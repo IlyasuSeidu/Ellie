@@ -106,12 +106,7 @@ export class ShiftDataService {
     const startDate = new Date(year, month, 1);
     const endDate = new Date(year, month + 1, 0); // Last day of month
 
-    const allShifts = await this.getShiftDaysInRange(
-      startDate,
-      endDate,
-      cycle,
-      userId
-    );
+    const allShifts = await this.getShiftDaysInRange(startDate, endDate, cycle, userId);
 
     return allShifts.filter((shift) => shift.isWorkDay);
   }
@@ -131,12 +126,7 @@ export class ShiftDataService {
     const endDate = new Date();
     endDate.setMonth(endDate.getMonth() + months);
 
-    const shifts = await this.getShiftDaysInRange(
-      startDate,
-      endDate,
-      cycle,
-      userId
-    );
+    const shifts = await this.getShiftDaysInRange(startDate, endDate, cycle, userId);
 
     shifts.forEach((shift) => {
       calendar.set(shift.date, shift);
@@ -149,6 +139,7 @@ export class ShiftDataService {
   /**
    * Export shifts in a date range
    */
+  // eslint-disable-next-line require-await
   async exportShifts(
     startDate: Date,
     endDate: Date,
@@ -166,11 +157,7 @@ export class ShiftDataService {
   /**
    * Count work days in a date range
    */
-  countWorkDaysInRange(
-    start: Date,
-    end: Date,
-    cycle: ShiftCycle
-  ): number {
+  countWorkDaysInRange(start: Date, end: Date, cycle: ShiftCycle): number {
     logger.debug('Counting work days', {
       start: start.toISOString(),
       end: end.toISOString(),
@@ -272,11 +259,7 @@ export class ShiftDataService {
   /**
    * Cache shifts by month
    */
-  private async cacheShifts(
-    userId: string,
-    shifts: ShiftDay[],
-    cycle: ShiftCycle
-  ): Promise<void> {
+  private async cacheShifts(userId: string, shifts: ShiftDay[], cycle: ShiftCycle): Promise<void> {
     try {
       // Group shifts by month
       const shiftsByMonth = new Map<string, ShiftDay[]>();
@@ -298,11 +281,7 @@ export class ShiftDataService {
         const [year, month] = monthKey.split('-').map(Number);
         const cacheKey = this.getCacheKey(userId, year, month);
 
-        await this.storage.set(
-          cacheKey,
-          { shifts: monthShifts, cycle },
-          CACHE_CONFIG.MAX_AGE_MS
-        );
+        await this.storage.set(cacheKey, { shifts: monthShifts, cycle }, CACHE_CONFIG.MAX_AGE_MS);
       }
 
       logger.debug('Shifts cached', {
@@ -325,10 +304,7 @@ export class ShiftDataService {
   /**
    * Get all months in a date range
    */
-  private getMonthsInRange(
-    start: Date,
-    end: Date
-  ): Array<{ year: number; month: number }> {
+  private getMonthsInRange(start: Date, end: Date): Array<{ year: number; month: number }> {
     const months: Array<{ year: number; month: number }> = [];
     const current = new Date(start);
 

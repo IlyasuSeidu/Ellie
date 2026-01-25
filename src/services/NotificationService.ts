@@ -54,10 +54,7 @@ export interface ScheduledNotification {
  * Notification scheduler interface
  */
 export interface INotificationScheduler {
-  scheduleNotification(
-    content: NotificationContent,
-    triggerDate: Date
-  ): Promise<string>;
+  scheduleNotification(content: NotificationContent, triggerDate: Date): Promise<string>;
   cancelNotification(notificationId: string): Promise<void>;
   cancelAllNotifications(): Promise<void>;
   requestPermissions(): Promise<boolean>;
@@ -99,18 +96,13 @@ export class NotificationService extends FirebaseService {
 
     // Calculate trigger time
     const shiftDate = new Date(shift.date);
-    const triggerDate = new Date(
-      shiftDate.getTime() - hoursBefore * 60 * 60 * 1000
-    );
+    const triggerDate = new Date(shiftDate.getTime() - hoursBefore * 60 * 60 * 1000);
 
     // Build content
     const content = this.buildShiftReminderContent(shift, hoursBefore);
 
     // Schedule notification
-    const notificationId = await this.scheduler.scheduleNotification(
-      content,
-      triggerDate
-    );
+    const notificationId = await this.scheduler.scheduleNotification(content, triggerDate);
 
     // Save to history
     const notification: ScheduledNotification = {
@@ -157,18 +149,13 @@ export class NotificationService extends FirebaseService {
 
     // Calculate trigger time
     const holidayDate = new Date(holiday.date);
-    const triggerDate = new Date(
-      holidayDate.getTime() - daysBefore * 24 * 60 * 60 * 1000
-    );
+    const triggerDate = new Date(holidayDate.getTime() - daysBefore * 24 * 60 * 60 * 1000);
 
     // Build content
     const content = this.buildHolidayAlertContent(holiday, daysBefore);
 
     // Schedule notification
-    const notificationId = await this.scheduler.scheduleNotification(
-      content,
-      triggerDate
-    );
+    const notificationId = await this.scheduler.scheduleNotification(content, triggerDate);
 
     // Save to history
     const notification: ScheduledNotification = {
@@ -195,10 +182,7 @@ export class NotificationService extends FirebaseService {
   /**
    * Cancel a notification
    */
-  async cancelNotification(
-    userId: string,
-    notificationId: string
-  ): Promise<void> {
+  async cancelNotification(userId: string, notificationId: string): Promise<void> {
     logger.debug('Cancelling notification', { userId, notificationId });
 
     if (!this.scheduler) {
@@ -264,6 +248,7 @@ export class NotificationService extends FirebaseService {
   /**
    * Check notification permissions
    */
+  // eslint-disable-next-line require-await
   async checkPermissions(): Promise<boolean> {
     if (!this.scheduler) {
       return false;
@@ -275,6 +260,7 @@ export class NotificationService extends FirebaseService {
   /**
    * Get permission status
    */
+  // eslint-disable-next-line require-await
   async getPermissionStatus(): Promise<PermissionStatus> {
     if (!this.scheduler) {
       return 'undetermined';
@@ -286,10 +272,7 @@ export class NotificationService extends FirebaseService {
   /**
    * Build shift reminder content
    */
-  buildShiftReminderContent(
-    shift: ShiftDay,
-    hoursBefore: number
-  ): NotificationContent {
+  buildShiftReminderContent(shift: ShiftDay, hoursBefore: number): NotificationContent {
     const shiftType = shift.isNightShift ? 'Night Shift' : 'Day Shift';
     const title = `${shiftType} Reminder`;
     const body =
@@ -313,17 +296,14 @@ export class NotificationService extends FirebaseService {
   /**
    * Build holiday alert content
    */
-  buildHolidayAlertContent(
-    holiday: Holiday,
-    daysBefore: number
-  ): NotificationContent {
+  buildHolidayAlertContent(holiday: Holiday, daysBefore: number): NotificationContent {
     const title = 'Upcoming Holiday';
     const body =
       daysBefore === 0
         ? `Today is ${holiday.name}!`
         : daysBefore === 1
-        ? `Tomorrow is ${holiday.name}`
-        : `${holiday.name} is in ${daysBefore} days (${holiday.date})`;
+          ? `Tomorrow is ${holiday.name}`
+          : `${holiday.name} is in ${daysBefore} days (${holiday.date})`;
 
     return {
       title,
@@ -342,10 +322,7 @@ export class NotificationService extends FirebaseService {
   /**
    * Save notification to history
    */
-  async saveNotification(
-    userId: string,
-    notification: ScheduledNotification
-  ): Promise<void> {
+  async saveNotification(userId: string, notification: ScheduledNotification): Promise<void> {
     try {
       await this.create(
         this.NOTIFICATIONS_COLLECTION,
@@ -377,18 +354,12 @@ export class NotificationService extends FirebaseService {
     limit: number = 50
   ): Promise<ScheduledNotification[]> {
     try {
-      const notifications = await this.query<ScheduledNotification>(
-        this.NOTIFICATIONS_COLLECTION
-      );
+      const notifications = await this.query<ScheduledNotification>(this.NOTIFICATIONS_COLLECTION);
 
       // Filter by userId and sort by scheduledFor (most recent first)
       const userNotifications = notifications
         .filter((n) => n.userId === userId)
-        .sort(
-          (a, b) =>
-            new Date(b.scheduledFor).getTime() -
-            new Date(a.scheduledFor).getTime()
-        )
+        .sort((a, b) => new Date(b.scheduledFor).getTime() - new Date(a.scheduledFor).getTime())
         .slice(0, limit);
 
       logger.debug('Notification history retrieved', {

@@ -43,10 +43,12 @@ export class MockFirebaseService {
    * Set mock data for a collection
    */
   public setMockData(collectionName: string, docId: string, data: DocumentData): void {
-    if (!this.mockData.has(collectionName)) {
-      this.mockData.set(collectionName, new Map());
+    let collection = this.mockData.get(collectionName);
+    if (!collection) {
+      collection = new Map();
+      this.mockData.set(collectionName, collection);
     }
-    this.mockData.get(collectionName)!.set(docId, data);
+    collection.set(docId, data);
   }
 
   /**
@@ -100,8 +102,8 @@ export class MockFirebaseService {
   /**
    * Mock read operation
    */
-  protected async read<T extends DocumentData>(
   // eslint-disable-next-line require-await
+  protected async read<T extends DocumentData>(
     collectionName: string,
     docId: string
   ): Promise<T | null> {
@@ -118,9 +120,9 @@ export class MockFirebaseService {
   /**
    * Mock update operation
    */
+  // eslint-disable-next-line require-await
   protected async update<T extends DocumentData>(
     collectionName: string,
-  // eslint-disable-next-line require-await
     docId: string,
     data: Partial<T>
   ): Promise<void> {
@@ -131,7 +133,11 @@ export class MockFirebaseService {
       throw new Error('Document not found');
     }
 
-    const existing = collection.get(docId)!;
+    const existing = collection.get(docId);
+    if (!existing) {
+      throw new Error('Document not found');
+    }
+
     collection.set(docId, {
       ...existing,
       ...data,
@@ -142,11 +148,11 @@ export class MockFirebaseService {
   /**
    * Mock delete operation
    */
+  // eslint-disable-next-line require-await
   protected async delete(collectionName: string, docId: string): Promise<void> {
     this.checkForSimulatedFailure();
 
     const collection = this.mockData.get(collectionName);
-  // eslint-disable-next-line require-await
     if (!collection || !collection.has(docId)) {
       throw new Error('Document not found');
     }
@@ -157,12 +163,12 @@ export class MockFirebaseService {
   /**
    * Mock query operation
    */
+  // eslint-disable-next-line require-await
   protected async query<T extends DocumentData>(
     collectionName: string,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _constraints: QueryConstraint[] = []
   ): Promise<T[]> {
-  // eslint-disable-next-line require-await
     this.checkForSimulatedFailure();
 
     return this.getMockCollection(collectionName) as T[];

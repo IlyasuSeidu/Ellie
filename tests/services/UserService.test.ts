@@ -65,7 +65,7 @@ describe('UserService', () => {
       it('should create a user with valid data', async () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const createSpy = // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        jest.spyOn(service as any, 'create').mockResolvedValue('user-123');
+          jest.spyOn(service as any, 'create').mockResolvedValue('user-123');
 
         await service.createUser(mockUserId, mockUserProfile);
 
@@ -163,9 +163,9 @@ describe('UserService', () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         jest.spyOn(service as any, 'update').mockRejectedValue(error);
 
-        await expect(
-          service.updateUser(mockUserId, { name: 'Test' })
-        ).rejects.toThrow('Update failed');
+        await expect(service.updateUser(mockUserId, { name: 'Test' })).rejects.toThrow(
+          'Update failed'
+        );
         expect(logger.error).toHaveBeenCalledWith(
           'Failed to update user',
           error,
@@ -301,12 +301,12 @@ describe('UserService', () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         jest.spyOn(service as any, 'read').mockResolvedValue(null);
 
-        await expect(
-          service.updateShiftCycle(mockUserId, { daysOn: 5 })
-        ).rejects.toThrow(ValidationError);
-        await expect(
-          service.updateShiftCycle(mockUserId, { daysOn: 5 })
-        ).rejects.toThrow('Shift cycle not found');
+        await expect(service.updateShiftCycle(mockUserId, { daysOn: 5 })).rejects.toThrow(
+          ValidationError
+        );
+        await expect(service.updateShiftCycle(mockUserId, { daysOn: 5 })).rejects.toThrow(
+          'Shift cycle not found'
+        );
       });
 
       it('should throw ValidationError for invalid updates', async () => {
@@ -314,9 +314,9 @@ describe('UserService', () => {
         jest.spyOn(service as any, 'read').mockResolvedValue(mockUserProfile);
 
         const invalidUpdates = { daysOn: -1 };
-        await expect(
-          service.updateShiftCycle(mockUserId, invalidUpdates)
-        ).rejects.toThrow(ValidationError);
+        await expect(service.updateShiftCycle(mockUserId, invalidUpdates)).rejects.toThrow(
+          ValidationError
+        );
       });
     });
   });
@@ -347,9 +347,9 @@ describe('UserService', () => {
 
       it('should throw ValidationError for invalid notifications', async () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const invalidPrefs: UserPreferences = {
+        const invalidPrefs: any = {
           theme: 'dark',
-          notifications: { ...mockNotificationSettings, shift24HoursBefore: 'invalid' as any },
+          notifications: { ...mockNotificationSettings, shift24HoursBefore: 'invalid' },
           language: 'en',
           timezone: 'UTC',
         };
@@ -451,9 +451,9 @@ describe('UserService', () => {
 
       it('should throw ValidationError for invalid settings', async () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const invalidSettings = {
+        const invalidSettings: any = {
           ...mockNotificationSettings,
-          shift24HoursBefore: 'invalid' as any,
+          shift24HoursBefore: 'invalid',
         };
 
         await expect(
@@ -535,7 +535,7 @@ describe('UserService', () => {
       const unsubscribe = jest.fn();
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        jest.spyOn(service as any, 'subscribe').mockReturnValue(unsubscribe);
+      jest.spyOn(service as any, 'subscribe').mockReturnValue(unsubscribe);
 
       const result = service.subscribeToUserChanges(mockUserId, callback);
 
@@ -552,7 +552,7 @@ describe('UserService', () => {
     it('should handle network errors gracefully', async () => {
       const networkError = new Error('Network unavailable');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        jest.spyOn(service as any, 'read').mockRejectedValue(networkError);
+      jest.spyOn(service as any, 'read').mockRejectedValue(networkError);
 
       await expect(service.getUser(mockUserId)).rejects.toThrow('Network unavailable');
       expect(logger.error).toHaveBeenCalled();
@@ -561,7 +561,7 @@ describe('UserService', () => {
     it('should handle permission denied errors', async () => {
       const permissionError = new Error('Permission denied');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        jest.spyOn(service as any, 'create').mockRejectedValue(permissionError);
+      jest.spyOn(service as any, 'create').mockRejectedValue(permissionError);
 
       await expect(service.createUser(mockUserId, mockUserProfile)).rejects.toThrow(
         'Permission denied'
@@ -569,12 +569,10 @@ describe('UserService', () => {
     });
 
     it('should validate data before operations', async () => {
-      const invalidData = { name: '', createdAt: 'invalid', updatedAt: 'invalid' };
-
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await expect(
-        service.createUser(mockUserId, invalidData as any)
-      ).rejects.toThrow(ValidationError);
+      const invalidData: any = { name: '', createdAt: 'invalid', updatedAt: 'invalid' };
+
+      await expect(service.createUser(mockUserId, invalidData)).rejects.toThrow(ValidationError);
     });
   });
 });

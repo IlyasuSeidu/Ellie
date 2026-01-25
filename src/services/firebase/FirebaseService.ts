@@ -68,10 +68,7 @@ export class FirebaseService {
    */
   protected checkNetworkState(): void {
     if (!this.networkState.isConnected) {
-      throw new NetworkError(
-        'No network connection available',
-        'NETWORK_UNAVAILABLE'
-      );
+      throw new NetworkError('No network connection available', 'NETWORK_UNAVAILABLE');
     }
   }
 
@@ -129,8 +126,8 @@ export class FirebaseService {
    * @param docId - Document ID
    * @returns Document data or null if not found
    */
-  protected async read<T extends DocumentData>(
   // eslint-disable-next-line require-await
+  protected async read<T extends DocumentData>(
     collectionName: string,
     docId: string
   ): Promise<T | null> {
@@ -176,9 +173,9 @@ export class FirebaseService {
    * @param docId - Document ID
    * @param data - Partial document data to update
    */
+  // eslint-disable-next-line require-await
   protected async update<T extends DocumentData>(
     collectionName: string,
-  // eslint-disable-next-line require-await
     docId: string,
     data: Partial<T>
   ): Promise<void> {
@@ -217,11 +214,8 @@ export class FirebaseService {
    * @param collectionName - Firestore collection name
    * @param docId - Document ID
    */
-  protected async delete(
   // eslint-disable-next-line require-await
-    collectionName: string,
-    docId: string
-  ): Promise<void> {
+  protected async delete(collectionName: string, docId: string): Promise<void> {
     this.checkNetworkState();
 
     return retry(
@@ -254,9 +248,9 @@ export class FirebaseService {
    * @param constraints - Query constraints (where, orderBy, limit, etc.)
    * @returns Array of documents
    */
+  // eslint-disable-next-line require-await
   protected async query<T extends DocumentData>(
     collectionName: string,
-  // eslint-disable-next-line require-await
     constraints: QueryConstraint[] = []
   ): Promise<T[]> {
     this.checkNetworkState();
@@ -409,10 +403,7 @@ export class FirebaseService {
         );
 
       case 'not-found':
-        return new FirebaseError(
-          `Document not found during ${operation}`,
-          'FIRESTORE_NOT_FOUND'
-        );
+        return new FirebaseError(`Document not found during ${operation}`, 'FIRESTORE_NOT_FOUND');
 
       default:
         return new FirebaseError(

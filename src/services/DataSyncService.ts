@@ -255,9 +255,7 @@ export class DataSyncService {
     logger.info('Syncing shift cycle', { userId });
 
     try {
-      const localCycle = await asyncStorageService.get<ShiftCycle>(
-        `shiftCycle:${userId}`
-      );
+      const localCycle = await asyncStorageService.get<ShiftCycle>(`shiftCycle:${userId}`);
       const remoteCycle = await this.userService.getShiftCycle(userId);
 
       if (!remoteCycle && localCycle) {
@@ -284,9 +282,7 @@ export class DataSyncService {
     logger.info('Syncing preferences', { userId });
 
     try {
-      const localPrefs = await asyncStorageService.get<UserPreferences>(
-        `preferences:${userId}`
-      );
+      const localPrefs = await asyncStorageService.get<UserPreferences>(`preferences:${userId}`);
       const remotePrefs = await this.userService.getPreferences(userId);
 
       if (!remotePrefs && localPrefs) {
@@ -350,10 +346,7 @@ export class DataSyncService {
    */
   async setLastSyncTime(userId: string, time: Date): Promise<void> {
     try {
-      await asyncStorageService.set(
-        `${STORAGE_KEYS.LAST_SYNC_TIME}${userId}`,
-        time.toISOString()
-      );
+      await asyncStorageService.set(`${STORAGE_KEYS.LAST_SYNC_TIME}${userId}`, time.toISOString());
     } catch (error) {
       logger.error('Failed to set last sync time', error as Error, { userId });
       throw error;
@@ -433,9 +426,7 @@ export class DataSyncService {
    * Get sync queue
    */
   private async getQueue(): Promise<SyncOperation[]> {
-    const queue = await asyncStorageService.get<SyncOperation[]>(
-      STORAGE_KEYS.SYNC_QUEUE
-    );
+    const queue = await asyncStorageService.get<SyncOperation[]>(STORAGE_KEYS.SYNC_QUEUE);
     return queue || [];
   }
 
@@ -448,13 +439,13 @@ export class DataSyncService {
     switch (type) {
       case 'CREATE':
         if (collection === 'users' && data) {
-          await this.userService.createUser(documentId, data);
+          await this.userService.createUser(documentId, data as UserProfile);
         }
         break;
 
       case 'UPDATE':
         if (collection === 'users' && data) {
-          await this.userService.updateUser(documentId, data);
+          await this.userService.updateUser(documentId, data as Partial<UserProfile>);
         }
         break;
 
@@ -472,10 +463,7 @@ export class DataSyncService {
   /**
    * Resolve user data conflict (last-write-wins)
    */
-  private resolveUserConflict(
-    local: UserProfile,
-    remote: UserProfile
-  ): UserProfile {
+  private resolveUserConflict(local: UserProfile, remote: UserProfile): UserProfile {
     // Compare timestamps - use server timestamp as source of truth
     const localTime = local.updatedAt ? new Date(local.updatedAt).getTime() : 0;
     const remoteTime = remote.updatedAt ? new Date(remote.updatedAt).getTime() : 0;
@@ -483,19 +471,16 @@ export class DataSyncService {
     if (remoteTime >= localTime) {
       logger.debug('Using remote data (newer)', { localTime, remoteTime });
       return remote;
-    } else {
-      logger.debug('Using local data (newer)', { localTime, remoteTime });
-      return local;
     }
+
+    logger.debug('Using local data (newer)', { localTime, remoteTime });
+    return local;
   }
 
   /**
    * Merge user preferences intelligently
    */
-  private mergePreferences(
-    local: UserPreferences,
-    remote: UserPreferences
-  ): UserPreferences {
+  private mergePreferences(local: UserPreferences, remote: UserPreferences): UserPreferences {
     // Merge preferences, preferring local for UI settings
     // and remote for sync-critical settings
     return {
