@@ -11,11 +11,28 @@ import { ShiftPattern, EnergyLevel, ReportType } from './index';
 /**
  * Date String Validation
  *
- * Validates YYYY-MM-DD format
+ * Validates YYYY-MM-DD format and ensures date is valid
  */
-const dateStringSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, {
-  message: 'Date must be in YYYY-MM-DD format',
-});
+const dateStringSchema = z
+  .string()
+  .regex(/^\d{4}-\d{2}-\d{2}$/, {
+    message: 'Date must be in YYYY-MM-DD format',
+  })
+  .refine(
+    (date) => {
+      // Validate that the date is actually valid (not 2024-13-01 or 2024-01-32)
+      const [year, month, day] = date.split('-').map(Number);
+      const dateObj = new Date(year, month - 1, day);
+      return (
+        dateObj.getFullYear() === year &&
+        dateObj.getMonth() === month - 1 &&
+        dateObj.getDate() === day
+      );
+    },
+    {
+      message: 'Invalid date',
+    }
+  );
 
 /**
  * Time String Validation

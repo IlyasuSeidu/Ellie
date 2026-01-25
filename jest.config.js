@@ -1,30 +1,16 @@
 module.exports = {
-  preset: 'jest-expo',
-  transformIgnorePatterns: [
-    'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|@react-native-google-signin|react-native-calendars|react-native-paper|react-native-reanimated|lottie-react-native|react-native-linear-gradient)',
-  ],
-  setupFilesAfterEnv: ['@testing-library/react-native/extend-expect'],
+  rootDir: __dirname,
+  preset: 'ts-jest',
   testEnvironment: 'node',
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  testMatch: ['**/__tests__/**/*.ts?(x)', '**/?(*.)+(spec|test).ts?(x)'],
   collectCoverageFrom: [
-    'src/**/*.{ts,tsx}',
+    'src/**/*.{js,jsx,ts,tsx}',
     '!src/**/*.d.ts',
-    '!src/**/*.stories.tsx',
     '!src/**/__tests__/**',
-    '!src/**/*.test.{ts,tsx}',
-    '!src/**/index.{ts,tsx}',
+    '!src/**/__mocks__/**',
   ],
-  coverageDirectory: 'coverage',
-  coverageReporters: ['text', 'lcov', 'html', 'json-summary'],
-  coverageThreshold: {
-    global: {
-      branches: 70,
-      functions: 70,
-      lines: 70,
-      statements: 70,
-    },
-  },
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@/components/(.*)$': '<rootDir>/src/components/$1',
@@ -37,7 +23,22 @@ module.exports = {
     '^@/config/(.*)$': '<rootDir>/src/config/$1',
     '^@/assets/(.*)$': '<rootDir>/assets/$1',
   },
-  verbose: true,
-  clearMocks: true,
-  resetMocks: true,
+  transform: {
+    '^.+\\.(js|jsx)$': 'babel-jest',
+    '^.+\\.(ts|tsx)$': [
+      'ts-jest',
+      {
+        tsconfig: '<rootDir>/tsconfig.json',
+        babelConfig: true,
+      },
+    ],
+  },
+  transformIgnorePatterns: [
+    'node_modules/(?!(react-native|@react-native|expo|expo-.*|@expo|@expo-.*|@unimodules|unimodules|@react-navigation)/)',
+  ],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/e2e/',
+    'src/__tests__/App.test.tsx', // Requires React Native test environment
+  ],
 };

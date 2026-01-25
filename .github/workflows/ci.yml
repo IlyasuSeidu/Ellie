@@ -54,7 +54,6 @@ jobs:
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest
-    continue-on-error: true # Tests fail due to jest-expo RN 0.81 compatibility issue
 
     env:
       # Firebase configuration (dummy values for CI)
@@ -82,7 +81,6 @@ jobs:
 
       - name: Run Jest tests
         run: npm test -- --coverage --watchAll=false
-        continue-on-error: true
 
       - name: Check coverage thresholds
         run: |

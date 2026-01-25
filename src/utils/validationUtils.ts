@@ -357,6 +357,7 @@ export function sanitizeSql(input: string): string {
     .replace(/\bUNION\b/gi, '') // Remove UNION keyword
     .replace(/\bSELECT\b/gi, '') // Remove SELECT keyword
     .replace(/\bDROP\b/gi, '') // Remove DROP keyword
+    .replace(/\bTABLE\b/gi, '') // Remove TABLE keyword
     .replace(/\bDELETE\b/gi, '') // Remove DELETE keyword
     .replace(/\bINSERT\b/gi, '') // Remove INSERT keyword
     .replace(/\bUPDATE\b/gi, ''); // Remove UPDATE keyword

@@ -98,8 +98,8 @@ export function calculateShiftDay(date: Date, shiftCycle: ShiftCycle): ShiftDay 
   const startDate = new Date(shiftCycle.startDate);
   let daysSinceStart = diffInDays(date, startDate);
 
-  // Apply phase offset
-  daysSinceStart -= shiftCycle.phaseOffset;
+  // Apply phase offset (add to shift the cycle forward)
+  daysSinceStart += shiftCycle.phaseOffset;
 
   // Calculate cycle length
   const cycleLength = shiftCycle.daysOn + shiftCycle.nightsOn + shiftCycle.daysOff;
@@ -324,7 +324,7 @@ export function getPhaseInfo(
 } {
   const startDate = new Date(shiftCycle.startDate);
   let daysSinceStart = diffInDays(date, startDate);
-  daysSinceStart -= shiftCycle.phaseOffset;
+  daysSinceStart += shiftCycle.phaseOffset;
 
   const cycleLength = shiftCycle.daysOn + shiftCycle.nightsOn + shiftCycle.daysOff;
 

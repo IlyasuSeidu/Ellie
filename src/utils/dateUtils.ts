@@ -39,16 +39,21 @@ export function formatDate(date: Date, format: string): string {
  * Parse a date string into a Date object
  *
  * @param dateString - Date string to parse
- * @param format - Optional format string (default: 'YYYY-MM-DD')
+ * @param format - Optional format string (if not provided, auto-detects ISO and common formats)
  * @returns Parsed Date object
  *
  * @example
  * ```typescript
  * parseDate('2024-01-15') // Date object for Jan 15, 2024
+ * parseDate('2024-01-15T10:30:00') // Date object for Jan 15, 2024 at 10:30
  * parseDate('01/15/2024', 'MM/DD/YYYY') // Date object for Jan 15, 2024
  * ```
  */
-export function parseDate(dateString: string, format = 'YYYY-MM-DD'): Date {
+export function parseDate(dateString: string, format?: string): Date {
+  // If no format specified, let dayjs auto-parse (handles ISO datetime, etc.)
+  if (!format) {
+    return dayjs(dateString).toDate();
+  }
   return dayjs(dateString, format).toDate();
 }
 
@@ -269,7 +274,11 @@ export function getLastDayOfMonth(date: Date): Date {
  * ```
  */
 export function toDateString(date: Date): string {
-  return dayjs(date).format('YYYY-MM-DD');
+  // Use UTC methods to ensure consistent handling across timezones
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 /**

@@ -463,9 +463,10 @@ describe('getShiftStatistics', () => {
     // Verify proportions are roughly correct
     // 31 days / 9 day cycle = 3.44 cycles
     // Each cycle: 3 day, 3 night, 3 off
+    // 3 full cycles (27 days) + 4 partial (day-day-day-night) = 12 day, 10 night, 9 off
     expect(stats.dayShifts).toBeGreaterThan(9);
     expect(stats.nightShifts).toBeGreaterThan(9);
-    expect(stats.daysOff).toBeGreaterThan(9);
+    expect(stats.daysOff).toBeGreaterThanOrEqual(9);
   });
 });
 
