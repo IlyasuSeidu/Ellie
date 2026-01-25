@@ -26,11 +26,62 @@ jest.mock('expo-constants', () => ({
   },
 }));
 
-// Mock react-native-reanimated to avoid worklets plugin issue
+// Mock react-native-reanimated before anything else
 jest.mock('react-native-reanimated', () => {
-  const Reanimated = require('react-native-reanimated/mock');
-  Reanimated.default.call = () => {};
-  return Reanimated;
+  const React = require('react');
+  const { View, Text } = require('react-native');
+
+  return {
+    default: {
+      createAnimatedComponent: (Component) => Component,
+      View,
+      Text,
+    },
+    View,
+    Text,
+    useSharedValue: jest.fn((initialValue) => ({ value: initialValue })),
+    useAnimatedStyle: jest.fn((cb) => {
+      try {
+        return cb();
+      } catch (e) {
+        return {};
+      }
+    }),
+    withSpring: jest.fn((value) => value),
+    withTiming: jest.fn((value) => value),
+    withDelay: jest.fn((_, value) => value),
+    withSequence: jest.fn((...values) => values[values.length - 1]),
+    withRepeat: jest.fn((value) => value),
+    cancelAnimation: jest.fn(),
+    measure: jest.fn(),
+    Easing: {
+      linear: (x) => x,
+      ease: (x) => x,
+      quad: (x) => x,
+      cubic: (x) => x,
+      bezier: () => (x) => x,
+    },
+    Extrapolate: {
+      CLAMP: 'clamp',
+      EXTEND: 'extend',
+      IDENTITY: 'identity',
+    },
+    interpolate: jest.fn((value, input, output) => output[0]),
+    runOnJS: jest.fn((fn) => fn),
+    runOnUI: jest.fn((fn) => fn),
+    createAnimatedComponent: jest.fn((Component) => Component),
+  };
+});
+
+// Mock react-native-linear-gradient
+jest.mock('react-native-linear-gradient', () => {
+  const React = require('react');
+  return {
+    __esModule: true,
+    default: ({ children, ...props }) => {
+      return React.createElement('LinearGradient', props, children);
+    },
+  };
 });
 
 // Mock expo modules that might cause issues
@@ -38,6 +89,16 @@ jest.mock('expo-haptics', () => ({
   impactAsync: jest.fn(),
   notificationAsync: jest.fn(),
   selectionAsync: jest.fn(),
+  ImpactFeedbackStyle: {
+    Light: 'light',
+    Medium: 'medium',
+    Heavy: 'heavy',
+  },
+  NotificationFeedbackType: {
+    Success: 'success',
+    Warning: 'warning',
+    Error: 'error',
+  },
 }));
 
 jest.mock('expo-notifications', () => ({
@@ -78,3 +139,6 @@ jest.mock('expo-apple-authentication', () => ({
 
 // Mock Firebase config to use test values
 process.env.NODE_ENV = 'test';
+
+// Define React Native global __DEV__
+global.__DEV__ = true;

@@ -1,7 +1,6 @@
 module.exports = {
   rootDir: __dirname,
-  preset: 'ts-jest',
-  testEnvironment: 'node',
+  preset: 'jest-expo',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testMatch: ['**/__tests__/**/*.ts?(x)', '**/?(*.)+(spec|test).ts?(x)'],
   collectCoverageFrom: [
@@ -24,14 +23,7 @@ module.exports = {
     '^@/assets/(.*)$': '<rootDir>/assets/$1',
   },
   transform: {
-    '^.+\\.(js|jsx)$': 'babel-jest',
-    '^.+\\.(ts|tsx)$': [
-      'ts-jest',
-      {
-        tsconfig: '<rootDir>/tsconfig.json',
-        babelConfig: true,
-      },
-    ],
+    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
   },
   transformIgnorePatterns: [
     'node_modules/(?!(react-native|@react-native|expo|expo-.*|@expo|@expo-.*|@unimodules|unimodules|@react-navigation)/)',
