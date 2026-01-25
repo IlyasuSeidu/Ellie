@@ -1,0 +1,112 @@
+name: E2E Tests
+
+on:
+  push:
+    branches:
+      - 'release/**'
+  pull_request:
+    branches:
+      - 'release/**'
+  workflow_dispatch:
+
+jobs:
+  e2e-ios:
+    name: E2E Tests (iOS)
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup iOS Simulator
+        run: |
+          xcrun simctl list devices available
+          UDID=$(xcrun simctl create "iPhone 15 Pro" "com.apple.CoreSimulator.SimDeviceType.iPhone-15-Pro")
+          echo "SIMULATOR_UDID=$UDID" >> $GITHUB_ENV
+          xcrun simctl boot "$UDID"
+
+      - name: Install Detox CLI
+        run: npm install -g detox-cli
+
+      - name: Build iOS app for testing
+        run: detox build --configuration ios.release
+
+      - name: Run Detox E2E tests
+        run: detox test --configuration ios.release --cleanup
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-test-results-ios
+          path: |
+            e2e/artifacts/
+            e2e/*.log
+
+      - name: Shutdown simulator
+        if: always()
+        run: xcrun simctl shutdown "$SIMULATOR_UDID" || true
+
+  e2e-android:
+    name: E2E Tests (Android)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          cache: 'npm'
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Detox CLI
+        run: npm install -g detox-cli
+
+      - name: Create Android emulator
+        run: |
+          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "system-images;android-33;google_apis;x86_64"
+          echo "no" | $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager create avd -n TestEmulator -k "system-images;android-33;google_apis;x86_64" --force
+          $ANDROID_HOME/emulator/emulator -list-avds
+
+      - name: Start Android emulator
+        run: |
+          nohup $ANDROID_HOME/emulator/emulator -avd TestEmulator -no-snapshot -no-window -no-audio -gpu swiftshader_indirect &
+          adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done'
+
+      - name: Build Android app for testing
+        run: detox build --configuration android.release
+
+      - name: Run Detox E2E tests
+        run: detox test --configuration android.release --cleanup
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-test-results-android
+          path: |
+            e2e/artifacts/
+            e2e/*.log
