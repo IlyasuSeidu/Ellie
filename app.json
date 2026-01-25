@@ -1,12 +1,13 @@
 {
   "expo": {
-    "name": "ShiftSync",
-    "slug": "ShiftSync",
+    "name": "Ellie",
+    "slug": "Ellie",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "plugins": ["@config-plugins/detox"],
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
