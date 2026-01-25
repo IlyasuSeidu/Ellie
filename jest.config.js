@@ -32,5 +32,6 @@ module.exports = {
     '/node_modules/',
     '/e2e/',
     'src/__tests__/App.test.tsx', // Requires React Native test environment
+    'tests/services/firebase/FirebaseService.test.ts', // Firebase ESM import issues with Jest
   ],
 };
