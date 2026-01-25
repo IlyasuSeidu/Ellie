@@ -10,7 +10,9 @@ describe('Ellie App', () => {
   });
 
   it('should display the welcome screen', async () => {
-    await detoxExpect(element(by.text('Open up App.tsx to start working on your app!'))).toBeVisible();
+    await detoxExpect(
+      element(by.text('Open up App.tsx to start working on your app!'))
+    ).toBeVisible();
   });
 
   it('should handle app launch successfully', async () => {
