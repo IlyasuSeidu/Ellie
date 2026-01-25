@@ -70,6 +70,9 @@ jest.mock('react-native-reanimated', () => {
     runOnJS: jest.fn((fn) => fn),
     runOnUI: jest.fn((fn) => fn),
     createAnimatedComponent: jest.fn((Component) => Component),
+    FadeIn: {
+      duration: jest.fn(() => ({})),
+    },
   };
 });
 
