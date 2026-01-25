@@ -197,14 +197,14 @@ export const mockStorageRef: Record<string, unknown> = {
 };
 
 // Set up put and putString after mockStorageRef is defined
-mockStorageRef.put.mockImplementation(() =>
+(mockStorageRef.put as jest.Mock).mockImplementation(() =>
   Promise.resolve({
     ref: mockStorageRef,
     metadata: mockMetadata,
   })
 );
 
-mockStorageRef.putString.mockImplementation(() =>
+(mockStorageRef.putString as jest.Mock).mockImplementation(() =>
   Promise.resolve({
     ref: mockStorageRef,
     metadata: { ...mockMetadata, contentType: 'text/plain' },

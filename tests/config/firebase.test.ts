@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Firebase Configuration Tests
  *
@@ -84,12 +85,12 @@ describe('Firebase Configuration', () => {
     });
 
     it('should return auth via getter', () => {
-      const firebaseAuth = getFirebaseAuth();
+      const firebaseAuth = getFirebaseAuth() as any;
       expect(firebaseAuth).toBeDefined();
     });
 
     it('should have auth methods', () => {
-      const firebaseAuth = getFirebaseAuth();
+      const firebaseAuth = getFirebaseAuth() as any;
       expect(firebaseAuth.signInWithEmailAndPassword).toBeDefined();
       expect(firebaseAuth.createUserWithEmailAndPassword).toBeDefined();
       expect(firebaseAuth.signOut).toBeDefined();
@@ -97,7 +98,7 @@ describe('Firebase Configuration', () => {
     });
 
     it('should handle auth state changes', () => {
-      const firebaseAuth = getFirebaseAuth();
+      const firebaseAuth = getFirebaseAuth() as any;
       const mockCallback = jest.fn();
 
       firebaseAuth.onAuthStateChanged(mockCallback);
@@ -111,12 +112,12 @@ describe('Firebase Configuration', () => {
     });
 
     it('should return firestore via getter', () => {
-      const firestoreInstance = getFirebaseFirestore();
+      const firestoreInstance = getFirebaseFirestore() as any;
       expect(firestoreInstance).toBeDefined();
     });
 
     it('should have firestore methods', () => {
-      const firestoreInstance = getFirebaseFirestore();
+      const firestoreInstance = getFirebaseFirestore() as any;
       expect(firestoreInstance.collection).toBeDefined();
       expect(firestoreInstance.doc).toBeDefined();
       expect(firestoreInstance.batch).toBeDefined();
@@ -124,7 +125,7 @@ describe('Firebase Configuration', () => {
     });
 
     it('should support collection operations', () => {
-      const firestoreInstance = getFirebaseFirestore();
+      const firestoreInstance = getFirebaseFirestore() as any;
       const collection = firestoreInstance.collection('users');
 
       expect(collection).toBeDefined();
@@ -132,7 +133,7 @@ describe('Firebase Configuration', () => {
     });
 
     it('should support document operations', () => {
-      const firestoreInstance = getFirebaseFirestore();
+      const firestoreInstance = getFirebaseFirestore() as any;
       const doc = firestoreInstance.doc('users/user-123');
 
       expect(doc).toBeDefined();
@@ -146,18 +147,18 @@ describe('Firebase Configuration', () => {
     });
 
     it('should return storage via getter', () => {
-      const storageInstance = getFirebaseStorage();
+      const storageInstance = getFirebaseStorage() as any;
       expect(storageInstance).toBeDefined();
     });
 
     it('should have storage methods', () => {
-      const storageInstance = getFirebaseStorage();
+      const storageInstance = getFirebaseStorage() as any;
       expect(storageInstance.ref).toBeDefined();
       expect(storageInstance.refFromURL).toBeDefined();
     });
 
     it('should create storage references', () => {
-      const storageInstance = getFirebaseStorage();
+      const storageInstance = getFirebaseStorage() as any;
       const ref = storageInstance.ref('path/to/file');
 
       expect(ref).toBeDefined();
@@ -171,18 +172,18 @@ describe('Firebase Configuration', () => {
     });
 
     it('should return functions via getter', () => {
-      const functionsInstance = getCloudFunctions();
+      const functionsInstance = getCloudFunctions() as any;
       expect(functionsInstance).toBeDefined();
     });
 
     it('should have functions methods', () => {
-      const functionsInstance = getCloudFunctions();
+      const functionsInstance = getCloudFunctions() as any;
       expect(functionsInstance.httpsCallable).toBeDefined();
       expect(functionsInstance.region).toBeDefined();
     });
 
     it('should create callable functions', () => {
-      const functionsInstance = getCloudFunctions();
+      const functionsInstance = getCloudFunctions() as any;
       const callable = functionsInstance.httpsCallable('myFunction');
 
       expect(callable).toBeDefined();
@@ -233,7 +234,7 @@ describe('Firebase Configuration', () => {
 
   describe('Mock Behavior', () => {
     it('should use mocked Firebase in test environment', () => {
-      const firebaseAuth = getFirebaseAuth();
+      const firebaseAuth = getFirebaseAuth() as any;
 
       // Mock functions should be defined
       expect(firebaseAuth.signInWithEmailAndPassword).toBeDefined();
@@ -241,7 +242,7 @@ describe('Firebase Configuration', () => {
     });
 
     it('should have mock data in responses', async () => {
-      const firebaseAuth = getFirebaseAuth();
+      const firebaseAuth = getFirebaseAuth() as any;
 
       // Mock sign in should return mock user
       const result = await firebaseAuth.signInWithEmailAndPassword('test@example.com', 'password');
@@ -252,7 +253,7 @@ describe('Firebase Configuration', () => {
     });
 
     it('should support mock Firestore operations', async () => {
-      const firestoreInstance = getFirebaseFirestore();
+      const firestoreInstance = getFirebaseFirestore() as any;
       const collection = firestoreInstance.collection('users');
 
       const result = await collection.get();
@@ -263,7 +264,7 @@ describe('Firebase Configuration', () => {
     });
 
     it('should support mock Storage operations', async () => {
-      const storageInstance = getFirebaseStorage();
+      const storageInstance = getFirebaseStorage() as any;
       const ref = storageInstance.ref('path/to/file');
 
       const url = await ref.getDownloadURL();
@@ -273,7 +274,7 @@ describe('Firebase Configuration', () => {
     });
 
     it('should support mock Functions calls', async () => {
-      const functionsInstance = getCloudFunctions();
+      const functionsInstance = getCloudFunctions() as any;
       const callable = functionsInstance.httpsCallable('myFunction');
 
       const result = await callable({ data: 'test' });

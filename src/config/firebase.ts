@@ -201,11 +201,11 @@ export function getFirebaseInstances(): {
   }
 
   return {
-    app,
-    auth,
-    firestore,
-    storage,
-    functions,
+    app: app as FirebaseApp,
+    auth: auth as Auth,
+    firestore: firestore as Firestore,
+    storage: storage as FirebaseStorage,
+    functions: functions as Functions,
   };
 }
 
@@ -232,35 +232,35 @@ export const getFirebaseApp = (): FirebaseApp => {
   if (!app && !isTest) {
     throw new Error('Firebase app not initialized');
   }
-  return app;
+  return app as FirebaseApp;
 };
 
 export const getFirebaseAuth = (): Auth => {
   if (!auth && !isTest) {
     throw new Error('Firebase Auth not initialized');
   }
-  return auth;
+  return auth as Auth;
 };
 
 export const getFirebaseFirestore = (): Firestore => {
   if (!firestore && !isTest) {
     throw new Error('Firestore not initialized');
   }
-  return firestore;
+  return firestore as Firestore;
 };
 
 export const getFirebaseStorage = (): FirebaseStorage => {
   if (!storage && !isTest) {
     throw new Error('Firebase Storage not initialized');
   }
-  return storage;
+  return storage as FirebaseStorage;
 };
 
 export const getCloudFunctions = (): Functions => {
   if (!functions && !isTest) {
     throw new Error('Cloud Functions not initialized');
   }
-  return functions;
+  return functions as Functions;
 };
 
 /**
