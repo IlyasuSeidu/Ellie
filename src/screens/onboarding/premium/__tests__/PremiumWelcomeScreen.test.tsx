@@ -6,6 +6,13 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { PremiumWelcomeScreen } from '../PremiumWelcomeScreen';
 
+// Mock React Navigation
+jest.mock('@react-navigation/native', () => ({
+  useNavigation: () => ({
+    navigate: jest.fn(),
+  }),
+}));
+
 // Mock timers
 jest.useFakeTimers();
 
