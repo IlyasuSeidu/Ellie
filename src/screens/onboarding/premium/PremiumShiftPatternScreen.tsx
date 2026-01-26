@@ -5,7 +5,7 @@
  * Features pattern cards in responsive grid with staggered animations
  */
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, useWindowDimensions, Platform } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -31,7 +31,7 @@ interface AnimatedPatternCardProps {
     description: string;
     schedule: string;
   };
-  animation: { opacity: { value: number }; translateY: { value: number } };
+  delay: number;
   selectedPattern: string | null;
   onSelect: (patternId: string) => void;
   numColumns: number;
@@ -40,15 +40,23 @@ interface AnimatedPatternCardProps {
 
 const AnimatedPatternCardWrapper: React.FC<AnimatedPatternCardProps> = ({
   pattern,
-  animation,
+  delay,
   selectedPattern,
   onSelect,
   numColumns,
   testID,
 }) => {
+  const opacity = useSharedValue(0);
+  const translateY = useSharedValue(20);
+
+  useEffect(() => {
+    opacity.value = withDelay(delay, withTiming(1, { duration: 300 }));
+    translateY.value = withDelay(delay, withTiming(0, { duration: 300 }));
+  }, [opacity, translateY, delay]);
+
   const animatedStyle = useAnimatedStyle(() => ({
-    opacity: animation.opacity.value,
-    transform: [{ translateY: animation.translateY.value }],
+    opacity: opacity.value,
+    transform: [{ translateY: translateY.value }],
   }));
 
   return (
@@ -175,16 +183,6 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
   const subtitleOpacity = useSharedValue(0);
   const buttonOpacity = useSharedValue(0);
 
-  // Card animation values (one per card) - use useMemo to avoid hooks in callbacks
-  const cardAnimations = useMemo(
-    () =>
-      Array.from({ length: SHIFT_PATTERNS.length }, () => ({
-        opacity: { value: 0 },
-        translateY: { value: 20 },
-      })),
-    []
-  );
-
   // Start animations on mount
   useEffect(() => {
     // Title animation
@@ -194,19 +192,12 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
     // Subtitle animation
     subtitleOpacity.value = withDelay(200, withTiming(1, { duration: 300 }));
 
-    // Staggered card animations (50ms delay each)
-    cardAnimations.forEach((anim, index) => {
-      const delay = 400 + index * 50;
-      anim.opacity.value = withDelay(delay, withTiming(1, { duration: 300 }));
-      anim.translateY.value = withDelay(delay, withTiming(0, { duration: 300 }));
-    });
-
     // Button animation
     buttonOpacity.value = withDelay(
       400 + SHIFT_PATTERNS.length * 50 + 100,
       withTiming(1, { duration: 300 })
     );
-  }, [titleOpacity, titleTranslateY, subtitleOpacity, buttonOpacity, cardAnimations]);
+  }, [titleOpacity, titleTranslateY, subtitleOpacity, buttonOpacity]);
 
   // Animated styles
   const titleAnimatedStyle = useAnimatedStyle(() => ({
@@ -273,7 +264,7 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
             <AnimatedPatternCardWrapper
               key={pattern.id}
               pattern={pattern}
-              animation={cardAnimations[index]}
+              delay={400 + index * 50}
               selectedPattern={selectedPattern}
               onSelect={handlePatternSelect}
               numColumns={numColumns}
