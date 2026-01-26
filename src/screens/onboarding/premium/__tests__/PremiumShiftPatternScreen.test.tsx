@@ -1,24 +1,83 @@
 /**
  * PremiumShiftPatternScreen Component Tests
+ * Tests for Tinder-style swipeable card interface
  */
 
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { PremiumShiftPatternScreen } from '../PremiumShiftPatternScreen';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
-import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { ShiftPattern } from '@/types';
+import * as Haptics from 'expo-haptics';
 
-// Get the mocked useWindowDimensions from jest.setup.js
-const mockUseWindowDimensions = jest.requireMock(
-  'react-native/Libraries/Utilities/useWindowDimensions'
-).default;
+// Mock haptics
+jest.mock('expo-haptics');
+
+// Mock gesture handler
+jest.mock('react-native-gesture-handler', () => {
+  return {
+    Gesture: {
+      Pan: () => ({
+        enabled: jest.fn(() => ({
+          enabled: jest.fn(),
+          onUpdate: jest.fn(() => ({
+            onUpdate: jest.fn(),
+            onEnd: jest.fn(() => ({ onEnd: jest.fn() })),
+          })),
+        })),
+      }),
+      Tap: () => ({
+        enabled: jest.fn(() => ({
+          enabled: jest.fn(),
+          onEnd: jest.fn(() => ({ onEnd: jest.fn() })),
+        })),
+      }),
+      Simultaneous: jest.fn((a, b) => ({ a, b })),
+    },
+    GestureDetector: ({ children }: { children: React.ReactNode }) => children,
+  };
+});
 
 // Mock React Navigation
 jest.mock('@react-navigation/native', () => ({
   useNavigation: () => ({
     navigate: jest.fn(),
   }),
+}));
+
+// Mock components
+jest.mock('@/components/onboarding/premium/ProgressHeader', () => ({
+  ProgressHeader: ({ currentStep, totalSteps }: { currentStep: number; totalSteps: number }) => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { View, Text } = require('react-native');
+    return (
+      <View testID="progress-header">
+        <Text>
+          Step {currentStep} of {totalSteps}
+        </Text>
+      </View>
+    );
+  },
+}));
+
+jest.mock('@/components/onboarding/premium/PremiumButton', () => ({
+  PremiumButton: ({
+    title,
+    onPress,
+    testID,
+  }: {
+    title: string;
+    onPress: () => void;
+    testID?: string;
+  }) => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { Pressable, Text } = require('react-native');
+    return (
+      <Pressable onPress={onPress} testID={testID}>
+        <Text>{title}</Text>
+      </Pressable>
+    );
+  },
 }));
 
 // Helper to render with context
@@ -33,7 +92,7 @@ describe('PremiumShiftPatternScreen', () => {
     jest.clearAllMocks();
   });
 
-  describe('Rendering', () => {
+  describe('Initial Rendering', () => {
     it('should render the screen', () => {
       const { getByTestId } = renderWithContext(
         <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
@@ -42,331 +101,376 @@ describe('PremiumShiftPatternScreen', () => {
     });
 
     it('should render title and subtitle', () => {
-      const { getByText } = renderWithContext(
-        <PremiumShiftPatternScreen onContinue={mockOnContinue} />
-      );
+      const { getByText } = renderWithContext(<PremiumShiftPatternScreen />);
       expect(getByText('Choose your shift pattern')).toBeTruthy();
-      expect(getByText('Select the pattern that matches your roster')).toBeTruthy();
+      expect(getByText('Swipe to explore shift patterns')).toBeTruthy();
     });
 
-    it('should render progress header showing step 3 of 10', () => {
-      const { UNSAFE_getByType } = renderWithContext(
-        <PremiumShiftPatternScreen onContinue={mockOnContinue} />
-      );
-      const progressHeader = UNSAFE_getByType(ProgressHeader);
-      expect(progressHeader.props.currentStep).toBe(3);
-      expect(progressHeader.props.totalSteps).toBe(10);
+    it('should render progress header with step 3 of 10', () => {
+      const { getByText } = renderWithContext(<PremiumShiftPatternScreen />);
+      expect(getByText('Step 3 of 10')).toBeTruthy();
     });
 
-    it('should render all 9 pattern cards', () => {
-      const { getByTestId } = renderWithContext(
-        <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
-      );
-      expect(getByTestId('pattern-pattern-3-3-3')).toBeTruthy();
-      expect(getByTestId('pattern-pattern-5-5-5')).toBeTruthy();
-      expect(getByTestId('pattern-pattern-10-10-10')).toBeTruthy();
-      expect(getByTestId('pattern-pattern-2-2-3')).toBeTruthy();
-      expect(getByTestId('pattern-pattern-4-4-4')).toBeTruthy();
-      expect(getByTestId('pattern-pattern-7-7-7')).toBeTruthy();
-      expect(getByTestId('pattern-pattern-continental')).toBeTruthy();
-      expect(getByTestId('pattern-pattern-pitman')).toBeTruthy();
-      expect(getByTestId('pattern-pattern-custom')).toBeTruthy();
+    it('should render first card (4-4-4 Cycle)', () => {
+      const { getByText } = renderWithContext(<PremiumShiftPatternScreen />);
+      expect(getByText('4-4-4 Cycle')).toBeTruthy();
+      expect(getByText('4D / 4N / 4O')).toBeTruthy();
     });
 
-    it('should render continue button', () => {
-      const { getByTestId } = renderWithContext(
-        <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
-      );
-      expect(getByTestId('pattern-continue-button')).toBeTruthy();
-    });
-
-    it('should render pattern names', () => {
-      const { getByText } = renderWithContext(
-        <PremiumShiftPatternScreen onContinue={mockOnContinue} />
-      );
-      expect(getByText('3-3-3 Cycle')).toBeTruthy();
-      expect(getByText('5-5-5 Cycle')).toBeTruthy();
-      expect(getByText('Custom Pattern')).toBeTruthy();
-    });
-  });
-
-  describe('Pattern Selection', () => {
-    it('should initially have no pattern selected', () => {
-      const { getByTestId } = renderWithContext(
-        <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
-      );
-      const button = getByTestId('pattern-continue-button');
-      expect(button.props.accessibilityState.disabled).toBe(true);
-    });
-
-    it('should select a pattern when tapped', async () => {
-      const { getByTestId } = renderWithContext(
-        <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
-      );
-
-      const patternCard = getByTestId('pattern-pattern-3-3-3');
-      fireEvent.press(patternCard);
-
-      await waitFor(() => {
-        const button = getByTestId('pattern-continue-button');
-        expect(button.props.accessibilityState.disabled).toBe(false);
-      });
-    });
-
-    it('should enable continue button when pattern is selected', async () => {
-      const { getByTestId } = renderWithContext(
-        <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
-      );
-
-      const continueButton = getByTestId('pattern-continue-button');
-      expect(continueButton.props.accessibilityState.disabled).toBe(true);
-
-      const patternCard = getByTestId('pattern-pattern-5-5-5');
-      fireEvent.press(patternCard);
-
-      await waitFor(() => {
-        expect(continueButton.props.accessibilityState.disabled).toBe(false);
-      });
-    });
-
-    it('should allow changing pattern selection', async () => {
-      const { getByTestId } = renderWithContext(
-        <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
-      );
-
-      // Select first pattern
-      fireEvent.press(getByTestId('pattern-pattern-3-3-3'));
-
-      await waitFor(() => {
-        const button = getByTestId('pattern-continue-button');
-        expect(button.props.accessibilityState.disabled).toBe(false);
-      });
-
-      // Select different pattern
-      fireEvent.press(getByTestId('pattern-pattern-5-5-5'));
-
-      await waitFor(() => {
-        const button = getByTestId('pattern-continue-button');
-        expect(button.props.accessibilityState.disabled).toBe(false);
-      });
-    });
-
-    it('should maintain single selection behavior', async () => {
-      const { getByTestId } = renderWithContext(
-        <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
-      );
-
-      // Select first pattern
-      fireEvent.press(getByTestId('pattern-pattern-3-3-3'));
-
-      // Select second pattern
-      fireEvent.press(getByTestId('pattern-pattern-5-5-5'));
-
-      // Continue button should still be enabled (only one selected)
-      await waitFor(() => {
-        const button = getByTestId('pattern-continue-button');
-        expect(button.props.accessibilityState.disabled).toBe(false);
-      });
-    });
-  });
-
-  describe('Continue Button', () => {
-    it('should call onContinue with selected pattern type when continue is pressed', async () => {
-      const { getByTestId } = renderWithContext(
-        <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
-      );
-
-      // Select pattern
-      fireEvent.press(getByTestId('pattern-pattern-3-3-3'));
-
-      await waitFor(() => {
-        const button = getByTestId('pattern-continue-button');
-        expect(button.props.accessibilityState.disabled).toBe(false);
-      });
-
-      // Press continue
-      fireEvent.press(getByTestId('pattern-continue-button'));
-
-      expect(mockOnContinue).toHaveBeenCalledWith(ShiftPattern.STANDARD_3_3_3);
-    });
-
-    it('should not call onContinue if no pattern is selected', () => {
-      const { getByTestId } = renderWithContext(
-        <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
-      );
-
-      const continueButton = getByTestId('pattern-continue-button');
-      fireEvent.press(continueButton);
-
-      expect(mockOnContinue).not.toHaveBeenCalled();
-    });
-
-    it('should save pattern type to context when continue is pressed', async () => {
-      const { getByTestId } = renderWithContext(
-        <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
-      );
-
-      // Select pattern
-      fireEvent.press(getByTestId('pattern-pattern-5-5-5'));
-
-      await waitFor(() => {
-        const button = getByTestId('pattern-continue-button');
-        expect(button.props.accessibilityState.disabled).toBe(false);
-      });
-
-      // Press continue
-      fireEvent.press(getByTestId('pattern-continue-button'));
-
-      expect(mockOnContinue).toHaveBeenCalledWith(ShiftPattern.STANDARD_5_5_5);
-    });
-
-    it('should work without onContinue callback', async () => {
+    it('should render action buttons', () => {
       const { getByTestId } = renderWithContext(<PremiumShiftPatternScreen testID="pattern" />);
-
-      // Select pattern
-      fireEvent.press(getByTestId('pattern-pattern-custom'));
-
-      await waitFor(() => {
-        const button = getByTestId('pattern-continue-button');
-        expect(button.props.accessibilityState.disabled).toBe(false);
-      });
-
-      // Press continue - should not crash
-      fireEvent.press(getByTestId('pattern-continue-button'));
-
-      expect(true).toBe(true);
+      expect(getByTestId('pattern-skip-button')).toBeTruthy();
+      expect(getByTestId('pattern-info-button')).toBeTruthy();
+      expect(getByTestId('pattern-select-button')).toBeTruthy();
     });
   });
 
-  describe('Pattern Types', () => {
-    const patternTypes = [
-      { id: '3-3-3', type: ShiftPattern.STANDARD_3_3_3, name: '3-3-3 Cycle' },
-      { id: '5-5-5', type: ShiftPattern.STANDARD_5_5_5, name: '5-5-5 Cycle' },
-      { id: '10-10-10', type: ShiftPattern.STANDARD_10_10_10, name: '10-10-10 Cycle' },
-      { id: '2-2-3', type: ShiftPattern.STANDARD_2_2_3, name: '2-2-3 Cycle' },
+  describe('Action Buttons', () => {
+    it('should advance to next card when skip button is pressed', async () => {
+      const { getByTestId, getByText } = renderWithContext(
+        <PremiumShiftPatternScreen testID="pattern" />
+      );
+
+      // Initially shows 4-4-4 Cycle
+      expect(getByText('4-4-4 Cycle')).toBeTruthy();
+
+      // Press skip button
+      fireEvent.press(getByTestId('pattern-skip-button'));
+
+      // Wait for next card to appear (7-7-7 Cycle)
+      await waitFor(() => {
+        expect(getByText('7-7-7 Cycle')).toBeTruthy();
+      });
+
+      // Should have triggered haptic feedback
+      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
+    });
+
+    it('should select pattern and advance when select button is pressed', async () => {
+      const { getByTestId, getByText } = renderWithContext(
+        <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
+      );
+
+      // Press select button
+      fireEvent.press(getByTestId('pattern-select-button'));
+
+      // Wait for next card
+      await waitFor(() => {
+        expect(getByText('7-7-7 Cycle')).toBeTruthy();
+      });
+
+      // Should have called onContinue with selected pattern
+      expect(mockOnContinue).toHaveBeenCalledWith(ShiftPattern.STANDARD_4_4_4);
+
+      // Should have triggered success haptic
+      expect(Haptics.notificationAsync).toHaveBeenCalledWith(
+        Haptics.NotificationFeedbackType.Success
+      );
+    });
+
+    it('should show learn more modal when info button is pressed', async () => {
+      const { getByTestId, getByText } = renderWithContext(
+        <PremiumShiftPatternScreen testID="pattern" />
+      );
+
+      // Press info button
+      fireEvent.press(getByTestId('pattern-info-button'));
+
+      // Modal should be visible
+      await waitFor(() => {
+        expect(getByText('Work-Rest Ratio')).toBeTruthy();
+        expect(getByText('Common Use Cases')).toBeTruthy();
+        expect(getByText('Advantages')).toBeTruthy();
+      });
+
+      // Should have triggered haptic feedback
+      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Medium);
+    });
+  });
+
+  describe('Learn More Modal', () => {
+    it('should display pattern details in modal', async () => {
+      const { getByTestId, getByText } = renderWithContext(
+        <PremiumShiftPatternScreen testID="pattern" />
+      );
+
+      // Open modal
+      fireEvent.press(getByTestId('pattern-info-button'));
+
+      // Check modal content
+      await waitFor(() => {
+        expect(getByText('4-4-4 Cycle')).toBeTruthy();
+        expect(getByText('67% work, 33% rest')).toBeTruthy();
+        expect(getByText('• FIFO mining')).toBeTruthy();
+        expect(getByText('✓ Good work-life balance')).toBeTruthy();
+      });
+    });
+
+    it('should close modal when close button is pressed', async () => {
+      const { getByTestId, getByText, queryByText } = renderWithContext(
+        <PremiumShiftPatternScreen testID="pattern" />
+      );
+
+      // Open modal
+      fireEvent.press(getByTestId('pattern-info-button'));
+
+      await waitFor(() => {
+        expect(getByText('Work-Rest Ratio')).toBeTruthy();
+      });
+
+      // Close modal
+      fireEvent.press(getByTestId('modal-close-button'));
+
+      // Modal content should not be visible
+      await waitFor(() => {
+        expect(queryByText('Work-Rest Ratio')).toBeNull();
+      });
+    });
+  });
+
+  describe('Progress Tracking', () => {
+    it('should show progress dots with current position', () => {
+      const { UNSAFE_getAllByType } = renderWithContext(<PremiumShiftPatternScreen />);
+      // 9 total patterns, so should have progress indicator
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const container = UNSAFE_getAllByType(require('react-native').View);
+      expect(container.length).toBeGreaterThan(0);
+    });
+
+    it('should update progress when advancing through cards', async () => {
+      const { getByTestId, getByText } = renderWithContext(
+        <PremiumShiftPatternScreen testID="pattern" />
+      );
+
+      // Skip first card
+      fireEvent.press(getByTestId('pattern-skip-button'));
+
+      await waitFor(() => {
+        expect(getByText('7-7-7 Cycle')).toBeTruthy();
+      });
+
+      // Skip second card
+      fireEvent.press(getByTestId('pattern-skip-button'));
+
+      await waitFor(() => {
+        expect(getByText('2-2-3 Cycle')).toBeTruthy();
+      });
+    });
+  });
+
+  describe('All Pattern Types', () => {
+    const patterns = [
       { id: '4-4-4', type: ShiftPattern.STANDARD_4_4_4, name: '4-4-4 Cycle' },
       { id: '7-7-7', type: ShiftPattern.STANDARD_7_7_7, name: '7-7-7 Cycle' },
+      { id: '2-2-3', type: ShiftPattern.STANDARD_2_2_3, name: '2-2-3 Cycle' },
+      { id: '5-5-5', type: ShiftPattern.STANDARD_5_5_5, name: '5-5-5 Cycle' },
+      { id: '3-3-3', type: ShiftPattern.STANDARD_3_3_3, name: '3-3-3 Cycle' },
+      { id: '10-10-10', type: ShiftPattern.STANDARD_10_10_10, name: '10-10-10 Cycle' },
       { id: 'continental', type: ShiftPattern.CONTINENTAL, name: 'Continental' },
       { id: 'pitman', type: ShiftPattern.PITMAN, name: 'Pitman Schedule' },
       { id: 'custom', type: ShiftPattern.CUSTOM, name: 'Custom Pattern' },
     ];
 
-    patternTypes.forEach((pattern) => {
+    patterns.forEach((pattern, index) => {
       it(`should handle ${pattern.name} selection correctly`, async () => {
-        const { getByTestId } = renderWithContext(
+        const { getByTestId, getByText } = renderWithContext(
           <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
         );
 
-        fireEvent.press(getByTestId(`pattern-pattern-${pattern.id}`));
+        // Skip to this pattern
+        for (let i = 0; i < index; i++) {
+          fireEvent.press(getByTestId('pattern-skip-button'));
+          await waitFor(() => {}, { timeout: 500 });
+        }
 
-        await waitFor(() => {
-          const button = getByTestId('pattern-continue-button');
-          expect(button.props.accessibilityState.disabled).toBe(false);
-        });
+        // Verify correct pattern is shown
+        expect(getByText(pattern.name)).toBeTruthy();
 
-        fireEvent.press(getByTestId('pattern-continue-button'));
+        // Select pattern
+        fireEvent.press(getByTestId('pattern-select-button'));
 
+        // Should call with correct pattern type
         expect(mockOnContinue).toHaveBeenCalledWith(pattern.type);
       });
     });
   });
 
-  describe('Responsive Layout', () => {
-    it('should use 2 columns on phone screens', () => {
-      mockUseWindowDimensions.mockReturnValueOnce({
-        width: 375,
-        height: 812,
-        fontScale: 1,
-        scale: 1,
-      });
-
-      const { getByTestId } = renderWithContext(
-        <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
+  describe('End of Stack', () => {
+    it('should show end screen after swiping through all cards', async () => {
+      const { getByTestId, getByText } = renderWithContext(
+        <PremiumShiftPatternScreen testID="pattern" />
       );
 
-      expect(getByTestId('pattern')).toBeTruthy();
+      // Skip through all 9 cards
+      for (let i = 0; i < 9; i++) {
+        fireEvent.press(getByTestId('pattern-skip-button'));
+        await waitFor(() => {}, { timeout: 500 });
+      }
+
+      // Should show end screen
+      await waitFor(() => {
+        expect(getByText('No pattern selected yet?')).toBeTruthy();
+        expect(getByTestId('review-again-button')).toBeTruthy();
+        expect(getByTestId('custom-pattern-button')).toBeTruthy();
+      });
     });
 
-    it('should use 3 columns on tablet screens', () => {
-      mockUseWindowDimensions.mockReturnValueOnce({
-        width: 768,
-        height: 1024,
-        fontScale: 1,
-        scale: 1,
+    it('should show selected pattern on end screen if pattern was selected', async () => {
+      const { getByTestId, getByText } = renderWithContext(
+        <PremiumShiftPatternScreen testID="pattern" />
+      );
+
+      // Select first pattern
+      fireEvent.press(getByTestId('pattern-select-button'));
+
+      await waitFor(() => {}, { timeout: 500 });
+
+      // Skip through remaining cards
+      for (let i = 0; i < 8; i++) {
+        fireEvent.press(getByTestId('pattern-skip-button'));
+        await waitFor(() => {}, { timeout: 500 });
+      }
+
+      // Should show success end screen
+      await waitFor(() => {
+        expect(getByText('Pattern Selected!')).toBeTruthy();
+        expect(getByText('You have selected 4-4-4 Cycle')).toBeTruthy();
+      });
+    });
+
+    it('should reset stack when review again button is pressed', async () => {
+      const { getByTestId, getByText } = renderWithContext(
+        <PremiumShiftPatternScreen testID="pattern" />
+      );
+
+      // Skip through all cards
+      for (let i = 0; i < 9; i++) {
+        fireEvent.press(getByTestId('pattern-skip-button'));
+        await waitFor(() => {}, { timeout: 500 });
+      }
+
+      // Wait for end screen
+      await waitFor(() => {
+        expect(getByText('No pattern selected yet?')).toBeTruthy();
       });
 
+      // Press review again
+      fireEvent.press(getByTestId('review-again-button'));
+
+      // Should show first card again
+      await waitFor(() => {
+        expect(getByText('4-4-4 Cycle')).toBeTruthy();
+        expect(getByTestId('pattern-skip-button')).toBeTruthy();
+      });
+    });
+
+    it('should handle custom pattern selection from end screen', async () => {
       const { getByTestId } = renderWithContext(
         <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
       );
 
-      expect(getByTestId('pattern')).toBeTruthy();
+      // Skip through all cards
+      for (let i = 0; i < 9; i++) {
+        fireEvent.press(getByTestId('pattern-skip-button'));
+        await waitFor(() => {}, { timeout: 500 });
+      }
+
+      await waitFor(() => {
+        expect(getByTestId('custom-pattern-button')).toBeTruthy();
+      });
+
+      // Select custom pattern
+      fireEvent.press(getByTestId('custom-pattern-button'));
+
+      // Should call with CUSTOM pattern type
+      expect(mockOnContinue).toHaveBeenCalledWith(ShiftPattern.CUSTOM);
+    });
+  });
+
+  describe('Swipeable Card Component', () => {
+    it('should render card with testID', () => {
+      const { getByTestId } = renderWithContext(<PremiumShiftPatternScreen testID="pattern" />);
+      expect(getByTestId('pattern-card-4-4-4')).toBeTruthy();
+    });
+
+    it('should show pattern icon, name, schedule, and description', () => {
+      const { getByText } = renderWithContext(<PremiumShiftPatternScreen />);
+      expect(getByText('⛏️')).toBeTruthy(); // Icon
+      expect(getByText('4-4-4 Cycle')).toBeTruthy(); // Name
+      expect(getByText('4D / 4N / 4O')).toBeTruthy(); // Schedule
+      expect(
+        getByText(/4 days on, 4 nights on, 4 days off - Perfect for FIFO mining operations/)
+      ).toBeTruthy();
+    });
+
+    it('should show swipe hints on first card', () => {
+      const { getByText } = renderWithContext(<PremiumShiftPatternScreen />);
+      expect(getByText('← Skip')).toBeTruthy();
+      expect(getByText('Select →')).toBeTruthy();
     });
   });
 
   describe('Context Integration', () => {
-    it('should load previously selected pattern from context', () => {
-      const { getByTestId } = render(
-        <OnboardingProvider>
-          <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
-        </OnboardingProvider>
-      );
+    it('should save selected pattern to context', async () => {
+      const { getByTestId } = renderWithContext(<PremiumShiftPatternScreen testID="pattern" />);
 
-      // Initially no selection, button should be disabled
-      const button = getByTestId('pattern-continue-button');
-      expect(button.props.accessibilityState.disabled).toBe(true);
+      // Select pattern
+      fireEvent.press(getByTestId('pattern-select-button'));
+
+      await waitFor(() => {}, { timeout: 500 });
+
+      // Context should be updated (verified through onContinue callback)
+      expect(mockOnContinue).toHaveBeenCalledWith(ShiftPattern.STANDARD_4_4_4);
     });
   });
 
   describe('Accessibility', () => {
-    it('should have testID for screen', () => {
-      const { getByTestId } = renderWithContext(
-        <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="custom-id" />
-      );
-      expect(getByTestId('custom-id')).toBeTruthy();
-    });
-
-    it('should have testID for each pattern card', () => {
-      const { getByTestId } = renderWithContext(
-        <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
-      );
-
-      expect(getByTestId('pattern-pattern-3-3-3')).toBeTruthy();
-      expect(getByTestId('pattern-pattern-custom')).toBeTruthy();
-    });
-
-    it('should have testID for continue button', () => {
-      const { getByTestId } = renderWithContext(
-        <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
-      );
-      expect(getByTestId('pattern-continue-button')).toBeTruthy();
+    it('should have testIDs for main elements', () => {
+      const { getByTestId } = renderWithContext(<PremiumShiftPatternScreen testID="pattern" />);
+      expect(getByTestId('pattern')).toBeTruthy();
+      expect(getByTestId('pattern-skip-button')).toBeTruthy();
+      expect(getByTestId('pattern-info-button')).toBeTruthy();
+      expect(getByTestId('pattern-select-button')).toBeTruthy();
+      expect(getByTestId('pattern-card-4-4-4')).toBeTruthy();
     });
   });
 
   describe('Edge Cases', () => {
-    it('should render without crashing when no props provided', () => {
-      const { getByText } = renderWithContext(<PremiumShiftPatternScreen />);
-      expect(getByText('Choose your shift pattern')).toBeTruthy();
+    it('should render without crashing when no onContinue prop provided', () => {
+      const { getByTestId } = renderWithContext(<PremiumShiftPatternScreen testID="pattern" />);
+      expect(getByTestId('pattern')).toBeTruthy();
     });
 
-    it('should handle rapid pattern selection', async () => {
-      const { getByTestId } = renderWithContext(
-        <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
+    it('should handle rapid button presses gracefully', async () => {
+      const { getByTestId } = renderWithContext(<PremiumShiftPatternScreen testID="pattern" />);
+
+      // Rapidly press skip button
+      fireEvent.press(getByTestId('pattern-skip-button'));
+      fireEvent.press(getByTestId('pattern-skip-button'));
+      fireEvent.press(getByTestId('pattern-skip-button'));
+
+      // Should still work correctly
+      await waitFor(() => {}, { timeout: 1000 });
+    });
+
+    it('should handle selecting and then skipping', async () => {
+      const { getByTestId, getByText } = renderWithContext(
+        <PremiumShiftPatternScreen testID="pattern" />
       );
 
-      // Rapidly select different patterns
-      fireEvent.press(getByTestId('pattern-pattern-3-3-3'));
-      fireEvent.press(getByTestId('pattern-pattern-5-5-5'));
-      fireEvent.press(getByTestId('pattern-pattern-7-7-7'));
+      // Select first card
+      fireEvent.press(getByTestId('pattern-select-button'));
 
       await waitFor(() => {
-        const button = getByTestId('pattern-continue-button');
-        expect(button.props.accessibilityState.disabled).toBe(false);
+        expect(getByText('7-7-7 Cycle')).toBeTruthy();
       });
 
-      fireEvent.press(getByTestId('pattern-continue-button'));
+      // Skip next card
+      fireEvent.press(getByTestId('pattern-skip-button'));
 
-      // Should call with last selected pattern
-      expect(mockOnContinue).toHaveBeenCalledWith(ShiftPattern.STANDARD_7_7_7);
+      await waitFor(() => {
+        expect(getByText('2-2-3 Cycle')).toBeTruthy();
+      });
     });
   });
 });

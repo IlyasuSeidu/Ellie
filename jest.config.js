@@ -26,7 +26,7 @@ module.exports = {
     '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|expo|expo-.*|@expo|@expo-.*|@unimodules|unimodules|@react-navigation)/)',
+    'node_modules/(?!(react-native|@react-native|expo|expo-.*|@expo|@expo-.*|@unimodules|unimodules|@react-navigation|react-native-gesture-handler)/)',
   ],
   testPathIgnorePatterns: [
     '/node_modules/',
