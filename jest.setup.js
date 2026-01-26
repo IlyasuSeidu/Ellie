@@ -60,6 +60,9 @@ jest.mock('react-native-reanimated', () => {
       quad: (x) => x,
       cubic: (x) => x,
       bezier: () => (x) => x,
+      out: (easing) => easing,
+      in: (easing) => easing,
+      inOut: (easing) => easing,
     },
     Extrapolate: {
       CLAMP: 'clamp',
@@ -144,3 +147,10 @@ process.env.NODE_ENV = 'test';
 
 // Define React Native global __DEV__
 global.__DEV__ = true;
+
+// Mock useWindowDimensions
+jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => {
+  return {
+    default: jest.fn(() => ({ width: 375, height: 812, fontScale: 1, scale: 1 })),
+  };
+});

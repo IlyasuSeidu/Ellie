@@ -14,6 +14,8 @@ import Animated, {
   withTiming,
   Easing,
 } from 'react-native-reanimated';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { z } from 'zod';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
@@ -21,6 +23,10 @@ import { PremiumTextInput } from '@/components/onboarding/premium/PremiumTextInp
 import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
 import { PremiumCountrySelectorModal } from '@/components/onboarding/premium/PremiumCountrySelectorModal';
 import { Country } from '@/components/onboarding/premium/PremiumCountrySelector';
+import { useOnboarding } from '@/contexts/OnboardingContext';
+import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
+
+type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList, 'Introduction'>;
 
 // Validation schema using Zod
 const introductionSchema = z.object({
@@ -49,11 +55,14 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
   onContinue,
   testID = 'premium-introduction-screen',
 }) => {
-  // Form state
-  const [name, setName] = useState('');
-  const [occupation, setOccupation] = useState('');
-  const [company, setCompany] = useState('');
-  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
+  const navigation = useNavigation<NavigationProp>();
+  const { data, updateData } = useOnboarding();
+
+  // Form state - initialize from context if available
+  const [name, setName] = useState(data.name || '');
+  const [occupation, setOccupation] = useState(data.occupation || '');
+  const [company, setCompany] = useState(data.company || '');
+  const [selectedCountry, setSelectedCountry] = useState<Country | null>(data.country || null);
   const [showCountrySelector, setShowCountrySelector] = useState(false);
 
   // Validation state
@@ -239,12 +248,26 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
     });
 
     if (validateForm() && selectedCountry) {
-      onContinue?.({
+      // Save data to context
+      updateData({
         name,
         occupation,
         company: company || undefined,
         country: selectedCountry,
       });
+
+      // Call optional callback
+      if (onContinue) {
+        onContinue({
+          name,
+          occupation,
+          company: company || undefined,
+          country: selectedCountry,
+        });
+      } else {
+        // Navigate to next screen
+        navigation.navigate('ShiftPattern');
+      }
     }
   };
 
