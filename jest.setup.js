@@ -76,12 +76,11 @@ jest.mock('react-native-reanimated', () => {
   };
 });
 
-// Mock react-native-linear-gradient
-jest.mock('react-native-linear-gradient', () => {
+// Mock expo-linear-gradient
+jest.mock('expo-linear-gradient', () => {
   const React = require('react');
   return {
-    __esModule: true,
-    default: ({ children, ...props }) => {
+    LinearGradient: ({ children, ...props }) => {
       return React.createElement('LinearGradient', props, children);
     },
   };

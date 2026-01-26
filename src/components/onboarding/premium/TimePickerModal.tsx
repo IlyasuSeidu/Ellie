@@ -8,7 +8,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, View, TouchableOpacity, ScrollView, StyleSheet, Platform } from 'react-native';
 import Animated from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
-import LinearGradient from 'react-native-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 import { theme } from '@/utils/theme';
 
 export interface TimePickerModalProps {

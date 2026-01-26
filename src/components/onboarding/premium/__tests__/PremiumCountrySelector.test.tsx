@@ -260,21 +260,7 @@ describe('PremiumCountrySelector', () => {
   });
 
   describe('Custom Props', () => {
-    it('should apply custom maxHeight', () => {
-      const { getByTestId } = render(
-        <PremiumCountrySelector
-          countries={testCountries}
-          onCountrySelect={mockOnCountrySelect}
-          maxHeight={300}
-          testID="selector"
-        />
-      );
-
-      const scrollView = getByTestId('selector-scroll-view');
-      expect(scrollView).toBeTruthy();
-    });
-
-    it('should use default maxHeight', () => {
+    it('should render with custom countries', () => {
       const { getByTestId } = render(
         <PremiumCountrySelector
           countries={testCountries}

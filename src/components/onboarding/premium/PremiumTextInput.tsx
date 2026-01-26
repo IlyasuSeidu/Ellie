@@ -101,9 +101,9 @@ export const PremiumTextInput: React.FC<PremiumTextInputProps> = ({
   }, [onChangeText]);
 
   const labelStyle = useAnimatedStyle(() => {
-    const translateY = interpolate(labelPosition.value, [0, 1], [0, -28], Extrapolate.CLAMP);
+    const translateY = interpolate(labelPosition.value, [0, 1], [0, -42], Extrapolate.CLAMP);
 
-    const scale = interpolate(labelPosition.value, [0, 1], [1, 0.85], Extrapolate.CLAMP);
+    const scale = interpolate(labelPosition.value, [0, 1], [1, 0.75], Extrapolate.CLAMP);
 
     return {
       transform: [{ translateY }, { scale }],
@@ -112,7 +112,11 @@ export const PremiumTextInput: React.FC<PremiumTextInputProps> = ({
 
   const labelColorStyle = useAnimatedStyle(() => {
     return {
-      color: isFocused ? theme.colors.sacredGold : theme.colors.dust,
+      color: isFocused
+        ? theme.colors.sacredGold
+        : labelPosition.value > 0
+          ? theme.colors.paper
+          : theme.colors.dust,
     };
   });
 
@@ -144,7 +148,15 @@ export const PremiumTextInput: React.FC<PremiumTextInputProps> = ({
           multiline && styles.multilineContainer,
         ]}
       >
-        {leftIcon && <View style={styles.leftIconContainer}>{leftIcon}</View>}
+        {leftIcon && (
+          <View style={styles.leftIconContainer}>
+            {typeof leftIcon === 'string' ? (
+              <Text style={styles.iconText}>{leftIcon}</Text>
+            ) : (
+              leftIcon
+            )}
+          </View>
+        )}
 
         <View style={styles.inputWrapper}>
           <Animated.Text
@@ -172,7 +184,7 @@ export const PremiumTextInput: React.FC<PremiumTextInputProps> = ({
               },
               inputStyle,
             ]}
-            placeholderTextColor={theme.colors.dust}
+            placeholderTextColor={theme.colors.shadow}
             maxLength={maxLength}
             multiline={multiline}
             numberOfLines={multiline ? numberOfLines : 1}
@@ -192,7 +204,15 @@ export const PremiumTextInput: React.FC<PremiumTextInputProps> = ({
           </TouchableOpacity>
         )}
 
-        {rightIcon && <View style={styles.rightIconContainer}>{rightIcon}</View>}
+        {rightIcon && (
+          <View style={styles.rightIconContainer}>
+            {typeof rightIcon === 'string' ? (
+              <Text style={styles.iconText}>{rightIcon}</Text>
+            ) : (
+              rightIcon
+            )}
+          </View>
+        )}
       </View>
 
       {(error || (showCharacterCounter && characterCount)) && (
@@ -221,10 +241,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 2,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    minHeight: 60,
+    borderRadius: 14,
+    paddingHorizontal: 18,
+    paddingVertical: 20,
+    minHeight: 76,
+    ...Platform.select({
+      ios: {
+        shadowColor: theme.colors.sacredGold,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
   },
   multilineContainer: {
     minHeight: 100,
@@ -238,15 +269,18 @@ const styles = StyleSheet.create({
   label: {
     position: 'absolute',
     left: 0,
-    fontSize: 16,
-    fontWeight: '400',
+    fontSize: 14,
+    fontWeight: '700',
+    letterSpacing: 0.5,
     transformOrigin: 'left',
     ...Platform.select({
       ios: {
         top: 0,
+        fontFamily: 'System',
       },
       android: {
         top: -2,
+        fontFamily: 'sans-serif-medium',
       },
     }),
   },
@@ -254,17 +288,20 @@ const styles = StyleSheet.create({
     left: 40,
   },
   input: {
-    fontSize: 16,
-    fontWeight: '400',
-    paddingTop: 8,
+    fontSize: 17,
+    fontWeight: '600',
+    letterSpacing: 0.3,
+    paddingTop: 16,
     paddingBottom: 0,
     paddingHorizontal: 0,
     ...Platform.select({
       ios: {
-        paddingVertical: 8,
+        paddingVertical: 16,
+        fontFamily: 'System',
       },
       android: {
-        paddingVertical: 0,
+        paddingVertical: 4,
+        fontFamily: 'sans-serif-medium',
       },
     }),
   },
@@ -273,6 +310,10 @@ const styles = StyleSheet.create({
   },
   rightIconContainer: {
     marginLeft: 12,
+  },
+  iconText: {
+    fontSize: 24,
+    color: theme.colors.paper,
   },
   clearButton: {
     width: 24,

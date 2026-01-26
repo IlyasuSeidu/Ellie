@@ -44,9 +44,10 @@ describe('PremiumWelcomeScreen', () => {
       expect(getByText('Get Started')).toBeTruthy();
     });
 
-    it('should render logo placeholder', () => {
-      const { getByText } = render(<PremiumWelcomeScreen onContinue={mockOnContinue} />);
-      expect(getByText('⛏️')).toBeTruthy();
+    it('should render logo image', () => {
+      const { UNSAFE_root } = render(<PremiumWelcomeScreen onContinue={mockOnContinue} />);
+      const image = UNSAFE_root.findByType('Image');
+      expect(image).toBeTruthy();
     });
   });
 
@@ -142,9 +143,11 @@ describe('PremiumWelcomeScreen', () => {
     });
 
     it('should render all animated elements', () => {
-      const { getByText } = render(<PremiumWelcomeScreen onContinue={mockOnContinue} />);
+      const { getByText, UNSAFE_root } = render(
+        <PremiumWelcomeScreen onContinue={mockOnContinue} />
+      );
 
-      expect(getByText('⛏️')).toBeTruthy(); // Logo
+      expect(UNSAFE_root.findByType('Image')).toBeTruthy(); // Logo
       expect(getByText('Ellie')).toBeTruthy(); // App name
       expect(getByText('Your Mining Shift Companion')).toBeTruthy(); // Tagline
       expect(getByText('Get Started')).toBeTruthy(); // Button
@@ -212,10 +215,12 @@ describe('PremiumWelcomeScreen', () => {
 
   describe('Layout', () => {
     it('should render content in correct order', () => {
-      const { getByText } = render(<PremiumWelcomeScreen onContinue={mockOnContinue} />);
+      const { getByText, UNSAFE_root } = render(
+        <PremiumWelcomeScreen onContinue={mockOnContinue} />
+      );
 
       // All elements should be present
-      expect(getByText('⛏️')).toBeTruthy();
+      expect(UNSAFE_root.findByType('Image')).toBeTruthy();
       expect(getByText('Ellie')).toBeTruthy();
       expect(getByText('Your Mining Shift Companion')).toBeTruthy();
       expect(getByText('Get Started')).toBeTruthy();

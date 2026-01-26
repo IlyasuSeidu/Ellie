@@ -33,6 +33,7 @@
       "@/types/*": ["src/types/*"],
       "@/constants/*": ["src/constants/*"],
       "@/config/*": ["src/config/*"],
+      "@/navigation/*": ["src/navigation/*"],
       "@/assets/*": ["assets/*"]
     }
   },

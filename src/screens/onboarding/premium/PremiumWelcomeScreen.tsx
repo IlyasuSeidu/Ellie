@@ -5,7 +5,7 @@
  */
 
 import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet, Platform, Image } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -14,12 +14,17 @@ import Animated, {
   withTiming,
   Easing,
 } from 'react-native-reanimated';
-import LinearGradient from 'react-native-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { theme } from '@/utils/theme';
 import { PremiumButton } from '@/components/onboarding/premium';
+import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
+
+type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList, 'Welcome'>;
 
 export interface PremiumWelcomeScreenProps {
-  /** Navigation handler for next screen */
+  /** Navigation handler for next screen (optional for testing) */
   onContinue?: () => void;
   /** Test ID */
   testID?: string;
@@ -37,6 +42,7 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
   onContinue,
   testID,
 }) => {
+  const navigation = useNavigation<NavigationProp>();
   const autoAdvanceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Animation values
@@ -78,6 +84,8 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
     autoAdvanceTimerRef.current = setTimeout(() => {
       if (onContinue) {
         onContinue();
+      } else {
+        navigation.navigate('Introduction');
       }
     }, ANIMATION_TIMINGS.AUTO_ADVANCE);
 
@@ -95,6 +103,7 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
     buttonTranslateY,
     buttonOpacity,
     onContinue,
+    navigation,
   ]);
 
   const handleContinue = () => {
@@ -103,6 +112,8 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
     }
     if (onContinue) {
       onContinue();
+    } else {
+      navigation.navigate('Introduction');
     }
   };
 
@@ -140,10 +151,14 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
 
       {/* Content */}
       <View style={styles.content}>
-        {/* Logo placeholder with animation */}
+        {/* Logo with animation */}
         <Animated.View style={[styles.logoContainer, logoAnimatedStyle]}>
           <View style={styles.logoPlaceholder}>
-            <Animated.Text style={styles.logoIcon}>⛏️</Animated.Text>
+            <Image
+              source={require('../../../../assets/onboarding/icons/consolidated/mining-helmet-sacred-flame.png')}
+              style={styles.logoIcon}
+              resizeMode="contain"
+            />
           </View>
         </Animated.View>
 
@@ -194,46 +209,47 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     marginBottom: theme.spacing.xl,
+    alignSelf: 'flex-start',
+    marginLeft: -20,
   },
   logoPlaceholder: {
-    width: 120,
-    height: 120,
-    borderRadius: 30,
-    backgroundColor: theme.colors.darkStone,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 2,
-    borderColor: theme.colors.sacredGold,
     ...Platform.select({
       ios: {
         shadowColor: theme.colors.sacredGold,
-        shadowOffset: { width: 0, height: 8 },
-        shadowOpacity: 0.4,
-        shadowRadius: 16,
+        shadowOffset: { width: 0, height: 20 },
+        shadowOpacity: 1,
+        shadowRadius: 48,
       },
       android: {
-        elevation: 12,
+        elevation: 24,
       },
     }),
   },
   logoIcon: {
-    fontSize: 64,
+    width: 320,
+    height: 320,
   },
   nameContainer: {
     position: 'relative',
     marginBottom: theme.spacing.md,
   },
   appName: {
-    fontSize: 48,
-    fontWeight: theme.typography.fontWeights.bold,
+    fontSize: 56,
+    fontWeight: theme.typography.fontWeights.black,
     color: theme.colors.paper,
-    letterSpacing: 2,
+    letterSpacing: 3,
     textAlign: 'center',
     ...Platform.select({
       ios: {
+        fontFamily: 'System',
         textShadowColor: theme.colors.sacredGold,
         textShadowOffset: { width: 0, height: 0 },
         textShadowRadius: 20,
+      },
+      android: {
+        fontFamily: 'sans-serif-black',
       },
     }),
   },
@@ -256,11 +272,20 @@ const styles = StyleSheet.create({
     }),
   },
   tagline: {
-    fontSize: theme.typography.fontSizes.lg,
+    fontSize: 20,
+    fontWeight: theme.typography.fontWeights.semibold,
     color: theme.colors.dust,
     textAlign: 'center',
     marginBottom: theme.spacing.xxxl,
-    letterSpacing: 0.5,
+    letterSpacing: 1,
+    ...Platform.select({
+      ios: {
+        fontFamily: 'System',
+      },
+      android: {
+        fontFamily: 'sans-serif-medium',
+      },
+    }),
   },
   buttonContainer: {
     width: '100%',

@@ -31,6 +31,10 @@ export {
   type Country,
 } from './PremiumCountrySelector';
 export {
+  PremiumCountrySelectorModal,
+  type PremiumCountrySelectorModalProps,
+} from './PremiumCountrySelectorModal';
+export {
   ReportCheckbox,
   type ReportCheckboxProps,
   type ReportType,

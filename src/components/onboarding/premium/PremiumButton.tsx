@@ -11,6 +11,7 @@ import {
   ViewStyle,
   TextStyle,
   StyleSheet,
+  Platform,
 } from 'react-native';
 import Animated, {
   useAnimatedStyle,
@@ -19,7 +20,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
-import LinearGradient from 'react-native-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 import { theme } from '@/utils/theme';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outline';
@@ -255,26 +256,37 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 12,
+    borderRadius: 14,
+    ...Platform.select({
+      ios: {
+        shadowColor: theme.colors.sacredGold,
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.4,
+        shadowRadius: 12,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
   },
   secondaryButton: {
     backgroundColor: theme.colors.brightGold,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 12,
+    borderRadius: 14,
     shadowColor: theme.colors.brightGold,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.4,
+    shadowRadius: 12,
+    elevation: 8,
   },
   outlineButton: {
     backgroundColor: 'transparent',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 12,
+    borderRadius: 14,
     borderWidth: 2,
     borderColor: theme.colors.sacredGold,
   },
@@ -287,23 +299,32 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   largeContainer: {
-    height: 60,
+    height: 64,
     paddingHorizontal: 32,
   },
   text: {
-    fontWeight: '600',
+    fontWeight: '700',
     textAlign: 'center',
+    letterSpacing: 1.5,
+    ...Platform.select({
+      ios: {
+        fontFamily: 'System',
+      },
+      android: {
+        fontFamily: 'sans-serif-medium',
+      },
+    }),
   },
   smallText: {
-    fontSize: 14,
+    fontSize: 15,
     lineHeight: 20,
   },
   mediumText: {
-    fontSize: 16,
+    fontSize: 17,
     lineHeight: 24,
   },
   largeText: {
-    fontSize: 18,
+    fontSize: 20,
     lineHeight: 28,
   },
   iconContainer: {

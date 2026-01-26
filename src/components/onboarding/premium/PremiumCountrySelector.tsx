@@ -28,41 +28,66 @@ export interface PremiumCountrySelectorProps {
   countries?: Country[];
   /** Placeholder text for search */
   searchPlaceholder?: string;
-  /** Maximum height for the country list */
-  maxHeight?: number;
   /** Test ID */
   testID?: string;
 }
 
 const DEFAULT_COUNTRIES: Country[] = [
-  { code: 'US', name: 'United States', flag: '🇺🇸' },
-  { code: 'GB', name: 'United Kingdom', flag: '🇬🇧' },
-  { code: 'CA', name: 'Canada', flag: '🇨🇦' },
+  // Top global mining countries
+  { code: 'CN', name: 'China', flag: '🇨🇳' },
   { code: 'AU', name: 'Australia', flag: '🇦🇺' },
-  { code: 'DE', name: 'Germany', flag: '🇩🇪' },
-  { code: 'FR', name: 'France', flag: '🇫🇷' },
-  { code: 'IT', name: 'Italy', flag: '🇮🇹' },
-  { code: 'ES', name: 'Spain', flag: '🇪🇸' },
-  { code: 'NL', name: 'Netherlands', flag: '🇳🇱' },
-  { code: 'SE', name: 'Sweden', flag: '🇸🇪' },
-  { code: 'NO', name: 'Norway', flag: '🇳🇴' },
-  { code: 'DK', name: 'Denmark', flag: '🇩🇰' },
-  { code: 'FI', name: 'Finland', flag: '🇫🇮' },
-  { code: 'PL', name: 'Poland', flag: '🇵🇱' },
-  { code: 'IE', name: 'Ireland', flag: '🇮🇪' },
-  { code: 'CH', name: 'Switzerland', flag: '🇨🇭' },
-  { code: 'AT', name: 'Austria', flag: '🇦🇹' },
-  { code: 'BE', name: 'Belgium', flag: '🇧🇪' },
-  { code: 'PT', name: 'Portugal', flag: '🇵🇹' },
-  { code: 'NZ', name: 'New Zealand', flag: '🇳🇿' },
-  { code: 'JP', name: 'Japan', flag: '🇯🇵' },
-  { code: 'KR', name: 'South Korea', flag: '🇰🇷' },
-  { code: 'SG', name: 'Singapore', flag: '🇸🇬' },
+  { code: 'RU', name: 'Russia', flag: '🇷🇺' },
+  { code: 'US', name: 'United States', flag: '🇺🇸' },
+  { code: 'ID', name: 'Indonesia', flag: '🇮🇩' },
   { code: 'IN', name: 'India', flag: '🇮🇳' },
+  { code: 'CL', name: 'Chile', flag: '🇨🇱' },
+  { code: 'PE', name: 'Peru', flag: '🇵🇪' },
   { code: 'BR', name: 'Brazil', flag: '🇧🇷' },
-  { code: 'MX', name: 'Mexico', flag: '🇲🇽' },
-  { code: 'AR', name: 'Argentina', flag: '🇦🇷' },
   { code: 'ZA', name: 'South Africa', flag: '🇿🇦' },
+  { code: 'CA', name: 'Canada', flag: '🇨🇦' },
+  { code: 'MX', name: 'Mexico', flag: '🇲🇽' },
+
+  // Major mining nations (alphabetically)
+  { code: 'DZ', name: 'Algeria', flag: '🇩🇿' },
+  { code: 'AR', name: 'Argentina', flag: '🇦🇷' },
+  { code: 'BO', name: 'Bolivia', flag: '🇧🇴' },
+  { code: 'BW', name: 'Botswana', flag: '🇧🇼' },
+  { code: 'BF', name: 'Burkina Faso', flag: '🇧🇫' },
+  { code: 'CO', name: 'Colombia', flag: '🇨🇴' },
+  { code: 'CD', name: 'Democratic Republic of Congo', flag: '🇨🇩' },
+  { code: 'EC', name: 'Ecuador', flag: '🇪🇨' },
+  { code: 'EG', name: 'Egypt', flag: '🇪🇬' },
+  { code: 'FI', name: 'Finland', flag: '🇫🇮' },
+  { code: 'DE', name: 'Germany', flag: '🇩🇪' },
+  { code: 'GH', name: 'Ghana', flag: '🇬🇭' },
+  { code: 'GN', name: 'Guinea', flag: '🇬🇳' },
+  { code: 'GY', name: 'Guyana', flag: '🇬🇾' },
+  { code: 'IR', name: 'Iran', flag: '🇮🇷' },
+  { code: 'KZ', name: 'Kazakhstan', flag: '🇰🇿' },
+  { code: 'MY', name: 'Malaysia', flag: '🇲🇾' },
+  { code: 'ML', name: 'Mali', flag: '🇲🇱' },
+  { code: 'MR', name: 'Mauritania', flag: '🇲🇷' },
+  { code: 'MN', name: 'Mongolia', flag: '🇲🇳' },
+  { code: 'MA', name: 'Morocco', flag: '🇲🇦' },
+  { code: 'NA', name: 'Namibia', flag: '🇳🇦' },
+  { code: 'NE', name: 'Niger', flag: '🇳🇪' },
+  { code: 'NO', name: 'Norway', flag: '🇳🇴' },
+  { code: 'PK', name: 'Pakistan', flag: '🇵🇰' },
+  { code: 'PH', name: 'Philippines', flag: '🇵🇭' },
+  { code: 'PL', name: 'Poland', flag: '🇵🇱' },
+  { code: 'SA', name: 'Saudi Arabia', flag: '🇸🇦' },
+  { code: 'SR', name: 'Suriname', flag: '🇸🇷' },
+  { code: 'SE', name: 'Sweden', flag: '🇸🇪' },
+  { code: 'TZ', name: 'Tanzania', flag: '🇹🇿' },
+  { code: 'TH', name: 'Thailand', flag: '🇹🇭' },
+  { code: 'TR', name: 'Turkey', flag: '🇹🇷' },
+  { code: 'UA', name: 'Ukraine', flag: '🇺🇦' },
+  { code: 'AE', name: 'United Arab Emirates', flag: '🇦🇪' },
+  { code: 'GB', name: 'United Kingdom', flag: '🇬🇧' },
+  { code: 'VE', name: 'Venezuela', flag: '🇻🇪' },
+  { code: 'VN', name: 'Vietnam', flag: '🇻🇳' },
+  { code: 'ZM', name: 'Zambia', flag: '🇿🇲' },
+  { code: 'ZW', name: 'Zimbabwe', flag: '🇿🇼' },
 ];
 
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
@@ -72,7 +97,6 @@ export const PremiumCountrySelector: React.FC<PremiumCountrySelectorProps> = ({
   onCountrySelect,
   countries = DEFAULT_COUNTRIES,
   searchPlaceholder = 'Search countries...',
-  maxHeight = 400,
   testID,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -113,7 +137,8 @@ export const PremiumCountrySelector: React.FC<PremiumCountrySelectorProps> = ({
 
       {/* Country list */}
       <ScrollView
-        style={[styles.listContainer, { maxHeight }]}
+        style={styles.scrollView}
+        contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={true}
         testID={`${testID}-scroll-view`}
       >
@@ -187,6 +212,7 @@ const CountryItem: React.FC<CountryItemProps> = ({ country, selected, onPress, t
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: theme.colors.darkStone,
     borderRadius: theme.borderRadius.lg,
     borderWidth: 1,
@@ -216,8 +242,12 @@ const styles = StyleSheet.create({
     fontSize: theme.typography.fontSizes.md,
     color: theme.colors.paper,
   },
+  scrollView: {
+    flex: 1,
+  },
   listContainer: {
     padding: theme.spacing.sm,
+    flexGrow: 1,
   },
   emptyContainer: {
     padding: theme.spacing.xl,
