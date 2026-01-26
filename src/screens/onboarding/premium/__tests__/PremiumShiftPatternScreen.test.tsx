@@ -9,9 +9,10 @@ import { OnboardingProvider } from '@/contexts/OnboardingContext';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { ShiftPattern } from '@/types';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const useWindowDimensionsMock =
-  require('react-native/Libraries/Utilities/useWindowDimensions').default;
+// Get the mocked useWindowDimensions from jest.setup.js
+const mockUseWindowDimensions = jest.requireMock(
+  'react-native/Libraries/Utilities/useWindowDimensions'
+).default;
 
 // Mock React Navigation
 jest.mock('@react-navigation/native', () => ({
@@ -272,7 +273,7 @@ describe('PremiumShiftPatternScreen', () => {
 
   describe('Responsive Layout', () => {
     it('should use 2 columns on phone screens', () => {
-      useWindowDimensionsMock.mockReturnValueOnce({
+      mockUseWindowDimensions.mockReturnValueOnce({
         width: 375,
         height: 812,
         fontScale: 1,
@@ -287,7 +288,7 @@ describe('PremiumShiftPatternScreen', () => {
     });
 
     it('should use 3 columns on tablet screens', () => {
-      useWindowDimensionsMock.mockReturnValueOnce({
+      mockUseWindowDimensions.mockReturnValueOnce({
         width: 768,
         height: 1024,
         fontScale: 1,
