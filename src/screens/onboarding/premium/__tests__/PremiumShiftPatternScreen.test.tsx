@@ -103,7 +103,7 @@ describe('PremiumShiftPatternScreen', () => {
     it('should render title and subtitle', () => {
       const { getByText } = renderWithContext(<PremiumShiftPatternScreen />);
       expect(getByText('Choose your shift pattern')).toBeTruthy();
-      expect(getByText('Swipe to explore shift patterns')).toBeTruthy();
+      expect(getByText('Swipe right to select or tap info to learn more')).toBeTruthy();
     });
 
     it('should render progress header with step 3 of 10', () => {
@@ -119,33 +119,12 @@ describe('PremiumShiftPatternScreen', () => {
 
     it('should render action buttons', () => {
       const { getByTestId } = renderWithContext(<PremiumShiftPatternScreen testID="pattern" />);
-      expect(getByTestId('pattern-skip-button')).toBeTruthy();
       expect(getByTestId('pattern-info-button')).toBeTruthy();
       expect(getByTestId('pattern-select-button')).toBeTruthy();
     });
   });
 
   describe('Action Buttons', () => {
-    it('should advance to next card when skip button is pressed', async () => {
-      const { getByTestId, getByText } = renderWithContext(
-        <PremiumShiftPatternScreen testID="pattern" />
-      );
-
-      // Initially shows 4-4-4 Cycle
-      expect(getByText('4-4-4 Cycle')).toBeTruthy();
-
-      // Press skip button
-      fireEvent.press(getByTestId('pattern-skip-button'));
-
-      // Wait for next card to appear (7-7-7 Cycle)
-      await waitFor(() => {
-        expect(getByText('7-7-7 Cycle')).toBeTruthy();
-      });
-
-      // Should have triggered haptic feedback
-      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
-    });
-
     it('should select pattern and advance when select button is pressed', async () => {
       const { getByTestId, getByText } = renderWithContext(
         <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
@@ -197,9 +176,9 @@ describe('PremiumShiftPatternScreen', () => {
       // Open modal
       fireEvent.press(getByTestId('pattern-info-button'));
 
-      // Check modal content
+      // Check modal content (avoid checking duplicate pattern name)
       await waitFor(() => {
-        expect(getByText('4-4-4 Cycle')).toBeTruthy();
+        expect(getByText('Work-Rest Ratio')).toBeTruthy();
         expect(getByText('67% work, 33% rest')).toBeTruthy();
         expect(getByText('• FIFO mining')).toBeTruthy();
         expect(getByText('✓ Good work-life balance')).toBeTruthy();
@@ -243,14 +222,14 @@ describe('PremiumShiftPatternScreen', () => {
       );
 
       // Skip first card
-      fireEvent.press(getByTestId('pattern-skip-button'));
+      fireEvent.press(getByTestId('pattern-select-button'));
 
       await waitFor(() => {
         expect(getByText('7-7-7 Cycle')).toBeTruthy();
       });
 
       // Skip second card
-      fireEvent.press(getByTestId('pattern-skip-button'));
+      fireEvent.press(getByTestId('pattern-select-button'));
 
       await waitFor(() => {
         expect(getByText('2-2-3 Cycle')).toBeTruthy();
@@ -277,10 +256,11 @@ describe('PremiumShiftPatternScreen', () => {
           <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
         );
 
-        // Skip to this pattern
+        // Advance to this pattern by selecting previous patterns
         for (let i = 0; i < index; i++) {
-          fireEvent.press(getByTestId('pattern-skip-button'));
-          await waitFor(() => {}, { timeout: 500 });
+          fireEvent.press(getByTestId('pattern-select-button'));
+          // Wait for state update
+          await new Promise((resolve) => setTimeout(resolve, 400));
         }
 
         // Verify correct pattern is shown
@@ -296,22 +276,22 @@ describe('PremiumShiftPatternScreen', () => {
   });
 
   describe('End of Stack', () => {
-    it('should show end screen after swiping through all cards', async () => {
+    it('should show end screen after selecting through all cards', async () => {
       const { getByTestId, getByText } = renderWithContext(
         <PremiumShiftPatternScreen testID="pattern" />
       );
 
-      // Skip through all 9 cards
+      // Select through all 9 cards
       for (let i = 0; i < 9; i++) {
-        fireEvent.press(getByTestId('pattern-skip-button'));
-        await waitFor(() => {}, { timeout: 500 });
+        fireEvent.press(getByTestId('pattern-select-button'));
+        await new Promise((resolve) => setTimeout(resolve, 400));
       }
 
-      // Should show end screen
+      // Should show end screen with last selected pattern
       await waitFor(() => {
-        expect(getByText('No pattern selected yet?')).toBeTruthy();
+        expect(getByText('Pattern Selected!')).toBeTruthy();
+        expect(getByText('You have selected Custom Pattern')).toBeTruthy();
         expect(getByTestId('review-again-button')).toBeTruthy();
-        expect(getByTestId('custom-pattern-button')).toBeTruthy();
       });
     });
 
@@ -327,7 +307,7 @@ describe('PremiumShiftPatternScreen', () => {
 
       // Skip through remaining cards
       for (let i = 0; i < 8; i++) {
-        fireEvent.press(getByTestId('pattern-skip-button'));
+        fireEvent.press(getByTestId('pattern-select-button'));
         await waitFor(() => {}, { timeout: 500 });
       }
 
@@ -343,15 +323,15 @@ describe('PremiumShiftPatternScreen', () => {
         <PremiumShiftPatternScreen testID="pattern" />
       );
 
-      // Skip through all cards
+      // Select through all cards
       for (let i = 0; i < 9; i++) {
-        fireEvent.press(getByTestId('pattern-skip-button'));
-        await waitFor(() => {}, { timeout: 500 });
+        fireEvent.press(getByTestId('pattern-select-button'));
+        await new Promise((resolve) => setTimeout(resolve, 400));
       }
 
       // Wait for end screen
       await waitFor(() => {
-        expect(getByText('No pattern selected yet?')).toBeTruthy();
+        expect(getByText('Pattern Selected!')).toBeTruthy();
       });
 
       // Press review again
@@ -360,30 +340,8 @@ describe('PremiumShiftPatternScreen', () => {
       // Should show first card again
       await waitFor(() => {
         expect(getByText('4-4-4 Cycle')).toBeTruthy();
-        expect(getByTestId('pattern-skip-button')).toBeTruthy();
+        expect(getByTestId('pattern-select-button')).toBeTruthy();
       });
-    });
-
-    it('should handle custom pattern selection from end screen', async () => {
-      const { getByTestId } = renderWithContext(
-        <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
-      );
-
-      // Skip through all cards
-      for (let i = 0; i < 9; i++) {
-        fireEvent.press(getByTestId('pattern-skip-button'));
-        await waitFor(() => {}, { timeout: 500 });
-      }
-
-      await waitFor(() => {
-        expect(getByTestId('custom-pattern-button')).toBeTruthy();
-      });
-
-      // Select custom pattern
-      fireEvent.press(getByTestId('custom-pattern-button'));
-
-      // Should call with CUSTOM pattern type
-      expect(mockOnContinue).toHaveBeenCalledWith(ShiftPattern.CUSTOM);
     });
   });
 
@@ -403,21 +361,22 @@ describe('PremiumShiftPatternScreen', () => {
       ).toBeTruthy();
     });
 
-    it('should show swipe hints on first card', () => {
+    it('should show swipe hint on first card', () => {
       const { getByText } = renderWithContext(<PremiumShiftPatternScreen />);
-      expect(getByText('← Skip')).toBeTruthy();
-      expect(getByText('Select →')).toBeTruthy();
+      expect(getByText('Swipe right to select →')).toBeTruthy();
     });
   });
 
   describe('Context Integration', () => {
     it('should save selected pattern to context', async () => {
-      const { getByTestId } = renderWithContext(<PremiumShiftPatternScreen testID="pattern" />);
+      const { getByTestId } = renderWithContext(
+        <PremiumShiftPatternScreen onContinue={mockOnContinue} testID="pattern" />
+      );
 
       // Select pattern
       fireEvent.press(getByTestId('pattern-select-button'));
 
-      await waitFor(() => {}, { timeout: 500 });
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Context should be updated (verified through onContinue callback)
       expect(mockOnContinue).toHaveBeenCalledWith(ShiftPattern.STANDARD_4_4_4);
@@ -428,7 +387,6 @@ describe('PremiumShiftPatternScreen', () => {
     it('should have testIDs for main elements', () => {
       const { getByTestId } = renderWithContext(<PremiumShiftPatternScreen testID="pattern" />);
       expect(getByTestId('pattern')).toBeTruthy();
-      expect(getByTestId('pattern-skip-button')).toBeTruthy();
       expect(getByTestId('pattern-info-button')).toBeTruthy();
       expect(getByTestId('pattern-select-button')).toBeTruthy();
       expect(getByTestId('pattern-card-4-4-4')).toBeTruthy();
@@ -445,9 +403,9 @@ describe('PremiumShiftPatternScreen', () => {
       const { getByTestId } = renderWithContext(<PremiumShiftPatternScreen testID="pattern" />);
 
       // Rapidly press skip button
-      fireEvent.press(getByTestId('pattern-skip-button'));
-      fireEvent.press(getByTestId('pattern-skip-button'));
-      fireEvent.press(getByTestId('pattern-skip-button'));
+      fireEvent.press(getByTestId('pattern-select-button'));
+      fireEvent.press(getByTestId('pattern-select-button'));
+      fireEvent.press(getByTestId('pattern-select-button'));
 
       // Should still work correctly
       await waitFor(() => {}, { timeout: 1000 });
@@ -466,7 +424,7 @@ describe('PremiumShiftPatternScreen', () => {
       });
 
       // Skip next card
-      fireEvent.press(getByTestId('pattern-skip-button'));
+      fireEvent.press(getByTestId('pattern-select-button'));
 
       await waitFor(() => {
         expect(getByText('2-2-3 Cycle')).toBeTruthy();

@@ -193,7 +193,6 @@ interface SwipeableCardProps {
   totalCards: number;
   isActive: boolean;
   onSwipeRight: () => void;
-  onSwipeLeft: () => void;
   onSwipeUp: () => void;
   testID?: string;
 }
@@ -204,7 +203,6 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   totalCards,
   isActive,
   onSwipeRight,
-  onSwipeLeft,
   onSwipeUp,
   testID,
 }) => {
@@ -246,7 +244,6 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .onEnd((event: any) => {
       const isSwipeRight = event.translationX > SWIPE_THRESHOLD;
-      const isSwipeLeft = event.translationX < -SWIPE_THRESHOLD;
       const isSwipeUp = event.translationY < -SWIPE_THRESHOLD;
 
       if (isSwipeRight) {
@@ -257,14 +254,6 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
         opacity.value = withTiming(0, { duration: 300 });
         runOnJS(Haptics.notificationAsync)(Haptics.NotificationFeedbackType.Success);
         runOnJS(onSwipeRight)();
-      } else if (isSwipeLeft) {
-        translateX.value = withSpring(-SCREEN_WIDTH, {
-          damping: 30,
-          stiffness: 400,
-        });
-        opacity.value = withTiming(0, { duration: 300 });
-        runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Light);
-        runOnJS(onSwipeLeft)();
       } else if (isSwipeUp) {
         translateY.value = withSpring(0, { damping: 20, stiffness: 300 });
         translateX.value = withSpring(0, { damping: 20, stiffness: 300 });
@@ -334,16 +323,11 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
         {/* Description */}
         <Text style={styles.description}>{pattern.description}</Text>
 
-        {/* Swipe Hints (only for first card) */}
+        {/* Swipe Hint (only for first card) */}
         {index === 0 && isActive && (
-          <>
-            <Animated.View style={[styles.swipeHint, styles.swipeHintLeft]}>
-              <Text style={styles.swipeHintText}>← Skip</Text>
-            </Animated.View>
-            <Animated.View style={[styles.swipeHint, styles.swipeHintRight]}>
-              <Text style={styles.swipeHintText}>Select →</Text>
-            </Animated.View>
-          </>
+          <Animated.View style={[styles.swipeHint, styles.swipeHintRight]}>
+            <Text style={styles.swipeHintText}>Swipe right to select →</Text>
+          </Animated.View>
         )}
       </Animated.View>
     </GestureDetector>
@@ -469,11 +453,13 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
     updateData({ patternType: pattern.type });
 
     setTimeout(() => {
-      if (currentIndex < SHIFT_PATTERNS.length - 1) {
-        setCurrentIndex(currentIndex + 1);
-      } else {
+      setCurrentIndex((prevIndex) => {
+        if (prevIndex < SHIFT_PATTERNS.length - 1) {
+          return prevIndex + 1;
+        }
         setShowEndScreen(true);
-      }
+        return prevIndex;
+      });
     }, 300);
 
     if (onContinue) {
@@ -481,25 +467,10 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
     }
   }, [currentIndex, updateData, onContinue]);
 
-  const handleSwipeLeft = useCallback(() => {
-    setTimeout(() => {
-      if (currentIndex < SHIFT_PATTERNS.length - 1) {
-        setCurrentIndex(currentIndex + 1);
-      } else {
-        setShowEndScreen(true);
-      }
-    }, 300);
-  }, [currentIndex]);
-
   const handleSwipeUp = useCallback(() => {
     setLearnMorePattern(SHIFT_PATTERNS[currentIndex]);
     setShowLearnMore(true);
   }, [currentIndex]);
-
-  const handleSkipButton = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    handleSwipeLeft();
-  };
 
   const handleInfoButton = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -568,7 +539,7 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
 
       {/* Subtitle */}
       <Animated.Text style={[styles.subtitle, subtitleStyle]}>
-        Swipe to explore shift patterns
+        Swipe right to select or tap info to learn more
       </Animated.Text>
 
       {/* Card Stack */}
@@ -581,7 +552,6 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
             totalCards={visibleCards.length}
             isActive={index === visibleCards.length - 1}
             onSwipeRight={handleSwipeRight}
-            onSwipeLeft={handleSwipeLeft}
             onSwipeUp={handleSwipeUp}
             testID={`${testID}-card-${pattern.id}`}
           />
@@ -593,14 +563,6 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
 
       {/* Action Buttons */}
       <View style={styles.actionButtons}>
-        <Pressable
-          style={[styles.actionButton, styles.skipButton]}
-          onPress={handleSkipButton}
-          testID={`${testID}-skip-button`}
-        >
-          <Text style={styles.actionButtonText}>❌ Skip</Text>
-        </Pressable>
-
         <Pressable
           style={[styles.actionButton, styles.infoButton]}
           onPress={handleInfoButton}
