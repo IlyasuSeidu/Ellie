@@ -336,11 +336,16 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
         {/* Description */}
         <Text style={styles.description}>{pattern.description}</Text>
 
-        {/* Swipe Hint (only for first card) */}
+        {/* Swipe Hints (only for first card) */}
         {index === 0 && isActive && (
-          <Animated.View style={[styles.swipeHint, styles.swipeHintRight]}>
-            <Text style={styles.swipeHintText}>Swipe right to select →</Text>
-          </Animated.View>
+          <>
+            <Animated.View style={[styles.swipeHint, styles.swipeHintLeft]}>
+              <Text style={styles.swipeHintText}>← Skip</Text>
+            </Animated.View>
+            <Animated.View style={[styles.swipeHint, styles.swipeHintRight]}>
+              <Text style={styles.swipeHintText}>Select →</Text>
+            </Animated.View>
+          </>
         )}
       </Animated.View>
     </GestureDetector>

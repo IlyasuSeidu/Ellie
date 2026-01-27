@@ -114,9 +114,10 @@ describe('PremiumShiftPatternScreen', () => {
       ).toBeTruthy();
     });
 
-    it('should show swipe hint on first card', () => {
+    it('should show swipe hints on first card', () => {
       const { getByText } = renderWithContext(<PremiumShiftPatternScreen />);
-      expect(getByText('Swipe right to select →')).toBeTruthy();
+      expect(getByText('← Skip')).toBeTruthy();
+      expect(getByText('Select →')).toBeTruthy();
     });
   });
 
