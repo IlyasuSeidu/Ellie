@@ -193,6 +193,7 @@ interface SwipeableCardProps {
   totalCards: number;
   isActive: boolean;
   onSwipeRight: () => void;
+  onSwipeLeft: () => void;
   onSwipeUp: () => void;
   testID?: string;
 }
@@ -203,6 +204,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   totalCards,
   isActive,
   onSwipeRight,
+  onSwipeLeft,
   onSwipeUp,
   testID,
 }) => {
@@ -244,6 +246,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .onEnd((event: any) => {
       const isSwipeRight = event.translationX > SWIPE_THRESHOLD;
+      const isSwipeLeft = event.translationX < -SWIPE_THRESHOLD;
       const isSwipeUp = event.translationY < -SWIPE_THRESHOLD;
 
       if (isSwipeRight) {
@@ -254,6 +257,14 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
         opacity.value = withTiming(0, { duration: 300 });
         runOnJS(Haptics.notificationAsync)(Haptics.NotificationFeedbackType.Success);
         runOnJS(onSwipeRight)();
+      } else if (isSwipeLeft) {
+        translateX.value = withSpring(-SCREEN_WIDTH, {
+          damping: 30,
+          stiffness: 400,
+        });
+        opacity.value = withTiming(0, { duration: 300 });
+        runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Light);
+        runOnJS(onSwipeLeft)();
       } else if (isSwipeUp) {
         // Snap back to center
         translateY.value = withSpring(0, { damping: 20, stiffness: 300 });
@@ -426,7 +437,7 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
   testID = 'premium-shift-pattern-screen',
 }) => {
   const { updateData } = useOnboarding();
-  const [currentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [showLearnMore, setShowLearnMore] = useState(false);
   const [learnMorePattern, setLearnMorePattern] = useState<PatternCardData | null>(null);
 
@@ -462,6 +473,17 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
     setShowLearnMore(true);
   }, [currentIndex]);
 
+  const handleSwipeLeft = useCallback(() => {
+    setTimeout(() => {
+      setCurrentIndex((prevIndex) => {
+        if (prevIndex < SHIFT_PATTERNS.length - 1) {
+          return prevIndex + 1;
+        }
+        return prevIndex;
+      });
+    }, 300);
+  }, []);
+
   const visibleCards = SHIFT_PATTERNS.slice(currentIndex, currentIndex + 4);
 
   return (
@@ -473,7 +495,7 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
 
       {/* Subtitle */}
       <Animated.Text style={[styles.subtitle, subtitleStyle]}>
-        Swipe right to select • Swipe up for details
+        Swipe right to select • Swipe left to skip • Swipe up for details
       </Animated.Text>
 
       {/* Card Stack */}
@@ -486,6 +508,7 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
             totalCards={visibleCards.length}
             isActive={index === visibleCards.length - 1}
             onSwipeRight={handleSwipeRight}
+            onSwipeLeft={handleSwipeLeft}
             onSwipeUp={handleSwipeUp}
             testID={`${testID}-card-${pattern.id}`}
           />
