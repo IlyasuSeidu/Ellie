@@ -118,6 +118,7 @@ describe('PremiumShiftPatternScreen', () => {
       const { getByText } = renderWithContext(<PremiumShiftPatternScreen />);
       expect(getByText('← Skip')).toBeTruthy();
       expect(getByText('Select →')).toBeTruthy();
+      expect(getByText('↑ Info')).toBeTruthy();
     });
   });
 

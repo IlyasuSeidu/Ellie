@@ -345,6 +345,9 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
             <Animated.View style={[styles.swipeHint, styles.swipeHintRight]}>
               <Text style={styles.swipeHintText}>Select →</Text>
             </Animated.View>
+            <Animated.View style={[styles.swipeHint, styles.swipeHintUp]}>
+              <Text style={styles.swipeHintText}>↑ Info</Text>
+            </Animated.View>
           </>
         )}
       </Animated.View>
@@ -629,6 +632,12 @@ const styles = StyleSheet.create({
   },
   swipeHintRight: {
     right: -theme.spacing.md,
+  },
+  swipeHintUp: {
+    top: 'auto',
+    bottom: theme.spacing.md,
+    left: '50%',
+    transform: [{ translateX: -40 }],
   },
   swipeHintText: {
     fontSize: 14,
