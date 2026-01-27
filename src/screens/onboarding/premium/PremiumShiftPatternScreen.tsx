@@ -635,7 +635,7 @@ const styles = StyleSheet.create({
   },
   swipeHintUp: {
     top: 'auto',
-    bottom: theme.spacing.md,
+    bottom: theme.spacing.sm,
     alignSelf: 'center',
   },
   swipeHintText: {
