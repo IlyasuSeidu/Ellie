@@ -81,7 +81,7 @@ describe('PremiumShiftPatternScreen', () => {
     it('should render title and subtitle', () => {
       const { getByText } = renderWithContext(<PremiumShiftPatternScreen />);
       expect(getByText('Choose your shift pattern')).toBeTruthy();
-      expect(getByText('Swipe right to select your pattern')).toBeTruthy();
+      expect(getByText('Swipe right to select • Swipe up for details')).toBeTruthy();
     });
 
     it('should render progress header with step 3 of 10', () => {

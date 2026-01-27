@@ -6,7 +6,16 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, Text, Dimensions, Platform } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Dimensions,
+  Platform,
+  Modal,
+  Pressable,
+  ScrollView,
+} from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -22,6 +31,7 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
+import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ShiftPattern } from '@/types';
 
@@ -183,6 +193,7 @@ interface SwipeableCardProps {
   totalCards: number;
   isActive: boolean;
   onSwipeRight: () => void;
+  onSwipeUp: () => void;
   testID?: string;
 }
 
@@ -192,6 +203,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   totalCards,
   isActive,
   onSwipeRight,
+  onSwipeUp,
   testID,
 }) => {
   const translateX = useSharedValue(0);
@@ -232,6 +244,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .onEnd((event: any) => {
       const isSwipeRight = event.translationX > SWIPE_THRESHOLD;
+      const isSwipeUp = event.translationY < -SWIPE_THRESHOLD;
 
       if (isSwipeRight) {
         translateX.value = withSpring(SCREEN_WIDTH, {
@@ -241,6 +254,14 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
         opacity.value = withTiming(0, { duration: 300 });
         runOnJS(Haptics.notificationAsync)(Haptics.NotificationFeedbackType.Success);
         runOnJS(onSwipeRight)();
+      } else if (isSwipeUp) {
+        // Snap back to center
+        translateY.value = withSpring(0, { damping: 20, stiffness: 300 });
+        translateX.value = withSpring(0, { damping: 20, stiffness: 300 });
+        scale.value = withSpring(1);
+        opacity.value = withSpring(1);
+        runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Medium);
+        runOnJS(onSwipeUp)();
       } else {
         // Rubber band back to center
         translateX.value = withSpring(0, { damping: 20, stiffness: 300 });
@@ -315,6 +336,69 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   );
 };
 
+// Learn More Modal Component
+interface LearnMoreModalProps {
+  visible: boolean;
+  pattern: PatternCardData | null;
+  onClose: () => void;
+}
+
+const LearnMoreModal: React.FC<LearnMoreModalProps> = ({ visible, pattern, onClose }) => {
+  if (!pattern) return null;
+
+  return (
+    <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose}>
+      <Pressable style={styles.modalBackdrop} onPress={onClose}>
+        <View style={styles.modalContent}>
+          <Text style={styles.modalTitle}>{pattern.name}</Text>
+          <Text style={styles.modalSchedule}>{pattern.schedule}</Text>
+
+          <ScrollView style={styles.modalScroll} showsVerticalScrollIndicator={false}>
+            <View style={styles.modalSection}>
+              <Text style={styles.modalSectionTitle}>Work-Rest Ratio</Text>
+              <Text style={styles.modalSectionText}>{pattern.detailedInfo.workRestRatio}</Text>
+            </View>
+
+            <View style={styles.modalSection}>
+              <Text style={styles.modalSectionTitle}>Common Use Cases</Text>
+              {pattern.detailedInfo.useCases.map((useCase, i) => (
+                <Text key={i} style={styles.modalListItem}>
+                  • {useCase}
+                </Text>
+              ))}
+            </View>
+
+            <View style={styles.modalSection}>
+              <Text style={styles.modalSectionTitle}>Advantages</Text>
+              {pattern.detailedInfo.pros.map((pro, i) => (
+                <Text key={i} style={styles.modalListItem}>
+                  ✓ {pro}
+                </Text>
+              ))}
+            </View>
+
+            <View style={styles.modalSection}>
+              <Text style={styles.modalSectionTitle}>Considerations</Text>
+              {pattern.detailedInfo.cons.map((con, i) => (
+                <Text key={i} style={styles.modalListItem}>
+                  • {con}
+                </Text>
+              ))}
+            </View>
+          </ScrollView>
+
+          <PremiumButton
+            title="Close"
+            onPress={onClose}
+            variant="outline"
+            testID="modal-close-button"
+          />
+        </View>
+      </Pressable>
+    </Modal>
+  );
+};
+
 // Progress Dots Component
 interface ProgressDotsProps {
   total: number;
@@ -343,6 +427,8 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
 }) => {
   const { updateData } = useOnboarding();
   const [currentIndex] = useState(0);
+  const [showLearnMore, setShowLearnMore] = useState(false);
+  const [learnMorePattern, setLearnMorePattern] = useState<PatternCardData | null>(null);
 
   // Title animations
   const titleOpacity = useSharedValue(0);
@@ -371,6 +457,11 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
     }
   }, [currentIndex, updateData, onContinue]);
 
+  const handleSwipeUp = useCallback(() => {
+    setLearnMorePattern(SHIFT_PATTERNS[currentIndex]);
+    setShowLearnMore(true);
+  }, [currentIndex]);
+
   const visibleCards = SHIFT_PATTERNS.slice(currentIndex, currentIndex + 4);
 
   return (
@@ -382,7 +473,7 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
 
       {/* Subtitle */}
       <Animated.Text style={[styles.subtitle, subtitleStyle]}>
-        Swipe right to select your pattern
+        Swipe right to select • Swipe up for details
       </Animated.Text>
 
       {/* Card Stack */}
@@ -395,6 +486,7 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
             totalCards={visibleCards.length}
             isActive={index === visibleCards.length - 1}
             onSwipeRight={handleSwipeRight}
+            onSwipeUp={handleSwipeUp}
             testID={`${testID}-card-${pattern.id}`}
           />
         ))}
@@ -402,6 +494,13 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
 
       {/* Progress Dots */}
       <ProgressDots total={SHIFT_PATTERNS.length} current={currentIndex} />
+
+      {/* Learn More Modal */}
+      <LearnMoreModal
+        visible={showLearnMore}
+        pattern={learnMorePattern}
+        onClose={() => setShowLearnMore(false)}
+      />
     </View>
   );
 };
