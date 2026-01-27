@@ -6,16 +6,7 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Dimensions,
-  Platform,
-  Pressable,
-  Modal,
-  ScrollView,
-} from 'react-native';
+import { View, StyleSheet, Text, Dimensions, Platform } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -31,7 +22,6 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
-import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ShiftPattern } from '@/types';
 
@@ -193,7 +183,6 @@ interface SwipeableCardProps {
   totalCards: number;
   isActive: boolean;
   onSwipeRight: () => void;
-  onSwipeUp: () => void;
   testID?: string;
 }
 
@@ -203,7 +192,6 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   totalCards,
   isActive,
   onSwipeRight,
-  onSwipeUp,
   testID,
 }) => {
   const translateX = useSharedValue(0);
@@ -244,7 +232,6 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .onEnd((event: any) => {
       const isSwipeRight = event.translationX > SWIPE_THRESHOLD;
-      const isSwipeUp = event.translationY < -SWIPE_THRESHOLD;
 
       if (isSwipeRight) {
         translateX.value = withSpring(SCREEN_WIDTH, {
@@ -254,14 +241,8 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
         opacity.value = withTiming(0, { duration: 300 });
         runOnJS(Haptics.notificationAsync)(Haptics.NotificationFeedbackType.Success);
         runOnJS(onSwipeRight)();
-      } else if (isSwipeUp) {
-        translateY.value = withSpring(0, { damping: 20, stiffness: 300 });
-        translateX.value = withSpring(0, { damping: 20, stiffness: 300 });
-        scale.value = withSpring(1);
-        opacity.value = withSpring(1);
-        runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Medium);
-        runOnJS(onSwipeUp)();
       } else {
+        // Rubber band back to center
         translateX.value = withSpring(0, { damping: 20, stiffness: 300 });
         translateY.value = withSpring(0, { damping: 20, stiffness: 300 });
         scale.value = withSpring(1);
@@ -334,69 +315,6 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   );
 };
 
-// Learn More Modal Component
-interface LearnMoreModalProps {
-  visible: boolean;
-  pattern: PatternCardData | null;
-  onClose: () => void;
-}
-
-const LearnMoreModal: React.FC<LearnMoreModalProps> = ({ visible, pattern, onClose }) => {
-  if (!pattern) return null;
-
-  return (
-    <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose}>
-      <Pressable style={styles.modalBackdrop} onPress={onClose}>
-        <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>{pattern.name}</Text>
-          <Text style={styles.modalSchedule}>{pattern.schedule}</Text>
-
-          <ScrollView style={styles.modalScroll} showsVerticalScrollIndicator={false}>
-            <View style={styles.modalSection}>
-              <Text style={styles.modalSectionTitle}>Work-Rest Ratio</Text>
-              <Text style={styles.modalSectionText}>{pattern.detailedInfo.workRestRatio}</Text>
-            </View>
-
-            <View style={styles.modalSection}>
-              <Text style={styles.modalSectionTitle}>Common Use Cases</Text>
-              {pattern.detailedInfo.useCases.map((useCase, i) => (
-                <Text key={i} style={styles.modalListItem}>
-                  • {useCase}
-                </Text>
-              ))}
-            </View>
-
-            <View style={styles.modalSection}>
-              <Text style={styles.modalSectionTitle}>Advantages</Text>
-              {pattern.detailedInfo.pros.map((pro, i) => (
-                <Text key={i} style={styles.modalListItem}>
-                  ✓ {pro}
-                </Text>
-              ))}
-            </View>
-
-            <View style={styles.modalSection}>
-              <Text style={styles.modalSectionTitle}>Considerations</Text>
-              {pattern.detailedInfo.cons.map((con, i) => (
-                <Text key={i} style={styles.modalListItem}>
-                  • {con}
-                </Text>
-              ))}
-            </View>
-          </ScrollView>
-
-          <PremiumButton
-            title="Close"
-            onPress={onClose}
-            variant="outline"
-            testID="modal-close-button"
-          />
-        </View>
-      </Pressable>
-    </Modal>
-  );
-};
-
 // Progress Dots Component
 interface ProgressDotsProps {
   total: number;
@@ -424,11 +342,7 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
   testID = 'premium-shift-pattern-screen',
 }) => {
   const { updateData } = useOnboarding();
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedPattern, setSelectedPattern] = useState<PatternCardData | null>(null);
-  const [showLearnMore, setShowLearnMore] = useState(false);
-  const [learnMorePattern, setLearnMorePattern] = useState<PatternCardData | null>(null);
-  const [showEndScreen, setShowEndScreen] = useState(false);
+  const [currentIndex] = useState(0);
 
   // Title animations
   const titleOpacity = useSharedValue(0);
@@ -449,84 +363,13 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
 
   const handleSwipeRight = useCallback(() => {
     const pattern = SHIFT_PATTERNS[currentIndex];
-    setSelectedPattern(pattern);
     updateData({ patternType: pattern.type });
 
-    setTimeout(() => {
-      setCurrentIndex((prevIndex) => {
-        if (prevIndex < SHIFT_PATTERNS.length - 1) {
-          return prevIndex + 1;
-        }
-        setShowEndScreen(true);
-        return prevIndex;
-      });
-    }, 300);
-
+    // Call onContinue to navigate to next screen
     if (onContinue) {
       onContinue(pattern.type);
     }
   }, [currentIndex, updateData, onContinue]);
-
-  const handleSwipeUp = useCallback(() => {
-    setLearnMorePattern(SHIFT_PATTERNS[currentIndex]);
-    setShowLearnMore(true);
-  }, [currentIndex]);
-
-  const handleInfoButton = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    handleSwipeUp();
-  };
-
-  const handleSelectButton = () => {
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    handleSwipeRight();
-  };
-
-  const handleReviewAgain = () => {
-    setCurrentIndex(0);
-    setShowEndScreen(false);
-    setSelectedPattern(null);
-  };
-
-  if (showEndScreen) {
-    return (
-      <View style={styles.container} testID={`${testID}-end-screen`}>
-        <ProgressHeader currentStep={3} totalSteps={10} />
-
-        <View style={styles.endScreenContent}>
-          <Text style={styles.endScreenIcon}>✨</Text>
-          <Text style={styles.endScreenTitle}>
-            {selectedPattern ? 'Pattern Selected!' : 'No pattern selected yet?'}
-          </Text>
-          {selectedPattern && (
-            <Text style={styles.endScreenSubtitle}>You have selected {selectedPattern.name}</Text>
-          )}
-
-          <View style={styles.endScreenButtons}>
-            <PremiumButton
-              title="Review patterns again"
-              onPress={handleReviewAgain}
-              variant="outline"
-              testID="review-again-button"
-            />
-            {!selectedPattern && (
-              <PremiumButton
-                title="Build custom pattern"
-                onPress={() => {
-                  updateData({ patternType: ShiftPattern.CUSTOM });
-                  if (onContinue) {
-                    onContinue(ShiftPattern.CUSTOM);
-                  }
-                }}
-                variant="primary"
-                testID="custom-pattern-button"
-              />
-            )}
-          </View>
-        </View>
-      </View>
-    );
-  }
 
   const visibleCards = SHIFT_PATTERNS.slice(currentIndex, currentIndex + 4);
 
@@ -539,7 +382,7 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
 
       {/* Subtitle */}
       <Animated.Text style={[styles.subtitle, subtitleStyle]}>
-        Swipe right to select or tap info to learn more
+        Swipe right to select your pattern
       </Animated.Text>
 
       {/* Card Stack */}
@@ -552,7 +395,6 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
             totalCards={visibleCards.length}
             isActive={index === visibleCards.length - 1}
             onSwipeRight={handleSwipeRight}
-            onSwipeUp={handleSwipeUp}
             testID={`${testID}-card-${pattern.id}`}
           />
         ))}
@@ -560,32 +402,6 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
 
       {/* Progress Dots */}
       <ProgressDots total={SHIFT_PATTERNS.length} current={currentIndex} />
-
-      {/* Action Buttons */}
-      <View style={styles.actionButtons}>
-        <Pressable
-          style={[styles.actionButton, styles.infoButton]}
-          onPress={handleInfoButton}
-          testID={`${testID}-info-button`}
-        >
-          <Text style={styles.actionButtonText}>ℹ️ Info</Text>
-        </Pressable>
-
-        <Pressable
-          style={[styles.actionButton, styles.selectButton]}
-          onPress={handleSelectButton}
-          testID={`${testID}-select-button`}
-        >
-          <Text style={styles.selectButtonText}>✅ Select</Text>
-        </Pressable>
-      </View>
-
-      {/* Learn More Modal */}
-      <LearnMoreModal
-        visible={showLearnMore}
-        pattern={learnMorePattern}
-        onClose={() => setShowLearnMore(false)}
-      />
     </View>
   );
 };

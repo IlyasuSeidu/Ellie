@@ -1,0 +1,133 @@
+/**
+ * Expo Application Configuration
+ *
+ * This file configures the Expo app and loads environment variables.
+ * It takes precedence over app.json and allows dynamic configuration.
+ */
+
+// Load environment variables from .env file (if dotenv is installed)
+try {
+  require('dotenv').config();
+} catch (e) {
+  // dotenv not installed, using default values
+}
+
+module.exports = {
+  expo: {
+    name: 'ShiftSync',
+    slug: 'shiftsync',
+    version: '1.0.0',
+    orientation: 'portrait',
+    icon: './assets/icon.png',
+    userInterfaceStyle: 'automatic',
+    newArchEnabled: true,
+
+    splash: {
+      image: './assets/splash-icon.png',
+      resizeMode: 'contain',
+      backgroundColor: '#ffffff',
+    },
+
+    // iOS Configuration
+    ios: {
+      supportsTablet: true,
+      bundleIdentifier: 'com.shiftsync.app',
+      buildNumber: '1',
+      infoPlist: {
+        NSCameraUsageDescription:
+          'This app uses the camera to take profile photos and shift documentation.',
+        NSPhotoLibraryUsageDescription:
+          'This app accesses your photos to select profile pictures and shift documentation.',
+        NSPhotoLibraryAddUsageDescription: 'This app saves photos to your photo library.',
+      },
+      associatedDomains: ['applinks:shiftsync.app'],
+    },
+
+    // Android Configuration
+    android: {
+      adaptiveIcon: {
+        foregroundImage: './assets/adaptive-icon.png',
+        backgroundColor: '#ffffff',
+      },
+      package: 'com.shiftsync.app',
+      versionCode: 1,
+      permissions: [
+        'CAMERA',
+        'READ_EXTERNAL_STORAGE',
+        'WRITE_EXTERNAL_STORAGE',
+        'NOTIFICATIONS',
+        'RECEIVE_BOOT_COMPLETED',
+      ],
+      edgeToEdgeEnabled: true,
+      predictiveBackGestureEnabled: false,
+    },
+
+    // Web Configuration
+    web: {
+      favicon: './assets/favicon.png',
+      bundler: 'metro',
+    },
+
+    // Plugins
+    plugins: [
+      // '@config-plugins/detox', // Temporarily removed - requires SDK 53, we're on SDK 54
+      [
+        'expo-notifications',
+        {
+          icon: './assets/notification-icon.png',
+          color: '#ffffff',
+          sounds: ['./assets/notification-sound.wav'],
+        },
+      ],
+      [
+        '@react-native-google-signin/google-signin',
+        {
+          iosUrlScheme: 'com.googleusercontent.apps.YOUR_CLIENT_ID',
+        },
+      ],
+      'expo-apple-authentication',
+    ],
+
+    // Extra configuration - environment variables
+    extra: {
+      // App environment
+      APP_ENV: process.env.APP_ENV || 'development',
+
+      // Firebase configuration
+      FIREBASE_API_KEY: process.env.FIREBASE_API_KEY || '',
+      FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN || '',
+      FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID || '',
+      FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET || '',
+      FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID || '',
+      FIREBASE_APP_ID: process.env.FIREBASE_APP_ID || '',
+      FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID || '',
+
+      // Google configuration
+      GOOGLE_WEB_CLIENT_ID: process.env.GOOGLE_WEB_CLIENT_ID || '',
+
+      // API configuration
+      API_BASE_URL: process.env.API_BASE_URL || 'https://api.shiftsync.app',
+      API_TIMEOUT: process.env.API_TIMEOUT || '30000',
+
+      // EAS configuration
+      eas: {
+        projectId: process.env.EAS_PROJECT_ID || 'your-eas-project-id',
+      },
+    },
+
+    // EAS Configuration
+    updates: {
+      url: 'https://u.expo.dev/your-project-id',
+    },
+
+    runtimeVersion: {
+      policy: 'appVersion',
+    },
+
+    // Scheme for deep linking
+    scheme: 'shiftsync',
+
+    // Privacy and permissions
+    privacy: 'public',
+  },
+};
