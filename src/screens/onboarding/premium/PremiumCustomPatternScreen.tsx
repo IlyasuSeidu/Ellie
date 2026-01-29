@@ -1250,6 +1250,9 @@ const styles = StyleSheet.create({
   thumbIcon: {
     width: 14,
     height: 14,
+    backgroundColor: '#fff',
+    borderRadius: 7,
+    padding: 2,
   },
   tipBox: {
     flexDirection: 'row',
