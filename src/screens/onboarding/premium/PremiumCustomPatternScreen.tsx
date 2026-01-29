@@ -653,9 +653,6 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
 
   const tipOpacity = useSharedValue(0);
   const continueButtonScale = useSharedValue(1);
-  const heroIconOpacity = useSharedValue(0);
-  const heroIconScale = useSharedValue(0.8);
-
   // Check for reduced motion preference
   useEffect(() => {
     AccessibilityInfo.isReduceMotionEnabled().then((enabled) => {
@@ -678,12 +675,6 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
   const workDays = daysOn + nightsOn;
   const workPercentage = Math.round((workDays / totalDays) * 100);
   const hasHighWorkRatio = workPercentage > 85;
-
-  // Hero icon entrance animation
-  useEffect(() => {
-    heroIconOpacity.value = withDelay(100, withTiming(1, { duration: 500 }));
-    heroIconScale.value = withDelay(100, withSpring(1, { damping: 15, stiffness: 200 }));
-  }, [heroIconOpacity, heroIconScale]);
 
   // Show tip after first interaction
   useEffect(() => {
@@ -755,17 +746,8 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {/* Title with Hero Icon */}
-        <View style={styles.titleContainer}>
-          <Animated.View style={[styles.heroIconInline, tipAnimatedStyle]}>
-            <Image
-              source={require('../../../../assets/onboarding/icons/consolidated/custom-pattern-builder-hero.png')}
-              style={styles.heroIcon}
-              resizeMode="contain"
-            />
-          </Animated.View>
-          <Text style={styles.title}>Customize Your Shift Pattern</Text>
-        </View>
+        {/* Title */}
+        <Text style={styles.title}>Customize Your Shift Pattern</Text>
         <Text style={styles.subtitle}>Design your ideal work schedule</Text>
 
         {/* Live Preview Card */}
@@ -912,39 +894,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.spacing.lg,
     paddingBottom: 100,
   },
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: theme.spacing.xl,
-    marginBottom: theme.spacing.md,
-    gap: theme.spacing.xs,
-    alignSelf: 'center',
-  },
-  heroIconInline: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  heroIcon: {
-    width: 48,
-    height: 48,
-    ...Platform.select({
-      ios: {
-        shadowColor: theme.colors.sacredGold,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 8,
-      },
-      android: {
-        elevation: 6,
-      },
-    }),
-  },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     color: theme.colors.sacredGold,
     textAlign: 'center',
+    marginTop: theme.spacing.xl,
+    marginBottom: theme.spacing.md,
   },
   subtitle: {
     fontSize: 16,
