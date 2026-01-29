@@ -42,6 +42,9 @@ jest.mock('@react-navigation/native', () => ({
   useNavigation: () => ({
     navigate: jest.fn(),
   }),
+  useFocusEffect: jest.fn(() => {
+    // No-op in tests to avoid triggering focus effects
+  }),
 }));
 
 // Mock components

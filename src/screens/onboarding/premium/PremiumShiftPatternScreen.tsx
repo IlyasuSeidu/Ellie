@@ -34,7 +34,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
@@ -677,6 +677,7 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
   const [showLearnMore, setShowLearnMore] = useState(false);
   const [learnMorePattern, setLearnMorePattern] = useState<PatternCardData | null>(null);
   const [showEndScreen, setShowEndScreen] = useState(false);
+  const [cardRemountKey, setCardRemountKey] = useState(0);
 
   // Title animations
   const titleOpacity = useSharedValue(0);
@@ -703,6 +704,24 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [titleOpacity, subtitleOpacity]);
+
+  // Reset card state when screen comes back into focus (e.g., from CustomPattern screen)
+  useFocusEffect(
+    useCallback(() => {
+      // Force cards to remount with fresh animation state
+      setCardRemountKey((prev) => prev + 1);
+
+      // Re-trigger card entrance animations
+      cardAnimations.forEach((anim, index) => {
+        anim.value = 0;
+        anim.value = withDelay(
+          index * 80,
+          withTiming(1, { duration: 400, easing: Easing.out(Easing.cubic) })
+        );
+      });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+  );
 
   // Detect end of stack
   useEffect(() => {
@@ -773,7 +792,7 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
       <View style={styles.cardStack}>
         {visibleCards.reverse().map((pattern, index) => (
           <SwipeableCardMemoized
-            key={pattern.id}
+            key={`${pattern.id}-${cardRemountKey}`}
             pattern={pattern}
             index={visibleCards.length - 1 - index}
             totalCards={visibleCards.length}
