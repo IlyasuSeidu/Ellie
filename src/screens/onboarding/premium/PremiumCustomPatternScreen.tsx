@@ -51,6 +51,15 @@ const CYCLE_COLORS = {
   off: '#F59E0B',
 } as const;
 
+// Spring animation configs
+const SPRING_CONFIGS = {
+  fast: { damping: 10, stiffness: 400 },
+  smooth: { damping: 20, stiffness: 300 },
+  bouncy: { damping: 10, stiffness: 400 },
+  gentle: { damping: 15, stiffness: 200 },
+  elastic: { damping: 8, stiffness: 250 },
+} as const;
+
 // Enhanced Slider Component
 interface EnhancedSliderProps {
   label: string;
@@ -92,10 +101,7 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
   // Entry animation
   useEffect(() => {
     containerOpacity.value = withDelay(delayIndex * 200, withTiming(1, { duration: 400 }));
-    containerTranslateY.value = withDelay(
-      delayIndex * 200,
-      withSpring(0, { damping: 15, stiffness: 200 })
-    );
+    containerTranslateY.value = withDelay(delayIndex * 200, withSpring(0, SPRING_CONFIGS.gentle));
   }, [delayIndex, containerOpacity, containerTranslateY]);
 
   // Idle glow pulse animation (skip if reduced motion)
@@ -113,13 +119,13 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
 
   // Update position when value changes externally
   useEffect(() => {
-    translateX.value = withSpring(((value - min) / (max - min)) * SLIDER_WIDTH, {
-      damping: 20,
-      stiffness: 300,
-    });
+    translateX.value = withSpring(
+      ((value - min) / (max - min)) * SLIDER_WIDTH,
+      SPRING_CONFIGS.smooth
+    );
     badgeScale.value = withSequence(
-      withSpring(1.15, { damping: 10, stiffness: 400 }),
-      withSpring(1, { damping: 10, stiffness: 400 })
+      withSpring(1.15, SPRING_CONFIGS.fast),
+      withSpring(1, SPRING_CONFIGS.fast)
     );
   }, [value, min, max, translateX, badgeScale]);
 
@@ -174,7 +180,7 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
 
   const panGesture = Gesture.Pan()
     .onBegin(() => {
-      scale.value = withSpring(1.1, { damping: 10, stiffness: 400 });
+      scale.value = withSpring(1.1, SPRING_CONFIGS.fast);
       thumbGlow.value = withTiming(0.6, { duration: 150 }); // Max glow during drag
     })
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -192,7 +198,7 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
       }
     })
     .onEnd(() => {
-      scale.value = withSpring(1, { damping: 10, stiffness: 400 });
+      scale.value = withSpring(1, SPRING_CONFIGS.fast);
 
       // Resume idle glow pulse
       thumbGlow.value = withRepeat(
@@ -204,10 +210,10 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
       // Snap to nearest value
       const progress = translateX.value / SLIDER_WIDTH;
       const newValue = Math.round(min + progress * (max - min));
-      translateX.value = withSpring(((newValue - min) / (max - min)) * SLIDER_WIDTH, {
-        damping: 20,
-        stiffness: 300,
-      });
+      translateX.value = withSpring(
+        ((newValue - min) / (max - min)) * SLIDER_WIDTH,
+        SPRING_CONFIGS.smooth
+      );
     });
 
   const containerAnimatedStyle = useAnimatedStyle(() => ({
@@ -333,6 +339,57 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
   );
 };
 
+// Cycle Square Component with individual animations
+interface CycleSquareProps {
+  type: 'day' | 'night' | 'off';
+  index: number;
+  animationDelay: number;
+  reducedMotion: boolean;
+  triggerAnimation: number; // Incremented to trigger re-animation
+}
+
+const CycleSquare: React.FC<CycleSquareProps> = React.memo(
+  ({ type, animationDelay, reducedMotion, triggerAnimation }) => {
+    const opacity = useSharedValue(1);
+    const rotation = useSharedValue(0);
+
+    useEffect(() => {
+      if (!reducedMotion && triggerAnimation > 0) {
+        opacity.value = withDelay(
+          animationDelay,
+          withSequence(withTiming(0, { duration: 100 }), withTiming(1, { duration: 200 }))
+        );
+        rotation.value = withDelay(
+          animationDelay,
+          withSequence(withTiming(180, { duration: 200 }), withTiming(0, { duration: 200 }))
+        );
+      }
+    }, [triggerAnimation, animationDelay, reducedMotion, opacity, rotation]);
+
+    const animatedStyle = useAnimatedStyle(() => ({
+      opacity: opacity.value,
+      transform: [{ rotateY: `${rotation.value}deg` }],
+    }));
+
+    const backgroundColor =
+      type === 'day' ? CYCLE_COLORS.day : type === 'night' ? CYCLE_COLORS.night : CYCLE_COLORS.off;
+
+    return (
+      <Animated.View
+        style={[
+          styles.cycleSquare,
+          {
+            backgroundColor,
+          },
+          animatedStyle,
+        ]}
+      />
+    );
+  }
+);
+
+CycleSquare.displayName = 'CycleSquare';
+
 // Live Preview Card Component
 interface LivePreviewCardProps {
   daysOn: number;
@@ -383,21 +440,34 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
   const animatedWorkPercentage = useSharedValue(workPercentage);
   const animatedRestPercentage = useSharedValue(restPercentage);
 
-  // Animate percentages when they change
+  // Animated bar widths (as percentages)
+  const workBarWidth = useSharedValue(workPercentage);
+  const restBarWidth = useSharedValue(restPercentage);
+
+  // Animate percentages and bar widths when they change
   useEffect(() => {
     animatedWorkPercentage.value = withTiming(workPercentage, { duration: 400 });
     animatedRestPercentage.value = withTiming(restPercentage, { duration: 400 });
-  }, [workPercentage, restPercentage, animatedWorkPercentage, animatedRestPercentage]);
+    workBarWidth.value = withSpring(workPercentage, SPRING_CONFIGS.smooth);
+    restBarWidth.value = withSpring(restPercentage, SPRING_CONFIGS.smooth);
+  }, [
+    workPercentage,
+    restPercentage,
+    animatedWorkPercentage,
+    animatedRestPercentage,
+    workBarWidth,
+    restBarWidth,
+  ]);
 
   // Entry animation
   useEffect(() => {
-    scaleValue.value = withDelay(200, withSpring(1, { damping: 15, stiffness: 200 }));
+    scaleValue.value = withDelay(200, withSpring(1, SPRING_CONFIGS.gentle));
     opacityValue.value = withDelay(200, withTiming(1, { duration: 400 }));
 
     // Staggered entrance for cycle blocks
-    dayBlockScale.value = withDelay(300, withSpring(1, { damping: 15, stiffness: 200 }));
-    nightBlockScale.value = withDelay(400, withSpring(1, { damping: 15, stiffness: 200 }));
-    offBlockScale.value = withDelay(500, withSpring(1, { damping: 15, stiffness: 200 }));
+    dayBlockScale.value = withDelay(300, withSpring(1, SPRING_CONFIGS.gentle));
+    nightBlockScale.value = withDelay(400, withSpring(1, SPRING_CONFIGS.gentle));
+    offBlockScale.value = withDelay(500, withSpring(1, SPRING_CONFIGS.gentle));
   }, [scaleValue, opacityValue, dayBlockScale, nightBlockScale, offBlockScale]);
 
   // Idle floating animation (skip if reduced motion)
@@ -415,8 +485,8 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
   useEffect(() => {
     if (dayBlockScale.value === 1) {
       dayBlockScale.value = withSequence(
-        withSpring(1.05, { damping: 10, stiffness: 400 }),
-        withSpring(1, { damping: 10, stiffness: 400 })
+        withSpring(1.05, SPRING_CONFIGS.fast),
+        withSpring(1, SPRING_CONFIGS.fast)
       );
     }
   }, [daysOn, dayBlockScale]);
@@ -424,8 +494,8 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
   useEffect(() => {
     if (nightBlockScale.value === 1) {
       nightBlockScale.value = withSequence(
-        withSpring(1.05, { damping: 10, stiffness: 400 }),
-        withSpring(1, { damping: 10, stiffness: 400 })
+        withSpring(1.05, SPRING_CONFIGS.fast),
+        withSpring(1, SPRING_CONFIGS.fast)
       );
     }
   }, [nightsOn, nightBlockScale]);
@@ -433,16 +503,16 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
   useEffect(() => {
     if (offBlockScale.value === 1) {
       offBlockScale.value = withSequence(
-        withSpring(1.05, { damping: 10, stiffness: 400 }),
-        withSpring(1, { damping: 10, stiffness: 400 })
+        withSpring(1.05, SPRING_CONFIGS.fast),
+        withSpring(1, SPRING_CONFIGS.fast)
       );
     }
   }, [daysOff, offBlockScale]);
 
   useEffect(() => {
     cycleLengthScale.value = withSequence(
-      withSpring(1.1, { damping: 10, stiffness: 400 }),
-      withSpring(1, { damping: 10, stiffness: 400 })
+      withSpring(1.1, SPRING_CONFIGS.fast),
+      withSpring(1, SPRING_CONFIGS.fast)
     );
   }, [totalDays, cycleLengthScale]);
 
@@ -467,6 +537,14 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
     transform: [{ scale: cycleLengthScale.value }],
   }));
 
+  const workBarAnimatedStyle = useAnimatedStyle(() => ({
+    width: `${workBarWidth.value}%`,
+  }));
+
+  const restBarAnimatedStyle = useAnimatedStyle(() => ({
+    width: `${restBarWidth.value}%`,
+  }));
+
   // Generate cycle preview squares (memoized)
   const cyclePattern = useMemo(
     () => [
@@ -477,21 +555,13 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
     [daysOn, nightsOn, daysOff]
   );
 
-  // Cycle preview animation (pulse when pattern changes)
-  const cyclePreviewScale = useSharedValue(1);
+  // Trigger counter for cycle square wave animation
+  const [animationTrigger, setAnimationTrigger] = useState(0);
 
+  // Increment trigger when pattern changes to re-animate squares
   useEffect(() => {
-    if (!reducedMotion) {
-      cyclePreviewScale.value = withSequence(
-        withTiming(1.05, { duration: 200 }),
-        withSpring(1, { damping: 10, stiffness: 400 })
-      );
-    }
-  }, [cyclePattern.length, daysOn, nightsOn, daysOff, reducedMotion, cyclePreviewScale]);
-
-  const cyclePreviewAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: cyclePreviewScale.value }],
-  }));
+    setAnimationTrigger((prev) => prev + 1);
+  }, [daysOn, nightsOn, daysOff]);
 
   return (
     <Animated.View style={[styles.previewCard, cardAnimatedStyle]}>
@@ -562,24 +632,18 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
             </View>
           </View>
 
-          <Animated.View style={[styles.cyclePreview, cyclePreviewAnimatedStyle]}>
+          <View style={styles.cyclePreview}>
             {cyclePattern.map((type, index) => (
-              <View
-                key={index}
-                style={[
-                  styles.cycleSquare,
-                  {
-                    backgroundColor:
-                      type === 'day'
-                        ? CYCLE_COLORS.day
-                        : type === 'night'
-                          ? CYCLE_COLORS.night
-                          : CYCLE_COLORS.off,
-                  },
-                ]}
+              <CycleSquare
+                key={`${type}-${index}-${animationTrigger}`}
+                type={type}
+                index={index}
+                animationDelay={index * 30}
+                reducedMotion={reducedMotion}
+                triggerAnimation={animationTrigger}
               />
             ))}
-          </Animated.View>
+          </View>
 
           <Animated.View style={cycleLengthAnimatedStyle}>
             <Text style={styles.cycleLabel}>Your {totalDays}-day cycle</Text>
@@ -598,16 +662,16 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
             <Text style={styles.balanceTitle}>Work-Rest Balance</Text>
           </View>
           <View style={styles.chartBar}>
-            <View style={[styles.chartSegment, { flex: workDays }]}>
+            <Animated.View style={[styles.chartSegmentAnimated, workBarAnimatedStyle]}>
               <LinearGradient colors={['#6366F1', '#4F46E5']} style={styles.chartGradient}>
                 <Text style={styles.chartPercentage}>{workPercentage}%</Text>
               </LinearGradient>
-            </View>
-            <View style={[styles.chartSegment, { flex: daysOff }]}>
+            </Animated.View>
+            <Animated.View style={[styles.chartSegmentAnimated, restBarAnimatedStyle]}>
               <LinearGradient colors={['#22C55E', '#15803D']} style={styles.chartGradient}>
                 <Text style={styles.chartPercentage}>{restPercentage}%</Text>
               </LinearGradient>
-            </View>
+            </Animated.View>
           </View>
           <View style={styles.chartLabels}>
             <Text style={styles.chartLabel}>Work: {workDays} days</Text>
@@ -1071,6 +1135,12 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.xs,
   },
   chartSegment: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  chartSegmentAnimated: {
+    height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
