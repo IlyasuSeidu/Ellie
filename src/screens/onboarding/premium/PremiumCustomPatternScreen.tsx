@@ -828,6 +828,19 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
           </Animated.View>
         )}
 
+        {isValid && !hasHighWorkRatio && (
+          <View style={styles.successMessage}>
+            <Image
+              source={require('../../../../assets/onboarding/icons/consolidated/validation-success-checkmark.png')}
+              style={styles.validationIcon}
+              resizeMode="contain"
+            />
+            <Text style={styles.successText}>
+              Great balance! Your {totalDays}-day cycle supports healthy work-rest patterns.
+            </Text>
+          </View>
+        )}
+
         {!isValid && (
           <View style={styles.validationMessage}>
             <Ionicons name="alert-circle" size={20} color="#EF4444" />
@@ -1260,7 +1273,6 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   tipBox: {
-    flexDirection: 'row',
     alignItems: 'center',
     gap: theme.spacing.sm,
     backgroundColor: 'rgba(251, 191, 36, 0.1)',
@@ -1269,14 +1281,32 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.lg,
   },
   tipIcon: {
-    width: 24,
-    height: 24,
+    width: 40,
+    height: 40,
   },
   tipText: {
-    flex: 1,
     fontSize: 14,
     color: theme.colors.dust,
     lineHeight: 20,
+    textAlign: 'center',
+  },
+  successMessage: {
+    alignItems: 'center',
+    gap: theme.spacing.sm,
+    backgroundColor: 'rgba(34, 197, 94, 0.1)',
+    borderRadius: 16,
+    padding: theme.spacing.md,
+    marginBottom: theme.spacing.lg,
+  },
+  successText: {
+    fontSize: 14,
+    color: '#22C55E',
+    lineHeight: 20,
+    textAlign: 'center',
+  },
+  validationIcon: {
+    width: 32,
+    height: 32,
   },
   validationMessage: {
     flexDirection: 'row',
