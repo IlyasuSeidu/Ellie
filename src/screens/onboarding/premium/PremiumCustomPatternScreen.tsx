@@ -970,8 +970,8 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   previewHeaderIcon: {
-    width: 40,
-    height: 40,
+    width: 60,
+    height: 60,
   },
   cycleBlocks: {
     flexDirection: 'row',
@@ -1173,8 +1173,8 @@ const styles = StyleSheet.create({
     color: theme.colors.paper,
   },
   sliderHeaderIcon: {
-    width: 30,
-    height: 30,
+    width: 50,
+    height: 50,
   },
   sliderValue: {
     fontSize: 20,
@@ -1278,10 +1278,10 @@ const styles = StyleSheet.create({
     }),
   },
   thumbIcon: {
-    width: 18,
-    height: 18,
+    width: 30,
+    height: 30,
     backgroundColor: '#fff',
-    borderRadius: 9,
+    borderRadius: 15,
     padding: 2,
   },
   tipBox: {
@@ -1293,8 +1293,8 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.lg,
   },
   tipIcon: {
-    width: 40,
-    height: 40,
+    width: 60,
+    height: 60,
   },
   tipText: {
     fontSize: 14,
@@ -1317,8 +1317,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   validationIcon: {
-    width: 32,
-    height: 32,
+    width: 52,
+    height: 52,
   },
   validationMessage: {
     alignItems: 'center',
@@ -1385,7 +1385,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   trophyIcon: {
-    width: 28,
-    height: 28,
+    width: 50,
+    height: 50,
   },
 });
