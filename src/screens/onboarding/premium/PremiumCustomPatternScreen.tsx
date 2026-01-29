@@ -525,6 +525,15 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
 
         {/* Visual Cycle Preview */}
         <View style={styles.cyclePreviewSection}>
+          {/* Calendar Grid Icon */}
+          <View style={styles.calendarGridIconContainer}>
+            <Image
+              source={require('../../../../assets/onboarding/icons/consolidated/cycle-preview-calendar-grid.png')}
+              style={styles.calendarGridIcon}
+              resizeMode="contain"
+            />
+          </View>
+
           <View style={styles.cycleLegend}>
             <View style={styles.legendItem}>
               <View style={[styles.legendDot, { backgroundColor: CYCLE_COLORS.day }]} />
@@ -970,6 +979,15 @@ const styles = StyleSheet.create({
   },
   cyclePreviewSection: {
     marginBottom: theme.spacing.lg,
+  },
+  calendarGridIconContainer: {
+    alignItems: 'center',
+    marginBottom: theme.spacing.md,
+  },
+  calendarGridIcon: {
+    width: 80,
+    height: 80,
+    opacity: 0.9,
   },
   cycleLegend: {
     flexDirection: 'row',
