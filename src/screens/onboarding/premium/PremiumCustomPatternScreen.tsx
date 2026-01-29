@@ -547,15 +547,6 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
 
         {/* Visual Cycle Preview */}
         <View style={styles.cyclePreviewSection}>
-          {/* Calendar Grid Icon */}
-          <View style={styles.calendarGridIconContainer}>
-            <Image
-              source={require('../../../../assets/onboarding/icons/consolidated/cycle-preview-calendar-grid.png')}
-              style={styles.calendarGridIcon}
-              resizeMode="contain"
-            />
-          </View>
-
           <View style={styles.cycleLegend}>
             <View style={styles.legendItem}>
               <View style={[styles.legendDot, { backgroundColor: CYCLE_COLORS.day }]} />
@@ -597,6 +588,14 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
 
         {/* Work-Rest Balance Chart */}
         <View style={styles.balanceChart}>
+          {/* Balance Scale Icon */}
+          <View style={styles.balanceScaleIconContainer}>
+            <Image
+              source={require('../../../../assets/onboarding/icons/consolidated/work-rest-balance-scale.png')}
+              style={styles.balanceScaleIcon}
+              resizeMode="contain"
+            />
+          </View>
           <Text style={styles.balanceTitle}>Work-Rest Balance</Text>
           <View style={styles.chartBar}>
             <View style={[styles.chartSegment, { flex: workDays }]}>
@@ -756,17 +755,17 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {/* Hero Icon */}
-        <Animated.View style={[styles.heroIconContainer, tipAnimatedStyle]}>
-          <Image
-            source={require('../../../../assets/onboarding/icons/consolidated/custom-pattern-builder-hero.png')}
-            style={styles.heroIcon}
-            resizeMode="contain"
-          />
-        </Animated.View>
-
-        {/* Title */}
-        <Text style={styles.title}>Customize Your Shift Pattern</Text>
+        {/* Title with Hero Icon */}
+        <View style={styles.titleContainer}>
+          <Animated.View style={[styles.heroIconInline, tipAnimatedStyle]}>
+            <Image
+              source={require('../../../../assets/onboarding/icons/consolidated/custom-pattern-builder-hero.png')}
+              style={styles.heroIcon}
+              resizeMode="contain"
+            />
+          </Animated.View>
+          <Text style={styles.title}>Customize Your Shift Pattern</Text>
+        </View>
         <Text style={styles.subtitle}>Design your ideal work schedule</Text>
 
         {/* Live Preview Card */}
@@ -913,23 +912,29 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.spacing.lg,
     paddingBottom: 100,
   },
-  heroIconContainer: {
+  titleContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     marginTop: theme.spacing.xl,
     marginBottom: theme.spacing.md,
+    gap: theme.spacing.md,
+  },
+  heroIconInline: {
+    // Inline icon styling
   },
   heroIcon: {
-    width: 120,
-    height: 120,
+    width: 48,
+    height: 48,
     ...Platform.select({
       ios: {
         shadowColor: theme.colors.sacredGold,
-        shadowOffset: { width: 0, height: 8 },
+        shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
-        shadowRadius: 16,
+        shadowRadius: 8,
       },
       android: {
-        elevation: 8,
+        elevation: 6,
       },
     }),
   },
@@ -937,8 +942,6 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     color: theme.colors.sacredGold,
-    textAlign: 'center',
-    marginTop: theme.spacing.md,
   },
   subtitle: {
     fontSize: 16,
@@ -1013,15 +1016,6 @@ const styles = StyleSheet.create({
   cyclePreviewSection: {
     marginBottom: theme.spacing.lg,
   },
-  calendarGridIconContainer: {
-    alignItems: 'center',
-    marginBottom: theme.spacing.md,
-  },
-  calendarGridIcon: {
-    width: 80,
-    height: 80,
-    opacity: 0.9,
-  },
   cycleLegend: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -1062,6 +1056,15 @@ const styles = StyleSheet.create({
   },
   balanceChart: {
     marginBottom: theme.spacing.md,
+  },
+  balanceScaleIconContainer: {
+    alignItems: 'center',
+    marginBottom: theme.spacing.sm,
+  },
+  balanceScaleIcon: {
+    width: 64,
+    height: 64,
+    opacity: 0.9,
   },
   balanceTitle: {
     fontSize: 14,
