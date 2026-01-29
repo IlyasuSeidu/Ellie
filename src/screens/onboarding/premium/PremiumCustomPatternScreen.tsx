@@ -793,6 +793,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               onChange={setDaysOff}
               delayIndex={2}
               reducedMotion={reducedMotion}
+              customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png')}
             />
           </View>
         </View>
