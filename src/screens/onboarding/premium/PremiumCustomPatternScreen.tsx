@@ -15,6 +15,7 @@ import {
   Pressable,
   ScrollView,
   AccessibilityInfo,
+  Image,
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -615,6 +616,8 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
 
   const tipOpacity = useSharedValue(0);
   const continueButtonScale = useSharedValue(1);
+  const heroIconOpacity = useSharedValue(0);
+  const heroIconScale = useSharedValue(0.8);
 
   // Check for reduced motion preference
   useEffect(() => {
@@ -638,6 +641,12 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
   const workDays = daysOn + nightsOn;
   const workPercentage = Math.round((workDays / totalDays) * 100);
   const hasHighWorkRatio = workPercentage > 85;
+
+  // Hero icon entrance animation
+  useEffect(() => {
+    heroIconOpacity.value = withDelay(100, withTiming(1, { duration: 500 }));
+    heroIconScale.value = withDelay(100, withSpring(1, { damping: 15, stiffness: 200 }));
+  }, [heroIconOpacity, heroIconScale]);
 
   // Show tip after first interaction
   useEffect(() => {
@@ -709,6 +718,15 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
+        {/* Hero Icon */}
+        <Animated.View style={[styles.heroIconContainer, tipAnimatedStyle]}>
+          <Image
+            source={require('../../../../assets/onboarding/icons/consolidated/custom-pattern-builder-hero.png')}
+            style={styles.heroIcon}
+            resizeMode="contain"
+          />
+        </Animated.View>
+
         {/* Title */}
         <Text style={styles.title}>Customize Your Shift Pattern</Text>
         <Text style={styles.subtitle}>Design your ideal work schedule</Text>
@@ -851,12 +869,32 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.spacing.lg,
     paddingBottom: 100,
   },
+  heroIconContainer: {
+    alignItems: 'center',
+    marginTop: theme.spacing.xl,
+    marginBottom: theme.spacing.md,
+  },
+  heroIcon: {
+    width: 120,
+    height: 120,
+    ...Platform.select({
+      ios: {
+        shadowColor: theme.colors.sacredGold,
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.3,
+        shadowRadius: 16,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
+  },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     color: theme.colors.sacredGold,
     textAlign: 'center',
-    marginTop: theme.spacing.lg,
+    marginTop: theme.spacing.md,
   },
   subtitle: {
     fontSize: 16,
