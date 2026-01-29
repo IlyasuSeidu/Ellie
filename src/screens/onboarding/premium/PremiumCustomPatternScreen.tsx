@@ -843,14 +843,22 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
 
         {!isValid && (
           <View style={styles.validationMessage}>
-            <Ionicons name="alert-circle" size={20} color="#EF4444" />
+            <Image
+              source={require('../../../../assets/onboarding/icons/consolidated/validation-warning-alert.png')}
+              style={styles.validationIcon}
+              resizeMode="contain"
+            />
             <Text style={styles.validationText}>{validationMessage}</Text>
           </View>
         )}
 
         {isValid && hasHighWorkRatio && (
           <View style={styles.warningMessage}>
-            <Ionicons name="warning" size={20} color="#F59E0B" />
+            <Image
+              source={require('../../../../assets/onboarding/icons/consolidated/validation-warning-alert.png')}
+              style={styles.validationIcon}
+              resizeMode="contain"
+            />
             <Text style={styles.warningText}>
               High work ratio ({workPercentage}%). Consider adding more rest days for better
               work-life balance.
@@ -1309,7 +1317,6 @@ const styles = StyleSheet.create({
     height: 32,
   },
   validationMessage: {
-    flexDirection: 'row',
     alignItems: 'center',
     gap: theme.spacing.sm,
     backgroundColor: 'rgba(239, 68, 68, 0.1)',
@@ -1318,13 +1325,12 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.lg,
   },
   validationText: {
-    flex: 1,
     fontSize: 14,
     color: '#EF4444',
     lineHeight: 20,
+    textAlign: 'center',
   },
   warningMessage: {
-    flexDirection: 'row',
     alignItems: 'center',
     gap: theme.spacing.sm,
     backgroundColor: 'rgba(245, 158, 11, 0.1)',
@@ -1333,10 +1339,10 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.lg,
   },
   warningText: {
-    flex: 1,
     fontSize: 14,
     color: '#F59E0B',
     lineHeight: 20,
+    textAlign: 'center',
   },
   bottomNav: {
     position: 'absolute',
