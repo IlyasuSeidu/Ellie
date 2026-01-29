@@ -653,6 +653,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
 
   const tipOpacity = useSharedValue(0);
   const continueButtonScale = useSharedValue(1);
+
   // Check for reduced motion preference
   useEffect(() => {
     AccessibilityInfo.isReduceMotionEnabled().then((enabled) => {
