@@ -817,7 +817,11 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
         {/* Tips & Validation */}
         {showTip && (
           <Animated.View style={[styles.tipBox, tipAnimatedStyle]}>
-            <Ionicons name="bulb" size={20} color="#FBBF24" />
+            <Image
+              source={require('../../../../assets/onboarding/icons/consolidated/tips-lightbulb-glowing.png')}
+              style={styles.tipIcon}
+              resizeMode="contain"
+            />
             <Text style={styles.tipText}>
               A balanced shift pattern helps improve alertness and overall health.
             </Text>
@@ -1263,6 +1267,10 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: theme.spacing.md,
     marginBottom: theme.spacing.lg,
+  },
+  tipIcon: {
+    width: 24,
+    height: 24,
   },
   tipText: {
     flex: 1,
