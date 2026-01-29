@@ -779,6 +779,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               onChange={setNightsOn}
               delayIndex={1}
               reducedMotion={reducedMotion}
+              customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png')}
             />
 
             <EnhancedSlider
