@@ -588,15 +588,15 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
 
         {/* Work-Rest Balance Chart */}
         <View style={styles.balanceChart}>
-          {/* Balance Scale Icon */}
-          <View style={styles.balanceScaleIconContainer}>
+          {/* Balance Header with Icon */}
+          <View style={styles.balanceHeader}>
             <Image
               source={require('../../../../assets/onboarding/icons/consolidated/work-rest-balance-scale.png')}
               style={styles.balanceScaleIcon}
               resizeMode="contain"
             />
+            <Text style={styles.balanceTitle}>Work-Rest Balance</Text>
           </View>
-          <Text style={styles.balanceTitle}>Work-Rest Balance</Text>
           <View style={styles.chartBar}>
             <View style={[styles.chartSegment, { flex: workDays }]}>
               <LinearGradient colors={['#6366F1', '#4F46E5']} style={styles.chartGradient}>
@@ -919,9 +919,11 @@ const styles = StyleSheet.create({
     marginTop: theme.spacing.xl,
     marginBottom: theme.spacing.md,
     gap: theme.spacing.md,
+    alignSelf: 'center',
   },
   heroIconInline: {
-    // Inline icon styling
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   heroIcon: {
     width: 48,
@@ -942,6 +944,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     color: theme.colors.sacredGold,
+    textAlign: 'center',
   },
   subtitle: {
     fontSize: 16,
@@ -976,13 +979,13 @@ const styles = StyleSheet.create({
     gap: theme.spacing.sm,
   },
   previewTitle: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#fff',
   },
   previewHeaderIcon: {
-    width: 30,
-    height: 30,
+    width: 40,
+    height: 40,
   },
   cycleBlocks: {
     flexDirection: 'row',
@@ -1057,21 +1060,22 @@ const styles = StyleSheet.create({
   balanceChart: {
     marginBottom: theme.spacing.md,
   },
-  balanceScaleIconContainer: {
+  balanceHeader: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: theme.spacing.sm,
+    gap: theme.spacing.sm,
   },
   balanceScaleIcon: {
-    width: 64,
-    height: 64,
+    width: 80,
+    height: 80,
     opacity: 0.9,
   },
   balanceTitle: {
-    fontSize: 14,
+    fontSize: 18,
     color: '#fff',
     fontWeight: '600',
-    marginBottom: theme.spacing.sm,
-    textAlign: 'center',
   },
   chartBar: {
     flexDirection: 'row',
