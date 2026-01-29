@@ -899,7 +899,11 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               colors={isValid ? ['#F59E0B', '#D97706'] : ['#6B7280', '#4B5563']}
               style={styles.continueGradient}
             >
-              <Ionicons name="checkmark" size={24} color="#fff" />
+              <Image
+                source={require('../../../../assets/onboarding/icons/consolidated/navigation-save-trophy.png')}
+                style={styles.trophyIcon}
+                resizeMode="contain"
+              />
             </LinearGradient>
           </Pressable>
         </Animated.View>
@@ -1379,5 +1383,9 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  trophyIcon: {
+    width: 28,
+    height: 28,
   },
 });
