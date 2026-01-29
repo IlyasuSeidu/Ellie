@@ -64,6 +64,7 @@ interface EnhancedSliderProps {
   delayIndex?: number;
   reducedMotion?: boolean;
   customThumbIcon?: ImageSourcePropType;
+  customHeaderIcon?: ImageSourcePropType;
 }
 
 const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
@@ -78,6 +79,7 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
   delayIndex = 0,
   reducedMotion = false,
   customThumbIcon,
+  customHeaderIcon,
 }) => {
   const translateX = useSharedValue(((value - min) / (max - min)) * SLIDER_WIDTH);
   const scale = useSharedValue(1);
@@ -230,7 +232,11 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
     <Animated.View style={[styles.sliderContainer, containerAnimatedStyle]}>
       <View style={styles.sliderHeader}>
         <View style={styles.sliderLabelContainer}>
-          <Ionicons name={icon} size={20} color={color} />
+          {customHeaderIcon ? (
+            <Image source={customHeaderIcon} style={styles.sliderHeaderIcon} resizeMode="contain" />
+          ) : (
+            <Ionicons name={icon} size={20} color={color} />
+          )}
           <Text style={styles.sliderLabel}>{label}</Text>
         </View>
         <Text style={[styles.sliderValue, { color }]}>{value}</Text>
@@ -492,7 +498,11 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
       <LinearGradient colors={['#b45309', '#d97706']} style={styles.previewGradient}>
         {/* Header */}
         <View style={styles.previewHeader}>
-          <Ionicons name="calendar-outline" size={24} color="#fff" />
+          <Image
+            source={require('../../../../assets/onboarding/icons/consolidated/cycle-preview-calendar-grid.png')}
+            style={styles.previewHeaderIcon}
+            resizeMode="contain"
+          />
           <Text style={styles.previewTitle}>Custom Cycle</Text>
         </View>
 
@@ -500,7 +510,11 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
         <View style={styles.cycleBlocks}>
           <Animated.View style={[styles.cycleBlock, dayBlockAnimatedStyle]}>
             <View style={[styles.cycleBlockInner, { backgroundColor: CYCLE_COLORS.day }]}>
-              <Ionicons name="sunny" size={20} color="#fff" />
+              <Image
+                source={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
+                style={styles.cycleBlockIcon}
+                resizeMode="contain"
+              />
               <Text style={styles.cycleBlockNumber}>{daysOn}</Text>
               <Text style={styles.cycleBlockLabel}>Days</Text>
             </View>
@@ -508,7 +522,11 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
 
           <Animated.View style={[styles.cycleBlock, nightBlockAnimatedStyle]}>
             <View style={[styles.cycleBlockInner, { backgroundColor: CYCLE_COLORS.night }]}>
-              <Ionicons name="moon" size={20} color="#fff" />
+              <Image
+                source={require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png')}
+                style={styles.cycleBlockIcon}
+                resizeMode="contain"
+              />
               <Text style={styles.cycleBlockNumber}>{nightsOn}</Text>
               <Text style={styles.cycleBlockLabel}>Nights</Text>
             </View>
@@ -516,7 +534,11 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
 
           <Animated.View style={[styles.cycleBlock, offBlockAnimatedStyle]}>
             <View style={[styles.cycleBlockInner, { backgroundColor: CYCLE_COLORS.off }]}>
-              <Ionicons name="home" size={20} color="#fff" />
+              <Image
+                source={require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png')}
+                style={styles.cycleBlockIcon}
+                resizeMode="contain"
+              />
               <Text style={styles.cycleBlockNumber}>{daysOff}</Text>
               <Text style={styles.cycleBlockLabel}>Off</Text>
             </View>
@@ -775,6 +797,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               delayIndex={0}
               reducedMotion={reducedMotion}
               customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
+              customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
             />
 
             <EnhancedSlider
@@ -789,6 +812,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               delayIndex={1}
               reducedMotion={reducedMotion}
               customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png')}
+              customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png')}
             />
 
             <EnhancedSlider
@@ -803,6 +827,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               delayIndex={2}
               reducedMotion={reducedMotion}
               customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png')}
+              customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png')}
             />
           </View>
         </View>
@@ -952,6 +977,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#fff',
   },
+  previewHeaderIcon: {
+    width: 24,
+    height: 24,
+  },
   cycleBlocks: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -976,6 +1005,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#fff',
     opacity: 0.9,
+  },
+  cycleBlockIcon: {
+    width: 20,
+    height: 20,
   },
   cyclePreviewSection: {
     marginBottom: theme.spacing.lg,
@@ -1145,6 +1178,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: theme.colors.paper,
+  },
+  sliderHeaderIcon: {
+    width: 20,
+    height: 20,
   },
   sliderValue: {
     fontSize: 20,
