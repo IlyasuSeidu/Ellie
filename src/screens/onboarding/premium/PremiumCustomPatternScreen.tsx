@@ -978,8 +978,8 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   previewHeaderIcon: {
-    width: 32,
-    height: 32,
+    width: 30,
+    height: 30,
   },
   cycleBlocks: {
     flexDirection: 'row',
@@ -1007,8 +1007,8 @@ const styles = StyleSheet.create({
     opacity: 0.9,
   },
   cycleBlockIcon: {
-    width: 28,
-    height: 28,
+    width: 30,
+    height: 30,
   },
   cyclePreviewSection: {
     marginBottom: theme.spacing.lg,
@@ -1180,8 +1180,8 @@ const styles = StyleSheet.create({
     color: theme.colors.paper,
   },
   sliderHeaderIcon: {
-    width: 24,
-    height: 24,
+    width: 30,
+    height: 30,
   },
   sliderValue: {
     fontSize: 20,
