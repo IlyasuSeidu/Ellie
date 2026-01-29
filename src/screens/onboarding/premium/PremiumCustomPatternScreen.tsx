@@ -16,6 +16,7 @@ import {
   ScrollView,
   AccessibilityInfo,
   Image,
+  ImageSourcePropType,
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -62,6 +63,7 @@ interface EnhancedSliderProps {
   onChange: (value: number) => void;
   delayIndex?: number;
   reducedMotion?: boolean;
+  customThumbIcon?: ImageSourcePropType;
 }
 
 const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
@@ -75,6 +77,7 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
   onChange,
   delayIndex = 0,
   reducedMotion = false,
+  customThumbIcon,
 }) => {
   const translateX = useSharedValue(((value - min) / (max - min)) * SLIDER_WIDTH);
   const scale = useSharedValue(1);
@@ -298,7 +301,11 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
               accessibilityValue={{ min, max, now: value, text: `${value} ${label.toLowerCase()}` }}
               accessibilityHint="Swipe left or right to adjust value"
             >
-              <Ionicons name={icon} size={14} color="#fff" />
+              {customThumbIcon ? (
+                <Image source={customThumbIcon} style={styles.thumbIcon} resizeMode="contain" />
+              ) : (
+                <Ionicons name={icon} size={14} color="#fff" />
+              )}
             </Animated.View>
           </GestureDetector>
         </View>
@@ -758,6 +765,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               onChange={setDaysOn}
               delayIndex={0}
               reducedMotion={reducedMotion}
+              customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
             />
 
             <EnhancedSlider
@@ -1218,6 +1226,10 @@ const styles = StyleSheet.create({
         elevation: 4,
       },
     }),
+  },
+  thumbIcon: {
+    width: 14,
+    height: 14,
   },
   tipBox: {
     flexDirection: 'row',
