@@ -978,8 +978,8 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   previewHeaderIcon: {
-    width: 24,
-    height: 24,
+    width: 32,
+    height: 32,
   },
   cycleBlocks: {
     flexDirection: 'row',
@@ -1007,8 +1007,8 @@ const styles = StyleSheet.create({
     opacity: 0.9,
   },
   cycleBlockIcon: {
-    width: 20,
-    height: 20,
+    width: 28,
+    height: 28,
   },
   cyclePreviewSection: {
     marginBottom: theme.spacing.lg,
@@ -1180,8 +1180,8 @@ const styles = StyleSheet.create({
     color: theme.colors.paper,
   },
   sliderHeaderIcon: {
-    width: 20,
-    height: 20,
+    width: 24,
+    height: 24,
   },
   sliderValue: {
     fontSize: 20,
@@ -1285,10 +1285,10 @@ const styles = StyleSheet.create({
     }),
   },
   thumbIcon: {
-    width: 14,
-    height: 14,
+    width: 18,
+    height: 18,
     backgroundColor: '#fff',
-    borderRadius: 7,
+    borderRadius: 9,
     padding: 2,
   },
   tipBox: {
