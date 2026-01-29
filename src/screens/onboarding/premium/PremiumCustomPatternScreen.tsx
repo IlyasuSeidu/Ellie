@@ -918,7 +918,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: theme.spacing.xl,
     marginBottom: theme.spacing.md,
-    gap: theme.spacing.md,
+    gap: theme.spacing.xs,
     alignSelf: 'center',
   },
   heroIconInline: {
