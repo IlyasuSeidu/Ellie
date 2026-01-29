@@ -1,4 +1,5 @@
 module.exports = function (api) {
+  const isTest = api.env('test');
   api.cache(true);
 
   return {
@@ -24,7 +25,8 @@ module.exports = function (api) {
           },
         },
       ],
-      'react-native-reanimated/plugin',
+      // Don't include reanimated plugin in test environment
+      ...(!isTest ? ['react-native-reanimated/plugin'] : []),
     ],
   };
 };

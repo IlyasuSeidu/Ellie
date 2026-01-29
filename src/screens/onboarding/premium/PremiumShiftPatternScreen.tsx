@@ -15,6 +15,8 @@ import {
   Modal,
   Pressable,
   ScrollView,
+  Image,
+  ImageSourcePropType,
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -23,29 +25,47 @@ import Animated, {
   withTiming,
   withRepeat,
   withSequence,
+  withDelay,
   runOnJS,
   interpolate,
   Extrapolate,
+  Easing,
+  SharedValue,
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ShiftPattern } from '@/types';
+import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
+
+type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList, 'ShiftPattern'>;
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const CARD_WIDTH = SCREEN_WIDTH * 0.85;
 const CARD_HEIGHT = SCREEN_HEIGHT * 0.58;
 const SWIPE_THRESHOLD = 120;
 const ROTATION_ANGLE = 15;
+const VELOCITY_THRESHOLD = 500;
+
+// Spring physics configurations
+const SPRING_CONFIGS = {
+  swipeRightSelect: { damping: 25, stiffness: 450 },
+  swipeLeftSkip: { damping: 35, stiffness: 500 },
+  swipeUpInfo: { damping: 20, stiffness: 300 },
+  snapBack: { damping: 18, stiffness: 280 },
+} as const;
 
 // Shift pattern card data
 interface PatternCardData {
   id: string;
   type: ShiftPattern;
   icon: string;
+  iconImage?: ImageSourcePropType;
   name: string;
   schedule: string;
   description: string;
@@ -62,6 +82,7 @@ const SHIFT_PATTERNS: PatternCardData[] = [
     id: '4-4-4',
     type: ShiftPattern.STANDARD_4_4_4,
     icon: '⛏️',
+    iconImage: require('../../../../assets/onboarding/icons/consolidated/shift-pattern-4-4-4.png'),
     name: '4-4-4 Cycle',
     schedule: '4D / 4N / 4O',
     description: '4 days on, 4 nights on, 4 days off - Perfect for FIFO mining operations',
@@ -76,6 +97,7 @@ const SHIFT_PATTERNS: PatternCardData[] = [
     id: '7-7-7',
     type: ShiftPattern.STANDARD_7_7_7,
     icon: '🗓️',
+    iconImage: require('../../../../assets/onboarding/icons/consolidated/shift-pattern-7-7-7.png'),
     name: '7-7-7 Cycle',
     schedule: '7D / 7N / 7O',
     description: 'Weekly rotation - 7 days, 7 nights, 7 off for consistent scheduling',
@@ -90,6 +112,7 @@ const SHIFT_PATTERNS: PatternCardData[] = [
     id: '2-2-3',
     type: ShiftPattern.STANDARD_2_2_3,
     icon: '⚡',
+    iconImage: require('../../../../assets/onboarding/icons/consolidated/shift-pattern-2-2-3.png'),
     name: '2-2-3 Cycle',
     schedule: '2D / 2N / 3O',
     description: 'Pitman variation - Short bursts of work with frequent rest periods',
@@ -104,6 +127,7 @@ const SHIFT_PATTERNS: PatternCardData[] = [
     id: '5-5-5',
     type: ShiftPattern.STANDARD_5_5_5,
     icon: '📅',
+    iconImage: require('../../../../assets/onboarding/icons/consolidated/shift-pattern-5-5-5.png'),
     name: '5-5-5 Cycle',
     schedule: '5D / 5N / 5O',
     description: 'Medium cycle - Balanced rotation for steady operations',
@@ -118,6 +142,7 @@ const SHIFT_PATTERNS: PatternCardData[] = [
     id: '3-3-3',
     type: ShiftPattern.STANDARD_3_3_3,
     icon: '🔄',
+    iconImage: require('../../../../assets/onboarding/icons/consolidated/shift-pattern-3-3-3.png'),
     name: '3-3-3 Cycle',
     schedule: '3D / 3N / 3O',
     description: 'Standard short cycle - Quick rotation for adaptability',
@@ -132,6 +157,7 @@ const SHIFT_PATTERNS: PatternCardData[] = [
     id: '10-10-10',
     type: ShiftPattern.STANDARD_10_10_10,
     icon: '📆',
+    iconImage: require('../../../../assets/onboarding/icons/consolidated/shift-pattern-10-10-10.png'),
     name: '10-10-10 Cycle',
     schedule: '10D / 10N / 10O',
     description: 'Extended cycle - Long work periods with extended rest for remote work',
@@ -146,6 +172,7 @@ const SHIFT_PATTERNS: PatternCardData[] = [
     id: 'continental',
     type: ShiftPattern.CONTINENTAL,
     icon: '🌍',
+    iconImage: require('../../../../assets/onboarding/icons/consolidated/shift-pattern-continental.png'),
     name: 'Continental',
     schedule: '2D / 2N / 4O',
     description: 'Continental shift - 8-hour shifts with 4-day rest cycles',
@@ -160,6 +187,7 @@ const SHIFT_PATTERNS: PatternCardData[] = [
     id: 'pitman',
     type: ShiftPattern.PITMAN,
     icon: '🏭',
+    iconImage: require('../../../../assets/onboarding/icons/consolidated/shift-pattern-pitman.png'),
     name: 'Pitman Schedule',
     schedule: '2-2-3-2-2-3',
     description: 'Classic Pitman - 12-hour shifts with alternating 2 and 3-day breaks',
@@ -174,6 +202,7 @@ const SHIFT_PATTERNS: PatternCardData[] = [
     id: 'custom',
     type: ShiftPattern.CUSTOM,
     icon: '✨',
+    iconImage: require('../../../../assets/onboarding/icons/consolidated/shift-pattern-custom.png'),
     name: 'Custom Pattern',
     schedule: 'Flexible',
     description: 'Build your own shift pattern tailored to your specific needs',
@@ -186,6 +215,47 @@ const SHIFT_PATTERNS: PatternCardData[] = [
   },
 ];
 
+// Shadow utility function
+const getShadowStyle = (cardIndex: number, isActiveCard: boolean) => {
+  if (isActiveCard) {
+    return Platform.select({
+      ios: {
+        shadowColor: theme.colors.sacredGold,
+        shadowOffset: { width: 0, height: 12 },
+        shadowOpacity: 0.4,
+        shadowRadius: 20,
+      },
+      android: {
+        elevation: 12,
+      },
+    });
+  }
+  if (cardIndex === 1) {
+    return Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.2,
+        shadowRadius: 12,
+      },
+      android: {
+        elevation: 6,
+      },
+    });
+  }
+  return Platform.select({
+    ios: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 3 },
+      shadowOpacity: 0.1,
+      shadowRadius: 6,
+    },
+    android: {
+      elevation: 3,
+    },
+  });
+};
+
 // Swipeable Card Component
 interface SwipeableCardProps {
   pattern: PatternCardData;
@@ -195,6 +265,7 @@ interface SwipeableCardProps {
   onSwipeRight: () => void;
   onSwipeLeft: () => void;
   onSwipeUp: () => void;
+  mountProgress?: SharedValue<number>;
   testID?: string;
 }
 
@@ -206,12 +277,16 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   onSwipeRight,
   onSwipeLeft,
   onSwipeUp,
+  mountProgress,
   testID,
 }) => {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const scale = useSharedValue(isActive ? 1 : 0.95 - index * 0.05);
   const opacity = useSharedValue(isActive ? 1 : 0.9 - index * 0.05);
+  const iconScale = useSharedValue(1);
+  const hintOpacity = useSharedValue(1);
+  const hintScale = useSharedValue(1);
 
   // Idle floating animation
   useEffect(() => {
@@ -226,8 +301,38 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
         -1,
         true
       );
+      // Icon pulse animation
+      iconScale.value = withRepeat(
+        withSequence(withTiming(1.0, { duration: 1200 }), withTiming(1.08, { duration: 1200 })),
+        -1,
+        true
+      );
     }
-  }, [isActive, translateY, scale]);
+  }, [isActive, translateY, scale, iconScale]);
+
+  // Hint pulse and auto-fade animation with repeat cycle
+  useEffect(() => {
+    if (isActive && index === 0) {
+      // Pulse animation - continuous loop
+      hintScale.value = withRepeat(
+        withSequence(withTiming(1.0, { duration: 600 }), withTiming(1.15, { duration: 600 })),
+        -1, // Infinite repeat
+        true
+      );
+
+      // Opacity cycle: visible 3s -> fade out 0.5s -> hidden 7s -> fade in 0.5s -> repeat
+      // Use delays to create proper timing
+      hintOpacity.value = withRepeat(
+        withSequence(
+          withTiming(1, { duration: 100 }), // Ensure we start visible
+          withDelay(3000, withTiming(0, { duration: 500 })), // Wait 3s, then fade out over 0.5s
+          withDelay(7000, withTiming(1, { duration: 500 })) // Wait 7s hidden, then fade in over 0.5s
+        ),
+        -1, // Infinite repeat
+        false
+      );
+    }
+  }, [isActive, index, hintOpacity, hintScale]);
 
   const panGesture = Gesture.Pan()
     .enabled(isActive)
@@ -235,7 +340,11 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
     .onUpdate((event: any) => {
       translateX.value = event.translationX;
       translateY.value = event.translationY;
-      scale.value = 1.05;
+
+      // Dynamic scale based on swipe distance
+      const distance = Math.sqrt(event.translationX ** 2 + event.translationY ** 2);
+      scale.value = interpolate(distance, [0, SWIPE_THRESHOLD], [1.0, 1.08], Extrapolate.CLAMP);
+
       opacity.value = interpolate(
         Math.abs(event.translationX),
         [0, SWIPE_THRESHOLD],
@@ -245,38 +354,54 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
     })
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .onEnd((event: any) => {
-      const isSwipeRight = event.translationX > SWIPE_THRESHOLD;
-      const isSwipeLeft = event.translationX < -SWIPE_THRESHOLD;
-      const isSwipeUp = event.translationY < -SWIPE_THRESHOLD;
+      // Velocity-based detection
+      const velocityX = event.velocityX ?? 0;
+      const velocityY = event.velocityY ?? 0;
+
+      const isQuickFlick =
+        Math.abs(velocityX) > VELOCITY_THRESHOLD || Math.abs(velocityY) > VELOCITY_THRESHOLD;
+      const activeThreshold = isQuickFlick ? SWIPE_THRESHOLD * 0.5 : SWIPE_THRESHOLD;
+
+      const isSwipeRight =
+        event.translationX > activeThreshold ||
+        (velocityX > VELOCITY_THRESHOLD && event.translationX > 0);
+      const isSwipeLeft =
+        event.translationX < -activeThreshold ||
+        (velocityX < -VELOCITY_THRESHOLD && event.translationX < 0);
+      const isSwipeUp =
+        event.translationY < -activeThreshold ||
+        (velocityY < -VELOCITY_THRESHOLD && event.translationY < 0);
 
       if (isSwipeRight) {
+        const duration = Math.max(200, 500 - Math.abs(velocityX) / 3);
         translateX.value = withSpring(SCREEN_WIDTH, {
-          damping: 30,
-          stiffness: 400,
+          ...SPRING_CONFIGS.swipeRightSelect,
+          velocity: velocityX,
         });
-        opacity.value = withTiming(0, { duration: 300 });
+        opacity.value = withTiming(0, { duration });
         runOnJS(Haptics.notificationAsync)(Haptics.NotificationFeedbackType.Success);
         runOnJS(onSwipeRight)();
       } else if (isSwipeLeft) {
+        const duration = Math.max(200, 500 - Math.abs(velocityX) / 3);
         translateX.value = withSpring(-SCREEN_WIDTH, {
-          damping: 30,
-          stiffness: 400,
+          ...SPRING_CONFIGS.swipeLeftSkip,
+          velocity: velocityX,
         });
-        opacity.value = withTiming(0, { duration: 300 });
+        opacity.value = withTiming(0, { duration });
         runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Light);
         runOnJS(onSwipeLeft)();
       } else if (isSwipeUp) {
         // Snap back to center
-        translateY.value = withSpring(0, { damping: 20, stiffness: 300 });
-        translateX.value = withSpring(0, { damping: 20, stiffness: 300 });
+        translateY.value = withSpring(0, SPRING_CONFIGS.swipeUpInfo);
+        translateX.value = withSpring(0, SPRING_CONFIGS.swipeUpInfo);
         scale.value = withSpring(1);
         opacity.value = withSpring(1);
         runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Medium);
         runOnJS(onSwipeUp)();
       } else {
         // Rubber band back to center
-        translateX.value = withSpring(0, { damping: 20, stiffness: 300 });
-        translateY.value = withSpring(0, { damping: 20, stiffness: 300 });
+        translateX.value = withSpring(0, SPRING_CONFIGS.snapBack);
+        translateY.value = withSpring(0, SPRING_CONFIGS.snapBack);
         scale.value = withSpring(1);
         opacity.value = withSpring(1);
       }
@@ -295,35 +420,70 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   const composed = Gesture.Simultaneous(panGesture, tapGesture);
 
   const animatedStyle = useAnimatedStyle(() => {
+    // Enhanced rotation interpolation
     const rotate = interpolate(
       translateX.value,
-      [-SWIPE_THRESHOLD, 0, SWIPE_THRESHOLD],
-      [-ROTATION_ANGLE, 0, ROTATION_ANGLE],
+      [-SWIPE_THRESHOLD * 1.5, -SWIPE_THRESHOLD, 0, SWIPE_THRESHOLD, SWIPE_THRESHOLD * 1.5],
+      [-ROTATION_ANGLE * 1.3, -ROTATION_ANGLE, 0, ROTATION_ANGLE, ROTATION_ANGLE * 1.3],
       Extrapolate.CLAMP
     );
 
     const stackOffset = index * 8;
     const stackScale = 0.95 - index * 0.05;
 
+    // Parallax effect for background cards
+    const parallaxFactor = isActive ? 0 : (1 - index * 0.3) * 0.2;
+    const parallaxX = translateX.value * parallaxFactor;
+    const parallaxY = translateY.value * parallaxFactor;
+
+    // Mount animation values
+    const mountOpacity = mountProgress?.value ?? 1;
+    const mountTranslateY = interpolate(
+      mountProgress?.value ?? 1,
+      [0, 1],
+      [30, 0],
+      Extrapolate.CLAMP
+    );
+
     return {
       transform: [
-        { translateX: isActive ? translateX.value : 0 },
-        { translateY: isActive ? translateY.value : stackOffset },
+        { translateX: isActive ? translateX.value : parallaxX },
+        {
+          translateY: isActive
+            ? translateY.value + mountTranslateY
+            : stackOffset + parallaxY + mountTranslateY,
+        },
         { rotate: isActive ? `${rotate}deg` : '0deg' },
         { scale: isActive ? scale.value : stackScale },
       ],
-      opacity: isActive ? opacity.value : 0.9 - index * 0.05,
+      opacity: (isActive ? opacity.value : 0.9 - index * 0.05) * mountOpacity,
       zIndex: totalCards - index,
     };
   });
 
+  const iconAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: isActive ? iconScale.value : 1 }],
+  }));
+
+  const hintAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: hintOpacity.value,
+    transform: [{ scale: hintScale.value }],
+  }));
+
   return (
     <GestureDetector gesture={composed}>
-      <Animated.View style={[styles.card, animatedStyle]} testID={testID}>
+      <Animated.View
+        style={[styles.card, getShadowStyle(index, isActive), animatedStyle]}
+        testID={testID}
+      >
         {/* 3D Icon */}
-        <View style={styles.iconContainer}>
-          <Text style={styles.icon}>{pattern.icon}</Text>
-        </View>
+        <Animated.View style={[styles.iconContainer, iconAnimatedStyle]}>
+          {pattern.iconImage ? (
+            <Image source={pattern.iconImage} style={styles.iconImage} resizeMode="contain" />
+          ) : (
+            <Text style={styles.icon}>{pattern.icon}</Text>
+          )}
+        </Animated.View>
 
         {/* Shift Name */}
         <Text style={styles.cardTitle}>{pattern.name}</Text>
@@ -339,13 +499,13 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
         {/* Swipe Hints (only for first card) */}
         {index === 0 && isActive && (
           <>
-            <Animated.View style={[styles.swipeHint, styles.swipeHintLeft]}>
+            <Animated.View style={[styles.swipeHint, styles.swipeHintLeft, hintAnimatedStyle]}>
               <Text style={styles.swipeHintText}>← Skip</Text>
             </Animated.View>
-            <Animated.View style={[styles.swipeHint, styles.swipeHintRight]}>
+            <Animated.View style={[styles.swipeHint, styles.swipeHintRight, hintAnimatedStyle]}>
               <Text style={styles.swipeHintText}>Select →</Text>
             </Animated.View>
-            <Animated.View style={[styles.swipeHint, styles.swipeHintUp]}>
+            <Animated.View style={[styles.swipeHint, styles.swipeHintUp, hintAnimatedStyle]}>
               <Text style={styles.swipeHintText}>↑ Info</Text>
             </Animated.View>
           </>
@@ -354,6 +514,16 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
     </GestureDetector>
   );
 };
+
+// Memoized version for performance
+const SwipeableCardMemoized = React.memo(SwipeableCard, (prevProps, nextProps) => {
+  return (
+    prevProps.pattern.id === nextProps.pattern.id &&
+    prevProps.index === nextProps.index &&
+    prevProps.isActive === nextProps.isActive &&
+    prevProps.totalCards === nextProps.totalCards
+  );
+});
 
 // Learn More Modal Component
 interface LearnMoreModalProps {
@@ -434,6 +604,63 @@ const ProgressDots: React.FC<ProgressDotsProps> = ({ total, current }) => {
   );
 };
 
+// End Stack Screen Component
+interface EndStackScreenProps {
+  visible: boolean;
+  patternsViewed: number;
+  onReviewAgain: () => void;
+  onContinueCustom: () => void;
+}
+
+const EndStackScreen: React.FC<EndStackScreenProps> = ({
+  visible,
+  patternsViewed,
+  onReviewAgain,
+  onContinueCustom,
+}) => {
+  const scaleValue = useSharedValue(0.8);
+  const opacityValue = useSharedValue(0);
+
+  useEffect(() => {
+    if (visible) {
+      scaleValue.value = withSpring(1, { damping: 15, stiffness: 200 });
+      opacityValue.value = withTiming(1, { duration: 300 });
+    }
+  }, [visible, scaleValue, opacityValue]);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scaleValue.value }],
+    opacity: opacityValue.value,
+  }));
+
+  if (!visible) return null;
+
+  return (
+    <View style={styles.endScreenOverlay}>
+      <Animated.View style={[styles.endScreenContent, animatedStyle]}>
+        <Text style={styles.endScreenIcon}>✅</Text>
+        <Text style={styles.endScreenTitle}>You&apos;ve viewed all {patternsViewed} patterns!</Text>
+        <Text style={styles.endScreenSubtitle}>Ready to make your choice or review again?</Text>
+
+        <View style={styles.endScreenButtons}>
+          <PremiumButton
+            title="Review Patterns"
+            onPress={onReviewAgain}
+            variant="outline"
+            testID="review-again-button"
+          />
+          <PremiumButton
+            title="Create Custom Pattern"
+            onPress={onContinueCustom}
+            variant="primary"
+            testID="continue-custom-button"
+          />
+        </View>
+      </Animated.View>
+    </View>
+  );
+};
+
 // Main Screen Component
 export interface PremiumShiftPatternScreenProps {
   onContinue?: (patternType: ShiftPattern) => void;
@@ -444,19 +671,45 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
   onContinue,
   testID = 'premium-shift-pattern-screen',
 }) => {
+  const navigation = useNavigation<NavigationProp>();
   const { updateData } = useOnboarding();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showLearnMore, setShowLearnMore] = useState(false);
   const [learnMorePattern, setLearnMorePattern] = useState<PatternCardData | null>(null);
+  const [showEndScreen, setShowEndScreen] = useState(false);
 
   // Title animations
   const titleOpacity = useSharedValue(0);
   const subtitleOpacity = useSharedValue(0);
 
+  // Card mount animations
+  const cardAnimations = [
+    useSharedValue(0),
+    useSharedValue(0),
+    useSharedValue(0),
+    useSharedValue(0),
+  ];
+
   useEffect(() => {
     titleOpacity.value = withTiming(1, { duration: 400 });
     subtitleOpacity.value = withTiming(1, { duration: 400 });
+
+    // Stagger card entrance animations
+    cardAnimations.forEach((anim, index) => {
+      anim.value = withDelay(
+        index * 80,
+        withTiming(1, { duration: 400, easing: Easing.out(Easing.cubic) })
+      );
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [titleOpacity, subtitleOpacity]);
+
+  // Detect end of stack
+  useEffect(() => {
+    if (currentIndex >= SHIFT_PATTERNS.length) {
+      setShowEndScreen(true);
+    }
+  }, [currentIndex]);
 
   const titleStyle = useAnimatedStyle(() => ({
     opacity: titleOpacity.value,
@@ -470,11 +723,16 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
     const pattern = SHIFT_PATTERNS[currentIndex];
     updateData({ patternType: pattern.type });
 
-    // Call onContinue to navigate to next screen
-    if (onContinue) {
-      onContinue(pattern.type);
+    // If custom pattern selected, navigate to CustomPattern screen
+    if (pattern.type === ShiftPattern.CUSTOM) {
+      navigation.navigate('CustomPattern');
+    } else {
+      // Call onContinue for other patterns to navigate to next screen
+      if (onContinue) {
+        onContinue(pattern.type);
+      }
     }
-  }, [currentIndex, updateData, onContinue]);
+  }, [currentIndex, updateData, onContinue, navigation]);
 
   const handleSwipeUp = useCallback(() => {
     setLearnMorePattern(SHIFT_PATTERNS[currentIndex]);
@@ -483,14 +741,19 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
 
   const handleSwipeLeft = useCallback(() => {
     setTimeout(() => {
-      setCurrentIndex((prevIndex) => {
-        if (prevIndex < SHIFT_PATTERNS.length - 1) {
-          return prevIndex + 1;
-        }
-        return prevIndex;
-      });
+      setCurrentIndex((prevIndex) => prevIndex + 1);
     }, 300);
   }, []);
+
+  const handleReviewAgain = useCallback(() => {
+    setShowEndScreen(false);
+    setCurrentIndex(0);
+  }, []);
+
+  const handleContinueCustom = useCallback(() => {
+    updateData({ patternType: ShiftPattern.CUSTOM });
+    navigation.navigate('CustomPattern');
+  }, [updateData, navigation]);
 
   const visibleCards = SHIFT_PATTERNS.slice(currentIndex, currentIndex + 4);
 
@@ -509,7 +772,7 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
       {/* Card Stack */}
       <View style={styles.cardStack}>
         {visibleCards.reverse().map((pattern, index) => (
-          <SwipeableCard
+          <SwipeableCardMemoized
             key={pattern.id}
             pattern={pattern}
             index={visibleCards.length - 1 - index}
@@ -518,6 +781,7 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
             onSwipeRight={handleSwipeRight}
             onSwipeLeft={handleSwipeLeft}
             onSwipeUp={handleSwipeUp}
+            mountProgress={cardAnimations[index]}
             testID={`${testID}-card-${pattern.id}`}
           />
         ))}
@@ -531,6 +795,14 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
         visible={showLearnMore}
         pattern={learnMorePattern}
         onClose={() => setShowLearnMore(false)}
+      />
+
+      {/* End Stack Screen */}
+      <EndStackScreen
+        visible={showEndScreen}
+        patternsViewed={SHIFT_PATTERNS.length}
+        onReviewAgain={handleReviewAgain}
+        onContinueCustom={handleContinueCustom}
       />
     </View>
   );
@@ -574,24 +846,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: 'rgba(180, 83, 9, 0.2)',
-    ...Platform.select({
-      ios: {
-        shadowColor: '#b45309',
-        shadowOffset: { width: 0, height: 8 },
-        shadowOpacity: 0.3,
-        shadowRadius: 16,
-      },
-      android: {
-        elevation: 8,
-      },
-    }),
   },
   iconContainer: {
     marginBottom: theme.spacing.lg,
+    width: 180,
+    height: 180,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   icon: {
     fontSize: 120,
     textAlign: 'center',
+  },
+  iconImage: {
+    width: 180,
+    height: 180,
   },
   cardTitle: {
     fontSize: 24,
@@ -753,6 +1022,17 @@ const styles = StyleSheet.create({
     color: theme.colors.dust,
     lineHeight: 24,
     marginBottom: theme.spacing.xs,
+  },
+  endScreenOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(12, 10, 9, 0.95)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000,
   },
   endScreenContent: {
     flex: 1,

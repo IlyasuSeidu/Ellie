@@ -32,7 +32,8 @@ jest.mock('react-native-gesture-handler', () => {
       }),
       Simultaneous: jest.fn((a, b) => ({ a, b })),
     },
-    GestureDetector: ({ children }: { children: React.ReactNode }) => children,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    GestureDetector: (props: any) => props.children,
   };
 });
 
@@ -44,22 +45,25 @@ jest.mock('@react-navigation/native', () => ({
 }));
 
 // Mock components
-jest.mock('@/components/onboarding/premium/ProgressHeader', () => ({
-  ProgressHeader: ({ currentStep, totalSteps }: { currentStep: number; totalSteps: number }) => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { View, Text } = require('react-native');
-    return (
-      <View testID="progress-header">
-        <Text>
-          Step {currentStep} of {totalSteps}
-        </Text>
-      </View>
-    );
-  },
-}));
+jest.mock('@/components/onboarding/premium/ProgressHeader', () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const React = require('react');
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const RN = require('react-native');
+  return {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ProgressHeader: (props: any) =>
+      React.createElement(
+        RN.View,
+        { testID: 'progress-header' },
+        React.createElement(RN.Text, null, `Step ${props.currentStep} of ${props.totalSteps}`)
+      ),
+  };
+});
 
 // Helper to render with context
-const renderWithContext = (component: React.ReactElement) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const renderWithContext = (component: any) => {
   return render(<OnboardingProvider>{component}</OnboardingProvider>);
 };
 
@@ -106,7 +110,7 @@ describe('PremiumShiftPatternScreen', () => {
 
     it('should show pattern icon, name, schedule, and description', () => {
       const { getByText } = renderWithContext(<PremiumShiftPatternScreen />);
-      expect(getByText('⛏️')).toBeTruthy(); // Icon
+      // Note: First pattern now uses Image component instead of emoji
       expect(getByText('4-4-4 Cycle')).toBeTruthy(); // Name
       expect(getByText('4D / 4N / 4O')).toBeTruthy(); // Schedule
       expect(
