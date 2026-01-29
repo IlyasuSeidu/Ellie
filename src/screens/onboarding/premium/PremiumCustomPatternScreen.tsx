@@ -999,8 +999,8 @@ const styles = StyleSheet.create({
     opacity: 0.9,
   },
   cycleBlockIcon: {
-    width: 30,
-    height: 30,
+    width: 50,
+    height: 50,
   },
   cyclePreviewSection: {
     marginBottom: theme.spacing.lg,
@@ -1293,8 +1293,8 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.lg,
   },
   tipIcon: {
-    width: 60,
-    height: 60,
+    width: 80,
+    height: 80,
   },
   tipText: {
     fontSize: 14,
@@ -1317,8 +1317,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   validationIcon: {
-    width: 52,
-    height: 52,
+    width: 80,
+    height: 80,
   },
   validationMessage: {
     alignItems: 'center',
@@ -1387,5 +1387,8 @@ const styles = StyleSheet.create({
   trophyIcon: {
     width: 50,
     height: 50,
+    backgroundColor: '#fff',
+    borderRadius: 25,
+    padding: 2,
   },
 });
