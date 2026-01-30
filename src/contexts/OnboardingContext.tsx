@@ -25,6 +25,7 @@ export interface OnboardingData {
 
   // Future steps...
   startDate?: Date;
+  phaseOffset?: number;
   shiftTimes?: {
     dayStart: string;
     dayEnd: string;
