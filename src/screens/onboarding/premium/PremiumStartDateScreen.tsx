@@ -782,10 +782,34 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
 
   // Get pattern data from context
   const pattern = data.patternType || ShiftPattern.CUSTOM;
-  const customPattern = useMemo(
-    () => data.customPattern || { daysOn: 0, nightsOn: 0, daysOff: 0 },
+
+  // Convert predefined patterns to numeric values
+  const getPatternValues = useCallback(
+    (patternType: ShiftPattern) => {
+      switch (patternType) {
+        case ShiftPattern.STANDARD_4_4_4:
+          return { daysOn: 4, nightsOn: 4, daysOff: 4 };
+        case ShiftPattern.STANDARD_7_7_7:
+          return { daysOn: 7, nightsOn: 7, daysOff: 7 };
+        case ShiftPattern.STANDARD_2_2_3:
+          return { daysOn: 2, nightsOn: 2, daysOff: 3 };
+        case ShiftPattern.STANDARD_5_5_5:
+          return { daysOn: 5, nightsOn: 5, daysOff: 5 };
+        case ShiftPattern.STANDARD_3_3_3:
+          return { daysOn: 3, nightsOn: 3, daysOff: 3 };
+        case ShiftPattern.STANDARD_10_10_10:
+          return { daysOn: 10, nightsOn: 10, daysOff: 10 };
+        case ShiftPattern.STANDARD_12_12_12:
+          return { daysOn: 12, nightsOn: 12, daysOff: 12 };
+        case ShiftPattern.CUSTOM:
+        default:
+          return data.customPattern || { daysOn: 0, nightsOn: 0, daysOff: 0 };
+      }
+    },
     [data.customPattern]
   );
+
+  const customPattern = useMemo(() => getPatternValues(pattern), [pattern, getPatternValues]);
 
   const canContinue = selectedDate !== null && selectedPhase !== null;
 
