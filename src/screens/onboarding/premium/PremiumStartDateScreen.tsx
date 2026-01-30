@@ -14,6 +14,8 @@ import {
   Pressable,
   ScrollView,
   AccessibilityInfo,
+  Image,
+  ImageSourcePropType,
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -23,7 +25,9 @@ import Animated, {
   withRepeat,
   withSequence,
   withDelay,
+  runOnJS,
 } from 'react-native-reanimated';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
@@ -79,14 +83,17 @@ const TIPS = [
 // TypeScript Interfaces
 interface PatternSummaryCardProps {
   pattern: ShiftPattern;
-  customPattern?: { daysOn: number; nightsOn: number; daysOff: number };
+  customPattern: { daysOn: number; nightsOn: number; daysOff: number };
   reducedMotion: boolean;
+  patternIcon?: ImageSourcePropType;
 }
 
 interface CalendarProps {
   selectedDate: string | null;
   onDateSelect: (date: string) => void;
   reducedMotion: boolean;
+  customPattern: { daysOn: number; nightsOn: number; daysOff: number };
+  phaseOffset: number;
 }
 
 interface PhaseSelectorProps {
@@ -96,11 +103,17 @@ interface PhaseSelectorProps {
   reducedMotion: boolean;
 }
 
+interface SelectedDateCardProps {
+  selectedDate: string | null;
+  reducedMotion: boolean;
+}
+
 interface LivePreviewCardProps {
   selectedDate: string | null;
   selectedPhase: 'day' | 'night' | 'off' | null;
-  pattern: { daysOn: number; nightsOn: number; daysOff: number };
   reducedMotion: boolean;
+  customPattern: { daysOn: number; nightsOn: number; daysOff: number };
+  phaseOffset: number;
 }
 
 // Helper Functions
@@ -165,11 +178,74 @@ const getPhaseEmoji = (phase: 'day' | 'night' | 'off'): string => {
   }
 };
 
+// Calculate which shift type for a given date
+const getShiftTypeForDate = (
+  date: Date,
+  startDate: Date,
+  phaseOffset: number,
+  pattern: { daysOn: number; nightsOn: number; daysOff: number }
+): 'day' | 'night' | 'off' | null => {
+  const daysDiff = Math.floor((date.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+
+  if (daysDiff < 0) return null; // Before start date
+
+  const cycleLength = pattern.daysOn + pattern.nightsOn + pattern.daysOff;
+  if (cycleLength === 0) return null;
+
+  const positionInCycle = (daysDiff + phaseOffset) % cycleLength;
+
+  if (positionInCycle < pattern.daysOn) {
+    return 'day';
+  } else if (positionInCycle < pattern.daysOn + pattern.nightsOn) {
+    return 'night';
+  }
+  return 'off';
+};
+
+// Get pattern icon
+const getPatternIcon = (patternType: ShiftPattern): ImageSourcePropType | undefined => {
+  try {
+    switch (patternType) {
+      case ShiftPattern.STANDARD_4_4_4:
+        return require('../../../../assets/onboarding/icons/consolidated/shift-pattern-4-4-4.png');
+      case ShiftPattern.STANDARD_7_7_7:
+        return require('../../../../assets/onboarding/icons/consolidated/shift-pattern-7-7-7.png');
+      case ShiftPattern.STANDARD_2_2_3:
+        return require('../../../../assets/onboarding/icons/consolidated/shift-pattern-2-2-3.png');
+      case ShiftPattern.STANDARD_5_5_5:
+        return require('../../../../assets/onboarding/icons/consolidated/shift-pattern-5-5-5.png');
+      case ShiftPattern.STANDARD_3_3_3:
+        return require('../../../../assets/onboarding/icons/consolidated/shift-pattern-3-3-3.png');
+      case ShiftPattern.STANDARD_10_10_10:
+        return require('../../../../assets/onboarding/icons/consolidated/shift-pattern-10-10-10.png');
+      case ShiftPattern.CONTINENTAL:
+        return require('../../../../assets/onboarding/icons/consolidated/shift-pattern-continental.png');
+      case ShiftPattern.PITMAN:
+        return require('../../../../assets/onboarding/icons/consolidated/shift-pattern-pitman.png');
+      case ShiftPattern.CUSTOM:
+        return require('../../../../assets/onboarding/icons/consolidated/custom-pattern-builder-hero.png');
+      default:
+        return undefined;
+    }
+  } catch {
+    return undefined;
+  }
+};
+
+// Get tomorrow's date as default
+const getTomorrowDate = (): string => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setHours(0, 0, 0, 0);
+  return tomorrow.toISOString().split('T')[0];
+};
+
 // Pattern Summary Card Component
 const PatternSummaryCard: React.FC<PatternSummaryCardProps> = ({
   pattern,
   customPattern,
   reducedMotion,
+  patternIcon,
 }) => {
   const floatY = useSharedValue(0);
   const opacity = useSharedValue(0);
@@ -197,45 +273,108 @@ const PatternSummaryCard: React.FC<PatternSummaryCardProps> = ({
 
   const patternName = pattern === ShiftPattern.CUSTOM ? 'Custom Pattern' : pattern;
 
+  // Timeline track - max 6 blocks per type with "+N more" indicator
+  const renderTimelineTrack = () => {
+    const MAX_BLOCKS = 6;
+    const dayBlocks = Math.min(customPattern.daysOn, MAX_BLOCKS);
+    const nightBlocks = Math.min(customPattern.nightsOn, MAX_BLOCKS);
+    const offBlocks = Math.min(customPattern.daysOff, MAX_BLOCKS);
+
+    const extraDays = Math.max(0, customPattern.daysOn - MAX_BLOCKS);
+    const extraNights = Math.max(0, customPattern.nightsOn - MAX_BLOCKS);
+    const extraOffs = Math.max(0, customPattern.daysOff - MAX_BLOCKS);
+
+    return (
+      <View style={styles.timelineTrack}>
+        {/* Day blocks */}
+        {Array(dayBlocks)
+          .fill(null)
+          .map((_, i) => (
+            <View
+              key={`day-${i}`}
+              style={[styles.timelineBlock, { backgroundColor: COLORS.dayShift }]}
+            />
+          ))}
+        {extraDays > 0 && <Text style={styles.timelineExtra}>+{extraDays}</Text>}
+
+        {/* Night blocks */}
+        {Array(nightBlocks)
+          .fill(null)
+          .map((_, i) => (
+            <View
+              key={`night-${i}`}
+              style={[styles.timelineBlock, { backgroundColor: COLORS.nightShift }]}
+            />
+          ))}
+        {extraNights > 0 && <Text style={styles.timelineExtra}>+{extraNights}</Text>}
+
+        {/* Off blocks */}
+        {Array(offBlocks)
+          .fill(null)
+          .map((_, i) => (
+            <View
+              key={`off-${i}`}
+              style={[styles.timelineBlock, { backgroundColor: COLORS.daysOff }]}
+            />
+          ))}
+        {extraOffs > 0 && <Text style={styles.timelineExtra}>+{extraOffs}</Text>}
+      </View>
+    );
+  };
+
   return (
     <Animated.View style={[styles.patternCard, animatedStyle]}>
       <LinearGradient colors={[COLORS.softStone, COLORS.darkStone]} style={styles.patternGradient}>
-        {/* Placeholder for 3D icon */}
+        <Text style={styles.patternCardTitle}>Your Shift Pattern</Text>
+
+        {/* Pattern icon - either loaded image or fallback */}
         <View style={styles.patternIconContainer}>
-          <Ionicons name="calendar" size={64} color={COLORS.paleGold} />
+          {patternIcon ? (
+            <Image source={patternIcon} style={styles.patternIcon} resizeMode="contain" />
+          ) : (
+            <Ionicons name="calendar" size={64} color={COLORS.paleGold} />
+          )}
         </View>
 
         <Text style={styles.patternName}>{patternName}</Text>
 
         {customPattern && (
           <>
-            <Text style={styles.patternDetails}>
-              {customPattern.daysOn} Days • {customPattern.nightsOn} Nights •{' '}
-              {customPattern.daysOff} Off
-            </Text>
+            {/* Cycle items with icons */}
+            <View style={styles.cycleItems}>
+              {customPattern.daysOn > 0 && (
+                <View style={styles.cycleItem}>
+                  <View style={[styles.cycleIconCircle, { backgroundColor: COLORS.dayShift }]}>
+                    <Text style={styles.cycleIconEmoji}>☀️</Text>
+                  </View>
+                  <Text style={styles.cycleItemText}>{customPattern.daysOn} day shifts</Text>
+                </View>
+              )}
+              {customPattern.nightsOn > 0 && (
+                <View style={styles.cycleItem}>
+                  <View style={[styles.cycleIconCircle, { backgroundColor: COLORS.nightShift }]}>
+                    <Text style={styles.cycleIconEmoji}>🌙</Text>
+                  </View>
+                  <Text style={styles.cycleItemText}>{customPattern.nightsOn} night shifts</Text>
+                </View>
+              )}
+              {customPattern.daysOff > 0 && (
+                <View style={styles.cycleItem}>
+                  <View style={[styles.cycleIconCircle, { backgroundColor: COLORS.daysOff }]}>
+                    <Text style={styles.cycleIconEmoji}>🏠</Text>
+                  </View>
+                  <Text style={styles.cycleItemText}>{customPattern.daysOff} days off</Text>
+                </View>
+              )}
+            </View>
 
-            {/* Mini Cycle Preview */}
-            <View style={styles.miniCyclePreview}>
-              {[
-                ...Array(customPattern.daysOn).fill('day'),
-                ...Array(customPattern.nightsOn).fill('night'),
-                ...Array(customPattern.daysOff).fill('off'),
-              ].map((type, index) => (
-                <View
-                  key={index}
-                  style={[
-                    styles.miniCycleBlock,
-                    {
-                      backgroundColor:
-                        type === 'day'
-                          ? COLORS.dayShift
-                          : type === 'night'
-                            ? COLORS.nightShift
-                            : COLORS.daysOff,
-                    },
-                  ]}
-                />
-              ))}
+            {/* Timeline Track */}
+            {renderTimelineTrack()}
+
+            {/* Start date prompt */}
+            <View style={styles.startDatePrompt}>
+              <Text style={styles.startDatePromptIcon}>🚩</Text>
+              <Text style={styles.startDatePromptText}>Set your start date below</Text>
             </View>
           </>
         )}
@@ -249,10 +388,13 @@ const InteractiveCalendar: React.FC<CalendarProps> = ({
   selectedDate,
   onDateSelect,
   reducedMotion: _reducedMotion,
+  customPattern,
+  phaseOffset,
 }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const opacity = useSharedValue(0);
   const slideY = useSharedValue(50);
+  const translateX = useSharedValue(0);
 
   useEffect(() => {
     opacity.value = withDelay(200, withTiming(1, { duration: 400 }));
@@ -261,7 +403,7 @@ const InteractiveCalendar: React.FC<CalendarProps> = ({
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
-    transform: [{ translateY: slideY.value }],
+    transform: [{ translateY: slideY.value }, { translateX: translateX.value }],
   }));
 
   const goToPreviousMonth = useCallback(() => {
@@ -293,6 +435,20 @@ const InteractiveCalendar: React.FC<CalendarProps> = ({
     },
     [onDateSelect]
   );
+
+  // Swipe gesture for month navigation
+  const panGesture = Gesture.Pan()
+    .onUpdate((event) => {
+      translateX.value = event.translationX;
+    })
+    .onEnd((event) => {
+      if (event.translationX < -50) {
+        runOnJS(goToNextMonth)();
+      } else if (event.translationX > 50) {
+        runOnJS(goToPreviousMonth)();
+      }
+      translateX.value = withSpring(0);
+    });
 
   // Generate calendar days
   const days = useMemo(() => {
@@ -346,44 +502,137 @@ const InteractiveCalendar: React.FC<CalendarProps> = ({
         ))}
       </View>
 
-      {/* Calendar Grid */}
-      <View style={styles.calendarGrid}>
-        {days.map((date, index) => {
-          const dateString = date.toISOString().split('T')[0];
-          const isSelected = selectedDate === dateString;
-          const isToday =
-            date.toDateString() === new Date().toDateString() &&
-            date.getMonth() === currentMonth.getMonth();
-          const isValid = isDateValid(date);
-          const isCurrentMonth = date.getMonth() === currentMonth.getMonth();
+      {/* Calendar Grid with Gesture */}
+      <GestureDetector gesture={panGesture}>
+        <View style={styles.calendarGrid}>
+          {days.map((date, index) => {
+            const dateString = date.toISOString().split('T')[0];
+            const isSelected = selectedDate === dateString;
+            const isToday =
+              date.toDateString() === new Date().toDateString() &&
+              date.getMonth() === currentMonth.getMonth();
+            const isValid = isDateValid(date);
+            const isCurrentMonth = date.getMonth() === currentMonth.getMonth();
 
-          return (
-            <Pressable
-              key={index}
-              onPress={() => handleDateSelect(date)}
-              disabled={!isValid}
-              style={[
-                styles.dayCell,
-                isSelected && styles.dayCellSelected,
-                isToday && styles.dayCellToday,
-                !isValid && styles.dayCellDisabled,
-                !isCurrentMonth && styles.dayCellOtherMonth,
-              ]}
-            >
-              <Text
+            // Calculate shift type for this date if selected date exists
+            let shiftType: 'day' | 'night' | 'off' | null = null;
+            if (selectedDate && isValid && isCurrentMonth) {
+              const startDate = new Date(selectedDate);
+              shiftType = getShiftTypeForDate(date, startDate, phaseOffset, customPattern);
+            }
+
+            return (
+              <Pressable
+                key={index}
+                onPress={() => handleDateSelect(date)}
+                disabled={!isValid}
                 style={[
-                  styles.dayText,
-                  isSelected && styles.dayTextSelected,
-                  !isValid && styles.dayTextDisabled,
-                  !isCurrentMonth && styles.dayTextOtherMonth,
+                  styles.dayCell,
+                  isSelected && styles.dayCellSelected,
+                  isToday && styles.dayCellToday,
+                  !isValid && styles.dayCellDisabled,
+                  !isCurrentMonth && styles.dayCellOtherMonth,
                 ]}
               >
-                {date.getDate()}
-              </Text>
-            </Pressable>
-          );
-        })}
+                {/* Shift icon above date */}
+                {shiftType && (
+                  <Text
+                    style={[
+                      styles.shiftIcon,
+                      {
+                        color:
+                          shiftType === 'day'
+                            ? COLORS.dayShift
+                            : shiftType === 'night'
+                              ? COLORS.nightShift
+                              : COLORS.daysOff,
+                      },
+                    ]}
+                  >
+                    {shiftType === 'day' ? '☀️' : shiftType === 'night' ? '🌙' : '🏠'}
+                  </Text>
+                )}
+
+                <Text
+                  style={[
+                    styles.dayText,
+                    isSelected && styles.dayTextSelected,
+                    !isValid && styles.dayTextDisabled,
+                    !isCurrentMonth && styles.dayTextOtherMonth,
+                    shiftType && styles.dayTextWithIcon,
+                  ]}
+                >
+                  {date.getDate()}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </View>
+      </GestureDetector>
+
+      {/* Calendar Legend */}
+      <View style={styles.calendarLegend}>
+        <View style={styles.legendItem}>
+          <Text style={[styles.legendIcon, { color: COLORS.dayShift }]}>☀️</Text>
+          <Text style={styles.legendText}>Day Shift</Text>
+        </View>
+        <View style={styles.legendItem}>
+          <Text style={[styles.legendIcon, { color: COLORS.nightShift }]}>🌙</Text>
+          <Text style={styles.legendText}>Night Shift</Text>
+        </View>
+        <View style={styles.legendItem}>
+          <Text style={[styles.legendIcon, { color: COLORS.daysOff }]}>🏠</Text>
+          <Text style={styles.legendText}>Day Off</Text>
+        </View>
       </View>
+    </Animated.View>
+  );
+};
+
+// Selected Date Display Card Component
+const SelectedDateCard: React.FC<SelectedDateCardProps> = ({ selectedDate, reducedMotion }) => {
+  const opacity = useSharedValue(0);
+  const slideY = useSharedValue(20);
+  const contentOpacity = useSharedValue(1);
+
+  useEffect(() => {
+    opacity.value = withDelay(700, withTiming(1, { duration: 400 }));
+    slideY.value = withDelay(700, withSpring(0, SPRING_CONFIGS.smooth));
+  }, [opacity, slideY]);
+
+  // Crossfade content when date changes
+  useEffect(() => {
+    if (!reducedMotion) {
+      contentOpacity.value = withSequence(
+        withTiming(0, { duration: 100 }),
+        withTiming(1, { duration: 200 })
+      );
+    }
+  }, [selectedDate, reducedMotion, contentOpacity]);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ translateY: slideY.value }],
+  }));
+
+  const contentAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: contentOpacity.value,
+  }));
+
+  if (!selectedDate) return null;
+
+  const date = new Date(selectedDate);
+  const formattedDate = formatDate(date);
+
+  return (
+    <Animated.View style={[styles.selectedDateCard, animatedStyle]}>
+      <LinearGradient colors={['#E5E5E5', '#F5F5F5']} style={styles.selectedDateGradient}>
+        <Text style={styles.selectedDateIcon}>🏁</Text>
+        <Animated.View style={contentAnimatedStyle}>
+          <Text style={styles.selectedDateLabel}>Your cycle will start on:</Text>
+          <Text style={styles.selectedDateText}>{formattedDate}</Text>
+        </Animated.View>
+      </LinearGradient>
     </Animated.View>
   );
 };
@@ -545,8 +794,9 @@ const PhaseSelector: React.FC<PhaseSelectorProps> = ({
 const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
   selectedDate,
   selectedPhase,
-  pattern: _pattern,
   reducedMotion,
+  customPattern,
+  phaseOffset,
 }) => {
   const floatY = useSharedValue(0);
   const opacity = useSharedValue(0);
@@ -629,7 +879,57 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
             </View>
           </View>
 
-          {/* Row 3: Confirmation */}
+          {/* Row 3: 7-Day Visual Timeline */}
+          {selectedDate && selectedPhase && (
+            <View style={styles.previewTimelineContainer}>
+              <View style={styles.previewTimelineDays}>
+                {Array(7)
+                  .fill(null)
+                  .map((_, dayIndex) => {
+                    const date = new Date(selectedDate);
+                    date.setDate(date.getDate() + dayIndex);
+                    const dayLabel = date.toLocaleDateString('en-US', { weekday: 'narrow' });
+                    const shiftType = getShiftTypeForDate(
+                      date,
+                      new Date(selectedDate),
+                      phaseOffset,
+                      customPattern
+                    );
+                    const bgColor =
+                      shiftType === 'day'
+                        ? COLORS.dayShift
+                        : shiftType === 'night'
+                          ? COLORS.nightShift
+                          : COLORS.daysOff;
+
+                    return (
+                      <View key={dayIndex} style={styles.previewTimelineDay}>
+                        <View
+                          style={[
+                            styles.previewTimelineBlock,
+                            { backgroundColor: bgColor },
+                            dayIndex === 0 && styles.previewTimelineBlockFirst,
+                          ]}
+                        >
+                          <Text style={styles.previewTimelineDayLabel}>{dayLabel}</Text>
+                          <Text style={styles.previewTimelineShiftLabel}>
+                            {shiftType === 'day' ? 'D' : shiftType === 'night' ? 'N' : 'O'}
+                          </Text>
+                        </View>
+                      </View>
+                    );
+                  })}
+              </View>
+              <Ionicons
+                name="arrow-forward"
+                size={16}
+                color={COLORS.paleGold}
+                style={styles.previewTimelineArrow}
+              />
+            </View>
+          )}
+
+          {/* Row 4: Confirmation */}
           {selectedDate && selectedPhase && (
             <View style={styles.previewConfirmation}>
               <Ionicons name="rocket" size={24} color={COLORS.success} />
@@ -761,7 +1061,8 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
 }) => {
   const navigation = useNavigation<NavigationProp>();
   const { data, updateData } = useOnboarding();
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  // Smart default: tomorrow
+  const [selectedDate, setSelectedDate] = useState<string | null>(getTomorrowDate());
   const [selectedPhase, setSelectedPhase] = useState<'day' | 'night' | 'off' | null>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
 
@@ -799,8 +1100,10 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
           return { daysOn: 3, nightsOn: 3, daysOff: 3 };
         case ShiftPattern.STANDARD_10_10_10:
           return { daysOn: 10, nightsOn: 10, daysOff: 10 };
-        case ShiftPattern.STANDARD_12_12_12:
-          return { daysOn: 12, nightsOn: 12, daysOff: 12 };
+        case ShiftPattern.CONTINENTAL:
+          return { daysOn: 2, nightsOn: 2, daysOff: 4 };
+        case ShiftPattern.PITMAN:
+          return { daysOn: 2, nightsOn: 2, daysOff: 3 };
         case ShiftPattern.CUSTOM:
         default:
           return data.customPattern || { daysOn: 0, nightsOn: 0, daysOff: 0 };
@@ -810,6 +1113,12 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   );
 
   const customPattern = useMemo(() => getPatternValues(pattern), [pattern, getPatternValues]);
+
+  // Get pattern icon
+  const patternIcon = useMemo(() => getPatternIcon(pattern), [pattern]);
+
+  // Calculate phase offset for preview
+  const previewPhaseOffset = selectedPhase ? calculatePhaseOffset(selectedPhase, customPattern) : 0;
 
   const canContinue = selectedDate !== null && selectedPhase !== null;
 
@@ -857,6 +1166,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
           pattern={pattern}
           customPattern={customPattern}
           reducedMotion={reducedMotion}
+          patternIcon={patternIcon}
         />
 
         {/* Interactive Calendar */}
@@ -864,7 +1174,12 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
           selectedDate={selectedDate}
           onDateSelect={setSelectedDate}
           reducedMotion={reducedMotion}
+          customPattern={customPattern}
+          phaseOffset={previewPhaseOffset}
         />
+
+        {/* Selected Date Card */}
+        <SelectedDateCard selectedDate={selectedDate} reducedMotion={reducedMotion} />
 
         {/* Phase Selector */}
         <PhaseSelector
@@ -878,8 +1193,9 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
         <LivePreviewCard
           selectedDate={selectedDate}
           selectedPhase={selectedPhase}
-          pattern={customPattern}
           reducedMotion={reducedMotion}
+          customPattern={customPattern}
+          phaseOffset={previewPhaseOffset}
         />
 
         {/* Validation Tips */}
@@ -1244,5 +1560,183 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: '#fff',
+  },
+  // Pattern Summary Card - Enhanced
+  patternCardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: COLORS.paper,
+    textAlign: 'center',
+    marginBottom: theme.spacing.sm,
+  },
+  patternIcon: {
+    width: 80,
+    height: 80,
+  },
+  cycleItems: {
+    marginTop: theme.spacing.md,
+    gap: theme.spacing.sm,
+  },
+  cycleItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.sm,
+  },
+  cycleIconCircle: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cycleIconEmoji: {
+    fontSize: 16,
+  },
+  cycleItemText: {
+    fontSize: 14,
+    color: COLORS.paper,
+  },
+  timelineTrack: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    gap: 4,
+    marginTop: theme.spacing.md,
+    paddingHorizontal: theme.spacing.md,
+    justifyContent: 'center',
+  },
+  timelineBlock: {
+    width: 14,
+    height: 14,
+    borderRadius: 4,
+  },
+  timelineExtra: {
+    fontSize: 10,
+    color: COLORS.warmStone,
+    marginLeft: 2,
+  },
+  startDatePrompt: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.xs,
+    marginTop: theme.spacing.md,
+    padding: theme.spacing.sm,
+    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+    borderRadius: 8,
+  },
+  startDatePromptIcon: {
+    fontSize: 20,
+  },
+  startDatePromptText: {
+    fontSize: 14,
+    color: COLORS.paleGold,
+  },
+  // Calendar - Enhanced
+  shiftIcon: {
+    fontSize: 12,
+    position: 'absolute',
+    top: 2,
+  },
+  dayTextWithIcon: {
+    marginTop: 10,
+  },
+  calendarLegend: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: theme.spacing.md,
+    paddingTop: theme.spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.softStone,
+  },
+  legendItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  legendIcon: {
+    fontSize: 16,
+  },
+  legendText: {
+    fontSize: 12,
+    color: COLORS.warmStone,
+  },
+  // Selected Date Card
+  selectedDateCard: {
+    marginVertical: theme.spacing.md,
+  },
+  selectedDateGradient: {
+    borderRadius: 12,
+    padding: theme.spacing.md,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.sm,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
+  },
+  selectedDateIcon: {
+    fontSize: 24,
+  },
+  selectedDateLabel: {
+    fontSize: 14,
+    color: '#6B7280',
+    fontWeight: '500',
+  },
+  selectedDateText: {
+    fontSize: 16,
+    color: '#0369A1',
+    fontWeight: 'bold',
+    marginTop: 2,
+  },
+  // Live Preview - Enhanced with 7-day timeline
+  previewTimelineContainer: {
+    marginTop: theme.spacing.md,
+    paddingTop: theme.spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  previewTimelineDays: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 4,
+  },
+  previewTimelineDay: {
+    flex: 1,
+  },
+  previewTimelineBlock: {
+    borderRadius: 8,
+    padding: 6,
+    alignItems: 'center',
+    minHeight: 48,
+    justifyContent: 'center',
+  },
+  previewTimelineBlockFirst: {
+    borderWidth: 2,
+    borderColor: COLORS.paleGold,
+  },
+  previewTimelineDayLabel: {
+    fontSize: 10,
+    color: '#fff',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  previewTimelineShiftLabel: {
+    fontSize: 14,
+    color: '#fff',
+    fontWeight: 'bold',
+    marginTop: 2,
+    textAlign: 'center',
+  },
+  previewTimelineArrow: {
+    marginTop: theme.spacing.sm,
+    alignSelf: 'center',
   },
 });

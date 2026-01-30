@@ -25,20 +25,20 @@ jest.mock('@expo/vector-icons', () => {
 });
 
 // Mock gesture handler
-jest.mock('react-native-gesture-handler', () => ({
-  Gesture: {
-    Pan: () => ({
-      onBegin: jest.fn(() => ({
-        onBegin: jest.fn(),
-        onUpdate: jest.fn(() => ({
-          onUpdate: jest.fn(),
-          onEnd: jest.fn(() => ({ onEnd: jest.fn() })),
-        })),
-      })),
-    }),
-  },
-  GestureDetector: (props: Record<string, unknown>) => props.children,
-}));
+jest.mock('react-native-gesture-handler', () => {
+  const mockGesture = {
+    onBegin: jest.fn().mockReturnThis(),
+    onUpdate: jest.fn().mockReturnThis(),
+    onEnd: jest.fn().mockReturnThis(),
+    onFinalize: jest.fn().mockReturnThis(),
+  };
+  return {
+    Gesture: {
+      Pan: jest.fn(() => mockGesture),
+    },
+    GestureDetector: (props: Record<string, unknown>) => props.children,
+  };
+});
 
 // Mock React Navigation
 jest.mock('@react-navigation/native', () => ({
@@ -135,7 +135,8 @@ describe('PremiumStartDateScreen', () => {
 
     it('should display pattern details with default values', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('0 Days • 0 Nights • 0 Off')).toBeTruthy();
+      expect(getByText('Your Shift Pattern')).toBeTruthy();
+      expect(getByText('Custom Pattern')).toBeTruthy();
     });
 
     it('should render pattern summary card', () => {
@@ -299,7 +300,8 @@ describe('PremiumStartDateScreen', () => {
   describe('Edge Cases', () => {
     it('should handle default pattern values', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('0 Days • 0 Nights • 0 Off')).toBeTruthy();
+      expect(getByText('Your Shift Pattern')).toBeTruthy();
+      expect(getByText('Custom Pattern')).toBeTruthy();
     });
 
     it('should render without errors', () => {
