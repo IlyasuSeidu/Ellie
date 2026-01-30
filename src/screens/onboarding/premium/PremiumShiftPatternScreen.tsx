@@ -43,7 +43,7 @@ import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ShiftPattern } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 
-type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList, 'ShiftPattern'>;
+type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const CARD_WIDTH = SCREEN_WIDTH * 0.85;
@@ -746,9 +746,11 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
     if (pattern.type === ShiftPattern.CUSTOM) {
       navigation.navigate('CustomPattern');
     } else {
-      // Call onContinue for other patterns to navigate to next screen
+      // Call onContinue callback or navigate to StartDate screen by default
       if (onContinue) {
         onContinue(pattern.type);
+      } else {
+        navigation.navigate('StartDate');
       }
     }
   }, [currentIndex, updateData, onContinue, navigation]);

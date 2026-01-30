@@ -39,7 +39,7 @@ import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 
-type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList, 'CustomPattern'>;
+type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const SLIDER_WIDTH = SCREEN_WIDTH * 0.75;
@@ -790,8 +790,10 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
 
     if (onContinue) {
       onContinue();
+    } else {
+      navigation.navigate('StartDate');
     }
-  }, [isValid, daysOn, nightsOn, daysOff, updateData, onContinue]);
+  }, [isValid, daysOn, nightsOn, daysOff, updateData, onContinue, navigation]);
 
   const handleBack = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);

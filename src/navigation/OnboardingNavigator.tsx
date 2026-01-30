@@ -10,6 +10,7 @@ import { PremiumWelcomeScreen } from '@/screens/onboarding/premium/PremiumWelcom
 import { PremiumIntroductionScreen } from '@/screens/onboarding/premium/PremiumIntroductionScreen';
 import { PremiumShiftPatternScreen } from '@/screens/onboarding/premium/PremiumShiftPatternScreen';
 import { PremiumCustomPatternScreen } from '@/screens/onboarding/premium/PremiumCustomPatternScreen';
+import { PremiumStartDateScreen } from '@/screens/onboarding/premium/PremiumStartDateScreen';
 
 // Define the onboarding stack param list
 export type OnboardingStackParamList = {
@@ -17,7 +18,8 @@ export type OnboardingStackParamList = {
   Introduction: undefined;
   ShiftPattern: undefined;
   CustomPattern: undefined;
-  // TODO: Add remaining 6 screens (Steps 5-10)
+  StartDate: undefined;
+  // TODO: Add remaining 5 screens (Steps 6-10)
 };
 
 const Stack = createNativeStackNavigator<OnboardingStackParamList>();
@@ -35,6 +37,7 @@ export const OnboardingNavigator: React.FC = () => {
       <Stack.Screen name="Introduction" component={PremiumIntroductionScreen} />
       <Stack.Screen name="ShiftPattern" component={PremiumShiftPatternScreen} />
       <Stack.Screen name="CustomPattern" component={PremiumCustomPatternScreen} />
+      <Stack.Screen name="StartDate" component={PremiumStartDateScreen} />
     </Stack.Navigator>
   );
 };
