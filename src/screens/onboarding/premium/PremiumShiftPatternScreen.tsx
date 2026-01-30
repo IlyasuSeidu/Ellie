@@ -839,6 +839,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: theme.spacing.lg,
     paddingHorizontal: theme.spacing.lg,
+    letterSpacing: 1,
+    ...Platform.select({
+      ios: {
+        fontFamily: 'System',
+      },
+      android: {
+        fontFamily: 'sans-serif-black',
+      },
+    }),
   },
   subtitle: {
     fontSize: 16,
@@ -847,6 +856,14 @@ const styles = StyleSheet.create({
     marginTop: theme.spacing.sm,
     marginBottom: theme.spacing.xl,
     paddingHorizontal: theme.spacing.lg,
+    ...Platform.select({
+      ios: {
+        fontFamily: 'System',
+      },
+      android: {
+        fontFamily: 'sans-serif-medium',
+      },
+    }),
   },
   cardStack: {
     flex: 1,
