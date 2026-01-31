@@ -1,35 +1,137 @@
-# Ellie
+# Ellie - Shift Schedule Manager for Mining Workers
 
 ![CI Pipeline](https://github.com/IlyasuSeidu/Ellie/workflows/CI%20Pipeline/badge.svg)
 ![E2E Tests](https://github.com/IlyasuSeidu/Ellie/workflows/E2E%20Tests/badge.svg)
 [![codecov](https://codecov.io/gh/IlyasuSeidu/Ellie/branch/main/graph/badge.svg)](https://codecov.io/gh/IlyasuSeidu/Ellie)
 
-A modern React Native mobile application built with Expo, TypeScript, and best practices for code quality and testing.
+**Ellie** helps mining shift workers manage complex rotating shift schedules during multi-week work cycles. Never lose track of whether you're on day shifts, night shifts, or off days again.
 
-## Features
+> **"Did I set my alarm for the right time? Am I on days or nights tomorrow?"**
+> **"When's my next fly-out day?"**
+> **"Am I working on my kid's birthday in March?"**
 
-- **TypeScript**: Strict type checking with comprehensive compiler options
-- **React Navigation**: Seamless navigation with native stack and bottom tabs
-- **Firebase Integration**: Authentication and backend services
-- **React Native Paper**: Material Design UI components
-- **Comprehensive Testing**: Unit tests with Jest and E2E tests with Detox
-- **Code Quality**: ESLint, Prettier, and pre-commit hooks
-- **CI/CD**: Automated testing and builds with GitHub Actions
+Ellie answers these questions with a glance—no mental math, no counting forward from your start date, no missed shifts.
 
-## Tech Stack
+---
+
+## 🎯 The Problem
+
+Mining shift workers operate on repeating cycles (7-7-7, 4-4-4, 2-2-3, custom patterns) that span weeks. Keeping track of which day of the cycle you're on, across months and life events, is mentally exhausting. Workers constantly:
+
+- Lose their place in the 21-day cycle, especially after days off
+- Do mental math to figure out if they're working a specific future date
+- Miss shift start times because they set alarms for the wrong shift
+- Can't plan family events without counting through their pattern manually
+
+**The Core Insight**: Humans aren't built to track repeating patterns across months. We need a tool that does the math for us.
+
+---
+
+## ✨ The Solution
+
+Ellie is a **premium shift schedule app** built specifically for mining workers. It provides:
+
+- **Instant shift visibility**: "Tomorrow: Night Shift 🌙 6pm-6am"
+- **Long-term planning**: See your schedule months in advance
+- **Smart notifications**: Reminders before shift starts
+- **Offline-first**: Works underground with no cell signal
+- **Pattern flexibility**: Supports all standard patterns + custom cycles
+
+---
+
+## 🚀 Current Features
+
+### Premium Onboarding Flow (Completed)
+
+Ellie features a polished, Tinder-inspired onboarding experience built with React Native Reanimated 4:
+
+#### 1. **Welcome Screen** - First Impressions Matter
+
+- Orchestrated entrance animations with staggered delays
+- Spring physics for natural motion
+- Accessibility-first with reduced motion support
+- [Read the story →](build-in-public/emotional-moment/03-welcome-screen-first-impression.md)
+
+#### 2. **Shift Pattern Selection** - Tinder-Style Cards
+
+- Swipeable cards for 9 standard patterns (4-4-4, 7-7-7, 2-2-3, etc.)
+- Physics-based gestures with rotation and depth effects
+- Learn More modals for pattern details
+- Custom pattern option
+- [Read the story →](build-in-public/unexpected-challenge/04-tinder-style-pattern-selection.md)
+
+#### 3. **Custom Pattern Builder** - Every Mine is Different
+
+- Visual sliders with 3D icon thumbs (sun, moon, rest)
+- Real-time pattern preview with color-coded blocks
+- Smart validation with helpful warnings
+- Live cycle visualization
+- [Read the story →](build-in-public/user-empathy/05-custom-pattern-builder.md)
+
+#### 4. **Start Date & Phase Selection** - Calendar Intelligence
+
+- Interactive calendar with swipe gestures for month navigation
+- Phase selector (choose starting shift: day/night/off)
+- Live shift preview icons on calendar days (☀️🌙🏠)
+- 7-day timeline showing upcoming shifts
+- Smart defaults (tomorrow as start date)
+- Calendar legend for shift types
+- [Read the story →](build-in-public/technical-discovery/06-start-date-calendar-system.md)
+
+### Core Technology (Foundation)
+
+- **Bulletproof Shift Calculation**: Pure functions for instant, offline calculations
+- **TypeScript + Zod Validation**: Runtime safety for user data
+- **Firebase Backend**: Cloud Firestore for data sync
+- **Sacred Theme System**: Premium design language for shift workers
+- **1,500+ Tests**: Comprehensive coverage across 42 test suites
+- [Read the story →](build-in-public/system-thinking/01-day-one-foundations.md)
+
+---
+
+## 🛠 Tech Stack
+
+### Frontend
 
 - **Framework**: Expo SDK 54 with React Native 0.81
-- **Language**: TypeScript 5.9
-- **UI Library**: React Native Paper 5.14
-- **Navigation**: React Navigation 7.x
-- **Backend**: Firebase 11.10
-- **State Management**: React Context (built-in)
-- **Testing**: Jest, React Testing Library, Detox
-- **Code Quality**: ESLint, Prettier, Husky, lint-staged
+- **Language**: TypeScript 5.9 (strict mode)
+- **Animations**: React Native Reanimated 4
+- **Gestures**: React Native Gesture Handler
+- **UI Components**: Custom components with Sacred theme
+- **Navigation**: React Navigation 7.x (Native Stack)
 
-## Prerequisites
+### Backend
 
-Before you begin, ensure you have the following installed:
+- **Database**: Firebase Cloud Firestore
+- **Authentication**: Firebase Auth
+- **Storage**: Firebase Storage (for icons/assets)
+- **Environment Management**: dotenv with environment validation
+
+### State Management
+
+- **Onboarding**: React Context (`OnboardingContext`)
+- **Shift Calculations**: Pure functions (client-side)
+- **User Data**: Firebase Firestore + local state
+
+### Code Quality
+
+- **Linting**: ESLint with TypeScript rules
+- **Formatting**: Prettier
+- **Pre-commit Hooks**: Husky + lint-staged
+- **Type Checking**: TypeScript strict mode
+- **Testing**: Jest (1,500 tests), React Testing Library, Detox (E2E)
+
+### CI/CD
+
+- **GitHub Actions**: Automated testing and builds
+- **Code Coverage**: Codecov integration
+- **Platform Builds**: EAS Build (iOS/Android)
+
+---
+
+## 📦 Getting Started
+
+### Prerequisites
 
 - **Node.js**: v18.x or later
 - **npm**: v9.x or later
@@ -40,61 +142,63 @@ Before you begin, ensure you have the following installed:
 - **Android Development**:
   - Android Studio
   - Android SDK (API 33 or later)
-  - Java Development Kit (JDK) 17
+  - JDK 17
 
-## Getting Started
-
-### 1. Clone the Repository
+### Installation
 
 ```bash
+# 1. Clone the repository
 git clone https://github.com/IlyasuSeidu/Ellie.git
 cd Ellie
-```
 
-### 2. Install Dependencies
+# 2. Install dependencies (use --legacy-peer-deps due to React Native constraints)
+npm install --legacy-peer-deps
 
-```bash
-npm install
-```
+# 3. Set up environment variables
+# Create .env file in root directory
+cp .env.example .env
 
-### 3. Set Up Environment Variables
-
-Create a `.env` file in the root directory:
-
-```env
-# Firebase Configuration
+# 4. Add your Firebase configuration to .env
 FIREBASE_API_KEY=your_api_key
 FIREBASE_AUTH_DOMAIN=your_auth_domain
 FIREBASE_PROJECT_ID=your_project_id
 FIREBASE_STORAGE_BUCKET=your_storage_bucket
 FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 FIREBASE_APP_ID=your_app_id
-```
 
-### 4. Start the Development Server
-
-```bash
+# 5. Start the development server
 npm start
 ```
 
-This will open Expo DevTools in your browser. You can then:
+### Running the App
 
-- Press `i` to open in iOS simulator
-- Press `a` to open in Android emulator
-- Scan the QR code with Expo Go app on your physical device
+```bash
+# iOS Simulator (macOS only)
+npm run ios
 
-## Available Scripts
+# Android Emulator
+npm run android
 
-### Development
+# Expo Go (physical device)
+npm start  # Then scan QR code with Expo Go app
+```
+
+---
+
+## 🧪 Development
+
+### Available Scripts
+
+#### Development
 
 ```bash
 npm start                # Start Expo development server
 npm run android          # Run on Android emulator
 npm run ios              # Run on iOS simulator
-npm run web              # Run in web browser
+npm run web              # Run in web browser (limited support)
 ```
 
-### Code Quality
+#### Code Quality
 
 ```bash
 npm run lint             # Run ESLint
@@ -105,189 +209,274 @@ npm run type-check       # Run TypeScript type checking
 npm run validate         # Run type-check and lint together
 ```
 
-### Testing
+#### Testing
 
 ```bash
-npm test                 # Run unit tests with Jest
+npm test                 # Run all unit tests
 npm run test:watch       # Run tests in watch mode
 npm run test:coverage    # Run tests with coverage report
-npm run test:e2e         # Run E2E tests with Detox
+npm run test:e2e         # Run E2E tests (requires built app)
 npm run test:e2e:build   # Build app for E2E testing
 ```
 
-### Build
+#### Specific Test Suites
 
 ```bash
-npm run build:ios        # Build for iOS
-npm run build:android    # Build for Android
+# Test individual screens
+npm test -- --testPathPattern="PremiumWelcomeScreen"
+npm test -- --testPathPattern="PremiumShiftPatternScreen"
+npm test -- --testPathPattern="PremiumStartDateScreen"
+
+# Test utils and services
+npm test -- --testPathPattern="shiftUtils"
+npm test -- --testPathPattern="ShiftDataService"
 ```
 
-## Project Structure
+---
+
+## 📁 Project Structure
 
 ```
 Ellie/
-├── .github/                 # GitHub configuration
-│   ├── workflows/          # CI/CD workflows
-│   └── PULL_REQUEST_TEMPLATE.md
-├── .husky/                 # Git hooks
-│   └── pre-commit
-├── assets/                 # Images, fonts, and other static assets
-├── e2e/                    # End-to-end tests
-│   ├── app.test.ts
-│   └── jest.config.js
-├── src/                    # Source code
-│   ├── components/         # Reusable UI components
-│   ├── screens/            # Screen components
-│   ├── navigation/         # Navigation configuration
-│   ├── hooks/              # Custom React hooks
-│   ├── services/           # API and service integrations
-│   ├── utils/              # Utility functions
-│   ├── types/              # TypeScript type definitions
-│   ├── constants/          # Constants and configuration
-│   ├── config/             # App configuration
-│   └── __tests__/          # Unit tests
-├── tests/                  # Additional test utilities
-├── App.tsx                 # Root application component
-├── app.json                # Expo configuration
-├── babel.config.js         # Babel configuration
-├── tsconfig.json           # TypeScript configuration
-├── jest.config.js          # Jest configuration
-├── .eslintrc.js            # ESLint configuration
-├── .prettierrc             # Prettier configuration
-├── .editorconfig           # Editor configuration
-└── README.md               # This file
+├── .github/                      # GitHub configuration & CI/CD workflows
+├── .husky/                       # Git hooks (pre-commit)
+├── assets/                       # Static assets
+│   └── onboarding/
+│       └── icons/
+│           ├── consolidated/     # 3D pattern icons
+│           ├── phase-selector/   # Day/night/off icons
+│           └── ui-elements/      # Buttons, hints, etc.
+├── build-in-public/              # 📝 Build-in-public content
+│   ├── system-thinking/          # Foundation & architecture stories
+│   ├── design-tradeoff/          # Sacred theme & design decisions
+│   ├── emotional-moment/         # Welcome screen & first impressions
+│   ├── unexpected-challenge/     # Tinder-style pattern selection
+│   ├── user-empathy/             # Custom pattern builder
+│   └── technical-discovery/      # Start date calendar system
+├── src/
+│   ├── components/               # Reusable UI components
+│   │   └── onboarding/
+│   │       └── premium/          # Premium onboarding components
+│   │           ├── PatternCard.tsx
+│   │           ├── PhaseSelector.tsx
+│   │           ├── PremiumButton.tsx
+│   │           ├── PremiumCalendar.tsx
+│   │           ├── PremiumSlider.tsx
+│   │           └── __tests__/    # Component tests
+│   ├── contexts/                 # React contexts
+│   │   ├── OnboardingContext.tsx # Onboarding state management
+│   │   └── __tests__/
+│   ├── navigation/               # Navigation configuration
+│   │   └── OnboardingNavigator.tsx
+│   ├── screens/                  # Screen components
+│   │   └── onboarding/
+│   │       └── premium/
+│   │           ├── PremiumWelcomeScreen.tsx
+│   │           ├── PremiumIntroductionScreen.tsx
+│   │           ├── PremiumShiftPatternScreen.tsx     # Tinder-style cards
+│   │           ├── PremiumCustomPatternScreen.tsx    # Custom builder
+│   │           ├── PremiumStartDateScreen.tsx        # Calendar & phase
+│   │           └── __tests__/
+│   ├── services/                 # Backend services
+│   │   ├── AsyncStorageService.ts
+│   │   ├── AuthService.ts
+│   │   ├── FirebaseService.ts
+│   │   ├── ShiftDataService.ts
+│   │   └── __tests__/
+│   ├── types/                    # TypeScript type definitions
+│   │   └── index.ts              # ShiftPattern, ShiftCycle, etc.
+│   ├── utils/                    # Utility functions
+│   │   ├── shiftUtils.ts         # Shift calculation logic
+│   │   ├── dateUtils.ts          # Date manipulation
+│   │   ├── theme.ts              # Sacred theme system
+│   │   └── __tests__/
+│   └── config/                   # App configuration
+│       └── firebase.config.ts
+├── tests/                        # Integration tests
+├── App.tsx                       # Root component
+├── app.json                      # Expo configuration
+└── README.md                     # This file
 ```
 
-## Path Aliases
+---
 
-The project uses TypeScript path aliases for cleaner imports:
+## 🎨 Design System - Sacred Theme
 
-```typescript
-import Button from '@/components/Button';
-import HomeScreen from '@/screens/HomeScreen';
-import useAuth from '@/hooks/useAuth';
-import api from '@/services/api';
-import { User } from '@/types/user';
-import { API_URL } from '@/constants/config';
-```
+Ellie uses a custom design system called **"Sacred"** - built specifically for shift workers who check their schedules at 4am before heading underground.
 
-Available aliases:
+### Color Palette
 
-- `@/*` → `src/*`
-- `@/components/*` → `src/components/*`
-- `@/screens/*` → `src/screens/*`
-- `@/utils/*` → `src/utils/*`
-- `@/hooks/*` → `src/hooks/*`
-- `@/services/*` → `src/services/*`
-- `@/types/*` → `src/types/*`
-- `@/constants/*` → `src/constants/*`
-- `@/config/*` → `src/config/*`
-- `@/assets/*` → `assets/*`
+Colors inspired by the mining environment itself:
 
-## Code Quality Standards
+| Name           | Hex       | Usage                                   |
+| -------------- | --------- | --------------------------------------- |
+| **deepVoid**   | `#0C0A09` | Backgrounds (the darkness underground)  |
+| **sacredGold** | `#C5975C` | Primary accents (the mineral extracted) |
+| **paleGold**   | `#F5F1E8` | Body text (4.8:1 contrast, WCAG AA)     |
+| **ashStone**   | `#1C1917` | Card backgrounds (the rock face)        |
+| **warmStone**  | `#A8A29E` | Secondary text                          |
+| **lightStone** | `#78716C` | Labels and hints                        |
+| **dayShift**   | `#2196F3` | Day shift indicators                    |
+| **nightShift** | `#651FFF` | Night shift indicators                  |
+| **daysOff**    | `#FF9800` | Days off indicators                     |
 
-### TypeScript
+[Read the design story →](build-in-public/design-tradeoff/02-sacred-theme-system.md)
 
-- Strict mode enabled with all strict compiler flags
-- No implicit `any` types allowed
-- No unused variables or parameters
-- Explicit return types for exported functions (recommended)
+---
 
-### ESLint Rules
+## 🧭 Roadmap
 
-- No `console.log` (use `console.warn` or `console.error`)
-- No explicit `any` types
-- React Hooks dependencies must be exhaustive
-- Consistent return statements
-- Prefer `const` over `let`, no `var`
-- Always use strict equality (`===`)
+### ✅ Phase 1: Foundation (Completed)
 
-### Testing Requirements
+- [x] Project setup and development environment
+- [x] TypeScript types and Zod validation
+- [x] Utility functions (shift calculation, date handling)
+- [x] Firebase integration
+- [x] Sacred theme system
+- [x] Testing infrastructure (1,500+ tests)
 
-- Minimum code coverage: 70%
-- All new features must include tests
-- E2E tests for critical user flows
+### ✅ Phase 2: Premium Onboarding (Completed)
 
-## Pre-commit Hooks
+- [x] Welcome screen with orchestrated animations
+- [x] Introduction screen (name, occupation, company, country)
+- [x] Tinder-style shift pattern selection
+- [x] Custom pattern builder with visual sliders
+- [x] Start date & phase selection with calendar
+- [x] Onboarding navigation flow
 
-The project uses Husky and lint-staged to enforce code quality before commits:
+### 🚧 Phase 3: Core App Features (In Progress)
 
-1. **lint-staged**: Automatically formats and lints staged files
-2. **type-check**: Runs TypeScript type checking
+- [ ] Energy level selection
+- [ ] AI assistance preference
+- [ ] Earnings input (hourly rate, overtime)
+- [ ] Onboarding completion screen
 
-If any check fails, the commit will be rejected.
+### 📋 Phase 4: Main App (Planned)
 
-## CI/CD Pipeline
+- [ ] Home screen with "Tomorrow: [Shift Type]" display
+- [ ] Full calendar view with shift preview
+- [ ] Shift notifications (1 hour before start)
+- [ ] Pattern editing and management
+- [ ] Fly-out day countdown
+- [ ] Important date checking ("Am I working on...")
 
-### CI Pipeline (runs on every push/PR to main)
+### 🔮 Phase 5: Advanced Features (Future)
 
-1. **Lint and Type Check**: ESLint and TypeScript validation
-2. **Unit Tests**: Jest tests with coverage reporting
-3. **Build Check**: Validates Expo configuration and package.json
+- [ ] Multiple pattern support (different sites)
+- [ ] Shift swap tracking
+- [ ] Calendar export (Google Calendar integration)
+- [ ] Pattern sharing with coworkers
+- [ ] Recurring event support (holidays, shutdowns)
+- [ ] Analytics and insights (hours worked, earnings tracking)
 
-### E2E Pipeline (runs on release branches)
+---
 
-1. **iOS E2E Tests**: Detox tests on iOS simulator
-2. **Android E2E Tests**: Detox tests on Android emulator
+## 📖 Build-in-Public Journey
 
-## Contributing
+I'm building Ellie in public, documenting every decision, challenge, and lesson learned. Each major feature has a dedicated story:
 
-We welcome contributions! Please follow these guidelines:
+| Feature               | Story Angle          | Link                                                                                |
+| --------------------- | -------------------- | ----------------------------------------------------------------------------------- |
+| **Day 1: Foundation** | System Thinking      | [Read →](build-in-public/system-thinking/01-day-one-foundations.md)                 |
+| **Sacred Theme**      | Design Tradeoff      | [Read →](build-in-public/design-tradeoff/02-sacred-theme-system.md)                 |
+| **Welcome Screen**    | Emotional Moment     | [Read →](build-in-public/emotional-moment/03-welcome-screen-first-impression.md)    |
+| **Pattern Selection** | Unexpected Challenge | [Read →](build-in-public/unexpected-challenge/04-tinder-style-pattern-selection.md) |
+| **Custom Builder**    | User Empathy         | [Read →](build-in-public/user-empathy/05-custom-pattern-builder.md)                 |
+| **Start Date Screen** | Technical Discovery  | [Read →](build-in-public/technical-discovery/06-start-date-calendar-system.md)      |
 
-### 1. Fork and Clone
+Each story includes:
+
+- Human summary for miners
+- Build-in-public post
+- Beginner lesson
+- Expert insight
+- Short video script
+- Future improvements
+
+---
+
+## 🧪 Testing Strategy
+
+Ellie has comprehensive test coverage across all layers:
+
+### Unit Tests (1,500+ tests)
+
+- **Utilities**: Shift calculations, date manipulation, validation
+- **Components**: All onboarding components
+- **Services**: Firebase, storage, auth, shift data
+- **Contexts**: Onboarding state management
+
+### Integration Tests
+
+- **Services Integration**: Cross-service data flow
+- **Onboarding Flow**: Complete user journey
+
+### E2E Tests (Planned)
+
+- **Critical Flows**: Onboarding completion, shift viewing
+- **Platform-Specific**: iOS and Android behavior
+
+### Test Commands
 
 ```bash
-git clone https://github.com/your-username/Ellie.git
-cd Ellie
-git remote add upstream https://github.com/IlyasuSeidu/Ellie.git
+# Run all tests
+npm test
+
+# Run specific test suite
+npm test -- --testPathPattern="PremiumStartDateScreen"
+
+# Watch mode for TDD
+npm run test:watch
+
+# Coverage report
+npm run test:coverage
 ```
 
-### 2. Create a Feature Branch
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these guidelines:
+
+### 1. Code Standards
+
+- **TypeScript**: Strict mode, no `any` types
+- **Testing**: Add tests for all new features
+- **Formatting**: Prettier + ESLint (auto-fixed on commit)
+- **Commits**: Use conventional commits (`feat:`, `fix:`, `docs:`, etc.)
+
+### 2. Development Workflow
 
 ```bash
+# 1. Create feature branch
 git checkout -b feature/your-feature-name
-```
 
-### 3. Make Your Changes
+# 2. Make changes and add tests
+# 3. Run validation
+npm run validate
+npm test
 
-- Write clean, maintainable code
-- Follow the existing code style
-- Add tests for new features
-- Update documentation as needed
+# 4. Commit (pre-commit hooks will run automatically)
+git commit -m "feat: add new feature"
 
-### 4. Commit Your Changes
-
-Use conventional commit messages:
-
-```bash
-git commit -m "feat: add user profile screen"
-git commit -m "fix: resolve authentication bug"
-git commit -m "docs: update README with new instructions"
-```
-
-Commit types:
-
-- `feat`: New feature
-- `fix`: Bug fix
-- `docs`: Documentation changes
-- `style`: Code style changes (formatting, etc.)
-- `refactor`: Code refactoring
-- `test`: Adding or updating tests
-- `chore`: Maintenance tasks
-
-### 5. Push and Create a Pull Request
-
-```bash
+# 5. Push and create PR
 git push origin feature/your-feature-name
 ```
 
-Then create a pull request on GitHub using the provided template.
+### 3. Pull Request Template
 
-## Troubleshooting
+- Describe what changed and why
+- Link related issues
+- Include screenshots for UI changes
+- Verify all CI checks pass
+
+---
+
+## 🐛 Troubleshooting
 
 ### Common Issues
 
-**Metro bundler not starting**
+**Metro bundler cache issues**
 
 ```bash
 npx expo start -c
@@ -297,15 +486,17 @@ npx expo start -c
 
 ```bash
 cd ios && pod install && cd ..
+npm run ios
 ```
 
 **Android build failing**
 
 ```bash
 cd android && ./gradlew clean && cd ..
+npm run android
 ```
 
-**Type errors after installing dependencies**
+**Type errors after dependency update**
 
 ```bash
 npm run type-check
@@ -318,17 +509,53 @@ npm run validate
 npm run format
 ```
 
-## License
+**Firebase connection issues**
 
-This project is private and proprietary.
-
-## Contact
-
-For questions or support, please contact:
-
-- **GitHub**: [@IlyasuSeidu](https://github.com/IlyasuSeidu)
-- **Repository**: [Ellie](https://github.com/IlyasuSeidu/Ellie)
+- Verify `.env` file has correct Firebase credentials
+- Check Firebase project is active
+- Ensure Firestore rules allow read/write
 
 ---
 
-Built with ❤️ using Expo and React Native
+## 📊 Metrics
+
+### Current Status (as of latest commit)
+
+- **Total Tests**: 1,500+ across 42 test suites
+- **Test Coverage**: 100% on utilities and services
+- **TypeScript Errors**: 0
+- **ESLint Errors**: 0
+- **Onboarding Screens**: 5 completed (Welcome, Introduction, Pattern Selection, Custom Builder, Start Date)
+- **Lines of Code**: ~15,000+
+- **Commits**: 70+
+- **Build Time**: ✅ Passing
+- **CI/CD**: ✅ All workflows green
+
+---
+
+## 📄 License
+
+This project is private and proprietary.
+
+---
+
+## 📞 Contact
+
+**GitHub**: [@IlyasuSeidu](https://github.com/IlyasuSeidu)
+**Repository**: [Ellie](https://github.com/IlyasuSeidu/Ellie)
+
+---
+
+## 💡 The Vision
+
+**Ellie exists because shift work is hard enough without the mental overhead of tracking complex rotating schedules.**
+
+Every feature is designed with one question in mind: _"Will this help a miner know what shift they're on at 4am?"_
+
+If you're a shift worker tired of counting through your pattern, Ellie is for you.
+
+---
+
+_Built with respect for the work, using Expo and React Native._
+
+_"Track your shifts. Own your time."_
