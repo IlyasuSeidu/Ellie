@@ -1881,15 +1881,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: theme.spacing.sm,
+    gap: theme.spacing.md,
+    marginTop: theme.spacing.md,
   },
   helperIcon: {
-    width: 24,
-    height: 24,
+    width: 32,
+    height: 32,
   },
   helperText: {
-    fontSize: 14,
+    fontSize: 15,
     color: theme.colors.dust,
+    fontWeight: '500',
   },
 
   // Live Preview Card
