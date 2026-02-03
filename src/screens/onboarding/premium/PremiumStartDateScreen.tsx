@@ -1715,16 +1715,16 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: theme.spacing.lg,
     borderWidth: 1,
-    borderColor: theme.colors.softStone,
+    borderColor: theme.colors.opacity.gold20,
     ...Platform.select({
       ios: {
-        shadowColor: theme.colors.deepVoid,
-        shadowOffset: { width: 0, height: 8 },
+        shadowColor: theme.colors.sacredGold,
+        shadowOffset: { width: 0, height: 12 },
         shadowOpacity: 0.4,
-        shadowRadius: 16,
+        shadowRadius: 20,
       },
       android: {
-        elevation: 8,
+        elevation: 12,
       },
     }),
   },
@@ -1895,7 +1895,18 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: theme.spacing.lg,
     borderWidth: 1,
-    borderColor: theme.colors.opacity.gold30,
+    borderColor: theme.colors.opacity.gold20,
+    ...Platform.select({
+      ios: {
+        shadowColor: theme.colors.sacredGold,
+        shadowOffset: { width: 0, height: 12 },
+        shadowOpacity: 0.4,
+        shadowRadius: 20,
+      },
+      android: {
+        elevation: 12,
+      },
+    }),
   },
   previewRow: {
     flexDirection: 'row',
@@ -2136,15 +2147,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: theme.spacing.sm,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
     ...Platform.select({
       ios: {
-        shadowColor: theme.colors.deepVoid,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.15,
-        shadowRadius: 8,
+        shadowColor: theme.colors.sacredGold,
+        shadowOffset: { width: 0, height: 12 },
+        shadowOpacity: 0.4,
+        shadowRadius: 20,
       },
       android: {
-        elevation: 4,
+        elevation: 12,
       },
     }),
   },
