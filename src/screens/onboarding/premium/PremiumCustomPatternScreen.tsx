@@ -1473,7 +1473,7 @@ const styles = StyleSheet.create({
   },
   warningText: {
     fontSize: 14,
-    color: theme.colors.paleGold,
+    color: theme.colors.sacredGold,
     lineHeight: 20,
     textAlign: 'center',
   },

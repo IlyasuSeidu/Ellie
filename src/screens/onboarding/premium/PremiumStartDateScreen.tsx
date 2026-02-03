@@ -1738,7 +1738,7 @@ const styles = StyleSheet.create({
   patternName: {
     fontSize: 24,
     fontWeight: '800',
-    color: theme.colors.paleGold,
+    color: theme.colors.sacredGold,
     textAlign: 'center',
     marginBottom: theme.spacing.md,
     letterSpacing: 0.5,
@@ -1779,7 +1779,7 @@ const styles = StyleSheet.create({
   monthName: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: theme.colors.paleGold,
+    color: theme.colors.sacredGold,
   },
   weekdayRow: {
     flexDirection: 'row',
@@ -1928,7 +1928,7 @@ const styles = StyleSheet.create({
   },
   previewValue: {
     fontSize: 16,
-    color: theme.colors.paleGold,
+    color: theme.colors.sacredGold,
     fontWeight: '600',
   },
   previewConfirmation: {
@@ -2106,7 +2106,7 @@ const styles = StyleSheet.create({
   },
   startDatePromptText: {
     fontSize: 15,
-    color: theme.colors.paleGold,
+    color: theme.colors.sacredGold,
     fontWeight: '600',
     letterSpacing: 0.3,
   },
