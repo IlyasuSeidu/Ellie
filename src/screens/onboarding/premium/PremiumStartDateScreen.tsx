@@ -1678,10 +1678,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: theme.colors.sacredGold,
+    color: theme.colors.paper,
     textAlign: 'center',
-    marginTop: theme.spacing.xl,
-    marginBottom: theme.spacing.md,
+    marginTop: theme.spacing.lg,
+    paddingHorizontal: theme.spacing.lg,
     letterSpacing: 1,
     ...Platform.select({
       ios: {
@@ -1696,7 +1696,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: theme.colors.dust,
     textAlign: 'center',
+    marginTop: theme.spacing.sm,
     marginBottom: theme.spacing.xl,
+    paddingHorizontal: theme.spacing.lg,
     ...Platform.select({
       ios: {
         fontFamily: 'System',
