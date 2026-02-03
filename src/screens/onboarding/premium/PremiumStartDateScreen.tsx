@@ -41,23 +41,6 @@ import { ShiftPattern } from '@/types';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
-// Color Palette
-const COLORS = {
-  sacredGold: '#B45309',
-  brightGold: '#D97706',
-  paleGold: '#F59E0B',
-  deepVoid: '#0C0A09',
-  darkStone: '#1C1917',
-  softStone: '#292524',
-  lightStone: '#78716C',
-  warmStone: '#A8A29E',
-  paper: '#E7E5E4',
-  dayShift: '#2196F3',
-  nightShift: '#651FFF',
-  daysOff: '#FF9800',
-  success: '#10B981',
-} as const;
-
 // Spring Configurations
 const SPRING_CONFIGS = {
   fast: { damping: 25, stiffness: 300, mass: 0.5 },
@@ -79,6 +62,13 @@ const TIPS = [
   "💡 Select today's date if already mid-cycle",
   '💡 Your calendar will sync from this date forward',
 ] as const;
+
+// Shift visualization colors (RGB values from theme for use with opacity)
+const SHIFT_COLORS = {
+  day: { r: 33, g: 150, b: 243 }, // #2196F3 - Blue
+  night: { r: 101, g: 31, b: 255 }, // #651FFF - Purple
+  off: { r: 255, g: 152, b: 0 }, // #FF9800 - Orange
+} as const;
 
 // TypeScript Interfaces
 interface PatternSummaryCardProps {
@@ -115,6 +105,193 @@ interface LivePreviewCardProps {
   customPattern: { daysOn: number; nightsOn: number; daysOff: number };
   phaseOffset: number;
 }
+
+// Animated Day Cell Component
+interface DayCellProps {
+  date: Date;
+  isSelected: boolean;
+  isToday: boolean;
+  isValid: boolean;
+  isCurrentMonth: boolean;
+  shiftType: 'day' | 'night' | 'off' | null;
+  onPress: () => void;
+  reducedMotion: boolean;
+}
+
+const AnimatedDayCell: React.FC<DayCellProps> = React.memo(
+  ({ date, isSelected, isToday, isValid, isCurrentMonth, shiftType, onPress, reducedMotion }) => {
+    const scale = useSharedValue(1);
+    const glowOpacity = useSharedValue(0);
+    const ringScale = useSharedValue(0);
+    const ringOpacity = useSharedValue(0);
+    const bgOpacity = useSharedValue(isSelected ? 1 : 0);
+
+    useEffect(() => {
+      if (isSelected) {
+        // Selection animation sequence
+        if (!reducedMotion) {
+          // Scale animation (0-50ms)
+          scale.value = withTiming(1.05, { duration: 50 });
+
+          // Glow pulse (50-250ms)
+          glowOpacity.value = withDelay(
+            50,
+            withSequence(withTiming(0.6, { duration: 100 }), withTiming(0, { duration: 100 }))
+          );
+
+          // Golden ring expansion (100-500ms)
+          ringScale.value = withDelay(100, withTiming(2, { duration: 400 }));
+          ringOpacity.value = withDelay(
+            100,
+            withSequence(withTiming(0.8, { duration: 200 }), withTiming(0, { duration: 200 }))
+          );
+
+          // Final scale to 1.15
+          scale.value = withDelay(100, withSpring(1.15, SPRING_CONFIGS.bouncy));
+        }
+
+        // Background fade in
+        bgOpacity.value = withDelay(100, withSpring(1, SPRING_CONFIGS.smooth));
+      } else {
+        // Deselection: fade out and reset scale
+        if (!reducedMotion) {
+          scale.value = withTiming(1, { duration: 200 });
+        }
+        bgOpacity.value = withTiming(0, { duration: 200 });
+        ringScale.value = 0;
+        ringOpacity.value = 0;
+        glowOpacity.value = 0;
+      }
+    }, [isSelected, reducedMotion, scale, glowOpacity, ringScale, ringOpacity, bgOpacity]);
+
+    const cellAnimatedStyle = useAnimatedStyle(() => {
+      const getBorderColor = () => {
+        if (!shiftType) return 'transparent';
+
+        const color =
+          shiftType === 'day'
+            ? SHIFT_COLORS.day
+            : shiftType === 'night'
+              ? SHIFT_COLORS.night
+              : SHIFT_COLORS.off;
+
+        return `rgba(${color.r}, ${color.g}, ${color.b}, ${bgOpacity.value})`;
+      };
+
+      return {
+        transform: [{ scale: reducedMotion ? 1 : scale.value }],
+        borderWidth: bgOpacity.value > 0 ? 2 : 0,
+        borderColor: getBorderColor(),
+      };
+    });
+
+    const glowAnimatedStyle = useAnimatedStyle(() => {
+      const getGlowColor = () => {
+        if (!shiftType) return `rgba(197, 151, 92, ${glowOpacity.value * 0.3})`;
+
+        const color =
+          shiftType === 'day'
+            ? SHIFT_COLORS.day
+            : shiftType === 'night'
+              ? SHIFT_COLORS.night
+              : SHIFT_COLORS.off;
+
+        return `rgba(${color.r}, ${color.g}, ${color.b}, ${glowOpacity.value * 0.3})`;
+      };
+
+      return {
+        position: 'absolute',
+        width: 40,
+        height: 40,
+        borderRadius: 8,
+        backgroundColor: getGlowColor(),
+        opacity: glowOpacity.value,
+      };
+    });
+
+    const ringAnimatedStyle = useAnimatedStyle(() => {
+      const getRingColor = () => {
+        if (!shiftType) return `rgba(197, 151, 92, ${ringOpacity.value})`;
+
+        const color =
+          shiftType === 'day'
+            ? SHIFT_COLORS.day
+            : shiftType === 'night'
+              ? SHIFT_COLORS.night
+              : SHIFT_COLORS.off;
+
+        return `rgba(${color.r}, ${color.g}, ${color.b}, ${ringOpacity.value})`;
+      };
+
+      return {
+        position: 'absolute',
+        width: 40,
+        height: 40,
+        borderRadius: 8,
+        borderWidth: 2,
+        borderColor: getRingColor(),
+        transform: [{ scale: ringScale.value }],
+        opacity: ringOpacity.value,
+      };
+    });
+
+    return (
+      <Pressable
+        onPress={onPress}
+        disabled={!isValid}
+        style={[
+          styles.dayCell,
+          isToday && styles.dayCellToday,
+          !isValid && styles.dayCellDisabled,
+          !isCurrentMonth && styles.dayCellOtherMonth,
+        ]}
+      >
+        {/* Glow effect */}
+        {isSelected && !reducedMotion && <Animated.View style={glowAnimatedStyle} />}
+
+        {/* Golden ring expansion */}
+        {isSelected && !reducedMotion && <Animated.View style={ringAnimatedStyle} />}
+
+        {/* Main cell */}
+        <Animated.View
+          style={[
+            {
+              width: 40,
+              height: 40,
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 8,
+            },
+            cellAnimatedStyle,
+          ]}
+        >
+          {/* Shift icon above date */}
+          {shiftType && (
+            <Image
+              source={getCalendarShiftIcon(shiftType)}
+              style={styles.shiftIcon}
+              resizeMode="contain"
+            />
+          )}
+
+          <Text
+            style={[
+              styles.dayText,
+              isSelected && styles.dayTextSelected,
+              !isValid && styles.dayTextDisabled,
+              !isCurrentMonth && styles.dayTextOtherMonth,
+              shiftType && styles.dayTextWithIcon,
+            ]}
+          >
+            {date.getDate()}
+          </Text>
+        </Animated.View>
+      </Pressable>
+    );
+  }
+);
+
+AnimatedDayCell.displayName = 'AnimatedDayCell';
 
 // Helper Functions
 const formatDate = (date: Date): string => {
@@ -155,26 +332,40 @@ const calculatePhaseOffset = (
 const getPhaseColor = (phase: 'day' | 'night' | 'off'): string => {
   switch (phase) {
     case 'day':
-      return COLORS.dayShift;
+      return theme.colors.shiftVisualization.dayShift;
     case 'night':
-      return COLORS.nightShift;
+      return theme.colors.shiftVisualization.nightShift;
     case 'off':
-      return COLORS.daysOff;
+      return theme.colors.shiftVisualization.daysOff;
     default:
-      return COLORS.dayShift;
+      return theme.colors.shiftVisualization.dayShift;
   }
 };
 
-const getPhaseEmoji = (phase: 'day' | 'night' | 'off'): string => {
+const getPhaseIcon = (phase: 'day' | 'night' | 'off'): ImageSourcePropType => {
   switch (phase) {
     case 'day':
-      return '☀️';
+      return require('../../../../assets/onboarding/icons/consolidated/phase-day-shift-sun.png');
     case 'night':
-      return '🌙';
+      return require('../../../../assets/onboarding/icons/consolidated/phase-night-shift-moon.png');
     case 'off':
-      return '🏖️';
+      return require('../../../../assets/onboarding/icons/consolidated/phase-days-off-rest.png');
     default:
-      return '☀️';
+      return require('../../../../assets/onboarding/icons/consolidated/phase-day-shift-sun.png');
+  }
+};
+
+// Get calendar cell icon for shift type
+const getCalendarShiftIcon = (shiftType: 'day' | 'night' | 'off'): ImageSourcePropType => {
+  switch (shiftType) {
+    case 'day':
+      return require('../../../../assets/onboarding/icons/consolidated/calendar-day-shift-sun.png');
+    case 'night':
+      return require('../../../../assets/onboarding/icons/consolidated/calendar-night-shift-moon.png');
+    case 'off':
+      return require('../../../../assets/onboarding/icons/consolidated/calendar-days-off-rest.png');
+    default:
+      return require('../../../../assets/onboarding/icons/consolidated/calendar-day-shift-sun.png');
   }
 };
 
@@ -292,7 +483,10 @@ const PatternSummaryCard: React.FC<PatternSummaryCardProps> = ({
           .map((_, i) => (
             <View
               key={`day-${i}`}
-              style={[styles.timelineBlock, { backgroundColor: COLORS.dayShift }]}
+              style={[
+                styles.timelineBlock,
+                { backgroundColor: theme.colors.shiftVisualization.dayShift },
+              ]}
             />
           ))}
         {extraDays > 0 && <Text style={styles.timelineExtra}>+{extraDays}</Text>}
@@ -303,7 +497,10 @@ const PatternSummaryCard: React.FC<PatternSummaryCardProps> = ({
           .map((_, i) => (
             <View
               key={`night-${i}`}
-              style={[styles.timelineBlock, { backgroundColor: COLORS.nightShift }]}
+              style={[
+                styles.timelineBlock,
+                { backgroundColor: theme.colors.shiftVisualization.nightShift },
+              ]}
             />
           ))}
         {extraNights > 0 && <Text style={styles.timelineExtra}>+{extraNights}</Text>}
@@ -314,7 +511,10 @@ const PatternSummaryCard: React.FC<PatternSummaryCardProps> = ({
           .map((_, i) => (
             <View
               key={`off-${i}`}
-              style={[styles.timelineBlock, { backgroundColor: COLORS.daysOff }]}
+              style={[
+                styles.timelineBlock,
+                { backgroundColor: theme.colors.shiftVisualization.daysOff },
+              ]}
             />
           ))}
         {extraOffs > 0 && <Text style={styles.timelineExtra}>+{extraOffs}</Text>}
@@ -324,7 +524,10 @@ const PatternSummaryCard: React.FC<PatternSummaryCardProps> = ({
 
   return (
     <Animated.View style={[styles.patternCard, animatedStyle]}>
-      <LinearGradient colors={[COLORS.softStone, COLORS.darkStone]} style={styles.patternGradient}>
+      <LinearGradient
+        colors={[theme.colors.softStone, theme.colors.darkStone]}
+        style={styles.patternGradient}
+      >
         <Text style={styles.patternCardTitle}>Your Shift Pattern</Text>
 
         {/* Pattern icon - either loaded image or fallback */}
@@ -332,7 +535,7 @@ const PatternSummaryCard: React.FC<PatternSummaryCardProps> = ({
           {patternIcon ? (
             <Image source={patternIcon} style={styles.patternIcon} resizeMode="contain" />
           ) : (
-            <Ionicons name="calendar" size={64} color={COLORS.paleGold} />
+            <Ionicons name="calendar" size={64} color={theme.colors.paleGold} />
           )}
         </View>
 
@@ -344,24 +547,51 @@ const PatternSummaryCard: React.FC<PatternSummaryCardProps> = ({
             <View style={styles.cycleItems}>
               {customPattern.daysOn > 0 && (
                 <View style={styles.cycleItem}>
-                  <View style={[styles.cycleIconCircle, { backgroundColor: COLORS.dayShift }]}>
-                    <Text style={styles.cycleIconEmoji}>☀️</Text>
+                  <View
+                    style={[
+                      styles.cycleIconCircle,
+                      { backgroundColor: theme.colors.shiftVisualization.dayShift },
+                    ]}
+                  >
+                    <Image
+                      source={require('../../../../assets/onboarding/icons/consolidated/cycle-day-shift-sun.png')}
+                      style={styles.cycleIconImage}
+                      resizeMode="contain"
+                    />
                   </View>
                   <Text style={styles.cycleItemText}>{customPattern.daysOn} day shifts</Text>
                 </View>
               )}
               {customPattern.nightsOn > 0 && (
                 <View style={styles.cycleItem}>
-                  <View style={[styles.cycleIconCircle, { backgroundColor: COLORS.nightShift }]}>
-                    <Text style={styles.cycleIconEmoji}>🌙</Text>
+                  <View
+                    style={[
+                      styles.cycleIconCircle,
+                      { backgroundColor: theme.colors.shiftVisualization.nightShift },
+                    ]}
+                  >
+                    <Image
+                      source={require('../../../../assets/onboarding/icons/consolidated/cycle-night-shift-moon.png')}
+                      style={styles.cycleIconImage}
+                      resizeMode="contain"
+                    />
                   </View>
                   <Text style={styles.cycleItemText}>{customPattern.nightsOn} night shifts</Text>
                 </View>
               )}
               {customPattern.daysOff > 0 && (
                 <View style={styles.cycleItem}>
-                  <View style={[styles.cycleIconCircle, { backgroundColor: COLORS.daysOff }]}>
-                    <Text style={styles.cycleIconEmoji}>🏠</Text>
+                  <View
+                    style={[
+                      styles.cycleIconCircle,
+                      { backgroundColor: theme.colors.shiftVisualization.daysOff },
+                    ]}
+                  >
+                    <Image
+                      source={require('../../../../assets/onboarding/icons/consolidated/cycle-days-off-rest.png')}
+                      style={styles.cycleIconImage}
+                      resizeMode="contain"
+                    />
                   </View>
                   <Text style={styles.cycleItemText}>{customPattern.daysOff} days off</Text>
                 </View>
@@ -395,34 +625,84 @@ const InteractiveCalendar: React.FC<CalendarProps> = ({
   const opacity = useSharedValue(0);
   const slideY = useSharedValue(50);
   const translateX = useSharedValue(0);
+  const gridOpacity = useSharedValue(1);
+  const gridSlideX = useSharedValue(0);
+  const leftArrowScale = useSharedValue(1);
+  const rightArrowScale = useSharedValue(1);
 
   useEffect(() => {
-    opacity.value = withDelay(200, withTiming(1, { duration: 400 }));
-    slideY.value = withDelay(200, withSpring(0, SPRING_CONFIGS.bouncy));
+    opacity.value = withDelay(400, withTiming(1, { duration: 400 }));
+    slideY.value = withDelay(400, withSpring(0, SPRING_CONFIGS.bouncy));
   }, [opacity, slideY]);
+
+  // Grid slide animation on month change
+  useEffect(() => {
+    if (!_reducedMotion) {
+      // Slide in animation for new month
+      gridOpacity.value = withSequence(
+        withTiming(0, { duration: 150 }),
+        withTiming(1, { duration: 150 })
+      );
+      gridSlideX.value = withSequence(
+        withTiming(20, { duration: 0 }),
+        withTiming(0, { duration: 300 })
+      );
+    }
+  }, [currentMonth, _reducedMotion, gridOpacity, gridSlideX]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
     transform: [{ translateY: slideY.value }, { translateX: translateX.value }],
   }));
 
+  const gridAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: gridOpacity.value,
+    transform: [{ translateX: gridSlideX.value }],
+  }));
+
+  const leftArrowAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: leftArrowScale.value }],
+  }));
+
+  const rightArrowAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: rightArrowScale.value }],
+  }));
+
   const goToPreviousMonth = useCallback(() => {
     HAPTIC_PATTERNS.LIGHT();
+
+    // Arrow animation
+    if (!_reducedMotion) {
+      leftArrowScale.value = withSequence(
+        withTiming(1.1, { duration: 50 }),
+        withTiming(1.0, { duration: 100 })
+      );
+    }
+
     setCurrentMonth((prev) => {
       const newDate = new Date(prev);
       newDate.setMonth(newDate.getMonth() - 1);
       return newDate;
     });
-  }, []);
+  }, [_reducedMotion, leftArrowScale]);
 
   const goToNextMonth = useCallback(() => {
     HAPTIC_PATTERNS.LIGHT();
+
+    // Arrow animation
+    if (!_reducedMotion) {
+      rightArrowScale.value = withSequence(
+        withTiming(1.1, { duration: 50 }),
+        withTiming(1.0, { duration: 100 })
+      );
+    }
+
     setCurrentMonth((prev) => {
       const newDate = new Date(prev);
       newDate.setMonth(newDate.getMonth() + 1);
       return newDate;
     });
-  }, []);
+  }, [_reducedMotion, rightArrowScale]);
 
   const handleDateSelect = useCallback(
     (date: Date) => {
@@ -483,13 +763,17 @@ const InteractiveCalendar: React.FC<CalendarProps> = ({
       {/* Month Header */}
       <View style={styles.calendarHeader}>
         <Pressable onPress={goToPreviousMonth} style={styles.monthArrow}>
-          <Ionicons name="chevron-back" size={24} color={COLORS.paleGold} />
+          <Animated.View style={leftArrowAnimatedStyle}>
+            <Ionicons name="chevron-back" size={24} color={theme.colors.paleGold} />
+          </Animated.View>
         </Pressable>
 
         <Text style={styles.monthName}>{monthName}</Text>
 
         <Pressable onPress={goToNextMonth} style={styles.monthArrow}>
-          <Ionicons name="chevron-forward" size={24} color={COLORS.paleGold} />
+          <Animated.View style={rightArrowAnimatedStyle}>
+            <Ionicons name="chevron-forward" size={24} color={theme.colors.paleGold} />
+          </Animated.View>
         </Pressable>
       </View>
 
@@ -504,7 +788,7 @@ const InteractiveCalendar: React.FC<CalendarProps> = ({
 
       {/* Calendar Grid with Gesture */}
       <GestureDetector gesture={panGesture}>
-        <View style={styles.calendarGrid}>
+        <Animated.View style={[styles.calendarGrid, gridAnimatedStyle]}>
           {days.map((date, index) => {
             const dateString = date.toISOString().split('T')[0];
             const isSelected = selectedDate === dateString;
@@ -522,66 +806,46 @@ const InteractiveCalendar: React.FC<CalendarProps> = ({
             }
 
             return (
-              <Pressable
+              <AnimatedDayCell
                 key={index}
+                date={date}
+                isSelected={isSelected}
+                isToday={isToday}
+                isValid={isValid}
+                isCurrentMonth={isCurrentMonth}
+                shiftType={shiftType}
                 onPress={() => handleDateSelect(date)}
-                disabled={!isValid}
-                style={[
-                  styles.dayCell,
-                  isSelected && styles.dayCellSelected,
-                  isToday && styles.dayCellToday,
-                  !isValid && styles.dayCellDisabled,
-                  !isCurrentMonth && styles.dayCellOtherMonth,
-                ]}
-              >
-                {/* Shift icon above date */}
-                {shiftType && (
-                  <Text
-                    style={[
-                      styles.shiftIcon,
-                      {
-                        color:
-                          shiftType === 'day'
-                            ? COLORS.dayShift
-                            : shiftType === 'night'
-                              ? COLORS.nightShift
-                              : COLORS.daysOff,
-                      },
-                    ]}
-                  >
-                    {shiftType === 'day' ? '☀️' : shiftType === 'night' ? '🌙' : '🏠'}
-                  </Text>
-                )}
-
-                <Text
-                  style={[
-                    styles.dayText,
-                    isSelected && styles.dayTextSelected,
-                    !isValid && styles.dayTextDisabled,
-                    !isCurrentMonth && styles.dayTextOtherMonth,
-                    shiftType && styles.dayTextWithIcon,
-                  ]}
-                >
-                  {date.getDate()}
-                </Text>
-              </Pressable>
+                reducedMotion={_reducedMotion}
+              />
             );
           })}
-        </View>
+        </Animated.View>
       </GestureDetector>
 
       {/* Calendar Legend */}
       <View style={styles.calendarLegend}>
         <View style={styles.legendItem}>
-          <Text style={[styles.legendIcon, { color: COLORS.dayShift }]}>☀️</Text>
+          <Image
+            source={require('../../../../assets/onboarding/icons/consolidated/cycle-day-shift-sun.png')}
+            style={styles.legendIconImage}
+            resizeMode="contain"
+          />
           <Text style={styles.legendText}>Day Shift</Text>
         </View>
         <View style={styles.legendItem}>
-          <Text style={[styles.legendIcon, { color: COLORS.nightShift }]}>🌙</Text>
+          <Image
+            source={require('../../../../assets/onboarding/icons/consolidated/cycle-night-shift-moon.png')}
+            style={styles.legendIconImage}
+            resizeMode="contain"
+          />
           <Text style={styles.legendText}>Night Shift</Text>
         </View>
         <View style={styles.legendItem}>
-          <Text style={[styles.legendIcon, { color: COLORS.daysOff }]}>🏠</Text>
+          <Image
+            source={require('../../../../assets/onboarding/icons/consolidated/cycle-days-off-rest.png')}
+            style={styles.legendIconImage}
+            resizeMode="contain"
+          />
           <Text style={styles.legendText}>Day Off</Text>
         </View>
       </View>
@@ -626,7 +890,10 @@ const SelectedDateCard: React.FC<SelectedDateCardProps> = ({ selectedDate, reduc
 
   return (
     <Animated.View style={[styles.selectedDateCard, animatedStyle]}>
-      <LinearGradient colors={['#E5E5E5', '#F5F5F5']} style={styles.selectedDateGradient}>
+      <LinearGradient
+        colors={[theme.colors.softStone, theme.colors.darkStone]}
+        style={styles.selectedDateGradient}
+      >
         <Text style={styles.selectedDateIcon}>🏁</Text>
         <Animated.View style={contentAnimatedStyle}>
           <Text style={styles.selectedDateLabel}>Your cycle will start on:</Text>
@@ -637,47 +904,184 @@ const SelectedDateCard: React.FC<SelectedDateCardProps> = ({ selectedDate, reduc
   );
 };
 
+// Animated Phase Card Component
+interface AnimatedPhaseCardProps {
+  phase: 'day' | 'night' | 'off';
+  isSelected: boolean;
+  onPress: () => void;
+  label: string;
+  icon: ImageSourcePropType;
+  entranceDelay: number;
+  reducedMotion: boolean;
+}
+
+const AnimatedPhaseCard: React.FC<AnimatedPhaseCardProps> = React.memo(
+  ({ phase, isSelected, onPress, label, icon, entranceDelay, reducedMotion }) => {
+    const opacity = useSharedValue(0);
+    const slideY = useSharedValue(50);
+    const scale = useSharedValue(1);
+    const borderOpacity = useSharedValue(0);
+    const iconScale = useSharedValue(1);
+    const pressScale = useSharedValue(1);
+    const iconFloatY = useSharedValue(0);
+    const borderGlow = useSharedValue(0.8);
+
+    // Entrance animation
+    useEffect(() => {
+      opacity.value = withDelay(entranceDelay, withTiming(1, { duration: 400 }));
+      slideY.value = withDelay(entranceDelay, withSpring(0, SPRING_CONFIGS.bouncy));
+    }, [entranceDelay, opacity, slideY]);
+
+    // Selection animations + Idle animations
+    useEffect(() => {
+      if (isSelected) {
+        if (!reducedMotion) {
+          // Scale to 1.05×
+          scale.value = withDelay(100, withSpring(1.05, SPRING_CONFIGS.bouncy));
+
+          // Icon bounce animation (on selection)
+          iconScale.value = withDelay(
+            100,
+            withSequence(
+              withSpring(1.3, SPRING_CONFIGS.bouncy),
+              withSpring(1, SPRING_CONFIGS.bouncy)
+            )
+          );
+
+          // Start idle animations
+          // Icon float: ±3px vertical, 3-second loop
+          iconFloatY.value = withRepeat(
+            withSequence(withTiming(-3, { duration: 1500 }), withTiming(3, { duration: 1500 })),
+            -1,
+            true
+          );
+
+          // Border glow pulse: 0.8→1.0, 2-second loop
+          borderGlow.value = withRepeat(
+            withSequence(withTiming(1.0, { duration: 1000 }), withTiming(0.8, { duration: 1000 })),
+            -1,
+            true
+          );
+        }
+
+        // Border animate in
+        borderOpacity.value = withDelay(100, withSpring(1, SPRING_CONFIGS.smooth));
+      } else {
+        // Deselection: stop idle animations
+        if (!reducedMotion) {
+          scale.value = withTiming(1, { duration: 200 });
+          iconScale.value = 1;
+          iconFloatY.value = 0;
+          borderGlow.value = 0.8;
+        }
+        borderOpacity.value = withTiming(0, { duration: 200 });
+      }
+    }, [isSelected, reducedMotion, scale, borderOpacity, iconScale, iconFloatY, borderGlow]);
+
+    const cardAnimatedStyle = useAnimatedStyle(() => ({
+      opacity: opacity.value,
+      transform: [
+        { translateY: slideY.value },
+        { scale: reducedMotion ? 1 : scale.value * pressScale.value },
+      ],
+    }));
+
+    const iconAnimatedStyle = useAnimatedStyle(() => ({
+      transform: [
+        { scale: reducedMotion ? 1 : iconScale.value },
+        { translateY: reducedMotion ? 0 : iconFloatY.value },
+      ],
+    }));
+
+    const borderAnimatedStyle = useAnimatedStyle(() => ({
+      opacity: isSelected ? borderGlow.value : 0,
+    }));
+
+    const handlePressIn = useCallback(() => {
+      if (!reducedMotion) {
+        pressScale.value = withTiming(0.95, { duration: 100 });
+      }
+    }, [reducedMotion, pressScale]);
+
+    const handlePressOut = useCallback(() => {
+      if (!reducedMotion) {
+        pressScale.value = withTiming(1, { duration: 100 });
+      }
+      onPress();
+    }, [reducedMotion, pressScale, onPress]);
+
+    const getPhaseColor = () => {
+      switch (phase) {
+        case 'day':
+          return theme.colors.shiftVisualization.dayShift;
+        case 'night':
+          return theme.colors.shiftVisualization.nightShift;
+        case 'off':
+          return theme.colors.shiftVisualization.daysOff;
+        default:
+          return theme.colors.shiftVisualization.dayShift;
+      }
+    };
+
+    return (
+      <Animated.View style={[styles.phaseCardWrapper, cardAnimatedStyle]}>
+        <Pressable
+          onPressIn={handlePressIn}
+          onPressOut={handlePressOut}
+          style={[
+            styles.phaseCard,
+            isSelected && styles.phaseCardSelected,
+            isSelected && { borderColor: getPhaseColor() },
+          ]}
+        >
+          {/* Animated border glow */}
+          {isSelected && !reducedMotion && (
+            <Animated.View
+              style={[
+                {
+                  position: 'absolute',
+                  top: -2,
+                  left: -2,
+                  right: -2,
+                  bottom: -2,
+                  borderRadius: 16,
+                  borderWidth: 2,
+                  borderColor: getPhaseColor(),
+                },
+                borderAnimatedStyle,
+              ]}
+            />
+          )}
+
+          <LinearGradient
+            colors={
+              isSelected
+                ? [getPhaseColor(), theme.colors.darkStone]
+                : [theme.colors.darkStone, theme.colors.darkStone]
+            }
+            style={styles.phaseCardGradient}
+          >
+            {/* Icon with bounce and float animation */}
+            <Animated.View style={[styles.phaseIconContainer, iconAnimatedStyle]}>
+              <Image source={icon} style={styles.phaseIcon} resizeMode="contain" />
+            </Animated.View>
+            <Text style={styles.phaseLabel}>{label}</Text>
+          </LinearGradient>
+        </Pressable>
+      </Animated.View>
+    );
+  }
+);
+
+AnimatedPhaseCard.displayName = 'AnimatedPhaseCard';
+
 // Phase Selector Component
 const PhaseSelector: React.FC<PhaseSelectorProps> = ({
   selectedPhase,
   onPhaseSelect,
   pattern,
-  reducedMotion: _reducedMotion,
+  reducedMotion,
 }) => {
-  const dayOpacity = useSharedValue(0);
-  const nightOpacity = useSharedValue(0);
-  const offOpacity = useSharedValue(0);
-  const daySlideY = useSharedValue(50);
-  const nightSlideY = useSharedValue(50);
-  const offSlideY = useSharedValue(50);
-
-  useEffect(() => {
-    // Staggered entrance
-    dayOpacity.value = withDelay(400, withTiming(1, { duration: 400 }));
-    daySlideY.value = withDelay(400, withSpring(0, SPRING_CONFIGS.bouncy));
-
-    nightOpacity.value = withDelay(500, withTiming(1, { duration: 400 }));
-    nightSlideY.value = withDelay(500, withSpring(0, SPRING_CONFIGS.bouncy));
-
-    offOpacity.value = withDelay(600, withTiming(1, { duration: 400 }));
-    offSlideY.value = withDelay(600, withSpring(0, SPRING_CONFIGS.bouncy));
-  }, [dayOpacity, nightOpacity, offOpacity, daySlideY, nightSlideY, offSlideY]);
-
-  const dayAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: dayOpacity.value,
-    transform: [{ translateY: daySlideY.value }],
-  }));
-
-  const nightAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: nightOpacity.value,
-    transform: [{ translateY: nightSlideY.value }],
-  }));
-
-  const offAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: offOpacity.value,
-    transform: [{ translateY: offSlideY.value }],
-  }));
-
   const handlePhaseSelect = useCallback(
     (phase: 'day' | 'night' | 'off') => {
       HAPTIC_PATTERNS.MEDIUM();
@@ -695,95 +1099,47 @@ const PhaseSelector: React.FC<PhaseSelectorProps> = ({
       <View style={styles.phaseCardsRow}>
         {/* Day Shift Card */}
         {hasDay && (
-          <Animated.View style={[styles.phaseCardWrapper, dayAnimatedStyle]}>
-            <Pressable
-              onPress={() => handlePhaseSelect('day')}
-              style={[
-                styles.phaseCard,
-                selectedPhase === 'day' && styles.phaseCardSelected,
-                selectedPhase === 'day' && { borderColor: COLORS.dayShift },
-              ]}
-            >
-              <LinearGradient
-                colors={
-                  selectedPhase === 'day'
-                    ? [COLORS.dayShift, COLORS.darkStone]
-                    : [COLORS.darkStone, COLORS.darkStone]
-                }
-                style={styles.phaseCardGradient}
-              >
-                {/* Placeholder for 3D icon */}
-                <View style={styles.phaseIconContainer}>
-                  <Text style={styles.phaseEmoji}>{getPhaseEmoji('day')}</Text>
-                </View>
-                <Text style={styles.phaseLabel}>Day Shift</Text>
-              </LinearGradient>
-            </Pressable>
-          </Animated.View>
+          <AnimatedPhaseCard
+            phase="day"
+            isSelected={selectedPhase === 'day'}
+            onPress={() => handlePhaseSelect('day')}
+            label="Day Shift"
+            icon={getPhaseIcon('day')}
+            entranceDelay={200}
+            reducedMotion={reducedMotion}
+          />
         )}
 
         {/* Night Shift Card */}
         {hasNight && (
-          <Animated.View style={[styles.phaseCardWrapper, nightAnimatedStyle]}>
-            <Pressable
-              onPress={() => handlePhaseSelect('night')}
-              style={[
-                styles.phaseCard,
-                selectedPhase === 'night' && styles.phaseCardSelected,
-                selectedPhase === 'night' && { borderColor: COLORS.nightShift },
-              ]}
-            >
-              <LinearGradient
-                colors={
-                  selectedPhase === 'night'
-                    ? [COLORS.nightShift, COLORS.darkStone]
-                    : [COLORS.darkStone, COLORS.darkStone]
-                }
-                style={styles.phaseCardGradient}
-              >
-                {/* Placeholder for 3D icon */}
-                <View style={styles.phaseIconContainer}>
-                  <Text style={styles.phaseEmoji}>{getPhaseEmoji('night')}</Text>
-                </View>
-                <Text style={styles.phaseLabel}>Night Shift</Text>
-              </LinearGradient>
-            </Pressable>
-          </Animated.View>
+          <AnimatedPhaseCard
+            phase="night"
+            isSelected={selectedPhase === 'night'}
+            onPress={() => handlePhaseSelect('night')}
+            label="Night Shift"
+            icon={getPhaseIcon('night')}
+            entranceDelay={300}
+            reducedMotion={reducedMotion}
+          />
         )}
 
         {/* Days Off Card */}
         {hasOff && (
-          <Animated.View style={[styles.phaseCardWrapper, offAnimatedStyle]}>
-            <Pressable
-              onPress={() => handlePhaseSelect('off')}
-              style={[
-                styles.phaseCard,
-                selectedPhase === 'off' && styles.phaseCardSelected,
-                selectedPhase === 'off' && { borderColor: COLORS.daysOff },
-              ]}
-            >
-              <LinearGradient
-                colors={
-                  selectedPhase === 'off'
-                    ? [COLORS.daysOff, COLORS.darkStone]
-                    : [COLORS.darkStone, COLORS.darkStone]
-                }
-                style={styles.phaseCardGradient}
-              >
-                {/* Placeholder for 3D icon */}
-                <View style={styles.phaseIconContainer}>
-                  <Text style={styles.phaseEmoji}>{getPhaseEmoji('off')}</Text>
-                </View>
-                <Text style={styles.phaseLabel}>Days Off</Text>
-              </LinearGradient>
-            </Pressable>
-          </Animated.View>
+          <AnimatedPhaseCard
+            phase="off"
+            isSelected={selectedPhase === 'off'}
+            onPress={() => handlePhaseSelect('off')}
+            label="Days Off"
+            icon={getPhaseIcon('off')}
+            entranceDelay={400}
+            reducedMotion={reducedMotion}
+          />
         )}
       </View>
 
       {/* Helper Text */}
       <View style={styles.helperTextContainer}>
-        <Ionicons name="information-circle" size={24} color={COLORS.paleGold} />
+        <Ionicons name="information-circle" size={24} color={theme.colors.paleGold} />
         <Text style={styles.helperText}>Choose which part of your cycle you&apos;ll be on</Text>
       </View>
     </View>
@@ -848,11 +1204,14 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
 
   return (
     <Animated.View style={[styles.previewCard, animatedStyle]}>
-      <LinearGradient colors={[COLORS.darkStone, COLORS.deepVoid]} style={styles.previewGradient}>
+      <LinearGradient
+        colors={[theme.colors.darkStone, theme.colors.deepVoid]}
+        style={styles.previewGradient}
+      >
         <Animated.View style={contentAnimatedStyle}>
           {/* Row 1: Start Date */}
           <View style={styles.previewRow}>
-            <Ionicons name="calendar-outline" size={32} color={COLORS.paleGold} />
+            <Ionicons name="calendar-outline" size={32} color={theme.colors.paleGold} />
             <View style={styles.previewTextContainer}>
               <Text style={styles.previewLabel}>Starting:</Text>
               <Text style={styles.previewValue}>{formattedDate}</Text>
@@ -864,7 +1223,7 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
             <Ionicons
               name={selectedPhase === 'day' ? 'sunny' : selectedPhase === 'night' ? 'moon' : 'beer'}
               size={32}
-              color={selectedPhase ? getPhaseColor(selectedPhase) : COLORS.warmStone}
+              color={selectedPhase ? getPhaseColor(selectedPhase) : theme.colors.dust}
             />
             <View style={styles.previewTextContainer}>
               <Text style={styles.previewLabel}>Phase:</Text>
@@ -897,10 +1256,10 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
                     );
                     const bgColor =
                       shiftType === 'day'
-                        ? COLORS.dayShift
+                        ? theme.colors.shiftVisualization.dayShift
                         : shiftType === 'night'
-                          ? COLORS.nightShift
-                          : COLORS.daysOff;
+                          ? theme.colors.shiftVisualization.nightShift
+                          : theme.colors.shiftVisualization.daysOff;
 
                     return (
                       <View key={dayIndex} style={styles.previewTimelineDay}>
@@ -923,7 +1282,7 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
               <Ionicons
                 name="arrow-forward"
                 size={16}
-                color={COLORS.paleGold}
+                color={theme.colors.paleGold}
                 style={styles.previewTimelineArrow}
               />
             </View>
@@ -932,7 +1291,7 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
           {/* Row 4: Confirmation */}
           {selectedDate && selectedPhase && (
             <View style={styles.previewConfirmation}>
-              <Ionicons name="rocket" size={24} color={COLORS.success} />
+              <Ionicons name="rocket" size={24} color={theme.colors.success} />
               <Text style={styles.previewConfirmationText}>Your first cycle begins here</Text>
             </View>
           )}
@@ -981,7 +1340,11 @@ const ValidationTips: React.FC<{ reducedMotion: boolean }> = ({ reducedMotion })
 
   return (
     <Animated.View style={[styles.tipsContainer, animatedStyle]}>
-      <Ionicons name="bulb" size={32} color={COLORS.paleGold} />
+      <Image
+        source={require('../../../../assets/onboarding/icons/consolidated/tips-lightbulb-glowing-small.png')}
+        style={styles.tipsIcon}
+        resizeMode="contain"
+      />
       <Animated.Text style={[styles.tipText, tipAnimatedStyle]}>
         {TIPS[currentTipIndex]}
       </Animated.Text>
@@ -997,9 +1360,10 @@ const ContinueButton: React.FC<{
 }> = ({ enabled, onPress, reducedMotion }) => {
   const slideY = useSharedValue(100);
   const scale = useSharedValue(1);
+  const pressScale = useSharedValue(1);
 
   useEffect(() => {
-    slideY.value = withDelay(800, withSpring(0, SPRING_CONFIGS.bouncy));
+    slideY.value = withDelay(900, withSpring(0, SPRING_CONFIGS.bouncy));
 
     // Idle pulse when enabled
     if (enabled && !reducedMotion) {
@@ -1014,36 +1378,79 @@ const ContinueButton: React.FC<{
   }, [enabled, reducedMotion, slideY, scale]);
 
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: slideY.value }, { scale: scale.value }],
+    transform: [
+      { translateY: slideY.value },
+      { scale: (reducedMotion ? 1 : scale.value) * pressScale.value },
+    ],
   }));
 
-  const handlePress = useCallback(() => {
+  const handlePressIn = useCallback(() => {
+    if (!enabled || reducedMotion) return;
+    pressScale.value = withTiming(0.98, { duration: 100 });
+  }, [enabled, reducedMotion, pressScale]);
+
+  const handlePressOut = useCallback(() => {
     if (!enabled) return;
+    if (!reducedMotion) {
+      pressScale.value = withTiming(1.0, { duration: 100 });
+    }
     HAPTIC_PATTERNS.SUCCESS();
     onPress();
-  }, [enabled, onPress]);
+  }, [enabled, reducedMotion, pressScale, onPress]);
 
   return (
     <Animated.View style={[styles.continueButtonContainer, animatedStyle]}>
       <Pressable
-        onPress={handlePress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
         disabled={!enabled}
         style={[styles.continueButton, !enabled && styles.continueButtonDisabled]}
       >
         <LinearGradient
           colors={
             enabled
-              ? [COLORS.sacredGold, COLORS.brightGold]
-              : [COLORS.lightStone, COLORS.lightStone]
+              ? [theme.colors.sacredGold, theme.colors.brightGold]
+              : [theme.colors.shadow, theme.colors.shadow]
           }
           style={styles.continueGradient}
         >
-          <Ionicons name="checkmark-circle" size={28} color="#fff" />
+          <Ionicons name="checkmark-circle" size={28} color={theme.colors.paper} />
           <Text style={styles.continueButtonText}>Continue to Energy Level</Text>
-          <Ionicons name="arrow-forward" size={24} color="#fff" />
+          <Ionicons name="arrow-forward" size={24} color={theme.colors.paper} />
         </LinearGradient>
       </Pressable>
     </Animated.View>
+  );
+};
+
+// Header Component with Entrance Animation
+const HeaderSection: React.FC<{ reducedMotion: boolean }> = ({ reducedMotion }) => {
+  const titleOpacity = useSharedValue(0);
+  const subtitleOpacity = useSharedValue(0);
+
+  useEffect(() => {
+    // Header entrance: 0ms delay
+    titleOpacity.value = withTiming(1, { duration: 300 });
+    subtitleOpacity.value = withDelay(100, withTiming(1, { duration: 300 }));
+  }, [titleOpacity, subtitleOpacity]);
+
+  const titleAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: reducedMotion ? 1 : titleOpacity.value,
+  }));
+
+  const subtitleAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: reducedMotion ? 1 : subtitleOpacity.value,
+  }));
+
+  return (
+    <>
+      <Animated.Text style={[styles.title, titleAnimatedStyle]}>
+        Select Your Start Date
+      </Animated.Text>
+      <Animated.Text style={[styles.subtitle, subtitleAnimatedStyle]}>
+        Choose when your shift cycle begins
+      </Animated.Text>
+    </>
   );
 };
 
@@ -1065,6 +1472,8 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   const [selectedDate, setSelectedDate] = useState<string | null>(getTomorrowDate());
   const [selectedPhase, setSelectedPhase] = useState<'day' | 'night' | 'off' | null>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const screenOpacity = useSharedValue(1);
+  const screenSlideX = useSharedValue(0);
 
   // Check for reduced motion preference
   useEffect(() => {
@@ -1080,6 +1489,11 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
       subscription.remove();
     };
   }, []);
+
+  const screenAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: screenOpacity.value,
+    transform: [{ translateX: screenSlideX.value }],
+  }));
 
   // Get pattern data from context
   const pattern = data.patternType || ShiftPattern.CUSTOM;
@@ -1132,12 +1546,38 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
       phaseOffset,
     });
 
-    if (onContinue) {
-      onContinue();
+    // Exit animation
+    if (!reducedMotion) {
+      screenOpacity.value = withTiming(0, { duration: 400 });
+      screenSlideX.value = withTiming(-50, { duration: 400 });
+
+      // Navigate after animation completes
+      setTimeout(() => {
+        if (onContinue) {
+          onContinue();
+        } else {
+          navigation.navigate('EnergyLevel' as never);
+        }
+      }, 400);
     } else {
-      navigation.navigate('EnergyLevel' as never);
+      if (onContinue) {
+        onContinue();
+      } else {
+        navigation.navigate('EnergyLevel' as never);
+      }
     }
-  }, [canContinue, selectedDate, selectedPhase, customPattern, updateData, onContinue, navigation]);
+  }, [
+    canContinue,
+    selectedDate,
+    selectedPhase,
+    customPattern,
+    updateData,
+    onContinue,
+    navigation,
+    reducedMotion,
+    screenOpacity,
+    screenSlideX,
+  ]);
 
   const handleBack = useCallback(() => {
     HAPTIC_PATTERNS.LIGHT();
@@ -1152,55 +1592,56 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
     <View style={styles.container} testID={testID}>
       <ProgressHeader currentStep={5} totalSteps={10} />
 
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Title */}
-        <Text style={styles.title}>Select Your Start Date</Text>
-        <Text style={styles.subtitle}>Choose when your shift cycle begins</Text>
+      <Animated.View style={[{ flex: 1 }, screenAnimatedStyle]}>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Header with entrance animation */}
+          <HeaderSection reducedMotion={reducedMotion} />
 
-        {/* Pattern Summary Card */}
-        <PatternSummaryCard
-          pattern={pattern}
-          customPattern={customPattern}
-          reducedMotion={reducedMotion}
-          patternIcon={patternIcon}
-        />
+          {/* Pattern Summary Card */}
+          <PatternSummaryCard
+            pattern={pattern}
+            customPattern={customPattern}
+            reducedMotion={reducedMotion}
+            patternIcon={patternIcon}
+          />
 
-        {/* Interactive Calendar */}
-        <InteractiveCalendar
-          selectedDate={selectedDate}
-          onDateSelect={setSelectedDate}
-          reducedMotion={reducedMotion}
-          customPattern={customPattern}
-          phaseOffset={previewPhaseOffset}
-        />
+          {/* Interactive Calendar */}
+          <InteractiveCalendar
+            selectedDate={selectedDate}
+            onDateSelect={setSelectedDate}
+            reducedMotion={reducedMotion}
+            customPattern={customPattern}
+            phaseOffset={previewPhaseOffset}
+          />
 
-        {/* Selected Date Card */}
-        <SelectedDateCard selectedDate={selectedDate} reducedMotion={reducedMotion} />
+          {/* Selected Date Card */}
+          <SelectedDateCard selectedDate={selectedDate} reducedMotion={reducedMotion} />
 
-        {/* Phase Selector */}
-        <PhaseSelector
-          selectedPhase={selectedPhase}
-          onPhaseSelect={setSelectedPhase}
-          pattern={customPattern}
-          reducedMotion={reducedMotion}
-        />
+          {/* Phase Selector */}
+          <PhaseSelector
+            selectedPhase={selectedPhase}
+            onPhaseSelect={setSelectedPhase}
+            pattern={customPattern}
+            reducedMotion={reducedMotion}
+          />
 
-        {/* Live Preview Card */}
-        <LivePreviewCard
-          selectedDate={selectedDate}
-          selectedPhase={selectedPhase}
-          reducedMotion={reducedMotion}
-          customPattern={customPattern}
-          phaseOffset={previewPhaseOffset}
-        />
+          {/* Live Preview Card */}
+          <LivePreviewCard
+            selectedDate={selectedDate}
+            selectedPhase={selectedPhase}
+            reducedMotion={reducedMotion}
+            customPattern={customPattern}
+            phaseOffset={previewPhaseOffset}
+          />
 
-        {/* Validation Tips */}
-        <ValidationTips reducedMotion={reducedMotion} />
-      </ScrollView>
+          {/* Validation Tips */}
+          <ValidationTips reducedMotion={reducedMotion} />
+        </ScrollView>
+      </Animated.View>
 
       {/* Bottom Navigation */}
       <View style={styles.bottomNav}>
@@ -1222,7 +1663,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.deepVoid,
+    backgroundColor: theme.colors.deepVoid,
   },
   scrollView: {
     flex: 1,
@@ -1234,7 +1675,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: COLORS.sacredGold,
+    color: theme.colors.sacredGold,
     textAlign: 'center',
     marginTop: theme.spacing.xl,
     marginBottom: theme.spacing.md,
@@ -1250,7 +1691,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 16,
-    color: COLORS.warmStone,
+    color: theme.colors.dust,
     textAlign: 'center',
     marginBottom: theme.spacing.xl,
     ...Platform.select({
@@ -1271,10 +1712,10 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: theme.spacing.lg,
     borderWidth: 1,
-    borderColor: COLORS.softStone,
+    borderColor: theme.colors.softStone,
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: theme.colors.deepVoid,
         shadowOffset: { width: 0, height: 8 },
         shadowOpacity: 0.4,
         shadowRadius: 16,
@@ -1289,15 +1730,16 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.md,
   },
   patternName: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: COLORS.paleGold,
+    fontSize: 24,
+    fontWeight: '800',
+    color: theme.colors.paleGold,
     textAlign: 'center',
-    marginBottom: theme.spacing.sm,
+    marginBottom: theme.spacing.md,
+    letterSpacing: 0.5,
   },
   patternDetails: {
     fontSize: 14,
-    color: COLORS.warmStone,
+    color: theme.colors.dust,
     textAlign: 'center',
     marginBottom: theme.spacing.md,
   },
@@ -1331,16 +1773,16 @@ const styles = StyleSheet.create({
   monthName: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: COLORS.paleGold,
+    color: theme.colors.paleGold,
   },
   weekdayRow: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    gap: 4,
     marginBottom: theme.spacing.sm,
   },
   weekdayLabel: {
     fontSize: 12,
-    color: COLORS.warmStone,
+    color: theme.colors.dust,
     textTransform: 'uppercase',
     width: 40,
     textAlign: 'center',
@@ -1355,14 +1797,11 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 20,
-  },
-  dayCellSelected: {
-    backgroundColor: COLORS.sacredGold,
+    borderRadius: 8,
   },
   dayCellToday: {
     borderWidth: 2,
-    borderColor: COLORS.paleGold,
+    borderColor: theme.colors.paleGold,
   },
   dayCellDisabled: {
     opacity: 0.4,
@@ -1372,17 +1811,17 @@ const styles = StyleSheet.create({
   },
   dayText: {
     fontSize: 14,
-    color: COLORS.paper,
+    color: theme.colors.paper,
   },
   dayTextSelected: {
-    color: '#fff',
+    color: theme.colors.paper,
     fontWeight: 'bold',
   },
   dayTextDisabled: {
-    color: COLORS.lightStone,
+    color: theme.colors.shadow,
   },
   dayTextOtherMonth: {
-    color: COLORS.warmStone,
+    color: theme.colors.dust,
   },
 
   // Phase Selector
@@ -1400,14 +1839,14 @@ const styles = StyleSheet.create({
   phaseCard: {
     borderRadius: 16,
     borderWidth: 2,
-    borderColor: COLORS.softStone,
+    borderColor: theme.colors.softStone,
     overflow: 'hidden',
   },
   phaseCardSelected: {
     borderWidth: 2,
     ...Platform.select({
       ios: {
-        shadowColor: COLORS.sacredGold,
+        shadowColor: theme.colors.sacredGold,
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.5,
         shadowRadius: 12,
@@ -1424,13 +1863,14 @@ const styles = StyleSheet.create({
   phaseIconContainer: {
     marginBottom: theme.spacing.sm,
   },
-  phaseEmoji: {
-    fontSize: 40,
+  phaseIcon: {
+    width: 64,
+    height: 64,
   },
   phaseLabel: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: COLORS.paper,
+    color: theme.colors.paper,
     textAlign: 'center',
   },
   helperTextContainer: {
@@ -1441,7 +1881,7 @@ const styles = StyleSheet.create({
   },
   helperText: {
     fontSize: 14,
-    color: COLORS.warmStone,
+    color: theme.colors.dust,
   },
 
   // Live Preview Card
@@ -1452,7 +1892,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: theme.spacing.lg,
     borderWidth: 1,
-    borderColor: `rgba(${parseInt(COLORS.sacredGold.slice(1, 3), 16)}, ${parseInt(COLORS.sacredGold.slice(3, 5), 16)}, ${parseInt(COLORS.sacredGold.slice(5, 7), 16)}, 0.4)`,
+    borderColor: theme.colors.opacity.gold30,
   },
   previewRow: {
     flexDirection: 'row',
@@ -1465,12 +1905,12 @@ const styles = StyleSheet.create({
   },
   previewLabel: {
     fontSize: 12,
-    color: COLORS.warmStone,
+    color: theme.colors.dust,
     marginBottom: 4,
   },
   previewValue: {
     fontSize: 16,
-    color: COLORS.paleGold,
+    color: theme.colors.paleGold,
     fontWeight: '600',
   },
   previewConfirmation: {
@@ -1480,11 +1920,11 @@ const styles = StyleSheet.create({
     marginTop: theme.spacing.sm,
     paddingTop: theme.spacing.md,
     borderTopWidth: 1,
-    borderTopColor: COLORS.softStone,
+    borderTopColor: theme.colors.softStone,
   },
   previewConfirmationText: {
     fontSize: 14,
-    color: COLORS.warmStone,
+    color: theme.colors.dust,
     fontStyle: 'italic',
   },
 
@@ -1493,15 +1933,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: theme.spacing.md,
-    backgroundColor: COLORS.softStone,
+    backgroundColor: theme.colors.softStone,
     borderRadius: 12,
     padding: theme.spacing.md,
     marginBottom: theme.spacing.xl,
   },
+  tipsIcon: {
+    width: 40,
+    height: 40,
+  },
   tipText: {
     flex: 1,
     fontSize: 14,
-    color: COLORS.paper,
+    color: theme.colors.paper,
   },
 
   // Bottom Navigation
@@ -1516,13 +1960,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.spacing.lg,
     paddingBottom: Platform.OS === 'ios' ? theme.spacing.xxl : theme.spacing.lg,
     paddingTop: theme.spacing.lg,
-    backgroundColor: COLORS.deepVoid,
+    backgroundColor: theme.colors.deepVoid,
   },
   backButton: {
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: theme.colors.opacity.white10,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -1535,7 +1979,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: theme.colors.deepVoid,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.4,
         shadowRadius: 8,
@@ -1559,19 +2003,21 @@ const styles = StyleSheet.create({
   continueButtonText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#fff',
+    color: theme.colors.paper,
   },
   // Pattern Summary Card - Enhanced
   patternCardTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: COLORS.paper,
+    fontSize: 11,
+    fontWeight: '700',
+    color: theme.colors.dust,
     textAlign: 'center',
-    marginBottom: theme.spacing.sm,
+    marginBottom: theme.spacing.lg,
+    textTransform: 'uppercase',
+    letterSpacing: 1.5,
   },
   patternIcon: {
-    width: 80,
-    height: 80,
+    width: 96,
+    height: 96,
   },
   cycleItems: {
     marginTop: theme.spacing.md,
@@ -1580,21 +2026,30 @@ const styles = StyleSheet.create({
   cycleItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: theme.spacing.sm,
+    gap: theme.spacing.md,
+    backgroundColor: theme.colors.opacity.stone5,
+    paddingVertical: theme.spacing.sm,
+    paddingHorizontal: theme.spacing.md,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.white10,
   },
   cycleIconCircle: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  cycleIconEmoji: {
-    fontSize: 16,
+  cycleIconImage: {
+    width: 26,
+    height: 26,
   },
   cycleItemText: {
-    fontSize: 14,
-    color: COLORS.paper,
+    fontSize: 15,
+    color: theme.colors.paper,
+    fontWeight: '600',
+    flex: 1,
   },
   timelineTrack: {
     flexDirection: 'row',
@@ -1612,33 +2067,40 @@ const styles = StyleSheet.create({
   },
   timelineExtra: {
     fontSize: 10,
-    color: COLORS.warmStone,
+    color: theme.colors.dust,
     marginLeft: 2,
   },
   startDatePrompt: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: theme.spacing.xs,
-    marginTop: theme.spacing.md,
-    padding: theme.spacing.sm,
-    backgroundColor: 'rgba(245, 158, 11, 0.1)',
-    borderRadius: 8,
+    justifyContent: 'center',
+    gap: theme.spacing.sm,
+    marginTop: theme.spacing.lg,
+    paddingVertical: theme.spacing.md,
+    paddingHorizontal: theme.spacing.lg,
+    backgroundColor: theme.colors.opacity.gold10,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
   },
   startDatePromptIcon: {
-    fontSize: 20,
+    fontSize: 22,
   },
   startDatePromptText: {
-    fontSize: 14,
-    color: COLORS.paleGold,
+    fontSize: 15,
+    color: theme.colors.paleGold,
+    fontWeight: '600',
+    letterSpacing: 0.3,
   },
   // Calendar - Enhanced
   shiftIcon: {
-    fontSize: 12,
+    width: 18,
+    height: 18,
     position: 'absolute',
-    top: 2,
+    top: -2,
   },
   dayTextWithIcon: {
-    marginTop: 10,
+    marginTop: 12,
   },
   calendarLegend: {
     flexDirection: 'row',
@@ -1646,19 +2108,20 @@ const styles = StyleSheet.create({
     marginTop: theme.spacing.md,
     paddingTop: theme.spacing.md,
     borderTopWidth: 1,
-    borderTopColor: COLORS.softStone,
+    borderTopColor: theme.colors.softStone,
   },
   legendItem: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
   },
-  legendIcon: {
-    fontSize: 16,
+  legendIconImage: {
+    width: 20,
+    height: 20,
   },
   legendText: {
     fontSize: 12,
-    color: COLORS.warmStone,
+    color: theme.colors.dust,
   },
   // Selected Date Card
   selectedDateCard: {
@@ -1672,7 +2135,7 @@ const styles = StyleSheet.create({
     gap: theme.spacing.sm,
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: theme.colors.deepVoid,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.15,
         shadowRadius: 8,
@@ -1687,12 +2150,12 @@ const styles = StyleSheet.create({
   },
   selectedDateLabel: {
     fontSize: 14,
-    color: '#6B7280',
+    color: theme.colors.dust,
     fontWeight: '500',
   },
   selectedDateText: {
     fontSize: 16,
-    color: '#0369A1',
+    color: theme.colors.sacredGold,
     fontWeight: 'bold',
     marginTop: 2,
   },
@@ -1701,7 +2164,7 @@ const styles = StyleSheet.create({
     marginTop: theme.spacing.md,
     paddingTop: theme.spacing.md,
     borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.1)',
+    borderTopColor: theme.colors.opacity.white10,
   },
   previewTimelineDays: {
     flexDirection: 'row',
@@ -1720,17 +2183,17 @@ const styles = StyleSheet.create({
   },
   previewTimelineBlockFirst: {
     borderWidth: 2,
-    borderColor: COLORS.paleGold,
+    borderColor: theme.colors.paleGold,
   },
   previewTimelineDayLabel: {
     fontSize: 10,
-    color: '#fff',
+    color: theme.colors.paper,
     fontWeight: 'bold',
     textAlign: 'center',
   },
   previewTimelineShiftLabel: {
     fontSize: 14,
-    color: '#fff',
+    color: theme.colors.paper,
     fontWeight: 'bold',
     marginTop: 2,
     textAlign: 'center',

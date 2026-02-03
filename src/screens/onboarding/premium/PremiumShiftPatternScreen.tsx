@@ -233,7 +233,7 @@ const getShadowStyle = (cardIndex: number, isActiveCard: boolean) => {
   if (cardIndex === 1) {
     return Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: theme.colors.deepVoid,
         shadowOffset: { width: 0, height: 6 },
         shadowOpacity: 0.2,
         shadowRadius: 12,
@@ -245,7 +245,7 @@ const getShadowStyle = (cardIndex: number, isActiveCard: boolean) => {
   }
   return Platform.select({
     ios: {
-      shadowColor: '#000',
+      shadowColor: theme.colors.deepVoid,
       shadowOffset: { width: 0, height: 3 },
       shadowOpacity: 0.1,
       shadowRadius: 6,
@@ -877,13 +877,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: CARD_WIDTH,
     height: CARD_HEIGHT,
-    backgroundColor: '#1a1816',
+    backgroundColor: theme.colors.darkStone,
     borderRadius: 24,
     padding: theme.spacing.xl,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(180, 83, 9, 0.2)',
+    borderColor: theme.colors.opacity.gold20,
   },
   iconContainer: {
     marginBottom: theme.spacing.lg,
@@ -908,7 +908,7 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.md,
   },
   badge: {
-    backgroundColor: 'rgba(180, 83, 9, 0.2)',
+    backgroundColor: theme.colors.opacity.gold20,
     paddingHorizontal: theme.spacing.md,
     paddingVertical: theme.spacing.xs,
     borderRadius: 20,
@@ -931,7 +931,7 @@ const styles = StyleSheet.create({
     top: '50%',
     paddingHorizontal: theme.spacing.md,
     paddingVertical: theme.spacing.xs,
-    backgroundColor: 'rgba(180, 83, 9, 0.3)',
+    backgroundColor: theme.colors.opacity.gold30,
     borderRadius: 12,
   },
   swipeHintLeft: {
@@ -1006,23 +1006,23 @@ const styles = StyleSheet.create({
   },
   selectButtonText: {
     fontSize: 14,
-    color: '#000',
+    color: theme.colors.deepVoid,
     textAlign: 'center',
     fontWeight: 'bold',
   },
   modalBackdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    backgroundColor: theme.colors.opacity.black60,
     justifyContent: 'flex-end',
   },
   modalContent: {
-    backgroundColor: '#1a1816',
+    backgroundColor: theme.colors.darkStone,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     padding: theme.spacing.xl,
     maxHeight: SCREEN_HEIGHT * 0.8,
     borderTopWidth: 1,
-    borderTopColor: 'rgba(180, 83, 9, 0.3)',
+    borderTopColor: theme.colors.opacity.gold30,
   },
   modalTitle: {
     fontSize: 24,
@@ -1067,7 +1067,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(12, 10, 9, 0.95)',
+    backgroundColor: theme.colors.opacity.void95,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1000,

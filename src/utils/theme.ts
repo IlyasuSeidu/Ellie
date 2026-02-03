@@ -33,6 +33,13 @@ export const colors = {
   nightShift: '#7c2d12', // Amber 900 for night shifts
   holiday: '#ea580c', // Orange 600 for holidays
 
+  // Shift visualization colors (calendar/timeline UI)
+  shiftVisualization: {
+    dayShift: '#2196F3', // Blue - for calendar day shift indicators
+    nightShift: '#651FFF', // Purple - for calendar night shift indicators
+    daysOff: '#FF9800', // Orange - for calendar days off indicators
+  },
+
   // Status colors
   success: '#22c55e', // Green 500
   successBg: '#14532d', // Green 900/20 background
@@ -79,6 +86,11 @@ export const colors = {
     stone20: 'rgba(28, 25, 23, 0.2)',
     stone30: 'rgba(28, 25, 23, 0.3)',
     stone95: 'rgba(28, 25, 23, 0.95)',
+    void95: 'rgba(12, 10, 9, 0.95)', // End screen overlays
+    white10: 'rgba(255, 255, 255, 0.1)', // Button backgrounds
+    white20: 'rgba(255, 255, 255, 0.2)', // Highlights
+    black40: 'rgba(0, 0, 0, 0.4)', // Light modal backdrops
+    black60: 'rgba(0, 0, 0, 0.6)', // Standard modal backdrops
   },
 } as const;
 
