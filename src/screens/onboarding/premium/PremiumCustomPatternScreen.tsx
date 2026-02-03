@@ -44,11 +44,18 @@ type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const SLIDER_WIDTH = SCREEN_WIDTH * 0.75;
 
-// Cycle block colors
+// Cycle block colors - using theme shift visualization colors
 const CYCLE_COLORS = {
-  day: '#2196F3',
-  night: '#651FFF',
-  off: '#F59E0B',
+  day: theme.colors.shiftVisualization.dayShift,
+  night: theme.colors.shiftVisualization.nightShift,
+  off: theme.colors.shiftVisualization.daysOff,
+} as const;
+
+// Slider track colors - lighter versions for visual feedback
+const TRACK_COLORS = {
+  day: '#60A5FA', // Light blue
+  night: '#A78BFA', // Light purple
+  off: '#FBBF24', // Light amber
 } as const;
 
 // Spring animation configs
@@ -264,7 +271,7 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
 
         {/* Slider Track */}
         <View style={styles.sliderTrackContainer}>
-          <View style={[styles.sliderTrack, { backgroundColor: 'rgba(255,255,255,0.1)' }]}>
+          <View style={[styles.sliderTrack, { backgroundColor: theme.colors.opacity.white10 }]}>
             <Animated.View
               style={[
                 styles.sliderTrackFill,
@@ -316,7 +323,7 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
               {customThumbIcon ? (
                 <Image source={customThumbIcon} style={styles.thumbIcon} resizeMode="contain" />
               ) : (
-                <Ionicons name={icon} size={14} color="#fff" />
+                <Ionicons name={icon} size={14} color={theme.colors.paper} />
               )}
             </Animated.View>
           </GestureDetector>
@@ -666,12 +673,21 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
           </View>
           <View style={styles.chartBar}>
             <Animated.View style={[styles.chartSegmentAnimated, workBarAnimatedStyle]}>
-              <LinearGradient colors={['#6366F1', '#4F46E5']} style={styles.chartGradient}>
+              <LinearGradient
+                colors={[
+                  theme.colors.shiftVisualization.dayShift,
+                  theme.colors.shiftVisualization.nightShift,
+                ]}
+                style={styles.chartGradient}
+              >
                 <Text style={styles.chartPercentage}>{workPercentage}%</Text>
               </LinearGradient>
             </Animated.View>
             <Animated.View style={[styles.chartSegmentAnimated, restBarAnimatedStyle]}>
-              <LinearGradient colors={['#22C55E', '#15803D']} style={styles.chartGradient}>
+              <LinearGradient
+                colors={[theme.colors.success, theme.colors.successBg]}
+                style={styles.chartGradient}
+              >
                 <Text style={styles.chartPercentage}>{restPercentage}%</Text>
               </LinearGradient>
             </Animated.View>
@@ -690,7 +706,7 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
 
         {/* Cycle Length Badge */}
         <Animated.View style={[styles.cycleBadge, cycleLengthAnimatedStyle]}>
-          <Ionicons name="calendar-number-outline" size={16} color="#fff" />
+          <Ionicons name="calendar-number-outline" size={16} color={theme.colors.paper} />
           <Text style={styles.cycleBadgeText}>{totalDays}-day cycle</Text>
         </Animated.View>
       </LinearGradient>
@@ -843,7 +859,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               min={0}
               max={14}
               color={CYCLE_COLORS.day}
-              trackColor="#60A5FA"
+              trackColor={TRACK_COLORS.day}
               onChange={setDaysOn}
               delayIndex={0}
               reducedMotion={reducedMotion}
@@ -858,7 +874,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               min={0}
               max={14}
               color={CYCLE_COLORS.night}
-              trackColor="#A78BFA"
+              trackColor={TRACK_COLORS.night}
               onChange={setNightsOn}
               delayIndex={1}
               reducedMotion={reducedMotion}
@@ -873,7 +889,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               min={1}
               max={14}
               color={CYCLE_COLORS.off}
-              trackColor="#FBBF24"
+              trackColor={TRACK_COLORS.off}
               onChange={setDaysOff}
               delayIndex={2}
               reducedMotion={reducedMotion}
@@ -965,7 +981,11 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
             accessibilityState={{ disabled: !isValid }}
           >
             <LinearGradient
-              colors={isValid ? ['#F59E0B', '#D97706'] : ['#6B7280', '#4B5563']}
+              colors={
+                isValid
+                  ? [theme.colors.paleGold, theme.colors.brightGold]
+                  : [theme.colors.shadow, theme.colors.softStone]
+              }
               style={styles.continueGradient}
             >
               <Image
@@ -1055,7 +1075,7 @@ const styles = StyleSheet.create({
   previewTitle: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#fff',
+    color: theme.colors.paper,
   },
   previewHeaderIcon: {
     width: 60,
@@ -1079,11 +1099,11 @@ const styles = StyleSheet.create({
   cycleBlockNumber: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#fff',
+    color: theme.colors.paper,
   },
   cycleBlockLabel: {
     fontSize: 12,
-    color: '#fff',
+    color: theme.colors.paper,
     opacity: 0.9,
   },
   cycleBlockIcon: {
@@ -1110,7 +1130,7 @@ const styles = StyleSheet.create({
   },
   legendText: {
     fontSize: 10,
-    color: '#fff',
+    color: theme.colors.paper,
     opacity: 0.9,
   },
   cyclePreview: {
@@ -1127,7 +1147,7 @@ const styles = StyleSheet.create({
   },
   cycleLabel: {
     fontSize: 14,
-    color: '#fff',
+    color: theme.colors.paper,
     textAlign: 'center',
     fontWeight: '600',
   },
@@ -1148,7 +1168,7 @@ const styles = StyleSheet.create({
   },
   balanceTitle: {
     fontSize: 18,
-    color: '#fff',
+    color: theme.colors.paper,
     fontWeight: '600',
   },
   chartBar: {
@@ -1178,7 +1198,7 @@ const styles = StyleSheet.create({
   chartPercentage: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#fff',
+    color: theme.colors.paper,
   },
   chartLabels: {
     flexDirection: 'row',
@@ -1186,7 +1206,7 @@ const styles = StyleSheet.create({
   },
   chartLabel: {
     fontSize: 12,
-    color: '#fff',
+    color: theme.colors.paper,
     opacity: 0.9,
   },
   ratioContainer: {
@@ -1197,26 +1217,26 @@ const styles = StyleSheet.create({
     marginTop: theme.spacing.sm,
     paddingVertical: theme.spacing.xs,
     paddingHorizontal: theme.spacing.md,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: theme.colors.opacity.white10,
     borderRadius: 12,
     alignSelf: 'center',
   },
   ratioLabel: {
     fontSize: 11,
-    color: '#fff',
+    color: theme.colors.paper,
     opacity: 0.8,
   },
   ratioValue: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#fff',
+    color: theme.colors.paper,
   },
   cycleBadge: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: theme.spacing.xs,
-    backgroundColor: 'rgba(0,0,0,0.15)',
+    backgroundColor: theme.colors.opacity.stone20,
     paddingHorizontal: theme.spacing.md,
     paddingVertical: theme.spacing.sm,
     borderRadius: 20,
@@ -1224,7 +1244,7 @@ const styles = StyleSheet.create({
   },
   cycleBadgeText: {
     fontSize: 14,
-    color: '#fff',
+    color: theme.colors.paper,
     fontWeight: '600',
   },
   slidersSection: {
@@ -1243,7 +1263,7 @@ const styles = StyleSheet.create({
     color: theme.colors.paper,
   },
   slidersContainer: {
-    backgroundColor: 'rgba(41, 37, 36, 0.5)',
+    backgroundColor: theme.colors.opacity.stone50,
     borderRadius: 24,
     padding: theme.spacing.lg,
     gap: theme.spacing.xl,
@@ -1283,7 +1303,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: theme.colors.opacity.white10,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -1323,7 +1343,7 @@ const styles = StyleSheet.create({
   tickMark: {
     width: 1,
     height: 4,
-    backgroundColor: 'rgba(255,255,255,0.3)',
+    backgroundColor: theme.colors.opacity.white30,
   },
   rangeLabels: {
     position: 'absolute',
@@ -1349,7 +1369,7 @@ const styles = StyleSheet.create({
   valueBadgeText: {
     fontSize: 12,
     fontWeight: 'bold',
-    color: '#fff',
+    color: theme.colors.paper,
   },
   sliderThumb: {
     position: 'absolute',
@@ -1361,7 +1381,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: theme.colors.deepVoid,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
         shadowRadius: 4,
@@ -1374,14 +1394,14 @@ const styles = StyleSheet.create({
   thumbIcon: {
     width: 30,
     height: 30,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.paper,
     borderRadius: 15,
     padding: 2,
   },
   tipBox: {
     alignItems: 'center',
     gap: theme.spacing.sm,
-    backgroundColor: 'rgba(251, 191, 36, 0.1)',
+    backgroundColor: theme.colors.opacity.gold10,
     borderRadius: 16,
     padding: theme.spacing.md,
     marginBottom: theme.spacing.lg,
@@ -1399,14 +1419,14 @@ const styles = StyleSheet.create({
   successMessage: {
     alignItems: 'center',
     gap: theme.spacing.sm,
-    backgroundColor: 'rgba(34, 197, 94, 0.1)',
+    backgroundColor: theme.colors.successBg,
     borderRadius: 16,
     padding: theme.spacing.md,
     marginBottom: theme.spacing.lg,
   },
   successText: {
     fontSize: 14,
-    color: '#22C55E',
+    color: theme.colors.success,
     lineHeight: 20,
     textAlign: 'center',
   },
@@ -1417,28 +1437,28 @@ const styles = StyleSheet.create({
   validationMessage: {
     alignItems: 'center',
     gap: theme.spacing.sm,
-    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+    backgroundColor: theme.colors.errorBg,
     borderRadius: 16,
     padding: theme.spacing.md,
     marginBottom: theme.spacing.lg,
   },
   validationText: {
     fontSize: 14,
-    color: '#EF4444',
+    color: theme.colors.error,
     lineHeight: 20,
     textAlign: 'center',
   },
   warningMessage: {
     alignItems: 'center',
     gap: theme.spacing.sm,
-    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+    backgroundColor: theme.colors.warningBg,
     borderRadius: 16,
     padding: theme.spacing.md,
     marginBottom: theme.spacing.lg,
   },
   warningText: {
     fontSize: 14,
-    color: '#F59E0B',
+    color: theme.colors.paleGold,
     lineHeight: 20,
     textAlign: 'center',
   },
@@ -1459,7 +1479,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: theme.colors.opacity.white10,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -1481,7 +1501,7 @@ const styles = StyleSheet.create({
   trophyIcon: {
     width: 50,
     height: 50,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.paper,
     borderRadius: 25,
     padding: 2,
   },

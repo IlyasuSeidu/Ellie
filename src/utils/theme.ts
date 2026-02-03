@@ -85,10 +85,12 @@ export const colors = {
     stone10: 'rgba(28, 25, 23, 0.1)',
     stone20: 'rgba(28, 25, 23, 0.2)',
     stone30: 'rgba(28, 25, 23, 0.3)',
+    stone50: 'rgba(41, 37, 36, 0.5)', // softStone with 50% opacity
     stone95: 'rgba(28, 25, 23, 0.95)',
     void95: 'rgba(12, 10, 9, 0.95)', // End screen overlays
     white10: 'rgba(255, 255, 255, 0.1)', // Button backgrounds
     white20: 'rgba(255, 255, 255, 0.2)', // Highlights
+    white30: 'rgba(255, 255, 255, 0.3)', // Stronger highlights
     black40: 'rgba(0, 0, 0, 0.4)', // Light modal backdrops
     black60: 'rgba(0, 0, 0, 0.6)', // Standard modal backdrops
   },

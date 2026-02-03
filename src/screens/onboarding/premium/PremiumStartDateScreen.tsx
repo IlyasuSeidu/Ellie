@@ -68,6 +68,7 @@ const SHIFT_COLORS = {
   day: { r: 33, g: 150, b: 243 }, // #2196F3 - Blue
   night: { r: 101, g: 31, b: 255 }, // #651FFF - Purple
   off: { r: 255, g: 152, b: 0 }, // #FF9800 - Orange
+  default: { r: 180, g: 83, b: 9 }, // #b45309 - sacredGold fallback
 } as const;
 
 // TypeScript Interfaces
@@ -187,7 +188,8 @@ const AnimatedDayCell: React.FC<DayCellProps> = React.memo(
 
     const glowAnimatedStyle = useAnimatedStyle(() => {
       const getGlowColor = () => {
-        if (!shiftType) return `rgba(197, 151, 92, ${glowOpacity.value * 0.3})`;
+        if (!shiftType)
+          return `rgba(${SHIFT_COLORS.default.r}, ${SHIFT_COLORS.default.g}, ${SHIFT_COLORS.default.b}, ${glowOpacity.value * 0.3})`;
 
         const color =
           shiftType === 'day'
@@ -211,7 +213,8 @@ const AnimatedDayCell: React.FC<DayCellProps> = React.memo(
 
     const ringAnimatedStyle = useAnimatedStyle(() => {
       const getRingColor = () => {
-        if (!shiftType) return `rgba(197, 151, 92, ${ringOpacity.value})`;
+        if (!shiftType)
+          return `rgba(${SHIFT_COLORS.default.r}, ${SHIFT_COLORS.default.g}, ${SHIFT_COLORS.default.b}, ${ringOpacity.value})`;
 
         const color =
           shiftType === 'day'
