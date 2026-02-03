@@ -1032,16 +1032,16 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     padding: theme.spacing.xl,
     borderWidth: 1,
-    borderColor: theme.colors.softStone,
+    borderColor: theme.colors.opacity.gold20,
     ...Platform.select({
       ios: {
-        shadowColor: theme.colors.deepVoid,
-        shadowOffset: { width: 0, height: 8 },
-        shadowOpacity: 0.25,
-        shadowRadius: 16,
+        shadowColor: theme.colors.sacredGold,
+        shadowOffset: { width: 0, height: 12 },
+        shadowOpacity: 0.4,
+        shadowRadius: 20,
       },
       android: {
-        elevation: 8,
+        elevation: 12,
       },
     }),
   },
