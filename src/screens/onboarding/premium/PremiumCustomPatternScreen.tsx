@@ -1047,10 +1047,7 @@ const styles = StyleSheet.create({
   },
   previewCard: {
     marginBottom: theme.spacing.xl,
-  },
-  previewGradient: {
     borderRadius: 24,
-    padding: theme.spacing.xl,
     borderWidth: 1,
     borderColor: theme.colors.opacity.gold20,
     ...Platform.select({
@@ -1064,6 +1061,10 @@ const styles = StyleSheet.create({
         elevation: 12,
       },
     }),
+  },
+  previewGradient: {
+    borderRadius: 24,
+    padding: theme.spacing.xl,
   },
   previewHeader: {
     flexDirection: 'row',

@@ -1710,10 +1710,7 @@ const styles = StyleSheet.create({
   // Pattern Summary Card
   patternCard: {
     marginBottom: theme.spacing.xl,
-  },
-  patternGradient: {
     borderRadius: 16,
-    padding: theme.spacing.lg,
     borderWidth: 1,
     borderColor: theme.colors.opacity.gold20,
     ...Platform.select({
@@ -1727,6 +1724,10 @@ const styles = StyleSheet.create({
         elevation: 12,
       },
     }),
+  },
+  patternGradient: {
+    borderRadius: 16,
+    padding: theme.spacing.lg,
   },
   patternIconContainer: {
     alignSelf: 'center',
@@ -1890,10 +1891,7 @@ const styles = StyleSheet.create({
   // Live Preview Card
   previewCard: {
     marginBottom: theme.spacing.xl,
-  },
-  previewGradient: {
     borderRadius: 16,
-    padding: theme.spacing.lg,
     borderWidth: 1,
     borderColor: theme.colors.opacity.gold20,
     ...Platform.select({
@@ -1907,6 +1905,10 @@ const styles = StyleSheet.create({
         elevation: 12,
       },
     }),
+  },
+  previewGradient: {
+    borderRadius: 16,
+    padding: theme.spacing.lg,
   },
   previewRow: {
     flexDirection: 'row',
@@ -2140,13 +2142,7 @@ const styles = StyleSheet.create({
   // Selected Date Card
   selectedDateCard: {
     marginVertical: theme.spacing.md,
-  },
-  selectedDateGradient: {
     borderRadius: 12,
-    padding: theme.spacing.md,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.spacing.sm,
     borderWidth: 1,
     borderColor: theme.colors.opacity.gold20,
     ...Platform.select({
@@ -2160,6 +2156,13 @@ const styles = StyleSheet.create({
         elevation: 12,
       },
     }),
+  },
+  selectedDateGradient: {
+    borderRadius: 12,
+    padding: theme.spacing.md,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.sm,
   },
   selectedDateIcon: {
     fontSize: 24,
