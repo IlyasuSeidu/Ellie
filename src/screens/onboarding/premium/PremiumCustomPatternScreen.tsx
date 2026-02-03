@@ -565,7 +565,10 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
 
   return (
     <Animated.View style={[styles.previewCard, cardAnimatedStyle]}>
-      <LinearGradient colors={['#b45309', '#d97706']} style={styles.previewGradient}>
+      <LinearGradient
+        colors={[theme.colors.softStone, theme.colors.darkStone]}
+        style={styles.previewGradient}
+      >
         {/* Header */}
         <View style={styles.previewHeader}>
           <Image
@@ -1028,11 +1031,13 @@ const styles = StyleSheet.create({
   previewGradient: {
     borderRadius: 24,
     padding: theme.spacing.xl,
+    borderWidth: 1,
+    borderColor: theme.colors.softStone,
     ...Platform.select({
       ios: {
-        shadowColor: '#b45309',
+        shadowColor: theme.colors.deepVoid,
         shadowOffset: { width: 0, height: 8 },
-        shadowOpacity: 0.3,
+        shadowOpacity: 0.25,
         shadowRadius: 16,
       },
       android: {
