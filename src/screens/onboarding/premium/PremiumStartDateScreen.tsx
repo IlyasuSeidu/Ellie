@@ -1139,7 +1139,11 @@ const PhaseSelector: React.FC<PhaseSelectorProps> = ({
 
       {/* Helper Text */}
       <View style={styles.helperTextContainer}>
-        <Ionicons name="information-circle" size={24} color={theme.colors.paleGold} />
+        <Image
+          source={require('../../../../assets/onboarding/icons/consolidated/info-helper-bubble.png')}
+          style={styles.helperIcon}
+          resizeMode="contain"
+        />
         <Text style={styles.helperText}>Choose which part of your cycle you&apos;ll be on</Text>
       </View>
     </View>
@@ -1878,6 +1882,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: theme.spacing.sm,
+  },
+  helperIcon: {
+    width: 24,
+    height: 24,
   },
   helperText: {
     fontSize: 14,
