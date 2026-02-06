@@ -73,8 +73,33 @@ jest.mock('react-native-reanimated', () => {
     runOnJS: jest.fn((fn) => fn),
     runOnUI: jest.fn((fn) => fn),
     createAnimatedComponent: jest.fn((Component) => Component),
+    // Entering animations with fully chainable methods
     FadeIn: {
-      duration: jest.fn(() => ({})),
+      duration: jest.fn(function () {
+        const chain = {
+          springify: jest.fn(() => chain),
+          delay: jest.fn(() => chain),
+        };
+        return chain;
+      }),
+    },
+    FadeInDown: {
+      duration: jest.fn(function () {
+        const chain = {
+          springify: jest.fn(() => chain),
+          delay: jest.fn(() => chain),
+        };
+        return chain;
+      }),
+    },
+    FadeInUp: {
+      duration: jest.fn(function () {
+        const chain = {
+          springify: jest.fn(() => chain),
+          delay: jest.fn(() => chain),
+        };
+        return chain;
+      }),
     },
   };
 });

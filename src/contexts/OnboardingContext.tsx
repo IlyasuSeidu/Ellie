@@ -23,15 +23,16 @@ export interface OnboardingData {
     daysOff: number;
   };
 
-  // Future steps...
+  // Step 5: Start Date
   startDate?: Date;
   phaseOffset?: number;
-  shiftTimes?: {
-    dayStart: string;
-    dayEnd: string;
-    nightStart: string;
-    nightEnd: string;
-  };
+
+  // Step 6: Shift Times
+  shiftStartTime?: string; // HH:MM format (24-hour)
+  shiftEndTime?: string; // HH:MM format (24-hour)
+  shiftDuration?: 8 | 12; // Hours
+  shiftType?: 'day' | 'night'; // Auto-detected from start time
+  isCustomShiftTime?: boolean; // True if user selected custom time
 }
 
 interface OnboardingContextValue {

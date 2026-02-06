@@ -16,6 +16,7 @@ import {
   AccessibilityInfo,
   Image,
   ImageSourcePropType,
+  InteractionManager,
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -1355,57 +1356,21 @@ const ValidationTips: React.FC<{ reducedMotion: boolean }> = ({ reducedMotion })
   );
 };
 
-// Continue Button Component
+// Continue Button Component - Simplified to avoid animation crashes
 const ContinueButton: React.FC<{
   enabled: boolean;
   onPress: () => void;
   reducedMotion: boolean;
-}> = ({ enabled, onPress, reducedMotion }) => {
-  const slideY = useSharedValue(100);
-  const scale = useSharedValue(1);
-  const pressScale = useSharedValue(1);
-
-  useEffect(() => {
-    slideY.value = withDelay(900, withSpring(0, SPRING_CONFIGS.bouncy));
-
-    // Idle pulse when enabled
-    if (enabled && !reducedMotion) {
-      scale.value = withRepeat(
-        withSequence(withTiming(1.0, { duration: 1500 }), withTiming(1.02, { duration: 1500 })),
-        -1,
-        true
-      );
-    } else {
-      scale.value = 1;
-    }
-  }, [enabled, reducedMotion, slideY, scale]);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [
-      { translateY: slideY.value },
-      { scale: (reducedMotion ? 1 : scale.value) * pressScale.value },
-    ],
-  }));
-
-  const handlePressIn = useCallback(() => {
-    if (!enabled || reducedMotion) return;
-    pressScale.value = withTiming(0.98, { duration: 100 });
-  }, [enabled, reducedMotion, pressScale]);
-
-  const handlePressOut = useCallback(() => {
-    if (!enabled) return;
-    if (!reducedMotion) {
-      pressScale.value = withTiming(1.0, { duration: 100 });
-    }
-    HAPTIC_PATTERNS.SUCCESS();
-    onPress();
-  }, [enabled, reducedMotion, pressScale, onPress]);
-
+}> = ({ enabled, onPress }) => {
   return (
-    <Animated.View style={[styles.continueButtonContainer, animatedStyle]}>
+    <View style={styles.continueButtonContainer}>
       <Pressable
-        onPressIn={handlePressIn}
-        onPressOut={handlePressOut}
+        onPress={() => {
+          if (enabled) {
+            HAPTIC_PATTERNS.SUCCESS();
+            onPress();
+          }
+        }}
         disabled={!enabled}
         style={[styles.continueButton, !enabled && styles.continueButtonDisabled]}
       >
@@ -1418,11 +1383,11 @@ const ContinueButton: React.FC<{
           style={styles.continueGradient}
         >
           <Ionicons name="checkmark-circle" size={28} color={theme.colors.paper} />
-          <Text style={styles.continueButtonText}>Continue to Energy Level</Text>
+          <Text style={styles.continueButtonText}>Set Shift Times</Text>
           <Ionicons name="arrow-forward" size={24} color={theme.colors.paper} />
         </LinearGradient>
       </Pressable>
-    </Animated.View>
+    </View>
   );
 };
 
@@ -1549,38 +1514,18 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
       phaseOffset,
     });
 
-    // Exit animation
-    if (!reducedMotion) {
-      screenOpacity.value = withTiming(0, { duration: 400 });
-      screenSlideX.value = withTiming(-50, { duration: 400 });
+    // Navigate with haptic feedback
+    HAPTIC_PATTERNS.SUCCESS();
 
-      // Navigate after animation completes
-      setTimeout(() => {
-        if (onContinue) {
-          onContinue();
-        } else {
-          navigation.navigate('EnergyLevel' as never);
-        }
-      }, 400);
-    } else {
+    // Defer navigation to allow animations to settle and prevent crashes
+    InteractionManager.runAfterInteractions(() => {
       if (onContinue) {
         onContinue();
       } else {
-        navigation.navigate('EnergyLevel' as never);
+        navigation.navigate('ShiftTimeInput');
       }
-    }
-  }, [
-    canContinue,
-    selectedDate,
-    selectedPhase,
-    customPattern,
-    updateData,
-    onContinue,
-    navigation,
-    reducedMotion,
-    screenOpacity,
-    screenSlideX,
-  ]);
+    });
+  }, [canContinue, selectedDate, selectedPhase, customPattern, updateData, onContinue, navigation]);
 
   const handleBack = useCallback(() => {
     HAPTIC_PATTERNS.LIGHT();

@@ -228,7 +228,7 @@ describe('PremiumStartDateScreen', () => {
   describe('Continue Button', () => {
     it('should render continue button', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('Continue to Energy Level')).toBeTruthy();
+      expect(getByText('Set Shift Times')).toBeTruthy();
     });
 
     it('should have back button', () => {
@@ -240,7 +240,7 @@ describe('PremiumStartDateScreen', () => {
 
     it('should render navigation buttons', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('Continue to Energy Level')).toBeTruthy();
+      expect(getByText('Set Shift Times')).toBeTruthy();
     });
   });
 

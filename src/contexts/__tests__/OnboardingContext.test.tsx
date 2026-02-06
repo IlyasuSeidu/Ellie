@@ -170,12 +170,10 @@ describe('OnboardingContext', () => {
         country: { code: 'AU', name: 'Australia', flag: '🇦🇺' },
         patternType: ShiftPattern.STANDARD_5_5_5,
         startDate: new Date('2024-01-15'),
-        shiftTimes: {
-          dayStart: '07:00',
-          dayEnd: '19:00',
-          nightStart: '19:00',
-          nightEnd: '07:00',
-        },
+        shiftStartTime: '07:00',
+        shiftEndTime: '19:00',
+        shiftDuration: 12,
+        shiftType: 'day',
       };
 
       act(() => {
