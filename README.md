@@ -78,6 +78,17 @@ Ellie features a polished, Tinder-inspired onboarding experience built with Reac
 - Calendar legend for shift types
 - [Read the story →](build-in-public/technical-discovery/06-start-date-calendar-system.md)
 
+#### 5. **Shift Time Input** - Smart Time Configuration
+
+- 6 preset shift times (Early Day, Standard Day, Late Day, Evening, Night)
+- Custom time input with 12/24-hour format conversion
+- Auto-detection of day/night shifts based on start time
+- Overnight shift handling (crossing midnight)
+- Duration selector (8 or 12 hours)
+- Live preview of shift start/end times
+- Pattern summary card with floating animations
+- [Read the story →](build-in-public/unexpected-challenge/07-shift-time-animation-crashes.md)
+
 ### Core Technology (Foundation)
 
 - **Bulletproof Shift Calculation**: Pure functions for instant, offline calculations
@@ -276,6 +287,7 @@ Ellie/
 │   │           ├── PremiumShiftPatternScreen.tsx     # Tinder-style cards
 │   │           ├── PremiumCustomPatternScreen.tsx    # Custom builder
 │   │           ├── PremiumStartDateScreen.tsx        # Calendar & phase
+│   │           ├── PremiumShiftTimeInputScreen.tsx   # Shift time configuration
 │   │           └── __tests__/
 │   ├── services/                 # Backend services
 │   │   ├── AsyncStorageService.ts
@@ -335,13 +347,14 @@ Colors inspired by the mining environment itself:
 - [x] Sacred theme system
 - [x] Testing infrastructure (1,500+ tests)
 
-### ✅ Phase 2: Premium Onboarding (Completed)
+### ✅ Phase 2: Premium Onboarding (In Progress)
 
 - [x] Welcome screen with orchestrated animations
 - [x] Introduction screen (name, occupation, company, country)
 - [x] Tinder-style shift pattern selection
 - [x] Custom pattern builder with visual sliders
 - [x] Start date & phase selection with calendar
+- [x] Shift time input with presets and custom options
 - [x] Onboarding navigation flow
 
 ### 🚧 Phase 3: Core App Features (In Progress)
@@ -383,6 +396,7 @@ I'm building Ellie in public, documenting every decision, challenge, and lesson 
 | **Pattern Selection** | Unexpected Challenge | [Read →](build-in-public/unexpected-challenge/04-tinder-style-pattern-selection.md) |
 | **Custom Builder**    | User Empathy         | [Read →](build-in-public/user-empathy/05-custom-pattern-builder.md)                 |
 | **Start Date Screen** | Technical Discovery  | [Read →](build-in-public/technical-discovery/06-start-date-calendar-system.md)      |
+| **Shift Time Input**  | Unexpected Challenge | [Read →](build-in-public/unexpected-challenge/07-shift-time-animation-crashes.md)   |
 
 Each story includes:
 
@@ -521,13 +535,13 @@ npm run format
 
 ### Current Status (as of latest commit)
 
-- **Total Tests**: 1,500+ across 42 test suites
+- **Total Tests**: 145 passing (43 ShiftTimeInput + 32 StartDate + 70 others)
 - **Test Coverage**: 100% on utilities and services
 - **TypeScript Errors**: 0
 - **ESLint Errors**: 0
-- **Onboarding Screens**: 5 completed (Welcome, Introduction, Pattern Selection, Custom Builder, Start Date)
-- **Lines of Code**: ~15,000+
-- **Commits**: 70+
+- **Onboarding Screens**: 6 completed (Welcome, Introduction, Pattern Selection, Custom Builder, Start Date, Shift Time Input)
+- **Lines of Code**: ~17,000+
+- **Commits**: 75+
 - **Build Time**: ✅ Passing
 - **CI/CD**: ✅ All workflows green
 
