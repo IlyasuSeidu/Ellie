@@ -73,13 +73,6 @@ const SHIFT_COLORS = {
 } as const;
 
 // TypeScript Interfaces
-interface PatternSummaryCardProps {
-  pattern: ShiftPattern;
-  customPattern: { daysOn: number; nightsOn: number; daysOff: number };
-  reducedMotion: boolean;
-  patternIcon?: ImageSourcePropType;
-}
-
 interface CalendarProps {
   selectedDate: string | null;
   onDateSelect: (date: string) => void;
@@ -397,224 +390,12 @@ const getShiftTypeForDate = (
   return 'off';
 };
 
-// Get pattern icon
-const getPatternIcon = (patternType: ShiftPattern): ImageSourcePropType | undefined => {
-  try {
-    switch (patternType) {
-      case ShiftPattern.STANDARD_4_4_4:
-        return require('../../../../assets/onboarding/icons/consolidated/shift-pattern-4-4-4.png');
-      case ShiftPattern.STANDARD_7_7_7:
-        return require('../../../../assets/onboarding/icons/consolidated/shift-pattern-7-7-7.png');
-      case ShiftPattern.STANDARD_2_2_3:
-        return require('../../../../assets/onboarding/icons/consolidated/shift-pattern-2-2-3.png');
-      case ShiftPattern.STANDARD_5_5_5:
-        return require('../../../../assets/onboarding/icons/consolidated/shift-pattern-5-5-5.png');
-      case ShiftPattern.STANDARD_3_3_3:
-        return require('../../../../assets/onboarding/icons/consolidated/shift-pattern-3-3-3.png');
-      case ShiftPattern.STANDARD_10_10_10:
-        return require('../../../../assets/onboarding/icons/consolidated/shift-pattern-10-10-10.png');
-      case ShiftPattern.CONTINENTAL:
-        return require('../../../../assets/onboarding/icons/consolidated/shift-pattern-continental.png');
-      case ShiftPattern.PITMAN:
-        return require('../../../../assets/onboarding/icons/consolidated/shift-pattern-pitman.png');
-      case ShiftPattern.CUSTOM:
-        return require('../../../../assets/onboarding/icons/consolidated/custom-pattern-builder-hero.png');
-      default:
-        return undefined;
-    }
-  } catch {
-    return undefined;
-  }
-};
-
 // Get tomorrow's date as default
 const getTomorrowDate = (): string => {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   tomorrow.setHours(0, 0, 0, 0);
   return tomorrow.toISOString().split('T')[0];
-};
-
-// Pattern Summary Card Component
-const PatternSummaryCard: React.FC<PatternSummaryCardProps> = ({
-  pattern,
-  customPattern,
-  reducedMotion,
-  patternIcon,
-}) => {
-  const floatY = useSharedValue(0);
-  const opacity = useSharedValue(0);
-  const slideY = useSharedValue(-50);
-
-  useEffect(() => {
-    // Entrance animation
-    opacity.value = withTiming(1, { duration: 400 });
-    slideY.value = withSpring(0, SPRING_CONFIGS.bouncy);
-
-    // Idle floating animation
-    if (!reducedMotion) {
-      floatY.value = withRepeat(
-        withSequence(withTiming(-2, { duration: 2000 }), withTiming(2, { duration: 2000 })),
-        -1,
-        true
-      );
-    }
-  }, [reducedMotion, floatY, opacity, slideY]);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    opacity: opacity.value,
-    transform: [{ translateY: slideY.value + floatY.value }],
-  }));
-
-  const patternName = pattern === ShiftPattern.CUSTOM ? 'Custom Pattern' : pattern;
-
-  // Timeline track - max 6 blocks per type with "+N more" indicator
-  const renderTimelineTrack = () => {
-    const MAX_BLOCKS = 6;
-    const dayBlocks = Math.min(customPattern.daysOn, MAX_BLOCKS);
-    const nightBlocks = Math.min(customPattern.nightsOn, MAX_BLOCKS);
-    const offBlocks = Math.min(customPattern.daysOff, MAX_BLOCKS);
-
-    const extraDays = Math.max(0, customPattern.daysOn - MAX_BLOCKS);
-    const extraNights = Math.max(0, customPattern.nightsOn - MAX_BLOCKS);
-    const extraOffs = Math.max(0, customPattern.daysOff - MAX_BLOCKS);
-
-    return (
-      <View style={styles.timelineTrack}>
-        {/* Day blocks */}
-        {Array(dayBlocks)
-          .fill(null)
-          .map((_, i) => (
-            <View
-              key={`day-${i}`}
-              style={[
-                styles.timelineBlock,
-                { backgroundColor: theme.colors.shiftVisualization.dayShift },
-              ]}
-            />
-          ))}
-        {extraDays > 0 && <Text style={styles.timelineExtra}>+{extraDays}</Text>}
-
-        {/* Night blocks */}
-        {Array(nightBlocks)
-          .fill(null)
-          .map((_, i) => (
-            <View
-              key={`night-${i}`}
-              style={[
-                styles.timelineBlock,
-                { backgroundColor: theme.colors.shiftVisualization.nightShift },
-              ]}
-            />
-          ))}
-        {extraNights > 0 && <Text style={styles.timelineExtra}>+{extraNights}</Text>}
-
-        {/* Off blocks */}
-        {Array(offBlocks)
-          .fill(null)
-          .map((_, i) => (
-            <View
-              key={`off-${i}`}
-              style={[
-                styles.timelineBlock,
-                { backgroundColor: theme.colors.shiftVisualization.daysOff },
-              ]}
-            />
-          ))}
-        {extraOffs > 0 && <Text style={styles.timelineExtra}>+{extraOffs}</Text>}
-      </View>
-    );
-  };
-
-  return (
-    <Animated.View style={[styles.patternCard, animatedStyle]}>
-      <LinearGradient
-        colors={[theme.colors.softStone, theme.colors.darkStone]}
-        style={styles.patternGradient}
-      >
-        <Text style={styles.patternCardTitle}>Your Shift Pattern</Text>
-
-        {/* Pattern icon - either loaded image or fallback */}
-        <View style={styles.patternIconContainer}>
-          {patternIcon ? (
-            <Image source={patternIcon} style={styles.patternIcon} resizeMode="contain" />
-          ) : (
-            <Ionicons name="calendar" size={64} color={theme.colors.paleGold} />
-          )}
-        </View>
-
-        <Text style={styles.patternName}>{patternName}</Text>
-
-        {customPattern && (
-          <>
-            {/* Cycle items with icons */}
-            <View style={styles.cycleItems}>
-              {customPattern.daysOn > 0 && (
-                <View style={styles.cycleItem}>
-                  <View
-                    style={[
-                      styles.cycleIconCircle,
-                      { backgroundColor: theme.colors.shiftVisualization.dayShift },
-                    ]}
-                  >
-                    <Image
-                      source={require('../../../../assets/onboarding/icons/consolidated/cycle-day-shift-sun.png')}
-                      style={styles.cycleIconImage}
-                      resizeMode="contain"
-                    />
-                  </View>
-                  <Text style={styles.cycleItemText}>{customPattern.daysOn} day shifts</Text>
-                </View>
-              )}
-              {customPattern.nightsOn > 0 && (
-                <View style={styles.cycleItem}>
-                  <View
-                    style={[
-                      styles.cycleIconCircle,
-                      { backgroundColor: theme.colors.shiftVisualization.nightShift },
-                    ]}
-                  >
-                    <Image
-                      source={require('../../../../assets/onboarding/icons/consolidated/cycle-night-shift-moon.png')}
-                      style={styles.cycleIconImage}
-                      resizeMode="contain"
-                    />
-                  </View>
-                  <Text style={styles.cycleItemText}>{customPattern.nightsOn} night shifts</Text>
-                </View>
-              )}
-              {customPattern.daysOff > 0 && (
-                <View style={styles.cycleItem}>
-                  <View
-                    style={[
-                      styles.cycleIconCircle,
-                      { backgroundColor: theme.colors.shiftVisualization.daysOff },
-                    ]}
-                  >
-                    <Image
-                      source={require('../../../../assets/onboarding/icons/consolidated/cycle-days-off-rest.png')}
-                      style={styles.cycleIconImage}
-                      resizeMode="contain"
-                    />
-                  </View>
-                  <Text style={styles.cycleItemText}>{customPattern.daysOff} days off</Text>
-                </View>
-              )}
-            </View>
-
-            {/* Timeline Track */}
-            {renderTimelineTrack()}
-
-            {/* Start date prompt */}
-            <View style={styles.startDatePrompt}>
-              <Text style={styles.startDatePromptIcon}>🚩</Text>
-              <Text style={styles.startDatePromptText}>Set your start date below</Text>
-            </View>
-          </>
-        )}
-      </LinearGradient>
-    </Animated.View>
-  );
 };
 
 // Interactive Calendar Component
@@ -1496,9 +1277,6 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
 
   const customPattern = useMemo(() => getPatternValues(pattern), [pattern, getPatternValues]);
 
-  // Get pattern icon
-  const patternIcon = useMemo(() => getPatternIcon(pattern), [pattern]);
-
   // Calculate phase offset for preview
   const previewPhaseOffset = selectedPhase ? calculatePhaseOffset(selectedPhase, customPattern) : 0;
 
@@ -1548,14 +1326,6 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
         >
           {/* Header with entrance animation */}
           <HeaderSection reducedMotion={reducedMotion} />
-
-          {/* Pattern Summary Card */}
-          <PatternSummaryCard
-            pattern={pattern}
-            customPattern={customPattern}
-            reducedMotion={reducedMotion}
-            patternIcon={patternIcon}
-          />
 
           {/* Interactive Calendar */}
           <InteractiveCalendar
@@ -1652,57 +1422,6 @@ const styles = StyleSheet.create({
         fontFamily: 'sans-serif-medium',
       },
     }),
-  },
-
-  // Pattern Summary Card
-  patternCard: {
-    marginBottom: theme.spacing.xl,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: theme.colors.opacity.gold20,
-    ...Platform.select({
-      ios: {
-        shadowColor: theme.colors.sacredGold,
-        shadowOffset: { width: 0, height: 12 },
-        shadowOpacity: 0.4,
-        shadowRadius: 20,
-      },
-      android: {
-        elevation: 12,
-      },
-    }),
-  },
-  patternGradient: {
-    borderRadius: 16,
-    padding: theme.spacing.lg,
-  },
-  patternIconContainer: {
-    alignSelf: 'center',
-    marginBottom: theme.spacing.md,
-  },
-  patternName: {
-    fontSize: 24,
-    fontWeight: '800',
-    color: theme.colors.sacredGold,
-    textAlign: 'center',
-    marginBottom: theme.spacing.md,
-    letterSpacing: 0.5,
-  },
-  patternDetails: {
-    fontSize: 14,
-    color: theme.colors.dust,
-    textAlign: 'center',
-    marginBottom: theme.spacing.md,
-  },
-  miniCyclePreview: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 4,
-  },
-  miniCycleBlock: {
-    width: 20,
-    height: 20,
-    borderRadius: 4,
   },
 
   // Calendar
@@ -1967,93 +1686,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: theme.colors.paper,
-  },
-  // Pattern Summary Card - Enhanced
-  patternCardTitle: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: theme.colors.dust,
-    textAlign: 'center',
-    marginBottom: theme.spacing.lg,
-    textTransform: 'uppercase',
-    letterSpacing: 1.5,
-  },
-  patternIcon: {
-    width: 96,
-    height: 96,
-  },
-  cycleItems: {
-    marginTop: theme.spacing.md,
-    gap: theme.spacing.sm,
-  },
-  cycleItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.spacing.md,
-    backgroundColor: theme.colors.opacity.stone5,
-    paddingVertical: theme.spacing.sm,
-    paddingHorizontal: theme.spacing.md,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: theme.colors.opacity.white10,
-  },
-  cycleIconCircle: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  cycleIconImage: {
-    width: 26,
-    height: 26,
-  },
-  cycleItemText: {
-    fontSize: 15,
-    color: theme.colors.paper,
-    fontWeight: '600',
-    flex: 1,
-  },
-  timelineTrack: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    gap: 4,
-    marginTop: theme.spacing.md,
-    paddingHorizontal: theme.spacing.md,
-    justifyContent: 'center',
-  },
-  timelineBlock: {
-    width: 14,
-    height: 14,
-    borderRadius: 4,
-  },
-  timelineExtra: {
-    fontSize: 10,
-    color: theme.colors.dust,
-    marginLeft: 2,
-  },
-  startDatePrompt: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: theme.spacing.sm,
-    marginTop: theme.spacing.lg,
-    paddingVertical: theme.spacing.md,
-    paddingHorizontal: theme.spacing.lg,
-    backgroundColor: theme.colors.opacity.gold10,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: theme.colors.opacity.gold20,
-  },
-  startDatePromptIcon: {
-    fontSize: 22,
-  },
-  startDatePromptText: {
-    fontSize: 15,
-    color: theme.colors.sacredGold,
-    fontWeight: '600',
-    letterSpacing: 0.3,
   },
   // Calendar - Enhanced
   shiftIcon: {

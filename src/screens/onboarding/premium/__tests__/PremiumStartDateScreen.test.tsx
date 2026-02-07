@@ -127,24 +127,6 @@ describe('PremiumStartDateScreen', () => {
     });
   });
 
-  describe('Pattern Summary Card', () => {
-    it('should display custom pattern name for custom patterns', () => {
-      const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('Custom Pattern')).toBeTruthy();
-    });
-
-    it('should display pattern details with default values', () => {
-      const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('Your Shift Pattern')).toBeTruthy();
-      expect(getByText('Custom Pattern')).toBeTruthy();
-    });
-
-    it('should render pattern summary card', () => {
-      const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('Custom Pattern')).toBeTruthy();
-    });
-  });
-
   describe('Interactive Calendar', () => {
     it('should render calendar with month navigation', () => {
       const { getByTestId } = renderWithContext(
@@ -247,7 +229,7 @@ describe('PremiumStartDateScreen', () => {
   describe('Data Management', () => {
     it('should handle pattern data from context', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('Custom Pattern')).toBeTruthy();
+      expect(getByText('Select Your Start Date')).toBeTruthy();
     });
 
     it('should work with OnboardingProvider', () => {
@@ -300,8 +282,7 @@ describe('PremiumStartDateScreen', () => {
   describe('Edge Cases', () => {
     it('should handle default pattern values', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('Your Shift Pattern')).toBeTruthy();
-      expect(getByText('Custom Pattern')).toBeTruthy();
+      expect(getByText('Select Your Start Date')).toBeTruthy();
     });
 
     it('should render without errors', () => {
@@ -314,7 +295,7 @@ describe('PremiumStartDateScreen', () => {
     it('should display all UI elements correctly', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
       expect(getByText('Select Your Start Date')).toBeTruthy();
-      expect(getByText('Custom Pattern')).toBeTruthy();
+      expect(getByText('Choose when your shift cycle begins')).toBeTruthy();
     });
   });
 });
