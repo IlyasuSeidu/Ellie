@@ -885,6 +885,11 @@ const PhaseSelector: React.FC<PhaseSelectorProps> = ({
 
   return (
     <View style={styles.phaseSelectorContainer}>
+      {/* Section Title */}
+      <Text style={styles.phaseSelectorTitle}>
+        Choose which part of your cycle you&apos;ll be on
+      </Text>
+
       <View style={styles.phaseCardsRow}>
         {/* Day Shift Card */}
         <AnimatedPhaseCard
@@ -921,12 +926,6 @@ const PhaseSelector: React.FC<PhaseSelectorProps> = ({
           reducedMotion={reducedMotion}
           disabled={!hasOff}
         />
-      </View>
-
-      {/* Helper Text */}
-      <View style={styles.helperTextContainer}>
-        <Ionicons name="information-circle" size={24} color={theme.colors.paleGold} />
-        <Text style={styles.helperText}>Choose which part of your cycle you&apos;ll be on</Text>
       </View>
     </View>
   );
@@ -1500,6 +1499,13 @@ const styles = StyleSheet.create({
   phaseSelectorContainer: {
     marginBottom: theme.spacing.xl,
   },
+  phaseSelectorTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: theme.colors.paper,
+    marginBottom: theme.spacing.md,
+    textAlign: 'center',
+  },
   phaseCardsRow: {
     flexDirection: 'row',
     gap: 8,
@@ -1544,16 +1550,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: theme.colors.paper,
     textAlign: 'center',
-  },
-  helperTextContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: theme.spacing.sm,
-  },
-  helperText: {
-    fontSize: 14,
-    color: theme.colors.dust,
   },
 
   // Live Preview Card
