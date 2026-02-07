@@ -698,10 +698,11 @@ interface AnimatedPhaseCardProps {
   icon: ImageSourcePropType;
   entranceDelay: number;
   reducedMotion: boolean;
+  disabled?: boolean;
 }
 
 const AnimatedPhaseCard: React.FC<AnimatedPhaseCardProps> = React.memo(
-  ({ phase, isSelected, onPress, label, icon, entranceDelay, reducedMotion }) => {
+  ({ phase, isSelected, onPress, label, icon, entranceDelay, reducedMotion, disabled = false }) => {
     const opacity = useSharedValue(0);
     const slideY = useSharedValue(50);
     const scale = useSharedValue(1);
@@ -764,7 +765,7 @@ const AnimatedPhaseCard: React.FC<AnimatedPhaseCardProps> = React.memo(
     }, [isSelected, reducedMotion, scale, borderOpacity, iconScale, iconFloatY, borderGlow]);
 
     const cardAnimatedStyle = useAnimatedStyle(() => ({
-      opacity: opacity.value,
+      opacity: disabled ? opacity.value * 0.5 : opacity.value,
       transform: [
         { translateY: slideY.value },
         { scale: reducedMotion ? 1 : scale.value * pressScale.value },
@@ -783,17 +784,19 @@ const AnimatedPhaseCard: React.FC<AnimatedPhaseCardProps> = React.memo(
     }));
 
     const handlePressIn = useCallback(() => {
-      if (!reducedMotion) {
+      if (!reducedMotion && !disabled) {
         pressScale.value = withTiming(0.95, { duration: 100 });
       }
-    }, [reducedMotion, pressScale]);
+    }, [reducedMotion, pressScale, disabled]);
 
     const handlePressOut = useCallback(() => {
-      if (!reducedMotion) {
-        pressScale.value = withTiming(1, { duration: 100 });
+      if (!disabled) {
+        if (!reducedMotion) {
+          pressScale.value = withTiming(1, { duration: 100 });
+        }
+        onPress();
       }
-      onPress();
-    }, [reducedMotion, pressScale, onPress]);
+    }, [reducedMotion, pressScale, onPress, disabled]);
 
     const getPhaseColor = () => {
       switch (phase) {
@@ -813,6 +816,7 @@ const AnimatedPhaseCard: React.FC<AnimatedPhaseCardProps> = React.memo(
         <Pressable
           onPressIn={handlePressIn}
           onPressOut={handlePressOut}
+          disabled={disabled}
           style={[
             styles.phaseCard,
             isSelected && styles.phaseCardSelected,
@@ -883,43 +887,40 @@ const PhaseSelector: React.FC<PhaseSelectorProps> = ({
     <View style={styles.phaseSelectorContainer}>
       <View style={styles.phaseCardsRow}>
         {/* Day Shift Card */}
-        {hasDay && (
-          <AnimatedPhaseCard
-            phase="day"
-            isSelected={selectedPhase === 'day'}
-            onPress={() => handlePhaseSelect('day')}
-            label="Day Shift"
-            icon={getPhaseIcon('day')}
-            entranceDelay={200}
-            reducedMotion={reducedMotion}
-          />
-        )}
+        <AnimatedPhaseCard
+          phase="day"
+          isSelected={selectedPhase === 'day'}
+          onPress={() => handlePhaseSelect('day')}
+          label="Day Shift"
+          icon={getPhaseIcon('day')}
+          entranceDelay={0}
+          reducedMotion={reducedMotion}
+          disabled={!hasDay}
+        />
 
         {/* Night Shift Card */}
-        {hasNight && (
-          <AnimatedPhaseCard
-            phase="night"
-            isSelected={selectedPhase === 'night'}
-            onPress={() => handlePhaseSelect('night')}
-            label="Night Shift"
-            icon={getPhaseIcon('night')}
-            entranceDelay={300}
-            reducedMotion={reducedMotion}
-          />
-        )}
+        <AnimatedPhaseCard
+          phase="night"
+          isSelected={selectedPhase === 'night'}
+          onPress={() => handlePhaseSelect('night')}
+          label="Night Shift"
+          icon={getPhaseIcon('night')}
+          entranceDelay={100}
+          reducedMotion={reducedMotion}
+          disabled={!hasNight}
+        />
 
         {/* Days Off Card */}
-        {hasOff && (
-          <AnimatedPhaseCard
-            phase="off"
-            isSelected={selectedPhase === 'off'}
-            onPress={() => handlePhaseSelect('off')}
-            label="Days Off"
-            icon={getPhaseIcon('off')}
-            entranceDelay={400}
-            reducedMotion={reducedMotion}
-          />
-        )}
+        <AnimatedPhaseCard
+          phase="off"
+          isSelected={selectedPhase === 'off'}
+          onPress={() => handlePhaseSelect('off')}
+          label="Days Off"
+          icon={getPhaseIcon('off')}
+          entranceDelay={200}
+          reducedMotion={reducedMotion}
+          disabled={!hasOff}
+        />
       </View>
 
       {/* Helper Text */}
