@@ -1428,6 +1428,7 @@ const styles = StyleSheet.create({
   // Calendar
   calendarContainer: {
     marginBottom: theme.spacing.xl,
+    paddingLeft: theme.spacing.md,
   },
   calendarHeader: {
     flexDirection: 'row',
