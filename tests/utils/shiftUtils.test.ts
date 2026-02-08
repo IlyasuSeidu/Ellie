@@ -16,69 +16,104 @@ import {
   isNightShift,
   getPhaseInfo,
 } from '@/utils/shiftUtils';
-import { ShiftPattern } from '@/types';
+import { ShiftPattern, ShiftSystem } from '@/types';
 
 describe('getShiftPattern', () => {
   it('should return correct pattern for STANDARD_3_3_3', () => {
     const pattern = getShiftPattern(ShiftPattern.STANDARD_3_3_3);
     expect(pattern).toEqual({
-      daysOn: 3,
-      nightsOn: 3,
-      daysOff: 3,
+      config: {
+        daysOn: 3,
+        nightsOn: 3,
+        daysOff: 3,
+        totalCycleDays: 9,
+      },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT, ShiftSystem.THREE_SHIFT],
     });
   });
 
   it('should return correct pattern for STANDARD_5_5_5', () => {
     const pattern = getShiftPattern(ShiftPattern.STANDARD_5_5_5);
     expect(pattern).toEqual({
-      daysOn: 5,
-      nightsOn: 5,
-      daysOff: 5,
+      config: {
+        daysOn: 5,
+        nightsOn: 5,
+        daysOff: 5,
+        totalCycleDays: 15,
+      },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT, ShiftSystem.THREE_SHIFT],
     });
   });
 
   it('should return correct pattern for STANDARD_10_10_10', () => {
     const pattern = getShiftPattern(ShiftPattern.STANDARD_10_10_10);
     expect(pattern).toEqual({
-      daysOn: 10,
-      nightsOn: 10,
-      daysOff: 10,
+      config: {
+        daysOn: 10,
+        nightsOn: 10,
+        daysOff: 10,
+        totalCycleDays: 30,
+      },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT],
     });
   });
 
   it('should return correct pattern for STANDARD_2_2_3', () => {
     const pattern = getShiftPattern(ShiftPattern.STANDARD_2_2_3);
     expect(pattern).toEqual({
-      daysOn: 2,
-      nightsOn: 2,
-      daysOff: 3,
+      config: {
+        daysOn: 2,
+        nightsOn: 2,
+        daysOff: 3,
+        totalCycleDays: 7,
+      },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT],
     });
   });
 
   it('should return correct pattern for STANDARD_4_4_4', () => {
     const pattern = getShiftPattern(ShiftPattern.STANDARD_4_4_4);
     expect(pattern).toEqual({
-      daysOn: 4,
-      nightsOn: 4,
-      daysOff: 4,
+      config: {
+        daysOn: 4,
+        nightsOn: 4,
+        daysOff: 4,
+        totalCycleDays: 12,
+      },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT, ShiftSystem.THREE_SHIFT],
     });
   });
 
   it('should return correct pattern for STANDARD_7_7_7', () => {
     const pattern = getShiftPattern(ShiftPattern.STANDARD_7_7_7);
     expect(pattern).toEqual({
-      daysOn: 7,
-      nightsOn: 7,
-      daysOff: 7,
+      config: {
+        daysOn: 7,
+        nightsOn: 7,
+        daysOff: 7,
+        totalCycleDays: 21,
+      },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT, ShiftSystem.THREE_SHIFT],
     });
   });
 
   it('should return zeros for CUSTOM pattern', () => {
     const pattern = getShiftPattern(ShiftPattern.CUSTOM);
     expect(pattern).toEqual({
-      daysOn: 0,
-      nightsOn: 0,
-      daysOff: 0,
+      config: {
+        daysOn: 0,
+        nightsOn: 0,
+        daysOff: 0,
+        totalCycleDays: 0,
+      },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT, ShiftSystem.THREE_SHIFT],
     });
   });
 });

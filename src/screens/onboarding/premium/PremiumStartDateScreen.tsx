@@ -38,7 +38,7 @@ import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
-import { ShiftPattern } from '@/types';
+import { ShiftPattern, ShiftSystem, Phase } from '@/types';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -68,7 +68,9 @@ const TIPS = [
 const SHIFT_COLORS = {
   day: { r: 33, g: 150, b: 243 }, // #2196F3 - Blue
   night: { r: 101, g: 31, b: 255 }, // #651FFF - Purple
-  off: { r: 255, g: 152, b: 0 }, // #FF9800 - Orange
+  morning: { r: 252, g: 211, b: 77 }, // #FCD34D - Yellow
+  afternoon: { r: 251, g: 146, b: 60 }, // #FB923C - Orange
+  off: { r: 255, g: 152, b: 0 }, // #FF9800 - Orange/Amber
   default: { r: 180, g: 83, b: 9 }, // #b45309 - sacredGold fallback
 } as const;
 
@@ -77,14 +79,30 @@ interface CalendarProps {
   selectedDate: string | null;
   onDateSelect: (date: string) => void;
   reducedMotion: boolean;
-  customPattern: { daysOn: number; nightsOn: number; daysOff: number };
+  customPattern: {
+    daysOn?: number;
+    nightsOn?: number;
+    morningOn?: number;
+    afternoonOn?: number;
+    nightOn?: number;
+    daysOff: number;
+  };
   phaseOffset: number;
+  shiftSystem: ShiftSystem;
 }
 
 interface PhaseSelectorProps {
-  selectedPhase: 'day' | 'night' | 'off' | null;
-  onPhaseSelect: (phase: 'day' | 'night' | 'off') => void;
-  pattern: { daysOn: number; nightsOn: number; daysOff: number };
+  selectedPhase: Phase | null;
+  onPhaseSelect: (phase: Phase) => void;
+  pattern: {
+    daysOn?: number;
+    nightsOn?: number;
+    morningOn?: number;
+    afternoonOn?: number;
+    nightOn?: number;
+    daysOff: number;
+  };
+  shiftSystem: ShiftSystem;
   reducedMotion: boolean;
 }
 
@@ -95,9 +113,17 @@ interface SelectedDateCardProps {
 
 interface LivePreviewCardProps {
   selectedDate: string | null;
-  selectedPhase: 'day' | 'night' | 'off' | null;
+  selectedPhase: Phase | null;
   reducedMotion: boolean;
-  customPattern: { daysOn: number; nightsOn: number; daysOff: number };
+  customPattern: {
+    daysOn?: number;
+    nightsOn?: number;
+    morningOn?: number;
+    afternoonOn?: number;
+    nightOn?: number;
+    daysOff: number;
+  };
+  shiftSystem: ShiftSystem;
   phaseOffset: number;
 }
 
@@ -108,7 +134,7 @@ interface DayCellProps {
   isToday: boolean;
   isValid: boolean;
   isCurrentMonth: boolean;
-  shiftType: 'day' | 'night' | 'off' | null;
+  shiftType: 'day' | 'night' | 'morning' | 'afternoon' | 'off' | null;
   onPress: () => void;
   reducedMotion: boolean;
 }
@@ -168,7 +194,11 @@ const AnimatedDayCell: React.FC<DayCellProps> = React.memo(
             ? SHIFT_COLORS.day
             : shiftType === 'night'
               ? SHIFT_COLORS.night
-              : SHIFT_COLORS.off;
+              : shiftType === 'morning'
+                ? SHIFT_COLORS.morning
+                : shiftType === 'afternoon'
+                  ? SHIFT_COLORS.afternoon
+                  : SHIFT_COLORS.off;
 
         return `rgba(${color.r}, ${color.g}, ${color.b}, ${bgOpacity.value})`;
       };
@@ -190,7 +220,11 @@ const AnimatedDayCell: React.FC<DayCellProps> = React.memo(
             ? SHIFT_COLORS.day
             : shiftType === 'night'
               ? SHIFT_COLORS.night
-              : SHIFT_COLORS.off;
+              : shiftType === 'morning'
+                ? SHIFT_COLORS.morning
+                : shiftType === 'afternoon'
+                  ? SHIFT_COLORS.afternoon
+                  : SHIFT_COLORS.off;
 
         return `rgba(${color.r}, ${color.g}, ${color.b}, ${glowOpacity.value * 0.3})`;
       };
@@ -215,7 +249,11 @@ const AnimatedDayCell: React.FC<DayCellProps> = React.memo(
             ? SHIFT_COLORS.day
             : shiftType === 'night'
               ? SHIFT_COLORS.night
-              : SHIFT_COLORS.off;
+              : shiftType === 'morning'
+                ? SHIFT_COLORS.morning
+                : shiftType === 'afternoon'
+                  ? SHIFT_COLORS.afternoon
+                  : SHIFT_COLORS.off;
 
         return `rgba(${color.r}, ${color.g}, ${color.b}, ${ringOpacity.value})`;
       };
@@ -311,27 +349,55 @@ const isDateValid = (date: Date): boolean => {
 };
 
 const calculatePhaseOffset = (
-  phase: 'day' | 'night' | 'off',
-  pattern: { daysOn: number; nightsOn: number; daysOff: number }
+  phase: Phase,
+  pattern: {
+    daysOn?: number;
+    nightsOn?: number;
+    morningOn?: number;
+    afternoonOn?: number;
+    nightOn?: number;
+    daysOff: number;
+  },
+  shiftSystem: ShiftSystem
 ): number => {
-  switch (phase) {
-    case 'day':
-      return 0;
-    case 'night':
-      return pattern.daysOn;
-    case 'off':
-      return pattern.daysOn + pattern.nightsOn;
-    default:
-      return 0;
+  if (shiftSystem === ShiftSystem.TWO_SHIFT) {
+    switch (phase) {
+      case 'day':
+        return 0;
+      case 'night':
+        return pattern.daysOn ?? 0;
+      case 'off':
+        return (pattern.daysOn ?? 0) + (pattern.nightsOn ?? 0);
+      default:
+        return 0;
+    }
+  } else {
+    // 3-shift system
+    switch (phase) {
+      case 'morning':
+        return 0;
+      case 'afternoon':
+        return pattern.morningOn ?? 0;
+      case 'night':
+        return (pattern.morningOn ?? 0) + (pattern.afternoonOn ?? 0);
+      case 'off':
+        return (pattern.morningOn ?? 0) + (pattern.afternoonOn ?? 0) + (pattern.nightOn ?? 0);
+      default:
+        return 0;
+    }
   }
 };
 
-const getPhaseColor = (phase: 'day' | 'night' | 'off'): string => {
+const getPhaseColor = (phase: Phase): string => {
   switch (phase) {
     case 'day':
       return theme.colors.shiftVisualization.dayShift;
     case 'night':
       return theme.colors.shiftVisualization.nightShift;
+    case 'morning':
+      return '#FCD34D'; // Yellow
+    case 'afternoon':
+      return '#FB923C'; // Orange
     case 'off':
       return theme.colors.shiftVisualization.daysOff;
     default:
@@ -339,12 +405,16 @@ const getPhaseColor = (phase: 'day' | 'night' | 'off'): string => {
   }
 };
 
-const getPhaseIcon = (phase: 'day' | 'night' | 'off'): ImageSourcePropType => {
+const getPhaseIcon = (phase: Phase): ImageSourcePropType => {
   switch (phase) {
     case 'day':
       return require('../../../../assets/onboarding/icons/consolidated/phase-day-shift-sun.png');
     case 'night':
       return require('../../../../assets/onboarding/icons/consolidated/phase-night-shift-moon.png');
+    case 'morning':
+      return require('../../../../assets/onboarding/icons/consolidated/phase-day-shift-sun.png'); // Reuse sun icon
+    case 'afternoon':
+      return require('../../../../assets/onboarding/icons/consolidated/phase-day-shift-sun.png'); // Reuse sun icon
     case 'off':
       return require('../../../../assets/onboarding/icons/consolidated/phase-days-off-rest.png');
     default:
@@ -353,12 +423,18 @@ const getPhaseIcon = (phase: 'day' | 'night' | 'off'): ImageSourcePropType => {
 };
 
 // Get calendar cell icon for shift type
-const getCalendarShiftIcon = (shiftType: 'day' | 'night' | 'off'): ImageSourcePropType => {
+const getCalendarShiftIcon = (
+  shiftType: 'day' | 'night' | 'morning' | 'afternoon' | 'off'
+): ImageSourcePropType => {
   switch (shiftType) {
     case 'day':
       return require('../../../../assets/onboarding/icons/consolidated/calendar-day-shift-sun.png');
     case 'night':
       return require('../../../../assets/onboarding/icons/consolidated/calendar-night-shift-moon.png');
+    case 'morning':
+      return require('../../../../assets/onboarding/icons/consolidated/calendar-day-shift-sun.png'); // Reuse sun for morning
+    case 'afternoon':
+      return require('../../../../assets/onboarding/icons/consolidated/calendar-day-shift-sun.png'); // Reuse sun for afternoon
     case 'off':
       return require('../../../../assets/onboarding/icons/consolidated/calendar-days-off-rest.png');
     default:
@@ -371,20 +447,55 @@ const getShiftTypeForDate = (
   date: Date,
   startDate: Date,
   phaseOffset: number,
-  pattern: { daysOn: number; nightsOn: number; daysOff: number }
-): 'day' | 'night' | 'off' | null => {
+  pattern: {
+    daysOn?: number;
+    nightsOn?: number;
+    morningOn?: number;
+    afternoonOn?: number;
+    nightOn?: number;
+    daysOff: number;
+  },
+  shiftSystem: ShiftSystem
+): 'day' | 'night' | 'morning' | 'afternoon' | 'off' | null => {
   const daysDiff = Math.floor((date.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
 
   if (daysDiff < 0) return null; // Before start date
 
-  const cycleLength = pattern.daysOn + pattern.nightsOn + pattern.daysOff;
+  // Handle 3-shift system
+  if (shiftSystem === ShiftSystem.THREE_SHIFT) {
+    const morningOn = pattern.morningOn || 0;
+    const afternoonOn = pattern.afternoonOn || 0;
+    const nightOn = pattern.nightOn || 0;
+    const daysOff = pattern.daysOff || 0;
+
+    const cycleLength = morningOn + afternoonOn + nightOn + daysOff;
+    if (cycleLength === 0) return null;
+
+    const positionInCycle = (daysDiff + phaseOffset) % cycleLength;
+
+    if (positionInCycle < morningOn) {
+      return 'morning';
+    } else if (positionInCycle < morningOn + afternoonOn) {
+      return 'afternoon';
+    } else if (positionInCycle < morningOn + afternoonOn + nightOn) {
+      return 'night';
+    }
+    return 'off';
+  }
+
+  // Handle 2-shift system
+  const daysOn = pattern.daysOn || 0;
+  const nightsOn = pattern.nightsOn || 0;
+  const daysOff = pattern.daysOff || 0;
+
+  const cycleLength = daysOn + nightsOn + daysOff;
   if (cycleLength === 0) return null;
 
   const positionInCycle = (daysDiff + phaseOffset) % cycleLength;
 
-  if (positionInCycle < pattern.daysOn) {
+  if (positionInCycle < daysOn) {
     return 'day';
-  } else if (positionInCycle < pattern.daysOn + pattern.nightsOn) {
+  } else if (positionInCycle < daysOn + nightsOn) {
     return 'night';
   }
   return 'off';
@@ -405,6 +516,7 @@ const InteractiveCalendar: React.FC<CalendarProps> = ({
   reducedMotion: _reducedMotion,
   customPattern,
   phaseOffset,
+  shiftSystem,
 }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const opacity = useSharedValue(0);
@@ -584,10 +696,16 @@ const InteractiveCalendar: React.FC<CalendarProps> = ({
             const isCurrentMonth = date.getMonth() === currentMonth.getMonth();
 
             // Calculate shift type for this date if selected date exists
-            let shiftType: 'day' | 'night' | 'off' | null = null;
+            let shiftType: 'day' | 'night' | 'morning' | 'afternoon' | 'off' | null = null;
             if (selectedDate && isValid && isCurrentMonth) {
               const startDate = new Date(selectedDate);
-              shiftType = getShiftTypeForDate(date, startDate, phaseOffset, customPattern);
+              shiftType = getShiftTypeForDate(
+                date,
+                startDate,
+                phaseOffset,
+                customPattern,
+                shiftSystem
+              );
             }
 
             return (
@@ -691,7 +809,7 @@ const SelectedDateCard: React.FC<SelectedDateCardProps> = ({ selectedDate, reduc
 
 // Animated Phase Card Component
 interface AnimatedPhaseCardProps {
-  phase: 'day' | 'night' | 'off';
+  phase: 'day' | 'night' | 'off' | 'morning' | 'afternoon';
   isSelected: boolean;
   onPress: () => void;
   label: string;
@@ -779,10 +897,6 @@ const AnimatedPhaseCard: React.FC<AnimatedPhaseCardProps> = React.memo(
       ],
     }));
 
-    const borderAnimatedStyle = useAnimatedStyle(() => ({
-      opacity: isSelected ? borderGlow.value : 0,
-    }));
-
     const handlePressIn = useCallback(() => {
       if (!reducedMotion && !disabled) {
         pressScale.value = withTiming(0.95, { duration: 100 });
@@ -798,16 +912,20 @@ const AnimatedPhaseCard: React.FC<AnimatedPhaseCardProps> = React.memo(
       }
     }, [reducedMotion, pressScale, onPress, disabled]);
 
-    const getPhaseColor = () => {
+    const getPhaseIconBgColor = () => {
       switch (phase) {
         case 'day':
-          return theme.colors.shiftVisualization.dayShift;
+          return 'rgba(33, 150, 243, 0.2)'; // Blue tint
         case 'night':
-          return theme.colors.shiftVisualization.nightShift;
+          return 'rgba(101, 31, 255, 0.2)'; // Purple tint
+        case 'morning':
+          return 'rgba(33, 150, 243, 0.2)'; // Blue tint
+        case 'afternoon':
+          return 'rgba(255, 152, 0, 0.2)'; // Orange tint
         case 'off':
-          return theme.colors.shiftVisualization.daysOff;
+          return theme.colors.opacity.gold20;
         default:
-          return theme.colors.shiftVisualization.dayShift;
+          return 'rgba(33, 150, 243, 0.2)';
       }
     };
 
@@ -820,42 +938,22 @@ const AnimatedPhaseCard: React.FC<AnimatedPhaseCardProps> = React.memo(
           style={[
             styles.phaseCard,
             isSelected && styles.phaseCardSelected,
-            isSelected && { borderColor: getPhaseColor() },
+            disabled && { opacity: 0.5 },
           ]}
         >
-          {/* Animated border glow */}
-          {isSelected && !reducedMotion && (
+          <View style={styles.phaseCardGradient}>
+            {/* Icon with bounce and float animation */}
             <Animated.View
               style={[
-                {
-                  position: 'absolute',
-                  top: -2,
-                  left: -2,
-                  right: -2,
-                  bottom: -2,
-                  borderRadius: 16,
-                  borderWidth: 2,
-                  borderColor: getPhaseColor(),
-                },
-                borderAnimatedStyle,
+                styles.phaseIconContainer,
+                { backgroundColor: getPhaseIconBgColor() },
+                iconAnimatedStyle,
               ]}
-            />
-          )}
-
-          <LinearGradient
-            colors={
-              isSelected
-                ? [getPhaseColor(), theme.colors.darkStone]
-                : [theme.colors.darkStone, theme.colors.darkStone]
-            }
-            style={styles.phaseCardGradient}
-          >
-            {/* Icon with bounce and float animation */}
-            <Animated.View style={[styles.phaseIconContainer, iconAnimatedStyle]}>
+            >
               <Image source={icon} style={styles.phaseIcon} resizeMode="contain" />
             </Animated.View>
             <Text style={styles.phaseLabel}>{label}</Text>
-          </LinearGradient>
+          </View>
         </Pressable>
       </Animated.View>
     );
@@ -869,64 +967,135 @@ const PhaseSelector: React.FC<PhaseSelectorProps> = ({
   selectedPhase,
   onPhaseSelect,
   pattern,
+  shiftSystem,
   reducedMotion,
 }) => {
   const handlePhaseSelect = useCallback(
-    (phase: 'day' | 'night' | 'off') => {
+    (phase: Phase) => {
       HAPTIC_PATTERNS.MEDIUM();
       onPhaseSelect(phase);
     },
     [onPhaseSelect]
   );
 
-  const hasDay = pattern.daysOn > 0;
-  const hasNight = pattern.nightsOn > 0;
+  if (shiftSystem === ShiftSystem.TWO_SHIFT) {
+    // 2-Shift System: Day / Night / Off
+    const hasDay = (pattern.daysOn ?? 0) > 0;
+    const hasNight = (pattern.nightsOn ?? 0) > 0;
+    const hasOff = pattern.daysOff > 0;
+
+    return (
+      <View style={styles.phaseSelectorContainer}>
+        <Text style={styles.phaseSelectorTitle}>
+          Choose which part of your cycle you&apos;ll be on
+        </Text>
+
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.phaseCardsScrollContent}
+          snapToInterval={152} // 140px card + 12px gap
+          decelerationRate="fast"
+        >
+          <AnimatedPhaseCard
+            phase="day"
+            isSelected={selectedPhase === 'day'}
+            onPress={() => handlePhaseSelect('day')}
+            label="Day Shift"
+            icon={getPhaseIcon('day')}
+            entranceDelay={0}
+            reducedMotion={reducedMotion}
+            disabled={!hasDay}
+          />
+
+          <AnimatedPhaseCard
+            phase="night"
+            isSelected={selectedPhase === 'night'}
+            onPress={() => handlePhaseSelect('night')}
+            label="Night Shift"
+            icon={getPhaseIcon('night')}
+            entranceDelay={100}
+            reducedMotion={reducedMotion}
+            disabled={!hasNight}
+          />
+
+          <AnimatedPhaseCard
+            phase="off"
+            isSelected={selectedPhase === 'off'}
+            onPress={() => handlePhaseSelect('off')}
+            label="Days Off"
+            icon={getPhaseIcon('off')}
+            entranceDelay={200}
+            reducedMotion={reducedMotion}
+            disabled={!hasOff}
+          />
+        </ScrollView>
+      </View>
+    );
+  }
+  // 3-Shift System: Morning / Afternoon / Night / Off
+  const hasMorning = (pattern.morningOn ?? 0) > 0;
+  const hasAfternoon = (pattern.afternoonOn ?? 0) > 0;
+  const hasNight = (pattern.nightOn ?? 0) > 0;
   const hasOff = pattern.daysOff > 0;
 
   return (
     <View style={styles.phaseSelectorContainer}>
-      {/* Section Title */}
       <Text style={styles.phaseSelectorTitle}>
         Choose which part of your cycle you&apos;ll be on
       </Text>
 
-      <View style={styles.phaseCardsRow}>
-        {/* Day Shift Card */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.phaseCardsScrollContent}
+        snapToInterval={152} // 140px card + 12px gap
+        decelerationRate="fast"
+      >
         <AnimatedPhaseCard
-          phase="day"
-          isSelected={selectedPhase === 'day'}
-          onPress={() => handlePhaseSelect('day')}
-          label="Day Shift"
-          icon={getPhaseIcon('day')}
+          phase="morning"
+          isSelected={selectedPhase === 'morning'}
+          onPress={() => handlePhaseSelect('morning')}
+          label="Morning"
+          icon={getPhaseIcon('morning')}
           entranceDelay={0}
           reducedMotion={reducedMotion}
-          disabled={!hasDay}
+          disabled={!hasMorning}
         />
 
-        {/* Night Shift Card */}
+        <AnimatedPhaseCard
+          phase="afternoon"
+          isSelected={selectedPhase === 'afternoon'}
+          onPress={() => handlePhaseSelect('afternoon')}
+          label="Afternoon"
+          icon={getPhaseIcon('afternoon')}
+          entranceDelay={100}
+          reducedMotion={reducedMotion}
+          disabled={!hasAfternoon}
+        />
+
         <AnimatedPhaseCard
           phase="night"
           isSelected={selectedPhase === 'night'}
           onPress={() => handlePhaseSelect('night')}
-          label="Night Shift"
+          label="Night"
           icon={getPhaseIcon('night')}
-          entranceDelay={100}
+          entranceDelay={200}
           reducedMotion={reducedMotion}
           disabled={!hasNight}
         />
 
-        {/* Days Off Card */}
         <AnimatedPhaseCard
           phase="off"
           isSelected={selectedPhase === 'off'}
           onPress={() => handlePhaseSelect('off')}
           label="Days Off"
           icon={getPhaseIcon('off')}
-          entranceDelay={200}
+          entranceDelay={300}
           reducedMotion={reducedMotion}
           disabled={!hasOff}
         />
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -937,6 +1106,7 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
   selectedPhase,
   reducedMotion,
   customPattern,
+  shiftSystem,
   phaseOffset,
 }) => {
   const floatY = useSharedValue(0);
@@ -984,7 +1154,11 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
       ? 'Day Shift'
       : selectedPhase === 'night'
         ? 'Night Shift'
-        : 'Days Off'
+        : selectedPhase === 'morning'
+          ? 'Morning Shift'
+          : selectedPhase === 'afternoon'
+            ? 'Afternoon Shift'
+            : 'Days Off'
     : 'Not selected';
 
   return (
@@ -1006,7 +1180,17 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
           {/* Row 2: Phase */}
           <View style={styles.previewRow}>
             <Ionicons
-              name={selectedPhase === 'day' ? 'sunny' : selectedPhase === 'night' ? 'moon' : 'beer'}
+              name={
+                selectedPhase === 'day'
+                  ? 'sunny'
+                  : selectedPhase === 'night'
+                    ? 'moon'
+                    : selectedPhase === 'morning'
+                      ? 'sunny-outline'
+                      : selectedPhase === 'afternoon'
+                        ? 'partly-sunny'
+                        : 'beer'
+              }
               size={32}
               color={selectedPhase ? getPhaseColor(selectedPhase) : theme.colors.dust}
             />
@@ -1037,14 +1221,19 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
                       date,
                       new Date(selectedDate),
                       phaseOffset,
-                      customPattern
+                      customPattern,
+                      shiftSystem
                     );
                     const bgColor =
                       shiftType === 'day'
                         ? theme.colors.shiftVisualization.dayShift
                         : shiftType === 'night'
                           ? theme.colors.shiftVisualization.nightShift
-                          : theme.colors.shiftVisualization.daysOff;
+                          : shiftType === 'morning'
+                            ? '#FCD34D'
+                            : shiftType === 'afternoon'
+                              ? '#FB923C'
+                              : theme.colors.shiftVisualization.daysOff;
 
                     return (
                       <View key={dayIndex} style={styles.previewTimelineDay}>
@@ -1057,7 +1246,15 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
                         >
                           <Text style={styles.previewTimelineDayLabel}>{dayLabel}</Text>
                           <Text style={styles.previewTimelineShiftLabel}>
-                            {shiftType === 'day' ? 'D' : shiftType === 'night' ? 'N' : 'O'}
+                            {shiftType === 'day'
+                              ? 'D'
+                              : shiftType === 'night'
+                                ? 'N'
+                                : shiftType === 'morning'
+                                  ? 'M'
+                                  : shiftType === 'afternoon'
+                                    ? 'A'
+                                    : 'O'}
                           </Text>
                         </View>
                       </View>
@@ -1217,9 +1414,10 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
 }) => {
   const navigation = useNavigation<NavigationProp>();
   const { data, updateData } = useOnboarding();
+  const shiftSystem = data.shiftSystem || ShiftSystem.TWO_SHIFT;
   // Smart default: tomorrow
   const [selectedDate, setSelectedDate] = useState<string | null>(getTomorrowDate());
-  const [selectedPhase, setSelectedPhase] = useState<'day' | 'night' | 'off' | null>(null);
+  const [selectedPhase, setSelectedPhase] = useState<Phase | null>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
   const screenOpacity = useSharedValue(1);
   const screenSlideX = useSharedValue(0);
@@ -1250,29 +1448,57 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   // Convert predefined patterns to numeric values
   const getPatternValues = useCallback(
     (patternType: ShiftPattern) => {
+      let basePattern;
       switch (patternType) {
         case ShiftPattern.STANDARD_4_4_4:
-          return { daysOn: 4, nightsOn: 4, daysOff: 4 };
+          basePattern = { daysOn: 4, nightsOn: 4, daysOff: 4 };
+          break;
         case ShiftPattern.STANDARD_7_7_7:
-          return { daysOn: 7, nightsOn: 7, daysOff: 7 };
+          basePattern = { daysOn: 7, nightsOn: 7, daysOff: 7 };
+          break;
         case ShiftPattern.STANDARD_2_2_3:
-          return { daysOn: 2, nightsOn: 2, daysOff: 3 };
+          basePattern = { daysOn: 2, nightsOn: 2, daysOff: 3 };
+          break;
         case ShiftPattern.STANDARD_5_5_5:
-          return { daysOn: 5, nightsOn: 5, daysOff: 5 };
+          basePattern = { daysOn: 5, nightsOn: 5, daysOff: 5 };
+          break;
         case ShiftPattern.STANDARD_3_3_3:
-          return { daysOn: 3, nightsOn: 3, daysOff: 3 };
+          basePattern = { daysOn: 3, nightsOn: 3, daysOff: 3 };
+          break;
         case ShiftPattern.STANDARD_10_10_10:
-          return { daysOn: 10, nightsOn: 10, daysOff: 10 };
+          basePattern = { daysOn: 10, nightsOn: 10, daysOff: 10 };
+          break;
         case ShiftPattern.CONTINENTAL:
-          return { daysOn: 2, nightsOn: 2, daysOff: 4 };
+          basePattern = { daysOn: 2, nightsOn: 2, daysOff: 4 };
+          break;
         case ShiftPattern.PITMAN:
-          return { daysOn: 2, nightsOn: 2, daysOff: 3 };
+          basePattern = { daysOn: 2, nightsOn: 2, daysOff: 3 };
+          break;
         case ShiftPattern.CUSTOM:
         default:
-          return data.customPattern || { daysOn: 0, nightsOn: 0, daysOff: 0 };
+          basePattern = data.customPattern || { daysOn: 0, nightsOn: 0, daysOff: 0 };
+          break;
       }
+
+      // Convert to 3-shift structure if 3-shift system is selected
+      if (shiftSystem === ShiftSystem.THREE_SHIFT) {
+        const daysOn = basePattern.daysOn || 0;
+        const nightsOn = basePattern.nightsOn || 0;
+
+        // For 3-shift: expand the pattern to include separate morning and afternoon
+        // Example: 4-4-4 (2-shift, 12-day) → 4-4-4-4 (3-shift, 16-day)
+        return {
+          morningOn: daysOn, // Same number of morning shifts as days
+          afternoonOn: daysOn, // Same number of afternoon shifts as days
+          nightOn: nightsOn, // Keep night shifts
+          daysOff: basePattern.daysOff, // Keep days off
+        };
+      }
+
+      // Return 2-shift structure as-is
+      return basePattern;
     },
-    [data.customPattern]
+    [data.customPattern, shiftSystem]
   );
 
   const customPattern = useMemo(() => getPatternValues(pattern), [pattern, getPatternValues]);
@@ -1285,7 +1511,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   const handleContinue = useCallback(() => {
     if (!canContinue || !selectedDate || !selectedPhase) return;
 
-    const phaseOffset = calculatePhaseOffset(selectedPhase, customPattern);
+    const phaseOffset = calculatePhaseOffset(selectedPhase, customPattern, shiftSystem);
 
     updateData({
       startDate: new Date(selectedDate),
@@ -1303,7 +1529,16 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
         navigation.navigate('ShiftTimeInput');
       }
     });
-  }, [canContinue, selectedDate, selectedPhase, customPattern, updateData, onContinue, navigation]);
+  }, [
+    canContinue,
+    selectedDate,
+    selectedPhase,
+    customPattern,
+    shiftSystem,
+    updateData,
+    onContinue,
+    navigation,
+  ]);
 
   const handleBack = useCallback(() => {
     HAPTIC_PATTERNS.LIGHT();
@@ -1334,6 +1569,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
             reducedMotion={reducedMotion}
             customPattern={customPattern}
             phaseOffset={previewPhaseOffset}
+            shiftSystem={shiftSystem}
           />
 
           {/* Selected Date Card */}
@@ -1344,6 +1580,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
             selectedPhase={selectedPhase}
             onPhaseSelect={setSelectedPhase}
             pattern={customPattern}
+            shiftSystem={shiftSystem}
             reducedMotion={reducedMotion}
           />
 
@@ -1353,6 +1590,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
             selectedPhase={selectedPhase}
             reducedMotion={reducedMotion}
             customPattern={customPattern}
+            shiftSystem={shiftSystem}
             phaseOffset={previewPhaseOffset}
           />
 
@@ -1506,28 +1744,32 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.md,
     textAlign: 'center',
   },
-  phaseCardsRow: {
-    flexDirection: 'row',
-    gap: 8,
+  phaseCardsScrollContent: {
+    paddingRight: theme.spacing.lg,
+    gap: 12,
     marginBottom: theme.spacing.md,
   },
   phaseCardWrapper: {
-    flex: 1,
+    width: 140,
   },
   phaseCard: {
+    height: 120,
+    backgroundColor: theme.colors.darkStone,
     borderRadius: 16,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: theme.colors.softStone,
     overflow: 'hidden',
   },
   phaseCardSelected: {
     borderWidth: 2,
+    borderColor: theme.colors.sacredGold,
+    backgroundColor: theme.colors.opacity.gold10,
     ...Platform.select({
       ios: {
         shadowColor: theme.colors.sacredGold,
-        shadowOffset: { width: 0, height: 0 },
+        shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.5,
-        shadowRadius: 12,
+        shadowRadius: 8,
       },
       android: {
         elevation: 8,
@@ -1535,18 +1777,25 @@ const styles = StyleSheet.create({
     }),
   },
   phaseCardGradient: {
-    padding: theme.spacing.md,
+    padding: theme.spacing.sm,
     alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
   },
   phaseIconContainer: {
-    marginBottom: theme.spacing.sm,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: theme.spacing.xs,
   },
   phaseIcon: {
-    width: 64,
-    height: 64,
+    width: 32,
+    height: 32,
   },
   phaseLabel: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     color: theme.colors.paper,
     textAlign: 'center',

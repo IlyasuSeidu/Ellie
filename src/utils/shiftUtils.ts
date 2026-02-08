@@ -4,36 +4,90 @@
  * Functions for calculating shift schedules, patterns, and related data.
  */
 
-import { ShiftPattern, ShiftCycle, ShiftDay, ShiftType } from '@/types';
+import {
+  ShiftPattern,
+  ShiftCycle,
+  ShiftDay,
+  ShiftType,
+  ShiftSystem,
+  ShiftPatternConfig,
+} from '@/types';
 import { diffInDays, addDays, toDateString, getDateRange } from './dateUtils';
 
 /**
  * Get pattern configuration for predefined shift patterns
  *
  * @param patternType - The shift pattern type
- * @returns Pattern configuration with daysOn, nightsOn, daysOff
+ * @returns Pattern configuration with shift system metadata
  *
  * @example
  * ```typescript
  * getShiftPattern(ShiftPattern.STANDARD_3_3_3)
- * // Returns: { daysOn: 3, nightsOn: 3, daysOff: 3 }
+ * // Returns: {
+ * //   config: { daysOn: 3, nightsOn: 3, daysOff: 3, totalCycleDays: 9 },
+ * //   defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+ * //   supportsShiftSystem: [ShiftSystem.TWO_SHIFT, ShiftSystem.THREE_SHIFT]
+ * // }
  * ```
  */
 export function getShiftPattern(patternType: ShiftPattern): {
-  daysOn: number;
-  nightsOn: number;
-  daysOff: number;
+  config: ShiftPatternConfig;
+  defaultShiftSystem: ShiftSystem;
+  supportsShiftSystem: ShiftSystem[];
 } {
-  const patterns: Record<ShiftPattern, { daysOn: number; nightsOn: number; daysOff: number }> = {
-    [ShiftPattern.STANDARD_3_3_3]: { daysOn: 3, nightsOn: 3, daysOff: 3 },
-    [ShiftPattern.STANDARD_5_5_5]: { daysOn: 5, nightsOn: 5, daysOff: 5 },
-    [ShiftPattern.STANDARD_10_10_10]: { daysOn: 10, nightsOn: 10, daysOff: 10 },
-    [ShiftPattern.STANDARD_2_2_3]: { daysOn: 2, nightsOn: 2, daysOff: 3 },
-    [ShiftPattern.STANDARD_4_4_4]: { daysOn: 4, nightsOn: 4, daysOff: 4 },
-    [ShiftPattern.STANDARD_7_7_7]: { daysOn: 7, nightsOn: 7, daysOff: 7 },
-    [ShiftPattern.CONTINENTAL]: { daysOn: 7, nightsOn: 7, daysOff: 7 }, // Simplified
-    [ShiftPattern.PITMAN]: { daysOn: 2, nightsOn: 2, daysOff: 3 }, // Simplified Pitman
-    [ShiftPattern.CUSTOM]: { daysOn: 0, nightsOn: 0, daysOff: 0 }, // User-defined
+  const patterns: Record<
+    ShiftPattern,
+    {
+      config: ShiftPatternConfig;
+      defaultShiftSystem: ShiftSystem;
+      supportsShiftSystem: ShiftSystem[];
+    }
+  > = {
+    [ShiftPattern.STANDARD_3_3_3]: {
+      config: { daysOn: 3, nightsOn: 3, daysOff: 3, totalCycleDays: 9 },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT, ShiftSystem.THREE_SHIFT],
+    },
+    [ShiftPattern.STANDARD_5_5_5]: {
+      config: { daysOn: 5, nightsOn: 5, daysOff: 5, totalCycleDays: 15 },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT, ShiftSystem.THREE_SHIFT],
+    },
+    [ShiftPattern.STANDARD_10_10_10]: {
+      config: { daysOn: 10, nightsOn: 10, daysOff: 10, totalCycleDays: 30 },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT],
+    },
+    [ShiftPattern.STANDARD_2_2_3]: {
+      config: { daysOn: 2, nightsOn: 2, daysOff: 3, totalCycleDays: 7 },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT],
+    },
+    [ShiftPattern.STANDARD_4_4_4]: {
+      config: { daysOn: 4, nightsOn: 4, daysOff: 4, totalCycleDays: 12 },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT, ShiftSystem.THREE_SHIFT],
+    },
+    [ShiftPattern.STANDARD_7_7_7]: {
+      config: { daysOn: 7, nightsOn: 7, daysOff: 7, totalCycleDays: 21 },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT, ShiftSystem.THREE_SHIFT],
+    },
+    [ShiftPattern.CONTINENTAL]: {
+      config: { daysOn: 7, nightsOn: 7, daysOff: 7, totalCycleDays: 21 },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT],
+    },
+    [ShiftPattern.PITMAN]: {
+      config: { daysOn: 2, nightsOn: 2, daysOff: 3, totalCycleDays: 7 },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT],
+    },
+    [ShiftPattern.CUSTOM]: {
+      config: { daysOn: 0, nightsOn: 0, daysOff: 0, totalCycleDays: 0 },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT, ShiftSystem.THREE_SHIFT],
+    },
   };
 
   return patterns[patternType];
@@ -62,9 +116,9 @@ export function getShiftCycle(
 
   return {
     patternType,
-    daysOn: pattern.daysOn,
-    nightsOn: pattern.nightsOn,
-    daysOff: pattern.daysOff,
+    daysOn: pattern.config.daysOn ?? 0,
+    nightsOn: pattern.config.nightsOn ?? 0,
+    daysOff: pattern.config.daysOff,
     startDate,
     phaseOffset,
   };

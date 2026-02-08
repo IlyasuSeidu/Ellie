@@ -265,8 +265,8 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
           country: selectedCountry,
         });
       } else {
-        // Navigate to next screen
-        navigation.navigate('ShiftPattern');
+        // Navigate to next screen (Step 3: Shift System)
+        navigation.navigate('ShiftSystem');
       }
     }
   };

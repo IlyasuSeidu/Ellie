@@ -9,6 +9,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { PremiumWelcomeScreen } from '@/screens/onboarding/premium/PremiumWelcomeScreen';
 import { PremiumIntroductionScreen } from '@/screens/onboarding/premium/PremiumIntroductionScreen';
 import { PremiumShiftPatternScreen } from '@/screens/onboarding/premium/PremiumShiftPatternScreen';
+import { PremiumShiftSystemScreen } from '@/screens/onboarding/premium/PremiumShiftSystemScreen';
 import { PremiumCustomPatternScreen } from '@/screens/onboarding/premium/PremiumCustomPatternScreen';
 import { PremiumStartDateScreen } from '@/screens/onboarding/premium/PremiumStartDateScreen';
 import { PremiumShiftTimeInputScreen } from '@/screens/onboarding/premium/PremiumShiftTimeInputScreen';
@@ -18,6 +19,7 @@ export type OnboardingStackParamList = {
   Welcome: undefined;
   Introduction: undefined;
   ShiftPattern: undefined;
+  ShiftSystem: undefined;
   CustomPattern: undefined;
   StartDate: undefined;
   ShiftTimeInput: undefined;
@@ -38,6 +40,7 @@ export const OnboardingNavigator: React.FC = () => {
       <Stack.Screen name="Welcome" component={PremiumWelcomeScreen} />
       <Stack.Screen name="Introduction" component={PremiumIntroductionScreen} />
       <Stack.Screen name="ShiftPattern" component={PremiumShiftPatternScreen} />
+      <Stack.Screen name="ShiftSystem" component={PremiumShiftSystemScreen} />
       <Stack.Screen name="CustomPattern" component={PremiumCustomPatternScreen} />
       <Stack.Screen name="StartDate" component={PremiumStartDateScreen} />
       <Stack.Screen name="ShiftTimeInput" component={PremiumShiftTimeInputScreen} />

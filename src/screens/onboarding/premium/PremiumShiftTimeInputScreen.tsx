@@ -46,7 +46,7 @@ import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
-import { ShiftPattern } from '@/types';
+import { ShiftPattern, ShiftSystem } from '@/types';
 import {
   convertTo24Hour,
   calculateEndTime,
@@ -99,11 +99,13 @@ interface ShiftPreset {
   period: 'AM' | 'PM';
   duration: 8 | 12;
   icon: keyof typeof Ionicons.glyphMap;
-  type: 'day' | 'night';
+  type: 'day' | 'night' | 'morning' | 'afternoon';
   endTimeLabel: string;
+  shiftSystem: ShiftSystem;
 }
 
 const SHIFT_PRESETS: ShiftPreset[] = [
+  // 2-Shift (12-hour) Presets
   {
     id: 'early_day',
     label: 'Early Day Shift',
@@ -113,6 +115,7 @@ const SHIFT_PRESETS: ShiftPreset[] = [
     icon: 'sunny',
     type: 'day',
     endTimeLabel: 'Ends at 6:00 PM',
+    shiftSystem: ShiftSystem.TWO_SHIFT,
   },
   {
     id: 'standard_day',
@@ -123,6 +126,7 @@ const SHIFT_PRESETS: ShiftPreset[] = [
     icon: 'partly-sunny',
     type: 'day',
     endTimeLabel: 'Ends at 7:00 PM',
+    shiftSystem: ShiftSystem.TWO_SHIFT,
   },
   {
     id: 'late_day',
@@ -133,16 +137,7 @@ const SHIFT_PRESETS: ShiftPreset[] = [
     icon: 'cloudy',
     type: 'day',
     endTimeLabel: 'Ends at 1:00 AM',
-  },
-  {
-    id: 'evening',
-    label: 'Evening Shift',
-    startTime: '06:00',
-    period: 'PM',
-    duration: 8,
-    icon: 'moon-outline',
-    type: 'night',
-    endTimeLabel: 'Ends at 2:00 AM',
+    shiftSystem: ShiftSystem.TWO_SHIFT,
   },
   {
     id: 'night',
@@ -153,7 +148,45 @@ const SHIFT_PRESETS: ShiftPreset[] = [
     icon: 'moon',
     type: 'night',
     endTimeLabel: 'Ends at 10:00 AM',
+    shiftSystem: ShiftSystem.TWO_SHIFT,
   },
+
+  // 3-Shift (8-hour) Presets
+  {
+    id: 'morning_shift',
+    label: 'Morning Shift',
+    startTime: '06:00',
+    period: 'AM',
+    duration: 8,
+    icon: 'sunny-outline',
+    type: 'morning',
+    endTimeLabel: 'Ends at 2:00 PM',
+    shiftSystem: ShiftSystem.THREE_SHIFT,
+  },
+  {
+    id: 'afternoon_shift',
+    label: 'Afternoon Shift',
+    startTime: '02:00',
+    period: 'PM',
+    duration: 8,
+    icon: 'partly-sunny-outline',
+    type: 'afternoon',
+    endTimeLabel: 'Ends at 10:00 PM',
+    shiftSystem: ShiftSystem.THREE_SHIFT,
+  },
+  {
+    id: 'night_shift_8h',
+    label: 'Night Shift',
+    startTime: '10:00',
+    period: 'PM',
+    duration: 8,
+    icon: 'moon-outline',
+    type: 'night',
+    endTimeLabel: 'Ends at 6:00 AM',
+    shiftSystem: ShiftSystem.THREE_SHIFT,
+  },
+
+  // Custom (available for both)
   {
     id: 'custom',
     label: 'Custom',
@@ -163,6 +196,7 @@ const SHIFT_PRESETS: ShiftPreset[] = [
     icon: 'create-outline',
     type: 'day',
     endTimeLabel: '',
+    shiftSystem: ShiftSystem.TWO_SHIFT, // Default to 2-shift
   },
 ];
 
@@ -180,13 +214,22 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
 }) => {
   const navigation = useNavigation<NavigationProp>();
   const { data, updateData } = useOnboarding();
+  const shiftSystem = data.shiftSystem || ShiftSystem.TWO_SHIFT;
+
+  // Set duration based on shift system (locked)
+  const lockedDuration: 8 | 12 = shiftSystem === ShiftSystem.THREE_SHIFT ? 8 : 12;
+
+  // Filter presets by shift system
+  const filteredPresets = SHIFT_PRESETS.filter(
+    (preset) => preset.id === 'custom' || preset.shiftSystem === shiftSystem
+  );
 
   // State
   const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
   const [customHours, setCustomHours] = useState('06');
   const [customMinutes, setCustomMinutes] = useState('00');
   const [customPeriod, setCustomPeriod] = useState<'AM' | 'PM'>('AM');
-  const [duration, setDuration] = useState<8 | 12>(12);
+  const [duration, setDuration] = useState<8 | 12>(lockedDuration);
   const [showCustomInput, setShowCustomInput] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [timeError, setTimeError] = useState<string | null>(null);
@@ -475,7 +518,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
               snapToInterval={156} // 140px card + 16px gap
               decelerationRate="fast"
             >
-              {SHIFT_PRESETS.map((preset, index) => (
+              {filteredPresets.map((preset, index) => (
                 <PresetCard
                   key={preset.id}
                   preset={preset}
@@ -565,27 +608,45 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
 
                 {/* Shift Duration Selector */}
                 <View style={styles.inputRow}>
-                  <Text style={styles.inputLabel}>Shift Duration</Text>
+                  <Text style={styles.inputLabel}>
+                    Shift Duration{' '}
+                    <Text style={styles.lockedLabel}>
+                      (Set by {shiftSystem === ShiftSystem.TWO_SHIFT ? '2-shift' : '3-shift'}{' '}
+                      system)
+                    </Text>
+                  </Text>
                   <View style={styles.durationSelector}>
                     <Pressable
-                      style={[styles.durationCard, duration === 12 && styles.durationCardSelected]}
-                      onPress={() => handleDurationChange(12)}
+                      style={[
+                        styles.durationCard,
+                        duration === 12 && styles.durationCardSelected,
+                        lockedDuration !== 12 && styles.durationCardDisabled,
+                      ]}
+                      onPress={() => lockedDuration === 12 && handleDurationChange(12)}
+                      disabled={lockedDuration !== 12}
                     >
                       <View style={styles.durationCardContent}>
-                        {duration === 12 && (
+                        {lockedDuration === 12 && (
                           <View style={styles.recommendedBadge}>
-                            <Text style={styles.recommendedBadgeText}>Recommended</Text>
+                            <Text style={styles.recommendedBadgeText}>Your System</Text>
                           </View>
                         )}
                         <Ionicons
                           name="time-outline"
                           size={20}
-                          color={duration === 12 ? theme.colors.paper : theme.colors.dust}
+                          color={
+                            duration === 12
+                              ? theme.colors.paper
+                              : lockedDuration !== 12
+                                ? theme.colors.charcoalGray
+                                : theme.colors.dust
+                          }
                         />
                         <Text
                           style={[
                             styles.durationText,
                             duration === 12 && styles.durationTextSelected,
+                            lockedDuration !== 12 && styles.durationTextDisabled,
                           ]}
                         >
                           12 Hours
@@ -593,19 +654,36 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                       </View>
                     </Pressable>
                     <Pressable
-                      style={[styles.durationCard, duration === 8 && styles.durationCardSelected]}
-                      onPress={() => handleDurationChange(8)}
+                      style={[
+                        styles.durationCard,
+                        duration === 8 && styles.durationCardSelected,
+                        lockedDuration !== 8 && styles.durationCardDisabled,
+                      ]}
+                      onPress={() => lockedDuration === 8 && handleDurationChange(8)}
+                      disabled={lockedDuration !== 8}
                     >
                       <View style={styles.durationCardContent}>
+                        {lockedDuration === 8 && (
+                          <View style={styles.recommendedBadge}>
+                            <Text style={styles.recommendedBadgeText}>Your System</Text>
+                          </View>
+                        )}
                         <Ionicons
                           name="timer-outline"
                           size={20}
-                          color={duration === 8 ? theme.colors.paper : theme.colors.dust}
+                          color={
+                            duration === 8
+                              ? theme.colors.paper
+                              : lockedDuration !== 8
+                                ? theme.colors.charcoalGray
+                                : theme.colors.dust
+                          }
                         />
                         <Text
                           style={[
                             styles.durationText,
                             duration === 8 && styles.durationTextSelected,
+                            lockedDuration !== 8 && styles.durationTextDisabled,
                           ]}
                         >
                           8 Hours
@@ -1123,6 +1201,18 @@ const styles = StyleSheet.create({
   },
   durationTextSelected: {
     color: theme.colors.paper,
+  },
+  durationCardDisabled: {
+    opacity: 0.4,
+    backgroundColor: theme.colors.charcoalGray,
+  },
+  durationTextDisabled: {
+    color: theme.colors.charcoalGray,
+  },
+  lockedLabel: {
+    fontSize: 12,
+    color: theme.colors.softGray,
+    fontStyle: 'italic',
   },
   // Live Preview Card
   livePreviewCard: {

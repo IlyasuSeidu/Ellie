@@ -65,15 +65,38 @@ export function calculateEndTime(startTime24h: string, duration: number): string
 }
 
 /**
- * Detect whether a shift is day or night based on start time
- * Day shift: 6:00 AM to 5:59 PM
- * Night shift: 6:00 PM to 5:59 AM
+ * Detect shift type based on start time and shift system
+ *
+ * 2-Shift System:
+ * - Day shift: 6:00 AM to 5:59 PM
+ * - Night shift: 6:00 PM to 5:59 AM
+ *
+ * 3-Shift System:
+ * - Morning shift: 6:00 AM to 1:59 PM
+ * - Afternoon shift: 2:00 PM to 9:59 PM
+ * - Night shift: 10:00 PM to 5:59 AM
+ *
  * @param startTime24h - Start time in HH:MM format (24-hour)
- * @returns 'day' or 'night'
+ * @param shiftSystem - The shift system being used ('2-shift' or '3-shift')
+ * @returns Shift type: 'day' | 'night' | 'morning' | 'afternoon'
  */
-export function detectShiftType(startTime24h: string): 'day' | 'night' {
+export function detectShiftType(
+  startTime24h: string,
+  shiftSystem: '2-shift' | '3-shift' = '2-shift'
+): 'day' | 'night' | 'morning' | 'afternoon' {
   const [hours] = startTime24h.split(':').map(Number);
-  return hours >= 6 && hours < 18 ? 'day' : 'night';
+
+  if (shiftSystem === '2-shift') {
+    // 2-shift system: Day (6 AM - 6 PM) or Night (6 PM - 6 AM)
+    return hours >= 6 && hours < 18 ? 'day' : 'night';
+  }
+  // 3-shift system: Morning, Afternoon, or Night
+  if (hours >= 6 && hours < 14) {
+    return 'morning'; // 6 AM - 2 PM
+  } else if (hours >= 14 && hours < 22) {
+    return 'afternoon'; // 2 PM - 10 PM
+  }
+  return 'night'; // 10 PM - 6 AM
 }
 
 /**

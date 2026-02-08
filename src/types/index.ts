@@ -33,6 +33,63 @@ export enum ShiftPattern {
 }
 
 /**
+ * Shift System
+ *
+ * Defines whether workers operate on a 2-shift (12-hour) or 3-shift (8-hour) system.
+ */
+export enum ShiftSystem {
+  /** 2 shifts per day (typically 12 hours each): Day and Night */
+  TWO_SHIFT = '2-shift',
+  /** 3 shifts per day (typically 8 hours each): Morning, Afternoon, and Night */
+  THREE_SHIFT = '3-shift',
+}
+
+/**
+ * Phase Types for 2-Shift System
+ *
+ * Phases available in a 2-shift (12-hour) system.
+ */
+export type Phase2Shift = 'day' | 'night' | 'off';
+
+/**
+ * Phase Types for 3-Shift System
+ *
+ * Phases available in a 3-shift (8-hour) system.
+ */
+export type Phase3Shift = 'morning' | 'afternoon' | 'night' | 'off';
+
+/**
+ * Phase
+ *
+ * Union type representing all possible phases across both shift systems.
+ */
+export type Phase = Phase2Shift | Phase3Shift;
+
+/**
+ * Shift Pattern Configuration
+ *
+ * Flexible configuration that supports both 2-shift and 3-shift systems.
+ */
+export interface ShiftPatternConfig {
+  /** Number of consecutive day shifts (2-shift system) */
+  daysOn?: number;
+  /** Number of consecutive night shifts (2-shift system) */
+  nightsOn?: number;
+
+  /** Number of consecutive morning shifts (3-shift system) */
+  morningOn?: number;
+  /** Number of consecutive afternoon shifts (3-shift system) */
+  afternoonOn?: number;
+  /** Number of consecutive night shifts (3-shift system) */
+  nightOn?: number;
+
+  /** Number of consecutive days off (common to both systems) */
+  daysOff: number;
+  /** Total days in the rotation cycle */
+  totalCycleDays: number;
+}
+
+/**
  * Shift Type
  *
  * Indicates whether a shift is during the day, night, or a day off.

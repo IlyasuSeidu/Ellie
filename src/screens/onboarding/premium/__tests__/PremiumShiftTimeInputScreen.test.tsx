@@ -126,7 +126,7 @@ describe('PremiumShiftTimeInputScreen', () => {
       // Custom input section should appear
       await waitFor(() => {
         expect(getByText('Shift Start Time')).toBeTruthy();
-        expect(getByText('Shift Duration')).toBeTruthy();
+        expect(getByText(/Shift Duration/i)).toBeTruthy();
       });
     });
 
@@ -191,13 +191,13 @@ describe('PremiumShiftTimeInputScreen', () => {
       });
     });
 
-    it('should show "Recommended" badge on 12-hour option', async () => {
+    it('should show "Your System" badge on locked duration option', async () => {
       const { getByText } = renderWithProviders(<PremiumShiftTimeInputScreen />);
 
       fireEvent.press(getByText(/Custom Time/i));
 
       await waitFor(() => {
-        expect(getByText('Recommended')).toBeTruthy();
+        expect(getByText('Your System')).toBeTruthy();
       });
     });
   });

@@ -82,12 +82,26 @@ jest.mock('react-native-reanimated', () => {
         };
         return chain;
       }),
+      delay: jest.fn(function () {
+        const chain = {
+          springify: jest.fn(() => chain),
+          duration: jest.fn(() => chain),
+        };
+        return chain;
+      }),
     },
     FadeInDown: {
       duration: jest.fn(function () {
         const chain = {
           springify: jest.fn(() => chain),
           delay: jest.fn(() => chain),
+        };
+        return chain;
+      }),
+      delay: jest.fn(function () {
+        const chain = {
+          springify: jest.fn(() => chain),
+          duration: jest.fn(() => chain),
         };
         return chain;
       }),
@@ -100,7 +114,42 @@ jest.mock('react-native-reanimated', () => {
         };
         return chain;
       }),
+      delay: jest.fn(function () {
+        const chain = {
+          springify: jest.fn(() => chain),
+          duration: jest.fn(() => chain),
+        };
+        return chain;
+      }),
     },
+  };
+});
+
+// Mock react-native-gesture-handler
+jest.mock('react-native-gesture-handler', () => {
+  const View = require('react-native').View;
+  return {
+    Gesture: {
+      Pan: () => ({
+        enabled: jest.fn().mockReturnThis(),
+        onStart: jest.fn().mockReturnThis(),
+        onUpdate: jest.fn().mockReturnThis(),
+        onEnd: jest.fn().mockReturnThis(),
+      }),
+      Tap: () => ({
+        enabled: jest.fn().mockReturnThis(),
+        onStart: jest.fn().mockReturnThis(),
+        onEnd: jest.fn().mockReturnThis(),
+      }),
+      Simultaneous: (...gestures) => ({
+        enabled: jest.fn().mockReturnThis(),
+        onStart: jest.fn().mockReturnThis(),
+        onUpdate: jest.fn().mockReturnThis(),
+        onEnd: jest.fn().mockReturnThis(),
+      }),
+    },
+    GestureDetector: ({ children }) => children,
+    GestureHandlerRootView: View,
   };
 });
 

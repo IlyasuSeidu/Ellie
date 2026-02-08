@@ -17,21 +17,34 @@ export interface OnboardingData {
 
   // Step 3: Shift Pattern
   patternType?: ShiftPattern;
+
+  // Step 4 (new): Shift System Selection
+  shiftSystem?: '2-shift' | '3-shift'; // Determines 2-shift (12h) vs 3-shift (8h)
+
+  // Step 5: Custom Pattern (supports both systems)
   customPattern?: {
-    daysOn: number;
-    nightsOn: number;
-    daysOff: number;
+    // For 2-shift system
+    daysOn: number; // Day shifts
+    nightsOn: number; // Night shifts
+
+    // For 3-shift system (optional)
+    morningOn?: number; // Morning shifts (6 AM - 2 PM)
+    afternoonOn?: number; // Afternoon shifts (2 PM - 10 PM)
+    nightOn?: number; // Night shifts (10 PM - 6 AM)
+
+    // Common
+    daysOff: number; // Days off (both systems)
   };
 
-  // Step 5: Start Date
+  // Step 6: Start Date & Phase
   startDate?: Date;
-  phaseOffset?: number;
+  phaseOffset?: number; // Calculated from selected phase
 
-  // Step 6: Shift Times
+  // Step 7: Shift Times
   shiftStartTime?: string; // HH:MM format (24-hour)
   shiftEndTime?: string; // HH:MM format (24-hour)
-  shiftDuration?: 8 | 12; // Hours
-  shiftType?: 'day' | 'night'; // Auto-detected from start time
+  shiftDuration?: 8 | 12; // Hours (locked based on shift system)
+  shiftType?: 'day' | 'night' | 'morning' | 'afternoon'; // Auto-detected from start time
   isCustomShiftTime?: boolean; // True if user selected custom time
 }
 

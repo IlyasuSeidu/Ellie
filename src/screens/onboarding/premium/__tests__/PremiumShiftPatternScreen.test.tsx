@@ -93,9 +93,9 @@ describe('PremiumShiftPatternScreen', () => {
       ).toBeTruthy();
     });
 
-    it('should render progress header with step 3 of 10', () => {
+    it('should render progress header with step 4 of 10', () => {
       const { getByText } = renderWithContext(<PremiumShiftPatternScreen />);
-      expect(getByText('Step 3 of 10')).toBeTruthy();
+      expect(getByText('Step 4 of 10')).toBeTruthy();
     });
 
     it('should render first card (4-4-4 Cycle)', () => {

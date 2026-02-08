@@ -37,6 +37,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { useOnboarding } from '@/contexts/OnboardingContext';
+import { ShiftSystem } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
@@ -48,6 +49,9 @@ const SLIDER_WIDTH = SCREEN_WIDTH * 0.75;
 const CYCLE_COLORS = {
   day: theme.colors.shiftVisualization.dayShift,
   night: theme.colors.shiftVisualization.nightShift,
+  morning: '#FCD34D', // Bright yellow for morning
+  afternoon: '#FB923C', // Orange for afternoon
+  night3shift: '#A78BFA', // Purple for 3-shift night
   off: theme.colors.shiftVisualization.daysOff,
 } as const;
 
@@ -55,6 +59,9 @@ const CYCLE_COLORS = {
 const TRACK_COLORS = {
   day: '#60A5FA', // Light blue
   night: '#A78BFA', // Light purple
+  morning: '#FDE68A', // Light yellow
+  afternoon: '#FDBA74', // Light orange
+  night3shift: '#C4B5FD', // Light purple
   off: '#FBBF24', // Light amber
 } as const;
 
@@ -727,9 +734,19 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
   testID = 'premium-custom-pattern-screen',
 }) => {
   const navigation = useNavigation<NavigationProp>();
-  const { updateData } = useOnboarding();
+  const { data, updateData } = useOnboarding();
+  const shiftSystem = data.shiftSystem || ShiftSystem.TWO_SHIFT;
+
+  // State for 2-shift system
   const [daysOn, setDaysOn] = useState(4);
   const [nightsOn, setNightsOn] = useState(4);
+
+  // State for 3-shift system
+  const [morningOn, setMorningOn] = useState(4);
+  const [afternoonOn, setAfternoonOn] = useState(4);
+  const [nightOn, setNightOn] = useState(4);
+
+  // Common state
   const [daysOff, setDaysOff] = useState(4);
   const [showTip, setShowTip] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -752,11 +769,22 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
     };
   }, []);
 
-  // Calculate validation and metrics
-  const totalDays = daysOn + nightsOn + daysOff;
-  const hasWorkTime = daysOn > 0 || nightsOn > 0;
+  // Calculate validation and metrics based on shift system
+  const totalDays =
+    shiftSystem === ShiftSystem.TWO_SHIFT
+      ? daysOn + nightsOn + daysOff
+      : morningOn + afternoonOn + nightOn + daysOff;
+
+  const hasWorkTime =
+    shiftSystem === ShiftSystem.TWO_SHIFT
+      ? daysOn > 0 || nightsOn > 0
+      : morningOn > 0 || afternoonOn > 0 || nightOn > 0;
+
   const isValid = totalDays <= 28 && hasWorkTime && daysOff >= 1;
-  const workDays = daysOn + nightsOn;
+
+  const workDays =
+    shiftSystem === ShiftSystem.TWO_SHIFT ? daysOn + nightsOn : morningOn + afternoonOn + nightOn;
+
   const workPercentage = Math.round((workDays / totalDays) * 100);
   const hasHighWorkRatio = workPercentage > 85;
 
@@ -804,7 +832,28 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
       return;
     }
 
-    updateData({ customPattern: { daysOn, nightsOn, daysOff } });
+    // Save pattern based on shift system
+    if (shiftSystem === ShiftSystem.TWO_SHIFT) {
+      updateData({
+        customPattern: {
+          daysOn,
+          nightsOn,
+          daysOff,
+        },
+      });
+    } else {
+      updateData({
+        customPattern: {
+          daysOn: 0,
+          nightsOn: 0,
+          morningOn,
+          afternoonOn,
+          nightOn,
+          daysOff,
+        },
+      });
+    }
+
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
     if (onContinue) {
@@ -812,7 +861,19 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
     } else {
       navigation.navigate('StartDate');
     }
-  }, [isValid, daysOn, nightsOn, daysOff, updateData, onContinue, navigation]);
+  }, [
+    isValid,
+    shiftSystem,
+    daysOn,
+    nightsOn,
+    morningOn,
+    afternoonOn,
+    nightOn,
+    daysOff,
+    updateData,
+    onContinue,
+    navigation,
+  ]);
 
   const handleBack = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -849,53 +910,124 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
           <View style={styles.slidersHeader}>
             <Ionicons name="options-outline" size={22} color={theme.colors.sacredGold} />
             <Text style={styles.slidersTitle}>Adjust Your Pattern</Text>
+            <Text style={styles.slidersSubtitle}>
+              {shiftSystem === ShiftSystem.TWO_SHIFT ? '2-Shift System' : '3-Shift System'}
+            </Text>
           </View>
 
           <View style={styles.slidersContainer}>
-            <EnhancedSlider
-              label="Days On"
-              icon="sunny"
-              value={daysOn}
-              min={0}
-              max={14}
-              color={CYCLE_COLORS.day}
-              trackColor={TRACK_COLORS.day}
-              onChange={setDaysOn}
-              delayIndex={0}
-              reducedMotion={reducedMotion}
-              customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
-              customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
-            />
+            {shiftSystem === ShiftSystem.TWO_SHIFT ? (
+              <>
+                {/* 2-Shift Sliders */}
+                <EnhancedSlider
+                  label="Days On"
+                  icon="sunny"
+                  value={daysOn}
+                  min={0}
+                  max={14}
+                  color={CYCLE_COLORS.day}
+                  trackColor={TRACK_COLORS.day}
+                  onChange={setDaysOn}
+                  delayIndex={0}
+                  reducedMotion={reducedMotion}
+                  customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
+                  customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
+                />
 
-            <EnhancedSlider
-              label="Nights On"
-              icon="moon"
-              value={nightsOn}
-              min={0}
-              max={14}
-              color={CYCLE_COLORS.night}
-              trackColor={TRACK_COLORS.night}
-              onChange={setNightsOn}
-              delayIndex={1}
-              reducedMotion={reducedMotion}
-              customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png')}
-              customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png')}
-            />
+                <EnhancedSlider
+                  label="Nights On"
+                  icon="moon"
+                  value={nightsOn}
+                  min={0}
+                  max={14}
+                  color={CYCLE_COLORS.night}
+                  trackColor={TRACK_COLORS.night}
+                  onChange={setNightsOn}
+                  delayIndex={1}
+                  reducedMotion={reducedMotion}
+                  customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png')}
+                  customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png')}
+                />
 
-            <EnhancedSlider
-              label="Days Off"
-              icon="home"
-              value={daysOff}
-              min={1}
-              max={14}
-              color={CYCLE_COLORS.off}
-              trackColor={TRACK_COLORS.off}
-              onChange={setDaysOff}
-              delayIndex={2}
-              reducedMotion={reducedMotion}
-              customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png')}
-              customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png')}
-            />
+                <EnhancedSlider
+                  label="Days Off"
+                  icon="home"
+                  value={daysOff}
+                  min={1}
+                  max={14}
+                  color={CYCLE_COLORS.off}
+                  trackColor={TRACK_COLORS.off}
+                  onChange={setDaysOff}
+                  delayIndex={2}
+                  reducedMotion={reducedMotion}
+                  customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png')}
+                  customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png')}
+                />
+              </>
+            ) : (
+              <>
+                {/* 3-Shift Sliders */}
+                <EnhancedSlider
+                  label="Morning Shifts (6 AM - 2 PM)"
+                  icon="sunny-outline"
+                  value={morningOn}
+                  min={0}
+                  max={14}
+                  color={CYCLE_COLORS.morning}
+                  trackColor={TRACK_COLORS.morning}
+                  onChange={setMorningOn}
+                  delayIndex={0}
+                  reducedMotion={reducedMotion}
+                  customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
+                  customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
+                />
+
+                <EnhancedSlider
+                  label="Afternoon Shifts (2 PM - 10 PM)"
+                  icon="partly-sunny-outline"
+                  value={afternoonOn}
+                  min={0}
+                  max={14}
+                  color={CYCLE_COLORS.afternoon}
+                  trackColor={TRACK_COLORS.afternoon}
+                  onChange={setAfternoonOn}
+                  delayIndex={1}
+                  reducedMotion={reducedMotion}
+                  customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
+                  customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
+                />
+
+                <EnhancedSlider
+                  label="Night Shifts (10 PM - 6 AM)"
+                  icon="moon-outline"
+                  value={nightOn}
+                  min={0}
+                  max={14}
+                  color={CYCLE_COLORS.night3shift}
+                  trackColor={TRACK_COLORS.night3shift}
+                  onChange={setNightOn}
+                  delayIndex={2}
+                  reducedMotion={reducedMotion}
+                  customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png')}
+                  customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png')}
+                />
+
+                <EnhancedSlider
+                  label="Days Off"
+                  icon="home"
+                  value={daysOff}
+                  min={1}
+                  max={14}
+                  color={CYCLE_COLORS.off}
+                  trackColor={TRACK_COLORS.off}
+                  onChange={setDaysOff}
+                  delayIndex={3}
+                  reducedMotion={reducedMotion}
+                  customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png')}
+                  customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png')}
+                />
+              </>
+            )}
           </View>
         </View>
 
@@ -1263,6 +1395,11 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     color: theme.colors.paper,
+  },
+  slidersSubtitle: {
+    fontSize: 14,
+    color: theme.colors.softGray,
+    fontStyle: 'italic',
   },
   slidersContainer: {
     backgroundColor: theme.colors.opacity.stone50,
