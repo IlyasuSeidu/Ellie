@@ -17,6 +17,7 @@ jest.mock('@expo/vector-icons', () => {
   const React = require('react');
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const RN = require('react-native');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const MockIcon = (props: any) => React.createElement(RN.Text, props, props.name || 'icon');
   return {
     Ionicons: MockIcon,
@@ -35,6 +36,7 @@ jest.mock('react-native-gesture-handler', () => {
     Gesture: {
       Pan: jest.fn(() => mockGesture),
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     GestureDetector: (props: any) => props.children,
   };
 });

@@ -1398,7 +1398,7 @@ const styles = StyleSheet.create({
   },
   slidersSubtitle: {
     fontSize: 14,
-    color: theme.colors.softGray,
+    color: theme.colors.dust,
     fontStyle: 'italic',
   },
   slidersContainer: {

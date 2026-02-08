@@ -279,12 +279,16 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     return calculateEndTime(startTime, duration);
   }, [getStartTime24h, duration]);
 
-  const getShiftType = useCallback((): 'day' | 'night' => {
+  const getShiftType = useCallback((): 'day' | 'night' | 'morning' | 'afternoon' => {
     const startTime = getStartTime24h();
     if (!startTime) return 'day';
 
-    return detectShiftType(startTime);
-  }, [getStartTime24h]);
+    const shiftSystem = data.shiftSystem as ShiftSystem;
+    return detectShiftType(
+      startTime,
+      shiftSystem === ShiftSystem.THREE_SHIFT ? '3-shift' : '2-shift'
+    );
+  }, [getStartTime24h, data.shiftSystem]);
 
   const isValid = useCallback((): boolean => {
     if (!selectedPreset) return false;
@@ -638,7 +642,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                             duration === 12
                               ? theme.colors.paper
                               : lockedDuration !== 12
-                                ? theme.colors.charcoalGray
+                                ? theme.colors.shadow
                                 : theme.colors.dust
                           }
                         />
@@ -675,7 +679,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                             duration === 8
                               ? theme.colors.paper
                               : lockedDuration !== 8
-                                ? theme.colors.charcoalGray
+                                ? theme.colors.shadow
                                 : theme.colors.dust
                           }
                         />
@@ -724,7 +728,11 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
               entering={reducedMotion ? undefined : FadeInUp.duration(300)}
               style={[
                 styles.detectionCard,
-                getShiftType() === 'day' ? styles.detectionCardDay : styles.detectionCardNight,
+                getShiftType() === 'day' ||
+                getShiftType() === 'morning' ||
+                getShiftType() === 'afternoon'
+                  ? styles.detectionCardDay
+                  : styles.detectionCardNight,
               ]}
             >
               <Ionicons name="bulb" size={24} color={theme.colors.sacredGold} />
@@ -732,10 +740,20 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                 <Text
                   style={[
                     styles.detectionText,
-                    getShiftType() === 'day' ? styles.detectionTextDay : styles.detectionTextNight,
+                    getShiftType() === 'day' ||
+                    getShiftType() === 'morning' ||
+                    getShiftType() === 'afternoon'
+                      ? styles.detectionTextDay
+                      : styles.detectionTextNight,
                   ]}
                 >
-                  {getShiftType() === 'day' ? '☀️ Day Shift Detected' : '🌙 Night Shift Detected'}
+                  {getShiftType() === 'day'
+                    ? '☀️ Day Shift Detected'
+                    : getShiftType() === 'morning'
+                      ? '🌅 Morning Shift Detected'
+                      : getShiftType() === 'afternoon'
+                        ? '🌤️ Afternoon Shift Detected'
+                        : '🌙 Night Shift Detected'}
                 </Text>
                 <Text style={styles.detectionHelper}>Based on your start time</Text>
               </View>
@@ -1204,14 +1222,14 @@ const styles = StyleSheet.create({
   },
   durationCardDisabled: {
     opacity: 0.4,
-    backgroundColor: theme.colors.charcoalGray,
+    backgroundColor: theme.colors.shadow,
   },
   durationTextDisabled: {
-    color: theme.colors.charcoalGray,
+    color: theme.colors.shadow,
   },
   lockedLabel: {
     fontSize: 12,
-    color: theme.colors.softGray,
+    color: theme.colors.dust,
     fontStyle: 'italic',
   },
   // Live Preview Card
