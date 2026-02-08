@@ -33,7 +33,7 @@ jest.mock('@expo/vector-icons', () => {
   const React = require('react');
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const RN = require('react-native');
-  const MockIcon = (props) => React.createElement(RN.Text, props, props.name || 'icon');
+  const MockIcon = (props: any) => React.createElement(RN.Text, props, props.name || 'icon');
   return {
     Ionicons: MockIcon,
     MaterialIcons: MockIcon,
@@ -164,15 +164,12 @@ describe('PremiumShiftSystemScreen', () => {
       expect(getByTestId('premium-shift-system-screen')).toBeTruthy();
     });
 
-    it('should render without crashing when onContinue and onBack are provided', () => {
-      const mockOnContinue = jest.fn();
-      const mockOnBack = jest.fn();
-
+    it('should render without crashing with custom testID', () => {
       const { getByTestId } = renderWithProviders(
-        <PremiumShiftSystemScreen onContinue={mockOnContinue} onBack={mockOnBack} />
+        <PremiumShiftSystemScreen testID="custom-test-id" />
       );
 
-      expect(getByTestId('premium-shift-system-screen')).toBeTruthy();
+      expect(getByTestId('custom-test-id')).toBeTruthy();
     });
   });
 

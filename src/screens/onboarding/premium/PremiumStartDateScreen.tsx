@@ -1414,7 +1414,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
 }) => {
   const navigation = useNavigation<NavigationProp>();
   const { data, updateData } = useOnboarding();
-  const shiftSystem = data.shiftSystem || ShiftSystem.TWO_SHIFT;
+  const shiftSystem: ShiftSystem = (data.shiftSystem as ShiftSystem) || ShiftSystem.TWO_SHIFT;
   // Smart default: tomorrow
   const [selectedDate, setSelectedDate] = useState<string | null>(getTomorrowDate());
   const [selectedPhase, setSelectedPhase] = useState<Phase | null>(null);
@@ -1504,7 +1504,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   const customPattern = useMemo(() => getPatternValues(pattern), [pattern, getPatternValues]);
 
   // Calculate phase offset for preview
-  const previewPhaseOffset = selectedPhase ? calculatePhaseOffset(selectedPhase, customPattern) : 0;
+  const previewPhaseOffset = selectedPhase ? calculatePhaseOffset(selectedPhase, customPattern, shiftSystem) : 0;
 
   const canContinue = selectedDate !== null && selectedPhase !== null;
 

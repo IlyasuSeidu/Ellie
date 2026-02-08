@@ -685,7 +685,7 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
   const { data, updateData } = useOnboarding();
 
   // Filter patterns based on selected shift system
-  const shiftSystem = data.shiftSystem || ShiftSystem.TWO_SHIFT; // Default to 2-shift
+  const shiftSystem: ShiftSystem = (data.shiftSystem as ShiftSystem) || ShiftSystem.TWO_SHIFT; // Default to 2-shift
   const filteredPatterns = SHIFT_PATTERNS.filter((pattern) =>
     pattern.supportedSystems.includes(shiftSystem)
   );
