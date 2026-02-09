@@ -355,7 +355,7 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
 
 // Cycle Square Component with individual animations
 interface CycleSquareProps {
-  type: 'day' | 'night' | 'off';
+  type: 'day' | 'night' | 'morning' | 'afternoon' | 'off';
   index: number;
   animationDelay: number;
   reducedMotion: boolean;
@@ -386,7 +386,15 @@ const CycleSquare: React.FC<CycleSquareProps> = React.memo(
     }));
 
     const backgroundColor =
-      type === 'day' ? CYCLE_COLORS.day : type === 'night' ? CYCLE_COLORS.night : CYCLE_COLORS.off;
+      type === 'day'
+        ? CYCLE_COLORS.day
+        : type === 'night'
+          ? CYCLE_COLORS.night
+          : type === 'morning'
+            ? CYCLE_COLORS.morning
+            : type === 'afternoon'
+              ? CYCLE_COLORS.afternoon
+              : CYCLE_COLORS.off;
 
     return (
       <Animated.View
@@ -406,15 +414,26 @@ CycleSquare.displayName = 'CycleSquare';
 
 // Live Preview Card Component
 interface LivePreviewCardProps {
-  daysOn: number;
-  nightsOn: number;
+  shiftSystem: ShiftSystem;
+  // 2-shift system props
+  daysOn?: number;
+  nightsOn?: number;
+  // 3-shift system props
+  morningOn?: number;
+  afternoonOn?: number;
+  nightOn?: number;
+  // Common props
   daysOff: number;
   reducedMotion?: boolean;
 }
 
 const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
-  daysOn,
-  nightsOn,
+  shiftSystem,
+  daysOn = 0,
+  nightsOn = 0,
+  morningOn = 0,
+  afternoonOn = 0,
+  nightOn = 0,
   daysOff,
   reducedMotion = false,
 }) => {
@@ -423,14 +442,23 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
   const floatValue = useSharedValue(0);
   const dayBlockScale = useSharedValue(0);
   const nightBlockScale = useSharedValue(0);
+  const morningBlockScale = useSharedValue(0);
+  const afternoonBlockScale = useSharedValue(0);
+  const night3BlockScale = useSharedValue(0);
   const offBlockScale = useSharedValue(0);
   const cycleLengthScale = useSharedValue(1);
 
   // Memoize work-rest calculations
   const { totalDays, workDays, workPercentage, restPercentage, workRatio, restRatio } =
     useMemo(() => {
-      const total = daysOn + nightsOn + daysOff;
-      const work = daysOn + nightsOn;
+      const total =
+        shiftSystem === ShiftSystem.TWO_SHIFT
+          ? daysOn + nightsOn + daysOff
+          : morningOn + afternoonOn + nightOn + daysOff;
+      const work =
+        shiftSystem === ShiftSystem.TWO_SHIFT
+          ? daysOn + nightsOn
+          : morningOn + afternoonOn + nightOn;
       const workPct = Math.round((work / total) * 100);
       const restPct = Math.round((daysOff / total) * 100);
 
@@ -448,7 +476,7 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
         workRatio: wRatio,
         restRatio: rRatio,
       };
-    }, [daysOn, nightsOn, daysOff]);
+    }, [shiftSystem, daysOn, nightsOn, morningOn, afternoonOn, nightOn, daysOff]);
 
   // Animated percentages for count-up effect
   const animatedWorkPercentage = useSharedValue(workPercentage);
@@ -479,10 +507,27 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
     opacityValue.value = withDelay(200, withTiming(1, { duration: 400 }));
 
     // Staggered entrance for cycle blocks
-    dayBlockScale.value = withDelay(300, withSpring(1, SPRING_CONFIGS.gentle));
-    nightBlockScale.value = withDelay(400, withSpring(1, SPRING_CONFIGS.gentle));
-    offBlockScale.value = withDelay(500, withSpring(1, SPRING_CONFIGS.gentle));
-  }, [scaleValue, opacityValue, dayBlockScale, nightBlockScale, offBlockScale]);
+    if (shiftSystem === ShiftSystem.TWO_SHIFT) {
+      dayBlockScale.value = withDelay(300, withSpring(1, SPRING_CONFIGS.gentle));
+      nightBlockScale.value = withDelay(400, withSpring(1, SPRING_CONFIGS.gentle));
+      offBlockScale.value = withDelay(500, withSpring(1, SPRING_CONFIGS.gentle));
+    } else {
+      morningBlockScale.value = withDelay(300, withSpring(1, SPRING_CONFIGS.gentle));
+      afternoonBlockScale.value = withDelay(400, withSpring(1, SPRING_CONFIGS.gentle));
+      night3BlockScale.value = withDelay(500, withSpring(1, SPRING_CONFIGS.gentle));
+      offBlockScale.value = withDelay(600, withSpring(1, SPRING_CONFIGS.gentle));
+    }
+  }, [
+    scaleValue,
+    opacityValue,
+    shiftSystem,
+    dayBlockScale,
+    nightBlockScale,
+    morningBlockScale,
+    afternoonBlockScale,
+    night3BlockScale,
+    offBlockScale,
+  ]);
 
   // Idle floating animation (skip if reduced motion)
   useEffect(() => {
@@ -497,22 +542,49 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
 
   // Pulse animations when values change (only if already entered)
   useEffect(() => {
-    if (dayBlockScale.value === 1) {
+    if (shiftSystem === ShiftSystem.TWO_SHIFT && dayBlockScale.value === 1) {
       dayBlockScale.value = withSequence(
         withSpring(1.05, SPRING_CONFIGS.fast),
         withSpring(1, SPRING_CONFIGS.fast)
       );
     }
-  }, [daysOn, dayBlockScale]);
+  }, [daysOn, dayBlockScale, shiftSystem]);
 
   useEffect(() => {
-    if (nightBlockScale.value === 1) {
+    if (shiftSystem === ShiftSystem.TWO_SHIFT && nightBlockScale.value === 1) {
       nightBlockScale.value = withSequence(
         withSpring(1.05, SPRING_CONFIGS.fast),
         withSpring(1, SPRING_CONFIGS.fast)
       );
     }
-  }, [nightsOn, nightBlockScale]);
+  }, [nightsOn, nightBlockScale, shiftSystem]);
+
+  useEffect(() => {
+    if (shiftSystem === ShiftSystem.THREE_SHIFT && morningBlockScale.value === 1) {
+      morningBlockScale.value = withSequence(
+        withSpring(1.05, SPRING_CONFIGS.fast),
+        withSpring(1, SPRING_CONFIGS.fast)
+      );
+    }
+  }, [morningOn, morningBlockScale, shiftSystem]);
+
+  useEffect(() => {
+    if (shiftSystem === ShiftSystem.THREE_SHIFT && afternoonBlockScale.value === 1) {
+      afternoonBlockScale.value = withSequence(
+        withSpring(1.05, SPRING_CONFIGS.fast),
+        withSpring(1, SPRING_CONFIGS.fast)
+      );
+    }
+  }, [afternoonOn, afternoonBlockScale, shiftSystem]);
+
+  useEffect(() => {
+    if (shiftSystem === ShiftSystem.THREE_SHIFT && night3BlockScale.value === 1) {
+      night3BlockScale.value = withSequence(
+        withSpring(1.05, SPRING_CONFIGS.fast),
+        withSpring(1, SPRING_CONFIGS.fast)
+      );
+    }
+  }, [nightOn, night3BlockScale, shiftSystem]);
 
   useEffect(() => {
     if (offBlockScale.value === 1) {
@@ -543,6 +615,18 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
     transform: [{ scale: nightBlockScale.value }],
   }));
 
+  const morningBlockAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: morningBlockScale.value }],
+  }));
+
+  const afternoonBlockAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: afternoonBlockScale.value }],
+  }));
+
+  const night3BlockAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: night3BlockScale.value }],
+  }));
+
   const offBlockAnimatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: offBlockScale.value }],
   }));
@@ -560,14 +644,21 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
   }));
 
   // Generate cycle preview squares (memoized)
-  const cyclePattern = useMemo(
-    () => [
-      ...Array(daysOn).fill('day'),
-      ...Array(nightsOn).fill('night'),
+  const cyclePattern = useMemo(() => {
+    if (shiftSystem === ShiftSystem.TWO_SHIFT) {
+      return [
+        ...Array(daysOn).fill('day'),
+        ...Array(nightsOn).fill('night'),
+        ...Array(daysOff).fill('off'),
+      ];
+    }
+    return [
+      ...Array(morningOn).fill('morning'),
+      ...Array(afternoonOn).fill('afternoon'),
+      ...Array(nightOn).fill('night'),
       ...Array(daysOff).fill('off'),
-    ],
-    [daysOn, nightsOn, daysOff]
-  );
+    ];
+  }, [shiftSystem, daysOn, nightsOn, morningOn, afternoonOn, nightOn, daysOff]);
 
   // Trigger counter for cycle square wave animation
   const [animationTrigger, setAnimationTrigger] = useState(0);
@@ -575,7 +666,7 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
   // Increment trigger when pattern changes to re-animate squares
   useEffect(() => {
     setAnimationTrigger((prev) => prev + 1);
-  }, [daysOn, nightsOn, daysOff]);
+  }, [daysOn, nightsOn, morningOn, afternoonOn, nightOn, daysOff]);
 
   return (
     <Animated.View style={[styles.previewCard, cardAnimatedStyle]}>
@@ -594,60 +685,148 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
         </View>
 
         {/* Cycle Blocks */}
-        <View style={styles.cycleBlocks}>
-          <Animated.View style={[styles.cycleBlock, dayBlockAnimatedStyle]}>
-            <View style={[styles.cycleBlockInner, { backgroundColor: CYCLE_COLORS.day }]}>
-              <Image
-                source={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
-                style={styles.cycleBlockIcon}
-                resizeMode="contain"
-              />
-              <Text style={styles.cycleBlockNumber}>{daysOn}</Text>
-              <Text style={styles.cycleBlockLabel}>Days</Text>
-            </View>
-          </Animated.View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.cycleBlocksScroll}
+          style={styles.cycleBlocksContainer}
+        >
+          {shiftSystem === ShiftSystem.TWO_SHIFT ? (
+            <>
+              <Animated.View style={[styles.cycleBlock, dayBlockAnimatedStyle]}>
+                <View style={[styles.cycleBlockInner, { backgroundColor: CYCLE_COLORS.day }]}>
+                  <Image
+                    source={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
+                    style={styles.cycleBlockIcon}
+                    resizeMode="contain"
+                  />
+                  <Text style={styles.cycleBlockNumber}>{daysOn}</Text>
+                  <Text style={styles.cycleBlockLabel}>Days</Text>
+                </View>
+              </Animated.View>
 
-          <Animated.View style={[styles.cycleBlock, nightBlockAnimatedStyle]}>
-            <View style={[styles.cycleBlockInner, { backgroundColor: CYCLE_COLORS.night }]}>
-              <Image
-                source={require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png')}
-                style={styles.cycleBlockIcon}
-                resizeMode="contain"
-              />
-              <Text style={styles.cycleBlockNumber}>{nightsOn}</Text>
-              <Text style={styles.cycleBlockLabel}>Nights</Text>
-            </View>
-          </Animated.View>
+              <Animated.View style={[styles.cycleBlock, nightBlockAnimatedStyle]}>
+                <View style={[styles.cycleBlockInner, { backgroundColor: CYCLE_COLORS.night }]}>
+                  <Image
+                    source={require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png')}
+                    style={styles.cycleBlockIcon}
+                    resizeMode="contain"
+                  />
+                  <Text style={styles.cycleBlockNumber}>{nightsOn}</Text>
+                  <Text style={styles.cycleBlockLabel}>Nights</Text>
+                </View>
+              </Animated.View>
 
-          <Animated.View style={[styles.cycleBlock, offBlockAnimatedStyle]}>
-            <View style={[styles.cycleBlockInner, { backgroundColor: CYCLE_COLORS.off }]}>
-              <Image
-                source={require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png')}
-                style={styles.cycleBlockIcon}
-                resizeMode="contain"
-              />
-              <Text style={styles.cycleBlockNumber}>{daysOff}</Text>
-              <Text style={styles.cycleBlockLabel}>Off</Text>
-            </View>
-          </Animated.View>
-        </View>
+              <Animated.View style={[styles.cycleBlock, offBlockAnimatedStyle]}>
+                <View style={[styles.cycleBlockInner, { backgroundColor: CYCLE_COLORS.off }]}>
+                  <Image
+                    source={require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png')}
+                    style={styles.cycleBlockIcon}
+                    resizeMode="contain"
+                  />
+                  <Text style={styles.cycleBlockNumber}>{daysOff}</Text>
+                  <Text style={styles.cycleBlockLabel}>Off</Text>
+                </View>
+              </Animated.View>
+            </>
+          ) : (
+            <>
+              <Animated.View style={[styles.cycleBlock, morningBlockAnimatedStyle]}>
+                <View style={[styles.cycleBlockInner, { backgroundColor: CYCLE_COLORS.morning }]}>
+                  <Image
+                    source={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
+                    style={styles.cycleBlockIcon}
+                    resizeMode="contain"
+                  />
+                  <Text style={styles.cycleBlockNumber}>{morningOn}</Text>
+                  <Text style={styles.cycleBlockLabel}>Morning</Text>
+                </View>
+              </Animated.View>
+
+              <Animated.View style={[styles.cycleBlock, afternoonBlockAnimatedStyle]}>
+                <View style={[styles.cycleBlockInner, { backgroundColor: CYCLE_COLORS.afternoon }]}>
+                  <Image
+                    source={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
+                    style={styles.cycleBlockIcon}
+                    resizeMode="contain"
+                  />
+                  <Text style={styles.cycleBlockNumber}>{afternoonOn}</Text>
+                  <Text style={styles.cycleBlockLabel}>Afternoon</Text>
+                </View>
+              </Animated.View>
+
+              <Animated.View style={[styles.cycleBlock, night3BlockAnimatedStyle]}>
+                <View
+                  style={[styles.cycleBlockInner, { backgroundColor: CYCLE_COLORS.night3shift }]}
+                >
+                  <Image
+                    source={require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png')}
+                    style={styles.cycleBlockIcon}
+                    resizeMode="contain"
+                  />
+                  <Text style={styles.cycleBlockNumber}>{nightOn}</Text>
+                  <Text style={styles.cycleBlockLabel}>Night</Text>
+                </View>
+              </Animated.View>
+
+              <Animated.View style={[styles.cycleBlock, offBlockAnimatedStyle]}>
+                <View style={[styles.cycleBlockInner, { backgroundColor: CYCLE_COLORS.off }]}>
+                  <Image
+                    source={require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png')}
+                    style={styles.cycleBlockIcon}
+                    resizeMode="contain"
+                  />
+                  <Text style={styles.cycleBlockNumber}>{daysOff}</Text>
+                  <Text style={styles.cycleBlockLabel}>Off</Text>
+                </View>
+              </Animated.View>
+            </>
+          )}
+        </ScrollView>
 
         {/* Visual Cycle Preview */}
         <View style={styles.cyclePreviewSection}>
-          <View style={styles.cycleLegend}>
-            <View style={styles.legendItem}>
-              <View style={[styles.legendDot, { backgroundColor: CYCLE_COLORS.day }]} />
-              <Text style={styles.legendText}>Day Shift</Text>
-            </View>
-            <View style={styles.legendItem}>
-              <View style={[styles.legendDot, { backgroundColor: CYCLE_COLORS.night }]} />
-              <Text style={styles.legendText}>Night Shift</Text>
-            </View>
-            <View style={styles.legendItem}>
-              <View style={[styles.legendDot, { backgroundColor: CYCLE_COLORS.off }]} />
-              <Text style={styles.legendText}>Day Off</Text>
-            </View>
-          </View>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.cycleLegendScroll}
+          >
+            {shiftSystem === ShiftSystem.TWO_SHIFT ? (
+              <>
+                <View style={styles.legendItem}>
+                  <View style={[styles.legendDot, { backgroundColor: CYCLE_COLORS.day }]} />
+                  <Text style={styles.legendText}>Day Shift</Text>
+                </View>
+                <View style={styles.legendItem}>
+                  <View style={[styles.legendDot, { backgroundColor: CYCLE_COLORS.night }]} />
+                  <Text style={styles.legendText}>Night Shift</Text>
+                </View>
+                <View style={styles.legendItem}>
+                  <View style={[styles.legendDot, { backgroundColor: CYCLE_COLORS.off }]} />
+                  <Text style={styles.legendText}>Day Off</Text>
+                </View>
+              </>
+            ) : (
+              <>
+                <View style={styles.legendItem}>
+                  <View style={[styles.legendDot, { backgroundColor: CYCLE_COLORS.morning }]} />
+                  <Text style={styles.legendText}>Morning</Text>
+                </View>
+                <View style={styles.legendItem}>
+                  <View style={[styles.legendDot, { backgroundColor: CYCLE_COLORS.afternoon }]} />
+                  <Text style={styles.legendText}>Afternoon</Text>
+                </View>
+                <View style={styles.legendItem}>
+                  <View style={[styles.legendDot, { backgroundColor: CYCLE_COLORS.night3shift }]} />
+                  <Text style={styles.legendText}>Night</Text>
+                </View>
+                <View style={styles.legendItem}>
+                  <View style={[styles.legendDot, { backgroundColor: CYCLE_COLORS.off }]} />
+                  <Text style={styles.legendText}>Day Off</Text>
+                </View>
+              </>
+            )}
+          </ScrollView>
 
           <View style={styles.cyclePreview}>
             {cyclePattern.map((type, index) => (
@@ -899,8 +1078,12 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
 
         {/* Live Preview Card */}
         <LivePreviewCard
+          shiftSystem={shiftSystem as ShiftSystem}
           daysOn={daysOn}
           nightsOn={nightsOn}
+          morningOn={morningOn}
+          afternoonOn={afternoonOn}
+          nightOn={nightOn}
           daysOff={daysOff}
           reducedMotion={reducedMotion}
         />
@@ -1215,14 +1398,17 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
   },
-  cycleBlocks: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  cycleBlocksContainer: {
     marginBottom: theme.spacing.lg,
+  },
+  cycleBlocksScroll: {
+    flexDirection: 'row',
     gap: theme.spacing.sm,
+    paddingHorizontal: theme.spacing.xs,
   },
   cycleBlock: {
-    flex: 1,
+    width: 100,
+    minWidth: 100,
   },
   cycleBlockInner: {
     borderRadius: 16,
@@ -1251,6 +1437,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginBottom: theme.spacing.sm,
+  },
+  cycleLegendScroll: {
+    flexDirection: 'row',
+    gap: theme.spacing.md,
+    paddingHorizontal: theme.spacing.sm,
+    justifyContent: 'center',
   },
   legendItem: {
     flexDirection: 'row',
