@@ -77,7 +77,7 @@ const SPRING_CONFIGS = {
 // Enhanced Slider Component
 interface EnhancedSliderProps {
   label: string;
-  icon: keyof typeof Ionicons.glyphMap;
+  icon: keyof typeof Ionicons.glyphMap | string; // Can be Ionicon name or emoji
   value: number;
   min: number;
   max: number;
@@ -104,7 +104,9 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
   customThumbIcon,
   customHeaderIcon,
 }) => {
-  const translateX = useSharedValue(((value - min) / (max - min)) * SLIDER_WIDTH);
+  const [trackWidth, setTrackWidth] = React.useState(SLIDER_WIDTH);
+  const translateX = useSharedValue(((value - min) / (max - min)) * trackWidth);
+  const startX = useSharedValue(0); // Store starting position for gesture
   const scale = useSharedValue(1);
   const badgeScale = useSharedValue(1);
   const containerOpacity = useSharedValue(0);
@@ -131,17 +133,21 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
     }
   }, [thumbGlow, reducedMotion]);
 
-  // Update position when value changes externally
+  // Update position when value or trackWidth changes
   useEffect(() => {
     translateX.value = withSpring(
-      ((value - min) / (max - min)) * SLIDER_WIDTH,
+      ((value - min) / (max - min)) * trackWidth,
       SPRING_CONFIGS.smooth
     );
+  }, [value, min, max, translateX, trackWidth]);
+
+  // Badge animation when value changes
+  useEffect(() => {
     badgeScale.value = withSequence(
       withSpring(1.15, SPRING_CONFIGS.fast),
       withSpring(1, SPRING_CONFIGS.fast)
     );
-  }, [value, min, max, translateX, badgeScale]);
+  }, [value, badgeScale]);
 
   const handleIncrement = useCallback(() => {
     if (value < max) {
@@ -180,8 +186,8 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
   const handleTrackPress = useCallback(
     (event: { nativeEvent: { locationX: number } }) => {
       const tapX = event.nativeEvent.locationX;
-      const clampedX = Math.max(0, Math.min(SLIDER_WIDTH, tapX));
-      const progress = clampedX / SLIDER_WIDTH;
+      const clampedX = Math.max(0, Math.min(trackWidth, tapX));
+      const progress = clampedX / trackWidth;
       const newValue = Math.round(min + progress * (max - min));
 
       if (newValue !== value) {
@@ -189,21 +195,22 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
       }
     },
-    [min, max, value, onChange]
+    [min, max, value, onChange, trackWidth]
   );
 
   const panGesture = Gesture.Pan()
     .onBegin(() => {
+      startX.value = translateX.value; // Save the starting position
       scale.value = withSpring(1.1, SPRING_CONFIGS.fast);
       thumbGlow.value = withTiming(0.6, { duration: 150 }); // Max glow during drag
     })
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .onUpdate((event: any) => {
-      const newX = Math.max(0, Math.min(SLIDER_WIDTH, event.translationX + translateX.value));
+      const newX = Math.max(0, Math.min(trackWidth, startX.value + event.translationX));
       translateX.value = newX;
 
       // Calculate new value
-      const progress = newX / SLIDER_WIDTH;
+      const progress = newX / trackWidth;
       const newValue = Math.round(min + progress * (max - min));
 
       if (newValue !== value) {
@@ -222,10 +229,10 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
       );
 
       // Snap to nearest value
-      const progress = translateX.value / SLIDER_WIDTH;
+      const progress = translateX.value / trackWidth;
       const newValue = Math.round(min + progress * (max - min));
       translateX.value = withSpring(
-        ((newValue - min) / (max - min)) * SLIDER_WIDTH,
+        ((newValue - min) / (max - min)) * trackWidth,
         SPRING_CONFIGS.smooth
       );
     });
@@ -254,8 +261,10 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
         <View style={styles.sliderLabelContainer}>
           {customHeaderIcon ? (
             <Image source={customHeaderIcon} style={styles.sliderHeaderIcon} resizeMode="contain" />
+          ) : icon.length <= 2 ? (
+            <Text style={{ fontSize: 20 }}>{icon}</Text>
           ) : (
-            <Ionicons name={icon} size={20} color={color} />
+            <Ionicons name={icon as keyof typeof Ionicons.glyphMap} size={20} color={color} />
           )}
           <Text style={styles.sliderLabel}>{label}</Text>
         </View>
@@ -277,7 +286,13 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
         </Pressable>
 
         {/* Slider Track */}
-        <View style={styles.sliderTrackContainer}>
+        <View
+          style={styles.sliderTrackContainer}
+          onLayout={(event) => {
+            const { width } = event.nativeEvent.layout;
+            setTrackWidth(width);
+          }}
+        >
           <View style={[styles.sliderTrack, { backgroundColor: theme.colors.opacity.white10 }]}>
             <Animated.View
               style={[
@@ -329,8 +344,14 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
             >
               {customThumbIcon ? (
                 <Image source={customThumbIcon} style={styles.thumbIcon} resizeMode="contain" />
+              ) : icon.length <= 2 ? (
+                <Text style={{ fontSize: 14 }}>{icon}</Text>
               ) : (
-                <Ionicons name={icon} size={14} color={theme.colors.paper} />
+                <Ionicons
+                  name={icon as keyof typeof Ionicons.glyphMap}
+                  size={14}
+                  color={theme.colors.paper}
+                />
               )}
             </Animated.View>
           </GestureDetector>
@@ -745,10 +766,11 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
 
               <Animated.View style={[styles.cycleBlock, afternoonBlockAnimatedStyle]}>
                 <View style={[styles.cycleBlockInner, { backgroundColor: CYCLE_COLORS.afternoon }]}>
-                  <Image
-                    source={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
+                  <Ionicons
+                    name="partly-sunny"
+                    size={50}
+                    color={theme.colors.paper}
                     style={styles.cycleBlockIcon}
-                    resizeMode="contain"
                   />
                   <Text style={styles.cycleBlockNumber}>{afternoonOn}</Text>
                   <Text style={styles.cycleBlockLabel}>Afternoon</Text>
@@ -1173,8 +1195,6 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
                   onChange={setAfternoonOn}
                   delayIndex={1}
                   reducedMotion={reducedMotion}
-                  customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
-                  customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
                 />
 
                 <EnhancedSlider

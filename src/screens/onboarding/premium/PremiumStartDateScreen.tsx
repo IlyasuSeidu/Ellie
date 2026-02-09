@@ -302,11 +302,19 @@ const AnimatedDayCell: React.FC<DayCellProps> = React.memo(
         >
           {/* Shift icon above date */}
           {shiftType && (
-            <Image
-              source={getCalendarShiftIcon(shiftType)}
-              style={styles.shiftIcon}
-              resizeMode="contain"
-            />
+            <>
+              {getCalendarShiftIcon(shiftType) === 'iconicon' ? (
+                <View style={styles.shiftIcon}>
+                  <Ionicons name="partly-sunny" size={18} color={theme.colors.sacredGold} />
+                </View>
+              ) : (
+                <Image
+                  source={getCalendarShiftIcon(shiftType) as ImageSourcePropType}
+                  style={styles.shiftIcon}
+                  resizeMode="contain"
+                />
+              )}
+            </>
           )}
 
           <Text
@@ -405,7 +413,7 @@ const getPhaseColor = (phase: Phase): string => {
   }
 };
 
-const getPhaseIcon = (phase: Phase): ImageSourcePropType => {
+const getPhaseIcon = (phase: Phase): ImageSourcePropType | 'iconicon' => {
   switch (phase) {
     case 'day':
       return require('../../../../assets/onboarding/icons/consolidated/phase-day-shift-sun.png');
@@ -414,7 +422,7 @@ const getPhaseIcon = (phase: Phase): ImageSourcePropType => {
     case 'morning':
       return require('../../../../assets/onboarding/icons/consolidated/phase-day-shift-sun.png'); // Reuse sun icon
     case 'afternoon':
-      return require('../../../../assets/onboarding/icons/consolidated/phase-day-shift-sun.png'); // Reuse sun icon
+      return 'iconicon'; // Use Ionicon partly-sunny
     case 'off':
       return require('../../../../assets/onboarding/icons/consolidated/phase-days-off-rest.png');
     default:
@@ -425,7 +433,7 @@ const getPhaseIcon = (phase: Phase): ImageSourcePropType => {
 // Get calendar cell icon for shift type
 const getCalendarShiftIcon = (
   shiftType: 'day' | 'night' | 'morning' | 'afternoon' | 'off'
-): ImageSourcePropType => {
+): ImageSourcePropType | 'iconicon' => {
   switch (shiftType) {
     case 'day':
       return require('../../../../assets/onboarding/icons/consolidated/calendar-day-shift-sun.png');
@@ -434,7 +442,7 @@ const getCalendarShiftIcon = (
     case 'morning':
       return require('../../../../assets/onboarding/icons/consolidated/calendar-day-shift-sun.png'); // Reuse sun for morning
     case 'afternoon':
-      return require('../../../../assets/onboarding/icons/consolidated/calendar-day-shift-sun.png'); // Reuse sun for afternoon
+      return 'iconicon'; // Use Ionicon partly-sunny
     case 'off':
       return require('../../../../assets/onboarding/icons/consolidated/calendar-days-off-rest.png');
     default:
@@ -813,7 +821,7 @@ interface AnimatedPhaseCardProps {
   isSelected: boolean;
   onPress: () => void;
   label: string;
-  icon: ImageSourcePropType;
+  icon: ImageSourcePropType | 'iconicon'; // 'iconicon' marker for using Ionicon instead
   entranceDelay: number;
   reducedMotion: boolean;
   disabled?: boolean;
@@ -1043,7 +1051,15 @@ const AnimatedPhaseCard: React.FC<AnimatedPhaseCardProps> = React.memo(
                   iconAnimatedStyle,
                 ]}
               >
-                <Image source={icon} style={styles.phaseIcon} resizeMode="contain" />
+                {icon === 'iconicon' ? (
+                  <Ionicons name="partly-sunny" size={48} color={theme.colors.paper} />
+                ) : (
+                  <Image
+                    source={icon as ImageSourcePropType}
+                    style={styles.phaseIcon}
+                    resizeMode="contain"
+                  />
+                )}
               </Animated.View>
               <Text style={styles.phaseLabel}>{label}</Text>
             </LinearGradient>
@@ -1057,7 +1073,15 @@ const AnimatedPhaseCard: React.FC<AnimatedPhaseCardProps> = React.memo(
                   iconAnimatedStyle,
                 ]}
               >
-                <Image source={icon} style={styles.phaseIcon} resizeMode="contain" />
+                {icon === 'iconicon' ? (
+                  <Ionicons name="partly-sunny" size={48} color={theme.colors.paper} />
+                ) : (
+                  <Image
+                    source={icon as ImageSourcePropType}
+                    style={styles.phaseIcon}
+                    resizeMode="contain"
+                  />
+                )}
               </Animated.View>
               <Text style={styles.phaseLabel}>{label}</Text>
             </View>

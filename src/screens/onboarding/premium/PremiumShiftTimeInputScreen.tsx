@@ -98,7 +98,7 @@ interface ShiftPreset {
   startTime: string; // HH:MM (12-hour format)
   period: 'AM' | 'PM';
   duration: 8 | 12;
-  icon: keyof typeof Ionicons.glyphMap;
+  icon: keyof typeof Ionicons.glyphMap | string; // Can be Ionicon name or emoji
   type: 'day' | 'night' | 'morning' | 'afternoon';
   endTimeLabel: string;
   shiftSystem: ShiftSystem;
@@ -321,11 +321,6 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
       }
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     }
-  };
-
-  const handleDurationChange = (newDuration: 8 | 12) => {
-    setDuration(newDuration);
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   };
 
   const handlePeriodToggle = (period: 'AM' | 'PM') => {
@@ -612,88 +607,33 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
 
                 {/* Shift Duration Selector */}
                 <View style={styles.inputRow}>
-                  <Text style={styles.inputLabel}>
-                    Shift Duration{' '}
-                    <Text style={styles.lockedLabel}>
-                      (Set by {shiftSystem === ShiftSystem.TWO_SHIFT ? '2-shift' : '3-shift'}{' '}
-                      system)
-                    </Text>
-                  </Text>
+                  <Text style={styles.inputLabel}>Shift Duration</Text>
                   <View style={styles.durationSelector}>
-                    <Pressable
-                      style={[
-                        styles.durationCard,
-                        duration === 12 && styles.durationCardSelected,
-                        lockedDuration !== 12 && styles.durationCardDisabled,
-                      ]}
-                      onPress={() => lockedDuration === 12 && handleDurationChange(12)}
-                      disabled={lockedDuration !== 12}
-                    >
-                      <View style={styles.durationCardContent}>
-                        {lockedDuration === 12 && (
-                          <View style={styles.recommendedBadge}>
-                            <Text style={styles.recommendedBadgeText}>Your System</Text>
-                          </View>
-                        )}
-                        <Ionicons
-                          name="time-outline"
-                          size={20}
-                          color={
-                            duration === 12
-                              ? theme.colors.paper
-                              : lockedDuration !== 12
-                                ? theme.colors.shadow
-                                : theme.colors.dust
-                          }
-                        />
-                        <Text
-                          style={[
-                            styles.durationText,
-                            duration === 12 && styles.durationTextSelected,
-                            lockedDuration !== 12 && styles.durationTextDisabled,
-                          ]}
-                        >
-                          12 Hours
-                        </Text>
-                      </View>
-                    </Pressable>
-                    <Pressable
-                      style={[
-                        styles.durationCard,
-                        duration === 8 && styles.durationCardSelected,
-                        lockedDuration !== 8 && styles.durationCardDisabled,
-                      ]}
-                      onPress={() => lockedDuration === 8 && handleDurationChange(8)}
-                      disabled={lockedDuration !== 8}
-                    >
-                      <View style={styles.durationCardContent}>
-                        {lockedDuration === 8 && (
-                          <View style={styles.recommendedBadge}>
-                            <Text style={styles.recommendedBadgeText}>Your System</Text>
-                          </View>
-                        )}
-                        <Ionicons
-                          name="timer-outline"
-                          size={20}
-                          color={
-                            duration === 8
-                              ? theme.colors.paper
-                              : lockedDuration !== 8
-                                ? theme.colors.shadow
-                                : theme.colors.dust
-                          }
-                        />
-                        <Text
-                          style={[
-                            styles.durationText,
-                            duration === 8 && styles.durationTextSelected,
-                            lockedDuration !== 8 && styles.durationTextDisabled,
-                          ]}
-                        >
-                          8 Hours
-                        </Text>
-                      </View>
-                    </Pressable>
+                    {lockedDuration === 12 ? (
+                      <Pressable
+                        style={[styles.durationCard, styles.durationCardSelected]}
+                        disabled
+                      >
+                        <View style={styles.durationCardContent}>
+                          <Ionicons name="time-outline" size={20} color={theme.colors.paper} />
+                          <Text style={[styles.durationText, styles.durationTextSelected]}>
+                            12 Hours
+                          </Text>
+                        </View>
+                      </Pressable>
+                    ) : (
+                      <Pressable
+                        style={[styles.durationCard, styles.durationCardSelected]}
+                        disabled
+                      >
+                        <View style={styles.durationCardContent}>
+                          <Ionicons name="timer-outline" size={20} color={theme.colors.paper} />
+                          <Text style={[styles.durationText, styles.durationTextSelected]}>
+                            8 Hours
+                          </Text>
+                        </View>
+                      </Pressable>
+                    )}
                   </View>
                 </View>
 
@@ -771,8 +711,9 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
             <View style={styles.tipContent}>
               <Text style={styles.tipTitle}>Pro Tip</Text>
               <Text style={styles.tipText}>
-                Most mining operations use 12-hour shifts. You can always change this later in
-                settings.
+                {shiftSystem === ShiftSystem.TWO_SHIFT
+                  ? 'Most mining operations use 12-hour shifts. You can always change this later in settings.'
+                  : 'Most mining operations with 3-shift systems use 8-hour shifts. You can always change this later in settings.'}
               </Text>
             </View>
           </Animated.View>
@@ -882,7 +823,15 @@ const PresetCard: React.FC<PresetCardProps> = ({
               isCustom && styles.presetIconCircleCustom,
             ]}
           >
-            <Ionicons name={preset.icon} size={32} color={theme.colors.paper} />
+            {preset.icon.length <= 2 ? (
+              <Text style={{ fontSize: 32 }}>{preset.icon}</Text>
+            ) : (
+              <Ionicons
+                name={preset.icon as keyof typeof Ionicons.glyphMap}
+                size={32}
+                color={theme.colors.paper}
+              />
+            )}
           </View>
 
           {!isCustom ? (
@@ -1198,20 +1147,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: theme.spacing.xs,
   },
-  recommendedBadge: {
-    position: 'absolute',
-    top: 4,
-    right: 4,
-    backgroundColor: theme.colors.sacredGold,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 8,
-  },
-  recommendedBadgeText: {
-    fontSize: 10,
-    fontWeight: '600',
-    color: theme.colors.paper,
-  },
   durationText: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -1219,18 +1154,6 @@ const styles = StyleSheet.create({
   },
   durationTextSelected: {
     color: theme.colors.paper,
-  },
-  durationCardDisabled: {
-    opacity: 0.4,
-    backgroundColor: theme.colors.shadow,
-  },
-  durationTextDisabled: {
-    color: theme.colors.shadow,
-  },
-  lockedLabel: {
-    fontSize: 12,
-    color: theme.colors.dust,
-    fontStyle: 'italic',
   },
   // Live Preview Card
   livePreviewCard: {

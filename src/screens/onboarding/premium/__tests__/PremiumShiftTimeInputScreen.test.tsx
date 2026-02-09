@@ -180,51 +180,28 @@ describe('PremiumShiftTimeInputScreen', () => {
       });
     });
 
-    it('should render duration selector with 8h and 12h options', async () => {
+    it('should render duration selector with appropriate option for shift system', async () => {
       const { getByText } = renderWithProviders(<PremiumShiftTimeInputScreen />);
 
       fireEvent.press(getByText(/Custom Time/i));
 
       await waitFor(() => {
+        // Default mock data uses 2-shift system, so only 12 Hours should be visible
         expect(getByText('12 Hours')).toBeTruthy();
-        expect(getByText('8 Hours')).toBeTruthy();
-      });
-    });
-
-    it('should show "Your System" badge on locked duration option', async () => {
-      const { getByText } = renderWithProviders(<PremiumShiftTimeInputScreen />);
-
-      fireEvent.press(getByText(/Custom Time/i));
-
-      await waitFor(() => {
-        expect(getByText('Your System')).toBeTruthy();
       });
     });
   });
 
   describe('Shift Duration Selection', () => {
-    it('should select 12-hour duration by default', async () => {
+    it('should select correct duration by default based on shift system', async () => {
       const { getByText } = renderWithProviders(<PremiumShiftTimeInputScreen />);
 
       fireEvent.press(getByText(/Custom Time/i));
 
       await waitFor(() => {
-        // 12 Hours should be selected by default (this is just a visual check in the test)
+        // 12 Hours should be selected by default for 2-shift system
         expect(getByText('12 Hours')).toBeTruthy();
       });
-    });
-
-    it('should trigger haptic feedback when changing duration', async () => {
-      const { getByText } = renderWithProviders(<PremiumShiftTimeInputScreen />);
-
-      fireEvent.press(getByText(/Custom Time/i));
-
-      await waitFor(() => {
-        const eightHourButton = getByText('8 Hours');
-        fireEvent.press(eightHourButton);
-      });
-
-      expect(Haptics.impactAsync).toHaveBeenCalled();
     });
   });
 
