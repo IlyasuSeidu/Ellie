@@ -1458,7 +1458,7 @@ const ValidationTips: React.FC<{ reducedMotion: boolean }> = ({ reducedMotion })
       >
         <Animated.View style={[styles.tipsIconWrapper, iconAnimatedStyle]}>
           <Image
-            source={require('../../../../assets/onboarding/icons/consolidated/tips-lightbulb-glowing-small.png')}
+            source={require('../../../../assets/onboarding/icons/consolidated/tips-lightbulb-glowing.png')}
             style={styles.tipsIcon}
             resizeMode="contain"
             fadeDuration={0}
