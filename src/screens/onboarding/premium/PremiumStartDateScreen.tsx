@@ -1877,7 +1877,7 @@ const styles = StyleSheet.create({
   },
   phaseCardsScrollContent: {
     paddingTop: theme.spacing.sm,
-    paddingLeft: theme.spacing.lg,
+    paddingLeft: theme.spacing.md,
     paddingRight: theme.spacing.lg,
     gap: 12,
     marginBottom: theme.spacing.md,
