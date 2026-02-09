@@ -1369,12 +1369,6 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
                     );
                   })}
               </View>
-              <Ionicons
-                name="arrow-forward"
-                size={16}
-                color={theme.colors.paleGold}
-                style={styles.previewTimelineArrow}
-              />
             </View>
           )}
 
@@ -1428,7 +1422,7 @@ const ValidationTips: React.FC<{ reducedMotion: boolean }> = ({ reducedMotion })
     }
 
     iconScale.value = withRepeat(
-      withSequence(withTiming(1.05, { duration: 1500 }), withTiming(1, { duration: 1500 })),
+      withSequence(withTiming(1.1, { duration: 1500 }), withTiming(1, { duration: 1500 })),
       -1, // Infinite repeat
       false
     );
@@ -1462,7 +1456,7 @@ const ValidationTips: React.FC<{ reducedMotion: boolean }> = ({ reducedMotion })
         end={{ x: 1, y: 1 }}
         style={styles.tipsGradient}
       >
-        <Animated.View style={iconAnimatedStyle}>
+        <Animated.View style={[styles.tipsIconWrapper, iconAnimatedStyle]}>
           <Image
             source={require('../../../../assets/onboarding/icons/consolidated/tips-lightbulb-glowing-small.png')}
             style={styles.tipsIcon}
@@ -2053,9 +2047,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.spacing.lg,
     overflow: 'hidden',
   },
+  tipsIconWrapper: {
+    // Add subtle glow around the icon for more prominence
+    ...Platform.select({
+      ios: {
+        shadowColor: theme.colors.sacredGold,
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.6,
+        shadowRadius: 16,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
+  },
   tipsIcon: {
-    width: 44,
-    height: 44,
+    width: 56,
+    height: 56,
   },
   tipText: {
     flex: 1,
@@ -2239,9 +2247,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 2,
     textAlign: 'center',
-  },
-  previewTimelineArrow: {
-    marginTop: theme.spacing.sm,
-    alignSelf: 'center',
   },
 });
