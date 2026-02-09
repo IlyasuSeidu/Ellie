@@ -1851,10 +1851,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     color: theme.colors.paper,
-    marginBottom: theme.spacing.md,
+    marginBottom: theme.spacing.lg,
     textAlign: 'center',
   },
   phaseCardsScrollContent: {
+    paddingTop: theme.spacing.sm,
     paddingRight: theme.spacing.lg,
     gap: 12,
     marginBottom: theme.spacing.md,
