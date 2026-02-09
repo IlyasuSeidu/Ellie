@@ -1396,6 +1396,7 @@ const ValidationTips: React.FC<{ reducedMotion: boolean }> = ({ reducedMotion })
   const [currentTipIndex, setCurrentTipIndex] = useState(0);
   const opacity = useSharedValue(0);
   const tipOpacity = useSharedValue(1);
+  const iconScale = useSharedValue(1);
 
   useEffect(() => {
     opacity.value = withDelay(800, withTiming(1, { duration: 300 }));
@@ -1420,6 +1421,23 @@ const ValidationTips: React.FC<{ reducedMotion: boolean }> = ({ reducedMotion })
     return () => clearInterval(interval);
   }, [reducedMotion, tipOpacity]);
 
+  // Subtle pulsing animation for the lightbulb icon
+  useEffect(() => {
+    if (reducedMotion) {
+      return () => {}; // no-op cleanup
+    }
+
+    iconScale.value = withRepeat(
+      withSequence(withTiming(1.05, { duration: 1500 }), withTiming(1, { duration: 1500 })),
+      -1, // Infinite repeat
+      false
+    );
+
+    return () => {
+      iconScale.value = 1;
+    };
+  }, [reducedMotion, iconScale]);
+
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
   }));
@@ -1428,16 +1446,33 @@ const ValidationTips: React.FC<{ reducedMotion: boolean }> = ({ reducedMotion })
     opacity: tipOpacity.value,
   }));
 
+  const iconAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: iconScale.value }],
+  }));
+
   return (
     <Animated.View style={[styles.tipsContainer, animatedStyle]}>
-      <Image
-        source={require('../../../../assets/onboarding/icons/consolidated/tips-lightbulb-glowing-small.png')}
-        style={styles.tipsIcon}
-        resizeMode="contain"
-      />
-      <Animated.Text style={[styles.tipText, tipAnimatedStyle]}>
-        {TIPS[currentTipIndex]}
-      </Animated.Text>
+      {/* Gradient Background */}
+      <LinearGradient
+        colors={[
+          'rgba(180, 83, 9, 0.15)', // Gold with 15% opacity
+          'rgba(180, 83, 9, 0.05)', // Gold with 5% opacity
+        ]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.tipsGradient}
+      >
+        <Animated.View style={iconAnimatedStyle}>
+          <Image
+            source={require('../../../../assets/onboarding/icons/consolidated/tips-lightbulb-glowing-small.png')}
+            style={styles.tipsIcon}
+            resizeMode="contain"
+          />
+        </Animated.View>
+        <Animated.Text style={[styles.tipText, tipAnimatedStyle]}>
+          {TIPS[currentTipIndex]}
+        </Animated.Text>
+      </LinearGradient>
     </Animated.View>
   );
 };
@@ -1992,22 +2027,51 @@ const styles = StyleSheet.create({
 
   // Tips
   tipsContainer: {
+    borderRadius: 16,
+    marginBottom: theme.spacing.xl,
+    borderWidth: 1,
+    borderColor: 'rgba(180, 83, 9, 0.3)', // Gold border with 30% opacity
+    // Shadow for premium depth
+    ...Platform.select({
+      ios: {
+        shadowColor: theme.colors.sacredGold,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 12,
+      },
+      android: {
+        elevation: 6,
+      },
+    }),
+  },
+  tipsGradient: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: theme.spacing.md,
-    backgroundColor: theme.colors.softStone,
-    borderRadius: 12,
-    padding: theme.spacing.md,
-    marginBottom: theme.spacing.xl,
+    borderRadius: 16,
+    paddingVertical: theme.spacing.lg,
+    paddingHorizontal: theme.spacing.lg,
+    overflow: 'hidden',
   },
   tipsIcon: {
-    width: 40,
-    height: 40,
+    width: 44,
+    height: 44,
   },
   tipText: {
     flex: 1,
-    fontSize: 14,
+    fontSize: 15,
+    fontWeight: '500',
     color: theme.colors.paper,
+    lineHeight: 22,
+    letterSpacing: 0.2,
+    ...Platform.select({
+      ios: {
+        fontFamily: 'System',
+      },
+      android: {
+        fontFamily: 'sans-serif-medium',
+      },
+    }),
   },
 
   // Bottom Navigation
