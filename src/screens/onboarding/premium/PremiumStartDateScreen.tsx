@@ -830,6 +830,10 @@ const AnimatedPhaseCard: React.FC<AnimatedPhaseCardProps> = React.memo(
     const iconFloatY = useSharedValue(0);
     const borderGlow = useSharedValue(0.8);
 
+    // Track touch position to differentiate tap from scroll
+    const touchStartX = React.useRef<number>(0);
+    const touchStartY = React.useRef<number>(0);
+
     // Entrance animation
     useEffect(() => {
       opacity.value = withDelay(entranceDelay, withTiming(1, { duration: 400 }));
@@ -897,20 +901,37 @@ const AnimatedPhaseCard: React.FC<AnimatedPhaseCardProps> = React.memo(
       ],
     }));
 
-    const handlePressIn = useCallback(() => {
-      if (!reducedMotion && !disabled) {
-        pressScale.value = withTiming(0.95, { duration: 100 });
-      }
-    }, [reducedMotion, pressScale, disabled]);
-
-    const handlePressOut = useCallback(() => {
-      if (!disabled) {
-        if (!reducedMotion) {
-          pressScale.value = withTiming(1, { duration: 100 });
+    const handleTouchStart = useCallback(
+      (event: { nativeEvent: { pageX: number; pageY: number } }) => {
+        touchStartX.current = event.nativeEvent.pageX;
+        touchStartY.current = event.nativeEvent.pageY;
+        if (!reducedMotion && !disabled) {
+          pressScale.value = withTiming(0.95, { duration: 100 });
         }
-        onPress();
-      }
-    }, [reducedMotion, pressScale, onPress, disabled]);
+      },
+      [reducedMotion, pressScale, disabled]
+    );
+
+    const handleTouchEnd = useCallback(
+      (event: { nativeEvent: { pageX: number; pageY: number } }) => {
+        if (!disabled) {
+          if (!reducedMotion) {
+            pressScale.value = withTiming(1, { duration: 100 });
+          }
+
+          // Calculate movement distance
+          const deltaX = Math.abs(event.nativeEvent.pageX - touchStartX.current);
+          const deltaY = Math.abs(event.nativeEvent.pageY - touchStartY.current);
+          const totalMovement = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+          // Only trigger onPress if movement was minimal (< 10px = tap, not scroll)
+          if (totalMovement < 10) {
+            onPress();
+          }
+        }
+      },
+      [reducedMotion, pressScale, onPress, disabled]
+    );
 
     const getPhaseIconBgColor = () => {
       switch (phase) {
@@ -983,8 +1004,8 @@ const AnimatedPhaseCard: React.FC<AnimatedPhaseCardProps> = React.memo(
     return (
       <Animated.View style={[styles.phaseCardWrapper, cardAnimatedStyle]}>
         <Pressable
-          onPressIn={handlePressIn}
-          onPressOut={handlePressOut}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
           disabled={disabled}
           style={[
             styles.phaseCard,
