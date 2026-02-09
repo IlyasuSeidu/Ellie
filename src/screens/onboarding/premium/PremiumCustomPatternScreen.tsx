@@ -1093,9 +1093,6 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
           <View style={styles.slidersHeader}>
             <Ionicons name="options-outline" size={22} color={theme.colors.sacredGold} />
             <Text style={styles.slidersTitle}>Adjust Your Pattern</Text>
-            <Text style={styles.slidersSubtitle}>
-              {shiftSystem === ShiftSystem.TWO_SHIFT ? '2-Shift System' : '3-Shift System'}
-            </Text>
           </View>
 
           <View style={styles.slidersContainer}>
@@ -1151,7 +1148,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               <>
                 {/* 3-Shift Sliders */}
                 <EnhancedSlider
-                  label="Morning Shifts (6 AM - 2 PM)"
+                  label="Mornings On"
                   icon="sunny-outline"
                   value={morningOn}
                   min={0}
@@ -1166,7 +1163,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
                 />
 
                 <EnhancedSlider
-                  label="Afternoon Shifts (2 PM - 10 PM)"
+                  label="Afternoons On"
                   icon="partly-sunny-outline"
                   value={afternoonOn}
                   min={0}
@@ -1181,7 +1178,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
                 />
 
                 <EnhancedSlider
-                  label="Night Shifts (10 PM - 6 AM)"
+                  label="Nights On"
                   icon="moon-outline"
                   value={nightOn}
                   min={0}
