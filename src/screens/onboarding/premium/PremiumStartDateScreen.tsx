@@ -2072,6 +2072,7 @@ const styles = StyleSheet.create({
     color: theme.colors.paper,
     lineHeight: 22,
     letterSpacing: 0.2,
+    textAlign: 'center',
     ...Platform.select({
       ios: {
         fontFamily: 'System',
