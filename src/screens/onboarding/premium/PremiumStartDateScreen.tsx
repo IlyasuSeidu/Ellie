@@ -929,6 +929,57 @@ const AnimatedPhaseCard: React.FC<AnimatedPhaseCardProps> = React.memo(
       }
     };
 
+    const getPhaseGradientColors = (): [string, string] => {
+      switch (phase) {
+        case 'day':
+          return ['rgba(33, 150, 243, 0.25)', 'rgba(33, 150, 243, 0.05)']; // Blue gradient
+        case 'night':
+          return ['rgba(101, 31, 255, 0.25)', 'rgba(101, 31, 255, 0.05)']; // Purple gradient
+        case 'morning':
+          return ['rgba(252, 211, 77, 0.25)', 'rgba(252, 211, 77, 0.05)']; // Yellow gradient
+        case 'afternoon':
+          return ['rgba(251, 146, 60, 0.25)', 'rgba(251, 146, 60, 0.05)']; // Orange gradient
+        case 'off':
+          return ['rgba(255, 152, 0, 0.25)', 'rgba(255, 152, 0, 0.05)']; // Amber gradient
+        default:
+          return ['rgba(33, 150, 243, 0.25)', 'rgba(33, 150, 243, 0.05)'];
+      }
+    };
+
+    const getPhaseBorderColor = (): string => {
+      switch (phase) {
+        case 'day':
+          return 'rgb(33, 150, 243)'; // Blue
+        case 'night':
+          return 'rgb(101, 31, 255)'; // Purple
+        case 'morning':
+          return 'rgb(252, 211, 77)'; // Yellow
+        case 'afternoon':
+          return 'rgb(251, 146, 60)'; // Orange
+        case 'off':
+          return 'rgb(255, 152, 0)'; // Amber
+        default:
+          return theme.colors.sacredGold;
+      }
+    };
+
+    const getPhaseShadowColor = (): string => {
+      switch (phase) {
+        case 'day':
+          return '#2196F3'; // Blue
+        case 'night':
+          return '#651FFF'; // Purple
+        case 'morning':
+          return '#FCD34D'; // Yellow
+        case 'afternoon':
+          return '#FB923C'; // Orange
+        case 'off':
+          return '#FF9800'; // Amber
+        default:
+          return theme.colors.sacredGold;
+      }
+    };
+
     return (
       <Animated.View style={[styles.phaseCardWrapper, cardAnimatedStyle]}>
         <Pressable
@@ -937,23 +988,59 @@ const AnimatedPhaseCard: React.FC<AnimatedPhaseCardProps> = React.memo(
           disabled={disabled}
           style={[
             styles.phaseCard,
-            isSelected && styles.phaseCardSelected,
+            isSelected && {
+              borderWidth: 2,
+              borderColor: getPhaseBorderColor(),
+              backgroundColor: 'transparent',
+              ...Platform.select({
+                ios: {
+                  shadowColor: getPhaseShadowColor(),
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.5,
+                  shadowRadius: 8,
+                },
+                android: {
+                  elevation: 8,
+                },
+              }),
+            },
             disabled && { opacity: 0.5 },
           ]}
         >
-          <View style={styles.phaseCardGradient}>
-            {/* Icon with bounce and float animation */}
-            <Animated.View
-              style={[
-                styles.phaseIconContainer,
-                { backgroundColor: getPhaseIconBgColor() },
-                iconAnimatedStyle,
-              ]}
+          {isSelected ? (
+            <LinearGradient
+              colors={getPhaseGradientColors()}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.phaseCardGradient}
             >
-              <Image source={icon} style={styles.phaseIcon} resizeMode="contain" />
-            </Animated.View>
-            <Text style={styles.phaseLabel}>{label}</Text>
-          </View>
+              {/* Icon with bounce and float animation */}
+              <Animated.View
+                style={[
+                  styles.phaseIconContainer,
+                  { backgroundColor: getPhaseIconBgColor() },
+                  iconAnimatedStyle,
+                ]}
+              >
+                <Image source={icon} style={styles.phaseIcon} resizeMode="contain" />
+              </Animated.View>
+              <Text style={styles.phaseLabel}>{label}</Text>
+            </LinearGradient>
+          ) : (
+            <View style={styles.phaseCardGradient}>
+              {/* Icon with bounce and float animation */}
+              <Animated.View
+                style={[
+                  styles.phaseIconContainer,
+                  { backgroundColor: getPhaseIconBgColor() },
+                  iconAnimatedStyle,
+                ]}
+              >
+                <Image source={icon} style={styles.phaseIcon} resizeMode="contain" />
+              </Animated.View>
+              <Text style={styles.phaseLabel}>{label}</Text>
+            </View>
+          )}
         </Pressable>
       </Animated.View>
     );
