@@ -1482,6 +1482,27 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
 
       // Convert to 3-shift structure if 3-shift system is selected
       if (shiftSystem === ShiftSystem.THREE_SHIFT) {
+        // Check if pattern already has 3-shift data (from custom pattern)
+        const hasThreeShiftData =
+          'morningOn' in basePattern || 'afternoonOn' in basePattern || 'nightOn' in basePattern;
+
+        if (hasThreeShiftData) {
+          // Already a 3-shift pattern, return as-is
+          const pattern = basePattern as {
+            morningOn?: number;
+            afternoonOn?: number;
+            nightOn?: number;
+            daysOff: number;
+          };
+          return {
+            morningOn: pattern.morningOn || 0,
+            afternoonOn: pattern.afternoonOn || 0,
+            nightOn: pattern.nightOn || 0,
+            daysOff: pattern.daysOff,
+          };
+        }
+
+        // Convert from 2-shift pattern (predefined patterns like 4-4-4)
         const daysOn = basePattern.daysOn || 0;
         const nightsOn = basePattern.nightsOn || 0;
 
@@ -1504,7 +1525,9 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   const customPattern = useMemo(() => getPatternValues(pattern), [pattern, getPatternValues]);
 
   // Calculate phase offset for preview
-  const previewPhaseOffset = selectedPhase ? calculatePhaseOffset(selectedPhase, customPattern, shiftSystem) : 0;
+  const previewPhaseOffset = selectedPhase
+    ? calculatePhaseOffset(selectedPhase, customPattern, shiftSystem)
+    : 0;
 
   const canContinue = selectedDate !== null && selectedPhase !== null;
 
