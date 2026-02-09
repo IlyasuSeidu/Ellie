@@ -1422,7 +1422,7 @@ const ValidationTips: React.FC<{ reducedMotion: boolean }> = ({ reducedMotion })
     }
 
     iconScale.value = withRepeat(
-      withSequence(withTiming(1.1, { duration: 1500 }), withTiming(1, { duration: 1500 })),
+      withSequence(withTiming(1.05, { duration: 1500 }), withTiming(1, { duration: 1500 })),
       -1, // Infinite repeat
       false
     );
@@ -1461,6 +1461,7 @@ const ValidationTips: React.FC<{ reducedMotion: boolean }> = ({ reducedMotion })
             source={require('../../../../assets/onboarding/icons/consolidated/tips-lightbulb-glowing-small.png')}
             style={styles.tipsIcon}
             resizeMode="contain"
+            fadeDuration={0}
           />
         </Animated.View>
         <Animated.Text style={[styles.tipText, tipAnimatedStyle]}>
@@ -2054,17 +2055,17 @@ const styles = StyleSheet.create({
       ios: {
         shadowColor: theme.colors.sacredGold,
         shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.6,
-        shadowRadius: 16,
+        shadowOpacity: 0.4,
+        shadowRadius: 12,
       },
       android: {
-        elevation: 8,
+        elevation: 6,
       },
     }),
   },
   tipsIcon: {
-    width: 56,
-    height: 56,
+    width: 48,
+    height: 48,
   },
   tipText: {
     flex: 1,
