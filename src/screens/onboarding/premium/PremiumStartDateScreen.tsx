@@ -59,9 +59,9 @@ const HAPTIC_PATTERNS = {
 
 // Rotating Tips
 const TIPS = [
-  '💡 Choose tomorrow if starting a new roster',
-  "💡 Select today's date if already mid-cycle",
-  '💡 Your calendar will sync from this date forward',
+  'Choose tomorrow if starting a new roster',
+  "Select today's date if already mid-cycle",
+  'Your calendar will sync from this date forward',
 ] as const;
 
 // Shift visualization colors (RGB values from theme for use with opacity)
@@ -2046,6 +2046,7 @@ const styles = StyleSheet.create({
     paddingVertical: theme.spacing.lg,
     paddingHorizontal: theme.spacing.lg,
     overflow: 'hidden',
+    flexWrap: 'nowrap',
   },
   tipsIconWrapper: {
     // Add subtle glow around the icon for more prominence
@@ -2067,12 +2068,13 @@ const styles = StyleSheet.create({
   },
   tipText: {
     flex: 1,
+    flexShrink: 1,
     fontSize: 15,
     fontWeight: '500',
     color: theme.colors.paper,
     lineHeight: 22,
     letterSpacing: 0.2,
-    textAlign: 'center',
+    textAlign: 'left',
     ...Platform.select({
       ios: {
         fontFamily: 'System',

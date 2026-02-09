@@ -197,7 +197,7 @@ describe('PremiumStartDateScreen', () => {
     it('should display rotating tips', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
       // Check for first tip (others rotate)
-      expect(getByText('💡 Choose tomorrow if starting a new roster')).toBeTruthy();
+      expect(getByText('Choose tomorrow if starting a new roster')).toBeTruthy();
     });
 
     it('should render tips section', () => {
