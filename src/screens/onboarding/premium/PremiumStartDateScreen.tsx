@@ -1370,6 +1370,9 @@ const DayWithinPhaseSelector: React.FC<DayWithinPhaseSelectorProps> = ({
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.dayCardsScrollContent}
         style={styles.dayCardsScroll}
+        snapToInterval={120}
+        decelerationRate="fast"
+        snapToAlignment="start"
       >
         {Array.from({ length: phaseLength }, (_, index) => {
           const dayNumber = index + 1;
@@ -1467,18 +1470,18 @@ const DayCard: React.FC<DayCardProps> = ({
         style={[
           styles.dayCard,
           isSelected && {
-            borderWidth: 2,
+            borderWidth: 3,
             borderColor: theme.colors.sacredGold,
             backgroundColor: 'transparent',
             ...Platform.select({
               ios: {
                 shadowColor: theme.colors.sacredGold,
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.5,
-                shadowRadius: 8,
+                shadowOffset: { width: 0, height: 6 },
+                shadowOpacity: 0.6,
+                shadowRadius: 12,
               },
               android: {
-                elevation: 8,
+                elevation: 12,
               },
             }),
           },
@@ -2361,18 +2364,18 @@ const styles = StyleSheet.create({
   },
   dayCardsScrollContent: {
     paddingTop: theme.spacing.xs,
-    paddingLeft: theme.spacing.md,
+    paddingLeft: theme.spacing.lg,
     paddingRight: theme.spacing.lg,
-    gap: 12,
+    gap: 20,
   },
   dayCardWrapper: {
-    width: 60,
+    width: 100,
   },
   dayCard: {
-    width: 60,
-    height: 60,
+    width: 100,
+    height: 100,
     backgroundColor: theme.colors.darkStone,
-    borderRadius: 12,
+    borderRadius: 16,
     borderWidth: 1,
     borderColor: theme.colors.softStone,
     justifyContent: 'center',
@@ -2386,7 +2389,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dayCardNumber: {
-    fontSize: 20,
+    fontSize: 28,
     fontWeight: 'bold',
     color: theme.colors.dust,
   },
