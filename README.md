@@ -72,11 +72,14 @@ Ellie features a polished, Tinder-inspired onboarding experience built with Reac
 
 - Interactive calendar with swipe gestures for month navigation
 - Phase selector (choose starting shift: day/night/off)
+- **Day-within-phase selector** - capture exact cycle position (e.g., day 3 of 7 nights)
 - Live shift preview icons on calendar days (☀️🌙🏠)
 - 7-day timeline showing upcoming shifts
 - Smart defaults (tomorrow as start date)
 - Calendar legend for shift types
+- Progressive disclosure for multi-day phases
 - [Read the story →](build-in-public/technical-discovery/06-start-date-calendar-system.md)
+- [Day positioning story →](build-in-public/user-empathy/09-day-within-phase-positioning.md)
 
 #### 5. **Shift Time Input** - Smart Time Configuration
 
@@ -397,6 +400,8 @@ I'm building Ellie in public, documenting every decision, challenge, and lesson 
 | **Custom Builder**    | User Empathy         | [Read →](build-in-public/user-empathy/05-custom-pattern-builder.md)                 |
 | **Start Date Screen** | Technical Discovery  | [Read →](build-in-public/technical-discovery/06-start-date-calendar-system.md)      |
 | **Shift Time Input**  | Unexpected Challenge | [Read →](build-in-public/unexpected-challenge/07-shift-time-animation-crashes.md)   |
+| **Shift System**      | System Thinking      | [Read →](build-in-public/system-thinking/08-shift-system-architecture.md)           |
+| **Day Within Phase**  | User Empathy         | [Read →](build-in-public/user-empathy/09-day-within-phase-positioning.md)           |
 
 Each story includes:
 
@@ -541,7 +546,7 @@ npm run format
 - **ESLint Errors**: 0
 - **Onboarding Screens**: 6 completed (Welcome, Introduction, Pattern Selection, Custom Builder, Start Date, Shift Time Input)
 - **Lines of Code**: ~17,000+
-- **Commits**: 75+
+- **Commits**: 76+
 - **Build Time**: ✅ Passing
 - **CI/CD**: ✅ All workflows green
 
