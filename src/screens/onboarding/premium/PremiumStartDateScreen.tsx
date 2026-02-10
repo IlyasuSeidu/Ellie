@@ -1383,6 +1383,7 @@ const DayWithinPhaseSelector: React.FC<DayWithinPhaseSelectorProps> = ({
               key={dayNumber}
               dayNumber={dayNumber}
               isSelected={isSelected}
+              phase={selectedPhase}
               onPress={() => {
                 HAPTIC_PATTERNS.LIGHT();
                 onDaySelect(dayNumber);
@@ -1403,6 +1404,7 @@ const DayWithinPhaseSelector: React.FC<DayWithinPhaseSelectorProps> = ({
 interface DayCardProps {
   dayNumber: number;
   isSelected: boolean;
+  phase: Phase | null;
   onPress: () => void;
   reducedMotion: boolean;
   entranceDelay: number;
@@ -1411,6 +1413,7 @@ interface DayCardProps {
 const DayCard: React.FC<DayCardProps> = ({
   dayNumber,
   isSelected,
+  phase,
   onPress,
   reducedMotion,
   entranceDelay,
@@ -1494,10 +1497,40 @@ const DayCard: React.FC<DayCardProps> = ({
             end={{ x: 1, y: 1 }}
             style={styles.dayCardGradient}
           >
+            {phase &&
+              (() => {
+                const icon = getPhaseIcon(phase);
+                return icon === 'iconicon' ? (
+                  <Ionicons
+                    name="partly-sunny"
+                    size={24}
+                    color={theme.colors.sacredGold}
+                    style={styles.dayCardIcon}
+                  />
+                ) : (
+                  <Image source={icon} style={styles.dayCardIcon} />
+                );
+              })()}
             <Text style={[styles.dayCardNumber, styles.dayCardNumberSelected]}>{dayNumber}</Text>
           </LinearGradient>
         ) : (
-          <Text style={styles.dayCardNumber}>{dayNumber}</Text>
+          <>
+            {phase &&
+              (() => {
+                const icon = getPhaseIcon(phase);
+                return icon === 'iconicon' ? (
+                  <Ionicons
+                    name="partly-sunny"
+                    size={24}
+                    color={theme.colors.dust}
+                    style={styles.dayCardIcon}
+                  />
+                ) : (
+                  <Image source={icon} style={styles.dayCardIcon} />
+                );
+              })()}
+            <Text style={styles.dayCardNumber}>{dayNumber}</Text>
+          </>
         )}
       </Pressable>
     </Animated.View>
@@ -2387,6 +2420,11 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  dayCardIcon: {
+    width: 28,
+    height: 28,
+    marginBottom: 4,
   },
   dayCardNumber: {
     fontSize: 28,
