@@ -106,6 +106,22 @@ interface PhaseSelectorProps {
   reducedMotion: boolean;
 }
 
+interface DayWithinPhaseSelectorProps {
+  selectedPhase: Phase | null;
+  pattern: {
+    daysOn?: number;
+    nightsOn?: number;
+    morningOn?: number;
+    afternoonOn?: number;
+    nightOn?: number;
+    daysOff: number;
+  };
+  shiftSystem: ShiftSystem;
+  selectedDay: number | null;
+  onDaySelect: (day: number) => void;
+  reducedMotion: boolean;
+}
+
 interface SelectedDateCardProps {
   selectedDate: string | null;
   reducedMotion: boolean;
@@ -356,7 +372,7 @@ const isDateValid = (date: Date): boolean => {
   return date >= today && date <= maxDate;
 };
 
-const calculatePhaseOffset = (
+const getBasePhaseOffset = (
   phase: Phase,
   pattern: {
     daysOn?: number;
@@ -394,6 +410,34 @@ const calculatePhaseOffset = (
         return 0;
     }
   }
+};
+
+/**
+ * Calculate enhanced phase offset that includes the specific day within the phase
+ * @param phase - The selected phase
+ * @param dayWithinPhase - The specific day number within the phase (1-indexed)
+ * @param pattern - The shift pattern configuration
+ * @param shiftSystem - The shift system (2-shift or 3-shift)
+ * @returns Enhanced phase offset
+ */
+const calculateEnhancedPhaseOffset = (
+  phase: Phase,
+  dayWithinPhase: number,
+  pattern: {
+    daysOn?: number;
+    nightsOn?: number;
+    morningOn?: number;
+    afternoonOn?: number;
+    nightOn?: number;
+    daysOff: number;
+  },
+  shiftSystem: ShiftSystem
+): number => {
+  // Get base offset (start of phase)
+  const baseOffset = getBasePhaseOffset(phase, pattern, shiftSystem);
+
+  // Add days within phase (subtract 1 since dayWithinPhase is 1-indexed)
+  return baseOffset + (dayWithinPhase - 1);
 };
 
 const getPhaseColor = (phase: Phase): string => {
@@ -1232,6 +1276,231 @@ const PhaseSelector: React.FC<PhaseSelectorProps> = ({
   );
 };
 
+// Day Within Phase Selector Component
+const DayWithinPhaseSelector: React.FC<DayWithinPhaseSelectorProps> = ({
+  selectedPhase,
+  pattern,
+  shiftSystem,
+  selectedDay,
+  onDaySelect,
+  reducedMotion,
+}) => {
+  const opacity = useSharedValue(0);
+  const slideY = useSharedValue(20);
+
+  // Calculate phase length based on selected phase and shift system
+  const getPhaseLength = (): number => {
+    if (!selectedPhase) return 0;
+
+    if (shiftSystem === ShiftSystem.TWO_SHIFT) {
+      switch (selectedPhase) {
+        case 'day':
+          return pattern.daysOn ?? 0;
+        case 'night':
+          return pattern.nightsOn ?? 0;
+        case 'off':
+          return pattern.daysOff;
+        default:
+          return 0;
+      }
+    } else {
+      // 3-shift system
+      switch (selectedPhase) {
+        case 'morning':
+          return pattern.morningOn ?? 0;
+        case 'afternoon':
+          return pattern.afternoonOn ?? 0;
+        case 'night':
+          return pattern.nightOn ?? 0;
+        case 'off':
+          return pattern.daysOff;
+        default:
+          return 0;
+      }
+    }
+  };
+
+  const phaseLength = getPhaseLength();
+
+  // Slide-up entrance animation
+  useEffect(() => {
+    if (selectedPhase) {
+      opacity.value = withTiming(1, { duration: 300 });
+      slideY.value = withSpring(0, SPRING_CONFIGS.smooth);
+    } else {
+      opacity.value = withTiming(0, { duration: 200 });
+      slideY.value = 20;
+    }
+  }, [selectedPhase, opacity, slideY]);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ translateY: slideY.value }],
+  }));
+
+  // Get phase label for helper text
+  const getPhaseLabel = (): string => {
+    switch (selectedPhase) {
+      case 'day':
+        return 'Day Shifts';
+      case 'night':
+        return 'Night Shifts';
+      case 'morning':
+        return 'Morning Shifts';
+      case 'afternoon':
+        return 'Afternoon Shifts';
+      case 'off':
+        return 'Days Off';
+      default:
+        return '';
+    }
+  };
+
+  // Don't render if no phase selected or phase is only 1 day
+  if (!selectedPhase || phaseLength <= 1) {
+    return null;
+  }
+
+  return (
+    <Animated.View style={[styles.dayWithinPhaseSelectorContainer, animatedStyle]}>
+      <Text style={styles.dayWithinPhaseHeader}>Which day of your {getPhaseLabel()}?</Text>
+
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.dayCardsScrollContent}
+        style={styles.dayCardsScroll}
+      >
+        {Array.from({ length: phaseLength }, (_, index) => {
+          const dayNumber = index + 1;
+          const isSelected = selectedDay === dayNumber;
+
+          return (
+            <DayCard
+              key={dayNumber}
+              dayNumber={dayNumber}
+              isSelected={isSelected}
+              onPress={() => {
+                HAPTIC_PATTERNS.LIGHT();
+                onDaySelect(dayNumber);
+              }}
+              reducedMotion={reducedMotion}
+              entranceDelay={index * 50}
+            />
+          );
+        })}
+      </ScrollView>
+
+      <Text style={styles.dayWithinPhaseHelper}>Select day 1 if starting fresh tomorrow</Text>
+    </Animated.View>
+  );
+};
+
+// Day Card Component (for DayWithinPhaseSelector)
+interface DayCardProps {
+  dayNumber: number;
+  isSelected: boolean;
+  onPress: () => void;
+  reducedMotion: boolean;
+  entranceDelay: number;
+}
+
+const DayCard: React.FC<DayCardProps> = ({
+  dayNumber,
+  isSelected,
+  onPress,
+  reducedMotion,
+  entranceDelay,
+}) => {
+  const scale = useSharedValue(0);
+  const pressScale = useSharedValue(1);
+  const touchStartX = React.useRef(0);
+  const touchStartY = React.useRef(0);
+
+  useEffect(() => {
+    scale.value = withDelay(entranceDelay, withSpring(1, SPRING_CONFIGS.bouncy));
+  }, [entranceDelay, scale]);
+
+  const cardAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: reducedMotion ? 1 : scale.value * pressScale.value }],
+  }));
+
+  const handleTouchStart = useCallback(
+    (event: { nativeEvent: { pageX: number; pageY: number } }) => {
+      touchStartX.current = event.nativeEvent.pageX;
+      touchStartY.current = event.nativeEvent.pageY;
+      if (!reducedMotion) {
+        pressScale.value = withTiming(0.9, { duration: 100 });
+      }
+    },
+    [reducedMotion, pressScale]
+  );
+
+  const handleTouchEnd = useCallback(
+    (event: { nativeEvent: { pageX: number; pageY: number } }) => {
+      if (!reducedMotion) {
+        pressScale.value = withTiming(1, { duration: 100 });
+      }
+
+      // Calculate movement distance
+      const deltaX = Math.abs(event.nativeEvent.pageX - touchStartX.current);
+      const deltaY = Math.abs(event.nativeEvent.pageY - touchStartY.current);
+      const totalMovement = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+      // Only trigger onPress if movement was minimal (< 10px = tap, not scroll)
+      if (totalMovement < 10) {
+        onPress();
+      }
+    },
+    [reducedMotion, pressScale, onPress]
+  );
+
+  return (
+    <Animated.View style={[styles.dayCardWrapper, cardAnimatedStyle]}>
+      <Pressable
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        accessible={true}
+        accessibilityRole="button"
+        accessibilityLabel={`Day ${dayNumber}`}
+        accessibilityHint={`Select day ${dayNumber} of phase`}
+        style={[
+          styles.dayCard,
+          isSelected && {
+            borderWidth: 2,
+            borderColor: theme.colors.sacredGold,
+            backgroundColor: 'transparent',
+            ...Platform.select({
+              ios: {
+                shadowColor: theme.colors.sacredGold,
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.5,
+                shadowRadius: 8,
+              },
+              android: {
+                elevation: 8,
+              },
+            }),
+          },
+        ]}
+      >
+        {isSelected ? (
+          <LinearGradient
+            colors={[theme.colors.opacity.gold20, theme.colors.opacity.gold10]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.dayCardGradient}
+          >
+            <Text style={[styles.dayCardNumber, styles.dayCardNumberSelected]}>{dayNumber}</Text>
+          </LinearGradient>
+        ) : (
+          <Text style={styles.dayCardNumber}>{dayNumber}</Text>
+        )}
+      </Pressable>
+    </Animated.View>
+  );
+};
+
 // Live Preview Card Component
 const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
   selectedDate,
@@ -1580,6 +1849,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   // Smart default: tomorrow
   const [selectedDate, setSelectedDate] = useState<string | null>(getTomorrowDate());
   const [selectedPhase, setSelectedPhase] = useState<Phase | null>(null);
+  const [dayWithinPhase, setDayWithinPhase] = useState<number | null>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
   const screenOpacity = useSharedValue(1);
   const screenSlideX = useSharedValue(0);
@@ -1686,17 +1956,93 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
 
   const customPattern = useMemo(() => getPatternValues(pattern), [pattern, getPatternValues]);
 
-  // Calculate phase offset for preview
-  const previewPhaseOffset = selectedPhase
-    ? calculatePhaseOffset(selectedPhase, customPattern, shiftSystem)
-    : 0;
+  // Calculate phase length for current selected phase
+  const getPhaseLength = useCallback(
+    (phase: Phase | null): number => {
+      if (!phase) return 0;
 
-  const canContinue = selectedDate !== null && selectedPhase !== null;
+      if (shiftSystem === ShiftSystem.TWO_SHIFT) {
+        switch (phase) {
+          case 'day':
+            return ('daysOn' in customPattern && customPattern.daysOn) || 0;
+          case 'night':
+            return ('nightsOn' in customPattern && customPattern.nightsOn) || 0;
+          case 'off':
+            return customPattern.daysOff;
+          default:
+            return 0;
+        }
+      } else {
+        // 3-shift system
+        switch (phase) {
+          case 'morning':
+            return ('morningOn' in customPattern && customPattern.morningOn) || 0;
+          case 'afternoon':
+            return ('afternoonOn' in customPattern && customPattern.afternoonOn) || 0;
+          case 'night':
+            return ('nightOn' in customPattern && customPattern.nightOn) || 0;
+          case 'off':
+            return customPattern.daysOff;
+          default:
+            return 0;
+        }
+      }
+    },
+    [customPattern, shiftSystem]
+  );
+
+  // Handle phase selection change
+  const handlePhaseChange = useCallback(
+    (phase: Phase) => {
+      setSelectedPhase(phase);
+
+      // Reset day selection when phase changes
+      setDayWithinPhase(null);
+
+      // Auto-select day 1 for single-day phases
+      const length = getPhaseLength(phase);
+      if (length === 1) {
+        setDayWithinPhase(1);
+      }
+    },
+    [getPhaseLength]
+  );
+
+  // Handle day selection
+  const handleDaySelect = useCallback((day: number) => {
+    setDayWithinPhase(day);
+  }, []);
+
+  // Calculate phase offset for preview (use enhanced offset if day is selected)
+  const previewPhaseOffset = useMemo(() => {
+    if (!selectedPhase) return 0;
+
+    if (dayWithinPhase !== null) {
+      // Use enhanced calculation when day is selected
+      return calculateEnhancedPhaseOffset(
+        selectedPhase,
+        dayWithinPhase,
+        customPattern,
+        shiftSystem
+      );
+    }
+
+    // Fall back to base offset for preview before day selection
+    return getBasePhaseOffset(selectedPhase, customPattern, shiftSystem);
+  }, [selectedPhase, dayWithinPhase, customPattern, shiftSystem]);
+
+  const canContinue = selectedDate !== null && selectedPhase !== null && dayWithinPhase !== null;
 
   const handleContinue = useCallback(() => {
-    if (!canContinue || !selectedDate || !selectedPhase) return;
+    if (!canContinue || !selectedDate || !selectedPhase || !dayWithinPhase) return;
 
-    const phaseOffset = calculatePhaseOffset(selectedPhase, customPattern, shiftSystem);
+    // Use enhanced phase offset calculation
+    const phaseOffset = calculateEnhancedPhaseOffset(
+      selectedPhase,
+      dayWithinPhase,
+      customPattern,
+      shiftSystem
+    );
 
     updateData({
       startDate: new Date(selectedDate),
@@ -1718,6 +2064,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
     canContinue,
     selectedDate,
     selectedPhase,
+    dayWithinPhase,
     customPattern,
     shiftSystem,
     updateData,
@@ -1763,9 +2110,19 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
           {/* Phase Selector */}
           <PhaseSelector
             selectedPhase={selectedPhase}
-            onPhaseSelect={setSelectedPhase}
+            onPhaseSelect={handlePhaseChange}
             pattern={customPattern}
             shiftSystem={shiftSystem}
+            reducedMotion={reducedMotion}
+          />
+
+          {/* Day Within Phase Selector */}
+          <DayWithinPhaseSelector
+            selectedPhase={selectedPhase}
+            pattern={customPattern}
+            shiftSystem={shiftSystem}
+            selectedDay={dayWithinPhase}
+            onDaySelect={handleDaySelect}
             reducedMotion={reducedMotion}
           />
 
@@ -1986,6 +2343,61 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: theme.colors.paper,
     textAlign: 'center',
+  },
+
+  // Day Within Phase Selector
+  dayWithinPhaseSelectorContainer: {
+    marginBottom: theme.spacing.xl,
+  },
+  dayWithinPhaseHeader: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: theme.colors.paper,
+    marginBottom: theme.spacing.md,
+    textAlign: 'center',
+  },
+  dayCardsScroll: {
+    marginBottom: theme.spacing.md,
+  },
+  dayCardsScrollContent: {
+    paddingTop: theme.spacing.xs,
+    paddingLeft: theme.spacing.md,
+    paddingRight: theme.spacing.lg,
+    gap: 12,
+  },
+  dayCardWrapper: {
+    width: 60,
+  },
+  dayCard: {
+    width: 60,
+    height: 60,
+    backgroundColor: theme.colors.darkStone,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: theme.colors.softStone,
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  dayCardGradient: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dayCardNumber: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: theme.colors.dust,
+  },
+  dayCardNumberSelected: {
+    color: theme.colors.sacredGold,
+  },
+  dayWithinPhaseHelper: {
+    fontSize: 12,
+    color: theme.colors.dust,
+    textAlign: 'center',
+    fontStyle: 'italic',
   },
 
   // Live Preview Card
