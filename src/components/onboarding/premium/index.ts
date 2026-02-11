@@ -50,3 +50,7 @@ export {
   CUSTOM_PRESET,
 } from './PresetTimeCard';
 export { PremiumToggle, type PremiumToggleProps } from './PremiumToggle';
+export { ChatAvatar, type ChatAvatarProps } from './ChatAvatar';
+export { ChatMessage, type ChatMessageProps, type Message } from './ChatMessage';
+export { TypingIndicator, type TypingIndicatorProps } from './TypingIndicator';
+export { ChatInput, type ChatInputProps, type QuickReply } from './ChatInput';

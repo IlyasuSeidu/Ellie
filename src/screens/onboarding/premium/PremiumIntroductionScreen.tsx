@@ -1,26 +1,34 @@
 /**
  * PremiumIntroductionScreen Component
  *
- * User introduction screen (Step 2 of 10) for collecting basic user information
- * Features staggered animations, real-time validation, and stone/gold theme
+ * Conversational chatbot-style introduction screen (Step 2 of 10)
+ * Features progressive disclosure, typing indicators, and engaging animations
  */
 
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Image } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withDelay,
-  withTiming,
-  Easing,
-} from 'react-native-reanimated';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
+  AccessibilityInfo,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { z } from 'zod';
+import * as Haptics from 'expo-haptics';
+
+// Generate unique ID for messages (React Native compatible)
+const generateId = (): string => {
+  return `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+};
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
-import { PremiumTextInput } from '@/components/onboarding/premium/PremiumTextInput';
-import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
+import { ChatMessage, Message } from '@/components/onboarding/premium/ChatMessage';
+import { TypingIndicator } from '@/components/onboarding/premium/TypingIndicator';
+import { ChatInput, QuickReply } from '@/components/onboarding/premium/ChatInput';
 import { PremiumCountrySelectorModal } from '@/components/onboarding/premium/PremiumCountrySelectorModal';
 import { Country } from '@/components/onboarding/premium/PremiumCountrySelector';
 import { useOnboarding } from '@/contexts/OnboardingContext';
@@ -36,7 +44,7 @@ const introductionSchema = z.object({
     .max(50, 'Name must not exceed 50 characters')
     .regex(/^[a-zA-Z\s'-]+$/, 'Name can only contain letters, spaces, hyphens, and apostrophes'),
   occupation: z.string().min(1, 'Occupation is required'),
-  company: z.string().optional(),
+  company: z.string().min(1, 'Company is required'),
   country: z.object({
     code: z.string(),
     name: z.string(),
@@ -45,6 +53,20 @@ const introductionSchema = z.object({
 });
 
 type IntroductionFormData = z.infer<typeof introductionSchema>;
+
+// Conversation steps state machine
+enum ConversationStep {
+  WELCOME = 'welcome',
+  ASK_NAME = 'askName',
+  WAIT_NAME = 'waitName',
+  ASK_OCCUPATION = 'askOccupation',
+  WAIT_OCCUPATION = 'waitOccupation',
+  ASK_COMPANY = 'askCompany',
+  WAIT_COMPANY = 'waitCompany',
+  ASK_COUNTRY = 'askCountry',
+  WAIT_COUNTRY = 'waitCountry',
+  COMPLETE = 'complete',
+}
 
 export interface PremiumIntroductionScreenProps {
   onContinue?: (data: IntroductionFormData) => void;
@@ -57,227 +79,484 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
 }) => {
   const navigation = useNavigation<NavigationProp>();
   const { data, updateData } = useOnboarding();
+  const flatListRef = useRef<FlatList>(null);
 
-  // Form state - initialize from context if available
-  const [name, setName] = useState(data.name || '');
-  const [occupation, setOccupation] = useState(data.occupation || '');
-  const [company, setCompany] = useState(data.company || '');
-  const [selectedCountry, setSelectedCountry] = useState<Country | null>(data.country || null);
-  const [showCountrySelector, setShowCountrySelector] = useState(false);
+  // Conversation state
+  const [currentStep, setCurrentStep] = useState<ConversationStep>(ConversationStep.WELCOME);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [isTyping, setIsTyping] = useState(false);
 
-  // Validation state
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({});
+  // Form data
+  const [formData, setFormData] = useState<{
+    name: string;
+    occupation: string;
+    company: string;
+    country?: Country;
+  }>({
+    name: data.name || '',
+    occupation: data.occupation || '',
+    company: data.company || '',
+    country: data.country,
+  });
 
-  // Animation values
-  const titleOpacity = useSharedValue(0);
-  const titleTranslateY = useSharedValue(20);
-  const subtitleOpacity = useSharedValue(0);
-  const heroOpacity = useSharedValue(0);
-  const field1Opacity = useSharedValue(0);
-  const field1TranslateY = useSharedValue(20);
-  const field2Opacity = useSharedValue(0);
-  const field2TranslateY = useSharedValue(20);
-  const field3Opacity = useSharedValue(0);
-  const field3TranslateY = useSharedValue(20);
-  const field4Opacity = useSharedValue(0);
-  const field4TranslateY = useSharedValue(20);
-  const buttonOpacity = useSharedValue(0);
+  // Input state
+  const [currentInput, setCurrentInput] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [showCountryPicker, setShowCountryPicker] = useState(false);
 
-  // Start animations on mount
+  // Reduced motion preference
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  // Check for reduced motion preference
   useEffect(() => {
-    // Title animation
-    titleOpacity.value = withTiming(1, { duration: 400, easing: Easing.out(Easing.cubic) });
-    titleTranslateY.value = withTiming(0, { duration: 400, easing: Easing.out(Easing.cubic) });
+    const checkReducedMotion = async () => {
+      const isReduceMotionEnabled = await AccessibilityInfo.isReduceMotionEnabled();
+      setReducedMotion(isReduceMotionEnabled);
+    };
+    checkReducedMotion();
+  }, []);
 
-    // Subtitle animation
-    subtitleOpacity.value = withDelay(200, withTiming(1, { duration: 300 }));
+  // Add bot message with typing indicator
+  const addBotMessage = useCallback(
+    (content: string, typingDuration: number) => {
+      setIsTyping(true);
 
-    // Hero animation
-    heroOpacity.value = withDelay(400, withTiming(1, { duration: 400 }));
-
-    // Staggered field animations
-    field1Opacity.value = withDelay(600, withTiming(1, { duration: 300 }));
-    field1TranslateY.value = withDelay(600, withTiming(0, { duration: 300 }));
-
-    field2Opacity.value = withDelay(700, withTiming(1, { duration: 300 }));
-    field2TranslateY.value = withDelay(700, withTiming(0, { duration: 300 }));
-
-    field3Opacity.value = withDelay(800, withTiming(1, { duration: 300 }));
-    field3TranslateY.value = withDelay(800, withTiming(0, { duration: 300 }));
-
-    field4Opacity.value = withDelay(900, withTiming(1, { duration: 300 }));
-    field4TranslateY.value = withDelay(900, withTiming(0, { duration: 300 }));
-
-    buttonOpacity.value = withDelay(1000, withTiming(1, { duration: 300 }));
-  }, [
-    titleOpacity,
-    titleTranslateY,
-    subtitleOpacity,
-    heroOpacity,
-    field1Opacity,
-    field1TranslateY,
-    field2Opacity,
-    field2TranslateY,
-    field3Opacity,
-    field3TranslateY,
-    field4Opacity,
-    field4TranslateY,
-    buttonOpacity,
-  ]);
-
-  // Animated styles
-  const titleAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: titleOpacity.value,
-    transform: [{ translateY: titleTranslateY.value }],
-  }));
-
-  const subtitleAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: subtitleOpacity.value,
-  }));
-
-  const heroAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: heroOpacity.value,
-  }));
-
-  const field1AnimatedStyle = useAnimatedStyle(() => ({
-    opacity: field1Opacity.value,
-    transform: [{ translateY: field1TranslateY.value }],
-  }));
-
-  const field2AnimatedStyle = useAnimatedStyle(() => ({
-    opacity: field2Opacity.value,
-    transform: [{ translateY: field2TranslateY.value }],
-  }));
-
-  const field3AnimatedStyle = useAnimatedStyle(() => ({
-    opacity: field3Opacity.value,
-    transform: [{ translateY: field3TranslateY.value }],
-  }));
-
-  const field4AnimatedStyle = useAnimatedStyle(() => ({
-    opacity: field4Opacity.value,
-    transform: [{ translateY: field4TranslateY.value }],
-  }));
-
-  const buttonAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: buttonOpacity.value,
-  }));
-
-  // Validate individual field
-  const validateField = (fieldName: keyof IntroductionFormData, value: unknown) => {
-    try {
-      const fieldSchema = introductionSchema.shape[fieldName];
-      fieldSchema.parse(value);
-      setErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[fieldName];
-        return newErrors;
-      });
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        setErrors((prev) => ({
-          ...prev,
-          [fieldName]: error.errors[0].message,
-        }));
+      // Light haptic feedback
+      if (!reducedMotion) {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
       }
-    }
-  };
 
-  // Handle field blur
-  const handleBlur = (fieldName: keyof IntroductionFormData) => {
-    setTouchedFields((prev) => ({ ...prev, [fieldName]: true }));
+      setTimeout(() => {
+        setIsTyping(false);
 
-    // Validate field on blur
-    const fieldValue =
-      fieldName === 'name'
-        ? name
-        : fieldName === 'occupation'
-          ? occupation
-          : fieldName === 'company'
-            ? company
-            : selectedCountry;
+        const newMessage: Message = {
+          id: generateId(),
+          type: 'bot',
+          content,
+          timestamp: Date.now(),
+        };
 
-    validateField(fieldName, fieldValue);
-  };
+        setMessages((prev) => [...prev, newMessage]);
 
-  // Validate entire form
-  const validateForm = (): boolean => {
+        // Auto-scroll to bottom
+        setTimeout(() => {
+          flatListRef.current?.scrollToEnd({ animated: !reducedMotion });
+        }, 100);
+      }, typingDuration);
+    },
+    [reducedMotion]
+  );
+
+  // Add user message
+  const addUserMessage = useCallback(
+    (content: string, metadata?: Message['metadata']) => {
+      const newMessage: Message = {
+        id: generateId(),
+        type: 'user',
+        content,
+        timestamp: Date.now(),
+        metadata,
+      };
+
+      setMessages((prev) => [...prev, newMessage]);
+
+      // Medium haptic feedback
+      if (!reducedMotion) {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      }
+
+      // Auto-scroll to bottom
+      setTimeout(() => {
+        flatListRef.current?.scrollToEnd({ animated: !reducedMotion });
+      }, 100);
+    },
+    [reducedMotion]
+  );
+
+  // Validate name
+  const validateName = useCallback((input: string): boolean => {
     try {
-      introductionSchema.parse({
-        name,
-        occupation,
-        company: company || undefined,
-        country: selectedCountry,
-      });
-      setErrors({});
+      introductionSchema.shape.name.parse(input);
+      setError(null);
       return true;
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        const newErrors: Record<string, string> = {};
-        error.errors.forEach((err) => {
-          if (err.path.length > 0) {
-            newErrors[err.path[0] as string] = err.message;
-          }
-        });
-        setErrors(newErrors);
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        setError(err.errors[0].message);
       }
       return false;
     }
-  };
+  }, []);
 
-  // Check if form is valid
-  const isFormValid = (): boolean => {
-    return (
-      name.length >= 2 &&
-      name.length <= 50 &&
-      occupation.length > 0 &&
-      selectedCountry !== null &&
-      Object.keys(errors).length === 0
-    );
-  };
+  // Validate occupation
+  const validateOccupation = useCallback((input: string): boolean => {
+    try {
+      introductionSchema.shape.occupation.parse(input);
+      setError(null);
+      return true;
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        setError(err.errors[0].message);
+      }
+      return false;
+    }
+  }, []);
 
-  // Handle continue
-  const handleContinue = () => {
-    // Mark all fields as touched
-    setTouchedFields({
-      name: true,
-      occupation: true,
-      company: true,
-      country: true,
-    });
+  // Validate company
+  const validateCompany = useCallback((input: string): boolean => {
+    try {
+      introductionSchema.shape.company.parse(input);
+      setError(null);
+      return true;
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        setError(err.errors[0].message);
+      }
+      return false;
+    }
+  }, []);
 
-    if (validateForm() && selectedCountry) {
-      // Save data to context
-      updateData({
-        name,
-        occupation,
-        company: company || undefined,
-        country: selectedCountry,
+  // Advance conversation based on current step
+  const advanceConversation = useCallback(() => {
+    switch (currentStep) {
+      case ConversationStep.WELCOME:
+        addBotMessage(
+          "Welcome to Ellie! I'm here to help you set up your shift calendar. Let's start by getting to know you a bit better.",
+          1000
+        );
+        setTimeout(() => {
+          setCurrentStep(ConversationStep.ASK_NAME);
+        }, 2500);
+        break;
+
+      case ConversationStep.ASK_NAME: {
+        // Check if question already exists (editing scenario)
+        const nameQuestionExists = messages.some(
+          (m) => m.type === 'bot' && m.content.includes("What's your name?")
+        );
+
+        if (!nameQuestionExists) {
+          addBotMessage("What's your name?", 800);
+          setTimeout(() => {
+            setCurrentStep(ConversationStep.WAIT_NAME);
+          }, 1300);
+        } else {
+          // Question already exists, go straight to waiting for input
+          setCurrentStep(ConversationStep.WAIT_NAME);
+        }
+        break;
+      }
+
+      case ConversationStep.WAIT_NAME:
+        // Input is handled by handleSubmit, not automatically
+        break;
+
+      case ConversationStep.ASK_OCCUPATION: {
+        // Check if question already exists (editing scenario)
+        const occupationQuestionExists = messages.some(
+          (m) => m.type === 'bot' && m.content.includes("What's your occupation?")
+        );
+
+        if (!occupationQuestionExists) {
+          addBotMessage(`Great to meet you, ${formData.name}! What's your occupation?`, 900);
+          setTimeout(() => {
+            setCurrentStep(ConversationStep.WAIT_OCCUPATION);
+          }, 1400);
+        } else {
+          // Question already exists, go straight to waiting for input
+          setCurrentStep(ConversationStep.WAIT_OCCUPATION);
+        }
+        break;
+      }
+
+      case ConversationStep.WAIT_OCCUPATION:
+        // Input is handled by handleSubmit, not automatically
+        break;
+
+      case ConversationStep.ASK_COMPANY: {
+        // Check if question already exists (editing scenario)
+        const companyQuestionExists = messages.some(
+          (m) => m.type === 'bot' && m.content.includes('Which company do you work for?')
+        );
+
+        if (!companyQuestionExists) {
+          addBotMessage('Got it! Which company do you work for?', 1000);
+          setTimeout(() => {
+            setCurrentStep(ConversationStep.WAIT_COMPANY);
+          }, 1500);
+        } else {
+          // Question already exists, go straight to waiting for input
+          setCurrentStep(ConversationStep.WAIT_COMPANY);
+        }
+        break;
+      }
+
+      case ConversationStep.WAIT_COMPANY:
+        // Input is handled by handleSubmit, not automatically
+        break;
+
+      case ConversationStep.ASK_COUNTRY: {
+        // Check if question already exists (editing scenario)
+        const countryQuestionExists = messages.some(
+          (m) => m.type === 'bot' && m.content.includes('Which country are you based in?')
+        );
+
+        if (!countryQuestionExists) {
+          addBotMessage('Almost done! Which country are you based in?', 900);
+          setTimeout(() => {
+            setCurrentStep(ConversationStep.WAIT_COUNTRY);
+            setShowCountryPicker(true);
+          }, 1400);
+        } else {
+          // Question already exists, go straight to showing picker
+          setCurrentStep(ConversationStep.WAIT_COUNTRY);
+          setShowCountryPicker(true);
+        }
+        break;
+      }
+
+      case ConversationStep.WAIT_COUNTRY:
+        // Country selection handled directly in handleCountrySelect
+        // This case is only reached when editing
+        break;
+
+      case ConversationStep.COMPLETE:
+        addBotMessage(
+          `Perfect! You're all set, ${formData.name}. Let's get your shift calendar configured.`,
+          1000
+        );
+
+        // Save to context and navigate after delay (allow time to read final message)
+        setTimeout(() => {
+          updateData({
+            name: formData.name,
+            occupation: formData.occupation,
+            company: formData.company,
+            country: formData.country,
+          });
+
+          // Light success haptic
+          if (!reducedMotion) {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+          }
+
+          // Call optional callback or navigate
+          if (onContinue && formData.country) {
+            onContinue({
+              name: formData.name,
+              occupation: formData.occupation,
+              company: formData.company,
+              country: formData.country,
+            });
+          } else {
+            navigation.navigate('ShiftSystem');
+          }
+        }, 4000); // Increased from 2000ms to 4000ms to allow reading the final message
+        break;
+    }
+  }, [
+    currentStep,
+    formData,
+    messages,
+    addBotMessage,
+    updateData,
+    reducedMotion,
+    onContinue,
+    navigation,
+  ]);
+
+  // Start conversation on mount
+  useEffect(() => {
+    advanceConversation();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Advance conversation when step changes (except on mount)
+  useEffect(() => {
+    if (currentStep !== ConversationStep.WELCOME) {
+      advanceConversation();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentStep, advanceConversation]);
+
+  // Auto-scroll when input field appears
+  useEffect(() => {
+    const shouldShowInput =
+      currentStep === ConversationStep.WAIT_NAME ||
+      currentStep === ConversationStep.WAIT_OCCUPATION ||
+      currentStep === ConversationStep.WAIT_COMPANY;
+
+    if (shouldShowInput) {
+      // Delay to ensure input field has rendered
+      setTimeout(() => {
+        flatListRef.current?.scrollToEnd({ animated: !reducedMotion });
+      }, 300);
+    }
+  }, [currentStep, reducedMotion]);
+
+  // Handle input submission
+  const handleSubmit = useCallback(() => {
+    if (currentStep === ConversationStep.WAIT_NAME) {
+      if (!validateName(currentInput)) {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+        return;
+      }
+      // Process name
+      addUserMessage(currentInput);
+      setFormData((prev) => ({ ...prev, name: currentInput }));
+      setCurrentInput('');
+      setError(null);
+      setCurrentStep(ConversationStep.ASK_OCCUPATION);
+    } else if (currentStep === ConversationStep.WAIT_OCCUPATION) {
+      if (!validateOccupation(currentInput)) {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+        return;
+      }
+      // Process occupation
+      addUserMessage(currentInput);
+      setFormData((prev) => ({ ...prev, occupation: currentInput }));
+      setCurrentInput('');
+      setError(null);
+      setCurrentStep(ConversationStep.ASK_COMPANY);
+    } else if (currentStep === ConversationStep.WAIT_COMPANY) {
+      if (!validateCompany(currentInput)) {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+        return;
+      }
+      // Process company
+      addUserMessage(currentInput);
+      setFormData((prev) => ({ ...prev, company: currentInput.trim() }));
+      setCurrentInput('');
+      setError(null);
+      setCurrentStep(ConversationStep.ASK_COUNTRY);
+    }
+  }, [
+    currentStep,
+    currentInput,
+    validateName,
+    validateOccupation,
+    validateCompany,
+    addUserMessage,
+  ]);
+
+  // Handle quick reply (Skip company)
+  const handleQuickReply = useCallback(
+    (reply: QuickReply) => {
+      if (reply.id === 'skip' && currentStep === ConversationStep.WAIT_COMPANY) {
+        setCurrentInput('');
+        advanceConversation();
+      }
+    },
+    [currentStep, advanceConversation]
+  );
+
+  // Handle country selection
+  const handleCountrySelect = useCallback(
+    (country: Country) => {
+      setFormData((prev) => ({ ...prev, country }));
+      setShowCountryPicker(false);
+
+      // Add user message immediately with the selected country
+      addUserMessage(country.name, {
+        countryFlag: country.flag,
       });
 
-      // Call optional callback
-      if (onContinue) {
-        onContinue({
-          name,
-          occupation,
-          company: company || undefined,
-          country: selectedCountry,
-        });
-      } else {
-        // Navigate to next screen (Step 3: Shift System)
-        navigation.navigate('ShiftSystem');
-      }
+      // Move to COMPLETE step
+      setCurrentStep(ConversationStep.COMPLETE);
+    },
+    [addUserMessage]
+  );
+
+  // Determine message step from message for editing
+  // Handle long-press to edit
+  const handleLongPress = useCallback(
+    (messageId: string) => {
+      const messageIndex = messages.findIndex((m) => m.id === messageId);
+      const message = messages[messageIndex];
+
+      if (message.type !== 'user') return;
+
+      // Haptic feedback
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+
+      // Show confirmation alert
+      Alert.alert(
+        'Edit Response',
+        'Edit your response. The conversation will rewind from this point.',
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+          {
+            text: 'Edit',
+            onPress: () => {
+              // Remove this message and all subsequent messages
+              setMessages((prev) => prev.slice(0, messageIndex));
+
+              // Determine which step to rewind to based on message position
+              // Count user messages before this one to determine which field
+              const userMessagesBefore = messages
+                .slice(0, messageIndex)
+                .filter((m) => m.type === 'user').length;
+
+              // Return ASK step - the advanceConversation will detect existing question and skip to WAIT
+              let rewindStep: ConversationStep;
+              switch (userMessagesBefore) {
+                case 0:
+                  rewindStep = ConversationStep.ASK_NAME;
+                  break;
+                case 1:
+                  rewindStep = ConversationStep.ASK_OCCUPATION;
+                  break;
+                case 2:
+                  rewindStep = ConversationStep.ASK_COMPANY;
+                  break;
+                case 3:
+                  rewindStep = ConversationStep.ASK_COUNTRY;
+                  break;
+                default:
+                  rewindStep = currentStep;
+              }
+
+              // Pre-fill input with previous value for text inputs
+              if (rewindStep !== ConversationStep.ASK_COUNTRY) {
+                setCurrentInput(message.content);
+              }
+
+              // Set the step (advanceConversation will detect existing question and skip re-asking)
+              setCurrentStep(rewindStep);
+
+              // Clear error
+              setError(null);
+            },
+          },
+        ]
+      );
+    },
+    [messages, currentStep]
+  );
+
+  // Determine if input should be shown
+  const shouldShowInput =
+    currentStep === ConversationStep.WAIT_NAME ||
+    currentStep === ConversationStep.WAIT_OCCUPATION ||
+    currentStep === ConversationStep.WAIT_COMPANY;
+
+  // Determine placeholder
+  const getPlaceholder = (): string => {
+    switch (currentStep) {
+      case ConversationStep.WAIT_NAME:
+        return 'Enter your name';
+      case ConversationStep.WAIT_OCCUPATION:
+        return 'Enter your occupation';
+      case ConversationStep.WAIT_COMPANY:
+        return 'Enter company name';
+      default:
+        return '';
     }
   };
 
-  // Handle country selection
-  const handleCountrySelect = (country: Country) => {
-    setSelectedCountry(country);
-    setShowCountrySelector(false);
-    setTouchedFields((prev) => ({ ...prev, country: true }));
-    validateField('country', country);
-  };
+  // Quick replies (none currently used)
+  const quickReplies: QuickReply[] = [];
 
   return (
     <View style={styles.container} testID={testID}>
@@ -285,120 +564,67 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
       <ProgressHeader currentStep={2} totalSteps={10} />
 
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardView}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
       >
-        <ScrollView
-          style={styles.scrollView}
-          contentContainerStyle={styles.scrollContent}
+        {/* Messages List */}
+        <FlatList
+          ref={flatListRef}
+          data={messages}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item, index }) => (
+            <ChatMessage
+              message={item}
+              isBot={item.type === 'bot'}
+              delay={index * 200}
+              reducedMotion={reducedMotion}
+              onLongPress={item.type === 'user' ? () => handleLongPress(item.id) : undefined}
+              testID={`${testID}-message-${item.id}`}
+            />
+          )}
+          style={styles.messagesList}
+          contentContainerStyle={styles.messagesContent}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
-        >
-          {/* Title */}
-          <Animated.Text style={[styles.title, titleAnimatedStyle]}>
-            Let&apos;s get to know you
-          </Animated.Text>
-
-          {/* Subtitle */}
-          <Animated.Text style={[styles.subtitle, subtitleAnimatedStyle]}>
-            Help us personalize your experience
-          </Animated.Text>
-
-          {/* Hero Illustration */}
-          <Animated.View style={[styles.heroContainer, heroAnimatedStyle]}>
-            <Image
-              source={require('../../../../assets/onboarding/icons/consolidated/digital-id-badge.png')}
-              style={styles.heroIcon}
-              resizeMode="contain"
-            />
-          </Animated.View>
-
-          {/* Form Fields */}
-          <View style={styles.formContainer}>
-            {/* Name Field */}
-            <Animated.View style={field1AnimatedStyle}>
-              <PremiumTextInput
-                label="Full Name"
-                placeholder="Enter your full name"
-                value={name}
-                onChangeText={(text) => {
-                  setName(text);
-                  if (touchedFields.name) {
-                    validateField('name', text);
-                  }
-                }}
-                onBlur={() => handleBlur('name')}
-                error={touchedFields.name ? errors.name : undefined}
-                testID={`${testID}-name-input`}
+          maintainVisibleContentPosition={{
+            minIndexForVisible: 0,
+            autoscrollToTopThreshold: 100,
+          }}
+          ListFooterComponent={
+            isTyping ? (
+              <TypingIndicator
+                visible={isTyping}
+                reducedMotion={reducedMotion}
+                testID={`${testID}-typing-indicator`}
               />
-            </Animated.View>
+            ) : null
+          }
+        />
 
-            {/* Occupation Field */}
-            <Animated.View style={field2AnimatedStyle}>
-              <PremiumTextInput
-                label="Occupation"
-                placeholder="e.g., Mining Engineer"
-                value={occupation}
-                onChangeText={(text) => {
-                  setOccupation(text);
-                  if (touchedFields.occupation) {
-                    validateField('occupation', text);
-                  }
-                }}
-                onBlur={() => handleBlur('occupation')}
-                error={touchedFields.occupation ? errors.occupation : undefined}
-                testID={`${testID}-occupation-input`}
-              />
-            </Animated.View>
-
-            {/* Company Field */}
-            <Animated.View style={field3AnimatedStyle}>
-              <PremiumTextInput
-                label="Company"
-                placeholder="e.g., ABC Mining Co."
-                value={company}
-                onChangeText={setCompany}
-                onBlur={() => handleBlur('company')}
-                testID={`${testID}-company-input`}
-              />
-            </Animated.View>
-
-            {/* Country Field */}
-            <Animated.View style={field4AnimatedStyle}>
-              <PremiumTextInput
-                label="Country"
-                placeholder="Select your country"
-                value={selectedCountry?.name || ''}
-                onChangeText={() => {}}
-                onPress={() => setShowCountrySelector(true)}
-                editable={false}
-                rightIcon={selectedCountry?.flag}
-                error={touchedFields.country ? errors.country : undefined}
-                testID={`${testID}-country-input`}
-              />
-            </Animated.View>
-          </View>
-
-          {/* Continue Button */}
-          <Animated.View style={[styles.buttonContainer, buttonAnimatedStyle]}>
-            <PremiumButton
-              title="Continue"
-              onPress={handleContinue}
-              variant="primary"
-              size="large"
-              disabled={!isFormValid()}
-              testID={`${testID}-continue-button`}
-            />
-          </Animated.View>
-        </ScrollView>
+        {/* Chat Input */}
+        {shouldShowInput && (
+          <ChatInput
+            value={currentInput}
+            onChangeText={setCurrentInput}
+            onSubmit={handleSubmit}
+            placeholder={getPlaceholder()}
+            disabled={isTyping}
+            error={error || undefined}
+            showQuickReplies={quickReplies.length > 0}
+            quickReplies={quickReplies}
+            onQuickReply={handleQuickReply}
+            testID={`${testID}-chat-input`}
+          />
+        )}
       </KeyboardAvoidingView>
 
       {/* Country Selector Modal */}
       <PremiumCountrySelectorModal
-        visible={showCountrySelector}
+        visible={showCountryPicker}
         onSelect={handleCountrySelect}
-        onClose={() => setShowCountrySelector(false)}
-        selectedCountry={selectedCountry}
+        onClose={() => setShowCountryPicker(false)}
+        selectedCountry={formData.country || null}
       />
     </View>
   );
@@ -412,77 +638,12 @@ const styles = StyleSheet.create({
   keyboardView: {
     flex: 1,
   },
-  scrollView: {
+  messagesList: {
     flex: 1,
   },
-  scrollContent: {
-    paddingHorizontal: theme.spacing.xl,
-    paddingBottom: theme.spacing.xxl,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: theme.typography.fontWeights.black,
-    color: theme.colors.paper,
-    marginTop: theme.spacing.lg,
-    marginBottom: theme.spacing.sm,
-    letterSpacing: 1.5,
-    textAlign: 'center',
-    ...Platform.select({
-      ios: {
-        fontFamily: 'System',
-        textShadowColor: theme.colors.sacredGold,
-        textShadowOffset: { width: 0, height: 0 },
-        textShadowRadius: 12,
-      },
-      android: {
-        fontFamily: 'sans-serif-black',
-      },
-    }),
-  },
-  subtitle: {
-    fontSize: 18,
-    fontWeight: theme.typography.fontWeights.semibold,
-    color: theme.colors.dust,
-    marginBottom: theme.spacing.xl,
-    letterSpacing: 0.8,
-    textAlign: 'center',
-    ...Platform.select({
-      ios: {
-        fontFamily: 'System',
-      },
-      android: {
-        fontFamily: 'sans-serif-medium',
-      },
-    }),
-  },
-  heroContainer: {
-    marginBottom: theme.spacing.xl,
-    alignSelf: 'flex-start',
-    marginLeft: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...Platform.select({
-      ios: {
-        shadowColor: theme.colors.sacredGold,
-        shadowOffset: { width: 0, height: 20 },
-        shadowOpacity: 1,
-        shadowRadius: 48,
-      },
-      android: {
-        elevation: 24,
-      },
-    }),
-  },
-  heroIcon: {
-    width: 320,
-    height: 320,
-  },
-  formContainer: {
-    gap: theme.spacing.lg,
-  },
-  buttonContainer: {
-    marginTop: theme.spacing.xxl,
-    width: '100%',
+  messagesContent: {
+    paddingTop: theme.spacing.md,
+    paddingBottom: theme.spacing.md,
   },
 });
 
