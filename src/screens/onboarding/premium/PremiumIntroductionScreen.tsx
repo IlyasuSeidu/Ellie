@@ -560,12 +560,13 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
   const quickReplies: QuickReply[] = [];
 
   // Memoized render function for FlatList performance
+  // Remove delay prop to prevent breaking memoization - ChatMessage animates on mount
   const renderMessage = useCallback(
-    ({ item, index }: { item: Message; index: number }) => (
+    ({ item }: { item: Message }) => (
       <ChatMessage
         message={item}
         isBot={item.type === 'bot'}
-        delay={index * 200}
+        delay={0}
         reducedMotion={reducedMotion}
         onLongPress={item.type === 'user' ? () => handleLongPress(item.id) : undefined}
         testID={`${testID}-message-${item.id}`}
@@ -601,6 +602,12 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
             minIndexForVisible: 0,
             autoscrollToTopThreshold: 100,
           }}
+          // Performance optimizations
+          maxToRenderPerBatch={10}
+          updateCellsBatchingPeriod={50}
+          initialNumToRender={10}
+          windowSize={21}
+          removeClippedSubviews={Platform.OS === 'android'}
           ListFooterComponent={
             isTyping ? (
               <TypingIndicator
