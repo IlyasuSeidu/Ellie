@@ -87,7 +87,7 @@ describe('OnboardingContext', () => {
     it('should handle complex objects', () => {
       const { result } = renderHook(() => useOnboarding(), { wrapper });
 
-      const country = { code: 'AU', name: 'Australia', flag: '🇦🇺' };
+      const country = 'Australia';
 
       act(() => {
         result.current.updateData({
@@ -167,7 +167,7 @@ describe('OnboardingContext', () => {
         name: 'John Doe',
         occupation: 'Mining Engineer',
         company: 'ABC Mining Co.',
-        country: { code: 'AU', name: 'Australia', flag: '🇦🇺' },
+        country: 'Australia',
         patternType: ShiftPattern.STANDARD_5_5_5,
         startDate: new Date('2024-01-15'),
         shiftStartTime: '07:00',
@@ -192,12 +192,12 @@ describe('OnboardingContext', () => {
           name: 'John Doe',
           occupation: 'Mining Engineer',
           company: 'ABC Mining',
-          country: { code: 'AU', name: 'Australia', flag: '🇦🇺' },
+          country: 'Australia',
         });
       });
 
       expect(result.current.data.name).toBe('John Doe');
-      expect(result.current.data.country?.code).toBe('AU');
+      expect(result.current.data.country).toBe('Australia');
 
       // Step 3: Shift Pattern
       act(() => {

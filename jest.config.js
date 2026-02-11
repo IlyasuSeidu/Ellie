@@ -8,13 +8,6 @@ module.exports = {
     '!src/**/*.d.ts',
     '!src/**/__tests__/**',
     '!src/**/__mocks__/**',
-    // Exclude infrastructure code from coverage requirements
-    // These require different testing strategies (integration/e2e tests)
-    '!src/services/**',
-    '!src/config/**',
-    '!src/navigation/**',
-    '!src/types/**',
-    '!src/constants/**',
   ],
   coverageReporters: ['text', 'lcov', 'json-summary'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],

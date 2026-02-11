@@ -29,8 +29,6 @@ import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { ChatMessage, Message } from '@/components/onboarding/premium/ChatMessage';
 import { TypingIndicator } from '@/components/onboarding/premium/TypingIndicator';
 import { ChatInput, QuickReply } from '@/components/onboarding/premium/ChatInput';
-import { PremiumCountrySelectorModal } from '@/components/onboarding/premium/PremiumCountrySelectorModal';
-import { Country } from '@/components/onboarding/premium/PremiumCountrySelector';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 
@@ -45,11 +43,10 @@ const introductionSchema = z.object({
     .regex(/^[a-zA-Z\s'-]+$/, 'Name can only contain letters, spaces, hyphens, and apostrophes'),
   occupation: z.string().min(1, 'Occupation is required'),
   company: z.string().min(1, 'Company is required'),
-  country: z.object({
-    code: z.string(),
-    name: z.string(),
-    flag: z.string(),
-  }),
+  country: z
+    .string()
+    .min(2, 'Country must be at least 2 characters')
+    .max(100, 'Country must not exceed 100 characters'),
 });
 
 type IntroductionFormData = z.infer<typeof introductionSchema>;
@@ -91,18 +88,17 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
     name: string;
     occupation: string;
     company: string;
-    country?: Country;
+    country: string;
   }>({
     name: data.name || '',
     occupation: data.occupation || '',
     company: data.company || '',
-    country: data.country,
+    country: data.country || '',
   });
 
   // Input state
   const [currentInput, setCurrentInput] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [showCountryPicker, setShowCountryPicker] = useState(false);
 
   // Reduced motion preference
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -215,6 +211,20 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
     }
   }, []);
 
+  // Validate country
+  const validateCountry = useCallback((input: string): boolean => {
+    try {
+      introductionSchema.shape.country.parse(input);
+      setError(null);
+      return true;
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        setError(err.errors[0].message);
+      }
+      return false;
+    }
+  }, []);
+
   // Advance conversation based on current step
   const advanceConversation = useCallback(() => {
     switch (currentStep) {
@@ -302,22 +312,18 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
 
         if (!countryQuestionExists) {
           addBotMessage('Almost done! Which country are you based in?', 900);
-          // Wait for typing animation (900ms) + reading time (1600ms) before showing modal
           setTimeout(() => {
             setCurrentStep(ConversationStep.WAIT_COUNTRY);
-            setShowCountryPicker(true);
-          }, 2500);
+          }, 1400);
         } else {
-          // Question already exists, go straight to showing picker
+          // Question already exists, go straight to waiting for input
           setCurrentStep(ConversationStep.WAIT_COUNTRY);
-          setShowCountryPicker(true);
         }
         break;
       }
 
       case ConversationStep.WAIT_COUNTRY:
-        // Country selection handled directly in handleCountrySelect
-        // This case is only reached when editing
+        // Input is handled by handleSubmit, not automatically
         break;
 
       case ConversationStep.COMPLETE:
@@ -383,7 +389,8 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
     const shouldShowInput =
       currentStep === ConversationStep.WAIT_NAME ||
       currentStep === ConversationStep.WAIT_OCCUPATION ||
-      currentStep === ConversationStep.WAIT_COMPANY;
+      currentStep === ConversationStep.WAIT_COMPANY ||
+      currentStep === ConversationStep.WAIT_COUNTRY;
 
     if (shouldShowInput) {
       // Delay to ensure input field has rendered
@@ -428,6 +435,17 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
       setCurrentInput('');
       setError(null);
       setCurrentStep(ConversationStep.ASK_COUNTRY);
+    } else if (currentStep === ConversationStep.WAIT_COUNTRY) {
+      if (!validateCountry(currentInput)) {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+        return;
+      }
+      // Process country
+      addUserMessage(currentInput);
+      setFormData((prev) => ({ ...prev, country: currentInput.trim() }));
+      setCurrentInput('');
+      setError(null);
+      setCurrentStep(ConversationStep.COMPLETE);
     }
   }, [
     currentStep,
@@ -435,6 +453,7 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
     validateName,
     validateOccupation,
     validateCompany,
+    validateCountry,
     addUserMessage,
   ]);
 
@@ -449,24 +468,6 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
     [currentStep, advanceConversation]
   );
 
-  // Handle country selection
-  const handleCountrySelect = useCallback(
-    (country: Country) => {
-      setFormData((prev) => ({ ...prev, country }));
-      setShowCountryPicker(false);
-
-      // Add user message immediately with the selected country
-      addUserMessage(country.name, {
-        countryFlag: country.flag,
-      });
-
-      // Move to COMPLETE step
-      setCurrentStep(ConversationStep.COMPLETE);
-    },
-    [addUserMessage]
-  );
-
-  // Determine message step from message for editing
   // Handle long-press to edit
   const handleLongPress = useCallback(
     (messageId: string) => {
@@ -540,7 +541,8 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
   const shouldShowInput =
     currentStep === ConversationStep.WAIT_NAME ||
     currentStep === ConversationStep.WAIT_OCCUPATION ||
-    currentStep === ConversationStep.WAIT_COMPANY;
+    currentStep === ConversationStep.WAIT_COMPANY ||
+    currentStep === ConversationStep.WAIT_COUNTRY;
 
   // Determine placeholder
   const getPlaceholder = (): string => {
@@ -551,6 +553,8 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
         return 'Enter your occupation';
       case ConversationStep.WAIT_COMPANY:
         return 'Enter company name';
+      case ConversationStep.WAIT_COUNTRY:
+        return 'Enter your country';
       default:
         return '';
     }
@@ -635,14 +639,6 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
           />
         )}
       </KeyboardAvoidingView>
-
-      {/* Country Selector Modal */}
-      <PremiumCountrySelectorModal
-        visible={showCountryPicker}
-        onSelect={handleCountrySelect}
-        onClose={() => setShowCountryPicker(false)}
-        selectedCountry={formData.country || null}
-      />
     </View>
   );
 };

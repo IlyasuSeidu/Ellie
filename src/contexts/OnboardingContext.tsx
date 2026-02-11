@@ -5,7 +5,6 @@
  */
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Country } from '@/components/onboarding/premium/PremiumCountrySelector';
 import { ShiftPattern } from '@/types';
 
 export interface OnboardingData {
@@ -13,7 +12,7 @@ export interface OnboardingData {
   name?: string;
   occupation?: string;
   company?: string;
-  country?: Country;
+  country?: string;
 
   // Step 3: Shift Pattern
   patternType?: ShiftPattern;

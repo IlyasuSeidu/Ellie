@@ -90,7 +90,7 @@ jobs:
               const total = coverage.total;
               const failed = [];
 
-              if (total.branches.pct < 60) failed.push('Branches: ' + total.branches.pct + '%');
+              if (total.branches.pct < 70) failed.push('Branches: ' + total.branches.pct + '%');
               if (total.functions.pct < 70) failed.push('Functions: ' + total.functions.pct + '%');
               if (total.lines.pct < 70) failed.push('Lines: ' + total.lines.pct + '%');
               if (total.statements.pct < 70) failed.push('Statements: ' + total.statements.pct + '%');
@@ -100,7 +100,7 @@ jobs:
                 failed.forEach(f => console.error('  - ' + f));
                 process.exit(1);
               } else {
-                console.log('All coverage thresholds met (branches >= 60%, others >= 70%)');
+                console.log('All coverage thresholds met (>= 70%)');
               }
             "
           else

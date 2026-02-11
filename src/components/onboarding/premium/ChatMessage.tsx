@@ -151,16 +151,10 @@ export const ChatMessage = React.memo<ChatMessageProps>(
   },
   (prevProps, nextProps) => {
     // Custom comparison to prevent unnecessary re-renders
-    // Return true if props are equal (component should NOT re-render)
     return (
       prevProps.message.id === nextProps.message.id &&
       prevProps.message.content === nextProps.message.content &&
-      prevProps.message.timestamp === nextProps.message.timestamp &&
-      prevProps.isBot === nextProps.isBot &&
-      prevProps.delay === nextProps.delay &&
-      prevProps.reducedMotion === nextProps.reducedMotion &&
-      prevProps.onLongPress === nextProps.onLongPress &&
-      prevProps.testID === nextProps.testID
+      prevProps.reducedMotion === nextProps.reducedMotion
     );
   }
 );
