@@ -52,7 +52,18 @@ Ellie features a polished, Tinder-inspired onboarding experience built with Reac
 - Accessibility-first with reduced motion support
 - [Read the story →](build-in-public/emotional-moment/03-welcome-screen-first-impression.md)
 
-#### 2. **Shift Pattern Selection** - Tinder-Style Cards
+#### 2. **Introduction Screen** - Conversational Onboarding
+
+- Progressive disclosure chatbot experience (one question at a time)
+- Animated mining helmet avatar with breathing animation
+- Typing indicators for natural conversation feel
+- Smart editing (long-press any response to rewind conversation)
+- Name personalization ("Great to meet you, John!")
+- Sacred Theme colors throughout (gold and stone)
+- 60fps spring animations for all transitions
+- [Read the story →](build-in-public/emotional-moment/10-conversational-introduction.md)
+
+#### 3. **Shift Pattern Selection** - Tinder-Style Cards
 
 - Swipeable cards for 9 standard patterns (4-4-4, 7-7-7, 2-2-3, etc.)
 - Physics-based gestures with rotation and depth effects
@@ -60,7 +71,7 @@ Ellie features a polished, Tinder-inspired onboarding experience built with Reac
 - Custom pattern option
 - [Read the story →](build-in-public/unexpected-challenge/04-tinder-style-pattern-selection.md)
 
-#### 3. **Custom Pattern Builder** - Every Mine is Different
+#### 4. **Custom Pattern Builder** - Every Mine is Different
 
 - Visual sliders with 3D icon thumbs (sun, moon, rest)
 - Real-time pattern preview with color-coded blocks
@@ -68,7 +79,7 @@ Ellie features a polished, Tinder-inspired onboarding experience built with Reac
 - Live cycle visualization
 - [Read the story →](build-in-public/user-empathy/05-custom-pattern-builder.md)
 
-#### 4. **Start Date & Phase Selection** - Calendar Intelligence
+#### 5. **Start Date & Phase Selection** - Calendar Intelligence
 
 - Interactive calendar with swipe gestures for month navigation
 - Phase selector (choose starting shift: day/night/off)
@@ -81,7 +92,7 @@ Ellie features a polished, Tinder-inspired onboarding experience built with Reac
 - [Read the story →](build-in-public/technical-discovery/06-start-date-calendar-system.md)
 - [Day positioning story →](build-in-public/user-empathy/09-day-within-phase-positioning.md)
 
-#### 5. **Shift Time Input** - Smart Time Configuration
+#### 6. **Shift Time Input** - Smart Time Configuration
 
 - 6 preset shift times (Early Day, Standard Day, Late Day, Evening, Night)
 - Custom time input with 12/24-hour format conversion
