@@ -9,6 +9,7 @@ module.exports = {
     '!src/**/__tests__/**',
     '!src/**/__mocks__/**',
   ],
+  coverageReporters: ['text', 'lcov', 'json-summary'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
