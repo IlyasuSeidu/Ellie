@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     lineHeight: 22,
-    color: theme.colors.deepVoid,
+    color: theme.colors.paper,
   },
   skippedBubble: {
     backgroundColor: theme.colors.softStone,

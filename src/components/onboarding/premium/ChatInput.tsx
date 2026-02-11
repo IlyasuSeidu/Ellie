@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
   quickReplyText: {
     fontSize: 14,
     fontWeight: '600',
-    color: theme.colors.paper, // White text for better contrast
+    color: theme.colors.sacredGold,
   },
   inputContainer: {
     paddingHorizontal: 16,
