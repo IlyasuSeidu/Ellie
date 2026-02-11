@@ -302,10 +302,11 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
 
         if (!countryQuestionExists) {
           addBotMessage('Almost done! Which country are you based in?', 900);
+          // Wait for typing animation (900ms) + reading time (1600ms) before showing modal
           setTimeout(() => {
             setCurrentStep(ConversationStep.WAIT_COUNTRY);
             setShowCountryPicker(true);
-          }, 1400);
+          }, 2500);
         } else {
           // Question already exists, go straight to showing picker
           setCurrentStep(ConversationStep.WAIT_COUNTRY);
