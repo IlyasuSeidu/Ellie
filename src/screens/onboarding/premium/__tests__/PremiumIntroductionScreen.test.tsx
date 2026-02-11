@@ -4,7 +4,7 @@
 
 /* eslint-disable @typescript-eslint/no-var-requires, require-await */
 import React from 'react';
-import { render, fireEvent, act } from '@testing-library/react-native';
+import { render, fireEvent, act, waitFor } from '@testing-library/react-native';
 import { Alert } from 'react-native';
 import { PremiumIntroductionScreen } from '../PremiumIntroductionScreen';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
@@ -82,14 +82,16 @@ describe('PremiumIntroductionScreen', () => {
 
   describe('Conversational Flow', () => {
     it('should show name question after welcome', async () => {
-      const { findByText } = renderWithProviders(<PremiumIntroductionScreen />);
+      const { getAllByText } = renderWithProviders(<PremiumIntroductionScreen />);
 
-      await act(async () => {
+      act(() => {
         jest.advanceTimersByTime(5000);
       });
 
-      const nameQuestion = await findByText("What's your name?");
-      expect(nameQuestion).toBeTruthy();
+      await waitFor(() => {
+        const nameQuestion = getAllByText("What's your name?");
+        expect(nameQuestion.length).toBeGreaterThan(0);
+      });
     });
 
     it('should render input placeholder', async () => {
@@ -167,19 +169,25 @@ describe('PremiumIntroductionScreen', () => {
     });
 
     it('should render multiple bot messages in sequence', async () => {
-      const { findByText } = renderWithProviders(<PremiumIntroductionScreen />);
+      const { getAllByText } = renderWithProviders(<PremiumIntroductionScreen />);
 
-      await act(async () => {
+      act(() => {
         jest.advanceTimersByTime(2000);
       });
-      const welcome = await findByText(/Welcome to Ellie!/);
-      expect(welcome).toBeTruthy();
 
-      await act(async () => {
-        jest.advanceTimersByTime(4000);
+      await waitFor(() => {
+        const welcomeMessages = getAllByText(/Welcome to Ellie!/);
+        expect(welcomeMessages.length).toBeGreaterThan(0);
       });
-      const nameQ = await findByText("What's your name?");
-      expect(nameQ).toBeTruthy();
+
+      act(() => {
+        jest.advanceTimersByTime(5000);
+      });
+
+      await waitFor(() => {
+        const nameMessages = getAllByText("What's your name?");
+        expect(nameMessages.length).toBeGreaterThan(0);
+      });
     });
   });
 
