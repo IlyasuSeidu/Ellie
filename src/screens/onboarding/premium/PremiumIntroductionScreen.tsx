@@ -559,6 +559,24 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
   // Quick replies (none currently used)
   const quickReplies: QuickReply[] = [];
 
+  // Memoized render function for FlatList performance
+  const renderMessage = useCallback(
+    ({ item, index }: { item: Message; index: number }) => (
+      <ChatMessage
+        message={item}
+        isBot={item.type === 'bot'}
+        delay={index * 200}
+        reducedMotion={reducedMotion}
+        onLongPress={item.type === 'user' ? () => handleLongPress(item.id) : undefined}
+        testID={`${testID}-message-${item.id}`}
+      />
+    ),
+    [reducedMotion, handleLongPress, testID]
+  );
+
+  // Memoized key extractor
+  const keyExtractor = useCallback((item: Message) => item.id, []);
+
   return (
     <View style={styles.container} testID={testID}>
       {/* Progress Header */}
@@ -573,17 +591,8 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
         <FlatList
           ref={flatListRef}
           data={messages}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item, index }) => (
-            <ChatMessage
-              message={item}
-              isBot={item.type === 'bot'}
-              delay={index * 200}
-              reducedMotion={reducedMotion}
-              onLongPress={item.type === 'user' ? () => handleLongPress(item.id) : undefined}
-              testID={`${testID}-message-${item.id}`}
-            />
-          )}
+          keyExtractor={keyExtractor}
+          renderItem={renderMessage}
           style={styles.messagesList}
           contentContainerStyle={styles.messagesContent}
           showsVerticalScrollIndicator={false}
