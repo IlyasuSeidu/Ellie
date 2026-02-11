@@ -326,39 +326,47 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
         // Input is handled by handleSubmit, not automatically
         break;
 
-      case ConversationStep.COMPLETE:
-        addBotMessage(
-          `Perfect! You're all set, ${formData.name}. Let's get your shift calendar configured.`,
-          1000
+      case ConversationStep.COMPLETE: {
+        // Check if completion message already exists (prevent duplicates)
+        const completionMessageExists = messages.some(
+          (m) => m.type === 'bot' && m.content.includes("You're all set")
         );
 
-        // Save to context and navigate after delay (allow time to read final message)
-        setTimeout(() => {
-          updateData({
-            name: formData.name,
-            occupation: formData.occupation,
-            company: formData.company,
-            country: formData.country,
-          });
+        if (!completionMessageExists) {
+          addBotMessage(
+            `Perfect! You're all set, ${formData.name}. Let's get your shift calendar configured.`,
+            1000
+          );
 
-          // Light success haptic
-          if (!reducedMotion) {
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-          }
-
-          // Call optional callback or navigate
-          if (onContinue && formData.country) {
-            onContinue({
+          // Save to context and navigate after delay (allow time to read final message)
+          setTimeout(() => {
+            updateData({
               name: formData.name,
               occupation: formData.occupation,
               company: formData.company,
               country: formData.country,
             });
-          } else {
-            navigation.navigate('ShiftSystem');
-          }
-        }, 4000); // Increased from 2000ms to 4000ms to allow reading the final message
+
+            // Light success haptic
+            if (!reducedMotion) {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+            }
+
+            // Call optional callback or navigate
+            if (onContinue && formData.country) {
+              onContinue({
+                name: formData.name,
+                occupation: formData.occupation,
+                company: formData.company,
+                country: formData.country,
+              });
+            } else {
+              navigation.navigate('ShiftSystem');
+            }
+          }, 4000); // Increased from 2000ms to 4000ms to allow reading the final message
+        }
         break;
+      }
     }
   }, [
     currentStep,
