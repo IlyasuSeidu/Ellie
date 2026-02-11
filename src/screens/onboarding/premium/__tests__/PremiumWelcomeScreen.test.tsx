@@ -2,9 +2,24 @@
  * PremiumWelcomeScreen Component Tests
  */
 
+/* eslint-disable @typescript-eslint/no-var-requires */
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { PremiumWelcomeScreen } from '../PremiumWelcomeScreen';
+
+// Mock Ionicons
+jest.mock('@expo/vector-icons', () => {
+  const React = require('react');
+  const RN = require('react-native');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const MockIcon = (props: any) => React.createElement(RN.Text, props, props.name || 'icon');
+  return {
+    Ionicons: MockIcon,
+    MaterialIcons: MockIcon,
+    FontAwesome: MockIcon,
+    Feather: MockIcon,
+  };
+});
 
 // Mock React Navigation
 jest.mock('@react-navigation/native', () => ({
