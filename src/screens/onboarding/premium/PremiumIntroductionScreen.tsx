@@ -560,7 +560,7 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
   const quickReplies: QuickReply[] = [];
 
   // Memoized render function for FlatList performance
-  // Remove delay prop to prevent breaking memoization - ChatMessage animates on mount
+  // CRITICAL: No inline arrow functions - pass stable function references only
   const renderMessage = useCallback(
     ({ item }: { item: Message }) => (
       <ChatMessage
@@ -568,7 +568,7 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
         isBot={item.type === 'bot'}
         delay={0}
         reducedMotion={reducedMotion}
-        onLongPress={item.type === 'user' ? () => handleLongPress(item.id) : undefined}
+        onLongPress={item.type === 'user' ? handleLongPress : undefined}
         testID={`${testID}-message-${item.id}`}
       />
     ),

@@ -41,8 +41,8 @@ export interface ChatMessageProps {
   delay?: number;
   /** Reduced motion preference */
   reducedMotion: boolean;
-  /** Long-press handler for editing */
-  onLongPress?: () => void;
+  /** Long-press handler for editing - receives message ID */
+  onLongPress?: (messageId: string) => void;
   /** Test ID */
   testID?: string;
 }
@@ -53,6 +53,13 @@ export const ChatMessage = React.memo<ChatMessageProps>(
     const slideUp = useSharedValue(isBot ? 30 : 0);
     const slideFromRight = useSharedValue(isBot ? 0 : 50);
     const opacity = useSharedValue(0);
+
+    // Stable callback for onLongPress
+    const handleLongPress = React.useCallback(() => {
+      if (onLongPress) {
+        onLongPress(message.id);
+      }
+    }, [onLongPress, message.id]);
 
     useEffect(() => {
       if (reducedMotion) {
@@ -127,7 +134,7 @@ export const ChatMessage = React.memo<ChatMessageProps>(
     return (
       <Animated.View style={[styles.messageContainer, styles.userContainer, animatedStyle]}>
         <Pressable
-          onLongPress={onLongPress}
+          onLongPress={handleLongPress}
           testID={testID}
           accessibilityRole="text"
           accessibilityLabel={`Your message: ${message.content}`}
@@ -144,10 +151,16 @@ export const ChatMessage = React.memo<ChatMessageProps>(
   },
   (prevProps, nextProps) => {
     // Custom comparison to prevent unnecessary re-renders
+    // Return true if props are equal (component should NOT re-render)
     return (
       prevProps.message.id === nextProps.message.id &&
       prevProps.message.content === nextProps.message.content &&
-      prevProps.reducedMotion === nextProps.reducedMotion
+      prevProps.message.timestamp === nextProps.message.timestamp &&
+      prevProps.isBot === nextProps.isBot &&
+      prevProps.delay === nextProps.delay &&
+      prevProps.reducedMotion === nextProps.reducedMotion &&
+      prevProps.onLongPress === nextProps.onLongPress &&
+      prevProps.testID === nextProps.testID
     );
   }
 );
