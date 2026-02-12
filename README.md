@@ -79,20 +79,30 @@ Ellie features a polished, Tinder-inspired onboarding experience built with Reac
 - Live cycle visualization
 - [Read the story →](build-in-public/user-empathy/05-custom-pattern-builder.md)
 
-#### 5. **Start Date & Phase Selection** - Calendar Intelligence
+#### 5. **Phase Selector** - Tinder-Style Phase Selection
+
+- Dedicated screen for phase selection (separated from Start Date)
+- Swipeable cards for phases (Day/Night/Off for 2-shift, +Morning/Afternoon for 3-shift)
+- Two-stage selection flow: Phase cards → Day-within-phase cards
+- **Day-within-phase selector** - capture exact cycle position (e.g., day 3 of 7 nights)
+- Physics-based gestures with spring animations
+- Stack depth effects (scale, opacity, rotation)
+- Progressive disclosure (day cards only shown if phase length > 1)
+- Calculates phaseOffset and saves to context
+- [Read the story →](build-in-public/system-thinking/11-phase-selector-separation.md)
+
+#### 6. **Start Date Selection** - Calendar Intelligence
 
 - Interactive calendar with swipe gestures for month navigation
-- Phase selector (choose starting shift: day/night/off)
-- **Day-within-phase selector** - capture exact cycle position (e.g., day 3 of 7 nights)
 - Live shift preview icons on calendar days (☀️🌙🏠)
 - 7-day timeline showing upcoming shifts
 - Smart defaults (tomorrow as start date)
 - Calendar legend for shift types
-- Progressive disclosure for multi-day phases
-- [Read the story →](build-in-public/technical-discovery/06-start-date-calendar-system.md)
+- Uses phaseOffset from Phase Selector for accurate positioning
+- [Read the calendar story →](build-in-public/technical-discovery/06-start-date-calendar-system.md)
 - [Day positioning story →](build-in-public/user-empathy/09-day-within-phase-positioning.md)
 
-#### 6. **Shift Time Input** - Smart Time Configuration
+#### 7. **Shift Time Input** - Smart Time Configuration
 
 - 6 preset shift times (Early Day, Standard Day, Late Day, Evening, Night)
 - Custom time input with 12/24-hour format conversion
@@ -402,17 +412,19 @@ Colors inspired by the mining environment itself:
 
 I'm building Ellie in public, documenting every decision, challenge, and lesson learned. Each major feature has a dedicated story:
 
-| Feature               | Story Angle          | Link                                                                                |
-| --------------------- | -------------------- | ----------------------------------------------------------------------------------- |
-| **Day 1: Foundation** | System Thinking      | [Read →](build-in-public/system-thinking/01-day-one-foundations.md)                 |
-| **Sacred Theme**      | Design Tradeoff      | [Read →](build-in-public/design-tradeoff/02-sacred-theme-system.md)                 |
-| **Welcome Screen**    | Emotional Moment     | [Read →](build-in-public/emotional-moment/03-welcome-screen-first-impression.md)    |
-| **Pattern Selection** | Unexpected Challenge | [Read →](build-in-public/unexpected-challenge/04-tinder-style-pattern-selection.md) |
-| **Custom Builder**    | User Empathy         | [Read →](build-in-public/user-empathy/05-custom-pattern-builder.md)                 |
-| **Start Date Screen** | Technical Discovery  | [Read →](build-in-public/technical-discovery/06-start-date-calendar-system.md)      |
-| **Shift Time Input**  | Unexpected Challenge | [Read →](build-in-public/unexpected-challenge/07-shift-time-animation-crashes.md)   |
-| **Shift System**      | System Thinking      | [Read →](build-in-public/system-thinking/08-shift-system-architecture.md)           |
-| **Day Within Phase**  | User Empathy         | [Read →](build-in-public/user-empathy/09-day-within-phase-positioning.md)           |
+| Feature                 | Story Angle          | Link                                                                                |
+| ----------------------- | -------------------- | ----------------------------------------------------------------------------------- |
+| **Day 1: Foundation**   | System Thinking      | [Read →](build-in-public/system-thinking/01-day-one-foundations.md)                 |
+| **Sacred Theme**        | Design Tradeoff      | [Read →](build-in-public/design-tradeoff/02-sacred-theme-system.md)                 |
+| **Welcome Screen**      | Emotional Moment     | [Read →](build-in-public/emotional-moment/03-welcome-screen-first-impression.md)    |
+| **Pattern Selection**   | Unexpected Challenge | [Read →](build-in-public/unexpected-challenge/04-tinder-style-pattern-selection.md) |
+| **Custom Builder**      | User Empathy         | [Read →](build-in-public/user-empathy/05-custom-pattern-builder.md)                 |
+| **Start Date Screen**   | Technical Discovery  | [Read →](build-in-public/technical-discovery/06-start-date-calendar-system.md)      |
+| **Shift Time Input**    | Unexpected Challenge | [Read →](build-in-public/unexpected-challenge/07-shift-time-animation-crashes.md)   |
+| **Shift System**        | System Thinking      | [Read →](build-in-public/system-thinking/08-shift-system-architecture.md)           |
+| **Day Within Phase**    | User Empathy         | [Read →](build-in-public/user-empathy/09-day-within-phase-positioning.md)           |
+| **Introduction Screen** | Emotional Moment     | [Read →](build-in-public/emotional-moment/10-conversational-introduction.md)        |
+| **Phase Selector**      | System Thinking      | [Read →](build-in-public/system-thinking/11-phase-selector-separation.md)           |
 
 Each story includes:
 
@@ -551,13 +563,17 @@ npm run format
 
 ### Current Status (as of latest commit)
 
-- **Total Tests**: 145 passing (43 ShiftTimeInput + 32 StartDate + 70 others)
-- **Test Coverage**: 100% on utilities and services
+- **Total Tests**: 1,701 passing (51 test suites)
+- **Test Coverage**:
+  - Branches: 62.03% (≥60% ✅)
+  - Functions: 76.95% (≥70% ✅)
+  - Lines: 73.60% (≥70% ✅)
+  - Statements: 74.27% (≥70% ✅)
 - **TypeScript Errors**: 0
 - **ESLint Errors**: 0
-- **Onboarding Screens**: 6 completed (Welcome, Introduction, Pattern Selection, Custom Builder, Start Date, Shift Time Input)
-- **Lines of Code**: ~17,000+
-- **Commits**: 76+
+- **Onboarding Screens**: 7 completed (Welcome, Introduction, Shift System, Pattern Selection, Custom Builder, Phase Selector, Start Date, Shift Time Input)
+- **Lines of Code**: ~18,000+
+- **Commits**: 79+
 - **Build Time**: ✅ Passing
 - **CI/CD**: ✅ All workflows green
 
