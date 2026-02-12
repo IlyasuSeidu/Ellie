@@ -835,10 +835,24 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
       if (currentCardIndex < totalCards - 1) {
         setCurrentCardIndex((prev) => prev + 1);
       } else {
-        // Loop back to first card
+        // Loop back to first card with fresh animations
         setCurrentCardIndex(0);
+        setCardRemountKey((prev) => prev + 1);
+
+        // Haptic feedback for loop-back
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+
+        // Re-trigger card entrance animations
+        cardAnimations.forEach((anim, index) => {
+          anim.value = 0;
+          anim.value = withDelay(
+            index * 100,
+            withTiming(1, { duration: 400, easing: Easing.out(Easing.ease) })
+          );
+        });
       }
     }, 300);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage, phaseCards.length, dayCards.length, currentCardIndex]);
 
   // Handle swipe up (info)
