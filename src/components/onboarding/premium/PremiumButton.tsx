@@ -82,7 +82,6 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
   const scale = useSharedValue(1);
   const opacity = useSharedValue(1);
   const shimmerTranslate = useSharedValue(-1);
-  const pulseGlow = useSharedValue(1);
   const bounceY = useSharedValue(0);
 
   // Shimmer animation - continuous shine effect
@@ -99,20 +98,6 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
       );
     }
   }, [disabled, loading, variant, shimmerTranslate]);
-
-  // Subtle pulse glow effect
-  useEffect(() => {
-    if (!disabled && !loading && variant === 'primary') {
-      pulseGlow.value = withRepeat(
-        withSequence(
-          withTiming(1, { duration: 1500, easing: Easing.inOut(Easing.sin) }),
-          withTiming(1.15, { duration: 1500, easing: Easing.inOut(Easing.sin) })
-        ),
-        -1,
-        true
-      );
-    }
-  }, [disabled, loading, variant, pulseGlow]);
 
   const handlePressIn = () => {
     if (!disabled && !loading) {
@@ -171,10 +156,6 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
       opacity: shimmerOpacity,
     };
   });
-
-  const glowStyle = useAnimatedStyle(() => ({
-    opacity: variant === 'primary' ? interpolate(pulseGlow.value, [1, 1.15], [0.4, 0.7]) : 0.4,
-  }));
 
   const sizeStyles = getSizeStyles(size);
   const isDisabled = disabled || loading;
@@ -246,9 +227,6 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
         accessibilityState={{ disabled: isDisabled }}
         testID={testID}
       >
-        {/* Pulsing glow shadow */}
-        <Animated.View style={[styles.glowShadow, glowStyle, sizeStyles.container]} />
-
         <LinearGradient
           colors={[theme.colors.sacredGold, theme.colors.brightGold]}
           start={{ x: 0, y: 0 }}
@@ -362,22 +340,6 @@ const styles = StyleSheet.create({
       },
       android: {
         elevation: 10,
-      },
-    }),
-  },
-  glowShadow: {
-    position: 'absolute',
-    backgroundColor: theme.colors.sacredGold,
-    borderRadius: 16,
-    ...Platform.select({
-      ios: {
-        shadowColor: theme.colors.sacredGold,
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 1,
-        shadowRadius: 24,
-      },
-      android: {
-        elevation: 20,
       },
     }),
   },
