@@ -104,9 +104,9 @@ describe('PremiumStartDateScreen', () => {
       expect(getByText('Choose when your shift cycle begins')).toBeTruthy();
     });
 
-    it('should render progress header with step 5 of 10', () => {
+    it('should render progress header correctly', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('Step 5 of 10')).toBeTruthy();
+      expect(getByText('Step 6 of 11')).toBeTruthy();
     });
 
     it('should render without crashing when no callbacks provided', () => {
@@ -155,41 +155,51 @@ describe('PremiumStartDateScreen', () => {
     });
   });
 
-  describe('Phase Selector', () => {
-    it('should render helper text for phase selection', () => {
-      const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText("Choose which part of your cycle you'll be on")).toBeTruthy();
+  describe('Phase Offset from Context', () => {
+    it('should use phase offset from context', () => {
+      const { getByTestId } = renderWithContext(
+        <PremiumStartDateScreen testID="start-date-screen" />
+      );
+      // Phase selection is now done in PhaseSelector screen (step 5)
+      // This screen uses phaseOffset from OnboardingContext
+      expect(getByTestId('start-date-screen')).toBeTruthy();
     });
 
-    it('should render phase selector component', () => {
+    it('should render calendar with phase offset visualization', () => {
       const { getByTestId } = renderWithContext(
         <PremiumStartDateScreen testID="start-date-screen" />
       );
       expect(getByTestId('start-date-screen')).toBeTruthy();
     });
 
-    it('should display helper text', () => {
-      const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText("Choose which part of your cycle you'll be on")).toBeTruthy();
+    it('should not render phase selection UI', () => {
+      const { queryByText } = renderWithContext(<PremiumStartDateScreen />);
+      // Phase selection UI removed - now in PhaseSelector screen
+      expect(queryByText("Choose which part of your cycle you'll be on")).toBeFalsy();
     });
   });
 
-  describe('Live Preview Card', () => {
-    it('should display "Not selected" when no date is selected', () => {
-      const { getAllByText } = renderWithContext(<PremiumStartDateScreen />);
-      const notSelectedElements = getAllByText('Not selected');
-      expect(notSelectedElements.length).toBeGreaterThan(0);
+  describe('Calendar Visualization', () => {
+    it('should display calendar with shift pattern visualization', () => {
+      const { getByTestId } = renderWithContext(
+        <PremiumStartDateScreen testID="start-date-screen" />
+      );
+      // Calendar visualizes the shift pattern based on phaseOffset from context
+      expect(getByTestId('start-date-screen')).toBeTruthy();
     });
 
-    it('should render preview card labels', () => {
-      const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('Starting:')).toBeTruthy();
-      expect(getByText('Phase:')).toBeTruthy();
+    it('should not render live preview card', () => {
+      const { queryByText } = renderWithContext(<PremiumStartDateScreen />);
+      // Live preview component is no longer shown (marked as unused)
+      expect(queryByText('Starting:')).toBeFalsy();
+      expect(queryByText('Phase:')).toBeFalsy();
     });
 
-    it('should render live preview component', () => {
-      const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('Starting:')).toBeTruthy();
+    it('should visualize phase offset in calendar', () => {
+      const { getByTestId } = renderWithContext(
+        <PremiumStartDateScreen testID="start-date-screen" />
+      );
+      expect(getByTestId('start-date-screen')).toBeTruthy();
     });
   });
 

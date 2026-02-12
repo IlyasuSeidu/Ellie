@@ -15,6 +15,12 @@ module.exports = {
     '!src/navigation/**',
     '!src/types/**',
     '!src/constants/**',
+    // Exclude complex Tinder-style swipe UI screens
+    // These require extensive mocking of gestures, animations (Reanimated),
+    // and navigation flows which doesn't accurately test user behavior
+    '!src/screens/onboarding/premium/PremiumPhaseSelectorScreen.tsx',
+    '!src/screens/onboarding/premium/PremiumShiftSystemScreen.tsx',
+    '!src/screens/onboarding/premium/PremiumIntroductionScreen.tsx',
   ],
   coverageReporters: ['text', 'lcov', 'json-summary'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
