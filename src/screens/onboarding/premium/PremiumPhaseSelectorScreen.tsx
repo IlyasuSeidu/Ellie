@@ -23,6 +23,9 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
   withTiming,
+  withRepeat,
+  withSequence,
+  withDelay,
   runOnJS,
   interpolate,
   Extrapolate,
@@ -33,18 +36,17 @@ import * as Haptics from 'expo-haptics';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { useOnboarding } from '@/contexts/OnboardingContext';
-import { ShiftSystem, Phase } from '@/types';
+import { ShiftSystem, Phase, ShiftPattern } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const CARD_WIDTH = SCREEN_WIDTH * 0.85;
-const CARD_HEIGHT = SCREEN_HEIGHT * 0.55;
+const CARD_HEIGHT = SCREEN_HEIGHT * 0.58;
 const SWIPE_THRESHOLD = 120;
 const ROTATION_ANGLE = 15;
 const VELOCITY_THRESHOLD = 500;
@@ -72,8 +74,6 @@ interface PhaseCardData {
   title: string;
   description: string;
   icon: string;
-  color: string;
-  secondaryColor: string;
   phaseLength: number;
 }
 
@@ -84,6 +84,47 @@ interface DayCardData {
   title: string;
   description: string;
 }
+
+// Shadow utility function
+const getShadowStyle = (cardIndex: number, isActiveCard: boolean) => {
+  if (isActiveCard) {
+    return Platform.select({
+      ios: {
+        shadowColor: theme.colors.sacredGold,
+        shadowOffset: { width: 0, height: 12 },
+        shadowOpacity: 0.4,
+        shadowRadius: 20,
+      },
+      android: {
+        elevation: 12,
+      },
+    });
+  }
+  if (cardIndex === 1) {
+    return Platform.select({
+      ios: {
+        shadowColor: theme.colors.deepVoid,
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.2,
+        shadowRadius: 12,
+      },
+      android: {
+        elevation: 6,
+      },
+    });
+  }
+  return Platform.select({
+    ios: {
+      shadowColor: theme.colors.deepVoid,
+      shadowOffset: { width: 0, height: 3 },
+      shadowOpacity: 0.1,
+      shadowRadius: 6,
+    },
+    android: {
+      elevation: 3,
+    },
+  });
+};
 
 // Helper: Get base phase offset
 const getBasePhaseOffset = (
@@ -161,18 +202,66 @@ interface SwipeablePhaseCardProps {
 const SwipeablePhaseCard: React.FC<SwipeablePhaseCardProps> = ({
   card,
   index,
+  totalCards,
   isActive,
   onSwipeRight,
   onSwipeLeft,
   onSwipeUp,
   mountProgress,
-  reducedMotion: _reducedMotion,
-  stage: _stage,
+  reducedMotion,
 }) => {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const scale = useSharedValue(isActive ? 1 : 0.95 - index * 0.05);
   const opacity = useSharedValue(isActive ? 1 : 0.9 - index * 0.05);
+  const iconScale = useSharedValue(1);
+  const hintOpacity = useSharedValue(1);
+  const hintScale = useSharedValue(1);
+
+  // Idle floating animation
+  useEffect(() => {
+    if (isActive && !reducedMotion) {
+      translateY.value = withRepeat(
+        withSequence(withTiming(-3, { duration: 1500 }), withTiming(3, { duration: 1500 })),
+        -1,
+        true
+      );
+      scale.value = withRepeat(
+        withSequence(withTiming(1.0, { duration: 1000 }), withTiming(1.02, { duration: 1000 })),
+        -1,
+        true
+      );
+      // Icon pulse animation
+      iconScale.value = withRepeat(
+        withSequence(withTiming(1.0, { duration: 1200 }), withTiming(1.08, { duration: 1200 })),
+        -1,
+        true
+      );
+    }
+  }, [isActive, reducedMotion, translateY, scale, iconScale]);
+
+  // Hint pulse and auto-fade animation with repeat cycle
+  useEffect(() => {
+    if (isActive && index === 0 && !reducedMotion) {
+      // Pulse animation - continuous loop
+      hintScale.value = withRepeat(
+        withSequence(withTiming(1.0, { duration: 600 }), withTiming(1.15, { duration: 600 })),
+        -1, // Infinite repeat
+        true
+      );
+
+      // Opacity cycle: visible 3s -> fade out 0.5s -> hidden 7s -> fade in 0.5s -> repeat
+      hintOpacity.value = withRepeat(
+        withSequence(
+          withTiming(1, { duration: 100 }), // Ensure we start visible
+          withDelay(3000, withTiming(0, { duration: 500 })), // Wait 3s, then fade out over 0.5s
+          withDelay(7000, withTiming(1, { duration: 500 })) // Wait 7s hidden, then fade in over 0.5s
+        ),
+        -1, // Infinite repeat
+        false
+      );
+    }
+  }, [isActive, index, reducedMotion, hintOpacity, hintScale]);
 
   const panGesture = Gesture.Pan()
     .enabled(isActive)
@@ -247,6 +336,20 @@ const SwipeablePhaseCard: React.FC<SwipeablePhaseCardProps> = ({
       }
     });
 
+  const tapGesture = Gesture.Tap()
+    .enabled(isActive)
+    .onEnd(() => {
+      if (!reducedMotion) {
+        scale.value = withSequence(
+          withSpring(1.05, { damping: 10, stiffness: 400 }),
+          withSpring(1, { damping: 10, stiffness: 400 })
+        );
+      }
+      runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Medium);
+    });
+
+  const composed = Gesture.Simultaneous(panGesture, tapGesture);
+
   const animatedStyle = useAnimatedStyle(() => {
     // Enhanced rotation interpolation
     const rotate = interpolate(
@@ -282,12 +385,21 @@ const SwipeablePhaseCard: React.FC<SwipeablePhaseCardProps> = ({
             : stackOffset + parallaxY + mountTranslateY,
         },
         { rotate: isActive ? `${rotate}deg` : '0deg' },
-        { scale: scale.value * stackScale },
+        { scale: isActive ? scale.value : scale.value * stackScale },
       ],
-      opacity: opacity.value * mountOpacity,
-      zIndex: 100 - index,
+      opacity: (isActive ? opacity.value : 0.9 - index * 0.05) * mountOpacity,
+      zIndex: totalCards - index,
     };
   });
+
+  const iconAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: isActive && !reducedMotion ? iconScale.value : 1 }],
+  }));
+
+  const hintAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: hintOpacity.value,
+    transform: [{ scale: hintScale.value }],
+  }));
 
   // Type guard to check if card is PhaseCardData
   const isPhaseCard = (c: PhaseCardData | DayCardData): c is PhaseCardData => {
@@ -298,79 +410,44 @@ const SwipeablePhaseCard: React.FC<SwipeablePhaseCardProps> = ({
   const dayCard = !isPhaseCard(card) ? card : null;
 
   return (
-    <GestureDetector gesture={panGesture}>
-      <Animated.View style={[styles.card, animatedStyle]}>
-        {phaseCard && (
-          <LinearGradient
-            colors={[phaseCard.color, phaseCard.secondaryColor]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.cardGradient}
-          >
-            <View style={styles.cardContent}>
-              <Text style={styles.cardIcon}>{phaseCard.icon}</Text>
-              <Text style={styles.cardTitle}>{phaseCard.title}</Text>
-              <Text style={styles.cardDescription}>{phaseCard.description}</Text>
-              {phaseCard.phaseLength > 0 && (
-                <Text style={styles.cardPhaseLength}>
-                  {phaseCard.phaseLength} {phaseCard.phaseLength === 1 ? 'day' : 'days'}
-                </Text>
-              )}
-            </View>
-          </LinearGradient>
+    <GestureDetector gesture={composed}>
+      <Animated.View style={[styles.card, getShadowStyle(index, isActive), animatedStyle]}>
+        {/* Icon */}
+        <Animated.View style={[styles.iconContainer, iconAnimatedStyle]}>
+          <Text style={styles.icon}>{phaseCard?.icon || dayCard?.dayNumber}</Text>
+        </Animated.View>
+
+        {/* Title */}
+        <Text style={styles.cardTitle}>{card.title}</Text>
+
+        {/* Badge (phase length for phase cards) */}
+        {phaseCard && phaseCard.phaseLength > 0 && (
+          <View style={styles.badge}>
+            <Text style={styles.badgeText}>
+              {phaseCard.phaseLength} {phaseCard.phaseLength === 1 ? 'day' : 'days'}
+            </Text>
+          </View>
         )}
 
-        {dayCard && (
-          <View style={[styles.cardGradient, styles.dayCardBackground]}>
-            <View style={styles.cardContent}>
-              <Text style={styles.dayNumber}>{dayCard.dayNumber}</Text>
-              <Text style={styles.cardTitle}>{dayCard.title}</Text>
-              <Text style={styles.cardDescription}>{dayCard.description}</Text>
-            </View>
-          </View>
+        {/* Description */}
+        <Text style={styles.description}>{card.description}</Text>
+
+        {/* Swipe Hints (only for first card) */}
+        {index === 0 && isActive && (
+          <>
+            <Animated.View style={[styles.swipeHint, styles.swipeHintLeft, hintAnimatedStyle]}>
+              <Text style={styles.swipeHintText}>← Skip</Text>
+            </Animated.View>
+            <Animated.View style={[styles.swipeHint, styles.swipeHintRight, hintAnimatedStyle]}>
+              <Text style={styles.swipeHintText}>Select →</Text>
+            </Animated.View>
+            <Animated.View style={[styles.swipeHint, styles.swipeHintUp, hintAnimatedStyle]}>
+              <Text style={styles.swipeHintText}>↑ Info</Text>
+            </Animated.View>
+          </>
         )}
       </Animated.View>
     </GestureDetector>
-  );
-};
-
-// Instruction Text Component
-interface InstructionTextProps {
-  stage: SelectionStage;
-}
-
-const InstructionText: React.FC<InstructionTextProps> = ({ stage }) => {
-  const text = useMemo(() => {
-    switch (stage) {
-      case SelectionStage.PHASE:
-        return 'Swipe right to select your current phase';
-      case SelectionStage.DAY_WITHIN_PHASE:
-        return 'Which day of this phase are you starting on?';
-      default:
-        return '';
-    }
-  }, [stage]);
-
-  return <Text style={styles.instruction}>{text}</Text>;
-};
-
-// Swipe Instructions Component
-const SwipeInstructions: React.FC = () => {
-  return (
-    <View style={styles.swipeInstructions}>
-      <View style={styles.swipeHintRow}>
-        <Ionicons name="arrow-back" size={20} color={theme.colors.dust} />
-        <Text style={styles.swipeHintText}>Skip</Text>
-      </View>
-      <View style={styles.swipeHintRow}>
-        <Ionicons name="arrow-forward" size={20} color={theme.colors.sacredGold} />
-        <Text style={styles.swipeHintText}>Select</Text>
-      </View>
-      <View style={styles.swipeHintRow}>
-        <Ionicons name="arrow-up" size={20} color={theme.colors.dust} />
-        <Text style={styles.swipeHintText}>Info</Text>
-      </View>
-    </View>
   );
 };
 
@@ -422,6 +499,7 @@ const PhaseInfoModal: React.FC<PhaseInfoModalProps> = ({ visible, content, onClo
 
           {dayCard && (
             <>
+              <Text style={styles.modalIcon}>{dayCard.dayNumber}</Text>
               <Text style={styles.modalTitle}>{dayCard.title}</Text>
               <Text style={styles.modalDescription}>{dayCard.description}</Text>
             </>
@@ -465,12 +543,91 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
     mountProgress.value = withSpring(1, { damping: 20, stiffness: 300 });
   }, [mountProgress]);
 
+  // Convert preset pattern to pattern values (like StartDate screen does)
+  const getPatternValues = useCallback(
+    (patternType: ShiftPattern) => {
+      let basePattern;
+      switch (patternType) {
+        case ShiftPattern.STANDARD_4_4_4:
+          basePattern = { daysOn: 4, nightsOn: 4, daysOff: 4 };
+          break;
+        case ShiftPattern.STANDARD_7_7_7:
+          basePattern = { daysOn: 7, nightsOn: 7, daysOff: 7 };
+          break;
+        case ShiftPattern.STANDARD_2_2_3:
+          basePattern = { daysOn: 2, nightsOn: 2, daysOff: 3 };
+          break;
+        case ShiftPattern.STANDARD_5_5_5:
+          basePattern = { daysOn: 5, nightsOn: 5, daysOff: 5 };
+          break;
+        case ShiftPattern.STANDARD_3_3_3:
+          basePattern = { daysOn: 3, nightsOn: 3, daysOff: 3 };
+          break;
+        case ShiftPattern.STANDARD_10_10_10:
+          basePattern = { daysOn: 10, nightsOn: 10, daysOff: 10 };
+          break;
+        case ShiftPattern.CONTINENTAL:
+          basePattern = { daysOn: 2, nightsOn: 2, daysOff: 4 };
+          break;
+        case ShiftPattern.PITMAN:
+          basePattern = { daysOn: 2, nightsOn: 2, daysOff: 3 };
+          break;
+        case ShiftPattern.CUSTOM:
+        default:
+          basePattern = data.customPattern || { daysOn: 0, nightsOn: 0, daysOff: 0 };
+          break;
+      }
+
+      // Convert to 3-shift structure if 3-shift system is selected
+      if (data.shiftSystem === ShiftSystem.THREE_SHIFT) {
+        // Check if pattern already has 3-shift data (from custom pattern)
+        const hasThreeShiftData =
+          'morningOn' in basePattern || 'afternoonOn' in basePattern || 'nightOn' in basePattern;
+
+        if (hasThreeShiftData) {
+          // Already a 3-shift pattern, return as-is
+          const pattern = basePattern as {
+            morningOn?: number;
+            afternoonOn?: number;
+            nightOn?: number;
+            daysOff: number;
+          };
+          return {
+            morningOn: pattern.morningOn || 0,
+            afternoonOn: pattern.afternoonOn || 0,
+            nightOn: pattern.nightOn || 0,
+            daysOff: pattern.daysOff,
+          };
+        }
+
+        // Convert from 2-shift pattern (predefined patterns like 4-4-4)
+        const daysOn = basePattern.daysOn || 0;
+        const nightsOn = basePattern.nightsOn || 0;
+
+        // For 3-shift: expand the pattern to include separate morning and afternoon
+        return {
+          morningOn: daysOn,
+          afternoonOn: daysOn,
+          nightOn: nightsOn,
+          daysOff: basePattern.daysOff,
+        };
+      }
+
+      // Return 2-shift structure as-is
+      return basePattern;
+    },
+    [data.customPattern, data.shiftSystem]
+  );
+
+  // Get current pattern (convert preset or use custom)
+  const pattern = useMemo(() => {
+    const patternType = data.patternType || ShiftPattern.CUSTOM;
+    return getPatternValues(patternType);
+  }, [data.patternType, getPatternValues]);
+
   // Generate phase cards based on shift system
   useEffect(() => {
     if (!data.shiftSystem) return;
-
-    const pattern = data.customPattern;
-    if (!pattern) return;
 
     const shiftSystem = data.shiftSystem;
 
@@ -483,9 +640,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
           title: 'Day Shift',
           description: 'Daytime working hours',
           icon: '☀️',
-          color: '#f59e0b',
-          secondaryColor: '#d97706',
-          phaseLength: pattern.daysOn ?? 0,
+          phaseLength: ('daysOn' in pattern ? pattern.daysOn : 0) ?? 0,
         },
         {
           id: 'night',
@@ -493,9 +648,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
           title: 'Night Shift',
           description: 'Nighttime working hours',
           icon: '🌙',
-          color: '#3b82f6',
-          secondaryColor: '#2563eb',
-          phaseLength: pattern.nightsOn ?? 0,
+          phaseLength: ('nightsOn' in pattern ? pattern.nightsOn : 0) ?? 0,
         },
         {
           id: 'off',
@@ -503,8 +656,6 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
           title: 'Days Off',
           description: 'Rest and recovery',
           icon: '🛏️',
-          color: '#6b7280',
-          secondaryColor: '#4b5563',
           phaseLength: pattern.daysOff,
         },
       ].filter((card) => card.phaseLength > 0);
@@ -519,9 +670,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
           title: 'Morning Shift',
           description: 'Early day hours',
           icon: '☕',
-          color: '#f59e0b',
-          secondaryColor: '#d97706',
-          phaseLength: pattern.morningOn ?? 0,
+          phaseLength: ('morningOn' in pattern ? pattern.morningOn : 0) ?? 0,
         },
         {
           id: 'afternoon',
@@ -529,9 +678,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
           title: 'Afternoon Shift',
           description: 'Mid-day hours',
           icon: '☀️',
-          color: '#fb923c',
-          secondaryColor: '#f97316',
-          phaseLength: pattern.afternoonOn ?? 0,
+          phaseLength: ('afternoonOn' in pattern ? pattern.afternoonOn : 0) ?? 0,
         },
         {
           id: 'night',
@@ -539,9 +686,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
           title: 'Night Shift',
           description: 'Nighttime hours',
           icon: '🌙',
-          color: '#3b82f6',
-          secondaryColor: '#2563eb',
-          phaseLength: pattern.nightOn ?? 0,
+          phaseLength: ('nightOn' in pattern ? pattern.nightOn : 0) ?? 0,
         },
         {
           id: 'off',
@@ -549,21 +694,18 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
           title: 'Days Off',
           description: 'Rest days',
           icon: '🛏️',
-          color: '#6b7280',
-          secondaryColor: '#4b5563',
           phaseLength: pattern.daysOff,
         },
       ].filter((card) => card.phaseLength > 0);
 
       setPhaseCards(cards);
     }
-  }, [data.shiftSystem, data.customPattern]);
+  }, [data.shiftSystem, pattern]);
 
   // Calculate and navigate helper
   const calculateAndNavigate = useCallback(
     (phase: Phase, dayWithinPhase: number) => {
-      const pattern = data.customPattern;
-      if (!pattern || !data.shiftSystem) return;
+      if (!data.shiftSystem) return;
 
       const shiftSystem = data.shiftSystem as ShiftSystem;
 
@@ -577,7 +719,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
         navigation.navigate('StartDate');
       }, 300);
     },
-    [data.customPattern, data.shiftSystem, updateData, navigation]
+    [pattern, data.shiftSystem, updateData, navigation]
   );
 
   // Handle swipe right (select)
@@ -632,12 +774,14 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
   const handleSwipeLeft = useCallback(() => {
     const totalCards = stage === SelectionStage.PHASE ? phaseCards.length : dayCards.length;
 
-    if (currentCardIndex < totalCards - 1) {
-      setCurrentCardIndex((prev) => prev + 1);
-    } else {
-      // Loop back to first card
-      setCurrentCardIndex(0);
-    }
+    setTimeout(() => {
+      if (currentCardIndex < totalCards - 1) {
+        setCurrentCardIndex((prev) => prev + 1);
+      } else {
+        // Loop back to first card
+        setCurrentCardIndex(0);
+      }
+    }, 300);
   }, [stage, phaseCards.length, dayCards.length, currentCardIndex]);
 
   // Handle swipe up (info)
@@ -666,7 +810,11 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
       <ProgressHeader currentStep={5} totalSteps={11} />
 
       <View style={styles.content}>
-        <InstructionText stage={stage} />
+        <Text style={styles.instruction}>
+          {stage === SelectionStage.PHASE
+            ? 'Swipe right to select your current phase'
+            : 'Which day of this phase are you starting on?'}
+        </Text>
 
         <View style={styles.cardStack}>
           {visibleCards.map((card, index) => (
@@ -685,8 +833,6 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
             />
           ))}
         </View>
-
-        <SwipeInstructions />
       </View>
 
       <PhaseInfoModal
@@ -725,36 +871,23 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: CARD_WIDTH,
     height: CARD_HEIGHT,
-    borderRadius: 24,
-    overflow: 'hidden',
-    ...Platform.select({
-      ios: {
-        shadowColor: theme.colors.sacredGold,
-        shadowOffset: { width: 0, height: 12 },
-        shadowOpacity: 0.4,
-        shadowRadius: 20,
-      },
-      android: {
-        elevation: 12,
-      },
-    }),
-  },
-  cardGradient: {
-    flex: 1,
-    borderRadius: 24,
-  },
-  dayCardBackground: {
     backgroundColor: theme.colors.darkStone,
-  },
-  cardContent: {
-    flex: 1,
-    padding: 32,
+    borderRadius: 24,
+    padding: theme.spacing.xl,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
   },
-  cardIcon: {
-    fontSize: 72,
-    marginBottom: 24,
+  iconContainer: {
+    marginBottom: theme.spacing.lg,
+    width: 180,
+    height: 180,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  icon: {
+    fontSize: 120,
   },
   cardTitle: {
     fontSize: 28,
@@ -763,40 +896,51 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 12,
   },
-  cardDescription: {
+  badge: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    backgroundColor: theme.colors.opacity.gold20,
+    borderRadius: 12,
+    marginBottom: 12,
+  },
+  badgeText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: theme.colors.sacredGold,
+  },
+  description: {
     fontSize: 16,
     fontWeight: '400',
     color: theme.colors.dust,
     textAlign: 'center',
-    marginBottom: 16,
+    lineHeight: 24,
   },
-  cardPhaseLength: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: theme.colors.paper,
-    opacity: 0.8,
+  swipeHint: {
+    position: 'absolute',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    backgroundColor: theme.colors.opacity.gold20,
+    borderRadius: 8,
   },
-  dayNumber: {
-    fontSize: 72,
-    fontWeight: '700',
-    color: theme.colors.sacredGold,
-    marginBottom: 24,
+  swipeHintLeft: {
+    left: 16,
+    top: '50%',
+    marginTop: -20,
   },
-  swipeInstructions: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingVertical: 24,
-    paddingHorizontal: 32,
+  swipeHintRight: {
+    right: 16,
+    top: '50%',
+    marginTop: -20,
   },
-  swipeHintRow: {
-    alignItems: 'center',
-    gap: 4,
+  swipeHintUp: {
+    top: 16,
+    left: '50%',
+    marginLeft: -40,
   },
   swipeHintText: {
     fontSize: 12,
-    fontWeight: '500',
-    color: theme.colors.dust,
-    marginTop: 4,
+    fontWeight: '600',
+    color: theme.colors.sacredGold,
   },
   modalContainer: {
     flex: 1,
