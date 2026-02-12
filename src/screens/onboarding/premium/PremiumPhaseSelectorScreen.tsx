@@ -29,11 +29,12 @@ import Animated, {
   runOnJS,
   interpolate,
   Extrapolate,
+  Easing,
   SharedValue,
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
@@ -385,7 +386,7 @@ const SwipeablePhaseCard: React.FC<SwipeablePhaseCardProps> = ({
             : stackOffset + parallaxY + mountTranslateY,
         },
         { rotate: isActive ? `${rotate}deg` : '0deg' },
-        { scale: isActive ? scale.value : scale.value * stackScale },
+        { scale: isActive ? scale.value : stackScale },
       ],
       opacity: (isActive ? opacity.value : 0.9 - index * 0.05) * mountOpacity,
       zIndex: totalCards - index,
@@ -510,6 +511,22 @@ const PhaseInfoModal: React.FC<PhaseInfoModalProps> = ({ visible, content, onClo
   );
 };
 
+// Progress Dots Component
+interface ProgressDotsProps {
+  total: number;
+  current: number;
+}
+
+const ProgressDots: React.FC<ProgressDotsProps> = ({ total, current }) => {
+  return (
+    <View style={styles.progressDots}>
+      {Array.from({ length: total }).map((_, index) => (
+        <View key={index} style={[styles.dot, index === current && styles.dotActive]} />
+      ))}
+    </View>
+  );
+};
+
 // Main Screen Component
 export const PremiumPhaseSelectorScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
@@ -527,9 +544,19 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
     null
   );
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [cardRemountKey, setCardRemountKey] = useState(0);
 
-  // Mount animation
-  const mountProgress = useSharedValue(0);
+  // Title animations
+  const titleOpacity = useSharedValue(0);
+  const subtitleOpacity = useSharedValue(0);
+
+  // Card mount animations
+  const cardAnimations = [
+    useSharedValue(0),
+    useSharedValue(0),
+    useSharedValue(0),
+    useSharedValue(0),
+  ];
 
   // Check reduced motion preference
   useEffect(() => {
@@ -538,10 +565,52 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
     });
   }, []);
 
-  // Mount animation
+  // Mount animations
   useEffect(() => {
-    mountProgress.value = withSpring(1, { damping: 20, stiffness: 300 });
-  }, [mountProgress]);
+    titleOpacity.value = withTiming(1, { duration: 400 });
+    subtitleOpacity.value = withTiming(1, { duration: 400 });
+
+    // Stagger card entrance animations
+    cardAnimations.forEach((anim, index) => {
+      anim.value = withDelay(
+        index * 100,
+        withTiming(1, { duration: 400, easing: Easing.out(Easing.ease) })
+      );
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [titleOpacity, subtitleOpacity]);
+
+  // Reset card state when screen comes back into focus (e.g., from StartDate screen)
+  useFocusEffect(
+    useCallback(() => {
+      // Force cards to remount with fresh animation state
+      setCardRemountKey((prev) => prev + 1);
+
+      // Reset to beginning of card stack
+      setCurrentCardIndex(0);
+      setShowInfoModal(false);
+      setInfoModalContent(null);
+      // Keep selectedPhase so user's previous selection is preserved
+
+      // Re-trigger card entrance animations
+      cardAnimations.forEach((anim, index) => {
+        anim.value = 0;
+        anim.value = withDelay(
+          index * 100,
+          withTiming(1, { duration: 400, easing: Easing.out(Easing.ease) })
+        );
+      });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+  );
+
+  const titleAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: titleOpacity.value,
+  }));
+
+  const subtitleAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: subtitleOpacity.value,
+  }));
 
   // Convert preset pattern to pattern values (like StartDate screen does)
   const getPatternValues = useCallback(
@@ -743,10 +812,6 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
         setDayCards(cards);
         setCurrentCardIndex(0);
         setStage(SelectionStage.DAY_WITHIN_PHASE);
-
-        // Reset mount animation for stage transition
-        mountProgress.value = 0;
-        mountProgress.value = withSpring(1, SPRING_CONFIGS.stageTransition);
       } else {
         // Single-day phase: Skip to calculation
         setSelectedDay(1);
@@ -760,15 +825,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
       setSelectedDay(selectedCard.dayNumber);
       calculateAndNavigate(selectedPhase, selectedCard.dayNumber);
     }
-  }, [
-    stage,
-    phaseCards,
-    dayCards,
-    currentCardIndex,
-    selectedPhase,
-    calculateAndNavigate,
-    mountProgress,
-  ]);
+  }, [stage, phaseCards, dayCards, currentCardIndex, selectedPhase, calculateAndNavigate]);
 
   // Handle swipe left (skip)
   const handleSwipeLeft = useCallback(() => {
@@ -809,30 +866,38 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
     <View style={styles.container}>
       <ProgressHeader currentStep={5} totalSteps={11} />
 
-      <View style={styles.content}>
-        <Text style={styles.instruction}>
-          {stage === SelectionStage.PHASE
-            ? 'Swipe right to select your current phase'
-            : 'Which day of this phase are you starting on?'}
-        </Text>
+      {/* Title */}
+      <Animated.Text style={[styles.title, titleAnimatedStyle]}>
+        {stage === SelectionStage.PHASE ? 'Choose Your Current Phase' : 'Choose Starting Day'}
+      </Animated.Text>
 
-        <View style={styles.cardStack}>
-          {visibleCards.map((card, index) => (
-            <SwipeablePhaseCard
-              key={card.id}
-              card={card}
-              index={index}
-              totalCards={currentCards.length}
-              isActive={index === 0}
-              onSwipeRight={handleSwipeRight}
-              onSwipeLeft={handleSwipeLeft}
-              onSwipeUp={handleSwipeUp}
-              mountProgress={mountProgress}
-              reducedMotion={reducedMotion}
-              stage={stage}
-            />
-          ))}
-        </View>
+      {/* Subtitle */}
+      <Animated.Text style={[styles.subtitle, subtitleAnimatedStyle]}>
+        {stage === SelectionStage.PHASE
+          ? 'Swipe right to select, left to skip, or up for details'
+          : 'Select which day within this phase you are starting on'}
+      </Animated.Text>
+
+      {/* Progress Dots */}
+      <ProgressDots total={currentCards.length} current={currentCardIndex} />
+
+      {/* Card Stack */}
+      <View style={styles.cardStack}>
+        {visibleCards.reverse().map((card, index) => (
+          <SwipeablePhaseCard
+            key={`${card.id}-${cardRemountKey}`}
+            card={card}
+            index={visibleCards.length - 1 - index}
+            totalCards={visibleCards.length}
+            isActive={index === visibleCards.length - 1}
+            onSwipeRight={handleSwipeRight}
+            onSwipeLeft={handleSwipeLeft}
+            onSwipeUp={handleSwipeUp}
+            mountProgress={cardAnimations[index]}
+            reducedMotion={reducedMotion}
+            stage={stage}
+          />
+        ))}
       </View>
 
       <PhaseInfoModal
@@ -849,23 +914,44 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.deepVoid,
   },
-  content: {
-    flex: 1,
-    paddingHorizontal: 16,
-  },
-  instruction: {
-    fontSize: 18,
-    fontWeight: '600',
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
     color: theme.colors.paper,
     textAlign: 'center',
-    marginTop: 24,
-    marginBottom: 32,
-    paddingHorizontal: 24,
+    marginTop: theme.spacing.lg,
+    paddingHorizontal: theme.spacing.lg,
+    letterSpacing: 1,
+    ...Platform.select({
+      ios: {
+        fontFamily: 'System',
+      },
+      android: {
+        fontFamily: 'sans-serif-black',
+      },
+    }),
+  },
+  subtitle: {
+    fontSize: 16,
+    color: theme.colors.dust,
+    textAlign: 'center',
+    marginTop: theme.spacing.sm,
+    marginBottom: theme.spacing.xl,
+    paddingHorizontal: theme.spacing.lg,
+    ...Platform.select({
+      ios: {
+        fontFamily: 'System',
+      },
+      android: {
+        fontFamily: 'sans-serif-medium',
+      },
+    }),
   },
   cardStack: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: theme.spacing.xl,
   },
   card: {
     position: 'absolute',
@@ -890,57 +976,70 @@ const styles = StyleSheet.create({
     fontSize: 120,
   },
   cardTitle: {
-    fontSize: 28,
-    fontWeight: '700',
+    fontSize: 24,
+    fontWeight: 'bold',
     color: theme.colors.paper,
     textAlign: 'center',
-    marginBottom: 12,
+    marginBottom: theme.spacing.md,
   },
   badge: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
     backgroundColor: theme.colors.opacity.gold20,
-    borderRadius: 12,
-    marginBottom: 12,
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: theme.spacing.xs,
+    borderRadius: 20,
+    marginBottom: theme.spacing.lg,
   },
   badgeText: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: 18,
     color: theme.colors.sacredGold,
+    fontWeight: '600',
   },
   description: {
     fontSize: 16,
-    fontWeight: '400',
     color: theme.colors.dust,
     textAlign: 'center',
     lineHeight: 24,
+    paddingHorizontal: theme.spacing.md,
   },
   swipeHint: {
     position: 'absolute',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    backgroundColor: theme.colors.opacity.gold20,
-    borderRadius: 8,
+    backgroundColor: theme.colors.opacity.gold30,
+    paddingVertical: theme.spacing.xs,
+    paddingHorizontal: theme.spacing.sm,
+    borderRadius: 12,
   },
   swipeHintLeft: {
-    left: 16,
+    left: theme.spacing.lg,
     top: '50%',
-    marginTop: -20,
   },
   swipeHintRight: {
-    right: 16,
+    right: theme.spacing.lg,
     top: '50%',
-    marginTop: -20,
   },
   swipeHintUp: {
-    top: 16,
-    left: '50%',
-    marginLeft: -40,
+    top: theme.spacing.lg,
+    alignSelf: 'center',
   },
   swipeHintText: {
-    fontSize: 12,
+    fontSize: 14,
+    color: theme.colors.dust,
     fontWeight: '600',
-    color: theme.colors.sacredGold,
+  },
+  progressDots: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: theme.spacing.sm,
+    marginBottom: theme.spacing.lg,
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: theme.colors.softStone,
+  },
+  dotActive: {
+    backgroundColor: theme.colors.sacredGold,
+    width: 24,
   },
   modalContainer: {
     flex: 1,
