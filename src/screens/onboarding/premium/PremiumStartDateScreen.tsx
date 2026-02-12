@@ -808,8 +808,8 @@ const InteractiveCalendar: React.FC<CalendarProps> = ({
   );
 };
 
-// Selected Date Display Card Component
-const SelectedDateCard: React.FC<SelectedDateCardProps> = ({ selectedDate, reducedMotion }) => {
+// Selected Date Display Card Component (currently unused)
+const _SelectedDateCard: React.FC<SelectedDateCardProps> = ({ selectedDate, reducedMotion }) => {
   const opacity = useSharedValue(0);
   const slideY = useSharedValue(20);
   const contentOpacity = useSharedValue(1);
@@ -1394,8 +1394,6 @@ const DayWithinPhaseSelector: React.FC<DayWithinPhaseSelectorProps> = ({
           );
         })}
       </ScrollView>
-
-      <Text style={styles.dayWithinPhaseHelper}>Select day 1 if starting fresh tomorrow</Text>
     </Animated.View>
   );
 };
@@ -1537,8 +1535,8 @@ const DayCard: React.FC<DayCardProps> = ({
   );
 };
 
-// Live Preview Card Component
-const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
+// Live Preview Card Component (currently unused)
+const _LivePreviewCard: React.FC<LivePreviewCardProps> = ({
   selectedDate,
   selectedPhase,
   reducedMotion,
@@ -2140,9 +2138,6 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
             shiftSystem={shiftSystem}
           />
 
-          {/* Selected Date Card */}
-          <SelectedDateCard selectedDate={selectedDate} reducedMotion={reducedMotion} />
-
           {/* Phase Selector */}
           <PhaseSelector
             selectedPhase={selectedPhase}
@@ -2160,16 +2155,6 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
             selectedDay={dayWithinPhase}
             onDaySelect={handleDaySelect}
             reducedMotion={reducedMotion}
-          />
-
-          {/* Live Preview Card */}
-          <LivePreviewCard
-            selectedDate={selectedDate}
-            selectedPhase={selectedPhase}
-            reducedMotion={reducedMotion}
-            customPattern={customPattern}
-            shiftSystem={shiftSystem}
-            phaseOffset={previewPhaseOffset}
           />
 
           {/* Validation Tips */}
@@ -2433,12 +2418,6 @@ const styles = StyleSheet.create({
   },
   dayCardNumberSelected: {
     color: theme.colors.sacredGold,
-  },
-  dayWithinPhaseHelper: {
-    fontSize: 12,
-    color: theme.colors.dust,
-    textAlign: 'center',
-    fontStyle: 'italic',
   },
 
   // Live Preview Card
