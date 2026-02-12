@@ -2,9 +2,10 @@
  * PremiumButton Component
  *
  * Premium button with haptic feedback and animations using stone and gold theme
+ * Features: shimmer effect, pulse glow, bouncy interactions, and smooth press animations
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   TouchableOpacity,
   ActivityIndicator,
@@ -18,6 +19,11 @@ import Animated, {
   useSharedValue,
   withSpring,
   withTiming,
+  withRepeat,
+  withSequence,
+  interpolate,
+  Extrapolate,
+  Easing,
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -75,32 +81,99 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
 }) => {
   const scale = useSharedValue(1);
   const opacity = useSharedValue(1);
+  const shimmerTranslate = useSharedValue(-1);
+  const pulseGlow = useSharedValue(1);
+  const bounceY = useSharedValue(0);
+
+  // Shimmer animation - continuous shine effect
+  useEffect(() => {
+    if (!disabled && !loading && variant === 'primary') {
+      shimmerTranslate.value = withRepeat(
+        withSequence(
+          withTiming(-1, { duration: 0 }),
+          withTiming(2, { duration: 2500, easing: Easing.inOut(Easing.ease) }),
+          withTiming(2, { duration: 1500 }) // Pause before repeat
+        ),
+        -1,
+        false
+      );
+    }
+  }, [disabled, loading, variant, shimmerTranslate]);
+
+  // Subtle pulse glow effect
+  useEffect(() => {
+    if (!disabled && !loading && variant === 'primary') {
+      pulseGlow.value = withRepeat(
+        withSequence(
+          withTiming(1, { duration: 1500, easing: Easing.inOut(Easing.sin) }),
+          withTiming(1.15, { duration: 1500, easing: Easing.inOut(Easing.sin) })
+        ),
+        -1,
+        true
+      );
+    }
+  }, [disabled, loading, variant, pulseGlow]);
 
   const handlePressIn = () => {
     if (!disabled && !loading) {
-      scale.value = withSpring(0.95, { damping: 15, stiffness: 300 });
-      opacity.value = withTiming(0.8, { duration: 100 });
+      // Bouncy press down with spring physics
+      scale.value = withSpring(0.92, { damping: 12, stiffness: 400 });
+      opacity.value = withTiming(0.85, { duration: 100 });
+      bounceY.value = withSpring(2, { damping: 10, stiffness: 300 });
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     }
   };
 
   const handlePressOut = () => {
     if (!disabled && !loading) {
-      scale.value = withSpring(1, { damping: 15, stiffness: 300 });
-      opacity.value = withTiming(1, { duration: 100 });
+      // Bouncy release with overshoot
+      scale.value = withSequence(
+        withSpring(1.05, { damping: 8, stiffness: 350 }),
+        withSpring(1, { damping: 12, stiffness: 300 })
+      );
+      opacity.value = withTiming(1, { duration: 150 });
+      bounceY.value = withSpring(0, { damping: 10, stiffness: 300 });
     }
   };
 
   const handlePress = () => {
     if (!disabled && !loading) {
+      // More pronounced haptic feedback
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+
+      // Celebratory bounce after press
+      scale.value = withSequence(
+        withSpring(1.08, { damping: 10, stiffness: 400 }),
+        withSpring(1, { damping: 12, stiffness: 300 })
+      );
+
       onPress();
     }
   };
 
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
+    transform: [{ scale: scale.value }, { translateY: bounceY.value }],
     opacity: opacity.value,
+  }));
+
+  const shimmerStyle = useAnimatedStyle(() => {
+    const translateX = interpolate(shimmerTranslate.value, [-1, 2], [-200, 600], Extrapolate.CLAMP);
+
+    const shimmerOpacity = interpolate(
+      shimmerTranslate.value,
+      [-1, 0, 1, 2],
+      [0, 0.6, 0.6, 0],
+      Extrapolate.CLAMP
+    );
+
+    return {
+      transform: [{ translateX }],
+      opacity: shimmerOpacity,
+    };
+  });
+
+  const glowStyle = useAnimatedStyle(() => ({
+    opacity: variant === 'primary' ? interpolate(pulseGlow.value, [1, 1.15], [0.4, 0.7]) : 0.4,
   }));
 
   const sizeStyles = getSizeStyles(size);
@@ -130,6 +203,9 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
             textStyle,
             isDisabled && styles.disabledText,
           ]}
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          minimumFontScale={0.85}
         >
           {title}
         </Animated.Text>
@@ -137,6 +213,21 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
           <Animated.View style={styles.iconContainer}>{icon}</Animated.View>
         )}
       </>
+    );
+  };
+
+  const renderShimmer = () => {
+    if (disabled || loading || variant !== 'primary') return null;
+
+    return (
+      <Animated.View style={[styles.shimmerContainer, shimmerStyle]}>
+        <LinearGradient
+          colors={['transparent', 'rgba(255, 255, 255, 0.3)', 'transparent']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={styles.shimmer}
+        />
+      </Animated.View>
     );
   };
 
@@ -155,12 +246,16 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
         accessibilityState={{ disabled: isDisabled }}
         testID={testID}
       >
+        {/* Pulsing glow shadow */}
+        <Animated.View style={[styles.glowShadow, glowStyle, sizeStyles.container]} />
+
         <LinearGradient
           colors={[theme.colors.sacredGold, theme.colors.brightGold]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={[styles.gradient, sizeStyles.container, isDisabled && styles.disabledContainer]}
         >
+          {renderShimmer()}
           {renderContent()}
         </LinearGradient>
       </AnimatedTouchable>
@@ -256,56 +351,98 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 14,
+    borderRadius: 16,
+    overflow: 'hidden', // Ensure shimmer is clipped
     ...Platform.select({
       ios: {
         shadowColor: theme.colors.sacredGold,
-        shadowOffset: { width: 0, height: 6 },
-        shadowOpacity: 0.4,
-        shadowRadius: 12,
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.5,
+        shadowRadius: 16,
       },
       android: {
-        elevation: 8,
+        elevation: 10,
       },
     }),
+  },
+  glowShadow: {
+    position: 'absolute',
+    backgroundColor: theme.colors.sacredGold,
+    borderRadius: 16,
+    ...Platform.select({
+      ios: {
+        shadowColor: theme.colors.sacredGold,
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 1,
+        shadowRadius: 24,
+      },
+      android: {
+        elevation: 20,
+      },
+    }),
+  },
+  shimmerContainer: {
+    position: 'absolute',
+    top: 0,
+    left: -100,
+    right: -100,
+    bottom: 0,
+    zIndex: 1,
+  },
+  shimmer: {
+    flex: 1,
+    width: 100,
   },
   secondaryButton: {
     backgroundColor: theme.colors.brightGold,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 14,
-    shadowColor: theme.colors.brightGold,
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.4,
-    shadowRadius: 12,
-    elevation: 8,
+    borderRadius: 16,
+    overflow: 'hidden',
+    ...Platform.select({
+      ios: {
+        shadowColor: theme.colors.brightGold,
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.5,
+        shadowRadius: 16,
+      },
+      android: {
+        elevation: 10,
+      },
+    }),
   },
   outlineButton: {
     backgroundColor: 'transparent',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 14,
+    borderRadius: 16,
     borderWidth: 2,
     borderColor: theme.colors.sacredGold,
+    overflow: 'hidden',
   },
   smallContainer: {
-    height: 40,
-    paddingHorizontal: 16,
+    height: 44,
+    paddingHorizontal: 20,
+    minWidth: 100,
   },
   mediumContainer: {
-    height: 52,
-    paddingHorizontal: 24,
+    height: 56,
+    paddingHorizontal: 28,
+    minWidth: 140,
   },
   largeContainer: {
-    height: 64,
-    paddingHorizontal: 32,
+    height: 68,
+    paddingHorizontal: 36,
+    minWidth: 180,
   },
   text: {
     fontWeight: '700',
     textAlign: 'center',
-    letterSpacing: 1.5,
+    letterSpacing: 1,
+    flexShrink: 1, // Allow text to shrink if needed
+    zIndex: 2, // Ensure text is above shimmer
     ...Platform.select({
       ios: {
         fontFamily: 'System',
@@ -316,19 +453,20 @@ const styles = StyleSheet.create({
     }),
   },
   smallText: {
-    fontSize: 15,
+    fontSize: 14,
     lineHeight: 20,
   },
   mediumText: {
-    fontSize: 17,
+    fontSize: 16,
     lineHeight: 24,
   },
   largeText: {
-    fontSize: 20,
+    fontSize: 18,
     lineHeight: 28,
   },
   iconContainer: {
     marginHorizontal: 8,
+    zIndex: 2,
   },
   disabledContainer: {
     opacity: 0.5,
