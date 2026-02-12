@@ -809,7 +809,10 @@ const InteractiveCalendar: React.FC<CalendarProps> = ({
 };
 
 // Selected Date Display Card Component (currently unused)
-const _SelectedDateCard: React.FC<SelectedDateCardProps> = ({ selectedDate, reducedMotion }) => {
+export const _SelectedDateCard: React.FC<SelectedDateCardProps> = ({
+  selectedDate,
+  reducedMotion,
+}) => {
   const opacity = useSharedValue(0);
   const slideY = useSharedValue(20);
   const contentOpacity = useSharedValue(1);
@@ -1536,7 +1539,7 @@ const DayCard: React.FC<DayCardProps> = ({
 };
 
 // Live Preview Card Component (currently unused)
-const _LivePreviewCard: React.FC<LivePreviewCardProps> = ({
+export const _LivePreviewCard: React.FC<LivePreviewCardProps> = ({
   selectedDate,
   selectedPhase,
   reducedMotion,
@@ -2117,7 +2120,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
 
   return (
     <View style={styles.container} testID={testID}>
-      <ProgressHeader currentStep={5} totalSteps={10} />
+      <ProgressHeader currentStep={6} totalSteps={10} />
 
       <Animated.View style={[{ flex: 1 }, screenAnimatedStyle]}>
         <ScrollView

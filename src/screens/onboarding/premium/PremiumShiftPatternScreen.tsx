@@ -764,11 +764,11 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
       onContinue(pattern.type);
     } else {
       // If custom pattern, go to custom pattern screen
-      // Otherwise, go directly to start date screen
+      // Otherwise, go to phase selector screen
       if (pattern.type === ShiftPattern.CUSTOM) {
         navigation.navigate('CustomPattern');
       } else {
-        navigation.navigate('StartDate');
+        navigation.navigate('PhaseSelector');
       }
     }
   }, [currentIndex, updateData, onContinue, navigation, filteredPatterns]);

@@ -455,7 +455,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
 
   return (
     <View style={styles.container} testID={testID}>
-      <ProgressHeader currentStep={6} totalSteps={7} />
+      <ProgressHeader currentStep={7} totalSteps={7} />
 
       <KeyboardAvoidingView
         style={styles.keyboardAvoid}

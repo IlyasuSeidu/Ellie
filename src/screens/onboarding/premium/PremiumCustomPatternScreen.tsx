@@ -1060,7 +1060,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
     if (onContinue) {
       onContinue();
     } else {
-      navigation.navigate('StartDate');
+      navigation.navigate('PhaseSelector');
     }
   }, [
     isValid,
