@@ -1,7 +1,8 @@
 /**
  * PremiumStartDateScreen Component
  *
- * Start date and phase selection screen with interactive calendar (Step 5 of 10)
+ * Start date selection screen with interactive calendar (Step 6 of 11)
+ * Phase selection now handled by PremiumPhaseSelectorScreen (Step 5)
  * Features cascade entrance animations, floating effects, and celebration micro-interactions
  */
 
@@ -420,7 +421,7 @@ const getBasePhaseOffset = (
  * @param shiftSystem - The shift system (2-shift or 3-shift)
  * @returns Enhanced phase offset
  */
-const calculateEnhancedPhaseOffset = (
+export const _calculateEnhancedPhaseOffset = (
   phase: Phase,
   dayWithinPhase: number,
   pattern: {
@@ -1141,8 +1142,8 @@ const AnimatedPhaseCard: React.FC<AnimatedPhaseCardProps> = React.memo(
 
 AnimatedPhaseCard.displayName = 'AnimatedPhaseCard';
 
-// Phase Selector Component
-const PhaseSelector: React.FC<PhaseSelectorProps> = ({
+// Phase Selector Component (unused - now handled by dedicated PremiumPhaseSelectorScreen)
+export const _PhaseSelector: React.FC<PhaseSelectorProps> = ({
   selectedPhase,
   onPhaseSelect,
   pattern,
@@ -1279,8 +1280,8 @@ const PhaseSelector: React.FC<PhaseSelectorProps> = ({
   );
 };
 
-// Day Within Phase Selector Component
-const DayWithinPhaseSelector: React.FC<DayWithinPhaseSelectorProps> = ({
+// Day Within Phase Selector Component (unused - now handled by dedicated PremiumPhaseSelectorScreen)
+export const _DayWithinPhaseSelector: React.FC<DayWithinPhaseSelectorProps> = ({
   selectedPhase,
   pattern,
   shiftSystem,
@@ -1885,8 +1886,6 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   const shiftSystem: ShiftSystem = (data.shiftSystem as ShiftSystem) || ShiftSystem.TWO_SHIFT;
   // Smart default: tomorrow
   const [selectedDate, setSelectedDate] = useState<string | null>(getTomorrowDate());
-  const [selectedPhase, setSelectedPhase] = useState<Phase | null>(null);
-  const [dayWithinPhase, setDayWithinPhase] = useState<number | null>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
   const screenOpacity = useSharedValue(1);
   const screenSlideX = useSharedValue(0);
@@ -1993,97 +1992,15 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
 
   const customPattern = useMemo(() => getPatternValues(pattern), [pattern, getPatternValues]);
 
-  // Calculate phase length for current selected phase
-  const getPhaseLength = useCallback(
-    (phase: Phase | null): number => {
-      if (!phase) return 0;
-
-      if (shiftSystem === ShiftSystem.TWO_SHIFT) {
-        switch (phase) {
-          case 'day':
-            return ('daysOn' in customPattern && customPattern.daysOn) || 0;
-          case 'night':
-            return ('nightsOn' in customPattern && customPattern.nightsOn) || 0;
-          case 'off':
-            return customPattern.daysOff;
-          default:
-            return 0;
-        }
-      } else {
-        // 3-shift system
-        switch (phase) {
-          case 'morning':
-            return ('morningOn' in customPattern && customPattern.morningOn) || 0;
-          case 'afternoon':
-            return ('afternoonOn' in customPattern && customPattern.afternoonOn) || 0;
-          case 'night':
-            return ('nightOn' in customPattern && customPattern.nightOn) || 0;
-          case 'off':
-            return customPattern.daysOff;
-          default:
-            return 0;
-        }
-      }
-    },
-    [customPattern, shiftSystem]
-  );
-
-  // Handle phase selection change
-  const handlePhaseChange = useCallback(
-    (phase: Phase) => {
-      setSelectedPhase(phase);
-
-      // Reset day selection when phase changes
-      setDayWithinPhase(null);
-
-      // Auto-select day 1 for single-day phases
-      const length = getPhaseLength(phase);
-      if (length === 1) {
-        setDayWithinPhase(1);
-      }
-    },
-    [getPhaseLength]
-  );
-
-  // Handle day selection
-  const handleDaySelect = useCallback((day: number) => {
-    setDayWithinPhase(day);
-  }, []);
-
-  // Calculate phase offset for preview (use enhanced offset if day is selected)
-  const previewPhaseOffset = useMemo(() => {
-    if (!selectedPhase) return 0;
-
-    if (dayWithinPhase !== null) {
-      // Use enhanced calculation when day is selected
-      return calculateEnhancedPhaseOffset(
-        selectedPhase,
-        dayWithinPhase,
-        customPattern,
-        shiftSystem
-      );
-    }
-
-    // Fall back to base offset for preview before day selection
-    return getBasePhaseOffset(selectedPhase, customPattern, shiftSystem);
-  }, [selectedPhase, dayWithinPhase, customPattern, shiftSystem]);
-
-  const canContinue = selectedDate !== null && selectedPhase !== null && dayWithinPhase !== null;
+  // Check if user can continue (requires date selection and phaseOffset from Phase Selector)
+  const canContinue = selectedDate !== null && data.phaseOffset !== undefined;
 
   const handleContinue = useCallback(() => {
-    if (!canContinue || !selectedDate || !selectedPhase || !dayWithinPhase) return;
+    if (!canContinue || !selectedDate || data.phaseOffset === undefined) return;
 
-    // Use enhanced phase offset calculation
-    const phaseOffset = calculateEnhancedPhaseOffset(
-      selectedPhase,
-      dayWithinPhase,
-      customPattern,
-      shiftSystem
-    );
-
+    // Use phaseOffset from Phase Selector screen (already saved in context)
     updateData({
       startDate: new Date(selectedDate),
-      phaseOffset,
     });
 
     // Navigate with haptic feedback
@@ -2097,17 +2014,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
         navigation.navigate('ShiftTimeInput');
       }
     });
-  }, [
-    canContinue,
-    selectedDate,
-    selectedPhase,
-    dayWithinPhase,
-    customPattern,
-    shiftSystem,
-    updateData,
-    onContinue,
-    navigation,
-  ]);
+  }, [canContinue, selectedDate, data.phaseOffset, updateData, onContinue, navigation]);
 
   const handleBack = useCallback(() => {
     HAPTIC_PATTERNS.LIGHT();
@@ -2120,7 +2027,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
 
   return (
     <View style={styles.container} testID={testID}>
-      <ProgressHeader currentStep={6} totalSteps={10} />
+      <ProgressHeader currentStep={6} totalSteps={11} />
 
       <Animated.View style={[{ flex: 1 }, screenAnimatedStyle]}>
         <ScrollView
@@ -2137,27 +2044,8 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
             onDateSelect={setSelectedDate}
             reducedMotion={reducedMotion}
             customPattern={customPattern}
-            phaseOffset={previewPhaseOffset}
+            phaseOffset={data.phaseOffset ?? 0}
             shiftSystem={shiftSystem}
-          />
-
-          {/* Phase Selector */}
-          <PhaseSelector
-            selectedPhase={selectedPhase}
-            onPhaseSelect={handlePhaseChange}
-            pattern={customPattern}
-            shiftSystem={shiftSystem}
-            reducedMotion={reducedMotion}
-          />
-
-          {/* Day Within Phase Selector */}
-          <DayWithinPhaseSelector
-            selectedPhase={selectedPhase}
-            pattern={customPattern}
-            shiftSystem={shiftSystem}
-            selectedDay={dayWithinPhase}
-            onDaySelect={handleDaySelect}
-            reducedMotion={reducedMotion}
           />
 
           {/* Validation Tips */}
