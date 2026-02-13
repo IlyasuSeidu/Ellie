@@ -58,13 +58,6 @@ const HAPTIC_PATTERNS = {
   ERROR: () => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error),
 } as const;
 
-// Rotating Tips
-const TIPS = [
-  'Choose tomorrow if starting a new roster',
-  "Select today's date if already mid-cycle",
-  'Your calendar will sync from this date forward',
-] as const;
-
 // Shift visualization colors (RGB values from theme for use with opacity)
 const SHIFT_COLORS = {
   day: { r: 33, g: 150, b: 243 }, // #2196F3 - Blue
@@ -779,32 +772,72 @@ const InteractiveCalendar: React.FC<CalendarProps> = ({
       </GestureDetector>
 
       {/* Calendar Legend */}
-      <View style={styles.calendarLegend}>
-        <View style={styles.legendItem}>
-          <Image
-            source={require('../../../../assets/onboarding/icons/consolidated/cycle-day-shift-sun.png')}
-            style={styles.legendIconImage}
-            resizeMode="contain"
-          />
-          <Text style={styles.legendText}>Day Shift</Text>
-        </View>
-        <View style={styles.legendItem}>
-          <Image
-            source={require('../../../../assets/onboarding/icons/consolidated/cycle-night-shift-moon.png')}
-            style={styles.legendIconImage}
-            resizeMode="contain"
-          />
-          <Text style={styles.legendText}>Night Shift</Text>
-        </View>
-        <View style={styles.legendItem}>
-          <Image
-            source={require('../../../../assets/onboarding/icons/consolidated/cycle-days-off-rest.png')}
-            style={styles.legendIconImage}
-            resizeMode="contain"
-          />
-          <Text style={styles.legendText}>Day Off</Text>
-        </View>
-      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.calendarLegendContent}
+        style={styles.calendarLegend}
+      >
+        {shiftSystem === ShiftSystem.TWO_SHIFT ? (
+          <>
+            <View style={styles.legendItem}>
+              <Image
+                source={require('../../../../assets/onboarding/icons/consolidated/cycle-day-shift-sun.png')}
+                style={styles.legendIconImage}
+                resizeMode="contain"
+              />
+              <Text style={styles.legendText}>Day Shift</Text>
+            </View>
+            <View style={styles.legendItem}>
+              <Image
+                source={require('../../../../assets/onboarding/icons/consolidated/cycle-night-shift-moon.png')}
+                style={styles.legendIconImage}
+                resizeMode="contain"
+              />
+              <Text style={styles.legendText}>Night Shift</Text>
+            </View>
+            <View style={styles.legendItem}>
+              <Image
+                source={require('../../../../assets/onboarding/icons/consolidated/cycle-days-off-rest.png')}
+                style={styles.legendIconImage}
+                resizeMode="contain"
+              />
+              <Text style={styles.legendText}>Day Off</Text>
+            </View>
+          </>
+        ) : (
+          <>
+            <View style={styles.legendItem}>
+              <Image
+                source={require('../../../../assets/onboarding/icons/consolidated/cycle-day-shift-sun.png')}
+                style={styles.legendIconImage}
+                resizeMode="contain"
+              />
+              <Text style={styles.legendText}>Morning</Text>
+            </View>
+            <View style={styles.legendItem}>
+              <Ionicons name="partly-sunny" size={20} color={theme.colors.dust} />
+              <Text style={styles.legendText}>Afternoon</Text>
+            </View>
+            <View style={styles.legendItem}>
+              <Image
+                source={require('../../../../assets/onboarding/icons/consolidated/cycle-night-shift-moon.png')}
+                style={styles.legendIconImage}
+                resizeMode="contain"
+              />
+              <Text style={styles.legendText}>Night</Text>
+            </View>
+            <View style={styles.legendItem}>
+              <Image
+                source={require('../../../../assets/onboarding/icons/consolidated/cycle-days-off-rest.png')}
+                style={styles.legendIconImage}
+                resizeMode="contain"
+              />
+              <Text style={styles.legendText}>Off</Text>
+            </View>
+          </>
+        )}
+      </ScrollView>
     </Animated.View>
   );
 };
@@ -1716,93 +1749,6 @@ export const _LivePreviewCard: React.FC<LivePreviewCardProps> = ({
   );
 };
 
-// Validation Tips Component
-const ValidationTips: React.FC<{ reducedMotion: boolean }> = ({ reducedMotion }) => {
-  const [currentTipIndex, setCurrentTipIndex] = useState(0);
-  const opacity = useSharedValue(0);
-  const tipOpacity = useSharedValue(1);
-  const iconScale = useSharedValue(1);
-
-  useEffect(() => {
-    opacity.value = withDelay(800, withTiming(1, { duration: 300 }));
-  }, [opacity]);
-
-  useEffect(() => {
-    if (reducedMotion) {
-      return () => {}; // no-op cleanup
-    }
-
-    const interval = setInterval(() => {
-      tipOpacity.value = withSequence(
-        withTiming(0, { duration: 300 }),
-        withTiming(1, { duration: 300 })
-      );
-
-      setTimeout(() => {
-        setCurrentTipIndex((prev) => (prev + 1) % TIPS.length);
-      }, 300);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [reducedMotion, tipOpacity]);
-
-  // Subtle pulsing animation for the lightbulb icon
-  useEffect(() => {
-    if (reducedMotion) {
-      return () => {}; // no-op cleanup
-    }
-
-    iconScale.value = withRepeat(
-      withSequence(withTiming(1.05, { duration: 1500 }), withTiming(1, { duration: 1500 })),
-      -1, // Infinite repeat
-      false
-    );
-
-    return () => {
-      iconScale.value = 1;
-    };
-  }, [reducedMotion, iconScale]);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    opacity: opacity.value,
-  }));
-
-  const tipAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: tipOpacity.value,
-  }));
-
-  const iconAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: iconScale.value }],
-  }));
-
-  return (
-    <Animated.View style={[styles.tipsContainer, animatedStyle]}>
-      {/* Gradient Background */}
-      <LinearGradient
-        colors={[
-          'rgba(180, 83, 9, 0.15)', // Gold with 15% opacity
-          'rgba(180, 83, 9, 0.05)', // Gold with 5% opacity
-        ]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.tipsGradient}
-      >
-        <Animated.View style={[styles.tipsIconWrapper, iconAnimatedStyle]}>
-          <Image
-            source={require('../../../../assets/onboarding/icons/consolidated/tips-lightbulb-glowing.png')}
-            style={styles.tipsIcon}
-            resizeMode="contain"
-            fadeDuration={0}
-          />
-        </Animated.View>
-        <Animated.Text style={[styles.tipText, tipAnimatedStyle]}>
-          {TIPS[currentTipIndex]}
-        </Animated.Text>
-      </LinearGradient>
-    </Animated.View>
-  );
-};
-
 // Continue Button Component - Simplified to avoid animation crashes
 const ContinueButton: React.FC<{
   enabled: boolean;
@@ -2047,9 +1993,6 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
             phaseOffset={data.phaseOffset ?? 0}
             shiftSystem={shiftSystem}
           />
-
-          {/* Validation Tips */}
-          <ValidationTips reducedMotion={reducedMotion} />
         </ScrollView>
       </Animated.View>
 
@@ -2367,72 +2310,6 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
 
-  // Tips
-  tipsContainer: {
-    borderRadius: 16,
-    marginBottom: theme.spacing.xl,
-    borderWidth: 1,
-    borderColor: 'rgba(180, 83, 9, 0.3)', // Gold border with 30% opacity
-    // Shadow for premium depth
-    ...Platform.select({
-      ios: {
-        shadowColor: theme.colors.sacredGold,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.15,
-        shadowRadius: 12,
-      },
-      android: {
-        elevation: 6,
-      },
-    }),
-  },
-  tipsGradient: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.spacing.md,
-    borderRadius: 16,
-    paddingVertical: theme.spacing.lg,
-    paddingHorizontal: theme.spacing.lg,
-    overflow: 'hidden',
-    flexWrap: 'nowrap',
-  },
-  tipsIconWrapper: {
-    // Add subtle glow around the icon for more prominence
-    ...Platform.select({
-      ios: {
-        shadowColor: theme.colors.sacredGold,
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.4,
-        shadowRadius: 12,
-      },
-      android: {
-        elevation: 6,
-      },
-    }),
-  },
-  tipsIcon: {
-    width: 48,
-    height: 48,
-  },
-  tipText: {
-    flex: 1,
-    flexShrink: 1,
-    fontSize: 15,
-    fontWeight: '500',
-    color: theme.colors.paper,
-    lineHeight: 22,
-    letterSpacing: 0.2,
-    textAlign: 'left',
-    ...Platform.select({
-      ios: {
-        fontFamily: 'System',
-      },
-      android: {
-        fontFamily: 'sans-serif-medium',
-      },
-    }),
-  },
-
   // Bottom Navigation
   bottomNav: {
     position: 'absolute',
@@ -2501,17 +2378,22 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   calendarLegend: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
     marginTop: theme.spacing.md,
     paddingTop: theme.spacing.md,
     borderTopWidth: 1,
     borderTopColor: theme.colors.softStone,
   },
+  calendarLegendContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.md,
+    paddingHorizontal: theme.spacing.sm,
+  },
   legendItem: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
+    marginHorizontal: theme.spacing.xs,
   },
   legendIconImage: {
     width: 20,

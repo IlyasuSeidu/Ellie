@@ -1112,18 +1112,6 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
             : 'Morning, Afternoon, Night & Off'}
         </Text>
 
-        {/* Live Preview Card */}
-        <LivePreviewCard
-          shiftSystem={shiftSystem as ShiftSystem}
-          daysOn={daysOn}
-          nightsOn={nightsOn}
-          morningOn={morningOn}
-          afternoonOn={afternoonOn}
-          nightOn={nightOn}
-          daysOff={daysOff}
-          reducedMotion={reducedMotion}
-        />
-
         {/* Interactive Sliders Section */}
         <View style={styles.slidersSection}>
           <View style={styles.slidersHeader}>
@@ -1244,6 +1232,18 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
             )}
           </View>
         </View>
+
+        {/* Live Preview Card */}
+        <LivePreviewCard
+          shiftSystem={shiftSystem as ShiftSystem}
+          daysOn={daysOn}
+          nightsOn={nightsOn}
+          morningOn={morningOn}
+          afternoonOn={afternoonOn}
+          nightOn={nightOn}
+          daysOff={daysOff}
+          reducedMotion={reducedMotion}
+        />
 
         {/* Tips & Validation */}
         {showTip && (
