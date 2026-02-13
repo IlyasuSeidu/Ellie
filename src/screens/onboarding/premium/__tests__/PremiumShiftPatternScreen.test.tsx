@@ -87,10 +87,8 @@ describe('PremiumShiftPatternScreen', () => {
 
     it('should render title and subtitle', () => {
       const { getByText } = renderWithContext(<PremiumShiftPatternScreen />);
-      expect(getByText('Choose your shift pattern')).toBeTruthy();
-      expect(
-        getByText('Swipe right to select • Swipe left to skip • Swipe up for details')
-      ).toBeTruthy();
+      expect(getByText("What's Your Roster Rotation?")).toBeTruthy();
+      expect(getByText(/Swipe right to choose, left to see more/i)).toBeTruthy();
     });
 
     it('should render progress header with step 4 of 10', () => {
@@ -98,10 +96,10 @@ describe('PremiumShiftPatternScreen', () => {
       expect(getByText('Step 4 of 10')).toBeTruthy();
     });
 
-    it('should render first card (4-4-4 Cycle)', () => {
+    it('should render first card (4-4-4 Rotation)', () => {
       const { getByText } = renderWithContext(<PremiumShiftPatternScreen />);
-      expect(getByText('4-4-4 Cycle')).toBeTruthy();
-      expect(getByText('4D / 4N / 4O')).toBeTruthy();
+      expect(getByText('4-4-4 Rotation')).toBeTruthy();
+      expect(getByText('4 days • 4 nights • 4 off')).toBeTruthy();
     });
   });
 
@@ -114,18 +112,16 @@ describe('PremiumShiftPatternScreen', () => {
     it('should show pattern icon, name, schedule, and description', () => {
       const { getByText } = renderWithContext(<PremiumShiftPatternScreen />);
       // Note: First pattern now uses Image component instead of emoji
-      expect(getByText('4-4-4 Cycle')).toBeTruthy(); // Name
-      expect(getByText('4D / 4N / 4O')).toBeTruthy(); // Schedule
-      expect(
-        getByText(/4 days on, 4 nights on, 4 days off - Perfect for FIFO mining operations/)
-      ).toBeTruthy();
+      expect(getByText('4-4-4 Rotation')).toBeTruthy(); // Name
+      expect(getByText('4 days • 4 nights • 4 off')).toBeTruthy(); // Schedule
+      expect(getByText(/Work 4 day shifts, then 4 night shifts, then get 4 days off/)).toBeTruthy();
     });
 
     it('should show swipe hints on first card', () => {
       const { getByText } = renderWithContext(<PremiumShiftPatternScreen />);
-      expect(getByText('← Skip')).toBeTruthy();
-      expect(getByText('Select →')).toBeTruthy();
-      expect(getByText('↑ Info')).toBeTruthy();
+      expect(getByText('← Next option')).toBeTruthy();
+      expect(getByText('This one →')).toBeTruthy();
+      expect(getByText('↑ Learn more')).toBeTruthy();
     });
   });
 
