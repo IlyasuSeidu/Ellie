@@ -80,11 +80,11 @@ const SHIFT_SYSTEMS: SystemCardData[] = [
     system: ShiftSystem.TWO_SHIFT,
     icon: '☀️',
     title: '2 Shifts (12 hours)',
-    schedule: '2 shifts / day',
-    description: 'Two 12-hour shifts per day - Classic FIFO and mining schedule',
+    schedule: 'Day & night',
+    description: 'Your workplace runs two 12-hour shifts—one during the day, one at night',
     detailedInfo: {
       workRestRatio: '12 hours on, 12 hours off',
-      useCases: ['FIFO mining', 'Oil & gas', 'Remote operations', 'Construction sites'],
+      useCases: ['Mining sites', 'Oil & gas', '24/7 operations', 'Remote work'],
       pros: ['Extended rest periods', 'Predictable schedule', 'Good work-life balance'],
       cons: ['Long shift duration', 'Can be physically demanding', 'Limited daylight in winter'],
     },
@@ -94,8 +94,8 @@ const SHIFT_SYSTEMS: SystemCardData[] = [
     system: ShiftSystem.THREE_SHIFT,
     icon: '🕐',
     title: '3 Shifts (8 hours)',
-    schedule: '3 shifts / day',
-    description: 'Three 8-hour shifts per day - Standard manufacturing and healthcare',
+    schedule: 'Morning, afternoon & night',
+    description: 'Your workplace runs three 8-hour shifts—morning, afternoon, and night',
     detailedInfo: {
       workRestRatio: '8 hours on, 16 hours off',
       useCases: ['Manufacturing', 'Healthcare', 'Call centers', '24/7 operations'],
@@ -389,13 +389,13 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
         {index === 0 && isActive && (
           <>
             <Animated.View style={[styles.swipeHint, styles.swipeHintLeft, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>← Skip</Text>
+              <Text style={styles.swipeHintText}>← Next option</Text>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintRight, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>Select →</Text>
+              <Text style={styles.swipeHintText}>This one →</Text>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintUp, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>↑ Info</Text>
+              <Text style={styles.swipeHintText}>↑ Learn more</Text>
             </Animated.View>
           </>
         )}
@@ -433,12 +433,12 @@ const LearnMoreModal: React.FC<LearnMoreModalProps> = ({ visible, system, onClos
 
           <ScrollView style={styles.modalScroll} showsVerticalScrollIndicator={false}>
             <View style={styles.modalSection}>
-              <Text style={styles.modalSectionTitle}>Work-Rest Ratio</Text>
+              <Text style={styles.modalSectionTitle}>How it works</Text>
               <Text style={styles.modalSectionText}>{system.detailedInfo.workRestRatio}</Text>
             </View>
 
             <View style={styles.modalSection}>
-              <Text style={styles.modalSectionTitle}>Common Use Cases</Text>
+              <Text style={styles.modalSectionTitle}>Where you&apos;ll see this</Text>
               {system.detailedInfo.useCases.map((useCase, i) => (
                 <Text key={i} style={styles.modalListItem}>
                   • {useCase}
@@ -447,7 +447,7 @@ const LearnMoreModal: React.FC<LearnMoreModalProps> = ({ visible, system, onClos
             </View>
 
             <View style={styles.modalSection}>
-              <Text style={styles.modalSectionTitle}>Advantages</Text>
+              <Text style={styles.modalSectionTitle}>The good bits</Text>
               {system.detailedInfo.pros.map((pro, i) => (
                 <Text key={i} style={styles.modalListItem}>
                   ✓ {pro}
@@ -456,7 +456,7 @@ const LearnMoreModal: React.FC<LearnMoreModalProps> = ({ visible, system, onClos
             </View>
 
             <View style={styles.modalSection}>
-              <Text style={styles.modalSectionTitle}>Considerations</Text>
+              <Text style={styles.modalSectionTitle}>What to know</Text>
               {system.detailedInfo.cons.map((con, i) => (
                 <Text key={i} style={styles.modalListItem}>
                   • {con}
@@ -541,12 +541,12 @@ const EndStackScreen: React.FC<EndStackScreenProps> = ({
         <Text style={styles.endScreenIcon}>{hasSelection ? '✅' : '👀'}</Text>
         <Text style={styles.endScreenTitle}>
           {hasSelection
-            ? `You've selected a shift system!`
+            ? `Got it! We'll set up your calendar for this.`
             : `You've viewed all ${systemsViewed} shift systems!`}
         </Text>
         <Text style={styles.endScreenSubtitle}>
           {hasSelection
-            ? 'Ready to continue with your selection?'
+            ? `Next, we'll pick your specific rotation pattern`
             : 'Please review systems again to make your selection'}
         </Text>
 
@@ -713,12 +713,13 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
 
       {/* Title */}
       <Animated.Text style={[styles.title, titleAnimatedStyle]}>
-        Choose Your Shift System
+        How Many Shifts Does Your Site Run?
       </Animated.Text>
 
       {/* Subtitle */}
       <Animated.Text style={[styles.subtitle, subtitleAnimatedStyle]}>
-        Swipe right to select, left to skip, or up for details
+        Select how your site operates—we&apos;ll build your calendar from this{'\n'}Swipe right to
+        choose, left to see more, up for info
       </Animated.Text>
 
       {/* Progress Dots */}
@@ -846,6 +847,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: theme.colors.sacredGold,
     fontWeight: '600',
+    textAlign: 'center',
   },
   description: {
     fontSize: 16,

@@ -470,34 +470,31 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
   const cycleLengthScale = useSharedValue(1);
 
   // Memoize work-rest calculations
-  const { totalDays, workDays, workPercentage, restPercentage, workRatio, restRatio } =
-    useMemo(() => {
-      const total =
-        shiftSystem === ShiftSystem.TWO_SHIFT
-          ? daysOn + nightsOn + daysOff
-          : morningOn + afternoonOn + nightOn + daysOff;
-      const work =
-        shiftSystem === ShiftSystem.TWO_SHIFT
-          ? daysOn + nightsOn
-          : morningOn + afternoonOn + nightOn;
-      const workPct = Math.round((work / total) * 100);
-      const restPct = Math.round((daysOff / total) * 100);
+  const { totalDays, workDays, workPercentage, restPercentage } = useMemo(() => {
+    const total =
+      shiftSystem === ShiftSystem.TWO_SHIFT
+        ? daysOn + nightsOn + daysOff
+        : morningOn + afternoonOn + nightOn + daysOff;
+    const work =
+      shiftSystem === ShiftSystem.TWO_SHIFT ? daysOn + nightsOn : morningOn + afternoonOn + nightOn;
+    const workPct = Math.round((work / total) * 100);
+    const restPct = Math.round((daysOff / total) * 100);
 
-      // Calculate work-rest ratio (simplified)
-      const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b));
-      const divisor = gcd(work, daysOff);
-      const wRatio = work / divisor;
-      const rRatio = daysOff / divisor;
+    // Calculate work-rest ratio (simplified)
+    const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b));
+    const divisor = gcd(work, daysOff);
+    const wRatio = work / divisor;
+    const rRatio = daysOff / divisor;
 
-      return {
-        totalDays: total,
-        workDays: work,
-        workPercentage: workPct,
-        restPercentage: restPct,
-        workRatio: wRatio,
-        restRatio: rRatio,
-      };
-    }, [shiftSystem, daysOn, nightsOn, morningOn, afternoonOn, nightOn, daysOff]);
+    return {
+      totalDays: total,
+      workDays: work,
+      workPercentage: workPct,
+      restPercentage: restPct,
+      workRatio: wRatio,
+      restRatio: rRatio,
+    };
+  }, [shiftSystem, daysOn, nightsOn, morningOn, afternoonOn, nightOn, daysOff]);
 
   // Animated percentages for count-up effect
   const animatedWorkPercentage = useSharedValue(workPercentage);
@@ -702,7 +699,8 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
             style={styles.previewHeaderIcon}
             resizeMode="contain"
           />
-          <Text style={styles.previewTitle}>Custom Cycle</Text>
+          <Text style={styles.previewTitle}>Your Rotation Preview</Text>
+          <Text style={styles.previewSubtitle}>See what your schedule looks like</Text>
         </View>
 
         {/* Cycle Blocks */}
@@ -905,10 +903,18 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
             <Text style={styles.chartLabel}>Rest: {daysOff} days</Text>
           </View>
           <View style={styles.ratioContainer}>
-            <Text style={styles.ratioLabel}>Work:Rest Ratio</Text>
-            <Text style={styles.ratioValue}>
-              {workRatio}:{restRatio}
-            </Text>
+            <Text style={styles.ratioLabel}>Every rotation you work</Text>
+            <View style={styles.ratioBreakdown}>
+              <View style={styles.ratioItem}>
+                <Text style={styles.ratioNumber}>{workDays}</Text>
+                <Text style={styles.ratioUnit}>days on</Text>
+              </View>
+              <Text style={styles.ratioSeparator}>→</Text>
+              <View style={styles.ratioItem}>
+                <Text style={styles.ratioNumber}>{daysOff}</Text>
+                <Text style={styles.ratioUnit}>days off</Text>
+              </View>
+            </View>
           </View>
         </View>
 
@@ -1013,10 +1019,10 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
 
   const validationMessage = !isValid
     ? totalDays > 28
-      ? 'Total cycle must be 28 days or less'
+      ? `Your rotation is ${totalDays} days long—we can only handle up to 28 days. Try shortening it.`
       : !hasWorkTime
-        ? 'At least 1 day or 1 night shift required'
-        : 'At least 1 day off required'
+        ? 'You need at least 1 shift to track—add some day or night shifts'
+        : 'Everyone needs time off—add at least 1 day off to your rotation'
     : '';
 
   const tipAnimatedStyle = useAnimatedStyle(() => ({
@@ -1095,8 +1101,29 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
         showsVerticalScrollIndicator={false}
       >
         {/* Title */}
-        <Text style={styles.title}>Customize Your Shift Pattern</Text>
-        <Text style={styles.subtitle}>Design your ideal work schedule</Text>
+        <Text style={styles.title}>Build Your Rotation</Text>
+        <Text style={styles.subtitle}>
+          Set how many shifts you work, then how many days off you get—we&apos;ll show you what it
+          looks like
+        </Text>
+
+        {/* Context Card */}
+        <View style={styles.contextCard}>
+          <View style={styles.contextRow}>
+            <Ionicons name="checkmark-circle" size={20} color={theme.colors.success} />
+            <Text style={styles.contextText}>
+              You picked:{' '}
+              <Text style={styles.contextBold}>
+                {shiftSystem === ShiftSystem.TWO_SHIFT
+                  ? '2-shift system (day & night)'
+                  : '3-shift system (morning, afternoon & night)'}
+              </Text>
+            </Text>
+          </View>
+          <Text style={styles.contextHelper}>
+            Now choose how long you work each shift, and how many days off you get
+          </Text>
+        </View>
 
         {/* Live Preview Card */}
         <LivePreviewCard
@@ -1113,8 +1140,8 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
         {/* Interactive Sliders Section */}
         <View style={styles.slidersSection}>
           <View style={styles.slidersHeader}>
-            <Ionicons name="options-outline" size={22} color={theme.colors.sacredGold} />
-            <Text style={styles.slidersTitle}>Adjust Your Pattern</Text>
+            <Ionicons name="construct-outline" size={22} color={theme.colors.sacredGold} />
+            <Text style={styles.slidersTitle}>Set Up Your Rotation</Text>
           </View>
 
           <View style={styles.slidersContainer}>
@@ -1122,7 +1149,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               <>
                 {/* 2-Shift Sliders */}
                 <EnhancedSlider
-                  label="Days On"
+                  label="Day Shifts"
                   icon="sunny"
                   value={daysOn}
                   min={0}
@@ -1137,7 +1164,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
                 />
 
                 <EnhancedSlider
-                  label="Nights On"
+                  label="Night Shifts"
                   icon="moon"
                   value={nightsOn}
                   min={0}
@@ -1170,7 +1197,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               <>
                 {/* 3-Shift Sliders */}
                 <EnhancedSlider
-                  label="Mornings On"
+                  label="Morning Shifts"
                   icon="sunny-outline"
                   value={morningOn}
                   min={0}
@@ -1185,7 +1212,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
                 />
 
                 <EnhancedSlider
-                  label="Afternoons On"
+                  label="Afternoon Shifts"
                   icon="partly-sunny-outline"
                   value={afternoonOn}
                   min={0}
@@ -1198,7 +1225,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
                 />
 
                 <EnhancedSlider
-                  label="Nights On"
+                  label="Night Shifts"
                   icon="moon-outline"
                   value={nightOn}
                   min={0}
@@ -1240,7 +1267,8 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               resizeMode="contain"
             />
             <Text style={styles.tipText}>
-              A balanced shift pattern helps improve alertness and overall health.
+              Tip: Most shift workers find rotations with at least 3 days off work best. Your body
+              needs time to recover between swing changes.
             </Text>
           </Animated.View>
         )}
@@ -1253,7 +1281,8 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               resizeMode="contain"
             />
             <Text style={styles.successText}>
-              Great balance! Your {totalDays}-day cycle supports healthy work-rest patterns.
+              Looking good! You work {workDays} days, then get {daysOff} days off. That&apos;s a
+              solid rotation.
             </Text>
           </View>
         )}
@@ -1277,8 +1306,9 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               resizeMode="contain"
             />
             <Text style={styles.warningText}>
-              High work ratio ({workPercentage}%). Consider adding more rest days for better
-              work-life balance.
+              Heads up: you&apos;re working {workDays} out of every {totalDays} days (
+              {workPercentage}%). That&apos;s a lot—consider adding more days off so you don&apos;t
+              burn out.
             </Text>
           </View>
         )}
@@ -1304,7 +1334,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
             disabled={!isValid}
             accessible={true}
             accessibilityRole="button"
-            accessibilityLabel="Continue with custom pattern"
+            accessibilityLabel="Save your rotation and continue"
             accessibilityHint={
               isValid
                 ? `Your ${totalDays}-day cycle: ${daysOn} days on, ${nightsOn} nights on, ${daysOff} days off`
@@ -1315,16 +1345,20 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
             <LinearGradient
               colors={
                 isValid
-                  ? [theme.colors.paleGold, theme.colors.brightGold]
-                  : [theme.colors.shadow, theme.colors.softStone]
+                  ? [theme.colors.sacredGold, theme.colors.brightGold]
+                  : [theme.colors.shadow, theme.colors.shadow]
               }
               style={styles.continueGradient}
             >
               <Image
                 source={require('../../../../assets/onboarding/icons/consolidated/navigation-save-trophy.png')}
-                style={styles.trophyIcon}
+                style={styles.trophyIconSmaller}
                 resizeMode="contain"
               />
+              <Text style={styles.continueButtonText}>
+                {isValid ? 'Save This Rotation' : 'Need More Changes'}
+              </Text>
+              <Ionicons name="arrow-forward" size={24} color={theme.colors.paper} />
             </LinearGradient>
           </Pressable>
         </Animated.View>
@@ -1378,6 +1412,36 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  contextCard: {
+    backgroundColor: theme.colors.opacity.gold10,
+    borderRadius: 16,
+    padding: theme.spacing.md,
+    marginBottom: theme.spacing.lg,
+    borderLeftWidth: 4,
+    borderLeftColor: theme.colors.sacredGold,
+    marginHorizontal: theme.spacing.md,
+  },
+  contextRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.sm,
+    marginBottom: theme.spacing.xs,
+  },
+  contextText: {
+    fontSize: 14,
+    color: theme.colors.dust,
+    flex: 1,
+  },
+  contextBold: {
+    fontWeight: 'bold',
+    color: theme.colors.paper,
+  },
+  contextHelper: {
+    fontSize: 13,
+    color: theme.colors.dust,
+    marginLeft: 28,
+    fontStyle: 'italic',
+  },
   previewCard: {
     marginBottom: theme.spacing.xl,
     borderRadius: 24,
@@ -1400,7 +1464,7 @@ const styles = StyleSheet.create({
     padding: theme.spacing.xl,
   },
   previewHeader: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: theme.spacing.lg,
@@ -1410,6 +1474,12 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     color: theme.colors.paper,
+  },
+  previewSubtitle: {
+    fontSize: 14,
+    color: theme.colors.dust,
+    textAlign: 'center',
+    marginTop: 4,
   },
   previewHeaderIcon: {
     width: 60,
@@ -1553,12 +1623,11 @@ const styles = StyleSheet.create({
     opacity: 0.9,
   },
   ratioContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: theme.spacing.sm,
     marginTop: theme.spacing.sm,
-    paddingVertical: theme.spacing.xs,
+    paddingVertical: theme.spacing.md,
     paddingHorizontal: theme.spacing.md,
     backgroundColor: theme.colors.opacity.white10,
     borderRadius: 12,
@@ -1568,11 +1637,29 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: theme.colors.paper,
     opacity: 0.8,
+    marginBottom: theme.spacing.xs,
   },
-  ratioValue: {
-    fontSize: 14,
+  ratioBreakdown: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.md,
+    marginTop: theme.spacing.xs,
+  },
+  ratioItem: {
+    alignItems: 'center',
+  },
+  ratioNumber: {
+    fontSize: 24,
     fontWeight: 'bold',
-    color: theme.colors.paper,
+    color: theme.colors.sacredGold,
+  },
+  ratioUnit: {
+    fontSize: 12,
+    color: theme.colors.dust,
+  },
+  ratioSeparator: {
+    fontSize: 20,
+    color: theme.colors.dust,
   },
   cycleBadge: {
     flexDirection: 'row',
@@ -1845,10 +1932,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   continueButton: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    flex: 1,
+    height: 60,
+    borderRadius: 16,
     overflow: 'hidden',
+    marginLeft: theme.spacing.md,
+    ...Platform.select({
+      ios: {
+        shadowColor: theme.colors.deepVoid,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.4,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 6,
+      },
+    }),
   },
   continueButtonDisabled: {
     opacity: 0.5,
@@ -1856,8 +1955,19 @@ const styles = StyleSheet.create({
   continueGradient: {
     width: '100%',
     height: '100%',
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    gap: theme.spacing.sm,
+  },
+  trophyIconSmaller: {
+    width: 24,
+    height: 24,
+  },
+  continueButtonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: theme.colors.paper,
   },
   trophyIcon: {
     width: 50,

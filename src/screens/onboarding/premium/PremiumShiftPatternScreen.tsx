@@ -84,15 +84,16 @@ const SHIFT_PATTERNS: PatternCardData[] = [
     type: ShiftPattern.STANDARD_4_4_4,
     icon: '⛏️',
     iconImage: require('../../../../assets/onboarding/icons/consolidated/shift-pattern-4-4-4.png'),
-    name: '4-4-4 Cycle',
-    schedule: '4D / 4N / 4O',
-    description: '4 days on, 4 nights on, 4 days off - Perfect for FIFO mining operations',
+    name: '4-4-4 Rotation',
+    schedule: '4 days • 4 nights • 4 off',
+    description:
+      'Work 4 day shifts, then 4 night shifts, then get 4 days off—common for fly-in fly-out sites',
     supportedSystems: [ShiftSystem.TWO_SHIFT], // 12-hour shifts
     detailedInfo: {
-      workRestRatio: '67% work, 33% rest',
-      useCases: ['FIFO mining', 'Oil & gas', 'Remote operations'],
-      pros: ['Good work-life balance', 'Predictable schedule', 'Extended rest period'],
-      cons: ['Rapid day/night transition', 'Can be physically demanding'],
+      workRestRatio: 'You work 8 days out of every 12-day cycle, giving you 4 days off',
+      useCases: ['Fly-in fly-out mining', 'Oil & gas', 'Remote sites'],
+      pros: ['Decent time at home', 'Easy to plan around', 'Good stretch of days off'],
+      cons: ['You switch from days to nights pretty quick', 'Long shifts can be tough'],
     },
   },
   {
@@ -100,15 +101,15 @@ const SHIFT_PATTERNS: PatternCardData[] = [
     type: ShiftPattern.STANDARD_7_7_7,
     icon: '🗓️',
     iconImage: require('../../../../assets/onboarding/icons/consolidated/shift-pattern-7-7-7.png'),
-    name: '7-7-7 Cycle',
-    schedule: '7D / 7N / 7O',
-    description: 'Weekly rotation - 7 days, 7 nights, 7 off for consistent scheduling',
+    name: '7-7-7 Rotation',
+    schedule: '7 days • 7 nights • 7 off',
+    description: 'A full week of day shifts, then nights, then a week off—great for planning ahead',
     supportedSystems: [ShiftSystem.TWO_SHIFT], // 12-hour shifts
     detailedInfo: {
-      workRestRatio: '67% work, 33% rest',
+      workRestRatio: 'You work 14 days out of every 21-day cycle, giving you 7 days off',
       useCases: ['Manufacturing', 'Healthcare', 'Emergency services'],
-      pros: ['Full week of rest', 'Easy to remember', 'Good for family planning'],
-      cons: ['Long stretches of night shifts', 'Takes time to adjust'],
+      pros: ['Full week to recover', 'Simple to remember', 'Easy to plan around'],
+      cons: ['7 nights in a row can be draining', 'Takes a while to adjust'],
     },
   },
   {
@@ -116,15 +117,15 @@ const SHIFT_PATTERNS: PatternCardData[] = [
     type: ShiftPattern.STANDARD_2_2_3,
     icon: '⚡',
     iconImage: require('../../../../assets/onboarding/icons/consolidated/shift-pattern-2-2-3.png'),
-    name: '2-2-3 Cycle',
-    schedule: '2D / 2N / 3O',
-    description: 'Pitman variation - Short bursts of work with frequent rest periods',
+    name: '2-2-3 Rotation',
+    schedule: '2 days • 2 nights • 3 off',
+    description: 'Short swings of 2 days, 2 nights, then 3 days off—you get breaks more often',
     supportedSystems: [ShiftSystem.TWO_SHIFT], // 12-hour shifts
     detailedInfo: {
-      workRestRatio: '57% work, 43% rest',
+      workRestRatio: 'You work 4 days out of every 7-day cycle, giving you 3 days off',
       useCases: ['Police', 'Fire departments', '24/7 operations'],
-      pros: ['Frequent days off', 'Less consecutive nights', 'Weekend flexibility'],
-      cons: ['Irregular weekly schedule', 'Frequent shift changes'],
+      pros: ['Get time off more often', 'Not too many nights in a row', 'Weekends work out well'],
+      cons: ['Week-to-week can vary', 'Shift changes happen often'],
     },
   },
   {
@@ -132,15 +133,15 @@ const SHIFT_PATTERNS: PatternCardData[] = [
     type: ShiftPattern.STANDARD_5_5_5,
     icon: '📅',
     iconImage: require('../../../../assets/onboarding/icons/consolidated/shift-pattern-5-5-5.png'),
-    name: '5-5-5 Cycle',
-    schedule: '5D / 5N / 5O',
-    description: 'Medium cycle - Balanced rotation for steady operations',
+    name: '5-5-5 Rotation',
+    schedule: '5 days • 5 nights • 5 off',
+    description: 'Work 5 day shifts, then 5 night shifts, then 5 days off—a good middle ground',
     supportedSystems: [ShiftSystem.TWO_SHIFT], // 12-hour shifts
     detailedInfo: {
-      workRestRatio: '67% work, 33% rest',
+      workRestRatio: 'You work 10 days out of every 15-day cycle, giving you 5 days off',
       useCases: ['Construction', 'Utilities', 'Transportation'],
-      pros: ['Moderate work periods', 'Good recovery time', 'Flexible schedule'],
-      cons: ['5 consecutive nights can be tiring', 'Irregular weekends'],
+      pros: ['Not too long at work', 'Decent time to recover', 'Works for most people'],
+      cons: ['5 nights in a row can be tiring', 'Weekends can be unpredictable'],
     },
   },
   {
@@ -148,15 +149,15 @@ const SHIFT_PATTERNS: PatternCardData[] = [
     type: ShiftPattern.STANDARD_3_3_3,
     icon: '🔄',
     iconImage: require('../../../../assets/onboarding/icons/consolidated/shift-pattern-3-3-3.png'),
-    name: '3-3-3 Cycle',
-    schedule: '3D / 3N / 3O',
-    description: 'Standard short cycle - Quick rotation for adaptability',
+    name: '3-3-3 Rotation',
+    schedule: '3 days • 3 nights • 3 off',
+    description: 'Short swings of 3 day shifts, 3 night shifts, then 3 days off—faster rotation',
     supportedSystems: [ShiftSystem.TWO_SHIFT], // 12-hour shifts
     detailedInfo: {
-      workRestRatio: '67% work, 33% rest',
-      useCases: ['Security', 'Retail 24hr', 'Call centers'],
-      pros: ['Short work stretches', 'Quick recovery', 'Easier adjustment'],
-      cons: ['Frequent shift changes', 'Less predictable'],
+      workRestRatio: 'You work 6 days out of every 9-day cycle, giving you 3 days off',
+      useCases: ['Security', '24-hour retail', 'Call centers'],
+      pros: ['Not stuck on one shift too long', 'Recover faster', 'Body adjusts easier'],
+      cons: ['Shifts change pretty often', 'Can feel less settled'],
     },
   },
   {
@@ -164,15 +165,15 @@ const SHIFT_PATTERNS: PatternCardData[] = [
     type: ShiftPattern.STANDARD_10_10_10,
     icon: '📆',
     iconImage: require('../../../../assets/onboarding/icons/consolidated/shift-pattern-10-10-10.png'),
-    name: '10-10-10 Cycle',
-    schedule: '10D / 10N / 10O',
-    description: 'Extended cycle - Long work periods with extended rest for remote work',
+    name: '10-10-10 Rotation',
+    schedule: '10 days • 10 nights • 10 off',
+    description: 'Long swings of 10 days, 10 nights, then 10 off—maximizes your time at home',
     supportedSystems: [ShiftSystem.TWO_SHIFT], // 12-hour shifts
     detailedInfo: {
-      workRestRatio: '67% work, 33% rest',
+      workRestRatio: 'You work 20 days out of every 30-day cycle, giving you 10 days off',
       useCases: ['Remote mining', 'Offshore oil', 'Antarctic research'],
-      pros: ['Long rest period', 'Maximizes travel time', 'High earnings potential'],
-      cons: ['Very demanding', 'Long time away from home', 'Difficult adjustment'],
+      pros: ['Big chunk of time off', 'Worth the travel', 'Good money usually'],
+      cons: ['Really demanding', 'Away from home a while', 'Hard to adjust to'],
     },
   },
   {
@@ -180,15 +181,16 @@ const SHIFT_PATTERNS: PatternCardData[] = [
     type: ShiftPattern.CONTINENTAL,
     icon: '🌍',
     iconImage: require('../../../../assets/onboarding/icons/consolidated/shift-pattern-continental.png'),
-    name: 'Continental',
-    schedule: '2M / 2A / 2N / 4O',
-    description: 'Continental shift - 8-hour shifts with 4-day rest cycles',
+    name: 'Continental Rotation',
+    schedule: '2 mornings • 2 afternoons • 2 nights • 4 off',
+    description:
+      'Work 2 morning shifts, 2 afternoon, 2 night, then 4 days off—for 8-hour shift sites',
     supportedSystems: [ShiftSystem.THREE_SHIFT], // 8-hour shifts (morning/afternoon/night)
     detailedInfo: {
-      workRestRatio: '50% work, 50% rest',
-      useCases: ['Manufacturing', 'Processing plants', 'Industrial operations'],
-      pros: ['Equal work-rest balance', 'Regular 4-day breaks', '8-hour shifts easier'],
-      cons: ['Requires 4 teams', 'Complex scheduling'],
+      workRestRatio: 'You work 6 days out of every 10-day cycle, giving you 4 days off',
+      useCases: ['Manufacturing', 'Processing plants', 'Industrial sites'],
+      pros: ['Half your time is off', '4 days off regularly', '8-hour shifts are easier'],
+      cons: ['Needs 4 crews to work', 'Scheduling can be tricky'],
     },
   },
   {
@@ -197,14 +199,14 @@ const SHIFT_PATTERNS: PatternCardData[] = [
     icon: '🏭',
     iconImage: require('../../../../assets/onboarding/icons/consolidated/shift-pattern-pitman.png'),
     name: 'Pitman Schedule',
-    schedule: '2-2-3-2-2-3',
-    description: 'Classic Pitman - 12-hour shifts with alternating 2 and 3-day breaks',
+    schedule: '2 on • 2 off • 3 on • 2 on • 2 off • 3 off',
+    description: 'You work 2 days, then 2 off, then 3 on, repeating—every other weekend off',
     supportedSystems: [ShiftSystem.TWO_SHIFT], // 12-hour shifts
     detailedInfo: {
-      workRestRatio: '50% work, 50% rest',
+      workRestRatio: 'You work half the time, and get half the time off',
       useCases: ['Emergency services', 'Healthcare', 'Manufacturing'],
-      pros: ['Every other weekend off', 'Equal work-rest', 'Popular standard'],
-      cons: ['12-hour shifts demanding', 'Complex pattern'],
+      pros: ['Every second weekend free', 'Same time working and off', 'Well-known pattern'],
+      cons: ['12-hour shifts can be tough', 'Pattern takes getting used to'],
     },
   },
   {
@@ -212,15 +214,15 @@ const SHIFT_PATTERNS: PatternCardData[] = [
     type: ShiftPattern.CUSTOM,
     icon: '✨',
     iconImage: require('../../../../assets/onboarding/icons/consolidated/shift-pattern-custom.png'),
-    name: 'Custom Pattern',
-    schedule: 'Flexible',
-    description: 'Build your own shift pattern tailored to your specific needs',
+    name: 'Custom Rotation',
+    schedule: 'You choose',
+    description: 'Your site uses something different? Build your own rotation here',
     supportedSystems: [ShiftSystem.TWO_SHIFT, ShiftSystem.THREE_SHIFT], // Supports both
     detailedInfo: {
       workRestRatio: 'You decide',
-      useCases: ['Unique schedules', 'Non-standard operations', 'Special projects'],
-      pros: ['Fully customizable', 'Fits unique needs', 'Maximum flexibility'],
-      cons: ['Requires manual setup', 'May need approval'],
+      useCases: ['Unique schedules', 'Non-standard sites', 'Special arrangements'],
+      pros: ['Set it up your way', 'Fits what you need', 'Total flexibility'],
+      cons: ['Takes time to set up', 'Might need manager approval'],
     },
   },
 ];
@@ -510,13 +512,13 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
         {index === 0 && isActive && (
           <>
             <Animated.View style={[styles.swipeHint, styles.swipeHintLeft, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>← Skip</Text>
+              <Text style={styles.swipeHintText}>← Next option</Text>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintRight, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>Select →</Text>
+              <Text style={styles.swipeHintText}>This one →</Text>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintUp, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>↑ Info</Text>
+              <Text style={styles.swipeHintText}>↑ Learn more</Text>
             </Animated.View>
           </>
         )}
@@ -554,12 +556,12 @@ const LearnMoreModal: React.FC<LearnMoreModalProps> = ({ visible, pattern, onClo
 
           <ScrollView style={styles.modalScroll} showsVerticalScrollIndicator={false}>
             <View style={styles.modalSection}>
-              <Text style={styles.modalSectionTitle}>Work-Rest Ratio</Text>
+              <Text style={styles.modalSectionTitle}>How it works</Text>
               <Text style={styles.modalSectionText}>{pattern.detailedInfo.workRestRatio}</Text>
             </View>
 
             <View style={styles.modalSection}>
-              <Text style={styles.modalSectionTitle}>Common Use Cases</Text>
+              <Text style={styles.modalSectionTitle}>Where you&apos;ll see this</Text>
               {pattern.detailedInfo.useCases.map((useCase, i) => (
                 <Text key={i} style={styles.modalListItem}>
                   • {useCase}
@@ -568,7 +570,7 @@ const LearnMoreModal: React.FC<LearnMoreModalProps> = ({ visible, pattern, onClo
             </View>
 
             <View style={styles.modalSection}>
-              <Text style={styles.modalSectionTitle}>Advantages</Text>
+              <Text style={styles.modalSectionTitle}>The good bits</Text>
               {pattern.detailedInfo.pros.map((pro, i) => (
                 <Text key={i} style={styles.modalListItem}>
                   ✓ {pro}
@@ -577,7 +579,7 @@ const LearnMoreModal: React.FC<LearnMoreModalProps> = ({ visible, pattern, onClo
             </View>
 
             <View style={styles.modalSection}>
-              <Text style={styles.modalSectionTitle}>Considerations</Text>
+              <Text style={styles.modalSectionTitle}>What to know</Text>
               {pattern.detailedInfo.cons.map((con, i) => (
                 <Text key={i} style={styles.modalListItem}>
                   • {con}
@@ -649,18 +651,22 @@ const EndStackScreen: React.FC<EndStackScreenProps> = ({
     <View style={styles.endScreenOverlay}>
       <Animated.View style={[styles.endScreenContent, animatedStyle]}>
         <Text style={styles.endScreenIcon}>✅</Text>
-        <Text style={styles.endScreenTitle}>You&apos;ve viewed all {patternsViewed} patterns!</Text>
-        <Text style={styles.endScreenSubtitle}>Ready to make your choice or review again?</Text>
+        <Text style={styles.endScreenTitle}>
+          That&apos;s all {patternsViewed} rotations we&apos;ve got!
+        </Text>
+        <Text style={styles.endScreenSubtitle}>
+          Didn&apos;t see yours? You can build a custom one, or take another look
+        </Text>
 
         <View style={styles.endScreenButtons}>
           <PremiumButton
-            title="Review Patterns"
+            title="Look Again"
             onPress={onReviewAgain}
             variant="outline"
             testID="review-again-button"
           />
           <PremiumButton
-            title="Create Custom Pattern"
+            title="Build Custom Rotation"
             onPress={onContinueCustom}
             variant="primary"
             testID="continue-custom-button"
@@ -801,11 +807,14 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
       <ProgressHeader currentStep={4} totalSteps={10} />
 
       {/* Title */}
-      <Animated.Text style={[styles.title, titleStyle]}>Choose your shift pattern</Animated.Text>
+      <Animated.Text style={[styles.title, titleStyle]}>
+        What&apos;s Your Roster Rotation?
+      </Animated.Text>
 
       {/* Subtitle */}
       <Animated.Text style={[styles.subtitle, subtitleStyle]}>
-        Swipe right to select • Swipe left to skip • Swipe up for details
+        Choose the rotation your workplace uses—we&apos;ll build your calendar from this{'\n'}Swipe
+        right to choose, left to see more, up for info
       </Animated.Text>
 
       {/* Card Stack */}
@@ -936,6 +945,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: theme.colors.sacredGold,
     fontWeight: '600',
+    textAlign: 'center',
   },
   description: {
     fontSize: 16,

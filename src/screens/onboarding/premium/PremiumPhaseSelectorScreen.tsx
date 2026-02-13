@@ -17,7 +17,9 @@ import {
   Pressable,
   ScrollView,
   AccessibilityInfo,
+  Image,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -74,8 +76,9 @@ interface PhaseCardData {
   phase: Phase;
   title: string;
   description: string;
-  icon: string;
+  icon: ReturnType<typeof require> | 'iconicon';
   phaseLength: number;
+  gradientColors: [string, string];
 }
 
 // Day card data interface
@@ -184,6 +187,74 @@ const calculateEnhancedPhaseOffset = (
 ): number => {
   const baseOffset = getBasePhaseOffset(phase, pattern, shiftSystem);
   return baseOffset + (dayWithinPhase - 1);
+};
+
+/**
+ * Generate ordinal number list for day selection subtitle
+ * Example: generateDayOrdinalList(7) → "1st, 2nd, 3rd, 4th, 5th, 6th, or 7th"
+ */
+const generateDayOrdinalList = (count: number): string => {
+  if (count === 0) return '';
+
+  const getOrdinal = (n: number): string => {
+    const suffixes = ['th', 'st', 'nd', 'rd'];
+    const v = n % 100;
+    return n + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0]);
+  };
+
+  const ordinals = Array.from({ length: count }, (_, i) => getOrdinal(i + 1));
+
+  if (count === 1) return ordinals[0];
+  if (count === 2) return `${ordinals[0]} or ${ordinals[1]}`;
+
+  const lastOrdinal = ordinals.pop();
+  return `${ordinals.join(', ')}, or ${lastOrdinal}`;
+};
+
+/**
+ * Generate contextual day card description
+ * Example: generateDayCardDescription(1, 7, 'Night Shift') → "First night of your shift"
+ */
+const generateDayCardDescription = (
+  dayNumber: number,
+  totalDays: number,
+  phaseTitle: string
+): string => {
+  // Extract shift type (remove "Shift" or "Shifts" suffix)
+  const shiftType = phaseTitle
+    .replace(/Shifts?$/i, '')
+    .trim()
+    .toLowerCase();
+
+  const ordinalMap: { [key: number]: string } = {
+    1: 'First',
+    2: 'Second',
+    3: 'Third',
+    4: 'Fourth',
+    5: 'Fifth',
+    6: 'Sixth',
+    7: 'Seventh',
+    8: 'Eighth',
+    9: 'Ninth',
+    10: 'Tenth',
+  };
+
+  const ordinal = ordinalMap[dayNumber] || `Day ${dayNumber}`;
+
+  // Handle "Days Off" specially
+  if (phaseTitle.toLowerCase().includes('off')) {
+    if (dayNumber === totalDays) {
+      return `Last day off before returning`;
+    }
+    return `${ordinal} day of rest`;
+  }
+
+  // Handle shifts
+  if (dayNumber === totalDays) {
+    return `Last ${shiftType} of your block`;
+  }
+
+  return `${ordinal} ${shiftType} of your shift`;
 };
 
 // Swipeable Phase Card Component
@@ -413,9 +484,27 @@ const SwipeablePhaseCard: React.FC<SwipeablePhaseCardProps> = ({
   return (
     <GestureDetector gesture={composed}>
       <Animated.View style={[styles.card, getShadowStyle(index, isActive), animatedStyle]}>
+        {/* Gradient Background (for phase cards only) */}
+        {phaseCard && (
+          <LinearGradient
+            colors={phaseCard.gradientColors}
+            style={StyleSheet.absoluteFill}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+          />
+        )}
+
         {/* Icon */}
         <Animated.View style={[styles.iconContainer, iconAnimatedStyle]}>
-          <Text style={styles.icon}>{phaseCard?.icon || dayCard?.dayNumber}</Text>
+          {phaseCard ? (
+            phaseCard.icon === 'iconicon' ? (
+              <Ionicons name="partly-sunny" size={120} color={theme.colors.paper} />
+            ) : (
+              <Image source={phaseCard.icon} style={styles.iconImage} resizeMode="contain" />
+            )
+          ) : (
+            <Text style={styles.icon}>{dayCard?.dayNumber}</Text>
+          )}
         </Animated.View>
 
         {/* Title */}
@@ -437,7 +526,7 @@ const SwipeablePhaseCard: React.FC<SwipeablePhaseCardProps> = ({
         {index === 0 && isActive && (
           <>
             <Animated.View style={[styles.swipeHint, styles.swipeHintLeft, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>← Skip</Text>
+              <Text style={styles.swipeHintText}>← Next</Text>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintRight, hintAnimatedStyle]}>
               <Text style={styles.swipeHintText}>Select →</Text>
@@ -536,6 +625,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
   const [stage, setStage] = useState<SelectionStage>(SelectionStage.PHASE);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [selectedPhase, setSelectedPhase] = useState<Phase | null>(null);
+  const [selectedPhaseTitle, setSelectedPhaseTitle] = useState<string>('');
   const [_selectedDay, setSelectedDay] = useState<number | null>(null);
   const [phaseCards, setPhaseCards] = useState<PhaseCardData[]>([]);
   const [dayCards, setDayCards] = useState<DayCardData[]>([]);
@@ -707,25 +797,37 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
           id: 'day',
           phase: 'day' as Phase,
           title: 'Day Shift',
-          description: 'Daytime working hours',
-          icon: '☀️',
+          description: 'Working during daylight (e.g., 6am-6pm)',
+          icon: require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png'),
           phaseLength: ('daysOn' in pattern ? pattern.daysOn : 0) ?? 0,
+          gradientColors: ['rgba(33, 150, 243, 0.25)', 'rgba(33, 150, 243, 0.05)'] as [
+            string,
+            string,
+          ],
         },
         {
           id: 'night',
           phase: 'night' as Phase,
           title: 'Night Shift',
-          description: 'Nighttime working hours',
-          icon: '🌙',
+          description: 'Working at nighttime (e.g., 6pm-6am)',
+          icon: require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png'),
           phaseLength: ('nightsOn' in pattern ? pattern.nightsOn : 0) ?? 0,
+          gradientColors: ['rgba(101, 31, 255, 0.25)', 'rgba(101, 31, 255, 0.05)'] as [
+            string,
+            string,
+          ],
         },
         {
           id: 'off',
           phase: 'off' as Phase,
           title: 'Days Off',
-          description: 'Rest and recovery',
-          icon: '🛏️',
+          description: 'Rest and recovery at home',
+          icon: require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png'),
           phaseLength: pattern.daysOff,
+          gradientColors: ['rgba(255, 152, 0, 0.25)', 'rgba(255, 152, 0, 0.05)'] as [
+            string,
+            string,
+          ],
         },
       ].filter((card) => card.phaseLength > 0);
 
@@ -737,33 +839,49 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
           id: 'morning',
           phase: 'morning' as Phase,
           title: 'Morning Shift',
-          description: 'Early day hours',
-          icon: '☕',
+          description: 'Early morning hours (e.g., 4am-12pm)',
+          icon: require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png'),
           phaseLength: ('morningOn' in pattern ? pattern.morningOn : 0) ?? 0,
+          gradientColors: ['rgba(252, 211, 77, 0.25)', 'rgba(252, 211, 77, 0.05)'] as [
+            string,
+            string,
+          ],
         },
         {
           id: 'afternoon',
           phase: 'afternoon' as Phase,
           title: 'Afternoon Shift',
-          description: 'Mid-day hours',
-          icon: '☀️',
+          description: 'Afternoon hours (e.g., 12pm-8pm)',
+          icon: 'iconicon',
           phaseLength: ('afternoonOn' in pattern ? pattern.afternoonOn : 0) ?? 0,
+          gradientColors: ['rgba(251, 146, 60, 0.25)', 'rgba(251, 146, 60, 0.05)'] as [
+            string,
+            string,
+          ],
         },
         {
           id: 'night',
           phase: 'night' as Phase,
           title: 'Night Shift',
-          description: 'Nighttime hours',
-          icon: '🌙',
+          description: 'Nighttime hours (e.g., 8pm-4am)',
+          icon: require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png'),
           phaseLength: ('nightOn' in pattern ? pattern.nightOn : 0) ?? 0,
+          gradientColors: ['rgba(101, 31, 255, 0.25)', 'rgba(101, 31, 255, 0.05)'] as [
+            string,
+            string,
+          ],
         },
         {
           id: 'off',
           phase: 'off' as Phase,
           title: 'Days Off',
-          description: 'Rest days',
-          icon: '🛏️',
+          description: 'Rest and recovery at home',
+          icon: require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png'),
           phaseLength: pattern.daysOff,
+          gradientColors: ['rgba(255, 152, 0, 0.25)', 'rgba(255, 152, 0, 0.05)'] as [
+            string,
+            string,
+          ],
         },
       ].filter((card) => card.phaseLength > 0);
 
@@ -799,6 +917,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
       if (!selectedCard) return;
 
       setSelectedPhase(selectedCard.phase);
+      setSelectedPhaseTitle(selectedCard.title);
 
       if (selectedCard.phaseLength > 1) {
         // Multi-day phase: Generate day cards and transition to stage 2
@@ -806,7 +925,11 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
           id: `day-${i + 1}`,
           dayNumber: i + 1,
           title: `Day ${i + 1}`,
-          description: `Starting on day ${i + 1} of your ${selectedCard.title}`,
+          description: generateDayCardDescription(
+            i + 1,
+            selectedCard.phaseLength,
+            selectedCard.title
+          ),
         }));
 
         setDayCards(cards);
@@ -882,14 +1005,18 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
 
       {/* Title */}
       <Animated.Text style={[styles.title, titleAnimatedStyle]}>
-        {stage === SelectionStage.PHASE ? 'Choose Your Current Phase' : 'Choose Starting Day'}
+        {stage === SelectionStage.PHASE
+          ? 'What shift are you on right now?'
+          : `Which day of ${selectedPhaseTitle} are you on?`}
       </Animated.Text>
 
       {/* Subtitle */}
       <Animated.Text style={[styles.subtitle, subtitleAnimatedStyle]}>
         {stage === SelectionStage.PHASE
-          ? 'Swipe right to select, left to skip, or up for details'
-          : 'Select which day within this phase you are starting on'}
+          ? 'Swipe right to select, left to see next, or up for more info'
+          : `You said you're on ${selectedPhaseTitle}. Swipe to your current day—is it the ${generateDayOrdinalList(
+              phaseCards.find((c) => c.phase === selectedPhase)?.phaseLength || 0
+            )}?`}
       </Animated.Text>
 
       {/* Progress Dots */}
@@ -978,6 +1105,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: theme.colors.opacity.gold20,
+    overflow: 'hidden',
   },
   iconContainer: {
     marginBottom: theme.spacing.lg,
@@ -988,6 +1116,11 @@ const styles = StyleSheet.create({
   },
   icon: {
     fontSize: 120,
+    color: theme.colors.paper,
+  },
+  iconImage: {
+    width: 120,
+    height: 120,
   },
   cardTitle: {
     fontSize: 24,
