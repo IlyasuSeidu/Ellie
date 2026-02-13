@@ -86,8 +86,8 @@ describe('PremiumShiftSystemScreen', () => {
     it('should render title and subtitle', () => {
       const { getByText } = renderWithProviders(<PremiumShiftSystemScreen />);
 
-      expect(getByText('Choose Your Shift System')).toBeTruthy();
-      expect(getByText(/Swipe right to select, left to skip, or up for details/i)).toBeTruthy();
+      expect(getByText('How Many Shifts Does Your Site Run?')).toBeTruthy();
+      expect(getByText(/Swipe right to choose, left to see more/i)).toBeTruthy();
     });
 
     it('should render progress header with step 3 of 11', () => {
@@ -112,15 +112,15 @@ describe('PremiumShiftSystemScreen', () => {
       const card = getByTestId('shift-system-card-2-shift');
       expect(card).toBeTruthy();
       expect(getByText('2 Shifts (12 hours)')).toBeTruthy();
-      expect(getByText(/2 shifts \/ day/i)).toBeTruthy();
+      expect(getByText(/Day & night/i)).toBeTruthy();
     });
 
     it('should show swipe hints on active card', () => {
       const { getByText } = renderWithProviders(<PremiumShiftSystemScreen />);
 
-      expect(getByText('← Skip')).toBeTruthy();
-      expect(getByText('Select →')).toBeTruthy();
-      expect(getByText('↑ Info')).toBeTruthy();
+      expect(getByText('← Next option')).toBeTruthy();
+      expect(getByText('This one →')).toBeTruthy();
+      expect(getByText('↑ Learn more')).toBeTruthy();
     });
 
     it('should render card icon', () => {
@@ -214,7 +214,7 @@ describe('PremiumShiftSystemScreen', () => {
       const { getByText } = renderWithProviders(<PremiumShiftSystemScreen />);
 
       // 2-shift description
-      expect(getByText(/Two 12-hour shifts per day/i)).toBeTruthy();
+      expect(getByText(/Your workplace runs two 12-hour shifts/i)).toBeTruthy();
     });
   });
 
@@ -236,8 +236,8 @@ describe('PremiumShiftSystemScreen', () => {
       const { getByText } = renderWithProviders(<PremiumShiftSystemScreen />);
 
       // Title and subtitle should render with entrance animations
-      expect(getByText('Choose Your Shift System')).toBeTruthy();
-      expect(getByText(/Swipe right to select, left to skip, or up for details/i)).toBeTruthy();
+      expect(getByText('How Many Shifts Does Your Site Run?')).toBeTruthy();
+      expect(getByText(/Swipe right to choose, left to see more/i)).toBeTruthy();
     });
   });
 
