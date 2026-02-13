@@ -1103,10 +1103,13 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
         {/* Title */}
         <Text style={styles.title}>Build Your Rotation</Text>
         <Text style={styles.subtitle}>
+          Set how many shifts you work, then how many days off you get—we&apos;ll show you what it
+          looks like
+        </Text>
+        <Text style={styles.subtitleSecondary}>
           {shiftSystem === ShiftSystem.TWO_SHIFT
             ? 'Day & night shifts'
-            : 'Morning, afternoon & night shifts'}{' '}
-          • Set how many of each you work
+            : 'Morning, afternoon & night shifts'}
         </Text>
 
         {/* Live Preview Card */}
@@ -1395,6 +1398,15 @@ const styles = StyleSheet.create({
         fontFamily: 'sans-serif-medium',
       },
     }),
+  },
+  subtitleSecondary: {
+    fontSize: 14,
+    color: theme.colors.sacredGold,
+    textAlign: 'center',
+    marginTop: theme.spacing.xs,
+    marginBottom: theme.spacing.lg,
+    paddingHorizontal: theme.spacing.lg,
+    fontWeight: '600',
   },
   previewCard: {
     marginBottom: theme.spacing.xl,

@@ -118,7 +118,7 @@ describe('PremiumCustomPatternScreen', () => {
     it('should render title and subtitle', () => {
       const { getByText } = renderWithContext(<PremiumCustomPatternScreen />);
       expect(getByText('Build Your Rotation')).toBeTruthy();
-      expect(getByText(/Set how many of each you work/)).toBeTruthy();
+      expect(getByText(/Set how many shifts you work/)).toBeTruthy();
     });
 
     it('should render progress header with step 4 of 10', () => {
@@ -376,7 +376,7 @@ describe('PremiumCustomPatternScreen', () => {
 
     it('should have descriptive titles and subtitles', () => {
       const { getByText } = renderWithContext(<PremiumCustomPatternScreen />);
-      expect(getByText(/Set how many of each you work/)).toBeTruthy();
+      expect(getByText(/Set how many shifts you work/)).toBeTruthy();
     });
   });
 
