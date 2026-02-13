@@ -1108,8 +1108,8 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
         </Text>
         <Text style={styles.subtitleSecondary}>
           {shiftSystem === ShiftSystem.TWO_SHIFT
-            ? 'Day & night shifts'
-            : 'Morning, afternoon & night shifts'}
+            ? 'Day, Night & Off'
+            : 'Morning, Afternoon, Night & Off'}
         </Text>
 
         {/* Live Preview Card */}
