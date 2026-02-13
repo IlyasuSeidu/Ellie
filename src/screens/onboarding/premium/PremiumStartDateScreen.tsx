@@ -547,12 +547,11 @@ const getShiftTypeForDate = (
   return 'off';
 };
 
-// Get tomorrow's date as default
-const getTomorrowDate = (): string => {
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  tomorrow.setHours(0, 0, 0, 0);
-  return tomorrow.toISOString().split('T')[0];
+// Get today's date as default
+const getTodayDate = (): string => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return today.toISOString().split('T')[0];
 };
 
 // Interactive Calendar Component
@@ -1830,8 +1829,8 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   const navigation = useNavigation<NavigationProp>();
   const { data, updateData } = useOnboarding();
   const shiftSystem: ShiftSystem = (data.shiftSystem as ShiftSystem) || ShiftSystem.TWO_SHIFT;
-  // Smart default: tomorrow
-  const [selectedDate, setSelectedDate] = useState<string | null>(getTomorrowDate());
+  // Smart default: today
+  const [selectedDate, setSelectedDate] = useState<string | null>(getTodayDate());
   const [reducedMotion, setReducedMotion] = useState(false);
   const screenOpacity = useSharedValue(1);
   const screenSlideX = useSharedValue(0);
