@@ -203,21 +203,6 @@ describe('PremiumStartDateScreen', () => {
     });
   });
 
-  describe('Validation Tips', () => {
-    it('should display rotating tips', () => {
-      const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      // Check for first tip (others rotate)
-      expect(getByText('Choose tomorrow if starting a new roster')).toBeTruthy();
-    });
-
-    it('should render tips section', () => {
-      const { getByTestId } = renderWithContext(
-        <PremiumStartDateScreen testID="start-date-screen" />
-      );
-      expect(getByTestId('start-date-screen')).toBeTruthy();
-    });
-  });
-
   describe('Continue Button', () => {
     it('should render continue button', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);

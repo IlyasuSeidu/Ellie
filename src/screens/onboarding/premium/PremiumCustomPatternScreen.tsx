@@ -694,11 +694,6 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
       >
         {/* Header */}
         <View style={styles.previewHeader}>
-          <Image
-            source={require('../../../../assets/onboarding/icons/consolidated/cycle-preview-calendar-grid.png')}
-            style={styles.previewHeaderIcon}
-            resizeMode="contain"
-          />
           <Text style={styles.previewTitle}>Your Rotation Preview</Text>
           <Text style={styles.previewSubtitle}>See what your schedule looks like</Text>
         </View>
@@ -1231,6 +1226,12 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               </>
             )}
           </View>
+
+          {/* Guide to preview */}
+          <Text style={styles.previewGuide}>
+            <Ionicons name="arrow-down" size={16} color={theme.colors.sacredGold} /> See your
+            rotation below
+          </Text>
         </View>
 
         {/* Live Preview Card */}
@@ -1681,6 +1682,14 @@ const styles = StyleSheet.create({
         elevation: 12,
       },
     }),
+  },
+  previewGuide: {
+    fontSize: 14,
+    color: theme.colors.sacredGold,
+    textAlign: 'center',
+    marginTop: theme.spacing.lg,
+    fontWeight: '600',
+    fontStyle: 'italic',
   },
   sliderContainer: {
     gap: theme.spacing.md,
