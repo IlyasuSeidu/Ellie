@@ -125,17 +125,19 @@ describe('PremiumPhaseSelectorScreen', () => {
   describe('Initial Rendering', () => {
     it('should render the screen', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
-      expect(getByText('Choose Your Current Phase')).toBeTruthy();
+      expect(getByText('What shift are you on right now?')).toBeTruthy();
     });
 
     it('should render title for phase selection', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
-      expect(getByText('Choose Your Current Phase')).toBeTruthy();
+      expect(getByText('What shift are you on right now?')).toBeTruthy();
     });
 
     it('should render subtitle with instructions', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
-      expect(getByText('Swipe right to select, left to skip, or up for details')).toBeTruthy();
+      expect(
+        getByText('Swipe right to select, left to see next, or up for more info')
+      ).toBeTruthy();
     });
 
     it('should render progress header with step 5 of 11', () => {
@@ -145,14 +147,16 @@ describe('PremiumPhaseSelectorScreen', () => {
 
     it('should render without crashing', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
-      expect(getByText('Choose Your Current Phase')).toBeTruthy();
+      expect(getByText('What shift are you on right now?')).toBeTruthy();
     });
 
     it('should render all UI elements correctly', () => {
       const { getByText, getByTestId } = renderWithProvider(<PremiumPhaseSelectorScreen />);
       expect(getByTestId('progress-header')).toBeTruthy();
-      expect(getByText('Choose Your Current Phase')).toBeTruthy();
-      expect(getByText('Swipe right to select, left to skip, or up for details')).toBeTruthy();
+      expect(getByText('What shift are you on right now?')).toBeTruthy();
+      expect(
+        getByText('Swipe right to select, left to see next, or up for more info')
+      ).toBeTruthy();
     });
   });
 
@@ -161,7 +165,7 @@ describe('PremiumPhaseSelectorScreen', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
 
       await waitFor(() => {
-        expect(getByText('Choose Your Current Phase')).toBeTruthy();
+        expect(getByText('What shift are you on right now?')).toBeTruthy();
       });
     });
 
@@ -169,7 +173,7 @@ describe('PremiumPhaseSelectorScreen', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
 
       await waitFor(() => {
-        expect(getByText('Choose Your Current Phase')).toBeTruthy();
+        expect(getByText('What shift are you on right now?')).toBeTruthy();
       });
     });
 
@@ -177,7 +181,7 @@ describe('PremiumPhaseSelectorScreen', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
 
       await waitFor(() => {
-        expect(getByText('Choose Your Current Phase')).toBeTruthy();
+        expect(getByText('What shift are you on right now?')).toBeTruthy();
       });
     });
   });
@@ -185,19 +189,21 @@ describe('PremiumPhaseSelectorScreen', () => {
   describe('Two-Stage Selection Flow', () => {
     it('should start in PHASE selection stage', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
-      expect(getByText('Choose Your Current Phase')).toBeTruthy();
+      expect(getByText('What shift are you on right now?')).toBeTruthy();
     });
 
     it('should show phase selection instructions', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
-      expect(getByText('Swipe right to select, left to skip, or up for details')).toBeTruthy();
+      expect(
+        getByText('Swipe right to select, left to see next, or up for more info')
+      ).toBeTruthy();
     });
 
     it('should render the screen for multi-day phases', async () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
 
       await waitFor(() => {
-        expect(getByText('Choose Your Current Phase')).toBeTruthy();
+        expect(getByText('What shift are you on right now?')).toBeTruthy();
       });
     });
   });
@@ -205,19 +211,21 @@ describe('PremiumPhaseSelectorScreen', () => {
   describe('Accessibility', () => {
     it('should have accessible labels', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
-      expect(getByText('Choose Your Current Phase')).toBeTruthy();
+      expect(getByText('What shift are you on right now?')).toBeTruthy();
     });
 
     it('should have descriptive instructions', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
-      expect(getByText('Swipe right to select, left to skip, or up for details')).toBeTruthy();
+      expect(
+        getByText('Swipe right to select, left to see next, or up for more info')
+      ).toBeTruthy();
     });
 
     it('should support reduced motion settings', async () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
 
       await waitFor(() => {
-        expect(getByText('Choose Your Current Phase')).toBeTruthy();
+        expect(getByText('What shift are you on right now?')).toBeTruthy();
       });
     });
   });
@@ -227,7 +235,7 @@ describe('PremiumPhaseSelectorScreen', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
 
       await waitFor(() => {
-        expect(getByText('Choose Your Current Phase')).toBeTruthy();
+        expect(getByText('What shift are you on right now?')).toBeTruthy();
       });
     });
 
@@ -235,7 +243,7 @@ describe('PremiumPhaseSelectorScreen', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
 
       await waitFor(() => {
-        expect(getByText('Choose Your Current Phase')).toBeTruthy();
+        expect(getByText('What shift are you on right now?')).toBeTruthy();
       });
     });
 
@@ -243,7 +251,7 @@ describe('PremiumPhaseSelectorScreen', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
 
       await waitFor(() => {
-        expect(getByText('Choose Your Current Phase')).toBeTruthy();
+        expect(getByText('What shift are you on right now?')).toBeTruthy();
       });
     });
   });
@@ -252,14 +260,14 @@ describe('PremiumPhaseSelectorScreen', () => {
     it('should render consistently with default data', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
       expect(getByText('Step 5 of 11')).toBeTruthy();
-      expect(getByText('Choose Your Current Phase')).toBeTruthy();
+      expect(getByText('What shift are you on right now?')).toBeTruthy();
     });
 
     it('should render with shift system data', async () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
 
       await waitFor(() => {
-        expect(getByText('Choose Your Current Phase')).toBeTruthy();
+        expect(getByText('What shift are you on right now?')).toBeTruthy();
       });
     });
 
@@ -267,7 +275,7 @@ describe('PremiumPhaseSelectorScreen', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
 
       await waitFor(() => {
-        expect(getByText('Choose Your Current Phase')).toBeTruthy();
+        expect(getByText('What shift are you on right now?')).toBeTruthy();
       });
     });
   });
@@ -277,7 +285,7 @@ describe('PremiumPhaseSelectorScreen', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
 
       await waitFor(() => {
-        expect(getByText('Choose Your Current Phase')).toBeTruthy();
+        expect(getByText('What shift are you on right now?')).toBeTruthy();
       });
     });
 
@@ -285,7 +293,7 @@ describe('PremiumPhaseSelectorScreen', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
 
       await waitFor(() => {
-        expect(getByText('Choose Your Current Phase')).toBeTruthy();
+        expect(getByText('What shift are you on right now?')).toBeTruthy();
       });
     });
 
@@ -293,7 +301,7 @@ describe('PremiumPhaseSelectorScreen', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
 
       await waitFor(() => {
-        expect(getByText('Choose Your Current Phase')).toBeTruthy();
+        expect(getByText('What shift are you on right now?')).toBeTruthy();
       });
     });
   });
@@ -301,19 +309,21 @@ describe('PremiumPhaseSelectorScreen', () => {
   describe('Styling and Theme', () => {
     it('should use Sacred theme colors', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
-      expect(getByText('Choose Your Current Phase')).toBeTruthy();
+      expect(getByText('What shift are you on right now?')).toBeTruthy();
     });
 
     it('should match Shift System screen layout', () => {
       const { getByTestId, getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
       expect(getByTestId('progress-header')).toBeTruthy();
-      expect(getByText('Choose Your Current Phase')).toBeTruthy();
-      expect(getByText('Swipe right to select, left to skip, or up for details')).toBeTruthy();
+      expect(getByText('What shift are you on right now?')).toBeTruthy();
+      expect(
+        getByText('Swipe right to select, left to see next, or up for more info')
+      ).toBeTruthy();
     });
 
     it('should render with proper spacing and layout', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
-      expect(getByText('Choose Your Current Phase')).toBeTruthy();
+      expect(getByText('What shift are you on right now?')).toBeTruthy();
     });
   });
 });

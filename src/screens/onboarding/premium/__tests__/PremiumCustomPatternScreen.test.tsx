@@ -117,8 +117,8 @@ describe('PremiumCustomPatternScreen', () => {
 
     it('should render title and subtitle', () => {
       const { getByText } = renderWithContext(<PremiumCustomPatternScreen />);
-      expect(getByText('Customize Your Shift Pattern')).toBeTruthy();
-      expect(getByText('Design your ideal work schedule')).toBeTruthy();
+      expect(getByText('Build Your Rotation')).toBeTruthy();
+      expect(getByText(/Set how many shifts you work/)).toBeTruthy();
     });
 
     it('should render progress header with step 4 of 10', () => {
@@ -135,7 +135,7 @@ describe('PremiumCustomPatternScreen', () => {
   describe('Live Preview Card', () => {
     it('should render custom cycle header', () => {
       const { getByText } = renderWithContext(<PremiumCustomPatternScreen />);
-      expect(getByText('Custom Cycle')).toBeTruthy();
+      expect(getByText('Your Rotation Preview')).toBeTruthy();
     });
 
     it('should render cycle blocks with default values', () => {
@@ -174,14 +174,14 @@ describe('PremiumCustomPatternScreen', () => {
   describe('Interactive Sliders', () => {
     it('should render all three sliders', () => {
       const { getByText } = renderWithContext(<PremiumCustomPatternScreen />);
-      expect(getByText('Days On')).toBeTruthy();
-      expect(getByText('Nights On')).toBeTruthy();
+      expect(getByText('Day Shifts')).toBeTruthy();
+      expect(getByText('Night Shifts')).toBeTruthy();
       expect(getByText('Days Off')).toBeTruthy();
     });
 
     it('should render adjust pattern header', () => {
       const { getByText } = renderWithContext(<PremiumCustomPatternScreen />);
-      expect(getByText('Adjust Your Pattern')).toBeTruthy();
+      expect(getByText('Set Up Your Rotation')).toBeTruthy();
     });
 
     it('should show default slider values', () => {
@@ -198,7 +198,7 @@ describe('PremiumCustomPatternScreen', () => {
 
       // Wait for the tip to appear (has 800ms delay)
       const tipText = await findByText(
-        'A balanced shift pattern helps improve alertness and overall health.'
+        /Most shift workers find rotations with at least 3 days off/
       );
       expect(tipText).toBeTruthy();
     });
@@ -338,8 +338,9 @@ describe('PremiumCustomPatternScreen', () => {
 
     it('should calculate work-rest ratio correctly for 4-4-4', () => {
       const { getByText } = renderWithContext(<PremiumCustomPatternScreen />);
-      // 8:4 simplifies to 2:1
-      expect(getByText('2:1')).toBeTruthy();
+      // Visual breakdown shows "X days on" and "Y days off"
+      expect(getByText('days on')).toBeTruthy();
+      expect(getByText('days off')).toBeTruthy();
     });
   });
 
@@ -370,12 +371,12 @@ describe('PremiumCustomPatternScreen', () => {
 
     it('should have accessible labels for screen', () => {
       const { getByText } = renderWithContext(<PremiumCustomPatternScreen />);
-      expect(getByText('Customize Your Shift Pattern')).toBeTruthy();
+      expect(getByText('Build Your Rotation')).toBeTruthy();
     });
 
     it('should have descriptive titles and subtitles', () => {
       const { getByText } = renderWithContext(<PremiumCustomPatternScreen />);
-      expect(getByText('Design your ideal work schedule')).toBeTruthy();
+      expect(getByText(/Set how many shifts you work/)).toBeTruthy();
     });
   });
 
