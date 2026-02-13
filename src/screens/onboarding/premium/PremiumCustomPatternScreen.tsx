@@ -1103,27 +1103,11 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
         {/* Title */}
         <Text style={styles.title}>Build Your Rotation</Text>
         <Text style={styles.subtitle}>
-          Set how many shifts you work, then how many days off you get—we&apos;ll show you what it
-          looks like
+          {shiftSystem === ShiftSystem.TWO_SHIFT
+            ? 'Day & night shifts'
+            : 'Morning, afternoon & night shifts'}{' '}
+          • Set how many of each you work
         </Text>
-
-        {/* Context Card */}
-        <View style={styles.contextCard}>
-          <View style={styles.contextRow}>
-            <Ionicons name="checkmark-circle" size={20} color={theme.colors.success} />
-            <Text style={styles.contextText}>
-              You picked:{' '}
-              <Text style={styles.contextBold}>
-                {shiftSystem === ShiftSystem.TWO_SHIFT
-                  ? '2-shift system (day & night)'
-                  : '3-shift system (morning, afternoon & night)'}
-              </Text>
-            </Text>
-          </View>
-          <Text style={styles.contextHelper}>
-            Now choose how long you work each shift, and how many days off you get
-          </Text>
-        </View>
 
         {/* Live Preview Card */}
         <LivePreviewCard
@@ -1411,36 +1395,6 @@ const styles = StyleSheet.create({
         fontFamily: 'sans-serif-medium',
       },
     }),
-  },
-  contextCard: {
-    backgroundColor: theme.colors.opacity.gold10,
-    borderRadius: 16,
-    padding: theme.spacing.md,
-    marginBottom: theme.spacing.lg,
-    borderLeftWidth: 4,
-    borderLeftColor: theme.colors.sacredGold,
-    marginHorizontal: theme.spacing.md,
-  },
-  contextRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.spacing.sm,
-    marginBottom: theme.spacing.xs,
-  },
-  contextText: {
-    fontSize: 14,
-    color: theme.colors.dust,
-    flex: 1,
-  },
-  contextBold: {
-    fontWeight: 'bold',
-    color: theme.colors.paper,
-  },
-  contextHelper: {
-    fontSize: 13,
-    color: theme.colors.dust,
-    marginLeft: 28,
-    fontStyle: 'italic',
   },
   previewCard: {
     marginBottom: theme.spacing.xl,
