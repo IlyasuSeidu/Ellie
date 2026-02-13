@@ -100,8 +100,10 @@ describe('PremiumStartDateScreen', () => {
 
     it('should render title and subtitle', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('Select Your Start Date')).toBeTruthy();
-      expect(getByText('Choose when your shift cycle begins')).toBeTruthy();
+      expect(getByText('When Does Your Rotation Start?')).toBeTruthy();
+      expect(
+        getByText('Pick the date you want your calendar to start from—most people choose today')
+      ).toBeTruthy();
     });
 
     it('should render progress header correctly', () => {
@@ -225,7 +227,7 @@ describe('PremiumStartDateScreen', () => {
   describe('Data Management', () => {
     it('should handle pattern data from context', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('Select Your Start Date')).toBeTruthy();
+      expect(getByText('When Does Your Rotation Start?')).toBeTruthy();
     });
 
     it('should work with OnboardingProvider', () => {
@@ -266,19 +268,21 @@ describe('PremiumStartDateScreen', () => {
 
     it('should have accessible labels', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('Select Your Start Date')).toBeTruthy();
+      expect(getByText('When Does Your Rotation Start?')).toBeTruthy();
     });
 
     it('should have descriptive titles and subtitles', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('Choose when your shift cycle begins')).toBeTruthy();
+      expect(
+        getByText('Pick the date you want your calendar to start from—most people choose today')
+      ).toBeTruthy();
     });
   });
 
   describe('Edge Cases', () => {
     it('should handle default pattern values', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('Select Your Start Date')).toBeTruthy();
+      expect(getByText('When Does Your Rotation Start?')).toBeTruthy();
     });
 
     it('should render without errors', () => {
@@ -290,8 +294,10 @@ describe('PremiumStartDateScreen', () => {
 
     it('should display all UI elements correctly', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('Select Your Start Date')).toBeTruthy();
-      expect(getByText('Choose when your shift cycle begins')).toBeTruthy();
+      expect(getByText('When Does Your Rotation Start?')).toBeTruthy();
+      expect(
+        getByText('Pick the date you want your calendar to start from—most people choose today')
+      ).toBeTruthy();
     });
   });
 });

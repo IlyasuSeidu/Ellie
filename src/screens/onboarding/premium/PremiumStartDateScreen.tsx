@@ -554,6 +554,37 @@ const getTodayDate = (): string => {
   return today.toISOString().split('T')[0];
 };
 
+// Get user-friendly phase label
+const getPhaseLabel = (
+  currentPhase: Phase | null | undefined,
+  selectedDay: number | null | undefined
+): string => {
+  if (!currentPhase) return 'your current shift';
+
+  // Single-day phases or no specific day selected
+  const labels: Record<Phase, string> = {
+    day: 'Day Shift',
+    night: 'Night Shift',
+    morning: 'Morning Shift',
+    afternoon: 'Afternoon Shift',
+    off: 'Days Off',
+  };
+
+  // If no specific day, return simple label
+  if (!selectedDay) return labels[currentPhase];
+
+  // Multi-day phases with specific day: "Day 3 of Night Shifts"
+  const pluralLabels: Record<Phase, string> = {
+    day: 'Day Shifts',
+    night: 'Night Shifts',
+    morning: 'Morning Shifts',
+    afternoon: 'Afternoon Shifts',
+    off: 'Days Off',
+  };
+
+  return `Day ${selectedDay} of ${pluralLabels[currentPhase]}`;
+};
+
 // Interactive Calendar Component
 const InteractiveCalendar: React.FC<CalendarProps> = ({
   selectedDate,
@@ -1784,7 +1815,11 @@ const ContinueButton: React.FC<{
 };
 
 // Header Component with Entrance Animation
-const HeaderSection: React.FC<{ reducedMotion: boolean }> = ({ reducedMotion }) => {
+const HeaderSection: React.FC<{
+  reducedMotion: boolean;
+  currentPhase?: Phase | null;
+  selectedDay?: number | null;
+}> = ({ reducedMotion, currentPhase, selectedDay }) => {
   const titleOpacity = useSharedValue(0);
   const subtitleOpacity = useSharedValue(0);
 
@@ -1802,14 +1837,17 @@ const HeaderSection: React.FC<{ reducedMotion: boolean }> = ({ reducedMotion }) 
     opacity: reducedMotion ? 1 : subtitleOpacity.value,
   }));
 
+  // Create context-aware subtitle
+  const subtitle = currentPhase
+    ? `You're on ${getPhaseLabel(currentPhase, selectedDay)} right now—pick today or any date, and we'll map out your whole calendar from there`
+    : 'Pick the date you want your calendar to start from—most people choose today';
+
   return (
     <>
       <Animated.Text style={[styles.title, titleAnimatedStyle]}>
-        Select Your Start Date
+        When Does Your Rotation Start?
       </Animated.Text>
-      <Animated.Text style={[styles.subtitle, subtitleAnimatedStyle]}>
-        Choose when your shift cycle begins
-      </Animated.Text>
+      <Animated.Text style={[styles.subtitle, subtitleAnimatedStyle]}>{subtitle}</Animated.Text>
     </>
   );
 };
@@ -1981,7 +2019,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
           showsVerticalScrollIndicator={false}
         >
           {/* Header with entrance animation */}
-          <HeaderSection reducedMotion={reducedMotion} />
+          <HeaderSection reducedMotion={reducedMotion} currentPhase={null} selectedDay={null} />
 
           {/* Interactive Calendar */}
           <InteractiveCalendar
@@ -1992,6 +2030,22 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
             phaseOffset={data.phaseOffset ?? 0}
             shiftSystem={shiftSystem}
           />
+
+          {/* Guidance Section */}
+          <View style={styles.guidanceSection}>
+            <View style={styles.guidanceHeader}>
+              <Ionicons
+                name="information-circle-outline"
+                size={22}
+                color={theme.colors.sacredGold}
+              />
+              <Text style={styles.guidanceTitle}>Picking your date</Text>
+            </View>
+            <Text style={styles.guidanceText}>
+              Most people pick today so their calendar starts right away. But you can pick any
+              date—we&apos;ll calculate your rotation from there.
+            </Text>
+          </View>
         </ScrollView>
       </Animated.View>
 
@@ -2479,5 +2533,30 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 2,
     textAlign: 'center',
+  },
+  // Guidance Section
+  guidanceSection: {
+    marginTop: theme.spacing.lg,
+    padding: theme.spacing.lg,
+    backgroundColor: theme.colors.opacity.gold10,
+    borderRadius: 16,
+    borderLeftWidth: 4,
+    borderLeftColor: theme.colors.sacredGold,
+  },
+  guidanceHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.sm,
+    marginBottom: theme.spacing.sm,
+  },
+  guidanceTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: theme.colors.sacredGold,
+  },
+  guidanceText: {
+    fontSize: 14,
+    color: theme.colors.dust,
+    lineHeight: 20,
   },
 });
