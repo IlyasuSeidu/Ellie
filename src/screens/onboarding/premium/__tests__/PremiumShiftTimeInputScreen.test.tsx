@@ -71,8 +71,10 @@ describe('PremiumShiftTimeInputScreen', () => {
 
     it('should render title and subtitle', () => {
       const { getByText } = renderWithProviders(<PremiumShiftTimeInputScreen />);
-      expect(getByText('Set Your Shift Times')).toBeTruthy();
-      expect(getByText('When do your shifts typically start?')).toBeTruthy();
+      expect(getByText('When Do Your Shifts Start?')).toBeTruthy();
+      expect(
+        getByText(/Pick what time you clock in each day.*track your hours and set reminders/i)
+      ).toBeTruthy();
     });
 
     it('should render progress header with step 6 of 7', () => {
@@ -88,7 +90,15 @@ describe('PremiumShiftTimeInputScreen', () => {
 
     it('should render preset section header', () => {
       const { getByText } = renderWithProviders(<PremiumShiftTimeInputScreen />);
-      expect(getByText('Choose a Preset')).toBeTruthy();
+      expect(getByText('Pick a Common Start Time')).toBeTruthy();
+    });
+
+    it('should render guidance card with shift type definitions', () => {
+      const { getByText } = renderWithProviders(<PremiumShiftTimeInputScreen />);
+      expect(getByText('About shift times')).toBeTruthy();
+      expect(getByText(/rotation stays the same/i)).toBeTruthy();
+      // Should show shift type definitions (varies by shift system)
+      expect(getByText(/Day vs Night:|Shift types:/i)).toBeTruthy();
     });
   });
 
@@ -125,8 +135,7 @@ describe('PremiumShiftTimeInputScreen', () => {
 
       // Custom input section should appear
       await waitFor(() => {
-        expect(getByText('Shift Start Time')).toBeTruthy();
-        expect(getByText(/Shift Duration/i)).toBeTruthy();
+        expect(getByText('What time do you usually clock in?')).toBeTruthy();
       });
     });
 
@@ -150,7 +159,7 @@ describe('PremiumShiftTimeInputScreen', () => {
       fireEvent.press(getByText(/Custom Time/i));
 
       await waitFor(() => {
-        expect(getByText('Shift Start Time')).toBeTruthy();
+        expect(getByText('What time do you usually clock in?')).toBeTruthy();
       });
     });
 
@@ -162,8 +171,8 @@ describe('PremiumShiftTimeInputScreen', () => {
       fireEvent.press(getByText(/Custom Time/i));
 
       await waitFor(() => {
-        expect(getByPlaceholderText('HH')).toBeTruthy();
-        expect(getByPlaceholderText('MM')).toBeTruthy();
+        expect(getByPlaceholderText('06')).toBeTruthy();
+        expect(getByPlaceholderText('00')).toBeTruthy();
       });
     });
 
@@ -179,30 +188,6 @@ describe('PremiumShiftTimeInputScreen', () => {
         expect(pmButtons.length).toBeGreaterThan(0);
       });
     });
-
-    it('should render duration selector with appropriate option for shift system', async () => {
-      const { getByText } = renderWithProviders(<PremiumShiftTimeInputScreen />);
-
-      fireEvent.press(getByText(/Custom Time/i));
-
-      await waitFor(() => {
-        // Default mock data uses 2-shift system, so only 12 Hours should be visible
-        expect(getByText('12 Hours')).toBeTruthy();
-      });
-    });
-  });
-
-  describe('Shift Duration Selection', () => {
-    it('should select correct duration by default based on shift system', async () => {
-      const { getByText } = renderWithProviders(<PremiumShiftTimeInputScreen />);
-
-      fireEvent.press(getByText(/Custom Time/i));
-
-      await waitFor(() => {
-        // 12 Hours should be selected by default for 2-shift system
-        expect(getByText('12 Hours')).toBeTruthy();
-      });
-    });
   });
 
   describe('Live Preview', () => {
@@ -213,7 +198,7 @@ describe('PremiumShiftTimeInputScreen', () => {
       fireEvent.press(getByText('Custom Time'));
 
       await waitFor(() => {
-        expect(getByText('Shift Start Time')).toBeTruthy();
+        expect(getByText('What time do you usually clock in?')).toBeTruthy();
       });
 
       // Enter valid time (already defaults to 06:00 AM)
@@ -230,7 +215,7 @@ describe('PremiumShiftTimeInputScreen', () => {
       fireEvent.press(getByText('Custom Time'));
 
       await waitFor(() => {
-        expect(getByText('Shift Start Time')).toBeTruthy();
+        expect(getByText('What time do you usually clock in?')).toBeTruthy();
       });
 
       // Default is 06:00 AM with 12 hour duration, so should show 6:00 AM → 6:00 PM
@@ -248,7 +233,7 @@ describe('PremiumShiftTimeInputScreen', () => {
       fireEvent.press(getByText(/6:00 AM/i));
 
       await waitFor(() => {
-        expect(getByText(/Day Shift Detected/i)).toBeTruthy();
+        expect(getByText(/Daytime start/i)).toBeTruthy();
       });
     });
 
@@ -259,7 +244,7 @@ describe('PremiumShiftTimeInputScreen', () => {
       fireEvent.press(getByText(/10:00 PM/i));
 
       await waitFor(() => {
-        expect(getByText(/Night Shift Detected/i)).toBeTruthy();
+        expect(getByText(/Night start/i)).toBeTruthy();
       });
     });
 
@@ -278,7 +263,9 @@ describe('PremiumShiftTimeInputScreen', () => {
     it('should render tips section', () => {
       const { getByText } = renderWithProviders(<PremiumShiftTimeInputScreen />);
       expect(getByText('Pro Tip')).toBeTruthy();
-      expect(getByText(/Most mining operations use 12-hour shifts/i)).toBeTruthy();
+      expect(
+        getByText(/Most shift workers on 12-hour rotations start at 6 AM or 6 PM/i)
+      ).toBeTruthy();
     });
   });
 
@@ -351,7 +338,7 @@ describe('PremiumShiftTimeInputScreen', () => {
       fireEvent.press(getByText(/Custom Time/i));
 
       await waitFor(async () => {
-        const hoursInput = getByPlaceholderText('HH');
+        const hoursInput = getByPlaceholderText('06');
         fireEvent.changeText(hoursInput, '25');
         fireEvent(hoursInput, 'blur');
 
@@ -369,7 +356,7 @@ describe('PremiumShiftTimeInputScreen', () => {
       fireEvent.press(getByText(/Custom Time/i));
 
       await waitFor(async () => {
-        const minutesInput = getByPlaceholderText('MM');
+        const minutesInput = getByPlaceholderText('00');
         fireEvent.changeText(minutesInput, '75');
         fireEvent(minutesInput, 'blur');
 
@@ -387,7 +374,7 @@ describe('PremiumShiftTimeInputScreen', () => {
       fireEvent.press(getByText(/Custom Time/i));
 
       await waitFor(async () => {
-        const hoursInput = getByPlaceholderText('HH');
+        const hoursInput = getByPlaceholderText('06');
         fireEvent.changeText(hoursInput, '25');
         fireEvent(hoursInput, 'blur');
 
@@ -520,8 +507,8 @@ describe('PremiumShiftTimeInputScreen', () => {
       fireEvent.press(getByText(/Custom Time/i));
 
       await waitFor(() => {
-        const hoursInput = getByPlaceholderText('HH');
-        const minutesInput = getByPlaceholderText('MM');
+        const hoursInput = getByPlaceholderText('06');
+        const minutesInput = getByPlaceholderText('00');
         const amButtons = getAllByText(getByText, 'AM');
 
         fireEvent.changeText(hoursInput, '12');

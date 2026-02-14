@@ -473,8 +473,11 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
             entering={reducedMotion ? undefined : FadeIn.duration(300)}
             style={styles.header}
           >
-            <Text style={styles.title}>Set Your Shift Times</Text>
-            <Text style={styles.subtitle}>When do your shifts typically start?</Text>
+            <Text style={styles.title}>When Do Your Shifts Start?</Text>
+            <Text style={styles.subtitle}>
+              Pick what time you clock in each day—we&apos;ll use this to track your hours and set
+              reminders
+            </Text>
           </Animated.View>
 
           {/* Pattern Summary Card */}
@@ -500,6 +503,41 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
             </Animated.View>
           </Animated.View>
 
+          {/* Guidance Card */}
+          <Animated.View
+            entering={reducedMotion ? undefined : FadeIn.duration(300).delay(100)}
+            style={styles.guidanceCard}
+          >
+            <View style={styles.guidanceHeader}>
+              <Ionicons
+                name="information-circle-outline"
+                size={22}
+                color={theme.colors.sacredGold}
+              />
+              <Text style={styles.guidanceTitle}>About shift times</Text>
+            </View>
+            <Text style={styles.guidanceText}>
+              Your {patternInfo.name} rotation stays the same—but we need to know what time your
+              shifts start so we can track your hours and remind you before each shift.
+            </Text>
+
+            {/* Shift Type Definitions */}
+            <View style={styles.shiftTypeDefinitions}>
+              <Text style={styles.shiftTypeDefinitionsTitle}>
+                {shiftSystem === ShiftSystem.TWO_SHIFT ? 'Day vs Night:' : 'Shift types:'}
+              </Text>
+              {shiftSystem === ShiftSystem.TWO_SHIFT ? (
+                <Text style={styles.shiftTypeDefinitionsText}>
+                  Day shifts start 6 AM–6 PM • Night shifts start 6 PM–6 AM
+                </Text>
+              ) : (
+                <Text style={styles.shiftTypeDefinitionsText}>
+                  Morning: 6 AM–2 PM • Afternoon: 2 PM–10 PM • Night: 10 PM–6 AM
+                </Text>
+              )}
+            </View>
+          </Animated.View>
+
           {/* Preset Shift Time Cards Section */}
           <Animated.View
             entering={reducedMotion ? undefined : FadeIn.duration(300).delay(200)}
@@ -507,7 +545,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
           >
             <View style={styles.presetsSectionHeader}>
               <Ionicons name="time-outline" size={32} color={theme.colors.sacredGold} />
-              <Text style={styles.presetsSectionTitle}>Choose a Preset</Text>
+              <Text style={styles.presetsSectionTitle}>Pick a Common Start Time</Text>
             </View>
 
             <ScrollView
@@ -542,14 +580,17 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
               >
                 {/* Shift Start Time */}
                 <View style={styles.inputRow}>
-                  <Text style={styles.inputLabel}>Shift Start Time</Text>
+                  <View style={styles.inputLabelContainer}>
+                    <Text style={styles.inputLabel}>What time do you usually clock in?</Text>
+                    <Text style={styles.inputHelper}>Use 12-hour format (e.g., 6:00 AM)</Text>
+                  </View>
                   <View style={styles.timeInputContainer}>
                     <TextInput
                       style={[styles.timeInput, timeError && styles.timeInputError]}
                       value={customHours}
                       onChangeText={(value) => handleCustomTimeChange('hours', value)}
                       onBlur={validateCustomTime}
-                      placeholder="HH"
+                      placeholder="06"
                       placeholderTextColor={theme.colors.shadow}
                       keyboardType="number-pad"
                       maxLength={2}
@@ -561,7 +602,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                       value={customMinutes}
                       onChangeText={(value) => handleCustomTimeChange('minutes', value)}
                       onBlur={validateCustomTime}
-                      placeholder="MM"
+                      placeholder="00"
                       placeholderTextColor={theme.colors.shadow}
                       keyboardType="number-pad"
                       maxLength={2}
@@ -603,38 +644,6 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                     </View>
                   </View>
                   {timeError && <Text style={styles.errorText}>{timeError}</Text>}
-                </View>
-
-                {/* Shift Duration Selector */}
-                <View style={styles.inputRow}>
-                  <Text style={styles.inputLabel}>Shift Duration</Text>
-                  <View style={styles.durationSelector}>
-                    {lockedDuration === 12 ? (
-                      <Pressable
-                        style={[styles.durationCard, styles.durationCardSelected]}
-                        disabled
-                      >
-                        <View style={styles.durationCardContent}>
-                          <Ionicons name="time-outline" size={20} color={theme.colors.paper} />
-                          <Text style={[styles.durationText, styles.durationTextSelected]}>
-                            12 Hours
-                          </Text>
-                        </View>
-                      </Pressable>
-                    ) : (
-                      <Pressable
-                        style={[styles.durationCard, styles.durationCardSelected]}
-                        disabled
-                      >
-                        <View style={styles.durationCardContent}>
-                          <Ionicons name="timer-outline" size={20} color={theme.colors.paper} />
-                          <Text style={[styles.durationText, styles.durationTextSelected]}>
-                            8 Hours
-                          </Text>
-                        </View>
-                      </Pressable>
-                    )}
-                  </View>
                 </View>
 
                 {/* Live Preview Card */}
@@ -688,14 +697,14 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                   ]}
                 >
                   {getShiftType() === 'day'
-                    ? '☀️ Day Shift Detected'
+                    ? '☀️ Daytime start'
                     : getShiftType() === 'morning'
-                      ? '🌅 Morning Shift Detected'
+                      ? '🌅 Morning start'
                       : getShiftType() === 'afternoon'
-                        ? '🌤️ Afternoon Shift Detected'
-                        : '🌙 Night Shift Detected'}
+                        ? '🌤️ Afternoon start'
+                        : '🌙 Night start'}
                 </Text>
-                <Text style={styles.detectionHelper}>Based on your start time</Text>
+                <Text style={styles.detectionHelper}>This is when your shift begins</Text>
               </View>
             </Animated.View>
           )}
@@ -712,8 +721,8 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
               <Text style={styles.tipTitle}>Pro Tip</Text>
               <Text style={styles.tipText}>
                 {shiftSystem === ShiftSystem.TWO_SHIFT
-                  ? 'Most mining operations use 12-hour shifts. You can always change this later in settings.'
-                  : 'Most mining operations with 3-shift systems use 8-hour shifts. You can always change this later in settings.'}
+                  ? 'Not sure? Most shift workers on 12-hour rotations start at 6 AM or 6 PM. Pick the closest match—you can adjust it later in settings if needed.'
+                  : 'Not sure? Most 8-hour shift workers start at 6 AM, 2 PM, or 10 PM. Pick the closest match—you can adjust it later in settings if needed.'}
               </Text>
             </View>
           </Animated.View>
@@ -1317,6 +1326,58 @@ const styles = StyleSheet.create({
         elevation: 8,
       },
     }),
+  },
+  // Guidance Card
+  guidanceCard: {
+    marginTop: theme.spacing.lg,
+    marginBottom: theme.spacing.xl,
+    padding: theme.spacing.lg,
+    backgroundColor: theme.colors.opacity.gold10,
+    borderRadius: 16,
+    borderLeftWidth: 4,
+    borderLeftColor: theme.colors.sacredGold,
+  },
+  guidanceHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.sm,
+    marginBottom: theme.spacing.sm,
+  },
+  guidanceTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: theme.colors.sacredGold,
+  },
+  guidanceText: {
+    fontSize: 14,
+    color: theme.colors.dust,
+    lineHeight: 20,
+  },
+  shiftTypeDefinitions: {
+    marginTop: theme.spacing.md,
+    paddingTop: theme.spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: theme.colors.opacity.gold20,
+  },
+  shiftTypeDefinitionsTitle: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: theme.colors.sacredGold,
+    marginBottom: theme.spacing.xs,
+  },
+  shiftTypeDefinitionsText: {
+    fontSize: 12,
+    color: theme.colors.dust,
+    lineHeight: 18,
+  },
+  // Input Helper
+  inputLabelContainer: {
+    gap: theme.spacing.xs,
+  },
+  inputHelper: {
+    fontSize: 12,
+    color: theme.colors.dust,
+    fontStyle: 'italic',
   },
 });
 
