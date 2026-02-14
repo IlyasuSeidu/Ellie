@@ -392,8 +392,9 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     if (onContinue) {
       onContinue();
     }
-    // TODO: Navigate to next screen (Step 7) once it's implemented
-    // Temporarily staying on this screen until Step 7 is ready
+
+    // Navigate to completion screen (Step 8)
+    navigation.navigate('Completion');
   }, [
     isValid,
     selectedPreset,
@@ -404,6 +405,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     duration,
     updateData,
     onContinue,
+    navigation,
   ]);
 
   const handleBack = useCallback(() => {

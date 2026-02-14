@@ -13,11 +13,14 @@ import {
   ScrollView,
   ActivityIndicator,
   AccessibilityInfo,
+  Pressable,
 } from 'react-native';
 import Animated, {
   FadeIn,
   FadeInDown,
   FadeInUp,
+  FadeInRight,
+  FadeOutUp,
   withSpring,
   withTiming,
   withDelay,
@@ -42,23 +45,173 @@ import { ShiftPattern } from '@/types';
 // Animated SVG components
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 
+// Confetti Particle Component
+const ConfettiParticle: React.FC<{ delay: number; angle: number; reducedMotion: boolean }> = ({
+  delay,
+  angle,
+  reducedMotion,
+}) => {
+  const translateX = useSharedValue(0);
+  const translateY = useSharedValue(0);
+  const opacity = useSharedValue(1);
+  const rotation = useSharedValue(0);
+
+  const colors = [
+    theme.colors.sacredGold,
+    '#60A5FA', // Blue
+    '#F59E0B', // Amber
+    '#10B981', // Green
+    '#EC4899', // Pink
+    '#8B5CF6', // Purple
+  ];
+
+  const particleColor = colors[Math.floor(Math.random() * colors.length)];
+
+  useEffect(() => {
+    if (reducedMotion) return;
+
+    translateX.value = withDelay(
+      delay,
+      withTiming(Math.cos(angle) * (Math.random() * 150 + 100), {
+        duration: 1500,
+        easing: Easing.out(Easing.quad),
+      })
+    );
+    translateY.value = withDelay(
+      delay,
+      withTiming(Math.sin(angle) * (Math.random() * 150 + 100) + 300, {
+        duration: 1500,
+        easing: Easing.in(Easing.quad),
+      })
+    );
+    rotation.value = withDelay(delay, withTiming(Math.random() * 720, { duration: 1500 }));
+    opacity.value = withDelay(delay + 1000, withTiming(0, { duration: 500 }));
+  }, [delay, angle, reducedMotion, translateX, translateY, rotation, opacity]);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [
+      { translateX: translateX.value },
+      { translateY: translateY.value },
+      { rotate: `${rotation.value}deg` },
+    ],
+    opacity: opacity.value,
+  }));
+
+  if (reducedMotion) return null;
+
+  return (
+    <Animated.View style={[styles.confettiParticle, animatedStyle]}>
+      <View style={[styles.confettiDot, { backgroundColor: particleColor }]} />
+    </Animated.View>
+  );
+};
+
+// Sparkle Component for checkmark decoration
+const Sparkle: React.FC<{ delay: number; angle: number; reducedMotion: boolean }> = ({
+  delay,
+  angle,
+  reducedMotion,
+}) => {
+  const scale = useSharedValue(0);
+  const opacity = useSharedValue(0);
+
+  useEffect(() => {
+    if (reducedMotion) {
+      scale.value = 1;
+      opacity.value = 0.8;
+      return;
+    }
+
+    scale.value = withDelay(
+      delay,
+      withRepeat(
+        withSequence(withTiming(1, { duration: 400 }), withTiming(0.8, { duration: 400 })),
+        -1,
+        true
+      )
+    );
+    opacity.value = withDelay(delay, withTiming(0.8, { duration: 300 }));
+  }, [delay, reducedMotion, scale, opacity]);
+
+  const sparkleStyle = useAnimatedStyle(() => ({
+    transform: [
+      { translateX: Math.cos(angle) * 70 },
+      { translateY: Math.sin(angle) * 70 },
+      { scale: scale.value },
+    ],
+    opacity: opacity.value,
+  }));
+
+  return (
+    <Animated.View style={[styles.sparkle, sparkleStyle]}>
+      <Ionicons name="sparkles" size={16} color={theme.colors.sacredGold} />
+    </Animated.View>
+  );
+};
+
 export interface PremiumCompletionScreenProps {
   onComplete?: () => void;
   testID?: string;
 }
 
 interface FeaturePill {
+  id: string;
   icon: keyof typeof Ionicons.glyphMap;
-  label: string;
+  text: string;
+  description: string;
+  color: string;
 }
 
 const FEATURE_HIGHLIGHTS: FeaturePill[] = [
-  { icon: 'calendar-outline', label: 'Holiday tracking' },
-  { icon: 'stats-chart-outline', label: 'Shift analytics' },
-  { icon: 'notifications-outline', label: 'Smart notifications' },
-  { icon: 'time-outline', label: 'Shift time tracking' },
-  { icon: 'scale-outline', label: 'Work-life insights' },
-  { icon: 'sync-outline', label: 'Calendar sync' },
+  {
+    id: '1',
+    text: 'Smart shift reminders',
+    icon: 'notifications-outline',
+    description: 'Never miss a shift with intelligent notifications that adapt to your rotation',
+    color: theme.colors.sacredGold,
+  },
+  {
+    id: '2',
+    text: 'Sleep tracking & insights',
+    icon: 'moon-outline',
+    description: 'Optimize your rest between shifts with personalized sleep analytics',
+    color: '#60A5FA', // Blue
+  },
+  {
+    id: '3',
+    text: 'Fatigue monitoring',
+    icon: 'battery-charging-outline',
+    description: 'Track your energy levels and get alerts when fatigue risk is high',
+    color: '#F59E0B', // Amber
+  },
+  {
+    id: '4',
+    text: 'Team coordination',
+    icon: 'people-outline',
+    description: 'See your crew schedule and coordinate handovers seamlessly',
+    color: '#10B981', // Green
+  },
+  {
+    id: '5',
+    text: 'Work-life balance',
+    icon: 'fitness-outline',
+    description: 'Maintain healthy routines with activity and wellness tracking',
+    color: '#EC4899', // Pink
+  },
+  {
+    id: '6',
+    text: 'Earnings calculator',
+    icon: 'calculator-outline',
+    description: 'Automatically calculate overtime, penalties, and shift allowances',
+    color: '#8B5CF6', // Purple
+  },
+  {
+    id: '7',
+    text: 'Meal & hydration',
+    icon: 'restaurant-outline',
+    description: 'Stay healthy with meal timing suggestions and hydration reminders',
+    color: '#14B8A6', // Teal
+  },
 ];
 
 export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = ({
@@ -72,10 +225,12 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
   const [saveError, setSaveError] = useState<string | null>(null);
   const [isSaved, setIsSaved] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [expandedFeature, setExpandedFeature] = useState<string | null>(null);
 
   // Animation values
   const checkmarkProgress = useSharedValue(0);
   const buttonScale = useSharedValue(1);
+  const buttonShadowOpacity = useSharedValue(0.3);
   const glowOpacity = useSharedValue(0);
 
   // Check for reduced motion
@@ -127,7 +282,20 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
 
   const buttonAnimatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: buttonScale.value }],
+    shadowOpacity: buttonShadowOpacity.value,
   }));
+
+  // Button press handlers for micro-animations
+  const handleButtonPressIn = () => {
+    buttonScale.value = withSpring(0.96, { damping: 15, stiffness: 400 });
+    buttonShadowOpacity.value = withTiming(0.5, { duration: 150 });
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  };
+
+  const handleButtonPressOut = () => {
+    buttonScale.value = withSpring(1, { damping: 15, stiffness: 400 });
+    buttonShadowOpacity.value = withTiming(0.3, { duration: 150 });
+  };
 
   // Save onboarding data
   const saveOnboardingData = async (): Promise<void> => {
@@ -183,6 +351,12 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
 
     // Navigate to main app (placeholder - update when Dashboard is created)
     // TODO: navigation.navigate('Dashboard');
+  };
+
+  // Handle feature pill expansion
+  const handleFeaturePillPress = (featureId: string) => {
+    setExpandedFeature(expandedFeature === featureId ? null : featureId);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   };
 
   // Format pattern name for display
@@ -247,6 +421,30 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
           {/* Glow effect */}
           <Animated.View style={[styles.glow, glowStyle]} />
 
+          {/* Confetti explosion */}
+          <View style={styles.confettiContainer} pointerEvents="none">
+            {Array.from({ length: 30 }).map((_, i) => (
+              <ConfettiParticle
+                key={i}
+                delay={1000 + i * 20}
+                angle={(Math.PI * 2 * i) / 30}
+                reducedMotion={reducedMotion}
+              />
+            ))}
+          </View>
+
+          {/* Sparkles around checkmark */}
+          <View style={styles.sparklesContainer}>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Sparkle
+                key={i}
+                delay={1000 + i * 100}
+                angle={(Math.PI * 2 * i) / 6}
+                reducedMotion={reducedMotion}
+              />
+            ))}
+          </View>
+
           {/* SVG Circle and Checkmark */}
           <Svg width={120} height={120} viewBox="0 0 120 120">
             {/* Gradient border circle */}
@@ -300,32 +498,64 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
           </View>
 
           <View style={styles.summaryContent}>
-            {data.name && (
-              <View style={styles.summaryRow}>
-                <Text style={styles.summaryLabel}>Name</Text>
-                <Text style={styles.summaryValue}>{data.name}</Text>
-              </View>
-            )}
-
-            <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>Shift System</Text>
-              <Text style={styles.summaryValue}>{getShiftSystemName()}</Text>
-            </View>
-
-            <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>Rotation</Text>
-              <Text style={styles.summaryValue}>{getPatternName()}</Text>
-            </View>
-
-            <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>Start Date</Text>
-              <Text style={styles.summaryValue}>{formatDate(data.startDate)}</Text>
-            </View>
-
-            <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>Shift Times</Text>
-              <Text style={styles.summaryValue}>{getShiftTimes()}</Text>
-            </View>
+            {(
+              [
+                data.name
+                  ? {
+                      icon: 'person-outline',
+                      label: 'Name',
+                      value: data.name,
+                    }
+                  : undefined,
+                data.company
+                  ? {
+                      icon: 'business-outline',
+                      label: 'Company',
+                      value: data.company,
+                    }
+                  : undefined,
+                {
+                  icon: 'layers-outline',
+                  label: 'Shift System',
+                  value: getShiftSystemName(),
+                },
+                { icon: 'refresh-outline', label: 'Rotation', value: getPatternName() },
+                {
+                  icon: 'calendar-outline',
+                  label: 'Start Date',
+                  value: formatDate(data.startDate),
+                },
+                { icon: 'time-outline', label: 'Shift Times', value: getShiftTimes() },
+              ] as Array<{ icon: string; label: string; value: string } | undefined>
+            )
+              .filter(Boolean)
+              .map((item, index) => {
+                // Type narrowing: After filter(Boolean), item is guaranteed to be defined
+                const summaryItem = item as { icon: string; label: string; value: string };
+                return (
+                  <Animated.View
+                    key={summaryItem.label}
+                    entering={
+                      reducedMotion
+                        ? undefined
+                        : FadeInRight.duration(400)
+                            .delay(800 + index * 100)
+                            .springify()
+                    }
+                    style={styles.summaryRow}
+                  >
+                    <Ionicons
+                      name={summaryItem.icon as keyof typeof Ionicons.glyphMap}
+                      size={20}
+                      color={theme.colors.sacredGold}
+                    />
+                    <View style={styles.summaryRowContent}>
+                      <Text style={styles.summaryLabel}>{summaryItem.label}</Text>
+                      <Text style={styles.summaryValue}>{summaryItem.value || 'Not set'}</Text>
+                    </View>
+                  </Animated.View>
+                );
+              })}
           </View>
         </Animated.View>
 
@@ -342,16 +572,37 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
             contentContainerStyle={styles.featuresScroll}
           >
             {FEATURE_HIGHLIGHTS.map((feature, index) => (
-              <Animated.View
-                key={feature.label}
-                entering={
-                  reducedMotion ? undefined : FadeIn.delay(1500 + index * 100).duration(300)
-                }
-                style={styles.featurePill}
-              >
-                <Ionicons name={feature.icon} size={20} color={theme.colors.sacredGold} />
-                <Text style={styles.featurePillText}>{feature.label}</Text>
-              </Animated.View>
+              <Pressable key={feature.id} onPress={() => handleFeaturePillPress(feature.id)}>
+                <Animated.View
+                  entering={
+                    reducedMotion ? undefined : FadeIn.delay(1500 + index * 100).duration(300)
+                  }
+                  style={[
+                    styles.featurePill,
+                    expandedFeature === feature.id && styles.featurePillExpanded,
+                  ]}
+                >
+                  <View style={styles.featurePillContent}>
+                    <Ionicons name={feature.icon} size={20} color={feature.color} />
+                    <Text style={styles.featurePillText}>{feature.text}</Text>
+                    <Ionicons
+                      name={expandedFeature === feature.id ? 'chevron-up' : 'chevron-down'}
+                      size={16}
+                      color={theme.colors.dust}
+                    />
+                  </View>
+
+                  {expandedFeature === feature.id && (
+                    <Animated.View
+                      entering={reducedMotion ? undefined : FadeInDown.duration(300)}
+                      exiting={reducedMotion ? undefined : FadeOutUp.duration(200)}
+                      style={styles.featurePillDescription}
+                    >
+                      <Text style={styles.featurePillDescriptionText}>{feature.description}</Text>
+                    </Animated.View>
+                  )}
+                </Animated.View>
+              </Pressable>
             ))}
           </ScrollView>
         </Animated.View>
@@ -384,17 +635,24 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
               accessibilityHint="Tap to try saving your data again"
             />
           ) : (
-            <Animated.View style={buttonAnimatedStyle}>
-              <PremiumButton
-                title="Get Started"
-                onPress={handleGetStarted}
-                variant="primary"
-                size="large"
-                disabled={!isSaved}
-                accessibilityLabel="Get started with Ellie"
-                accessibilityHint="Tap to start using the app"
-              />
-            </Animated.View>
+            <Pressable
+              onPressIn={handleButtonPressIn}
+              onPressOut={handleButtonPressOut}
+              onPress={handleGetStarted}
+              disabled={!isSaved}
+            >
+              <Animated.View style={buttonAnimatedStyle}>
+                <PremiumButton
+                  title="Get Started"
+                  onPress={() => {}}
+                  variant="primary"
+                  size="large"
+                  disabled={!isSaved}
+                  accessibilityLabel="Get started with Ellie"
+                  accessibilityHint="Tap to start using the app"
+                />
+              </Animated.View>
+            </Pressable>
           )}
         </Animated.View>
       </ScrollView>
@@ -421,6 +679,31 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.xl,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  confettiContainer: {
+    position: 'absolute',
+    width: '100%',
+    height: 400,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  confettiParticle: {
+    position: 'absolute',
+  },
+  confettiDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  sparklesContainer: {
+    position: 'absolute',
+    width: 120,
+    height: 120,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  sparkle: {
+    position: 'absolute',
   },
   glow: {
     position: 'absolute',
@@ -470,6 +753,13 @@ const styles = StyleSheet.create({
   },
   summaryRow: {
     flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.md,
+    marginBottom: theme.spacing.sm,
+  },
+  summaryRowContent: {
+    flex: 1,
+    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -502,9 +792,6 @@ const styles = StyleSheet.create({
     gap: theme.spacing.sm,
   },
   featurePill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.spacing.xs,
     paddingVertical: theme.spacing.sm,
     paddingHorizontal: theme.spacing.md,
     backgroundColor: theme.colors.darkStone,
@@ -512,10 +799,32 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.colors.sacredGold,
     marginRight: theme.spacing.sm,
+    minWidth: 200,
+  },
+  featurePillExpanded: {
+    borderColor: theme.colors.sacredGold,
+    backgroundColor: theme.colors.softStone,
+  },
+  featurePillContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.xs,
   },
   featurePillText: {
     fontSize: 14,
     color: theme.colors.paper,
+    flex: 1,
+  },
+  featurePillDescription: {
+    marginTop: theme.spacing.sm,
+    paddingTop: theme.spacing.sm,
+    borderTopWidth: 1,
+    borderTopColor: theme.colors.opacity.gold10,
+  },
+  featurePillDescriptionText: {
+    fontSize: 12,
+    color: theme.colors.dust,
+    lineHeight: 18,
   },
   // Error
   errorContainer: {

@@ -14,6 +14,7 @@ import { PremiumCustomPatternScreen } from '@/screens/onboarding/premium/Premium
 import { PremiumPhaseSelectorScreen } from '@/screens/onboarding/premium/PremiumPhaseSelectorScreen';
 import { PremiumStartDateScreen } from '@/screens/onboarding/premium/PremiumStartDateScreen';
 import { PremiumShiftTimeInputScreen } from '@/screens/onboarding/premium/PremiumShiftTimeInputScreen';
+import { PremiumCompletionScreen } from '@/screens/onboarding/premium/PremiumCompletionScreen';
 
 // Define the onboarding stack param list
 export type OnboardingStackParamList = {
@@ -25,7 +26,8 @@ export type OnboardingStackParamList = {
   PhaseSelector: undefined;
   StartDate: undefined;
   ShiftTimeInput: undefined;
-  // TODO: Add remaining 4 screens (Steps 7-10)
+  Completion: undefined;
+  // TODO: Add remaining 3 screens (Steps 9-11)
 };
 
 const Stack = createNativeStackNavigator<OnboardingStackParamList>();
@@ -47,6 +49,7 @@ export const OnboardingNavigator: React.FC = () => {
       <Stack.Screen name="PhaseSelector" component={PremiumPhaseSelectorScreen} />
       <Stack.Screen name="StartDate" component={PremiumStartDateScreen} />
       <Stack.Screen name="ShiftTimeInput" component={PremiumShiftTimeInputScreen} />
+      <Stack.Screen name="Completion" component={PremiumCompletionScreen} />
     </Stack.Navigator>
   );
 };
