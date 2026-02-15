@@ -28,6 +28,7 @@ import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { ChatMessage, Message } from '@/components/onboarding/premium/ChatMessage';
 import { TypingIndicator } from '@/components/onboarding/premium/TypingIndicator';
+import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { ChatInput, QuickReply } from '@/components/onboarding/premium/ChatInput';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
@@ -593,7 +594,10 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
   return (
     <View style={styles.container} testID={testID}>
       {/* Progress Header */}
-      <ProgressHeader currentStep={2} totalSteps={10} />
+      <ProgressHeader
+        currentStep={ONBOARDING_STEPS.INTRODUCTION}
+        totalSteps={TOTAL_ONBOARDING_STEPS}
+      />
 
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

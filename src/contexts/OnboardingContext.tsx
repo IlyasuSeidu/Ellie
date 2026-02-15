@@ -9,9 +9,16 @@ import { ShiftPattern } from '@/types';
 
 export interface OnboardingData {
   // Step 2: Introduction
+  /** User's full name */
   name?: string;
+
+  /** User's occupation/job title - Currently for display only, may be used for backend analytics */
   occupation?: string;
+
+  /** User's company/employer name */
   company?: string;
+
+  /** User's country - Currently for display only, may be used for backend analytics or locale settings */
   country?: string;
 
   // Step 3: Shift Pattern
@@ -39,11 +46,49 @@ export interface OnboardingData {
   startDate?: Date;
   phaseOffset?: number; // Calculated from selected phase
 
-  // Step 7: Shift Times
+  // Step 7: Shift Times (NEW: supports multiple shift types per cycle)
+  shiftTimes?: {
+    // For 2-shift systems (12-hour)
+    dayShift?: {
+      startTime: string; // HH:MM (24-hour)
+      endTime: string; // HH:MM (24-hour)
+      duration: 8 | 12;
+    };
+    nightShift?: {
+      startTime: string; // HH:MM (24-hour)
+      endTime: string; // HH:MM (24-hour)
+      duration: 8 | 12;
+    };
+
+    // For 3-shift systems (8-hour)
+    morningShift?: {
+      startTime: string; // HH:MM (24-hour)
+      endTime: string; // HH:MM (24-hour)
+      duration: 8 | 12;
+    };
+    afternoonShift?: {
+      startTime: string; // HH:MM (24-hour)
+      endTime: string; // HH:MM (24-hour)
+      duration: 8 | 12;
+    };
+    nightShift3?: {
+      // Separate from 2-shift night
+      startTime: string; // HH:MM (24-hour)
+      endTime: string; // HH:MM (24-hour)
+      duration: 8 | 12;
+    };
+  };
+
+  // Legacy fields (DEPRECATED - kept for backwards compatibility only)
+  /** @deprecated Use shiftTimes.dayShift or shiftTimes.nightShift instead */
   shiftStartTime?: string; // HH:MM format (24-hour)
+  /** @deprecated Use shiftTimes.dayShift.endTime or shiftTimes.nightShift.endTime instead */
   shiftEndTime?: string; // HH:MM format (24-hour)
+  /** @deprecated Use shiftTimes.dayShift.duration or shiftTimes.nightShift.duration instead */
   shiftDuration?: 8 | 12; // Hours (locked based on shift system)
+  /** @deprecated Use shiftTimes keys instead */
   shiftType?: 'day' | 'night' | 'morning' | 'afternoon'; // Auto-detected from start time
+  /** @deprecated Use shiftTimes instead */
   isCustomShiftTime?: boolean; // True if user selected custom time
 }
 

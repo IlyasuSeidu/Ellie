@@ -155,8 +155,24 @@ export function calculateShiftDay(date: Date, shiftCycle: ShiftCycle): ShiftDay 
   // Apply phase offset (add to shift the cycle forward)
   daysSinceStart += shiftCycle.phaseOffset;
 
-  // Calculate cycle length
-  const cycleLength = shiftCycle.daysOn + shiftCycle.nightsOn + shiftCycle.daysOff;
+  // Determine if this is a 3-shift system
+  const is3Shift =
+    shiftCycle.shiftSystem === ShiftSystem.THREE_SHIFT ||
+    (shiftCycle.morningOn !== undefined && shiftCycle.morningOn > 0) ||
+    (shiftCycle.afternoonOn !== undefined && shiftCycle.afternoonOn > 0) ||
+    (shiftCycle.nightOn !== undefined && shiftCycle.nightOn > 0);
+
+  // Calculate cycle length based on shift system
+  let cycleLength: number;
+  if (is3Shift) {
+    cycleLength =
+      (shiftCycle.morningOn || 0) +
+      (shiftCycle.afternoonOn || 0) +
+      (shiftCycle.nightOn || 0) +
+      shiftCycle.daysOff;
+  } else {
+    cycleLength = shiftCycle.daysOn + shiftCycle.nightsOn + shiftCycle.daysOff;
+  }
 
   // Handle negative days (before start date + offset)
   if (daysSinceStart < 0) {
@@ -167,26 +183,56 @@ export function calculateShiftDay(date: Date, shiftCycle: ShiftCycle): ShiftDay 
   // Position in current cycle
   const positionInCycle = daysSinceStart % cycleLength;
 
-  // Determine shift type based on position
+  // Determine shift type based on position and shift system
   let shiftType: ShiftType;
   let isWorkDay: boolean;
   let isNightShift: boolean;
 
-  if (positionInCycle < shiftCycle.daysOn) {
-    // Day shift period
-    shiftType = 'day';
-    isWorkDay = true;
-    isNightShift = false;
-  } else if (positionInCycle < shiftCycle.daysOn + shiftCycle.nightsOn) {
-    // Night shift period
-    shiftType = 'night';
-    isWorkDay = true;
-    isNightShift = true;
+  if (is3Shift) {
+    // 3-shift system logic
+    const morningOn = shiftCycle.morningOn || 0;
+    const afternoonOn = shiftCycle.afternoonOn || 0;
+    const nightOn = shiftCycle.nightOn || 0;
+
+    if (positionInCycle < morningOn) {
+      // Morning shift period
+      shiftType = 'morning';
+      isWorkDay = true;
+      isNightShift = false;
+    } else if (positionInCycle < morningOn + afternoonOn) {
+      // Afternoon shift period
+      shiftType = 'afternoon';
+      isWorkDay = true;
+      isNightShift = false;
+    } else if (positionInCycle < morningOn + afternoonOn + nightOn) {
+      // Night shift period (3-shift)
+      shiftType = 'night';
+      isWorkDay = true;
+      isNightShift = true;
+    } else {
+      // Days off period
+      shiftType = 'off';
+      isWorkDay = false;
+      isNightShift = false;
+    }
   } else {
-    // Days off period
-    shiftType = 'off';
-    isWorkDay = false;
-    isNightShift = false;
+    // 2-shift system logic
+    if (positionInCycle < shiftCycle.daysOn) {
+      // Day shift period
+      shiftType = 'day';
+      isWorkDay = true;
+      isNightShift = false;
+    } else if (positionInCycle < shiftCycle.daysOn + shiftCycle.nightsOn) {
+      // Night shift period (2-shift)
+      shiftType = 'night';
+      isWorkDay = true;
+      isNightShift = true;
+    } else {
+      // Days off period
+      shiftType = 'off';
+      isWorkDay = false;
+      isNightShift = false;
+    }
   }
 
   return {

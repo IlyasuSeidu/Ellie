@@ -44,6 +44,7 @@ import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ShiftSystem, Phase, ShiftPattern } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
+import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -1001,7 +1002,10 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <ProgressHeader currentStep={5} totalSteps={11} />
+      <ProgressHeader
+        currentStep={ONBOARDING_STEPS.PHASE_SELECTOR}
+        totalSteps={TOTAL_ONBOARDING_STEPS}
+      />
 
       {/* Title */}
       <Animated.Text style={[styles.title, titleAnimatedStyle]}>

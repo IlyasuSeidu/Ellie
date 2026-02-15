@@ -38,6 +38,7 @@ import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
 import { useOnboarding } from '@/contexts/OnboardingContext';
+import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { ShiftSystem } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 
@@ -709,7 +710,11 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
 
   return (
     <View style={styles.container} testID={testID}>
-      <ProgressHeader currentStep={3} totalSteps={11} testID="progress-header" />
+      <ProgressHeader
+        currentStep={ONBOARDING_STEPS.SHIFT_SYSTEM}
+        totalSteps={TOTAL_ONBOARDING_STEPS}
+        testID="progress-header"
+      />
 
       {/* Title */}
       <Animated.Text style={[styles.title, titleAnimatedStyle]}>

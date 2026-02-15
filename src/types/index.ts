@@ -92,9 +92,10 @@ export interface ShiftPatternConfig {
 /**
  * Shift Type
  *
- * Indicates whether a shift is during the day, night, or a day off.
+ * Indicates the type of shift for a given day.
+ * Supports both 2-shift (day/night) and 3-shift (morning/afternoon/night) systems.
  */
-export type ShiftType = 'day' | 'night' | 'off';
+export type ShiftType = 'day' | 'night' | 'morning' | 'afternoon' | 'off';
 
 /**
  * Shift Day
@@ -118,15 +119,28 @@ export interface ShiftDay {
  * Shift Cycle Configuration
  *
  * Defines the parameters for a shift rotation cycle.
+ * Supports both 2-shift and 3-shift systems.
  */
 export interface ShiftCycle {
   /** The pattern type being used */
   patternType: ShiftPattern;
-  /** Number of consecutive day shifts */
+
+  /** The shift system (2-shift or 3-shift) */
+  shiftSystem?: ShiftSystem;
+
+  /** Number of consecutive day shifts (2-shift system) */
   daysOn: number;
-  /** Number of consecutive night shifts */
+  /** Number of consecutive night shifts (2-shift system) */
   nightsOn: number;
-  /** Number of consecutive days off */
+
+  /** Number of consecutive morning shifts (3-shift system) */
+  morningOn?: number;
+  /** Number of consecutive afternoon shifts (3-shift system) */
+  afternoonOn?: number;
+  /** Number of consecutive night shifts (3-shift system) */
+  nightOn?: number;
+
+  /** Number of consecutive days off (common to both systems) */
   daysOff: number;
   /** Start date of the cycle in YYYY-MM-DD format */
   startDate: string;

@@ -39,6 +39,7 @@ import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ShiftSystem } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
+import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -1041,11 +1042,16 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
           daysOn,
           nightsOn,
           daysOff,
+          // 3-shift fields not used for 2-shift system
         },
       });
     } else {
+      // 3-Shift System
       updateData({
         customPattern: {
+          // IMPORTANT: daysOn/nightsOn set to 0 for 3-shift systems
+          // 3-shift uses morningOn/afternoonOn/nightOn instead
+          // calculateShiftDay() in shiftUtils.ts detects this and uses the correct fields
           daysOn: 0,
           nightsOn: 0,
           morningOn,
@@ -1088,7 +1094,10 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
 
   return (
     <View style={styles.container} testID={testID}>
-      <ProgressHeader currentStep={4} totalSteps={10} />
+      <ProgressHeader
+        currentStep={ONBOARDING_STEPS.CUSTOM_PATTERN}
+        totalSteps={TOTAL_ONBOARDING_STEPS}
+      />
 
       <ScrollView
         style={styles.scrollView}

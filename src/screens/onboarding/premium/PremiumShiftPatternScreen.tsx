@@ -42,6 +42,7 @@ import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ShiftPattern, ShiftSystem } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
+import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -804,7 +805,10 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
 
   return (
     <View style={styles.container} testID={testID}>
-      <ProgressHeader currentStep={4} totalSteps={10} />
+      <ProgressHeader
+        currentStep={ONBOARDING_STEPS.SHIFT_PATTERN}
+        totalSteps={TOTAL_ONBOARDING_STEPS}
+      />
 
       {/* Title */}
       <Animated.Text style={[styles.title, titleStyle]}>

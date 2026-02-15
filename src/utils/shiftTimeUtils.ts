@@ -5,6 +5,8 @@
  * used in the Premium Shift Time Input screen.
  */
 
+import type { OnboardingData } from '@/contexts/OnboardingContext';
+
 /**
  * Convert 12-hour time format to 24-hour format
  * @param time - Time in HH:MM format (12-hour)
@@ -147,4 +149,124 @@ export function parseTimeInput(input: string): { hours: string; minutes: string 
   }
 
   return { hours, minutes };
+}
+
+/**
+ * Determine which shift types are required based on the shift pattern and system
+ *
+ * For 2-shift systems (12-hour):
+ * - Checks if pattern includes day shifts (daysOn > 0)
+ * - Checks if pattern includes night shifts (nightsOn > 0)
+ *
+ * For 3-shift systems (8-hour):
+ * - Checks if pattern includes morning shifts (morningOn > 0)
+ * - Checks if pattern includes afternoon shifts (afternoonOn > 0)
+ * - Checks if pattern includes night shifts (nightOn > 0)
+ *
+ * @param shiftSystem - The shift system ('2-shift' or '3-shift')
+ * @param customPattern - Custom pattern configuration if applicable
+ * @returns Array of required shift types
+ */
+export function getRequiredShiftTypes(
+  shiftSystem: '2-shift' | '3-shift',
+  customPattern?: {
+    daysOn: number;
+    nightsOn: number;
+    morningOn?: number;
+    afternoonOn?: number;
+    nightOn?: number;
+    daysOff: number;
+  }
+): Array<'day' | 'night' | 'morning' | 'afternoon'> {
+  if (!customPattern) {
+    // Default: require only primary shift type (for simple cases and testing)
+    return shiftSystem === '2-shift' ? ['day'] : ['morning'];
+  }
+
+  if (shiftSystem === '2-shift') {
+    const required: Array<'day' | 'night'> = [];
+
+    if (customPattern.daysOn > 0) {
+      required.push('day');
+    }
+    if (customPattern.nightsOn > 0) {
+      required.push('night');
+    }
+
+    // If pattern has no working shifts (edge case), require at least day shift
+    if (required.length === 0) {
+      required.push('day');
+    }
+
+    return required;
+  }
+
+  // 3-shift system
+  const required: Array<'morning' | 'afternoon' | 'night'> = [];
+
+  if ((customPattern.morningOn ?? 0) > 0) {
+    required.push('morning');
+  }
+  if ((customPattern.afternoonOn ?? 0) > 0) {
+    required.push('afternoon');
+  }
+  if ((customPattern.nightOn ?? 0) > 0) {
+    required.push('night');
+  }
+
+  // If pattern has no working shifts (edge case), require at least morning shift
+  if (required.length === 0) {
+    required.push('morning');
+  }
+
+  return required;
+}
+
+/**
+ * Get shift times from onboarding data, preferring new structure
+ *
+ * @param data - OnboardingData
+ * @returns Array of shift time entries
+ */
+export function getShiftTimesFromData(data: OnboardingData): Array<{
+  type: 'day' | 'night' | 'morning' | 'afternoon';
+  startTime: string;
+  endTime: string;
+  duration: 8 | 12;
+}> {
+  const result: Array<{
+    type: 'day' | 'night' | 'morning' | 'afternoon';
+    startTime: string;
+    endTime: string;
+    duration: 8 | 12;
+  }> = [];
+
+  // Prefer new structure
+  if (data.shiftTimes) {
+    if (data.shiftTimes.dayShift) {
+      result.push({ type: 'day', ...data.shiftTimes.dayShift });
+    }
+    if (data.shiftTimes.nightShift) {
+      result.push({ type: 'night', ...data.shiftTimes.nightShift });
+    }
+    if (data.shiftTimes.morningShift) {
+      result.push({ type: 'morning', ...data.shiftTimes.morningShift });
+    }
+    if (data.shiftTimes.afternoonShift) {
+      result.push({ type: 'afternoon', ...data.shiftTimes.afternoonShift });
+    }
+    if (data.shiftTimes.nightShift3) {
+      result.push({ type: 'night', ...data.shiftTimes.nightShift3 });
+    }
+  } else if (data.shiftStartTime && data.shiftEndTime && data.shiftDuration && data.shiftType) {
+    // Fallback to legacy structure
+    result.push({
+      type: data.shiftType,
+      startTime: data.shiftStartTime,
+      endTime: data.shiftEndTime,
+      duration: data.shiftDuration,
+    });
+  }
+
+  return result;
 }

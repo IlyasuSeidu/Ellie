@@ -40,7 +40,9 @@ import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { asyncStorageService } from '@/services/AsyncStorageService';
-import { ShiftPattern } from '@/types';
+import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
+import { getShiftTimesFromData } from '@/utils/shiftTimeUtils';
+import { ShiftPattern, ShiftSystem } from '@/types';
 
 // Animated SVG components
 const AnimatedPath = Animated.createAnimatedComponent(Path);
@@ -297,12 +299,77 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
     buttonShadowOpacity.value = withTiming(0.3, { duration: 150 });
   };
 
+  /**
+   * Validate that all required onboarding data is present
+   */
+  const validateOnboardingData = (): {
+    isValid: boolean;
+    missingFields: string[];
+  } => {
+    const missingFields: string[] = [];
+
+    // Step 2: Profile data
+    if (!data.name || data.name.trim().length === 0) {
+      missingFields.push('Name');
+    }
+    if (!data.company || data.company.trim().length === 0) {
+      missingFields.push('Company');
+    }
+
+    // Step 3: Shift system
+    if (!data.shiftSystem) {
+      missingFields.push('Shift System');
+    }
+
+    // Step 4: Pattern
+    if (!data.patternType) {
+      missingFields.push('Shift Pattern');
+    }
+
+    // Step 4b: Custom pattern (if CUSTOM selected)
+    if (data.patternType === ShiftPattern.CUSTOM && !data.customPattern) {
+      missingFields.push('Custom Pattern Configuration');
+    }
+
+    // Step 5: Phase offset
+    if (data.phaseOffset === undefined) {
+      missingFields.push('Phase Offset');
+    }
+
+    // Step 6: Start date
+    if (!data.startDate) {
+      missingFields.push('Start Date');
+    }
+
+    // Step 7: Shift times (either new or legacy)
+    const hasNewStructure = data.shiftTimes && Object.keys(data.shiftTimes).length > 0;
+    const hasLegacyStructure = data.shiftStartTime && data.shiftEndTime;
+
+    if (!hasNewStructure && !hasLegacyStructure) {
+      missingFields.push('Shift Times');
+    }
+
+    return {
+      isValid: missingFields.length === 0,
+      missingFields,
+    };
+  };
+
   // Save onboarding data
   const saveOnboardingData = async (): Promise<void> => {
     setIsSaving(true);
     setSaveError(null);
 
     try {
+      // Validate data BEFORE saving
+      const validation = validateOnboardingData();
+
+      if (!validation.isValid) {
+        throw new Error(
+          `Missing required information: ${validation.missingFields.join(', ')}. Please go back and complete all steps.`
+        );
+      }
+
       // For now, just save to AsyncStorage
       // Full UserService integration will come after proper backend setup
       await asyncStorageService.set('onboarding:complete', true);
@@ -361,10 +428,17 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
 
   // Format pattern name for display
   const getPatternName = (): string => {
-    if (data.customPattern) {
-      const { daysOn, nightsOn, daysOff } = data.customPattern;
-      const pattern = nightsOn ? `${daysOn}-${nightsOn}-${daysOff}` : `${daysOn}-${daysOff}`;
-      return `${pattern} Custom Rotation`;
+    // Handle custom patterns (check pattern type first)
+    if (data.patternType === ShiftPattern.CUSTOM && data.customPattern) {
+      // Check if it's a 3-shift custom pattern
+      if (data.shiftSystem === ShiftSystem.THREE_SHIFT) {
+        const { morningOn = 0, afternoonOn = 0, nightOn = 0, daysOff = 0 } = data.customPattern;
+        return `${morningOn}-${afternoonOn}-${nightOn}-${daysOff} Custom Rotation`;
+      }
+
+      // 2-shift custom pattern
+      const { daysOn = 0, nightsOn = 0, daysOff = 0 } = data.customPattern;
+      return `${daysOn}-${nightsOn}-${daysOff} Custom Rotation`;
     }
 
     const patternNames: Record<ShiftPattern, string> = {
@@ -397,16 +471,32 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
     });
   };
 
-  // Format shift times
-  const getShiftTimes = (): string => {
-    if (!data.shiftStartTime || !data.shiftEndTime) return 'Not set';
-    return `${data.shiftStartTime} - ${data.shiftEndTime}`;
+  // Format shift times - returns array of shift time entries
+  const getShiftTimeEntries = (): Array<{ label: string; value: string }> => {
+    const shiftTimes = getShiftTimesFromData(data);
+    const entries = shiftTimes.map((st) => ({
+      label: `${st.type.charAt(0).toUpperCase() + st.type.slice(1)} Shift`,
+      value: `${st.startTime} - ${st.endTime}`,
+    }));
+
+    // If no shift times configured, show placeholder
+    if (entries.length === 0) {
+      entries.push({
+        label: 'Shift Times',
+        value: 'Not set',
+      });
+    }
+
+    return entries;
   };
 
   return (
     <View style={styles.container} testID={testID}>
       {/* Progress Header */}
-      <ProgressHeader currentStep={8} totalSteps={11} />
+      <ProgressHeader
+        currentStep={ONBOARDING_STEPS.COMPLETION}
+        totalSteps={TOTAL_ONBOARDING_STEPS}
+      />
 
       <ScrollView
         style={styles.scrollView}
@@ -525,7 +615,12 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
                   label: 'Start Date',
                   value: formatDate(data.startDate),
                 },
-                { icon: 'time-outline', label: 'Shift Times', value: getShiftTimes() },
+                // Spread all shift time entries (supports multiple shifts)
+                ...getShiftTimeEntries().map((entry) => ({
+                  icon: 'time-outline',
+                  label: entry.label,
+                  value: entry.value,
+                })),
               ] as Array<{ icon: string; label: string; value: string } | undefined>
             )
               .filter(Boolean)

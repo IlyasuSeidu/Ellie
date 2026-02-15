@@ -40,6 +40,7 @@ import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { ShiftPattern, ShiftSystem, Phase } from '@/types';
+import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -2010,7 +2011,10 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
 
   return (
     <View style={styles.container} testID={testID}>
-      <ProgressHeader currentStep={6} totalSteps={11} />
+      <ProgressHeader
+        currentStep={ONBOARDING_STEPS.START_DATE}
+        totalSteps={TOTAL_ONBOARDING_STEPS}
+      />
 
       <Animated.View style={[{ flex: 1 }, screenAnimatedStyle]}>
         <ScrollView

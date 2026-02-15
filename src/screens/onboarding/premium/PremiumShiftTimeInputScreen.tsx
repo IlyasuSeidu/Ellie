@@ -44,26 +44,48 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
-import { useOnboarding } from '@/contexts/OnboardingContext';
+import { useOnboarding, OnboardingData } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { ShiftPattern, ShiftSystem } from '@/types';
+import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import {
   convertTo24Hour,
   calculateEndTime,
   detectShiftType,
   formatTimeForDisplay,
+  getRequiredShiftTypes,
 } from '@/utils/shiftTimeUtils';
 
 // Helper to get pattern display info
 const getPatternInfo = (
   patternType: ShiftPattern | undefined,
-  customPattern: { daysOn: number; nightsOn: number; daysOff: number } | undefined
+  customPattern: OnboardingData['customPattern'] | undefined,
+  shiftSystem: ShiftSystem | '2-shift' | '3-shift' | undefined
 ): { name: string; stats: string } => {
   if (patternType === ShiftPattern.CUSTOM && customPattern) {
-    const total = customPattern.daysOn + customPattern.nightsOn + customPattern.daysOff;
+    // Handle 3-shift custom pattern
+    if (shiftSystem === ShiftSystem.THREE_SHIFT) {
+      const morningOn = customPattern.morningOn || 0;
+      const afternoonOn = customPattern.afternoonOn || 0;
+      const nightOn = customPattern.nightOn || 0;
+      const daysOff = customPattern.daysOff || 0;
+      const total = morningOn + afternoonOn + nightOn + daysOff;
+
+      return {
+        name: 'Custom Pattern',
+        stats: `${total}-day cycle • ${morningOn}M/${afternoonOn}A/${nightOn}N/${daysOff}O`,
+      };
+    }
+
+    // Handle 2-shift custom pattern
+    const daysOn = customPattern.daysOn || 0;
+    const nightsOn = customPattern.nightsOn || 0;
+    const daysOff = customPattern.daysOff || 0;
+    const total = daysOn + nightsOn + daysOff;
+
     return {
       name: 'Custom Pattern',
-      stats: `${total}-day cycle • ${customPattern.daysOn}D/${customPattern.nightsOn}N/${customPattern.daysOff}O`,
+      stats: `${total}-day cycle • ${daysOn}D/${nightsOn}N/${daysOff}O`,
     };
   }
 
@@ -214,17 +236,41 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
 }) => {
   const navigation = useNavigation<NavigationProp>();
   const { data, updateData } = useOnboarding();
-  const shiftSystem = data.shiftSystem || ShiftSystem.TWO_SHIFT;
+  const shiftSystem: '2-shift' | '3-shift' = data.shiftSystem || ShiftSystem.TWO_SHIFT;
 
   // Set duration based on shift system (locked)
   const lockedDuration: 8 | 12 = shiftSystem === ShiftSystem.THREE_SHIFT ? 8 : 12;
 
-  // Filter presets by shift system
-  const filteredPresets = SHIFT_PRESETS.filter(
-    (preset) => preset.id === 'custom' || preset.shiftSystem === shiftSystem
+  // Determine required shift types based on pattern
+  const requiredShiftTypes = getRequiredShiftTypes(
+    shiftSystem === ShiftSystem.THREE_SHIFT ? '3-shift' : '2-shift',
+    data.customPattern
   );
 
-  // State
+  // Multi-stage state: track which shift type we're currently collecting
+  const [currentStageIndex, setCurrentStageIndex] = useState(0);
+  const currentShiftType = requiredShiftTypes[currentStageIndex];
+  const totalStages = requiredShiftTypes.length;
+  const isLastStage = currentStageIndex === totalStages - 1;
+
+  // Store collected shift times for all stages
+  const [collectedShiftTimes, setCollectedShiftTimes] = useState<
+    Record<string, { startTime: string; endTime: string; duration: 8 | 12 }>
+  >({});
+
+  // Filter presets by shift system AND current shift type
+  const filteredPresets = SHIFT_PRESETS.filter((preset) => {
+    if (preset.id === 'custom') return true;
+    if (preset.shiftSystem !== shiftSystem) return false;
+    // Only filter by shift type when collecting multiple shift types
+    if (totalStages > 1) {
+      return preset.type === currentShiftType;
+    }
+    // For single-stage flow, show all presets for this shift system
+    return true;
+  });
+
+  // State for current stage input
   const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
   const [customHours, setCustomHours] = useState('06');
   const [customMinutes, setCustomMinutes] = useState('00');
@@ -376,25 +422,73 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
 
     const startTime24h = getStartTime24h();
     const endTime24h = getEndTime24h();
-    const shiftType = getShiftType();
 
-    // Save to context
-    updateData({
-      shiftStartTime: startTime24h,
-      shiftEndTime: endTime24h,
-      shiftDuration: duration,
-      shiftType,
-      isCustomShiftTime: selectedPreset === 'custom',
-    });
+    // Save current stage's shift times
+    const updatedShiftTimes = {
+      ...collectedShiftTimes,
+      [currentShiftType]: {
+        startTime: startTime24h,
+        endTime: endTime24h,
+        duration,
+      },
+    };
+    setCollectedShiftTimes(updatedShiftTimes);
 
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
-    if (onContinue) {
-      onContinue();
-    }
+    // If this is the last stage, save all shift times and navigate
+    if (isLastStage) {
+      // Build the new shiftTimes structure
+      const shiftTimes: OnboardingData['shiftTimes'] = {};
 
-    // Navigate to completion screen (Step 8)
-    navigation.navigate('Completion');
+      if (shiftSystem === ShiftSystem.TWO_SHIFT) {
+        if (updatedShiftTimes.day) {
+          shiftTimes.dayShift = updatedShiftTimes.day;
+        }
+        if (updatedShiftTimes.night) {
+          shiftTimes.nightShift = updatedShiftTimes.night;
+        }
+      } else {
+        // 3-shift system
+        if (updatedShiftTimes.morning) {
+          shiftTimes.morningShift = updatedShiftTimes.morning;
+        }
+        if (updatedShiftTimes.afternoon) {
+          shiftTimes.afternoonShift = updatedShiftTimes.afternoon;
+        }
+        if (updatedShiftTimes.night) {
+          shiftTimes.nightShift3 = updatedShiftTimes.night;
+        }
+      }
+
+      // Save to context with new structure
+      updateData({
+        shiftTimes,
+        // Also save to legacy fields for backwards compatibility (first shift type)
+        shiftStartTime: updatedShiftTimes[requiredShiftTypes[0]]?.startTime,
+        shiftEndTime: updatedShiftTimes[requiredShiftTypes[0]]?.endTime,
+        shiftDuration: duration,
+        shiftType: getShiftType(),
+        isCustomShiftTime: selectedPreset === 'custom',
+      });
+
+      if (onContinue) {
+        onContinue();
+      }
+
+      // Navigate to completion screen (Step 8)
+      navigation.navigate('Completion');
+    } else {
+      // Move to next stage
+      setCurrentStageIndex(currentStageIndex + 1);
+      // Reset input state for next stage
+      setSelectedPreset(null);
+      setCustomHours('06');
+      setCustomMinutes('00');
+      setCustomPeriod(currentShiftType === 'night' ? 'PM' : 'AM');
+      setShowCustomInput(false);
+      setTimeError(null);
+    }
   }, [
     isValid,
     selectedPreset,
@@ -403,6 +497,12 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     getEndTime24h,
     getShiftType,
     duration,
+    currentShiftType,
+    collectedShiftTimes,
+    isLastStage,
+    currentStageIndex,
+    requiredShiftTypes,
+    shiftSystem,
     updateData,
     onContinue,
     navigation,
@@ -411,12 +511,25 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   const handleBack = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
-    if (onBack) {
-      onBack();
+    // If we're not on the first stage, go back to previous stage
+    if (currentStageIndex > 0) {
+      setCurrentStageIndex(currentStageIndex - 1);
+      // Reset input state
+      setSelectedPreset(null);
+      setCustomHours('06');
+      setCustomMinutes('00');
+      setCustomPeriod('AM');
+      setShowCustomInput(false);
+      setTimeError(null);
     } else {
-      navigation.goBack();
+      // On first stage, go back to previous screen
+      if (onBack) {
+        onBack();
+      } else {
+        navigation.goBack();
+      }
     }
-  }, [navigation, onBack]);
+  }, [currentStageIndex, navigation, onBack]);
 
   // Animated styles
   const floatingStyle = useAnimatedStyle(() => ({
@@ -427,7 +540,45 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   // The pulse animation was removed for stability
 
   // Get pattern display info from context
-  const patternInfo = getPatternInfo(data.patternType, data.customPattern);
+  const patternInfo = getPatternInfo(data.patternType, data.customPattern, shiftSystem);
+
+  // Get stage-specific title
+  const getStageTitle = (): string => {
+    if (totalStages === 1) {
+      return 'When Do Your Shifts Start?';
+    }
+
+    switch (currentShiftType) {
+      case 'day':
+        return 'Day Shift Times';
+      case 'night':
+        return 'Night Shift Times';
+      case 'morning':
+        return 'Morning Shift Times';
+      case 'afternoon':
+        return 'Afternoon Shift Times';
+      default:
+        return 'Shift Times';
+    }
+  };
+
+  // Get stage-specific subtitle
+  const getStageSubtitle = (): string => {
+    if (totalStages === 1) {
+      return "Pick what time you clock in each day—we'll use this to track your hours and set reminders";
+    }
+
+    const shiftTypeLabel =
+      currentShiftType === 'day'
+        ? 'day shifts'
+        : currentShiftType === 'night'
+          ? 'night shifts'
+          : currentShiftType === 'morning'
+            ? 'morning shifts'
+            : 'afternoon shifts';
+
+    return `Your pattern includes ${shiftTypeLabel}. Set the start time for these shifts.`;
+  };
 
   // Get pattern icon based on pattern type
   const patternIcon = React.useMemo((): ImageSourcePropType | null => {
@@ -457,7 +608,10 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
 
   return (
     <View style={styles.container} testID={testID}>
-      <ProgressHeader currentStep={7} totalSteps={7} />
+      <ProgressHeader
+        currentStep={ONBOARDING_STEPS.SHIFT_TIME_INPUT}
+        totalSteps={TOTAL_ONBOARDING_STEPS}
+      />
 
       <KeyboardAvoidingView
         style={styles.keyboardAvoid}
@@ -475,11 +629,13 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
             entering={reducedMotion ? undefined : FadeIn.duration(300)}
             style={styles.header}
           >
-            <Text style={styles.title}>When Do Your Shifts Start?</Text>
-            <Text style={styles.subtitle}>
-              Pick what time you clock in each day—we&apos;ll use this to track your hours and set
-              reminders
-            </Text>
+            {totalStages > 1 && (
+              <Text style={styles.stageIndicator}>
+                Step {currentStageIndex + 1} of {totalStages}
+              </Text>
+            )}
+            <Text style={styles.title}>{getStageTitle()}</Text>
+            <Text style={styles.subtitle}>{getStageSubtitle()}</Text>
           </Animated.View>
 
           {/* Pattern Summary Card */}
@@ -751,7 +907,13 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
               ]}
               onPress={handleContinue}
               disabled={!isValid()}
-              accessibilityLabel="Continue to next step"
+              accessibilityLabel={
+                totalStages === 1
+                  ? 'Continue to next step'
+                  : isLastStage
+                    ? 'Save shift times and continue'
+                    : `Continue to ${requiredShiftTypes[currentStageIndex + 1]} shift times`
+              }
               accessibilityRole="button"
               accessibilityState={{ disabled: !isValid() }}
             >
@@ -901,6 +1063,15 @@ const styles = StyleSheet.create({
     color: theme.colors.dust,
     textAlign: 'center',
     paddingHorizontal: theme.spacing.lg,
+  },
+  stageIndicator: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: theme.colors.sacredGold,
+    textAlign: 'center',
+    marginBottom: theme.spacing.sm,
+    letterSpacing: 0.5,
+    textTransform: 'uppercase',
   },
   // Pattern Summary Card
   patternCard: {
