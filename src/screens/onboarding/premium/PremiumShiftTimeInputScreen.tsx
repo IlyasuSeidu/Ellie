@@ -11,7 +11,7 @@
  * - Shift type (day/night - auto-detected)
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -330,6 +330,9 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   const { data, updateData } = useOnboarding();
   const shiftSystem: '2-shift' | '3-shift' = data.shiftSystem || ShiftSystem.TWO_SHIFT;
 
+  // Ref for ScrollView to enable auto-scroll
+  const scrollViewRef = useRef<ScrollView>(null);
+
   // Set duration based on shift system (locked)
   const lockedDuration: 8 | 12 = shiftSystem === ShiftSystem.THREE_SHIFT ? 8 : 12;
 
@@ -376,6 +379,17 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   useEffect(() => {
     AccessibilityInfo.isReduceMotionEnabled().then(setReducedMotion);
   }, []);
+
+  // Auto-scroll to top when stage changes
+  useEffect(() => {
+    if (currentStageIndex > 0) {
+      // Scroll to top with smooth animation when moving to next stage
+      scrollViewRef.current?.scrollTo({
+        y: 0,
+        animated: !reducedMotion,
+      });
+    }
+  }, [currentStageIndex, reducedMotion]);
 
   // Animation values
   const floatingY = useSharedValue(0);
@@ -711,6 +725,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
       >
         <ScrollView
+          ref={scrollViewRef}
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
