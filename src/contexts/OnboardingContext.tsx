@@ -153,10 +153,45 @@ export interface OnboardingData {
   isCustomShiftTime?: boolean; // True if user selected custom time
 }
 
+/**
+ * Validation result from validateData()
+ */
+export interface ValidationResult {
+  /** Whether all required fields are present and valid */
+  isValid: boolean;
+  /** Array of missing or invalid field names */
+  missingFields: string[];
+}
+
+/**
+ * OnboardingContext Interface
+ *
+ * Provides methods for managing onboarding data state
+ */
 interface OnboardingContextValue {
+  /** Current onboarding data */
   data: OnboardingData;
+
+  /** Update specific fields in onboarding data */
   updateData: (updates: Partial<OnboardingData>) => void;
+
+  /** Replace all onboarding data at once */
+  setAllData: (newData: OnboardingData) => void;
+
+  /** Clear a specific field from onboarding data */
+  clearField: (field: keyof OnboardingData) => void;
+
+  /** Reset all onboarding data to empty state */
   resetData: () => void;
+
+  /** Validate all required fields are present */
+  validateData: () => ValidationResult;
+
+  /** Check if all required fields are complete (quick boolean check) */
+  isComplete: () => boolean;
+
+  /** Get list of missing required fields */
+  getMissingFields: () => string[];
 }
 
 const OnboardingContext = createContext<OnboardingContextValue | undefined>(undefined);
@@ -168,16 +203,124 @@ export interface OnboardingProviderProps {
 export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children }) => {
   const [data, setData] = useState<OnboardingData>({});
 
+  /**
+   * Update specific fields in onboarding data (merges with existing)
+   */
   const updateData = (updates: Partial<OnboardingData>) => {
     setData((prev) => ({ ...prev, ...updates }));
   };
 
+  /**
+   * Replace all onboarding data at once
+   */
+  const setAllData = (newData: OnboardingData) => {
+    setData(newData);
+  };
+
+  /**
+   * Clear a specific field from onboarding data
+   */
+  const clearField = (field: keyof OnboardingData) => {
+    setData((prev) => {
+      const updated = { ...prev };
+      delete updated[field];
+      return updated;
+    });
+  };
+
+  /**
+   * Reset all onboarding data to empty state
+   */
   const resetData = () => {
     setData({});
   };
 
+  /**
+   * Validate all required onboarding fields
+   *
+   * @returns Object with isValid boolean and array of missing field names
+   */
+  const validateData = (): ValidationResult => {
+    const missingFields: string[] = [];
+
+    // Step 2: Profile data (required)
+    if (!data.name || data.name.trim().length === 0) {
+      missingFields.push('Name');
+    }
+    if (!data.company || data.company.trim().length === 0) {
+      missingFields.push('Company');
+    }
+
+    // Step 3: Shift system (required)
+    if (!data.shiftSystem) {
+      missingFields.push('Shift System');
+    }
+
+    // Step 4: Pattern type (required)
+    if (!data.patternType) {
+      missingFields.push('Shift Pattern');
+    }
+
+    // Step 4b: Custom pattern (required only if CUSTOM pattern selected)
+    if (data.patternType === ShiftPattern.CUSTOM && !data.customPattern) {
+      missingFields.push('Custom Pattern Configuration');
+    }
+
+    // Step 5: Phase offset (required)
+    if (data.phaseOffset === undefined) {
+      missingFields.push('Phase Offset');
+    }
+
+    // Step 6: Start date (required)
+    if (!data.startDate) {
+      missingFields.push('Start Date');
+    }
+
+    // Step 7: Shift times (required - either new or legacy structure)
+    const hasNewStructure = data.shiftTimes && Object.keys(data.shiftTimes).length > 0;
+    const hasLegacyStructure = data.shiftStartTime && data.shiftEndTime;
+
+    if (!hasNewStructure && !hasLegacyStructure) {
+      missingFields.push('Shift Times');
+    }
+
+    return {
+      isValid: missingFields.length === 0,
+      missingFields,
+    };
+  };
+
+  /**
+   * Quick boolean check if all required fields are complete
+   *
+   * @returns True if all required fields are present
+   */
+  const isComplete = (): boolean => {
+    return validateData().isValid;
+  };
+
+  /**
+   * Get list of missing required fields
+   *
+   * @returns Array of missing field names
+   */
+  const getMissingFields = (): string[] => {
+    return validateData().missingFields;
+  };
+
   return (
-    <OnboardingContext.Provider value={{ data, updateData, resetData }}>
+    <OnboardingContext.Provider
+      value={{
+        data,
+        updateData,
+        setAllData,
+        clearField,
+        resetData,
+        validateData,
+        isComplete,
+        getMissingFields,
+      }}
+    >
       {children}
     </OnboardingContext.Provider>
   );

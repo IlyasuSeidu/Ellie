@@ -220,7 +220,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
   onComplete,
   testID = 'premium-completion-screen',
 }) => {
-  const { data } = useOnboarding();
+  const { data, validateData } = useOnboarding();
 
   // State
   const [isSaving, setIsSaving] = useState(false);
@@ -299,61 +299,8 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
     buttonShadowOpacity.value = withTiming(0.3, { duration: 150 });
   };
 
-  /**
-   * Validate that all required onboarding data is present
-   */
-  const validateOnboardingData = (): {
-    isValid: boolean;
-    missingFields: string[];
-  } => {
-    const missingFields: string[] = [];
-
-    // Step 2: Profile data
-    if (!data.name || data.name.trim().length === 0) {
-      missingFields.push('Name');
-    }
-    if (!data.company || data.company.trim().length === 0) {
-      missingFields.push('Company');
-    }
-
-    // Step 3: Shift system
-    if (!data.shiftSystem) {
-      missingFields.push('Shift System');
-    }
-
-    // Step 4: Pattern
-    if (!data.patternType) {
-      missingFields.push('Shift Pattern');
-    }
-
-    // Step 4b: Custom pattern (if CUSTOM selected)
-    if (data.patternType === ShiftPattern.CUSTOM && !data.customPattern) {
-      missingFields.push('Custom Pattern Configuration');
-    }
-
-    // Step 5: Phase offset
-    if (data.phaseOffset === undefined) {
-      missingFields.push('Phase Offset');
-    }
-
-    // Step 6: Start date
-    if (!data.startDate) {
-      missingFields.push('Start Date');
-    }
-
-    // Step 7: Shift times (either new or legacy)
-    const hasNewStructure = data.shiftTimes && Object.keys(data.shiftTimes).length > 0;
-    const hasLegacyStructure = data.shiftStartTime && data.shiftEndTime;
-
-    if (!hasNewStructure && !hasLegacyStructure) {
-      missingFields.push('Shift Times');
-    }
-
-    return {
-      isValid: missingFields.length === 0,
-      missingFields,
-    };
-  };
+  // Validation logic is now handled by OnboardingContext.validateData()
+  // No need for duplicate validation function here
 
   // Save onboarding data
   const saveOnboardingData = async (): Promise<void> => {
@@ -361,8 +308,8 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
     setSaveError(null);
 
     try {
-      // Validate data BEFORE saving
-      const validation = validateOnboardingData();
+      // Validate data BEFORE saving (using context validation)
+      const validation = validateData();
 
       if (!validation.isValid) {
         throw new Error(

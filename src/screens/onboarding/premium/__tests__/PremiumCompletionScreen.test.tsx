@@ -104,7 +104,12 @@ jest.mock('@/contexts/OnboardingContext', () => ({
       shiftType: 'day',
     },
     updateData: jest.fn(),
+    setAllData: jest.fn(),
+    clearField: jest.fn(),
     resetData: jest.fn(),
+    validateData: jest.fn().mockReturnValue({ isValid: true, missingFields: [] }),
+    isComplete: jest.fn().mockReturnValue(true),
+    getMissingFields: jest.fn().mockReturnValue([]),
   }),
 }));
 
