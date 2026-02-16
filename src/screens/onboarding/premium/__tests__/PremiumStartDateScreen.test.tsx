@@ -9,6 +9,15 @@ import { PremiumStartDateScreen } from '../PremiumStartDateScreen';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
 
 // Mock haptics
+// Mock AsyncStorage
+jest.mock('@/services/AsyncStorageService', () => ({
+  asyncStorageService: {
+    get: jest.fn().mockResolvedValue(null),
+    set: jest.fn().mockResolvedValue(undefined),
+    remove: jest.fn().mockResolvedValue(undefined),
+  },
+}));
+
 jest.mock('expo-haptics');
 
 // Mock @expo/vector-icons

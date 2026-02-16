@@ -8,6 +8,15 @@ import { render } from '@testing-library/react-native';
 import { PremiumCustomPatternScreen } from '../PremiumCustomPatternScreen';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
 
+// Mock AsyncStorage
+jest.mock('@/services/AsyncStorageService', () => ({
+  asyncStorageService: {
+    get: jest.fn().mockResolvedValue(null),
+    set: jest.fn().mockResolvedValue(undefined),
+    remove: jest.fn().mockResolvedValue(undefined),
+  },
+}));
+
 // Mock haptics
 jest.mock('expo-haptics');
 
