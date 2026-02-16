@@ -10,6 +10,8 @@ import {
   validateTimeFormat,
   formatTimeForDisplay,
   parseTimeInput,
+  getRequiredShiftTypes,
+  getShiftTimesFromData,
 } from '../shiftTimeUtils';
 
 describe('shiftTimeUtils', () => {
@@ -251,6 +253,248 @@ describe('shiftTimeUtils', () => {
       const displayEnd = formatTimeForDisplay(endTime24h);
       expect(displayStart).toBe('12:00 AM');
       expect(displayEnd).toBe('12:00 PM');
+    });
+  });
+
+  describe('detectShiftType with 3-shift system', () => {
+    it('should return "morning" for times between 6 AM and 2 PM in 3-shift system', () => {
+      expect(detectShiftType('06:00', '3-shift')).toBe('morning');
+      expect(detectShiftType('08:30', '3-shift')).toBe('morning');
+      expect(detectShiftType('12:00', '3-shift')).toBe('morning');
+      expect(detectShiftType('13:59', '3-shift')).toBe('morning');
+    });
+
+    it('should return "afternoon" for times between 2 PM and 10 PM in 3-shift system', () => {
+      expect(detectShiftType('14:00', '3-shift')).toBe('afternoon');
+      expect(detectShiftType('16:30', '3-shift')).toBe('afternoon');
+      expect(detectShiftType('18:00', '3-shift')).toBe('afternoon');
+      expect(detectShiftType('21:59', '3-shift')).toBe('afternoon');
+    });
+
+    it('should return "night" for times between 10 PM and 6 AM in 3-shift system', () => {
+      expect(detectShiftType('22:00', '3-shift')).toBe('night');
+      expect(detectShiftType('23:30', '3-shift')).toBe('night');
+      expect(detectShiftType('00:00', '3-shift')).toBe('night');
+      expect(detectShiftType('03:00', '3-shift')).toBe('night');
+      expect(detectShiftType('05:59', '3-shift')).toBe('night');
+    });
+
+    it('should handle boundary times correctly in 3-shift system', () => {
+      // Morning starts at 6:00
+      expect(detectShiftType('06:00', '3-shift')).toBe('morning');
+      expect(detectShiftType('05:59', '3-shift')).toBe('night');
+
+      // Afternoon starts at 14:00
+      expect(detectShiftType('14:00', '3-shift')).toBe('afternoon');
+      expect(detectShiftType('13:59', '3-shift')).toBe('morning');
+
+      // Night starts at 22:00
+      expect(detectShiftType('22:00', '3-shift')).toBe('night');
+      expect(detectShiftType('21:59', '3-shift')).toBe('afternoon');
+    });
+  });
+
+  describe('getRequiredShiftTypes', () => {
+    it('should return default shift type when no custom pattern provided for 2-shift', () => {
+      const result = getRequiredShiftTypes('2-shift');
+      expect(result).toEqual(['day']);
+    });
+
+    it('should return default shift type when no custom pattern provided for 3-shift', () => {
+      const result = getRequiredShiftTypes('3-shift');
+      expect(result).toEqual(['morning']);
+    });
+
+    it('should return required shifts for 2-shift custom pattern with both day and night', () => {
+      const result = getRequiredShiftTypes('2-shift', {
+        daysOn: 4,
+        nightsOn: 4,
+        daysOff: 4,
+      });
+      expect(result).toEqual(['day', 'night']);
+    });
+
+    it('should return only day shift for 2-shift pattern with only days', () => {
+      const result = getRequiredShiftTypes('2-shift', {
+        daysOn: 5,
+        nightsOn: 0,
+        daysOff: 2,
+      });
+      expect(result).toEqual(['day']);
+    });
+
+    it('should return only night shift for 2-shift pattern with only nights', () => {
+      const result = getRequiredShiftTypes('2-shift', {
+        daysOn: 0,
+        nightsOn: 5,
+        daysOff: 2,
+      });
+      expect(result).toEqual(['night']);
+    });
+
+    it('should handle edge case of 2-shift pattern with no working shifts', () => {
+      const result = getRequiredShiftTypes('2-shift', {
+        daysOn: 0,
+        nightsOn: 0,
+        daysOff: 7,
+      });
+      expect(result).toEqual(['day']); // Should default to day
+    });
+
+    it('should return required shifts for 3-shift custom pattern with all shifts', () => {
+      const result = getRequiredShiftTypes('3-shift', {
+        daysOn: 0,
+        nightsOn: 0,
+        morningOn: 2,
+        afternoonOn: 3,
+        nightOn: 2,
+        daysOff: 2,
+      });
+      expect(result).toEqual(['morning', 'afternoon', 'night']);
+    });
+
+    it('should return only required shifts for 3-shift pattern', () => {
+      const result = getRequiredShiftTypes('3-shift', {
+        daysOn: 0,
+        nightsOn: 0,
+        morningOn: 5,
+        afternoonOn: 0,
+        nightOn: 0,
+        daysOff: 2,
+      });
+      expect(result).toEqual(['morning']);
+    });
+
+    it('should handle edge case of 3-shift pattern with no working shifts', () => {
+      const result = getRequiredShiftTypes('3-shift', {
+        daysOn: 0,
+        nightsOn: 0,
+        morningOn: 0,
+        afternoonOn: 0,
+        nightOn: 0,
+        daysOff: 7,
+      });
+      expect(result).toEqual(['morning']); // Should default to morning
+    });
+  });
+
+  describe('getShiftTimesFromData', () => {
+    it('should extract shift times from new structure with day shift', () => {
+      const data = {
+        shiftTimes: {
+          dayShift: {
+            startTime: '06:00',
+            endTime: '18:00',
+            duration: 12 as const,
+          },
+        },
+      };
+      const result = getShiftTimesFromData(data);
+      expect(result).toEqual([
+        {
+          type: 'day',
+          startTime: '06:00',
+          endTime: '18:00',
+          duration: 12,
+        },
+      ]);
+    });
+
+    it('should extract shift times from new structure with multiple shifts', () => {
+      const data = {
+        shiftTimes: {
+          dayShift: {
+            startTime: '06:00',
+            endTime: '18:00',
+            duration: 12 as const,
+          },
+          nightShift: {
+            startTime: '18:00',
+            endTime: '06:00',
+            duration: 12 as const,
+          },
+        },
+      };
+      const result = getShiftTimesFromData(data);
+      expect(result).toHaveLength(2);
+      expect(result).toContainEqual({
+        type: 'day',
+        startTime: '06:00',
+        endTime: '18:00',
+        duration: 12,
+      });
+      expect(result).toContainEqual({
+        type: 'night',
+        startTime: '18:00',
+        endTime: '06:00',
+        duration: 12,
+      });
+    });
+
+    it('should extract 3-shift times from new structure', () => {
+      const data = {
+        shiftTimes: {
+          morningShift: {
+            startTime: '06:00',
+            endTime: '14:00',
+            duration: 8 as const,
+          },
+          afternoonShift: {
+            startTime: '14:00',
+            endTime: '22:00',
+            duration: 8 as const,
+          },
+          nightShift3: {
+            startTime: '22:00',
+            endTime: '06:00',
+            duration: 8 as const,
+          },
+        },
+      };
+      const result = getShiftTimesFromData(data);
+      expect(result).toHaveLength(3);
+      expect(result).toContainEqual({
+        type: 'morning',
+        startTime: '06:00',
+        endTime: '14:00',
+        duration: 8,
+      });
+      expect(result).toContainEqual({
+        type: 'afternoon',
+        startTime: '14:00',
+        endTime: '22:00',
+        duration: 8,
+      });
+      expect(result).toContainEqual({
+        type: 'night',
+        startTime: '22:00',
+        endTime: '06:00',
+        duration: 8,
+      });
+    });
+
+    it('should fall back to legacy structure when shiftTimes not present', () => {
+      const data = {
+        shiftStartTime: '06:00',
+        shiftEndTime: '18:00',
+        shiftDuration: 12 as const,
+        shiftType: 'day' as const,
+      };
+      const result = getShiftTimesFromData(data);
+      expect(result).toEqual([
+        {
+          type: 'day',
+          startTime: '06:00',
+          endTime: '18:00',
+          duration: 12,
+        },
+      ]);
+    });
+
+    it('should return empty array when no shift data present', () => {
+      const data = {};
+      const result = getShiftTimesFromData(data);
+      expect(result).toEqual([]);
     });
   });
 });
