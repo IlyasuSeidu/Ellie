@@ -40,6 +40,7 @@ import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ShiftSystem } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
+import { goToNextScreen } from '@/utils/onboardingNavigation';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -1067,7 +1068,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
     if (onContinue) {
       onContinue();
     } else {
-      navigation.navigate('PhaseSelector');
+      goToNextScreen(navigation, 'CustomPattern');
     }
   }, [
     isValid,

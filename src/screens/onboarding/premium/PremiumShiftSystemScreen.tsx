@@ -41,6 +41,7 @@ import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { ShiftSystem } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
+import { goToNextScreen } from '@/utils/onboardingNavigation';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -659,7 +660,7 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
       // Navigate to ShiftPattern screen (Step 4)
-      navigation.navigate('ShiftPattern');
+      goToNextScreen(navigation, 'ShiftSystem');
     }, 300);
   }, [currentIndex, updateData, navigation]);
 
@@ -702,7 +703,7 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
     // Navigate to ShiftPattern screen (Step 4)
-    navigation.navigate('ShiftPattern');
+    goToNextScreen(navigation, 'ShiftSystem');
   }, [selectedSystem, updateData, navigation]);
 
   // Slice visible cards to show only 4 at a time (matches pattern screen approach)

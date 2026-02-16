@@ -48,6 +48,7 @@ import { useOnboarding, OnboardingData } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { ShiftPattern, ShiftSystem } from '@/types';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
+import { goToNextScreen } from '@/utils/onboardingNavigation';
 import {
   convertTo24Hour,
   calculateEndTime,
@@ -583,7 +584,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
       }
 
       // Navigate to completion screen (Step 8)
-      navigation.navigate('Completion');
+      goToNextScreen(navigation, 'ShiftTimeInput');
     } else {
       // Move to next stage
       setCurrentStageIndex(currentStageIndex + 1);

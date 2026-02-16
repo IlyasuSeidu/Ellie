@@ -32,6 +32,7 @@ import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboarding
 import { ChatInput, QuickReply } from '@/components/onboarding/premium/ChatInput';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
+import { goToNextScreen } from '@/utils/onboardingNavigation';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList, 'Introduction'>;
 
@@ -362,7 +363,7 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
                 country: formData.country,
               });
             } else {
-              navigation.navigate('ShiftSystem');
+              goToNextScreen(navigation, 'Introduction');
             }
           }, 4000); // Increased from 2000ms to 4000ms to allow reading the final message
         }

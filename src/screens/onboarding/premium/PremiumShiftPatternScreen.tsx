@@ -43,6 +43,7 @@ import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ShiftPattern, ShiftSystem } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
+import { goToNextScreen } from '@/utils/onboardingNavigation';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -770,15 +771,10 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
     if (onContinue) {
       onContinue(pattern.type);
     } else {
-      // If custom pattern, go to custom pattern screen
-      // Otherwise, go to phase selector screen
-      if (pattern.type === ShiftPattern.CUSTOM) {
-        navigation.navigate('CustomPattern');
-      } else {
-        navigation.navigate('PhaseSelector');
-      }
+      // Use the navigation helper which handles conditional routing
+      goToNextScreen(navigation, 'ShiftPattern', data);
     }
-  }, [currentIndex, updateData, onContinue, navigation, filteredPatterns]);
+  }, [currentIndex, updateData, onContinue, navigation, filteredPatterns, data]);
 
   const handleSwipeUp = useCallback(() => {
     setLearnMorePattern(filteredPatterns[currentIndex]);
@@ -798,8 +794,8 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
 
   const handleContinueCustom = useCallback(() => {
     updateData({ patternType: ShiftPattern.CUSTOM });
-    navigation.navigate('CustomPattern');
-  }, [updateData, navigation]);
+    goToNextScreen(navigation, 'ShiftPattern', { ...data, patternType: ShiftPattern.CUSTOM });
+  }, [updateData, navigation, data]);
 
   const visibleCards = filteredPatterns.slice(currentIndex, currentIndex + 4);
 

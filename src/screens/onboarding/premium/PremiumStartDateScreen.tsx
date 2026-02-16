@@ -41,6 +41,7 @@ import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { ShiftPattern, ShiftSystem, Phase } from '@/types';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
+import { goToNextScreen } from '@/utils/onboardingNavigation';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -1995,7 +1996,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
       if (onContinue) {
         onContinue();
       } else {
-        navigation.navigate('ShiftTimeInput');
+        goToNextScreen(navigation, 'StartDate');
       }
     });
   }, [canContinue, selectedDate, data.phaseOffset, updateData, onContinue, navigation]);

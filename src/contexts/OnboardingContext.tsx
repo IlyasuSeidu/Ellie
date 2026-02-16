@@ -63,8 +63,16 @@
  * ```
  */
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  ReactNode,
+} from 'react';
 import { ShiftPattern } from '@/types';
+import { asyncStorageService } from '@/services/AsyncStorageService';
 
 export interface OnboardingData {
   // Step 2: Introduction (PremiumIntroductionScreen)
@@ -204,18 +212,55 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
   const [data, setData] = useState<OnboardingData>({});
 
   /**
-   * Update specific fields in onboarding data (merges with existing)
+   * Restore onboarding data from AsyncStorage on mount
    */
-  const updateData = (updates: Partial<OnboardingData>) => {
-    setData((prev) => ({ ...prev, ...updates }));
-  };
+  useEffect(() => {
+    const restoreData = async () => {
+      try {
+        const savedData = await asyncStorageService.get<string>('onboarding:data');
+        if (savedData) {
+          const parsed = JSON.parse(savedData);
+          setData(parsed);
+        }
+      } catch (error) {
+        console.warn('Failed to restore onboarding data:', error);
+        // Don't block - just start with empty data
+      }
+    };
+
+    restoreData();
+  }, []);
+
+  /**
+   * Update specific fields in onboarding data (merges with existing)
+   * Also auto-saves to AsyncStorage to prevent data loss
+   */
+  const updateData = useCallback((updates: Partial<OnboardingData>) => {
+    setData((prevData) => {
+      const newData = { ...prevData, ...updates };
+
+      // Auto-save to AsyncStorage (non-blocking, don't await)
+      asyncStorageService.set('onboarding:data', JSON.stringify(newData)).catch((error) => {
+        console.warn('Failed to auto-save onboarding data:', error);
+        // Don't throw - auto-save failure shouldn't block UX
+      });
+
+      return newData;
+    });
+  }, []);
 
   /**
    * Replace all onboarding data at once
+   * Also saves to AsyncStorage
    */
-  const setAllData = (newData: OnboardingData) => {
+  const setAllData = useCallback((newData: OnboardingData) => {
     setData(newData);
-  };
+
+    // Auto-save to AsyncStorage (non-blocking)
+    asyncStorageService.set('onboarding:data', JSON.stringify(newData)).catch((error) => {
+      console.warn('Failed to save onboarding data:', error);
+    });
+  }, []);
 
   /**
    * Clear a specific field from onboarding data
@@ -230,10 +275,16 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
 
   /**
    * Reset all onboarding data to empty state
+   * Also clears AsyncStorage
    */
-  const resetData = () => {
+  const resetData = useCallback(() => {
     setData({});
-  };
+
+    // Clear AsyncStorage (non-blocking)
+    asyncStorageService.set('onboarding:data', JSON.stringify({})).catch((error) => {
+      console.warn('Failed to clear onboarding data:', error);
+    });
+  }, []);
 
   /**
    * Validate all required onboarding fields

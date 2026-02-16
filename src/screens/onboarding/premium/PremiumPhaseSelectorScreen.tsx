@@ -45,6 +45,7 @@ import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ShiftSystem, Phase, ShiftPattern } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
+import { goToNextScreen } from '@/utils/onboardingNavigation';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -904,7 +905,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
       setTimeout(() => {
-        navigation.navigate('StartDate');
+        goToNextScreen(navigation, 'PhaseSelector');
       }, 300);
     },
     [pattern, data.shiftSystem, updateData, navigation]

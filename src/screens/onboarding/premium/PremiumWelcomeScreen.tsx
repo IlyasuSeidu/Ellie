@@ -20,6 +20,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { theme } from '@/utils/theme';
 import { PremiumButton } from '@/components/onboarding/premium';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
+import { goToNextScreen } from '@/utils/onboardingNavigation';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList, 'Welcome'>;
 
@@ -85,7 +86,7 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
       if (onContinue) {
         onContinue();
       } else {
-        navigation.navigate('Introduction');
+        goToNextScreen(navigation, 'Welcome');
       }
     }, ANIMATION_TIMINGS.AUTO_ADVANCE);
 
