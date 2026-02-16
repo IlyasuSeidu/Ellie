@@ -50,6 +50,27 @@ jest.mock('@/components/onboarding/premium/ProgressHeader', () => {
   };
 });
 
+// Mock OnboardingContext to provide a custom pattern with only day shifts
+// This ensures single-stage behavior for most tests
+jest.mock('@/contexts/OnboardingContext', () => {
+  const mockData = {
+    shiftSystem: '2-shift',
+    customPattern: {
+      daysOn: 4,
+      nightsOn: 0, // Only day shifts, so only one stage
+      daysOff: 3,
+    },
+  };
+  return {
+    ...jest.requireActual('@/contexts/OnboardingContext'),
+    useOnboarding: () => ({
+      data: mockData,
+      updateData: jest.fn(),
+      resetData: jest.fn(),
+    }),
+  };
+});
+
 const renderWithProviders = (component: React.ReactElement) => {
   return render(
     <NavigationContainer>

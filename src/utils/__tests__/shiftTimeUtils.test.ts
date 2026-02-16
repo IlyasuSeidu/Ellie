@@ -295,14 +295,14 @@ describe('shiftTimeUtils', () => {
   });
 
   describe('getRequiredShiftTypes', () => {
-    it('should return default shift type when no custom pattern provided for 2-shift', () => {
+    it('should return all shift types for standard 2-shift patterns', () => {
       const result = getRequiredShiftTypes('2-shift');
-      expect(result).toEqual(['day']);
+      expect(result).toEqual(['day', 'night']);
     });
 
-    it('should return default shift type when no custom pattern provided for 3-shift', () => {
+    it('should return all shift types for standard 3-shift patterns', () => {
       const result = getRequiredShiftTypes('3-shift');
-      expect(result).toEqual(['morning']);
+      expect(result).toEqual(['morning', 'afternoon', 'night']);
     });
 
     it('should return required shifts for 2-shift custom pattern with both day and night', () => {

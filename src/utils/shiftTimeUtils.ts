@@ -179,8 +179,10 @@ export function getRequiredShiftTypes(
   }
 ): Array<'day' | 'night' | 'morning' | 'afternoon'> {
   if (!customPattern) {
-    // Default: require only primary shift type (for simple cases and testing)
-    return shiftSystem === '2-shift' ? ['day'] : ['morning'];
+    // Standard patterns: require all shift types for the system
+    // Standard 2-shift patterns (4-4-4, 7-7-7, etc.) have both day and night shifts
+    // Standard 3-shift patterns have morning, afternoon, and night shifts
+    return shiftSystem === '2-shift' ? ['day', 'night'] : ['morning', 'afternoon', 'night'];
   }
 
   if (shiftSystem === '2-shift') {
