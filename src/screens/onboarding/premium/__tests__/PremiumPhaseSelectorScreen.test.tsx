@@ -142,7 +142,7 @@ describe('PremiumPhaseSelectorScreen', () => {
 
     it('should render progress header with step 5 of 11', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
-      expect(getByText('Step 5 of 11')).toBeTruthy();
+      expect(getByText('Step 5 of 8')).toBeTruthy();
     });
 
     it('should render without crashing', () => {
@@ -259,7 +259,7 @@ describe('PremiumPhaseSelectorScreen', () => {
   describe('Rendering Consistency', () => {
     it('should render consistently with default data', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
-      expect(getByText('Step 5 of 11')).toBeTruthy();
+      expect(getByText('Step 5 of 8')).toBeTruthy();
       expect(getByText('What shift are you on right now?')).toBeTruthy();
     });
 

@@ -121,9 +121,9 @@ describe('PremiumCustomPatternScreen', () => {
       expect(getByText(/Set how many shifts you work/)).toBeTruthy();
     });
 
-    it('should render progress header with step 4 of 10', () => {
+    it('should render progress header with step 4 of 8', () => {
       const { getByText } = renderWithContext(<PremiumCustomPatternScreen />);
-      expect(getByText('Step 4 of 10')).toBeTruthy();
+      expect(getByText('Step 4 of 8')).toBeTruthy();
     });
 
     it('should render with default values (4-4-4)', () => {

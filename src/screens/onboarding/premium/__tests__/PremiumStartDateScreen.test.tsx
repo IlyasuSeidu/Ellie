@@ -108,7 +108,7 @@ describe('PremiumStartDateScreen', () => {
 
     it('should render progress header correctly', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('Step 6 of 11')).toBeTruthy();
+      expect(getByText('Step 6 of 8')).toBeTruthy();
     });
 
     it('should render without crashing when no callbacks provided', () => {
