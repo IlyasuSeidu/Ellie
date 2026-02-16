@@ -121,7 +121,7 @@ describe('onboardingNavigation', () => {
     });
 
     it('should not call goBack when navigation cannot go back', () => {
-      mockNavigation.canGoBack.mockReturnValue(false);
+      (mockNavigation.canGoBack as jest.Mock).mockReturnValue(false);
 
       goToPreviousScreen(mockNavigation);
 

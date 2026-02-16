@@ -399,7 +399,7 @@ describe('OnboardingContext', () => {
     });
 
     it('should restore complex data structures', async () => {
-      const savedData: OnboardingData = {
+      const savedData = {
         name: 'John Doe',
         customPattern: {
           daysOn: 4,
