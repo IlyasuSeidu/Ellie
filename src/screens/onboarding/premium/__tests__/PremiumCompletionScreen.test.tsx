@@ -584,6 +584,87 @@ describe('PremiumCompletionScreen', () => {
       expect(getByTestId('premium-completion-screen')).toBeTruthy();
     });
   });
+
+  describe('3-Shift Pattern Display', () => {
+    it('should display 3-shift custom rotation pattern correctly', () => {
+      // Re-mock the context for this test with 3-shift data
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const useOnboardingModule = require('@/contexts/OnboardingContext');
+      const originalUseOnboarding = useOnboardingModule.useOnboarding;
+
+      jest.spyOn(useOnboardingModule, 'useOnboarding').mockImplementation(() => ({
+        data: {
+          name: 'Test User',
+          occupation: 'Nurse',
+          company: 'Test Hospital',
+          country: 'Australia',
+          shiftSystem: '3-shift',
+          patternType: 'CUSTOM',
+          customPattern: {
+            morningOn: 2,
+            afternoonOn: 3,
+            nightOn: 2,
+            daysOff: 2,
+          },
+          phaseOffset: 0,
+          startDate: new Date('2024-01-01'),
+          shiftStartTime: '06:00',
+          shiftEndTime: '14:00',
+          shiftDuration: 8,
+          shiftType: 'morning',
+        },
+        updateData: jest.fn(),
+        resetData: jest.fn(),
+      }));
+
+      const { getByText } = renderWithProviders(<PremiumCompletionScreen />);
+
+      // Should display the 3-shift custom rotation pattern
+      expect(getByText(/2-3-2-2 Custom Rotation/i)).toBeTruthy();
+
+      // Restore original mock
+      useOnboardingModule.useOnboarding.mockImplementation(originalUseOnboarding);
+    });
+
+    it('should display 2-shift custom rotation pattern correctly', () => {
+      // The default mock already has 2-shift data, but let's be explicit
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const useOnboardingModule = require('@/contexts/OnboardingContext');
+      const originalUseOnboarding = useOnboardingModule.useOnboarding;
+
+      jest.spyOn(useOnboardingModule, 'useOnboarding').mockImplementation(() => ({
+        data: {
+          name: 'Test User',
+          occupation: 'Software Engineer',
+          company: 'Test Company',
+          country: 'Australia',
+          shiftSystem: '2-shift',
+          patternType: 'CUSTOM',
+          customPattern: {
+            daysOn: 4,
+            nightsOn: 4,
+            daysOff: 4,
+          },
+          phaseOffset: 0,
+          startDate: new Date('2024-01-01'),
+          shiftStartTime: '06:00',
+          shiftEndTime: '18:00',
+          shiftDuration: 12,
+          shiftType: 'day',
+        },
+        updateData: jest.fn(),
+        resetData: jest.fn(),
+      }));
+
+      const { getByText } = renderWithProviders(<PremiumCompletionScreen />);
+
+      // Should display the 2-shift custom rotation pattern
+      expect(getByText(/4-4-4 Custom Rotation/i)).toBeTruthy();
+
+      // Restore original mock
+      useOnboardingModule.useOnboarding.mockImplementation(originalUseOnboarding);
+    });
+  });
 });
 
 // Helper function to get all elements by text
