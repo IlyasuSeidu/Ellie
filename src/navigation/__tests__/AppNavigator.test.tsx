@@ -65,11 +65,12 @@ describe('AppNavigator', () => {
   });
 
   it('should show dashboard when onboarding is complete', async () => {
-    const completeData = JSON.stringify({
+    // asyncStorageService.get() auto-deserializes, so mock returns parsed object
+    const completeData = {
       name: 'John',
       startDate: '2026-01-01',
       patternType: 'STANDARD_3_3_3',
-    });
+    };
     (asyncStorageService.get as jest.Mock).mockResolvedValue(completeData);
 
     const { getByTestId } = render(
@@ -84,10 +85,10 @@ describe('AppNavigator', () => {
   });
 
   it('should show onboarding when data is incomplete', async () => {
-    const incompleteData = JSON.stringify({
+    const incompleteData = {
       name: 'John',
       // Missing startDate and patternType
-    });
+    };
     (asyncStorageService.get as jest.Mock).mockResolvedValue(incompleteData);
 
     const { getByTestId } = render(

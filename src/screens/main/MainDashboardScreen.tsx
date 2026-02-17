@@ -7,11 +7,29 @@
  * Orchestrates staggered entrance animations for all child components.
  */
 
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { View, ScrollView, StyleSheet, RefreshControl, ActivityIndicator } from 'react-native';
-import Animated from 'react-native-reanimated';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  RefreshControl,
+  ActivityIndicator,
+} from 'react-native';
+import Animated, {
+  FadeIn,
+  FadeOut,
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  withDelay,
+  withSequence,
+  withSpring,
+  Easing,
+} from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
 import { asyncStorageService } from '@/services/AsyncStorageService';
@@ -202,15 +220,49 @@ export const MainDashboardScreen: React.FC = () => {
   });
   const [selectedDay, setSelectedDay] = useState<number | undefined>(undefined);
 
+  // Refresh animation state
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [showRefreshSuccess, setShowRefreshSuccess] = useState(false);
+  const refreshSuccessTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Refresh success animation values
+  const successBannerOpacity = useSharedValue(0);
+  const successBannerTranslateY = useSharedValue(-40);
+  const successIconScale = useSharedValue(0);
+
+  const successBannerStyle = useAnimatedStyle(() => ({
+    opacity: successBannerOpacity.value,
+    transform: [{ translateY: successBannerTranslateY.value }],
+  }));
+
+  const successIconStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: successIconScale.value }],
+  }));
+
   /**
    * Load onboarding data from AsyncStorage
    */
-  const loadData = useCallback(async () => {
+  const loadData = useCallback(async (isRefresh = false) => {
     try {
-      const savedData = await asyncStorageService.get<string>('onboarding:data');
-      if (savedData) {
-        const parsed = typeof savedData === 'string' ? JSON.parse(savedData) : savedData;
-        setUserData(parsed);
+      // asyncStorageService.get() auto-deserializes JSON, returns object directly
+      const savedData = await asyncStorageService.get<OnboardingData>('onboarding:data');
+      if (savedData && typeof savedData === 'object') {
+        setUserData(savedData);
+      }
+
+      if (isRefresh) {
+        // Update timestamp
+        setLastUpdated(new Date());
+
+        // Trigger re-entrance animations by incrementing key
+        setRefreshKey((prev) => prev + 1);
+
+        // Show success feedback
+        triggerRefreshSuccess();
+
+        // Success haptic
+        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       }
     } catch (error) {
       console.warn('Failed to load dashboard data:', error);
@@ -218,17 +270,72 @@ export const MainDashboardScreen: React.FC = () => {
       setLoading(false);
       setRefreshing(false);
     }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /**
+   * Trigger the refresh success animation sequence
+   */
+  const triggerRefreshSuccess = useCallback(() => {
+    setShowRefreshSuccess(true);
+
+    // Animate banner in
+    successBannerOpacity.value = withTiming(1, { duration: 250, easing: Easing.out(Easing.quad) });
+    successBannerTranslateY.value = withSpring(0, { damping: 14, stiffness: 160 });
+
+    // Animate checkmark icon with bounce
+    successIconScale.value = withDelay(
+      100,
+      withSequence(
+        withSpring(1.2, { damping: 8, stiffness: 300 }),
+        withSpring(1, { damping: 12, stiffness: 200 })
+      )
+    );
+
+    // Auto-dismiss after 2 seconds
+    if (refreshSuccessTimeout.current) {
+      clearTimeout(refreshSuccessTimeout.current);
+    }
+    refreshSuccessTimeout.current = setTimeout(() => {
+      successBannerOpacity.value = withTiming(0, { duration: 300 });
+      successBannerTranslateY.value = withTiming(-40, { duration: 300 });
+      setTimeout(() => setShowRefreshSuccess(false), 350);
+    }, 2000);
+  }, [successBannerOpacity, successBannerTranslateY, successIconScale]);
+
+  // Clean up timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (refreshSuccessTimeout.current) {
+        clearTimeout(refreshSuccessTimeout.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
-    loadData();
+    loadData(false);
   }, [loadData]);
 
   const handleRefresh = useCallback(() => {
     setRefreshing(true);
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    loadData();
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    loadData(true);
   }, [loadData]);
+
+  /**
+   * Format last updated time for display
+   */
+  const lastUpdatedText = useMemo(() => {
+    if (!lastUpdated) return null;
+    const now = new Date();
+    const diffMs = now.getTime() - lastUpdated.getTime();
+    const diffSec = Math.floor(diffMs / 1000);
+
+    if (diffSec < 10) return 'Just now';
+    if (diffSec < 60) return `${diffSec}s ago`;
+    const diffMin = Math.floor(diffSec / 60);
+    if (diffMin < 60) return `${diffMin}m ago`;
+    return lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }, [lastUpdated]);
 
   // Build shift cycle from user data
   const shiftCycle = useMemo(() => (userData ? buildShiftCycle(userData) : null), [userData]);
@@ -331,6 +438,20 @@ export const MainDashboardScreen: React.FC = () => {
         style={StyleSheet.absoluteFill}
       />
 
+      {/* Refresh Success Banner */}
+      {showRefreshSuccess && (
+        <Animated.View
+          style={[styles.refreshSuccessBanner, { top: insets.top + 8 }, successBannerStyle]}
+        >
+          <View style={styles.refreshSuccessContent}>
+            <Animated.View style={successIconStyle}>
+              <Ionicons name="checkmark-circle" size={20} color={theme.colors.success} />
+            </Animated.View>
+            <Text style={styles.refreshSuccessText}>Schedule updated</Text>
+          </View>
+        </Animated.View>
+      )}
+
       <ScrollView
         style={[styles.scrollView, { paddingTop: insets.top }]}
         contentContainerStyle={styles.scrollContent}
@@ -341,11 +462,27 @@ export const MainDashboardScreen: React.FC = () => {
             onRefresh={handleRefresh}
             tintColor={theme.colors.sacredGold}
             colors={[theme.colors.sacredGold]}
+            progressBackgroundColor={theme.colors.darkStone}
+            title={refreshing ? 'Refreshing schedule...' : 'Pull to refresh'}
+            titleColor={theme.colors.dust}
           />
         }
       >
-        {/* Personalized Header */}
+        {/* Last Updated Indicator */}
+        {lastUpdatedText && (
+          <Animated.View
+            entering={FadeIn.duration(300)}
+            exiting={FadeOut.duration(200)}
+            style={styles.lastUpdatedContainer}
+          >
+            <Ionicons name="time-outline" size={12} color={theme.colors.shadow} />
+            <Text style={styles.lastUpdatedText}>Updated {lastUpdatedText}</Text>
+          </Animated.View>
+        )}
+
+        {/* Personalized Header - keyed for re-entrance animation */}
         <PersonalizedHeader
+          key={`header-${refreshKey}`}
           name={userData.name || 'User'}
           occupation={userData.occupation}
           animationDelay={0}
@@ -354,6 +491,7 @@ export const MainDashboardScreen: React.FC = () => {
 
         {/* Current Shift Status Card (HERO) */}
         <CurrentShiftStatusCard
+          key={`status-${refreshKey}`}
           shiftType={todayShift.shiftType}
           timeDisplay={timeDisplay || undefined}
           countdown={countdown || undefined}
@@ -377,6 +515,7 @@ export const MainDashboardScreen: React.FC = () => {
 
         {/* Statistics Row */}
         <StatisticsRow
+          key={`stats-${refreshKey}`}
           workDays={monthStats.workDays}
           offDays={monthStats.offDays}
           workLifeBalance={monthStats.workLifeBalance}
@@ -386,6 +525,7 @@ export const MainDashboardScreen: React.FC = () => {
 
         {/* Upcoming Shifts */}
         <UpcomingShiftsCard
+          key={`upcoming-${refreshKey}`}
           shifts={upcomingShifts}
           animationDelay={500}
           testID="dashboard-upcoming"
@@ -393,6 +533,7 @@ export const MainDashboardScreen: React.FC = () => {
 
         {/* Quick Actions */}
         <QuickActionsBar
+          key={`actions-${refreshKey}`}
           onActionPress={handleActionPress}
           animationDelay={600}
           testID="dashboard-actions"
@@ -423,5 +564,48 @@ const styles = StyleSheet.create({
     fontSize: theme.typography.fontSizes.md,
     color: theme.colors.dust,
     textAlign: 'center',
+  },
+  // Refresh Success Banner
+  refreshSuccessBanner: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    zIndex: 100,
+    alignItems: 'center',
+    paddingHorizontal: theme.spacing.lg,
+  },
+  refreshSuccessContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.sm,
+    backgroundColor: theme.colors.darkStone,
+    paddingVertical: theme.spacing.sm,
+    paddingHorizontal: theme.spacing.lg,
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: theme.colors.success,
+    shadowColor: theme.colors.success,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  refreshSuccessText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: theme.colors.success,
+  },
+  // Last Updated Indicator
+  lastUpdatedContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+    paddingVertical: theme.spacing.xs,
+    marginBottom: theme.spacing.xs,
+  },
+  lastUpdatedText: {
+    fontSize: 11,
+    color: theme.colors.shadow,
   },
 });

@@ -217,10 +217,10 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
   useEffect(() => {
     const restoreData = async () => {
       try {
-        const savedData = await asyncStorageService.get<string>('onboarding:data');
-        if (savedData) {
-          const parsed = JSON.parse(savedData);
-          setData(parsed);
+        // asyncStorageService.get() auto-deserializes JSON, so no JSON.parse needed
+        const savedData = await asyncStorageService.get<OnboardingData>('onboarding:data');
+        if (savedData && typeof savedData === 'object') {
+          setData(savedData);
         }
       } catch (error) {
         console.warn('Failed to restore onboarding data:', error);
@@ -240,7 +240,8 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
       const newData = { ...prevData, ...updates };
 
       // Auto-save to AsyncStorage (non-blocking, don't await)
-      asyncStorageService.set('onboarding:data', JSON.stringify(newData)).catch((error) => {
+      // Pass object directly - asyncStorageService handles serialization
+      asyncStorageService.set('onboarding:data', newData).catch((error) => {
         console.warn('Failed to auto-save onboarding data:', error);
         // Don't throw - auto-save failure shouldn't block UX
       });
@@ -257,7 +258,7 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
     setData(newData);
 
     // Auto-save to AsyncStorage (non-blocking)
-    asyncStorageService.set('onboarding:data', JSON.stringify(newData)).catch((error) => {
+    asyncStorageService.set('onboarding:data', newData).catch((error) => {
       console.warn('Failed to save onboarding data:', error);
     });
   }, []);
@@ -281,7 +282,7 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
     setData({});
 
     // Clear AsyncStorage (non-blocking)
-    asyncStorageService.set('onboarding:data', JSON.stringify({})).catch((error) => {
+    asyncStorageService.set('onboarding:data', {}).catch((error) => {
       console.warn('Failed to clear onboarding data:', error);
     });
   }, []);

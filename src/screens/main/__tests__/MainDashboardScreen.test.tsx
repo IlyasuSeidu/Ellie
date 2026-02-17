@@ -4,7 +4,7 @@
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 import React from 'react';
-import { render, waitFor } from '@testing-library/react-native';
+import { render, waitFor, act } from '@testing-library/react-native';
 import { MainDashboardScreen } from '../MainDashboardScreen';
 
 // Mock AsyncStorageService
@@ -67,7 +67,15 @@ jest.mock('react-native-reanimated', () => {
     withTiming: (val: number) => val,
     withSpring: (val: number) => val,
     withDelay: (_d: number, val: number) => val,
-    FadeIn: { delay: () => ({ duration: () => ({ springify: () => undefined }) }) },
+    Easing: { out: () => undefined, quad: undefined },
+    FadeIn: {
+      delay: () => ({ duration: () => ({ springify: () => undefined }) }),
+      duration: () => ({ springify: () => undefined }),
+    },
+    FadeOut: {
+      delay: () => ({ duration: () => ({ springify: () => undefined }) }),
+      duration: () => ({ springify: () => undefined }),
+    },
     FadeInDown: { delay: () => ({ duration: () => ({ springify: () => undefined }) }) },
     FadeInUp: { delay: () => ({ duration: () => ({ springify: () => undefined }) }) },
     FadeInRight: { delay: () => ({ duration: () => ({ springify: () => undefined }) }) },
@@ -78,7 +86,8 @@ jest.mock('react-native-reanimated', () => {
 // Import the mocked service for test manipulation
 import { asyncStorageService } from '@/services/AsyncStorageService';
 
-const mockOnboardingData = JSON.stringify({
+// asyncStorageService.get() auto-deserializes, so mock returns parsed object
+const mockOnboardingData = {
   name: 'John Doe',
   occupation: 'Nurse',
   company: 'Hospital',
@@ -91,7 +100,7 @@ const mockOnboardingData = JSON.stringify({
     dayShift: { startTime: '07:00', endTime: '19:00', duration: 12 },
     nightShift: { startTime: '19:00', endTime: '07:00', duration: 12 },
   },
-});
+};
 
 describe('MainDashboardScreen', () => {
   beforeEach(() => {
@@ -197,6 +206,47 @@ describe('MainDashboardScreen', () => {
       await waitFor(() => {
         expect(getByText('Nurse')).toBeTruthy();
       });
+    });
+  });
+
+  describe('Pull to Refresh', () => {
+    it('should have RefreshControl configured', async () => {
+      (asyncStorageService.get as jest.Mock).mockResolvedValue(mockOnboardingData);
+
+      const { UNSAFE_getByType } = render(<MainDashboardScreen />);
+
+      await waitFor(() => {
+        const scrollView = UNSAFE_getByType(require('react-native').ScrollView);
+        expect(scrollView.props.refreshControl).toBeTruthy();
+        expect(scrollView.props.refreshControl.props.tintColor).toBeTruthy();
+      });
+    });
+
+    it('should trigger refresh and reload data', async () => {
+      (asyncStorageService.get as jest.Mock).mockResolvedValue(mockOnboardingData);
+
+      const Haptics = require('expo-haptics');
+      const { UNSAFE_getByType } = render(<MainDashboardScreen />);
+
+      await waitFor(() => {
+        expect(UNSAFE_getByType(require('react-native').ScrollView)).toBeTruthy();
+      });
+
+      // Get RefreshControl's onRefresh from ScrollView
+      const scrollView = UNSAFE_getByType(require('react-native').ScrollView);
+      const onRefresh = scrollView.props.refreshControl.props.onRefresh;
+
+      await act(() => {
+        onRefresh();
+      });
+
+      // Data should have been reloaded (initial load + refresh)
+      await waitFor(() => {
+        expect(asyncStorageService.get).toHaveBeenCalledTimes(2);
+      });
+
+      // Should trigger medium haptic on pull
+      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Medium);
     });
   });
 });

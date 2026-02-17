@@ -324,7 +324,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
       // For now, just save to AsyncStorage
       // Full UserService integration will come after proper backend setup
       await asyncStorageService.set('onboarding:complete', true);
-      await asyncStorageService.set('onboarding:data', JSON.stringify(data));
+      await asyncStorageService.set('onboarding:data', data);
 
       setIsSaved(true);
 

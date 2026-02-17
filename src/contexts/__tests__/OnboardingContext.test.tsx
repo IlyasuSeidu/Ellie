@@ -286,11 +286,11 @@ describe('OnboardingContext', () => {
         });
       });
 
-      // Wait for async auto-save to complete
+      // Wait for async auto-save to complete (object passed directly, not JSON string)
       await waitFor(() => {
         expect(asyncStorageService.set).toHaveBeenCalledWith(
           'onboarding:data',
-          expect.stringContaining('John Doe')
+          expect.objectContaining({ name: 'John Doe' })
         );
       });
     });
@@ -311,9 +311,10 @@ describe('OnboardingContext', () => {
       });
 
       await waitFor(() => {
+        // updateData passes object directly to asyncStorageService.set
         expect(asyncStorageService.set).toHaveBeenCalledWith(
           'onboarding:data',
-          JSON.stringify(testData)
+          expect.objectContaining(testData)
         );
       });
     });
@@ -359,7 +360,8 @@ describe('OnboardingContext', () => {
         patternType: ShiftPattern.STANDARD_4_4_4,
       };
 
-      (asyncStorageService.get as jest.Mock).mockResolvedValue(JSON.stringify(savedData));
+      // asyncStorageService.get() auto-deserializes, returns object directly
+      (asyncStorageService.get as jest.Mock).mockResolvedValue(savedData);
 
       const { result } = renderHook(() => useOnboarding(), { wrapper });
 
@@ -388,8 +390,9 @@ describe('OnboardingContext', () => {
       });
     });
 
-    it('should handle invalid JSON in saved data', async () => {
-      (asyncStorageService.get as jest.Mock).mockResolvedValue('invalid json{]');
+    it('should handle non-object saved data gracefully', async () => {
+      // If get() returns a non-object (e.g., string), restoreData ignores it
+      (asyncStorageService.get as jest.Mock).mockResolvedValue('not-an-object');
 
       const { result } = renderHook(() => useOnboarding(), { wrapper });
 
@@ -421,7 +424,8 @@ describe('OnboardingContext', () => {
         startDate: new Date('2024-01-15').toISOString(), // Stored as string
       };
 
-      (asyncStorageService.get as jest.Mock).mockResolvedValue(JSON.stringify(savedData));
+      // asyncStorageService.get() auto-deserializes, returns object directly
+      (asyncStorageService.get as jest.Mock).mockResolvedValue(savedData);
 
       const { result } = renderHook(() => useOnboarding(), { wrapper });
 

@@ -33,11 +33,11 @@ export const AppNavigator: React.FC = () => {
 
   const checkOnboardingStatus = async () => {
     try {
-      const savedData = await asyncStorageService.get<string>('onboarding:data');
-      if (savedData) {
-        const parsed = typeof savedData === 'string' ? JSON.parse(savedData) : savedData;
+      // asyncStorageService.get() auto-deserializes JSON, returns object directly
+      const savedData = await asyncStorageService.get<Record<string, unknown>>('onboarding:data');
+      if (savedData && typeof savedData === 'object') {
         // Onboarding is complete if essential fields are present
-        const complete = !!(parsed.name && parsed.startDate && parsed.patternType);
+        const complete = !!(savedData.name && savedData.startDate && savedData.patternType);
         setIsOnboardingComplete(complete);
       } else {
         setIsOnboardingComplete(false);

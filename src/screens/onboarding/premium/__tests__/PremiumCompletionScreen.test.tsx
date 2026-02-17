@@ -317,7 +317,7 @@ describe('PremiumCompletionScreen', () => {
       renderWithProviders(<PremiumCompletionScreen />);
 
       await waitFor(() => {
-        expect(asyncStorageService.set).toHaveBeenCalledWith('onboarding:data', expect.any(String));
+        expect(asyncStorageService.set).toHaveBeenCalledWith('onboarding:data', expect.any(Object));
       });
     });
 
