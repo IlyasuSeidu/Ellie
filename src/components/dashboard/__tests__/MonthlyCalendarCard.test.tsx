@@ -1,0 +1,199 @@
+/**
+ * MonthlyCalendarCard Component Tests
+ */
+
+/* eslint-disable @typescript-eslint/no-var-requires */
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react-native';
+import { MonthlyCalendarCard } from '../MonthlyCalendarCard';
+import type { ShiftDay } from '@/types';
+
+// Mock Ionicons
+jest.mock('@expo/vector-icons', () => {
+  const React = require('react');
+  const RN = require('react-native');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const MockIcon = (props: any) => React.createElement(RN.Text, props, props.name || 'icon');
+  return { Ionicons: MockIcon };
+});
+
+// Mock expo-haptics
+jest.mock('expo-haptics', () => ({
+  impactAsync: jest.fn(),
+  ImpactFeedbackStyle: { Light: 'light', Medium: 'medium' },
+}));
+
+// Mock reanimated
+jest.mock('react-native-reanimated', () => {
+  const RN = require('react-native');
+  return {
+    __esModule: true,
+    default: {
+      View: RN.View,
+      Text: RN.Text,
+      createAnimatedComponent: (component: unknown) => component,
+    },
+    useSharedValue: (val: number) => ({ value: val }),
+    useAnimatedStyle: () => ({}),
+    withRepeat: (val: number) => val,
+    withSequence: (val: number) => val,
+    withTiming: (val: number) => val,
+    withSpring: (val: number) => val,
+    FadeIn: { delay: () => ({ duration: () => undefined }) },
+    FadeInLeft: { delay: () => ({ duration: () => undefined }) },
+    FadeInRight: { delay: () => ({ duration: () => undefined }) },
+  };
+});
+
+// Sample shift days for February 2026
+const createShiftDays = (): ShiftDay[] => {
+  const days: ShiftDay[] = [];
+  for (let i = 1; i <= 28; i++) {
+    const dayStr = i.toString().padStart(2, '0');
+    const cyclePos = (i - 1) % 9;
+    let shiftType: 'day' | 'night' | 'off';
+    if (cyclePos < 3) shiftType = 'day';
+    else if (cyclePos < 6) shiftType = 'night';
+    else shiftType = 'off';
+
+    days.push({
+      date: `2026-02-${dayStr}`,
+      isWorkDay: shiftType !== 'off',
+      isNightShift: shiftType === 'night',
+      shiftType,
+    });
+  }
+  return days;
+};
+
+describe('MonthlyCalendarCard', () => {
+  const mockPrevMonth = jest.fn();
+  const mockNextMonth = jest.fn();
+  const mockDayPress = jest.fn();
+  const shiftDays = createShiftDays();
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe('Rendering', () => {
+    it('should render month and year title', () => {
+      const { getByText } = render(
+        <MonthlyCalendarCard
+          year={2026}
+          month={1}
+          shiftDays={shiftDays}
+          onPreviousMonth={mockPrevMonth}
+          onNextMonth={mockNextMonth}
+        />
+      );
+      expect(getByText('February 2026')).toBeTruthy();
+    });
+
+    it('should render weekday headers', () => {
+      const { getAllByText } = render(
+        <MonthlyCalendarCard
+          year={2026}
+          month={1}
+          shiftDays={shiftDays}
+          onPreviousMonth={mockPrevMonth}
+          onNextMonth={mockNextMonth}
+        />
+      );
+      // S appears twice (Sunday, Saturday)
+      expect(getAllByText('S').length).toBeGreaterThanOrEqual(2);
+      expect(getAllByText('M').length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('should render day cells', () => {
+      const { getByTestId } = render(
+        <MonthlyCalendarCard
+          year={2026}
+          month={1}
+          shiftDays={shiftDays}
+          onPreviousMonth={mockPrevMonth}
+          onNextMonth={mockNextMonth}
+        />
+      );
+      expect(getByTestId('calendar-day-1')).toBeTruthy();
+      expect(getByTestId('calendar-day-15')).toBeTruthy();
+      expect(getByTestId('calendar-day-28')).toBeTruthy();
+    });
+
+    it('should render legend', () => {
+      const { getByText } = render(
+        <MonthlyCalendarCard
+          year={2026}
+          month={1}
+          shiftDays={shiftDays}
+          onPreviousMonth={mockPrevMonth}
+          onNextMonth={mockNextMonth}
+        />
+      );
+      expect(getByText('Day')).toBeTruthy();
+      expect(getByText('Night')).toBeTruthy();
+      expect(getByText('Off')).toBeTruthy();
+    });
+
+    it('should render with testID', () => {
+      const { getByTestId } = render(
+        <MonthlyCalendarCard
+          year={2026}
+          month={1}
+          shiftDays={shiftDays}
+          onPreviousMonth={mockPrevMonth}
+          onNextMonth={mockNextMonth}
+          testID="test-calendar"
+        />
+      );
+      expect(getByTestId('test-calendar')).toBeTruthy();
+    });
+  });
+
+  describe('Navigation', () => {
+    it('should call onPreviousMonth when prev button pressed', () => {
+      const { getByLabelText } = render(
+        <MonthlyCalendarCard
+          year={2026}
+          month={1}
+          shiftDays={shiftDays}
+          onPreviousMonth={mockPrevMonth}
+          onNextMonth={mockNextMonth}
+        />
+      );
+      fireEvent.press(getByLabelText('Previous month'));
+      expect(mockPrevMonth).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call onNextMonth when next button pressed', () => {
+      const { getByLabelText } = render(
+        <MonthlyCalendarCard
+          year={2026}
+          month={1}
+          shiftDays={shiftDays}
+          onPreviousMonth={mockPrevMonth}
+          onNextMonth={mockNextMonth}
+        />
+      );
+      fireEvent.press(getByLabelText('Next month'));
+      expect(mockNextMonth).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('Day Selection', () => {
+    it('should call onDayPress when a day is pressed', () => {
+      const { getByTestId } = render(
+        <MonthlyCalendarCard
+          year={2026}
+          month={1}
+          shiftDays={shiftDays}
+          onPreviousMonth={mockPrevMonth}
+          onNextMonth={mockNextMonth}
+          onDayPress={mockDayPress}
+        />
+      );
+      fireEvent.press(getByTestId('calendar-day-15'));
+      expect(mockDayPress).toHaveBeenCalledWith(15);
+    });
+  });
+});

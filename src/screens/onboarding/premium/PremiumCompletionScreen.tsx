@@ -35,6 +35,8 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import Svg, { Circle, Path } from 'react-native-svg';
 
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
@@ -43,6 +45,7 @@ import { asyncStorageService } from '@/services/AsyncStorageService';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { getShiftTimesFromData } from '@/utils/shiftTimeUtils';
 import { ShiftPattern, ShiftSystem } from '@/types';
+import type { RootStackParamList } from '@/navigation/AppNavigator';
 
 // Animated SVG components
 const AnimatedPath = Animated.createAnimatedComponent(Path);
@@ -221,6 +224,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
   testID = 'premium-completion-screen',
 }) => {
   const { data, validateData } = useOnboarding();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   // State
   const [isSaving, setIsSaving] = useState(false);
@@ -354,7 +358,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
     saveOnboardingData();
   };
 
-  // Handle completion
+  // Handle completion - navigate to Main Dashboard
   const handleGetStarted = async () => {
     if (!isSaved) return;
 
@@ -363,8 +367,11 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
     // Call completion callback if provided
     onComplete?.();
 
-    // Navigate to main app (placeholder - update when Dashboard is created)
-    // TODO: navigation.navigate('Dashboard');
+    // Reset navigation stack and go to MainDashboard
+    navigation.getParent()?.reset({
+      index: 0,
+      routes: [{ name: 'MainDashboard' }],
+    });
   };
 
   // Handle feature pill expansion
