@@ -459,30 +459,52 @@ export const MainDashboardScreen: React.FC = () => {
     return lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }, [lastUpdated, lastUpdatedTick]);
 
+  // Live tick: updates every 60s for countdown, detects day change at midnight
+  // so todayShift, calendar "today" highlight, and stats refresh automatically.
+  const [liveTick, setLiveTick] = useState(0);
+  const [currentDateStr, setCurrentDateStr] = useState(() => toDateString(new Date()));
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setLiveTick((t) => t + 1);
+      const nowStr = toDateString(new Date());
+      setCurrentDateStr((prev) => {
+        if (prev !== nowStr) {
+          // Day changed — also switch calendar to new month if needed
+          const now = new Date();
+          setCurrentMonth({ year: now.getFullYear(), month: now.getMonth() });
+        }
+        return nowStr;
+      });
+    }, 60000);
+    return () => clearInterval(timer);
+  }, []);
+
   // Build shift cycle from user data
   const shiftCycle = useMemo(() => (userData ? buildShiftCycle(userData) : null), [userData]);
 
-  // Today's shift
+  // Today's shift (recalculates when day changes at midnight)
   const todayShift = useMemo(
     () => (shiftCycle ? calculateShiftDay(getToday(), shiftCycle) : null),
-    [shiftCycle]
+    [shiftCycle, currentDateStr] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
-  // Current month shift days
+  // Current month shift days (recalculates on day change for today highlight)
   const monthShifts = useMemo(() => {
     if (!shiftCycle) return [];
+    void currentDateStr; // recalc on day change for today indicator
     const { year, month } = currentMonth;
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
     return getShiftDaysInRange(firstDay, lastDay, shiftCycle);
-  }, [shiftCycle, currentMonth]);
+  }, [shiftCycle, currentMonth, currentDateStr]);
 
-  // Monthly statistics
+  // Monthly statistics (recalculates on day change)
   const monthStats = useMemo(() => {
     if (!shiftCycle) return null;
+    void currentDateStr;
     const { year, month } = currentMonth;
     return calculateMonthStats(year, month, shiftCycle);
-  }, [shiftCycle, currentMonth]);
+  }, [shiftCycle, currentMonth, currentDateStr]);
 
   // Current shift time display
   const timeDisplay = useMemo(
@@ -491,20 +513,13 @@ export const MainDashboardScreen: React.FC = () => {
     [todayShift, userData]
   );
 
-  // Tick every 60s so the countdown updates live
-  const [countdownTick, setCountdownTick] = useState(0);
-  useEffect(() => {
-    const timer = setInterval(() => setCountdownTick((t) => t + 1), 60000);
-    return () => clearInterval(timer);
-  }, []);
-
-  // Countdown text (time-aware: shows hours/minutes using shift times)
+  // Countdown text (time-aware: recalculates every 60s via liveTick)
   const countdown = useMemo(() => {
-    void countdownTick; // forces recalc every minute
+    void liveTick; // forces recalc every minute
     return todayShift && shiftCycle
       ? getCountdownText(todayShift.shiftType, shiftCycle, userData)
       : '';
-  }, [todayShift, shiftCycle, userData, countdownTick]);
+  }, [todayShift, shiftCycle, userData, liveTick]);
 
   // Month navigation
   const handlePreviousMonth = useCallback(() => {
