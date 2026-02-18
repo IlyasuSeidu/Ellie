@@ -60,14 +60,14 @@ const HAPTIC_PATTERNS = {
   ERROR: () => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error),
 } as const;
 
-// Shift visualization colors (RGB values from theme for use with opacity)
+// Shift visualization colors (RGB values aligned with dashboard calendar)
 const SHIFT_COLORS = {
   day: { r: 33, g: 150, b: 243 }, // #2196F3 - Blue
   night: { r: 101, g: 31, b: 255 }, // #651FFF - Purple
-  morning: { r: 252, g: 211, b: 77 }, // #FCD34D - Yellow
-  afternoon: { r: 251, g: 146, b: 60 }, // #FB923C - Orange
-  off: { r: 255, g: 152, b: 0 }, // #FF9800 - Orange/Amber
-  default: { r: 180, g: 83, b: 9 }, // #b45309 - sacredGold fallback
+  morning: { r: 245, g: 158, b: 11 }, // #F59E0B - Amber
+  afternoon: { r: 6, g: 182, b: 212 }, // #06B6D4 - Cyan
+  off: { r: 120, g: 113, b: 108 }, // #78716c - Stone
+  default: { r: 33, g: 150, b: 243 }, // #2196F3 - Blue fallback
 } as const;
 
 // TypeScript Interfaces
@@ -1061,11 +1061,11 @@ const AnimatedPhaseCard: React.FC<AnimatedPhaseCardProps> = React.memo(
         case 'night':
           return 'rgba(101, 31, 255, 0.2)'; // Purple tint
         case 'morning':
-          return 'rgba(33, 150, 243, 0.2)'; // Blue tint
+          return 'rgba(245, 158, 11, 0.2)'; // Amber tint
         case 'afternoon':
-          return 'rgba(255, 152, 0, 0.2)'; // Orange tint
+          return 'rgba(6, 182, 212, 0.2)'; // Cyan tint
         case 'off':
-          return theme.colors.opacity.gold20;
+          return 'rgba(120, 113, 108, 0.2)'; // Stone tint
         default:
           return 'rgba(33, 150, 243, 0.2)';
       }
@@ -1078,11 +1078,11 @@ const AnimatedPhaseCard: React.FC<AnimatedPhaseCardProps> = React.memo(
         case 'night':
           return ['rgba(101, 31, 255, 0.25)', 'rgba(101, 31, 255, 0.05)']; // Purple gradient
         case 'morning':
-          return ['rgba(252, 211, 77, 0.25)', 'rgba(252, 211, 77, 0.05)']; // Yellow gradient
+          return ['rgba(245, 158, 11, 0.25)', 'rgba(245, 158, 11, 0.05)']; // Amber gradient
         case 'afternoon':
-          return ['rgba(251, 146, 60, 0.25)', 'rgba(251, 146, 60, 0.05)']; // Orange gradient
+          return ['rgba(6, 182, 212, 0.25)', 'rgba(6, 182, 212, 0.05)']; // Cyan gradient
         case 'off':
-          return ['rgba(255, 152, 0, 0.25)', 'rgba(255, 152, 0, 0.05)']; // Amber gradient
+          return ['rgba(120, 113, 108, 0.25)', 'rgba(120, 113, 108, 0.05)']; // Stone gradient
         default:
           return ['rgba(33, 150, 243, 0.25)', 'rgba(33, 150, 243, 0.05)'];
       }
@@ -1095,11 +1095,11 @@ const AnimatedPhaseCard: React.FC<AnimatedPhaseCardProps> = React.memo(
         case 'night':
           return 'rgb(101, 31, 255)'; // Purple
         case 'morning':
-          return 'rgb(252, 211, 77)'; // Yellow
+          return 'rgb(245, 158, 11)'; // Amber
         case 'afternoon':
-          return 'rgb(251, 146, 60)'; // Orange
+          return 'rgb(6, 182, 212)'; // Cyan
         case 'off':
-          return 'rgb(255, 152, 0)'; // Amber
+          return 'rgb(120, 113, 108)'; // Stone
         default:
           return theme.colors.sacredGold;
       }
@@ -1112,11 +1112,11 @@ const AnimatedPhaseCard: React.FC<AnimatedPhaseCardProps> = React.memo(
         case 'night':
           return '#651FFF'; // Purple
         case 'morning':
-          return '#FCD34D'; // Yellow
+          return '#F59E0B'; // Amber
         case 'afternoon':
-          return '#FB923C'; // Orange
+          return '#06B6D4'; // Cyan
         case 'off':
-          return '#FF9800'; // Amber
+          return '#78716c'; // Stone
         default:
           return theme.colors.sacredGold;
       }

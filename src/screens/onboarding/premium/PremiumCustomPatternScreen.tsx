@@ -47,24 +47,24 @@ type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const SLIDER_WIDTH = SCREEN_WIDTH * 0.75;
 
-// Cycle block colors - using theme shift visualization colors
+// Cycle block colors - aligned with dashboard calendar
 const CYCLE_COLORS = {
-  day: theme.colors.shiftVisualization.dayShift,
-  night: theme.colors.shiftVisualization.nightShift,
-  morning: '#FCD34D', // Bright yellow for morning
-  afternoon: '#FB923C', // Orange for afternoon
-  night3shift: '#A78BFA', // Purple for 3-shift night
-  off: theme.colors.shiftVisualization.daysOff,
+  day: theme.colors.shiftVisualization.dayShift, // #2196F3 Blue
+  night: theme.colors.shiftVisualization.nightShift, // #651FFF Purple
+  morning: theme.colors.shiftVisualization.morningShift, // #F59E0B Amber
+  afternoon: theme.colors.shiftVisualization.afternoonShift, // #06B6D4 Cyan
+  night3shift: theme.colors.shiftVisualization.nightShift, // #651FFF Purple
+  off: theme.colors.shiftVisualization.daysOff, // #78716c Stone
 } as const;
 
 // Slider track colors - lighter versions for visual feedback
 const TRACK_COLORS = {
   day: '#60A5FA', // Light blue
   night: '#A78BFA', // Light purple
-  morning: '#FDE68A', // Light yellow
-  afternoon: '#FDBA74', // Light orange
-  night3shift: '#C4B5FD', // Light purple
-  off: '#FBBF24', // Light amber
+  morning: '#FCD34D', // Light amber
+  afternoon: '#67E8F9', // Light cyan
+  night3shift: '#A78BFA', // Light purple
+  off: '#a8a29e', // Light stone
 } as const;
 
 // Spring animation configs

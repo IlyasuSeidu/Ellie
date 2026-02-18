@@ -27,10 +27,10 @@ export const colors = {
   dust: '#a8a29e', // Stone 400 - Secondary text, icons, timestamps
   shadow: '#78716c', // Stone 500 - Tertiary text, disabled states
 
-  // Shift-specific colors
-  workDay: '#b45309', // Gold for work days
-  offDay: '#57534e', // Stone 600 for off days
-  nightShift: '#7c2d12', // Amber 900 for night shifts
+  // Shift-specific colors (aligned with dashboard calendar)
+  workDay: '#2196F3', // Blue for day shifts
+  offDay: '#78716c', // Stone 500 for off days
+  nightShift: '#651FFF', // Purple for night shifts
   holiday: '#ea580c', // Orange 600 for holidays
 
   // Shift visualization colors (calendar/timeline UI)
@@ -39,7 +39,7 @@ export const colors = {
     nightShift: '#651FFF', // Purple - for calendar night shift indicators
     morningShift: '#F59E0B', // Amber 500 - sunrise gold for morning shifts
     afternoonShift: '#06B6D4', // Cyan 500 - clear sky for afternoon shifts
-    daysOff: '#FF9800', // Orange - for calendar days off indicators
+    daysOff: '#78716c', // Stone 500 - for calendar days off indicators
   },
 
   // Status colors

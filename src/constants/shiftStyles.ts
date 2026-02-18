@@ -8,16 +8,16 @@ import { hexToRGBA } from '@/utils/styleUtils';
  */
 export const shiftColors = {
   day: {
-    primary: colors.brightGold, // #d97706
-    background: hexToRGBA(colors.brightGold, 0.1),
-    border: hexToRGBA(colors.brightGold, 0.3),
-    text: colors.brightGold,
+    primary: colors.shiftVisualization.dayShift, // #2196F3
+    background: hexToRGBA(colors.shiftVisualization.dayShift, 0.1),
+    border: hexToRGBA(colors.shiftVisualization.dayShift, 0.3),
+    text: colors.shiftVisualization.dayShift,
   },
   night: {
-    primary: colors.sacredGold, // #b45309
-    background: hexToRGBA(colors.sacredGold, 0.1),
-    border: hexToRGBA(colors.sacredGold, 0.3),
-    text: colors.sacredGold,
+    primary: colors.shiftVisualization.nightShift, // #651FFF
+    background: hexToRGBA(colors.shiftVisualization.nightShift, 0.1),
+    border: hexToRGBA(colors.shiftVisualization.nightShift, 0.3),
+    text: colors.shiftVisualization.nightShift,
   },
   morning: {
     primary: colors.shiftVisualization.morningShift, // #F59E0B - sunrise amber
@@ -32,10 +32,10 @@ export const shiftColors = {
     text: colors.shiftVisualization.afternoonShift,
   },
   off: {
-    primary: colors.dust, // #a8a29e
-    background: hexToRGBA(colors.dust, 0.05),
-    border: hexToRGBA(colors.dust, 0.2),
-    text: colors.dust,
+    primary: colors.offDay, // #78716c
+    background: hexToRGBA(colors.offDay, 0.05),
+    border: hexToRGBA(colors.offDay, 0.2),
+    text: colors.offDay,
   },
 } as const;
 
@@ -72,11 +72,11 @@ export const calendarDayStyles = {
     } as ViewStyle,
 
     dayShift: {
-      backgroundColor: hexToRGBA(colors.brightGold, 0.15),
+      backgroundColor: hexToRGBA(colors.shiftVisualization.dayShift, 0.15),
     } as ViewStyle,
 
     nightShift: {
-      backgroundColor: hexToRGBA(colors.sacredGold, 0.15),
+      backgroundColor: hexToRGBA(colors.shiftVisualization.nightShift, 0.15),
     } as ViewStyle,
 
     morningShift: {
