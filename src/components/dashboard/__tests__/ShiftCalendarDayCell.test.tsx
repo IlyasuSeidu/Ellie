@@ -7,6 +7,15 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { ShiftCalendarDayCell } from '../ShiftCalendarDayCell';
 
+// Mock Ionicons
+jest.mock('@expo/vector-icons', () => {
+  const React = require('react');
+  const RN = require('react-native');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const MockIcon = (props: any) => React.createElement(RN.Text, props, props.name || 'icon');
+  return { Ionicons: MockIcon };
+});
+
 // Mock expo-haptics
 jest.mock('expo-haptics', () => ({
   impactAsync: jest.fn(),
@@ -29,7 +38,7 @@ jest.mock('react-native-reanimated', () => {
     withSequence: (val: number) => val,
     withTiming: (val: number) => val,
     withSpring: (val: number) => val,
-    FadeIn: { delay: () => ({ duration: () => undefined }) },
+    withDelay: (_d: number, val: number) => val,
   };
 });
 
@@ -46,29 +55,29 @@ describe('ShiftCalendarDayCell', () => {
       expect(getByText('15')).toBeTruthy();
     });
 
-    it('should render shift type badge for day shift', () => {
+    it('should render shift type icon badge for day shift', () => {
       const { getByText } = render(<ShiftCalendarDayCell day={1} shiftType="day" />);
-      expect(getByText('D')).toBeTruthy();
+      expect(getByText('sunny')).toBeTruthy();
     });
 
-    it('should render shift type badge for night shift', () => {
+    it('should render shift type icon badge for night shift', () => {
       const { getByText } = render(<ShiftCalendarDayCell day={1} shiftType="night" />);
-      expect(getByText('N')).toBeTruthy();
+      expect(getByText('moon')).toBeTruthy();
     });
 
-    it('should render shift type badge for off day', () => {
+    it('should render shift type icon badge for off day', () => {
       const { getByText } = render(<ShiftCalendarDayCell day={1} shiftType="off" />);
-      expect(getByText('O')).toBeTruthy();
+      expect(getByText('bed-outline')).toBeTruthy();
     });
 
-    it('should render shift type badge for morning shift', () => {
+    it('should render shift type icon badge for morning shift', () => {
       const { getByText } = render(<ShiftCalendarDayCell day={1} shiftType="morning" />);
-      expect(getByText('M')).toBeTruthy();
+      expect(getByText('sunny-outline')).toBeTruthy();
     });
 
-    it('should render shift type badge for afternoon shift', () => {
+    it('should render shift type icon badge for afternoon shift', () => {
       const { getByText } = render(<ShiftCalendarDayCell day={1} shiftType="afternoon" />);
-      expect(getByText('A')).toBeTruthy();
+      expect(getByText('partly-sunny')).toBeTruthy();
     });
 
     it('should render with testID', () => {

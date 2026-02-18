@@ -43,7 +43,7 @@ jest.mock('expo-haptics', () => ({
   NotificationFeedbackType: { Success: 'success', Error: 'error' },
 }));
 
-// Mock react-native-gesture-handler (used by PersonalizedHeader)
+// Mock react-native-gesture-handler (used by PersonalizedHeader + MonthlyCalendarCard)
 jest.mock('react-native-gesture-handler', () => {
   const React = require('react');
   const RN = require('react-native');
@@ -59,6 +59,17 @@ jest.mock('react-native-gesture-handler', () => {
           return this;
         },
         onFinalize: function () {
+          return this;
+        },
+      }),
+      Pan: () => ({
+        activeOffsetX: function () {
+          return this;
+        },
+        failOffsetY: function () {
+          return this;
+        },
+        onEnd: function () {
           return this;
         },
       }),

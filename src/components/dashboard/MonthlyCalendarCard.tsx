@@ -1,20 +1,31 @@
 /**
  * MonthlyCalendarCard Component
  *
- * Interactive monthly calendar with shift visualization.
- * Features month navigation with swipe gestures, color-coded shift days,
- * today indicator, legend, and haptic feedback.
+ * Premium interactive monthly calendar with shift visualization.
+ * Features staggered entrance animations (header → weekdays → rows → legend),
+ * spring-bounce nav buttons, gold accent divider, color-coded shift days,
+ * today indicator, dynamic legend, and haptic feedback.
+ * Entrance replays on month navigation for a polished transition.
  */
 
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { View, StyleSheet, Platform, TouchableOpacity } from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withSequence,
+  withSpring,
+  withTiming,
+  runOnJS,
+} from 'react-native-reanimated';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
 import { getDaysInMonth, getFirstDayOfMonth, isToday as checkIsToday } from '@/utils/dateUtils';
 import { ShiftCalendarDayCell } from './ShiftCalendarDayCell';
-import type { ShiftDay } from '@/types';
+import { ShiftSystem, type ShiftDay } from '@/types';
 
 export interface MonthlyCalendarCardProps {
   /** Current year */
@@ -31,6 +42,8 @@ export interface MonthlyCalendarCardProps {
   onNextMonth: () => void;
   /** Called when a day is pressed */
   onDayPress?: (day: number) => void;
+  /** Shift system (2-shift or 3-shift) — controls which legend items appear */
+  shiftSystem?: ShiftSystem;
   /** Animation delay in ms */
   animationDelay?: number;
   /** Test ID */
@@ -102,6 +115,7 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
   onPreviousMonth,
   onNextMonth,
   onDayPress,
+  shiftSystem,
   animationDelay = 200,
   testID,
 }) => {
@@ -117,6 +131,155 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
     return map;
   }, [shiftDays]);
 
+  // ── Staggered Entrance Shared Values (20 total) ──
+
+  // Stage 1: Header
+  const headerTranslateY = useSharedValue(10);
+  const headerOpacity = useSharedValue(0);
+
+  // Stage 2: Weekday labels
+  const weekdayTranslateY = useSharedValue(8);
+  const weekdayOpacity = useSharedValue(0);
+
+  // Stage 3: Calendar grid rows (6 max rows, declared individually for hooks rules)
+  const row0TranslateY = useSharedValue(10);
+  const row0Opacity = useSharedValue(0);
+  const row1TranslateY = useSharedValue(10);
+  const row1Opacity = useSharedValue(0);
+  const row2TranslateY = useSharedValue(10);
+  const row2Opacity = useSharedValue(0);
+  const row3TranslateY = useSharedValue(10);
+  const row3Opacity = useSharedValue(0);
+  const row4TranslateY = useSharedValue(10);
+  const row4Opacity = useSharedValue(0);
+  const row5TranslateY = useSharedValue(10);
+  const row5Opacity = useSharedValue(0);
+
+  // Stage 4: Legend
+  const legendTranslateY = useSharedValue(8);
+  const legendOpacity = useSharedValue(0);
+
+  // Nav button tap scale
+  const prevBtnScale = useSharedValue(1);
+  const nextBtnScale = useSharedValue(1);
+
+  // Collect row shared values into arrays for indexed access
+  const rowTranslateYs = useMemo(
+    () => [
+      row0TranslateY,
+      row1TranslateY,
+      row2TranslateY,
+      row3TranslateY,
+      row4TranslateY,
+      row5TranslateY,
+    ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+  const rowOpacities = useMemo(
+    () => [row0Opacity, row1Opacity, row2Opacity, row3Opacity, row4Opacity, row5Opacity],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  // ── Staggered Entrance Trigger (replays on month change) ──
+  useEffect(() => {
+    const D = animationDelay;
+    const springConfig = { damping: 16, stiffness: 180 };
+
+    // Reset all to initial state
+    headerTranslateY.value = 10;
+    headerOpacity.value = 0;
+    weekdayTranslateY.value = 8;
+    weekdayOpacity.value = 0;
+    for (let i = 0; i < 6; i++) {
+      rowTranslateYs[i].value = 10;
+      rowOpacities[i].value = 0;
+    }
+    legendTranslateY.value = 8;
+    legendOpacity.value = 0;
+
+    // Stage 1: Header
+    headerTranslateY.value = withDelay(D, withSpring(0, springConfig));
+    headerOpacity.value = withDelay(D, withTiming(1, { duration: 350 }));
+
+    // Stage 2: Weekday labels
+    weekdayTranslateY.value = withDelay(D + 120, withSpring(0, springConfig));
+    weekdayOpacity.value = withDelay(D + 120, withTiming(1, { duration: 350 }));
+
+    // Stage 3: Calendar grid rows (staggered at 80ms intervals)
+    const rowCount = calendarGrid.length;
+    for (let i = 0; i < rowCount; i++) {
+      const rowDelay = D + 240 + i * 80;
+      rowTranslateYs[i].value = withDelay(rowDelay, withSpring(0, springConfig));
+      rowOpacities[i].value = withDelay(rowDelay, withTiming(1, { duration: 300 }));
+    }
+
+    // Stage 4: Legend
+    const legendDelay = D + 240 + rowCount * 80 + 100;
+    legendTranslateY.value = withDelay(legendDelay, withSpring(0, springConfig));
+    legendOpacity.value = withDelay(legendDelay, withTiming(1, { duration: 350 }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [animationDelay, year, month]);
+
+  // ── Animated Styles ──
+
+  const headerEntranceStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: headerTranslateY.value }],
+    opacity: headerOpacity.value,
+  }));
+
+  const weekdayEntranceStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: weekdayTranslateY.value }],
+    opacity: weekdayOpacity.value,
+  }));
+
+  const row0Style = useAnimatedStyle(() => ({
+    transform: [{ translateY: row0TranslateY.value }],
+    opacity: row0Opacity.value,
+  }));
+  const row1Style = useAnimatedStyle(() => ({
+    transform: [{ translateY: row1TranslateY.value }],
+    opacity: row1Opacity.value,
+  }));
+  const row2Style = useAnimatedStyle(() => ({
+    transform: [{ translateY: row2TranslateY.value }],
+    opacity: row2Opacity.value,
+  }));
+  const row3Style = useAnimatedStyle(() => ({
+    transform: [{ translateY: row3TranslateY.value }],
+    opacity: row3Opacity.value,
+  }));
+  const row4Style = useAnimatedStyle(() => ({
+    transform: [{ translateY: row4TranslateY.value }],
+    opacity: row4Opacity.value,
+  }));
+  const row5Style = useAnimatedStyle(() => ({
+    transform: [{ translateY: row5TranslateY.value }],
+    opacity: row5Opacity.value,
+  }));
+
+  const rowEntranceStyles = useMemo(
+    () => [row0Style, row1Style, row2Style, row3Style, row4Style, row5Style],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  const legendEntranceStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: legendTranslateY.value }],
+    opacity: legendOpacity.value,
+  }));
+
+  const prevBtnAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: prevBtnScale.value }],
+  }));
+
+  const nextBtnAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: nextBtnScale.value }],
+  }));
+
+  // ── Nav Button Handlers ──
+
   const handlePrevMonth = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     onPreviousMonth();
@@ -127,95 +290,160 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
     onNextMonth();
   }, [onNextMonth]);
 
+  const handlePrevPressIn = useCallback(() => {
+    prevBtnScale.value = withSpring(0.85, { damping: 15, stiffness: 400 });
+  }, [prevBtnScale]);
+
+  const handlePrevPressOut = useCallback(() => {
+    prevBtnScale.value = withSequence(
+      withSpring(1.1, { damping: 8, stiffness: 350 }),
+      withSpring(1.0, { damping: 12, stiffness: 300 })
+    );
+  }, [prevBtnScale]);
+
+  const handleNextPressIn = useCallback(() => {
+    nextBtnScale.value = withSpring(0.85, { damping: 15, stiffness: 400 });
+  }, [nextBtnScale]);
+
+  const handleNextPressOut = useCallback(() => {
+    nextBtnScale.value = withSequence(
+      withSpring(1.1, { damping: 8, stiffness: 350 }),
+      withSpring(1.0, { damping: 12, stiffness: 300 })
+    );
+  }, [nextBtnScale]);
+
+  // ── Swipe Gesture for Month Navigation ──
+  // activeOffsetX: only activate after 30px horizontal movement
+  // failOffsetY: fail (let ScrollView handle) if 15px vertical movement happens first
+  const swipeGesture = useMemo(
+    () =>
+      Gesture.Pan()
+        .activeOffsetX([-30, 30])
+        .failOffsetY([-15, 15])
+        .onEnd((event) => {
+          if (event.translationX < -50) {
+            // Swiped left → next month
+            runOnJS(handleNextMonth)();
+          } else if (event.translationX > 50) {
+            // Swiped right → previous month
+            runOnJS(handlePrevMonth)();
+          }
+        }),
+    [handleNextMonth, handlePrevMonth]
+  );
+
   return (
-    <Animated.View
-      entering={FadeIn.delay(animationDelay).duration(600)}
-      style={styles.container}
-      testID={testID}
-    >
-      {/* Month Navigation Header */}
-      <View style={styles.header}>
-        <TouchableOpacity
-          onPress={handlePrevMonth}
-          style={styles.navButton}
-          accessibilityLabel="Previous month"
-          accessibilityRole="button"
-        >
-          <Ionicons name="chevron-back" size={22} color={theme.colors.paper} />
-        </TouchableOpacity>
+    <GestureDetector gesture={swipeGesture}>
+      <View style={styles.container} testID={testID}>
+        {/* Month Navigation Header — with entrance animation */}
+        <Animated.View style={[styles.header, headerEntranceStyle]}>
+          <Animated.View style={prevBtnAnimatedStyle}>
+            <TouchableOpacity
+              onPress={handlePrevMonth}
+              onPressIn={handlePrevPressIn}
+              onPressOut={handlePrevPressOut}
+              style={styles.navButton}
+              activeOpacity={1}
+              accessibilityLabel="Previous month"
+              accessibilityRole="button"
+            >
+              <Ionicons name="chevron-back" size={22} color={theme.colors.paper} />
+            </TouchableOpacity>
+          </Animated.View>
 
-        <Animated.Text style={styles.monthTitle}>
-          {MONTH_NAMES[month]} {year}
-        </Animated.Text>
+          <Animated.Text style={styles.monthTitle}>
+            {MONTH_NAMES[month]} {year}
+          </Animated.Text>
 
-        <TouchableOpacity
-          onPress={handleNextMonth}
-          style={styles.navButton}
-          accessibilityLabel="Next month"
-          accessibilityRole="button"
-        >
-          <Ionicons name="chevron-forward" size={22} color={theme.colors.paper} />
-        </TouchableOpacity>
+          <Animated.View style={nextBtnAnimatedStyle}>
+            <TouchableOpacity
+              onPress={handleNextMonth}
+              onPressIn={handleNextPressIn}
+              onPressOut={handleNextPressOut}
+              style={styles.navButton}
+              activeOpacity={1}
+              accessibilityLabel="Next month"
+              accessibilityRole="button"
+            >
+              <Ionicons name="chevron-forward" size={22} color={theme.colors.paper} />
+            </TouchableOpacity>
+          </Animated.View>
+        </Animated.View>
+
+        {/* Gold accent divider */}
+        <View style={styles.goldDivider} />
+
+        {/* Weekday Headers — with entrance animation */}
+        <Animated.View style={[styles.weekdayRow, weekdayEntranceStyle]}>
+          {WEEKDAY_LABELS.map((label, index) => (
+            <View key={`weekday-${index}`} style={styles.weekdayCell}>
+              <Animated.Text style={styles.weekdayText}>{label}</Animated.Text>
+            </View>
+          ))}
+        </Animated.View>
+
+        {/* Calendar Grid — row-level staggered entrance */}
+        <View style={styles.gridContainer}>
+          {calendarGrid.map((week, weekIndex) => (
+            <Animated.View
+              key={`week-${weekIndex}`}
+              style={[styles.weekRow, rowEntranceStyles[weekIndex]]}
+            >
+              {week.map((day, dayIndex) => {
+                if (day === null) {
+                  return <View key={`empty-${weekIndex}-${dayIndex}`} style={styles.emptyCell} />;
+                }
+
+                const shiftDay = shiftDayMap[day];
+                const dayDate = new Date(year, month, day);
+                const isTodayDate = checkIsToday(dayDate);
+
+                return (
+                  <ShiftCalendarDayCell
+                    key={`day-${day}`}
+                    day={day}
+                    shiftType={shiftDay?.shiftType}
+                    isToday={isTodayDate}
+                    selected={selectedDay === day}
+                    onPress={onDayPress}
+                    testID={`calendar-day-${day}`}
+                  />
+                );
+              })}
+            </Animated.View>
+          ))}
+        </View>
+
+        {/* Legend — filtered by shift system, with entrance animation */}
+        <Animated.View style={[styles.legend, legendEntranceStyle]}>
+          {shiftSystem !== ShiftSystem.THREE_SHIFT && (
+            <LegendItem color="#2196F3" icon="sunny" label="Day" />
+          )}
+          {shiftSystem !== ShiftSystem.TWO_SHIFT && (
+            <>
+              <LegendItem color="#F59E0B" icon="sunny-outline" label="Morning" />
+              <LegendItem color="#06B6D4" icon="partly-sunny" label="Afternoon" />
+            </>
+          )}
+          <LegendItem color="#651FFF" icon="moon" label="Night" />
+          <LegendItem color="#78716c" icon="bed-outline" label="Off" />
+        </Animated.View>
       </View>
-
-      {/* Weekday Headers */}
-      <View style={styles.weekdayRow}>
-        {WEEKDAY_LABELS.map((label, index) => (
-          <View key={`weekday-${index}`} style={styles.weekdayCell}>
-            <Animated.Text style={styles.weekdayText}>{label}</Animated.Text>
-          </View>
-        ))}
-      </View>
-
-      {/* Calendar Grid */}
-      <View style={styles.gridContainer}>
-        {calendarGrid.map((week, weekIndex) => (
-          <View key={`week-${weekIndex}`} style={styles.weekRow}>
-            {week.map((day, dayIndex) => {
-              if (day === null) {
-                return <View key={`empty-${weekIndex}-${dayIndex}`} style={styles.emptyCell} />;
-              }
-
-              const shiftDay = shiftDayMap[day];
-              const dayDate = new Date(year, month, day);
-              const isTodayDate = checkIsToday(dayDate);
-
-              return (
-                <ShiftCalendarDayCell
-                  key={`day-${day}`}
-                  day={day}
-                  shiftType={shiftDay?.shiftType}
-                  isToday={isTodayDate}
-                  selected={selectedDay === day}
-                  onPress={onDayPress}
-                  testID={`calendar-day-${day}`}
-                />
-              );
-            })}
-          </View>
-        ))}
-      </View>
-
-      {/* Legend */}
-      <View style={styles.legend}>
-        <LegendItem color="#2196F3" label="Day" />
-        <LegendItem color="#F59E0B" label="Morning" />
-        <LegendItem color="#06B6D4" label="Afternoon" />
-        <LegendItem color="#651FFF" label="Night" />
-        <LegendItem color="#78716c" label="Off" />
-      </View>
-    </Animated.View>
+    </GestureDetector>
   );
 };
 
 interface LegendItemProps {
   color: string;
+  icon: keyof typeof Ionicons.glyphMap;
   label: string;
 }
 
-const LegendItem: React.FC<LegendItemProps> = ({ color, label }) => (
+const LegendItem: React.FC<LegendItemProps> = ({ color, icon, label }) => (
   <View style={styles.legendItem}>
-    <View style={[styles.legendDot, { backgroundColor: color }]} />
+    <View style={[styles.legendDot, { backgroundColor: color }]}>
+      <Ionicons name={icon} size={8} color="#fff" />
+    </View>
     <Animated.Text style={styles.legendText}>{label}</Animated.Text>
   </View>
 );
@@ -229,15 +457,17 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.darkStone,
     borderRadius: theme.borderRadius.xl,
     padding: theme.spacing.md,
+    borderTopWidth: 1.5,
+    borderTopColor: theme.colors.opacity.gold20,
     ...Platform.select({
       ios: {
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.15,
-        shadowRadius: 8,
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.25,
+        shadowRadius: 16,
       },
       android: {
-        elevation: 4,
+        elevation: 8,
       },
     }),
   },
@@ -245,7 +475,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: theme.spacing.md,
+    marginBottom: theme.spacing.sm,
     paddingHorizontal: theme.spacing.xs,
   },
   navButton: {
@@ -260,6 +490,12 @@ const styles = StyleSheet.create({
     fontSize: theme.typography.fontSizes.lg,
     fontWeight: theme.typography.fontWeights.bold,
     color: theme.colors.paper,
+  },
+  goldDivider: {
+    height: 1,
+    backgroundColor: theme.colors.opacity.gold20,
+    marginHorizontal: theme.spacing.xl,
+    marginBottom: theme.spacing.sm,
   },
   weekdayRow: {
     flexDirection: 'row',
@@ -287,7 +523,7 @@ const styles = StyleSheet.create({
   },
   emptyCell: {
     width: CELL_WIDTH,
-    height: CELL_WIDTH + 4,
+    height: 72,
   },
   legend: {
     flexDirection: 'row',
@@ -304,10 +540,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   legendDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginRight: 4,
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+    marginRight: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+      },
+    }),
   },
   legendText: {
     fontSize: theme.typography.fontSizes.xs,

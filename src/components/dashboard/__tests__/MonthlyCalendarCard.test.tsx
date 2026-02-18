@@ -6,7 +6,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { MonthlyCalendarCard } from '../MonthlyCalendarCard';
-import type { ShiftDay } from '@/types';
+import { ShiftSystem, type ShiftDay } from '@/types';
 
 // Mock Ionicons
 jest.mock('@expo/vector-icons', () => {
@@ -15,6 +15,29 @@ jest.mock('@expo/vector-icons', () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const MockIcon = (props: any) => React.createElement(RN.Text, props, props.name || 'icon');
   return { Ionicons: MockIcon };
+});
+
+// Mock react-native-gesture-handler
+jest.mock('react-native-gesture-handler', () => {
+  const React = require('react');
+  const RN = require('react-native');
+  return {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    GestureDetector: ({ children }: any) => React.createElement(RN.View, null, children),
+    Gesture: {
+      Pan: () => ({
+        activeOffsetX: function () {
+          return this;
+        },
+        failOffsetY: function () {
+          return this;
+        },
+        onEnd: function () {
+          return this;
+        },
+      }),
+    },
+  };
 });
 
 // Mock expo-haptics
@@ -39,9 +62,8 @@ jest.mock('react-native-reanimated', () => {
     withSequence: (val: number) => val,
     withTiming: (val: number) => val,
     withSpring: (val: number) => val,
-    FadeIn: { delay: () => ({ duration: () => undefined }) },
-    FadeInLeft: { delay: () => ({ duration: () => undefined }) },
-    FadeInRight: { delay: () => ({ duration: () => undefined }) },
+    withDelay: (_d: number, val: number) => val,
+    runOnJS: (fn: unknown) => fn,
   };
 });
 
@@ -120,7 +142,7 @@ describe('MonthlyCalendarCard', () => {
       expect(getByTestId('calendar-day-28')).toBeTruthy();
     });
 
-    it('should render legend', () => {
+    it('should render all legend items when no shiftSystem specified', () => {
       const { getByText } = render(
         <MonthlyCalendarCard
           year={2026}
@@ -131,8 +153,46 @@ describe('MonthlyCalendarCard', () => {
         />
       );
       expect(getByText('Day')).toBeTruthy();
+      expect(getByText('Morning')).toBeTruthy();
+      expect(getByText('Afternoon')).toBeTruthy();
       expect(getByText('Night')).toBeTruthy();
       expect(getByText('Off')).toBeTruthy();
+    });
+
+    it('should show only 2-shift legend items for TWO_SHIFT system', () => {
+      const { getByText, queryByText } = render(
+        <MonthlyCalendarCard
+          year={2026}
+          month={1}
+          shiftDays={shiftDays}
+          onPreviousMonth={mockPrevMonth}
+          onNextMonth={mockNextMonth}
+          shiftSystem={ShiftSystem.TWO_SHIFT}
+        />
+      );
+      expect(getByText('Day')).toBeTruthy();
+      expect(getByText('Night')).toBeTruthy();
+      expect(getByText('Off')).toBeTruthy();
+      expect(queryByText('Morning')).toBeNull();
+      expect(queryByText('Afternoon')).toBeNull();
+    });
+
+    it('should show only 3-shift legend items for THREE_SHIFT system', () => {
+      const { getByText, queryByText } = render(
+        <MonthlyCalendarCard
+          year={2026}
+          month={1}
+          shiftDays={shiftDays}
+          onPreviousMonth={mockPrevMonth}
+          onNextMonth={mockNextMonth}
+          shiftSystem={ShiftSystem.THREE_SHIFT}
+        />
+      );
+      expect(getByText('Morning')).toBeTruthy();
+      expect(getByText('Afternoon')).toBeTruthy();
+      expect(getByText('Night')).toBeTruthy();
+      expect(getByText('Off')).toBeTruthy();
+      expect(queryByText('Day')).toBeNull();
     });
 
     it('should render with testID', () => {

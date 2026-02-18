@@ -1,9 +1,10 @@
 /**
  * ShiftCalendarDayCell Component
  *
- * Enhanced calendar day cell with shift type visualization.
- * Color-coded backgrounds, shift type badges (D/N/O/M/A),
- * today indicator with pulsing gold ring, and press animation.
+ * Premium calendar day cell with shift type visualization.
+ * Color-coded backgrounds, shift type badges (D/N/M/A/O),
+ * 3-layer today indicator with pulsing gold glow ring,
+ * premium bounce press animation, and selected day glow.
  */
 
 import React, { useMemo } from 'react';
@@ -15,9 +16,9 @@ import Animated, {
   withSequence,
   withSpring,
   withTiming,
-  FadeIn,
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
+import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
 import type { ShiftType } from '@/types';
 
@@ -34,43 +35,46 @@ export interface ShiftCalendarDayCellProps {
   isOtherMonth?: boolean;
   /** Press handler */
   onPress?: (day: number) => void;
-  /** Stagger delay for entrance animation */
+  /** Stagger delay for entrance animation (reserved for parent control) */
   animationDelay?: number;
   /** Test ID */
   testID?: string;
 }
 
 /** Color config per shift type */
-const SHIFT_COLORS: Record<ShiftType, { bg: string; badge: string; text: string; abbr: string }> = {
+const SHIFT_COLORS: Record<
+  ShiftType,
+  { bg: string; badge: string; text: string; icon: keyof typeof Ionicons.glyphMap }
+> = {
   day: {
     bg: 'rgba(33, 150, 243, 0.15)',
     badge: '#2196F3',
     text: '#64B5F6',
-    abbr: 'D',
+    icon: 'sunny',
   },
   night: {
     bg: 'rgba(101, 31, 255, 0.15)',
     badge: '#651FFF',
     text: '#B388FF',
-    abbr: 'N',
+    icon: 'moon',
   },
   morning: {
     bg: 'rgba(245, 158, 11, 0.15)',
     badge: '#F59E0B',
     text: '#FCD34D',
-    abbr: 'M',
+    icon: 'sunny-outline',
   },
   afternoon: {
     bg: 'rgba(6, 182, 212, 0.15)',
     badge: '#06B6D4',
     text: '#67E8F9',
-    abbr: 'A',
+    icon: 'partly-sunny',
   },
   off: {
     bg: 'rgba(120, 113, 108, 0.1)',
     badge: '#78716c',
     text: '#a8a29e',
-    abbr: 'O',
+    icon: 'bed-outline',
   },
 };
 
@@ -83,23 +87,25 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
   selected = false,
   isOtherMonth = false,
   onPress,
-  animationDelay = 0,
   testID,
 }) => {
   const shiftColor = useMemo(() => (shiftType ? SHIFT_COLORS[shiftType] : null), [shiftType]);
 
-  // Press scale animation
+  // ── Press scale animation (premium bounce) ──
   const scale = useSharedValue(1);
 
   const handlePressIn = () => {
     if (!isOtherMonth) {
-      scale.value = withSpring(0.92, { damping: 15, stiffness: 300 });
+      scale.value = withSpring(0.88, { damping: 15, stiffness: 400 });
     }
   };
 
   const handlePressOut = () => {
     if (!isOtherMonth) {
-      scale.value = withSpring(1, { damping: 15, stiffness: 300 });
+      scale.value = withSequence(
+        withSpring(1.05, { damping: 8, stiffness: 350 }),
+        withSpring(1.0, { damping: 12, stiffness: 300 })
+      );
     }
   };
 
@@ -114,17 +120,30 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
     transform: [{ scale: scale.value }],
   }));
 
-  // Today pulsing ring
+  // ── Today 3-layer pulsing glow ──
   const pulseScale = useSharedValue(1);
+  const todayGlowOpacity = useSharedValue(0.15);
+
   React.useEffect(() => {
     if (isToday) {
+      // Layer 1: glow opacity pulse
+      todayGlowOpacity.value = withRepeat(
+        withSequence(withTiming(0.35, { duration: 1200 }), withTiming(0.15, { duration: 1200 })),
+        -1,
+        true
+      );
+      // Layer 2: ring scale pulse
       pulseScale.value = withRepeat(
-        withSequence(withTiming(1.12, { duration: 1200 }), withTiming(1, { duration: 1200 })),
+        withSequence(withTiming(1.08, { duration: 1500 }), withTiming(1.0, { duration: 1500 })),
         -1,
         true
       );
     }
-  }, [isToday, pulseScale]);
+  }, [isToday, pulseScale, todayGlowOpacity]);
+
+  const todayGlowStyle = useAnimatedStyle(() => ({
+    opacity: todayGlowOpacity.value,
+  }));
 
   const todayRingStyle = useAnimatedStyle(() => ({
     transform: [{ scale: pulseScale.value }],
@@ -142,7 +161,6 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
 
   return (
     <AnimatedTouchable
-      entering={FadeIn.delay(animationDelay).duration(300)}
       onPress={handlePress}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
@@ -154,10 +172,16 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
       accessibilityState={{ disabled: isOtherMonth, selected }}
       testID={testID}
     >
-      {/* Today pulsing ring */}
+      {/* Today 3-layer glow: Layer 1 — glow background */}
+      {isToday && !selected && <Animated.View style={[styles.todayGlow, todayGlowStyle]} />}
+
+      {/* Today 3-layer glow: Layer 2 — pulsing outer ring */}
       {isToday && !selected && <Animated.View style={[styles.todayRing, todayRingStyle]} />}
 
-      {/* Background */}
+      {/* Selected day glow */}
+      {selected && <View style={styles.selectedGlow} />}
+
+      {/* Cell content (Layer 3 / main) */}
       <View
         style={[
           styles.cellBackground,
@@ -176,7 +200,7 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
           {day}
         </Animated.Text>
 
-        {/* Shift type badge */}
+        {/* Shift type icon badge */}
         {shiftColor && !isOtherMonth && (
           <View
             style={[
@@ -186,9 +210,7 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
               },
             ]}
           >
-            <Animated.Text style={[styles.badgeText, { color: selected ? '#fff' : '#fff' }]}>
-              {shiftColor.abbr}
-            </Animated.Text>
+            <Ionicons name={shiftColor.icon} size={9} color="#fff" />
           </View>
         )}
       </View>
@@ -197,14 +219,25 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
 };
 
 const CELL_SIZE = 44;
+const CELL_HEIGHT = 72;
 
 const styles = StyleSheet.create({
   container: {
     width: CELL_SIZE,
-    height: CELL_SIZE + 4,
+    height: CELL_HEIGHT,
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
+  },
+  todayGlow: {
+    position: 'absolute',
+    top: -2,
+    left: -2,
+    right: -2,
+    bottom: 2,
+    borderRadius: theme.borderRadius.sm + 4,
+    backgroundColor: theme.colors.sacredGold,
+    zIndex: 0,
   },
   todayRing: {
     position: 'absolute',
@@ -213,16 +246,37 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 4,
     borderRadius: theme.borderRadius.sm + 2,
-    borderWidth: 2,
-    borderColor: theme.colors.sacredGold,
+    borderWidth: 1.5,
+    borderColor: theme.colors.opacity.gold30,
+    zIndex: 1,
+  },
+  selectedGlow: {
+    position: 'absolute',
+    top: -2,
+    left: -2,
+    right: -2,
+    bottom: 2,
+    borderRadius: theme.borderRadius.sm + 4,
+    backgroundColor: theme.colors.sacredGold,
+    opacity: 0.25,
+    zIndex: 0,
+    ...Platform.select({
+      ios: {
+        shadowColor: theme.colors.sacredGold,
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.5,
+        shadowRadius: 6,
+      },
+    }),
   },
   cellBackground: {
     width: CELL_SIZE - 4,
-    height: CELL_SIZE - 2,
+    height: CELL_HEIGHT - 6,
     borderRadius: theme.borderRadius.sm,
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
+    zIndex: 2,
   },
   selectedBorder: {
     ...Platform.select({
@@ -248,14 +302,21 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 1,
     right: 1,
-    width: 14,
-    height: 14,
-    borderRadius: 7,
+    width: 16,
+    height: 16,
+    borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  badgeText: {
-    fontSize: 8,
-    fontWeight: theme.typography.fontWeights.bold,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
   },
 });

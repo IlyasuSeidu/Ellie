@@ -207,18 +207,98 @@ function getCurrentShiftTimeDisplay(shiftType: ShiftType, data: OnboardingData):
 }
 
 /**
- * Calculate countdown text to next shift change
+ * Parse "HH:MM" into total minutes since midnight
  */
-function getCountdownText(currentShiftType: ShiftType, cycle: ShiftCycle): string {
+function parseTimeToMinutes(time24h: string): number {
+  const [h, m] = time24h.split(':').map(Number);
+  return h * 60 + m;
+}
+
+/**
+ * Format a duration in minutes to "Xh Ym" display string
+ */
+function formatMinutesCountdown(totalMinutes: number): string {
+  if (totalMinutes <= 0) return '';
+  const h = Math.floor(totalMinutes / 60);
+  const m = totalMinutes % 60;
+  if (h === 0) return `${m}m`;
+  if (m === 0) return `${h}h`;
+  return `${h}h ${m}m`;
+}
+
+/**
+ * Calculate countdown text to next shift change.
+ *
+ * Time-aware: uses shift start/end times + current clock to show
+ * hours/minutes remaining in shift or until next shift starts.
+ *
+ * Falls back to day-level countdown when shift times are unavailable.
+ */
+function getCountdownText(
+  currentShiftType: ShiftType,
+  cycle: ShiftCycle,
+  data: OnboardingData | null
+): string {
+  const now = new Date();
+  const nowMinutes = now.getHours() * 60 + now.getMinutes();
+
+  // Try to get shift time info for time-aware countdown
+  const shiftTimes = data ? getShiftTimesFromData(data) : [];
+  const currentShiftTime = shiftTimes.find((st) => st.type === currentShiftType);
+
+  // If currently on a work shift and we have time data, show time remaining
+  if (currentShiftType !== 'off' && currentShiftTime) {
+    const startMin = parseTimeToMinutes(currentShiftTime.startTime);
+    const endMin = parseTimeToMinutes(currentShiftTime.endTime);
+
+    // Calculate minutes remaining in shift
+    let minutesRemaining: number;
+    if (endMin > startMin) {
+      // Same-day shift (e.g. 07:00-19:00)
+      if (nowMinutes >= startMin && nowMinutes < endMin) {
+        minutesRemaining = endMin - nowMinutes;
+        const display = formatMinutesCountdown(minutesRemaining);
+        return display ? `${display} remaining` : '';
+      }
+    } else {
+      // Overnight shift (e.g. 19:00-07:00)
+      if (nowMinutes >= startMin) {
+        // Before midnight portion
+        minutesRemaining = 24 * 60 - nowMinutes + endMin;
+        const display = formatMinutesCountdown(minutesRemaining);
+        return display ? `${display} remaining` : '';
+      } else if (nowMinutes < endMin) {
+        // After midnight portion
+        minutesRemaining = endMin - nowMinutes;
+        const display = formatMinutesCountdown(minutesRemaining);
+        return display ? `${display} remaining` : '';
+      }
+    }
+  }
+
+  // Find next day with a different shift type
   const today = getToday();
   let nextDate = addDays(today, 1);
   let daysUntil = 1;
 
-  // Find next day with a different shift type
   while (daysUntil < 30) {
     const nextShift = calculateShiftDay(nextDate, cycle);
     if (nextShift.shiftType !== currentShiftType) {
-      if (daysUntil === 1) return 'Tomorrow';
+      // For tomorrow, try to show hours/minutes until that shift starts
+      if (daysUntil === 1 && nextShift.shiftType !== 'off') {
+        const nextShiftTime = shiftTimes.find((st) => st.type === nextShift.shiftType);
+        if (nextShiftTime) {
+          const nextStartMin = parseTimeToMinutes(nextShiftTime.startTime);
+          // Minutes from now until tomorrow's shift start
+          const minutesUntil = 24 * 60 - nowMinutes + nextStartMin;
+          const display = formatMinutesCountdown(minutesUntil);
+          if (display) {
+            return `${display} until ${nextShift.isWorkDay ? 'next shift' : 'day off'}`;
+          }
+        }
+      }
+
+      if (daysUntil === 1) return `Tomorrow`;
       return `${daysUntil} days until ${nextShift.isWorkDay ? 'next shift' : 'day off'}`;
     }
     nextDate = addDays(nextDate, 1);
@@ -423,11 +503,20 @@ export const MainDashboardScreen: React.FC = () => {
     [todayShift, userData]
   );
 
-  // Countdown text
-  const countdown = useMemo(
-    () => (todayShift && shiftCycle ? getCountdownText(todayShift.shiftType, shiftCycle) : ''),
-    [todayShift, shiftCycle]
-  );
+  // Tick every 60s so the countdown updates live
+  const [countdownTick, setCountdownTick] = useState(0);
+  useEffect(() => {
+    const timer = setInterval(() => setCountdownTick((t) => t + 1), 60000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Countdown text (time-aware: shows hours/minutes using shift times)
+  const countdown = useMemo(() => {
+    void countdownTick; // forces recalc every minute
+    return todayShift && shiftCycle
+      ? getCountdownText(todayShift.shiftType, shiftCycle, userData)
+      : '';
+  }, [todayShift, shiftCycle, userData, countdownTick]);
 
   // Month navigation
   const handlePreviousMonth = useCallback(() => {
@@ -550,6 +639,7 @@ export const MainDashboardScreen: React.FC = () => {
 
         {/* Monthly Calendar */}
         <MonthlyCalendarCard
+          key={`calendar-${refreshKey}`}
           year={currentMonth.year}
           month={currentMonth.month}
           shiftDays={monthShifts}
@@ -557,6 +647,7 @@ export const MainDashboardScreen: React.FC = () => {
           onPreviousMonth={handlePreviousMonth}
           onNextMonth={handleNextMonth}
           onDayPress={handleDayPress}
+          shiftSystem={shiftCycle?.shiftSystem}
           animationDelay={200}
           testID="dashboard-calendar"
         />
