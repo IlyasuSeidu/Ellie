@@ -57,19 +57,19 @@ const SHIFT_STYLES: Record<
     subtitle: 'Stay alert!',
   },
   morning: {
-    gradient: ['#FF9800', '#E65100'],
+    gradient: ['#F59E0B', '#D97706'],
     icon: 'sunny-outline',
     label: 'MORNING SHIFT',
     subtitle: 'Rise and shine!',
   },
   afternoon: {
-    gradient: ['#26A69A', '#00695C'],
+    gradient: ['#06B6D4', '#0E7490'],
     icon: 'partly-sunny',
     label: 'AFTERNOON SHIFT',
     subtitle: 'Keep it going!',
   },
   off: {
-    gradient: ['#FF9800', '#F57C00'],
+    gradient: ['#57534e', '#44403c'],
     icon: 'bed-outline',
     label: 'DAY OFF',
     subtitle: 'Rest and recharge!',

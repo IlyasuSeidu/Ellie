@@ -19,6 +19,18 @@ export const shiftColors = {
     border: hexToRGBA(colors.sacredGold, 0.3),
     text: colors.sacredGold,
   },
+  morning: {
+    primary: colors.shiftVisualization.morningShift, // #F59E0B - sunrise amber
+    background: hexToRGBA(colors.shiftVisualization.morningShift, 0.1),
+    border: hexToRGBA(colors.shiftVisualization.morningShift, 0.3),
+    text: colors.shiftVisualization.morningShift,
+  },
+  afternoon: {
+    primary: colors.shiftVisualization.afternoonShift, // #06B6D4 - sky cyan
+    background: hexToRGBA(colors.shiftVisualization.afternoonShift, 0.1),
+    border: hexToRGBA(colors.shiftVisualization.afternoonShift, 0.3),
+    text: colors.shiftVisualization.afternoonShift,
+  },
   off: {
     primary: colors.dust, // #a8a29e
     background: hexToRGBA(colors.dust, 0.05),
@@ -65,6 +77,14 @@ export const calendarDayStyles = {
 
     nightShift: {
       backgroundColor: hexToRGBA(colors.sacredGold, 0.15),
+    } as ViewStyle,
+
+    morningShift: {
+      backgroundColor: hexToRGBA(colors.shiftVisualization.morningShift, 0.15),
+    } as ViewStyle,
+
+    afternoonShift: {
+      backgroundColor: hexToRGBA(colors.shiftVisualization.afternoonShift, 0.15),
     } as ViewStyle,
   },
 

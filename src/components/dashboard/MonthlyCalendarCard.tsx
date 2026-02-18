@@ -199,10 +199,10 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
       {/* Legend */}
       <View style={styles.legend}>
         <LegendItem color="#2196F3" label="Day" />
+        <LegendItem color="#F59E0B" label="Morning" />
+        <LegendItem color="#06B6D4" label="Afternoon" />
         <LegendItem color="#651FFF" label="Night" />
-        <LegendItem color="#FF9800" label="Off" />
-        <LegendItem color="#26A69A" label="Morning" />
-        <LegendItem color="#FF9800" label="Afternoon" secondary />
+        <LegendItem color="#78716c" label="Off" />
       </View>
     </Animated.View>
   );
@@ -211,14 +211,11 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
 interface LegendItemProps {
   color: string;
   label: string;
-  secondary?: boolean;
 }
 
-const LegendItem: React.FC<LegendItemProps> = ({ color, label, secondary }) => (
+const LegendItem: React.FC<LegendItemProps> = ({ color, label }) => (
   <View style={styles.legendItem}>
-    <View
-      style={[styles.legendDot, { backgroundColor: color }, secondary && styles.legendDotSecondary]}
-    />
+    <View style={[styles.legendDot, { backgroundColor: color }]} />
     <Animated.Text style={styles.legendText}>{label}</Animated.Text>
   </View>
 );
@@ -311,11 +308,6 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 4,
     marginRight: 4,
-  },
-  legendDotSecondary: {
-    borderWidth: 1,
-    borderColor: '#26A69A',
-    backgroundColor: '#26A69A',
   },
   legendText: {
     fontSize: theme.typography.fontSizes.xs,
