@@ -303,9 +303,10 @@ function getCountdownText(
     }
   }
 
-  // ── 2. Shift ended or off day → find the next work shift (any type) ──
-  // Counts down to the very next shift instance, not just the next
-  // different shift type. E.g. day 1 morning ended → day 2 morning.
+  // ── 2. Shift ended or off day → find the next work shift ──
+  // Always counts down to the next actual work shift (skips off days).
+  // E.g. day 1 morning ended → day 2 morning, or last work day → first
+  // shift after off days.
   const today = getToday();
   let nextDate = addDays(today, 1);
   let daysUntil = 1;
@@ -331,14 +332,6 @@ function getCountdownText(
         return `${nextName[0].toUpperCase()}${nextName.slice(1)} tomorrow`;
       }
       return `${daysUntil} days until ${nextName}`;
-    }
-
-    // Tomorrow is off and today was a work shift → show countdown to day off
-    if (daysUntil === 1 && currentShiftType !== 'off') {
-      const minutesUntilMidnight = 24 * 60 - nowMinutes;
-      const display = formatMinutesCountdown(minutesUntilMidnight);
-      if (display) return `${display} until day off`;
-      return 'Day off tomorrow';
     }
 
     nextDate = addDays(nextDate, 1);
