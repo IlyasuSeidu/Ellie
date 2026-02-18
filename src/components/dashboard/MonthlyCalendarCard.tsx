@@ -9,7 +9,7 @@
  */
 
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { View, StyleSheet, Platform, TouchableOpacity } from 'react-native';
+import { View, Image, StyleSheet, Platform, TouchableOpacity } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -26,6 +26,13 @@ import { theme } from '@/utils/theme';
 import { getDaysInMonth, getFirstDayOfMonth, isToday as checkIsToday } from '@/utils/dateUtils';
 import { ShiftCalendarDayCell } from './ShiftCalendarDayCell';
 import { ShiftSystem, type ShiftDay } from '@/types';
+
+/* eslint-disable @typescript-eslint/no-var-requires */
+/** 3D assets for shift types */
+const DAY_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png');
+const OFF_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png');
+const NIGHT_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png');
+/* eslint-enable @typescript-eslint/no-var-requires */
 
 export interface MonthlyCalendarCardProps {
   /** Current year */
@@ -417,7 +424,7 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
         {/* Legend — filtered by shift system, with entrance animation */}
         <Animated.View style={[styles.legend, legendEntranceStyle]}>
           {shiftSystem !== ShiftSystem.THREE_SHIFT && (
-            <LegendItem color="#2196F3" icon="sunny" label="Day" />
+            <LegendItem color="#BBDEFB" imageSource={DAY_SHIFT_ICON} label="Day" />
           )}
           {shiftSystem !== ShiftSystem.TWO_SHIFT && (
             <>
@@ -425,8 +432,8 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
               <LegendItem color="#06B6D4" icon="partly-sunny" label="Afternoon" />
             </>
           )}
-          <LegendItem color="#651FFF" icon="moon" label="Night" />
-          <LegendItem color="#78716c" icon="bed-outline" label="Off" />
+          <LegendItem color="#fff" imageSource={NIGHT_SHIFT_ICON} label="Night" />
+          <LegendItem color="#78716c" imageSource={OFF_SHIFT_ICON} label="Off" />
         </Animated.View>
       </View>
     </GestureDetector>
@@ -435,14 +442,19 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
 
 interface LegendItemProps {
   color: string;
-  icon: keyof typeof Ionicons.glyphMap;
+  icon?: keyof typeof Ionicons.glyphMap;
+  imageSource?: ReturnType<typeof require>;
   label: string;
 }
 
-const LegendItem: React.FC<LegendItemProps> = ({ color, icon, label }) => (
+const LegendItem: React.FC<LegendItemProps> = ({ color, icon, imageSource, label }) => (
   <View style={styles.legendItem}>
     <View style={[styles.legendDot, { backgroundColor: color }]}>
-      <Ionicons name={icon} size={8} color="#fff" />
+      {imageSource ? (
+        <Image source={imageSource} style={styles.legendImage} />
+      ) : icon ? (
+        <Ionicons name={icon} size={8} color="#fff" />
+      ) : null}
     </View>
     <Animated.Text style={styles.legendText}>{label}</Animated.Text>
   </View>
@@ -558,5 +570,10 @@ const styles = StyleSheet.create({
   legendText: {
     fontSize: theme.typography.fontSizes.xs,
     color: theme.colors.dust,
+  },
+  legendImage: {
+    width: 12,
+    height: 12,
+    resizeMode: 'contain',
   },
 });

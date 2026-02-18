@@ -7,7 +7,7 @@
  */
 
 import React, { useEffect, useMemo } from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, Image, StyleSheet, Platform } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -43,24 +43,29 @@ export interface CurrentShiftStatusCardProps {
   testID?: string;
 }
 
+/* eslint-disable @typescript-eslint/no-var-requires */
+/** 3D assets for shift types */
+const DAY_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png');
+const OFF_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png');
+const NIGHT_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png');
+/* eslint-enable @typescript-eslint/no-var-requires */
+
 const SHIFT_STYLES: Record<
   ShiftType,
   {
     gradient: [string, string];
-    icon: keyof typeof Ionicons.glyphMap;
+    icon?: keyof typeof Ionicons.glyphMap;
     label: string;
     subtitle: string;
   }
 > = {
   day: {
     gradient: ['#2196F3', '#1565C0'],
-    icon: 'sunny',
     label: 'DAY SHIFT',
     subtitle: 'Stay energized!',
   },
   night: {
     gradient: ['#7C4DFF', '#4A148C'],
-    icon: 'moon',
     label: 'NIGHT SHIFT',
     subtitle: 'Stay alert!',
   },
@@ -78,7 +83,6 @@ const SHIFT_STYLES: Record<
   },
   off: {
     gradient: ['#57534e', '#44403c'],
-    icon: 'bed-outline',
     label: 'DAY OFF',
     subtitle: 'Rest and recharge!',
   },
@@ -314,8 +318,26 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                     iconRingPulseStyle,
                   ]}
                 />
-                <View style={styles.iconContainer}>
-                  <Ionicons name={style.icon} size={24} color="rgba(255,255,255,0.9)" />
+                <View
+                  style={[
+                    styles.iconContainer,
+                    shiftType === 'day' && styles.lightBlueIconContainer,
+                    shiftType === 'night' && styles.whiteIconContainer,
+                  ]}
+                >
+                  {shiftType === 'day' ? (
+                    <Image source={DAY_SHIFT_ICON} style={styles.shiftImage} />
+                  ) : shiftType === 'night' ? (
+                    <Image source={NIGHT_SHIFT_ICON} style={styles.shiftImage} />
+                  ) : shiftType === 'off' ? (
+                    <Image source={OFF_SHIFT_ICON} style={styles.shiftImage} />
+                  ) : (
+                    <Ionicons
+                      name={style.icon as keyof typeof Ionicons.glyphMap}
+                      size={24}
+                      color="rgba(255,255,255,0.9)"
+                    />
+                  )}
                 </View>
               </Animated.View>
 
@@ -529,5 +551,16 @@ const styles = StyleSheet.create({
   countdownText: {
     fontSize: theme.typography.fontSizes.sm,
     color: 'rgba(255,255,255,0.6)',
+  },
+  lightBlueIconContainer: {
+    backgroundColor: '#BBDEFB',
+  },
+  whiteIconContainer: {
+    backgroundColor: '#fff',
+  },
+  shiftImage: {
+    width: 30,
+    height: 30,
+    resizeMode: 'contain',
   },
 });

@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, Image, StyleSheet, Platform } from 'react-native';
 import Animated, { FadeInRight, FadeIn } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
@@ -22,15 +22,22 @@ export interface UpcomingShiftsCardProps {
   testID?: string;
 }
 
+/* eslint-disable @typescript-eslint/no-var-requires */
+/** 3D assets for shift types */
+const DAY_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png');
+const OFF_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png');
+const NIGHT_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png');
+/* eslint-enable @typescript-eslint/no-var-requires */
+
 const SHIFT_CONFIG: Record<
   ShiftType,
-  { color: string; icon: keyof typeof Ionicons.glyphMap; label: string }
+  { color: string; icon?: keyof typeof Ionicons.glyphMap; label: string }
 > = {
-  day: { color: '#2196F3', icon: 'sunny', label: 'Day Shift' },
-  night: { color: '#651FFF', icon: 'moon', label: 'Night Shift' },
-  morning: { color: '#FF9800', icon: 'sunny-outline', label: 'Morning Shift' },
-  afternoon: { color: '#26A69A', icon: 'partly-sunny', label: 'Afternoon Shift' },
-  off: { color: '#78716c', icon: 'bed-outline', label: 'Day Off' },
+  day: { color: '#2196F3', label: 'Day Shift' },
+  night: { color: '#651FFF', label: 'Night Shift' },
+  morning: { color: '#F59E0B', icon: 'sunny-outline', label: 'Morning Shift' },
+  afternoon: { color: '#06B6D4', icon: 'partly-sunny', label: 'Afternoon Shift' },
+  off: { color: '#78716c', label: 'Day Off' },
 };
 
 export const UpcomingShiftsCard: React.FC<UpcomingShiftsCardProps> = ({
@@ -73,7 +80,19 @@ export const UpcomingShiftsCard: React.FC<UpcomingShiftsCardProps> = ({
 
             {/* Shift icon */}
             <View style={[styles.shiftIconContainer, { backgroundColor: `${config.color}20` }]}>
-              <Ionicons name={config.icon} size={18} color={config.color} />
+              {shift.shiftType === 'day' ? (
+                <Image source={DAY_SHIFT_ICON} style={styles.shiftImage} />
+              ) : shift.shiftType === 'night' ? (
+                <Image source={NIGHT_SHIFT_ICON} style={styles.shiftImage} />
+              ) : shift.shiftType === 'off' ? (
+                <Image source={OFF_SHIFT_ICON} style={styles.shiftImage} />
+              ) : (
+                <Ionicons
+                  name={config.icon as keyof typeof Ionicons.glyphMap}
+                  size={18}
+                  color={config.color}
+                />
+              )}
             </View>
 
             {/* Shift info */}
@@ -180,5 +199,10 @@ const styles = StyleSheet.create({
     fontSize: theme.typography.fontSizes.xs,
     color: theme.colors.dust,
     fontWeight: theme.typography.fontWeights.medium,
+  },
+  shiftImage: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
   },
 });

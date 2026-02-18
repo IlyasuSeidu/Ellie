@@ -56,18 +56,24 @@ describe('ShiftCalendarDayCell', () => {
     });
 
     it('should render shift type icon badge for day shift', () => {
-      const { getByText } = render(<ShiftCalendarDayCell day={1} shiftType="day" />);
-      expect(getByText('sunny')).toBeTruthy();
+      const { UNSAFE_getAllByType } = render(<ShiftCalendarDayCell day={1} shiftType="day" />);
+      // Day shift uses 3D PNG image instead of Ionicons
+      const { Image } = require('react-native');
+      expect(UNSAFE_getAllByType(Image).length).toBeGreaterThan(0);
     });
 
     it('should render shift type icon badge for night shift', () => {
-      const { getByText } = render(<ShiftCalendarDayCell day={1} shiftType="night" />);
-      expect(getByText('moon')).toBeTruthy();
+      const { UNSAFE_getAllByType } = render(<ShiftCalendarDayCell day={1} shiftType="night" />);
+      // Night shift uses 3D PNG image instead of Ionicons
+      const { Image } = require('react-native');
+      expect(UNSAFE_getAllByType(Image).length).toBeGreaterThan(0);
     });
 
     it('should render shift type icon badge for off day', () => {
-      const { getByText } = render(<ShiftCalendarDayCell day={1} shiftType="off" />);
-      expect(getByText('bed-outline')).toBeTruthy();
+      const { UNSAFE_getByType } = render(<ShiftCalendarDayCell day={1} shiftType="off" />);
+      // Off day uses 3D PNG image instead of Ionicons
+      const { Image } = require('react-native');
+      expect(UNSAFE_getByType(Image)).toBeTruthy();
     });
 
     it('should render shift type icon badge for morning shift', () => {

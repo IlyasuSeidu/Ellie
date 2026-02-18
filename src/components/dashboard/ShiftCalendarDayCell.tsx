@@ -8,7 +8,7 @@
  */
 
 import React, { useMemo } from 'react';
-import { View, StyleSheet, Platform, TouchableOpacity } from 'react-native';
+import { View, Image, StyleSheet, Platform, TouchableOpacity } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -41,22 +41,27 @@ export interface ShiftCalendarDayCellProps {
   testID?: string;
 }
 
+/* eslint-disable @typescript-eslint/no-var-requires */
+/** 3D assets for shift types */
+const DAY_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png');
+const OFF_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png');
+const NIGHT_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png');
+/* eslint-enable @typescript-eslint/no-var-requires */
+
 /** Color config per shift type */
 const SHIFT_COLORS: Record<
   ShiftType,
-  { bg: string; badge: string; text: string; icon: keyof typeof Ionicons.glyphMap }
+  { bg: string; badge: string; text: string; icon?: keyof typeof Ionicons.glyphMap }
 > = {
   day: {
     bg: 'rgba(33, 150, 243, 0.15)',
-    badge: '#2196F3',
+    badge: '#BBDEFB',
     text: '#64B5F6',
-    icon: 'sunny',
   },
   night: {
     bg: 'rgba(101, 31, 255, 0.15)',
-    badge: '#651FFF',
+    badge: '#fff',
     text: '#B388FF',
-    icon: 'moon',
   },
   morning: {
     bg: 'rgba(245, 158, 11, 0.15)',
@@ -74,7 +79,6 @@ const SHIFT_COLORS: Record<
     bg: 'rgba(120, 113, 108, 0.1)',
     badge: '#78716c',
     text: '#a8a29e',
-    icon: 'bed-outline',
   },
 };
 
@@ -210,7 +214,19 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
               },
             ]}
           >
-            <Ionicons name={shiftColor.icon} size={13} color="#fff" />
+            {shiftType === 'day' ? (
+              <Image source={DAY_SHIFT_ICON} style={styles.badgeImage} />
+            ) : shiftType === 'night' ? (
+              <Image source={NIGHT_SHIFT_ICON} style={styles.badgeImage} />
+            ) : shiftType === 'off' ? (
+              <Image source={OFF_SHIFT_ICON} style={styles.badgeImage} />
+            ) : (
+              <Ionicons
+                name={shiftColor.icon as keyof typeof Ionicons.glyphMap}
+                size={13}
+                color="#fff"
+              />
+            )}
           </View>
         )}
       </View>
@@ -319,5 +335,10 @@ const styles = StyleSheet.create({
         elevation: 2,
       },
     }),
+  },
+  badgeImage: {
+    width: 18,
+    height: 18,
+    resizeMode: 'contain',
   },
 });
