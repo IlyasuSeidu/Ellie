@@ -91,7 +91,9 @@ jest.mock('react-native-reanimated', () => {
     withSpring: (val: number) => val,
     withDelay: (_d: number, val: number) => val,
     runOnJS: (fn: unknown) => fn,
-    Easing: { out: () => undefined, quad: undefined },
+    interpolate: (val: number) => val,
+    Extrapolate: { CLAMP: 'clamp' },
+    Easing: { out: () => undefined, quad: undefined, inOut: () => ({}), ease: {} },
     FadeIn: {
       delay: () => ({ duration: () => ({ springify: () => undefined }) }),
       duration: () => ({ springify: () => undefined }),

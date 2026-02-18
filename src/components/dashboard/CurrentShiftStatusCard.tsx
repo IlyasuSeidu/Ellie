@@ -1,11 +1,12 @@
 /**
  * CurrentShiftStatusCard Component
  *
- * Hero card displaying today's shift status with color-coded background,
- * shift time display, countdown timer, and premium animations.
+ * Premium hero card displaying today's shift status with staggered entrance
+ * animations, pulsing icon glow ring, interactive tap gesture with haptics,
+ * animated LIVE badge, shimmer accent, and color-coded gradient background.
  */
 
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import Animated, {
   useAnimatedStyle,
@@ -13,9 +14,16 @@ import Animated, {
   withRepeat,
   withSequence,
   withTiming,
-  FadeInUp,
+  withSpring,
+  withDelay,
+  runOnJS,
+  interpolate,
+  Extrapolate,
+  Easing,
 } from 'react-native-reanimated';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
 import type { ShiftType } from '@/types';
@@ -76,6 +84,8 @@ const SHIFT_STYLES: Record<
   },
 };
 
+const ICON_SIZE = 56;
+
 export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
   shiftType,
   timeDisplay,
@@ -86,94 +96,260 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
 }) => {
   const style = useMemo(() => SHIFT_STYLES[shiftType], [shiftType]);
 
-  // Floating animation
+  // ── Staggered Entrance ────────────────────────────────────────
+  const iconEntranceScale = useSharedValue(0.3);
+  const iconEntranceOpacity = useSharedValue(0);
+  const labelEntranceY = useSharedValue(12);
+  const labelEntranceOpacity = useSharedValue(0);
+  const infoEntranceY = useSharedValue(10);
+  const infoEntranceOpacity = useSharedValue(0);
+
+  useEffect(() => {
+    const D = animationDelay;
+
+    // Icon: scale up + fade in
+    iconEntranceScale.value = withDelay(D, withSpring(1, { damping: 14, stiffness: 200 }));
+    iconEntranceOpacity.value = withDelay(D, withTiming(1, { duration: 400 }));
+
+    // Label + subtitle: slide up + fade in
+    labelEntranceY.value = withDelay(D + 150, withSpring(0, { damping: 16, stiffness: 180 }));
+    labelEntranceOpacity.value = withDelay(D + 150, withTiming(1, { duration: 350 }));
+
+    // Time + countdown: slide up + fade in
+    infoEntranceY.value = withDelay(D + 350, withSpring(0, { damping: 16, stiffness: 180 }));
+    infoEntranceOpacity.value = withDelay(D + 350, withTiming(1, { duration: 350 }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [animationDelay]);
+
+  // ── Continuous Animations ─────────────────────────────────────
   const floatY = useSharedValue(0);
-  React.useEffect(() => {
+  const iconGlowOpacity = useSharedValue(0.15);
+  const iconRingScale = useSharedValue(1.0);
+  const shimmerTranslate = useSharedValue(-1);
+
+  useEffect(() => {
+    // Floating
     floatY.value = withRepeat(
-      withSequence(withTiming(-4, { duration: 2000 }), withTiming(0, { duration: 2000 })),
+      withSequence(withTiming(-3, { duration: 2000 }), withTiming(0, { duration: 2000 })),
       -1,
       true
     );
-  }, [floatY]);
 
-  const floatingStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: floatY.value }],
-  }));
+    // Icon glow pulse
+    iconGlowOpacity.value = withRepeat(
+      withSequence(withTiming(0.35, { duration: 1200 }), withTiming(0.15, { duration: 1200 })),
+      -1,
+      true
+    );
 
-  // Pulsing glow for active shifts
+    // Icon ring scale
+    iconRingScale.value = withRepeat(
+      withSequence(withTiming(1.08, { duration: 1500 }), withTiming(1.0, { duration: 1500 })),
+      -1,
+      true
+    );
+
+    // Shimmer sweep
+    shimmerTranslate.value = withRepeat(
+      withSequence(
+        withTiming(-1, { duration: 0 }),
+        withTiming(2, { duration: 3000, easing: Easing.inOut(Easing.ease) }),
+        withTiming(2, { duration: 2000 })
+      ),
+      -1,
+      false
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ── Interactive Tap ───────────────────────────────────────────
+  const cardTapScale = useSharedValue(1);
+
+  const triggerHaptic = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+  };
+
+  const tapGesture = Gesture.Tap()
+    .onBegin(() => {
+      cardTapScale.value = withSpring(0.96, { damping: 15, stiffness: 400 });
+    })
+    .onEnd(() => {
+      cardTapScale.value = withSequence(
+        withSpring(1.02, { damping: 8, stiffness: 350 }),
+        withSpring(1.0, { damping: 12, stiffness: 300 })
+      );
+      runOnJS(triggerHaptic)();
+    })
+    .onFinalize(() => {
+      cardTapScale.value = withSpring(1.0, { damping: 12, stiffness: 300 });
+    });
+
+  // ── On-Shift Animations ───────────────────────────────────────
   const glowOpacity = useSharedValue(0);
-  React.useEffect(() => {
+  const liveDotOpacity = useSharedValue(1);
+
+  useEffect(() => {
     if (isOnShift) {
       glowOpacity.value = withRepeat(
         withSequence(withTiming(0.6, { duration: 1500 }), withTiming(0.2, { duration: 1500 })),
         -1,
         true
       );
+      liveDotOpacity.value = withRepeat(
+        withSequence(withTiming(0.3, { duration: 800 }), withTiming(1, { duration: 800 })),
+        -1,
+        true
+      );
     }
-  }, [isOnShift, glowOpacity]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOnShift]);
+
+  // ── Animated Styles ───────────────────────────────────────────
+  const iconEntranceStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: iconEntranceScale.value }],
+    opacity: iconEntranceOpacity.value,
+  }));
+
+  const labelEntranceStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: labelEntranceY.value }],
+    opacity: labelEntranceOpacity.value,
+  }));
+
+  const infoEntranceStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: infoEntranceY.value }],
+    opacity: infoEntranceOpacity.value,
+  }));
+
+  const floatingStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: floatY.value }],
+  }));
+
+  const cardInteractionStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: cardTapScale.value }],
+  }));
+
+  const iconGlowStyle = useAnimatedStyle(() => ({
+    opacity: iconGlowOpacity.value,
+  }));
+
+  const iconRingPulseStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: iconRingScale.value }],
+  }));
 
   const glowStyle = useAnimatedStyle(() => ({
     opacity: glowOpacity.value,
   }));
 
+  const liveDotStyle = useAnimatedStyle(() => ({
+    opacity: liveDotOpacity.value,
+  }));
+
+  const shimmerStyle = useAnimatedStyle(() => {
+    const translateX = interpolate(shimmerTranslate.value, [-1, 2], [-200, 600], Extrapolate.CLAMP);
+    const shimmerOpacity = interpolate(
+      shimmerTranslate.value,
+      [-1, 0, 1, 2],
+      [0, 0.4, 0.4, 0],
+      Extrapolate.CLAMP
+    );
+    return { transform: [{ translateX }], opacity: shimmerOpacity };
+  });
+
+  // ── Render ────────────────────────────────────────────────────
   return (
-    <Animated.View
-      entering={FadeInUp.delay(animationDelay).duration(600).springify()}
-      style={styles.wrapper}
-      testID={testID}
-    >
-      <Animated.View style={[styles.cardContainer, floatingStyle]}>
-        {isOnShift && (
-          <Animated.View
-            style={[styles.glowEffect, { shadowColor: style.gradient[0] }, glowStyle]}
-          />
-        )}
-        <LinearGradient
-          colors={style.gradient}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.gradient}
-        >
-          <View style={styles.topRow}>
-            <View style={styles.iconContainer}>
-              <Ionicons name={style.icon} size={32} color="rgba(255,255,255,0.9)" />
-            </View>
-            {isOnShift && (
-              <View style={styles.liveBadge}>
-                <View style={styles.liveDot} />
-                <Animated.Text style={styles.liveText}>LIVE</Animated.Text>
-              </View>
-            )}
-          </View>
-
-          <Animated.Text style={styles.shiftLabel}>{style.label}</Animated.Text>
-          <Animated.Text style={styles.shiftSubtitle}>{style.subtitle}</Animated.Text>
-
-          {timeDisplay && (
-            <View style={styles.timeContainer}>
-              <Ionicons
-                name="time-outline"
-                size={16}
-                color="rgba(255,255,255,0.7)"
-                style={styles.timeIcon}
-              />
-              <Animated.Text style={styles.timeText}>{timeDisplay}</Animated.Text>
-            </View>
+    <Animated.View style={styles.wrapper} testID={testID}>
+      <GestureDetector gesture={tapGesture}>
+        <Animated.View style={[styles.cardContainer, floatingStyle, cardInteractionStyle]}>
+          {/* Pulsing glow behind card (on-shift only) */}
+          {isOnShift && (
+            <Animated.View
+              style={[styles.glowEffect, { shadowColor: style.gradient[0] }, glowStyle]}
+            />
           )}
 
-          {countdown && (
-            <View style={styles.countdownContainer}>
-              <Ionicons
-                name="hourglass-outline"
-                size={14}
-                color="rgba(255,255,255,0.6)"
-                style={styles.timeIcon}
+          <LinearGradient
+            colors={style.gradient}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.gradient}
+          >
+            {/* Shimmer accent line */}
+            <Animated.View style={[styles.shimmerContainer, shimmerStyle]}>
+              <LinearGradient
+                colors={['transparent', 'rgba(255,255,255,0.15)', 'transparent']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.shimmerGradient}
               />
-              <Animated.Text style={styles.countdownText}>{countdown}</Animated.Text>
+            </Animated.View>
+
+            {/* Top Row: Icon + LIVE badge */}
+            <View style={styles.topRow}>
+              {/* Enhanced icon with pulsing ring */}
+              <Animated.View style={[styles.iconOuter, iconEntranceStyle]}>
+                <Animated.View
+                  style={[
+                    styles.iconGlowRing,
+                    { backgroundColor: style.gradient[0] },
+                    iconGlowStyle,
+                  ]}
+                />
+                <Animated.View
+                  style={[
+                    styles.iconOuterRing,
+                    { borderColor: style.gradient[0] + '40' },
+                    iconRingPulseStyle,
+                  ]}
+                />
+                <View style={styles.iconContainer}>
+                  <Ionicons name={style.icon} size={32} color="rgba(255,255,255,0.9)" />
+                </View>
+              </Animated.View>
+
+              {/* LIVE badge with pulsing dot */}
+              {isOnShift && (
+                <View style={styles.liveBadge}>
+                  <Animated.View style={[styles.liveDot, liveDotStyle]} />
+                  <Animated.Text style={styles.liveText}>LIVE</Animated.Text>
+                </View>
+              )}
             </View>
-          )}
-        </LinearGradient>
-      </Animated.View>
+
+            {/* Label + subtitle (staggered entrance) */}
+            <Animated.View style={labelEntranceStyle}>
+              <Animated.Text style={styles.shiftLabel}>{style.label}</Animated.Text>
+              <Animated.Text style={styles.shiftSubtitle}>{style.subtitle}</Animated.Text>
+            </Animated.View>
+
+            {/* Time + countdown (staggered entrance) */}
+            <Animated.View style={infoEntranceStyle}>
+              {timeDisplay && (
+                <View style={styles.timeContainer}>
+                  <Ionicons
+                    name="time-outline"
+                    size={16}
+                    color="rgba(255,255,255,0.7)"
+                    style={styles.timeIcon}
+                  />
+                  <Animated.Text style={styles.timeText}>{timeDisplay}</Animated.Text>
+                </View>
+              )}
+
+              {countdown && (
+                <View style={styles.countdownContainer}>
+                  <Ionicons
+                    name="hourglass-outline"
+                    size={14}
+                    color="rgba(255,255,255,0.6)"
+                    style={styles.timeIcon}
+                  />
+                  <Animated.Text style={styles.countdownText}>{countdown}</Animated.Text>
+                </View>
+              )}
+            </Animated.View>
+          </LinearGradient>
+        </Animated.View>
+      </GestureDetector>
     </Animated.View>
   );
 };
@@ -216,22 +392,71 @@ const styles = StyleSheet.create({
   },
   gradient: {
     padding: theme.spacing.lg,
+    paddingTop: theme.spacing.lg + 4,
     borderRadius: theme.borderRadius.xl,
+    overflow: 'hidden',
   },
+
+  // ── Shimmer ─────────────────────────────────────────────────
+  shimmerContainer: {
+    position: 'absolute',
+    top: 0,
+    left: -100,
+    right: -100,
+    bottom: 0,
+    zIndex: 1,
+  },
+  shimmerGradient: {
+    flex: 1,
+    width: 120,
+  },
+
+  // ── Top Row ─────────────────────────────────────────────────
   topRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: theme.spacing.md,
   },
-  iconContainer: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    backgroundColor: 'rgba(255,255,255,0.15)',
+
+  // ── Icon Pulsing Ring ───────────────────────────────────────
+  iconOuter: {
+    position: 'relative',
+    width: ICON_SIZE + 16,
+    height: ICON_SIZE + 16,
     alignItems: 'center',
     justifyContent: 'center',
   },
+  iconGlowRing: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderRadius: (ICON_SIZE + 16) / 2,
+    zIndex: 0,
+  },
+  iconOuterRing: {
+    position: 'absolute',
+    top: 2,
+    left: 2,
+    right: 2,
+    bottom: 2,
+    borderRadius: (ICON_SIZE + 12) / 2,
+    borderWidth: 1.5,
+    zIndex: 1,
+  },
+  iconContainer: {
+    width: ICON_SIZE,
+    height: ICON_SIZE,
+    borderRadius: ICON_SIZE / 2,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 2,
+  },
+
+  // ── LIVE Badge ──────────────────────────────────────────────
   liveBadge: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -239,6 +464,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: theme.borderRadius.full,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
   },
   liveDot: {
     width: 8,
@@ -253,17 +480,21 @@ const styles = StyleSheet.create({
     color: '#fff',
     letterSpacing: 1,
   },
+
+  // ── Text ────────────────────────────────────────────────────
   shiftLabel: {
-    fontSize: theme.typography.fontSizes.xxl,
+    fontSize: theme.typography.fontSizes.xxxl,
     fontWeight: theme.typography.fontWeights.black,
     color: '#fff',
-    letterSpacing: 1,
+    letterSpacing: 2,
   },
   shiftSubtitle: {
     fontSize: theme.typography.fontSizes.md,
     color: 'rgba(255,255,255,0.7)',
     marginTop: 4,
   },
+
+  // ── Time & Countdown ───────────────────────────────────────
   timeContainer: {
     flexDirection: 'row',
     alignItems: 'center',

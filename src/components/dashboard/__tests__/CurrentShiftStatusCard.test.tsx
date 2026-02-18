@@ -32,6 +32,29 @@ jest.mock('expo-haptics', () => ({
   ImpactFeedbackStyle: { Light: 'light', Medium: 'medium' },
 }));
 
+// Mock react-native-gesture-handler
+jest.mock('react-native-gesture-handler', () => {
+  const React = require('react');
+  const RN = require('react-native');
+  return {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    GestureDetector: ({ children }: any) => React.createElement(RN.View, null, children),
+    Gesture: {
+      Tap: () => ({
+        onBegin: function () {
+          return this;
+        },
+        onEnd: function () {
+          return this;
+        },
+        onFinalize: function () {
+          return this;
+        },
+      }),
+    },
+  };
+});
+
 // Mock reanimated
 jest.mock('react-native-reanimated', () => {
   const RN = require('react-native');
@@ -47,6 +70,12 @@ jest.mock('react-native-reanimated', () => {
     withRepeat: (val: number) => val,
     withSequence: (val: number) => val,
     withTiming: (val: number) => val,
+    withSpring: (val: number) => val,
+    withDelay: (_d: number, val: number) => val,
+    runOnJS: (fn: unknown) => fn,
+    interpolate: (val: number) => val,
+    Extrapolate: { CLAMP: 'clamp' },
+    Easing: { inOut: () => ({}), ease: {} },
     FadeInUp: { delay: () => ({ duration: () => ({ springify: () => undefined }) }) },
   };
 });
