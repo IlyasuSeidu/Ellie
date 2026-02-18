@@ -39,18 +39,18 @@ import {
   getShiftStatistics,
   getShiftPattern,
 } from '@/utils/shiftUtils';
-import { getToday, addDays, toDateString, formatDate, getDaysInMonth } from '@/utils/dateUtils';
+import { getToday, addDays, toDateString, getDaysInMonth } from '@/utils/dateUtils';
 import { formatTimeForDisplay, getShiftTimesFromData } from '@/utils/shiftTimeUtils';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
 import { ShiftPattern, ShiftSystem, type ShiftCycle, type ShiftType } from '@/types';
-import type { MonthStatistics, UpcomingShift } from '@/types/dashboard';
+import type { MonthStatistics } from '@/types/dashboard';
 
 // Dashboard components
 import { PersonalizedHeader } from '@/components/dashboard/PersonalizedHeader';
 import { CurrentShiftStatusCard } from '@/components/dashboard/CurrentShiftStatusCard';
 import { MonthlyCalendarCard } from '@/components/dashboard/MonthlyCalendarCard';
 import { StatisticsRow } from '@/components/dashboard/StatisticsCard';
-import { UpcomingShiftsCard } from '@/components/dashboard/UpcomingShiftsCard';
+
 import { QuickActionsBar } from '@/components/dashboard/QuickActionsBar';
 
 /**
@@ -153,45 +153,6 @@ function calculateMonthStats(year: number, month: number, cycle: ShiftCycle): Mo
     nightShifts: stats.nightShifts,
     workLifeBalance: totalDays > 0 ? (stats.daysOff / totalDays) * 100 : 0,
   };
-}
-
-/**
- * Get next N upcoming shift changes (work days only)
- */
-function getUpcomingShifts(
-  cycle: ShiftCycle,
-  shiftTimesData: OnboardingData | null,
-  count: number = 5
-): UpcomingShift[] {
-  const upcoming: UpcomingShift[] = [];
-  const today = getToday();
-  let checkDate = addDays(today, 1);
-  let checked = 0;
-
-  const shiftTimes = shiftTimesData ? getShiftTimesFromData(shiftTimesData) : [];
-
-  while (upcoming.length < count && checked < 60) {
-    const shiftDay = calculateShiftDay(checkDate, cycle);
-
-    // Get time display for this shift type
-    const matchingTime = shiftTimes.find((st) => st.type === shiftDay.shiftType);
-    const timeDisplay = matchingTime
-      ? `${formatTimeForDisplay(matchingTime.startTime)} - ${formatTimeForDisplay(matchingTime.endTime)}`
-      : undefined;
-
-    upcoming.push({
-      date: shiftDay.date,
-      shiftType: shiftDay.shiftType,
-      isWorkDay: shiftDay.isWorkDay,
-      displayDate: formatDate(checkDate, 'ddd, MMM D'),
-      timeDisplay: shiftDay.isWorkDay ? timeDisplay : undefined,
-    });
-
-    checkDate = addDays(checkDate, 1);
-    checked++;
-  }
-
-  return upcoming;
 }
 
 /**
@@ -523,12 +484,6 @@ export const MainDashboardScreen: React.FC = () => {
     return calculateMonthStats(year, month, shiftCycle);
   }, [shiftCycle, currentMonth]);
 
-  // Upcoming shifts
-  const upcomingShifts = useMemo(
-    () => (shiftCycle ? getUpcomingShifts(shiftCycle, userData, 5) : []),
-    [shiftCycle, userData]
-  );
-
   // Current shift time display
   const timeDisplay = useMemo(
     () =>
@@ -693,14 +648,6 @@ export const MainDashboardScreen: React.FC = () => {
           workLifeBalance={monthStats.workLifeBalance}
           animationDelay={300}
           testID="dashboard-stats"
-        />
-
-        {/* Upcoming Shifts */}
-        <UpcomingShiftsCard
-          key={`upcoming-${refreshKey}`}
-          shifts={upcomingShifts}
-          animationDelay={500}
-          testID="dashboard-upcoming"
         />
 
         {/* Quick Actions */}

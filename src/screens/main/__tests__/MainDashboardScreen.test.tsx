@@ -205,16 +205,6 @@ describe('MainDashboardScreen', () => {
       });
     });
 
-    it('should render upcoming shifts', async () => {
-      (asyncStorageService.get as jest.Mock).mockResolvedValue(mockOnboardingData);
-
-      const { getByTestId } = render(<MainDashboardScreen />);
-
-      await waitFor(() => {
-        expect(getByTestId('dashboard-upcoming')).toBeTruthy();
-      });
-    });
-
     it('should render quick actions', async () => {
       (asyncStorageService.get as jest.Mock).mockResolvedValue(mockOnboardingData);
 
