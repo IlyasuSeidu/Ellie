@@ -254,15 +254,13 @@ function getCountdownText(
     if (endMin > startMin) {
       // Same-day shift (e.g. 06:00-14:00, 07:00-19:00)
       if (nowMinutes >= startMin && nowMinutes < endMin) {
-        // Currently within shift hours → show time remaining
         const remaining = endMin - nowMinutes;
         const display = formatMinutesCountdown(remaining);
-        return display ? `${display} remaining` : '';
+        return display ? `${display} left in shift` : '';
       } else if (nowMinutes < startMin) {
-        // Shift hasn't started yet today → show time until it starts
         const minutesUntil = startMin - nowMinutes;
         const display = formatMinutesCountdown(minutesUntil);
-        return display ? `${display} until shift` : '';
+        return display ? `${display} until shift starts` : '';
       }
       // nowMinutes >= endMin → shift ended today, fall through to next-day logic
     } else {
@@ -270,17 +268,17 @@ function getCountdownText(
       if (nowMinutes >= startMin) {
         const remaining = 24 * 60 - nowMinutes + endMin;
         const display = formatMinutesCountdown(remaining);
-        return display ? `${display} remaining` : '';
+        return display ? `${display} left in shift` : '';
       } else if (nowMinutes < endMin) {
         const remaining = endMin - nowMinutes;
         const display = formatMinutesCountdown(remaining);
-        return display ? `${display} remaining` : '';
+        return display ? `${display} left in shift` : '';
       }
       // Between endMin and startMin → shift not active, fall through
       if (nowMinutes >= endMin && nowMinutes < startMin) {
         const minutesUntil = startMin - nowMinutes;
         const display = formatMinutesCountdown(minutesUntil);
-        return display ? `${display} until shift` : '';
+        return display ? `${display} until shift starts` : '';
       }
     }
   }
@@ -301,7 +299,7 @@ function getCountdownText(
           const minutesUntil = 24 * 60 - nowMinutes + nextStartMin;
           const display = formatMinutesCountdown(minutesUntil);
           if (display) {
-            return `${display} until ${nextShift.isWorkDay ? 'next shift' : 'day off'}`;
+            return `${display} until next shift`;
           }
         }
       }
@@ -315,7 +313,9 @@ function getCountdownText(
         }
       }
 
-      if (daysUntil === 1) return 'Tomorrow';
+      if (daysUntil === 1) {
+        return nextShift.isWorkDay ? 'Next shift tomorrow' : 'Day off tomorrow';
+      }
       return `${daysUntil} days until ${nextShift.isWorkDay ? 'next shift' : 'day off'}`;
     }
     nextDate = addDays(nextDate, 1);
