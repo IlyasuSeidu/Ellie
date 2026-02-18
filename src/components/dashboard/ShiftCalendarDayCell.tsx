@@ -292,8 +292,9 @@ const styles = StyleSheet.create({
     }),
   },
   dayText: {
-    fontSize: theme.typography.fontSizes.sm,
-    fontWeight: theme.typography.fontWeights.medium,
+    fontSize: theme.typography.fontSizes.lg,
+    fontWeight: theme.typography.fontWeights.semibold,
+    marginTop: -16,
   },
   todayText: {
     fontWeight: theme.typography.fontWeights.bold,
