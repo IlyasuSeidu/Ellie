@@ -42,55 +42,21 @@ interface GreetingData {
 }
 
 /**
- * Get time-aware greeting with personality and icon color
- * Uses hour-based deterministic selection for stable rendering
+ * Get time-aware greeting with icon
  */
 function getGreeting(): GreetingData {
   const hour = new Date().getHours();
 
   if (hour >= 5 && hour < 12) {
-    const greetings = [
-      'Good morning',
-      'Rise and shine',
-      'Top of the morning',
-      'Ready to conquer the day',
-    ];
-    return {
-      text: greetings[hour % greetings.length],
-      icon: 'sunny-outline',
-      iconColor: '#f97316',
-    };
+    return { text: 'Good morning', icon: 'sunny-outline', iconColor: '#f97316' };
   }
-
   if (hour >= 12 && hour < 17) {
-    const greetings = ['Good afternoon', 'Keep it going', 'Halfway through', 'Powering through'];
-    return {
-      text: greetings[(hour - 12) % greetings.length],
-      icon: 'partly-sunny-outline',
-      iconColor: '#d97706',
-    };
+    return { text: 'Good afternoon', icon: 'partly-sunny-outline', iconColor: '#d97706' };
   }
-
   if (hour >= 17 && hour < 21) {
-    const greetings = ['Good evening', 'Winding down', 'Almost there', 'Evening check-in'];
-    return {
-      text: greetings[(hour - 17) % greetings.length],
-      icon: 'moon-outline',
-      iconColor: '#8b5cf6',
-    };
+    return { text: 'Good evening', icon: 'moon-outline', iconColor: '#8b5cf6' };
   }
-
-  const greetings = [
-    'Good night',
-    'Burning the midnight oil',
-    'Night owl mode',
-    'Late night shift',
-  ];
-  return {
-    text: greetings[(hour >= 21 ? hour - 21 : hour + 3) % greetings.length],
-    icon: 'cloudy-night-outline',
-    iconColor: '#6366f1',
-  };
+  return { text: 'Good night', icon: 'cloudy-night-outline', iconColor: '#6366f1' };
 }
 
 /**

@@ -66,34 +66,10 @@ jest.mock('react-native-reanimated', () => {
   };
 });
 
-// Greeting prefixes (without trailing comma — rendered as "prefix, Name!")
-const MORNING_GREETINGS = [
-  'Good morning',
-  'Rise and shine',
-  'Top of the morning',
-  'Ready to conquer the day',
-];
-const AFTERNOON_GREETINGS = [
-  'Good afternoon',
-  'Keep it going',
-  'Halfway through',
-  'Powering through',
-];
-const EVENING_GREETINGS = ['Good evening', 'Winding down', 'Almost there', 'Evening check-in'];
-const NIGHT_GREETINGS = [
-  'Good night',
-  'Burning the midnight oil',
-  'Night owl mode',
-  'Late night shift',
-];
-const ALL_GREETINGS = [
-  ...MORNING_GREETINGS,
-  ...AFTERNOON_GREETINGS,
-  ...EVENING_GREETINGS,
-  ...NIGHT_GREETINGS,
-];
+// Standard greetings by time of day
+const ALL_GREETINGS = ['Good morning', 'Good afternoon', 'Good evening', 'Good night'];
 
-/** Helper: check if any greeting prefix appears in the rendered text tree */
+/** Helper: check if a greeting appears in the rendered text tree */
 function findGreeting(
   queryByText: (text: string | RegExp) => unknown,
   greetings: string[],
@@ -101,7 +77,6 @@ function findGreeting(
 ) {
   return greetings.some((g) => {
     try {
-      // The rendered text is: "greeting, Name!" as a combined text node
       return queryByText(new RegExp(`${g},\\s+${name}!`)) !== null;
     } catch {
       return false;
@@ -177,31 +152,31 @@ describe('PersonalizedHeader', () => {
     it('should show morning greeting (5-11)', () => {
       mockHour(7);
       const { queryByText } = render(<PersonalizedHeader name="Test" />);
-      expect(findGreeting(queryByText, MORNING_GREETINGS, 'Test')).toBe(true);
+      expect(findGreeting(queryByText, ['Good morning'], 'Test')).toBe(true);
     });
 
     it('should show afternoon greeting (12-16)', () => {
       mockHour(14);
       const { queryByText } = render(<PersonalizedHeader name="Test" />);
-      expect(findGreeting(queryByText, AFTERNOON_GREETINGS, 'Test')).toBe(true);
+      expect(findGreeting(queryByText, ['Good afternoon'], 'Test')).toBe(true);
     });
 
     it('should show evening greeting (17-20)', () => {
       mockHour(18);
       const { queryByText } = render(<PersonalizedHeader name="Test" />);
-      expect(findGreeting(queryByText, EVENING_GREETINGS, 'Test')).toBe(true);
+      expect(findGreeting(queryByText, ['Good evening'], 'Test')).toBe(true);
     });
 
     it('should show night greeting (21-4)', () => {
       mockHour(23);
       const { queryByText } = render(<PersonalizedHeader name="Test" />);
-      expect(findGreeting(queryByText, NIGHT_GREETINGS, 'Test')).toBe(true);
+      expect(findGreeting(queryByText, ['Good night'], 'Test')).toBe(true);
     });
 
     it('should show night greeting for early morning (hour 2)', () => {
       mockHour(2);
       const { queryByText } = render(<PersonalizedHeader name="Test" />);
-      expect(findGreeting(queryByText, NIGHT_GREETINGS, 'Test')).toBe(true);
+      expect(findGreeting(queryByText, ['Good night'], 'Test')).toBe(true);
     });
   });
 });
