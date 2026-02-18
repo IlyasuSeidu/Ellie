@@ -236,13 +236,22 @@ const SHIFT_DISPLAY_NAME: Record<ShiftType, string> = {
 };
 
 /**
- * Calculate countdown text to next shift change.
+ * Calculate countdown text to the next shift event.
  *
- * Time-aware: uses shift start/end times + current clock to show
- * hours/minutes remaining in shift or until next shift starts.
- * Includes the specific shift name (e.g. "morning shift", "night shift").
+ * Time-aware: uses shift start/end times + current clock to show precise
+ * hours/minutes. Counts down to the very next shift instance (same or
+ * different type), not just the next rotation change.
  *
- * Falls back to day-level countdown when shift times are unavailable.
+ * 3-shift 3-3-3 example (morning 06:00-14:00, afternoon 14:00-22:00):
+ *   Day 1, 10:00 → "4h left in morning shift"
+ *   Day 1, 18:00 → "12h until morning shift"   (day 2's morning)
+ *   Day 3, 18:00 → "20h until afternoon shift"  (rotation changes)
+ *   Off day, 12:00 → "18h until morning shift"  (next work day)
+ *
+ * 2-shift example (day 07:00-19:00, night 19:00-07:00):
+ *   Day shift, 15:00 → "4h left in day shift"
+ *   Day shift, 20:00 → "11h until day shift"    (tomorrow)
+ *   Off day, 10:00   → "21h until day shift"    (next work day)
  */
 function getCountdownText(
   currentShiftType: ShiftType,
@@ -294,43 +303,44 @@ function getCountdownText(
     }
   }
 
-  // For off days or when shift times unavailable, find next shift change
+  // ── 2. Shift ended or off day → find the next work shift (any type) ──
+  // Counts down to the very next shift instance, not just the next
+  // different shift type. E.g. day 1 morning ended → day 2 morning.
   const today = getToday();
   let nextDate = addDays(today, 1);
   let daysUntil = 1;
 
   while (daysUntil < 30) {
     const nextShift = calculateShiftDay(nextDate, cycle);
-    if (nextShift.shiftType !== currentShiftType) {
+
+    if (nextShift.isWorkDay) {
+      // Found the next work shift (same or different type)
       const nextName = SHIFT_DISPLAY_NAME[nextShift.shiftType];
+      const nextShiftTime = shiftTimes.find((st) => st.type === nextShift.shiftType);
 
-      // For tomorrow, show hours/minutes until that shift starts
-      if (daysUntil === 1 && nextShift.shiftType !== 'off') {
-        const nextShiftTime = shiftTimes.find((st) => st.type === nextShift.shiftType);
-        if (nextShiftTime) {
-          const nextStartMin = parseTimeToMinutes(nextShiftTime.startTime);
-          const minutesUntil = 24 * 60 - nowMinutes + nextStartMin;
-          const display = formatMinutesCountdown(minutesUntil);
-          if (display) {
-            return `${display} until ${nextName}`;
-          }
-        }
+      if (nextShiftTime) {
+        const nextStartMin = parseTimeToMinutes(nextShiftTime.startTime);
+        // Total minutes: remaining today + full intermediate days + start offset
+        const minutesUntil = 24 * 60 - nowMinutes + (daysUntil - 1) * 24 * 60 + nextStartMin;
+        const display = formatMinutesCountdown(minutesUntil);
+        if (display) return `${display} until ${nextName}`;
       }
 
-      // For off days tomorrow, show time until midnight
-      if (daysUntil === 1 && nextShift.shiftType === 'off') {
-        const minutesUntilMidnight = 24 * 60 - nowMinutes;
-        if (minutesUntilMidnight > 0) {
-          const display = formatMinutesCountdown(minutesUntilMidnight);
-          if (display) return `${display} until ${nextName}`;
-        }
-      }
-
+      // Fallback without time data
       if (daysUntil === 1) {
         return `${nextName[0].toUpperCase()}${nextName.slice(1)} tomorrow`;
       }
       return `${daysUntil} days until ${nextName}`;
     }
+
+    // Tomorrow is off and today was a work shift → show countdown to day off
+    if (daysUntil === 1 && currentShiftType !== 'off') {
+      const minutesUntilMidnight = 24 * 60 - nowMinutes;
+      const display = formatMinutesCountdown(minutesUntilMidnight);
+      if (display) return `${display} until day off`;
+      return 'Day off tomorrow';
+    }
+
     nextDate = addDays(nextDate, 1);
     daysUntil++;
   }
