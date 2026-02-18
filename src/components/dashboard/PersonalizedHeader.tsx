@@ -69,7 +69,7 @@ function getInitials(name: string): string {
   return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
 }
 
-const AVATAR_SIZE = 66;
+const AVATAR_SIZE = 50;
 const AVATAR_RADIUS = AVATAR_SIZE / 2;
 
 export const PersonalizedHeader: React.FC<PersonalizedHeaderProps> = ({
@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   avatarText: {
-    fontSize: 26,
+    fontSize: 20,
     fontWeight: theme.typography.fontWeights.bold,
     color: theme.colors.sacredGold,
   },
