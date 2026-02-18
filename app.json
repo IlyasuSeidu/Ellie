@@ -26,6 +26,15 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-font"]
+    "plugins": [
+      "expo-font",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Ellie needs access to your photos to set a profile picture.",
+          "cameraPermission": "Ellie needs access to your camera to take a profile picture."
+        }
+      ]
+    ]
   }
 }

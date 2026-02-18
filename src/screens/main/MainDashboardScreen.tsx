@@ -552,6 +552,21 @@ export const MainDashboardScreen: React.FC = () => {
     // Placeholder for future navigation
   }, []);
 
+  // Avatar change handler — persists new URI to AsyncStorage
+  const handleAvatarChange = useCallback(
+    async (newUri: string | null) => {
+      if (!userData) return;
+      const updatedData = { ...userData, avatarUri: newUri ?? undefined };
+      setUserData(updatedData);
+      try {
+        await asyncStorageService.set('onboarding:data', updatedData);
+      } catch (error) {
+        console.warn('Failed to save avatar URI:', error);
+      }
+    },
+    [userData]
+  );
+
   // Loading state
   if (loading) {
     return (
@@ -625,6 +640,8 @@ export const MainDashboardScreen: React.FC = () => {
           key={`header-${refreshKey}`}
           name={userData.name || 'User'}
           occupation={userData.occupation}
+          avatarUri={userData.avatarUri}
+          onAvatarChange={handleAvatarChange}
           animationDelay={0}
           testID="dashboard-header"
         />

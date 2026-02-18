@@ -39,8 +39,17 @@ jest.mock('expo-linear-gradient', () => {
 jest.mock('expo-haptics', () => ({
   impactAsync: jest.fn(),
   notificationAsync: jest.fn(),
-  ImpactFeedbackStyle: { Light: 'light', Medium: 'medium' },
+  ImpactFeedbackStyle: { Light: 'light', Medium: 'medium', Heavy: 'heavy' },
   NotificationFeedbackType: { Success: 'success', Error: 'error' },
+}));
+
+// Mock AvatarService
+jest.mock('@/services/AvatarService', () => ({
+  avatarService: {
+    pickFromLibrary: jest.fn(),
+    pickFromCamera: jest.fn(),
+    deleteAvatar: jest.fn(),
+  },
 }));
 
 // Mock react-native-gesture-handler (used by PersonalizedHeader + MonthlyCalendarCard)
@@ -62,6 +71,14 @@ jest.mock('react-native-gesture-handler', () => {
           return this;
         },
       }),
+      LongPress: () => ({
+        minDuration: function () {
+          return this;
+        },
+        onEnd: function () {
+          return this;
+        },
+      }),
       Pan: () => ({
         activeOffsetX: function () {
           return this;
@@ -73,6 +90,7 @@ jest.mock('react-native-gesture-handler', () => {
           return this;
         },
       }),
+      Exclusive: () => ({}),
     },
   };
 });

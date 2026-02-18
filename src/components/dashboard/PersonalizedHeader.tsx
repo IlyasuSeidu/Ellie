@@ -7,8 +7,8 @@
  * icon colors for a polished, engaging experience.
  */
 
-import React, { useMemo, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useMemo, useEffect, useCallback } from 'react';
+import { View, Image, Alert, Pressable, StyleSheet, Platform } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -23,12 +23,17 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
+import { avatarService } from '@/services/AvatarService';
 
 export interface PersonalizedHeaderProps {
   /** User's full name */
   name: string;
   /** User's occupation */
   occupation?: string;
+  /** URI of the user's avatar image */
+  avatarUri?: string;
+  /** Callback when avatar is changed (new URI) or removed (null) */
+  onAvatarChange?: (uri: string | null) => void;
   /** Animation delay in ms */
   animationDelay?: number;
   /** Test ID */
@@ -75,6 +80,8 @@ const AVATAR_RADIUS = AVATAR_SIZE / 2;
 export const PersonalizedHeader: React.FC<PersonalizedHeaderProps> = ({
   name,
   occupation,
+  avatarUri,
+  onAvatarChange,
   animationDelay = 0,
   testID,
 }) => {
@@ -138,13 +145,54 @@ export const PersonalizedHeader: React.FC<PersonalizedHeaderProps> = ({
     );
   }, [ringScale]);
 
-  // ── Interactive Avatar Tap ────────────────────────────────────
+  // ── Interactive Avatar Gestures ──────────────────────────────
   const avatarTapScale = useSharedValue(1);
 
   const triggerHaptic = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   };
 
+  const showAvatarActionSheet = useCallback(() => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+
+    const buttons: Array<{
+      text: string;
+      style?: 'default' | 'cancel' | 'destructive';
+      onPress?: () => void;
+    }> = [
+      {
+        text: 'Choose from Library',
+        onPress: async () => {
+          const uri = await avatarService.pickFromLibrary();
+          if (uri) onAvatarChange?.(uri);
+        },
+      },
+      {
+        text: 'Take Photo',
+        onPress: async () => {
+          const uri = await avatarService.pickFromCamera();
+          if (uri) onAvatarChange?.(uri);
+        },
+      },
+    ];
+
+    if (avatarUri) {
+      buttons.push({
+        text: 'Remove Photo',
+        style: 'destructive',
+        onPress: async () => {
+          await avatarService.deleteAvatar(avatarUri);
+          onAvatarChange?.(null);
+        },
+      });
+    }
+
+    buttons.push({ text: 'Cancel', style: 'cancel' });
+
+    Alert.alert('Profile Photo', 'Choose your avatar', buttons);
+  }, [avatarUri, onAvatarChange]);
+
+  // Short tap: haptic bounce (unchanged)
   const tapGesture = Gesture.Tap()
     .onBegin(() => {
       avatarTapScale.value = withSpring(0.92, { damping: 15, stiffness: 400 });
@@ -159,6 +207,15 @@ export const PersonalizedHeader: React.FC<PersonalizedHeaderProps> = ({
     .onFinalize(() => {
       avatarTapScale.value = withSpring(1.0, { damping: 12, stiffness: 300 });
     });
+
+  // Long press: open avatar picker action sheet
+  const longPressGesture = Gesture.LongPress()
+    .minDuration(400)
+    .onEnd(() => {
+      runOnJS(showAvatarActionSheet)();
+    });
+
+  const composedGesture = Gesture.Exclusive(longPressGesture, tapGesture);
 
   // ── Animated Styles ───────────────────────────────────────────
   const avatarEntranceStyle = useAnimatedStyle(() => ({
@@ -212,7 +269,7 @@ export const PersonalizedHeader: React.FC<PersonalizedHeaderProps> = ({
 
       {/* Avatar Section with occupation underneath */}
       <View style={styles.avatarColumn}>
-        <GestureDetector gesture={tapGesture}>
+        <GestureDetector gesture={composedGesture}>
           <Animated.View style={[styles.avatarOuter, avatarEntranceStyle, avatarFloatStyle]}>
             {/* Pulsing glow ring (behind) */}
             <Animated.View style={[styles.avatarGlowRing, glowPulseStyle]} />
@@ -222,8 +279,33 @@ export const PersonalizedHeader: React.FC<PersonalizedHeaderProps> = ({
 
             {/* Main avatar circle (interactive) */}
             <Animated.View style={[styles.avatar, avatarInteractionStyle]}>
-              <Animated.Text style={styles.avatarText}>{initials}</Animated.Text>
+              {avatarUri ? (
+                <Image
+                  source={{ uri: avatarUri }}
+                  style={styles.avatarImage}
+                  resizeMode="cover"
+                  onError={() => onAvatarChange?.(null)}
+                  testID={testID ? `${testID}-avatar-image` : undefined}
+                />
+              ) : (
+                <Animated.Text
+                  style={styles.avatarText}
+                  testID={testID ? `${testID}-avatar-initials` : undefined}
+                >
+                  {initials}
+                </Animated.Text>
+              )}
             </Animated.View>
+
+            {/* Camera badge for discoverability */}
+            <Pressable
+              style={styles.cameraBadge}
+              onPress={showAvatarActionSheet}
+              hitSlop={8}
+              testID={testID ? `${testID}-camera-badge` : undefined}
+            >
+              <Ionicons name="camera" size={10} color={theme.colors.paper} />
+            </Pressable>
           </Animated.View>
         </GestureDetector>
 
@@ -275,6 +357,36 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: theme.typography.fontWeights.bold,
     color: theme.colors.sacredGold,
+  },
+  avatarImage: {
+    width: AVATAR_SIZE - 5,
+    height: AVATAR_SIZE - 5,
+    borderRadius: AVATAR_RADIUS,
+  },
+  cameraBadge: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: theme.colors.sacredGold,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1.5,
+    borderColor: theme.colors.darkStone,
+    zIndex: 3,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
   },
   avatarGlowRing: {
     position: 'absolute',

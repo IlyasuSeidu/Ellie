@@ -4,7 +4,7 @@
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { render, fireEvent } from '@testing-library/react-native';
 import { PersonalizedHeader } from '../PersonalizedHeader';
 
 // Mock Ionicons
@@ -19,28 +19,38 @@ jest.mock('@expo/vector-icons', () => {
 // Mock expo-haptics
 jest.mock('expo-haptics', () => ({
   impactAsync: jest.fn(),
-  ImpactFeedbackStyle: { Light: 'light', Medium: 'medium' },
+  ImpactFeedbackStyle: { Light: 'light', Medium: 'medium', Heavy: 'heavy' },
+}));
+
+// Mock AvatarService
+jest.mock('@/services/AvatarService', () => ({
+  avatarService: {
+    pickFromLibrary: jest.fn(),
+    pickFromCamera: jest.fn(),
+    deleteAvatar: jest.fn(),
+  },
 }));
 
 // Mock react-native-gesture-handler
 jest.mock('react-native-gesture-handler', () => {
   const React = require('react');
   const RN = require('react-native');
+  const chainable = () => {
+    const obj: Record<string, unknown> = {};
+    const handler = () => obj;
+    obj.onBegin = handler;
+    obj.onEnd = handler;
+    obj.onFinalize = handler;
+    obj.minDuration = handler;
+    return obj;
+  };
   return {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     GestureDetector: ({ children }: any) => React.createElement(RN.View, null, children),
     Gesture: {
-      Tap: () => ({
-        onBegin: function () {
-          return this;
-        },
-        onEnd: function () {
-          return this;
-        },
-        onFinalize: function () {
-          return this;
-        },
-      }),
+      Tap: chainable,
+      LongPress: chainable,
+      Exclusive: () => ({}),
     },
   };
 });
@@ -177,6 +187,47 @@ describe('PersonalizedHeader', () => {
       mockHour(2);
       const { queryByText } = render(<PersonalizedHeader name="Test" />);
       expect(findGreeting(queryByText, ['Good night'], 'Test')).toBe(true);
+    });
+  });
+
+  describe('Avatar', () => {
+    it('should render initials when no avatarUri is provided', () => {
+      const { getByText, queryByTestId } = render(
+        <PersonalizedHeader name="John Doe" testID="header" />
+      );
+      expect(getByText('JD')).toBeTruthy();
+      expect(queryByTestId('header-avatar-image')).toBeNull();
+    });
+
+    it('should render image when avatarUri is provided', () => {
+      const { queryByTestId } = render(
+        <PersonalizedHeader
+          name="John Doe"
+          avatarUri="file:///path/to/avatar.jpg"
+          testID="header"
+        />
+      );
+      expect(queryByTestId('header-avatar-image')).toBeTruthy();
+      expect(queryByTestId('header-avatar-initials')).toBeNull();
+    });
+
+    it('should render camera badge', () => {
+      const { getByTestId } = render(<PersonalizedHeader name="John Doe" testID="header" />);
+      expect(getByTestId('header-camera-badge')).toBeTruthy();
+    });
+
+    it('should call onAvatarChange with null on image error', () => {
+      const onAvatarChange = jest.fn();
+      const { getByTestId } = render(
+        <PersonalizedHeader
+          name="John Doe"
+          avatarUri="file:///nonexistent.jpg"
+          onAvatarChange={onAvatarChange}
+          testID="header"
+        />
+      );
+      fireEvent(getByTestId('header-avatar-image'), 'error');
+      expect(onAvatarChange).toHaveBeenCalledWith(null);
     });
   });
 });

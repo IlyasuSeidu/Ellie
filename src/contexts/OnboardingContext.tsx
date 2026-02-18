@@ -88,6 +88,9 @@ export interface OnboardingData {
   /** User's country - Currently for display only, may be used for backend analytics or locale settings */
   country?: string;
 
+  /** URI of the user's profile avatar image (file:// URI in document directory) */
+  avatarUri?: string;
+
   // Step 3: Shift System Selection (PremiumShiftSystemScreen)
   shiftSystem?: '2-shift' | '3-shift'; // Determines 2-shift (12h) vs 3-shift (8h)
 
