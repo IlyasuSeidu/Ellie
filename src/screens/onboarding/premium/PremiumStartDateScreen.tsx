@@ -460,9 +460,9 @@ const getPhaseIcon = (phase: Phase): ImageSourcePropType | 'iconicon' => {
     case 'night':
       return require('../../../../assets/onboarding/icons/consolidated/phase-night-shift-moon.png');
     case 'morning':
-      return require('../../../../assets/onboarding/icons/consolidated/phase-day-shift-sun.png'); // Reuse sun icon
+      return require('../../../../assets/onboarding/icons/consolidated/phase-shift-time-morning.png');
     case 'afternoon':
-      return 'iconicon'; // Use Ionicon partly-sunny
+      return require('../../../../assets/onboarding/icons/consolidated/phase-shift-time-afternoon.png');
     case 'off':
       return require('../../../../assets/onboarding/icons/consolidated/phase-days-off-rest.png');
     default:
@@ -480,9 +480,9 @@ const getCalendarShiftIcon = (
     case 'night':
       return require('../../../../assets/onboarding/icons/consolidated/calendar-night-shift-moon.png');
     case 'morning':
-      return require('../../../../assets/onboarding/icons/consolidated/calendar-day-shift-sun.png'); // Reuse sun for morning
+      return require('../../../../assets/onboarding/icons/consolidated/calendar-shift-time-morning.png');
     case 'afternoon':
-      return 'iconicon'; // Use Ionicon partly-sunny
+      return require('../../../../assets/onboarding/icons/consolidated/calendar-shift-time-afternoon.png');
     case 'off':
       return require('../../../../assets/onboarding/icons/consolidated/calendar-days-off-rest.png');
     default:
@@ -1683,21 +1683,25 @@ export const _LivePreviewCard: React.FC<LivePreviewCardProps> = ({
 
           {/* Row 2: Phase */}
           <View style={styles.previewRow}>
-            <Ionicons
-              name={
-                selectedPhase === 'day'
-                  ? 'sunny'
-                  : selectedPhase === 'night'
-                    ? 'moon'
-                    : selectedPhase === 'morning'
-                      ? 'sunny-outline'
-                      : selectedPhase === 'afternoon'
-                        ? 'partly-sunny'
-                        : 'beer'
-              }
-              size={32}
-              color={selectedPhase ? getPhaseColor(selectedPhase) : theme.colors.dust}
-            />
+            {selectedPhase === 'morning' ? (
+              <Image
+                source={require('../../../../assets/onboarding/icons/consolidated/shift-time-morning.png')}
+                style={{ width: 32, height: 32, resizeMode: 'contain' }}
+              />
+            ) : selectedPhase === 'afternoon' ? (
+              <Image
+                source={require('../../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png')}
+                style={{ width: 32, height: 32, resizeMode: 'contain' }}
+              />
+            ) : (
+              <Ionicons
+                name={
+                  selectedPhase === 'day' ? 'sunny' : selectedPhase === 'night' ? 'moon' : 'beer'
+                }
+                size={32}
+                color={selectedPhase ? getPhaseColor(selectedPhase) : theme.colors.dust}
+              />
+            )}
             <View style={styles.previewTextContainer}>
               <Text style={styles.previewLabel}>Phase:</Text>
               <Text

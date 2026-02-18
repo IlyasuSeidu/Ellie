@@ -77,13 +77,19 @@ describe('ShiftCalendarDayCell', () => {
     });
 
     it('should render shift type icon badge for morning shift', () => {
-      const { getByText } = render(<ShiftCalendarDayCell day={1} shiftType="morning" />);
-      expect(getByText('sunny-outline')).toBeTruthy();
+      const { UNSAFE_getAllByType } = render(<ShiftCalendarDayCell day={1} shiftType="morning" />);
+      // Morning shift uses 3D PNG image instead of Ionicons
+      const { Image } = require('react-native');
+      expect(UNSAFE_getAllByType(Image).length).toBeGreaterThan(0);
     });
 
     it('should render shift type icon badge for afternoon shift', () => {
-      const { getByText } = render(<ShiftCalendarDayCell day={1} shiftType="afternoon" />);
-      expect(getByText('partly-sunny')).toBeTruthy();
+      const { UNSAFE_getAllByType } = render(
+        <ShiftCalendarDayCell day={1} shiftType="afternoon" />
+      );
+      // Afternoon shift uses 3D PNG image instead of Ionicons
+      const { Image } = require('react-native');
+      expect(UNSAFE_getAllByType(Image).length).toBeGreaterThan(0);
     });
 
     it('should render with testID', () => {

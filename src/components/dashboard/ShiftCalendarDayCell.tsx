@@ -44,6 +44,8 @@ export interface ShiftCalendarDayCellProps {
 /* eslint-disable @typescript-eslint/no-var-requires */
 /** 3D assets for shift types */
 const DAY_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png');
+const MORNING_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/shift-time-morning.png');
+const AFTERNOON_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png');
 const OFF_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png');
 const NIGHT_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png');
 /* eslint-enable @typescript-eslint/no-var-requires */
@@ -65,15 +67,13 @@ const SHIFT_COLORS: Record<
   },
   morning: {
     bg: 'rgba(245, 158, 11, 0.15)',
-    badge: '#F59E0B',
+    badge: 'rgba(245, 158, 11, 0.25)',
     text: '#FCD34D',
-    icon: 'sunny-outline',
   },
   afternoon: {
     bg: 'rgba(6, 182, 212, 0.15)',
-    badge: '#06B6D4',
+    badge: 'rgba(6, 182, 212, 0.25)',
     text: '#67E8F9',
-    icon: 'partly-sunny',
   },
   off: {
     bg: 'rgba(120, 113, 108, 0.1)',
@@ -209,24 +209,23 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
           <View
             style={[
               styles.badge,
+              styles.badgeLarge,
               {
                 backgroundColor: selected ? 'rgba(255,255,255,0.3)' : shiftColor.badge,
               },
             ]}
           >
             {shiftType === 'day' ? (
-              <Image source={DAY_SHIFT_ICON} style={styles.badgeImage} />
+              <Image source={DAY_SHIFT_ICON} style={styles.badgeImageLarge} />
             ) : shiftType === 'night' ? (
-              <Image source={NIGHT_SHIFT_ICON} style={styles.badgeImage} />
+              <Image source={NIGHT_SHIFT_ICON} style={styles.badgeImageLarge} />
+            ) : shiftType === 'morning' ? (
+              <Image source={MORNING_SHIFT_ICON} style={styles.badgeImageLarge} />
+            ) : shiftType === 'afternoon' ? (
+              <Image source={AFTERNOON_SHIFT_ICON} style={styles.badgeImageLarge} />
             ) : shiftType === 'off' ? (
-              <Image source={OFF_SHIFT_ICON} style={styles.badgeImage} />
-            ) : (
-              <Ionicons
-                name={shiftColor.icon as keyof typeof Ionicons.glyphMap}
-                size={13}
-                color="#fff"
-              />
-            )}
+              <Image source={OFF_SHIFT_ICON} style={styles.badgeImageLarge} />
+            ) : null}
           </View>
         )}
       </View>
@@ -339,6 +338,16 @@ const styles = StyleSheet.create({
   badgeImage: {
     width: 18,
     height: 18,
+    resizeMode: 'contain',
+  },
+  badgeLarge: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+  },
+  badgeImageLarge: {
+    width: 28,
+    height: 28,
     resizeMode: 'contain',
   },
 });

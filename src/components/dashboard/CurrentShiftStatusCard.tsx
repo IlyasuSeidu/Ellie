@@ -46,6 +46,8 @@ export interface CurrentShiftStatusCardProps {
 /* eslint-disable @typescript-eslint/no-var-requires */
 /** 3D assets for shift types */
 const DAY_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png');
+const MORNING_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/shift-time-morning.png');
+const AFTERNOON_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png');
 const OFF_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png');
 const NIGHT_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png');
 /* eslint-enable @typescript-eslint/no-var-requires */
@@ -71,13 +73,11 @@ const SHIFT_STYLES: Record<
   },
   morning: {
     gradient: ['#F59E0B', '#D97706'],
-    icon: 'sunny-outline',
     label: 'MORNING SHIFT',
     subtitle: 'Rise and shine!',
   },
   afternoon: {
     gradient: ['#06B6D4', '#0E7490'],
-    icon: 'partly-sunny',
     label: 'AFTERNOON SHIFT',
     subtitle: 'Keep it going!',
   },
@@ -323,21 +323,21 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                     styles.iconContainer,
                     shiftType === 'day' && styles.lightBlueIconContainer,
                     shiftType === 'night' && styles.whiteIconContainer,
+                    shiftType === 'morning' && styles.amberIconContainer,
+                    shiftType === 'afternoon' && styles.cyanIconContainer,
                   ]}
                 >
                   {shiftType === 'day' ? (
                     <Image source={DAY_SHIFT_ICON} style={styles.shiftImage} />
                   ) : shiftType === 'night' ? (
                     <Image source={NIGHT_SHIFT_ICON} style={styles.shiftImage} />
+                  ) : shiftType === 'morning' ? (
+                    <Image source={MORNING_SHIFT_ICON} style={styles.shiftImage} />
+                  ) : shiftType === 'afternoon' ? (
+                    <Image source={AFTERNOON_SHIFT_ICON} style={styles.shiftImage} />
                   ) : shiftType === 'off' ? (
                     <Image source={OFF_SHIFT_ICON} style={styles.shiftImage} />
-                  ) : (
-                    <Ionicons
-                      name={style.icon as keyof typeof Ionicons.glyphMap}
-                      size={24}
-                      color="rgba(255,255,255,0.9)"
-                    />
-                  )}
+                  ) : null}
                 </View>
               </Animated.View>
 
@@ -557,6 +557,12 @@ const styles = StyleSheet.create({
   },
   whiteIconContainer: {
     backgroundColor: '#fff',
+  },
+  amberIconContainer: {
+    backgroundColor: 'rgba(245, 158, 11, 0.25)',
+  },
+  cyanIconContainer: {
+    backgroundColor: 'rgba(6, 182, 212, 0.25)',
   },
   shiftImage: {
     width: 30,

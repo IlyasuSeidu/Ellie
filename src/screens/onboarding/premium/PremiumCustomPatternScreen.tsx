@@ -750,7 +750,7 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
               <Animated.View style={[styles.cycleBlock, morningBlockAnimatedStyle]}>
                 <View style={[styles.cycleBlockInner, { backgroundColor: CYCLE_COLORS.morning }]}>
                   <Image
-                    source={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
+                    source={require('../../../../assets/onboarding/icons/consolidated/shift-time-morning.png')}
                     style={styles.cycleBlockIcon}
                     resizeMode="contain"
                   />
@@ -761,11 +761,10 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
 
               <Animated.View style={[styles.cycleBlock, afternoonBlockAnimatedStyle]}>
                 <View style={[styles.cycleBlockInner, { backgroundColor: CYCLE_COLORS.afternoon }]}>
-                  <Ionicons
-                    name="partly-sunny"
-                    size={50}
-                    color={theme.colors.paper}
+                  <Image
+                    source={require('../../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png')}
                     style={styles.cycleBlockIcon}
+                    resizeMode="contain"
                   />
                   <Text style={styles.cycleBlockNumber}>{afternoonOn}</Text>
                   <Text style={styles.cycleBlockLabel}>Afternoon</Text>
@@ -1187,8 +1186,8 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
                   onChange={setMorningOn}
                   delayIndex={0}
                   reducedMotion={reducedMotion}
-                  customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
-                  customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
+                  customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/shift-time-morning.png')}
+                  customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/shift-time-morning.png')}
                 />
 
                 <EnhancedSlider
@@ -1202,6 +1201,8 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
                   onChange={setAfternoonOn}
                   delayIndex={1}
                   reducedMotion={reducedMotion}
+                  customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png')}
+                  customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png')}
                 />
 
                 <EnhancedSlider

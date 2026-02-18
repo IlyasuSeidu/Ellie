@@ -25,6 +25,8 @@ export interface UpcomingShiftsCardProps {
 /* eslint-disable @typescript-eslint/no-var-requires */
 /** 3D assets for shift types */
 const DAY_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png');
+const MORNING_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/shift-time-morning.png');
+const AFTERNOON_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png');
 const OFF_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png');
 const NIGHT_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png');
 /* eslint-enable @typescript-eslint/no-var-requires */
@@ -35,8 +37,8 @@ const SHIFT_CONFIG: Record<
 > = {
   day: { color: '#2196F3', label: 'Day Shift' },
   night: { color: '#651FFF', label: 'Night Shift' },
-  morning: { color: '#F59E0B', icon: 'sunny-outline', label: 'Morning Shift' },
-  afternoon: { color: '#06B6D4', icon: 'partly-sunny', label: 'Afternoon Shift' },
+  morning: { color: '#F59E0B', label: 'Morning Shift' },
+  afternoon: { color: '#06B6D4', label: 'Afternoon Shift' },
   off: { color: '#78716c', label: 'Day Off' },
 };
 
@@ -84,15 +86,13 @@ export const UpcomingShiftsCard: React.FC<UpcomingShiftsCardProps> = ({
                 <Image source={DAY_SHIFT_ICON} style={styles.shiftImage} />
               ) : shift.shiftType === 'night' ? (
                 <Image source={NIGHT_SHIFT_ICON} style={styles.shiftImage} />
+              ) : shift.shiftType === 'morning' ? (
+                <Image source={MORNING_SHIFT_ICON} style={styles.shiftImage} />
+              ) : shift.shiftType === 'afternoon' ? (
+                <Image source={AFTERNOON_SHIFT_ICON} style={styles.shiftImage} />
               ) : shift.shiftType === 'off' ? (
                 <Image source={OFF_SHIFT_ICON} style={styles.shiftImage} />
-              ) : (
-                <Ionicons
-                  name={config.icon as keyof typeof Ionicons.glyphMap}
-                  size={18}
-                  color={config.color}
-                />
-              )}
+              ) : null}
             </View>
 
             {/* Shift info */}

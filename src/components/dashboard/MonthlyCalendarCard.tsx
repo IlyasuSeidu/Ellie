@@ -30,6 +30,8 @@ import { ShiftSystem, type ShiftDay } from '@/types';
 /* eslint-disable @typescript-eslint/no-var-requires */
 /** 3D assets for shift types */
 const DAY_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png');
+const MORNING_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/shift-time-morning.png');
+const AFTERNOON_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png');
 const OFF_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png');
 const NIGHT_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png');
 /* eslint-enable @typescript-eslint/no-var-requires */
@@ -428,8 +430,16 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
           )}
           {shiftSystem !== ShiftSystem.TWO_SHIFT && (
             <>
-              <LegendItem color="#F59E0B" icon="sunny-outline" label="Morning" />
-              <LegendItem color="#06B6D4" icon="partly-sunny" label="Afternoon" />
+              <LegendItem
+                color="rgba(245, 158, 11, 0.25)"
+                imageSource={MORNING_SHIFT_ICON}
+                label="Morning"
+              />
+              <LegendItem
+                color="rgba(6, 182, 212, 0.25)"
+                imageSource={AFTERNOON_SHIFT_ICON}
+                label="Afternoon"
+              />
             </>
           )}
           <LegendItem color="#fff" imageSource={NIGHT_SHIFT_ICON} label="Night" />

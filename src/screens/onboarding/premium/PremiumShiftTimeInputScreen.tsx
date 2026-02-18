@@ -122,6 +122,7 @@ interface ShiftPreset {
   period: 'AM' | 'PM';
   duration: 8 | 12;
   icon: keyof typeof Ionicons.glyphMap | string; // Can be Ionicon name or emoji
+  imageSource?: ImageSourcePropType; // 3D PNG icon (takes priority over icon)
   type: 'day' | 'night' | 'morning' | 'afternoon';
   endTimeLabel: string;
   shiftSystem: ShiftSystem;
@@ -204,6 +205,8 @@ const SHIFT_PRESETS: ShiftPreset[] = [
     period: 'AM',
     duration: 8,
     icon: 'sunny-outline',
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    imageSource: require('../../../../assets/onboarding/icons/consolidated/shift-time-morning.png'),
     type: 'morning',
     endTimeLabel: 'Ends at 1:00 PM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
@@ -215,6 +218,8 @@ const SHIFT_PRESETS: ShiftPreset[] = [
     period: 'AM',
     duration: 8,
     icon: 'sunny-outline',
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    imageSource: require('../../../../assets/onboarding/icons/consolidated/shift-time-morning.png'),
     type: 'morning',
     endTimeLabel: 'Ends at 2:00 PM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
@@ -226,6 +231,8 @@ const SHIFT_PRESETS: ShiftPreset[] = [
     period: 'AM',
     duration: 8,
     icon: 'sunny-outline',
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    imageSource: require('../../../../assets/onboarding/icons/consolidated/shift-time-morning.png'),
     type: 'morning',
     endTimeLabel: 'Ends at 4:00 PM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
@@ -239,6 +246,8 @@ const SHIFT_PRESETS: ShiftPreset[] = [
     period: 'PM',
     duration: 8,
     icon: 'partly-sunny-outline',
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    imageSource: require('../../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png'),
     type: 'afternoon',
     endTimeLabel: 'Ends at 9:00 PM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
@@ -250,6 +259,8 @@ const SHIFT_PRESETS: ShiftPreset[] = [
     period: 'PM',
     duration: 8,
     icon: 'partly-sunny-outline',
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    imageSource: require('../../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png'),
     type: 'afternoon',
     endTimeLabel: 'Ends at 10:00 PM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
@@ -261,6 +272,8 @@ const SHIFT_PRESETS: ShiftPreset[] = [
     period: 'PM',
     duration: 8,
     icon: 'partly-sunny-outline',
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    imageSource: require('../../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png'),
     type: 'afternoon',
     endTimeLabel: 'Ends at 11:00 PM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
@@ -1101,10 +1114,14 @@ const PresetCard: React.FC<PresetCardProps> = ({
               styles.presetIconCircle,
               preset.type === 'day' && !isCustom && styles.presetIconCircleDay,
               preset.type === 'night' && !isCustom && styles.presetIconCircleNight,
+              preset.type === 'morning' && !isCustom && styles.presetIconCircleMorning,
+              preset.type === 'afternoon' && !isCustom && styles.presetIconCircleAfternoon,
               isCustom && styles.presetIconCircleCustom,
             ]}
           >
-            {preset.icon.length <= 2 ? (
+            {preset.imageSource ? (
+              <Image source={preset.imageSource} style={styles.presetIconImage} />
+            ) : preset.icon.length <= 2 ? (
               <Text style={{ fontSize: 32 }}>{preset.icon}</Text>
             ) : (
               <Ionicons
@@ -1305,6 +1322,17 @@ const styles = StyleSheet.create({
   },
   presetIconCircleNight: {
     backgroundColor: 'rgba(101, 31, 255, 0.2)',
+  },
+  presetIconCircleMorning: {
+    backgroundColor: 'rgba(245, 158, 11, 0.25)',
+  },
+  presetIconCircleAfternoon: {
+    backgroundColor: 'rgba(6, 182, 212, 0.25)',
+  },
+  presetIconImage: {
+    width: 32,
+    height: 32,
+    resizeMode: 'contain',
   },
   presetIconCircleCustom: {
     backgroundColor: theme.colors.opacity.gold20,
