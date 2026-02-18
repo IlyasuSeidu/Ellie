@@ -246,37 +246,46 @@ function getCountdownText(
   const shiftTimes = data ? getShiftTimesFromData(data) : [];
   const currentShiftTime = shiftTimes.find((st) => st.type === currentShiftType);
 
-  // If currently on a work shift and we have time data, show time remaining
+  // If currently on a work shift and we have time data, check time-of-day
   if (currentShiftType !== 'off' && currentShiftTime) {
     const startMin = parseTimeToMinutes(currentShiftTime.startTime);
     const endMin = parseTimeToMinutes(currentShiftTime.endTime);
 
-    // Calculate minutes remaining in shift
-    let minutesRemaining: number;
     if (endMin > startMin) {
-      // Same-day shift (e.g. 07:00-19:00)
+      // Same-day shift (e.g. 06:00-14:00, 07:00-19:00)
       if (nowMinutes >= startMin && nowMinutes < endMin) {
-        minutesRemaining = endMin - nowMinutes;
-        const display = formatMinutesCountdown(minutesRemaining);
+        // Currently within shift hours → show time remaining
+        const remaining = endMin - nowMinutes;
+        const display = formatMinutesCountdown(remaining);
         return display ? `${display} remaining` : '';
+      } else if (nowMinutes < startMin) {
+        // Shift hasn't started yet today → show time until it starts
+        const minutesUntil = startMin - nowMinutes;
+        const display = formatMinutesCountdown(minutesUntil);
+        return display ? `${display} until shift` : '';
       }
+      // nowMinutes >= endMin → shift ended today, fall through to next-day logic
     } else {
-      // Overnight shift (e.g. 19:00-07:00)
+      // Overnight shift (e.g. 22:00-06:00, 19:00-07:00)
       if (nowMinutes >= startMin) {
-        // Before midnight portion
-        minutesRemaining = 24 * 60 - nowMinutes + endMin;
-        const display = formatMinutesCountdown(minutesRemaining);
+        const remaining = 24 * 60 - nowMinutes + endMin;
+        const display = formatMinutesCountdown(remaining);
         return display ? `${display} remaining` : '';
       } else if (nowMinutes < endMin) {
-        // After midnight portion
-        minutesRemaining = endMin - nowMinutes;
-        const display = formatMinutesCountdown(minutesRemaining);
+        const remaining = endMin - nowMinutes;
+        const display = formatMinutesCountdown(remaining);
         return display ? `${display} remaining` : '';
+      }
+      // Between endMin and startMin → shift not active, fall through
+      if (nowMinutes >= endMin && nowMinutes < startMin) {
+        const minutesUntil = startMin - nowMinutes;
+        const display = formatMinutesCountdown(minutesUntil);
+        return display ? `${display} until shift` : '';
       }
     }
   }
 
-  // Find next day with a different shift type
+  // For off days or when shift times unavailable, find next shift change
   const today = getToday();
   let nextDate = addDays(today, 1);
   let daysUntil = 1;
@@ -284,12 +293,11 @@ function getCountdownText(
   while (daysUntil < 30) {
     const nextShift = calculateShiftDay(nextDate, cycle);
     if (nextShift.shiftType !== currentShiftType) {
-      // For tomorrow, try to show hours/minutes until that shift starts
+      // For tomorrow, show hours/minutes until that shift starts
       if (daysUntil === 1 && nextShift.shiftType !== 'off') {
         const nextShiftTime = shiftTimes.find((st) => st.type === nextShift.shiftType);
         if (nextShiftTime) {
           const nextStartMin = parseTimeToMinutes(nextShiftTime.startTime);
-          // Minutes from now until tomorrow's shift start
           const minutesUntil = 24 * 60 - nowMinutes + nextStartMin;
           const display = formatMinutesCountdown(minutesUntil);
           if (display) {
@@ -298,7 +306,16 @@ function getCountdownText(
         }
       }
 
-      if (daysUntil === 1) return `Tomorrow`;
+      // For off days tomorrow, show time until midnight
+      if (daysUntil === 1 && nextShift.shiftType === 'off') {
+        const minutesUntilMidnight = 24 * 60 - nowMinutes;
+        if (minutesUntilMidnight > 0) {
+          const display = formatMinutesCountdown(minutesUntilMidnight);
+          if (display) return `${display} until day off`;
+        }
+      }
+
+      if (daysUntil === 1) return 'Tomorrow';
       return `${daysUntil} days until ${nextShift.isWorkDay ? 'next shift' : 'day off'}`;
     }
     nextDate = addDays(nextDate, 1);
