@@ -84,7 +84,7 @@ const SHIFT_STYLES: Record<
   },
 };
 
-const ICON_SIZE = 56;
+const ICON_SIZE = 44;
 
 export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
   shiftType,
@@ -283,6 +283,19 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
               />
             </Animated.View>
 
+            {/* Countdown at the very top, centered */}
+            {countdown && (
+              <Animated.View style={[styles.countdownTopContainer, infoEntranceStyle]}>
+                <Ionicons
+                  name="hourglass-outline"
+                  size={14}
+                  color="rgba(255,255,255,0.6)"
+                  style={styles.timeIcon}
+                />
+                <Animated.Text style={styles.countdownText}>{countdown}</Animated.Text>
+              </Animated.View>
+            )}
+
             {/* Top Row: Icon + LIVE badge */}
             <View style={styles.topRow}>
               {/* Enhanced icon with pulsing ring */}
@@ -302,7 +315,7 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                   ]}
                 />
                 <View style={styles.iconContainer}>
-                  <Ionicons name={style.icon} size={32} color="rgba(255,255,255,0.9)" />
+                  <Ionicons name={style.icon} size={24} color="rgba(255,255,255,0.9)" />
                 </View>
               </Animated.View>
 
@@ -315,37 +328,23 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
               )}
             </View>
 
-            {/* Label + subtitle (staggered entrance) */}
+            {/* Label, then subtitle + time on same line */}
             <Animated.View style={labelEntranceStyle}>
               <Animated.Text style={styles.shiftLabel}>{style.label}</Animated.Text>
-              <Animated.Text style={styles.shiftSubtitle}>{style.subtitle}</Animated.Text>
-            </Animated.View>
-
-            {/* Time + countdown (staggered entrance) */}
-            <Animated.View style={infoEntranceStyle}>
-              {timeDisplay && (
-                <View style={styles.timeContainer}>
-                  <Ionicons
-                    name="time-outline"
-                    size={16}
-                    color="rgba(255,255,255,0.7)"
-                    style={styles.timeIcon}
-                  />
-                  <Animated.Text style={styles.timeText}>{timeDisplay}</Animated.Text>
-                </View>
-              )}
-
-              {countdown && (
-                <View style={styles.countdownContainer}>
-                  <Ionicons
-                    name="hourglass-outline"
-                    size={14}
-                    color="rgba(255,255,255,0.6)"
-                    style={styles.timeIcon}
-                  />
-                  <Animated.Text style={styles.countdownText}>{countdown}</Animated.Text>
-                </View>
-              )}
+              <View style={styles.subtitleTimeRow}>
+                <Animated.Text style={styles.shiftSubtitle}>{style.subtitle}</Animated.Text>
+                {timeDisplay && (
+                  <View style={styles.timeContainer}>
+                    <Ionicons
+                      name="time-outline"
+                      size={14}
+                      color="rgba(255,255,255,0.7)"
+                      style={styles.timeIcon}
+                    />
+                    <Animated.Text style={styles.timeText}>{timeDisplay}</Animated.Text>
+                  </View>
+                )}
+              </View>
             </Animated.View>
           </LinearGradient>
         </Animated.View>
@@ -416,7 +415,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: theme.spacing.md,
+    marginBottom: theme.spacing.xs,
   },
 
   // ── Icon Pulsing Ring ───────────────────────────────────────
@@ -483,40 +482,49 @@ const styles = StyleSheet.create({
 
   // ── Text ────────────────────────────────────────────────────
   shiftLabel: {
-    fontSize: theme.typography.fontSizes.xxxl,
+    fontSize: theme.typography.fontSizes.xl,
     fontWeight: theme.typography.fontWeights.black,
     color: '#fff',
-    letterSpacing: 2,
+    letterSpacing: 1.5,
+    textAlign: 'center',
+    marginBottom: theme.spacing.md,
   },
   shiftSubtitle: {
     fontSize: theme.typography.fontSizes.md,
     color: 'rgba(255,255,255,0.7)',
-    marginTop: 4,
+  },
+
+  // ── Subtitle + Time Row ──────────────────────────────────────
+  subtitleTimeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: theme.spacing.sm,
+    gap: theme.spacing.md,
   },
 
   // ── Time & Countdown ───────────────────────────────────────
   timeContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: theme.spacing.md,
     backgroundColor: 'rgba(0,0,0,0.15)',
-    paddingHorizontal: 14,
-    paddingVertical: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     borderRadius: theme.borderRadius.md,
-    alignSelf: 'flex-start',
   },
   timeIcon: {
     marginRight: 6,
   },
   timeText: {
-    fontSize: theme.typography.fontSizes.md,
+    fontSize: theme.typography.fontSizes.sm,
     fontWeight: theme.typography.fontWeights.semibold,
     color: '#fff',
   },
-  countdownContainer: {
+  countdownTopContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: theme.spacing.sm,
+    justifyContent: 'center',
+    marginBottom: theme.spacing.sm,
   },
   countdownText: {
     fontSize: theme.typography.fontSizes.sm,
