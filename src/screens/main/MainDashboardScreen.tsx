@@ -85,21 +85,40 @@ function buildShiftCycle(data: OnboardingData): ShiftCycle | null {
   const shiftSystem =
     data.shiftSystem === '3-shift' ? ShiftSystem.THREE_SHIFT : ShiftSystem.TWO_SHIFT;
 
+  // If pattern already has 3-shift fields (e.g. Continental), use them directly
+  if (
+    config.morningOn !== undefined ||
+    config.afternoonOn !== undefined ||
+    config.nightOn !== undefined
+  ) {
+    return {
+      patternType: data.patternType,
+      shiftSystem: ShiftSystem.THREE_SHIFT,
+      daysOn: 0,
+      nightsOn: 0,
+      morningOn: config.morningOn ?? 0,
+      afternoonOn: config.afternoonOn ?? 0,
+      nightOn: config.nightOn ?? 0,
+      daysOff: config.daysOff,
+      startDate: startDateStr,
+      phaseOffset: data.phaseOffset || 0,
+    };
+  }
+
   const daysOn = config.daysOn ?? 0;
   const nightsOn = config.nightsOn ?? 0;
 
-  // For 3-shift standard patterns, distribute evenly
+  // For 2-shift patterns selected with 3-shift system, convert:
+  // morningOn = daysOn, afternoonOn = daysOn, nightOn = nightsOn
   if (shiftSystem === ShiftSystem.THREE_SHIFT) {
-    const totalWork = daysOn + nightsOn;
-    const perPhase = Math.ceil(totalWork / 3);
     return {
       patternType: data.patternType,
       shiftSystem,
-      daysOn,
-      nightsOn,
-      morningOn: perPhase,
-      afternoonOn: perPhase,
-      nightOn: totalWork - perPhase * 2 > 0 ? totalWork - perPhase * 2 : perPhase,
+      daysOn: 0,
+      nightsOn: 0,
+      morningOn: daysOn,
+      afternoonOn: daysOn,
+      nightOn: nightsOn,
       daysOff: config.daysOff,
       startDate: startDateStr,
       phaseOffset: data.phaseOffset || 0,
@@ -127,10 +146,10 @@ function calculateMonthStats(year: number, month: number, cycle: ShiftCycle): Mo
   const totalDays = getDaysInMonth(year, month + 1);
 
   return {
-    workDays: stats.dayShifts + stats.nightShifts,
+    workDays: stats.dayShifts + stats.nightShifts + stats.morningShifts + stats.afternoonShifts,
     offDays: stats.daysOff,
     totalDays,
-    dayShifts: stats.dayShifts,
+    dayShifts: stats.dayShifts + stats.morningShifts + stats.afternoonShifts,
     nightShifts: stats.nightShifts,
     workLifeBalance: totalDays > 0 ? (stats.daysOff / totalDays) * 100 : 0,
   };
@@ -223,8 +242,10 @@ export const MainDashboardScreen: React.FC = () => {
   // Refresh animation state
   const [refreshKey, setRefreshKey] = useState(0);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [lastUpdatedTick, setLastUpdatedTick] = useState(0);
   const [showRefreshSuccess, setShowRefreshSuccess] = useState(false);
   const refreshSuccessTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastUpdatedTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Refresh success animation values
   const successBannerOpacity = useSharedValue(0);
@@ -322,12 +343,39 @@ export const MainDashboardScreen: React.FC = () => {
   }, [loadData]);
 
   /**
+   * Live-updating "last updated" timer
+   * Ticks every 10s for the first minute, then every 60s after
+   */
+  useEffect(() => {
+    if (lastUpdatedTimerRef.current) clearInterval(lastUpdatedTimerRef.current);
+
+    if (lastUpdated) {
+      lastUpdatedTimerRef.current = setInterval(() => {
+        const diffSec = Math.floor((Date.now() - lastUpdated.getTime()) / 1000);
+        setLastUpdatedTick((t) => t + 1);
+        // Switch to 60s interval once past the first minute
+        if (diffSec >= 60 && lastUpdatedTimerRef.current) {
+          clearInterval(lastUpdatedTimerRef.current);
+          lastUpdatedTimerRef.current = setInterval(() => {
+            setLastUpdatedTick((t) => t + 1);
+          }, 60000);
+        }
+      }, 10000);
+    }
+
+    return () => {
+      if (lastUpdatedTimerRef.current) clearInterval(lastUpdatedTimerRef.current);
+    };
+  }, [lastUpdated]);
+
+  /**
    * Format last updated time for display
    */
   const lastUpdatedText = useMemo(() => {
     if (!lastUpdated) return null;
-    const now = new Date();
-    const diffMs = now.getTime() - lastUpdated.getTime();
+    // lastUpdatedTick forces re-computation
+    void lastUpdatedTick;
+    const diffMs = Date.now() - lastUpdated.getTime();
     const diffSec = Math.floor(diffMs / 1000);
 
     if (diffSec < 10) return 'Just now';
@@ -335,7 +383,7 @@ export const MainDashboardScreen: React.FC = () => {
     const diffMin = Math.floor(diffSec / 60);
     if (diffMin < 60) return `${diffMin}m ago`;
     return lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  }, [lastUpdated]);
+  }, [lastUpdated, lastUpdatedTick]);
 
   // Build shift cycle from user data
   const shiftCycle = useMemo(() => (userData ? buildShiftCycle(userData) : null), [userData]);

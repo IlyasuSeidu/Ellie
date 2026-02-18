@@ -728,7 +728,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
           basePattern = { daysOn: 10, nightsOn: 10, daysOff: 10 };
           break;
         case ShiftPattern.CONTINENTAL:
-          basePattern = { daysOn: 2, nightsOn: 2, daysOff: 4 };
+          basePattern = { morningOn: 2, afternoonOn: 2, nightOn: 2, daysOff: 4 };
           break;
         case ShiftPattern.PITMAN:
           basePattern = { daysOn: 2, nightsOn: 2, daysOff: 3 };

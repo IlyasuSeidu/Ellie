@@ -201,14 +201,15 @@ const SHIFT_PATTERNS: PatternCardData[] = [
     icon: '🏭',
     iconImage: require('../../../../assets/onboarding/icons/consolidated/shift-pattern-pitman.png'),
     name: 'Pitman Schedule',
-    schedule: '2 on • 2 off • 3 on • 2 on • 2 off • 3 off',
-    description: 'You work 2 days, then 2 off, then 3 on, repeating—every other weekend off',
+    schedule: '2 days • 2 nights • 3 off',
+    description:
+      'Short swings of 2 day shifts, then 2 night shifts, then 3 days off—a compact 7-day cycle',
     supportedSystems: [ShiftSystem.TWO_SHIFT], // 12-hour shifts
     detailedInfo: {
-      workRestRatio: 'You work half the time, and get half the time off',
+      workRestRatio: 'You work 4 days out of every 7-day cycle, giving you 3 days off',
       useCases: ['Emergency services', 'Healthcare', 'Manufacturing'],
-      pros: ['Every second weekend free', 'Same time working and off', 'Well-known pattern'],
-      cons: ['12-hour shifts can be tough', 'Pattern takes getting used to'],
+      pros: ['Frequent days off', 'Quick rotation between shifts', 'Compact cycle'],
+      cons: ['12-hour shifts can be tough', 'Switching day to night quickly'],
     },
   },
   {

@@ -1,13 +1,13 @@
 /**
  * PersonalizedHeader Component
  *
- * Time-aware greeting with animated avatar and user info.
- * Displays personalized greeting based on time of day,
- * user's name initials in an animated avatar circle,
- * and occupation subtitle.
+ * Premium time-aware greeting with animated avatar and user info.
+ * Features staggered entrance animations, pulsing avatar glow,
+ * interactive tap gesture with haptic feedback, and time-aware
+ * icon colors for a polished, engaging experience.
  */
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated, {
   useAnimatedStyle,
@@ -15,8 +15,12 @@ import Animated, {
   withRepeat,
   withSequence,
   withTiming,
-  FadeInDown,
+  withSpring,
+  withDelay,
+  runOnJS,
 } from 'react-native-reanimated';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
 
@@ -31,20 +35,62 @@ export interface PersonalizedHeaderProps {
   testID?: string;
 }
 
+interface GreetingData {
+  text: string;
+  icon: keyof typeof Ionicons.glyphMap;
+  iconColor: string;
+}
+
 /**
- * Get time-aware greeting message
+ * Get time-aware greeting with personality and icon color
+ * Uses hour-based deterministic selection for stable rendering
  */
-function getGreeting(): { text: string; icon: keyof typeof Ionicons.glyphMap } {
+function getGreeting(): GreetingData {
   const hour = new Date().getHours();
 
   if (hour >= 5 && hour < 12) {
-    return { text: 'Good morning', icon: 'sunny-outline' };
-  } else if (hour >= 12 && hour < 17) {
-    return { text: 'Good afternoon', icon: 'partly-sunny-outline' };
-  } else if (hour >= 17 && hour < 21) {
-    return { text: 'Good evening', icon: 'moon-outline' };
+    const greetings = [
+      'Good morning',
+      'Rise and shine',
+      'Top of the morning',
+      'Ready to conquer the day',
+    ];
+    return {
+      text: greetings[hour % greetings.length],
+      icon: 'sunny-outline',
+      iconColor: '#f97316',
+    };
   }
-  return { text: 'Good night', icon: 'cloudy-night-outline' };
+
+  if (hour >= 12 && hour < 17) {
+    const greetings = ['Good afternoon', 'Keep it going', 'Halfway through', 'Powering through'];
+    return {
+      text: greetings[(hour - 12) % greetings.length],
+      icon: 'partly-sunny-outline',
+      iconColor: '#d97706',
+    };
+  }
+
+  if (hour >= 17 && hour < 21) {
+    const greetings = ['Good evening', 'Winding down', 'Almost there', 'Evening check-in'];
+    return {
+      text: greetings[(hour - 17) % greetings.length],
+      icon: 'moon-outline',
+      iconColor: '#8b5cf6',
+    };
+  }
+
+  const greetings = [
+    'Good night',
+    'Burning the midnight oil',
+    'Night owl mode',
+    'Late night shift',
+  ];
+  return {
+    text: greetings[(hour >= 21 ? hour - 21 : hour + 3) % greetings.length],
+    icon: 'cloudy-night-outline',
+    iconColor: '#6366f1',
+  };
 }
 
 /**
@@ -57,6 +103,9 @@ function getInitials(name: string): string {
   return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
 }
 
+const AVATAR_SIZE = 66;
+const AVATAR_RADIUS = AVATAR_SIZE / 2;
+
 export const PersonalizedHeader: React.FC<PersonalizedHeaderProps> = ({
   name,
   occupation,
@@ -66,9 +115,36 @@ export const PersonalizedHeader: React.FC<PersonalizedHeaderProps> = ({
   const greeting = useMemo(() => getGreeting(), []);
   const initials = useMemo(() => getInitials(name), [name]);
 
-  // Floating animation for avatar
+  // ── Staggered Entrance Shared Values ──────────────────────────
+  const avatarEntranceScale = useSharedValue(0.3);
+  const avatarEntranceOpacity = useSharedValue(0);
+  const greetingTranslateX = useSharedValue(-20);
+  const greetingOpacity = useSharedValue(0);
+  const occupationTranslateY = useSharedValue(8);
+  const occupationOpacity = useSharedValue(0);
+
+  useEffect(() => {
+    const D = animationDelay;
+
+    // Avatar: scale up + fade in
+    avatarEntranceScale.value = withDelay(D, withSpring(1, { damping: 14, stiffness: 200 }));
+    avatarEntranceOpacity.value = withDelay(D, withTiming(1, { duration: 400 }));
+
+    // Greeting + Name: slide from left + fade in
+    greetingTranslateX.value = withDelay(D + 150, withSpring(0, { damping: 16, stiffness: 180 }));
+    greetingOpacity.value = withDelay(D + 150, withTiming(1, { duration: 350 }));
+
+    // Occupation: slide up + fade in
+    occupationTranslateY.value = withDelay(D + 350, withSpring(0, { damping: 16, stiffness: 180 }));
+    occupationOpacity.value = withDelay(D + 350, withTiming(1, { duration: 350 }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [animationDelay]);
+
+  // ── Continuous Avatar Animations ──────────────────────────────
+
+  // Float
   const floatY = useSharedValue(0);
-  React.useEffect(() => {
+  useEffect(() => {
     floatY.value = withRepeat(
       withSequence(withTiming(-3, { duration: 2000 }), withTiming(0, { duration: 2000 })),
       -1,
@@ -76,43 +152,125 @@ export const PersonalizedHeader: React.FC<PersonalizedHeaderProps> = ({
     );
   }, [floatY]);
 
-  const avatarAnimatedStyle = useAnimatedStyle(() => ({
+  // Glow ring opacity pulse
+  const glowOpacity = useSharedValue(0.15);
+  useEffect(() => {
+    glowOpacity.value = withRepeat(
+      withSequence(withTiming(0.35, { duration: 1200 }), withTiming(0.15, { duration: 1200 })),
+      -1,
+      true
+    );
+  }, [glowOpacity]);
+
+  // Outer ring scale pulse
+  const ringScale = useSharedValue(1.0);
+  useEffect(() => {
+    ringScale.value = withRepeat(
+      withSequence(withTiming(1.06, { duration: 1500 }), withTiming(1.0, { duration: 1500 })),
+      -1,
+      true
+    );
+  }, [ringScale]);
+
+  // ── Interactive Avatar Tap ────────────────────────────────────
+  const avatarTapScale = useSharedValue(1);
+
+  const triggerHaptic = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+  };
+
+  const tapGesture = Gesture.Tap()
+    .onBegin(() => {
+      avatarTapScale.value = withSpring(0.92, { damping: 15, stiffness: 400 });
+    })
+    .onEnd(() => {
+      avatarTapScale.value = withSequence(
+        withSpring(1.05, { damping: 8, stiffness: 350 }),
+        withSpring(1.0, { damping: 12, stiffness: 300 })
+      );
+      runOnJS(triggerHaptic)();
+    })
+    .onFinalize(() => {
+      avatarTapScale.value = withSpring(1.0, { damping: 12, stiffness: 300 });
+    });
+
+  // ── Animated Styles ───────────────────────────────────────────
+  const avatarEntranceStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: avatarEntranceScale.value }],
+    opacity: avatarEntranceOpacity.value,
+  }));
+
+  const avatarFloatStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: floatY.value }],
   }));
 
-  return (
-    <Animated.View
-      entering={FadeInDown.delay(animationDelay).duration(600).springify()}
-      style={styles.container}
-      testID={testID}
-    >
-      <Animated.View style={[styles.avatarContainer, avatarAnimatedStyle]}>
-        <View style={styles.avatar}>
-          <Animated.Text style={styles.avatarText}>{initials}</Animated.Text>
-        </View>
-        <View style={styles.avatarGlow} />
-      </Animated.View>
+  const avatarInteractionStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: avatarTapScale.value }],
+  }));
 
+  const glowPulseStyle = useAnimatedStyle(() => ({
+    opacity: glowOpacity.value,
+  }));
+
+  const ringPulseStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: ringScale.value }],
+  }));
+
+  const greetingEntranceStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: greetingTranslateX.value }],
+    opacity: greetingOpacity.value,
+  }));
+
+  const occupationEntranceStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: occupationTranslateY.value }],
+    opacity: occupationOpacity.value,
+  }));
+
+  return (
+    <View style={styles.container} testID={testID}>
+      {/* Text Section */}
       <View style={styles.textContainer}>
-        <View style={styles.greetingRow}>
+        {/* Greeting + Name row */}
+        <Animated.View style={[styles.greetingRow, greetingEntranceStyle]}>
           <Ionicons
             name={greeting.icon}
-            size={20}
-            color={theme.colors.sacredGold}
+            size={18}
+            color={greeting.iconColor}
             style={styles.greetingIcon}
           />
-          <Animated.Text style={styles.greetingText}>{greeting.text},</Animated.Text>
-        </View>
-        <Animated.Text style={styles.nameText} numberOfLines={1}>
-          {name}
-        </Animated.Text>
-        {occupation ? (
-          <Animated.Text style={styles.occupationText} numberOfLines={1}>
-            {occupation}
+          <Animated.Text style={styles.greetingText} numberOfLines={1}>
+            {greeting.text}, <Animated.Text style={styles.nameText}>{name}!</Animated.Text>
           </Animated.Text>
+        </Animated.View>
+      </View>
+
+      {/* Avatar Section with occupation underneath */}
+      <View style={styles.avatarColumn}>
+        <GestureDetector gesture={tapGesture}>
+          <Animated.View style={[styles.avatarOuter, avatarEntranceStyle, avatarFloatStyle]}>
+            {/* Pulsing glow ring (behind) */}
+            <Animated.View style={[styles.avatarGlowRing, glowPulseStyle]} />
+
+            {/* Breathing outer ring */}
+            <Animated.View style={[styles.avatarOuterRing, ringPulseStyle]} />
+
+            {/* Main avatar circle (interactive) */}
+            <Animated.View style={[styles.avatar, avatarInteractionStyle]}>
+              <Animated.Text style={styles.avatarText}>{initials}</Animated.Text>
+            </Animated.View>
+          </Animated.View>
+        </GestureDetector>
+
+        {/* Occupation */}
+        {occupation ? (
+          <Animated.View style={occupationEntranceStyle}>
+            <Animated.Text style={styles.occupationText} numberOfLines={1}>
+              {occupation}
+            </Animated.Text>
+          </Animated.View>
         ) : null}
       </View>
-    </Animated.View>
+    </View>
   );
 };
 
@@ -123,35 +281,58 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.spacing.lg,
     paddingVertical: theme.spacing.md,
   },
-  avatarContainer: {
-    position: 'relative',
-    marginRight: theme.spacing.md,
+
+  // ── Avatar Styles ─────────────────────────────────────────────
+  avatarColumn: {
+    alignItems: 'center',
+    marginLeft: theme.spacing.md + 4,
   },
-  avatar: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: theme.colors.softStone,
-    borderWidth: 2,
-    borderColor: theme.colors.sacredGold,
+  avatarOuter: {
+    position: 'relative',
+    width: AVATAR_SIZE + 16,
+    height: AVATAR_SIZE + 16,
     alignItems: 'center',
     justifyContent: 'center',
   },
+  avatar: {
+    width: AVATAR_SIZE,
+    height: AVATAR_SIZE,
+    borderRadius: AVATAR_RADIUS,
+    backgroundColor: theme.colors.softStone,
+    borderWidth: 2.5,
+    borderColor: theme.colors.sacredGold,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 2,
+  },
   avatarText: {
-    fontSize: theme.typography.fontSizes.xl,
+    fontSize: 26,
     fontWeight: theme.typography.fontWeights.bold,
     color: theme.colors.sacredGold,
   },
-  avatarGlow: {
+  avatarGlowRing: {
     position: 'absolute',
-    top: -4,
-    left: -4,
-    right: -4,
-    bottom: -4,
-    borderRadius: 32,
-    borderWidth: 1,
-    borderColor: theme.colors.opacity.gold10,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderRadius: (AVATAR_SIZE + 16) / 2,
+    backgroundColor: theme.colors.sacredGold,
+    zIndex: 0,
   },
+  avatarOuterRing: {
+    position: 'absolute',
+    top: 2,
+    left: 2,
+    right: 2,
+    bottom: 2,
+    borderRadius: (AVATAR_SIZE + 12) / 2,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
+    zIndex: 1,
+  },
+
+  // ── Text Styles ───────────────────────────────────────────────
   textContainer: {
     flex: 1,
   },
@@ -160,22 +341,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   greetingIcon: {
-    marginRight: theme.spacing.xs,
+    marginRight: theme.spacing.xs + 2,
   },
   greetingText: {
-    fontSize: theme.typography.fontSizes.sm,
+    fontSize: theme.typography.fontSizes.lg,
     color: theme.colors.dust,
     fontWeight: theme.typography.fontWeights.medium,
+    flexShrink: 1,
   },
   nameText: {
-    fontSize: theme.typography.fontSizes.xl,
     fontWeight: theme.typography.fontWeights.bold,
     color: theme.colors.paper,
-    marginTop: 2,
   },
   occupationText: {
-    fontSize: theme.typography.fontSizes.sm,
+    fontSize: theme.typography.fontSizes.xs,
     color: theme.colors.shadow,
-    marginTop: 2,
+    marginTop: 4,
+    textAlign: 'center',
   },
 });

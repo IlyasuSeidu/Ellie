@@ -43,6 +43,29 @@ jest.mock('expo-haptics', () => ({
   NotificationFeedbackType: { Success: 'success', Error: 'error' },
 }));
 
+// Mock react-native-gesture-handler (used by PersonalizedHeader)
+jest.mock('react-native-gesture-handler', () => {
+  const React = require('react');
+  const RN = require('react-native');
+  return {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    GestureDetector: ({ children }: any) => React.createElement(RN.View, null, children),
+    Gesture: {
+      Tap: () => ({
+        onBegin: function () {
+          return this;
+        },
+        onEnd: function () {
+          return this;
+        },
+        onFinalize: function () {
+          return this;
+        },
+      }),
+    },
+  };
+});
+
 // Mock safe-area-context
 jest.mock('react-native-safe-area-context', () => ({
   useSafeAreaInsets: () => ({ top: 44, bottom: 34, left: 0, right: 0 }),
@@ -67,6 +90,7 @@ jest.mock('react-native-reanimated', () => {
     withTiming: (val: number) => val,
     withSpring: (val: number) => val,
     withDelay: (_d: number, val: number) => val,
+    runOnJS: (fn: unknown) => fn,
     Easing: { out: () => undefined, quad: undefined },
     FadeIn: {
       delay: () => ({ duration: () => ({ springify: () => undefined }) }),
@@ -191,10 +215,11 @@ describe('MainDashboardScreen', () => {
     it('should display user name', async () => {
       (asyncStorageService.get as jest.Mock).mockResolvedValue(mockOnboardingData);
 
-      const { getByText } = render(<MainDashboardScreen />);
+      const { queryByText } = render(<MainDashboardScreen />);
 
       await waitFor(() => {
-        expect(getByText('John Doe')).toBeTruthy();
+        // Name is inline with greeting: "Good morning, John Doe!"
+        expect(queryByText(/John Doe!/)).toBeTruthy();
       });
     });
 

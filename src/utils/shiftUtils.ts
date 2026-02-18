@@ -74,9 +74,9 @@ export function getShiftPattern(patternType: ShiftPattern): {
       supportsShiftSystem: [ShiftSystem.TWO_SHIFT, ShiftSystem.THREE_SHIFT],
     },
     [ShiftPattern.CONTINENTAL]: {
-      config: { daysOn: 7, nightsOn: 7, daysOff: 7, totalCycleDays: 21 },
-      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
-      supportsShiftSystem: [ShiftSystem.TWO_SHIFT],
+      config: { morningOn: 2, afternoonOn: 2, nightOn: 2, daysOff: 4, totalCycleDays: 10 },
+      defaultShiftSystem: ShiftSystem.THREE_SHIFT,
+      supportsShiftSystem: [ShiftSystem.THREE_SHIFT],
     },
     [ShiftPattern.PITMAN]: {
       config: { daysOn: 2, nightsOn: 2, daysOff: 3, totalCycleDays: 7 },
@@ -113,15 +113,24 @@ export function getShiftCycle(
   phaseOffset = 0
 ): ShiftCycle {
   const pattern = getShiftPattern(patternType);
+  const config = pattern.config;
 
-  return {
+  const cycle: ShiftCycle = {
     patternType,
-    daysOn: pattern.config.daysOn ?? 0,
-    nightsOn: pattern.config.nightsOn ?? 0,
-    daysOff: pattern.config.daysOff,
+    shiftSystem: pattern.defaultShiftSystem,
+    daysOn: config.daysOn ?? 0,
+    nightsOn: config.nightsOn ?? 0,
+    daysOff: config.daysOff,
     startDate,
     phaseOffset,
   };
+
+  // Include 3-shift fields if present
+  if (config.morningOn !== undefined) cycle.morningOn = config.morningOn;
+  if (config.afternoonOn !== undefined) cycle.afternoonOn = config.afternoonOn;
+  if (config.nightOn !== undefined) cycle.nightOn = config.nightOn;
+
+  return cycle;
 }
 
 /**
@@ -139,15 +148,6 @@ export function getShiftCycle(
  * ```
  */
 export function calculateShiftDay(date: Date, shiftCycle: ShiftCycle): ShiftDay {
-  // For custom patterns, we would look up in the customPattern array
-  if (shiftCycle.patternType === ShiftPattern.CUSTOM && shiftCycle.customPattern) {
-    const dateStr = toDateString(date);
-    const customDay = shiftCycle.customPattern.find((d) => d.date === dateStr);
-    if (customDay) {
-      return customDay;
-    }
-  }
-
   // Calculate days since cycle start
   const startDate = new Date(shiftCycle.startDate);
   let daysSinceStart = diffInDays(date, startDate);
@@ -365,6 +365,8 @@ export function getShiftStatistics(
 ): {
   dayShifts: number;
   nightShifts: number;
+  morningShifts: number;
+  afternoonShifts: number;
   daysOff: number;
   totalDays: number;
 } {
@@ -372,11 +374,15 @@ export function getShiftStatistics(
 
   const dayShifts = shiftDays.filter((day) => day.shiftType === 'day').length;
   const nightShifts = shiftDays.filter((day) => day.shiftType === 'night').length;
+  const morningShifts = shiftDays.filter((day) => day.shiftType === 'morning').length;
+  const afternoonShifts = shiftDays.filter((day) => day.shiftType === 'afternoon').length;
   const daysOff = shiftDays.filter((day) => day.shiftType === 'off').length;
 
   return {
     dayShifts,
     nightShifts,
+    morningShifts,
+    afternoonShifts,
     daysOff,
     totalDays: shiftDays.length,
   };
@@ -420,13 +426,30 @@ export function getPhaseInfo(
 ): {
   position: number;
   cycleLength: number;
-  phaseType: 'day' | 'night' | 'off';
+  phaseType: ShiftType;
 } {
+  const shiftDay = calculateShiftDay(date, shiftCycle);
+
+  const is3Shift =
+    shiftCycle.shiftSystem === ShiftSystem.THREE_SHIFT ||
+    (shiftCycle.morningOn !== undefined && shiftCycle.morningOn > 0) ||
+    (shiftCycle.afternoonOn !== undefined && shiftCycle.afternoonOn > 0) ||
+    (shiftCycle.nightOn !== undefined && shiftCycle.nightOn > 0);
+
+  let cycleLength: number;
+  if (is3Shift) {
+    cycleLength =
+      (shiftCycle.morningOn || 0) +
+      (shiftCycle.afternoonOn || 0) +
+      (shiftCycle.nightOn || 0) +
+      shiftCycle.daysOff;
+  } else {
+    cycleLength = shiftCycle.daysOn + shiftCycle.nightsOn + shiftCycle.daysOff;
+  }
+
   const startDate = new Date(shiftCycle.startDate);
   let daysSinceStart = diffInDays(date, startDate);
   daysSinceStart += shiftCycle.phaseOffset;
-
-  const cycleLength = shiftCycle.daysOn + shiftCycle.nightsOn + shiftCycle.daysOff;
 
   if (daysSinceStart < 0) {
     daysSinceStart = cycleLength + (daysSinceStart % cycleLength);
@@ -434,18 +457,9 @@ export function getPhaseInfo(
 
   const position = daysSinceStart % cycleLength;
 
-  let phaseType: 'day' | 'night' | 'off';
-  if (position < shiftCycle.daysOn) {
-    phaseType = 'day';
-  } else if (position < shiftCycle.daysOn + shiftCycle.nightsOn) {
-    phaseType = 'night';
-  } else {
-    phaseType = 'off';
-  }
-
   return {
     position,
     cycleLength,
-    phaseType,
+    phaseType: shiftDay.shiftType,
   };
 }

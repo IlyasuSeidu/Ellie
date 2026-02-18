@@ -22,6 +22,29 @@ jest.mock('expo-haptics', () => ({
   ImpactFeedbackStyle: { Light: 'light', Medium: 'medium' },
 }));
 
+// Mock react-native-gesture-handler
+jest.mock('react-native-gesture-handler', () => {
+  const React = require('react');
+  const RN = require('react-native');
+  return {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    GestureDetector: ({ children }: any) => React.createElement(RN.View, null, children),
+    Gesture: {
+      Tap: () => ({
+        onBegin: function () {
+          return this;
+        },
+        onEnd: function () {
+          return this;
+        },
+        onFinalize: function () {
+          return this;
+        },
+      }),
+    },
+  };
+});
+
 // Mock reanimated
 jest.mock('react-native-reanimated', () => {
   const RN = require('react-native');
@@ -37,11 +60,54 @@ jest.mock('react-native-reanimated', () => {
     withRepeat: (val: number) => val,
     withSequence: (val: number) => val,
     withTiming: (val: number) => val,
+    withSpring: (val: number) => val,
     withDelay: (_d: number, val: number) => val,
-    FadeInDown: { delay: () => ({ duration: () => ({ springify: () => undefined }) }) },
-    FadeIn: { delay: () => ({ duration: () => undefined }) },
+    runOnJS: (fn: unknown) => fn,
   };
 });
+
+// Greeting prefixes (without trailing comma — rendered as "prefix, Name!")
+const MORNING_GREETINGS = [
+  'Good morning',
+  'Rise and shine',
+  'Top of the morning',
+  'Ready to conquer the day',
+];
+const AFTERNOON_GREETINGS = [
+  'Good afternoon',
+  'Keep it going',
+  'Halfway through',
+  'Powering through',
+];
+const EVENING_GREETINGS = ['Good evening', 'Winding down', 'Almost there', 'Evening check-in'];
+const NIGHT_GREETINGS = [
+  'Good night',
+  'Burning the midnight oil',
+  'Night owl mode',
+  'Late night shift',
+];
+const ALL_GREETINGS = [
+  ...MORNING_GREETINGS,
+  ...AFTERNOON_GREETINGS,
+  ...EVENING_GREETINGS,
+  ...NIGHT_GREETINGS,
+];
+
+/** Helper: check if any greeting prefix appears in the rendered text tree */
+function findGreeting(
+  queryByText: (text: string | RegExp) => unknown,
+  greetings: string[],
+  name: string
+) {
+  return greetings.some((g) => {
+    try {
+      // The rendered text is: "greeting, Name!" as a combined text node
+      return queryByText(new RegExp(`${g},\\s+${name}!`)) !== null;
+    } catch {
+      return false;
+    }
+  });
+}
 
 describe('PersonalizedHeader', () => {
   beforeEach(() => {
@@ -49,9 +115,10 @@ describe('PersonalizedHeader', () => {
   });
 
   describe('Rendering', () => {
-    it('should render with user name', () => {
-      const { getByText } = render(<PersonalizedHeader name="John Doe" testID="header" />);
-      expect(getByText('John Doe')).toBeTruthy();
+    it('should render with user name in greeting', () => {
+      const { queryByText } = render(<PersonalizedHeader name="John Doe" testID="header" />);
+      const found = findGreeting(queryByText, ALL_GREETINGS, 'John Doe');
+      expect(found).toBe(true);
     });
 
     it('should render initials from full name', () => {
@@ -79,24 +146,62 @@ describe('PersonalizedHeader', () => {
       expect(queryByText('Nurse')).toBeNull();
     });
 
-    it('should render time-based greeting', () => {
-      const { getByText } = render(<PersonalizedHeader name="John" />);
-      // Should contain one of the greeting variants
-      const greetingVariants = ['Good morning,', 'Good afternoon,', 'Good evening,', 'Good night,'];
-      const found = greetingVariants.some((greeting) => {
-        try {
-          getByText(greeting);
-          return true;
-        } catch {
-          return false;
-        }
-      });
+    it('should render time-based greeting with name', () => {
+      const { queryByText } = render(<PersonalizedHeader name="John" />);
+      const found = findGreeting(queryByText, ALL_GREETINGS, 'John');
       expect(found).toBe(true);
     });
 
     it('should render with testID', () => {
       const { getByTestId } = render(<PersonalizedHeader name="John" testID="test-header" />);
       expect(getByTestId('test-header')).toBeTruthy();
+    });
+  });
+
+  describe('Greeting variants by time', () => {
+    const originalDate = global.Date;
+
+    afterEach(() => {
+      global.Date = originalDate;
+    });
+
+    function mockHour(hour: number) {
+      global.Date = class extends originalDate {
+        getHours() {
+          return hour;
+        }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any;
+    }
+
+    it('should show morning greeting (5-11)', () => {
+      mockHour(7);
+      const { queryByText } = render(<PersonalizedHeader name="Test" />);
+      expect(findGreeting(queryByText, MORNING_GREETINGS, 'Test')).toBe(true);
+    });
+
+    it('should show afternoon greeting (12-16)', () => {
+      mockHour(14);
+      const { queryByText } = render(<PersonalizedHeader name="Test" />);
+      expect(findGreeting(queryByText, AFTERNOON_GREETINGS, 'Test')).toBe(true);
+    });
+
+    it('should show evening greeting (17-20)', () => {
+      mockHour(18);
+      const { queryByText } = render(<PersonalizedHeader name="Test" />);
+      expect(findGreeting(queryByText, EVENING_GREETINGS, 'Test')).toBe(true);
+    });
+
+    it('should show night greeting (21-4)', () => {
+      mockHour(23);
+      const { queryByText } = render(<PersonalizedHeader name="Test" />);
+      expect(findGreeting(queryByText, NIGHT_GREETINGS, 'Test')).toBe(true);
+    });
+
+    it('should show night greeting for early morning (hour 2)', () => {
+      mockHour(2);
+      const { queryByText } = render(<PersonalizedHeader name="Test" />);
+      expect(findGreeting(queryByText, NIGHT_GREETINGS, 'Test')).toBe(true);
     });
   });
 });

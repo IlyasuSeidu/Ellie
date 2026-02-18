@@ -124,6 +124,7 @@ describe('getShiftCycle', () => {
 
     expect(cycle).toEqual({
       patternType: ShiftPattern.STANDARD_3_3_3,
+      shiftSystem: ShiftSystem.TWO_SHIFT,
       daysOn: 3,
       nightsOn: 3,
       daysOff: 3,
@@ -294,37 +295,31 @@ describe('calculateShiftDay', () => {
   });
 
   describe('custom pattern', () => {
-    it('should use custom pattern when provided', () => {
-      const customPattern = [
-        {
-          date: '2024-01-01',
-          isWorkDay: true,
-          isNightShift: false,
-          shiftType: 'day' as const,
-        },
-        {
-          date: '2024-01-02',
-          isWorkDay: false,
-          isNightShift: false,
-          shiftType: 'off' as const,
-        },
-      ];
-
+    it('should calculate custom pattern using cycle arithmetic', () => {
+      // Custom pattern: 2 days on, 1 night, 3 off
       const cycle = {
         patternType: ShiftPattern.CUSTOM,
-        daysOn: 0,
-        nightsOn: 0,
-        daysOff: 0,
+        daysOn: 2,
+        nightsOn: 1,
+        daysOff: 3,
         startDate: '2024-01-01',
         phaseOffset: 0,
-        customPattern,
       };
 
       const jan1 = calculateShiftDay(new Date('2024-01-01'), cycle);
-      expect(jan1).toEqual(customPattern[0]);
+      expect(jan1.shiftType).toBe('day');
+      expect(jan1.isWorkDay).toBe(true);
 
       const jan2 = calculateShiftDay(new Date('2024-01-02'), cycle);
-      expect(jan2).toEqual(customPattern[1]);
+      expect(jan2.shiftType).toBe('day');
+
+      const jan3 = calculateShiftDay(new Date('2024-01-03'), cycle);
+      expect(jan3.shiftType).toBe('night');
+      expect(jan3.isNightShift).toBe(true);
+
+      const jan4 = calculateShiftDay(new Date('2024-01-04'), cycle);
+      expect(jan4.shiftType).toBe('off');
+      expect(jan4.isWorkDay).toBe(false);
     });
   });
 });
@@ -473,6 +468,8 @@ describe('getShiftStatistics', () => {
     expect(stats).toEqual({
       dayShifts: 3,
       nightShifts: 3,
+      morningShifts: 0,
+      afternoonShifts: 0,
       daysOff: 3,
       totalDays: 9,
     });
@@ -484,6 +481,8 @@ describe('getShiftStatistics', () => {
     expect(stats).toEqual({
       dayShifts: 3,
       nightShifts: 2,
+      morningShifts: 0,
+      afternoonShifts: 0,
       daysOff: 0,
       totalDays: 5,
     });
@@ -605,6 +604,8 @@ describe('different shift patterns', () => {
     expect(stats).toEqual({
       dayShifts: 7,
       nightShifts: 7,
+      morningShifts: 0,
+      afternoonShifts: 0,
       daysOff: 7,
       totalDays: 21,
     });
@@ -617,5 +618,536 @@ describe('different shift patterns', () => {
 
     // One complete cycle: 4 day + 4 night = 8 work days
     expect(count).toBe(8);
+  });
+});
+
+describe('custom 3-shift pattern verification', () => {
+  it('should correctly calculate a custom 3-shift pattern (3M/2A/2N/3O)', () => {
+    const cycle = {
+      patternType: ShiftPattern.CUSTOM,
+      shiftSystem: ShiftSystem.THREE_SHIFT,
+      daysOn: 0,
+      nightsOn: 0,
+      morningOn: 3,
+      afternoonOn: 2,
+      nightOn: 2,
+      daysOff: 3,
+      startDate: '2026-03-01',
+      phaseOffset: 0,
+    };
+
+    // Generate one full 10-day cycle
+    const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-10'), cycle);
+
+    // Verify the exact pattern: M M M A A N N O O O
+    expect(days.map((d) => d.shiftType)).toEqual([
+      'morning',
+      'morning',
+      'morning',
+      'afternoon',
+      'afternoon',
+      'night',
+      'night',
+      'off',
+      'off',
+      'off',
+    ]);
+
+    // Verify work day flags
+    expect(days.filter((d) => d.isWorkDay).length).toBe(7);
+    expect(days.filter((d) => !d.isWorkDay).length).toBe(3);
+    expect(days.filter((d) => d.isNightShift).length).toBe(2);
+
+    // Verify cycle repeats correctly (day 11 = morning again)
+    const day11 = calculateShiftDay(new Date('2026-03-11'), cycle);
+    expect(day11.shiftType).toBe('morning');
+
+    // Full month stats
+    const stats = getShiftStatistics(new Date('2026-03-01'), new Date('2026-03-31'), cycle);
+    expect(stats.morningShifts).toBe(10); // 3 per cycle * 3 full + 1 partial
+    expect(stats.afternoonShifts).toBe(6); // 2 per cycle * 3
+    expect(stats.nightShifts).toBe(6); // 2 per cycle * 3
+    expect(stats.daysOff).toBe(9); // 3 per cycle * 3
+    expect(stats.dayShifts).toBe(0); // No 2-shift day shifts
+    expect(stats.totalDays).toBe(31);
+
+    // Print calendar for visual verification
+    const allDays = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-31'), cycle);
+    const cal = allDays.map(
+      (d, i) =>
+        `Mar ${String(i + 1).padStart(2)}: pos=${i % 10} -> ${d.shiftType.padEnd(9)} ${d.isWorkDay ? 'WORK' : 'OFF '}`
+    );
+    console.log('\n' + cal.join('\n'));
+  });
+
+  it('should correctly calculate Continental pattern (2M/2A/2N/4O)', () => {
+    const cycle = getShiftCycle(ShiftPattern.CONTINENTAL, '2026-03-01', 0);
+
+    const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-10'), cycle);
+
+    // Verify: M M A A N N O O O O
+    expect(days.map((d) => d.shiftType)).toEqual([
+      'morning',
+      'morning',
+      'afternoon',
+      'afternoon',
+      'night',
+      'night',
+      'off',
+      'off',
+      'off',
+      'off',
+    ]);
+
+    // Day 11 should be morning again (cycle repeats)
+    const day11 = calculateShiftDay(new Date('2026-03-11'), cycle);
+    expect(day11.shiftType).toBe('morning');
+  });
+
+  it('should handle phase offset correctly for 3-shift custom', () => {
+    const cycle = {
+      patternType: ShiftPattern.CUSTOM,
+      shiftSystem: ShiftSystem.THREE_SHIFT,
+      daysOn: 0,
+      nightsOn: 0,
+      morningOn: 3,
+      afternoonOn: 2,
+      nightOn: 2,
+      daysOff: 3,
+      startDate: '2026-03-01',
+      phaseOffset: 5, // Start at position 5 = first night shift
+    };
+
+    const day1 = calculateShiftDay(new Date('2026-03-01'), cycle);
+    expect(day1.shiftType).toBe('night');
+    expect(day1.isNightShift).toBe(true);
+  });
+});
+
+describe('2-shift pattern verification', () => {
+  it('should correctly calculate 4-4-4 pattern (4D/4N/4O)', () => {
+    const cycle = getShiftCycle(ShiftPattern.STANDARD_4_4_4, '2026-03-01', 0);
+
+    const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-12'), cycle);
+
+    expect(days.map((d) => d.shiftType)).toEqual([
+      'day',
+      'day',
+      'day',
+      'day',
+      'night',
+      'night',
+      'night',
+      'night',
+      'off',
+      'off',
+      'off',
+      'off',
+    ]);
+
+    // Cycle repeats
+    const day13 = calculateShiftDay(new Date('2026-03-13'), cycle);
+    expect(day13.shiftType).toBe('day');
+
+    // Work/off flags
+    expect(days.filter((d) => d.isWorkDay).length).toBe(8);
+    expect(days.filter((d) => d.isNightShift).length).toBe(4);
+  });
+
+  it('should correctly calculate 7-7-7 pattern (7D/7N/7O)', () => {
+    const cycle = getShiftCycle(ShiftPattern.STANDARD_7_7_7, '2026-03-01', 0);
+
+    const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-21'), cycle);
+
+    expect(days.map((d) => d.shiftType)).toEqual([
+      'day',
+      'day',
+      'day',
+      'day',
+      'day',
+      'day',
+      'day',
+      'night',
+      'night',
+      'night',
+      'night',
+      'night',
+      'night',
+      'night',
+      'off',
+      'off',
+      'off',
+      'off',
+      'off',
+      'off',
+      'off',
+    ]);
+
+    const day22 = calculateShiftDay(new Date('2026-03-22'), cycle);
+    expect(day22.shiftType).toBe('day');
+  });
+
+  it('should correctly calculate 3-3-3 pattern (3D/3N/3O)', () => {
+    const cycle = getShiftCycle(ShiftPattern.STANDARD_3_3_3, '2026-03-01', 0);
+
+    const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-09'), cycle);
+
+    expect(days.map((d) => d.shiftType)).toEqual([
+      'day',
+      'day',
+      'day',
+      'night',
+      'night',
+      'night',
+      'off',
+      'off',
+      'off',
+    ]);
+  });
+
+  it('should correctly calculate 5-5-5 pattern (5D/5N/5O)', () => {
+    const cycle = getShiftCycle(ShiftPattern.STANDARD_5_5_5, '2026-03-01', 0);
+
+    const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-15'), cycle);
+
+    expect(days.map((d) => d.shiftType)).toEqual([
+      'day',
+      'day',
+      'day',
+      'day',
+      'day',
+      'night',
+      'night',
+      'night',
+      'night',
+      'night',
+      'off',
+      'off',
+      'off',
+      'off',
+      'off',
+    ]);
+  });
+
+  it('should correctly calculate 2-2-3 pattern (2D/2N/3O)', () => {
+    const cycle = getShiftCycle(ShiftPattern.STANDARD_2_2_3, '2026-03-01', 0);
+
+    const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-07'), cycle);
+
+    expect(days.map((d) => d.shiftType)).toEqual([
+      'day',
+      'day',
+      'night',
+      'night',
+      'off',
+      'off',
+      'off',
+    ]);
+
+    // Cycle repeats
+    const day8 = calculateShiftDay(new Date('2026-03-08'), cycle);
+    expect(day8.shiftType).toBe('day');
+  });
+
+  it('should correctly calculate 10-10-10 pattern (10D/10N/10O)', () => {
+    const cycle = getShiftCycle(ShiftPattern.STANDARD_10_10_10, '2026-03-01', 0);
+
+    const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-30'), cycle);
+
+    // First 10 = day, next 10 = night, last 10 = off
+    expect(days.slice(0, 10).every((d) => d.shiftType === 'day')).toBe(true);
+    expect(days.slice(10, 20).every((d) => d.shiftType === 'night')).toBe(true);
+    expect(days.slice(20, 30).every((d) => d.shiftType === 'off')).toBe(true);
+  });
+
+  it('should correctly calculate Pitman pattern (2D/2N/3O)', () => {
+    const cycle = getShiftCycle(ShiftPattern.PITMAN, '2026-03-01', 0);
+
+    const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-07'), cycle);
+
+    expect(days.map((d) => d.shiftType)).toEqual([
+      'day',
+      'day',
+      'night',
+      'night',
+      'off',
+      'off',
+      'off',
+    ]);
+  });
+
+  it('should correctly calculate custom 2-shift pattern (5D/3N/2O)', () => {
+    const cycle = {
+      patternType: ShiftPattern.CUSTOM,
+      shiftSystem: ShiftSystem.TWO_SHIFT,
+      daysOn: 5,
+      nightsOn: 3,
+      daysOff: 2,
+      startDate: '2026-03-01',
+      phaseOffset: 0,
+    };
+
+    const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-10'), cycle);
+
+    expect(days.map((d) => d.shiftType)).toEqual([
+      'day',
+      'day',
+      'day',
+      'day',
+      'day',
+      'night',
+      'night',
+      'night',
+      'off',
+      'off',
+    ]);
+
+    // Verify stats
+    const stats = getShiftStatistics(new Date('2026-03-01'), new Date('2026-03-10'), cycle);
+    expect(stats.dayShifts).toBe(5);
+    expect(stats.nightShifts).toBe(3);
+    expect(stats.daysOff).toBe(2);
+    expect(stats.morningShifts).toBe(0);
+    expect(stats.afternoonShifts).toBe(0);
+  });
+
+  it('should handle phase offset for 2-shift (start on night)', () => {
+    const cycle = getShiftCycle(ShiftPattern.STANDARD_4_4_4, '2026-03-01', 4);
+
+    // phaseOffset=4 means start at position 4 = first night shift
+    const day1 = calculateShiftDay(new Date('2026-03-01'), cycle);
+    expect(day1.shiftType).toBe('night');
+
+    const day5 = calculateShiftDay(new Date('2026-03-05'), cycle);
+    expect(day5.shiftType).toBe('off');
+  });
+
+  it('should handle phase offset for 2-shift (start on off)', () => {
+    const cycle = getShiftCycle(ShiftPattern.STANDARD_4_4_4, '2026-03-01', 8);
+
+    // phaseOffset=8 means start at position 8 = first off day
+    const day1 = calculateShiftDay(new Date('2026-03-01'), cycle);
+    expect(day1.shiftType).toBe('off');
+
+    const day5 = calculateShiftDay(new Date('2026-03-05'), cycle);
+    expect(day5.shiftType).toBe('day');
+  });
+
+  it('should print full month calendar for 4-4-4 pattern', () => {
+    const cycle = getShiftCycle(ShiftPattern.STANDARD_4_4_4, '2026-03-01', 0);
+    const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-31'), cycle);
+
+    const cal = days.map(
+      (d, i) =>
+        `Mar ${String(i + 1).padStart(2)}: pos=${String(i % 12).padStart(2)} -> ${d.shiftType.padEnd(5)} ${d.isWorkDay ? 'WORK' : 'OFF '}`
+    );
+    console.log('\n4-4-4 Calendar:\n' + cal.join('\n'));
+
+    const stats = getShiftStatistics(new Date('2026-03-01'), new Date('2026-03-31'), cycle);
+    console.log(
+      `\nStats: ${stats.dayShifts}D ${stats.nightShifts}N ${stats.daysOff}O = ${stats.totalDays} total`
+    );
+
+    // Basic sanity checks
+    expect(stats.dayShifts + stats.nightShifts + stats.daysOff).toBe(31);
+    expect(stats.morningShifts).toBe(0);
+    expect(stats.afternoonShifts).toBe(0);
+  });
+});
+
+describe('day-within-phase offset verification', () => {
+  describe('2-shift system (4-4-4 pattern)', () => {
+    // Pattern: D D D D N N N N O O O O (cycle = 12)
+    // Phase offsets:
+    //   Day phase:   day1=0, day2=1, day3=2, day4=3
+    //   Night phase: day1=4, day2=5, day3=6, day4=7
+    //   Off phase:   day1=8, day2=9, day3=10, day4=11
+
+    it('day phase, day 1 (offset=0) -> start date is day shift', () => {
+      const cycle = getShiftCycle(ShiftPattern.STANDARD_4_4_4, '2026-03-01', 0);
+      const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-05'), cycle);
+      expect(days.map((d) => d.shiftType)).toEqual(['day', 'day', 'day', 'day', 'night']);
+      console.log('2-shift | Day phase, day 1 (offset=0): D D D D N ...');
+    });
+
+    it('day phase, day 3 (offset=2) -> start date is 3rd day of day shift', () => {
+      const cycle = getShiftCycle(ShiftPattern.STANDARD_4_4_4, '2026-03-01', 2);
+      const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-06'), cycle);
+      // pos 2,3 = day, pos 4,5,6,7 = night, pos 8 = off
+      expect(days.map((d) => d.shiftType)).toEqual([
+        'day',
+        'day',
+        'night',
+        'night',
+        'night',
+        'night',
+      ]);
+      console.log('2-shift | Day phase, day 3 (offset=2): D D N N N N ...');
+    });
+
+    it('night phase, day 1 (offset=4) -> start date is night shift', () => {
+      const cycle = getShiftCycle(ShiftPattern.STANDARD_4_4_4, '2026-03-01', 4);
+      const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-06'), cycle);
+      expect(days.map((d) => d.shiftType)).toEqual([
+        'night',
+        'night',
+        'night',
+        'night',
+        'off',
+        'off',
+      ]);
+      console.log('2-shift | Night phase, day 1 (offset=4): N N N N O O ...');
+    });
+
+    it('night phase, day 3 (offset=6) -> start date is 3rd night shift', () => {
+      const cycle = getShiftCycle(ShiftPattern.STANDARD_4_4_4, '2026-03-01', 6);
+      const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-06'), cycle);
+      // pos 6,7 = night, pos 8,9,10,11 = off
+      expect(days.map((d) => d.shiftType)).toEqual(['night', 'night', 'off', 'off', 'off', 'off']);
+      console.log('2-shift | Night phase, day 3 (offset=6): N N O O O O ...');
+    });
+
+    it('off phase, day 1 (offset=8) -> start date is day off', () => {
+      const cycle = getShiftCycle(ShiftPattern.STANDARD_4_4_4, '2026-03-01', 8);
+      const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-06'), cycle);
+      expect(days.map((d) => d.shiftType)).toEqual(['off', 'off', 'off', 'off', 'day', 'day']);
+      console.log('2-shift | Off phase, day 1 (offset=8): O O O O D D ...');
+    });
+
+    it('off phase, day 3 (offset=10) -> start date is 3rd day off', () => {
+      const cycle = getShiftCycle(ShiftPattern.STANDARD_4_4_4, '2026-03-01', 10);
+      const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-06'), cycle);
+      // pos 10,11 = off, pos 0,1,2,3 = day
+      expect(days.map((d) => d.shiftType)).toEqual(['off', 'off', 'day', 'day', 'day', 'day']);
+      console.log('2-shift | Off phase, day 3 (offset=10): O O D D D D ...');
+    });
+  });
+
+  describe('3-shift system (Continental: 2M/2A/2N/4O)', () => {
+    // Pattern: M M A A N N O O O O (cycle = 10)
+    // Phase offsets:
+    //   Morning:   day1=0, day2=1
+    //   Afternoon: day1=2, day2=3
+    //   Night:     day1=4, day2=5
+    //   Off:       day1=6, day2=7, day3=8, day4=9
+
+    it('morning phase, day 1 (offset=0) -> start date is morning shift', () => {
+      const cycle = getShiftCycle(ShiftPattern.CONTINENTAL, '2026-03-01', 0);
+      const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-06'), cycle);
+      expect(days.map((d) => d.shiftType)).toEqual([
+        'morning',
+        'morning',
+        'afternoon',
+        'afternoon',
+        'night',
+        'night',
+      ]);
+      console.log('3-shift | Morning phase, day 1 (offset=0): M M A A N N ...');
+    });
+
+    it('morning phase, day 2 (offset=1) -> start date is 2nd morning', () => {
+      const cycle = getShiftCycle(ShiftPattern.CONTINENTAL, '2026-03-01', 1);
+      const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-06'), cycle);
+      expect(days.map((d) => d.shiftType)).toEqual([
+        'morning',
+        'afternoon',
+        'afternoon',
+        'night',
+        'night',
+        'off',
+      ]);
+      console.log('3-shift | Morning phase, day 2 (offset=1): M A A N N O ...');
+    });
+
+    it('afternoon phase, day 1 (offset=2) -> start date is afternoon shift', () => {
+      const cycle = getShiftCycle(ShiftPattern.CONTINENTAL, '2026-03-01', 2);
+      const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-06'), cycle);
+      expect(days.map((d) => d.shiftType)).toEqual([
+        'afternoon',
+        'afternoon',
+        'night',
+        'night',
+        'off',
+        'off',
+      ]);
+      console.log('3-shift | Afternoon phase, day 1 (offset=2): A A N N O O ...');
+    });
+
+    it('night phase, day 1 (offset=4) -> start date is night shift', () => {
+      const cycle = getShiftCycle(ShiftPattern.CONTINENTAL, '2026-03-01', 4);
+      const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-06'), cycle);
+      expect(days.map((d) => d.shiftType)).toEqual(['night', 'night', 'off', 'off', 'off', 'off']);
+      console.log('3-shift | Night phase, day 1 (offset=4): N N O O O O ...');
+    });
+
+    it('night phase, day 2 (offset=5) -> start date is 2nd night', () => {
+      const cycle = getShiftCycle(ShiftPattern.CONTINENTAL, '2026-03-01', 5);
+      const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-06'), cycle);
+      expect(days.map((d) => d.shiftType)).toEqual([
+        'night',
+        'off',
+        'off',
+        'off',
+        'off',
+        'morning',
+      ]);
+      console.log('3-shift | Night phase, day 2 (offset=5): N O O O O M ...');
+    });
+
+    it('off phase, day 1 (offset=6) -> start date is first day off', () => {
+      const cycle = getShiftCycle(ShiftPattern.CONTINENTAL, '2026-03-01', 6);
+      const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-06'), cycle);
+      expect(days.map((d) => d.shiftType)).toEqual([
+        'off',
+        'off',
+        'off',
+        'off',
+        'morning',
+        'morning',
+      ]);
+      console.log('3-shift | Off phase, day 1 (offset=6): O O O O M M ...');
+    });
+
+    it('off phase, day 3 (offset=8) -> start date is 3rd day off', () => {
+      const cycle = getShiftCycle(ShiftPattern.CONTINENTAL, '2026-03-01', 8);
+      const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-06'), cycle);
+      expect(days.map((d) => d.shiftType)).toEqual([
+        'off',
+        'off',
+        'morning',
+        'morning',
+        'afternoon',
+        'afternoon',
+      ]);
+      console.log('3-shift | Off phase, day 3 (offset=8): O O M M A A ...');
+    });
+  });
+
+  describe('custom 3-shift with day-within-phase (3M/2A/2N/3O)', () => {
+    it('afternoon phase, day 2 (offset=4) -> start on 2nd afternoon', () => {
+      const cycle = {
+        patternType: ShiftPattern.CUSTOM,
+        shiftSystem: ShiftSystem.THREE_SHIFT,
+        daysOn: 0,
+        nightsOn: 0,
+        morningOn: 3,
+        afternoonOn: 2,
+        nightOn: 2,
+        daysOff: 3,
+        startDate: '2026-03-01',
+        phaseOffset: 4, // morning(3) + afternoon day 2 - 1 = 4
+      };
+      const days = getShiftDaysInRange(new Date('2026-03-01'), new Date('2026-03-06'), cycle);
+      // pos 4 = afternoon(2nd), pos 5 = night, pos 6 = night, pos 7,8,9 = off
+      expect(days.map((d) => d.shiftType)).toEqual([
+        'afternoon',
+        'night',
+        'night',
+        'off',
+        'off',
+        'off',
+      ]);
+      console.log('Custom 3-shift | Afternoon day 2 (offset=4): A N N O O O ...');
+    });
   });
 });
