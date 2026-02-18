@@ -210,7 +210,7 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
               },
             ]}
           >
-            <Ionicons name={shiftColor.icon} size={9} color="#fff" />
+            <Ionicons name={shiftColor.icon} size={11} color="#fff" />
           </View>
         )}
       </View>
@@ -302,9 +302,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 1,
     right: 1,
-    width: 16,
-    height: 16,
-    borderRadius: 8,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     ...Platform.select({
