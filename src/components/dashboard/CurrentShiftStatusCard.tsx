@@ -332,7 +332,7 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                   ) : shiftType === 'night' ? (
                     <Image source={NIGHT_SHIFT_ICON} style={styles.shiftImage} />
                   ) : shiftType === 'morning' ? (
-                    <Image source={MORNING_SHIFT_ICON} style={styles.shiftImage} />
+                    <Image source={MORNING_SHIFT_ICON} style={styles.shiftImageLarge} />
                   ) : shiftType === 'afternoon' ? (
                     <Image source={AFTERNOON_SHIFT_ICON} style={styles.shiftImage} />
                   ) : shiftType === 'off' ? (
@@ -591,7 +591,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   amberIconContainer: {
-    backgroundColor: 'rgba(245, 158, 11, 0.25)',
+    backgroundColor: '#fff',
   },
   cyanIconContainer: {
     backgroundColor: 'rgba(6, 182, 212, 0.25)',
@@ -599,6 +599,11 @@ const styles = StyleSheet.create({
   shiftImage: {
     width: 30,
     height: 30,
+    resizeMode: 'contain',
+  },
+  shiftImageLarge: {
+    width: 44,
+    height: 44,
     resizeMode: 'contain',
   },
 });

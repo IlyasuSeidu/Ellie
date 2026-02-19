@@ -66,7 +66,7 @@ export const shiftPatternSchema = z.nativeEnum(ShiftPattern);
 /**
  * Shift Type Schema
  */
-export const shiftTypeSchema = z.enum(['day', 'night', 'off']);
+export const shiftTypeSchema = z.enum(['day', 'night', 'morning', 'afternoon', 'off']);
 
 /**
  * Shift Day Schema

@@ -37,6 +37,8 @@ export interface ShiftCalendarDayCellProps {
   onPress?: (day: number) => void;
   /** Stagger delay for entrance animation (reserved for parent control) */
   animationDelay?: number;
+  /** Override glow color for today's cell (e.g. during overnight carry-over) */
+  activeGlowColor?: string;
   /** Test ID */
   testID?: string;
 }
@@ -90,6 +92,7 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
   isToday = false,
   selected = false,
   isOtherMonth = false,
+  activeGlowColor,
   onPress,
   testID,
 }) => {
@@ -153,6 +156,10 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
     transform: [{ scale: pulseScale.value }],
   }));
 
+  // Resolve glow color: use carry-over color if provided, else default gold
+  const glowColor = activeGlowColor ?? theme.colors.sacredGold;
+  const glowColor30 = activeGlowColor ? `${activeGlowColor}4D` : theme.colors.opacity.gold30;
+
   const containerBg = selected ? theme.colors.sacredGold : (shiftColor?.bg ?? 'transparent');
 
   const dayTextColor = isOtherMonth
@@ -160,7 +167,7 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
     : selected
       ? '#fff'
       : isToday
-        ? theme.colors.sacredGold
+        ? glowColor
         : theme.colors.paper;
 
   return (
@@ -177,10 +184,14 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
       testID={testID}
     >
       {/* Today 3-layer glow: Layer 1 — glow background */}
-      {isToday && !selected && <Animated.View style={[styles.todayGlow, todayGlowStyle]} />}
+      {isToday && !selected && (
+        <Animated.View style={[styles.todayGlow, { backgroundColor: glowColor }, todayGlowStyle]} />
+      )}
 
       {/* Today 3-layer glow: Layer 2 — pulsing outer ring */}
-      {isToday && !selected && <Animated.View style={[styles.todayRing, todayRingStyle]} />}
+      {isToday && !selected && (
+        <Animated.View style={[styles.todayRing, { borderColor: glowColor30 }, todayRingStyle]} />
+      )}
 
       {/* Selected day glow */}
       {selected && <View style={styles.selectedGlow} />}
@@ -251,7 +262,6 @@ const styles = StyleSheet.create({
     right: -2,
     bottom: 2,
     borderRadius: theme.borderRadius.sm + 4,
-    backgroundColor: theme.colors.sacredGold,
     zIndex: 0,
   },
   todayRing: {
@@ -262,7 +272,6 @@ const styles = StyleSheet.create({
     bottom: 4,
     borderRadius: theme.borderRadius.sm + 2,
     borderWidth: 1.5,
-    borderColor: theme.colors.opacity.gold30,
     zIndex: 1,
   },
   selectedGlow: {

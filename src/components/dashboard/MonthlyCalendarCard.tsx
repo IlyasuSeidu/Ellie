@@ -53,6 +53,8 @@ export interface MonthlyCalendarCardProps {
   onDayPress?: (day: number) => void;
   /** Shift system (2-shift or 3-shift) — controls which legend items appear */
   shiftSystem?: ShiftSystem;
+  /** Glow color override for today's cell (e.g. during overnight carry-over) */
+  activeGlowColor?: string;
   /** Animation delay in ms */
   animationDelay?: number;
   /** Test ID */
@@ -125,6 +127,7 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
   onNextMonth,
   onDayPress,
   shiftSystem,
+  activeGlowColor,
   animationDelay = 200,
   testID,
 }) => {
@@ -414,6 +417,7 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
                     shiftType={shiftDay?.shiftType}
                     isToday={isTodayDate}
                     selected={selectedDay === day}
+                    activeGlowColor={isTodayDate ? activeGlowColor : undefined}
                     onPress={onDayPress}
                     testID={`calendar-day-${day}`}
                   />
