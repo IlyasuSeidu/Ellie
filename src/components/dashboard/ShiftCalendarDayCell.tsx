@@ -288,8 +288,6 @@ const styles = StyleSheet.create({
     width: CELL_SIZE - 4,
     height: CELL_HEIGHT - 6,
     borderRadius: theme.borderRadius.sm,
-    alignItems: 'center',
-    justifyContent: 'center',
     position: 'relative',
     zIndex: 2,
   },
@@ -309,7 +307,9 @@ const styles = StyleSheet.create({
   dayText: {
     fontSize: theme.typography.fontSizes.lg,
     fontWeight: theme.typography.fontWeights.semibold,
-    marginTop: -16,
+    position: 'absolute',
+    top: 4,
+    left: 6,
   },
   todayText: {
     fontWeight: theme.typography.fontWeights.bold,

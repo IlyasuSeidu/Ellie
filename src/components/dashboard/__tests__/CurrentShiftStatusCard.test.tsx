@@ -140,6 +140,11 @@ describe('CurrentShiftStatusCard', () => {
       expect(queryByText('LIVE')).toBeNull();
     });
 
+    it('should show OFF badge when not on shift', () => {
+      const { getByText } = render(<CurrentShiftStatusCard shiftType="off" isOnShift={false} />);
+      expect(getByText('OFF')).toBeTruthy();
+    });
+
     it('should render with testID', () => {
       const { getByTestId } = render(<CurrentShiftStatusCard shiftType="day" testID="test-card" />);
       expect(getByTestId('test-card')).toBeTruthy();

@@ -348,12 +348,25 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                   <Animated.Text style={styles.liveText}>LIVE</Animated.Text>
                 </View>
               )}
+
+              {/* OFF badge when not on shift */}
+              {!isOnShift && (
+                <View style={styles.offBadge}>
+                  <Ionicons
+                    name="moon-outline"
+                    size={12}
+                    color="rgba(255,255,255,0.5)"
+                    style={{ marginRight: 5 }}
+                  />
+                  <Animated.Text style={styles.offText}>OFF</Animated.Text>
+                </View>
+              )}
             </View>
 
             {/* Label, then subtitle + time on same line */}
             <Animated.View style={labelEntranceStyle}>
               <Animated.Text style={styles.shiftLabel}>{style.label}</Animated.Text>
-              <View style={styles.subtitleTimeRow}>
+              <View style={[styles.subtitleTimeRow, !isOnShift && styles.subtitleTimeRowCentered]}>
                 <Animated.Text style={styles.shiftSubtitle}>{style.subtitle}</Animated.Text>
                 {timeDisplay && (
                   <View style={styles.timeContainer}>
@@ -501,6 +514,22 @@ const styles = StyleSheet.create({
     color: '#fff',
     letterSpacing: 1,
   },
+  offBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: theme.borderRadius.full,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
+  },
+  offText: {
+    fontSize: 12,
+    fontWeight: theme.typography.fontWeights.bold,
+    color: 'rgba(255,255,255,0.5)',
+    letterSpacing: 1,
+  },
 
   // ── Text ────────────────────────────────────────────────────
   shiftLabel: {
@@ -523,6 +552,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: theme.spacing.sm,
     gap: theme.spacing.md,
+  },
+  subtitleTimeRowCentered: {
+    justifyContent: 'center',
   },
 
   // ── Time & Countdown ───────────────────────────────────────
