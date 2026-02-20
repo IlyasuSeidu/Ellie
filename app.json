@@ -1,7 +1,8 @@
 {
   "expo": {
     "name": "Ellie",
-    "slug": "Ellie",
+    "slug": "ellie",
+    "scheme": "ellie",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,15 +14,25 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "deploymentTarget": "16.0",
+      "infoPlist": {
+        "NSSpeechRecognitionUsageDescription": "Ellie needs speech recognition to understand your questions.",
+        "NSMicrophoneUsageDescription": "Ellie needs microphone access for voice commands."
+      },
+      "bundleIdentifier": "com.anonymous.ellie"
     },
     "android": {
+      "package": "com.anonymous.ellie",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -33,6 +44,13 @@
         {
           "photosPermission": "Ellie needs access to your photos to set a profile picture.",
           "cameraPermission": "Ellie needs access to your camera to take a profile picture."
+        }
+      ],
+      [
+        "expo-speech-recognition",
+        {
+          "microphonePermission": "Ellie needs microphone access for voice commands.",
+          "speechRecognitionPermission": "Ellie needs speech recognition to understand your questions."
         }
       ]
     ]

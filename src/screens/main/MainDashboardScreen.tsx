@@ -33,10 +33,14 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
 import { asyncStorageService } from '@/services/AsyncStorageService';
-import { getShiftDaysInRange, getShiftStatistics, getShiftPattern } from '@/utils/shiftUtils';
+import {
+  getShiftDaysInRange,
+  getShiftStatistics,
+  buildShiftCycle,
+} from '@/utils/shiftUtils';
 import { toDateString, getDaysInMonth } from '@/utils/dateUtils';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
-import { ShiftPattern, ShiftSystem, type ShiftCycle } from '@/types';
+import type { ShiftCycle } from '@/types';
 import { useActiveShift } from '@/hooks/useActiveShift';
 import type { MonthStatistics } from '@/types/dashboard';
 
@@ -47,89 +51,7 @@ import { MonthlyCalendarCard } from '@/components/dashboard/MonthlyCalendarCard'
 import { StatisticsRow } from '@/components/dashboard/StatisticsCard';
 
 import { QuickActionsBar } from '@/components/dashboard/QuickActionsBar';
-
-/**
- * Build a ShiftCycle from onboarding data
- */
-function buildShiftCycle(data: OnboardingData): ShiftCycle | null {
-  if (!data.patternType || !data.startDate) return null;
-
-  const startDateStr = toDateString(
-    typeof data.startDate === 'string' ? new Date(data.startDate) : data.startDate
-  );
-
-  if (data.patternType === ShiftPattern.CUSTOM && data.customPattern) {
-    return {
-      patternType: ShiftPattern.CUSTOM,
-      shiftSystem: data.shiftSystem === '3-shift' ? ShiftSystem.THREE_SHIFT : ShiftSystem.TWO_SHIFT,
-      daysOn: data.customPattern.daysOn,
-      nightsOn: data.customPattern.nightsOn,
-      morningOn: data.customPattern.morningOn,
-      afternoonOn: data.customPattern.afternoonOn,
-      nightOn: data.customPattern.nightOn,
-      daysOff: data.customPattern.daysOff,
-      startDate: startDateStr,
-      phaseOffset: data.phaseOffset || 0,
-    };
-  }
-
-  // Standard pattern
-  const pattern = getShiftPattern(data.patternType);
-  const config = pattern.config;
-
-  const shiftSystem =
-    data.shiftSystem === '3-shift' ? ShiftSystem.THREE_SHIFT : ShiftSystem.TWO_SHIFT;
-
-  // If pattern already has 3-shift fields (e.g. Continental), use them directly
-  if (
-    config.morningOn !== undefined ||
-    config.afternoonOn !== undefined ||
-    config.nightOn !== undefined
-  ) {
-    return {
-      patternType: data.patternType,
-      shiftSystem: ShiftSystem.THREE_SHIFT,
-      daysOn: 0,
-      nightsOn: 0,
-      morningOn: config.morningOn ?? 0,
-      afternoonOn: config.afternoonOn ?? 0,
-      nightOn: config.nightOn ?? 0,
-      daysOff: config.daysOff,
-      startDate: startDateStr,
-      phaseOffset: data.phaseOffset || 0,
-    };
-  }
-
-  const daysOn = config.daysOn ?? 0;
-  const nightsOn = config.nightsOn ?? 0;
-
-  // For 2-shift patterns selected with 3-shift system, convert:
-  // morningOn = daysOn, afternoonOn = daysOn, nightOn = nightsOn
-  if (shiftSystem === ShiftSystem.THREE_SHIFT) {
-    return {
-      patternType: data.patternType,
-      shiftSystem,
-      daysOn: 0,
-      nightsOn: 0,
-      morningOn: daysOn,
-      afternoonOn: daysOn,
-      nightOn: nightsOn,
-      daysOff: config.daysOff,
-      startDate: startDateStr,
-      phaseOffset: data.phaseOffset || 0,
-    };
-  }
-
-  return {
-    patternType: data.patternType,
-    shiftSystem,
-    daysOn,
-    nightsOn,
-    daysOff: config.daysOff,
-    startDate: startDateStr,
-    phaseOffset: data.phaseOffset || 0,
-  };
-}
+import { EllieButton, VoiceAssistantModal } from '@/components/voice';
 
 /**
  * Calculate monthly statistics
@@ -532,6 +454,10 @@ export const MainDashboardScreen: React.FC = () => {
           testID="dashboard-actions"
         />
       </ScrollView>
+
+      {/* Ellie Voice Assistant */}
+      <EllieButton />
+      <VoiceAssistantModal />
     </View>
   );
 };

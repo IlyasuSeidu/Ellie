@@ -1,0 +1,174 @@
+/**
+ * Voice Assistant Type Definitions
+ *
+ * Types for the Ellie voice assistant feature including
+ * conversation state, messages, tool calls, and service interfaces.
+ */
+
+import type { ShiftCycle, ShiftType } from './index';
+import type { OnboardingData } from '@/contexts/OnboardingContext';
+
+/**
+ * Voice assistant operational states
+ */
+export type VoiceAssistantState =
+  | 'idle' // Button visible, not active
+  | 'listening' // Microphone active, capturing speech
+  | 'processing' // Sending to backend, awaiting response
+  | 'speaking' // TTS playing response
+  | 'error'; // Error state with retry option
+
+/**
+ * Message role in conversation
+ */
+export type MessageRole = 'user' | 'assistant';
+
+/**
+ * Single conversation message
+ */
+export interface VoiceMessage {
+  /** Unique message ID */
+  id: string;
+  /** Who sent the message */
+  role: MessageRole;
+  /** Text content */
+  text: string;
+  /** When the message was created */
+  timestamp: number;
+  /** Optional shift data attached to assistant response */
+  shiftData?: ShiftQueryResult;
+}
+
+/**
+ * Result from a shift query tool call
+ */
+export interface ShiftQueryResult {
+  /** The tool that was called */
+  toolName: string;
+  /** Raw result data */
+  data: unknown;
+}
+
+/**
+ * User context sent to the backend with each query
+ */
+export interface VoiceAssistantUserContext {
+  /** User's first name */
+  name: string;
+  /** User's occupation */
+  occupation?: string;
+  /** Serialized ShiftCycle */
+  shiftCycle: ShiftCycle;
+  /** Current date in YYYY-MM-DD */
+  currentDate: string;
+  /** Current time in HH:MM */
+  currentTime: string;
+  /** Shift system type */
+  shiftSystem: '2-shift' | '3-shift';
+  /** Shift times configuration */
+  shiftTimes?: OnboardingData['shiftTimes'];
+}
+
+/**
+ * Request payload to the backend
+ */
+export interface EllieBrainRequest {
+  /** Transcribed user query */
+  query: string;
+  /** User context for personalized responses */
+  userContext: VoiceAssistantUserContext;
+  /** Previous messages for multi-turn conversation (last 6) */
+  conversationHistory?: Array<{ role: 'user' | 'assistant'; text: string }>;
+}
+
+/**
+ * Response from the backend
+ */
+export interface EllieBrainResponse {
+  /** Natural language response text */
+  text: string;
+  /** Optional structured shift data */
+  shiftData?: ShiftQueryResult;
+}
+
+/**
+ * Speech recognition event data
+ */
+export interface SpeechRecognitionResult {
+  /** Transcribed text */
+  transcript: string;
+  /** Whether this is a final result */
+  isFinal: boolean;
+  /** Confidence score 0-1 */
+  confidence: number;
+}
+
+/**
+ * Voice assistant error types
+ */
+export type VoiceAssistantErrorType =
+  | 'permission_denied'
+  | 'speech_recognition_failed'
+  | 'network_error'
+  | 'backend_error'
+  | 'tts_error'
+  | 'unknown';
+
+/**
+ * Voice assistant error
+ */
+export interface VoiceAssistantError {
+  type: VoiceAssistantErrorType;
+  message: string;
+  retryable: boolean;
+}
+
+/**
+ * Tool definitions for the Claude API.
+ * These mirror the tools the backend registers with Claude.
+ */
+export type ShiftToolName =
+  | 'get_shift_for_date'
+  | 'get_shifts_in_range'
+  | 'get_current_status'
+  | 'get_statistics'
+  | 'get_next_occurrence';
+
+/**
+ * Input types for each tool
+ */
+export interface GetShiftForDateInput {
+  date: string; // YYYY-MM-DD
+}
+
+export interface GetShiftsInRangeInput {
+  startDate: string; // YYYY-MM-DD
+  endDate: string; // YYYY-MM-DD
+}
+
+export interface GetCurrentStatusInput {
+  // No inputs needed — uses userContext
+}
+
+export interface GetStatisticsInput {
+  startDate: string; // YYYY-MM-DD
+  endDate: string; // YYYY-MM-DD
+}
+
+export interface GetNextOccurrenceInput {
+  shiftType: ShiftType;
+  fromDate?: string; // YYYY-MM-DD, defaults to today
+}
+
+/**
+ * Shift statistics result from get_statistics tool
+ */
+export interface ShiftStatisticsResult {
+  totalShifts: number;
+  dayShifts: number;
+  nightShifts: number;
+  morningShifts: number;
+  afternoonShifts: number;
+  daysOff: number;
+  totalDays: number;
+}

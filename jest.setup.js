@@ -122,6 +122,33 @@ jest.mock('react-native-reanimated', () => {
         return chain;
       }),
     },
+    FadeOut: {
+      duration: jest.fn(function () {
+        const chain = {
+          springify: jest.fn(() => chain),
+          delay: jest.fn(() => chain),
+        };
+        return chain;
+      }),
+    },
+    SlideInDown: {
+      duration: jest.fn(function () {
+        const chain = {
+          springify: jest.fn(() => chain),
+          delay: jest.fn(() => chain),
+        };
+        return chain;
+      }),
+    },
+    SlideOutDown: {
+      duration: jest.fn(function () {
+        const chain = {
+          springify: jest.fn(() => chain),
+          delay: jest.fn(() => chain),
+        };
+        return chain;
+      }),
+    },
   };
 });
 
@@ -214,6 +241,26 @@ jest.mock('@react-native-google-signin/google-signin', () => ({
 jest.mock('expo-apple-authentication', () => ({
   isAvailableAsync: jest.fn(() => Promise.resolve(false)),
   signInAsync: jest.fn(),
+}));
+
+// Mock expo-speech-recognition (requires native module)
+jest.mock('expo-speech-recognition', () => ({
+  ExpoSpeechRecognitionModule: {
+    requestPermissionsAsync: jest.fn(() => Promise.resolve({ granted: true })),
+    getPermissionsAsync: jest.fn(() => Promise.resolve({ granted: true })),
+    start: jest.fn(),
+    stop: jest.fn(),
+    abort: jest.fn(),
+  },
+  useSpeechRecognitionEvent: jest.fn(),
+}));
+
+// Mock expo-speech (TTS)
+jest.mock('expo-speech', () => ({
+  speak: jest.fn(),
+  stop: jest.fn(),
+  getAvailableVoicesAsync: jest.fn(() => Promise.resolve([{ identifier: 'en-US', name: 'English' }])),
+  isSpeakingAsync: jest.fn(() => Promise.resolve(false)),
 }));
 
 // Mock Firebase config to use test values

@@ -33,6 +33,7 @@ yarn-error.*
 # local env files
 .env
 .env*.local
+backend/functions/.secret.local
 
 # typescript
 *.tsbuildinfo
@@ -43,3 +44,5 @@ coverage/
 # generated native folders
 /ios
 /android
+
+backend/functions/lib/

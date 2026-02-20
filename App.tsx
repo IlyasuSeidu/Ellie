@@ -5,18 +5,21 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { OnboardingProvider } from './src/contexts/OnboardingContext';
+import { VoiceAssistantProvider } from './src/contexts/VoiceAssistantContext';
 
 export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <OnboardingProvider>
-          <View style={styles.container}>
-            <StatusBar style="light" />
-            <NavigationContainer>
-              <AppNavigator />
-            </NavigationContainer>
-          </View>
+          <VoiceAssistantProvider>
+            <View style={styles.container}>
+              <StatusBar style="light" />
+              <NavigationContainer>
+                <AppNavigator />
+              </NavigationContainer>
+            </View>
+          </VoiceAssistantProvider>
         </OnboardingProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

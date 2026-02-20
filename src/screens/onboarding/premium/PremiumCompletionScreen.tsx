@@ -21,7 +21,6 @@ import Animated, {
   FadeInUp,
   FadeInRight,
   FadeOutUp,
-  withSpring,
   withTiming,
   withDelay,
   withRepeat,
@@ -235,8 +234,6 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
 
   // Animation values
   const checkmarkProgress = useSharedValue(0);
-  const buttonScale = useSharedValue(1);
-  const buttonShadowOpacity = useSharedValue(0.3);
   const glowOpacity = useSharedValue(0);
 
   // Check for reduced motion
@@ -286,23 +283,6 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
     opacity: glowOpacity.value,
   }));
 
-  const buttonAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: buttonScale.value }],
-    shadowOpacity: buttonShadowOpacity.value,
-  }));
-
-  // Button press handlers for micro-animations
-  const handleButtonPressIn = () => {
-    buttonScale.value = withSpring(0.96, { damping: 15, stiffness: 400 });
-    buttonShadowOpacity.value = withTiming(0.5, { duration: 150 });
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-  };
-
-  const handleButtonPressOut = () => {
-    buttonScale.value = withSpring(1, { damping: 15, stiffness: 400 });
-    buttonShadowOpacity.value = withTiming(0.3, { duration: 150 });
-  };
-
   // Validation logic is now handled by OnboardingContext.validateData()
   // No need for duplicate validation function here
 
@@ -330,12 +310,6 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
 
       // Trigger success haptic
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-
-      // Pulse button
-      buttonScale.value = withSequence(
-        withSpring(1.1, { damping: 10 }),
-        withSpring(1, { damping: 10 })
-      );
     } catch (error) {
       console.error('Failed to save onboarding data:', error);
       setSaveError(
@@ -362,16 +336,26 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
   const handleGetStarted = async () => {
     if (!isSaved) return;
 
-    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-
     // Call completion callback if provided
     onComplete?.();
 
-    // Reset navigation stack and go to MainDashboard
-    navigation.getParent()?.reset({
-      index: 0,
-      routes: [{ name: 'MainDashboard' }],
-    });
+    const parentNavigation =
+      typeof navigation.getParent === 'function'
+        ? navigation.getParent<NativeStackNavigationProp<RootStackParamList>>()
+        : undefined;
+
+    if (parentNavigation && typeof parentNavigation.reset === 'function') {
+      parentNavigation.reset({
+        index: 0,
+        routes: [{ name: 'MainDashboard' }],
+      });
+      return;
+    }
+
+    // Fallback for test/mocked navigation objects
+    if (typeof navigation.navigate === 'function') {
+      navigation.navigate('MainDashboard');
+    }
   };
 
   // Handle feature pill expansion
@@ -684,24 +668,15 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
               accessibilityHint="Tap to try saving your data again"
             />
           ) : (
-            <Pressable
-              onPressIn={handleButtonPressIn}
-              onPressOut={handleButtonPressOut}
+            <PremiumButton
+              title="Get Started"
               onPress={handleGetStarted}
+              variant="primary"
+              size="large"
               disabled={!isSaved}
-            >
-              <Animated.View style={buttonAnimatedStyle}>
-                <PremiumButton
-                  title="Get Started"
-                  onPress={() => {}}
-                  variant="primary"
-                  size="large"
-                  disabled={!isSaved}
-                  accessibilityLabel="Get started with Ellie"
-                  accessibilityHint="Tap to start using the app"
-                />
-              </Animated.View>
-            </Pressable>
+              accessibilityLabel="Get started with Ellie"
+              accessibilityHint="Tap to start using the app"
+            />
           )}
         </Animated.View>
       </ScrollView>

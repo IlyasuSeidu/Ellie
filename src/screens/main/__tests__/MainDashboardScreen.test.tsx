@@ -95,6 +95,12 @@ jest.mock('react-native-gesture-handler', () => {
   };
 });
 
+// Mock voice assistant components (requires native modules)
+jest.mock('@/components/voice', () => ({
+  EllieButton: () => null,
+  VoiceAssistantModal: () => null,
+}));
+
 // Mock safe-area-context
 jest.mock('react-native-safe-area-context', () => ({
   useSafeAreaInsets: () => ({ top: 44, bottom: 34, left: 0, right: 0 }),

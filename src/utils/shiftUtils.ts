@@ -12,6 +12,7 @@ import {
   ShiftSystem,
   ShiftPatternConfig,
 } from '@/types';
+import type { OnboardingData } from '@/contexts/OnboardingContext';
 import { diffInDays, addDays, toDateString, getDateRange } from './dateUtils';
 
 /**
@@ -462,4 +463,121 @@ export function getPhaseInfo(
     cycleLength,
     phaseType: shiftDay.shiftType,
   };
+}
+
+/**
+ * Build a ShiftCycle from onboarding data.
+ *
+ * Extracted here so it can be shared between the dashboard screen
+ * and the voice assistant context.
+ *
+ * @param data - Onboarding data containing shift configuration
+ * @returns A ShiftCycle or null if essential fields are missing
+ */
+export function buildShiftCycle(data: OnboardingData): ShiftCycle | null {
+  if (!data.patternType || !data.startDate) return null;
+
+  const startDateStr = toDateString(
+    typeof data.startDate === 'string' ? new Date(data.startDate) : data.startDate
+  );
+
+  if (data.patternType === ShiftPattern.CUSTOM && data.customPattern) {
+    return {
+      patternType: ShiftPattern.CUSTOM,
+      shiftSystem:
+        data.shiftSystem === '3-shift' ? ShiftSystem.THREE_SHIFT : ShiftSystem.TWO_SHIFT,
+      daysOn: data.customPattern.daysOn,
+      nightsOn: data.customPattern.nightsOn,
+      morningOn: data.customPattern.morningOn,
+      afternoonOn: data.customPattern.afternoonOn,
+      nightOn: data.customPattern.nightOn,
+      daysOff: data.customPattern.daysOff,
+      startDate: startDateStr,
+      phaseOffset: data.phaseOffset || 0,
+    };
+  }
+
+  // Standard pattern
+  const pattern = getShiftPattern(data.patternType);
+  const config = pattern.config;
+
+  const shiftSystem =
+    data.shiftSystem === '3-shift' ? ShiftSystem.THREE_SHIFT : ShiftSystem.TWO_SHIFT;
+
+  // If pattern already has 3-shift fields (e.g. Continental), use them directly
+  if (
+    config.morningOn !== undefined ||
+    config.afternoonOn !== undefined ||
+    config.nightOn !== undefined
+  ) {
+    return {
+      patternType: data.patternType,
+      shiftSystem: ShiftSystem.THREE_SHIFT,
+      daysOn: 0,
+      nightsOn: 0,
+      morningOn: config.morningOn ?? 0,
+      afternoonOn: config.afternoonOn ?? 0,
+      nightOn: config.nightOn ?? 0,
+      daysOff: config.daysOff,
+      startDate: startDateStr,
+      phaseOffset: data.phaseOffset || 0,
+    };
+  }
+
+  const daysOn = config.daysOn ?? 0;
+  const nightsOn = config.nightsOn ?? 0;
+
+  // For 2-shift patterns selected with 3-shift system, convert:
+  // morningOn = daysOn, afternoonOn = daysOn, nightOn = nightsOn
+  if (shiftSystem === ShiftSystem.THREE_SHIFT) {
+    return {
+      patternType: data.patternType,
+      shiftSystem,
+      daysOn: 0,
+      nightsOn: 0,
+      morningOn: daysOn,
+      afternoonOn: daysOn,
+      nightOn: nightsOn,
+      daysOff: config.daysOff,
+      startDate: startDateStr,
+      phaseOffset: data.phaseOffset || 0,
+    };
+  }
+
+  return {
+    patternType: data.patternType,
+    shiftSystem,
+    daysOn,
+    nightsOn,
+    daysOff: config.daysOff,
+    startDate: startDateStr,
+    phaseOffset: data.phaseOffset || 0,
+  };
+}
+
+/**
+ * Find the next occurrence of a specific shift type from a given date.
+ *
+ * Searches forward day-by-day from the day after `fromDate` until a day
+ * matching `shiftType` is found, or `maxDaysAhead` is reached.
+ *
+ * @param fromDate - Start searching from the day after this date
+ * @param shiftType - The shift type to find
+ * @param shiftCycle - Shift cycle configuration
+ * @param maxDaysAhead - Maximum days to search (default 365)
+ * @returns The matching ShiftDay, or null if not found within range
+ */
+export function getNextOccurrence(
+  fromDate: Date,
+  shiftType: ShiftType,
+  shiftCycle: ShiftCycle,
+  maxDaysAhead = 365
+): ShiftDay | null {
+  let checkDate = addDays(fromDate, 1);
+  for (let i = 0; i < maxDaysAhead; i++) {
+    const day = calculateShiftDay(checkDate, shiftCycle);
+    if (day.shiftType === shiftType) return day;
+    checkDate = addDays(checkDate, 1);
+  }
+  return null;
 }

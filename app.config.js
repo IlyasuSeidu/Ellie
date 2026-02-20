@@ -1,0 +1,46 @@
+/**
+ * Expo Application Configuration
+ *
+ * Loads .env values and exposes them via expo.extra for runtime config validation.
+ */
+
+try {
+  require('dotenv').config();
+} catch (_error) {
+  // dotenv is optional in some environments
+}
+
+const appJson = require('./app.json');
+
+module.exports = {
+  expo: {
+    ...appJson.expo,
+    extra: {
+      ...(appJson.expo.extra || {}),
+      APP_ENV: process.env.APP_ENV || 'development',
+      FIREBASE_API_KEY: process.env.FIREBASE_API_KEY || '',
+      FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN || '',
+      FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID || '',
+      FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET || '',
+      FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID || '',
+      FIREBASE_APP_ID: process.env.FIREBASE_APP_ID || '',
+      FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID || '',
+      GOOGLE_WEB_CLIENT_ID: process.env.GOOGLE_WEB_CLIENT_ID || '',
+      API_BASE_URL: process.env.API_BASE_URL || 'https://api.shiftsync.app',
+      API_TIMEOUT: process.env.API_TIMEOUT || '30000',
+      ELLIE_BRAIN_URL:
+        process.env.ELLIE_BRAIN_URL ||
+        'https://ellie-brain-REGION-PROJECT.cloudfunctions.net/ellieBrain',
+      ELLIE_BRAIN_TIMEOUT: process.env.ELLIE_BRAIN_TIMEOUT || '30000',
+      PICOVOICE_ACCESS_KEY: process.env.PICOVOICE_ACCESS_KEY || '',
+      WAKE_WORD_ENABLED: process.env.WAKE_WORD_ENABLED || '',
+      WAKE_WORD_AUTO_START: process.env.WAKE_WORD_AUTO_START || '',
+      WAKE_WORD_SENSITIVITY: process.env.WAKE_WORD_SENSITIVITY || '',
+      WAKE_WORD_PHRASE: process.env.WAKE_WORD_PHRASE || '',
+      WAKE_WORD_KEYWORD_PATHS: process.env.WAKE_WORD_KEYWORD_PATHS || '',
+      WAKE_WORD_KEYWORD_PATHS_IOS: process.env.WAKE_WORD_KEYWORD_PATHS_IOS || '',
+      WAKE_WORD_KEYWORD_PATHS_ANDROID: process.env.WAKE_WORD_KEYWORD_PATHS_ANDROID || '',
+      WAKE_WORD_BUILT_IN_KEYWORDS: process.env.WAKE_WORD_BUILT_IN_KEYWORDS || '',
+    },
+  },
+};
