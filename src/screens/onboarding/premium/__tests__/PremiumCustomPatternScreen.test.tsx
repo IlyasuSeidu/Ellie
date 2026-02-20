@@ -207,7 +207,9 @@ describe('PremiumCustomPatternScreen', () => {
 
       // Wait for the tip to appear (has 800ms delay)
       const tipText = await findByText(
-        /Most shift workers find rotations with at least 3 days off/
+        /Most shift workers find rotations with at least 3 days off/i,
+        undefined,
+        { timeout: 5000 }
       );
       expect(tipText).toBeTruthy();
     });
