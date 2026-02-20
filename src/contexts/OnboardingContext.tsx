@@ -302,8 +302,14 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
     if (!data.name || data.name.trim().length === 0) {
       missingFields.push('Name');
     }
+    if (!data.occupation || data.occupation.trim().length === 0) {
+      missingFields.push('Occupation');
+    }
     if (!data.company || data.company.trim().length === 0) {
       missingFields.push('Company');
+    }
+    if (!data.country || data.country.trim().length === 0) {
+      missingFields.push('Country');
     }
 
     // Step 3: Shift system (required)

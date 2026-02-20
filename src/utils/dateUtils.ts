@@ -274,10 +274,10 @@ export function getLastDayOfMonth(date: Date): Date {
  * ```
  */
 export function toDateString(date: Date): string {
-  // Use UTC methods to ensure consistent handling across timezones
-  const year = date.getUTCFullYear();
-  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-  const day = String(date.getUTCDate()).padStart(2, '0');
+  // Use local time methods to stay consistent with dayjs (which defaults to local time)
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 }
 

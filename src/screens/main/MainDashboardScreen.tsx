@@ -481,6 +481,7 @@ export const MainDashboardScreen: React.FC = () => {
           avatarUri={userData.avatarUri}
           onAvatarChange={handleAvatarChange}
           animationDelay={0}
+          liveTick={liveTick}
           testID="dashboard-header"
         />
 

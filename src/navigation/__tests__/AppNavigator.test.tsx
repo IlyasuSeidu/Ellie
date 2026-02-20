@@ -70,6 +70,7 @@ describe('AppNavigator', () => {
       name: 'John',
       startDate: '2026-01-01',
       patternType: 'STANDARD_3_3_3',
+      shiftSystem: '2-shift',
     };
     (asyncStorageService.get as jest.Mock).mockResolvedValue(completeData);
 

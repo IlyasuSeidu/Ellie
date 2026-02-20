@@ -6,7 +6,7 @@
  */
 
 import { z } from 'zod';
-import { ShiftPattern, EnergyLevel, ReportType } from './index';
+import { ShiftPattern, ShiftSystem, EnergyLevel, ReportType } from './index';
 
 /**
  * Date String Validation
@@ -84,8 +84,12 @@ export const shiftDaySchema = z.object({
  */
 export const shiftCycleSchema = z.object({
   patternType: shiftPatternSchema,
+  shiftSystem: z.nativeEnum(ShiftSystem).optional(),
   daysOn: z.number().int().min(0).max(365),
   nightsOn: z.number().int().min(0).max(365),
+  morningOn: z.number().int().min(0).max(365).optional(),
+  afternoonOn: z.number().int().min(0).max(365).optional(),
+  nightOn: z.number().int().min(0).max(365).optional(),
   daysOff: z.number().int().min(0).max(365),
   startDate: dateStringSchema,
   phaseOffset: z.number().int().min(0),

@@ -36,6 +36,8 @@ export interface PersonalizedHeaderProps {
   onAvatarChange?: (uri: string | null) => void;
   /** Animation delay in ms */
   animationDelay?: number;
+  /** Live tick counter (increments every 60s) to refresh time-aware greeting */
+  liveTick?: number;
   /** Test ID */
   testID?: string;
 }
@@ -83,9 +85,10 @@ export const PersonalizedHeader: React.FC<PersonalizedHeaderProps> = ({
   avatarUri,
   onAvatarChange,
   animationDelay = 0,
+  liveTick = 0,
   testID,
 }) => {
-  const greeting = useMemo(() => getGreeting(), []);
+  const greeting = useMemo(() => getGreeting(), [liveTick]); // eslint-disable-line react-hooks/exhaustive-deps
   const initials = useMemo(() => getInitials(name), [name]);
 
   // ── Staggered Entrance Shared Values ──────────────────────────

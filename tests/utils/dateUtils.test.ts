@@ -529,12 +529,12 @@ describe('edge cases and timezone handling', () => {
   });
 
   it('should handle dates far in the past', () => {
-    const date = new Date('1900-01-01');
+    const date = new Date(1900, 0, 1); // Local time constructor
     expect(toDateString(date)).toBe('1900-01-01');
   });
 
   it('should handle dates far in the future', () => {
-    const date = new Date('2100-12-31');
+    const date = new Date(2100, 11, 31); // Local time constructor
     expect(toDateString(date)).toBe('2100-12-31');
   });
 

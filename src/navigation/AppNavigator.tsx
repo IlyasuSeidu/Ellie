@@ -36,8 +36,13 @@ export const AppNavigator: React.FC = () => {
       // asyncStorageService.get() auto-deserializes JSON, returns object directly
       const savedData = await asyncStorageService.get<Record<string, unknown>>('onboarding:data');
       if (savedData && typeof savedData === 'object') {
-        // Onboarding is complete if essential fields are present
-        const complete = !!(savedData.name && savedData.startDate && savedData.patternType);
+        // Onboarding is complete if all essential fields are present
+        const complete = !!(
+          savedData.name &&
+          savedData.startDate &&
+          savedData.patternType &&
+          savedData.shiftSystem
+        );
         setIsOnboardingComplete(complete);
       } else {
         setIsOnboardingComplete(false);
