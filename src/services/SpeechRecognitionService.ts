@@ -74,10 +74,7 @@ class SpeechRecognitionService {
    * @param callbacks - Event callbacks for results and errors
    * @param locale - Language locale (default: 'en-US')
    */
-  async startListening(
-    callbacks: SpeechRecognitionCallbacks,
-    locale = 'en-US'
-  ): Promise<void> {
+  async startListening(callbacks: SpeechRecognitionCallbacks, locale = 'en-US'): Promise<void> {
     if (this.isListening) {
       logger.warn('Speech recognition already active');
       return;
@@ -114,7 +111,7 @@ class SpeechRecognitionService {
   /**
    * Stop listening (triggers final result if speech was captured).
    */
-  async stopListening(): Promise<void> {
+  stopListening(): void {
     if (!this.isListening) return;
 
     try {
@@ -128,7 +125,7 @@ class SpeechRecognitionService {
   /**
    * Abort listening without waiting for final result.
    */
-  async abort(): Promise<void> {
+  abort(): void {
     if (!this.isListening) return;
 
     try {

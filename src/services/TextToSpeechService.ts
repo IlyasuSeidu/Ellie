@@ -81,7 +81,7 @@ class TextToSpeechService {
   /**
    * Stop any current speech.
    */
-  async stop(): Promise<void> {
+  stop(): void {
     if (!this.isSpeaking) return;
 
     try {

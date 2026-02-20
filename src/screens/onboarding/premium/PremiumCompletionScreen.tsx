@@ -333,7 +333,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
   };
 
   // Handle completion - navigate to Main Dashboard
-  const handleGetStarted = async () => {
+  const handleGetStarted = () => {
     if (!isSaved) return;
 
     // Call completion callback if provided

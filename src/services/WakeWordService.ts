@@ -37,6 +37,20 @@ function clampSensitivity(value: number): number {
   return Math.min(1, Math.max(0, value));
 }
 
+function isActivationLimitError(error: unknown): boolean {
+  if (!(error instanceof Error)) {
+    return false;
+  }
+
+  const name = error.name.toLowerCase();
+  const message = error.message.toLowerCase();
+  return (
+    name.includes('activationlimit') ||
+    message.includes('activation limit') ||
+    message.includes('activationlimit')
+  );
+}
+
 function getKeywordPathLabel(path: string): string {
   const fileName = path.split('/').pop() ?? path;
   return fileName.replace(/\.ppn$/i, '');
@@ -129,6 +143,14 @@ class WakeWordService {
 
           this.keywordLabels = config.keywordPaths.map(getKeywordPathLabel);
         } catch (customModelError) {
+          if (isActivationLimitError(customModelError)) {
+            logger.error(
+              'Wake-word activation limit reached; skipping built-in fallback',
+              customModelError as Error
+            );
+            throw customModelError;
+          }
+
           logger.warn('Custom wake-word model initialization failed; falling back to built-in', {
             error:
               customModelError instanceof Error

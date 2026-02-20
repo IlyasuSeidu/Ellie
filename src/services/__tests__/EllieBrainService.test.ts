@@ -45,7 +45,7 @@ describe('EllieBrainService', () => {
     it('should send a POST request to the brain URL', async () => {
       mockFetch.mockResolvedValue({
         ok: true,
-        json: async () => ({ text: 'Response' }),
+        json: () => Promise.resolve({ text: 'Response' }),
       });
 
       await ellieBrainService.query('What shift today?', mockUserContext);
@@ -62,7 +62,7 @@ describe('EllieBrainService', () => {
     it('should include query and user context in request body', async () => {
       mockFetch.mockResolvedValue({
         ok: true,
-        json: async () => ({ text: 'Response' }),
+        json: () => Promise.resolve({ text: 'Response' }),
       });
 
       await ellieBrainService.query('Test query', mockUserContext);
@@ -75,7 +75,11 @@ describe('EllieBrainService', () => {
     it('should return the response text', async () => {
       mockFetch.mockResolvedValue({
         ok: true,
-        json: async () => ({ text: 'You have a day shift.', shiftData: { toolName: 'get_current_status', data: {} } }),
+        json: () =>
+          Promise.resolve({
+            text: 'You have a day shift.',
+            shiftData: { toolName: 'get_current_status', data: {} },
+          }),
       });
 
       const result = await ellieBrainService.query('What shift?', mockUserContext);
@@ -87,7 +91,7 @@ describe('EllieBrainService', () => {
     it('should strip HTML tags from query', async () => {
       mockFetch.mockResolvedValue({
         ok: true,
-        json: async () => ({ text: 'Response' }),
+        json: () => Promise.resolve({ text: 'Response' }),
       });
 
       await ellieBrainService.query('<script>alert("xss")</script>What shift?', mockUserContext);
@@ -100,7 +104,7 @@ describe('EllieBrainService', () => {
     it('should truncate long queries', async () => {
       mockFetch.mockResolvedValue({
         ok: true,
-        json: async () => ({ text: 'Response' }),
+        json: () => Promise.resolve({ text: 'Response' }),
       });
 
       const longQuery = 'a'.repeat(1000);
@@ -111,15 +115,13 @@ describe('EllieBrainService', () => {
     });
 
     it('should throw for empty queries', async () => {
-      await expect(
-        ellieBrainService.query('   ', mockUserContext)
-      ).rejects.toThrow('Empty query');
+      await expect(ellieBrainService.query('   ', mockUserContext)).rejects.toThrow('Empty query');
     });
 
     it('should include conversation history trimmed to max messages', async () => {
       mockFetch.mockResolvedValue({
         ok: true,
-        json: async () => ({ text: 'Response' }),
+        json: () => Promise.resolve({ text: 'Response' }),
       });
 
       const history = Array.from({ length: 20 }, (_, i) => ({
@@ -140,35 +142,35 @@ describe('EllieBrainService', () => {
       mockFetch.mockResolvedValue({
         ok: false,
         status: 429,
-        text: async () => 'Too many requests',
+        text: () => Promise.resolve('Too many requests'),
       });
 
-      await expect(
-        ellieBrainService.query('Test', mockUserContext)
-      ).rejects.toThrow('Rate limit exceeded');
+      await expect(ellieBrainService.query('Test', mockUserContext)).rejects.toThrow(
+        'Rate limit exceeded'
+      );
     });
 
     it('should throw for 500 server error', async () => {
       mockFetch.mockResolvedValue({
         ok: false,
         status: 500,
-        text: async () => 'Internal server error',
+        text: () => Promise.resolve('Internal server error'),
       });
 
-      await expect(
-        ellieBrainService.query('Test', mockUserContext)
-      ).rejects.toThrow('Backend error (500)');
+      await expect(ellieBrainService.query('Test', mockUserContext)).rejects.toThrow(
+        'Backend error (500)'
+      );
     });
 
     it('should throw for invalid response without text', async () => {
       mockFetch.mockResolvedValue({
         ok: true,
-        json: async () => ({}),
+        json: () => Promise.resolve({}),
       });
 
-      await expect(
-        ellieBrainService.query('Test', mockUserContext)
-      ).rejects.toThrow('Invalid response from backend');
+      await expect(ellieBrainService.query('Test', mockUserContext)).rejects.toThrow(
+        'Invalid response from backend'
+      );
     });
   });
 

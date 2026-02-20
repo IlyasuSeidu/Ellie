@@ -71,7 +71,7 @@ export function getBuiltInKeywordsMap(): BuiltInKeywordsMap {
   return wakeWordPackage?.BuiltInKeywords ?? {};
 }
 
-export async function createPorcupineManagerFromBuiltIns(
+export function createPorcupineManagerFromBuiltIns(
   accessKey: string,
   keywords: string[],
   detectionCallback: DetectionCallback,
@@ -92,7 +92,7 @@ export async function createPorcupineManagerFromBuiltIns(
   );
 }
 
-export async function createPorcupineManagerFromKeywordPaths(
+export function createPorcupineManagerFromKeywordPaths(
   accessKey: string,
   keywordPaths: string[],
   detectionCallback: DetectionCallback,
@@ -112,4 +112,3 @@ export async function createPorcupineManagerFromKeywordPaths(
     sensitivities
   );
 }
-

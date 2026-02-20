@@ -16,6 +16,7 @@ import type {
   VoiceAssistantError,
 } from '@/types/voiceAssistant';
 import { ShiftPattern, ShiftSystem } from '@/types';
+import { tryOfflineFallback } from '@/utils/offlineFallback';
 
 // ── Mocks ──────────────────────────────────────────────────────────
 
@@ -133,7 +134,8 @@ describe('VoiceAssistantService', () => {
     it('should register onPartialResult callback', async () => {
       await voiceAssistantService.startListening();
 
-      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock.calls[0][0];
+      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
+        .calls[0][0];
       registeredCallbacks.onPartialResult('testing partial');
 
       expect(callbacks.onPartialTranscript).toHaveBeenCalledWith('testing partial');
@@ -169,13 +171,18 @@ describe('VoiceAssistantService', () => {
       await voiceAssistantService.startListening();
 
       // Get the registered callbacks from startListening
-      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock.calls[0][0];
+      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
+        .calls[0][0];
 
       // Mock the brain to hang (don't resolve)
       (ellieBrainService.query as jest.Mock).mockReturnValue(new Promise(() => {}));
 
       // Trigger final result which moves to processing
-      registeredCallbacks.onFinalResult({ transcript: 'test query', isFinal: true, confidence: 0.9 });
+      registeredCallbacks.onFinalResult({
+        transcript: 'test query',
+        isFinal: true,
+        confidence: 0.9,
+      });
 
       // Wait for state transition
       await new Promise((r) => setTimeout(r, 10));
@@ -185,7 +192,7 @@ describe('VoiceAssistantService', () => {
       expect(ellieBrainService.abort).toHaveBeenCalled();
     });
 
-    it('should stop TTS when in speaking state', async () => {
+    it('should stop TTS when in speaking state', () => {
       // We need to go through the full pipeline: listen → process → speak
       // This is complex, so let's just verify the cancel logic directly
       // by checking it calls the right service methods
@@ -196,7 +203,8 @@ describe('VoiceAssistantService', () => {
   describe('handleFinalTranscript (via onFinalResult)', () => {
     it('should create a user message when final transcript received', async () => {
       await voiceAssistantService.startListening();
-      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock.calls[0][0];
+      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
+        .calls[0][0];
 
       // Mock the brain to return a response
       (ellieBrainService.query as jest.Mock).mockResolvedValue({
@@ -209,7 +217,11 @@ describe('VoiceAssistantService', () => {
         return Promise.resolve();
       });
 
-      registeredCallbacks.onFinalResult({ transcript: 'What shift today?', isFinal: true, confidence: 0.95 });
+      registeredCallbacks.onFinalResult({
+        transcript: 'What shift today?',
+        isFinal: true,
+        confidence: 0.95,
+      });
 
       // Wait for async processing
       await new Promise((r) => setTimeout(r, 50));
@@ -224,7 +236,8 @@ describe('VoiceAssistantService', () => {
 
     it('should return to idle when transcript is empty', async () => {
       await voiceAssistantService.startListening();
-      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock.calls[0][0];
+      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
+        .calls[0][0];
 
       registeredCallbacks.onFinalResult({ transcript: '  ', isFinal: true, confidence: 0 });
 
@@ -236,8 +249,6 @@ describe('VoiceAssistantService', () => {
   });
 
   describe('processQuery with offline fallback', () => {
-    const { tryOfflineFallback } = require('@/utils/offlineFallback');
-
     it('should use offline fallback when query is handled', async () => {
       (tryOfflineFallback as jest.Mock).mockReturnValue({
         handled: true,
@@ -252,9 +263,14 @@ describe('VoiceAssistantService', () => {
       });
 
       await voiceAssistantService.startListening();
-      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock.calls[0][0];
+      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
+        .calls[0][0];
 
-      registeredCallbacks.onFinalResult({ transcript: 'What shift today?', isFinal: true, confidence: 0.9 });
+      registeredCallbacks.onFinalResult({
+        transcript: 'What shift today?',
+        isFinal: true,
+        confidence: 0.9,
+      });
 
       await new Promise((r) => setTimeout(r, 50));
 
@@ -289,9 +305,14 @@ describe('VoiceAssistantService', () => {
       });
 
       await voiceAssistantService.startListening();
-      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock.calls[0][0];
+      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
+        .calls[0][0];
 
-      registeredCallbacks.onFinalResult({ transcript: 'How many night shifts this month?', isFinal: true, confidence: 0.9 });
+      registeredCallbacks.onFinalResult({
+        transcript: 'How many night shifts this month?',
+        isFinal: true,
+        confidence: 0.9,
+      });
 
       await new Promise((r) => setTimeout(r, 50));
 
@@ -308,7 +329,8 @@ describe('VoiceAssistantService', () => {
   describe('error handling', () => {
     it('should handle permission denied errors', async () => {
       await voiceAssistantService.startListening();
-      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock.calls[0][0];
+      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
+        .calls[0][0];
 
       registeredCallbacks.onError(new Error('Speech recognition permission denied'));
 
@@ -322,7 +344,8 @@ describe('VoiceAssistantService', () => {
 
     it('should handle generic speech recognition errors', async () => {
       await voiceAssistantService.startListening();
-      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock.calls[0][0];
+      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
+        .calls[0][0];
 
       registeredCallbacks.onError(new Error('No speech detected'));
 
@@ -335,7 +358,6 @@ describe('VoiceAssistantService', () => {
     });
 
     it('should handle brain service errors', async () => {
-      const { tryOfflineFallback } = require('@/utils/offlineFallback');
       (tryOfflineFallback as jest.Mock).mockReturnValue({ handled: false });
 
       (ellieBrainService.query as jest.Mock).mockRejectedValue(
@@ -343,9 +365,14 @@ describe('VoiceAssistantService', () => {
       );
 
       await voiceAssistantService.startListening();
-      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock.calls[0][0];
+      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
+        .calls[0][0];
 
-      registeredCallbacks.onFinalResult({ transcript: 'Tell me something', isFinal: true, confidence: 0.9 });
+      registeredCallbacks.onFinalResult({
+        transcript: 'Tell me something',
+        isFinal: true,
+        confidence: 0.9,
+      });
 
       await new Promise((r) => setTimeout(r, 50));
 
@@ -360,7 +387,6 @@ describe('VoiceAssistantService', () => {
 
   describe('conversation history', () => {
     it('should accumulate messages in history', async () => {
-      const { tryOfflineFallback } = require('@/utils/offlineFallback');
       (tryOfflineFallback as jest.Mock).mockReturnValue({
         handled: true,
         text: 'Day shift today.',
@@ -373,9 +399,14 @@ describe('VoiceAssistantService', () => {
       });
 
       await voiceAssistantService.startListening();
-      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock.calls[0][0];
+      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
+        .calls[0][0];
 
-      registeredCallbacks.onFinalResult({ transcript: 'Shift today?', isFinal: true, confidence: 0.9 });
+      registeredCallbacks.onFinalResult({
+        transcript: 'Shift today?',
+        isFinal: true,
+        confidence: 0.9,
+      });
 
       await new Promise((r) => setTimeout(r, 50));
 
@@ -386,7 +417,6 @@ describe('VoiceAssistantService', () => {
     });
 
     it('should clear history when clearHistory is called', async () => {
-      const { tryOfflineFallback } = require('@/utils/offlineFallback');
       (tryOfflineFallback as jest.Mock).mockReturnValue({
         handled: true,
         text: 'Response',
@@ -399,7 +429,8 @@ describe('VoiceAssistantService', () => {
       });
 
       await voiceAssistantService.startListening();
-      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock.calls[0][0];
+      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
+        .calls[0][0];
       registeredCallbacks.onFinalResult({ transcript: 'Test', isFinal: true, confidence: 0.9 });
 
       await new Promise((r) => setTimeout(r, 50));

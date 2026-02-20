@@ -217,11 +217,11 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
 
   useEffect(() => {
     const userContext = buildUserContext();
-    if (!userContext) return;
+    if (!userContext) return undefined;
 
     if (initializedRef.current) {
       voiceAssistantService.updateUserContext(userContext);
-      return;
+      return undefined;
     }
 
     voiceAssistantService.initialize(

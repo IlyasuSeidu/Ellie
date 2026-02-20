@@ -530,9 +530,9 @@ describe('executeGetNextOccurrence', () => {
 
     expect(result.found).toBe(true);
     expect(result.shiftDay).toBeDefined();
-    expect(result.shiftDay!.shiftType).toBe('off');
-    expect(result.shiftDay!.date).toBe('2024-01-09');
-    expect(result.shiftDay!.isWorkDay).toBe(false);
+    expect(result.shiftDay?.shiftType).toBe('off');
+    expect(result.shiftDay?.date).toBe('2024-01-09');
+    expect(result.shiftDay?.isWorkDay).toBe(false);
   });
 
   it('should find the next night shift from the start of a 2-shift cycle', () => {
@@ -544,8 +544,8 @@ describe('executeGetNextOccurrence', () => {
 
     expect(result.found).toBe(true);
     expect(result.shiftDay).toBeDefined();
-    expect(result.shiftDay!.shiftType).toBe('night');
-    expect(result.shiftDay!.date).toBe('2024-01-05');
+    expect(result.shiftDay?.shiftType).toBe('night');
+    expect(result.shiftDay?.date).toBe('2024-01-05');
   });
 
   it('should find the next day shift from an off day', () => {
@@ -557,8 +557,8 @@ describe('executeGetNextOccurrence', () => {
 
     expect(result.found).toBe(true);
     expect(result.shiftDay).toBeDefined();
-    expect(result.shiftDay!.shiftType).toBe('day');
-    expect(result.shiftDay!.date).toBe('2024-01-13');
+    expect(result.shiftDay?.shiftType).toBe('day');
+    expect(result.shiftDay?.date).toBe('2024-01-13');
   });
 
   it('should find the next morning shift from the start of a 3-shift cycle', () => {
@@ -570,8 +570,8 @@ describe('executeGetNextOccurrence', () => {
 
     expect(result.found).toBe(true);
     expect(result.shiftDay).toBeDefined();
-    expect(result.shiftDay!.shiftType).toBe('morning');
-    expect(result.shiftDay!.date).toBe('2024-01-10');
+    expect(result.shiftDay?.shiftType).toBe('morning');
+    expect(result.shiftDay?.date).toBe('2024-01-10');
   });
 
   it('should find the next afternoon shift in a 3-shift cycle', () => {
@@ -583,8 +583,8 @@ describe('executeGetNextOccurrence', () => {
 
     expect(result.found).toBe(true);
     expect(result.shiftDay).toBeDefined();
-    expect(result.shiftDay!.shiftType).toBe('afternoon');
-    expect(result.shiftDay!.date).toBe('2024-01-03');
+    expect(result.shiftDay?.shiftType).toBe('afternoon');
+    expect(result.shiftDay?.date).toBe('2024-01-03');
   });
 
   it('should skip the current day and search from the day after', () => {
@@ -596,20 +596,17 @@ describe('executeGetNextOccurrence', () => {
     );
 
     expect(result.found).toBe(true);
-    expect(result.shiftDay!.date).toBe('2024-01-06');
+    expect(result.shiftDay?.date).toBe('2024-01-06');
   });
 
   it('should use today as default when fromDate is not provided', () => {
     // No fromDate specified, should use today
-    const result = executeGetNextOccurrence(
-      { shiftType: 'off' },
-      twoShiftCycle
-    );
+    const result = executeGetNextOccurrence({ shiftType: 'off' }, twoShiftCycle);
 
     expect(result.found).toBe(true);
     expect(result.shiftDay).toBeDefined();
-    expect(result.shiftDay!.shiftType).toBe('off');
-    expect(result.shiftDay!.isWorkDay).toBe(false);
+    expect(result.shiftDay?.shiftType).toBe('off');
+    expect(result.shiftDay?.isWorkDay).toBe(false);
   });
 
   it('should not find a non-existent shift type in a 2-shift cycle', () => {
@@ -667,11 +664,9 @@ describe('executeTool', () => {
   });
 
   it('should dispatch get_current_status correctly', () => {
-    const result = executeTool(
-      'get_current_status',
-      {},
-      twoShiftCycle
-    ) as ReturnType<typeof executeGetCurrentStatus>;
+    const result = executeTool('get_current_status', {}, twoShiftCycle) as ReturnType<
+      typeof executeGetCurrentStatus
+    >;
 
     expect(result).toHaveProperty('todayShift');
     expect(result.todayShift).toHaveProperty('date');
@@ -695,12 +690,9 @@ describe('executeTool', () => {
       },
     };
 
-    const result = executeTool(
-      'get_current_status',
-      {},
-      alwaysDayCycle,
-      userData
-    ) as ReturnType<typeof executeGetCurrentStatus>;
+    const result = executeTool('get_current_status', {}, alwaysDayCycle, userData) as ReturnType<
+      typeof executeGetCurrentStatus
+    >;
 
     expect(result.todayShift.shiftType).toBe('day');
     expect(result.shiftTimes).toBe('7:00 AM to 7:00 PM');
@@ -729,37 +721,27 @@ describe('executeTool', () => {
 
     expect(result.found).toBe(true);
     expect(result.shiftDay).toBeDefined();
-    expect(result.shiftDay!.shiftType).toBe('off');
+    expect(result.shiftDay?.shiftType).toBe('off');
   });
 
   it('should return an error for an unknown tool name', () => {
-    const result = executeTool(
-      'unknown_tool',
-      {},
-      twoShiftCycle
-    ) as { error: string };
+    const result = executeTool('unknown_tool', {}, twoShiftCycle) as { error: string };
 
     expect(result).toHaveProperty('error');
     expect(result.error).toBe('Unknown tool: unknown_tool');
   });
 
   it('should return an error for an empty tool name', () => {
-    const result = executeTool(
-      '',
-      {},
-      twoShiftCycle
-    ) as { error: string };
+    const result = executeTool('', {}, twoShiftCycle) as { error: string };
 
     expect(result).toHaveProperty('error');
     expect(result.error).toBe('Unknown tool: ');
   });
 
   it('should return an error for a similarly named but incorrect tool', () => {
-    const result = executeTool(
-      'getShiftForDate',
-      { date: '2024-01-01' },
-      twoShiftCycle
-    ) as { error: string };
+    const result = executeTool('getShiftForDate', { date: '2024-01-01' }, twoShiftCycle) as {
+      error: string;
+    };
 
     expect(result).toHaveProperty('error');
     expect(result.error).toBe('Unknown tool: getShiftForDate');
@@ -814,12 +796,11 @@ describe('cross-function consistency', () => {
     );
 
     expect(occurrence.found).toBe(true);
+    expect(occurrence.shiftDay).toBeDefined();
 
     // Verify the found date actually has the expected shift type
-    const verification = executeGetShiftForDate(
-      { date: occurrence.shiftDay!.date },
-      twoShiftCycle
-    );
+    const foundDate = occurrence.shiftDay?.date ?? '';
+    const verification = executeGetShiftForDate({ date: foundDate }, twoShiftCycle);
     expect(verification.shiftType).toBe('night');
   });
 

@@ -40,7 +40,7 @@ export const ResponseBubble: React.FC<ResponseBubbleProps> = ({
   useEffect(() => {
     if (!shouldAnimate) {
       setDisplayedText(message.text);
-      return;
+      return undefined;
     }
 
     let charIndex = 0;
@@ -68,11 +68,7 @@ export const ResponseBubble: React.FC<ResponseBubbleProps> = ({
       entering={FadeInUp.delay(index * 50).duration(300)}
       style={[styles.container, isUser ? styles.userContainer : styles.assistantContainer]}
       accessibilityRole="text"
-      accessibilityLabel={
-        isUser
-          ? `You said: ${message.text}`
-          : `Ellie said: ${message.text}`
-      }
+      accessibilityLabel={isUser ? `You said: ${message.text}` : `Ellie said: ${message.text}`}
     >
       <View style={[styles.bubble, isUser ? styles.userBubble : styles.assistantBubble]}>
         {!isUser && <Text style={styles.assistantLabel}>Ellie</Text>}
