@@ -596,7 +596,8 @@ describe('PremiumShiftTimeInputScreen', () => {
 });
 
 // Helper function to get all elements by text (since getAllByText is not available in some test utils)
-function getAllByText(getByText: (text: string) => unknown, text: string): unknown[] {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getAllByText(getByText: (text: string) => unknown, text: string): any[] {
   try {
     const result = getByText(text);
     return Array.isArray(result) ? result : [result];

@@ -7,10 +7,23 @@
 
 import { onRequest } from 'firebase-functions/v2/https';
 import { defineSecret } from 'firebase-functions/params';
-import { processQuery } from './ellie-brain';
-import { EllieBrainRequest } from './types';
+import { EllieBrainProcessingError, processQuery } from './ellie-brain';
+import { EllieBrainSuccessEnvelope } from './types';
+import { createErrorEnvelope, createRequestId, validateRequestBody } from './http-utils';
 
 const openaiApiKey = defineSecret('OPENAI_API_KEY');
+const PROVIDER_TIMEOUT_MS = 25000;
+
+function logStructured(level: 'info' | 'error', message: string, details: Record<string, unknown>) {
+  const payload = JSON.stringify({ message, ...details });
+  if (level === 'error') {
+    // eslint-disable-next-line no-console
+    console.error(payload);
+    return;
+  }
+  // eslint-disable-next-line no-console
+  console.info(payload);
+}
 
 /**
  * Main HTTPS endpoint for the Ellie Brain.
@@ -28,56 +41,103 @@ export const ellieBrain = onRequest(
     memory: '256MiB',
   },
   async (req, res) => {
+    const startedAt = Date.now();
+    const requestId = createRequestId(req.get('x-request-id'));
+
     // Only allow POST
     if (req.method !== 'POST') {
-      res.status(405).json({ error: 'Method not allowed' });
+      res
+        .status(405)
+        .json(createErrorEnvelope(requestId, 'invalid_request', 'Method not allowed.', false));
       return;
     }
 
     try {
-      const body = req.body as EllieBrainRequest;
-
-      // Validate required fields
-      if (!body.query || typeof body.query !== 'string') {
-        res.status(400).json({ error: 'Missing or invalid query' });
+      const validation = validateRequestBody(req.body);
+      if (!validation.ok) {
+        const shouldRetry =
+          validation.code === 'rate_limited' || validation.code === 'provider_timeout';
+        res
+          .status(validation.statusCode)
+          .json(createErrorEnvelope(requestId, validation.code, validation.message, shouldRetry));
         return;
-      }
-
-      if (!body.userContext?.name || !body.userContext?.shiftCycle) {
-        res.status(400).json({ error: 'Missing user context' });
-        return;
-      }
-
-      if (!body.userContext.shiftCycle.startDate || body.userContext.shiftCycle.daysOff === undefined) {
-        res.status(400).json({ error: 'Invalid shift cycle data' });
-        return;
-      }
-
-      // Sanitize query length
-      if (body.query.length > 500) {
-        body.query = body.query.slice(0, 500);
       }
 
       const apiKey = openaiApiKey.value();
       if (!apiKey) {
-        console.error('OPENAI_API_KEY secret is not configured');
-        res.status(500).json({ error: 'Service configuration error' });
+        logStructured('error', 'OPENAI_API_KEY secret is not configured', {
+          requestId,
+          errorCode: 'internal_error',
+          latencyMs: Date.now() - startedAt,
+        });
+        res
+          .status(500)
+          .json(
+            createErrorEnvelope(requestId, 'internal_error', 'Service configuration error.', false)
+          );
         return;
       }
 
-      const response = await processQuery(body, apiKey);
-      res.status(200).json(response);
-    } catch (error) {
-      console.error('Ellie Brain error:', error);
+      const response = await processQuery(validation.request, apiKey, {
+        requestId,
+        timeoutMs: PROVIDER_TIMEOUT_MS,
+      });
 
-      const message = error instanceof Error ? error.message : 'Unknown error';
-
-      // Don't leak internal errors to client
-      if (message.includes('rate_limit') || message.includes('429')) {
-        res.status(429).json({ error: 'Too many requests. Please try again in a moment.' });
-      } else {
-        res.status(500).json({ error: 'Something went wrong. Please try again.' });
+      if (!response.text || response.text.trim().length === 0) {
+        throw new EllieBrainProcessingError(
+          'provider_error',
+          'Provider returned an empty response.',
+          true,
+          502
+        );
       }
+
+      const successEnvelope: EllieBrainSuccessEnvelope = {
+        ok: true,
+        requestId,
+        data: {
+          ...response,
+          requestId,
+        },
+      };
+
+      logStructured('info', 'Ellie Brain request completed', {
+        requestId,
+        latencyMs: Date.now() - startedAt,
+        providerStatus: 'ok',
+      });
+
+      res.status(200).json(successEnvelope);
+    } catch (error) {
+      const mappedError =
+        error instanceof EllieBrainProcessingError
+          ? error
+          : new EllieBrainProcessingError(
+              'internal_error',
+              'Something went wrong. Please try again.',
+              true,
+              500
+            );
+
+      logStructured('error', 'Ellie Brain request failed', {
+        requestId,
+        errorCode: mappedError.code,
+        retryable: mappedError.retryable,
+        providerStatus: mappedError.providerStatus ?? 'unknown',
+        latencyMs: Date.now() - startedAt,
+        message: mappedError.message,
+      });
+
+      res
+        .status(mappedError.statusCode)
+        .json(
+          createErrorEnvelope(
+            requestId,
+            mappedError.code,
+            mappedError.message,
+            mappedError.retryable
+          )
+        );
     }
   }
 );

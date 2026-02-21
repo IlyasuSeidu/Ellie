@@ -54,4 +54,40 @@ export interface EllieBrainResponse {
     toolName: string;
     data: unknown;
   };
+  requestId?: string;
+}
+
+export type EllieBrainErrorCode =
+  | 'invalid_request'
+  | 'missing_user_context'
+  | 'invalid_user_context'
+  | 'rate_limited'
+  | 'provider_timeout'
+  | 'provider_error'
+  | 'internal_error';
+
+export interface EllieBrainError {
+  code: EllieBrainErrorCode;
+  message: string;
+  retryable: boolean;
+  requestId: string;
+}
+
+export interface EllieBrainSuccessEnvelope {
+  ok: true;
+  requestId: string;
+  data: EllieBrainResponse;
+}
+
+export interface EllieBrainErrorEnvelope {
+  ok: false;
+  requestId: string;
+  error: EllieBrainError;
+}
+
+export type EllieBrainResponseEnvelope = EllieBrainSuccessEnvelope | EllieBrainErrorEnvelope;
+
+export interface QueryProcessingOptions {
+  requestId: string;
+  timeoutMs: number;
 }

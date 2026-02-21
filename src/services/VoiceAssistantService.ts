@@ -9,7 +9,7 @@
 
 import { speechRecognitionService } from './SpeechRecognitionService';
 import { textToSpeechService } from './TextToSpeechService';
-import { ellieBrainService } from './EllieBrainService';
+import { ellieBrainService, EllieBrainServiceError } from './EllieBrainService';
 import { voiceAssistantConfig } from '@/config/env';
 import { logger } from '@/utils/logger';
 import { tryOfflineFallback } from '@/utils/offlineFallback';
@@ -46,17 +46,19 @@ class VoiceAssistantService {
   private currentState: VoiceAssistantState = 'idle';
   private userContext: VoiceAssistantUserContext | null = null;
   private conversationHistory: VoiceMessage[] = [];
+  private isStartingListening = false;
+  private activeRequestToken = 0;
+  private currentProcessingToken: number | null = null;
+  private currentSpeechToken: number | null = null;
 
   /**
    * Initialize the service with callbacks and user context.
    */
-  initialize(
-    callbacks: VoiceAssistantCallbacks,
-    userContext: VoiceAssistantUserContext
-  ): void {
+  initialize(callbacks: VoiceAssistantCallbacks, userContext: VoiceAssistantUserContext): void {
     this.callbacks = callbacks;
     this.userContext = userContext;
-    this.setState('idle');
+    this.setState('idle', true);
+    this.resetEphemeralState();
   }
 
   /**
@@ -70,38 +72,51 @@ class VoiceAssistantService {
    * Start listening for speech.
    */
   async startListening(): Promise<void> {
-    if (this.currentState !== 'idle') {
+    // Recover from retryable errors without forcing explicit cancel/reset.
+    if (this.currentState === 'error') {
+      this.setState('idle');
+    }
+
+    if (this.currentState !== 'idle' || this.isStartingListening) {
       logger.warn('Cannot start listening from state', { state: this.currentState });
       return;
     }
 
-    this.setState('listening');
+    this.isStartingListening = true;
+    try {
+      this.activeRequestToken += 1;
+      this.resetEphemeralState();
+      this.setState('listening');
 
-    await speechRecognitionService.startListening(
-      {
-        onPartialResult: (transcript) => {
-          this.callbacks?.onPartialTranscript(transcript);
+      await speechRecognitionService.startListening(
+        {
+          onPartialResult: (transcript) => {
+            this.callbacks?.onPartialTranscript(transcript);
+          },
+          onFinalResult: (result) => {
+            void this.handleFinalTranscript(result.transcript);
+          },
+          onError: (error) => {
+            if (error.message === 'Speech recognition permission denied') {
+              this.handleError('permission_denied', error.message);
+            } else {
+              this.handleError('speech_recognition_failed', error.message);
+            }
+          },
+          onEnd: () => {
+            // If still in listening state when recognition ends naturally,
+            // it means no result was captured
+            if (this.currentState === 'listening') {
+              this.resetEphemeralState();
+              this.setState('idle');
+            }
+          },
         },
-        onFinalResult: (result) => {
-          this.handleFinalTranscript(result.transcript);
-        },
-        onError: (error) => {
-          if (error.message === 'Speech recognition permission denied') {
-            this.handleError('permission_denied', error.message);
-          } else {
-            this.handleError('speech_recognition_failed', error.message);
-          }
-        },
-        onEnd: () => {
-          // If still in listening state when recognition ends naturally,
-          // it means no result was captured
-          if (this.currentState === 'listening') {
-            this.setState('idle');
-          }
-        },
-      },
-      voiceAssistantConfig.locale
-    );
+        voiceAssistantConfig.locale
+      );
+    } finally {
+      this.isStartingListening = false;
+    }
   }
 
   /**
@@ -116,17 +131,21 @@ class VoiceAssistantService {
    * Cancel the current operation and return to idle.
    */
   async cancel(): Promise<void> {
+    this.activeRequestToken += 1;
+    this.resetEphemeralState();
+
     switch (this.currentState) {
       case 'listening':
         await speechRecognitionService.abort();
         break;
       case 'processing':
-        ellieBrainService.abort();
+        ellieBrainService.abort('user');
         break;
       case 'speaking':
         await textToSpeechService.stop();
         break;
     }
+
     this.setState('idle');
   }
 
@@ -134,7 +153,12 @@ class VoiceAssistantService {
    * Handle a completed transcript from speech recognition.
    */
   private async handleFinalTranscript(transcript: string): Promise<void> {
+    if (this.currentState !== 'listening') {
+      return;
+    }
+
     if (!transcript.trim()) {
+      this.resetEphemeralState();
       this.setState('idle');
       return;
     }
@@ -151,17 +175,25 @@ class VoiceAssistantService {
     this.trimHistory();
     this.callbacks?.onUserMessage(userMessage);
 
+    const requestToken = this.activeRequestToken + 1;
+    this.activeRequestToken = requestToken;
+    this.currentProcessingToken = requestToken;
+
     // Process with brain
-    await this.processQuery(userMessage.text);
+    await this.processQuery(userMessage.text, requestToken);
   }
 
   /**
    * Send query to the Ellie Brain and handle response.
    * Tries offline fallback first for simple queries.
    */
-  private async processQuery(query: string): Promise<void> {
+  private async processQuery(query: string, requestToken: number): Promise<void> {
     if (!this.userContext) {
       this.handleError('unknown', 'Voice assistant not initialized');
+      return;
+    }
+
+    if (this.currentProcessingToken !== requestToken) {
       return;
     }
 
@@ -177,6 +209,10 @@ class VoiceAssistantService {
     if (offlineResult.handled && offlineResult.text) {
       logger.info('Query handled offline', { toolName: offlineResult.toolName });
 
+      if (this.currentProcessingToken !== requestToken) {
+        return;
+      }
+
       const assistantMessage: VoiceMessage = {
         id: generateMessageId(),
         role: 'assistant',
@@ -191,7 +227,7 @@ class VoiceAssistantService {
       this.trimHistory();
       this.callbacks?.onAssistantMessage(assistantMessage);
 
-      await this.speakResponse(offlineResult.text);
+      await this.speakResponse(offlineResult.text, requestToken);
       return;
     }
 
@@ -202,6 +238,10 @@ class VoiceAssistantService {
         this.userContext,
         this.conversationHistory
       );
+
+      if (this.currentProcessingToken !== requestToken) {
+        return;
+      }
 
       const assistantMessage: VoiceMessage = {
         id: generateMessageId(),
@@ -216,19 +256,35 @@ class VoiceAssistantService {
       this.callbacks?.onAssistantMessage(assistantMessage);
 
       // Speak the response
-      await this.speakResponse(response.text);
+      await this.speakResponse(response.text, requestToken);
     } catch (error) {
+      if (this.currentProcessingToken !== requestToken) {
+        return;
+      }
+
+      if (error instanceof EllieBrainServiceError) {
+        if (error.code === 'request_cancelled') {
+          return;
+        }
+
+        this.handleError(error.type, error.message, {
+          retryable: error.retryable,
+          code: error.code,
+          requestId: error.requestId,
+          statusCode: error.statusCode,
+        });
+        return;
+      }
+
       const message = (error as Error).message;
       if (message === 'Request cancelled') {
         // User cancelled, already handled
         return;
       }
-      if (message.includes('Rate limit')) {
-        this.handleError('network_error', message);
-      } else if (message.includes('Backend error')) {
-        this.handleError('backend_error', message);
-      } else {
-        this.handleError('network_error', message);
+      this.handleError('backend_error', message);
+    } finally {
+      if (this.currentProcessingToken === requestToken) {
+        this.currentProcessingToken = null;
       }
     }
   }
@@ -236,7 +292,12 @@ class VoiceAssistantService {
   /**
    * Speak the assistant's response via TTS.
    */
-  private async speakResponse(text: string): Promise<void> {
+  private async speakResponse(text: string, requestToken: number): Promise<void> {
+    if (this.activeRequestToken !== requestToken) {
+      return;
+    }
+
+    this.currentSpeechToken = requestToken;
     this.setState('speaking');
 
     // Resolve TTS language from the configured locale
@@ -249,12 +310,26 @@ class VoiceAssistantService {
       language: ttsLanguage,
       rate: voiceAssistantConfig.speechRate,
       onDone: () => {
+        if (this.currentSpeechToken !== requestToken) {
+          return;
+        }
+        this.currentSpeechToken = null;
+        this.resetEphemeralState();
         this.setState('idle');
       },
       onStopped: () => {
+        if (this.currentSpeechToken !== requestToken) {
+          return;
+        }
+        this.currentSpeechToken = null;
+        this.resetEphemeralState();
         this.setState('idle');
       },
       onError: (error) => {
+        if (this.currentSpeechToken !== requestToken) {
+          return;
+        }
+        this.currentSpeechToken = null;
         this.handleError('tts_error', error.message);
       },
     });
@@ -263,15 +338,35 @@ class VoiceAssistantService {
   /**
    * Handle an error and transition to error state.
    */
-  private handleError(type: VoiceAssistantErrorType, message: string): void {
+  private handleError(
+    type: VoiceAssistantErrorType,
+    message: string,
+    overrides: Partial<VoiceAssistantError> = {}
+  ): void {
     logger.error('Voice assistant error', new Error(message), { type });
+
+    const retryableDefaults: Record<VoiceAssistantErrorType, boolean> = {
+      permission_denied: false,
+      speech_recognition_failed: true,
+      network_error: true,
+      backend_error: true,
+      rate_limited: true,
+      timeout: true,
+      wake_word_unavailable: false,
+      tts_error: true,
+      unknown: false,
+    };
 
     const error: VoiceAssistantError = {
       type,
       message,
-      retryable: type !== 'permission_denied',
+      retryable: overrides.retryable ?? retryableDefaults[type],
+      code: overrides.code,
+      requestId: overrides.requestId,
+      statusCode: overrides.statusCode,
     };
 
+    this.resetEphemeralState();
     this.setState('error');
     this.callbacks?.onError(error);
   }
@@ -279,9 +374,18 @@ class VoiceAssistantService {
   /**
    * Transition to a new state.
    */
-  private setState(state: VoiceAssistantState): void {
+  private setState(state: VoiceAssistantState, force = false): void {
+    if (!force && this.currentState === state) {
+      return;
+    }
+
     this.currentState = state;
     this.callbacks?.onStateChange(state);
+  }
+
+  private resetEphemeralState(): void {
+    this.currentProcessingToken = null;
+    this.currentSpeechToken = null;
   }
 
   /**
@@ -324,6 +428,9 @@ class VoiceAssistantService {
     this.callbacks = null;
     this.userContext = null;
     this.conversationHistory = [];
+    this.isStartingListening = false;
+    this.activeRequestToken = 0;
+    this.resetEphemeralState();
     this.currentState = 'idle';
   }
 }

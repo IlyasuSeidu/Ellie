@@ -1,0 +1,233 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ListeningIndicator Snapshot should match snapshot when listening 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "height": 264,
+      "justifyContent": "center",
+      "width": 264,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "borderColor": "#b45309",
+          "borderWidth": 2,
+          "position": "absolute",
+        },
+        {
+          "borderRadius": 64,
+          "height": 128,
+          "width": 128,
+        },
+        {
+          "opacity": 0,
+          "transform": [
+            {
+              "scale": 1,
+            },
+          ],
+        },
+      ]
+    }
+  />
+  <View
+    style={
+      [
+        {
+          "borderColor": "#b45309",
+          "borderWidth": 2,
+          "position": "absolute",
+        },
+        {
+          "borderRadius": 88,
+          "height": 176,
+          "width": 176,
+        },
+        {
+          "opacity": 0,
+          "transform": [
+            {
+              "scale": 1,
+            },
+          ],
+        },
+      ]
+    }
+  />
+  <View
+    style={
+      [
+        {
+          "borderColor": "#b45309",
+          "borderWidth": 2,
+          "position": "absolute",
+        },
+        {
+          "borderRadius": 112,
+          "height": 224,
+          "width": 224,
+        },
+        {
+          "opacity": 0,
+          "transform": [
+            {
+              "scale": 1,
+            },
+          ],
+        },
+      ]
+    }
+  />
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#1c1917",
+        "borderColor": "#b45309",
+        "borderRadius": 40,
+        "borderWidth": 2,
+        "height": 80,
+        "justifyContent": "center",
+        "shadowColor": "#b45309",
+        "shadowOffset": {
+          "height": 0,
+          "width": 0,
+        },
+        "shadowOpacity": 0.3,
+        "shadowRadius": 8,
+        "width": 80,
+      }
+    }
+  >
+    <Text
+      color="#b45309"
+      name="mic"
+      size={36}
+      testID="icon-mic"
+    >
+      mic
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`ListeningIndicator Snapshot should match snapshot when not listening 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "height": 264,
+      "justifyContent": "center",
+      "width": 264,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "borderColor": "#b45309",
+          "borderWidth": 2,
+          "position": "absolute",
+        },
+        {
+          "borderRadius": 64,
+          "height": 128,
+          "width": 128,
+        },
+        {
+          "opacity": 0,
+          "transform": [
+            {
+              "scale": 1,
+            },
+          ],
+        },
+      ]
+    }
+  />
+  <View
+    style={
+      [
+        {
+          "borderColor": "#b45309",
+          "borderWidth": 2,
+          "position": "absolute",
+        },
+        {
+          "borderRadius": 88,
+          "height": 176,
+          "width": 176,
+        },
+        {
+          "opacity": 0,
+          "transform": [
+            {
+              "scale": 1,
+            },
+          ],
+        },
+      ]
+    }
+  />
+  <View
+    style={
+      [
+        {
+          "borderColor": "#b45309",
+          "borderWidth": 2,
+          "position": "absolute",
+        },
+        {
+          "borderRadius": 112,
+          "height": 224,
+          "width": 224,
+        },
+        {
+          "opacity": 0,
+          "transform": [
+            {
+              "scale": 1,
+            },
+          ],
+        },
+      ]
+    }
+  />
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#1c1917",
+        "borderColor": "#b45309",
+        "borderRadius": 40,
+        "borderWidth": 2,
+        "height": 80,
+        "justifyContent": "center",
+        "shadowColor": "#b45309",
+        "shadowOffset": {
+          "height": 0,
+          "width": 0,
+        },
+        "shadowOpacity": 0.3,
+        "shadowRadius": 8,
+        "width": 80,
+      }
+    }
+  >
+    <Text
+      color="#b45309"
+      name="mic-outline"
+      size={36}
+      testID="icon-mic-outline"
+    >
+      mic-outline
+    </Text>
+  </View>
+</View>
+`;

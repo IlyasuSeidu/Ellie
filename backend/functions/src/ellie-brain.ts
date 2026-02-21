@@ -13,10 +13,129 @@ import type {
   ChatCompletionToolMessageParam,
 } from 'openai/resources/chat/completions';
 import { executeTool } from './shift-tools';
-import { EllieBrainRequest, EllieBrainResponse } from './types';
+import {
+  EllieBrainErrorCode,
+  EllieBrainRequest,
+  EllieBrainResponse,
+  QueryProcessingOptions,
+} from './types';
 
 const OPENAI_MODEL = 'gpt-4o-mini';
 const MAX_TOOL_ROUNDS = 5;
+const DEFAULT_PROVIDER_TIMEOUT_MS = 25000;
+
+interface OpenAIErrorShape {
+  status?: number;
+  code?: string;
+  type?: string;
+  message?: string;
+}
+
+export class EllieBrainProcessingError extends Error {
+  readonly code: EllieBrainErrorCode;
+  readonly retryable: boolean;
+  readonly statusCode: number;
+  readonly providerStatus?: number;
+
+  constructor(
+    code: EllieBrainErrorCode,
+    message: string,
+    retryable: boolean,
+    statusCode: number,
+    providerStatus?: number
+  ) {
+    super(message);
+    this.name = 'EllieBrainProcessingError';
+    this.code = code;
+    this.retryable = retryable;
+    this.statusCode = statusCode;
+    this.providerStatus = providerStatus;
+  }
+}
+
+function mapProviderError(error: unknown): EllieBrainProcessingError {
+  if (error instanceof EllieBrainProcessingError) {
+    return error;
+  }
+
+  const providerError = error as OpenAIErrorShape;
+  const status = typeof providerError.status === 'number' ? providerError.status : undefined;
+  const code = String(providerError.code ?? '').toLowerCase();
+  const type = String(providerError.type ?? '').toLowerCase();
+  const message = providerError.message || 'Provider request failed';
+
+  if (status === 429) {
+    return new EllieBrainProcessingError(
+      'rate_limited',
+      'Too many requests. Please retry shortly.',
+      true,
+      429,
+      status
+    );
+  }
+
+  if (
+    status === 408 ||
+    status === 504 ||
+    code.includes('timeout') ||
+    type.includes('timeout') ||
+    message.toLowerCase().includes('timeout')
+  ) {
+    return new EllieBrainProcessingError(
+      'provider_timeout',
+      'Provider request timed out.',
+      true,
+      504,
+      status
+    );
+  }
+
+  if (status && status >= 500) {
+    return new EllieBrainProcessingError(
+      'provider_error',
+      'Provider temporarily unavailable.',
+      true,
+      502,
+      status
+    );
+  }
+
+  if (status && status >= 400) {
+    return new EllieBrainProcessingError(
+      'provider_error',
+      'Provider rejected the request.',
+      false,
+      502,
+      status
+    );
+  }
+
+  return new EllieBrainProcessingError('internal_error', message, true, 500);
+}
+
+async function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  try {
+    const timeoutPromise = new Promise<T>((_, reject) => {
+      timeoutId = setTimeout(() => {
+        reject(
+          new EllieBrainProcessingError(
+            'provider_timeout',
+            'Provider request timed out.',
+            true,
+            504
+          )
+        );
+      }, timeoutMs);
+    });
+
+    return await Promise.race([promise, timeoutPromise]);
+  } finally {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+  }
+}
 
 /**
  * OpenAI tool definitions for shift queries.
@@ -167,9 +286,11 @@ function parseToolArgs(args: string): Record<string, unknown> {
  */
 export async function processQuery(
   request: EllieBrainRequest,
-  openaiApiKey: string
+  openaiApiKey: string,
+  options: QueryProcessingOptions
 ): Promise<EllieBrainResponse> {
   const client = new OpenAI({ apiKey: openaiApiKey });
+  const providerTimeoutMs = options.timeoutMs || DEFAULT_PROVIDER_TIMEOUT_MS;
 
   const systemPrompt = buildSystemPrompt(request);
 
@@ -198,62 +319,71 @@ export async function processQuery(
   let lastShiftData: { toolName: string; data: unknown } | undefined;
 
   // Tool loop — model may call multiple tools in sequence
-  for (let round = 0; round < MAX_TOOL_ROUNDS; round++) {
-    const completion = await client.chat.completions.create({
-      model: OPENAI_MODEL,
-      messages,
-      tools: TOOLS,
-      tool_choice: 'auto',
-      temperature: 0.3,
-    });
+  try {
+    for (let round = 0; round < MAX_TOOL_ROUNDS; round++) {
+      const completion = await withTimeout(
+        client.chat.completions.create({
+          model: OPENAI_MODEL,
+          messages,
+          tools: TOOLS,
+          tool_choice: 'auto',
+          temperature: 0.3,
+        }),
+        providerTimeoutMs
+      );
 
-    const assistant = completion.choices[0]?.message;
-    if (!assistant) {
-      break;
-    }
-
-    const toolCalls = assistant.tool_calls ?? [];
-
-    messages.push({
-      role: 'assistant',
-      content: assistant.content ?? '',
-      tool_calls: toolCalls,
-    });
-
-    if (toolCalls.length === 0) {
-      const responseText = (assistant.content || '').trim();
-      return {
-        text: responseText || "I'm sorry, I couldn't generate a response. Please try again.",
-        shiftData: lastShiftData,
-      };
-    }
-
-    for (const toolCall of toolCalls) {
-      if (toolCall.type !== 'function') {
-        continue;
+      const assistant = completion.choices[0]?.message;
+      if (!assistant) {
+        break;
       }
 
-      const toolName = toolCall.function.name;
-      const input = parseToolArgs(toolCall.function.arguments);
-      const toolResult = executeTool(toolName, input, request.userContext.shiftCycle);
+      const toolCalls = assistant.tool_calls ?? [];
 
-      lastShiftData = {
-        toolName,
-        data: toolResult,
-      };
+      messages.push({
+        role: 'assistant',
+        content: assistant.content ?? '',
+        tool_calls: toolCalls,
+      });
 
-      const toolMessage: ChatCompletionToolMessageParam = {
-        role: 'tool',
-        content: JSON.stringify(toolResult),
-        tool_call_id: toolCall.id,
-      };
+      if (toolCalls.length === 0) {
+        const responseText = (assistant.content || '').trim();
+        return {
+          text: responseText || "I'm sorry, I couldn't generate a response. Please try again.",
+          shiftData: lastShiftData,
+          requestId: options.requestId,
+        };
+      }
 
-      messages.push(toolMessage);
+      for (const toolCall of toolCalls) {
+        if (toolCall.type !== 'function') {
+          continue;
+        }
+
+        const toolName = toolCall.function.name;
+        const input = parseToolArgs(toolCall.function.arguments);
+        const toolResult = executeTool(toolName, input, request.userContext.shiftCycle);
+
+        lastShiftData = {
+          toolName,
+          data: toolResult,
+        };
+
+        const toolMessage: ChatCompletionToolMessageParam = {
+          role: 'tool',
+          content: JSON.stringify(toolResult),
+          tool_call_id: toolCall.id,
+        };
+
+        messages.push(toolMessage);
+      }
     }
+  } catch (error) {
+    throw mapProviderError(error);
   }
 
   return {
     text: "I'm sorry, I had trouble processing your question. Please try asking in a different way.",
     shiftData: lastShiftData,
+    requestId: options.requestId,
   };
 }

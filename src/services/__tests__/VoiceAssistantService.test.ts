@@ -8,7 +8,7 @@
 import { voiceAssistantService } from '../VoiceAssistantService';
 import { speechRecognitionService } from '../SpeechRecognitionService';
 import { textToSpeechService } from '../TextToSpeechService';
-import { ellieBrainService } from '../EllieBrainService';
+import { ellieBrainService, EllieBrainServiceError } from '../EllieBrainService';
 import type {
   VoiceAssistantState,
   VoiceAssistantUserContext,
@@ -40,6 +40,29 @@ jest.mock('../TextToSpeechService', () => ({
 }));
 
 jest.mock('../EllieBrainService', () => ({
+  EllieBrainServiceError: class EllieBrainServiceError extends Error {
+    type: string;
+    retryable: boolean;
+    code?: string;
+    requestId?: string;
+    statusCode?: number;
+
+    constructor(options: {
+      type: string;
+      message: string;
+      retryable: boolean;
+      code?: string;
+      requestId?: string;
+      statusCode?: number;
+    }) {
+      super(options.message);
+      this.type = options.type;
+      this.retryable = options.retryable;
+      this.code = options.code;
+      this.requestId = options.requestId;
+      this.statusCode = options.statusCode;
+    }
+  },
   ellieBrainService: {
     query: jest.fn(),
     abort: jest.fn(),
@@ -139,6 +162,23 @@ describe('VoiceAssistantService', () => {
       registeredCallbacks.onPartialResult('testing partial');
 
       expect(callbacks.onPartialTranscript).toHaveBeenCalledWith('testing partial');
+    });
+
+    it('should allow retrying startListening after entering error state', async () => {
+      await voiceAssistantService.startListening();
+      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
+        .calls[0][0];
+
+      // Force the service into error state.
+      registeredCallbacks.onError(new Error('No speech detected'));
+
+      jest.clearAllMocks();
+
+      await voiceAssistantService.startListening();
+
+      expect(speechRecognitionService.startListening).toHaveBeenCalled();
+      expect(callbacks.onStateChange).toHaveBeenCalledWith('idle');
+      expect(callbacks.onStateChange).toHaveBeenCalledWith('listening');
     });
   });
 
@@ -382,6 +422,61 @@ describe('VoiceAssistantService', () => {
         })
       );
       expect(callbacks.onStateChange).toHaveBeenCalledWith('error');
+    });
+
+    it('should map rate-limited backend errors to rate_limited type', async () => {
+      (tryOfflineFallback as jest.Mock).mockReturnValue({ handled: false });
+      (ellieBrainService.query as jest.Mock).mockRejectedValue(
+        new EllieBrainServiceError({
+          type: 'rate_limited',
+          message: 'Please wait briefly and retry.',
+          retryable: true,
+          code: 'rate_limited',
+          statusCode: 429,
+        })
+      );
+
+      await voiceAssistantService.startListening();
+      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
+        .calls[0][0];
+      registeredCallbacks.onFinalResult({
+        transcript: 'How many shifts?',
+        isFinal: true,
+        confidence: 0.9,
+      });
+      await new Promise((r) => setTimeout(r, 50));
+
+      expect(callbacks.onError).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: 'rate_limited',
+          retryable: true,
+          code: 'rate_limited',
+        })
+      );
+    });
+
+    it('should ignore request_cancelled backend errors', async () => {
+      (tryOfflineFallback as jest.Mock).mockReturnValue({ handled: false });
+      (ellieBrainService.query as jest.Mock).mockRejectedValue(
+        new EllieBrainServiceError({
+          type: 'unknown',
+          message: 'Request cancelled',
+          retryable: false,
+          code: 'request_cancelled',
+        })
+      );
+
+      await voiceAssistantService.startListening();
+      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
+        .calls[0][0];
+      registeredCallbacks.onFinalResult({
+        transcript: 'Test cancel',
+        isFinal: true,
+        confidence: 0.9,
+      });
+      await new Promise((r) => setTimeout(r, 20));
+
+      expect(callbacks.onError).not.toHaveBeenCalled();
     });
   });
 

@@ -100,7 +100,9 @@ export const VoiceAssistantModal: React.FC = () => {
     isModalVisible,
     hasPermission,
     isWakeWordEnabled,
+    isWakeWordAvailable,
     isWakeWordListening,
+    wakeWordWarning,
     wakeWordPhrase,
     startListening,
     stopListening,
@@ -144,6 +146,8 @@ export const VoiceAssistantModal: React.FC = () => {
     await requestPermissions();
   };
 
+  const normalizeSentence = (text: string): string => text.trim().replace(/[.!?]+$/g, '');
+
   const getStatusText = (): string => {
     switch (state) {
       case 'listening':
@@ -155,6 +159,9 @@ export const VoiceAssistantModal: React.FC = () => {
       case 'error':
         return getErrorMessage();
       default:
+        if (messages.length === 0 && isWakeWordEnabled && !isWakeWordAvailable) {
+          return 'Wake-word unavailable, tap the mic to talk';
+        }
         if (messages.length === 0 && isWakeWordEnabled && isWakeWordListening) {
           return `Say "${wakeWordPhrase}" or tap the mic`;
         }
@@ -173,11 +180,17 @@ export const VoiceAssistantModal: React.FC = () => {
           ? 'Microphone access denied. Enable in Settings > Ellie.'
           : 'Microphone access denied. Please grant permission.';
       case 'network_error':
-        return 'No internet connection. Please check your network.';
+        return 'Check your connection and retry.';
       case 'speech_recognition_failed':
         return "I didn't catch that. Please try again.";
       case 'backend_error':
-        return 'Service unavailable. Please try again later.';
+        return 'Service temporarily unavailable. Please try again.';
+      case 'rate_limited':
+        return 'Please wait briefly and retry.';
+      case 'timeout':
+        return 'Request timed out. Please retry.';
+      case 'wake_word_unavailable':
+        return 'Wake-word unavailable, tap the mic to talk.';
       case 'tts_error':
         return 'Could not play audio response.';
       default:
@@ -209,7 +222,7 @@ export const VoiceAssistantModal: React.FC = () => {
       case 'speaking':
         return 'Ellie is speaking. Double tap to stop.';
       case 'error':
-        return `Error: ${getErrorMessage()}. Double tap to try again.`;
+        return `Error: ${normalizeSentence(getErrorMessage())}. Double tap to try again.`;
       default:
         return 'Ask Ellie a question. Double tap to start speaking.';
     }
@@ -293,9 +306,7 @@ export const VoiceAssistantModal: React.FC = () => {
                   <Text style={styles.suggestionText}>
                     &quot;What shift do I have tomorrow?&quot;
                   </Text>
-                  <Text style={styles.suggestionText}>
-                    &quot;When is my next day off?&quot;
-                  </Text>
+                  <Text style={styles.suggestionText}>&quot;When is my next day off?&quot;</Text>
                   <Text style={styles.suggestionText}>
                     &quot;How many night shifts this month?&quot;
                   </Text>
@@ -326,9 +337,7 @@ export const VoiceAssistantModal: React.FC = () => {
                 key={message.id}
                 message={message}
                 index={index}
-                isNew={
-                  message.role === 'assistant' && index === messages.length - 1
-                }
+                isNew={message.role === 'assistant' && index === messages.length - 1}
               />
             ))}
 
@@ -350,10 +359,7 @@ export const VoiceAssistantModal: React.FC = () => {
 
             {/* Processing indicator inline */}
             {state === 'processing' && (
-              <Animated.View
-                entering={FadeIn.duration(200)}
-                style={styles.processingBubble}
-              >
+              <Animated.View entering={FadeIn.duration(200)} style={styles.processingBubble}>
                 <ActivityIndicator size="small" color={theme.colors.sacredGold} />
                 <Text style={styles.processingText}>Ellie is thinking...</Text>
               </Animated.View>
@@ -397,15 +403,18 @@ export const VoiceAssistantModal: React.FC = () => {
 
             {/* Status text */}
             <Text
-              style={[
-                styles.statusText,
-                state === 'error' && styles.errorText,
-              ]}
+              style={[styles.statusText, state === 'error' && styles.errorText]}
               accessibilityLiveRegion="polite"
               accessibilityRole="text"
             >
               {getStatusText()}
             </Text>
+
+            {state === 'idle' && isWakeWordEnabled && !isWakeWordAvailable && wakeWordWarning && (
+              <Text style={styles.wakeWordWarningText} accessibilityRole="text">
+                Wake-word unavailable, tap mic to talk.
+              </Text>
+            )}
 
             {/* Mic button */}
             <TouchableOpacity
@@ -635,6 +644,13 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: theme.colors.error,
+  },
+  wakeWordWarningText: {
+    fontSize: theme.typography.fontSizes.xs,
+    color: theme.colors.warning,
+    marginBottom: 10,
+    textAlign: 'center',
+    paddingHorizontal: 24,
   },
   micButton: {
     width: 72,

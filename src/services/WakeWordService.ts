@@ -29,6 +29,27 @@ export interface WakeWordCallbacks {
   onError: (error: Error) => void;
 }
 
+export type WakeWordErrorCode =
+  | 'activation_limit'
+  | 'auth_failed'
+  | 'invalid_model'
+  | 'runtime_error'
+  | 'configuration_error';
+
+export class WakeWordError extends Error {
+  readonly code: WakeWordErrorCode;
+  readonly fatal: boolean;
+  readonly retryable: boolean;
+
+  constructor(message: string, code: WakeWordErrorCode, fatal: boolean, retryable: boolean) {
+    super(message);
+    this.name = 'WakeWordError';
+    this.code = code;
+    this.fatal = fatal;
+    this.retryable = retryable;
+  }
+}
+
 const DEFAULT_BUILT_IN_KEYWORD = 'PORCUPINE';
 const DEFAULT_SENSITIVITY = 0.65;
 
@@ -37,18 +58,56 @@ function clampSensitivity(value: number): number {
   return Math.min(1, Math.max(0, value));
 }
 
-function isActivationLimitError(error: unknown): boolean {
-  if (!(error instanceof Error)) {
-    return false;
-  }
+function normalizeWakeWordError(error: unknown): WakeWordError {
+  const source = error instanceof Error ? error : new Error(String(error));
+  const name = source.name.toLowerCase();
+  const message = source.message.toLowerCase();
 
-  const name = error.name.toLowerCase();
-  const message = error.message.toLowerCase();
-  return (
+  if (
     name.includes('activationlimit') ||
     message.includes('activation limit') ||
     message.includes('activationlimit')
-  );
+  ) {
+    return new WakeWordError(
+      'Wake-word activation limit reached for this access key.',
+      'activation_limit',
+      true,
+      false
+    );
+  }
+
+  if (
+    name.includes('authorization') ||
+    name.includes('authentication') ||
+    message.includes('accesskey') ||
+    message.includes('access key') ||
+    message.includes('unauthorized') ||
+    message.includes('forbidden')
+  ) {
+    return new WakeWordError(
+      'Wake-word authentication failed. Check your Picovoice AccessKey.',
+      'auth_failed',
+      true,
+      false
+    );
+  }
+
+  if (
+    name.includes('invalidargument') ||
+    message.includes('.ppn') ||
+    message.includes('invalid model') ||
+    message.includes('keyword') ||
+    message.includes('initialization failed')
+  ) {
+    return new WakeWordError(
+      'Wake-word model is invalid or incompatible with this platform.',
+      'invalid_model',
+      true,
+      false
+    );
+  }
+
+  return new WakeWordError(source.message, 'runtime_error', false, true);
 }
 
 function getKeywordPathLabel(path: string): string {
@@ -61,6 +120,8 @@ class WakeWordService {
   private isListening = false;
   private isInitialized = false;
   private keywordLabels: string[] = [];
+  private disabledForSession = false;
+  private unavailableReason: string | null = null;
 
   isSupported(): boolean {
     return isWakeWordNativeAvailable;
@@ -78,7 +139,27 @@ class WakeWordService {
     return this.keywordLabels[0] ?? 'wake word';
   }
 
+  isUnavailableForSession(): boolean {
+    return this.disabledForSession;
+  }
+
+  getUnavailableReason(): string | null {
+    return this.unavailableReason;
+  }
+
+  resetSessionAvailability(): void {
+    this.disabledForSession = false;
+    this.unavailableReason = null;
+  }
+
   async initialize(config: WakeWordConfig, callbacks: WakeWordCallbacks): Promise<boolean> {
+    if (this.disabledForSession) {
+      logger.warn('Wake-word disabled for this app session', {
+        reason: this.unavailableReason,
+      });
+      return false;
+    }
+
     await this.destroy();
 
     if (!isWakeWordNativeAvailable) {
@@ -88,7 +169,14 @@ class WakeWordService {
 
     const accessKey = config.accessKey.trim();
     if (!accessKey) {
-      callbacks.onError(new Error('Missing Picovoice AccessKey for wake-word detection'));
+      callbacks.onError(
+        new WakeWordError(
+          'Missing Picovoice AccessKey for wake-word detection.',
+          'configuration_error',
+          false,
+          false
+        )
+      );
       return false;
     }
 
@@ -143,19 +231,17 @@ class WakeWordService {
 
           this.keywordLabels = config.keywordPaths.map(getKeywordPathLabel);
         } catch (customModelError) {
-          if (isActivationLimitError(customModelError)) {
+          const normalizedCustomError = normalizeWakeWordError(customModelError);
+          if (normalizedCustomError.fatal) {
             logger.error(
-              'Wake-word activation limit reached; skipping built-in fallback',
-              customModelError as Error
+              'Fatal wake-word model initialization error; skipping built-in fallback',
+              normalizedCustomError
             );
-            throw customModelError;
+            throw normalizedCustomError;
           }
 
           logger.warn('Custom wake-word model initialization failed; falling back to built-in', {
-            error:
-              customModelError instanceof Error
-                ? customModelError.message
-                : String(customModelError),
+            error: normalizedCustomError.message,
           });
 
           await initializeFromBuiltIns();
@@ -171,8 +257,14 @@ class WakeWordService {
 
       return true;
     } catch (error) {
-      logger.error('Failed to initialize wake-word service', error as Error);
-      callbacks.onError(error as Error);
+      const normalizedError = normalizeWakeWordError(error);
+      if (normalizedError.fatal) {
+        this.disabledForSession = true;
+        this.unavailableReason = normalizedError.message;
+      }
+
+      logger.error('Failed to initialize wake-word service', normalizedError);
+      callbacks.onError(normalizedError);
       await this.destroy();
       return false;
     }
@@ -188,8 +280,13 @@ class WakeWordService {
       this.isListening = true;
       logger.info('Wake-word listening started');
     } catch (error) {
-      logger.error('Failed to start wake-word listening', error as Error);
-      throw error;
+      const normalizedError = normalizeWakeWordError(error);
+      if (normalizedError.fatal) {
+        this.disabledForSession = true;
+        this.unavailableReason = normalizedError.message;
+      }
+      logger.error('Failed to start wake-word listening', normalizedError);
+      throw normalizedError;
     }
   }
 

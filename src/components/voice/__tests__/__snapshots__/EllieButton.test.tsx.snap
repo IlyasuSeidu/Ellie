@@ -1,0 +1,201 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EllieButton Snapshot should match snapshot in active state 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "bottom": 24,
+      "height": 76,
+      "justifyContent": "center",
+      "position": "absolute",
+      "right": 20,
+      "width": 76,
+      "zIndex": 100,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "backgroundColor": "#b45309",
+          "borderRadius": 38,
+          "height": 76,
+          "position": "absolute",
+          "width": 76,
+        },
+        {
+          "opacity": 0.6,
+          "transform": [
+            {
+              "scale": 1,
+            },
+          ],
+        },
+      ]
+    }
+  />
+  <View
+    accessibilityLabel="Open Ellie voice assistant"
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#1c1917",
+        "borderColor": "#b45309",
+        "borderRadius": 30,
+        "borderWidth": 2,
+        "elevation": 8,
+        "height": 60,
+        "justifyContent": "center",
+        "opacity": 1,
+        "shadowColor": "#b45309",
+        "shadowOffset": {
+          "height": 0,
+          "width": 0,
+        },
+        "shadowOpacity": 0.3,
+        "shadowRadius": 8,
+        "width": 60,
+      }
+    }
+  >
+    <Text
+      color="#b45309"
+      name="mic"
+      size={26}
+      testID="icon-mic"
+    >
+      mic
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`EllieButton Snapshot should match snapshot in idle state 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "bottom": 24,
+      "height": 76,
+      "justifyContent": "center",
+      "position": "absolute",
+      "right": 20,
+      "width": 76,
+      "zIndex": 100,
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "backgroundColor": "#b45309",
+          "borderRadius": 38,
+          "height": 76,
+          "position": "absolute",
+          "width": 76,
+        },
+        {
+          "opacity": 0,
+          "transform": [
+            {
+              "scale": 1,
+            },
+          ],
+        },
+      ]
+    }
+  />
+  <View
+    accessibilityLabel="Open Ellie voice assistant"
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#1c1917",
+        "borderColor": "#b45309",
+        "borderRadius": 30,
+        "borderWidth": 2,
+        "elevation": 8,
+        "height": 60,
+        "justifyContent": "center",
+        "opacity": 1,
+        "shadowColor": "#b45309",
+        "shadowOffset": {
+          "height": 0,
+          "width": 0,
+        },
+        "shadowOpacity": 0.3,
+        "shadowRadius": 8,
+        "width": 60,
+      }
+    }
+  >
+    <Text
+      color="#b45309"
+      name="mic"
+      size={26}
+      testID="icon-mic"
+    >
+      mic
+    </Text>
+  </View>
+</View>
+`;

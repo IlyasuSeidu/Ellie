@@ -31,7 +31,7 @@ import { AppState, Platform } from 'react-native';
 import { useSpeechRecognitionEvent } from '@/services/speechRecognitionNative';
 import { voiceAssistantService } from '@/services/VoiceAssistantService';
 import { speechRecognitionService } from '@/services/SpeechRecognitionService';
-import { wakeWordService } from '@/services/WakeWordService';
+import { WakeWordError, wakeWordService } from '@/services/WakeWordService';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { buildShiftCycle } from '@/utils/shiftUtils';
 import { toDateString } from '@/utils/dateUtils';
@@ -59,8 +59,12 @@ interface VoiceAssistantContextValue {
   hasPermission: boolean;
   /** Whether wake-word detection is configured and enabled */
   isWakeWordEnabled: boolean;
+  /** Whether wake-word engine is available in this app session */
+  isWakeWordAvailable: boolean;
   /** Whether wake-word engine is currently listening */
   isWakeWordListening: boolean;
+  /** Optional wake-word warning shown to the user */
+  wakeWordWarning: string | null;
   /** Current wake-word phrase label */
   wakeWordPhrase: string;
   /** Start listening for speech */
@@ -130,6 +134,8 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
   const [hasPermission, setHasPermission] = useState(false);
   const [isWakeWordListening, setIsWakeWordListening] = useState(false);
   const [isWakeWordReady, setIsWakeWordReady] = useState(false);
+  const [isWakeWordAvailable, setIsWakeWordAvailable] = useState(isWakeWordEnabled);
+  const [wakeWordWarning, setWakeWordWarning] = useState<string | null>(null);
   const [wakeWordPhrase, setWakeWordPhrase] = useState(getConfiguredWakeWordLabel());
   const [isAppActive, setIsAppActive] = useState(true);
 
@@ -328,11 +334,14 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
         if (!isCancelled) {
           setIsWakeWordListening(false);
           setIsWakeWordReady(false);
+          setIsWakeWordAvailable(false);
+          setWakeWordWarning(null);
           setWakeWordPhrase(getConfiguredWakeWordLabel());
         }
         return;
       }
 
+      let wakeWordInitErrorMessage: string | undefined;
       const initialized = await wakeWordService.initialize(
         {
           accessKey: voiceAssistantConfig.wakeWord.accessKey ?? '',
@@ -362,15 +371,28 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
           },
           onError: (wakeWordError) => {
             logger.error('Wake-word engine error', wakeWordError);
+            if (wakeWordError instanceof WakeWordError || wakeWordError instanceof Error) {
+              wakeWordInitErrorMessage = wakeWordError.message;
+            }
           },
         }
       );
 
       if (!isCancelled && initialized) {
         setIsWakeWordReady(true);
+        setIsWakeWordAvailable(true);
+        setWakeWordWarning(null);
         setWakeWordPhrase(configuredWakeWordPhrase || wakeWordService.getPrimaryKeywordLabel());
       } else if (!isCancelled) {
         setIsWakeWordReady(false);
+        setIsWakeWordListening(false);
+
+        const unavailableReason =
+          wakeWordInitErrorMessage ??
+          wakeWordService.getUnavailableReason() ??
+          'Wake-word unavailable, tap mic to talk.';
+        setIsWakeWordAvailable(false);
+        setWakeWordWarning(unavailableReason);
       }
     };
 
@@ -388,6 +410,7 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
     const syncWakeWordListening = async () => {
       const shouldListen =
         isWakeWordEnabled &&
+        isWakeWordAvailable &&
         isWakeWordReady &&
         voiceAssistantConfig.wakeWord.autoStart &&
         isAppActive &&
@@ -411,6 +434,12 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
         logger.error('Failed to synchronize wake-word listening state', wakeWordError as Error);
         if (!isCancelled) {
           setIsWakeWordListening(false);
+          setIsWakeWordAvailable(false);
+          setWakeWordWarning(
+            wakeWordError instanceof Error
+              ? wakeWordError.message
+              : 'Wake-word unavailable, tap mic to talk.'
+          );
         }
       }
     };
@@ -420,7 +449,15 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
     return () => {
       isCancelled = true;
     };
-  }, [hasPermission, isAppActive, isModalVisible, isWakeWordEnabled, isWakeWordReady, state]);
+  }, [
+    hasPermission,
+    isAppActive,
+    isModalVisible,
+    isWakeWordAvailable,
+    isWakeWordEnabled,
+    isWakeWordReady,
+    state,
+  ]);
 
   return (
     <VoiceAssistantContext.Provider
@@ -432,7 +469,9 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
         isModalVisible,
         hasPermission,
         isWakeWordEnabled,
+        isWakeWordAvailable,
         isWakeWordListening,
+        wakeWordWarning,
         wakeWordPhrase,
         startListening,
         stopListening,

@@ -89,6 +89,44 @@ export interface EllieBrainResponse {
   text: string;
   /** Optional structured shift data */
   shiftData?: ShiftQueryResult;
+  /** Optional request id for diagnostics */
+  requestId?: string;
+}
+
+/**
+ * Normalized backend error payload.
+ */
+export interface EllieBrainErrorPayload {
+  /** Stable machine-readable code */
+  code:
+    | 'invalid_request'
+    | 'missing_user_context'
+    | 'invalid_user_context'
+    | 'rate_limited'
+    | 'provider_timeout'
+    | 'provider_error'
+    | 'internal_error'
+    | 'malformed_response'
+    | 'network_unreachable'
+    | 'request_cancelled';
+  /** Human-readable message for UI/logs */
+  message: string;
+  /** Whether the operation should be retried */
+  retryable: boolean;
+  /** Optional request id for cross-system tracing */
+  requestId?: string;
+  /** Optional HTTP status from backend transport */
+  statusCode?: number;
+}
+
+/**
+ * Backward-compatible backend response envelope.
+ */
+export interface EllieBrainResponseEnvelope {
+  ok?: boolean;
+  requestId?: string;
+  data?: EllieBrainResponse;
+  error?: EllieBrainErrorPayload | string;
 }
 
 /**
@@ -111,6 +149,9 @@ export type VoiceAssistantErrorType =
   | 'speech_recognition_failed'
   | 'network_error'
   | 'backend_error'
+  | 'rate_limited'
+  | 'timeout'
+  | 'wake_word_unavailable'
   | 'tts_error'
   | 'unknown';
 
@@ -121,6 +162,9 @@ export interface VoiceAssistantError {
   type: VoiceAssistantErrorType;
   message: string;
   retryable: boolean;
+  code?: string;
+  requestId?: string;
+  statusCode?: number;
 }
 
 /**
