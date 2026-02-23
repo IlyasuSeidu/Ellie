@@ -71,8 +71,8 @@ try {
 } catch (error) {
   try {
     // Fallback to local module source path for in-repo development.
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     openWakeWordPackage =
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('../../modules/ellie-openwakeword/src') as OpenWakeWordPackageLike;
   } catch (fallbackError) {
     logger.warn('OpenWakeWord native module is unavailable in this runtime', {
