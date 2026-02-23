@@ -12,14 +12,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { theme } from '@/utils/theme';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import { OnboardingNavigator } from './OnboardingNavigator';
-import { MainDashboardScreen } from '@/screens/main/MainDashboardScreen';
+import { MainTabNavigator } from './MainTabNavigator';
 
 /**
  * Root Stack Parameter List
  */
 export type RootStackParamList = {
   Onboarding: undefined;
-  MainDashboard: undefined;
+  Main: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -68,10 +68,10 @@ export const AppNavigator: React.FC = () => {
         animation: 'fade',
         contentStyle: { backgroundColor: theme.colors.deepVoid },
       }}
-      initialRouteName={isOnboardingComplete ? 'MainDashboard' : 'Onboarding'}
+      initialRouteName={isOnboardingComplete ? 'Main' : 'Onboarding'}
     >
       <Stack.Screen name="Onboarding" component={OnboardingNavigator} />
-      <Stack.Screen name="MainDashboard" component={MainDashboardScreen} />
+      <Stack.Screen name="Main" component={MainTabNavigator} />
     </Stack.Navigator>
   );
 };

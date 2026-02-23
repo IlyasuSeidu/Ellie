@@ -347,14 +347,14 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
     if (parentNavigation && typeof parentNavigation.reset === 'function') {
       parentNavigation.reset({
         index: 0,
-        routes: [{ name: 'MainDashboard' }],
+        routes: [{ name: 'Main' }],
       });
       return;
     }
 
     // Fallback for test/mocked navigation objects
     if (typeof navigation.navigate === 'function') {
-      navigation.navigate('MainDashboard');
+      navigation.navigate('Main');
     }
   };
 

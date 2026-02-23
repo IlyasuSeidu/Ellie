@@ -25,8 +25,12 @@ jest.mock('../speechRecognitionNative', () => ({
 
 /** Reset mocks to their default (permissions granted) implementations */
 function resetPermissionMocks() {
-  (ExpoSpeechRecognitionModule.getPermissionsAsync as jest.Mock).mockResolvedValue({ granted: true });
-  (ExpoSpeechRecognitionModule.requestPermissionsAsync as jest.Mock).mockResolvedValue({ granted: true });
+  (ExpoSpeechRecognitionModule.getPermissionsAsync as jest.Mock).mockResolvedValue({
+    granted: true,
+  });
+  (ExpoSpeechRecognitionModule.requestPermissionsAsync as jest.Mock).mockResolvedValue({
+    granted: true,
+  });
 }
 
 function createCallbacks() {
@@ -56,7 +60,9 @@ describe('SpeechRecognitionService', () => {
     });
 
     it('should return false when permissions are denied', async () => {
-      (ExpoSpeechRecognitionModule.requestPermissionsAsync as jest.Mock).mockResolvedValue({ granted: false });
+      (ExpoSpeechRecognitionModule.requestPermissionsAsync as jest.Mock).mockResolvedValue({
+        granted: false,
+      });
 
       const result = await speechRecognitionService.requestPermissions();
 
@@ -82,7 +88,9 @@ describe('SpeechRecognitionService', () => {
     });
 
     it('should return false when permissions are not granted', async () => {
-      (ExpoSpeechRecognitionModule.getPermissionsAsync as jest.Mock).mockResolvedValue({ granted: false });
+      (ExpoSpeechRecognitionModule.getPermissionsAsync as jest.Mock).mockResolvedValue({
+        granted: false,
+      });
 
       const result = await speechRecognitionService.hasPermissions();
 
@@ -98,7 +106,7 @@ describe('SpeechRecognitionService', () => {
       expect(ExpoSpeechRecognitionModule.start).toHaveBeenCalledWith({
         lang: 'en-US',
         interimResults: true,
-        continuous: false,
+        continuous: true,
         addsPunctuation: true,
       });
     });
@@ -121,8 +129,12 @@ describe('SpeechRecognitionService', () => {
     });
 
     it('should error if permissions are not granted and cannot be requested', async () => {
-      (ExpoSpeechRecognitionModule.getPermissionsAsync as jest.Mock).mockResolvedValue({ granted: false });
-      (ExpoSpeechRecognitionModule.requestPermissionsAsync as jest.Mock).mockResolvedValue({ granted: false });
+      (ExpoSpeechRecognitionModule.getPermissionsAsync as jest.Mock).mockResolvedValue({
+        granted: false,
+      });
+      (ExpoSpeechRecognitionModule.requestPermissionsAsync as jest.Mock).mockResolvedValue({
+        granted: false,
+      });
 
       const cbs = createCallbacks();
       await speechRecognitionService.startListening(cbs);
@@ -244,9 +256,7 @@ describe('SpeechRecognitionService', () => {
 
       speechRecognitionService.handleError('audio', '');
 
-      expect(cbs.onError).toHaveBeenCalledWith(
-        expect.objectContaining({ message: 'audio' })
-      );
+      expect(cbs.onError).toHaveBeenCalledWith(expect.objectContaining({ message: 'audio' }));
     });
 
     it('should set isListening to false on error', async () => {
@@ -255,6 +265,17 @@ describe('SpeechRecognitionService', () => {
 
       speechRecognitionService.handleError('error', 'Something failed');
 
+      expect(speechRecognitionService.getIsListening()).toBe(false);
+    });
+
+    it('should treat aborted as a soft end and call onEnd without onError', async () => {
+      const cbs = createCallbacks();
+      await speechRecognitionService.startListening(cbs);
+
+      speechRecognitionService.handleError('aborted', 'Speech recognition aborted.');
+
+      expect(cbs.onError).not.toHaveBeenCalled();
+      expect(cbs.onEnd).toHaveBeenCalled();
       expect(speechRecognitionService.getIsListening()).toBe(false);
     });
   });

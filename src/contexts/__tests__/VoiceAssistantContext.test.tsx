@@ -20,9 +20,24 @@ jest.mock('@/services/VoiceAssistantService', () => ({
     stopListening: jest.fn(),
     cancel: jest.fn(),
     clearHistory: jest.fn(),
+    restoreHistory: jest.fn(),
     updateUserContext: jest.fn(),
     getState: jest.fn(() => 'idle'),
     getConversationHistory: jest.fn(() => []),
+  },
+}));
+
+jest.mock('@/services/VoiceAssistantPersistenceService', () => ({
+  voiceAssistantPersistenceService: {
+    hydrate: jest.fn(() =>
+      Promise.resolve({ history: [], lastError: null, wakeWordSession: null, diagnostics: [] })
+    ),
+    persistHistory: jest.fn(() => Promise.resolve()),
+    persistLastError: jest.fn(() => Promise.resolve()),
+    persistWakeWordSession: jest.fn(() => Promise.resolve()),
+    persistDiagnostics: jest.fn(() => Promise.resolve()),
+    appendDiagnostic: jest.fn(() => Promise.resolve()),
+    clear: jest.fn(() => Promise.resolve()),
   },
 }));
 
@@ -113,6 +128,7 @@ jest.mock('@/utils/logger', () => ({
 
 import { VoiceAssistantProvider, useVoiceAssistant } from '../VoiceAssistantContext';
 import { voiceAssistantService } from '@/services/VoiceAssistantService';
+import { voiceAssistantPersistenceService } from '@/services/VoiceAssistantPersistenceService';
 import { speechRecognitionService } from '@/services/SpeechRecognitionService';
 import { wakeWordService } from '@/services/WakeWordService';
 import { useSpeechRecognitionEvent } from '@/services/speechRecognitionNative';
@@ -161,6 +177,7 @@ function getServiceCallbacks() {
     onUserMessage: (message: unknown) => void;
     onAssistantMessage: (message: unknown) => void;
     onError: (err: unknown) => void;
+    onNotice?: (notice: { type: 'info' | 'warning'; message: string; code?: string }) => void;
   };
 }
 
@@ -214,6 +231,19 @@ describe('VoiceAssistantContext', () => {
     (voiceAssistantService.startListening as jest.Mock).mockResolvedValue(undefined);
     (voiceAssistantService.stopListening as jest.Mock).mockResolvedValue(undefined);
     (voiceAssistantService.cancel as jest.Mock).mockResolvedValue(undefined);
+    (voiceAssistantPersistenceService.hydrate as jest.Mock).mockResolvedValue({
+      history: [],
+      lastError: null,
+      wakeWordSession: null,
+      diagnostics: [],
+    });
+    (voiceAssistantPersistenceService.persistHistory as jest.Mock).mockResolvedValue(undefined);
+    (voiceAssistantPersistenceService.persistLastError as jest.Mock).mockResolvedValue(undefined);
+    (voiceAssistantPersistenceService.persistWakeWordSession as jest.Mock).mockResolvedValue(
+      undefined
+    );
+    (voiceAssistantPersistenceService.persistDiagnostics as jest.Mock).mockResolvedValue(undefined);
+    (voiceAssistantPersistenceService.appendDiagnostic as jest.Mock).mockResolvedValue(undefined);
   });
 
   afterEach(async () => {
@@ -315,6 +345,7 @@ describe('VoiceAssistantContext', () => {
       expect(capturedValue.messages).toEqual([]);
       expect(capturedValue.partialTranscript).toBe('');
       expect(capturedValue.error).toBeNull();
+      expect(capturedValue.notice).toBeNull();
       expect(capturedValue.isModalVisible).toBe(false);
       expect(typeof capturedValue.startListening).toBe('function');
       expect(typeof capturedValue.stopListening).toBe('function');
@@ -384,6 +415,80 @@ describe('VoiceAssistantContext', () => {
       });
 
       expect(capturedValue.hasPermission).toBe(false);
+    });
+  });
+
+  describe('local persistence', () => {
+    it('hydrates persisted history and restores service history', async () => {
+      const persistedHistory = [
+        {
+          id: 'persisted-1',
+          role: 'user',
+          text: 'Persisted question',
+          timestamp: 1,
+        },
+      ];
+
+      (voiceAssistantPersistenceService.hydrate as jest.Mock).mockResolvedValue({
+        history: persistedHistory,
+        lastError: null,
+        wakeWordSession: null,
+        diagnostics: [],
+      });
+
+      renderWithProvider();
+
+      await act(async () => {
+        await Promise.resolve();
+        await Promise.resolve();
+      });
+
+      expect(capturedValue.messages).toEqual(persistedHistory);
+      expect(voiceAssistantService.restoreHistory).toHaveBeenCalledWith(persistedHistory);
+    });
+
+    it('hydrates last error and persists new errors', async () => {
+      const persistedError = {
+        type: 'network_error',
+        message: 'Persisted network issue',
+        retryable: true,
+      };
+
+      (voiceAssistantPersistenceService.hydrate as jest.Mock).mockResolvedValue({
+        history: [],
+        lastError: persistedError,
+        wakeWordSession: null,
+        diagnostics: [],
+      });
+
+      renderWithProvider();
+
+      await act(async () => {
+        await Promise.resolve();
+        await Promise.resolve();
+      });
+
+      expect(capturedValue.error).toEqual(persistedError);
+
+      const callbacks = getServiceCallbacks();
+      const nextError = {
+        type: 'backend_error',
+        message: 'Service unavailable',
+        retryable: true,
+      };
+
+      act(() => {
+        callbacks.onError(nextError);
+      });
+
+      await act(async () => {
+        await Promise.resolve();
+      });
+
+      expect(voiceAssistantPersistenceService.persistLastError).toHaveBeenCalledWith(
+        nextError,
+        expect.any(Object)
+      );
     });
   });
 
@@ -710,6 +815,37 @@ describe('VoiceAssistantContext', () => {
       });
 
       expect(capturedValue.error).toEqual(err);
+    });
+
+    it('sets notice via onNotice and clears it when listening starts', async () => {
+      renderWithProvider();
+
+      await act(async () => {
+        await Promise.resolve();
+      });
+
+      const callbacks = getServiceCallbacks();
+      expect(callbacks.onNotice).toBeDefined();
+
+      act(() => {
+        callbacks.onNotice?.({
+          type: 'warning',
+          message: "I didn't catch that. Please try again.",
+          code: 'no_speech',
+        });
+      });
+
+      expect(capturedValue.notice).toEqual({
+        type: 'warning',
+        message: "I didn't catch that. Please try again.",
+        code: 'no_speech',
+      });
+
+      act(() => {
+        callbacks.onStateChange('listening');
+      });
+
+      expect(capturedValue.notice).toBeNull();
     });
   });
 

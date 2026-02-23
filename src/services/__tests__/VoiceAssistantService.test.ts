@@ -14,6 +14,7 @@ import type {
   VoiceAssistantUserContext,
   VoiceMessage,
   VoiceAssistantError,
+  VoiceAssistantNotice,
 } from '@/types/voiceAssistant';
 import { ShiftPattern, ShiftSystem } from '@/types';
 import { tryOfflineFallback } from '@/utils/offlineFallback';
@@ -99,6 +100,7 @@ function createCallbacks() {
     onUserMessage: jest.fn<void, [VoiceMessage]>(),
     onAssistantMessage: jest.fn<void, [VoiceMessage]>(),
     onError: jest.fn<void, [VoiceAssistantError]>(),
+    onNotice: jest.fn<void, [VoiceAssistantNotice]>(),
   };
 }
 
@@ -170,7 +172,7 @@ describe('VoiceAssistantService', () => {
         .calls[0][0];
 
       // Force the service into error state.
-      registeredCallbacks.onError(new Error('No speech detected'));
+      registeredCallbacks.onError(new Error('Recognizer crashed unexpectedly'));
 
       jest.clearAllMocks();
 
@@ -382,12 +384,32 @@ describe('VoiceAssistantService', () => {
       );
     });
 
-    it('should handle generic speech recognition errors', async () => {
+    it('should treat no-speech as soft timeout and return to idle', async () => {
       await voiceAssistantService.startListening();
       const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
         .calls[0][0];
 
-      registeredCallbacks.onError(new Error('No speech detected'));
+      const noSpeechError = Object.assign(new Error('No speech was detected.'), {
+        code: 'no-speech',
+      });
+      registeredCallbacks.onError(noSpeechError);
+
+      expect(callbacks.onError).not.toHaveBeenCalled();
+      expect(callbacks.onNotice).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: 'warning',
+          code: 'no_speech',
+        })
+      );
+      expect(callbacks.onStateChange).toHaveBeenCalledWith('idle');
+    });
+
+    it('should handle non-timeout speech recognition errors', async () => {
+      await voiceAssistantService.startListening();
+      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
+        .calls[0][0];
+
+      registeredCallbacks.onError(new Error('Recognizer unexpectedly failed'));
 
       expect(callbacks.onError).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -395,6 +417,20 @@ describe('VoiceAssistantService', () => {
           retryable: true,
         })
       );
+    });
+
+    it('should treat aborted speech recognition errors as soft return to idle', async () => {
+      await voiceAssistantService.startListening();
+      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
+        .calls[0][0];
+
+      const abortedError = Object.assign(new Error('Speech recognition aborted.'), {
+        code: 'aborted',
+      });
+      registeredCallbacks.onError(abortedError);
+
+      expect(callbacks.onError).not.toHaveBeenCalled();
+      expect(callbacks.onStateChange).toHaveBeenCalledWith('idle');
     });
 
     it('should handle brain service errors', async () => {
@@ -534,6 +570,17 @@ describe('VoiceAssistantService', () => {
 
       voiceAssistantService.clearHistory();
       expect(voiceAssistantService.getConversationHistory()).toHaveLength(0);
+    });
+
+    it('should restore persisted history', () => {
+      const persistedHistory = [
+        { id: 'p1', role: 'user' as const, text: 'Persisted', timestamp: 1 },
+        { id: 'p2', role: 'assistant' as const, text: 'Restored', timestamp: 2 },
+      ];
+
+      voiceAssistantService.restoreHistory(persistedHistory);
+
+      expect(voiceAssistantService.getConversationHistory()).toEqual(persistedHistory);
     });
   });
 

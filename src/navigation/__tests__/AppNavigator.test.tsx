@@ -26,8 +26,8 @@ jest.mock('../OnboardingNavigator', () => ({
   },
 }));
 
-jest.mock('@/screens/main/MainDashboardScreen', () => ({
-  MainDashboardScreen: () => {
+jest.mock('../MainTabNavigator', () => ({
+  MainTabNavigator: () => {
     const React = require('react');
     const RN = require('react-native');
     return React.createElement(RN.View, { testID: 'main-dashboard' });

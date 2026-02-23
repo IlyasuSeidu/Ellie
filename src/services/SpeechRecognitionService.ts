@@ -15,6 +15,8 @@ import { ExpoSpeechRecognitionModule } from './speechRecognitionNative';
 import { logger } from '@/utils/logger';
 import type { SpeechRecognitionResult } from '@/types/voiceAssistant';
 
+type SpeechRecognitionServiceError = Error & { code: string };
+
 export interface SpeechRecognitionCallbacks {
   onPartialResult: (transcript: string) => void;
   onFinalResult: (result: SpeechRecognitionResult) => void;
@@ -36,6 +38,13 @@ export interface SpeechRecognitionCallbacks {
 class SpeechRecognitionService {
   private isListening = false;
   private callbacks: SpeechRecognitionCallbacks | null = null;
+
+  private static readonly SOFT_END_ERROR_CODES = new Set([
+    'aborted',
+    'cancelled',
+    'canceled',
+    'interrupted',
+  ]);
 
   /**
    * Request microphone and speech recognition permissions.
@@ -84,7 +93,9 @@ class SpeechRecognitionService {
     if (!hasPerms) {
       const granted = await this.requestPermissions();
       if (!granted) {
-        callbacks.onError(new Error('Speech recognition permission denied'));
+        callbacks.onError(
+          this.createRecognitionError('permission_denied', 'Speech recognition permission denied')
+        );
         return;
       }
     }
@@ -96,7 +107,7 @@ class SpeechRecognitionService {
       ExpoSpeechRecognitionModule.start({
         lang: locale,
         interimResults: true,
-        continuous: false,
+        continuous: true,
         addsPunctuation: true,
       });
       logger.info('Speech recognition started', { locale });
@@ -104,7 +115,12 @@ class SpeechRecognitionService {
       this.isListening = false;
       this.callbacks = null;
       logger.error('Failed to start speech recognition', error as Error);
-      callbacks.onError(error as Error);
+      callbacks.onError(
+        this.createRecognitionError(
+          'start_failed',
+          error instanceof Error ? error.message : 'Failed to start speech recognition'
+        )
+      );
     }
   }
 
@@ -158,9 +174,31 @@ class SpeechRecognitionService {
    * Called by the useSpeechRecognitionEvent('error') hook in VoiceAssistantContext.
    */
   handleError(errorCode: string, message: string): void {
-    logger.error('Speech recognition error', new Error(message), { code: errorCode });
+    const normalizedMessage = message || errorCode;
+    const normalizedCode = errorCode.toLowerCase();
+    const normalizedError = this.createRecognitionError(normalizedCode, normalizedMessage);
+    const lowerMessage = normalizedMessage.toLowerCase();
+    const isSoftEndSignal =
+      SpeechRecognitionService.SOFT_END_ERROR_CODES.has(normalizedCode) ||
+      lowerMessage.includes('aborted') ||
+      lowerMessage.includes('cancelled') ||
+      lowerMessage.includes('canceled');
+
+    if (isSoftEndSignal) {
+      logger.info('Speech recognition ended with abort/cancel signal', { code: normalizedCode });
+      this.isListening = false;
+      this.callbacks?.onEnd?.();
+      return;
+    }
+
+    if (normalizedCode === 'no-speech') {
+      logger.warn('Speech recognition ended with no-speech', { code: normalizedCode });
+    } else {
+      logger.error('Speech recognition error', normalizedError, { code: normalizedCode });
+    }
+
     this.isListening = false;
-    this.callbacks?.onError(new Error(message || errorCode));
+    this.callbacks?.onError(normalizedError);
   }
 
   /**
@@ -192,6 +230,12 @@ class SpeechRecognitionService {
     }
     this.callbacks = null;
     this.isListening = false;
+  }
+
+  private createRecognitionError(code: string, message: string): SpeechRecognitionServiceError {
+    const error = new Error(message) as SpeechRecognitionServiceError;
+    error.code = code;
+    return error;
   }
 }
 

@@ -62,6 +62,7 @@ const mockVoiceAssistant = {
   messages: [] as VoiceMessage[],
   partialTranscript: '',
   error: null as VoiceAssistantError | null,
+  notice: null as { type: 'info' | 'warning'; message: string; code?: string } | null,
   isModalVisible: true,
   hasPermission: true,
   isWakeWordEnabled: false,
@@ -112,6 +113,7 @@ describe('VoiceAssistantModal', () => {
     mockVoiceAssistant.messages = [];
     mockVoiceAssistant.partialTranscript = '';
     mockVoiceAssistant.error = null;
+    mockVoiceAssistant.notice = null;
     mockVoiceAssistant.isModalVisible = true;
     mockVoiceAssistant.hasPermission = true;
     mockVoiceAssistant.isWakeWordEnabled = false;
@@ -231,6 +233,17 @@ describe('VoiceAssistantModal', () => {
       expect(getByText('Tap the mic to ask Ellie')).toBeTruthy();
     });
 
+    it('should show notice message when idle notice is present', () => {
+      mockVoiceAssistant.state = 'idle';
+      mockVoiceAssistant.notice = {
+        type: 'warning',
+        message: "I didn't catch that. Please try again.",
+        code: 'no_speech',
+      };
+      const { getByText } = render(<VoiceAssistantModal />);
+      expect(getByText("I didn't catch that. Please try again.")).toBeTruthy();
+    });
+
     it('should show "Tap the mic to ask another question" when idle with messages', () => {
       mockVoiceAssistant.state = 'idle';
       mockVoiceAssistant.messages = [makeUserMessage()];
@@ -274,7 +287,7 @@ describe('VoiceAssistantModal', () => {
       mockVoiceAssistant.wakeWordWarning = 'Wake-word unavailable';
       const { getByText } = render(<VoiceAssistantModal />);
       expect(getByText('Wake-word unavailable, tap the mic to talk')).toBeTruthy();
-      expect(getByText('Wake-word unavailable, tap mic to talk.')).toBeTruthy();
+      expect(getByText('Wake-word unavailable')).toBeTruthy();
     });
   });
 

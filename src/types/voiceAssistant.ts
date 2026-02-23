@@ -168,6 +168,39 @@ export interface VoiceAssistantError {
 }
 
 /**
+ * User-facing non-fatal notice.
+ */
+export interface VoiceAssistantNotice {
+  type: 'info' | 'warning';
+  message: string;
+  code?: string;
+}
+
+/**
+ * Local diagnostic categories for voice assistant telemetry.
+ */
+export type VoiceAssistantDiagnosticCategory =
+  | 'wake_word'
+  | 'speech_recognition'
+  | 'ellie_brain'
+  | 'tts'
+  | 'pipeline'
+  | 'persistence';
+
+/**
+ * Lightweight timestamped diagnostic event stored locally for crash recovery.
+ */
+export interface VoiceAssistantDiagnosticEvent {
+  id: string;
+  timestamp: number;
+  category: VoiceAssistantDiagnosticCategory;
+  code: string;
+  message: string;
+  retryable?: boolean;
+  details?: Record<string, unknown>;
+}
+
+/**
  * Tool definitions for the Claude API.
  * These mirror the tools the backend registers with Claude.
  */

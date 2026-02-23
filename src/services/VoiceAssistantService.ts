@@ -19,10 +19,14 @@ import type {
   VoiceMessage,
   VoiceAssistantError,
   VoiceAssistantErrorType,
+  VoiceAssistantNotice,
 } from '@/types/voiceAssistant';
 
 /** Max messages to keep in memory (prevents unbounded growth) */
 const MAX_HISTORY_LENGTH = 50;
+const LISTENING_MAX_DURATION_MS = 15_000;
+const LISTENING_SILENCE_STOP_MS = 1_400;
+const LISTENING_STOP_FALLBACK_MS = 2_500;
 
 export interface VoiceAssistantCallbacks {
   onStateChange: (state: VoiceAssistantState) => void;
@@ -30,6 +34,7 @@ export interface VoiceAssistantCallbacks {
   onUserMessage: (message: VoiceMessage) => void;
   onAssistantMessage: (message: VoiceMessage) => void;
   onError: (error: VoiceAssistantError) => void;
+  onNotice?: (notice: VoiceAssistantNotice) => void;
 }
 
 let messageIdCounter = 0;
@@ -50,6 +55,11 @@ class VoiceAssistantService {
   private activeRequestToken = 0;
   private currentProcessingToken: number | null = null;
   private currentSpeechToken: number | null = null;
+  private listeningMaxTimeout: ReturnType<typeof setTimeout> | null = null;
+  private listeningSilenceTimeout: ReturnType<typeof setTimeout> | null = null;
+  private listeningStopFallbackTimeout: ReturnType<typeof setTimeout> | null = null;
+  private hasSpeechInCurrentListen = false;
+  private stopRequestedForCurrentListen = false;
 
   /**
    * Initialize the service with callbacks and user context.
@@ -86,24 +96,42 @@ class VoiceAssistantService {
     try {
       this.activeRequestToken += 1;
       this.resetEphemeralState();
+      this.hasSpeechInCurrentListen = false;
+      this.stopRequestedForCurrentListen = false;
       this.setState('listening');
+      this.scheduleListeningMaxTimeout();
 
       await speechRecognitionService.startListening(
         {
           onPartialResult: (transcript) => {
             this.callbacks?.onPartialTranscript(transcript);
+            if (transcript.trim().length > 0) {
+              this.hasSpeechInCurrentListen = true;
+              this.scheduleListeningSilenceStop();
+            }
           },
           onFinalResult: (result) => {
+            this.clearListeningWatchdogTimers();
             void this.handleFinalTranscript(result.transcript);
           },
           onError: (error) => {
+            this.clearListeningWatchdogTimers();
             if (error.message === 'Speech recognition permission denied') {
               this.handleError('permission_denied', error.message);
+            } else if (this.isNoSpeechError(error)) {
+              // "no-speech" is a common, expected timeout path when wake-word triggers
+              // and the user does not continue speaking quickly enough.
+              this.handleNoSpeechTimeout();
+            } else if (this.isAbortLikeError(error)) {
+              logger.info('Speech recognition aborted/cancelled; returning to idle');
+              this.resetEphemeralState();
+              this.setState('idle');
             } else {
               this.handleError('speech_recognition_failed', error.message);
             }
           },
           onEnd: () => {
+            this.clearListeningWatchdogTimers();
             // If still in listening state when recognition ends naturally,
             // it means no result was captured
             if (this.currentState === 'listening') {
@@ -119,12 +147,119 @@ class VoiceAssistantService {
     }
   }
 
+  private isNoSpeechError(error: Error): boolean {
+    const errorWithCode = error as Error & { code?: string };
+    const code = errorWithCode.code?.toLowerCase().trim();
+    const message = error.message.toLowerCase();
+
+    return code === 'no-speech' || code === 'speech_timeout' || message.includes('no speech');
+  }
+
+  private isAbortLikeError(error: Error): boolean {
+    const errorWithCode = error as Error & { code?: string };
+    const code = errorWithCode.code?.toLowerCase().trim();
+    const message = error.message.toLowerCase();
+
+    return (
+      code === 'aborted' ||
+      code === 'cancelled' ||
+      code === 'canceled' ||
+      code === 'interrupted' ||
+      message.includes('aborted') ||
+      message.includes('cancelled') ||
+      message.includes('canceled')
+    );
+  }
+
+  private handleNoSpeechTimeout(): void {
+    logger.info('Speech recognition ended with no speech; returning to idle');
+    this.emitNotice('warning', "I didn't catch that. Please try again.", 'no_speech');
+    this.clearListeningWatchdogTimers();
+    this.resetEphemeralState();
+    this.setState('idle');
+  }
+
   /**
    * Stop listening (triggers final result if available).
    */
-  async stopListening(): Promise<void> {
+  stopListening(): void {
     if (this.currentState !== 'listening') return;
-    await speechRecognitionService.stopListening();
+    this.requestStopListeningWithFallback('user_stop');
+  }
+
+  private scheduleListeningMaxTimeout(): void {
+    if (this.listeningMaxTimeout) {
+      clearTimeout(this.listeningMaxTimeout);
+    }
+
+    this.listeningMaxTimeout = setTimeout(() => {
+      if (this.currentState !== 'listening') {
+        return;
+      }
+      this.requestStopListeningWithFallback('max_duration');
+    }, LISTENING_MAX_DURATION_MS);
+  }
+
+  private scheduleListeningSilenceStop(): void {
+    if (this.listeningSilenceTimeout) {
+      clearTimeout(this.listeningSilenceTimeout);
+    }
+
+    this.listeningSilenceTimeout = setTimeout(() => {
+      if (this.currentState !== 'listening' || !this.hasSpeechInCurrentListen) {
+        return;
+      }
+      this.requestStopListeningWithFallback('silence');
+    }, LISTENING_SILENCE_STOP_MS);
+  }
+
+  private requestStopListeningWithFallback(reason: 'user_stop' | 'silence' | 'max_duration'): void {
+    if (this.currentState !== 'listening' || this.stopRequestedForCurrentListen) {
+      return;
+    }
+
+    this.stopRequestedForCurrentListen = true;
+    logger.info('Stopping speech recognition from listening watchdog', { reason });
+
+    try {
+      speechRecognitionService.stopListening();
+    } catch (error) {
+      logger.warn('Failed to request speech recognition stop', {
+        reason,
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+
+    if (this.listeningStopFallbackTimeout) {
+      clearTimeout(this.listeningStopFallbackTimeout);
+    }
+
+    this.listeningStopFallbackTimeout = setTimeout(() => {
+      if (this.currentState === 'listening') {
+        logger.warn('Speech recognition stop fallback triggered; resetting to idle');
+        this.handleNoSpeechTimeout();
+      }
+    }, LISTENING_STOP_FALLBACK_MS);
+  }
+
+  private clearListeningWatchdogTimers(): void {
+    if (this.listeningMaxTimeout) {
+      clearTimeout(this.listeningMaxTimeout);
+      this.listeningMaxTimeout = null;
+    }
+
+    if (this.listeningSilenceTimeout) {
+      clearTimeout(this.listeningSilenceTimeout);
+      this.listeningSilenceTimeout = null;
+    }
+
+    if (this.listeningStopFallbackTimeout) {
+      clearTimeout(this.listeningStopFallbackTimeout);
+      this.listeningStopFallbackTimeout = null;
+    }
+
+    this.hasSpeechInCurrentListen = false;
+    this.stopRequestedForCurrentListen = false;
   }
 
   /**
@@ -359,7 +494,7 @@ class VoiceAssistantService {
 
     const error: VoiceAssistantError = {
       type,
-      message,
+      message: this.toUserFacingErrorMessage(type, message),
       retryable: overrides.retryable ?? retryableDefaults[type],
       code: overrides.code,
       requestId: overrides.requestId,
@@ -369,6 +504,34 @@ class VoiceAssistantService {
     this.resetEphemeralState();
     this.setState('error');
     this.callbacks?.onError(error);
+  }
+
+  private toUserFacingErrorMessage(type: VoiceAssistantErrorType, rawMessage: string): string {
+    switch (type) {
+      case 'permission_denied':
+        return 'Microphone permission is required. Please grant access and try again.';
+      case 'speech_recognition_failed':
+        return "I couldn't understand that. Please try again.";
+      case 'network_error':
+        return 'Check your internet connection and retry.';
+      case 'backend_error':
+        return 'Service is temporarily unavailable. Please try again.';
+      case 'rate_limited':
+        return 'Please wait briefly, then try again.';
+      case 'timeout':
+        return 'The request timed out. Please retry.';
+      case 'wake_word_unavailable':
+        return 'Wake-word unavailable. Tap the mic to talk.';
+      case 'tts_error':
+        return 'I could not play audio response.';
+      case 'unknown':
+      default:
+        return rawMessage?.trim() || 'Something went wrong. Please try again.';
+    }
+  }
+
+  private emitNotice(type: VoiceAssistantNotice['type'], message: string, code?: string): void {
+    this.callbacks?.onNotice?.({ type, message, code });
   }
 
   /**
@@ -386,6 +549,7 @@ class VoiceAssistantService {
   private resetEphemeralState(): void {
     this.currentProcessingToken = null;
     this.currentSpeechToken = null;
+    this.clearListeningWatchdogTimers();
   }
 
   /**
@@ -409,6 +573,13 @@ class VoiceAssistantService {
    */
   getConversationHistory(): VoiceMessage[] {
     return [...this.conversationHistory];
+  }
+
+  /**
+   * Restore persisted conversation history.
+   */
+  restoreHistory(messages: VoiceMessage[]): void {
+    this.conversationHistory = messages.slice(-MAX_HISTORY_LENGTH);
   }
 
   /**

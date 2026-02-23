@@ -97,6 +97,7 @@ export const VoiceAssistantModal: React.FC = () => {
     messages,
     partialTranscript,
     error,
+    notice,
     isModalVisible,
     hasPermission,
     isWakeWordEnabled,
@@ -159,6 +160,9 @@ export const VoiceAssistantModal: React.FC = () => {
       case 'error':
         return getErrorMessage();
       default:
+        if (notice) {
+          return notice.message;
+        }
         if (messages.length === 0 && isWakeWordEnabled && !isWakeWordAvailable) {
           return 'Wake-word unavailable, tap the mic to talk';
         }
@@ -403,7 +407,12 @@ export const VoiceAssistantModal: React.FC = () => {
 
             {/* Status text */}
             <Text
-              style={[styles.statusText, state === 'error' && styles.errorText]}
+              style={[
+                styles.statusText,
+                state === 'error' && styles.errorText,
+                state === 'idle' && notice?.type === 'warning' && styles.noticeWarningText,
+                state === 'idle' && notice?.type === 'info' && styles.noticeInfoText,
+              ]}
               accessibilityLiveRegion="polite"
               accessibilityRole="text"
             >
@@ -412,7 +421,7 @@ export const VoiceAssistantModal: React.FC = () => {
 
             {state === 'idle' && isWakeWordEnabled && !isWakeWordAvailable && wakeWordWarning && (
               <Text style={styles.wakeWordWarningText} accessibilityRole="text">
-                Wake-word unavailable, tap mic to talk.
+                {wakeWordWarning}
               </Text>
             )}
 
@@ -453,6 +462,11 @@ export const VoiceAssistantModal: React.FC = () => {
                 {error.retryable && (
                   <Text style={styles.retryHint} accessibilityRole="text">
                     Tap the mic to try again
+                  </Text>
+                )}
+                {error.requestId && (
+                  <Text style={styles.requestIdText} accessibilityRole="text">
+                    Ref: {error.requestId}
                   </Text>
                 )}
                 {error.type === 'permission_denied' && (
@@ -645,6 +659,12 @@ const styles = StyleSheet.create({
   errorText: {
     color: theme.colors.error,
   },
+  noticeWarningText: {
+    color: theme.colors.warning,
+  },
+  noticeInfoText: {
+    color: theme.colors.dust,
+  },
   wakeWordWarningText: {
     fontSize: theme.typography.fontSizes.xs,
     color: theme.colors.warning,
@@ -680,6 +700,11 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   retryHint: {
+    fontSize: theme.typography.fontSizes.xs,
+    color: theme.colors.shadow,
+  },
+  requestIdText: {
+    marginTop: 4,
     fontSize: theme.typography.fontSizes.xs,
     color: theme.colors.shadow,
   },

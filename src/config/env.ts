@@ -54,6 +54,8 @@ export interface FirebaseConfig {
  * Wake-word configuration
  */
 export interface WakeWordConfig {
+  /** Wake-word engine provider */
+  provider: 'porcupine' | 'openwakeword';
   /** Enable wake-word detection */
   enabled: boolean;
   /** Picovoice AccessKey */
@@ -72,6 +74,28 @@ export interface WakeWordConfig {
   sensitivity: number;
   /** Auto-start wake-word listening while app is active + idle */
   autoStart: boolean;
+  /** Optional OpenWakeWord model path (fallback for both platforms) */
+  openWakeWordModelPath?: string;
+  /** Optional iOS-specific OpenWakeWord model path */
+  openWakeWordModelPathIOS?: string;
+  /** Optional Android-specific OpenWakeWord model path */
+  openWakeWordModelPathAndroid?: string;
+  /** Optional OpenWakeWord melspectrogram feature model path (fallback for both platforms) */
+  openWakeWordMelspectrogramModelPath?: string;
+  /** Optional iOS-specific OpenWakeWord melspectrogram feature model path */
+  openWakeWordMelspectrogramModelPathIOS?: string;
+  /** Optional Android-specific OpenWakeWord melspectrogram feature model path */
+  openWakeWordMelspectrogramModelPathAndroid?: string;
+  /** Optional OpenWakeWord embedding feature model path (fallback for both platforms) */
+  openWakeWordEmbeddingModelPath?: string;
+  /** Optional iOS-specific OpenWakeWord embedding feature model path */
+  openWakeWordEmbeddingModelPathIOS?: string;
+  /** Optional Android-specific OpenWakeWord embedding feature model path */
+  openWakeWordEmbeddingModelPathAndroid?: string;
+  /** OpenWakeWord score threshold in [0, 1] */
+  openWakeWordThreshold: number;
+  /** Cooldown window between detections (milliseconds) */
+  openWakeWordTriggerCooldownMs: number;
 }
 
 /**
@@ -213,13 +237,46 @@ function buildFirebaseConfig(): FirebaseConfig {
  */
 function buildAppConfig(): AppConfig {
   const env = getEnvironment();
+  const wakeWordProviderRaw = getEnvVar('WAKE_WORD_PROVIDER', false)?.trim().toLowerCase();
+  const wakeWordProvider = wakeWordProviderRaw === 'porcupine' ? 'porcupine' : 'openwakeword';
   const wakeWordAccessKey = getEnvVar('PICOVOICE_ACCESS_KEY', false);
-  const wakeWordSensitivityRaw = parseFloat(
-    getEnvVar('WAKE_WORD_SENSITIVITY', false) || '0.65'
-  );
+  const wakeWordSensitivityRaw = parseFloat(getEnvVar('WAKE_WORD_SENSITIVITY', false) || '0.65');
   const wakeWordSensitivity = Number.isFinite(wakeWordSensitivityRaw)
     ? Math.min(1, Math.max(0, wakeWordSensitivityRaw))
     : 0.65;
+  const openWakeWordThresholdRaw = parseFloat(getEnvVar('OPENWAKEWORD_THRESHOLD', false) || '0.45');
+  const openWakeWordThreshold = Number.isFinite(openWakeWordThresholdRaw)
+    ? Math.min(1, Math.max(0, openWakeWordThresholdRaw))
+    : 0.45;
+  const openWakeWordModelPath = getEnvVar('OPENWAKEWORD_MODEL_PATH', false)?.trim() || undefined;
+  const openWakeWordModelPathIOS =
+    getEnvVar('OPENWAKEWORD_MODEL_PATH_IOS', false)?.trim() || undefined;
+  const openWakeWordModelPathAndroid =
+    getEnvVar('OPENWAKEWORD_MODEL_PATH_ANDROID', false)?.trim() || undefined;
+  const openWakeWordMelspectrogramModelPath =
+    getEnvVar('OPENWAKEWORD_MELSPECTROGRAM_MODEL_PATH', false)?.trim() || undefined;
+  const openWakeWordMelspectrogramModelPathIOS =
+    getEnvVar('OPENWAKEWORD_MELSPECTROGRAM_MODEL_PATH_IOS', false)?.trim() || undefined;
+  const openWakeWordMelspectrogramModelPathAndroid =
+    getEnvVar('OPENWAKEWORD_MELSPECTROGRAM_MODEL_PATH_ANDROID', false)?.trim() || undefined;
+  const openWakeWordEmbeddingModelPath =
+    getEnvVar('OPENWAKEWORD_EMBEDDING_MODEL_PATH', false)?.trim() || undefined;
+  const openWakeWordEmbeddingModelPathIOS =
+    getEnvVar('OPENWAKEWORD_EMBEDDING_MODEL_PATH_IOS', false)?.trim() || undefined;
+  const openWakeWordEmbeddingModelPathAndroid =
+    getEnvVar('OPENWAKEWORD_EMBEDDING_MODEL_PATH_ANDROID', false)?.trim() || undefined;
+  const openWakeWordTriggerCooldownMsRaw = parseInt(
+    getEnvVar('OPENWAKEWORD_TRIGGER_COOLDOWN_MS', false) || '1200',
+    10
+  );
+  const openWakeWordTriggerCooldownMs = Number.isFinite(openWakeWordTriggerCooldownMsRaw)
+    ? Math.max(0, openWakeWordTriggerCooldownMsRaw)
+    : 1200;
+  const hasOpenWakeWordModelPath = Boolean(
+    openWakeWordModelPath || openWakeWordModelPathIOS || openWakeWordModelPathAndroid
+  );
+  const defaultWakeWordEnabled =
+    wakeWordProvider === 'openwakeword' ? hasOpenWakeWordModelPath : Boolean(wakeWordAccessKey);
 
   return {
     env,
@@ -237,7 +294,9 @@ function buildAppConfig(): AppConfig {
       buildNumber: Constants.expoConfig?.ios?.buildNumber || '1',
     },
     ellieBrain: {
-      url: getEnvVar('ELLIE_BRAIN_URL', false) || 'https://ellie-brain-REGION-PROJECT.cloudfunctions.net/ellieBrain',
+      url:
+        getEnvVar('ELLIE_BRAIN_URL', false) ||
+        'https://ellie-brain-REGION-PROJECT.cloudfunctions.net/ellieBrain',
       timeout: parseInt(getEnvVar('ELLIE_BRAIN_TIMEOUT', false) || '30000', 10),
       maxQueryLength: 500,
     },
@@ -247,7 +306,8 @@ function buildAppConfig(): AppConfig {
       maxHistoryMessages: 6,
       supportedLocales: SUPPORTED_LOCALES,
       wakeWord: {
-        enabled: parseBooleanEnv('WAKE_WORD_ENABLED', Boolean(wakeWordAccessKey)),
+        provider: wakeWordProvider,
+        enabled: parseBooleanEnv('WAKE_WORD_ENABLED', defaultWakeWordEnabled),
         accessKey: wakeWordAccessKey,
         phrase: getEnvVar('WAKE_WORD_PHRASE', false)?.trim() || undefined,
         keywordPaths: parseCsvEnv('WAKE_WORD_KEYWORD_PATHS'),
@@ -256,6 +316,17 @@ function buildAppConfig(): AppConfig {
         builtInKeywords: parseCsvEnv('WAKE_WORD_BUILT_IN_KEYWORDS'),
         sensitivity: wakeWordSensitivity,
         autoStart: parseBooleanEnv('WAKE_WORD_AUTO_START', true),
+        openWakeWordModelPath,
+        openWakeWordModelPathIOS,
+        openWakeWordModelPathAndroid,
+        openWakeWordMelspectrogramModelPath,
+        openWakeWordMelspectrogramModelPathIOS,
+        openWakeWordMelspectrogramModelPathAndroid,
+        openWakeWordEmbeddingModelPath,
+        openWakeWordEmbeddingModelPathIOS,
+        openWakeWordEmbeddingModelPathAndroid,
+        openWakeWordThreshold,
+        openWakeWordTriggerCooldownMs,
       },
     },
   };
@@ -288,7 +359,11 @@ function validateConfig(config: AppConfig): void {
   }
 
   // Validate wake-word config
-  if (config.voiceAssistant.wakeWord.enabled && !config.voiceAssistant.wakeWord.accessKey) {
+  if (
+    config.voiceAssistant.wakeWord.enabled &&
+    config.voiceAssistant.wakeWord.provider === 'porcupine' &&
+    !config.voiceAssistant.wakeWord.accessKey
+  ) {
     console.warn('Wake word is enabled but PICOVOICE_ACCESS_KEY is missing');
   }
 
@@ -299,18 +374,40 @@ function validateConfig(config: AppConfig): void {
     throw new Error('WAKE_WORD_SENSITIVITY must be between 0 and 1');
   }
 
-  const hasCustomWakeWordModels =
-    config.voiceAssistant.wakeWord.keywordPaths.length > 0 ||
-    config.voiceAssistant.wakeWord.keywordPathsIOS.length > 0 ||
-    config.voiceAssistant.wakeWord.keywordPathsAndroid.length > 0;
-  if (
-    config.voiceAssistant.wakeWord.enabled &&
-    !hasCustomWakeWordModels &&
-    config.voiceAssistant.wakeWord.builtInKeywords.length === 0
-  ) {
-    console.warn(
-      'Wake word is enabled but no custom keyword paths or built-in keywords are configured'
+  if (config.voiceAssistant.wakeWord.provider === 'porcupine') {
+    const hasCustomWakeWordModels =
+      config.voiceAssistant.wakeWord.keywordPaths.length > 0 ||
+      config.voiceAssistant.wakeWord.keywordPathsIOS.length > 0 ||
+      config.voiceAssistant.wakeWord.keywordPathsAndroid.length > 0;
+    if (
+      config.voiceAssistant.wakeWord.enabled &&
+      !hasCustomWakeWordModels &&
+      config.voiceAssistant.wakeWord.builtInKeywords.length === 0
+    ) {
+      console.warn(
+        'Wake word is enabled but no custom keyword paths or built-in keywords are configured'
+      );
+    }
+  } else {
+    const hasOpenWakeWordModelPath = Boolean(
+      config.voiceAssistant.wakeWord.openWakeWordModelPath ||
+      config.voiceAssistant.wakeWord.openWakeWordModelPathIOS ||
+      config.voiceAssistant.wakeWord.openWakeWordModelPathAndroid
     );
+    if (config.voiceAssistant.wakeWord.enabled && !hasOpenWakeWordModelPath) {
+      console.warn('Wake word provider is openwakeword but no model path is configured');
+    }
+  }
+
+  if (
+    config.voiceAssistant.wakeWord.openWakeWordThreshold < 0 ||
+    config.voiceAssistant.wakeWord.openWakeWordThreshold > 1
+  ) {
+    throw new Error('OPENWAKEWORD_THRESHOLD must be between 0 and 1');
+  }
+
+  if (config.voiceAssistant.wakeWord.openWakeWordTriggerCooldownMs < 0) {
+    throw new Error('OPENWAKEWORD_TRIGGER_COOLDOWN_MS must be greater than or equal to 0');
   }
 
   // Additional validation for production
@@ -365,6 +462,7 @@ try {
         maxHistoryMessages: 6,
         supportedLocales: SUPPORTED_LOCALES,
         wakeWord: {
+          provider: 'openwakeword',
           enabled: false,
           accessKey: undefined,
           keywordPaths: [],
@@ -373,6 +471,17 @@ try {
           builtInKeywords: ['PORCUPINE'],
           sensitivity: 0.65,
           autoStart: true,
+          openWakeWordModelPath: undefined,
+          openWakeWordModelPathIOS: undefined,
+          openWakeWordModelPathAndroid: undefined,
+          openWakeWordMelspectrogramModelPath: undefined,
+          openWakeWordMelspectrogramModelPathIOS: undefined,
+          openWakeWordMelspectrogramModelPathAndroid: undefined,
+          openWakeWordEmbeddingModelPath: undefined,
+          openWakeWordEmbeddingModelPathIOS: undefined,
+          openWakeWordEmbeddingModelPathAndroid: undefined,
+          openWakeWordThreshold: 0.45,
+          openWakeWordTriggerCooldownMs: 1200,
         },
       },
     };

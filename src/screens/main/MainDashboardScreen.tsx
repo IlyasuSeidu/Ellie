@@ -33,11 +33,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
 import { asyncStorageService } from '@/services/AsyncStorageService';
-import {
-  getShiftDaysInRange,
-  getShiftStatistics,
-  buildShiftCycle,
-} from '@/utils/shiftUtils';
+import { getShiftDaysInRange, getShiftStatistics, buildShiftCycle } from '@/utils/shiftUtils';
 import { toDateString, getDaysInMonth } from '@/utils/dateUtils';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
 import type { ShiftCycle } from '@/types';
@@ -51,7 +47,7 @@ import { MonthlyCalendarCard } from '@/components/dashboard/MonthlyCalendarCard'
 import { StatisticsRow } from '@/components/dashboard/StatisticsCard';
 
 import { QuickActionsBar } from '@/components/dashboard/QuickActionsBar';
-import { EllieButton, VoiceAssistantModal } from '@/components/voice';
+// Voice assistant is now in MainTabNavigator (center tab + global modal)
 
 /**
  * Calculate monthly statistics
@@ -454,10 +450,6 @@ export const MainDashboardScreen: React.FC = () => {
           testID="dashboard-actions"
         />
       </ScrollView>
-
-      {/* Ellie Voice Assistant */}
-      <EllieButton />
-      <VoiceAssistantModal />
     </View>
   );
 };
@@ -471,7 +463,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingBottom: 40,
+    paddingBottom: 120,
   },
   loadingContainer: {
     flex: 1,
