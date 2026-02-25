@@ -32,22 +32,15 @@ const Ring: React.FC<{ index: number; isListening: boolean }> = ({ index, isList
 
   useEffect(() => {
     if (isListening) {
-      const delay = index * 300;
+      const stagger = index * 400;
+      // Slower cycle (2500ms) reduces GPU rasterization load vs 1500ms
       scale.value = withDelay(
-        delay,
-        withRepeat(
-          withTiming(1.6, { duration: 1500, easing: Easing.out(Easing.ease) }),
-          -1,
-          false
-        )
+        stagger,
+        withRepeat(withTiming(1.5, { duration: 2500, easing: Easing.out(Easing.ease) }), -1, false)
       );
       opacity.value = withDelay(
-        delay,
-        withRepeat(
-          withTiming(0, { duration: 1500, easing: Easing.out(Easing.ease) }),
-          -1,
-          false
-        )
+        stagger,
+        withRepeat(withTiming(0, { duration: 2500, easing: Easing.out(Easing.ease) }), -1, false)
       );
     } else {
       scale.value = withTiming(1, { duration: 300 });
@@ -58,10 +51,9 @@ const Ring: React.FC<{ index: number; isListening: boolean }> = ({ index, isList
   // Set initial opacity when listening starts
   useEffect(() => {
     if (isListening) {
-      const delay = index * 300;
       const timeout = setTimeout(() => {
         opacity.value = 0.5;
-      }, delay);
+      }, index * 400);
 
       return () => clearTimeout(timeout);
     }

@@ -96,6 +96,12 @@ export interface WakeWordConfig {
   openWakeWordThreshold: number;
   /** Cooldown window between detections (milliseconds) */
   openWakeWordTriggerCooldownMs: number;
+  /** Minimum input RMS to allow wake-word detection */
+  openWakeWordMinRmsForDetection: number;
+  /** Consecutive inference frames required above threshold */
+  openWakeWordActivationFrames: number;
+  /** EMA smoothing alpha for classifier score [0, 1] */
+  openWakeWordScoreSmoothingAlpha: number;
 }
 
 /**
@@ -244,7 +250,7 @@ function buildAppConfig(): AppConfig {
   const wakeWordSensitivity = Number.isFinite(wakeWordSensitivityRaw)
     ? Math.min(1, Math.max(0, wakeWordSensitivityRaw))
     : 0.65;
-  const openWakeWordThresholdRaw = parseFloat(getEnvVar('OPENWAKEWORD_THRESHOLD', false) || '0.45');
+  const openWakeWordThresholdRaw = parseFloat(getEnvVar('OPENWAKEWORD_THRESHOLD', false) || '0.1');
   const openWakeWordThreshold = Number.isFinite(openWakeWordThresholdRaw)
     ? Math.min(1, Math.max(0, openWakeWordThresholdRaw))
     : 0.45;
@@ -272,6 +278,25 @@ function buildAppConfig(): AppConfig {
   const openWakeWordTriggerCooldownMs = Number.isFinite(openWakeWordTriggerCooldownMsRaw)
     ? Math.max(0, openWakeWordTriggerCooldownMsRaw)
     : 1200;
+  const openWakeWordMinRmsForDetectionRaw = parseFloat(
+    getEnvVar('OPENWAKEWORD_MIN_RMS', false) || '0.0025'
+  );
+  const openWakeWordMinRmsForDetection = Number.isFinite(openWakeWordMinRmsForDetectionRaw)
+    ? Math.min(1, Math.max(0, openWakeWordMinRmsForDetectionRaw))
+    : 0.0025;
+  const openWakeWordActivationFramesRaw = parseInt(
+    getEnvVar('OPENWAKEWORD_ACTIVATION_FRAMES', false) || '3',
+    10
+  );
+  const openWakeWordActivationFrames = Number.isFinite(openWakeWordActivationFramesRaw)
+    ? Math.max(1, openWakeWordActivationFramesRaw)
+    : 3;
+  const openWakeWordScoreSmoothingAlphaRaw = parseFloat(
+    getEnvVar('OPENWAKEWORD_SCORE_SMOOTHING_ALPHA', false) || '0.35'
+  );
+  const openWakeWordScoreSmoothingAlpha = Number.isFinite(openWakeWordScoreSmoothingAlphaRaw)
+    ? Math.min(1, Math.max(0, openWakeWordScoreSmoothingAlphaRaw))
+    : 0.35;
   const hasOpenWakeWordModelPath = Boolean(
     openWakeWordModelPath || openWakeWordModelPathIOS || openWakeWordModelPathAndroid
   );
@@ -327,6 +352,9 @@ function buildAppConfig(): AppConfig {
         openWakeWordEmbeddingModelPathAndroid,
         openWakeWordThreshold,
         openWakeWordTriggerCooldownMs,
+        openWakeWordMinRmsForDetection,
+        openWakeWordActivationFrames,
+        openWakeWordScoreSmoothingAlpha,
       },
     },
   };
@@ -410,6 +438,24 @@ function validateConfig(config: AppConfig): void {
     throw new Error('OPENWAKEWORD_TRIGGER_COOLDOWN_MS must be greater than or equal to 0');
   }
 
+  if (
+    config.voiceAssistant.wakeWord.openWakeWordMinRmsForDetection < 0 ||
+    config.voiceAssistant.wakeWord.openWakeWordMinRmsForDetection > 1
+  ) {
+    throw new Error('OPENWAKEWORD_MIN_RMS must be between 0 and 1');
+  }
+
+  if (config.voiceAssistant.wakeWord.openWakeWordActivationFrames < 1) {
+    throw new Error('OPENWAKEWORD_ACTIVATION_FRAMES must be at least 1');
+  }
+
+  if (
+    config.voiceAssistant.wakeWord.openWakeWordScoreSmoothingAlpha < 0 ||
+    config.voiceAssistant.wakeWord.openWakeWordScoreSmoothingAlpha > 1
+  ) {
+    throw new Error('OPENWAKEWORD_SCORE_SMOOTHING_ALPHA must be between 0 and 1');
+  }
+
   // Additional validation for production
   if (config.env === 'production') {
     if (!config.firebase.measurementId) {
@@ -482,6 +528,9 @@ try {
           openWakeWordEmbeddingModelPathAndroid: undefined,
           openWakeWordThreshold: 0.45,
           openWakeWordTriggerCooldownMs: 1200,
+          openWakeWordMinRmsForDetection: 0.0025,
+          openWakeWordActivationFrames: 3,
+          openWakeWordScoreSmoothingAlpha: 0.35,
         },
       },
     };

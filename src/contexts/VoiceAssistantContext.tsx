@@ -97,6 +97,7 @@ export interface VoiceAssistantProviderProps {
 const DEFAULT_WAKE_WORD_LABEL = 'wake word';
 const DEFAULT_VOICE_PERSIST_TTL_SECONDS = 12 * 60 * 60;
 const NOTICE_AUTO_DISMISS_MS = 4_000;
+const PERSISTENCE_DEBOUNCE_MS = 2_000;
 
 function getVoicePersistenceTTLSeconds(): number | undefined {
   const rawValue = process.env.EXPO_PUBLIC_VOICE_ASSISTANT_PERSIST_TTL_SECONDS;
@@ -583,34 +584,55 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
     };
   }, [clearNoticeDismissTimeout]);
 
+  const historyPersistTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
     if (!initializedRef.current || !hydrationCompleteRef.current) {
-      return;
+      return undefined;
     }
 
-    void voiceAssistantPersistenceService
-      .persistHistory(messages, getPersistenceOptions())
-      .catch((persistenceError) => {
-        logger.warn('Failed to persist voice assistant history', {
-          error:
-            persistenceError instanceof Error ? persistenceError.message : String(persistenceError),
+    // Debounce persistence writes to reduce AsyncStorage I/O
+    if (historyPersistTimerRef.current) clearTimeout(historyPersistTimerRef.current);
+    historyPersistTimerRef.current = setTimeout(() => {
+      void voiceAssistantPersistenceService
+        .persistHistory(messages, getPersistenceOptions())
+        .catch((persistenceError) => {
+          logger.warn('Failed to persist voice assistant history', {
+            error:
+              persistenceError instanceof Error
+                ? persistenceError.message
+                : String(persistenceError),
+          });
         });
-      });
+    }, PERSISTENCE_DEBOUNCE_MS);
+
+    return () => {
+      if (historyPersistTimerRef.current) clearTimeout(historyPersistTimerRef.current);
+    };
   }, [getPersistenceOptions, messages]);
 
+  const errorPersistTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
     if (!initializedRef.current || !hydrationCompleteRef.current) {
-      return;
+      return undefined;
     }
 
-    void voiceAssistantPersistenceService
-      .persistLastError(lastError, getPersistenceOptions())
-      .catch((persistenceError) => {
-        logger.warn('Failed to persist voice assistant last error', {
-          error:
-            persistenceError instanceof Error ? persistenceError.message : String(persistenceError),
+    if (errorPersistTimerRef.current) clearTimeout(errorPersistTimerRef.current);
+    errorPersistTimerRef.current = setTimeout(() => {
+      void voiceAssistantPersistenceService
+        .persistLastError(lastError, getPersistenceOptions())
+        .catch((persistenceError) => {
+          logger.warn('Failed to persist voice assistant last error', {
+            error:
+              persistenceError instanceof Error
+                ? persistenceError.message
+                : String(persistenceError),
+          });
         });
-      });
+    }, PERSISTENCE_DEBOUNCE_MS);
+
+    return () => {
+      if (errorPersistTimerRef.current) clearTimeout(errorPersistTimerRef.current);
+    };
   }, [getPersistenceOptions, lastError]);
 
   // ─── Actions ──────────────────────────────────────────────────────
@@ -775,6 +797,11 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
           openWakeWordThreshold: voiceAssistantConfig.wakeWord.openWakeWordThreshold,
           openWakeWordTriggerCooldownMs:
             voiceAssistantConfig.wakeWord.openWakeWordTriggerCooldownMs,
+          openWakeWordMinRmsForDetection:
+            voiceAssistantConfig.wakeWord.openWakeWordMinRmsForDetection,
+          openWakeWordActivationFrames: voiceAssistantConfig.wakeWord.openWakeWordActivationFrames,
+          openWakeWordScoreSmoothingAlpha:
+            voiceAssistantConfig.wakeWord.openWakeWordScoreSmoothingAlpha,
         },
         {
           onDetection: async (keywordLabel) => {

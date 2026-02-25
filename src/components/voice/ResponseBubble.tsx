@@ -15,9 +15,9 @@ import { theme } from '@/utils/theme';
 import type { VoiceMessage } from '@/types/voiceAssistant';
 
 /** Characters revealed per tick for typewriter effect */
-const CHARS_PER_TICK = 2;
+const CHARS_PER_TICK = 3;
 /** Interval between ticks in ms */
-const TICK_INTERVAL = 20;
+const TICK_INTERVAL = 50;
 
 interface ResponseBubbleProps {
   message: VoiceMessage;

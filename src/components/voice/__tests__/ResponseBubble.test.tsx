@@ -157,7 +157,7 @@ describe('ResponseBubble', () => {
 
       render(<ResponseBubble message={message} index={0} isNew={true} />);
 
-      expect(setIntervalSpy).toHaveBeenCalledWith(expect.any(Function), 20);
+      expect(setIntervalSpy).toHaveBeenCalledWith(expect.any(Function), 50);
       setIntervalSpy.mockRestore();
     });
 
@@ -180,36 +180,30 @@ describe('ResponseBubble', () => {
       // Initially empty — no "ABCDEF"
       expect(queryByText('ABCDEF')).toBeNull();
 
-      // After 1 tick (20ms): 2 chars revealed → "AB"
+      // After 1 tick (50ms): 3 chars revealed → "ABC"
       act(() => {
-        jest.advanceTimersByTime(20);
+        jest.advanceTimersByTime(50);
       });
-      expect(getByText('AB')).toBeTruthy();
+      expect(getByText('ABC')).toBeTruthy();
 
-      // After 2nd tick: 4 chars → "ABCD"
+      // After 2nd tick: 6 chars (full) → "ABCDEF"
       act(() => {
-        jest.advanceTimersByTime(20);
-      });
-      expect(getByText('ABCD')).toBeTruthy();
-
-      // After 3rd tick: 6 chars (full) → "ABCDEF"
-      act(() => {
-        jest.advanceTimersByTime(20);
+        jest.advanceTimersByTime(50);
       });
       expect(getByText('ABCDEF')).toBeTruthy();
     });
 
     it('should clear interval when animation completes', () => {
       const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
-      const message = makeAssistantMessage({ text: 'AB' }); // 2 chars = 1 tick
+      const message = makeAssistantMessage({ text: 'AB' }); // 2 chars < 3 chars/tick = 1 tick
 
       render(<ResponseBubble message={message} index={0} isNew={true} />);
 
       act(() => {
-        jest.advanceTimersByTime(20);
+        jest.advanceTimersByTime(50);
       });
 
-      // charIndex (2) >= text.length (2), so clearInterval should be called
+      // charIndex (3) >= text.length (2), so clearInterval should be called
       expect(clearIntervalSpy).toHaveBeenCalled();
       clearIntervalSpy.mockRestore();
     });

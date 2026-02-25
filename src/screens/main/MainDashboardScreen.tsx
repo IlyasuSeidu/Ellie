@@ -90,10 +90,8 @@ export const MainDashboardScreen: React.FC = () => {
   // Refresh animation state
   const [refreshKey, setRefreshKey] = useState(0);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
-  const [lastUpdatedTick, setLastUpdatedTick] = useState(0);
   const [showRefreshSuccess, setShowRefreshSuccess] = useState(false);
   const refreshSuccessTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const lastUpdatedTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Refresh success animation values
   const successBannerOpacity = useSharedValue(0);
@@ -190,51 +188,8 @@ export const MainDashboardScreen: React.FC = () => {
     loadData(true);
   }, [loadData]);
 
-  /**
-   * Live-updating "last updated" timer
-   * Ticks every 10s for the first minute, then every 60s after
-   */
-  useEffect(() => {
-    if (lastUpdatedTimerRef.current) clearInterval(lastUpdatedTimerRef.current);
-
-    if (lastUpdated) {
-      lastUpdatedTimerRef.current = setInterval(() => {
-        const diffSec = Math.floor((Date.now() - lastUpdated.getTime()) / 1000);
-        setLastUpdatedTick((t) => t + 1);
-        // Switch to 60s interval once past the first minute
-        if (diffSec >= 60 && lastUpdatedTimerRef.current) {
-          clearInterval(lastUpdatedTimerRef.current);
-          lastUpdatedTimerRef.current = setInterval(() => {
-            setLastUpdatedTick((t) => t + 1);
-          }, 60000);
-        }
-      }, 10000);
-    }
-
-    return () => {
-      if (lastUpdatedTimerRef.current) clearInterval(lastUpdatedTimerRef.current);
-    };
-  }, [lastUpdated]);
-
-  /**
-   * Format last updated time for display
-   */
-  const lastUpdatedText = useMemo(() => {
-    if (!lastUpdated) return null;
-    // lastUpdatedTick forces re-computation
-    void lastUpdatedTick;
-    const diffMs = Date.now() - lastUpdated.getTime();
-    const diffSec = Math.floor(diffMs / 1000);
-
-    if (diffSec < 10) return 'Just now';
-    if (diffSec < 60) return `${diffSec}s ago`;
-    const diffMin = Math.floor(diffSec / 60);
-    if (diffMin < 60) return `${diffMin}m ago`;
-    return lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  }, [lastUpdated, lastUpdatedTick]);
-
-  // Live tick: updates every 60s for active shift + countdown, detects day
-  // change at midnight so calendar "today" highlight and stats refresh.
+  // Single consolidated timer: handles last-updated display + day-change detection.
+  // Ticks every 30s — avoids two separate intervals and nested interval re-creation.
   const [liveTick, setLiveTick] = useState(0);
   const [currentDateStr, setCurrentDateStr] = useState(() => toDateString(new Date()));
   useEffect(() => {
@@ -243,15 +198,31 @@ export const MainDashboardScreen: React.FC = () => {
       const nowStr = toDateString(new Date());
       setCurrentDateStr((prev) => {
         if (prev !== nowStr) {
-          // Day changed — also switch calendar to new month if needed
           const now = new Date();
           setCurrentMonth({ year: now.getFullYear(), month: now.getMonth() });
         }
         return nowStr;
       });
-    }, 60000);
+    }, 30000);
     return () => clearInterval(timer);
   }, []);
+
+  /**
+   * Format last updated time for display
+   */
+  const lastUpdatedText = useMemo(() => {
+    if (!lastUpdated) return null;
+    // liveTick forces re-computation
+    void liveTick;
+    const diffMs = Date.now() - lastUpdated.getTime();
+    const diffSec = Math.floor(diffMs / 1000);
+
+    if (diffSec < 10) return 'Just now';
+    if (diffSec < 60) return `${diffSec}s ago`;
+    const diffMin = Math.floor(diffSec / 60);
+    if (diffMin < 60) return `${diffMin}m ago`;
+    return lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }, [lastUpdated, liveTick]);
 
   // Build shift cycle from user data
   const shiftCycle = useMemo(() => (userData ? buildShiftCycle(userData) : null), [userData]);

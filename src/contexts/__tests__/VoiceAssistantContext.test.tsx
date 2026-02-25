@@ -448,6 +448,8 @@ describe('VoiceAssistantContext', () => {
     });
 
     it('hydrates last error and persists new errors', async () => {
+      jest.useFakeTimers();
+
       const persistedError = {
         type: 'network_error',
         message: 'Persisted network issue',
@@ -481,7 +483,9 @@ describe('VoiceAssistantContext', () => {
         callbacks.onError(nextError);
       });
 
+      // Advance past the persistence debounce (2s)
       await act(async () => {
+        jest.advanceTimersByTime(2500);
         await Promise.resolve();
       });
 
@@ -489,6 +493,8 @@ describe('VoiceAssistantContext', () => {
         nextError,
         expect.any(Object)
       );
+
+      jest.useRealTimers();
     });
   });
 

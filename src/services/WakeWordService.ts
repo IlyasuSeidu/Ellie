@@ -39,6 +39,9 @@ export interface WakeWordConfig {
   openWakeWordKeywordLabel?: string;
   openWakeWordThreshold?: number;
   openWakeWordTriggerCooldownMs?: number;
+  openWakeWordMinRmsForDetection?: number;
+  openWakeWordActivationFrames?: number;
+  openWakeWordScoreSmoothingAlpha?: number;
   modelPath?: string;
   device?: string;
 }
@@ -72,8 +75,11 @@ export class WakeWordError extends Error {
 const DEFAULT_BUILT_IN_KEYWORD = 'PORCUPINE';
 const DEFAULT_BUILT_IN_KEYWORD_VALUE = 'porcupine';
 const DEFAULT_SENSITIVITY = 0.65;
-const DEFAULT_OPENWAKEWORD_THRESHOLD = 0.45;
-const DEFAULT_OPENWAKEWORD_TRIGGER_COOLDOWN_MS = 1200;
+const DEFAULT_OPENWAKEWORD_THRESHOLD = 0.1;
+const DEFAULT_OPENWAKEWORD_TRIGGER_COOLDOWN_MS = 2000;
+const DEFAULT_OPENWAKEWORD_MIN_RMS = 0.01;
+const DEFAULT_OPENWAKEWORD_ACTIVATION_FRAMES = 1;
+const DEFAULT_OPENWAKEWORD_SCORE_SMOOTHING_ALPHA = 0.35;
 
 function clampSensitivity(value: number): number {
   if (!Number.isFinite(value)) return DEFAULT_SENSITIVITY;
@@ -246,6 +252,21 @@ class WakeWordService {
         0,
         config.openWakeWordTriggerCooldownMs ?? DEFAULT_OPENWAKEWORD_TRIGGER_COOLDOWN_MS
       );
+      const minRmsForDetection = Math.min(
+        1,
+        Math.max(0, config.openWakeWordMinRmsForDetection ?? DEFAULT_OPENWAKEWORD_MIN_RMS)
+      );
+      const activationFrames = Math.max(
+        1,
+        Math.floor(config.openWakeWordActivationFrames ?? DEFAULT_OPENWAKEWORD_ACTIVATION_FRAMES)
+      );
+      const scoreSmoothingAlpha = Math.min(
+        1,
+        Math.max(
+          0,
+          config.openWakeWordScoreSmoothingAlpha ?? DEFAULT_OPENWAKEWORD_SCORE_SMOOTHING_ALPHA
+        )
+      );
       const keywordLabel = config.openWakeWordKeywordLabel?.trim() || 'Hey Ellie';
 
       this.openWakeWordSubscriptions = [
@@ -255,13 +276,22 @@ class WakeWordService {
         addOpenWakeWordErrorListener((event) => {
           callbacks.onError(new Error(event.message));
         }),
-        addOpenWakeWordInferenceListener((event) => {
-          logger.debug('OpenWakeWord inference sample', {
-            score: Number(event.score.toFixed(4)),
-            threshold: event.threshold,
-            rms: typeof event.rms === 'number' ? Number(event.rms.toFixed(4)) : undefined,
-          });
-        }),
+        addOpenWakeWordInferenceListener(
+          (() => {
+            let sampleCount = 0;
+            return (event: { score: number; threshold: number; rms?: number }) => {
+              // Only log every 50th sample to avoid CPU overhead from constant serialization
+              sampleCount += 1;
+              if (sampleCount % 50 === 0) {
+                logger.debug('OpenWakeWord inference sample', {
+                  score: Number(event.score.toFixed(4)),
+                  threshold: event.threshold,
+                  rms: typeof event.rms === 'number' ? Number(event.rms.toFixed(4)) : undefined,
+                });
+              }
+            };
+          })()
+        ),
       ];
 
       await initializeOpenWakeWord({
@@ -271,6 +301,9 @@ class WakeWordService {
         keywordLabel,
         threshold,
         triggerCooldownMs,
+        minRmsForDetection,
+        activationFrames,
+        scoreSmoothingAlpha,
       });
 
       const runtimeConfig = getOpenWakeWordConfig();
@@ -278,6 +311,9 @@ class WakeWordService {
         modelPath,
         threshold: runtimeConfig?.threshold ?? threshold,
         triggerCooldownMs: runtimeConfig?.triggerCooldownMs ?? triggerCooldownMs,
+        minRmsForDetection: runtimeConfig?.minRmsForDetection ?? minRmsForDetection,
+        activationFrames: runtimeConfig?.activationFrames ?? activationFrames,
+        scoreSmoothingAlpha: runtimeConfig?.scoreSmoothingAlpha ?? scoreSmoothingAlpha,
       });
 
       this.keywordLabels = [keywordLabel];

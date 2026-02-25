@@ -13,6 +13,9 @@ export interface OpenWakeWordInitializeOptions {
   keywordLabel?: string;
   threshold?: number;
   triggerCooldownMs?: number;
+  minRmsForDetection?: number;
+  activationFrames?: number;
+  scoreSmoothingAlpha?: number;
 }
 
 export interface OpenWakeWordDetectionEvent {
@@ -43,6 +46,9 @@ interface OpenWakeWordModuleLike {
     keywordLabel: string;
     threshold: number;
     triggerCooldownMs: number;
+    minRmsForDetection?: number;
+    activationFrames?: number;
+    scoreSmoothingAlpha?: number;
   };
   initialize: (options: OpenWakeWordInitializeOptions) => Promise<void>;
   start: () => Promise<void>;
@@ -123,6 +129,9 @@ export function getOpenWakeWordConfig(): {
   keywordLabel: string;
   threshold: number;
   triggerCooldownMs: number;
+  minRmsForDetection?: number;
+  activationFrames?: number;
+  scoreSmoothingAlpha?: number;
 } | null {
   const configGetter = getNativeModule().getConfig;
   return typeof configGetter === 'function' ? configGetter() : null;

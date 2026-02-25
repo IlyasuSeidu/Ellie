@@ -1,0 +1,15 @@
+{
+  "name": "ellie-openwakeword",
+  "version": "0.1.0",
+  "description": "Local Expo module for OpenWakeWord integration in Ellie",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "sideEffects": false,
+  "private": true,
+  "peerDependencies": {
+    "expo": "*",
+    "expo-modules-core": "*",
+    "react": "*",
+    "react-native": "*"
+  }
+}
