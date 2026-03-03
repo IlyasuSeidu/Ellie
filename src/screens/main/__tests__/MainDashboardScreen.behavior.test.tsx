@@ -4,6 +4,31 @@ import { render, fireEvent, waitFor, act } from '@testing-library/react-native';
 import { MainDashboardScreen } from '../MainDashboardScreen';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 
+type HeaderMockProps = {
+  testID?: string;
+  name?: string;
+  onAvatarChange?: (uri: string | null) => void;
+};
+
+type ShiftCardMockProps = {
+  testID?: string;
+};
+
+type CalendarCardMockProps = {
+  testID?: string;
+  year: number;
+  month: number;
+  selectedDay?: number;
+  onPreviousMonth?: () => void;
+  onNextMonth?: () => void;
+  onDayPress: (day: number) => void;
+};
+
+type QuickActionsMockProps = {
+  testID?: string;
+  onActionPress?: (action: string) => void;
+};
+
 jest.mock('@/services/AsyncStorageService', () => ({
   asyncStorageService: {
     get: jest.fn(),
@@ -67,9 +92,8 @@ jest.mock('expo-linear-gradient', () => {
 jest.mock('@/components/dashboard/PersonalizedHeader', () => {
   const React = require('react');
   const RN = require('react-native');
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return {
-    PersonalizedHeader: (props: any) =>
+    PersonalizedHeader: (props: HeaderMockProps) =>
       React.createElement(
         RN.View,
         { testID: props.testID },
@@ -91,18 +115,17 @@ jest.mock('@/components/dashboard/PersonalizedHeader', () => {
 jest.mock('@/components/dashboard/CurrentShiftStatusCard', () => {
   const React = require('react');
   const RN = require('react-native');
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return {
-    CurrentShiftStatusCard: (props: any) => React.createElement(RN.View, { testID: props.testID }),
+    CurrentShiftStatusCard: (props: ShiftCardMockProps) =>
+      React.createElement(RN.View, { testID: props.testID }),
   };
 });
 
 jest.mock('@/components/dashboard/MonthlyCalendarCard', () => {
   const React = require('react');
   const RN = require('react-native');
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return {
-    MonthlyCalendarCard: (props: any) =>
+    MonthlyCalendarCard: (props: CalendarCardMockProps) =>
       React.createElement(
         RN.View,
         { testID: props.testID },
@@ -141,9 +164,8 @@ jest.mock('@/components/dashboard/StatisticsCard', () => {
 jest.mock('@/components/dashboard/QuickActionsBar', () => {
   const React = require('react');
   const RN = require('react-native');
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return {
-    QuickActionsBar: (props: any) =>
+    QuickActionsBar: (props: QuickActionsMockProps) =>
       React.createElement(
         RN.View,
         { testID: props.testID },

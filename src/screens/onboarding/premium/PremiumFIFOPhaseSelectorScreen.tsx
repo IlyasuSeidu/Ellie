@@ -710,9 +710,6 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
   const calculateAndNavigate = useCallback(
     (blockType: 'work' | 'rest', dayWithinBlock: number) => {
       if (isTransitioningRef.current) {
-        if (__DEV__) {
-          console.info('[FIFOPhaseSelector] Selection ignored while transition lock is active');
-        }
         return;
       }
 
@@ -725,25 +722,12 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       setIsTransitioning(true);
 
       updateData({ phaseOffset });
-      if (__DEV__) {
-        console.info('[FIFOPhaseSelector] Day selected', {
-          blockType,
-          dayWithinBlock: safeDayWithinBlock,
-        });
-        console.info('[FIFOPhaseSelector] Computed phaseOffset', { phaseOffset, cycleLength });
-      }
       void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
         source: 'PremiumFIFOPhaseSelectorScreen.handleDaySelect',
       });
-      if (__DEV__) {
-        console.info('[FIFOPhaseSelector] Navigation scheduled');
-      }
       interactionHandleRef.current = InteractionManager.runAfterInteractions(() => {
         navigationTimeoutRef.current = setTimeout(() => {
           navigationTimeoutRef.current = null;
-          if (__DEV__) {
-            console.info('[FIFOPhaseSelector] Navigation executing');
-          }
           goToNextScreen(navigation, 'FIFOPhaseSelector');
         }, 300);
       });
