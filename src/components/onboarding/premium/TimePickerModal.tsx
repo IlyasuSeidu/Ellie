@@ -10,6 +10,7 @@ import Animated from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { theme } from '@/utils/theme';
+import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
 
 export interface TimePickerModalProps {
   /** Modal visible state */
@@ -78,17 +79,23 @@ export const TimePickerModal: React.FC<TimePickerModalProps> = ({
   };
 
   const handleHourSelect = (hour: number) => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: `TimePickerModal.hour:${hour}`,
+    });
     setSelectedHour(hour);
   };
 
   const handleMinuteSelect = (minute: number) => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: `TimePickerModal.minute:${minute}`,
+    });
     setSelectedMinute(minute);
   };
 
   const toggleAMPM = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+      source: `TimePickerModal.toggleAMPM:${isPM ? 'pm' : 'am'}`,
+    });
     setIsPM(!isPM);
   };
 

@@ -5,11 +5,21 @@
  * Features staggered entrance animations (header → weekdays → rows → legend),
  * spring-bounce nav buttons, gold accent divider, color-coded shift days,
  * today indicator, dynamic legend, and haptic feedback.
+ * FIFO mode adds connected block ribbons, enhanced legend with cycle info,
+ * and long-press tooltips.
  * Entrance replays on month navigation for a polished transition.
  */
 
-import React, { useCallback, useEffect, useMemo } from 'react';
-import { View, Image, StyleSheet, Platform, TouchableOpacity } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
+import {
+  View,
+  Image,
+  StyleSheet,
+  Platform,
+  TouchableOpacity,
+  LayoutChangeEvent,
+  Pressable,
+} from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -25,7 +35,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
 import { getDaysInMonth, getFirstDayOfMonth, isToday as checkIsToday } from '@/utils/dateUtils';
 import { ShiftCalendarDayCell } from './ShiftCalendarDayCell';
-import { ShiftSystem, type ShiftDay } from '@/types';
+import { FIFODayTooltip } from './FIFODayTooltip';
+import { RosterType, ShiftSystem, type ShiftDay, type ShiftCycle } from '@/types';
+import {
+  computeFIFOBlockPositions,
+  getBlockRunsForRow,
+  type FIFOPositionMap,
+} from '@/utils/fifoCalendarUtils';
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 /** 3D assets for shift types */
@@ -53,6 +69,10 @@ export interface MonthlyCalendarCardProps {
   onDayPress?: (day: number) => void;
   /** Shift system (2-shift or 3-shift) — controls which legend items appear */
   shiftSystem?: ShiftSystem;
+  /** Roster paradigm (rotating or FIFO) — controls block-focused rendering */
+  rosterType?: RosterType;
+  /** Shift cycle configuration — needed for FIFO block position computation */
+  shiftCycle?: ShiftCycle;
   /** Glow color override for today's cell (e.g. during overnight carry-over) */
   activeGlowColor?: string;
   /** Animation delay in ms */
@@ -118,6 +138,113 @@ function buildCalendarGrid(year: number, month: number): (number | null)[][] {
   return weeks;
 }
 
+/** Animated FIFO ribbon — animates width on mount for a left-to-right fill effect */
+const AnimatedRibbon: React.FC<{
+  ribbonColor: { bg: string; border: string };
+  leftPos: number;
+  targetWidth: number;
+  startsBlock: boolean;
+  endsBlock: boolean;
+  delay: number;
+  testID?: string;
+}> = ({ ribbonColor, leftPos, targetWidth, startsBlock, endsBlock, delay, testID }) => {
+  const ribbonScale = useSharedValue(0);
+
+  React.useEffect(() => {
+    ribbonScale.value = 0;
+    ribbonScale.value = withDelay(delay, withSpring(1, { damping: 18, stiffness: 160 }));
+  }, [ribbonScale, delay]);
+
+  const ribbonAnimStyle = useAnimatedStyle(() => ({
+    width: Math.max(targetWidth * ribbonScale.value, 0),
+  }));
+
+  return (
+    <Animated.View
+      style={[
+        ribbonStyles.ribbon,
+        {
+          left: leftPos,
+          backgroundColor: ribbonColor.bg,
+          borderColor: ribbonColor.border,
+          borderTopLeftRadius: startsBlock ? 8 : 0,
+          borderBottomLeftRadius: startsBlock ? 8 : 0,
+          borderTopRightRadius: endsBlock ? 8 : 0,
+          borderBottomRightRadius: endsBlock ? 8 : 0,
+        },
+        ribbonAnimStyle,
+      ]}
+      testID={testID}
+    />
+  );
+};
+
+const ribbonStyles = StyleSheet.create({
+  ribbon: {
+    position: 'absolute',
+    top: 3,
+    bottom: 5,
+    borderWidth: 1,
+    zIndex: 0,
+  },
+});
+
+/** FIFO ribbon color config */
+const RIBBON_COLORS = {
+  work: {
+    bg: 'rgba(33, 150, 243, 0.18)',
+    border: 'rgba(33, 150, 243, 0.25)',
+  },
+  rest: {
+    bg: 'rgba(120, 113, 108, 0.12)',
+    border: 'rgba(120, 113, 108, 0.18)',
+  },
+} as const;
+
+/** Small inline component for FIFO legend block preview (3 connected rectangles) */
+const FIFOLegendBlockPreview: React.FC<{ type: 'work' | 'rest' }> = ({ type }) => {
+  const bg = type === 'work' ? RIBBON_COLORS.work.bg : RIBBON_COLORS.rest.bg;
+  const border = type === 'work' ? RIBBON_COLORS.work.border : RIBBON_COLORS.rest.border;
+  return (
+    <View style={legendPreviewStyles.container}>
+      <View style={[legendPreviewStyles.left, { backgroundColor: bg, borderColor: border }]} />
+      <View
+        style={[
+          legendPreviewStyles.middle,
+          { backgroundColor: bg, borderTopColor: border, borderBottomColor: border },
+        ]}
+      />
+      <View style={[legendPreviewStyles.right, { backgroundColor: bg, borderColor: border }]} />
+    </View>
+  );
+};
+
+const legendPreviewStyles = StyleSheet.create({
+  container: { flexDirection: 'row', marginRight: 6 },
+  left: {
+    width: 12,
+    height: 8,
+    borderWidth: 0.5,
+    borderTopLeftRadius: 3,
+    borderBottomLeftRadius: 3,
+    borderRightWidth: 0,
+  },
+  middle: {
+    width: 12,
+    height: 8,
+    borderTopWidth: 0.5,
+    borderBottomWidth: 0.5,
+  },
+  right: {
+    width: 12,
+    height: 8,
+    borderWidth: 0.5,
+    borderTopRightRadius: 3,
+    borderBottomRightRadius: 3,
+    borderLeftWidth: 0,
+  },
+});
+
 export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
   year,
   month,
@@ -127,6 +254,8 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
   onNextMonth,
   onDayPress,
   shiftSystem,
+  rosterType = RosterType.ROTATING,
+  shiftCycle,
   activeGlowColor,
   animationDelay = 200,
   testID,
@@ -142,6 +271,84 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
     }
     return map;
   }, [shiftDays]);
+
+  // ── FIFO Block Positions ──
+  const fifoPositionMap: FIFOPositionMap | null = useMemo(() => {
+    if (rosterType !== RosterType.FIFO || !shiftCycle) return null;
+    return computeFIFOBlockPositions(year, month, shiftDays, shiftCycle, calendarGrid);
+  }, [rosterType, shiftCycle, year, month, shiftDays, calendarGrid]);
+
+  // ── FIFO Tooltip State ──
+  const [tooltipDay, setTooltipDay] = useState<number | null>(null);
+  const [isTooltipDismissing, setIsTooltipDismissing] = useState(false);
+  const tooltipDayRef = useRef<number | null>(null);
+  const tooltipTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const tooltipDismissTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [gridWidth, setGridWidth] = useState(0);
+
+  useEffect(() => {
+    tooltipDayRef.current = tooltipDay;
+  }, [tooltipDay]);
+
+  const dismissTooltip = useCallback(() => {
+    if (tooltipDayRef.current === null) return;
+    if (isTooltipDismissing) return;
+    setIsTooltipDismissing(true);
+    if (tooltipTimeout.current) clearTimeout(tooltipTimeout.current);
+    if (tooltipDismissTimeout.current) clearTimeout(tooltipDismissTimeout.current);
+    tooltipDismissTimeout.current = setTimeout(() => {
+      setTooltipDay(null);
+      setIsTooltipDismissing(false);
+      tooltipDismissTimeout.current = null;
+    }, 200);
+  }, [isTooltipDismissing]);
+
+  const handleLongPress = useCallback(
+    (day: number) => {
+      if (!fifoPositionMap?.[day]) return;
+      if (tooltipDismissTimeout.current) {
+        clearTimeout(tooltipDismissTimeout.current);
+        tooltipDismissTimeout.current = null;
+      }
+      setIsTooltipDismissing(false);
+      setTooltipDay(day);
+      // Auto-dismiss after 2500ms
+      if (tooltipTimeout.current) clearTimeout(tooltipTimeout.current);
+      tooltipTimeout.current = setTimeout(() => dismissTooltip(), 2500);
+    },
+    [fifoPositionMap, dismissTooltip]
+  );
+
+  // Clean up tooltip timeout
+  useEffect(() => {
+    return () => {
+      if (tooltipTimeout.current) clearTimeout(tooltipTimeout.current);
+      if (tooltipDismissTimeout.current) clearTimeout(tooltipDismissTimeout.current);
+    };
+  }, []);
+
+  // Dismiss tooltip on month change
+  useEffect(() => {
+    setTooltipDay(null);
+    setIsTooltipDismissing(false);
+    if (tooltipTimeout.current) clearTimeout(tooltipTimeout.current);
+    if (tooltipDismissTimeout.current) {
+      clearTimeout(tooltipDismissTimeout.current);
+      tooltipDismissTimeout.current = null;
+    }
+  }, [year, month]);
+
+  const handleDayPress = useCallback(
+    (day: number) => {
+      dismissTooltip();
+      onDayPress?.(day);
+    },
+    [onDayPress, dismissTooltip]
+  );
+
+  const handleGridLayout = useCallback((e: LayoutChangeEvent) => {
+    setGridWidth(e.nativeEvent.layout.width);
+  }, []);
 
   // ── Staggered Entrance Shared Values (20 total) ──
 
@@ -344,6 +551,42 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
     [handleNextMonth, handlePrevMonth]
   );
 
+  // ── Compute per-row cell width for ribbon positioning ──
+  // The grid uses `justifyContent: 'space-around'`, so we need actual cell positions.
+  // Since all cells are CELL_WIDTH wide and evenly spaced, calculate the gap.
+  const cellSpacing = useMemo(() => {
+    if (!gridWidth || gridWidth === 0) return { gap: 0, offset: 0 };
+    // space-around: gap between cells = (totalWidth - 7 * CELL_WIDTH) / 7
+    // and half-gap on each side
+    const totalCellWidth = 7 * CELL_WIDTH;
+    const totalGap = gridWidth - totalCellWidth;
+    const gap = totalGap / 7; // space-around distributes equally
+    const offset = gap / 2; // half-gap before first cell
+    return { gap, offset };
+  }, [gridWidth]);
+
+  // ── Tooltip position computation ──
+  const tooltipPosition = useMemo(() => {
+    if (tooltipDay === null || !fifoPositionMap) return null;
+
+    // Find which row/col the tooltip day is in
+    for (let rowIdx = 0; rowIdx < calendarGrid.length; rowIdx++) {
+      const colIdx = calendarGrid[rowIdx].indexOf(tooltipDay);
+      if (colIdx !== -1) {
+        const cellCenterX =
+          cellSpacing.offset + colIdx * (CELL_WIDTH + cellSpacing.gap) + CELL_WIDTH / 2;
+        const cellTop = rowIdx * (CELL_HEIGHT + 2); // 2px marginBottom per row
+        const showAbove = rowIdx > 0;
+        return {
+          x: cellCenterX,
+          y: showAbove ? cellTop - 4 : cellTop + CELL_HEIGHT + 4,
+          showAbove,
+        };
+      }
+    }
+    return null;
+  }, [tooltipDay, fifoPositionMap, calendarGrid, cellSpacing]);
+
   return (
     <GestureDetector gesture={swipeGesture}>
       <View style={styles.container} testID={testID}>
@@ -395,12 +638,52 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
         </Animated.View>
 
         {/* Calendar Grid — row-level staggered entrance */}
-        <View style={styles.gridContainer}>
+        <View
+          style={styles.gridContainer}
+          onLayout={handleGridLayout}
+          testID="calendar-grid-container"
+        >
+          {tooltipDay !== null && (
+            <Pressable
+              onPress={dismissTooltip}
+              style={styles.tooltipDismissOverlay}
+              testID="fifo-tooltip-dismiss-overlay"
+            />
+          )}
           {calendarGrid.map((week, weekIndex) => (
             <Animated.View
               key={`week-${weekIndex}`}
               style={[styles.weekRow, rowEntranceStyles[weekIndex]]}
             >
+              {/* FIFO Connected Block Ribbons (rendered behind cells, animated fill) */}
+              {fifoPositionMap && gridWidth > 0 && (
+                <>
+                  {getBlockRunsForRow(week, fifoPositionMap).map((run, runIdx) => {
+                    const ribbonColor = RIBBON_COLORS[run.blockType];
+                    const leftPos =
+                      cellSpacing.offset + run.startCol * (CELL_WIDTH + cellSpacing.gap) + 2;
+                    const ribbonWidth =
+                      run.length * (CELL_WIDTH + cellSpacing.gap) - cellSpacing.gap - 4;
+                    // Stagger: row delay + 30ms per ribbon within the row
+                    const rowDelay = animationDelay + 240 + weekIndex * 80;
+                    const ribbonDelay = rowDelay + runIdx * 30;
+
+                    return (
+                      <AnimatedRibbon
+                        key={`ribbon-${weekIndex}-${runIdx}-${year}-${month}`}
+                        ribbonColor={ribbonColor}
+                        leftPos={leftPos}
+                        targetWidth={Math.max(ribbonWidth, 0)}
+                        startsBlock={run.startsBlock}
+                        endsBlock={run.endsBlock}
+                        delay={ribbonDelay}
+                        testID={`fifo-ribbon-${weekIndex}-${runIdx}`}
+                      />
+                    );
+                  })}
+                </>
+              )}
+
               {week.map((day, dayIndex) => {
                 if (day === null) {
                   return <View key={`empty-${weekIndex}-${dayIndex}`} style={styles.emptyCell} />;
@@ -415,39 +698,82 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
                     key={`day-${day}`}
                     day={day}
                     shiftType={shiftDay?.shiftType}
+                    rosterType={rosterType}
+                    fifoPosition={fifoPositionMap?.[day]}
                     isToday={isTodayDate}
                     selected={selectedDay === day}
                     activeGlowColor={isTodayDate ? activeGlowColor : undefined}
-                    onPress={onDayPress}
+                    onPress={handleDayPress}
+                    onLongPress={fifoPositionMap ? handleLongPress : undefined}
                     testID={`calendar-day-${day}`}
                   />
                 );
               })}
             </Animated.View>
           ))}
+
+          {/* FIFO Day Tooltip */}
+          {tooltipDay !== null && fifoPositionMap?.[tooltipDay] && tooltipPosition && (
+            <FIFODayTooltip
+              day={tooltipDay}
+              position={fifoPositionMap[tooltipDay]}
+              x={tooltipPosition.x}
+              y={tooltipPosition.y}
+              showAbove={tooltipPosition.showAbove}
+              isDismissing={isTooltipDismissing}
+              onDismiss={dismissTooltip}
+            />
+          )}
         </View>
 
         {/* Legend — filtered by shift system, with entrance animation */}
         <Animated.View style={[styles.legend, legendEntranceStyle]}>
-          {shiftSystem !== ShiftSystem.THREE_SHIFT && (
-            <LegendItem color="#BBDEFB" imageSource={DAY_SHIFT_ICON} label="Day" />
-          )}
-          {shiftSystem !== ShiftSystem.TWO_SHIFT && (
+          {rosterType === RosterType.FIFO ? (
             <>
-              <LegendItem
-                color="rgba(245, 158, 11, 0.25)"
-                imageSource={MORNING_SHIFT_ICON}
-                label="Morning"
-              />
-              <LegendItem
-                color="rgba(6, 182, 212, 0.25)"
-                imageSource={AFTERNOON_SHIFT_ICON}
-                label="Afternoon"
-              />
+              {/* Connected block previews for FIFO legend */}
+              <View style={styles.legendItem}>
+                <FIFOLegendBlockPreview type="work" />
+                <Animated.Text style={styles.legendText}>Work Block</Animated.Text>
+              </View>
+              <View style={styles.legendItem}>
+                <FIFOLegendBlockPreview type="rest" />
+                <Animated.Text style={styles.legendText}>Rest Block</Animated.Text>
+              </View>
+              {/* Cycle info label */}
+              {shiftCycle?.fifoConfig && (
+                <View style={styles.legendItem}>
+                  <View style={styles.cycleBadge}>
+                    <Animated.Text style={styles.cycleBadgeText}>
+                      {shiftCycle.fifoConfig.workBlockDays}/{shiftCycle.fifoConfig.restBlockDays}
+                    </Animated.Text>
+                  </View>
+                  <Animated.Text style={styles.legendText}>cycle</Animated.Text>
+                </View>
+              )}
+            </>
+          ) : (
+            <>
+              {shiftSystem !== ShiftSystem.THREE_SHIFT && (
+                <LegendItem color="#BBDEFB" imageSource={DAY_SHIFT_ICON} label="Day" />
+              )}
+              {shiftSystem !== ShiftSystem.TWO_SHIFT && (
+                <>
+                  <LegendItem
+                    color="rgba(245, 158, 11, 0.25)"
+                    imageSource={MORNING_SHIFT_ICON}
+                    label="Morning"
+                  />
+                  <LegendItem
+                    color="rgba(6, 182, 212, 0.25)"
+                    imageSource={AFTERNOON_SHIFT_ICON}
+                    label="Afternoon"
+                  />
+                </>
+              )}
+              <LegendItem color="#fff" imageSource={NIGHT_SHIFT_ICON} label="Night" />
+              <LegendItem color="#78716c" imageSource={OFF_SHIFT_ICON} label="Off" />
             </>
           )}
-          <LegendItem color="#fff" imageSource={NIGHT_SHIFT_ICON} label="Night" />
-          <LegendItem color="#78716c" imageSource={OFF_SHIFT_ICON} label="Off" />
         </Animated.View>
       </View>
     </GestureDetector>
@@ -475,6 +801,7 @@ const LegendItem: React.FC<LegendItemProps> = ({ color, icon, imageSource, label
 );
 
 const CELL_WIDTH = 44;
+const CELL_HEIGHT = 72;
 
 const styles = StyleSheet.create({
   container: {
@@ -540,16 +867,22 @@ const styles = StyleSheet.create({
   },
   gridContainer: {
     alignItems: 'center',
+    position: 'relative',
+  },
+  tooltipDismissOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 20,
   },
   weekRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '100%',
     marginBottom: 2,
+    position: 'relative',
   },
   emptyCell: {
     width: CELL_WIDTH,
-    height: 72,
+    height: CELL_HEIGHT,
   },
   legend: {
     flexDirection: 'row',
@@ -589,5 +922,17 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     resizeMode: 'contain',
+  },
+  cycleBadge: {
+    backgroundColor: theme.colors.softStone,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    marginRight: 6,
+  },
+  cycleBadgeText: {
+    fontSize: 10,
+    fontWeight: theme.typography.fontWeights.bold,
+    color: theme.colors.paper,
   },
 });

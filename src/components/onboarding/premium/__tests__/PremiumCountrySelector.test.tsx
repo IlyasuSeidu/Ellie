@@ -207,7 +207,7 @@ describe('PremiumCountrySelector', () => {
 
       fireEvent.press(getByText('Canada'));
 
-      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Medium);
+      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
     });
 
     it('should not crash when no onCountrySelect handler provided', () => {

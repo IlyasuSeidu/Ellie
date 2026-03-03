@@ -4,6 +4,30 @@
 
 This guide covers building and deploying the Ellie application to iOS and Android platforms using Expo Application Services (EAS).
 
+## Release Checklist (Dual Roster + Voice)
+
+Before cutting a release, run this gate in order:
+
+1. `npm run type-check`
+2. `npm test -- --runInBand`
+3. `npm run backend:build`
+4. Confirm voice env values are set (`EXPO_PUBLIC_ELLIE_BRAIN_URL`, wake-word env keys)
+5. Build dev clients for smoke:
+   - `npx expo run:ios`
+   - `npx expo run:android`
+6. Smoke pass:
+   - Rotating onboarding path
+   - FIFO onboarding path
+   - Dashboard block labels for FIFO
+   - Voice assistant: no-speech/offline/backend failure/wake-word-unavailable paths
+7. Update release notes:
+   - `docs/RELEASE_NOTES_FIFO_DUAL_ROSTER.md`
+
+Recommended branch naming:
+
+- `release/<version>` for release prep
+- `hotfix/<version>-<topic>` for post-release critical fixes
+
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)

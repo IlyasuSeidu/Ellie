@@ -9,6 +9,7 @@ import { View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import Animated from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
+import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
 import { DayCell } from './DayCell';
 
 export interface PremiumCalendarProps {
@@ -53,7 +54,9 @@ export const PremiumCalendar: React.FC<PremiumCalendarProps> = ({
   const [currentMonth, setCurrentMonth] = useState(selectedDate || new Date());
 
   const handlePrevMonth = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: 'PremiumCalendar.prevMonth',
+    });
     setCurrentMonth((prev) => {
       const newDate = new Date(prev);
       newDate.setMonth(newDate.getMonth() - 1);
@@ -62,7 +65,9 @@ export const PremiumCalendar: React.FC<PremiumCalendarProps> = ({
   };
 
   const handleNextMonth = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: 'PremiumCalendar.nextMonth',
+    });
     setCurrentMonth((prev) => {
       const newDate = new Date(prev);
       newDate.setMonth(newDate.getMonth() + 1);

@@ -4,6 +4,21 @@
 
 Ellie is built using a modern React Native architecture with Expo, following best practices for scalability, maintainability, and testability. The application uses a layered architecture with clear separation of concerns.
 
+## Dual Roster Architecture (Rotating + FIFO)
+
+Ellie supports two scheduling paradigms:
+
+- **Rotating roster**: day/night/off or morning/afternoon/night/off patterns.
+- **FIFO roster**: work block/rest block cycles with optional work-block patterns (straight day, straight night, swing, custom).
+
+Core architecture points:
+
+- `ShiftCycle` now carries `rosterType` and optional `fifoConfig`.
+- `calculateShiftDay` branches by `rosterType` so both paradigms share one query surface.
+- Onboarding routes split early by roster type (`RosterType`, `FIFOCustomPattern`, `FIFOPhaseSelector`).
+- Dashboard components render either shift-centric UI (rotating) or block-centric UI (FIFO).
+- Voice assistant context serializes `rosterType` and `fifoConfig`, and backend tools return block-aware responses.
+
 ## Architecture Layers
 
 ```

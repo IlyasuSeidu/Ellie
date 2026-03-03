@@ -1,0 +1,458 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PremiumFIFOPhaseSelectorScreen matches snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#0c0a09",
+      "flex": 1,
+    }
+  }
+>
+  <View
+    testID="fifo-phase-selector-progress-header"
+  />
+  <Text
+    style={
+      {
+        "color": "#e7e5e4",
+        "fontFamily": "System",
+        "fontSize": 28,
+        "fontWeight": "bold",
+        "letterSpacing": 1,
+        "marginTop": 24,
+        "paddingHorizontal": 24,
+        "textAlign": "center",
+      }
+    }
+  >
+    Where are you in your FIFO cycle?
+  </Text>
+  <Text
+    style={
+      {
+        "color": "#a8a29e",
+        "fontFamily": "System",
+        "fontSize": 16,
+        "marginBottom": 32,
+        "marginTop": 8,
+        "paddingHorizontal": 24,
+        "textAlign": "center",
+      }
+    }
+  >
+    Swipe right to select, left to see next, or up for more info
+  </Text>
+  <View
+    style={
+      {
+        "flexDirection": "row",
+        "gap": 8,
+        "justifyContent": "center",
+        "marginBottom": 24,
+      }
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "backgroundColor": "#292524",
+            "borderRadius": 4,
+            "height": 8,
+            "width": 8,
+          },
+          {
+            "backgroundColor": "#b45309",
+            "width": 24,
+          },
+        ]
+      }
+    />
+    <View
+      style={
+        [
+          {
+            "backgroundColor": "#292524",
+            "borderRadius": 4,
+            "height": 8,
+            "width": 8,
+          },
+          false,
+        ]
+      }
+    />
+  </View>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "center",
+        "marginBottom": 32,
+      }
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "backgroundColor": "#1c1917",
+            "borderColor": "rgba(180, 83, 9, 0.2)",
+            "borderRadius": 24,
+            "borderWidth": 1,
+            "height": 773.7199999999999,
+            "justifyContent": "center",
+            "overflow": "hidden",
+            "padding": 32,
+            "position": "absolute",
+            "width": 637.5,
+          },
+          {},
+          {
+            "shadowColor": "#0c0a09",
+            "shadowOffset": {
+              "height": 6,
+              "width": 0,
+            },
+            "shadowOpacity": 0.2,
+            "shadowRadius": 12,
+          },
+        ]
+      }
+    >
+      <View
+        colors={
+          [
+            "#78716c",
+            "#57534e",
+          ]
+        }
+        end={
+          {
+            "x": 0,
+            "y": 1,
+          }
+        }
+        start={
+          {
+            "x": 0,
+            "y": 0,
+          }
+        }
+        style={
+          {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "height": 180,
+              "justifyContent": "center",
+              "marginBottom": 24,
+              "width": 180,
+            },
+            {},
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#e7e5e4",
+              "fontSize": 120,
+            }
+          }
+        >
+          🏠
+        </Text>
+      </View>
+      <Text
+        style={
+          {
+            "color": "#e7e5e4",
+            "fontSize": 24,
+            "fontWeight": "bold",
+            "marginBottom": 16,
+            "textAlign": "center",
+          }
+        }
+      >
+        At Home (Rest)
+      </Text>
+      <View
+        style={
+          {
+            "backgroundColor": "rgba(180, 83, 9, 0.2)",
+            "borderRadius": 20,
+            "marginBottom": 24,
+            "paddingHorizontal": 16,
+            "paddingVertical": 4,
+          }
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#b45309",
+              "fontSize": 18,
+              "fontWeight": "600",
+            }
+          }
+        >
+          14
+           
+          days
+        </Text>
+      </View>
+      <Text
+        style={
+          {
+            "color": "#a8a29e",
+            "fontSize": 16,
+            "lineHeight": 24,
+            "paddingHorizontal": 16,
+            "textAlign": "center",
+          }
+        }
+      >
+        You are currently at home on your rest block
+      </Text>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "backgroundColor": "#1c1917",
+            "borderColor": "rgba(180, 83, 9, 0.2)",
+            "borderRadius": 24,
+            "borderWidth": 1,
+            "height": 773.7199999999999,
+            "justifyContent": "center",
+            "overflow": "hidden",
+            "padding": 32,
+            "position": "absolute",
+            "width": 637.5,
+          },
+          {},
+          {
+            "shadowColor": "#b45309",
+            "shadowOffset": {
+              "height": 12,
+              "width": 0,
+            },
+            "shadowOpacity": 0.4,
+            "shadowRadius": 20,
+          },
+        ]
+      }
+    >
+      <View
+        colors={
+          [
+            "#2196F3",
+            "#1976D2",
+          ]
+        }
+        end={
+          {
+            "x": 0,
+            "y": 1,
+          }
+        }
+        start={
+          {
+            "x": 0,
+            "y": 0,
+          }
+        }
+        style={
+          {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "height": 180,
+              "justifyContent": "center",
+              "marginBottom": 24,
+              "width": 180,
+            },
+            {},
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#e7e5e4",
+              "fontSize": 120,
+            }
+          }
+        >
+          ⛏️
+        </Text>
+      </View>
+      <Text
+        style={
+          {
+            "color": "#e7e5e4",
+            "fontSize": 24,
+            "fontWeight": "bold",
+            "marginBottom": 16,
+            "textAlign": "center",
+          }
+        }
+      >
+        At Site (Working)
+      </Text>
+      <View
+        style={
+          {
+            "backgroundColor": "rgba(180, 83, 9, 0.2)",
+            "borderRadius": 20,
+            "marginBottom": 24,
+            "paddingHorizontal": 16,
+            "paddingVertical": 4,
+          }
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#b45309",
+              "fontSize": 18,
+              "fontWeight": "600",
+            }
+          }
+        >
+          14
+           
+          days
+        </Text>
+      </View>
+      <Text
+        style={
+          {
+            "color": "#a8a29e",
+            "fontSize": 16,
+            "lineHeight": 24,
+            "paddingHorizontal": 16,
+            "textAlign": "center",
+          }
+        }
+      >
+        You are currently at the mine site on your work block
+      </Text>
+      <View
+        style={
+          [
+            {
+              "backgroundColor": "rgba(180, 83, 9, 0.3)",
+              "borderRadius": 12,
+              "paddingHorizontal": 8,
+              "paddingVertical": 4,
+              "position": "absolute",
+            },
+            {
+              "left": 24,
+              "top": "50%",
+            },
+            {},
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#a8a29e",
+              "fontSize": 14,
+              "fontWeight": "600",
+            }
+          }
+        >
+          ← Next
+        </Text>
+      </View>
+      <View
+        style={
+          [
+            {
+              "backgroundColor": "rgba(180, 83, 9, 0.3)",
+              "borderRadius": 12,
+              "paddingHorizontal": 8,
+              "paddingVertical": 4,
+              "position": "absolute",
+            },
+            {
+              "right": 24,
+              "top": "50%",
+            },
+            {},
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#a8a29e",
+              "fontSize": 14,
+              "fontWeight": "600",
+            }
+          }
+        >
+          Select →
+        </Text>
+      </View>
+      <View
+        style={
+          [
+            {
+              "backgroundColor": "rgba(180, 83, 9, 0.3)",
+              "borderRadius": 12,
+              "paddingHorizontal": 8,
+              "paddingVertical": 4,
+              "position": "absolute",
+            },
+            {
+              "alignSelf": "center",
+              "top": 24,
+            },
+            {},
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#a8a29e",
+              "fontSize": 14,
+              "fontWeight": "600",
+            }
+          }
+        >
+          ↑ Info
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

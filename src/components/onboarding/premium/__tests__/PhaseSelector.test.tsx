@@ -213,7 +213,7 @@ describe('PhaseSelector', () => {
         <PhaseSelector selectedPhase="day" onPhaseSelect={mockOnPhaseSelect} />
       );
       fireEvent.press(getByTestId('phase-night'));
-      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Medium);
+      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
     });
 
     it('should trigger light haptic on press in', () => {
@@ -231,17 +231,17 @@ describe('PhaseSelector', () => {
       );
 
       fireEvent.press(getByTestId('phase-day'));
-      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Medium);
+      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
 
       jest.clearAllMocks();
 
       fireEvent.press(getByTestId('phase-night'));
-      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Medium);
+      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
 
       jest.clearAllMocks();
 
       fireEvent.press(getByTestId('phase-off'));
-      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Medium);
+      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
     });
 
     it('should trigger haptic even when selecting already selected phase', () => {
@@ -249,7 +249,7 @@ describe('PhaseSelector', () => {
         <PhaseSelector selectedPhase="day" onPhaseSelect={mockOnPhaseSelect} />
       );
       fireEvent.press(getByTestId('phase-day'));
-      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Medium);
+      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
     });
   });
 

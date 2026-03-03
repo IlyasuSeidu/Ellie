@@ -23,6 +23,14 @@ module.exports = {
     '!src/screens/onboarding/premium/PremiumIntroductionScreen.tsx',
   ],
   coverageReporters: ['text', 'lcov', 'json-summary'],
+  coverageThreshold: {
+    global: {
+      branches: 60,
+      functions: 70,
+      lines: 70,
+      statements: 70,
+    },
+  },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',

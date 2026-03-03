@@ -19,6 +19,7 @@ type AnyNavigation = {
 /**
  * Navigation flow map
  * Defines the next screen for each onboarding step
+ * Updated to support both Rotating and FIFO roster paradigms
  */
 const NAVIGATION_FLOW: Record<
   keyof OnboardingStackParamList,
@@ -26,13 +27,33 @@ const NAVIGATION_FLOW: Record<
 > = {
   Welcome: () => 'Introduction',
   Introduction: () => 'ShiftSystem',
-  ShiftSystem: () => 'ShiftPattern',
+  ShiftSystem: () => 'RosterType', // NEW: Go to roster type selection
+  RosterType: () => 'ShiftPattern', // NEW: Roster type screen
   ShiftPattern: (data) => {
-    // Conditional: Go to CustomPattern if CUSTOM selected, else PhaseSelector
-    return data?.patternType === ShiftPattern.CUSTOM ? 'CustomPattern' : 'PhaseSelector';
+    // Complex conditional routing based on pattern type AND roster type
+
+    // Custom rotating pattern
+    if (data?.patternType === ShiftPattern.CUSTOM && data?.rosterType === 'rotating') {
+      return 'CustomPattern';
+    }
+
+    // Custom FIFO pattern
+    if (data?.patternType === ShiftPattern.FIFO_CUSTOM && data?.rosterType === 'fifo') {
+      return 'FIFOCustomPattern';
+    }
+
+    // FIFO patterns (non-custom)
+    if (data?.rosterType === 'fifo') {
+      return 'FIFOPhaseSelector';
+    }
+
+    // Rotating patterns (non-custom) - default behavior
+    return 'PhaseSelector';
   },
-  CustomPattern: () => 'PhaseSelector',
-  PhaseSelector: () => 'StartDate',
+  CustomPattern: () => 'PhaseSelector', // Rotating custom → rotating phase
+  FIFOCustomPattern: () => 'FIFOPhaseSelector', // NEW: FIFO custom → FIFO phase
+  PhaseSelector: () => 'StartDate', // Rotating phase → start date
+  FIFOPhaseSelector: () => 'StartDate', // NEW: FIFO phase → start date
   StartDate: () => 'ShiftTimeInput',
   ShiftTimeInput: () => 'Completion',
   Completion: () => null, // Final screen

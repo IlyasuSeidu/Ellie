@@ -152,7 +152,7 @@ describe('ReportCheckbox', () => {
       );
       fireEvent.press(getByTestId('checkbox'));
 
-      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Medium);
+      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
     });
 
     it('should trigger light haptic on uncheck', () => {

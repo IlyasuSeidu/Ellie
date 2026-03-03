@@ -1,17 +1,25 @@
 /**
  * Onboarding Navigator
  *
- * Handles navigation between all 9 premium onboarding screens (8 steps total).
+ * Handles navigation between 9-10 premium onboarding screens (depends on roster type).
  *
- * ## Flow:
- * 1. Welcome → 2. Introduction → 3. ShiftSystem → 4. ShiftPattern
- * → [4b. CustomPattern (conditional)] → 5. PhaseSelector → 6. StartDate
+ * ## Flow (Rotating Rosters):
+ * 1. Welcome → 2. Introduction → 3. ShiftSystem → 3.5 RosterType → 4. ShiftPattern
+ * → [4b-R. CustomPattern (conditional)] → 5-R. PhaseSelector → 6. StartDate
+ * → 7. ShiftTimeInput → 8. Completion
+ *
+ * ## Flow (FIFO Rosters):
+ * 1. Welcome → 2. Introduction → 3. ShiftSystem → 3.5 RosterType → 4. ShiftPattern
+ * → [4b-F. FIFOCustomPattern (conditional)] → 5-F. FIFOPhaseSelector → 6. StartDate
  * → 7. ShiftTimeInput → 8. Completion
  *
  * ## Conditional Navigation:
- * - **CustomPattern** screen only appears if user selects ShiftPattern.CUSTOM in step 4
- * - **ShiftTimeInput** is multi-stage based on shift system (2-shift vs 3-shift)
- * - **PhaseSelector** is two-stage if selected phase has multiple days
+ * - **RosterType** screen added between ShiftSystem and ShiftPattern
+ * - **CustomPattern** appears if user selects ShiftPattern.CUSTOM (rotating)
+ * - **FIFOCustomPattern** appears if user selects ShiftPattern.FIFO_CUSTOM (FIFO)
+ * - **PhaseSelector** used for rotating rosters
+ * - **FIFOPhaseSelector** used for FIFO rosters
+ * - **ShiftTimeInput** adjusts based on shift system and roster type
  *
  * ## Data Flow:
  * All screens use `useOnboarding()` hook to read/write to OnboardingContext.
@@ -25,9 +33,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { PremiumWelcomeScreen } from '@/screens/onboarding/premium/PremiumWelcomeScreen';
 import { PremiumIntroductionScreen } from '@/screens/onboarding/premium/PremiumIntroductionScreen';
 import { PremiumShiftSystemScreen } from '@/screens/onboarding/premium/PremiumShiftSystemScreen';
+import { PremiumRosterTypeScreen } from '@/screens/onboarding/premium/PremiumRosterTypeScreen';
 import { PremiumShiftPatternScreen } from '@/screens/onboarding/premium/PremiumShiftPatternScreen';
 import { PremiumCustomPatternScreen } from '@/screens/onboarding/premium/PremiumCustomPatternScreen';
+import { PremiumFIFOCustomPatternScreen } from '@/screens/onboarding/premium/PremiumFIFOCustomPatternScreen';
 import { PremiumPhaseSelectorScreen } from '@/screens/onboarding/premium/PremiumPhaseSelectorScreen';
+import { PremiumFIFOPhaseSelectorScreen } from '@/screens/onboarding/premium/PremiumFIFOPhaseSelectorScreen';
 import { PremiumStartDateScreen } from '@/screens/onboarding/premium/PremiumStartDateScreen';
 import { PremiumShiftTimeInputScreen } from '@/screens/onboarding/premium/PremiumShiftTimeInputScreen';
 import { PremiumCompletionScreen } from '@/screens/onboarding/premium/PremiumCompletionScreen';
@@ -35,7 +46,7 @@ import { PremiumCompletionScreen } from '@/screens/onboarding/premium/PremiumCom
 /**
  * Onboarding Stack Parameter List
  *
- * Defines all routes in the onboarding flow.
+ * Defines all routes in the onboarding flow (9-10 screens depending on roster type).
  * All routes have `undefined` params as data is managed through OnboardingContext.
  */
 export type OnboardingStackParamList = {
@@ -45,15 +56,21 @@ export type OnboardingStackParamList = {
   Introduction: undefined;
   /** Step 3: Select shift system (2-shift or 3-shift) */
   ShiftSystem: undefined;
-  /** Step 4: Select shift pattern (standard or custom) */
+  /** Step 3.5: Select roster type (rotating or FIFO) - NEW */
+  RosterType: undefined;
+  /** Step 4: Select shift pattern (filtered by roster type) */
   ShiftPattern: undefined;
-  /** Step 4b: Configure custom pattern (only if CUSTOM selected) */
+  /** Step 4b-R: Configure custom rotating pattern (only if CUSTOM selected) */
   CustomPattern: undefined;
-  /** Step 5: Select current phase and day within phase */
+  /** Step 4b-F: Configure custom FIFO pattern (only if FIFO_CUSTOM selected) - NEW */
+  FIFOCustomPattern: undefined;
+  /** Step 5-R: Select current phase and day within phase (rotating rosters) */
   PhaseSelector: undefined;
+  /** Step 5-F: Select work/rest block and day within block (FIFO rosters) - NEW */
+  FIFOPhaseSelector: undefined;
   /** Step 6: Select calendar start date */
   StartDate: undefined;
-  /** Step 7: Configure shift times (multi-stage based on system) */
+  /** Step 7: Configure shift times (adjusted for roster type) */
   ShiftTimeInput: undefined;
   /** Step 8: Review data and complete onboarding */
   Completion: undefined;
@@ -88,19 +105,28 @@ export const OnboardingNavigator: React.FC = () => {
       {/* Step 3: Shift System - Select 2-shift or 3-shift */}
       <Stack.Screen name="ShiftSystem" component={PremiumShiftSystemScreen} />
 
-      {/* Step 4: Shift Pattern - Select pattern type */}
+      {/* Step 3.5: Roster Type - Select rotating or FIFO (NEW) */}
+      <Stack.Screen name="RosterType" component={PremiumRosterTypeScreen} />
+
+      {/* Step 4: Shift Pattern - Select pattern type (filtered by roster type) */}
       <Stack.Screen name="ShiftPattern" component={PremiumShiftPatternScreen} />
 
-      {/* Step 4b: Custom Pattern - Configure custom pattern (conditional) */}
+      {/* Step 4b-R: Custom Pattern - Configure custom rotating pattern (conditional) */}
       <Stack.Screen name="CustomPattern" component={PremiumCustomPatternScreen} />
 
-      {/* Step 5: Phase Selector - Select current phase */}
+      {/* Step 4b-F: FIFO Custom Pattern - Configure custom FIFO pattern (conditional, NEW) */}
+      <Stack.Screen name="FIFOCustomPattern" component={PremiumFIFOCustomPatternScreen} />
+
+      {/* Step 5-R: Phase Selector - Select current phase (rotating rosters) */}
       <Stack.Screen name="PhaseSelector" component={PremiumPhaseSelectorScreen} />
+
+      {/* Step 5-F: FIFO Phase Selector - Select work/rest block (FIFO rosters, NEW) */}
+      <Stack.Screen name="FIFOPhaseSelector" component={PremiumFIFOPhaseSelectorScreen} />
 
       {/* Step 6: Start Date - Select calendar start date */}
       <Stack.Screen name="StartDate" component={PremiumStartDateScreen} />
 
-      {/* Step 7: Shift Time Input - Configure shift times */}
+      {/* Step 7: Shift Time Input - Configure shift times (adjusted for roster type) */}
       <Stack.Screen name="ShiftTimeInput" component={PremiumShiftTimeInputScreen} />
 
       {/* Step 8: Completion - Review and save */}

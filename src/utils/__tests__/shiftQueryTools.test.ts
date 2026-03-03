@@ -11,9 +11,14 @@ import {
   executeGetCurrentStatus,
   executeGetStatistics,
   executeGetNextOccurrence,
+  executeGetNextWorkBlock,
+  executeGetNextRestBlock,
+  executeGetDaysUntilWork,
+  executeGetDaysUntilRest,
+  executeGetCurrentBlockInfo,
   executeTool,
 } from '../shiftQueryTools';
-import { ShiftPattern, ShiftSystem, ShiftCycle } from '@/types';
+import { RosterType, ShiftPattern, ShiftSystem, ShiftCycle } from '@/types';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
 
 // ---------------------------------------------------------------------------
@@ -76,6 +81,26 @@ const threeThreeThreeCycle: ShiftCycle = {
   daysOff: 3,
   startDate: '2024-03-01',
   phaseOffset: 0,
+};
+
+/**
+ * FIFO 8/6: 8 work, 6 rest.
+ * Start date: 2024-01-01
+ */
+const fifoCycle: ShiftCycle = {
+  patternType: ShiftPattern.FIFO_8_6,
+  rosterType: RosterType.FIFO,
+  shiftSystem: ShiftSystem.TWO_SHIFT,
+  daysOn: 8,
+  nightsOn: 0,
+  daysOff: 6,
+  startDate: '2024-01-01',
+  phaseOffset: 0,
+  fifoConfig: {
+    workBlockDays: 8,
+    restBlockDays: 6,
+    workBlockPattern: 'straight-days',
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -288,11 +313,19 @@ describe('executeGetCurrentStatus', () => {
     const result = executeGetCurrentStatus(twoShiftCycle);
 
     expect(result).toHaveProperty('todayShift');
+    expect(result).toHaveProperty('currentBlockInfo');
     expect(result.todayShift).toHaveProperty('date');
     expect(result.todayShift).toHaveProperty('shiftType');
     expect(result.todayShift).toHaveProperty('isWorkDay');
     expect(result.todayShift).toHaveProperty('isNightShift');
     expect(['day', 'night', 'off']).toContain(result.todayShift.shiftType);
+  });
+
+  it('should include FIFO block info when cycle is FIFO', () => {
+    const result = executeGetCurrentStatus(fifoCycle);
+    expect(result.currentBlockInfo.rosterType).toBe('fifo');
+    expect(['work', 'rest']).toContain(result.currentBlockInfo.blockType);
+    expect(result.currentBlockInfo.dayInBlock).toBeGreaterThan(0);
   });
 
   it('should not include shiftTimes when no userData is provided', () => {
@@ -410,6 +443,56 @@ describe('executeGetCurrentStatus', () => {
 
     expect(result).toHaveProperty('todayShift');
     expect(['morning', 'afternoon', 'night', 'off']).toContain(result.todayShift.shiftType);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// FIFO block tools
+// ---------------------------------------------------------------------------
+
+describe('FIFO block tools', () => {
+  it('should find next rest block in FIFO schedule', () => {
+    const result = executeGetNextRestBlock({ fromDate: '2024-01-05' }, fifoCycle);
+
+    expect(result.found).toBe(true);
+    expect(result.blockType).toBe('rest');
+    expect(result.startDate).toBe('2024-01-09');
+    expect(result.daysUntilStart).toBe(4);
+  });
+
+  it('should find next work block in FIFO schedule', () => {
+    const result = executeGetNextWorkBlock({ fromDate: '2024-01-10' }, fifoCycle);
+
+    expect(result.found).toBe(true);
+    expect(result.blockType).toBe('work');
+    expect(result.startDate).toBe('2024-01-15');
+    expect(result.daysUntilStart).toBe(5);
+  });
+
+  it('should return days until rest', () => {
+    const result = executeGetDaysUntilRest({ fromDate: '2024-01-03' }, fifoCycle);
+
+    expect(result.found).toBe(true);
+    expect(result.daysUntil).toBe(6);
+    expect(result.targetDate).toBe('2024-01-09');
+  });
+
+  it('should return days until work', () => {
+    const result = executeGetDaysUntilWork({ fromDate: '2024-01-11' }, fifoCycle);
+
+    expect(result.found).toBe(true);
+    expect(result.daysUntil).toBe(4);
+    expect(result.targetDate).toBe('2024-01-15');
+  });
+
+  it('should return current block info for explicit date', () => {
+    const result = executeGetCurrentBlockInfo({ date: '2024-01-10' }, fifoCycle);
+
+    expect(result.rosterType).toBe('fifo');
+    expect(result.blockType).toBe('rest');
+    expect(result.dayInBlock).toBe(2);
+    expect(result.blockLengthDays).toBe(6);
+    expect(result.daysUntilBlockChange).toBe(4);
   });
 });
 
@@ -722,6 +805,64 @@ describe('executeTool', () => {
     expect(result.found).toBe(true);
     expect(result.shiftDay).toBeDefined();
     expect(result.shiftDay?.shiftType).toBe('off');
+  });
+
+  it('should dispatch get_next_work_block correctly', () => {
+    const result = executeTool(
+      'get_next_work_block',
+      { fromDate: '2024-01-10' },
+      fifoCycle
+    ) as ReturnType<typeof executeGetNextWorkBlock>;
+
+    expect(result.found).toBe(true);
+    expect(result.blockType).toBe('work');
+    expect(result.startDate).toBe('2024-01-15');
+  });
+
+  it('should dispatch get_next_rest_block correctly', () => {
+    const result = executeTool(
+      'get_next_rest_block',
+      { fromDate: '2024-01-05' },
+      fifoCycle
+    ) as ReturnType<typeof executeGetNextRestBlock>;
+
+    expect(result.found).toBe(true);
+    expect(result.blockType).toBe('rest');
+    expect(result.startDate).toBe('2024-01-09');
+  });
+
+  it('should dispatch days_until_work correctly', () => {
+    const result = executeTool(
+      'days_until_work',
+      { fromDate: '2024-01-11' },
+      fifoCycle
+    ) as ReturnType<typeof executeGetDaysUntilWork>;
+
+    expect(result.found).toBe(true);
+    expect(result.daysUntil).toBe(4);
+  });
+
+  it('should dispatch days_until_rest correctly', () => {
+    const result = executeTool(
+      'days_until_rest',
+      { fromDate: '2024-01-03' },
+      fifoCycle
+    ) as ReturnType<typeof executeGetDaysUntilRest>;
+
+    expect(result.found).toBe(true);
+    expect(result.daysUntil).toBe(6);
+  });
+
+  it('should dispatch current_block_info correctly', () => {
+    const result = executeTool(
+      'current_block_info',
+      { date: '2024-01-10' },
+      fifoCycle
+    ) as ReturnType<typeof executeGetCurrentBlockInfo>;
+
+    expect(result.rosterType).toBe('fifo');
+    expect(result.blockType).toBe('rest');
+    expect(result.dayInBlock).toBe(2);
   });
 
   it('should return an error for an unknown tool name', () => {

@@ -22,6 +22,23 @@ This document outlines our comprehensive testing strategy for the Ellie applicat
 
 ## Testing Layers
 
+## FIFO + Voice Reliability Coverage
+
+The dual-roster rollout adds explicit coverage for:
+
+- FIFO calculation and migration tests
+- FIFO onboarding navigation path tests
+- FIFO dashboard rendering tests (legend/badges/status text)
+- Voice tool tests for:
+  - `get_next_work_block`
+  - `get_next_rest_block`
+  - `days_until_work`
+  - `days_until_rest`
+  - `current_block_info`
+- Backend parity tests for tool execution in `backend/functions/src/__tests__/shift-tools.test.ts`
+- Performance sanity test:
+  - `tests/utils/shiftUtils.performance.test.ts` (included in full suite)
+
 ### 1. Unit Tests (70% of tests)
 
 **Purpose**: Test individual functions, components, and hooks in isolation.

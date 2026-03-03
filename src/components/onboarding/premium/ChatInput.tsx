@@ -26,6 +26,7 @@ import Animated, {
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
+import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 
 export interface QuickReply {
   id: string;
@@ -94,10 +95,14 @@ export const ChatInput: React.FC<ChatInputProps> = ({
 
   const handleSubmitPress = () => {
     if (canSubmit) {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+        source: 'ChatInput.submit',
+      });
       onSubmit();
     } else {
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+        source: 'ChatInput.submitError',
+      });
     }
   };
 
@@ -118,7 +123,9 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   };
 
   const handleQuickReplyPress = (reply: QuickReply) => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: `ChatInput.quickReply:${reply.id}`,
+    });
     onQuickReply?.(reply);
   };
 

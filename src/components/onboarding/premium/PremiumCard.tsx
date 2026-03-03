@@ -9,6 +9,7 @@ import { View, TouchableOpacity, ViewStyle, StyleSheet, Platform } from 'react-n
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
+import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
 
 export interface PremiumCardProps {
   /** Card children */
@@ -50,7 +51,9 @@ export const PremiumCard: React.FC<PremiumCardProps> = ({
   const handlePressIn = () => {
     if (pressable && onPress) {
       scale.value = withSpring(0.98, { damping: 15, stiffness: 300 });
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+        source: `PremiumCard.pressIn:${testID ?? 'unknown'}`,
+      });
     }
   };
 
@@ -62,7 +65,9 @@ export const PremiumCard: React.FC<PremiumCardProps> = ({
 
   const handlePress = () => {
     if (pressable && onPress) {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+        source: `PremiumCard.press:${testID ?? 'unknown'}`,
+      });
       onPress();
     }
   };

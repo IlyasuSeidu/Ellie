@@ -58,10 +58,13 @@ jest.mock('react-native-gesture-handler', () => {
     onUpdate: jest.fn().mockReturnThis(),
     onEnd: jest.fn().mockReturnThis(),
     onFinalize: jest.fn().mockReturnThis(),
+    enabled: jest.fn().mockReturnThis(),
   };
   return {
     Gesture: {
       Pan: jest.fn(() => mockGesture),
+      Tap: jest.fn(() => mockGesture),
+      Simultaneous: jest.fn((a, b) => ({ a, b })),
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     GestureDetector: (props: any) => props.children,
@@ -119,7 +122,7 @@ const renderWithProvider = (component: React.ReactElement) => {
     <NavigationContainer>
       <OnboardingProvider>
         <Stack.Navigator>
-          <Stack.Screen name="PhaseSelector" component={() => component} />
+          <Stack.Screen name="PhaseSelector">{() => component}</Stack.Screen>
         </Stack.Navigator>
       </OnboardingProvider>
     </NavigationContainer>

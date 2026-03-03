@@ -74,7 +74,7 @@ const renderWithProviders = (component: React.ReactElement, _initialData = {}) =
     <NavigationContainer>
       <OnboardingProvider>
         <Stack.Navigator>
-          <Stack.Screen name="ShiftSystem" component={() => component} />
+          <Stack.Screen name="ShiftSystem">{() => component}</Stack.Screen>
         </Stack.Navigator>
       </OnboardingProvider>
     </NavigationContainer>

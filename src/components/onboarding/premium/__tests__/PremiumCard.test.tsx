@@ -119,7 +119,7 @@ describe('PremiumCard', () => {
         </PremiumCard>
       );
       fireEvent.press(getByTestId('card'));
-      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Medium);
+      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
     });
 
     it('should not trigger haptic when non-pressable', () => {
@@ -282,7 +282,7 @@ describe('PremiumCard', () => {
       );
       fireEvent.press(getByTestId('card'));
 
-      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Medium);
+      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
     });
 
     it('should not provide haptic when card is not pressable', () => {

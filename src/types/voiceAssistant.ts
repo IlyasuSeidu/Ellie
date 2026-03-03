@@ -67,6 +67,10 @@ export interface VoiceAssistantUserContext {
   shiftSystem: '2-shift' | '3-shift';
   /** Shift times configuration */
   shiftTimes?: OnboardingData['shiftTimes'];
+  /** Roster paradigm hint for backend prompt/tool behavior */
+  rosterType?: ShiftCycle['rosterType'];
+  /** FIFO block configuration when rosterType is fifo */
+  fifoConfig?: ShiftCycle['fifoConfig'];
 }
 
 /**
@@ -209,7 +213,12 @@ export type ShiftToolName =
   | 'get_shifts_in_range'
   | 'get_current_status'
   | 'get_statistics'
-  | 'get_next_occurrence';
+  | 'get_next_occurrence'
+  | 'get_next_work_block'
+  | 'get_next_rest_block'
+  | 'days_until_work'
+  | 'days_until_rest'
+  | 'current_block_info';
 
 /**
  * Input types for each tool
@@ -237,6 +246,18 @@ export interface GetNextOccurrenceInput {
   fromDate?: string; // YYYY-MM-DD, defaults to today
 }
 
+export interface GetNextBlockInput {
+  fromDate?: string; // YYYY-MM-DD, defaults to today
+}
+
+export interface GetDaysUntilInput {
+  fromDate?: string; // YYYY-MM-DD, defaults to today
+}
+
+export interface GetCurrentBlockInfoInput {
+  date?: string; // YYYY-MM-DD, defaults to today
+}
+
 /**
  * Shift statistics result from get_statistics tool
  */
@@ -248,4 +269,6 @@ export interface ShiftStatisticsResult {
   afternoonShifts: number;
   daysOff: number;
   totalDays: number;
+  workBlockDays?: number;
+  restBlockDays?: number;
 }

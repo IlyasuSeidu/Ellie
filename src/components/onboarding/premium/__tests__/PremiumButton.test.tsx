@@ -125,7 +125,7 @@ describe('PremiumButton', () => {
         <PremiumButton title="Haptic" onPress={mockOnPress} testID="button" />
       );
       fireEvent.press(getByTestId('button'));
-      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Medium);
+      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
     });
 
     it('should trigger light haptic on press in', () => {

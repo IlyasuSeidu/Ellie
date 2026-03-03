@@ -14,6 +14,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
+import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
 
 export interface DayCellProps {
   /** Day number (1-31) */
@@ -53,7 +54,9 @@ export const DayCell: React.FC<DayCellProps> = ({
     if (!disabled) {
       scale.value = withSpring(0.9, { damping: 15, stiffness: 300 });
       opacity.value = withTiming(0.8, { duration: 100 });
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+        source: `DayCell.pressIn:${day}`,
+      });
     }
   };
 
@@ -66,7 +69,9 @@ export const DayCell: React.FC<DayCellProps> = ({
 
   const handlePress = () => {
     if (!disabled && onPress) {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+        source: `DayCell.press:${day}`,
+      });
       onPress(day);
     }
   };

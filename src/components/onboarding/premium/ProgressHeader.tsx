@@ -14,6 +14,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
+import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
 
 export interface ProgressHeaderProps {
   /** Current step (1-based index) */
@@ -49,14 +50,18 @@ export const ProgressHeader: React.FC<ProgressHeaderProps> = ({
 }) => {
   const handleBack = () => {
     if (onBack && currentStep > 1) {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+        source: `ProgressHeader.back:${currentStep}`,
+      });
       onBack();
     }
   };
 
   const handleSkip = () => {
     if (onSkip) {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+        source: `ProgressHeader.skip:${currentStep}`,
+      });
       onSkip();
     }
   };

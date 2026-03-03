@@ -229,6 +229,99 @@ const TOOLS: ChatCompletionTool[] = [
       },
     },
   },
+  {
+    type: 'function',
+    function: {
+      name: 'get_next_work_block',
+      description:
+        'Find the next date when a work block starts. Useful for FIFO and rotating schedules.',
+      parameters: {
+        type: 'object',
+        properties: {
+          fromDate: {
+            type: 'string',
+            description: 'Start searching from this date (YYYY-MM-DD). Defaults to today.',
+          },
+        },
+        required: [],
+        additionalProperties: false,
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'get_next_rest_block',
+      description:
+        'Find the next date when a rest/off block starts. Useful for FIFO and rotating schedules.',
+      parameters: {
+        type: 'object',
+        properties: {
+          fromDate: {
+            type: 'string',
+            description: 'Start searching from this date (YYYY-MM-DD). Defaults to today.',
+          },
+        },
+        required: [],
+        additionalProperties: false,
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'days_until_work',
+      description: 'Get number of days until work starts (or 0 if currently in a work block).',
+      parameters: {
+        type: 'object',
+        properties: {
+          fromDate: {
+            type: 'string',
+            description: 'Date to measure from (YYYY-MM-DD). Defaults to today.',
+          },
+        },
+        required: [],
+        additionalProperties: false,
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'days_until_rest',
+      description: 'Get number of days until rest/off starts (or 0 if currently resting).',
+      parameters: {
+        type: 'object',
+        properties: {
+          fromDate: {
+            type: 'string',
+            description: 'Date to measure from (YYYY-MM-DD). Defaults to today.',
+          },
+        },
+        required: [],
+        additionalProperties: false,
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'current_block_info',
+      description:
+        'Get current block status (work/rest), day in block, block length, and days until block change.',
+      parameters: {
+        type: 'object',
+        properties: {
+          date: {
+            type: 'string',
+            description: 'Date to inspect (YYYY-MM-DD). Defaults to today.',
+          },
+        },
+        required: [],
+        additionalProperties: false,
+      },
+    },
+  },
 ];
 
 /**
@@ -240,6 +333,7 @@ function buildSystemPrompt(request: EllieBrainRequest): string {
     ctx.shiftSystem === '2-shift'
       ? '2-shift system (12-hour shifts: day and night)'
       : '3-shift system (8-hour shifts: morning, afternoon, and night)';
+  const rosterTypeDesc = ctx.rosterType === 'fifo' ? 'FIFO / block roster' : 'rotating roster';
 
   return `You are Ellie, a friendly and helpful voice assistant for shift workers. You help ${ctx.name} understand their work schedule.
 
@@ -255,6 +349,7 @@ CONTEXT:
 - Current date: ${ctx.currentDate}
 - Current time: ${ctx.currentTime}
 - User's shift system: ${shiftSystemDesc}
+- User's roster type: ${rosterTypeDesc}
 - User's name: ${ctx.name}${ctx.occupation ? `\n- User's occupation: ${ctx.occupation}` : ''}
 
 RULES:
@@ -264,6 +359,9 @@ RULES:
 - If they ask "am I working now/today", use get_current_status.
 - If they ask about counts or statistics, use get_statistics.
 - For "next day off" or "next night shift", use get_next_occurrence.
+- For block-based questions ("next swing", "next work block", "next rest/home block"), use get_next_work_block or get_next_rest_block.
+- For "how many days until work/home", use days_until_work or days_until_rest.
+- For "what block am I in", use current_block_info.
 - If the user mentions a personal event on a date, acknowledge it warmly before giving the shift info.
 - If the user's question is not about shifts, politely let them know you specialize in shift schedule questions.`;
 }

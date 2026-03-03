@@ -36,10 +36,26 @@ Ellie is a **premium shift schedule app** built specifically for mining workers.
 - **Smart notifications**: Reminders before shift starts
 - **Offline-first**: Works underground with no cell signal
 - **Pattern flexibility**: Supports all standard patterns + custom cycles
+- **Dual roster paradigms**: Rotating rosters and FIFO/block rosters
+- **Voice assistant tooling**: Date/range queries, next block, days-until-work/rest, and current block info
 
 ---
 
 ## 🚀 Current Features
+
+### FIFO + Rotating Support (Phase 1-7)
+
+- **Dual-paradigm scheduling**: `RosterType` split between `rotating` and `fifo`
+- **FIFO onboarding path**: Roster selection, FIFO patterns, custom FIFO config, FIFO phase selector
+- **FIFO dashboard UX**: Work/Rest block labels, block countdowns, FIFO legends and badges
+- **Voice assistant FIFO tools**:
+  - `get_next_work_block`
+  - `get_next_rest_block`
+  - `days_until_work`
+  - `days_until_rest`
+  - `current_block_info`
+- **Backend parity**: Cloud Function tool execution supports rotating + FIFO behaviors
+- **Persistence + migration**: Backward-compatible onboarding migration to `rosterType`
 
 ### Premium Onboarding Flow (Completed)
 

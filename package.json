@@ -8,6 +8,7 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "test": "jest",
+    "test:visual": "jest --runInBand --silent --testPathPattern=visual\\.test\\.tsx$",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:e2e": "detox test --configuration ios.release",
@@ -23,6 +24,7 @@
     "prepare": "husky",
     "process-icons": "node scripts/process-icons.js",
     "backend:build": "npm --prefix backend/functions run build",
+    "release:check": "npm run type-check && npm test -- --runInBand --silent && npm run backend:build",
     "firebase:projects": "firebase projects:list",
     "firebase:emulators:functions": "firebase emulators:start --config firebase.json --only functions",
     "firebase:deploy:functions": "firebase deploy --config firebase.json --only functions"

@@ -10,6 +10,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-na
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
+import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
 
 export interface PremiumSliderProps {
   /** Current value */
@@ -50,13 +51,15 @@ export const PremiumSlider: React.FC<PremiumSliderProps> = ({
       const roundedValue = Math.round(clampedValue);
 
       if (roundedValue !== lastHapticValue.current) {
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+          source: `PremiumSlider.valueChange:${testID ?? 'unknown'}`,
+        });
         lastHapticValue.current = roundedValue;
       }
 
       onValueChange(roundedValue);
     },
-    [min, max, onValueChange]
+    [min, max, onValueChange, testID]
   );
 
   const panResponder = useRef(
@@ -65,7 +68,9 @@ export const PremiumSlider: React.FC<PremiumSliderProps> = ({
       onMoveShouldSetPanResponder: () => true,
       onPanResponderGrant: () => {
         scale.value = withSpring(1.1, { damping: 15, stiffness: 300 });
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+          source: `PremiumSlider.grant:${testID ?? 'unknown'}`,
+        });
       },
       onPanResponderMove: (_evt, gestureState) => {
         const newPosition = Math.max(0, Math.min(SLIDER_WIDTH, position.value + gestureState.dx));

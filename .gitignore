@@ -46,3 +46,11 @@ coverage/
 /android
 
 backend/functions/lib/
+
+# local training/build scratch
+.tmp-*/
+.venv-oww/
+modules/ellie-openwakeword/android/.gradle/
+modules/ellie-openwakeword/android/build/
+Hey-Ellie_en_ios_v4_0_0/
+Hey-Ellie_en_ios_v4_0_0.zip

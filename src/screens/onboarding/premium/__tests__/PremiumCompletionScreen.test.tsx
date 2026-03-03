@@ -95,6 +95,7 @@ jest.mock('@/contexts/OnboardingContext', () => ({
       company: 'Test Company',
       country: 'Australia',
       shiftSystem: '2-shift',
+      rosterType: 'rotating',
       patternType: 'STANDARD_4_4_4',
       phaseOffset: 0,
       startDate: new Date('2024-01-01'),
@@ -350,9 +351,7 @@ describe('PremiumCompletionScreen', () => {
       renderWithProviders(<PremiumCompletionScreen />);
 
       await waitFor(() => {
-        expect(Haptics.notificationAsync).toHaveBeenCalledWith(
-          Haptics.NotificationFeedbackType.Success
-        );
+        expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
       });
     });
   });
@@ -384,9 +383,7 @@ describe('PremiumCompletionScreen', () => {
       renderWithProviders(<PremiumCompletionScreen />);
 
       await waitFor(() => {
-        expect(Haptics.notificationAsync).toHaveBeenCalledWith(
-          Haptics.NotificationFeedbackType.Error
-        );
+        expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
       });
     });
 
@@ -459,7 +456,7 @@ describe('PremiumCompletionScreen', () => {
 
       // Check haptic was called
       await waitFor(() => {
-        expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Medium);
+        expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
       });
     });
 
@@ -503,9 +500,7 @@ describe('PremiumCompletionScreen', () => {
       renderWithProviders(<PremiumCompletionScreen />);
 
       await waitFor(() => {
-        expect(Haptics.notificationAsync).toHaveBeenCalledWith(
-          Haptics.NotificationFeedbackType.Success
-        );
+        expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
       });
     });
 
@@ -514,7 +509,7 @@ describe('PremiumCompletionScreen', () => {
 
       await waitFor(() => {
         // Should be called twice: once on mount, once after save
-        expect(Haptics.notificationAsync).toHaveBeenCalledTimes(2);
+        expect(Haptics.impactAsync).toHaveBeenCalledTimes(2);
       });
     });
   });

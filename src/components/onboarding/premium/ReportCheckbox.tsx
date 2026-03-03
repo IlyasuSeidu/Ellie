@@ -15,6 +15,7 @@ import Animated, {
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { theme } from '@/utils/theme';
+import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
 
 export type ReportType = 'shift-summary' | 'earnings' | 'work-life' | 'holiday-impact';
 
@@ -56,7 +57,9 @@ export const ReportCheckbox: React.FC<ReportCheckboxProps> = ({
   const handlePressIn = () => {
     if (!disabled) {
       scale.value = withSpring(0.98, { damping: 15, stiffness: 300 });
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+        source: `ReportCheckbox.pressIn:${report.type}`,
+      });
     }
   };
 
@@ -70,8 +73,11 @@ export const ReportCheckbox: React.FC<ReportCheckboxProps> = ({
     if (!disabled && onChange) {
       const newChecked = !checked;
       checkScale.value = withSpring(newChecked ? 1 : 0, { damping: 15, stiffness: 300 });
-      Haptics.impactAsync(
-        newChecked ? Haptics.ImpactFeedbackStyle.Medium : Haptics.ImpactFeedbackStyle.Light
+      void triggerImpactHaptic(
+        newChecked ? Haptics.ImpactFeedbackStyle.Medium : Haptics.ImpactFeedbackStyle.Light,
+        {
+          source: `ReportCheckbox.press:${report.type}`,
+        }
       );
       onChange(newChecked, report);
     }

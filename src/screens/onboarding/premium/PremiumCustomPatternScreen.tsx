@@ -5,7 +5,7 @@
  * Appears when user selects "Custom Pattern" from shift pattern cards
  */
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import {
   View,
   StyleSheet,
@@ -17,6 +17,7 @@ import {
   AccessibilityInfo,
   Image,
   ImageSourcePropType,
+  InteractionManager,
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -37,10 +38,11 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { useOnboarding } from '@/contexts/OnboardingContext';
-import { ShiftSystem } from '@/types';
+import { ShiftPattern, ShiftSystem } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
+import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -154,7 +156,9 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
   const handleIncrement = useCallback(() => {
     if (value < max) {
       onChange(value + 1);
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+        source: `PremiumCustomPatternScreen.slider.increment:${label}`,
+      });
     } else {
       // Shake animation when hitting max limit
       shakeX.value = withSequence(
@@ -164,14 +168,18 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
         withTiming(8, { duration: 50 }),
         withTiming(0, { duration: 50 })
       );
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+        source: `PremiumCustomPatternScreen.slider.increment.limit:${label}`,
+      });
     }
-  }, [value, max, onChange, shakeX]);
+  }, [value, max, onChange, shakeX, label]);
 
   const handleDecrement = useCallback(() => {
     if (value > min) {
       onChange(value - 1);
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+        source: `PremiumCustomPatternScreen.slider.decrement:${label}`,
+      });
     } else {
       // Shake animation when hitting min limit
       shakeX.value = withSequence(
@@ -181,9 +189,11 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
         withTiming(8, { duration: 50 }),
         withTiming(0, { duration: 50 })
       );
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+        source: `PremiumCustomPatternScreen.slider.decrement.limit:${label}`,
+      });
     }
-  }, [value, min, onChange, shakeX]);
+  }, [value, min, onChange, shakeX, label]);
 
   const handleTrackPress = useCallback(
     (event: { nativeEvent: { locationX: number } }) => {
@@ -194,11 +204,19 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
 
       if (newValue !== value) {
         onChange(newValue);
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+          source: `PremiumCustomPatternScreen.slider.trackPress:${label}`,
+        });
       }
     },
-    [min, max, value, onChange, trackWidth]
+    [min, max, value, onChange, trackWidth, label]
   );
+
+  const triggerLightHaptic = useCallback(() => {
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: `PremiumCustomPatternScreen.slider.drag:${label}`,
+    });
+  }, [label]);
 
   const panGesture = Gesture.Pan()
     .onBegin(() => {
@@ -217,7 +235,7 @@ const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
 
       if (newValue !== value) {
         runOnJS(onChange)(newValue);
-        runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Light);
+        runOnJS(triggerLightHaptic)();
       }
     })
     .onEnd(() => {
@@ -953,24 +971,64 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
   const [daysOff, setDaysOff] = useState(4);
   const [showTip, setShowTip] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const reducedMotionRef = useRef(false);
+  const isTransitioningRef = useRef(false);
+  const navigationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const interactionHandleRef = useRef<{ cancel?: () => void } | null>(null);
 
   const tipOpacity = useSharedValue(0);
   const continueButtonScale = useSharedValue(1);
 
+  const clearPendingTransition = useCallback((resetUi: boolean) => {
+    if (navigationTimeoutRef.current) {
+      clearTimeout(navigationTimeoutRef.current);
+      navigationTimeoutRef.current = null;
+    }
+
+    if (interactionHandleRef.current?.cancel) {
+      interactionHandleRef.current.cancel();
+    }
+    interactionHandleRef.current = null;
+
+    if (resetUi) {
+      isTransitioningRef.current = false;
+      setIsTransitioning(false);
+    }
+  }, []);
+
   // Check for reduced motion preference
   useEffect(() => {
-    AccessibilityInfo.isReduceMotionEnabled().then((enabled) => {
+    let mounted = true;
+    const updateReducedMotionState = (enabled: boolean) => {
+      if (!mounted || reducedMotionRef.current === enabled) {
+        return;
+      }
+
+      reducedMotionRef.current = enabled;
       setReducedMotion(enabled);
+    };
+
+    AccessibilityInfo.isReduceMotionEnabled().then((enabled) => {
+      updateReducedMotionState(enabled);
     });
 
     const subscription = AccessibilityInfo.addEventListener('reduceMotionChanged', (enabled) => {
-      setReducedMotion(enabled);
+      updateReducedMotionState(enabled);
     });
 
     return () => {
+      mounted = false;
       subscription.remove();
     };
   }, []);
+
+  useEffect(() => {
+    return () => {
+      clearPendingTransition(false);
+    };
+  }, [clearPendingTransition]);
 
   // Calculate validation and metrics based on shift system
   const totalDays =
@@ -1002,7 +1060,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
 
   // Continue button idle pulse (skip if reduced motion)
   useEffect(() => {
-    if (isValid && !reducedMotion) {
+    if (isValid && !reducedMotion && !isTransitioning) {
       continueButtonScale.value = withRepeat(
         withSequence(withTiming(1.0, { duration: 1000 }), withTiming(1.03, { duration: 1000 })),
         -1,
@@ -1011,7 +1069,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
     } else {
       continueButtonScale.value = 1;
     }
-  }, [isValid, continueButtonScale, reducedMotion]);
+  }, [isValid, continueButtonScale, reducedMotion, isTransitioning]);
 
   const validationMessage = !isValid
     ? totalDays > 28
@@ -1030,10 +1088,15 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
   }));
 
   const handleSave = useCallback(() => {
-    if (!isValid) {
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+    if (!isValid || isTransitioningRef.current) {
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+        source: 'PremiumCustomPatternScreen.handleSave.invalid',
+      });
       return;
     }
+
+    isTransitioningRef.current = true;
+    setIsTransitioning(true);
 
     // Save pattern based on shift system
     if (shiftSystem === ShiftSystem.TWO_SHIFT) {
@@ -1062,13 +1125,29 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
       });
     }
 
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
+      source: 'PremiumCustomPatternScreen.handleSave.success',
+    });
+    interactionHandleRef.current = InteractionManager.runAfterInteractions(() => {
+      navigationTimeoutRef.current = setTimeout(() => {
+        clearPendingTransition(true);
 
-    if (onContinue) {
-      onContinue();
-    } else {
-      goToNextScreen(navigation, 'CustomPattern');
-    }
+        if (onContinue) {
+          onContinue();
+          return;
+        }
+
+        const normalizedRosterType = data.rosterType ?? 'rotating';
+        goToNextScreen(navigation, 'CustomPattern', {
+          ...data,
+          rosterType: normalizedRosterType,
+          patternType:
+            normalizedRosterType === 'fifo'
+              ? ShiftPattern.FIFO_CUSTOM
+              : (data.patternType ?? ShiftPattern.CUSTOM),
+        });
+      }, 300);
+    });
   }, [
     isValid,
     shiftSystem,
@@ -1081,10 +1160,18 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
     updateData,
     onContinue,
     navigation,
+    data,
+    clearPendingTransition,
   ]);
 
   const handleBack = useCallback(() => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    if (isTransitioningRef.current) {
+      return;
+    }
+
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: 'PremiumCustomPatternScreen.handleBack',
+    });
     if (onBack) {
       onBack();
     } else {
@@ -1330,7 +1417,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
           <Pressable
             onPress={handleSave}
             style={[styles.continueButton, !isValid && styles.continueButtonDisabled]}
-            disabled={!isValid}
+            disabled={!isValid || isTransitioning}
             accessible={true}
             accessibilityRole="button"
             accessibilityLabel="Save your rotation and continue"
@@ -1339,7 +1426,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
                 ? `Your ${totalDays}-day cycle: ${daysOn} days on, ${nightsOn} nights on, ${daysOff} days off`
                 : validationMessage
             }
-            accessibilityState={{ disabled: !isValid }}
+            accessibilityState={{ disabled: !isValid || isTransitioning }}
           >
             <LinearGradient
               colors={
@@ -1362,6 +1449,12 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
           </Pressable>
         </Animated.View>
       </View>
+
+      {isTransitioning ? (
+        <View style={styles.transitionOverlay} pointerEvents="none">
+          <Text style={styles.transitionText}>Preparing next step...</Text>
+        </View>
+      ) : null}
     </View>
   );
 };
@@ -1954,6 +2047,23 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: theme.colors.paper,
+  },
+  transitionOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+    zIndex: 200,
+  },
+  transitionText: {
+    color: theme.colors.paper,
+    fontSize: 16,
+    fontWeight: '700',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 12,
+    overflow: 'hidden',
   },
   trophyIcon: {
     width: 50,

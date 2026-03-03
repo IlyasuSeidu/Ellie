@@ -1,0 +1,3701 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PremiumFIFOCustomPatternScreen matches snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#0c0a09",
+      "flex": 1,
+    }
+  }
+>
+  <View
+    testID="fifo-custom-pattern-progress-header"
+  />
+  <RCTScrollView
+    contentContainerStyle={
+      {
+        "paddingBottom": 120,
+        "paddingHorizontal": 24,
+      }
+    }
+    showsVerticalScrollIndicator={false}
+    style={
+      {
+        "flex": 1,
+      }
+    }
+  >
+    <View>
+      <Text
+        style={
+          {
+            "color": "#e7e5e4",
+            "fontFamily": "System",
+            "fontSize": 28,
+            "fontWeight": "bold",
+            "letterSpacing": 1,
+            "marginTop": 24,
+            "paddingHorizontal": 24,
+            "textAlign": "center",
+          }
+        }
+      >
+        Build Your FIFO Rotation
+      </Text>
+      <Text
+        style={
+          {
+            "color": "#a8a29e",
+            "fontFamily": "System",
+            "fontSize": 16,
+            "marginBottom": 16,
+            "marginTop": 8,
+            "paddingHorizontal": 24,
+            "textAlign": "center",
+          }
+        }
+      >
+        Set your on-site block, home block, and work-block shift style for a schedule that fits your site cycle.
+      </Text>
+      <Text
+        style={
+          {
+            "color": "#b45309",
+            "fontSize": 14,
+            "fontWeight": "600",
+            "marginBottom": 24,
+            "paddingHorizontal": 24,
+            "textAlign": "center",
+          }
+        }
+      >
+        Work Block, Rest Block & Pattern Split
+      </Text>
+      <View
+        style={
+          {
+            "backgroundColor": "#1c1917",
+            "borderColor": "#292524",
+            "borderRadius": 20,
+            "borderWidth": 1,
+            "marginBottom": 24,
+            "padding": 24,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 8,
+              "marginBottom": 16,
+            }
+          }
+        >
+          <Text
+            color="#b45309"
+            name="construct-outline"
+            size={22}
+          >
+            construct-outline
+          </Text>
+          <Text
+            style={
+              {
+                "color": "#e7e5e4",
+                "fontSize": 18,
+                "fontWeight": "700",
+              }
+            }
+          >
+            Set Up Your FIFO Pattern
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "gap": 16,
+            }
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "marginBottom": 8,
+                },
+                {},
+              ]
+            }
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                  "marginBottom": 12,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "flexShrink": 1,
+                    "gap": 8,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    {
+                      "fontSize": 20,
+                    }
+                  }
+                >
+                  🏗️
+                </Text>
+                <Text
+                  style={
+                    {
+                      "color": "#e7e5e4",
+                      "flexShrink": 1,
+                      "fontSize": 15,
+                      "fontWeight": "600",
+                    }
+                  }
+                >
+                  Days at Site (Work Block)
+                </Text>
+              </View>
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 20,
+                      "fontWeight": "700",
+                      "marginLeft": 12,
+                    },
+                    {
+                      "color": "#2196F3",
+                    },
+                  ]
+                }
+              >
+                14
+              </Text>
+            </View>
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 10,
+                }
+              }
+            >
+              <View
+                accessibilityHint="Current value is 14. Minimum is 1."
+                accessibilityLabel="Decrease Days at Site (Work Block)"
+                accessibilityRole="button"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": false,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "backgroundColor": "#0c0a09",
+                      "borderColor": "#292524",
+                      "borderRadius": 20,
+                      "borderWidth": 1,
+                      "height": 40,
+                      "justifyContent": "center",
+                      "width": 40,
+                    },
+                    false,
+                  ]
+                }
+              >
+                <Text
+                  color="#2196F3"
+                  name="remove"
+                  size={20}
+                >
+                  remove
+                </Text>
+              </View>
+              <View
+                onLayout={[Function]}
+                style={
+                  {
+                    "flex": 1,
+                    "height": 62,
+                    "justifyContent": "center",
+                  }
+                }
+              >
+                <View
+                  style={
+                    [
+                      {
+                        "borderRadius": 4,
+                        "height": 8,
+                        "overflow": "hidden",
+                      },
+                      {
+                        "backgroundColor": "rgba(255, 255, 255, 0.1)",
+                      },
+                    ]
+                  }
+                >
+                  <View
+                    style={
+                      [
+                        {
+                          "borderRadius": 4,
+                          "height": "100%",
+                        },
+                        {
+                          "backgroundColor": "#60A5FA",
+                        },
+                        {},
+                      ]
+                    }
+                  />
+                </View>
+                <View
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "bottom": 0,
+                      "left": 0,
+                      "position": "absolute",
+                      "right": 0,
+                      "top": 0,
+                    }
+                  }
+                />
+                <View
+                  style={
+                    {
+                      "flexDirection": "row",
+                      "justifyContent": "space-between",
+                      "paddingHorizontal": 2,
+                      "pointerEvents": "none",
+                      "position": "absolute",
+                      "width": "100%",
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        {
+                          "backgroundColor": "#2196F3",
+                          "height": 8,
+                          "width": 2,
+                        },
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                </View>
+                <View
+                  style={
+                    {
+                      "bottom": 0,
+                      "flexDirection": "row",
+                      "justifyContent": "space-between",
+                      "position": "absolute",
+                      "width": "100%",
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      {
+                        "color": "#a8a29e",
+                        "fontSize": 11,
+                      }
+                    }
+                  >
+                    1
+                  </Text>
+                  <Text
+                    style={
+                      {
+                        "color": "#a8a29e",
+                        "fontSize": 11,
+                      }
+                    }
+                  >
+                    60
+                  </Text>
+                </View>
+                <View
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 12,
+                        "height": 24,
+                        "justifyContent": "center",
+                        "marginLeft": -16,
+                        "position": "absolute",
+                        "top": -30,
+                        "width": 32,
+                      },
+                      {
+                        "backgroundColor": "#2196F3",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  <Text
+                    style={
+                      {
+                        "color": "#0c0a09",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                      }
+                    }
+                  >
+                    14
+                  </Text>
+                </View>
+                <View
+                  accessibilityHint="Swipe left or right to adjust value"
+                  accessibilityLabel="Days at Site (Work Block)"
+                  accessibilityRole="adjustable"
+                  accessibilityValue={
+                    {
+                      "max": 60,
+                      "min": 1,
+                      "now": 14,
+                      "text": "14 days at site (work block)",
+                    }
+                  }
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 16,
+                        "height": 32,
+                        "justifyContent": "center",
+                        "marginLeft": -16,
+                        "marginTop": -4,
+                        "position": "absolute",
+                        "shadowColor": "#b45309",
+                        "shadowOffset": {
+                          "height": 4,
+                          "width": 0,
+                        },
+                        "shadowOpacity": 0.4,
+                        "shadowRadius": 8,
+                        "width": 32,
+                      },
+                      {
+                        "backgroundColor": "#2196F3",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  <View
+                    style={
+                      {
+                        "backgroundColor": "#0c0a09",
+                        "borderRadius": 6,
+                        "height": 12,
+                        "width": 12,
+                      }
+                    }
+                  />
+                </View>
+              </View>
+              <View
+                accessibilityHint="Current value is 14. Maximum is 60."
+                accessibilityLabel="Increase Days at Site (Work Block)"
+                accessibilityRole="button"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": false,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "backgroundColor": "#0c0a09",
+                      "borderColor": "#292524",
+                      "borderRadius": 20,
+                      "borderWidth": 1,
+                      "height": 40,
+                      "justifyContent": "center",
+                      "width": 40,
+                    },
+                    false,
+                  ]
+                }
+              >
+                <Text
+                  color="#2196F3"
+                  name="add"
+                  size={20}
+                >
+                  add
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              [
+                {
+                  "marginBottom": 8,
+                },
+                {},
+              ]
+            }
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                  "marginBottom": 12,
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "flexShrink": 1,
+                    "gap": 8,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    {
+                      "fontSize": 20,
+                    }
+                  }
+                >
+                  🏠
+                </Text>
+                <Text
+                  style={
+                    {
+                      "color": "#e7e5e4",
+                      "flexShrink": 1,
+                      "fontSize": 15,
+                      "fontWeight": "600",
+                    }
+                  }
+                >
+                  Days at Home (Rest Block)
+                </Text>
+              </View>
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 20,
+                      "fontWeight": "700",
+                      "marginLeft": 12,
+                    },
+                    {
+                      "color": "#78716c",
+                    },
+                  ]
+                }
+              >
+                14
+              </Text>
+            </View>
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 10,
+                }
+              }
+            >
+              <View
+                accessibilityHint="Current value is 14. Minimum is 1."
+                accessibilityLabel="Decrease Days at Home (Rest Block)"
+                accessibilityRole="button"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": false,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "backgroundColor": "#0c0a09",
+                      "borderColor": "#292524",
+                      "borderRadius": 20,
+                      "borderWidth": 1,
+                      "height": 40,
+                      "justifyContent": "center",
+                      "width": 40,
+                    },
+                    false,
+                  ]
+                }
+              >
+                <Text
+                  color="#78716c"
+                  name="remove"
+                  size={20}
+                >
+                  remove
+                </Text>
+              </View>
+              <View
+                onLayout={[Function]}
+                style={
+                  {
+                    "flex": 1,
+                    "height": 62,
+                    "justifyContent": "center",
+                  }
+                }
+              >
+                <View
+                  style={
+                    [
+                      {
+                        "borderRadius": 4,
+                        "height": 8,
+                        "overflow": "hidden",
+                      },
+                      {
+                        "backgroundColor": "rgba(255, 255, 255, 0.1)",
+                      },
+                    ]
+                  }
+                >
+                  <View
+                    style={
+                      [
+                        {
+                          "borderRadius": 4,
+                          "height": "100%",
+                        },
+                        {
+                          "backgroundColor": "#a8a29e",
+                        },
+                        {},
+                      ]
+                    }
+                  />
+                </View>
+                <View
+                  accessibilityState={
+                    {
+                      "busy": undefined,
+                      "checked": undefined,
+                      "disabled": undefined,
+                      "expanded": undefined,
+                      "selected": undefined,
+                    }
+                  }
+                  accessibilityValue={
+                    {
+                      "max": undefined,
+                      "min": undefined,
+                      "now": undefined,
+                      "text": undefined,
+                    }
+                  }
+                  accessible={true}
+                  collapsable={false}
+                  focusable={true}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    {
+                      "bottom": 0,
+                      "left": 0,
+                      "position": "absolute",
+                      "right": 0,
+                      "top": 0,
+                    }
+                  }
+                />
+                <View
+                  style={
+                    {
+                      "flexDirection": "row",
+                      "justifyContent": "space-between",
+                      "paddingHorizontal": 2,
+                      "pointerEvents": "none",
+                      "position": "absolute",
+                      "width": "100%",
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        {
+                          "backgroundColor": "#78716c",
+                          "height": 8,
+                          "width": 2,
+                        },
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                  <View
+                    style={
+                      [
+                        {
+                          "backgroundColor": "rgba(255, 255, 255, 0.3)",
+                          "height": 6,
+                          "width": 1,
+                        },
+                        false,
+                      ]
+                    }
+                  />
+                </View>
+                <View
+                  style={
+                    {
+                      "bottom": 0,
+                      "flexDirection": "row",
+                      "justifyContent": "space-between",
+                      "position": "absolute",
+                      "width": "100%",
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      {
+                        "color": "#a8a29e",
+                        "fontSize": 11,
+                      }
+                    }
+                  >
+                    1
+                  </Text>
+                  <Text
+                    style={
+                      {
+                        "color": "#a8a29e",
+                        "fontSize": 11,
+                      }
+                    }
+                  >
+                    60
+                  </Text>
+                </View>
+                <View
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 12,
+                        "height": 24,
+                        "justifyContent": "center",
+                        "marginLeft": -16,
+                        "position": "absolute",
+                        "top": -30,
+                        "width": 32,
+                      },
+                      {
+                        "backgroundColor": "#78716c",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  <Text
+                    style={
+                      {
+                        "color": "#0c0a09",
+                        "fontSize": 12,
+                        "fontWeight": "700",
+                      }
+                    }
+                  >
+                    14
+                  </Text>
+                </View>
+                <View
+                  accessibilityHint="Swipe left or right to adjust value"
+                  accessibilityLabel="Days at Home (Rest Block)"
+                  accessibilityRole="adjustable"
+                  accessibilityValue={
+                    {
+                      "max": 60,
+                      "min": 1,
+                      "now": 14,
+                      "text": "14 days at home (rest block)",
+                    }
+                  }
+                  style={
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 16,
+                        "height": 32,
+                        "justifyContent": "center",
+                        "marginLeft": -16,
+                        "marginTop": -4,
+                        "position": "absolute",
+                        "shadowColor": "#b45309",
+                        "shadowOffset": {
+                          "height": 4,
+                          "width": 0,
+                        },
+                        "shadowOpacity": 0.4,
+                        "shadowRadius": 8,
+                        "width": 32,
+                      },
+                      {
+                        "backgroundColor": "#78716c",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  <View
+                    style={
+                      {
+                        "backgroundColor": "#0c0a09",
+                        "borderRadius": 6,
+                        "height": 12,
+                        "width": 12,
+                      }
+                    }
+                  />
+                </View>
+              </View>
+              <View
+                accessibilityHint="Current value is 14. Maximum is 60."
+                accessibilityLabel="Increase Days at Home (Rest Block)"
+                accessibilityRole="button"
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": false,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "backgroundColor": "#0c0a09",
+                      "borderColor": "#292524",
+                      "borderRadius": 20,
+                      "borderWidth": 1,
+                      "height": 40,
+                      "justifyContent": "center",
+                      "width": 40,
+                    },
+                    false,
+                  ]
+                }
+              >
+                <Text
+                  color="#78716c"
+                  name="add"
+                  size={20}
+                >
+                  add
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "marginBottom": 24,
+          }
+        }
+        testID="work-pattern-section"
+      >
+        <Text
+          style={
+            {
+              "color": "#e7e5e4",
+              "fontSize": 18,
+              "fontWeight": "700",
+              "marginBottom": 6,
+            }
+          }
+        >
+          Work Pattern During Work Block
+        </Text>
+        <Text
+          style={
+            {
+              "color": "#a8a29e",
+              "fontSize": 14,
+              "marginBottom": 14,
+            }
+          }
+        >
+          How are your shifts organized while at site?
+        </Text>
+        <View
+          style={
+            {
+              "gap": 12,
+            }
+          }
+        >
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            testID="work-pattern-straight-days"
+          >
+            <View
+              style={
+                [
+                  {
+                    "backgroundColor": "#1c1917",
+                    "borderRadius": 16,
+                    "borderWidth": 2,
+                    "padding": 16,
+                    "position": "relative",
+                  },
+                  {
+                    "borderWidth": 2,
+                  },
+                  {
+                    "borderColor": "#2196F3",
+                  },
+                  {},
+                ]
+              }
+            >
+              <Text
+                style={
+                  {
+                    "fontSize": 28,
+                    "marginBottom": 8,
+                  }
+                }
+              >
+                ☀️
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#e7e5e4",
+                    "fontSize": 16,
+                    "fontWeight": "600",
+                    "marginBottom": 4,
+                  }
+                }
+              >
+                Straight Days
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#a8a29e",
+                    "fontSize": 13,
+                    "lineHeight": 19,
+                    "paddingRight": 24,
+                  }
+                }
+              >
+                Work day shifts only for the entire work block (e.g., 7am-7pm)
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 14,
+                      "height": 28,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 12,
+                      "top": 12,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#2196F3",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  color="#0c0a09"
+                  name="checkmark"
+                  size={16}
+                >
+                  checkmark
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            testID="work-pattern-straight-nights"
+          >
+            <View
+              style={
+                [
+                  {
+                    "backgroundColor": "#1c1917",
+                    "borderRadius": 16,
+                    "borderWidth": 2,
+                    "padding": 16,
+                    "position": "relative",
+                  },
+                  false,
+                  {
+                    "borderColor": "#292524",
+                  },
+                  {},
+                ]
+              }
+            >
+              <Text
+                style={
+                  {
+                    "fontSize": 28,
+                    "marginBottom": 8,
+                  }
+                }
+              >
+                🌙
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#e7e5e4",
+                    "fontSize": 16,
+                    "fontWeight": "600",
+                    "marginBottom": 4,
+                  }
+                }
+              >
+                Straight Nights
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#a8a29e",
+                    "fontSize": 13,
+                    "lineHeight": 19,
+                    "paddingRight": 24,
+                  }
+                }
+              >
+                Work night shifts only for the entire work block (e.g., 7pm-7am)
+              </Text>
+            </View>
+          </View>
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            testID="work-pattern-swing"
+          >
+            <View
+              style={
+                [
+                  {
+                    "backgroundColor": "#1c1917",
+                    "borderRadius": 16,
+                    "borderWidth": 2,
+                    "padding": 16,
+                    "position": "relative",
+                  },
+                  false,
+                  {
+                    "borderColor": "#292524",
+                  },
+                  {},
+                ]
+              }
+            >
+              <Text
+                style={
+                  {
+                    "fontSize": 28,
+                    "marginBottom": 8,
+                  }
+                }
+              >
+                🔄
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#e7e5e4",
+                    "fontSize": 16,
+                    "fontWeight": "600",
+                    "marginBottom": 4,
+                  }
+                }
+              >
+                Swing Roster
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#a8a29e",
+                    "fontSize": 13,
+                    "lineHeight": 19,
+                    "paddingRight": 24,
+                  }
+                }
+              >
+                Alternate between day shifts and night shifts during work block
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+      <Text
+        style={
+          {
+            "color": "#b45309",
+            "fontSize": 14,
+            "fontWeight": "600",
+            "marginBottom": 16,
+            "textAlign": "center",
+          }
+        }
+      >
+        <Text
+          color="#b45309"
+          name="arrow-down"
+          size={16}
+        >
+          arrow-down
+        </Text>
+         See your FIFO pattern below
+      </Text>
+      <View
+        style={
+          [
+            {
+              "borderColor": "rgba(180, 83, 9, 0.2)",
+              "borderRadius": 24,
+              "borderWidth": 1,
+              "marginBottom": 24,
+              "shadowColor": "#b45309",
+              "shadowOffset": {
+                "height": 12,
+                "width": 0,
+              },
+              "shadowOpacity": 0.35,
+              "shadowRadius": 20,
+            },
+            {},
+          ]
+        }
+      >
+        <View
+          colors={
+            [
+              "#292524",
+              "#1c1917",
+            ]
+          }
+          style={
+            {
+              "borderRadius": 24,
+              "padding": 24,
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "marginBottom": 16,
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "color": "#e7e5e4",
+                  "fontSize": 21,
+                  "fontWeight": "bold",
+                  "textAlign": "center",
+                }
+              }
+            >
+              Your FIFO Rotation Preview
+            </Text>
+            <Text
+              style={
+                {
+                  "color": "#a8a29e",
+                  "fontSize": 14,
+                  "marginTop": 4,
+                  "textAlign": "center",
+                }
+              }
+            >
+              14
+               days at site, then 
+              14
+               days at home
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "flexDirection": "row",
+                "gap": 10,
+                "marginBottom": 16,
+              }
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "borderRadius": 12,
+                    "flex": 1,
+                    "justifyContent": "center",
+                    "paddingVertical": 8,
+                  },
+                  {
+                    "backgroundColor": "#2196F3",
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  {
+                    "color": "#e7e5e4",
+                    "fontSize": 13,
+                    "fontWeight": "700",
+                  }
+                }
+              >
+                Work: 
+                14
+                d
+              </Text>
+            </View>
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "borderRadius": 12,
+                    "flex": 1,
+                    "justifyContent": "center",
+                    "paddingVertical": 8,
+                  },
+                  {
+                    "backgroundColor": "#78716c",
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  {
+                    "color": "#e7e5e4",
+                    "fontSize": 13,
+                    "fontWeight": "700",
+                  }
+                }
+              >
+                Rest: 
+                14
+                d
+              </Text>
+            </View>
+          </View>
+          <RCTScrollView
+            contentContainerStyle={
+              {
+                "alignItems": "center",
+                "gap": 6,
+                "marginBottom": 16,
+              }
+            }
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+          >
+            <View>
+              <View
+                accessibilityLabel="Cycle day 1"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#2196F3",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 2"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#2196F3",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 3"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#2196F3",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 4"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#2196F3",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 5"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#2196F3",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 6"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#2196F3",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 7"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#2196F3",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 8"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#2196F3",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 9"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#2196F3",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 10"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#2196F3",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 11"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#2196F3",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 12"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#2196F3",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 13"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#2196F3",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 14"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#2196F3",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 15"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 16"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 17"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 18"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 19"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 20"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 21"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 22"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 23"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 24"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 25"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 26"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 27"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              />
+              <View
+                accessibilityLabel="Cycle day 28"
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": 14,
+                      "width": 14,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              />
+            </View>
+          </RCTScrollView>
+          <View
+            style={
+              {
+                "backgroundColor": "rgba(0, 0, 0, 0.4)",
+                "borderRadius": 14,
+                "marginBottom": 16,
+                "padding": 16,
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "color": "#e7e5e4",
+                  "fontSize": 15,
+                  "fontWeight": "700",
+                  "marginBottom": 10,
+                }
+              }
+            >
+              Work-Rest Balance
+            </Text>
+            <View
+              style={
+                {
+                  "backgroundColor": "rgba(255, 255, 255, 0.1)",
+                  "borderRadius": 8,
+                  "flexDirection": "row",
+                  "height": 28,
+                  "marginBottom": 10,
+                  "overflow": "hidden",
+                }
+              }
+            >
+              <View
+                style={
+                  [
+                    {
+                      "height": "100%",
+                    },
+                    {
+                      "width": "50%",
+                    },
+                  ]
+                }
+              >
+                <View
+                  colors={
+                    [
+                      "#2196F3",
+                      "#651FFF",
+                    ]
+                  }
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "justifyContent": "center",
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      {
+                        "color": "#e7e5e4",
+                        "fontSize": 11,
+                        "fontWeight": "700",
+                      }
+                    }
+                  >
+                    50
+                    %
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={
+                  [
+                    {
+                      "height": "100%",
+                    },
+                    {
+                      "width": "50%",
+                    },
+                  ]
+                }
+              >
+                <View
+                  colors={
+                    [
+                      "#22c55e",
+                      "#14532d",
+                    ]
+                  }
+                  style={
+                    {
+                      "alignItems": "center",
+                      "flex": 1,
+                      "justifyContent": "center",
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      {
+                        "color": "#e7e5e4",
+                        "fontSize": 11,
+                        "fontWeight": "700",
+                      }
+                    }
+                  >
+                    50
+                    %
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View
+              style={
+                {
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "color": "#a8a29e",
+                    "fontSize": 12,
+                    "fontWeight": "600",
+                  }
+                }
+              >
+                Work: 
+                14
+                 days
+              </Text>
+              <Text
+                style={
+                  {
+                    "color": "#a8a29e",
+                    "fontSize": 12,
+                    "fontWeight": "600",
+                  }
+                }
+              >
+                Rest: 
+                14
+                 days
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "alignSelf": "center",
+                "backgroundColor": "rgba(0, 0, 0, 0.4)",
+                "borderRadius": 20,
+                "flexDirection": "row",
+                "gap": 8,
+                "paddingHorizontal": 14,
+                "paddingVertical": 8,
+              }
+            }
+          >
+            <Text
+              color="#e7e5e4"
+              name="calendar-number-outline"
+              size={16}
+            >
+              calendar-number-outline
+            </Text>
+            <Text
+              style={
+                {
+                  "color": "#e7e5e4",
+                  "fontSize": 13,
+                  "fontWeight": "700",
+                }
+              }
+            >
+              28
+              -day FIFO cycle
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#14532d",
+            "borderRadius": 14,
+            "flexDirection": "row",
+            "gap": 10,
+            "marginBottom": 32,
+            "padding": 14,
+          }
+        }
+        testID="fifo-status-success"
+      >
+        <Text
+          color="#22c55e"
+          name="checkmark-circle-outline"
+          size={20}
+        >
+          checkmark-circle-outline
+        </Text>
+        <Text
+          style={
+            {
+              "color": "#22c55e",
+              "flex": 1,
+              "fontSize": 14,
+              "lineHeight": 20,
+            }
+          }
+        >
+          Solid FIFO setup. 
+          14
+           days at site, then 
+          14
+           days at home.
+        </Text>
+      </View>
+    </View>
+  </RCTScrollView>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#0c0a09",
+        "borderTopColor": "#292524",
+        "borderTopWidth": 1,
+        "bottom": 0,
+        "flexDirection": "row",
+        "gap": 16,
+        "left": 0,
+        "paddingBottom": 32,
+        "paddingHorizontal": 24,
+        "paddingTop": 16,
+        "position": "absolute",
+        "right": 0,
+      }
+    }
+  >
+    <View
+      accessibilityHint="Return to shift pattern selection"
+      accessibilityLabel="Go back"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "#1c1917",
+          "borderColor": "#292524",
+          "borderRadius": 28,
+          "borderWidth": 1,
+          "height": 56,
+          "justifyContent": "center",
+          "width": 56,
+        }
+      }
+      testID="fifo-custom-back-button"
+    >
+      <Text
+        color="#e7e5e4"
+        name="arrow-back"
+        size={24}
+      >
+        arrow-back
+      </Text>
+    </View>
+    <View
+      style={{}}
+    >
+      <View
+        accessibilityHint="14 days work, 14 days rest"
+        accessibilityLabel="Save FIFO pattern and continue"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "borderRadius": 28,
+              "height": 56,
+              "overflow": "hidden",
+              "shadowColor": "#0c0a09",
+              "shadowOffset": {
+                "height": 4,
+                "width": 0,
+              },
+              "shadowOpacity": 0.35,
+              "shadowRadius": 8,
+              "width": 630,
+            },
+            false,
+          ]
+        }
+        testID="fifo-custom-save-button"
+      >
+        <View
+          colors={
+            [
+              "#b45309",
+              "#d97706",
+            ]
+          }
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "gap": 8,
+              "height": "100%",
+              "justifyContent": "center",
+              "width": "100%",
+            }
+          }
+        >
+          <Text
+            color="#e7e5e4"
+            name="save-outline"
+            size={22}
+          >
+            save-outline
+          </Text>
+          <Text
+            style={
+              {
+                "color": "#e7e5e4",
+                "fontSize": 17,
+                "fontWeight": "bold",
+              }
+            }
+          >
+            Save FIFO Pattern
+          </Text>
+          <Text
+            color="#e7e5e4"
+            name="arrow-forward"
+            size={24}
+          >
+            arrow-forward
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;

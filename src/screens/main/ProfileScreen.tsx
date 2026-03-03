@@ -1,20 +1,52 @@
 /**
  * ProfileScreen
  *
- * Placeholder screen for the Profile tab.
- * Will contain user profile, settings, and preferences.
+ * Full profile screen with animated hero avatar, editable personal information,
+ * shift configuration summary, and work overview statistics.
+ * Uses the Sacred design system with Reanimated animations and haptic feedback.
  */
 
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useCallback, useEffect } from 'react';
+import { View, StyleSheet, Text, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { LinearGradient } from 'expo-linear-gradient';
-import Animated, { FadeIn, FadeInUp } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import { theme } from '@/utils/theme';
+import { useProfileData } from '@/hooks/useProfileData';
+import { ProfileHeroSection } from '@/components/profile/ProfileHeroSection';
+import { ProfileSectionHeader } from '@/components/profile/ProfileSectionHeader';
+import { ProfileEditForm } from '@/components/profile/ProfileEditForm';
+import { ShiftConfigCard } from '@/components/profile/ShiftConfigCard';
+import { WorkStatsSummary } from '@/components/profile/WorkStatsSummary';
+import { asyncStorageService } from '@/services/AsyncStorageService';
+import type { RootStackParamList } from '@/navigation/AppNavigator';
 
 export const ProfileScreen: React.FC = () => {
   const insets = useSafeAreaInsets();
+  const isFocused = useIsFocused();
+  const navigation = useNavigation();
+  const profile = useProfileData();
+  const { isEditing, cancelEditing } = profile;
+
+  useEffect(() => {
+    if (!isFocused && isEditing) {
+      cancelEditing();
+    }
+  }, [isFocused, isEditing, cancelEditing]);
+
+  const handleRunOnboardingAgain = useCallback(async () => {
+    await asyncStorageService.set('onboarding:complete', false);
+
+    const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+    if (rootNavigation && typeof rootNavigation.reset === 'function') {
+      rootNavigation.reset({
+        index: 0,
+        routes: [{ name: 'Onboarding' }],
+      });
+    }
+  }, [navigation]);
 
   return (
     <View style={styles.screen}>
@@ -23,22 +55,111 @@ export const ProfileScreen: React.FC = () => {
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
-      <View style={[styles.content, { paddingTop: insets.top + 60 }]}>
-        <Animated.View entering={FadeIn.duration(400)} style={styles.iconContainer}>
-          <View style={styles.iconCircle}>
-            <Ionicons name="person" size={48} color={theme.colors.dust} />
+      <Animated.ScrollView
+        contentContainerStyle={[
+          styles.scrollContent,
+          { paddingTop: insets.top + 16, paddingBottom: 120 },
+        ]}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+      >
+        <ProfileHeroSection
+          name={profile.data.name || ''}
+          occupation={
+            profile.isEditing
+              ? (profile.editedFields.occupation ?? profile.data.occupation)
+              : profile.data.occupation
+          }
+          company={
+            profile.isEditing
+              ? (profile.editedFields.company ?? profile.data.company)
+              : profile.data.company
+          }
+          country={
+            profile.isEditing
+              ? (profile.editedFields.country ?? profile.data.country)
+              : profile.data.country
+          }
+          avatarUri={profile.data.avatarUri}
+          isEditing={profile.isEditing}
+          onAvatarChange={profile.handleAvatarChange}
+          onEditPress={profile.isEditing ? profile.saveChanges : profile.startEditing}
+          animationDelay={0}
+        />
+
+        <ProfileSectionHeader
+          title="Personal Information"
+          icon="person-outline"
+          animationDelay={500}
+        />
+        <ProfileEditForm
+          name={
+            profile.isEditing
+              ? (profile.editedFields.name ?? profile.data.name ?? '')
+              : (profile.data.name ?? '')
+          }
+          occupation={
+            profile.isEditing
+              ? (profile.editedFields.occupation ?? profile.data.occupation ?? '')
+              : (profile.data.occupation ?? '')
+          }
+          company={
+            profile.isEditing
+              ? (profile.editedFields.company ?? profile.data.company ?? '')
+              : (profile.data.company ?? '')
+          }
+          country={
+            profile.isEditing
+              ? (profile.editedFields.country ?? profile.data.country ?? '')
+              : (profile.data.country ?? '')
+          }
+          isEditing={profile.isEditing}
+          onFieldChange={profile.updateField}
+          onSave={profile.saveChanges}
+          onCancel={profile.cancelEditing}
+          animationDelay={600}
+        />
+
+        <ProfileSectionHeader
+          title="Shift Configuration"
+          icon="time-outline"
+          animationDelay={800}
+        />
+        <ShiftConfigCard
+          shiftSystem={profile.data.shiftSystem}
+          rosterType={profile.data.rosterType}
+          patternType={profile.data.patternType}
+          customPattern={profile.data.customPattern}
+          fifoConfig={profile.data.fifoConfig}
+          shiftTimes={profile.data.shiftTimes}
+          shiftStartTime={profile.data.shiftStartTime}
+          shiftEndTime={profile.data.shiftEndTime}
+          animationDelay={900}
+        />
+
+        <ProfileSectionHeader
+          title="Work Overview"
+          icon="stats-chart-outline"
+          animationDelay={1100}
+        />
+        <WorkStatsSummary data={profile.data} animationDelay={1200} />
+
+        {__DEV__ ? (
+          <View style={styles.onboardingToolsSection}>
+            <Pressable
+              style={styles.onboardingButton}
+              onPress={handleRunOnboardingAgain}
+              accessibilityRole="button"
+              accessibilityLabel="Run onboarding flow again"
+              accessibilityHint="Re-open onboarding screens from the first step"
+              testID="run-onboarding-again-button"
+            >
+              <Text style={styles.onboardingButtonText}>Run Onboarding Again</Text>
+              <Text style={styles.onboardingButtonHint}>Opens onboarding from step one</Text>
+            </Pressable>
           </View>
-        </Animated.View>
-        <Animated.Text entering={FadeInUp.delay(100).duration(400)} style={styles.title}>
-          Profile
-        </Animated.Text>
-        <Animated.Text entering={FadeInUp.delay(200).duration(400)} style={styles.subtitle}>
-          Coming Soon
-        </Animated.Text>
-        <Animated.Text entering={FadeInUp.delay(300).duration(400)} style={styles.description}>
-          Your profile, settings, and preferences will appear here.
-        </Animated.Text>
-      </View>
+        ) : null}
+      </Animated.ScrollView>
     </View>
   );
 };
@@ -48,42 +169,29 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.deepVoid,
   },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: theme.spacing.xl,
-    paddingBottom: 120,
+  scrollContent: {
+    flexGrow: 1,
   },
-  iconContainer: {
-    marginBottom: theme.spacing.lg,
+  onboardingToolsSection: {
+    paddingHorizontal: theme.spacing.lg,
+    paddingBottom: theme.spacing.lg,
   },
-  iconCircle: {
-    width: 96,
-    height: 96,
-    borderRadius: 48,
-    backgroundColor: theme.colors.softStone,
-    justifyContent: 'center',
-    alignItems: 'center',
+  onboardingButton: {
+    borderRadius: 16,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.05)',
+    borderColor: theme.colors.softStone,
+    backgroundColor: theme.colors.darkStone,
+    paddingVertical: theme.spacing.md,
+    paddingHorizontal: theme.spacing.lg,
   },
-  title: {
-    fontSize: theme.typography.fontSizes.xxl,
-    fontWeight: theme.typography.fontWeights.bold,
+  onboardingButtonText: {
     color: theme.colors.paper,
-    marginBottom: theme.spacing.sm,
+    fontSize: 16,
+    fontWeight: '700',
   },
-  subtitle: {
-    fontSize: theme.typography.fontSizes.lg,
-    fontWeight: theme.typography.fontWeights.semibold,
-    color: theme.colors.sacredGold,
-    marginBottom: theme.spacing.md,
-  },
-  description: {
-    fontSize: theme.typography.fontSizes.md,
+  onboardingButtonHint: {
     color: theme.colors.dust,
-    textAlign: 'center',
-    lineHeight: theme.typography.fontSizes.md * theme.typography.lineHeights.relaxed,
+    fontSize: 13,
+    marginTop: 4,
   },
 });

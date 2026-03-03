@@ -26,11 +26,21 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
-import type { ShiftType } from '@/types';
+import { RosterType, type ShiftType } from '@/types';
+import { fifoBlockColors } from '@/constants/shiftStyles';
 
 export interface CurrentShiftStatusCardProps {
   /** Current shift type */
   shiftType: ShiftType;
+  /** Roster paradigm (rotating vs FIFO) */
+  rosterType?: RosterType;
+  /** Optional FIFO block status details */
+  fifoBlockInfo?: {
+    inWorkBlock: boolean;
+    dayInBlock: number;
+    blockLength: number;
+    daysUntilBlockChange: number;
+  } | null;
   /** Shift time display (e.g., "7:00 AM - 7:00 PM") */
   timeDisplay?: string;
   /** Countdown text (e.g., "6h 32m until next shift") */
@@ -88,17 +98,66 @@ const SHIFT_STYLES: Record<
   },
 };
 
+const FIFO_WORK_STYLE = {
+  gradient: [fifoBlockColors.work.primary, '#1565C0'] as [string, string],
+  label: 'WORK BLOCK',
+  subtitle: 'On-site roster active',
+};
+
+const FIFO_REST_STYLE = {
+  gradient: [fifoBlockColors.rest.primary, '#44403c'] as [string, string],
+  label: 'REST BLOCK',
+  subtitle: 'Home block active',
+};
+
 const ICON_SIZE = 44;
 
 export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
   shiftType,
+  rosterType = RosterType.ROTATING,
+  fifoBlockInfo,
   timeDisplay,
   countdown,
   isOnShift = false,
   animationDelay = 100,
   testID,
 }) => {
-  const style = useMemo(() => SHIFT_STYLES[shiftType], [shiftType]);
+  const style = useMemo(() => {
+    if (rosterType === RosterType.FIFO) {
+      return shiftType === 'off' ? FIFO_REST_STYLE : FIFO_WORK_STYLE;
+    }
+    return SHIFT_STYLES[shiftType];
+  }, [shiftType, rosterType]);
+
+  const shiftLabel = useMemo(() => {
+    return style.label;
+  }, [style.label]);
+
+  const shiftSubtitle = useMemo(() => {
+    if (rosterType !== RosterType.FIFO || !fifoBlockInfo) {
+      return style.subtitle;
+    }
+    const blockName = fifoBlockInfo.inWorkBlock ? 'Work' : 'Rest';
+    return `${blockName} Block Day ${fifoBlockInfo.dayInBlock} of ${fifoBlockInfo.blockLength}`;
+  }, [fifoBlockInfo, rosterType, style.subtitle]);
+
+  // FIFO block progress (0 to 1)
+  const fifoProgress = useMemo(() => {
+    if (!fifoBlockInfo) return 0;
+    return fifoBlockInfo.dayInBlock / fifoBlockInfo.blockLength;
+  }, [fifoBlockInfo]);
+
+  const fifoProgressPercent = useMemo(() => {
+    return Math.round(fifoProgress * 100);
+  }, [fifoProgress]);
+
+  // Block transition text
+  const blockTransitionText = useMemo(() => {
+    if (!fifoBlockInfo) return null;
+    if (fifoBlockInfo.daysUntilBlockChange === 0) return 'Block change today!';
+    if (fifoBlockInfo.daysUntilBlockChange === 1) return 'Block change tomorrow!';
+    return null;
+  }, [fifoBlockInfo]);
 
   // ── Staggered Entrance ────────────────────────────────────────
   const iconEntranceScale = useSharedValue(0.3);
@@ -124,6 +183,24 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
     infoEntranceOpacity.value = withDelay(D + 350, withTiming(1, { duration: 350 }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [animationDelay]);
+
+  // ── FIFO Progress Bar Animation ──────────────────────────────
+  const progressWidth = useSharedValue(0);
+
+  useEffect(() => {
+    if (rosterType === RosterType.FIFO && fifoBlockInfo) {
+      progressWidth.value = 0;
+      progressWidth.value = withDelay(
+        animationDelay + 400,
+        withTiming(fifoProgress, { duration: 800, easing: Easing.out(Easing.cubic) })
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fifoProgress, animationDelay]);
+
+  const progressFillStyle = useAnimatedStyle(() => ({
+    width: `${progressWidth.value * 100}%`,
+  }));
 
   // ── Continuous Animations ─────────────────────────────────────
   const floatY = useSharedValue(0);
@@ -353,21 +430,23 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
               {!isOnShift && (
                 <View style={styles.offBadge}>
                   <Ionicons
-                    name="moon-outline"
+                    name={rosterType === RosterType.FIFO ? 'home-outline' : 'moon-outline'}
                     size={12}
                     color="rgba(255,255,255,0.5)"
                     style={{ marginRight: 5 }}
                   />
-                  <Animated.Text style={styles.offText}>OFF</Animated.Text>
+                  <Animated.Text style={styles.offText}>
+                    {rosterType === RosterType.FIFO ? 'HOME' : 'OFF'}
+                  </Animated.Text>
                 </View>
               )}
             </View>
 
             {/* Label, then subtitle + time on same line */}
             <Animated.View style={labelEntranceStyle}>
-              <Animated.Text style={styles.shiftLabel}>{style.label}</Animated.Text>
+              <Animated.Text style={styles.shiftLabel}>{shiftLabel}</Animated.Text>
               <View style={[styles.subtitleTimeRow, !isOnShift && styles.subtitleTimeRowCentered]}>
-                <Animated.Text style={styles.shiftSubtitle}>{style.subtitle}</Animated.Text>
+                <Animated.Text style={styles.shiftSubtitle}>{shiftSubtitle}</Animated.Text>
                 {timeDisplay && (
                   <View style={styles.timeContainer}>
                     <Ionicons
@@ -380,6 +459,43 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                   </View>
                 )}
               </View>
+
+              {/* FIFO Block Progress Bar */}
+              {rosterType === RosterType.FIFO && fifoBlockInfo && (
+                <View style={styles.progressBarContainer}>
+                  <View style={styles.progressBarTrack}>
+                    <Animated.View
+                      style={[
+                        styles.progressBarFill,
+                        {
+                          backgroundColor: fifoBlockInfo.inWorkBlock ? '#64B5F6' : '#a8a29e',
+                        },
+                        progressFillStyle,
+                      ]}
+                    />
+                  </View>
+                  <Animated.Text style={styles.progressPercent}>
+                    {fifoProgressPercent}%
+                  </Animated.Text>
+                </View>
+              )}
+
+              {/* FIFO Block Transition Indicator with gold shimmer */}
+              {blockTransitionText && (
+                <View style={styles.blockTransitionContainer}>
+                  <Animated.View style={[styles.blockTransitionShimmer, shimmerStyle]}>
+                    <LinearGradient
+                      colors={['transparent', 'rgba(217, 119, 6, 0.2)', 'transparent']}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 0 }}
+                      style={styles.blockTransitionShimmerGradient}
+                    />
+                  </Animated.View>
+                  <Animated.Text style={styles.blockTransitionText}>
+                    {blockTransitionText}
+                  </Animated.Text>
+                </View>
+              )}
             </Animated.View>
           </LinearGradient>
         </Animated.View>
@@ -605,5 +721,58 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     resizeMode: 'contain',
+  },
+  // FIFO Progress Bar
+  progressBarContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+    gap: 8,
+  },
+  progressBarTrack: {
+    flex: 1,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    overflow: 'hidden',
+  },
+  progressBarFill: {
+    height: 4,
+    borderRadius: 2,
+  },
+  progressPercent: {
+    fontSize: 11,
+    fontWeight: theme.typography.fontWeights.semibold,
+    color: 'rgba(255,255,255,0.6)',
+    minWidth: 30,
+    textAlign: 'right',
+  },
+  // Block Transition
+  blockTransitionContainer: {
+    position: 'relative',
+    marginTop: 6,
+    overflow: 'hidden',
+    borderRadius: 4,
+    paddingVertical: 4,
+  },
+  blockTransitionShimmer: {
+    position: 'absolute',
+    top: 0,
+    left: -100,
+    right: -100,
+    bottom: 0,
+    zIndex: 0,
+  },
+  blockTransitionShimmerGradient: {
+    flex: 1,
+    width: 120,
+  },
+  blockTransitionText: {
+    fontSize: 12,
+    fontWeight: theme.typography.fontWeights.bold,
+    color: '#d97706',
+    textAlign: 'center',
+    letterSpacing: 0.5,
+    zIndex: 1,
   },
 });

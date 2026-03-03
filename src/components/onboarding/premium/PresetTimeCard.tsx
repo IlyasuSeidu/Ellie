@@ -10,6 +10,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-na
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { theme } from '@/utils/theme';
+import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
 
 export interface TimePreset {
   /** Time in 24h format (HH:mm) */
@@ -50,7 +51,9 @@ export const PresetTimeCard: React.FC<PresetTimeCardProps> = ({
   const handlePressIn = () => {
     if (!disabled) {
       scale.value = withSpring(0.95, { damping: 15, stiffness: 300 });
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+        source: `PresetTimeCard.pressIn:${preset.time}`,
+      });
     }
   };
 
@@ -62,7 +65,9 @@ export const PresetTimeCard: React.FC<PresetTimeCardProps> = ({
 
   const handlePress = () => {
     if (!disabled && onSelect) {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+        source: `PresetTimeCard.press:${preset.time}`,
+      });
       onSelect(preset);
     }
   };

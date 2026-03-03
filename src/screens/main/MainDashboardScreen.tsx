@@ -33,10 +33,15 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
 import { asyncStorageService } from '@/services/AsyncStorageService';
-import { getShiftDaysInRange, getShiftStatistics, buildShiftCycle } from '@/utils/shiftUtils';
+import {
+  getShiftDaysInRange,
+  getShiftStatistics,
+  buildShiftCycle,
+  getFIFOBlockInfo,
+} from '@/utils/shiftUtils';
 import { toDateString, getDaysInMonth } from '@/utils/dateUtils';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
-import type { ShiftCycle } from '@/types';
+import { RosterType, type ShiftCycle } from '@/types';
 import { useActiveShift } from '@/hooks/useActiveShift';
 import type { MonthStatistics } from '@/types/dashboard';
 
@@ -230,6 +235,13 @@ export const MainDashboardScreen: React.FC = () => {
   // Active shift: time-aware status with overnight carry-over support
   const activeShift = useActiveShift(shiftCycle, userData, liveTick, currentDateStr);
 
+  const fifoBlockInfo = useMemo(() => {
+    if (!shiftCycle || shiftCycle.rosterType !== RosterType.FIFO) {
+      return null;
+    }
+    return getFIFOBlockInfo(new Date(currentDateStr), shiftCycle);
+  }, [shiftCycle, currentDateStr]);
+
   // Current month shift days (recalculates on day change for today highlight)
   const monthShifts = useMemo(() => {
     if (!shiftCycle) return [];
@@ -378,8 +390,14 @@ export const MainDashboardScreen: React.FC = () => {
         <CurrentShiftStatusCard
           key={`status-${refreshKey}`}
           shiftType={activeShift.shiftType}
+          rosterType={shiftCycle.rosterType}
+          fifoBlockInfo={fifoBlockInfo}
           timeDisplay={activeShift.timeDisplay || undefined}
-          countdown={activeShift.countdown || undefined}
+          countdown={
+            shiftCycle.rosterType === RosterType.FIFO && fifoBlockInfo
+              ? `${fifoBlockInfo.daysUntilBlockChange}d until ${fifoBlockInfo.inWorkBlock ? 'rest' : 'work'} block`
+              : (activeShift.countdown ?? undefined)
+          }
           isOnShift={activeShift.isOnShift}
           animationDelay={100}
           testID="dashboard-shift-status"
@@ -396,6 +414,8 @@ export const MainDashboardScreen: React.FC = () => {
           onNextMonth={handleNextMonth}
           onDayPress={handleDayPress}
           shiftSystem={shiftCycle?.shiftSystem}
+          rosterType={shiftCycle?.rosterType}
+          shiftCycle={shiftCycle ?? undefined}
           activeGlowColor={
             activeShift?.isOvernightCarryOver ? SHIFT_GLOW_COLORS[activeShift.shiftType] : undefined
           }

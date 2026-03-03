@@ -7,11 +7,92 @@ This document provides comprehensive information about the APIs, services, and i
 ## Table of Contents
 
 - [Environment Variables](#environment-variables)
+- [Ellie Brain Voice API](#ellie-brain-voice-api)
 - [Firebase Configuration](#firebase-configuration)
 - [Service APIs](#service-apis)
 - [Error Handling](#error-handling)
 - [Rate Limiting](#rate-limiting)
 - [Authentication](#authentication)
+
+## Ellie Brain Voice API
+
+### Endpoint
+
+- `POST /ellieBrain` (Firebase HTTPS function, CORS enabled)
+
+### Request Shape
+
+```json
+{
+  "query": "am I working tomorrow?",
+  "userContext": {
+    "name": "Alex",
+    "shiftSystem": "2-shift",
+    "rosterType": "fifo",
+    "shiftCycle": {
+      "patternType": "FIFO_8_6",
+      "rosterType": "fifo",
+      "daysOn": 8,
+      "nightsOn": 0,
+      "daysOff": 6,
+      "startDate": "2026-01-01",
+      "phaseOffset": 0,
+      "fifoConfig": {
+        "workBlockDays": 8,
+        "restBlockDays": 6,
+        "workBlockPattern": "straight-days"
+      }
+    }
+  }
+}
+```
+
+### Response Envelope
+
+Success:
+
+```json
+{
+  "ok": true,
+  "requestId": "uuid",
+  "data": {
+    "text": "You are in a work block today.",
+    "shiftData": {
+      "toolName": "current_block_info",
+      "data": {}
+    },
+    "requestId": "uuid"
+  }
+}
+```
+
+Error:
+
+```json
+{
+  "ok": false,
+  "requestId": "uuid",
+  "error": {
+    "code": "provider_timeout",
+    "message": "Provider request timed out.",
+    "retryable": true,
+    "requestId": "uuid"
+  }
+}
+```
+
+### Registered Shift Tools
+
+- `get_shift_for_date`
+- `get_shifts_in_range`
+- `get_current_status`
+- `get_statistics`
+- `get_next_occurrence`
+- `get_next_work_block`
+- `get_next_rest_block`
+- `days_until_work`
+- `days_until_rest`
+- `current_block_info`
 
 ## Environment Variables
 

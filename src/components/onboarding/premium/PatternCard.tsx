@@ -10,6 +10,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-na
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
 import { ShiftPattern } from '@/types';
+import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
 
 export interface PatternMetadata {
   /** Pattern emoji icon */
@@ -51,7 +52,9 @@ export const PatternCard: React.FC<PatternCardProps> = ({
 
   const handlePressIn = () => {
     scale.value = withSpring(0.98, { damping: 15, stiffness: 300 });
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: `PatternCard.pressIn:${pattern}`,
+    });
   };
 
   const handlePressOut = () => {
@@ -59,7 +62,9 @@ export const PatternCard: React.FC<PatternCardProps> = ({
   };
 
   const handlePress = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+      source: `PatternCard.press:${pattern}`,
+    });
     onSelect(pattern);
   };
 
@@ -372,6 +377,167 @@ export function getPatternMetadata(pattern: ShiftPattern): PatternMetadata {
       name: 'Custom Pattern',
       description: 'Create your own schedule',
       preview: ['day', 'night', 'off'],
+    },
+    // FIFO Patterns
+    [ShiftPattern.FIFO_8_6]: {
+      emoji: '⛏️',
+      name: '8/6 FIFO',
+      description: '8 Days Work, 6 Days Home',
+      preview: [
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'off',
+        'off',
+        'off',
+        'off',
+        'off',
+        'off',
+      ],
+    },
+    [ShiftPattern.FIFO_7_7]: {
+      emoji: '⛏️',
+      name: '7/7 FIFO',
+      description: '7 Days Work, 7 Days Home',
+      preview: [
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'off',
+        'off',
+        'off',
+        'off',
+        'off',
+        'off',
+        'off',
+      ],
+    },
+    [ShiftPattern.FIFO_14_14]: {
+      emoji: '🌙',
+      name: '14/14 FIFO',
+      description: '14 Days Work, 14 Days Home',
+      preview: [
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+      ],
+    },
+    [ShiftPattern.FIFO_14_7]: {
+      emoji: '🌙',
+      name: '14/7 FIFO',
+      description: '14 Days Work, 7 Days Home',
+      preview: [
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'off',
+        'off',
+        'off',
+        'off',
+        'off',
+        'off',
+        'off',
+      ],
+    },
+    [ShiftPattern.FIFO_21_7]: {
+      emoji: '🌙',
+      name: '21/7 FIFO',
+      description: '21 Days Work, 7 Days Home',
+      preview: [
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+      ],
+    },
+    [ShiftPattern.FIFO_28_14]: {
+      emoji: '🌙',
+      name: '28/14 FIFO',
+      description: '28 Days Work, 14 Days Home',
+      preview: [
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+        'day',
+      ],
+    },
+    [ShiftPattern.FIFO_CUSTOM]: {
+      emoji: '✏️',
+      name: 'Custom FIFO',
+      description: 'Create your own FIFO schedule',
+      preview: ['day', 'day', 'day', 'off', 'off'],
     },
   };
 

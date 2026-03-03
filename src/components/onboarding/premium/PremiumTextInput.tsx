@@ -25,6 +25,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
+import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
 
 export interface PremiumTextInputProps extends Omit<TextInputProps, 'style'> {
   /** Input label */
@@ -85,8 +86,10 @@ export const PremiumTextInput: React.FC<PremiumTextInputProps> = ({
   const handleFocus = useCallback(() => {
     setIsFocused(true);
     labelPosition.value = withTiming(1, { duration: 200 });
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-  }, [labelPosition]);
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: `PremiumTextInput.focus:${testID ?? 'unknown'}`,
+    });
+  }, [labelPosition, testID]);
 
   const handleBlur = useCallback(() => {
     setIsFocused(false);
@@ -97,8 +100,10 @@ export const PremiumTextInput: React.FC<PremiumTextInputProps> = ({
 
   const handleClear = useCallback(() => {
     onChangeText('');
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-  }, [onChangeText]);
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: `PremiumTextInput.clear:${testID ?? 'unknown'}`,
+    });
+  }, [onChangeText, testID]);
 
   const labelStyle = useAnimatedStyle(() => {
     const translateY = interpolate(labelPosition.value, [0, 1], [0, -42], Extrapolate.CLAMP);

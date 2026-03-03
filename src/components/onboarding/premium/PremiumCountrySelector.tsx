@@ -9,6 +9,7 @@ import { View, TouchableOpacity, ScrollView, StyleSheet, Platform, TextInput } f
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
+import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
 
 export interface Country {
   /** Country code (ISO 3166-1 alpha-2) */
@@ -114,7 +115,9 @@ export const PremiumCountrySelector: React.FC<PremiumCountrySelectorProps> = ({
   }, [searchQuery, countries]);
 
   const handleCountryPress = (country: Country) => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+      source: `PremiumCountrySelector.select:${country.code}`,
+    });
     if (onCountrySelect) {
       onCountrySelect(country);
     }
@@ -174,7 +177,9 @@ const CountryItem: React.FC<CountryItemProps> = ({ country, selected, onPress, t
 
   const handlePressIn = () => {
     scale.value = withSpring(0.98, { damping: 15, stiffness: 300 });
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: `PremiumCountrySelector.pressIn:${country.code}`,
+    });
   };
 
   const handlePressOut = () => {

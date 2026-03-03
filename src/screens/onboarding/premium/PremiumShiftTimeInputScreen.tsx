@@ -56,6 +56,7 @@ import {
   formatTimeForDisplay,
   getRequiredShiftTypes,
 } from '@/utils/shiftTimeUtils';
+import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 
 // Helper to get pattern display info
 const getPatternInfo = (
@@ -343,6 +344,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   const navigation = useNavigation<NavigationProp>();
   const { data, updateData } = useOnboarding();
   const shiftSystem: '2-shift' | '3-shift' = data.shiftSystem || ShiftSystem.TWO_SHIFT;
+  const rosterType = data.rosterType || 'rotating';
 
   // Ref for ScrollView to enable auto-scroll
   const scrollViewRef = useRef<ScrollView>(null);
@@ -350,11 +352,33 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   // Set duration based on shift system (locked)
   const lockedDuration: 8 | 12 = shiftSystem === ShiftSystem.THREE_SHIFT ? 8 : 12;
 
-  // Determine required shift types based on pattern
-  const requiredShiftTypes = getRequiredShiftTypes(
-    shiftSystem === ShiftSystem.THREE_SHIFT ? '3-shift' : '2-shift',
-    data.customPattern
-  );
+  // Determine required shift types based on roster type and pattern
+  let requiredShiftTypes: string[];
+
+  if (rosterType === 'fifo' && data.fifoConfig) {
+    // FIFO roster: determine shift types based on work pattern
+    const workPattern = data.fifoConfig.workBlockPattern;
+
+    if (workPattern === 'straight-days') {
+      // Only collect day shift times
+      requiredShiftTypes = ['day'];
+    } else if (workPattern === 'straight-nights') {
+      // Only collect night shift times
+      requiredShiftTypes = ['night'];
+    } else if (workPattern === 'swing') {
+      // Collect both day and night shift times
+      requiredShiftTypes = ['day', 'night'];
+    } else {
+      // Fallback: collect both (for custom or unknown patterns)
+      requiredShiftTypes = ['day', 'night'];
+    }
+  } else {
+    // Rotating roster: use existing logic
+    requiredShiftTypes = getRequiredShiftTypes(
+      shiftSystem === ShiftSystem.THREE_SHIFT ? '3-shift' : '2-shift',
+      data.customPattern
+    );
+  }
 
   // Multi-stage state: track which shift type we're currently collecting
   const [currentStageIndex, setCurrentStageIndex] = useState(0);
@@ -478,20 +502,26 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
 
     if (presetId === 'custom') {
       setShowCustomInput(true);
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+        source: 'PremiumShiftTimeInputScreen.handlePresetSelect.custom',
+      });
     } else {
       setShowCustomInput(false);
       const preset = SHIFT_PRESETS.find((p) => p.id === presetId);
       if (preset) {
         setDuration(preset.duration);
       }
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+        source: 'PremiumShiftTimeInputScreen.handlePresetSelect.preset',
+      });
     }
   };
 
   const handlePeriodToggle = (period: 'AM' | 'PM') => {
     setCustomPeriod(period);
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: 'PremiumShiftTimeInputScreen.handlePeriodToggle',
+    });
   };
 
   const handleCustomTimeChange = (field: 'hours' | 'minutes', value: string) => {
@@ -516,13 +546,17 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
 
     if (isNaN(hours) || hours < 1 || hours > 12) {
       setTimeError('Hours must be between 1 and 12');
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+        source: 'PremiumShiftTimeInputScreen.validateCustomTime.hours',
+      });
       return false;
     }
 
     if (isNaN(minutes) || minutes < 0 || minutes > 59) {
       setTimeError('Minutes must be between 0 and 59');
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+        source: 'PremiumShiftTimeInputScreen.validateCustomTime.minutes',
+      });
       return false;
     }
 
@@ -532,7 +566,9 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
 
   const handleContinue = useCallback(() => {
     if (!isValid()) {
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+        source: 'PremiumShiftTimeInputScreen.handleContinue.invalid',
+      });
       return;
     }
 
@@ -554,7 +590,9 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     };
     setCollectedShiftTimes(updatedShiftTimes);
 
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
+      source: 'PremiumShiftTimeInputScreen.handleContinue.success',
+    });
 
     // If this is the last stage, save all shift times and navigate
     if (isLastStage) {
@@ -629,7 +667,9 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   ]);
 
   const handleBack = useCallback(() => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: 'PremiumShiftTimeInputScreen.handleBack',
+    });
 
     // If we're not on the first stage, go back to previous stage
     if (currentStageIndex > 0) {

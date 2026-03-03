@@ -10,6 +10,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-na
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
+import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
 
 export type PhaseType = 'day' | 'night' | 'off';
 
@@ -52,7 +53,9 @@ export const PhaseSelector: React.FC<PhaseSelectorProps> = ({
           option={option}
           selected={selectedPhase === option.type}
           onSelect={() => {
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+              source: `PhaseSelector.select:${option.type}`,
+            });
             onPhaseSelect(option.type);
           }}
         />
@@ -72,7 +75,9 @@ const PhaseCard: React.FC<PhaseCardProps> = ({ option, selected, onSelect }) => 
 
   const handlePressIn = () => {
     scale.value = withSpring(0.95, { damping: 15, stiffness: 300 });
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: `PhaseSelector.pressIn:${option.type}`,
+    });
   };
 
   const handlePressOut = () => {

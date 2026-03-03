@@ -220,7 +220,7 @@ describe('TimePickerModal', () => {
       );
 
       fireEvent.press(getByTestId('modal-pm'));
-      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Medium);
+      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
     });
 
     it('should trigger haptic on AM/PM toggle', () => {

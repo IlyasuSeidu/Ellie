@@ -33,10 +33,20 @@ export const AppNavigator: React.FC = () => {
 
   const checkOnboardingStatus = async () => {
     try {
-      // asyncStorageService.get() auto-deserializes JSON, returns object directly
+      const completionFlag = await asyncStorageService.get<boolean>('onboarding:complete');
+      if (completionFlag === true) {
+        setIsOnboardingComplete(true);
+        return;
+      }
+
+      if (completionFlag === false) {
+        setIsOnboardingComplete(false);
+        return;
+      }
+
+      // Backward compatibility for older installs without completion flag.
       const savedData = await asyncStorageService.get<Record<string, unknown>>('onboarding:data');
       if (savedData && typeof savedData === 'object') {
-        // Onboarding is complete if all essential fields are present
         const complete = !!(
           savedData.name &&
           savedData.startDate &&

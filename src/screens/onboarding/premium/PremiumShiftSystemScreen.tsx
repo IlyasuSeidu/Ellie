@@ -5,7 +5,7 @@
  * Features swipeable cards with spring physics, card stack visualization, and interactive animations
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import {
   View,
   StyleSheet,
@@ -15,6 +15,7 @@ import {
   Modal,
   Pressable,
   ScrollView,
+  InteractionManager,
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -42,6 +43,7 @@ import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboarding
 import { ShiftSystem } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
+import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -158,6 +160,7 @@ interface SwipeableCardProps {
   index: number;
   totalCards: number;
   isActive: boolean;
+  interactionLocked?: boolean;
   onSwipeRight: () => void;
   onSwipeLeft: () => void;
   onSwipeUp: () => void;
@@ -170,6 +173,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   index,
   totalCards,
   isActive,
+  interactionLocked = false,
   onSwipeRight,
   onSwipeLeft,
   onSwipeUp,
@@ -183,6 +187,26 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   const iconScale = useSharedValue(1);
   const hintOpacity = useSharedValue(1);
   const hintScale = useSharedValue(1);
+  const triggerSuccessHaptic = useCallback(() => {
+    void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
+      source: 'PremiumShiftSystemScreen.card.swipeRight',
+    });
+  }, []);
+  const triggerLightHaptic = useCallback(() => {
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: 'PremiumShiftSystemScreen.card.swipeLeft',
+    });
+  }, []);
+  const triggerMediumHaptic = useCallback(() => {
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+      source: 'PremiumShiftSystemScreen.card.swipeUpOrTap',
+    });
+  }, []);
+  const reportWorkletError = useCallback((phase: 'update' | 'end', message: string) => {
+    if (__DEV__) {
+      console.error('[ShiftSystem] Swipe worklet error', { phase, message });
+    }
+  }, []);
 
   // Idle floating animation
   useEffect(() => {
@@ -230,86 +254,98 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   }, [isActive, index, hintOpacity, hintScale]);
 
   const panGesture = Gesture.Pan()
-    .enabled(isActive)
+    .enabled(isActive && !interactionLocked)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .onUpdate((event: any) => {
-      translateX.value = event.translationX;
-      translateY.value = event.translationY;
+      try {
+        translateX.value = event.translationX;
+        translateY.value = event.translationY;
 
-      // Dynamic scale based on swipe distance
-      const distance = Math.sqrt(event.translationX ** 2 + event.translationY ** 2);
-      scale.value = interpolate(distance, [0, SWIPE_THRESHOLD], [1.0, 1.08], Extrapolate.CLAMP);
+        // Dynamic scale based on swipe distance
+        const distance = Math.sqrt(event.translationX ** 2 + event.translationY ** 2);
+        scale.value = interpolate(distance, [0, SWIPE_THRESHOLD], [1.0, 1.08], Extrapolate.CLAMP);
 
-      opacity.value = interpolate(
-        Math.abs(event.translationX),
-        [0, SWIPE_THRESHOLD],
-        [1, 0.6],
-        Extrapolate.CLAMP
-      );
+        opacity.value = interpolate(
+          Math.abs(event.translationX),
+          [0, SWIPE_THRESHOLD],
+          [1, 0.6],
+          Extrapolate.CLAMP
+        );
+      } catch (error) {
+        runOnJS(reportWorkletError)('update', String(error));
+      }
     })
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .onEnd((event: any) => {
-      // Velocity-based detection
-      const velocityX = event.velocityX ?? 0;
-      const velocityY = event.velocityY ?? 0;
+      try {
+        // Velocity-based detection
+        const velocityX = event.velocityX ?? 0;
+        const velocityY = event.velocityY ?? 0;
 
-      const isQuickFlick =
-        Math.abs(velocityX) > VELOCITY_THRESHOLD || Math.abs(velocityY) > VELOCITY_THRESHOLD;
-      const activeThreshold = isQuickFlick ? SWIPE_THRESHOLD * 0.5 : SWIPE_THRESHOLD;
+        const isQuickFlick =
+          Math.abs(velocityX) > VELOCITY_THRESHOLD || Math.abs(velocityY) > VELOCITY_THRESHOLD;
+        const activeThreshold = isQuickFlick ? SWIPE_THRESHOLD * 0.5 : SWIPE_THRESHOLD;
 
-      const isSwipeRight =
-        event.translationX > activeThreshold ||
-        (velocityX > VELOCITY_THRESHOLD && event.translationX > 0);
-      const isSwipeLeft =
-        event.translationX < -activeThreshold ||
-        (velocityX < -VELOCITY_THRESHOLD && event.translationX < 0);
-      const isSwipeUp =
-        event.translationY < -activeThreshold ||
-        (velocityY < -VELOCITY_THRESHOLD && event.translationY < 0);
+        const isSwipeRight =
+          event.translationX > activeThreshold ||
+          (velocityX > VELOCITY_THRESHOLD && event.translationX > 0);
+        const isSwipeLeft =
+          event.translationX < -activeThreshold ||
+          (velocityX < -VELOCITY_THRESHOLD && event.translationX < 0);
+        const isSwipeUp =
+          event.translationY < -activeThreshold ||
+          (velocityY < -VELOCITY_THRESHOLD && event.translationY < 0);
 
-      if (isSwipeRight) {
-        const duration = Math.max(200, 500 - Math.abs(velocityX) / 3);
-        translateX.value = withSpring(SCREEN_WIDTH, {
-          ...SPRING_CONFIGS.swipeRightSelect,
-          velocity: velocityX,
-        });
-        opacity.value = withTiming(0, { duration });
-        runOnJS(Haptics.notificationAsync)(Haptics.NotificationFeedbackType.Success);
-        runOnJS(onSwipeRight)();
-      } else if (isSwipeLeft) {
-        const duration = Math.max(200, 500 - Math.abs(velocityX) / 3);
-        translateX.value = withSpring(-SCREEN_WIDTH, {
-          ...SPRING_CONFIGS.swipeLeftSkip,
-          velocity: velocityX,
-        });
-        opacity.value = withTiming(0, { duration });
-        runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Light);
-        runOnJS(onSwipeLeft)();
-      } else if (isSwipeUp) {
-        // Snap back to center
-        translateY.value = withSpring(0, SPRING_CONFIGS.swipeUpInfo);
-        translateX.value = withSpring(0, SPRING_CONFIGS.swipeUpInfo);
-        scale.value = withSpring(1);
-        opacity.value = withSpring(1);
-        runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Medium);
-        runOnJS(onSwipeUp)();
-      } else {
-        // Rubber band back to center
+        if (isSwipeRight) {
+          const duration = Math.max(200, 500 - Math.abs(velocityX) / 3);
+          translateX.value = withSpring(SCREEN_WIDTH, {
+            ...SPRING_CONFIGS.swipeRightSelect,
+            velocity: velocityX,
+          });
+          opacity.value = withTiming(0, { duration });
+          runOnJS(triggerSuccessHaptic)();
+          runOnJS(onSwipeRight)();
+        } else if (isSwipeLeft) {
+          const duration = Math.max(200, 500 - Math.abs(velocityX) / 3);
+          translateX.value = withSpring(-SCREEN_WIDTH, {
+            ...SPRING_CONFIGS.swipeLeftSkip,
+            velocity: velocityX,
+          });
+          opacity.value = withTiming(0, { duration });
+          runOnJS(triggerLightHaptic)();
+          runOnJS(onSwipeLeft)();
+        } else if (isSwipeUp) {
+          // Snap back to center
+          translateY.value = withSpring(0, SPRING_CONFIGS.swipeUpInfo);
+          translateX.value = withSpring(0, SPRING_CONFIGS.swipeUpInfo);
+          scale.value = withSpring(1);
+          opacity.value = withSpring(1);
+          runOnJS(triggerMediumHaptic)();
+          runOnJS(onSwipeUp)();
+        } else {
+          // Rubber band back to center
+          translateX.value = withSpring(0, SPRING_CONFIGS.snapBack);
+          translateY.value = withSpring(0, SPRING_CONFIGS.snapBack);
+          scale.value = withSpring(1);
+          opacity.value = withSpring(1);
+        }
+      } catch (error) {
         translateX.value = withSpring(0, SPRING_CONFIGS.snapBack);
         translateY.value = withSpring(0, SPRING_CONFIGS.snapBack);
         scale.value = withSpring(1);
         opacity.value = withSpring(1);
+        runOnJS(reportWorkletError)('end', String(error));
       }
     });
 
   const tapGesture = Gesture.Tap()
-    .enabled(isActive)
+    .enabled(isActive && !interactionLocked)
     .onEnd(() => {
       scale.value = withSequence(
         withSpring(1.05, { damping: 10, stiffness: 400 }),
         withSpring(1, { damping: 10, stiffness: 400 })
       );
-      runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Medium);
+      runOnJS(triggerMediumHaptic)();
     });
 
   const composed = Gesture.Simultaneous(panGesture, tapGesture);
@@ -412,7 +448,8 @@ const SwipeableCardMemoized = React.memo(SwipeableCard, (prevProps, nextProps) =
     prevProps.system.id === nextProps.system.id &&
     prevProps.index === nextProps.index &&
     prevProps.isActive === nextProps.isActive &&
-    prevProps.totalCards === nextProps.totalCards
+    prevProps.totalCards === nextProps.totalCards &&
+    prevProps.interactionLocked === nextProps.interactionLocked
   );
 });
 
@@ -589,6 +626,11 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
   const [showEndScreen, setShowEndScreen] = useState(false);
   const [cardRemountKey, setCardRemountKey] = useState(0);
   const [selectedSystem, setSelectedSystem] = useState<ShiftSystem | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const isTransitioningRef = useRef(false);
+  const swipeLeftTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const navigationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const interactionHandleRef = useRef<{ cancel?: () => void } | null>(null);
 
   // Title animations
   const titleOpacity = useSharedValue(0);
@@ -601,6 +643,23 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
     useSharedValue(0),
     useSharedValue(0),
   ];
+
+  const clearPendingTransitions = useCallback(() => {
+    if (swipeLeftTimeoutRef.current) {
+      clearTimeout(swipeLeftTimeoutRef.current);
+      swipeLeftTimeoutRef.current = null;
+    }
+    if (navigationTimeoutRef.current) {
+      clearTimeout(navigationTimeoutRef.current);
+      navigationTimeoutRef.current = null;
+    }
+    if (interactionHandleRef.current?.cancel) {
+      interactionHandleRef.current.cancel();
+    }
+    interactionHandleRef.current = null;
+    isTransitioningRef.current = false;
+    setIsTransitioning(false);
+  }, []);
 
   useEffect(() => {
     titleOpacity.value = withTiming(1, { duration: 400 });
@@ -619,6 +678,7 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
   // Reset card state when screen comes back into focus (e.g., from StartDate screen)
   useFocusEffect(
     useCallback(() => {
+      clearPendingTransitions();
       // Force cards to remount with fresh animation state
       setCardRemountKey((prev) => prev + 1);
 
@@ -637,9 +697,18 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
           withTiming(1, { duration: 400, easing: Easing.out(Easing.ease) })
         );
       });
+      return () => {
+        clearPendingTransitions();
+      };
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [clearPendingTransitions])
   );
+
+  useEffect(() => {
+    return () => {
+      clearPendingTransitions();
+    };
+  }, [clearPendingTransitions]);
 
   const titleAnimatedStyle = useAnimatedStyle(() => ({
     opacity: titleOpacity.value,
@@ -650,23 +719,38 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
   }));
 
   const handleSwipeRight = useCallback(() => {
+    if (isTransitioningRef.current) return;
     const system = SHIFT_SYSTEMS[currentIndex];
+    if (!system) return;
+    setSelectedSystem(system.system);
 
     // Save selection and navigate immediately
     updateData({ shiftSystem: system.system });
+    isTransitioningRef.current = true;
+    setIsTransitioning(true);
 
     // Navigate after animation completes
-    setTimeout(() => {
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    interactionHandleRef.current = InteractionManager.runAfterInteractions(() => {
+      navigationTimeoutRef.current = setTimeout(() => {
+        navigationTimeoutRef.current = null;
+        void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
+          source: 'PremiumShiftSystemScreen.handleSwipeRight.navigate',
+        });
 
-      // Navigate to ShiftPattern screen (Step 4)
-      goToNextScreen(navigation, 'ShiftSystem');
-    }, 300);
+        // Navigate to ShiftPattern screen (Step 4)
+        goToNextScreen(navigation, 'ShiftSystem');
+      }, 300);
+    });
   }, [currentIndex, updateData, navigation]);
 
   const handleSwipeLeft = useCallback(() => {
+    if (isTransitioningRef.current) return;
     // Delay state update to allow swipe animation to complete
-    setTimeout(() => {
+    if (swipeLeftTimeoutRef.current) {
+      clearTimeout(swipeLeftTimeoutRef.current);
+    }
+    swipeLeftTimeoutRef.current = setTimeout(() => {
+      swipeLeftTimeoutRef.current = null;
       if (currentIndex < SHIFT_SYSTEMS.length - 1) {
         setCurrentIndex(currentIndex + 1);
       } else {
@@ -676,18 +760,24 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
   }, [currentIndex]);
 
   const handleSwipeUp = useCallback(() => {
+    if (isTransitioningRef.current) return;
     const system = SHIFT_SYSTEMS[currentIndex];
+    if (!system) return;
     setLearnMoreSystem(system);
     setShowLearnMore(true);
   }, [currentIndex]);
 
   const handleLearnMoreClose = useCallback(() => {
     setShowLearnMore(false);
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: 'PremiumShiftSystemScreen.learnMore.close',
+    });
   }, []);
 
   const handleReviewAgain = useCallback(() => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+      source: 'PremiumShiftSystemScreen.reviewAgain',
+    });
     setShowEndScreen(false);
     setCurrentIndex(0);
     setSelectedSystem(null);
@@ -696,18 +786,30 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
 
   const handleContinue = useCallback(() => {
     // Only continue if user made a selection
-    if (!selectedSystem) return;
+    if (!selectedSystem || isTransitioningRef.current) return;
 
     updateData({ shiftSystem: selectedSystem });
+    isTransitioningRef.current = true;
+    setIsTransitioning(true);
 
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
+      source: 'PremiumShiftSystemScreen.handleContinue',
+    });
 
     // Navigate to ShiftPattern screen (Step 4)
-    goToNextScreen(navigation, 'ShiftSystem');
+    interactionHandleRef.current = InteractionManager.runAfterInteractions(() => {
+      navigationTimeoutRef.current = setTimeout(() => {
+        navigationTimeoutRef.current = null;
+        goToNextScreen(navigation, 'ShiftSystem');
+      }, 300);
+    });
   }, [selectedSystem, updateData, navigation]);
 
   // Slice visible cards to show only 4 at a time (matches pattern screen approach)
-  const visibleCards = SHIFT_SYSTEMS.slice(currentIndex, currentIndex + 4);
+  const visibleCards = useMemo(
+    () => SHIFT_SYSTEMS.slice(currentIndex, currentIndex + 4),
+    [currentIndex]
+  );
 
   return (
     <View style={styles.container} testID={testID}>
@@ -733,13 +835,14 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
 
       {/* Card Stack */}
       <View style={styles.cardStack}>
-        {visibleCards.reverse().map((system, index) => (
+        {[...visibleCards].reverse().map((system, index) => (
           <SwipeableCardMemoized
             key={`${system.id}-${cardRemountKey}`}
             system={system}
             index={visibleCards.length - 1 - index}
             totalCards={visibleCards.length}
             isActive={index === visibleCards.length - 1}
+            interactionLocked={isTransitioning}
             onSwipeRight={handleSwipeRight}
             onSwipeLeft={handleSwipeLeft}
             onSwipeUp={handleSwipeUp}
@@ -748,6 +851,12 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
           />
         ))}
       </View>
+
+      {isTransitioning ? (
+        <View pointerEvents="none" style={styles.transitionOverlay}>
+          <Text style={styles.transitionText}>Preparing next step...</Text>
+        </View>
+      ) : null}
 
       {/* Learn More Modal */}
       <LearnMoreModal
@@ -811,6 +920,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: theme.spacing.xl,
+  },
+  transitionOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: theme.colors.opacity.black60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: theme.spacing.xl,
+  },
+  transitionText: {
+    fontSize: 18,
+    color: theme.colors.dust,
+    textAlign: 'center',
+    fontWeight: '600',
   },
   card: {
     position: 'absolute',

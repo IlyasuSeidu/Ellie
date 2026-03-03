@@ -15,6 +15,7 @@ import Animated, {
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { theme } from '@/utils/theme';
+import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
 
 export interface PremiumToggleProps {
   /** Toggle state */
@@ -62,7 +63,9 @@ export const PremiumToggle: React.FC<PremiumToggleProps> = ({
   const handlePressIn = () => {
     if (!disabled) {
       scale.value = withSpring(0.95, { damping: 15, stiffness: 300 });
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+        source: `PremiumToggle.pressIn:${testID ?? 'unknown'}`,
+      });
     }
   };
 
@@ -74,7 +77,9 @@ export const PremiumToggle: React.FC<PremiumToggleProps> = ({
 
   const handlePress = () => {
     if (!disabled && onChange) {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+        source: `PremiumToggle.press:${testID ?? 'unknown'}`,
+      });
       onChange(!value);
     }
   };

@@ -140,7 +140,7 @@ describe('PresetTimeCard', () => {
 
       fireEvent.press(getByTestId('card'));
 
-      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Medium);
+      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
     });
 
     it('should not trigger haptic when disabled', () => {

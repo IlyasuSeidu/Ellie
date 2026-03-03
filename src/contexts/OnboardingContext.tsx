@@ -2,9 +2,9 @@
  * OnboardingContext
  *
  * Manages state across all premium onboarding flow screens.
- * Provides centralized data storage and updates for the 8-step onboarding process.
+ * Provides centralized data storage and updates for the 8-9 step onboarding process.
  *
- * ## Onboarding Flow (9 screens, 8 steps):
+ * ## Onboarding Flow (9-10 screens, 8-9 steps - depends on roster type):
  *
  * 1. **Welcome** (PremiumWelcomeScreen)
  *    - Auto-advances after 3 seconds
@@ -18,19 +18,32 @@
  *    - Select 2-shift (12h) or 3-shift (8h) system
  *    - Collects: shiftSystem
  *
+ * 3.5. **Roster Type** (PremiumRosterTypeScreen - NEW)
+ *      - Select Rotating Roster or FIFO Roster
+ *      - Collects: rosterType
+ *
  * 4. **Shift Pattern** (PremiumShiftPatternScreen)
- *    - Select from standard patterns or create custom
+ *    - Select from standard patterns (filtered by roster type) or create custom
  *    - Collects: patternType
- *    - Routes to CustomPattern if CUSTOM selected, else PhaseSelector
+ *    - Routes based on pattern type and roster type
  *
- * 4b. **Custom Pattern** (PremiumCustomPatternScreen - CONDITIONAL)
- *     - Only shown if patternType === ShiftPattern.CUSTOM
- *     - Configure days on/off for each shift type
- *     - Collects: customPattern (daysOn, nightsOn, morningOn, afternoonOn, nightOn, daysOff)
+ * 4b-R. **Custom Pattern** (PremiumCustomPatternScreen - CONDITIONAL for Rotating)
+ *       - Only shown if patternType === ShiftPattern.CUSTOM and rosterType === 'rotating'
+ *       - Configure days on/off for each shift type
+ *       - Collects: customPattern (daysOn, nightsOn, morningOn, afternoonOn, nightOn, daysOff)
  *
- * 5. **Phase Selector** (PremiumPhaseSelectorScreen)
- *    - Two-stage: Select current phase, then day within phase (if multi-day)
- *    - Collects: phaseOffset
+ * 4b-F. **FIFO Custom Pattern** (PremiumFIFOCustomPatternScreen - CONDITIONAL for FIFO - NEW)
+ *       - Only shown if patternType === ShiftPattern.FIFO_CUSTOM and rosterType === 'fifo'
+ *       - Configure work/rest blocks and work pattern
+ *       - Collects: fifoConfig
+ *
+ * 5-R. **Phase Selector** (PremiumPhaseSelectorScreen - for Rotating)
+ *      - Two-stage: Select current phase, then day within phase (if multi-day)
+ *      - Collects: phaseOffset
+ *
+ * 5-F. **FIFO Phase Selector** (PremiumFIFOPhaseSelectorScreen - for FIFO - NEW)
+ *      - Two-stage: Select work/rest block, then day within block
+ *      - Collects: phaseOffset
  *
  * 6. **Start Date** (PremiumStartDateScreen)
  *    - Calendar-based date selection
@@ -71,8 +84,9 @@ import React, {
   useCallback,
   ReactNode,
 } from 'react';
-import { ShiftPattern } from '@/types';
+import { ShiftPattern, FIFOConfig } from '@/types';
 import { asyncStorageService } from '@/services/AsyncStorageService';
+import { migrateOnboardingDataToV2 } from '@/utils/migrationUtils';
 
 export interface OnboardingData {
   // Step 2: Introduction (PremiumIntroductionScreen)
@@ -94,10 +108,13 @@ export interface OnboardingData {
   // Step 3: Shift System Selection (PremiumShiftSystemScreen)
   shiftSystem?: '2-shift' | '3-shift'; // Determines 2-shift (12h) vs 3-shift (8h)
 
+  // Step 3.5: Roster Type Selection (PremiumRosterTypeScreen - NEW)
+  rosterType?: 'rotating' | 'fifo'; // Determines rotating roster vs FIFO roster
+
   // Step 4: Shift Pattern Selection (PremiumShiftPatternScreen)
   patternType?: ShiftPattern;
 
-  // Step 4b: Custom Pattern Configuration (PremiumCustomPatternScreen - only if patternType === CUSTOM)
+  // Step 4b-R: Custom Pattern Configuration (PremiumCustomPatternScreen - only if patternType === CUSTOM and rosterType === 'rotating')
   customPattern?: {
     // For 2-shift system
     daysOn: number; // Day shifts
@@ -112,8 +129,11 @@ export interface OnboardingData {
     daysOff: number; // Days off (both systems)
   };
 
-  // Step 5: Current Phase Selection (PremiumPhaseSelectorScreen)
-  phaseOffset?: number; // Calculated from selected phase and day within phase
+  // Step 4b-F: FIFO Custom Pattern Configuration (PremiumFIFOCustomPatternScreen - only if patternType === FIFO_CUSTOM and rosterType === 'fifo')
+  fifoConfig?: FIFOConfig;
+
+  // Step 5: Current Phase Selection (PremiumPhaseSelectorScreen or PremiumFIFOPhaseSelectorScreen)
+  phaseOffset?: number; // Calculated from selected phase and day within phase (rotating) or block position (FIFO)
 
   // Step 6: Start Date Selection (PremiumStartDateScreen)
   startDate?: Date;
@@ -223,7 +243,8 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
         // asyncStorageService.get() auto-deserializes JSON, so no JSON.parse needed
         const savedData = await asyncStorageService.get<OnboardingData>('onboarding:data');
         if (savedData && typeof savedData === 'object') {
-          setData(savedData);
+          const migrated = migrateOnboardingDataToV2(savedData);
+          setData(migrated);
         }
       } catch (error) {
         console.warn('Failed to restore onboarding data:', error);
@@ -317,14 +338,25 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
       missingFields.push('Shift System');
     }
 
+    // Step 3.5: Roster type (optional - defaults to rotating if not set)
+    // No validation needed - backward compatible
+
     // Step 4: Pattern type (required)
     if (!data.patternType) {
       missingFields.push('Shift Pattern');
     }
 
-    // Step 4b: Custom pattern (required only if CUSTOM pattern selected)
-    if (data.patternType === ShiftPattern.CUSTOM && !data.customPattern) {
-      missingFields.push('Custom Pattern Configuration');
+    // Step 4b: Custom pattern validation (depends on roster type)
+    if (data.rosterType === 'fifo') {
+      // FIFO custom pattern
+      if (data.patternType === ShiftPattern.FIFO_CUSTOM && !data.fifoConfig) {
+        missingFields.push('FIFO Configuration');
+      }
+    } else {
+      // Rotating custom pattern (default behavior)
+      if (data.patternType === ShiftPattern.CUSTOM && !data.customPattern) {
+        missingFields.push('Custom Pattern Configuration');
+      }
     }
 
     // Step 5: Phase offset (required)

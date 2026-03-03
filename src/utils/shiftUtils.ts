@@ -11,9 +11,45 @@ import {
   ShiftType,
   ShiftSystem,
   ShiftPatternConfig,
+  FIFOConfig,
+  RosterType,
 } from '@/types';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
 import { diffInDays, addDays, toDateString, getDateRange } from './dateUtils';
+
+function isFIFOPattern(patternType: ShiftPattern): boolean {
+  switch (patternType) {
+    case ShiftPattern.FIFO_8_6:
+    case ShiftPattern.FIFO_7_7:
+    case ShiftPattern.FIFO_14_14:
+    case ShiftPattern.FIFO_14_7:
+    case ShiftPattern.FIFO_21_7:
+    case ShiftPattern.FIFO_28_14:
+    case ShiftPattern.FIFO_CUSTOM:
+      return true;
+    default:
+      return false;
+  }
+}
+
+export function getDefaultFIFOConfig(patternType: ShiftPattern): FIFOConfig | null {
+  switch (patternType) {
+    case ShiftPattern.FIFO_8_6:
+      return { workBlockDays: 8, restBlockDays: 6, workBlockPattern: 'straight-days' };
+    case ShiftPattern.FIFO_7_7:
+      return { workBlockDays: 7, restBlockDays: 7, workBlockPattern: 'straight-days' };
+    case ShiftPattern.FIFO_14_14:
+      return { workBlockDays: 14, restBlockDays: 14, workBlockPattern: 'straight-days' };
+    case ShiftPattern.FIFO_14_7:
+      return { workBlockDays: 14, restBlockDays: 7, workBlockPattern: 'straight-days' };
+    case ShiftPattern.FIFO_21_7:
+      return { workBlockDays: 21, restBlockDays: 7, workBlockPattern: 'straight-days' };
+    case ShiftPattern.FIFO_28_14:
+      return { workBlockDays: 28, restBlockDays: 14, workBlockPattern: 'straight-days' };
+    default:
+      return null;
+  }
+}
 
 /**
  * Get pattern configuration for predefined shift patterns
@@ -45,49 +81,182 @@ export function getShiftPattern(patternType: ShiftPattern): {
     }
   > = {
     [ShiftPattern.STANDARD_3_3_3]: {
-      config: { daysOn: 3, nightsOn: 3, daysOff: 3, totalCycleDays: 9 },
+      config: {
+        rosterType: RosterType.ROTATING,
+        daysOn: 3,
+        nightsOn: 3,
+        daysOff: 3,
+        totalCycleDays: 9,
+      },
       defaultShiftSystem: ShiftSystem.TWO_SHIFT,
       supportsShiftSystem: [ShiftSystem.TWO_SHIFT, ShiftSystem.THREE_SHIFT],
     },
     [ShiftPattern.STANDARD_5_5_5]: {
-      config: { daysOn: 5, nightsOn: 5, daysOff: 5, totalCycleDays: 15 },
+      config: {
+        rosterType: RosterType.ROTATING,
+        daysOn: 5,
+        nightsOn: 5,
+        daysOff: 5,
+        totalCycleDays: 15,
+      },
       defaultShiftSystem: ShiftSystem.TWO_SHIFT,
       supportsShiftSystem: [ShiftSystem.TWO_SHIFT, ShiftSystem.THREE_SHIFT],
     },
     [ShiftPattern.STANDARD_10_10_10]: {
-      config: { daysOn: 10, nightsOn: 10, daysOff: 10, totalCycleDays: 30 },
+      config: {
+        rosterType: RosterType.ROTATING,
+        daysOn: 10,
+        nightsOn: 10,
+        daysOff: 10,
+        totalCycleDays: 30,
+      },
       defaultShiftSystem: ShiftSystem.TWO_SHIFT,
       supportsShiftSystem: [ShiftSystem.TWO_SHIFT],
     },
     [ShiftPattern.STANDARD_2_2_3]: {
-      config: { daysOn: 2, nightsOn: 2, daysOff: 3, totalCycleDays: 7 },
+      config: {
+        rosterType: RosterType.ROTATING,
+        daysOn: 2,
+        nightsOn: 2,
+        daysOff: 3,
+        totalCycleDays: 7,
+      },
       defaultShiftSystem: ShiftSystem.TWO_SHIFT,
       supportsShiftSystem: [ShiftSystem.TWO_SHIFT],
     },
     [ShiftPattern.STANDARD_4_4_4]: {
-      config: { daysOn: 4, nightsOn: 4, daysOff: 4, totalCycleDays: 12 },
+      config: {
+        rosterType: RosterType.ROTATING,
+        daysOn: 4,
+        nightsOn: 4,
+        daysOff: 4,
+        totalCycleDays: 12,
+      },
       defaultShiftSystem: ShiftSystem.TWO_SHIFT,
       supportsShiftSystem: [ShiftSystem.TWO_SHIFT, ShiftSystem.THREE_SHIFT],
     },
     [ShiftPattern.STANDARD_7_7_7]: {
-      config: { daysOn: 7, nightsOn: 7, daysOff: 7, totalCycleDays: 21 },
+      config: {
+        rosterType: RosterType.ROTATING,
+        daysOn: 7,
+        nightsOn: 7,
+        daysOff: 7,
+        totalCycleDays: 21,
+      },
       defaultShiftSystem: ShiftSystem.TWO_SHIFT,
       supportsShiftSystem: [ShiftSystem.TWO_SHIFT, ShiftSystem.THREE_SHIFT],
     },
     [ShiftPattern.CONTINENTAL]: {
-      config: { morningOn: 2, afternoonOn: 2, nightOn: 2, daysOff: 4, totalCycleDays: 10 },
+      config: {
+        rosterType: RosterType.ROTATING,
+        morningOn: 2,
+        afternoonOn: 2,
+        nightOn: 2,
+        daysOff: 4,
+        totalCycleDays: 10,
+      },
       defaultShiftSystem: ShiftSystem.THREE_SHIFT,
       supportsShiftSystem: [ShiftSystem.THREE_SHIFT],
     },
     [ShiftPattern.PITMAN]: {
-      config: { daysOn: 2, nightsOn: 2, daysOff: 3, totalCycleDays: 7 },
+      config: {
+        rosterType: RosterType.ROTATING,
+        daysOn: 2,
+        nightsOn: 2,
+        daysOff: 3,
+        totalCycleDays: 7,
+      },
       defaultShiftSystem: ShiftSystem.TWO_SHIFT,
       supportsShiftSystem: [ShiftSystem.TWO_SHIFT],
     },
     [ShiftPattern.CUSTOM]: {
-      config: { daysOn: 0, nightsOn: 0, daysOff: 0, totalCycleDays: 0 },
+      config: {
+        rosterType: RosterType.ROTATING,
+        daysOn: 0,
+        nightsOn: 0,
+        daysOff: 0,
+        totalCycleDays: 0,
+      },
       defaultShiftSystem: ShiftSystem.TWO_SHIFT,
       supportsShiftSystem: [ShiftSystem.TWO_SHIFT, ShiftSystem.THREE_SHIFT],
+    },
+    // FIFO Patterns (use FIFOConfig instead of these dummy configs in practice)
+    [ShiftPattern.FIFO_8_6]: {
+      config: {
+        rosterType: RosterType.FIFO,
+        daysOn: 8,
+        nightsOn: 0,
+        daysOff: 6,
+        totalCycleDays: 14,
+      },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT],
+    },
+    [ShiftPattern.FIFO_7_7]: {
+      config: {
+        rosterType: RosterType.FIFO,
+        daysOn: 7,
+        nightsOn: 0,
+        daysOff: 7,
+        totalCycleDays: 14,
+      },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT],
+    },
+    [ShiftPattern.FIFO_14_14]: {
+      config: {
+        rosterType: RosterType.FIFO,
+        daysOn: 14,
+        nightsOn: 0,
+        daysOff: 14,
+        totalCycleDays: 28,
+      },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT],
+    },
+    [ShiftPattern.FIFO_14_7]: {
+      config: {
+        rosterType: RosterType.FIFO,
+        daysOn: 14,
+        nightsOn: 0,
+        daysOff: 7,
+        totalCycleDays: 21,
+      },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT],
+    },
+    [ShiftPattern.FIFO_21_7]: {
+      config: {
+        rosterType: RosterType.FIFO,
+        daysOn: 21,
+        nightsOn: 0,
+        daysOff: 7,
+        totalCycleDays: 28,
+      },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT],
+    },
+    [ShiftPattern.FIFO_28_14]: {
+      config: {
+        rosterType: RosterType.FIFO,
+        daysOn: 28,
+        nightsOn: 0,
+        daysOff: 14,
+        totalCycleDays: 42,
+      },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT],
+    },
+    [ShiftPattern.FIFO_CUSTOM]: {
+      config: {
+        rosterType: RosterType.FIFO,
+        daysOn: 0,
+        nightsOn: 0,
+        daysOff: 0,
+        totalCycleDays: 0,
+      },
+      defaultShiftSystem: ShiftSystem.TWO_SHIFT,
+      supportsShiftSystem: [ShiftSystem.TWO_SHIFT],
     },
   };
 
@@ -113,11 +282,40 @@ export function getShiftCycle(
   startDate: string,
   phaseOffset = 0
 ): ShiftCycle {
+  if (isFIFOPattern(patternType)) {
+    const fifoConfig = getDefaultFIFOConfig(patternType);
+    if (!fifoConfig) {
+      return {
+        patternType,
+        rosterType: RosterType.FIFO,
+        shiftSystem: ShiftSystem.TWO_SHIFT,
+        daysOn: 0,
+        nightsOn: 0,
+        daysOff: 0,
+        startDate,
+        phaseOffset,
+      };
+    }
+
+    return {
+      patternType,
+      rosterType: RosterType.FIFO,
+      shiftSystem: ShiftSystem.TWO_SHIFT,
+      daysOn: fifoConfig.workBlockDays,
+      nightsOn: 0,
+      daysOff: fifoConfig.restBlockDays,
+      startDate,
+      phaseOffset,
+      fifoConfig,
+    };
+  }
+
   const pattern = getShiftPattern(patternType);
   const config = pattern.config;
 
   const cycle: ShiftCycle = {
     patternType,
+    rosterType: RosterType.ROTATING,
     shiftSystem: pattern.defaultShiftSystem,
     daysOn: config.daysOn ?? 0,
     nightsOn: config.nightsOn ?? 0,
@@ -148,14 +346,167 @@ export function getShiftCycle(
  * // Returns ShiftDay with isWorkDay, shiftType, etc.
  * ```
  */
-export function calculateShiftDay(date: Date, shiftCycle: ShiftCycle): ShiftDay {
-  // Calculate days since cycle start
+/**
+ * Calculate shift day for FIFO/block rosters
+ *
+ * @param date - Date to calculate
+ * @param daysSinceStart - Days since cycle start (with phase offset applied)
+ * @param shiftCycle - Shift cycle configuration
+ * @returns Shift day information
+ *
+ * @internal
+ */
+function calculateFIFOShiftDay(
+  date: Date,
+  daysSinceStart: number,
+  shiftCycle: ShiftCycle
+): ShiftDay {
+  const config = shiftCycle.fifoConfig;
+  if (!config) {
+    return {
+      date: toDateString(date),
+      isWorkDay: false,
+      isNightShift: false,
+      shiftType: 'off',
+    };
+  }
+  const cycleLength = config.workBlockDays + config.restBlockDays;
+
+  // Handle negative days (before start date)
+  if (daysSinceStart < 0) {
+    daysSinceStart = cycleLength + (daysSinceStart % cycleLength);
+  }
+
+  const positionInCycle = daysSinceStart % cycleLength;
+
+  // Determine if in work block or rest block
+  if (positionInCycle < config.workBlockDays) {
+    // IN WORK BLOCK
+    const dayInWorkBlock = positionInCycle;
+
+    // Determine shift type based on work block pattern
+    let shiftType: ShiftType;
+    let isNightShift: boolean;
+
+    switch (config.workBlockPattern) {
+      case 'straight-days':
+        shiftType = 'day';
+        isNightShift = false;
+        break;
+
+      case 'straight-nights':
+        shiftType = 'night';
+        isNightShift = true;
+        break;
+
+      case 'swing':
+        if (config.swingPattern) {
+          // Swing between days and nights based on configured pattern
+          if (dayInWorkBlock < config.swingPattern.daysOnDayShift) {
+            shiftType = 'day';
+            isNightShift = false;
+          } else {
+            shiftType = 'night';
+            isNightShift = true;
+          }
+        } else {
+          // Default swing: alternate weeks (7 days each)
+          const weekInBlock = Math.floor(dayInWorkBlock / 7);
+          if (weekInBlock % 2 === 0) {
+            shiftType = 'day';
+            isNightShift = false;
+          } else {
+            shiftType = 'night';
+            isNightShift = true;
+          }
+        }
+        break;
+
+      case 'custom':
+        if (config.customWorkSequence && config.customWorkSequence.length > 0) {
+          const sequenceIndex = dayInWorkBlock % config.customWorkSequence.length;
+          shiftType = config.customWorkSequence[sequenceIndex];
+          isNightShift = shiftType === 'night';
+        } else {
+          shiftType = 'day';
+          isNightShift = false;
+        }
+        break;
+
+      default:
+        shiftType = 'day';
+        isNightShift = false;
+    }
+
+    return {
+      date: toDateString(date),
+      isWorkDay: true,
+      isNightShift,
+      shiftType,
+    };
+  }
+  // IN REST BLOCK
+  return {
+    date: toDateString(date),
+    isWorkDay: false,
+    isNightShift: false,
+    shiftType: 'off',
+  };
+}
+
+export interface FIFOBlockInfo {
+  inWorkBlock: boolean;
+  dayInBlock: number;
+  blockLength: number;
+  daysUntilBlockChange: number;
+  positionInCycle: number;
+  cycleLength: number;
+}
+
+export function getFIFOBlockInfo(date: Date, shiftCycle: ShiftCycle): FIFOBlockInfo | null {
+  if (shiftCycle.rosterType !== RosterType.FIFO || !shiftCycle.fifoConfig) {
+    return null;
+  }
+
+  const config = shiftCycle.fifoConfig;
+  const cycleLength = config.workBlockDays + config.restBlockDays;
   const startDate = new Date(shiftCycle.startDate);
-  let daysSinceStart = diffInDays(date, startDate);
+  let daysSinceStart = diffInDays(date, startDate) + shiftCycle.phaseOffset;
 
-  // Apply phase offset (add to shift the cycle forward)
-  daysSinceStart += shiftCycle.phaseOffset;
+  if (daysSinceStart < 0) {
+    daysSinceStart = cycleLength + (daysSinceStart % cycleLength);
+  }
 
+  const positionInCycle = daysSinceStart % cycleLength;
+  const inWorkBlock = positionInCycle < config.workBlockDays;
+  const dayInBlock = inWorkBlock ? positionInCycle + 1 : positionInCycle - config.workBlockDays + 1;
+  const blockLength = inWorkBlock ? config.workBlockDays : config.restBlockDays;
+
+  return {
+    inWorkBlock,
+    dayInBlock,
+    blockLength,
+    daysUntilBlockChange: Math.max(0, blockLength - dayInBlock),
+    positionInCycle,
+    cycleLength,
+  };
+}
+
+/**
+ * Calculate shift day for rotating rosters
+ *
+ * @param date - Date to calculate
+ * @param daysSinceStart - Days since cycle start (with phase offset applied)
+ * @param shiftCycle - Shift cycle configuration
+ * @returns Shift day information
+ *
+ * @internal
+ */
+function calculateRotatingShiftDay(
+  date: Date,
+  daysSinceStart: number,
+  shiftCycle: ShiftCycle
+): ShiftDay {
   // Determine if this is a 3-shift system
   const is3Shift =
     shiftCycle.shiftSystem === ShiftSystem.THREE_SHIFT ||
@@ -242,6 +593,41 @@ export function calculateShiftDay(date: Date, shiftCycle: ShiftCycle): ShiftDay 
     isNightShift,
     shiftType,
   };
+}
+
+/**
+ * Calculate shift information for a specific date
+ *
+ * Supports both rotating rosters (days → nights → off) and FIFO rosters (work blocks → rest blocks)
+ *
+ * @param date - Date to calculate shift for
+ * @param shiftCycle - Shift cycle configuration
+ * @returns Shift day information including type, work status, and night shift status
+ *
+ * @example
+ * ```typescript
+ * // Rotating roster
+ * calculateShiftDay(new Date('2024-01-15'), rotatingCycle)
+ * // Returns: { date: '2024-01-15', isWorkDay: true, isNightShift: false, shiftType: 'day' }
+ *
+ * // FIFO roster
+ * calculateShiftDay(new Date('2024-01-15'), fifoCycle)
+ * // Returns: { date: '2024-01-15', isWorkDay: true, isNightShift: false, shiftType: 'day' }
+ * ```
+ */
+export function calculateShiftDay(date: Date, shiftCycle: ShiftCycle): ShiftDay {
+  // Calculate days since cycle start
+  const startDate = new Date(shiftCycle.startDate);
+  let daysSinceStart = diffInDays(date, startDate);
+
+  // Apply phase offset (add to shift the cycle forward)
+  daysSinceStart += shiftCycle.phaseOffset;
+
+  // Dispatch to appropriate calculation based on roster type
+  if (shiftCycle.rosterType === 'fifo' && shiftCycle.fifoConfig) {
+    return calculateFIFOShiftDay(date, daysSinceStart, shiftCycle);
+  }
+  return calculateRotatingShiftDay(date, daysSinceStart, shiftCycle);
 }
 
 /**
@@ -431,14 +817,15 @@ export function getPhaseInfo(
 } {
   const shiftDay = calculateShiftDay(date, shiftCycle);
 
-  const is3Shift =
+  let cycleLength: number;
+  if (shiftCycle.rosterType === RosterType.FIFO && shiftCycle.fifoConfig) {
+    cycleLength = shiftCycle.fifoConfig.workBlockDays + shiftCycle.fifoConfig.restBlockDays;
+  } else if (
     shiftCycle.shiftSystem === ShiftSystem.THREE_SHIFT ||
     (shiftCycle.morningOn !== undefined && shiftCycle.morningOn > 0) ||
     (shiftCycle.afternoonOn !== undefined && shiftCycle.afternoonOn > 0) ||
-    (shiftCycle.nightOn !== undefined && shiftCycle.nightOn > 0);
-
-  let cycleLength: number;
-  if (is3Shift) {
+    (shiftCycle.nightOn !== undefined && shiftCycle.nightOn > 0)
+  ) {
     cycleLength =
       (shiftCycle.morningOn || 0) +
       (shiftCycle.afternoonOn || 0) +
@@ -481,11 +868,35 @@ export function buildShiftCycle(data: OnboardingData): ShiftCycle | null {
     typeof data.startDate === 'string' ? new Date(data.startDate) : data.startDate
   );
 
+  const inferredRosterType: RosterType =
+    data.rosterType === RosterType.FIFO || isFIFOPattern(data.patternType)
+      ? RosterType.FIFO
+      : RosterType.ROTATING;
+
+  if (inferredRosterType === RosterType.FIFO) {
+    const fifoConfig = data.fifoConfig ?? getDefaultFIFOConfig(data.patternType);
+    if (!fifoConfig) {
+      return null;
+    }
+
+    return {
+      patternType: data.patternType,
+      rosterType: RosterType.FIFO,
+      shiftSystem: ShiftSystem.TWO_SHIFT,
+      daysOn: fifoConfig.workBlockDays,
+      nightsOn: 0,
+      daysOff: fifoConfig.restBlockDays,
+      startDate: startDateStr,
+      phaseOffset: data.phaseOffset || 0,
+      fifoConfig,
+    };
+  }
+
   if (data.patternType === ShiftPattern.CUSTOM && data.customPattern) {
     return {
       patternType: ShiftPattern.CUSTOM,
-      shiftSystem:
-        data.shiftSystem === '3-shift' ? ShiftSystem.THREE_SHIFT : ShiftSystem.TWO_SHIFT,
+      rosterType: RosterType.ROTATING,
+      shiftSystem: data.shiftSystem === '3-shift' ? ShiftSystem.THREE_SHIFT : ShiftSystem.TWO_SHIFT,
       daysOn: data.customPattern.daysOn,
       nightsOn: data.customPattern.nightsOn,
       morningOn: data.customPattern.morningOn,
@@ -512,6 +923,7 @@ export function buildShiftCycle(data: OnboardingData): ShiftCycle | null {
   ) {
     return {
       patternType: data.patternType,
+      rosterType: RosterType.ROTATING,
       shiftSystem: ShiftSystem.THREE_SHIFT,
       daysOn: 0,
       nightsOn: 0,
@@ -532,6 +944,7 @@ export function buildShiftCycle(data: OnboardingData): ShiftCycle | null {
   if (shiftSystem === ShiftSystem.THREE_SHIFT) {
     return {
       patternType: data.patternType,
+      rosterType: RosterType.ROTATING,
       shiftSystem,
       daysOn: 0,
       nightsOn: 0,
@@ -546,6 +959,7 @@ export function buildShiftCycle(data: OnboardingData): ShiftCycle | null {
 
   return {
     patternType: data.patternType,
+    rosterType: RosterType.ROTATING,
     shiftSystem,
     daysOn,
     nightsOn,

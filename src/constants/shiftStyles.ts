@@ -40,6 +40,25 @@ export const shiftColors = {
 } as const;
 
 /**
+ * FIFO block color mappings.
+ * Work/rest block visuals for FIFO roster mode.
+ */
+export const fifoBlockColors = {
+  work: {
+    primary: colors.shiftVisualization.dayShift,
+    background: hexToRGBA(colors.shiftVisualization.dayShift, 0.14),
+    border: hexToRGBA(colors.shiftVisualization.dayShift, 0.34),
+    text: '#64B5F6',
+  },
+  rest: {
+    primary: colors.offDay,
+    background: hexToRGBA(colors.offDay, 0.1),
+    border: hexToRGBA(colors.offDay, 0.24),
+    text: '#d6d3d1',
+  },
+} as const;
+
+/**
  * Calendar day state styles
  * Used for rendering calendar days with different states
  */

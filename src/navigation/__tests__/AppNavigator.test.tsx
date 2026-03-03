@@ -51,7 +51,7 @@ describe('AppNavigator', () => {
   });
 
   it('should show onboarding when no data exists', async () => {
-    (asyncStorageService.get as jest.Mock).mockResolvedValue(null);
+    (asyncStorageService.get as jest.Mock).mockImplementation(async () => null);
 
     const { getByTestId } = render(
       <NavigationContainer>
@@ -65,14 +65,10 @@ describe('AppNavigator', () => {
   });
 
   it('should show dashboard when onboarding is complete', async () => {
-    // asyncStorageService.get() auto-deserializes, so mock returns parsed object
-    const completeData = {
-      name: 'John',
-      startDate: '2026-01-01',
-      patternType: 'STANDARD_3_3_3',
-      shiftSystem: '2-shift',
-    };
-    (asyncStorageService.get as jest.Mock).mockResolvedValue(completeData);
+    (asyncStorageService.get as jest.Mock).mockImplementation(async (key: string) => {
+      if (key === 'onboarding:complete') return true;
+      return null;
+    });
 
     const { getByTestId } = render(
       <NavigationContainer>
@@ -90,7 +86,11 @@ describe('AppNavigator', () => {
       name: 'John',
       // Missing startDate and patternType
     };
-    (asyncStorageService.get as jest.Mock).mockResolvedValue(incompleteData);
+    (asyncStorageService.get as jest.Mock).mockImplementation(async (key: string) => {
+      if (key === 'onboarding:complete') return null;
+      if (key === 'onboarding:data') return incompleteData;
+      return null;
+    });
 
     const { getByTestId } = render(
       <NavigationContainer>
@@ -105,6 +105,31 @@ describe('AppNavigator', () => {
 
   it('should show onboarding on storage error', async () => {
     (asyncStorageService.get as jest.Mock).mockRejectedValue(new Error('Storage error'));
+
+    const { getByTestId } = render(
+      <NavigationContainer>
+        <AppNavigator />
+      </NavigationContainer>
+    );
+
+    await waitFor(() => {
+      expect(getByTestId('onboarding-navigator')).toBeTruthy();
+    });
+  });
+
+  it('should show onboarding when completion flag is false even with complete data', async () => {
+    const completeData = {
+      name: 'John',
+      startDate: '2026-01-01',
+      patternType: 'STANDARD_3_3_3',
+      shiftSystem: '2-shift',
+    };
+
+    (asyncStorageService.get as jest.Mock).mockImplementation(async (key: string) => {
+      if (key === 'onboarding:complete') return false;
+      if (key === 'onboarding:data') return completeData;
+      return null;
+    });
 
     const { getByTestId } = render(
       <NavigationContainer>

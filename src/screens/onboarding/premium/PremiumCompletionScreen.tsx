@@ -43,8 +43,15 @@ import { useOnboarding } from '@/contexts/OnboardingContext';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { getShiftTimesFromData } from '@/utils/shiftTimeUtils';
-import { ShiftPattern, ShiftSystem } from '@/types';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
+import {
+  getPatternDisplayName,
+  getShiftSystemDisplayName,
+  getRosterTypeDisplayName,
+  getFIFOWorkPatternName,
+  getFIFOCycleDescription,
+} from '@/utils/profileUtils';
+import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 
 // Animated SVG components
 const AnimatedPath = Animated.createAnimatedComponent(Path);
@@ -249,7 +256,9 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
   useEffect(() => {
     const triggerCelebration = async () => {
       // Success haptic
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      await triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
+        source: 'PremiumCompletionScreen.triggerCelebration',
+      });
 
       // Animate checkmark
       checkmarkProgress.value = withDelay(
@@ -309,13 +318,17 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
       setIsSaved(true);
 
       // Trigger success haptic
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      await triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
+        source: 'PremiumCompletionScreen.saveOnboardingData.success',
+      });
     } catch (error) {
       console.error('Failed to save onboarding data:', error);
       setSaveError(
         error instanceof Error ? error.message : 'Failed to save your data. Please try again.'
       );
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      await triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+        source: 'PremiumCompletionScreen.saveOnboardingData.error',
+      });
     } finally {
       setIsSaving(false);
     }
@@ -361,42 +374,33 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
   // Handle feature pill expansion
   const handleFeaturePillPress = (featureId: string) => {
     setExpandedFeature(expandedFeature === featureId ? null : featureId);
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: 'PremiumCompletionScreen.handleFeaturePillPress',
+    });
   };
 
   // Format pattern name for display
-  const getPatternName = (): string => {
-    // Handle custom patterns (check pattern type first)
-    if (data.patternType === ShiftPattern.CUSTOM && data.customPattern) {
-      // Check if it's a 3-shift custom pattern
-      if (data.shiftSystem === ShiftSystem.THREE_SHIFT) {
-        const { morningOn = 0, afternoonOn = 0, nightOn = 0, daysOff = 0 } = data.customPattern;
-        return `${morningOn}-${afternoonOn}-${nightOn}-${daysOff} Custom Rotation`;
-      }
-
-      // 2-shift custom pattern
-      const { daysOn = 0, nightsOn = 0, daysOff = 0 } = data.customPattern;
-      return `${daysOn}-${nightsOn}-${daysOff} Custom Rotation`;
-    }
-
-    const patternNames: Record<ShiftPattern, string> = {
-      [ShiftPattern.STANDARD_4_4_4]: '4-4-4 Rotation',
-      [ShiftPattern.STANDARD_7_7_7]: '7-7-7 Rotation',
-      [ShiftPattern.STANDARD_2_2_3]: '2-2-3 (Pitman)',
-      [ShiftPattern.STANDARD_5_5_5]: '5-5-5 Rotation',
-      [ShiftPattern.STANDARD_3_3_3]: '3-3-3 Rotation',
-      [ShiftPattern.STANDARD_10_10_10]: '10-10-10 Rotation',
-      [ShiftPattern.CONTINENTAL]: 'Continental',
-      [ShiftPattern.PITMAN]: 'Pitman',
-      [ShiftPattern.CUSTOM]: 'Custom Rotation',
-    };
-
-    return patternNames[data.patternType || ShiftPattern.CUSTOM];
-  };
+  const getPatternName = (): string => getPatternDisplayName(data);
 
   // Format shift system
   const getShiftSystemName = (): string => {
-    return data.shiftSystem === '2-shift' ? '2-Shift System' : '3-Shift System';
+    const displayName = getShiftSystemDisplayName(data.shiftSystem);
+    return displayName === '3-Shift (8h)' ? '3-Shift System' : '2-Shift System';
+  };
+
+  // Get roster type display name
+  const getRosterTypeName = (): string => {
+    return getRosterTypeDisplayName(data.rosterType) === 'FIFO'
+      ? 'FIFO (Fly-In Fly-Out)'
+      : 'Rotating Roster';
+  };
+
+  // Get FIFO work pattern description
+  const getFIFOShiftPatternName = (): string => getFIFOWorkPatternName(data.fifoConfig);
+
+  // Get FIFO cycle description
+  const getFIFOCycleSummary = (): string => {
+    return getFIFOCycleDescription(data.fifoConfig).replace(', ', ' → ');
   };
 
   // Format date
@@ -543,11 +547,31 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
                     }
                   : undefined,
                 {
+                  icon: 'swap-horizontal-outline',
+                  label: 'Roster Type',
+                  value: getRosterTypeName(),
+                },
+                {
                   icon: 'layers-outline',
                   label: 'Shift System',
                   value: getShiftSystemName(),
                 },
-                { icon: 'refresh-outline', label: 'Rotation', value: getPatternName() },
+                { icon: 'refresh-outline', label: 'Pattern', value: getPatternName() },
+                // FIFO-specific fields
+                ...(data.rosterType === 'fifo'
+                  ? [
+                      {
+                        icon: 'sync-outline',
+                        label: 'Cycle',
+                        value: getFIFOCycleSummary(),
+                      },
+                      {
+                        icon: 'partly-sunny-outline',
+                        label: 'Work Pattern',
+                        value: getFIFOShiftPatternName(),
+                      },
+                    ]
+                  : []),
                 {
                   icon: 'calendar-outline',
                   label: 'Start Date',

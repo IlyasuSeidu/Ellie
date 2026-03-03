@@ -4,9 +4,9 @@
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { render, fireEvent, act } from '@testing-library/react-native';
 import { MonthlyCalendarCard } from '../MonthlyCalendarCard';
-import { ShiftSystem, type ShiftDay } from '@/types';
+import { RosterType, ShiftPattern, ShiftSystem, type ShiftCycle, type ShiftDay } from '@/types';
 
 // Mock Ionicons
 jest.mock('@expo/vector-icons', () => {
@@ -86,6 +86,22 @@ const createShiftDays = (): ShiftDay[] => {
     });
   }
   return days;
+};
+
+const fifoShiftCycle: ShiftCycle = {
+  patternType: ShiftPattern.FIFO_14_7,
+  shiftSystem: ShiftSystem.TWO_SHIFT,
+  rosterType: RosterType.FIFO,
+  daysOn: 14,
+  nightsOn: 0,
+  daysOff: 7,
+  startDate: '2026-02-01',
+  phaseOffset: 0,
+  fifoConfig: {
+    workBlockDays: 14,
+    restBlockDays: 7,
+    workBlockPattern: 'straight-days',
+  },
 };
 
 describe('MonthlyCalendarCard', () => {
@@ -208,6 +224,46 @@ describe('MonthlyCalendarCard', () => {
       );
       expect(getByTestId('test-calendar')).toBeTruthy();
     });
+
+    it('should show FIFO legend labels in FIFO mode', () => {
+      const { getByText, queryByText } = render(
+        <MonthlyCalendarCard
+          year={2026}
+          month={1}
+          shiftDays={shiftDays}
+          onPreviousMonth={mockPrevMonth}
+          onNextMonth={mockNextMonth}
+          rosterType={RosterType.FIFO}
+          shiftCycle={fifoShiftCycle}
+        />
+      );
+
+      expect(getByText('Work Block')).toBeTruthy();
+      expect(getByText('Rest Block')).toBeTruthy();
+      expect(getByText('14/7')).toBeTruthy();
+      expect(getByText('cycle')).toBeTruthy();
+      expect(queryByText('Morning')).toBeNull();
+    });
+
+    it('renders FIFO ribbons after grid layout measurement', () => {
+      const { getByTestId } = render(
+        <MonthlyCalendarCard
+          year={2026}
+          month={1}
+          shiftDays={shiftDays}
+          onPreviousMonth={mockPrevMonth}
+          onNextMonth={mockNextMonth}
+          rosterType={RosterType.FIFO}
+          shiftCycle={fifoShiftCycle}
+        />
+      );
+
+      fireEvent(getByTestId('calendar-grid-container'), 'layout', {
+        nativeEvent: { layout: { width: 340, height: 320, x: 0, y: 0 } },
+      });
+
+      expect(getByTestId('fifo-ribbon-0-0')).toBeTruthy();
+    });
   });
 
   describe('Navigation', () => {
@@ -254,6 +310,46 @@ describe('MonthlyCalendarCard', () => {
       );
       fireEvent.press(getByTestId('calendar-day-15'));
       expect(mockDayPress).toHaveBeenCalledWith(15);
+    });
+  });
+
+  describe('FIFO tooltip lifecycle', () => {
+    it('shows tooltip on long press and dismisses on overlay tap and timeout', () => {
+      jest.useFakeTimers();
+      const { getByTestId, getByText, queryByTestId, queryByText } = render(
+        <MonthlyCalendarCard
+          year={2026}
+          month={1}
+          shiftDays={shiftDays}
+          onPreviousMonth={mockPrevMonth}
+          onNextMonth={mockNextMonth}
+          rosterType={RosterType.FIFO}
+          shiftCycle={fifoShiftCycle}
+        />
+      );
+
+      fireEvent(getByTestId('calendar-day-1'), 'onLongPress');
+      expect(getByText(/Block Day/)).toBeTruthy();
+      expect(getByTestId('fifo-tooltip-dismiss-overlay')).toBeTruthy();
+
+      fireEvent.press(getByTestId('fifo-tooltip-dismiss-overlay'));
+      act(() => {
+        jest.advanceTimersByTime(200);
+      });
+      expect(queryByTestId('fifo-tooltip-dismiss-overlay')).toBeNull();
+      expect(queryByText(/Block Day/)).toBeNull();
+
+      fireEvent(getByTestId('calendar-day-1'), 'onLongPress');
+      expect(getByText(/Block Day/)).toBeTruthy();
+      act(() => {
+        jest.advanceTimersByTime(2500);
+      });
+      act(() => {
+        jest.advanceTimersByTime(200);
+      });
+      expect(queryByText(/Block Day/)).toBeNull();
+
+      jest.useRealTimers();
     });
   });
 });

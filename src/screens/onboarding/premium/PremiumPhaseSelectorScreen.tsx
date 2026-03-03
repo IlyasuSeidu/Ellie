@@ -6,7 +6,7 @@
  * Calculates and saves phaseOffset to OnboardingContext
  */
 
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import {
   View,
   StyleSheet,
@@ -18,6 +18,7 @@ import {
   ScrollView,
   AccessibilityInfo,
   Image,
+  InteractionManager,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, {
@@ -46,6 +47,7 @@ import { ShiftSystem, Phase, ShiftPattern } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
+import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -265,6 +267,7 @@ interface SwipeablePhaseCardProps {
   index: number;
   totalCards: number;
   isActive: boolean;
+  interactionLocked?: boolean;
   onSwipeRight: () => void;
   onSwipeLeft: () => void;
   onSwipeUp: () => void;
@@ -278,6 +281,7 @@ const SwipeablePhaseCard: React.FC<SwipeablePhaseCardProps> = ({
   index,
   totalCards,
   isActive,
+  interactionLocked = false,
   onSwipeRight,
   onSwipeLeft,
   onSwipeUp,
@@ -291,6 +295,26 @@ const SwipeablePhaseCard: React.FC<SwipeablePhaseCardProps> = ({
   const iconScale = useSharedValue(1);
   const hintOpacity = useSharedValue(1);
   const hintScale = useSharedValue(1);
+  const triggerSuccessHaptic = useCallback(() => {
+    void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
+      source: 'PremiumPhaseSelectorScreen.card.swipeRight',
+    });
+  }, []);
+  const triggerLightHaptic = useCallback(() => {
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: 'PremiumPhaseSelectorScreen.card.swipeLeft',
+    });
+  }, []);
+  const triggerMediumHaptic = useCallback(() => {
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+      source: 'PremiumPhaseSelectorScreen.card.swipeUpOrTap',
+    });
+  }, []);
+  const reportWorkletError = useCallback((phase: 'update' | 'end', message: string) => {
+    if (__DEV__) {
+      console.error('[PhaseSelector] Swipe worklet error', { phase, message });
+    }
+  }, []);
 
   // Idle floating animation
   useEffect(() => {
@@ -338,80 +362,92 @@ const SwipeablePhaseCard: React.FC<SwipeablePhaseCardProps> = ({
   }, [isActive, index, reducedMotion, hintOpacity, hintScale]);
 
   const panGesture = Gesture.Pan()
-    .enabled(isActive)
+    .enabled(isActive && !interactionLocked)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .onUpdate((event: any) => {
-      translateX.value = event.translationX;
-      translateY.value = event.translationY;
+      try {
+        translateX.value = event.translationX;
+        translateY.value = event.translationY;
 
-      // Dynamic scale based on swipe distance
-      const distance = Math.sqrt(event.translationX ** 2 + event.translationY ** 2);
-      scale.value = interpolate(distance, [0, SWIPE_THRESHOLD], [1.0, 1.08], Extrapolate.CLAMP);
+        // Dynamic scale based on swipe distance
+        const distance = Math.sqrt(event.translationX ** 2 + event.translationY ** 2);
+        scale.value = interpolate(distance, [0, SWIPE_THRESHOLD], [1.0, 1.08], Extrapolate.CLAMP);
 
-      opacity.value = interpolate(
-        Math.abs(event.translationX),
-        [0, SWIPE_THRESHOLD],
-        [1, 0.6],
-        Extrapolate.CLAMP
-      );
+        opacity.value = interpolate(
+          Math.abs(event.translationX),
+          [0, SWIPE_THRESHOLD],
+          [1, 0.6],
+          Extrapolate.CLAMP
+        );
+      } catch (error) {
+        runOnJS(reportWorkletError)('update', String(error));
+      }
     })
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .onEnd((event: any) => {
-      // Velocity-based detection
-      const velocityX = event.velocityX ?? 0;
-      const velocityY = event.velocityY ?? 0;
+      try {
+        // Velocity-based detection
+        const velocityX = event.velocityX ?? 0;
+        const velocityY = event.velocityY ?? 0;
 
-      const isQuickFlick =
-        Math.abs(velocityX) > VELOCITY_THRESHOLD || Math.abs(velocityY) > VELOCITY_THRESHOLD;
-      const activeThreshold = isQuickFlick ? SWIPE_THRESHOLD * 0.5 : SWIPE_THRESHOLD;
+        const isQuickFlick =
+          Math.abs(velocityX) > VELOCITY_THRESHOLD || Math.abs(velocityY) > VELOCITY_THRESHOLD;
+        const activeThreshold = isQuickFlick ? SWIPE_THRESHOLD * 0.5 : SWIPE_THRESHOLD;
 
-      const isSwipeRight =
-        event.translationX > activeThreshold ||
-        (velocityX > VELOCITY_THRESHOLD && event.translationX > 0);
-      const isSwipeLeft =
-        event.translationX < -activeThreshold ||
-        (velocityX < -VELOCITY_THRESHOLD && event.translationX < 0);
-      const isSwipeUp =
-        event.translationY < -activeThreshold ||
-        (velocityY < -VELOCITY_THRESHOLD && event.translationY < 0);
+        const isSwipeRight =
+          event.translationX > activeThreshold ||
+          (velocityX > VELOCITY_THRESHOLD && event.translationX > 0);
+        const isSwipeLeft =
+          event.translationX < -activeThreshold ||
+          (velocityX < -VELOCITY_THRESHOLD && event.translationX < 0);
+        const isSwipeUp =
+          event.translationY < -activeThreshold ||
+          (velocityY < -VELOCITY_THRESHOLD && event.translationY < 0);
 
-      if (isSwipeRight) {
-        const duration = Math.max(200, 500 - Math.abs(velocityX) / 3);
-        translateX.value = withSpring(SCREEN_WIDTH, {
-          ...SPRING_CONFIGS.swipeRightSelect,
-          velocity: velocityX,
-        });
-        opacity.value = withTiming(0, { duration });
-        runOnJS(Haptics.notificationAsync)(Haptics.NotificationFeedbackType.Success);
-        runOnJS(onSwipeRight)();
-      } else if (isSwipeLeft) {
-        const duration = Math.max(200, 500 - Math.abs(velocityX) / 3);
-        translateX.value = withSpring(-SCREEN_WIDTH, {
-          ...SPRING_CONFIGS.swipeLeftSkip,
-          velocity: velocityX,
-        });
-        opacity.value = withTiming(0, { duration });
-        runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Light);
-        runOnJS(onSwipeLeft)();
-      } else if (isSwipeUp) {
-        // Snap back to center
-        translateY.value = withSpring(0, SPRING_CONFIGS.swipeUpInfo);
-        translateX.value = withSpring(0, SPRING_CONFIGS.swipeUpInfo);
-        scale.value = withSpring(1);
-        opacity.value = withSpring(1);
-        runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Medium);
-        runOnJS(onSwipeUp)();
-      } else {
-        // Rubber band back to center
+        if (isSwipeRight) {
+          const duration = Math.max(200, 500 - Math.abs(velocityX) / 3);
+          translateX.value = withSpring(SCREEN_WIDTH, {
+            ...SPRING_CONFIGS.swipeRightSelect,
+            velocity: velocityX,
+          });
+          opacity.value = withTiming(0, { duration });
+          runOnJS(triggerSuccessHaptic)();
+          runOnJS(onSwipeRight)();
+        } else if (isSwipeLeft) {
+          const duration = Math.max(200, 500 - Math.abs(velocityX) / 3);
+          translateX.value = withSpring(-SCREEN_WIDTH, {
+            ...SPRING_CONFIGS.swipeLeftSkip,
+            velocity: velocityX,
+          });
+          opacity.value = withTiming(0, { duration });
+          runOnJS(triggerLightHaptic)();
+          runOnJS(onSwipeLeft)();
+        } else if (isSwipeUp) {
+          // Snap back to center
+          translateY.value = withSpring(0, SPRING_CONFIGS.swipeUpInfo);
+          translateX.value = withSpring(0, SPRING_CONFIGS.swipeUpInfo);
+          scale.value = withSpring(1);
+          opacity.value = withSpring(1);
+          runOnJS(triggerMediumHaptic)();
+          runOnJS(onSwipeUp)();
+        } else {
+          // Rubber band back to center
+          translateX.value = withSpring(0, SPRING_CONFIGS.snapBack);
+          translateY.value = withSpring(0, SPRING_CONFIGS.snapBack);
+          scale.value = withSpring(1);
+          opacity.value = withSpring(1);
+        }
+      } catch (error) {
         translateX.value = withSpring(0, SPRING_CONFIGS.snapBack);
         translateY.value = withSpring(0, SPRING_CONFIGS.snapBack);
         scale.value = withSpring(1);
         opacity.value = withSpring(1);
+        runOnJS(reportWorkletError)('end', String(error));
       }
     });
 
   const tapGesture = Gesture.Tap()
-    .enabled(isActive)
+    .enabled(isActive && !interactionLocked)
     .onEnd(() => {
       if (!reducedMotion) {
         scale.value = withSequence(
@@ -419,7 +455,7 @@ const SwipeablePhaseCard: React.FC<SwipeablePhaseCardProps> = ({
           withSpring(1, { damping: 10, stiffness: 400 })
         );
       }
-      runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Medium);
+      runOnJS(triggerMediumHaptic)();
     });
 
   const composed = Gesture.Simultaneous(panGesture, tapGesture);
@@ -636,7 +672,12 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
     null
   );
   const [reducedMotion, setReducedMotion] = useState(false);
+  const reducedMotionRef = useRef(false);
   const [cardRemountKey, setCardRemountKey] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const isTransitioningRef = useRef(false);
+  const navigationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const interactionHandleRef = useRef<{ cancel?: () => void } | null>(null);
 
   // Title animations
   const titleOpacity = useSharedValue(0);
@@ -650,12 +691,51 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
     useSharedValue(0),
   ];
 
+  const clearPendingTransition = useCallback(() => {
+    if (interactionHandleRef.current?.cancel) {
+      interactionHandleRef.current.cancel();
+    }
+    interactionHandleRef.current = null;
+    if (navigationTimeoutRef.current) {
+      clearTimeout(navigationTimeoutRef.current);
+      navigationTimeoutRef.current = null;
+    }
+    isTransitioningRef.current = false;
+    setIsTransitioning(false);
+  }, []);
+
   // Check reduced motion preference
   useEffect(() => {
-    AccessibilityInfo.isReduceMotionEnabled().then((enabled) => {
+    let isMounted = true;
+
+    const applyReducedMotionPreference = (enabled: boolean | null | undefined) => {
+      if (!isMounted || typeof enabled !== 'boolean') return;
+      if (reducedMotionRef.current === enabled) return;
+
+      reducedMotionRef.current = enabled;
       setReducedMotion(enabled);
-    });
+    };
+
+    AccessibilityInfo.isReduceMotionEnabled()
+      .then(applyReducedMotionPreference)
+      .catch(() => {
+        // Keep default false if accessibility query fails.
+      });
+
+    const sub = AccessibilityInfo.addEventListener(
+      'reduceMotionChanged',
+      applyReducedMotionPreference
+    );
+
+    return () => {
+      isMounted = false;
+      sub.remove();
+    };
   }, []);
+
+  useEffect(() => {
+    reducedMotionRef.current = reducedMotion;
+  }, [reducedMotion]);
 
   // Mount animations
   useEffect(() => {
@@ -675,6 +755,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
   // Reset card state when screen comes back into focus (e.g., from StartDate screen)
   useFocusEffect(
     useCallback(() => {
+      clearPendingTransition();
       // Force cards to remount with fresh animation state
       setCardRemountKey((prev) => prev + 1);
 
@@ -692,9 +773,18 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
           withTiming(1, { duration: 400, easing: Easing.out(Easing.ease) })
         );
       });
+      return () => {
+        clearPendingTransition();
+      };
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [clearPendingTransition])
   );
+
+  useEffect(() => {
+    return () => {
+      clearPendingTransition();
+    };
+  }, [clearPendingTransition]);
 
   const titleAnimatedStyle = useAnimatedStyle(() => ({
     opacity: titleOpacity.value,
@@ -894,25 +984,38 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
   // Calculate and navigate helper
   const calculateAndNavigate = useCallback(
     (phase: Phase, dayWithinPhase: number) => {
+      if (isTransitioningRef.current) {
+        return;
+      }
       if (!data.shiftSystem) return;
 
       const shiftSystem = data.shiftSystem as ShiftSystem;
 
       const phaseOffset = calculateEnhancedPhaseOffset(phase, dayWithinPhase, pattern, shiftSystem);
+      isTransitioningRef.current = true;
+      setIsTransitioning(true);
 
       updateData({ phaseOffset });
 
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
+        source: 'PremiumPhaseSelectorScreen.calculateAndNavigate',
+      });
 
-      setTimeout(() => {
-        goToNextScreen(navigation, 'PhaseSelector');
-      }, 300);
+      interactionHandleRef.current = InteractionManager.runAfterInteractions(() => {
+        navigationTimeoutRef.current = setTimeout(() => {
+          navigationTimeoutRef.current = null;
+          goToNextScreen(navigation, 'PhaseSelector');
+        }, 300);
+      });
     },
     [pattern, data.shiftSystem, updateData, navigation]
   );
 
   // Handle swipe right (select)
   const handleSwipeRight = useCallback(() => {
+    if (isTransitioningRef.current) {
+      return;
+    }
     if (stage === SelectionStage.PHASE) {
       // Phase selection
       const selectedCard = phaseCards[currentCardIndex];
@@ -954,6 +1057,9 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
 
   // Handle swipe left (skip)
   const handleSwipeLeft = useCallback(() => {
+    if (isTransitioningRef.current) {
+      return;
+    }
     const totalCards = stage === SelectionStage.PHASE ? phaseCards.length : dayCards.length;
 
     setTimeout(() => {
@@ -965,7 +1071,9 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
         setCardRemountKey((prev) => prev + 1);
 
         // Haptic feedback for loop-back
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+          source: 'PremiumPhaseSelectorScreen.handleSwipeLeft.loopback',
+        });
 
         // Re-trigger card entrance animations
         cardAnimations.forEach((anim, index) => {
@@ -982,6 +1090,9 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
 
   // Handle swipe up (info)
   const handleSwipeUp = useCallback(() => {
+    if (isTransitioningRef.current) {
+      return;
+    }
     const activeCard =
       stage === SelectionStage.PHASE ? phaseCards[currentCardIndex] : dayCards[currentCardIndex];
 
@@ -1029,13 +1140,14 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
 
       {/* Card Stack */}
       <View style={styles.cardStack}>
-        {visibleCards.reverse().map((card, index) => (
+        {[...visibleCards].reverse().map((card, index) => (
           <SwipeablePhaseCard
             key={`${card.id}-${cardRemountKey}`}
             card={card}
             index={visibleCards.length - 1 - index}
             totalCards={visibleCards.length}
             isActive={index === visibleCards.length - 1}
+            interactionLocked={isTransitioning}
             onSwipeRight={handleSwipeRight}
             onSwipeLeft={handleSwipeLeft}
             onSwipeUp={handleSwipeUp}
@@ -1045,6 +1157,12 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
           />
         ))}
       </View>
+
+      {isTransitioning ? (
+        <View pointerEvents="none" style={styles.transitionOverlay}>
+          <Text style={styles.transitionText}>Preparing your calendar...</Text>
+        </View>
+      ) : null}
 
       <PhaseInfoModal
         visible={showInfoModal}
@@ -1098,6 +1216,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: theme.spacing.xl,
+  },
+  transitionOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: theme.colors.opacity.black60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: theme.spacing.xl,
+  },
+  transitionText: {
+    fontSize: 18,
+    color: theme.colors.dust,
+    textAlign: 'center',
+    fontWeight: '600',
   },
   card: {
     position: 'absolute',

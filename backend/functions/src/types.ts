@@ -6,10 +6,26 @@
  */
 
 export type ShiftType = 'day' | 'night' | 'morning' | 'afternoon' | 'off';
+export type RosterType = 'rotating' | 'fifo';
+
+export interface FIFOConfig {
+  workBlockDays: number;
+  restBlockDays: number;
+  workBlockPattern: 'straight-days' | 'straight-nights' | 'swing' | 'custom';
+  swingPattern?: {
+    daysOnDayShift: number;
+    daysOnNightShift: number;
+  };
+  customWorkSequence?: ShiftType[];
+  flyInDay?: number;
+  flyOutDay?: number;
+  siteName?: string;
+}
 
 export interface ShiftCycle {
   patternType: string;
   shiftSystem?: string;
+  rosterType?: RosterType;
   daysOn: number;
   nightsOn: number;
   morningOn?: number;
@@ -18,6 +34,7 @@ export interface ShiftCycle {
   daysOff: number;
   startDate: string;
   phaseOffset: number;
+  fifoConfig?: FIFOConfig;
 }
 
 export interface ShiftDay {
@@ -33,6 +50,8 @@ export interface EllieBrainRequest {
     name: string;
     occupation?: string;
     shiftCycle: ShiftCycle;
+    rosterType?: RosterType;
+    fifoConfig?: FIFOConfig;
     currentDate: string;
     currentTime: string;
     shiftSystem: '2-shift' | '3-shift';

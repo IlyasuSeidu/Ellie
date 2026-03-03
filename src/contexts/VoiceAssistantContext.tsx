@@ -99,7 +99,7 @@ const DEFAULT_VOICE_PERSIST_TTL_SECONDS = 12 * 60 * 60;
 const NOTICE_AUTO_DISMISS_MS = 4_000;
 const PERSISTENCE_DEBOUNCE_MS = 2_000;
 
-function getVoicePersistenceTTLSeconds(): number | undefined {
+export function getVoicePersistenceTTLSeconds(): number | undefined {
   const rawValue = process.env.EXPO_PUBLIC_VOICE_ASSISTANT_PERSIST_TTL_SECONDS;
   if (!rawValue) {
     return DEFAULT_VOICE_PERSIST_TTL_SECONDS;
@@ -113,40 +113,44 @@ function getVoicePersistenceTTLSeconds(): number | undefined {
   return Math.floor(parsed);
 }
 
-function getConfiguredKeywordPathsForPlatform(): string[] {
-  if (Platform.OS === 'ios' && voiceAssistantConfig.wakeWord.keywordPathsIOS.length > 0) {
+export function getConfiguredKeywordPathsForPlatform(platformOS: string = Platform.OS): string[] {
+  if (platformOS === 'ios' && voiceAssistantConfig.wakeWord.keywordPathsIOS.length > 0) {
     return voiceAssistantConfig.wakeWord.keywordPathsIOS;
   }
 
-  if (Platform.OS === 'android' && voiceAssistantConfig.wakeWord.keywordPathsAndroid.length > 0) {
+  if (platformOS === 'android' && voiceAssistantConfig.wakeWord.keywordPathsAndroid.length > 0) {
     return voiceAssistantConfig.wakeWord.keywordPathsAndroid;
   }
 
   return voiceAssistantConfig.wakeWord.keywordPaths;
 }
 
-function getConfiguredOpenWakeWordModelPathForPlatform(): string | undefined {
-  if (Platform.OS === 'ios' && voiceAssistantConfig.wakeWord.openWakeWordModelPathIOS) {
+export function getConfiguredOpenWakeWordModelPathForPlatform(
+  platformOS: string = Platform.OS
+): string | undefined {
+  if (platformOS === 'ios' && voiceAssistantConfig.wakeWord.openWakeWordModelPathIOS) {
     return voiceAssistantConfig.wakeWord.openWakeWordModelPathIOS;
   }
 
-  if (Platform.OS === 'android' && voiceAssistantConfig.wakeWord.openWakeWordModelPathAndroid) {
+  if (platformOS === 'android' && voiceAssistantConfig.wakeWord.openWakeWordModelPathAndroid) {
     return voiceAssistantConfig.wakeWord.openWakeWordModelPathAndroid;
   }
 
   return voiceAssistantConfig.wakeWord.openWakeWordModelPath;
 }
 
-function getConfiguredOpenWakeWordMelspectrogramModelPathForPlatform(): string | undefined {
+export function getConfiguredOpenWakeWordMelspectrogramModelPathForPlatform(
+  platformOS: string = Platform.OS
+): string | undefined {
   if (
-    Platform.OS === 'ios' &&
+    platformOS === 'ios' &&
     voiceAssistantConfig.wakeWord.openWakeWordMelspectrogramModelPathIOS
   ) {
     return voiceAssistantConfig.wakeWord.openWakeWordMelspectrogramModelPathIOS;
   }
 
   if (
-    Platform.OS === 'android' &&
+    platformOS === 'android' &&
     voiceAssistantConfig.wakeWord.openWakeWordMelspectrogramModelPathAndroid
   ) {
     return voiceAssistantConfig.wakeWord.openWakeWordMelspectrogramModelPathAndroid;
@@ -155,13 +159,15 @@ function getConfiguredOpenWakeWordMelspectrogramModelPathForPlatform(): string |
   return voiceAssistantConfig.wakeWord.openWakeWordMelspectrogramModelPath;
 }
 
-function getConfiguredOpenWakeWordEmbeddingModelPathForPlatform(): string | undefined {
-  if (Platform.OS === 'ios' && voiceAssistantConfig.wakeWord.openWakeWordEmbeddingModelPathIOS) {
+export function getConfiguredOpenWakeWordEmbeddingModelPathForPlatform(
+  platformOS: string = Platform.OS
+): string | undefined {
+  if (platformOS === 'ios' && voiceAssistantConfig.wakeWord.openWakeWordEmbeddingModelPathIOS) {
     return voiceAssistantConfig.wakeWord.openWakeWordEmbeddingModelPathIOS;
   }
 
   if (
-    Platform.OS === 'android' &&
+    platformOS === 'android' &&
     voiceAssistantConfig.wakeWord.openWakeWordEmbeddingModelPathAndroid
   ) {
     return voiceAssistantConfig.wakeWord.openWakeWordEmbeddingModelPathAndroid;
@@ -170,7 +176,7 @@ function getConfiguredOpenWakeWordEmbeddingModelPathForPlatform(): string | unde
   return voiceAssistantConfig.wakeWord.openWakeWordEmbeddingModelPath;
 }
 
-function getConfiguredWakeWordLabel(): string {
+export function getConfiguredWakeWordLabel(): string {
   const configuredPhrase = voiceAssistantConfig.wakeWord.phrase?.trim();
   if (configuredPhrase) {
     return configuredPhrase;
@@ -303,6 +309,8 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
       name: onboardingData.name,
       occupation: onboardingData.occupation,
       shiftCycle,
+      rosterType: shiftCycle.rosterType,
+      fifoConfig: shiftCycle.fifoConfig,
       currentDate: toDateString(now),
       currentTime: `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`,
       shiftSystem: onboardingData.shiftSystem ?? '2-shift',

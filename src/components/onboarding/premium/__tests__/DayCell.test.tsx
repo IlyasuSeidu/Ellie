@@ -83,7 +83,7 @@ describe('DayCell', () => {
     it('should trigger haptic feedback on press', () => {
       const { getByTestId } = render(<DayCell day={15} onPress={mockOnPress} testID="day-cell" />);
       fireEvent.press(getByTestId('day-cell'));
-      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Medium);
+      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
     });
 
     it('should trigger light haptic on press in', () => {

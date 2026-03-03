@@ -271,7 +271,7 @@ describe('PatternCard', () => {
         />
       );
       fireEvent.press(getByTestId('pattern-card'));
-      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Medium);
+      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
     });
 
     it('should handle full press sequence', () => {

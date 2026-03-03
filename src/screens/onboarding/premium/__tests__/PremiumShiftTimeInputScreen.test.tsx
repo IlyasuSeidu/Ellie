@@ -64,6 +64,7 @@ jest.mock('@/components/onboarding/premium/ProgressHeader', () => {
 jest.mock('@/contexts/OnboardingContext', () => {
   const mockData = {
     shiftSystem: '2-shift',
+    rosterType: 'rotating',
     customPattern: {
       daysOn: 4,
       nightsOn: 0, // Only day shifts, so only one stage
@@ -415,9 +416,7 @@ describe('PremiumShiftTimeInputScreen', () => {
         fireEvent(hoursInput, 'blur');
 
         await waitFor(() => {
-          expect(Haptics.notificationAsync).toHaveBeenCalledWith(
-            Haptics.NotificationFeedbackType.Error
-          );
+          expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
         });
       });
     });
@@ -438,9 +437,7 @@ describe('PremiumShiftTimeInputScreen', () => {
 
       // Context should be updated (we can't directly test this without accessing context,
       // but onContinue being called is a good indicator)
-      expect(Haptics.notificationAsync).toHaveBeenCalledWith(
-        Haptics.NotificationFeedbackType.Success
-      );
+      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
     });
   });
 
@@ -477,7 +474,7 @@ describe('PremiumShiftTimeInputScreen', () => {
       const presets = getAllByText(/6:00 AM/i);
       fireEvent.press(presets[0]);
 
-      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Medium);
+      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
     });
 
     it('should provide haptic feedback when toggling AM/PM', async () => {
@@ -505,9 +502,7 @@ describe('PremiumShiftTimeInputScreen', () => {
         fireEvent.press(continueButton);
       });
 
-      expect(Haptics.notificationAsync).toHaveBeenCalledWith(
-        Haptics.NotificationFeedbackType.Success
-      );
+      expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
     });
 
     it('should not trigger haptic when pressing disabled continue button', () => {
@@ -521,7 +516,7 @@ describe('PremiumShiftTimeInputScreen', () => {
       fireEvent.press(continueButton);
 
       // No haptic should be triggered
-      expect(Haptics.notificationAsync).not.toHaveBeenCalled();
+      expect(Haptics.impactAsync).not.toHaveBeenCalled();
     });
   });
 

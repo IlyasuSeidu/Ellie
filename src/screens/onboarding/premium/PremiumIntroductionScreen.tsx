@@ -33,6 +33,7 @@ import { ChatInput, QuickReply } from '@/components/onboarding/premium/ChatInput
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
+import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList, 'Introduction'>;
 
@@ -121,7 +122,9 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
 
       // Light haptic feedback
       if (!reducedMotion) {
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+          source: 'PremiumIntroductionScreen.addBotMessage',
+        });
       }
 
       setTimeout(() => {
@@ -160,7 +163,9 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
 
       // Medium haptic feedback
       if (!reducedMotion) {
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+          source: 'PremiumIntroductionScreen.addUserMessage',
+        });
       }
 
       // Auto-scroll to bottom
@@ -351,7 +356,9 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
 
             // Light success haptic
             if (!reducedMotion) {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+                source: 'PremiumIntroductionScreen.quickReply',
+              });
             }
 
             // Call optional callback or navigate
@@ -414,7 +421,9 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
   const handleSubmit = useCallback(() => {
     if (currentStep === ConversationStep.WAIT_NAME) {
       if (!validateName(currentInput)) {
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+        void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+          source: 'PremiumIntroductionScreen.validation.name',
+        });
         return;
       }
       // Process name
@@ -425,7 +434,9 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
       setCurrentStep(ConversationStep.ASK_OCCUPATION);
     } else if (currentStep === ConversationStep.WAIT_OCCUPATION) {
       if (!validateOccupation(currentInput)) {
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+        void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+          source: 'PremiumIntroductionScreen.validation.occupation',
+        });
         return;
       }
       // Process occupation
@@ -436,7 +447,9 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
       setCurrentStep(ConversationStep.ASK_COMPANY);
     } else if (currentStep === ConversationStep.WAIT_COMPANY) {
       if (!validateCompany(currentInput)) {
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+        void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+          source: 'PremiumIntroductionScreen.validation.company',
+        });
         return;
       }
       // Process company
@@ -447,7 +460,9 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
       setCurrentStep(ConversationStep.ASK_COUNTRY);
     } else if (currentStep === ConversationStep.WAIT_COUNTRY) {
       if (!validateCountry(currentInput)) {
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+        void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+          source: 'PremiumIntroductionScreen.validation.country',
+        });
         return;
       }
       // Process country
@@ -487,7 +502,9 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
       if (message.type !== 'user') return;
 
       // Haptic feedback
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+        source: 'PremiumIntroductionScreen.handleNext',
+      });
 
       // Show confirmation alert
       Alert.alert(

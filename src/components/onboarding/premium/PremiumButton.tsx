@@ -28,6 +28,7 @@ import Animated, {
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { theme } from '@/utils/theme';
+import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outline';
 export type ButtonSize = 'small' | 'medium' | 'large';
@@ -105,7 +106,9 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
       scale.value = withSpring(0.92, { damping: 12, stiffness: 400 });
       opacity.value = withTiming(0.85, { duration: 100 });
       bounceY.value = withSpring(2, { damping: 10, stiffness: 300 });
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+        source: `PremiumButton.pressIn:${testID ?? title}`,
+      });
     }
   };
 
@@ -124,7 +127,9 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
   const handlePress = () => {
     if (!disabled && !loading) {
       // More pronounced haptic feedback
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+        source: `PremiumButton.press:${testID ?? title}`,
+      });
 
       // Celebratory bounce after press
       scale.value = withSequence(

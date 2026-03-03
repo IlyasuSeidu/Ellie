@@ -275,6 +275,161 @@ describe('OnboardingContext', () => {
     });
   });
 
+  describe('validation and utility methods', () => {
+    it('setAllData replaces data and persists snapshot', async () => {
+      const { result } = renderHook(() => useOnboarding(), { wrapper });
+      const snapshot: OnboardingData = {
+        name: 'Taylor',
+        occupation: 'Operator',
+        company: 'Mine Co',
+        country: 'AU',
+        shiftSystem: '2-shift',
+        patternType: ShiftPattern.STANDARD_4_4_4,
+        phaseOffset: 1,
+        startDate: new Date('2026-02-01'),
+        shiftTimes: {
+          dayShift: { startTime: '07:00', endTime: '19:00', duration: 12 },
+          nightShift: { startTime: '19:00', endTime: '07:00', duration: 12 },
+        },
+      };
+
+      act(() => {
+        result.current.setAllData(snapshot);
+      });
+
+      expect(result.current.data).toEqual(snapshot);
+      await waitFor(() => {
+        expect(asyncStorageService.set).toHaveBeenCalledWith('onboarding:data', snapshot);
+      });
+    });
+
+    it('clearField removes one field without clearing others', () => {
+      const { result } = renderHook(() => useOnboarding(), { wrapper });
+
+      act(() => {
+        result.current.updateData({
+          name: 'Alex',
+          occupation: 'Engineer',
+          company: 'Site A',
+        });
+      });
+
+      act(() => {
+        result.current.clearField('occupation');
+      });
+
+      expect(result.current.data.name).toBe('Alex');
+      expect(result.current.data.company).toBe('Site A');
+      expect(result.current.data.occupation).toBeUndefined();
+    });
+
+    it('validateData reports missing required fields for blank values', () => {
+      const { result } = renderHook(() => useOnboarding(), { wrapper });
+
+      act(() => {
+        result.current.updateData({
+          name: '   ',
+          occupation: '',
+          company: '',
+          country: '',
+          shiftSystem: undefined,
+          patternType: undefined,
+          phaseOffset: undefined,
+          startDate: undefined,
+        });
+      });
+
+      const validation = result.current.validateData();
+      expect(validation.isValid).toBe(false);
+      expect(validation.missingFields).toEqual(
+        expect.arrayContaining([
+          'Name',
+          'Occupation',
+          'Company',
+          'Country',
+          'Shift System',
+          'Shift Pattern',
+          'Phase Offset',
+          'Start Date',
+          'Shift Times',
+        ])
+      );
+      expect(result.current.isComplete()).toBe(false);
+      expect(result.current.getMissingFields()).toEqual(validation.missingFields);
+    });
+
+    it('requires rotating custom pattern config when CUSTOM is selected', () => {
+      const { result } = renderHook(() => useOnboarding(), { wrapper });
+
+      act(() => {
+        result.current.setAllData({
+          name: 'A',
+          occupation: 'B',
+          company: 'C',
+          country: 'D',
+          shiftSystem: '2-shift',
+          rosterType: 'rotating',
+          patternType: ShiftPattern.CUSTOM,
+          phaseOffset: 0,
+          startDate: new Date('2026-02-01'),
+          shiftStartTime: '07:00',
+          shiftEndTime: '19:00',
+        });
+      });
+
+      const validation = result.current.validateData();
+      expect(validation.missingFields).toContain('Custom Pattern Configuration');
+    });
+
+    it('requires fifoConfig when FIFO_CUSTOM is selected for FIFO roster', () => {
+      const { result } = renderHook(() => useOnboarding(), { wrapper });
+
+      act(() => {
+        result.current.setAllData({
+          name: 'A',
+          occupation: 'B',
+          company: 'C',
+          country: 'D',
+          shiftSystem: '2-shift',
+          rosterType: 'fifo',
+          patternType: ShiftPattern.FIFO_CUSTOM,
+          phaseOffset: 0,
+          startDate: new Date('2026-02-01'),
+          shiftStartTime: '07:00',
+          shiftEndTime: '19:00',
+        });
+      });
+
+      const validation = result.current.validateData();
+      expect(validation.missingFields).toContain('FIFO Configuration');
+    });
+
+    it('accepts legacy shift time fields as valid shift times', () => {
+      const { result } = renderHook(() => useOnboarding(), { wrapper });
+
+      act(() => {
+        result.current.setAllData({
+          name: 'Valid',
+          occupation: 'Role',
+          company: 'Org',
+          country: 'US',
+          shiftSystem: '2-shift',
+          rosterType: 'rotating',
+          patternType: ShiftPattern.STANDARD_4_4_4,
+          phaseOffset: 1,
+          startDate: new Date('2026-02-01'),
+          shiftStartTime: '07:00',
+          shiftEndTime: '19:00',
+        });
+      });
+
+      const validation = result.current.validateData();
+      expect(validation.isValid).toBe(true);
+      expect(validation.missingFields).toHaveLength(0);
+      expect(result.current.isComplete()).toBe(true);
+    });
+  });
+
   describe('AsyncStorage Auto-Save', () => {
     it('should auto-save data when updateData is called', async () => {
       const { result } = renderHook(() => useOnboarding(), { wrapper });
@@ -366,7 +521,10 @@ describe('OnboardingContext', () => {
       const { result } = renderHook(() => useOnboarding(), { wrapper });
 
       await waitFor(() => {
-        expect(result.current.data).toEqual(savedData);
+        expect(result.current.data).toEqual({
+          ...savedData,
+          rosterType: 'rotating',
+        });
       });
     });
 

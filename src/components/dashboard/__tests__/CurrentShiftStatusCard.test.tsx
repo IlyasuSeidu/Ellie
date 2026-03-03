@@ -6,6 +6,7 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
 import { CurrentShiftStatusCard } from '../CurrentShiftStatusCard';
+import { RosterType } from '@/types';
 
 // Mock Ionicons
 jest.mock('@expo/vector-icons', () => {
@@ -75,7 +76,7 @@ jest.mock('react-native-reanimated', () => {
     runOnJS: (fn: unknown) => fn,
     interpolate: (val: number) => val,
     Extrapolate: { CLAMP: 'clamp' },
-    Easing: { inOut: () => ({}), ease: {} },
+    Easing: { inOut: () => ({}), ease: {}, out: () => ({}), cubic: {} },
     FadeInUp: { delay: () => ({ duration: () => ({ springify: () => undefined }) }) },
   };
 });
@@ -148,6 +149,61 @@ describe('CurrentShiftStatusCard', () => {
     it('should render with testID', () => {
       const { getByTestId } = render(<CurrentShiftStatusCard shiftType="day" testID="test-card" />);
       expect(getByTestId('test-card')).toBeTruthy();
+    });
+
+    it('should render FIFO work block subtitle when fifoBlockInfo is provided', () => {
+      const { getByText } = render(
+        <CurrentShiftStatusCard
+          shiftType="day"
+          rosterType={RosterType.FIFO}
+          fifoBlockInfo={{
+            inWorkBlock: true,
+            dayInBlock: 3,
+            blockLength: 8,
+            daysUntilBlockChange: 5,
+          }}
+        />
+      );
+      expect(getByText('WORK BLOCK')).toBeTruthy();
+      expect(getByText('Work Block Day 3 of 8')).toBeTruthy();
+      expect(getByText('38%')).toBeTruthy();
+    });
+
+    it('should show HOME badge text when FIFO is resting', () => {
+      const { getByText } = render(
+        <CurrentShiftStatusCard shiftType="off" rosterType={RosterType.FIFO} isOnShift={false} />
+      );
+      expect(getByText('HOME')).toBeTruthy();
+    });
+
+    it('shows FIFO block transition warning text for tomorrow and today', () => {
+      const tomorrow = render(
+        <CurrentShiftStatusCard
+          shiftType="day"
+          rosterType={RosterType.FIFO}
+          fifoBlockInfo={{
+            inWorkBlock: true,
+            dayInBlock: 7,
+            blockLength: 8,
+            daysUntilBlockChange: 1,
+          }}
+        />
+      );
+      expect(tomorrow.getByText('Block change tomorrow!')).toBeTruthy();
+
+      const today = render(
+        <CurrentShiftStatusCard
+          shiftType="off"
+          rosterType={RosterType.FIFO}
+          fifoBlockInfo={{
+            inWorkBlock: false,
+            dayInBlock: 7,
+            blockLength: 7,
+            daysUntilBlockChange: 0,
+          }}
+        />
+      );
+      expect(today.getByText('Block change today!')).toBeTruthy();
     });
   });
 });
