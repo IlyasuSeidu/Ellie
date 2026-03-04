@@ -1340,16 +1340,24 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                     colors={
                       isValid()
                         ? [
-                            theme.colors.brightGold,
                             theme.colors.sacredGold,
                             theme.colors.brightGold,
+                            theme.colors.sacredGold,
                           ]
                         : ['rgba(78, 67, 61, 0.85)', 'rgba(58, 52, 49, 0.85)']
                     }
                     locations={isValid() ? [0, 0.5, 1] : undefined}
                     style={styles.continueGradient}
                   >
-                    <Ionicons name="checkmark" size={24} color={theme.colors.paper} />
+                    <Ionicons name="checkmark-circle" size={24} color={theme.colors.paper} />
+                    <Text style={styles.continueButtonText}>
+                      {totalStages === 1
+                        ? 'Save & Continue'
+                        : isLastStage
+                          ? 'Finish Setup'
+                          : 'Next Shift Type'}
+                    </Text>
+                    <Ionicons name="arrow-forward" size={22} color={theme.colors.paper} />
                   </LinearGradient>
                 </View>
               </Pressable>
@@ -2068,8 +2076,8 @@ const styles = StyleSheet.create({
   },
   bottomNavShell: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    gap: theme.spacing.md,
     borderRadius: 24,
     borderWidth: 1,
     borderColor: theme.colors.opacity.gold20,
@@ -2088,9 +2096,9 @@ const styles = StyleSheet.create({
     }),
   },
   backButton: {
-    width: 54,
-    height: 54,
-    borderRadius: 27,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
     overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
@@ -2098,7 +2106,7 @@ const styles = StyleSheet.create({
   backButtonGradient: {
     width: '100%',
     height: '100%',
-    borderRadius: 27,
+    borderRadius: 28,
     borderWidth: 1,
     borderColor: theme.colors.opacity.white10,
     alignItems: 'center',
@@ -2116,16 +2124,16 @@ const styles = StyleSheet.create({
     }),
   },
   backButtonPressed: {
+    opacity: 0.88,
     transform: [{ scale: 0.97 }],
   },
   continueButtonContainer: {
-    width: 58,
-    height: 58,
+    flex: 1,
   },
   continueButton: {
     width: '100%',
-    height: '100%',
-    borderRadius: 29,
+    height: 60,
+    borderRadius: 18,
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: theme.colors.opacity.gold20,
@@ -2134,14 +2142,17 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   continueButtonPressed: {
-    transform: [{ scale: 0.97 }],
+    opacity: 0.95,
+    transform: [{ scale: 0.99 }],
   },
   continueGradient: {
     width: '100%',
     height: '100%',
-    borderRadius: 29,
+    borderRadius: 18,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    gap: theme.spacing.sm,
     ...Platform.select({
       ios: {
         shadowColor: theme.colors.sacredGold,
@@ -2153,6 +2164,11 @@ const styles = StyleSheet.create({
         elevation: 8,
       },
     }),
+  },
+  continueButtonText: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: theme.colors.paper,
   },
   // Guidance Card
   guidanceCard: {
