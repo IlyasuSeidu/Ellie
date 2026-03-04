@@ -336,7 +336,7 @@ const AnimatedDayCell: React.FC<DayCellProps> = React.memo(
               ) : (
                 <Image
                   source={getCalendarShiftIcon(shiftType) as ImageSourcePropType}
-                  style={styles.shiftIcon}
+                  style={[styles.shiftIcon, shiftType === 'morning' && styles.shiftIconMorning]}
                   resizeMode="contain"
                 />
               )}
@@ -1113,7 +1113,7 @@ export const _InteractiveCalendar: React.FC<CalendarProps> = ({
             <View style={styles.legendItem}>
               <Image
                 source={require('../../../../assets/onboarding/icons/consolidated/cycle-day-shift-sun.png')}
-                style={styles.legendIconImage}
+                style={[styles.legendIconImage, styles.legendIconMorning]}
                 resizeMode="contain"
               />
               <Text style={styles.legendText}>Morning</Text>
@@ -2637,6 +2637,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -2,
   },
+  shiftIconMorning: {
+    width: 22,
+    height: 22,
+    top: -4,
+  },
   dayTextWithIcon: {
     marginTop: 12,
   },
@@ -2661,6 +2666,10 @@ const styles = StyleSheet.create({
   legendIconImage: {
     width: 20,
     height: 20,
+  },
+  legendIconMorning: {
+    width: 24,
+    height: 24,
   },
   legendText: {
     fontSize: 12,
