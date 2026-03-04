@@ -1119,7 +1119,11 @@ export const _InteractiveCalendar: React.FC<CalendarProps> = ({
               <Text style={styles.legendText}>Morning</Text>
             </View>
             <View style={styles.legendItem}>
-              <Ionicons name="partly-sunny" size={20} color={theme.colors.dust} />
+              <Image
+                source={require('../../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png')}
+                style={styles.legendIconImage}
+                resizeMode="contain"
+              />
               <Text style={styles.legendText}>Afternoon</Text>
             </View>
             <View style={styles.legendItem}>
