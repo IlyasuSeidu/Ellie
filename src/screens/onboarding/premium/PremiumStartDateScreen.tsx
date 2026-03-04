@@ -2050,6 +2050,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   const shiftSystem: ShiftSystem = (data.shiftSystem as ShiftSystem) || ShiftSystem.TWO_SHIFT;
   // Smart default: today
   const [selectedDate, setSelectedDate] = useState<string | null>(getTodayDate());
+  const [isGuidanceExpanded, setIsGuidanceExpanded] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const screenOpacity = useSharedValue(1);
   const screenSlideX = useSharedValue(0);
@@ -2096,6 +2097,10 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
 
   // Check if user can continue (requires date selection and phaseOffset from Phase Selector)
   const canContinue = selectedDate !== null && data.phaseOffset !== undefined;
+  const selectedDateGuidanceLabel = useMemo(
+    () => (selectedDate ? `Selected: ${formatDate(new Date(selectedDate))}` : null),
+    [selectedDate]
+  );
 
   const handleContinue = useCallback(() => {
     if (!canContinue || !selectedDate || data.phaseOffset === undefined) return;
@@ -2127,6 +2132,11 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
     }
   }, [onBack, navigation]);
 
+  const handleGuidanceToggle = useCallback(() => {
+    HAPTIC_PATTERNS.LIGHT();
+    setIsGuidanceExpanded((prev) => !prev);
+  }, []);
+
   return (
     <View style={styles.container} testID={testID}>
       <ProgressHeader
@@ -2155,18 +2165,104 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
 
           {/* Guidance Section */}
           <View style={styles.guidanceSection}>
-            <View style={styles.guidanceHeader}>
-              <Ionicons
-                name="information-circle-outline"
-                size={22}
-                color={theme.colors.sacredGold}
-              />
-              <Text style={styles.guidanceTitle}>Picking your date</Text>
-            </View>
-            <Text style={styles.guidanceText}>
-              Most people pick today so their calendar starts right away. But you can pick any
-              date—we&apos;ll calculate your rotation from there.
-            </Text>
+            <LinearGradient
+              colors={[
+                theme.colors.opacity.gold30,
+                theme.colors.opacity.gold10,
+                'rgba(20, 15, 10, 0.95)',
+              ]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.guidanceCard}
+            >
+              <Pressable
+                onPress={handleGuidanceToggle}
+                accessibilityRole="button"
+                accessibilityLabel="Date selection guidance"
+                accessibilityHint="Double tap to expand or collapse quick setup tips"
+                style={({ pressed }) => [
+                  styles.guidancePressable,
+                  pressed && styles.guidancePressablePressed,
+                ]}
+              >
+                <View style={styles.guidanceHeader}>
+                  <View style={styles.guidanceIconBadge}>
+                    <Ionicons name="sparkles-outline" size={18} color={theme.colors.paleGold} />
+                  </View>
+                  <View style={styles.guidanceTitleContainer}>
+                    <Text style={styles.guidanceTitle}>Picking your date</Text>
+                    <Text style={styles.guidanceSubtitle}>Quick tips for a faster setup</Text>
+                  </View>
+                  <View style={styles.guidanceChevronBadge}>
+                    <Ionicons
+                      name={isGuidanceExpanded ? 'chevron-up' : 'chevron-down'}
+                      size={16}
+                      color={theme.colors.paper}
+                    />
+                  </View>
+                </View>
+
+                <View style={styles.guidanceChipRow}>
+                  <View style={styles.guidanceChip}>
+                    <Ionicons name="today-outline" size={14} color={theme.colors.paleGold} />
+                    <Text style={styles.guidanceChipText}>Today is common</Text>
+                  </View>
+                  <View style={styles.guidanceChip}>
+                    <Ionicons name="calendar-outline" size={14} color={theme.colors.paleGold} />
+                    <Text style={styles.guidanceChipText}>Any date works</Text>
+                  </View>
+                </View>
+
+                <Text style={styles.guidanceText}>
+                  Most people pick today so their calendar starts right away. But you can pick any
+                  date—we&apos;ll calculate your rotation from there.
+                </Text>
+
+                {isGuidanceExpanded ? (
+                  <View style={styles.guidanceExpanded}>
+                    <View style={styles.guidanceBulletRow}>
+                      <Ionicons
+                        name="pulse-outline"
+                        size={14}
+                        color={theme.colors.sacredGold}
+                        style={styles.guidanceBulletIcon}
+                      />
+                      <Text style={styles.guidanceBulletText}>
+                        Ellie maps your work/off cycle instantly from the date you choose.
+                      </Text>
+                    </View>
+                    <View style={styles.guidanceBulletRow}>
+                      <Ionicons
+                        name="refresh-outline"
+                        size={14}
+                        color={theme.colors.sacredGold}
+                        style={styles.guidanceBulletIcon}
+                      />
+                      <Text style={styles.guidanceBulletText}>
+                        You can always refine your setup later in the Profile screen.
+                      </Text>
+                    </View>
+                    {selectedDateGuidanceLabel ? (
+                      <View style={styles.guidanceSelectionPill}>
+                        <Ionicons
+                          name="checkmark-circle"
+                          size={14}
+                          color={theme.colors.paleGold}
+                          style={styles.guidanceBulletIcon}
+                        />
+                        <Text style={styles.guidanceSelectionText}>
+                          {selectedDateGuidanceLabel}
+                        </Text>
+                      </View>
+                    ) : null}
+                  </View>
+                ) : (
+                  <Text style={styles.guidanceHintText}>
+                    Tap this card to reveal more quick tips.
+                  </Text>
+                )}
+              </Pressable>
+            </LinearGradient>
           </View>
         </ScrollView>
       </Animated.View>
@@ -2659,26 +2755,137 @@ const styles = StyleSheet.create({
   // Guidance Section
   guidanceSection: {
     marginTop: theme.spacing.lg,
-    padding: theme.spacing.lg,
-    backgroundColor: theme.colors.opacity.gold10,
+    marginBottom: theme.spacing.sm,
+  },
+  guidanceCard: {
     borderRadius: 16,
-    borderLeftWidth: 4,
-    borderLeftColor: theme.colors.sacredGold,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
+    overflow: 'hidden',
+    ...Platform.select({
+      ios: {
+        shadowColor: theme.colors.sacredGold,
+        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.28,
+        shadowRadius: 16,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
+  },
+  guidancePressable: {
+    paddingHorizontal: theme.spacing.lg,
+    paddingVertical: theme.spacing.md + 2,
+  },
+  guidancePressablePressed: {
+    opacity: 0.93,
   },
   guidanceHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: theme.spacing.sm,
-    marginBottom: theme.spacing.sm,
+    marginBottom: theme.spacing.md,
+  },
+  guidanceIconBadge: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.opacity.gold20,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold30,
+  },
+  guidanceTitleContainer: {
+    flex: 1,
   },
   guidanceTitle: {
     fontSize: 16,
+    fontWeight: '700',
+    color: theme.colors.paleGold,
+  },
+  guidanceSubtitle: {
+    marginTop: 2,
+    fontSize: 12,
+    color: theme.colors.dust,
+  },
+  guidanceChevronBadge: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.opacity.white10,
+  },
+  guidanceChipRow: {
+    flexDirection: 'row',
+    gap: theme.spacing.sm,
+    marginBottom: theme.spacing.sm,
+  },
+  guidanceChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
+    backgroundColor: theme.colors.opacity.gold10,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+  },
+  guidanceChipText: {
+    fontSize: 12,
+    color: theme.colors.paper,
     fontWeight: '600',
-    color: theme.colors.sacredGold,
   },
   guidanceText: {
     fontSize: 14,
+    color: theme.colors.paper,
+    lineHeight: 22,
+  },
+  guidanceExpanded: {
+    marginTop: theme.spacing.sm,
+    paddingTop: theme.spacing.sm,
+    borderTopWidth: 1,
+    borderTopColor: theme.colors.opacity.gold20,
+    gap: 8,
+  },
+  guidanceBulletRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  guidanceBulletIcon: {
+    marginTop: 2,
+    marginRight: 8,
+  },
+  guidanceBulletText: {
+    flex: 1,
+    fontSize: 13,
     color: theme.colors.dust,
-    lineHeight: 20,
+    lineHeight: 19,
+  },
+  guidanceSelectionPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 999,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold30,
+    backgroundColor: theme.colors.opacity.white10,
+    marginTop: 4,
+  },
+  guidanceSelectionText: {
+    flex: 1,
+    fontSize: 12,
+    color: theme.colors.paleGold,
+    fontWeight: '600',
+  },
+  guidanceHintText: {
+    marginTop: theme.spacing.sm,
+    fontSize: 12,
+    color: theme.colors.dust,
+    fontStyle: 'italic',
   },
 });
