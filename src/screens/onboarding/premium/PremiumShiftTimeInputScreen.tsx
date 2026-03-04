@@ -733,7 +733,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     switch (detectedShiftType) {
       case 'day':
         return {
-          title: '☀️ Daytime start',
+          title: 'Daytime start',
           icon: 'sunny-outline' as const,
           windowLabel: 'Typical window: 6:00 AM - 5:59 PM',
           quickHint: 'Great for daytime operations and standard handovers.',
@@ -747,7 +747,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
         };
       case 'morning':
         return {
-          title: '🌅 Morning start',
+          title: 'Morning start',
           icon: 'partly-sunny-outline' as const,
           windowLabel: 'Typical window: 6:00 AM - 1:59 PM',
           quickHint: 'Common for early production and daytime coverage.',
@@ -761,7 +761,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
         };
       case 'afternoon':
         return {
-          title: '🌤️ Afternoon start',
+          title: 'Afternoon start',
           icon: 'sunny-outline' as const,
           windowLabel: 'Typical window: 2:00 PM - 9:59 PM',
           quickHint: 'Best for late-day handover and evening coverage.',
@@ -776,7 +776,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
       case 'night':
       default:
         return {
-          title: '🌙 Night start',
+          title: 'Night start',
           icon: 'moon-outline' as const,
           windowLabel:
             shiftSystem === ShiftSystem.THREE_SHIFT

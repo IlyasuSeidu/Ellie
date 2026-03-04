@@ -282,14 +282,14 @@ describe('PremiumShiftTimeInputScreen', () => {
       });
     });
 
-    it('should show appropriate emoji for detected shift type', async () => {
+    it('should show auto-detected metadata for detected shift type', async () => {
       const { getByText, getAllByText } = renderWithProviders(<PremiumShiftTimeInputScreen />);
 
       const presets = getAllByText(/6:00 AM/i);
       fireEvent.press(presets[0]);
 
       await waitFor(() => {
-        expect(getByText(/☀️/)).toBeTruthy();
+        expect(getByText(/Auto-detected/i)).toBeTruthy();
       });
     });
   });
