@@ -288,6 +288,8 @@ const SHIFT_PRESETS: ShiftPreset[] = [
     period: 'PM',
     duration: 8,
     icon: 'moon-outline',
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    imageSource: require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png'),
     type: 'night',
     endTimeLabel: 'Ends at 5:00 AM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
@@ -299,6 +301,8 @@ const SHIFT_PRESETS: ShiftPreset[] = [
     period: 'PM',
     duration: 8,
     icon: 'moon-outline',
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    imageSource: require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png'),
     type: 'night',
     endTimeLabel: 'Ends at 6:00 AM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
@@ -310,6 +314,8 @@ const SHIFT_PRESETS: ShiftPreset[] = [
     period: 'PM',
     duration: 8,
     icon: 'moon-outline',
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    imageSource: require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png'),
     type: 'night',
     endTimeLabel: 'Ends at 7:00 AM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
@@ -1266,6 +1272,26 @@ interface PresetCardProps {
   reducedMotion: boolean;
 }
 
+const getPresetIconSource = (preset: ShiftPreset): ImageSourcePropType | undefined => {
+  if (preset.id === 'custom') {
+    return undefined;
+  }
+
+  if (preset.shiftSystem === ShiftSystem.THREE_SHIFT) {
+    if (preset.type === 'morning') {
+      return require('../../../../assets/onboarding/icons/consolidated/shift-time-morning.png');
+    }
+    if (preset.type === 'afternoon') {
+      return require('../../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png');
+    }
+    if (preset.type === 'night') {
+      return require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png');
+    }
+  }
+
+  return preset.imageSource;
+};
+
 const PresetCard: React.FC<PresetCardProps> = ({
   preset,
   selected,
@@ -1273,6 +1299,7 @@ const PresetCard: React.FC<PresetCardProps> = ({
   index,
   reducedMotion,
 }) => {
+  const presetIconSource = getPresetIconSource(preset);
   const scale = useSharedValue(1);
 
   const animatedStyle = useAnimatedStyle(() => ({
@@ -1322,8 +1349,8 @@ const PresetCard: React.FC<PresetCardProps> = ({
               isCustom && styles.presetIconCircleCustom,
             ]}
           >
-            {preset.imageSource ? (
-              <Image source={preset.imageSource} style={styles.presetIconImage} />
+            {presetIconSource ? (
+              <Image source={presetIconSource} style={styles.presetIconImage} />
             ) : preset.icon.length <= 2 ? (
               <Text style={{ fontSize: 32 }}>{preset.icon}</Text>
             ) : (
