@@ -1965,7 +1965,7 @@ const ContinueButton: React.FC<{
   enabled: boolean;
   onPress: () => void;
   reducedMotion: boolean;
-}> = ({ enabled, onPress }) => {
+}> = ({ enabled, onPress, reducedMotion }) => {
   return (
     <View style={styles.continueButtonContainer}>
       <Pressable
@@ -1976,14 +1976,20 @@ const ContinueButton: React.FC<{
           }
         }}
         disabled={!enabled}
-        style={[styles.continueButton, !enabled && styles.continueButtonDisabled]}
+        style={({ pressed }) => [
+          styles.continueButton,
+          pressed && enabled && styles.continueButtonPressed,
+          !enabled && styles.continueButtonDisabled,
+          reducedMotion && styles.continueButtonReducedMotion,
+        ]}
       >
         <LinearGradient
           colors={
             enabled
-              ? [theme.colors.sacredGold, theme.colors.brightGold]
+              ? [theme.colors.sacredGold, theme.colors.brightGold, theme.colors.sacredGold]
               : [theme.colors.shadow, theme.colors.shadow]
           }
+          locations={enabled ? [0, 0.5, 1] : undefined}
           style={styles.continueGradient}
         >
           <Ionicons name="checkmark-circle" size={28} color={theme.colors.paper} />
@@ -2269,15 +2275,32 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
 
       {/* Bottom Navigation */}
       <View style={styles.bottomNav}>
-        <Pressable onPress={handleBack} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color={theme.colors.paper} />
-        </Pressable>
+        <LinearGradient
+          colors={['rgba(43, 24, 10, 0.82)', 'rgba(22, 14, 9, 0.92)']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.bottomNavShell}
+        >
+          <Pressable
+            onPress={handleBack}
+            style={({ pressed }) => [styles.backButton, pressed && styles.backButtonPressed]}
+          >
+            <LinearGradient
+              colors={['rgba(255,255,255,0.18)', 'rgba(255,255,255,0.06)']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.backButtonGradient}
+            >
+              <Ionicons name="arrow-back" size={24} color={theme.colors.paper} />
+            </LinearGradient>
+          </Pressable>
 
-        <ContinueButton
-          enabled={canContinue}
-          onPress={handleContinue}
-          reducedMotion={reducedMotion}
-        />
+          <ContinueButton
+            enabled={canContinue}
+            onPress={handleContinue}
+            reducedMotion={reducedMotion}
+          />
+        </LinearGradient>
       </View>
     </View>
   );
@@ -2587,43 +2610,83 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.spacing.md,
     paddingHorizontal: theme.spacing.lg,
     paddingBottom: Platform.OS === 'ios' ? theme.spacing.xxl : theme.spacing.lg,
     paddingTop: theme.spacing.lg,
-    backgroundColor: theme.colors.deepVoid,
+    backgroundColor: 'transparent',
+  },
+  bottomNavShell: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.md,
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: theme.spacing.sm,
+    ...Platform.select({
+      ios: {
+        shadowColor: theme.colors.deepVoid,
+        shadowOffset: { width: 0, height: 14 },
+        shadowOpacity: 0.42,
+        shadowRadius: 18,
+      },
+      android: {
+        elevation: 12,
+      },
+    }),
   },
   backButton: {
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: theme.colors.opacity.white10,
+    overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  backButtonGradient: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.white10,
+    borderRadius: 28,
+  },
+  backButtonPressed: {
+    opacity: 0.88,
+    transform: [{ scale: 0.97 }],
   },
   continueButtonContainer: {
     flex: 1,
   },
   continueButton: {
     height: 60,
-    borderRadius: 16,
+    borderRadius: 18,
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
     ...Platform.select({
       ios: {
         shadowColor: theme.colors.deepVoid,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.4,
-        shadowRadius: 8,
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.45,
+        shadowRadius: 12,
       },
       android: {
-        elevation: 8,
+        elevation: 10,
       },
     }),
   },
+  continueButtonPressed: {
+    opacity: 0.95,
+    transform: [{ scale: 0.99 }],
+  },
+  continueButtonReducedMotion: {
+    transform: [{ scale: 1 }],
+  },
   continueButtonDisabled: {
-    opacity: 0.5,
+    opacity: 0.48,
   },
   continueGradient: {
     width: '100%',
