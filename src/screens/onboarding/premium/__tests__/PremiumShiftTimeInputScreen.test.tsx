@@ -116,8 +116,8 @@ describe('PremiumShiftTimeInputScreen', () => {
     });
 
     it('should render pattern summary card', () => {
-      const { getByText } = renderWithProviders(<PremiumShiftTimeInputScreen />);
-      expect(getByText(/cycle/i)).toBeTruthy();
+      const { getAllByText } = renderWithProviders(<PremiumShiftTimeInputScreen />);
+      expect(getAllByText(/cycle/i).length).toBeGreaterThan(0);
     });
 
     it('should render preset section header', () => {

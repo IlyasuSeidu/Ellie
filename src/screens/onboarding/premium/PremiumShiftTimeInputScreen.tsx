@@ -412,6 +412,8 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   const [showCustomInput, setShowCustomInput] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [timeError, setTimeError] = useState<string | null>(null);
+  const [isPatternExpanded, setIsPatternExpanded] = useState(false);
+  const [isGuidanceExpanded, setIsGuidanceExpanded] = useState(false);
 
   // Check for reduced motion preference
   useEffect(() => {
@@ -420,6 +422,8 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
 
   // Auto-scroll to top when stage changes
   useEffect(() => {
+    setIsPatternExpanded(false);
+    setIsGuidanceExpanded(false);
     if (currentStageIndex > 0) {
       // Scroll to top with smooth animation when moving to next stage
       scrollViewRef.current?.scrollTo({
@@ -701,6 +705,33 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
 
   // Get pattern display info from context
   const patternInfo = getPatternInfo(data.patternType, data.customPattern, shiftSystem);
+  const [cycleLengthLabel, cycleMixLabel] = React.useMemo(() => {
+    const statsParts = patternInfo.stats
+      .split('•')
+      .map((part) => part.trim())
+      .filter(Boolean);
+    return [statsParts[0] || 'Custom cycle', statsParts[1] || 'Flexible schedule'];
+  }, [patternInfo.stats]);
+  const shiftSystemLabel =
+    shiftSystem === ShiftSystem.THREE_SHIFT ? '3-shift system' : '2-shift system';
+  const stageCollectionLabel =
+    totalStages === 1
+      ? 'Single shift profile'
+      : `Profile ${currentStageIndex + 1} of ${totalStages}`;
+
+  const handlePatternCardToggle = useCallback(() => {
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: 'PremiumShiftTimeInputScreen.handlePatternCardToggle',
+    });
+    setIsPatternExpanded((prev) => !prev);
+  }, []);
+
+  const handleGuidanceCardToggle = useCallback(() => {
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: 'PremiumShiftTimeInputScreen.handleGuidanceCardToggle',
+    });
+    setIsGuidanceExpanded((prev) => !prev);
+  }, []);
 
   // Get stage-specific title
   const getStageTitle = (): string => {
@@ -804,22 +835,90 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
             entering={reducedMotion ? undefined : FadeInDown.duration(400).springify()}
             style={styles.patternCard}
           >
-            <Animated.View style={floatingStyle}>
-              <LinearGradient
-                colors={[theme.colors.softStone, theme.colors.darkStone]}
-                style={styles.patternGradient}
-              >
-                <View style={styles.patternIconContainer}>
-                  {patternIcon ? (
-                    <Image source={patternIcon} style={styles.patternIcon} resizeMode="contain" />
-                  ) : (
-                    <Ionicons name="calendar" size={80} color={theme.colors.sacredGold} />
-                  )}
-                </View>
-                <Text style={styles.patternName}>{patternInfo.name}</Text>
-                <Text style={styles.patternStats}>{patternInfo.stats}</Text>
-              </LinearGradient>
-            </Animated.View>
+            <LinearGradient
+              colors={['rgba(217, 119, 6, 0.3)', 'rgba(35, 20, 11, 0.35)', 'rgba(18, 12, 9, 0.82)']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.patternCardShell}
+            >
+              <Animated.View style={floatingStyle}>
+                <Pressable
+                  onPress={handlePatternCardToggle}
+                  style={({ pressed }) => [
+                    styles.patternPressable,
+                    pressed && styles.patternPressablePressed,
+                  ]}
+                >
+                  <LinearGradient
+                    colors={[
+                      'rgba(63, 46, 35, 0.95)',
+                      'rgba(34, 28, 24, 0.98)',
+                      'rgba(20, 18, 17, 0.98)',
+                    ]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.patternGradient}
+                  >
+                    <View style={styles.patternMetaRow}>
+                      <View style={styles.patternMetaBadge}>
+                        <Ionicons
+                          name="sparkles-outline"
+                          size={14}
+                          color={theme.colors.sacredGold}
+                        />
+                        <Text style={styles.patternMetaBadgeText}>Active Pattern</Text>
+                      </View>
+                      <View style={[styles.patternMetaBadge, styles.patternMetaBadgeMuted]}>
+                        <Text style={styles.patternMetaBadgeMutedText}>{shiftSystemLabel}</Text>
+                      </View>
+                    </View>
+
+                    <View style={styles.patternIconContainer}>
+                      {patternIcon ? (
+                        <Image
+                          source={patternIcon}
+                          style={styles.patternIcon}
+                          resizeMode="contain"
+                        />
+                      ) : (
+                        <Ionicons name="calendar" size={80} color={theme.colors.sacredGold} />
+                      )}
+                    </View>
+
+                    <Text style={styles.patternName}>{patternInfo.name}</Text>
+                    <Text style={styles.patternStats}>{patternInfo.stats}</Text>
+
+                    <View style={styles.patternTagRow}>
+                      <View style={styles.patternTag}>
+                        <Text style={styles.patternTagText}>{cycleLengthLabel}</Text>
+                      </View>
+                      <View style={styles.patternTag}>
+                        <Text style={styles.patternTagText}>{stageCollectionLabel}</Text>
+                      </View>
+                    </View>
+
+                    {isPatternExpanded ? (
+                      <View style={styles.patternExpanded}>
+                        <View style={styles.patternExpandedRow}>
+                          <Ionicons name="sync-outline" size={16} color={theme.colors.sacredGold} />
+                          <Text style={styles.patternExpandedText}>Cycle mix: {cycleMixLabel}</Text>
+                        </View>
+                        <View style={styles.patternExpandedRow}>
+                          <Ionicons name="time-outline" size={16} color={theme.colors.sacredGold} />
+                          <Text style={styles.patternExpandedText}>
+                            We only need shift start times to calculate reminders and totals.
+                          </Text>
+                        </View>
+                      </View>
+                    ) : (
+                      <Text style={styles.patternHintText}>
+                        Tap this card to see quick cycle details.
+                      </Text>
+                    )}
+                  </LinearGradient>
+                </Pressable>
+              </Animated.View>
+            </LinearGradient>
           </Animated.View>
 
           {/* Guidance Card */}
@@ -827,34 +926,105 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
             entering={reducedMotion ? undefined : FadeIn.duration(300).delay(100)}
             style={styles.guidanceCard}
           >
-            <View style={styles.guidanceHeader}>
-              <Ionicons
-                name="information-circle-outline"
-                size={22}
-                color={theme.colors.sacredGold}
-              />
-              <Text style={styles.guidanceTitle}>About shift times</Text>
-            </View>
-            <Text style={styles.guidanceText}>
-              Your {patternInfo.name} rotation stays the same—but we need to know what time your
-              shifts start so we can track your hours and remind you before each shift.
-            </Text>
+            <LinearGradient
+              colors={[
+                'rgba(217, 119, 6, 0.24)',
+                'rgba(43, 24, 10, 0.55)',
+                'rgba(24, 16, 11, 0.9)',
+              ]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.guidanceCardGradient}
+            >
+              <Pressable
+                onPress={handleGuidanceCardToggle}
+                style={({ pressed }) => [
+                  styles.guidancePressable,
+                  pressed && styles.guidancePressablePressed,
+                ]}
+              >
+                <View style={styles.guidanceHeader}>
+                  <View style={styles.guidanceIconBadge}>
+                    <Ionicons
+                      name="information-circle-outline"
+                      size={20}
+                      color={theme.colors.sacredGold}
+                    />
+                  </View>
+                  <View style={styles.guidanceHeaderTextContainer}>
+                    <Text style={styles.guidanceTitle}>About shift times</Text>
+                    <Text style={styles.guidanceSubtitle}>
+                      Used for reminders, hour totals, and smarter alerts
+                    </Text>
+                  </View>
+                  <View style={styles.guidanceChevronBadge}>
+                    <Ionicons
+                      name={isGuidanceExpanded ? 'chevron-up' : 'chevron-down'}
+                      size={18}
+                      color={theme.colors.sacredGold}
+                    />
+                  </View>
+                </View>
 
-            {/* Shift Type Definitions */}
-            <View style={styles.shiftTypeDefinitions}>
-              <Text style={styles.shiftTypeDefinitionsTitle}>
-                {shiftSystem === ShiftSystem.TWO_SHIFT ? 'Day vs Night:' : 'Shift types:'}
-              </Text>
-              {shiftSystem === ShiftSystem.TWO_SHIFT ? (
-                <Text style={styles.shiftTypeDefinitionsText}>
-                  Day shifts start 6 AM–6 PM • Night shifts start 6 PM–6 AM
+                <Text style={styles.guidanceText}>
+                  Your {patternInfo.name} rotation stays the same, but we need your shift start
+                  times so Ellie can track hours and alert you before each shift.
                 </Text>
-              ) : (
-                <Text style={styles.shiftTypeDefinitionsText}>
-                  Morning: 6 AM–2 PM • Afternoon: 2 PM–10 PM • Night: 10 PM–6 AM
-                </Text>
-              )}
-            </View>
+
+                <View style={styles.guidanceChipRow}>
+                  <View style={styles.guidanceChip}>
+                    <Text style={styles.guidanceChipText}>Accurate reminders</Text>
+                  </View>
+                  <View style={styles.guidanceChip}>
+                    <Text style={styles.guidanceChipText}>Hours tracking</Text>
+                  </View>
+                  <View style={styles.guidanceChip}>
+                    <Text style={styles.guidanceChipText}>Shift-aware alerts</Text>
+                  </View>
+                </View>
+
+                {/* Shift Type Definitions */}
+                <View style={styles.shiftTypeDefinitions}>
+                  <Text style={styles.shiftTypeDefinitionsTitle}>
+                    {shiftSystem === ShiftSystem.TWO_SHIFT ? 'Day vs Night:' : 'Shift types:'}
+                  </Text>
+                  {shiftSystem === ShiftSystem.TWO_SHIFT ? (
+                    <Text style={styles.shiftTypeDefinitionsText}>
+                      Day shifts start 6 AM–6 PM • Night shifts start 6 PM–6 AM
+                    </Text>
+                  ) : (
+                    <Text style={styles.shiftTypeDefinitionsText}>
+                      Morning: 6 AM–2 PM • Afternoon: 2 PM–10 PM • Night: 10 PM–6 AM
+                    </Text>
+                  )}
+                </View>
+
+                {isGuidanceExpanded ? (
+                  <View style={styles.guidanceExpanded}>
+                    <View style={styles.guidanceExpandedRow}>
+                      <Ionicons
+                        name="checkmark-done-outline"
+                        size={16}
+                        color={theme.colors.sacredGold}
+                      />
+                      <Text style={styles.guidanceExpandedText}>
+                        Pick the closest start time now, then fine-tune later in settings.
+                      </Text>
+                    </View>
+                    <View style={styles.guidanceExpandedRow}>
+                      <Ionicons name="alarm-outline" size={16} color={theme.colors.sacredGold} />
+                      <Text style={styles.guidanceExpandedText}>
+                        Accurate start times improve alert timing and reduce missed shifts.
+                      </Text>
+                    </View>
+                  </View>
+                ) : (
+                  <Text style={styles.guidanceHintText}>
+                    Tap this card to reveal quick setup tips.
+                  </Text>
+                )}
+              </Pressable>
+            </LinearGradient>
           </Animated.View>
 
           {/* Preset Shift Time Cards Section */}
@@ -1241,25 +1411,74 @@ const styles = StyleSheet.create({
   // Pattern Summary Card
   patternCard: {
     marginBottom: theme.spacing.xl,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: theme.colors.opacity.gold20,
+    borderRadius: 22,
     ...Platform.select({
       ios: {
         shadowColor: theme.colors.sacredGold,
-        shadowOffset: { width: 0, height: 12 },
-        shadowOpacity: 0.4,
-        shadowRadius: 20,
+        shadowOffset: { width: 0, height: 16 },
+        shadowOpacity: 0.36,
+        shadowRadius: 24,
       },
       android: {
-        elevation: 12,
+        elevation: 14,
       },
     }),
   },
+  patternCardShell: {
+    borderRadius: 22,
+    padding: 2,
+  },
+  patternPressable: {
+    borderRadius: 20,
+    overflow: 'hidden',
+  },
+  patternPressablePressed: {
+    opacity: 0.95,
+    transform: [{ scale: 0.99 }],
+  },
   patternGradient: {
-    borderRadius: 16,
+    borderRadius: 20,
     padding: theme.spacing.lg,
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
+  },
+  patternMetaRow: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: theme.spacing.md,
+    gap: theme.spacing.sm,
+  },
+  patternMetaBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 999,
+    backgroundColor: 'rgba(217, 119, 6, 0.18)',
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
+  },
+  patternMetaBadgeMuted: {
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    borderColor: 'rgba(255, 255, 255, 0.15)',
+  },
+  patternMetaBadgeText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: theme.colors.sacredGold,
+    textTransform: 'uppercase',
+    letterSpacing: 0.4,
+  },
+  patternMetaBadgeMutedText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: theme.colors.paper,
+    textTransform: 'uppercase',
+    letterSpacing: 0.4,
   },
   patternIconContainer: {
     marginBottom: theme.spacing.md,
@@ -1279,6 +1498,54 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: theme.colors.dust,
     textAlign: 'center',
+    marginBottom: theme.spacing.sm,
+  },
+  patternTagRow: {
+    width: '100%',
+    flexDirection: 'row',
+    gap: theme.spacing.sm,
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    marginTop: theme.spacing.xs,
+  },
+  patternTag: {
+    paddingHorizontal: theme.spacing.sm,
+    paddingVertical: 6,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.16)',
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+  },
+  patternTagText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: theme.colors.paper,
+  },
+  patternExpanded: {
+    width: '100%',
+    marginTop: theme.spacing.md,
+    paddingTop: theme.spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: theme.colors.opacity.gold20,
+    gap: theme.spacing.sm,
+  },
+  patternExpandedRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: theme.spacing.sm,
+  },
+  patternExpandedText: {
+    flex: 1,
+    fontSize: 13,
+    color: theme.colors.dust,
+    lineHeight: 19,
+  },
+  patternHintText: {
+    marginTop: theme.spacing.md,
+    fontSize: 12,
+    color: theme.colors.dust,
+    textAlign: 'center',
+    fontStyle: 'italic',
   },
   // Presets Section
   presetsSection: {
@@ -1680,27 +1947,96 @@ const styles = StyleSheet.create({
   guidanceCard: {
     marginTop: theme.spacing.lg,
     marginBottom: theme.spacing.xl,
+    borderRadius: 20,
+    ...Platform.select({
+      ios: {
+        shadowColor: theme.colors.sacredGold,
+        shadowOffset: { width: 0, height: 14 },
+        shadowOpacity: 0.24,
+        shadowRadius: 18,
+      },
+      android: {
+        elevation: 10,
+      },
+    }),
+  },
+  guidanceCardGradient: {
+    borderRadius: 20,
+    padding: 1,
+  },
+  guidancePressable: {
+    borderRadius: 19,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
+    backgroundColor: 'rgba(24, 16, 11, 0.92)',
     padding: theme.spacing.lg,
-    backgroundColor: theme.colors.opacity.gold10,
-    borderRadius: 16,
-    borderLeftWidth: 4,
-    borderLeftColor: theme.colors.sacredGold,
+  },
+  guidancePressablePressed: {
+    opacity: 0.95,
+    transform: [{ scale: 0.995 }],
   },
   guidanceHeader: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     gap: theme.spacing.sm,
     marginBottom: theme.spacing.sm,
   },
+  guidanceIconBadge: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
+    backgroundColor: 'rgba(217, 119, 6, 0.12)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  guidanceHeaderTextContainer: {
+    flex: 1,
+    gap: 2,
+  },
   guidanceTitle: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 22,
+    fontWeight: '700',
     color: theme.colors.sacredGold,
   },
-  guidanceText: {
-    fontSize: 14,
+  guidanceSubtitle: {
+    fontSize: 12,
     color: theme.colors.dust,
-    lineHeight: 20,
+  },
+  guidanceChevronBadge: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
+    backgroundColor: 'rgba(217, 119, 6, 0.1)',
+  },
+  guidanceText: {
+    fontSize: 15,
+    color: theme.colors.dust,
+    lineHeight: 24,
+  },
+  guidanceChipRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: theme.spacing.sm,
+    marginTop: theme.spacing.md,
+  },
+  guidanceChip: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
+    backgroundColor: theme.colors.opacity.gold10,
+  },
+  guidanceChipText: {
+    fontSize: 12,
+    color: theme.colors.paleGold,
+    fontWeight: '600',
   },
   shiftTypeDefinitions: {
     marginTop: theme.spacing.md,
@@ -1718,6 +2054,27 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: theme.colors.dust,
     lineHeight: 18,
+  },
+  guidanceExpanded: {
+    marginTop: theme.spacing.md,
+    gap: theme.spacing.sm,
+  },
+  guidanceExpandedRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: theme.spacing.sm,
+  },
+  guidanceExpandedText: {
+    flex: 1,
+    fontSize: 13,
+    color: theme.colors.dust,
+    lineHeight: 19,
+  },
+  guidanceHintText: {
+    marginTop: theme.spacing.sm,
+    fontSize: 12,
+    color: theme.colors.dust,
+    fontStyle: 'italic',
   },
   // Input Helper
   inputLabelContainer: {
