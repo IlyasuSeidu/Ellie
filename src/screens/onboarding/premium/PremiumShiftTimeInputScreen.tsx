@@ -937,9 +937,6 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                   </View>
                   <View style={styles.guidanceHeaderTextContainer}>
                     <Text style={styles.guidanceTitle}>About shift times</Text>
-                    <Text style={styles.guidanceSubtitle}>
-                      Used for reminders, hour totals, and smarter alerts
-                    </Text>
                   </View>
                 </View>
 
