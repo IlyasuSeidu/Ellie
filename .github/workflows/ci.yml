@@ -80,7 +80,7 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Run Jest tests
-        run: npm test -- --coverage --watchAll=false --runInBand --forceExit
+        run: npm test -- --coverage --watchAll=false --runInBand --forceExit --silent
 
       - name: Check coverage thresholds
         run: |
