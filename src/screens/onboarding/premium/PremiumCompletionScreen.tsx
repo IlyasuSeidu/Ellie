@@ -5,7 +5,7 @@
  * Shows summary of user's configuration and saves data to Firestore.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -238,6 +238,8 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
   const [isSaved, setIsSaved] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [expandedFeature, setExpandedFeature] = useState<string | null>(null);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const featuresSectionYRef = useRef(0);
 
   // Animation values
   const checkmarkProgress = useSharedValue(0);
@@ -372,12 +374,31 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
   };
 
   // Handle feature pill expansion
-  const handleFeaturePillPress = (featureId: string) => {
-    setExpandedFeature(expandedFeature === featureId ? null : featureId);
-    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
-      source: 'PremiumCompletionScreen.handleFeaturePillPress',
-    });
-  };
+  const handleFeaturePillPress = useCallback(
+    (featureId: string) => {
+      const isAlreadySelected = expandedFeature === featureId;
+      setExpandedFeature(isAlreadySelected ? null : featureId);
+
+      if (!isAlreadySelected && scrollViewRef.current) {
+        requestAnimationFrame(() => {
+          scrollViewRef.current?.scrollTo({
+            y: Math.max(featuresSectionYRef.current - 130, 0),
+            animated: true,
+          });
+        });
+      }
+
+      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+        source: 'PremiumCompletionScreen.handleFeaturePillPress',
+      });
+    },
+    [expandedFeature]
+  );
+
+  const selectedFeature = useMemo(
+    () => FEATURE_HIGHLIGHTS.find((feature) => feature.id === expandedFeature) ?? null,
+    [expandedFeature]
+  );
 
   // Format pattern name for display
   const getPatternName = (): string => getPatternDisplayName(data);
@@ -441,6 +462,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
       />
 
       <ScrollView
+        ref={scrollViewRef}
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
@@ -620,8 +642,27 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
         <Animated.View
           entering={reducedMotion ? undefined : FadeIn.delay(1200).duration(500)}
           style={styles.featuresSection}
+          onLayout={(event) => {
+            featuresSectionYRef.current = event.nativeEvent.layout.y;
+          }}
         >
           <Text style={styles.featuresTitle}>What you can do with Ellie</Text>
+
+          {selectedFeature ? (
+            <Animated.View
+              entering={reducedMotion ? undefined : FadeInDown.duration(260)}
+              exiting={reducedMotion ? undefined : FadeOutUp.duration(180)}
+              style={styles.featureDetailCard}
+            >
+              <View style={styles.featureDetailHeader}>
+                <Ionicons name={selectedFeature.icon} size={18} color={selectedFeature.color} />
+                <Text style={styles.featureDetailTitle}>{selectedFeature.text}</Text>
+              </View>
+              <Text style={styles.featureDetailText}>{selectedFeature.description}</Text>
+            </Animated.View>
+          ) : (
+            <Text style={styles.featureHintText}>Tap a feature chip to see more details.</Text>
+          )}
 
           <ScrollView
             horizontal
@@ -641,23 +682,15 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
                 >
                   <View style={styles.featurePillContent}>
                     <Ionicons name={feature.icon} size={20} color={feature.color} />
-                    <Text style={styles.featurePillText}>{feature.text}</Text>
-                    <Ionicons
-                      name={expandedFeature === feature.id ? 'chevron-up' : 'chevron-down'}
-                      size={16}
-                      color={theme.colors.dust}
-                    />
-                  </View>
-
-                  {expandedFeature === feature.id && (
-                    <Animated.View
-                      entering={reducedMotion ? undefined : FadeInDown.duration(300)}
-                      exiting={reducedMotion ? undefined : FadeOutUp.duration(200)}
-                      style={styles.featurePillDescription}
+                    <Text
+                      style={[
+                        styles.featurePillText,
+                        expandedFeature === feature.id && styles.featurePillTextExpanded,
+                      ]}
                     >
-                      <Text style={styles.featurePillDescriptionText}>{feature.description}</Text>
-                    </Animated.View>
-                  )}
+                      {feature.text}
+                    </Text>
+                  </View>
                 </Animated.View>
               </Pressable>
             ))}
@@ -839,6 +872,38 @@ const styles = StyleSheet.create({
     paddingVertical: theme.spacing.sm,
     gap: theme.spacing.sm,
   },
+  featureHintText: {
+    fontSize: 13,
+    color: theme.colors.dust,
+    marginBottom: theme.spacing.sm,
+    textAlign: 'center',
+  },
+  featureDetailCard: {
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
+    backgroundColor: theme.colors.softStone,
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: theme.spacing.sm,
+    marginBottom: theme.spacing.sm,
+  },
+  featureDetailHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.xs,
+    marginBottom: theme.spacing.xs,
+  },
+  featureDetailTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: theme.colors.paper,
+    flex: 1,
+  },
+  featureDetailText: {
+    fontSize: 13,
+    color: theme.colors.dust,
+    lineHeight: 19,
+  },
   featurePill: {
     paddingVertical: theme.spacing.sm,
     paddingHorizontal: theme.spacing.md,
@@ -863,16 +928,9 @@ const styles = StyleSheet.create({
     color: theme.colors.paper,
     flex: 1,
   },
-  featurePillDescription: {
-    marginTop: theme.spacing.sm,
-    paddingTop: theme.spacing.sm,
-    borderTopWidth: 1,
-    borderTopColor: theme.colors.opacity.gold10,
-  },
-  featurePillDescriptionText: {
-    fontSize: 12,
-    color: theme.colors.dust,
-    lineHeight: 18,
+  featurePillTextExpanded: {
+    color: theme.colors.paleGold,
+    fontWeight: '700',
   },
   // Error
   errorContainer: {
