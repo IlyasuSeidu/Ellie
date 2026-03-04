@@ -2056,7 +2056,6 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   const shiftSystem: ShiftSystem = (data.shiftSystem as ShiftSystem) || ShiftSystem.TWO_SHIFT;
   // Smart default: today
   const [selectedDate, setSelectedDate] = useState<string | null>(getTodayDate());
-  const [isGuidanceExpanded, setIsGuidanceExpanded] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const screenOpacity = useSharedValue(1);
   const screenSlideX = useSharedValue(0);
@@ -2138,11 +2137,6 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
     }
   }, [onBack, navigation]);
 
-  const handleGuidanceToggle = useCallback(() => {
-    HAPTIC_PATTERNS.LIGHT();
-    setIsGuidanceExpanded((prev) => !prev);
-  }, []);
-
   return (
     <View style={styles.container} testID={testID}>
       <ProgressHeader
@@ -2181,16 +2175,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
               end={{ x: 1, y: 1 }}
               style={styles.guidanceCard}
             >
-              <Pressable
-                onPress={handleGuidanceToggle}
-                accessibilityRole="button"
-                accessibilityLabel="Date selection guidance"
-                accessibilityHint="Double tap to expand or collapse quick setup tips"
-                style={({ pressed }) => [
-                  styles.guidancePressable,
-                  pressed && styles.guidancePressablePressed,
-                ]}
-              >
+              <View style={styles.guidancePressable}>
                 <View style={styles.guidanceHeader}>
                   <View style={styles.guidanceIconBadge}>
                     <Ionicons name="sparkles-outline" size={18} color={theme.colors.paleGold} />
@@ -2199,75 +2184,19 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
                     <Text style={styles.guidanceTitle}>Picking your date</Text>
                     <Text style={styles.guidanceSubtitle}>Quick tips for a faster setup</Text>
                   </View>
-                  <View style={styles.guidanceChevronBadge}>
-                    <Ionicons
-                      name={isGuidanceExpanded ? 'chevron-up' : 'chevron-down'}
-                      size={16}
-                      color={theme.colors.paper}
-                    />
-                  </View>
-                </View>
-
-                <View style={styles.guidanceChipRow}>
-                  <View style={styles.guidanceChip}>
-                    <Ionicons name="today-outline" size={14} color={theme.colors.paleGold} />
-                    <Text style={styles.guidanceChipText}>Today is common</Text>
-                  </View>
-                  <View style={styles.guidanceChip}>
-                    <Ionicons name="calendar-outline" size={14} color={theme.colors.paleGold} />
-                    <Text style={styles.guidanceChipText}>Any date works</Text>
-                  </View>
                 </View>
 
                 <Text style={styles.guidanceText}>
                   Most people pick today so their calendar starts right away. But you can pick any
                   date—we&apos;ll calculate your rotation from there.
                 </Text>
-
-                {isGuidanceExpanded ? (
-                  <View style={styles.guidanceExpanded}>
-                    <View style={styles.guidanceBulletRow}>
-                      <Ionicons
-                        name="pulse-outline"
-                        size={14}
-                        color={theme.colors.sacredGold}
-                        style={styles.guidanceBulletIcon}
-                      />
-                      <Text style={styles.guidanceBulletText}>
-                        Ellie maps your work/off cycle instantly from the date you choose.
-                      </Text>
-                    </View>
-                    <View style={styles.guidanceBulletRow}>
-                      <Ionicons
-                        name="refresh-outline"
-                        size={14}
-                        color={theme.colors.sacredGold}
-                        style={styles.guidanceBulletIcon}
-                      />
-                      <Text style={styles.guidanceBulletText}>
-                        You can always refine your setup later in the Profile screen.
-                      </Text>
-                    </View>
-                    {selectedDateGuidanceLabel ? (
-                      <View style={styles.guidanceSelectionPill}>
-                        <Ionicons
-                          name="checkmark-circle"
-                          size={14}
-                          color={theme.colors.paleGold}
-                          style={styles.guidanceBulletIcon}
-                        />
-                        <Text style={styles.guidanceSelectionText}>
-                          {selectedDateGuidanceLabel}
-                        </Text>
-                      </View>
-                    ) : null}
-                  </View>
-                ) : (
-                  <Text style={styles.guidanceHintText}>
-                    Tap this card to reveal more quick tips.
-                  </Text>
-                )}
-              </Pressable>
+                <Text style={styles.guidanceHintText}>
+                  Pick the closest date now, you can adjust settings later.
+                </Text>
+                {selectedDateGuidanceLabel ? (
+                  <Text style={styles.guidanceSelectionSimple}>{selectedDateGuidanceLabel}</Text>
+                ) : null}
+              </View>
             </LinearGradient>
           </View>
         </ScrollView>
@@ -2950,5 +2879,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: theme.colors.dust,
     fontStyle: 'italic',
+  },
+  guidanceSelectionSimple: {
+    marginTop: theme.spacing.sm,
+    fontSize: 12,
+    color: theme.colors.paleGold,
+    fontWeight: '600',
   },
 });
