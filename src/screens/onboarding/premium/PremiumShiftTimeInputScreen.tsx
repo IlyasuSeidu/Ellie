@@ -415,6 +415,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   const [isPatternExpanded, setIsPatternExpanded] = useState(false);
   const [isGuidanceExpanded, setIsGuidanceExpanded] = useState(false);
   const [isTipExpanded, setIsTipExpanded] = useState(false);
+  const [isDetectionExpanded, setIsDetectionExpanded] = useState(false);
 
   // Check for reduced motion preference
   useEffect(() => {
@@ -426,6 +427,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     setIsPatternExpanded(false);
     setIsGuidanceExpanded(false);
     setIsTipExpanded(false);
+    setIsDetectionExpanded(false);
     if (currentStageIndex > 0) {
       // Scroll to top with smooth animation when moving to next stage
       scrollViewRef.current?.scrollTo({
@@ -505,6 +507,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   const handlePresetSelect = (presetId: string) => {
     setSelectedPreset(presetId);
     setTimeError(null);
+    setIsDetectionExpanded(false);
 
     if (presetId === 'custom') {
       setShowCustomInput(true);
@@ -720,6 +723,76 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     totalStages === 1
       ? 'Single shift profile'
       : `Profile ${currentStageIndex + 1} of ${totalStages}`;
+  const detectedShiftType = selectedPreset && isValid() ? getShiftType() : null;
+
+  const detectionCardMeta = React.useMemo(() => {
+    if (!detectedShiftType) {
+      return null;
+    }
+
+    switch (detectedShiftType) {
+      case 'day':
+        return {
+          title: '☀️ Daytime start',
+          icon: 'sunny-outline' as const,
+          windowLabel: 'Typical window: 6:00 AM - 5:59 PM',
+          quickHint: 'Great for daytime operations and standard handovers.',
+          colors: [
+            'rgba(59, 130, 246, 0.25)',
+            'rgba(37, 99, 235, 0.12)',
+            'rgba(15, 23, 42, 0.92)',
+          ] as const,
+          accent: '#60A5FA',
+          iconBackground: 'rgba(59, 130, 246, 0.2)',
+        };
+      case 'morning':
+        return {
+          title: '🌅 Morning start',
+          icon: 'partly-sunny-outline' as const,
+          windowLabel: 'Typical window: 6:00 AM - 1:59 PM',
+          quickHint: 'Common for early production and daytime coverage.',
+          colors: [
+            'rgba(245, 158, 11, 0.28)',
+            'rgba(251, 146, 60, 0.12)',
+            'rgba(24, 16, 11, 0.92)',
+          ] as const,
+          accent: '#F59E0B',
+          iconBackground: 'rgba(245, 158, 11, 0.2)',
+        };
+      case 'afternoon':
+        return {
+          title: '🌤️ Afternoon start',
+          icon: 'sunny-outline' as const,
+          windowLabel: 'Typical window: 2:00 PM - 9:59 PM',
+          quickHint: 'Best for late-day handover and evening coverage.',
+          colors: [
+            'rgba(6, 182, 212, 0.25)',
+            'rgba(14, 116, 144, 0.12)',
+            'rgba(15, 23, 42, 0.92)',
+          ] as const,
+          accent: '#22D3EE',
+          iconBackground: 'rgba(6, 182, 212, 0.2)',
+        };
+      case 'night':
+      default:
+        return {
+          title: '🌙 Night start',
+          icon: 'moon-outline' as const,
+          windowLabel:
+            shiftSystem === ShiftSystem.THREE_SHIFT
+              ? 'Typical window: 10:00 PM - 5:59 AM'
+              : 'Typical window: 6:00 PM - 5:59 AM',
+          quickHint: 'Designed for overnight rotations and low-light coverage.',
+          colors: [
+            'rgba(124, 58, 237, 0.3)',
+            'rgba(99, 102, 241, 0.12)',
+            'rgba(17, 24, 39, 0.92)',
+          ] as const,
+          accent: '#A78BFA',
+          iconBackground: 'rgba(124, 58, 237, 0.22)',
+        };
+    }
+  }, [detectedShiftType, shiftSystem]);
 
   const handlePatternCardToggle = useCallback(() => {
     void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
@@ -740,6 +813,13 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
       source: 'PremiumShiftTimeInputScreen.handleTipCardToggle',
     });
     setIsTipExpanded((prev) => !prev);
+  }, []);
+
+  const handleDetectionCardToggle = useCallback(() => {
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: 'PremiumShiftTimeInputScreen.handleDetectionCardToggle',
+    });
+    setIsDetectionExpanded((prev) => !prev);
   }, []);
 
   // Get stage-specific title
@@ -1170,40 +1250,87 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
           )}
 
           {/* Shift Type Auto-Detection Card */}
-          {selectedPreset && isValid() && (
+          {detectionCardMeta && (
             <Animated.View
               entering={reducedMotion ? undefined : FadeInUp.duration(300)}
-              style={[
-                styles.detectionCard,
-                getShiftType() === 'day' ||
-                getShiftType() === 'morning' ||
-                getShiftType() === 'afternoon'
-                  ? styles.detectionCardDay
-                  : styles.detectionCardNight,
-              ]}
+              style={styles.detectionCard}
             >
-              <Ionicons name="bulb" size={24} color={theme.colors.sacredGold} />
-              <View style={styles.detectionContent}>
-                <Text
-                  style={[
-                    styles.detectionText,
-                    getShiftType() === 'day' ||
-                    getShiftType() === 'morning' ||
-                    getShiftType() === 'afternoon'
-                      ? styles.detectionTextDay
-                      : styles.detectionTextNight,
+              <LinearGradient
+                colors={detectionCardMeta.colors}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.detectionCardGradient}
+              >
+                <Pressable
+                  onPress={handleDetectionCardToggle}
+                  style={({ pressed }) => [
+                    styles.detectionPressable,
+                    pressed && styles.detectionPressablePressed,
                   ]}
                 >
-                  {getShiftType() === 'day'
-                    ? '☀️ Daytime start'
-                    : getShiftType() === 'morning'
-                      ? '🌅 Morning start'
-                      : getShiftType() === 'afternoon'
-                        ? '🌤️ Afternoon start'
-                        : '🌙 Night start'}
-                </Text>
-                <Text style={styles.detectionHelper}>This is when your shift begins</Text>
-              </View>
+                  <View style={styles.detectionHeaderRow}>
+                    <View
+                      style={[
+                        styles.detectionIconBadge,
+                        { backgroundColor: detectionCardMeta.iconBackground },
+                      ]}
+                    >
+                      <Ionicons
+                        name={detectionCardMeta.icon}
+                        size={18}
+                        color={detectionCardMeta.accent}
+                      />
+                    </View>
+                    <View style={styles.detectionContent}>
+                      <Text style={[styles.detectionText, { color: detectionCardMeta.accent }]}>
+                        {detectionCardMeta.title}
+                      </Text>
+                      <Text style={styles.detectionHelper}>This is when your shift begins</Text>
+                    </View>
+                    <View style={styles.detectionChevronBadge}>
+                      <Ionicons
+                        name={isDetectionExpanded ? 'chevron-up' : 'chevron-down'}
+                        size={18}
+                        color={detectionCardMeta.accent}
+                      />
+                    </View>
+                  </View>
+
+                  <View style={styles.detectionChipRow}>
+                    <View style={styles.detectionChip}>
+                      <Text style={styles.detectionChipText}>Auto-detected</Text>
+                    </View>
+                    <View style={styles.detectionChip}>
+                      <Text style={styles.detectionChipText}>{detectionCardMeta.windowLabel}</Text>
+                    </View>
+                  </View>
+
+                  {isDetectionExpanded ? (
+                    <View style={styles.detectionExpanded}>
+                      <View style={styles.detectionExpandedRow}>
+                        <Ionicons
+                          name="checkmark-done-outline"
+                          size={16}
+                          color={detectionCardMeta.accent}
+                        />
+                        <Text style={styles.detectionExpandedText}>
+                          {detectionCardMeta.quickHint}
+                        </Text>
+                      </View>
+                      <View style={styles.detectionExpandedRow}>
+                        <Ionicons name="time-outline" size={16} color={detectionCardMeta.accent} />
+                        <Text style={styles.detectionExpandedText}>
+                          You can still adjust this start time later from settings.
+                        </Text>
+                      </View>
+                    </View>
+                  ) : (
+                    <Text style={styles.detectionHintText}>
+                      Tap this card to see why this shift type was selected.
+                    </Text>
+                  )}
+                </Pressable>
+              </LinearGradient>
             </Animated.View>
           )}
 
@@ -1917,18 +2044,48 @@ const styles = StyleSheet.create({
   },
   // Detection Card
   detectionCard: {
+    borderRadius: 18,
+    marginBottom: theme.spacing.lg,
+    ...Platform.select({
+      ios: {
+        shadowColor: theme.colors.deepVoid,
+        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.24,
+        shadowRadius: 14,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
+  },
+  detectionCardGradient: {
+    borderRadius: 18,
+    padding: 1,
+  },
+  detectionPressable: {
+    borderRadius: 17,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.white10,
+    backgroundColor: 'rgba(15, 15, 15, 0.75)',
+    padding: theme.spacing.md,
+  },
+  detectionPressablePressed: {
+    opacity: 0.95,
+    transform: [{ scale: 0.995 }],
+  },
+  detectionHeaderRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: theme.spacing.md,
+    gap: theme.spacing.sm,
+  },
+  detectionIconBadge: {
+    width: 32,
+    height: 32,
     borderRadius: 16,
-    padding: theme.spacing.md,
-    marginBottom: theme.spacing.lg,
-  },
-  detectionCardDay: {
-    backgroundColor: 'rgba(33, 150, 243, 0.1)',
-  },
-  detectionCardNight: {
-    backgroundColor: 'rgba(101, 31, 255, 0.1)',
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.white20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   detectionContent: {
     flex: 1,
@@ -1938,15 +2095,59 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 2,
   },
-  detectionTextDay: {
-    color: '#2196F3',
-  },
-  detectionTextNight: {
-    color: '#651FFF',
+  detectionChevronBadge: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.white20,
+    backgroundColor: theme.colors.opacity.white10,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   detectionHelper: {
+    fontSize: 13,
+    color: theme.colors.dust,
+  },
+  detectionChipRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: theme.spacing.sm,
+    marginTop: theme.spacing.sm,
+  },
+  detectionChip: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.white20,
+    backgroundColor: theme.colors.opacity.white10,
+  },
+  detectionChipText: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: theme.colors.paper,
+  },
+  detectionExpanded: {
+    marginTop: theme.spacing.md,
+    gap: theme.spacing.xs,
+  },
+  detectionExpandedRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: theme.spacing.sm,
+  },
+  detectionExpandedText: {
+    flex: 1,
     fontSize: 12,
     color: theme.colors.dust,
+    lineHeight: 18,
+  },
+  detectionHintText: {
+    marginTop: theme.spacing.sm,
+    fontSize: 12,
+    color: theme.colors.dust,
+    fontStyle: 'italic',
   },
   // Tips Section
   tipsSection: {
