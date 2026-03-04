@@ -220,7 +220,7 @@ const SHIFT_PRESETS: ShiftPreset[] = [
     duration: 8,
     icon: 'sunny-outline',
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    imageSource: require('../../../../assets/onboarding/icons/consolidated/shift-time-morning.png'),
+    imageSource: require('../../../../assets/onboarding/icons/consolidated/phase-shift-time-morning.png'),
     type: 'morning',
     endTimeLabel: 'Ends at 2:00 PM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
@@ -233,7 +233,7 @@ const SHIFT_PRESETS: ShiftPreset[] = [
     duration: 8,
     icon: 'sunny-outline',
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    imageSource: require('../../../../assets/onboarding/icons/consolidated/shift-time-morning.png'),
+    imageSource: require('../../../../assets/onboarding/icons/consolidated/calendar-shift-time-morning.png'),
     type: 'morning',
     endTimeLabel: 'Ends at 4:00 PM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
@@ -261,7 +261,7 @@ const SHIFT_PRESETS: ShiftPreset[] = [
     duration: 8,
     icon: 'partly-sunny-outline',
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    imageSource: require('../../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png'),
+    imageSource: require('../../../../assets/onboarding/icons/consolidated/phase-shift-time-afternoon.png'),
     type: 'afternoon',
     endTimeLabel: 'Ends at 10:00 PM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
@@ -274,7 +274,7 @@ const SHIFT_PRESETS: ShiftPreset[] = [
     duration: 8,
     icon: 'partly-sunny-outline',
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    imageSource: require('../../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png'),
+    imageSource: require('../../../../assets/onboarding/icons/consolidated/calendar-shift-time-afternoon.png'),
     type: 'afternoon',
     endTimeLabel: 'Ends at 11:00 PM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
@@ -302,7 +302,7 @@ const SHIFT_PRESETS: ShiftPreset[] = [
     duration: 8,
     icon: 'moon-outline',
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    imageSource: require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png'),
+    imageSource: require('../../../../assets/onboarding/icons/consolidated/phase-night-shift-moon.png'),
     type: 'night',
     endTimeLabel: 'Ends at 6:00 AM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
@@ -315,7 +315,7 @@ const SHIFT_PRESETS: ShiftPreset[] = [
     duration: 8,
     icon: 'moon-outline',
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    imageSource: require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png'),
+    imageSource: require('../../../../assets/onboarding/icons/consolidated/calendar-night-shift-moon.png'),
     type: 'night',
     endTimeLabel: 'Ends at 7:00 AM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
@@ -1277,19 +1277,19 @@ const getPresetIconSource = (preset: ShiftPreset): ImageSourcePropType | undefin
     return undefined;
   }
 
-  if (preset.shiftSystem === ShiftSystem.THREE_SHIFT) {
-    if (preset.type === 'morning') {
-      return require('../../../../assets/onboarding/icons/consolidated/shift-time-morning.png');
-    }
-    if (preset.type === 'afternoon') {
-      return require('../../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png');
-    }
-    if (preset.type === 'night') {
-      return require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png');
-    }
-  }
+  const presetIconById: Partial<Record<ShiftPreset['id'], ImageSourcePropType>> = {
+    early_morning: require('../../../../assets/onboarding/icons/consolidated/shift-time-morning.png'),
+    standard_morning: require('../../../../assets/onboarding/icons/consolidated/phase-shift-time-morning.png'),
+    late_morning: require('../../../../assets/onboarding/icons/consolidated/calendar-shift-time-morning.png'),
+    early_afternoon: require('../../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png'),
+    standard_afternoon: require('../../../../assets/onboarding/icons/consolidated/phase-shift-time-afternoon.png'),
+    late_afternoon: require('../../../../assets/onboarding/icons/consolidated/calendar-shift-time-afternoon.png'),
+    early_night_8h: require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png'),
+    standard_night_8h: require('../../../../assets/onboarding/icons/consolidated/phase-night-shift-moon.png'),
+    late_night_8h: require('../../../../assets/onboarding/icons/consolidated/calendar-night-shift-moon.png'),
+  };
 
-  return preset.imageSource;
+  return presetIconById[preset.id] ?? preset.imageSource;
 };
 
 const PresetCard: React.FC<PresetCardProps> = ({
