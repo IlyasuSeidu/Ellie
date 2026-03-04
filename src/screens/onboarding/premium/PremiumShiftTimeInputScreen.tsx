@@ -414,6 +414,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   const [timeError, setTimeError] = useState<string | null>(null);
   const [isPatternExpanded, setIsPatternExpanded] = useState(false);
   const [isGuidanceExpanded, setIsGuidanceExpanded] = useState(false);
+  const [isTipExpanded, setIsTipExpanded] = useState(false);
 
   // Check for reduced motion preference
   useEffect(() => {
@@ -424,6 +425,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   useEffect(() => {
     setIsPatternExpanded(false);
     setIsGuidanceExpanded(false);
+    setIsTipExpanded(false);
     if (currentStageIndex > 0) {
       // Scroll to top with smooth animation when moving to next stage
       scrollViewRef.current?.scrollTo({
@@ -731,6 +733,13 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
       source: 'PremiumShiftTimeInputScreen.handleGuidanceCardToggle',
     });
     setIsGuidanceExpanded((prev) => !prev);
+  }, []);
+
+  const handleTipCardToggle = useCallback(() => {
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: 'PremiumShiftTimeInputScreen.handleTipCardToggle',
+    });
+    setIsTipExpanded((prev) => !prev);
   }, []);
 
   // Get stage-specific title
@@ -1203,17 +1212,82 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
             entering={reducedMotion ? undefined : FadeIn.duration(300).delay(1000)}
             style={styles.tipsSection}
           >
-            <View style={styles.tipIconContainer}>
-              <Ionicons name="bulb-outline" size={40} color={theme.colors.sacredGold} />
-            </View>
-            <View style={styles.tipContent}>
-              <Text style={styles.tipTitle}>Pro Tip</Text>
-              <Text style={styles.tipText}>
-                {shiftSystem === ShiftSystem.TWO_SHIFT
-                  ? 'Not sure? Most shift workers on 12-hour rotations start at 6 AM or 6 PM. Pick the closest match—you can adjust it later in settings if needed.'
-                  : 'Not sure? Most 8-hour shift workers start at 6 AM, 2 PM, or 10 PM. Pick the closest match—you can adjust it later in settings if needed.'}
-              </Text>
-            </View>
+            <LinearGradient
+              colors={[
+                'rgba(217, 119, 6, 0.22)',
+                'rgba(42, 26, 14, 0.56)',
+                'rgba(22, 16, 12, 0.94)',
+              ]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.tipsSectionGradient}
+            >
+              <Pressable
+                onPress={handleTipCardToggle}
+                style={({ pressed }) => [
+                  styles.tipPressable,
+                  pressed && styles.tipPressablePressed,
+                ]}
+              >
+                <View style={styles.tipHeaderRow}>
+                  <View style={styles.tipIconContainer}>
+                    <Ionicons name="bulb-outline" size={22} color={theme.colors.sacredGold} />
+                  </View>
+                  <View style={styles.tipHeaderTextContainer}>
+                    <Text style={styles.tipTitle}>Pro Tip</Text>
+                    <Text style={styles.tipSubtitle}>
+                      Fastest way to pick a reliable start time
+                    </Text>
+                  </View>
+                  <View style={styles.tipChevronBadge}>
+                    <Ionicons
+                      name={isTipExpanded ? 'chevron-up' : 'chevron-down'}
+                      size={18}
+                      color={theme.colors.sacredGold}
+                    />
+                  </View>
+                </View>
+
+                <Text style={styles.tipText}>
+                  {shiftSystem === ShiftSystem.TWO_SHIFT
+                    ? 'Not sure? Most shift workers on 12-hour rotations start at 6 AM or 6 PM. Pick the closest match—you can adjust it later in settings if needed.'
+                    : 'Not sure? Most 8-hour shift workers start at 6 AM, 2 PM, or 10 PM. Pick the closest match—you can adjust it later in settings if needed.'}
+                </Text>
+
+                <View style={styles.tipChipRow}>
+                  <View style={styles.tipChip}>
+                    <Text style={styles.tipChipText}>Editable later</Text>
+                  </View>
+                  <View style={styles.tipChip}>
+                    <Text style={styles.tipChipText}>Use closest match</Text>
+                  </View>
+                </View>
+
+                {isTipExpanded ? (
+                  <View style={styles.tipExpanded}>
+                    <View style={styles.tipExpandedRow}>
+                      <Ionicons
+                        name="checkmark-circle-outline"
+                        size={16}
+                        color={theme.colors.sacredGold}
+                      />
+                      <Text style={styles.tipExpandedText}>
+                        Start with presets first. They’re fastest and usually close to real shift
+                        start times.
+                      </Text>
+                    </View>
+                    <View style={styles.tipExpandedRow}>
+                      <Ionicons name="build-outline" size={16} color={theme.colors.sacredGold} />
+                      <Text style={styles.tipExpandedText}>
+                        If your site schedule is unusual, use Custom and fine-tune to the minute.
+                      </Text>
+                    </View>
+                  </View>
+                ) : (
+                  <Text style={styles.tipHintText}>Tap this card to reveal more setup advice.</Text>
+                )}
+              </Pressable>
+            </LinearGradient>
           </Animated.View>
         </ScrollView>
 
@@ -1222,41 +1296,64 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
           entering={reducedMotion ? undefined : FadeInUp.duration(400).springify().delay(1200)}
         >
           <View style={styles.bottomNav}>
-            <Pressable
-              style={({ pressed }) => [styles.backButton, pressed && styles.backButtonPressed]}
-              onPress={handleBack}
-              accessibilityLabel="Go back"
-              accessibilityRole="button"
+            <LinearGradient
+              colors={['rgba(43, 24, 10, 0.84)', 'rgba(22, 14, 9, 0.95)']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.bottomNavShell}
             >
-              <Ionicons name="arrow-back" size={24} color={theme.colors.paper} />
-            </Pressable>
-
-            <Pressable
-              style={({ pressed }) => [
-                styles.continueButtonContainer,
-                pressed && isValid() && styles.continueButtonPressed,
-              ]}
-              onPress={handleContinue}
-              disabled={!isValid()}
-              accessibilityLabel={
-                totalStages === 1
-                  ? 'Continue to next step'
-                  : isLastStage
-                    ? 'Save shift times and continue'
-                    : `Continue to ${requiredShiftTypes[currentStageIndex + 1]} shift times`
-              }
-              accessibilityRole="button"
-              accessibilityState={{ disabled: !isValid() }}
-            >
-              <View style={[styles.continueButton, { opacity: isValid() ? 1 : 0.5 }]}>
+              <Pressable
+                style={({ pressed }) => [styles.backButton, pressed && styles.backButtonPressed]}
+                onPress={handleBack}
+                accessibilityLabel="Go back"
+                accessibilityRole="button"
+              >
                 <LinearGradient
-                  colors={[theme.colors.brightGold, theme.colors.sacredGold]}
-                  style={styles.continueGradient}
+                  colors={['rgba(255,255,255,0.18)', 'rgba(255,255,255,0.08)']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.backButtonGradient}
                 >
-                  <Ionicons name="checkmark" size={24} color={theme.colors.paper} />
+                  <Ionicons name="arrow-back" size={24} color={theme.colors.paper} />
                 </LinearGradient>
-              </View>
-            </Pressable>
+              </Pressable>
+
+              <Pressable
+                style={({ pressed }) => [
+                  styles.continueButtonContainer,
+                  pressed && isValid() && styles.continueButtonPressed,
+                ]}
+                onPress={handleContinue}
+                disabled={!isValid()}
+                accessibilityLabel={
+                  totalStages === 1
+                    ? 'Continue to next step'
+                    : isLastStage
+                      ? 'Save shift times and continue'
+                      : `Continue to ${requiredShiftTypes[currentStageIndex + 1]} shift times`
+                }
+                accessibilityRole="button"
+                accessibilityState={{ disabled: !isValid() }}
+              >
+                <View style={[styles.continueButton, !isValid() && styles.continueButtonDisabled]}>
+                  <LinearGradient
+                    colors={
+                      isValid()
+                        ? [
+                            theme.colors.brightGold,
+                            theme.colors.sacredGold,
+                            theme.colors.brightGold,
+                          ]
+                        : ['rgba(78, 67, 61, 0.85)', 'rgba(58, 52, 49, 0.85)']
+                    }
+                    locations={isValid() ? [0, 0.5, 1] : undefined}
+                    style={styles.continueGradient}
+                  >
+                    <Ionicons name="checkmark" size={24} color={theme.colors.paper} />
+                  </LinearGradient>
+                </View>
+              </Pressable>
+            </LinearGradient>
           </View>
         </Animated.View>
       </KeyboardAvoidingView>
@@ -1845,36 +1942,118 @@ const styles = StyleSheet.create({
   },
   // Tips Section
   tipsSection: {
-    flexDirection: 'row',
-    backgroundColor: theme.colors.opacity.stone50,
-    borderRadius: 16,
+    borderRadius: 20,
+    marginBottom: theme.spacing.xl,
+    ...Platform.select({
+      ios: {
+        shadowColor: theme.colors.sacredGold,
+        shadowOffset: { width: 0, height: 14 },
+        shadowOpacity: 0.22,
+        shadowRadius: 18,
+      },
+      android: {
+        elevation: 10,
+      },
+    }),
+  },
+  tipsSectionGradient: {
+    borderRadius: 20,
+    padding: 1,
+  },
+  tipPressable: {
+    borderRadius: 19,
     borderWidth: 1,
     borderColor: theme.colors.opacity.gold20,
+    backgroundColor: 'rgba(22, 16, 12, 0.92)',
     padding: theme.spacing.md,
-    gap: theme.spacing.md,
-    marginBottom: theme.spacing.xl,
+  },
+  tipPressablePressed: {
+    opacity: 0.95,
+    transform: [{ scale: 0.995 }],
+  },
+  tipHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: theme.spacing.sm,
+    marginBottom: theme.spacing.sm,
   },
   tipIconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: theme.colors.opacity.gold20,
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
+    backgroundColor: 'rgba(217, 119, 6, 0.14)',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  tipContent: {
+  tipHeaderTextContainer: {
     flex: 1,
+    gap: 2,
   },
   tipTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
+    fontSize: 22,
+    fontWeight: '700',
     color: theme.colors.sacredGold,
-    marginBottom: theme.spacing.xs,
   },
-  tipText: {
+  tipSubtitle: {
     fontSize: 12,
     color: theme.colors.dust,
-    lineHeight: 18,
+  },
+  tipChevronBadge: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
+    backgroundColor: 'rgba(217, 119, 6, 0.12)',
+  },
+  tipText: {
+    fontSize: 15,
+    color: theme.colors.dust,
+    lineHeight: 24,
+  },
+  tipChipRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: theme.spacing.sm,
+    marginTop: theme.spacing.md,
+  },
+  tipChip: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
+    backgroundColor: theme.colors.opacity.gold10,
+  },
+  tipChipText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: theme.colors.paleGold,
+  },
+  tipExpanded: {
+    marginTop: theme.spacing.md,
+    gap: theme.spacing.sm,
+  },
+  tipExpandedRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: theme.spacing.sm,
+  },
+  tipExpandedText: {
+    flex: 1,
+    fontSize: 13,
+    color: theme.colors.dust,
+    lineHeight: 19,
+  },
+  tipHintText: {
+    marginTop: theme.spacing.sm,
+    fontSize: 12,
+    color: theme.colors.dust,
+    fontStyle: 'italic',
   },
   // Bottom Navigation
   bottomNav: {
@@ -1882,60 +2061,92 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
+    paddingHorizontal: theme.spacing.lg,
+    paddingTop: theme.spacing.lg,
+    paddingBottom: Platform.OS === 'ios' ? theme.spacing.xxl : theme.spacing.lg,
+    backgroundColor: 'transparent',
+  },
+  bottomNavShell: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: theme.spacing.lg,
-    paddingVertical: theme.spacing.lg,
-    backgroundColor: theme.colors.deepVoid,
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: theme.spacing.sm,
+    ...Platform.select({
+      ios: {
+        shadowColor: theme.colors.deepVoid,
+        shadowOffset: { width: 0, height: 14 },
+        shadowOpacity: 0.4,
+        shadowRadius: 18,
+      },
+      android: {
+        elevation: 10,
+      },
+    }),
   },
   backButton: {
     width: 54,
     height: 54,
     borderRadius: 27,
-    backgroundColor: theme.colors.opacity.white10,
+    overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  backButtonGradient: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 27,
     borderWidth: 1,
-    borderColor: theme.colors.opacity.gold20,
+    borderColor: theme.colors.opacity.white10,
     alignItems: 'center',
     justifyContent: 'center',
     ...Platform.select({
       ios: {
         shadowColor: theme.colors.deepVoid,
         shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
+        shadowOpacity: 0.25,
+        shadowRadius: 6,
       },
       android: {
-        elevation: 4,
+        elevation: 5,
       },
     }),
   },
   backButtonPressed: {
-    transform: [{ scale: 0.95 }],
+    transform: [{ scale: 0.97 }],
   },
   continueButtonContainer: {
-    width: 54,
-    height: 54,
+    width: 58,
+    height: 58,
   },
   continueButton: {
     width: '100%',
     height: '100%',
-    borderRadius: 27,
+    borderRadius: 29,
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
+  },
+  continueButtonDisabled: {
+    opacity: 0.5,
   },
   continueButtonPressed: {
-    transform: [{ scale: 0.95 }],
+    transform: [{ scale: 0.97 }],
   },
   continueGradient: {
     width: '100%',
     height: '100%',
+    borderRadius: 29,
     alignItems: 'center',
     justifyContent: 'center',
     ...Platform.select({
       ios: {
         shadowColor: theme.colors.sacredGold,
         shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.5,
+        shadowOpacity: 0.42,
         shadowRadius: 8,
       },
       android: {
