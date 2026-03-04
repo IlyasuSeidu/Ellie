@@ -412,10 +412,6 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   const [showCustomInput, setShowCustomInput] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [timeError, setTimeError] = useState<string | null>(null);
-  const [isPatternExpanded, setIsPatternExpanded] = useState(false);
-  const [isGuidanceExpanded, setIsGuidanceExpanded] = useState(false);
-  const [isTipExpanded, setIsTipExpanded] = useState(false);
-  const [isDetectionExpanded, setIsDetectionExpanded] = useState(false);
 
   // Check for reduced motion preference
   useEffect(() => {
@@ -424,10 +420,6 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
 
   // Auto-scroll to top when stage changes
   useEffect(() => {
-    setIsPatternExpanded(false);
-    setIsGuidanceExpanded(false);
-    setIsTipExpanded(false);
-    setIsDetectionExpanded(false);
     if (currentStageIndex > 0) {
       // Scroll to top with smooth animation when moving to next stage
       scrollViewRef.current?.scrollTo({
@@ -507,7 +499,6 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   const handlePresetSelect = (presetId: string) => {
     setSelectedPreset(presetId);
     setTimeError(null);
-    setIsDetectionExpanded(false);
 
     if (presetId === 'custom') {
       setShowCustomInput(true);
@@ -710,13 +701,6 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
 
   // Get pattern display info from context
   const patternInfo = getPatternInfo(data.patternType, data.customPattern, shiftSystem);
-  const [cycleLengthLabel, cycleMixLabel] = React.useMemo(() => {
-    const statsParts = patternInfo.stats
-      .split('•')
-      .map((part) => part.trim())
-      .filter(Boolean);
-    return [statsParts[0] || 'Custom cycle', statsParts[1] || 'Flexible schedule'];
-  }, [patternInfo.stats]);
   const shiftSystemLabel =
     shiftSystem === ShiftSystem.THREE_SHIFT ? '3-shift system' : '2-shift system';
   const stageCollectionLabel =
@@ -736,7 +720,6 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
           title: 'Daytime start',
           icon: 'sunny-outline' as const,
           windowLabel: 'Typical window: 6:00 AM - 5:59 PM',
-          quickHint: 'Great for daytime operations and standard handovers.',
           colors: [
             'rgba(59, 130, 246, 0.25)',
             'rgba(37, 99, 235, 0.12)',
@@ -750,7 +733,6 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
           title: 'Morning start',
           icon: 'partly-sunny-outline' as const,
           windowLabel: 'Typical window: 6:00 AM - 1:59 PM',
-          quickHint: 'Common for early production and daytime coverage.',
           colors: [
             'rgba(245, 158, 11, 0.28)',
             'rgba(251, 146, 60, 0.12)',
@@ -764,7 +746,6 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
           title: 'Afternoon start',
           icon: 'sunny-outline' as const,
           windowLabel: 'Typical window: 2:00 PM - 9:59 PM',
-          quickHint: 'Best for late-day handover and evening coverage.',
           colors: [
             'rgba(6, 182, 212, 0.25)',
             'rgba(14, 116, 144, 0.12)',
@@ -782,7 +763,6 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
             shiftSystem === ShiftSystem.THREE_SHIFT
               ? 'Typical window: 10:00 PM - 5:59 AM'
               : 'Typical window: 6:00 PM - 5:59 AM',
-          quickHint: 'Designed for overnight rotations and low-light coverage.',
           colors: [
             'rgba(124, 58, 237, 0.3)',
             'rgba(99, 102, 241, 0.12)',
@@ -793,34 +773,6 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
         };
     }
   }, [detectedShiftType, shiftSystem]);
-
-  const handlePatternCardToggle = useCallback(() => {
-    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
-      source: 'PremiumShiftTimeInputScreen.handlePatternCardToggle',
-    });
-    setIsPatternExpanded((prev) => !prev);
-  }, []);
-
-  const handleGuidanceCardToggle = useCallback(() => {
-    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
-      source: 'PremiumShiftTimeInputScreen.handleGuidanceCardToggle',
-    });
-    setIsGuidanceExpanded((prev) => !prev);
-  }, []);
-
-  const handleTipCardToggle = useCallback(() => {
-    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
-      source: 'PremiumShiftTimeInputScreen.handleTipCardToggle',
-    });
-    setIsTipExpanded((prev) => !prev);
-  }, []);
-
-  const handleDetectionCardToggle = useCallback(() => {
-    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
-      source: 'PremiumShiftTimeInputScreen.handleDetectionCardToggle',
-    });
-    setIsDetectionExpanded((prev) => !prev);
-  }, []);
 
   // Get stage-specific title
   const getStageTitle = (): string => {
@@ -931,81 +883,30 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
               style={styles.patternCardShell}
             >
               <Animated.View style={floatingStyle}>
-                <Pressable
-                  onPress={handlePatternCardToggle}
-                  style={({ pressed }) => [
-                    styles.patternPressable,
-                    pressed && styles.patternPressablePressed,
+                <LinearGradient
+                  colors={[
+                    'rgba(63, 46, 35, 0.95)',
+                    'rgba(34, 28, 24, 0.98)',
+                    'rgba(20, 18, 17, 0.98)',
                   ]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.patternGradient}
                 >
-                  <LinearGradient
-                    colors={[
-                      'rgba(63, 46, 35, 0.95)',
-                      'rgba(34, 28, 24, 0.98)',
-                      'rgba(20, 18, 17, 0.98)',
-                    ]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.patternGradient}
-                  >
-                    <View style={styles.patternMetaRow}>
-                      <View style={styles.patternMetaBadge}>
-                        <Ionicons
-                          name="sparkles-outline"
-                          size={14}
-                          color={theme.colors.sacredGold}
-                        />
-                        <Text style={styles.patternMetaBadgeText}>Active Pattern</Text>
-                      </View>
-                      <View style={[styles.patternMetaBadge, styles.patternMetaBadgeMuted]}>
-                        <Text style={styles.patternMetaBadgeMutedText}>{shiftSystemLabel}</Text>
-                      </View>
-                    </View>
-
-                    <View style={styles.patternIconContainer}>
-                      {patternIcon ? (
-                        <Image
-                          source={patternIcon}
-                          style={styles.patternIcon}
-                          resizeMode="contain"
-                        />
-                      ) : (
-                        <Ionicons name="calendar" size={80} color={theme.colors.sacredGold} />
-                      )}
-                    </View>
-
-                    <Text style={styles.patternName}>{patternInfo.name}</Text>
-                    <Text style={styles.patternStats}>{patternInfo.stats}</Text>
-
-                    <View style={styles.patternTagRow}>
-                      <View style={styles.patternTag}>
-                        <Text style={styles.patternTagText}>{cycleLengthLabel}</Text>
-                      </View>
-                      <View style={styles.patternTag}>
-                        <Text style={styles.patternTagText}>{stageCollectionLabel}</Text>
-                      </View>
-                    </View>
-
-                    {isPatternExpanded ? (
-                      <View style={styles.patternExpanded}>
-                        <View style={styles.patternExpandedRow}>
-                          <Ionicons name="sync-outline" size={16} color={theme.colors.sacredGold} />
-                          <Text style={styles.patternExpandedText}>Cycle mix: {cycleMixLabel}</Text>
-                        </View>
-                        <View style={styles.patternExpandedRow}>
-                          <Ionicons name="time-outline" size={16} color={theme.colors.sacredGold} />
-                          <Text style={styles.patternExpandedText}>
-                            We only need shift start times to calculate reminders and totals.
-                          </Text>
-                        </View>
-                      </View>
+                  <View style={styles.patternIconContainer}>
+                    {patternIcon ? (
+                      <Image source={patternIcon} style={styles.patternIcon} resizeMode="contain" />
                     ) : (
-                      <Text style={styles.patternHintText}>
-                        Tap this card to see quick cycle details.
-                      </Text>
+                      <Ionicons name="calendar" size={80} color={theme.colors.sacredGold} />
                     )}
-                  </LinearGradient>
-                </Pressable>
+                  </View>
+
+                  <Text style={styles.patternName}>{patternInfo.name}</Text>
+                  <Text style={styles.patternStats}>{patternInfo.stats}</Text>
+                  <Text style={styles.patternSimpleMeta}>
+                    {shiftSystemLabel} • {stageCollectionLabel}
+                  </Text>
+                </LinearGradient>
               </Animated.View>
             </LinearGradient>
           </Animated.View>
@@ -1025,13 +926,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
               end={{ x: 1, y: 1 }}
               style={styles.guidanceCardGradient}
             >
-              <Pressable
-                onPress={handleGuidanceCardToggle}
-                style={({ pressed }) => [
-                  styles.guidancePressable,
-                  pressed && styles.guidancePressablePressed,
-                ]}
-              >
+              <View style={styles.guidancePressable}>
                 <View style={styles.guidanceHeader}>
                   <View style={styles.guidanceIconBadge}>
                     <Ionicons
@@ -1046,31 +941,12 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                       Used for reminders, hour totals, and smarter alerts
                     </Text>
                   </View>
-                  <View style={styles.guidanceChevronBadge}>
-                    <Ionicons
-                      name={isGuidanceExpanded ? 'chevron-up' : 'chevron-down'}
-                      size={18}
-                      color={theme.colors.sacredGold}
-                    />
-                  </View>
                 </View>
 
                 <Text style={styles.guidanceText}>
                   Your {patternInfo.name} rotation stays the same, but we need your shift start
                   times so Ellie can track hours and alert you before each shift.
                 </Text>
-
-                <View style={styles.guidanceChipRow}>
-                  <View style={styles.guidanceChip}>
-                    <Text style={styles.guidanceChipText}>Accurate reminders</Text>
-                  </View>
-                  <View style={styles.guidanceChip}>
-                    <Text style={styles.guidanceChipText}>Hours tracking</Text>
-                  </View>
-                  <View style={styles.guidanceChip}>
-                    <Text style={styles.guidanceChipText}>Shift-aware alerts</Text>
-                  </View>
-                </View>
 
                 {/* Shift Type Definitions */}
                 <View style={styles.shiftTypeDefinitions}>
@@ -1087,32 +963,10 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                     </Text>
                   )}
                 </View>
-
-                {isGuidanceExpanded ? (
-                  <View style={styles.guidanceExpanded}>
-                    <View style={styles.guidanceExpandedRow}>
-                      <Ionicons
-                        name="checkmark-done-outline"
-                        size={16}
-                        color={theme.colors.sacredGold}
-                      />
-                      <Text style={styles.guidanceExpandedText}>
-                        Pick the closest start time now, then fine-tune later in settings.
-                      </Text>
-                    </View>
-                    <View style={styles.guidanceExpandedRow}>
-                      <Ionicons name="alarm-outline" size={16} color={theme.colors.sacredGold} />
-                      <Text style={styles.guidanceExpandedText}>
-                        Accurate start times improve alert timing and reduce missed shifts.
-                      </Text>
-                    </View>
-                  </View>
-                ) : (
-                  <Text style={styles.guidanceHintText}>
-                    Tap this card to reveal quick setup tips.
-                  </Text>
-                )}
-              </Pressable>
+                <Text style={styles.guidanceHintText}>
+                  Use the closest start time now. You can fine-tune it later in settings.
+                </Text>
+              </View>
             </LinearGradient>
           </Animated.View>
 
@@ -1261,13 +1115,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                 end={{ x: 1, y: 1 }}
                 style={styles.detectionCardGradient}
               >
-                <Pressable
-                  onPress={handleDetectionCardToggle}
-                  style={({ pressed }) => [
-                    styles.detectionPressable,
-                    pressed && styles.detectionPressablePressed,
-                  ]}
-                >
+                <View style={styles.detectionPressable}>
                   <View style={styles.detectionHeaderRow}>
                     <View
                       style={[
@@ -1287,49 +1135,11 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                       </Text>
                       <Text style={styles.detectionHelper}>This is when your shift begins</Text>
                     </View>
-                    <View style={styles.detectionChevronBadge}>
-                      <Ionicons
-                        name={isDetectionExpanded ? 'chevron-up' : 'chevron-down'}
-                        size={18}
-                        color={detectionCardMeta.accent}
-                      />
-                    </View>
                   </View>
 
-                  <View style={styles.detectionChipRow}>
-                    <View style={styles.detectionChip}>
-                      <Text style={styles.detectionChipText}>Auto-detected</Text>
-                    </View>
-                    <View style={styles.detectionChip}>
-                      <Text style={styles.detectionChipText}>{detectionCardMeta.windowLabel}</Text>
-                    </View>
-                  </View>
-
-                  {isDetectionExpanded ? (
-                    <View style={styles.detectionExpanded}>
-                      <View style={styles.detectionExpandedRow}>
-                        <Ionicons
-                          name="checkmark-done-outline"
-                          size={16}
-                          color={detectionCardMeta.accent}
-                        />
-                        <Text style={styles.detectionExpandedText}>
-                          {detectionCardMeta.quickHint}
-                        </Text>
-                      </View>
-                      <View style={styles.detectionExpandedRow}>
-                        <Ionicons name="time-outline" size={16} color={detectionCardMeta.accent} />
-                        <Text style={styles.detectionExpandedText}>
-                          You can still adjust this start time later from settings.
-                        </Text>
-                      </View>
-                    </View>
-                  ) : (
-                    <Text style={styles.detectionHintText}>
-                      Tap this card to see why this shift type was selected.
-                    </Text>
-                  )}
-                </Pressable>
+                  <Text style={styles.detectionMetaText}>Auto-detected</Text>
+                  <Text style={styles.detectionWindowText}>{detectionCardMeta.windowLabel}</Text>
+                </View>
               </LinearGradient>
             </Animated.View>
           )}
@@ -1349,13 +1159,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
               end={{ x: 1, y: 1 }}
               style={styles.tipsSectionGradient}
             >
-              <Pressable
-                onPress={handleTipCardToggle}
-                style={({ pressed }) => [
-                  styles.tipPressable,
-                  pressed && styles.tipPressablePressed,
-                ]}
-              >
+              <View style={styles.tipPressable}>
                 <View style={styles.tipHeaderRow}>
                   <View style={styles.tipIconContainer}>
                     <Ionicons name="bulb-outline" size={22} color={theme.colors.sacredGold} />
@@ -1366,13 +1170,6 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                       Fastest way to pick a reliable start time
                     </Text>
                   </View>
-                  <View style={styles.tipChevronBadge}>
-                    <Ionicons
-                      name={isTipExpanded ? 'chevron-up' : 'chevron-down'}
-                      size={18}
-                      color={theme.colors.sacredGold}
-                    />
-                  </View>
                 </View>
 
                 <Text style={styles.tipText}>
@@ -1380,40 +1177,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                     ? 'Not sure? Most shift workers on 12-hour rotations start at 6 AM or 6 PM. Pick the closest match—you can adjust it later in settings if needed.'
                     : 'Not sure? Most 8-hour shift workers start at 6 AM, 2 PM, or 10 PM. Pick the closest match—you can adjust it later in settings if needed.'}
                 </Text>
-
-                <View style={styles.tipChipRow}>
-                  <View style={styles.tipChip}>
-                    <Text style={styles.tipChipText}>Editable later</Text>
-                  </View>
-                  <View style={styles.tipChip}>
-                    <Text style={styles.tipChipText}>Use closest match</Text>
-                  </View>
-                </View>
-
-                {isTipExpanded ? (
-                  <View style={styles.tipExpanded}>
-                    <View style={styles.tipExpandedRow}>
-                      <Ionicons
-                        name="checkmark-circle-outline"
-                        size={16}
-                        color={theme.colors.sacredGold}
-                      />
-                      <Text style={styles.tipExpandedText}>
-                        Start with presets first. They’re fastest and usually close to real shift
-                        start times.
-                      </Text>
-                    </View>
-                    <View style={styles.tipExpandedRow}>
-                      <Ionicons name="build-outline" size={16} color={theme.colors.sacredGold} />
-                      <Text style={styles.tipExpandedText}>
-                        If your site schedule is unusual, use Custom and fine-tune to the minute.
-                      </Text>
-                    </View>
-                  </View>
-                ) : (
-                  <Text style={styles.tipHintText}>Tap this card to reveal more setup advice.</Text>
-                )}
-              </Pressable>
+              </View>
             </LinearGradient>
           </Animated.View>
         </ScrollView>
@@ -1731,6 +1495,12 @@ const styles = StyleSheet.create({
     color: theme.colors.dust,
     textAlign: 'center',
     marginBottom: theme.spacing.sm,
+  },
+  patternSimpleMeta: {
+    fontSize: 12,
+    color: theme.colors.dust,
+    textAlign: 'center',
+    opacity: 0.9,
   },
   patternTagRow: {
     width: '100%',
@@ -2107,6 +1877,19 @@ const styles = StyleSheet.create({
   },
   detectionHelper: {
     fontSize: 13,
+    color: theme.colors.dust,
+  },
+  detectionMetaText: {
+    marginTop: theme.spacing.sm,
+    fontSize: 11,
+    fontWeight: '700',
+    color: theme.colors.paper,
+    textTransform: 'uppercase',
+    letterSpacing: 0.4,
+  },
+  detectionWindowText: {
+    marginTop: 4,
+    fontSize: 12,
     color: theme.colors.dust,
   },
   detectionChipRow: {
