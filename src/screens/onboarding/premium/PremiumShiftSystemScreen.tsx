@@ -619,7 +619,7 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
   testID = 'premium-shift-system-screen',
 }) => {
   const navigation = useNavigation<NavigationProp>();
-  const { updateData } = useOnboarding();
+  const { data, updateData } = useOnboarding();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showLearnMore, setShowLearnMore] = useState(false);
   const [learnMoreSystem, setLearnMoreSystem] = useState<SystemCardData | null>(null);
@@ -724,8 +724,14 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
     if (!system) return;
     setSelectedSystem(system.system);
 
-    // Save selection and navigate immediately
-    updateData({ shiftSystem: system.system });
+    // Save selection — auto-set rosterType for 3-shift (FIFO not supported)
+    const updates: { shiftSystem: ShiftSystem; rosterType?: 'rotating' } = {
+      shiftSystem: system.system,
+    };
+    if (system.system === ShiftSystem.THREE_SHIFT) {
+      updates.rosterType = 'rotating';
+    }
+    updateData(updates);
     isTransitioningRef.current = true;
     setIsTransitioning(true);
 
@@ -737,11 +743,11 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
           source: 'PremiumShiftSystemScreen.handleSwipeRight.navigate',
         });
 
-        // Navigate to ShiftPattern screen (Step 4)
-        goToNextScreen(navigation, 'ShiftSystem');
+        // Navigate — skips RosterType for 3-shift, goes to RosterType for 2-shift
+        goToNextScreen(navigation, 'ShiftSystem', { ...data, ...updates });
       }, 300);
     });
-  }, [currentIndex, updateData, navigation]);
+  }, [currentIndex, updateData, navigation, data]);
 
   const handleSwipeLeft = useCallback(() => {
     if (isTransitioningRef.current) return;
@@ -788,7 +794,14 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
     // Only continue if user made a selection
     if (!selectedSystem || isTransitioningRef.current) return;
 
-    updateData({ shiftSystem: selectedSystem });
+    // Save selection — auto-set rosterType for 3-shift (FIFO not supported)
+    const updates: { shiftSystem: ShiftSystem; rosterType?: 'rotating' } = {
+      shiftSystem: selectedSystem,
+    };
+    if (selectedSystem === ShiftSystem.THREE_SHIFT) {
+      updates.rosterType = 'rotating';
+    }
+    updateData(updates);
     isTransitioningRef.current = true;
     setIsTransitioning(true);
 
@@ -796,14 +809,14 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
       source: 'PremiumShiftSystemScreen.handleContinue',
     });
 
-    // Navigate to ShiftPattern screen (Step 4)
+    // Navigate — skips RosterType for 3-shift, goes to RosterType for 2-shift
     interactionHandleRef.current = InteractionManager.runAfterInteractions(() => {
       navigationTimeoutRef.current = setTimeout(() => {
         navigationTimeoutRef.current = null;
-        goToNextScreen(navigation, 'ShiftSystem');
+        goToNextScreen(navigation, 'ShiftSystem', { ...data, ...updates });
       }, 300);
     });
-  }, [selectedSystem, updateData, navigation]);
+  }, [selectedSystem, updateData, navigation, data]);
 
   // Slice visible cards to show only 4 at a time (matches pattern screen approach)
   const visibleCards = useMemo(

@@ -27,7 +27,13 @@ const NAVIGATION_FLOW: Record<
 > = {
   Welcome: () => 'Introduction',
   Introduction: () => 'ShiftSystem',
-  ShiftSystem: () => 'RosterType', // NEW: Go to roster type selection
+  ShiftSystem: (data) => {
+    // 3-shift systems only support rotating rosters — skip RosterType selection
+    if (data?.shiftSystem === '3-shift') {
+      return 'ShiftPattern';
+    }
+    return 'RosterType';
+  },
   RosterType: () => 'ShiftPattern', // NEW: Roster type screen
   ShiftPattern: (data) => {
     // Complex conditional routing based on pattern type AND roster type
