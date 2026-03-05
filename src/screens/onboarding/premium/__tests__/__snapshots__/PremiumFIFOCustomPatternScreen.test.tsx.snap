@@ -2460,16 +2460,21 @@ exports[`PremiumFIFOCustomPatternScreen matches snapshot 1`] = `
                 ]
               }
             >
-              <Text
-                style={
+              <Image
+                resizeMode="contain"
+                source={
                   {
-                    "fontSize": 28,
-                    "marginBottom": 8,
+                    "testUri": "../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png",
                   }
                 }
-              >
-                ☀️
-              </Text>
+                style={
+                  {
+                    "height": 28,
+                    "marginBottom": 8,
+                    "width": 28,
+                  }
+                }
+              />
               <Text
                 style={
                   {
@@ -2573,16 +2578,21 @@ exports[`PremiumFIFOCustomPatternScreen matches snapshot 1`] = `
                 ]
               }
             >
-              <Text
-                style={
+              <Image
+                resizeMode="contain"
+                source={
                   {
-                    "fontSize": 28,
-                    "marginBottom": 8,
+                    "testUri": "../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png",
                   }
                 }
-              >
-                🌙
-              </Text>
+                style={
+                  {
+                    "height": 28,
+                    "marginBottom": 8,
+                    "width": 28,
+                  }
+                }
+              />
               <Text
                 style={
                   {
@@ -2659,16 +2669,21 @@ exports[`PremiumFIFOCustomPatternScreen matches snapshot 1`] = `
                 ]
               }
             >
-              <Text
-                style={
+              <Image
+                resizeMode="contain"
+                source={
                   {
-                    "fontSize": 28,
-                    "marginBottom": 8,
+                    "testUri": "../../../assets/onboarding/icons/consolidated/roster-type-rotating.png",
                   }
                 }
-              >
-                🔄
-              </Text>
+                style={
+                  {
+                    "height": 28,
+                    "marginBottom": 8,
+                    "width": 28,
+                  }
+                }
+              />
               <Text
                 style={
                   {

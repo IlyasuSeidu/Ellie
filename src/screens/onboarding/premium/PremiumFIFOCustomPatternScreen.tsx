@@ -18,6 +18,8 @@ import {
   ScrollView,
   AccessibilityInfo,
   InteractionManager,
+  Image,
+  ImageSourcePropType,
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -58,7 +60,7 @@ const SPRING_CONFIGS = {
 interface WorkPatternOption {
   id: 'straight-days' | 'straight-nights' | 'swing';
   title: string;
-  icon: string;
+  icon: ImageSourcePropType;
   description: string;
   color: string;
 }
@@ -67,21 +69,24 @@ const WORK_PATTERNS: WorkPatternOption[] = [
   {
     id: 'straight-days',
     title: 'Straight Days',
-    icon: '☀️',
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    icon: require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png'),
     description: 'Work day shifts only for the entire work block (e.g., 7am-7pm)',
     color: theme.colors.shiftVisualization.dayShift,
   },
   {
     id: 'straight-nights',
     title: 'Straight Nights',
-    icon: '🌙',
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    icon: require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png'),
     description: 'Work night shifts only for the entire work block (e.g., 7pm-7am)',
     color: theme.colors.shiftVisualization.nightShift,
   },
   {
     id: 'swing',
     title: 'Swing Roster',
-    icon: '🔄',
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    icon: require('../../../../assets/onboarding/icons/consolidated/roster-type-rotating.png'),
     description: 'Alternate between day shifts and night shifts during work block',
     color: theme.colors.sacredGold,
   },
@@ -411,7 +416,7 @@ const WorkPatternCard: React.FC<WorkPatternCardProps> = ({
           cardStyle,
         ]}
       >
-        <Text style={styles.patternIcon}>{pattern.icon}</Text>
+        <Image source={pattern.icon} style={styles.patternIconImage} resizeMode="contain" />
         <Text style={styles.patternTitle}>{pattern.title}</Text>
         <Text style={styles.patternDescription}>{pattern.description}</Text>
         {isSelected && (
@@ -1201,6 +1206,11 @@ const styles = StyleSheet.create({
   },
   patternIcon: {
     fontSize: 28,
+    marginBottom: 8,
+  },
+  patternIconImage: {
+    width: 28,
+    height: 28,
     marginBottom: 8,
   },
   patternTitle: {

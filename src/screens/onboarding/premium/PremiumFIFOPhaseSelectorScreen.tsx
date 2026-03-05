@@ -22,6 +22,8 @@ import {
   Pressable,
   AccessibilityInfo,
   InteractionManager,
+  Image,
+  ImageSourcePropType,
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -78,7 +80,7 @@ interface BlockCardData {
   id: 'work' | 'rest';
   title: string;
   description: string;
-  icon: string;
+  icon: ImageSourcePropType;
   blockLength: number;
   gradientColors: [string, string];
   quickInfo: string;
@@ -382,7 +384,7 @@ const SwipeableFIFOCard: React.FC<SwipeableFIFOCardProps> = ({
 
         <Animated.View style={[styles.iconContainer, iconAnimatedStyle]}>
           {isBlockCard ? (
-            <Text style={styles.icon}>{card.icon}</Text>
+            <Image source={card.icon} style={styles.iconImage} resizeMode="contain" />
           ) : (
             <Text style={styles.icon}>{card.dayNumber}</Text>
           )}
@@ -444,7 +446,11 @@ const FIFOInfoModal: React.FC<FIFOInfoModalProps> = ({ visible, content, onClose
         </View>
 
         <View style={styles.modalContent}>
-          <Text style={styles.modalIcon}>{isBlockCard ? content.icon : content.dayNumber}</Text>
+          {isBlockCard ? (
+            <Image source={content.icon} style={styles.modalIconImage} resizeMode="contain" />
+          ) : (
+            <Text style={styles.modalIcon}>{content.dayNumber}</Text>
+          )}
           <Text style={styles.modalTitle}>{content.title}</Text>
           <Text style={styles.modalDescription}>{content.description}</Text>
 
@@ -585,7 +591,8 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
         id: 'work',
         title: 'At Site (Working)',
         description: 'You are currently at the mine site on your work block',
-        icon: '⛏️',
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        icon: require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png'),
         blockLength: workBlockDays,
         gradientColors: [theme.colors.shiftVisualization.dayShift, '#1976D2'],
         quickInfo: 'This means your cycle starts counting from your current work day.',
@@ -595,7 +602,8 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
         id: 'rest',
         title: 'At Home (Rest)',
         description: 'You are currently at home on your rest block',
-        icon: '🏠',
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        icon: require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png'),
         blockLength: restBlockDays,
         gradientColors: [theme.colors.shiftVisualization.daysOff, '#57534e'],
         quickInfo: 'This offsets your cycle by your work block length first.',
@@ -919,6 +927,10 @@ const styles = StyleSheet.create({
     fontSize: 120,
     color: theme.colors.paper,
   },
+  iconImage: {
+    width: 120,
+    height: 120,
+  },
   cardTitle: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -1026,6 +1038,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 24,
     color: theme.colors.paper,
+  },
+  modalIconImage: {
+    width: 96,
+    height: 96,
+    alignSelf: 'center',
+    marginBottom: 24,
   },
   modalTitle: {
     fontSize: 32,

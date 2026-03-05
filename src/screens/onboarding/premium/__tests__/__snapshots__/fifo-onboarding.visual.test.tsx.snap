@@ -2460,16 +2460,21 @@ exports[`fifo onboarding visual snapshots PremiumFIFOCustomPatternScreen snapsho
                 ]
               }
             >
-              <Text
-                style={
+              <Image
+                resizeMode="contain"
+                source={
                   {
-                    "fontSize": 28,
-                    "marginBottom": 8,
+                    "testUri": "../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png",
                   }
                 }
-              >
-                ☀️
-              </Text>
+                style={
+                  {
+                    "height": 28,
+                    "marginBottom": 8,
+                    "width": 28,
+                  }
+                }
+              />
               <Text
                 style={
                   {
@@ -2573,16 +2578,21 @@ exports[`fifo onboarding visual snapshots PremiumFIFOCustomPatternScreen snapsho
                 ]
               }
             >
-              <Text
-                style={
+              <Image
+                resizeMode="contain"
+                source={
                   {
-                    "fontSize": 28,
-                    "marginBottom": 8,
+                    "testUri": "../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png",
                   }
                 }
-              >
-                🌙
-              </Text>
+                style={
+                  {
+                    "height": 28,
+                    "marginBottom": 8,
+                    "width": 28,
+                  }
+                }
+              />
               <Text
                 style={
                   {
@@ -2659,16 +2669,21 @@ exports[`fifo onboarding visual snapshots PremiumFIFOCustomPatternScreen snapsho
                 ]
               }
             >
-              <Text
-                style={
+              <Image
+                resizeMode="contain"
+                source={
                   {
-                    "fontSize": 28,
-                    "marginBottom": 8,
+                    "testUri": "../../../assets/onboarding/icons/consolidated/roster-type-rotating.png",
                   }
                 }
-              >
-                🔄
-              </Text>
+                style={
+                  {
+                    "height": 28,
+                    "marginBottom": 8,
+                    "width": 28,
+                  }
+                }
+              />
               <Text
                 style={
                   {
@@ -3865,16 +3880,20 @@ exports[`fifo onboarding visual snapshots PremiumFIFOPhaseSelectorScreen snapsho
           ]
         }
       >
-        <Text
-          style={
+        <Image
+          resizeMode="contain"
+          source={
             {
-              "color": "#e7e5e4",
-              "fontSize": 120,
+              "testUri": "../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png",
             }
           }
-        >
-          🏠
-        </Text>
+          style={
+            {
+              "height": 120,
+              "width": 120,
+            }
+          }
+        />
       </View>
       <Text
         style={
@@ -4000,16 +4019,20 @@ exports[`fifo onboarding visual snapshots PremiumFIFOPhaseSelectorScreen snapsho
           ]
         }
       >
-        <Text
-          style={
+        <Image
+          resizeMode="contain"
+          source={
             {
-              "color": "#e7e5e4",
-              "fontSize": 120,
+              "testUri": "../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png",
             }
           }
-        >
-          ⛏️
-        </Text>
+          style={
+            {
+              "height": 120,
+              "width": 120,
+            }
+          }
+        />
       </View>
       <Text
         style={

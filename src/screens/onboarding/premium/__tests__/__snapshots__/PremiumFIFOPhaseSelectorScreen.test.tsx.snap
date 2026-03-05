@@ -165,16 +165,20 @@ exports[`PremiumFIFOPhaseSelectorScreen matches snapshot 1`] = `
           ]
         }
       >
-        <Text
-          style={
+        <Image
+          resizeMode="contain"
+          source={
             {
-              "color": "#e7e5e4",
-              "fontSize": 120,
+              "testUri": "../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png",
             }
           }
-        >
-          🏠
-        </Text>
+          style={
+            {
+              "height": 120,
+              "width": 120,
+            }
+          }
+        />
       </View>
       <Text
         style={
@@ -300,16 +304,20 @@ exports[`PremiumFIFOPhaseSelectorScreen matches snapshot 1`] = `
           ]
         }
       >
-        <Text
-          style={
+        <Image
+          resizeMode="contain"
+          source={
             {
-              "color": "#e7e5e4",
-              "fontSize": 120,
+              "testUri": "../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png",
             }
           }
-        >
-          ⛏️
-        </Text>
+          style={
+            {
+              "height": 120,
+              "width": 120,
+            }
+          }
+        />
       </View>
       <Text
         style={
