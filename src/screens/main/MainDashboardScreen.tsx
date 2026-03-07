@@ -17,8 +17,6 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import Animated, {
-  FadeIn,
-  FadeOut,
   useSharedValue,
   useAnimatedStyle,
   withTiming,
@@ -94,7 +92,6 @@ export const MainDashboardScreen: React.FC = () => {
 
   // Refresh animation state
   const [refreshKey, setRefreshKey] = useState(0);
-  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [showRefreshSuccess, setShowRefreshSuccess] = useState(false);
   const refreshSuccessTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -124,9 +121,6 @@ export const MainDashboardScreen: React.FC = () => {
       }
 
       if (isRefresh) {
-        // Update timestamp
-        setLastUpdated(new Date());
-
         // Trigger re-entrance animations by incrementing key
         setRefreshKey((prev) => prev + 1);
 
@@ -215,20 +209,6 @@ export const MainDashboardScreen: React.FC = () => {
   /**
    * Format last updated time for display
    */
-  const lastUpdatedText = useMemo(() => {
-    if (!lastUpdated) return null;
-    // liveTick forces re-computation
-    void liveTick;
-    const diffMs = Date.now() - lastUpdated.getTime();
-    const diffSec = Math.floor(diffMs / 1000);
-
-    if (diffSec < 10) return 'Just now';
-    if (diffSec < 60) return `${diffSec}s ago`;
-    const diffMin = Math.floor(diffSec / 60);
-    if (diffMin < 60) return `${diffMin}m ago`;
-    return lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  }, [lastUpdated, liveTick]);
-
   // Build shift cycle from user data
   const shiftCycle = useMemo(() => (userData ? buildShiftCycle(userData) : null), [userData]);
 
@@ -362,18 +342,6 @@ export const MainDashboardScreen: React.FC = () => {
           />
         }
       >
-        {/* Last Updated Indicator */}
-        {lastUpdatedText && (
-          <Animated.View
-            entering={FadeIn.duration(300)}
-            exiting={FadeOut.duration(200)}
-            style={styles.lastUpdatedContainer}
-          >
-            <Ionicons name="time-outline" size={12} color={theme.colors.shadow} />
-            <Text style={styles.lastUpdatedText}>Updated {lastUpdatedText}</Text>
-          </Animated.View>
-        )}
-
         {/* Personalized Header - keyed for re-entrance animation */}
         <PersonalizedHeader
           key={`header-${refreshKey}`}
@@ -498,16 +466,4 @@ const styles = StyleSheet.create({
     color: theme.colors.success,
   },
   // Last Updated Indicator
-  lastUpdatedContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 4,
-    paddingVertical: theme.spacing.xs,
-    marginBottom: theme.spacing.xs,
-  },
-  lastUpdatedText: {
-    fontSize: 11,
-    color: theme.colors.shadow,
-  },
 });
