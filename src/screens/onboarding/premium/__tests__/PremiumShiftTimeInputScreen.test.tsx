@@ -65,6 +65,7 @@ jest.mock('@/contexts/OnboardingContext', () => {
   const mockData = {
     shiftSystem: '2-shift',
     rosterType: 'rotating',
+    patternType: 'CUSTOM',
     customPattern: {
       daysOn: 4,
       nightsOn: 0, // Only day shifts, so only one stage

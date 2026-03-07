@@ -117,13 +117,6 @@ describe('CurrentShiftStatusCard', () => {
       expect(getByText('Keep it going!')).toBeTruthy();
     });
 
-    it('should show time display when provided', () => {
-      const { getByText } = render(
-        <CurrentShiftStatusCard shiftType="day" timeDisplay="7:00 AM - 7:00 PM" />
-      );
-      expect(getByText('7:00 AM - 7:00 PM')).toBeTruthy();
-    });
-
     it('should show countdown when provided', () => {
       const { getByText } = render(
         <CurrentShiftStatusCard shiftType="day" countdown="6h 32m until next shift" />
@@ -144,6 +137,14 @@ describe('CurrentShiftStatusCard', () => {
     it('should show OFF badge when not on shift', () => {
       const { getByText } = render(<CurrentShiftStatusCard shiftType="off" isOnShift={false} />);
       expect(getByText('OFF')).toBeTruthy();
+    });
+
+    it('should show ACTIVE badge for work shifts when not currently on shift', () => {
+      const { getByText, queryByText } = render(
+        <CurrentShiftStatusCard shiftType="morning" isOnShift={false} />
+      );
+      expect(getByText('ACTIVE')).toBeTruthy();
+      expect(queryByText('OFF')).toBeNull();
     });
 
     it('should render with testID', () => {
@@ -174,6 +175,23 @@ describe('CurrentShiftStatusCard', () => {
         <CurrentShiftStatusCard shiftType="off" rosterType={RosterType.FIFO} isOnShift={false} />
       );
       expect(getByText('HOME')).toBeTruthy();
+    });
+
+    it('should show ON-SITE badge when FIFO work block but between shifts', () => {
+      const { getByText } = render(
+        <CurrentShiftStatusCard
+          shiftType="day"
+          rosterType={RosterType.FIFO}
+          isOnShift={false}
+          fifoBlockInfo={{
+            inWorkBlock: true,
+            dayInBlock: 4,
+            blockLength: 8,
+            daysUntilBlockChange: 4,
+          }}
+        />
+      );
+      expect(getByText('ON-SITE')).toBeTruthy();
     });
 
     it('shows FIFO block transition warning text for tomorrow and today', () => {

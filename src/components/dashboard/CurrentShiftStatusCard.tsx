@@ -425,17 +425,53 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                 </View>
               )}
 
-              {/* OFF badge when not on shift */}
+              {/* OFF / HOME / ON-SITE / ACTIVE badge when not on shift */}
               {!isOnShift && (
-                <View style={styles.offBadge}>
+                <View
+                  style={
+                    rosterType === RosterType.FIFO && fifoBlockInfo?.inWorkBlock
+                      ? styles.onSiteBadge
+                      : rosterType === RosterType.FIFO || shiftType === 'off'
+                        ? styles.offBadge
+                        : styles.scheduledBadge
+                  }
+                >
                   <Ionicons
-                    name={rosterType === RosterType.FIFO ? 'home-outline' : 'moon-outline'}
+                    name={
+                      rosterType === RosterType.FIFO
+                        ? fifoBlockInfo?.inWorkBlock
+                          ? 'construct-outline'
+                          : 'home-outline'
+                        : shiftType === 'off'
+                          ? 'moon-outline'
+                          : 'calendar-outline'
+                    }
                     size={12}
-                    color="rgba(255,255,255,0.5)"
+                    color={
+                      rosterType === RosterType.FIFO && fifoBlockInfo?.inWorkBlock
+                        ? 'rgba(255,200,100,0.8)'
+                        : shiftType === 'off' || rosterType === RosterType.FIFO
+                          ? 'rgba(255,255,255,0.5)'
+                          : 'rgba(147,197,253,0.85)'
+                    }
                     style={{ marginRight: 5 }}
                   />
-                  <Animated.Text style={styles.offText}>
-                    {rosterType === RosterType.FIFO ? 'HOME' : 'OFF'}
+                  <Animated.Text
+                    style={
+                      rosterType === RosterType.FIFO && fifoBlockInfo?.inWorkBlock
+                        ? styles.onSiteText
+                        : shiftType === 'off' || rosterType === RosterType.FIFO
+                          ? styles.offText
+                          : styles.scheduledText
+                    }
+                  >
+                    {rosterType === RosterType.FIFO
+                      ? fifoBlockInfo?.inWorkBlock
+                        ? 'ON-SITE'
+                        : 'HOME'
+                      : shiftType === 'off'
+                        ? 'OFF'
+                        : 'ACTIVE'}
                   </Animated.Text>
                 </View>
               )}
@@ -632,6 +668,38 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: theme.typography.fontWeights.bold,
     color: 'rgba(255,255,255,0.5)',
+    letterSpacing: 1,
+  },
+  onSiteBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(217,119,6,0.15)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: theme.borderRadius.full,
+    borderWidth: 1,
+    borderColor: 'rgba(217,119,6,0.25)',
+  },
+  onSiteText: {
+    fontSize: 12,
+    fontWeight: theme.typography.fontWeights.bold,
+    color: 'rgba(255,200,100,0.8)',
+    letterSpacing: 1,
+  },
+  scheduledBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(59,130,246,0.16)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: theme.borderRadius.full,
+    borderWidth: 1,
+    borderColor: 'rgba(147,197,253,0.4)',
+  },
+  scheduledText: {
+    fontSize: 12,
+    fontWeight: theme.typography.fontWeights.bold,
+    color: 'rgba(191,219,254,0.95)',
     letterSpacing: 1,
   },
 

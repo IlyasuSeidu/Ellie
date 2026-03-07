@@ -319,6 +319,48 @@ describe('PremiumFIFOPhaseSelectorScreen', () => {
     });
   });
 
+  it('uses standard FIFO preset config instead of stale custom fifoConfig', async () => {
+    (asyncStorageService.get as jest.Mock).mockResolvedValueOnce({
+      rosterType: 'fifo',
+      patternType: 'FIFO_8_6',
+      fifoConfig: {
+        workBlockDays: 10,
+        restBlockDays: 10,
+        workBlockPattern: 'straight-nights',
+      },
+    });
+
+    const { getByText } = renderWithContext();
+
+    await waitFor(() => {
+      expect(getByText('8 days')).toBeTruthy();
+      expect(getByText('6 days')).toBeTruthy();
+    });
+
+    swipeRight(); // Select work block
+
+    await waitFor(() => {
+      expect(getByText('Which day of At Site (Working) are you on?')).toBeTruthy();
+    });
+
+    swipeRight(); // Select day 1
+
+    await waitFor(() => {
+      const setCalls = (asyncStorageService.set as jest.Mock).mock.calls;
+      const latestPayload = setCalls[setCalls.length - 1]?.[1];
+      expect(latestPayload).toEqual(
+        expect.objectContaining({
+          phaseOffset: 0,
+          fifoConfig: expect.objectContaining({
+            workBlockDays: 8,
+            restBlockDays: 6,
+            workBlockPattern: 'swing',
+          }),
+        })
+      );
+    });
+  });
+
   it('matches snapshot', () => {
     const { toJSON } = renderWithContext();
     expect(toJSON()).toMatchSnapshot();

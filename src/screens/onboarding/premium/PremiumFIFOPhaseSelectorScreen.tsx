@@ -574,15 +574,19 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     useSharedValue(0),
   ];
 
+  const isCustomFIFOPattern = data.patternType === ShiftPattern.FIFO_CUSTOM;
+
   const { workBlockDays, restBlockDays } = useMemo(() => {
-    if (data.fifoConfig) {
+    // Standard FIFO patterns should come from the selected preset pattern, not
+    // stale custom FIFO config from a prior onboarding attempt.
+    if (isCustomFIFOPattern && data.fifoConfig) {
       return {
         workBlockDays: normalizePositiveInt(data.fifoConfig.workBlockDays, 14),
         restBlockDays: normalizePositiveInt(data.fifoConfig.restBlockDays, 14),
       };
     }
     return getBlockLengthsFromPattern(data.patternType as ShiftPattern | undefined);
-  }, [data.fifoConfig, data.patternType]);
+  }, [data.fifoConfig, data.patternType, isCustomFIFOPattern]);
 
   const blockCards = useMemo<BlockCardData[]>(
     () => [
@@ -729,12 +733,17 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       isTransitioningRef.current = true;
       setIsTransitioning(true);
 
-      // Ensure fifoConfig is populated (for non-custom FIFO patterns it's not set yet)
-      const fifoConfig = data.fifoConfig ?? {
-        workBlockDays,
-        restBlockDays,
-        workBlockPattern: 'swing' as const, // Default: collect both day/night shift times
-      };
+      // Ensure fifoConfig is populated and aligned to selected pattern:
+      // - Standard FIFO patterns use a predictable default work pattern.
+      // - Custom FIFO patterns keep the user-configured settings.
+      const fifoConfig =
+        isCustomFIFOPattern && data.fifoConfig
+          ? data.fifoConfig
+          : {
+              workBlockDays,
+              restBlockDays,
+              workBlockPattern: 'swing' as const, // Default: collect both day/night shift times
+            };
       updateData({ phaseOffset, fifoConfig });
       void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
         source: 'PremiumFIFOPhaseSelectorScreen.handleDaySelect',
@@ -746,7 +755,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
         }, 300);
       });
     },
-    [navigation, restBlockDays, updateData, workBlockDays, data.fifoConfig]
+    [navigation, restBlockDays, updateData, workBlockDays, data.fifoConfig, isCustomFIFOPattern]
   );
 
   const handleSwipeRight = useCallback(() => {

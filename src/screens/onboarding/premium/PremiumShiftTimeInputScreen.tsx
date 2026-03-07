@@ -343,9 +343,12 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   // Determine required shift types based on roster type and pattern
   let requiredShiftTypes: string[];
 
-  if (rosterType === 'fifo' && data.fifoConfig) {
+  if (rosterType === 'fifo') {
     // FIFO roster: determine shift types based on work pattern
-    const workPattern = data.fifoConfig.workBlockPattern;
+    const workPattern =
+      data.patternType === ShiftPattern.FIFO_CUSTOM
+        ? data.fifoConfig?.workBlockPattern || 'swing'
+        : 'swing';
 
     if (workPattern === 'straight-days') {
       // Only collect day shift times
@@ -362,9 +365,12 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     }
   } else {
     // Rotating roster: use existing logic
+    const customPatternForStageDetection =
+      data.patternType === ShiftPattern.CUSTOM ? data.customPattern : undefined;
+
     requiredShiftTypes = getRequiredShiftTypes(
       shiftSystem === ShiftSystem.THREE_SHIFT ? '3-shift' : '2-shift',
-      data.customPattern
+      customPatternForStageDetection
     );
   }
 
