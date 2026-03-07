@@ -200,8 +200,35 @@ describe('CustomTabBar', () => {
     const props = buildProps(0);
     const { getByTestId } = render(<CustomTabBar {...props} />);
 
+    expect(extractTextColor(getByTestId('icon-mic-outline').props.style)).toBe('#fff');
+  });
+
+  it('applies dynamic shift accent color to center mic background', () => {
+    mockUseShiftAccent.mockReturnValue({
+      shiftType: 'night',
+      statusAreaColor: shiftColors.night.primary,
+      tabAccentColor: shiftColors.night.primary,
+      tabGlowColor: 'rgba(101, 31, 255, 0.2)',
+    });
+
+    const props = buildProps(0);
+    const { getByTestId } = render(<CustomTabBar {...props} />);
+    const centerGradient = getByTestId('center-mic-gradient');
+
+    expect(centerGradient.props.colors).toEqual([
+      shiftColors.night.primary,
+      shiftColors.night.primary,
+    ]);
+  });
+
+  it('keeps the original mic background treatment for off/default state', () => {
+    const props = buildProps(0);
+    const { getByTestId } = render(<CustomTabBar {...props} />);
+    const centerGradient = getByTestId('center-mic-gradient');
+
+    expect(centerGradient.props.colors).toEqual([theme.colors.brightGold, theme.colors.sacredGold]);
     expect(extractTextColor(getByTestId('icon-mic-outline').props.style)).toBe(
-      shiftColors.night.primary
+      theme.colors.deepVoid
     );
   });
 });

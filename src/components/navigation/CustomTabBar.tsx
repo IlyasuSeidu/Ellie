@@ -134,6 +134,13 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
   const insets = useSafeAreaInsets();
   const { state: voiceState, openModal } = useVoiceAssistant();
   const { tabAccentColor, tabGlowColor } = useShiftAccent();
+  const centerButtonGradient = useMemo(
+    () =>
+      tabAccentColor === theme.colors.paleGold
+        ? ([theme.colors.brightGold, theme.colors.sacredGold] as const)
+        : ([tabAccentColor, tabAccentColor] as const),
+    [tabAccentColor]
+  );
   const centerButtonAccentStyle = useMemo(
     () => [
       { borderColor: tabAccentColor },
@@ -285,7 +292,8 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
           accessibilityRole="button"
         >
           <LinearGradient
-            colors={[theme.colors.brightGold, theme.colors.sacredGold]}
+            testID="center-mic-gradient"
+            colors={centerButtonGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={[styles.centerButton, centerButtonAccentStyle]}
@@ -293,7 +301,7 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
             <Ionicons
               name={isVoiceActive ? 'mic' : 'mic-outline'}
               size={28}
-              color={tabAccentColor}
+              color={tabAccentColor === theme.colors.paleGold ? theme.colors.deepVoid : '#fff'}
             />
           </LinearGradient>
         </TouchableOpacity>
