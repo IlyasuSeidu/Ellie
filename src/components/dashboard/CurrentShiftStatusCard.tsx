@@ -267,6 +267,7 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
   // ── On-Shift Animations ───────────────────────────────────────
   const glowOpacity = useSharedValue(0);
   const liveDotOpacity = useSharedValue(1);
+  const showActivePulse = !isOnShift && rosterType === RosterType.ROTATING && shiftType !== 'off';
 
   useEffect(() => {
     if (isOnShift) {
@@ -275,14 +276,20 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
         -1,
         true
       );
+    }
+
+    if (isOnShift || showActivePulse) {
       liveDotOpacity.value = withRepeat(
         withSequence(withTiming(0.3, { duration: 800 }), withTiming(1, { duration: 800 })),
         -1,
         true
       );
+      return;
     }
+
+    liveDotOpacity.value = withTiming(1, { duration: 200 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOnShift]);
+  }, [isOnShift, showActivePulse]);
 
   // ── Animated Styles ───────────────────────────────────────────
   const iconEntranceStyle = useAnimatedStyle(() => ({
@@ -436,6 +443,12 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                         : styles.scheduledBadge
                   }
                 >
+                  {showActivePulse && (
+                    <Animated.View
+                      testID="active-badge-pulse-dot"
+                      style={[styles.liveDot, liveDotStyle]}
+                    />
+                  )}
                   <Ionicons
                     name={
                       rosterType === RosterType.FIFO

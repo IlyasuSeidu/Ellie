@@ -158,11 +158,48 @@ describe('CurrentShiftStatusCard', () => {
     });
 
     it('should show ACTIVE badge for work shifts when not currently on shift', () => {
-      const { getByText, queryByText } = render(
+      const { getByText, queryByText, getByTestId } = render(
         <CurrentShiftStatusCard shiftType="morning" isOnShift={false} />
       );
       expect(getByText('ACTIVE')).toBeTruthy();
       expect(queryByText('OFF')).toBeNull();
+      expect(getByTestId('active-badge-pulse-dot')).toBeTruthy();
+    });
+
+    it('should show green pulse on ACTIVE badge for all rotating work shifts', () => {
+      const day = render(<CurrentShiftStatusCard shiftType="day" isOnShift={false} />);
+      expect(day.getByTestId('active-badge-pulse-dot')).toBeTruthy();
+
+      const night = render(<CurrentShiftStatusCard shiftType="night" isOnShift={false} />);
+      expect(night.getByTestId('active-badge-pulse-dot')).toBeTruthy();
+
+      const afternoon = render(<CurrentShiftStatusCard shiftType="afternoon" isOnShift={false} />);
+      expect(afternoon.getByTestId('active-badge-pulse-dot')).toBeTruthy();
+    });
+
+    it('should not show the green active pulse for off or FIFO badges', () => {
+      const off = render(<CurrentShiftStatusCard shiftType="off" isOnShift={false} />);
+      expect(off.queryByTestId('active-badge-pulse-dot')).toBeNull();
+
+      const fifoHome = render(
+        <CurrentShiftStatusCard shiftType="off" rosterType={RosterType.FIFO} isOnShift={false} />
+      );
+      expect(fifoHome.queryByTestId('active-badge-pulse-dot')).toBeNull();
+
+      const fifoWork = render(
+        <CurrentShiftStatusCard
+          shiftType="day"
+          rosterType={RosterType.FIFO}
+          isOnShift={false}
+          fifoBlockInfo={{
+            inWorkBlock: true,
+            dayInBlock: 2,
+            blockLength: 8,
+            daysUntilBlockChange: 6,
+          }}
+        />
+      );
+      expect(fifoWork.queryByTestId('active-badge-pulse-dot')).toBeNull();
     });
 
     it('should render with testID', () => {
