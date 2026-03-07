@@ -454,40 +454,25 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
         style={[styles.card, getShadowStyle(index, isActive), animatedCardStyle]}
         testID={`roster-type-card-${rosterType.id}`}
       >
-        {/* Card Content */}
-        <View style={styles.cardHeader}>
-          <Animated.View style={iconAnimatedStyle}>
-            {rosterType.iconImage ? (
-              <Image
-                source={rosterType.iconImage}
-                style={styles.cardIconImage}
-                resizeMode="contain"
-              />
-            ) : (
-              <Text style={styles.cardIcon}>{rosterType.icon}</Text>
-            )}
-          </Animated.View>
-          <Text style={styles.cardTitle}>{rosterType.title}</Text>
-          <Text style={styles.cardSubtitle}>{rosterType.subtitle}</Text>
+        <Animated.View style={[styles.iconContainer, iconAnimatedStyle]}>
+          {rosterType.iconImage ? (
+            <Image
+              source={rosterType.iconImage}
+              style={styles.cardIconImage}
+              resizeMode="contain"
+            />
+          ) : (
+            <Text style={styles.cardIcon}>{rosterType.icon}</Text>
+          )}
+        </Animated.View>
+
+        <Text style={styles.cardTitle}>{rosterType.title}</Text>
+
+        <View style={styles.badge}>
+          <Text style={styles.badgeText}>{rosterType.subtitle}</Text>
         </View>
 
-        <View style={styles.cardBody}>
-          <Text style={styles.cardDescription}>{rosterType.description}</Text>
-
-          <View style={styles.examplesSection}>
-            <Text style={styles.sectionTitle}>Common patterns:</Text>
-            {rosterType.detailedInfo.examples.slice(0, 3).map((example, idx) => (
-              <Text key={idx} style={styles.exampleText}>
-                • {example}
-              </Text>
-            ))}
-          </View>
-
-          <View style={styles.regionsSection}>
-            <Text style={styles.sectionTitle}>Popular in:</Text>
-            <Text style={styles.regionsText}>{rosterType.detailedInfo.regions.join(', ')}</Text>
-          </View>
-        </View>
+        <Text style={styles.description}>{rosterType.description}</Text>
 
         {/* Swipe Hints (only for first active card, with smart cycling) */}
         {index === 0 && isActive && (
@@ -926,99 +911,75 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     borderWidth: 1,
     borderColor: theme.colors.opacity.gold20,
-    overflow: 'hidden',
-  },
-  cardHeader: {
+    padding: theme.spacing.xl,
     alignItems: 'center',
-    paddingTop: 24,
-    paddingHorizontal: 24,
-    paddingBottom: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: theme.colors.softStone,
+    justifyContent: 'center',
+  },
+  iconContainer: {
+    marginBottom: theme.spacing.lg,
+    width: 180,
+    height: 180,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   cardIcon: {
-    fontSize: 64,
-    marginBottom: 12,
+    fontSize: 120,
+    textAlign: 'center',
   },
   cardIconImage: {
-    width: 64,
-    height: 64,
-    marginBottom: 8,
+    width: 180,
+    height: 180,
   },
   cardTitle: {
-    fontSize: 26,
-    fontWeight: '700',
+    fontSize: 24,
+    fontWeight: 'bold',
     color: theme.colors.paper,
     textAlign: 'center',
-    marginBottom: 6,
+    marginBottom: theme.spacing.md,
   },
-  cardSubtitle: {
-    fontSize: 15,
-    fontWeight: '500',
+  badge: {
+    backgroundColor: theme.colors.opacity.gold20,
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: theme.spacing.xs,
+    borderRadius: 20,
+    marginBottom: theme.spacing.lg,
+  },
+  badgeText: {
+    fontSize: 18,
     color: theme.colors.sacredGold,
-    textAlign: 'center',
-  },
-  cardBody: {
-    flex: 1,
-    paddingHorizontal: 24,
-    paddingVertical: 16,
-  },
-  cardDescription: {
-    fontSize: 16,
-    lineHeight: 22,
-    color: theme.colors.dust,
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  examplesSection: {
-    marginBottom: 12,
-  },
-  sectionTitle: {
-    fontSize: 14,
     fontWeight: '600',
-    color: theme.colors.paper,
-    marginBottom: 8,
+    textAlign: 'center',
   },
-  exampleText: {
-    fontSize: 14,
-    lineHeight: 20,
+  description: {
+    fontSize: 16,
     color: theme.colors.dust,
-    marginLeft: 8,
-  },
-  regionsSection: {
-    marginTop: 6,
-    width: '100%',
-  },
-  regionsText: {
-    fontSize: 15,
-    lineHeight: 20,
-    color: theme.colors.dust,
-    fontStyle: 'italic',
-    width: '100%',
+    textAlign: 'center',
+    lineHeight: 24,
+    paddingHorizontal: theme.spacing.md,
   },
   swipeHint: {
     position: 'absolute',
-    top: theme.spacing.sm,
+    backgroundColor: theme.colors.opacity.gold30,
     paddingHorizontal: theme.spacing.md,
     paddingVertical: theme.spacing.xs,
-    backgroundColor: theme.colors.opacity.gold30,
     borderRadius: 12,
   },
   swipeHintRight: {
-    right: theme.spacing.sm,
+    right: theme.spacing.lg,
+    top: '50%',
   },
   swipeHintLeft: {
-    left: theme.spacing.sm,
+    left: theme.spacing.lg,
+    top: '50%',
   },
   swipeHintUp: {
-    top: 'auto',
-    bottom: theme.spacing.sm,
+    top: theme.spacing.lg,
     alignSelf: 'center',
   },
   swipeHintText: {
     fontSize: 14,
+    color: theme.colors.dust,
     fontWeight: '600',
-    color: theme.colors.paper,
   },
   progressDots: {
     flexDirection: 'row',

@@ -209,13 +209,14 @@ describe('PremiumRosterTypeScreen', () => {
       expect(getByTestId('roster-type-progress-dots')).toBeTruthy();
     });
 
-    it('renders first card content: description and examples', () => {
-      const { getByText, getAllByText } = renderWithContext();
+    it('renders first card content with compact face only', () => {
+      const { getByText, queryByText } = renderWithContext();
       expect(
         getByText('You rotate through different shift times in a repeating cycle')
       ).toBeTruthy();
-      // Both visible cards show "Common patterns:", so verify at least one exists
-      expect(getAllByText('Common patterns:').length).toBeGreaterThanOrEqual(1);
+      expect(getByText('Days → Nights → Off pattern')).toBeTruthy();
+      expect(queryByText('Common patterns:')).toBeNull();
+      expect(queryByText('Popular in:')).toBeNull();
     });
   });
 
@@ -338,6 +339,8 @@ describe('PremiumRosterTypeScreen', () => {
       // Modal should show detailed info for the active card (Rotating)
       expect(getByText('How it works')).toBeTruthy();
       expect(getByText(/Workers rotate through different shift times/)).toBeTruthy();
+      expect(getByText('Examples')).toBeTruthy();
+      expect(getByText('Popular in')).toBeTruthy();
     });
 
     it('closes learn-more modal on close button press', () => {
