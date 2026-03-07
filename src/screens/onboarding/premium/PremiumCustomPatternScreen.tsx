@@ -54,7 +54,7 @@ const CYCLE_COLORS = {
   day: theme.colors.shiftVisualization.dayShift, // #2196F3 Blue
   night: theme.colors.shiftVisualization.nightShift, // #651FFF Purple
   morning: theme.colors.shiftVisualization.morningShift, // #F59E0B Amber
-  afternoon: theme.colors.shiftVisualization.afternoonShift, // #06B6D4 Cyan
+  afternoon: theme.colors.shiftVisualization.afternoonShift, // #FB923C Orange
   night3shift: theme.colors.shiftVisualization.nightShift, // #651FFF Purple
   off: theme.colors.shiftVisualization.daysOff, // #78716c Stone
 } as const;
@@ -64,7 +64,7 @@ const TRACK_COLORS = {
   day: '#60A5FA', // Light blue
   night: '#A78BFA', // Light purple
   morning: '#FCD34D', // Light amber
-  afternoon: '#67E8F9', // Light cyan
+  afternoon: '#FDBA74', // Light orange
   night3shift: '#A78BFA', // Light purple
   off: '#a8a29e', // Light stone
 } as const;

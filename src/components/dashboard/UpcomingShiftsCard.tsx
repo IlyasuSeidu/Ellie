@@ -38,7 +38,7 @@ const SHIFT_CONFIG: Record<
   day: { color: '#2196F3', label: 'Day Shift' },
   night: { color: '#651FFF', label: 'Night Shift' },
   morning: { color: '#F59E0B', label: 'Morning Shift' },
-  afternoon: { color: '#06B6D4', label: 'Afternoon Shift' },
+  afternoon: { color: '#FB923C', label: 'Afternoon Shift' },
   off: { color: '#78716c', label: 'Day Off' },
 };
 

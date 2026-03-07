@@ -79,7 +79,7 @@ const SHIFT_GLOW_COLORS: Record<string, string> = {
   day: '#64B5F6',
   night: '#B388FF',
   morning: '#FCD34D',
-  afternoon: '#67E8F9',
+  afternoon: '#FDBA74',
 };
 
 export const MainDashboardScreen: React.FC = () => {
