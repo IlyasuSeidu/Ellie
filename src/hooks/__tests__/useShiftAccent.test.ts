@@ -79,16 +79,16 @@ describe('useShiftAccent', () => {
     expect(result.current.tabGlowColor).toBe(theme.colors.opacity.gold20);
   });
 
-  it('keeps the default colors before a scheduled shift has actually started', () => {
+  it('uses the displayed scheduled shift colors before a scheduled shift has actually started', () => {
     mockBuildShiftCycle.mockReturnValue({ rosterType: 'rotating' });
     mockUseActiveShift.mockReturnValue({ shiftType: 'day', accentShiftType: 'off' });
 
     const { result } = renderHook(() => useShiftAccent());
 
-    expect(result.current.shiftType).toBe('off');
-    expect(result.current.statusAreaColor).toBe(theme.colors.deepVoid);
-    expect(result.current.tabAccentColor).toBe(theme.colors.paleGold);
-    expect(result.current.tabGlowColor).toBe(theme.colors.opacity.gold20);
+    expect(result.current.shiftType).toBe('day');
+    expect(result.current.statusAreaColor).toBe(shiftColors.day.primary);
+    expect(result.current.tabAccentColor).toBe(shiftColors.day.primary);
+    expect(result.current.tabGlowColor).toBe('rgba(33, 150, 243, 0.2)');
   });
 
   it('schedules the next refresh at the exact current shift end boundary', () => {
