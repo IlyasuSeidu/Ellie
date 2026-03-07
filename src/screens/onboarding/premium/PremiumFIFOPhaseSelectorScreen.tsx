@@ -729,7 +729,13 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       isTransitioningRef.current = true;
       setIsTransitioning(true);
 
-      updateData({ phaseOffset });
+      // Ensure fifoConfig is populated (for non-custom FIFO patterns it's not set yet)
+      const fifoConfig = data.fifoConfig ?? {
+        workBlockDays,
+        restBlockDays,
+        workBlockPattern: 'swing' as const, // Default: collect both day/night shift times
+      };
+      updateData({ phaseOffset, fifoConfig });
       void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
         source: 'PremiumFIFOPhaseSelectorScreen.handleDaySelect',
       });
@@ -740,7 +746,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
         }, 300);
       });
     },
-    [navigation, restBlockDays, updateData, workBlockDays]
+    [navigation, restBlockDays, updateData, workBlockDays, data.fifoConfig]
   );
 
   const handleSwipeRight = useCallback(() => {
