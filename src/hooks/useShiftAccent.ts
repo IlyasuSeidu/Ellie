@@ -6,7 +6,7 @@ import { buildShiftCycle } from '@/utils/shiftUtils';
 import { toDateString } from '@/utils/dateUtils';
 import { hexToRGBA } from '@/utils/styleUtils';
 import { theme } from '@/utils/theme';
-import { RosterType, type ShiftType } from '@/types';
+import type { ShiftType } from '@/types';
 
 interface ShiftAccentResult {
   shiftType: ShiftType | null;
@@ -43,27 +43,25 @@ export function useShiftAccent(): ShiftAccentResult {
 
   const activeShift = useActiveShift(shiftCycle, data, liveTick, currentDateStr);
 
-  const rotatingShiftType = useMemo<ShiftType | null>(() => {
-    if (!shiftCycle || shiftCycle.rosterType !== RosterType.ROTATING || !activeShift) {
+  const activeShiftType = useMemo<ShiftType | null>(() => {
+    if (!shiftCycle || !activeShift) {
       return null;
     }
     return activeShift.shiftType;
   }, [activeShift, shiftCycle]);
 
-  const isWorkShift = rotatingShiftType !== null && rotatingShiftType !== 'off';
+  const isWorkShift = activeShiftType !== null && activeShiftType !== 'off';
 
-  const tabAccentColor = isWorkShift
-    ? shiftColors[rotatingShiftType].primary
-    : theme.colors.paleGold;
+  const tabAccentColor = isWorkShift ? shiftColors[activeShiftType].primary : theme.colors.paleGold;
   const tabGlowColor = isWorkShift
-    ? hexToRGBA(shiftColors[rotatingShiftType].primary, 0.2)
+    ? hexToRGBA(shiftColors[activeShiftType].primary, 0.2)
     : theme.colors.opacity.gold20;
   const statusAreaColor = isWorkShift
-    ? shiftColors[rotatingShiftType].primary
+    ? shiftColors[activeShiftType].primary
     : theme.colors.deepVoid;
 
   return {
-    shiftType: rotatingShiftType,
+    shiftType: activeShiftType,
     statusAreaColor,
     tabAccentColor,
     tabGlowColor,
