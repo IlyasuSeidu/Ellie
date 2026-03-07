@@ -57,6 +57,7 @@ import {
   getRequiredShiftTypes,
 } from '@/utils/shiftTimeUtils';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
+import { getDefaultFIFOConfig } from '@/utils/shiftUtils';
 
 // Helper to get pattern display info
 const getPatternInfo = (
@@ -348,7 +349,8 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     const workPattern =
       data.patternType === ShiftPattern.FIFO_CUSTOM
         ? data.fifoConfig?.workBlockPattern || 'swing'
-        : 'swing';
+        : getDefaultFIFOConfig(data.patternType ?? ShiftPattern.FIFO_14_14)?.workBlockPattern ||
+          'straight-days';
 
     if (workPattern === 'straight-days') {
       // Only collect day shift times
@@ -389,8 +391,8 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   const filteredPresets = SHIFT_PRESETS.filter((preset) => {
     if (preset.id === 'custom') return true;
     if (preset.shiftSystem !== shiftSystem) return false;
-    // Only filter by shift type when collecting multiple shift types
-    if (totalStages > 1) {
+    // FIFO preset selection should always stay scoped to the required shift type.
+    if (rosterType === 'fifo' || totalStages > 1) {
       return preset.type === currentShiftType;
     }
     // For single-stage flow, show all presets for this shift system

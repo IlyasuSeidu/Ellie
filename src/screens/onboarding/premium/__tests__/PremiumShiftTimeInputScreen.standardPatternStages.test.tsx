@@ -149,7 +149,7 @@ describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
     expect(queryByText('Night start')).toBeNull();
   });
 
-  it('uses 2 stages for standard FIFO patterns even with stale fifoConfig work pattern', () => {
+  it('uses the standard FIFO preset work pattern instead of stale fifoConfig work pattern', () => {
     mockOnboardingData = {
       shiftSystem: '2-shift',
       rosterType: 'fifo',
@@ -162,8 +162,12 @@ describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
       },
     };
 
-    const { getByText } = renderScreen();
-    expect(getByText('Step 1 of 2')).toBeTruthy();
+    const { getByText, queryByText } = renderScreen();
+    expect(queryByText('Step 1 of 2')).toBeNull();
+    expect(getByText(/Single shift profile/i)).toBeTruthy();
+    expect(queryByText('Night Shift Times')).toBeNull();
+    expect(getByText(/6:00 AM/i)).toBeTruthy();
+    expect(queryByText(/Ends at 6:00 AM/i)).toBeNull();
   });
 
   it('keeps custom FIFO work pattern behavior for FIFO custom patterns', () => {
