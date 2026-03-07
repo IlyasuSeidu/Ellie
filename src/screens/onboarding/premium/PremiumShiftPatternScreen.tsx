@@ -312,7 +312,7 @@ const SHIFT_PATTERNS: PatternCardData[] = [
     id: 'fifo-14-7',
     type: ShiftPattern.FIFO_14_7,
     icon: '🏗️',
-    iconImage: require('../../../../assets/onboarding/icons/consolidated/shift-pattern-fifo-14-7.png'),
+    iconImage: require('../../../../assets/onboarding/icons/consolidated/shift-pattern-fifo-14-7-refresh.png'),
     name: 'FIFO 14/7 (2:1)',
     schedule: '2 weeks work • 1 week home',
     description: '14 days on-site, 7 days home—higher pay for more time away',
