@@ -443,6 +443,7 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                         ? styles.offBadge
                         : styles.activeBadge
                   }
+                  testID="shift-status-badge"
                 >
                   {showActivePulse && (
                     <Animated.View

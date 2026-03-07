@@ -163,7 +163,9 @@ describe('CurrentShiftStatusCard', () => {
       );
       expect(getByText('ACTIVE')).toBeTruthy();
       expect(queryByText('OFF')).toBeNull();
+      expect(getByTestId('shift-status-badge')).toBeTruthy();
       expect(getByTestId('active-badge-pulse-dot')).toBeTruthy();
+      expect(getByTestId('shift-status-badge-icon').props.name).toBe('calendar');
     });
 
     it('should show green pulse on ACTIVE badge for all rotating work shifts', () => {
