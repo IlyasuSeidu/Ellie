@@ -109,6 +109,8 @@ describe('PremiumFIFOCustomPatternScreen', () => {
   it('renders parity shell with FIFO-specific controls', () => {
     const { getByText, getByTestId } = renderWithContext();
     expect(getByText('Build Your FIFO Rotation')).toBeTruthy();
+    expect(getByText('Work Block, Rest Block & Pattern Split')).toBeTruthy();
+    expect(getByText(/See your FIFO pattern below/)).toBeTruthy();
     expect(getByText('Work Pattern During Work Block')).toBeTruthy();
     expect(getByTestId('fifo-custom-pattern-progress-header')).toBeTruthy();
     expect(getByTestId('fifo-custom-save-button')).toBeTruthy();

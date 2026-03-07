@@ -12,7 +12,6 @@ import {
   View,
   StyleSheet,
   Text,
-  Dimensions,
   Platform,
   Pressable,
   ScrollView,
@@ -29,9 +28,7 @@ import Animated, {
   withRepeat,
   withSequence,
   withDelay,
-  runOnJS,
 } from 'react-native-reanimated';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
@@ -45,11 +42,9 @@ import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboarding
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import type { FIFOConfig } from '@/types';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
+import { PatternBuilderSlider } from '@/components/onboarding/premium/PatternBuilderSlider';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
-
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const SLIDER_WIDTH = SCREEN_WIDTH * 0.75;
 
 const SPRING_CONFIGS = {
   fast: { damping: 10, stiffness: 400 },
@@ -92,282 +87,6 @@ const WORK_PATTERNS: WorkPatternOption[] = [
   },
 ];
 
-interface EnhancedSliderProps {
-  label: string;
-  icon: string;
-  value: number;
-  min: number;
-  max: number;
-  color: string;
-  trackColor: string;
-  onChange: (value: number) => void;
-  delayIndex?: number;
-  reducedMotion?: boolean;
-}
-
-const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
-  label,
-  icon,
-  value,
-  min,
-  max,
-  color,
-  trackColor,
-  onChange,
-  delayIndex = 0,
-  reducedMotion = false,
-}) => {
-  const [trackWidth, setTrackWidth] = React.useState(SLIDER_WIDTH);
-  const translateX = useSharedValue(((value - min) / Math.max(1, max - min)) * trackWidth);
-  const startX = useSharedValue(0);
-  const scale = useSharedValue(1);
-  const badgeScale = useSharedValue(1);
-  const containerOpacity = useSharedValue(0);
-  const containerTranslateY = useSharedValue(20);
-  const shakeX = useSharedValue(0);
-  const thumbGlow = useSharedValue(0.3);
-
-  useEffect(() => {
-    containerOpacity.value = withDelay(delayIndex * 180, withTiming(1, { duration: 380 }));
-    containerTranslateY.value = withDelay(delayIndex * 180, withSpring(0, SPRING_CONFIGS.gentle));
-  }, [delayIndex, containerOpacity, containerTranslateY]);
-
-  useEffect(() => {
-    if (reducedMotion) {
-      thumbGlow.value = 0.45;
-      return;
-    }
-    thumbGlow.value = withRepeat(
-      withSequence(withTiming(0.3, { duration: 1400 }), withTiming(0.6, { duration: 1400 })),
-      -1,
-      true
-    );
-  }, [thumbGlow, reducedMotion]);
-
-  useEffect(() => {
-    translateX.value = withSpring(
-      ((value - min) / Math.max(1, max - min)) * trackWidth,
-      SPRING_CONFIGS.smooth
-    );
-  }, [value, min, max, trackWidth, translateX]);
-
-  useEffect(() => {
-    badgeScale.value = withSequence(
-      withSpring(1.15, SPRING_CONFIGS.fast),
-      withSpring(1, SPRING_CONFIGS.fast)
-    );
-  }, [value, badgeScale]);
-
-  const handleIncrement = useCallback(() => {
-    if (value < max) {
-      onChange(value + 1);
-      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
-        source: `PremiumFIFOCustomPatternScreen.slider.increment:${label}`,
-      });
-      return;
-    }
-    shakeX.value = withSequence(
-      withTiming(-8, { duration: 50 }),
-      withTiming(8, { duration: 50 }),
-      withTiming(-8, { duration: 50 }),
-      withTiming(8, { duration: 50 }),
-      withTiming(0, { duration: 50 })
-    );
-    void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
-      source: `PremiumFIFOCustomPatternScreen.slider.increment.limit:${label}`,
-    });
-  }, [max, onChange, shakeX, value, label]);
-
-  const handleDecrement = useCallback(() => {
-    if (value > min) {
-      onChange(value - 1);
-      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
-        source: `PremiumFIFOCustomPatternScreen.slider.decrement:${label}`,
-      });
-      return;
-    }
-    shakeX.value = withSequence(
-      withTiming(-8, { duration: 50 }),
-      withTiming(8, { duration: 50 }),
-      withTiming(-8, { duration: 50 }),
-      withTiming(8, { duration: 50 }),
-      withTiming(0, { duration: 50 })
-    );
-    void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
-      source: `PremiumFIFOCustomPatternScreen.slider.decrement.limit:${label}`,
-    });
-  }, [min, onChange, shakeX, value, label]);
-
-  const handleTrackPress = useCallback(
-    (event: { nativeEvent: { locationX: number } }) => {
-      const tapX = event.nativeEvent.locationX;
-      const clampedX = Math.max(0, Math.min(trackWidth, tapX));
-      const progress = clampedX / Math.max(1, trackWidth);
-      const newValue = Math.round(min + progress * (max - min));
-
-      if (newValue !== value) {
-        onChange(newValue);
-        void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
-          source: `PremiumFIFOCustomPatternScreen.slider.trackPress:${label}`,
-        });
-      }
-    },
-    [max, min, onChange, trackWidth, value, label]
-  );
-
-  const triggerLightHaptic = useCallback(() => {
-    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
-      source: `PremiumFIFOCustomPatternScreen.slider.drag:${label}`,
-    });
-  }, [label]);
-
-  const panGesture = Gesture.Pan()
-    .onBegin(() => {
-      startX.value = translateX.value;
-      scale.value = withSpring(1.1, SPRING_CONFIGS.fast);
-      thumbGlow.value = withTiming(0.7, { duration: 160 });
-    })
-    .onUpdate((event) => {
-      const newX = Math.max(0, Math.min(trackWidth, startX.value + event.translationX));
-      translateX.value = newX;
-      const progress = newX / Math.max(1, trackWidth);
-      const newValue = Math.round(min + progress * (max - min));
-
-      if (newValue !== value) {
-        runOnJS(onChange)(newValue);
-        runOnJS(triggerLightHaptic)();
-      }
-    })
-    .onEnd(() => {
-      scale.value = withSpring(1, SPRING_CONFIGS.fast);
-      if (!reducedMotion) {
-        thumbGlow.value = withRepeat(
-          withSequence(withTiming(0.3, { duration: 1400 }), withTiming(0.6, { duration: 1400 })),
-          -1,
-          true
-        );
-      } else {
-        thumbGlow.value = 0.45;
-      }
-
-      const progress = translateX.value / Math.max(1, trackWidth);
-      const newValue = Math.round(min + progress * (max - min));
-      translateX.value = withSpring(
-        ((newValue - min) / Math.max(1, max - min)) * trackWidth,
-        SPRING_CONFIGS.smooth
-      );
-    });
-
-  const containerAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: containerOpacity.value,
-    transform: [{ translateY: containerTranslateY.value }, { translateX: shakeX.value }],
-  }));
-
-  const thumbAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }, { scale: scale.value }],
-    shadowOpacity: thumbGlow.value,
-  }));
-
-  const trackFillAnimatedStyle = useAnimatedStyle(() => ({
-    width: translateX.value,
-  }));
-
-  const badgeAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value - 16 }, { scale: badgeScale.value }],
-  }));
-
-  return (
-    <Animated.View style={[styles.sliderContainer, containerAnimatedStyle]}>
-      <View style={styles.sliderHeader}>
-        <View style={styles.sliderLabelContainer}>
-          <Text style={styles.sliderEmoji}>{icon}</Text>
-          <Text style={styles.sliderLabel}>{label}</Text>
-        </View>
-        <Text style={[styles.sliderValue, { color }]}>{value}</Text>
-      </View>
-
-      <View style={styles.sliderControls}>
-        <Pressable
-          onPress={handleDecrement}
-          style={[styles.controlButton, value === min && styles.controlButtonDisabled]}
-          accessibilityRole="button"
-          accessibilityLabel={`Decrease ${label}`}
-          accessibilityHint={`Current value is ${value}. Minimum is ${min}.`}
-          accessibilityState={{ disabled: value === min }}
-        >
-          <Ionicons name="remove" size={20} color={value === min ? theme.colors.dust : color} />
-        </Pressable>
-
-        <View
-          style={styles.sliderTrackContainer}
-          onLayout={(event) => {
-            const { width } = event.nativeEvent.layout;
-            setTrackWidth(width);
-          }}
-        >
-          <View style={[styles.sliderTrack, { backgroundColor: theme.colors.opacity.white10 }]}>
-            <Animated.View
-              style={[
-                styles.sliderTrackFill,
-                { backgroundColor: trackColor },
-                trackFillAnimatedStyle,
-              ]}
-            />
-          </View>
-
-          <Pressable onPress={handleTrackPress} style={styles.trackPressable} />
-
-          <View style={styles.tickMarks}>
-            {Array.from({ length: max - min + 1 }).map((_, index) => (
-              <View
-                key={`${label}-${index}`}
-                style={[
-                  styles.tickMark,
-                  index === value - min && { backgroundColor: color, height: 8, width: 2 },
-                ]}
-              />
-            ))}
-          </View>
-
-          <View style={styles.rangeLabels}>
-            <Text style={styles.rangeLabel}>{min}</Text>
-            <Text style={styles.rangeLabel}>{max}</Text>
-          </View>
-
-          <Animated.View
-            style={[styles.valueBadge, { backgroundColor: color }, badgeAnimatedStyle]}
-          >
-            <Text style={styles.valueBadgeText}>{value}</Text>
-          </Animated.View>
-
-          <GestureDetector gesture={panGesture}>
-            <Animated.View
-              style={[styles.sliderThumb, { backgroundColor: color }, thumbAnimatedStyle]}
-              accessibilityRole="adjustable"
-              accessibilityLabel={label}
-              accessibilityValue={{ min, max, now: value, text: `${value} ${label.toLowerCase()}` }}
-              accessibilityHint="Swipe left or right to adjust value"
-            >
-              <View style={styles.thumbInner} />
-            </Animated.View>
-          </GestureDetector>
-        </View>
-
-        <Pressable
-          onPress={handleIncrement}
-          style={[styles.controlButton, value === max && styles.controlButtonDisabled]}
-          accessibilityRole="button"
-          accessibilityLabel={`Increase ${label}`}
-          accessibilityHint={`Current value is ${value}. Maximum is ${max}.`}
-          accessibilityState={{ disabled: value === max }}
-        >
-          <Ionicons name="add" size={20} color={value === max ? theme.colors.dust : color} />
-        </Pressable>
-      </View>
-    </Animated.View>
-  );
-};
-
 interface WorkPatternCardProps {
   pattern: WorkPatternOption;
   isSelected: boolean;
@@ -409,21 +128,29 @@ const WorkPatternCard: React.FC<WorkPatternCardProps> = ({
   return (
     <Pressable onPress={handlePress} testID={`work-pattern-${pattern.id}`}>
       <Animated.View
-        style={[
-          styles.patternCard,
-          isSelected && styles.patternCardSelected,
-          { borderColor: isSelected ? pattern.color : theme.colors.softStone },
-          cardStyle,
-        ]}
+        style={[styles.patternCardShell, isSelected && styles.patternCardSelected, cardStyle]}
       >
-        <Image source={pattern.icon} style={styles.patternIconImage} resizeMode="contain" />
-        <Text style={styles.patternTitle}>{pattern.title}</Text>
-        <Text style={styles.patternDescription}>{pattern.description}</Text>
-        {isSelected && (
-          <View style={[styles.selectedBadge, { backgroundColor: pattern.color }]}>
-            <Ionicons name="checkmark" size={16} color={theme.colors.deepVoid} />
-          </View>
-        )}
+        <LinearGradient
+          colors={
+            isSelected
+              ? [theme.colors.opacity.gold20, theme.colors.opacity.white10]
+              : [theme.colors.opacity.white10, theme.colors.opacity.black40]
+          }
+          style={[
+            styles.patternCard,
+            { borderColor: isSelected ? pattern.color : theme.colors.opacity.gold20 },
+          ]}
+        >
+          <View style={[styles.patternAccent, { backgroundColor: pattern.color }]} />
+          <Image source={pattern.icon} style={styles.patternIconImage} resizeMode="contain" />
+          <Text style={styles.patternTitle}>{pattern.title}</Text>
+          <Text style={styles.patternDescription}>{pattern.description}</Text>
+          {isSelected && (
+            <View style={[styles.selectedBadge, { backgroundColor: pattern.color }]}>
+              <Ionicons name="checkmark" size={16} color={theme.colors.deepVoid} />
+            </View>
+          )}
+        </LinearGradient>
       </Animated.View>
     </Pressable>
   );
@@ -484,70 +211,158 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
         style={styles.previewGradient}
       >
         <View style={styles.previewHeader}>
+          <Image
+            source={require('../../../../assets/onboarding/icons/consolidated/roster-type-fifo.png')}
+            style={styles.previewHeaderIcon}
+            resizeMode="contain"
+          />
           <Text style={styles.previewTitle}>Your FIFO Rotation Preview</Text>
           <Text style={styles.previewSubtitle}>
             {workBlockDays} days at site, then {restBlockDays} days at home
           </Text>
         </View>
 
-        <View style={styles.blockSummaryRow}>
-          <View
-            style={[
-              styles.summaryChip,
-              { backgroundColor: theme.colors.shiftVisualization.dayShift },
-            ]}
-          >
-            <Text style={styles.summaryChipText}>Work: {workBlockDays}d</Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.cycleBlocksScroll}
+          style={styles.cycleBlocksContainer}
+        >
+          <View style={styles.cycleBlock}>
+            <View
+              style={[
+                styles.cycleBlockInner,
+                { backgroundColor: theme.colors.shiftVisualization.dayShift },
+              ]}
+            >
+              <Image
+                source={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
+                style={styles.cycleBlockIcon}
+                resizeMode="contain"
+              />
+              <Text style={styles.cycleBlockNumber}>{workBlockDays}</Text>
+              <Text style={styles.cycleBlockLabel}>Work</Text>
+            </View>
           </View>
-          <View
-            style={[
-              styles.summaryChip,
-              { backgroundColor: theme.colors.shiftVisualization.daysOff },
-            ]}
-          >
-            <Text style={styles.summaryChipText}>Rest: {restBlockDays}d</Text>
+
+          <View style={styles.cycleBlock}>
+            <View
+              style={[
+                styles.cycleBlockInner,
+                { backgroundColor: theme.colors.shiftVisualization.daysOff },
+              ]}
+            >
+              <Image
+                source={require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png')}
+                style={styles.cycleBlockIcon}
+                resizeMode="contain"
+              />
+              <Text style={styles.cycleBlockNumber}>{restBlockDays}</Text>
+              <Text style={styles.cycleBlockLabel}>Rest</Text>
+            </View>
           </View>
-        </View>
+        </ScrollView>
         {workPattern === 'swing' && (
           <Text style={styles.swingPreviewText}>
             Swing split: {daysOnDayShift} day-shift days + {daysOnNightShift} night-shift days
           </Text>
         )}
 
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.cyclePreview}
-        >
-          {Array.from({ length: previewDays }).map((_, index) => {
-            const isWork = index < workBlockDays;
-            let backgroundColor: string = theme.colors.shiftVisualization.daysOff;
-
-            if (isWork) {
-              if (workPattern === 'straight-nights') {
-                backgroundColor = theme.colors.shiftVisualization.nightShift;
-              } else if (workPattern === 'swing') {
-                backgroundColor =
-                  index < daysOnDayShift
-                    ? theme.colors.shiftVisualization.dayShift
-                    : theme.colors.shiftVisualization.nightShift;
-              } else {
-                backgroundColor = theme.colors.shiftVisualization.dayShift;
-              }
-            }
-
-            return (
+        <View style={styles.cyclePreviewSection}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.cycleLegendScroll}
+            style={styles.cycleLegendContainer}
+          >
+            {workPattern === 'swing' ? (
+              <>
+                <View style={styles.legendItem}>
+                  <View
+                    style={[
+                      styles.legendDot,
+                      { backgroundColor: theme.colors.shiftVisualization.dayShift },
+                    ]}
+                  />
+                  <Text style={styles.legendText}>Day Swing</Text>
+                </View>
+                <View style={styles.legendItem}>
+                  <View
+                    style={[
+                      styles.legendDot,
+                      { backgroundColor: theme.colors.shiftVisualization.nightShift },
+                    ]}
+                  />
+                  <Text style={styles.legendText}>Night Swing</Text>
+                </View>
+              </>
+            ) : (
+              <View style={styles.legendItem}>
+                <View
+                  style={[
+                    styles.legendDot,
+                    {
+                      backgroundColor:
+                        workPattern === 'straight-nights'
+                          ? theme.colors.shiftVisualization.nightShift
+                          : theme.colors.shiftVisualization.dayShift,
+                    },
+                  ]}
+                />
+                <Text style={styles.legendText}>Work Block</Text>
+              </View>
+            )}
+            <View style={styles.legendItem}>
               <View
-                key={`fifo-day-${index}`}
-                style={[styles.cycleSquare, { backgroundColor }]}
-                accessibilityLabel={`Cycle day ${index + 1}`}
+                style={[
+                  styles.legendDot,
+                  { backgroundColor: theme.colors.shiftVisualization.daysOff },
+                ]}
               />
-            );
-          })}
-        </ScrollView>
+              <Text style={styles.legendText}>Home Block</Text>
+            </View>
+          </ScrollView>
+
+          <View style={styles.cyclePreview}>
+            {Array.from({ length: previewDays }).map((_, index) => {
+              const isWork = index < workBlockDays;
+              let backgroundColor: string = theme.colors.shiftVisualization.daysOff;
+
+              if (isWork) {
+                if (workPattern === 'straight-nights') {
+                  backgroundColor = theme.colors.shiftVisualization.nightShift;
+                } else if (workPattern === 'swing') {
+                  backgroundColor =
+                    index < daysOnDayShift
+                      ? theme.colors.shiftVisualization.dayShift
+                      : theme.colors.shiftVisualization.nightShift;
+                } else {
+                  backgroundColor = theme.colors.shiftVisualization.dayShift;
+                }
+              }
+
+              return (
+                <View
+                  key={`fifo-day-${index}`}
+                  style={[styles.cycleSquare, { backgroundColor }]}
+                  accessibilityLabel={`Cycle day ${index + 1}`}
+                />
+              );
+            })}
+          </View>
+
+          <Text style={styles.cycleLabel}>Cycle flow across {previewDays} visible days</Text>
+        </View>
 
         <View style={styles.balanceChart}>
-          <Text style={styles.balanceTitle}>Work-Rest Balance</Text>
+          <View style={styles.balanceHeader}>
+            <Image
+              source={require('../../../../assets/onboarding/icons/consolidated/work-rest-balance-scale.png')}
+              style={styles.balanceScaleIcon}
+              resizeMode="contain"
+            />
+            <Text style={styles.balanceTitle}>Work-Rest Balance</Text>
+          </View>
           <View style={styles.chartBar}>
             <View style={[styles.chartSegment, { width: `${workPercentage}%` }]}>
               <LinearGradient
@@ -572,6 +387,21 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
           <View style={styles.chartLabels}>
             <Text style={styles.chartLabel}>Work: {workBlockDays} days</Text>
             <Text style={styles.chartLabel}>Rest: {restBlockDays} days</Text>
+          </View>
+        </View>
+
+        <View style={styles.ratioContainer}>
+          <Text style={styles.ratioLabel}>Site to home rhythm</Text>
+          <View style={styles.ratioBreakdown}>
+            <View style={styles.ratioItem}>
+              <Text style={styles.ratioNumber}>{workBlockDays}</Text>
+              <Text style={styles.ratioUnit}>site days</Text>
+            </View>
+            <Text style={styles.ratioSeparator}>:</Text>
+            <View style={styles.ratioItem}>
+              <Text style={styles.ratioNumber}>{restBlockDays}</Text>
+              <Text style={styles.ratioUnit}>home days</Text>
+            </View>
           </View>
         </View>
 
@@ -606,6 +436,8 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
   const navigationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const interactionHandleRef = useRef<{ cancel?: () => void } | null>(null);
   const continueButtonScale = useSharedValue(1);
+  const tipOpacity = useSharedValue(0);
+  const tipTranslateY = useSharedValue(12);
 
   const clearPendingTransition = useCallback((resetUi: boolean) => {
     if (navigationTimeoutRef.current) {
@@ -694,6 +526,16 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
 
   const continueButtonAnimatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: continueButtonScale.value }],
+  }));
+
+  useEffect(() => {
+    tipOpacity.value = withDelay(500, withTiming(1, { duration: 400 }));
+    tipTranslateY.value = withDelay(500, withSpring(0, SPRING_CONFIGS.gentle));
+  }, [tipOpacity, tipTranslateY]);
+
+  const tipAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: tipOpacity.value,
+    transform: [{ translateY: tipTranslateY.value }],
   }));
 
   const handleBack = useCallback(() => {
@@ -785,7 +627,7 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
           </View>
 
           <View style={styles.slidersContainer}>
-            <EnhancedSlider
+            <PatternBuilderSlider
               label="Days at Site (Work Block)"
               icon="🏗️"
               value={workBlockDays}
@@ -794,11 +636,14 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
               color={theme.colors.shiftVisualization.dayShift}
               trackColor="#60A5FA"
               onChange={setWorkBlockDays}
+              hapticSourcePrefix="PremiumFIFOCustomPatternScreen"
               delayIndex={0}
               reducedMotion={reducedMotion}
+              customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
+              customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
             />
 
-            <EnhancedSlider
+            <PatternBuilderSlider
               label="Days at Home (Rest Block)"
               icon="🏠"
               value={restBlockDays}
@@ -807,71 +652,90 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
               color={theme.colors.shiftVisualization.daysOff}
               trackColor="#a8a29e"
               onChange={setRestBlockDays}
+              hapticSourcePrefix="PremiumFIFOCustomPatternScreen"
               delayIndex={1}
               reducedMotion={reducedMotion}
+              customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png')}
+              customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png')}
             />
           </View>
         </View>
 
         <View style={styles.sectionContainer} testID="work-pattern-section">
-          <Text style={styles.sectionTitle}>Work Pattern During Work Block</Text>
-          <Text style={styles.sectionSubtitle}>How are your shifts organized while at site?</Text>
+          <View style={styles.sectionHeader}>
+            <Ionicons name="layers-outline" size={22} color={theme.colors.sacredGold} />
+            <Text style={styles.sectionTitle}>Work Pattern During Work Block</Text>
+          </View>
+          <View style={styles.sectionBody}>
+            <Text style={styles.sectionSubtitle}>How are your shifts organized while at site?</Text>
 
-          <View style={styles.patternCardsContainer}>
-            {WORK_PATTERNS.map((pattern, index) => (
-              <WorkPatternCard
-                key={pattern.id}
-                pattern={pattern}
-                isSelected={workPattern === pattern.id}
-                onSelect={() => setWorkPattern(pattern.id)}
-                index={index}
-              />
-            ))}
+            <View style={styles.patternCardsContainer}>
+              {WORK_PATTERNS.map((pattern, index) => (
+                <WorkPatternCard
+                  key={pattern.id}
+                  pattern={pattern}
+                  isSelected={workPattern === pattern.id}
+                  onSelect={() => setWorkPattern(pattern.id)}
+                  index={index}
+                />
+              ))}
+            </View>
           </View>
         </View>
 
         {workPattern === 'swing' && (
           <View style={styles.swingConfigContainer} testID="swing-config-section">
-            <Text style={styles.sectionTitle}>Swing Configuration</Text>
-            <Text style={styles.sectionSubtitle}>
-              Split your work block between day and night shifts.
-            </Text>
+            <View style={styles.sectionHeader}>
+              <Ionicons name="swap-horizontal-outline" size={22} color={theme.colors.sacredGold} />
+              <Text style={styles.sectionTitle}>Swing Configuration</Text>
+            </View>
+            <View style={styles.sectionBody}>
+              <Text style={styles.sectionSubtitle}>
+                Split your work block between day and night shifts.
+              </Text>
 
-            <EnhancedSlider
-              label="Days on Day Shift"
-              icon="☀️"
-              value={daysOnDayShift}
-              min={1}
-              max={Math.max(1, workBlockDays - 1)}
-              color={theme.colors.shiftVisualization.dayShift}
-              trackColor="#60A5FA"
-              onChange={(val) => {
-                setDaysOnDayShift(val);
-                setDaysOnNightShift(Math.max(0, workBlockDays - val));
-              }}
-              delayIndex={2}
-              reducedMotion={reducedMotion}
-            />
+              <PatternBuilderSlider
+                label="Days on Day Shift"
+                icon="☀️"
+                value={daysOnDayShift}
+                min={1}
+                max={Math.max(1, workBlockDays - 1)}
+                color={theme.colors.shiftVisualization.dayShift}
+                trackColor="#60A5FA"
+                onChange={(val) => {
+                  setDaysOnDayShift(val);
+                  setDaysOnNightShift(Math.max(0, workBlockDays - val));
+                }}
+                hapticSourcePrefix="PremiumFIFOCustomPatternScreen"
+                delayIndex={2}
+                reducedMotion={reducedMotion}
+                customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
+                customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
+              />
 
-            <EnhancedSlider
-              label="Days on Night Shift"
-              icon="🌙"
-              value={daysOnNightShift}
-              min={1}
-              max={Math.max(1, workBlockDays - 1)}
-              color={theme.colors.shiftVisualization.nightShift}
-              trackColor="#A78BFA"
-              onChange={(val) => {
-                setDaysOnNightShift(val);
-                setDaysOnDayShift(Math.max(0, workBlockDays - val));
-              }}
-              delayIndex={3}
-              reducedMotion={reducedMotion}
-            />
+              <PatternBuilderSlider
+                label="Days on Night Shift"
+                icon="🌙"
+                value={daysOnNightShift}
+                min={1}
+                max={Math.max(1, workBlockDays - 1)}
+                color={theme.colors.shiftVisualization.nightShift}
+                trackColor="#A78BFA"
+                onChange={(val) => {
+                  setDaysOnNightShift(val);
+                  setDaysOnDayShift(Math.max(0, workBlockDays - val));
+                }}
+                hapticSourcePrefix="PremiumFIFOCustomPatternScreen"
+                delayIndex={3}
+                reducedMotion={reducedMotion}
+                customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png')}
+                customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png')}
+              />
 
-            <Text style={styles.swingSplitText} testID="swing-total-text">
-              Split total: {swingTotal}/{workBlockDays} days
-            </Text>
+              <Text style={styles.swingSplitText} testID="swing-total-text">
+                Split total: {swingTotal}/{workBlockDays} days
+              </Text>
+            </View>
           </View>
         )}
 
@@ -889,9 +753,25 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
           reducedMotion={reducedMotion}
         />
 
+        <Animated.View style={[styles.tipBox, tipAnimatedStyle]}>
+          <Image
+            source={require('../../../../assets/onboarding/icons/consolidated/tips-lightbulb-glowing.png')}
+            style={styles.tipIcon}
+            resizeMode="contain"
+          />
+          <Text style={styles.tipText}>
+            Tip: Match your home block to recovery and travel demands. FIFO patterns work best when
+            the rest block is long enough to reset before your next site run.
+          </Text>
+        </Animated.View>
+
         {hasHardError && (
           <View style={styles.validationMessage} testID="fifo-status-error">
-            <Ionicons name="warning-outline" size={20} color={theme.colors.warning} />
+            <Image
+              source={require('../../../../assets/onboarding/icons/consolidated/validation-warning-alert.png')}
+              style={styles.validationIcon}
+              resizeMode="contain"
+            />
             <Text style={styles.validationText}>
               {swingMismatch
                 ? `Swing split must equal ${workBlockDays} days before saving.`
@@ -902,7 +782,11 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
 
         {!hasHardError && hasWarning && (
           <View style={styles.warningMessage} testID="fifo-status-warning">
-            <Ionicons name="alert-circle-outline" size={20} color={theme.colors.warning} />
+            <Image
+              source={require('../../../../assets/onboarding/icons/consolidated/validation-warning-alert.png')}
+              style={styles.validationIcon}
+              resizeMode="contain"
+            />
             <Text style={styles.warningText}>
               This roster is heavy ({workPercentage}% work). Consider balancing with more home days
               if fatigue becomes an issue.
@@ -912,7 +796,11 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
 
         {!hasHardError && !hasWarning && (
           <View style={styles.successMessage} testID="fifo-status-success">
-            <Ionicons name="checkmark-circle-outline" size={20} color={theme.colors.success} />
+            <Image
+              source={require('../../../../assets/onboarding/icons/consolidated/validation-success-checkmark.png')}
+              style={styles.validationIcon}
+              resizeMode="contain"
+            />
             <Text style={styles.successText}>
               Solid FIFO setup. {workBlockDays} days at site, then {restBlockDays} days at home.
             </Text>
@@ -924,6 +812,7 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
         <Pressable
           onPress={handleBack}
           style={styles.backButton}
+          accessible={true}
           accessibilityRole="button"
           accessibilityLabel="Go back"
           accessibilityHint="Return to shift pattern selection"
@@ -932,11 +821,12 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
           <Ionicons name="arrow-back" size={24} color={theme.colors.paper} />
         </Pressable>
 
-        <Animated.View style={continueButtonAnimatedStyle}>
+        <Animated.View style={[styles.continueButtonWrap, continueButtonAnimatedStyle]}>
           <Pressable
             onPress={handleContinue}
             style={[styles.continueButton, hasHardError && styles.continueButtonDisabled]}
             disabled={hasHardError || isTransitioning}
+            accessible={true}
             accessibilityRole="button"
             accessibilityLabel="Save FIFO pattern and continue"
             accessibilityHint={
@@ -955,7 +845,11 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
               }
               style={styles.continueGradient}
             >
-              <Ionicons name="save-outline" size={22} color={theme.colors.paper} />
+              <Image
+                source={require('../../../../assets/onboarding/icons/consolidated/navigation-save-trophy.png')}
+                style={styles.trophyIconSmaller}
+                resizeMode="contain"
+              />
               <Text style={styles.continueButtonText}>Save FIFO Pattern</Text>
               <Ionicons name="arrow-forward" size={24} color={theme.colors.paper} />
             </LinearGradient>
@@ -982,7 +876,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: theme.spacing.lg,
-    paddingBottom: 120,
+    paddingBottom: 100,
   },
   title: {
     fontSize: 28,
@@ -1006,7 +900,7 @@ const styles = StyleSheet.create({
     color: theme.colors.dust,
     textAlign: 'center',
     marginTop: theme.spacing.sm,
-    marginBottom: theme.spacing.md,
+    marginBottom: theme.spacing.xl,
     paddingHorizontal: theme.spacing.lg,
     ...Platform.select({
       ios: {
@@ -1021,209 +915,139 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: theme.colors.sacredGold,
     textAlign: 'center',
+    marginTop: theme.spacing.xs,
     marginBottom: theme.spacing.lg,
     paddingHorizontal: theme.spacing.lg,
     fontWeight: '600',
   },
   slidersSection: {
-    backgroundColor: theme.colors.darkStone,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: theme.colors.softStone,
-    padding: theme.spacing.lg,
-    marginBottom: theme.spacing.lg,
+    marginBottom: theme.spacing.xl,
   },
   slidersHeader: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: theme.spacing.sm,
-    marginBottom: theme.spacing.md,
+    marginBottom: theme.spacing.lg,
   },
   slidersTitle: {
-    fontSize: 18,
-    fontWeight: '700',
+    fontSize: 22,
+    fontWeight: 'bold',
     color: theme.colors.paper,
   },
   slidersContainer: {
-    gap: theme.spacing.md,
-  },
-  sliderContainer: {
-    marginBottom: 8,
-  },
-  sliderHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  sliderLabelContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    flexShrink: 1,
-  },
-  sliderEmoji: {
-    fontSize: 20,
-  },
-  sliderLabel: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: theme.colors.paper,
-    flexShrink: 1,
-  },
-  sliderValue: {
-    fontSize: 20,
-    fontWeight: '700',
-    marginLeft: 12,
-  },
-  sliderControls: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-  controlButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: theme.colors.deepVoid,
+    backgroundColor: theme.colors.opacity.stone50,
+    borderRadius: 24,
+    padding: theme.spacing.lg,
+    gap: theme.spacing.xl,
     borderWidth: 1,
-    borderColor: theme.colors.softStone,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  controlButtonDisabled: {
-    opacity: 0.4,
-  },
-  sliderTrackContainer: {
-    flex: 1,
-    height: 62,
-    justifyContent: 'center',
-  },
-  sliderTrack: {
-    height: 8,
-    borderRadius: 4,
-    overflow: 'hidden',
-  },
-  sliderTrackFill: {
-    height: '100%',
-    borderRadius: 4,
-  },
-  trackPressable: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  tickMarks: {
-    position: 'absolute',
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    pointerEvents: 'none',
-    paddingHorizontal: 2,
-  },
-  tickMark: {
-    width: 1,
-    height: 6,
-    backgroundColor: theme.colors.opacity.white30,
-  },
-  rangeLabels: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  rangeLabel: {
-    fontSize: 11,
-    color: theme.colors.dust,
-  },
-  valueBadge: {
-    position: 'absolute',
-    top: -30,
-    width: 32,
-    height: 24,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: -16,
-  },
-  valueBadgeText: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: theme.colors.deepVoid,
-  },
-  sliderThumb: {
-    position: 'absolute',
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    marginLeft: -16,
-    marginTop: -4,
-    alignItems: 'center',
-    justifyContent: 'center',
+    borderColor: theme.colors.opacity.gold20,
     ...Platform.select({
       ios: {
         shadowColor: theme.colors.sacredGold,
-        shadowOffset: { width: 0, height: 4 },
+        shadowOffset: { width: 0, height: 12 },
         shadowOpacity: 0.4,
-        shadowRadius: 8,
+        shadowRadius: 20,
       },
       android: {
-        elevation: 6,
+        elevation: 12,
       },
     }),
   },
-  thumbInner: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    backgroundColor: theme.colors.deepVoid,
-  },
   sectionContainer: {
+    marginBottom: theme.spacing.xl,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: theme.spacing.sm,
     marginBottom: theme.spacing.lg,
   },
+  sectionBody: {
+    backgroundColor: theme.colors.opacity.stone50,
+    borderRadius: 24,
+    padding: theme.spacing.lg,
+    gap: theme.spacing.lg,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
+    ...Platform.select({
+      ios: {
+        shadowColor: theme.colors.sacredGold,
+        shadowOffset: { width: 0, height: 12 },
+        shadowOpacity: 0.4,
+        shadowRadius: 20,
+      },
+      android: {
+        elevation: 12,
+      },
+    }),
+  },
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: '700',
+    fontSize: 22,
+    fontWeight: 'bold',
     color: theme.colors.paper,
-    marginBottom: 6,
   },
   sectionSubtitle: {
     fontSize: 14,
     color: theme.colors.dust,
-    marginBottom: 14,
+    marginBottom: 0,
+    textAlign: 'center',
   },
   patternCardsContainer: {
-    gap: 12,
+    gap: theme.spacing.md,
+  },
+  patternCardShell: {
+    borderRadius: 20,
+    overflow: 'hidden',
   },
   patternCard: {
-    backgroundColor: theme.colors.darkStone,
-    borderRadius: 16,
-    borderWidth: 2,
-    padding: 16,
+    borderRadius: 20,
+    borderWidth: 1,
+    padding: theme.spacing.lg,
     position: 'relative',
-  },
-  patternCardSelected: {
-    borderWidth: 2,
+    minHeight: 142,
   },
   patternIcon: {
     fontSize: 28,
     marginBottom: 8,
   },
+  patternAccent: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: 4,
+  },
   patternIconImage: {
-    width: 28,
-    height: 28,
-    marginBottom: 8,
+    width: 42,
+    height: 42,
+    marginBottom: theme.spacing.sm,
   },
   patternTitle: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: '600',
     color: theme.colors.paper,
-    marginBottom: 4,
+    marginBottom: theme.spacing.xs,
   },
   patternDescription: {
     fontSize: 13,
     lineHeight: 19,
     color: theme.colors.dust,
-    paddingRight: 24,
+    paddingRight: 36,
+  },
+  patternCardSelected: {
+    ...Platform.select({
+      ios: {
+        shadowColor: theme.colors.sacredGold,
+        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.25,
+        shadowRadius: 14,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
   },
   selectedBadge: {
     position: 'absolute',
@@ -1236,12 +1060,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   swingConfigContainer: {
-    backgroundColor: theme.colors.darkStone,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: theme.colors.softStone,
-    padding: theme.spacing.lg,
-    marginBottom: theme.spacing.lg,
+    marginBottom: theme.spacing.xl,
   },
   swingSplitText: {
     fontSize: 13,
@@ -1256,9 +1075,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: theme.spacing.md,
     fontWeight: '600',
+    fontStyle: 'italic',
   },
   previewCard: {
-    marginBottom: theme.spacing.lg,
+    marginBottom: theme.spacing.xl,
     borderRadius: 24,
     borderWidth: 1,
     borderColor: theme.colors.opacity.gold20,
@@ -1266,27 +1086,29 @@ const styles = StyleSheet.create({
       ios: {
         shadowColor: theme.colors.sacredGold,
         shadowOffset: { width: 0, height: 12 },
-        shadowOpacity: 0.35,
+        shadowOpacity: 0.4,
         shadowRadius: 20,
       },
       android: {
-        elevation: 10,
+        elevation: 12,
       },
     }),
   },
   previewGradient: {
     borderRadius: 24,
-    padding: theme.spacing.lg,
+    padding: theme.spacing.xl,
   },
   previewHeader: {
+    flexDirection: 'column',
     alignItems: 'center',
-    marginBottom: theme.spacing.md,
+    justifyContent: 'center',
+    marginBottom: theme.spacing.lg,
+    gap: theme.spacing.sm,
   },
   previewTitle: {
-    fontSize: 21,
+    fontSize: 22,
     fontWeight: 'bold',
     color: theme.colors.paper,
-    textAlign: 'center',
   },
   previewSubtitle: {
     fontSize: 14,
@@ -1294,141 +1116,265 @@ const styles = StyleSheet.create({
     marginTop: 4,
     textAlign: 'center',
   },
-  blockSummaryRow: {
+  previewHeaderIcon: {
+    width: 60,
+    height: 60,
+  },
+  cycleBlocksContainer: {
+    marginBottom: theme.spacing.lg,
+  },
+  cycleBlocksScroll: {
     flexDirection: 'row',
-    gap: 10,
-    marginBottom: theme.spacing.md,
+    gap: theme.spacing.sm,
+    paddingHorizontal: theme.spacing.xs,
   },
-  summaryChip: {
-    flex: 1,
-    borderRadius: 12,
-    paddingVertical: 8,
+  cycleBlock: {
+    width: 100,
+    minWidth: 100,
+  },
+  cycleBlockInner: {
+    borderRadius: 16,
+    padding: theme.spacing.md,
     alignItems: 'center',
-    justifyContent: 'center',
+    gap: theme.spacing.xs,
   },
-  summaryChipText: {
+  cycleBlockNumber: {
+    fontSize: 24,
+    fontWeight: 'bold',
     color: theme.colors.paper,
-    fontWeight: '700',
-    fontSize: 13,
+  },
+  cycleBlockLabel: {
+    fontSize: 12,
+    color: theme.colors.paper,
+    opacity: 0.9,
+  },
+  cycleBlockIcon: {
+    width: 50,
+    height: 50,
   },
   swingPreviewText: {
     color: theme.colors.sacredGold,
     fontSize: 12,
     textAlign: 'center',
     fontWeight: '600',
-    marginBottom: 10,
+    marginBottom: theme.spacing.md,
+  },
+  cyclePreviewSection: {
+    marginBottom: theme.spacing.lg,
+  },
+  cycleLegendContainer: {
+    marginBottom: theme.spacing.sm,
+  },
+  cycleLegendScroll: {
+    flexDirection: 'row',
+    gap: theme.spacing.md,
+    paddingHorizontal: theme.spacing.sm,
+    justifyContent: 'center',
+  },
+  legendItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  legendDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  legendText: {
+    fontSize: 10,
+    color: theme.colors.paper,
+    opacity: 0.9,
   },
   cyclePreview: {
-    gap: 6,
-    marginBottom: theme.spacing.md,
-    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: 2,
+    marginBottom: theme.spacing.sm,
   },
   cycleSquare: {
-    width: 14,
-    height: 14,
-    borderRadius: 3,
+    width: 16,
+    height: 16,
+    borderRadius: 4,
+  },
+  cycleLabel: {
+    fontSize: 14,
+    color: theme.colors.paper,
+    textAlign: 'center',
+    fontWeight: '600',
   },
   balanceChart: {
-    backgroundColor: theme.colors.opacity.black40,
-    borderRadius: 14,
-    padding: theme.spacing.md,
     marginBottom: theme.spacing.md,
   },
+  balanceHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: theme.spacing.sm,
+    gap: theme.spacing.sm,
+  },
+  balanceScaleIcon: {
+    width: 80,
+    height: 80,
+    opacity: 0.9,
+  },
   balanceTitle: {
-    fontSize: 15,
-    fontWeight: '700',
+    fontSize: 18,
     color: theme.colors.paper,
-    marginBottom: 10,
+    fontWeight: '600',
   },
   chartBar: {
     flexDirection: 'row',
-    borderRadius: 8,
+    height: 40,
+    borderRadius: 20,
     overflow: 'hidden',
-    height: 28,
-    marginBottom: 10,
-    backgroundColor: theme.colors.opacity.white10,
+    marginBottom: theme.spacing.xs,
   },
   chartSegment: {
-    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
   },
   chartGradient: {
-    flex: 1,
+    width: '100%',
+    height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
   },
   chartPercentage: {
-    fontSize: 11,
+    fontSize: 14,
     color: theme.colors.paper,
-    fontWeight: '700',
+    fontWeight: 'bold',
   },
   chartLabels: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   chartLabel: {
-    color: theme.colors.dust,
     fontSize: 12,
-    fontWeight: '600',
+    color: theme.colors.paper,
+    opacity: 0.9,
+  },
+  ratioContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: theme.spacing.sm,
+    paddingVertical: theme.spacing.md,
+    paddingHorizontal: theme.spacing.md,
+    backgroundColor: theme.colors.opacity.white10,
+    borderRadius: 12,
+    alignSelf: 'center',
+    marginBottom: theme.spacing.lg,
+  },
+  ratioLabel: {
+    fontSize: 12,
+    color: theme.colors.paper,
+    opacity: 0.8,
+    marginBottom: theme.spacing.xs,
+  },
+  ratioBreakdown: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.md,
+    marginTop: theme.spacing.xs,
+  },
+  ratioItem: {
+    alignItems: 'center',
+  },
+  ratioNumber: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: theme.colors.sacredGold,
+  },
+  ratioUnit: {
+    fontSize: 12,
+    color: theme.colors.dust,
+  },
+  ratioSeparator: {
+    fontSize: 20,
+    color: theme.colors.dust,
   },
   cycleBadge: {
-    alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-    backgroundColor: theme.colors.opacity.black40,
+    justifyContent: 'center',
+    gap: theme.spacing.xs,
+    backgroundColor: theme.colors.opacity.stone20,
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: theme.spacing.sm,
     borderRadius: 20,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
+    alignSelf: 'center',
   },
   cycleBadgeText: {
+    fontSize: 14,
     color: theme.colors.paper,
-    fontSize: 13,
-    fontWeight: '700',
+    fontWeight: '600',
+  },
+  tipBox: {
+    alignItems: 'center',
+    gap: theme.spacing.sm,
+    backgroundColor: theme.colors.opacity.gold10,
+    borderRadius: 16,
+    padding: theme.spacing.md,
+    marginBottom: theme.spacing.lg,
+  },
+  tipIcon: {
+    width: 80,
+    height: 80,
+  },
+  tipText: {
+    fontSize: 14,
+    color: theme.colors.dust,
+    lineHeight: 20,
+    textAlign: 'center',
   },
   successMessage: {
-    flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: theme.spacing.sm,
     backgroundColor: theme.colors.successBg,
-    borderRadius: 14,
-    padding: 14,
-    marginBottom: theme.spacing.xl,
+    borderRadius: 16,
+    padding: theme.spacing.md,
+    marginBottom: theme.spacing.lg,
   },
   successText: {
-    flex: 1,
     fontSize: 14,
     color: theme.colors.success,
     lineHeight: 20,
+    textAlign: 'center',
+  },
+  validationIcon: {
+    width: 80,
+    height: 80,
   },
   validationMessage: {
-    flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: theme.spacing.sm,
     backgroundColor: theme.colors.errorBg,
-    borderRadius: 14,
-    padding: 14,
-    marginBottom: theme.spacing.xl,
+    borderRadius: 16,
+    padding: theme.spacing.md,
+    marginBottom: theme.spacing.lg,
   },
   validationText: {
-    flex: 1,
     fontSize: 14,
     color: theme.colors.error,
     lineHeight: 20,
+    textAlign: 'center',
   },
   warningMessage: {
-    flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: theme.spacing.sm,
     backgroundColor: theme.colors.warningBg,
-    borderRadius: 14,
-    padding: 14,
-    marginBottom: theme.spacing.xl,
+    borderRadius: 16,
+    padding: theme.spacing.md,
+    marginBottom: theme.spacing.lg,
   },
   warningText: {
-    flex: 1,
     fontSize: 14,
-    color: theme.colors.warning,
+    color: theme.colors.sacredGold,
     lineHeight: 20,
+    textAlign: 'center',
   },
   bottomNav: {
     position: 'absolute',
@@ -1436,35 +1382,35 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    gap: theme.spacing.md,
     paddingHorizontal: theme.spacing.lg,
-    paddingTop: theme.spacing.md,
-    paddingBottom: theme.spacing.xl,
+    paddingBottom: Platform.OS === 'ios' ? theme.spacing.xxl : theme.spacing.lg,
+    paddingTop: theme.spacing.lg,
     backgroundColor: theme.colors.deepVoid,
-    borderTopWidth: 1,
-    borderTopColor: theme.colors.softStone,
   },
   backButton: {
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: theme.colors.darkStone,
-    borderWidth: 1,
-    borderColor: theme.colors.softStone,
+    backgroundColor: theme.colors.opacity.white10,
     alignItems: 'center',
     justifyContent: 'center',
   },
+  continueButtonWrap: {
+    flex: 1,
+    marginLeft: theme.spacing.md,
+  },
   continueButton: {
-    width: SCREEN_WIDTH - theme.spacing.lg * 2 - 56 - theme.spacing.md,
-    height: 56,
-    borderRadius: 28,
+    flex: 1,
+    height: 60,
+    borderRadius: 16,
     overflow: 'hidden',
     ...Platform.select({
       ios: {
         shadowColor: theme.colors.deepVoid,
         shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.35,
+        shadowOpacity: 0.4,
         shadowRadius: 8,
       },
       android: {
@@ -1484,9 +1430,13 @@ const styles = StyleSheet.create({
     gap: theme.spacing.sm,
   },
   continueButtonText: {
-    fontSize: 17,
+    fontSize: 18,
     fontWeight: 'bold',
     color: theme.colors.paper,
+  },
+  trophyIconSmaller: {
+    width: 24,
+    height: 24,
   },
   transitionOverlay: {
     ...StyleSheet.absoluteFillObject,

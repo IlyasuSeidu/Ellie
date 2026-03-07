@@ -10,13 +10,11 @@ import {
   View,
   StyleSheet,
   Text,
-  Dimensions,
   Platform,
   Pressable,
   ScrollView,
   AccessibilityInfo,
   Image,
-  ImageSourcePropType,
   InteractionManager,
 } from 'react-native';
 import Animated, {
@@ -27,9 +25,7 @@ import Animated, {
   withRepeat,
   withSequence,
   withDelay,
-  runOnJS,
 } from 'react-native-reanimated';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
@@ -43,11 +39,9 @@ import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator'
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
+import { PatternBuilderSlider } from '@/components/onboarding/premium/PatternBuilderSlider';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
-
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const SLIDER_WIDTH = SCREEN_WIDTH * 0.75;
 
 // Cycle block colors - aligned with dashboard calendar
 const CYCLE_COLORS = {
@@ -77,322 +71,6 @@ const SPRING_CONFIGS = {
   gentle: { damping: 15, stiffness: 200 },
   elastic: { damping: 8, stiffness: 250 },
 } as const;
-
-// Enhanced Slider Component
-interface EnhancedSliderProps {
-  label: string;
-  icon: keyof typeof Ionicons.glyphMap | string; // Can be Ionicon name or emoji
-  value: number;
-  min: number;
-  max: number;
-  color: string;
-  trackColor: string;
-  onChange: (value: number) => void;
-  delayIndex?: number;
-  reducedMotion?: boolean;
-  customThumbIcon?: ImageSourcePropType;
-  customHeaderIcon?: ImageSourcePropType;
-}
-
-const EnhancedSlider: React.FC<EnhancedSliderProps> = ({
-  label,
-  icon,
-  value,
-  min,
-  max,
-  color,
-  trackColor,
-  onChange,
-  delayIndex = 0,
-  reducedMotion = false,
-  customThumbIcon,
-  customHeaderIcon,
-}) => {
-  const [trackWidth, setTrackWidth] = React.useState(SLIDER_WIDTH);
-  const translateX = useSharedValue(((value - min) / (max - min)) * trackWidth);
-  const startX = useSharedValue(0); // Store starting position for gesture
-  const scale = useSharedValue(1);
-  const badgeScale = useSharedValue(1);
-  const containerOpacity = useSharedValue(0);
-  const containerTranslateY = useSharedValue(20);
-  const shakeX = useSharedValue(0);
-  const thumbGlow = useSharedValue(0.3);
-
-  // Entry animation
-  useEffect(() => {
-    containerOpacity.value = withDelay(delayIndex * 200, withTiming(1, { duration: 400 }));
-    containerTranslateY.value = withDelay(delayIndex * 200, withSpring(0, SPRING_CONFIGS.gentle));
-  }, [delayIndex, containerOpacity, containerTranslateY]);
-
-  // Idle glow pulse animation (skip if reduced motion)
-  useEffect(() => {
-    if (!reducedMotion) {
-      thumbGlow.value = withRepeat(
-        withSequence(withTiming(0.3, { duration: 1500 }), withTiming(0.6, { duration: 1500 })),
-        -1,
-        true
-      );
-    } else {
-      thumbGlow.value = 0.4; // Static value for reduced motion
-    }
-  }, [thumbGlow, reducedMotion]);
-
-  // Update position when value or trackWidth changes
-  useEffect(() => {
-    translateX.value = withSpring(
-      ((value - min) / (max - min)) * trackWidth,
-      SPRING_CONFIGS.smooth
-    );
-  }, [value, min, max, translateX, trackWidth]);
-
-  // Badge animation when value changes
-  useEffect(() => {
-    badgeScale.value = withSequence(
-      withSpring(1.15, SPRING_CONFIGS.fast),
-      withSpring(1, SPRING_CONFIGS.fast)
-    );
-  }, [value, badgeScale]);
-
-  const handleIncrement = useCallback(() => {
-    if (value < max) {
-      onChange(value + 1);
-      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
-        source: `PremiumCustomPatternScreen.slider.increment:${label}`,
-      });
-    } else {
-      // Shake animation when hitting max limit
-      shakeX.value = withSequence(
-        withTiming(-8, { duration: 50 }),
-        withTiming(8, { duration: 50 }),
-        withTiming(-8, { duration: 50 }),
-        withTiming(8, { duration: 50 }),
-        withTiming(0, { duration: 50 })
-      );
-      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
-        source: `PremiumCustomPatternScreen.slider.increment.limit:${label}`,
-      });
-    }
-  }, [value, max, onChange, shakeX, label]);
-
-  const handleDecrement = useCallback(() => {
-    if (value > min) {
-      onChange(value - 1);
-      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
-        source: `PremiumCustomPatternScreen.slider.decrement:${label}`,
-      });
-    } else {
-      // Shake animation when hitting min limit
-      shakeX.value = withSequence(
-        withTiming(-8, { duration: 50 }),
-        withTiming(8, { duration: 50 }),
-        withTiming(-8, { duration: 50 }),
-        withTiming(8, { duration: 50 }),
-        withTiming(0, { duration: 50 })
-      );
-      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
-        source: `PremiumCustomPatternScreen.slider.decrement.limit:${label}`,
-      });
-    }
-  }, [value, min, onChange, shakeX, label]);
-
-  const handleTrackPress = useCallback(
-    (event: { nativeEvent: { locationX: number } }) => {
-      const tapX = event.nativeEvent.locationX;
-      const clampedX = Math.max(0, Math.min(trackWidth, tapX));
-      const progress = clampedX / trackWidth;
-      const newValue = Math.round(min + progress * (max - min));
-
-      if (newValue !== value) {
-        onChange(newValue);
-        void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
-          source: `PremiumCustomPatternScreen.slider.trackPress:${label}`,
-        });
-      }
-    },
-    [min, max, value, onChange, trackWidth, label]
-  );
-
-  const triggerLightHaptic = useCallback(() => {
-    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
-      source: `PremiumCustomPatternScreen.slider.drag:${label}`,
-    });
-  }, [label]);
-
-  const panGesture = Gesture.Pan()
-    .onBegin(() => {
-      startX.value = translateX.value; // Save the starting position
-      scale.value = withSpring(1.1, SPRING_CONFIGS.fast);
-      thumbGlow.value = withTiming(0.6, { duration: 150 }); // Max glow during drag
-    })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .onUpdate((event: any) => {
-      const newX = Math.max(0, Math.min(trackWidth, startX.value + event.translationX));
-      translateX.value = newX;
-
-      // Calculate new value
-      const progress = newX / trackWidth;
-      const newValue = Math.round(min + progress * (max - min));
-
-      if (newValue !== value) {
-        runOnJS(onChange)(newValue);
-        runOnJS(triggerLightHaptic)();
-      }
-    })
-    .onEnd(() => {
-      scale.value = withSpring(1, SPRING_CONFIGS.fast);
-
-      // Resume idle glow pulse
-      thumbGlow.value = withRepeat(
-        withSequence(withTiming(0.3, { duration: 1500 }), withTiming(0.6, { duration: 1500 })),
-        -1,
-        true
-      );
-
-      // Snap to nearest value
-      const progress = translateX.value / trackWidth;
-      const newValue = Math.round(min + progress * (max - min));
-      translateX.value = withSpring(
-        ((newValue - min) / (max - min)) * trackWidth,
-        SPRING_CONFIGS.smooth
-      );
-    });
-
-  const containerAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: containerOpacity.value,
-    transform: [{ translateY: containerTranslateY.value }, { translateX: shakeX.value }],
-  }));
-
-  const thumbAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }, { scale: scale.value }],
-    shadowOpacity: thumbGlow.value,
-  }));
-
-  const trackFillAnimatedStyle = useAnimatedStyle(() => ({
-    width: translateX.value,
-  }));
-
-  const badgeAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value - 16 }, { scale: badgeScale.value }],
-  }));
-
-  return (
-    <Animated.View style={[styles.sliderContainer, containerAnimatedStyle]}>
-      <View style={styles.sliderHeader}>
-        <View style={styles.sliderLabelContainer}>
-          {customHeaderIcon ? (
-            <Image source={customHeaderIcon} style={styles.sliderHeaderIcon} resizeMode="contain" />
-          ) : icon.length <= 2 ? (
-            <Text style={{ fontSize: 20 }}>{icon}</Text>
-          ) : (
-            <Ionicons name={icon as keyof typeof Ionicons.glyphMap} size={20} color={color} />
-          )}
-          <Text style={styles.sliderLabel}>{label}</Text>
-        </View>
-        <Text style={[styles.sliderValue, { color }]}>{value}</Text>
-      </View>
-
-      <View style={styles.sliderControls}>
-        {/* Decrement Button */}
-        <Pressable
-          onPress={handleDecrement}
-          style={[styles.controlButton, value === min && styles.controlButtonDisabled]}
-          accessible={true}
-          accessibilityRole="button"
-          accessibilityLabel={`Decrease ${label}`}
-          accessibilityHint={`Current value is ${value}. Minimum is ${min}.`}
-          accessibilityState={{ disabled: value === min }}
-        >
-          <Ionicons name="remove" size={20} color={value === min ? theme.colors.dust : color} />
-        </Pressable>
-
-        {/* Slider Track */}
-        <View
-          style={styles.sliderTrackContainer}
-          onLayout={(event) => {
-            const { width } = event.nativeEvent.layout;
-            setTrackWidth(width);
-          }}
-        >
-          <View style={[styles.sliderTrack, { backgroundColor: theme.colors.opacity.white10 }]}>
-            <Animated.View
-              style={[
-                styles.sliderTrackFill,
-                { backgroundColor: trackColor },
-                trackFillAnimatedStyle,
-              ]}
-            />
-          </View>
-
-          {/* Tap-to-jump overlay */}
-          <Pressable onPress={handleTrackPress} style={styles.trackPressable} />
-
-          {/* Tick Marks */}
-          <View style={styles.tickMarks}>
-            {Array.from({ length: max - min + 1 }).map((_, i) => (
-              <View
-                key={i}
-                style={[
-                  styles.tickMark,
-                  i === value - min && { backgroundColor: color, height: 8, width: 2 },
-                ]}
-              />
-            ))}
-          </View>
-
-          {/* Range Labels */}
-          <View style={styles.rangeLabels}>
-            <Text style={styles.rangeLabel}>{min}</Text>
-            <Text style={styles.rangeLabel}>{max}</Text>
-          </View>
-
-          {/* Value Badge (floating above thumb) */}
-          <Animated.View
-            style={[styles.valueBadge, { backgroundColor: color }, badgeAnimatedStyle]}
-          >
-            <Text style={styles.valueBadgeText}>{value}</Text>
-          </Animated.View>
-
-          {/* Animated Thumb */}
-          <GestureDetector gesture={panGesture}>
-            <Animated.View
-              style={[styles.sliderThumb, { backgroundColor: color }, thumbAnimatedStyle]}
-              accessible={true}
-              accessibilityRole="adjustable"
-              accessibilityLabel={label}
-              accessibilityValue={{ min, max, now: value, text: `${value} ${label.toLowerCase()}` }}
-              accessibilityHint="Swipe left or right to adjust value"
-            >
-              {customThumbIcon ? (
-                <Image source={customThumbIcon} style={styles.thumbIcon} resizeMode="contain" />
-              ) : icon.length <= 2 ? (
-                <Text style={{ fontSize: 14 }}>{icon}</Text>
-              ) : (
-                <Ionicons
-                  name={icon as keyof typeof Ionicons.glyphMap}
-                  size={14}
-                  color={theme.colors.paper}
-                />
-              )}
-            </Animated.View>
-          </GestureDetector>
-        </View>
-
-        {/* Increment Button */}
-        <Pressable
-          onPress={handleIncrement}
-          style={[styles.controlButton, value === max && styles.controlButtonDisabled]}
-          accessible={true}
-          accessibilityRole="button"
-          accessibilityLabel={`Increase ${label}`}
-          accessibilityHint={`Current value is ${value}. Maximum is ${max}.`}
-          accessibilityState={{ disabled: value === max }}
-        >
-          <Ionicons name="add" size={20} color={value === max ? theme.colors.dust : color} />
-        </Pressable>
-      </View>
-    </Animated.View>
-  );
-};
 
 // Cycle Square Component with individual animations
 interface CycleSquareProps {
@@ -1214,7 +892,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
             {shiftSystem === ShiftSystem.TWO_SHIFT ? (
               <>
                 {/* 2-Shift Sliders */}
-                <EnhancedSlider
+                <PatternBuilderSlider
                   label="Day Shifts"
                   icon="sunny"
                   value={daysOn}
@@ -1223,13 +901,14 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
                   color={CYCLE_COLORS.day}
                   trackColor={TRACK_COLORS.day}
                   onChange={setDaysOn}
+                  hapticSourcePrefix="PremiumCustomPatternScreen"
                   delayIndex={0}
                   reducedMotion={reducedMotion}
                   customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
                   customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
                 />
 
-                <EnhancedSlider
+                <PatternBuilderSlider
                   label="Night Shifts"
                   icon="moon"
                   value={nightsOn}
@@ -1238,13 +917,14 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
                   color={CYCLE_COLORS.night}
                   trackColor={TRACK_COLORS.night}
                   onChange={setNightsOn}
+                  hapticSourcePrefix="PremiumCustomPatternScreen"
                   delayIndex={1}
                   reducedMotion={reducedMotion}
                   customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png')}
                   customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png')}
                 />
 
-                <EnhancedSlider
+                <PatternBuilderSlider
                   label="Days Off"
                   icon="home"
                   value={daysOff}
@@ -1253,6 +933,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
                   color={CYCLE_COLORS.off}
                   trackColor={TRACK_COLORS.off}
                   onChange={setDaysOff}
+                  hapticSourcePrefix="PremiumCustomPatternScreen"
                   delayIndex={2}
                   reducedMotion={reducedMotion}
                   customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png')}
@@ -1262,7 +943,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
             ) : (
               <>
                 {/* 3-Shift Sliders */}
-                <EnhancedSlider
+                <PatternBuilderSlider
                   label="Morning Shifts"
                   icon="sunny-outline"
                   value={morningOn}
@@ -1271,13 +952,14 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
                   color={CYCLE_COLORS.morning}
                   trackColor={TRACK_COLORS.morning}
                   onChange={setMorningOn}
+                  hapticSourcePrefix="PremiumCustomPatternScreen"
                   delayIndex={0}
                   reducedMotion={reducedMotion}
                   customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/shift-time-morning.png')}
                   customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/shift-time-morning.png')}
                 />
 
-                <EnhancedSlider
+                <PatternBuilderSlider
                   label="Afternoon Shifts"
                   icon="partly-sunny-outline"
                   value={afternoonOn}
@@ -1286,13 +968,14 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
                   color={CYCLE_COLORS.afternoon}
                   trackColor={TRACK_COLORS.afternoon}
                   onChange={setAfternoonOn}
+                  hapticSourcePrefix="PremiumCustomPatternScreen"
                   delayIndex={1}
                   reducedMotion={reducedMotion}
                   customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png')}
                   customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png')}
                 />
 
-                <EnhancedSlider
+                <PatternBuilderSlider
                   label="Night Shifts"
                   icon="moon-outline"
                   value={nightOn}
@@ -1301,13 +984,14 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
                   color={CYCLE_COLORS.night3shift}
                   trackColor={TRACK_COLORS.night3shift}
                   onChange={setNightOn}
+                  hapticSourcePrefix="PremiumCustomPatternScreen"
                   delayIndex={2}
                   reducedMotion={reducedMotion}
                   customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png')}
                   customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png')}
                 />
 
-                <EnhancedSlider
+                <PatternBuilderSlider
                   label="Days Off"
                   icon="home"
                   value={daysOff}
@@ -1316,6 +1000,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
                   color={CYCLE_COLORS.off}
                   trackColor={TRACK_COLORS.off}
                   onChange={setDaysOff}
+                  hapticSourcePrefix="PremiumCustomPatternScreen"
                   delayIndex={3}
                   reducedMotion={reducedMotion}
                   customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png')}
