@@ -115,6 +115,18 @@ describe('dashboard visual snapshots', () => {
     expect(toJSON()).toMatchSnapshot();
   });
 
+  it('CurrentShiftStatusCard scheduled shift with inactive accent snapshot', () => {
+    const { toJSON } = render(
+      <CurrentShiftStatusCard
+        shiftType="day"
+        accentShiftType="off"
+        countdown="30m until day shift starts"
+      />
+    );
+
+    expect(toJSON()).toMatchSnapshot();
+  });
+
   it('MonthlyCalendarCard FIFO snapshot', () => {
     const { toJSON } = render(
       <MonthlyCalendarCard

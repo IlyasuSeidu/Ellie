@@ -35,7 +35,7 @@ describe('useShiftAccent', () => {
 
   it('returns FIFO straight-days accent colors from active day shift', () => {
     mockBuildShiftCycle.mockReturnValue({ rosterType: 'fifo' });
-    mockUseActiveShift.mockReturnValue({ shiftType: 'day' });
+    mockUseActiveShift.mockReturnValue({ shiftType: 'day', accentShiftType: 'day' });
 
     const { result } = renderHook(() => useShiftAccent());
 
@@ -47,7 +47,7 @@ describe('useShiftAccent', () => {
 
   it('returns FIFO straight-nights accent colors from active night shift', () => {
     mockBuildShiftCycle.mockReturnValue({ rosterType: 'fifo' });
-    mockUseActiveShift.mockReturnValue({ shiftType: 'night' });
+    mockUseActiveShift.mockReturnValue({ shiftType: 'night', accentShiftType: 'night' });
 
     const { result } = renderHook(() => useShiftAccent());
 
@@ -59,7 +59,7 @@ describe('useShiftAccent', () => {
 
   it('returns work-shift accent colors for FIFO swing day phase', () => {
     mockBuildShiftCycle.mockReturnValue({ rosterType: 'fifo' });
-    mockUseActiveShift.mockReturnValue({ shiftType: 'day' });
+    mockUseActiveShift.mockReturnValue({ shiftType: 'day', accentShiftType: 'day' });
 
     const { result } = renderHook(() => useShiftAccent());
 
@@ -69,7 +69,19 @@ describe('useShiftAccent', () => {
 
   it('keeps the default colors for FIFO off days', () => {
     mockBuildShiftCycle.mockReturnValue({ rosterType: 'fifo' });
-    mockUseActiveShift.mockReturnValue({ shiftType: 'off' });
+    mockUseActiveShift.mockReturnValue({ shiftType: 'off', accentShiftType: 'off' });
+
+    const { result } = renderHook(() => useShiftAccent());
+
+    expect(result.current.shiftType).toBe('off');
+    expect(result.current.statusAreaColor).toBe(theme.colors.deepVoid);
+    expect(result.current.tabAccentColor).toBe(theme.colors.paleGold);
+    expect(result.current.tabGlowColor).toBe(theme.colors.opacity.gold20);
+  });
+
+  it('keeps the default colors before a scheduled shift has actually started', () => {
+    mockBuildShiftCycle.mockReturnValue({ rosterType: 'rotating' });
+    mockUseActiveShift.mockReturnValue({ shiftType: 'day', accentShiftType: 'off' });
 
     const { result } = renderHook(() => useShiftAccent());
 

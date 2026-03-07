@@ -40,6 +40,7 @@ jest.mock('@/services/AsyncStorageService', () => ({
 jest.mock('@/hooks/useActiveShift', () => ({
   useActiveShift: jest.fn(() => ({
     shiftType: 'day',
+    accentShiftType: 'day',
     isOnShift: true,
     timeDisplay: '07:00 - 19:00',
     countdown: '2h left',

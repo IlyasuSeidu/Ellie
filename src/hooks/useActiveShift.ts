@@ -23,6 +23,8 @@ import type { ShiftCycle, ShiftType } from '@/types';
 export interface ActiveShiftResult {
   /** The shift type currently in effect (may differ from calendar during overnight carry-over) */
   shiftType: ShiftType;
+  /** The shift type that should drive live UI accents; falls back to off between shift windows */
+  accentShiftType: ShiftType;
   /** The scheduled shift type for today (from the calendar pattern) */
   scheduledShiftType: ShiftType;
   /** Whether this is a work day (true during overnight carry-over) */
@@ -271,9 +273,11 @@ export function useActiveShift(
 
   const isOvernightCarryOver =
     effectiveShift.isOnShift && effectiveShift.shiftType !== todayShift.shiftType;
+  const accentShiftType = effectiveShift.isOnShift ? effectiveShift.shiftType : 'off';
 
   return {
     shiftType: effectiveShift.shiftType,
+    accentShiftType,
     scheduledShiftType: todayShift.shiftType,
     isWorkDay: effectiveShift.isWorkDay,
     isOnShift: effectiveShift.isOnShift,

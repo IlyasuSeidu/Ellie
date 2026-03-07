@@ -67,7 +67,20 @@ describe('useActiveShift', () => {
     );
 
     expect(result.current?.shiftType).toBe('day');
+    expect(result.current?.accentShiftType).toBe('day');
     expect(result.current?.isOnShift).toBe(true);
+  });
+
+  it('keeps accent colors off before a scheduled rotating day shift starts', () => {
+    jest.setSystemTime(new Date('2026-03-07T06:30:00'));
+
+    const { result } = renderHook(() =>
+      useActiveShift(buildTwoShiftCycle('2026-03-07'), twoShiftData, 0, toDateString(new Date()))
+    );
+
+    expect(result.current?.shiftType).toBe('day');
+    expect(result.current?.accentShiftType).toBe('off');
+    expect(result.current?.isOnShift).toBe(false);
   });
 
   it('marks a rotating night shift as live during the same-night work window', () => {
@@ -78,6 +91,7 @@ describe('useActiveShift', () => {
     );
 
     expect(result.current?.shiftType).toBe('night');
+    expect(result.current?.accentShiftType).toBe('night');
     expect(result.current?.isOnShift).toBe(true);
   });
 
@@ -89,6 +103,7 @@ describe('useActiveShift', () => {
     );
 
     expect(result.current?.shiftType).toBe('night');
+    expect(result.current?.accentShiftType).toBe('night');
     expect(result.current?.scheduledShiftType).toBe('off');
     expect(result.current?.isOnShift).toBe(true);
     expect(result.current?.isOvernightCarryOver).toBe(true);
@@ -107,6 +122,7 @@ describe('useActiveShift', () => {
     );
 
     expect(result.current?.shiftType).toBe('morning');
+    expect(result.current?.accentShiftType).toBe('morning');
     expect(result.current?.isOnShift).toBe(true);
   });
 
@@ -123,6 +139,7 @@ describe('useActiveShift', () => {
     );
 
     expect(result.current?.shiftType).toBe('afternoon');
+    expect(result.current?.accentShiftType).toBe('afternoon');
     expect(result.current?.isOnShift).toBe(true);
   });
 
@@ -139,6 +156,7 @@ describe('useActiveShift', () => {
     );
 
     expect(result.current?.shiftType).toBe('night');
+    expect(result.current?.accentShiftType).toBe('night');
     expect(result.current?.isOnShift).toBe(true);
   });
 });

@@ -129,7 +129,7 @@ export function useShiftAccent(): ShiftAccentResult {
     if (!shiftCycle || !activeShift) {
       return null;
     }
-    return activeShift.shiftType;
+    return activeShift.accentShiftType;
   }, [activeShift, shiftCycle]);
 
   const isWorkShift = activeShiftType !== null && activeShiftType !== 'off';

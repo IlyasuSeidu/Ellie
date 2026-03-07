@@ -32,6 +32,8 @@ import { fifoBlockColors } from '@/constants/shiftStyles';
 export interface CurrentShiftStatusCardProps {
   /** Current shift type */
   shiftType: ShiftType;
+  /** Optional live accent shift type for color-only transitions */
+  accentShiftType?: ShiftType;
   /** Roster paradigm (rotating vs FIFO) */
   rosterType?: RosterType;
   /** Optional FIFO block status details */
@@ -114,6 +116,7 @@ const ICON_SIZE = 44;
 
 export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
   shiftType,
+  accentShiftType,
   rosterType = RosterType.ROTATING,
   fifoBlockInfo,
   countdown,
@@ -121,24 +124,30 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
   animationDelay = 100,
   testID,
 }) => {
-  const style = useMemo(() => {
+  const contentStyle = useMemo(() => {
     if (rosterType === RosterType.FIFO) {
       return shiftType === 'off' ? FIFO_REST_STYLE : FIFO_WORK_STYLE;
     }
     return SHIFT_STYLES[shiftType];
   }, [shiftType, rosterType]);
 
+  const liveAccentShiftType = accentShiftType ?? shiftType;
+
+  const accentStyle = useMemo(() => {
+    return SHIFT_STYLES[liveAccentShiftType];
+  }, [liveAccentShiftType]);
+
   const shiftLabel = useMemo(() => {
-    return style.label;
-  }, [style.label]);
+    return contentStyle.label;
+  }, [contentStyle.label]);
 
   const shiftSubtitle = useMemo(() => {
     if (rosterType !== RosterType.FIFO || !fifoBlockInfo) {
-      return style.subtitle;
+      return contentStyle.subtitle;
     }
     const blockName = fifoBlockInfo.inWorkBlock ? 'Work' : 'Rest';
     return `${blockName} Block Day ${fifoBlockInfo.dayInBlock} of ${fifoBlockInfo.blockLength}`;
-  }, [fifoBlockInfo, rosterType, style.subtitle]);
+  }, [fifoBlockInfo, rosterType, contentStyle.subtitle]);
 
   // FIFO block progress (0 to 1)
   const fifoProgress = useMemo(() => {
@@ -351,12 +360,12 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
           {/* Pulsing glow behind card (on-shift only) */}
           {isOnShift && (
             <Animated.View
-              style={[styles.glowEffect, { shadowColor: style.gradient[0] }, glowStyle]}
+              style={[styles.glowEffect, { shadowColor: accentStyle.gradient[0] }, glowStyle]}
             />
           )}
 
           <LinearGradient
-            colors={style.gradient}
+            colors={accentStyle.gradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={styles.gradient}
@@ -391,24 +400,24 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                 <Animated.View
                   style={[
                     styles.iconGlowRing,
-                    { backgroundColor: style.gradient[0] },
+                    { backgroundColor: accentStyle.gradient[0] },
                     iconGlowStyle,
                   ]}
                 />
                 <Animated.View
                   style={[
                     styles.iconOuterRing,
-                    { borderColor: style.gradient[0] + '40' },
+                    { borderColor: accentStyle.gradient[0] + '40' },
                     iconRingPulseStyle,
                   ]}
                 />
                 <View
                   style={[
                     styles.iconContainer,
-                    shiftType === 'day' && styles.lightBlueIconContainer,
-                    shiftType === 'night' && styles.whiteIconContainer,
-                    shiftType === 'morning' && styles.amberIconContainer,
-                    shiftType === 'afternoon' && styles.cyanIconContainer,
+                    liveAccentShiftType === 'day' && styles.lightBlueIconContainer,
+                    liveAccentShiftType === 'night' && styles.whiteIconContainer,
+                    liveAccentShiftType === 'morning' && styles.amberIconContainer,
+                    liveAccentShiftType === 'afternoon' && styles.cyanIconContainer,
                   ]}
                 >
                   {shiftType === 'day' ? (
