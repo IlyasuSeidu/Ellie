@@ -441,7 +441,7 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                       ? styles.onSiteBadge
                       : rosterType === RosterType.FIFO || shiftType === 'off'
                         ? styles.offBadge
-                        : styles.scheduledBadge
+                        : styles.activeBadge
                   }
                 >
                   {showActivePulse && (
@@ -459,7 +459,7 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                           : 'home-outline'
                         : shiftType === 'off'
                           ? 'moon-outline'
-                          : 'calendar-outline'
+                          : 'calendar'
                     }
                     size={12}
                     color={
@@ -710,6 +710,16 @@ const styles = StyleSheet.create({
     borderRadius: theme.borderRadius.full,
     borderWidth: 1,
     borderColor: 'rgba(147,197,253,0.4)',
+  },
+  activeBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.24)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: theme.borderRadius.full,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.18)',
   },
   scheduledText: {
     fontSize: 12,

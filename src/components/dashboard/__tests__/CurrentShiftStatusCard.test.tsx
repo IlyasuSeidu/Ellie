@@ -169,16 +169,16 @@ describe('CurrentShiftStatusCard', () => {
     it('should show green pulse on ACTIVE badge for all rotating work shifts', () => {
       const day = render(<CurrentShiftStatusCard shiftType="day" isOnShift={false} />);
       expect(day.getByTestId('active-badge-pulse-dot')).toBeTruthy();
-      expect(day.getByTestId('shift-status-badge-icon').props.name).toBe('calendar-outline');
-      expect(day.getByText('calendar-outline')).toBeTruthy();
+      expect(day.getByTestId('shift-status-badge-icon').props.name).toBe('calendar');
+      expect(day.getByText('calendar')).toBeTruthy();
 
       const night = render(<CurrentShiftStatusCard shiftType="night" isOnShift={false} />);
       expect(night.getByTestId('active-badge-pulse-dot')).toBeTruthy();
-      expect(night.getByTestId('shift-status-badge-icon').props.name).toBe('calendar-outline');
+      expect(night.getByTestId('shift-status-badge-icon').props.name).toBe('calendar');
 
       const afternoon = render(<CurrentShiftStatusCard shiftType="afternoon" isOnShift={false} />);
       expect(afternoon.getByTestId('active-badge-pulse-dot')).toBeTruthy();
-      expect(afternoon.getByTestId('shift-status-badge-icon').props.name).toBe('calendar-outline');
+      expect(afternoon.getByTestId('shift-status-badge-icon').props.name).toBe('calendar');
     });
 
     it('should not show the green active pulse for off or FIFO badges', () => {
