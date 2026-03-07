@@ -85,6 +85,53 @@ interface PhaseCardData {
   gradientColors: [string, string];
 }
 
+const PHASE_CARD_ACCENTS: Record<
+  Phase,
+  {
+    borderColor: string;
+    badgeGradient: [string, string];
+    badgeText: string;
+    hintGradient: [string, string];
+    hintText: string;
+  }
+> = {
+  day: {
+    borderColor: 'rgba(33, 150, 243, 0.45)',
+    badgeGradient: ['rgba(33, 150, 243, 0.28)', 'rgba(21, 101, 192, 0.16)'],
+    badgeText: '#93C5FD',
+    hintGradient: ['rgba(33, 150, 243, 0.3)', 'rgba(21, 101, 192, 0.18)'],
+    hintText: '#DBEAFE',
+  },
+  morning: {
+    borderColor: 'rgba(245, 158, 11, 0.5)',
+    badgeGradient: ['rgba(245, 158, 11, 0.3)', 'rgba(217, 119, 6, 0.16)'],
+    badgeText: '#FDE68A',
+    hintGradient: ['rgba(245, 158, 11, 0.32)', 'rgba(217, 119, 6, 0.18)'],
+    hintText: '#FEF3C7',
+  },
+  afternoon: {
+    borderColor: 'rgba(249, 115, 22, 0.5)',
+    badgeGradient: ['rgba(249, 115, 22, 0.3)', 'rgba(194, 65, 12, 0.16)'],
+    badgeText: '#FDBA74',
+    hintGradient: ['rgba(249, 115, 22, 0.32)', 'rgba(194, 65, 12, 0.18)'],
+    hintText: '#FFEDD5',
+  },
+  night: {
+    borderColor: 'rgba(101, 31, 255, 0.5)',
+    badgeGradient: ['rgba(101, 31, 255, 0.3)', 'rgba(74, 20, 140, 0.16)'],
+    badgeText: '#C4B5FD',
+    hintGradient: ['rgba(101, 31, 255, 0.32)', 'rgba(74, 20, 140, 0.18)'],
+    hintText: '#E9D5FF',
+  },
+  off: {
+    borderColor: 'rgba(245, 158, 11, 0.38)',
+    badgeGradient: ['rgba(245, 158, 11, 0.22)', 'rgba(120, 113, 108, 0.16)'],
+    badgeText: '#FCD34D',
+    hintGradient: ['rgba(245, 158, 11, 0.24)', 'rgba(120, 113, 108, 0.18)'],
+    hintText: '#FEF3C7',
+  },
+};
+
 // Day card data interface
 interface DayCardData {
   id: string;
@@ -518,10 +565,18 @@ const SwipeablePhaseCard: React.FC<SwipeablePhaseCardProps> = ({
 
   const phaseCard = isPhaseCard(card) ? card : null;
   const dayCard = !isPhaseCard(card) ? card : null;
+  const phaseAccent = phaseCard ? PHASE_CARD_ACCENTS[phaseCard.phase] : null;
 
   return (
     <GestureDetector gesture={composed}>
-      <Animated.View style={[styles.card, getShadowStyle(index, isActive), animatedStyle]}>
+      <Animated.View
+        style={[
+          styles.card,
+          phaseAccent && { borderColor: phaseAccent.borderColor },
+          getShadowStyle(index, isActive),
+          animatedStyle,
+        ]}
+      >
         {/* Gradient Background (for phase cards only) */}
         {phaseCard && (
           <LinearGradient
@@ -550,11 +605,18 @@ const SwipeablePhaseCard: React.FC<SwipeablePhaseCardProps> = ({
 
         {/* Badge (phase length for phase cards) */}
         {phaseCard && phaseCard.phaseLength > 0 && (
-          <View style={styles.badge}>
-            <Text style={styles.badgeText}>
+          <LinearGradient
+            colors={
+              phaseAccent?.badgeGradient ?? ['rgba(255,255,255,0.12)', 'rgba(255,255,255,0.06)']
+            }
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.badge}
+          >
+            <Text style={[styles.badgeText, phaseAccent && { color: phaseAccent.badgeText }]}>
               {phaseCard.phaseLength} {phaseCard.phaseLength === 1 ? 'day' : 'days'}
             </Text>
-          </View>
+          </LinearGradient>
         )}
 
         {/* Description */}
@@ -564,13 +626,67 @@ const SwipeablePhaseCard: React.FC<SwipeablePhaseCardProps> = ({
         {index === 0 && isActive && (
           <>
             <Animated.View style={[styles.swipeHint, styles.swipeHintLeft, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>← Next</Text>
+              <View style={styles.swipeHintBubble}>
+                <LinearGradient
+                  colors={
+                    phaseAccent?.hintGradient ?? [
+                      'rgba(255,255,255,0.16)',
+                      'rgba(255,255,255,0.08)',
+                    ]
+                  }
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.swipeHintGradient}
+                >
+                  <Text
+                    style={[styles.swipeHintText, phaseAccent && { color: phaseAccent.hintText }]}
+                  >
+                    ← Next
+                  </Text>
+                </LinearGradient>
+              </View>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintRight, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>Select →</Text>
+              <View style={styles.swipeHintBubble}>
+                <LinearGradient
+                  colors={
+                    phaseAccent?.hintGradient ?? [
+                      'rgba(255,255,255,0.16)',
+                      'rgba(255,255,255,0.08)',
+                    ]
+                  }
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.swipeHintGradient}
+                >
+                  <Text
+                    style={[styles.swipeHintText, phaseAccent && { color: phaseAccent.hintText }]}
+                  >
+                    Select →
+                  </Text>
+                </LinearGradient>
+              </View>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintUp, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>↑ Info</Text>
+              <View style={styles.swipeHintBubble}>
+                <LinearGradient
+                  colors={
+                    phaseAccent?.hintGradient ?? [
+                      'rgba(255,255,255,0.16)',
+                      'rgba(255,255,255,0.08)',
+                    ]
+                  }
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.swipeHintGradient}
+                >
+                  <Text
+                    style={[styles.swipeHintText, phaseAccent && { color: phaseAccent.hintText }]}
+                  >
+                    ↑ Info
+                  </Text>
+                </LinearGradient>
+              </View>
             </Animated.View>
           </>
         )}
@@ -1286,10 +1402,14 @@ const styles = StyleSheet.create({
   },
   swipeHint: {
     position: 'absolute',
-    backgroundColor: theme.colors.opacity.gold30,
+  },
+  swipeHintBubble: {
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  swipeHintGradient: {
     paddingVertical: theme.spacing.xs,
     paddingHorizontal: theme.spacing.sm,
-    borderRadius: 12,
   },
   swipeHintLeft: {
     left: theme.spacing.lg,
