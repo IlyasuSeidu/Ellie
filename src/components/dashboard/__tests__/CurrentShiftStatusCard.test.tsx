@@ -178,6 +178,10 @@ describe('CurrentShiftStatusCard', () => {
       expect(night.getByTestId('active-badge-pulse-dot')).toBeTruthy();
       expect(night.getByTestId('shift-status-badge-icon').props.name).toBe('calendar');
 
+      const morning = render(<CurrentShiftStatusCard shiftType="morning" isOnShift={false} />);
+      expect(morning.getByTestId('active-badge-pulse-dot')).toBeTruthy();
+      expect(morning.getByTestId('shift-status-badge-icon').props.name).toBe('calendar');
+
       const afternoon = render(<CurrentShiftStatusCard shiftType="afternoon" isOnShift={false} />);
       expect(afternoon.getByTestId('active-badge-pulse-dot')).toBeTruthy();
       expect(afternoon.getByTestId('shift-status-badge-icon').props.name).toBe('calendar');
