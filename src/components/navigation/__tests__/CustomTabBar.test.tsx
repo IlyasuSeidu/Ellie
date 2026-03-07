@@ -1,17 +1,58 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { CustomTabBar } from '../CustomTabBar';
+import { theme } from '@/utils/theme';
+import { shiftColors } from '@/constants/shiftStyles';
+import { RosterType } from '@/types';
 
 const mockOpenModal = jest.fn();
 const mockUseVoiceAssistant = jest.fn();
+const mockUseOnboarding = jest.fn();
+const mockUseActiveShift = jest.fn();
+const mockBuildShiftCycle = jest.fn();
+
+function extractTextColor(
+  style: { color?: string } | Array<{ color?: string } | null> | undefined
+): string | undefined {
+  if (Array.isArray(style)) {
+    const flattened = style.reduce<Record<string, unknown>>((acc, item) => {
+      if (!item) return acc;
+      return { ...acc, ...item };
+    }, {});
+    return flattened.color as string | undefined;
+  }
+  return style?.color;
+}
 
 jest.mock('@/contexts/VoiceAssistantContext', () => ({
   useVoiceAssistant: () => mockUseVoiceAssistant(),
 }));
 
+jest.mock('@/contexts/OnboardingContext', () => ({
+  useOnboarding: () => mockUseOnboarding(),
+}));
+
+jest.mock('@/hooks/useActiveShift', () => ({
+  useActiveShift: () => mockUseActiveShift(),
+}));
+
+jest.mock('@/utils/shiftUtils', () => ({
+  buildShiftCycle: () => mockBuildShiftCycle(),
+}));
+
 jest.mock('react-native-safe-area-context', () => ({
   useSafeAreaInsets: () => ({ top: 0, bottom: 10, left: 0, right: 0 }),
 }));
+
+jest.mock('@expo/vector-icons', () => {
+  const React = require('react');
+  const RN = require('react-native');
+  return {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    Ionicons: ({ name, color, style, ...rest }: any) =>
+      React.createElement(RN.Text, { ...rest, testID: `icon-${name}`, style: [style, { color }] }),
+  };
+});
 
 jest.mock('expo-blur', () => {
   const React = require('react');
@@ -62,6 +103,9 @@ describe('CustomTabBar', () => {
       state: 'idle',
       openModal: mockOpenModal,
     });
+    mockUseOnboarding.mockReturnValue({ data: {} });
+    mockUseActiveShift.mockReturnValue(null);
+    mockBuildShiftCycle.mockReturnValue(null);
   });
 
   it('navigates to non-focused tab on press', () => {
@@ -114,5 +158,34 @@ describe('CustomTabBar', () => {
     const { getByLabelText } = render(<CustomTabBar {...props} />);
 
     expect(getByLabelText('Open Ellie voice assistant')).toBeTruthy();
+  });
+
+  it('uses the original focused tab color when no rotating shift accent is available', () => {
+    const props = buildProps(0);
+    const { getByTestId } = render(<CustomTabBar {...props} />);
+
+    expect(extractTextColor(getByTestId('icon-home').props.style)).toBe(theme.colors.paleGold);
+  });
+
+  it('uses rotating shift color for focused tab when shift is active', () => {
+    mockBuildShiftCycle.mockReturnValue({ rosterType: RosterType.ROTATING });
+    mockUseActiveShift.mockReturnValue({ shiftType: 'morning' });
+
+    const props = buildProps(0);
+    const { getByTestId } = render(<CustomTabBar {...props} />);
+
+    expect(extractTextColor(getByTestId('icon-home').props.style)).toBe(
+      shiftColors.morning.primary
+    );
+  });
+
+  it('keeps original focused tab color when active rotating shift is off', () => {
+    mockBuildShiftCycle.mockReturnValue({ rosterType: RosterType.ROTATING });
+    mockUseActiveShift.mockReturnValue({ shiftType: 'off' });
+
+    const props = buildProps(0);
+    const { getByTestId } = render(<CustomTabBar {...props} />);
+
+    expect(extractTextColor(getByTestId('icon-home').props.style)).toBe(theme.colors.paleGold);
   });
 });
