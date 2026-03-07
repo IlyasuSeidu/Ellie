@@ -250,6 +250,7 @@ exports[`dashboard visual snapshots CurrentShiftStatusCard FIFO snapshot 1`] = `
                 "paddingVertical": 6,
               }
             }
+            testID="shift-status-badge"
           >
             <Text
               color="rgba(255,200,100,0.8)"
@@ -260,6 +261,7 @@ exports[`dashboard visual snapshots CurrentShiftStatusCard FIFO snapshot 1`] = `
                   "marginRight": 5,
                 }
               }
+              testID="shift-status-badge-icon"
             >
               construct-outline
             </Text>
