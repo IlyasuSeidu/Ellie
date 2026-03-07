@@ -403,7 +403,7 @@ export const MainDashboardScreen: React.FC = () => {
         <CurrentShiftStatusCard
           key={`status-${refreshKey}`}
           shiftType={activeShift.shiftType}
-          accentShiftType={activeShift.shiftType}
+          accentShiftType={activeShift.scheduledShiftType}
           rosterType={shiftCycle.rosterType}
           fifoBlockInfo={fifoBlockInfo}
           timeDisplay={activeShift.timeDisplay || undefined}

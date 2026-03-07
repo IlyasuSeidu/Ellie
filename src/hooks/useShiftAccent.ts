@@ -94,8 +94,8 @@ export function getNextShiftAccentRefreshAt(
 }
 
 /**
- * Dynamic shift accent colors shared by status area + tab UI.
- * Uses live active shift state (time-aware, including overnight carry-over).
+ * Calendar-driven shift accent colors shared by status area + tab UI.
+ * Uses the scheduled roster shift for the current day.
  */
 export function useShiftAccent(): ShiftAccentResult {
   const { data } = useOnboarding();
@@ -129,7 +129,7 @@ export function useShiftAccent(): ShiftAccentResult {
     if (!shiftCycle || !activeShift) {
       return null;
     }
-    return activeShift.shiftType;
+    return activeShift.scheduledShiftType;
   }, [activeShift, shiftCycle]);
 
   const isWorkShift = activeShiftType !== null && activeShiftType !== 'off';
