@@ -740,6 +740,8 @@ const styles = StyleSheet.create({
   shiftSubtitle: {
     fontSize: theme.typography.fontSizes.md,
     color: 'rgba(255,255,255,0.7)',
+    textAlign: 'center',
+    width: '100%',
   },
 
   // ── Subtitle + Time Row ──────────────────────────────────────
