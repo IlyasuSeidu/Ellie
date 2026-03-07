@@ -487,7 +487,7 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                         : 'HOME'
                       : shiftType === 'off'
                         ? 'OFF'
-                        : 'ACTIVE'}
+                        : 'LIVE'}
                   </Animated.Text>
                 </View>
               )}
