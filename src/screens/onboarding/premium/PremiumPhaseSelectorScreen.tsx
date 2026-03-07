@@ -110,11 +110,11 @@ const PHASE_CARD_ACCENTS: Record<
     hintText: '#FEF3C7',
   },
   afternoon: {
-    borderColor: 'rgba(249, 115, 22, 0.5)',
-    badgeGradient: ['rgba(249, 115, 22, 0.3)', 'rgba(194, 65, 12, 0.16)'],
-    badgeText: '#FDBA74',
-    hintGradient: ['rgba(249, 115, 22, 0.32)', 'rgba(194, 65, 12, 0.18)'],
-    hintText: '#FFEDD5',
+    borderColor: 'rgba(6, 182, 212, 0.5)',
+    badgeGradient: ['rgba(6, 182, 212, 0.3)', 'rgba(14, 116, 144, 0.16)'],
+    badgeText: '#67E8F9',
+    hintGradient: ['rgba(6, 182, 212, 0.32)', 'rgba(14, 116, 144, 0.18)'],
+    hintText: '#CFFAFE',
   },
   night: {
     borderColor: 'rgba(101, 31, 255, 0.5)',
@@ -1062,7 +1062,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
           description: 'Afternoon hours (e.g., 12pm-8pm)',
           icon: require('../../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png'),
           phaseLength: ('afternoonOn' in pattern ? pattern.afternoonOn : 0) ?? 0,
-          gradientColors: ['rgba(251, 146, 60, 0.25)', 'rgba(251, 146, 60, 0.05)'] as [
+          gradientColors: ['rgba(6, 182, 212, 0.25)', 'rgba(6, 182, 212, 0.05)'] as [
             string,
             string,
           ],

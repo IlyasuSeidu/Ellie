@@ -460,7 +460,7 @@ export const _getPhaseColor = (phase: Phase): string => {
     case 'morning':
       return '#FCD34D'; // Yellow
     case 'afternoon':
-      return '#FB923C'; // Orange
+      return '#06B6D4'; // Cyan
     case 'off':
       return theme.colors.shiftVisualization.daysOff;
     default:
@@ -1919,7 +1919,7 @@ export const _LivePreviewCard: React.FC<LivePreviewCardProps> = ({
                           : shiftType === 'morning'
                             ? '#FCD34D'
                             : shiftType === 'afternoon'
-                              ? '#FB923C'
+                              ? '#06B6D4'
                               : theme.colors.shiftVisualization.daysOff;
 
                     return (
