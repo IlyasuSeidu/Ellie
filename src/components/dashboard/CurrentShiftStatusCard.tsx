@@ -267,7 +267,7 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
   // ── On-Shift Animations ───────────────────────────────────────
   const glowOpacity = useSharedValue(0);
   const liveDotOpacity = useSharedValue(1);
-  const showActivePulse = !isOnShift && rosterType === RosterType.ROTATING && shiftType !== 'off';
+  const showActivePulse = rosterType === RosterType.ROTATING && shiftType !== 'off';
   const showRotatingActiveBadge = rosterType === RosterType.ROTATING && shiftType !== 'off';
 
   useEffect(() => {
@@ -425,23 +425,17 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                 </View>
               </Animated.View>
 
-              {/* LIVE badge with pulsing dot */}
-              {isOnShift && (
-                <View style={styles.liveBadge}>
-                  <Animated.View style={[styles.liveDot, liveDotStyle]} />
-                  <Animated.Text style={styles.liveText}>LIVE</Animated.Text>
-                </View>
-              )}
-
-              {/* OFF / HOME / ON-SITE / ACTIVE badge when not on shift */}
-              {!isOnShift && (
+              {/* LIVE / OFF / HOME / ON-SITE badge */}
+              {(showRotatingActiveBadge || !isOnShift) && (
                 <View
                   style={
-                    rosterType === RosterType.FIFO && fifoBlockInfo?.inWorkBlock
-                      ? styles.onSiteBadge
-                      : rosterType === RosterType.FIFO || shiftType === 'off'
-                        ? styles.offBadge
-                        : styles.activeBadge
+                    showRotatingActiveBadge
+                      ? styles.activeBadge
+                      : rosterType === RosterType.FIFO && fifoBlockInfo?.inWorkBlock
+                        ? styles.onSiteBadge
+                        : rosterType === RosterType.FIFO || shiftType === 'off'
+                          ? styles.offBadge
+                          : styles.activeBadge
                   }
                   testID="shift-status-badge"
                 >
@@ -474,11 +468,13 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                   />
                   <Animated.Text
                     style={
-                      rosterType === RosterType.FIFO && fifoBlockInfo?.inWorkBlock
-                        ? styles.onSiteText
-                        : shiftType === 'off' || rosterType === RosterType.FIFO
-                          ? styles.offText
-                          : [styles.scheduledText, showRotatingActiveBadge && styles.activeText]
+                      showRotatingActiveBadge
+                        ? [styles.scheduledText, styles.activeText]
+                        : rosterType === RosterType.FIFO && fifoBlockInfo?.inWorkBlock
+                          ? styles.onSiteText
+                          : shiftType === 'off' || rosterType === RosterType.FIFO
+                            ? styles.offText
+                            : [styles.scheduledText, showRotatingActiveBadge && styles.activeText]
                     }
                   >
                     {rosterType === RosterType.FIFO
