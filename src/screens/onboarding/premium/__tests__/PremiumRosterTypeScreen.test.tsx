@@ -8,6 +8,7 @@
 
 import React from 'react';
 import { render, fireEvent, waitFor, act } from '@testing-library/react-native';
+import { InteractionManager } from 'react-native';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
 import { PremiumRosterTypeScreen } from '../PremiumRosterTypeScreen';
 import { asyncStorageService } from '@/services/AsyncStorageService';
@@ -25,7 +26,6 @@ jest.mock('@/services/AsyncStorageService', () => ({
 
 jest.mock('expo-haptics');
 
-// Track pan onEnd callbacks per card for swipe simulation
 type PanEndCallback = (event: {
   translationX: number;
   translationY: number;
@@ -33,23 +33,34 @@ type PanEndCallback = (event: {
   velocityY: number;
 }) => void;
 
-const panEndCallbacks: PanEndCallback[] = [];
+let activePanEndCallback: PanEndCallback | null = null;
 
 jest.mock('react-native-gesture-handler', () => {
+  const Pan = () => {
+    let enabled = true;
+    const api: {
+      enabled: (value: boolean) => unknown;
+      onUpdate: (cb: () => void) => unknown;
+      onEnd: (cb: PanEndCallback) => unknown;
+    } = {
+      enabled: jest.fn((value: boolean) => {
+        enabled = value;
+        return api;
+      }),
+      onUpdate: jest.fn(() => api),
+      onEnd: jest.fn((cb: PanEndCallback) => {
+        if (enabled) {
+          activePanEndCallback = cb;
+        }
+        return api;
+      }),
+    };
+    return api;
+  };
+
   return {
     Gesture: {
-      Pan: () => ({
-        enabled: jest.fn(function enabled() {
-          return this;
-        }),
-        onUpdate: jest.fn(function onUpdate() {
-          return this;
-        }),
-        onEnd: jest.fn(function onEnd(cb: PanEndCallback) {
-          panEndCallbacks.push(cb);
-          return this;
-        }),
-      }),
+      Pan,
       Tap: () => ({
         enabled: jest.fn(function enabled() {
           return this;
@@ -130,7 +141,7 @@ function simulateSwipe(event: {
   velocityX?: number;
   velocityY?: number;
 }) {
-  const cb = panEndCallbacks[panEndCallbacks.length - 1];
+  const cb = activePanEndCallback;
   if (cb) {
     cb({
       translationX: event.translationX,
@@ -146,15 +157,28 @@ function simulateSwipe(event: {
 describe('PremiumRosterTypeScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    panEndCallbacks.length = 0;
+    activePanEndCallback = null;
     focusCallback = null;
     (asyncStorageService.get as jest.Mock).mockResolvedValue(null);
+    jest.spyOn(InteractionManager, 'runAfterInteractions').mockImplementation((task?: unknown) => {
+      if (typeof task === 'function') {
+        task();
+      } else if (task && typeof (task as { run?: () => void }).run === 'function') {
+        (task as { run: () => void }).run();
+      }
+      return {
+        then: () => Promise.resolve(),
+        done: () => undefined,
+        cancel: jest.fn(),
+      } as never;
+    });
     jest.useFakeTimers();
   });
 
   afterEach(() => {
     jest.clearAllTimers();
     jest.useRealTimers();
+    jest.restoreAllMocks();
   });
 
   // ── Rendering ──────────────────────────────────────────────────
