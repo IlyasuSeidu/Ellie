@@ -944,7 +944,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
           phase: 'afternoon' as Phase,
           title: 'Afternoon Shift',
           description: 'Afternoon hours (e.g., 12pm-8pm)',
-          icon: 'iconicon',
+          icon: require('../../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png'),
           phaseLength: ('afternoonOn' in pattern ? pattern.afternoonOn : 0) ?? 0,
           gradientColors: ['rgba(251, 146, 60, 0.25)', 'rgba(251, 146, 60, 0.05)'] as [
             string,
