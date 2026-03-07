@@ -134,6 +134,13 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
   const insets = useSafeAreaInsets();
   const { state: voiceState, openModal } = useVoiceAssistant();
   const { tabAccentColor, tabGlowColor } = useShiftAccent();
+  const centerButtonAccentStyle = useMemo(
+    () => [
+      { borderColor: tabAccentColor },
+      Platform.OS === 'ios' ? { shadowColor: tabAccentColor } : null,
+    ],
+    [tabAccentColor]
+  );
 
   const glowAccentStyle = useMemo(
     () => [
@@ -281,12 +288,12 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
             colors={[theme.colors.brightGold, theme.colors.sacredGold]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
-            style={styles.centerButton}
+            style={[styles.centerButton, centerButtonAccentStyle]}
           >
             <Ionicons
               name={isVoiceActive ? 'mic' : 'mic-outline'}
               size={28}
-              color={theme.colors.deepVoid}
+              color={tabAccentColor}
             />
           </LinearGradient>
         </TouchableOpacity>

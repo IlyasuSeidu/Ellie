@@ -188,4 +188,20 @@ describe('CustomTabBar', () => {
 
     expect(extractTextColor(getByTestId('icon-home').props.style)).toBe(theme.colors.paleGold);
   });
+
+  it('applies dynamic shift accent color to center mic icon', () => {
+    mockUseShiftAccent.mockReturnValue({
+      shiftType: 'night',
+      statusAreaColor: shiftColors.night.primary,
+      tabAccentColor: shiftColors.night.primary,
+      tabGlowColor: 'rgba(101, 31, 255, 0.2)',
+    });
+
+    const props = buildProps(0);
+    const { getByTestId } = render(<CustomTabBar {...props} />);
+
+    expect(extractTextColor(getByTestId('icon-mic-outline').props.style)).toBe(
+      shiftColors.night.primary
+    );
+  });
 });
