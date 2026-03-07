@@ -116,7 +116,6 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
   shiftType,
   rosterType = RosterType.ROTATING,
   fifoBlockInfo,
-  timeDisplay,
   countdown,
   isOnShift = false,
   animationDelay = 100,
@@ -447,17 +446,6 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
               <Animated.Text style={styles.shiftLabel}>{shiftLabel}</Animated.Text>
               <View style={[styles.subtitleTimeRow, !isOnShift && styles.subtitleTimeRowCentered]}>
                 <Animated.Text style={styles.shiftSubtitle}>{shiftSubtitle}</Animated.Text>
-                {timeDisplay && (
-                  <View style={styles.timeContainer}>
-                    <Ionicons
-                      name="time-outline"
-                      size={14}
-                      color="rgba(255,255,255,0.7)"
-                      style={styles.timeIcon}
-                    />
-                    <Animated.Text style={styles.timeText}>{timeDisplay}</Animated.Text>
-                  </View>
-                )}
               </View>
 
               {/* FIFO Block Progress Bar */}
