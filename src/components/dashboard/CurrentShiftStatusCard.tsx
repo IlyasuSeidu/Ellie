@@ -268,6 +268,7 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
   const glowOpacity = useSharedValue(0);
   const liveDotOpacity = useSharedValue(1);
   const showActivePulse = !isOnShift && rosterType === RosterType.ROTATING && shiftType !== 'off';
+  const showRotatingActiveBadge = rosterType === RosterType.ROTATING && shiftType !== 'off';
 
   useEffect(() => {
     if (isOnShift) {
@@ -450,6 +451,7 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                     />
                   )}
                   <Ionicons
+                    testID="shift-status-badge-icon"
                     name={
                       rosterType === RosterType.FIFO
                         ? fifoBlockInfo?.inWorkBlock
@@ -465,7 +467,7 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                         ? 'rgba(255,200,100,0.8)'
                         : shiftType === 'off' || rosterType === RosterType.FIFO
                           ? 'rgba(255,255,255,0.5)'
-                          : 'rgba(147,197,253,0.85)'
+                          : 'rgba(255,255,255,0.96)'
                     }
                     style={{ marginRight: 5 }}
                   />
@@ -475,7 +477,7 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                         ? styles.onSiteText
                         : shiftType === 'off' || rosterType === RosterType.FIFO
                           ? styles.offText
-                          : styles.scheduledText
+                          : [styles.scheduledText, showRotatingActiveBadge && styles.activeText]
                     }
                   >
                     {rosterType === RosterType.FIFO
@@ -714,6 +716,9 @@ const styles = StyleSheet.create({
     fontWeight: theme.typography.fontWeights.bold,
     color: 'rgba(191,219,254,0.95)',
     letterSpacing: 1,
+  },
+  activeText: {
+    color: 'rgba(255,255,255,0.96)',
   },
 
   // ── Text ────────────────────────────────────────────────────
