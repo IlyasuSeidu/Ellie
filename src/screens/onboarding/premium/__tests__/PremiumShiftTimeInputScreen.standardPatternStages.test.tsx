@@ -134,6 +134,21 @@ describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
     expect(getByText('Morning Shift Times')).toBeTruthy();
   });
 
+  it('shows morning detection for 5:00 AM early morning preset in 3-shift mode', () => {
+    mockOnboardingData = {
+      shiftSystem: '3-shift',
+      rosterType: 'rotating',
+      patternType: ShiftPattern.CONTINENTAL,
+    };
+
+    const { getAllByText, getByText, queryByText } = renderScreen();
+
+    fireEvent.press(getAllByText(/5:00 AM/i)[0]);
+
+    expect(getByText('Morning start')).toBeTruthy();
+    expect(queryByText('Night start')).toBeNull();
+  });
+
   it('uses 2 stages for standard FIFO patterns even with stale fifoConfig work pattern', () => {
     mockOnboardingData = {
       shiftSystem: '2-shift',

@@ -464,6 +464,13 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   }, [getStartTime24h, duration]);
 
   const getShiftType = useCallback((): 'day' | 'night' | 'morning' | 'afternoon' => {
+    if (selectedPreset && selectedPreset !== 'custom') {
+      const preset = SHIFT_PRESETS.find((p) => p.id === selectedPreset);
+      if (preset) {
+        return preset.type;
+      }
+    }
+
     const startTime = getStartTime24h();
     if (!startTime) return 'day';
 
@@ -472,7 +479,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
       startTime,
       shiftSystem === ShiftSystem.THREE_SHIFT ? '3-shift' : '2-shift'
     );
-  }, [getStartTime24h, data.shiftSystem]);
+  }, [selectedPreset, getStartTime24h, data.shiftSystem]);
 
   const isValid = useCallback((): boolean => {
     if (!selectedPreset) return false;
