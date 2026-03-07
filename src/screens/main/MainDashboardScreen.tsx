@@ -43,6 +43,7 @@ import { toDateString, getDaysInMonth } from '@/utils/dateUtils';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
 import { RosterType, type ShiftCycle } from '@/types';
 import { useActiveShift } from '@/hooks/useActiveShift';
+import { getNextShiftAccentRefreshAt } from '@/hooks/useShiftAccent';
 import type { MonthStatistics } from '@/types/dashboard';
 
 // Dashboard components
@@ -193,32 +194,47 @@ export const MainDashboardScreen: React.FC = () => {
     loadData(true);
   }, [loadData]);
 
-  // Single consolidated timer: handles last-updated display + day-change detection.
-  // Ticks every 30s — avoids two separate intervals and nested interval re-creation.
+  // Build shift cycle from user data
+  const shiftCycle = useMemo(() => (userData ? buildShiftCycle(userData) : null), [userData]);
+
   const [liveTick, setLiveTick] = useState(0);
+  const [clockTick, setClockTick] = useState(0);
   const [currentDateStr, setCurrentDateStr] = useState(() => toDateString(new Date()));
+
   useEffect(() => {
     const timer = setInterval(() => {
-      setLiveTick((t) => t + 1);
-      const nowStr = toDateString(new Date());
-      setCurrentDateStr((prev) => {
-        if (prev !== nowStr) {
-          const now = new Date();
-          setCurrentMonth({ year: now.getFullYear(), month: now.getMonth() });
-        }
-        return nowStr;
-      });
+      setClockTick((tick) => tick + 1);
     }, 30000);
+
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    const now = new Date();
+    const nextRefreshAt = getNextShiftAccentRefreshAt(now, shiftCycle, userData);
+    const delayMs = Math.max(250, nextRefreshAt.getTime() - now.getTime() + 250);
+
+    const timer = setTimeout(() => {
+      setLiveTick((tick) => tick + 1);
+      const nextDate = new Date();
+      const nextDateStr = toDateString(nextDate);
+      setCurrentDateStr((prev) => {
+        if (prev !== nextDateStr) {
+          setCurrentMonth({ year: nextDate.getFullYear(), month: nextDate.getMonth() });
+        }
+        return nextDateStr;
+      });
+    }, delayMs);
+
+    return () => clearTimeout(timer);
+  }, [shiftCycle, userData, liveTick]);
 
   /**
    * Format last updated time for display
    */
   const lastUpdatedText = useMemo(() => {
     if (!lastUpdated) return null;
-    // liveTick forces re-computation
-    void liveTick;
+    void clockTick;
     const diffMs = Date.now() - lastUpdated.getTime();
     const diffSec = Math.floor(diffMs / 1000);
 
@@ -227,10 +243,7 @@ export const MainDashboardScreen: React.FC = () => {
     const diffMin = Math.floor(diffSec / 60);
     if (diffMin < 60) return `${diffMin}m ago`;
     return lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  }, [lastUpdated, liveTick]);
-
-  // Build shift cycle from user data
-  const shiftCycle = useMemo(() => (userData ? buildShiftCycle(userData) : null), [userData]);
+  }, [lastUpdated, clockTick]);
 
   // Active shift: time-aware status with overnight carry-over support
   const activeShift = useActiveShift(shiftCycle, userData, liveTick, currentDateStr);

@@ -57,6 +57,11 @@ jest.mock('@/utils/shiftUtils', () => ({
     startDate: '2026-01-01',
     phaseOffset: 0,
   })),
+  calculateShiftDay: jest.fn(() => ({
+    shiftType: 'day',
+    isWorkDay: true,
+    isNightShift: false,
+  })),
   getShiftDaysInRange: jest.fn(() => []),
   getShiftStatistics: jest.fn(() => ({
     dayShifts: 10,

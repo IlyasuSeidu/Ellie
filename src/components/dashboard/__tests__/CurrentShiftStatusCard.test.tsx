@@ -129,6 +129,24 @@ describe('CurrentShiftStatusCard', () => {
       expect(getByText('LIVE')).toBeTruthy();
     });
 
+    it('should show LIVE badge for night shifts when on shift', () => {
+      const { getByText, queryByText } = render(
+        <CurrentShiftStatusCard shiftType="night" isOnShift={true} />
+      );
+      expect(getByText('LIVE')).toBeTruthy();
+      expect(queryByText('ACTIVE')).toBeNull();
+    });
+
+    it('should show LIVE badge for morning and afternoon shifts when on shift', () => {
+      const morning = render(<CurrentShiftStatusCard shiftType="morning" isOnShift={true} />);
+      expect(morning.getByText('LIVE')).toBeTruthy();
+      expect(morning.queryByText('ACTIVE')).toBeNull();
+
+      const afternoon = render(<CurrentShiftStatusCard shiftType="afternoon" isOnShift={true} />);
+      expect(afternoon.getByText('LIVE')).toBeTruthy();
+      expect(afternoon.queryByText('ACTIVE')).toBeNull();
+    });
+
     it('should not show LIVE badge when off shift', () => {
       const { queryByText } = render(<CurrentShiftStatusCard shiftType="off" isOnShift={false} />);
       expect(queryByText('LIVE')).toBeNull();
