@@ -3,13 +3,10 @@ import { render, fireEvent } from '@testing-library/react-native';
 import { CustomTabBar } from '../CustomTabBar';
 import { theme } from '@/utils/theme';
 import { shiftColors } from '@/constants/shiftStyles';
-import { RosterType } from '@/types';
 
 const mockOpenModal = jest.fn();
 const mockUseVoiceAssistant = jest.fn();
-const mockUseOnboarding = jest.fn();
-const mockUseActiveShift = jest.fn();
-const mockBuildShiftCycle = jest.fn();
+const mockUseShiftAccent = jest.fn();
 
 function extractTextColor(
   style: { color?: string } | Array<{ color?: string } | null> | undefined
@@ -28,16 +25,8 @@ jest.mock('@/contexts/VoiceAssistantContext', () => ({
   useVoiceAssistant: () => mockUseVoiceAssistant(),
 }));
 
-jest.mock('@/contexts/OnboardingContext', () => ({
-  useOnboarding: () => mockUseOnboarding(),
-}));
-
-jest.mock('@/hooks/useActiveShift', () => ({
-  useActiveShift: () => mockUseActiveShift(),
-}));
-
-jest.mock('@/utils/shiftUtils', () => ({
-  buildShiftCycle: () => mockBuildShiftCycle(),
+jest.mock('@/hooks/useShiftAccent', () => ({
+  useShiftAccent: () => mockUseShiftAccent(),
 }));
 
 jest.mock('react-native-safe-area-context', () => ({
@@ -103,9 +92,12 @@ describe('CustomTabBar', () => {
       state: 'idle',
       openModal: mockOpenModal,
     });
-    mockUseOnboarding.mockReturnValue({ data: {} });
-    mockUseActiveShift.mockReturnValue(null);
-    mockBuildShiftCycle.mockReturnValue(null);
+    mockUseShiftAccent.mockReturnValue({
+      shiftType: null,
+      statusAreaColor: '#0c0a09',
+      tabAccentColor: theme.colors.paleGold,
+      tabGlowColor: theme.colors.opacity.gold20,
+    });
   });
 
   it('navigates to non-focused tab on press', () => {
@@ -168,8 +160,12 @@ describe('CustomTabBar', () => {
   });
 
   it('uses rotating shift color for focused tab when shift is active', () => {
-    mockBuildShiftCycle.mockReturnValue({ rosterType: RosterType.ROTATING });
-    mockUseActiveShift.mockReturnValue({ shiftType: 'morning' });
+    mockUseShiftAccent.mockReturnValue({
+      shiftType: 'morning',
+      statusAreaColor: shiftColors.morning.primary,
+      tabAccentColor: shiftColors.morning.primary,
+      tabGlowColor: 'rgba(245, 158, 11, 0.2)',
+    });
 
     const props = buildProps(0);
     const { getByTestId } = render(<CustomTabBar {...props} />);
@@ -180,8 +176,12 @@ describe('CustomTabBar', () => {
   });
 
   it('keeps original focused tab color when active rotating shift is off', () => {
-    mockBuildShiftCycle.mockReturnValue({ rosterType: RosterType.ROTATING });
-    mockUseActiveShift.mockReturnValue({ shiftType: 'off' });
+    mockUseShiftAccent.mockReturnValue({
+      shiftType: 'off',
+      statusAreaColor: '#0c0a09',
+      tabAccentColor: theme.colors.paleGold,
+      tabGlowColor: theme.colors.opacity.gold20,
+    });
 
     const props = buildProps(0);
     const { getByTestId } = render(<CustomTabBar {...props} />);

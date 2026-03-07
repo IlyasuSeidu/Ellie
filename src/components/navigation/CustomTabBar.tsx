@@ -8,7 +8,7 @@
  * Features a sliding glow indicator that smoothly transitions between active tabs.
  */
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { View, TouchableOpacity, StyleSheet, Dimensions, Platform } from 'react-native';
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -27,13 +27,7 @@ import Animated, {
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
 import { useVoiceAssistant } from '@/contexts/VoiceAssistantContext';
-import { useOnboarding } from '@/contexts/OnboardingContext';
-import { useActiveShift } from '@/hooks/useActiveShift';
-import { buildShiftCycle } from '@/utils/shiftUtils';
-import { toDateString } from '@/utils/dateUtils';
-import { shiftColors } from '@/constants/shiftStyles';
-import { hexToRGBA } from '@/utils/styleUtils';
-import { RosterType, type ShiftType } from '@/types';
+import { useShiftAccent } from '@/hooks/useShiftAccent';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -138,58 +132,15 @@ const TabButton: React.FC<TabButtonProps> = ({
 
 export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation }) => {
   const insets = useSafeAreaInsets();
-  const { data } = useOnboarding();
   const { state: voiceState, openModal } = useVoiceAssistant();
-  const [liveTick, setLiveTick] = useState(0);
-  const [currentDateStr, setCurrentDateStr] = useState(() => toDateString(new Date()));
-
-  // Keep shift accent color in sync when time/day changes.
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setLiveTick((tick) => tick + 1);
-      setCurrentDateStr(toDateString(new Date()));
-    }, 30000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  const shiftCycle = useMemo(() => {
-    try {
-      return buildShiftCycle(data);
-    } catch {
-      return null;
-    }
-  }, [data]);
-
-  const activeShift = useActiveShift(shiftCycle, data, liveTick, currentDateStr);
-
-  const rotatingShiftType = useMemo<ShiftType | null>(() => {
-    if (!shiftCycle || shiftCycle.rosterType !== RosterType.ROTATING || !activeShift) {
-      return null;
-    }
-    return activeShift.shiftType;
-  }, [activeShift, shiftCycle]);
-
-  const focusedTabColor = useMemo(() => {
-    if (!rotatingShiftType || rotatingShiftType === 'off') {
-      return theme.colors.paleGold;
-    }
-    return shiftColors[rotatingShiftType].primary;
-  }, [rotatingShiftType]);
-
-  const glowFillColor = useMemo(() => {
-    if (!rotatingShiftType || rotatingShiftType === 'off') {
-      return theme.colors.opacity.gold20;
-    }
-    return hexToRGBA(shiftColors[rotatingShiftType].primary, 0.2);
-  }, [rotatingShiftType]);
+  const { tabAccentColor, tabGlowColor } = useShiftAccent();
 
   const glowAccentStyle = useMemo(
     () => [
-      { backgroundColor: glowFillColor },
-      Platform.OS === 'ios' ? { shadowColor: focusedTabColor } : null,
+      { backgroundColor: tabGlowColor },
+      Platform.OS === 'ios' ? { shadowColor: tabAccentColor } : null,
     ],
-    [glowFillColor, focusedTabColor]
+    [tabGlowColor, tabAccentColor]
   );
 
   // ── Sliding glow indicator ──────────────────────────────────────────────
@@ -302,7 +253,7 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
 
             const icons = TAB_ICONS[route.name];
             const iconName = isFocused ? icons.filled : icons.outline;
-            const iconColor = isFocused ? focusedTabColor : theme.colors.dust;
+            const iconColor = isFocused ? tabAccentColor : theme.colors.dust;
 
             return (
               <TabButton

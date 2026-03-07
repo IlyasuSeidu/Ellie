@@ -1,56 +1,31 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { AppNavigator } from './src/navigation/AppNavigator';
-import { OnboardingProvider, useOnboarding } from './src/contexts/OnboardingContext';
+import { OnboardingProvider } from './src/contexts/OnboardingContext';
 import { VoiceAssistantProvider } from './src/contexts/VoiceAssistantContext';
-import { useActiveShift } from './src/hooks/useActiveShift';
-import { buildShiftCycle } from './src/utils/shiftUtils';
-import { toDateString } from './src/utils/dateUtils';
-import { shiftColors } from './src/constants/shiftStyles';
-import { theme } from './src/utils/theme';
-import { RosterType } from './src/types';
+import { useShiftAccent } from './src/hooks/useShiftAccent';
 
 function AppContent() {
-  const { data } = useOnboarding();
-  const [liveTick, setLiveTick] = useState(0);
-  const [currentDateStr, setCurrentDateStr] = useState(() => toDateString(new Date()));
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setLiveTick((tick) => tick + 1);
-      setCurrentDateStr(toDateString(new Date()));
-    }, 30000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  const shiftCycle = useMemo(() => {
-    try {
-      return buildShiftCycle(data);
-    } catch {
-      return null;
-    }
-  }, [data]);
-
-  const activeShift = useActiveShift(shiftCycle, data, liveTick, currentDateStr);
-
-  const statusBarColor = useMemo(() => {
-    if (!shiftCycle || shiftCycle.rosterType !== RosterType.ROTATING || !activeShift) {
-      return theme.colors.deepVoid;
-    }
-    if (activeShift.shiftType === 'off') {
-      return theme.colors.deepVoid;
-    }
-    return shiftColors[activeShift.shiftType].primary;
-  }, [activeShift, shiftCycle]);
+  const insets = useSafeAreaInsets();
+  const { statusAreaColor } = useShiftAccent();
 
   return (
     <View style={styles.container}>
-      <StatusBar style="light" backgroundColor={statusBarColor} translucent={false} />
+      <View
+        pointerEvents="none"
+        style={[
+          styles.statusAreaBackground,
+          {
+            height: insets.top,
+            backgroundColor: statusAreaColor,
+          },
+        ]}
+      />
+      <StatusBar style="light" backgroundColor={statusAreaColor} translucent={false} />
       <NavigationContainer>
         <AppNavigator />
       </NavigationContainer>
@@ -75,5 +50,12 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  statusAreaBackground: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1,
   },
 });
