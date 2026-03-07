@@ -38,7 +38,7 @@ export const colors = {
     dayShift: '#2196F3', // Blue - for calendar day shift indicators
     nightShift: '#651FFF', // Purple - for calendar night shift indicators
     morningShift: '#F59E0B', // Amber 500 - sunrise gold for morning shifts
-    afternoonShift: '#FB923C', // Orange 400 - midday warmth for afternoon shifts
+    afternoonShift: '#06B6D4', // Cyan 500 - clear sky for afternoon shifts
     daysOff: '#78716c', // Stone 500 - for calendar days off indicators
   },
 

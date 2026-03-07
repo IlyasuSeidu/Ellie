@@ -84,9 +84,9 @@ const SHIFT_COLORS: Record<
     text: '#FCD34D',
   },
   afternoon: {
-    bg: 'rgba(251, 146, 60, 0.15)',
-    badge: 'rgba(251, 146, 60, 0.25)',
-    text: '#FDBA74',
+    bg: 'rgba(6, 182, 212, 0.15)',
+    badge: 'rgba(6, 182, 212, 0.25)',
+    text: '#67E8F9',
   },
   off: {
     bg: 'rgba(120, 113, 108, 0.1)',

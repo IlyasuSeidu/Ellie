@@ -89,7 +89,7 @@ const SHIFT_STYLES: Record<
     subtitle: 'Rise and shine!',
   },
   afternoon: {
-    gradient: ['#FB923C', '#C2410C'],
+    gradient: ['#06B6D4', '#0E7490'],
     label: 'AFTERNOON SHIFT',
     subtitle: 'Keep it going!',
   },
@@ -802,7 +802,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   cyanIconContainer: {
-    backgroundColor: 'rgba(251, 146, 60, 0.22)',
+    backgroundColor: 'rgba(6, 182, 212, 0.25)',
   },
   shiftImage: {
     width: 30,

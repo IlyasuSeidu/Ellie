@@ -78,7 +78,7 @@ const SHIFT_COLORS = {
   day: { r: 33, g: 150, b: 243 }, // #2196F3 - Blue
   night: { r: 101, g: 31, b: 255 }, // #651FFF - Purple
   morning: { r: 245, g: 158, b: 11 }, // #F59E0B - Amber
-  afternoon: { r: 251, g: 146, b: 60 }, // #FB923C - Orange
+  afternoon: { r: 6, g: 182, b: 212 }, // #06B6D4 - Cyan
   off: { r: 120, g: 113, b: 108 }, // #78716c - Stone
   default: { r: 33, g: 150, b: 243 }, // #2196F3 - Blue fallback
 } as const;
@@ -797,7 +797,7 @@ export const _getPhaseShadowColor = (
     case 'morning':
       return '#F59E0B';
     case 'afternoon':
-      return '#FB923C';
+      return '#06B6D4';
     case 'off':
       return '#78716c';
     default:
@@ -1339,7 +1339,7 @@ export const _AnimatedPhaseCard: React.FC<AnimatedPhaseCardProps> = React.memo(
         case 'morning':
           return 'rgba(245, 158, 11, 0.2)'; // Amber tint
         case 'afternoon':
-          return 'rgba(251, 146, 60, 0.2)'; // Orange tint
+          return 'rgba(6, 182, 212, 0.2)'; // Cyan tint
         case 'off':
           return 'rgba(120, 113, 108, 0.2)'; // Stone tint
         default:
