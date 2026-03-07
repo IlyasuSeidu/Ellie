@@ -53,6 +53,7 @@ import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboarding
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { ShiftPattern } from '@/types';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
+import { getDefaultFIFOConfig } from '@/utils/shiftUtils';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -739,11 +740,11 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       const fifoConfig =
         isCustomFIFOPattern && data.fifoConfig
           ? data.fifoConfig
-          : {
+          : (getDefaultFIFOConfig(data.patternType ?? ShiftPattern.FIFO_14_14) ?? {
               workBlockDays,
               restBlockDays,
-              workBlockPattern: 'swing' as const, // Default: collect both day/night shift times
-            };
+              workBlockPattern: 'straight-days' as const,
+            });
       updateData({ phaseOffset, fifoConfig });
       void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
         source: 'PremiumFIFOPhaseSelectorScreen.handleDaySelect',
@@ -755,7 +756,15 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
         }, 300);
       });
     },
-    [navigation, restBlockDays, updateData, workBlockDays, data.fifoConfig, isCustomFIFOPattern]
+    [
+      navigation,
+      restBlockDays,
+      updateData,
+      workBlockDays,
+      data.fifoConfig,
+      data.patternType,
+      isCustomFIFOPattern,
+    ]
   );
 
   const handleSwipeRight = useCallback(() => {

@@ -354,7 +354,7 @@ describe('PremiumFIFOPhaseSelectorScreen', () => {
           fifoConfig: expect.objectContaining({
             workBlockDays: 8,
             restBlockDays: 6,
-            workBlockPattern: 'swing',
+            workBlockPattern: 'straight-days',
           }),
         })
       );
