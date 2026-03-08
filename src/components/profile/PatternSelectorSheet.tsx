@@ -7,7 +7,7 @@
  * gold selection highlight, and haptic feedback.
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   Modal,
   View,
@@ -188,25 +188,14 @@ export const PatternSelectorSheet: React.FC<PatternSelectorSheetProps> = ({
 }) => {
   const translateY = useSharedValue(SCREEN_HEIGHT);
   const backdropOpacity = useSharedValue(0);
-  // Track whether the modal is mounted — stays true during the close animation
-  const [isRendered, setIsRendered] = useState(false);
-  const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (visible) {
-      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
-      setIsRendered(true);
-      backdropOpacity.value = withTiming(1, { duration: 280 });
-      translateY.value = withSpring(0, { damping: 22, stiffness: 260 });
-    } else {
-      backdropOpacity.value = withTiming(0, { duration: 250 });
-      translateY.value = withTiming(SCREEN_HEIGHT, { duration: 300 });
-      // Unmount only after the close animation completes
-      hideTimerRef.current = setTimeout(() => setIsRendered(false), 330);
-    }
-    return () => {
-      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
-    };
+    if (!visible) return;
+    // Reset to hidden values before opening animation to avoid stale modal state in native builds.
+    backdropOpacity.value = 0;
+    translateY.value = SCREEN_HEIGHT;
+    backdropOpacity.value = withTiming(1, { duration: 220 });
+    translateY.value = withSpring(0, { damping: 22, stiffness: 260 });
   }, [visible, backdropOpacity, translateY]);
 
   const backdropStyle = useAnimatedStyle(() => ({
@@ -225,10 +214,17 @@ export const PatternSelectorSheet: React.FC<PatternSelectorSheetProps> = ({
     onClose();
   };
 
-  if (!isRendered) return null;
+  if (!visible) return null;
 
   return (
-    <Modal visible={true} transparent animationType="none" onRequestClose={onClose}>
+    <Modal
+      visible={visible}
+      transparent
+      animationType="none"
+      presentationStyle="overFullScreen"
+      hardwareAccelerated
+      onRequestClose={onClose}
+    >
       {/* Backdrop */}
       <Animated.View style={[styles.backdrop, backdropStyle]}>
         <TouchableOpacity

@@ -6,7 +6,7 @@
  * Modeled on PatternSelectorSheet for consistent animation/layout.
  */
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Modal, View, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -107,8 +107,6 @@ export const StartDatePickerSheet: React.FC<StartDatePickerSheetProps> = ({
 }) => {
   const translateY = useSharedValue(SCREEN_HEIGHT);
   const backdropOpacity = useSharedValue(0);
-  const [isRendered, setIsRendered] = useState(false);
-  const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const today = useMemo(() => startOfDay(new Date()), []);
   const maxDate = useMemo(() => {
@@ -136,19 +134,12 @@ export const StartDatePickerSheet: React.FC<StartDatePickerSheetProps> = ({
   }, [visible, normalizedSelectedDate]);
 
   useEffect(() => {
-    if (visible) {
-      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
-      setIsRendered(true);
-      backdropOpacity.value = withTiming(1, { duration: 280 });
-      translateY.value = withSpring(0, { damping: 22, stiffness: 260 });
-    } else {
-      backdropOpacity.value = withTiming(0, { duration: 250 });
-      translateY.value = withTiming(SCREEN_HEIGHT, { duration: 300 });
-      hideTimerRef.current = setTimeout(() => setIsRendered(false), 330);
-    }
-    return () => {
-      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
-    };
+    if (!visible) return;
+    // Reset to hidden values before opening animation to avoid stale modal state in native builds.
+    backdropOpacity.value = 0;
+    translateY.value = SCREEN_HEIGHT;
+    backdropOpacity.value = withTiming(1, { duration: 220 });
+    translateY.value = withSpring(0, { damping: 22, stiffness: 260 });
   }, [visible, backdropOpacity, translateY]);
 
   const backdropStyle = useAnimatedStyle(() => ({ opacity: backdropOpacity.value }));
@@ -187,15 +178,23 @@ export const StartDatePickerSheet: React.FC<StartDatePickerSheetProps> = ({
     if (date < today || date > maxDate) return;
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     onSelect(date);
+    onClose();
   };
 
   const canGoPrev = new Date(viewYear, viewMonth, 1) > minMonthStart;
   const canGoNext = new Date(viewYear, viewMonth + 1, 1) <= maxMonthStart;
 
-  if (!isRendered) return null;
+  if (!visible) return null;
 
   return (
-    <Modal visible={true} transparent animationType="none" onRequestClose={onClose}>
+    <Modal
+      visible={visible}
+      transparent
+      animationType="none"
+      presentationStyle="overFullScreen"
+      hardwareAccelerated
+      onRequestClose={onClose}
+    >
       {/* Backdrop */}
       <Animated.View style={[styles.backdrop, backdropStyle]}>
         <TouchableOpacity

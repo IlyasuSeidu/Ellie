@@ -8,7 +8,7 @@
  * Works for both rotating (Day / Night / Off phases) and FIFO (Work / Rest blocks).
  */
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Modal, View, TouchableOpacity, ScrollView, StyleSheet, Dimensions } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -256,8 +256,6 @@ export const CycleResyncSheet: React.FC<CycleResyncSheetProps> = ({
 }) => {
   const translateY = useSharedValue(SCREEN_HEIGHT);
   const backdropOpacity = useSharedValue(0);
-  const [isRendered, setIsRendered] = useState(false);
-  const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Two-stage selection state
   const [stage, setStage] = useState<'phase' | 'day'>('phase');
@@ -276,19 +274,12 @@ export const CycleResyncSheet: React.FC<CycleResyncSheetProps> = ({
   }, [visible]);
 
   useEffect(() => {
-    if (visible) {
-      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
-      setIsRendered(true);
-      backdropOpacity.value = withTiming(1, { duration: 280 });
-      translateY.value = withSpring(0, { damping: 22, stiffness: 260 });
-    } else {
-      backdropOpacity.value = withTiming(0, { duration: 250 });
-      translateY.value = withTiming(SCREEN_HEIGHT, { duration: 300 });
-      hideTimerRef.current = setTimeout(() => setIsRendered(false), 330);
-    }
-    return () => {
-      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
-    };
+    if (!visible) return;
+    // Reset to hidden values before opening animation to avoid stale modal state in native builds.
+    backdropOpacity.value = 0;
+    translateY.value = SCREEN_HEIGHT;
+    backdropOpacity.value = withTiming(1, { duration: 220 });
+    translateY.value = withSpring(0, { damping: 22, stiffness: 260 });
   }, [visible, backdropOpacity, translateY]);
 
   const backdropStyle = useAnimatedStyle(() => ({ opacity: backdropOpacity.value }));
@@ -319,10 +310,17 @@ export const CycleResyncSheet: React.FC<CycleResyncSheetProps> = ({
     onClose();
   };
 
-  if (!isRendered) return null;
+  if (!visible) return null;
 
   return (
-    <Modal visible={true} transparent animationType="none" onRequestClose={onClose}>
+    <Modal
+      visible={visible}
+      transparent
+      animationType="none"
+      presentationStyle="overFullScreen"
+      hardwareAccelerated
+      onRequestClose={onClose}
+    >
       {/* Backdrop */}
       <Animated.View style={[styles.backdrop, backdropStyle]}>
         <TouchableOpacity
