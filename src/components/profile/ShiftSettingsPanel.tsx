@@ -1584,6 +1584,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                   onPress={handleSave}
                   variant="primary"
                   size="medium"
+                  primaryGradientColors={headerGradient}
                   loading={isSaving}
                   disabled={!hasChanges}
                   icon={

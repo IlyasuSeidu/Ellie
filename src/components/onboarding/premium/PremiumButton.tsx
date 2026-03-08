@@ -55,6 +55,8 @@ export interface PremiumButtonProps {
   style?: ViewStyle;
   /** Custom text style */
   textStyle?: TextStyle;
+  /** Optional custom gradient for primary variant */
+  primaryGradientColors?: readonly [string, string];
   /** Accessibility label */
   accessibilityLabel?: string;
   /** Accessibility hint */
@@ -76,6 +78,7 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
   iconPosition = 'left',
   style,
   textStyle,
+  primaryGradientColors,
   accessibilityLabel,
   accessibilityHint,
   testID,
@@ -233,7 +236,7 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
         testID={testID}
       >
         <LinearGradient
-          colors={[theme.colors.sacredGold, theme.colors.brightGold]}
+          colors={primaryGradientColors ?? [theme.colors.sacredGold, theme.colors.brightGold]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={[styles.gradient, sizeStyles.container, isDisabled && styles.disabledContainer]}
