@@ -188,6 +188,27 @@ describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
     expect(mockRootGoBack).toHaveBeenCalledTimes(1);
   });
 
+  it('returns directly to settings from later stage (no previous-stage step back)', () => {
+    mockRouteParams = {
+      entryPoint: 'settings',
+      returnToMainOnSelect: true,
+      initialShiftType: 'night',
+    };
+    mockOnboardingData = {
+      shiftSystem: '2-shift',
+      rosterType: 'rotating',
+      patternType: ShiftPattern.STANDARD_4_4_4,
+    };
+
+    const { getByLabelText, getByText } = renderScreen();
+    expect(getByText('Step 2 of 2')).toBeTruthy();
+
+    fireEvent.press(getByLabelText('Go back'));
+
+    expect(mockRootGoBack).toHaveBeenCalledTimes(1);
+    expect(getByText('Step 2 of 2')).toBeTruthy();
+  });
+
   it('shows morning detection for 5:00 AM early morning preset in 3-shift mode', () => {
     mockOnboardingData = {
       shiftSystem: '3-shift',

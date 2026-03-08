@@ -531,28 +531,11 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
       }
 
       event.preventDefault();
-
-      if (currentStageIndex > 0) {
-        const previousStageIndex = currentStageIndex - 1;
-        const previousShiftType = requiredShiftTypes[previousStageIndex];
-        setCurrentStageIndex(previousStageIndex);
-        resetStageInput(previousShiftType);
-        return;
-      }
-
       returnToSettings();
     });
 
     return unsubscribe;
-  }, [
-    currentStageIndex,
-    isSettingsEntry,
-    navigation,
-    requiredShiftTypes,
-    resetStageInput,
-    returnToMainOnSelect,
-    returnToSettings,
-  ]);
+  }, [isSettingsEntry, navigation, returnToMainOnSelect, returnToSettings]);
 
   // Animation values
   const floatingY = useSharedValue(0);
@@ -808,22 +791,23 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
       source: 'PremiumShiftTimeInputScreen.handleBack',
     });
 
-    // If we're not on the first stage, go back to previous stage
+    if (onBack) {
+      onBack();
+      return;
+    }
+    if (isSettingsEntry && returnToMainOnSelect) {
+      returnToSettings();
+      return;
+    }
+    // Non-settings flow: stage-level back remains intact.
     if (currentStageIndex > 0) {
       const previousStageIndex = currentStageIndex - 1;
       const previousShiftType = requiredShiftTypes[previousStageIndex];
       setCurrentStageIndex(previousStageIndex);
       resetStageInput(previousShiftType);
-    } else {
-      // On first stage, go back to previous screen
-      if (onBack) {
-        onBack();
-      } else if (isSettingsEntry && returnToMainOnSelect) {
-        returnToSettings();
-      } else {
-        navigation.goBack();
-      }
+      return;
     }
+    navigation.goBack();
   }, [
     currentStageIndex,
     requiredShiftTypes,
