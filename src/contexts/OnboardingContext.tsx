@@ -231,6 +231,20 @@ export interface OnboardingProviderProps {
   children: ReactNode;
 }
 
+function normalizeStartDate(data: OnboardingData): OnboardingData {
+  const rawStartDate = data.startDate as Date | string | undefined;
+  if (!rawStartDate) {
+    return data;
+  }
+
+  const parsed = typeof rawStartDate === 'string' ? new Date(rawStartDate) : rawStartDate;
+  if (Number.isNaN(parsed.getTime())) {
+    return { ...data, startDate: undefined };
+  }
+
+  return { ...data, startDate: parsed };
+}
+
 export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children }) => {
   const [data, setData] = useState<OnboardingData>({});
 
@@ -244,7 +258,7 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
         const savedData = await asyncStorageService.get<OnboardingData>('onboarding:data');
         if (savedData && typeof savedData === 'object') {
           const migrated = migrateOnboardingDataToV2(savedData);
-          setData(migrated);
+          setData(normalizeStartDate(migrated));
         }
       } catch (error) {
         console.warn('Failed to restore onboarding data:', error);
@@ -261,7 +275,7 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
    */
   const updateData = useCallback((updates: Partial<OnboardingData>) => {
     setData((prevData) => {
-      const newData = { ...prevData, ...updates };
+      const newData = normalizeStartDate({ ...prevData, ...updates });
 
       // Auto-save to AsyncStorage (non-blocking, don't await)
       // Pass object directly - asyncStorageService handles serialization
@@ -279,10 +293,11 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
    * Also saves to AsyncStorage
    */
   const setAllData = useCallback((newData: OnboardingData) => {
-    setData(newData);
+    const normalizedData = normalizeStartDate(newData);
+    setData(normalizedData);
 
     // Auto-save to AsyncStorage (non-blocking)
-    asyncStorageService.set('onboarding:data', newData).catch((error) => {
+    asyncStorageService.set('onboarding:data', normalizedData).catch((error) => {
       console.warn('Failed to save onboarding data:', error);
     });
   }, []);

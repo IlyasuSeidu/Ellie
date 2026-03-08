@@ -18,7 +18,7 @@ import { useProfileData } from '@/hooks/useProfileData';
 import { ProfileHeroSection } from '@/components/profile/ProfileHeroSection';
 import { ProfileSectionHeader } from '@/components/profile/ProfileSectionHeader';
 import { ProfileEditForm } from '@/components/profile/ProfileEditForm';
-import { ShiftConfigCard } from '@/components/profile/ShiftConfigCard';
+import { ShiftSettingsPanel } from '@/components/profile/ShiftSettingsPanel';
 import { WorkStatsSummary } from '@/components/profile/WorkStatsSummary';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
@@ -120,21 +120,10 @@ export const ProfileScreen: React.FC = () => {
           animationDelay={600}
         />
 
-        <ProfileSectionHeader
-          title="Shift Configuration"
-          icon="time-outline"
+        <ShiftSettingsPanel
+          data={profile.data}
+          onUpdate={profile.updateData}
           animationDelay={800}
-        />
-        <ShiftConfigCard
-          shiftSystem={profile.data.shiftSystem}
-          rosterType={profile.data.rosterType}
-          patternType={profile.data.patternType}
-          customPattern={profile.data.customPattern}
-          fifoConfig={profile.data.fifoConfig}
-          shiftTimes={profile.data.shiftTimes}
-          shiftStartTime={profile.data.shiftStartTime}
-          shiftEndTime={profile.data.shiftEndTime}
-          animationDelay={900}
         />
 
         <ProfileSectionHeader

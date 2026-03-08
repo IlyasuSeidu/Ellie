@@ -4,6 +4,9 @@
  * Read-only card displaying the user's shift configuration summary.
  * Shows shift system, roster type, pattern, shift times, and FIFO-specific
  * details with gold pill badges and staggered entrance animations.
+ *
+ * @deprecated Use ShiftSettingsPanel instead. ShiftConfigCard is kept for
+ * test compatibility only and is no longer rendered in ProfileScreen.
  */
 
 import React, { useMemo } from 'react';

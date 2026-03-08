@@ -887,7 +887,7 @@ export function buildShiftCycle(data: OnboardingData): ShiftCycle | null {
       nightsOn: 0,
       daysOff: fifoConfig.restBlockDays,
       startDate: startDateStr,
-      phaseOffset: data.phaseOffset || 0,
+      phaseOffset: data.phaseOffset ?? 0,
       fifoConfig,
     };
   }
@@ -904,7 +904,7 @@ export function buildShiftCycle(data: OnboardingData): ShiftCycle | null {
       nightOn: data.customPattern.nightOn,
       daysOff: data.customPattern.daysOff,
       startDate: startDateStr,
-      phaseOffset: data.phaseOffset || 0,
+      phaseOffset: data.phaseOffset ?? 0,
     };
   }
 
@@ -932,7 +932,7 @@ export function buildShiftCycle(data: OnboardingData): ShiftCycle | null {
       nightOn: config.nightOn ?? 0,
       daysOff: config.daysOff,
       startDate: startDateStr,
-      phaseOffset: data.phaseOffset || 0,
+      phaseOffset: data.phaseOffset ?? 0,
     };
   }
 
@@ -953,7 +953,7 @@ export function buildShiftCycle(data: OnboardingData): ShiftCycle | null {
       nightOn: nightsOn,
       daysOff: config.daysOff,
       startDate: startDateStr,
-      phaseOffset: data.phaseOffset || 0,
+      phaseOffset: data.phaseOffset ?? 0,
     };
   }
 
@@ -965,7 +965,7 @@ export function buildShiftCycle(data: OnboardingData): ShiftCycle | null {
     nightsOn,
     daysOff: config.daysOff,
     startDate: startDateStr,
-    phaseOffset: data.phaseOffset || 0,
+    phaseOffset: data.phaseOffset ?? 0,
   };
 }
 

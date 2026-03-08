@@ -7,6 +7,12 @@ import React from 'react';
 import { render, waitFor, act } from '@testing-library/react-native';
 import { MainDashboardScreen } from '../MainDashboardScreen';
 
+// Mock OnboardingContext — Dashboard subscribes to this for reactive updates.
+// Tests still control data via asyncStorageService.get, which the dashboard reads directly.
+jest.mock('@/contexts/OnboardingContext', () => ({
+  useOnboarding: jest.fn(() => ({ data: {}, updateData: jest.fn() })),
+}));
+
 // Mock AsyncStorageService
 jest.mock('@/services/AsyncStorageService', () => ({
   asyncStorageService: {

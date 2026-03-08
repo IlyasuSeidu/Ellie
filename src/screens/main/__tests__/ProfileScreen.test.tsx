@@ -69,11 +69,15 @@ jest.mock('@/components/profile/ProfileEditForm', () => ({
   },
 }));
 
-jest.mock('@/components/profile/ShiftConfigCard', () => ({
-  ShiftConfigCard: () => {
+jest.mock('@/components/profile/ShiftSettingsPanel', () => ({
+  ShiftSettingsPanel: () => {
     const React = require('react');
     const RN = require('react-native');
-    return React.createElement(RN.Text, { testID: 'profile-shift-config' }, 'Shift Config Card');
+    return React.createElement(
+      RN.Text,
+      { testID: 'profile-shift-settings' },
+      'Shift Settings Panel'
+    );
   },
 }));
 
@@ -108,6 +112,7 @@ describe('ProfileScreen', () => {
       updateField: jest.fn(),
       saveChanges: jest.fn(),
       handleAvatarChange: jest.fn(),
+      updateData: jest.fn(),
       patternDisplayName: '14/7 FIFO Roster',
       shiftSystemName: '2-Shift (12h)',
       rosterTypeName: 'FIFO',
@@ -122,10 +127,9 @@ describe('ProfileScreen', () => {
 
     expect(getByTestId('profile-hero')).toBeTruthy();
     expect(getByText('Personal Information')).toBeTruthy();
-    expect(getByText('Shift Configuration')).toBeTruthy();
     expect(getByText('Work Overview')).toBeTruthy();
     expect(getByTestId('profile-edit-form')).toBeTruthy();
-    expect(getByTestId('profile-shift-config')).toBeTruthy();
+    expect(getByTestId('profile-shift-settings')).toBeTruthy();
     expect(getByTestId('profile-work-stats')).toBeTruthy();
     expect(getByTestId('run-onboarding-again-button')).toBeTruthy();
   });
@@ -145,6 +149,7 @@ describe('ProfileScreen', () => {
       updateField: jest.fn(),
       saveChanges: jest.fn(),
       handleAvatarChange: jest.fn(),
+      updateData: jest.fn(),
       patternDisplayName: 'Custom Rotation',
       shiftSystemName: '2-Shift (12h)',
       rosterTypeName: 'Rotating',

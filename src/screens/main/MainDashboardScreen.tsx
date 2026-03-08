@@ -40,7 +40,7 @@ import {
   getFIFOBlockInfo,
 } from '@/utils/shiftUtils';
 import { toDateString, getDaysInMonth } from '@/utils/dateUtils';
-import type { OnboardingData } from '@/contexts/OnboardingContext';
+import { useOnboarding, type OnboardingData } from '@/contexts/OnboardingContext';
 import { RosterType, type ShiftCycle } from '@/types';
 import { useActiveShift } from '@/hooks/useActiveShift';
 import { getNextShiftAccentRefreshAt } from '@/hooks/useShiftAccent';
@@ -187,6 +187,15 @@ export const MainDashboardScreen: React.FC = () => {
   useEffect(() => {
     loadData(false);
   }, [loadData]);
+
+  // Subscribe to OnboardingContext so Profile → ShiftSettingsPanel saves are
+  // reflected immediately on the Dashboard without requiring a pull-to-refresh.
+  const { data: onboardingContextData } = useOnboarding();
+  useEffect(() => {
+    if (onboardingContextData.shiftSystem) {
+      setUserData(onboardingContextData as OnboardingData);
+    }
+  }, [onboardingContextData]);
 
   const handleRefresh = useCallback(() => {
     setRefreshing(true);

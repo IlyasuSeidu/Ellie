@@ -40,6 +40,8 @@ export interface UseProfileDataReturn {
   saveChanges: () => void;
   /** Update avatar immediately (no edit mode needed) */
   handleAvatarChange: (uri: string | null) => void;
+  /** Bulk update any onboarding fields immediately (used by ShiftSettingsPanel) */
+  updateData: (updates: Partial<OnboardingData>) => void;
 
   /** Human-readable pattern name */
   patternDisplayName: string;
@@ -127,6 +129,7 @@ export function useProfileData(): UseProfileDataReturn {
     updateField,
     saveChanges,
     handleAvatarChange,
+    updateData,
     patternDisplayName,
     shiftSystemName,
     rosterTypeName,

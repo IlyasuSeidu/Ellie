@@ -29,6 +29,10 @@ type QuickActionsMockProps = {
   onActionPress?: (action: string) => void;
 };
 
+jest.mock('@/contexts/OnboardingContext', () => ({
+  useOnboarding: jest.fn(() => ({ data: {}, updateData: jest.fn() })),
+}));
+
 jest.mock('@/services/AsyncStorageService', () => ({
   asyncStorageService: {
     get: jest.fn(),
