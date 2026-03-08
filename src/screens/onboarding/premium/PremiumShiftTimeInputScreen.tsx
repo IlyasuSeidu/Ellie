@@ -609,6 +609,12 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
 
     return true;
   }, [selectedPreset, customHours, customMinutes]);
+  const isSettingsMode = isSettingsEntry && returnToMainOnSelect;
+  const existingCurrentStageTime = collectedShiftTimes[currentShiftType];
+  const hasExistingCurrentStageTime = Boolean(
+    existingCurrentStageTime?.startTime && existingCurrentStageTime?.endTime
+  );
+  const canContinue = isValid() || (isSettingsMode && hasExistingCurrentStageTime);
 
   // Handlers
   const handlePresetSelect = (presetId: string) => {
@@ -680,28 +686,37 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   }, [customHours, customMinutes]);
 
   const handleContinue = useCallback(() => {
-    if (!isValid()) {
+    const hasValidSelection = isValid();
+    if (!hasValidSelection && !(isSettingsMode && hasExistingCurrentStageTime)) {
       void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
         source: 'PremiumShiftTimeInputScreen.handleContinue.invalid',
       });
       return;
     }
 
-    if (selectedPreset === 'custom' && !validateCustomTime()) {
+    if (hasValidSelection && selectedPreset === 'custom' && !validateCustomTime()) {
       return;
     }
 
-    const startTime24h = getStartTime24h();
-    const endTime24h = getEndTime24h();
+    const stageShiftTime: StageShiftTimes | undefined = hasValidSelection
+      ? {
+          startTime: getStartTime24h(),
+          endTime: getEndTime24h(),
+          duration,
+        }
+      : existingCurrentStageTime;
+
+    if (!stageShiftTime) {
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+        source: 'PremiumShiftTimeInputScreen.handleContinue.missingStageTime',
+      });
+      return;
+    }
 
     // Save current stage's shift times
     const updatedShiftTimes = {
       ...collectedShiftTimes,
-      [currentShiftType]: {
-        startTime: startTime24h,
-        endTime: endTime24h,
-        duration,
-      },
+      [currentShiftType]: stageShiftTime,
     };
     setCollectedShiftTimes(updatedShiftTimes);
 
@@ -709,51 +724,52 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
       source: 'PremiumShiftTimeInputScreen.handleContinue.success',
     });
 
+    // Build the new shiftTimes structure
+    const shiftTimes: OnboardingData['shiftTimes'] = {};
+    if (shiftSystem === ShiftSystem.TWO_SHIFT) {
+      if (updatedShiftTimes.day) {
+        shiftTimes.dayShift = updatedShiftTimes.day;
+      }
+      if (updatedShiftTimes.night) {
+        shiftTimes.nightShift = updatedShiftTimes.night;
+      }
+    } else {
+      // 3-shift system
+      if (updatedShiftTimes.morning) {
+        shiftTimes.morningShift = updatedShiftTimes.morning;
+      }
+      if (updatedShiftTimes.afternoon) {
+        shiftTimes.afternoonShift = updatedShiftTimes.afternoon;
+      }
+      if (updatedShiftTimes.night) {
+        shiftTimes.nightShift3 = updatedShiftTimes.night;
+      }
+    }
+
+    const primaryLegacyShift = updatedShiftTimes[requiredShiftTypes[0]] ?? stageShiftTime;
+
+    // Save to context with new structure
+    updateData({
+      shiftTimes,
+      // Also save to legacy fields for backwards compatibility (first shift type)
+      shiftStartTime: primaryLegacyShift?.startTime,
+      shiftEndTime: primaryLegacyShift?.endTime,
+      shiftDuration: duration,
+      shiftType: hasValidSelection ? getShiftType() : (data.shiftType ?? currentShiftType),
+      isCustomShiftTime: hasValidSelection ? selectedPreset === 'custom' : data.isCustomShiftTime,
+    });
+
+    if (onContinue) {
+      onContinue();
+    }
+
+    if (isSettingsMode) {
+      returnToSettings();
+      return;
+    }
+
     // If this is the last stage, save all shift times and navigate
     if (isLastStage) {
-      // Build the new shiftTimes structure
-      const shiftTimes: OnboardingData['shiftTimes'] = {};
-
-      if (shiftSystem === ShiftSystem.TWO_SHIFT) {
-        if (updatedShiftTimes.day) {
-          shiftTimes.dayShift = updatedShiftTimes.day;
-        }
-        if (updatedShiftTimes.night) {
-          shiftTimes.nightShift = updatedShiftTimes.night;
-        }
-      } else {
-        // 3-shift system
-        if (updatedShiftTimes.morning) {
-          shiftTimes.morningShift = updatedShiftTimes.morning;
-        }
-        if (updatedShiftTimes.afternoon) {
-          shiftTimes.afternoonShift = updatedShiftTimes.afternoon;
-        }
-        if (updatedShiftTimes.night) {
-          shiftTimes.nightShift3 = updatedShiftTimes.night;
-        }
-      }
-
-      // Save to context with new structure
-      updateData({
-        shiftTimes,
-        // Also save to legacy fields for backwards compatibility (first shift type)
-        shiftStartTime: updatedShiftTimes[requiredShiftTypes[0]]?.startTime,
-        shiftEndTime: updatedShiftTimes[requiredShiftTypes[0]]?.endTime,
-        shiftDuration: duration,
-        shiftType: getShiftType(),
-        isCustomShiftTime: selectedPreset === 'custom',
-      });
-
-      if (onContinue) {
-        onContinue();
-      }
-
-      if (isSettingsEntry && returnToMainOnSelect) {
-        returnToSettings();
-        return;
-      }
-
       // Navigate to completion screen (Step 8)
       goToNextScreen(navigation, 'ShiftTimeInput');
     } else {
@@ -779,8 +795,11 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     shiftSystem,
     updateData,
     onContinue,
-    isSettingsEntry,
-    returnToMainOnSelect,
+    isSettingsMode,
+    hasExistingCurrentStageTime,
+    existingCurrentStageTime,
+    data.isCustomShiftTime,
+    data.shiftType,
     resetStageInput,
     returnToSettings,
     navigation,
@@ -1321,7 +1340,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
               <Pressable
                 style={({ pressed }) => [styles.backButton, pressed && styles.backButtonPressed]}
                 onPress={handleBack}
-                accessibilityLabel="Go back"
+                accessibilityLabel={isSettingsMode ? 'Back to Settings' : 'Go back'}
                 accessibilityRole="button"
               >
                 <LinearGradient
@@ -1337,24 +1356,28 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
               <Pressable
                 style={({ pressed }) => [
                   styles.continueButtonContainer,
-                  pressed && isValid() && styles.continueButtonPressed,
+                  pressed && canContinue && styles.continueButtonPressed,
                 ]}
                 onPress={handleContinue}
-                disabled={!isValid()}
+                disabled={!canContinue}
                 accessibilityLabel={
-                  totalStages === 1
-                    ? 'Continue to next step'
-                    : isLastStage
-                      ? 'Save shift times and continue'
-                      : `Continue to ${requiredShiftTypes[currentStageIndex + 1]} shift times`
+                  isSettingsMode
+                    ? 'Save shift time and return to settings'
+                    : totalStages === 1
+                      ? 'Continue to next step'
+                      : isLastStage
+                        ? 'Save shift times and continue'
+                        : `Continue to ${requiredShiftTypes[currentStageIndex + 1]} shift times`
                 }
                 accessibilityRole="button"
-                accessibilityState={{ disabled: !isValid() }}
+                accessibilityState={{ disabled: !canContinue }}
               >
-                <View style={[styles.continueButton, !isValid() && styles.continueButtonDisabled]}>
+                <View
+                  style={[styles.continueButton, !canContinue && styles.continueButtonDisabled]}
+                >
                   <LinearGradient
                     colors={
-                      isValid()
+                      canContinue
                         ? [
                             theme.colors.sacredGold,
                             theme.colors.brightGold,
@@ -1362,16 +1385,18 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                           ]
                         : ['rgba(78, 67, 61, 0.85)', 'rgba(58, 52, 49, 0.85)']
                     }
-                    locations={isValid() ? [0, 0.5, 1] : undefined}
+                    locations={canContinue ? [0, 0.5, 1] : undefined}
                     style={styles.continueGradient}
                   >
                     <Ionicons name="checkmark-circle" size={24} color={theme.colors.paper} />
                     <Text style={styles.continueButtonText}>
-                      {totalStages === 1
-                        ? 'Save & Continue'
-                        : isLastStage
-                          ? 'Finish Setup'
-                          : 'Next Shift Type'}
+                      {isSettingsMode
+                        ? 'Save & Return'
+                        : totalStages === 1
+                          ? 'Save & Continue'
+                          : isLastStage
+                            ? 'Finish Setup'
+                            : 'Next Shift Type'}
                     </Text>
                     <Ionicons name="arrow-forward" size={22} color={theme.colors.paper} />
                   </LinearGradient>

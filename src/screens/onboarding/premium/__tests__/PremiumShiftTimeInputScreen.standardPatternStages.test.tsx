@@ -85,12 +85,13 @@ let mockOnboardingData: Record<string, unknown> = {
     daysOff: 3,
   },
 };
+const mockUpdateData = jest.fn();
 
 jest.mock('@/contexts/OnboardingContext', () => ({
   ...jest.requireActual('@/contexts/OnboardingContext'),
   useOnboarding: () => ({
     data: mockOnboardingData,
-    updateData: jest.fn(),
+    updateData: mockUpdateData,
     resetData: jest.fn(),
   }),
 }));
@@ -106,6 +107,7 @@ describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockRouteParams = undefined;
+    mockUpdateData.mockReset();
     mockGetParent.mockReturnValue({
       canGoBack: () => true,
       goBack: mockRootGoBack,
@@ -183,7 +185,7 @@ describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
     };
 
     const { getByLabelText } = renderScreen();
-    fireEvent.press(getByLabelText('Go back'));
+    fireEvent.press(getByLabelText('Back to Settings'));
 
     expect(mockRootGoBack).toHaveBeenCalledTimes(1);
   });
@@ -203,10 +205,85 @@ describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
     const { getByLabelText, getByText } = renderScreen();
     expect(getByText('Step 2 of 2')).toBeTruthy();
 
-    fireEvent.press(getByLabelText('Go back'));
+    fireEvent.press(getByLabelText('Back to Settings'));
 
     expect(mockRootGoBack).toHaveBeenCalledTimes(1);
     expect(getByText('Step 2 of 2')).toBeTruthy();
+  });
+
+  it('saves and returns directly from a later stage when entered from settings', () => {
+    mockRouteParams = {
+      entryPoint: 'settings',
+      returnToMainOnSelect: true,
+      initialShiftType: 'night',
+    };
+    mockOnboardingData = {
+      shiftSystem: '2-shift',
+      rosterType: 'rotating',
+      patternType: ShiftPattern.STANDARD_4_4_4,
+      shiftTimes: {
+        dayShift: { startTime: '06:00', endTime: '18:00', duration: 12 },
+        nightShift: { startTime: '18:00', endTime: '06:00', duration: 12 },
+      },
+    };
+
+    const { getByLabelText, queryByText } = renderScreen();
+    fireEvent.press(getByLabelText('Save shift time and return to settings'));
+
+    expect(mockRootGoBack).toHaveBeenCalledTimes(1);
+    expect(mockUpdateData).toHaveBeenCalledWith(
+      expect.objectContaining({
+        shiftTimes: expect.objectContaining({
+          dayShift: expect.any(Object),
+          nightShift: expect.any(Object),
+        }),
+      })
+    );
+    expect(queryByText('Next Shift Type')).toBeNull();
+  });
+
+  it('saves and returns directly from first stage when entered from settings', () => {
+    mockRouteParams = {
+      entryPoint: 'settings',
+      returnToMainOnSelect: true,
+      initialShiftType: 'day',
+    };
+    mockOnboardingData = {
+      shiftSystem: '2-shift',
+      rosterType: 'rotating',
+      patternType: ShiftPattern.STANDARD_4_4_4,
+      shiftTimes: {
+        dayShift: { startTime: '06:00', endTime: '18:00', duration: 12 },
+      },
+    };
+
+    const { getByLabelText } = renderScreen();
+    fireEvent.press(getByLabelText('Save shift time and return to settings'));
+
+    expect(mockRootGoBack).toHaveBeenCalledTimes(1);
+    expect(mockUpdateData).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps primary action enabled in settings-entry mode when current stage already has saved time', () => {
+    mockRouteParams = {
+      entryPoint: 'settings',
+      returnToMainOnSelect: true,
+      initialShiftType: 'night',
+    };
+    mockOnboardingData = {
+      shiftSystem: '2-shift',
+      rosterType: 'rotating',
+      patternType: ShiftPattern.STANDARD_4_4_4,
+      shiftTimes: {
+        dayShift: { startTime: '06:00', endTime: '18:00', duration: 12 },
+        nightShift: { startTime: '18:00', endTime: '06:00', duration: 12 },
+      },
+    };
+
+    const { getByLabelText, queryByText } = renderScreen();
+    const saveAndReturnButton = getByLabelText('Save shift time and return to settings');
+    expect(saveAndReturnButton.props.accessibilityState.disabled).toBe(false);
+    expect(queryByText('Next Shift Type')).toBeNull();
   });
 
   it('shows morning detection for 5:00 AM early morning preset in 3-shift mode', () => {
