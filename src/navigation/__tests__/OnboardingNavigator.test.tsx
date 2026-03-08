@@ -131,11 +131,25 @@ describe('OnboardingNavigator', () => {
       const customPatternSettingsParams: CustomPatternParams = {
         entryPoint: 'settings',
         returnToMainOnSelect: true,
+        settingsBaseline: {
+          patternType: undefined,
+          customPattern: undefined,
+          fifoConfig: undefined,
+          rosterType: 'rotating',
+          shiftSystem: '2-shift',
+        },
       };
       const fifoCustomPatternParams: FIFOCustomPatternParams = undefined;
       const fifoCustomPatternSettingsParams: FIFOCustomPatternParams = {
         entryPoint: 'settings',
         returnToMainOnSelect: true,
+        settingsBaseline: {
+          patternType: undefined,
+          customPattern: undefined,
+          fifoConfig: undefined,
+          rosterType: 'fifo',
+          shiftSystem: '2-shift',
+        },
       };
       const phaseSelectorParams: PhaseSelectorParams = undefined;
       const fifoPhaseSelectorParams: FIFOPhaseSelectorParams = undefined;

@@ -5,7 +5,13 @@
 
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import { PremiumShiftPatternScreen } from '../PremiumShiftPatternScreen';
+import {
+  PremiumShiftPatternScreen,
+  _buildSettingsCustomRouteParams,
+  _captureSettingsPatternBaseline,
+  _resolveShiftPatternSettingsAction,
+} from '../PremiumShiftPatternScreen';
+import { ShiftPattern } from '@/types';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
 
 // Mock haptics
@@ -151,6 +157,42 @@ describe('PremiumShiftPatternScreen', () => {
     it('should render without crashing when no onContinue prop provided', () => {
       const { getByTestId } = renderWithContext(<PremiumShiftPatternScreen testID="pattern" />);
       expect(getByTestId('pattern')).toBeTruthy();
+    });
+  });
+
+  describe('Settings Entry Helpers', () => {
+    it('resolves action for settings-mode custom vs non-custom selections', () => {
+      expect(_resolveShiftPatternSettingsAction(true, ShiftPattern.CUSTOM)).toBe('navigate-custom');
+      expect(_resolveShiftPatternSettingsAction(true, ShiftPattern.FIFO_CUSTOM)).toBe(
+        'navigate-custom'
+      );
+      expect(_resolveShiftPatternSettingsAction(true, ShiftPattern.STANDARD_4_4_4)).toBe(
+        'exit-settings'
+      );
+      expect(_resolveShiftPatternSettingsAction(false, ShiftPattern.CUSTOM)).toBe(
+        'advance-onboarding'
+      );
+    });
+
+    it('captures and builds settings baseline route params for custom screens', () => {
+      const baseline = _captureSettingsPatternBaseline({
+        patternType: ShiftPattern.STANDARD_4_4_4,
+        customPattern: { daysOn: 4, nightsOn: 4, daysOff: 4 },
+        fifoConfig: undefined,
+        rosterType: 'rotating',
+        shiftSystem: '2-shift',
+      });
+
+      const params = _buildSettingsCustomRouteParams(baseline);
+      expect(params.entryPoint).toBe('settings');
+      expect(params.returnToMainOnSelect).toBe(true);
+      expect(params.settingsBaseline).toEqual(
+        expect.objectContaining({
+          patternType: ShiftPattern.STANDARD_4_4_4,
+          rosterType: 'rotating',
+          shiftSystem: '2-shift',
+        })
+      );
     });
   });
 });

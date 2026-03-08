@@ -3,6 +3,9 @@ import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
 import { PremiumFIFOCustomPatternScreen } from '../PremiumFIFOCustomPatternScreen';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
+import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
+import * as OnboardingContext from '@/contexts/OnboardingContext';
+import { ShiftPattern } from '@/types';
 
 jest.mock('@/services/AsyncStorageService', () => ({
   asyncStorageService: {
@@ -40,15 +43,23 @@ jest.mock('react-native-gesture-handler', () => ({
   GestureDetector: ({ children }: any) => children,
 }));
 
-const mockGoBack = jest.fn();
+const mockNavigationGoBack = jest.fn();
+const mockNavigationNavigate = jest.fn();
+const mockRootGoBack = jest.fn();
+let mockRouteParams: OnboardingStackParamList['FIFOCustomPattern'] = undefined;
 
 jest.mock('@react-navigation/native', () => ({
   useNavigation: () => ({
-    navigate: jest.fn(),
-    goBack: mockGoBack,
+    navigate: mockNavigationNavigate,
+    goBack: mockNavigationGoBack,
+    getParent: () => ({
+      canGoBack: () => true,
+      goBack: mockRootGoBack,
+      reset: jest.fn(),
+    }),
   }),
   useRoute: () => ({
-    params: undefined,
+    params: mockRouteParams,
   }),
 }));
 
@@ -107,6 +118,7 @@ function renderWithContext() {
 describe('PremiumFIFOCustomPatternScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockRouteParams = undefined;
   });
 
   it('renders parity shell with FIFO-specific controls', () => {
@@ -222,7 +234,118 @@ describe('PremiumFIFOCustomPatternScreen', () => {
   it('uses back action from bottom navigation', () => {
     const { getByTestId } = renderWithContext();
     fireEvent.press(getByTestId('fifo-custom-back-button'));
-    expect(mockGoBack).toHaveBeenCalled();
+    expect(mockNavigationGoBack).toHaveBeenCalled();
+  });
+
+  it('settings Back restores baseline and exits to settings without saving', () => {
+    mockRouteParams = {
+      entryPoint: 'settings',
+      returnToMainOnSelect: true,
+      settingsBaseline: {
+        patternType: ShiftPattern.FIFO_14_7,
+        customPattern: undefined,
+        fifoConfig: {
+          workBlockDays: 14,
+          restBlockDays: 7,
+          workBlockPattern: 'straight-days',
+        },
+        rosterType: 'fifo',
+        shiftSystem: '2-shift',
+      },
+    };
+
+    const updateDataMock = jest.fn();
+    const onboardingSpy = jest.spyOn(OnboardingContext, 'useOnboarding').mockReturnValue({
+      data: {
+        shiftSystem: '2-shift',
+        rosterType: 'fifo',
+        patternType: ShiftPattern.FIFO_CUSTOM,
+        fifoConfig: {
+          workBlockDays: 21,
+          restBlockDays: 7,
+          workBlockPattern: 'swing',
+        },
+      },
+      updateData: updateDataMock,
+    } as unknown as ReturnType<typeof OnboardingContext.useOnboarding>);
+
+    const { getByLabelText } = render(<PremiumFIFOCustomPatternScreen />);
+    fireEvent.press(getByLabelText('Back to Settings'));
+
+    expect(updateDataMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        patternType: ShiftPattern.FIFO_14_7,
+        rosterType: 'fifo',
+        shiftSystem: '2-shift',
+        fifoConfig: expect.objectContaining({
+          workBlockDays: 14,
+          restBlockDays: 7,
+          workBlockPattern: 'straight-days',
+        }),
+      })
+    );
+    expect(mockRootGoBack).toHaveBeenCalled();
+    onboardingSpy.mockRestore();
+  });
+
+  it('settings Save persists FIFO custom pattern and exits to settings', async () => {
+    mockRouteParams = {
+      entryPoint: 'settings',
+      returnToMainOnSelect: true,
+      settingsBaseline: {
+        patternType: ShiftPattern.FIFO_7_7,
+        customPattern: undefined,
+        fifoConfig: {
+          workBlockDays: 7,
+          restBlockDays: 7,
+          workBlockPattern: 'straight-days',
+        },
+        rosterType: 'fifo',
+        shiftSystem: '2-shift',
+      },
+    };
+
+    const updateDataMock = jest.fn();
+    const onboardingSpy = jest.spyOn(OnboardingContext, 'useOnboarding').mockReturnValue({
+      data: {
+        shiftSystem: '2-shift',
+        rosterType: 'fifo',
+        patternType: ShiftPattern.FIFO_CUSTOM,
+      },
+      updateData: updateDataMock,
+    } as unknown as ReturnType<typeof OnboardingContext.useOnboarding>);
+
+    const runAfterInteractionsSpy = jest
+      .spyOn(require('react-native').InteractionManager, 'runAfterInteractions')
+      .mockImplementation((...args: unknown[]) => {
+        const callback = args[0] as (() => void) | undefined;
+        callback?.();
+        return { cancel: jest.fn() };
+      });
+
+    const { getByTestId } = render(<PremiumFIFOCustomPatternScreen />);
+    fireEvent.press(getByTestId('fifo-custom-save-button'));
+
+    await waitFor(() => {
+      expect(updateDataMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          patternType: ShiftPattern.FIFO_CUSTOM,
+          rosterType: 'fifo',
+          fifoConfig: expect.objectContaining({
+            workBlockDays: 14,
+            restBlockDays: 14,
+            workBlockPattern: 'straight-days',
+          }),
+        })
+      );
+    });
+    await waitFor(() => {
+      expect(mockRootGoBack).toHaveBeenCalled();
+    });
+    expect(goToNextScreen).not.toHaveBeenCalled();
+
+    onboardingSpy.mockRestore();
+    runAfterInteractionsSpy.mockRestore();
   });
 
   it('matches snapshot', () => {

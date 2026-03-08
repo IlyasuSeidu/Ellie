@@ -4,9 +4,17 @@
  */
 
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import { PremiumCustomPatternScreen } from '../PremiumCustomPatternScreen';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
+import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
+import * as OnboardingContext from '@/contexts/OnboardingContext';
+import { ShiftPattern } from '@/types';
+
+const mockNavigationNavigate = jest.fn();
+const mockNavigationGoBack = jest.fn();
+const mockRootGoBack = jest.fn();
+let mockRouteParams: OnboardingStackParamList['CustomPattern'] = undefined;
 
 // Mock AsyncStorage
 jest.mock('@/services/AsyncStorageService', () => ({
@@ -53,10 +61,16 @@ jest.mock('react-native-gesture-handler', () => ({
 // Mock React Navigation
 jest.mock('@react-navigation/native', () => ({
   useNavigation: () => ({
-    navigate: jest.fn(),
+    navigate: mockNavigationNavigate,
+    goBack: mockNavigationGoBack,
+    getParent: () => ({
+      canGoBack: () => true,
+      goBack: mockRootGoBack,
+      reset: jest.fn(),
+    }),
   }),
   useRoute: () => ({
-    params: undefined,
+    params: mockRouteParams,
   }),
 }));
 
@@ -117,6 +131,7 @@ describe('PremiumCustomPatternScreen', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockRouteParams = undefined;
   });
 
   describe('Initial Rendering', () => {
@@ -411,6 +426,97 @@ describe('PremiumCustomPatternScreen', () => {
         />
       );
       expect(getByTestId('custom-pattern')).toBeTruthy();
+    });
+  });
+
+  describe('Settings Entry Back/Save Behavior', () => {
+    it('Back restores baseline and exits to settings without saving edits', () => {
+      mockRouteParams = {
+        entryPoint: 'settings',
+        returnToMainOnSelect: true,
+        settingsBaseline: {
+          patternType: ShiftPattern.STANDARD_4_4_4,
+          customPattern: { daysOn: 4, nightsOn: 4, daysOff: 4 },
+          fifoConfig: undefined,
+          rosterType: 'rotating',
+          shiftSystem: '2-shift',
+        },
+      };
+
+      const updateDataMock = jest.fn();
+      const onboardingSpy = jest.spyOn(OnboardingContext, 'useOnboarding').mockReturnValue({
+        data: {
+          shiftSystem: '2-shift',
+          rosterType: 'rotating',
+          patternType: ShiftPattern.CUSTOM,
+          customPattern: { daysOn: 8, nightsOn: 8, daysOff: 2 },
+        },
+        updateData: updateDataMock,
+      } as unknown as ReturnType<typeof OnboardingContext.useOnboarding>);
+
+      const { getByLabelText } = render(<PremiumCustomPatternScreen />);
+      fireEvent.press(getByLabelText('Back to Settings'));
+
+      expect(updateDataMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          patternType: ShiftPattern.STANDARD_4_4_4,
+          customPattern: expect.objectContaining({ daysOn: 4, nightsOn: 4, daysOff: 4 }),
+          rosterType: 'rotating',
+          shiftSystem: '2-shift',
+        })
+      );
+      expect(mockRootGoBack).toHaveBeenCalled();
+      onboardingSpy.mockRestore();
+    });
+
+    it('Save persists custom pattern type and returns to settings', async () => {
+      mockRouteParams = {
+        entryPoint: 'settings',
+        returnToMainOnSelect: true,
+        settingsBaseline: {
+          patternType: ShiftPattern.STANDARD_7_7_7,
+          customPattern: { daysOn: 7, nightsOn: 7, daysOff: 7 },
+          fifoConfig: undefined,
+          rosterType: 'rotating',
+          shiftSystem: '2-shift',
+        },
+      };
+
+      const updateDataMock = jest.fn();
+      const onboardingSpy = jest.spyOn(OnboardingContext, 'useOnboarding').mockReturnValue({
+        data: {
+          shiftSystem: '2-shift',
+          rosterType: 'rotating',
+          patternType: ShiftPattern.CUSTOM,
+        },
+        updateData: updateDataMock,
+      } as unknown as ReturnType<typeof OnboardingContext.useOnboarding>);
+
+      const runAfterInteractionsSpy = jest
+        .spyOn(require('react-native').InteractionManager, 'runAfterInteractions')
+        .mockImplementation((...args: unknown[]) => {
+          const callback = args[0] as (() => void) | undefined;
+          callback?.();
+          return { cancel: jest.fn() };
+        });
+
+      const { getByLabelText } = render(<PremiumCustomPatternScreen />);
+      fireEvent.press(getByLabelText('Save your rotation and continue'));
+
+      await waitFor(() => {
+        expect(updateDataMock).toHaveBeenCalledWith(
+          expect.objectContaining({
+            patternType: ShiftPattern.CUSTOM,
+            customPattern: expect.objectContaining({ daysOn: 4, nightsOn: 4, daysOff: 4 }),
+          })
+        );
+      });
+      await waitFor(() => {
+        expect(mockRootGoBack).toHaveBeenCalled();
+      });
+
+      onboardingSpy.mockRestore();
+      runAfterInteractionsSpy.mockRestore();
     });
   });
 });

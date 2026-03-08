@@ -638,6 +638,8 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
   const { data, updateData } = useOnboarding();
   const isSettingsEntry = route.params?.entryPoint === 'settings';
   const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
+  const isSettingsMode = isSettingsEntry && returnToMainOnSelect;
+  const settingsBaseline = route.params?.settingsBaseline;
   const shiftSystem = data.shiftSystem || ShiftSystem.TWO_SHIFT;
 
   const closeSettingsEditor = useCallback(() => {
@@ -795,30 +797,48 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
     setIsTransitioning(true);
 
     // Save pattern based on shift system
+    const customPatternPayload =
+      shiftSystem === ShiftSystem.TWO_SHIFT
+        ? {
+            daysOn,
+            nightsOn,
+            daysOff,
+          }
+        : {
+            // IMPORTANT: daysOn/nightsOn set to 0 for 3-shift systems
+            // 3-shift uses morningOn/afternoonOn/nightOn instead
+            // calculateShiftDay() in shiftUtils.ts detects this and uses the correct fields
+            daysOn: 0,
+            nightsOn: 0,
+            morningOn,
+            afternoonOn,
+            nightOn,
+            daysOff,
+          };
+
     if (shiftSystem === ShiftSystem.TWO_SHIFT) {
-      updateData({
-        customPattern: {
-          daysOn,
-          nightsOn,
-          daysOff,
-          // 3-shift fields not used for 2-shift system
-        },
-      });
+      updateData(
+        isSettingsMode
+          ? {
+              patternType: ShiftPattern.CUSTOM,
+              customPattern: customPatternPayload,
+            }
+          : {
+              customPattern: customPatternPayload,
+            }
+      );
     } else {
       // 3-Shift System
-      updateData({
-        customPattern: {
-          // IMPORTANT: daysOn/nightsOn set to 0 for 3-shift systems
-          // 3-shift uses morningOn/afternoonOn/nightOn instead
-          // calculateShiftDay() in shiftUtils.ts detects this and uses the correct fields
-          daysOn: 0,
-          nightsOn: 0,
-          morningOn,
-          afternoonOn,
-          nightOn,
-          daysOff,
-        },
-      });
+      updateData(
+        isSettingsMode
+          ? {
+              patternType: ShiftPattern.CUSTOM,
+              customPattern: customPatternPayload,
+            }
+          : {
+              customPattern: customPatternPayload,
+            }
+      );
     }
 
     void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
@@ -832,7 +852,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
           onContinue();
           return;
         }
-        if (isSettingsEntry && returnToMainOnSelect) {
+        if (isSettingsMode) {
           closeSettingsEditor();
           return;
         }
@@ -859,8 +879,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
     daysOff,
     updateData,
     onContinue,
-    isSettingsEntry,
-    returnToMainOnSelect,
+    isSettingsMode,
     closeSettingsEditor,
     navigation,
     data,
@@ -875,12 +894,28 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
     void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
       source: 'PremiumCustomPatternScreen.handleBack',
     });
+    if (isSettingsMode) {
+      if (settingsBaseline) {
+        updateData({
+          patternType: settingsBaseline.patternType,
+          customPattern: settingsBaseline.customPattern
+            ? { ...settingsBaseline.customPattern }
+            : undefined,
+          fifoConfig: settingsBaseline.fifoConfig ? { ...settingsBaseline.fifoConfig } : undefined,
+          rosterType: settingsBaseline.rosterType,
+          shiftSystem: settingsBaseline.shiftSystem,
+        });
+      }
+      closeSettingsEditor();
+      return;
+    }
+
     if (onBack) {
       onBack();
     } else {
       navigation.goBack();
     }
-  }, [onBack, navigation]);
+  }, [closeSettingsEditor, isSettingsMode, navigation, onBack, settingsBaseline, updateData]);
 
   return (
     <View style={styles.container} testID={testID}>
@@ -1117,8 +1152,12 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
           style={styles.backButton}
           accessible={true}
           accessibilityRole="button"
-          accessibilityLabel="Go back"
-          accessibilityHint="Return to shift pattern selection"
+          accessibilityLabel={isSettingsMode ? 'Back to Settings' : 'Go back'}
+          accessibilityHint={
+            isSettingsMode
+              ? 'Discard changes and return to settings'
+              : 'Return to shift pattern selection'
+          }
         >
           <Ionicons name="arrow-back" size={24} color={theme.colors.paper} />
         </Pressable>

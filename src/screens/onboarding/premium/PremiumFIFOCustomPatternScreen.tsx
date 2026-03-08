@@ -41,7 +41,7 @@ import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator'
 import type { RootStackParamList } from '@/navigation/AppNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
-import type { FIFOConfig } from '@/types';
+import { ShiftPattern, type FIFOConfig } from '@/types';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 import { PatternBuilderSlider } from '@/components/onboarding/premium/PatternBuilderSlider';
 
@@ -421,6 +421,8 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
   const { data, updateData } = useOnboarding();
   const isSettingsEntry = route.params?.entryPoint === 'settings';
   const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
+  const isSettingsMode = isSettingsEntry && returnToMainOnSelect;
+  const settingsBaseline = route.params?.settingsBaseline;
 
   const closeSettingsEditor = useCallback(() => {
     const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
@@ -561,11 +563,27 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
       return;
     }
 
+    if (isSettingsMode) {
+      if (settingsBaseline) {
+        updateData({
+          patternType: settingsBaseline.patternType,
+          customPattern: settingsBaseline.customPattern
+            ? { ...settingsBaseline.customPattern }
+            : undefined,
+          fifoConfig: settingsBaseline.fifoConfig ? { ...settingsBaseline.fifoConfig } : undefined,
+          rosterType: settingsBaseline.rosterType,
+          shiftSystem: settingsBaseline.shiftSystem,
+        });
+      }
+      closeSettingsEditor();
+      return;
+    }
+
     void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
       source: 'PremiumFIFOCustomPatternScreen.handleBack',
     });
     navigation.goBack();
-  }, [navigation]);
+  }, [closeSettingsEditor, isSettingsMode, navigation, settingsBaseline, updateData]);
 
   const handleContinue = useCallback(() => {
     if (hasHardError || isTransitioningRef.current) {
@@ -590,14 +608,22 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
       }),
     };
 
-    updateData({ fifoConfig });
+    updateData(
+      isSettingsMode
+        ? {
+            patternType: ShiftPattern.FIFO_CUSTOM,
+            rosterType: 'fifo',
+            fifoConfig,
+          }
+        : { fifoConfig }
+    );
     void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
       source: 'PremiumFIFOCustomPatternScreen.handleContinue.success',
     });
     interactionHandleRef.current = InteractionManager.runAfterInteractions(() => {
       navigationTimeoutRef.current = setTimeout(() => {
         clearPendingTransition(true);
-        if (isSettingsEntry && returnToMainOnSelect) {
+        if (isSettingsMode) {
           closeSettingsEditor();
           return;
         }
@@ -615,8 +641,7 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
     daysOnDayShift,
     daysOnNightShift,
     hasHardError,
-    isSettingsEntry,
-    returnToMainOnSelect,
+    isSettingsMode,
     closeSettingsEditor,
     navigation,
     restBlockDays,
@@ -839,8 +864,12 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
           style={styles.backButton}
           accessible={true}
           accessibilityRole="button"
-          accessibilityLabel="Go back"
-          accessibilityHint="Return to shift pattern selection"
+          accessibilityLabel={isSettingsMode ? 'Back to Settings' : 'Go back'}
+          accessibilityHint={
+            isSettingsMode
+              ? 'Discard changes and return to settings'
+              : 'Return to shift pattern selection'
+          }
           testID="fifo-custom-back-button"
         >
           <Ionicons name="arrow-back" size={24} color={theme.colors.paper} />

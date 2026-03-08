@@ -42,6 +42,15 @@ import { PremiumFIFOPhaseSelectorScreen } from '@/screens/onboarding/premium/Pre
 import { PremiumStartDateScreen } from '@/screens/onboarding/premium/PremiumStartDateScreen';
 import { PremiumShiftTimeInputScreen } from '@/screens/onboarding/premium/PremiumShiftTimeInputScreen';
 import { PremiumCompletionScreen } from '@/screens/onboarding/premium/PremiumCompletionScreen';
+import type { OnboardingData } from '@/contexts/OnboardingContext';
+
+export type SettingsPatternBaseline = {
+  patternType?: OnboardingData['patternType'];
+  customPattern?: OnboardingData['customPattern'];
+  fifoConfig?: OnboardingData['fifoConfig'];
+  rosterType?: OnboardingData['rosterType'];
+  shiftSystem?: OnboardingData['shiftSystem'];
+};
 
 /**
  * Onboarding Stack Parameter List
@@ -71,6 +80,7 @@ export type OnboardingStackParamList = {
     | {
         entryPoint?: 'onboarding' | 'settings';
         returnToMainOnSelect?: boolean;
+        settingsBaseline?: SettingsPatternBaseline;
       }
     | undefined;
   /** Step 4b-F: Configure custom FIFO pattern (only if FIFO_CUSTOM selected) - NEW */
@@ -78,6 +88,7 @@ export type OnboardingStackParamList = {
     | {
         entryPoint?: 'onboarding' | 'settings';
         returnToMainOnSelect?: boolean;
+        settingsBaseline?: SettingsPatternBaseline;
       }
     | undefined;
   /** Step 5-R: Select current phase and day within phase (rotating rosters) */

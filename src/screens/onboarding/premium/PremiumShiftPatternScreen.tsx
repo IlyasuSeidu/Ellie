@@ -40,9 +40,12 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
-import { useOnboarding } from '@/contexts/OnboardingContext';
+import { useOnboarding, type OnboardingData } from '@/contexts/OnboardingContext';
 import { ShiftPattern, ShiftSystem } from '@/types';
-import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
+import type {
+  OnboardingStackParamList,
+  SettingsPatternBaseline,
+} from '@/navigation/OnboardingNavigator';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
@@ -889,6 +892,49 @@ const EndStackScreen: React.FC<EndStackScreenProps> = ({
   );
 };
 
+const isCustomPatternType = (patternType: ShiftPattern): boolean =>
+  patternType === ShiftPattern.CUSTOM || patternType === ShiftPattern.FIFO_CUSTOM;
+
+const cloneSettingsPatternBaseline = (
+  baseline: SettingsPatternBaseline
+): SettingsPatternBaseline => ({
+  patternType: baseline.patternType,
+  customPattern: baseline.customPattern ? { ...baseline.customPattern } : undefined,
+  fifoConfig: baseline.fifoConfig ? { ...baseline.fifoConfig } : undefined,
+  rosterType: baseline.rosterType,
+  shiftSystem: baseline.shiftSystem,
+});
+
+export const _captureSettingsPatternBaseline = (
+  data: Pick<
+    OnboardingData,
+    'patternType' | 'customPattern' | 'fifoConfig' | 'rosterType' | 'shiftSystem'
+  >
+): SettingsPatternBaseline => ({
+  patternType: data.patternType,
+  customPattern: data.customPattern ? { ...data.customPattern } : undefined,
+  fifoConfig: data.fifoConfig ? { ...data.fifoConfig } : undefined,
+  rosterType: data.rosterType,
+  shiftSystem: data.shiftSystem,
+});
+
+export const _resolveShiftPatternSettingsAction = (
+  isSettingsMode: boolean,
+  patternType: ShiftPattern
+): 'exit-settings' | 'navigate-custom' | 'advance-onboarding' => {
+  if (!isSettingsMode) return 'advance-onboarding';
+  if (isCustomPatternType(patternType)) return 'navigate-custom';
+  return 'exit-settings';
+};
+
+export const _buildSettingsCustomRouteParams = (
+  baseline: SettingsPatternBaseline
+): NonNullable<OnboardingStackParamList['CustomPattern']> => ({
+  entryPoint: 'settings',
+  returnToMainOnSelect: true,
+  settingsBaseline: cloneSettingsPatternBaseline(baseline),
+});
+
 // Main Screen Component
 export interface PremiumShiftPatternScreenProps {
   onContinue?: (patternType: ShiftPattern) => void;
@@ -904,6 +950,8 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
   const { data, updateData } = useOnboarding();
   const isSettingsEntry = route.params?.entryPoint === 'settings';
   const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
+  const isSettingsMode = isSettingsEntry && returnToMainOnSelect;
+  const settingsBaselineRef = useRef<SettingsPatternBaseline | null>(null);
 
   const closeSettingsEditor = useCallback(() => {
     const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
@@ -968,6 +1016,24 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
   }, []);
 
   useEffect(() => {
+    if (!isSettingsMode || settingsBaselineRef.current) {
+      return;
+    }
+    settingsBaselineRef.current = _captureSettingsPatternBaseline(data);
+  }, [data, isSettingsMode]);
+
+  const getSettingsCustomRouteParams = useCallback(() => {
+    const existingBaseline = settingsBaselineRef.current;
+    if (existingBaseline) {
+      return _buildSettingsCustomRouteParams(existingBaseline);
+    }
+
+    const fallbackBaseline = _captureSettingsPatternBaseline(data);
+    settingsBaselineRef.current = fallbackBaseline;
+    return _buildSettingsCustomRouteParams(fallbackBaseline);
+  }, [data]);
+
+  useEffect(() => {
     titleOpacity.value = withTiming(1, { duration: 400 });
     subtitleOpacity.value = withTiming(1, { duration: 400 });
 
@@ -1028,7 +1094,10 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
     if (isTransitioningRef.current) return;
     const pattern = filteredPatterns[currentIndex];
     if (!pattern) return;
-    updateData({ patternType: pattern.type });
+    const selectionAction = _resolveShiftPatternSettingsAction(isSettingsMode, pattern.type);
+    if (selectionAction !== 'navigate-custom') {
+      updateData({ patternType: pattern.type });
+    }
     isTransitioningRef.current = true;
     setIsTransitioning(true);
 
@@ -1040,13 +1109,14 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
           onContinue(pattern.type);
           return;
         }
-        if (
-          isSettingsEntry &&
-          returnToMainOnSelect &&
-          pattern.type !== ShiftPattern.CUSTOM &&
-          pattern.type !== ShiftPattern.FIFO_CUSTOM
-        ) {
+        if (selectionAction === 'exit-settings') {
           closeSettingsEditor();
+          return;
+        }
+        if (selectionAction === 'navigate-custom') {
+          const customRoute =
+            pattern.type === ShiftPattern.FIFO_CUSTOM ? 'FIFOCustomPattern' : 'CustomPattern';
+          navigation.navigate(customRoute, getSettingsCustomRouteParams());
           return;
         }
         // Use the navigation helper which handles conditional routing
@@ -1058,10 +1128,10 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
     currentIndex,
     data,
     filteredPatterns,
-    isSettingsEntry,
+    getSettingsCustomRouteParams,
+    isSettingsMode,
     navigation,
     onContinue,
-    returnToMainOnSelect,
     updateData,
   ]);
 
@@ -1091,31 +1161,25 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
     if (isTransitioningRef.current) return;
     const customPatternType =
       rosterType === 'fifo' ? ShiftPattern.FIFO_CUSTOM : ShiftPattern.CUSTOM;
-    updateData({ patternType: customPatternType });
+    if (!isSettingsMode) {
+      updateData({ patternType: customPatternType });
+    }
     isTransitioningRef.current = true;
     setIsTransitioning(true);
     interactionHandleRef.current = InteractionManager.runAfterInteractions(() => {
       navigationTimeoutRef.current = setTimeout(() => {
         navigationTimeoutRef.current = null;
-        if (isSettingsEntry && returnToMainOnSelect) {
+        if (isSettingsMode) {
           navigation.navigate(
             rosterType === 'fifo' ? 'FIFOCustomPattern' : 'CustomPattern',
-            route.params
+            getSettingsCustomRouteParams()
           );
           return;
         }
         goToNextScreen(navigation, 'ShiftPattern', { ...data, patternType: customPatternType });
       }, 300);
     });
-  }, [
-    updateData,
-    isSettingsEntry,
-    returnToMainOnSelect,
-    navigation,
-    data,
-    rosterType,
-    route.params,
-  ]);
+  }, [data, getSettingsCustomRouteParams, isSettingsMode, navigation, rosterType, updateData]);
 
   const visibleCards = useMemo(
     () => filteredPatterns.slice(currentIndex, currentIndex + 4),
