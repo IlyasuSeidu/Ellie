@@ -42,9 +42,15 @@ import { asyncStorageService } from '@/services/AsyncStorageService';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import * as OnboardingContext from '@/contexts/OnboardingContext';
 import * as Haptics from 'expo-haptics';
+import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 
 const mockNavigate = jest.fn();
 const mockGoBack = jest.fn();
+const mockRootGoBack = jest.fn();
+const mockRootReset = jest.fn();
+const mockAddListener = jest.fn(() => jest.fn());
+const mockCanGoBack = jest.fn(() => true);
+let mockRouteParams: OnboardingStackParamList['StartDate'] = undefined;
 
 // Mock haptics
 // Mock AsyncStorage
@@ -91,9 +97,20 @@ jest.mock('react-native-gesture-handler', () => {
 // Mock React Navigation
 jest.mock('@react-navigation/native', () => ({
   __esModule: true,
+  useRoute: () => ({
+    key: 'StartDate-test',
+    name: 'StartDate',
+    params: mockRouteParams,
+  }),
   useNavigation: () => ({
     navigate: mockNavigate,
     goBack: mockGoBack,
+    addListener: mockAddListener,
+    getParent: () => ({
+      canGoBack: mockCanGoBack,
+      goBack: mockRootGoBack,
+      reset: mockRootReset,
+    }),
   }),
 }));
 
@@ -141,6 +158,8 @@ describe('PremiumStartDateScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     (asyncStorageService.get as jest.Mock).mockResolvedValue(null);
+    mockRouteParams = undefined;
+    mockCanGoBack.mockReturnValue(true);
   });
 
   describe('Initial Rendering', () => {
@@ -361,6 +380,76 @@ describe('PremiumStartDateScreen', () => {
       const fallbackView = renderWithContext(<PremiumStartDateScreen />);
       fireEvent.press(fallbackView.getByText('arrow-back'));
       expect(mockGoBack).toHaveBeenCalled();
+    });
+  });
+
+  describe('Settings Entry Mode', () => {
+    it('shows settings-specific CTA labels', () => {
+      mockRouteParams = {
+        entryPoint: 'settings',
+        returnToMainOnSelect: true,
+      };
+
+      const { getByText } = renderWithContext(<PremiumStartDateScreen />);
+      expect(getByText('Save & Return')).toBeTruthy();
+      expect(getByText('arrow-back')).toBeTruthy();
+    });
+
+    it('back exits directly to settings parent navigator', () => {
+      mockRouteParams = {
+        entryPoint: 'settings',
+        returnToMainOnSelect: true,
+      };
+
+      const { getByText } = renderWithContext(<PremiumStartDateScreen />);
+      fireEvent.press(getByText('arrow-back'));
+
+      expect(mockRootGoBack).toHaveBeenCalled();
+      expect(mockGoBack).not.toHaveBeenCalled();
+    });
+
+    it('forward saves current start date and exits to settings without onboarding progression', () => {
+      mockRouteParams = {
+        entryPoint: 'settings',
+        returnToMainOnSelect: true,
+      };
+
+      const updateDataMock = jest.fn();
+      const onboardingSpy = jest.spyOn(OnboardingContext, 'useOnboarding').mockReturnValue({
+        data: {
+          name: 'Alex',
+          occupation: 'Engineer',
+          company: 'Site',
+          country: 'US',
+          shiftSystem: '2-shift',
+          patternType: 'standard_4_4_4',
+          startDate: '2026-03-06T00:00:00.000Z',
+        },
+        updateData: updateDataMock,
+      } as unknown as ReturnType<typeof OnboardingContext.useOnboarding>);
+
+      const runAfterInteractionsSpy = jest
+        .spyOn(require('react-native').InteractionManager, 'runAfterInteractions')
+        .mockImplementation((...args: unknown[]) => {
+          const callback = args[0] as (() => void) | undefined;
+          callback?.();
+          return { cancel: jest.fn() };
+        });
+
+      const { getByText } = render(<PremiumStartDateScreen />);
+      fireEvent.press(getByText('Save & Return'));
+
+      expect(updateDataMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          startDate: expect.any(Date),
+          phaseOffset: 0,
+        })
+      );
+      expect(mockRootGoBack).toHaveBeenCalled();
+      expect(goToNextScreen).not.toHaveBeenCalled();
+
+      onboardingSpy.mockRestore();
+      runAfterInteractionsSpy.mockRestore();
     });
   });
 

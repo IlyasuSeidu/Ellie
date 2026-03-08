@@ -85,7 +85,12 @@ export type OnboardingStackParamList = {
   /** Step 5-F: Select work/rest block and day within block (FIFO rosters) - NEW */
   FIFOPhaseSelector: undefined;
   /** Step 6: Select calendar start date */
-  StartDate: undefined;
+  StartDate:
+    | {
+        entryPoint?: 'onboarding' | 'settings';
+        returnToMainOnSelect?: boolean;
+      }
+    | undefined;
   /** Step 7: Configure shift times (adjusted for roster type) */
   ShiftTimeInput:
     | {

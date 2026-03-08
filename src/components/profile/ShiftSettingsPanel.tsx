@@ -236,6 +236,7 @@ export interface ShiftSettingsPanelProps {
   data: OnboardingData;
   onUpdate: (updates: Partial<OnboardingData>) => void;
   onOpenPatternOnboarding?: (seed: Partial<OnboardingData>) => void;
+  onOpenStartDateOnboarding?: (seed: Partial<OnboardingData>) => void;
   onOpenShiftTimeOnboarding?: (
     seed: Partial<OnboardingData>,
     initialShiftType?: 'day' | 'night' | 'morning' | 'afternoon'
@@ -249,6 +250,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
   data,
   onUpdate,
   onOpenPatternOnboarding,
+  onOpenStartDateOnboarding,
   onOpenShiftTimeOnboarding,
   animationDelay = 0,
 }) => {
@@ -275,6 +277,8 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
   const editShiftDuration = d.shiftDuration;
   const editShiftType = d.shiftType;
   const editIsCustomShiftTime = d.isCustomShiftTime;
+  const editStartDate = d.startDate;
+  const editPhaseOffset = d.phaseOffset;
 
   const systemIndex = d.shiftSystem === '3-shift' ? 1 : 0;
   const rosterIndex = d.rosterType === 'fifo' ? 1 : 0;
@@ -497,6 +501,45 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
       onUpdate,
     ]
   );
+
+  const handleOpenStartDatePicker = useCallback(() => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+
+    if (!onOpenStartDateOnboarding) {
+      setStartDatePickerVisible(true);
+      return;
+    }
+
+    const seed: Partial<OnboardingData> = {
+      shiftSystem: editShiftSystem,
+      rosterType: editRosterType,
+      patternType: editPatternType,
+      customPattern: editCustomPattern,
+      fifoConfig: editFIFOConfig,
+      startDate: editStartDate,
+      phaseOffset: editPhaseOffset,
+    };
+
+    onUpdate(seed);
+    setPatternSheetVisible(false);
+    setTimePickerTarget(null);
+    setStartDatePickerVisible(false);
+    setResyncSheetVisible(false);
+    setAutoResetNotice(null);
+    setLocalData({});
+    setIsEditing(false);
+    onOpenStartDateOnboarding(seed);
+  }, [
+    editCustomPattern,
+    editFIFOConfig,
+    editPatternType,
+    editPhaseOffset,
+    editRosterType,
+    editShiftSystem,
+    editStartDate,
+    onOpenStartDateOnboarding,
+    onUpdate,
+  ]);
 
   // ── Time picker ────────────────────────────────────────────────────────────
   const getTimeValue = useCallback(
@@ -1659,10 +1702,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
               />
               <TouchableOpacity
                 style={styles.patternRow}
-                onPress={() => {
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                  setStartDatePickerVisible(true);
-                }}
+                onPress={handleOpenStartDatePicker}
                 activeOpacity={0.7}
                 accessibilityLabel={`Start date: ${formatStartDate(d.startDate)}. Double tap to change.`}
                 accessibilityRole="button"

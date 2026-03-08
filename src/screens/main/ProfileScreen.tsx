@@ -100,6 +100,22 @@ export const ProfileScreen: React.FC = () => {
     [navigation]
   );
 
+  const handleOpenStartDateOnboarding = useCallback(
+    (_seed: Partial<OnboardingData>) => {
+      const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+      if (!rootNavigation) return;
+
+      rootNavigation.navigate('Onboarding', {
+        screen: 'StartDate',
+        params: {
+          entryPoint: 'settings',
+          returnToMainOnSelect: true,
+        } satisfies OnboardingStackParamList['StartDate'],
+      });
+    },
+    [navigation]
+  );
+
   return (
     <View style={styles.screen}>
       <LinearGradient
@@ -179,6 +195,7 @@ export const ProfileScreen: React.FC = () => {
           data={profile.data}
           onUpdate={profile.updateData}
           onOpenPatternOnboarding={handleOpenPatternOnboarding}
+          onOpenStartDateOnboarding={handleOpenStartDateOnboarding}
           onOpenShiftTimeOnboarding={handleOpenShiftTimeOnboarding}
           animationDelay={800}
         />

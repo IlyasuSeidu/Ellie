@@ -6,7 +6,7 @@
  * Features cascade entrance animations, floating effects, and celebration micro-interactions
  */
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import {
   View,
   StyleSheet,
@@ -33,12 +33,13 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, type RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
+import type { RootStackParamList } from '@/navigation/AppNavigator';
 import { ShiftPattern, ShiftSystem, Phase } from '@/types';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
@@ -1969,7 +1970,9 @@ const ContinueButton: React.FC<{
   enabled: boolean;
   onPress: () => void;
   reducedMotion: boolean;
-}> = ({ enabled, onPress, reducedMotion }) => {
+  label?: string;
+  accessibilityLabel?: string;
+}> = ({ enabled, onPress, reducedMotion, label = 'Set Shift Times', accessibilityLabel }) => {
   return (
     <View style={styles.continueButtonContainer}>
       <Pressable
@@ -1980,6 +1983,8 @@ const ContinueButton: React.FC<{
           }
         }}
         disabled={!enabled}
+        accessibilityRole="button"
+        accessibilityLabel={accessibilityLabel ?? label}
         style={({ pressed }) => [
           styles.continueButton,
           pressed && enabled && styles.continueButtonPressed,
@@ -1997,7 +2002,7 @@ const ContinueButton: React.FC<{
           style={styles.continueGradient}
         >
           <Ionicons name="checkmark-circle" size={28} color={theme.colors.paper} />
-          <Text style={styles.continueButtonText}>Set Shift Times</Text>
+          <Text style={styles.continueButtonText}>{label}</Text>
           <Ionicons name="arrow-forward" size={24} color={theme.colors.paper} />
         </LinearGradient>
       </Pressable>
@@ -2056,13 +2061,50 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   testID = 'premium-start-date-screen',
 }) => {
   const navigation = useNavigation<NavigationProp>();
+  const route = useRoute<RouteProp<OnboardingStackParamList, 'StartDate'>>();
   const { data, updateData } = useOnboarding();
+  const isSettingsEntry = route.params?.entryPoint === 'settings';
+  const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
+  const isSettingsMode = isSettingsEntry && returnToMainOnSelect;
   const shiftSystem: ShiftSystem = (data.shiftSystem as ShiftSystem) || ShiftSystem.TWO_SHIFT;
+  const allowSettingsExitRef = useRef(false);
+  const existingStartDate = useMemo(() => {
+    const rawStartDate = data.startDate as Date | string | undefined;
+    if (rawStartDate instanceof Date && !Number.isNaN(rawStartDate.getTime())) {
+      return rawStartDate.toISOString().split('T')[0] ?? getTodayDate();
+    }
+    if (typeof rawStartDate === 'string' && rawStartDate.length > 0) {
+      const parsedDate = new Date(rawStartDate);
+      if (!Number.isNaN(parsedDate.getTime())) {
+        return parsedDate.toISOString().split('T')[0] ?? getTodayDate();
+      }
+    }
+    return getTodayDate();
+  }, [data.startDate]);
   // Smart default: today
-  const [selectedDate, setSelectedDate] = useState<string | null>(getTodayDate());
+  const [selectedDate, setSelectedDate] = useState<string | null>(existingStartDate);
   const [reducedMotion, setReducedMotion] = useState(false);
   const screenOpacity = useSharedValue(1);
   const screenSlideX = useSharedValue(0);
+
+  const closeSettingsEditor = useCallback(() => {
+    const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+    if (rootNavigation?.canGoBack()) {
+      rootNavigation.goBack();
+      return;
+    }
+    if (rootNavigation?.reset) {
+      rootNavigation.reset({
+        index: 0,
+        routes: [{ name: 'Main' }],
+      });
+    }
+  }, [navigation]);
+
+  const returnToSettings = useCallback(() => {
+    allowSettingsExitRef.current = true;
+    closeSettingsEditor();
+  }, [closeSettingsEditor]);
 
   // Check for reduced motion preference
   useEffect(() => {
@@ -2104,20 +2146,29 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
 
   const customPattern = useMemo(() => getPatternValues(pattern), [pattern, getPatternValues]);
 
-  // Check if user can continue (requires date selection and phaseOffset from Phase Selector)
-  const canContinue = selectedDate !== null && data.phaseOffset !== undefined;
+  // Check if user can continue:
+  // - onboarding mode requires phaseOffset from Phase Selector
+  // - settings mode allows date update independently and resets phase to day 1
+  const canContinue = selectedDate !== null && (isSettingsMode || data.phaseOffset !== undefined);
   const selectedDateGuidanceLabel = useMemo(
     () => (selectedDate ? `Selected: ${formatDate(new Date(selectedDate))}` : null),
     [selectedDate]
   );
 
   const handleContinue = useCallback(() => {
-    if (!canContinue || !selectedDate || data.phaseOffset === undefined) return;
+    if (!canContinue || !selectedDate) return;
+    if (!isSettingsMode && data.phaseOffset === undefined) return;
 
-    // Use phaseOffset from Phase Selector screen (already saved in context)
-    updateData({
-      startDate: new Date(selectedDate),
-    });
+    updateData(
+      isSettingsMode
+        ? {
+            startDate: new Date(selectedDate),
+            phaseOffset: 0,
+          }
+        : {
+            startDate: new Date(selectedDate),
+          }
+    );
 
     // Navigate with haptic feedback
     HAPTIC_PATTERNS.SUCCESS();
@@ -2126,20 +2177,50 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
     InteractionManager.runAfterInteractions(() => {
       if (onContinue) {
         onContinue();
+      } else if (isSettingsMode) {
+        returnToSettings();
       } else {
         goToNextScreen(navigation, 'StartDate');
       }
     });
-  }, [canContinue, selectedDate, data.phaseOffset, updateData, onContinue, navigation]);
+  }, [
+    canContinue,
+    selectedDate,
+    isSettingsMode,
+    data.phaseOffset,
+    updateData,
+    onContinue,
+    returnToSettings,
+    navigation,
+  ]);
 
   const handleBack = useCallback(() => {
     HAPTIC_PATTERNS.LIGHT();
     if (onBack) {
       onBack();
+    } else if (isSettingsMode) {
+      returnToSettings();
     } else {
       navigation.goBack();
     }
-  }, [onBack, navigation]);
+  }, [onBack, isSettingsMode, returnToSettings, navigation]);
+
+  useEffect(() => {
+    if (!isSettingsMode) {
+      return () => undefined;
+    }
+
+    const unsubscribe = navigation.addListener('beforeRemove', (event) => {
+      if (allowSettingsExitRef.current) {
+        return;
+      }
+
+      event.preventDefault();
+      returnToSettings();
+    });
+
+    return unsubscribe;
+  }, [isSettingsMode, navigation, returnToSettings]);
 
   return (
     <View style={styles.container} testID={testID}>
@@ -2217,6 +2298,8 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
           <Pressable
             onPress={handleBack}
             style={({ pressed }) => [styles.backButton, pressed && styles.backButtonPressed]}
+            accessibilityLabel={isSettingsMode ? 'Back to Settings' : 'Go back'}
+            accessibilityRole="button"
           >
             <LinearGradient
               colors={['rgba(255,255,255,0.18)', 'rgba(255,255,255,0.06)']}
@@ -2232,6 +2315,10 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
             enabled={canContinue}
             onPress={handleContinue}
             reducedMotion={reducedMotion}
+            label={isSettingsMode ? 'Save & Return' : 'Set Shift Times'}
+            accessibilityLabel={
+              isSettingsMode ? 'Save start date and return to settings' : 'Set shift times'
+            }
           />
         </LinearGradient>
       </View>

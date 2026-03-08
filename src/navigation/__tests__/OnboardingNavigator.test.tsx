@@ -140,6 +140,10 @@ describe('OnboardingNavigator', () => {
       const phaseSelectorParams: PhaseSelectorParams = undefined;
       const fifoPhaseSelectorParams: FIFOPhaseSelectorParams = undefined;
       const startDateParams: StartDateParams = undefined;
+      const startDateSettingsParams: StartDateParams = {
+        entryPoint: 'settings',
+        returnToMainOnSelect: true,
+      };
       const shiftTimeInputParams: ShiftTimeInputParams = undefined;
       const shiftTimeInputSettingsParams: ShiftTimeInputParams = {
         entryPoint: 'settings',
@@ -161,6 +165,7 @@ describe('OnboardingNavigator', () => {
       expect(phaseSelectorParams).toBeUndefined();
       expect(fifoPhaseSelectorParams).toBeUndefined();
       expect(startDateParams).toBeUndefined();
+      expect(startDateSettingsParams).toBeTruthy();
       expect(shiftTimeInputParams).toBeUndefined();
       expect(shiftTimeInputSettingsParams).toBeTruthy();
       expect(completionParams).toBeUndefined();

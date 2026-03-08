@@ -7,7 +7,7 @@
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { Modal, View, TouchableOpacity, StyleSheet, Dimensions, Image } from 'react-native';
+import { Modal, View, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -36,11 +36,6 @@ const MONTH_NAMES = [
   'December',
 ];
 const DAY_NAMES = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
-const SHEET_ICONS = {
-  startDate: require('../../../assets/onboarding/icons/consolidated/cycle-preview-calendar-grid.png'),
-} as const;
-
-const START_DATE_ICON = SHEET_ICONS.startDate;
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -219,7 +214,7 @@ export const StartDatePickerSheet: React.FC<StartDatePickerSheetProps> = ({
         <View style={styles.header}>
           <View style={styles.headerLeft}>
             <View style={styles.headerIconBg}>
-              <Image source={START_DATE_ICON} style={styles.headerIconImage} resizeMode="contain" />
+              <Ionicons name="calendar-outline" size={18} color="#06B6D4" />
             </View>
             <Animated.Text style={styles.headerTitle}>Select Start Date</Animated.Text>
           </View>
@@ -392,10 +387,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(6,182,212,0.15)',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  headerIconImage: {
-    width: 18,
-    height: 18,
   },
   headerTitle: {
     fontSize: theme.typography.fontSizes.md,
