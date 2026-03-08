@@ -13,7 +13,15 @@
  */
 
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
-import { View, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  Image,
+  type ImageSourcePropType,
+} from 'react-native';
 import Animated, {
   FadeInUp,
   FadeOutUp,
@@ -118,6 +126,51 @@ const SHIFT_TYPE_COLORS: Record<ShiftType, string> = {
   off: '#4CAF50',
 };
 
+const SHIFT_TYPE_ICONS: Record<ShiftType, ImageSourcePropType> = {
+  day: require('../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png'),
+  night: require('../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png'),
+  morning: require('../../../assets/onboarding/icons/consolidated/shift-time-morning.png'),
+  afternoon: require('../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png'),
+  off: require('../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png'),
+};
+
+const SYSTEM_ICONS = {
+  twoShift: require('../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png'),
+  threeShift: require('../../../assets/onboarding/icons/consolidated/shift-time-morning.png'),
+} as const;
+
+const ROSTER_ICONS = {
+  rotating: require('../../../assets/onboarding/icons/consolidated/roster-type-rotating.png'),
+  fifo: require('../../../assets/onboarding/icons/consolidated/roster-type-fifo.png'),
+} as const;
+
+const ANCHOR_ICONS = {
+  startDate: require('../../../assets/onboarding/icons/consolidated/cycle-preview-calendar-grid.png'),
+  cyclePosition: require('../../../assets/onboarding/icons/consolidated/phase-day-shift-sun.png'),
+} as const;
+
+const START_DATE_ICON: ImageSourcePropType = ANCHOR_ICONS.startDate;
+const CYCLE_POSITION_ICON: ImageSourcePropType = ANCHOR_ICONS.cyclePosition;
+
+const PATTERN_ICONS: Record<ShiftPattern, ImageSourcePropType> = {
+  [ShiftPattern.STANDARD_3_3_3]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-3-3-3.png'),
+  [ShiftPattern.STANDARD_5_5_5]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-5-5-5.png'),
+  [ShiftPattern.STANDARD_10_10_10]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-10-10-10.png'),
+  [ShiftPattern.STANDARD_2_2_3]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-2-2-3.png'),
+  [ShiftPattern.STANDARD_4_4_4]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-4-4-4.png'),
+  [ShiftPattern.STANDARD_7_7_7]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-7-7-7.png'),
+  [ShiftPattern.CONTINENTAL]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-continental.png'),
+  [ShiftPattern.PITMAN]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-pitman.png'),
+  [ShiftPattern.CUSTOM]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-custom.png'),
+  [ShiftPattern.FIFO_8_6]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-fifo-8-6.png'),
+  [ShiftPattern.FIFO_7_7]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-fifo-7-7.png'),
+  [ShiftPattern.FIFO_14_14]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-fifo-14-14.png'),
+  [ShiftPattern.FIFO_14_7]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-fifo-14-7.png'),
+  [ShiftPattern.FIFO_21_7]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-fifo-21-7.png'),
+  [ShiftPattern.FIFO_28_14]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-fifo-28-14.png'),
+  [ShiftPattern.FIFO_CUSTOM]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-fifo-custom.png'),
+};
+
 const DEFAULT_CUSTOM_SEQUENCE: ShiftType[] = ['day', 'day', 'night', 'night', 'off', 'off', 'off'];
 
 // ── Module-level helpers ───────────────────────────────────────────────────────
@@ -136,6 +189,19 @@ function formatStartDate(date: Date | string | undefined): string {
 
 function getSelectableStartDate(date: Date | string | undefined): Date {
   return parseStartDateValue(date) ?? new Date();
+}
+
+function getSystemIconSource(shiftSystem?: string): ImageSourcePropType {
+  return shiftSystem === '3-shift' ? SYSTEM_ICONS.threeShift : SYSTEM_ICONS.twoShift;
+}
+
+function getRosterIconSource(rosterType?: string): ImageSourcePropType {
+  return rosterType === 'fifo' ? ROSTER_ICONS.fifo : ROSTER_ICONS.rotating;
+}
+
+function getPatternIconSource(patternType?: ShiftPattern): ImageSourcePropType {
+  if (!patternType) return PATTERN_ICONS[ShiftPattern.CUSTOM];
+  return PATTERN_ICONS[patternType] ?? PATTERN_ICONS[ShiftPattern.CUSTOM];
 }
 
 function getRotatingPhaseLengths(data: OnboardingData): Array<{ label: string; days: number }> {
@@ -488,6 +554,9 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
   const isFIFOCustom = effectivePattern === ShiftPattern.FIFO_CUSTOM;
   const isFIFORoster = effectiveRosterType === 'fifo';
   const is3Shift = effectiveShiftSystem === '3-shift';
+  const systemIconSource = getSystemIconSource(effectiveShiftSystem);
+  const rosterIconSource = getRosterIconSource(effectiveRosterType);
+  const patternIconSource = getPatternIconSource(effectivePattern);
 
   const headerGradient = useMemo(() => {
     if (activeAccentShiftType) {
@@ -580,7 +649,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
           style={styles.card}
         >
           <ReadRow
-            icon="time-outline"
+            iconSource={systemIconSource}
             iconColor="#2196F3"
             label="System"
             value={getShiftSystemDisplayName(effectiveShiftSystem)}
@@ -591,7 +660,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
           {!is3Shift && (
             <>
               <ReadRow
-                icon="swap-horizontal-outline"
+                iconSource={rosterIconSource}
                 iconColor="#9C27B0"
                 label="Roster"
                 value={getRosterTypeDisplayName(effectiveRosterType)}
@@ -602,7 +671,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
           )}
 
           <ReadRow
-            icon="refresh-circle-outline"
+            iconSource={patternIconSource}
             iconColor={theme.colors.sacredGold}
             label="Pattern"
             value={getPatternDisplayName(d) || 'Not configured'}
@@ -621,7 +690,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
             <>
               <Divider />
               <ReadRow
-                icon="calendar-outline"
+                iconSource={START_DATE_ICON}
                 iconColor="#06B6D4"
                 label="Start Date"
                 value={formatStartDate(d.startDate)}
@@ -649,7 +718,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                 <>
                   <Divider />
                   <ReadRow
-                    icon="sunny-outline"
+                    iconSource={SHIFT_TYPE_ICONS.day}
                     iconColor="#2196F3"
                     label="Day"
                     value={
@@ -664,7 +733,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                 <>
                   <Divider />
                   <ReadRow
-                    icon="moon-outline"
+                    iconSource={SHIFT_TYPE_ICONS.night}
                     iconColor="#9C27B0"
                     label="Night"
                     value={`${formatShiftTime(d.shiftTimes.nightShift.startTime)} – ${formatShiftTime(d.shiftTimes.nightShift.endTime)}`}
@@ -675,7 +744,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                 <>
                   <Divider />
                   <ReadRow
-                    icon="partly-sunny-outline"
+                    iconSource={SHIFT_TYPE_ICONS.morning}
                     iconColor="#F59E0B"
                     label="Morning"
                     value={formatShiftTime(d.shiftTimes.morningShift.startTime)}
@@ -686,7 +755,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                 <>
                   <Divider />
                   <ReadRow
-                    icon="cloud-outline"
+                    iconSource={SHIFT_TYPE_ICONS.afternoon}
                     iconColor="#06B6D4"
                     label="Afternoon"
                     value={formatShiftTime(d.shiftTimes.afternoonShift.startTime)}
@@ -697,7 +766,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                 <>
                   <Divider />
                   <ReadRow
-                    icon="moon-outline"
+                    iconSource={SHIFT_TYPE_ICONS.night}
                     iconColor="#9C27B0"
                     label="Night"
                     value={formatShiftTime(d.shiftTimes.nightShift3.startTime)}
@@ -739,14 +808,14 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                 <>
                   <Divider />
                   <ReadRow
-                    icon="sunny-outline"
+                    iconSource={SHIFT_TYPE_ICONS.day}
                     iconColor="#F59E0B"
                     label="Day Shifts"
                     value={`${currentFifoConfig.swingPattern.daysOnDayShift} days`}
                   />
                   <Divider />
                   <ReadRow
-                    icon="moon-outline"
+                    iconSource={SHIFT_TYPE_ICONS.night}
                     iconColor="#9C27B0"
                     label="Night Shifts"
                     value={`${currentFifoConfig.swingPattern.daysOnNightShift} days`}
@@ -773,7 +842,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                   <>
                     <Divider />
                     <ReadRow
-                      icon="sunny-outline"
+                      iconSource={SHIFT_TYPE_ICONS.day}
                       iconColor="#2196F3"
                       label="Day Shift"
                       value={`${formatShiftTime(d.shiftTimes.dayShift.startTime)} – ${formatShiftTime(d.shiftTimes.dayShift.endTime)}`}
@@ -786,7 +855,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                   <>
                     <Divider />
                     <ReadRow
-                      icon="moon-outline"
+                      iconSource={SHIFT_TYPE_ICONS.night}
                       iconColor="#9C27B0"
                       label="Night Shift"
                       value={`${formatShiftTime(d.shiftTimes.nightShift.startTime)} – ${formatShiftTime(d.shiftTimes.nightShift.endTime)}`}
@@ -859,7 +928,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
               {/* System section */}
               <EditSectionLabel
                 label="SHIFT SYSTEM"
-                icon="time-outline"
+                iconSource={systemIconSource}
                 iconColor="#2196F3"
                 delay={0}
               />
@@ -874,7 +943,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                 <>
                   <EditSectionLabel
                     label="ROSTER TYPE"
-                    icon="swap-horizontal-outline"
+                    iconSource={rosterIconSource}
                     iconColor="#9C27B0"
                     delay={80}
                   />
@@ -891,7 +960,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
               {/* Pattern section */}
               <EditSectionLabel
                 label="SHIFT PATTERN"
-                icon="refresh-circle-outline"
+                iconSource={patternIconSource}
                 iconColor={theme.colors.sacredGold}
                 delay={160}
               />
@@ -910,10 +979,10 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                   <View
                     style={[styles.patternIconBg, { backgroundColor: 'rgba(180, 83, 9, 0.15)' }]}
                   >
-                    <Ionicons
-                      name="refresh-circle-outline"
-                      size={18}
-                      color={theme.colors.sacredGold}
+                    <Image
+                      source={patternIconSource}
+                      style={styles.patternIconImage}
+                      resizeMode="contain"
                     />
                   </View>
                   <Animated.Text style={styles.patternName} numberOfLines={1}>
@@ -928,14 +997,14 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                 <>
                   <EditSectionLabel
                     label="SHIFT TIMES"
-                    icon="alarm-outline"
+                    iconSource={is3Shift ? SHIFT_TYPE_ICONS.morning : SHIFT_TYPE_ICONS.day}
                     iconColor="#F59E0B"
                     delay={240}
                   />
                   {!is3Shift ? (
                     <>
                       <TimeRow
-                        icon="sunny-outline"
+                        iconSource={SHIFT_TYPE_ICONS.day}
                         iconColor="#2196F3"
                         label="Day Start"
                         time={getTimeValue({
@@ -952,7 +1021,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                         }
                       />
                       <TimeRow
-                        icon="sunny-outline"
+                        iconSource={SHIFT_TYPE_ICONS.day}
                         iconColor="#1565C0"
                         label="Day End"
                         time={getTimeValue({
@@ -969,7 +1038,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                         }
                       />
                       <TimeRow
-                        icon="moon-outline"
+                        iconSource={SHIFT_TYPE_ICONS.night}
                         iconColor="#9C27B0"
                         label="Night Start"
                         time={getTimeValue({
@@ -986,7 +1055,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                         }
                       />
                       <TimeRow
-                        icon="moon-outline"
+                        iconSource={SHIFT_TYPE_ICONS.night}
                         iconColor="#7B1FA2"
                         label="Night End"
                         time={getTimeValue({
@@ -1006,7 +1075,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                   ) : (
                     <>
                       <TimeRow
-                        icon="partly-sunny-outline"
+                        iconSource={SHIFT_TYPE_ICONS.morning}
                         iconColor="#F59E0B"
                         label="Morning Start"
                         time={getTimeValue({
@@ -1023,7 +1092,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                         }
                       />
                       <TimeRow
-                        icon="cloud-outline"
+                        iconSource={SHIFT_TYPE_ICONS.afternoon}
                         iconColor="#06B6D4"
                         label="Afternoon Start"
                         time={getTimeValue({
@@ -1040,7 +1109,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                         }
                       />
                       <TimeRow
-                        icon="moon-outline"
+                        iconSource={SHIFT_TYPE_ICONS.night}
                         iconColor="#9C27B0"
                         label="Night Start"
                         time={getTimeValue({
@@ -1145,6 +1214,8 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                         <PatternBuilderSlider
                           label="Day Shifts"
                           icon="sunny-outline"
+                          customThumbIcon={SHIFT_TYPE_ICONS.day}
+                          customHeaderIcon={SHIFT_TYPE_ICONS.day}
                           value={currentFifoConfig.swingPattern?.daysOnDayShift ?? 5}
                           min={1}
                           max={30}
@@ -1167,6 +1238,8 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                         <PatternBuilderSlider
                           label="Night Shifts"
                           icon="moon-outline"
+                          customThumbIcon={SHIFT_TYPE_ICONS.night}
+                          customHeaderIcon={SHIFT_TYPE_ICONS.night}
                           value={currentFifoConfig.swingPattern?.daysOnNightShift ?? 5}
                           min={1}
                           max={30}
@@ -1306,12 +1379,12 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                     <Animated.View entering={FadeInUp.duration(300)}>
                       <EditSectionLabel
                         label="SHIFT TIMES"
-                        icon="alarm-outline"
+                        iconSource={SHIFT_TYPE_ICONS.day}
                         iconColor="#F59E0B"
                         delay={360}
                       />
                       <TimeRow
-                        icon="sunny-outline"
+                        iconSource={SHIFT_TYPE_ICONS.day}
                         iconColor="#2196F3"
                         label="Day Start"
                         time={getTimeValue({
@@ -1328,7 +1401,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                         }
                       />
                       <TimeRow
-                        icon="sunny-outline"
+                        iconSource={SHIFT_TYPE_ICONS.day}
                         iconColor="#1565C0"
                         label="Day End"
                         time={getTimeValue({
@@ -1351,13 +1424,13 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                       {fifoWorkPattern === 'straight-nights' && (
                         <EditSectionLabel
                           label="SHIFT TIMES"
-                          icon="alarm-outline"
+                          iconSource={SHIFT_TYPE_ICONS.night}
                           iconColor="#F59E0B"
                           delay={360}
                         />
                       )}
                       <TimeRow
-                        icon="moon-outline"
+                        iconSource={SHIFT_TYPE_ICONS.night}
                         iconColor="#9C27B0"
                         label="Night Start"
                         time={getTimeValue({
@@ -1374,7 +1447,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                         }
                       />
                       <TimeRow
-                        icon="moon-outline"
+                        iconSource={SHIFT_TYPE_ICONS.night}
                         iconColor="#7B1FA2"
                         label="Night End"
                         time={getTimeValue({
@@ -1450,6 +1523,8 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                         <PatternBuilderSlider
                           label="Day Shifts"
                           icon="sunny-outline"
+                          customThumbIcon={SHIFT_TYPE_ICONS.day}
+                          customHeaderIcon={SHIFT_TYPE_ICONS.day}
                           value={customPattern.daysOn}
                           min={1}
                           max={30}
@@ -1464,6 +1539,8 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                         <PatternBuilderSlider
                           label="Night Shifts"
                           icon="moon-outline"
+                          customThumbIcon={SHIFT_TYPE_ICONS.night}
+                          customHeaderIcon={SHIFT_TYPE_ICONS.night}
                           value={customPattern.nightsOn}
                           min={1}
                           max={30}
@@ -1481,6 +1558,8 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                         <PatternBuilderSlider
                           label="Morning Shifts"
                           icon="partly-sunny-outline"
+                          customThumbIcon={SHIFT_TYPE_ICONS.morning}
+                          customHeaderIcon={SHIFT_TYPE_ICONS.morning}
                           value={customPattern.morningOn ?? 3}
                           min={1}
                           max={20}
@@ -1495,6 +1574,8 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                         <PatternBuilderSlider
                           label="Afternoon Shifts"
                           icon="cloud-outline"
+                          customThumbIcon={SHIFT_TYPE_ICONS.afternoon}
+                          customHeaderIcon={SHIFT_TYPE_ICONS.afternoon}
                           value={customPattern.afternoonOn ?? 3}
                           min={1}
                           max={20}
@@ -1509,6 +1590,8 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                         <PatternBuilderSlider
                           label="Night Shifts"
                           icon="moon-outline"
+                          customThumbIcon={SHIFT_TYPE_ICONS.night}
+                          customHeaderIcon={SHIFT_TYPE_ICONS.night}
                           value={customPattern.nightOn ?? 3}
                           min={1}
                           max={20}
@@ -1525,6 +1608,8 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                     <PatternBuilderSlider
                       label="Days Off"
                       icon="bed-outline"
+                      customThumbIcon={SHIFT_TYPE_ICONS.off}
+                      customHeaderIcon={SHIFT_TYPE_ICONS.off}
                       value={customPattern.daysOff}
                       min={1}
                       max={30}
@@ -1541,7 +1626,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
               {/* Schedule Anchor */}
               <EditSectionLabel
                 label="SCHEDULE ANCHOR"
-                icon="calendar-outline"
+                iconSource={START_DATE_ICON}
                 iconColor="#06B6D4"
                 delay={560}
               />
@@ -1558,7 +1643,11 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
               >
                 <View style={styles.patternRowLeft}>
                   <View style={[styles.patternIconBg, { backgroundColor: 'rgba(6,182,212,0.15)' }]}>
-                    <Ionicons name="calendar-outline" size={18} color="#06B6D4" />
+                    <Image
+                      source={START_DATE_ICON}
+                      style={styles.patternIconImage}
+                      resizeMode="contain"
+                    />
                   </View>
                   <View>
                     <Animated.Text style={styles.patternName}>
@@ -1582,7 +1671,11 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
               >
                 <View style={styles.patternRowLeft}>
                   <View style={[styles.patternIconBg, { backgroundColor: 'rgba(180,83,9,0.15)' }]}>
-                    <Ionicons name="locate-outline" size={18} color={theme.colors.sacredGold} />
+                    <Image
+                      source={CYCLE_POSITION_ICON}
+                      style={styles.patternIconImage}
+                      resizeMode="contain"
+                    />
                   </View>
                   <View>
                     <Animated.Text style={styles.patternName}>
@@ -1666,16 +1759,21 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
 
 /** Read-only row with coloured icon */
 const ReadRow: React.FC<{
-  icon: keyof typeof Ionicons.glyphMap;
+  icon?: keyof typeof Ionicons.glyphMap;
+  iconSource?: ImageSourcePropType;
   iconColor: string;
   label: string;
   value: string;
   isBadge?: boolean;
-}> = ({ icon, iconColor, label, value, isBadge }) => (
+}> = ({ icon, iconSource, iconColor, label, value, isBadge }) => (
   <View style={styles.readRow}>
     <View style={styles.readRowLeft}>
       <View style={[styles.readRowIconBg, { backgroundColor: iconColor + '22' }]}>
-        <Ionicons name={icon} size={15} color={iconColor} />
+        {iconSource ? (
+          <Image source={iconSource} style={styles.readRowIconImage} resizeMode="contain" />
+        ) : icon ? (
+          <Ionicons name={icon} size={15} color={iconColor} />
+        ) : null}
       </View>
       <Animated.Text style={styles.readRowLabel}>{label}</Animated.Text>
     </View>
@@ -1697,24 +1795,30 @@ const Divider: React.FC = () => <View style={styles.divider} />;
 /** Section label for edit mode */
 const EditSectionLabel: React.FC<{
   label: string;
-  icon: keyof typeof Ionicons.glyphMap;
+  icon?: keyof typeof Ionicons.glyphMap;
+  iconSource?: ImageSourcePropType;
   iconColor: string;
   delay?: number;
-}> = ({ label, icon, iconColor, delay = 0 }) => (
+}> = ({ label, icon, iconSource, iconColor, delay = 0 }) => (
   <Animated.View entering={FadeInUp.delay(delay).duration(300)} style={styles.sectionLabelRow}>
-    <Ionicons name={icon} size={13} color={iconColor} />
+    {iconSource ? (
+      <Image source={iconSource} style={styles.sectionLabelIconImage} resizeMode="contain" />
+    ) : icon ? (
+      <Ionicons name={icon} size={13} color={iconColor} />
+    ) : null}
     <Animated.Text style={styles.sectionLabel}>{label}</Animated.Text>
   </Animated.View>
 );
 
 /** Time picker trigger row */
 const TimeRow: React.FC<{
-  icon: keyof typeof Ionicons.glyphMap;
+  icon?: keyof typeof Ionicons.glyphMap;
+  iconSource?: ImageSourcePropType;
   iconColor: string;
   label: string;
   time: string;
   onPress: () => void;
-}> = ({ icon, iconColor, label, time, onPress }) => {
+}> = ({ icon, iconSource, iconColor, label, time, onPress }) => {
   const scale = useSharedValue(1);
 
   const rowStyle = useAnimatedStyle(() => ({
@@ -1737,7 +1841,11 @@ const TimeRow: React.FC<{
       >
         <View style={styles.timeRowLeft}>
           <View style={[styles.timeRowIconBg, { backgroundColor: iconColor + '22' }]}>
-            <Ionicons name={icon} size={15} color={iconColor} />
+            {iconSource ? (
+              <Image source={iconSource} style={styles.timeRowIconImage} resizeMode="contain" />
+            ) : icon ? (
+              <Ionicons name={icon} size={15} color={iconColor} />
+            ) : null}
           </View>
           <Animated.Text style={styles.timeRowLabel}>{label}</Animated.Text>
         </View>
@@ -1982,6 +2090,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  readRowIconImage: {
+    width: 17,
+    height: 17,
+  },
   readRowLabel: {
     fontSize: theme.typography.fontSizes.xs,
     color: theme.colors.shadow,
@@ -2080,6 +2192,10 @@ const styles = StyleSheet.create({
     marginTop: theme.spacing.sm,
     marginBottom: 2,
   },
+  sectionLabelIconImage: {
+    width: 14,
+    height: 14,
+  },
   sectionLabel: {
     fontSize: 10,
     color: theme.colors.shadow,
@@ -2141,6 +2257,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  patternIconImage: {
+    width: 20,
+    height: 20,
+  },
   patternName: {
     fontSize: theme.typography.fontSizes.sm,
     color: theme.colors.paper,
@@ -2171,6 +2291,10 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  timeRowIconImage: {
+    width: 17,
+    height: 17,
   },
   timeRowLabel: {
     fontSize: theme.typography.fontSizes.sm,
