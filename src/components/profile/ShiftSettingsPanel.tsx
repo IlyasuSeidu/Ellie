@@ -42,6 +42,7 @@ import { TimePickerModal } from '@/components/onboarding/premium/TimePickerModal
 import { PatternBuilderSlider } from '@/components/onboarding/premium/PatternBuilderSlider';
 import { PremiumTextInput } from '@/components/onboarding/premium/PremiumTextInput';
 import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
+import { useShiftAccent } from '@/hooks/useShiftAccent';
 import { PatternSelectorSheet } from './PatternSelectorSheet';
 import { StartDatePickerSheet } from './StartDatePickerSheet';
 import { CycleResyncSheet } from './CycleResyncSheet';
@@ -76,6 +77,14 @@ function getHeaderGradient(shiftSystem?: string, rosterType?: string): readonly 
   if (shiftSystem === '3-shift') return ['#E65100', '#F57F17'] as const;
   return ['#1565C0', '#7B1FA2'] as const;
 }
+
+const LIVE_HEADER_GRADIENT_BY_SHIFT: Record<ShiftType, readonly [string, string]> = {
+  day: ['#2196F3', '#1565C0'],
+  night: ['#7C4DFF', '#4A148C'],
+  morning: ['#F59E0B', '#D97706'],
+  afternoon: ['#06B6D4', '#0E7490'],
+  off: ['#57534e', '#44403c'],
+};
 
 type TimeTarget = {
   shiftKey: 'dayShift' | 'nightShift' | 'morningShift' | 'afternoonShift' | 'nightShift3';
@@ -235,6 +244,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
   onUpdate,
   animationDelay = 0,
 }) => {
+  const { shiftType: activeAccentShiftType } = useShiftAccent();
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [localData, setLocalData] = useState<Partial<OnboardingData>>({});
@@ -478,7 +488,12 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
   const isFIFORoster = effectiveRosterType === 'fifo';
   const is3Shift = effectiveShiftSystem === '3-shift';
 
-  const headerGradient = getHeaderGradient(effectiveShiftSystem, effectiveRosterType);
+  const headerGradient = useMemo(() => {
+    if (activeAccentShiftType) {
+      return LIVE_HEADER_GRADIENT_BY_SHIFT[activeAccentShiftType];
+    }
+    return getHeaderGradient(effectiveShiftSystem, effectiveRosterType);
+  }, [activeAccentShiftType, effectiveShiftSystem, effectiveRosterType]);
 
   useEffect(() => {
     return () => {
