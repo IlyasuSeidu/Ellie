@@ -236,6 +236,7 @@ export interface ShiftSettingsPanelProps {
   data: OnboardingData;
   onUpdate: (updates: Partial<OnboardingData>) => void;
   onOpenPatternOnboarding?: (seed: Partial<OnboardingData>) => void;
+  onOpenShiftTimeOnboarding?: (seed: Partial<OnboardingData>) => void;
   animationDelay?: number;
 }
 
@@ -245,6 +246,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
   data,
   onUpdate,
   onOpenPatternOnboarding,
+  onOpenShiftTimeOnboarding,
   animationDelay = 0,
 }) => {
   const { shiftType: activeAccentShiftType } = useShiftAccent();
@@ -264,6 +266,12 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
   const editPatternType = d.patternType;
   const editCustomPattern = d.customPattern;
   const editFIFOConfig = d.fifoConfig;
+  const editShiftTimes = d.shiftTimes;
+  const editShiftStartTime = d.shiftStartTime;
+  const editShiftEndTime = d.shiftEndTime;
+  const editShiftDuration = d.shiftDuration;
+  const editShiftType = d.shiftType;
+  const editIsCustomShiftTime = d.isCustomShiftTime;
 
   const systemIndex = d.shiftSystem === '3-shift' ? 1 : 0;
   const rosterIndex = d.rosterType === 'fifo' ? 1 : 0;
@@ -425,6 +433,56 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
     onOpenPatternOnboarding,
     onUpdate,
   ]);
+
+  const handleOpenShiftTimePicker = useCallback(
+    (target: TimeTarget) => {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+
+      if (!onOpenShiftTimeOnboarding) {
+        setTimePickerTarget(target);
+        return;
+      }
+
+      const seed: Partial<OnboardingData> = {
+        shiftSystem: editShiftSystem,
+        rosterType: editRosterType,
+        patternType: editPatternType,
+        customPattern: editCustomPattern,
+        fifoConfig: editFIFOConfig,
+        shiftTimes: editShiftTimes,
+        shiftStartTime: editShiftStartTime,
+        shiftEndTime: editShiftEndTime,
+        shiftDuration: editShiftDuration,
+        shiftType: editShiftType,
+        isCustomShiftTime: editIsCustomShiftTime,
+      };
+
+      onUpdate(seed);
+      setPatternSheetVisible(false);
+      setTimePickerTarget(null);
+      setStartDatePickerVisible(false);
+      setResyncSheetVisible(false);
+      setAutoResetNotice(null);
+      setLocalData({});
+      setIsEditing(false);
+      onOpenShiftTimeOnboarding(seed);
+    },
+    [
+      editCustomPattern,
+      editFIFOConfig,
+      editIsCustomShiftTime,
+      editPatternType,
+      editRosterType,
+      editShiftDuration,
+      editShiftEndTime,
+      editShiftStartTime,
+      editShiftSystem,
+      editShiftTimes,
+      editShiftType,
+      onOpenShiftTimeOnboarding,
+      onUpdate,
+    ]
+  );
 
   // ── Time picker ────────────────────────────────────────────────────────────
   const getTimeValue = useCallback(
@@ -984,7 +1042,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                           label: 'Day Start',
                         })}
                         onPress={() =>
-                          setTimePickerTarget({
+                          handleOpenShiftTimePicker({
                             shiftKey: 'dayShift',
                             field: 'startTime',
                             label: 'Day Shift Start',
@@ -1001,7 +1059,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                           label: 'Day End',
                         })}
                         onPress={() =>
-                          setTimePickerTarget({
+                          handleOpenShiftTimePicker({
                             shiftKey: 'dayShift',
                             field: 'endTime',
                             label: 'Day Shift End',
@@ -1018,7 +1076,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                           label: 'Night Start',
                         })}
                         onPress={() =>
-                          setTimePickerTarget({
+                          handleOpenShiftTimePicker({
                             shiftKey: 'nightShift',
                             field: 'startTime',
                             label: 'Night Shift Start',
@@ -1035,7 +1093,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                           label: 'Night End',
                         })}
                         onPress={() =>
-                          setTimePickerTarget({
+                          handleOpenShiftTimePicker({
                             shiftKey: 'nightShift',
                             field: 'endTime',
                             label: 'Night Shift End',
@@ -1055,7 +1113,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                           label: 'Morning Start',
                         })}
                         onPress={() =>
-                          setTimePickerTarget({
+                          handleOpenShiftTimePicker({
                             shiftKey: 'morningShift',
                             field: 'startTime',
                             label: 'Morning Shift Start',
@@ -1072,7 +1130,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                           label: 'Afternoon Start',
                         })}
                         onPress={() =>
-                          setTimePickerTarget({
+                          handleOpenShiftTimePicker({
                             shiftKey: 'afternoonShift',
                             field: 'startTime',
                             label: 'Afternoon Shift Start',
@@ -1089,7 +1147,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                           label: 'Night Start',
                         })}
                         onPress={() =>
-                          setTimePickerTarget({
+                          handleOpenShiftTimePicker({
                             shiftKey: 'nightShift3',
                             field: 'startTime',
                             label: 'Night Shift Start',
@@ -1360,7 +1418,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                           label: 'Day Start',
                         })}
                         onPress={() =>
-                          setTimePickerTarget({
+                          handleOpenShiftTimePicker({
                             shiftKey: 'dayShift',
                             field: 'startTime',
                             label: 'Day Shift Start',
@@ -1377,7 +1435,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                           label: 'Day End',
                         })}
                         onPress={() =>
-                          setTimePickerTarget({
+                          handleOpenShiftTimePicker({
                             shiftKey: 'dayShift',
                             field: 'endTime',
                             label: 'Day Shift End',
@@ -1406,7 +1464,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                           label: 'Night Start',
                         })}
                         onPress={() =>
-                          setTimePickerTarget({
+                          handleOpenShiftTimePicker({
                             shiftKey: 'nightShift',
                             field: 'startTime',
                             label: 'Night Shift Start',
@@ -1423,7 +1481,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                           label: 'Night End',
                         })}
                         onPress={() =>
-                          setTimePickerTarget({
+                          handleOpenShiftTimePicker({
                             shiftKey: 'nightShift',
                             field: 'endTime',
                             label: 'Night Shift End',

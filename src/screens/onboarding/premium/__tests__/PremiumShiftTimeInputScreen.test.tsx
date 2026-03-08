@@ -41,6 +41,9 @@ jest.mock('@react-navigation/native', () => ({
     navigate: jest.fn(),
     goBack: jest.fn(),
   }),
+  useRoute: () => ({
+    params: undefined,
+  }),
 }));
 
 // Mock ProgressHeader component

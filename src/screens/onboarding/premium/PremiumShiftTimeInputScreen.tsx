@@ -40,12 +40,13 @@ import Animated, {
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, type RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { useOnboarding, OnboardingData } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
+import type { RootStackParamList } from '@/navigation/AppNavigator';
 import { ShiftPattern, ShiftSystem } from '@/types';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
@@ -331,9 +332,26 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   testID = 'premium-shift-time-input-screen',
 }) => {
   const navigation = useNavigation<NavigationProp>();
+  const route = useRoute<RouteProp<OnboardingStackParamList, 'ShiftTimeInput'>>();
   const { data, updateData } = useOnboarding();
+  const isSettingsEntry = route.params?.entryPoint === 'settings';
+  const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
   const shiftSystem: '2-shift' | '3-shift' = data.shiftSystem || ShiftSystem.TWO_SHIFT;
   const rosterType = data.rosterType || 'rotating';
+
+  const closeSettingsEditor = useCallback(() => {
+    const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+    if (rootNavigation?.canGoBack()) {
+      rootNavigation.goBack();
+      return;
+    }
+    if (rootNavigation?.reset) {
+      rootNavigation.reset({
+        index: 0,
+        routes: [{ name: 'Main' }],
+      });
+    }
+  }, [navigation]);
 
   // Ref for ScrollView to enable auto-scroll
   const scrollViewRef = useRef<ScrollView>(null);
@@ -637,6 +655,11 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
         onContinue();
       }
 
+      if (isSettingsEntry && returnToMainOnSelect) {
+        closeSettingsEditor();
+        return;
+      }
+
       // Navigate to completion screen (Step 8)
       goToNextScreen(navigation, 'ShiftTimeInput');
     } else {
@@ -666,6 +689,9 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     shiftSystem,
     updateData,
     onContinue,
+    isSettingsEntry,
+    returnToMainOnSelect,
+    closeSettingsEditor,
     navigation,
   ]);
 
@@ -688,11 +714,20 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
       // On first stage, go back to previous screen
       if (onBack) {
         onBack();
+      } else if (isSettingsEntry && returnToMainOnSelect) {
+        closeSettingsEditor();
       } else {
         navigation.goBack();
       }
     }
-  }, [currentStageIndex, navigation, onBack]);
+  }, [
+    currentStageIndex,
+    navigation,
+    onBack,
+    isSettingsEntry,
+    returnToMainOnSelect,
+    closeSettingsEditor,
+  ]);
 
   // Animated styles
   const floatingStyle = useAnimatedStyle(() => ({

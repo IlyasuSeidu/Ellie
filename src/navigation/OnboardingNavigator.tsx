@@ -47,7 +47,8 @@ import { PremiumCompletionScreen } from '@/screens/onboarding/premium/PremiumCom
  * Onboarding Stack Parameter List
  *
  * Defines all routes in the onboarding flow (9-10 screens depending on roster type).
- * All routes have `undefined` params as data is managed through OnboardingContext.
+ * Most routes use `undefined` params since data is managed through OnboardingContext.
+ * Some routes allow optional settings-entry params for edit-mode handoff.
  */
 export type OnboardingStackParamList = {
   /** Step 1: Welcome screen with app intro (auto-advances) */
@@ -86,7 +87,12 @@ export type OnboardingStackParamList = {
   /** Step 6: Select calendar start date */
   StartDate: undefined;
   /** Step 7: Configure shift times (adjusted for roster type) */
-  ShiftTimeInput: undefined;
+  ShiftTimeInput:
+    | {
+        entryPoint?: 'onboarding' | 'settings';
+        returnToMainOnSelect?: boolean;
+      }
+    | undefined;
   /** Step 8: Review data and complete onboarding */
   Completion: undefined;
 };

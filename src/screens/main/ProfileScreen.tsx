@@ -79,6 +79,19 @@ export const ProfileScreen: React.FC = () => {
     });
   }, [navigation]);
 
+  const handleOpenShiftTimeOnboarding = useCallback(() => {
+    const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+    if (!rootNavigation) return;
+
+    rootNavigation.navigate('Onboarding', {
+      screen: 'ShiftTimeInput',
+      params: {
+        entryPoint: 'settings',
+        returnToMainOnSelect: true,
+      } satisfies OnboardingStackParamList['ShiftTimeInput'],
+    });
+  }, [navigation]);
+
   return (
     <View style={styles.screen}>
       <LinearGradient
@@ -158,6 +171,7 @@ export const ProfileScreen: React.FC = () => {
           data={profile.data}
           onUpdate={profile.updateData}
           onOpenPatternOnboarding={handleOpenPatternOnboarding}
+          onOpenShiftTimeOnboarding={handleOpenShiftTimeOnboarding}
           animationDelay={800}
         />
 

@@ -103,8 +103,8 @@ describe('OnboardingNavigator', () => {
       });
     });
 
-    it('should have undefined params for all routes', () => {
-      // Type check - all routes should have undefined params
+    it('should type params correctly for onboarding and settings-entry routes', () => {
+      // Type check for base routes
       type WelcomeParams = OnboardingStackParamList['Welcome'];
       type IntroParams = OnboardingStackParamList['Introduction'];
       type ShiftSystemParams = OnboardingStackParamList['ShiftSystem'];
@@ -123,12 +123,28 @@ describe('OnboardingNavigator', () => {
       const shiftSystemParams: ShiftSystemParams = undefined;
       const rosterTypeParams: RosterTypeParams = undefined;
       const shiftPatternParams: ShiftPatternParams = undefined;
+      const shiftPatternSettingsParams: ShiftPatternParams = {
+        entryPoint: 'settings',
+        returnToMainOnSelect: true,
+      };
       const customPatternParams: CustomPatternParams = undefined;
+      const customPatternSettingsParams: CustomPatternParams = {
+        entryPoint: 'settings',
+        returnToMainOnSelect: true,
+      };
       const fifoCustomPatternParams: FIFOCustomPatternParams = undefined;
+      const fifoCustomPatternSettingsParams: FIFOCustomPatternParams = {
+        entryPoint: 'settings',
+        returnToMainOnSelect: true,
+      };
       const phaseSelectorParams: PhaseSelectorParams = undefined;
       const fifoPhaseSelectorParams: FIFOPhaseSelectorParams = undefined;
       const startDateParams: StartDateParams = undefined;
       const shiftTimeInputParams: ShiftTimeInputParams = undefined;
+      const shiftTimeInputSettingsParams: ShiftTimeInputParams = {
+        entryPoint: 'settings',
+        returnToMainOnSelect: true,
+      };
       const completionParams: CompletionParams = undefined;
 
       expect(welcomeParams).toBeUndefined();
@@ -136,12 +152,16 @@ describe('OnboardingNavigator', () => {
       expect(shiftSystemParams).toBeUndefined();
       expect(rosterTypeParams).toBeUndefined();
       expect(shiftPatternParams).toBeUndefined();
+      expect(shiftPatternSettingsParams).toBeTruthy();
       expect(customPatternParams).toBeUndefined();
+      expect(customPatternSettingsParams).toBeTruthy();
       expect(fifoCustomPatternParams).toBeUndefined();
+      expect(fifoCustomPatternSettingsParams).toBeTruthy();
       expect(phaseSelectorParams).toBeUndefined();
       expect(fifoPhaseSelectorParams).toBeUndefined();
       expect(startDateParams).toBeUndefined();
       expect(shiftTimeInputParams).toBeUndefined();
+      expect(shiftTimeInputSettingsParams).toBeTruthy();
       expect(completionParams).toBeUndefined();
     });
   });
