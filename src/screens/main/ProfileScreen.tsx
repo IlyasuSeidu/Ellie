@@ -6,7 +6,7 @@
  * Uses the Sacred design system with Reanimated animations and haptic feedback.
  */
 
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { View, StyleSheet, Text, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
@@ -29,8 +29,23 @@ export const ProfileScreen: React.FC = () => {
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const profile = useProfileData();
-  const { tabAccentColor } = useShiftAccent();
+  const { shiftType: liveShiftType, tabAccentColor } = useShiftAccent();
   const { isEditing, cancelEditing } = profile;
+  const personalInfoHeaderGradient = useMemo<readonly [string, string]>(() => {
+    switch (liveShiftType) {
+      case 'day':
+        return ['#2196F3', '#1565C0'] as const;
+      case 'night':
+        return ['#7C4DFF', '#4A148C'] as const;
+      case 'morning':
+        return ['#F59E0B', '#D97706'] as const;
+      case 'afternoon':
+        return ['#06B6D4', '#0E7490'] as const;
+      case 'off':
+      default:
+        return ['#57534e', '#44403c'] as const;
+    }
+  }, [liveShiftType]);
 
   useEffect(() => {
     if (!isFocused && isEditing) {
@@ -93,6 +108,7 @@ export const ProfileScreen: React.FC = () => {
           title="Personal Information"
           icon="person-outline"
           iconColor={tabAccentColor}
+          backgroundGradientColors={personalInfoHeaderGradient}
           animationDelay={500}
         />
         <ProfileEditForm

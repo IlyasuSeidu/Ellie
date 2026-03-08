@@ -8,6 +8,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
 
@@ -15,6 +16,7 @@ interface ProfileSectionHeaderProps {
   title: string;
   icon: keyof typeof Ionicons.glyphMap;
   iconColor?: string;
+  backgroundGradientColors?: readonly [string, string];
   animationDelay?: number;
 }
 
@@ -22,14 +24,30 @@ export const ProfileSectionHeader: React.FC<ProfileSectionHeaderProps> = ({
   title,
   icon,
   iconColor = theme.colors.sacredGold,
+  backgroundGradientColors,
   animationDelay = 0,
 }) => {
+  const rowContent = (
+    <View style={[styles.row, backgroundGradientColors ? styles.rowCompact : null]}>
+      <Ionicons name={icon} size={18} color={iconColor} style={styles.icon} />
+      <Animated.Text style={styles.title}>{title}</Animated.Text>
+    </View>
+  );
+
   return (
     <Animated.View entering={FadeInUp.delay(animationDelay).duration(400)} style={styles.container}>
-      <View style={styles.row}>
-        <Ionicons name={icon} size={18} color={iconColor} style={styles.icon} />
-        <Animated.Text style={styles.title}>{title}</Animated.Text>
-      </View>
+      {backgroundGradientColors ? (
+        <LinearGradient
+          colors={[...backgroundGradientColors]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.headerGradient}
+        >
+          {rowContent}
+        </LinearGradient>
+      ) : (
+        rowContent
+      )}
       <View style={styles.divider} />
     </Animated.View>
   );
@@ -44,6 +62,17 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: theme.spacing.sm,
+  },
+  rowCompact: {
+    marginBottom: 0,
+  },
+  headerGradient: {
+    borderRadius: theme.borderRadius.md,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.18)',
+    paddingVertical: theme.spacing.sm,
+    paddingHorizontal: theme.spacing.md,
     marginBottom: theme.spacing.sm,
   },
   icon: {
