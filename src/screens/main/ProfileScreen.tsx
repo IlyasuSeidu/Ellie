@@ -15,6 +15,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Animated from 'react-native-reanimated';
 import { theme } from '@/utils/theme';
 import { useProfileData } from '@/hooks/useProfileData';
+import { useShiftAccent } from '@/hooks/useShiftAccent';
 import { ProfileHeroSection } from '@/components/profile/ProfileHeroSection';
 import { ProfileSectionHeader } from '@/components/profile/ProfileSectionHeader';
 import { ProfileEditForm } from '@/components/profile/ProfileEditForm';
@@ -28,6 +29,7 @@ export const ProfileScreen: React.FC = () => {
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const profile = useProfileData();
+  const { tabAccentColor } = useShiftAccent();
   const { isEditing, cancelEditing } = profile;
 
   useEffect(() => {
@@ -90,6 +92,7 @@ export const ProfileScreen: React.FC = () => {
         <ProfileSectionHeader
           title="Personal Information"
           icon="person-outline"
+          iconColor={tabAccentColor}
           animationDelay={500}
         />
         <ProfileEditForm
@@ -113,6 +116,7 @@ export const ProfileScreen: React.FC = () => {
               ? (profile.editedFields.country ?? profile.data.country ?? '')
               : (profile.data.country ?? '')
           }
+          iconColor={tabAccentColor}
           isEditing={profile.isEditing}
           onFieldChange={profile.updateField}
           onSave={profile.saveChanges}

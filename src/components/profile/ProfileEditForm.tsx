@@ -28,6 +28,7 @@ interface ProfileEditFormProps {
   occupation: string;
   company: string;
   country: string;
+  iconColor?: string;
   isEditing: boolean;
   onFieldChange: (field: keyof OnboardingData, value: string) => void;
   onSave: () => void;
@@ -47,6 +48,7 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   occupation,
   company,
   country,
+  iconColor = theme.colors.shadow,
   isEditing,
   onFieldChange,
   onSave,
@@ -142,21 +144,21 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               label="Name"
               value={name}
               onChangeText={(text) => onFieldChange('name', text)}
-              leftIcon={<Ionicons name="person-outline" size={18} color={theme.colors.shadow} />}
+              leftIcon={<Ionicons name="person-outline" size={18} color={iconColor} />}
               containerStyle={styles.inputSpacing}
             />
             <PremiumTextInput
               label="Occupation"
               value={occupation}
               onChangeText={(text) => onFieldChange('occupation', text)}
-              leftIcon={<Ionicons name="briefcase-outline" size={18} color={theme.colors.shadow} />}
+              leftIcon={<Ionicons name="briefcase-outline" size={18} color={iconColor} />}
               containerStyle={styles.inputSpacing}
             />
             <PremiumTextInput
               label="Company"
               value={company}
               onChangeText={(text) => onFieldChange('company', text)}
-              leftIcon={<Ionicons name="business-outline" size={18} color={theme.colors.shadow} />}
+              leftIcon={<Ionicons name="business-outline" size={18} color={iconColor} />}
               containerStyle={styles.inputSpacing}
             />
 
@@ -167,14 +169,14 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               activeOpacity={0.7}
             >
               <View style={styles.countryTriggerInner}>
-                <Ionicons name="flag-outline" size={18} color={theme.colors.shadow} />
+                <Ionicons name="flag-outline" size={18} color={iconColor} />
                 <View style={styles.countryTextContainer}>
                   <Animated.Text style={styles.countryLabel}>Country</Animated.Text>
                   <Animated.Text style={styles.countryValue}>
                     {country || 'Select country'}
                   </Animated.Text>
                 </View>
-                <Ionicons name="chevron-forward" size={16} color={theme.colors.shadow} />
+                <Ionicons name="chevron-forward" size={16} color={iconColor} />
               </View>
             </TouchableOpacity>
 
@@ -219,12 +221,7 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
           >
             <View style={styles.fieldRow}>
               <View style={styles.fieldLeft}>
-                <Ionicons
-                  name={field.icon}
-                  size={18}
-                  color={theme.colors.shadow}
-                  style={styles.fieldIcon}
-                />
+                <Ionicons name={field.icon} size={18} color={iconColor} style={styles.fieldIcon} />
                 <Animated.Text style={styles.fieldLabel}>{field.label}</Animated.Text>
               </View>
               <Animated.Text style={styles.fieldValue} numberOfLines={1}>

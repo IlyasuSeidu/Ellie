@@ -14,18 +14,20 @@ import { theme } from '@/utils/theme';
 interface ProfileSectionHeaderProps {
   title: string;
   icon: keyof typeof Ionicons.glyphMap;
+  iconColor?: string;
   animationDelay?: number;
 }
 
 export const ProfileSectionHeader: React.FC<ProfileSectionHeaderProps> = ({
   title,
   icon,
+  iconColor = theme.colors.sacredGold,
   animationDelay = 0,
 }) => {
   return (
     <Animated.View entering={FadeInUp.delay(animationDelay).duration(400)} style={styles.container}>
       <View style={styles.row}>
-        <Ionicons name={icon} size={18} color={theme.colors.sacredGold} style={styles.icon} />
+        <Ionicons name={icon} size={18} color={iconColor} style={styles.icon} />
         <Animated.Text style={styles.title}>{title}</Animated.Text>
       </View>
       <View style={styles.divider} />

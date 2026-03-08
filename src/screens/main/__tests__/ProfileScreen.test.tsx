@@ -28,6 +28,15 @@ jest.mock('@/hooks/useProfileData', () => ({
   useProfileData: () => mockUseProfileData(),
 }));
 
+jest.mock('@/hooks/useShiftAccent', () => ({
+  useShiftAccent: () => ({
+    shiftType: 'day',
+    statusAreaColor: '#2196F3',
+    tabAccentColor: '#2196F3',
+    tabGlowColor: 'rgba(33,150,243,0.2)',
+  }),
+}));
+
 jest.mock('@react-navigation/native', () => ({
   useIsFocused: () => mockUseIsFocused(),
   useNavigation: () => ({

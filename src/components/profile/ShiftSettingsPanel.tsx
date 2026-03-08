@@ -494,6 +494,13 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
     }
     return getHeaderGradient(effectiveShiftSystem, effectiveRosterType);
   }, [activeAccentShiftType, effectiveShiftSystem, effectiveRosterType]);
+  const liveAccentColor = useMemo(
+    () =>
+      activeAccentShiftType
+        ? LIVE_HEADER_GRADIENT_BY_SHIFT[activeAccentShiftType][0]
+        : theme.colors.sacredGold,
+    [activeAccentShiftType]
+  );
 
   useEffect(() => {
     return () => {
@@ -514,7 +521,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
         <View style={styles.headerContent}>
           <View style={styles.headerLeft}>
             <View style={styles.headerIconCircle}>
-              <Ionicons name="settings-outline" size={18} color="rgba(255,255,255,0.9)" />
+              <Ionicons name="settings-outline" size={18} color={liveAccentColor} />
             </View>
             <View>
               <Animated.Text style={styles.headerTitle}>
@@ -536,7 +543,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
               accessibilityLabel="Cancel editing shift settings"
               accessibilityRole="button"
             >
-              <Ionicons name="close-circle" size={22} color="rgba(255,255,255,0.8)" />
+              <Ionicons name="close-circle" size={22} color={liveAccentColor} />
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
@@ -546,7 +553,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
               accessibilityLabel="Edit shift settings"
               accessibilityRole="button"
             >
-              <Ionicons name="create-outline" size={20} color="rgba(255,255,255,0.8)" />
+              <Ionicons name="create-outline" size={20} color={liveAccentColor} />
             </TouchableOpacity>
           )}
         </View>
