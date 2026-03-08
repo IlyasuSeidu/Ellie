@@ -136,74 +136,73 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={styles.wrapper}
       >
-        <Animated.View
-          entering={FadeInUp.delay(animationDelay).duration(300)}
-          style={[styles.card, editModeAnimStyle, saveFlashStyle]}
-        >
-          <PremiumTextInput
-            label="Name"
-            value={name}
-            onChangeText={(text) => onFieldChange('name', text)}
-            leftIcon={<Ionicons name="person-outline" size={18} color={theme.colors.shadow} />}
-            containerStyle={styles.inputSpacing}
-          />
-          <PremiumTextInput
-            label="Occupation"
-            value={occupation}
-            onChangeText={(text) => onFieldChange('occupation', text)}
-            leftIcon={<Ionicons name="briefcase-outline" size={18} color={theme.colors.shadow} />}
-            containerStyle={styles.inputSpacing}
-          />
-          <PremiumTextInput
-            label="Company"
-            value={company}
-            onChangeText={(text) => onFieldChange('company', text)}
-            leftIcon={<Ionicons name="business-outline" size={18} color={theme.colors.shadow} />}
-            containerStyle={styles.inputSpacing}
-          />
+        <Animated.View entering={FadeInUp.delay(animationDelay).duration(300)} style={styles.card}>
+          <Animated.View style={[editModeAnimStyle, saveFlashStyle]}>
+            <PremiumTextInput
+              label="Name"
+              value={name}
+              onChangeText={(text) => onFieldChange('name', text)}
+              leftIcon={<Ionicons name="person-outline" size={18} color={theme.colors.shadow} />}
+              containerStyle={styles.inputSpacing}
+            />
+            <PremiumTextInput
+              label="Occupation"
+              value={occupation}
+              onChangeText={(text) => onFieldChange('occupation', text)}
+              leftIcon={<Ionicons name="briefcase-outline" size={18} color={theme.colors.shadow} />}
+              containerStyle={styles.inputSpacing}
+            />
+            <PremiumTextInput
+              label="Company"
+              value={company}
+              onChangeText={(text) => onFieldChange('company', text)}
+              leftIcon={<Ionicons name="business-outline" size={18} color={theme.colors.shadow} />}
+              containerStyle={styles.inputSpacing}
+            />
 
-          {/* Country field — opens modal */}
-          <TouchableOpacity
-            onPress={() => setCountryModalVisible(true)}
-            style={styles.countryTrigger}
-            activeOpacity={0.7}
-          >
-            <View style={styles.countryTriggerInner}>
-              <Ionicons name="flag-outline" size={18} color={theme.colors.shadow} />
-              <View style={styles.countryTextContainer}>
-                <Animated.Text style={styles.countryLabel}>Country</Animated.Text>
-                <Animated.Text style={styles.countryValue}>
-                  {country || 'Select country'}
-                </Animated.Text>
+            {/* Country field — opens modal */}
+            <TouchableOpacity
+              onPress={() => setCountryModalVisible(true)}
+              style={styles.countryTrigger}
+              activeOpacity={0.7}
+            >
+              <View style={styles.countryTriggerInner}>
+                <Ionicons name="flag-outline" size={18} color={theme.colors.shadow} />
+                <View style={styles.countryTextContainer}>
+                  <Animated.Text style={styles.countryLabel}>Country</Animated.Text>
+                  <Animated.Text style={styles.countryValue}>
+                    {country || 'Select country'}
+                  </Animated.Text>
+                </View>
+                <Ionicons name="chevron-forward" size={16} color={theme.colors.shadow} />
               </View>
-              <Ionicons name="chevron-forward" size={16} color={theme.colors.shadow} />
+            </TouchableOpacity>
+
+            {/* Save / Cancel */}
+            <View style={styles.buttonRow}>
+              <PremiumButton
+                title="Cancel"
+                onPress={onCancel}
+                variant="outline"
+                size="small"
+                style={styles.buttonHalf}
+              />
+              <PremiumButton
+                title="Save Changes"
+                onPress={handleSavePress}
+                variant="primary"
+                size="small"
+                style={styles.buttonHalf}
+              />
             </View>
-          </TouchableOpacity>
 
-          {/* Save / Cancel */}
-          <View style={styles.buttonRow}>
-            <PremiumButton
-              title="Cancel"
-              onPress={onCancel}
-              variant="outline"
-              size="small"
-              style={styles.buttonHalf}
+            <PremiumCountrySelectorModal
+              visible={countryModalVisible}
+              onSelect={handleCountrySelect}
+              onClose={() => setCountryModalVisible(false)}
+              selectedCountry={selectedCountryObj}
             />
-            <PremiumButton
-              title="Save Changes"
-              onPress={handleSavePress}
-              variant="primary"
-              size="small"
-              style={styles.buttonHalf}
-            />
-          </View>
-
-          <PremiumCountrySelectorModal
-            visible={countryModalVisible}
-            onSelect={handleCountrySelect}
-            onClose={() => setCountryModalVisible(false)}
-            selectedCountry={selectedCountryObj}
-          />
+          </Animated.View>
         </Animated.View>
       </KeyboardAvoidingView>
     );
@@ -211,32 +210,31 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
 
   // Read-only mode
   return (
-    <Animated.View
-      entering={FadeInUp.delay(animationDelay).duration(400)}
-      style={[styles.wrapper, styles.card, readModeAnimStyle]}
-    >
-      {fields.map((field, index) => (
-        <Animated.View
-          key={field.key}
-          entering={FadeInUp.delay(animationDelay + index * 80).duration(350)}
-        >
-          <View style={styles.fieldRow}>
-            <View style={styles.fieldLeft}>
-              <Ionicons
-                name={field.icon}
-                size={18}
-                color={theme.colors.shadow}
-                style={styles.fieldIcon}
-              />
-              <Animated.Text style={styles.fieldLabel}>{field.label}</Animated.Text>
+    <Animated.View entering={FadeInUp.delay(animationDelay).duration(400)} style={styles.wrapper}>
+      <Animated.View style={[styles.card, readModeAnimStyle]}>
+        {fields.map((field, index) => (
+          <Animated.View
+            key={field.key}
+            entering={FadeInUp.delay(animationDelay + index * 80).duration(350)}
+          >
+            <View style={styles.fieldRow}>
+              <View style={styles.fieldLeft}>
+                <Ionicons
+                  name={field.icon}
+                  size={18}
+                  color={theme.colors.shadow}
+                  style={styles.fieldIcon}
+                />
+                <Animated.Text style={styles.fieldLabel}>{field.label}</Animated.Text>
+              </View>
+              <Animated.Text style={styles.fieldValue} numberOfLines={1}>
+                {field.value || 'Not set'}
+              </Animated.Text>
             </View>
-            <Animated.Text style={styles.fieldValue} numberOfLines={1}>
-              {field.value || 'Not set'}
-            </Animated.Text>
-          </View>
-          {index < fields.length - 1 && <View style={styles.divider} />}
-        </Animated.View>
-      ))}
+            {index < fields.length - 1 && <View style={styles.divider} />}
+          </Animated.View>
+        ))}
+      </Animated.View>
     </Animated.View>
   );
 };

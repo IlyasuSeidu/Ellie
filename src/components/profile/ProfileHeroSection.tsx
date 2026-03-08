@@ -214,19 +214,21 @@ export const ProfileHeroSection: React.FC<ProfileHeroSectionProps> = ({
       {/* Edit button (top-right) */}
       <Animated.View
         entering={FadeInUp.delay(D + 500).duration(400)}
-        style={[styles.editButtonWrapper, editButtonStyle]}
+        style={styles.editButtonWrapper}
       >
-        <Pressable
-          onPress={handleEditPress}
-          style={[styles.editButton, isEditing && styles.editButtonActive]}
-          hitSlop={8}
-        >
-          <Ionicons
-            name={isEditing ? 'checkmark-circle' : 'create-outline'}
-            size={20}
-            color={isEditing ? theme.colors.sacredGold : theme.colors.dust}
-          />
-        </Pressable>
+        <Animated.View style={editButtonStyle}>
+          <Pressable
+            onPress={handleEditPress}
+            style={[styles.editButton, isEditing && styles.editButtonActive]}
+            hitSlop={8}
+          >
+            <Ionicons
+              name={isEditing ? 'checkmark-circle' : 'create-outline'}
+              size={20}
+              color={isEditing ? theme.colors.sacredGold : theme.colors.dust}
+            />
+          </Pressable>
+        </Animated.View>
       </Animated.View>
 
       {/* Avatar */}

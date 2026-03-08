@@ -120,57 +120,55 @@ export const LivePatternPreview: React.FC<LivePatternPreviewProps> = ({
   };
 
   return (
-    <Animated.View
-      entering={FadeIn.duration(300)}
-      style={[styles.container, animatedStyle, style]}
-      testID={testID}
-    >
-      {/* Summary card */}
-      <View style={styles.summaryCard}>
-        <Text style={styles.summaryText}>
-          Your {cycleLength}-day cycle: {daysOn}D / {nightsOn}N / {daysOff}O
-        </Text>
-      </View>
+    <Animated.View entering={FadeIn.duration(300)} style={style} testID={testID}>
+      <Animated.View style={[styles.container, animatedStyle]}>
+        {/* Summary card */}
+        <View style={styles.summaryCard}>
+          <Text style={styles.summaryText}>
+            Your {cycleLength}-day cycle: {daysOn}D / {nightsOn}N / {daysOff}O
+          </Text>
+        </View>
 
-      {/* 28-day preview */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-        style={styles.scrollView}
-      >
-        <View style={styles.previewGrid}>
-          {previewDays.map((day, index) => (
-            <View
-              key={index}
-              style={[
-                styles.dayBox,
-                { backgroundColor: getDayColor(day.type) },
-                day.type === 'day' && styles.dayBoxGlow,
-              ]}
-            >
-              <Text style={styles.dayLabel}>{getDayLabel(day.type)}</Text>
-              <Text style={styles.dayNumber}>{index + 1}</Text>
-            </View>
-          ))}
-        </View>
-      </ScrollView>
+        {/* 28-day preview */}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
+          style={styles.scrollView}
+        >
+          <View style={styles.previewGrid}>
+            {previewDays.map((day, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.dayBox,
+                  { backgroundColor: getDayColor(day.type) },
+                  day.type === 'day' && styles.dayBoxGlow,
+                ]}
+              >
+                <Text style={styles.dayLabel}>{getDayLabel(day.type)}</Text>
+                <Text style={styles.dayNumber}>{index + 1}</Text>
+              </View>
+            ))}
+          </View>
+        </ScrollView>
 
-      {/* Legend */}
-      <View style={styles.legend}>
-        <View style={styles.legendItem}>
-          <View style={[styles.legendBox, { backgroundColor: theme.colors.workDay }]} />
-          <Text style={styles.legendText}>Day Shift</Text>
+        {/* Legend */}
+        <View style={styles.legend}>
+          <View style={styles.legendItem}>
+            <View style={[styles.legendBox, { backgroundColor: theme.colors.workDay }]} />
+            <Text style={styles.legendText}>Day Shift</Text>
+          </View>
+          <View style={styles.legendItem}>
+            <View style={[styles.legendBox, { backgroundColor: theme.colors.nightShift }]} />
+            <Text style={styles.legendText}>Night Shift</Text>
+          </View>
+          <View style={styles.legendItem}>
+            <View style={[styles.legendBox, { backgroundColor: theme.colors.offDay }]} />
+            <Text style={styles.legendText}>Off Days</Text>
+          </View>
         </View>
-        <View style={styles.legendItem}>
-          <View style={[styles.legendBox, { backgroundColor: theme.colors.nightShift }]} />
-          <Text style={styles.legendText}>Night Shift</Text>
-        </View>
-        <View style={styles.legendItem}>
-          <View style={[styles.legendBox, { backgroundColor: theme.colors.offDay }]} />
-          <Text style={styles.legendText}>Off Days</Text>
-        </View>
-      </View>
+      </Animated.View>
     </Animated.View>
   );
 };
