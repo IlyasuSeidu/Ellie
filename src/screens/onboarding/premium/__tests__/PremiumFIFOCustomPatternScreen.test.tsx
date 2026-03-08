@@ -146,6 +146,25 @@ describe('PremiumFIFOCustomPatternScreen', () => {
     fireEvent.press(swing);
   });
 
+  it('updates preview content dynamically for straight days, straight nights, and swing', async () => {
+    const { getByTestId, getByText, getAllByText } = renderWithContext();
+
+    expect(getAllByText(/Work pattern: Straight Days/).length).toBeGreaterThan(0);
+    expect(getByText('Day Work')).toBeTruthy();
+
+    fireEvent.press(getByTestId('work-pattern-straight-nights'));
+    await waitFor(() => {
+      expect(getAllByText(/Work pattern: Straight Nights/).length).toBeGreaterThan(0);
+      expect(getByText('Night Work')).toBeTruthy();
+    });
+
+    fireEvent.press(getByTestId('work-pattern-swing'));
+    await waitFor(() => {
+      expect(getAllByText(/Work pattern: Swing/).length).toBeGreaterThan(0);
+      expect(getByText('Swing Work')).toBeTruthy();
+    });
+  });
+
   it('keeps swing config hidden for non-swing and visible for swing', async () => {
     const { queryByTestId, getByText } = renderWithContext();
     expect(queryByTestId('swing-config-section')).toBeNull();

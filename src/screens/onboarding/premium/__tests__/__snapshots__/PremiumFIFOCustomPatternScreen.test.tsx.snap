@@ -2967,6 +2967,8 @@ exports[`PremiumFIFOCustomPatternScreen matches snapshot 1`] = `
                   "color": "#e7e5e4",
                   "fontSize": 22,
                   "fontWeight": "bold",
+                  "textAlign": "center",
+                  "width": "100%",
                 }
               }
             >
@@ -2986,6 +2988,20 @@ exports[`PremiumFIFOCustomPatternScreen matches snapshot 1`] = `
                days at site, then 
               14
                days at home
+            </Text>
+            <Text
+              style={
+                {
+                  "color": "#b45309",
+                  "fontSize": 13,
+                  "fontWeight": "600",
+                  "textAlign": "center",
+                }
+              }
+            >
+              Straight Days
+               • 
+              Work pattern: Straight Days
             </Text>
           </View>
           <RCTScrollView
@@ -3062,7 +3078,7 @@ exports[`PremiumFIFOCustomPatternScreen matches snapshot 1`] = `
                       }
                     }
                   >
-                    Work
+                    Day Work
                   </Text>
                 </View>
               </View>
@@ -3129,6 +3145,19 @@ exports[`PremiumFIFOCustomPatternScreen matches snapshot 1`] = `
               </View>
             </View>
           </RCTScrollView>
+          <Text
+            style={
+              {
+                "color": "#b45309",
+                "fontSize": 12,
+                "fontWeight": "600",
+                "marginBottom": 16,
+                "textAlign": "center",
+              }
+            }
+          >
+            Work pattern: Straight Days
+          </Text>
           <View
             style={
               {
@@ -3186,7 +3215,7 @@ exports[`PremiumFIFOCustomPatternScreen matches snapshot 1`] = `
                       }
                     }
                   >
-                    Work Block
+                    Day Work Block
                   </Text>
                 </View>
                 <View

@@ -166,6 +166,66 @@ interface FIFOPreviewCardProps {
   reducedMotion: boolean;
 }
 
+const getPreviewPatternMeta = (
+  workPattern: FIFOPreviewCardProps['workPattern'],
+  daysOnDayShift: number,
+  daysOnNightShift: number
+) => {
+  const selectedPattern = WORK_PATTERNS.find((pattern) => pattern.id === workPattern);
+
+  if (workPattern === 'straight-nights') {
+    return {
+      title: selectedPattern?.title ?? 'Straight Nights',
+      detail: 'Work pattern: Straight Nights',
+      blockLabel: 'Night Work',
+      icon:
+        selectedPattern?.icon ??
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png'),
+      blockColor: theme.colors.shiftVisualization.nightShift,
+      legendLabel: 'Night Work Block',
+    };
+  }
+
+  if (workPattern === 'swing') {
+    return {
+      title: selectedPattern?.title ?? 'Swing Roster',
+      detail: `Work pattern: Swing (${daysOnDayShift} day + ${daysOnNightShift} night)`,
+      blockLabel: 'Swing Work',
+      icon:
+        selectedPattern?.icon ??
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        require('../../../../assets/onboarding/icons/consolidated/roster-type-rotating.png'),
+      blockColor: theme.colors.sacredGold,
+      legendLabel: 'Swing Work Block',
+    };
+  }
+
+  if (workPattern === 'custom') {
+    return {
+      title: 'Custom Work Pattern',
+      detail: 'Work pattern: Custom sequence',
+      blockLabel: 'Custom Work',
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      icon: require('../../../../assets/onboarding/icons/consolidated/roster-type-fifo.png'),
+      blockColor: theme.colors.sacredGold,
+      legendLabel: 'Custom Work Block',
+    };
+  }
+
+  return {
+    title: selectedPattern?.title ?? 'Straight Days',
+    detail: 'Work pattern: Straight Days',
+    blockLabel: 'Day Work',
+    icon:
+      selectedPattern?.icon ??
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png'),
+    blockColor: theme.colors.shiftVisualization.dayShift,
+    legendLabel: 'Day Work Block',
+  };
+};
+
 const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
   workBlockDays,
   restBlockDays,
@@ -182,6 +242,10 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
   const workPercentage = Math.round((workBlockDays / Math.max(1, totalCycleDays)) * 100);
   const restPercentage = Math.round((restBlockDays / Math.max(1, totalCycleDays)) * 100);
   const previewDays = Math.min(totalCycleDays, 42);
+  const patternMeta = useMemo(
+    () => getPreviewPatternMeta(workPattern, daysOnDayShift, daysOnNightShift),
+    [daysOnDayShift, daysOnNightShift, workPattern]
+  );
 
   useEffect(() => {
     scaleValue.value = withDelay(200, withSpring(1, SPRING_CONFIGS.gentle));
@@ -221,6 +285,9 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
           <Text style={styles.previewSubtitle}>
             {workBlockDays} days at site, then {restBlockDays} days at home
           </Text>
+          <Text style={styles.previewPatternDetail}>
+            {patternMeta.title} • {patternMeta.detail}
+          </Text>
         </View>
 
         <ScrollView
@@ -230,19 +297,10 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
           style={styles.cycleBlocksContainer}
         >
           <View style={styles.cycleBlock}>
-            <View
-              style={[
-                styles.cycleBlockInner,
-                { backgroundColor: theme.colors.shiftVisualization.dayShift },
-              ]}
-            >
-              <Image
-                source={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
-                style={styles.cycleBlockIcon}
-                resizeMode="contain"
-              />
+            <View style={[styles.cycleBlockInner, { backgroundColor: patternMeta.blockColor }]}>
+              <Image source={patternMeta.icon} style={styles.cycleBlockIcon} resizeMode="contain" />
               <Text style={styles.cycleBlockNumber}>{workBlockDays}</Text>
-              <Text style={styles.cycleBlockLabel}>Work</Text>
+              <Text style={styles.cycleBlockLabel}>{patternMeta.blockLabel}</Text>
             </View>
           </View>
 
@@ -263,11 +321,11 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
             </View>
           </View>
         </ScrollView>
-        {workPattern === 'swing' && (
-          <Text style={styles.swingPreviewText}>
-            Swing split: {daysOnDayShift} day-shift days + {daysOnNightShift} night-shift days
-          </Text>
-        )}
+        <Text style={styles.swingPreviewText}>
+          {workPattern === 'swing'
+            ? `Swing split: ${daysOnDayShift} day-shift days + ${daysOnNightShift} night-shift days`
+            : patternMeta.detail}
+        </Text>
 
         <View style={styles.cyclePreviewSection}>
           <ScrollView
@@ -303,14 +361,11 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
                   style={[
                     styles.legendDot,
                     {
-                      backgroundColor:
-                        workPattern === 'straight-nights'
-                          ? theme.colors.shiftVisualization.nightShift
-                          : theme.colors.shiftVisualization.dayShift,
+                      backgroundColor: patternMeta.blockColor,
                     },
                   ]}
                 />
-                <Text style={styles.legendText}>Work Block</Text>
+                <Text style={styles.legendText}>{patternMeta.legendLabel}</Text>
               </View>
             )}
             <View style={styles.legendItem}>
@@ -1163,12 +1218,20 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     color: theme.colors.paper,
+    textAlign: 'center',
+    width: '100%',
   },
   previewSubtitle: {
     fontSize: 14,
     color: theme.colors.dust,
     marginTop: 4,
     textAlign: 'center',
+  },
+  previewPatternDetail: {
+    fontSize: 13,
+    color: theme.colors.sacredGold,
+    textAlign: 'center',
+    fontWeight: '600',
   },
   previewHeaderIcon: {
     width: 60,
