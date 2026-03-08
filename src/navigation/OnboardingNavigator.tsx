@@ -91,6 +91,7 @@ export type OnboardingStackParamList = {
     | {
         entryPoint?: 'onboarding' | 'settings';
         returnToMainOnSelect?: boolean;
+        initialShiftType?: 'day' | 'night' | 'morning' | 'afternoon';
       }
     | undefined;
   /** Step 8: Review data and complete onboarding */

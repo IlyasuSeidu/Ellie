@@ -144,6 +144,7 @@ describe('OnboardingNavigator', () => {
       const shiftTimeInputSettingsParams: ShiftTimeInputParams = {
         entryPoint: 'settings',
         returnToMainOnSelect: true,
+        initialShiftType: 'night',
       };
       const completionParams: CompletionParams = undefined;
 

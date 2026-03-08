@@ -236,7 +236,10 @@ export interface ShiftSettingsPanelProps {
   data: OnboardingData;
   onUpdate: (updates: Partial<OnboardingData>) => void;
   onOpenPatternOnboarding?: (seed: Partial<OnboardingData>) => void;
-  onOpenShiftTimeOnboarding?: (seed: Partial<OnboardingData>) => void;
+  onOpenShiftTimeOnboarding?: (
+    seed: Partial<OnboardingData>,
+    initialShiftType?: 'day' | 'night' | 'morning' | 'afternoon'
+  ) => void;
   animationDelay?: number;
 }
 
@@ -457,6 +460,17 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
         isCustomShiftTime: editIsCustomShiftTime,
       };
 
+      const initialShiftType =
+        target.shiftKey === 'dayShift'
+          ? 'day'
+          : target.shiftKey === 'nightShift' || target.shiftKey === 'nightShift3'
+            ? 'night'
+            : target.shiftKey === 'morningShift'
+              ? 'morning'
+              : target.shiftKey === 'afternoonShift'
+                ? 'afternoon'
+                : undefined;
+
       onUpdate(seed);
       setPatternSheetVisible(false);
       setTimePickerTarget(null);
@@ -465,7 +479,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
       setAutoResetNotice(null);
       setLocalData({});
       setIsEditing(false);
-      onOpenShiftTimeOnboarding(seed);
+      onOpenShiftTimeOnboarding(seed, initialShiftType);
     },
     [
       editCustomPattern,

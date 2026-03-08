@@ -35,6 +35,8 @@ jest.mock('@expo/vector-icons', () => {
 });
 
 // Mock navigation
+let mockRouteParams: Record<string, unknown> | undefined;
+
 jest.mock('@react-navigation/native', () => ({
   ...jest.requireActual('@react-navigation/native'),
   useNavigation: () => ({
@@ -42,7 +44,7 @@ jest.mock('@react-navigation/native', () => ({
     goBack: jest.fn(),
   }),
   useRoute: () => ({
-    params: undefined,
+    params: mockRouteParams,
   }),
 }));
 
@@ -91,6 +93,7 @@ const renderScreen = () =>
 describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockRouteParams = undefined;
   });
 
   it('uses 2 stages for standard 2-shift patterns even with stale customPattern', async () => {
@@ -135,6 +138,19 @@ describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
     const { getByText } = renderScreen();
     expect(getByText('Step 1 of 3')).toBeTruthy();
     expect(getByText('Morning Shift Times')).toBeTruthy();
+  });
+
+  it('opens at the requested stage when initialShiftType is provided', () => {
+    mockRouteParams = { initialShiftType: 'night' };
+    mockOnboardingData = {
+      shiftSystem: '2-shift',
+      rosterType: 'rotating',
+      patternType: ShiftPattern.STANDARD_4_4_4,
+    };
+
+    const { getByText } = renderScreen();
+    expect(getByText('Step 2 of 2')).toBeTruthy();
+    expect(getByText('Night Shift Times')).toBeTruthy();
   });
 
   it('shows morning detection for 5:00 AM early morning preset in 3-shift mode', () => {

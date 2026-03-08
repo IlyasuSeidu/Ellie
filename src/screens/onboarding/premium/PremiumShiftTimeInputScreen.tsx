@@ -116,6 +116,12 @@ const getPatternInfo = (
 };
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
+type StageShiftType = 'day' | 'night' | 'morning' | 'afternoon';
+type StageShiftTimes = {
+  startTime: string;
+  endTime: string;
+  duration: 8 | 12;
+};
 
 // Preset shift configurations
 interface ShiftPreset {
@@ -360,7 +366,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   const lockedDuration: 8 | 12 = shiftSystem === ShiftSystem.THREE_SHIFT ? 8 : 12;
 
   // Determine required shift types based on roster type and pattern
-  let requiredShiftTypes: string[];
+  let requiredShiftTypes: StageShiftType[];
 
   if (rosterType === 'fifo') {
     // FIFO roster: determine shift types based on work pattern
@@ -388,22 +394,76 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     const customPatternForStageDetection =
       data.patternType === ShiftPattern.CUSTOM ? data.customPattern : undefined;
 
-    requiredShiftTypes = getRequiredShiftTypes(
+    const rotatingShiftTypes = getRequiredShiftTypes(
       shiftSystem === ShiftSystem.THREE_SHIFT ? '3-shift' : '2-shift',
       customPatternForStageDetection
     );
+    requiredShiftTypes = rotatingShiftTypes.filter(
+      (shiftType): shiftType is StageShiftType =>
+        shiftType === 'day' ||
+        shiftType === 'night' ||
+        shiftType === 'morning' ||
+        shiftType === 'afternoon'
+    );
+    if (requiredShiftTypes.length === 0) {
+      requiredShiftTypes =
+        shiftSystem === ShiftSystem.THREE_SHIFT ? ['morning', 'afternoon', 'night'] : ['day'];
+    }
   }
 
+  const initialStageIndex = (() => {
+    const initialShiftType = route.params?.initialShiftType;
+    if (!initialShiftType) return 0;
+    const stageIndex = requiredShiftTypes.indexOf(initialShiftType);
+    return stageIndex >= 0 ? stageIndex : 0;
+  })();
+
+  const buildInitialCollectedShiftTimes = (): Partial<Record<StageShiftType, StageShiftTimes>> => {
+    const initial: Partial<Record<StageShiftType, StageShiftTimes>> = {};
+    const currentShiftTimes = data.shiftTimes;
+
+    if (currentShiftTimes?.dayShift) {
+      initial.day = currentShiftTimes.dayShift;
+    }
+    if (currentShiftTimes?.morningShift) {
+      initial.morning = currentShiftTimes.morningShift;
+    }
+    if (currentShiftTimes?.afternoonShift) {
+      initial.afternoon = currentShiftTimes.afternoonShift;
+    }
+    if (currentShiftTimes?.nightShift3) {
+      initial.night = currentShiftTimes.nightShift3;
+    } else if (currentShiftTimes?.nightShift) {
+      initial.night = currentShiftTimes.nightShift;
+    }
+
+    const firstRequiredShift = requiredShiftTypes[0];
+    if (
+      firstRequiredShift &&
+      !initial[firstRequiredShift] &&
+      data.shiftStartTime &&
+      data.shiftEndTime
+    ) {
+      initial[firstRequiredShift] = {
+        startTime: data.shiftStartTime,
+        endTime: data.shiftEndTime,
+        duration: data.shiftDuration ?? lockedDuration,
+      };
+    }
+
+    return initial;
+  };
+
   // Multi-stage state: track which shift type we're currently collecting
-  const [currentStageIndex, setCurrentStageIndex] = useState(0);
+  const [currentStageIndex, setCurrentStageIndex] = useState(initialStageIndex);
   const currentShiftType = requiredShiftTypes[currentStageIndex];
   const totalStages = requiredShiftTypes.length;
   const isLastStage = currentStageIndex === totalStages - 1;
 
   // Store collected shift times for all stages
   const [collectedShiftTimes, setCollectedShiftTimes] = useState<
-    Record<string, { startTime: string; endTime: string; duration: 8 | 12 }>
-  >({});
+    Partial<Record<StageShiftType, StageShiftTimes>>
+  >(buildInitialCollectedShiftTimes);
 
   // Filter presets by shift system AND current shift type
   const filteredPresets = SHIFT_PRESETS.filter((preset) => {
@@ -421,7 +481,9 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
   const [customHours, setCustomHours] = useState('06');
   const [customMinutes, setCustomMinutes] = useState('00');
-  const [customPeriod, setCustomPeriod] = useState<'AM' | 'PM'>('AM');
+  const [customPeriod, setCustomPeriod] = useState<'AM' | 'PM'>(
+    currentShiftType === 'night' ? 'PM' : 'AM'
+  );
   const [duration, setDuration] = useState<8 | 12>(lockedDuration);
   const [showCustomInput, setShowCustomInput] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -664,12 +726,14 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
       goToNextScreen(navigation, 'ShiftTimeInput');
     } else {
       // Move to next stage
-      setCurrentStageIndex(currentStageIndex + 1);
+      const nextStageIndex = currentStageIndex + 1;
+      const nextShiftType = requiredShiftTypes[nextStageIndex];
+      setCurrentStageIndex(nextStageIndex);
       // Reset input state for next stage
       setSelectedPreset(null);
       setCustomHours('06');
       setCustomMinutes('00');
-      setCustomPeriod(currentShiftType === 'night' ? 'PM' : 'AM');
+      setCustomPeriod(nextShiftType === 'night' ? 'PM' : 'AM');
       setShowCustomInput(false);
       setTimeError(null);
     }
@@ -702,12 +766,14 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
 
     // If we're not on the first stage, go back to previous stage
     if (currentStageIndex > 0) {
-      setCurrentStageIndex(currentStageIndex - 1);
+      const previousStageIndex = currentStageIndex - 1;
+      const previousShiftType = requiredShiftTypes[previousStageIndex];
+      setCurrentStageIndex(previousStageIndex);
       // Reset input state
       setSelectedPreset(null);
       setCustomHours('06');
       setCustomMinutes('00');
-      setCustomPeriod('AM');
+      setCustomPeriod(previousShiftType === 'night' ? 'PM' : 'AM');
       setShowCustomInput(false);
       setTimeError(null);
     } else {
@@ -722,6 +788,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     }
   }, [
     currentStageIndex,
+    requiredShiftTypes,
     navigation,
     onBack,
     isSettingsEntry,

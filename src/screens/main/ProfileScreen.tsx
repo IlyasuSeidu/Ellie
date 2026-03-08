@@ -16,6 +16,7 @@ import Animated from 'react-native-reanimated';
 import { theme } from '@/utils/theme';
 import { useProfileData } from '@/hooks/useProfileData';
 import { useShiftAccent } from '@/hooks/useShiftAccent';
+import type { OnboardingData } from '@/contexts/OnboardingContext';
 import { ProfileHeroSection } from '@/components/profile/ProfileHeroSection';
 import { ProfileSectionHeader } from '@/components/profile/ProfileSectionHeader';
 import { ProfileEditForm } from '@/components/profile/ProfileEditForm';
@@ -79,18 +80,25 @@ export const ProfileScreen: React.FC = () => {
     });
   }, [navigation]);
 
-  const handleOpenShiftTimeOnboarding = useCallback(() => {
-    const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
-    if (!rootNavigation) return;
+  const handleOpenShiftTimeOnboarding = useCallback(
+    (
+      _seed: Partial<OnboardingData>,
+      initialShiftType?: 'day' | 'night' | 'morning' | 'afternoon'
+    ) => {
+      const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+      if (!rootNavigation) return;
 
-    rootNavigation.navigate('Onboarding', {
-      screen: 'ShiftTimeInput',
-      params: {
-        entryPoint: 'settings',
-        returnToMainOnSelect: true,
-      } satisfies OnboardingStackParamList['ShiftTimeInput'],
-    });
-  }, [navigation]);
+      rootNavigation.navigate('Onboarding', {
+        screen: 'ShiftTimeInput',
+        params: {
+          entryPoint: 'settings',
+          returnToMainOnSelect: true,
+          initialShiftType,
+        } satisfies OnboardingStackParamList['ShiftTimeInput'],
+      });
+    },
+    [navigation]
+  );
 
   return (
     <View style={styles.screen}>
