@@ -9,7 +9,16 @@
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { Modal, View, TouchableOpacity, ScrollView, StyleSheet, Dimensions } from 'react-native';
+import {
+  Modal,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+  Dimensions,
+  Image,
+  type ImageSourcePropType,
+} from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -34,9 +43,23 @@ interface PhaseOption {
   id: string;
   label: string;
   days: number;
-  icon: keyof typeof Ionicons.glyphMap;
+  iconSource: ImageSourcePropType;
   color: string;
 }
+
+const SHIFT_TYPE_ICONS = {
+  day: require('../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png'),
+  night: require('../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png'),
+  morning: require('../../../assets/onboarding/icons/consolidated/shift-time-morning.png'),
+  afternoon: require('../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png'),
+  off: require('../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png'),
+} as const;
+
+const RESYNC_SHEET_ICONS = {
+  header: require('../../../assets/onboarding/icons/consolidated/phase-day-shift-sun.png'),
+} as const;
+
+const RESYNC_HEADER_ICON: ImageSourcePropType = RESYNC_SHEET_ICONS.header;
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -73,7 +96,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
           id: 'morning',
           label: 'Morning Shift',
           days: morning,
-          icon: 'partly-sunny-outline',
+          iconSource: SHIFT_TYPE_ICONS.morning,
           color: '#F59E0B',
         });
       }
@@ -82,7 +105,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
           id: 'afternoon',
           label: 'Afternoon Shift',
           days: afternoon,
-          icon: 'cloud-outline',
+          iconSource: SHIFT_TYPE_ICONS.afternoon,
           color: '#06B6D4',
         });
       }
@@ -91,7 +114,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
           id: 'night',
           label: 'Night Shift',
           days: night3,
-          icon: 'moon-outline',
+          iconSource: SHIFT_TYPE_ICONS.night,
           color: '#9C27B0',
         });
       }
@@ -101,7 +124,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
           id: 'day',
           label: 'Day Shift',
           days: day,
-          icon: 'sunny-outline',
+          iconSource: SHIFT_TYPE_ICONS.day,
           color: '#2196F3',
         });
       }
@@ -110,7 +133,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
           id: 'night',
           label: 'Night Shift',
           days: night,
-          icon: 'moon-outline',
+          iconSource: SHIFT_TYPE_ICONS.night,
           color: '#9C27B0',
         });
       }
@@ -121,7 +144,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
         id: 'off',
         label: 'Days Off',
         days: off,
-        icon: 'bed-outline',
+        iconSource: SHIFT_TYPE_ICONS.off,
         color: '#4CAF50',
       });
     }
@@ -145,7 +168,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
         id: 'morning',
         label: 'Morning Shift',
         days: morning,
-        icon: 'partly-sunny-outline',
+        iconSource: SHIFT_TYPE_ICONS.morning,
         color: '#F59E0B',
       });
     }
@@ -154,7 +177,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
         id: 'afternoon',
         label: 'Afternoon Shift',
         days: afternoon,
-        icon: 'cloud-outline',
+        iconSource: SHIFT_TYPE_ICONS.afternoon,
         color: '#06B6D4',
       });
     }
@@ -163,7 +186,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
         id: 'night',
         label: 'Night Shift',
         days: night,
-        icon: 'moon-outline',
+        iconSource: SHIFT_TYPE_ICONS.night,
         color: '#9C27B0',
       });
     }
@@ -173,7 +196,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
         id: 'day',
         label: 'Day Shift',
         days: config.daysOn ?? 0,
-        icon: 'sunny-outline',
+        iconSource: SHIFT_TYPE_ICONS.day,
         color: '#2196F3',
       });
     }
@@ -182,7 +205,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
         id: 'night',
         label: 'Night Shift',
         days: config.nightsOn ?? 0,
-        icon: 'moon-outline',
+        iconSource: SHIFT_TYPE_ICONS.night,
         color: '#9C27B0',
       });
     }
@@ -193,7 +216,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
       id: 'off',
       label: 'Days Off',
       days: config.daysOff,
-      icon: 'bed-outline',
+      iconSource: SHIFT_TYPE_ICONS.off,
       color: '#4CAF50',
     });
   }
@@ -212,7 +235,7 @@ function getFIFOPhases(data: OnboardingData): PhaseOption[] {
       id: 'work',
       label: 'Work Block',
       days: workDays,
-      icon: 'construct-outline',
+      iconSource: SHIFT_TYPE_ICONS.day,
       color: '#2196F3',
     });
   }
@@ -222,7 +245,7 @@ function getFIFOPhases(data: OnboardingData): PhaseOption[] {
       id: 'rest',
       label: 'Rest Block',
       days: restDays,
-      icon: 'home-outline',
+      iconSource: SHIFT_TYPE_ICONS.off,
       color: '#78716c',
     });
   }
@@ -346,7 +369,11 @@ export const CycleResyncSheet: React.FC<CycleResyncSheetProps> = ({
             <View style={styles.header}>
               <View style={styles.headerLeft}>
                 <View style={styles.headerIconBg}>
-                  <Ionicons name="locate-outline" size={18} color={theme.colors.sacredGold} />
+                  <Image
+                    source={RESYNC_HEADER_ICON}
+                    style={styles.headerIconImage}
+                    resizeMode="contain"
+                  />
                 </View>
                 <View>
                   <Animated.Text style={styles.headerTitle}>Re-sync Cycle</Animated.Text>
@@ -381,7 +408,11 @@ export const CycleResyncSheet: React.FC<CycleResyncSheetProps> = ({
                   accessibilityRole="button"
                 >
                   <View style={[styles.phaseIconBg, { backgroundColor: phase.color + '20' }]}>
-                    <Ionicons name={phase.icon} size={22} color={phase.color} />
+                    <Image
+                      source={phase.iconSource}
+                      style={styles.phaseIconImage}
+                      resizeMode="contain"
+                    />
                   </View>
                   <View style={styles.phaseInfo}>
                     <Animated.Text style={styles.phaseLabel}>{phase.label}</Animated.Text>
@@ -558,6 +589,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  headerIconImage: {
+    width: 18,
+    height: 18,
+  },
   headerTitle: {
     fontSize: theme.typography.fontSizes.md,
     fontWeight: theme.typography.fontWeights.bold,
@@ -607,6 +642,10 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  phaseIconImage: {
+    width: 24,
+    height: 24,
   },
   phaseInfo: {
     flex: 1,

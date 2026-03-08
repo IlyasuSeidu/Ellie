@@ -10,11 +10,11 @@
  */
 
 import React, { useMemo } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image, type ImageSourcePropType } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
-import type { ShiftPattern, FIFOConfig } from '@/types';
+import { ShiftPattern, type FIFOConfig } from '@/types';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
 import {
   getPatternDisplayName,
@@ -37,10 +37,45 @@ interface ShiftConfigCardProps {
 }
 
 interface ConfigRow {
-  icon: keyof typeof Ionicons.glyphMap;
+  iconSource?: ImageSourcePropType;
+  icon?: keyof typeof Ionicons.glyphMap;
   label: string;
   value: string;
   isBadge?: boolean;
+}
+
+const SHIFT_TYPE_ICONS = {
+  day: require('../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png'),
+  night: require('../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png'),
+  morning: require('../../../assets/onboarding/icons/consolidated/shift-time-morning.png'),
+} as const;
+
+const ROSTER_ICONS = {
+  rotating: require('../../../assets/onboarding/icons/consolidated/roster-type-rotating.png'),
+  fifo: require('../../../assets/onboarding/icons/consolidated/roster-type-fifo.png'),
+} as const;
+
+const PATTERN_ICONS: Record<ShiftPattern, ImageSourcePropType> = {
+  [ShiftPattern.STANDARD_3_3_3]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-3-3-3.png'),
+  [ShiftPattern.STANDARD_5_5_5]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-5-5-5.png'),
+  [ShiftPattern.STANDARD_10_10_10]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-10-10-10.png'),
+  [ShiftPattern.STANDARD_2_2_3]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-2-2-3.png'),
+  [ShiftPattern.STANDARD_4_4_4]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-4-4-4.png'),
+  [ShiftPattern.STANDARD_7_7_7]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-7-7-7.png'),
+  [ShiftPattern.CONTINENTAL]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-continental.png'),
+  [ShiftPattern.PITMAN]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-pitman.png'),
+  [ShiftPattern.CUSTOM]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-custom.png'),
+  [ShiftPattern.FIFO_8_6]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-fifo-8-6.png'),
+  [ShiftPattern.FIFO_7_7]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-fifo-7-7.png'),
+  [ShiftPattern.FIFO_14_14]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-fifo-14-14.png'),
+  [ShiftPattern.FIFO_14_7]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-fifo-14-7.png'),
+  [ShiftPattern.FIFO_21_7]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-fifo-21-7.png'),
+  [ShiftPattern.FIFO_28_14]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-fifo-28-14.png'),
+  [ShiftPattern.FIFO_CUSTOM]: require('../../../assets/onboarding/icons/consolidated/shift-pattern-fifo-custom.png'),
+};
+
+function getSystemIconSource(shiftSystem?: '2-shift' | '3-shift'): ImageSourcePropType {
+  return shiftSystem === '3-shift' ? SHIFT_TYPE_ICONS.morning : SHIFT_TYPE_ICONS.day;
 }
 
 export const ShiftConfigCard: React.FC<ShiftConfigCardProps> = ({
@@ -61,7 +96,7 @@ export const ShiftConfigCard: React.FC<ShiftConfigCardProps> = ({
 
     // Shift system
     result.push({
-      icon: 'time-outline',
+      iconSource: getSystemIconSource(shiftSystem),
       label: 'System',
       value: getShiftSystemDisplayName(shiftSystem),
       isBadge: true,
@@ -69,7 +104,7 @@ export const ShiftConfigCard: React.FC<ShiftConfigCardProps> = ({
 
     // Roster type
     result.push({
-      icon: 'swap-horizontal-outline',
+      iconSource: rosterType === 'fifo' ? ROSTER_ICONS.fifo : ROSTER_ICONS.rotating,
       label: 'Roster',
       value: getRosterTypeDisplayName(rosterType),
       isBadge: true,
@@ -77,7 +112,7 @@ export const ShiftConfigCard: React.FC<ShiftConfigCardProps> = ({
 
     // Pattern
     result.push({
-      icon: 'refresh-outline',
+      iconSource: PATTERN_ICONS[patternType],
       label: 'Pattern',
       value: getPatternDisplayName({ patternType, shiftSystem, customPattern, fifoConfig }),
     });
@@ -86,7 +121,7 @@ export const ShiftConfigCard: React.FC<ShiftConfigCardProps> = ({
     const timesText = getShiftTimesText(shiftSystem, shiftTimes, shiftStartTime, shiftEndTime);
     if (timesText) {
       result.push({
-        icon: 'sunny-outline',
+        iconSource: shiftSystem === '3-shift' ? SHIFT_TYPE_ICONS.morning : SHIFT_TYPE_ICONS.day,
         label: 'Times',
         value: timesText,
       });
@@ -159,12 +194,16 @@ export const ShiftConfigCard: React.FC<ShiftConfigCardProps> = ({
         >
           <View style={styles.row}>
             <View style={styles.rowLeft}>
-              <Ionicons
-                name={row.icon}
-                size={18}
-                color={theme.colors.shadow}
-                style={styles.rowIcon}
-              />
+              {row.iconSource ? (
+                <Image source={row.iconSource} style={styles.rowIconImage} resizeMode="contain" />
+              ) : row.icon ? (
+                <Ionicons
+                  name={row.icon}
+                  size={18}
+                  color={theme.colors.shadow}
+                  style={styles.rowIcon}
+                />
+              ) : null}
               <Animated.Text style={styles.rowLabel}>{row.label}</Animated.Text>
             </View>
             {row.isBadge ? (
@@ -261,6 +300,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   rowIcon: {
+    marginRight: theme.spacing.sm,
+  },
+  rowIconImage: {
+    width: 18,
+    height: 18,
     marginRight: theme.spacing.sm,
   },
   rowLabel: {

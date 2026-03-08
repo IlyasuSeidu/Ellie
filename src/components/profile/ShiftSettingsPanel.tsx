@@ -703,7 +703,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
             <>
               <Divider />
               <ReadRow
-                icon="locate-outline"
+                iconSource={CYCLE_POSITION_ICON}
                 iconColor={theme.colors.sacredGold}
                 label="Cycle"
                 value={getCyclePositionLabel(d) ?? '—'}
