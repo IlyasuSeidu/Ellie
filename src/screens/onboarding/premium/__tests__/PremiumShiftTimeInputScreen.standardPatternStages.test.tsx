@@ -36,12 +36,24 @@ jest.mock('@expo/vector-icons', () => {
 
 // Mock navigation
 let mockRouteParams: Record<string, unknown> | undefined;
+const mockNavigationGoBack = jest.fn();
+const mockNavigationNavigate = jest.fn();
+const mockNavigationAddListener = jest.fn(() => jest.fn());
+const mockRootGoBack = jest.fn();
+const mockRootReset = jest.fn();
+const mockGetParent = jest.fn(() => ({
+  canGoBack: () => true,
+  goBack: mockRootGoBack,
+  reset: mockRootReset,
+}));
 
 jest.mock('@react-navigation/native', () => ({
   ...jest.requireActual('@react-navigation/native'),
   useNavigation: () => ({
-    navigate: jest.fn(),
-    goBack: jest.fn(),
+    navigate: mockNavigationNavigate,
+    goBack: mockNavigationGoBack,
+    addListener: mockNavigationAddListener,
+    getParent: mockGetParent,
   }),
   useRoute: () => ({
     params: mockRouteParams,
@@ -94,6 +106,11 @@ describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockRouteParams = undefined;
+    mockGetParent.mockReturnValue({
+      canGoBack: () => true,
+      goBack: mockRootGoBack,
+      reset: mockRootReset,
+    });
   });
 
   it('uses 2 stages for standard 2-shift patterns even with stale customPattern', async () => {
@@ -151,6 +168,24 @@ describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
     const { getByText } = renderScreen();
     expect(getByText('Step 2 of 2')).toBeTruthy();
     expect(getByText('Night Shift Times')).toBeTruthy();
+  });
+
+  it('returns to settings from first stage when entered from settings', () => {
+    mockRouteParams = {
+      entryPoint: 'settings',
+      returnToMainOnSelect: true,
+      initialShiftType: 'day',
+    };
+    mockOnboardingData = {
+      shiftSystem: '2-shift',
+      rosterType: 'rotating',
+      patternType: ShiftPattern.STANDARD_4_4_4,
+    };
+
+    const { getByLabelText } = renderScreen();
+    fireEvent.press(getByLabelText('Go back'));
+
+    expect(mockRootGoBack).toHaveBeenCalledTimes(1);
   });
 
   it('shows morning detection for 5:00 AM early morning preset in 3-shift mode', () => {

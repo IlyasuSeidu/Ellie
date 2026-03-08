@@ -361,6 +361,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
 
   // Ref for ScrollView to enable auto-scroll
   const scrollViewRef = useRef<ScrollView>(null);
+  const allowSettingsExitRef = useRef(false);
 
   // Set duration based on shift system (locked)
   const lockedDuration: 8 | 12 = shiftSystem === ShiftSystem.THREE_SHIFT ? 8 : 12;
@@ -489,6 +490,20 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   const [reducedMotion, setReducedMotion] = useState(false);
   const [timeError, setTimeError] = useState<string | null>(null);
 
+  const resetStageInput = useCallback((shiftType: StageShiftType) => {
+    setSelectedPreset(null);
+    setCustomHours('06');
+    setCustomMinutes('00');
+    setCustomPeriod(shiftType === 'night' ? 'PM' : 'AM');
+    setShowCustomInput(false);
+    setTimeError(null);
+  }, []);
+
+  const returnToSettings = useCallback(() => {
+    allowSettingsExitRef.current = true;
+    closeSettingsEditor();
+  }, [closeSettingsEditor]);
+
   // Check for reduced motion preference
   useEffect(() => {
     AccessibilityInfo.isReduceMotionEnabled().then(setReducedMotion);
@@ -504,6 +519,40 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
       });
     }
   }, [currentStageIndex, reducedMotion]);
+
+  useEffect(() => {
+    if (!isSettingsEntry || !returnToMainOnSelect) {
+      return () => undefined;
+    }
+
+    const unsubscribe = navigation.addListener('beforeRemove', (event) => {
+      if (allowSettingsExitRef.current) {
+        return;
+      }
+
+      event.preventDefault();
+
+      if (currentStageIndex > 0) {
+        const previousStageIndex = currentStageIndex - 1;
+        const previousShiftType = requiredShiftTypes[previousStageIndex];
+        setCurrentStageIndex(previousStageIndex);
+        resetStageInput(previousShiftType);
+        return;
+      }
+
+      returnToSettings();
+    });
+
+    return unsubscribe;
+  }, [
+    currentStageIndex,
+    isSettingsEntry,
+    navigation,
+    requiredShiftTypes,
+    resetStageInput,
+    returnToMainOnSelect,
+    returnToSettings,
+  ]);
 
   // Animation values
   const floatingY = useSharedValue(0);
@@ -718,7 +767,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
       }
 
       if (isSettingsEntry && returnToMainOnSelect) {
-        closeSettingsEditor();
+        returnToSettings();
         return;
       }
 
@@ -729,13 +778,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
       const nextStageIndex = currentStageIndex + 1;
       const nextShiftType = requiredShiftTypes[nextStageIndex];
       setCurrentStageIndex(nextStageIndex);
-      // Reset input state for next stage
-      setSelectedPreset(null);
-      setCustomHours('06');
-      setCustomMinutes('00');
-      setCustomPeriod(nextShiftType === 'night' ? 'PM' : 'AM');
-      setShowCustomInput(false);
-      setTimeError(null);
+      resetStageInput(nextShiftType);
     }
   }, [
     isValid,
@@ -755,7 +798,8 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     onContinue,
     isSettingsEntry,
     returnToMainOnSelect,
-    closeSettingsEditor,
+    resetStageInput,
+    returnToSettings,
     navigation,
   ]);
 
@@ -769,19 +813,13 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
       const previousStageIndex = currentStageIndex - 1;
       const previousShiftType = requiredShiftTypes[previousStageIndex];
       setCurrentStageIndex(previousStageIndex);
-      // Reset input state
-      setSelectedPreset(null);
-      setCustomHours('06');
-      setCustomMinutes('00');
-      setCustomPeriod(previousShiftType === 'night' ? 'PM' : 'AM');
-      setShowCustomInput(false);
-      setTimeError(null);
+      resetStageInput(previousShiftType);
     } else {
       // On first stage, go back to previous screen
       if (onBack) {
         onBack();
       } else if (isSettingsEntry && returnToMainOnSelect) {
-        closeSettingsEditor();
+        returnToSettings();
       } else {
         navigation.goBack();
       }
@@ -793,7 +831,8 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     onBack,
     isSettingsEntry,
     returnToMainOnSelect,
-    closeSettingsEditor,
+    resetStageInput,
+    returnToSettings,
   ]);
 
   // Animated styles
