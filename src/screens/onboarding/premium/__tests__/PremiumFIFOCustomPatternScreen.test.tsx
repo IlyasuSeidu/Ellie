@@ -161,7 +161,9 @@ describe('PremiumFIFOCustomPatternScreen', () => {
     fireEvent.press(getByTestId('work-pattern-swing'));
     await waitFor(() => {
       expect(getAllByText(/Work pattern: Swing/).length).toBeGreaterThan(0);
-      expect(getByText('Swing Work')).toBeTruthy();
+      expect(getByText('Day Work')).toBeTruthy();
+      expect(getByText('Night Work')).toBeTruthy();
+      expect(getByText('Rest')).toBeTruthy();
     });
   });
 

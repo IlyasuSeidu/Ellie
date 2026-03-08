@@ -166,6 +166,14 @@ interface FIFOPreviewCardProps {
   reducedMotion: boolean;
 }
 
+interface PreviewBlock {
+  id: string;
+  days: number;
+  label: string;
+  icon: ImageSourcePropType;
+  color: string;
+}
+
 const getPreviewPatternMeta = (
   workPattern: FIFOPreviewCardProps['workPattern'],
   daysOnDayShift: number,
@@ -246,6 +254,58 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
     () => getPreviewPatternMeta(workPattern, daysOnDayShift, daysOnNightShift),
     [daysOnDayShift, daysOnNightShift, workPattern]
   );
+  const previewBlocks = useMemo<PreviewBlock[]>(() => {
+    const restBlock: PreviewBlock = {
+      id: 'rest',
+      days: restBlockDays,
+      label: 'Rest',
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      icon: require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png'),
+      color: theme.colors.shiftVisualization.daysOff,
+    };
+
+    if (workPattern === 'swing') {
+      return [
+        {
+          id: 'day-work',
+          days: daysOnDayShift,
+          label: 'Day Work',
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
+          icon: require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png'),
+          color: theme.colors.shiftVisualization.dayShift,
+        },
+        {
+          id: 'night-work',
+          days: daysOnNightShift,
+          label: 'Night Work',
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
+          icon: require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png'),
+          color: theme.colors.shiftVisualization.nightShift,
+        },
+        restBlock,
+      ];
+    }
+
+    return [
+      {
+        id: 'work',
+        days: workBlockDays,
+        label: patternMeta.blockLabel,
+        icon: patternMeta.icon,
+        color: patternMeta.blockColor,
+      },
+      restBlock,
+    ];
+  }, [
+    daysOnDayShift,
+    daysOnNightShift,
+    patternMeta.blockColor,
+    patternMeta.blockLabel,
+    patternMeta.icon,
+    restBlockDays,
+    workBlockDays,
+    workPattern,
+  ]);
 
   useEffect(() => {
     scaleValue.value = withDelay(200, withSpring(1, SPRING_CONFIGS.gentle));
@@ -296,30 +356,15 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
           contentContainerStyle={styles.cycleBlocksScroll}
           style={styles.cycleBlocksContainer}
         >
-          <View style={styles.cycleBlock}>
-            <View style={[styles.cycleBlockInner, { backgroundColor: patternMeta.blockColor }]}>
-              <Image source={patternMeta.icon} style={styles.cycleBlockIcon} resizeMode="contain" />
-              <Text style={styles.cycleBlockNumber}>{workBlockDays}</Text>
-              <Text style={styles.cycleBlockLabel}>{patternMeta.blockLabel}</Text>
+          {previewBlocks.map((block) => (
+            <View key={block.id} style={styles.cycleBlock}>
+              <View style={[styles.cycleBlockInner, { backgroundColor: block.color }]}>
+                <Image source={block.icon} style={styles.cycleBlockIcon} resizeMode="contain" />
+                <Text style={styles.cycleBlockNumber}>{block.days}</Text>
+                <Text style={styles.cycleBlockLabel}>{block.label}</Text>
+              </View>
             </View>
-          </View>
-
-          <View style={styles.cycleBlock}>
-            <View
-              style={[
-                styles.cycleBlockInner,
-                { backgroundColor: theme.colors.shiftVisualization.daysOff },
-              ]}
-            >
-              <Image
-                source={require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png')}
-                style={styles.cycleBlockIcon}
-                resizeMode="contain"
-              />
-              <Text style={styles.cycleBlockNumber}>{restBlockDays}</Text>
-              <Text style={styles.cycleBlockLabel}>Rest</Text>
-            </View>
-          </View>
+          ))}
         </ScrollView>
         <Text style={styles.swingPreviewText}>
           {workPattern === 'swing'
