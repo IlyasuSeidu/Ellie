@@ -29,7 +29,9 @@ export const ProfileSectionHeader: React.FC<ProfileSectionHeaderProps> = ({
 }) => {
   const rowContent = (
     <View style={[styles.row, backgroundGradientColors ? styles.rowCompact : null]}>
-      <Ionicons name={icon} size={18} color={iconColor} style={styles.icon} />
+      <View style={styles.iconBadge}>
+        <Ionicons name={icon} size={17} color={iconColor} />
+      </View>
       <Animated.Text style={styles.title}>{title}</Animated.Text>
     </View>
   );
@@ -70,12 +72,21 @@ const styles = StyleSheet.create({
   headerGradient: {
     borderRadius: theme.borderRadius.md,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.18)',
+    borderColor: 'rgba(255, 255, 255, 0.24)',
     paddingVertical: theme.spacing.sm,
     paddingHorizontal: theme.spacing.md,
     marginBottom: theme.spacing.sm,
+    overflow: 'hidden',
   },
-  icon: {
+  iconBadge: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: 'rgba(12, 10, 9, 0.28)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.28)',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginRight: theme.spacing.sm,
   },
   title: {
