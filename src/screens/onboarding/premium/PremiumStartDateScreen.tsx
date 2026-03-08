@@ -40,10 +40,18 @@ import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
-import { ShiftPattern, ShiftSystem, Phase } from '@/types';
+import {
+  ShiftPattern,
+  ShiftSystem,
+  Phase,
+  RosterType,
+  type FIFOConfig,
+  type ShiftCycle,
+} from '@/types';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
+import { calculateShiftDay, getDefaultFIFOConfig } from '@/utils/shiftUtils';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -145,6 +153,9 @@ interface CalendarProps {
   };
   phaseOffset: number;
   shiftSystem: ShiftSystem;
+  patternType?: ShiftPattern;
+  rosterType?: string | null;
+  fifoConfig?: FIFOConfig | null;
 }
 
 interface PhaseSelectorProps {
@@ -509,24 +520,117 @@ export const _getCalendarShiftIcon = (
 };
 const getCalendarShiftIcon = _getCalendarShiftIcon;
 
+type ShiftPatternValues = {
+  daysOn?: number;
+  nightsOn?: number;
+  morningOn?: number;
+  afternoonOn?: number;
+  nightOn?: number;
+  daysOff: number;
+  workBlockPattern?: FIFOConfig['workBlockPattern'];
+  swingPattern?: FIFOConfig['swingPattern'];
+  customWorkSequence?: FIFOConfig['customWorkSequence'];
+};
+
+type ShiftTypeForDateOptions = {
+  rosterType?: string | null;
+  patternType?: ShiftPattern;
+  fifoConfig?: FIFOConfig | null;
+};
+
+const normalizePositiveInt = (value: unknown, fallback: number): number => {
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return Math.max(1, Math.floor(value));
+  }
+  if (typeof value === 'string') {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed)) {
+      return Math.max(1, Math.floor(parsed));
+    }
+  }
+  return Math.max(1, Math.floor(fallback));
+};
+
+const toDateOnlyString = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+const getEffectiveFIFOConfigForDate = (
+  pattern: ShiftPatternValues,
+  options?: ShiftTypeForDateOptions
+): FIFOConfig | null => {
+  const presetDefault = options?.patternType ? getDefaultFIFOConfig(options.patternType) : null;
+  const workBlockDays = normalizePositiveInt(
+    options?.fifoConfig?.workBlockDays ?? pattern.daysOn,
+    presetDefault?.workBlockDays ?? 1
+  );
+  const restBlockDays = normalizePositiveInt(
+    options?.fifoConfig?.restBlockDays ?? pattern.daysOff,
+    presetDefault?.restBlockDays ?? 1
+  );
+
+  const workBlockPattern =
+    options?.fifoConfig?.workBlockPattern ??
+    pattern.workBlockPattern ??
+    presetDefault?.workBlockPattern ??
+    'straight-days';
+
+  if (workBlockDays < 1 || restBlockDays < 1) {
+    return null;
+  }
+
+  return {
+    workBlockDays,
+    restBlockDays,
+    workBlockPattern,
+    ...((options?.fifoConfig?.swingPattern ?? pattern.swingPattern)
+      ? { swingPattern: options?.fifoConfig?.swingPattern ?? pattern.swingPattern }
+      : {}),
+    ...((options?.fifoConfig?.customWorkSequence ?? pattern.customWorkSequence)
+      ? {
+          customWorkSequence: options?.fifoConfig?.customWorkSequence ?? pattern.customWorkSequence,
+        }
+      : {}),
+  };
+};
+
 // Calculate which shift type for a given date
 export const _getShiftTypeForDate = (
   date: Date,
   startDate: Date,
   phaseOffset: number,
-  pattern: {
-    daysOn?: number;
-    nightsOn?: number;
-    morningOn?: number;
-    afternoonOn?: number;
-    nightOn?: number;
-    daysOff: number;
-  },
-  shiftSystem: ShiftSystem
+  pattern: ShiftPatternValues,
+  shiftSystem: ShiftSystem,
+  options?: ShiftTypeForDateOptions
 ): 'day' | 'night' | 'morning' | 'afternoon' | 'off' | null => {
   const daysDiff = Math.floor((date.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
 
   if (daysDiff < 0) return null; // Before start date
+
+  if (options?.rosterType === 'fifo') {
+    const fifoConfig = getEffectiveFIFOConfigForDate(pattern, options);
+    if (!fifoConfig) {
+      return null;
+    }
+
+    const fifoCycle: ShiftCycle = {
+      patternType: options.patternType ?? ShiftPattern.FIFO_CUSTOM,
+      rosterType: RosterType.FIFO,
+      shiftSystem: ShiftSystem.TWO_SHIFT,
+      daysOn: fifoConfig.workBlockDays,
+      nightsOn: 0,
+      daysOff: fifoConfig.restBlockDays,
+      startDate: toDateOnlyString(startDate),
+      phaseOffset,
+      fifoConfig,
+    };
+
+    const shiftType = calculateShiftDay(date, fifoCycle).shiftType;
+    return shiftType === 'day' || shiftType === 'night' || shiftType === 'off' ? shiftType : null;
+  }
 
   // Handle 3-shift system
   if (shiftSystem === ShiftSystem.THREE_SHIFT) {
@@ -569,21 +673,9 @@ export const _getShiftTypeForDate = (
 };
 const getShiftTypeForDate = _getShiftTypeForDate;
 
-type ShiftPatternValues = {
-  daysOn?: number;
-  nightsOn?: number;
-  morningOn?: number;
-  afternoonOn?: number;
-  nightOn?: number;
-  daysOff: number;
-};
-
 type StartDatePatternResolutionData = {
   customPattern?: ShiftPatternValues;
-  fifoConfig?: {
-    workBlockDays: number;
-    restBlockDays: number;
-  } | null;
+  fifoConfig?: FIFOConfig | null;
   rosterType?: string | null;
 };
 
@@ -619,22 +711,22 @@ export const _resolvePatternValues = (
       basePattern = { daysOn: 2, nightsOn: 2, daysOff: 3 };
       break;
     case ShiftPattern.FIFO_8_6:
-      basePattern = { daysOn: 8, nightsOn: 0, daysOff: 6 };
+      basePattern = { daysOn: 8, nightsOn: 0, daysOff: 6, workBlockPattern: 'straight-days' };
       break;
     case ShiftPattern.FIFO_7_7:
-      basePattern = { daysOn: 7, nightsOn: 0, daysOff: 7 };
+      basePattern = { daysOn: 7, nightsOn: 0, daysOff: 7, workBlockPattern: 'straight-days' };
       break;
     case ShiftPattern.FIFO_14_14:
-      basePattern = { daysOn: 14, nightsOn: 0, daysOff: 14 };
+      basePattern = { daysOn: 14, nightsOn: 0, daysOff: 14, workBlockPattern: 'straight-days' };
       break;
     case ShiftPattern.FIFO_14_7:
-      basePattern = { daysOn: 14, nightsOn: 0, daysOff: 7 };
+      basePattern = { daysOn: 14, nightsOn: 0, daysOff: 7, workBlockPattern: 'straight-days' };
       break;
     case ShiftPattern.FIFO_21_7:
-      basePattern = { daysOn: 21, nightsOn: 0, daysOff: 7 };
+      basePattern = { daysOn: 21, nightsOn: 0, daysOff: 7, workBlockPattern: 'straight-days' };
       break;
     case ShiftPattern.FIFO_28_14:
-      basePattern = { daysOn: 28, nightsOn: 0, daysOff: 14 };
+      basePattern = { daysOn: 28, nightsOn: 0, daysOff: 14, workBlockPattern: 'straight-days' };
       break;
     case ShiftPattern.FIFO_CUSTOM:
       basePattern = data.fifoConfig
@@ -642,6 +734,11 @@ export const _resolvePatternValues = (
             daysOn: data.fifoConfig.workBlockDays,
             nightsOn: 0,
             daysOff: data.fifoConfig.restBlockDays,
+            workBlockPattern: data.fifoConfig.workBlockPattern,
+            ...(data.fifoConfig.swingPattern ? { swingPattern: data.fifoConfig.swingPattern } : {}),
+            ...(data.fifoConfig.customWorkSequence
+              ? { customWorkSequence: data.fifoConfig.customWorkSequence }
+              : {}),
           }
         : { daysOn: 0, nightsOn: 0, daysOff: 0 };
       break;
@@ -872,6 +969,9 @@ export const _InteractiveCalendar: React.FC<CalendarProps> = ({
   customPattern,
   phaseOffset,
   shiftSystem,
+  patternType,
+  rosterType,
+  fifoConfig,
 }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const opacity = useSharedValue(0);
@@ -1054,7 +1154,12 @@ export const _InteractiveCalendar: React.FC<CalendarProps> = ({
                 startDate,
                 phaseOffset,
                 customPattern,
-                shiftSystem
+                shiftSystem,
+                {
+                  patternType,
+                  rosterType,
+                  fifoConfig,
+                }
               );
             }
 
@@ -2246,6 +2351,9 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
             customPattern={customPattern}
             phaseOffset={data.phaseOffset ?? 0}
             shiftSystem={shiftSystem}
+            patternType={data.patternType}
+            rosterType={data.rosterType}
+            fifoConfig={data.fifoConfig}
           />
 
           {/* Guidance Section */}

@@ -4646,7 +4646,7 @@ exports[`fifo onboarding visual snapshots PremiumFIFOPhaseSelectorScreen snapsho
           }
         }
       >
-        You are currently at the mine site on your work block
+        You are currently at the mine site on your day-shift work block
       </Text>
       <View
         style={

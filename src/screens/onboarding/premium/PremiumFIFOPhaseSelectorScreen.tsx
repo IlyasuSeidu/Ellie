@@ -51,7 +51,7 @@ import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
-import { ShiftPattern } from '@/types';
+import { ShiftPattern, type FIFOConfig } from '@/types';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 import { getDefaultFIFOConfig } from '@/utils/shiftUtils';
 
@@ -110,23 +110,119 @@ const getBlockLengthsFromPattern = (
   return { workBlockDays: 14, restBlockDays: 14 };
 };
 
+type FIFOWorkBlockPattern = FIFOConfig['workBlockPattern'];
+
+interface ResolvedFIFOConfig {
+  workBlockDays: number;
+  restBlockDays: number;
+  workBlockPattern: FIFOWorkBlockPattern;
+  swingPattern?: FIFOConfig['swingPattern'];
+  customWorkSequence?: FIFOConfig['customWorkSequence'];
+}
+
+const resolveFIFOConfig = (
+  patternType: ShiftPattern | undefined,
+  fifoConfig: FIFOConfig | null | undefined,
+  isCustomFIFOPattern: boolean
+): ResolvedFIFOConfig => {
+  const presetLengths = getBlockLengthsFromPattern(patternType);
+  const presetDefaults = getDefaultFIFOConfig(patternType ?? ShiftPattern.FIFO_14_14) ?? {
+    workBlockDays: presetLengths.workBlockDays,
+    restBlockDays: presetLengths.restBlockDays,
+    workBlockPattern: 'straight-days' as const,
+  };
+
+  const toResolved = (
+    source: Partial<FIFOConfig> | undefined,
+    fallbackWorkDays: number,
+    fallbackRestDays: number,
+    fallbackPattern: FIFOWorkBlockPattern
+  ): ResolvedFIFOConfig => ({
+    workBlockDays: normalizePositiveInt(source?.workBlockDays, fallbackWorkDays),
+    restBlockDays: normalizePositiveInt(source?.restBlockDays, fallbackRestDays),
+    workBlockPattern: source?.workBlockPattern ?? fallbackPattern,
+    ...(source?.swingPattern ? { swingPattern: source.swingPattern } : {}),
+    ...(source?.customWorkSequence ? { customWorkSequence: source.customWorkSequence } : {}),
+  });
+
+  if (isCustomFIFOPattern && fifoConfig) {
+    return toResolved(
+      fifoConfig,
+      presetDefaults.workBlockDays,
+      presetDefaults.restBlockDays,
+      presetDefaults.workBlockPattern
+    );
+  }
+
+  const hasMatchingPresetLengths =
+    !!fifoConfig &&
+    normalizePositiveInt(fifoConfig.workBlockDays, presetDefaults.workBlockDays) ===
+      presetDefaults.workBlockDays &&
+    normalizePositiveInt(fifoConfig.restBlockDays, presetDefaults.restBlockDays) ===
+      presetDefaults.restBlockDays;
+
+  if (hasMatchingPresetLengths && fifoConfig) {
+    return toResolved(
+      fifoConfig,
+      presetDefaults.workBlockDays,
+      presetDefaults.restBlockDays,
+      presetDefaults.workBlockPattern
+    );
+  }
+
+  return toResolved(
+    presetDefaults,
+    presetDefaults.workBlockDays,
+    presetDefaults.restBlockDays,
+    presetDefaults.workBlockPattern
+  );
+};
+
 const generateDayDescription = (
   blockType: 'work' | 'rest',
   dayNumber: number,
-  totalDays: number
+  totalDays: number,
+  workBlockPattern: FIFOWorkBlockPattern = 'straight-days'
 ): string => {
+  if (blockType === 'work') {
+    const isStraightDays = workBlockPattern === 'straight-days';
+    const isStraightNights = workBlockPattern === 'straight-nights';
+    if (dayNumber === 1) {
+      return isStraightDays
+        ? 'First day back at site'
+        : isStraightNights
+          ? 'First night shift back at site'
+          : 'First shift back at site';
+    }
+    if (dayNumber === totalDays) {
+      return isStraightDays
+        ? 'Last day before flying home'
+        : isStraightNights
+          ? 'Last night shift before flying home'
+          : 'Last shift before flying home';
+    }
+    if (dayNumber === Math.ceil(totalDays / 2)) {
+      return 'Midpoint of this block';
+    }
+    if (isStraightDays) {
+      return `Day ${dayNumber} of your work block`;
+    }
+    if (isStraightNights) {
+      return `Shift ${dayNumber} of your night work block`;
+    }
+    return `Shift ${dayNumber} of your work block`;
+  }
+
   if (dayNumber === 1) {
-    return blockType === 'work' ? 'First day back at site' : 'First day back at home';
+    return 'First day back at home';
   }
   if (dayNumber === totalDays) {
-    return blockType === 'work'
-      ? 'Last day before flying home'
-      : 'Last day before returning to site';
+    return 'Last day before returning to site';
   }
   if (dayNumber === Math.ceil(totalDays / 2)) {
     return 'Midpoint of this block';
   }
-  return `Day ${dayNumber} of your ${blockType === 'work' ? 'work' : 'rest'} block`;
+  return `Day ${dayNumber} of your rest block`;
 };
 
 interface SwipeableFIFOCardProps {
@@ -577,30 +673,60 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
 
   const isCustomFIFOPattern = data.patternType === ShiftPattern.FIFO_CUSTOM;
 
-  const { workBlockDays, restBlockDays } = useMemo(() => {
-    // Standard FIFO patterns should come from the selected preset pattern, not
-    // stale custom FIFO config from a prior onboarding attempt.
-    if (isCustomFIFOPattern && data.fifoConfig) {
-      return {
-        workBlockDays: normalizePositiveInt(data.fifoConfig.workBlockDays, 14),
-        restBlockDays: normalizePositiveInt(data.fifoConfig.restBlockDays, 14),
-      };
-    }
-    return getBlockLengthsFromPattern(data.patternType as ShiftPattern | undefined);
-  }, [data.fifoConfig, data.patternType, isCustomFIFOPattern]);
+  const resolvedFIFOConfig = useMemo(
+    () =>
+      resolveFIFOConfig(
+        data.patternType as ShiftPattern | undefined,
+        data.fifoConfig,
+        isCustomFIFOPattern
+      ),
+    [data.fifoConfig, data.patternType, isCustomFIFOPattern]
+  );
 
-  const blockCards = useMemo<BlockCardData[]>(
-    () => [
+  const { workBlockDays, restBlockDays, workBlockPattern } = resolvedFIFOConfig;
+
+  const blockCards = useMemo<BlockCardData[]>(() => {
+    const workBlockVisuals =
+      workBlockPattern === 'straight-nights'
+        ? {
+            description: 'You are currently at the mine site on your night-shift work block',
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            icon: require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png'),
+            gradientColors: [theme.colors.shiftVisualization.nightShift, '#4C1D95'] as [
+              string,
+              string,
+            ],
+            quickInfo: 'This means your cycle starts counting from your night-shift work block.',
+          }
+        : workBlockPattern === 'straight-days'
+          ? {
+              description: 'You are currently at the mine site on your day-shift work block',
+              // eslint-disable-next-line @typescript-eslint/no-var-requires
+              icon: require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png'),
+              gradientColors: [theme.colors.shiftVisualization.dayShift, '#1976D2'] as [
+                string,
+                string,
+              ],
+              quickInfo: 'This means your cycle starts counting from your day-shift work block.',
+            }
+          : {
+              description: 'You are currently at the mine site on your work block',
+              // eslint-disable-next-line @typescript-eslint/no-var-requires
+              icon: require('../../../../assets/onboarding/icons/consolidated/roster-type-fifo.png'),
+              gradientColors: ['#0EA5E9', '#6366F1'] as [string, string],
+              quickInfo: 'This means your cycle starts counting from your current work block.',
+            };
+
+    return [
       {
         type: 'block',
         id: 'work',
         title: 'At Site (Working)',
-        description: 'You are currently at the mine site on your work block',
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        icon: require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png'),
+        description: workBlockVisuals.description,
+        icon: workBlockVisuals.icon,
         blockLength: workBlockDays,
-        gradientColors: [theme.colors.shiftVisualization.dayShift, '#1976D2'],
-        quickInfo: 'This means your cycle starts counting from your current work day.',
+        gradientColors: workBlockVisuals.gradientColors,
+        quickInfo: workBlockVisuals.quickInfo,
       },
       {
         type: 'block',
@@ -613,9 +739,8 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
         gradientColors: [theme.colors.shiftVisualization.daysOff, '#57534e'],
         quickInfo: 'This offsets your cycle by your work block length first.',
       },
-    ],
-    [restBlockDays, workBlockDays]
-  );
+    ];
+  }, [restBlockDays, workBlockDays, workBlockPattern]);
 
   const clearPendingTransition = useCallback(() => {
     if (interactionHandleRef.current?.cancel) {
@@ -737,14 +862,17 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       // Ensure fifoConfig is populated and aligned to selected pattern:
       // - Standard FIFO patterns use a predictable default work pattern.
       // - Custom FIFO patterns keep the user-configured settings.
-      const fifoConfig =
-        isCustomFIFOPattern && data.fifoConfig
-          ? data.fifoConfig
-          : (getDefaultFIFOConfig(data.patternType ?? ShiftPattern.FIFO_14_14) ?? {
-              workBlockDays,
-              restBlockDays,
-              workBlockPattern: 'straight-days' as const,
-            });
+      const fifoConfig: FIFOConfig = {
+        workBlockDays,
+        restBlockDays,
+        workBlockPattern,
+        ...(resolvedFIFOConfig.swingPattern
+          ? { swingPattern: resolvedFIFOConfig.swingPattern }
+          : {}),
+        ...(resolvedFIFOConfig.customWorkSequence
+          ? { customWorkSequence: resolvedFIFOConfig.customWorkSequence }
+          : {}),
+      };
       updateData({ phaseOffset, fifoConfig });
       void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
         source: 'PremiumFIFOPhaseSelectorScreen.handleDaySelect',
@@ -759,11 +887,11 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     [
       navigation,
       restBlockDays,
+      resolvedFIFOConfig.customWorkSequence,
+      resolvedFIFOConfig.swingPattern,
       updateData,
       workBlockDays,
-      data.fifoConfig,
-      data.patternType,
-      isCustomFIFOPattern,
+      workBlockPattern,
     ]
   );
 
@@ -790,7 +918,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
         id: `${active.id}-day-${idx + 1}`,
         dayNumber: idx + 1,
         title: `Day ${idx + 1}`,
-        description: generateDayDescription(active.id, idx + 1, totalDays),
+        description: generateDayDescription(active.id, idx + 1, totalDays, workBlockPattern),
         blockType: active.id,
       }));
 
@@ -804,7 +932,15 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     if (stage === SelectionStage.DAY_WITHIN_BLOCK && active.type === 'day') {
       calculateAndNavigate(active.blockType, active.dayNumber);
     }
-  }, [calculateAndNavigate, currentCardIndex, currentCards, restBlockDays, stage, workBlockDays]);
+  }, [
+    calculateAndNavigate,
+    currentCardIndex,
+    currentCards,
+    restBlockDays,
+    stage,
+    workBlockDays,
+    workBlockPattern,
+  ]);
 
   const handleSwipeLeft = useCallback(() => {
     if (isTransitioningRef.current) {

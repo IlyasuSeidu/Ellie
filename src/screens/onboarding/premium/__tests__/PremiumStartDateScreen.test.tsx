@@ -1088,14 +1088,31 @@ describe('PremiumStartDateScreen', () => {
       ).toEqual({ daysOn: 4, nightsOn: 4, daysOff: 4 });
       expect(
         _resolvePatternValues(ShiftPattern.FIFO_14_7, twoShiftData, ShiftSystem.TWO_SHIFT)
-      ).toEqual({ daysOn: 14, nightsOn: 0, daysOff: 7 });
+      ).toEqual({
+        daysOn: 14,
+        nightsOn: 0,
+        daysOff: 7,
+        workBlockPattern: 'straight-days',
+      });
       expect(
         _resolvePatternValues(
           ShiftPattern.FIFO_CUSTOM,
-          { fifoConfig: { workBlockDays: 9, restBlockDays: 5 }, rosterType: 'fifo' },
+          {
+            fifoConfig: {
+              workBlockDays: 9,
+              restBlockDays: 5,
+              workBlockPattern: 'straight-nights',
+            },
+            rosterType: 'fifo',
+          },
           ShiftSystem.TWO_SHIFT
         )
-      ).toEqual({ daysOn: 9, nightsOn: 0, daysOff: 5 });
+      ).toEqual({
+        daysOn: 9,
+        nightsOn: 0,
+        daysOff: 5,
+        workBlockPattern: 'straight-nights',
+      });
 
       expect(
         _resolvePatternValues(ShiftPattern.STANDARD_2_2_3, twoShiftData, ShiftSystem.THREE_SHIFT)
@@ -1118,23 +1135,116 @@ describe('PremiumStartDateScreen', () => {
         rosterType: 'rotating',
         customPattern: { daysOn: 1, nightsOn: 1, daysOff: 1 },
       };
-      const cases: Array<[ShiftPattern, { daysOn: number; nightsOn: number; daysOff: number }]> = [
+      const cases: Array<
+        [
+          ShiftPattern,
+          { daysOn: number; nightsOn: number; daysOff: number; workBlockPattern?: string },
+        ]
+      > = [
         [ShiftPattern.STANDARD_7_7_7, { daysOn: 7, nightsOn: 7, daysOff: 7 }],
         [ShiftPattern.STANDARD_5_5_5, { daysOn: 5, nightsOn: 5, daysOff: 5 }],
         [ShiftPattern.STANDARD_3_3_3, { daysOn: 3, nightsOn: 3, daysOff: 3 }],
         [ShiftPattern.STANDARD_10_10_10, { daysOn: 10, nightsOn: 10, daysOff: 10 }],
         [ShiftPattern.CONTINENTAL, { daysOn: 2, nightsOn: 2, daysOff: 4 }],
         [ShiftPattern.PITMAN, { daysOn: 2, nightsOn: 2, daysOff: 3 }],
-        [ShiftPattern.FIFO_8_6, { daysOn: 8, nightsOn: 0, daysOff: 6 }],
-        [ShiftPattern.FIFO_7_7, { daysOn: 7, nightsOn: 0, daysOff: 7 }],
-        [ShiftPattern.FIFO_14_14, { daysOn: 14, nightsOn: 0, daysOff: 14 }],
-        [ShiftPattern.FIFO_21_7, { daysOn: 21, nightsOn: 0, daysOff: 7 }],
-        [ShiftPattern.FIFO_28_14, { daysOn: 28, nightsOn: 0, daysOff: 14 }],
+        [
+          ShiftPattern.FIFO_8_6,
+          { daysOn: 8, nightsOn: 0, daysOff: 6, workBlockPattern: 'straight-days' },
+        ],
+        [
+          ShiftPattern.FIFO_7_7,
+          { daysOn: 7, nightsOn: 0, daysOff: 7, workBlockPattern: 'straight-days' },
+        ],
+        [
+          ShiftPattern.FIFO_14_14,
+          { daysOn: 14, nightsOn: 0, daysOff: 14, workBlockPattern: 'straight-days' },
+        ],
+        [
+          ShiftPattern.FIFO_21_7,
+          { daysOn: 21, nightsOn: 0, daysOff: 7, workBlockPattern: 'straight-days' },
+        ],
+        [
+          ShiftPattern.FIFO_28_14,
+          { daysOn: 28, nightsOn: 0, daysOff: 14, workBlockPattern: 'straight-days' },
+        ],
       ];
 
       cases.forEach(([pattern, expected]) => {
-        expect(_resolvePatternValues(pattern, rotating, ShiftSystem.TWO_SHIFT)).toEqual(expected);
+        if (String(pattern).startsWith('FIFO_')) {
+          expect(_resolvePatternValues(pattern, rotating, ShiftSystem.TWO_SHIFT)).toEqual(expected);
+          return;
+        }
+        expect(_resolvePatternValues(pattern, rotating, ShiftSystem.TWO_SHIFT)).toEqual(
+          expect.objectContaining({
+            daysOn: expected.daysOn,
+            nightsOn: expected.nightsOn,
+            daysOff: expected.daysOff,
+          })
+        );
       });
+    });
+
+    it('derives FIFO shift type using FIFO config for straight-nights, swing, and custom sequence', () => {
+      const start = new Date('2026-02-01T00:00:00.000Z');
+
+      expect(
+        _getShiftTypeForDate(
+          new Date('2026-02-01T00:00:00.000Z'),
+          start,
+          0,
+          { daysOn: 14, nightsOn: 0, daysOff: 14, workBlockPattern: 'straight-days' },
+          ShiftSystem.TWO_SHIFT,
+          {
+            rosterType: 'fifo',
+            patternType: ShiftPattern.FIFO_14_14,
+            fifoConfig: {
+              workBlockDays: 14,
+              restBlockDays: 14,
+              workBlockPattern: 'straight-nights',
+            },
+          }
+        )
+      ).toBe('night');
+
+      expect(
+        _getShiftTypeForDate(
+          new Date('2026-02-03T00:00:00.000Z'),
+          start,
+          0,
+          { daysOn: 14, nightsOn: 0, daysOff: 14, workBlockPattern: 'straight-days' },
+          ShiftSystem.TWO_SHIFT,
+          {
+            rosterType: 'fifo',
+            patternType: ShiftPattern.FIFO_14_14,
+            fifoConfig: {
+              workBlockDays: 14,
+              restBlockDays: 14,
+              workBlockPattern: 'swing',
+              swingPattern: { daysOnDayShift: 2, daysOnNightShift: 12 },
+            },
+          }
+        )
+      ).toBe('night');
+
+      expect(
+        _getShiftTypeForDate(
+          new Date('2026-02-02T00:00:00.000Z'),
+          start,
+          0,
+          { daysOn: 14, nightsOn: 0, daysOff: 14, workBlockPattern: 'straight-days' },
+          ShiftSystem.TWO_SHIFT,
+          {
+            rosterType: 'fifo',
+            patternType: ShiftPattern.FIFO_14_14,
+            fifoConfig: {
+              workBlockDays: 14,
+              restBlockDays: 14,
+              workBlockPattern: 'custom',
+              customWorkSequence: ['day', 'night', 'night'],
+            },
+          }
+        )
+      ).toBe('night');
     });
 
     it('covers calendar selection and pan-end helper branches', () => {

@@ -361,6 +361,54 @@ describe('PremiumFIFOPhaseSelectorScreen', () => {
     });
   });
 
+  it('renders night semantics for FIFO custom straight-nights work block card', async () => {
+    (asyncStorageService.get as jest.Mock).mockResolvedValueOnce({
+      rosterType: 'fifo',
+      patternType: 'FIFO_CUSTOM',
+      fifoConfig: {
+        workBlockDays: 14,
+        restBlockDays: 14,
+        workBlockPattern: 'straight-nights',
+      },
+    });
+
+    const { getByText, queryByText } = renderWithContext();
+
+    await waitFor(() => {
+      expect(
+        getByText('You are currently at the mine site on your night-shift work block')
+      ).toBeTruthy();
+      expect(
+        queryByText('You are currently at the mine site on your day-shift work block')
+      ).toBeNull();
+    });
+  });
+
+  it('renders neutral work-block semantics for FIFO custom swing pattern', async () => {
+    (asyncStorageService.get as jest.Mock).mockResolvedValueOnce({
+      rosterType: 'fifo',
+      patternType: 'FIFO_CUSTOM',
+      fifoConfig: {
+        workBlockDays: 14,
+        restBlockDays: 14,
+        workBlockPattern: 'swing',
+        swingPattern: { daysOnDayShift: 7, daysOnNightShift: 7 },
+      },
+    });
+
+    const { getByText, queryByText } = renderWithContext();
+
+    await waitFor(() => {
+      expect(getByText('You are currently at the mine site on your work block')).toBeTruthy();
+      expect(
+        queryByText('You are currently at the mine site on your day-shift work block')
+      ).toBeNull();
+      expect(
+        queryByText('You are currently at the mine site on your night-shift work block')
+      ).toBeNull();
+    });
+  });
+
   it('matches snapshot', () => {
     const { toJSON } = renderWithContext();
     expect(toJSON()).toMatchSnapshot();
