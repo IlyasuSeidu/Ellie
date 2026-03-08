@@ -31,6 +31,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
 import { ShiftPattern, type FIFOConfig, type ShiftType } from '@/types';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
+import { hexToRGBA } from '@/utils/styleUtils';
 import {
   getPatternDisplayName,
   getShiftSystemDisplayName,
@@ -501,6 +502,13 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
         : theme.colors.sacredGold,
     [activeAccentShiftType]
   );
+  const headerIconBadgeStyle = useMemo(
+    () => ({
+      borderColor: hexToRGBA(liveAccentColor, 0.68),
+      shadowColor: liveAccentColor,
+    }),
+    [liveAccentColor]
+  );
 
   useEffect(() => {
     return () => {
@@ -520,8 +528,8 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
       >
         <View style={styles.headerContent}>
           <View style={styles.headerLeft}>
-            <View style={styles.headerIconCircle}>
-              <Ionicons name="settings-outline" size={18} color={liveAccentColor} />
+            <View style={[styles.headerIconCircle, headerIconBadgeStyle]}>
+              <Ionicons name="settings-outline" size={18} color={theme.colors.paper} />
             </View>
             <View>
               <Animated.Text style={styles.headerTitle}>
@@ -538,22 +546,22 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
           {isEditing ? (
             <TouchableOpacity
               onPress={handleCancel}
-              style={styles.headerActionBtn}
+              style={[styles.headerActionBtn, headerIconBadgeStyle]}
               hitSlop={8}
               accessibilityLabel="Cancel editing shift settings"
               accessibilityRole="button"
             >
-              <Ionicons name="close-circle" size={22} color={liveAccentColor} />
+              <Ionicons name="close-circle" size={22} color={theme.colors.paper} />
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
               onPress={handleStartEditing}
-              style={styles.headerActionBtn}
+              style={[styles.headerActionBtn, headerIconBadgeStyle]}
               hitSlop={8}
               accessibilityLabel="Edit shift settings"
               accessibilityRole="button"
             >
-              <Ionicons name="create-outline" size={20} color={liveAccentColor} />
+              <Ionicons name="create-outline" size={20} color={theme.colors.paper} />
             </TouchableOpacity>
           )}
         </View>
