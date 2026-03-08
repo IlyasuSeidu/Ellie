@@ -9,16 +9,17 @@
 import React, { useState, useEffect } from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import type { NavigatorScreenParams } from '@react-navigation/native';
 import { theme } from '@/utils/theme';
 import { asyncStorageService } from '@/services/AsyncStorageService';
-import { OnboardingNavigator } from './OnboardingNavigator';
+import { OnboardingNavigator, type OnboardingStackParamList } from './OnboardingNavigator';
 import { MainTabNavigator } from './MainTabNavigator';
 
 /**
  * Root Stack Parameter List
  */
 export type RootStackParamList = {
-  Onboarding: undefined;
+  Onboarding: NavigatorScreenParams<OnboardingStackParamList> | undefined;
   Main: undefined;
 };
 

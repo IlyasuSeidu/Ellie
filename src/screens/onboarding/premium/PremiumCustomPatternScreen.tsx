@@ -29,13 +29,14 @@ import Animated, {
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, type RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ShiftPattern, ShiftSystem } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
+import type { RootStackParamList } from '@/navigation/AppNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
@@ -633,8 +634,25 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
   testID = 'premium-custom-pattern-screen',
 }) => {
   const navigation = useNavigation<NavigationProp>();
+  const route = useRoute<RouteProp<OnboardingStackParamList, 'CustomPattern'>>();
   const { data, updateData } = useOnboarding();
+  const isSettingsEntry = route.params?.entryPoint === 'settings';
+  const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
   const shiftSystem = data.shiftSystem || ShiftSystem.TWO_SHIFT;
+
+  const closeSettingsEditor = useCallback(() => {
+    const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+    if (rootNavigation?.canGoBack()) {
+      rootNavigation.goBack();
+      return;
+    }
+    if (rootNavigation?.reset) {
+      rootNavigation.reset({
+        index: 0,
+        routes: [{ name: 'Main' }],
+      });
+    }
+  }, [navigation]);
 
   // State for 2-shift system
   const [daysOn, setDaysOn] = useState(4);
@@ -814,6 +832,10 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
           onContinue();
           return;
         }
+        if (isSettingsEntry && returnToMainOnSelect) {
+          closeSettingsEditor();
+          return;
+        }
 
         const normalizedRosterType = data.rosterType ?? 'rotating';
         goToNextScreen(navigation, 'CustomPattern', {
@@ -837,6 +859,9 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
     daysOff,
     updateData,
     onContinue,
+    isSettingsEntry,
+    returnToMainOnSelect,
+    closeSettingsEditor,
     navigation,
     data,
     clearPendingTransition,

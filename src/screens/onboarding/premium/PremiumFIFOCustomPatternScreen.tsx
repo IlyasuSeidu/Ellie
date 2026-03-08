@@ -32,12 +32,13 @@ import Animated, {
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, type RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
+import type { RootStackParamList } from '@/navigation/AppNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import type { FIFOConfig } from '@/types';
@@ -416,7 +417,24 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
 
 export const PremiumFIFOCustomPatternScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
+  const route = useRoute<RouteProp<OnboardingStackParamList, 'FIFOCustomPattern'>>();
   const { data, updateData } = useOnboarding();
+  const isSettingsEntry = route.params?.entryPoint === 'settings';
+  const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
+
+  const closeSettingsEditor = useCallback(() => {
+    const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+    if (rootNavigation?.canGoBack()) {
+      rootNavigation.goBack();
+      return;
+    }
+    if (rootNavigation?.reset) {
+      rootNavigation.reset({
+        index: 0,
+        routes: [{ name: 'Main' }],
+      });
+    }
+  }, [navigation]);
 
   const [workBlockDays, setWorkBlockDays] = useState(data.fifoConfig?.workBlockDays || 14);
   const [restBlockDays, setRestBlockDays] = useState(data.fifoConfig?.restBlockDays || 14);
@@ -579,6 +597,10 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
     interactionHandleRef.current = InteractionManager.runAfterInteractions(() => {
       navigationTimeoutRef.current = setTimeout(() => {
         clearPendingTransition(true);
+        if (isSettingsEntry && returnToMainOnSelect) {
+          closeSettingsEditor();
+          return;
+        }
         goToNextScreen(navigation, 'FIFOCustomPattern', {
           ...data,
           rosterType: 'fifo',
@@ -593,6 +615,9 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
     daysOnDayShift,
     daysOnNightShift,
     hasHardError,
+    isSettingsEntry,
+    returnToMainOnSelect,
+    closeSettingsEditor,
     navigation,
     restBlockDays,
     updateData,

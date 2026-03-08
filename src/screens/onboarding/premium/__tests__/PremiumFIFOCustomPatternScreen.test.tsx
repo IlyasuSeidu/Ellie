@@ -47,6 +47,9 @@ jest.mock('@react-navigation/native', () => ({
     navigate: jest.fn(),
     goBack: mockGoBack,
   }),
+  useRoute: () => ({
+    params: undefined,
+  }),
 }));
 
 jest.mock('@/utils/onboardingNavigation', () => ({

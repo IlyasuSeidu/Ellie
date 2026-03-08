@@ -55,6 +55,9 @@ jest.mock('@react-navigation/native', () => ({
   useNavigation: () => ({
     navigate: jest.fn(),
   }),
+  useRoute: () => ({
+    params: undefined,
+  }),
 }));
 
 // Mock expo-linear-gradient

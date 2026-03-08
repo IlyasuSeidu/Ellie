@@ -59,11 +59,26 @@ export type OnboardingStackParamList = {
   /** Step 3.5: Select roster type (rotating or FIFO) - NEW */
   RosterType: undefined;
   /** Step 4: Select shift pattern (filtered by roster type) */
-  ShiftPattern: undefined;
+  ShiftPattern:
+    | {
+        entryPoint?: 'onboarding' | 'settings';
+        returnToMainOnSelect?: boolean;
+      }
+    | undefined;
   /** Step 4b-R: Configure custom rotating pattern (only if CUSTOM selected) */
-  CustomPattern: undefined;
+  CustomPattern:
+    | {
+        entryPoint?: 'onboarding' | 'settings';
+        returnToMainOnSelect?: boolean;
+      }
+    | undefined;
   /** Step 4b-F: Configure custom FIFO pattern (only if FIFO_CUSTOM selected) - NEW */
-  FIFOCustomPattern: undefined;
+  FIFOCustomPattern:
+    | {
+        entryPoint?: 'onboarding' | 'settings';
+        returnToMainOnSelect?: boolean;
+      }
+    | undefined;
   /** Step 5-R: Select current phase and day within phase (rotating rosters) */
   PhaseSelector: undefined;
   /** Step 5-F: Select work/rest block and day within block (FIFO rosters) - NEW */

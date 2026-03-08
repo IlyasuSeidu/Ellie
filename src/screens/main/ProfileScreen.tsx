@@ -23,6 +23,7 @@ import { ShiftSettingsPanel } from '@/components/profile/ShiftSettingsPanel';
 import { WorkStatsSummary } from '@/components/profile/WorkStatsSummary';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
+import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 
 export const ProfileScreen: React.FC = () => {
   const insets = useSafeAreaInsets();
@@ -63,6 +64,19 @@ export const ProfileScreen: React.FC = () => {
         routes: [{ name: 'Onboarding' }],
       });
     }
+  }, [navigation]);
+
+  const handleOpenPatternOnboarding = useCallback(() => {
+    const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+    if (!rootNavigation) return;
+
+    rootNavigation.navigate('Onboarding', {
+      screen: 'ShiftPattern',
+      params: {
+        entryPoint: 'settings',
+        returnToMainOnSelect: true,
+      } satisfies OnboardingStackParamList['ShiftPattern'],
+    });
   }, [navigation]);
 
   return (
@@ -143,6 +157,7 @@ export const ProfileScreen: React.FC = () => {
         <ShiftSettingsPanel
           data={profile.data}
           onUpdate={profile.updateData}
+          onOpenPatternOnboarding={handleOpenPatternOnboarding}
           animationDelay={800}
         />
 

@@ -35,7 +35,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useNavigation, useFocusEffect, useRoute, type RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
@@ -43,6 +43,7 @@ import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ShiftPattern, ShiftSystem } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
+import type { RootStackParamList } from '@/navigation/AppNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
@@ -899,7 +900,24 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
   testID = 'premium-shift-pattern-screen',
 }) => {
   const navigation = useNavigation<NavigationProp>();
+  const route = useRoute<RouteProp<OnboardingStackParamList, 'ShiftPattern'>>();
   const { data, updateData } = useOnboarding();
+  const isSettingsEntry = route.params?.entryPoint === 'settings';
+  const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
+
+  const closeSettingsEditor = useCallback(() => {
+    const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+    if (rootNavigation?.canGoBack()) {
+      rootNavigation.goBack();
+      return;
+    }
+    if (rootNavigation?.reset) {
+      rootNavigation.reset({
+        index: 0,
+        routes: [{ name: 'Main' }],
+      });
+    }
+  }, [navigation]);
 
   // Filter patterns based on selected shift system AND roster type
   const shiftSystem: ShiftSystem = (data.shiftSystem as ShiftSystem) || ShiftSystem.TWO_SHIFT; // Default to 2-shift
@@ -1022,11 +1040,30 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
           onContinue(pattern.type);
           return;
         }
+        if (
+          isSettingsEntry &&
+          returnToMainOnSelect &&
+          pattern.type !== ShiftPattern.CUSTOM &&
+          pattern.type !== ShiftPattern.FIFO_CUSTOM
+        ) {
+          closeSettingsEditor();
+          return;
+        }
         // Use the navigation helper which handles conditional routing
         goToNextScreen(navigation, 'ShiftPattern', { ...data, patternType: pattern.type });
       }, 300);
     });
-  }, [currentIndex, updateData, onContinue, navigation, filteredPatterns, data]);
+  }, [
+    closeSettingsEditor,
+    currentIndex,
+    data,
+    filteredPatterns,
+    isSettingsEntry,
+    navigation,
+    onContinue,
+    returnToMainOnSelect,
+    updateData,
+  ]);
 
   const handleSwipeUp = useCallback(() => {
     if (isTransitioningRef.current) return;
@@ -1060,10 +1097,25 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
     interactionHandleRef.current = InteractionManager.runAfterInteractions(() => {
       navigationTimeoutRef.current = setTimeout(() => {
         navigationTimeoutRef.current = null;
+        if (isSettingsEntry && returnToMainOnSelect) {
+          navigation.navigate(
+            rosterType === 'fifo' ? 'FIFOCustomPattern' : 'CustomPattern',
+            route.params
+          );
+          return;
+        }
         goToNextScreen(navigation, 'ShiftPattern', { ...data, patternType: customPatternType });
       }, 300);
     });
-  }, [updateData, navigation, data, rosterType]);
+  }, [
+    updateData,
+    isSettingsEntry,
+    returnToMainOnSelect,
+    navigation,
+    data,
+    rosterType,
+    route.params,
+  ]);
 
   const visibleCards = useMemo(
     () => filteredPatterns.slice(currentIndex, currentIndex + 4),
@@ -1076,6 +1128,19 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
         currentStep={ONBOARDING_STEPS.SHIFT_PATTERN}
         totalSteps={TOTAL_ONBOARDING_STEPS}
       />
+
+      {isSettingsEntry ? (
+        <View style={styles.settingsEntryActions}>
+          <Pressable
+            style={styles.settingsExitButton}
+            onPress={closeSettingsEditor}
+            accessibilityRole="button"
+            accessibilityLabel="Back to profile settings"
+          >
+            <Text style={styles.settingsExitButtonText}>Back to Settings</Text>
+          </Pressable>
+        </View>
+      ) : null}
 
       {/* Title */}
       <Animated.Text style={[styles.title, titleStyle]}>
@@ -1138,6 +1203,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.deepVoid,
+  },
+  settingsEntryActions: {
+    paddingHorizontal: theme.spacing.lg,
+    alignItems: 'flex-end',
+    marginTop: theme.spacing.sm,
+  },
+  settingsExitButton: {
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: 8,
+    borderRadius: theme.borderRadius.full,
+    borderWidth: 1,
+    borderColor: theme.colors.softStone,
+    backgroundColor: theme.colors.darkStone,
+  },
+  settingsExitButtonText: {
+    color: theme.colors.dust,
+    fontSize: theme.typography.fontSizes.xs,
+    fontWeight: theme.typography.fontWeights.semibold,
+    letterSpacing: 0.3,
   },
   title: {
     fontSize: 28,
