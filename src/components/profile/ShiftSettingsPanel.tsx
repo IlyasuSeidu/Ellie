@@ -31,7 +31,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
 import { ShiftPattern, type FIFOConfig, type ShiftType } from '@/types';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
-import { hexToRGBA } from '@/utils/styleUtils';
+import { getContrastTextColor, hexToRGBA } from '@/utils/styleUtils';
 import {
   getPatternDisplayName,
   getShiftSystemDisplayName,
@@ -509,6 +509,10 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
     }),
     [liveAccentColor]
   );
+  const liveAccentIconColor = useMemo(
+    () => getContrastTextColor(liveAccentColor, theme.colors.paper, theme.colors.deepVoid),
+    [liveAccentColor]
+  );
 
   useEffect(() => {
     return () => {
@@ -529,7 +533,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
         <View style={styles.headerContent}>
           <View style={styles.headerLeft}>
             <View style={[styles.headerIconCircle, headerIconBadgeStyle]}>
-              <Ionicons name="settings-outline" size={18} color={theme.colors.paper} />
+              <Ionicons name="settings-outline" size={18} color={liveAccentIconColor} />
             </View>
             <View>
               <Animated.Text style={styles.headerTitle}>
@@ -551,7 +555,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
               accessibilityLabel="Cancel editing shift settings"
               accessibilityRole="button"
             >
-              <Ionicons name="close-circle" size={22} color={theme.colors.paper} />
+              <Ionicons name="close-circle" size={22} color={liveAccentIconColor} />
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
@@ -561,7 +565,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
               accessibilityLabel="Edit shift settings"
               accessibilityRole="button"
             >
-              <Ionicons name="create-outline" size={20} color={theme.colors.paper} />
+              <Ionicons name="create-outline" size={20} color={liveAccentIconColor} />
             </TouchableOpacity>
           )}
         </View>

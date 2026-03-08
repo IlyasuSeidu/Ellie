@@ -92,3 +92,36 @@ export function hexToRGBA(hex: string, alpha: number): string {
 
   return `rgba(${r}, ${g}, ${b}, ${clampedAlpha})`;
 }
+
+/**
+ * Returns a high-contrast foreground color for a given hex background.
+ * Uses WCAG relative luminance thresholding.
+ */
+export function getContrastTextColor(
+  backgroundHex: string,
+  lightColor: string = '#FFFFFF',
+  darkColor: string = '#0C0A09'
+): string {
+  const cleanHex = backgroundHex.replace('#', '');
+
+  let r: number, g: number, b: number;
+  if (cleanHex.length === 3) {
+    r = parseInt(cleanHex[0] + cleanHex[0], 16);
+    g = parseInt(cleanHex[1] + cleanHex[1], 16);
+    b = parseInt(cleanHex[2] + cleanHex[2], 16);
+  } else if (cleanHex.length === 6) {
+    r = parseInt(cleanHex.substring(0, 2), 16);
+    g = parseInt(cleanHex.substring(2, 4), 16);
+    b = parseInt(cleanHex.substring(4, 6), 16);
+  } else {
+    return lightColor;
+  }
+
+  const toLinear = (value: number): number => {
+    const c = value / 255;
+    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  };
+
+  const luminance = 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b);
+  return luminance > 0.55 ? darkColor : lightColor;
+}

@@ -11,7 +11,7 @@ import Animated, { FadeInUp } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
-import { hexToRGBA } from '@/utils/styleUtils';
+import { getContrastTextColor, hexToRGBA } from '@/utils/styleUtils';
 
 interface ProfileSectionHeaderProps {
   title: string;
@@ -35,11 +35,16 @@ export const ProfileSectionHeader: React.FC<ProfileSectionHeaderProps> = ({
       return 'rgba(255, 255, 255, 0.34)';
     }
   })();
+  const iconForegroundColor = getContrastTextColor(
+    iconColor,
+    theme.colors.paper,
+    theme.colors.deepVoid
+  );
 
   const rowContent = (
     <View style={[styles.row, backgroundGradientColors ? styles.rowCompact : null]}>
       <View style={[styles.iconBadge, { borderColor: accentBorderColor }]}>
-        <Ionicons name={icon} size={17} color={theme.colors.paper} />
+        <Ionicons name={icon} size={17} color={iconForegroundColor} />
       </View>
       <Animated.Text style={styles.title}>{title}</Animated.Text>
     </View>
