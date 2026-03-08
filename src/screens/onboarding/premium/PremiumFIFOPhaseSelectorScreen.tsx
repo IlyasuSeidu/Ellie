@@ -499,7 +499,7 @@ const SwipeableFIFOCard: React.FC<SwipeableFIFOCardProps> = ({
 
         <Text style={styles.description}>{card.description}</Text>
 
-        {index === 0 && isActive && (
+        {(isBlockCard || (index === 0 && isActive)) && (
           <>
             <Animated.View style={[styles.swipeHint, styles.swipeHintLeft, hintAnimatedStyle]}>
               <Text style={styles.swipeHintText}>← Next</Text>
@@ -1099,15 +1099,17 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.md,
   },
   badge: {
-    backgroundColor: theme.colors.opacity.gold20,
+    backgroundColor: theme.colors.opacity.black40,
     paddingHorizontal: theme.spacing.md,
     paddingVertical: theme.spacing.xs,
     borderRadius: 20,
     marginBottom: theme.spacing.lg,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold30,
   },
   badgeText: {
     fontSize: 18,
-    color: theme.colors.sacredGold,
+    color: theme.colors.paper,
     fontWeight: '600',
   },
   description: {

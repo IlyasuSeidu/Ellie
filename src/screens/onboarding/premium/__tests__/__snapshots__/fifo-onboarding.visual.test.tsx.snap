@@ -2967,6 +2967,8 @@ exports[`fifo onboarding visual snapshots PremiumFIFOCustomPatternScreen snapsho
                   "color": "#e7e5e4",
                   "fontSize": 22,
                   "fontWeight": "bold",
+                  "textAlign": "center",
+                  "width": "100%",
                 }
               }
             >
@@ -2986,6 +2988,20 @@ exports[`fifo onboarding visual snapshots PremiumFIFOCustomPatternScreen snapsho
                days at site, then 
               14
                days at home
+            </Text>
+            <Text
+              style={
+                {
+                  "color": "#b45309",
+                  "fontSize": 13,
+                  "fontWeight": "600",
+                  "textAlign": "center",
+                }
+              }
+            >
+              Straight Days
+               • 
+              Work pattern: Straight Days
             </Text>
           </View>
           <RCTScrollView
@@ -3062,7 +3078,7 @@ exports[`fifo onboarding visual snapshots PremiumFIFOCustomPatternScreen snapsho
                       }
                     }
                   >
-                    Work
+                    Day Work
                   </Text>
                 </View>
               </View>
@@ -3129,6 +3145,19 @@ exports[`fifo onboarding visual snapshots PremiumFIFOCustomPatternScreen snapsho
               </View>
             </View>
           </RCTScrollView>
+          <Text
+            style={
+              {
+                "color": "#b45309",
+                "fontSize": 12,
+                "fontWeight": "600",
+                "marginBottom": 16,
+                "textAlign": "center",
+              }
+            }
+          >
+            Work pattern: Straight Days
+          </Text>
           <View
             style={
               {
@@ -3186,7 +3215,7 @@ exports[`fifo onboarding visual snapshots PremiumFIFOCustomPatternScreen snapsho
                       }
                     }
                   >
-                    Work Block
+                    Day Work Block
                   </Text>
                 </View>
                 <View
@@ -4474,8 +4503,10 @@ exports[`fifo onboarding visual snapshots PremiumFIFOPhaseSelectorScreen snapsho
       <View
         style={
           {
-            "backgroundColor": "rgba(180, 83, 9, 0.2)",
+            "backgroundColor": "rgba(0, 0, 0, 0.4)",
+            "borderColor": "rgba(180, 83, 9, 0.3)",
             "borderRadius": 20,
+            "borderWidth": 1,
             "marginBottom": 24,
             "paddingHorizontal": 16,
             "paddingVertical": 4,
@@ -4485,7 +4516,7 @@ exports[`fifo onboarding visual snapshots PremiumFIFOPhaseSelectorScreen snapsho
         <Text
           style={
             {
-              "color": "#b45309",
+              "color": "#e7e5e4",
               "fontSize": 18,
               "fontWeight": "600",
             }
@@ -4509,6 +4540,96 @@ exports[`fifo onboarding visual snapshots PremiumFIFOPhaseSelectorScreen snapsho
       >
         You are currently at home on your rest block
       </Text>
+      <View
+        style={
+          [
+            {
+              "backgroundColor": "rgba(180, 83, 9, 0.3)",
+              "borderRadius": 12,
+              "paddingHorizontal": 8,
+              "paddingVertical": 4,
+              "position": "absolute",
+            },
+            {
+              "left": 24,
+              "top": "50%",
+            },
+            {},
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#a8a29e",
+              "fontSize": 14,
+              "fontWeight": "600",
+            }
+          }
+        >
+          ← Next
+        </Text>
+      </View>
+      <View
+        style={
+          [
+            {
+              "backgroundColor": "rgba(180, 83, 9, 0.3)",
+              "borderRadius": 12,
+              "paddingHorizontal": 8,
+              "paddingVertical": 4,
+              "position": "absolute",
+            },
+            {
+              "right": 24,
+              "top": "50%",
+            },
+            {},
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#a8a29e",
+              "fontSize": 14,
+              "fontWeight": "600",
+            }
+          }
+        >
+          Select →
+        </Text>
+      </View>
+      <View
+        style={
+          [
+            {
+              "backgroundColor": "rgba(180, 83, 9, 0.3)",
+              "borderRadius": 12,
+              "paddingHorizontal": 8,
+              "paddingVertical": 4,
+              "position": "absolute",
+            },
+            {
+              "alignSelf": "center",
+              "top": 24,
+            },
+            {},
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#a8a29e",
+              "fontSize": 14,
+              "fontWeight": "600",
+            }
+          }
+        >
+          ↑ Info
+        </Text>
+      </View>
     </View>
     <View
       style={
@@ -4613,8 +4734,10 @@ exports[`fifo onboarding visual snapshots PremiumFIFOPhaseSelectorScreen snapsho
       <View
         style={
           {
-            "backgroundColor": "rgba(180, 83, 9, 0.2)",
+            "backgroundColor": "rgba(0, 0, 0, 0.4)",
+            "borderColor": "rgba(180, 83, 9, 0.3)",
             "borderRadius": 20,
+            "borderWidth": 1,
             "marginBottom": 24,
             "paddingHorizontal": 16,
             "paddingVertical": 4,
@@ -4624,7 +4747,7 @@ exports[`fifo onboarding visual snapshots PremiumFIFOPhaseSelectorScreen snapsho
         <Text
           style={
             {
-              "color": "#b45309",
+              "color": "#e7e5e4",
               "fontSize": 18,
               "fontWeight": "600",
             }
