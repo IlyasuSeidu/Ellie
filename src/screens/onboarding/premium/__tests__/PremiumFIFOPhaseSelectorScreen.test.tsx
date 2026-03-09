@@ -75,6 +75,7 @@ jest.mock('react-native-gesture-handler', () => {
     let enabled = true;
     const api: {
       enabled: (value: boolean) => unknown;
+      onBegin: (cb: (event: Record<string, number>) => void) => unknown;
       onUpdate: (cb: (event: Record<string, number>) => void) => unknown;
       onEnd: (cb: (event: Record<string, number>) => void) => unknown;
     } = {
@@ -82,6 +83,7 @@ jest.mock('react-native-gesture-handler', () => {
         enabled = value;
         return api;
       }),
+      onBegin: jest.fn(() => api),
       onUpdate: jest.fn(() => api),
       onEnd: jest.fn((cb: (event: Record<string, number>) => void) => {
         if (enabled) {
@@ -148,6 +150,24 @@ jest.mock('@/components/onboarding/premium/ProgressHeader', () => {
   };
 });
 
+jest.mock('@/components/onboarding/premium/PatternBuilderSlider', () => {
+  const React = require('react');
+  const RN = require('react-native');
+  return {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    PatternBuilderSlider: ({ label, value, onChange }: any) =>
+      React.createElement(
+        RN.View,
+        {
+          testID: `mock-slider-${String(label).replace(/\s+/g, '-').toLowerCase()}`,
+          onSetValueForTest: onChange,
+        },
+        React.createElement(RN.Text, null, String(label)),
+        React.createElement(RN.Text, null, String(value))
+      ),
+  };
+});
+
 function renderWithContext() {
   return render(
     <OnboardingProvider>
@@ -187,6 +207,60 @@ const swipeUp = () =>
     velocityX: 0,
     velocityY: -900,
   });
+
+const continueFromSwingConfig = (getByTestId: (id: string) => unknown) => {
+  const continueButton = getByTestId('swing-config-continue-button') as {
+    props?: Record<string, unknown>;
+  };
+  const onPress = continueButton.props?.onPress;
+  const onStartShouldSetResponder = continueButton.props?.onStartShouldSetResponder;
+  const onResponderGrant = continueButton.props?.onResponderGrant;
+  const onResponderRelease = continueButton.props?.onResponderRelease;
+  const onClick = continueButton.props?.onClick;
+  const syntheticEvent = {
+    nativeEvent: {},
+    currentTarget: 1,
+    target: 1,
+    persist: () => undefined,
+    stopPropagation: () => undefined,
+    preventDefault: () => undefined,
+  };
+
+  act(() => {
+    if (typeof onPress === 'function') {
+      onPress();
+      return;
+    }
+    if (typeof onStartShouldSetResponder === 'function') {
+      onStartShouldSetResponder(syntheticEvent);
+    }
+    if (typeof onResponderGrant === 'function') {
+      onResponderGrant(syntheticEvent);
+    }
+    if (typeof onResponderRelease === 'function') {
+      onResponderRelease(syntheticEvent);
+      return;
+    }
+    if (typeof onClick === 'function') {
+      onClick(syntheticEvent);
+      return;
+    }
+    fireEvent.press(continueButton as never);
+  });
+};
+
+const setSwingSliderValue = (
+  getByTestId: (id: string) => unknown,
+  testId: string,
+  value: number
+) => {
+  const slider = getByTestId(testId) as {
+    props?: { onSetValueForTest?: (nextValue: number) => void };
+  };
+  act(() => {
+    slider.props?.onSetValueForTest?.(value);
+  });
+};
 
 describe('PremiumFIFOPhaseSelectorScreen', () => {
   beforeEach(() => {
@@ -257,6 +331,21 @@ describe('PremiumFIFOPhaseSelectorScreen', () => {
       expect(
         getByText('You are currently at the mine site on your night-shift work block')
       ).toBeTruthy();
+    });
+  });
+
+  it('opens swing configuration stage when swing pattern is selected', async () => {
+    const { getByText, getByTestId } = renderWithContext();
+    swipeLeft(); // straight-nights
+    swipeLeft(); // swing
+    swipeRight(); // select swing
+
+    await waitFor(() => {
+      expect(getByText('Configure your swing split')).toBeTruthy();
+      expect(getByTestId('swing-config-stage')).toBeTruthy();
+      expect(getByTestId('swing-config-continue-button')).toBeTruthy();
+      expect(getByTestId('swing-config-change-pattern-button')).toBeTruthy();
+      expect(getByTestId('swing-split-total-text')).toBeTruthy();
     });
   });
 
@@ -474,10 +563,14 @@ describe('PremiumFIFOPhaseSelectorScreen', () => {
       patternType: 'FIFO_8_6',
     });
 
-    const { getByText } = renderWithContext();
+    const { getByText, getByTestId } = renderWithContext();
     swipeLeft(); // straight-nights
     swipeLeft(); // swing
     swipeRight(); // select pattern
+    await waitFor(() => {
+      expect(getByText('Configure your swing split')).toBeTruthy();
+    });
+    continueFromSwingConfig(getByTestId);
     await waitFor(() => {
       expect(getByText('8 days')).toBeTruthy();
       expect(getByText('6 days')).toBeTruthy();
@@ -497,6 +590,91 @@ describe('PremiumFIFOPhaseSelectorScreen', () => {
             swingPattern: {
               daysOnDayShift: 4,
               daysOnNightShift: 4,
+            },
+          }),
+        })
+      );
+    });
+  });
+
+  it('shows swing day card labels aligned to split before night cards', async () => {
+    (asyncStorageService.get as jest.Mock).mockResolvedValueOnce({
+      rosterType: 'fifo',
+      patternType: 'FIFO_8_6',
+    });
+
+    const { getByText, getByTestId } = renderWithContext();
+    swipeLeft(); // straight-nights
+    swipeLeft(); // swing
+    swipeRight(); // select swing
+    await waitFor(() => {
+      expect(getByText('Configure your swing split')).toBeTruthy();
+    });
+    continueFromSwingConfig(getByTestId);
+    swipeRight(); // select work block
+
+    await waitFor(() => {
+      expect(getByText('Day Shift Day 1')).toBeTruthy();
+    });
+
+    swipeLeft();
+    swipeLeft();
+    swipeLeft();
+    swipeLeft();
+
+    await waitFor(() => {
+      expect(getByText('Night Shift Day 1')).toBeTruthy();
+    });
+  });
+
+  it('persists user-configured swing split and aligns day cards to that split', async () => {
+    (asyncStorageService.get as jest.Mock).mockResolvedValueOnce({
+      rosterType: 'fifo',
+      patternType: 'FIFO_8_6',
+    });
+
+    const { getByText, getByTestId } = renderWithContext();
+    swipeLeft(); // straight-nights
+    swipeLeft(); // swing
+    swipeRight(); // select swing
+
+    await waitFor(() => {
+      expect(getByText('Configure your swing split')).toBeTruthy();
+    });
+
+    setSwingSliderValue(getByTestId, 'mock-slider-days-on-day-shift', 5);
+    await waitFor(() => {
+      expect(getByText('Split total: 8/8 days')).toBeTruthy();
+    });
+
+    continueFromSwingConfig(getByTestId);
+    swipeRight(); // select work block
+    await waitFor(() => {
+      expect(getByText('Day Shift Day 1')).toBeTruthy();
+    });
+
+    swipeLeft();
+    swipeLeft();
+    swipeLeft();
+    swipeLeft();
+    swipeLeft();
+
+    await waitFor(() => {
+      expect(getByText('Night Shift Day 1')).toBeTruthy();
+    });
+
+    swipeRight(); // select first night-shift day
+
+    await waitFor(() => {
+      const setCalls = (asyncStorageService.set as jest.Mock).mock.calls;
+      const latestPayload = setCalls[setCalls.length - 1]?.[1];
+      expect(latestPayload).toEqual(
+        expect.objectContaining({
+          fifoConfig: expect.objectContaining({
+            workBlockPattern: 'swing',
+            swingPattern: {
+              daysOnDayShift: 5,
+              daysOnNightShift: 3,
             },
           }),
         })

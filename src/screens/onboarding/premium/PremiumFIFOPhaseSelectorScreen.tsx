@@ -48,6 +48,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
+import { PatternBuilderSlider } from '@/components/onboarding/premium/PatternBuilderSlider';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
@@ -74,6 +75,7 @@ const SPRING_CONFIGS = {
 
 enum SelectionStage {
   WORK_PATTERN = 'workPattern',
+  SWING_CONFIG = 'swingConfig',
   BLOCK = 'block',
   DAY_WITHIN_BLOCK = 'dayWithinBlock',
 }
@@ -133,10 +135,39 @@ interface ResolvedFIFOConfig {
   customWorkSequence?: FIFOConfig['customWorkSequence'];
 }
 
+type SwingPatternConfig = NonNullable<FIFOConfig['swingPattern']>;
+
 const normalizeStandardWorkPattern = (
   pattern: FIFOWorkBlockPattern
 ): StandardFIFOWorkBlockPattern =>
   pattern === 'straight-nights' || pattern === 'swing' ? pattern : 'straight-days';
+
+const getDefaultSwingSplit = (
+  workBlockDays: number,
+  swingPattern?: FIFOConfig['swingPattern']
+): SwingPatternConfig => {
+  const fallbackDays = Math.ceil(workBlockDays / 2);
+  const fallbackNights = Math.max(0, workBlockDays - fallbackDays);
+
+  if (!swingPattern) {
+    return {
+      daysOnDayShift: fallbackDays,
+      daysOnNightShift: fallbackNights,
+    };
+  }
+
+  const daysOnDayShift = normalizePositiveInt(swingPattern.daysOnDayShift, fallbackDays);
+  const daysOnNightShift = normalizePositiveInt(swingPattern.daysOnNightShift, fallbackNights);
+
+  if (daysOnDayShift + daysOnNightShift !== workBlockDays) {
+    return {
+      daysOnDayShift: fallbackDays,
+      daysOnNightShift: fallbackNights,
+    };
+  }
+
+  return { daysOnDayShift, daysOnNightShift };
+};
 
 const resolveFIFOConfig = (
   patternType: ShiftPattern | undefined,
@@ -241,6 +272,66 @@ const generateDayDescription = (
     return 'Midpoint of this block';
   }
   return `Day ${dayNumber} of your rest block`;
+};
+
+const getDayCardContent = (
+  blockType: 'work' | 'rest',
+  dayNumber: number,
+  totalDays: number,
+  workBlockPattern: FIFOWorkBlockPattern,
+  swingPattern?: SwingPatternConfig
+): Pick<DayCardData, 'title' | 'description'> => {
+  if (
+    blockType === 'work' &&
+    workBlockPattern === 'swing' &&
+    swingPattern &&
+    swingPattern.daysOnDayShift > 0 &&
+    swingPattern.daysOnNightShift > 0
+  ) {
+    const isDayShiftSegment = dayNumber <= swingPattern.daysOnDayShift;
+    if (isDayShiftSegment) {
+      const dayShiftDayNumber = dayNumber;
+      if (dayShiftDayNumber === 1) {
+        return {
+          title: 'Day Shift Day 1',
+          description: 'First day shift back at site',
+        };
+      }
+      if (dayShiftDayNumber === swingPattern.daysOnDayShift) {
+        return {
+          title: `Day Shift Day ${dayShiftDayNumber}`,
+          description: 'Final day shift before switching to nights',
+        };
+      }
+      return {
+        title: `Day Shift Day ${dayShiftDayNumber}`,
+        description: `Day shift day ${dayShiftDayNumber} of your work block`,
+      };
+    }
+
+    const nightShiftDayNumber = dayNumber - swingPattern.daysOnDayShift;
+    if (nightShiftDayNumber === 1) {
+      return {
+        title: 'Night Shift Day 1',
+        description: 'First night shift in this swing block',
+      };
+    }
+    if (nightShiftDayNumber === swingPattern.daysOnNightShift) {
+      return {
+        title: `Night Shift Day ${nightShiftDayNumber}`,
+        description: 'Final night shift before flying home',
+      };
+    }
+    return {
+      title: `Night Shift Day ${nightShiftDayNumber}`,
+      description: `Night shift day ${nightShiftDayNumber} of your work block`,
+    };
+  }
+
+  return {
+    title: `Day ${dayNumber}`,
+    description: generateDayDescription(blockType, dayNumber, totalDays, workBlockPattern),
+  };
 };
 
 interface SwipeableFIFOCardProps {
@@ -691,6 +782,8 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
   const navigationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const interactionHandleRef = useRef<{ cancel?: () => void } | null>(null);
   const isCustomFIFOPatternRef = useRef(isCustomFIFOPattern);
+  const hasUserSelectedWorkPatternRef = useRef(false);
+  const hasUserAdjustedSwingSplitRef = useRef(false);
 
   const cardAnimations = [
     useSharedValue(0),
@@ -711,9 +804,16 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
 
   const { workBlockDays, restBlockDays, workBlockPattern } = resolvedFIFOConfig;
   const standardWorkPattern = normalizeStandardWorkPattern(workBlockPattern);
+  const defaultSwingSplit = useMemo(
+    () => getDefaultSwingSplit(workBlockDays, resolvedFIFOConfig.swingPattern),
+    [resolvedFIFOConfig.swingPattern, workBlockDays]
+  );
   const standardWorkPatternRef = useRef(standardWorkPattern);
+  const defaultSwingSplitRef = useRef(defaultSwingSplit);
   const [selectedWorkPattern, setSelectedWorkPattern] =
     useState<StandardFIFOWorkBlockPattern>(standardWorkPattern);
+  const [daysOnDayShift, setDaysOnDayShift] = useState(defaultSwingSplit.daysOnDayShift);
+  const [daysOnNightShift, setDaysOnNightShift] = useState(defaultSwingSplit.daysOnNightShift);
   const activeWorkBlockPattern = isCustomFIFOPattern ? workBlockPattern : selectedWorkPattern;
 
   useEffect(() => {
@@ -725,10 +825,23 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
   }, [standardWorkPattern]);
 
   useEffect(() => {
-    if (!isCustomFIFOPattern) {
+    defaultSwingSplitRef.current = defaultSwingSplit;
+  }, [defaultSwingSplit]);
+
+  useEffect(() => {
+    if (!isCustomFIFOPattern && !hasUserSelectedWorkPatternRef.current) {
       setSelectedWorkPattern(standardWorkPattern);
     }
-  }, [isCustomFIFOPattern, standardWorkPattern]);
+    if (!isCustomFIFOPattern && !hasUserAdjustedSwingSplitRef.current) {
+      setDaysOnDayShift(defaultSwingSplit.daysOnDayShift);
+      setDaysOnNightShift(defaultSwingSplit.daysOnNightShift);
+    }
+  }, [
+    defaultSwingSplit.daysOnDayShift,
+    defaultSwingSplit.daysOnNightShift,
+    isCustomFIFOPattern,
+    standardWorkPattern,
+  ]);
 
   useEffect(() => {
     if (isCustomFIFOPattern && stage === SelectionStage.WORK_PATTERN) {
@@ -889,7 +1002,11 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       clearPendingTransition();
       setStage(isCustomFIFOPatternRef.current ? SelectionStage.BLOCK : SelectionStage.WORK_PATTERN);
       setCurrentCardIndex(0);
+      hasUserSelectedWorkPatternRef.current = false;
+      hasUserAdjustedSwingSplitRef.current = false;
       setSelectedWorkPattern(standardWorkPatternRef.current);
+      setDaysOnDayShift(defaultSwingSplitRef.current.daysOnDayShift);
+      setDaysOnNightShift(defaultSwingSplitRef.current.daysOnNightShift);
       setSelectedBlockType(null);
       setSelectedBlockTitle('');
       setDayCards([]);
@@ -921,6 +1038,9 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     if (stage === SelectionStage.WORK_PATTERN) {
       return workPatternCards;
     }
+    if (stage === SelectionStage.SWING_CONFIG) {
+      return [];
+    }
     if (stage === SelectionStage.BLOCK) {
       return blockCards;
     }
@@ -933,6 +1053,13 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
   const stackedCards = useMemo(() => [...visibleCards].reverse(), [visibleCards]);
 
   const stageDayCount = selectedBlockType === 'work' ? workBlockDays : restBlockDays;
+  const swingSplitTotal = daysOnDayShift + daysOnNightShift;
+  const canConfigureSwingSplit = workBlockDays > 1;
+  const isSwingSplitValid =
+    canConfigureSwingSplit &&
+    daysOnDayShift >= 1 &&
+    daysOnNightShift >= 1 &&
+    swingSplitTotal === workBlockDays;
 
   useEffect(() => {
     if (currentCardIndex >= currentCards.length && currentCards.length > 0) {
@@ -973,8 +1100,8 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
             ...(selectedWorkPattern === 'swing'
               ? {
                   swingPattern: {
-                    daysOnDayShift: Math.ceil(workBlockDays / 2),
-                    daysOnNightShift: workBlockDays - Math.ceil(workBlockDays / 2),
+                    daysOnDayShift,
+                    daysOnNightShift,
                   },
                 }
               : {}),
@@ -996,6 +1123,8 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       restBlockDays,
       resolvedFIFOConfig.customWorkSequence,
       resolvedFIFOConfig.swingPattern,
+      daysOnDayShift,
+      daysOnNightShift,
       selectedWorkPattern,
       updateData,
       workBlockDays,
@@ -1003,10 +1132,47 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     ]
   );
 
+  const handleContinueFromSwingConfig = useCallback(() => {
+    if (!isSwingSplitValid) {
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+        source: 'PremiumFIFOPhaseSelectorScreen.handleSwingConfigContinue.invalid',
+      });
+      return;
+    }
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+      source: 'PremiumFIFOPhaseSelectorScreen.handleSwingConfigContinue',
+    });
+    setCurrentCardIndex(0);
+    setStage(SelectionStage.BLOCK);
+    setCardRemountKey((prev) => prev + 1);
+  }, [isSwingSplitValid]);
+
+  const handleChangePattern = useCallback(() => {
+    void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+      source: 'PremiumFIFOPhaseSelectorScreen.handleSwingConfigChangePattern',
+    });
+    setCurrentCardIndex(0);
+    hasUserAdjustedSwingSplitRef.current = false;
+    setStage(SelectionStage.WORK_PATTERN);
+    setCardRemountKey((prev) => prev + 1);
+  }, []);
+
   const handleSwipeRight = useCallback(() => {
     if (isTransitioningRef.current) {
       return;
     }
+
+    if (stage === SelectionStage.SWING_CONFIG) {
+      if (isSwingSplitValid) {
+        handleContinueFromSwingConfig();
+      } else {
+        void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+          source: 'PremiumFIFOPhaseSelectorScreen.handleSwingConfigSwipe.invalid',
+        });
+      }
+      return;
+    }
+
     const active = currentCards[currentCardIndex];
     if (!active) return;
 
@@ -1014,9 +1180,18 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
         source: 'PremiumFIFOPhaseSelectorScreen.handleWorkPatternSelect',
       });
+      hasUserSelectedWorkPatternRef.current = true;
       setSelectedWorkPattern(active.id);
       setCurrentCardIndex(0);
-      setStage(SelectionStage.BLOCK);
+      if (active.id === 'swing' && !isCustomFIFOPattern) {
+        const swingSplit = getDefaultSwingSplit(workBlockDays, resolvedFIFOConfig.swingPattern);
+        hasUserAdjustedSwingSplitRef.current = false;
+        setDaysOnDayShift(swingSplit.daysOnDayShift);
+        setDaysOnNightShift(swingSplit.daysOnNightShift);
+        setStage(SelectionStage.SWING_CONFIG);
+      } else {
+        setStage(SelectionStage.BLOCK);
+      }
       setCardRemountKey((prev) => prev + 1);
       return;
     }
@@ -1032,12 +1207,23 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
         active.id === 'work' ? workBlockDays : restBlockDays,
         14
       );
+      const swingPatternForDayCards: SwingPatternConfig | undefined =
+        active.id === 'work' && activeWorkBlockPattern === 'swing'
+          ? isCustomFIFOPattern
+            ? getDefaultSwingSplit(workBlockDays, resolvedFIFOConfig.swingPattern)
+            : { daysOnDayShift, daysOnNightShift }
+          : undefined;
       const generatedDays: DayCardData[] = Array.from({ length: totalDays }, (_, idx) => ({
+        ...(getDayCardContent(
+          active.id,
+          idx + 1,
+          totalDays,
+          activeWorkBlockPattern,
+          swingPatternForDayCards
+        ) as Pick<DayCardData, 'title' | 'description'>),
         type: 'day',
         id: `${active.id}-day-${idx + 1}`,
         dayNumber: idx + 1,
-        title: `Day ${idx + 1}`,
-        description: generateDayDescription(active.id, idx + 1, totalDays, activeWorkBlockPattern),
         blockType: active.id,
       }));
 
@@ -1053,11 +1239,17 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     }
   }, [
     calculateAndNavigate,
+    handleContinueFromSwingConfig,
     currentCardIndex,
     currentCards,
+    isSwingSplitValid,
     restBlockDays,
     stage,
     activeWorkBlockPattern,
+    isCustomFIFOPattern,
+    resolvedFIFOConfig.swingPattern,
+    daysOnDayShift,
+    daysOnNightShift,
     workBlockDays,
   ]);
 
@@ -1099,41 +1291,141 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       <Text style={styles.title}>
         {stage === SelectionStage.WORK_PATTERN
           ? 'How are shifts run during your FIFO work block?'
-          : stage === SelectionStage.BLOCK
-            ? 'Where are you in your FIFO cycle?'
-            : `Which day of ${selectedBlockTitle} are you on?`}
+          : stage === SelectionStage.SWING_CONFIG
+            ? 'Configure your swing split'
+            : stage === SelectionStage.BLOCK
+              ? 'Where are you in your FIFO cycle?'
+              : `Which day of ${selectedBlockTitle} are you on?`}
       </Text>
 
       <Text style={styles.subtitle}>
         {stage === SelectionStage.WORK_PATTERN
           ? 'Swipe right to choose your work-block pattern, left for next option, or up for info'
-          : stage === SelectionStage.BLOCK
-            ? 'Swipe right to select, left to see next, or up for more info'
-            : `Swipe right to select, left to see next, or up for more info. Is it the ${generateOrdinalList(
-                stageDayCount
-              )}?`}
+          : stage === SelectionStage.SWING_CONFIG
+            ? 'Set how many day-shift and night-shift days you work before choosing your current block'
+            : stage === SelectionStage.BLOCK
+              ? 'Swipe right to select, left to see next, or up for more info'
+              : `Swipe right to select, left to see next, or up for more info. Is it the ${generateOrdinalList(
+                  stageDayCount
+                )}?`}
       </Text>
 
       <>
-        <ProgressDots total={currentCards.length} current={currentCardIndex} />
+        <ProgressDots
+          total={stage === SelectionStage.SWING_CONFIG ? 1 : currentCards.length}
+          current={stage === SelectionStage.SWING_CONFIG ? 0 : currentCardIndex}
+        />
 
-        <View style={styles.cardStack}>
-          {stackedCards.map((card, index) => (
-            <SwipeableFIFOCard
-              key={`${card.id}-${cardRemountKey}`}
-              card={card}
-              index={stackedCards.length - 1 - index}
-              totalCards={stackedCards.length}
-              isActive={index === stackedCards.length - 1}
-              interactionLocked={isTransitioning}
-              onSwipeRight={handleSwipeRight}
-              onSwipeLeft={handleSwipeLeft}
-              onSwipeUp={handleSwipeUp}
-              mountProgress={cardAnimations[index]}
-              reducedMotion={reducedMotion}
+        {stage === SelectionStage.SWING_CONFIG ? (
+          <View style={styles.swingConfigCard} testID="swing-config-stage">
+            <LinearGradient
+              colors={['#0EA5E9', '#6366F1']}
+              style={StyleSheet.absoluteFill}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 0, y: 1 }}
             />
-          ))}
-        </View>
+
+            <View style={styles.swingConfigContent}>
+              <PatternBuilderSlider
+                label="Days on Day Shift"
+                icon="☀️"
+                value={daysOnDayShift}
+                min={1}
+                max={Math.max(1, workBlockDays - 1)}
+                color={theme.colors.shiftVisualization.dayShift}
+                trackColor="#60A5FA"
+                onChange={(value) => {
+                  hasUserAdjustedSwingSplitRef.current = true;
+                  const nextDayShiftDays = Math.max(
+                    1,
+                    Math.min(Math.max(1, workBlockDays - 1), value)
+                  );
+                  setDaysOnDayShift(nextDayShiftDays);
+                  setDaysOnNightShift(Math.max(1, workBlockDays - nextDayShiftDays));
+                }}
+                hapticSourcePrefix="PremiumFIFOPhaseSelectorScreen"
+                delayIndex={0}
+                reducedMotion={reducedMotion}
+                customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
+                customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png')}
+              />
+
+              <PatternBuilderSlider
+                label="Days on Night Shift"
+                icon="🌙"
+                value={daysOnNightShift}
+                min={1}
+                max={Math.max(1, workBlockDays - 1)}
+                color={theme.colors.shiftVisualization.nightShift}
+                trackColor="#A78BFA"
+                onChange={(value) => {
+                  hasUserAdjustedSwingSplitRef.current = true;
+                  const nextNightShiftDays = Math.max(
+                    1,
+                    Math.min(Math.max(1, workBlockDays - 1), value)
+                  );
+                  setDaysOnNightShift(nextNightShiftDays);
+                  setDaysOnDayShift(Math.max(1, workBlockDays - nextNightShiftDays));
+                }}
+                hapticSourcePrefix="PremiumFIFOPhaseSelectorScreen"
+                delayIndex={1}
+                reducedMotion={reducedMotion}
+                customThumbIcon={require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png')}
+                customHeaderIcon={require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png')}
+              />
+
+              <Text style={styles.swingSplitText} testID="swing-split-total-text">
+                Split total: {swingSplitTotal}/{workBlockDays} days
+              </Text>
+
+              {isSwingSplitValid ? null : (
+                <Text style={styles.swingValidationText} testID="swing-config-error">
+                  Swing split must equal {workBlockDays} days with at least 1 day on each shift.
+                </Text>
+              )}
+
+              <View style={styles.swingActions}>
+                <Pressable
+                  onPress={handleChangePattern}
+                  style={styles.changePatternButton}
+                  testID="swing-config-change-pattern-button"
+                >
+                  <Text style={styles.changePatternButtonText}>Change Pattern</Text>
+                </Pressable>
+
+                <Pressable
+                  onPress={handleContinueFromSwingConfig}
+                  style={[
+                    styles.swingContinueButton,
+                    !isSwingSplitValid && styles.swingContinueButtonDisabled,
+                  ]}
+                  disabled={!isSwingSplitValid}
+                  testID="swing-config-continue-button"
+                >
+                  <Text style={styles.swingContinueButtonText}>Continue</Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        ) : (
+          <View style={styles.cardStack}>
+            {stackedCards.map((card, index) => (
+              <SwipeableFIFOCard
+                key={`${card.id}-${cardRemountKey}`}
+                card={card}
+                index={stackedCards.length - 1 - index}
+                totalCards={stackedCards.length}
+                isActive={index === stackedCards.length - 1}
+                interactionLocked={isTransitioning}
+                onSwipeRight={handleSwipeRight}
+                onSwipeLeft={handleSwipeLeft}
+                onSwipeUp={handleSwipeUp}
+                mountProgress={cardAnimations[index]}
+                reducedMotion={reducedMotion}
+              />
+            ))}
+          </View>
+        )}
       </>
       {isTransitioning ? (
         <View pointerEvents="none" style={styles.transitionOverlay}>
@@ -1185,6 +1477,72 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: theme.spacing.xl,
+  },
+  swingConfigCard: {
+    width: CARD_WIDTH,
+    alignSelf: 'center',
+    backgroundColor: theme.colors.darkStone,
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
+    overflow: 'hidden',
+    marginBottom: theme.spacing.xl,
+    minHeight: CARD_HEIGHT,
+  },
+  swingConfigContent: {
+    paddingVertical: theme.spacing.lg,
+    paddingHorizontal: theme.spacing.lg,
+    gap: theme.spacing.sm,
+  },
+  swingSplitText: {
+    fontSize: 16,
+    color: theme.colors.paper,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginTop: theme.spacing.sm,
+  },
+  swingValidationText: {
+    fontSize: 14,
+    color: '#FCA5A5',
+    textAlign: 'center',
+    marginTop: theme.spacing.xs,
+  },
+  swingActions: {
+    flexDirection: 'row',
+    gap: theme.spacing.sm,
+    marginTop: theme.spacing.md,
+  },
+  changePatternButton: {
+    flex: 1,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.white20,
+    paddingVertical: theme.spacing.sm,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.opacity.black40,
+  },
+  changePatternButtonText: {
+    color: theme.colors.paper,
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  swingContinueButton: {
+    flex: 1,
+    borderRadius: 14,
+    paddingVertical: theme.spacing.sm,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.sacredGold,
+  },
+  swingContinueButtonDisabled: {
+    backgroundColor: theme.colors.softStone,
+    opacity: 0.6,
+  },
+  swingContinueButtonText: {
+    color: theme.colors.deepVoid,
+    fontSize: 14,
+    fontWeight: '700',
   },
   card: {
     position: 'absolute',
