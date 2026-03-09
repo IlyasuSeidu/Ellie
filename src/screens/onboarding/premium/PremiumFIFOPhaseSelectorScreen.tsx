@@ -690,6 +690,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
   const isTransitioningRef = useRef(false);
   const navigationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const interactionHandleRef = useRef<{ cancel?: () => void } | null>(null);
+  const isCustomFIFOPatternRef = useRef(isCustomFIFOPattern);
 
   const cardAnimations = [
     useSharedValue(0),
@@ -710,9 +711,18 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
 
   const { workBlockDays, restBlockDays, workBlockPattern } = resolvedFIFOConfig;
   const standardWorkPattern = normalizeStandardWorkPattern(workBlockPattern);
+  const standardWorkPatternRef = useRef(standardWorkPattern);
   const [selectedWorkPattern, setSelectedWorkPattern] =
     useState<StandardFIFOWorkBlockPattern>(standardWorkPattern);
   const activeWorkBlockPattern = isCustomFIFOPattern ? workBlockPattern : selectedWorkPattern;
+
+  useEffect(() => {
+    isCustomFIFOPatternRef.current = isCustomFIFOPattern;
+  }, [isCustomFIFOPattern]);
+
+  useEffect(() => {
+    standardWorkPatternRef.current = standardWorkPattern;
+  }, [standardWorkPattern]);
 
   useEffect(() => {
     if (!isCustomFIFOPattern) {
@@ -877,9 +887,9 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
   useFocusEffect(
     useCallback(() => {
       clearPendingTransition();
-      setStage(isCustomFIFOPattern ? SelectionStage.BLOCK : SelectionStage.WORK_PATTERN);
+      setStage(isCustomFIFOPatternRef.current ? SelectionStage.BLOCK : SelectionStage.WORK_PATTERN);
       setCurrentCardIndex(0);
-      setSelectedWorkPattern(standardWorkPattern);
+      setSelectedWorkPattern(standardWorkPatternRef.current);
       setSelectedBlockType(null);
       setSelectedBlockTitle('');
       setDayCards([]);
@@ -898,7 +908,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
         clearPendingTransition();
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [clearPendingTransition, isCustomFIFOPattern, standardWorkPattern])
+    }, [clearPendingTransition])
   );
 
   useEffect(() => {
