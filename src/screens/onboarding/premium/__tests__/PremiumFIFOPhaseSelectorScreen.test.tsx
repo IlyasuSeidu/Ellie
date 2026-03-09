@@ -212,18 +212,34 @@ describe('PremiumFIFOPhaseSelectorScreen', () => {
     jest.restoreAllMocks();
   });
 
-  it('renders stage 1 parity title/subtitle and progress header', () => {
+  it('renders swipeable work-pattern stage first for standard FIFO', () => {
     const { getByText, getByTestId } = renderWithContext();
-    expect(getByText('Where are you in your FIFO cycle?')).toBeTruthy();
-    expect(getByText('Swipe right to select, left to see next, or up for more info')).toBeTruthy();
-    expect(getByText('At Site (Working)')).toBeTruthy();
-    expect(getByText('At Home (Rest)')).toBeTruthy();
+    expect(getByText('How are shifts run during your FIFO work block?')).toBeTruthy();
+    expect(
+      getByText(
+        'Swipe right to choose your work-block pattern, left for next option, or up for info'
+      )
+    ).toBeTruthy();
+    expect(getByText('Straight Days')).toBeTruthy();
+    expect(getByText('Straight Nights')).toBeTruthy();
+    expect(getByText('Swing')).toBeTruthy();
     expect(getByTestId('fifo-phase-selector-progress-header')).toBeTruthy();
   });
 
-  it('right swipe selects current block and moves to stage 2', async () => {
+  it('right swipe selects current work pattern and moves to block stage', async () => {
     const { getByText } = renderWithContext();
     swipeRight();
+
+    await waitFor(() => {
+      expect(getByText('Where are you in your FIFO cycle?')).toBeTruthy();
+      expect(getByText('At Site (Working)')).toBeTruthy();
+    });
+  });
+
+  it('right swipe on block stage then moves to day stage', async () => {
+    const { getByText } = renderWithContext();
+    swipeRight(); // select straight-days pattern
+    swipeRight(); // select work block
 
     await waitFor(() => {
       expect(getByText('Which day of At Site (Working) are you on?')).toBeTruthy();
@@ -231,44 +247,52 @@ describe('PremiumFIFOPhaseSelectorScreen', () => {
     });
   });
 
-  it('left swipe skips to next block, then right swipe selects it', async () => {
+  it('left swipe skips to next work pattern, then right swipe selects it', async () => {
     const { getByText } = renderWithContext();
+    swipeLeft();
+    swipeRight(); // select straight-nights
+
+    await waitFor(() => {
+      expect(getByText('Where are you in your FIFO cycle?')).toBeTruthy();
+      expect(
+        getByText('You are currently at the mine site on your night-shift work block')
+      ).toBeTruthy();
+    });
+  });
+
+  it('left swipe loops at end in work-pattern stage', async () => {
+    const { getByText } = renderWithContext();
+    swipeLeft();
+    swipeLeft();
     swipeLeft();
     swipeRight();
 
     await waitFor(() => {
-      expect(getByText('Which day of At Home (Rest) are you on?')).toBeTruthy();
+      expect(getByText('Where are you in your FIFO cycle?')).toBeTruthy();
+      expect(
+        getByText('You are currently at the mine site on your day-shift work block')
+      ).toBeTruthy();
     });
   });
 
-  it('left swipe loops at end in stage 1 (two skips returns to first block)', async () => {
-    const { getByText } = renderWithContext();
-    swipeLeft();
-    swipeLeft();
-    swipeRight();
-
-    await waitFor(() => {
-      expect(getByText('Which day of At Site (Working) are you on?')).toBeTruthy();
-    });
-  });
-
-  it('up swipe opens info modal and close returns to flow', async () => {
+  it('up swipe opens info modal for work-pattern cards and close returns to flow', async () => {
     const { getByText, queryByText } = renderWithContext();
     swipeUp();
 
     await waitFor(() => {
-      expect(getByText('Block Length')).toBeTruthy();
+      expect(getByText('Why it matters')).toBeTruthy();
     });
 
     fireEvent.press(getByText('close'));
     await waitFor(() => {
-      expect(queryByText('Block Length')).toBeNull();
-      expect(getByText('Where are you in your FIFO cycle?')).toBeTruthy();
+      expect(queryByText('Why it matters')).toBeNull();
+      expect(getByText('How are shifts run during your FIFO work block?')).toBeTruthy();
     });
   });
 
   it('computes phaseOffset for rest block day 3', async () => {
     renderWithContext();
+    swipeRight(); // select straight-days
     swipeLeft();
     swipeRight(); // select rest block
     swipeLeft(); // day 2
@@ -285,6 +309,7 @@ describe('PremiumFIFOPhaseSelectorScreen', () => {
 
   it('computes phaseOffset for work block day 3', async () => {
     renderWithContext();
+    swipeRight(); // select straight-days
     swipeRight(); // select work block
     swipeLeft(); // day 2
     swipeLeft(); // day 3
@@ -300,7 +325,8 @@ describe('PremiumFIFOPhaseSelectorScreen', () => {
 
   it('keeps one-shot navigation when right-swipe fires repeatedly on day cards', async () => {
     renderWithContext();
-    swipeRight(); // stage 1: select work block
+    swipeRight(); // stage 1: select straight-days pattern
+    swipeRight(); // stage 2: select work block
 
     await waitFor(() => {
       expect(goToNextScreen).toHaveBeenCalledTimes(0);
@@ -331,6 +357,8 @@ describe('PremiumFIFOPhaseSelectorScreen', () => {
     });
 
     const { getByText } = renderWithContext();
+
+    swipeRight(); // select straight-days pattern
 
     await waitFor(() => {
       expect(getByText('8 days')).toBeTruthy();
@@ -406,6 +434,73 @@ describe('PremiumFIFOPhaseSelectorScreen', () => {
       expect(
         queryByText('You are currently at the mine site on your night-shift work block')
       ).toBeNull();
+    });
+  });
+
+  it('persists straight-nights for standard FIFO when selected in work-pattern stage', async () => {
+    (asyncStorageService.get as jest.Mock).mockResolvedValueOnce({
+      rosterType: 'fifo',
+      patternType: 'FIFO_8_6',
+    });
+
+    const { getByText } = renderWithContext();
+    swipeLeft(); // straight-nights
+    swipeRight(); // select pattern
+    await waitFor(() => {
+      expect(getByText('8 days')).toBeTruthy();
+      expect(getByText('6 days')).toBeTruthy();
+    });
+    swipeRight(); // select work block
+    swipeRight(); // select day 1
+
+    await waitFor(() => {
+      const setCalls = (asyncStorageService.set as jest.Mock).mock.calls;
+      const latestPayload = setCalls[setCalls.length - 1]?.[1];
+      expect(latestPayload).toEqual(
+        expect.objectContaining({
+          fifoConfig: expect.objectContaining({
+            workBlockDays: 8,
+            restBlockDays: 6,
+            workBlockPattern: 'straight-nights',
+          }),
+        })
+      );
+    });
+  });
+
+  it('persists swing with explicit 50/50 split for standard FIFO when selected in work-pattern stage', async () => {
+    (asyncStorageService.get as jest.Mock).mockResolvedValueOnce({
+      rosterType: 'fifo',
+      patternType: 'FIFO_8_6',
+    });
+
+    const { getByText } = renderWithContext();
+    swipeLeft(); // straight-nights
+    swipeLeft(); // swing
+    swipeRight(); // select pattern
+    await waitFor(() => {
+      expect(getByText('8 days')).toBeTruthy();
+      expect(getByText('6 days')).toBeTruthy();
+    });
+    swipeRight(); // select work block
+    swipeRight(); // select day 1
+
+    await waitFor(() => {
+      const setCalls = (asyncStorageService.set as jest.Mock).mock.calls;
+      const latestPayload = setCalls[setCalls.length - 1]?.[1];
+      expect(latestPayload).toEqual(
+        expect.objectContaining({
+          fifoConfig: expect.objectContaining({
+            workBlockDays: 8,
+            restBlockDays: 6,
+            workBlockPattern: 'swing',
+            swingPattern: {
+              daysOnDayShift: 4,
+              daysOnNightShift: 4,
+            },
+          }),
+        })
+      );
     });
   });
 

@@ -1,9 +1,10 @@
 /**
  * PremiumFIFOPhaseSelectorScreen Component
  *
- * Two-stage FIFO phase selector with swipe parity to PremiumPhaseSelectorScreen.
- * Stage 1: Select block type (work/rest)
- * Stage 2: Select day within selected block
+ * Three-stage FIFO phase selector with swipe parity to PremiumPhaseSelectorScreen.
+ * Stage 1 (standard FIFO only): Select work pattern (days/nights/swing)
+ * Stage 2: Select block type (work/rest)
+ * Stage 3: Select day within selected block
  *
  * Swipe semantics:
  * - Right: select current option
@@ -72,8 +73,19 @@ const SPRING_CONFIGS = {
 } as const;
 
 enum SelectionStage {
+  WORK_PATTERN = 'workPattern',
   BLOCK = 'block',
   DAY_WITHIN_BLOCK = 'dayWithinBlock',
+}
+
+interface WorkPatternCardData {
+  type: 'workPattern';
+  id: StandardFIFOWorkBlockPattern;
+  title: string;
+  description: string;
+  icon: ImageSourcePropType;
+  gradientColors: [string, string];
+  quickInfo: string;
 }
 
 interface BlockCardData {
@@ -96,7 +108,7 @@ interface DayCardData {
   blockType: 'work' | 'rest';
 }
 
-type FIFOCardData = BlockCardData | DayCardData;
+type FIFOSelectableCardData = WorkPatternCardData | BlockCardData | DayCardData;
 
 const getBlockLengthsFromPattern = (
   patternType: ShiftPattern | undefined
@@ -111,6 +123,7 @@ const getBlockLengthsFromPattern = (
 };
 
 type FIFOWorkBlockPattern = FIFOConfig['workBlockPattern'];
+type StandardFIFOWorkBlockPattern = Exclude<FIFOWorkBlockPattern, 'custom'>;
 
 interface ResolvedFIFOConfig {
   workBlockDays: number;
@@ -119,6 +132,11 @@ interface ResolvedFIFOConfig {
   swingPattern?: FIFOConfig['swingPattern'];
   customWorkSequence?: FIFOConfig['customWorkSequence'];
 }
+
+const normalizeStandardWorkPattern = (
+  pattern: FIFOWorkBlockPattern
+): StandardFIFOWorkBlockPattern =>
+  pattern === 'straight-nights' || pattern === 'swing' ? pattern : 'straight-days';
 
 const resolveFIFOConfig = (
   patternType: ShiftPattern | undefined,
@@ -226,7 +244,7 @@ const generateDayDescription = (
 };
 
 interface SwipeableFIFOCardProps {
-  card: FIFOCardData;
+  card: FIFOSelectableCardData;
   index: number;
   totalCards: number;
   isActive: boolean;
@@ -466,11 +484,13 @@ const SwipeableFIFOCard: React.FC<SwipeableFIFOCardProps> = ({
   }));
 
   const isBlockCard = card.type === 'block';
+  const isPatternCard = card.type === 'workPattern';
+  const isVisualCard = isBlockCard || isPatternCard;
 
   return (
     <GestureDetector gesture={composed}>
       <Animated.View style={[styles.card, animatedStyle, getShadowStyle(index, isActive)]}>
-        {isBlockCard && (
+        {isVisualCard && (
           <LinearGradient
             colors={card.gradientColors}
             style={StyleSheet.absoluteFill}
@@ -480,7 +500,7 @@ const SwipeableFIFOCard: React.FC<SwipeableFIFOCardProps> = ({
         )}
 
         <Animated.View style={[styles.iconContainer, iconAnimatedStyle]}>
-          {isBlockCard ? (
+          {isVisualCard ? (
             <Image source={card.icon} style={styles.iconImage} resizeMode="contain" />
           ) : (
             <Text style={styles.icon}>{card.dayNumber}</Text>
@@ -519,7 +539,7 @@ const SwipeableFIFOCard: React.FC<SwipeableFIFOCardProps> = ({
 
 interface FIFOInfoModalProps {
   visible: boolean;
-  content: FIFOCardData | null;
+  content: FIFOSelectableCardData | null;
   onClose: () => void;
 }
 
@@ -527,6 +547,8 @@ const FIFOInfoModal: React.FC<FIFOInfoModalProps> = ({ visible, content, onClose
   if (!content) return null;
 
   const isBlockCard = content.type === 'block';
+  const isPatternCard = content.type === 'workPattern';
+  const isVisualCard = isBlockCard || isPatternCard;
 
   return (
     <Modal
@@ -543,7 +565,7 @@ const FIFOInfoModal: React.FC<FIFOInfoModalProps> = ({ visible, content, onClose
         </View>
 
         <View style={styles.modalContent}>
-          {isBlockCard ? (
+          {isVisualCard ? (
             <Image source={content.icon} style={styles.modalIconImage} resizeMode="contain" />
           ) : (
             <Text style={styles.modalIcon}>{content.dayNumber}</Text>
@@ -551,14 +573,16 @@ const FIFOInfoModal: React.FC<FIFOInfoModalProps> = ({ visible, content, onClose
           <Text style={styles.modalTitle}>{content.title}</Text>
           <Text style={styles.modalDescription}>{content.description}</Text>
 
-          {isBlockCard && (
+          {(isBlockCard || isPatternCard) && (
             <>
-              <View style={styles.modalSection}>
-                <Text style={styles.modalSectionTitle}>Block Length</Text>
-                <Text style={styles.modalSectionText}>
-                  {content.blockLength} {content.blockLength === 1 ? 'day' : 'days'}
-                </Text>
-              </View>
+              {isBlockCard ? (
+                <View style={styles.modalSection}>
+                  <Text style={styles.modalSectionTitle}>Block Length</Text>
+                  <Text style={styles.modalSectionText}>
+                    {content.blockLength} {content.blockLength === 1 ? 'day' : 'days'}
+                  </Text>
+                </View>
+              ) : null}
               <View style={styles.modalSection}>
                 <Text style={styles.modalSectionTitle}>Why it matters</Text>
                 <Text style={styles.modalSectionText}>{content.quickInfo}</Text>
@@ -649,13 +673,16 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
   const { data, updateData } = useOnboarding();
 
-  const [stage, setStage] = useState<SelectionStage>(SelectionStage.BLOCK);
+  const isCustomFIFOPattern = data.patternType === ShiftPattern.FIFO_CUSTOM;
+  const [stage, setStage] = useState<SelectionStage>(
+    isCustomFIFOPattern ? SelectionStage.BLOCK : SelectionStage.WORK_PATTERN
+  );
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [selectedBlockType, setSelectedBlockType] = useState<'work' | 'rest' | null>(null);
   const [selectedBlockTitle, setSelectedBlockTitle] = useState('');
   const [dayCards, setDayCards] = useState<DayCardData[]>([]);
   const [showInfoModal, setShowInfoModal] = useState(false);
-  const [infoModalContent, setInfoModalContent] = useState<FIFOCardData | null>(null);
+  const [infoModalContent, setInfoModalContent] = useState<FIFOSelectableCardData | null>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
   const reducedMotionRef = useRef(false);
   const [cardRemountKey, setCardRemountKey] = useState(0);
@@ -671,8 +698,6 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     useSharedValue(0),
   ];
 
-  const isCustomFIFOPattern = data.patternType === ShiftPattern.FIFO_CUSTOM;
-
   const resolvedFIFOConfig = useMemo(
     () =>
       resolveFIFOConfig(
@@ -684,10 +709,64 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
   );
 
   const { workBlockDays, restBlockDays, workBlockPattern } = resolvedFIFOConfig;
+  const standardWorkPattern = normalizeStandardWorkPattern(workBlockPattern);
+  const [selectedWorkPattern, setSelectedWorkPattern] =
+    useState<StandardFIFOWorkBlockPattern>(standardWorkPattern);
+  const activeWorkBlockPattern = isCustomFIFOPattern ? workBlockPattern : selectedWorkPattern;
+
+  useEffect(() => {
+    if (!isCustomFIFOPattern) {
+      setSelectedWorkPattern(standardWorkPattern);
+    }
+  }, [isCustomFIFOPattern, standardWorkPattern]);
+
+  useEffect(() => {
+    if (isCustomFIFOPattern && stage === SelectionStage.WORK_PATTERN) {
+      setStage(SelectionStage.BLOCK);
+      setCurrentCardIndex(0);
+      setCardRemountKey((prev) => prev + 1);
+    }
+  }, [isCustomFIFOPattern, stage]);
+
+  const workPatternCards = useMemo<WorkPatternCardData[]>(
+    () => [
+      {
+        type: 'workPattern',
+        id: 'straight-days',
+        title: 'Straight Days',
+        description: 'Your work block runs day shifts only.',
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        icon: require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png'),
+        gradientColors: [theme.colors.shiftVisualization.dayShift, '#1976D2'],
+        quickInfo: 'Best for operations that keep all crews on daytime rotations.',
+      },
+      {
+        type: 'workPattern',
+        id: 'straight-nights',
+        title: 'Straight Nights',
+        description: 'Your work block runs night shifts only.',
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        icon: require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png'),
+        gradientColors: [theme.colors.shiftVisualization.nightShift, '#4C1D95'],
+        quickInfo: 'Use this when site crews remain on night shifts for the full work block.',
+      },
+      {
+        type: 'workPattern',
+        id: 'swing',
+        title: 'Swing',
+        description: 'Your work block mixes day and night shifts.',
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        icon: require('../../../../assets/onboarding/icons/consolidated/roster-type-rotating.png'),
+        gradientColors: ['#0891B2', '#6366F1'],
+        quickInfo: 'Choose this when your work block rotates between days and nights.',
+      },
+    ],
+    []
+  );
 
   const blockCards = useMemo<BlockCardData[]>(() => {
     const workBlockVisuals =
-      workBlockPattern === 'straight-nights'
+      activeWorkBlockPattern === 'straight-nights'
         ? {
             description: 'You are currently at the mine site on your night-shift work block',
             // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -698,7 +777,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
             ],
             quickInfo: 'This means your cycle starts counting from your night-shift work block.',
           }
-        : workBlockPattern === 'straight-days'
+        : activeWorkBlockPattern === 'straight-days'
           ? {
               description: 'You are currently at the mine site on your day-shift work block',
               // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -740,7 +819,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
         quickInfo: 'This offsets your cycle by your work block length first.',
       },
     ];
-  }, [restBlockDays, workBlockDays, workBlockPattern]);
+  }, [activeWorkBlockPattern, restBlockDays, workBlockDays]);
 
   const clearPendingTransition = useCallback(() => {
     if (interactionHandleRef.current?.cancel) {
@@ -798,8 +877,9 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
   useFocusEffect(
     useCallback(() => {
       clearPendingTransition();
-      setStage(SelectionStage.BLOCK);
+      setStage(isCustomFIFOPattern ? SelectionStage.BLOCK : SelectionStage.WORK_PATTERN);
       setCurrentCardIndex(0);
+      setSelectedWorkPattern(standardWorkPattern);
       setSelectedBlockType(null);
       setSelectedBlockTitle('');
       setDayCards([]);
@@ -818,7 +898,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
         clearPendingTransition();
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [clearPendingTransition])
+    }, [clearPendingTransition, isCustomFIFOPattern, standardWorkPattern])
   );
 
   useEffect(() => {
@@ -827,10 +907,15 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     };
   }, [clearPendingTransition]);
 
-  const currentCards = useMemo<FIFOCardData[]>(
-    () => (stage === SelectionStage.BLOCK ? blockCards : dayCards),
-    [blockCards, dayCards, stage]
-  );
+  const currentCards = useMemo<FIFOSelectableCardData[]>(() => {
+    if (stage === SelectionStage.WORK_PATTERN) {
+      return workPatternCards;
+    }
+    if (stage === SelectionStage.BLOCK) {
+      return blockCards;
+    }
+    return dayCards;
+  }, [blockCards, dayCards, stage, workPatternCards]);
 
   const visibleCards = useMemo(() => {
     return currentCards.slice(currentCardIndex, currentCardIndex + 4);
@@ -859,20 +944,31 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       isTransitioningRef.current = true;
       setIsTransitioning(true);
 
-      // Ensure fifoConfig is populated and aligned to selected pattern:
-      // - Standard FIFO patterns use a predictable default work pattern.
-      // - Custom FIFO patterns keep the user-configured settings.
-      const fifoConfig: FIFOConfig = {
-        workBlockDays,
-        restBlockDays,
-        workBlockPattern,
-        ...(resolvedFIFOConfig.swingPattern
-          ? { swingPattern: resolvedFIFOConfig.swingPattern }
-          : {}),
-        ...(resolvedFIFOConfig.customWorkSequence
-          ? { customWorkSequence: resolvedFIFOConfig.customWorkSequence }
-          : {}),
-      };
+      const fifoConfig: FIFOConfig = isCustomFIFOPattern
+        ? {
+            workBlockDays,
+            restBlockDays,
+            workBlockPattern,
+            ...(resolvedFIFOConfig.swingPattern
+              ? { swingPattern: resolvedFIFOConfig.swingPattern }
+              : {}),
+            ...(resolvedFIFOConfig.customWorkSequence
+              ? { customWorkSequence: resolvedFIFOConfig.customWorkSequence }
+              : {}),
+          }
+        : {
+            workBlockDays,
+            restBlockDays,
+            workBlockPattern: selectedWorkPattern,
+            ...(selectedWorkPattern === 'swing'
+              ? {
+                  swingPattern: {
+                    daysOnDayShift: Math.ceil(workBlockDays / 2),
+                    daysOnNightShift: workBlockDays - Math.ceil(workBlockDays / 2),
+                  },
+                }
+              : {}),
+          };
       updateData({ phaseOffset, fifoConfig });
       void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
         source: 'PremiumFIFOPhaseSelectorScreen.handleDaySelect',
@@ -885,10 +981,12 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       });
     },
     [
+      isCustomFIFOPattern,
       navigation,
       restBlockDays,
       resolvedFIFOConfig.customWorkSequence,
       resolvedFIFOConfig.swingPattern,
+      selectedWorkPattern,
       updateData,
       workBlockDays,
       workBlockPattern,
@@ -901,6 +999,17 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     }
     const active = currentCards[currentCardIndex];
     if (!active) return;
+
+    if (stage === SelectionStage.WORK_PATTERN && active.type === 'workPattern') {
+      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+        source: 'PremiumFIFOPhaseSelectorScreen.handleWorkPatternSelect',
+      });
+      setSelectedWorkPattern(active.id);
+      setCurrentCardIndex(0);
+      setStage(SelectionStage.BLOCK);
+      setCardRemountKey((prev) => prev + 1);
+      return;
+    }
 
     if (stage === SelectionStage.BLOCK && active.type === 'block') {
       void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
@@ -918,7 +1027,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
         id: `${active.id}-day-${idx + 1}`,
         dayNumber: idx + 1,
         title: `Day ${idx + 1}`,
-        description: generateDayDescription(active.id, idx + 1, totalDays, workBlockPattern),
+        description: generateDayDescription(active.id, idx + 1, totalDays, activeWorkBlockPattern),
         blockType: active.id,
       }));
 
@@ -938,8 +1047,8 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     currentCards,
     restBlockDays,
     stage,
+    activeWorkBlockPattern,
     workBlockDays,
-    workBlockPattern,
   ]);
 
   const handleSwipeLeft = useCallback(() => {
@@ -978,17 +1087,21 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       />
 
       <Text style={styles.title}>
-        {stage === SelectionStage.BLOCK
-          ? 'Where are you in your FIFO cycle?'
-          : `Which day of ${selectedBlockTitle} are you on?`}
+        {stage === SelectionStage.WORK_PATTERN
+          ? 'How are shifts run during your FIFO work block?'
+          : stage === SelectionStage.BLOCK
+            ? 'Where are you in your FIFO cycle?'
+            : `Which day of ${selectedBlockTitle} are you on?`}
       </Text>
 
       <Text style={styles.subtitle}>
-        {stage === SelectionStage.BLOCK
-          ? 'Swipe right to select, left to see next, or up for more info'
-          : `Swipe right to select, left to see next, or up for more info. Is it the ${generateOrdinalList(
-              stageDayCount
-            )}?`}
+        {stage === SelectionStage.WORK_PATTERN
+          ? 'Swipe right to choose your work-block pattern, left for next option, or up for info'
+          : stage === SelectionStage.BLOCK
+            ? 'Swipe right to select, left to see next, or up for more info'
+            : `Swipe right to select, left to see next, or up for more info. Is it the ${generateOrdinalList(
+                stageDayCount
+              )}?`}
       </Text>
 
       <>

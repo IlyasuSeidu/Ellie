@@ -371,11 +371,20 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
 
   if (rosterType === 'fifo') {
     // FIFO roster: determine shift types based on work pattern
+    const presetFIFOConfig = getDefaultFIFOConfig(data.patternType ?? ShiftPattern.FIFO_14_14);
+    const normalizedPresetPattern = presetFIFOConfig?.workBlockPattern || 'straight-days';
+    const hasMatchingPresetLengths =
+      !!presetFIFOConfig &&
+      !!data.fifoConfig &&
+      data.fifoConfig.workBlockDays === presetFIFOConfig.workBlockDays &&
+      data.fifoConfig.restBlockDays === presetFIFOConfig.restBlockDays;
+
     const workPattern =
       data.patternType === ShiftPattern.FIFO_CUSTOM
         ? data.fifoConfig?.workBlockPattern || 'swing'
-        : getDefaultFIFOConfig(data.patternType ?? ShiftPattern.FIFO_14_14)?.workBlockPattern ||
-          'straight-days';
+        : hasMatchingPresetLengths
+          ? data.fifoConfig?.workBlockPattern || normalizedPresetPattern
+          : normalizedPresetPattern;
 
     if (workPattern === 'straight-days') {
       // Only collect day shift times

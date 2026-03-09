@@ -4333,7 +4333,7 @@ exports[`fifo onboarding visual snapshots PremiumFIFOPhaseSelectorScreen snapsho
       }
     }
   >
-    Where are you in your FIFO cycle?
+    How are shifts run during your FIFO work block?
   </Text>
   <Text
     style={
@@ -4348,7 +4348,7 @@ exports[`fifo onboarding visual snapshots PremiumFIFOPhaseSelectorScreen snapsho
       }
     }
   >
-    Swipe right to select, left to see next, or up for more info
+    Swipe right to choose your work-block pattern, left for next option, or up for info
   </Text>
   <View
     style={
@@ -4373,6 +4373,19 @@ exports[`fifo onboarding visual snapshots PremiumFIFOPhaseSelectorScreen snapsho
             "backgroundColor": "#b45309",
             "width": 24,
           },
+        ]
+      }
+    />
+    <View
+      style={
+        [
+          {
+            "backgroundColor": "#292524",
+            "borderRadius": 4,
+            "height": 8,
+            "width": 8,
+          },
+          false,
         ]
       }
     />
@@ -4420,11 +4433,11 @@ exports[`fifo onboarding visual snapshots PremiumFIFOPhaseSelectorScreen snapsho
           {
             "shadowColor": "#0c0a09",
             "shadowOffset": {
-              "height": 6,
+              "height": 3,
               "width": 0,
             },
-            "shadowOpacity": 0.2,
-            "shadowRadius": 12,
+            "shadowOpacity": 0.1,
+            "shadowRadius": 6,
           },
         ]
       }
@@ -4432,8 +4445,8 @@ exports[`fifo onboarding visual snapshots PremiumFIFOPhaseSelectorScreen snapsho
       <View
         colors={
           [
-            "#78716c",
-            "#57534e",
+            "#0891B2",
+            "#6366F1",
           ]
         }
         end={
@@ -4476,7 +4489,7 @@ exports[`fifo onboarding visual snapshots PremiumFIFOPhaseSelectorScreen snapsho
           resizeMode="contain"
           source={
             {
-              "testUri": "../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png",
+              "testUri": "../../../assets/onboarding/icons/consolidated/roster-type-rotating.png",
             }
           }
           style={
@@ -4498,35 +4511,8 @@ exports[`fifo onboarding visual snapshots PremiumFIFOPhaseSelectorScreen snapsho
           }
         }
       >
-        At Home (Rest)
+        Swing
       </Text>
-      <View
-        style={
-          {
-            "backgroundColor": "rgba(0, 0, 0, 0.4)",
-            "borderColor": "rgba(180, 83, 9, 0.3)",
-            "borderRadius": 20,
-            "borderWidth": 1,
-            "marginBottom": 24,
-            "paddingHorizontal": 16,
-            "paddingVertical": 4,
-          }
-        }
-      >
-        <Text
-          style={
-            {
-              "color": "#e7e5e4",
-              "fontSize": 18,
-              "fontWeight": "600",
-            }
-          }
-        >
-          14
-           
-          days
-        </Text>
-      </View>
       <Text
         style={
           {
@@ -4538,98 +4524,122 @@ exports[`fifo onboarding visual snapshots PremiumFIFOPhaseSelectorScreen snapsho
           }
         }
       >
-        You are currently at home on your rest block
+        Your work block mixes day and night shifts.
       </Text>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "backgroundColor": "#1c1917",
+            "borderColor": "rgba(180, 83, 9, 0.2)",
+            "borderRadius": 24,
+            "borderWidth": 1,
+            "height": 773.7199999999999,
+            "justifyContent": "center",
+            "overflow": "hidden",
+            "padding": 32,
+            "position": "absolute",
+            "width": 637.5,
+          },
+          {},
+          {
+            "shadowColor": "#0c0a09",
+            "shadowOffset": {
+              "height": 6,
+              "width": 0,
+            },
+            "shadowOpacity": 0.2,
+            "shadowRadius": 12,
+          },
+        ]
+      }
+    >
+      <View
+        colors={
+          [
+            "#651FFF",
+            "#4C1D95",
+          ]
+        }
+        end={
+          {
+            "x": 0,
+            "y": 1,
+          }
+        }
+        start={
+          {
+            "x": 0,
+            "y": 0,
+          }
+        }
+        style={
+          {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          }
+        }
+      />
       <View
         style={
           [
             {
-              "backgroundColor": "rgba(180, 83, 9, 0.3)",
-              "borderRadius": 12,
-              "paddingHorizontal": 8,
-              "paddingVertical": 4,
-              "position": "absolute",
-            },
-            {
-              "left": 24,
-              "top": "50%",
+              "alignItems": "center",
+              "height": 180,
+              "justifyContent": "center",
+              "marginBottom": 24,
+              "width": 180,
             },
             {},
           ]
         }
       >
-        <Text
-          style={
+        <Image
+          resizeMode="contain"
+          source={
             {
-              "color": "#a8a29e",
-              "fontSize": 14,
-              "fontWeight": "600",
+              "testUri": "../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png",
             }
           }
-        >
-          ← Next
-        </Text>
+          style={
+            {
+              "height": 120,
+              "width": 120,
+            }
+          }
+        />
       </View>
-      <View
+      <Text
         style={
-          [
-            {
-              "backgroundColor": "rgba(180, 83, 9, 0.3)",
-              "borderRadius": 12,
-              "paddingHorizontal": 8,
-              "paddingVertical": 4,
-              "position": "absolute",
-            },
-            {
-              "right": 24,
-              "top": "50%",
-            },
-            {},
-          ]
+          {
+            "color": "#e7e5e4",
+            "fontSize": 24,
+            "fontWeight": "bold",
+            "marginBottom": 16,
+            "textAlign": "center",
+          }
         }
       >
-        <Text
-          style={
-            {
-              "color": "#a8a29e",
-              "fontSize": 14,
-              "fontWeight": "600",
-            }
-          }
-        >
-          Select →
-        </Text>
-      </View>
-      <View
+        Straight Nights
+      </Text>
+      <Text
         style={
-          [
-            {
-              "backgroundColor": "rgba(180, 83, 9, 0.3)",
-              "borderRadius": 12,
-              "paddingHorizontal": 8,
-              "paddingVertical": 4,
-              "position": "absolute",
-            },
-            {
-              "alignSelf": "center",
-              "top": 24,
-            },
-            {},
-          ]
+          {
+            "color": "#a8a29e",
+            "fontSize": 16,
+            "lineHeight": 24,
+            "paddingHorizontal": 16,
+            "textAlign": "center",
+          }
         }
       >
-        <Text
-          style={
-            {
-              "color": "#a8a29e",
-              "fontSize": 14,
-              "fontWeight": "600",
-            }
-          }
-        >
-          ↑ Info
-        </Text>
-      </View>
+        Your work block runs night shifts only.
+      </Text>
     </View>
     <View
       style={
@@ -4729,35 +4739,8 @@ exports[`fifo onboarding visual snapshots PremiumFIFOPhaseSelectorScreen snapsho
           }
         }
       >
-        At Site (Working)
+        Straight Days
       </Text>
-      <View
-        style={
-          {
-            "backgroundColor": "rgba(0, 0, 0, 0.4)",
-            "borderColor": "rgba(180, 83, 9, 0.3)",
-            "borderRadius": 20,
-            "borderWidth": 1,
-            "marginBottom": 24,
-            "paddingHorizontal": 16,
-            "paddingVertical": 4,
-          }
-        }
-      >
-        <Text
-          style={
-            {
-              "color": "#e7e5e4",
-              "fontSize": 18,
-              "fontWeight": "600",
-            }
-          }
-        >
-          14
-           
-          days
-        </Text>
-      </View>
       <Text
         style={
           {
@@ -4769,7 +4752,7 @@ exports[`fifo onboarding visual snapshots PremiumFIFOPhaseSelectorScreen snapsho
           }
         }
       >
-        You are currently at the mine site on your day-shift work block
+        Your work block runs day shifts only.
       </Text>
       <View
         style={
