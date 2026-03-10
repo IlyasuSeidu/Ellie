@@ -1,72 +1,72 @@
 {
   "greeting": {
-    "morning": "Good morning",
-    "afternoon": "Good afternoon",
-    "evening": "Good evening",
-    "night": "Good night"
+    "morning": "Sawubona",
+    "afternoon": "Sawubona",
+    "evening": "Sawubona",
+    "night": "Ulale kahle"
   },
-  "pullToRefresh": "Pull to refresh",
-  "refreshing": "Refreshing schedule...",
-  "scheduleUpdated": "Schedule updated",
+  "pullToRefresh": "Donsa ukuze uvuselele",
+  "refreshing": "Iqala kabusha ishejuli...",
+  "scheduleUpdated": "Ishejuli ibuyekeziwe",
   "lastUpdated": {
-    "justNow": "Just now",
-    "secondsAgo": "{{count}}s ago",
-    "minutesAgo": "{{count}}m ago",
-    "updatedPrefix": "Updated "
+    "justNow": "Khona manje",
+    "secondsAgo": "{{count}}amasekhondi adlule",
+    "minutesAgo": "{{count}}m edlule",
+    "updatedPrefix": "Kubuyekeziwe"
   },
   "errors": {
-    "loadFailed": "Unable to load shift data"
+    "loadFailed": "Ayikwazi ukulayisha idatha ye-shift"
   },
   "user": {
-    "defaultName": "User"
+    "defaultName": "Umsebenzisi"
   },
   "upcoming": {
-    "title": "Upcoming Shifts"
+    "title": "Amashifu Azayo"
   },
   "shiftLabels": {
-    "day": "Day Shift",
-    "night": "Night Shift",
+    "day": "I-Day Shift",
+    "night": "I-Night Shift",
     "morning": "Morning Shift",
-    "afternoon": "Afternoon Shift",
-    "off": "Day Off"
+    "afternoon": "I-Ntambama Shift",
+    "off": "Usuku Lokusebenza"
   },
   "shiftSubtitles": {
-    "day": "Stay energized!",
-    "night": "Stay alert!",
-    "morning": "Rise and shine!",
-    "afternoon": "Keep it going!",
-    "off": "Rest and recharge!"
+    "day": "Hlala unamandla!",
+    "night": "Hlala uqaphile!",
+    "morning": "Khuphuka uqhakaze!",
+    "afternoon": "Qhubeka!",
+    "off": "Phumula futhi ushaje!"
   },
   "fifo": {
-    "onSite": "On-site roster active",
-    "homeBlock": "Home block active",
-    "workBlock": "Work",
-    "restBlock": "Rest",
-    "blockChangeToday": "Block change today!",
-    "blockChangeTomorrow": "Block change tomorrow!",
-    "untilRest": "{{count}}d until rest block",
-    "untilWork": "{{count}}d until work block",
-    "blockDayOf": "{{blockName}} Block Day {{day}} of {{total}}",
-    "days": "days"
+    "onSite": "Uhlu lwasendaweni luyasebenza",
+    "homeBlock": "Ibhulokhi yasekhaya iyasebenza",
+    "workBlock": "Sebenza",
+    "restBlock": "Phumula",
+    "blockChangeToday": "Vimba ushintsho namuhla!",
+    "blockChangeTomorrow": "Vimba ushintsho kusasa!",
+    "untilRest": "{{count}}d kuze kube sekuvinjweni kokuphumula",
+    "untilWork": "{{count}}d kuze kuvinjwe umsebenzi",
+    "blockDayOf": "{{blockName}} Usuku Lokuvimbela {{day}} kwangu-{{total}}",
+    "days": "izinsuku"
   },
   "stats": {
-    "workDays": "Work Days",
-    "offDays": "Off Days",
-    "balance": "Balance"
+    "workDays": "Izinsuku Zokusebenza",
+    "offDays": "Izinsuku Zokungasebenzi",
+    "balance": "Ibhalansi"
   },
   "calendar": {
-    "legendDay": "Day",
-    "legendMorning": "Morning",
-    "legendAfternoon": "Afternoon",
-    "legendNight": "Night",
-    "legendOff": "Off",
-    "legendWorkBlock": "Work Block",
-    "legendRestBlock": "Rest Block",
-    "cycle": "cycle",
-    "previousMonth": "Previous month",
-    "nextMonth": "Next month"
+    "legendDay": "Usuku",
+    "legendMorning": "Ekuseni",
+    "legendAfternoon": "Ntambama",
+    "legendNight": "Ebusuku",
+    "legendOff": "Valiwe",
+    "legendWorkBlock": "Umsebenzi Block",
+    "legendRestBlock": "Phumula Block",
+    "cycle": "umjikelezo",
+    "previousMonth": "Inyanga edlule",
+    "nextMonth": "Inyanga ezayo"
   },
   "badges": {
-    "active": "ACTIVE"
+    "active": "OKUSEBENZA"
   }
 }

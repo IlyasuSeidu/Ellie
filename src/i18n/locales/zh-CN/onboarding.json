@@ -1,746 +1,714 @@
 {
   "welcome": {
-    "tagline": "Your Mining Shift Companion",
-    "getStarted": "Get Started"
+    "tagline": "您的采矿轮班伴侣",
+    "getStarted": "开始使用"
   },
   "common": {
-    "swipeHint": "Swipe right to select, left to see next, or up for more info",
-    "reviewAgain": "Please review options again to make your selection",
-    "reviewButton": "Review",
-    "continueButton": "Continue",
-    "closeButton": "Close",
-    "backToSettings": "Back to Settings",
-    "saveAndReturn": "Save & Return",
+    "swipeHint": "向右滑动进行选择，向左滑动查看下一个，向上滑动查看更多信息",
+    "reviewAgain": "请再次查看选项以做出选择",
+    "reviewButton": "审查",
+    "continueButton": "继续",
+    "closeButton": "关闭",
+    "backToSettings": "返回设置",
+    "saveAndReturn": "保存并返回",
     "hints": {
-      "nextOption": "← Next option",
-      "selectThis": "This one →",
-      "learnMore": "↑ Learn more"
+      "nextOption": "← 下一个选项",
+      "selectThis": "这个→",
+      "learnMore": "↑ 了解更多"
     },
     "learnMore": {
-      "howItWorks": "How it works",
-      "whereUsed": "Where you'll see this",
-      "pros": "The good bits",
-      "cons": "What to know"
+      "howItWorks": "它是如何运作的",
+      "whereUsed": "你会在哪里看到这个",
+      "pros": "好的方面",
+      "cons": "要知道什么"
     }
   },
   "intro": {
-    "welcome": "Welcome to Ellie! I'm here to help you set up your shift calendar. Let's start by getting to know you a bit better.",
-    "askName": "What's your name?",
-    "askOccupation": "Great to meet you, {{name}}! What's your occupation?",
-    "askCompany": "Got it! Which company do you work for?",
-    "askCountry": "Almost done! Which country are you based in?",
-    "allSet": "Perfect! You're all set, {{name}}. Let's get your shift calendar configured.",
+    "welcome": "欢迎来到艾莉！我来这里是为了帮助您设置轮班日历。让我们从更好地了解您开始。",
+    "askName": "你叫什么名字？",
+    "askOccupation": "很高兴认识你，{{name}}！你的职业是什么？",
+    "askCompany": "知道了！你在哪家公司工作？",
+    "askCountry": "快完成了！您位于哪个国家/地区？",
+    "allSet": "完美的！一切就绪，{{name}}。让我们配置您的轮班日历。",
     "placeholders": {
-      "name": "Enter your name",
-      "occupation": "Enter your occupation",
-      "company": "Enter company name",
-      "country": "Enter your country"
+      "name": "输入你的名字",
+      "occupation": "输入您的职业",
+      "company": "输入公司名称",
+      "country": "输入您的国家/地区"
     },
     "editResponse": {
-      "title": "Edit Response",
-      "message": "Edit your response. The conversation will rewind from this point.",
-      "cancel": "Cancel",
-      "confirm": "Edit"
+      "title": "编辑回复",
+      "message": "编辑您的回复。谈话将从此时倒转。",
+      "cancel": "取消",
+      "confirm": "编辑"
     },
     "errors": {
-      "nameTooShort": "Name must be at least 2 characters",
-      "nameTooLong": "Name must not exceed 50 characters",
-      "nameInvalidChars": "Name can only contain letters, spaces, hyphens, and apostrophes",
-      "occupationRequired": "Occupation is required",
-      "companyRequired": "Company is required",
-      "countryTooShort": "Country must be at least 2 characters",
-      "countryTooLong": "Country must not exceed 100 characters"
+      "nameTooShort": "名称必须至少有 2 个字符",
+      "nameTooLong": "名称不得超过 50 个字符",
+      "nameInvalidChars": "名称只能包含字母、空格、连字符和撇号",
+      "occupationRequired": "职业为必填项",
+      "companyRequired": "公司为必填项",
+      "countryTooShort": "国家/地区必须至少为 2 个字符",
+      "countryTooLong": "国家/地区不得超过 100 个字符"
     }
   },
   "shiftSystem": {
-    "title": "How Many Shifts Does Your Site Run?",
-    "reviewAgain": "Please review systems again to make your selection",
-    "reviewButton": "Review Systems",
-    "continueButton": "Continue",
-    "closeButton": "Close",
-    "instruction": "Select how your site operates—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info",
+    "title": "您的网站有多少班次？",
+    "reviewAgain": "请再次查看系统以做出选择",
+    "reviewButton": "审查系统",
+    "continueButton": "继续",
+    "closeButton": "关闭",
+    "instruction": "选择您网站的运营方式——我们将据此构建您的日历\n向右滑动进行选择，向左滑动查看更多，向上滑动查看信息",
     "endState": {
-      "selectedTitle": "Got it! We'll set up your calendar for this.",
-      "reviewedTitle": "You've viewed all {{count}} shift systems!",
-      "selectedSubtitle": "Next, we'll pick your specific rotation pattern"
+      "selectedTitle": "知道了！我们将为此设置您的日历。",
+      "reviewedTitle": "您已查看所有 {{count}} 轮班系统！",
+      "selectedSubtitle": "接下来，我们将选择您的具体轮换模式"
     },
     "cards": {
       "2-shift": {
-        "title": "2 Shifts (12 hours)",
-        "schedule": "Day & night",
-        "description": "Your workplace runs two 12-hour shifts—one during the day, one at night",
+        "title": "2班制（12小时）",
+        "schedule": "白天和黑夜",
+        "description": "您的工作场所实行两班制，每班 12 小时——一个白天，一个晚上",
         "details": {
-          "workRestRatio": "12 hours on, 12 hours off",
-          "useCases": ["Mining sites", "Oil & gas", "24/7 operations", "Remote work"],
-          "pros": ["Extended rest periods", "Predictable schedule", "Good work-life balance"],
-          "cons": [
-            "Long shift duration",
-            "Can be physically demanding",
-            "Limited daylight in winter"
-          ]
+          "workRestRatio": "开12小时，关12小时",
+          "useCases": ["采矿场", "石油和天然气", "24/7 运营", "远程工作"],
+          "pros": ["延长休息时间", "可预测的时间表", "良好的工作与生活平衡"],
+          "cons": ["轮班时间长", "可能对体力要求较高", "冬季日照有限"]
         }
       },
       "3-shift": {
-        "title": "3 Shifts (8 hours)",
-        "schedule": "Morning, afternoon & night",
-        "description": "Your workplace runs three 8-hour shifts—morning, afternoon, and night",
+        "title": "3班制（8小时）",
+        "schedule": "早上、下午、晚上",
+        "description": "您的工作场所实行三个 8 小时轮班制：上午、下午和晚上",
         "details": {
-          "workRestRatio": "8 hours on, 16 hours off",
-          "useCases": ["Manufacturing", "Healthcare", "Call centers", "24/7 operations"],
-          "pros": ["Shorter shifts", "More time for family", "Easier to stay alert"],
-          "cons": [
-            "More frequent shift changes",
-            "Can disrupt sleep patterns",
-            "Less rest between cycles"
-          ]
+          "workRestRatio": "工作8小时，休息16小时",
+          "useCases": ["制造业", "卫生保健", "呼叫中心", "24/7 运营"],
+          "pros": ["轮班时间较短", "有更多时间陪伴家人", "更容易保持警觉"],
+          "cons": ["更频繁的换班", "会扰乱睡眠模式", "周期之间休息较少"]
         }
       }
     }
   },
   "shiftPattern": {
-    "reviewAgain": "Please review patterns again to make your selection",
-    "reviewButton": "Review Patterns",
-    "continueButton": "Continue",
-    "closeButton": "Close",
+    "reviewAgain": "请再次查看模式以做出选择",
+    "reviewButton": "审查模式",
+    "continueButton": "继续",
+    "closeButton": "关闭",
     "endState": {
-      "customButton": "Build Custom Rotation",
-      "reviewButton": "Look Again",
-      "reviewedSubtitle": "Didn't see yours? You can build a custom one, or take another look",
-      "reviewedTitle": "That's all {{count}} rotations we've got!"
+      "customButton": "构建自定义旋转",
+      "reviewButton": "再看一遍",
+      "reviewedSubtitle": "没看到你的吗？您可以构建一个自定义的，或者再看看",
+      "reviewedTitle": "这就是我们所有的 {{count}} 轮换！"
     },
-    "instruction": "Choose the rotation your workplace uses—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info",
-    "title": "What's Your Roster Rotation?"
+    "instruction": "选择您的工作场所使用的轮换方式——我们将据此构建您的日历\n向右滑动进行选择，向左滑动查看更多，向上滑动查看信息",
+    "title": "你的轮换名单是怎样的？"
   },
   "rosterType": {
-    "title": "How Does Your Roster Work?",
-    "instruction": "Choose the roster style your workplace uses — this shapes your entire schedule\nSwipe right to choose, left to see more, up for details",
-    "preparingNextStep": "Preparing next step...",
+    "title": "你的名册如何运作？",
+    "instruction": "选择您工作场所使用的排班方式——这会影响您的整个日程安排\n向右滑动选择，向左滑动查看更多，向上滑动查看详情",
+    "preparingNextStep": "准备下一步...",
     "learnMore": {
-      "examples": "Examples",
-      "popularIn": "Popular in",
-      "benefits": "Benefits",
-      "considerations": "Things to consider"
+      "examples": "示例",
+      "popularIn": "流行于",
+      "benefits": "好处",
+      "considerations": "需要考虑的事项"
     },
     "cards": {
       "rotating": {
-        "title": "Rotating Roster",
-        "subtitle": "Days → Nights → Off pattern",
-        "description": "You rotate through different shift times in a repeating cycle",
+        "title": "轮换名单",
+        "subtitle": "白天 → 夜晚 → 关闭模式",
+        "description": "您在重复循环中轮换不同的轮班时间",
         "details": {
-          "howItWorks": "Workers rotate through different shift times (day shifts, night shifts, days off) in a continuous cycle",
-          "examples": [
-            "5-5-5 (South Africa)",
-            "4-4-4 (common globally)",
-            "7-7-7 (long cycle)",
-            "2-2-3 (short cycle)"
-          ],
-          "regions": ["South Africa", "Zambia", "DRC", "Europe", "Some US operations"],
-          "pros": [
-            "Go home daily or frequently",
-            "Regular routine at each phase",
-            "Suitable for local operations",
-            "Easier for family planning"
-          ],
-          "cons": [
-            "Night shifts can disrupt sleep",
-            "Constant rotation through times",
-            "Less extended home time"
-          ]
+          "howItWorks": "工人连续循环地轮换不同的轮班时间（白班、夜班、休息日）",
+          "examples": ["5-5-5（南非）", "4-4-4（全球通用）", "7-7-7（长周期）", "2-2-3（短周期）"],
+          "regions": ["南非", "赞比亚", "DRC", "欧洲", "部分美国业务"],
+          "pros": ["每天或经常回家", "各阶段常规", "适合本地操作", "计划生育更容易"],
+          "cons": ["夜班会扰乱睡眠", "随时间不断轮转", "减少延长在家时间"]
         }
       },
       "fifo": {
-        "title": "FIFO / Swing Roster",
-        "subtitle": "Work blocks → Home blocks",
-        "description": "You work consecutive days on-site, then get extended time at home",
+        "title": "先进先出/摇摆名册",
+        "subtitle": "工作块 → 家庭块",
+        "description": "您在现场连续工作几天，然后延长在家工作的时间",
         "details": {
-          "howItWorks": "Workers fly in to remote sites, work consecutive days (work block), then fly home for extended rest (rest block)",
+          "howItWorks": "工人飞往偏远地点，连续工作几天（工作区），然后飞回家延长休息时间（休息区）",
           "examples": [
-            "8/6 (common WA)",
-            "14/14 (even-time)",
-            "21/7 (remote sites)",
-            "28/14 (long cycle)"
+            "8/6（常见西澳）",
+            "14/14（偶数时间）",
+            "21/7（远程站点）",
+            "28/14（长周期）"
           ],
-          "regions": ["Australia", "Canada", "Remote global mining"],
-          "pros": [
-            "Extended time at home",
-            "Higher pay rates",
-            "Good for remote sites",
-            "Predictable blocks"
-          ],
-          "cons": [
-            "Away from family for extended periods",
-            "Travel fatigue",
-            "Isolation at camp",
-            "Adjustment between blocks"
-          ]
+          "regions": ["澳大利亚", "加拿大", "远程全球挖矿"],
+          "pros": ["延长在家时间", "更高的工资率", "适合远程站点", "可预测的区块"],
+          "cons": ["长时间远离家人", "旅途疲劳", "营地隔离", "块间​​调整"]
         }
       }
     }
   },
   "completion": {
-    "saveFailed": "Failed to save your data. Please try again.",
+    "saveFailed": "无法保存您的数据。请再试一次。",
     "features": {
-      "reminders": "Smart shift reminders",
-      "remindersDesc": "Never miss a shift with intelligent notifications that adapt to your rotation",
-      "sleep": "Sleep tracking & insights",
-      "sleepDesc": "Optimize your rest between shifts with personalized sleep analytics",
-      "fatigue": "Fatigue monitoring",
-      "fatigueDesc": "Track your energy levels and get alerts when fatigue risk is high",
-      "team": "Team coordination",
-      "teamDesc": "See your crew schedule and coordinate handovers seamlessly",
-      "balance": "Work-life balance",
-      "balanceDesc": "Maintain healthy routines with activity and wellness tracking",
-      "earnings": "Earnings calculator",
-      "earningsDesc": "Automatically calculate overtime, penalties, and shift allowances",
-      "meals": "Meal & hydration",
-      "mealsDesc": "Stay healthy with meal timing suggestions and hydration reminders"
+      "reminders": "智能换班提醒",
+      "remindersDesc": "通过适应您轮换的智能通知，绝不会错过任何轮班",
+      "sleep": "睡眠追踪和见解",
+      "sleepDesc": "通过个性化睡眠分析优化轮班之间的休息",
+      "fatigue": "疲劳监测",
+      "fatigueDesc": "跟踪您的能量水平并在疲劳风险高时收到警报",
+      "team": "团队协调",
+      "teamDesc": "查看您的船员日程安排并无缝协调交接",
+      "balance": "工作与生活的平衡",
+      "balanceDesc": "通过活动和健康跟踪保持健康的日常生活",
+      "earnings": "收益计算器",
+      "earningsDesc": "自动计算加班、罚款和轮班津贴",
+      "meals": "膳食和水分",
+      "mealsDesc": "通过用餐时间建议和补水提醒保持健康"
     },
-    "featureHint": "Tap a feature chip to see more details.",
-    "featuresTitle": "What you can do with Ellie",
-    "getStartedA11yHint": "Tap to start using the app",
-    "getStartedA11yLabel": "Get started with Ellie",
-    "loading": "Setting up your calendar...",
-    "retryA11yHint": "Tap to try saving your data again",
-    "retryA11yLabel": "Retry saving your data",
-    "subtitle": "Welcome to Ellie",
+    "featureHint": "点击功能芯片可查看更多详细信息。",
+    "featuresTitle": "你可以和艾莉一起做什么",
+    "getStartedA11yHint": "点击即可开始使用该应用程序",
+    "getStartedA11yLabel": "开始与艾莉一起",
+    "loading": "正在设置您的日历...",
+    "retryA11yHint": "点击以尝试再次保存您的数据",
+    "retryA11yLabel": "重试保存您的数据",
+    "subtitle": "欢迎来到艾莉",
     "summary": {
-      "company": "Company",
-      "cycle": "Cycle",
-      "name": "Name",
-      "notSet": "Not set",
-      "pattern": "Pattern",
-      "rosterType": "Roster Type",
-      "rosterTypeFIFO": "FIFO (Fly-In Fly-Out)",
-      "rosterTypeRotating": "Rotating Roster",
-      "shiftSystem": "Shift System",
-      "shiftSystemThree": "3-Shift System",
-      "shiftSystemTwo": "2-Shift System",
-      "shiftTimes": "Shift Times",
-      "startDate": "Start Date",
-      "title": "Your profile",
-      "workPattern": "Work Pattern"
+      "company": "公司",
+      "cycle": "循环",
+      "name": "姓名",
+      "notSet": "未设置",
+      "pattern": "图案",
+      "rosterType": "名册类型",
+      "rosterTypeFIFO": "FIFO（飞入飞出）",
+      "rosterTypeRotating": "轮换名单",
+      "shiftSystem": "换档系统",
+      "shiftSystemThree": "三班制",
+      "shiftSystemTwo": "两班制",
+      "shiftTimes": "轮班时间",
+      "startDate": "开始日期",
+      "title": "您的个人资料",
+      "workPattern": "工作模式"
     },
-    "title": "You're all set!",
-    "tryAgain": "Try Again"
+    "title": "你都准备好了！",
+    "tryAgain": "再试一次"
   },
   "phaseSelector": {
     "hints": {
-      "next": "← Next",
-      "select": "Select →",
-      "info": "↑ Info"
+      "next": "← 下一页",
+      "select": "选择→",
+      "info": "↑ 信息"
     },
     "modal": {
-      "phaseLengthValue_one": "{{count}} day",
-      "phaseLengthValue_other": "{{count}} days",
-      "phaseLength": "Phase Length",
-      "phaseLengthValue": "{{count}} day"
+      "phaseLengthValue_one": "{{count}} 天",
+      "phaseLengthValue_other": "{{count}} 天",
+      "phaseLength": "相长",
+      "phaseLengthValue": "{{count}} 天"
     },
     "cards": {
       "afternoon": {
-        "description": "Afternoon hours (e.g., 12pm-8pm)",
-        "title": "Afternoon Shift"
+        "description": "下午时间（例如中午 12 点至晚上 8 点）",
+        "title": "下午班"
       },
       "day": {
-        "description": "Working during daylight (e.g., 6am-6pm)",
-        "title": "Day Shift"
+        "description": "白天工作（例如上午 6 点至下午 6 点）",
+        "title": "白班"
       },
       "morning": {
-        "description": "Early morning hours (e.g., 4am-12pm)",
-        "title": "Morning Shift"
+        "description": "清晨时间（例如，凌晨 4 点至中午 12 点）",
+        "title": "早班"
       },
       "night": {
-        "description": "Working at nighttime (e.g., 6pm-6am)",
-        "descriptionThreeShift": "Nighttime hours (e.g., 8pm-4am)",
-        "title": "Night Shift"
+        "description": "夜间工作（例如下午 6 点至凌晨 6 点）",
+        "descriptionThreeShift": "夜间时段（例如晚上 8 点至凌晨 4 点）",
+        "title": "夜班"
       },
       "off": {
-        "description": "Rest and recovery at home",
-        "title": "Days Off"
+        "description": "在家休息和恢复",
+        "title": "休息日"
       }
     },
-    "dayCardTitle": "Day {{day}}",
-    "daySubtitle": "You said you're on {{selectedPhaseTitle}}. Swipe to your current day—is it the {{dayList}}?",
-    "dayTitle": "Which day of {{selectedPhaseTitle}} are you on?",
-    "preparing": "Preparing your calendar...",
-    "title": "What shift are you on right now?",
-    "dayOrdinal": "Day {{day}}",
+    "dayCardTitle": "第 {{day}} 天",
+    "daySubtitle": "你说过你在 {{selectedPhaseTitle}}。滑动到您当前的日期 - 是 {{dayList}} 吗？",
+    "dayTitle": "您在 {{selectedPhaseTitle}} 的哪一天？",
+    "preparing": "正在准备您的日历...",
+    "title": "你现在值什么班次？",
+    "dayOrdinal": "第 {{day}} 天",
     "list": {
-      "or": "or"
+      "or": "或者"
     },
     "dayDescriptions": {
-      "restLastDay": "Last day off before returning",
-      "restDayOfTotal": "Rest day {{day}} of {{total}}",
-      "firstDay": "First day of this phase",
-      "lastDay": "Last day of this phase",
-      "dayOfTotal": "Day {{day}} of {{total}}"
+      "restLastDay": "回国前最后一天休息",
+      "restDayOfTotal": "{{total}} 休息日 {{day}}",
+      "firstDay": "本阶段第一天",
+      "lastDay": "本阶段最后一天",
+      "dayOfTotal": "{{total}} 第 {{day}} 天"
     }
   },
   "fifoPhaseSelector": {
     "title": {
-      "workPattern": "How are shifts run during your FIFO work block?",
-      "swingConfig": "Configure your swing split",
-      "block": "Where are you in your FIFO cycle?",
-      "dayWithinBlock": "Which day of {{blockTitle}} are you on?"
+      "workPattern": "在 FIFO 工作块期间如何进行轮班？",
+      "swingConfig": "配置你的挥杆分割",
+      "block": "您处于 FIFO 周期的哪个阶段？",
+      "dayWithinBlock": "您在 {{blockTitle}} 的哪一天？"
     },
     "subtitle": {
-      "workPattern": "Swipe right to choose your work-block pattern, left for next option, or up for info",
-      "swingConfig": "Set how many day-shift and night-shift days you work before choosing your current block",
-      "block": "Swipe right to select, left to see next, or up for more info",
-      "dayWithinBlock": "Swipe right to select, left to see next, or up for more info. Is it the {{ordinalList}}?"
+      "workPattern": "向右滑动以选择您的工作块模式，向左滑动以选择下一个选项，或向上滑动以获取信息",
+      "swingConfig": "在选择当前区块之前，设置您的白班和夜班工作天数",
+      "block": "向右滑动进行选择，向左滑动查看下一个，向上滑动查看更多信息",
+      "dayWithinBlock": "向右滑动进行选择，向左滑动查看下一个，或向上滑动了解更多信息。是 {{ordinalList}} 吗？"
     },
     "modal": {
-      "blockLength": "Block Length",
-      "whyItMatters": "Why it matters"
+      "blockLength": "块长度",
+      "whyItMatters": "为什么这很重要"
     },
     "patterns": {
       "straightDays": {
-        "title": "Straight Days",
-        "description": "Your work block runs day shifts only.",
-        "quickInfo": "Best for operations that keep all crews on daytime rotations."
+        "title": "直日",
+        "description": "您的工作区仅实行白班制。",
+        "quickInfo": "最适合让所有机组人员在白天轮班的操作。"
       },
       "straightNights": {
-        "title": "Straight Nights",
-        "description": "Your work block runs night shifts only.",
-        "quickInfo": "Use this when site crews remain on night shifts for the full work block."
+        "title": "直夜",
+        "description": "您的工作区只上夜班。",
+        "quickInfo": "当现场工作人员在整个工作区都上夜班时使用此功能。"
       },
       "swing": {
-        "title": "Swing",
-        "description": "Your work block mixes day and night shifts.",
-        "quickInfo": "Choose this when your work block rotates between days and nights."
+        "title": "摇摆",
+        "description": "您的工作区包括白班和夜班。",
+        "quickInfo": "当您的工作时间在白天和晚上轮流时选择此选项。"
       }
     },
     "blocks": {
       "work": {
-        "title": "At Site (Working)",
-        "descriptionDay": "You are currently at the mine site on your day-shift work block",
-        "descriptionNight": "You are currently at the mine site on your night-shift work block",
-        "descriptionNeutral": "You are currently at the mine site on your work block",
-        "quickInfoDay": "This means your cycle starts counting from your day-shift work block.",
-        "quickInfoNight": "This means your cycle starts counting from your night-shift work block.",
-        "quickInfoNeutral": "This means your cycle starts counting from your current work block."
+        "title": "现场（工作中）",
+        "descriptionDay": "您目前在矿场的白班工作区",
+        "descriptionNight": "您目前在矿场的夜班工作区",
+        "descriptionNeutral": "您目前位于工作区的矿场",
+        "quickInfoDay": "这意味着您的周期从白班工作区开始计算。",
+        "quickInfoNight": "这意味着您的周期从夜班工作区开始计算。",
+        "quickInfoNeutral": "这意味着您的周期从当前的工作块开始计数。"
       },
       "rest": {
-        "title": "At Home (Rest)",
-        "description": "You are currently at home on your rest block",
-        "quickInfo": "This offsets your cycle by your work block length first."
+        "title": "在家（休息）",
+        "description": "您目前在家中的休息区",
+        "quickInfo": "这首先会根据工作块长度来抵消您的周期。"
       }
     },
     "swingConfig": {
-      "daysOnDayShift": "Days on Day Shift",
-      "daysOnNightShift": "Days on Night Shift",
-      "splitTotal": "Split total: {{swingSplitTotal}}/{{workBlockDays}} days",
-      "validation": "Swing split must equal {{workBlockDays}} days with at least 1 day on each shift.",
-      "changePattern": "Change Pattern",
-      "continue": "Continue"
+      "daysOnDayShift": "白班天数",
+      "daysOnNightShift": "夜班天数",
+      "splitTotal": "分期总计：{{swingSplitTotal}}/{{workBlockDays}} 天",
+      "validation": "轮换间隔必须等于 {{workBlockDays}} 天，且每个轮班至少 1 天。",
+      "changePattern": "改变模式",
+      "continue": "继续"
     },
     "days": {
       "shared": {
-        "midpoint": "Midpoint of this block"
+        "midpoint": "该块的中点"
       },
-      "defaultDayTitle": "Day {{dayNumber}}",
+      "defaultDayTitle": "第 {{dayNumber}} 天",
       "work": {
-        "firstDayAtSite": "First day back at site",
-        "firstNightAtSite": "First night shift back at site",
-        "firstShiftAtSite": "First shift back at site",
-        "lastDayBeforeHome": "Last day before flying home",
-        "lastNightBeforeHome": "Last night shift before flying home",
-        "lastShiftBeforeHome": "Last shift before flying home",
-        "dayOfWorkBlock": "Day {{dayNumber}} of your work block",
-        "shiftOfNightBlock": "Shift {{dayNumber}} of your night work block",
-        "shiftOfWorkBlock": "Shift {{dayNumber}} of your work block"
+        "firstDayAtSite": "回到现场第一天",
+        "firstNightAtSite": "第一个夜班回到现场",
+        "firstShiftAtSite": "第一班返回现场",
+        "lastDayBeforeHome": "飞回家前的最后一天",
+        "lastNightBeforeHome": "飞回家前的最后一个夜班",
+        "lastShiftBeforeHome": "飞回家前的最后一次轮班",
+        "dayOfWorkBlock": "您工作区的 {{dayNumber}} 天",
+        "shiftOfNightBlock": "夜间工作班次 {{dayNumber}}",
+        "shiftOfWorkBlock": "移动工作块的 {{dayNumber}}"
       },
       "rest": {
-        "firstDayAtHome": "First day back at home",
-        "lastDayBeforeSite": "Last day before returning to site",
-        "dayOfRestBlock": "Day {{dayNumber}} of your rest block"
+        "firstDayAtHome": "回国第一天",
+        "lastDayBeforeSite": "返回站点前的最后一天",
+        "dayOfRestBlock": "您的休息时间段的 {{dayNumber}} 天"
       },
       "swing": {
-        "dayShiftTitle": "Day Shift Day {{dayNumber}}",
-        "firstDayShiftAtSite": "First day shift back at site",
-        "finalDayShiftBeforeNights": "Final day shift before switching to nights",
-        "dayShiftDayDescription": "Day shift day {{dayNumber}} of your work block",
-        "nightShiftTitle": "Night Shift Day {{dayNumber}}",
-        "firstNightShiftInBlock": "First night shift in this swing block",
-        "finalNightShiftBeforeHome": "Final night shift before flying home",
-        "nightShiftDayDescription": "Night shift day {{dayNumber}} of your work block"
+        "dayShiftTitle": "白班日 {{dayNumber}}",
+        "firstDayShiftAtSite": "第一天返回现场",
+        "finalDayShiftBeforeNights": "切换到夜班之前的最后一个白班",
+        "dayShiftDayDescription": "您工作区的白班日 {{dayNumber}}",
+        "nightShiftTitle": "夜班日 {{dayNumber}}",
+        "firstNightShiftInBlock": "这个摇摆区的第一个夜班",
+        "finalNightShiftBeforeHome": "飞回家前的最后一个夜班",
+        "nightShiftDayDescription": "您工作区的夜班日 {{dayNumber}}"
       }
     },
     "transition": {
-      "preparingCalendar": "Preparing your calendar..."
+      "preparingCalendar": "正在准备您的日历..."
     }
   },
   "startDate": {
     "header": {
-      "title": "When Does Your Rotation Start?",
-      "subtitleWithPhase": "You're on {{phaseLabel}} right now—pick today or any date, and we'll map out your whole calendar from there",
-      "subtitleDefault": "Pick the date you want your calendar to start from—most people choose today"
+      "title": "你的轮换什么时候开始？",
+      "subtitleWithPhase": "您现在处于 {{phaseLabel}} — 选择今天或任何日期，我们将从那里制定您的整个日历",
+      "subtitleDefault": "选择您希望日历开始的日期 - 大多数人选择今天"
     },
     "phaseLabels": {
-      "day": "Day Shift",
-      "night": "Night Shift",
-      "morning": "Morning Shift",
-      "afternoon": "Afternoon Shift",
-      "off": "Days Off",
-      "withDay": "Day {{selectedDay}} of {{phaseLabel}}"
+      "day": "白班",
+      "night": "夜班",
+      "morning": "早班",
+      "afternoon": "下午班",
+      "off": "休息日",
+      "withDay": "{{phaseLabel}} 第 {{selectedDay}} 天"
     },
     "calendar": {
       "weekdays": {
-        "sun": "Sun",
-        "mon": "Mon",
-        "tue": "Tue",
-        "wed": "Wed",
-        "thu": "Thu",
-        "fri": "Fri",
-        "sat": "Sat"
+        "sun": "太阳",
+        "mon": "周一",
+        "tue": "星期二",
+        "wed": "周三",
+        "thu": "星期四",
+        "fri": "周五",
+        "sat": "星期六"
       },
       "legend": {
-        "dayShift": "Day Shift",
-        "nightShift": "Night Shift",
-        "dayOff": "Day Off",
-        "morning": "Morning",
-        "afternoon": "Afternoon",
-        "night": "Night",
-        "off": "Off"
+        "dayShift": "白班",
+        "nightShift": "夜班",
+        "dayOff": "休息日",
+        "morning": "早晨",
+        "afternoon": "下午",
+        "night": "夜晚",
+        "off": "离开"
       }
     },
     "guidance": {
-      "title": "Picking your date",
-      "subtitle": "Quick tips for a faster setup",
-      "body": "Most people pick today so their calendar starts right away. But you can pick any date—we'll calculate your rotation from there.",
-      "hint": "Pick the closest date now, you can adjust settings later.",
-      "selectedDate": "Selected: {{date}}"
+      "title": "选择你的日期",
+      "subtitle": "更快设置的快速提示",
+      "body": "大多数人都会选择今天，这样他们的日历就会立即开始。但您可以选择任何日期——我们将从那里计算您的轮换时间。",
+      "hint": "现在选择最接近的日期，您可以稍后调整设置。",
+      "selectedDate": "已选择：{{date}}"
     },
     "actions": {
-      "goBack": "Go back",
-      "backToSettings": "Back to Settings",
-      "saveAndReturn": "Save & Return",
-      "saveAndReturnToSettings": "Save start date and return to settings",
-      "setShiftTimes": "Set Shift Times",
-      "setShiftTimesA11y": "Set shift times"
+      "goBack": "回去",
+      "backToSettings": "返回设置",
+      "saveAndReturn": "保存并返回",
+      "saveAndReturnToSettings": "保存开始日期并返回设置",
+      "setShiftTimes": "设置轮班时间",
+      "setShiftTimesA11y": "设置轮班时间"
     },
     "selectedDate": {
-      "startsOn": "Your cycle will start on:"
+      "startsOn": "您的周期将从以下时间开始："
     },
     "phaseSelector": {
-      "title": "Choose which part of your cycle you'll be on"
+      "title": "选择您将处于周期的哪一部分"
     },
     "dayWithinPhase": {
-      "title": "Which day of your {{phaseLabel}}?",
-      "dayA11yLabel": "Day {{dayNumber}}",
-      "dayA11yHint": "Select day {{dayNumber}} of phase"
+      "title": "您的 {{phaseLabel}} 是哪一天？",
+      "dayA11yLabel": "第 {{dayNumber}} 天",
+      "dayA11yHint": "选择阶段的 {{dayNumber}} 天"
     },
     "preview": {
-      "notSelected": "Not selected",
-      "startingLabel": "Starting:",
-      "phaseLabel": "Phase:",
-      "confirmation": "Your first cycle begins here"
+      "notSelected": "未选择",
+      "startingLabel": "开始：",
+      "phaseLabel": "阶段：",
+      "confirmation": "您的第一个周期从这里开始"
     }
   },
   "shiftTime": {
     "actions": {
-      "goBack": "Go back",
-      "backToSettings": "Back to Settings",
-      "saveAndReturn": "Save & Return",
-      "saveAndReturnA11y": "Save shift time and return to settings",
-      "saveAndContinue": "Save & Continue",
-      "finishSetup": "Finish Setup",
-      "nextShiftType": "Next Shift Type",
-      "continueToNextStep": "Continue to next step",
-      "continueToShiftType": "Continue to {{shiftType}} shift times",
-      "saveShiftTimesAndContinue": "Save shift times and continue"
+      "goBack": "回去",
+      "backToSettings": "返回设置",
+      "saveAndReturn": "保存并返回",
+      "saveAndReturnA11y": "保存轮班时间并返回设置",
+      "saveAndContinue": "保存并继续",
+      "finishSetup": "完成设置",
+      "nextShiftType": "下一个班次类型",
+      "continueToNextStep": "继续下一步",
+      "continueToShiftType": "继续到 {{shiftType}} 轮班时间",
+      "saveShiftTimesAndContinue": "节省轮班时间并继续"
     },
     "stage": {
-      "stepOfTotal": "Step {{current}} of {{total}}",
-      "singleProfile": "Single shift profile",
-      "profileOfTotal": "Profile {{current}} of {{total}}"
+      "stepOfTotal": "第 {{current}} 步（共 {{total}}）",
+      "singleProfile": "单班模式",
+      "profileOfTotal": "{{total}} 的个人资料 {{current}}"
     },
     "systemLabels": {
-      "twoShift": "2-shift system",
-      "threeShift": "3-shift system"
+      "twoShift": "2班制",
+      "threeShift": "三班制"
     },
     "shiftLabels": {
-      "dayTitle": "Day",
-      "dayLower": "day",
-      "dayPlural": "day shifts",
-      "nightTitle": "Night",
-      "nightLower": "night",
-      "nightPlural": "night shifts",
-      "morningTitle": "Morning",
-      "morningLower": "morning",
-      "morningPlural": "morning shifts",
-      "afternoonTitle": "Afternoon",
-      "afternoonLower": "afternoon",
-      "afternoonPlural": "afternoon shifts"
+      "dayTitle": "天",
+      "dayLower": "天",
+      "dayPlural": "白班",
+      "nightTitle": "夜晚",
+      "nightLower": "夜晚",
+      "nightPlural": "夜班",
+      "morningTitle": "早晨",
+      "morningLower": "早晨",
+      "morningPlural": "早班",
+      "afternoonTitle": "下午",
+      "afternoonLower": "下午",
+      "afternoonPlural": "下午班"
     },
     "header": {
       "title": {
-        "single": "When Do Your Shifts Start?",
-        "day": "Day Shift Times",
-        "night": "Night Shift Times",
-        "morning": "Morning Shift Times",
-        "afternoon": "Afternoon Shift Times",
-        "default": "Shift Times"
+        "single": "你们什么时候开始轮班？",
+        "day": "白班时间",
+        "night": "夜班时间",
+        "morning": "早班时间",
+        "afternoon": "下午班时间",
+        "default": "轮班时间"
       },
       "subtitle": {
-        "single": "Pick what time you clock in each day-we'll use this to track your hours and set reminders",
-        "multi": "Your pattern includes {{shiftTypeLabel}}. Set the start time for these shifts."
+        "single": "选择您每天打卡的时间 - 我们将使用它来跟踪您的时间并设置提醒",
+        "multi": "您的模式包括 {{shiftTypeLabel}}。设置这些班次的开始时间。"
       }
     },
     "guidance": {
-      "aboutTitle": "About shift times",
-      "aboutBody": "Your {{patternName}} rotation stays the same, but we need your shift start times so Ellie can track hours and alert you before each shift.",
-      "hint": "Use the closest start time now. You can fine-tune it later in settings.",
+      "aboutTitle": "关于轮班时间",
+      "aboutBody": "您的 {{patternName}} 轮班保持不变，但我们需要您的轮班开始时间，以便 Ellie 可以跟踪工作时间并在每次轮班前提醒您。",
+      "hint": "现在使用最接近的开始时间。您可以稍后在设置中对其进行微调。",
       "definitions": {
-        "twoShiftTitle": "Day vs Night:",
-        "twoShiftBody": "Day shifts start 6 AM-6 PM - Night shifts start 6 PM-6 AM",
-        "threeShiftTitle": "Shift types:",
-        "threeShiftBody": "Morning: 6 AM-2 PM - Afternoon: 2 PM-10 PM - Night: 10 PM-6 AM"
+        "twoShiftTitle": "白天与夜晚：",
+        "twoShiftBody": "白班从上午 6 点至下午 6 点开始 - 夜班从下午 6 点至上午 6 点开始",
+        "threeShiftTitle": "班次类型：",
+        "threeShiftBody": "上午：上午 6 点至下午 2 点 - 下午：下午 2 点至晚上 10 点 - 夜间：晚上 10 点至上午 6 点"
       }
     },
     "presets": {
-      "sectionTitle": "Pick a Common Start Time",
+      "sectionTitle": "选择一个共同的开始时间",
       "custom": {
-        "label": "Custom Time"
+        "label": "自定义时间"
       },
       "early_day": {
-        "label": "Early Day Shift"
+        "label": "早班"
       },
       "standard_day": {
-        "label": "Standard Day Shift"
+        "label": "标准白班"
       },
       "late_day": {
-        "label": "Late Day Shift"
+        "label": "晚班"
       },
       "early_night": {
-        "label": "Early Night Shift"
+        "label": "早夜班"
       },
       "standard_night": {
-        "label": "Standard Night Shift"
+        "label": "标准夜班"
       },
       "late_night": {
-        "label": "Late Night Shift"
+        "label": "深夜轮班"
       },
       "early_morning": {
-        "label": "Early Morning"
+        "label": "清晨"
       },
       "standard_morning": {
-        "label": "Standard Morning"
+        "label": "标准早晨"
       },
       "late_morning": {
-        "label": "Late Morning"
+        "label": "上午晚些时候"
       },
       "early_afternoon": {
-        "label": "Early Afternoon"
+        "label": "下午早些时候"
       },
       "standard_afternoon": {
-        "label": "Standard Afternoon"
+        "label": "标准下午"
       },
       "late_afternoon": {
-        "label": "Late Afternoon"
+        "label": "下午晚些时候"
       },
       "early_night_8h": {
-        "label": "Early Night"
+        "label": "初夜"
       },
       "standard_night_8h": {
-        "label": "Standard Night"
+        "label": "标准晚间"
       },
       "late_night_8h": {
-        "label": "Late Night"
+        "label": "深夜"
       }
     },
     "customInput": {
-      "label": "What time do you usually clock in?",
-      "helper": "Use 12-hour format (e.g., 6:00 AM)"
+      "label": "你通常几点钟打卡？",
+      "helper": "使用 12 小时格式（例如 6:00 AM）"
     },
     "validation": {
-      "hoursRange": "Hours must be between 1 and 12",
-      "minutesRange": "Minutes must be between 0 and 59"
+      "hoursRange": "时间必须介于 1 点到 12 点之间",
+      "minutesRange": "分钟必须介于 0 到 59 之间"
     },
     "preview": {
-      "yourShift": "Your shift:",
-      "durationHours": "{{duration}} hours"
+      "yourShift": "您的班次：",
+      "durationHours": "{{duration}} 小时"
     },
     "detection": {
-      "helper": "This is when your shift begins",
-      "autoDetected": "Auto-detected",
+      "helper": "这是您轮班开始的时间",
+      "autoDetected": "自动检测",
       "day": {
-        "title": "Daytime start",
-        "window": "Typical window: 6:00 AM - 5:59 PM"
+        "title": "白天开始",
+        "window": "典型时段：上午 6:00 - 下午 5:59"
       },
       "morning": {
-        "title": "Morning start",
-        "window": "Typical window: 6:00 AM - 1:59 PM"
+        "title": "早上开始",
+        "window": "典型时段：上午 6:00 - 下午 1:59"
       },
       "afternoon": {
-        "title": "Afternoon start",
-        "window": "Typical window: 2:00 PM - 9:59 PM"
+        "title": "下午开始",
+        "window": "典型时段：下午 2:00 - 晚上 9:59"
       },
       "night": {
-        "title": "Night start",
-        "windowTwoShift": "Typical window: 6:00 PM - 5:59 AM",
-        "windowThreeShift": "Typical window: 10:00 PM - 5:59 AM"
+        "title": "夜间开始",
+        "windowTwoShift": "典型窗口：下午 6:00 - 凌晨 5:59",
+        "windowThreeShift": "典型时段：晚上 10:00 - 凌晨 5:59"
       }
     },
     "tips": {
-      "title": "Pro Tip",
-      "subtitle": "Fastest way to pick a reliable start time",
-      "twoShift": "Not sure? Most shift workers on 12-hour rotations start at 6 AM or 6 PM. Pick the closest match-you can adjust it later in settings if needed.",
-      "threeShift": "Not sure? Most 8-hour shift workers start at 6 AM, 2 PM, or 10 PM. Pick the closest match-you can adjust it later in settings if needed."
+      "title": "专业提示",
+      "subtitle": "选择可靠开始时间的最快方法",
+      "twoShift": "没有把握？大多数 12 小时轮班的轮班工人从早上 6 点或下午 6 点开始工作。选择最接近的匹配项 - 如果需要，您可以稍后在设置中进行调整。",
+      "threeShift": "没有把握？大多数 8 小时轮班工人的上班时间是早上 6 点、下午 2 点或晚上 10 点。选择最接近的匹配项 - 如果需要，您可以稍后在设置中进行调整。"
     },
     "patternInfo": {
       "custom": {
-        "name": "Custom Pattern",
-        "statsTwoShift": "{{total}}-day cycle - {{daysOn}}D/{{nightsOn}}N/{{daysOff}}O",
-        "statsThreeShift": "{{total}}-day cycle - {{morningOn}}M/{{afternoonOn}}A/{{nightOn}}N/{{daysOff}}O"
+        "name": "定制图案",
+        "statsTwoShift": "{{total}} 天周期 - {{daysOn}}D/{{nightsOn}}N/{{daysOff}}O",
+        "statsThreeShift": "{{total}} 天周期 - {{morningOn}}M/{{afternoonOn}}A/{{nightOn}}N/{{daysOff}}O"
       },
-      "defaultStats": "Custom cycle - Set your schedule",
+      "defaultStats": "自定义周期 - 设置您的日程安排",
       "standard444": {
-        "name": "4-4-4 Cycle",
-        "stats": "12-day cycle - 4D/4N/4O"
+        "name": "4-4-4循环",
+        "stats": "12 天周期 - 4D/4N/4O"
       },
       "standard777": {
-        "name": "7-7-7 Cycle",
-        "stats": "21-day cycle - 7D/7N/7O"
+        "name": "7-7-7循环",
+        "stats": "21 天周期 - 7D/7N/7O"
       },
       "standard223": {
-        "name": "2-2-3 Cycle",
-        "stats": "7-day cycle - 2D/2N/3O"
+        "name": "2-2-3循环",
+        "stats": "7 天周期 - 2D/2N/3O"
       },
       "standard555": {
-        "name": "5-5-5 Cycle",
-        "stats": "15-day cycle - 5D/5N/5O"
+        "name": "5-5-5循环",
+        "stats": "15 天周期 - 5D/5N/5O"
       },
       "standard333": {
-        "name": "3-3-3 Cycle",
-        "stats": "9-day cycle - 3D/3N/3O"
+        "name": "3-3-3循环",
+        "stats": "9 天周期 - 3D/3N/3O"
       },
       "standard101010": {
-        "name": "10-10-10 Cycle",
-        "stats": "30-day cycle - 10D/10N/10O"
+        "name": "10-10-10 周期",
+        "stats": "30 天周期 - 10D/10N/10O"
       },
       "continental": {
-        "name": "Continental",
-        "stats": "8-day cycle - 2D/2N/4O"
+        "name": "大陆航空",
+        "stats": "8 天周期 - 2D/2N/4O"
       },
       "pitman": {
-        "name": "Pitman",
-        "stats": "7-day cycle - 2D/2N/3O"
+        "name": "皮特曼",
+        "stats": "7 天周期 - 2D/2N/3O"
       }
     }
   },
   "customPattern": {
-    "backA11y": "Go back",
+    "backA11y": "回去",
     "backHint": {
-      "default": "Return to shift pattern selection",
-      "settings": "Discard changes and return to settings"
+      "default": "返回换档模式选择",
+      "settings": "放弃更改并返回设置"
     },
-    "needMoreChanges": "Need More Changes",
+    "needMoreChanges": "需要更多改变",
     "preview": {
-      "badgeLabel": "{{totalDays}}-day cycle",
-      "balanceTitle": "Work-Rest Balance",
+      "badgeLabel": "{{totalDays}} 天周期",
+      "balanceTitle": "工作与休息的平衡",
       "blocks": {
-        "afternoon": "Afternoon",
-        "days": "Days",
-        "morning": "Morning",
-        "night": "Night",
-        "nights": "Nights",
-        "off": "Off"
+        "afternoon": "下午",
+        "days": "天",
+        "morning": "早晨",
+        "night": "夜晚",
+        "nights": "夜晚",
+        "off": "离开"
       },
-      "cycleLabel": "Your {{totalDays}}-day cycle",
-      "daysOff": "days off",
-      "daysOn": "days on",
+      "cycleLabel": "您的 {{totalDays}} 天周期",
+      "daysOff": "休息日",
+      "daysOn": "天数",
       "legend": {
-        "afternoon": "Afternoon",
-        "dayOff": "Day Off",
-        "dayShift": "Day Shift",
-        "morning": "Morning",
-        "night": "Night",
-        "nightShift": "Night Shift"
+        "afternoon": "下午",
+        "dayOff": "休息日",
+        "dayShift": "白班",
+        "morning": "早晨",
+        "night": "夜晚",
+        "nightShift": "夜班"
       },
-      "ratioLabel": "Every rotation you work",
-      "restLabel": "Rest: {{count}} days",
-      "subtitle": "See what your schedule looks like",
-      "title": "Your Rotation Preview",
-      "workLabel": "Work: {{count}} days"
+      "ratioLabel": "你工作的每一次轮换",
+      "restLabel": "休息：{{count}} 天",
+      "subtitle": "查看您的日程安排",
+      "title": "您的旋转预览",
+      "workLabel": "工作时间：{{count}} 天"
     },
-    "previewGuide": "See your rotation below",
-    "saveA11y": "Save your rotation and continue",
-    "saveButton": "Save This Rotation",
-    "saveHintValid": "Save this {{totalDays}}-day rotation",
+    "previewGuide": "请参阅下面的轮换",
+    "saveA11y": "保存轮换并继续",
+    "saveButton": "保存此旋转",
+    "saveHintValid": "保存这次 {{totalDays}} 天的轮换",
     "sliders": {
-      "afternoonShifts": "Afternoon Shifts",
-      "dayShifts": "Day Shifts",
-      "daysOff": "Days Off",
-      "morningShifts": "Morning Shifts",
-      "nightShifts": "Night Shifts"
+      "afternoonShifts": "下午班",
+      "dayShifts": "白班",
+      "daysOff": "休息日",
+      "morningShifts": "早班",
+      "nightShifts": "夜班"
     },
-    "slidersTitle": "Set Up Your Rotation",
-    "subtitle": "Set how many shifts you work, then how many days off you get—we'll show you what it looks like",
+    "slidersTitle": "设置你的轮换",
+    "subtitle": "设置您的轮班次数，然后您可以休息多少天——我们将向您展示具体情况",
     "subtitleSecondary": {
-      "threeShift": "Morning, Afternoon, Night & Off",
-      "twoShift": "Day, Night & Off"
+      "threeShift": "早上、下午、晚上及休息时间",
+      "twoShift": "白天、夜晚和休息时间"
     },
-    "success": "Looking good! You work {{workDays}} days, then get {{daysOff}} days off. That's a solid rotation.",
-    "tip": "Tip: Most shift workers find rotations with at least 3 days off work best. Your body needs time to recover between swing changes.",
-    "title": "Build Your Rotation",
+    "success": "看起来不错！您工作 {{workDays}} 天，然后休息 {{daysOff}} 天。这是一个坚实的旋转。",
+    "tip": "提示：大多数轮班工人发现轮班时至少休息 3 天是最好的。在两次挥杆变化之间，您的身体需要时间来恢复。",
+    "title": "建立你的轮换",
     "validation": {
-      "noOff": "Everyone needs time off—add at least 1 day off to your rotation",
-      "noWork": "You need at least 1 shift to track—add some day or night shifts",
-      "tooLong": "Your rotation is {{totalDays}} days long—we can only handle up to 28 days. Try shortening it."
+      "noOff": "每个人都需要休息——在轮换中至少增加 1 天的休息时间",
+      "noWork": "您至少需要 1 个班次来跟踪 — 添加一些白班或夜班",
+      "tooLong": "您的轮换时间为 {{totalDays}} 天——我们最多只能处理 28 天。尝试缩短它。"
     },
-    "warning": "This pattern is work-heavy ({{workPercentage}}% work). Consider adding more days off if fatigue is a concern."
+    "warning": "此模式工作量很大（{{workPercentage}}% 工作）。如果担心疲劳，请考虑增加休息天数。"
   },
   "fifoCustom": {
-    "backA11y": "Go back",
+    "backA11y": "回去",
     "backHint": {
-      "default": "Return to shift pattern selection",
-      "settings": "Discard changes and return to settings"
+      "default": "返回换档模式选择",
+      "settings": "放弃更改并返回设置"
     },
     "preview": {
-      "badgeLabel": "{{totalCycleDays}}-day FIFO cycle",
-      "balanceTitle": "Work-Rest Balance",
-      "cycleDayA11y": "Cycle day {{day}}",
-      "cycleFlow": "Cycle flow across {{previewDays}} visible days",
-      "homeDays": "home days",
+      "badgeLabel": "{{totalCycleDays}} 天 FIFO 周期",
+      "balanceTitle": "工作与休息的平衡",
+      "cycleDayA11y": "周期日 {{day}}",
+      "cycleFlow": "{{previewDays}} 个可见天数的循环流量",
+      "homeDays": "居家日",
       "legend": {
-        "daySwing": "Day Swing",
-        "homeBlock": "Home Block",
-        "nightSwing": "Night Swing"
+        "daySwing": "日间秋千",
+        "homeBlock": "家庭街区",
+        "nightSwing": "夜间秋千"
       },
-      "ratioLabel": "Site to home rhythm",
-      "restLabel": "Rest: {{restBlockDays}} days",
-      "siteDays": "site days",
-      "subtitle": "{{workBlockDays}} days at site, then {{restBlockDays}} days at home",
-      "swingSplit": "Swing split: {{daysOnDayShift}} day-shift days + {{daysOnNightShift}} night-shift days",
-      "title": "Your FIFO Rotation Preview",
-      "workLabel": "Work: {{workBlockDays}} days"
+      "ratioLabel": "从现场到家的节奏",
+      "restLabel": "休息：{{restBlockDays}} 天",
+      "siteDays": "现场日",
+      "subtitle": "在现场 {{workBlockDays}} 天，然后在家里 {{restBlockDays}} 天",
+      "swingSplit": "轮班分班：{{daysOnDayShift}} 白班天数 + {{daysOnNightShift}} 夜班天数",
+      "title": "您的 FIFO 循环预览",
+      "workLabel": "工作时间：{{workBlockDays}} 天"
     },
-    "previewGuide": "See your FIFO pattern below",
-    "saveA11y": "Save FIFO pattern and continue",
-    "saveButton": "Save FIFO Pattern",
-    "saveHintInvalid": "Fix the validation issue before continuing",
-    "saveHintValid": "{{workBlockDays}} days work, {{restBlockDays}} days rest",
+    "previewGuide": "请参阅下面的 FIFO 模式",
+    "saveA11y": "保存 FIFO 模式并继续",
+    "saveButton": "保存 FIFO 模式",
+    "saveHintInvalid": "在继续之前修复验证问题",
+    "saveHintValid": "工作 {{workBlockDays}} 天，休息 {{restBlockDays}} 天",
     "sliders": {
-      "daysAtHome": "Days at Home (Rest Block)",
-      "daysAtSite": "Days at Site (Work Block)",
-      "daysOnDayShift": "Days on Day Shift",
-      "daysOnNightShift": "Days on Night Shift"
+      "daysAtHome": "在家的日子（休息区）",
+      "daysAtSite": "现场天数（工作区）",
+      "daysOnDayShift": "白班天数",
+      "daysOnNightShift": "夜班天数"
     },
-    "slidersTitle": "Set Up Your FIFO Pattern",
-    "subtitle": "Set your on-site block, home block, and work-block shift style for a schedule that fits your site cycle.",
-    "subtitleSecondary": "Work Block, Rest Block & Pattern Split",
-    "success": "Solid FIFO setup. {{workBlockDays}} days at site, then {{restBlockDays}} days at home.",
-    "swingSubtitle": "Split your work block between day and night shifts.",
-    "swingTitle": "Swing Configuration",
-    "swingTotal": "Split total: {{swingTotal}}/{{workBlockDays}} days",
-    "tip": "Tip: Match your home block to recovery and travel demands. FIFO patterns work best when the rest block is long enough to reset before your next site run.",
-    "title": "Build Your FIFO Rotation",
+    "slidersTitle": "设置您的 FIFO 模式",
+    "subtitle": "设置现场区块、家庭区块和工作区块轮班方式，以制定适合您现场周期的时间表。",
+    "subtitleSecondary": "工作块、休息块和模式分割",
+    "success": "可靠的 FIFO 设置。在现场 {{workBlockDays}} 天，然后在家 {{restBlockDays}} 天。",
+    "swingSubtitle": "将您的工作区域划分为白班和夜班。",
+    "swingTitle": "摆动配置",
+    "swingTotal": "分期总计：{{swingTotal}}/{{workBlockDays}} 天",
+    "tip": "提示：将您的家庭街区与恢复和旅行需求相匹配。当剩余块足够长以在下一个站点运行之前重置时，FIFO 模式效果最佳。",
+    "title": "构建您的 FIFO 循环",
     "validation": {
-      "blocksMinimum": "Work and rest blocks must each be at least 1 day.",
-      "swingMismatch": "Swing split must equal {{workBlockDays}} days before saving."
+      "blocksMinimum": "工作和休息时间必须至少为 1 天。",
+      "swingMismatch": "保存前的周转分割必须等于 {{workBlockDays}} 天。"
     },
-    "warning": "This roster is heavy ({{workPercentage}}% work). Consider balancing with more home days if fatigue becomes an issue.",
-    "workPatternSubtitle": "How are your shifts organized while at site?",
-    "workPatternTitle": "Work Pattern During Work Block"
+    "warning": "这个名册很繁重（{{workPercentage}}% 工作）。如果疲劳成为问题，请考虑增加在家休息的时间。",
+    "workPatternSubtitle": "您在现场时如何安排轮班？",
+    "workPatternTitle": "工作块期间的工作模式"
   }
 }

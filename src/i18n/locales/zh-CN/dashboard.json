@@ -1,72 +1,72 @@
 {
   "greeting": {
-    "morning": "Good morning",
-    "afternoon": "Good afternoon",
-    "evening": "Good evening",
-    "night": "Good night"
+    "morning": "早上好",
+    "afternoon": "下午好",
+    "evening": "晚上好",
+    "night": "晚安"
   },
-  "pullToRefresh": "Pull to refresh",
-  "refreshing": "Refreshing schedule...",
-  "scheduleUpdated": "Schedule updated",
+  "pullToRefresh": "拉动刷新",
+  "refreshing": "刷新日程...",
+  "scheduleUpdated": "时间表已更新",
   "lastUpdated": {
-    "justNow": "Just now",
-    "secondsAgo": "{{count}}s ago",
-    "minutesAgo": "{{count}}m ago",
-    "updatedPrefix": "Updated "
+    "justNow": "现在",
+    "secondsAgo": "{{count}} 秒前",
+    "minutesAgo": "{{count}} 分钟前",
+    "updatedPrefix": "已更新"
   },
   "errors": {
-    "loadFailed": "Unable to load shift data"
+    "loadFailed": "无法加载班次数据"
   },
   "user": {
-    "defaultName": "User"
+    "defaultName": "用户"
   },
   "upcoming": {
-    "title": "Upcoming Shifts"
+    "title": "即将到来的转变"
   },
   "shiftLabels": {
-    "day": "Day Shift",
-    "night": "Night Shift",
-    "morning": "Morning Shift",
-    "afternoon": "Afternoon Shift",
-    "off": "Day Off"
+    "day": "白班",
+    "night": "夜班",
+    "morning": "早班",
+    "afternoon": "下午班",
+    "off": "休息日"
   },
   "shiftSubtitles": {
-    "day": "Stay energized!",
-    "night": "Stay alert!",
-    "morning": "Rise and shine!",
-    "afternoon": "Keep it going!",
-    "off": "Rest and recharge!"
+    "day": "保持活力！",
+    "night": "保持警惕！",
+    "morning": "崛起并闪耀！",
+    "afternoon": "继续下去！",
+    "off": "休息并充电！"
   },
   "fifo": {
-    "onSite": "On-site roster active",
-    "homeBlock": "Home block active",
-    "workBlock": "Work",
-    "restBlock": "Rest",
-    "blockChangeToday": "Block change today!",
-    "blockChangeTomorrow": "Block change tomorrow!",
-    "untilRest": "{{count}}d until rest block",
-    "untilWork": "{{count}}d until work block",
-    "blockDayOf": "{{blockName}} Block Day {{day}} of {{total}}",
-    "days": "days"
+    "onSite": "现场名册活跃",
+    "homeBlock": "主块处于活动状态",
+    "workBlock": "工作",
+    "restBlock": "休息",
+    "blockChangeToday": "今天块改变！",
+    "blockChangeTomorrow": "明天换块！",
+    "untilRest": "{{count}}d 直到休息块",
+    "untilWork": "{{count}}d 直到工作块",
+    "blockDayOf": "{{total}} 的 {{blockName}} 区块日 {{day}}",
+    "days": "天"
   },
   "stats": {
-    "workDays": "Work Days",
-    "offDays": "Off Days",
-    "balance": "Balance"
+    "workDays": "工作日",
+    "offDays": "休息日",
+    "balance": "平衡"
   },
   "calendar": {
-    "legendDay": "Day",
-    "legendMorning": "Morning",
-    "legendAfternoon": "Afternoon",
-    "legendNight": "Night",
-    "legendOff": "Off",
-    "legendWorkBlock": "Work Block",
-    "legendRestBlock": "Rest Block",
-    "cycle": "cycle",
-    "previousMonth": "Previous month",
-    "nextMonth": "Next month"
+    "legendDay": "天",
+    "legendMorning": "早晨",
+    "legendAfternoon": "下午",
+    "legendNight": "夜晚",
+    "legendOff": "离开",
+    "legendWorkBlock": "工作块",
+    "legendRestBlock": "休息区",
+    "cycle": "循环",
+    "previousMonth": "上个月",
+    "nextMonth": "下个月"
   },
   "badges": {
-    "active": "ACTIVE"
+    "active": "积极的"
   }
 }

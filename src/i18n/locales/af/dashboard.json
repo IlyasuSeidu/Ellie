@@ -1,72 +1,72 @@
 {
   "greeting": {
-    "morning": "Good morning",
-    "afternoon": "Good afternoon",
-    "evening": "Good evening",
-    "night": "Good night"
+    "morning": "Goeie more",
+    "afternoon": "Goeie middag",
+    "evening": "Goeienaand",
+    "night": "Goeie nag"
   },
-  "pullToRefresh": "Pull to refresh",
-  "refreshing": "Refreshing schedule...",
-  "scheduleUpdated": "Schedule updated",
+  "pullToRefresh": "Trek om te verfris",
+  "refreshing": "Herlaai tans skedule …",
+  "scheduleUpdated": "Skedule opgedateer",
   "lastUpdated": {
-    "justNow": "Just now",
-    "secondsAgo": "{{count}}s ago",
-    "minutesAgo": "{{count}}m ago",
-    "updatedPrefix": "Updated "
+    "justNow": "Netnou",
+    "secondsAgo": "{{count}}s gelede",
+    "minutesAgo": "{{count}}m gelede",
+    "updatedPrefix": "Opgedateer"
   },
   "errors": {
-    "loadFailed": "Unable to load shift data"
+    "loadFailed": "Kan nie skofdata laai nie"
   },
   "user": {
-    "defaultName": "User"
+    "defaultName": "Gebruiker"
   },
   "upcoming": {
-    "title": "Upcoming Shifts"
+    "title": "Komende skofte"
   },
   "shiftLabels": {
-    "day": "Day Shift",
-    "night": "Night Shift",
-    "morning": "Morning Shift",
-    "afternoon": "Afternoon Shift",
-    "off": "Day Off"
+    "day": "Dagskof",
+    "night": "Nagskof",
+    "morning": "Oggendskof",
+    "afternoon": "Middagskof",
+    "off": "Afdag"
   },
   "shiftSubtitles": {
-    "day": "Stay energized!",
-    "night": "Stay alert!",
-    "morning": "Rise and shine!",
-    "afternoon": "Keep it going!",
-    "off": "Rest and recharge!"
+    "day": "Bly energiek!",
+    "night": "Bly wakker!",
+    "morning": "Staan op en skyn!",
+    "afternoon": "Hou so aan!",
+    "off": "Rus en herlaai!"
   },
   "fifo": {
-    "onSite": "On-site roster active",
-    "homeBlock": "Home block active",
-    "workBlock": "Work",
-    "restBlock": "Rest",
-    "blockChangeToday": "Block change today!",
-    "blockChangeTomorrow": "Block change tomorrow!",
-    "untilRest": "{{count}}d until rest block",
-    "untilWork": "{{count}}d until work block",
-    "blockDayOf": "{{blockName}} Block Day {{day}} of {{total}}",
-    "days": "days"
+    "onSite": "On-site rooster aktief",
+    "homeBlock": "Tuisblok aktief",
+    "workBlock": "Werk",
+    "restBlock": "Rus",
+    "blockChangeToday": "Blokkeer verandering vandag!",
+    "blockChangeTomorrow": "Blok verandering môre!",
+    "untilRest": "{{count}}d tot rusblok",
+    "untilWork": "{{count}}d tot werkblok",
+    "blockDayOf": "{{blockName}} Blokdag {{day}} van {{total}}",
+    "days": "dae"
   },
   "stats": {
-    "workDays": "Work Days",
-    "offDays": "Off Days",
-    "balance": "Balance"
+    "workDays": "Werksdae",
+    "offDays": "Af dae",
+    "balance": "Balans"
   },
   "calendar": {
-    "legendDay": "Day",
-    "legendMorning": "Morning",
-    "legendAfternoon": "Afternoon",
-    "legendNight": "Night",
-    "legendOff": "Off",
-    "legendWorkBlock": "Work Block",
-    "legendRestBlock": "Rest Block",
-    "cycle": "cycle",
-    "previousMonth": "Previous month",
-    "nextMonth": "Next month"
+    "legendDay": "Dag",
+    "legendMorning": "Oggend",
+    "legendAfternoon": "Middag",
+    "legendNight": "Nag",
+    "legendOff": "Af",
+    "legendWorkBlock": "Werk Blok",
+    "legendRestBlock": "Rusblok",
+    "cycle": "siklus",
+    "previousMonth": "Vorige maand",
+    "nextMonth": "Volgende maand"
   },
   "badges": {
-    "active": "ACTIVE"
+    "active": "AKTIEF"
   }
 }

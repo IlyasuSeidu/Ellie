@@ -1,746 +1,746 @@
 {
   "welcome": {
-    "tagline": "Your Mining Shift Companion",
-    "getStarted": "Get Started"
+    "tagline": "आपका खनन शिफ्ट साथी",
+    "getStarted": "शुरू हो जाओ"
   },
   "common": {
-    "swipeHint": "Swipe right to select, left to see next, or up for more info",
-    "reviewAgain": "Please review options again to make your selection",
-    "reviewButton": "Review",
-    "continueButton": "Continue",
-    "closeButton": "Close",
-    "backToSettings": "Back to Settings",
-    "saveAndReturn": "Save & Return",
+    "swipeHint": "चयन करने के लिए दाएं स्वाइप करें, अगला देखने के लिए बाएं स्वाइप करें, या अधिक जानकारी के लिए ऊपर स्वाइप करें",
+    "reviewAgain": "कृपया अपना चयन करने के लिए विकल्पों की दोबारा समीक्षा करें",
+    "reviewButton": "समीक्षा",
+    "continueButton": "जारी रखना",
+    "closeButton": "बंद करना",
+    "backToSettings": "सेटिंग्स पर वापस जाएँ",
+    "saveAndReturn": "सहेजें और वापस करें",
     "hints": {
-      "nextOption": "← Next option",
-      "selectThis": "This one →",
-      "learnMore": "↑ Learn more"
+      "nextOption": "← अगला विकल्प",
+      "selectThis": "यह वाला →",
+      "learnMore": "↑ और जानें"
     },
     "learnMore": {
-      "howItWorks": "How it works",
-      "whereUsed": "Where you'll see this",
-      "pros": "The good bits",
-      "cons": "What to know"
+      "howItWorks": "यह काम किस प्रकार करता है",
+      "whereUsed": "यह आपको कहां दिखेगा",
+      "pros": "अच्छे अंश",
+      "cons": "पता करने के लिए क्या"
     }
   },
   "intro": {
-    "welcome": "Welcome to Ellie! I'm here to help you set up your shift calendar. Let's start by getting to know you a bit better.",
-    "askName": "What's your name?",
-    "askOccupation": "Great to meet you, {{name}}! What's your occupation?",
-    "askCompany": "Got it! Which company do you work for?",
-    "askCountry": "Almost done! Which country are you based in?",
-    "allSet": "Perfect! You're all set, {{name}}. Let's get your shift calendar configured.",
+    "welcome": "ऐली में आपका स्वागत है! मैं आपका शिफ्ट कैलेंडर सेट करने में आपकी मदद करने के लिए यहां हूं। आइए आपको थोड़ा बेहतर जानने से शुरुआत करें।",
+    "askName": "तुम्हारा नाम क्या है?",
+    "askOccupation": "आपसे मिलकर बहुत अच्छा लगा, {{name}}! आपका पेशा क्या है?",
+    "askCompany": "समझ गया! आप किस कंपनी के लिए काम करते है?",
+    "askCountry": "लगभग पूरा हो गया! आप किस देश में स्थित हैं?",
+    "allSet": "उत्तम! आप पूरी तरह तैयार हैं, {{name}}। आइए आपका शिफ्ट कैलेंडर कॉन्फ़िगर करें।",
     "placeholders": {
-      "name": "Enter your name",
-      "occupation": "Enter your occupation",
-      "company": "Enter company name",
-      "country": "Enter your country"
+      "name": "अपना नाम दर्ज करें",
+      "occupation": "अपना व्यवसाय दर्ज करें",
+      "company": "कंपनी का नाम दर्ज करें",
+      "country": "अपना देश दर्ज करें"
     },
     "editResponse": {
-      "title": "Edit Response",
-      "message": "Edit your response. The conversation will rewind from this point.",
-      "cancel": "Cancel",
-      "confirm": "Edit"
+      "title": "प्रतिक्रिया संपादित करें",
+      "message": "अपनी प्रतिक्रिया संपादित करें. बातचीत यहीं से दोबारा शुरू होगी.",
+      "cancel": "रद्द करना",
+      "confirm": "संपादन करना"
     },
     "errors": {
-      "nameTooShort": "Name must be at least 2 characters",
-      "nameTooLong": "Name must not exceed 50 characters",
-      "nameInvalidChars": "Name can only contain letters, spaces, hyphens, and apostrophes",
-      "occupationRequired": "Occupation is required",
-      "companyRequired": "Company is required",
-      "countryTooShort": "Country must be at least 2 characters",
-      "countryTooLong": "Country must not exceed 100 characters"
+      "nameTooShort": "नाम कम से कम 2 अक्षर का होना चाहिए",
+      "nameTooLong": "नाम 50 अक्षरों से अधिक नहीं होना चाहिए",
+      "nameInvalidChars": "नाम में केवल अक्षर, रिक्त स्थान, हाइफ़न और एपोस्ट्रोफ़ शामिल हो सकते हैं",
+      "occupationRequired": "व्यवसाय आवश्यक है",
+      "companyRequired": "संगत की आवश्यकता है",
+      "countryTooShort": "देश कम से कम 2 अक्षर का होना चाहिए",
+      "countryTooLong": "देश 100 अक्षरों से अधिक नहीं होना चाहिए"
     }
   },
   "shiftSystem": {
-    "title": "How Many Shifts Does Your Site Run?",
-    "reviewAgain": "Please review systems again to make your selection",
-    "reviewButton": "Review Systems",
-    "continueButton": "Continue",
-    "closeButton": "Close",
-    "instruction": "Select how your site operates—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info",
+    "title": "आपकी साइट कितनी शिफ्ट में चलती है?",
+    "reviewAgain": "कृपया अपना चयन करने के लिए सिस्टम की दोबारा समीक्षा करें",
+    "reviewButton": "समीक्षा प्रणाली",
+    "continueButton": "जारी रखना",
+    "closeButton": "बंद करना",
+    "instruction": "चुनें कि आपकी साइट कैसे संचालित होती है—हम इससे आपका कैलेंडर बनाएंगे\nचुनने के लिए दाएं स्वाइप करें, अधिक देखने के लिए बाएं, जानकारी के लिए ऊपर स्वाइप करें",
     "endState": {
-      "selectedTitle": "Got it! We'll set up your calendar for this.",
-      "reviewedTitle": "You've viewed all {{count}} shift systems!",
-      "selectedSubtitle": "Next, we'll pick your specific rotation pattern"
+      "selectedTitle": "समझ गया! हम इसके लिए आपका कैलेंडर सेट करेंगे.",
+      "reviewedTitle": "आपने सभी {{count}} शिफ्ट सिस्टम देख लिए हैं!",
+      "selectedSubtitle": "इसके बाद, हम आपका विशिष्ट रोटेशन पैटर्न चुनेंगे"
     },
     "cards": {
       "2-shift": {
-        "title": "2 Shifts (12 hours)",
-        "schedule": "Day & night",
-        "description": "Your workplace runs two 12-hour shifts—one during the day, one at night",
+        "title": "2 शिफ्ट (12 घंटे)",
+        "schedule": "दिन और रात",
+        "description": "आपका कार्यस्थल 12-घंटे की दो शिफ्ट चलाता है - एक दिन के दौरान, एक रात में",
         "details": {
-          "workRestRatio": "12 hours on, 12 hours off",
-          "useCases": ["Mining sites", "Oil & gas", "24/7 operations", "Remote work"],
-          "pros": ["Extended rest periods", "Predictable schedule", "Good work-life balance"],
+          "workRestRatio": "12 घंटे चालू, 12 घंटे की छुट्टी",
+          "useCases": ["खनन स्थल", "तेल एवं गैस", "24/7 ऑपरेशन", "दूरदराज के काम"],
+          "pros": ["विस्तारित विश्राम अवधि", "पूर्वानुमेय कार्यक्रम", "अच्छा कार्य-जीवन संतुलन"],
           "cons": [
-            "Long shift duration",
-            "Can be physically demanding",
-            "Limited daylight in winter"
+            "लंबी पारी अवधि",
+            "शारीरिक रूप से मांगलिक हो सकते हैं",
+            "सर्दियों में दिन की रोशनी सीमित होती है"
           ]
         }
       },
       "3-shift": {
-        "title": "3 Shifts (8 hours)",
-        "schedule": "Morning, afternoon & night",
-        "description": "Your workplace runs three 8-hour shifts—morning, afternoon, and night",
+        "title": "3 शिफ्ट (8 घंटे)",
+        "schedule": "सुबह, दोपहर और रात",
+        "description": "आपके कार्यस्थल पर 8 घंटे की तीन शिफ्ट चलती हैं- सुबह, दोपहर और रात",
         "details": {
-          "workRestRatio": "8 hours on, 16 hours off",
-          "useCases": ["Manufacturing", "Healthcare", "Call centers", "24/7 operations"],
-          "pros": ["Shorter shifts", "More time for family", "Easier to stay alert"],
+          "workRestRatio": "8 घंटे चालू, 16 घंटे की छुट्टी",
+          "useCases": ["उत्पादन", "स्वास्थ्य देखभाल", "कॉल सेंटर", "24/7 ऑपरेशन"],
+          "pros": ["छोटी पाली", "परिवार के लिए अधिक समय", "सतर्क रहना आसान है"],
           "cons": [
-            "More frequent shift changes",
-            "Can disrupt sleep patterns",
-            "Less rest between cycles"
+            "अधिक बार शिफ्ट परिवर्तन",
+            "नींद के पैटर्न को बाधित कर सकता है",
+            "चक्रों के बीच कम आराम"
           ]
         }
       }
     }
   },
   "shiftPattern": {
-    "reviewAgain": "Please review patterns again to make your selection",
-    "reviewButton": "Review Patterns",
-    "continueButton": "Continue",
-    "closeButton": "Close",
+    "reviewAgain": "कृपया अपना चयन करने के लिए पैटर्न की दोबारा समीक्षा करें",
+    "reviewButton": "पैटर्न की समीक्षा करें",
+    "continueButton": "जारी रखना",
+    "closeButton": "बंद करना",
     "endState": {
-      "customButton": "Build Custom Rotation",
-      "reviewButton": "Look Again",
-      "reviewedSubtitle": "Didn't see yours? You can build a custom one, or take another look",
-      "reviewedTitle": "That's all {{count}} rotations we've got!"
+      "customButton": "कस्टम रोटेशन बनाएँ",
+      "reviewButton": "फिर देखो",
+      "reviewedSubtitle": "तुम्हारा नहीं देखा? आप एक कस्टम बना सकते हैं, या दूसरा रूप ले सकते हैं",
+      "reviewedTitle": "हमें बस इतना ही {{count}} घुमाव मिला है!"
     },
-    "instruction": "Choose the rotation your workplace uses—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info",
-    "title": "What's Your Roster Rotation?"
+    "instruction": "वह रोटेशन चुनें जिसका उपयोग आपका कार्यस्थल करता है—हम इससे आपका कैलेंडर बनाएंगे\nचुनने के लिए दाएं स्वाइप करें, अधिक देखने के लिए बाएं, जानकारी के लिए ऊपर स्वाइप करें",
+    "title": "आपका रोस्टर रोटेशन क्या है?"
   },
   "rosterType": {
-    "title": "How Does Your Roster Work?",
-    "instruction": "Choose the roster style your workplace uses — this shapes your entire schedule\nSwipe right to choose, left to see more, up for details",
-    "preparingNextStep": "Preparing next step...",
+    "title": "आपका रोस्टर कैसे काम करता है?",
+    "instruction": "आपके कार्यस्थल द्वारा उपयोग की जाने वाली रोस्टर शैली चुनें - यह आपके संपूर्ण शेड्यूल को आकार देती है\nचुनने के लिए दाएं स्वाइप करें, अधिक देखने के लिए बाएं, विवरण के लिए ऊपर स्वाइप करें",
+    "preparingNextStep": "अगले चरण की तैयारी...",
     "learnMore": {
-      "examples": "Examples",
-      "popularIn": "Popular in",
-      "benefits": "Benefits",
-      "considerations": "Things to consider"
+      "examples": "उदाहरण",
+      "popularIn": "में लोकप्रिय",
+      "benefits": "फ़ायदे",
+      "considerations": "विचार करने के लिए बातें"
     },
     "cards": {
       "rotating": {
-        "title": "Rotating Roster",
-        "subtitle": "Days → Nights → Off pattern",
-        "description": "You rotate through different shift times in a repeating cycle",
+        "title": "घूमने वाला रोस्टर",
+        "subtitle": "दिन → रातें → ऑफ पैटर्न",
+        "description": "आप दोहराए जाने वाले चक्र में अलग-अलग शिफ्ट समय में घूमते हैं",
         "details": {
-          "howItWorks": "Workers rotate through different shift times (day shifts, night shifts, days off) in a continuous cycle",
+          "howItWorks": "श्रमिक एक सतत चक्र में अलग-अलग शिफ्ट समय (दिन की शिफ्ट, रात की शिफ्ट, छुट्टी के दिन) में घूमते हैं",
           "examples": [
-            "5-5-5 (South Africa)",
-            "4-4-4 (common globally)",
-            "7-7-7 (long cycle)",
-            "2-2-3 (short cycle)"
+            "5-5-5 (दक्षिण अफ़्रीका)",
+            "4-4-4 (वैश्विक स्तर पर सामान्य)",
+            "7-7-7 (लंबा चक्र)",
+            "2-2-3 (छोटा चक्र)"
           ],
-          "regions": ["South Africa", "Zambia", "DRC", "Europe", "Some US operations"],
+          "regions": ["दक्षिण अफ़्रीका", "जाम्बिया", "DRC", "यूरोप", "कुछ अमेरिकी ऑपरेशन"],
           "pros": [
-            "Go home daily or frequently",
-            "Regular routine at each phase",
-            "Suitable for local operations",
-            "Easier for family planning"
+            "रोजाना या बार-बार घर जाएं",
+            "प्रत्येक चरण में नियमित दिनचर्या",
+            "स्थानीय परिचालन के लिए उपयुक्त",
+            "परिवार नियोजन के लिए आसान"
           ],
           "cons": [
-            "Night shifts can disrupt sleep",
-            "Constant rotation through times",
-            "Less extended home time"
+            "रात्रि पाली से नींद में खलल पड़ सकता है",
+            "समय के माध्यम से लगातार घूमना",
+            "घर का समय कम बढ़ाया गया"
           ]
         }
       },
       "fifo": {
-        "title": "FIFO / Swing Roster",
-        "subtitle": "Work blocks → Home blocks",
-        "description": "You work consecutive days on-site, then get extended time at home",
+        "title": "फीफो/स्विंग रोस्टर",
+        "subtitle": "कार्य ब्लॉक → होम ब्लॉक",
+        "description": "आप साइट पर लगातार दिन काम करते हैं, फिर घर पर विस्तारित समय मिलता है",
         "details": {
-          "howItWorks": "Workers fly in to remote sites, work consecutive days (work block), then fly home for extended rest (rest block)",
+          "howItWorks": "श्रमिक दूर-दराज के स्थानों पर जाते हैं, लगातार दिन काम करते हैं (कार्य ब्लॉक), फिर विस्तारित आराम के लिए घर के लिए उड़ान भरते हैं (विश्राम ब्लॉक)",
           "examples": [
-            "8/6 (common WA)",
-            "14/14 (even-time)",
-            "21/7 (remote sites)",
-            "28/14 (long cycle)"
+            "8/6 (सामान्य WA)",
+            "14/14 (सम-समय)",
+            "21/7 (दूरस्थ साइटें)",
+            "28/14 (लंबा चक्र)"
           ],
-          "regions": ["Australia", "Canada", "Remote global mining"],
+          "regions": ["ऑस्ट्रेलिया", "कनाडा", "दूरस्थ वैश्विक खनन"],
           "pros": [
-            "Extended time at home",
-            "Higher pay rates",
-            "Good for remote sites",
-            "Predictable blocks"
+            "घर पर विस्तारित समय",
+            "उच्च वेतन दरें",
+            "दूरस्थ साइटों के लिए अच्छा है",
+            "पूर्वानुमेय ब्लॉक"
           ],
           "cons": [
-            "Away from family for extended periods",
-            "Travel fatigue",
-            "Isolation at camp",
-            "Adjustment between blocks"
+            "लम्बे समय तक परिवार से दूर रहना",
+            "यात्रा की थकान",
+            "शिविर में अलगाव",
+            "ब्लॉकों के बीच समायोजन"
           ]
         }
       }
     }
   },
   "completion": {
-    "saveFailed": "Failed to save your data. Please try again.",
+    "saveFailed": "आपका डेटा सहेजने में विफल. कृपया पुन: प्रयास करें।",
     "features": {
-      "reminders": "Smart shift reminders",
-      "remindersDesc": "Never miss a shift with intelligent notifications that adapt to your rotation",
-      "sleep": "Sleep tracking & insights",
-      "sleepDesc": "Optimize your rest between shifts with personalized sleep analytics",
-      "fatigue": "Fatigue monitoring",
-      "fatigueDesc": "Track your energy levels and get alerts when fatigue risk is high",
-      "team": "Team coordination",
-      "teamDesc": "See your crew schedule and coordinate handovers seamlessly",
-      "balance": "Work-life balance",
-      "balanceDesc": "Maintain healthy routines with activity and wellness tracking",
-      "earnings": "Earnings calculator",
-      "earningsDesc": "Automatically calculate overtime, penalties, and shift allowances",
-      "meals": "Meal & hydration",
-      "mealsDesc": "Stay healthy with meal timing suggestions and hydration reminders"
+      "reminders": "स्मार्ट शिफ्ट अनुस्मारक",
+      "remindersDesc": "आपके रोटेशन के अनुकूल बुद्धिमान सूचनाओं के साथ कोई भी बदलाव कभी न चूकें",
+      "sleep": "नींद की ट्रैकिंग और अंतर्दृष्टि",
+      "sleepDesc": "वैयक्तिकृत नींद विश्लेषण के साथ पाली के बीच अपने आराम को अनुकूलित करें",
+      "fatigue": "थकान की निगरानी",
+      "fatigueDesc": "अपनी ऊर्जा के स्तर पर नज़र रखें और थकान का जोखिम अधिक होने पर अलर्ट प्राप्त करें",
+      "team": "टीम समन्वय",
+      "teamDesc": "अपने क्रू शेड्यूल को देखें और हैंडओवर को सहजता से समन्वयित करें",
+      "balance": "कार्य संतुलन",
+      "balanceDesc": "गतिविधि और स्वास्थ्य ट्रैकिंग के साथ स्वस्थ दिनचर्या बनाए रखें",
+      "earnings": "कमाई कैलकुलेटर",
+      "earningsDesc": "स्वचालित रूप से ओवरटाइम, दंड और शिफ्ट भत्ते की गणना करें",
+      "meals": "भोजन एवं जलयोजन",
+      "mealsDesc": "भोजन के समय के सुझावों और जलयोजन अनुस्मारक के साथ स्वस्थ रहें"
     },
-    "featureHint": "Tap a feature chip to see more details.",
-    "featuresTitle": "What you can do with Ellie",
-    "getStartedA11yHint": "Tap to start using the app",
-    "getStartedA11yLabel": "Get started with Ellie",
-    "loading": "Setting up your calendar...",
-    "retryA11yHint": "Tap to try saving your data again",
-    "retryA11yLabel": "Retry saving your data",
-    "subtitle": "Welcome to Ellie",
+    "featureHint": "अधिक विवरण देखने के लिए किसी फीचर चिप पर टैप करें।",
+    "featuresTitle": "आप ऐली के साथ क्या कर सकते हैं",
+    "getStartedA11yHint": "ऐप का उपयोग शुरू करने के लिए टैप करें",
+    "getStartedA11yLabel": "ऐली से शुरुआत करें",
+    "loading": "आपका कैलेंडर सेट किया जा रहा है...",
+    "retryA11yHint": "अपना डेटा दोबारा सहेजने का प्रयास करने के लिए टैप करें",
+    "retryA11yLabel": "अपना डेटा सहेजने का पुनः प्रयास करें",
+    "subtitle": "ऐली में आपका स्वागत है",
     "summary": {
-      "company": "Company",
-      "cycle": "Cycle",
-      "name": "Name",
-      "notSet": "Not set",
-      "pattern": "Pattern",
-      "rosterType": "Roster Type",
-      "rosterTypeFIFO": "FIFO (Fly-In Fly-Out)",
-      "rosterTypeRotating": "Rotating Roster",
-      "shiftSystem": "Shift System",
-      "shiftSystemThree": "3-Shift System",
-      "shiftSystemTwo": "2-Shift System",
-      "shiftTimes": "Shift Times",
-      "startDate": "Start Date",
-      "title": "Your profile",
-      "workPattern": "Work Pattern"
+      "company": "कंपनी",
+      "cycle": "चक्र",
+      "name": "नाम",
+      "notSet": "सेट नहीं",
+      "pattern": "नमूना",
+      "rosterType": "रोस्टर प्रकार",
+      "rosterTypeFIFO": "फीफो (फ्लाई-इन फ्लाई-आउट)",
+      "rosterTypeRotating": "घूमने वाला रोस्टर",
+      "shiftSystem": "शिफ्ट सिस्टम",
+      "shiftSystemThree": "3-शिफ्ट प्रणाली",
+      "shiftSystemTwo": "2-शिफ्ट प्रणाली",
+      "shiftTimes": "शिफ्ट टाइम्स",
+      "startDate": "आरंभ करने की तिथि",
+      "title": "आपकी प्रोफ़ाइल",
+      "workPattern": "कार्य पैटर्न"
     },
-    "title": "You're all set!",
-    "tryAgain": "Try Again"
+    "title": "तुम सब सेट हो!",
+    "tryAgain": "पुनः प्रयास करें"
   },
   "phaseSelector": {
     "hints": {
-      "next": "← Next",
-      "select": "Select →",
-      "info": "↑ Info"
+      "next": "← अगला",
+      "select": "→ चुनें",
+      "info": "↑ जानकारी"
     },
     "modal": {
-      "phaseLengthValue_one": "{{count}} day",
-      "phaseLengthValue_other": "{{count}} days",
-      "phaseLength": "Phase Length",
-      "phaseLengthValue": "{{count}} day"
+      "phaseLengthValue_one": "{{count}} दिन",
+      "phaseLengthValue_other": "{{count}} दिन",
+      "phaseLength": "चरण की लंबाई",
+      "phaseLengthValue": "{{count}} दिन"
     },
     "cards": {
       "afternoon": {
-        "description": "Afternoon hours (e.g., 12pm-8pm)",
-        "title": "Afternoon Shift"
+        "description": "दोपहर का समय (जैसे, दोपहर 12 बजे से रात 8 बजे तक)",
+        "title": "दोपहर की पाली"
       },
       "day": {
-        "description": "Working during daylight (e.g., 6am-6pm)",
-        "title": "Day Shift"
+        "description": "दिन के उजाले के दौरान काम करना (उदाहरण के लिए, सुबह 6 बजे से शाम 6 बजे तक)",
+        "title": "दिन की पाली"
       },
       "morning": {
-        "description": "Early morning hours (e.g., 4am-12pm)",
-        "title": "Morning Shift"
+        "description": "सुबह का समय (जैसे, सुबह 4 बजे से दोपहर 12 बजे तक)",
+        "title": "सुबह की पारी"
       },
       "night": {
-        "description": "Working at nighttime (e.g., 6pm-6am)",
-        "descriptionThreeShift": "Nighttime hours (e.g., 8pm-4am)",
-        "title": "Night Shift"
+        "description": "रात के समय काम करना (उदाहरण के लिए, शाम 6 बजे से सुबह 6 बजे तक)",
+        "descriptionThreeShift": "रात का समय (जैसे, रात 8 बजे से सुबह 4 बजे तक)",
+        "title": "रात की पाली"
       },
       "off": {
-        "description": "Rest and recovery at home",
-        "title": "Days Off"
+        "description": "घर पर आराम और स्वास्थ्य लाभ",
+        "title": "दिनों की छुट्टी"
       }
     },
-    "dayCardTitle": "Day {{day}}",
-    "daySubtitle": "You said you're on {{selectedPhaseTitle}}. Swipe to your current day—is it the {{dayList}}?",
-    "dayTitle": "Which day of {{selectedPhaseTitle}} are you on?",
-    "preparing": "Preparing your calendar...",
-    "title": "What shift are you on right now?",
-    "dayOrdinal": "Day {{day}}",
+    "dayCardTitle": "दिन {{day}}",
+    "daySubtitle": "आपने कहा कि आप {{selectedPhaseTitle}} पर हैं। अपने वर्तमान दिन पर स्वाइप करें—क्या यह {{dayList}} है?",
+    "dayTitle": "आप {{selectedPhaseTitle}} के किस दिन पर हैं?",
+    "preparing": "आपका कैलेंडर तैयार किया जा रहा है...",
+    "title": "आप अभी किस शिफ्ट में हैं?",
+    "dayOrdinal": "दिन {{day}}",
     "list": {
-      "or": "or"
+      "or": "या"
     },
     "dayDescriptions": {
-      "restLastDay": "Last day off before returning",
-      "restDayOfTotal": "Rest day {{day}} of {{total}}",
-      "firstDay": "First day of this phase",
-      "lastDay": "Last day of this phase",
-      "dayOfTotal": "Day {{day}} of {{total}}"
+      "restLastDay": "लौटने से पहले आखिरी दिन की छुट्टी",
+      "restDayOfTotal": "{{total}} का विश्राम दिवस {{day}}",
+      "firstDay": "इस चरण का पहला दिन",
+      "lastDay": "इस चरण का आखिरी दिन",
+      "dayOfTotal": "{{total}} का दिन {{day}}"
     }
   },
   "fifoPhaseSelector": {
     "title": {
-      "workPattern": "How are shifts run during your FIFO work block?",
-      "swingConfig": "Configure your swing split",
-      "block": "Where are you in your FIFO cycle?",
-      "dayWithinBlock": "Which day of {{blockTitle}} are you on?"
+      "workPattern": "आपके FIFO कार्य ब्लॉक के दौरान शिफ्ट कैसे चलती हैं?",
+      "swingConfig": "अपने स्विंग स्प्लिट को कॉन्फ़िगर करें",
+      "block": "आप अपने फीफो चक्र में कहां हैं?",
+      "dayWithinBlock": "आप {{blockTitle}} के किस दिन पर हैं?"
     },
     "subtitle": {
-      "workPattern": "Swipe right to choose your work-block pattern, left for next option, or up for info",
-      "swingConfig": "Set how many day-shift and night-shift days you work before choosing your current block",
-      "block": "Swipe right to select, left to see next, or up for more info",
-      "dayWithinBlock": "Swipe right to select, left to see next, or up for more info. Is it the {{ordinalList}}?"
+      "workPattern": "अपना कार्य-ब्लॉक पैटर्न चुनने के लिए दाएं स्वाइप करें, अगले विकल्प के लिए बाएं स्वाइप करें, या जानकारी के लिए ऊपर स्वाइप करें",
+      "swingConfig": "अपना वर्तमान ब्लॉक चुनने से पहले निर्धारित करें कि आप कितने दिन की पाली और रात की पाली में काम करते हैं",
+      "block": "चयन करने के लिए दाएं स्वाइप करें, अगला देखने के लिए बाएं स्वाइप करें, या अधिक जानकारी के लिए ऊपर स्वाइप करें",
+      "dayWithinBlock": "चयन करने के लिए दाएं स्वाइप करें, अगला देखने के लिए बाएं स्वाइप करें, या अधिक जानकारी के लिए ऊपर स्वाइप करें। क्या यह {{ordinalList}} है?"
     },
     "modal": {
-      "blockLength": "Block Length",
-      "whyItMatters": "Why it matters"
+      "blockLength": "ब्लॉक की लंबाई",
+      "whyItMatters": "यह क्यों मायने रखती है"
     },
     "patterns": {
       "straightDays": {
-        "title": "Straight Days",
-        "description": "Your work block runs day shifts only.",
-        "quickInfo": "Best for operations that keep all crews on daytime rotations."
+        "title": "सीधे दिन",
+        "description": "आपका कार्य ब्लॉक केवल दिन की पाली में चलता है।",
+        "quickInfo": "उन ऑपरेशनों के लिए सर्वोत्तम जो सभी क्रू को दिन के समय रोटेशन पर रखते हैं।"
       },
       "straightNights": {
-        "title": "Straight Nights",
-        "description": "Your work block runs night shifts only.",
-        "quickInfo": "Use this when site crews remain on night shifts for the full work block."
+        "title": "सीधी रातें",
+        "description": "आपका कार्य ब्लॉक केवल रात्रि पाली चलाता है।",
+        "quickInfo": "इसका उपयोग तब करें जब साइट कर्मचारी पूरे कार्य खंड के लिए रात्रि पाली में रहें।"
       },
       "swing": {
-        "title": "Swing",
-        "description": "Your work block mixes day and night shifts.",
-        "quickInfo": "Choose this when your work block rotates between days and nights."
+        "title": "झूला",
+        "description": "आपका कार्य ब्लॉक दिन और रात की पाली को मिश्रित करता है।",
+        "quickInfo": "इसे तब चुनें जब आपका कार्य ब्लॉक दिन और रात के बीच घूमता हो।"
       }
     },
     "blocks": {
       "work": {
-        "title": "At Site (Working)",
-        "descriptionDay": "You are currently at the mine site on your day-shift work block",
-        "descriptionNight": "You are currently at the mine site on your night-shift work block",
-        "descriptionNeutral": "You are currently at the mine site on your work block",
-        "quickInfoDay": "This means your cycle starts counting from your day-shift work block.",
-        "quickInfoNight": "This means your cycle starts counting from your night-shift work block.",
-        "quickInfoNeutral": "This means your cycle starts counting from your current work block."
+        "title": "साइट पर (कार्यरत)",
+        "descriptionDay": "आप इस समय अपने दिन की पाली के कार्य ब्लॉक पर खदान स्थल पर हैं",
+        "descriptionNight": "आप वर्तमान में अपने रात्रि-शिफ्ट कार्य ब्लॉक पर खदान स्थल पर हैं",
+        "descriptionNeutral": "आप इस समय अपने कार्यस्थल पर खदान स्थल पर हैं",
+        "quickInfoDay": "इसका मतलब है कि आपका चक्र आपके दिन-शिफ्ट के कार्य ब्लॉक से गिनती शुरू करता है।",
+        "quickInfoNight": "इसका मतलब है कि आपका चक्र आपके रात्रि-शिफ्ट कार्य ब्लॉक से गिनती शुरू करता है।",
+        "quickInfoNeutral": "इसका मतलब है कि आपका चक्र आपके वर्तमान कार्य ब्लॉक से गिनती शुरू करता है।"
       },
       "rest": {
-        "title": "At Home (Rest)",
-        "description": "You are currently at home on your rest block",
-        "quickInfo": "This offsets your cycle by your work block length first."
+        "title": "घर पर (आराम)",
+        "description": "आप इस समय अपने विश्राम खंड पर घर पर हैं",
+        "quickInfo": "यह पहले आपके चक्र को आपके कार्य ब्लॉक की लंबाई से ऑफसेट करता है।"
       }
     },
     "swingConfig": {
-      "daysOnDayShift": "Days on Day Shift",
-      "daysOnNightShift": "Days on Night Shift",
-      "splitTotal": "Split total: {{swingSplitTotal}}/{{workBlockDays}} days",
-      "validation": "Swing split must equal {{workBlockDays}} days with at least 1 day on each shift.",
-      "changePattern": "Change Pattern",
-      "continue": "Continue"
+      "daysOnDayShift": "दिन की पाली पर दिन",
+      "daysOnNightShift": "रात्रि पाली में दिन",
+      "splitTotal": "विभाजित कुल: {{swingSplitTotal}}/{{workBlockDays}} दिन",
+      "validation": "स्विंग स्प्लिट प्रत्येक शिफ्ट पर कम से कम 1 दिन के साथ {{workBlockDays}} दिनों के बराबर होना चाहिए।",
+      "changePattern": "पैटर्न बदलें",
+      "continue": "जारी रखना"
     },
     "days": {
       "shared": {
-        "midpoint": "Midpoint of this block"
+        "midpoint": "इस ब्लॉक का मध्यबिंदु"
       },
-      "defaultDayTitle": "Day {{dayNumber}}",
+      "defaultDayTitle": "दिन {{dayNumber}}",
       "work": {
-        "firstDayAtSite": "First day back at site",
-        "firstNightAtSite": "First night shift back at site",
-        "firstShiftAtSite": "First shift back at site",
-        "lastDayBeforeHome": "Last day before flying home",
-        "lastNightBeforeHome": "Last night shift before flying home",
-        "lastShiftBeforeHome": "Last shift before flying home",
-        "dayOfWorkBlock": "Day {{dayNumber}} of your work block",
-        "shiftOfNightBlock": "Shift {{dayNumber}} of your night work block",
-        "shiftOfWorkBlock": "Shift {{dayNumber}} of your work block"
+        "firstDayAtSite": "साइट पर पहला दिन वापस",
+        "firstNightAtSite": "साइट पर पहली रात की शिफ्ट वापस",
+        "firstShiftAtSite": "सबसे पहले साइट पर वापस शिफ्ट करें",
+        "lastDayBeforeHome": "घर के लिए उड़ान भरने से पहले आखिरी दिन",
+        "lastNightBeforeHome": "घर के लिए उड़ान भरने से पहले आखिरी रात की पाली",
+        "lastShiftBeforeHome": "घर के लिए उड़ान भरने से पहले आखिरी पारी",
+        "dayOfWorkBlock": "आपके कार्य ब्लॉक का दिन {{dayNumber}}",
+        "shiftOfNightBlock": "अपने रात्रि कार्य ब्लॉक का {{dayNumber}} शिफ्ट करें",
+        "shiftOfWorkBlock": "अपने कार्य ब्लॉक का {{dayNumber}} शिफ्ट करें"
       },
       "rest": {
-        "firstDayAtHome": "First day back at home",
-        "lastDayBeforeSite": "Last day before returning to site",
-        "dayOfRestBlock": "Day {{dayNumber}} of your rest block"
+        "firstDayAtHome": "घर वापसी का पहला दिन",
+        "lastDayBeforeSite": "साइट पर लौटने से पहले आखिरी दिन",
+        "dayOfRestBlock": "आपके विश्राम ब्लॉक का दिन {{dayNumber}}"
       },
       "swing": {
-        "dayShiftTitle": "Day Shift Day {{dayNumber}}",
-        "firstDayShiftAtSite": "First day shift back at site",
-        "finalDayShiftBeforeNights": "Final day shift before switching to nights",
-        "dayShiftDayDescription": "Day shift day {{dayNumber}} of your work block",
-        "nightShiftTitle": "Night Shift Day {{dayNumber}}",
-        "firstNightShiftInBlock": "First night shift in this swing block",
-        "finalNightShiftBeforeHome": "Final night shift before flying home",
-        "nightShiftDayDescription": "Night shift day {{dayNumber}} of your work block"
+        "dayShiftTitle": "दिन की पाली दिन {{dayNumber}}",
+        "firstDayShiftAtSite": "पहले दिन साइट पर वापस शिफ्ट",
+        "finalDayShiftBeforeNights": "रात में स्विच करने से पहले अंतिम दिन की शिफ्ट",
+        "dayShiftDayDescription": "आपके कार्य ब्लॉक का दिन की पाली का दिन {{dayNumber}}",
+        "nightShiftTitle": "रात्रि पाली दिन {{dayNumber}}",
+        "firstNightShiftInBlock": "इस स्विंग ब्लॉक में पहली रात्रि पाली",
+        "finalNightShiftBeforeHome": "घर के लिए उड़ान भरने से पहले अंतिम रात्रि पाली",
+        "nightShiftDayDescription": "आपके कार्य ब्लॉक का रात्रि पाली दिन {{dayNumber}}"
       }
     },
     "transition": {
-      "preparingCalendar": "Preparing your calendar..."
+      "preparingCalendar": "आपका कैलेंडर तैयार किया जा रहा है..."
     }
   },
   "startDate": {
     "header": {
-      "title": "When Does Your Rotation Start?",
-      "subtitleWithPhase": "You're on {{phaseLabel}} right now—pick today or any date, and we'll map out your whole calendar from there",
-      "subtitleDefault": "Pick the date you want your calendar to start from—most people choose today"
+      "title": "आपका घूर्णन कब प्रारंभ होता है?",
+      "subtitleWithPhase": "आप अभी {{phaseLabel}} पर हैं—आज या कोई भी तारीख चुनें, और हम वहां से आपका पूरा कैलेंडर तैयार कर देंगे",
+      "subtitleDefault": "वह तारीख चुनें जिससे आप अपना कैलेंडर प्रारंभ करना चाहते हैं—अधिकांश लोग आज का दिन चुनते हैं"
     },
     "phaseLabels": {
-      "day": "Day Shift",
-      "night": "Night Shift",
-      "morning": "Morning Shift",
-      "afternoon": "Afternoon Shift",
-      "off": "Days Off",
-      "withDay": "Day {{selectedDay}} of {{phaseLabel}}"
+      "day": "दिन की पाली",
+      "night": "रात की पाली",
+      "morning": "सुबह की पारी",
+      "afternoon": "दोपहर की पाली",
+      "off": "दिनों की छुट्टी",
+      "withDay": "{{phaseLabel}} का दिन {{selectedDay}}"
     },
     "calendar": {
       "weekdays": {
-        "sun": "Sun",
-        "mon": "Mon",
-        "tue": "Tue",
-        "wed": "Wed",
-        "thu": "Thu",
-        "fri": "Fri",
-        "sat": "Sat"
+        "sun": "सूरज",
+        "mon": "सोम",
+        "tue": "मंगल",
+        "wed": "बुध",
+        "thu": "गुरु",
+        "fri": "शुक्र",
+        "sat": "बैठा"
       },
       "legend": {
-        "dayShift": "Day Shift",
-        "nightShift": "Night Shift",
-        "dayOff": "Day Off",
-        "morning": "Morning",
-        "afternoon": "Afternoon",
-        "night": "Night",
-        "off": "Off"
+        "dayShift": "दिन की पाली",
+        "nightShift": "रात की पाली",
+        "dayOff": "छुट्टी का दिन",
+        "morning": "सुबह",
+        "afternoon": "दोपहर",
+        "night": "रात",
+        "off": "बंद"
       }
     },
     "guidance": {
-      "title": "Picking your date",
-      "subtitle": "Quick tips for a faster setup",
-      "body": "Most people pick today so their calendar starts right away. But you can pick any date—we'll calculate your rotation from there.",
-      "hint": "Pick the closest date now, you can adjust settings later.",
-      "selectedDate": "Selected: {{date}}"
+      "title": "अपनी तिथि चुन रहा हूँ",
+      "subtitle": "तेज़ सेटअप के लिए त्वरित सुझाव",
+      "body": "अधिकांश लोग आज का दिन चुनते हैं ताकि उनका कैलेंडर तुरंत शुरू हो जाए। लेकिन आप कोई भी तारीख चुन सकते हैं—हम वहां से आपके रोटेशन की गणना करेंगे।",
+      "hint": "अभी निकटतम तिथि चुनें, आप बाद में सेटिंग्स समायोजित कर सकते हैं।",
+      "selectedDate": "चयनित: {{date}}"
     },
     "actions": {
-      "goBack": "Go back",
-      "backToSettings": "Back to Settings",
-      "saveAndReturn": "Save & Return",
-      "saveAndReturnToSettings": "Save start date and return to settings",
-      "setShiftTimes": "Set Shift Times",
-      "setShiftTimesA11y": "Set shift times"
+      "goBack": "वापस जाओ",
+      "backToSettings": "सेटिंग्स पर वापस जाएँ",
+      "saveAndReturn": "सहेजें और वापस करें",
+      "saveAndReturnToSettings": "आरंभ तिथि सहेजें और सेटिंग्स पर वापस लौटें",
+      "setShiftTimes": "शिफ्ट टाइम्स सेट करें",
+      "setShiftTimesA11y": "शिफ्ट का समय निर्धारित करें"
     },
     "selectedDate": {
-      "startsOn": "Your cycle will start on:"
+      "startsOn": "आपका चक्र इस दिन शुरू होगा:"
     },
     "phaseSelector": {
-      "title": "Choose which part of your cycle you'll be on"
+      "title": "चुनें कि आप अपने चक्र के किस भाग पर होंगे"
     },
     "dayWithinPhase": {
-      "title": "Which day of your {{phaseLabel}}?",
-      "dayA11yLabel": "Day {{dayNumber}}",
-      "dayA11yHint": "Select day {{dayNumber}} of phase"
+      "title": "आपका {{phaseLabel}} कौन सा दिन है?",
+      "dayA11yLabel": "दिन {{dayNumber}}",
+      "dayA11yHint": "चरण का दिन {{dayNumber}} चुनें"
     },
     "preview": {
-      "notSelected": "Not selected",
-      "startingLabel": "Starting:",
-      "phaseLabel": "Phase:",
-      "confirmation": "Your first cycle begins here"
+      "notSelected": "चयनित नहीं",
+      "startingLabel": "प्रारंभ:",
+      "phaseLabel": "चरण:",
+      "confirmation": "आपका पहला चक्र यहीं से शुरू होता है"
     }
   },
   "shiftTime": {
     "actions": {
-      "goBack": "Go back",
-      "backToSettings": "Back to Settings",
-      "saveAndReturn": "Save & Return",
-      "saveAndReturnA11y": "Save shift time and return to settings",
-      "saveAndContinue": "Save & Continue",
-      "finishSetup": "Finish Setup",
-      "nextShiftType": "Next Shift Type",
-      "continueToNextStep": "Continue to next step",
-      "continueToShiftType": "Continue to {{shiftType}} shift times",
-      "saveShiftTimesAndContinue": "Save shift times and continue"
+      "goBack": "वापस जाओ",
+      "backToSettings": "सेटिंग्स पर वापस जाएँ",
+      "saveAndReturn": "सहेजें और वापस करें",
+      "saveAndReturnA11y": "शिफ्ट का समय बचाएं और सेटिंग्स पर वापस लौटें",
+      "saveAndContinue": "सहेजें जारी रखें",
+      "finishSetup": "सेटअप समाप्त करें",
+      "nextShiftType": "अगली शिफ्ट प्रकार",
+      "continueToNextStep": "अगले चरण पर जारी रखें",
+      "continueToShiftType": "{{shiftType}} शिफ्ट समय जारी रखें",
+      "saveShiftTimesAndContinue": "शिफ्ट का समय बचाएं और जारी रखें"
     },
     "stage": {
-      "stepOfTotal": "Step {{current}} of {{total}}",
-      "singleProfile": "Single shift profile",
-      "profileOfTotal": "Profile {{current}} of {{total}}"
+      "stepOfTotal": "{{total}} का चरण {{current}}",
+      "singleProfile": "सिंगल शिफ्ट प्रोफ़ाइल",
+      "profileOfTotal": "{{total}} का प्रोफ़ाइल {{current}}"
     },
     "systemLabels": {
-      "twoShift": "2-shift system",
-      "threeShift": "3-shift system"
+      "twoShift": "2-शिफ्ट प्रणाली",
+      "threeShift": "3-शिफ्ट प्रणाली"
     },
     "shiftLabels": {
-      "dayTitle": "Day",
-      "dayLower": "day",
-      "dayPlural": "day shifts",
-      "nightTitle": "Night",
-      "nightLower": "night",
-      "nightPlural": "night shifts",
-      "morningTitle": "Morning",
-      "morningLower": "morning",
-      "morningPlural": "morning shifts",
-      "afternoonTitle": "Afternoon",
-      "afternoonLower": "afternoon",
-      "afternoonPlural": "afternoon shifts"
+      "dayTitle": "दिन",
+      "dayLower": "दिन",
+      "dayPlural": "दिन की पाली",
+      "nightTitle": "रात",
+      "nightLower": "रात",
+      "nightPlural": "रात पालियां",
+      "morningTitle": "सुबह",
+      "morningLower": "सुबह",
+      "morningPlural": "सुबह की पाली",
+      "afternoonTitle": "दोपहर",
+      "afternoonLower": "दोपहर",
+      "afternoonPlural": "दोपहर की पाली"
     },
     "header": {
       "title": {
-        "single": "When Do Your Shifts Start?",
-        "day": "Day Shift Times",
-        "night": "Night Shift Times",
-        "morning": "Morning Shift Times",
-        "afternoon": "Afternoon Shift Times",
-        "default": "Shift Times"
+        "single": "आपकी शिफ्ट कब शुरू होती है?",
+        "day": "दिन की पाली का समय",
+        "night": "रात्रि पाली का समय",
+        "morning": "सुबह की पाली का समय",
+        "afternoon": "दोपहर की पाली का समय",
+        "default": "शिफ्ट टाइम्स"
       },
       "subtitle": {
-        "single": "Pick what time you clock in each day-we'll use this to track your hours and set reminders",
-        "multi": "Your pattern includes {{shiftTypeLabel}}. Set the start time for these shifts."
+        "single": "चुनें कि आप प्रत्येक दिन कौन सा समय देखते हैं-हम इसका उपयोग आपके घंटों को ट्रैक करने और अनुस्मारक सेट करने के लिए करेंगे",
+        "multi": "आपके पैटर्न में {{shiftTypeLabel}} शामिल है। इन पारियों के लिए प्रारंभ समय निर्धारित करें."
       }
     },
     "guidance": {
-      "aboutTitle": "About shift times",
-      "aboutBody": "Your {{patternName}} rotation stays the same, but we need your shift start times so Ellie can track hours and alert you before each shift.",
-      "hint": "Use the closest start time now. You can fine-tune it later in settings.",
+      "aboutTitle": "शिफ्ट टाइम के बारे में",
+      "aboutBody": "आपका {{patternName}} रोटेशन वही रहता है, लेकिन हमें आपकी शिफ्ट शुरू होने का समय चाहिए ताकि एली घंटों को ट्रैक कर सके और प्रत्येक शिफ्ट से पहले आपको सचेत कर सके।",
+      "hint": "अभी निकटतम आरंभ समय का उपयोग करें. आप इसे बाद में सेटिंग्स में ठीक कर सकते हैं।",
       "definitions": {
-        "twoShiftTitle": "Day vs Night:",
-        "twoShiftBody": "Day shifts start 6 AM-6 PM - Night shifts start 6 PM-6 AM",
-        "threeShiftTitle": "Shift types:",
-        "threeShiftBody": "Morning: 6 AM-2 PM - Afternoon: 2 PM-10 PM - Night: 10 PM-6 AM"
+        "twoShiftTitle": "दिन बनाम रात:",
+        "twoShiftBody": "दिन की पाली सुबह 6 बजे से शाम 6 बजे तक शुरू होती है - रात की पाली शाम 6 बजे से सुबह 6 बजे तक शुरू होती है",
+        "threeShiftTitle": "शिफ्ट प्रकार:",
+        "threeShiftBody": "सुबह: सुबह 6 बजे से दोपहर 2 बजे तक - दोपहर: दोपहर 2 बजे से रात 10 बजे तक - रात: रात 10 बजे से सुबह 6 बजे तक"
       }
     },
     "presets": {
-      "sectionTitle": "Pick a Common Start Time",
+      "sectionTitle": "एक सामान्य प्रारंभ समय चुनें",
       "custom": {
-        "label": "Custom Time"
+        "label": "कस्टम समय"
       },
       "early_day": {
-        "label": "Early Day Shift"
+        "label": "प्रारंभिक दिन की पाली"
       },
       "standard_day": {
-        "label": "Standard Day Shift"
+        "label": "मानक दिन की पाली"
       },
       "late_day": {
-        "label": "Late Day Shift"
+        "label": "देर दिन की पाली"
       },
       "early_night": {
-        "label": "Early Night Shift"
+        "label": "प्रारंभिक रात्रि पाली"
       },
       "standard_night": {
-        "label": "Standard Night Shift"
+        "label": "मानक रात्रि पाली"
       },
       "late_night": {
-        "label": "Late Night Shift"
+        "label": "देर रात की शिफ्ट"
       },
       "early_morning": {
-        "label": "Early Morning"
+        "label": "बहुत सवेरे"
       },
       "standard_morning": {
-        "label": "Standard Morning"
+        "label": "मानक सुबह"
       },
       "late_morning": {
-        "label": "Late Morning"
+        "label": "देर सुबह"
       },
       "early_afternoon": {
-        "label": "Early Afternoon"
+        "label": "तीसरा पहर"
       },
       "standard_afternoon": {
-        "label": "Standard Afternoon"
+        "label": "मानक दोपहर"
       },
       "late_afternoon": {
-        "label": "Late Afternoon"
+        "label": "दोपहर देर से"
       },
       "early_night_8h": {
-        "label": "Early Night"
+        "label": "जल्दी रात"
       },
       "standard_night_8h": {
-        "label": "Standard Night"
+        "label": "मानक रात"
       },
       "late_night_8h": {
-        "label": "Late Night"
+        "label": "देर रात"
       }
     },
     "customInput": {
-      "label": "What time do you usually clock in?",
-      "helper": "Use 12-hour format (e.g., 6:00 AM)"
+      "label": "आप आमतौर पर कौन सा समय देखते हैं?",
+      "helper": "12-घंटे के प्रारूप का उपयोग करें (उदाहरण के लिए, सुबह 6:00 बजे)"
     },
     "validation": {
-      "hoursRange": "Hours must be between 1 and 12",
-      "minutesRange": "Minutes must be between 0 and 59"
+      "hoursRange": "घंटे 1 से 12 के बीच होने चाहिए",
+      "minutesRange": "मिनट 0 से 59 के बीच होने चाहिए"
     },
     "preview": {
-      "yourShift": "Your shift:",
-      "durationHours": "{{duration}} hours"
+      "yourShift": "आपकी पारी:",
+      "durationHours": "{{duration}} घंटे"
     },
     "detection": {
-      "helper": "This is when your shift begins",
-      "autoDetected": "Auto-detected",
+      "helper": "यही वह समय है जब आपकी पारी शुरू होती है",
+      "autoDetected": "स्वत: पता लगाए",
       "day": {
-        "title": "Daytime start",
-        "window": "Typical window: 6:00 AM - 5:59 PM"
+        "title": "दिन का आरंभ",
+        "window": "विशिष्ट विंडो: सुबह 6:00 बजे - शाम 5:59 बजे तक"
       },
       "morning": {
-        "title": "Morning start",
-        "window": "Typical window: 6:00 AM - 1:59 PM"
+        "title": "सुबह की शुरुआत",
+        "window": "विशिष्ट विंडो: सुबह 6:00 बजे - दोपहर 1:59 बजे तक"
       },
       "afternoon": {
-        "title": "Afternoon start",
-        "window": "Typical window: 2:00 PM - 9:59 PM"
+        "title": "दोपहर की शुरुआत",
+        "window": "विशिष्ट विंडो: दोपहर 2:00 बजे - 9:59 बजे अपराह्न"
       },
       "night": {
-        "title": "Night start",
-        "windowTwoShift": "Typical window: 6:00 PM - 5:59 AM",
-        "windowThreeShift": "Typical window: 10:00 PM - 5:59 AM"
+        "title": "रात की शुरुआत",
+        "windowTwoShift": "विशिष्ट विंडो: शाम 6:00 बजे - सुबह 5:59 बजे तक",
+        "windowThreeShift": "विशिष्ट विंडो: रात्रि 10:00 बजे से प्रातः 5:59 बजे तक"
       }
     },
     "tips": {
-      "title": "Pro Tip",
-      "subtitle": "Fastest way to pick a reliable start time",
-      "twoShift": "Not sure? Most shift workers on 12-hour rotations start at 6 AM or 6 PM. Pick the closest match-you can adjust it later in settings if needed.",
-      "threeShift": "Not sure? Most 8-hour shift workers start at 6 AM, 2 PM, or 10 PM. Pick the closest match-you can adjust it later in settings if needed."
+      "title": "प्रो टिप",
+      "subtitle": "विश्वसनीय प्रारंभ समय चुनने का सबसे तेज़ तरीका",
+      "twoShift": "निश्चित नहीं? 12-घंटे के रोटेशन पर अधिकांश कर्मचारी सुबह 6 बजे या शाम 6 बजे शुरू होते हैं। निकटतम मिलान चुनें- यदि आवश्यक हो तो आप इसे बाद में सेटिंग्स में समायोजित कर सकते हैं।",
+      "threeShift": "निश्चित नहीं? अधिकांश 8-घंटे की शिफ्ट कर्मचारी सुबह 6 बजे, दोपहर 2 बजे या रात 10 बजे शुरू करते हैं। निकटतम मिलान चुनें- यदि आवश्यक हो तो आप इसे बाद में सेटिंग्स में समायोजित कर सकते हैं।"
     },
     "patternInfo": {
       "custom": {
-        "name": "Custom Pattern",
-        "statsTwoShift": "{{total}}-day cycle - {{daysOn}}D/{{nightsOn}}N/{{daysOff}}O",
-        "statsThreeShift": "{{total}}-day cycle - {{morningOn}}M/{{afternoonOn}}A/{{nightOn}}N/{{daysOff}}O"
+        "name": "कस्टम पैटर्न",
+        "statsTwoShift": "{{total}}-दिवसीय चक्र - {{daysOn}}D/{{nightsOn}}N/{{daysOff}}O",
+        "statsThreeShift": "{{total}}-दिवसीय चक्र - {{morningOn}}M/{{afternoonOn}}A/{{nightOn}}N/{{daysOff}}O"
       },
-      "defaultStats": "Custom cycle - Set your schedule",
+      "defaultStats": "कस्टम चक्र - अपना शेड्यूल निर्धारित करें",
       "standard444": {
-        "name": "4-4-4 Cycle",
-        "stats": "12-day cycle - 4D/4N/4O"
+        "name": "4-4-4 चक्र",
+        "stats": "12-दिवसीय चक्र - 4डी/4एन/4ओ"
       },
       "standard777": {
-        "name": "7-7-7 Cycle",
-        "stats": "21-day cycle - 7D/7N/7O"
+        "name": "7-7-7 चक्र",
+        "stats": "21-दिवसीय चक्र - 7डी/7एन/7ओ"
       },
       "standard223": {
-        "name": "2-2-3 Cycle",
-        "stats": "7-day cycle - 2D/2N/3O"
+        "name": "2-2-3 चक्र",
+        "stats": "7-दिवसीय चक्र - 2D/2N/3O"
       },
       "standard555": {
-        "name": "5-5-5 Cycle",
-        "stats": "15-day cycle - 5D/5N/5O"
+        "name": "5-5-5 चक्र",
+        "stats": "15 दिवसीय चक्र - 5D/5N/5O"
       },
       "standard333": {
-        "name": "3-3-3 Cycle",
-        "stats": "9-day cycle - 3D/3N/3O"
+        "name": "3-3-3 चक्र",
+        "stats": "9-दिवसीय चक्र - 3डी/3एन/3ओ"
       },
       "standard101010": {
-        "name": "10-10-10 Cycle",
-        "stats": "30-day cycle - 10D/10N/10O"
+        "name": "10-10-10 चक्र",
+        "stats": "30-दिवसीय चक्र - 10D/10N/10O"
       },
       "continental": {
-        "name": "Continental",
-        "stats": "8-day cycle - 2D/2N/4O"
+        "name": "CONTINENTAL",
+        "stats": "8-दिवसीय चक्र - 2D/2N/4O"
       },
       "pitman": {
-        "name": "Pitman",
-        "stats": "7-day cycle - 2D/2N/3O"
+        "name": "गड्ढे में काम करनेवाला",
+        "stats": "7-दिवसीय चक्र - 2D/2N/3O"
       }
     }
   },
   "customPattern": {
-    "backA11y": "Go back",
+    "backA11y": "वापस जाओ",
     "backHint": {
-      "default": "Return to shift pattern selection",
-      "settings": "Discard changes and return to settings"
+      "default": "शिफ्ट पैटर्न चयन पर लौटें",
+      "settings": "परिवर्तन त्यागें और सेटिंग्स पर वापस लौटें"
     },
-    "needMoreChanges": "Need More Changes",
+    "needMoreChanges": "और अधिक परिवर्तन की आवश्यकता है",
     "preview": {
-      "badgeLabel": "{{totalDays}}-day cycle",
-      "balanceTitle": "Work-Rest Balance",
+      "badgeLabel": "{{totalDays}}-दिवसीय चक्र",
+      "balanceTitle": "कार्य-विश्राम संतुलन",
       "blocks": {
-        "afternoon": "Afternoon",
-        "days": "Days",
-        "morning": "Morning",
-        "night": "Night",
-        "nights": "Nights",
-        "off": "Off"
+        "afternoon": "दोपहर",
+        "days": "दिन",
+        "morning": "सुबह",
+        "night": "रात",
+        "nights": "नाइट्स",
+        "off": "बंद"
       },
-      "cycleLabel": "Your {{totalDays}}-day cycle",
-      "daysOff": "days off",
-      "daysOn": "days on",
+      "cycleLabel": "आपका {{totalDays}}-दिन का चक्र",
+      "daysOff": "दिनों की छुट्टी",
+      "daysOn": "दिन पर",
       "legend": {
-        "afternoon": "Afternoon",
-        "dayOff": "Day Off",
-        "dayShift": "Day Shift",
-        "morning": "Morning",
-        "night": "Night",
-        "nightShift": "Night Shift"
+        "afternoon": "दोपहर",
+        "dayOff": "छुट्टी का दिन",
+        "dayShift": "दिन की पाली",
+        "morning": "सुबह",
+        "night": "रात",
+        "nightShift": "रात की पाली"
       },
-      "ratioLabel": "Every rotation you work",
-      "restLabel": "Rest: {{count}} days",
-      "subtitle": "See what your schedule looks like",
-      "title": "Your Rotation Preview",
-      "workLabel": "Work: {{count}} days"
+      "ratioLabel": "हर रोटेशन पर आप काम करते हैं",
+      "restLabel": "आराम: {{count}} दिन",
+      "subtitle": "देखें कि आपका शेड्यूल कैसा दिखता है",
+      "title": "आपका रोटेशन पूर्वावलोकन",
+      "workLabel": "कार्य: {{count}} दिन"
     },
-    "previewGuide": "See your rotation below",
-    "saveA11y": "Save your rotation and continue",
-    "saveButton": "Save This Rotation",
-    "saveHintValid": "Save this {{totalDays}}-day rotation",
+    "previewGuide": "नीचे अपना रोटेशन देखें",
+    "saveA11y": "अपना रोटेशन सहेजें और जारी रखें",
+    "saveButton": "इस रोटेशन को सहेजें",
+    "saveHintValid": "इस {{totalDays}}-दिन के रोटेशन को सहेजें",
     "sliders": {
-      "afternoonShifts": "Afternoon Shifts",
-      "dayShifts": "Day Shifts",
-      "daysOff": "Days Off",
-      "morningShifts": "Morning Shifts",
-      "nightShifts": "Night Shifts"
+      "afternoonShifts": "दोपहर की पाली",
+      "dayShifts": "दिन की पाली",
+      "daysOff": "दिनों की छुट्टी",
+      "morningShifts": "सुबह की पाली",
+      "nightShifts": "रात पालियां"
     },
-    "slidersTitle": "Set Up Your Rotation",
-    "subtitle": "Set how many shifts you work, then how many days off you get—we'll show you what it looks like",
+    "slidersTitle": "अपना रोटेशन सेट करें",
+    "subtitle": "निर्धारित करें कि आप कितनी शिफ्ट में काम करते हैं, फिर आपको कितने दिन की छुट्टी मिलती है—हम आपको दिखाएंगे कि यह कैसा दिखता है",
     "subtitleSecondary": {
-      "threeShift": "Morning, Afternoon, Night & Off",
-      "twoShift": "Day, Night & Off"
+      "threeShift": "सुबह, दोपहर, रात और छुट्टी",
+      "twoShift": "दिन, रात और छुट्टी"
     },
-    "success": "Looking good! You work {{workDays}} days, then get {{daysOff}} days off. That's a solid rotation.",
-    "tip": "Tip: Most shift workers find rotations with at least 3 days off work best. Your body needs time to recover between swing changes.",
-    "title": "Build Your Rotation",
+    "success": "अच्छा लग रहा है! आप {{workDays}} दिन काम करते हैं, फिर {{daysOff}} दिन की छुट्टी पाते हैं। यह एक ठोस घुमाव है.",
+    "tip": "टिप: अधिकांश शिफ्ट कर्मचारी कम से कम 3 दिन की छुट्टी के साथ रोटेशन को सबसे अच्छा मानते हैं। आपके शरीर को बदलावों के बीच ठीक होने के लिए समय की आवश्यकता होती है।",
+    "title": "अपना रोटेशन बनाएं",
     "validation": {
-      "noOff": "Everyone needs time off—add at least 1 day off to your rotation",
-      "noWork": "You need at least 1 shift to track—add some day or night shifts",
-      "tooLong": "Your rotation is {{totalDays}} days long—we can only handle up to 28 days. Try shortening it."
+      "noOff": "हर किसी को छुट्टी की ज़रूरत होती है—अपने रोटेशन में कम से कम एक दिन की छुट्टी जोड़ें",
+      "noWork": "आपको ट्रैक करने के लिए कम से कम 1 शिफ्ट की आवश्यकता है—कुछ दिन या रात की शिफ्ट जोड़ें",
+      "tooLong": "आपका रोटेशन {{totalDays}} दिन लंबा है—हम केवल 28 दिन तक ही संभाल सकते हैं। इसे छोटा करने का प्रयास करें."
     },
-    "warning": "This pattern is work-heavy ({{workPercentage}}% work). Consider adding more days off if fatigue is a concern."
+    "warning": "यह पैटर्न कार्य-भारी ({{workPercentage}}% कार्य) है। यदि थकान चिंता का विषय है तो अधिक दिनों की छुट्टी जोड़ने पर विचार करें।"
   },
   "fifoCustom": {
-    "backA11y": "Go back",
+    "backA11y": "वापस जाओ",
     "backHint": {
-      "default": "Return to shift pattern selection",
-      "settings": "Discard changes and return to settings"
+      "default": "शिफ्ट पैटर्न चयन पर लौटें",
+      "settings": "परिवर्तन त्यागें और सेटिंग्स पर वापस लौटें"
     },
     "preview": {
-      "badgeLabel": "{{totalCycleDays}}-day FIFO cycle",
-      "balanceTitle": "Work-Rest Balance",
-      "cycleDayA11y": "Cycle day {{day}}",
-      "cycleFlow": "Cycle flow across {{previewDays}} visible days",
-      "homeDays": "home days",
+      "badgeLabel": "{{totalCycleDays}}-दिन फीफो चक्र",
+      "balanceTitle": "कार्य-विश्राम संतुलन",
+      "cycleDayA11y": "साइकिल दिवस {{day}}",
+      "cycleFlow": "{{previewDays}} दृश्य दिनों में चक्र प्रवाह",
+      "homeDays": "घर के दिन",
       "legend": {
-        "daySwing": "Day Swing",
-        "homeBlock": "Home Block",
-        "nightSwing": "Night Swing"
+        "daySwing": "दिन का झूला",
+        "homeBlock": "होम ब्लॉक",
+        "nightSwing": "रात का झूला"
       },
-      "ratioLabel": "Site to home rhythm",
-      "restLabel": "Rest: {{restBlockDays}} days",
-      "siteDays": "site days",
-      "subtitle": "{{workBlockDays}} days at site, then {{restBlockDays}} days at home",
-      "swingSplit": "Swing split: {{daysOnDayShift}} day-shift days + {{daysOnNightShift}} night-shift days",
-      "title": "Your FIFO Rotation Preview",
-      "workLabel": "Work: {{workBlockDays}} days"
+      "ratioLabel": "साइट से होम लय",
+      "restLabel": "आराम: {{restBlockDays}} दिन",
+      "siteDays": "साइट के दिन",
+      "subtitle": "साइट पर {{workBlockDays}} दिन, फिर घर पर {{restBlockDays}} दिन",
+      "swingSplit": "स्विंग विभाजन: {{daysOnDayShift}} दिन-शिफ्ट वाले दिन + {{daysOnNightShift}} रात्रि-शिफ्ट वाले दिन",
+      "title": "आपका फीफो रोटेशन पूर्वावलोकन",
+      "workLabel": "कार्य: {{workBlockDays}} दिन"
     },
-    "previewGuide": "See your FIFO pattern below",
-    "saveA11y": "Save FIFO pattern and continue",
-    "saveButton": "Save FIFO Pattern",
-    "saveHintInvalid": "Fix the validation issue before continuing",
-    "saveHintValid": "{{workBlockDays}} days work, {{restBlockDays}} days rest",
+    "previewGuide": "नीचे अपना फीफो पैटर्न देखें",
+    "saveA11y": "फीफो पैटर्न सहेजें और जारी रखें",
+    "saveButton": "फीफो पैटर्न सहेजें",
+    "saveHintInvalid": "जारी रखने से पहले सत्यापन समस्या ठीक करें",
+    "saveHintValid": "{{workBlockDays}} दिन काम, {{restBlockDays}} दिन आराम",
     "sliders": {
-      "daysAtHome": "Days at Home (Rest Block)",
-      "daysAtSite": "Days at Site (Work Block)",
-      "daysOnDayShift": "Days on Day Shift",
-      "daysOnNightShift": "Days on Night Shift"
+      "daysAtHome": "घर पर दिन (विश्राम ब्लॉक)",
+      "daysAtSite": "साइट पर दिन (कार्य ब्लॉक)",
+      "daysOnDayShift": "दिन की पाली पर दिन",
+      "daysOnNightShift": "रात्रि पाली में दिन"
     },
-    "slidersTitle": "Set Up Your FIFO Pattern",
-    "subtitle": "Set your on-site block, home block, and work-block shift style for a schedule that fits your site cycle.",
-    "subtitleSecondary": "Work Block, Rest Block & Pattern Split",
-    "success": "Solid FIFO setup. {{workBlockDays}} days at site, then {{restBlockDays}} days at home.",
-    "swingSubtitle": "Split your work block between day and night shifts.",
-    "swingTitle": "Swing Configuration",
-    "swingTotal": "Split total: {{swingTotal}}/{{workBlockDays}} days",
-    "tip": "Tip: Match your home block to recovery and travel demands. FIFO patterns work best when the rest block is long enough to reset before your next site run.",
-    "title": "Build Your FIFO Rotation",
+    "slidersTitle": "अपना फीफो पैटर्न सेट करें",
+    "subtitle": "एक शेड्यूल के लिए अपना ऑन-साइट ब्लॉक, होम ब्लॉक और वर्क-ब्लॉक शिफ्ट स्टाइल सेट करें जो आपके साइट चक्र के अनुकूल हो।",
+    "subtitleSecondary": "वर्क ब्लॉक, रेस्ट ब्लॉक और पैटर्न स्प्लिट",
+    "success": "ठोस फीफो सेटअप. साइट पर {{workBlockDays}} दिन, फिर घर पर {{restBlockDays}} दिन।",
+    "swingSubtitle": "अपने कार्य खंड को दिन और रात की पाली के बीच विभाजित करें।",
+    "swingTitle": "स्विंग कॉन्फ़िगरेशन",
+    "swingTotal": "विभाजित कुल: {{swingTotal}}/{{workBlockDays}} दिन",
+    "tip": "युक्ति: अपने होम ब्लॉक को पुनर्प्राप्ति और यात्रा मांगों से मिलाएं। FIFO पैटर्न तब सबसे अच्छा काम करता है जब बाकी ब्लॉक आपकी अगली साइट चलाने से पहले रीसेट करने के लिए पर्याप्त लंबा हो।",
+    "title": "अपना फीफो रोटेशन बनाएं",
     "validation": {
-      "blocksMinimum": "Work and rest blocks must each be at least 1 day.",
-      "swingMismatch": "Swing split must equal {{workBlockDays}} days before saving."
+      "blocksMinimum": "कार्य और विश्राम ब्लॉक प्रत्येक कम से कम 1 दिन का होना चाहिए।",
+      "swingMismatch": "बचत से पहले स्विंग स्प्लिट {{workBlockDays}} दिन के बराबर होना चाहिए।"
     },
-    "warning": "This roster is heavy ({{workPercentage}}% work). Consider balancing with more home days if fatigue becomes an issue.",
-    "workPatternSubtitle": "How are your shifts organized while at site?",
-    "workPatternTitle": "Work Pattern During Work Block"
+    "warning": "यह रोस्टर भारी है ({{workPercentage}}% कार्य)। यदि थकान एक समस्या बन जाती है तो अधिक घरेलू दिनों के साथ संतुलन बनाने पर विचार करें।",
+    "workPatternSubtitle": "साइट पर रहते हुए आपकी शिफ्टें कैसे व्यवस्थित की जाती हैं?",
+    "workPatternTitle": "कार्य ब्लॉक के दौरान कार्य पैटर्न"
   }
 }

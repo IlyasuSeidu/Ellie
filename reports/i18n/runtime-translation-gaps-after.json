@@ -1,0 +1,497 @@
+{
+  "generatedAt": "2026-03-10T18:57:29.794Z",
+  "namespaces": {
+    "common": {
+      "enKeys": 20,
+      "langs": {
+        "af": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "ar": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "es": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "fr": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "hi": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "id": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "pt-BR": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "ru": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "zh-CN": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "zu": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        }
+      }
+    },
+    "onboarding": {
+      "enKeys": 488,
+      "langs": {
+        "af": {
+          "sameAsEnglishCount": 6,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": [
+            "rosterType.cards.rotating.details.regions.2",
+            "completion.summary.shiftSystem",
+            "completion.summary.shiftTimes",
+            "startDate.calendar.weekdays.sat",
+            "shiftTime.header.title.default",
+            "shiftTime.patternInfo.pitman.name"
+          ]
+        },
+        "ar": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "es": {
+          "sameAsEnglishCount": 3,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": [
+            "rosterType.cards.rotating.details.regions.1",
+            "rosterType.cards.rotating.details.regions.2",
+            "rosterType.cards.fifo.details.regions.0"
+          ]
+        },
+        "fr": {
+          "sameAsEnglishCount": 6,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": [
+            "rosterType.cards.rotating.details.regions.3",
+            "rosterType.cards.fifo.details.regions.1",
+            "completion.summary.rosterTypeFIFO",
+            "startDate.preview.phaseLabel",
+            "shiftTime.patternInfo.continental.name",
+            "shiftTime.patternInfo.pitman.name"
+          ]
+        },
+        "hi": {
+          "sameAsEnglishCount": 1,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": ["rosterType.cards.rotating.details.regions.2"]
+        },
+        "id": {
+          "sameAsEnglishCount": 3,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": [
+            "rosterType.cards.rotating.details.regions.1",
+            "rosterType.cards.rotating.details.regions.2",
+            "rosterType.cards.fifo.details.regions.0"
+          ]
+        },
+        "pt-BR": {
+          "sameAsEnglishCount": 1,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": ["rosterType.cards.rotating.details.regions.2"]
+        },
+        "ru": {
+          "sameAsEnglishCount": 1,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": ["rosterType.cards.rotating.details.regions.2"]
+        },
+        "zh-CN": {
+          "sameAsEnglishCount": 1,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": ["rosterType.cards.rotating.details.regions.2"]
+        },
+        "zu": {
+          "sameAsEnglishCount": 20,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": [
+            "rosterType.cards.rotating.details.regions.1",
+            "rosterType.cards.rotating.details.regions.2",
+            "rosterType.cards.fifo.details.regions.0",
+            "rosterType.cards.fifo.details.regions.1",
+            "completion.summary.shiftSystem",
+            "completion.summary.shiftSystemThree",
+            "completion.summary.shiftSystemTwo",
+            "completion.summary.shiftTimes",
+            "phaseSelector.cards.morning.title",
+            "fifoPhaseSelector.patterns.swing.title",
+            "startDate.phaseLabels.morning",
+            "startDate.calendar.weekdays.sat",
+            "shiftTime.header.title.morning",
+            "shiftTime.header.title.default",
+            "shiftTime.presets.late_day.label",
+            "shiftTime.presets.early_night.label",
+            "shiftTime.presets.late_night.label",
+            "shiftTime.presets.late_morning.label",
+            "shiftTime.presets.early_night_8h.label",
+            "shiftTime.presets.late_night_8h.label"
+          ]
+        }
+      }
+    },
+    "dashboard": {
+      "enKeys": 48,
+      "langs": {
+        "af": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "ar": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "es": {
+          "sameAsEnglishCount": 1,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": ["stats.balance"]
+        },
+        "fr": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "hi": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "id": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "pt-BR": {
+          "sameAsEnglishCount": 1,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": ["stats.balance"]
+        },
+        "ru": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "zh-CN": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "zu": {
+          "sameAsEnglishCount": 1,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": ["shiftLabels.morning"]
+        }
+      }
+    },
+    "profile": {
+      "enKeys": 112,
+      "langs": {
+        "af": {
+          "sameAsEnglishCount": 2,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": ["shift.header", "shift.chips.fifo"]
+        },
+        "ar": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "es": {
+          "sameAsEnglishCount": 3,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": ["shift.roster", "shift.chips.fifo", "shift.chips.swing"]
+        },
+        "fr": {
+          "sameAsEnglishCount": 1,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": ["shift.chips.fifo"]
+        },
+        "hi": {
+          "sameAsEnglishCount": 1,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": ["shift.chips.fifo"]
+        },
+        "id": {
+          "sameAsEnglishCount": 2,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": ["stats.perShift", "shift.chips.fifo"]
+        },
+        "pt-BR": {
+          "sameAsEnglishCount": 3,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": ["shift.site", "shift.chips.fifo", "shift.chips.swing"]
+        },
+        "ru": {
+          "sameAsEnglishCount": 1,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": ["shift.chips.fifo"]
+        },
+        "zh-CN": {
+          "sameAsEnglishCount": 1,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": ["shift.chips.fifo"]
+        },
+        "zu": {
+          "sameAsEnglishCount": 9,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": [
+            "stats.dayCycle",
+            "shift.flyIn",
+            "shift.flyOut",
+            "shift.sections.shiftPattern",
+            "shift.sections.fifoBlock",
+            "shift.chips.twoShift",
+            "shift.chips.threeShift",
+            "shift.chips.fifo",
+            "shift.chips.swing"
+          ]
+        }
+      }
+    },
+    "schedule": {
+      "enKeys": 5,
+      "langs": {
+        "af": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "ar": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "es": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "fr": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "hi": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "id": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "pt-BR": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "ru": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "zh-CN": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        },
+        "zu": {
+          "sameAsEnglishCount": 0,
+          "missingCount": 0,
+          "extraCount": 0,
+          "tokenMismatchCount": 0,
+          "sameAsEnglishKeys": []
+        }
+      }
+    }
+  },
+  "totals": {
+    "byLang": {
+      "af": {
+        "sameAsEnglishCount": 8,
+        "missingCount": 0,
+        "extraCount": 0,
+        "tokenMismatchCount": 0
+      },
+      "ar": {
+        "sameAsEnglishCount": 0,
+        "missingCount": 0,
+        "extraCount": 0,
+        "tokenMismatchCount": 0
+      },
+      "es": {
+        "sameAsEnglishCount": 7,
+        "missingCount": 0,
+        "extraCount": 0,
+        "tokenMismatchCount": 0
+      },
+      "fr": {
+        "sameAsEnglishCount": 7,
+        "missingCount": 0,
+        "extraCount": 0,
+        "tokenMismatchCount": 0
+      },
+      "hi": {
+        "sameAsEnglishCount": 2,
+        "missingCount": 0,
+        "extraCount": 0,
+        "tokenMismatchCount": 0
+      },
+      "id": {
+        "sameAsEnglishCount": 5,
+        "missingCount": 0,
+        "extraCount": 0,
+        "tokenMismatchCount": 0
+      },
+      "pt-BR": {
+        "sameAsEnglishCount": 5,
+        "missingCount": 0,
+        "extraCount": 0,
+        "tokenMismatchCount": 0
+      },
+      "ru": {
+        "sameAsEnglishCount": 2,
+        "missingCount": 0,
+        "extraCount": 0,
+        "tokenMismatchCount": 0
+      },
+      "zh-CN": {
+        "sameAsEnglishCount": 2,
+        "missingCount": 0,
+        "extraCount": 0,
+        "tokenMismatchCount": 0
+      },
+      "zu": {
+        "sameAsEnglishCount": 30,
+        "missingCount": 0,
+        "extraCount": 0,
+        "tokenMismatchCount": 0
+      }
+    }
+  }
+}

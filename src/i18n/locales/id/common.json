@@ -1,30 +1,30 @@
 {
   "buttons": {
-    "save": "Save",
-    "cancel": "Cancel",
-    "confirm": "Confirm",
-    "back": "Back",
-    "next": "Next",
-    "done": "Done",
-    "set": "Set",
-    "edit": "Edit",
-    "clear": "Clear",
-    "close": "Close",
-    "saveAndReturn": "Save & Return"
+    "save": "Menyimpan",
+    "cancel": "Membatalkan",
+    "confirm": "Mengonfirmasi",
+    "back": "Kembali",
+    "next": "Berikutnya",
+    "done": "Selesai",
+    "set": "Mengatur",
+    "edit": "Sunting",
+    "clear": "Jernih",
+    "close": "Menutup",
+    "saveAndReturn": "Simpan & Kembali"
   },
   "errors": {
-    "loadFailed": "Failed to load data",
-    "saveFailed": "Failed to save changes"
+    "loadFailed": "Gagal memuat data",
+    "saveFailed": "Gagal menyimpan perubahan"
   },
   "avatar": {
-    "title": "Profile Photo",
-    "message": "Choose your avatar",
-    "chooseFromLibrary": "Choose from Library",
-    "takePhoto": "Take Photo",
-    "removePhoto": "Remove Photo"
+    "title": "Foto Profil",
+    "message": "Pilih avatar Anda",
+    "chooseFromLibrary": "Pilih dari Perpustakaan",
+    "takePhoto": "Ambil Foto",
+    "removePhoto": "Hapus Foto"
   },
   "language": {
-    "label": "Language",
-    "selector": "Select Language"
+    "label": "Bahasa",
+    "selector": "Pilih Bahasa"
   }
 }

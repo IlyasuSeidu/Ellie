@@ -1,7 +1,7 @@
 {
-  "title": "Schedule",
-  "comingSoon": "Coming Soon",
-  "description": "Your detailed shift calendar and schedule management will appear here.",
-  "statsTitle": "Statistics",
-  "statsDescription": "Detailed analytics and insights about your shift patterns will appear here."
+  "title": "अनुसूची",
+  "comingSoon": "जल्द आ रहा है",
+  "description": "आपका विस्तृत शिफ्ट कैलेंडर और शेड्यूल प्रबंधन यहां दिखाई देगा।",
+  "statsTitle": "आंकड़े",
+  "statsDescription": "आपके बदलाव पैटर्न के बारे में विस्तृत विश्लेषण और अंतर्दृष्टि यहां दिखाई देगी।"
 }

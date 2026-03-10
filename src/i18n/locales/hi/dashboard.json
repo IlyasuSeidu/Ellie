@@ -1,72 +1,72 @@
 {
   "greeting": {
-    "morning": "Good morning",
-    "afternoon": "Good afternoon",
-    "evening": "Good evening",
-    "night": "Good night"
+    "morning": "शुभ प्रभात",
+    "afternoon": "शुभ दोपहर",
+    "evening": "शुभ संध्या",
+    "night": "शुभ रात्रि"
   },
-  "pullToRefresh": "Pull to refresh",
-  "refreshing": "Refreshing schedule...",
-  "scheduleUpdated": "Schedule updated",
+  "pullToRefresh": "रीफ़्रेश करने के लिए खींचें",
+  "refreshing": "ताज़ा शेड्यूल...",
+  "scheduleUpdated": "शेड्यूल अपडेट किया गया",
   "lastUpdated": {
-    "justNow": "Just now",
-    "secondsAgo": "{{count}}s ago",
-    "minutesAgo": "{{count}}m ago",
-    "updatedPrefix": "Updated "
+    "justNow": "बस अब ",
+    "secondsAgo": "{{count}}s पहले",
+    "minutesAgo": "{{count}}m पहले",
+    "updatedPrefix": "अद्यतन"
   },
   "errors": {
-    "loadFailed": "Unable to load shift data"
+    "loadFailed": "शिफ्ट डेटा लोड करने में असमर्थ"
   },
   "user": {
-    "defaultName": "User"
+    "defaultName": "उपयोगकर्ता"
   },
   "upcoming": {
-    "title": "Upcoming Shifts"
+    "title": "आगामी शिफ्ट"
   },
   "shiftLabels": {
-    "day": "Day Shift",
-    "night": "Night Shift",
-    "morning": "Morning Shift",
-    "afternoon": "Afternoon Shift",
-    "off": "Day Off"
+    "day": "दिन की पाली",
+    "night": "रात की पाली",
+    "morning": "सुबह की पारी",
+    "afternoon": "दोपहर की पाली",
+    "off": "छुट्टी का दिन"
   },
   "shiftSubtitles": {
-    "day": "Stay energized!",
-    "night": "Stay alert!",
-    "morning": "Rise and shine!",
-    "afternoon": "Keep it going!",
-    "off": "Rest and recharge!"
+    "day": "ऊर्जावान बने रहें!",
+    "night": "सतर्क रहो!",
+    "morning": "जागो और दिनचर्या में जुट जाओ!",
+    "afternoon": "जा रहा!",
+    "off": "आराम करें और रिचार्ज करें!"
   },
   "fifo": {
-    "onSite": "On-site roster active",
-    "homeBlock": "Home block active",
-    "workBlock": "Work",
-    "restBlock": "Rest",
-    "blockChangeToday": "Block change today!",
-    "blockChangeTomorrow": "Block change tomorrow!",
-    "untilRest": "{{count}}d until rest block",
-    "untilWork": "{{count}}d until work block",
-    "blockDayOf": "{{blockName}} Block Day {{day}} of {{total}}",
-    "days": "days"
+    "onSite": "ऑन-साइट रोस्टर सक्रिय",
+    "homeBlock": "होम ब्लॉक सक्रिय",
+    "workBlock": "काम",
+    "restBlock": "आराम",
+    "blockChangeToday": "आज परिवर्तन रोकें!",
+    "blockChangeTomorrow": "कल परिवर्तन रोकें!",
+    "untilRest": "विश्राम ब्लॉक तक {{count}}d",
+    "untilWork": "कार्य अवरोध तक {{count}}d",
+    "blockDayOf": "{{blockName}} ब्लॉक दिवस {{total}} का {{day}}",
+    "days": "दिन"
   },
   "stats": {
-    "workDays": "Work Days",
-    "offDays": "Off Days",
-    "balance": "Balance"
+    "workDays": "कार्य दिवस",
+    "offDays": "छुट्टी वाले दिनों",
+    "balance": "संतुलन"
   },
   "calendar": {
-    "legendDay": "Day",
-    "legendMorning": "Morning",
-    "legendAfternoon": "Afternoon",
-    "legendNight": "Night",
-    "legendOff": "Off",
-    "legendWorkBlock": "Work Block",
-    "legendRestBlock": "Rest Block",
-    "cycle": "cycle",
-    "previousMonth": "Previous month",
-    "nextMonth": "Next month"
+    "legendDay": "दिन",
+    "legendMorning": "सुबह",
+    "legendAfternoon": "दोपहर",
+    "legendNight": "रात",
+    "legendOff": "बंद",
+    "legendWorkBlock": "कार्य ब्लॉक",
+    "legendRestBlock": "बाकी ब्लॉक",
+    "cycle": "चक्र",
+    "previousMonth": "पिछला महीना",
+    "nextMonth": "अगले महीने"
   },
   "badges": {
-    "active": "ACTIVE"
+    "active": "सक्रिय"
   }
 }

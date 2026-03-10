@@ -1,746 +1,755 @@
 {
   "welcome": {
-    "tagline": "Your Mining Shift Companion",
-    "getStarted": "Get Started"
+    "tagline": "Ваш помощник в горной смене",
+    "getStarted": "Начать"
   },
   "common": {
-    "swipeHint": "Swipe right to select, left to see next, or up for more info",
-    "reviewAgain": "Please review options again to make your selection",
-    "reviewButton": "Review",
-    "continueButton": "Continue",
-    "closeButton": "Close",
-    "backToSettings": "Back to Settings",
-    "saveAndReturn": "Save & Return",
+    "swipeHint": "Проведите пальцем вправо, чтобы выбрать, влево, чтобы увидеть следующее, или вверх, чтобы получить дополнительную информацию.",
+    "reviewAgain": "Пожалуйста, просмотрите варианты еще раз, чтобы сделать свой выбор",
+    "reviewButton": "Обзор",
+    "continueButton": "Продолжать",
+    "closeButton": "Закрывать",
+    "backToSettings": "Вернуться к настройкам",
+    "saveAndReturn": "Сохранить и вернуть",
     "hints": {
-      "nextOption": "← Next option",
-      "selectThis": "This one →",
-      "learnMore": "↑ Learn more"
+      "nextOption": "← Следующий вариант",
+      "selectThis": "Этот →",
+      "learnMore": "↑ Узнать больше"
     },
     "learnMore": {
-      "howItWorks": "How it works",
-      "whereUsed": "Where you'll see this",
-      "pros": "The good bits",
-      "cons": "What to know"
+      "howItWorks": "Как это работает",
+      "whereUsed": "Где вы это увидите",
+      "pros": "Хорошие моменты",
+      "cons": "Что нужно знать"
     }
   },
   "intro": {
-    "welcome": "Welcome to Ellie! I'm here to help you set up your shift calendar. Let's start by getting to know you a bit better.",
-    "askName": "What's your name?",
-    "askOccupation": "Great to meet you, {{name}}! What's your occupation?",
-    "askCompany": "Got it! Which company do you work for?",
-    "askCountry": "Almost done! Which country are you based in?",
-    "allSet": "Perfect! You're all set, {{name}}. Let's get your shift calendar configured.",
+    "welcome": "Добро пожаловать в Элли! Я здесь, чтобы помочь вам настроить календарь смен. Давайте начнем с того, что узнаем вас немного лучше.",
+    "askName": "Как тебя зовут?",
+    "askOccupation": "Приятно познакомиться, {{name}}! Чем вы занимаетесь?",
+    "askCompany": "Понятно! В какой компании вы работаете?",
+    "askCountry": "Почти готово! В какой стране вы находитесь?",
+    "allSet": "Идеальный! Все готово, {{name}}. Давайте настроим ваш календарь смен.",
     "placeholders": {
-      "name": "Enter your name",
-      "occupation": "Enter your occupation",
-      "company": "Enter company name",
-      "country": "Enter your country"
+      "name": "Введите свое имя",
+      "occupation": "Введите свою профессию",
+      "company": "Введите название компании",
+      "country": "Введите свою страну"
     },
     "editResponse": {
-      "title": "Edit Response",
-      "message": "Edit your response. The conversation will rewind from this point.",
-      "cancel": "Cancel",
-      "confirm": "Edit"
+      "title": "Редактировать ответ",
+      "message": "Отредактируйте свой ответ. Разговор перемотается с этого момента.",
+      "cancel": "Отмена",
+      "confirm": "Редактировать"
     },
     "errors": {
-      "nameTooShort": "Name must be at least 2 characters",
-      "nameTooLong": "Name must not exceed 50 characters",
-      "nameInvalidChars": "Name can only contain letters, spaces, hyphens, and apostrophes",
-      "occupationRequired": "Occupation is required",
-      "companyRequired": "Company is required",
-      "countryTooShort": "Country must be at least 2 characters",
-      "countryTooLong": "Country must not exceed 100 characters"
+      "nameTooShort": "Имя должно содержать не менее 2 символов.",
+      "nameTooLong": "Имя не должно превышать 50 символов.",
+      "nameInvalidChars": "Имя может содержать только буквы, пробелы, дефисы и апострофы.",
+      "occupationRequired": "Требуется род занятий",
+      "companyRequired": "Требуется компания",
+      "countryTooShort": "Страна должна содержать не менее 2 символов.",
+      "countryTooLong": "Длина страны не должна превышать 100 символов."
     }
   },
   "shiftSystem": {
-    "title": "How Many Shifts Does Your Site Run?",
-    "reviewAgain": "Please review systems again to make your selection",
-    "reviewButton": "Review Systems",
-    "continueButton": "Continue",
-    "closeButton": "Close",
-    "instruction": "Select how your site operates—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info",
+    "title": "Сколько смен работает ваш сайт?",
+    "reviewAgain": "Пожалуйста, просмотрите системы еще раз, чтобы сделать свой выбор.",
+    "reviewButton": "Системы обзора",
+    "continueButton": "Продолжать",
+    "closeButton": "Закрывать",
+    "instruction": "Выберите, как будет работать ваш сайт — на основе этого мы создадим ваш календарь.\nПроведите пальцем вправо, чтобы выбрать, влево, чтобы увидеть больше, вверх для получения информации.",
     "endState": {
-      "selectedTitle": "Got it! We'll set up your calendar for this.",
-      "reviewedTitle": "You've viewed all {{count}} shift systems!",
-      "selectedSubtitle": "Next, we'll pick your specific rotation pattern"
+      "selectedTitle": "Понятно! Мы настроим для этого ваш календарь.",
+      "reviewedTitle": "Вы просмотрели все системы смен {{count}}!",
+      "selectedSubtitle": "Далее мы выберем вашу конкретную схему ротации."
     },
     "cards": {
       "2-shift": {
-        "title": "2 Shifts (12 hours)",
-        "schedule": "Day & night",
-        "description": "Your workplace runs two 12-hour shifts—one during the day, one at night",
+        "title": "2 смены (12 часов)",
+        "schedule": "День и ночь",
+        "description": "Ваше рабочее место работает в две 12-часовые смены — одну днем, другую ночью.",
         "details": {
-          "workRestRatio": "12 hours on, 12 hours off",
-          "useCases": ["Mining sites", "Oil & gas", "24/7 operations", "Remote work"],
-          "pros": ["Extended rest periods", "Predictable schedule", "Good work-life balance"],
+          "workRestRatio": "12 часов работы, 12 часов отдыха",
+          "useCases": [
+            "Горнодобывающие площадки",
+            "Нефть и газ",
+            "24/7 операции",
+            "Удаленная работа"
+          ],
+          "pros": [
+            "Увеличенные периоды отдыха",
+            "Предсказуемый график",
+            "Хороший баланс между работой и личной жизнью"
+          ],
           "cons": [
-            "Long shift duration",
-            "Can be physically demanding",
-            "Limited daylight in winter"
+            "Длительная продолжительность смены",
+            "Может быть физически требовательным",
+            "Ограниченный дневной свет зимой"
           ]
         }
       },
       "3-shift": {
-        "title": "3 Shifts (8 hours)",
-        "schedule": "Morning, afternoon & night",
-        "description": "Your workplace runs three 8-hour shifts—morning, afternoon, and night",
+        "title": "3 смены (8 часов)",
+        "schedule": "Утро, день и ночь",
+        "description": "Ваше рабочее место работает в три 8-часовые смены — утреннюю, дневную и ночную.",
         "details": {
-          "workRestRatio": "8 hours on, 16 hours off",
-          "useCases": ["Manufacturing", "Healthcare", "Call centers", "24/7 operations"],
-          "pros": ["Shorter shifts", "More time for family", "Easier to stay alert"],
+          "workRestRatio": "8 часов работы, 16 часов отдыха",
+          "useCases": ["Производство", "Здравоохранение", "Колл-центры", "24/7 операции"],
+          "pros": ["Более короткие смены", "Больше времени для семьи", "Легче оставаться начеку"],
           "cons": [
-            "More frequent shift changes",
-            "Can disrupt sleep patterns",
-            "Less rest between cycles"
+            "Более частая смена смен",
+            "Может нарушить режим сна",
+            "Меньше отдыха между циклами"
           ]
         }
       }
     }
   },
   "shiftPattern": {
-    "reviewAgain": "Please review patterns again to make your selection",
-    "reviewButton": "Review Patterns",
-    "continueButton": "Continue",
-    "closeButton": "Close",
+    "reviewAgain": "Пожалуйста, просмотрите выкройки еще раз, чтобы сделать свой выбор.",
+    "reviewButton": "Обзор шаблонов",
+    "continueButton": "Продолжать",
+    "closeButton": "Закрывать",
     "endState": {
-      "customButton": "Build Custom Rotation",
-      "reviewButton": "Look Again",
-      "reviewedSubtitle": "Didn't see yours? You can build a custom one, or take another look",
-      "reviewedTitle": "That's all {{count}} rotations we've got!"
+      "customButton": "Создайте собственную ротацию",
+      "reviewButton": "Посмотрите еще раз",
+      "reviewedSubtitle": "Не видел твоего? Вы можете создать собственный или посмотреть еще раз.",
+      "reviewedTitle": "Это все {{count}} ротаций, которые у нас есть!"
     },
-    "instruction": "Choose the rotation your workplace uses—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info",
-    "title": "What's Your Roster Rotation?"
+    "instruction": "Выберите ротацию, которую использует ваше рабочее место — на основе этого мы построим ваш календарь\nПроведите пальцем вправо, чтобы выбрать, влево, чтобы увидеть больше, вверх для получения информации.",
+    "title": "Какая у вас ротация в составе?"
   },
   "rosterType": {
-    "title": "How Does Your Roster Work?",
-    "instruction": "Choose the roster style your workplace uses — this shapes your entire schedule\nSwipe right to choose, left to see more, up for details",
-    "preparingNextStep": "Preparing next step...",
+    "title": "Как работает ваш список?",
+    "instruction": "Выберите стиль расписания, который используется на вашем рабочем месте — это формирует весь ваш график.\nПроведите пальцем вправо, чтобы выбрать, влево, чтобы увидеть больше, вверх, чтобы узнать подробности.",
+    "preparingNextStep": "Готовим следующий шаг...",
     "learnMore": {
-      "examples": "Examples",
-      "popularIn": "Popular in",
-      "benefits": "Benefits",
-      "considerations": "Things to consider"
+      "examples": "Примеры",
+      "popularIn": "Популярно в",
+      "benefits": "Преимущества",
+      "considerations": "Что следует учитывать"
     },
     "cards": {
       "rotating": {
-        "title": "Rotating Roster",
-        "subtitle": "Days → Nights → Off pattern",
-        "description": "You rotate through different shift times in a repeating cycle",
+        "title": "Ротационный состав",
+        "subtitle": "Дни → Ночи → Режим выключения",
+        "description": "Вы меняете смены в разное время в повторяющемся цикле.",
         "details": {
-          "howItWorks": "Workers rotate through different shift times (day shifts, night shifts, days off) in a continuous cycle",
+          "howItWorks": "Работники чередуются в разные часы работы (дневные смены, ночные смены, выходные) в непрерывном цикле.",
           "examples": [
-            "5-5-5 (South Africa)",
-            "4-4-4 (common globally)",
-            "7-7-7 (long cycle)",
-            "2-2-3 (short cycle)"
+            "5-5-5 (Южная Африка)",
+            "4-4-4 (распространено во всем мире)",
+            "7-7-7 (длинный цикл)",
+            "2-2-3 (короткий цикл)"
           ],
-          "regions": ["South Africa", "Zambia", "DRC", "Europe", "Some US operations"],
+          "regions": ["ЮАР", "Замбия", "DRC", "Европа", "Некоторые операции США"],
           "pros": [
-            "Go home daily or frequently",
-            "Regular routine at each phase",
-            "Suitable for local operations",
-            "Easier for family planning"
+            "Ходите домой ежедневно или часто",
+            "Регулярный распорядок дня на каждом этапе",
+            "Подходит для локальных операций.",
+            "Легче планировать семью"
           ],
           "cons": [
-            "Night shifts can disrupt sleep",
-            "Constant rotation through times",
-            "Less extended home time"
+            "Ночные смены могут нарушить сон",
+            "Постоянное вращение во времени",
+            "Меньшее время пребывания дома"
           ]
         }
       },
       "fifo": {
-        "title": "FIFO / Swing Roster",
-        "subtitle": "Work blocks → Home blocks",
-        "description": "You work consecutive days on-site, then get extended time at home",
+        "title": "ФИФО / Свинг-реестр",
+        "subtitle": "Рабочие блоки → Домашние блоки",
+        "description": "Вы работаете несколько дней подряд на месте, а затем получаете дополнительное время дома.",
         "details": {
-          "howItWorks": "Workers fly in to remote sites, work consecutive days (work block), then fly home for extended rest (rest block)",
+          "howItWorks": "Рабочие прилетают на удаленные объекты, работают несколько дней подряд (рабочий блок), а затем улетают домой для длительного отдыха (блок отдыха).",
           "examples": [
-            "8/6 (common WA)",
-            "14/14 (even-time)",
-            "21/7 (remote sites)",
-            "28/14 (long cycle)"
+            "8/6 (обычный WA)",
+            "14/14 (четное время)",
+            "21/7 (удаленные объекты)",
+            "28/14 (длинный цикл)"
           ],
-          "regions": ["Australia", "Canada", "Remote global mining"],
+          "regions": ["Австралия", "Канада", "Удаленный глобальный майнинг"],
           "pros": [
-            "Extended time at home",
-            "Higher pay rates",
-            "Good for remote sites",
-            "Predictable blocks"
+            "Продолжительное время дома",
+            "Более высокие ставки заработной платы",
+            "Подходит для удаленных сайтов",
+            "Предсказуемые блоки"
           ],
           "cons": [
-            "Away from family for extended periods",
-            "Travel fatigue",
-            "Isolation at camp",
-            "Adjustment between blocks"
+            "Вдали от семьи в течение длительного времени",
+            "Усталость от путешествия",
+            "Изоляция в лагере",
+            "Регулировка между блоками"
           ]
         }
       }
     }
   },
   "completion": {
-    "saveFailed": "Failed to save your data. Please try again.",
+    "saveFailed": "Не удалось сохранить ваши данные. Пожалуйста, попробуйте еще раз.",
     "features": {
-      "reminders": "Smart shift reminders",
-      "remindersDesc": "Never miss a shift with intelligent notifications that adapt to your rotation",
-      "sleep": "Sleep tracking & insights",
-      "sleepDesc": "Optimize your rest between shifts with personalized sleep analytics",
-      "fatigue": "Fatigue monitoring",
-      "fatigueDesc": "Track your energy levels and get alerts when fatigue risk is high",
-      "team": "Team coordination",
-      "teamDesc": "See your crew schedule and coordinate handovers seamlessly",
-      "balance": "Work-life balance",
-      "balanceDesc": "Maintain healthy routines with activity and wellness tracking",
-      "earnings": "Earnings calculator",
-      "earningsDesc": "Automatically calculate overtime, penalties, and shift allowances",
-      "meals": "Meal & hydration",
-      "mealsDesc": "Stay healthy with meal timing suggestions and hydration reminders"
+      "reminders": "Умные напоминания о сменах",
+      "remindersDesc": "Никогда не пропускайте смену благодаря интеллектуальным уведомлениям, которые адаптируются к вашей ротации.",
+      "sleep": "Отслеживание сна и аналитика",
+      "sleepDesc": "Оптимизируйте свой отдых между сменами с помощью персонализированной аналитики сна.",
+      "fatigue": "Мониторинг усталости",
+      "fatigueDesc": "Отслеживайте уровень своей энергии и получайте оповещения, когда риск утомления высок.",
+      "team": "Координация команды",
+      "teamDesc": "Просматривайте расписание своей бригады и легко координируйте передачу",
+      "balance": "Баланс между работой и личной жизнью",
+      "balanceDesc": "Поддерживайте здоровый распорядок дня с помощью отслеживания активности и самочувствия",
+      "earnings": "Калькулятор заработка",
+      "earningsDesc": "Автоматически рассчитывать сверхурочную работу, штрафы и надбавки за смену",
+      "meals": "Питание и увлажнение",
+      "mealsDesc": "Оставайтесь здоровыми с помощью рекомендаций по времени приема пищи и напоминаний о необходимости питья."
     },
-    "featureHint": "Tap a feature chip to see more details.",
-    "featuresTitle": "What you can do with Ellie",
-    "getStartedA11yHint": "Tap to start using the app",
-    "getStartedA11yLabel": "Get started with Ellie",
-    "loading": "Setting up your calendar...",
-    "retryA11yHint": "Tap to try saving your data again",
-    "retryA11yLabel": "Retry saving your data",
-    "subtitle": "Welcome to Ellie",
+    "featureHint": "Коснитесь функционального чипа, чтобы просмотреть более подробную информацию.",
+    "featuresTitle": "Что ты можешь сделать с Элли",
+    "getStartedA11yHint": "Нажмите, чтобы начать использовать приложение",
+    "getStartedA11yLabel": "Начни с Элли",
+    "loading": "Настройка календаря...",
+    "retryA11yHint": "Нажмите, чтобы попытаться сохранить данные еще раз.",
+    "retryA11yLabel": "Повторите попытку сохранения данных.",
+    "subtitle": "Добро пожаловать в Элли",
     "summary": {
-      "company": "Company",
-      "cycle": "Cycle",
-      "name": "Name",
-      "notSet": "Not set",
-      "pattern": "Pattern",
-      "rosterType": "Roster Type",
-      "rosterTypeFIFO": "FIFO (Fly-In Fly-Out)",
-      "rosterTypeRotating": "Rotating Roster",
-      "shiftSystem": "Shift System",
-      "shiftSystemThree": "3-Shift System",
-      "shiftSystemTwo": "2-Shift System",
-      "shiftTimes": "Shift Times",
-      "startDate": "Start Date",
-      "title": "Your profile",
-      "workPattern": "Work Pattern"
+      "company": "Компания",
+      "cycle": "Цикл",
+      "name": "Имя",
+      "notSet": "Не установлено",
+      "pattern": "Шаблон",
+      "rosterType": "Тип состава",
+      "rosterTypeFIFO": "ФИФО (прилет-вылет)",
+      "rosterTypeRotating": "Ротационный состав",
+      "shiftSystem": "Система смен",
+      "shiftSystemThree": "3-сменная система",
+      "shiftSystemTwo": "2-сменная система",
+      "shiftTimes": "Время смены",
+      "startDate": "Дата начала",
+      "title": "Ваш профиль",
+      "workPattern": "Схема работы"
     },
-    "title": "You're all set!",
-    "tryAgain": "Try Again"
+    "title": "Все готово!",
+    "tryAgain": "Попробуйте еще раз"
   },
   "phaseSelector": {
     "hints": {
-      "next": "← Next",
-      "select": "Select →",
-      "info": "↑ Info"
+      "next": "← Далее",
+      "select": "Выберите →",
+      "info": "↑ Информация"
     },
     "modal": {
-      "phaseLengthValue_one": "{{count}} day",
-      "phaseLengthValue_other": "{{count}} days",
-      "phaseLength": "Phase Length",
-      "phaseLengthValue": "{{count}} day"
+      "phaseLengthValue_one": "{{count}} день",
+      "phaseLengthValue_other": "{{count}} дней",
+      "phaseLength": "Длина фазы",
+      "phaseLengthValue": "{{count}} день"
     },
     "cards": {
       "afternoon": {
-        "description": "Afternoon hours (e.g., 12pm-8pm)",
-        "title": "Afternoon Shift"
+        "description": "Дневные часы (например, с 12:00 до 20:00)",
+        "title": "Дневная смена"
       },
       "day": {
-        "description": "Working during daylight (e.g., 6am-6pm)",
-        "title": "Day Shift"
+        "description": "Работа в светлое время суток (например, с 6:00 до 18:00).",
+        "title": "Дневная смена"
       },
       "morning": {
-        "description": "Early morning hours (e.g., 4am-12pm)",
-        "title": "Morning Shift"
+        "description": "Рано утром (например, с 4:00 до 12:00)",
+        "title": "Утренняя смена"
       },
       "night": {
-        "description": "Working at nighttime (e.g., 6pm-6am)",
-        "descriptionThreeShift": "Nighttime hours (e.g., 8pm-4am)",
-        "title": "Night Shift"
+        "description": "Работа в ночное время (например, с 18:00 до 6:00).",
+        "descriptionThreeShift": "Ночные часы (например, с 20:00 до 4:00)",
+        "title": "Ночная смена"
       },
       "off": {
-        "description": "Rest and recovery at home",
-        "title": "Days Off"
+        "description": "Отдых и восстановление дома",
+        "title": "Выходные дни"
       }
     },
-    "dayCardTitle": "Day {{day}}",
-    "daySubtitle": "You said you're on {{selectedPhaseTitle}}. Swipe to your current day—is it the {{dayList}}?",
-    "dayTitle": "Which day of {{selectedPhaseTitle}} are you on?",
-    "preparing": "Preparing your calendar...",
-    "title": "What shift are you on right now?",
-    "dayOrdinal": "Day {{day}}",
+    "dayCardTitle": "День {{day}}",
+    "daySubtitle": "Вы сказали, что находитесь на {{selectedPhaseTitle}}. Пролистните до текущего дня: сегодня {{dayList}}?",
+    "dayTitle": "В какой день {{selectedPhaseTitle}} вы находитесь?",
+    "preparing": "Подготовка календаря...",
+    "title": "В какой смене ты сейчас работаешь?",
+    "dayOrdinal": "День {{day}}",
     "list": {
-      "or": "or"
+      "or": "или"
     },
     "dayDescriptions": {
-      "restLastDay": "Last day off before returning",
-      "restDayOfTotal": "Rest day {{day}} of {{total}}",
-      "firstDay": "First day of this phase",
-      "lastDay": "Last day of this phase",
-      "dayOfTotal": "Day {{day}} of {{total}}"
+      "restLastDay": "Последний выходной перед возвращением",
+      "restDayOfTotal": "День отдыха {{day}} {{total}}",
+      "firstDay": "Первый день этого этапа",
+      "lastDay": "Последний день этого этапа",
+      "dayOfTotal": "День {{day}} {{total}}"
     }
   },
   "fifoPhaseSelector": {
     "title": {
-      "workPattern": "How are shifts run during your FIFO work block?",
-      "swingConfig": "Configure your swing split",
-      "block": "Where are you in your FIFO cycle?",
-      "dayWithinBlock": "Which day of {{blockTitle}} are you on?"
+      "workPattern": "Как проходят смены во время вашего рабочего блока FIFO?",
+      "swingConfig": "Настройте свой свинг-сплит",
+      "block": "На каком этапе цикла ФИФО вы находитесь?",
+      "dayWithinBlock": "В какой день {{blockTitle}} вы находитесь?"
     },
     "subtitle": {
-      "workPattern": "Swipe right to choose your work-block pattern, left for next option, or up for info",
-      "swingConfig": "Set how many day-shift and night-shift days you work before choosing your current block",
-      "block": "Swipe right to select, left to see next, or up for more info",
-      "dayWithinBlock": "Swipe right to select, left to see next, or up for more info. Is it the {{ordinalList}}?"
+      "workPattern": "Проведите пальцем вправо, чтобы выбрать шаблон рабочего блока, влево, чтобы перейти к следующему варианту, или вверх, чтобы получить информацию.",
+      "swingConfig": "Прежде чем выбирать текущий блок, укажите, сколько дней вы работаете в дневную и ночную смену.",
+      "block": "Проведите пальцем вправо, чтобы выбрать, влево, чтобы увидеть следующее, или вверх, чтобы получить дополнительную информацию.",
+      "dayWithinBlock": "Проведите пальцем вправо, чтобы выбрать, влево, чтобы увидеть следующий, или вверх, чтобы получить дополнительную информацию. Это {{ordinalList}}?"
     },
     "modal": {
-      "blockLength": "Block Length",
-      "whyItMatters": "Why it matters"
+      "blockLength": "Длина блока",
+      "whyItMatters": "Почему это важно"
     },
     "patterns": {
       "straightDays": {
-        "title": "Straight Days",
-        "description": "Your work block runs day shifts only.",
-        "quickInfo": "Best for operations that keep all crews on daytime rotations."
+        "title": "Прямые дни",
+        "description": "В вашем рабочем блоке работают только дневные смены.",
+        "quickInfo": "Лучше всего подходит для операций, при которых все бригады находятся на дневной смене."
       },
       "straightNights": {
-        "title": "Straight Nights",
-        "description": "Your work block runs night shifts only.",
-        "quickInfo": "Use this when site crews remain on night shifts for the full work block."
+        "title": "Прямые ночи",
+        "description": "В вашем рабочем блоке работают только ночные смены.",
+        "quickInfo": "Используйте это, когда бригады на объекте остаются в ночных сменах на протяжении всего рабочего блока."
       },
       "swing": {
-        "title": "Swing",
-        "description": "Your work block mixes day and night shifts.",
-        "quickInfo": "Choose this when your work block rotates between days and nights."
+        "title": "Качать",
+        "description": "Ваш рабочий блок совмещает дневные и ночные смены.",
+        "quickInfo": "Выберите этот вариант, если ваш рабочий блок меняется между днями и ночами."
       }
     },
     "blocks": {
       "work": {
-        "title": "At Site (Working)",
-        "descriptionDay": "You are currently at the mine site on your day-shift work block",
-        "descriptionNight": "You are currently at the mine site on your night-shift work block",
-        "descriptionNeutral": "You are currently at the mine site on your work block",
-        "quickInfoDay": "This means your cycle starts counting from your day-shift work block.",
-        "quickInfoNight": "This means your cycle starts counting from your night-shift work block.",
-        "quickInfoNeutral": "This means your cycle starts counting from your current work block."
+        "title": "На объекте (работает)",
+        "descriptionDay": "В настоящее время вы находитесь на руднике и работаете в дневную смену.",
+        "descriptionNight": "В настоящее время вы находитесь на руднике и работаете в ночную смену.",
+        "descriptionNeutral": "В настоящее время вы находитесь на руднике в своем рабочем блоке.",
+        "quickInfoDay": "Это означает, что ваш цикл начинает отсчитываться от рабочего блока дневной смены.",
+        "quickInfoNight": "Это означает, что ваш цикл начинает отсчитываться с рабочего блока в ночную смену.",
+        "quickInfoNeutral": "Это означает, что ваш цикл начинает отсчет с текущего рабочего блока."
       },
       "rest": {
-        "title": "At Home (Rest)",
-        "description": "You are currently at home on your rest block",
-        "quickInfo": "This offsets your cycle by your work block length first."
+        "title": "Дома (Отдых)",
+        "description": "В настоящее время вы находитесь дома на блоке отдыха",
+        "quickInfo": "Это сначала смещает ваш цикл на длину рабочего блока."
       }
     },
     "swingConfig": {
-      "daysOnDayShift": "Days on Day Shift",
-      "daysOnNightShift": "Days on Night Shift",
-      "splitTotal": "Split total: {{swingSplitTotal}}/{{workBlockDays}} days",
-      "validation": "Swing split must equal {{workBlockDays}} days with at least 1 day on each shift.",
-      "changePattern": "Change Pattern",
-      "continue": "Continue"
+      "daysOnDayShift": "Дни в дневной смене",
+      "daysOnNightShift": "Дни в ночной смене",
+      "splitTotal": "Всего по разбивке: {{swingSplitTotal}}/{{workBlockDays}} дней",
+      "validation": "Разделение смен должно составлять {{workBlockDays}} дней, по крайней мере, по 1 дню в каждой смене.",
+      "changePattern": "Изменить шаблон",
+      "continue": "Продолжать"
     },
     "days": {
       "shared": {
-        "midpoint": "Midpoint of this block"
+        "midpoint": "Середина этого блока"
       },
-      "defaultDayTitle": "Day {{dayNumber}}",
+      "defaultDayTitle": "День {{dayNumber}}",
       "work": {
-        "firstDayAtSite": "First day back at site",
-        "firstNightAtSite": "First night shift back at site",
-        "firstShiftAtSite": "First shift back at site",
-        "lastDayBeforeHome": "Last day before flying home",
-        "lastNightBeforeHome": "Last night shift before flying home",
-        "lastShiftBeforeHome": "Last shift before flying home",
-        "dayOfWorkBlock": "Day {{dayNumber}} of your work block",
-        "shiftOfNightBlock": "Shift {{dayNumber}} of your night work block",
-        "shiftOfWorkBlock": "Shift {{dayNumber}} of your work block"
+        "firstDayAtSite": "Первый день на месте",
+        "firstNightAtSite": "Первая ночная смена возвращается на объект",
+        "firstShiftAtSite": "Первая смена возвращается на площадку",
+        "lastDayBeforeHome": "Последний день перед отлетом домой",
+        "lastNightBeforeHome": "Последняя ночная смена перед отлетом домой.",
+        "lastShiftBeforeHome": "Последняя смена перед отлетом домой",
+        "dayOfWorkBlock": "День {{dayNumber}} вашего рабочего блока",
+        "shiftOfNightBlock": "Смена {{dayNumber}} вашего ночного рабочего блока",
+        "shiftOfWorkBlock": "Сдвиг {{dayNumber}} вашего рабочего блока"
       },
       "rest": {
-        "firstDayAtHome": "First day back at home",
-        "lastDayBeforeSite": "Last day before returning to site",
-        "dayOfRestBlock": "Day {{dayNumber}} of your rest block"
+        "firstDayAtHome": "Первый день дома",
+        "lastDayBeforeSite": "Последний день перед возвращением на сайт",
+        "dayOfRestBlock": "День {{dayNumber}} вашего блока отдыха"
       },
       "swing": {
-        "dayShiftTitle": "Day Shift Day {{dayNumber}}",
-        "firstDayShiftAtSite": "First day shift back at site",
-        "finalDayShiftBeforeNights": "Final day shift before switching to nights",
-        "dayShiftDayDescription": "Day shift day {{dayNumber}} of your work block",
-        "nightShiftTitle": "Night Shift Day {{dayNumber}}",
-        "firstNightShiftInBlock": "First night shift in this swing block",
-        "finalNightShiftBeforeHome": "Final night shift before flying home",
-        "nightShiftDayDescription": "Night shift day {{dayNumber}} of your work block"
+        "dayShiftTitle": "Дневная смена, день {{dayNumber}}",
+        "firstDayShiftAtSite": "Первая дневная смена возвращается на площадку",
+        "finalDayShiftBeforeNights": "Последняя дневная смена перед переходом на ночную",
+        "dayShiftDayDescription": "Дневная смена, день {{dayNumber}} вашего рабочего блока",
+        "nightShiftTitle": "Ночная смена, день {{dayNumber}}",
+        "firstNightShiftInBlock": "Первая ночная смена в этом качающемся блоке",
+        "finalNightShiftBeforeHome": "Последняя ночная смена перед отлетом домой.",
+        "nightShiftDayDescription": "Ночная смена, день {{dayNumber}} вашего рабочего блока"
       }
     },
     "transition": {
-      "preparingCalendar": "Preparing your calendar..."
+      "preparingCalendar": "Подготовка календаря..."
     }
   },
   "startDate": {
     "header": {
-      "title": "When Does Your Rotation Start?",
-      "subtitleWithPhase": "You're on {{phaseLabel}} right now—pick today or any date, and we'll map out your whole calendar from there",
-      "subtitleDefault": "Pick the date you want your calendar to start from—most people choose today"
+      "title": "Когда начинается ваша ротация?",
+      "subtitleWithPhase": "Вы сейчас находитесь на {{phaseLabel}} — выберите сегодняшний день или любую дату, и мы составим план всего вашего календаря оттуда.",
+      "subtitleDefault": "Выберите дату, с которой вы хотите начать свой календарь — большинство людей выбирают сегодня."
     },
     "phaseLabels": {
-      "day": "Day Shift",
-      "night": "Night Shift",
-      "morning": "Morning Shift",
-      "afternoon": "Afternoon Shift",
-      "off": "Days Off",
-      "withDay": "Day {{selectedDay}} of {{phaseLabel}}"
+      "day": "Дневная смена",
+      "night": "Ночная смена",
+      "morning": "Утренняя смена",
+      "afternoon": "Дневная смена",
+      "off": "Выходные дни",
+      "withDay": "День {{selectedDay}} {{phaseLabel}}"
     },
     "calendar": {
       "weekdays": {
-        "sun": "Sun",
-        "mon": "Mon",
-        "tue": "Tue",
-        "wed": "Wed",
-        "thu": "Thu",
-        "fri": "Fri",
-        "sat": "Sat"
+        "sun": "Солнце",
+        "mon": "Пн.",
+        "tue": "Вт",
+        "wed": "Обвенчались",
+        "thu": "Чт",
+        "fri": "Пт",
+        "sat": "Суббота"
       },
       "legend": {
-        "dayShift": "Day Shift",
-        "nightShift": "Night Shift",
-        "dayOff": "Day Off",
-        "morning": "Morning",
-        "afternoon": "Afternoon",
-        "night": "Night",
-        "off": "Off"
+        "dayShift": "Дневная смена",
+        "nightShift": "Ночная смена",
+        "dayOff": "Выходной",
+        "morning": "Утро",
+        "afternoon": "Полдень",
+        "night": "Ночь",
+        "off": "Выключенный"
       }
     },
     "guidance": {
-      "title": "Picking your date",
-      "subtitle": "Quick tips for a faster setup",
-      "body": "Most people pick today so their calendar starts right away. But you can pick any date—we'll calculate your rotation from there.",
-      "hint": "Pick the closest date now, you can adjust settings later.",
-      "selectedDate": "Selected: {{date}}"
+      "title": "Выбор даты",
+      "subtitle": "Краткие советы для более быстрой настройки",
+      "body": "Большинство людей выбирают сегодняшний день, чтобы их календарь начался сразу. Но вы можете выбрать любую дату — исходя из нее мы рассчитаем вашу ротацию.",
+      "hint": "Выберите ближайшую дату сейчас, настройки можно будет изменить позже.",
+      "selectedDate": "Выбрано: {{date}}"
     },
     "actions": {
-      "goBack": "Go back",
-      "backToSettings": "Back to Settings",
-      "saveAndReturn": "Save & Return",
-      "saveAndReturnToSettings": "Save start date and return to settings",
-      "setShiftTimes": "Set Shift Times",
-      "setShiftTimesA11y": "Set shift times"
+      "goBack": "Возвращаться",
+      "backToSettings": "Вернуться к настройкам",
+      "saveAndReturn": "Сохранить и вернуть",
+      "saveAndReturnToSettings": "Сохранить дату начала и вернуться к настройкам",
+      "setShiftTimes": "Установить время смены",
+      "setShiftTimesA11y": "Установите время смены"
     },
     "selectedDate": {
-      "startsOn": "Your cycle will start on:"
+      "startsOn": "Ваш цикл начнется:"
     },
     "phaseSelector": {
-      "title": "Choose which part of your cycle you'll be on"
+      "title": "Выберите, на какой части вашего цикла вы будете"
     },
     "dayWithinPhase": {
-      "title": "Which day of your {{phaseLabel}}?",
-      "dayA11yLabel": "Day {{dayNumber}}",
-      "dayA11yHint": "Select day {{dayNumber}} of phase"
+      "title": "Какой день твоего {{phaseLabel}}?",
+      "dayA11yLabel": "День {{dayNumber}}",
+      "dayA11yHint": "Выберите день {{dayNumber}} этапа"
     },
     "preview": {
-      "notSelected": "Not selected",
-      "startingLabel": "Starting:",
-      "phaseLabel": "Phase:",
-      "confirmation": "Your first cycle begins here"
+      "notSelected": "Не выбрано",
+      "startingLabel": "Начало:",
+      "phaseLabel": "Фаза:",
+      "confirmation": "Ваш первый цикл начинается здесь"
     }
   },
   "shiftTime": {
     "actions": {
-      "goBack": "Go back",
-      "backToSettings": "Back to Settings",
-      "saveAndReturn": "Save & Return",
-      "saveAndReturnA11y": "Save shift time and return to settings",
-      "saveAndContinue": "Save & Continue",
-      "finishSetup": "Finish Setup",
-      "nextShiftType": "Next Shift Type",
-      "continueToNextStep": "Continue to next step",
-      "continueToShiftType": "Continue to {{shiftType}} shift times",
-      "saveShiftTimesAndContinue": "Save shift times and continue"
+      "goBack": "Возвращаться",
+      "backToSettings": "Вернуться к настройкам",
+      "saveAndReturn": "Сохранить и вернуть",
+      "saveAndReturnA11y": "Сэкономьте время смены и вернитесь к настройкам",
+      "saveAndContinue": "Сохранить и продолжить",
+      "finishSetup": "Завершить настройку",
+      "nextShiftType": "Следующий тип смены",
+      "continueToNextStep": "Перейти к следующему шагу",
+      "continueToShiftType": "Продолжайте в {{shiftType}} смену",
+      "saveShiftTimesAndContinue": "Сохраните время смены и продолжайте"
     },
     "stage": {
-      "stepOfTotal": "Step {{current}} of {{total}}",
-      "singleProfile": "Single shift profile",
-      "profileOfTotal": "Profile {{current}} of {{total}}"
+      "stepOfTotal": "Шаг {{current}} из {{total}}",
+      "singleProfile": "Односменный профиль",
+      "profileOfTotal": "Профиль {{current}} из {{total}}"
     },
     "systemLabels": {
-      "twoShift": "2-shift system",
-      "threeShift": "3-shift system"
+      "twoShift": "2-сменная система",
+      "threeShift": "3-сменная система"
     },
     "shiftLabels": {
-      "dayTitle": "Day",
-      "dayLower": "day",
-      "dayPlural": "day shifts",
-      "nightTitle": "Night",
-      "nightLower": "night",
-      "nightPlural": "night shifts",
-      "morningTitle": "Morning",
-      "morningLower": "morning",
-      "morningPlural": "morning shifts",
-      "afternoonTitle": "Afternoon",
-      "afternoonLower": "afternoon",
-      "afternoonPlural": "afternoon shifts"
+      "dayTitle": "День",
+      "dayLower": "день",
+      "dayPlural": "дневные смены",
+      "nightTitle": "Ночь",
+      "nightLower": "ночь",
+      "nightPlural": "ночные смены",
+      "morningTitle": "Утро",
+      "morningLower": "утро",
+      "morningPlural": "утренние смены",
+      "afternoonTitle": "Полдень",
+      "afternoonLower": "полдень",
+      "afternoonPlural": "дневные смены"
     },
     "header": {
       "title": {
-        "single": "When Do Your Shifts Start?",
-        "day": "Day Shift Times",
-        "night": "Night Shift Times",
-        "morning": "Morning Shift Times",
-        "afternoon": "Afternoon Shift Times",
-        "default": "Shift Times"
+        "single": "Когда начинаются ваши смены?",
+        "day": "Время дневных смен",
+        "night": "Время ночных смен",
+        "morning": "Время утренней смены",
+        "afternoon": "Время дневной смены",
+        "default": "Время смены"
       },
       "subtitle": {
-        "single": "Pick what time you clock in each day-we'll use this to track your hours and set reminders",
-        "multi": "Your pattern includes {{shiftTypeLabel}}. Set the start time for these shifts."
+        "single": "Выберите время, которое вы будете отмечать каждый день. Мы будем использовать это для отслеживания вашего рабочего времени и установки напоминаний.",
+        "multi": "Ваш шаблон включает {{shiftTypeLabel}}. Установите время начала этих смен."
       }
     },
     "guidance": {
-      "aboutTitle": "About shift times",
-      "aboutBody": "Your {{patternName}} rotation stays the same, but we need your shift start times so Ellie can track hours and alert you before each shift.",
-      "hint": "Use the closest start time now. You can fine-tune it later in settings.",
+      "aboutTitle": "О времени смены",
+      "aboutBody": "Ваша ротация {{patternName}} останется прежней, но нам нужно время начала вашей смены, чтобы Элли могла отслеживать часы работы и предупреждать вас перед каждой сменой.",
+      "hint": "Используйте ближайшее время начала прямо сейчас. Вы можете настроить его позже в настройках.",
       "definitions": {
-        "twoShiftTitle": "Day vs Night:",
-        "twoShiftBody": "Day shifts start 6 AM-6 PM - Night shifts start 6 PM-6 AM",
-        "threeShiftTitle": "Shift types:",
-        "threeShiftBody": "Morning: 6 AM-2 PM - Afternoon: 2 PM-10 PM - Night: 10 PM-6 AM"
+        "twoShiftTitle": "День против Ночи:",
+        "twoShiftBody": "Дневные смены начинаются с 6:00 до 18:00, ночные смены начинаются с 18:00 до 6:00.",
+        "threeShiftTitle": "Типы смен:",
+        "threeShiftBody": "Утро: 6:00–14:00. День: 14:00–22:00. Ночь: 22:00–6:00."
       }
     },
     "presets": {
-      "sectionTitle": "Pick a Common Start Time",
+      "sectionTitle": "Выберите общее время начала",
       "custom": {
-        "label": "Custom Time"
+        "label": "Пользовательское время"
       },
       "early_day": {
-        "label": "Early Day Shift"
+        "label": "Ранняя дневная смена"
       },
       "standard_day": {
-        "label": "Standard Day Shift"
+        "label": "Стандартная дневная смена"
       },
       "late_day": {
-        "label": "Late Day Shift"
+        "label": "Поздняя дневная смена"
       },
       "early_night": {
-        "label": "Early Night Shift"
+        "label": "Ранняя ночная смена"
       },
       "standard_night": {
-        "label": "Standard Night Shift"
+        "label": "Стандартная ночная смена"
       },
       "late_night": {
-        "label": "Late Night Shift"
+        "label": "Поздняя ночная смена"
       },
       "early_morning": {
-        "label": "Early Morning"
+        "label": "Раннее утро"
       },
       "standard_morning": {
-        "label": "Standard Morning"
+        "label": "Стандартное утро"
       },
       "late_morning": {
-        "label": "Late Morning"
+        "label": "Позднее утро"
       },
       "early_afternoon": {
-        "label": "Early Afternoon"
+        "label": "Ранний день"
       },
       "standard_afternoon": {
-        "label": "Standard Afternoon"
+        "label": "Стандартный день"
       },
       "late_afternoon": {
-        "label": "Late Afternoon"
+        "label": "Поздно вечером"
       },
       "early_night_8h": {
-        "label": "Early Night"
+        "label": "Ранняя ночь"
       },
       "standard_night_8h": {
-        "label": "Standard Night"
+        "label": "Стандартная ночь"
       },
       "late_night_8h": {
-        "label": "Late Night"
+        "label": "Поздняя ночь"
       }
     },
     "customInput": {
-      "label": "What time do you usually clock in?",
-      "helper": "Use 12-hour format (e.g., 6:00 AM)"
+      "label": "В какое время вы обычно приходите?",
+      "helper": "Используйте 12-часовой формат (например, 6:00 утра)."
     },
     "validation": {
-      "hoursRange": "Hours must be between 1 and 12",
-      "minutesRange": "Minutes must be between 0 and 59"
+      "hoursRange": "Часы должны быть от 1 до 12.",
+      "minutesRange": "Минуты должны быть от 0 до 59."
     },
     "preview": {
-      "yourShift": "Your shift:",
-      "durationHours": "{{duration}} hours"
+      "yourShift": "Ваша смена:",
+      "durationHours": "{{duration}} часов"
     },
     "detection": {
-      "helper": "This is when your shift begins",
-      "autoDetected": "Auto-detected",
+      "helper": "Вот когда начинается твоя смена",
+      "autoDetected": "Автоматически обнаружено",
       "day": {
-        "title": "Daytime start",
-        "window": "Typical window: 6:00 AM - 5:59 PM"
+        "title": "Начало дня",
+        "window": "Типичное окно: 6:00 – 17:59."
       },
       "morning": {
-        "title": "Morning start",
-        "window": "Typical window: 6:00 AM - 1:59 PM"
+        "title": "Утреннее начало",
+        "window": "Типичное окно: 6:00 – 13:59."
       },
       "afternoon": {
-        "title": "Afternoon start",
-        "window": "Typical window: 2:00 PM - 9:59 PM"
+        "title": "Начало дня",
+        "window": "Типичное окно: 14:00–21:59."
       },
       "night": {
-        "title": "Night start",
-        "windowTwoShift": "Typical window: 6:00 PM - 5:59 AM",
-        "windowThreeShift": "Typical window: 10:00 PM - 5:59 AM"
+        "title": "Ночной старт",
+        "windowTwoShift": "Типичное окно: 18:00 – 5:59.",
+        "windowThreeShift": "Типичное окно: 22:00 – 5:59."
       }
     },
     "tips": {
-      "title": "Pro Tip",
-      "subtitle": "Fastest way to pick a reliable start time",
-      "twoShift": "Not sure? Most shift workers on 12-hour rotations start at 6 AM or 6 PM. Pick the closest match-you can adjust it later in settings if needed.",
-      "threeShift": "Not sure? Most 8-hour shift workers start at 6 AM, 2 PM, or 10 PM. Pick the closest match-you can adjust it later in settings if needed."
+      "title": "Совет профессионала",
+      "subtitle": "Самый быстрый способ выбрать надежное время начала",
+      "twoShift": "Не уверен? Большинство сменных рабочих с 12-часовой сменой начинают работу в 6 утра или 18 часов вечера. Выберите наиболее близкое совпадение — при необходимости вы можете изменить его позже в настройках.",
+      "threeShift": "Не уверен? Большинство работников, работающих по 8-часовой смене, начинают работу в 6:00, 14:00 или 22:00. Выберите наиболее близкое совпадение — при необходимости вы можете изменить его позже в настройках."
     },
     "patternInfo": {
       "custom": {
-        "name": "Custom Pattern",
-        "statsTwoShift": "{{total}}-day cycle - {{daysOn}}D/{{nightsOn}}N/{{daysOff}}O",
-        "statsThreeShift": "{{total}}-day cycle - {{morningOn}}M/{{afternoonOn}}A/{{nightOn}}N/{{daysOff}}O"
+        "name": "Пользовательский шаблон",
+        "statsTwoShift": "{{total}}-дневный цикл - {{daysOn}}D/{{nightsOn}}N/{{daysOff}}O",
+        "statsThreeShift": "{{total}}-дневный цикл - {{morningOn}}M/{{afternoonOn}}A/{{nightOn}}N/{{daysOff}}O"
       },
-      "defaultStats": "Custom cycle - Set your schedule",
+      "defaultStats": "Пользовательский цикл — установите свой график",
       "standard444": {
-        "name": "4-4-4 Cycle",
-        "stats": "12-day cycle - 4D/4N/4O"
+        "name": "Цикл 4-4-4",
+        "stats": "12-дневный цикл – 4Д/4Н/4О"
       },
       "standard777": {
-        "name": "7-7-7 Cycle",
-        "stats": "21-day cycle - 7D/7N/7O"
+        "name": "Цикл 7-7-7",
+        "stats": "21-дневный цикл - 7Д/7Н/7О"
       },
       "standard223": {
-        "name": "2-2-3 Cycle",
-        "stats": "7-day cycle - 2D/2N/3O"
+        "name": "2-2-3 цикл",
+        "stats": "7-дневный цикл - 2Д/2Н/3О"
       },
       "standard555": {
-        "name": "5-5-5 Cycle",
-        "stats": "15-day cycle - 5D/5N/5O"
+        "name": "Цикл 5-5-5",
+        "stats": "15-дневный цикл - 5Д/5Н/5О"
       },
       "standard333": {
-        "name": "3-3-3 Cycle",
-        "stats": "9-day cycle - 3D/3N/3O"
+        "name": "3-3-3 Цикл",
+        "stats": "9-дневный цикл - 3Д/3Н/3О"
       },
       "standard101010": {
-        "name": "10-10-10 Cycle",
-        "stats": "30-day cycle - 10D/10N/10O"
+        "name": "Цикл 10-10-10",
+        "stats": "30-дневный цикл - 10Д/10Н/10О"
       },
       "continental": {
-        "name": "Continental",
-        "stats": "8-day cycle - 2D/2N/4O"
+        "name": "Континентальный",
+        "stats": "8-дневный цикл - 2Д/2Н/4О"
       },
       "pitman": {
-        "name": "Pitman",
-        "stats": "7-day cycle - 2D/2N/3O"
+        "name": "Питман",
+        "stats": "7-дневный цикл - 2Д/2Н/3О"
       }
     }
   },
   "customPattern": {
-    "backA11y": "Go back",
+    "backA11y": "Возвращаться",
     "backHint": {
-      "default": "Return to shift pattern selection",
-      "settings": "Discard changes and return to settings"
+      "default": "Вернуться к выбору схемы смены",
+      "settings": "Отменить изменения и вернуться к настройкам"
     },
-    "needMoreChanges": "Need More Changes",
+    "needMoreChanges": "Нужно больше изменений",
     "preview": {
-      "badgeLabel": "{{totalDays}}-day cycle",
-      "balanceTitle": "Work-Rest Balance",
+      "badgeLabel": "{{totalDays}}-дневный цикл",
+      "balanceTitle": "Баланс работы и отдыха",
       "blocks": {
-        "afternoon": "Afternoon",
-        "days": "Days",
-        "morning": "Morning",
-        "night": "Night",
-        "nights": "Nights",
-        "off": "Off"
+        "afternoon": "Полдень",
+        "days": "Дни",
+        "morning": "Утро",
+        "night": "Ночь",
+        "nights": "Ночи",
+        "off": "Выключенный"
       },
-      "cycleLabel": "Your {{totalDays}}-day cycle",
-      "daysOff": "days off",
-      "daysOn": "days on",
+      "cycleLabel": "Ваш {{totalDays}}-дневный цикл",
+      "daysOff": "выходные",
+      "daysOn": "дней на",
       "legend": {
-        "afternoon": "Afternoon",
-        "dayOff": "Day Off",
-        "dayShift": "Day Shift",
-        "morning": "Morning",
-        "night": "Night",
-        "nightShift": "Night Shift"
+        "afternoon": "Полдень",
+        "dayOff": "Выходной",
+        "dayShift": "Дневная смена",
+        "morning": "Утро",
+        "night": "Ночь",
+        "nightShift": "Ночная смена"
       },
-      "ratioLabel": "Every rotation you work",
-      "restLabel": "Rest: {{count}} days",
-      "subtitle": "See what your schedule looks like",
-      "title": "Your Rotation Preview",
-      "workLabel": "Work: {{count}} days"
+      "ratioLabel": "Каждое вращение, которое вы работаете",
+      "restLabel": "Отдых: {{count}} дней",
+      "subtitle": "Посмотрите, как выглядит ваше расписание",
+      "title": "Предварительный просмотр вашей ротации",
+      "workLabel": "Работа: {{count}} дней"
     },
-    "previewGuide": "See your rotation below",
-    "saveA11y": "Save your rotation and continue",
-    "saveButton": "Save This Rotation",
-    "saveHintValid": "Save this {{totalDays}}-day rotation",
+    "previewGuide": "Посмотрите свою ротацию ниже",
+    "saveA11y": "Сохраните ротацию и продолжайте",
+    "saveButton": "Сохранить это вращение",
+    "saveHintValid": "Сохраните эту {{totalDays}}-дневную ротацию",
     "sliders": {
-      "afternoonShifts": "Afternoon Shifts",
-      "dayShifts": "Day Shifts",
-      "daysOff": "Days Off",
-      "morningShifts": "Morning Shifts",
-      "nightShifts": "Night Shifts"
+      "afternoonShifts": "Дневные смены",
+      "dayShifts": "Дневные смены",
+      "daysOff": "Выходные дни",
+      "morningShifts": "Утренние смены",
+      "nightShifts": "Ночные смены"
     },
-    "slidersTitle": "Set Up Your Rotation",
-    "subtitle": "Set how many shifts you work, then how many days off you get—we'll show you what it looks like",
+    "slidersTitle": "Настройте свою ротацию",
+    "subtitle": "Укажите, сколько смен вы будете работать, а затем сколько выходных у вас будет — мы покажем вам, как это выглядит.",
     "subtitleSecondary": {
-      "threeShift": "Morning, Afternoon, Night & Off",
-      "twoShift": "Day, Night & Off"
+      "threeShift": "Утро, день, ночь и выходной",
+      "twoShift": "День, ночь и выходной"
     },
-    "success": "Looking good! You work {{workDays}} days, then get {{daysOff}} days off. That's a solid rotation.",
-    "tip": "Tip: Most shift workers find rotations with at least 3 days off work best. Your body needs time to recover between swing changes.",
-    "title": "Build Your Rotation",
+    "success": "Выглядишь хорошо! Вы работаете {{workDays}} дней, а затем получаете {{daysOff}} выходных. Это надежная ротация.",
+    "tip": "Совет: большинству сменных работников лучше всего подходит ротация с минимум 3-мя выходными. Вашему телу нужно время, чтобы восстановиться между сменами качаний.",
+    "title": "Создайте свою ротацию",
     "validation": {
-      "noOff": "Everyone needs time off—add at least 1 day off to your rotation",
-      "noWork": "You need at least 1 shift to track—add some day or night shifts",
-      "tooLong": "Your rotation is {{totalDays}} days long—we can only handle up to 28 days. Try shortening it."
+      "noOff": "Каждому нужен выходной — добавьте в свой график хотя бы 1 выходной.",
+      "noWork": "Для отслеживания вам нужна хотя бы одна смена — добавьте несколько дневных или ночных смен.",
+      "tooLong": "Ваша ротация длится {{totalDays}} дней. Мы можем обработать не более 28 дней. Попробуйте сократить его."
     },
-    "warning": "This pattern is work-heavy ({{workPercentage}}% work). Consider adding more days off if fatigue is a concern."
+    "warning": "Этот шаблон требует больших усилий ({{workPercentage}}% работы). Рассмотрите возможность добавления дополнительных выходных, если вас беспокоит усталость."
   },
   "fifoCustom": {
-    "backA11y": "Go back",
+    "backA11y": "Возвращаться",
     "backHint": {
-      "default": "Return to shift pattern selection",
-      "settings": "Discard changes and return to settings"
+      "default": "Вернуться к выбору схемы смены",
+      "settings": "Отменить изменения и вернуться к настройкам"
     },
     "preview": {
-      "badgeLabel": "{{totalCycleDays}}-day FIFO cycle",
-      "balanceTitle": "Work-Rest Balance",
-      "cycleDayA11y": "Cycle day {{day}}",
-      "cycleFlow": "Cycle flow across {{previewDays}} visible days",
-      "homeDays": "home days",
+      "badgeLabel": "{{totalCycleDays}}-дневный цикл FIFO",
+      "balanceTitle": "Баланс работы и отдыха",
+      "cycleDayA11y": "День цикла {{day}}",
+      "cycleFlow": "Циклический поток в течение {{previewDays}} видимых дней",
+      "homeDays": "домашние дни",
       "legend": {
-        "daySwing": "Day Swing",
-        "homeBlock": "Home Block",
-        "nightSwing": "Night Swing"
+        "daySwing": "Дневные качели",
+        "homeBlock": "Домашний блок",
+        "nightSwing": "Ночные качели"
       },
-      "ratioLabel": "Site to home rhythm",
-      "restLabel": "Rest: {{restBlockDays}} days",
-      "siteDays": "site days",
-      "subtitle": "{{workBlockDays}} days at site, then {{restBlockDays}} days at home",
-      "swingSplit": "Swing split: {{daysOnDayShift}} day-shift days + {{daysOnNightShift}} night-shift days",
-      "title": "Your FIFO Rotation Preview",
-      "workLabel": "Work: {{workBlockDays}} days"
+      "ratioLabel": "Сайт в домашнем ритме",
+      "restLabel": "Отдых: {{restBlockDays}} дней",
+      "siteDays": "дни сайта",
+      "subtitle": "{{workBlockDays}} дней на месте, затем {{restBlockDays}} дней дома",
+      "swingSplit": "Разделение смены: {{daysOnDayShift}} дней дневной смены + {{daysOnNightShift}} дней ночной смены",
+      "title": "Предварительный просмотр ротации FIFO",
+      "workLabel": "Работа: {{workBlockDays}} дней"
     },
-    "previewGuide": "See your FIFO pattern below",
-    "saveA11y": "Save FIFO pattern and continue",
-    "saveButton": "Save FIFO Pattern",
-    "saveHintInvalid": "Fix the validation issue before continuing",
-    "saveHintValid": "{{workBlockDays}} days work, {{restBlockDays}} days rest",
+    "previewGuide": "См. шаблон FIFO ниже.",
+    "saveA11y": "Сохраните шаблон FIFO и продолжите.",
+    "saveButton": "Сохранить шаблон FIFO",
+    "saveHintInvalid": "Прежде чем продолжить, устраните проблему с проверкой.",
+    "saveHintValid": "{{workBlockDays}} дней работы, {{restBlockDays}} дней отдыха",
     "sliders": {
-      "daysAtHome": "Days at Home (Rest Block)",
-      "daysAtSite": "Days at Site (Work Block)",
-      "daysOnDayShift": "Days on Day Shift",
-      "daysOnNightShift": "Days on Night Shift"
+      "daysAtHome": "Дни дома (блок отдыха)",
+      "daysAtSite": "Дней на объекте (рабочий блок)",
+      "daysOnDayShift": "Дни в дневной смене",
+      "daysOnNightShift": "Дни в ночной смене"
     },
-    "slidersTitle": "Set Up Your FIFO Pattern",
-    "subtitle": "Set your on-site block, home block, and work-block shift style for a schedule that fits your site cycle.",
-    "subtitleSecondary": "Work Block, Rest Block & Pattern Split",
-    "success": "Solid FIFO setup. {{workBlockDays}} days at site, then {{restBlockDays}} days at home.",
-    "swingSubtitle": "Split your work block between day and night shifts.",
-    "swingTitle": "Swing Configuration",
-    "swingTotal": "Split total: {{swingTotal}}/{{workBlockDays}} days",
-    "tip": "Tip: Match your home block to recovery and travel demands. FIFO patterns work best when the rest block is long enough to reset before your next site run.",
-    "title": "Build Your FIFO Rotation",
+    "slidersTitle": "Настройте свой шаблон FIFO",
+    "subtitle": "Установите стиль смены блока на месте, домашнего блока и рабочего блока по графику, который соответствует циклу вашего сайта.",
+    "subtitleSecondary": "Рабочий блок, блок отдыха и разделение шаблона",
+    "success": "Надежная настройка FIFO. {{workBlockDays}} дней на месте, затем {{restBlockDays}} дней дома.",
+    "swingSubtitle": "Разделите свой рабочий блок на дневные и ночные смены.",
+    "swingTitle": "Конфигурация поворота",
+    "swingTotal": "Всего по разбивке: {{swingTotal}}/{{workBlockDays}} дней",
+    "tip": "Совет: сопоставьте свой домашний блок с потребностями в восстановлении и поездках. Шаблоны FIFO работают лучше всего, когда оставшийся блок достаточно длинный, чтобы его можно было сбросить перед следующим запуском сайта.",
+    "title": "Создайте ротацию ФИФО",
     "validation": {
-      "blocksMinimum": "Work and rest blocks must each be at least 1 day.",
-      "swingMismatch": "Swing split must equal {{workBlockDays}} days before saving."
+      "blocksMinimum": "Блоки работы и отдыха должны составлять не менее 1 дня каждый.",
+      "swingMismatch": "Перед сохранением разделение колебаний должно составлять {{workBlockDays}} дней."
     },
-    "warning": "This roster is heavy ({{workPercentage}}% work). Consider balancing with more home days if fatigue becomes an issue.",
-    "workPatternSubtitle": "How are your shifts organized while at site?",
-    "workPatternTitle": "Work Pattern During Work Block"
+    "warning": "Этот состав тяжелый ({{workPercentage}}% работы). Подумайте о том, чтобы сбалансировать больше дней дома, если усталость становится проблемой.",
+    "workPatternSubtitle": "Как организованы ваши смены на объекте?",
+    "workPatternTitle": "Схема работы во время рабочего блока"
   }
 }

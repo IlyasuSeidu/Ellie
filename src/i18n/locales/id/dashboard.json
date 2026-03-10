@@ -1,72 +1,72 @@
 {
   "greeting": {
-    "morning": "Good morning",
-    "afternoon": "Good afternoon",
-    "evening": "Good evening",
-    "night": "Good night"
+    "morning": "Selamat pagi",
+    "afternoon": "Selamat siang",
+    "evening": "Selamat malam",
+    "night": "Selamat malam"
   },
-  "pullToRefresh": "Pull to refresh",
-  "refreshing": "Refreshing schedule...",
-  "scheduleUpdated": "Schedule updated",
+  "pullToRefresh": "Tarik untuk menyegarkan",
+  "refreshing": "Menyegarkan jadwal...",
+  "scheduleUpdated": "Jadwal diperbarui",
   "lastUpdated": {
-    "justNow": "Just now",
-    "secondsAgo": "{{count}}s ago",
-    "minutesAgo": "{{count}}m ago",
-    "updatedPrefix": "Updated "
+    "justNow": "Baru saja",
+    "secondsAgo": "{{count}}s yang lalu",
+    "minutesAgo": "{{count}}m yang lalu",
+    "updatedPrefix": "Diperbarui"
   },
   "errors": {
-    "loadFailed": "Unable to load shift data"
+    "loadFailed": "Tidak dapat memuat data shift"
   },
   "user": {
-    "defaultName": "User"
+    "defaultName": "Pengguna"
   },
   "upcoming": {
-    "title": "Upcoming Shifts"
+    "title": "Pergeseran Mendatang"
   },
   "shiftLabels": {
-    "day": "Day Shift",
-    "night": "Night Shift",
-    "morning": "Morning Shift",
-    "afternoon": "Afternoon Shift",
-    "off": "Day Off"
+    "day": "Pergeseran Hari",
+    "night": "Pergeseran Malam",
+    "morning": "Shift Pagi",
+    "afternoon": "Shift Siang",
+    "off": "Hari libur"
   },
   "shiftSubtitles": {
-    "day": "Stay energized!",
-    "night": "Stay alert!",
-    "morning": "Rise and shine!",
-    "afternoon": "Keep it going!",
-    "off": "Rest and recharge!"
+    "day": "Tetap bersemangat!",
+    "night": "Tetap waspada!",
+    "morning": "Bangkit dan bersinar!",
+    "afternoon": "Teruskan!",
+    "off": "Istirahat dan isi ulang!"
   },
   "fifo": {
-    "onSite": "On-site roster active",
-    "homeBlock": "Home block active",
-    "workBlock": "Work",
-    "restBlock": "Rest",
-    "blockChangeToday": "Block change today!",
-    "blockChangeTomorrow": "Block change tomorrow!",
-    "untilRest": "{{count}}d until rest block",
-    "untilWork": "{{count}}d until work block",
-    "blockDayOf": "{{blockName}} Block Day {{day}} of {{total}}",
-    "days": "days"
+    "onSite": "Daftar di tempat aktif",
+    "homeBlock": "Blok rumah aktif",
+    "workBlock": "Bekerja",
+    "restBlock": "Istirahat",
+    "blockChangeToday": "Blokir perubahan hari ini!",
+    "blockChangeTomorrow": "Blokir perubahan besok!",
+    "untilRest": "{{count}}d sampai blok istirahat",
+    "untilWork": "{{count}}d sampai blok pekerjaan",
+    "blockDayOf": "{{blockName}} Hari Blok {{day}} dari {{total}}",
+    "days": "hari"
   },
   "stats": {
-    "workDays": "Work Days",
-    "offDays": "Off Days",
-    "balance": "Balance"
+    "workDays": "Hari Kerja",
+    "offDays": "Hari Libur",
+    "balance": "Keseimbangan"
   },
   "calendar": {
-    "legendDay": "Day",
-    "legendMorning": "Morning",
-    "legendAfternoon": "Afternoon",
-    "legendNight": "Night",
-    "legendOff": "Off",
-    "legendWorkBlock": "Work Block",
-    "legendRestBlock": "Rest Block",
-    "cycle": "cycle",
-    "previousMonth": "Previous month",
-    "nextMonth": "Next month"
+    "legendDay": "Hari",
+    "legendMorning": "Pagi",
+    "legendAfternoon": "Sore",
+    "legendNight": "Malam",
+    "legendOff": "Mati",
+    "legendWorkBlock": "Blok Kerja",
+    "legendRestBlock": "Blok Istirahat",
+    "cycle": "siklus",
+    "previousMonth": "Bulan sebelumnya",
+    "nextMonth": "Bulan depan"
   },
   "badges": {
-    "active": "ACTIVE"
+    "active": "AKTIF"
   }
 }

@@ -160,3 +160,6 @@ Scope lock:
    - fallback blocking alert if reload is unavailable/fails
 5. Extended date locale mapping for additional languages in onboarding/completion formatting flows.
 6. Completed strict onboarding language polish for `es` and `pt-BR` and preserved interpolation-token integrity.
+7. Completed runtime translation-polish pass for `fr`, `ar`, `zh-CN`, `ru`, `hi`, `af`, `zu`, `id` with parity/token audits and reports:
+   - `/Users/Shared/Ellie/reports/i18n/runtime-translation-gaps-before.json`
+   - `/Users/Shared/Ellie/reports/i18n/runtime-translation-gaps-after.json`

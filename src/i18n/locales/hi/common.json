@@ -1,30 +1,30 @@
 {
   "buttons": {
-    "save": "Save",
-    "cancel": "Cancel",
-    "confirm": "Confirm",
-    "back": "Back",
-    "next": "Next",
-    "done": "Done",
-    "set": "Set",
-    "edit": "Edit",
-    "clear": "Clear",
-    "close": "Close",
-    "saveAndReturn": "Save & Return"
+    "save": "बचाना",
+    "cancel": "रद्द करना",
+    "confirm": "पुष्टि करना",
+    "back": "पीछे",
+    "next": "अगला",
+    "done": "हो गया",
+    "set": "तय करना",
+    "edit": "संपादन करना",
+    "clear": "स्पष्ट",
+    "close": "बंद करना",
+    "saveAndReturn": "सहेजें और वापस करें"
   },
   "errors": {
-    "loadFailed": "Failed to load data",
-    "saveFailed": "Failed to save changes"
+    "loadFailed": "डेटा लोड करने में विफल",
+    "saveFailed": "परिवर्तन सहेजने में विफल"
   },
   "avatar": {
-    "title": "Profile Photo",
-    "message": "Choose your avatar",
-    "chooseFromLibrary": "Choose from Library",
-    "takePhoto": "Take Photo",
-    "removePhoto": "Remove Photo"
+    "title": "खाते की फोटो",
+    "message": "अपना अवतार चुनें",
+    "chooseFromLibrary": "लाइब्रेरी से चुनें",
+    "takePhoto": "फोटो लो",
+    "removePhoto": "फ़ोटो हटाएँ"
   },
   "language": {
-    "label": "Language",
-    "selector": "Select Language"
+    "label": "भाषा",
+    "selector": "भाषा चुने"
   }
 }

@@ -1,72 +1,72 @@
 {
   "greeting": {
-    "morning": "Good morning",
-    "afternoon": "Good afternoon",
-    "evening": "Good evening",
-    "night": "Good night"
+    "morning": "Доброе утро",
+    "afternoon": "Добрый день",
+    "evening": "Добрый вечер",
+    "night": "Спокойной ночи"
   },
-  "pullToRefresh": "Pull to refresh",
-  "refreshing": "Refreshing schedule...",
-  "scheduleUpdated": "Schedule updated",
+  "pullToRefresh": "Потяните, чтобы обновить",
+  "refreshing": "Обновление расписания...",
+  "scheduleUpdated": "Расписание обновлено",
   "lastUpdated": {
-    "justNow": "Just now",
-    "secondsAgo": "{{count}}s ago",
-    "minutesAgo": "{{count}}m ago",
-    "updatedPrefix": "Updated "
+    "justNow": "Прямо сейчас",
+    "secondsAgo": "{{count}}с назад",
+    "minutesAgo": "{{count}}м назад",
+    "updatedPrefix": "Обновлено"
   },
   "errors": {
-    "loadFailed": "Unable to load shift data"
+    "loadFailed": "Невозможно загрузить данные смены"
   },
   "user": {
-    "defaultName": "User"
+    "defaultName": "Пользователь"
   },
   "upcoming": {
-    "title": "Upcoming Shifts"
+    "title": "Предстоящие смены"
   },
   "shiftLabels": {
-    "day": "Day Shift",
-    "night": "Night Shift",
-    "morning": "Morning Shift",
-    "afternoon": "Afternoon Shift",
-    "off": "Day Off"
+    "day": "Дневная смена",
+    "night": "Ночная смена",
+    "morning": "Утренняя смена",
+    "afternoon": "Дневная смена",
+    "off": "Выходной"
   },
   "shiftSubtitles": {
-    "day": "Stay energized!",
-    "night": "Stay alert!",
-    "morning": "Rise and shine!",
-    "afternoon": "Keep it going!",
-    "off": "Rest and recharge!"
+    "day": "Оставайтесь энергичными!",
+    "night": "Будьте начеку!",
+    "morning": "Восстань и сияй!",
+    "afternoon": "Продолжайте в том же духе!",
+    "off": "Отдыхайте и заряжайтесь!"
   },
   "fifo": {
-    "onSite": "On-site roster active",
-    "homeBlock": "Home block active",
-    "workBlock": "Work",
-    "restBlock": "Rest",
-    "blockChangeToday": "Block change today!",
-    "blockChangeTomorrow": "Block change tomorrow!",
-    "untilRest": "{{count}}d until rest block",
-    "untilWork": "{{count}}d until work block",
-    "blockDayOf": "{{blockName}} Block Day {{day}} of {{total}}",
-    "days": "days"
+    "onSite": "Реестр на месте активен",
+    "homeBlock": "Домашняя блокировка активна",
+    "workBlock": "Работа",
+    "restBlock": "Отдых",
+    "blockChangeToday": "Заблокируйте замену сегодня!",
+    "blockChangeTomorrow": "Смена блока завтра!",
+    "untilRest": "{{count}}д до блока отдыха",
+    "untilWork": "{{count}}д до рабочего блока",
+    "blockDayOf": "{{blockName}} Блок-день {{day}} {{total}}",
+    "days": "дни"
   },
   "stats": {
-    "workDays": "Work Days",
-    "offDays": "Off Days",
-    "balance": "Balance"
+    "workDays": "Рабочие дни",
+    "offDays": "Выходные дни",
+    "balance": "Баланс"
   },
   "calendar": {
-    "legendDay": "Day",
-    "legendMorning": "Morning",
-    "legendAfternoon": "Afternoon",
-    "legendNight": "Night",
-    "legendOff": "Off",
-    "legendWorkBlock": "Work Block",
-    "legendRestBlock": "Rest Block",
-    "cycle": "cycle",
-    "previousMonth": "Previous month",
-    "nextMonth": "Next month"
+    "legendDay": "День",
+    "legendMorning": "Утро",
+    "legendAfternoon": "Полдень",
+    "legendNight": "Ночь",
+    "legendOff": "Выключенный",
+    "legendWorkBlock": "Рабочий блок",
+    "legendRestBlock": "Блок отдыха",
+    "cycle": "цикл",
+    "previousMonth": "Предыдущий месяц",
+    "nextMonth": "В следующем месяце"
   },
   "badges": {
-    "active": "ACTIVE"
+    "active": "АКТИВНЫЙ"
   }
 }

@@ -1,7 +1,7 @@
 {
-  "title": "Schedule",
-  "comingSoon": "Coming Soon",
-  "description": "Your detailed shift calendar and schedule management will appear here.",
-  "statsTitle": "Statistics",
-  "statsDescription": "Detailed analytics and insights about your shift patterns will appear here."
+  "title": "Jadwal",
+  "comingSoon": "Segera hadir",
+  "description": "Kalender shift dan manajemen jadwal Anda yang terperinci akan muncul di sini.",
+  "statsTitle": "Statistik",
+  "statsDescription": "Analisis dan wawasan terperinci tentang pola shift Anda akan muncul di sini."
 }

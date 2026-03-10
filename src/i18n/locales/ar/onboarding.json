@@ -99,13 +99,13 @@
     "continueButton": "يكمل",
     "closeButton": "يغلق",
     "endState": {
-      "customButton": "Build Custom Rotation",
-      "reviewButton": "Look Again",
-      "reviewedSubtitle": "Didn't see yours? You can build a custom one, or take another look",
-      "reviewedTitle": "That's all {{count}} rotations we've got!"
+      "customButton": "بناء دوران مخصص",
+      "reviewButton": "انظر مرة أخرى",
+      "reviewedSubtitle": "لم أرى لك؟ يمكنك بناء واحدة مخصصة، أو إلقاء نظرة أخرى",
+      "reviewedTitle": "هذا كل ما لدينا من دورات {{count}}!"
     },
-    "instruction": "Choose the rotation your workplace uses—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info",
-    "title": "What's Your Roster Rotation?"
+    "instruction": "اختر التناوب الذي يستخدمه مكان عملك، وسنقوم ببناء التقويم الخاص بك من هذا\nاسحب لليمين للاختيار، ولليسار لرؤية المزيد، ولأعلى للحصول على معلومات",
+    "title": "ما هو تناوب القائمة الخاصة بك؟"
   },
   "rosterType": {
     "title": "كيف تعمل قائمتك؟",
@@ -197,33 +197,33 @@
       "meals": "وجبة وترطيب",
       "mealsDesc": "حافظ على صحتك مع اقتراحات توقيت الوجبات وتذكيرات الترطيب"
     },
-    "featureHint": "Tap a feature chip to see more details.",
-    "featuresTitle": "What you can do with Ellie",
-    "getStartedA11yHint": "Tap to start using the app",
-    "getStartedA11yLabel": "Get started with Ellie",
-    "loading": "Setting up your calendar...",
-    "retryA11yHint": "Tap to try saving your data again",
-    "retryA11yLabel": "Retry saving your data",
-    "subtitle": "Welcome to Ellie",
+    "featureHint": "اضغط على شريحة الميزات لرؤية المزيد من التفاصيل.",
+    "featuresTitle": "ماذا يمكنك أن تفعل مع إيلي",
+    "getStartedA11yHint": "انقر لبدء استخدام التطبيق",
+    "getStartedA11yLabel": "ابدأ مع إيلي",
+    "loading": "جارٍ إعداد التقويم الخاص بك...",
+    "retryA11yHint": "انقر لمحاولة حفظ بياناتك مرة أخرى",
+    "retryA11yLabel": "أعد محاولة حفظ بياناتك",
+    "subtitle": "مرحبا بكم في ايلي",
     "summary": {
-      "company": "Company",
-      "cycle": "Cycle",
-      "name": "Name",
-      "notSet": "Not set",
-      "pattern": "Pattern",
-      "rosterType": "Roster Type",
-      "rosterTypeFIFO": "FIFO (Fly-In Fly-Out)",
-      "rosterTypeRotating": "Rotating Roster",
-      "shiftSystem": "Shift System",
-      "shiftSystemThree": "3-Shift System",
-      "shiftSystemTwo": "2-Shift System",
-      "shiftTimes": "Shift Times",
-      "startDate": "Start Date",
-      "title": "Your profile",
-      "workPattern": "Work Pattern"
+      "company": "شركة",
+      "cycle": "دورة",
+      "name": "اسم",
+      "notSet": "لم يتم ضبطه",
+      "pattern": "نمط",
+      "rosterType": "نوع القائمة",
+      "rosterTypeFIFO": "FIFO (التحليق للداخل والخروج للخارج)",
+      "rosterTypeRotating": "القائمة الدورية",
+      "shiftSystem": "نظام التحول",
+      "shiftSystemThree": "3-نظام التحول",
+      "shiftSystemTwo": "2-نظام التحول",
+      "shiftTimes": "أوقات التحول",
+      "startDate": "تاريخ البدء",
+      "title": "ملفك الشخصي",
+      "workPattern": "نمط العمل"
     },
-    "title": "You're all set!",
-    "tryAgain": "Try Again"
+    "title": "أنت جاهز تمامًا!",
+    "tryAgain": "حاول ثانية"
   },
   "phaseSelector": {
     "hints": {
@@ -234,47 +234,47 @@
     "modal": {
       "phaseLengthValue_one": "{{count}} يوم",
       "phaseLengthValue_other": "{{count}} يوم",
-      "phaseLength": "Phase Length",
-      "phaseLengthValue": "{{count}} day"
+      "phaseLength": "طول المرحلة",
+      "phaseLengthValue": "{{count}} يوم"
     },
     "cards": {
       "afternoon": {
-        "description": "Afternoon hours (e.g., 12pm-8pm)",
-        "title": "Afternoon Shift"
+        "description": "ساعات بعد الظهر (على سبيل المثال، 12 ظهرًا - 8 مساءً)",
+        "title": "التحول بعد الظهر"
       },
       "day": {
-        "description": "Working during daylight (e.g., 6am-6pm)",
-        "title": "Day Shift"
+        "description": "العمل أثناء النهار (على سبيل المثال، من 6 صباحًا إلى 6 مساءً)",
+        "title": "التحول اليومي"
       },
       "morning": {
-        "description": "Early morning hours (e.g., 4am-12pm)",
-        "title": "Morning Shift"
+        "description": "ساعات الصباح الباكر (على سبيل المثال، 4 صباحًا - 12 ظهرًا)",
+        "title": "التحول الصباحي"
       },
       "night": {
-        "description": "Working at nighttime (e.g., 6pm-6am)",
-        "descriptionThreeShift": "Nighttime hours (e.g., 8pm-4am)",
-        "title": "Night Shift"
+        "description": "العمل ليلاً (على سبيل المثال، من 6 مساءً إلى 6 صباحًا)",
+        "descriptionThreeShift": "ساعات الليل (على سبيل المثال، 8 مساءً - 4 صباحًا)",
+        "title": "التحول الليلي"
       },
       "off": {
-        "description": "Rest and recovery at home",
-        "title": "Days Off"
+        "description": "الراحة والتعافي في المنزل",
+        "title": "أيام العطلة"
       }
     },
-    "dayCardTitle": "Day {{day}}",
-    "daySubtitle": "You said you're on {{selectedPhaseTitle}}. Swipe to your current day—is it the {{dayList}}?",
-    "dayTitle": "Which day of {{selectedPhaseTitle}} are you on?",
-    "preparing": "Preparing your calendar...",
-    "title": "What shift are you on right now?",
-    "dayOrdinal": "Day {{day}}",
+    "dayCardTitle": "اليوم {{day}}",
+    "daySubtitle": "لقد قلت أنك على {{selectedPhaseTitle}}. اسحب إلى يومك الحالي — هل هو {{dayList}}؟",
+    "dayTitle": "في أي يوم من {{selectedPhaseTitle}} أنت؟",
+    "preparing": "جارٍ تحضير التقويم الخاص بك...",
+    "title": "ما التحول الذي أنت عليه الآن؟",
+    "dayOrdinal": "اليوم {{day}}",
     "list": {
-      "or": "or"
+      "or": "أو"
     },
     "dayDescriptions": {
-      "restLastDay": "Last day off before returning",
-      "restDayOfTotal": "Rest day {{day}} of {{total}}",
-      "firstDay": "First day of this phase",
-      "lastDay": "Last day of this phase",
-      "dayOfTotal": "Day {{day}} of {{total}}"
+      "restLastDay": "آخر يوم إجازة قبل العودة",
+      "restDayOfTotal": "يوم الراحة {{day}} من {{total}}",
+      "firstDay": "اليوم الأول من هذه المرحلة",
+      "lastDay": "اليوم الأخير من هذه المرحلة",
+      "dayOfTotal": "اليوم {{day}} من {{total}}"
     }
   },
   "fifoPhaseSelector": {
@@ -421,21 +421,21 @@
       "setShiftTimesA11y": "ضبط أوقات التحول"
     },
     "selectedDate": {
-      "startsOn": "Your cycle will start on:"
+      "startsOn": "ستبدأ دورتك في:"
     },
     "phaseSelector": {
-      "title": "Choose which part of your cycle you'll be on"
+      "title": "اختاري أي جزء من دورتك ستكونين فيه"
     },
     "dayWithinPhase": {
-      "title": "Which day of your {{phaseLabel}}?",
-      "dayA11yLabel": "Day {{dayNumber}}",
-      "dayA11yHint": "Select day {{dayNumber}} of phase"
+      "title": "أي يوم من أيام {{phaseLabel}}؟",
+      "dayA11yLabel": "اليوم {{dayNumber}}",
+      "dayA11yHint": "اختر اليوم {{dayNumber}} من المرحلة"
     },
     "preview": {
-      "notSelected": "Not selected",
-      "startingLabel": "Starting:",
-      "phaseLabel": "Phase:",
-      "confirmation": "Your first cycle begins here"
+      "notSelected": "لم يتم التحديد",
+      "startingLabel": "البدء:",
+      "phaseLabel": "مرحلة:",
+      "confirmation": "تبدأ دورتك الأولى هنا"
     }
   },
   "shiftTime": {
@@ -505,49 +505,49 @@
         "label": "الوقت المخصص"
       },
       "early_day": {
-        "label": "Early Day Shift"
+        "label": "التحول في وقت مبكر اليوم"
       },
       "standard_day": {
-        "label": "Standard Day Shift"
+        "label": "التحول اليومي القياسي"
       },
       "late_day": {
-        "label": "Late Day Shift"
+        "label": "التحول في وقت متأخر من اليوم"
       },
       "early_night": {
-        "label": "Early Night Shift"
+        "label": "التحول الليلي المبكر"
       },
       "standard_night": {
-        "label": "Standard Night Shift"
+        "label": "التحول الليلي القياسي"
       },
       "late_night": {
-        "label": "Late Night Shift"
+        "label": "التحول في وقت متأخر من الليل"
       },
       "early_morning": {
-        "label": "Early Morning"
+        "label": "الصباح الباكر"
       },
       "standard_morning": {
-        "label": "Standard Morning"
+        "label": "صباح قياسي"
       },
       "late_morning": {
-        "label": "Late Morning"
+        "label": "وقت متأخر من الصباح"
       },
       "early_afternoon": {
-        "label": "Early Afternoon"
+        "label": "في وقت مبكر بعد الظهر"
       },
       "standard_afternoon": {
-        "label": "Standard Afternoon"
+        "label": "بعد الظهر القياسية"
       },
       "late_afternoon": {
-        "label": "Late Afternoon"
+        "label": "وقت متأخر من بعد الظهر"
       },
       "early_night_8h": {
-        "label": "Early Night"
+        "label": "في وقت مبكر من الليل"
       },
       "standard_night_8h": {
-        "label": "Standard Night"
+        "label": "ليلة قياسية"
       },
       "late_night_8h": {
-        "label": "Late Night"
+        "label": "وقت متأخر من الليل"
       }
     },
     "customInput": {
@@ -631,118 +631,118 @@
     }
   },
   "customPattern": {
-    "backA11y": "Go back",
+    "backA11y": "عُد",
     "backHint": {
-      "default": "Return to shift pattern selection",
-      "settings": "Discard changes and return to settings"
+      "default": "العودة إلى اختيار نمط التحول",
+      "settings": "تجاهل التغييرات والعودة إلى الإعدادات"
     },
-    "needMoreChanges": "Need More Changes",
+    "needMoreChanges": "بحاجة الى مزيد من التغييرات",
     "preview": {
-      "badgeLabel": "{{totalDays}}-day cycle",
-      "balanceTitle": "Work-Rest Balance",
+      "badgeLabel": "{{totalDays}} دورة مدتها يوم",
+      "balanceTitle": "التوازن بين العمل والراحة",
       "blocks": {
-        "afternoon": "Afternoon",
-        "days": "Days",
-        "morning": "Morning",
-        "night": "Night",
-        "nights": "Nights",
-        "off": "Off"
+        "afternoon": "بعد الظهر",
+        "days": "أيام",
+        "morning": "صباح",
+        "night": "ليلة",
+        "nights": "ليالي",
+        "off": "عن"
       },
-      "cycleLabel": "Your {{totalDays}}-day cycle",
-      "daysOff": "days off",
-      "daysOn": "days on",
+      "cycleLabel": "دورتك التي تبلغ {{totalDays}} يومًا",
+      "daysOff": "أيام عطلة",
+      "daysOn": "أيام على",
       "legend": {
-        "afternoon": "Afternoon",
-        "dayOff": "Day Off",
-        "dayShift": "Day Shift",
-        "morning": "Morning",
-        "night": "Night",
-        "nightShift": "Night Shift"
+        "afternoon": "بعد الظهر",
+        "dayOff": "يوم عطلة",
+        "dayShift": "التحول اليومي",
+        "morning": "صباح",
+        "night": "ليلة",
+        "nightShift": "التحول الليلي"
       },
-      "ratioLabel": "Every rotation you work",
-      "restLabel": "Rest: {{count}} days",
-      "subtitle": "See what your schedule looks like",
-      "title": "Your Rotation Preview",
-      "workLabel": "Work: {{count}} days"
+      "ratioLabel": "في كل دورة تعملها",
+      "restLabel": "الراحة: {{count}} يوم",
+      "subtitle": "انظر كيف يبدو جدولك الزمني",
+      "title": "معاينة التناوب الخاص بك",
+      "workLabel": "العمل: {{count}} يوم"
     },
-    "previewGuide": "See your rotation below",
-    "saveA11y": "Save your rotation and continue",
-    "saveButton": "Save This Rotation",
-    "saveHintValid": "Save this {{totalDays}}-day rotation",
+    "previewGuide": "انظر التناوب الخاص بك أدناه",
+    "saveA11y": "حفظ التناوب الخاص بك والمتابعة",
+    "saveButton": "حفظ هذا التناوب",
+    "saveHintValid": "احفظ هذا التناوب الذي تبلغ مدته {{totalDays}} يومًا",
     "sliders": {
-      "afternoonShifts": "Afternoon Shifts",
-      "dayShifts": "Day Shifts",
-      "daysOff": "Days Off",
-      "morningShifts": "Morning Shifts",
-      "nightShifts": "Night Shifts"
+      "afternoonShifts": "التحولات بعد الظهر",
+      "dayShifts": "التحولات اليوم",
+      "daysOff": "أيام العطلة",
+      "morningShifts": "التحولات الصباحية",
+      "nightShifts": "التحولات الليلية"
     },
-    "slidersTitle": "Set Up Your Rotation",
-    "subtitle": "Set how many shifts you work, then how many days off you get—we'll show you what it looks like",
+    "slidersTitle": "قم بإعداد التناوب الخاص بك",
+    "subtitle": "حدد عدد الورديات التي تعمل بها، ثم عدد أيام الإجازة التي تحصل عليها، وسنوضح لك كيف تبدو",
     "subtitleSecondary": {
-      "threeShift": "Morning, Afternoon, Night & Off",
-      "twoShift": "Day, Night & Off"
+      "threeShift": "الصباح، بعد الظهر، الليل وإيقاف",
+      "twoShift": "النهار والليل والإيقاف"
     },
-    "success": "Looking good! You work {{workDays}} days, then get {{daysOff}} days off. That's a solid rotation.",
-    "tip": "Tip: Most shift workers find rotations with at least 3 days off work best. Your body needs time to recover between swing changes.",
-    "title": "Build Your Rotation",
+    "success": "تبدو جيدة! تعمل لمدة {{workDays}} يومًا، ثم تحصل على {{daysOff}} يوم إجازة. هذا دوران قوي.",
+    "tip": "نصيحة: يجد معظم العاملين في الورديات أن التناوب مع 3 أيام إجازة على الأقل هو الأفضل. يحتاج جسمك إلى وقت للتعافي بين تغييرات التأرجح.",
+    "title": "بناء التناوب الخاص بك",
     "validation": {
-      "noOff": "Everyone needs time off—add at least 1 day off to your rotation",
-      "noWork": "You need at least 1 shift to track—add some day or night shifts",
-      "tooLong": "Your rotation is {{totalDays}} days long—we can only handle up to 28 days. Try shortening it."
+      "noOff": "يحتاج الجميع إلى إجازة - أضف يومًا واحدًا على الأقل إلى دورتك",
+      "noWork": "أنت بحاجة إلى نوبة عمل واحدة على الأقل لتتبعها — أضف بعض الورديات النهارية أو الليلية",
+      "tooLong": "تبلغ مدة التناوب {{totalDays}} يومًا، ولا يمكننا التعامل إلا مع ما يصل إلى 28 يومًا. حاول تقصيرها."
     },
-    "warning": "This pattern is work-heavy ({{workPercentage}}% work). Consider adding more days off if fatigue is a concern."
+    "warning": "هذا النمط كثيف العمل ({{workPercentage}}% عمل). فكر في إضافة المزيد من أيام الإجازة إذا كان الإرهاق مصدر قلق."
   },
   "fifoCustom": {
-    "backA11y": "Go back",
+    "backA11y": "عُد",
     "backHint": {
-      "default": "Return to shift pattern selection",
-      "settings": "Discard changes and return to settings"
+      "default": "العودة إلى اختيار نمط التحول",
+      "settings": "تجاهل التغييرات والعودة إلى الإعدادات"
     },
     "preview": {
-      "badgeLabel": "{{totalCycleDays}}-day FIFO cycle",
-      "balanceTitle": "Work-Rest Balance",
-      "cycleDayA11y": "Cycle day {{day}}",
-      "cycleFlow": "Cycle flow across {{previewDays}} visible days",
-      "homeDays": "home days",
+      "badgeLabel": "{{totalCycleDays}} دورة FIFO لمدة يوم",
+      "balanceTitle": "التوازن بين العمل والراحة",
+      "cycleDayA11y": "يوم الدورة {{day}}",
+      "cycleFlow": "تدفق الدورة عبر {{previewDays}} من الأيام المرئية",
+      "homeDays": "أيام المنزل",
       "legend": {
-        "daySwing": "Day Swing",
-        "homeBlock": "Home Block",
-        "nightSwing": "Night Swing"
+        "daySwing": "سوينغ اليوم",
+        "homeBlock": "كتلة المنزل",
+        "nightSwing": "أرجوحة ليلية"
       },
-      "ratioLabel": "Site to home rhythm",
-      "restLabel": "Rest: {{restBlockDays}} days",
-      "siteDays": "site days",
-      "subtitle": "{{workBlockDays}} days at site, then {{restBlockDays}} days at home",
-      "swingSplit": "Swing split: {{daysOnDayShift}} day-shift days + {{daysOnNightShift}} night-shift days",
-      "title": "Your FIFO Rotation Preview",
-      "workLabel": "Work: {{workBlockDays}} days"
+      "ratioLabel": "موقع لإيقاع المنزل",
+      "restLabel": "الراحة: {{restBlockDays}} يوم",
+      "siteDays": "أيام الموقع",
+      "subtitle": "{{workBlockDays}} يومًا في الموقع، ثم {{restBlockDays}} يومًا في المنزل",
+      "swingSplit": "تقسيم التأرجح: {{daysOnDayShift}} أيام المناوبة النهارية + {{daysOnNightShift}} أيام المناوبة الليلية",
+      "title": "معاينة دوران FIFO الخاص بك",
+      "workLabel": "العمل: {{workBlockDays}} يوم"
     },
-    "previewGuide": "See your FIFO pattern below",
-    "saveA11y": "Save FIFO pattern and continue",
-    "saveButton": "Save FIFO Pattern",
-    "saveHintInvalid": "Fix the validation issue before continuing",
-    "saveHintValid": "{{workBlockDays}} days work, {{restBlockDays}} days rest",
+    "previewGuide": "انظر نمط FIFO الخاص بك أدناه",
+    "saveA11y": "احفظ نمط FIFO واستمر",
+    "saveButton": "حفظ نمط FIFO",
+    "saveHintInvalid": "قم بإصلاح مشكلة التحقق من الصحة قبل المتابعة",
+    "saveHintValid": "{{workBlockDays}} يوم عمل، {{restBlockDays}} يوم راحة",
     "sliders": {
-      "daysAtHome": "Days at Home (Rest Block)",
-      "daysAtSite": "Days at Site (Work Block)",
-      "daysOnDayShift": "Days on Day Shift",
-      "daysOnNightShift": "Days on Night Shift"
+      "daysAtHome": "أيام في المنزل (كتلة الراحة)",
+      "daysAtSite": "الأيام في الموقع (كتلة العمل)",
+      "daysOnDayShift": "أيام في يوم التحول",
+      "daysOnNightShift": "أيام في التحول الليلي"
     },
-    "slidersTitle": "Set Up Your FIFO Pattern",
-    "subtitle": "Set your on-site block, home block, and work-block shift style for a schedule that fits your site cycle.",
-    "subtitleSecondary": "Work Block, Rest Block & Pattern Split",
-    "success": "Solid FIFO setup. {{workBlockDays}} days at site, then {{restBlockDays}} days at home.",
-    "swingSubtitle": "Split your work block between day and night shifts.",
-    "swingTitle": "Swing Configuration",
-    "swingTotal": "Split total: {{swingTotal}}/{{workBlockDays}} days",
-    "tip": "Tip: Match your home block to recovery and travel demands. FIFO patterns work best when the rest block is long enough to reset before your next site run.",
-    "title": "Build Your FIFO Rotation",
+    "slidersTitle": "قم بإعداد نمط FIFO الخاص بك",
+    "subtitle": "قم بتعيين نمط الكتلة في الموقع، والكتلة الرئيسية، ونمط التحول في كتلة العمل لجدول زمني يناسب دورة موقعك.",
+    "subtitleSecondary": "كتلة العمل، كتلة الراحة وتقسيم النمط",
+    "success": "إعداد FIFO الصلبة. {{workBlockDays}} يومًا في الموقع، ثم {{restBlockDays}} يومًا في المنزل.",
+    "swingSubtitle": "قم بتقسيم كتلة عملك بين نوبات النهار والليل.",
+    "swingTitle": "تكوين التأرجح",
+    "swingTotal": "إجمالي التقسيم: {{swingTotal}}/{{workBlockDays}} يومًا",
+    "tip": "نصيحة: قم بمطابقة مبنى منزلك مع متطلبات التعافي والسفر. تعمل أنماط ما يصرف أولاً بشكل أفضل عندما تكون كتلة الاستراحة طويلة بما يكفي لإعادة ضبطها قبل تشغيل موقعك التالي.",
+    "title": "قم ببناء دوران FIFO الخاص بك",
     "validation": {
-      "blocksMinimum": "Work and rest blocks must each be at least 1 day.",
-      "swingMismatch": "Swing split must equal {{workBlockDays}} days before saving."
+      "blocksMinimum": "يجب أن تكون كتل العمل والراحة يومًا واحدًا على الأقل.",
+      "swingMismatch": "يجب أن يساوي تقسيم التأرجح {{workBlockDays}} يومًا قبل الحفظ."
     },
-    "warning": "This roster is heavy ({{workPercentage}}% work). Consider balancing with more home days if fatigue becomes an issue.",
-    "workPatternSubtitle": "How are your shifts organized while at site?",
-    "workPatternTitle": "Work Pattern During Work Block"
+    "warning": "هذه القائمة ثقيلة ({{workPercentage}}% عمل). فكر في الموازنة بين قضاء المزيد من أيام المنزل إذا أصبح الإرهاق مشكلة.",
+    "workPatternSubtitle": "كيف يتم تنظيم مناوباتك أثناء تواجدك في الموقع؟",
+    "workPatternTitle": "نمط العمل أثناء كتلة العمل"
   }
 }

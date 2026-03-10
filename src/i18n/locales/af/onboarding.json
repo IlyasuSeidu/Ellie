@@ -1,746 +1,746 @@
 {
   "welcome": {
-    "tagline": "Your Mining Shift Companion",
-    "getStarted": "Get Started"
+    "tagline": "Jou Mynskof-metgesel",
+    "getStarted": "Begin"
   },
   "common": {
-    "swipeHint": "Swipe right to select, left to see next, or up for more info",
-    "reviewAgain": "Please review options again to make your selection",
-    "reviewButton": "Review",
-    "continueButton": "Continue",
-    "closeButton": "Close",
-    "backToSettings": "Back to Settings",
-    "saveAndReturn": "Save & Return",
+    "swipeHint": "Swiep regs om te kies, links om volgende te sien, of op vir meer inligting",
+    "reviewAgain": "Hersien asseblief opsies weer om jou keuse te maak",
+    "reviewButton": "Hersien",
+    "continueButton": "Gaan voort",
+    "closeButton": "Maak toe",
+    "backToSettings": "Terug na Instellings",
+    "saveAndReturn": "Stoor en gee terug",
     "hints": {
-      "nextOption": "← Next option",
-      "selectThis": "This one →",
-      "learnMore": "↑ Learn more"
+      "nextOption": "← Volgende opsie",
+      "selectThis": "Hierdie een →",
+      "learnMore": "↑ Kom meer te wete"
     },
     "learnMore": {
-      "howItWorks": "How it works",
-      "whereUsed": "Where you'll see this",
-      "pros": "The good bits",
-      "cons": "What to know"
+      "howItWorks": "Hoe dit werk",
+      "whereUsed": "Waar jy dit sal sien",
+      "pros": "Die goeie stukkies",
+      "cons": "Wat om te weet"
     }
   },
   "intro": {
-    "welcome": "Welcome to Ellie! I'm here to help you set up your shift calendar. Let's start by getting to know you a bit better.",
-    "askName": "What's your name?",
-    "askOccupation": "Great to meet you, {{name}}! What's your occupation?",
-    "askCompany": "Got it! Which company do you work for?",
-    "askCountry": "Almost done! Which country are you based in?",
-    "allSet": "Perfect! You're all set, {{name}}. Let's get your shift calendar configured.",
+    "welcome": "Welkom aan Ellie! Ek is hier om jou te help om jou skofkalender op te stel. Kom ons begin deur jou 'n bietjie beter te leer ken.",
+    "askName": "Wat is jou naam?",
+    "askOccupation": "Wonderlik om jou te ontmoet, {{name}}! Wat is jou beroep?",
+    "askCompany": "Het dit! Vir watter maatskappy werk jy?",
+    "askCountry": "Amper klaar! In watter land is jy gebaseer?",
+    "allSet": "Perfek! Jy is gereed, {{name}}. Kom ons kry jou skofkalender opgestel.",
     "placeholders": {
-      "name": "Enter your name",
-      "occupation": "Enter your occupation",
-      "company": "Enter company name",
-      "country": "Enter your country"
+      "name": "Voer jou naam in",
+      "occupation": "Voer jou beroep in",
+      "company": "Voer maatskappy se naam in",
+      "country": "Voer jou land in"
     },
     "editResponse": {
-      "title": "Edit Response",
-      "message": "Edit your response. The conversation will rewind from this point.",
-      "cancel": "Cancel",
-      "confirm": "Edit"
+      "title": "Wysig reaksie",
+      "message": "Wysig jou antwoord. Die gesprek sal van hierdie punt af terugspoel.",
+      "cancel": "Kanselleer",
+      "confirm": "Wysig"
     },
     "errors": {
-      "nameTooShort": "Name must be at least 2 characters",
-      "nameTooLong": "Name must not exceed 50 characters",
-      "nameInvalidChars": "Name can only contain letters, spaces, hyphens, and apostrophes",
-      "occupationRequired": "Occupation is required",
-      "companyRequired": "Company is required",
-      "countryTooShort": "Country must be at least 2 characters",
-      "countryTooLong": "Country must not exceed 100 characters"
+      "nameTooShort": "Naam moet ten minste 2 karakters wees",
+      "nameTooLong": "Naam mag nie 50 karakters oorskry nie",
+      "nameInvalidChars": "Naam kan net letters, spasies, koppeltekens en apostrofe bevat",
+      "occupationRequired": "Beroep word vereis",
+      "companyRequired": "Maatskappy word vereis",
+      "countryTooShort": "Land moet ten minste 2 karakters wees",
+      "countryTooLong": "Land mag nie 100 karakters oorskry nie"
     }
   },
   "shiftSystem": {
-    "title": "How Many Shifts Does Your Site Run?",
-    "reviewAgain": "Please review systems again to make your selection",
-    "reviewButton": "Review Systems",
-    "continueButton": "Continue",
-    "closeButton": "Close",
-    "instruction": "Select how your site operates—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info",
+    "title": "Hoeveel skofte loop u webwerf?",
+    "reviewAgain": "Hersien asseblief stelsels weer om jou keuse te maak",
+    "reviewButton": "Hersien stelsels",
+    "continueButton": "Gaan voort",
+    "closeButton": "Maak toe",
+    "instruction": "Kies hoe jou werf werk—ons sal jou kalender hieruit bou\nSwiep regs om te kies, links om meer te sien, op vir inligting",
     "endState": {
-      "selectedTitle": "Got it! We'll set up your calendar for this.",
-      "reviewedTitle": "You've viewed all {{count}} shift systems!",
-      "selectedSubtitle": "Next, we'll pick your specific rotation pattern"
+      "selectedTitle": "Het dit! Ons sal jou kalender hiervoor opstel.",
+      "reviewedTitle": "Jy het al {{count}} skofstelsels bekyk!",
+      "selectedSubtitle": "Vervolgens kies ons jou spesifieke rotasiepatroon"
     },
     "cards": {
       "2-shift": {
-        "title": "2 Shifts (12 hours)",
-        "schedule": "Day & night",
-        "description": "Your workplace runs two 12-hour shifts—one during the day, one at night",
+        "title": "2 skofte (12 uur)",
+        "schedule": "Dag & nag",
+        "description": "Jou werkplek loop twee 12-uur skofte—een gedurende die dag, een in die nag",
         "details": {
-          "workRestRatio": "12 hours on, 12 hours off",
-          "useCases": ["Mining sites", "Oil & gas", "24/7 operations", "Remote work"],
-          "pros": ["Extended rest periods", "Predictable schedule", "Good work-life balance"],
-          "cons": [
-            "Long shift duration",
-            "Can be physically demanding",
-            "Limited daylight in winter"
-          ]
+          "workRestRatio": "12 uur aan, 12 uur af",
+          "useCases": ["Mynterreine", "Olie en gas", "24/7 operasies", "Werk op afstand"],
+          "pros": [
+            "Verlengde rusperiodes",
+            "Voorspelbare skedule",
+            "Goeie balans tussen werk en lewe"
+          ],
+          "cons": ["Lang skof duur", "Kan fisies veeleisend wees", "Beperkte daglig in die winter"]
         }
       },
       "3-shift": {
-        "title": "3 Shifts (8 hours)",
-        "schedule": "Morning, afternoon & night",
-        "description": "Your workplace runs three 8-hour shifts—morning, afternoon, and night",
+        "title": "3 skofte (8 uur)",
+        "schedule": "Oggend, middag & nag",
+        "description": "Jou werkplek loop drie 8-uur skofte—oggend, middag en nag",
         "details": {
-          "workRestRatio": "8 hours on, 16 hours off",
-          "useCases": ["Manufacturing", "Healthcare", "Call centers", "24/7 operations"],
-          "pros": ["Shorter shifts", "More time for family", "Easier to stay alert"],
+          "workRestRatio": "8 uur aan, 16 uur af",
+          "useCases": ["Vervaardiging", "Gesondheidsorg", "Inbelsentrums", "24/7 operasies"],
+          "pros": ["Korter skofte", "Meer tyd vir familie", "Makliker om wakker te bly"],
           "cons": [
-            "More frequent shift changes",
-            "Can disrupt sleep patterns",
-            "Less rest between cycles"
+            "Meer gereelde skofveranderinge",
+            "Kan slaappatrone ontwrig",
+            "Minder rus tussen siklusse"
           ]
         }
       }
     }
   },
   "shiftPattern": {
-    "reviewAgain": "Please review patterns again to make your selection",
-    "reviewButton": "Review Patterns",
-    "continueButton": "Continue",
-    "closeButton": "Close",
+    "reviewAgain": "Hersien asseblief weer patrone om jou keuse te maak",
+    "reviewButton": "Hersien patrone",
+    "continueButton": "Gaan voort",
+    "closeButton": "Maak toe",
     "endState": {
-      "customButton": "Build Custom Rotation",
-      "reviewButton": "Look Again",
-      "reviewedSubtitle": "Didn't see yours? You can build a custom one, or take another look",
-      "reviewedTitle": "That's all {{count}} rotations we've got!"
+      "customButton": "Bou pasgemaakte rotasie",
+      "reviewButton": "Kyk weer",
+      "reviewedSubtitle": "Het jy nie joune gesien nie? Jy kan 'n pasgemaakte een bou, of weer kyk",
+      "reviewedTitle": "Dit is al {{count}} rotasies wat ons het!"
     },
-    "instruction": "Choose the rotation your workplace uses—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info",
-    "title": "What's Your Roster Rotation?"
+    "instruction": "Kies die rotasie wat jou werkplek gebruik—ons sal jou kalender hieruit bou\nSwiep regs om te kies, links om meer te sien, op vir inligting",
+    "title": "Wat is jou roosterrotasie?"
   },
   "rosterType": {
-    "title": "How Does Your Roster Work?",
-    "instruction": "Choose the roster style your workplace uses — this shapes your entire schedule\nSwipe right to choose, left to see more, up for details",
-    "preparingNextStep": "Preparing next step...",
+    "title": "Hoe werk jou rooster?",
+    "instruction": "Kies die roosterstyl wat jou werkplek gebruik - dit vorm jou hele skedule\nSwiep regs om te kies, links om meer te sien, op vir besonderhede",
+    "preparingNextStep": "Berei tans volgende stap voor...",
     "learnMore": {
-      "examples": "Examples",
-      "popularIn": "Popular in",
-      "benefits": "Benefits",
-      "considerations": "Things to consider"
+      "examples": "Voorbeelde",
+      "popularIn": "Gewild in",
+      "benefits": "Voordele",
+      "considerations": "Dinge om te oorweeg"
     },
     "cards": {
       "rotating": {
-        "title": "Rotating Roster",
-        "subtitle": "Days → Nights → Off pattern",
-        "description": "You rotate through different shift times in a repeating cycle",
+        "title": "Roterende rooster",
+        "subtitle": "Dae → Nagte → Af patroon",
+        "description": "Jy roteer deur verskillende skoftye in 'n herhalende siklus",
         "details": {
-          "howItWorks": "Workers rotate through different shift times (day shifts, night shifts, days off) in a continuous cycle",
+          "howItWorks": "Werkers roteer deur verskillende skoftye (dagskofte, nagskofte, afdae) in 'n aaneenlopende siklus",
           "examples": [
-            "5-5-5 (South Africa)",
-            "4-4-4 (common globally)",
-            "7-7-7 (long cycle)",
-            "2-2-3 (short cycle)"
+            "5-5-5 (Suid-Afrika)",
+            "4-4-4 (algemeen wêreldwyd)",
+            "7-7-7 (lang siklus)",
+            "2-2-3 (kort siklus)"
           ],
-          "regions": ["South Africa", "Zambia", "DRC", "Europe", "Some US operations"],
+          "regions": ["Suid-Afrika", "Zambië", "DRC", "Europa", "Sommige Amerikaanse bedrywighede"],
           "pros": [
-            "Go home daily or frequently",
-            "Regular routine at each phase",
-            "Suitable for local operations",
-            "Easier for family planning"
+            "Gaan daagliks of gereeld huis toe",
+            "Gereelde roetine by elke fase",
+            "Geskik vir plaaslike bedrywighede",
+            "Makliker vir gesinsbeplanning"
           ],
           "cons": [
-            "Night shifts can disrupt sleep",
-            "Constant rotation through times",
-            "Less extended home time"
+            "Nagskofte kan slaap ontwrig",
+            "Konstante rotasie deur tye",
+            "Minder verlengde tuistyd"
           ]
         }
       },
       "fifo": {
-        "title": "FIFO / Swing Roster",
-        "subtitle": "Work blocks → Home blocks",
-        "description": "You work consecutive days on-site, then get extended time at home",
+        "title": "EIEU / Swing Roster",
+        "subtitle": "Werkblokke → Tuisblokke",
+        "description": "Jy werk opeenvolgende dae ter plaatse en kry dan lang tyd by die huis",
         "details": {
-          "howItWorks": "Workers fly in to remote sites, work consecutive days (work block), then fly home for extended rest (rest block)",
+          "howItWorks": "Werkers vlieg na afgeleë terreine, werk opeenvolgende dae (werkblok), vlieg dan huis toe vir lang rus (rusblok)",
           "examples": [
-            "8/6 (common WA)",
-            "14/14 (even-time)",
-            "21/7 (remote sites)",
-            "28/14 (long cycle)"
+            "8/6 (gewone WA)",
+            "14/14 (gelyktyd)",
+            "21/7 (afgeleë werwe)",
+            "28/14 (lang siklus)"
           ],
-          "regions": ["Australia", "Canada", "Remote global mining"],
+          "regions": ["Australië", "Kanada", "Afgeleë globale mynbou"],
           "pros": [
-            "Extended time at home",
-            "Higher pay rates",
-            "Good for remote sites",
-            "Predictable blocks"
+            "Verlengde tyd by die huis",
+            "Hoër betaalkoerse",
+            "Goed vir afgeleë werwe",
+            "Voorspelbare blokke"
           ],
           "cons": [
-            "Away from family for extended periods",
-            "Travel fatigue",
-            "Isolation at camp",
-            "Adjustment between blocks"
+            "Weg van familie vir lang tydperke",
+            "Reis moegheid",
+            "Isolasie by kamp",
+            "Verstelling tussen blokke"
           ]
         }
       }
     }
   },
   "completion": {
-    "saveFailed": "Failed to save your data. Please try again.",
+    "saveFailed": "Kon nie jou data stoor nie. Probeer asseblief weer.",
     "features": {
-      "reminders": "Smart shift reminders",
-      "remindersDesc": "Never miss a shift with intelligent notifications that adapt to your rotation",
-      "sleep": "Sleep tracking & insights",
-      "sleepDesc": "Optimize your rest between shifts with personalized sleep analytics",
-      "fatigue": "Fatigue monitoring",
-      "fatigueDesc": "Track your energy levels and get alerts when fatigue risk is high",
-      "team": "Team coordination",
-      "teamDesc": "See your crew schedule and coordinate handovers seamlessly",
-      "balance": "Work-life balance",
-      "balanceDesc": "Maintain healthy routines with activity and wellness tracking",
-      "earnings": "Earnings calculator",
-      "earningsDesc": "Automatically calculate overtime, penalties, and shift allowances",
-      "meals": "Meal & hydration",
-      "mealsDesc": "Stay healthy with meal timing suggestions and hydration reminders"
+      "reminders": "Slim skof-herinneringe",
+      "remindersDesc": "Moet nooit 'n skof mis met intelligente kennisgewings wat aanpas by jou rotasie nie",
+      "sleep": "Slaap dop en insigte",
+      "sleepDesc": "Optimaliseer jou rus tussen skofte met gepersonaliseerde slaapanalise",
+      "fatigue": "Moegheidsmonitering",
+      "fatigueDesc": "Volg jou energievlakke en kry waarskuwings wanneer die moegheidsrisiko hoog is",
+      "team": "Span koördinering",
+      "teamDesc": "Sien jou bemanningskedule en koördineer oorhandigings naatloos",
+      "balance": "Werk-lewe balans",
+      "balanceDesc": "Handhaaf gesonde roetines met aktiwiteit en welstand dop",
+      "earnings": "Verdienste sakrekenaar",
+      "earningsDesc": "Bereken outomaties oortyd, boetes en skoftoelaes",
+      "meals": "Ete & hidrasie",
+      "mealsDesc": "Bly gesond met maaltydtydvoorstelle en hidrasie-herinneringe"
     },
-    "featureHint": "Tap a feature chip to see more details.",
-    "featuresTitle": "What you can do with Ellie",
-    "getStartedA11yHint": "Tap to start using the app",
-    "getStartedA11yLabel": "Get started with Ellie",
-    "loading": "Setting up your calendar...",
-    "retryA11yHint": "Tap to try saving your data again",
-    "retryA11yLabel": "Retry saving your data",
-    "subtitle": "Welcome to Ellie",
+    "featureHint": "Tik 'n kenmerkskyfie om meer besonderhede te sien.",
+    "featuresTitle": "Wat jy met Ellie kan doen",
+    "getStartedA11yHint": "Tik om die toepassing te begin gebruik",
+    "getStartedA11yLabel": "Begin met Ellie",
+    "loading": "Stel tans jou kalender op...",
+    "retryA11yHint": "Tik om weer te probeer om jou data te stoor",
+    "retryA11yLabel": "Probeer weer om jou data te stoor",
+    "subtitle": "Welkom aan Ellie",
     "summary": {
-      "company": "Company",
-      "cycle": "Cycle",
-      "name": "Name",
-      "notSet": "Not set",
-      "pattern": "Pattern",
-      "rosterType": "Roster Type",
-      "rosterTypeFIFO": "FIFO (Fly-In Fly-Out)",
-      "rosterTypeRotating": "Rotating Roster",
+      "company": "Maatskappy",
+      "cycle": "Siklus",
+      "name": "Naam",
+      "notSet": "Nie gestel nie",
+      "pattern": "Patroon",
+      "rosterType": "Soort rooster",
+      "rosterTypeFIFO": "EIEU (Vlieg In Vlieg Uit)",
+      "rosterTypeRotating": "Roterende rooster",
       "shiftSystem": "Shift System",
-      "shiftSystemThree": "3-Shift System",
-      "shiftSystemTwo": "2-Shift System",
+      "shiftSystemThree": "3-skof stelsel",
+      "shiftSystemTwo": "2-skof stelsel",
       "shiftTimes": "Shift Times",
-      "startDate": "Start Date",
-      "title": "Your profile",
-      "workPattern": "Work Pattern"
+      "startDate": "Begindatum",
+      "title": "Jou profiel",
+      "workPattern": "Werkpatroon"
     },
-    "title": "You're all set!",
-    "tryAgain": "Try Again"
+    "title": "Jy is gereed!",
+    "tryAgain": "Probeer weer"
   },
   "phaseSelector": {
     "hints": {
-      "next": "← Next",
-      "select": "Select →",
-      "info": "↑ Info"
+      "next": "← Volgende",
+      "select": "Kies →",
+      "info": "↑ Inligting"
     },
     "modal": {
-      "phaseLengthValue_one": "{{count}} day",
-      "phaseLengthValue_other": "{{count}} days",
-      "phaseLength": "Phase Length",
-      "phaseLengthValue": "{{count}} day"
+      "phaseLengthValue_one": "{{count}} dag",
+      "phaseLengthValue_other": "{{count}} dae",
+      "phaseLength": "Fase Lengte",
+      "phaseLengthValue": "{{count}} dag"
     },
     "cards": {
       "afternoon": {
-        "description": "Afternoon hours (e.g., 12pm-8pm)",
-        "title": "Afternoon Shift"
+        "description": "Middag-ure (bv. 12:00-20:00)",
+        "title": "Middagskof"
       },
       "day": {
-        "description": "Working during daylight (e.g., 6am-6pm)",
-        "title": "Day Shift"
+        "description": "Werk gedurende daglig (bv. 06:00-18:00)",
+        "title": "Dagskof"
       },
       "morning": {
-        "description": "Early morning hours (e.g., 4am-12pm)",
-        "title": "Morning Shift"
+        "description": "Vroeë oggendure (bv. 04:00-12:00)",
+        "title": "Oggendskof"
       },
       "night": {
-        "description": "Working at nighttime (e.g., 6pm-6am)",
-        "descriptionThreeShift": "Nighttime hours (e.g., 8pm-4am)",
-        "title": "Night Shift"
+        "description": "Werk in die nag (bv. 18:00-06:00)",
+        "descriptionThreeShift": "Nagure (bv. 20:00-04:00)",
+        "title": "Nagskof"
       },
       "off": {
-        "description": "Rest and recovery at home",
-        "title": "Days Off"
+        "description": "Rus en herstel by die huis",
+        "title": "Afdae"
       }
     },
-    "dayCardTitle": "Day {{day}}",
-    "daySubtitle": "You said you're on {{selectedPhaseTitle}}. Swipe to your current day—is it the {{dayList}}?",
-    "dayTitle": "Which day of {{selectedPhaseTitle}} are you on?",
-    "preparing": "Preparing your calendar...",
-    "title": "What shift are you on right now?",
-    "dayOrdinal": "Day {{day}}",
+    "dayCardTitle": "Dag {{day}}",
+    "daySubtitle": "Jy het gesê jy is op {{selectedPhaseTitle}}. Swiep na jou huidige dag—is dit die {{dayList}}?",
+    "dayTitle": "Op watter dag van {{selectedPhaseTitle}} is jy?",
+    "preparing": "Berei tans jou kalender voor...",
+    "title": "Op watter skof is jy nou?",
+    "dayOrdinal": "Dag {{day}}",
     "list": {
-      "or": "or"
+      "or": "of"
     },
     "dayDescriptions": {
-      "restLastDay": "Last day off before returning",
-      "restDayOfTotal": "Rest day {{day}} of {{total}}",
-      "firstDay": "First day of this phase",
-      "lastDay": "Last day of this phase",
-      "dayOfTotal": "Day {{day}} of {{total}}"
+      "restLastDay": "Laaste dag af voor terugkeer",
+      "restDayOfTotal": "Rusdag {{day}} van {{total}}",
+      "firstDay": "Eerste dag van hierdie fase",
+      "lastDay": "Laaste dag van hierdie fase",
+      "dayOfTotal": "Dag {{day}} van {{total}}"
     }
   },
   "fifoPhaseSelector": {
     "title": {
-      "workPattern": "How are shifts run during your FIFO work block?",
-      "swingConfig": "Configure your swing split",
-      "block": "Where are you in your FIFO cycle?",
-      "dayWithinBlock": "Which day of {{blockTitle}} are you on?"
+      "workPattern": "Hoe word skofte tydens jou EIEU-werkblok uitgevoer?",
+      "swingConfig": "Stel jou swaaiverdeling op",
+      "block": "Waar is jy in jou EIEU-siklus?",
+      "dayWithinBlock": "Op watter dag van {{blockTitle}} is jy?"
     },
     "subtitle": {
-      "workPattern": "Swipe right to choose your work-block pattern, left for next option, or up for info",
-      "swingConfig": "Set how many day-shift and night-shift days you work before choosing your current block",
-      "block": "Swipe right to select, left to see next, or up for more info",
-      "dayWithinBlock": "Swipe right to select, left to see next, or up for more info. Is it the {{ordinalList}}?"
+      "workPattern": "Swiep regs om jou werkblokpatroon te kies, links vir volgende opsie, of op vir inligting",
+      "swingConfig": "Stel hoeveel dagskof- en nagskofdae jy werk voordat jy jou huidige blok kies",
+      "block": "Swiep regs om te kies, links om volgende te sien, of op vir meer inligting",
+      "dayWithinBlock": "Swiep regs om te kies, links om volgende te sien, of op vir meer inligting. Is dit die {{ordinalList}}?"
     },
     "modal": {
-      "blockLength": "Block Length",
-      "whyItMatters": "Why it matters"
+      "blockLength": "Bloklengte",
+      "whyItMatters": "Hoekom dit saak maak"
     },
     "patterns": {
       "straightDays": {
-        "title": "Straight Days",
-        "description": "Your work block runs day shifts only.",
-        "quickInfo": "Best for operations that keep all crews on daytime rotations."
+        "title": "Reguit Dae",
+        "description": "Jou werkblok loop slegs dagskofte.",
+        "quickInfo": "Beste vir bedrywighede wat alle spanne op dagrotasies hou."
       },
       "straightNights": {
-        "title": "Straight Nights",
-        "description": "Your work block runs night shifts only.",
-        "quickInfo": "Use this when site crews remain on night shifts for the full work block."
+        "title": "Reguit nagte",
+        "description": "Jou werkblok loop slegs nagskof.",
+        "quickInfo": "Gebruik dit wanneer terreinspanne vir die volle werkblok op nagskof bly."
       },
       "swing": {
-        "title": "Swing",
-        "description": "Your work block mixes day and night shifts.",
-        "quickInfo": "Choose this when your work block rotates between days and nights."
+        "title": "Swaai",
+        "description": "Jou werkblok meng dag- en nagskofte.",
+        "quickInfo": "Kies dit wanneer jou werkblok tussen dae en nagte roteer."
       }
     },
     "blocks": {
       "work": {
-        "title": "At Site (Working)",
-        "descriptionDay": "You are currently at the mine site on your day-shift work block",
-        "descriptionNight": "You are currently at the mine site on your night-shift work block",
-        "descriptionNeutral": "You are currently at the mine site on your work block",
-        "quickInfoDay": "This means your cycle starts counting from your day-shift work block.",
-        "quickInfoNight": "This means your cycle starts counting from your night-shift work block.",
-        "quickInfoNeutral": "This means your cycle starts counting from your current work block."
+        "title": "Op die terrein (werk)",
+        "descriptionDay": "Jy is tans by die mynperseel op jou dagskofwerkblok",
+        "descriptionNight": "Jy is tans by die mynperseel op jou nagskofwerkblok",
+        "descriptionNeutral": "Jy is tans by die mynperseel op jou werkblok",
+        "quickInfoDay": "Dit beteken jou siklus begin tel vanaf jou dagskof-werkblok.",
+        "quickInfoNight": "Dit beteken jou siklus begin tel vanaf jou nagskof-werkblok.",
+        "quickInfoNeutral": "Dit beteken jou siklus begin tel vanaf jou huidige werkblok."
       },
       "rest": {
-        "title": "At Home (Rest)",
-        "description": "You are currently at home on your rest block",
-        "quickInfo": "This offsets your cycle by your work block length first."
+        "title": "By die huis (Rus)",
+        "description": "Jy is tans tuis op jou rusblok",
+        "quickInfo": "Dit verreken jou siklus eers deur jou werkbloklengte."
       }
     },
     "swingConfig": {
-      "daysOnDayShift": "Days on Day Shift",
-      "daysOnNightShift": "Days on Night Shift",
-      "splitTotal": "Split total: {{swingSplitTotal}}/{{workBlockDays}} days",
-      "validation": "Swing split must equal {{workBlockDays}} days with at least 1 day on each shift.",
-      "changePattern": "Change Pattern",
-      "continue": "Continue"
+      "daysOnDayShift": "Dae op dagskof",
+      "daysOnNightShift": "Dae op Nagskof",
+      "splitTotal": "Gedeelde totaal: {{swingSplitTotal}}/{{workBlockDays}} dae",
+      "validation": "Swaaiverdeling moet gelyk wees aan {{workBlockDays}} dae met ten minste 1 dag op elke skof.",
+      "changePattern": "Verander patroon",
+      "continue": "Gaan voort"
     },
     "days": {
       "shared": {
-        "midpoint": "Midpoint of this block"
+        "midpoint": "Middelpunt van hierdie blok"
       },
-      "defaultDayTitle": "Day {{dayNumber}}",
+      "defaultDayTitle": "Dag {{dayNumber}}",
       "work": {
-        "firstDayAtSite": "First day back at site",
-        "firstNightAtSite": "First night shift back at site",
-        "firstShiftAtSite": "First shift back at site",
-        "lastDayBeforeHome": "Last day before flying home",
-        "lastNightBeforeHome": "Last night shift before flying home",
-        "lastShiftBeforeHome": "Last shift before flying home",
-        "dayOfWorkBlock": "Day {{dayNumber}} of your work block",
-        "shiftOfNightBlock": "Shift {{dayNumber}} of your night work block",
-        "shiftOfWorkBlock": "Shift {{dayNumber}} of your work block"
+        "firstDayAtSite": "Eerste dag terug op die terrein",
+        "firstNightAtSite": "Eerste nagskof terug op werf",
+        "firstShiftAtSite": "Eerste skof terug by werf",
+        "lastDayBeforeHome": "Laaste dag voor huistoe vlieg",
+        "lastNightBeforeHome": "Gisteraandskof voor ek huis toe vlieg",
+        "lastShiftBeforeHome": "Laaste skof voor huis toe vlieg",
+        "dayOfWorkBlock": "Dag {{dayNumber}} van jou werkblok",
+        "shiftOfNightBlock": "Skuif {{dayNumber}} van jou nagwerkblok",
+        "shiftOfWorkBlock": "Skuif {{dayNumber}} van jou werkblok"
       },
       "rest": {
-        "firstDayAtHome": "First day back at home",
-        "lastDayBeforeSite": "Last day before returning to site",
-        "dayOfRestBlock": "Day {{dayNumber}} of your rest block"
+        "firstDayAtHome": "Eerste dag terug by die huis",
+        "lastDayBeforeSite": "Laaste dag voor terugkeer na werf",
+        "dayOfRestBlock": "Dag {{dayNumber}} van jou rusblok"
       },
       "swing": {
-        "dayShiftTitle": "Day Shift Day {{dayNumber}}",
-        "firstDayShiftAtSite": "First day shift back at site",
-        "finalDayShiftBeforeNights": "Final day shift before switching to nights",
-        "dayShiftDayDescription": "Day shift day {{dayNumber}} of your work block",
-        "nightShiftTitle": "Night Shift Day {{dayNumber}}",
-        "firstNightShiftInBlock": "First night shift in this swing block",
-        "finalNightShiftBeforeHome": "Final night shift before flying home",
-        "nightShiftDayDescription": "Night shift day {{dayNumber}} of your work block"
+        "dayShiftTitle": "Dagskofdag {{dayNumber}}",
+        "firstDayShiftAtSite": "Eerste dagskof terug op terrein",
+        "finalDayShiftBeforeNights": "Laaste dagskof voor oorskakeling na nagte",
+        "dayShiftDayDescription": "Dagskof dag {{dayNumber}} van jou werkblok",
+        "nightShiftTitle": "Nagskofdag {{dayNumber}}",
+        "firstNightShiftInBlock": "Eerste nagskof in hierdie swaaiblok",
+        "finalNightShiftBeforeHome": "Laaste nagskof voor jy huis toe vlieg",
+        "nightShiftDayDescription": "Nagskof dag {{dayNumber}} van jou werkblok"
       }
     },
     "transition": {
-      "preparingCalendar": "Preparing your calendar..."
+      "preparingCalendar": "Berei tans jou kalender voor..."
     }
   },
   "startDate": {
     "header": {
-      "title": "When Does Your Rotation Start?",
-      "subtitleWithPhase": "You're on {{phaseLabel}} right now—pick today or any date, and we'll map out your whole calendar from there",
-      "subtitleDefault": "Pick the date you want your calendar to start from—most people choose today"
+      "title": "Wanneer begin jou rotasie?",
+      "subtitleWithPhase": "Jy is nou op {{phaseLabel}}—kies vandag of enige datum, en ons sal jou hele kalender daarvandaan uitbeeld",
+      "subtitleDefault": "Kies die datum waarvan jy wil hê jou kalender moet begin—die meeste mense kies vandag"
     },
     "phaseLabels": {
-      "day": "Day Shift",
-      "night": "Night Shift",
-      "morning": "Morning Shift",
-      "afternoon": "Afternoon Shift",
-      "off": "Days Off",
-      "withDay": "Day {{selectedDay}} of {{phaseLabel}}"
+      "day": "Dagskof",
+      "night": "Nagskof",
+      "morning": "Oggendskof",
+      "afternoon": "Middagskof",
+      "off": "Afdae",
+      "withDay": "Dag {{selectedDay}} van {{phaseLabel}}"
     },
     "calendar": {
       "weekdays": {
-        "sun": "Sun",
-        "mon": "Mon",
-        "tue": "Tue",
-        "wed": "Wed",
-        "thu": "Thu",
-        "fri": "Fri",
+        "sun": "Son",
+        "mon": "Ma",
+        "tue": "Di",
+        "wed": "Wo",
+        "thu": "Do",
+        "fri": "Vr",
         "sat": "Sat"
       },
       "legend": {
-        "dayShift": "Day Shift",
-        "nightShift": "Night Shift",
-        "dayOff": "Day Off",
-        "morning": "Morning",
-        "afternoon": "Afternoon",
-        "night": "Night",
-        "off": "Off"
+        "dayShift": "Dagskof",
+        "nightShift": "Nagskof",
+        "dayOff": "Afdag",
+        "morning": "Oggend",
+        "afternoon": "Middag",
+        "night": "Nag",
+        "off": "Af"
       }
     },
     "guidance": {
-      "title": "Picking your date",
-      "subtitle": "Quick tips for a faster setup",
-      "body": "Most people pick today so their calendar starts right away. But you can pick any date—we'll calculate your rotation from there.",
-      "hint": "Pick the closest date now, you can adjust settings later.",
-      "selectedDate": "Selected: {{date}}"
+      "title": "Kies jou datum",
+      "subtitle": "Vinnige wenke vir 'n vinniger opstelling",
+      "body": "Die meeste mense kies vandag so hul kalender begin dadelik. Maar jy kan enige datum kies—ons sal jou rotasie van daar af bereken.",
+      "hint": "Kies nou die naaste datum, jy kan instellings later aanpas.",
+      "selectedDate": "Gekies: {{date}}"
     },
     "actions": {
-      "goBack": "Go back",
-      "backToSettings": "Back to Settings",
-      "saveAndReturn": "Save & Return",
-      "saveAndReturnToSettings": "Save start date and return to settings",
-      "setShiftTimes": "Set Shift Times",
-      "setShiftTimesA11y": "Set shift times"
+      "goBack": "Gaan terug",
+      "backToSettings": "Terug na Instellings",
+      "saveAndReturn": "Stoor en gee terug",
+      "saveAndReturnToSettings": "Stoor begindatum en keer terug na instellings",
+      "setShiftTimes": "Stel Shift Times",
+      "setShiftTimesA11y": "Stel skoftye in"
     },
     "selectedDate": {
-      "startsOn": "Your cycle will start on:"
+      "startsOn": "Jou siklus sal begin op:"
     },
     "phaseSelector": {
-      "title": "Choose which part of your cycle you'll be on"
+      "title": "Kies watter deel van jou siklus jy sal wees"
     },
     "dayWithinPhase": {
-      "title": "Which day of your {{phaseLabel}}?",
-      "dayA11yLabel": "Day {{dayNumber}}",
-      "dayA11yHint": "Select day {{dayNumber}} of phase"
+      "title": "Watter dag van jou {{phaseLabel}}?",
+      "dayA11yLabel": "Dag {{dayNumber}}",
+      "dayA11yHint": "Kies dag {{dayNumber}} van fase"
     },
     "preview": {
-      "notSelected": "Not selected",
-      "startingLabel": "Starting:",
-      "phaseLabel": "Phase:",
-      "confirmation": "Your first cycle begins here"
+      "notSelected": "Nie gekies nie",
+      "startingLabel": "Begin:",
+      "phaseLabel": "Fase:",
+      "confirmation": "Jou eerste siklus begin hier"
     }
   },
   "shiftTime": {
     "actions": {
-      "goBack": "Go back",
-      "backToSettings": "Back to Settings",
-      "saveAndReturn": "Save & Return",
-      "saveAndReturnA11y": "Save shift time and return to settings",
-      "saveAndContinue": "Save & Continue",
-      "finishSetup": "Finish Setup",
-      "nextShiftType": "Next Shift Type",
-      "continueToNextStep": "Continue to next step",
-      "continueToShiftType": "Continue to {{shiftType}} shift times",
-      "saveShiftTimesAndContinue": "Save shift times and continue"
+      "goBack": "Gaan terug",
+      "backToSettings": "Terug na Instellings",
+      "saveAndReturn": "Stoor en gee terug",
+      "saveAndReturnA11y": "Bespaar skoftyd en keer terug na instellings",
+      "saveAndContinue": "Stoor en gaan voort",
+      "finishSetup": "Voltooi opstelling",
+      "nextShiftType": "Volgende Shift Tipe",
+      "continueToNextStep": "Gaan voort na die volgende stap",
+      "continueToShiftType": "Gaan voort na {{shiftType}} skoftye",
+      "saveShiftTimesAndContinue": "Stoor skoftye en gaan voort"
     },
     "stage": {
-      "stepOfTotal": "Step {{current}} of {{total}}",
-      "singleProfile": "Single shift profile",
-      "profileOfTotal": "Profile {{current}} of {{total}}"
+      "stepOfTotal": "Stap {{current}} van {{total}}",
+      "singleProfile": "Enkelskofprofiel",
+      "profileOfTotal": "Profiel {{current}} van {{total}}"
     },
     "systemLabels": {
-      "twoShift": "2-shift system",
-      "threeShift": "3-shift system"
+      "twoShift": "2-skof stelsel",
+      "threeShift": "3-skof stelsel"
     },
     "shiftLabels": {
-      "dayTitle": "Day",
-      "dayLower": "day",
-      "dayPlural": "day shifts",
-      "nightTitle": "Night",
-      "nightLower": "night",
-      "nightPlural": "night shifts",
-      "morningTitle": "Morning",
-      "morningLower": "morning",
-      "morningPlural": "morning shifts",
-      "afternoonTitle": "Afternoon",
-      "afternoonLower": "afternoon",
-      "afternoonPlural": "afternoon shifts"
+      "dayTitle": "Dag",
+      "dayLower": "dag",
+      "dayPlural": "dagskofte",
+      "nightTitle": "Nag",
+      "nightLower": "nag",
+      "nightPlural": "nagskofte",
+      "morningTitle": "Oggend",
+      "morningLower": "oggend",
+      "morningPlural": "oggendskofte",
+      "afternoonTitle": "Middag",
+      "afternoonLower": "middag",
+      "afternoonPlural": "middagskofte"
     },
     "header": {
       "title": {
-        "single": "When Do Your Shifts Start?",
-        "day": "Day Shift Times",
-        "night": "Night Shift Times",
-        "morning": "Morning Shift Times",
-        "afternoon": "Afternoon Shift Times",
+        "single": "Wanneer begin jou skofte?",
+        "day": "Dagskof tye",
+        "night": "Nagskof tye",
+        "morning": "Oggendskof Tye",
+        "afternoon": "Middagskoftye",
         "default": "Shift Times"
       },
       "subtitle": {
-        "single": "Pick what time you clock in each day-we'll use this to track your hours and set reminders",
-        "multi": "Your pattern includes {{shiftTypeLabel}}. Set the start time for these shifts."
+        "single": "Kies watter tyd jy elke dag klok - ons sal dit gebruik om jou ure op te spoor en onthounotas te stel",
+        "multi": "Jou patroon sluit {{shiftTypeLabel}} in. Stel die begintyd vir hierdie skofte."
       }
     },
     "guidance": {
-      "aboutTitle": "About shift times",
-      "aboutBody": "Your {{patternName}} rotation stays the same, but we need your shift start times so Ellie can track hours and alert you before each shift.",
-      "hint": "Use the closest start time now. You can fine-tune it later in settings.",
+      "aboutTitle": "Oor skoftye",
+      "aboutBody": "Jou {{patternName}}-rotasie bly dieselfde, maar ons het jou skofbegintye nodig sodat Ellie ure kan naspoor en jou voor elke skof waarsku.",
+      "hint": "Gebruik nou die naaste begintyd. Jy kan dit later in instellings verfyn.",
       "definitions": {
-        "twoShiftTitle": "Day vs Night:",
-        "twoShiftBody": "Day shifts start 6 AM-6 PM - Night shifts start 6 PM-6 AM",
-        "threeShiftTitle": "Shift types:",
-        "threeShiftBody": "Morning: 6 AM-2 PM - Afternoon: 2 PM-10 PM - Night: 10 PM-6 AM"
+        "twoShiftTitle": "Dag vs Nag:",
+        "twoShiftBody": "Dagskofte begin 06:00-18:00 - Nagskofte begin 18:00-06:00",
+        "threeShiftTitle": "Skof tipes:",
+        "threeShiftBody": "Oggend: 06:00-14:00 - Middag: 14:00-22:00 - Nag: 10:00-06:00"
       }
     },
     "presets": {
-      "sectionTitle": "Pick a Common Start Time",
+      "sectionTitle": "Kies 'n algemene begintyd",
       "custom": {
-        "label": "Custom Time"
+        "label": "Pasgemaakte tyd"
       },
       "early_day": {
-        "label": "Early Day Shift"
+        "label": "Vroeë dagskof"
       },
       "standard_day": {
-        "label": "Standard Day Shift"
+        "label": "Standaarddagskof"
       },
       "late_day": {
-        "label": "Late Day Shift"
+        "label": "Laatdagskof"
       },
       "early_night": {
-        "label": "Early Night Shift"
+        "label": "Vroeë nagskof"
       },
       "standard_night": {
-        "label": "Standard Night Shift"
+        "label": "Standaard nagskof"
       },
       "late_night": {
-        "label": "Late Night Shift"
+        "label": "Laatnagskof"
       },
       "early_morning": {
-        "label": "Early Morning"
+        "label": "Vroegoggend"
       },
       "standard_morning": {
-        "label": "Standard Morning"
+        "label": "Standaardoggend"
       },
       "late_morning": {
-        "label": "Late Morning"
+        "label": "Laatoggend"
       },
       "early_afternoon": {
-        "label": "Early Afternoon"
+        "label": "Vroegmiddag"
       },
       "standard_afternoon": {
-        "label": "Standard Afternoon"
+        "label": "Standaardmiddag"
       },
       "late_afternoon": {
-        "label": "Late Afternoon"
+        "label": "Laatmiddag"
       },
       "early_night_8h": {
-        "label": "Early Night"
+        "label": "Vroeë nag"
       },
       "standard_night_8h": {
-        "label": "Standard Night"
+        "label": "Standaard nag"
       },
       "late_night_8h": {
-        "label": "Late Night"
+        "label": "Laataand"
       }
     },
     "customInput": {
-      "label": "What time do you usually clock in?",
-      "helper": "Use 12-hour format (e.g., 6:00 AM)"
+      "label": "Hoe laat klok jy gewoonlik in?",
+      "helper": "Gebruik 12-uur-formaat (bv. 06:00)"
     },
     "validation": {
-      "hoursRange": "Hours must be between 1 and 12",
-      "minutesRange": "Minutes must be between 0 and 59"
+      "hoursRange": "Ure moet tussen 1 en 12 wees",
+      "minutesRange": "Minute moet tussen 0 en 59 wees"
     },
     "preview": {
-      "yourShift": "Your shift:",
-      "durationHours": "{{duration}} hours"
+      "yourShift": "Jou skof:",
+      "durationHours": "{{duration}} uur"
     },
     "detection": {
-      "helper": "This is when your shift begins",
-      "autoDetected": "Auto-detected",
+      "helper": "Dit is wanneer jou skof begin",
+      "autoDetected": "Outo-bespeur",
       "day": {
-        "title": "Daytime start",
-        "window": "Typical window: 6:00 AM - 5:59 PM"
+        "title": "Dag begin",
+        "window": "Tipiese venster: 06:00 - 17:59"
       },
       "morning": {
-        "title": "Morning start",
-        "window": "Typical window: 6:00 AM - 1:59 PM"
+        "title": "Oggend begin",
+        "window": "Tipiese venster: 06:00 - 13:59"
       },
       "afternoon": {
-        "title": "Afternoon start",
-        "window": "Typical window: 2:00 PM - 9:59 PM"
+        "title": "Middag begin",
+        "window": "Tipiese venster: 14:00 - 21:59"
       },
       "night": {
-        "title": "Night start",
-        "windowTwoShift": "Typical window: 6:00 PM - 5:59 AM",
-        "windowThreeShift": "Typical window: 10:00 PM - 5:59 AM"
+        "title": "Nag begin",
+        "windowTwoShift": "Tipiese venster: 18:00 - 05:59",
+        "windowThreeShift": "Tipiese venster: 22:00 - 05:59"
       }
     },
     "tips": {
-      "title": "Pro Tip",
-      "subtitle": "Fastest way to pick a reliable start time",
-      "twoShift": "Not sure? Most shift workers on 12-hour rotations start at 6 AM or 6 PM. Pick the closest match-you can adjust it later in settings if needed.",
-      "threeShift": "Not sure? Most 8-hour shift workers start at 6 AM, 2 PM, or 10 PM. Pick the closest match-you can adjust it later in settings if needed."
+      "title": "Pro Wenk",
+      "subtitle": "Vinnigste manier om 'n betroubare begintyd te kies",
+      "twoShift": "Nie seker nie? Die meeste skofwerkers op 12-uur-rotasies begin om 06:00 of 18:00. Kies die naaste pasmaat - jy kan dit later in instellings aanpas indien nodig.",
+      "threeShift": "Nie seker nie? Most 8-hour shift workers start at 6 AM, 2 PM, or 10 PM. Kies die naaste pasmaat - jy kan dit later in instellings aanpas indien nodig."
     },
     "patternInfo": {
       "custom": {
-        "name": "Custom Pattern",
-        "statsTwoShift": "{{total}}-day cycle - {{daysOn}}D/{{nightsOn}}N/{{daysOff}}O",
-        "statsThreeShift": "{{total}}-day cycle - {{morningOn}}M/{{afternoonOn}}A/{{nightOn}}N/{{daysOff}}O"
+        "name": "Pasgemaakte patroon",
+        "statsTwoShift": "{{total}}-dag siklus - {{daysOn}}D/{{nightsOn}}N/{{daysOff}}O",
+        "statsThreeShift": "{{total}}-dag siklus - {{morningOn}}M/{{afternoonOn}}A/{{nightOn}}N/{{daysOff}}O"
       },
-      "defaultStats": "Custom cycle - Set your schedule",
+      "defaultStats": "Pasgemaakte siklus - Stel jou skedule",
       "standard444": {
-        "name": "4-4-4 Cycle",
-        "stats": "12-day cycle - 4D/4N/4O"
+        "name": "4-4-4 siklus",
+        "stats": "12-dae siklus - 4D/4N/4O"
       },
       "standard777": {
-        "name": "7-7-7 Cycle",
-        "stats": "21-day cycle - 7D/7N/7O"
+        "name": "7-7-7 siklus",
+        "stats": "21-dae siklus - 7D/7N/7O"
       },
       "standard223": {
-        "name": "2-2-3 Cycle",
-        "stats": "7-day cycle - 2D/2N/3O"
+        "name": "2-2-3 siklus",
+        "stats": "7-dag siklus - 2D/2N/3O"
       },
       "standard555": {
-        "name": "5-5-5 Cycle",
-        "stats": "15-day cycle - 5D/5N/5O"
+        "name": "5-5-5 siklus",
+        "stats": "15-dae siklus - 5D/5N/5O"
       },
       "standard333": {
-        "name": "3-3-3 Cycle",
-        "stats": "9-day cycle - 3D/3N/3O"
+        "name": "3-3-3 siklus",
+        "stats": "9-dae siklus - 3D/3N/3O"
       },
       "standard101010": {
-        "name": "10-10-10 Cycle",
-        "stats": "30-day cycle - 10D/10N/10O"
+        "name": "10-10-10 Siklus",
+        "stats": "30-dae siklus - 10D/10N/10O"
       },
       "continental": {
-        "name": "Continental",
-        "stats": "8-day cycle - 2D/2N/4O"
+        "name": "Kontinentaal",
+        "stats": "8-dae siklus - 2D/2N/4O"
       },
       "pitman": {
         "name": "Pitman",
-        "stats": "7-day cycle - 2D/2N/3O"
+        "stats": "7-dag siklus - 2D/2N/3O"
       }
     }
   },
   "customPattern": {
-    "backA11y": "Go back",
+    "backA11y": "Gaan terug",
     "backHint": {
-      "default": "Return to shift pattern selection",
-      "settings": "Discard changes and return to settings"
+      "default": "Keer terug na skuifpatroonkeuse",
+      "settings": "Gooi veranderinge weg en keer terug na instellings"
     },
-    "needMoreChanges": "Need More Changes",
+    "needMoreChanges": "Benodig meer veranderinge",
     "preview": {
-      "badgeLabel": "{{totalDays}}-day cycle",
-      "balanceTitle": "Work-Rest Balance",
+      "badgeLabel": "{{totalDays}}-dag siklus",
+      "balanceTitle": "Werk-rusbalans",
       "blocks": {
-        "afternoon": "Afternoon",
-        "days": "Days",
-        "morning": "Morning",
-        "night": "Night",
-        "nights": "Nights",
-        "off": "Off"
+        "afternoon": "Middag",
+        "days": "Dae",
+        "morning": "Oggend",
+        "night": "Nag",
+        "nights": "Nagte",
+        "off": "Af"
       },
-      "cycleLabel": "Your {{totalDays}}-day cycle",
-      "daysOff": "days off",
-      "daysOn": "days on",
+      "cycleLabel": "Jou {{totalDays}}-dag siklus",
+      "daysOff": "dae af",
+      "daysOn": "dae aan",
       "legend": {
-        "afternoon": "Afternoon",
-        "dayOff": "Day Off",
-        "dayShift": "Day Shift",
-        "morning": "Morning",
-        "night": "Night",
-        "nightShift": "Night Shift"
+        "afternoon": "Middag",
+        "dayOff": "Afdag",
+        "dayShift": "Dagskof",
+        "morning": "Oggend",
+        "night": "Nag",
+        "nightShift": "Nagskof"
       },
-      "ratioLabel": "Every rotation you work",
-      "restLabel": "Rest: {{count}} days",
-      "subtitle": "See what your schedule looks like",
-      "title": "Your Rotation Preview",
-      "workLabel": "Work: {{count}} days"
+      "ratioLabel": "Elke rotasie wat jy werk",
+      "restLabel": "Rus: {{count}} dae",
+      "subtitle": "Kyk hoe jou skedule lyk",
+      "title": "Jou rotasievoorskou",
+      "workLabel": "Werk: {{count}} dae"
     },
-    "previewGuide": "See your rotation below",
-    "saveA11y": "Save your rotation and continue",
-    "saveButton": "Save This Rotation",
-    "saveHintValid": "Save this {{totalDays}}-day rotation",
+    "previewGuide": "Sien jou rotasie hieronder",
+    "saveA11y": "Stoor jou rotasie en gaan voort",
+    "saveButton": "Stoor hierdie rotasie",
+    "saveHintValid": "Stoor hierdie {{totalDays}}-dag-rotasie",
     "sliders": {
-      "afternoonShifts": "Afternoon Shifts",
-      "dayShifts": "Day Shifts",
-      "daysOff": "Days Off",
-      "morningShifts": "Morning Shifts",
-      "nightShifts": "Night Shifts"
+      "afternoonShifts": "Middagskofte",
+      "dayShifts": "Dagskofte",
+      "daysOff": "Afdae",
+      "morningShifts": "Oggendskofte",
+      "nightShifts": "Nagskofte"
     },
-    "slidersTitle": "Set Up Your Rotation",
-    "subtitle": "Set how many shifts you work, then how many days off you get—we'll show you what it looks like",
+    "slidersTitle": "Stel jou rotasie op",
+    "subtitle": "Stel hoeveel skofte jy werk, en dan hoeveel dae af jy kry—ons sal jou wys hoe dit lyk",
     "subtitleSecondary": {
-      "threeShift": "Morning, Afternoon, Night & Off",
-      "twoShift": "Day, Night & Off"
+      "threeShift": "Oggend, middag, nag en af",
+      "twoShift": "Dag, nag en af"
     },
-    "success": "Looking good! You work {{workDays}} days, then get {{daysOff}} days off. That's a solid rotation.",
-    "tip": "Tip: Most shift workers find rotations with at least 3 days off work best. Your body needs time to recover between swing changes.",
-    "title": "Build Your Rotation",
+    "success": "Lyk goed! Jy werk {{workDays}} dae en kry dan {{daysOff}} dae af. Dit is 'n stewige rotasie.",
+    "tip": "Wenk: Die meeste skofwerkers vind rotasies met ten minste 3 dae af werk die beste. Jou liggaam het tyd nodig om te herstel tussen swaai veranderinge.",
+    "title": "Bou jou rotasie",
     "validation": {
-      "noOff": "Everyone needs time off—add at least 1 day off to your rotation",
-      "noWork": "You need at least 1 shift to track—add some day or night shifts",
-      "tooLong": "Your rotation is {{totalDays}} days long—we can only handle up to 28 days. Try shortening it."
+      "noOff": "Almal het tyd nodig – voeg ten minste 1 dag af by jou rotasie",
+      "noWork": "Jy benodig ten minste 1 skof om op te spoor - voeg 'n paar dag- of nagskofte by",
+      "tooLong": "Jou rotasie is {{totalDays}} dae lank—ons kan net tot 28 dae hanteer. Probeer dit verkort."
     },
-    "warning": "This pattern is work-heavy ({{workPercentage}}% work). Consider adding more days off if fatigue is a concern."
+    "warning": "Hierdie patroon is werkswaar ({{workPercentage}}% werk). Oorweeg dit om meer afdae by te voeg as moegheid 'n bekommernis is."
   },
   "fifoCustom": {
-    "backA11y": "Go back",
+    "backA11y": "Gaan terug",
     "backHint": {
-      "default": "Return to shift pattern selection",
-      "settings": "Discard changes and return to settings"
+      "default": "Keer terug na skuifpatroonkeuse",
+      "settings": "Gooi veranderinge weg en keer terug na instellings"
     },
     "preview": {
-      "badgeLabel": "{{totalCycleDays}}-day FIFO cycle",
-      "balanceTitle": "Work-Rest Balance",
-      "cycleDayA11y": "Cycle day {{day}}",
-      "cycleFlow": "Cycle flow across {{previewDays}} visible days",
-      "homeDays": "home days",
+      "badgeLabel": "{{totalCycleDays}}-dag EIEU-siklus",
+      "balanceTitle": "Werk-rusbalans",
+      "cycleDayA11y": "Fietsdag {{day}}",
+      "cycleFlow": "Siklusvloei oor {{previewDays}} sigbare dae",
+      "homeDays": "huis dae",
       "legend": {
-        "daySwing": "Day Swing",
-        "homeBlock": "Home Block",
-        "nightSwing": "Night Swing"
+        "daySwing": "Dag Swing",
+        "homeBlock": "Huis Blok",
+        "nightSwing": "Nagswaai"
       },
-      "ratioLabel": "Site to home rhythm",
-      "restLabel": "Rest: {{restBlockDays}} days",
-      "siteDays": "site days",
-      "subtitle": "{{workBlockDays}} days at site, then {{restBlockDays}} days at home",
-      "swingSplit": "Swing split: {{daysOnDayShift}} day-shift days + {{daysOnNightShift}} night-shift days",
-      "title": "Your FIFO Rotation Preview",
-      "workLabel": "Work: {{workBlockDays}} days"
+      "ratioLabel": "Site to home ritme",
+      "restLabel": "Rus: {{restBlockDays}} dae",
+      "siteDays": "werf dae",
+      "subtitle": "{{workBlockDays}} dae by die werf, dan {{restBlockDays}} dae by die huis",
+      "swingSplit": "Swaaiverdeling: {{daysOnDayShift}} dagskof dae + {{daysOnNightShift}} nagskof dae",
+      "title": "Jou EIEU-rotasievoorskou",
+      "workLabel": "Werk: {{workBlockDays}} dae"
     },
-    "previewGuide": "See your FIFO pattern below",
-    "saveA11y": "Save FIFO pattern and continue",
-    "saveButton": "Save FIFO Pattern",
-    "saveHintInvalid": "Fix the validation issue before continuing",
-    "saveHintValid": "{{workBlockDays}} days work, {{restBlockDays}} days rest",
+    "previewGuide": "Sien jou EIEU-patroon hieronder",
+    "saveA11y": "Stoor EIEU-patroon en gaan voort",
+    "saveButton": "Stoor EIEU-patroon",
+    "saveHintInvalid": "Los die valideringskwessie op voordat jy voortgaan",
+    "saveHintValid": "{{workBlockDays}} dae werk, {{restBlockDays}} dae rus",
     "sliders": {
-      "daysAtHome": "Days at Home (Rest Block)",
-      "daysAtSite": "Days at Site (Work Block)",
-      "daysOnDayShift": "Days on Day Shift",
-      "daysOnNightShift": "Days on Night Shift"
+      "daysAtHome": "Dae by die huis (rusblok)",
+      "daysAtSite": "Dae op die terrein (werkblok)",
+      "daysOnDayShift": "Dae op dagskof",
+      "daysOnNightShift": "Dae op Nagskof"
     },
-    "slidersTitle": "Set Up Your FIFO Pattern",
-    "subtitle": "Set your on-site block, home block, and work-block shift style for a schedule that fits your site cycle.",
-    "subtitleSecondary": "Work Block, Rest Block & Pattern Split",
-    "success": "Solid FIFO setup. {{workBlockDays}} days at site, then {{restBlockDays}} days at home.",
-    "swingSubtitle": "Split your work block between day and night shifts.",
-    "swingTitle": "Swing Configuration",
-    "swingTotal": "Split total: {{swingTotal}}/{{workBlockDays}} days",
-    "tip": "Tip: Match your home block to recovery and travel demands. FIFO patterns work best when the rest block is long enough to reset before your next site run.",
-    "title": "Build Your FIFO Rotation",
+    "slidersTitle": "Stel jou EIEU-patroon op",
+    "subtitle": "Stel jou ter plaatse blok, huis blok, en werk-blok skof styl vir 'n skedule wat pas by jou webwerf siklus.",
+    "subtitleSecondary": "Werkblok, rusblok en patroonverdeling",
+    "success": "Soliede EIEU-opstelling. {{workBlockDays}} dae by die werf, dan {{restBlockDays}} dae by die huis.",
+    "swingSubtitle": "Verdeel jou werkblok tussen dag- en nagskofte.",
+    "swingTitle": "Swaai-konfigurasie",
+    "swingTotal": "Gedeelde totaal: {{swingTotal}}/{{workBlockDays}} dae",
+    "tip": "Wenk: Pas jou huisblok by herstel- en reiseise. EIEU-patrone werk die beste wanneer die rusblok lank genoeg is om terug te stel voor jou volgende werfloop.",
+    "title": "Bou jou EIEU-rotasie",
     "validation": {
-      "blocksMinimum": "Work and rest blocks must each be at least 1 day.",
-      "swingMismatch": "Swing split must equal {{workBlockDays}} days before saving."
+      "blocksMinimum": "Werk- en rusblokke moet elk minstens 1 dag wees.",
+      "swingMismatch": "Swaaiverdeling moet gelyk wees aan {{workBlockDays}} dae voor stoor."
     },
-    "warning": "This roster is heavy ({{workPercentage}}% work). Consider balancing with more home days if fatigue becomes an issue.",
-    "workPatternSubtitle": "How are your shifts organized while at site?",
-    "workPatternTitle": "Work Pattern During Work Block"
+    "warning": "Hierdie rooster is swaar ({{workPercentage}}% werk). Oorweeg om met meer tuisdae te balanseer as moegheid 'n probleem word.",
+    "workPatternSubtitle": "Hoe word jou skofte georganiseer terwyl jy op die terrein is?",
+    "workPatternTitle": "Werkpatroon tydens werkblok"
   }
 }

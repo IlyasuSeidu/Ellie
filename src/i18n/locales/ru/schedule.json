@@ -1,7 +1,7 @@
 {
-  "title": "Schedule",
-  "comingSoon": "Coming Soon",
-  "description": "Your detailed shift calendar and schedule management will appear here.",
-  "statsTitle": "Statistics",
-  "statsDescription": "Detailed analytics and insights about your shift patterns will appear here."
+  "title": "Расписание",
+  "comingSoon": "Вскоре",
+  "description": "Здесь появится подробный календарь смен и управление расписанием.",
+  "statsTitle": "Статистика",
+  "statsDescription": "Здесь появится подробная аналитика и информация о графике смен."
 }
