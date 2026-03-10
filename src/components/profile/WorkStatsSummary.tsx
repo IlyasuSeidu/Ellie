@@ -14,6 +14,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
 import { getCycleLengthDays, getWorkRestRatio } from '@/utils/profileUtils';
@@ -56,6 +57,7 @@ const MiniStatCard: React.FC<{
 };
 
 export const WorkStatsSummary: React.FC<WorkStatsSummaryProps> = ({ data, animationDelay = 0 }) => {
+  const { t } = useTranslation('profile');
   const stats = useMemo((): StatItem[] => {
     const cycleDays = getCycleLengthDays(data);
     const ratio = getWorkRestRatio(data);
@@ -65,20 +67,20 @@ export const WorkStatsSummary: React.FC<WorkStatsSummaryProps> = ({ data, animat
       {
         icon: 'repeat-outline',
         value: cycleDays !== null ? String(cycleDays) : '-',
-        label: 'Day Cycle',
+        label: t('stats.dayCycle'),
       },
       {
         icon: 'scale-outline',
         value: ratio,
-        label: 'Work : Rest',
+        label: t('stats.workRest'),
       },
       {
         icon: 'hourglass-outline',
         value: duration,
-        label: 'Per Shift',
+        label: t('stats.perShift'),
       },
     ];
-  }, [data]);
+  }, [data, t]);
 
   return (
     <View style={styles.container}>

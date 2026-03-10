@@ -45,6 +45,8 @@ import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useTranslation } from 'react-i18next';
+import type { TFunction } from 'i18next';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
@@ -231,47 +233,108 @@ const generateDayDescription = (
   blockType: 'work' | 'rest',
   dayNumber: number,
   totalDays: number,
-  workBlockPattern: FIFOWorkBlockPattern = 'straight-days'
+  workBlockPattern: FIFOWorkBlockPattern = 'straight-days',
+  t: TFunction<'onboarding'>
 ): string => {
   if (blockType === 'work') {
     const isStraightDays = workBlockPattern === 'straight-days';
     const isStraightNights = workBlockPattern === 'straight-nights';
     if (dayNumber === 1) {
       return isStraightDays
-        ? 'First day back at site'
+        ? String(
+            t('fifoPhaseSelector.days.work.firstDayAtSite', {
+              defaultValue: 'First day back at site',
+            })
+          )
         : isStraightNights
-          ? 'First night shift back at site'
-          : 'First shift back at site';
+          ? String(
+              t('fifoPhaseSelector.days.work.firstNightAtSite', {
+                defaultValue: 'First night shift back at site',
+              })
+            )
+          : String(
+              t('fifoPhaseSelector.days.work.firstShiftAtSite', {
+                defaultValue: 'First shift back at site',
+              })
+            );
     }
     if (dayNumber === totalDays) {
       return isStraightDays
-        ? 'Last day before flying home'
+        ? String(
+            t('fifoPhaseSelector.days.work.lastDayBeforeHome', {
+              defaultValue: 'Last day before flying home',
+            })
+          )
         : isStraightNights
-          ? 'Last night shift before flying home'
-          : 'Last shift before flying home';
+          ? String(
+              t('fifoPhaseSelector.days.work.lastNightBeforeHome', {
+                defaultValue: 'Last night shift before flying home',
+              })
+            )
+          : String(
+              t('fifoPhaseSelector.days.work.lastShiftBeforeHome', {
+                defaultValue: 'Last shift before flying home',
+              })
+            );
     }
     if (dayNumber === Math.ceil(totalDays / 2)) {
-      return 'Midpoint of this block';
+      return String(
+        t('fifoPhaseSelector.days.shared.midpoint', {
+          defaultValue: 'Midpoint of this block',
+        })
+      );
     }
     if (isStraightDays) {
-      return `Day ${dayNumber} of your work block`;
+      return String(
+        t('fifoPhaseSelector.days.work.dayOfWorkBlock', {
+          dayNumber,
+          defaultValue: `Day ${dayNumber} of your work block`,
+        })
+      );
     }
     if (isStraightNights) {
-      return `Shift ${dayNumber} of your night work block`;
+      return String(
+        t('fifoPhaseSelector.days.work.shiftOfNightBlock', {
+          dayNumber,
+          defaultValue: `Shift ${dayNumber} of your night work block`,
+        })
+      );
     }
-    return `Shift ${dayNumber} of your work block`;
+    return String(
+      t('fifoPhaseSelector.days.work.shiftOfWorkBlock', {
+        dayNumber,
+        defaultValue: `Shift ${dayNumber} of your work block`,
+      })
+    );
   }
 
   if (dayNumber === 1) {
-    return 'First day back at home';
+    return String(
+      t('fifoPhaseSelector.days.rest.firstDayAtHome', {
+        defaultValue: 'First day back at home',
+      })
+    );
   }
   if (dayNumber === totalDays) {
-    return 'Last day before returning to site';
+    return String(
+      t('fifoPhaseSelector.days.rest.lastDayBeforeSite', {
+        defaultValue: 'Last day before returning to site',
+      })
+    );
   }
   if (dayNumber === Math.ceil(totalDays / 2)) {
-    return 'Midpoint of this block';
+    return String(
+      t('fifoPhaseSelector.days.shared.midpoint', {
+        defaultValue: 'Midpoint of this block',
+      })
+    );
   }
-  return `Day ${dayNumber} of your rest block`;
+  return String(
+    t('fifoPhaseSelector.days.rest.dayOfRestBlock', {
+      dayNumber,
+      defaultValue: `Day ${dayNumber} of your rest block`,
+    })
+  );
 };
 
 const getDayCardContent = (
@@ -279,6 +342,7 @@ const getDayCardContent = (
   dayNumber: number,
   totalDays: number,
   workBlockPattern: FIFOWorkBlockPattern,
+  t: TFunction<'onboarding'>,
   swingPattern?: SwingPatternConfig
 ): Pick<DayCardData, 'title' | 'description'> => {
   if (
@@ -293,44 +357,105 @@ const getDayCardContent = (
       const dayShiftDayNumber = dayNumber;
       if (dayShiftDayNumber === 1) {
         return {
-          title: 'Day Shift Day 1',
-          description: 'First day shift back at site',
+          title: String(
+            t('fifoPhaseSelector.days.swing.dayShiftTitle', {
+              dayNumber: 1,
+              defaultValue: 'Day Shift Day 1',
+            })
+          ),
+          description: String(
+            t('fifoPhaseSelector.days.swing.firstDayShiftAtSite', {
+              defaultValue: 'First day shift back at site',
+            })
+          ),
         };
       }
       if (dayShiftDayNumber === swingPattern.daysOnDayShift) {
         return {
-          title: `Day Shift Day ${dayShiftDayNumber}`,
-          description: 'Final day shift before switching to nights',
+          title: String(
+            t('fifoPhaseSelector.days.swing.dayShiftTitle', {
+              dayNumber: dayShiftDayNumber,
+              defaultValue: `Day Shift Day ${dayShiftDayNumber}`,
+            })
+          ),
+          description: String(
+            t('fifoPhaseSelector.days.swing.finalDayShiftBeforeNights', {
+              defaultValue: 'Final day shift before switching to nights',
+            })
+          ),
         };
       }
       return {
-        title: `Day Shift Day ${dayShiftDayNumber}`,
-        description: `Day shift day ${dayShiftDayNumber} of your work block`,
+        title: String(
+          t('fifoPhaseSelector.days.swing.dayShiftTitle', {
+            dayNumber: dayShiftDayNumber,
+            defaultValue: `Day Shift Day ${dayShiftDayNumber}`,
+          })
+        ),
+        description: String(
+          t('fifoPhaseSelector.days.swing.dayShiftDayDescription', {
+            dayNumber: dayShiftDayNumber,
+            defaultValue: `Day shift day ${dayShiftDayNumber} of your work block`,
+          })
+        ),
       };
     }
 
     const nightShiftDayNumber = dayNumber - swingPattern.daysOnDayShift;
     if (nightShiftDayNumber === 1) {
       return {
-        title: 'Night Shift Day 1',
-        description: 'First night shift in this swing block',
+        title: String(
+          t('fifoPhaseSelector.days.swing.nightShiftTitle', {
+            dayNumber: 1,
+            defaultValue: 'Night Shift Day 1',
+          })
+        ),
+        description: String(
+          t('fifoPhaseSelector.days.swing.firstNightShiftInBlock', {
+            defaultValue: 'First night shift in this swing block',
+          })
+        ),
       };
     }
     if (nightShiftDayNumber === swingPattern.daysOnNightShift) {
       return {
-        title: `Night Shift Day ${nightShiftDayNumber}`,
-        description: 'Final night shift before flying home',
+        title: String(
+          t('fifoPhaseSelector.days.swing.nightShiftTitle', {
+            dayNumber: nightShiftDayNumber,
+            defaultValue: `Night Shift Day ${nightShiftDayNumber}`,
+          })
+        ),
+        description: String(
+          t('fifoPhaseSelector.days.swing.finalNightShiftBeforeHome', {
+            defaultValue: 'Final night shift before flying home',
+          })
+        ),
       };
     }
     return {
-      title: `Night Shift Day ${nightShiftDayNumber}`,
-      description: `Night shift day ${nightShiftDayNumber} of your work block`,
+      title: String(
+        t('fifoPhaseSelector.days.swing.nightShiftTitle', {
+          dayNumber: nightShiftDayNumber,
+          defaultValue: `Night Shift Day ${nightShiftDayNumber}`,
+        })
+      ),
+      description: String(
+        t('fifoPhaseSelector.days.swing.nightShiftDayDescription', {
+          dayNumber: nightShiftDayNumber,
+          defaultValue: `Night shift day ${nightShiftDayNumber} of your work block`,
+        })
+      ),
     };
   }
 
   return {
-    title: `Day ${dayNumber}`,
-    description: generateDayDescription(blockType, dayNumber, totalDays, workBlockPattern),
+    title: String(
+      t('fifoPhaseSelector.days.defaultDayTitle', {
+        dayNumber,
+        defaultValue: `Day ${dayNumber}`,
+      })
+    ),
+    description: generateDayDescription(blockType, dayNumber, totalDays, workBlockPattern, t),
   };
 };
 
@@ -359,6 +484,7 @@ const SwipeableFIFOCard: React.FC<SwipeableFIFOCardProps> = ({
   mountProgress,
   reducedMotion,
 }) => {
+  const { t } = useTranslation('onboarding');
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const scale = useSharedValue(isActive ? 1 : 0.95 - index * 0.05);
@@ -603,7 +729,10 @@ const SwipeableFIFOCard: React.FC<SwipeableFIFOCardProps> = ({
         {isBlockCard && (
           <View style={styles.badge}>
             <Text style={styles.badgeText}>
-              {card.blockLength} {card.blockLength === 1 ? 'day' : 'days'}
+              {t('phaseSelector.modal.phaseLengthValue', {
+                count: card.blockLength,
+                defaultValue: `${card.blockLength} ${card.blockLength === 1 ? 'day' : 'days'}`,
+              })}
             </Text>
           </View>
         )}
@@ -613,13 +742,19 @@ const SwipeableFIFOCard: React.FC<SwipeableFIFOCardProps> = ({
         {(isBlockCard || (index === 0 && isActive)) && (
           <>
             <Animated.View style={[styles.swipeHint, styles.swipeHintLeft, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>← Next</Text>
+              <Text style={styles.swipeHintText}>
+                {t('phaseSelector.hints.next', { defaultValue: '← Next' })}
+              </Text>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintRight, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>Select →</Text>
+              <Text style={styles.swipeHintText}>
+                {t('phaseSelector.hints.select', { defaultValue: 'Select →' })}
+              </Text>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintUp, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>↑ Info</Text>
+              <Text style={styles.swipeHintText}>
+                {t('phaseSelector.hints.info', { defaultValue: '↑ Info' })}
+              </Text>
             </Animated.View>
           </>
         )}
@@ -635,6 +770,7 @@ interface FIFOInfoModalProps {
 }
 
 const FIFOInfoModal: React.FC<FIFOInfoModalProps> = ({ visible, content, onClose }) => {
+  const { t } = useTranslation('onboarding');
   if (!content) return null;
 
   const isBlockCard = content.type === 'block';
@@ -668,14 +804,21 @@ const FIFOInfoModal: React.FC<FIFOInfoModalProps> = ({ visible, content, onClose
             <>
               {isBlockCard ? (
                 <View style={styles.modalSection}>
-                  <Text style={styles.modalSectionTitle}>Block Length</Text>
+                  <Text style={styles.modalSectionTitle}>
+                    {t('fifoPhaseSelector.modal.blockLength', { defaultValue: 'Block Length' })}
+                  </Text>
                   <Text style={styles.modalSectionText}>
-                    {content.blockLength} {content.blockLength === 1 ? 'day' : 'days'}
+                    {t('phaseSelector.modal.phaseLengthValue', {
+                      count: content.blockLength,
+                      defaultValue: `${content.blockLength} ${content.blockLength === 1 ? 'day' : 'days'}`,
+                    })}
                   </Text>
                 </View>
               ) : null}
               <View style={styles.modalSection}>
-                <Text style={styles.modalSectionTitle}>Why it matters</Text>
+                <Text style={styles.modalSectionTitle}>
+                  {t('fifoPhaseSelector.modal.whyItMatters', { defaultValue: 'Why it matters' })}
+                </Text>
                 <Text style={styles.modalSectionText}>{content.quickInfo}</Text>
               </View>
             </>
@@ -761,6 +904,7 @@ const normalizePositiveInt = (value: unknown, fallback: number): number => {
 };
 
 export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
+  const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const { data, updateData } = useOnboarding();
 
@@ -856,74 +1000,132 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       {
         type: 'workPattern',
         id: 'straight-days',
-        title: 'Straight Days',
-        description: 'Your work block runs day shifts only.',
+        title: String(
+          t('fifoPhaseSelector.patterns.straightDays.title', { defaultValue: 'Straight Days' })
+        ),
+        description: String(
+          t('fifoPhaseSelector.patterns.straightDays.description', {
+            defaultValue: 'Your work block runs day shifts only.',
+          })
+        ),
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         icon: require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png'),
         gradientColors: [theme.colors.shiftVisualization.dayShift, '#1976D2'],
-        quickInfo: 'Best for operations that keep all crews on daytime rotations.',
+        quickInfo: String(
+          t('fifoPhaseSelector.patterns.straightDays.quickInfo', {
+            defaultValue: 'Best for operations that keep all crews on daytime rotations.',
+          })
+        ),
       },
       {
         type: 'workPattern',
         id: 'straight-nights',
-        title: 'Straight Nights',
-        description: 'Your work block runs night shifts only.',
+        title: String(
+          t('fifoPhaseSelector.patterns.straightNights.title', { defaultValue: 'Straight Nights' })
+        ),
+        description: String(
+          t('fifoPhaseSelector.patterns.straightNights.description', {
+            defaultValue: 'Your work block runs night shifts only.',
+          })
+        ),
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         icon: require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png'),
         gradientColors: [theme.colors.shiftVisualization.nightShift, '#4C1D95'],
-        quickInfo: 'Use this when site crews remain on night shifts for the full work block.',
+        quickInfo: String(
+          t('fifoPhaseSelector.patterns.straightNights.quickInfo', {
+            defaultValue:
+              'Use this when site crews remain on night shifts for the full work block.',
+          })
+        ),
       },
       {
         type: 'workPattern',
         id: 'swing',
-        title: 'Swing',
-        description: 'Your work block mixes day and night shifts.',
+        title: String(t('fifoPhaseSelector.patterns.swing.title', { defaultValue: 'Swing' })),
+        description: String(
+          t('fifoPhaseSelector.patterns.swing.description', {
+            defaultValue: 'Your work block mixes day and night shifts.',
+          })
+        ),
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         icon: require('../../../../assets/onboarding/icons/consolidated/roster-type-rotating.png'),
         gradientColors: ['#0891B2', '#6366F1'],
-        quickInfo: 'Choose this when your work block rotates between days and nights.',
+        quickInfo: String(
+          t('fifoPhaseSelector.patterns.swing.quickInfo', {
+            defaultValue: 'Choose this when your work block rotates between days and nights.',
+          })
+        ),
       },
     ],
-    []
+    [t]
   );
 
   const blockCards = useMemo<BlockCardData[]>(() => {
     const workBlockVisuals =
       activeWorkBlockPattern === 'straight-nights'
         ? {
-            description: 'You are currently at the mine site on your night-shift work block',
+            description: String(
+              t('fifoPhaseSelector.blocks.work.descriptionNight', {
+                defaultValue: 'You are currently at the mine site on your night-shift work block',
+              })
+            ),
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             icon: require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png'),
             gradientColors: [theme.colors.shiftVisualization.nightShift, '#4C1D95'] as [
               string,
               string,
             ],
-            quickInfo: 'This means your cycle starts counting from your night-shift work block.',
+            quickInfo: String(
+              t('fifoPhaseSelector.blocks.work.quickInfoNight', {
+                defaultValue:
+                  'This means your cycle starts counting from your night-shift work block.',
+              })
+            ),
           }
         : activeWorkBlockPattern === 'straight-days'
           ? {
-              description: 'You are currently at the mine site on your day-shift work block',
+              description: String(
+                t('fifoPhaseSelector.blocks.work.descriptionDay', {
+                  defaultValue: 'You are currently at the mine site on your day-shift work block',
+                })
+              ),
               // eslint-disable-next-line @typescript-eslint/no-var-requires
               icon: require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png'),
               gradientColors: [theme.colors.shiftVisualization.dayShift, '#1976D2'] as [
                 string,
                 string,
               ],
-              quickInfo: 'This means your cycle starts counting from your day-shift work block.',
+              quickInfo: String(
+                t('fifoPhaseSelector.blocks.work.quickInfoDay', {
+                  defaultValue:
+                    'This means your cycle starts counting from your day-shift work block.',
+                })
+              ),
             }
           : {
-              description: 'You are currently at the mine site on your work block',
+              description: String(
+                t('fifoPhaseSelector.blocks.work.descriptionNeutral', {
+                  defaultValue: 'You are currently at the mine site on your work block',
+                })
+              ),
               // eslint-disable-next-line @typescript-eslint/no-var-requires
               icon: require('../../../../assets/onboarding/icons/consolidated/roster-type-fifo.png'),
               gradientColors: ['#0EA5E9', '#6366F1'] as [string, string],
-              quickInfo: 'This means your cycle starts counting from your current work block.',
+              quickInfo: String(
+                t('fifoPhaseSelector.blocks.work.quickInfoNeutral', {
+                  defaultValue:
+                    'This means your cycle starts counting from your current work block.',
+                })
+              ),
             };
 
     return [
       {
         type: 'block',
         id: 'work',
-        title: 'At Site (Working)',
+        title: String(
+          t('fifoPhaseSelector.blocks.work.title', { defaultValue: 'At Site (Working)' })
+        ),
         description: workBlockVisuals.description,
         icon: workBlockVisuals.icon,
         blockLength: workBlockDays,
@@ -933,16 +1135,24 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       {
         type: 'block',
         id: 'rest',
-        title: 'At Home (Rest)',
-        description: 'You are currently at home on your rest block',
+        title: String(t('fifoPhaseSelector.blocks.rest.title', { defaultValue: 'At Home (Rest)' })),
+        description: String(
+          t('fifoPhaseSelector.blocks.rest.description', {
+            defaultValue: 'You are currently at home on your rest block',
+          })
+        ),
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         icon: require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png'),
         blockLength: restBlockDays,
         gradientColors: [theme.colors.shiftVisualization.daysOff, '#57534e'],
-        quickInfo: 'This offsets your cycle by your work block length first.',
+        quickInfo: String(
+          t('fifoPhaseSelector.blocks.rest.quickInfo', {
+            defaultValue: 'This offsets your cycle by your work block length first.',
+          })
+        ),
       },
     ];
-  }, [activeWorkBlockPattern, restBlockDays, workBlockDays]);
+  }, [activeWorkBlockPattern, restBlockDays, t, workBlockDays]);
 
   const clearPendingTransition = useCallback(() => {
     if (interactionHandleRef.current?.cancel) {
@@ -1219,6 +1429,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
           idx + 1,
           totalDays,
           activeWorkBlockPattern,
+          t,
           swingPatternForDayCards
         ) as Pick<DayCardData, 'title' | 'description'>),
         type: 'day',
@@ -1250,6 +1461,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     resolvedFIFOConfig.swingPattern,
     daysOnDayShift,
     daysOnNightShift,
+    t,
     workBlockDays,
   ]);
 
@@ -1290,24 +1502,60 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
 
       <Text style={styles.title}>
         {stage === SelectionStage.WORK_PATTERN
-          ? 'How are shifts run during your FIFO work block?'
+          ? String(
+              t('fifoPhaseSelector.title.workPattern', {
+                defaultValue: 'How are shifts run during your FIFO work block?',
+              })
+            )
           : stage === SelectionStage.SWING_CONFIG
-            ? 'Configure your swing split'
+            ? String(
+                t('fifoPhaseSelector.title.swingConfig', {
+                  defaultValue: 'Configure your swing split',
+                })
+              )
             : stage === SelectionStage.BLOCK
-              ? 'Where are you in your FIFO cycle?'
-              : `Which day of ${selectedBlockTitle} are you on?`}
+              ? String(
+                  t('fifoPhaseSelector.title.block', {
+                    defaultValue: 'Where are you in your FIFO cycle?',
+                  })
+                )
+              : String(
+                  t('fifoPhaseSelector.title.dayWithinBlock', {
+                    blockTitle: selectedBlockTitle,
+                    defaultValue: `Which day of ${selectedBlockTitle} are you on?`,
+                  })
+                )}
       </Text>
 
       <Text style={styles.subtitle}>
         {stage === SelectionStage.WORK_PATTERN
-          ? 'Swipe right to choose your work-block pattern, left for next option, or up for info'
+          ? String(
+              t('fifoPhaseSelector.subtitle.workPattern', {
+                defaultValue:
+                  'Swipe right to choose your work-block pattern, left for next option, or up for info',
+              })
+            )
           : stage === SelectionStage.SWING_CONFIG
-            ? 'Set how many day-shift and night-shift days you work before choosing your current block'
+            ? String(
+                t('fifoPhaseSelector.subtitle.swingConfig', {
+                  defaultValue:
+                    'Set how many day-shift and night-shift days you work before choosing your current block',
+                })
+              )
             : stage === SelectionStage.BLOCK
-              ? 'Swipe right to select, left to see next, or up for more info'
-              : `Swipe right to select, left to see next, or up for more info. Is it the ${generateOrdinalList(
-                  stageDayCount
-                )}?`}
+              ? String(
+                  t('fifoPhaseSelector.subtitle.block', {
+                    defaultValue: 'Swipe right to select, left to see next, or up for more info',
+                  })
+                )
+              : String(
+                  t('fifoPhaseSelector.subtitle.dayWithinBlock', {
+                    ordinalList: generateOrdinalList(stageDayCount),
+                    defaultValue: `Swipe right to select, left to see next, or up for more info. Is it the ${generateOrdinalList(
+                      stageDayCount
+                    )}?`,
+                  })
+                )}
       </Text>
 
       <>
@@ -1327,7 +1575,11 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
 
             <View style={styles.swingConfigContent}>
               <PatternBuilderSlider
-                label="Days on Day Shift"
+                label={String(
+                  t('fifoPhaseSelector.swingConfig.daysOnDayShift', {
+                    defaultValue: 'Days on Day Shift',
+                  })
+                )}
                 icon="☀️"
                 value={daysOnDayShift}
                 min={1}
@@ -1351,7 +1603,11 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
               />
 
               <PatternBuilderSlider
-                label="Days on Night Shift"
+                label={String(
+                  t('fifoPhaseSelector.swingConfig.daysOnNightShift', {
+                    defaultValue: 'Days on Night Shift',
+                  })
+                )}
                 icon="🌙"
                 value={daysOnNightShift}
                 min={1}
@@ -1375,12 +1631,23 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
               />
 
               <Text style={styles.swingSplitText} testID="swing-split-total-text">
-                Split total: {swingSplitTotal}/{workBlockDays} days
+                {String(
+                  t('fifoPhaseSelector.swingConfig.splitTotal', {
+                    swingSplitTotal,
+                    workBlockDays,
+                    defaultValue: `Split total: ${swingSplitTotal}/${workBlockDays} days`,
+                  })
+                )}
               </Text>
 
               {isSwingSplitValid ? null : (
                 <Text style={styles.swingValidationText} testID="swing-config-error">
-                  Swing split must equal {workBlockDays} days with at least 1 day on each shift.
+                  {String(
+                    t('fifoPhaseSelector.swingConfig.validation', {
+                      workBlockDays,
+                      defaultValue: `Swing split must equal ${workBlockDays} days with at least 1 day on each shift.`,
+                    })
+                  )}
                 </Text>
               )}
 
@@ -1390,7 +1657,13 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
                   style={styles.changePatternButton}
                   testID="swing-config-change-pattern-button"
                 >
-                  <Text style={styles.changePatternButtonText}>Change Pattern</Text>
+                  <Text style={styles.changePatternButtonText}>
+                    {String(
+                      t('fifoPhaseSelector.swingConfig.changePattern', {
+                        defaultValue: 'Change Pattern',
+                      })
+                    )}
+                  </Text>
                 </Pressable>
 
                 <Pressable
@@ -1402,7 +1675,13 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
                   disabled={!isSwingSplitValid}
                   testID="swing-config-continue-button"
                 >
-                  <Text style={styles.swingContinueButtonText}>Continue</Text>
+                  <Text style={styles.swingContinueButtonText}>
+                    {String(
+                      t('fifoPhaseSelector.swingConfig.continue', {
+                        defaultValue: 'Continue',
+                      })
+                    )}
+                  </Text>
                 </Pressable>
               </View>
             </View>
@@ -1429,7 +1708,13 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       </>
       {isTransitioning ? (
         <View pointerEvents="none" style={styles.transitionOverlay}>
-          <Text style={styles.transitionText}>Preparing your calendar...</Text>
+          <Text style={styles.transitionText}>
+            {String(
+              t('fifoPhaseSelector.transition.preparingCalendar', {
+                defaultValue: 'Preparing your calendar...',
+              })
+            )}
+          </Text>
         </View>
       ) : null}
 

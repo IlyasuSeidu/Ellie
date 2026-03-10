@@ -6,6 +6,7 @@ import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-cont
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { OnboardingProvider } from './src/contexts/OnboardingContext';
+import { LanguageProvider } from './src/contexts/LanguageContext';
 import { VoiceAssistantProvider } from './src/contexts/VoiceAssistantContext';
 import { useShiftAccent } from './src/hooks/useShiftAccent';
 
@@ -38,9 +39,11 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <OnboardingProvider>
-          <VoiceAssistantProvider>
-            <AppContent />
-          </VoiceAssistantProvider>
+          <LanguageProvider>
+            <VoiceAssistantProvider>
+              <AppContent />
+            </VoiceAssistantProvider>
+          </LanguageProvider>
         </OnboardingProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

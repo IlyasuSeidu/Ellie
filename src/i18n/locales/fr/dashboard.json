@@ -1,0 +1,72 @@
+{
+  "greeting": {
+    "morning": "Bonjour",
+    "afternoon": "Bon après-midi",
+    "evening": "Bonne soirée",
+    "night": "Bonne nuit"
+  },
+  "pullToRefresh": "Tirer pour rafraîchir",
+  "refreshing": "Actualisation du planning...",
+  "scheduleUpdated": "Calendrier mis à jour",
+  "lastUpdated": {
+    "justNow": "À l’instant",
+    "secondsAgo": "Il y a {{count}}s",
+    "minutesAgo": "Il y a {{count}} min",
+    "updatedPrefix": "Mis à jour"
+  },
+  "errors": {
+    "loadFailed": "Impossible de charger les données de quart de travail"
+  },
+  "user": {
+    "defaultName": "Utilisateur"
+  },
+  "upcoming": {
+    "title": "Prochains shifts"
+  },
+  "shiftLabels": {
+    "day": "Quart de jour",
+    "night": "Équipe de nuit",
+    "morning": "Quart du matin",
+    "afternoon": "Quart de l'après-midi",
+    "off": "Jour de congé"
+  },
+  "shiftSubtitles": {
+    "day": "Restez énergique !",
+    "night": "Restez vigilant !",
+    "morning": "Lève-toi et brille !",
+    "afternoon": "Continuez comme ça !",
+    "off": "Reposez-vous et ressourcez-vous !"
+  },
+  "fifo": {
+    "onSite": "Bloc sur site actif",
+    "homeBlock": "Bloc à domicile actif",
+    "workBlock": "Travail",
+    "restBlock": "Repos",
+    "blockChangeToday": "Changement de bloc aujourd'hui !",
+    "blockChangeTomorrow": "Changement de bloc demain !",
+    "untilRest": "{{count}}d jusqu'au bloc de repos",
+    "untilWork": "{{count}}d jusqu'au bloc de travail",
+    "blockDayOf": "{{blockName}} Jour bloc {{day}} du {{total}}",
+    "days": "jours"
+  },
+  "stats": {
+    "workDays": "Jours de travail",
+    "offDays": "Jours de repos",
+    "balance": "Équilibre"
+  },
+  "calendar": {
+    "legendDay": "Jour",
+    "legendMorning": "Matin",
+    "legendAfternoon": "Après-midi",
+    "legendNight": "Nuit",
+    "legendOff": "Repos",
+    "legendWorkBlock": "Bloc de travail",
+    "legendRestBlock": "Bloc de repos",
+    "cycle": "Cycle",
+    "previousMonth": "Mois précédent",
+    "nextMonth": "Mois prochain"
+  },
+  "badges": {
+    "active": "ACTIF"
+  }
+}

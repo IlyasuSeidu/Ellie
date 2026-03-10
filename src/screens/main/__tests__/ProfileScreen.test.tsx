@@ -21,6 +21,12 @@ jest.mock('react-native-reanimated', () => {
     View: RN.View,
     Text: RN.Text,
     ScrollView: RN.ScrollView,
+    useSharedValue: (value: number) => ({ value }),
+    useAnimatedStyle: () => ({}),
+    withTiming: (value: number) => value,
+    withSpring: (value: number) => value,
+    runOnJS: (fn: unknown) => fn,
+    Easing: { out: () => undefined, quad: undefined },
   };
 });
 
@@ -96,6 +102,17 @@ jest.mock('@/components/profile/WorkStatsSummary', () => ({
     const RN = require('react-native');
     return React.createElement(RN.Text, { testID: 'profile-work-stats' }, 'Work Stats Summary');
   },
+}));
+
+jest.mock('@/components/profile/LanguageSelectorSheet', () => ({
+  LANGUAGE_NAMES: {
+    en: 'English',
+    es: 'Español',
+    'pt-BR': 'Português (Brasil)',
+    fr: 'Français',
+    ar: 'العربية',
+  },
+  LanguageSelectorSheet: () => null,
 }));
 
 describe('ProfileScreen', () => {

@@ -17,6 +17,7 @@ import Animated, {
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { PremiumButton } from '@/components/onboarding/premium';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
@@ -43,6 +44,7 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
   onContinue,
   testID,
 }) => {
+  const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const autoAdvanceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -171,13 +173,13 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
 
         {/* Tagline */}
         <Animated.Text style={[styles.tagline, taglineAnimatedStyle]}>
-          Your Mining Shift Companion
+          {t('welcome.tagline')}
         </Animated.Text>
 
         {/* Get Started button */}
         <Animated.View style={[styles.buttonContainer, buttonAnimatedStyle]}>
           <PremiumButton
-            title="Get Started"
+            title={t('welcome.getStarted')}
             onPress={handleContinue}
             variant="primary"
             size="large"

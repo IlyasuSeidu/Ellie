@@ -10,6 +10,7 @@ import React from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 
 export interface StatisticsCardProps {
@@ -93,6 +94,7 @@ export const StatisticsRow: React.FC<StatisticsRowProps> = ({
   animationDelay = 300,
   testID,
 }) => {
+  const { t } = useTranslation('dashboard');
   const balanceColor = getBalanceColor(workLifeBalance);
 
   return (
@@ -101,7 +103,7 @@ export const StatisticsRow: React.FC<StatisticsRowProps> = ({
         icon="briefcase-outline"
         iconColor="#2196F3"
         value={workDays}
-        label="Work Days"
+        label={t('stats.workDays')}
         animationDelay={animationDelay}
         testID="stat-work-days"
       />
@@ -109,7 +111,7 @@ export const StatisticsRow: React.FC<StatisticsRowProps> = ({
         icon="sunny-outline"
         iconColor="#FF9800"
         value={offDays}
-        label="Off Days"
+        label={t('stats.offDays')}
         animationDelay={animationDelay + 50}
         testID="stat-off-days"
       />
@@ -117,7 +119,7 @@ export const StatisticsRow: React.FC<StatisticsRowProps> = ({
         icon="heart-outline"
         iconColor={balanceColor}
         value={workLifeBalance.toFixed(0)}
-        label="Balance"
+        label={t('stats.balance')}
         suffix="%"
         animationDelay={animationDelay + 100}
         testID="stat-balance"

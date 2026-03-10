@@ -11,9 +11,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeIn, FadeInUp } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 
 export const StatsScreen: React.FC = () => {
+  const { t } = useTranslation('schedule');
   const insets = useSafeAreaInsets();
 
   return (
@@ -30,13 +32,13 @@ export const StatsScreen: React.FC = () => {
           </View>
         </Animated.View>
         <Animated.Text entering={FadeInUp.delay(100).duration(400)} style={styles.title}>
-          Statistics
+          {t('statsTitle')}
         </Animated.Text>
         <Animated.Text entering={FadeInUp.delay(200).duration(400)} style={styles.subtitle}>
-          Coming Soon
+          {t('comingSoon')}
         </Animated.Text>
         <Animated.Text entering={FadeInUp.delay(300).duration(400)} style={styles.description}>
-          Detailed analytics and insights about your shift patterns will appear here.
+          {t('statsDescription')}
         </Animated.Text>
       </View>
     </View>

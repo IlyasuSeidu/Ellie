@@ -16,6 +16,7 @@ import Animated, {
   withSequence,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { PremiumTextInput } from '@/components/onboarding/premium/PremiumTextInput';
 import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
@@ -55,6 +56,7 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   onCancel,
   animationDelay = 0,
 }) => {
+  const { t } = useTranslation('profile');
   const [countryModalVisible, setCountryModalVisible] = useState(false);
   const saveDelayTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const editOpacity = useSharedValue(isEditing ? 1 : 0);
@@ -101,10 +103,15 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   }));
 
   const fields: FieldConfig[] = [
-    { key: 'name', label: 'Name', icon: 'person-outline', value: name },
-    { key: 'occupation', label: 'Occupation', icon: 'briefcase-outline', value: occupation },
-    { key: 'company', label: 'Company', icon: 'business-outline', value: company },
-    { key: 'country', label: 'Country', icon: 'flag-outline', value: country },
+    { key: 'name', label: t('fields.name'), icon: 'person-outline', value: name },
+    {
+      key: 'occupation',
+      label: t('fields.occupation'),
+      icon: 'briefcase-outline',
+      value: occupation,
+    },
+    { key: 'company', label: t('fields.company'), icon: 'business-outline', value: company },
+    { key: 'country', label: t('fields.country'), icon: 'flag-outline', value: country },
   ];
 
   const handleCountrySelect = useCallback(
@@ -141,21 +148,21 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
         <Animated.View entering={FadeInUp.delay(animationDelay).duration(300)} style={styles.card}>
           <Animated.View style={[editModeAnimStyle, saveFlashStyle]}>
             <PremiumTextInput
-              label="Name"
+              label={t('fields.name')}
               value={name}
               onChangeText={(text) => onFieldChange('name', text)}
               leftIcon={<Ionicons name="person-outline" size={18} color={iconColor} />}
               containerStyle={styles.inputSpacing}
             />
             <PremiumTextInput
-              label="Occupation"
+              label={t('fields.occupation')}
               value={occupation}
               onChangeText={(text) => onFieldChange('occupation', text)}
               leftIcon={<Ionicons name="briefcase-outline" size={18} color={iconColor} />}
               containerStyle={styles.inputSpacing}
             />
             <PremiumTextInput
-              label="Company"
+              label={t('fields.company')}
               value={company}
               onChangeText={(text) => onFieldChange('company', text)}
               leftIcon={<Ionicons name="business-outline" size={18} color={iconColor} />}
@@ -171,9 +178,9 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
               <View style={styles.countryTriggerInner}>
                 <Ionicons name="flag-outline" size={18} color={iconColor} />
                 <View style={styles.countryTextContainer}>
-                  <Animated.Text style={styles.countryLabel}>Country</Animated.Text>
+                  <Animated.Text style={styles.countryLabel}>{t('fields.country')}</Animated.Text>
                   <Animated.Text style={styles.countryValue}>
-                    {country || 'Select country'}
+                    {country || t('fields.selectCountry')}
                   </Animated.Text>
                 </View>
                 <Ionicons name="chevron-forward" size={16} color={iconColor} />
@@ -183,14 +190,14 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
             {/* Save / Cancel */}
             <View style={styles.buttonRow}>
               <PremiumButton
-                title="Cancel"
+                title={t('buttons.cancel', { ns: 'common' })}
                 onPress={onCancel}
                 variant="outline"
                 size="small"
                 style={styles.buttonHalf}
               />
               <PremiumButton
-                title="Save Changes"
+                title={t('fields.saveChanges')}
                 onPress={handleSavePress}
                 variant="primary"
                 size="small"
@@ -225,7 +232,7 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
                 <Animated.Text style={styles.fieldLabel}>{field.label}</Animated.Text>
               </View>
               <Animated.Text style={styles.fieldValue} numberOfLines={1}>
-                {field.value || 'Not set'}
+                {field.value || t('fields.notSet')}
               </Animated.Text>
             </View>
             {index < fields.length - 1 && <View style={styles.divider} />}

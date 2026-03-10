@@ -36,6 +36,7 @@ import Svg, { Circle, Path } from 'react-native-svg';
 
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
@@ -52,6 +53,7 @@ import {
   getFIFOCycleDescription,
 } from '@/utils/profileUtils';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
+import { normalizeLanguage } from '@/i18n/languageDetector';
 
 // Animated SVG components
 const AnimatedPath = Animated.createAnimatedComponent(Path);
@@ -167,6 +169,7 @@ export interface PremiumCompletionScreenProps {
 
 interface FeaturePill {
   id: string;
+  translationKey: string;
   icon: keyof typeof Ionicons.glyphMap;
   text: string;
   description: string;
@@ -176,6 +179,7 @@ interface FeaturePill {
 const FEATURE_HIGHLIGHTS: FeaturePill[] = [
   {
     id: '1',
+    translationKey: 'reminders',
     text: 'Smart shift reminders',
     icon: 'notifications-outline',
     description: 'Never miss a shift with intelligent notifications that adapt to your rotation',
@@ -183,6 +187,7 @@ const FEATURE_HIGHLIGHTS: FeaturePill[] = [
   },
   {
     id: '2',
+    translationKey: 'sleep',
     text: 'Sleep tracking & insights',
     icon: 'moon-outline',
     description: 'Optimize your rest between shifts with personalized sleep analytics',
@@ -190,6 +195,7 @@ const FEATURE_HIGHLIGHTS: FeaturePill[] = [
   },
   {
     id: '3',
+    translationKey: 'fatigue',
     text: 'Fatigue monitoring',
     icon: 'battery-charging-outline',
     description: 'Track your energy levels and get alerts when fatigue risk is high',
@@ -197,6 +203,7 @@ const FEATURE_HIGHLIGHTS: FeaturePill[] = [
   },
   {
     id: '4',
+    translationKey: 'team',
     text: 'Team coordination',
     icon: 'people-outline',
     description: 'See your crew schedule and coordinate handovers seamlessly',
@@ -204,6 +211,7 @@ const FEATURE_HIGHLIGHTS: FeaturePill[] = [
   },
   {
     id: '5',
+    translationKey: 'balance',
     text: 'Work-life balance',
     icon: 'fitness-outline',
     description: 'Maintain healthy routines with activity and wellness tracking',
@@ -211,6 +219,7 @@ const FEATURE_HIGHLIGHTS: FeaturePill[] = [
   },
   {
     id: '6',
+    translationKey: 'earnings',
     text: 'Earnings calculator',
     icon: 'calculator-outline',
     description: 'Automatically calculate overtime, penalties, and shift allowances',
@@ -218,6 +227,7 @@ const FEATURE_HIGHLIGHTS: FeaturePill[] = [
   },
   {
     id: '7',
+    translationKey: 'meals',
     text: 'Meal & hydration',
     icon: 'restaurant-outline',
     description: 'Stay healthy with meal timing suggestions and hydration reminders',
@@ -229,6 +239,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
   onComplete,
   testID = 'premium-completion-screen',
 }) => {
+  const { t, i18n } = useTranslation('onboarding');
   const { data, validateData } = useOnboarding();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
@@ -325,9 +336,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
       });
     } catch (error) {
       console.error('Failed to save onboarding data:', error);
-      setSaveError(
-        error instanceof Error ? error.message : 'Failed to save your data. Please try again.'
-      );
+      setSaveError(error instanceof Error ? error.message : String(t('completion.saveFailed')));
       await triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
         source: 'PremiumCompletionScreen.saveOnboardingData.error',
       });
@@ -396,8 +405,39 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
   );
 
   const selectedFeature = useMemo(
-    () => FEATURE_HIGHLIGHTS.find((feature) => feature.id === expandedFeature) ?? null,
-    [expandedFeature]
+    () =>
+      FEATURE_HIGHLIGHTS.map((feature) => ({
+        ...feature,
+        text: String(
+          t(`completion.features.${feature.translationKey}`, {
+            defaultValue: feature.text,
+          })
+        ),
+        description: String(
+          t(`completion.features.${feature.translationKey}Desc`, {
+            defaultValue: feature.description,
+          })
+        ),
+      })).find((feature) => feature.id === expandedFeature) ?? null,
+    [expandedFeature, t]
+  );
+
+  const featureHighlights = useMemo(
+    () =>
+      FEATURE_HIGHLIGHTS.map((feature) => ({
+        ...feature,
+        text: String(
+          t(`completion.features.${feature.translationKey}`, {
+            defaultValue: feature.text,
+          })
+        ),
+        description: String(
+          t(`completion.features.${feature.translationKey}Desc`, {
+            defaultValue: feature.description,
+          })
+        ),
+      })),
+    [t]
   );
 
   // Format pattern name for display
@@ -406,14 +446,32 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
   // Format shift system
   const getShiftSystemName = (): string => {
     const displayName = getShiftSystemDisplayName(data.shiftSystem);
-    return displayName === '3-Shift (8h)' ? '3-Shift System' : '2-Shift System';
+    return displayName === '3-Shift (8h)'
+      ? String(
+          t('completion.summary.shiftSystemThree', {
+            defaultValue: '3-Shift System',
+          })
+        )
+      : String(
+          t('completion.summary.shiftSystemTwo', {
+            defaultValue: '2-Shift System',
+          })
+        );
   };
 
   // Get roster type display name
   const getRosterTypeName = (): string => {
     return getRosterTypeDisplayName(data.rosterType) === 'FIFO'
-      ? 'FIFO (Fly-In Fly-Out)'
-      : 'Rotating Roster';
+      ? String(
+          t('completion.summary.rosterTypeFIFO', {
+            defaultValue: 'FIFO (Fly-In Fly-Out)',
+          })
+        )
+      : String(
+          t('completion.summary.rosterTypeRotating', {
+            defaultValue: 'Rotating Roster',
+          })
+        );
   };
 
   // Get FIFO work pattern description
@@ -426,8 +484,19 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
 
   // Format date
   const formatDate = (date?: Date): string => {
-    if (!date) return 'Not set';
-    return date.toLocaleDateString('en-US', {
+    if (!date) return String(t('completion.summary.notSet', { defaultValue: 'Not set' }));
+    const language = normalizeLanguage(i18n.resolvedLanguage ?? i18n.language ?? 'en');
+    const locale =
+      language === 'pt-BR'
+        ? 'pt-BR'
+        : language === 'es'
+          ? 'es-ES'
+          : language === 'fr'
+            ? 'fr-FR'
+            : language === 'ar'
+              ? 'ar'
+              : 'en-US';
+    return date.toLocaleDateString(locale, {
       month: 'long',
       day: 'numeric',
       year: 'numeric',
@@ -445,8 +514,8 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
     // If no shift times configured, show placeholder
     if (entries.length === 0) {
       entries.push({
-        label: 'Shift Times',
-        value: 'Not set',
+        label: String(t('completion.summary.shiftTimes', { defaultValue: 'Shift Times' })),
+        value: String(t('completion.summary.notSet', { defaultValue: 'Not set' })),
       });
     }
 
@@ -530,7 +599,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
           entering={reducedMotion ? undefined : FadeInDown.delay(400).duration(500)}
           style={styles.title}
         >
-          You&apos;re all set!
+          {t('completion.title', { defaultValue: "You're all set!" })}
         </Animated.Text>
 
         {/* Subtitle */}
@@ -538,7 +607,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
           entering={reducedMotion ? undefined : FadeInDown.delay(500).duration(500)}
           style={styles.subtitle}
         >
-          Welcome to Ellie
+          {t('completion.subtitle', { defaultValue: 'Welcome to Ellie' })}
         </Animated.Text>
 
         {/* Summary Card */}
@@ -548,7 +617,9 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
         >
           <View style={styles.summaryHeader}>
             <Ionicons name="person-circle-outline" size={24} color={theme.colors.sacredGold} />
-            <Text style={styles.summaryHeaderText}>Your profile</Text>
+            <Text style={styles.summaryHeaderText}>
+              {t('completion.summary.title', { defaultValue: 'Your profile' })}
+            </Text>
           </View>
 
           <View style={styles.summaryContent}>
@@ -557,46 +628,56 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
                 data.name
                   ? {
                       icon: 'person-outline',
-                      label: 'Name',
+                      label: String(t('completion.summary.name', { defaultValue: 'Name' })),
                       value: data.name,
                     }
                   : undefined,
                 data.company
                   ? {
                       icon: 'business-outline',
-                      label: 'Company',
+                      label: String(t('completion.summary.company', { defaultValue: 'Company' })),
                       value: data.company,
                     }
                   : undefined,
                 {
                   icon: 'swap-horizontal-outline',
-                  label: 'Roster Type',
+                  label: String(
+                    t('completion.summary.rosterType', { defaultValue: 'Roster Type' })
+                  ),
                   value: getRosterTypeName(),
                 },
                 {
                   icon: 'layers-outline',
-                  label: 'Shift System',
+                  label: String(
+                    t('completion.summary.shiftSystem', { defaultValue: 'Shift System' })
+                  ),
                   value: getShiftSystemName(),
                 },
-                { icon: 'refresh-outline', label: 'Pattern', value: getPatternName() },
+                {
+                  icon: 'refresh-outline',
+                  label: String(t('completion.summary.pattern', { defaultValue: 'Pattern' })),
+                  value: getPatternName(),
+                },
                 // FIFO-specific fields
                 ...(data.rosterType === 'fifo'
                   ? [
                       {
                         icon: 'sync-outline',
-                        label: 'Cycle',
+                        label: String(t('completion.summary.cycle', { defaultValue: 'Cycle' })),
                         value: getFIFOCycleSummary(),
                       },
                       {
                         icon: 'partly-sunny-outline',
-                        label: 'Work Pattern',
+                        label: String(
+                          t('completion.summary.workPattern', { defaultValue: 'Work Pattern' })
+                        ),
                         value: getFIFOShiftPatternName(),
                       },
                     ]
                   : []),
                 {
                   icon: 'calendar-outline',
-                  label: 'Start Date',
+                  label: String(t('completion.summary.startDate', { defaultValue: 'Start Date' })),
                   value: formatDate(data.startDate),
                 },
                 // Spread all shift time entries (supports multiple shifts)
@@ -630,7 +711,10 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
                     />
                     <View style={styles.summaryRowContent}>
                       <Text style={styles.summaryLabel}>{summaryItem.label}</Text>
-                      <Text style={styles.summaryValue}>{summaryItem.value || 'Not set'}</Text>
+                      <Text style={styles.summaryValue}>
+                        {summaryItem.value ||
+                          String(t('completion.summary.notSet', { defaultValue: 'Not set' }))}
+                      </Text>
                     </View>
                   </Animated.View>
                 );
@@ -646,7 +730,9 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
             featuresSectionYRef.current = event.nativeEvent.layout.y;
           }}
         >
-          <Text style={styles.featuresTitle}>What you can do with Ellie</Text>
+          <Text style={styles.featuresTitle}>
+            {t('completion.featuresTitle', { defaultValue: 'What you can do with Ellie' })}
+          </Text>
 
           {selectedFeature ? (
             <Animated.View
@@ -661,7 +747,11 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
               <Text style={styles.featureDetailText}>{selectedFeature.description}</Text>
             </Animated.View>
           ) : (
-            <Text style={styles.featureHintText}>Tap a feature chip to see more details.</Text>
+            <Text style={styles.featureHintText}>
+              {t('completion.featureHint', {
+                defaultValue: 'Tap a feature chip to see more details.',
+              })}
+            </Text>
           )}
 
           <ScrollView
@@ -669,7 +759,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.featuresScroll}
           >
-            {FEATURE_HIGHLIGHTS.map((feature, index) => (
+            {featureHighlights.map((feature, index) => (
               <Pressable key={feature.id} onPress={() => handleFeaturePillPress(feature.id)}>
                 <Animated.View
                   entering={
@@ -713,26 +803,36 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
           {isSaving ? (
             <View style={styles.loadingContainer}>
               <ActivityIndicator size="large" color={theme.colors.sacredGold} />
-              <Text style={styles.loadingText}>Setting up your calendar...</Text>
+              <Text style={styles.loadingText}>
+                {t('completion.loading', { defaultValue: 'Setting up your calendar...' })}
+              </Text>
             </View>
           ) : saveError ? (
             <PremiumButton
-              title="Try Again"
+              title={t('completion.tryAgain', { defaultValue: 'Try Again' })}
               onPress={handleRetry}
               variant="primary"
               size="large"
-              accessibilityLabel="Retry saving your data"
-              accessibilityHint="Tap to try saving your data again"
+              accessibilityLabel={t('completion.retryA11yLabel', {
+                defaultValue: 'Retry saving your data',
+              })}
+              accessibilityHint={t('completion.retryA11yHint', {
+                defaultValue: 'Tap to try saving your data again',
+              })}
             />
           ) : (
             <PremiumButton
-              title="Get Started"
+              title={t('welcome.getStarted')}
               onPress={handleGetStarted}
               variant="primary"
               size="large"
               disabled={!isSaved}
-              accessibilityLabel="Get started with Ellie"
-              accessibilityHint="Tap to start using the app"
+              accessibilityLabel={t('completion.getStartedA11yLabel', {
+                defaultValue: 'Get started with Ellie',
+              })}
+              accessibilityHint={t('completion.getStartedA11yHint', {
+                defaultValue: 'Tap to start using the app',
+              })}
             />
           )}
         </Animated.View>

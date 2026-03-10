@@ -22,6 +22,7 @@ import Animated, {
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { avatarService } from '@/services/AvatarService';
 
@@ -48,22 +49,26 @@ interface GreetingData {
   iconColor: string;
 }
 
+type GreetingTranslationFn = (
+  key: 'greeting.morning' | 'greeting.afternoon' | 'greeting.evening' | 'greeting.night'
+) => string;
+
 /**
  * Get time-aware greeting with icon
  */
-function getGreeting(): GreetingData {
+function getGreeting(t: GreetingTranslationFn): GreetingData {
   const hour = new Date().getHours();
 
   if (hour >= 5 && hour < 12) {
-    return { text: 'Good morning', icon: 'sunny-outline', iconColor: '#f97316' };
+    return { text: t('greeting.morning'), icon: 'sunny-outline', iconColor: '#f97316' };
   }
   if (hour >= 12 && hour < 17) {
-    return { text: 'Good afternoon', icon: 'partly-sunny-outline', iconColor: '#d97706' };
+    return { text: t('greeting.afternoon'), icon: 'partly-sunny-outline', iconColor: '#d97706' };
   }
   if (hour >= 17 && hour < 21) {
-    return { text: 'Good evening', icon: 'moon-outline', iconColor: '#8b5cf6' };
+    return { text: t('greeting.evening'), icon: 'moon-outline', iconColor: '#8b5cf6' };
   }
-  return { text: 'Good night', icon: 'cloudy-night-outline', iconColor: '#6366f1' };
+  return { text: t('greeting.night'), icon: 'cloudy-night-outline', iconColor: '#6366f1' };
 }
 
 /**
@@ -88,7 +93,8 @@ export const PersonalizedHeader: React.FC<PersonalizedHeaderProps> = ({
   liveTick = 0,
   testID,
 }) => {
-  const greeting = useMemo(() => getGreeting(), [liveTick]); // eslint-disable-line react-hooks/exhaustive-deps
+  const { t } = useTranslation('dashboard');
+  const greeting = useMemo(() => getGreeting(t as GreetingTranslationFn), [liveTick, t]); // eslint-disable-line react-hooks/exhaustive-deps
   const initials = useMemo(() => getInitials(name), [name]);
 
   // ── Staggered Entrance Shared Values ──────────────────────────
@@ -164,14 +170,14 @@ export const PersonalizedHeader: React.FC<PersonalizedHeaderProps> = ({
       onPress?: () => void;
     }> = [
       {
-        text: 'Choose from Library',
+        text: t('avatar.chooseFromLibrary', { ns: 'common' }),
         onPress: async () => {
           const uri = await avatarService.pickFromLibrary();
           if (uri) onAvatarChange?.(uri);
         },
       },
       {
-        text: 'Take Photo',
+        text: t('avatar.takePhoto', { ns: 'common' }),
         onPress: async () => {
           const uri = await avatarService.pickFromCamera();
           if (uri) onAvatarChange?.(uri);
@@ -181,7 +187,7 @@ export const PersonalizedHeader: React.FC<PersonalizedHeaderProps> = ({
 
     if (avatarUri) {
       buttons.push({
-        text: 'Remove Photo',
+        text: t('avatar.removePhoto', { ns: 'common' }),
         style: 'destructive',
         onPress: async () => {
           await avatarService.deleteAvatar(avatarUri);
@@ -190,10 +196,14 @@ export const PersonalizedHeader: React.FC<PersonalizedHeaderProps> = ({
       });
     }
 
-    buttons.push({ text: 'Cancel', style: 'cancel' });
+    buttons.push({ text: t('buttons.cancel', { ns: 'common' }), style: 'cancel' });
 
-    Alert.alert('Profile Photo', 'Choose your avatar', buttons);
-  }, [avatarUri, onAvatarChange]);
+    Alert.alert(
+      t('avatar.title', { ns: 'common' }),
+      t('avatar.message', { ns: 'common' }),
+      buttons
+    );
+  }, [avatarUri, onAvatarChange, t]);
 
   // Short tap: haptic bounce (unchanged)
   const tapGesture = Gesture.Tap()

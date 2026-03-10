@@ -100,8 +100,8 @@ describe('CurrentShiftStatusCard', () => {
     });
 
     it('should render day off card', () => {
-      const { getByText } = render(<CurrentShiftStatusCard shiftType="off" />);
-      expect(getByText('DAY OFF')).toBeTruthy();
+      const { getAllByText, getByText } = render(<CurrentShiftStatusCard shiftType="off" />);
+      expect(getAllByText('DAY OFF').length).toBeGreaterThan(0);
       expect(getByText('Rest and recharge!')).toBeTruthy();
     });
 
@@ -124,92 +124,92 @@ describe('CurrentShiftStatusCard', () => {
       expect(getByText('6h 32m until next shift')).toBeTruthy();
     });
 
-    it('should show LIVE badge with pulse and calendar icon when on shift', () => {
+    it('should show ACTIVE badge with pulse and calendar icon when on shift', () => {
       const { getByText, getByTestId } = render(
         <CurrentShiftStatusCard shiftType="day" isOnShift={true} />
       );
-      expect(getByText('LIVE')).toBeTruthy();
+      expect(getByText('ACTIVE')).toBeTruthy();
       expect(getByTestId('shift-status-badge')).toBeTruthy();
       expect(getByTestId('active-badge-pulse-dot')).toBeTruthy();
       expect(getByTestId('shift-status-badge-icon').props.name).toBe('calendar');
     });
 
-    it('should show LIVE badge for night shifts when on shift', () => {
+    it('should show ACTIVE badge for night shifts when on shift', () => {
       const { getByText, queryByText, getByTestId } = render(
         <CurrentShiftStatusCard shiftType="night" isOnShift={true} />
       );
-      expect(getByText('LIVE')).toBeTruthy();
-      expect(queryByText('ACTIVE')).toBeNull();
+      expect(getByText('ACTIVE')).toBeTruthy();
+      expect(queryByText('LIVE')).toBeNull();
       expect(getByTestId('active-badge-pulse-dot')).toBeTruthy();
       expect(getByTestId('shift-status-badge-icon').props.name).toBe('calendar');
     });
 
-    it('should show LIVE badge for morning and afternoon shifts when on shift', () => {
+    it('should show ACTIVE badge for morning and afternoon shifts when on shift', () => {
       const morning = render(<CurrentShiftStatusCard shiftType="morning" isOnShift={true} />);
-      expect(morning.getByText('LIVE')).toBeTruthy();
-      expect(morning.queryByText('ACTIVE')).toBeNull();
+      expect(morning.getByText('ACTIVE')).toBeTruthy();
+      expect(morning.queryByText('LIVE')).toBeNull();
       expect(morning.getByTestId('active-badge-pulse-dot')).toBeTruthy();
       expect(morning.getByTestId('shift-status-badge-icon').props.name).toBe('calendar');
 
       const afternoon = render(<CurrentShiftStatusCard shiftType="afternoon" isOnShift={true} />);
-      expect(afternoon.getByText('LIVE')).toBeTruthy();
-      expect(afternoon.queryByText('ACTIVE')).toBeNull();
+      expect(afternoon.getByText('ACTIVE')).toBeTruthy();
+      expect(afternoon.queryByText('LIVE')).toBeNull();
       expect(afternoon.getByTestId('active-badge-pulse-dot')).toBeTruthy();
       expect(afternoon.getByTestId('shift-status-badge-icon').props.name).toBe('calendar');
     });
 
-    it('should not show LIVE badge when off shift', () => {
+    it('should not show ACTIVE badge when off shift', () => {
       const { queryByText } = render(<CurrentShiftStatusCard shiftType="off" isOnShift={false} />);
-      expect(queryByText('LIVE')).toBeNull();
+      expect(queryByText('ACTIVE')).toBeNull();
     });
 
     it('should show OFF badge when not on shift', () => {
-      const { getByText } = render(<CurrentShiftStatusCard shiftType="off" isOnShift={false} />);
-      expect(getByText('OFF')).toBeTruthy();
+      const { getAllByText } = render(<CurrentShiftStatusCard shiftType="off" isOnShift={false} />);
+      expect(getAllByText('DAY OFF').length).toBeGreaterThan(0);
     });
 
-    it('should show LIVE badge for rotating work shifts even when not currently on shift', () => {
+    it('should show ACTIVE badge for rotating work shifts even when not currently on shift', () => {
       const { getByText, queryByText, getByTestId } = render(
         <CurrentShiftStatusCard shiftType="morning" isOnShift={false} />
       );
-      expect(getByText('LIVE')).toBeTruthy();
+      expect(getByText('ACTIVE')).toBeTruthy();
       expect(queryByText('OFF')).toBeNull();
       expect(getByTestId('shift-status-badge')).toBeTruthy();
       expect(getByTestId('active-badge-pulse-dot')).toBeTruthy();
       expect(getByTestId('shift-status-badge-icon').props.name).toBe('calendar');
     });
 
-    it('should show green pulse on LIVE badge for all rotating work shifts on and off shift', () => {
+    it('should show green pulse on ACTIVE badge for all rotating work shifts on and off shift', () => {
       const day = render(<CurrentShiftStatusCard shiftType="day" isOnShift={false} />);
       expect(day.getByTestId('active-badge-pulse-dot')).toBeTruthy();
       expect(day.getByTestId('shift-status-badge-icon').props.name).toBe('calendar');
       expect(day.getByText('calendar')).toBeTruthy();
-      expect(day.getByText('LIVE')).toBeTruthy();
+      expect(day.getByText('ACTIVE')).toBeTruthy();
 
       const night = render(<CurrentShiftStatusCard shiftType="night" isOnShift={false} />);
       expect(night.getByTestId('active-badge-pulse-dot')).toBeTruthy();
       expect(night.getByTestId('shift-status-badge-icon').props.name).toBe('calendar');
-      expect(night.getByText('LIVE')).toBeTruthy();
+      expect(night.getByText('ACTIVE')).toBeTruthy();
 
       const morning = render(<CurrentShiftStatusCard shiftType="morning" isOnShift={false} />);
       expect(morning.getByTestId('active-badge-pulse-dot')).toBeTruthy();
       expect(morning.getByTestId('shift-status-badge-icon').props.name).toBe('calendar');
-      expect(morning.getByText('LIVE')).toBeTruthy();
+      expect(morning.getByText('ACTIVE')).toBeTruthy();
 
       const afternoon = render(<CurrentShiftStatusCard shiftType="afternoon" isOnShift={false} />);
       expect(afternoon.getByTestId('active-badge-pulse-dot')).toBeTruthy();
       expect(afternoon.getByTestId('shift-status-badge-icon').props.name).toBe('calendar');
-      expect(afternoon.getByText('LIVE')).toBeTruthy();
+      expect(afternoon.getByText('ACTIVE')).toBeTruthy();
 
       const liveDay = render(<CurrentShiftStatusCard shiftType="day" isOnShift={true} />);
       expect(liveDay.getByTestId('active-badge-pulse-dot')).toBeTruthy();
       expect(liveDay.getByTestId('shift-status-badge-icon').props.name).toBe('calendar');
-      expect(liveDay.getByText('LIVE')).toBeTruthy();
+      expect(liveDay.getByText('ACTIVE')).toBeTruthy();
 
       const liveMorning = render(<CurrentShiftStatusCard shiftType="morning" isOnShift={true} />);
       expect(liveMorning.getByTestId('active-badge-pulse-dot')).toBeTruthy();
       expect(liveMorning.getByTestId('shift-status-badge-icon').props.name).toBe('calendar');
-      expect(liveMorning.getByText('LIVE')).toBeTruthy();
+      expect(liveMorning.getByText('ACTIVE')).toBeTruthy();
     });
 
     it('should not show the green active pulse for off or FIFO badges', () => {
@@ -260,14 +260,14 @@ describe('CurrentShiftStatusCard', () => {
       expect(getByText('38%')).toBeTruthy();
     });
 
-    it('should show HOME badge text when FIFO is resting', () => {
+    it('should show REST badge text when FIFO is resting', () => {
       const { getByText } = render(
         <CurrentShiftStatusCard shiftType="off" rosterType={RosterType.FIFO} isOnShift={false} />
       );
-      expect(getByText('HOME')).toBeTruthy();
+      expect(getByText('REST')).toBeTruthy();
     });
 
-    it('should show ON-SITE badge when FIFO work block but between shifts', () => {
+    it('should show WORK badge when FIFO work block but between shifts', () => {
       const { getByText } = render(
         <CurrentShiftStatusCard
           shiftType="day"
@@ -281,7 +281,7 @@ describe('CurrentShiftStatusCard', () => {
           }}
         />
       );
-      expect(getByText('ON-SITE')).toBeTruthy();
+      expect(getByText('WORK')).toBeTruthy();
     });
 
     it('shows FIFO block transition warning text for tomorrow and today', () => {

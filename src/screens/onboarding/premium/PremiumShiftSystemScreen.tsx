@@ -35,6 +35,7 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
@@ -180,6 +181,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   mountProgress,
   testID,
 }) => {
+  const { t } = useTranslation('onboarding');
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const scale = useSharedValue(isActive ? 1 : 0.95 - index * 0.05);
@@ -401,6 +403,16 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
     transform: [{ scale: hintScale.value }],
   }));
 
+  const titleText = String(
+    t(`shiftSystem.cards.${system.id}.title`, { defaultValue: system.title })
+  );
+  const scheduleText = String(
+    t(`shiftSystem.cards.${system.id}.schedule`, { defaultValue: system.schedule })
+  );
+  const descriptionText = String(
+    t(`shiftSystem.cards.${system.id}.description`, { defaultValue: system.description })
+  );
+
   return (
     <GestureDetector gesture={composed}>
       <Animated.View
@@ -413,27 +425,27 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
         </Animated.View>
 
         {/* System Name */}
-        <Text style={styles.cardTitle}>{system.title}</Text>
+        <Text style={styles.cardTitle}>{titleText}</Text>
 
         {/* Schedule Badge */}
         <View style={styles.badge}>
-          <Text style={styles.badgeText}>{system.schedule}</Text>
+          <Text style={styles.badgeText}>{scheduleText}</Text>
         </View>
 
         {/* Description */}
-        <Text style={styles.description}>{system.description}</Text>
+        <Text style={styles.description}>{descriptionText}</Text>
 
         {/* Swipe Hints (only for first card) */}
         {index === 0 && isActive && (
           <>
             <Animated.View style={[styles.swipeHint, styles.swipeHintLeft, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>← Next option</Text>
+              <Text style={styles.swipeHintText}>{t('common.hints.nextOption')}</Text>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintRight, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>This one →</Text>
+              <Text style={styles.swipeHintText}>{t('common.hints.selectThis')}</Text>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintUp, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>↑ Learn more</Text>
+              <Text style={styles.swipeHintText}>{t('common.hints.learnMore')}</Text>
             </Animated.View>
           </>
         )}
@@ -461,24 +473,59 @@ interface LearnMoreModalProps {
 }
 
 const LearnMoreModal: React.FC<LearnMoreModalProps> = ({ visible, system, onClose }) => {
+  const { t } = useTranslation('onboarding');
   if (!system) return null;
+
+  const titleText = String(
+    t(`shiftSystem.cards.${system.id}.title`, { defaultValue: system.title })
+  );
+  const scheduleText = String(
+    t(`shiftSystem.cards.${system.id}.schedule`, { defaultValue: system.schedule })
+  );
+  const workRestRatioText = String(
+    t(`shiftSystem.cards.${system.id}.details.workRestRatio`, {
+      defaultValue: system.detailedInfo.workRestRatio,
+    })
+  );
+
+  const useCases = system.detailedInfo.useCases.map((useCase, index) =>
+    String(
+      t(`shiftSystem.cards.${system.id}.details.useCases.${index}`, {
+        defaultValue: useCase,
+      })
+    )
+  );
+  const pros = system.detailedInfo.pros.map((pro, index) =>
+    String(
+      t(`shiftSystem.cards.${system.id}.details.pros.${index}`, {
+        defaultValue: pro,
+      })
+    )
+  );
+  const cons = system.detailedInfo.cons.map((con, index) =>
+    String(
+      t(`shiftSystem.cards.${system.id}.details.cons.${index}`, {
+        defaultValue: con,
+      })
+    )
+  );
 
   return (
     <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose}>
       <Pressable style={styles.modalBackdrop} onPress={onClose}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>{system.title}</Text>
-          <Text style={styles.modalSchedule}>{system.schedule}</Text>
+          <Text style={styles.modalTitle}>{titleText}</Text>
+          <Text style={styles.modalSchedule}>{scheduleText}</Text>
 
           <ScrollView style={styles.modalScroll} showsVerticalScrollIndicator={false}>
             <View style={styles.modalSection}>
-              <Text style={styles.modalSectionTitle}>How it works</Text>
-              <Text style={styles.modalSectionText}>{system.detailedInfo.workRestRatio}</Text>
+              <Text style={styles.modalSectionTitle}>{t('common.learnMore.howItWorks')}</Text>
+              <Text style={styles.modalSectionText}>{workRestRatioText}</Text>
             </View>
 
             <View style={styles.modalSection}>
-              <Text style={styles.modalSectionTitle}>Where you&apos;ll see this</Text>
-              {system.detailedInfo.useCases.map((useCase, i) => (
+              <Text style={styles.modalSectionTitle}>{t('common.learnMore.whereUsed')}</Text>
+              {useCases.map((useCase, i) => (
                 <Text key={i} style={styles.modalListItem}>
                   • {useCase}
                 </Text>
@@ -486,8 +533,8 @@ const LearnMoreModal: React.FC<LearnMoreModalProps> = ({ visible, system, onClos
             </View>
 
             <View style={styles.modalSection}>
-              <Text style={styles.modalSectionTitle}>The good bits</Text>
-              {system.detailedInfo.pros.map((pro, i) => (
+              <Text style={styles.modalSectionTitle}>{t('common.learnMore.pros')}</Text>
+              {pros.map((pro, i) => (
                 <Text key={i} style={styles.modalListItem}>
                   ✓ {pro}
                 </Text>
@@ -495,8 +542,8 @@ const LearnMoreModal: React.FC<LearnMoreModalProps> = ({ visible, system, onClos
             </View>
 
             <View style={styles.modalSection}>
-              <Text style={styles.modalSectionTitle}>What to know</Text>
-              {system.detailedInfo.cons.map((con, i) => (
+              <Text style={styles.modalSectionTitle}>{t('common.learnMore.cons')}</Text>
+              {cons.map((con, i) => (
                 <Text key={i} style={styles.modalListItem}>
                   • {con}
                 </Text>
@@ -505,7 +552,7 @@ const LearnMoreModal: React.FC<LearnMoreModalProps> = ({ visible, system, onClos
           </ScrollView>
 
           <PremiumButton
-            title="Close"
+            title={t('common.closeButton')}
             onPress={onClose}
             variant="outline"
             testID="modal-close-button"
@@ -557,6 +604,7 @@ const EndStackScreen: React.FC<EndStackScreenProps> = ({
   onReviewAgain,
   onContinue,
 }) => {
+  const { t } = useTranslation('onboarding');
   const scaleValue = useSharedValue(0.8);
   const opacityValue = useSharedValue(0);
 
@@ -580,25 +628,23 @@ const EndStackScreen: React.FC<EndStackScreenProps> = ({
         <Text style={styles.endScreenIcon}>{hasSelection ? '✅' : '👀'}</Text>
         <Text style={styles.endScreenTitle}>
           {hasSelection
-            ? `Got it! We'll set up your calendar for this.`
-            : `You've viewed all ${systemsViewed} shift systems!`}
+            ? t('shiftSystem.endState.selectedTitle')
+            : t('shiftSystem.endState.reviewedTitle', { count: systemsViewed })}
         </Text>
         <Text style={styles.endScreenSubtitle}>
-          {hasSelection
-            ? `Next, we'll pick your specific rotation pattern`
-            : 'Please review systems again to make your selection'}
+          {hasSelection ? t('shiftSystem.endState.selectedSubtitle') : t('shiftSystem.reviewAgain')}
         </Text>
 
         <View style={styles.endScreenButtons}>
           <PremiumButton
-            title="Review Systems"
+            title={t('shiftSystem.reviewButton')}
             onPress={onReviewAgain}
             variant={hasSelection ? 'outline' : 'primary'}
             testID="review-again-button"
           />
           {hasSelection && (
             <PremiumButton
-              title="Continue"
+              title={t('common.continueButton')}
               onPress={onContinue}
               variant="primary"
               testID="continue-button"
@@ -618,6 +664,7 @@ export interface PremiumShiftSystemScreenProps {
 export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> = ({
   testID = 'premium-shift-system-screen',
 }) => {
+  const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const { data, updateData } = useOnboarding();
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -834,13 +881,12 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
 
       {/* Title */}
       <Animated.Text style={[styles.title, titleAnimatedStyle]}>
-        How Many Shifts Does Your Site Run?
+        {t('shiftSystem.title')}
       </Animated.Text>
 
       {/* Subtitle */}
       <Animated.Text style={[styles.subtitle, subtitleAnimatedStyle]}>
-        Select how your site operates—we&apos;ll build your calendar from this{'\n'}Swipe right to
-        choose, left to see more, up for info
+        {t('shiftSystem.instruction')}
       </Animated.Text>
 
       {/* Progress Dots */}

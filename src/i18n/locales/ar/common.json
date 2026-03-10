@@ -1,0 +1,30 @@
+{
+  "buttons": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "back": "رجوع",
+    "next": "التالي",
+    "done": "تم",
+    "set": "تعيين",
+    "edit": "تعديل",
+    "clear": "مسح",
+    "close": "إغلاق",
+    "saveAndReturn": "حفظ والعودة"
+  },
+  "errors": {
+    "loadFailed": "فشل تحميل البيانات",
+    "saveFailed": "فشل في حفظ التغييرات"
+  },
+  "avatar": {
+    "title": "صورة الملف الشخصي",
+    "message": "اختر الصورة الرمزية الخاصة بك",
+    "chooseFromLibrary": "اختر من المكتبة",
+    "takePhoto": "التقط صورة",
+    "removePhoto": "إزالة الصورة"
+  },
+  "language": {
+    "label": "لغة",
+    "selector": "اختر اللغة"
+  }
+}

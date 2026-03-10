@@ -31,6 +31,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute, type RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { useOnboarding } from '@/contexts/OnboardingContext';
@@ -157,6 +158,7 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
   daysOff,
   reducedMotion = false,
 }) => {
+  const { t } = useTranslation('onboarding');
   const scaleValue = useSharedValue(0.8);
   const opacityValue = useSharedValue(0);
   const floatValue = useSharedValue(0);
@@ -393,8 +395,14 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
       >
         {/* Header */}
         <View style={styles.previewHeader}>
-          <Text style={styles.previewTitle}>Your Rotation Preview</Text>
-          <Text style={styles.previewSubtitle}>See what your schedule looks like</Text>
+          <Text style={styles.previewTitle}>
+            {t('customPattern.preview.title', { defaultValue: 'Your Rotation Preview' })}
+          </Text>
+          <Text style={styles.previewSubtitle}>
+            {t('customPattern.preview.subtitle', {
+              defaultValue: 'See what your schedule looks like',
+            })}
+          </Text>
         </View>
 
         {/* Cycle Blocks */}
@@ -414,7 +422,9 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
                     resizeMode="contain"
                   />
                   <Text style={styles.cycleBlockNumber}>{daysOn}</Text>
-                  <Text style={styles.cycleBlockLabel}>Days</Text>
+                  <Text style={styles.cycleBlockLabel}>
+                    {t('customPattern.preview.blocks.days', { defaultValue: 'Days' })}
+                  </Text>
                 </View>
               </Animated.View>
 
@@ -426,7 +436,9 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
                     resizeMode="contain"
                   />
                   <Text style={styles.cycleBlockNumber}>{nightsOn}</Text>
-                  <Text style={styles.cycleBlockLabel}>Nights</Text>
+                  <Text style={styles.cycleBlockLabel}>
+                    {t('customPattern.preview.blocks.nights', { defaultValue: 'Nights' })}
+                  </Text>
                 </View>
               </Animated.View>
 
@@ -438,7 +450,9 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
                     resizeMode="contain"
                   />
                   <Text style={styles.cycleBlockNumber}>{daysOff}</Text>
-                  <Text style={styles.cycleBlockLabel}>Off</Text>
+                  <Text style={styles.cycleBlockLabel}>
+                    {t('customPattern.preview.blocks.off', { defaultValue: 'Off' })}
+                  </Text>
                 </View>
               </Animated.View>
             </>
@@ -452,7 +466,9 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
                     resizeMode="contain"
                   />
                   <Text style={styles.cycleBlockNumber}>{morningOn}</Text>
-                  <Text style={styles.cycleBlockLabel}>Morning</Text>
+                  <Text style={styles.cycleBlockLabel}>
+                    {t('customPattern.preview.blocks.morning', { defaultValue: 'Morning' })}
+                  </Text>
                 </View>
               </Animated.View>
 
@@ -464,7 +480,9 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
                     resizeMode="contain"
                   />
                   <Text style={styles.cycleBlockNumber}>{afternoonOn}</Text>
-                  <Text style={styles.cycleBlockLabel}>Afternoon</Text>
+                  <Text style={styles.cycleBlockLabel}>
+                    {t('customPattern.preview.blocks.afternoon', { defaultValue: 'Afternoon' })}
+                  </Text>
                 </View>
               </Animated.View>
 
@@ -478,7 +496,9 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
                     resizeMode="contain"
                   />
                   <Text style={styles.cycleBlockNumber}>{nightOn}</Text>
-                  <Text style={styles.cycleBlockLabel}>Night</Text>
+                  <Text style={styles.cycleBlockLabel}>
+                    {t('customPattern.preview.blocks.night', { defaultValue: 'Night' })}
+                  </Text>
                 </View>
               </Animated.View>
 
@@ -490,7 +510,9 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
                     resizeMode="contain"
                   />
                   <Text style={styles.cycleBlockNumber}>{daysOff}</Text>
-                  <Text style={styles.cycleBlockLabel}>Off</Text>
+                  <Text style={styles.cycleBlockLabel}>
+                    {t('customPattern.preview.blocks.off', { defaultValue: 'Off' })}
+                  </Text>
                 </View>
               </Animated.View>
             </>
@@ -508,34 +530,48 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
               <>
                 <View style={styles.legendItem}>
                   <View style={[styles.legendDot, { backgroundColor: CYCLE_COLORS.day }]} />
-                  <Text style={styles.legendText}>Day Shift</Text>
+                  <Text style={styles.legendText}>
+                    {t('customPattern.preview.legend.dayShift', { defaultValue: 'Day Shift' })}
+                  </Text>
                 </View>
                 <View style={styles.legendItem}>
                   <View style={[styles.legendDot, { backgroundColor: CYCLE_COLORS.night }]} />
-                  <Text style={styles.legendText}>Night Shift</Text>
+                  <Text style={styles.legendText}>
+                    {t('customPattern.preview.legend.nightShift', { defaultValue: 'Night Shift' })}
+                  </Text>
                 </View>
                 <View style={styles.legendItem}>
                   <View style={[styles.legendDot, { backgroundColor: CYCLE_COLORS.off }]} />
-                  <Text style={styles.legendText}>Day Off</Text>
+                  <Text style={styles.legendText}>
+                    {t('customPattern.preview.legend.dayOff', { defaultValue: 'Day Off' })}
+                  </Text>
                 </View>
               </>
             ) : (
               <>
                 <View style={styles.legendItem}>
                   <View style={[styles.legendDot, { backgroundColor: CYCLE_COLORS.morning }]} />
-                  <Text style={styles.legendText}>Morning</Text>
+                  <Text style={styles.legendText}>
+                    {t('customPattern.preview.legend.morning', { defaultValue: 'Morning' })}
+                  </Text>
                 </View>
                 <View style={styles.legendItem}>
                   <View style={[styles.legendDot, { backgroundColor: CYCLE_COLORS.afternoon }]} />
-                  <Text style={styles.legendText}>Afternoon</Text>
+                  <Text style={styles.legendText}>
+                    {t('customPattern.preview.legend.afternoon', { defaultValue: 'Afternoon' })}
+                  </Text>
                 </View>
                 <View style={styles.legendItem}>
                   <View style={[styles.legendDot, { backgroundColor: CYCLE_COLORS.night3shift }]} />
-                  <Text style={styles.legendText}>Night</Text>
+                  <Text style={styles.legendText}>
+                    {t('customPattern.preview.legend.night', { defaultValue: 'Night' })}
+                  </Text>
                 </View>
                 <View style={styles.legendItem}>
                   <View style={[styles.legendDot, { backgroundColor: CYCLE_COLORS.off }]} />
-                  <Text style={styles.legendText}>Day Off</Text>
+                  <Text style={styles.legendText}>
+                    {t('customPattern.preview.legend.dayOff', { defaultValue: 'Day Off' })}
+                  </Text>
                 </View>
               </>
             )}
@@ -555,7 +591,12 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
           </View>
 
           <Animated.View style={cycleLengthAnimatedStyle}>
-            <Text style={styles.cycleLabel}>Your {totalDays}-day cycle</Text>
+            <Text style={styles.cycleLabel}>
+              {t('customPattern.preview.cycleLabel', {
+                totalDays,
+                defaultValue: `Your ${totalDays}-day cycle`,
+              })}
+            </Text>
           </Animated.View>
         </View>
 
@@ -568,7 +609,9 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
               style={styles.balanceScaleIcon}
               resizeMode="contain"
             />
-            <Text style={styles.balanceTitle}>Work-Rest Balance</Text>
+            <Text style={styles.balanceTitle}>
+              {t('customPattern.preview.balanceTitle', { defaultValue: 'Work-Rest Balance' })}
+            </Text>
           </View>
           <View style={styles.chartBar}>
             <Animated.View style={[styles.chartSegmentAnimated, workBarAnimatedStyle]}>
@@ -592,20 +635,36 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
             </Animated.View>
           </View>
           <View style={styles.chartLabels}>
-            <Text style={styles.chartLabel}>Work: {workDays} days</Text>
-            <Text style={styles.chartLabel}>Rest: {daysOff} days</Text>
+            <Text style={styles.chartLabel}>
+              {t('customPattern.preview.workLabel', {
+                count: workDays,
+                defaultValue: `Work: ${workDays} days`,
+              })}
+            </Text>
+            <Text style={styles.chartLabel}>
+              {t('customPattern.preview.restLabel', {
+                count: daysOff,
+                defaultValue: `Rest: ${daysOff} days`,
+              })}
+            </Text>
           </View>
           <View style={styles.ratioContainer}>
-            <Text style={styles.ratioLabel}>Every rotation you work</Text>
+            <Text style={styles.ratioLabel}>
+              {t('customPattern.preview.ratioLabel', { defaultValue: 'Every rotation you work' })}
+            </Text>
             <View style={styles.ratioBreakdown}>
               <View style={styles.ratioItem}>
                 <Text style={styles.ratioNumber}>{workDays}</Text>
-                <Text style={styles.ratioUnit}>days on</Text>
+                <Text style={styles.ratioUnit}>
+                  {t('customPattern.preview.daysOn', { defaultValue: 'days on' })}
+                </Text>
               </View>
               <Text style={styles.ratioSeparator}>→</Text>
               <View style={styles.ratioItem}>
                 <Text style={styles.ratioNumber}>{daysOff}</Text>
-                <Text style={styles.ratioUnit}>days off</Text>
+                <Text style={styles.ratioUnit}>
+                  {t('customPattern.preview.daysOff', { defaultValue: 'days off' })}
+                </Text>
               </View>
             </View>
           </View>
@@ -614,7 +673,12 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
         {/* Cycle Length Badge */}
         <Animated.View style={[styles.cycleBadge, cycleLengthAnimatedStyle]}>
           <Ionicons name="calendar-number-outline" size={16} color={theme.colors.paper} />
-          <Text style={styles.cycleBadgeText}>{totalDays}-day cycle</Text>
+          <Text style={styles.cycleBadgeText}>
+            {t('customPattern.preview.badgeLabel', {
+              totalDays,
+              defaultValue: `${totalDays}-day cycle`,
+            })}
+          </Text>
         </Animated.View>
       </LinearGradient>
     </Animated.View>
@@ -633,6 +697,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
   onContinue,
   testID = 'premium-custom-pattern-screen',
 }) => {
+  const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProp<OnboardingStackParamList, 'CustomPattern'>>();
   const { data, updateData } = useOnboarding();
@@ -771,10 +836,17 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
 
   const validationMessage = !isValid
     ? totalDays > 28
-      ? `Your rotation is ${totalDays} days long—we can only handle up to 28 days. Try shortening it.`
+      ? t('customPattern.validation.tooLong', {
+          totalDays,
+          defaultValue: `Your rotation is ${totalDays} days long—we can only handle up to 28 days. Try shortening it.`,
+        })
       : !hasWorkTime
-        ? 'You need at least 1 shift to track—add some day or night shifts'
-        : 'Everyone needs time off—add at least 1 day off to your rotation'
+        ? t('customPattern.validation.noWork', {
+            defaultValue: 'You need at least 1 shift to track—add some day or night shifts',
+          })
+        : t('customPattern.validation.noOff', {
+            defaultValue: 'Everyone needs time off—add at least 1 day off to your rotation',
+          })
     : '';
 
   const tipAnimatedStyle = useAnimatedStyle(() => ({
@@ -930,22 +1002,30 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
         showsVerticalScrollIndicator={false}
       >
         {/* Title */}
-        <Text style={styles.title}>Build Your Rotation</Text>
+        <Text style={styles.title}>
+          {t('customPattern.title', { defaultValue: 'Build Your Rotation' })}
+        </Text>
         <Text style={styles.subtitle}>
-          Set how many shifts you work, then how many days off you get—we&apos;ll show you what it
-          looks like
+          {t('customPattern.subtitle', {
+            defaultValue:
+              "Set how many shifts you work, then how many days off you get—we'll show you what it looks like",
+          })}
         </Text>
         <Text style={styles.subtitleSecondary}>
           {shiftSystem === ShiftSystem.TWO_SHIFT
-            ? 'Day, Night & Off'
-            : 'Morning, Afternoon, Night & Off'}
+            ? t('customPattern.subtitleSecondary.twoShift', { defaultValue: 'Day, Night & Off' })
+            : t('customPattern.subtitleSecondary.threeShift', {
+                defaultValue: 'Morning, Afternoon, Night & Off',
+              })}
         </Text>
 
         {/* Interactive Sliders Section */}
         <View style={styles.slidersSection}>
           <View style={styles.slidersHeader}>
             <Ionicons name="construct-outline" size={22} color={theme.colors.sacredGold} />
-            <Text style={styles.slidersTitle}>Set Up Your Rotation</Text>
+            <Text style={styles.slidersTitle}>
+              {t('customPattern.slidersTitle', { defaultValue: 'Set Up Your Rotation' })}
+            </Text>
           </View>
 
           <View style={styles.slidersContainer}>
@@ -953,7 +1033,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               <>
                 {/* 2-Shift Sliders */}
                 <PatternBuilderSlider
-                  label="Day Shifts"
+                  label={t('customPattern.sliders.dayShifts', { defaultValue: 'Day Shifts' })}
                   icon="sunny"
                   value={daysOn}
                   min={0}
@@ -969,7 +1049,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
                 />
 
                 <PatternBuilderSlider
-                  label="Night Shifts"
+                  label={t('customPattern.sliders.nightShifts', { defaultValue: 'Night Shifts' })}
                   icon="moon"
                   value={nightsOn}
                   min={0}
@@ -985,7 +1065,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
                 />
 
                 <PatternBuilderSlider
-                  label="Days Off"
+                  label={t('customPattern.sliders.daysOff', { defaultValue: 'Days Off' })}
                   icon="home"
                   value={daysOff}
                   min={1}
@@ -1004,7 +1084,9 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               <>
                 {/* 3-Shift Sliders */}
                 <PatternBuilderSlider
-                  label="Morning Shifts"
+                  label={t('customPattern.sliders.morningShifts', {
+                    defaultValue: 'Morning Shifts',
+                  })}
                   icon="sunny-outline"
                   value={morningOn}
                   min={0}
@@ -1020,7 +1102,9 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
                 />
 
                 <PatternBuilderSlider
-                  label="Afternoon Shifts"
+                  label={t('customPattern.sliders.afternoonShifts', {
+                    defaultValue: 'Afternoon Shifts',
+                  })}
                   icon="partly-sunny-outline"
                   value={afternoonOn}
                   min={0}
@@ -1036,7 +1120,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
                 />
 
                 <PatternBuilderSlider
-                  label="Night Shifts"
+                  label={t('customPattern.sliders.nightShifts', { defaultValue: 'Night Shifts' })}
                   icon="moon-outline"
                   value={nightOn}
                   min={0}
@@ -1052,7 +1136,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
                 />
 
                 <PatternBuilderSlider
-                  label="Days Off"
+                  label={t('customPattern.sliders.daysOff', { defaultValue: 'Days Off' })}
                   icon="home"
                   value={daysOff}
                   min={1}
@@ -1072,8 +1156,8 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
 
           {/* Guide to preview */}
           <Text style={styles.previewGuide}>
-            <Ionicons name="arrow-down" size={16} color={theme.colors.sacredGold} /> See your
-            rotation below
+            <Ionicons name="arrow-down" size={16} color={theme.colors.sacredGold} />{' '}
+            {t('customPattern.previewGuide', { defaultValue: 'See your rotation below' })}
           </Text>
         </View>
 
@@ -1098,8 +1182,10 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               resizeMode="contain"
             />
             <Text style={styles.tipText}>
-              Tip: Most shift workers find rotations with at least 3 days off work best. Your body
-              needs time to recover between swing changes.
+              {t('customPattern.tip', {
+                defaultValue:
+                  'Tip: Most shift workers find rotations with at least 3 days off work best. Your body needs time to recover between swing changes.',
+              })}
             </Text>
           </Animated.View>
         )}
@@ -1112,8 +1198,11 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               resizeMode="contain"
             />
             <Text style={styles.successText}>
-              Looking good! You work {workDays} days, then get {daysOff} days off. That&apos;s a
-              solid rotation.
+              {t('customPattern.success', {
+                workDays,
+                daysOff,
+                defaultValue: `Looking good! You work ${workDays} days, then get ${daysOff} days off. That's a solid rotation.`,
+              })}
             </Text>
           </View>
         )}
@@ -1137,9 +1226,12 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               resizeMode="contain"
             />
             <Text style={styles.warningText}>
-              Heads up: you&apos;re working {workDays} out of every {totalDays} days (
-              {workPercentage}%). That&apos;s a lot—consider adding more days off so you don&apos;t
-              burn out.
+              {t('customPattern.warning', {
+                workDays,
+                totalDays,
+                workPercentage,
+                defaultValue: `Heads up: you're working ${workDays} out of every ${totalDays} days (${workPercentage}%). That's a lot—consider adding more days off so you don't burn out.`,
+              })}
             </Text>
           </View>
         )}
@@ -1152,11 +1244,19 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
           style={styles.backButton}
           accessible={true}
           accessibilityRole="button"
-          accessibilityLabel={isSettingsMode ? 'Back to Settings' : 'Go back'}
+          accessibilityLabel={
+            isSettingsMode
+              ? t('common.backToSettings')
+              : t('customPattern.backA11y', { defaultValue: 'Go back' })
+          }
           accessibilityHint={
             isSettingsMode
-              ? 'Discard changes and return to settings'
-              : 'Return to shift pattern selection'
+              ? t('customPattern.backHint.settings', {
+                  defaultValue: 'Discard changes and return to settings',
+                })
+              : t('customPattern.backHint.default', {
+                  defaultValue: 'Return to shift pattern selection',
+                })
           }
         >
           <Ionicons name="arrow-back" size={24} color={theme.colors.paper} />
@@ -1169,10 +1269,18 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
             disabled={!isValid || isTransitioning}
             accessible={true}
             accessibilityRole="button"
-            accessibilityLabel="Save your rotation and continue"
+            accessibilityLabel={t('customPattern.saveA11y', {
+              defaultValue: 'Save your rotation and continue',
+            })}
             accessibilityHint={
               isValid
-                ? `Your ${totalDays}-day cycle: ${daysOn} days on, ${nightsOn} nights on, ${daysOff} days off`
+                ? t('customPattern.saveHintValid', {
+                    totalDays,
+                    daysOn,
+                    nightsOn,
+                    daysOff,
+                    defaultValue: `Your ${totalDays}-day cycle: ${daysOn} days on, ${nightsOn} nights on, ${daysOff} days off`,
+                  })
                 : validationMessage
             }
             accessibilityState={{ disabled: !isValid || isTransitioning }}
@@ -1191,7 +1299,9 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
                 resizeMode="contain"
               />
               <Text style={styles.continueButtonText}>
-                {isValid ? 'Save This Rotation' : 'Need More Changes'}
+                {isValid
+                  ? t('customPattern.saveButton', { defaultValue: 'Save This Rotation' })
+                  : t('customPattern.needMoreChanges', { defaultValue: 'Need More Changes' })}
               </Text>
               <Ionicons name="arrow-forward" size={24} color={theme.colors.paper} />
             </LinearGradient>
@@ -1201,7 +1311,9 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
 
       {isTransitioning ? (
         <View style={styles.transitionOverlay} pointerEvents="none">
-          <Text style={styles.transitionText}>Preparing next step...</Text>
+          <Text style={styles.transitionText}>
+            {t('rosterType.preparingNextStep', { defaultValue: 'Preparing next step...' })}
+          </Text>
         </View>
       ) : null}
     </View>

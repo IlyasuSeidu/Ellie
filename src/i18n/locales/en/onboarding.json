@@ -1,0 +1,493 @@
+{
+  "welcome": {
+    "tagline": "Your Mining Shift Companion",
+    "getStarted": "Get Started"
+  },
+  "common": {
+    "swipeHint": "Swipe right to select, left to see next, or up for more info",
+    "reviewAgain": "Please review options again to make your selection",
+    "reviewButton": "Review",
+    "continueButton": "Continue",
+    "closeButton": "Close",
+    "backToSettings": "Back to Settings",
+    "saveAndReturn": "Save & Return",
+    "hints": {
+      "nextOption": "← Next option",
+      "selectThis": "This one →",
+      "learnMore": "↑ Learn more"
+    },
+    "learnMore": {
+      "howItWorks": "How it works",
+      "whereUsed": "Where you'll see this",
+      "pros": "The good bits",
+      "cons": "What to know"
+    }
+  },
+  "intro": {
+    "welcome": "Welcome to Ellie! I'm here to help you set up your shift calendar. Let's start by getting to know you a bit better.",
+    "askName": "What's your name?",
+    "askOccupation": "Great to meet you, {{name}}! What's your occupation?",
+    "askCompany": "Got it! Which company do you work for?",
+    "askCountry": "Almost done! Which country are you based in?",
+    "allSet": "Perfect! You're all set, {{name}}. Let's get your shift calendar configured.",
+    "placeholders": {
+      "name": "Enter your name",
+      "occupation": "Enter your occupation",
+      "company": "Enter company name",
+      "country": "Enter your country"
+    },
+    "editResponse": {
+      "title": "Edit Response",
+      "message": "Edit your response. The conversation will rewind from this point.",
+      "cancel": "Cancel",
+      "confirm": "Edit"
+    },
+    "errors": {
+      "nameTooShort": "Name must be at least 2 characters",
+      "nameTooLong": "Name must not exceed 50 characters",
+      "nameInvalidChars": "Name can only contain letters, spaces, hyphens, and apostrophes",
+      "occupationRequired": "Occupation is required",
+      "companyRequired": "Company is required",
+      "countryTooShort": "Country must be at least 2 characters",
+      "countryTooLong": "Country must not exceed 100 characters"
+    }
+  },
+  "shiftSystem": {
+    "title": "How Many Shifts Does Your Site Run?",
+    "reviewAgain": "Please review systems again to make your selection",
+    "reviewButton": "Review Systems",
+    "continueButton": "Continue",
+    "closeButton": "Close",
+    "instruction": "Select how your site operates—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info",
+    "endState": {
+      "selectedTitle": "Got it! We'll set up your calendar for this.",
+      "reviewedTitle": "You've viewed all {{count}} shift systems!",
+      "selectedSubtitle": "Next, we'll pick your specific rotation pattern"
+    },
+    "cards": {
+      "2-shift": {
+        "title": "2 Shifts (12 hours)",
+        "schedule": "Day & night",
+        "description": "Your workplace runs two 12-hour shifts—one during the day, one at night",
+        "details": {
+          "workRestRatio": "12 hours on, 12 hours off",
+          "useCases": ["Mining sites", "Oil & gas", "24/7 operations", "Remote work"],
+          "pros": ["Extended rest periods", "Predictable schedule", "Good work-life balance"],
+          "cons": [
+            "Long shift duration",
+            "Can be physically demanding",
+            "Limited daylight in winter"
+          ]
+        }
+      },
+      "3-shift": {
+        "title": "3 Shifts (8 hours)",
+        "schedule": "Morning, afternoon & night",
+        "description": "Your workplace runs three 8-hour shifts—morning, afternoon, and night",
+        "details": {
+          "workRestRatio": "8 hours on, 16 hours off",
+          "useCases": ["Manufacturing", "Healthcare", "Call centers", "24/7 operations"],
+          "pros": ["Shorter shifts", "More time for family", "Easier to stay alert"],
+          "cons": [
+            "More frequent shift changes",
+            "Can disrupt sleep patterns",
+            "Less rest between cycles"
+          ]
+        }
+      }
+    }
+  },
+  "shiftPattern": {
+    "reviewAgain": "Please review patterns again to make your selection",
+    "reviewButton": "Review Patterns",
+    "continueButton": "Continue",
+    "closeButton": "Close"
+  },
+  "rosterType": {
+    "title": "How Does Your Roster Work?",
+    "instruction": "Choose the roster style your workplace uses — this shapes your entire schedule\nSwipe right to choose, left to see more, up for details",
+    "preparingNextStep": "Preparing next step...",
+    "learnMore": {
+      "examples": "Examples",
+      "popularIn": "Popular in",
+      "benefits": "Benefits",
+      "considerations": "Things to consider"
+    },
+    "cards": {
+      "rotating": {
+        "title": "Rotating Roster",
+        "subtitle": "Days → Nights → Off pattern",
+        "description": "You rotate through different shift times in a repeating cycle",
+        "details": {
+          "howItWorks": "Workers rotate through different shift times (day shifts, night shifts, days off) in a continuous cycle",
+          "examples": [
+            "5-5-5 (South Africa)",
+            "4-4-4 (common globally)",
+            "7-7-7 (long cycle)",
+            "2-2-3 (short cycle)"
+          ],
+          "regions": ["South Africa", "Zambia", "DRC", "Europe", "Some US operations"],
+          "pros": [
+            "Go home daily or frequently",
+            "Regular routine at each phase",
+            "Suitable for local operations",
+            "Easier for family planning"
+          ],
+          "cons": [
+            "Night shifts can disrupt sleep",
+            "Constant rotation through times",
+            "Less extended home time"
+          ]
+        }
+      },
+      "fifo": {
+        "title": "FIFO / Swing Roster",
+        "subtitle": "Work blocks → Home blocks",
+        "description": "You work consecutive days on-site, then get extended time at home",
+        "details": {
+          "howItWorks": "Workers fly in to remote sites, work consecutive days (work block), then fly home for extended rest (rest block)",
+          "examples": [
+            "8/6 (common WA)",
+            "14/14 (even-time)",
+            "21/7 (remote sites)",
+            "28/14 (long cycle)"
+          ],
+          "regions": ["Australia", "Canada", "Remote global mining"],
+          "pros": [
+            "Extended time at home",
+            "Higher pay rates",
+            "Good for remote sites",
+            "Predictable blocks"
+          ],
+          "cons": [
+            "Away from family for extended periods",
+            "Travel fatigue",
+            "Isolation at camp",
+            "Adjustment between blocks"
+          ]
+        }
+      }
+    }
+  },
+  "completion": {
+    "saveFailed": "Failed to save your data. Please try again.",
+    "features": {
+      "reminders": "Smart shift reminders",
+      "remindersDesc": "Never miss a shift with intelligent notifications that adapt to your rotation",
+      "sleep": "Sleep tracking & insights",
+      "sleepDesc": "Optimize your rest between shifts with personalized sleep analytics",
+      "fatigue": "Fatigue monitoring",
+      "fatigueDesc": "Track your energy levels and get alerts when fatigue risk is high",
+      "team": "Team coordination",
+      "teamDesc": "See your crew schedule and coordinate handovers seamlessly",
+      "balance": "Work-life balance",
+      "balanceDesc": "Maintain healthy routines with activity and wellness tracking",
+      "earnings": "Earnings calculator",
+      "earningsDesc": "Automatically calculate overtime, penalties, and shift allowances",
+      "meals": "Meal & hydration",
+      "mealsDesc": "Stay healthy with meal timing suggestions and hydration reminders"
+    }
+  },
+  "phaseSelector": {
+    "hints": {
+      "next": "← Next",
+      "select": "Select →",
+      "info": "↑ Info"
+    },
+    "modal": {
+      "phaseLengthValue_one": "{{count}} day",
+      "phaseLengthValue_other": "{{count}} days"
+    }
+  },
+  "fifoPhaseSelector": {
+    "title": {
+      "workPattern": "How are shifts run during your FIFO work block?",
+      "swingConfig": "Configure your swing split",
+      "block": "Where are you in your FIFO cycle?",
+      "dayWithinBlock": "Which day of {{blockTitle}} are you on?"
+    },
+    "subtitle": {
+      "workPattern": "Swipe right to choose your work-block pattern, left for next option, or up for info",
+      "swingConfig": "Set how many day-shift and night-shift days you work before choosing your current block",
+      "block": "Swipe right to select, left to see next, or up for more info",
+      "dayWithinBlock": "Swipe right to select, left to see next, or up for more info. Is it the {{ordinalList}}?"
+    },
+    "modal": {
+      "blockLength": "Block Length",
+      "whyItMatters": "Why it matters"
+    },
+    "patterns": {
+      "straightDays": {
+        "title": "Straight Days",
+        "description": "Your work block runs day shifts only.",
+        "quickInfo": "Best for operations that keep all crews on daytime rotations."
+      },
+      "straightNights": {
+        "title": "Straight Nights",
+        "description": "Your work block runs night shifts only.",
+        "quickInfo": "Use this when site crews remain on night shifts for the full work block."
+      },
+      "swing": {
+        "title": "Swing",
+        "description": "Your work block mixes day and night shifts.",
+        "quickInfo": "Choose this when your work block rotates between days and nights."
+      }
+    },
+    "blocks": {
+      "work": {
+        "title": "At Site (Working)",
+        "descriptionDay": "You are currently at the mine site on your day-shift work block",
+        "descriptionNight": "You are currently at the mine site on your night-shift work block",
+        "descriptionNeutral": "You are currently at the mine site on your work block",
+        "quickInfoDay": "This means your cycle starts counting from your day-shift work block.",
+        "quickInfoNight": "This means your cycle starts counting from your night-shift work block.",
+        "quickInfoNeutral": "This means your cycle starts counting from your current work block."
+      },
+      "rest": {
+        "title": "At Home (Rest)",
+        "description": "You are currently at home on your rest block",
+        "quickInfo": "This offsets your cycle by your work block length first."
+      }
+    },
+    "swingConfig": {
+      "daysOnDayShift": "Days on Day Shift",
+      "daysOnNightShift": "Days on Night Shift",
+      "splitTotal": "Split total: {{swingSplitTotal}}/{{workBlockDays}} days",
+      "validation": "Swing split must equal {{workBlockDays}} days with at least 1 day on each shift.",
+      "changePattern": "Change Pattern",
+      "continue": "Continue"
+    },
+    "days": {
+      "shared": {
+        "midpoint": "Midpoint of this block"
+      },
+      "defaultDayTitle": "Day {{dayNumber}}",
+      "work": {
+        "firstDayAtSite": "First day back at site",
+        "firstNightAtSite": "First night shift back at site",
+        "firstShiftAtSite": "First shift back at site",
+        "lastDayBeforeHome": "Last day before flying home",
+        "lastNightBeforeHome": "Last night shift before flying home",
+        "lastShiftBeforeHome": "Last shift before flying home",
+        "dayOfWorkBlock": "Day {{dayNumber}} of your work block",
+        "shiftOfNightBlock": "Shift {{dayNumber}} of your night work block",
+        "shiftOfWorkBlock": "Shift {{dayNumber}} of your work block"
+      },
+      "rest": {
+        "firstDayAtHome": "First day back at home",
+        "lastDayBeforeSite": "Last day before returning to site",
+        "dayOfRestBlock": "Day {{dayNumber}} of your rest block"
+      },
+      "swing": {
+        "dayShiftTitle": "Day Shift Day {{dayNumber}}",
+        "firstDayShiftAtSite": "First day shift back at site",
+        "finalDayShiftBeforeNights": "Final day shift before switching to nights",
+        "dayShiftDayDescription": "Day shift day {{dayNumber}} of your work block",
+        "nightShiftTitle": "Night Shift Day {{dayNumber}}",
+        "firstNightShiftInBlock": "First night shift in this swing block",
+        "finalNightShiftBeforeHome": "Final night shift before flying home",
+        "nightShiftDayDescription": "Night shift day {{dayNumber}} of your work block"
+      }
+    },
+    "transition": {
+      "preparingCalendar": "Preparing your calendar..."
+    }
+  },
+  "startDate": {
+    "header": {
+      "title": "When Does Your Rotation Start?",
+      "subtitleWithPhase": "You're on {{phaseLabel}} right now—pick today or any date, and we'll map out your whole calendar from there",
+      "subtitleDefault": "Pick the date you want your calendar to start from—most people choose today"
+    },
+    "phaseLabels": {
+      "day": "Day Shift",
+      "night": "Night Shift",
+      "morning": "Morning Shift",
+      "afternoon": "Afternoon Shift",
+      "off": "Days Off",
+      "withDay": "Day {{selectedDay}} of {{phaseLabel}}"
+    },
+    "calendar": {
+      "weekdays": {
+        "sun": "Sun",
+        "mon": "Mon",
+        "tue": "Tue",
+        "wed": "Wed",
+        "thu": "Thu",
+        "fri": "Fri",
+        "sat": "Sat"
+      },
+      "legend": {
+        "dayShift": "Day Shift",
+        "nightShift": "Night Shift",
+        "dayOff": "Day Off",
+        "morning": "Morning",
+        "afternoon": "Afternoon",
+        "night": "Night",
+        "off": "Off"
+      }
+    },
+    "guidance": {
+      "title": "Picking your date",
+      "subtitle": "Quick tips for a faster setup",
+      "body": "Most people pick today so their calendar starts right away. But you can pick any date—we'll calculate your rotation from there.",
+      "hint": "Pick the closest date now, you can adjust settings later.",
+      "selectedDate": "Selected: {{date}}"
+    },
+    "actions": {
+      "goBack": "Go back",
+      "backToSettings": "Back to Settings",
+      "saveAndReturn": "Save & Return",
+      "saveAndReturnToSettings": "Save start date and return to settings",
+      "setShiftTimes": "Set Shift Times",
+      "setShiftTimesA11y": "Set shift times"
+    }
+  },
+  "shiftTime": {
+    "actions": {
+      "goBack": "Go back",
+      "backToSettings": "Back to Settings",
+      "saveAndReturn": "Save & Return",
+      "saveAndReturnA11y": "Save shift time and return to settings",
+      "saveAndContinue": "Save & Continue",
+      "finishSetup": "Finish Setup",
+      "nextShiftType": "Next Shift Type",
+      "continueToNextStep": "Continue to next step",
+      "continueToShiftType": "Continue to {{shiftType}} shift times",
+      "saveShiftTimesAndContinue": "Save shift times and continue"
+    },
+    "stage": {
+      "stepOfTotal": "Step {{current}} of {{total}}",
+      "singleProfile": "Single shift profile",
+      "profileOfTotal": "Profile {{current}} of {{total}}"
+    },
+    "systemLabels": {
+      "twoShift": "2-shift system",
+      "threeShift": "3-shift system"
+    },
+    "shiftLabels": {
+      "dayTitle": "Day",
+      "dayLower": "day",
+      "dayPlural": "day shifts",
+      "nightTitle": "Night",
+      "nightLower": "night",
+      "nightPlural": "night shifts",
+      "morningTitle": "Morning",
+      "morningLower": "morning",
+      "morningPlural": "morning shifts",
+      "afternoonTitle": "Afternoon",
+      "afternoonLower": "afternoon",
+      "afternoonPlural": "afternoon shifts"
+    },
+    "header": {
+      "title": {
+        "single": "When Do Your Shifts Start?",
+        "day": "Day Shift Times",
+        "night": "Night Shift Times",
+        "morning": "Morning Shift Times",
+        "afternoon": "Afternoon Shift Times",
+        "default": "Shift Times"
+      },
+      "subtitle": {
+        "single": "Pick what time you clock in each day-we'll use this to track your hours and set reminders",
+        "multi": "Your pattern includes {{shiftTypeLabel}}. Set the start time for these shifts."
+      }
+    },
+    "guidance": {
+      "aboutTitle": "About shift times",
+      "aboutBody": "Your {{patternName}} rotation stays the same, but we need your shift start times so Ellie can track hours and alert you before each shift.",
+      "hint": "Use the closest start time now. You can fine-tune it later in settings.",
+      "definitions": {
+        "twoShiftTitle": "Day vs Night:",
+        "twoShiftBody": "Day shifts start 6 AM-6 PM - Night shifts start 6 PM-6 AM",
+        "threeShiftTitle": "Shift types:",
+        "threeShiftBody": "Morning: 6 AM-2 PM - Afternoon: 2 PM-10 PM - Night: 10 PM-6 AM"
+      }
+    },
+    "presets": {
+      "sectionTitle": "Pick a Common Start Time",
+      "custom": {
+        "label": "Custom Time"
+      }
+    },
+    "customInput": {
+      "label": "What time do you usually clock in?",
+      "helper": "Use 12-hour format (e.g., 6:00 AM)"
+    },
+    "validation": {
+      "hoursRange": "Hours must be between 1 and 12",
+      "minutesRange": "Minutes must be between 0 and 59"
+    },
+    "preview": {
+      "yourShift": "Your shift:",
+      "durationHours": "{{duration}} hours"
+    },
+    "detection": {
+      "helper": "This is when your shift begins",
+      "autoDetected": "Auto-detected",
+      "day": {
+        "title": "Daytime start",
+        "window": "Typical window: 6:00 AM - 5:59 PM"
+      },
+      "morning": {
+        "title": "Morning start",
+        "window": "Typical window: 6:00 AM - 1:59 PM"
+      },
+      "afternoon": {
+        "title": "Afternoon start",
+        "window": "Typical window: 2:00 PM - 9:59 PM"
+      },
+      "night": {
+        "title": "Night start",
+        "windowTwoShift": "Typical window: 6:00 PM - 5:59 AM",
+        "windowThreeShift": "Typical window: 10:00 PM - 5:59 AM"
+      }
+    },
+    "tips": {
+      "title": "Pro Tip",
+      "subtitle": "Fastest way to pick a reliable start time",
+      "twoShift": "Not sure? Most shift workers on 12-hour rotations start at 6 AM or 6 PM. Pick the closest match-you can adjust it later in settings if needed.",
+      "threeShift": "Not sure? Most 8-hour shift workers start at 6 AM, 2 PM, or 10 PM. Pick the closest match-you can adjust it later in settings if needed."
+    },
+    "patternInfo": {
+      "custom": {
+        "name": "Custom Pattern",
+        "statsTwoShift": "{{total}}-day cycle - {{daysOn}}D/{{nightsOn}}N/{{daysOff}}O",
+        "statsThreeShift": "{{total}}-day cycle - {{morningOn}}M/{{afternoonOn}}A/{{nightOn}}N/{{daysOff}}O"
+      },
+      "defaultStats": "Custom cycle - Set your schedule",
+      "standard444": {
+        "name": "4-4-4 Cycle",
+        "stats": "12-day cycle - 4D/4N/4O"
+      },
+      "standard777": {
+        "name": "7-7-7 Cycle",
+        "stats": "21-day cycle - 7D/7N/7O"
+      },
+      "standard223": {
+        "name": "2-2-3 Cycle",
+        "stats": "7-day cycle - 2D/2N/3O"
+      },
+      "standard555": {
+        "name": "5-5-5 Cycle",
+        "stats": "15-day cycle - 5D/5N/5O"
+      },
+      "standard333": {
+        "name": "3-3-3 Cycle",
+        "stats": "9-day cycle - 3D/3N/3O"
+      },
+      "standard101010": {
+        "name": "10-10-10 Cycle",
+        "stats": "30-day cycle - 10D/10N/10O"
+      },
+      "continental": {
+        "name": "Continental",
+        "stats": "8-day cycle - 2D/2N/4O"
+      },
+      "pitman": {
+        "name": "Pitman",
+        "stats": "7-day cycle - 2D/2N/3O"
+      }
+    }
+  }
+}

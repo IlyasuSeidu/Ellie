@@ -37,6 +37,7 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { useNavigation, useFocusEffect, useRoute, type RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
@@ -474,6 +475,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   mountProgress,
   testID,
 }) => {
+  const { t } = useTranslation('onboarding');
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const scale = useSharedValue(isActive ? 1 : 0.95 - index * 0.05);
@@ -696,6 +698,16 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
     transform: [{ scale: hintScale.value }],
   }));
 
+  const nameText = String(
+    t(`shiftPattern.cards.${pattern.id}.name`, { defaultValue: pattern.name })
+  );
+  const scheduleText = String(
+    t(`shiftPattern.cards.${pattern.id}.schedule`, { defaultValue: pattern.schedule })
+  );
+  const descriptionText = String(
+    t(`shiftPattern.cards.${pattern.id}.description`, { defaultValue: pattern.description })
+  );
+
   return (
     <GestureDetector gesture={composed}>
       <Animated.View
@@ -712,27 +724,27 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
         </Animated.View>
 
         {/* Shift Name */}
-        <Text style={styles.cardTitle}>{pattern.name}</Text>
+        <Text style={styles.cardTitle}>{nameText}</Text>
 
         {/* Schedule Badge */}
         <View style={styles.badge}>
-          <Text style={styles.badgeText}>{pattern.schedule}</Text>
+          <Text style={styles.badgeText}>{scheduleText}</Text>
         </View>
 
         {/* Description */}
-        <Text style={styles.description}>{pattern.description}</Text>
+        <Text style={styles.description}>{descriptionText}</Text>
 
         {/* Swipe Hints (only for first card) */}
         {index === 0 && isActive && (
           <>
             <Animated.View style={[styles.swipeHint, styles.swipeHintLeft, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>← Next option</Text>
+              <Text style={styles.swipeHintText}>{t('common.hints.nextOption')}</Text>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintRight, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>This one →</Text>
+              <Text style={styles.swipeHintText}>{t('common.hints.selectThis')}</Text>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintUp, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>↑ Learn more</Text>
+              <Text style={styles.swipeHintText}>{t('common.hints.learnMore')}</Text>
             </Animated.View>
           </>
         )}
@@ -760,24 +772,58 @@ interface LearnMoreModalProps {
 }
 
 const LearnMoreModal: React.FC<LearnMoreModalProps> = ({ visible, pattern, onClose }) => {
+  const { t } = useTranslation('onboarding');
   if (!pattern) return null;
+
+  const patternName = String(
+    t(`shiftPattern.cards.${pattern.id}.name`, { defaultValue: pattern.name })
+  );
+  const patternSchedule = String(
+    t(`shiftPattern.cards.${pattern.id}.schedule`, { defaultValue: pattern.schedule })
+  );
+  const workRestRatio = String(
+    t(`shiftPattern.cards.${pattern.id}.details.workRestRatio`, {
+      defaultValue: pattern.detailedInfo.workRestRatio,
+    })
+  );
+  const useCases = pattern.detailedInfo.useCases.map((useCase, index) =>
+    String(
+      t(`shiftPattern.cards.${pattern.id}.details.useCases.${index}`, {
+        defaultValue: useCase,
+      })
+    )
+  );
+  const pros = pattern.detailedInfo.pros.map((pro, index) =>
+    String(
+      t(`shiftPattern.cards.${pattern.id}.details.pros.${index}`, {
+        defaultValue: pro,
+      })
+    )
+  );
+  const cons = pattern.detailedInfo.cons.map((con, index) =>
+    String(
+      t(`shiftPattern.cards.${pattern.id}.details.cons.${index}`, {
+        defaultValue: con,
+      })
+    )
+  );
 
   return (
     <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose}>
       <Pressable style={styles.modalBackdrop} onPress={onClose}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>{pattern.name}</Text>
-          <Text style={styles.modalSchedule}>{pattern.schedule}</Text>
+          <Text style={styles.modalTitle}>{patternName}</Text>
+          <Text style={styles.modalSchedule}>{patternSchedule}</Text>
 
           <ScrollView style={styles.modalScroll} showsVerticalScrollIndicator={false}>
             <View style={styles.modalSection}>
-              <Text style={styles.modalSectionTitle}>How it works</Text>
-              <Text style={styles.modalSectionText}>{pattern.detailedInfo.workRestRatio}</Text>
+              <Text style={styles.modalSectionTitle}>{t('common.learnMore.howItWorks')}</Text>
+              <Text style={styles.modalSectionText}>{workRestRatio}</Text>
             </View>
 
             <View style={styles.modalSection}>
-              <Text style={styles.modalSectionTitle}>Where you&apos;ll see this</Text>
-              {pattern.detailedInfo.useCases.map((useCase, i) => (
+              <Text style={styles.modalSectionTitle}>{t('common.learnMore.whereUsed')}</Text>
+              {useCases.map((useCase, i) => (
                 <Text key={i} style={styles.modalListItem}>
                   • {useCase}
                 </Text>
@@ -785,8 +831,8 @@ const LearnMoreModal: React.FC<LearnMoreModalProps> = ({ visible, pattern, onClo
             </View>
 
             <View style={styles.modalSection}>
-              <Text style={styles.modalSectionTitle}>The good bits</Text>
-              {pattern.detailedInfo.pros.map((pro, i) => (
+              <Text style={styles.modalSectionTitle}>{t('common.learnMore.pros')}</Text>
+              {pros.map((pro, i) => (
                 <Text key={i} style={styles.modalListItem}>
                   ✓ {pro}
                 </Text>
@@ -794,8 +840,8 @@ const LearnMoreModal: React.FC<LearnMoreModalProps> = ({ visible, pattern, onClo
             </View>
 
             <View style={styles.modalSection}>
-              <Text style={styles.modalSectionTitle}>What to know</Text>
-              {pattern.detailedInfo.cons.map((con, i) => (
+              <Text style={styles.modalSectionTitle}>{t('common.learnMore.cons')}</Text>
+              {cons.map((con, i) => (
                 <Text key={i} style={styles.modalListItem}>
                   • {con}
                 </Text>
@@ -804,7 +850,7 @@ const LearnMoreModal: React.FC<LearnMoreModalProps> = ({ visible, pattern, onClo
           </ScrollView>
 
           <PremiumButton
-            title="Close"
+            title={t('common.closeButton')}
             onPress={onClose}
             variant="outline"
             testID="modal-close-button"
@@ -845,6 +891,7 @@ const EndStackScreen: React.FC<EndStackScreenProps> = ({
   onReviewAgain,
   onContinueCustom,
 }) => {
+  const { t } = useTranslation('onboarding');
   const scaleValue = useSharedValue(0.8);
   const opacityValue = useSharedValue(0);
 
@@ -867,21 +914,28 @@ const EndStackScreen: React.FC<EndStackScreenProps> = ({
       <Animated.View style={[styles.endScreenContent, animatedStyle]}>
         <Text style={styles.endScreenIcon}>✅</Text>
         <Text style={styles.endScreenTitle}>
-          That&apos;s all {patternsViewed} rotations we&apos;ve got!
+          {t('shiftPattern.endState.reviewedTitle', {
+            count: patternsViewed,
+            defaultValue: `That's all ${patternsViewed} rotations we've got!`,
+          })}
         </Text>
         <Text style={styles.endScreenSubtitle}>
-          Didn&apos;t see yours? You can build a custom one, or take another look
+          {t('shiftPattern.endState.reviewedSubtitle', {
+            defaultValue: "Didn't see yours? You can build a custom one, or take another look",
+          })}
         </Text>
 
         <View style={styles.endScreenButtons}>
           <PremiumButton
-            title="Look Again"
+            title={t('shiftPattern.endState.reviewButton', { defaultValue: 'Look Again' })}
             onPress={onReviewAgain}
             variant="outline"
             testID="review-again-button"
           />
           <PremiumButton
-            title="Build Custom Rotation"
+            title={t('shiftPattern.endState.customButton', {
+              defaultValue: 'Build Custom Rotation',
+            })}
             onPress={onContinueCustom}
             variant="primary"
             testID="continue-custom-button"
@@ -945,6 +999,7 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
   onContinue,
   testID = 'premium-shift-pattern-screen',
 }) => {
+  const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProp<OnboardingStackParamList, 'ShiftPattern'>>();
   const { data, updateData } = useOnboarding();
@@ -1199,22 +1254,24 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
             style={styles.settingsExitButton}
             onPress={closeSettingsEditor}
             accessibilityRole="button"
-            accessibilityLabel="Back to profile settings"
+            accessibilityLabel={t('common.backToSettings')}
           >
-            <Text style={styles.settingsExitButtonText}>Back to Settings</Text>
+            <Text style={styles.settingsExitButtonText}>{t('common.backToSettings')}</Text>
           </Pressable>
         </View>
       ) : null}
 
       {/* Title */}
       <Animated.Text style={[styles.title, titleStyle]}>
-        What&apos;s Your Roster Rotation?
+        {t('shiftPattern.title', { defaultValue: "What's Your Roster Rotation?" })}
       </Animated.Text>
 
       {/* Subtitle */}
       <Animated.Text style={[styles.subtitle, subtitleStyle]}>
-        Choose the rotation your workplace uses—we&apos;ll build your calendar from this{'\n'}Swipe
-        right to choose, left to see more, up for info
+        {t('shiftPattern.instruction', {
+          defaultValue:
+            "Choose the rotation your workplace uses—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info",
+        })}
       </Animated.Text>
 
       {/* Card Stack */}
@@ -1238,7 +1295,7 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
 
       {isTransitioning ? (
         <View pointerEvents="none" style={styles.transitionOverlay}>
-          <Text style={styles.transitionText}>Preparing next step...</Text>
+          <Text style={styles.transitionText}>{t('rosterType.preparingNextStep')}</Text>
         </View>
       ) : null}
 

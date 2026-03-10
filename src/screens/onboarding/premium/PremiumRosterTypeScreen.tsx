@@ -37,6 +37,7 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
@@ -215,6 +216,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   onSwipeUp,
   reducedMotion,
 }) => {
+  const { t } = useTranslation('onboarding');
   // Per-card shared values
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
@@ -448,6 +450,22 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
     transform: [{ scale: hintScale.value }],
   }));
 
+  const titleText = String(
+    t(`rosterType.cards.${rosterType.id}.title`, {
+      defaultValue: rosterType.title,
+    })
+  );
+  const subtitleText = String(
+    t(`rosterType.cards.${rosterType.id}.subtitle`, {
+      defaultValue: rosterType.subtitle,
+    })
+  );
+  const descriptionText = String(
+    t(`rosterType.cards.${rosterType.id}.description`, {
+      defaultValue: rosterType.description,
+    })
+  );
+
   return (
     <GestureDetector gesture={composed}>
       <Animated.View
@@ -466,25 +484,25 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
           )}
         </Animated.View>
 
-        <Text style={styles.cardTitle}>{rosterType.title}</Text>
+        <Text style={styles.cardTitle}>{titleText}</Text>
 
         <View style={styles.badge}>
-          <Text style={styles.badgeText}>{rosterType.subtitle}</Text>
+          <Text style={styles.badgeText}>{subtitleText}</Text>
         </View>
 
-        <Text style={styles.description}>{rosterType.description}</Text>
+        <Text style={styles.description}>{descriptionText}</Text>
 
         {/* Swipe Hints (only for first active card, with smart cycling) */}
         {index === 0 && isActive && (
           <>
             <Animated.View style={[styles.swipeHint, styles.swipeHintRight, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>This one →</Text>
+              <Text style={styles.swipeHintText}>{t('common.hints.selectThis')}</Text>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintLeft, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>← Next option</Text>
+              <Text style={styles.swipeHintText}>{t('common.hints.nextOption')}</Text>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintUp, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>↑ Learn more</Text>
+              <Text style={styles.swipeHintText}>{t('common.hints.learnMore')}</Text>
             </Animated.View>
           </>
         )}
@@ -514,15 +532,60 @@ interface LearnMoreModalProps {
 }
 
 const LearnMoreModal: React.FC<LearnMoreModalProps> = ({ visible, rosterType, onClose }) => {
+  const { t } = useTranslation('onboarding');
   if (!rosterType) return null;
+
+  const titleText = String(
+    t(`rosterType.cards.${rosterType.id}.title`, {
+      defaultValue: rosterType.title,
+    })
+  );
+  const subtitleText = String(
+    t(`rosterType.cards.${rosterType.id}.subtitle`, {
+      defaultValue: rosterType.subtitle,
+    })
+  );
+  const howItWorks = String(
+    t(`rosterType.cards.${rosterType.id}.details.howItWorks`, {
+      defaultValue: rosterType.detailedInfo.howItWorks,
+    })
+  );
+  const examples = rosterType.detailedInfo.examples.map((example, index) =>
+    String(
+      t(`rosterType.cards.${rosterType.id}.details.examples.${index}`, {
+        defaultValue: example,
+      })
+    )
+  );
+  const regions = rosterType.detailedInfo.regions.map((region, index) =>
+    String(
+      t(`rosterType.cards.${rosterType.id}.details.regions.${index}`, {
+        defaultValue: region,
+      })
+    )
+  );
+  const pros = rosterType.detailedInfo.pros.map((pro, index) =>
+    String(
+      t(`rosterType.cards.${rosterType.id}.details.pros.${index}`, {
+        defaultValue: pro,
+      })
+    )
+  );
+  const cons = rosterType.detailedInfo.cons.map((con, index) =>
+    String(
+      t(`rosterType.cards.${rosterType.id}.details.cons.${index}`, {
+        defaultValue: con,
+      })
+    )
+  );
 
   return (
     <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose}>
       <View style={styles.modalBackdrop}>
         <Pressable style={styles.modalBackdropDismissArea} onPress={onClose} />
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>{rosterType.title}</Text>
-          <Text style={styles.modalSubtitle}>{rosterType.subtitle}</Text>
+          <Text style={styles.modalTitle}>{titleText}</Text>
+          <Text style={styles.modalSubtitle}>{subtitleText}</Text>
 
           <View style={styles.modalScrollContainer}>
             <ScrollView
@@ -532,13 +595,13 @@ const LearnMoreModal: React.FC<LearnMoreModalProps> = ({ visible, rosterType, on
               nestedScrollEnabled
             >
               <View style={styles.modalSection}>
-                <Text style={styles.modalSectionTitle}>How it works</Text>
-                <Text style={styles.modalSectionText}>{rosterType.detailedInfo.howItWorks}</Text>
+                <Text style={styles.modalSectionTitle}>{t('common.learnMore.howItWorks')}</Text>
+                <Text style={styles.modalSectionText}>{howItWorks}</Text>
               </View>
 
               <View style={styles.modalSection}>
-                <Text style={styles.modalSectionTitle}>Examples</Text>
-                {rosterType.detailedInfo.examples.map((example, i) => (
+                <Text style={styles.modalSectionTitle}>{t('rosterType.learnMore.examples')}</Text>
+                {examples.map((example, i) => (
                   <Text key={i} style={styles.modalListItem}>
                     • {example}
                   </Text>
@@ -546,8 +609,8 @@ const LearnMoreModal: React.FC<LearnMoreModalProps> = ({ visible, rosterType, on
               </View>
 
               <View style={styles.modalSection}>
-                <Text style={styles.modalSectionTitle}>Popular in</Text>
-                {rosterType.detailedInfo.regions.map((region, i) => (
+                <Text style={styles.modalSectionTitle}>{t('rosterType.learnMore.popularIn')}</Text>
+                {regions.map((region, i) => (
                   <Text key={i} style={styles.modalListItem}>
                     📍 {region}
                   </Text>
@@ -555,8 +618,8 @@ const LearnMoreModal: React.FC<LearnMoreModalProps> = ({ visible, rosterType, on
               </View>
 
               <View style={styles.modalSection}>
-                <Text style={styles.modalSectionTitle}>Benefits</Text>
-                {rosterType.detailedInfo.pros.map((pro, i) => (
+                <Text style={styles.modalSectionTitle}>{t('rosterType.learnMore.benefits')}</Text>
+                {pros.map((pro, i) => (
                   <Text key={i} style={styles.modalListItem}>
                     ✓ {pro}
                   </Text>
@@ -564,8 +627,10 @@ const LearnMoreModal: React.FC<LearnMoreModalProps> = ({ visible, rosterType, on
               </View>
 
               <View style={styles.modalSection}>
-                <Text style={styles.modalSectionTitle}>Things to consider</Text>
-                {rosterType.detailedInfo.cons.map((con, i) => (
+                <Text style={styles.modalSectionTitle}>
+                  {t('rosterType.learnMore.considerations')}
+                </Text>
+                {cons.map((con, i) => (
                   <Text key={i} style={styles.modalListItem}>
                     • {con}
                   </Text>
@@ -575,7 +640,7 @@ const LearnMoreModal: React.FC<LearnMoreModalProps> = ({ visible, rosterType, on
           </View>
 
           <PremiumButton
-            title="Close"
+            title={t('common.closeButton')}
             onPress={onClose}
             variant="outline"
             testID="modal-close-button"
@@ -609,6 +674,7 @@ const ProgressDots: React.FC<ProgressDotsProps> = ({
 
 // Main Screen Component
 export const PremiumRosterTypeScreen: React.FC = () => {
+  const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const { data, updateData } = useOnboarding();
 
@@ -802,12 +868,11 @@ export const PremiumRosterTypeScreen: React.FC = () => {
       />
 
       {/* Title */}
-      <Animated.Text style={[styles.title, titleStyle]}>How Does Your Roster Work?</Animated.Text>
+      <Animated.Text style={[styles.title, titleStyle]}>{t('rosterType.title')}</Animated.Text>
 
       {/* Subtitle */}
       <Animated.Text style={[styles.subtitle, subtitleStyle]}>
-        Choose the roster style your workplace uses — this shapes your entire schedule{'\n'}
-        Swipe right to choose, left to see more, up for details
+        {t('rosterType.instruction')}
       </Animated.Text>
 
       {/* Card Stack Container */}
@@ -845,7 +910,7 @@ export const PremiumRosterTypeScreen: React.FC = () => {
 
       {isTransitioning ? (
         <View pointerEvents="none" style={styles.transitionOverlay}>
-          <Text style={styles.transitionText}>Preparing next step...</Text>
+          <Text style={styles.transitionText}>{t('rosterType.preparingNextStep')}</Text>
         </View>
       ) : null}
 

@@ -48,9 +48,7 @@ exports[`PremiumRosterTypeScreen matches snapshot 1`] = `
     }
   >
     Choose the roster style your workplace uses — this shapes your entire schedule
-    
-
-    Swipe right to choose, left to see more, up for details
+Swipe right to choose, left to see more, up for details
   </Text>
   <View
     style={

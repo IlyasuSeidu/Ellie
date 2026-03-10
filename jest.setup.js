@@ -4,6 +4,29 @@
  * Configures mocks and global test environment.
  */
 
+jest.mock('@react-native-async-storage/async-storage', () =>
+  require('@react-native-async-storage/async-storage/jest/async-storage-mock')
+);
+
+jest.mock('expo-localization', () => ({
+  getLocales: jest.fn(() => [
+    {
+      languageTag: 'en-US',
+      languageCode: 'en',
+      regionCode: 'US',
+      textDirection: 'ltr',
+    },
+  ]),
+  getCalendars: jest.fn(() => [
+    {
+      calendar: 'gregory',
+      timeZone: 'UTC',
+      uses24hourClock: false,
+      firstWeekday: 1,
+    },
+  ]),
+}));
+
 // Mock expo-constants
 jest.mock('expo-constants', () => ({
   default: {
@@ -222,6 +245,10 @@ jest.mock('expo-secure-store', () => ({
   deleteItemAsync: jest.fn(),
 }));
 
+jest.mock('expo-updates', () => ({
+  reloadAsync: jest.fn(() => Promise.resolve()),
+}));
+
 jest.mock('@react-native-google-signin/google-signin', () => ({
   GoogleSignin: {
     configure: jest.fn(),
@@ -259,7 +286,9 @@ jest.mock('expo-speech-recognition', () => ({
 jest.mock('expo-speech', () => ({
   speak: jest.fn(),
   stop: jest.fn(),
-  getAvailableVoicesAsync: jest.fn(() => Promise.resolve([{ identifier: 'en-US', name: 'English' }])),
+  getAvailableVoicesAsync: jest.fn(() =>
+    Promise.resolve([{ identifier: 'en-US', name: 'English' }])
+  ),
   isSpeakingAsync: jest.fn(() => Promise.resolve(false)),
 }));
 
@@ -268,6 +297,9 @@ process.env.NODE_ENV = 'test';
 
 // Define React Native global __DEV__
 global.__DEV__ = true;
+
+// Initialize i18n once for deterministic translations in tests.
+require('./src/i18n');
 
 // Mock useWindowDimensions
 jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => {

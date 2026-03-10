@@ -35,11 +35,13 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { useNavigation, useRoute, type RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
+import { normalizeLanguage } from '@/i18n/languageDetector';
 import {
   ShiftPattern,
   ShiftSystem,
@@ -375,8 +377,17 @@ const AnimatedDayCell: React.FC<DayCellProps> = React.memo(
 AnimatedDayCell.displayName = 'AnimatedDayCell';
 
 // Helper Functions
-const formatDate = (date: Date): string => {
-  return date.toLocaleDateString('en-US', {
+const getDateLocaleTag = (language: string): string => {
+  const normalized = normalizeLanguage(language);
+  if (normalized === 'es') return 'es-ES';
+  if (normalized === 'pt-BR') return 'pt-BR';
+  if (normalized === 'fr') return 'fr-FR';
+  if (normalized === 'ar') return 'ar';
+  return 'en-US';
+};
+
+const formatDate = (date: Date, localeTag = 'en-US'): string => {
+  return date.toLocaleDateString(localeTag, {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
@@ -822,7 +833,6 @@ export const _getPhaseLabel = (
 
   return `Day ${selectedDay} of ${pluralLabels[currentPhase]}`;
 };
-const getPhaseLabel = _getPhaseLabel;
 
 export const _applyDateSelection = (date: Date, onDateSelect: (date: string) => void): void => {
   if (isDateValid(date)) {
@@ -973,6 +983,7 @@ export const _InteractiveCalendar: React.FC<CalendarProps> = ({
   rosterType,
   fifoConfig,
 }) => {
+  const { t, i18n } = useTranslation('onboarding');
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const opacity = useSharedValue(0);
   const slideY = useSharedValue(50);
@@ -981,6 +992,8 @@ export const _InteractiveCalendar: React.FC<CalendarProps> = ({
   const gridSlideX = useSharedValue(0);
   const leftArrowScale = useSharedValue(1);
   const rightArrowScale = useSharedValue(1);
+
+  const dateLocaleTag = useMemo(() => getDateLocaleTag(i18n.language), [i18n.language]);
 
   useEffect(() => {
     opacity.value = withDelay(400, withTiming(1, { duration: 400 }));
@@ -1100,10 +1113,23 @@ export const _InteractiveCalendar: React.FC<CalendarProps> = ({
     return monthDays;
   }, [currentMonth]);
 
-  const monthName = currentMonth.toLocaleDateString('en-US', {
+  const monthName = currentMonth.toLocaleDateString(dateLocaleTag, {
     month: 'long',
     year: 'numeric',
   });
+
+  const weekdayLabels = useMemo(
+    () => [
+      t('startDate.calendar.weekdays.sun', { defaultValue: 'Sun' }),
+      t('startDate.calendar.weekdays.mon', { defaultValue: 'Mon' }),
+      t('startDate.calendar.weekdays.tue', { defaultValue: 'Tue' }),
+      t('startDate.calendar.weekdays.wed', { defaultValue: 'Wed' }),
+      t('startDate.calendar.weekdays.thu', { defaultValue: 'Thu' }),
+      t('startDate.calendar.weekdays.fri', { defaultValue: 'Fri' }),
+      t('startDate.calendar.weekdays.sat', { defaultValue: 'Sat' }),
+    ],
+    [t]
+  );
 
   return (
     <Animated.View style={[styles.calendarContainer, animatedStyle]}>
@@ -1126,7 +1152,7 @@ export const _InteractiveCalendar: React.FC<CalendarProps> = ({
 
       {/* Weekday Labels */}
       <View style={styles.weekdayRow}>
-        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+        {weekdayLabels.map((day) => (
           <Text key={day} style={styles.weekdayLabel}>
             {day}
           </Text>
@@ -1195,7 +1221,9 @@ export const _InteractiveCalendar: React.FC<CalendarProps> = ({
                 style={styles.legendIconImage}
                 resizeMode="contain"
               />
-              <Text style={styles.legendText}>Day Shift</Text>
+              <Text style={styles.legendText}>
+                {t('startDate.calendar.legend.dayShift', { defaultValue: 'Day Shift' })}
+              </Text>
             </View>
             <View style={styles.legendItem}>
               <Image
@@ -1203,7 +1231,9 @@ export const _InteractiveCalendar: React.FC<CalendarProps> = ({
                 style={styles.legendIconImage}
                 resizeMode="contain"
               />
-              <Text style={styles.legendText}>Night Shift</Text>
+              <Text style={styles.legendText}>
+                {t('startDate.calendar.legend.nightShift', { defaultValue: 'Night Shift' })}
+              </Text>
             </View>
             <View style={styles.legendItem}>
               <Image
@@ -1211,7 +1241,9 @@ export const _InteractiveCalendar: React.FC<CalendarProps> = ({
                 style={styles.legendIconImage}
                 resizeMode="contain"
               />
-              <Text style={styles.legendText}>Day Off</Text>
+              <Text style={styles.legendText}>
+                {t('startDate.calendar.legend.dayOff', { defaultValue: 'Day Off' })}
+              </Text>
             </View>
           </>
         ) : (
@@ -1222,7 +1254,9 @@ export const _InteractiveCalendar: React.FC<CalendarProps> = ({
                 style={[styles.legendIconImage, styles.legendIconMorning]}
                 resizeMode="contain"
               />
-              <Text style={styles.legendText}>Morning</Text>
+              <Text style={styles.legendText}>
+                {t('startDate.calendar.legend.morning', { defaultValue: 'Morning' })}
+              </Text>
             </View>
             <View style={styles.legendItem}>
               <Image
@@ -1230,7 +1264,9 @@ export const _InteractiveCalendar: React.FC<CalendarProps> = ({
                 style={styles.legendIconImage}
                 resizeMode="contain"
               />
-              <Text style={styles.legendText}>Afternoon</Text>
+              <Text style={styles.legendText}>
+                {t('startDate.calendar.legend.afternoon', { defaultValue: 'Afternoon' })}
+              </Text>
             </View>
             <View style={styles.legendItem}>
               <Image
@@ -1238,7 +1274,9 @@ export const _InteractiveCalendar: React.FC<CalendarProps> = ({
                 style={styles.legendIconImage}
                 resizeMode="contain"
               />
-              <Text style={styles.legendText}>Night</Text>
+              <Text style={styles.legendText}>
+                {t('startDate.calendar.legend.night', { defaultValue: 'Night' })}
+              </Text>
             </View>
             <View style={styles.legendItem}>
               <Image
@@ -1246,7 +1284,9 @@ export const _InteractiveCalendar: React.FC<CalendarProps> = ({
                 style={styles.legendIconImage}
                 resizeMode="contain"
               />
-              <Text style={styles.legendText}>Off</Text>
+              <Text style={styles.legendText}>
+                {t('startDate.calendar.legend.off', { defaultValue: 'Off' })}
+              </Text>
             </View>
           </>
         )}
@@ -2121,6 +2161,7 @@ const HeaderSection: React.FC<{
   currentPhase?: Phase | null;
   selectedDay?: number | null;
 }> = ({ reducedMotion, currentPhase, selectedDay }) => {
+  const { t } = useTranslation('onboarding');
   const titleOpacity = useSharedValue(0);
   const subtitleOpacity = useSharedValue(0);
 
@@ -2139,14 +2180,41 @@ const HeaderSection: React.FC<{
   }));
 
   // Create context-aware subtitle
-  const subtitle = currentPhase
-    ? `You're on ${getPhaseLabel(currentPhase, selectedDay)} right now—pick today or any date, and we'll map out your whole calendar from there`
-    : 'Pick the date you want your calendar to start from—most people choose today';
+  const phaseLabel = currentPhase
+    ? currentPhase === 'day'
+      ? t('startDate.phaseLabels.day', { defaultValue: 'Day Shift' })
+      : currentPhase === 'night'
+        ? t('startDate.phaseLabels.night', { defaultValue: 'Night Shift' })
+        : currentPhase === 'morning'
+          ? t('startDate.phaseLabels.morning', { defaultValue: 'Morning Shift' })
+          : currentPhase === 'afternoon'
+            ? t('startDate.phaseLabels.afternoon', { defaultValue: 'Afternoon Shift' })
+            : t('startDate.phaseLabels.off', { defaultValue: 'Days Off' })
+    : null;
+
+  const contextualPhaseLabel =
+    phaseLabel && selectedDay
+      ? t('startDate.phaseLabels.withDay', {
+          selectedDay,
+          phaseLabel,
+          defaultValue: `Day ${selectedDay} of ${phaseLabel}`,
+        })
+      : phaseLabel;
+
+  const subtitle = contextualPhaseLabel
+    ? t('startDate.header.subtitleWithPhase', {
+        phaseLabel: contextualPhaseLabel,
+        defaultValue:
+          "You're on {{phaseLabel}} right now—pick today or any date, and we'll map out your whole calendar from there",
+      })
+    : t('startDate.header.subtitleDefault', {
+        defaultValue: 'Pick the date you want your calendar to start from—most people choose today',
+      });
 
   return (
     <>
       <Animated.Text style={[styles.title, titleAnimatedStyle]}>
-        When Does Your Rotation Start?
+        {t('startDate.header.title', { defaultValue: 'When Does Your Rotation Start?' })}
       </Animated.Text>
       <Animated.Text style={[styles.subtitle, subtitleAnimatedStyle]}>{subtitle}</Animated.Text>
     </>
@@ -2165,6 +2233,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   onContinue,
   testID = 'premium-start-date-screen',
 }) => {
+  const { t, i18n } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProp<OnboardingStackParamList, 'StartDate'>>();
   const { data, updateData } = useOnboarding();
@@ -2250,14 +2319,21 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   );
 
   const customPattern = useMemo(() => getPatternValues(pattern), [pattern, getPatternValues]);
+  const dateLocaleTag = useMemo(() => getDateLocaleTag(i18n.language), [i18n.language]);
 
   // Check if user can continue:
   // - onboarding mode requires phaseOffset from Phase Selector
   // - settings mode allows date update independently and resets phase to day 1
   const canContinue = selectedDate !== null && (isSettingsMode || data.phaseOffset !== undefined);
   const selectedDateGuidanceLabel = useMemo(
-    () => (selectedDate ? `Selected: ${formatDate(new Date(selectedDate))}` : null),
-    [selectedDate]
+    () =>
+      selectedDate
+        ? t('startDate.guidance.selectedDate', {
+            date: formatDate(new Date(selectedDate), dateLocaleTag),
+            defaultValue: `Selected: ${formatDate(new Date(selectedDate), dateLocaleTag)}`,
+          })
+        : null,
+    [dateLocaleTag, selectedDate, t]
   );
 
   const handleContinue = useCallback(() => {
@@ -2374,17 +2450,27 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
                     <Ionicons name="sparkles-outline" size={18} color={theme.colors.paleGold} />
                   </View>
                   <View style={styles.guidanceTitleContainer}>
-                    <Text style={styles.guidanceTitle}>Picking your date</Text>
-                    <Text style={styles.guidanceSubtitle}>Quick tips for a faster setup</Text>
+                    <Text style={styles.guidanceTitle}>
+                      {t('startDate.guidance.title', { defaultValue: 'Picking your date' })}
+                    </Text>
+                    <Text style={styles.guidanceSubtitle}>
+                      {t('startDate.guidance.subtitle', {
+                        defaultValue: 'Quick tips for a faster setup',
+                      })}
+                    </Text>
                   </View>
                 </View>
 
                 <Text style={styles.guidanceText}>
-                  Most people pick today so their calendar starts right away. But you can pick any
-                  date—we&apos;ll calculate your rotation from there.
+                  {t('startDate.guidance.body', {
+                    defaultValue:
+                      "Most people pick today so their calendar starts right away. But you can pick any date—we'll calculate your rotation from there.",
+                  })}
                 </Text>
                 <Text style={styles.guidanceHintText}>
-                  Pick the closest date now, you can adjust settings later.
+                  {t('startDate.guidance.hint', {
+                    defaultValue: 'Pick the closest date now, you can adjust settings later.',
+                  })}
                 </Text>
                 {selectedDateGuidanceLabel ? (
                   <Text style={styles.guidanceSelectionSimple}>{selectedDateGuidanceLabel}</Text>
@@ -2406,7 +2492,11 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
           <Pressable
             onPress={handleBack}
             style={({ pressed }) => [styles.backButton, pressed && styles.backButtonPressed]}
-            accessibilityLabel={isSettingsMode ? 'Back to Settings' : 'Go back'}
+            accessibilityLabel={
+              isSettingsMode
+                ? t('startDate.actions.backToSettings', { defaultValue: 'Back to Settings' })
+                : t('startDate.actions.goBack', { defaultValue: 'Go back' })
+            }
             accessibilityRole="button"
           >
             <LinearGradient
@@ -2423,9 +2513,17 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
             enabled={canContinue}
             onPress={handleContinue}
             reducedMotion={reducedMotion}
-            label={isSettingsMode ? 'Save & Return' : 'Set Shift Times'}
+            label={
+              isSettingsMode
+                ? t('startDate.actions.saveAndReturn', { defaultValue: 'Save & Return' })
+                : t('startDate.actions.setShiftTimes', { defaultValue: 'Set Shift Times' })
+            }
             accessibilityLabel={
-              isSettingsMode ? 'Save start date and return to settings' : 'Set shift times'
+              isSettingsMode
+                ? t('startDate.actions.saveAndReturnToSettings', {
+                    defaultValue: 'Save start date and return to settings',
+                  })
+                : t('startDate.actions.setShiftTimesA11y', { defaultValue: 'Set shift times' })
             }
           />
         </LinearGradient>

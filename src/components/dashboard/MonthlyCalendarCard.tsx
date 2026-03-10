@@ -32,11 +32,14 @@ import Animated, {
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
+import dayjs from 'dayjs';
 import { theme } from '@/utils/theme';
 import { getDaysInMonth, getFirstDayOfMonth, isToday as checkIsToday } from '@/utils/dateUtils';
 import { ShiftCalendarDayCell } from './ShiftCalendarDayCell';
 import { FIFODayTooltip } from './FIFODayTooltip';
 import { RosterType, ShiftSystem, type ShiftDay, type ShiftCycle } from '@/types';
+import { normalizeLanguage } from '@/i18n/languageDetector';
 import {
   computeFIFOBlockPositions,
   getBlockRunsForRow,
@@ -82,21 +85,6 @@ export interface MonthlyCalendarCardProps {
 }
 
 const WEEKDAY_LABELS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-
-const MONTH_NAMES = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
 
 /**
  * Build the calendar grid for a given month.
@@ -260,7 +248,19 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
   animationDelay = 200,
   testID,
 }) => {
+  const { t, i18n } = useTranslation('dashboard');
   const calendarGrid = useMemo(() => buildCalendarGrid(year, month), [year, month]);
+  const dayjsLocale = useMemo(() => {
+    const normalizedLanguage = normalizeLanguage(i18n.resolvedLanguage ?? i18n.language ?? 'en');
+    return normalizedLanguage === 'pt-BR' ? 'pt-br' : normalizedLanguage;
+  }, [i18n.resolvedLanguage, i18n.language]);
+  const monthLabel = useMemo(
+    () =>
+      dayjs(new Date(year, month, 1))
+        .locale(dayjsLocale)
+        .format('MMMM'),
+    [year, month, dayjsLocale]
+  );
 
   // Create a lookup from day number to ShiftDay
   const shiftDayMap = useMemo(() => {
@@ -599,7 +599,7 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
               onPressOut={handlePrevPressOut}
               style={styles.navButton}
               activeOpacity={1}
-              accessibilityLabel="Previous month"
+              accessibilityLabel={t('calendar.previousMonth')}
               accessibilityRole="button"
             >
               <Ionicons name="chevron-back" size={22} color={theme.colors.paper} />
@@ -607,7 +607,7 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
           </Animated.View>
 
           <Animated.Text style={styles.monthTitle}>
-            {MONTH_NAMES[month]} {year}
+            {monthLabel} {year}
           </Animated.Text>
 
           <Animated.View style={nextBtnAnimatedStyle}>
@@ -617,7 +617,7 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
               onPressOut={handleNextPressOut}
               style={styles.navButton}
               activeOpacity={1}
-              accessibilityLabel="Next month"
+              accessibilityLabel={t('calendar.nextMonth')}
               accessibilityRole="button"
             >
               <Ionicons name="chevron-forward" size={22} color={theme.colors.paper} />
@@ -733,11 +733,15 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
               {/* Connected block previews for FIFO legend */}
               <View style={styles.legendItem}>
                 <FIFOLegendBlockPreview type="work" />
-                <Animated.Text style={styles.legendText}>Work Block</Animated.Text>
+                <Animated.Text style={styles.legendText}>
+                  {t('calendar.legendWorkBlock')}
+                </Animated.Text>
               </View>
               <View style={styles.legendItem}>
                 <FIFOLegendBlockPreview type="rest" />
-                <Animated.Text style={styles.legendText}>Rest Block</Animated.Text>
+                <Animated.Text style={styles.legendText}>
+                  {t('calendar.legendRestBlock')}
+                </Animated.Text>
               </View>
               {/* Cycle info label */}
               {shiftCycle?.fifoConfig && (
@@ -747,31 +751,43 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
                       {shiftCycle.fifoConfig.workBlockDays}/{shiftCycle.fifoConfig.restBlockDays}
                     </Animated.Text>
                   </View>
-                  <Animated.Text style={styles.legendText}>cycle</Animated.Text>
+                  <Animated.Text style={styles.legendText}>{t('calendar.cycle')}</Animated.Text>
                 </View>
               )}
             </>
           ) : (
             <>
               {shiftSystem !== ShiftSystem.THREE_SHIFT && (
-                <LegendItem color="#BBDEFB" imageSource={DAY_SHIFT_ICON} label="Day" />
+                <LegendItem
+                  color="#BBDEFB"
+                  imageSource={DAY_SHIFT_ICON}
+                  label={t('calendar.legendDay')}
+                />
               )}
               {shiftSystem !== ShiftSystem.TWO_SHIFT && (
                 <>
                   <LegendItem
                     color="rgba(245, 158, 11, 0.25)"
                     imageSource={MORNING_SHIFT_ICON}
-                    label="Morning"
+                    label={t('calendar.legendMorning')}
                   />
                   <LegendItem
                     color="rgba(6, 182, 212, 0.25)"
                     imageSource={AFTERNOON_SHIFT_ICON}
-                    label="Afternoon"
+                    label={t('calendar.legendAfternoon')}
                   />
                 </>
               )}
-              <LegendItem color="#fff" imageSource={NIGHT_SHIFT_ICON} label="Night" />
-              <LegendItem color="#78716c" imageSource={OFF_SHIFT_ICON} label="Off" />
+              <LegendItem
+                color="#fff"
+                imageSource={NIGHT_SHIFT_ICON}
+                label={t('calendar.legendNight')}
+              />
+              <LegendItem
+                color="#78716c"
+                imageSource={OFF_SHIFT_ICON}
+                label={t('calendar.legendOff')}
+              />
             </>
           )}
         </Animated.View>

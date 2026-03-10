@@ -34,6 +34,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute, type RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { useOnboarding } from '@/contexts/OnboardingContext';
@@ -101,6 +102,7 @@ const WorkPatternCard: React.FC<WorkPatternCardProps> = ({
   onSelect,
   index,
 }) => {
+  const { t } = useTranslation('onboarding');
   const scale = useSharedValue(1);
   const opacity = useSharedValue(0);
   const translateY = useSharedValue(20);
@@ -126,6 +128,17 @@ const WorkPatternCard: React.FC<WorkPatternCardProps> = ({
     opacity: opacity.value,
   }));
 
+  const titleText = String(
+    t(`fifoCustom.workPatterns.${pattern.id}.title`, {
+      defaultValue: pattern.title,
+    })
+  );
+  const descriptionText = String(
+    t(`fifoCustom.workPatterns.${pattern.id}.description`, {
+      defaultValue: pattern.description,
+    })
+  );
+
   return (
     <Pressable onPress={handlePress} testID={`work-pattern-${pattern.id}`}>
       <Animated.View
@@ -144,8 +157,8 @@ const WorkPatternCard: React.FC<WorkPatternCardProps> = ({
         >
           <View style={[styles.patternAccent, { backgroundColor: pattern.color }]} />
           <Image source={pattern.icon} style={styles.patternIconImage} resizeMode="contain" />
-          <Text style={styles.patternTitle}>{pattern.title}</Text>
-          <Text style={styles.patternDescription}>{pattern.description}</Text>
+          <Text style={styles.patternTitle}>{titleText}</Text>
+          <Text style={styles.patternDescription}>{descriptionText}</Text>
           {isSelected && (
             <View style={[styles.selectedBadge, { backgroundColor: pattern.color }]}>
               <Ionicons name="checkmark" size={16} color={theme.colors.deepVoid} />
@@ -242,6 +255,7 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
   daysOnNightShift,
   reducedMotion,
 }) => {
+  const { t } = useTranslation('onboarding');
   const scaleValue = useSharedValue(0.9);
   const opacityValue = useSharedValue(0);
   const floatValue = useSharedValue(0);
@@ -341,9 +355,15 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
             style={styles.previewHeaderIcon}
             resizeMode="contain"
           />
-          <Text style={styles.previewTitle}>Your FIFO Rotation Preview</Text>
+          <Text style={styles.previewTitle}>
+            {t('fifoCustom.preview.title', { defaultValue: 'Your FIFO Rotation Preview' })}
+          </Text>
           <Text style={styles.previewSubtitle}>
-            {workBlockDays} days at site, then {restBlockDays} days at home
+            {t('fifoCustom.preview.subtitle', {
+              workBlockDays,
+              restBlockDays,
+              defaultValue: `${workBlockDays} days at site, then ${restBlockDays} days at home`,
+            })}
           </Text>
           <Text style={styles.previewPatternDetail}>
             {patternMeta.title} • {patternMeta.detail}
@@ -368,7 +388,11 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
         </ScrollView>
         <Text style={styles.swingPreviewText}>
           {workPattern === 'swing'
-            ? `Swing split: ${daysOnDayShift} day-shift days + ${daysOnNightShift} night-shift days`
+            ? t('fifoCustom.preview.swingSplit', {
+                daysOnDayShift,
+                daysOnNightShift,
+                defaultValue: `Swing split: ${daysOnDayShift} day-shift days + ${daysOnNightShift} night-shift days`,
+              })
             : patternMeta.detail}
         </Text>
 
@@ -388,7 +412,9 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
                       { backgroundColor: theme.colors.shiftVisualization.dayShift },
                     ]}
                   />
-                  <Text style={styles.legendText}>Day Swing</Text>
+                  <Text style={styles.legendText}>
+                    {t('fifoCustom.preview.legend.daySwing', { defaultValue: 'Day Swing' })}
+                  </Text>
                 </View>
                 <View style={styles.legendItem}>
                   <View
@@ -397,7 +423,9 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
                       { backgroundColor: theme.colors.shiftVisualization.nightShift },
                     ]}
                   />
-                  <Text style={styles.legendText}>Night Swing</Text>
+                  <Text style={styles.legendText}>
+                    {t('fifoCustom.preview.legend.nightSwing', { defaultValue: 'Night Swing' })}
+                  </Text>
                 </View>
               </>
             ) : (
@@ -420,7 +448,9 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
                   { backgroundColor: theme.colors.shiftVisualization.daysOff },
                 ]}
               />
-              <Text style={styles.legendText}>Home Block</Text>
+              <Text style={styles.legendText}>
+                {t('fifoCustom.preview.legend.homeBlock', { defaultValue: 'Home Block' })}
+              </Text>
             </View>
           </ScrollView>
 
@@ -446,13 +476,21 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
                 <View
                   key={`fifo-day-${index}`}
                   style={[styles.cycleSquare, { backgroundColor }]}
-                  accessibilityLabel={`Cycle day ${index + 1}`}
+                  accessibilityLabel={t('fifoCustom.preview.cycleDayA11y', {
+                    day: index + 1,
+                    defaultValue: `Cycle day ${index + 1}`,
+                  })}
                 />
               );
             })}
           </View>
 
-          <Text style={styles.cycleLabel}>Cycle flow across {previewDays} visible days</Text>
+          <Text style={styles.cycleLabel}>
+            {t('fifoCustom.preview.cycleFlow', {
+              previewDays,
+              defaultValue: `Cycle flow across ${previewDays} visible days`,
+            })}
+          </Text>
         </View>
 
         <View style={styles.balanceChart}>
@@ -462,7 +500,9 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
               style={styles.balanceScaleIcon}
               resizeMode="contain"
             />
-            <Text style={styles.balanceTitle}>Work-Rest Balance</Text>
+            <Text style={styles.balanceTitle}>
+              {t('fifoCustom.preview.balanceTitle', { defaultValue: 'Work-Rest Balance' })}
+            </Text>
           </View>
           <View style={styles.chartBar}>
             <View style={[styles.chartSegment, { width: `${workPercentage}%` }]}>
@@ -486,29 +526,50 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
             </View>
           </View>
           <View style={styles.chartLabels}>
-            <Text style={styles.chartLabel}>Work: {workBlockDays} days</Text>
-            <Text style={styles.chartLabel}>Rest: {restBlockDays} days</Text>
+            <Text style={styles.chartLabel}>
+              {t('fifoCustom.preview.workLabel', {
+                workBlockDays,
+                defaultValue: `Work: ${workBlockDays} days`,
+              })}
+            </Text>
+            <Text style={styles.chartLabel}>
+              {t('fifoCustom.preview.restLabel', {
+                restBlockDays,
+                defaultValue: `Rest: ${restBlockDays} days`,
+              })}
+            </Text>
           </View>
         </View>
 
         <View style={styles.ratioContainer}>
-          <Text style={styles.ratioLabel}>Site to home rhythm</Text>
+          <Text style={styles.ratioLabel}>
+            {t('fifoCustom.preview.ratioLabel', { defaultValue: 'Site to home rhythm' })}
+          </Text>
           <View style={styles.ratioBreakdown}>
             <View style={styles.ratioItem}>
               <Text style={styles.ratioNumber}>{workBlockDays}</Text>
-              <Text style={styles.ratioUnit}>site days</Text>
+              <Text style={styles.ratioUnit}>
+                {t('fifoCustom.preview.siteDays', { defaultValue: 'site days' })}
+              </Text>
             </View>
             <Text style={styles.ratioSeparator}>:</Text>
             <View style={styles.ratioItem}>
               <Text style={styles.ratioNumber}>{restBlockDays}</Text>
-              <Text style={styles.ratioUnit}>home days</Text>
+              <Text style={styles.ratioUnit}>
+                {t('fifoCustom.preview.homeDays', { defaultValue: 'home days' })}
+              </Text>
             </View>
           </View>
         </View>
 
         <View style={styles.cycleBadge}>
           <Ionicons name="calendar-number-outline" size={16} color={theme.colors.paper} />
-          <Text style={styles.cycleBadgeText}>{totalCycleDays}-day FIFO cycle</Text>
+          <Text style={styles.cycleBadgeText}>
+            {t('fifoCustom.preview.badgeLabel', {
+              totalCycleDays,
+              defaultValue: `${totalCycleDays}-day FIFO cycle`,
+            })}
+          </Text>
         </View>
       </LinearGradient>
     </Animated.View>
@@ -516,6 +577,7 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
 };
 
 export const PremiumFIFOCustomPatternScreen: React.FC = () => {
+  const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProp<OnboardingStackParamList, 'FIFOCustomPattern'>>();
   const { data, updateData } = useOnboarding();
@@ -763,22 +825,34 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.title}>Build Your FIFO Rotation</Text>
-        <Text style={styles.subtitle}>
-          Set your on-site block, home block, and work-block shift style for a schedule that fits
-          your site cycle.
+        <Text style={styles.title}>
+          {t('fifoCustom.title', { defaultValue: 'Build Your FIFO Rotation' })}
         </Text>
-        <Text style={styles.subtitleSecondary}>Work Block, Rest Block &amp; Pattern Split</Text>
+        <Text style={styles.subtitle}>
+          {t('fifoCustom.subtitle', {
+            defaultValue:
+              'Set your on-site block, home block, and work-block shift style for a schedule that fits your site cycle.',
+          })}
+        </Text>
+        <Text style={styles.subtitleSecondary}>
+          {t('fifoCustom.subtitleSecondary', {
+            defaultValue: 'Work Block, Rest Block & Pattern Split',
+          })}
+        </Text>
 
         <View style={styles.slidersSection}>
           <View style={styles.slidersHeader}>
             <Ionicons name="construct-outline" size={22} color={theme.colors.sacredGold} />
-            <Text style={styles.slidersTitle}>Set Up Your FIFO Pattern</Text>
+            <Text style={styles.slidersTitle}>
+              {t('fifoCustom.slidersTitle', { defaultValue: 'Set Up Your FIFO Pattern' })}
+            </Text>
           </View>
 
           <View style={styles.slidersContainer}>
             <PatternBuilderSlider
-              label="Days at Site (Work Block)"
+              label={t('fifoCustom.sliders.daysAtSite', {
+                defaultValue: 'Days at Site (Work Block)',
+              })}
               icon="🏗️"
               value={workBlockDays}
               min={1}
@@ -794,7 +868,9 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
             />
 
             <PatternBuilderSlider
-              label="Days at Home (Rest Block)"
+              label={t('fifoCustom.sliders.daysAtHome', {
+                defaultValue: 'Days at Home (Rest Block)',
+              })}
               icon="🏠"
               value={restBlockDays}
               min={1}
@@ -814,10 +890,16 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
         <View style={styles.sectionContainer} testID="work-pattern-section">
           <View style={styles.sectionHeader}>
             <Ionicons name="layers-outline" size={22} color={theme.colors.sacredGold} />
-            <Text style={styles.sectionTitle}>Work Pattern During Work Block</Text>
+            <Text style={styles.sectionTitle}>
+              {t('fifoCustom.workPatternTitle', { defaultValue: 'Work Pattern During Work Block' })}
+            </Text>
           </View>
           <View style={styles.sectionBody}>
-            <Text style={styles.sectionSubtitle}>How are your shifts organized while at site?</Text>
+            <Text style={styles.sectionSubtitle}>
+              {t('fifoCustom.workPatternSubtitle', {
+                defaultValue: 'How are your shifts organized while at site?',
+              })}
+            </Text>
 
             <View style={styles.patternCardsContainer}>
               {WORK_PATTERNS.map((pattern, index) => (
@@ -837,15 +919,21 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
           <View style={styles.swingConfigContainer} testID="swing-config-section">
             <View style={styles.sectionHeader}>
               <Ionicons name="swap-horizontal-outline" size={22} color={theme.colors.sacredGold} />
-              <Text style={styles.sectionTitle}>Swing Configuration</Text>
+              <Text style={styles.sectionTitle}>
+                {t('fifoCustom.swingTitle', { defaultValue: 'Swing Configuration' })}
+              </Text>
             </View>
             <View style={styles.sectionBody}>
               <Text style={styles.sectionSubtitle}>
-                Split your work block between day and night shifts.
+                {t('fifoCustom.swingSubtitle', {
+                  defaultValue: 'Split your work block between day and night shifts.',
+                })}
               </Text>
 
               <PatternBuilderSlider
-                label="Days on Day Shift"
+                label={t('fifoCustom.sliders.daysOnDayShift', {
+                  defaultValue: 'Days on Day Shift',
+                })}
                 icon="☀️"
                 value={daysOnDayShift}
                 min={1}
@@ -864,7 +952,9 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
               />
 
               <PatternBuilderSlider
-                label="Days on Night Shift"
+                label={t('fifoCustom.sliders.daysOnNightShift', {
+                  defaultValue: 'Days on Night Shift',
+                })}
                 icon="🌙"
                 value={daysOnNightShift}
                 min={1}
@@ -883,15 +973,19 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
               />
 
               <Text style={styles.swingSplitText} testID="swing-total-text">
-                Split total: {swingTotal}/{workBlockDays} days
+                {t('fifoCustom.swingTotal', {
+                  swingTotal,
+                  workBlockDays,
+                  defaultValue: `Split total: ${swingTotal}/${workBlockDays} days`,
+                })}
               </Text>
             </View>
           </View>
         )}
 
         <Text style={styles.previewGuide}>
-          <Ionicons name="arrow-down" size={16} color={theme.colors.sacredGold} /> See your FIFO
-          pattern below
+          <Ionicons name="arrow-down" size={16} color={theme.colors.sacredGold} />{' '}
+          {t('fifoCustom.previewGuide', { defaultValue: 'See your FIFO pattern below' })}
         </Text>
 
         <FIFOPreviewCard
@@ -910,8 +1004,10 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
             resizeMode="contain"
           />
           <Text style={styles.tipText}>
-            Tip: Match your home block to recovery and travel demands. FIFO patterns work best when
-            the rest block is long enough to reset before your next site run.
+            {t('fifoCustom.tip', {
+              defaultValue:
+                'Tip: Match your home block to recovery and travel demands. FIFO patterns work best when the rest block is long enough to reset before your next site run.',
+            })}
           </Text>
         </Animated.View>
 
@@ -924,8 +1020,13 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
             />
             <Text style={styles.validationText}>
               {swingMismatch
-                ? `Swing split must equal ${workBlockDays} days before saving.`
-                : 'Work and rest blocks must each be at least 1 day.'}
+                ? t('fifoCustom.validation.swingMismatch', {
+                    workBlockDays,
+                    defaultValue: `Swing split must equal ${workBlockDays} days before saving.`,
+                  })
+                : t('fifoCustom.validation.blocksMinimum', {
+                    defaultValue: 'Work and rest blocks must each be at least 1 day.',
+                  })}
             </Text>
           </View>
         )}
@@ -938,8 +1039,10 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
               resizeMode="contain"
             />
             <Text style={styles.warningText}>
-              This roster is heavy ({workPercentage}% work). Consider balancing with more home days
-              if fatigue becomes an issue.
+              {t('fifoCustom.warning', {
+                workPercentage,
+                defaultValue: `This roster is heavy (${workPercentage}% work). Consider balancing with more home days if fatigue becomes an issue.`,
+              })}
             </Text>
           </View>
         )}
@@ -952,7 +1055,11 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
               resizeMode="contain"
             />
             <Text style={styles.successText}>
-              Solid FIFO setup. {workBlockDays} days at site, then {restBlockDays} days at home.
+              {t('fifoCustom.success', {
+                workBlockDays,
+                restBlockDays,
+                defaultValue: `Solid FIFO setup. ${workBlockDays} days at site, then ${restBlockDays} days at home.`,
+              })}
             </Text>
           </View>
         )}
@@ -964,11 +1071,19 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
           style={styles.backButton}
           accessible={true}
           accessibilityRole="button"
-          accessibilityLabel={isSettingsMode ? 'Back to Settings' : 'Go back'}
+          accessibilityLabel={
+            isSettingsMode
+              ? t('common.backToSettings')
+              : t('fifoCustom.backA11y', { defaultValue: 'Go back' })
+          }
           accessibilityHint={
             isSettingsMode
-              ? 'Discard changes and return to settings'
-              : 'Return to shift pattern selection'
+              ? t('fifoCustom.backHint.settings', {
+                  defaultValue: 'Discard changes and return to settings',
+                })
+              : t('fifoCustom.backHint.default', {
+                  defaultValue: 'Return to shift pattern selection',
+                })
           }
           testID="fifo-custom-back-button"
         >
@@ -982,11 +1097,19 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
             disabled={hasHardError || isTransitioning}
             accessible={true}
             accessibilityRole="button"
-            accessibilityLabel="Save FIFO pattern and continue"
+            accessibilityLabel={t('fifoCustom.saveA11y', {
+              defaultValue: 'Save FIFO pattern and continue',
+            })}
             accessibilityHint={
               hasHardError
-                ? 'Fix the validation issue before continuing'
-                : `${workBlockDays} days work, ${restBlockDays} days rest`
+                ? t('fifoCustom.saveHintInvalid', {
+                    defaultValue: 'Fix the validation issue before continuing',
+                  })
+                : t('fifoCustom.saveHintValid', {
+                    workBlockDays,
+                    restBlockDays,
+                    defaultValue: `${workBlockDays} days work, ${restBlockDays} days rest`,
+                  })
             }
             accessibilityState={{ disabled: hasHardError || isTransitioning }}
             testID="fifo-custom-save-button"
@@ -1004,7 +1127,9 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
                 style={styles.trophyIconSmaller}
                 resizeMode="contain"
               />
-              <Text style={styles.continueButtonText}>Save FIFO Pattern</Text>
+              <Text style={styles.continueButtonText}>
+                {t('fifoCustom.saveButton', { defaultValue: 'Save FIFO Pattern' })}
+              </Text>
               <Ionicons name="arrow-forward" size={24} color={theme.colors.paper} />
             </LinearGradient>
           </Pressable>
@@ -1013,7 +1138,9 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
 
       {isTransitioning ? (
         <View style={styles.transitionOverlay} pointerEvents="none">
-          <Text style={styles.transitionText}>Preparing next step...</Text>
+          <Text style={styles.transitionText}>
+            {t('rosterType.preparingNextStep', { defaultValue: 'Preparing next step...' })}
+          </Text>
         </View>
       ) : null}
     </View>

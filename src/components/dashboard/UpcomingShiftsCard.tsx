@@ -9,6 +9,7 @@ import React from 'react';
 import { View, Image, StyleSheet, Platform } from 'react-native';
 import Animated, { FadeInRight, FadeIn } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import type { ShiftType } from '@/types';
 import type { UpcomingShift } from '@/types/dashboard';
@@ -33,13 +34,32 @@ const NIGHT_SHIFT_ICON = require('../../../assets/onboarding/icons/consolidated/
 
 const SHIFT_CONFIG: Record<
   ShiftType,
-  { color: string; icon?: keyof typeof Ionicons.glyphMap; label: string }
+  {
+    color: string;
+    icon?: keyof typeof Ionicons.glyphMap;
+    key: 'day' | 'night' | 'morning' | 'afternoon' | 'off';
+  }
 > = {
-  day: { color: '#2196F3', label: 'Day Shift' },
-  night: { color: '#651FFF', label: 'Night Shift' },
-  morning: { color: '#F59E0B', label: 'Morning Shift' },
-  afternoon: { color: '#06B6D4', label: 'Afternoon Shift' },
-  off: { color: '#78716c', label: 'Day Off' },
+  day: { color: '#2196F3', key: 'day' },
+  night: { color: '#651FFF', key: 'night' },
+  morning: { color: '#F59E0B', key: 'morning' },
+  afternoon: { color: '#06B6D4', key: 'afternoon' },
+  off: { color: '#78716c', key: 'off' },
+};
+
+const SHIFT_LABEL_KEYS: Record<
+  ShiftType,
+  | 'shiftLabels.day'
+  | 'shiftLabels.night'
+  | 'shiftLabels.morning'
+  | 'shiftLabels.afternoon'
+  | 'shiftLabels.off'
+> = {
+  day: 'shiftLabels.day',
+  night: 'shiftLabels.night',
+  morning: 'shiftLabels.morning',
+  afternoon: 'shiftLabels.afternoon',
+  off: 'shiftLabels.off',
 };
 
 export const UpcomingShiftsCard: React.FC<UpcomingShiftsCardProps> = ({
@@ -47,6 +67,7 @@ export const UpcomingShiftsCard: React.FC<UpcomingShiftsCardProps> = ({
   animationDelay = 500,
   testID,
 }) => {
+  const { t } = useTranslation('dashboard');
   if (shifts.length === 0) return null;
 
   return (
@@ -63,7 +84,7 @@ export const UpcomingShiftsCard: React.FC<UpcomingShiftsCardProps> = ({
           color={theme.colors.sacredGold}
           style={styles.headerIcon}
         />
-        <Animated.Text style={styles.headerTitle}>Upcoming Shifts</Animated.Text>
+        <Animated.Text style={styles.headerTitle}>{t('upcoming.title')}</Animated.Text>
       </View>
 
       {/* Shift List */}
@@ -99,7 +120,7 @@ export const UpcomingShiftsCard: React.FC<UpcomingShiftsCardProps> = ({
             <View style={styles.shiftInfo}>
               <Animated.Text style={styles.shiftDate}>{shift.displayDate}</Animated.Text>
               <Animated.Text style={[styles.shiftType, { color: config.color }]}>
-                {config.label}
+                {t(SHIFT_LABEL_KEYS[shift.shiftType])}
               </Animated.Text>
             </View>
 

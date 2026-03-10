@@ -42,6 +42,8 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { useNavigation, useRoute, type RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useTranslation } from 'react-i18next';
+import type { TFunction } from 'i18next';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { useOnboarding, OnboardingData } from '@/contexts/OnboardingContext';
@@ -64,7 +66,8 @@ import { getDefaultFIFOConfig } from '@/utils/shiftUtils';
 const getPatternInfo = (
   patternType: ShiftPattern | undefined,
   customPattern: OnboardingData['customPattern'] | undefined,
-  shiftSystem: ShiftSystem | '2-shift' | '3-shift' | undefined
+  shiftSystem: ShiftSystem | '2-shift' | '3-shift' | undefined,
+  t: TFunction<'onboarding'>
 ): { name: string; stats: string } => {
   if (patternType === ShiftPattern.CUSTOM && customPattern) {
     // Handle 3-shift custom pattern
@@ -76,8 +79,21 @@ const getPatternInfo = (
       const total = morningOn + afternoonOn + nightOn + daysOff;
 
       return {
-        name: 'Custom Pattern',
-        stats: `${total}-day cycle • ${morningOn}M/${afternoonOn}A/${nightOn}N/${daysOff}O`,
+        name: String(
+          t('shiftTime.patternInfo.custom.name', {
+            defaultValue: 'Custom Pattern',
+          })
+        ),
+        stats: String(
+          t('shiftTime.patternInfo.custom.statsThreeShift', {
+            total,
+            morningOn,
+            afternoonOn,
+            nightOn,
+            daysOff,
+            defaultValue: `${total}-day cycle • ${morningOn}M/${afternoonOn}A/${nightOn}N/${daysOff}O`,
+          })
+        ),
       };
     }
 
@@ -88,30 +104,89 @@ const getPatternInfo = (
     const total = daysOn + nightsOn + daysOff;
 
     return {
-      name: 'Custom Pattern',
-      stats: `${total}-day cycle • ${daysOn}D/${nightsOn}N/${daysOff}O`,
+      name: String(t('shiftTime.patternInfo.custom.name', { defaultValue: 'Custom Pattern' })),
+      stats: String(
+        t('shiftTime.patternInfo.custom.statsTwoShift', {
+          total,
+          daysOn,
+          nightsOn,
+          daysOff,
+          defaultValue: `${total}-day cycle • ${daysOn}D/${nightsOn}N/${daysOff}O`,
+        })
+      ),
     };
   }
 
   switch (patternType) {
     case ShiftPattern.STANDARD_4_4_4:
-      return { name: '4-4-4 Cycle', stats: '12-day cycle • 4D/4N/4O' };
+      return {
+        name: String(t('shiftTime.patternInfo.standard444.name', { defaultValue: '4-4-4 Cycle' })),
+        stats: String(
+          t('shiftTime.patternInfo.standard444.stats', { defaultValue: '12-day cycle • 4D/4N/4O' })
+        ),
+      };
     case ShiftPattern.STANDARD_7_7_7:
-      return { name: '7-7-7 Cycle', stats: '21-day cycle • 7D/7N/7O' };
+      return {
+        name: String(t('shiftTime.patternInfo.standard777.name', { defaultValue: '7-7-7 Cycle' })),
+        stats: String(
+          t('shiftTime.patternInfo.standard777.stats', { defaultValue: '21-day cycle • 7D/7N/7O' })
+        ),
+      };
     case ShiftPattern.STANDARD_2_2_3:
-      return { name: '2-2-3 Cycle', stats: '7-day cycle • 2D/2N/3O' };
+      return {
+        name: String(t('shiftTime.patternInfo.standard223.name', { defaultValue: '2-2-3 Cycle' })),
+        stats: String(
+          t('shiftTime.patternInfo.standard223.stats', { defaultValue: '7-day cycle • 2D/2N/3O' })
+        ),
+      };
     case ShiftPattern.STANDARD_5_5_5:
-      return { name: '5-5-5 Cycle', stats: '15-day cycle • 5D/5N/5O' };
+      return {
+        name: String(t('shiftTime.patternInfo.standard555.name', { defaultValue: '5-5-5 Cycle' })),
+        stats: String(
+          t('shiftTime.patternInfo.standard555.stats', { defaultValue: '15-day cycle • 5D/5N/5O' })
+        ),
+      };
     case ShiftPattern.STANDARD_3_3_3:
-      return { name: '3-3-3 Cycle', stats: '9-day cycle • 3D/3N/3O' };
+      return {
+        name: String(t('shiftTime.patternInfo.standard333.name', { defaultValue: '3-3-3 Cycle' })),
+        stats: String(
+          t('shiftTime.patternInfo.standard333.stats', { defaultValue: '9-day cycle • 3D/3N/3O' })
+        ),
+      };
     case ShiftPattern.STANDARD_10_10_10:
-      return { name: '10-10-10 Cycle', stats: '30-day cycle • 10D/10N/10O' };
+      return {
+        name: String(
+          t('shiftTime.patternInfo.standard101010.name', { defaultValue: '10-10-10 Cycle' })
+        ),
+        stats: String(
+          t('shiftTime.patternInfo.standard101010.stats', {
+            defaultValue: '30-day cycle • 10D/10N/10O',
+          })
+        ),
+      };
     case ShiftPattern.CONTINENTAL:
-      return { name: 'Continental', stats: '8-day cycle • 2D/2N/4O' };
+      return {
+        name: String(t('shiftTime.patternInfo.continental.name', { defaultValue: 'Continental' })),
+        stats: String(
+          t('shiftTime.patternInfo.continental.stats', { defaultValue: '8-day cycle • 2D/2N/4O' })
+        ),
+      };
     case ShiftPattern.PITMAN:
-      return { name: 'Pitman', stats: '7-day cycle • 2D/2N/3O' };
+      return {
+        name: String(t('shiftTime.patternInfo.pitman.name', { defaultValue: 'Pitman' })),
+        stats: String(
+          t('shiftTime.patternInfo.pitman.stats', { defaultValue: '7-day cycle • 2D/2N/3O' })
+        ),
+      };
     default:
-      return { name: 'Custom Pattern', stats: 'Custom cycle • Set your schedule' };
+      return {
+        name: String(t('shiftTime.patternInfo.custom.name', { defaultValue: 'Custom Pattern' })),
+        stats: String(
+          t('shiftTime.patternInfo.defaultStats', {
+            defaultValue: 'Custom cycle • Set your schedule',
+          })
+        ),
+      };
   }
 };
 
@@ -337,6 +412,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   onBack,
   testID = 'premium-shift-time-input-screen',
 }) => {
+  const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProp<OnboardingStackParamList, 'ShiftTimeInput'>>();
   const { data, updateData } = useOnboarding();
@@ -675,7 +751,13 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     const minutes = parseInt(customMinutes, 10);
 
     if (isNaN(hours) || hours < 1 || hours > 12) {
-      setTimeError('Hours must be between 1 and 12');
+      setTimeError(
+        String(
+          t('shiftTime.validation.hoursRange', {
+            defaultValue: 'Hours must be between 1 and 12',
+          })
+        )
+      );
       void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
         source: 'PremiumShiftTimeInputScreen.validateCustomTime.hours',
       });
@@ -683,7 +765,13 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     }
 
     if (isNaN(minutes) || minutes < 0 || minutes > 59) {
-      setTimeError('Minutes must be between 0 and 59');
+      setTimeError(
+        String(
+          t('shiftTime.validation.minutesRange', {
+            defaultValue: 'Minutes must be between 0 and 59',
+          })
+        )
+      );
       void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
         source: 'PremiumShiftTimeInputScreen.validateCustomTime.minutes',
       });
@@ -692,7 +780,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
 
     setTimeError(null);
     return true;
-  }, [customHours, customMinutes]);
+  }, [customHours, customMinutes, t]);
 
   const handleContinue = useCallback(() => {
     const hasValidSelection = isValid();
@@ -856,14 +944,75 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   // The pulse animation was removed for stability
 
   // Get pattern display info from context
-  const patternInfo = getPatternInfo(data.patternType, data.customPattern, shiftSystem);
+  const patternInfo = getPatternInfo(data.patternType, data.customPattern, shiftSystem, t);
+  const getShiftTypeLabel = useCallback(
+    (shiftType: StageShiftType, format: 'title' | 'lower' = 'title'): string => {
+      switch (shiftType) {
+        case 'day':
+          return String(
+            t(
+              format === 'title'
+                ? 'shiftTime.shiftLabels.dayTitle'
+                : 'shiftTime.shiftLabels.dayLower',
+              {
+                defaultValue: format === 'title' ? 'Day' : 'day',
+              }
+            )
+          );
+        case 'night':
+          return String(
+            t(
+              format === 'title'
+                ? 'shiftTime.shiftLabels.nightTitle'
+                : 'shiftTime.shiftLabels.nightLower',
+              {
+                defaultValue: format === 'title' ? 'Night' : 'night',
+              }
+            )
+          );
+        case 'morning':
+          return String(
+            t(
+              format === 'title'
+                ? 'shiftTime.shiftLabels.morningTitle'
+                : 'shiftTime.shiftLabels.morningLower',
+              {
+                defaultValue: format === 'title' ? 'Morning' : 'morning',
+              }
+            )
+          );
+        case 'afternoon':
+        default:
+          return String(
+            t(
+              format === 'title'
+                ? 'shiftTime.shiftLabels.afternoonTitle'
+                : 'shiftTime.shiftLabels.afternoonLower',
+              {
+                defaultValue: format === 'title' ? 'Afternoon' : 'afternoon',
+              }
+            )
+          );
+      }
+    },
+    [t]
+  );
   const shiftSystemLabel =
-    shiftSystem === ShiftSystem.THREE_SHIFT ? '3-shift system' : '2-shift system';
+    shiftSystem === ShiftSystem.THREE_SHIFT
+      ? String(t('shiftTime.systemLabels.threeShift', { defaultValue: '3-shift system' }))
+      : String(t('shiftTime.systemLabels.twoShift', { defaultValue: '2-shift system' }));
   const stageCollectionLabel =
     totalStages === 1
-      ? 'Single shift profile'
-      : `Profile ${currentStageIndex + 1} of ${totalStages}`;
+      ? String(t('shiftTime.stage.singleProfile', { defaultValue: 'Single shift profile' }))
+      : String(
+          t('shiftTime.stage.profileOfTotal', {
+            current: currentStageIndex + 1,
+            total: totalStages,
+            defaultValue: `Profile ${currentStageIndex + 1} of ${totalStages}`,
+          })
+        );
   const detectedShiftType = selectedPreset && isValid() ? getShiftType() : null;
+  const nextShiftType = requiredShiftTypes[currentStageIndex + 1] ?? currentShiftType;
 
   const detectionCardMeta = React.useMemo(() => {
     if (!detectedShiftType) {
@@ -873,9 +1022,17 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     switch (detectedShiftType) {
       case 'day':
         return {
-          title: 'Daytime start',
+          title: String(
+            t('shiftTime.detection.day.title', {
+              defaultValue: 'Daytime start',
+            })
+          ),
           icon: 'sunny-outline' as const,
-          windowLabel: 'Typical window: 6:00 AM - 5:59 PM',
+          windowLabel: String(
+            t('shiftTime.detection.day.window', {
+              defaultValue: 'Typical window: 6:00 AM - 5:59 PM',
+            })
+          ),
           colors: [
             'rgba(59, 130, 246, 0.25)',
             'rgba(37, 99, 235, 0.12)',
@@ -886,9 +1043,17 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
         };
       case 'morning':
         return {
-          title: 'Morning start',
+          title: String(
+            t('shiftTime.detection.morning.title', {
+              defaultValue: 'Morning start',
+            })
+          ),
           icon: 'partly-sunny-outline' as const,
-          windowLabel: 'Typical window: 6:00 AM - 1:59 PM',
+          windowLabel: String(
+            t('shiftTime.detection.morning.window', {
+              defaultValue: 'Typical window: 6:00 AM - 1:59 PM',
+            })
+          ),
           colors: [
             'rgba(245, 158, 11, 0.28)',
             'rgba(251, 146, 60, 0.12)',
@@ -899,9 +1064,17 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
         };
       case 'afternoon':
         return {
-          title: 'Afternoon start',
+          title: String(
+            t('shiftTime.detection.afternoon.title', {
+              defaultValue: 'Afternoon start',
+            })
+          ),
           icon: 'sunny-outline' as const,
-          windowLabel: 'Typical window: 2:00 PM - 9:59 PM',
+          windowLabel: String(
+            t('shiftTime.detection.afternoon.window', {
+              defaultValue: 'Typical window: 2:00 PM - 9:59 PM',
+            })
+          ),
           colors: [
             'rgba(6, 182, 212, 0.25)',
             'rgba(14, 116, 144, 0.12)',
@@ -913,12 +1086,24 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
       case 'night':
       default:
         return {
-          title: 'Night start',
+          title: String(
+            t('shiftTime.detection.night.title', {
+              defaultValue: 'Night start',
+            })
+          ),
           icon: 'moon-outline' as const,
           windowLabel:
             shiftSystem === ShiftSystem.THREE_SHIFT
-              ? 'Typical window: 10:00 PM - 5:59 AM'
-              : 'Typical window: 6:00 PM - 5:59 AM',
+              ? String(
+                  t('shiftTime.detection.night.windowThreeShift', {
+                    defaultValue: 'Typical window: 10:00 PM - 5:59 AM',
+                  })
+                )
+              : String(
+                  t('shiftTime.detection.night.windowTwoShift', {
+                    defaultValue: 'Typical window: 6:00 PM - 5:59 AM',
+                  })
+                ),
           colors: [
             'rgba(124, 58, 237, 0.3)',
             'rgba(99, 102, 241, 0.12)',
@@ -928,44 +1113,55 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
           iconBackground: 'rgba(124, 58, 237, 0.22)',
         };
     }
-  }, [detectedShiftType, shiftSystem]);
+  }, [detectedShiftType, shiftSystem, t]);
 
   // Get stage-specific title
   const getStageTitle = (): string => {
     if (totalStages === 1) {
-      return 'When Do Your Shifts Start?';
+      return String(
+        t('shiftTime.header.title.single', { defaultValue: 'When Do Your Shifts Start?' })
+      );
     }
 
     switch (currentShiftType) {
       case 'day':
-        return 'Day Shift Times';
+        return String(t('shiftTime.header.title.day', { defaultValue: 'Day Shift Times' }));
       case 'night':
-        return 'Night Shift Times';
+        return String(t('shiftTime.header.title.night', { defaultValue: 'Night Shift Times' }));
       case 'morning':
-        return 'Morning Shift Times';
+        return String(t('shiftTime.header.title.morning', { defaultValue: 'Morning Shift Times' }));
       case 'afternoon':
-        return 'Afternoon Shift Times';
+        return String(
+          t('shiftTime.header.title.afternoon', { defaultValue: 'Afternoon Shift Times' })
+        );
       default:
-        return 'Shift Times';
+        return String(t('shiftTime.header.title.default', { defaultValue: 'Shift Times' }));
     }
   };
 
   // Get stage-specific subtitle
   const getStageSubtitle = (): string => {
     if (totalStages === 1) {
-      return "Pick what time you clock in each day—we'll use this to track your hours and set reminders";
+      return String(
+        t('shiftTime.header.subtitle.single', {
+          defaultValue:
+            "Pick what time you clock in each day—we'll use this to track your hours and set reminders",
+        })
+      );
     }
 
-    const shiftTypeLabel =
-      currentShiftType === 'day'
-        ? 'day shifts'
-        : currentShiftType === 'night'
-          ? 'night shifts'
-          : currentShiftType === 'morning'
-            ? 'morning shifts'
-            : 'afternoon shifts';
+    const shiftTypeLabel = String(
+      t(`shiftTime.shiftLabels.${currentShiftType}Plural`, {
+        defaultValue: `${getShiftTypeLabel(currentShiftType, 'lower')} shifts`,
+      })
+    );
 
-    return `Your pattern includes ${shiftTypeLabel}. Set the start time for these shifts.`;
+    return String(
+      t('shiftTime.header.subtitle.multi', {
+        shiftTypeLabel,
+        defaultValue: `Your pattern includes ${shiftTypeLabel}. Set the start time for these shifts.`,
+      })
+    );
   };
 
   // Get pattern icon based on pattern type
@@ -1020,7 +1216,11 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
           >
             {totalStages > 1 && (
               <Text style={styles.stageIndicator}>
-                Step {currentStageIndex + 1} of {totalStages}
+                {t('shiftTime.stage.stepOfTotal', {
+                  current: currentStageIndex + 1,
+                  total: totalStages,
+                  defaultValue: `Step ${currentStageIndex + 1} of ${totalStages}`,
+                })}
               </Text>
             )}
             <Text style={styles.title}>{getStageTitle()}</Text>
@@ -1092,32 +1292,51 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                     />
                   </View>
                   <View style={styles.guidanceHeaderTextContainer}>
-                    <Text style={styles.guidanceTitle}>About shift times</Text>
+                    <Text style={styles.guidanceTitle}>
+                      {t('shiftTime.guidance.aboutTitle', { defaultValue: 'About shift times' })}
+                    </Text>
                   </View>
                 </View>
 
                 <Text style={styles.guidanceText}>
-                  Your {patternInfo.name} rotation stays the same, but we need your shift start
-                  times so Ellie can track hours and alert you before each shift.
+                  {t('shiftTime.guidance.aboutBody', {
+                    patternName: patternInfo.name,
+                    defaultValue:
+                      'Your {{patternName}} rotation stays the same, but we need your shift start times so Ellie can track hours and alert you before each shift.',
+                  })}
                 </Text>
 
                 {/* Shift Type Definitions */}
                 <View style={styles.shiftTypeDefinitions}>
                   <Text style={styles.shiftTypeDefinitionsTitle}>
-                    {shiftSystem === ShiftSystem.TWO_SHIFT ? 'Day vs Night:' : 'Shift types:'}
+                    {shiftSystem === ShiftSystem.TWO_SHIFT
+                      ? t('shiftTime.guidance.definitions.twoShiftTitle', {
+                          defaultValue: 'Day vs Night:',
+                        })
+                      : t('shiftTime.guidance.definitions.threeShiftTitle', {
+                          defaultValue: 'Shift types:',
+                        })}
                   </Text>
                   {shiftSystem === ShiftSystem.TWO_SHIFT ? (
                     <Text style={styles.shiftTypeDefinitionsText}>
-                      Day shifts start 6 AM–6 PM • Night shifts start 6 PM–6 AM
+                      {t('shiftTime.guidance.definitions.twoShiftBody', {
+                        defaultValue: 'Day shifts start 6 AM–6 PM • Night shifts start 6 PM–6 AM',
+                      })}
                     </Text>
                   ) : (
                     <Text style={styles.shiftTypeDefinitionsText}>
-                      Morning: 6 AM–2 PM • Afternoon: 2 PM–10 PM • Night: 10 PM–6 AM
+                      {t('shiftTime.guidance.definitions.threeShiftBody', {
+                        defaultValue:
+                          'Morning: 6 AM–2 PM • Afternoon: 2 PM–10 PM • Night: 10 PM–6 AM',
+                      })}
                     </Text>
                   )}
                 </View>
                 <Text style={styles.guidanceHintText}>
-                  Use the closest start time now. You can fine-tune it later in settings.
+                  {t('shiftTime.guidance.hint', {
+                    defaultValue:
+                      'Use the closest start time now. You can fine-tune it later in settings.',
+                  })}
                 </Text>
               </View>
             </LinearGradient>
@@ -1130,7 +1349,9 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
           >
             <View style={styles.presetsSectionHeader}>
               <Ionicons name="time-outline" size={32} color={theme.colors.sacredGold} />
-              <Text style={styles.presetsSectionTitle}>Pick a Common Start Time</Text>
+              <Text style={styles.presetsSectionTitle}>
+                {t('shiftTime.presets.sectionTitle', { defaultValue: 'Pick a Common Start Time' })}
+              </Text>
             </View>
 
             <ScrollView
@@ -1166,8 +1387,16 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                 {/* Shift Start Time */}
                 <View style={styles.inputRow}>
                   <View style={styles.inputLabelContainer}>
-                    <Text style={styles.inputLabel}>What time do you usually clock in?</Text>
-                    <Text style={styles.inputHelper}>Use 12-hour format (e.g., 6:00 AM)</Text>
+                    <Text style={styles.inputLabel}>
+                      {t('shiftTime.customInput.label', {
+                        defaultValue: 'What time do you usually clock in?',
+                      })}
+                    </Text>
+                    <Text style={styles.inputHelper}>
+                      {t('shiftTime.customInput.helper', {
+                        defaultValue: 'Use 12-hour format (e.g., 6:00 AM)',
+                      })}
+                    </Text>
                   </View>
                   <View style={styles.timeInputContainer}>
                     <TextInput
@@ -1243,12 +1472,19 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                       color={theme.colors.sacredGold}
                     />
                     <View style={styles.livePreviewContent}>
-                      <Text style={styles.livePreviewLabel}>Your shift:</Text>
+                      <Text style={styles.livePreviewLabel}>
+                        {t('shiftTime.preview.yourShift', { defaultValue: 'Your shift:' })}
+                      </Text>
                       <Text style={styles.livePreviewTime}>
                         {formatTimeForDisplay(getStartTime24h())} →{' '}
                         {formatTimeForDisplay(getEndTime24h())}
                       </Text>
-                      <Text style={styles.livePreviewDuration}>{duration} hours</Text>
+                      <Text style={styles.livePreviewDuration}>
+                        {t('shiftTime.preview.durationHours', {
+                          duration,
+                          defaultValue: `${duration} hours`,
+                        })}
+                      </Text>
                     </View>
                   </Animated.View>
                 )}
@@ -1286,11 +1522,17 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                       <Text style={[styles.detectionText, { color: detectionCardMeta.accent }]}>
                         {detectionCardMeta.title}
                       </Text>
-                      <Text style={styles.detectionHelper}>This is when your shift begins</Text>
+                      <Text style={styles.detectionHelper}>
+                        {t('shiftTime.detection.helper', {
+                          defaultValue: 'This is when your shift begins',
+                        })}
+                      </Text>
                     </View>
                   </View>
 
-                  <Text style={styles.detectionMetaText}>Auto-detected</Text>
+                  <Text style={styles.detectionMetaText}>
+                    {t('shiftTime.detection.autoDetected', { defaultValue: 'Auto-detected' })}
+                  </Text>
                   <Text style={styles.detectionWindowText}>{detectionCardMeta.windowLabel}</Text>
                 </View>
               </LinearGradient>
@@ -1318,17 +1560,27 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                     <Ionicons name="bulb-outline" size={22} color={theme.colors.sacredGold} />
                   </View>
                   <View style={styles.tipHeaderTextContainer}>
-                    <Text style={styles.tipTitle}>Pro Tip</Text>
+                    <Text style={styles.tipTitle}>
+                      {t('shiftTime.tips.title', { defaultValue: 'Pro Tip' })}
+                    </Text>
                     <Text style={styles.tipSubtitle}>
-                      Fastest way to pick a reliable start time
+                      {t('shiftTime.tips.subtitle', {
+                        defaultValue: 'Fastest way to pick a reliable start time',
+                      })}
                     </Text>
                   </View>
                 </View>
 
                 <Text style={styles.tipText}>
                   {shiftSystem === ShiftSystem.TWO_SHIFT
-                    ? 'Not sure? Most shift workers on 12-hour rotations start at 6 AM or 6 PM. Pick the closest match—you can adjust it later in settings if needed.'
-                    : 'Not sure? Most 8-hour shift workers start at 6 AM, 2 PM, or 10 PM. Pick the closest match—you can adjust it later in settings if needed.'}
+                    ? t('shiftTime.tips.twoShift', {
+                        defaultValue:
+                          'Not sure? Most shift workers on 12-hour rotations start at 6 AM or 6 PM. Pick the closest match—you can adjust it later in settings if needed.',
+                      })
+                    : t('shiftTime.tips.threeShift', {
+                        defaultValue:
+                          'Not sure? Most 8-hour shift workers start at 6 AM, 2 PM, or 10 PM. Pick the closest match—you can adjust it later in settings if needed.',
+                      })}
                 </Text>
               </View>
             </LinearGradient>
@@ -1349,7 +1601,13 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
               <Pressable
                 style={({ pressed }) => [styles.backButton, pressed && styles.backButtonPressed]}
                 onPress={handleBack}
-                accessibilityLabel={isSettingsMode ? 'Back to Settings' : 'Go back'}
+                accessibilityLabel={
+                  isSettingsMode
+                    ? t('shiftTime.actions.backToSettings', {
+                        defaultValue: 'Back to Settings',
+                      })
+                    : t('shiftTime.actions.goBack', { defaultValue: 'Go back' })
+                }
                 accessibilityRole="button"
               >
                 <LinearGradient
@@ -1371,12 +1629,24 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                 disabled={!canContinue}
                 accessibilityLabel={
                   isSettingsMode
-                    ? 'Save shift time and return to settings'
+                    ? t('shiftTime.actions.saveAndReturnA11y', {
+                        defaultValue: 'Save shift time and return to settings',
+                      })
                     : totalStages === 1
-                      ? 'Continue to next step'
+                      ? t('shiftTime.actions.continueToNextStep', {
+                          defaultValue: 'Continue to next step',
+                        })
                       : isLastStage
-                        ? 'Save shift times and continue'
-                        : `Continue to ${requiredShiftTypes[currentStageIndex + 1]} shift times`
+                        ? t('shiftTime.actions.saveShiftTimesAndContinue', {
+                            defaultValue: 'Save shift times and continue',
+                          })
+                        : t('shiftTime.actions.continueToShiftType', {
+                            shiftType: getShiftTypeLabel(nextShiftType, 'lower'),
+                            defaultValue: `Continue to ${getShiftTypeLabel(
+                              nextShiftType,
+                              'lower'
+                            )} shift times`,
+                          })
                 }
                 accessibilityRole="button"
                 accessibilityState={{ disabled: !canContinue }}
@@ -1400,12 +1670,20 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                     <Ionicons name="checkmark-circle" size={24} color={theme.colors.paper} />
                     <Text style={styles.continueButtonText}>
                       {isSettingsMode
-                        ? 'Save & Return'
+                        ? t('shiftTime.actions.saveAndReturn', {
+                            defaultValue: 'Save & Return',
+                          })
                         : totalStages === 1
-                          ? 'Save & Continue'
+                          ? t('shiftTime.actions.saveAndContinue', {
+                              defaultValue: 'Save & Continue',
+                            })
                           : isLastStage
-                            ? 'Finish Setup'
-                            : 'Next Shift Type'}
+                            ? t('shiftTime.actions.finishSetup', {
+                                defaultValue: 'Finish Setup',
+                              })
+                            : t('shiftTime.actions.nextShiftType', {
+                                defaultValue: 'Next Shift Type',
+                              })}
                     </Text>
                     <Ionicons name="arrow-forward" size={22} color={theme.colors.paper} />
                   </LinearGradient>
@@ -1443,8 +1721,16 @@ const PresetCard: React.FC<PresetCardProps> = ({
   index,
   reducedMotion,
 }) => {
+  const { t } = useTranslation('onboarding');
   const presetIconSource = getPresetIconSource(preset);
   const scale = useSharedValue(1);
+  const localizedEndTimeLabel = preset.endTimeLabel
+    ? String(
+        t(`shiftTime.presets.${preset.id}.endTimeLabel`, {
+          defaultValue: preset.endTimeLabel,
+        })
+      )
+    : '';
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
@@ -1511,10 +1797,12 @@ const PresetCard: React.FC<PresetCardProps> = ({
               <Text style={styles.presetTime}>
                 {preset.startTime.replace(/^0/, '')} {preset.period}
               </Text>
-              <Text style={styles.presetEndTime}>{preset.endTimeLabel}</Text>
+              <Text style={styles.presetEndTime}>{localizedEndTimeLabel}</Text>
             </>
           ) : (
-            <Text style={styles.presetCustomText}>Custom Time</Text>
+            <Text style={styles.presetCustomText}>
+              {t('shiftTime.presets.custom.label', { defaultValue: 'Custom Time' })}
+            </Text>
           )}
         </Pressable>
       </Animated.View>

@@ -29,6 +29,9 @@ export interface Message {
   metadata?: {
     isSkipped?: boolean;
     countryFlag?: string;
+    questionKey?: string;
+    label?: string;
+    validated?: boolean;
   };
 }
 

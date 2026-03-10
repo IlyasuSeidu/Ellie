@@ -1,0 +1,30 @@
+{
+  "buttons": {
+    "save": "Sauvegarder",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "back": "Retour",
+    "next": "Suivant",
+    "done": "Fait",
+    "set": "Définir",
+    "edit": "Modifier",
+    "clear": "Effacer",
+    "close": "Fermer",
+    "saveAndReturn": "Enregistrer et revenir"
+  },
+  "errors": {
+    "loadFailed": "Échec du chargement des données",
+    "saveFailed": "Échec de l'enregistrement des modifications"
+  },
+  "avatar": {
+    "title": "Photo de profil",
+    "message": "Choisissez votre avatar",
+    "chooseFromLibrary": "Choisissez dans la bibliothèque",
+    "takePhoto": "Prendre une photo",
+    "removePhoto": "Supprimer la photo"
+  },
+  "language": {
+    "label": "Langue",
+    "selector": "Sélectionnez la langue"
+  }
+}

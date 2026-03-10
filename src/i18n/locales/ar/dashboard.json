@@ -1,0 +1,72 @@
+{
+  "greeting": {
+    "morning": "صباح الخير",
+    "afternoon": "مساء الخير",
+    "evening": "مساء الخير",
+    "night": "طاب مساؤك"
+  },
+  "pullToRefresh": "اسحب للتحديث",
+  "refreshing": "جارٍ تحديث الجدول الزمني...",
+  "scheduleUpdated": "تم تحديث الجدول الزمني",
+  "lastUpdated": {
+    "justNow": "الآن",
+    "secondsAgo": "{{count}}s مضت",
+    "minutesAgo": "{{count}}م مضت",
+    "updatedPrefix": "تم التحديث"
+  },
+  "errors": {
+    "loadFailed": "غير قادر على تحميل بيانات التحول"
+  },
+  "user": {
+    "defaultName": "مستخدم"
+  },
+  "upcoming": {
+    "title": "التحولات القادمة"
+  },
+  "shiftLabels": {
+    "day": "التحول اليومي",
+    "night": "التحول الليلي",
+    "morning": "التحول الصباحي",
+    "afternoon": "التحول بعد الظهر",
+    "off": "يوم راحة"
+  },
+  "shiftSubtitles": {
+    "day": "ابق نشيطًا!",
+    "night": "البقاء في حالة تأهب!",
+    "morning": "صعود وتألق!",
+    "afternoon": "استمر في ذلك!",
+    "off": "الراحة وإعادة الشحن!"
+  },
+  "fifo": {
+    "onSite": "القائمة في الموقع نشطة",
+    "homeBlock": "كتلة المنزل نشطة",
+    "workBlock": "عمل",
+    "restBlock": "استراحة",
+    "blockChangeToday": "تغيير الكتلة اليوم!",
+    "blockChangeTomorrow": "تغيير الكتلة غدًا!",
+    "untilRest": "{{count}}d حتى كتلة الراحة",
+    "untilWork": "{{count}}d حتى كتلة العمل",
+    "blockDayOf": "{{blockName}} يوم الحظر {{day}} من {{total}}",
+    "days": "أيام"
+  },
+  "stats": {
+    "workDays": "أيام العمل",
+    "offDays": "أيام العطلة",
+    "balance": "توازن"
+  },
+  "calendar": {
+    "legendDay": "يوم",
+    "legendMorning": "صباح",
+    "legendAfternoon": "بعد الظهر",
+    "legendNight": "ليلة",
+    "legendOff": "راحة",
+    "legendWorkBlock": "كتلة العمل",
+    "legendRestBlock": "كتلة الراحة",
+    "cycle": "دورة",
+    "previousMonth": "الشهر السابق",
+    "nextMonth": "الشهر المقبل"
+  },
+  "badges": {
+    "active": "نشيط"
+  }
+}

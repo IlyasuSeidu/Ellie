@@ -7,32 +7,39 @@
  */
 
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { View, StyleSheet, Text, Pressable } from 'react-native';
+import { View, StyleSheet, Text, Pressable, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated from 'react-native-reanimated';
+import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { useProfileData } from '@/hooks/useProfileData';
 import { useShiftAccent } from '@/hooks/useShiftAccent';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { ProfileHeroSection } from '@/components/profile/ProfileHeroSection';
 import { ProfileSectionHeader } from '@/components/profile/ProfileSectionHeader';
 import { ProfileEditForm } from '@/components/profile/ProfileEditForm';
 import { ShiftSettingsPanel } from '@/components/profile/ShiftSettingsPanel';
 import { WorkStatsSummary } from '@/components/profile/WorkStatsSummary';
+import { LANGUAGE_NAMES, LanguageSelectorSheet } from '@/components/profile/LanguageSelectorSheet';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 
 export const ProfileScreen: React.FC = () => {
+  const { t } = useTranslation('profile');
   const insets = useSafeAreaInsets();
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const profile = useProfileData();
+  const { language, setLanguage } = useLanguage();
   const { shiftType: liveShiftType, tabAccentColor } = useShiftAccent();
   const { isEditing, cancelEditing } = profile;
+  const [languageSheetVisible, setLanguageSheetVisible] = React.useState(false);
   const personalInfoHeaderGradient = useMemo<readonly [string, string]>(() => {
     switch (liveShiftType) {
       case 'day':
@@ -156,7 +163,7 @@ export const ProfileScreen: React.FC = () => {
         />
 
         <ProfileSectionHeader
-          title="Personal Information"
+          title={t('sections.personalInfo')}
           icon="person-outline"
           iconColor={tabAccentColor}
           backgroundGradientColors={personalInfoHeaderGradient}
@@ -201,11 +208,23 @@ export const ProfileScreen: React.FC = () => {
         />
 
         <ProfileSectionHeader
-          title="Work Overview"
+          title={t('sections.workOverview')}
           icon="stats-chart-outline"
           animationDelay={1100}
         />
         <WorkStatsSummary data={profile.data} animationDelay={1200} />
+
+        <TouchableOpacity
+          style={styles.languageRow}
+          onPress={() => setLanguageSheetVisible(true)}
+          accessibilityRole="button"
+          accessibilityLabel={t('language.label')}
+        >
+          <Ionicons name="language-outline" size={18} color={theme.colors.sacredGold} />
+          <Text style={styles.languageLabel}>{t('language.label')}</Text>
+          <Text style={styles.languageValue}>{LANGUAGE_NAMES[language] ?? language}</Text>
+          <Ionicons name="chevron-forward" size={16} color={theme.colors.dust} />
+        </TouchableOpacity>
 
         {__DEV__ ? (
           <View style={styles.onboardingToolsSection}>
@@ -213,16 +232,23 @@ export const ProfileScreen: React.FC = () => {
               style={styles.onboardingButton}
               onPress={handleRunOnboardingAgain}
               accessibilityRole="button"
-              accessibilityLabel="Run onboarding flow again"
-              accessibilityHint="Re-open onboarding screens from the first step"
+              accessibilityLabel={t('dev.runOnboardingA11y')}
+              accessibilityHint={t('dev.runOnboardingA11yHint')}
               testID="run-onboarding-again-button"
             >
-              <Text style={styles.onboardingButtonText}>Run Onboarding Again</Text>
-              <Text style={styles.onboardingButtonHint}>Opens onboarding from step one</Text>
+              <Text style={styles.onboardingButtonText}>{t('dev.runOnboardingAgain')}</Text>
+              <Text style={styles.onboardingButtonHint}>{t('dev.runOnboardingHint')}</Text>
             </Pressable>
           </View>
         ) : null}
       </Animated.ScrollView>
+
+      <LanguageSelectorSheet
+        visible={languageSheetVisible}
+        onClose={() => setLanguageSheetVisible(false)}
+        currentLanguage={language}
+        onSelect={setLanguage}
+      />
     </View>
   );
 };
@@ -234,6 +260,28 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
+  },
+  languageRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingHorizontal: theme.spacing.lg,
+    paddingVertical: 14,
+    backgroundColor: theme.colors.darkStone,
+    borderRadius: theme.borderRadius.md,
+    marginHorizontal: theme.spacing.lg,
+    marginTop: theme.spacing.md,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.06)',
+  },
+  languageLabel: {
+    flex: 1,
+    fontSize: theme.typography.fontSizes.sm,
+    color: theme.colors.dust,
+  },
+  languageValue: {
+    fontSize: theme.typography.fontSizes.sm,
+    color: theme.colors.paper,
   },
   onboardingToolsSection: {
     paddingHorizontal: theme.spacing.lg,

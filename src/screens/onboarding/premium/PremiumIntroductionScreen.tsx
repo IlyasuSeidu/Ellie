@@ -17,6 +17,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 import * as Haptics from 'expo-haptics';
 
@@ -41,15 +42,12 @@ type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList, 'Intro
 const introductionSchema = z.object({
   name: z
     .string()
-    .min(2, 'Name must be at least 2 characters')
-    .max(50, 'Name must not exceed 50 characters')
-    .regex(/^[a-zA-Z\s'-]+$/, 'Name can only contain letters, spaces, hyphens, and apostrophes'),
-  occupation: z.string().min(1, 'Occupation is required'),
-  company: z.string().min(1, 'Company is required'),
-  country: z
-    .string()
-    .min(2, 'Country must be at least 2 characters')
-    .max(100, 'Country must not exceed 100 characters'),
+    .min(2)
+    .max(50)
+    .regex(/^[a-zA-Z\s'-]+$/),
+  occupation: z.string().min(1),
+  company: z.string().min(1),
+  country: z.string().min(2).max(100),
 });
 
 type IntroductionFormData = z.infer<typeof introductionSchema>;
@@ -77,6 +75,7 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
   onContinue,
   testID = 'premium-introduction-screen',
 }) => {
+  const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const { data, updateData } = useOnboarding();
   const flatListRef = useRef<FlatList>(null);
@@ -106,6 +105,14 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
   // Reduced motion preference
   const [reducedMotion, setReducedMotion] = useState(false);
 
+  const hasBotQuestion = useCallback(
+    (questionKey: string): boolean =>
+      messages.some(
+        (message) => message.type === 'bot' && message.metadata?.questionKey === questionKey
+      ),
+    [messages]
+  );
+
   // Check for reduced motion preference
   useEffect(() => {
     const checkReducedMotion = async () => {
@@ -117,7 +124,7 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
 
   // Add bot message with typing indicator
   const addBotMessage = useCallback(
-    (content: string, typingDuration: number) => {
+    (content: string, typingDuration: number, questionKey?: string) => {
       setIsTyping(true);
 
       // Light haptic feedback
@@ -135,6 +142,7 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
           type: 'bot',
           content,
           timestamp: Date.now(),
+          metadata: questionKey ? { questionKey } : undefined,
         };
 
         setMessages((prev) => [...prev, newMessage]);
@@ -177,82 +185,86 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
   );
 
   // Validate name
-  const validateName = useCallback((input: string): boolean => {
-    try {
-      introductionSchema.shape.name.parse(input);
+  const validateName = useCallback(
+    (input: string): boolean => {
+      const value = input.trim();
+      if (value.length < 2) {
+        setError(t('intro.errors.nameTooShort'));
+        return false;
+      }
+      if (value.length > 50) {
+        setError(t('intro.errors.nameTooLong'));
+        return false;
+      }
+      if (!/^[a-zA-Z\s'-]+$/.test(value)) {
+        setError(t('intro.errors.nameInvalidChars'));
+        return false;
+      }
       setError(null);
       return true;
-    } catch (err) {
-      if (err instanceof z.ZodError) {
-        setError(err.errors[0].message);
-      }
-      return false;
-    }
-  }, []);
+    },
+    [t]
+  );
 
   // Validate occupation
-  const validateOccupation = useCallback((input: string): boolean => {
-    try {
-      introductionSchema.shape.occupation.parse(input);
+  const validateOccupation = useCallback(
+    (input: string): boolean => {
+      if (input.trim().length < 1) {
+        setError(t('intro.errors.occupationRequired'));
+        return false;
+      }
       setError(null);
       return true;
-    } catch (err) {
-      if (err instanceof z.ZodError) {
-        setError(err.errors[0].message);
-      }
-      return false;
-    }
-  }, []);
+    },
+    [t]
+  );
 
   // Validate company
-  const validateCompany = useCallback((input: string): boolean => {
-    try {
-      introductionSchema.shape.company.parse(input);
+  const validateCompany = useCallback(
+    (input: string): boolean => {
+      if (input.trim().length < 1) {
+        setError(t('intro.errors.companyRequired'));
+        return false;
+      }
       setError(null);
       return true;
-    } catch (err) {
-      if (err instanceof z.ZodError) {
-        setError(err.errors[0].message);
-      }
-      return false;
-    }
-  }, []);
+    },
+    [t]
+  );
 
   // Validate country
-  const validateCountry = useCallback((input: string): boolean => {
-    try {
-      introductionSchema.shape.country.parse(input);
+  const validateCountry = useCallback(
+    (input: string): boolean => {
+      const value = input.trim();
+      if (value.length < 2) {
+        setError(t('intro.errors.countryTooShort'));
+        return false;
+      }
+      if (value.length > 100) {
+        setError(t('intro.errors.countryTooLong'));
+        return false;
+      }
       setError(null);
       return true;
-    } catch (err) {
-      if (err instanceof z.ZodError) {
-        setError(err.errors[0].message);
-      }
-      return false;
-    }
-  }, []);
+    },
+    [t]
+  );
 
   // Advance conversation based on current step
   const advanceConversation = useCallback(() => {
     switch (currentStep) {
       case ConversationStep.WELCOME:
-        addBotMessage(
-          "Welcome to Ellie! I'm here to help you set up your shift calendar. Let's start by getting to know you a bit better.",
-          1000
-        );
+        addBotMessage(t('intro.welcome'), 1000, 'welcome');
         setTimeout(() => {
           setCurrentStep(ConversationStep.ASK_NAME);
         }, 2500);
         break;
 
       case ConversationStep.ASK_NAME: {
-        // Check if question already exists (editing scenario)
-        const nameQuestionExists = messages.some(
-          (m) => m.type === 'bot' && m.content.includes("What's your name?")
-        );
+        const nameQuestionExists = hasBotQuestion('askName');
 
         if (!nameQuestionExists) {
-          addBotMessage("What's your name?", 800);
+          addBotMessage(t('intro.askName'), 800, 'askName');
           setTimeout(() => {
             setCurrentStep(ConversationStep.WAIT_NAME);
           }, 1300);
@@ -268,13 +280,10 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
         break;
 
       case ConversationStep.ASK_OCCUPATION: {
-        // Check if question already exists (editing scenario)
-        const occupationQuestionExists = messages.some(
-          (m) => m.type === 'bot' && m.content.includes("What's your occupation?")
-        );
+        const occupationQuestionExists = hasBotQuestion('askOccupation');
 
         if (!occupationQuestionExists) {
-          addBotMessage(`Great to meet you, ${formData.name}! What's your occupation?`, 900);
+          addBotMessage(t('intro.askOccupation', { name: formData.name }), 900, 'askOccupation');
           setTimeout(() => {
             setCurrentStep(ConversationStep.WAIT_OCCUPATION);
           }, 1400);
@@ -290,13 +299,10 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
         break;
 
       case ConversationStep.ASK_COMPANY: {
-        // Check if question already exists (editing scenario)
-        const companyQuestionExists = messages.some(
-          (m) => m.type === 'bot' && m.content.includes('Which company do you work for?')
-        );
+        const companyQuestionExists = hasBotQuestion('askCompany');
 
         if (!companyQuestionExists) {
-          addBotMessage('Got it! Which company do you work for?', 1000);
+          addBotMessage(t('intro.askCompany'), 1000, 'askCompany');
           setTimeout(() => {
             setCurrentStep(ConversationStep.WAIT_COMPANY);
           }, 1500);
@@ -312,13 +318,10 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
         break;
 
       case ConversationStep.ASK_COUNTRY: {
-        // Check if question already exists (editing scenario)
-        const countryQuestionExists = messages.some(
-          (m) => m.type === 'bot' && m.content.includes('Which country are you based in?')
-        );
+        const countryQuestionExists = hasBotQuestion('askCountry');
 
         if (!countryQuestionExists) {
-          addBotMessage('Almost done! Which country are you based in?', 900);
+          addBotMessage(t('intro.askCountry'), 900, 'askCountry');
           setTimeout(() => {
             setCurrentStep(ConversationStep.WAIT_COUNTRY);
           }, 1400);
@@ -334,16 +337,10 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
         break;
 
       case ConversationStep.COMPLETE: {
-        // Check if completion message already exists (prevent duplicates)
-        const completionMessageExists = messages.some(
-          (m) => m.type === 'bot' && m.content.includes("You're all set")
-        );
+        const completionMessageExists = hasBotQuestion('complete');
 
         if (!completionMessageExists) {
-          addBotMessage(
-            `Perfect! You're all set, ${formData.name}. Let's get your shift calendar configured.`,
-            1000
-          );
+          addBotMessage(t('intro.allSet', { name: formData.name }), 1000, 'complete');
 
           // Save to context and navigate after delay (allow time to read final message)
           setTimeout(() => {
@@ -380,12 +377,13 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
   }, [
     currentStep,
     formData,
-    messages,
+    hasBotQuestion,
     addBotMessage,
     updateData,
     reducedMotion,
     onContinue,
     navigation,
+    t,
   ]);
 
   // Start conversation on mount
@@ -507,61 +505,57 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
       });
 
       // Show confirmation alert
-      Alert.alert(
-        'Edit Response',
-        'Edit your response. The conversation will rewind from this point.',
-        [
-          {
-            text: 'Cancel',
-            style: 'cancel',
+      Alert.alert(t('intro.editResponse.title'), t('intro.editResponse.message'), [
+        {
+          text: t('intro.editResponse.cancel'),
+          style: 'cancel',
+        },
+        {
+          text: t('intro.editResponse.confirm'),
+          onPress: () => {
+            // Remove this message and all subsequent messages
+            setMessages((prev) => prev.slice(0, messageIndex));
+
+            // Determine which step to rewind to based on message position
+            // Count user messages before this one to determine which field
+            const userMessagesBefore = messages
+              .slice(0, messageIndex)
+              .filter((m) => m.type === 'user').length;
+
+            // Return ASK step - the advanceConversation will detect existing question and skip to WAIT
+            let rewindStep: ConversationStep;
+            switch (userMessagesBefore) {
+              case 0:
+                rewindStep = ConversationStep.ASK_NAME;
+                break;
+              case 1:
+                rewindStep = ConversationStep.ASK_OCCUPATION;
+                break;
+              case 2:
+                rewindStep = ConversationStep.ASK_COMPANY;
+                break;
+              case 3:
+                rewindStep = ConversationStep.ASK_COUNTRY;
+                break;
+              default:
+                rewindStep = currentStep;
+            }
+
+            // Pre-fill input with previous value for text inputs
+            if (rewindStep !== ConversationStep.ASK_COUNTRY) {
+              setCurrentInput(message.content);
+            }
+
+            // Set the step (advanceConversation will detect existing question and skip re-asking)
+            setCurrentStep(rewindStep);
+
+            // Clear error
+            setError(null);
           },
-          {
-            text: 'Edit',
-            onPress: () => {
-              // Remove this message and all subsequent messages
-              setMessages((prev) => prev.slice(0, messageIndex));
-
-              // Determine which step to rewind to based on message position
-              // Count user messages before this one to determine which field
-              const userMessagesBefore = messages
-                .slice(0, messageIndex)
-                .filter((m) => m.type === 'user').length;
-
-              // Return ASK step - the advanceConversation will detect existing question and skip to WAIT
-              let rewindStep: ConversationStep;
-              switch (userMessagesBefore) {
-                case 0:
-                  rewindStep = ConversationStep.ASK_NAME;
-                  break;
-                case 1:
-                  rewindStep = ConversationStep.ASK_OCCUPATION;
-                  break;
-                case 2:
-                  rewindStep = ConversationStep.ASK_COMPANY;
-                  break;
-                case 3:
-                  rewindStep = ConversationStep.ASK_COUNTRY;
-                  break;
-                default:
-                  rewindStep = currentStep;
-              }
-
-              // Pre-fill input with previous value for text inputs
-              if (rewindStep !== ConversationStep.ASK_COUNTRY) {
-                setCurrentInput(message.content);
-              }
-
-              // Set the step (advanceConversation will detect existing question and skip re-asking)
-              setCurrentStep(rewindStep);
-
-              // Clear error
-              setError(null);
-            },
-          },
-        ]
-      );
+        },
+      ]);
     },
-    [messages, currentStep]
+    [messages, currentStep, t]
   );
 
   // Determine if input should be shown
@@ -575,13 +569,13 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
   const getPlaceholder = (): string => {
     switch (currentStep) {
       case ConversationStep.WAIT_NAME:
-        return 'Enter your name';
+        return t('intro.placeholders.name');
       case ConversationStep.WAIT_OCCUPATION:
-        return 'Enter your occupation';
+        return t('intro.placeholders.occupation');
       case ConversationStep.WAIT_COMPANY:
-        return 'Enter company name';
+        return t('intro.placeholders.company');
       case ConversationStep.WAIT_COUNTRY:
-        return 'Enter your country';
+        return t('intro.placeholders.country');
       default:
         return '';
     }

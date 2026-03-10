@@ -1,0 +1,72 @@
+{
+  "greeting": {
+    "morning": "Buenos dias",
+    "afternoon": "Buenas tardes",
+    "evening": "Buenas noches",
+    "night": "Buenas noches"
+  },
+  "pullToRefresh": "Desliza para actualizar",
+  "refreshing": "Actualizando turno...",
+  "scheduleUpdated": "Horario actualizado",
+  "lastUpdated": {
+    "justNow": "Ahora mismo",
+    "secondsAgo": "hace {{count}}s",
+    "minutesAgo": "hace {{count}}m",
+    "updatedPrefix": "Actualizado "
+  },
+  "errors": {
+    "loadFailed": "No se pudo cargar el turno"
+  },
+  "user": {
+    "defaultName": "Usuario"
+  },
+  "upcoming": {
+    "title": "Proximos turnos"
+  },
+  "shiftLabels": {
+    "day": "Turno de dia",
+    "night": "Turno de noche",
+    "morning": "Turno de manana",
+    "afternoon": "Turno de tarde",
+    "off": "Dia libre"
+  },
+  "shiftSubtitles": {
+    "day": "Manten la energia!",
+    "night": "Mantente alerta!",
+    "morning": "Arriba y adelante!",
+    "afternoon": "Sigue asi!",
+    "off": "Descansa y recarga!"
+  },
+  "fifo": {
+    "onSite": "Bloque en sitio activo",
+    "homeBlock": "Bloque en casa activo",
+    "workBlock": "Trabajo",
+    "restBlock": "Descanso",
+    "blockChangeToday": "Cambio de bloque hoy!",
+    "blockChangeTomorrow": "Cambio de bloque manana!",
+    "untilRest": "{{count}}d hasta descanso",
+    "untilWork": "{{count}}d hasta trabajo",
+    "blockDayOf": "Bloque {{blockName}} dia {{day}} de {{total}}",
+    "days": "dias"
+  },
+  "stats": {
+    "workDays": "Dias de trabajo",
+    "offDays": "Dias libres",
+    "balance": "Balance"
+  },
+  "calendar": {
+    "legendDay": "Dia",
+    "legendMorning": "Manana",
+    "legendAfternoon": "Tarde",
+    "legendNight": "Noche",
+    "legendOff": "Libre",
+    "legendWorkBlock": "Bloque trabajo",
+    "legendRestBlock": "Bloque descanso",
+    "cycle": "ciclo",
+    "previousMonth": "Mes anterior",
+    "nextMonth": "Mes siguiente"
+  },
+  "badges": {
+    "active": "ACTIVO"
+  }
+}

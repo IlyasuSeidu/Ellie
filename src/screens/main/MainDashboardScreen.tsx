@@ -30,6 +30,7 @@ import Animated, {
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
 import { asyncStorageService } from '@/services/AsyncStorageService';
@@ -83,6 +84,7 @@ const SHIFT_GLOW_COLORS: Record<string, string> = {
 };
 
 export const MainDashboardScreen: React.FC = () => {
+  const { t } = useTranslation('dashboard');
   const insets = useSafeAreaInsets();
   const [userData, setUserData] = useState<OnboardingData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -247,12 +249,12 @@ export const MainDashboardScreen: React.FC = () => {
     const diffMs = Date.now() - lastUpdated.getTime();
     const diffSec = Math.floor(diffMs / 1000);
 
-    if (diffSec < 10) return 'Just now';
-    if (diffSec < 60) return `${diffSec}s ago`;
+    if (diffSec < 10) return t('lastUpdated.justNow');
+    if (diffSec < 60) return t('lastUpdated.secondsAgo', { count: diffSec });
     const diffMin = Math.floor(diffSec / 60);
-    if (diffMin < 60) return `${diffMin}m ago`;
+    if (diffMin < 60) return t('lastUpdated.minutesAgo', { count: diffMin });
     return lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  }, [lastUpdated, clockTick]);
+  }, [lastUpdated, clockTick, t]);
 
   // Active shift: time-aware status with overnight carry-over support
   const activeShift = useActiveShift(shiftCycle, userData, liveTick, currentDateStr);
@@ -337,7 +339,7 @@ export const MainDashboardScreen: React.FC = () => {
   if (!userData || !shiftCycle || !activeShift || !monthStats) {
     return (
       <View style={[styles.loadingContainer, { paddingTop: insets.top }]}>
-        <Animated.Text style={styles.errorText}>Unable to load shift data</Animated.Text>
+        <Animated.Text style={styles.errorText}>{t('errors.loadFailed')}</Animated.Text>
       </View>
     );
   }
@@ -359,7 +361,7 @@ export const MainDashboardScreen: React.FC = () => {
             <Animated.View style={successIconStyle}>
               <Ionicons name="checkmark-circle" size={20} color={theme.colors.success} />
             </Animated.View>
-            <Text style={styles.refreshSuccessText}>Schedule updated</Text>
+            <Text style={styles.refreshSuccessText}>{t('scheduleUpdated')}</Text>
           </View>
         </Animated.View>
       )}
@@ -375,7 +377,7 @@ export const MainDashboardScreen: React.FC = () => {
             tintColor={theme.colors.sacredGold}
             colors={[theme.colors.sacredGold]}
             progressBackgroundColor={theme.colors.darkStone}
-            title={refreshing ? 'Refreshing schedule...' : 'Pull to refresh'}
+            title={refreshing ? t('refreshing') : t('pullToRefresh')}
             titleColor={theme.colors.dust}
           />
         }
@@ -388,14 +390,17 @@ export const MainDashboardScreen: React.FC = () => {
             style={styles.lastUpdatedContainer}
           >
             <Ionicons name="time-outline" size={12} color={theme.colors.shadow} />
-            <Text style={styles.lastUpdatedText}>Updated {lastUpdatedText}</Text>
+            <Text style={styles.lastUpdatedText}>
+              {t('lastUpdated.updatedPrefix')}
+              {lastUpdatedText}
+            </Text>
           </Animated.View>
         )}
 
         {/* Personalized Header - keyed for re-entrance animation */}
         <PersonalizedHeader
           key={`header-${refreshKey}`}
-          name={userData.name || 'User'}
+          name={userData.name || t('user.defaultName')}
           occupation={userData.occupation}
           avatarUri={userData.avatarUri}
           onAvatarChange={handleAvatarChange}
@@ -414,7 +419,9 @@ export const MainDashboardScreen: React.FC = () => {
           timeDisplay={activeShift.timeDisplay || undefined}
           countdown={
             shiftCycle.rosterType === RosterType.FIFO && fifoBlockInfo
-              ? `${fifoBlockInfo.daysUntilBlockChange}d until ${fifoBlockInfo.inWorkBlock ? 'rest' : 'work'} block`
+              ? t(fifoBlockInfo.inWorkBlock ? 'fifo.untilRest' : 'fifo.untilWork', {
+                  count: fifoBlockInfo.daysUntilBlockChange,
+                })
               : (activeShift.countdown ?? undefined)
           }
           isOnShift={activeShift.isOnShift}

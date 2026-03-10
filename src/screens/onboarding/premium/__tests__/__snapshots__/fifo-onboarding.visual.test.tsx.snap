@@ -2900,7 +2900,8 @@ exports[`fifo onboarding visual snapshots PremiumFIFOCustomPatternScreen snapsho
         >
           arrow-down
         </Text>
-         See your FIFO pattern below
+         
+        See your FIFO pattern below
       </Text>
       <View
         style={
@@ -2984,10 +2985,7 @@ exports[`fifo onboarding visual snapshots PremiumFIFOCustomPatternScreen snapsho
                 }
               }
             >
-              14
-               days at site, then 
-              14
-               days at home
+              14 days at site, then 14 days at home
             </Text>
             <Text
               style={
@@ -3697,9 +3695,7 @@ exports[`fifo onboarding visual snapshots PremiumFIFOCustomPatternScreen snapsho
                 }
               }
             >
-              Cycle flow across 
-              28
-               visible days
+              Cycle flow across 28 visible days
             </Text>
           </View>
           <View
@@ -3864,9 +3860,7 @@ exports[`fifo onboarding visual snapshots PremiumFIFOCustomPatternScreen snapsho
                   }
                 }
               >
-                Work: 
-                14
-                 days
+                Work: 14 days
               </Text>
               <Text
                 style={
@@ -3877,9 +3871,7 @@ exports[`fifo onboarding visual snapshots PremiumFIFOCustomPatternScreen snapsho
                   }
                 }
               >
-                Rest: 
-                14
-                 days
+                Rest: 14 days
               </Text>
             </View>
           </View>
@@ -4022,8 +4014,7 @@ exports[`fifo onboarding visual snapshots PremiumFIFOCustomPatternScreen snapsho
                 }
               }
             >
-              28
-              -day FIFO cycle
+              28-day FIFO cycle
             </Text>
           </View>
         </View>
@@ -4107,11 +4098,7 @@ exports[`fifo onboarding visual snapshots PremiumFIFOCustomPatternScreen snapsho
             }
           }
         >
-          Solid FIFO setup. 
-          14
-           days at site, then 
-          14
-           days at home.
+          Solid FIFO setup. 14 days at site, then 14 days at home.
         </Text>
       </View>
     </View>
@@ -4897,9 +4884,7 @@ exports[`fifo onboarding visual snapshots PremiumRosterTypeScreen snapshot 1`] =
     }
   >
     Choose the roster style your workplace uses — this shapes your entire schedule
-    
-
-    Swipe right to choose, left to see more, up for details
+Swipe right to choose, left to see more, up for details
   </Text>
   <View
     style={

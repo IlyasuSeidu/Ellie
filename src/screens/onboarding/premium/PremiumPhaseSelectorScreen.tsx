@@ -39,6 +39,7 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
@@ -335,6 +336,7 @@ const SwipeablePhaseCard: React.FC<SwipeablePhaseCardProps> = ({
   mountProgress,
   reducedMotion,
 }) => {
+  const { t } = useTranslation('onboarding');
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const scale = useSharedValue(isActive ? 1 : 0.95 - index * 0.05);
@@ -641,7 +643,7 @@ const SwipeablePhaseCard: React.FC<SwipeablePhaseCardProps> = ({
                   <Text
                     style={[styles.swipeHintText, phaseAccent && { color: phaseAccent.hintText }]}
                   >
-                    ← Next
+                    {t('phaseSelector.hints.next', { defaultValue: '← Next' })}
                   </Text>
                 </LinearGradient>
               </View>
@@ -662,7 +664,7 @@ const SwipeablePhaseCard: React.FC<SwipeablePhaseCardProps> = ({
                   <Text
                     style={[styles.swipeHintText, phaseAccent && { color: phaseAccent.hintText }]}
                   >
-                    Select →
+                    {t('phaseSelector.hints.select', { defaultValue: 'Select →' })}
                   </Text>
                 </LinearGradient>
               </View>
@@ -683,7 +685,7 @@ const SwipeablePhaseCard: React.FC<SwipeablePhaseCardProps> = ({
                   <Text
                     style={[styles.swipeHintText, phaseAccent && { color: phaseAccent.hintText }]}
                   >
-                    ↑ Info
+                    {t('phaseSelector.hints.info', { defaultValue: '↑ Info' })}
                   </Text>
                 </LinearGradient>
               </View>
@@ -703,6 +705,7 @@ interface PhaseInfoModalProps {
 }
 
 const PhaseInfoModal: React.FC<PhaseInfoModalProps> = ({ visible, content, onClose }) => {
+  const { t } = useTranslation('onboarding');
   if (!content) return null;
 
   const isPhaseCard = (c: PhaseCardData | DayCardData): c is PhaseCardData => {
@@ -733,9 +736,14 @@ const PhaseInfoModal: React.FC<PhaseInfoModalProps> = ({ visible, content, onClo
               <Text style={styles.modalTitle}>{phaseCard.title}</Text>
               <Text style={styles.modalDescription}>{phaseCard.description}</Text>
               <View style={styles.modalSection}>
-                <Text style={styles.modalSectionTitle}>Phase Length</Text>
+                <Text style={styles.modalSectionTitle}>
+                  {t('phaseSelector.modal.phaseLength', { defaultValue: 'Phase Length' })}
+                </Text>
                 <Text style={styles.modalSectionText}>
-                  {phaseCard.phaseLength} {phaseCard.phaseLength === 1 ? 'day' : 'days'}
+                  {t('phaseSelector.modal.phaseLengthValue', {
+                    count: phaseCard.phaseLength,
+                    defaultValue: `${phaseCard.phaseLength} ${phaseCard.phaseLength === 1 ? 'day' : 'days'}`,
+                  })}
                 </Text>
               </View>
             </>
@@ -772,6 +780,7 @@ const ProgressDots: React.FC<ProgressDotsProps> = ({ total, current }) => {
 
 // Main Screen Component
 export const PremiumPhaseSelectorScreen: React.FC = () => {
+  const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const { data, updateData } = useOnboarding();
 
@@ -1004,8 +1013,12 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
         {
           id: 'day',
           phase: 'day' as Phase,
-          title: 'Day Shift',
-          description: 'Working during daylight (e.g., 6am-6pm)',
+          title: String(t('phaseSelector.cards.day.title', { defaultValue: 'Day Shift' })),
+          description: String(
+            t('phaseSelector.cards.day.description', {
+              defaultValue: 'Working during daylight (e.g., 6am-6pm)',
+            })
+          ),
           icon: require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png'),
           phaseLength: ('daysOn' in pattern ? pattern.daysOn : 0) ?? 0,
           gradientColors: ['rgba(33, 150, 243, 0.25)', 'rgba(33, 150, 243, 0.05)'] as [
@@ -1016,8 +1029,12 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
         {
           id: 'night',
           phase: 'night' as Phase,
-          title: 'Night Shift',
-          description: 'Working at nighttime (e.g., 6pm-6am)',
+          title: String(t('phaseSelector.cards.night.title', { defaultValue: 'Night Shift' })),
+          description: String(
+            t('phaseSelector.cards.night.description', {
+              defaultValue: 'Working at nighttime (e.g., 6pm-6am)',
+            })
+          ),
           icon: require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png'),
           phaseLength: ('nightsOn' in pattern ? pattern.nightsOn : 0) ?? 0,
           gradientColors: ['rgba(101, 31, 255, 0.25)', 'rgba(101, 31, 255, 0.05)'] as [
@@ -1028,8 +1045,12 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
         {
           id: 'off',
           phase: 'off' as Phase,
-          title: 'Days Off',
-          description: 'Rest and recovery at home',
+          title: String(t('phaseSelector.cards.off.title', { defaultValue: 'Days Off' })),
+          description: String(
+            t('phaseSelector.cards.off.description', {
+              defaultValue: 'Rest and recovery at home',
+            })
+          ),
           icon: require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png'),
           phaseLength: pattern.daysOff,
           gradientColors: ['rgba(255, 152, 0, 0.25)', 'rgba(255, 152, 0, 0.05)'] as [
@@ -1046,8 +1067,12 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
         {
           id: 'morning',
           phase: 'morning' as Phase,
-          title: 'Morning Shift',
-          description: 'Early morning hours (e.g., 4am-12pm)',
+          title: String(t('phaseSelector.cards.morning.title', { defaultValue: 'Morning Shift' })),
+          description: String(
+            t('phaseSelector.cards.morning.description', {
+              defaultValue: 'Early morning hours (e.g., 4am-12pm)',
+            })
+          ),
           icon: require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png'),
           phaseLength: ('morningOn' in pattern ? pattern.morningOn : 0) ?? 0,
           gradientColors: ['rgba(252, 211, 77, 0.25)', 'rgba(252, 211, 77, 0.05)'] as [
@@ -1058,8 +1083,14 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
         {
           id: 'afternoon',
           phase: 'afternoon' as Phase,
-          title: 'Afternoon Shift',
-          description: 'Afternoon hours (e.g., 12pm-8pm)',
+          title: String(
+            t('phaseSelector.cards.afternoon.title', { defaultValue: 'Afternoon Shift' })
+          ),
+          description: String(
+            t('phaseSelector.cards.afternoon.description', {
+              defaultValue: 'Afternoon hours (e.g., 12pm-8pm)',
+            })
+          ),
           icon: require('../../../../assets/onboarding/icons/consolidated/shift-time-afternoon.png'),
           phaseLength: ('afternoonOn' in pattern ? pattern.afternoonOn : 0) ?? 0,
           gradientColors: ['rgba(6, 182, 212, 0.25)', 'rgba(6, 182, 212, 0.05)'] as [
@@ -1070,8 +1101,12 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
         {
           id: 'night',
           phase: 'night' as Phase,
-          title: 'Night Shift',
-          description: 'Nighttime hours (e.g., 8pm-4am)',
+          title: String(t('phaseSelector.cards.night.title', { defaultValue: 'Night Shift' })),
+          description: String(
+            t('phaseSelector.cards.night.descriptionThreeShift', {
+              defaultValue: 'Nighttime hours (e.g., 8pm-4am)',
+            })
+          ),
           icon: require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png'),
           phaseLength: ('nightOn' in pattern ? pattern.nightOn : 0) ?? 0,
           gradientColors: ['rgba(101, 31, 255, 0.25)', 'rgba(101, 31, 255, 0.05)'] as [
@@ -1082,8 +1117,12 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
         {
           id: 'off',
           phase: 'off' as Phase,
-          title: 'Days Off',
-          description: 'Rest and recovery at home',
+          title: String(t('phaseSelector.cards.off.title', { defaultValue: 'Days Off' })),
+          description: String(
+            t('phaseSelector.cards.off.description', {
+              defaultValue: 'Rest and recovery at home',
+            })
+          ),
           icon: require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png'),
           phaseLength: pattern.daysOff,
           gradientColors: ['rgba(255, 152, 0, 0.25)', 'rgba(255, 152, 0, 0.05)'] as [
@@ -1095,7 +1134,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
 
       setPhaseCards(cards);
     }
-  }, [data.shiftSystem, pattern]);
+  }, [data.shiftSystem, pattern, t]);
 
   // Calculate and navigate helper
   const calculateAndNavigate = useCallback(
@@ -1145,7 +1184,12 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
         const cards: DayCardData[] = Array.from({ length: selectedCard.phaseLength }, (_, i) => ({
           id: `day-${i + 1}`,
           dayNumber: i + 1,
-          title: `Day ${i + 1}`,
+          title: String(
+            t('phaseSelector.dayCardTitle', {
+              day: i + 1,
+              defaultValue: `Day ${i + 1}`,
+            })
+          ),
           description: generateDayCardDescription(
             i + 1,
             selectedCard.phaseLength,
@@ -1169,7 +1213,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
       setSelectedDay(selectedCard.dayNumber);
       calculateAndNavigate(selectedPhase, selectedCard.dayNumber);
     }
-  }, [stage, phaseCards, dayCards, currentCardIndex, selectedPhase, calculateAndNavigate]);
+  }, [stage, phaseCards, dayCards, currentCardIndex, selectedPhase, calculateAndNavigate, t]);
 
   // Handle swipe left (skip)
   const handleSwipeLeft = useCallback(() => {
@@ -1238,17 +1282,26 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
       {/* Title */}
       <Animated.Text style={[styles.title, titleAnimatedStyle]}>
         {stage === SelectionStage.PHASE
-          ? 'What shift are you on right now?'
-          : `Which day of ${selectedPhaseTitle} are you on?`}
+          ? t('phaseSelector.title', { defaultValue: 'What shift are you on right now?' })
+          : t('phaseSelector.dayTitle', {
+              selectedPhaseTitle,
+              defaultValue: `Which day of ${selectedPhaseTitle} are you on?`,
+            })}
       </Animated.Text>
 
       {/* Subtitle */}
       <Animated.Text style={[styles.subtitle, subtitleAnimatedStyle]}>
         {stage === SelectionStage.PHASE
-          ? 'Swipe right to select, left to see next, or up for more info'
-          : `You said you're on ${selectedPhaseTitle}. Swipe to your current day—is it the ${generateDayOrdinalList(
-              phaseCards.find((c) => c.phase === selectedPhase)?.phaseLength || 0
-            )}?`}
+          ? t('common.swipeHint')
+          : t('phaseSelector.daySubtitle', {
+              selectedPhaseTitle,
+              dayList: generateDayOrdinalList(
+                phaseCards.find((c) => c.phase === selectedPhase)?.phaseLength || 0
+              ),
+              defaultValue: `You said you're on ${selectedPhaseTitle}. Swipe to your current day—is it the ${generateDayOrdinalList(
+                phaseCards.find((c) => c.phase === selectedPhase)?.phaseLength || 0
+              )}?`,
+            })}
       </Animated.Text>
 
       {/* Progress Dots */}
@@ -1276,7 +1329,9 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
 
       {isTransitioning ? (
         <View pointerEvents="none" style={styles.transitionOverlay}>
-          <Text style={styles.transitionText}>Preparing your calendar...</Text>
+          <Text style={styles.transitionText}>
+            {t('phaseSelector.preparing', { defaultValue: 'Preparing your calendar...' })}
+          </Text>
         </View>
       ) : null}
 

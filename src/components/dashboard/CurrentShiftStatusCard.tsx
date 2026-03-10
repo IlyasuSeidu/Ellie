@@ -25,9 +25,9 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { RosterType, type ShiftType } from '@/types';
-import { fifoBlockColors } from '@/constants/shiftStyles';
 
 export interface CurrentShiftStatusCardProps {
   /** Current shift type */
@@ -69,47 +69,23 @@ const SHIFT_STYLES: Record<
   {
     gradient: [string, string];
     icon?: keyof typeof Ionicons.glyphMap;
-    label: string;
-    subtitle: string;
   }
 > = {
   day: {
     gradient: ['#2196F3', '#1565C0'],
-    label: 'DAY SHIFT',
-    subtitle: 'Stay energized!',
   },
   night: {
     gradient: ['#7C4DFF', '#4A148C'],
-    label: 'NIGHT SHIFT',
-    subtitle: 'Stay alert!',
   },
   morning: {
     gradient: ['#F59E0B', '#D97706'],
-    label: 'MORNING SHIFT',
-    subtitle: 'Rise and shine!',
   },
   afternoon: {
     gradient: ['#06B6D4', '#0E7490'],
-    label: 'AFTERNOON SHIFT',
-    subtitle: 'Keep it going!',
   },
   off: {
     gradient: ['#57534e', '#44403c'],
-    label: 'DAY OFF',
-    subtitle: 'Rest and recharge!',
   },
-};
-
-const FIFO_WORK_STYLE = {
-  gradient: [fifoBlockColors.work.primary, '#1565C0'] as [string, string],
-  label: 'WORK BLOCK',
-  subtitle: 'On-site roster active',
-};
-
-const FIFO_REST_STYLE = {
-  gradient: [fifoBlockColors.rest.primary, '#44403c'] as [string, string],
-  label: 'REST BLOCK',
-  subtitle: 'Home block active',
 };
 
 const ICON_SIZE = 44;
@@ -124,12 +100,7 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
   animationDelay = 100,
   testID,
 }) => {
-  const contentStyle = useMemo(() => {
-    if (rosterType === RosterType.FIFO) {
-      return shiftType === 'off' ? FIFO_REST_STYLE : FIFO_WORK_STYLE;
-    }
-    return SHIFT_STYLES[shiftType];
-  }, [shiftType, rosterType]);
+  const { t } = useTranslation('dashboard');
 
   const liveAccentShiftType = accentShiftType ?? shiftType;
 
@@ -138,16 +109,40 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
   }, [liveAccentShiftType]);
 
   const shiftLabel = useMemo(() => {
-    return contentStyle.label;
-  }, [contentStyle.label]);
+    if (rosterType === RosterType.FIFO) {
+      const blockLabel = fifoBlockInfo?.inWorkBlock
+        ? String(t('fifo.workBlock'))
+        : String(t('fifo.restBlock'));
+      return `${blockLabel.toUpperCase()} BLOCK`;
+    }
+
+    if (shiftType === 'day') return String(t('shiftLabels.day')).toUpperCase();
+    if (shiftType === 'night') return String(t('shiftLabels.night')).toUpperCase();
+    if (shiftType === 'morning') return String(t('shiftLabels.morning')).toUpperCase();
+    if (shiftType === 'afternoon') return String(t('shiftLabels.afternoon')).toUpperCase();
+    return String(t('shiftLabels.off')).toUpperCase();
+  }, [rosterType, fifoBlockInfo?.inWorkBlock, shiftType, t]);
 
   const shiftSubtitle = useMemo(() => {
     if (rosterType !== RosterType.FIFO || !fifoBlockInfo) {
-      return contentStyle.subtitle;
+      if (shiftType === 'day') return String(t('shiftSubtitles.day'));
+      if (shiftType === 'night') return String(t('shiftSubtitles.night'));
+      if (shiftType === 'morning') return String(t('shiftSubtitles.morning'));
+      if (shiftType === 'afternoon') return String(t('shiftSubtitles.afternoon'));
+      return String(t('shiftSubtitles.off'));
     }
-    const blockName = fifoBlockInfo.inWorkBlock ? 'Work' : 'Rest';
-    return `${blockName} Block Day ${fifoBlockInfo.dayInBlock} of ${fifoBlockInfo.blockLength}`;
-  }, [fifoBlockInfo, rosterType, contentStyle.subtitle]);
+
+    const blockName = fifoBlockInfo.inWorkBlock
+      ? String(t('fifo.workBlock'))
+      : String(t('fifo.restBlock'));
+    return String(
+      t('fifo.blockDayOf', {
+        blockName,
+        day: fifoBlockInfo.dayInBlock,
+        total: fifoBlockInfo.blockLength,
+      })
+    );
+  }, [fifoBlockInfo, rosterType, shiftType, t]);
 
   // FIFO block progress (0 to 1)
   const fifoProgress = useMemo(() => {
@@ -162,10 +157,10 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
   // Block transition text
   const blockTransitionText = useMemo(() => {
     if (!fifoBlockInfo) return null;
-    if (fifoBlockInfo.daysUntilBlockChange === 0) return 'Block change today!';
-    if (fifoBlockInfo.daysUntilBlockChange === 1) return 'Block change tomorrow!';
+    if (fifoBlockInfo.daysUntilBlockChange === 0) return String(t('fifo.blockChangeToday'));
+    if (fifoBlockInfo.daysUntilBlockChange === 1) return String(t('fifo.blockChangeTomorrow'));
     return null;
-  }, [fifoBlockInfo]);
+  }, [fifoBlockInfo, t]);
 
   // ── Staggered Entrance ────────────────────────────────────────
   const iconEntranceScale = useSharedValue(0.3);
@@ -488,11 +483,11 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                   >
                     {rosterType === RosterType.FIFO
                       ? fifoBlockInfo?.inWorkBlock
-                        ? 'ON-SITE'
-                        : 'HOME'
+                        ? String(t('fifo.workBlock')).toUpperCase()
+                        : String(t('fifo.restBlock')).toUpperCase()
                       : shiftType === 'off'
-                        ? 'OFF'
-                        : 'LIVE'}
+                        ? String(t('shiftLabels.off')).toUpperCase()
+                        : String(t('badges.active'))}
                   </Animated.Text>
                 </View>
               )}

@@ -1,0 +1,517 @@
+{
+  "welcome": {
+    "tagline": "Votre compagnon de quart minier",
+    "getStarted": "Commencer"
+  },
+  "common": {
+    "swipeHint": "Faites glisser votre doigt vers la droite pour sélectionner, vers la gauche pour voir ensuite ou vers le haut pour plus d'informations.",
+    "reviewAgain": "Veuillez revoir les options pour faire votre sélection",
+    "reviewButton": "Revoir",
+    "continueButton": "Continuer",
+    "closeButton": "Fermer",
+    "backToSettings": "Retour aux paramètres",
+    "saveAndReturn": "Enregistrer et retourner",
+    "hints": {
+      "nextOption": "← Option suivante",
+      "selectThis": "Celui-ci →",
+      "learnMore": "↑ En savoir plus"
+    },
+    "learnMore": {
+      "howItWorks": "Comment ça marche",
+      "whereUsed": "Où tu verras ça",
+      "pros": "Les bons morceaux",
+      "cons": "Que savoir"
+    }
+  },
+  "intro": {
+    "welcome": "Bienvenue à Ellie ! Je suis là pour vous aider à établir votre calendrier de travail. Commençons par mieux vous connaître.",
+    "askName": "Quel est ton nom?",
+    "askOccupation": "Ravi de vous rencontrer, {{name}} ! Quelle est votre profession?",
+    "askCompany": "J'ai compris! Pour quelle entreprise travaillez-vous ?",
+    "askCountry": "Presque terminé ! Dans quel pays êtes-vous basé ?",
+    "allSet": "Parfait! Vous êtes prêt, {{name}}. Configureons votre calendrier de travail.",
+    "placeholders": {
+      "name": "Entrez votre nom",
+      "occupation": "Entrez votre profession",
+      "company": "Entrez le nom de l'entreprise",
+      "country": "Entrez votre pays"
+    },
+    "editResponse": {
+      "title": "Modifier la réponse",
+      "message": "Modifiez votre réponse. La conversation reviendra en arrière à partir de ce point.",
+      "cancel": "Annuler",
+      "confirm": "Modifier"
+    },
+    "errors": {
+      "nameTooShort": "Le nom doit comporter au moins 2 caractères",
+      "nameTooLong": "Le nom ne doit pas dépasser 50 caractères",
+      "nameInvalidChars": "Le nom ne peut contenir que des lettres, des espaces, des traits d'union et des apostrophes",
+      "occupationRequired": "La profession est requise",
+      "companyRequired": "La société est requise",
+      "countryTooShort": "Le pays doit comporter au moins 2 caractères",
+      "countryTooLong": "Le pays ne doit pas dépasser 100 caractères"
+    }
+  },
+  "shiftSystem": {
+    "title": "Combien d’équipes votre site gère-t-il ?",
+    "reviewAgain": "Veuillez revoir les systèmes pour faire votre sélection",
+    "reviewButton": "Systèmes d'examen",
+    "continueButton": "Continuer",
+    "closeButton": "Fermer",
+    "instruction": "Sélectionnez le mode de fonctionnement de votre site : nous créerons votre calendrier à partir de cela.\nFaites glisser votre doigt vers la droite pour choisir, vers la gauche pour en voir plus, vers le haut pour plus d'informations",
+    "endState": {
+      "selectedTitle": "J'ai compris! Nous allons configurer votre calendrier pour cela.",
+      "reviewedTitle": "Vous avez consulté tous les systèmes de changement de vitesse {{count}} !",
+      "selectedSubtitle": "Ensuite, nous choisirons votre modèle de rotation spécifique"
+    },
+    "cards": {
+      "2-shift": {
+        "title": "2 équipes (12 heures)",
+        "schedule": "Jour et nuit",
+        "description": "Votre lieu de travail comporte deux équipes de 12 heures : une de jour et une de nuit.",
+        "details": {
+          "workRestRatio": "12 heures allumées, 12 heures éteintes",
+          "useCases": [
+            "Sites miniers",
+            "Pétrole et gaz",
+            "Opérations 24h/24 et 7j/7",
+            "Travail à distance"
+          ],
+          "pros": [
+            "Périodes de repos prolongées",
+            "Calendrier prévisible",
+            "Bon équilibre travail-vie personnelle"
+          ],
+          "cons": [
+            "Longue durée de travail",
+            "Peut être physiquement exigeant",
+            "Lumière du jour limitée en hiver"
+          ]
+        }
+      },
+      "3-shift": {
+        "title": "3 équipes (8 heures)",
+        "schedule": "Matin, après-midi et soir",
+        "description": "Votre lieu de travail fonctionne sur trois équipes de 8 heures : matin, après-midi et nuit.",
+        "details": {
+          "workRestRatio": "8 heures allumées, 16 heures éteintes",
+          "useCases": [
+            "Fabrication",
+            "Soins de santé",
+            "Centres d'appels",
+            "Opérations 24h/24 et 7j/7"
+          ],
+          "pros": [
+            "Des quarts de travail plus courts",
+            "Plus de temps pour la famille",
+            "Plus facile de rester vigilant"
+          ],
+          "cons": [
+            "Changements d'équipe plus fréquents",
+            "Peut perturber les habitudes de sommeil",
+            "Moins de repos entre les cycles"
+          ]
+        }
+      }
+    }
+  },
+  "shiftPattern": {
+    "reviewAgain": "Veuillez revoir les modèles pour faire votre sélection",
+    "reviewButton": "Modèles de révision",
+    "continueButton": "Continuer",
+    "closeButton": "Fermer"
+  },
+  "rosterType": {
+    "title": "Comment fonctionne votre liste ?",
+    "instruction": "Choisissez le style de liste utilisé par votre lieu de travail – cela façonne l’ensemble de votre emploi du temps\nFaites glisser votre doigt vers la droite pour choisir, vers la gauche pour en voir plus, vers le haut pour plus de détails",
+    "preparingNextStep": "Préparation de la prochaine étape...",
+    "learnMore": {
+      "examples": "Exemples",
+      "popularIn": "Populaire dans",
+      "benefits": "Avantages",
+      "considerations": "Choses à considérer"
+    },
+    "cards": {
+      "rotating": {
+        "title": "Liste tournante",
+        "subtitle": "Jours → Nuits → Modèle d'arrêt",
+        "description": "Vous alternez entre différents horaires de travail dans un cycle répétitif",
+        "details": {
+          "howItWorks": "Les travailleurs alternent entre différents horaires de travail (équipes de jour, équipes de nuit, jours de congé) dans un cycle continu",
+          "examples": [
+            "5-5-5 (Afrique du Sud)",
+            "4-4-4 (commun à l'échelle mondiale)",
+            "7-7-7 (cycle long)",
+            "2-2-3 (cycle court)"
+          ],
+          "regions": [
+            "Afrique du Sud",
+            "Zambie",
+            "RDC",
+            "Europe",
+            "Certaines opérations américaines"
+          ],
+          "pros": [
+            "Rentrer chez soi quotidiennement ou fréquemment",
+            "Routine régulière à chaque phase",
+            "Adapté aux opérations locales",
+            "Plus facile pour la planification familiale"
+          ],
+          "cons": [
+            "Les quarts de nuit peuvent perturber le sommeil",
+            "Rotation constante dans le temps",
+            "Temps passé à la maison moins prolongé"
+          ]
+        }
+      },
+      "fifo": {
+        "title": "Liste FIFO / Swing",
+        "subtitle": "Blocs de travail → Blocs d'accueil",
+        "description": "Vous travaillez des jours consécutifs sur place, puis bénéficiez de périodes prolongées à la maison",
+        "details": {
+          "howItWorks": "Les travailleurs se rendent par avion vers des sites distants, travaillent des jours consécutifs (bloc de travail), puis rentrent chez eux pour un repos prolongé (bloc de repos)",
+          "examples": [
+            "8/6 (WA commun)",
+            "14/14 (temps pair)",
+            "21h/21 et 7j/7 (sites distants)",
+            "28/14 (cycle long)"
+          ],
+          "regions": ["Australie", "Canada", "Exploitation minière mondiale à distance"],
+          "pros": [
+            "Temps prolongé à la maison",
+            "Des taux de rémunération plus élevés",
+            "Idéal pour les sites distants",
+            "Blocs prévisibles"
+          ],
+          "cons": [
+            "Loin de la famille pendant de longues périodes",
+            "Fatigue du voyage",
+            "Isolement au camp",
+            "Ajustement entre les blocs"
+          ]
+        }
+      }
+    }
+  },
+  "completion": {
+    "saveFailed": "Échec de l'enregistrement de vos données. Veuillez réessayer.",
+    "features": {
+      "reminders": "Rappels de quarts de travail intelligents",
+      "remindersDesc": "Ne manquez jamais un quart de travail grâce aux notifications intelligentes qui s'adaptent à votre rotation",
+      "sleep": "Suivi et informations sur le sommeil",
+      "sleepDesc": "Optimisez votre repos entre les quarts de travail grâce à des analyses personnalisées du sommeil",
+      "fatigue": "Surveillance de la fatigue",
+      "fatigueDesc": "Suivez votre niveau d'énergie et recevez des alertes lorsque le risque de fatigue est élevé",
+      "team": "Coordination d'équipe",
+      "teamDesc": "Consultez le calendrier de votre équipe et coordonnez les transferts en toute transparence",
+      "balance": "Équilibre travail-vie personnelle",
+      "balanceDesc": "Maintenez des routines saines grâce au suivi de l'activité et du bien-être",
+      "earnings": "Calculateur de gains",
+      "earningsDesc": "Calculez automatiquement les heures supplémentaires, les pénalités et les indemnités de poste",
+      "meals": "Repas & hydratation",
+      "mealsDesc": "Restez en bonne santé grâce à des suggestions d'horaires de repas et des rappels d'hydratation"
+    }
+  },
+  "phaseSelector": {
+    "hints": {
+      "next": "← Suivant",
+      "select": "Sélectionnez →",
+      "info": "↑ Informations"
+    },
+    "modal": {
+      "phaseLengthValue_one": "{{count}} jour",
+      "phaseLengthValue_other": "{{count}} jours"
+    }
+  },
+  "fifoPhaseSelector": {
+    "title": {
+      "workPattern": "Comment se déroulent les équipes pendant votre bloc de travail FIFO ?",
+      "swingConfig": "Configurez votre swing split",
+      "block": "Où en es-tu dans ton cycle FIFO ?",
+      "dayWithinBlock": "Quel jour du {{blockTitle}} êtes-vous ?"
+    },
+    "subtitle": {
+      "workPattern": "Faites glisser votre doigt vers la droite pour choisir votre modèle de bloc de travail, vers la gauche pour l'option suivante ou vers le haut pour plus d'informations.",
+      "swingConfig": "Définissez le nombre de jours de jour et de nuit pendant lesquels vous travaillez avant de choisir votre bloc actuel",
+      "block": "Faites glisser votre doigt vers la droite pour sélectionner, vers la gauche pour voir ensuite ou vers le haut pour plus d'informations.",
+      "dayWithinBlock": "Faites glisser votre doigt vers la droite pour sélectionner, vers la gauche pour voir ensuite ou vers le haut pour plus d'informations. Est-ce le {{ordinalList}} ?"
+    },
+    "modal": {
+      "blockLength": "Longueur du bloc",
+      "whyItMatters": "Pourquoi c'est important"
+    },
+    "patterns": {
+      "straightDays": {
+        "title": "Jours consécutifs",
+        "description": "Votre bloc de travail fonctionne uniquement pendant des quarts de jour.",
+        "quickInfo": "Idéal pour les opérations qui maintiennent tous les équipages en rotation de jour."
+      },
+      "straightNights": {
+        "title": "Nuits droites",
+        "description": "Votre bloc de travail fonctionne uniquement de nuit.",
+        "quickInfo": "Utilisez-le lorsque les équipes de chantier restent de nuit pendant toute la durée du bloc de travail."
+      },
+      "swing": {
+        "title": "Balançoire",
+        "description": "Votre bloc de travail mélange des quarts de jour et de nuit.",
+        "quickInfo": "Choisissez cette option lorsque votre bloc de travail alterne entre le jour et la nuit."
+      }
+    },
+    "blocks": {
+      "work": {
+        "title": "Sur site (travail)",
+        "descriptionDay": "Vous êtes actuellement sur le site minier sur votre bloc de travail de jour",
+        "descriptionNight": "Vous êtes actuellement sur le site minier sur votre bloc de travail de nuit",
+        "descriptionNeutral": "Vous êtes actuellement sur le site minier sur votre bloc de travail",
+        "quickInfoDay": "Cela signifie que votre cycle commence à compter à partir de votre bloc de travail de jour.",
+        "quickInfoNight": "Cela signifie que votre cycle commence à compter à partir de votre bloc de travail de nuit.",
+        "quickInfoNeutral": "Cela signifie que votre cycle commence à compter à partir de votre bloc de travail actuel."
+      },
+      "rest": {
+        "title": "À la maison (repos)",
+        "description": "Vous êtes actuellement chez vous sur votre bloc de repos",
+        "quickInfo": "Cela compense d'abord votre cycle par la longueur de votre bloc de travail."
+      }
+    },
+    "swingConfig": {
+      "daysOnDayShift": "Jours de travail de jour",
+      "daysOnNightShift": "Jours de nuit",
+      "splitTotal": "Total fractionné : {{swingSplitTotal}}/{{workBlockDays}} jours",
+      "validation": "Le fractionnement du swing doit être égal à {{workBlockDays}} jours avec au moins 1 jour sur chaque quart de travail.",
+      "changePattern": "Changer de modèle",
+      "continue": "Continuer"
+    },
+    "days": {
+      "shared": {
+        "midpoint": "Milieu de ce bloc"
+      },
+      "defaultDayTitle": "Jour {{dayNumber}}",
+      "work": {
+        "firstDayAtSite": "Premier jour de retour sur site",
+        "firstNightAtSite": "Premier quart de nuit de retour sur site",
+        "firstShiftAtSite": "Premier retour sur site",
+        "lastDayBeforeHome": "Dernier jour avant de rentrer chez moi",
+        "lastNightBeforeHome": "Dernière équipe de nuit avant de rentrer chez moi",
+        "lastShiftBeforeHome": "Dernier quart de travail avant de rentrer chez moi",
+        "dayOfWorkBlock": "Jour {{dayNumber}} de votre bloc de travail",
+        "shiftOfNightBlock": "Quart {{dayNumber}} de votre bloc de travail de nuit",
+        "shiftOfWorkBlock": "Décalage {{dayNumber}} de votre bloc de travail"
+      },
+      "rest": {
+        "firstDayAtHome": "Premier jour de retour à la maison",
+        "lastDayBeforeSite": "Dernier jour avant le retour sur place",
+        "dayOfRestBlock": "Jour {{dayNumber}} de votre bloc de repos"
+      },
+      "swing": {
+        "dayShiftTitle": "Jour Quart Jour {{dayNumber}}",
+        "firstDayShiftAtSite": "Premier jour de retour sur site",
+        "finalDayShiftBeforeNights": "Dernière équipe de jour avant de passer à la nuit",
+        "dayShiftDayDescription": "Jour de quart de jour {{dayNumber}} de votre bloc de travail",
+        "nightShiftTitle": "Quart de nuit Jour {{dayNumber}}",
+        "firstNightShiftInBlock": "Premier quart de nuit dans ce bloc tournant",
+        "finalNightShiftBeforeHome": "Dernier quart de nuit avant de rentrer chez moi",
+        "nightShiftDayDescription": "Jour de nuit {{dayNumber}} de votre bloc de travail"
+      }
+    },
+    "transition": {
+      "preparingCalendar": "Préparez votre calendrier..."
+    }
+  },
+  "startDate": {
+    "header": {
+      "title": "Quand commence votre rotation ?",
+      "subtitleWithPhase": "Vous êtes actuellement le {{phaseLabel}} : choisissez aujourd'hui ou n'importe quelle date, et nous planifierons l'ensemble de votre calendrier à partir de là.",
+      "subtitleDefault": "Choisissez la date à partir de laquelle vous souhaitez que votre calendrier commence : la plupart des gens choisissent aujourd'hui"
+    },
+    "phaseLabels": {
+      "day": "Quart de jour",
+      "night": "Équipe de nuit",
+      "morning": "Quart du matin",
+      "afternoon": "Quart de l'après-midi",
+      "off": "Jours de congé",
+      "withDay": "Jour {{selectedDay}} du {{phaseLabel}}"
+    },
+    "calendar": {
+      "weekdays": {
+        "sun": "Soleil",
+        "mon": "Lun",
+        "tue": "Mar",
+        "wed": "Épouser",
+        "thu": "Jeu",
+        "fri": "Ven",
+        "sat": "Assis"
+      },
+      "legend": {
+        "dayShift": "Quart de jour",
+        "nightShift": "Équipe de nuit",
+        "dayOff": "Jour de congé",
+        "morning": "Matin",
+        "afternoon": "Après-midi",
+        "night": "Nuit",
+        "off": "Désactivé"
+      }
+    },
+    "guidance": {
+      "title": "Choisir votre date",
+      "subtitle": "Conseils rapides pour une configuration plus rapide",
+      "body": "La plupart des gens choisissent aujourd'hui pour que leur calendrier démarre immédiatement. Mais vous pouvez choisir n’importe quelle date : nous calculerons votre rotation à partir de là.",
+      "hint": "Choisissez la date la plus proche maintenant, vous pourrez ajuster les paramètres plus tard.",
+      "selectedDate": "Sélectionné : {{date}}"
+    },
+    "actions": {
+      "goBack": "Retourner",
+      "backToSettings": "Retour aux paramètres",
+      "saveAndReturn": "Enregistrer et retourner",
+      "saveAndReturnToSettings": "Enregistrer la date de début et revenir aux paramètres",
+      "setShiftTimes": "Définir les horaires de travail",
+      "setShiftTimesA11y": "Définir les horaires de travail"
+    }
+  },
+  "shiftTime": {
+    "actions": {
+      "goBack": "Retourner",
+      "backToSettings": "Retour aux paramètres",
+      "saveAndReturn": "Enregistrer et retourner",
+      "saveAndReturnA11y": "Gagnez du temps de travail et revenez aux paramètres",
+      "saveAndContinue": "Enregistrer et continuer",
+      "finishSetup": "Terminer la configuration",
+      "nextShiftType": "Type de quart de travail suivant",
+      "continueToNextStep": "Passer à l'étape suivante",
+      "continueToShiftType": "Continuer jusqu'à {{shiftType}} horaires de travail",
+      "saveShiftTimesAndContinue": "Économisez du temps de travail et continuez"
+    },
+    "stage": {
+      "stepOfTotal": "Étape {{current}} de {{total}}",
+      "singleProfile": "Profil d'équipe unique",
+      "profileOfTotal": "Profil {{current}} de {{total}}"
+    },
+    "systemLabels": {
+      "twoShift": "Système à 2 équipes",
+      "threeShift": "Système à 3 équipes"
+    },
+    "shiftLabels": {
+      "dayTitle": "Jour",
+      "dayLower": "jour",
+      "dayPlural": "quarts de jour",
+      "nightTitle": "Nuit",
+      "nightLower": "nuit",
+      "nightPlural": "quarts de nuit",
+      "morningTitle": "Matin",
+      "morningLower": "matin",
+      "morningPlural": "quarts de travail du matin",
+      "afternoonTitle": "Après-midi",
+      "afternoonLower": "après-midi",
+      "afternoonPlural": "quarts de travail de l'après-midi"
+    },
+    "header": {
+      "title": {
+        "single": "Quand commencent vos quarts de travail ?",
+        "day": "Horaires des quarts de jour",
+        "night": "Horaires des quarts de nuit",
+        "morning": "Horaires des quarts de travail du matin",
+        "afternoon": "Horaires des quarts de travail de l'après-midi",
+        "default": "Horaires des quarts de travail"
+      },
+      "subtitle": {
+        "single": "Choisissez l'heure à laquelle vous pointez chaque jour. Nous l'utiliserons pour suivre vos heures et définir des rappels.",
+        "multi": "Votre modèle comprend {{shiftTypeLabel}}. Définissez l’heure de début de ces quarts de travail."
+      }
+    },
+    "guidance": {
+      "aboutTitle": "À propos des horaires de travail",
+      "aboutBody": "Votre rotation {{patternName}} reste la même, mais nous avons besoin de vos heures de début de quart de travail pour qu'Ellie puisse suivre les heures et vous alerter avant chaque quart de travail.",
+      "hint": "Utilisez maintenant l’heure de début la plus proche. Vous pourrez l'affiner plus tard dans les paramètres.",
+      "definitions": {
+        "twoShiftTitle": "Jour contre nuit :",
+        "twoShiftBody": "Les équipes de jour commencent de 6h00 à 18h00 - Les équipes de nuit commencent de 18h00 à 6h00",
+        "threeShiftTitle": "Types de quarts de travail :",
+        "threeShiftBody": "Matin : 6h-14h - Après-midi : 14h-22h - Nuit : 22h-6h"
+      }
+    },
+    "presets": {
+      "sectionTitle": "Choisissez une heure de début commune",
+      "custom": {
+        "label": "Heure personnalisée"
+      }
+    },
+    "customInput": {
+      "label": "À quelle heure pointez-vous habituellement ?",
+      "helper": "Utilisez le format 12 heures (par exemple, 6h00)"
+    },
+    "validation": {
+      "hoursRange": "Les heures doivent être comprises entre 1 et 12",
+      "minutesRange": "Les minutes doivent être comprises entre 0 et 59"
+    },
+    "preview": {
+      "yourShift": "Votre quart de travail :",
+      "durationHours": "{{duration}} heures"
+    },
+    "detection": {
+      "helper": "C'est à ce moment-là que commence ton quart de travail",
+      "autoDetected": "Détection automatique",
+      "day": {
+        "title": "Début de journée",
+        "window": "Fenêtre typique : 6h00 - 17h59"
+      },
+      "morning": {
+        "title": "Début du matin",
+        "window": "Fenêtre typique : 6h00 - 13h59"
+      },
+      "afternoon": {
+        "title": "Début de l'après-midi",
+        "window": "Fenêtre typique : 14h00 - 21h59"
+      },
+      "night": {
+        "title": "Début de nuit",
+        "windowTwoShift": "Fenêtre typique : 18h00 - 5h59",
+        "windowThreeShift": "Fenêtre typique : 22h00 - 5h59"
+      }
+    },
+    "tips": {
+      "title": "Conseil de pro",
+      "subtitle": "Le moyen le plus rapide de choisir une heure de début fiable",
+      "twoShift": "Pas sûr? La plupart des travailleurs postés effectuant des rotations de 12 heures commencent à 6 heures du matin ou à 18 heures. Choisissez la correspondance la plus proche. Vous pourrez l'ajuster plus tard dans les paramètres si nécessaire.",
+      "threeShift": "Pas sûr? La plupart des travailleurs postés de 8 heures commencent à 6 heures du matin, 14 heures ou 22 heures. Choisissez la correspondance la plus proche. Vous pourrez l'ajuster plus tard dans les paramètres si nécessaire."
+    },
+    "patternInfo": {
+      "custom": {
+        "name": "Modèle personnalisé",
+        "statsTwoShift": "Cycle de {{total}} jours - {{daysOn}}D/{{nightsOn}}N/{{daysOff}}O",
+        "statsThreeShift": "Cycle de {{total}} jours - {{morningOn}}M/{{afternoonOn}}A/{{nightOn}}N/{{daysOff}}O"
+      },
+      "defaultStats": "Cycle personnalisé - Définissez votre horaire",
+      "standard444": {
+        "name": "Cycle 4-4-4",
+        "stats": "Cycle de 12 jours - 4J/4N/4O"
+      },
+      "standard777": {
+        "name": "Cycle 7-7-7",
+        "stats": "Cycle de 21 jours - 7J/7N/7O"
+      },
+      "standard223": {
+        "name": "Cycle 2-2-3",
+        "stats": "Cycle de 7 jours - 2J/2N/3O"
+      },
+      "standard555": {
+        "name": "Cycle 5-5-5",
+        "stats": "Cycle de 15 jours - 5J/5N/5O"
+      },
+      "standard333": {
+        "name": "Cycle 3-3-3",
+        "stats": "Cycle de 9 jours - 3J/3N/3O"
+      },
+      "standard101010": {
+        "name": "Cycle 10-10-10",
+        "stats": "Cycle de 30 jours - 10J/10N/10O"
+      },
+      "continental": {
+        "name": "Continental",
+        "stats": "Cycle de 8 jours - 2J/2N/4O"
+      },
+      "pitman": {
+        "name": "Pitman",
+        "stats": "Cycle de 7 jours - 2J/2N/3O"
+      }
+    }
+  }
+}
