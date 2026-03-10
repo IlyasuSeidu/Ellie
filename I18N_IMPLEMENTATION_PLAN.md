@@ -34,8 +34,8 @@ Ellie is used by shift workers in the global mining industry. The top mining nat
   - `common`, `onboarding`, `dashboard`, `profile`, `schedule`
 - Current translation quality status:
   - `es` and `pt-BR` onboarding copy is fully translated (language-polish pass completed).
-  - Runtime locales (`fr`, `ar`, `zh-CN`, `ru`, `hi`, `af`, `zu`, `id`) now include translated runtime copy across namespaces.
-  - Remaining same-as-English strings are limited to intentional proper nouns/acronyms and select locale-borrowed terms (tracked in `/Users/Shared/Ellie/reports/i18n/runtime-translation-gaps-after.json`).
+  - Runtime locales (`fr`, `ar`, `zh-CN`, `ru`, `hi`, `af`, `zu`, `id`) include translated runtime copy across namespaces.
+  - The previously flagged runtime `sameAsEnglish` residual-key list has been addressed in locale files; remaining identical values are intentional (proper nouns/acronyms/borrowed terms).
 
 ---
 

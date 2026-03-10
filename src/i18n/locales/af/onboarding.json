@@ -134,7 +134,7 @@
             "7-7-7 (lang siklus)",
             "2-2-3 (kort siklus)"
           ],
-          "regions": ["Suid-Afrika", "Zambië", "DRC", "Europa", "Sommige Amerikaanse bedrywighede"],
+          "regions": ["Suid-Afrika", "Zambië", "DRK", "Europa", "Sommige Amerikaanse bedrywighede"],
           "pros": [
             "Gaan daagliks of gereeld huis toe",
             "Gereelde roetine by elke fase",
@@ -212,10 +212,10 @@
       "rosterType": "Soort rooster",
       "rosterTypeFIFO": "EIEU (Vlieg In Vlieg Uit)",
       "rosterTypeRotating": "Roterende rooster",
-      "shiftSystem": "Shift System",
+      "shiftSystem": "Skofstelsel",
       "shiftSystemThree": "3-skof stelsel",
       "shiftSystemTwo": "2-skof stelsel",
-      "shiftTimes": "Shift Times",
+      "shiftTimes": "Skoftye",
       "startDate": "Begindatum",
       "title": "Jou profiel",
       "workPattern": "Werkpatroon"
@@ -396,7 +396,7 @@
         "wed": "Wo",
         "thu": "Do",
         "fri": "Vr",
-        "sat": "Sat"
+        "sat": "Sa"
       },
       "legend": {
         "dayShift": "Dagskof",
@@ -484,7 +484,7 @@
         "night": "Nagskof tye",
         "morning": "Oggendskof Tye",
         "afternoon": "Middagskoftye",
-        "default": "Shift Times"
+        "default": "Skofure"
       },
       "subtitle": {
         "single": "Kies watter tyd jy elke dag klok - ons sal dit gebruik om jou ure op te spoor en onthounotas te stel",
@@ -628,7 +628,7 @@
         "stats": "8-dae siklus - 2D/2N/4O"
       },
       "pitman": {
-        "name": "Pitman",
+        "name": "Pitman-skedule",
         "stats": "7-dag siklus - 2D/2N/3O"
       }
     }

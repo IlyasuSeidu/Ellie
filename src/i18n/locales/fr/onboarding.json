@@ -156,7 +156,7 @@
             "Afrique du Sud",
             "Zambie",
             "RDC",
-            "Europe",
+            "Europe (sites miniers)",
             "Certaines opérations américaines"
           ],
           "pros": [
@@ -184,7 +184,11 @@
             "21h/21 et 7j/7 (sites distants)",
             "28/14 (cycle long)"
           ],
-          "regions": ["Australie", "Canada", "Exploitation minière mondiale à distance"],
+          "regions": [
+            "Australie",
+            "Canada (sites éloignés)",
+            "Exploitation minière mondiale à distance"
+          ],
           "pros": [
             "Temps prolongé à la maison",
             "Des taux de rémunération plus élevés",
@@ -234,7 +238,7 @@
       "notSet": "Non défini",
       "pattern": "Modèle",
       "rosterType": "Type de liste",
-      "rosterTypeFIFO": "FIFO (Fly-In Fly-Out)",
+      "rosterTypeFIFO": "FIFO (navette aérienne)",
       "rosterTypeRotating": "Liste tournante",
       "shiftSystem": "Système de changement de vitesse",
       "shiftSystemThree": "Système à 3 équipes",
@@ -461,7 +465,7 @@
     "preview": {
       "notSelected": "Non sélectionné",
       "startingLabel": "Départ:",
-      "phaseLabel": "Phase:",
+      "phaseLabel": "Phase :",
       "confirmation": "Votre premier cycle commence ici"
     }
   },
@@ -648,11 +652,11 @@
         "stats": "Cycle de 30 jours - 10J/10N/10O"
       },
       "continental": {
-        "name": "Continental",
+        "name": "Rotation continentale",
         "stats": "Cycle de 8 jours - 2J/2N/4O"
       },
       "pitman": {
-        "name": "Pitman",
+        "name": "Cycle Pitman",
         "stats": "Cycle de 7 jours - 2J/2N/3O"
       }
     }

@@ -116,7 +116,7 @@
       "twoShift": "2 班（12 小时）",
       "threeShift": "3 班（8 小时）",
       "rotating": "旋转",
-      "fifo": "FIFO",
+      "fifo": "FIFO（飞入飞出）",
       "straightDays": "直日",
       "straightNights": "直夜",
       "swing": "摇摆",

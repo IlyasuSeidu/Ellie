@@ -142,7 +142,13 @@
             "7-7-7 (siklus panjang)",
             "2-2-3 (siklus pendek)"
           ],
-          "regions": ["Afrika Selatan", "Zambia", "DRC", "Eropa", "Beberapa operasi AS"],
+          "regions": [
+            "Afrika Selatan",
+            "Zambia (pertambangan)",
+            "RD Kongo",
+            "Eropa",
+            "Beberapa operasi AS"
+          ],
           "pros": [
             "Pulanglah setiap hari atau sering",
             "Rutinitas yang teratur pada setiap fasenya",
@@ -168,7 +174,7 @@
             "21/7 (situs jarak jauh)",
             "28/14 (siklus panjang)"
           ],
-          "regions": ["Australia", "Kanada", "Penambangan global jarak jauh"],
+          "regions": ["Australia Barat", "Kanada", "Penambangan global jarak jauh"],
           "pros": [
             "Perpanjangan waktu di rumah",
             "Tingkat gaji yang lebih tinggi",

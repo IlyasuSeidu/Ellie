@@ -38,12 +38,12 @@ This execution follows strict chronological tasks. No scope expansion beyond i18
 - Re-run parity and untranslated audits.
 - Manually fix malformed outputs (token spacing, untranslated boilerplate, awkward artifacts).
 
-### ⏳ Task 4 — Documentation Truth Alignment
+### ✅ Task 4 — Documentation Truth Alignment
 
 - Update i18n docs to reflect the post-polish runtime language state.
 - Keep explicit caveats only where objectively true.
 
-### ⏳ Task 5 — Validation, Commit, Push
+### ✅ Task 5 — Validation, Commit, Push
 
 - Run:
   - `npm run type-check`
@@ -65,5 +65,14 @@ This execution follows strict chronological tasks. No scope expansion beyond i18
 - ✅ Task 1 completed
 - ✅ Task 2 completed
 - ✅ Task 3 completed
-- ⏳ Task 4 pending
-- ⏳ Task 5 pending
+- ✅ Task 4 completed
+- ✅ Task 5 completed
+
+## Final Verification (March 10, 2026)
+
+- Applied targeted locale-polish fixes for all keys listed in the prior `sameAsEnglish` audit output.
+- Re-verified that the previously flagged key list is no longer equal to English source values.
+- Validation gates executed:
+  - `npm run type-check`
+  - `npm run lint`
+  - `npm test -- --runInBand --silent`

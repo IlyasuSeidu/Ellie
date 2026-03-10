@@ -154,8 +154,8 @@
           ],
           "regions": [
             "Iningizimu Afrika",
-            "Zambia",
-            "DRC",
+            "iZambia",
+            "i-DR Congo",
             "EYurophu",
             "Eminye imisebenzi yase-US"
           ],
@@ -184,7 +184,7 @@
             "21/7 (amasayithi akude)",
             "28/14 (umjikelezo omude)"
           ],
-          "regions": ["Australia", "Canada", "Izimayini zomhlaba ezikude"],
+          "regions": ["i-Australia", "i-Canada", "Izimayini zomhlaba ezikude"],
           "pros": [
             "Isikhathi esingeziwe ekhaya",
             "Izinga lokukhokha eliphakeme",
@@ -236,10 +236,10 @@
       "rosterType": "Uhlobo Lohlu",
       "rosterTypeFIFO": "I-FIFO (Fly-In Fly-Out)",
       "rosterTypeRotating": "Uhlu Oluzungezayo",
-      "shiftSystem": "Shift System",
-      "shiftSystemThree": "3-Shift System",
-      "shiftSystemTwo": "2-Shift System",
-      "shiftTimes": "Shift Times",
+      "shiftSystem": "Uhlelo lwamashifthi",
+      "shiftSystemThree": "Uhlelo lwamashifthi olu-3",
+      "shiftSystemTwo": "Uhlelo lwamashifthi olu-2",
+      "shiftTimes": "Izikhathi zamashifthi",
       "startDate": "Usuku okuqalwa ngalo",
       "title": "Iphrofayela yakho",
       "workPattern": "Iphethini Yomsebenzi"
@@ -270,7 +270,7 @@
       },
       "morning": {
         "description": "Amahora asekuseni (isb., 4am-12pm)",
-        "title": "Morning Shift"
+        "title": "Ishifthi lasekuseni"
       },
       "night": {
         "description": "Ukusebenza ebusuku (isb., 6pm-6am)",
@@ -333,7 +333,7 @@
         "quickInfo": "Sebenzisa lokhu lapho abasebenzi besizinda behlala emashifu ebusuku ukuze basebenze ngokugcwele."
       },
       "swing": {
-        "title": "Swing",
+        "title": "I-Swing roster",
         "description": "Ibhulokhi yakho yomsebenzi ihlanganisa amashifu emini nasebusuku.",
         "quickInfo": "Khetha lokhu uma ibhulokhi yakho yomsebenzi izungeza phakathi kwezinsuku nobusuku."
       }
@@ -407,7 +407,7 @@
     "phaseLabels": {
       "day": "I-Day Shift",
       "night": "I-Night Shift",
-      "morning": "Morning Shift",
+      "morning": "Ishifthi lasekuseni",
       "afternoon": "I-Ntambama Shift",
       "off": "Izinsuku Zokuvala",
       "withDay": "Usuku {{selectedDay}} lwe-{{phaseLabel}}"
@@ -420,7 +420,7 @@
         "wed": "NgoLwesithathu",
         "thu": "ULwesine",
         "fri": "NgoLwesihlanu",
-        "sat": "Sat"
+        "sat": "Mgq"
       },
       "legend": {
         "dayShift": "I-Day Shift",
@@ -506,9 +506,9 @@
         "single": "Ingabe Ukushintsha Kwakho Kuqala Nini?",
         "day": "I-Day Shift Times",
         "night": "I-Night Shift Times",
-        "morning": "Morning Shift Times",
+        "morning": "Izikhathi zeshifthi lasekuseni",
         "afternoon": "Ntambama Shift Times",
-        "default": "Shift Times"
+        "default": "Izikhathi zamashifthi"
       },
       "subtitle": {
         "single": "Khetha ukuthi uwubamba ngasiphi isikhathi usuku nosuku-sizosebenzisa lokhu ukulandelela amahora akho futhi sisethe izikhumbuzi",
@@ -538,16 +538,16 @@
         "label": "I-Standard Day Shift"
       },
       "late_day": {
-        "label": "Late Day Shift"
+        "label": "Ishifthi losuku elibambezelwe"
       },
       "early_night": {
-        "label": "Early Night Shift"
+        "label": "Ishifthi yasebusuku yokuqala"
       },
       "standard_night": {
         "label": "I-Standard Night Shift"
       },
       "late_night": {
-        "label": "Late Night Shift"
+        "label": "Ishifthi yasebusuku ebambezelwe"
       },
       "early_morning": {
         "label": "Ekuseni Ekuseni"
@@ -556,7 +556,7 @@
         "label": "Ekuseni Okujwayelekile"
       },
       "late_morning": {
-        "label": "Late Morning"
+        "label": "Ishifthi lasekuseni elibambezelwe"
       },
       "early_afternoon": {
         "label": "Ekuseni Ntambama"
@@ -568,13 +568,13 @@
         "label": "Late Ntambama"
       },
       "early_night_8h": {
-        "label": "Early Night"
+        "label": "Ishifthi yasebusuku yokuqala (8h)"
       },
       "standard_night_8h": {
         "label": "Ubusuku obujwayelekile"
       },
       "late_night_8h": {
-        "label": "Late Night"
+        "label": "Ishifthi yasebusuku ebambezelwe (8h)"
       }
     },
     "customInput": {

@@ -14,7 +14,7 @@
     "saveChanges": "Londoloza Izinguquko"
   },
   "stats": {
-    "dayCycle": "Day Cycle",
+    "dayCycle": "Umjikelezo wezinsuku",
     "workRest": "Umsebenzi : Phumula",
     "perShift": "Ngokuhamba ngakunye"
   },
@@ -49,8 +49,8 @@
     "sequence": "Ukulandelana",
     "dayShift": "I-Day Shift",
     "nightShift": "I-Night Shift",
-    "flyIn": "Fly-In",
-    "flyOut": "Fly-Out",
+    "flyIn": "Usuku lokundiza uya esizeni",
+    "flyOut": "Usuku lokubuya ngendiza",
     "site": "Isayithi",
     "dayStart": "Usuku Lokuqala",
     "dayEnd": "Usuku Lokuphela",
@@ -102,9 +102,9 @@
     "sections": {
       "shiftSystem": "SHIFT UHLELO",
       "rosterType": "UHLOBO LWEROSTA",
-      "shiftPattern": "SHIFT PATTERN",
+      "shiftPattern": "Iphethini yeshifthi",
       "shiftTimes": "SHIFT IZIKHATHI",
-      "fifoBlock": "FIFO BLOCK",
+      "fifoBlock": "Ibhulokhi ye-FIFO",
       "workPattern": "UMSEBENZI WOKUSEBENZA",
       "customSequence": "UKULANDELANA NGESIKHATHI",
       "siteDetails": "IMINININGWANE YESIZA",
@@ -113,13 +113,13 @@
       "customPattern": "IPHETHINSI YESIKO"
     },
     "chips": {
-      "twoShift": "2-Shift (12h)",
-      "threeShift": "3-Shift (8h)",
+      "twoShift": "2-Shifthi (12h)",
+      "threeShift": "3-Shifthi (8h)",
       "rotating": "Iyazungeza",
-      "fifo": "FIFO",
+      "fifo": "FIFO (ukundiza uya/ubuya)",
       "straightDays": "Izinsuku Eziqondile",
       "straightNights": "Ubusuku obuqondile",
-      "swing": "Swing",
+      "swing": "Eshintshanayo",
       "custom": "Ngokwezifiso"
     },
     "cycleWorkBlock": "I-Work Block - Usuku {{day}} lwe-{{total}}",

@@ -198,7 +198,13 @@
             "7-7-7 (ciclo largo)",
             "2-2-3 (ciclo corto)"
           ],
-          "regions": ["Sudáfrica", "Zambia", "DRC", "Europa", "Algunas operaciones en EE. UU."],
+          "regions": [
+            "Sudáfrica",
+            "Zambia (minería)",
+            "R. D. del Congo",
+            "Europa",
+            "Algunas operaciones en EE. UU."
+          ],
           "pros": [
             "Ir a casa diariamente o con frecuencia",
             "Rutina regular en cada fase.",
@@ -224,7 +230,7 @@
             "21/7 (sitios remotos)",
             "28/14 (ciclo largo)"
           ],
-          "regions": ["Australia", "Canadá", "Minería global remota"],
+          "regions": ["Australia Occidental", "Canadá", "Minería global remota"],
           "pros": [
             "Tiempo extendido en casa",
             "Tasas salariales más altas",

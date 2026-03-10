@@ -16,7 +16,7 @@
   "stats": {
     "dayCycle": "Siklus Hari",
     "workRest": "Pekerjaan : Istirahat",
-    "perShift": "Per Shift"
+    "perShift": "Per giliran"
   },
   "language": {
     "label": "Bahasa"
@@ -116,7 +116,7 @@
       "twoShift": "2-Shift (12 jam)",
       "threeShift": "3-Shift (8 jam)",
       "rotating": "Berputar",
-      "fifo": "FIFO",
+      "fifo": "FIFO (terbang masuk/terbang pulang)",
       "straightDays": "Hari Lurus",
       "straightNights": "Malam Lurus",
       "swing": "Mengayun",

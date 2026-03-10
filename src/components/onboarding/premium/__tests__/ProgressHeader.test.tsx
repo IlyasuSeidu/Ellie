@@ -318,7 +318,7 @@ describe('ProgressHeader', () => {
         <ProgressHeader currentStep={1} totalSteps={5} showPercentage testID="progress" />
       );
       const percentage = getByTestId('progress-percentage');
-      expect(percentage.props.children).toEqual([20, '% Complete']);
+      expect(percentage.props.children).toBe('20% Complete');
     });
 
     it('should display correct percentage for middle step', () => {
@@ -326,7 +326,7 @@ describe('ProgressHeader', () => {
         <ProgressHeader currentStep={3} totalSteps={5} showPercentage testID="progress" />
       );
       const percentage = getByTestId('progress-percentage');
-      expect(percentage.props.children).toEqual([60, '% Complete']);
+      expect(percentage.props.children).toBe('60% Complete');
     });
 
     it('should display correct percentage for last step', () => {
@@ -334,23 +334,23 @@ describe('ProgressHeader', () => {
         <ProgressHeader currentStep={5} totalSteps={5} showPercentage testID="progress" />
       );
       const percentage = getByTestId('progress-percentage');
-      expect(percentage.props.children).toEqual([100, '% Complete']);
+      expect(percentage.props.children).toBe('100% Complete');
     });
 
     it('should update percentage when step changes', () => {
       const { getByTestId, rerender } = render(
         <ProgressHeader currentStep={1} totalSteps={4} showPercentage testID="progress" />
       );
-      expect(getByTestId('progress-percentage').props.children).toEqual([25, '% Complete']);
+      expect(getByTestId('progress-percentage').props.children).toBe('25% Complete');
 
       rerender(<ProgressHeader currentStep={2} totalSteps={4} showPercentage testID="progress" />);
-      expect(getByTestId('progress-percentage').props.children).toEqual([50, '% Complete']);
+      expect(getByTestId('progress-percentage').props.children).toBe('50% Complete');
 
       rerender(<ProgressHeader currentStep={3} totalSteps={4} showPercentage testID="progress" />);
-      expect(getByTestId('progress-percentage').props.children).toEqual([75, '% Complete']);
+      expect(getByTestId('progress-percentage').props.children).toBe('75% Complete');
 
       rerender(<ProgressHeader currentStep={4} totalSteps={4} showPercentage testID="progress" />);
-      expect(getByTestId('progress-percentage').props.children).toEqual([100, '% Complete']);
+      expect(getByTestId('progress-percentage').props.children).toBe('100% Complete');
     });
 
     it('should round percentage to nearest integer', () => {
@@ -359,7 +359,7 @@ describe('ProgressHeader', () => {
       );
       const percentage = getByTestId('progress-percentage');
       // 1/3 = 33.333... should round to 33%
-      expect(percentage.props.children).toEqual([33, '% Complete']);
+      expect(percentage.props.children).toBe('33% Complete');
     });
   });
 
@@ -541,13 +541,13 @@ describe('ProgressHeader', () => {
       const { getByTestId, rerender } = render(
         <ProgressHeader currentStep={1} totalSteps={3} showPercentage testID="progress" />
       );
-      expect(getByTestId('progress-percentage').props.children).toEqual([33, '% Complete']);
+      expect(getByTestId('progress-percentage').props.children).toBe('33% Complete');
 
       rerender(<ProgressHeader currentStep={2} totalSteps={3} showPercentage testID="progress" />);
-      expect(getByTestId('progress-percentage').props.children).toEqual([67, '% Complete']);
+      expect(getByTestId('progress-percentage').props.children).toBe('67% Complete');
 
       rerender(<ProgressHeader currentStep={3} totalSteps={3} showPercentage testID="progress" />);
-      expect(getByTestId('progress-percentage').props.children).toEqual([100, '% Complete']);
+      expect(getByTestId('progress-percentage').props.children).toBe('100% Complete');
     });
 
     it('should maintain all dots through step changes', () => {
@@ -587,7 +587,7 @@ describe('ProgressHeader', () => {
       expect(getByTestId('progress-back')).toBeTruthy();
       expect(getByTestId('progress-skip')).toBeTruthy();
       expect(getByTestId('progress-percentage')).toBeTruthy();
-      expect(getByTestId('progress-percentage').props.children).toEqual([60, '% Complete']);
+      expect(getByTestId('progress-percentage').props.children).toBe('60% Complete');
 
       for (let i = 1; i <= 5; i++) {
         expect(getByTestId(`progress-dot-${i}`)).toBeTruthy();

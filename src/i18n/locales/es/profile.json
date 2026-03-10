@@ -29,7 +29,7 @@
   },
   "shift": {
     "system": "Sistema",
-    "roster": "Roster",
+    "roster": "Escala",
     "pattern": "Patron",
     "startDate": "Fecha de inicio",
     "cycle": "Ciclo",
@@ -116,10 +116,10 @@
       "twoShift": "2 Turnos (12h)",
       "threeShift": "3 Turnos (8h)",
       "rotating": "Rotativo",
-      "fifo": "FIFO",
+      "fifo": "FIFO (vuelo entrada/salida)",
       "straightDays": "Dias seguidos",
       "straightNights": "Noches seguidas",
-      "swing": "Swing",
+      "swing": "Mixto",
       "custom": "Personalizado"
     },
     "cycleWorkBlock": "Bloque trabajo - Dia {{day}} de {{total}}",
