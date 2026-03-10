@@ -245,68 +245,79 @@ const calculateEnhancedPhaseOffset = (
  * Generate ordinal number list for day selection subtitle
  * Example: generateDayOrdinalList(7) → "1st, 2nd, 3rd, 4th, 5th, 6th, or 7th"
  */
-const generateDayOrdinalList = (count: number): string => {
+type OnboardingTranslate = (key: string, options?: Record<string, string | number>) => string;
+
+const generateDayOrdinalList = (count: number, t: OnboardingTranslate): string => {
   if (count === 0) return '';
 
-  const getOrdinal = (n: number): string => {
-    const suffixes = ['th', 'st', 'nd', 'rd'];
-    const v = n % 100;
-    return n + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0]);
-  };
-
-  const ordinals = Array.from({ length: count }, (_, i) => getOrdinal(i + 1));
+  const ordinals = Array.from({ length: count }, (_, i) =>
+    String(
+      t('phaseSelector.dayOrdinal', {
+        day: i + 1,
+        defaultValue: `Day ${i + 1}`,
+      })
+    )
+  );
 
   if (count === 1) return ordinals[0];
-  if (count === 2) return `${ordinals[0]} or ${ordinals[1]}`;
+  if (count === 2) {
+    return `${ordinals[0]} ${t('phaseSelector.list.or', { defaultValue: 'or' })} ${ordinals[1]}`;
+  }
 
   const lastOrdinal = ordinals.pop();
-  return `${ordinals.join(', ')}, or ${lastOrdinal}`;
+  return `${ordinals.join(', ')}, ${t('phaseSelector.list.or', { defaultValue: 'or' })} ${lastOrdinal}`;
 };
 
 /**
  * Generate contextual day card description
- * Example: generateDayCardDescription(1, 7, 'Night Shift') → "First night of your shift"
+ * Example: generateDayCardDescription(1, 7, 'night', t) → "First day of this phase"
  */
 const generateDayCardDescription = (
   dayNumber: number,
   totalDays: number,
-  phaseTitle: string
+  phase: Phase,
+  t: OnboardingTranslate
 ): string => {
-  // Extract shift type (remove "Shift" or "Shifts" suffix)
-  const shiftType = phaseTitle
-    .replace(/Shifts?$/i, '')
-    .trim()
-    .toLowerCase();
-
-  const ordinalMap: { [key: number]: string } = {
-    1: 'First',
-    2: 'Second',
-    3: 'Third',
-    4: 'Fourth',
-    5: 'Fifth',
-    6: 'Sixth',
-    7: 'Seventh',
-    8: 'Eighth',
-    9: 'Ninth',
-    10: 'Tenth',
-  };
-
-  const ordinal = ordinalMap[dayNumber] || `Day ${dayNumber}`;
-
-  // Handle "Days Off" specially
-  if (phaseTitle.toLowerCase().includes('off')) {
+  if (phase === 'off') {
     if (dayNumber === totalDays) {
-      return `Last day off before returning`;
+      return String(
+        t('phaseSelector.dayDescriptions.restLastDay', {
+          defaultValue: 'Last day off before returning',
+        })
+      );
     }
-    return `${ordinal} day of rest`;
+    return String(
+      t('phaseSelector.dayDescriptions.restDayOfTotal', {
+        day: dayNumber,
+        total: totalDays,
+        defaultValue: `Rest day ${dayNumber} of ${totalDays}`,
+      })
+    );
   }
 
-  // Handle shifts
+  if (dayNumber === 1) {
+    return String(
+      t('phaseSelector.dayDescriptions.firstDay', {
+        defaultValue: 'First day of this phase',
+      })
+    );
+  }
+
   if (dayNumber === totalDays) {
-    return `Last ${shiftType} of your block`;
+    return String(
+      t('phaseSelector.dayDescriptions.lastDay', {
+        defaultValue: 'Last day of this phase',
+      })
+    );
   }
 
-  return `${ordinal} ${shiftType} of your shift`;
+  return String(
+    t('phaseSelector.dayDescriptions.dayOfTotal', {
+      day: dayNumber,
+      total: totalDays,
+      defaultValue: `Day ${dayNumber} of ${totalDays}`,
+    })
+  );
 };
 
 // Swipeable Phase Card Component
@@ -1193,7 +1204,8 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
           description: generateDayCardDescription(
             i + 1,
             selectedCard.phaseLength,
-            selectedCard.title
+            selectedCard.phase,
+            t as OnboardingTranslate
           ),
         }));
 
@@ -1296,10 +1308,12 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
           : t('phaseSelector.daySubtitle', {
               selectedPhaseTitle,
               dayList: generateDayOrdinalList(
-                phaseCards.find((c) => c.phase === selectedPhase)?.phaseLength || 0
+                phaseCards.find((c) => c.phase === selectedPhase)?.phaseLength || 0,
+                t as OnboardingTranslate
               ),
               defaultValue: `You said you're on ${selectedPhaseTitle}. Swipe to your current day—is it the ${generateDayOrdinalList(
-                phaseCards.find((c) => c.phase === selectedPhase)?.phaseLength || 0
+                phaseCards.find((c) => c.phase === selectedPhase)?.phaseLength || 0,
+                t as OnboardingTranslate
               )}?`,
             })}
       </Animated.Text>

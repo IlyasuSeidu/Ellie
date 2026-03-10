@@ -12,15 +12,15 @@
     "backToSettings": "Volver a configuracion",
     "saveAndReturn": "Guardar y volver",
     "hints": {
-      "nextOption": "← Next option",
-      "selectThis": "This one →",
-      "learnMore": "↑ Learn more"
+      "nextOption": "← Siguiente opción",
+      "selectThis": "Este →",
+      "learnMore": "↑ Más información"
     },
     "learnMore": {
-      "howItWorks": "How it works",
-      "whereUsed": "Where you'll see this",
-      "pros": "The good bits",
-      "cons": "What to know"
+      "howItWorks": "como funciona",
+      "whereUsed": "¿Dónde verás esto?",
+      "pros": "las cosas buenas",
+      "cons": "que saber"
     }
   },
   "intro": {
@@ -58,40 +58,58 @@
     "continueButton": "Continuar",
     "closeButton": "Cerrar",
     "instruction": "Selecciona como opera tu sitio-con esto armamos tu calendario\nDesliza a la derecha para seleccionar, izquierda para ver siguiente o arriba para mas informacion",
-    "title": "How Many Shifts Does Your Site Run?",
+    "title": "¿Cuántos turnos funciona su sitio?",
     "endState": {
-      "selectedTitle": "Got it! We'll set up your calendar for this.",
-      "reviewedTitle": "You've viewed all {{count}} shift systems!",
-      "selectedSubtitle": "Next, we'll pick your specific rotation pattern"
+      "selectedTitle": "¡Entiendo! Configuraremos su calendario para esto.",
+      "reviewedTitle": "¡Has visto todos los sistemas de cambio {{count}}!",
+      "selectedSubtitle": "A continuación, elegiremos su patrón de rotación específico."
     },
     "cards": {
       "2-shift": {
-        "title": "2 Shifts (12 hours)",
-        "schedule": "Day & night",
-        "description": "Your workplace runs two 12-hour shifts—one during the day, one at night",
+        "title": "2 Turnos (12 horas)",
+        "schedule": "Día y noche",
+        "description": "Su lugar de trabajo tiene dos turnos de 12 horas: uno durante el día y otro por la noche.",
         "details": {
-          "workRestRatio": "12 hours on, 12 hours off",
-          "useCases": ["Mining sites", "Oil & gas", "24/7 operations", "Remote work"],
-          "pros": ["Extended rest periods", "Predictable schedule", "Good work-life balance"],
+          "workRestRatio": "12 horas encendidas, 12 horas libres",
+          "useCases": [
+            "Sitios mineros",
+            "Petróleo y gas",
+            "Operaciones 24 horas al día, 7 días a la semana",
+            "Trabajo remoto"
+          ],
+          "pros": [
+            "Períodos de descanso prolongados",
+            "Horario predecible",
+            "Buen equilibrio entre el trabajo y la vida personal"
+          ],
           "cons": [
-            "Long shift duration",
-            "Can be physically demanding",
-            "Limited daylight in winter"
+            "Duración del turno larga",
+            "Puede ser físicamente exigente",
+            "Luz diurna limitada en invierno"
           ]
         }
       },
       "3-shift": {
-        "title": "3 Shifts (8 hours)",
-        "schedule": "Morning, afternoon & night",
-        "description": "Your workplace runs three 8-hour shifts—morning, afternoon, and night",
+        "title": "3 Turnos (8 horas)",
+        "schedule": "Mañana, tarde y noche",
+        "description": "Su lugar de trabajo cuenta con tres turnos de 8 horas: mañana, tarde y noche.",
         "details": {
-          "workRestRatio": "8 hours on, 16 hours off",
-          "useCases": ["Manufacturing", "Healthcare", "Call centers", "24/7 operations"],
-          "pros": ["Shorter shifts", "More time for family", "Easier to stay alert"],
+          "workRestRatio": "8 horas encendidas, 16 horas libres",
+          "useCases": [
+            "Fabricación",
+            "Cuidado de la salud",
+            "centros de llamadas",
+            "Operaciones 24 horas al día, 7 días a la semana"
+          ],
+          "pros": [
+            "Turnos más cortos",
+            "Más tiempo para la familia",
+            "Es más fácil mantenerse alerta"
+          ],
           "cons": [
-            "More frequent shift changes",
-            "Can disrupt sleep patterns",
-            "Less rest between cycles"
+            "Cambios de turno más frecuentes",
+            "Puede alterar los patrones de sueño",
+            "Menos descanso entre ciclos"
           ]
         }
       }
@@ -101,7 +119,15 @@
     "reviewAgain": "Revisa los patrones otra vez para seleccionar",
     "reviewButton": "Revisar patrones",
     "continueButton": "Continuar",
-    "closeButton": "Cerrar"
+    "closeButton": "Cerrar",
+    "endState": {
+      "customButton": "Crear rotación personalizada",
+      "reviewButton": "mirar de nuevo",
+      "reviewedSubtitle": "¿No viste el tuyo? Puedes crear uno personalizado o echarle otro vistazo.",
+      "reviewedTitle": "¡Esas son todas las rotaciones {{count}} que tenemos!"
+    },
+    "instruction": "Elija la rotación que utiliza su lugar de trabajo; crearemos su calendario a partir de esto\nDesliza hacia la derecha para elegir, hacia la izquierda para ver más, hacia arriba para obtener información",
+    "title": "¿Cuál es su rotación de plantilla?"
   },
   "completion": {
     "saveFailed": "No se pudo guardar tu informacion. Intentalo otra vez.",
@@ -120,69 +146,96 @@
       "earningsDesc": "Calcula horas extra y recargos automaticamente",
       "meals": "Comidas e hidratacion",
       "mealsDesc": "Mantente saludable con sugerencias de comida e hidratacion"
-    }
+    },
+    "featureHint": "Toque un chip de función para ver más detalles.",
+    "featuresTitle": "¿Qué puedes hacer con Ellie?",
+    "getStartedA11yHint": "Toque para comenzar a usar la aplicación",
+    "getStartedA11yLabel": "Empieza con Ellie",
+    "loading": "Configurando tu calendario...",
+    "retryA11yHint": "Toca para intentar guardar tus datos nuevamente.",
+    "retryA11yLabel": "Vuelve a intentar guardar tus datos",
+    "subtitle": "Bienvenido a Ellie",
+    "summary": {
+      "company": "Compañía",
+      "cycle": "Ciclo",
+      "name": "Nombre",
+      "notSet": "No establecido",
+      "pattern": "Patrón",
+      "rosterType": "Tipo de lista",
+      "rosterTypeFIFO": "FIFO (Fly-In-Fly-Out)",
+      "rosterTypeRotating": "Lista rotativa",
+      "shiftSystem": "Sistema de turnos",
+      "shiftSystemThree": "Sistema de 3 turnos",
+      "shiftSystemTwo": "Sistema de 2 turnos",
+      "shiftTimes": "Horarios de turnos",
+      "startDate": "Fecha de inicio",
+      "title": "Tu perfil",
+      "workPattern": "Patrón de trabajo"
+    },
+    "title": "¡Estás listo!",
+    "tryAgain": "Intentar otra vez"
   },
   "rosterType": {
-    "title": "How Does Your Roster Work?",
-    "instruction": "Choose the roster style your workplace uses — this shapes your entire schedule\nSwipe right to choose, left to see more, up for details",
-    "preparingNextStep": "Preparing next step...",
+    "title": "¿Cómo funciona tu lista?",
+    "instruction": "Elija el estilo de lista que utiliza su lugar de trabajo: esto da forma a todo su horario\nDesliza hacia la derecha para elegir, hacia la izquierda para ver más, hacia arriba para más detalles",
+    "preparingNextStep": "Preparando el siguiente paso...",
     "learnMore": {
-      "examples": "Examples",
-      "popularIn": "Popular in",
-      "benefits": "Benefits",
-      "considerations": "Things to consider"
+      "examples": "Ejemplos",
+      "popularIn": "Popular en",
+      "benefits": "Beneficios",
+      "considerations": "Cosas a considerar"
     },
     "cards": {
       "rotating": {
-        "title": "Rotating Roster",
-        "subtitle": "Days → Nights → Off pattern",
-        "description": "You rotate through different shift times in a repeating cycle",
+        "title": "Lista rotativa",
+        "subtitle": "Días → Noches → Patrón apagado",
+        "description": "Rotas a través de diferentes turnos en un ciclo repetitivo.",
         "details": {
-          "howItWorks": "Workers rotate through different shift times (day shifts, night shifts, days off) in a continuous cycle",
+          "howItWorks": "Los trabajadores rotan a través de diferentes turnos (turnos diurnos, nocturnos, días libres) en un ciclo continuo.",
           "examples": [
-            "5-5-5 (South Africa)",
-            "4-4-4 (common globally)",
-            "7-7-7 (long cycle)",
-            "2-2-3 (short cycle)"
+            "5-5-5 (Sudáfrica)",
+            "4-4-4 (común a nivel mundial)",
+            "7-7-7 (ciclo largo)",
+            "2-2-3 (ciclo corto)"
           ],
-          "regions": ["South Africa", "Zambia", "DRC", "Europe", "Some US operations"],
+          "regions": ["Sudáfrica", "Zambia", "DRC", "Europa", "Algunas operaciones en EE. UU."],
           "pros": [
-            "Go home daily or frequently",
-            "Regular routine at each phase",
-            "Suitable for local operations",
-            "Easier for family planning"
+            "Ir a casa diariamente o con frecuencia",
+            "Rutina regular en cada fase.",
+            "Adecuado para operaciones locales",
+            "Más fácil para la planificación familiar"
           ],
           "cons": [
-            "Night shifts can disrupt sleep",
-            "Constant rotation through times",
-            "Less extended home time"
+            "Los turnos de noche pueden alterar el sueño",
+            "Rotación constante a través de los tiempos.",
+            "Menos tiempo en casa"
           ]
         }
       },
       "fifo": {
-        "title": "FIFO / Swing Roster",
-        "subtitle": "Work blocks → Home blocks",
-        "description": "You work consecutive days on-site, then get extended time at home",
+        "title": "FIFO / Lista de cambios",
+        "subtitle": "Bloques de trabajo → Bloques de inicio",
+        "description": "Trabaja días consecutivos en el sitio y luego obtiene tiempo adicional en casa",
         "details": {
-          "howItWorks": "Workers fly in to remote sites, work consecutive days (work block), then fly home for extended rest (rest block)",
+          "howItWorks": "Los trabajadores vuelan a sitios remotos, trabajan días consecutivos (bloque de trabajo) y luego vuelan a casa para un descanso prolongado (bloque de descanso).",
           "examples": [
-            "8/6 (common WA)",
-            "14/14 (even-time)",
-            "21/7 (remote sites)",
-            "28/14 (long cycle)"
+            "8/6 (WA común)",
+            "14/14 (tiempo par)",
+            "21/7 (sitios remotos)",
+            "28/14 (ciclo largo)"
           ],
-          "regions": ["Australia", "Canada", "Remote global mining"],
+          "regions": ["Australia", "Canadá", "Minería global remota"],
           "pros": [
-            "Extended time at home",
-            "Higher pay rates",
-            "Good for remote sites",
-            "Predictable blocks"
+            "Tiempo extendido en casa",
+            "Tasas salariales más altas",
+            "Bueno para sitios remotos",
+            "Bloques predecibles"
           ],
           "cons": [
-            "Away from family for extended periods",
-            "Travel fatigue",
-            "Isolation at camp",
-            "Adjustment between blocks"
+            "Alejado de la familia por períodos prolongados",
+            "Fatiga del viaje",
+            "Aislamiento en el campamento",
+            "Ajuste entre bloques"
           ]
         }
       }
@@ -196,7 +249,48 @@
     },
     "modal": {
       "phaseLengthValue_one": "{{count}} día",
-      "phaseLengthValue_other": "{{count}} días"
+      "phaseLengthValue_other": "{{count}} días",
+      "phaseLength": "Longitud de fase",
+      "phaseLengthValue": "{{count}} día"
+    },
+    "cards": {
+      "afternoon": {
+        "description": "Horario de la tarde (por ejemplo, de 12 p. m. a 8 p. m.)",
+        "title": "Turno de tarde"
+      },
+      "day": {
+        "description": "Trabajar durante el día (por ejemplo, de 6 a. m. a 6 p. m.)",
+        "title": "Turno diurno"
+      },
+      "morning": {
+        "description": "Temprano en la mañana (por ejemplo, de 4 a. m. a 12 p. m.)",
+        "title": "Turno de mañana"
+      },
+      "night": {
+        "description": "Trabajar de noche (por ejemplo, de 6 p. m. a 6 a. m.)",
+        "descriptionThreeShift": "Horario nocturno (por ejemplo, de 8 p. m. a 4 a. m.)",
+        "title": "Turno de noche"
+      },
+      "off": {
+        "description": "Descanso y recuperación en casa.",
+        "title": "Días libres"
+      }
+    },
+    "dayCardTitle": "Día {{day}}",
+    "daySubtitle": "Dijiste que estás en {{selectedPhaseTitle}}. Pase a su día actual: ¿es el {{dayList}}?",
+    "dayTitle": "¿En qué día de {{selectedPhaseTitle}} estás?",
+    "preparing": "Preparando tu calendario...",
+    "title": "¿En qué turno estás ahora?",
+    "dayOrdinal": "Día {{day}}",
+    "list": {
+      "or": "o"
+    },
+    "dayDescriptions": {
+      "restLastDay": "Último día libre antes de regresar",
+      "restDayOfTotal": "Día de descanso {{day}} de {{total}}",
+      "firstDay": "Primer día de esta fase",
+      "lastDay": "Último día de esta fase",
+      "dayOfTotal": "Día {{day}} de {{total}}"
     }
   },
   "fifoPhaseSelector": {
@@ -341,6 +435,23 @@
       "saveAndReturnToSettings": "Guardar fecha de inicio y volver a ajustes",
       "setShiftTimes": "Configurar horarios",
       "setShiftTimesA11y": "Configurar horarios de turno"
+    },
+    "selectedDate": {
+      "startsOn": "Tu ciclo comenzará el:"
+    },
+    "phaseSelector": {
+      "title": "Elige en qué parte de tu ciclo estarás"
+    },
+    "dayWithinPhase": {
+      "title": "¿Qué día de tu {{phaseLabel}}?",
+      "dayA11yLabel": "Día {{dayNumber}}",
+      "dayA11yHint": "Seleccione el día {{dayNumber}} de la fase"
+    },
+    "preview": {
+      "notSelected": "No seleccionado",
+      "startingLabel": "A partir de:",
+      "phaseLabel": "Fase:",
+      "confirmation": "Tu primer ciclo comienza aquí."
     }
   },
   "shiftTime": {
@@ -408,6 +519,51 @@
       "sectionTitle": "Elige una hora de inicio común",
       "custom": {
         "label": "Hora personalizada"
+      },
+      "early_day": {
+        "label": "Turno temprano"
+      },
+      "standard_day": {
+        "label": "Turno diurno estándar"
+      },
+      "late_day": {
+        "label": "Turno de última hora"
+      },
+      "early_night": {
+        "label": "Turno nocturno temprano"
+      },
+      "standard_night": {
+        "label": "Turno de noche estándar"
+      },
+      "late_night": {
+        "label": "Turno nocturno"
+      },
+      "early_morning": {
+        "label": "Madrugada"
+      },
+      "standard_morning": {
+        "label": "mañana estándar"
+      },
+      "late_morning": {
+        "label": "Mañana tarde"
+      },
+      "early_afternoon": {
+        "label": "Temprano por la tarde"
+      },
+      "standard_afternoon": {
+        "label": "Tarde estándar"
+      },
+      "late_afternoon": {
+        "label": "Atardecer"
+      },
+      "early_night_8h": {
+        "label": "Temprano en la noche"
+      },
+      "standard_night_8h": {
+        "label": "Noche estándar"
+      },
+      "late_night_8h": {
+        "label": "Tarde en la noche"
       }
     },
     "customInput": {
@@ -489,5 +645,120 @@
         "stats": "Ciclo de 7 días - 2D/2N/3L"
       }
     }
+  },
+  "customPattern": {
+    "backA11y": "Volver",
+    "backHint": {
+      "default": "Volver a la selección de patrón de turnos",
+      "settings": "Descartar cambios y volver a la configuración"
+    },
+    "needMoreChanges": "Necesita más cambios",
+    "preview": {
+      "badgeLabel": "Ciclo de día {{totalDays}}",
+      "balanceTitle": "Equilibrio trabajo-descanso",
+      "blocks": {
+        "afternoon": "Tarde",
+        "days": "Días",
+        "morning": "Mañana",
+        "night": "Noche",
+        "nights": "Noches",
+        "off": "Apagado"
+      },
+      "cycleLabel": "Tu ciclo de días {{totalDays}}",
+      "daysOff": "días libres",
+      "daysOn": "días en",
+      "legend": {
+        "afternoon": "Tarde",
+        "dayOff": "Día de descanso",
+        "dayShift": "Turno diurno",
+        "morning": "Mañana",
+        "night": "Noche",
+        "nightShift": "Turno de noche"
+      },
+      "ratioLabel": "Cada rotación que trabajas",
+      "restLabel": "Descanso: {{count}} días",
+      "subtitle": "Mira cómo es tu agenda",
+      "title": "Tu vista previa de rotación",
+      "workLabel": "Trabajo: {{count}} días"
+    },
+    "previewGuide": "Vea su rotación a continuación",
+    "saveA11y": "Guarda tu rotación y continúa.",
+    "saveButton": "Guardar esta rotación",
+    "saveHintValid": "Guarde esta rotación de días {{totalDays}}",
+    "sliders": {
+      "afternoonShifts": "Turnos de tarde",
+      "dayShifts": "Turnos diurnos",
+      "daysOff": "Días libres",
+      "morningShifts": "Turnos de mañana",
+      "nightShifts": "Turnos de noche"
+    },
+    "slidersTitle": "Configure su rotación",
+    "subtitle": "Establece cuántos turnos trabajas y luego cuántos días libres tienes. Te mostraremos cómo se ve.",
+    "subtitleSecondary": {
+      "threeShift": "Mañana, tarde, noche y libre",
+      "twoShift": "Día, noche y descanso"
+    },
+    "success": "¡Se ve bien! Trabaja {{workDays}} días y luego obtiene {{daysOff}} días libres. Esa es una rotación sólida.",
+    "tip": "Consejo: la mayoría de los trabajadores por turnos consideran que las rotaciones con al menos 3 días libres funcionan mejor. Tu cuerpo necesita tiempo para recuperarse entre cambios de swing.",
+    "title": "Construye tu rotación",
+    "validation": {
+      "noOff": "Todo el mundo necesita tiempo libre: agregue al menos 1 día libre a su rotación",
+      "noWork": "Necesita al menos 1 turno para realizar el seguimiento; agregue algunos turnos de día o de noche",
+      "tooLong": "Su rotación tiene una duración de {{totalDays}} días; solo podemos manejar hasta 28 días. Intenta acortarlo."
+    },
+    "warning": "Este patrón requiere mucho trabajo ({{workPercentage}}% de trabajo). Considere agregar más días libres si le preocupa la fatiga."
+  },
+  "fifoCustom": {
+    "backA11y": "Volver",
+    "backHint": {
+      "default": "Volver a la selección de patrón de turnos",
+      "settings": "Descartar cambios y volver a la configuración"
+    },
+    "preview": {
+      "badgeLabel": "Ciclo FIFO de día {{totalCycleDays}}",
+      "balanceTitle": "Equilibrio trabajo-descanso",
+      "cycleDayA11y": "Día del ciclo {{day}}",
+      "cycleFlow": "Flujo del ciclo a través de días visibles {{previewDays}}",
+      "homeDays": "días de hogar",
+      "legend": {
+        "daySwing": "Columpio diurno",
+        "homeBlock": "Bloque de inicio",
+        "nightSwing": "Columpio nocturno"
+      },
+      "ratioLabel": "Ritmo del sitio al hogar",
+      "restLabel": "Descanso: {{restBlockDays}} días",
+      "siteDays": "días del sitio",
+      "subtitle": "{{workBlockDays}} días en el sitio, luego {{restBlockDays}} días en casa",
+      "swingSplit": "División de turnos: {{daysOnDayShift}} días de turno diurno + {{daysOnNightShift}} días de turno nocturno",
+      "title": "Su vista previa de rotación FIFO",
+      "workLabel": "Trabajo: {{workBlockDays}} días"
+    },
+    "previewGuide": "Vea su patrón FIFO a continuación",
+    "saveA11y": "Guarde el patrón FIFO y continúe",
+    "saveButton": "Guardar patrón FIFO",
+    "saveHintInvalid": "Solucione el problema de validación antes de continuar.",
+    "saveHintValid": "{{workBlockDays}} días de trabajo, {{restBlockDays}} días de descanso",
+    "sliders": {
+      "daysAtHome": "Días en Casa (Bloque de Descanso)",
+      "daysAtSite": "Días en el sitio (bloque de trabajo)",
+      "daysOnDayShift": "Días en turno diurno",
+      "daysOnNightShift": "Días en turno de noche"
+    },
+    "slidersTitle": "Configure su patrón FIFO",
+    "subtitle": "Configure su estilo de turno de bloque en el sitio, bloque de casa y bloque de trabajo para un horario que se ajuste al ciclo de su sitio.",
+    "subtitleSecondary": "Bloque de trabajo, bloque de descanso y división de patrón",
+    "success": "Configuración FIFO sólida. {{workBlockDays}} días en el sitio, luego {{restBlockDays}} días en casa.",
+    "swingSubtitle": "Divide tu bloque de trabajo entre turnos diurnos y nocturnos.",
+    "swingTitle": "Configuración de giro",
+    "swingTotal": "Total dividido: {{swingTotal}}/{{workBlockDays}} días",
+    "tip": "Consejo: Haga coincidir su bloque de residencia con las demandas de recuperación y viaje. Los patrones FIFO funcionan mejor cuando el bloque de descanso es lo suficientemente largo como para restablecerse antes de que se ejecute el próximo sitio.",
+    "title": "Construya su rotación FIFO",
+    "validation": {
+      "blocksMinimum": "Los bloques de trabajo y descanso deben ser de al menos 1 día cada uno.",
+      "swingMismatch": "La división de swing debe ser igual a {{workBlockDays}} días antes de guardar."
+    },
+    "warning": "Esta lista es pesada ({{workPercentage}}% de trabajo). Considere equilibrar con más días en casa si la fatiga se convierte en un problema.",
+    "workPatternSubtitle": "¿Cómo se organizan sus turnos mientras está en el sitio?",
+    "workPatternTitle": "Patrón de trabajo durante el bloque de trabajo"
   }
 }

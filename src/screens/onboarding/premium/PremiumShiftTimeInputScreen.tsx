@@ -1723,6 +1723,11 @@ const PresetCard: React.FC<PresetCardProps> = ({
 }) => {
   const { t } = useTranslation('onboarding');
   const presetIconSource = getPresetIconSource(preset);
+  const localizedPresetLabel = String(
+    t(`shiftTime.presets.${preset.id}.label`, {
+      defaultValue: preset.label,
+    })
+  );
   const scale = useSharedValue(1);
   const localizedEndTimeLabel = preset.endTimeLabel
     ? String(
@@ -1751,6 +1756,10 @@ const PresetCard: React.FC<PresetCardProps> = ({
       <Animated.View style={animatedStyle}>
         <Pressable
           onPress={handlePress}
+          accessibilityRole="button"
+          accessibilityLabel={
+            !isCustom ? `${localizedPresetLabel}. ${localizedEndTimeLabel}` : localizedPresetLabel
+          }
           style={[
             styles.presetCardInner,
             selected && styles.presetCardSelected,
@@ -1800,9 +1809,7 @@ const PresetCard: React.FC<PresetCardProps> = ({
               <Text style={styles.presetEndTime}>{localizedEndTimeLabel}</Text>
             </>
           ) : (
-            <Text style={styles.presetCustomText}>
-              {t('shiftTime.presets.custom.label', { defaultValue: 'Custom Time' })}
-            </Text>
+            <Text style={styles.presetCustomText}>{localizedPresetLabel}</Text>
           )}
         </Pressable>
       </Animated.View>

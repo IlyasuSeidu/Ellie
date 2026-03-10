@@ -495,7 +495,19 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
             ? 'fr-FR'
             : language === 'ar'
               ? 'ar'
-              : 'en-US';
+              : language === 'zh-CN'
+                ? 'zh-CN'
+                : language === 'ru'
+                  ? 'ru-RU'
+                  : language === 'hi'
+                    ? 'hi-IN'
+                    : language === 'af'
+                      ? 'af-ZA'
+                      : language === 'zu'
+                        ? 'zu-ZA'
+                        : language === 'id'
+                          ? 'id-ID'
+                          : 'en-US';
     return date.toLocaleDateString(locale, {
       month: 'long',
       day: 'numeric',

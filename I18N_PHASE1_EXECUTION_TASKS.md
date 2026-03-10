@@ -149,13 +149,14 @@ Scope lock:
 
 ## Post-Phase 1 Extension (Implemented)
 
-1. Add runtime languages `fr` and `ar` to i18n resources and detector normalization.
-2. Add full locale file sets for `fr` and `ar` across all namespaces:
+1. Expanded runtime language support in detector/resources to:
+   - `en`, `es`, `pt-BR`, `fr`, `ar`, `zh-CN`, `ru`, `hi`, `af`, `zu`, `id`
+2. Added locale file sets for all runtime languages across namespaces:
    - `common`, `onboarding`, `dashboard`, `profile`, `schedule`
-3. Extend language selector UI to 5 runtime languages:
-   - `en`, `es`, `pt-BR`, `fr`, `ar`
-4. Implement Arabic RTL switching with restart behavior:
+3. Extended language selector UI to include all runtime languages.
+4. Implemented Arabic RTL switching with restart behavior:
    - toggle `I18nManager.allowRTL/forceRTL` when switching into/out of Arabic
    - persist language, then trigger `expo-updates` reload
    - fallback blocking alert if reload is unavailable/fails
-5. Extend date locale mapping for French and Arabic formatting in onboarding and completion summaries.
+5. Extended date locale mapping for additional languages in onboarding/completion formatting flows.
+6. Completed strict onboarding language polish for `es` and `pt-BR` and preserved interpolation-token integrity.

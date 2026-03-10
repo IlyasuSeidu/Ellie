@@ -1,0 +1,72 @@
+{
+  "greeting": {
+    "morning": "Good morning",
+    "afternoon": "Good afternoon",
+    "evening": "Good evening",
+    "night": "Good night"
+  },
+  "pullToRefresh": "Pull to refresh",
+  "refreshing": "Refreshing schedule...",
+  "scheduleUpdated": "Schedule updated",
+  "lastUpdated": {
+    "justNow": "Just now",
+    "secondsAgo": "{{count}}s ago",
+    "minutesAgo": "{{count}}m ago",
+    "updatedPrefix": "Updated "
+  },
+  "errors": {
+    "loadFailed": "Unable to load shift data"
+  },
+  "user": {
+    "defaultName": "User"
+  },
+  "upcoming": {
+    "title": "Upcoming Shifts"
+  },
+  "shiftLabels": {
+    "day": "Day Shift",
+    "night": "Night Shift",
+    "morning": "Morning Shift",
+    "afternoon": "Afternoon Shift",
+    "off": "Day Off"
+  },
+  "shiftSubtitles": {
+    "day": "Stay energized!",
+    "night": "Stay alert!",
+    "morning": "Rise and shine!",
+    "afternoon": "Keep it going!",
+    "off": "Rest and recharge!"
+  },
+  "fifo": {
+    "onSite": "On-site roster active",
+    "homeBlock": "Home block active",
+    "workBlock": "Work",
+    "restBlock": "Rest",
+    "blockChangeToday": "Block change today!",
+    "blockChangeTomorrow": "Block change tomorrow!",
+    "untilRest": "{{count}}d until rest block",
+    "untilWork": "{{count}}d until work block",
+    "blockDayOf": "{{blockName}} Block Day {{day}} of {{total}}",
+    "days": "days"
+  },
+  "stats": {
+    "workDays": "Work Days",
+    "offDays": "Off Days",
+    "balance": "Balance"
+  },
+  "calendar": {
+    "legendDay": "Day",
+    "legendMorning": "Morning",
+    "legendAfternoon": "Afternoon",
+    "legendNight": "Night",
+    "legendOff": "Off",
+    "legendWorkBlock": "Work Block",
+    "legendRestBlock": "Rest Block",
+    "cycle": "cycle",
+    "previousMonth": "Previous month",
+    "nextMonth": "Next month"
+  },
+  "badges": {
+    "active": "ACTIVE"
+  }
+}

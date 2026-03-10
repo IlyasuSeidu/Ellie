@@ -383,6 +383,12 @@ const getDateLocaleTag = (language: string): string => {
   if (normalized === 'pt-BR') return 'pt-BR';
   if (normalized === 'fr') return 'fr-FR';
   if (normalized === 'ar') return 'ar';
+  if (normalized === 'zh-CN') return 'zh-CN';
+  if (normalized === 'ru') return 'ru-RU';
+  if (normalized === 'hi') return 'hi-IN';
+  if (normalized === 'af') return 'af-ZA';
+  if (normalized === 'zu') return 'zu-ZA';
+  if (normalized === 'id') return 'id-ID';
   return 'en-US';
 };
 
@@ -1301,6 +1307,7 @@ export const _SelectedDateCard: React.FC<SelectedDateCardProps> = ({
   selectedDate,
   reducedMotion,
 }) => {
+  const { t } = useTranslation('onboarding');
   const opacity = useSharedValue(0);
   const slideY = useSharedValue(20);
   const contentOpacity = useSharedValue(1);
@@ -1342,7 +1349,11 @@ export const _SelectedDateCard: React.FC<SelectedDateCardProps> = ({
       >
         <Text style={styles.selectedDateIcon}>🏁</Text>
         <Animated.View style={contentAnimatedStyle}>
-          <Text style={styles.selectedDateLabel}>Your cycle will start on:</Text>
+          <Text style={styles.selectedDateLabel}>
+            {t('startDate.selectedDate.startsOn', {
+              defaultValue: 'Your cycle will start on:',
+            })}
+          </Text>
           <Text style={styles.selectedDateText}>{formattedDate}</Text>
         </Animated.View>
       </LinearGradient>
@@ -1587,6 +1598,7 @@ export const _PhaseSelector: React.FC<PhaseSelectorProps> = ({
   shiftSystem,
   reducedMotion,
 }) => {
+  const { t } = useTranslation('onboarding');
   const handlePhaseSelect = useCallback(
     (phase: Phase) => {
       HAPTIC_PATTERNS.MEDIUM();
@@ -1604,7 +1616,9 @@ export const _PhaseSelector: React.FC<PhaseSelectorProps> = ({
     return (
       <View style={styles.phaseSelectorContainer}>
         <Text style={styles.phaseSelectorTitle}>
-          Choose which part of your cycle you&apos;ll be on
+          {t('startDate.phaseSelector.title', {
+            defaultValue: "Choose which part of your cycle you'll be on",
+          })}
         </Text>
 
         <ScrollView
@@ -1618,7 +1632,7 @@ export const _PhaseSelector: React.FC<PhaseSelectorProps> = ({
             phase="day"
             isSelected={selectedPhase === 'day'}
             onPress={() => handlePhaseSelect('day')}
-            label="Day Shift"
+            label={t('startDate.phaseLabels.day', { defaultValue: 'Day Shift' })}
             icon={getPhaseIcon('day')}
             entranceDelay={0}
             reducedMotion={reducedMotion}
@@ -1629,7 +1643,7 @@ export const _PhaseSelector: React.FC<PhaseSelectorProps> = ({
             phase="night"
             isSelected={selectedPhase === 'night'}
             onPress={() => handlePhaseSelect('night')}
-            label="Night Shift"
+            label={t('startDate.phaseLabels.night', { defaultValue: 'Night Shift' })}
             icon={getPhaseIcon('night')}
             entranceDelay={100}
             reducedMotion={reducedMotion}
@@ -1640,7 +1654,7 @@ export const _PhaseSelector: React.FC<PhaseSelectorProps> = ({
             phase="off"
             isSelected={selectedPhase === 'off'}
             onPress={() => handlePhaseSelect('off')}
-            label="Days Off"
+            label={t('startDate.phaseLabels.off', { defaultValue: 'Days Off' })}
             icon={getPhaseIcon('off')}
             entranceDelay={200}
             reducedMotion={reducedMotion}
@@ -1659,7 +1673,9 @@ export const _PhaseSelector: React.FC<PhaseSelectorProps> = ({
   return (
     <View style={styles.phaseSelectorContainer}>
       <Text style={styles.phaseSelectorTitle}>
-        Choose which part of your cycle you&apos;ll be on
+        {t('startDate.phaseSelector.title', {
+          defaultValue: "Choose which part of your cycle you'll be on",
+        })}
       </Text>
 
       <ScrollView
@@ -1673,7 +1689,7 @@ export const _PhaseSelector: React.FC<PhaseSelectorProps> = ({
           phase="morning"
           isSelected={selectedPhase === 'morning'}
           onPress={() => handlePhaseSelect('morning')}
-          label="Morning"
+          label={t('startDate.phaseLabels.morning', { defaultValue: 'Morning Shift' })}
           icon={getPhaseIcon('morning')}
           entranceDelay={0}
           reducedMotion={reducedMotion}
@@ -1684,7 +1700,7 @@ export const _PhaseSelector: React.FC<PhaseSelectorProps> = ({
           phase="afternoon"
           isSelected={selectedPhase === 'afternoon'}
           onPress={() => handlePhaseSelect('afternoon')}
-          label="Afternoon"
+          label={t('startDate.phaseLabels.afternoon', { defaultValue: 'Afternoon Shift' })}
           icon={getPhaseIcon('afternoon')}
           entranceDelay={100}
           reducedMotion={reducedMotion}
@@ -1695,7 +1711,7 @@ export const _PhaseSelector: React.FC<PhaseSelectorProps> = ({
           phase="night"
           isSelected={selectedPhase === 'night'}
           onPress={() => handlePhaseSelect('night')}
-          label="Night"
+          label={t('startDate.phaseLabels.night', { defaultValue: 'Night Shift' })}
           icon={getPhaseIcon('night')}
           entranceDelay={200}
           reducedMotion={reducedMotion}
@@ -1706,7 +1722,7 @@ export const _PhaseSelector: React.FC<PhaseSelectorProps> = ({
           phase="off"
           isSelected={selectedPhase === 'off'}
           onPress={() => handlePhaseSelect('off')}
-          label="Days Off"
+          label={t('startDate.phaseLabels.off', { defaultValue: 'Days Off' })}
           icon={getPhaseIcon('off')}
           entranceDelay={300}
           reducedMotion={reducedMotion}
@@ -1726,10 +1742,21 @@ export const _DayWithinPhaseSelector: React.FC<DayWithinPhaseSelectorProps> = ({
   onDaySelect,
   reducedMotion,
 }) => {
+  const { t } = useTranslation('onboarding');
   const opacity = useSharedValue(0);
   const slideY = useSharedValue(20);
 
   const phaseLength = _getDayWithinPhaseLength(selectedPhase, pattern, shiftSystem);
+  const localizedPhaseLabel =
+    selectedPhase === 'day'
+      ? t('startDate.phaseLabels.day', { defaultValue: 'Day Shift' })
+      : selectedPhase === 'night'
+        ? t('startDate.phaseLabels.night', { defaultValue: 'Night Shift' })
+        : selectedPhase === 'morning'
+          ? t('startDate.phaseLabels.morning', { defaultValue: 'Morning Shift' })
+          : selectedPhase === 'afternoon'
+            ? t('startDate.phaseLabels.afternoon', { defaultValue: 'Afternoon Shift' })
+            : t('startDate.phaseLabels.off', { defaultValue: 'Days Off' });
 
   // Slide-up entrance animation
   useEffect(() => {
@@ -1755,7 +1782,10 @@ export const _DayWithinPhaseSelector: React.FC<DayWithinPhaseSelectorProps> = ({
   return (
     <Animated.View style={[styles.dayWithinPhaseSelectorContainer, animatedStyle]}>
       <Text style={styles.dayWithinPhaseHeader}>
-        Which day of your {_getDayWithinPhaseLabel(selectedPhase)}?
+        {t('startDate.dayWithinPhase.title', {
+          phaseLabel: localizedPhaseLabel,
+          defaultValue: `Which day of your ${localizedPhaseLabel}?`,
+        })}
       </Text>
 
       <ScrollView
@@ -1809,6 +1839,7 @@ export const _DayCard: React.FC<DayCardProps> = ({
   reducedMotion,
   entranceDelay,
 }) => {
+  const { t } = useTranslation('onboarding');
   const scale = useSharedValue(0);
   const pressScale = useSharedValue(1);
   const touchStartX = React.useRef(0);
@@ -1859,8 +1890,14 @@ export const _DayCard: React.FC<DayCardProps> = ({
         onTouchEnd={handleTouchEnd}
         accessible={true}
         accessibilityRole="button"
-        accessibilityLabel={`Day ${dayNumber}`}
-        accessibilityHint={`Select day ${dayNumber} of phase`}
+        accessibilityLabel={t('startDate.dayWithinPhase.dayA11yLabel', {
+          dayNumber,
+          defaultValue: `Day ${dayNumber}`,
+        })}
+        accessibilityHint={t('startDate.dayWithinPhase.dayA11yHint', {
+          dayNumber,
+          defaultValue: `Select day ${dayNumber} of phase`,
+        })}
         style={[
           styles.dayCard,
           isSelected && {
@@ -1938,10 +1975,12 @@ export const _LivePreviewCard: React.FC<LivePreviewCardProps> = ({
   shiftSystem,
   phaseOffset,
 }) => {
+  const { t, i18n } = useTranslation('onboarding');
   const floatY = useSharedValue(0);
   const opacity = useSharedValue(0);
   const slideY = useSharedValue(50);
   const contentOpacity = useSharedValue(1);
+  const dateLocaleTag = getDateLocaleTag(i18n.language);
 
   useEffect(() => {
     opacity.value = withDelay(600, withTiming(1, { duration: 400 }));
@@ -1977,18 +2016,20 @@ export const _LivePreviewCard: React.FC<LivePreviewCardProps> = ({
     opacity: contentOpacity.value,
   }));
 
-  const formattedDate = selectedDate ? formatDate(new Date(selectedDate)) : 'Not selected';
+  const formattedDate = selectedDate
+    ? formatDate(new Date(selectedDate), dateLocaleTag)
+    : t('startDate.preview.notSelected', { defaultValue: 'Not selected' });
   const phaseLabel = selectedPhase
     ? selectedPhase === 'day'
-      ? 'Day Shift'
+      ? t('startDate.phaseLabels.day', { defaultValue: 'Day Shift' })
       : selectedPhase === 'night'
-        ? 'Night Shift'
+        ? t('startDate.phaseLabels.night', { defaultValue: 'Night Shift' })
         : selectedPhase === 'morning'
-          ? 'Morning Shift'
+          ? t('startDate.phaseLabels.morning', { defaultValue: 'Morning Shift' })
           : selectedPhase === 'afternoon'
-            ? 'Afternoon Shift'
-            : 'Days Off'
-    : 'Not selected';
+            ? t('startDate.phaseLabels.afternoon', { defaultValue: 'Afternoon Shift' })
+            : t('startDate.phaseLabels.off', { defaultValue: 'Days Off' })
+    : t('startDate.preview.notSelected', { defaultValue: 'Not selected' });
 
   return (
     <Animated.View style={[styles.previewCard, animatedStyle]}>
@@ -2001,7 +2042,9 @@ export const _LivePreviewCard: React.FC<LivePreviewCardProps> = ({
           <View style={styles.previewRow}>
             <Ionicons name="calendar-outline" size={32} color={theme.colors.paleGold} />
             <View style={styles.previewTextContainer}>
-              <Text style={styles.previewLabel}>Starting:</Text>
+              <Text style={styles.previewLabel}>
+                {t('startDate.preview.startingLabel', { defaultValue: 'Starting:' })}
+              </Text>
               <Text style={styles.previewValue}>{formattedDate}</Text>
             </View>
           </View>
@@ -2028,7 +2071,9 @@ export const _LivePreviewCard: React.FC<LivePreviewCardProps> = ({
               />
             )}
             <View style={styles.previewTextContainer}>
-              <Text style={styles.previewLabel}>Phase:</Text>
+              <Text style={styles.previewLabel}>
+                {t('startDate.preview.phaseLabel', { defaultValue: 'Phase:' })}
+              </Text>
               <Text
                 style={[
                   styles.previewValue,
@@ -2049,7 +2094,7 @@ export const _LivePreviewCard: React.FC<LivePreviewCardProps> = ({
                   .map((_, dayIndex) => {
                     const date = new Date(selectedDate);
                     date.setDate(date.getDate() + dayIndex);
-                    const dayLabel = date.toLocaleDateString('en-US', { weekday: 'narrow' });
+                    const dayLabel = date.toLocaleDateString(dateLocaleTag, { weekday: 'narrow' });
                     const shiftType = getShiftTypeForDate(
                       date,
                       new Date(selectedDate),
@@ -2101,7 +2146,11 @@ export const _LivePreviewCard: React.FC<LivePreviewCardProps> = ({
           {selectedDate && selectedPhase && (
             <View style={styles.previewConfirmation}>
               <Ionicons name="rocket" size={24} color={theme.colors.success} />
-              <Text style={styles.previewConfirmationText}>Your first cycle begins here</Text>
+              <Text style={styles.previewConfirmationText}>
+                {t('startDate.preview.confirmation', {
+                  defaultValue: 'Your first cycle begins here',
+                })}
+              </Text>
             </View>
           )}
         </Animated.View>
@@ -2117,7 +2166,14 @@ const ContinueButton: React.FC<{
   reducedMotion: boolean;
   label?: string;
   accessibilityLabel?: string;
-}> = ({ enabled, onPress, reducedMotion, label = 'Set Shift Times', accessibilityLabel }) => {
+}> = ({ enabled, onPress, reducedMotion, label, accessibilityLabel }) => {
+  const { t } = useTranslation('onboarding');
+  const resolvedLabel =
+    label ??
+    t('startDate.actions.setShiftTimes', {
+      defaultValue: 'Set Shift Times',
+    });
+
   return (
     <View style={styles.continueButtonContainer}>
       <Pressable
@@ -2129,7 +2185,7 @@ const ContinueButton: React.FC<{
         }}
         disabled={!enabled}
         accessibilityRole="button"
-        accessibilityLabel={accessibilityLabel ?? label}
+        accessibilityLabel={accessibilityLabel ?? resolvedLabel}
         style={({ pressed }) => [
           styles.continueButton,
           pressed && enabled && styles.continueButtonPressed,
@@ -2147,7 +2203,7 @@ const ContinueButton: React.FC<{
           style={styles.continueGradient}
         >
           <Ionicons name="checkmark-circle" size={28} color={theme.colors.paper} />
-          <Text style={styles.continueButtonText}>{label}</Text>
+          <Text style={styles.continueButtonText}>{resolvedLabel}</Text>
           <Ionicons name="arrow-forward" size={24} color={theme.colors.paper} />
         </LinearGradient>
       </Pressable>

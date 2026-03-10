@@ -119,7 +119,15 @@
     "reviewAgain": "Veuillez revoir les modèles pour faire votre sélection",
     "reviewButton": "Modèles de révision",
     "continueButton": "Continuer",
-    "closeButton": "Fermer"
+    "closeButton": "Fermer",
+    "endState": {
+      "customButton": "Build Custom Rotation",
+      "reviewButton": "Look Again",
+      "reviewedSubtitle": "Didn't see yours? You can build a custom one, or take another look",
+      "reviewedTitle": "That's all {{count}} rotations we've got!"
+    },
+    "instruction": "Choose the rotation your workplace uses—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info",
+    "title": "What's Your Roster Rotation?"
   },
   "rosterType": {
     "title": "Comment fonctionne votre liste ?",
@@ -210,7 +218,34 @@
       "earningsDesc": "Calculez automatiquement les heures supplémentaires, les pénalités et les indemnités de poste",
       "meals": "Repas & hydratation",
       "mealsDesc": "Restez en bonne santé grâce à des suggestions d'horaires de repas et des rappels d'hydratation"
-    }
+    },
+    "featureHint": "Tap a feature chip to see more details.",
+    "featuresTitle": "What you can do with Ellie",
+    "getStartedA11yHint": "Tap to start using the app",
+    "getStartedA11yLabel": "Get started with Ellie",
+    "loading": "Setting up your calendar...",
+    "retryA11yHint": "Tap to try saving your data again",
+    "retryA11yLabel": "Retry saving your data",
+    "subtitle": "Welcome to Ellie",
+    "summary": {
+      "company": "Company",
+      "cycle": "Cycle",
+      "name": "Name",
+      "notSet": "Not set",
+      "pattern": "Pattern",
+      "rosterType": "Roster Type",
+      "rosterTypeFIFO": "FIFO (Fly-In Fly-Out)",
+      "rosterTypeRotating": "Rotating Roster",
+      "shiftSystem": "Shift System",
+      "shiftSystemThree": "3-Shift System",
+      "shiftSystemTwo": "2-Shift System",
+      "shiftTimes": "Shift Times",
+      "startDate": "Start Date",
+      "title": "Your profile",
+      "workPattern": "Work Pattern"
+    },
+    "title": "You're all set!",
+    "tryAgain": "Try Again"
   },
   "phaseSelector": {
     "hints": {
@@ -220,7 +255,48 @@
     },
     "modal": {
       "phaseLengthValue_one": "{{count}} jour",
-      "phaseLengthValue_other": "{{count}} jours"
+      "phaseLengthValue_other": "{{count}} jours",
+      "phaseLength": "Phase Length",
+      "phaseLengthValue": "{{count}} day"
+    },
+    "cards": {
+      "afternoon": {
+        "description": "Afternoon hours (e.g., 12pm-8pm)",
+        "title": "Afternoon Shift"
+      },
+      "day": {
+        "description": "Working during daylight (e.g., 6am-6pm)",
+        "title": "Day Shift"
+      },
+      "morning": {
+        "description": "Early morning hours (e.g., 4am-12pm)",
+        "title": "Morning Shift"
+      },
+      "night": {
+        "description": "Working at nighttime (e.g., 6pm-6am)",
+        "descriptionThreeShift": "Nighttime hours (e.g., 8pm-4am)",
+        "title": "Night Shift"
+      },
+      "off": {
+        "description": "Rest and recovery at home",
+        "title": "Days Off"
+      }
+    },
+    "dayCardTitle": "Day {{day}}",
+    "daySubtitle": "You said you're on {{selectedPhaseTitle}}. Swipe to your current day—is it the {{dayList}}?",
+    "dayTitle": "Which day of {{selectedPhaseTitle}} are you on?",
+    "preparing": "Preparing your calendar...",
+    "title": "What shift are you on right now?",
+    "dayOrdinal": "Day {{day}}",
+    "list": {
+      "or": "or"
+    },
+    "dayDescriptions": {
+      "restLastDay": "Last day off before returning",
+      "restDayOfTotal": "Rest day {{day}} of {{total}}",
+      "firstDay": "First day of this phase",
+      "lastDay": "Last day of this phase",
+      "dayOfTotal": "Day {{day}} of {{total}}"
     }
   },
   "fifoPhaseSelector": {
@@ -365,6 +441,23 @@
       "saveAndReturnToSettings": "Enregistrer la date de début et revenir aux paramètres",
       "setShiftTimes": "Définir les horaires de travail",
       "setShiftTimesA11y": "Définir les horaires de travail"
+    },
+    "selectedDate": {
+      "startsOn": "Your cycle will start on:"
+    },
+    "phaseSelector": {
+      "title": "Choose which part of your cycle you'll be on"
+    },
+    "dayWithinPhase": {
+      "title": "Which day of your {{phaseLabel}}?",
+      "dayA11yLabel": "Day {{dayNumber}}",
+      "dayA11yHint": "Select day {{dayNumber}} of phase"
+    },
+    "preview": {
+      "notSelected": "Not selected",
+      "startingLabel": "Starting:",
+      "phaseLabel": "Phase:",
+      "confirmation": "Your first cycle begins here"
     }
   },
   "shiftTime": {
@@ -432,6 +525,51 @@
       "sectionTitle": "Choisissez une heure de début commune",
       "custom": {
         "label": "Heure personnalisée"
+      },
+      "early_day": {
+        "label": "Early Day Shift"
+      },
+      "standard_day": {
+        "label": "Standard Day Shift"
+      },
+      "late_day": {
+        "label": "Late Day Shift"
+      },
+      "early_night": {
+        "label": "Early Night Shift"
+      },
+      "standard_night": {
+        "label": "Standard Night Shift"
+      },
+      "late_night": {
+        "label": "Late Night Shift"
+      },
+      "early_morning": {
+        "label": "Early Morning"
+      },
+      "standard_morning": {
+        "label": "Standard Morning"
+      },
+      "late_morning": {
+        "label": "Late Morning"
+      },
+      "early_afternoon": {
+        "label": "Early Afternoon"
+      },
+      "standard_afternoon": {
+        "label": "Standard Afternoon"
+      },
+      "late_afternoon": {
+        "label": "Late Afternoon"
+      },
+      "early_night_8h": {
+        "label": "Early Night"
+      },
+      "standard_night_8h": {
+        "label": "Standard Night"
+      },
+      "late_night_8h": {
+        "label": "Late Night"
       }
     },
     "customInput": {
@@ -513,5 +651,120 @@
         "stats": "Cycle de 7 jours - 2J/2N/3O"
       }
     }
+  },
+  "customPattern": {
+    "backA11y": "Go back",
+    "backHint": {
+      "default": "Return to shift pattern selection",
+      "settings": "Discard changes and return to settings"
+    },
+    "needMoreChanges": "Need More Changes",
+    "preview": {
+      "badgeLabel": "{{totalDays}}-day cycle",
+      "balanceTitle": "Work-Rest Balance",
+      "blocks": {
+        "afternoon": "Afternoon",
+        "days": "Days",
+        "morning": "Morning",
+        "night": "Night",
+        "nights": "Nights",
+        "off": "Off"
+      },
+      "cycleLabel": "Your {{totalDays}}-day cycle",
+      "daysOff": "days off",
+      "daysOn": "days on",
+      "legend": {
+        "afternoon": "Afternoon",
+        "dayOff": "Day Off",
+        "dayShift": "Day Shift",
+        "morning": "Morning",
+        "night": "Night",
+        "nightShift": "Night Shift"
+      },
+      "ratioLabel": "Every rotation you work",
+      "restLabel": "Rest: {{count}} days",
+      "subtitle": "See what your schedule looks like",
+      "title": "Your Rotation Preview",
+      "workLabel": "Work: {{count}} days"
+    },
+    "previewGuide": "See your rotation below",
+    "saveA11y": "Save your rotation and continue",
+    "saveButton": "Save This Rotation",
+    "saveHintValid": "Save this {{totalDays}}-day rotation",
+    "sliders": {
+      "afternoonShifts": "Afternoon Shifts",
+      "dayShifts": "Day Shifts",
+      "daysOff": "Days Off",
+      "morningShifts": "Morning Shifts",
+      "nightShifts": "Night Shifts"
+    },
+    "slidersTitle": "Set Up Your Rotation",
+    "subtitle": "Set how many shifts you work, then how many days off you get—we'll show you what it looks like",
+    "subtitleSecondary": {
+      "threeShift": "Morning, Afternoon, Night & Off",
+      "twoShift": "Day, Night & Off"
+    },
+    "success": "Looking good! You work {{workDays}} days, then get {{daysOff}} days off. That's a solid rotation.",
+    "tip": "Tip: Most shift workers find rotations with at least 3 days off work best. Your body needs time to recover between swing changes.",
+    "title": "Build Your Rotation",
+    "validation": {
+      "noOff": "Everyone needs time off—add at least 1 day off to your rotation",
+      "noWork": "You need at least 1 shift to track—add some day or night shifts",
+      "tooLong": "Your rotation is {{totalDays}} days long—we can only handle up to 28 days. Try shortening it."
+    },
+    "warning": "This pattern is work-heavy ({{workPercentage}}% work). Consider adding more days off if fatigue is a concern."
+  },
+  "fifoCustom": {
+    "backA11y": "Go back",
+    "backHint": {
+      "default": "Return to shift pattern selection",
+      "settings": "Discard changes and return to settings"
+    },
+    "preview": {
+      "badgeLabel": "{{totalCycleDays}}-day FIFO cycle",
+      "balanceTitle": "Work-Rest Balance",
+      "cycleDayA11y": "Cycle day {{day}}",
+      "cycleFlow": "Cycle flow across {{previewDays}} visible days",
+      "homeDays": "home days",
+      "legend": {
+        "daySwing": "Day Swing",
+        "homeBlock": "Home Block",
+        "nightSwing": "Night Swing"
+      },
+      "ratioLabel": "Site to home rhythm",
+      "restLabel": "Rest: {{restBlockDays}} days",
+      "siteDays": "site days",
+      "subtitle": "{{workBlockDays}} days at site, then {{restBlockDays}} days at home",
+      "swingSplit": "Swing split: {{daysOnDayShift}} day-shift days + {{daysOnNightShift}} night-shift days",
+      "title": "Your FIFO Rotation Preview",
+      "workLabel": "Work: {{workBlockDays}} days"
+    },
+    "previewGuide": "See your FIFO pattern below",
+    "saveA11y": "Save FIFO pattern and continue",
+    "saveButton": "Save FIFO Pattern",
+    "saveHintInvalid": "Fix the validation issue before continuing",
+    "saveHintValid": "{{workBlockDays}} days work, {{restBlockDays}} days rest",
+    "sliders": {
+      "daysAtHome": "Days at Home (Rest Block)",
+      "daysAtSite": "Days at Site (Work Block)",
+      "daysOnDayShift": "Days on Day Shift",
+      "daysOnNightShift": "Days on Night Shift"
+    },
+    "slidersTitle": "Set Up Your FIFO Pattern",
+    "subtitle": "Set your on-site block, home block, and work-block shift style for a schedule that fits your site cycle.",
+    "subtitleSecondary": "Work Block, Rest Block & Pattern Split",
+    "success": "Solid FIFO setup. {{workBlockDays}} days at site, then {{restBlockDays}} days at home.",
+    "swingSubtitle": "Split your work block between day and night shifts.",
+    "swingTitle": "Swing Configuration",
+    "swingTotal": "Split total: {{swingTotal}}/{{workBlockDays}} days",
+    "tip": "Tip: Match your home block to recovery and travel demands. FIFO patterns work best when the rest block is long enough to reset before your next site run.",
+    "title": "Build Your FIFO Rotation",
+    "validation": {
+      "blocksMinimum": "Work and rest blocks must each be at least 1 day.",
+      "swingMismatch": "Swing split must equal {{workBlockDays}} days before saving."
+    },
+    "warning": "This roster is heavy ({{workPercentage}}% work). Consider balancing with more home days if fatigue becomes an issue.",
+    "workPatternSubtitle": "How are your shifts organized while at site?",
+    "workPatternTitle": "Work Pattern During Work Block"
   }
 }

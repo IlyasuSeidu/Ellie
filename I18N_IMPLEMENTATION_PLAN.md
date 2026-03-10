@@ -27,12 +27,14 @@ Ellie is used by shift workers in the global mining industry. The top mining nat
 
 ### Runtime Extension Status (March 10, 2026)
 
-- Implemented additional runtime languages ahead of Phase 3:
-  - `fr` (French)
-  - `ar` (Arabic)
+- Runtime language matrix currently enabled in app:
+  - `en`, `es`, `pt-BR`, `fr`, `ar`, `zh-CN`, `ru`, `hi`, `af`, `zu`, `id`
 - Added Arabic RTL behavior with direction toggle + app reload on language switch.
-- Runtime UI language list now includes:
-  - `en`, `es`, `pt-BR`, `fr`, `ar`
+- Locale files exist for all runtime languages across namespaces:
+  - `common`, `onboarding`, `dashboard`, `profile`, `schedule`
+- Current translation quality status:
+  - `es` and `pt-BR` onboarding copy is fully translated (language-polish pass completed).
+  - Additional runtime languages use complete key coverage and fallbacks where localized copy is still being expanded.
 
 ---
 
@@ -1341,18 +1343,19 @@ All other namespaces translated to Portuguese.
 
 ### Phase 1 — Steps 1–22 above (Infrastructure + en/es/pt-BR)
 
-Touches 22 files. Creates 15 new files (i18n infra + 3×5 locale JSON files + LanguageContext + LanguageSelectorSheet).
+Implemented.
 
 ### Phase 2 — Add zh-CN, ru, hi
 
-- Add dayjs imports: `import 'dayjs/locale/zh-cn'`, `'ru'`, `'hi'`
-- Add import + resource entries in `src/i18n/index.ts`
-- Create `src/i18n/locales/zh-CN/`, `ru/`, `hi/` with all 5 JSON files
+Implemented.
 
 ### Phase 3 — Add fr, af, zu, id
 
-- Same pattern — add locales + update `SUPPORTED_LANGUAGES` list in `LanguageSelectorSheet.tsx`
-- `af` and `zu`: no dayjs locale, use English fallback for dates
+Implemented.
+
+### Runtime Extension — Arabic (`ar`)
+
+Implemented with RTL direction switching and restart behavior.
 
 ---
 
@@ -1364,9 +1367,10 @@ Touches 22 files. Creates 15 new files (i18n infra + 3×5 locale JSON files + La
 4. **Spanish auto-detect:** Set device language to Spanish → cold launch → greeting shows "Buenos días" → RefreshControl shows "Desliza para actualizar".
 5. **Language picker:** ProfileScreen → Language row shows current language → tap → LanguageSelectorSheet → select "Português" → app re-renders immediately in Portuguese.
 6. **Persistence:** Background/foreground app → language stays Portuguese. Kill + relaunch → still Portuguese (AsyncStorage).
-7. **Fallback:** Set device language to Arabic (no translation) → app renders in English.
-8. **dayjs locale:** Switch to Spanish → MonthlyCalendarCard month header shows "marzo" (not "March").
-9. **FIFO countdown:** Switch to Spanish → countdown shows "3d hasta descanso".
-10. **Chat bot dedup:** PremiumIntroductionScreen — navigate back to name question step → bot does NOT ask again → uses `metadata.questionKey` not content match.
-11. **Missing key fallback:** Remove one key from es/dashboard.json → that string falls back to English, no crash, no blank.
-12. **TypeScript guard:** Add a typo like `t('greeting.mornnig')` → TypeScript compile error, proving type safety works.
+7. **Arabic runtime + RTL:** Select Arabic in language picker → app switches to RTL layout after reload and persists on relaunch.
+8. **RTL back to LTR:** Switch Arabic → English (or Spanish/Portuguese) → app reloads and returns to LTR layout.
+9. **dayjs locale:** Switch to Spanish → MonthlyCalendarCard month header shows "marzo" (not "March").
+10. **FIFO countdown:** Switch to Spanish → countdown shows localized text.
+11. **Chat bot dedup:** PremiumIntroductionScreen — navigate back to name question step → bot does NOT ask again → uses `metadata.questionKey` not content match.
+12. **Missing key fallback:** Remove one key from es/dashboard.json → that string falls back to English, no crash, no blank.
+13. **TypeScript guard:** Add a typo like `t('greeting.mornnig')` → TypeScript compile error, proving type safety works.

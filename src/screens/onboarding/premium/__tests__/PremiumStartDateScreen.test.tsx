@@ -816,8 +816,8 @@ describe('PremiumStartDateScreen', () => {
           reducedMotion={false}
         />
       );
-      expect(threeShift.getByText('Morning')).toBeTruthy();
-      expect(threeShift.getByText('Afternoon')).toBeTruthy();
+      expect(threeShift.getByText('Morning Shift')).toBeTruthy();
+      expect(threeShift.getByText('Afternoon Shift')).toBeTruthy();
     });
 
     it('renders animated phase card iconicon path in selected and unselected states', () => {
@@ -883,15 +883,15 @@ describe('PremiumStartDateScreen', () => {
           reducedMotion={false}
         />
       );
-      const morning = threeShift.getByText('Morning');
+      const morning = threeShift.getByText('Morning Shift');
       fireEvent(morning, 'touchStart', { nativeEvent: { pageX: 20, pageY: 20 } });
       fireEvent(morning, 'touchEnd', { nativeEvent: { pageX: 20, pageY: 20 } });
       expect(onPhaseSelect).toHaveBeenCalledWith('morning');
-      const afternoon = threeShift.getByText('Afternoon');
+      const afternoon = threeShift.getByText('Afternoon Shift');
       fireEvent(afternoon, 'touchStart', { nativeEvent: { pageX: 22, pageY: 22 } });
       fireEvent(afternoon, 'touchEnd', { nativeEvent: { pageX: 22, pageY: 22 } });
       expect(onPhaseSelect).toHaveBeenCalledWith('afternoon');
-      const threeShiftNight = threeShift.getByText('Night');
+      const threeShiftNight = threeShift.getByText('Night Shift');
       fireEvent(threeShiftNight, 'touchStart', { nativeEvent: { pageX: 24, pageY: 24 } });
       fireEvent(threeShiftNight, 'touchEnd', { nativeEvent: { pageX: 24, pageY: 24 } });
       expect(onPhaseSelect).toHaveBeenCalledWith('night');
@@ -933,7 +933,7 @@ describe('PremiumStartDateScreen', () => {
           reducedMotion={false}
         />
       );
-      expect(hidden.queryByText('Which day of your Day Shifts?')).toBeNull();
+      expect(hidden.queryByText('Which day of your Day Shift?')).toBeNull();
 
       const visible = render(
         <_DayWithinPhaseSelector
@@ -945,7 +945,7 @@ describe('PremiumStartDateScreen', () => {
           reducedMotion={false}
         />
       );
-      expect(visible.getByText('Which day of your Day Shifts?')).toBeTruthy();
+      expect(visible.getByText('Which day of your Day Shift?')).toBeTruthy();
 
       const day2 = visible.getByLabelText('Day 2');
       fireEvent(day2, 'touchStart', { nativeEvent: { pageX: 10, pageY: 10 } });
@@ -965,7 +965,7 @@ describe('PremiumStartDateScreen', () => {
           reducedMotion={false}
         />
       );
-      expect(view.getByText('Which day of your Morning Shifts?')).toBeTruthy();
+      expect(view.getByText('Which day of your Morning Shift?')).toBeTruthy();
 
       view.rerender(
         <_DayWithinPhaseSelector
@@ -977,7 +977,7 @@ describe('PremiumStartDateScreen', () => {
           reducedMotion={false}
         />
       );
-      expect(view.getByText('Which day of your Night Shifts?')).toBeTruthy();
+      expect(view.getByText('Which day of your Night Shift?')).toBeTruthy();
 
       view.rerender(
         <_DayWithinPhaseSelector

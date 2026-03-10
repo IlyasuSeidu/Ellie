@@ -35,6 +35,12 @@ const LANGUAGE_OPTIONS: LanguageOption[] = [
   { code: 'pt-BR', name: 'Portuguese', nativeName: 'Português (Brasil)' },
   { code: 'fr', name: 'French', nativeName: 'Français' },
   { code: 'ar', name: 'Arabic', nativeName: 'العربية' },
+  { code: 'zh-CN', name: 'Chinese', nativeName: '中文' },
+  { code: 'ru', name: 'Russian', nativeName: 'Русский' },
+  { code: 'hi', name: 'Hindi', nativeName: 'हिन्दी' },
+  { code: 'af', name: 'Afrikaans', nativeName: 'Afrikaans' },
+  { code: 'zu', name: 'Zulu', nativeName: 'isiZulu' },
+  { code: 'id', name: 'Indonesian', nativeName: 'Bahasa Indonesia' },
 ];
 
 export const LANGUAGE_NAMES: Record<string, string> = {
@@ -43,6 +49,12 @@ export const LANGUAGE_NAMES: Record<string, string> = {
   'pt-BR': 'Português',
   fr: 'Français',
   ar: 'العربية',
+  'zh-CN': '中文',
+  ru: 'Русский',
+  hi: 'हिन्दी',
+  af: 'Afrikaans',
+  zu: 'isiZulu',
+  id: 'Bahasa Indonesia',
 };
 
 export interface LanguageSelectorSheetProps {

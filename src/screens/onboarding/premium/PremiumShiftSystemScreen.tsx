@@ -913,7 +913,9 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
 
       {isTransitioning ? (
         <View pointerEvents="none" style={styles.transitionOverlay}>
-          <Text style={styles.transitionText}>Preparing next step...</Text>
+          <Text style={styles.transitionText}>
+            {t('rosterType.preparingNextStep', { defaultValue: 'Preparing next step...' })}
+          </Text>
         </View>
       ) : null}
 
