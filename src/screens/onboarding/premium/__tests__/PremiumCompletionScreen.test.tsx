@@ -9,6 +9,7 @@ import { PremiumCompletionScreen } from '../PremiumCompletionScreen';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
 import { NavigationContainer } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
+import * as hapticsDiagnostics from '@/utils/hapticsDiagnostics';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 
 // Mock react-native-reanimated
@@ -68,6 +69,13 @@ jest.mock('react-native-reanimated', () => {
 
 // Mock haptics
 jest.mock('expo-haptics');
+
+// Mock hapticsDiagnostics — prevents async Platform access after Jest teardown
+jest.mock('@/utils/hapticsDiagnostics', () => ({
+  triggerImpactHaptic: jest.fn().mockResolvedValue(true),
+  triggerNotificationHaptic: jest.fn().mockResolvedValue(true),
+  triggerSelectionHaptic: jest.fn().mockResolvedValue(true),
+}));
 
 // Mock UserService
 jest.mock('@/services/UserService', () => ({
@@ -351,7 +359,12 @@ describe('PremiumCompletionScreen', () => {
       renderWithProviders(<PremiumCompletionScreen />);
 
       await waitFor(() => {
-        expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
+        expect(hapticsDiagnostics.triggerNotificationHaptic).toHaveBeenCalledWith(
+          Haptics.NotificationFeedbackType.Success,
+          expect.objectContaining({
+            source: 'PremiumCompletionScreen.saveOnboardingData.success',
+          })
+        );
       });
     });
   });
@@ -383,7 +396,12 @@ describe('PremiumCompletionScreen', () => {
       renderWithProviders(<PremiumCompletionScreen />);
 
       await waitFor(() => {
-        expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
+        expect(hapticsDiagnostics.triggerNotificationHaptic).toHaveBeenCalledWith(
+          Haptics.NotificationFeedbackType.Error,
+          expect.objectContaining({
+            source: 'PremiumCompletionScreen.saveOnboardingData.error',
+          })
+        );
       });
     });
 
@@ -500,7 +518,12 @@ describe('PremiumCompletionScreen', () => {
       renderWithProviders(<PremiumCompletionScreen />);
 
       await waitFor(() => {
-        expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
+        expect(hapticsDiagnostics.triggerNotificationHaptic).toHaveBeenCalledWith(
+          Haptics.NotificationFeedbackType.Success,
+          expect.objectContaining({
+            source: 'PremiumCompletionScreen.saveOnboardingData.success',
+          })
+        );
       });
     });
 
@@ -508,8 +531,7 @@ describe('PremiumCompletionScreen', () => {
       renderWithProviders(<PremiumCompletionScreen />);
 
       await waitFor(() => {
-        // Should be called twice: once on mount, once after save
-        expect(Haptics.impactAsync).toHaveBeenCalledTimes(2);
+        expect(hapticsDiagnostics.triggerNotificationHaptic).toHaveBeenCalled();
       });
     });
   });

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Ellie",
+    "name": "Ellie: Miner Shift Assistant",
     "slug": "ellie",
     "scheme": "ellie",
     "version": "1.0.0",
@@ -16,23 +16,23 @@
     "ios": {
       "supportsTablet": true,
       "deploymentTarget": "16.0",
+      "buildNumber": "1",
       "infoPlist": {
         "NSSpeechRecognitionUsageDescription": "Ellie needs speech recognition to understand your questions.",
         "NSMicrophoneUsageDescription": "Ellie needs microphone access for voice commands."
       },
-      "bundleIdentifier": "com.anonymous.ellie"
+      "bundleIdentifier": "com.ellie.minershiftassistant"
     },
     "android": {
-      "package": "com.anonymous.ellie",
+      "package": "com.ellie.minershiftassistant",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ]
+      "permissions": ["android.permission.RECORD_AUDIO"]
     },
     "web": {
       "favicon": "./assets/favicon.png"

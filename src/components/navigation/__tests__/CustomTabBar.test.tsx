@@ -56,9 +56,7 @@ type TestProps = React.ComponentProps<typeof CustomTabBar>;
 
 const routes = [
   { key: 'home', name: 'Home' },
-  { key: 'schedule', name: 'Schedule' },
   { key: 'ellie', name: 'Ellie' },
-  { key: 'stats', name: 'Stats' },
   { key: 'profile', name: 'Profile' },
 ];
 
@@ -104,17 +102,17 @@ describe('CustomTabBar', () => {
     const props = buildProps(0);
     const { getByLabelText } = render(<CustomTabBar {...props} />);
 
-    fireEvent.press(getByLabelText('Schedule'));
+    fireEvent.press(getByLabelText('Profile'));
 
     expect(props.navigation.emit).toHaveBeenCalled();
-    expect(props.navigation.navigate).toHaveBeenCalledWith('Schedule');
+    expect(props.navigation.navigate).toHaveBeenCalledWith('Profile');
   });
 
   it('does not navigate when tabPress is prevented', () => {
     const props = buildProps(0, true);
     const { getByLabelText } = render(<CustomTabBar {...props} />);
 
-    fireEvent.press(getByLabelText('Schedule'));
+    fireEvent.press(getByLabelText('Profile'));
 
     expect(props.navigation.emit).toHaveBeenCalled();
     expect(props.navigation.navigate).not.toHaveBeenCalled();

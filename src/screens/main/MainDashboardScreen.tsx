@@ -52,8 +52,8 @@ import { CurrentShiftStatusCard } from '@/components/dashboard/CurrentShiftStatu
 import { MonthlyCalendarCard } from '@/components/dashboard/MonthlyCalendarCard';
 import { StatisticsRow } from '@/components/dashboard/StatisticsCard';
 
-import { QuickActionsBar } from '@/components/dashboard/QuickActionsBar';
 // Voice assistant is now in MainTabNavigator (center tab + global modal)
+// QuickActionsBar hidden for v1 — actions not yet implemented
 
 /**
  * Calculate monthly statistics
@@ -309,10 +309,6 @@ export const MainDashboardScreen: React.FC = () => {
     setSelectedDay((prev) => (prev === day ? undefined : day));
   }, []);
 
-  const handleActionPress = useCallback((_key: string) => {
-    // Placeholder for future navigation
-  }, []);
-
   // Avatar change handler — persists new URI to AsyncStorage
   const handleAvatarChange = useCallback(
     async (newUri: string | null) => {
@@ -454,14 +450,6 @@ export const MainDashboardScreen: React.FC = () => {
           workLifeBalance={monthStats.workLifeBalance}
           animationDelay={300}
           testID="dashboard-stats"
-        />
-
-        {/* Quick Actions */}
-        <QuickActionsBar
-          key={`actions-${refreshKey}`}
-          onActionPress={handleActionPress}
-          animationDelay={600}
-          testID="dashboard-actions"
         />
       </ScrollView>
     </View>

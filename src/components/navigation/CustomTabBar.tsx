@@ -44,7 +44,7 @@ const GLOW_SIZE = 44;
 const CENTER_PLACEHOLDER_WIDTH = CENTER_BUTTON_SIZE + 8;
 /** Width available for the 4 flex tabs */
 const FLEX_TOTAL_WIDTH = TAB_BAR_WIDTH - CENTER_PLACEHOLDER_WIDTH;
-const FLEX_TAB_WIDTH = FLEX_TOTAL_WIDTH / 4;
+const FLEX_TAB_WIDTH = FLEX_TOTAL_WIDTH / 2;
 
 /** Ionicons name pairs for each tab route */
 const TAB_ICONS: Record<
@@ -65,15 +65,13 @@ const TAB_ICONS: Record<
  * Tabs 3,4 are flex tabs after the center placeholder.
  */
 function getTabCenterX(index: number): number {
-  if (index < 2) {
-    // Tabs before center: index 0, 1
+  if (index < 1) {
+    // Tabs before center: index 0 (Home)
     return FLEX_TAB_WIDTH * index + FLEX_TAB_WIDTH / 2;
   }
-  // Tabs after center: index 3, 4 → visual slot 2, 3
-  const slot = index - 2; // 3→1, 4→2
-  return (
-    FLEX_TAB_WIDTH * 2 + CENTER_PLACEHOLDER_WIDTH + FLEX_TAB_WIDTH * (slot - 1) + FLEX_TAB_WIDTH / 2
-  );
+  // Tabs after center: index 2 (Profile) → visual slot 0
+  const slot = index - 2;
+  return FLEX_TAB_WIDTH + CENTER_PLACEHOLDER_WIDTH + FLEX_TAB_WIDTH * slot + FLEX_TAB_WIDTH / 2;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -159,11 +157,11 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
 
   // ── Sliding glow indicator ──────────────────────────────────────────────
   const indicatorX = useSharedValue(getTabCenterX(state.index));
-  const indicatorOpacity = useSharedValue(state.index === 2 ? 0 : 1);
+  const indicatorOpacity = useSharedValue(state.index === 1 ? 0 : 1);
   const indicatorScale = useSharedValue(1);
 
   useEffect(() => {
-    const isCenter = state.index === 2;
+    const isCenter = state.index === 1;
 
     if (isCenter) {
       // Hide indicator for center Ellie tab
@@ -286,7 +284,7 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
       {/* Center Ellie button — absolute positioned above the pill */}
       <Animated.View style={[styles.centerButtonOuter, centerAnimStyle]}>
         <TouchableOpacity
-          onPress={() => handleTabPress(state.routes[2], 2)}
+          onPress={() => handleTabPress(state.routes[1], 1)}
           activeOpacity={0.8}
           accessibilityLabel="Open Ellie voice assistant"
           accessibilityRole="button"

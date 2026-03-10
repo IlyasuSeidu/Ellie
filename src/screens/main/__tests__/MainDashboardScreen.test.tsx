@@ -235,16 +235,6 @@ describe('MainDashboardScreen', () => {
       });
     });
 
-    it('should render quick actions', async () => {
-      (asyncStorageService.get as jest.Mock).mockResolvedValue(mockOnboardingData);
-
-      const { getByTestId } = render(<MainDashboardScreen />);
-
-      await waitFor(() => {
-        expect(getByTestId('dashboard-actions')).toBeTruthy();
-      });
-    });
-
     it('should display user name', async () => {
       (asyncStorageService.get as jest.Mock).mockResolvedValue(mockOnboardingData);
 

@@ -10,8 +10,24 @@ interface HapticOptions {
 
 const DEFAULT_FALLBACK_PATTERN = 10;
 
+const PLATFORM_OS = (() => {
+  try {
+    return typeof Platform?.OS === 'string' ? Platform.OS : 'unknown';
+  } catch {
+    return 'unknown';
+  }
+})();
+
+const SAFE_VIBRATE = (() => {
+  try {
+    return typeof Vibration?.vibrate === 'function' ? Vibration.vibrate.bind(Vibration) : null;
+  } catch {
+    return null;
+  }
+})();
+
 function getPlatformOS(): string {
-  return typeof Platform?.OS === 'string' ? Platform.OS : 'unknown';
+  return PLATFORM_OS;
 }
 
 function normalizeError(error: unknown): { name: string; message: string } {
@@ -30,8 +46,8 @@ function triggerVibrationFallback(options: HapticOptions): void {
   const platform = getPlatformOS();
 
   try {
-    if (typeof Vibration?.vibrate === 'function') {
-      Vibration.vibrate(fallbackPattern);
+    if (SAFE_VIBRATE) {
+      SAFE_VIBRATE(fallbackPattern);
     }
     logger.warn('Haptics: vibration fallback triggered', {
       source: options.source,
