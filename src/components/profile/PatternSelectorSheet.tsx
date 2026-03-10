@@ -23,6 +23,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
@@ -34,95 +35,27 @@ const SHEET_MAX_HEIGHT = SCREEN_HEIGHT * 0.82;
 // ── Pattern metadata ──────────────────────────────────────────────────────────
 
 interface PatternMeta {
-  name: string;
-  subtitle: string;
   ratio: string;
   isCustom?: boolean;
 }
 
 const PATTERN_META: Record<ShiftPattern, PatternMeta> = {
-  [ShiftPattern.STANDARD_3_3_3]: {
-    name: '3-3-3 Rotation',
-    subtitle: '9-day cycle',
-    ratio: '2:1',
-  },
-  [ShiftPattern.STANDARD_4_4_4]: {
-    name: '4-4-4 Rotation',
-    subtitle: '12-day cycle',
-    ratio: '2:1',
-  },
-  [ShiftPattern.STANDARD_5_5_5]: {
-    name: '5-5-5 Rotation',
-    subtitle: '15-day cycle',
-    ratio: '2:1',
-  },
-  [ShiftPattern.STANDARD_7_7_7]: {
-    name: '7-7-7 Rotation',
-    subtitle: '21-day cycle',
-    ratio: '2:1',
-  },
-  [ShiftPattern.STANDARD_10_10_10]: {
-    name: '10-10-10 Rotation',
-    subtitle: '30-day cycle',
-    ratio: '2:1',
-  },
-  [ShiftPattern.STANDARD_2_2_3]: {
-    name: 'Pitman (2-2-3)',
-    subtitle: '7-day cycle',
-    ratio: '4:3',
-  },
-  [ShiftPattern.CONTINENTAL]: {
-    name: 'Continental',
-    subtitle: '10-day cycle',
-    ratio: '3:2',
-  },
-  [ShiftPattern.PITMAN]: {
-    name: 'Pitman',
-    subtitle: '7-day cycle',
-    ratio: '4:3',
-  },
-  [ShiftPattern.CUSTOM]: {
-    name: 'Custom Rotation',
-    subtitle: 'Build your own',
-    ratio: '-',
-    isCustom: true,
-  },
-  [ShiftPattern.FIFO_7_7]: {
-    name: '7/7 FIFO',
-    subtitle: '14-day cycle',
-    ratio: '1:1',
-  },
-  [ShiftPattern.FIFO_8_6]: {
-    name: '8/6 FIFO',
-    subtitle: '14-day cycle',
-    ratio: '4:3',
-  },
-  [ShiftPattern.FIFO_14_14]: {
-    name: '14/14 FIFO',
-    subtitle: '28-day cycle',
-    ratio: '1:1',
-  },
-  [ShiftPattern.FIFO_14_7]: {
-    name: '14/7 FIFO',
-    subtitle: '21-day cycle',
-    ratio: '2:1',
-  },
-  [ShiftPattern.FIFO_21_7]: {
-    name: '21/7 FIFO',
-    subtitle: '28-day cycle',
-    ratio: '3:1',
-  },
-  [ShiftPattern.FIFO_28_14]: {
-    name: '28/14 FIFO',
-    subtitle: '42-day cycle',
-    ratio: '2:1',
-  },
-  [ShiftPattern.FIFO_CUSTOM]: {
-    name: 'Custom FIFO',
-    subtitle: 'Configure blocks',
-    ratio: '-',
-    isCustom: true,
-  },
+  [ShiftPattern.STANDARD_3_3_3]: { ratio: '2:1' },
+  [ShiftPattern.STANDARD_4_4_4]: { ratio: '2:1' },
+  [ShiftPattern.STANDARD_5_5_5]: { ratio: '2:1' },
+  [ShiftPattern.STANDARD_7_7_7]: { ratio: '2:1' },
+  [ShiftPattern.STANDARD_10_10_10]: { ratio: '2:1' },
+  [ShiftPattern.STANDARD_2_2_3]: { ratio: '4:3' },
+  [ShiftPattern.CONTINENTAL]: { ratio: '3:2' },
+  [ShiftPattern.PITMAN]: { ratio: '4:3' },
+  [ShiftPattern.CUSTOM]: { ratio: '-', isCustom: true },
+  [ShiftPattern.FIFO_7_7]: { ratio: '1:1' },
+  [ShiftPattern.FIFO_8_6]: { ratio: '4:3' },
+  [ShiftPattern.FIFO_14_14]: { ratio: '1:1' },
+  [ShiftPattern.FIFO_14_7]: { ratio: '2:1' },
+  [ShiftPattern.FIFO_21_7]: { ratio: '3:1' },
+  [ShiftPattern.FIFO_28_14]: { ratio: '2:1' },
+  [ShiftPattern.FIFO_CUSTOM]: { ratio: '-', isCustom: true },
 };
 
 // ── Pattern lists by config ───────────────────────────────────────────────────
@@ -186,6 +119,7 @@ export const PatternSelectorSheet: React.FC<PatternSelectorSheetProps> = ({
   selectedPattern,
   onSelect,
 }) => {
+  const { t } = useTranslation('profile');
   const translateY = useSharedValue(SCREEN_HEIGHT);
   const backdropOpacity = useSharedValue(0);
 
@@ -231,7 +165,9 @@ export const PatternSelectorSheet: React.FC<PatternSelectorSheetProps> = ({
           style={StyleSheet.absoluteFill}
           onPress={onClose}
           activeOpacity={1}
-          accessibilityLabel="Close"
+          accessibilityLabel={t('shift.patternSelector.backdropCloseA11y', {
+            defaultValue: 'Close',
+          })}
           accessibilityRole="button"
         />
       </Animated.View>
@@ -247,13 +183,17 @@ export const PatternSelectorSheet: React.FC<PatternSelectorSheetProps> = ({
             <View style={styles.headerIconBg}>
               <Ionicons name="refresh-circle-outline" size={20} color={theme.colors.sacredGold} />
             </View>
-            <Animated.Text style={styles.headerTitle}>Select Pattern</Animated.Text>
+            <Animated.Text style={styles.headerTitle}>
+              {t('shift.patternSelector.title', { defaultValue: 'Select Pattern' })}
+            </Animated.Text>
           </View>
           <TouchableOpacity
             onPress={onClose}
             style={styles.closeButton}
             hitSlop={8}
-            accessibilityLabel="Close pattern selector"
+            accessibilityLabel={t('shift.patternSelector.closeA11y', {
+              defaultValue: 'Close pattern selector',
+            })}
             accessibilityRole="button"
           >
             <Ionicons name="close-circle" size={24} color={theme.colors.dust} />
@@ -263,10 +203,14 @@ export const PatternSelectorSheet: React.FC<PatternSelectorSheetProps> = ({
         {/* Subtitle */}
         <Animated.Text style={styles.headerSubtitle}>
           {rosterType === 'fifo'
-            ? 'FIFO block rosters'
+            ? t('shift.patternSelector.subtitle.fifo', { defaultValue: 'FIFO block rosters' })
             : shiftSystem === '3-shift'
-              ? '3-shift (8h) rotating patterns'
-              : '2-shift (12h) rotating patterns'}
+              ? t('shift.patternSelector.subtitle.threeShift', {
+                  defaultValue: '3-shift (8h) rotating patterns',
+                })
+              : t('shift.patternSelector.subtitle.twoShift', {
+                  defaultValue: '2-shift (12h) rotating patterns',
+                })}
         </Animated.Text>
 
         {/* Pattern grid */}
@@ -277,12 +221,17 @@ export const PatternSelectorSheet: React.FC<PatternSelectorSheetProps> = ({
         >
           {patterns.map((pattern) => {
             const meta = PATTERN_META[pattern];
+            const localizedMeta = {
+              ...meta,
+              name: t(`shift.patternSelector.patterns.${pattern}.name`),
+              subtitle: t(`shift.patternSelector.patterns.${pattern}.subtitle`),
+            };
             const isSelected = pattern === selectedPattern;
             return (
               <PatternCard
                 key={pattern}
                 pattern={pattern}
-                meta={meta}
+                meta={localizedMeta}
                 isSelected={isSelected}
                 isFIFO={rosterType === 'fifo'}
                 onPress={() => handleSelect(pattern)}
@@ -314,7 +263,10 @@ function getPatternDots(pattern: ShiftPattern, isFIFO: boolean): string[] {
 
 interface PatternCardProps {
   pattern: ShiftPattern;
-  meta: PatternMeta;
+  meta: PatternMeta & {
+    name: string;
+    subtitle: string;
+  };
   isSelected: boolean;
   isFIFO: boolean;
   onPress: () => void;
@@ -327,6 +279,7 @@ const PatternCard: React.FC<PatternCardProps> = ({
   isFIFO,
   onPress,
 }) => {
+  const { t } = useTranslation('profile');
   const scale = useSharedValue(1);
 
   const cardStyle = useAnimatedStyle(() => ({
@@ -349,10 +302,12 @@ const PatternCard: React.FC<PatternCardProps> = ({
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
         activeOpacity={1}
-        accessibilityLabel={`${meta.name}, ${meta.subtitle}${isSelected ? ', currently selected' : ''}`}
+        accessibilityLabel={`${meta.name}, ${meta.subtitle}${isSelected ? `, ${t('shift.patternSelector.currentlySelected', { defaultValue: 'currently selected' })}` : ''}`}
         accessibilityRole="radio"
         accessibilityState={{ checked: isSelected }}
-        accessibilityHint="Double tap to select this pattern"
+        accessibilityHint={t('shift.patternSelector.cardHint', {
+          defaultValue: 'Double tap to select this pattern',
+        })}
       >
         {/* Selection checkmark */}
         {isSelected && (

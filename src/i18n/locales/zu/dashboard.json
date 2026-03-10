@@ -68,5 +68,74 @@
   },
   "badges": {
     "active": "OKUSEBENZA"
+  },
+  "voiceAssistant": {
+    "subtitle": "Voice Assistant",
+    "clearHistoryA11y": "Clear conversation history",
+    "closeA11y": "Close voice assistant",
+    "conversationHistoryA11y": "Conversation history",
+    "empty": {
+      "prompt": "Ask me about your shift schedule",
+      "trySaying": "Try saying:",
+      "example1": "What shift do I have tomorrow?",
+      "example2": "When is my next day off?",
+      "example3": "How many night shifts this month?"
+    },
+    "permission": {
+      "notice": "Ellie needs microphone access to hear your questions.",
+      "grant": "Grant Permission",
+      "grantA11y": "Grant microphone permission",
+      "requestA11y": "Request microphone permission"
+    },
+    "status": {
+      "listening": "Listening...",
+      "processing": "Thinking...",
+      "speaking": "Tap to stop speaking",
+      "wakeWordUnavailable": "Wake-word unavailable, tap the mic to talk",
+      "sayWakeWordOrTap": "Say \"{{wakeWordPhrase}}\" or tap the mic",
+      "askAnother": "Tap the mic to ask another question",
+      "askEllie": "Tap the mic to ask Ellie"
+    },
+    "errors": {
+      "default": "Something went wrong",
+      "permissionDeniedIos": "Microphone access denied. Enable in Settings > Ellie.",
+      "permissionDenied": "Microphone access denied. Please grant permission.",
+      "network": "Check your connection and retry.",
+      "recognition": "I didn't catch that. Please try again.",
+      "backend": "Service temporarily unavailable. Please try again.",
+      "rateLimited": "Please wait briefly and retry.",
+      "timeout": "Request timed out. Please retry.",
+      "wakeWordUnavailable": "Wake-word unavailable, tap the mic to talk.",
+      "tts": "Could not play audio response."
+    },
+    "micA11y": {
+      "listening": "Stop listening. Double tap to finish speaking.",
+      "processing": "Processing your question. Please wait.",
+      "speaking": "Ellie is speaking. Double tap to stop.",
+      "error": "Error: {{message}}. Double tap to try again.",
+      "idle": "Ask Ellie a question. Double tap to start speaking."
+    },
+    "partialTranscriptA11y": "You are saying: {{text}}",
+    "processingInline": "Ellie is thinking...",
+    "retryHint": "Tap the mic to try again",
+    "requestRef": "Ref: {{requestId}}",
+    "responseBubble": {
+      "userSaidA11y": "You said: {{text}}",
+      "assistantSaidA11y": "Ellie said: {{text}}"
+    }
+  },
+  "tabs": {
+    "home": "Home",
+    "schedule": "Schedule",
+    "stats": "Stats",
+    "profile": "Profile",
+    "ellie": "Ellie",
+    "openVoiceAssistantA11y": "Open Ellie voice assistant"
+  },
+  "quickActions": {
+    "settings": "Settings",
+    "alerts": "Alerts",
+    "profile": "Profile",
+    "export": "Export"
   }
 }

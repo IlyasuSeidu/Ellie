@@ -6,6 +6,7 @@
 
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, ViewStyle } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
@@ -31,12 +32,6 @@ interface PhaseOption {
   icon: string;
 }
 
-const PHASE_OPTIONS: PhaseOption[] = [
-  { type: 'day', label: 'Day Shift', icon: '☀️' },
-  { type: 'night', label: 'Night Shift', icon: '🌙' },
-  { type: 'off', label: 'Off Days', icon: '🏖️' },
-];
-
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
 export const PhaseSelector: React.FC<PhaseSelectorProps> = ({
@@ -45,9 +40,28 @@ export const PhaseSelector: React.FC<PhaseSelectorProps> = ({
   style,
   testID,
 }) => {
+  const { t } = useTranslation('onboarding');
+  const phaseOptions: PhaseOption[] = [
+    {
+      type: 'day',
+      label: t('phaseSelector.options.day', { defaultValue: 'Day Shift' }),
+      icon: '☀️',
+    },
+    {
+      type: 'night',
+      label: t('phaseSelector.options.night', { defaultValue: 'Night Shift' }),
+      icon: '🌙',
+    },
+    {
+      type: 'off',
+      label: t('phaseSelector.options.off', { defaultValue: 'Off Days' }),
+      icon: '🏖️',
+    },
+  ];
+
   return (
     <View style={[styles.container, style]} testID={testID}>
-      {PHASE_OPTIONS.map((option) => (
+      {phaseOptions.map((option) => (
         <PhaseCard
           key={option.type}
           option={option}

@@ -14,30 +14,31 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
+import { normalizeLanguage } from '@/i18n/languageDetector';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 const SHEET_MAX_HEIGHT = SCREEN_HEIGHT * 0.75;
 
-const MONTH_NAMES = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
-const DAY_NAMES = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
-
 // ── Helpers ───────────────────────────────────────────────────────────────────
+
+function getDateLocaleTag(language: string): string {
+  const normalized = normalizeLanguage(language);
+  if (normalized === 'es') return 'es-ES';
+  if (normalized === 'pt-BR') return 'pt-BR';
+  if (normalized === 'fr') return 'fr-FR';
+  if (normalized === 'ar') return 'ar';
+  if (normalized === 'zh-CN') return 'zh-CN';
+  if (normalized === 'ru') return 'ru-RU';
+  if (normalized === 'hi') return 'hi-IN';
+  if (normalized === 'af') return 'af-ZA';
+  if (normalized === 'zu') return 'zu-ZA';
+  if (normalized === 'id') return 'id-ID';
+  return 'en-US';
+}
 
 function datesEqual(a: Date, b: Date): boolean {
   return (
@@ -105,8 +106,10 @@ export const StartDatePickerSheet: React.FC<StartDatePickerSheetProps> = ({
   selectedDate,
   onSelect,
 }) => {
+  const { t, i18n } = useTranslation('profile');
   const translateY = useSharedValue(SCREEN_HEIGHT);
   const backdropOpacity = useSharedValue(0);
+  const localeTag = useMemo(() => getDateLocaleTag(i18n.language), [i18n.language]);
 
   const today = useMemo(() => startOfDay(new Date()), []);
   const maxDate = useMemo(() => {
@@ -148,6 +151,14 @@ export const StartDatePickerSheet: React.FC<StartDatePickerSheetProps> = ({
   }));
 
   const grid = useMemo(() => buildCalendarGrid(viewYear, viewMonth), [viewYear, viewMonth]);
+  const dayHeaders = useMemo(() => {
+    const monday = new Date(Date.UTC(2024, 0, 1)); // Monday
+    return Array.from({ length: 7 }, (_, i) =>
+      new Date(monday.getTime() + i * 24 * 60 * 60 * 1000).toLocaleDateString(localeTag, {
+        weekday: 'short',
+      })
+    );
+  }, [localeTag]);
 
   const handlePrevMonth = () => {
     const currentMonthStart = new Date(viewYear, viewMonth, 1);
@@ -201,7 +212,9 @@ export const StartDatePickerSheet: React.FC<StartDatePickerSheetProps> = ({
           style={StyleSheet.absoluteFill}
           onPress={onClose}
           activeOpacity={1}
-          accessibilityLabel="Close"
+          accessibilityLabel={t('shift.startDatePicker.backdropCloseA11y', {
+            defaultValue: 'Close',
+          })}
           accessibilityRole="button"
         />
       </Animated.View>
@@ -216,13 +229,17 @@ export const StartDatePickerSheet: React.FC<StartDatePickerSheetProps> = ({
             <View style={styles.headerIconBg}>
               <Ionicons name="calendar-outline" size={18} color="#06B6D4" />
             </View>
-            <Animated.Text style={styles.headerTitle}>Select Start Date</Animated.Text>
+            <Animated.Text style={styles.headerTitle}>
+              {t('shift.startDatePicker.title', { defaultValue: 'Select Start Date' })}
+            </Animated.Text>
           </View>
           <TouchableOpacity
             onPress={onClose}
             style={styles.closeBtn}
             hitSlop={8}
-            accessibilityLabel="Close date picker"
+            accessibilityLabel={t('shift.startDatePicker.closeA11y', {
+              defaultValue: 'Close date picker',
+            })}
             accessibilityRole="button"
           >
             <Ionicons name="close-circle" size={24} color={theme.colors.shadow} />
@@ -237,7 +254,9 @@ export const StartDatePickerSheet: React.FC<StartDatePickerSheetProps> = ({
               disabled={!canGoPrev}
               style={[styles.navBtn, !canGoPrev && styles.navBtnDisabled]}
               hitSlop={8}
-              accessibilityLabel="Previous month"
+              accessibilityLabel={t('shift.startDatePicker.previousMonthA11y', {
+                defaultValue: 'Previous month',
+              })}
               accessibilityRole="button"
             >
               <Ionicons
@@ -247,14 +266,19 @@ export const StartDatePickerSheet: React.FC<StartDatePickerSheetProps> = ({
               />
             </TouchableOpacity>
             <Animated.Text style={styles.monthLabel}>
-              {MONTH_NAMES[viewMonth]} {viewYear}
+              {new Date(viewYear, viewMonth, 1).toLocaleDateString(localeTag, {
+                month: 'long',
+                year: 'numeric',
+              })}
             </Animated.Text>
             <TouchableOpacity
               onPress={handleNextMonth}
               disabled={!canGoNext}
               style={[styles.navBtn, !canGoNext && styles.navBtnDisabled]}
               hitSlop={8}
-              accessibilityLabel="Next month"
+              accessibilityLabel={t('shift.startDatePicker.nextMonthA11y', {
+                defaultValue: 'Next month',
+              })}
               accessibilityRole="button"
             >
               <Ionicons
@@ -267,7 +291,7 @@ export const StartDatePickerSheet: React.FC<StartDatePickerSheetProps> = ({
 
           {/* Day-of-week headers */}
           <View style={styles.dayHeaders}>
-            {DAY_NAMES.map((d) => (
+            {dayHeaders.map((d) => (
               <Animated.Text key={d} style={styles.dayHeader}>
                 {d}
               </Animated.Text>
@@ -286,6 +310,27 @@ export const StartDatePickerSheet: React.FC<StartDatePickerSheetProps> = ({
               const isPast = date < today;
               const isFuture = date > maxDate;
               const isDisabled = isPast || isFuture;
+              const monthName = date.toLocaleDateString(localeTag, { month: 'long' });
+              const dayAccessibility = [
+                t('shift.startDatePicker.dayA11y', {
+                  day,
+                  month: monthName,
+                  year: viewYear,
+                  defaultValue: '{{day}} {{month}} {{year}}',
+                }),
+                isToday
+                  ? t('shift.startDatePicker.todayTag', {
+                      defaultValue: 'today',
+                    })
+                  : null,
+                isDisabled
+                  ? t('shift.startDatePicker.unavailableTag', {
+                      defaultValue: 'unavailable',
+                    })
+                  : null,
+              ]
+                .filter(Boolean)
+                .join(', ');
 
               return (
                 <TouchableOpacity
@@ -299,7 +344,7 @@ export const StartDatePickerSheet: React.FC<StartDatePickerSheetProps> = ({
                   onPress={() => handleDayPress(day)}
                   disabled={isDisabled}
                   activeOpacity={0.7}
-                  accessibilityLabel={`${day} ${MONTH_NAMES[viewMonth]} ${viewYear}${isToday ? ', today' : ''}${isDisabled ? ', unavailable' : ''}`}
+                  accessibilityLabel={dayAccessibility}
                   accessibilityRole="button"
                   accessibilityState={{ disabled: isDisabled, selected: isSelected }}
                 >
@@ -324,13 +369,17 @@ export const StartDatePickerSheet: React.FC<StartDatePickerSheetProps> = ({
               <View
                 style={[styles.legendDot, { borderColor: theme.colors.sacredGold, borderWidth: 1 }]}
               />
-              <Animated.Text style={styles.legendText}>Today</Animated.Text>
+              <Animated.Text style={styles.legendText}>
+                {t('shift.startDatePicker.legendToday', { defaultValue: 'Today' })}
+              </Animated.Text>
             </View>
             <View style={styles.legendItem}>
               <View
                 style={[styles.legendDot, { backgroundColor: theme.colors.sacredGold + '30' }]}
               />
-              <Animated.Text style={styles.legendText}>Selected</Animated.Text>
+              <Animated.Text style={styles.legendText}>
+                {t('shift.startDatePicker.legendSelected', { defaultValue: 'Selected' })}
+              </Animated.Text>
             </View>
           </View>
         </View>

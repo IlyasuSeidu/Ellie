@@ -7,6 +7,7 @@
 
 import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -29,6 +30,7 @@ export interface TypingIndicatorProps {
 
 export const TypingIndicator = React.memo<TypingIndicatorProps>(
   ({ visible, reducedMotion, testID }) => {
+    const { t } = useTranslation('onboarding');
     const dot1Y = useSharedValue(0);
     const dot2Y = useSharedValue(0);
     const dot3Y = useSharedValue(0);
@@ -81,7 +83,9 @@ export const TypingIndicator = React.memo<TypingIndicatorProps>(
         style={styles.container}
         testID={testID}
         accessibilityRole="progressbar"
-        accessibilityLabel="Bot is typing"
+        accessibilityLabel={t('typingIndicator.a11y', {
+          defaultValue: 'Bot is typing',
+        })}
         accessibilityLiveRegion="polite"
       >
         <View style={styles.bubble}>

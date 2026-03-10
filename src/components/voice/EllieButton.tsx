@@ -9,6 +9,7 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -26,6 +27,7 @@ const BUTTON_SIZE = 60;
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
 export const EllieButton: React.FC = () => {
+  const { t } = useTranslation('dashboard');
   const { state, openModal } = useVoiceAssistant();
   const isActive = state !== 'idle';
 
@@ -65,7 +67,9 @@ export const EllieButton: React.FC = () => {
         style={styles.button}
         onPress={handlePress}
         activeOpacity={0.8}
-        accessibilityLabel="Open Ellie voice assistant"
+        accessibilityLabel={t('tabs.openVoiceAssistantA11y', {
+          defaultValue: 'Open Ellie voice assistant',
+        })}
         accessibilityRole="button"
       >
         <Ionicons name="mic" size={26} color={theme.colors.sacredGold} />

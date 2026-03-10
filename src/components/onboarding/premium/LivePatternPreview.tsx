@@ -12,6 +12,7 @@ import Animated, {
   withSpring,
   FadeIn,
 } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 
 export interface LivePatternPreviewProps {
@@ -41,6 +42,7 @@ export const LivePatternPreview: React.FC<LivePatternPreviewProps> = ({
   style,
   testID,
 }) => {
+  const { t } = useTranslation('onboarding');
   const scale = useSharedValue(1);
 
   useEffect(() => {
@@ -125,7 +127,14 @@ export const LivePatternPreview: React.FC<LivePatternPreviewProps> = ({
         {/* Summary card */}
         <View style={styles.summaryCard}>
           <Text style={styles.summaryText}>
-            Your {cycleLength}-day cycle: {daysOn}D / {nightsOn}N / {daysOff}O
+            {t('livePatternPreview.summary', {
+              cycleLength,
+              daysOn,
+              nightsOn,
+              daysOff,
+              defaultValue:
+                'Your {{cycleLength}}-day cycle: {{daysOn}}D / {{nightsOn}}N / {{daysOff}}O',
+            })}
           </Text>
         </View>
 
@@ -157,15 +166,21 @@ export const LivePatternPreview: React.FC<LivePatternPreviewProps> = ({
         <View style={styles.legend}>
           <View style={styles.legendItem}>
             <View style={[styles.legendBox, { backgroundColor: theme.colors.workDay }]} />
-            <Text style={styles.legendText}>Day Shift</Text>
+            <Text style={styles.legendText}>
+              {t('startDate.calendar.legend.dayShift', { defaultValue: 'Day Shift' })}
+            </Text>
           </View>
           <View style={styles.legendItem}>
             <View style={[styles.legendBox, { backgroundColor: theme.colors.nightShift }]} />
-            <Text style={styles.legendText}>Night Shift</Text>
+            <Text style={styles.legendText}>
+              {t('startDate.calendar.legend.nightShift', { defaultValue: 'Night Shift' })}
+            </Text>
           </View>
           <View style={styles.legendItem}>
             <View style={[styles.legendBox, { backgroundColor: theme.colors.offDay }]} />
-            <Text style={styles.legendText}>Off Days</Text>
+            <Text style={styles.legendText}>
+              {t('livePatternPreview.legend.offDays', { defaultValue: 'Off Days' })}
+            </Text>
           </View>
         </View>
       </Animated.View>

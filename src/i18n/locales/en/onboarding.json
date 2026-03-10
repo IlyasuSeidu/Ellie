@@ -23,6 +23,19 @@
       "cons": "What to know"
     }
   },
+  "chatInput": {
+    "submitA11y": "Submit response"
+  },
+  "typingIndicator": {
+    "a11y": "Bot is typing"
+  },
+  "chatAvatar": {
+    "a11y": "Mining assistant avatar"
+  },
+  "premiumCalendar": {
+    "previousMonthA11y": "Previous month",
+    "nextMonthA11y": "Next month"
+  },
   "intro": {
     "welcome": "Welcome to Ellie! I'm here to help you set up your shift calendar. Let's start by getting to know you a bit better.",
     "askName": "What's your name?",
@@ -224,6 +237,11 @@
     "tryAgain": "Try Again"
   },
   "phaseSelector": {
+    "options": {
+      "day": "Day Shift",
+      "night": "Night Shift",
+      "off": "Off Days"
+    },
     "hints": {
       "next": "← Next",
       "select": "Select →",
@@ -742,5 +760,32 @@
     "warning": "This roster is heavy ({{workPercentage}}% work). Consider balancing with more home days if fatigue becomes an issue.",
     "workPatternSubtitle": "How are your shifts organized while at site?",
     "workPatternTitle": "Work Pattern During Work Block"
+  },
+  "progressHeader": {
+    "goBackA11y": "Go back",
+    "skip": "Skip",
+    "skipA11y": "Skip",
+    "percentageComplete": "{{percentage}}% Complete"
+  },
+  "countrySelector": {
+    "searchPlaceholder": "Search countries...",
+    "searchA11y": "Search countries",
+    "empty": "No countries found",
+    "modalTitle": "Select Country",
+    "modalCloseA11y": "Close country selector"
+  },
+  "timePicker": {
+    "title": "Select Time",
+    "labels": {
+      "hour": "Hour",
+      "minute": "Minute",
+      "period": "Period"
+    }
+  },
+  "livePatternPreview": {
+    "summary": "Your {{cycleLength}}-day cycle: {{daysOn}}D / {{nightsOn}}N / {{daysOff}}O",
+    "legend": {
+      "offDays": "Off Days"
+    }
   }
 }

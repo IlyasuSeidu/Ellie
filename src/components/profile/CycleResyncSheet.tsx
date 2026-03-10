@@ -10,6 +10,8 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { Modal, View, TouchableOpacity, ScrollView, StyleSheet, Dimensions } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import type { TFunction } from 'i18next';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -71,7 +73,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
       if (morning > 0) {
         phases.push({
           id: 'morning',
-          label: 'Morning Shift',
+          label: 'morning',
           days: morning,
           icon: 'partly-sunny-outline',
           color: '#F59E0B',
@@ -80,7 +82,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
       if (afternoon > 0) {
         phases.push({
           id: 'afternoon',
-          label: 'Afternoon Shift',
+          label: 'afternoon',
           days: afternoon,
           icon: 'cloud-outline',
           color: '#06B6D4',
@@ -89,7 +91,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
       if (night3 > 0) {
         phases.push({
           id: 'night',
-          label: 'Night Shift',
+          label: 'night',
           days: night3,
           icon: 'moon-outline',
           color: '#9C27B0',
@@ -99,7 +101,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
       if (day > 0) {
         phases.push({
           id: 'day',
-          label: 'Day Shift',
+          label: 'day',
           days: day,
           icon: 'sunny-outline',
           color: '#2196F3',
@@ -108,7 +110,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
       if (night > 0) {
         phases.push({
           id: 'night',
-          label: 'Night Shift',
+          label: 'night',
           days: night,
           icon: 'moon-outline',
           color: '#9C27B0',
@@ -119,7 +121,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
     if (off > 0) {
       phases.push({
         id: 'off',
-        label: 'Days Off',
+        label: 'off',
         days: off,
         icon: 'bed-outline',
         color: '#4CAF50',
@@ -143,7 +145,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
     if (morning > 0) {
       phases.push({
         id: 'morning',
-        label: 'Morning Shift',
+        label: 'morning',
         days: morning,
         icon: 'partly-sunny-outline',
         color: '#F59E0B',
@@ -152,7 +154,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
     if (afternoon > 0) {
       phases.push({
         id: 'afternoon',
-        label: 'Afternoon Shift',
+        label: 'afternoon',
         days: afternoon,
         icon: 'cloud-outline',
         color: '#06B6D4',
@@ -161,7 +163,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
     if (night > 0) {
       phases.push({
         id: 'night',
-        label: 'Night Shift',
+        label: 'night',
         days: night,
         icon: 'moon-outline',
         color: '#9C27B0',
@@ -171,7 +173,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
     if ((config.daysOn ?? 0) > 0) {
       phases.push({
         id: 'day',
-        label: 'Day Shift',
+        label: 'day',
         days: config.daysOn ?? 0,
         icon: 'sunny-outline',
         color: '#2196F3',
@@ -180,7 +182,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
     if ((config.nightsOn ?? 0) > 0) {
       phases.push({
         id: 'night',
-        label: 'Night Shift',
+        label: 'night',
         days: config.nightsOn ?? 0,
         icon: 'moon-outline',
         color: '#9C27B0',
@@ -191,7 +193,7 @@ function getRotatingPhases(data: OnboardingData): PhaseOption[] {
   if ((config.daysOff ?? 0) > 0) {
     phases.push({
       id: 'off',
-      label: 'Days Off',
+      label: 'off',
       days: config.daysOff,
       icon: 'bed-outline',
       color: '#4CAF50',
@@ -210,7 +212,7 @@ function getFIFOPhases(data: OnboardingData): PhaseOption[] {
   if (workDays > 0) {
     phases.push({
       id: 'work',
-      label: 'Work Block',
+      label: 'work',
       days: workDays,
       icon: 'construct-outline',
       color: '#2196F3',
@@ -220,7 +222,7 @@ function getFIFOPhases(data: OnboardingData): PhaseOption[] {
   if (restDays > 0) {
     phases.push({
       id: 'rest',
-      label: 'Rest Block',
+      label: 'rest',
       days: restDays,
       icon: 'home-outline',
       color: '#78716c',
@@ -230,11 +232,35 @@ function getFIFOPhases(data: OnboardingData): PhaseOption[] {
   return phases;
 }
 
-function getDayDescription(day: number, totalDays: number, phaseLabel: string): string {
-  if (day === 1) return `First day of ${phaseLabel}`;
-  if (day === totalDays) return `Last day of ${phaseLabel}`;
-  if (day === Math.ceil(totalDays / 2)) return `Midpoint of ${phaseLabel}`;
-  return `Day ${day} of ${phaseLabel}`;
+function getDayDescription(
+  day: number,
+  totalDays: number,
+  phaseLabel: string,
+  t: TFunction<'profile'>
+): string {
+  if (day === 1) {
+    return t('shift.cycleResync.dayDescriptions.first', {
+      phase: phaseLabel,
+      defaultValue: `First day of ${phaseLabel}`,
+    });
+  }
+  if (day === totalDays) {
+    return t('shift.cycleResync.dayDescriptions.last', {
+      phase: phaseLabel,
+      defaultValue: `Last day of ${phaseLabel}`,
+    });
+  }
+  if (day === Math.ceil(totalDays / 2)) {
+    return t('shift.cycleResync.dayDescriptions.midpoint', {
+      phase: phaseLabel,
+      defaultValue: `Midpoint of ${phaseLabel}`,
+    });
+  }
+  return t('shift.cycleResync.dayDescriptions.dayOf', {
+    day,
+    phase: phaseLabel,
+    defaultValue: `Day ${day} of ${phaseLabel}`,
+  });
 }
 
 // ── Props ─────────────────────────────────────────────────────────────────────
@@ -254,6 +280,7 @@ export const CycleResyncSheet: React.FC<CycleResyncSheetProps> = ({
   data,
   onSelect,
 }) => {
+  const { t } = useTranslation('profile');
   const translateY = useSharedValue(SCREEN_HEIGHT);
   const backdropOpacity = useSharedValue(0);
 
@@ -288,10 +315,20 @@ export const CycleResyncSheet: React.FC<CycleResyncSheetProps> = ({
   }));
 
   const isFIFO = data.rosterType === 'fifo' || isFIFOPattern(data.patternType);
-  const phases = useMemo(
-    () => (isFIFO ? getFIFOPhases(data) : getRotatingPhases(data)),
-    [data, isFIFO]
-  );
+  const phases = useMemo(() => {
+    const basePhases = isFIFO ? getFIFOPhases(data) : getRotatingPhases(data);
+
+    return basePhases.map((phase) => {
+      const key = `shift.cycleResync.phaseLabels.${phase.id}`;
+
+      return {
+        ...phase,
+        label: t(key, {
+          defaultValue: t(`shift.${phase.label}`, { defaultValue: phase.label }),
+        }),
+      };
+    });
+  }, [data, isFIFO, t]);
 
   const handlePhaseSelect = (phase: PhaseOption, index: number) => {
     if (phase.days <= 0) return;
@@ -327,7 +364,9 @@ export const CycleResyncSheet: React.FC<CycleResyncSheetProps> = ({
           style={StyleSheet.absoluteFill}
           onPress={onClose}
           activeOpacity={1}
-          accessibilityLabel="Close"
+          accessibilityLabel={t('shift.cycleResync.backdropCloseA11y', {
+            defaultValue: 'Close',
+          })}
           accessibilityRole="button"
         />
       </Animated.View>
@@ -349,9 +388,17 @@ export const CycleResyncSheet: React.FC<CycleResyncSheetProps> = ({
                   <Ionicons name="locate-outline" size={18} color={theme.colors.sacredGold} />
                 </View>
                 <View>
-                  <Animated.Text style={styles.headerTitle}>Re-sync Cycle</Animated.Text>
+                  <Animated.Text style={styles.headerTitle}>
+                    {t('shift.cycleResync.title', { defaultValue: 'Re-sync Cycle' })}
+                  </Animated.Text>
                   <Animated.Text style={styles.headerSubtitle}>
-                    {isFIFO ? 'Are you at work or home?' : 'Which shift phase are you on?'}
+                    {isFIFO
+                      ? t('shift.cycleResync.subtitleFifo', {
+                          defaultValue: 'Are you at work or home?',
+                        })
+                      : t('shift.cycleResync.subtitleRotating', {
+                          defaultValue: 'Which shift phase are you on?',
+                        })}
                   </Animated.Text>
                 </View>
               </View>
@@ -359,7 +406,9 @@ export const CycleResyncSheet: React.FC<CycleResyncSheetProps> = ({
                 onPress={onClose}
                 style={styles.closeBtn}
                 hitSlop={8}
-                accessibilityLabel="Close"
+                accessibilityLabel={t('shift.cycleResync.closeA11y', {
+                  defaultValue: 'Close',
+                })}
                 accessibilityRole="button"
               >
                 <Ionicons name="close-circle" size={24} color={theme.colors.shadow} />
@@ -377,7 +426,10 @@ export const CycleResyncSheet: React.FC<CycleResyncSheetProps> = ({
                   style={styles.phaseCard}
                   onPress={() => handlePhaseSelect(phase, index)}
                   activeOpacity={0.75}
-                  accessibilityLabel={`${phase.label}, ${phase.days} days`}
+                  accessibilityLabel={`${phase.label}, ${t('shift.daysCount', {
+                    count: phase.days,
+                    defaultValue: '{{count}} days',
+                  })}`}
                   accessibilityRole="button"
                 >
                   <View style={[styles.phaseIconBg, { backgroundColor: phase.color + '20' }]}>
@@ -385,7 +437,12 @@ export const CycleResyncSheet: React.FC<CycleResyncSheetProps> = ({
                   </View>
                   <View style={styles.phaseInfo}>
                     <Animated.Text style={styles.phaseLabel}>{phase.label}</Animated.Text>
-                    <Animated.Text style={styles.phaseDays}>{phase.days} days</Animated.Text>
+                    <Animated.Text style={styles.phaseDays}>
+                      {t('shift.daysCount', {
+                        count: phase.days,
+                        defaultValue: '{{count}} days',
+                      })}
+                    </Animated.Text>
                   </View>
                   <Ionicons name="chevron-forward" size={18} color={theme.colors.shadow} />
                 </TouchableOpacity>
@@ -394,7 +451,9 @@ export const CycleResyncSheet: React.FC<CycleResyncSheetProps> = ({
               {phases.length === 0 && (
                 <View style={styles.emptyState}>
                   <Animated.Text style={styles.emptyText}>
-                    Configure a shift pattern first to re-sync your cycle.
+                    {t('shift.cycleResync.empty', {
+                      defaultValue: 'Configure a shift pattern first to re-sync your cycle.',
+                    })}
                   </Animated.Text>
                 </View>
               )}
@@ -414,20 +473,26 @@ export const CycleResyncSheet: React.FC<CycleResyncSheetProps> = ({
                 onPress={() => setStage('phase')}
                 style={styles.backBtn}
                 hitSlop={8}
-                accessibilityLabel="Back to phase selection"
+                accessibilityLabel={t('shift.cycleResync.backToPhaseA11y', {
+                  defaultValue: 'Back to phase selection',
+                })}
                 accessibilityRole="button"
               >
                 <Ionicons name="arrow-back" size={20} color={theme.colors.dust} />
               </TouchableOpacity>
               <View style={styles.headerCenter}>
                 <Animated.Text style={styles.headerTitle}>{selectedPhase.label}</Animated.Text>
-                <Animated.Text style={styles.headerSubtitle}>Which day are you on?</Animated.Text>
+                <Animated.Text style={styles.headerSubtitle}>
+                  {t('shift.cycleResync.daySubtitle', { defaultValue: 'Which day are you on?' })}
+                </Animated.Text>
               </View>
               <TouchableOpacity
                 onPress={onClose}
                 style={styles.closeBtn}
                 hitSlop={8}
-                accessibilityLabel="Close"
+                accessibilityLabel={t('shift.cycleResync.closeA11y', {
+                  defaultValue: 'Close',
+                })}
                 accessibilityRole="button"
               >
                 <Ionicons name="close-circle" size={24} color={theme.colors.shadow} />
@@ -458,7 +523,10 @@ export const CycleResyncSheet: React.FC<CycleResyncSheetProps> = ({
                         setSelectedDay(day);
                       }}
                       activeOpacity={0.7}
-                      accessibilityLabel={`Day ${day}`}
+                      accessibilityLabel={t('shift.cycleResync.dayA11y', {
+                        day,
+                        defaultValue: 'Day {{day}}',
+                      })}
                       accessibilityRole="radio"
                       accessibilityState={{ checked: isSelected }}
                     >
@@ -477,7 +545,7 @@ export const CycleResyncSheet: React.FC<CycleResyncSheetProps> = ({
 
               {/* Description */}
               <Animated.Text style={styles.dayDescription}>
-                {getDayDescription(selectedDay, selectedPhase.days, selectedPhase.label)}
+                {getDayDescription(selectedDay, selectedPhase.days, selectedPhase.label, t)}
               </Animated.Text>
 
               {/* Confirm button */}
@@ -486,11 +554,15 @@ export const CycleResyncSheet: React.FC<CycleResyncSheetProps> = ({
                 onPress={handleConfirm}
                 disabled={selectedPhase.days <= 0}
                 activeOpacity={0.8}
-                accessibilityLabel="Confirm cycle position"
+                accessibilityLabel={t('shift.cycleResync.confirmA11y', {
+                  defaultValue: 'Confirm cycle position',
+                })}
                 accessibilityRole="button"
               >
                 <Ionicons name="checkmark-circle-outline" size={18} color={theme.colors.paper} />
-                <Animated.Text style={styles.confirmText}>Confirm Position</Animated.Text>
+                <Animated.Text style={styles.confirmText}>
+                  {t('shift.cycleResync.confirm', { defaultValue: 'Confirm Position' })}
+                </Animated.Text>
               </TouchableOpacity>
             </ScrollView>
           </Animated.View>

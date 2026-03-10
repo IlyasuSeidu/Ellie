@@ -241,6 +241,11 @@
       "firstDay": "本阶段第一天",
       "lastDay": "本阶段最后一天",
       "dayOfTotal": "{{total}} 第 {{day}} 天"
+    },
+    "options": {
+      "day": "Day Shift",
+      "night": "Night Shift",
+      "off": "Off Days"
     }
   },
   "fifoPhaseSelector": {
@@ -710,5 +715,45 @@
     "warning": "这个名册很繁重（{{workPercentage}}% 工作）。如果疲劳成为问题，请考虑增加在家休息的时间。",
     "workPatternSubtitle": "您在现场时如何安排轮班？",
     "workPatternTitle": "工作块期间的工作模式"
+  },
+  "progressHeader": {
+    "goBackA11y": "Go back",
+    "skip": "Skip",
+    "skipA11y": "Skip",
+    "percentageComplete": "{{percentage}}% Complete"
+  },
+  "countrySelector": {
+    "searchPlaceholder": "Search countries...",
+    "searchA11y": "Search countries",
+    "empty": "No countries found",
+    "modalTitle": "Select Country",
+    "modalCloseA11y": "Close country selector"
+  },
+  "timePicker": {
+    "title": "Select Time",
+    "labels": {
+      "hour": "Hour",
+      "minute": "Minute",
+      "period": "Period"
+    }
+  },
+  "livePatternPreview": {
+    "summary": "Your {{cycleLength}}-day cycle: {{daysOn}}D / {{nightsOn}}N / {{daysOff}}O",
+    "legend": {
+      "offDays": "Off Days"
+    }
+  },
+  "chatInput": {
+    "submitA11y": "Submit response"
+  },
+  "typingIndicator": {
+    "a11y": "Bot is typing"
+  },
+  "chatAvatar": {
+    "a11y": "Mining assistant avatar"
+  },
+  "premiumCalendar": {
+    "previousMonthA11y": "Previous month",
+    "nextMonthA11y": "Next month"
   }
 }

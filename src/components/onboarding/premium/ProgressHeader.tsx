@@ -6,6 +6,7 @@
 
 import React from 'react';
 import { View, Text, TouchableOpacity, ViewStyle, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import Animated, {
   useAnimatedStyle,
   withSpring,
@@ -48,6 +49,7 @@ export const ProgressHeader: React.FC<ProgressHeaderProps> = ({
   style,
   testID,
 }) => {
+  const { t } = useTranslation(['onboarding', 'common']);
   const handleBack = () => {
     if (onBack && currentStep > 1) {
       void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
@@ -79,7 +81,10 @@ export const ProgressHeader: React.FC<ProgressHeaderProps> = ({
               onPress={handleBack}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               accessibilityRole="button"
-              accessibilityLabel="Go back"
+              accessibilityLabel={t('progressHeader.goBackA11y', {
+                ns: 'onboarding',
+                defaultValue: 'Go back',
+              })}
               testID={`${testID}-back`}
             >
               <Text style={styles.backButtonText}>←</Text>
@@ -108,10 +113,18 @@ export const ProgressHeader: React.FC<ProgressHeaderProps> = ({
               onPress={handleSkip}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               accessibilityRole="button"
-              accessibilityLabel="Skip"
+              accessibilityLabel={t('progressHeader.skipA11y', {
+                ns: 'onboarding',
+                defaultValue: 'Skip',
+              })}
               testID={`${testID}-skip`}
             >
-              <Text style={styles.skipButtonText}>Skip</Text>
+              <Text style={styles.skipButtonText}>
+                {t('progressHeader.skip', {
+                  ns: 'onboarding',
+                  defaultValue: 'Skip',
+                })}
+              </Text>
             </TouchableOpacity>
           ) : (
             <View style={styles.placeholder} />
@@ -122,7 +135,11 @@ export const ProgressHeader: React.FC<ProgressHeaderProps> = ({
       {/* Progress Percentage */}
       {showPercentage && (
         <Text style={styles.percentageText} testID={`${testID}-percentage`}>
-          {progressPercentage}% Complete
+          {t('progressHeader.percentageComplete', {
+            ns: 'onboarding',
+            percentage: progressPercentage,
+            defaultValue: '{{percentage}}% Complete',
+          })}
         </Text>
       )}
     </View>

@@ -8,6 +8,7 @@
 
 import React, { useEffect, useCallback, useMemo } from 'react';
 import { View, Image, Alert, Pressable, StyleSheet, Platform } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -58,6 +59,7 @@ export const ProfileHeroSection: React.FC<ProfileHeroSectionProps> = ({
   onEditPress,
   animationDelay = 0,
 }) => {
+  const { t } = useTranslation('common');
   const initials = useMemo(() => getInitials(name), [name]);
 
   // ── Entrance animation ─────────────────────────────────────────
@@ -116,14 +118,14 @@ export const ProfileHeroSection: React.FC<ProfileHeroSectionProps> = ({
       onPress?: () => void;
     }> = [
       {
-        text: 'Choose from Library',
+        text: t('avatar.chooseFromLibrary', { defaultValue: 'Choose from Library' }),
         onPress: async () => {
           const uri = await avatarService.pickFromLibrary();
           if (uri) onAvatarChange(uri);
         },
       },
       {
-        text: 'Take Photo',
+        text: t('avatar.takePhoto', { defaultValue: 'Take Photo' }),
         onPress: async () => {
           const uri = await avatarService.pickFromCamera();
           if (uri) onAvatarChange(uri);
@@ -133,7 +135,7 @@ export const ProfileHeroSection: React.FC<ProfileHeroSectionProps> = ({
 
     if (avatarUri) {
       buttons.push({
-        text: 'Remove Photo',
+        text: t('avatar.removePhoto', { defaultValue: 'Remove Photo' }),
         style: 'destructive',
         onPress: async () => {
           await avatarService.deleteAvatar(avatarUri);
@@ -142,9 +144,13 @@ export const ProfileHeroSection: React.FC<ProfileHeroSectionProps> = ({
       });
     }
 
-    buttons.push({ text: 'Cancel', style: 'cancel' });
-    Alert.alert('Profile Photo', 'Choose your avatar', buttons);
-  }, [avatarUri, onAvatarChange]);
+    buttons.push({ text: t('buttons.cancel', { defaultValue: 'Cancel' }), style: 'cancel' });
+    Alert.alert(
+      t('avatar.title', { defaultValue: 'Profile Photo' }),
+      t('avatar.message', { defaultValue: 'Choose your avatar' }),
+      buttons
+    );
+  }, [avatarUri, onAvatarChange, t]);
 
   const tapGesture = Gesture.Tap()
     .onBegin(() => {

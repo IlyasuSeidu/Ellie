@@ -6,8 +6,9 @@
  * Features entrance animation and haptic feedback.
  */
 
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { View, StyleSheet, Platform, TouchableOpacity } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import Animated, {
   FadeInUp,
   useAnimatedStyle,
@@ -39,13 +40,6 @@ export interface QuickActionsBarProps {
   /** Test ID */
   testID?: string;
 }
-
-const DEFAULT_ACTIONS: QuickAction[] = [
-  { key: 'settings', icon: 'settings-outline', label: 'Settings' },
-  { key: 'notifications', icon: 'notifications-outline', label: 'Alerts' },
-  { key: 'profile', icon: 'person-outline', label: 'Profile' },
-  { key: 'export', icon: 'share-outline', label: 'Export' },
-];
 
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
@@ -97,11 +91,39 @@ const ActionButton: React.FC<ActionButtonProps> = ({ action, onPress, delay }) =
 };
 
 export const QuickActionsBar: React.FC<QuickActionsBarProps> = ({
-  actions = DEFAULT_ACTIONS,
+  actions,
   onActionPress,
   animationDelay = 600,
   testID,
 }) => {
+  const { t } = useTranslation('dashboard');
+  const defaultActions = useMemo<QuickAction[]>(
+    () => [
+      {
+        key: 'settings',
+        icon: 'settings-outline',
+        label: t('quickActions.settings', { defaultValue: 'Settings' }),
+      },
+      {
+        key: 'notifications',
+        icon: 'notifications-outline',
+        label: t('quickActions.alerts', { defaultValue: 'Alerts' }),
+      },
+      {
+        key: 'profile',
+        icon: 'person-outline',
+        label: t('quickActions.profile', { defaultValue: 'Profile' }),
+      },
+      {
+        key: 'export',
+        icon: 'share-outline',
+        label: t('quickActions.export', { defaultValue: 'Export' }),
+      },
+    ],
+    [t]
+  );
+
+  const resolvedActions = actions ?? defaultActions;
   const handlePress = useCallback(
     (key: string) => {
       onActionPress?.(key);
@@ -111,7 +133,7 @@ export const QuickActionsBar: React.FC<QuickActionsBarProps> = ({
 
   return (
     <View style={styles.container} testID={testID}>
-      {actions.map((action, index) => (
+      {resolvedActions.map((action, index) => (
         <ActionButton
           key={action.key}
           action={action}

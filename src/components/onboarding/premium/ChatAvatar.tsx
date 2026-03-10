@@ -7,6 +7,7 @@
 
 import React, { useEffect } from 'react';
 import { StyleSheet, Platform, Image } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -30,6 +31,7 @@ export interface ChatAvatarProps {
 
 export const ChatAvatar = React.memo<ChatAvatarProps>(
   ({ size = 40, animated = true, reducedMotion, testID }) => {
+    const { t } = useTranslation('onboarding');
     const scale = useSharedValue(1);
 
     useEffect(() => {
@@ -70,7 +72,9 @@ export const ChatAvatar = React.memo<ChatAvatarProps>(
         ]}
         testID={testID}
         accessibilityRole="image"
-        accessibilityLabel="Mining assistant avatar"
+        accessibilityLabel={t('chatAvatar.a11y', {
+          defaultValue: 'Mining assistant avatar',
+        })}
       >
         <Image
           source={require('../../../../assets/onboarding/icons/consolidated/mining-helmet-sacred-flame.png')}

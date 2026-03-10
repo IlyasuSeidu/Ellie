@@ -32,6 +32,7 @@ import Animated, {
   Easing,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
@@ -92,6 +93,7 @@ const SpeakingIndicator: React.FC = () => {
 };
 
 export const VoiceAssistantModal: React.FC = () => {
+  const { t } = useTranslation('dashboard');
   const {
     state,
     messages,
@@ -152,11 +154,11 @@ export const VoiceAssistantModal: React.FC = () => {
   const getStatusText = (): string => {
     switch (state) {
       case 'listening':
-        return 'Listening...';
+        return t('voiceAssistant.status.listening', { defaultValue: 'Listening...' });
       case 'processing':
-        return 'Thinking...';
+        return t('voiceAssistant.status.processing', { defaultValue: 'Thinking...' });
       case 'speaking':
-        return 'Tap to stop speaking';
+        return t('voiceAssistant.status.speaking', { defaultValue: 'Tap to stop speaking' });
       case 'error':
         return getErrorMessage();
       default:
@@ -164,41 +166,69 @@ export const VoiceAssistantModal: React.FC = () => {
           return notice.message;
         }
         if (messages.length === 0 && isWakeWordEnabled && !isWakeWordAvailable) {
-          return 'Wake-word unavailable, tap the mic to talk';
+          return t('voiceAssistant.status.wakeWordUnavailable', {
+            defaultValue: 'Wake-word unavailable, tap the mic to talk',
+          });
         }
         if (messages.length === 0 && isWakeWordEnabled && isWakeWordListening) {
-          return `Say "${wakeWordPhrase}" or tap the mic`;
+          return t('voiceAssistant.status.sayWakeWordOrTap', {
+            wakeWordPhrase,
+            defaultValue: 'Say "{{wakeWordPhrase}}" or tap the mic',
+          });
         }
         return messages.length > 0
-          ? 'Tap the mic to ask another question'
-          : 'Tap the mic to ask Ellie';
+          ? t('voiceAssistant.status.askAnother', {
+              defaultValue: 'Tap the mic to ask another question',
+            })
+          : t('voiceAssistant.status.askEllie', { defaultValue: 'Tap the mic to ask Ellie' });
     }
   };
 
   const getErrorMessage = (): string => {
-    if (!error) return 'Something went wrong';
+    if (!error) return t('voiceAssistant.errors.default', { defaultValue: 'Something went wrong' });
 
     switch (error.type) {
       case 'permission_denied':
         return Platform.OS === 'ios'
-          ? 'Microphone access denied. Enable in Settings > Ellie.'
-          : 'Microphone access denied. Please grant permission.';
+          ? t('voiceAssistant.errors.permissionDeniedIos', {
+              defaultValue: 'Microphone access denied. Enable in Settings > Ellie.',
+            })
+          : t('voiceAssistant.errors.permissionDenied', {
+              defaultValue: 'Microphone access denied. Please grant permission.',
+            });
       case 'network_error':
-        return 'Check your connection and retry.';
+        return t('voiceAssistant.errors.network', {
+          defaultValue: 'Check your connection and retry.',
+        });
       case 'speech_recognition_failed':
-        return "I didn't catch that. Please try again.";
+        return t('voiceAssistant.errors.recognition', {
+          defaultValue: "I didn't catch that. Please try again.",
+        });
       case 'backend_error':
-        return 'Service temporarily unavailable. Please try again.';
+        return t('voiceAssistant.errors.backend', {
+          defaultValue: 'Service temporarily unavailable. Please try again.',
+        });
       case 'rate_limited':
-        return 'Please wait briefly and retry.';
+        return t('voiceAssistant.errors.rateLimited', {
+          defaultValue: 'Please wait briefly and retry.',
+        });
       case 'timeout':
-        return 'Request timed out. Please retry.';
+        return t('voiceAssistant.errors.timeout', {
+          defaultValue: 'Request timed out. Please retry.',
+        });
       case 'wake_word_unavailable':
-        return 'Wake-word unavailable, tap the mic to talk.';
+        return t('voiceAssistant.errors.wakeWordUnavailable', {
+          defaultValue: 'Wake-word unavailable, tap the mic to talk.',
+        });
       case 'tts_error':
-        return 'Could not play audio response.';
+        return t('voiceAssistant.errors.tts', {
+          defaultValue: 'Could not play audio response.',
+        });
       default:
-        return error.message || 'Something went wrong';
+        return (
+          error.message ||
+          t('voiceAssistant.errors.default', { defaultValue: 'Something went wrong' })
+        );
     }
   };
 
@@ -220,15 +250,26 @@ export const VoiceAssistantModal: React.FC = () => {
   const getMicAccessibilityLabel = (): string => {
     switch (state) {
       case 'listening':
-        return 'Stop listening. Double tap to finish speaking.';
+        return t('voiceAssistant.micA11y.listening', {
+          defaultValue: 'Stop listening. Double tap to finish speaking.',
+        });
       case 'processing':
-        return 'Processing your question. Please wait.';
+        return t('voiceAssistant.micA11y.processing', {
+          defaultValue: 'Processing your question. Please wait.',
+        });
       case 'speaking':
-        return 'Ellie is speaking. Double tap to stop.';
+        return t('voiceAssistant.micA11y.speaking', {
+          defaultValue: 'Ellie is speaking. Double tap to stop.',
+        });
       case 'error':
-        return `Error: ${normalizeSentence(getErrorMessage())}. Double tap to try again.`;
+        return t('voiceAssistant.micA11y.error', {
+          message: normalizeSentence(getErrorMessage()),
+          defaultValue: 'Error: {{message}}. Double tap to try again.',
+        });
       default:
-        return 'Ask Ellie a question. Double tap to start speaking.';
+        return t('voiceAssistant.micA11y.idle', {
+          defaultValue: 'Ask Ellie a question. Double tap to start speaking.',
+        });
     }
   };
 
@@ -260,7 +301,9 @@ export const VoiceAssistantModal: React.FC = () => {
               <Text style={styles.title} accessibilityRole="text">
                 Ellie
               </Text>
-              <Text style={styles.subtitle}>Voice Assistant</Text>
+              <Text style={styles.subtitle}>
+                {t('voiceAssistant.subtitle', { defaultValue: 'Voice Assistant' })}
+              </Text>
             </View>
             <View style={styles.headerRight}>
               {messages.length > 0 && (
@@ -268,7 +311,9 @@ export const VoiceAssistantModal: React.FC = () => {
                   onPress={clearHistory}
                   style={styles.clearButton}
                   hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
-                  accessibilityLabel="Clear conversation history"
+                  accessibilityLabel={t('voiceAssistant.clearHistoryA11y', {
+                    defaultValue: 'Clear conversation history',
+                  })}
                   accessibilityRole="button"
                 >
                   <Ionicons name="trash-outline" size={20} color={theme.colors.shadow} />
@@ -278,7 +323,9 @@ export const VoiceAssistantModal: React.FC = () => {
                 onPress={handleClose}
                 style={styles.closeButton}
                 hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
-                accessibilityLabel="Close voice assistant"
+                accessibilityLabel={t('voiceAssistant.closeA11y', {
+                  defaultValue: 'Close voice assistant',
+                })}
                 accessibilityRole="button"
               >
                 <Ionicons name="close" size={24} color={theme.colors.dust} />
@@ -293,7 +340,9 @@ export const VoiceAssistantModal: React.FC = () => {
             contentContainerStyle={styles.conversationContent}
             showsVerticalScrollIndicator={false}
             accessibilityRole="list"
-            accessibilityLabel="Conversation history"
+            accessibilityLabel={t('voiceAssistant.conversationHistoryA11y', {
+              defaultValue: 'Conversation history',
+            })}
           >
             {/* Empty state with suggestions */}
             {messages.length === 0 && state === 'idle' && (
@@ -304,15 +353,35 @@ export const VoiceAssistantModal: React.FC = () => {
                   color={theme.colors.softStone}
                   accessibilityElementsHidden
                 />
-                <Text style={styles.emptyText}>Ask me about your shift schedule</Text>
+                <Text style={styles.emptyText}>
+                  {t('voiceAssistant.empty.prompt', {
+                    defaultValue: 'Ask me about your shift schedule',
+                  })}
+                </Text>
                 <View style={styles.suggestions}>
-                  <Text style={styles.suggestionLabel}>Try saying:</Text>
-                  <Text style={styles.suggestionText}>
-                    &quot;What shift do I have tomorrow?&quot;
+                  <Text style={styles.suggestionLabel}>
+                    {t('voiceAssistant.empty.trySaying', { defaultValue: 'Try saying:' })}
                   </Text>
-                  <Text style={styles.suggestionText}>&quot;When is my next day off?&quot;</Text>
                   <Text style={styles.suggestionText}>
-                    &quot;How many night shifts this month?&quot;
+                    &quot;
+                    {t('voiceAssistant.empty.example1', {
+                      defaultValue: 'What shift do I have tomorrow?',
+                    })}
+                    &quot;
+                  </Text>
+                  <Text style={styles.suggestionText}>
+                    &quot;
+                    {t('voiceAssistant.empty.example2', {
+                      defaultValue: 'When is my next day off?',
+                    })}
+                    &quot;
+                  </Text>
+                  <Text style={styles.suggestionText}>
+                    &quot;
+                    {t('voiceAssistant.empty.example3', {
+                      defaultValue: 'How many night shifts this month?',
+                    })}
+                    &quot;
                   </Text>
                 </View>
               </View>
@@ -323,15 +392,21 @@ export const VoiceAssistantModal: React.FC = () => {
               <View style={styles.permissionNotice}>
                 <Ionicons name="mic-off-outline" size={32} color={theme.colors.warning} />
                 <Text style={styles.permissionText}>
-                  Ellie needs microphone access to hear your questions.
+                  {t('voiceAssistant.permission.notice', {
+                    defaultValue: 'Ellie needs microphone access to hear your questions.',
+                  })}
                 </Text>
                 <TouchableOpacity
                   style={styles.permissionButton}
                   onPress={handlePermissionRequest}
-                  accessibilityLabel="Grant microphone permission"
+                  accessibilityLabel={t('voiceAssistant.permission.grantA11y', {
+                    defaultValue: 'Grant microphone permission',
+                  })}
                   accessibilityRole="button"
                 >
-                  <Text style={styles.permissionButtonText}>Grant Permission</Text>
+                  <Text style={styles.permissionButtonText}>
+                    {t('voiceAssistant.permission.grant', { defaultValue: 'Grant Permission' })}
+                  </Text>
                 </TouchableOpacity>
               </View>
             )}
@@ -353,7 +428,10 @@ export const VoiceAssistantModal: React.FC = () => {
               >
                 <Text
                   style={styles.partialTranscript}
-                  accessibilityLabel={`You are saying: ${partialTranscript}`}
+                  accessibilityLabel={t('voiceAssistant.partialTranscriptA11y', {
+                    text: partialTranscript,
+                    defaultValue: 'You are saying: {{text}}',
+                  })}
                   accessibilityRole="text"
                 >
                   {partialTranscript}
@@ -365,7 +443,9 @@ export const VoiceAssistantModal: React.FC = () => {
             {state === 'processing' && (
               <Animated.View entering={FadeIn.duration(200)} style={styles.processingBubble}>
                 <ActivityIndicator size="small" color={theme.colors.sacredGold} />
-                <Text style={styles.processingText}>Ellie is thinking...</Text>
+                <Text style={styles.processingText}>
+                  {t('voiceAssistant.processingInline', { defaultValue: 'Ellie is thinking...' })}
+                </Text>
               </Animated.View>
             )}
           </ScrollView>
@@ -461,22 +541,29 @@ export const VoiceAssistantModal: React.FC = () => {
               <Animated.View entering={FadeIn.duration(200)} style={styles.errorContainer}>
                 {error.retryable && (
                   <Text style={styles.retryHint} accessibilityRole="text">
-                    Tap the mic to try again
+                    {t('voiceAssistant.retryHint', { defaultValue: 'Tap the mic to try again' })}
                   </Text>
                 )}
                 {error.requestId && (
                   <Text style={styles.requestIdText} accessibilityRole="text">
-                    Ref: {error.requestId}
+                    {t('voiceAssistant.requestRef', {
+                      requestId: error.requestId,
+                      defaultValue: 'Ref: {{requestId}}',
+                    })}
                   </Text>
                 )}
                 {error.type === 'permission_denied' && (
                   <TouchableOpacity
                     style={styles.settingsButton}
                     onPress={handlePermissionRequest}
-                    accessibilityLabel="Request microphone permission"
+                    accessibilityLabel={t('voiceAssistant.permission.requestA11y', {
+                      defaultValue: 'Request microphone permission',
+                    })}
                     accessibilityRole="button"
                   >
-                    <Text style={styles.settingsButtonText}>Grant Permission</Text>
+                    <Text style={styles.settingsButtonText}>
+                      {t('voiceAssistant.permission.grant', { defaultValue: 'Grant Permission' })}
+                    </Text>
                   </TouchableOpacity>
                 )}
               </Animated.View>

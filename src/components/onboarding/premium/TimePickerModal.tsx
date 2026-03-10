@@ -7,6 +7,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, View, TouchableOpacity, ScrollView, StyleSheet, Platform } from 'react-native';
 import Animated from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { theme } from '@/utils/theme';
@@ -40,6 +41,7 @@ export const TimePickerModal: React.FC<TimePickerModalProps> = ({
   onCancel,
   testID,
 }) => {
+  const { t } = useTranslation(['onboarding', 'common']);
   const [selectedHour, setSelectedHour] = useState(9);
   const [selectedMinute, setSelectedMinute] = useState(0);
   const [isPM, setIsPM] = useState(false);
@@ -118,14 +120,18 @@ export const TimePickerModal: React.FC<TimePickerModalProps> = ({
             end={{ x: 1, y: 1 }}
             style={styles.header}
           >
-            <Animated.Text style={styles.headerText}>Select Time</Animated.Text>
+            <Animated.Text style={styles.headerText}>
+              {t('timePicker.title', { ns: 'onboarding', defaultValue: 'Select Time' })}
+            </Animated.Text>
           </LinearGradient>
 
           {/* Pickers */}
           <View style={styles.pickersContainer}>
             {/* Hour Picker */}
             <View style={styles.pickerColumn}>
-              <Animated.Text style={styles.pickerLabel}>Hour</Animated.Text>
+              <Animated.Text style={styles.pickerLabel}>
+                {t('timePicker.labels.hour', { ns: 'onboarding', defaultValue: 'Hour' })}
+              </Animated.Text>
               <ScrollView style={styles.picker} showsVerticalScrollIndicator={false}>
                 {hours.map((hour) => (
                   <TouchableOpacity
@@ -149,7 +155,9 @@ export const TimePickerModal: React.FC<TimePickerModalProps> = ({
 
             {/* Minute Picker */}
             <View style={styles.pickerColumn}>
-              <Animated.Text style={styles.pickerLabel}>Minute</Animated.Text>
+              <Animated.Text style={styles.pickerLabel}>
+                {t('timePicker.labels.minute', { ns: 'onboarding', defaultValue: 'Minute' })}
+              </Animated.Text>
               <ScrollView style={styles.picker} showsVerticalScrollIndicator={false}>
                 {MINUTES.map((minute) => (
                   <TouchableOpacity
@@ -177,7 +185,9 @@ export const TimePickerModal: React.FC<TimePickerModalProps> = ({
             {/* AM/PM Toggle */}
             {use12HourFormat && (
               <View style={styles.pickerColumn}>
-                <Animated.Text style={styles.pickerLabel}>Period</Animated.Text>
+                <Animated.Text style={styles.pickerLabel}>
+                  {t('timePicker.labels.period', { ns: 'onboarding', defaultValue: 'Period' })}
+                </Animated.Text>
                 <View style={styles.ampmContainer}>
                   <TouchableOpacity
                     onPress={toggleAMPM}
@@ -209,14 +219,18 @@ export const TimePickerModal: React.FC<TimePickerModalProps> = ({
               style={styles.cancelButton}
               testID={`${testID}-cancel`}
             >
-              <Animated.Text style={styles.cancelButtonText}>Cancel</Animated.Text>
+              <Animated.Text style={styles.cancelButtonText}>
+                {t('buttons.cancel', { ns: 'common', defaultValue: 'Cancel' })}
+              </Animated.Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={handleConfirm}
               style={styles.confirmButton}
               testID={`${testID}-confirm`}
             >
-              <Animated.Text style={styles.confirmButtonText}>Confirm</Animated.Text>
+              <Animated.Text style={styles.confirmButtonText}>
+                {t('buttons.confirm', { ns: 'common', defaultValue: 'Confirm' })}
+              </Animated.Text>
             </TouchableOpacity>
           </View>
         </View>

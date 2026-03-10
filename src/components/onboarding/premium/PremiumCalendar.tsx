@@ -6,9 +6,11 @@
 
 import React, { useState, useMemo } from 'react';
 import { View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import Animated from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
+import { normalizeLanguage } from '@/i18n/languageDetector';
 import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
 import { DayCell } from './DayCell';
 
@@ -27,21 +29,20 @@ export interface PremiumCalendarProps {
   testID?: string;
 }
 
-const WEEKDAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-const MONTHS = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
+const getDateLocaleTag = (language: string): string => {
+  const normalized = normalizeLanguage(language);
+  if (normalized === 'es') return 'es-ES';
+  if (normalized === 'pt-BR') return 'pt-BR';
+  if (normalized === 'fr') return 'fr-FR';
+  if (normalized === 'ar') return 'ar';
+  if (normalized === 'zh-CN') return 'zh-CN';
+  if (normalized === 'ru') return 'ru-RU';
+  if (normalized === 'hi') return 'hi-IN';
+  if (normalized === 'af') return 'af-ZA';
+  if (normalized === 'zu') return 'zu-ZA';
+  if (normalized === 'id') return 'id-ID';
+  return 'en-US';
+};
 
 export const PremiumCalendar: React.FC<PremiumCalendarProps> = ({
   selectedDate,
@@ -51,7 +52,27 @@ export const PremiumCalendar: React.FC<PremiumCalendarProps> = ({
   disabledDates = [],
   testID,
 }) => {
+  const { t, i18n } = useTranslation('onboarding');
+  const localeTag = useMemo(() => getDateLocaleTag(i18n.language), [i18n.language]);
   const [currentMonth, setCurrentMonth] = useState(selectedDate || new Date());
+
+  const weekdayLabels = useMemo(() => {
+    const sunday = new Date(Date.UTC(2026, 0, 4)); // Sunday baseline
+    return Array.from({ length: 7 }, (_, index) => {
+      const date = new Date(sunday);
+      date.setUTCDate(sunday.getUTCDate() + index);
+      return date.toLocaleDateString(localeTag, { weekday: 'narrow' });
+    });
+  }, [localeTag]);
+
+  const monthLabel = useMemo(
+    () =>
+      currentMonth.toLocaleDateString(localeTag, {
+        month: 'long',
+        year: 'numeric',
+      }),
+    [currentMonth, localeTag]
+  );
 
   const handlePrevMonth = () => {
     void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
@@ -169,21 +190,23 @@ export const PremiumCalendar: React.FC<PremiumCalendarProps> = ({
           onPress={handlePrevMonth}
           style={styles.navButton}
           accessibilityRole="button"
-          accessibilityLabel="Previous month"
+          accessibilityLabel={t('premiumCalendar.previousMonthA11y', {
+            defaultValue: 'Previous month',
+          })}
           testID={`${testID}-prev-month`}
         >
           <Animated.Text style={styles.navText}>‹</Animated.Text>
         </TouchableOpacity>
 
-        <Animated.Text style={styles.monthText}>
-          {MONTHS[currentMonth.getMonth()]} {currentMonth.getFullYear()}
-        </Animated.Text>
+        <Animated.Text style={styles.monthText}>{monthLabel}</Animated.Text>
 
         <TouchableOpacity
           onPress={handleNextMonth}
           style={styles.navButton}
           accessibilityRole="button"
-          accessibilityLabel="Next month"
+          accessibilityLabel={t('premiumCalendar.nextMonthA11y', {
+            defaultValue: 'Next month',
+          })}
           testID={`${testID}-next-month`}
         >
           <Animated.Text style={styles.navText}>›</Animated.Text>
@@ -192,7 +215,7 @@ export const PremiumCalendar: React.FC<PremiumCalendarProps> = ({
 
       {/* Weekday headers */}
       <View style={styles.weekdaysContainer}>
-        {WEEKDAYS.map((weekday, index) => (
+        {weekdayLabels.map((weekday, index) => (
           <View key={index} style={styles.weekdayCell}>
             <Animated.Text style={styles.weekdayText}>{weekday}</Animated.Text>
           </View>

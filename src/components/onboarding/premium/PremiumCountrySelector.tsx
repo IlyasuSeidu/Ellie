@@ -7,6 +7,7 @@
 import React, { useState, useMemo } from 'react';
 import { View, TouchableOpacity, ScrollView, StyleSheet, Platform, TextInput } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
 import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
@@ -97,10 +98,14 @@ export const PremiumCountrySelector: React.FC<PremiumCountrySelectorProps> = ({
   selectedCountry,
   onCountrySelect,
   countries = DEFAULT_COUNTRIES,
-  searchPlaceholder = 'Search countries...',
+  searchPlaceholder,
   testID,
 }) => {
+  const { t } = useTranslation('onboarding');
   const [searchQuery, setSearchQuery] = useState('');
+  const resolvedSearchPlaceholder =
+    searchPlaceholder ??
+    t('countrySelector.searchPlaceholder', { defaultValue: 'Search countries...' });
 
   const filteredCountries = useMemo(() => {
     if (!searchQuery.trim()) {
@@ -131,9 +136,11 @@ export const PremiumCountrySelector: React.FC<PremiumCountrySelectorProps> = ({
           style={styles.searchInput}
           value={searchQuery}
           onChangeText={setSearchQuery}
-          placeholder={searchPlaceholder}
+          placeholder={resolvedSearchPlaceholder}
           placeholderTextColor={theme.colors.shadow}
-          accessibilityLabel="Search countries"
+          accessibilityLabel={t('countrySelector.searchA11y', {
+            defaultValue: 'Search countries',
+          })}
           testID={`${testID}-search-input`}
         />
       </View>
@@ -147,7 +154,9 @@ export const PremiumCountrySelector: React.FC<PremiumCountrySelectorProps> = ({
       >
         {filteredCountries.length === 0 ? (
           <View style={styles.emptyContainer}>
-            <Animated.Text style={styles.emptyText}>No countries found</Animated.Text>
+            <Animated.Text style={styles.emptyText}>
+              {t('countrySelector.empty', { defaultValue: 'No countries found' })}
+            </Animated.Text>
           </View>
         ) : (
           filteredCountries.map((country) => (

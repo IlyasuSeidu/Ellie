@@ -287,6 +287,11 @@
       "firstDay": "Primeiro dia desta fase",
       "lastDay": "Último dia desta fase",
       "dayOfTotal": "Dia {{day}} de {{total}}"
+    },
+    "options": {
+      "day": "Day Shift",
+      "night": "Night Shift",
+      "off": "Off Days"
     }
   },
   "fifoPhaseSelector": {
@@ -756,5 +761,45 @@
     "warning": "Esta lista é pesada ({{workPercentage}}% trabalho). Considere equilibrar com mais dias em casa se a fadiga se tornar um problema.",
     "workPatternSubtitle": "Como seus turnos são organizados no local?",
     "workPatternTitle": "Padrão de trabalho durante o bloco de trabalho"
+  },
+  "progressHeader": {
+    "goBackA11y": "Go back",
+    "skip": "Skip",
+    "skipA11y": "Skip",
+    "percentageComplete": "{{percentage}}% Complete"
+  },
+  "countrySelector": {
+    "searchPlaceholder": "Search countries...",
+    "searchA11y": "Search countries",
+    "empty": "No countries found",
+    "modalTitle": "Select Country",
+    "modalCloseA11y": "Close country selector"
+  },
+  "timePicker": {
+    "title": "Select Time",
+    "labels": {
+      "hour": "Hour",
+      "minute": "Minute",
+      "period": "Period"
+    }
+  },
+  "livePatternPreview": {
+    "summary": "Your {{cycleLength}}-day cycle: {{daysOn}}D / {{nightsOn}}N / {{daysOff}}O",
+    "legend": {
+      "offDays": "Off Days"
+    }
+  },
+  "chatInput": {
+    "submitA11y": "Submit response"
+  },
+  "typingIndicator": {
+    "a11y": "Bot is typing"
+  },
+  "chatAvatar": {
+    "a11y": "Mining assistant avatar"
+  },
+  "premiumCalendar": {
+    "previousMonthA11y": "Previous month",
+    "nextMonthA11y": "Next month"
   }
 }

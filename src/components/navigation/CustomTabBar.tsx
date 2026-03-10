@@ -13,6 +13,7 @@ import { View, TouchableOpacity, StyleSheet, Dimensions, Platform } from 'react-
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, {
@@ -129,6 +130,7 @@ const TabButton: React.FC<TabButtonProps> = ({
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation }) => {
+  const { t } = useTranslation('dashboard');
   const insets = useSafeAreaInsets();
   const { state: voiceState, openModal } = useVoiceAssistant();
   const { tabAccentColor, tabGlowColor } = useShiftAccent();
@@ -233,6 +235,16 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
   };
 
   const bottomPadding = Math.max(insets.bottom, 8);
+  const tabLabels = useMemo(
+    () => ({
+      Home: t('tabs.home', { defaultValue: 'Home' }),
+      Schedule: t('tabs.schedule', { defaultValue: 'Schedule' }),
+      Stats: t('tabs.stats', { defaultValue: 'Stats' }),
+      Profile: t('tabs.profile', { defaultValue: 'Profile' }),
+      Ellie: t('tabs.ellie', { defaultValue: 'Ellie' }),
+    }),
+    [t]
+  );
 
   return (
     <View style={[styles.container, { paddingBottom: bottomPadding }]} pointerEvents="box-none">
@@ -274,7 +286,7 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
                 isFocused={isFocused}
                 iconName={iconName}
                 iconColor={iconColor}
-                label={route.name}
+                label={tabLabels[route.name as keyof typeof tabLabels] ?? route.name}
               />
             );
           })}
@@ -286,7 +298,9 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
         <TouchableOpacity
           onPress={() => handleTabPress(state.routes[1], 1)}
           activeOpacity={0.8}
-          accessibilityLabel="Open Ellie voice assistant"
+          accessibilityLabel={t('tabs.openVoiceAssistantA11y', {
+            defaultValue: 'Open Ellie voice assistant',
+          })}
           accessibilityRole="button"
         >
           <LinearGradient

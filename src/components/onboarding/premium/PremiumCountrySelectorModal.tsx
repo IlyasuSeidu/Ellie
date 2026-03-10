@@ -7,6 +7,7 @@
 import React from 'react';
 import { View, Modal, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import Animated from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { PremiumCountrySelector, Country } from './PremiumCountrySelector';
 
@@ -30,6 +31,7 @@ export const PremiumCountrySelectorModal: React.FC<PremiumCountrySelectorModalPr
   selectedCountry,
   testID = 'premium-country-selector-modal',
 }) => {
+  const { t } = useTranslation('onboarding');
   const handleSelect = (country: Country) => {
     onSelect(country);
     onClose();
@@ -54,10 +56,15 @@ export const PremiumCountrySelectorModal: React.FC<PremiumCountrySelectorModalPr
         <View style={styles.modalContent}>
           {/* Header */}
           <View style={styles.header}>
-            <Animated.Text style={styles.headerTitle}>Select Country</Animated.Text>
+            <Animated.Text style={styles.headerTitle}>
+              {t('countrySelector.modalTitle', { defaultValue: 'Select Country' })}
+            </Animated.Text>
             <TouchableOpacity
               onPress={onClose}
               style={styles.closeButton}
+              accessibilityLabel={t('countrySelector.modalCloseA11y', {
+                defaultValue: 'Close country selector',
+              })}
               testID={`${testID}-close-button`}
             >
               <Animated.Text style={styles.closeIcon}>✕</Animated.Text>

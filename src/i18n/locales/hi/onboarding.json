@@ -273,6 +273,11 @@
       "firstDay": "इस चरण का पहला दिन",
       "lastDay": "इस चरण का आखिरी दिन",
       "dayOfTotal": "{{total}} का दिन {{day}}"
+    },
+    "options": {
+      "day": "Day Shift",
+      "night": "Night Shift",
+      "off": "Off Days"
     }
   },
   "fifoPhaseSelector": {
@@ -742,5 +747,45 @@
     "warning": "यह रोस्टर भारी है ({{workPercentage}}% कार्य)। यदि थकान एक समस्या बन जाती है तो अधिक घरेलू दिनों के साथ संतुलन बनाने पर विचार करें।",
     "workPatternSubtitle": "साइट पर रहते हुए आपकी शिफ्टें कैसे व्यवस्थित की जाती हैं?",
     "workPatternTitle": "कार्य ब्लॉक के दौरान कार्य पैटर्न"
+  },
+  "progressHeader": {
+    "goBackA11y": "Go back",
+    "skip": "Skip",
+    "skipA11y": "Skip",
+    "percentageComplete": "{{percentage}}% Complete"
+  },
+  "countrySelector": {
+    "searchPlaceholder": "Search countries...",
+    "searchA11y": "Search countries",
+    "empty": "No countries found",
+    "modalTitle": "Select Country",
+    "modalCloseA11y": "Close country selector"
+  },
+  "timePicker": {
+    "title": "Select Time",
+    "labels": {
+      "hour": "Hour",
+      "minute": "Minute",
+      "period": "Period"
+    }
+  },
+  "livePatternPreview": {
+    "summary": "Your {{cycleLength}}-day cycle: {{daysOn}}D / {{nightsOn}}N / {{daysOff}}O",
+    "legend": {
+      "offDays": "Off Days"
+    }
+  },
+  "chatInput": {
+    "submitA11y": "Submit response"
+  },
+  "typingIndicator": {
+    "a11y": "Bot is typing"
+  },
+  "chatAvatar": {
+    "a11y": "Mining assistant avatar"
+  },
+  "premiumCalendar": {
+    "previousMonthA11y": "Previous month",
+    "nextMonthA11y": "Next month"
   }
 }

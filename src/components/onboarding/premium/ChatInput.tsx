@@ -25,6 +25,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 
@@ -77,6 +78,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   autoFocus = true,
   testID,
 }) => {
+  const { t } = useTranslation('onboarding');
   const submitScale = useSharedValue(1);
   const errorOpacity = useSharedValue(0);
 
@@ -207,7 +209,9 @@ export const ChatInput: React.FC<ChatInputProps> = ({
             disabled={!canSubmit}
             testID={`${testID}-submit`}
             accessibilityRole="button"
-            accessibilityLabel="Submit response"
+            accessibilityLabel={t('chatInput.submitA11y', {
+              defaultValue: 'Submit response',
+            })}
             accessibilityState={{ disabled: !canSubmit }}
           >
             <Ionicons name="arrow-forward" size={20} color={theme.colors.paper} />

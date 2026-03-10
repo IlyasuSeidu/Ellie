@@ -13,6 +13,7 @@ import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import type { ShiftPattern, FIFOConfig } from '@/types';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
@@ -54,6 +55,7 @@ export const ShiftConfigCard: React.FC<ShiftConfigCardProps> = ({
   shiftEndTime,
   animationDelay = 0,
 }) => {
+  const { t } = useTranslation('profile');
   const rows = useMemo(() => {
     const result: ConfigRow[] = [];
 
@@ -62,7 +64,7 @@ export const ShiftConfigCard: React.FC<ShiftConfigCardProps> = ({
     // Shift system
     result.push({
       icon: 'time-outline',
-      label: 'System',
+      label: t('shift.system', { defaultValue: 'System' }),
       value: getShiftSystemDisplayName(shiftSystem),
       isBadge: true,
     });
@@ -70,7 +72,7 @@ export const ShiftConfigCard: React.FC<ShiftConfigCardProps> = ({
     // Roster type
     result.push({
       icon: 'swap-horizontal-outline',
-      label: 'Roster',
+      label: t('shift.roster', { defaultValue: 'Roster' }),
       value: getRosterTypeDisplayName(rosterType),
       isBadge: true,
     });
@@ -78,16 +80,21 @@ export const ShiftConfigCard: React.FC<ShiftConfigCardProps> = ({
     // Pattern
     result.push({
       icon: 'refresh-outline',
-      label: 'Pattern',
+      label: t('shift.pattern', { defaultValue: 'Pattern' }),
       value: getPatternDisplayName({ patternType, shiftSystem, customPattern, fifoConfig }),
     });
 
     // Shift times
-    const timesText = getShiftTimesText(shiftSystem, shiftTimes, shiftStartTime, shiftEndTime);
+    const timesText = getShiftTimesText(shiftSystem, shiftTimes, shiftStartTime, shiftEndTime, {
+      day: t('shift.day', { defaultValue: 'Day' }),
+      night: t('shift.night', { defaultValue: 'Night' }),
+      morning: t('shift.morning', { defaultValue: 'Morning' }),
+      afternoon: t('shift.afternoon', { defaultValue: 'Afternoon' }),
+    });
     if (timesText) {
       result.push({
         icon: 'sunny-outline',
-        label: 'Times',
+        label: t('shift.configCard.timesLabel', { defaultValue: 'Times' }),
         value: timesText,
       });
     }
@@ -97,26 +104,32 @@ export const ShiftConfigCard: React.FC<ShiftConfigCardProps> = ({
       if (fifoConfig.siteName) {
         result.push({
           icon: 'location-outline',
-          label: 'Site',
+          label: t('shift.site', { defaultValue: 'Site' }),
           value: fifoConfig.siteName,
         });
       }
 
       result.push({
         icon: 'hammer-outline',
-        label: 'Work',
-        value: `${fifoConfig.workBlockDays} days on-site`,
+        label: t('shift.work', { defaultValue: 'Work' }),
+        value: t('shift.configCard.workDaysOnSite', {
+          count: fifoConfig.workBlockDays,
+          defaultValue: '{{count}} days on-site',
+        }),
       });
 
       result.push({
         icon: 'home-outline',
-        label: 'Rest',
-        value: `${fifoConfig.restBlockDays} days at home`,
+        label: t('shift.rest', { defaultValue: 'Rest' }),
+        value: t('shift.configCard.restDaysAtHome', {
+          count: fifoConfig.restBlockDays,
+          defaultValue: '{{count}} days at home',
+        }),
       });
 
       result.push({
         icon: 'flash-outline',
-        label: 'Shifts',
+        label: t('shift.shifts', { defaultValue: 'Shifts' }),
         value: getFIFOWorkPatternName(fifoConfig),
       });
     }
@@ -131,6 +144,7 @@ export const ShiftConfigCard: React.FC<ShiftConfigCardProps> = ({
     shiftTimes,
     shiftStartTime,
     shiftEndTime,
+    t,
   ]);
 
   if (rows.length === 0) {
@@ -141,7 +155,9 @@ export const ShiftConfigCard: React.FC<ShiftConfigCardProps> = ({
       >
         <View style={styles.emptyState}>
           <Ionicons name="settings-outline" size={24} color={theme.colors.shadow} />
-          <Animated.Text style={styles.emptyText}>No shift configuration set</Animated.Text>
+          <Animated.Text style={styles.emptyText}>
+            {t('shift.configCard.empty', { defaultValue: 'No shift configuration set' })}
+          </Animated.Text>
         </View>
       </Animated.View>
     );
@@ -184,7 +200,9 @@ export const ShiftConfigCard: React.FC<ShiftConfigCardProps> = ({
       {/* Footer note */}
       <View style={styles.footer}>
         <Animated.Text style={styles.footerText}>
-          Shift settings can be updated in Settings
+          {t('shift.configCard.footer', {
+            defaultValue: 'Shift settings can be updated in Settings',
+          })}
         </Animated.Text>
       </View>
     </Animated.View>
@@ -198,19 +216,31 @@ function getShiftTimesText(
   shiftSystem?: string,
   shiftTimes?: OnboardingData['shiftTimes'],
   shiftStartTime?: string,
-  shiftEndTime?: string
+  shiftEndTime?: string,
+  labels?: {
+    day: string;
+    night: string;
+    morning: string;
+    afternoon: string;
+  }
 ): string | null {
   if (shiftTimes) {
     if (shiftSystem === '3-shift') {
       const parts: string[] = [];
       if (shiftTimes.morningShift) {
-        parts.push(`M: ${formatShiftTime(shiftTimes.morningShift.startTime)}`);
+        parts.push(
+          `${labels?.morning ?? 'Morning'}: ${formatShiftTime(shiftTimes.morningShift.startTime)}`
+        );
       }
       if (shiftTimes.afternoonShift) {
-        parts.push(`A: ${formatShiftTime(shiftTimes.afternoonShift.startTime)}`);
+        parts.push(
+          `${labels?.afternoon ?? 'Afternoon'}: ${formatShiftTime(shiftTimes.afternoonShift.startTime)}`
+        );
       }
       if (shiftTimes.nightShift3) {
-        parts.push(`N: ${formatShiftTime(shiftTimes.nightShift3.startTime)}`);
+        parts.push(
+          `${labels?.night ?? 'Night'}: ${formatShiftTime(shiftTimes.nightShift3.startTime)}`
+        );
       }
       return parts.join('  ');
     }
@@ -218,12 +248,12 @@ function getShiftTimesText(
     const parts: string[] = [];
     if (shiftTimes.dayShift) {
       parts.push(
-        `Day: ${formatShiftTime(shiftTimes.dayShift.startTime)} - ${formatShiftTime(shiftTimes.dayShift.endTime)}`
+        `${labels?.day ?? 'Day'}: ${formatShiftTime(shiftTimes.dayShift.startTime)} - ${formatShiftTime(shiftTimes.dayShift.endTime)}`
       );
     }
     if (shiftTimes.nightShift) {
       parts.push(
-        `Night: ${formatShiftTime(shiftTimes.nightShift.startTime)} - ${formatShiftTime(shiftTimes.nightShift.endTime)}`
+        `${labels?.night ?? 'Night'}: ${formatShiftTime(shiftTimes.nightShift.startTime)} - ${formatShiftTime(shiftTimes.nightShift.endTime)}`
       );
     }
     return parts.join('\n');

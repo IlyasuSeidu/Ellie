@@ -125,6 +125,131 @@
     "cycleWorkBlock": "Work Block - Day {{day}} of {{total}}",
     "cycleRestBlock": "Rest Block - Day {{day}} of {{total}}",
     "cyclePhase": "{{phase}} - Day {{day}} of {{total}}",
-    "cycleDay": "Day {{day}} of cycle"
+    "cycleDay": "Day {{day}} of cycle",
+    "startDatePicker": {
+      "title": "Select Start Date",
+      "backdropCloseA11y": "Close",
+      "closeA11y": "Close date picker",
+      "previousMonthA11y": "Previous month",
+      "nextMonthA11y": "Next month",
+      "dayA11y": "{{day}} {{month}} {{year}}",
+      "todayTag": "today",
+      "unavailableTag": "unavailable",
+      "legendToday": "Today",
+      "legendSelected": "Selected"
+    },
+    "patternSelector": {
+      "title": "Select Pattern",
+      "closeA11y": "Close pattern selector",
+      "backdropCloseA11y": "Close",
+      "currentlySelected": "currently selected",
+      "cardHint": "Double tap to select this pattern",
+      "subtitle": {
+        "fifo": "FIFO block rosters",
+        "threeShift": "3-shift (8h) rotating patterns",
+        "twoShift": "2-shift (12h) rotating patterns"
+      },
+      "patterns": {
+        "STANDARD_3_3_3": {
+          "name": "3-3-3 Rotation",
+          "subtitle": "9-day cycle"
+        },
+        "STANDARD_4_4_4": {
+          "name": "4-4-4 Rotation",
+          "subtitle": "12-day cycle"
+        },
+        "STANDARD_5_5_5": {
+          "name": "5-5-5 Rotation",
+          "subtitle": "15-day cycle"
+        },
+        "STANDARD_7_7_7": {
+          "name": "7-7-7 Rotation",
+          "subtitle": "21-day cycle"
+        },
+        "STANDARD_10_10_10": {
+          "name": "10-10-10 Rotation",
+          "subtitle": "30-day cycle"
+        },
+        "STANDARD_2_2_3": {
+          "name": "Pitman (2-2-3)",
+          "subtitle": "7-day cycle"
+        },
+        "CONTINENTAL": {
+          "name": "Continental",
+          "subtitle": "10-day cycle"
+        },
+        "PITMAN": {
+          "name": "Pitman",
+          "subtitle": "7-day cycle"
+        },
+        "CUSTOM": {
+          "name": "Custom Rotation",
+          "subtitle": "Build your own"
+        },
+        "FIFO_7_7": {
+          "name": "7/7 FIFO",
+          "subtitle": "14-day cycle"
+        },
+        "FIFO_8_6": {
+          "name": "8/6 FIFO",
+          "subtitle": "14-day cycle"
+        },
+        "FIFO_14_14": {
+          "name": "14/14 FIFO",
+          "subtitle": "28-day cycle"
+        },
+        "FIFO_14_7": {
+          "name": "14/7 FIFO",
+          "subtitle": "21-day cycle"
+        },
+        "FIFO_21_7": {
+          "name": "21/7 FIFO",
+          "subtitle": "28-day cycle"
+        },
+        "FIFO_28_14": {
+          "name": "28/14 FIFO",
+          "subtitle": "42-day cycle"
+        },
+        "FIFO_CUSTOM": {
+          "name": "Custom FIFO",
+          "subtitle": "Configure blocks"
+        }
+      }
+    },
+    "cycleResync": {
+      "title": "Re-sync Cycle",
+      "subtitleFifo": "Are you at work or home?",
+      "subtitleRotating": "Which shift phase are you on?",
+      "closeA11y": "Close",
+      "backdropCloseA11y": "Close",
+      "backToPhaseA11y": "Back to phase selection",
+      "daySubtitle": "Which day are you on?",
+      "dayA11y": "Day {{day}}",
+      "confirmA11y": "Confirm cycle position",
+      "confirm": "Confirm Position",
+      "empty": "Configure a shift pattern first to re-sync your cycle.",
+      "phaseLabels": {
+        "day": "Day Shift",
+        "night": "Night Shift",
+        "morning": "Morning Shift",
+        "afternoon": "Afternoon Shift",
+        "off": "Days Off",
+        "work": "Work Block",
+        "rest": "Rest Block"
+      },
+      "dayDescriptions": {
+        "first": "First day of {{phase}}",
+        "last": "Last day of {{phase}}",
+        "midpoint": "Midpoint of {{phase}}",
+        "dayOf": "Day {{day}} of {{phase}}"
+      }
+    },
+    "configCard": {
+      "timesLabel": "Times",
+      "workDaysOnSite": "{{count}} days on-site",
+      "restDaysAtHome": "{{count}} days at home",
+      "empty": "No shift configuration set",
+      "footer": "Shift settings can be updated in Settings"
+    }
   }
 }

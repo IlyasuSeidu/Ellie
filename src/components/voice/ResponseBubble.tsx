@@ -11,6 +11,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import type { VoiceMessage } from '@/types/voiceAssistant';
 
@@ -31,6 +32,7 @@ export const ResponseBubble: React.FC<ResponseBubbleProps> = ({
   index,
   isNew = false,
 }) => {
+  const { t } = useTranslation('dashboard');
   const isUser = message.role === 'user';
   const shouldAnimate = isNew && !isUser;
 
@@ -68,7 +70,17 @@ export const ResponseBubble: React.FC<ResponseBubbleProps> = ({
       entering={FadeInUp.delay(index * 50).duration(300)}
       style={[styles.container, isUser ? styles.userContainer : styles.assistantContainer]}
       accessibilityRole="text"
-      accessibilityLabel={isUser ? `You said: ${message.text}` : `Ellie said: ${message.text}`}
+      accessibilityLabel={
+        isUser
+          ? t('voiceAssistant.responseBubble.userSaidA11y', {
+              text: message.text,
+              defaultValue: 'You said: {{text}}',
+            })
+          : t('voiceAssistant.responseBubble.assistantSaidA11y', {
+              text: message.text,
+              defaultValue: 'Ellie said: {{text}}',
+            })
+      }
     >
       <View style={[styles.bubble, isUser ? styles.userBubble : styles.assistantBubble]}>
         {!isUser && <Text style={styles.assistantLabel}>Ellie</Text>}
