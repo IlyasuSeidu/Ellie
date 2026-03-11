@@ -52,6 +52,13 @@
     "titles": {
       "error": "Kesalahan",
       "unexpected": "Kesalahan tak terduga"
+    },
+    "settings": {
+      "languageChangeFailed": "Unable to change language right now. Please try again.",
+      "onboardingResetFailed": "Unable to restart onboarding right now. Please try again.",
+      "profileSaveFailed": "Unable to save your settings right now. Please try again.",
+      "permissionDenied": "You don't have permission to update these settings.",
+      "timeout": "The request took too long. Please try again."
     }
   },
   "avatar": {
@@ -65,6 +72,14 @@
       "photoLibraryMessage": "Aktifkan akses galeri foto di pengaturan perangkat Anda untuk memilih foto profil.",
       "cameraTitle": "Izin kamera",
       "cameraMessage": "Aktifkan akses kamera di pengaturan perangkat Anda untuk mengambil foto profil."
+    },
+    "errors": {
+      "selectFailedTitle": "Photo Selection Failed",
+      "selectFailedMessage": "We could not update your profile photo right now. Please try again.",
+      "captureFailedTitle": "Camera Failed",
+      "captureFailedMessage": "We could not capture your profile photo right now. Please try again.",
+      "removeFailedTitle": "Unable to Remove Photo",
+      "removeFailedMessage": "We could not remove your profile photo right now. Please try again."
     }
   },
   "language": {

@@ -52,6 +52,13 @@
     "titles": {
       "error": "错误",
       "unexpected": "意外错误"
+    },
+    "settings": {
+      "languageChangeFailed": "Unable to change language right now. Please try again.",
+      "onboardingResetFailed": "Unable to restart onboarding right now. Please try again.",
+      "profileSaveFailed": "Unable to save your settings right now. Please try again.",
+      "permissionDenied": "You don't have permission to update these settings.",
+      "timeout": "The request took too long. Please try again."
     }
   },
   "avatar": {
@@ -65,6 +72,14 @@
       "photoLibraryMessage": "请在设备设置中开启相册访问权限，以便选择头像照片。",
       "cameraTitle": "相机权限",
       "cameraMessage": "请在设备设置中开启相机访问权限，以便拍摄头像照片。"
+    },
+    "errors": {
+      "selectFailedTitle": "Photo Selection Failed",
+      "selectFailedMessage": "We could not update your profile photo right now. Please try again.",
+      "captureFailedTitle": "Camera Failed",
+      "captureFailedMessage": "We could not capture your profile photo right now. Please try again.",
+      "removeFailedTitle": "Unable to Remove Photo",
+      "removeFailedMessage": "We could not remove your profile photo right now. Please try again."
     }
   },
   "language": {

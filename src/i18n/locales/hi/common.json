@@ -52,6 +52,13 @@
     "titles": {
       "error": "त्रुटि",
       "unexpected": "अप्रत्याशित त्रुटि"
+    },
+    "settings": {
+      "languageChangeFailed": "Unable to change language right now. Please try again.",
+      "onboardingResetFailed": "Unable to restart onboarding right now. Please try again.",
+      "profileSaveFailed": "Unable to save your settings right now. Please try again.",
+      "permissionDenied": "You don't have permission to update these settings.",
+      "timeout": "The request took too long. Please try again."
     }
   },
   "avatar": {
@@ -65,6 +72,14 @@
       "photoLibraryMessage": "प्रोफ़ाइल फ़ोटो चुनने के लिए अपने डिवाइस सेटिंग्स में फोटो लाइब्रेरी एक्सेस सक्षम करें।",
       "cameraTitle": "कैमरा अनुमति",
       "cameraMessage": "प्रोफ़ाइल फ़ोटो लेने के लिए अपने डिवाइस सेटिंग्स में कैमरा एक्सेस सक्षम करें।"
+    },
+    "errors": {
+      "selectFailedTitle": "Photo Selection Failed",
+      "selectFailedMessage": "We could not update your profile photo right now. Please try again.",
+      "captureFailedTitle": "Camera Failed",
+      "captureFailedMessage": "We could not capture your profile photo right now. Please try again.",
+      "removeFailedTitle": "Unable to Remove Photo",
+      "removeFailedMessage": "We could not remove your profile photo right now. Please try again."
     }
   },
   "language": {

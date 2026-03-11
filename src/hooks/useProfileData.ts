@@ -7,7 +7,9 @@
  */
 
 import { useState, useMemo, useCallback } from 'react';
+import { Alert } from 'react-native';
 import * as Haptics from 'expo-haptics';
+import { useTranslation } from 'react-i18next';
 import { useOnboarding, type OnboardingData } from '@/contexts/OnboardingContext';
 import { buildShiftCycle } from '@/utils/shiftUtils';
 import type { ShiftCycle } from '@/types';
@@ -18,6 +20,7 @@ import {
   getCycleLengthDays,
   getWorkRestRatio,
 } from '@/utils/profileUtils';
+import { getSettingsErrorMessage } from '@/utils/settingsErrorMessage';
 
 export interface UseProfileDataReturn {
   /** Current onboarding data */
@@ -59,6 +62,7 @@ export interface UseProfileDataReturn {
 
 export function useProfileData(): UseProfileDataReturn {
   const { data, updateData } = useOnboarding();
+  const { t } = useTranslation('common');
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedFields, setEditedFields] = useState<Partial<OnboardingData>>({});
@@ -105,18 +109,34 @@ export function useProfileData(): UseProfileDataReturn {
   }, []);
 
   const saveChanges = useCallback(() => {
-    updateData(editedFields);
-    setEditedFields({});
-    setIsEditing(false);
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-  }, [editedFields, updateData]);
+    try {
+      updateData(editedFields);
+      setEditedFields({});
+      setIsEditing(false);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    } catch (error) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      Alert.alert(
+        t('errors.titles.error', { defaultValue: 'Error' }),
+        getSettingsErrorMessage(error, 'profileSave')
+      );
+    }
+  }, [editedFields, updateData, t]);
 
   const handleAvatarChange = useCallback(
     (uri: string | null) => {
-      updateData({ avatarUri: uri ?? undefined });
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      try {
+        updateData({ avatarUri: uri ?? undefined });
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      } catch (error) {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+        Alert.alert(
+          t('errors.titles.error', { defaultValue: 'Error' }),
+          getSettingsErrorMessage(error, 'profileSave')
+        );
+      }
     },
-    [updateData]
+    [updateData, t]
   );
 
   return {

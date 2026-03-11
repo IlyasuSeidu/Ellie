@@ -64,4 +64,22 @@ describe('LanguageSelectorSheet', () => {
       expect(onClose).toHaveBeenCalled();
     });
   });
+
+  it('shows clear error when language change fails', async () => {
+    const onSelect = jest.fn(async () => {
+      throw new Error('Network error');
+    });
+    const onClose = jest.fn();
+
+    const { getByLabelText, getByText } = render(
+      <LanguageSelectorSheet visible onClose={onClose} currentLanguage="en" onSelect={onSelect} />
+    );
+
+    fireEvent.press(getByLabelText('Français'));
+
+    await waitFor(() => {
+      expect(getByText(/network error/i)).toBeTruthy();
+      expect(onClose).not.toHaveBeenCalled();
+    });
+  });
 });

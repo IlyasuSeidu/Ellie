@@ -1,4 +1,5 @@
 import React from 'react';
+import { Alert } from 'react-native';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { ProfileScreen } from '../ProfileScreen';
 
@@ -9,6 +10,7 @@ const mockGetParent = jest.fn();
 const mockSet = jest.fn();
 const mockOpenPaywall = jest.fn();
 const mockUseSubscription = jest.fn();
+const mockAlert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
 
 jest.mock('react-native-reanimated', () => {
   const RN = require('react-native');
@@ -160,6 +162,10 @@ describe('ProfileScreen', () => {
     });
   });
 
+  afterAll(() => {
+    mockAlert.mockRestore();
+  });
+
   it('renders profile sections and cards', () => {
     const { getByText, getByTestId } = render(<ProfileScreen />);
 
@@ -230,6 +236,21 @@ describe('ProfileScreen', () => {
         index: 0,
         routes: [{ name: 'Onboarding' }],
       });
+    });
+  });
+
+  it('shows user-friendly error if onboarding reset fails', async () => {
+    mockSet.mockRejectedValueOnce(new Error('network request failed'));
+
+    const { getByTestId } = render(<ProfileScreen />);
+    fireEvent.press(getByTestId('run-onboarding-again-button'));
+
+    await waitFor(() => {
+      expect(mockAlert).toHaveBeenCalledWith(
+        'Error',
+        'Network error. Please check your connection and try again.'
+      );
+      expect(mockReset).not.toHaveBeenCalled();
     });
   });
 });

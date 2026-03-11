@@ -39,31 +39,43 @@ class AvatarService {
    * Returns the persisted file URI, or null if cancelled.
    */
   async pickFromLibrary(): Promise<string | null> {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') {
+    try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert(
+          translateAvatar('avatar.permissions.photoLibraryTitle', 'Photo Library Permission'),
+          translateAvatar(
+            'avatar.permissions.photoLibraryMessage',
+            'Please enable photo library access in your device settings to choose a profile photo.'
+          ),
+          [{ text: translateAvatar('buttons.confirm', 'Confirm') }]
+        );
+        return null;
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'],
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.8,
+      });
+
+      if (result.canceled || !result.assets?.[0]?.uri) {
+        return null;
+      }
+
+      return this.persistImage(result.assets[0].uri);
+    } catch {
       Alert.alert(
-        translateAvatar('avatar.permissions.photoLibraryTitle', 'Photo Library Permission'),
+        translateAvatar('avatar.errors.selectFailedTitle', 'Photo Selection Failed'),
         translateAvatar(
-          'avatar.permissions.photoLibraryMessage',
-          'Please enable photo library access in your device settings to choose a profile photo.'
+          'avatar.errors.selectFailedMessage',
+          'We could not update your profile photo right now. Please try again.'
         ),
         [{ text: translateAvatar('buttons.confirm', 'Confirm') }]
       );
       return null;
     }
-
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 0.8,
-    });
-
-    if (result.canceled || !result.assets?.[0]?.uri) {
-      return null;
-    }
-
-    return this.persistImage(result.assets[0].uri);
   }
 
   /**
@@ -71,30 +83,42 @@ class AvatarService {
    * Returns the persisted file URI, or null if cancelled.
    */
   async pickFromCamera(): Promise<string | null> {
-    const { status } = await ImagePicker.requestCameraPermissionsAsync();
-    if (status !== 'granted') {
+    try {
+      const { status } = await ImagePicker.requestCameraPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert(
+          translateAvatar('avatar.permissions.cameraTitle', 'Camera Permission'),
+          translateAvatar(
+            'avatar.permissions.cameraMessage',
+            'Please enable camera access in your device settings to take a profile photo.'
+          ),
+          [{ text: translateAvatar('buttons.confirm', 'Confirm') }]
+        );
+        return null;
+      }
+
+      const result = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.8,
+      });
+
+      if (result.canceled || !result.assets?.[0]?.uri) {
+        return null;
+      }
+
+      return this.persistImage(result.assets[0].uri);
+    } catch {
       Alert.alert(
-        translateAvatar('avatar.permissions.cameraTitle', 'Camera Permission'),
+        translateAvatar('avatar.errors.captureFailedTitle', 'Camera Failed'),
         translateAvatar(
-          'avatar.permissions.cameraMessage',
-          'Please enable camera access in your device settings to take a profile photo.'
+          'avatar.errors.captureFailedMessage',
+          'We could not capture your profile photo right now. Please try again.'
         ),
         [{ text: translateAvatar('buttons.confirm', 'Confirm') }]
       );
       return null;
     }
-
-    const result = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 0.8,
-    });
-
-    if (result.canceled || !result.assets?.[0]?.uri) {
-      return null;
-    }
-
-    return this.persistImage(result.assets[0].uri);
   }
 
   /**
@@ -127,7 +151,14 @@ class AvatarService {
         await FileSystem.deleteAsync(targetUri, { idempotent: true });
       }
     } catch {
-      // Silently ignore deletion failures
+      Alert.alert(
+        translateAvatar('avatar.errors.removeFailedTitle', 'Unable to Remove Photo'),
+        translateAvatar(
+          'avatar.errors.removeFailedMessage',
+          'We could not remove your profile photo right now. Please try again.'
+        ),
+        [{ text: translateAvatar('buttons.confirm', 'Confirm') }]
+      );
     }
   }
 }

@@ -7,7 +7,7 @@
  */
 
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { View, StyleSheet, Text, Pressable, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, Pressable, TouchableOpacity, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -30,6 +30,7 @@ import { asyncStorageService } from '@/services/AsyncStorageService';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { useSubscription } from '@/hooks/useSubscription';
+import { getSettingsErrorMessage } from '@/utils/settingsErrorMessage';
 
 export const ProfileScreen: React.FC = () => {
   const { t } = useTranslation('profile');
@@ -66,16 +67,23 @@ export const ProfileScreen: React.FC = () => {
   }, [isFocused, isEditing, cancelEditing]);
 
   const handleRunOnboardingAgain = useCallback(async () => {
-    await asyncStorageService.set('onboarding:complete', false);
+    try {
+      await asyncStorageService.set('onboarding:complete', false);
 
-    const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
-    if (rootNavigation && typeof rootNavigation.reset === 'function') {
-      rootNavigation.reset({
-        index: 0,
-        routes: [{ name: 'Onboarding' }],
-      });
+      const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+      if (rootNavigation && typeof rootNavigation.reset === 'function') {
+        rootNavigation.reset({
+          index: 0,
+          routes: [{ name: 'Onboarding' }],
+        });
+      }
+    } catch (error) {
+      Alert.alert(
+        tCommon('errors.titles.error', { defaultValue: 'Error' }),
+        getSettingsErrorMessage(error, 'onboardingReset')
+      );
     }
-  }, [navigation]);
+  }, [navigation, tCommon]);
 
   const handleOpenPatternOnboarding = useCallback(() => {
     const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();

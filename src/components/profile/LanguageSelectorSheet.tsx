@@ -19,6 +19,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/i18n/languageDetector';
+import { getSettingsErrorMessage } from '@/utils/settingsErrorMessage';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 const SHEET_MAX_HEIGHT = SCREEN_HEIGHT * 0.72;
@@ -71,6 +72,7 @@ export const LanguageSelectorSheet: React.FC<LanguageSelectorSheetProps> = ({
 }) => {
   const { t } = useTranslation('common');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const translateY = useSharedValue(SCREEN_HEIGHT);
   const backdropOpacity = useSharedValue(0);
 
@@ -104,11 +106,15 @@ export const LanguageSelectorSheet: React.FC<LanguageSelectorSheetProps> = ({
     }
 
     setIsSubmitting(true);
+    setErrorMessage(null);
 
     try {
       await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
       await onSelect(language);
       onClose();
+    } catch (error) {
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      setErrorMessage(getSettingsErrorMessage(error, 'languageChange'));
     } finally {
       setIsSubmitting(false);
     }
@@ -163,6 +169,13 @@ export const LanguageSelectorSheet: React.FC<LanguageSelectorSheetProps> = ({
           contentContainerStyle={styles.list}
           showsVerticalScrollIndicator={false}
         >
+          {errorMessage ? (
+            <View style={styles.errorBanner}>
+              <Ionicons name="alert-circle-outline" size={16} color={theme.colors.error} />
+              <Animated.Text style={styles.errorText}>{errorMessage}</Animated.Text>
+            </View>
+          ) : null}
+
           {selectableLanguages.map((language) => {
             const isSelected = currentLanguage === language.code;
             const localizedLanguageName = String(
@@ -282,6 +295,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.spacing.lg,
     paddingBottom: theme.spacing.xl,
     gap: theme.spacing.sm,
+  },
+  errorBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    borderWidth: 1,
+    borderColor: theme.colors.error,
+    borderRadius: theme.borderRadius.sm,
+    backgroundColor: theme.colors.errorBg,
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: theme.spacing.sm,
+  },
+  errorText: {
+    flex: 1,
+    color: theme.colors.error,
+    fontSize: theme.typography.fontSizes.xs,
   },
   optionRow: {
     flexDirection: 'row',
