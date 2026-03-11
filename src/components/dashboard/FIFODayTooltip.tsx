@@ -8,6 +8,7 @@
 
 import React, { useEffect } from 'react';
 import { StyleSheet, Platform } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -46,6 +47,7 @@ export const FIFODayTooltip: React.FC<FIFODayTooltipProps> = ({
   isDismissing = false,
   onDismiss,
 }) => {
+  const { t } = useTranslation('dashboard');
   const tooltipScale = useSharedValue(0.8);
   const tooltipOpacity = useSharedValue(0);
 
@@ -66,15 +68,19 @@ export const FIFODayTooltip: React.FC<FIFODayTooltipProps> = ({
   }));
 
   // Build tooltip content
-  const blockName = position.blockType === 'work' ? 'Work' : 'Rest';
+  const blockName = position.blockType === 'work' ? t('fifo.workBlock') : t('fifo.restBlock');
   const shiftLabel =
     position.blockType === 'work'
       ? position.shiftType === 'night'
-        ? 'Night Shift'
-        : 'Day Shift'
-      : 'Home';
+        ? t('shiftLabels.night')
+        : t('shiftLabels.day')
+      : t('fifo.tooltip.home');
 
-  const flyStatus = position.isFlyInDay ? ' — Fly In' : position.isFlyOutDay ? ' — Fly Out' : '';
+  const flyStatus = position.isFlyInDay
+    ? t('fifo.tooltip.flyInSuffix')
+    : position.isFlyOutDay
+      ? t('fifo.tooltip.flyOutSuffix')
+      : '';
 
   // Position tooltip centered on the cell X, above or below
   const tooltipLeft = Math.max(4, Math.min(x - TOOLTIP_WIDTH / 2, 300)); // clamp to prevent overflow
@@ -93,7 +99,11 @@ export const FIFODayTooltip: React.FC<FIFODayTooltipProps> = ({
       testID="fifo-day-tooltip"
     >
       <Animated.Text style={styles.tooltipTitle}>
-        {blockName} Block Day {position.dayInBlock}/{position.blockLength}
+        {t('fifo.tooltip.blockDay', {
+          blockName,
+          day: position.dayInBlock,
+          total: position.blockLength,
+        })}
       </Animated.Text>
       <Animated.Text style={styles.tooltipSubtitle}>
         {shiftLabel}
@@ -101,7 +111,8 @@ export const FIFODayTooltip: React.FC<FIFODayTooltipProps> = ({
       </Animated.Text>
       {position.isSwingTransitionDay && (
         <Animated.Text style={styles.tooltipDetail}>
-          <Ionicons name="swap-horizontal" size={10} color={theme.colors.dust} /> Shift transition
+          <Ionicons name="swap-horizontal" size={10} color={theme.colors.dust} />{' '}
+          {t('fifo.tooltip.shiftTransition')}
         </Animated.Text>
       )}
     </Animated.View>

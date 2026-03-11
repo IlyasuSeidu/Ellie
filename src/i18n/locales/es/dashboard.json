@@ -47,7 +47,14 @@
     "untilRest": "{{count}}d hasta descanso",
     "untilWork": "{{count}}d hasta trabajo",
     "blockDayOf": "Bloque {{blockName}} dia {{day}} de {{total}}",
-    "days": "dias"
+    "days": "dias",
+    "tooltip": {
+      "blockDay": "{{day}}/{{total}} del bloque de {{blockName}}",
+      "home": "Casa",
+      "flyInSuffix": " — Vuelo de entrada",
+      "flyOutSuffix": " — Vuelo de salida",
+      "shiftTransition": "Cambio de turno"
+    }
   },
   "stats": {
     "workDays": "Dias de trabajo",

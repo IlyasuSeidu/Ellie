@@ -47,7 +47,14 @@
     "untilRest": "{{count}}d jusqu'au bloc de repos",
     "untilWork": "{{count}}d jusqu'au bloc de travail",
     "blockDayOf": "{{blockName}} Jour bloc {{day}} du {{total}}",
-    "days": "jours"
+    "days": "jours",
+    "tooltip": {
+      "blockDay": "Jour {{day}}/{{total}} du bloc {{blockName}}",
+      "home": "Maison",
+      "flyInSuffix": " — Vol aller",
+      "flyOutSuffix": " — Vol retour",
+      "shiftTransition": "Transition de quart"
+    }
   },
   "stats": {
     "workDays": "Jours de travail",

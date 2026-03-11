@@ -59,7 +59,7 @@ export const ProfileHeroSection: React.FC<ProfileHeroSectionProps> = ({
   onEditPress,
   animationDelay = 0,
 }) => {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation(['common', 'profile']);
   const initials = useMemo(() => getInitials(name), [name]);
 
   // ── Entrance animation ─────────────────────────────────────────
@@ -268,7 +268,7 @@ export const ProfileHeroSection: React.FC<ProfileHeroSectionProps> = ({
         style={styles.nameText}
         numberOfLines={1}
       >
-        {name?.trim() ? name : 'Not set'}
+        {name?.trim() ? name : t('fields.notSet', { ns: 'profile', defaultValue: 'Not set' })}
       </Animated.Text>
 
       {occupation ? (

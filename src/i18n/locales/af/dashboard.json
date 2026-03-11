@@ -47,7 +47,14 @@
     "untilRest": "{{count}}d tot rusblok",
     "untilWork": "{{count}}d tot werkblok",
     "blockDayOf": "{{blockName}} Blokdag {{day}} van {{total}}",
-    "days": "dae"
+    "days": "dae",
+    "tooltip": {
+      "blockDay": "{{blockName}} Block Day {{day}}/{{total}}",
+      "home": "Home",
+      "flyInSuffix": " — Fly In",
+      "flyOutSuffix": " — Fly Out",
+      "shiftTransition": "Shift transition"
+    }
   },
   "stats": {
     "workDays": "Werksdae",

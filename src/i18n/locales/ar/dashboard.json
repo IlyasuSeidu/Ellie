@@ -47,7 +47,14 @@
     "untilRest": "{{count}}d حتى كتلة الراحة",
     "untilWork": "{{count}}d حتى كتلة العمل",
     "blockDayOf": "{{blockName}} يوم الحظر {{day}} من {{total}}",
-    "days": "أيام"
+    "days": "أيام",
+    "tooltip": {
+      "blockDay": "اليوم {{day}}/{{total}} من كتلة {{blockName}}",
+      "home": "المنزل",
+      "flyInSuffix": " — يوم السفر إلى الموقع",
+      "flyOutSuffix": " — يوم العودة",
+      "shiftTransition": "انتقال الوردية"
+    }
   },
   "stats": {
     "workDays": "أيام العمل",

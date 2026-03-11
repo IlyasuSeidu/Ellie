@@ -47,7 +47,14 @@
     "untilRest": "विश्राम ब्लॉक तक {{count}}d",
     "untilWork": "कार्य अवरोध तक {{count}}d",
     "blockDayOf": "{{blockName}} ब्लॉक दिवस {{total}} का {{day}}",
-    "days": "दिन"
+    "days": "दिन",
+    "tooltip": {
+      "blockDay": "{{blockName}} Block Day {{day}}/{{total}}",
+      "home": "Home",
+      "flyInSuffix": " — Fly In",
+      "flyOutSuffix": " — Fly Out",
+      "shiftTransition": "Shift transition"
+    }
   },
   "stats": {
     "workDays": "कार्य दिवस",

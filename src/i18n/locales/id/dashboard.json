@@ -47,7 +47,14 @@
     "untilRest": "{{count}}d sampai blok istirahat",
     "untilWork": "{{count}}d sampai blok pekerjaan",
     "blockDayOf": "{{blockName}} Hari Blok {{day}} dari {{total}}",
-    "days": "hari"
+    "days": "hari",
+    "tooltip": {
+      "blockDay": "{{blockName}} Block Day {{day}}/{{total}}",
+      "home": "Home",
+      "flyInSuffix": " — Fly In",
+      "flyOutSuffix": " — Fly Out",
+      "shiftTransition": "Shift transition"
+    }
   },
   "stats": {
     "workDays": "Hari Kerja",
