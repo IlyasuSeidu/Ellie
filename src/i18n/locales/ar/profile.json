@@ -127,107 +127,107 @@
     "cyclePhase": "{{phase}} - اليوم {{day}} من {{total}}",
     "cycleDay": "اليوم {{day}} من الدورة",
     "startDatePicker": {
-      "title": "Select Start Date",
-      "backdropCloseA11y": "Close",
-      "closeA11y": "Close date picker",
-      "previousMonthA11y": "Previous month",
-      "nextMonthA11y": "Next month",
+      "title": "حدد تاريخ البدء",
+      "backdropCloseA11y": "يغلق",
+      "closeA11y": "إغلاق منتقي التاريخ",
+      "previousMonthA11y": "الشهر السابق",
+      "nextMonthA11y": "الشهر المقبل",
       "dayA11y": "{{day}} {{month}} {{year}}",
-      "todayTag": "today",
-      "unavailableTag": "unavailable",
-      "legendToday": "Today",
-      "legendSelected": "Selected"
+      "todayTag": "اليوم",
+      "unavailableTag": "غير متاح",
+      "legendToday": "اليوم",
+      "legendSelected": "مختارة"
     },
     "patternSelector": {
-      "title": "Select Pattern",
-      "closeA11y": "Close pattern selector",
-      "backdropCloseA11y": "Close",
-      "currentlySelected": "currently selected",
-      "cardHint": "Double tap to select this pattern",
+      "title": "حدد النمط",
+      "closeA11y": "إغلاق محدد النمط",
+      "backdropCloseA11y": "يغلق",
+      "currentlySelected": "المحدد حاليا",
+      "cardHint": "انقر نقرًا مزدوجًا لتحديد هذا النمط",
       "subtitle": {
-        "fifo": "FIFO block rosters",
-        "threeShift": "3-shift (8h) rotating patterns",
-        "twoShift": "2-shift (12h) rotating patterns"
+        "fifo": "قوائم كتلة FIFO",
+        "threeShift": "أنماط دوران 3-shift (8h).",
+        "twoShift": "2-أنماط الدوران (12 ساعة)."
       },
       "patterns": {
         "STANDARD_3_3_3": {
-          "name": "3-3-3 Rotation",
-          "subtitle": "9-day cycle"
+          "name": "3-3-3 التناوب",
+          "subtitle": "دورة لمدة 9 أيام"
         },
         "STANDARD_4_4_4": {
-          "name": "4-4-4 Rotation",
-          "subtitle": "12-day cycle"
+          "name": "4-4-4 التناوب",
+          "subtitle": "دورة مدتها 12 يومًا"
         },
         "STANDARD_5_5_5": {
-          "name": "5-5-5 Rotation",
-          "subtitle": "15-day cycle"
+          "name": "5-5-5 التناوب",
+          "subtitle": "دورة مدتها 15 يومًا"
         },
         "STANDARD_7_7_7": {
-          "name": "7-7-7 Rotation",
-          "subtitle": "21-day cycle"
+          "name": "7-7-7 التناوب",
+          "subtitle": "دورة مدتها 21 يومًا"
         },
         "STANDARD_10_10_10": {
-          "name": "10-10-10 Rotation",
-          "subtitle": "30-day cycle"
+          "name": "10-10-10 التناوب",
+          "subtitle": "دورة لمدة 30 يوما"
         },
         "STANDARD_2_2_3": {
-          "name": "Pitman (2-2-3)",
-          "subtitle": "7-day cycle"
+          "name": "بيتمان (2-2-3)",
+          "subtitle": "دورة لمدة 7 أيام"
         },
         "CONTINENTAL": {
-          "name": "Continental",
-          "subtitle": "10-day cycle"
+          "name": "كونتيننتال",
+          "subtitle": "دورة لمدة 10 أيام"
         },
         "PITMAN": {
-          "name": "Pitman",
-          "subtitle": "7-day cycle"
+          "name": "بيتمان",
+          "subtitle": "دورة لمدة 7 أيام"
         },
         "CUSTOM": {
-          "name": "Custom Rotation",
-          "subtitle": "Build your own"
+          "name": "دوران مخصص",
+          "subtitle": "بناء بنفسك"
         },
         "FIFO_7_7": {
-          "name": "7/7 FIFO",
-          "subtitle": "14-day cycle"
+          "name": "7/7 يصرف أولاً",
+          "subtitle": "دورة مدتها 14 يومًا"
         },
         "FIFO_8_6": {
-          "name": "8/6 FIFO",
-          "subtitle": "14-day cycle"
+          "name": "8/6 ما يرد أولاً يصرف أولاً",
+          "subtitle": "دورة مدتها 14 يومًا"
         },
         "FIFO_14_14": {
-          "name": "14/14 FIFO",
-          "subtitle": "28-day cycle"
+          "name": "14/14 يصرف أولاً",
+          "subtitle": "دورة مدتها 28 يومًا"
         },
         "FIFO_14_7": {
-          "name": "14/7 FIFO",
-          "subtitle": "21-day cycle"
+          "name": "14/7 يصرف أولاً",
+          "subtitle": "دورة مدتها 21 يومًا"
         },
         "FIFO_21_7": {
-          "name": "21/7 FIFO",
-          "subtitle": "28-day cycle"
+          "name": "21/7 يصرف أولاً",
+          "subtitle": "دورة مدتها 28 يومًا"
         },
         "FIFO_28_14": {
-          "name": "28/14 FIFO",
-          "subtitle": "42-day cycle"
+          "name": "28/14 يصرف أولاً",
+          "subtitle": "دورة مدتها 42 يومًا"
         },
         "FIFO_CUSTOM": {
-          "name": "Custom FIFO",
-          "subtitle": "Configure blocks"
+          "name": "مخصص يصرف أولاً",
+          "subtitle": "تكوين الكتل"
         }
       }
     },
     "cycleResync": {
-      "title": "Re-sync Cycle",
-      "subtitleFifo": "Are you at work or home?",
-      "subtitleRotating": "Which shift phase are you on?",
-      "closeA11y": "Close",
-      "backdropCloseA11y": "Close",
-      "backToPhaseA11y": "Back to phase selection",
-      "daySubtitle": "Which day are you on?",
-      "dayA11y": "Day {{day}}",
-      "confirmA11y": "Confirm cycle position",
-      "confirm": "Confirm Position",
-      "empty": "Configure a shift pattern first to re-sync your cycle.",
+      "title": "دورة إعادة المزامنة",
+      "subtitleFifo": "هل أنت في العمل أو المنزل؟",
+      "subtitleRotating": "في أي مرحلة من التحول أنت؟",
+      "closeA11y": "يغلق",
+      "backdropCloseA11y": "يغلق",
+      "backToPhaseA11y": "العودة إلى اختيار المرحلة",
+      "daySubtitle": "في أي يوم أنت؟",
+      "dayA11y": "اليوم {{day}}",
+      "confirmA11y": "تأكيد موقف الدورة",
+      "confirm": "تأكيد الموقف",
+      "empty": "قم بتكوين نمط التحول أولاً لإعادة مزامنة دورتك.",
       "phaseLabels": {
         "day": "الوردية النهارية",
         "night": "الوردية الليلية",
@@ -238,18 +238,18 @@
         "rest": "كتلة الراحة"
       },
       "dayDescriptions": {
-        "first": "First day of {{phase}}",
-        "last": "Last day of {{phase}}",
-        "midpoint": "Midpoint of {{phase}}",
-        "dayOf": "Day {{day}} of {{phase}}"
+        "first": "اليوم الأول من {{phase}}",
+        "last": "اليوم الأخير من {{phase}}",
+        "midpoint": "نقطة المنتصف {{phase}}",
+        "dayOf": "اليوم {{day}} من {{phase}}"
       }
     },
     "configCard": {
-      "timesLabel": "Times",
-      "workDaysOnSite": "{{count}} days on-site",
-      "restDaysAtHome": "{{count}} days at home",
-      "empty": "No shift configuration set",
-      "footer": "Shift settings can be updated in Settings"
+      "timesLabel": "مرات",
+      "workDaysOnSite": "{{count}} أيام في الموقع",
+      "restDaysAtHome": "{{count}} أيام في المنزل",
+      "empty": "لم يتم ضبط تكوين التحول",
+      "footer": "يمكن تحديث إعدادات Shift في الإعدادات"
     },
     "profileUtils": {
       "customFIFO": "FIFO مخصص {{workBlockDays}}/{{restBlockDays}}",

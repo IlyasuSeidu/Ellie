@@ -49,11 +49,11 @@
     "blockDayOf": "{{blockName}} Usuku Lokuvimbela {{day}} kwangu-{{total}}",
     "days": "izinsuku",
     "tooltip": {
-      "blockDay": "{{blockName}} Block Day {{day}}/{{total}}",
-      "home": "Home",
-      "flyInSuffix": " — Fly In",
-      "flyOutSuffix": " — Fly Out",
-      "shiftTransition": "Shift transition"
+      "blockDay": "{{blockName}} Usuku Lokuvimba {{day}}/{{total}}",
+      "home": "Ikhaya",
+      "flyInSuffix": "- Fly In",
+      "flyOutSuffix": "- Fly Out",
+      "shiftTransition": "Shift inguquko"
     }
   },
   "stats": {
@@ -92,58 +92,58 @@
     "active": "OKUSEBENZA"
   },
   "voiceAssistant": {
-    "subtitle": "Voice Assistant",
-    "clearHistoryA11y": "Clear conversation history",
-    "closeA11y": "Close voice assistant",
-    "conversationHistoryA11y": "Conversation history",
+    "subtitle": "Umsizi Wezwi",
+    "clearHistoryA11y": "Sula umlando wengxoxo",
+    "closeA11y": "Vala umsizi wezwi",
+    "conversationHistoryA11y": "Umlando wengxoxo",
     "empty": {
-      "prompt": "Ask me about your shift schedule",
-      "trySaying": "Try saying:",
-      "example1": "What shift do I have tomorrow?",
-      "example2": "When is my next day off?",
-      "example3": "How many night shifts this month?"
+      "prompt": "Ngibuze ngeshejuli yakho yeshifu",
+      "trySaying": "Zama ukuthi:",
+      "example1": "Iluphi ushintsho enginalo kusasa?",
+      "example2": "Lunini usuku lwami olulandelayo lokuphumula?",
+      "example3": "Mangaki amashifu ebusuku kule nyanga?"
     },
     "permission": {
-      "notice": "Ellie needs microphone access to hear your questions.",
-      "grant": "Grant Permission",
-      "grantA11y": "Grant microphone permission",
-      "requestA11y": "Request microphone permission"
+      "notice": "U-Ellie udinga ukufinyelela kwemakrofoni ukuze ezwe imibuzo yakho.",
+      "grant": "Nikeza Imvume",
+      "grantA11y": "Nikeza imvume yemakrofoni",
+      "requestA11y": "Cela imvume yemakrofoni"
     },
     "status": {
-      "listening": "Listening...",
-      "processing": "Thinking...",
-      "speaking": "Tap to stop speaking",
+      "listening": "Ilalele...",
+      "processing": "Ukucabanga...",
+      "speaking": "Thepha ukuze uyeke ukukhuluma",
       "wakeWordUnavailable": "Igama lokuvusa alitholakali, thepha imakrofoni ukuze ukhulume",
-      "sayWakeWordOrTap": "Say \"{{wakeWordPhrase}}\" or tap the mic",
-      "askAnother": "Tap the mic to ask another question",
-      "askEllie": "Tap the mic to ask Ellie"
+      "sayWakeWordOrTap": "Ithi \"{{wakeWordPhrase}}\" noma thepha imakrofoni",
+      "askAnother": "Thepha imakrofoni ukuze ubuze omunye umbuzo",
+      "askEllie": "Thepha imakrofoni ukuze ubuze u-Ellie"
     },
     "errors": {
-      "default": "Something went wrong",
-      "permissionDeniedIos": "Microphone access denied. Enable in Settings > Ellie.",
-      "permissionDenied": "Microphone access denied. Please grant permission.",
-      "network": "Check your connection and retry.",
-      "recognition": "I didn't catch that. Please try again.",
-      "backend": "Service temporarily unavailable. Please try again.",
-      "rateLimited": "Please wait briefly and retry.",
-      "timeout": "Request timed out. Please retry.",
+      "default": "Kukhona into engahambanga kahle",
+      "permissionDeniedIos": "Ukufinyelela kwemakrofoni kunqatshiwe. Nika amandla kokuthi Izilungiselelo > Ellie.",
+      "permissionDenied": "Ukufinyelela kwemakrofoni kunqatshiwe. Sicela unikeze imvume.",
+      "network": "Hlola ukuxhumeka kwakho uphinde uzame.",
+      "recognition": "Angizange ngikubambe lokho. Sicela uzame futhi.",
+      "backend": "Isevisi ayitholakali okwamanje. Sicela uzame futhi.",
+      "rateLimited": "Sicela ulinde kafushane bese uzama futhi.",
+      "timeout": "Isicelo siphelelwe yisikhathi. Sicela uzame futhi.",
       "wakeWordUnavailable": "Igama lokuvusa alitholakali, thepha imakrofoni ukuze ukhulume.",
-      "tts": "Could not play audio response."
+      "tts": "Ayikwazanga ukudlala impendulo yomsindo."
     },
     "micA11y": {
-      "listening": "Stop listening. Double tap to finish speaking.",
-      "processing": "Processing your question. Please wait.",
-      "speaking": "Ellie is speaking. Double tap to stop.",
-      "error": "Error: {{message}}. Double tap to try again.",
-      "idle": "Ask Ellie a question. Double tap to start speaking."
+      "listening": "Yeka ukulalela. Thepha kabili ukuze uqedele ukukhuluma.",
+      "processing": "Icubungula umbuzo wakho. Ngicela ulinde.",
+      "speaking": "U-Ellie uyakhuluma. Thepha kabili ukuze umise.",
+      "error": "Iphutha: {{message}}. Thepha kabili ukuze uzame futhi.",
+      "idle": "Buza u-Ellie umbuzo. Thepha kabili ukuze uqale ukukhuluma."
     },
-    "partialTranscriptA11y": "You are saying: {{text}}",
-    "processingInline": "Ellie is thinking...",
-    "retryHint": "Tap the mic to try again",
+    "partialTranscriptA11y": "Uthi: {{text}}",
+    "processingInline": "U-Ellie uyacabanga...",
+    "retryHint": "Thepha imakrofoni ukuze uzame futhi",
     "requestRef": "Ref: {{requestId}}",
     "responseBubble": {
-      "userSaidA11y": "You said: {{text}}",
-      "assistantSaidA11y": "Ellie said: {{text}}"
+      "userSaidA11y": "Uthe: {{text}}",
+      "assistantSaidA11y": "U-Ellie uthe: {{text}}"
     },
     "warnings": {
       "microphonePermissionRequired": "Imvume yemakrofoni iyadingeka ku-Hey Ellie. Thepha imakrofoni ukuze ukhulume.",
@@ -161,18 +161,18 @@
     }
   },
   "tabs": {
-    "home": "Home",
-    "schedule": "Schedule",
-    "stats": "Stats",
-    "profile": "Profile",
+    "home": "Ikhaya",
+    "schedule": "Isheduli",
+    "stats": "Izibalo",
+    "profile": "Iphrofayela",
     "ellie": "Ellie",
-    "openVoiceAssistantA11y": "Open Ellie voice assistant"
+    "openVoiceAssistantA11y": "Vula umsizi wezwi u-Ellie"
   },
   "quickActions": {
-    "settings": "Settings",
-    "alerts": "Alerts",
-    "profile": "Profile",
-    "export": "Export"
+    "settings": "Izilungiselelo",
+    "alerts": "Izexwayiso",
+    "profile": "Iphrofayela",
+    "export": "Thekelisa"
   },
   "notifications": {
     "shiftType": {

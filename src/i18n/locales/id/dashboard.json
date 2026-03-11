@@ -49,11 +49,11 @@
     "blockDayOf": "{{blockName}} Hari Blok {{day}} dari {{total}}",
     "days": "hari",
     "tooltip": {
-      "blockDay": "{{blockName}} Block Day {{day}}/{{total}}",
-      "home": "Home",
-      "flyInSuffix": " — Fly In",
-      "flyOutSuffix": " — Fly Out",
-      "shiftTransition": "Shift transition"
+      "blockDay": "{{blockName}} Hari Blokir {{day}}/{{total}}",
+      "home": "Rumah",
+      "flyInSuffix": "— Terbang Masuk",
+      "flyOutSuffix": "— Terbang Keluar",
+      "shiftTransition": "Peralihan peralihan"
     }
   },
   "stats": {
@@ -92,58 +92,58 @@
     "active": "AKTIF"
   },
   "voiceAssistant": {
-    "subtitle": "Voice Assistant",
-    "clearHistoryA11y": "Clear conversation history",
-    "closeA11y": "Close voice assistant",
-    "conversationHistoryA11y": "Conversation history",
+    "subtitle": "Asisten Suara",
+    "clearHistoryA11y": "Hapus riwayat percakapan",
+    "closeA11y": "Tutup asisten suara",
+    "conversationHistoryA11y": "Riwayat percakapan",
     "empty": {
-      "prompt": "Ask me about your shift schedule",
-      "trySaying": "Try saying:",
-      "example1": "What shift do I have tomorrow?",
-      "example2": "When is my next day off?",
-      "example3": "How many night shifts this month?"
+      "prompt": "Tanyakan kepada saya tentang jadwal shift Anda",
+      "trySaying": "Coba ucapkan:",
+      "example1": "Pergeseran apa yang saya miliki besok?",
+      "example2": "Kapan hari libur saya berikutnya?",
+      "example3": "Berapa banyak shift malam bulan ini?"
     },
     "permission": {
-      "notice": "Ellie needs microphone access to hear your questions.",
-      "grant": "Grant Permission",
-      "grantA11y": "Grant microphone permission",
-      "requestA11y": "Request microphone permission"
+      "notice": "Ellie memerlukan akses mikrofon untuk mendengarkan pertanyaan Anda.",
+      "grant": "Berikan Izin",
+      "grantA11y": "Berikan izin mikrofon",
+      "requestA11y": "Minta izin mikrofon"
     },
     "status": {
-      "listening": "Listening...",
-      "processing": "Thinking...",
-      "speaking": "Tap to stop speaking",
+      "listening": "Mendengarkan...",
+      "processing": "Pemikiran...",
+      "speaking": "Ketuk untuk berhenti berbicara",
       "wakeWordUnavailable": "Kata pemicu tidak tersedia, ketuk mikrofon untuk berbicara",
-      "sayWakeWordOrTap": "Say \"{{wakeWordPhrase}}\" or tap the mic",
-      "askAnother": "Tap the mic to ask another question",
-      "askEllie": "Tap the mic to ask Ellie"
+      "sayWakeWordOrTap": "Ucapkan \"{{wakeWordPhrase}}\" atau ketuk mikrofon",
+      "askAnother": "Ketuk mikrofon untuk mengajukan pertanyaan lain",
+      "askEllie": "Ketuk mikrofon untuk bertanya pada Ellie"
     },
     "errors": {
-      "default": "Something went wrong",
-      "permissionDeniedIos": "Microphone access denied. Enable in Settings > Ellie.",
-      "permissionDenied": "Microphone access denied. Please grant permission.",
-      "network": "Check your connection and retry.",
-      "recognition": "I didn't catch that. Please try again.",
-      "backend": "Service temporarily unavailable. Please try again.",
-      "rateLimited": "Please wait briefly and retry.",
-      "timeout": "Request timed out. Please retry.",
+      "default": "Ada yang tidak beres",
+      "permissionDeniedIos": "Akses mikrofon ditolak. Aktifkan di Pengaturan > Ellie.",
+      "permissionDenied": "Akses mikrofon ditolak. Mohon izin.",
+      "network": "Periksa koneksi Anda dan coba lagi.",
+      "recognition": "Saya tidak menangkapnya. Silakan coba lagi.",
+      "backend": "Layanan untuk sementara tidak tersedia. Silakan coba lagi.",
+      "rateLimited": "Harap tunggu sebentar dan coba lagi.",
+      "timeout": "Waktu permintaan habis. Silakan coba lagi.",
       "wakeWordUnavailable": "Kata pemicu tidak tersedia, ketuk mikrofon untuk berbicara.",
-      "tts": "Could not play audio response."
+      "tts": "Tidak dapat memutar respons audio."
     },
     "micA11y": {
-      "listening": "Stop listening. Double tap to finish speaking.",
-      "processing": "Processing your question. Please wait.",
-      "speaking": "Ellie is speaking. Double tap to stop.",
-      "error": "Error: {{message}}. Double tap to try again.",
-      "idle": "Ask Ellie a question. Double tap to start speaking."
+      "listening": "Berhenti mendengarkan. Ketuk dua kali untuk menyelesaikan pembicaraan.",
+      "processing": "Memproses pertanyaan Anda. Harap tunggu.",
+      "speaking": "Ellie sedang berbicara. Ketuk dua kali untuk berhenti.",
+      "error": "Kesalahan: {{message}}. Ketuk dua kali untuk mencoba lagi.",
+      "idle": "Ajukan pertanyaan pada Ellie. Ketuk dua kali untuk mulai berbicara."
     },
-    "partialTranscriptA11y": "You are saying: {{text}}",
-    "processingInline": "Ellie is thinking...",
-    "retryHint": "Tap the mic to try again",
-    "requestRef": "Ref: {{requestId}}",
+    "partialTranscriptA11y": "Anda mengatakan: {{text}}",
+    "processingInline": "Ellie sedang berpikir...",
+    "retryHint": "Ketuk mikrofon untuk mencoba lagi",
+    "requestRef": "Referensi: {{requestId}}",
     "responseBubble": {
-      "userSaidA11y": "You said: {{text}}",
-      "assistantSaidA11y": "Ellie said: {{text}}"
+      "userSaidA11y": "Anda berkata: {{text}}",
+      "assistantSaidA11y": "Ellie berkata: {{text}}"
     },
     "warnings": {
       "microphonePermissionRequired": "Izin mikrofon diperlukan untuk Hey Ellie. Ketuk mikrofon untuk berbicara.",
@@ -161,18 +161,18 @@
     }
   },
   "tabs": {
-    "home": "Home",
-    "schedule": "Schedule",
-    "stats": "Stats",
-    "profile": "Profile",
+    "home": "Rumah",
+    "schedule": "Jadwal",
+    "stats": "Statistik",
+    "profile": "Profil",
     "ellie": "Ellie",
-    "openVoiceAssistantA11y": "Open Ellie voice assistant"
+    "openVoiceAssistantA11y": "Buka asisten suara Ellie"
   },
   "quickActions": {
-    "settings": "Settings",
-    "alerts": "Alerts",
-    "profile": "Profile",
-    "export": "Export"
+    "settings": "Pengaturan",
+    "alerts": "Peringatan",
+    "profile": "Profil",
+    "export": "Ekspor"
   },
   "notifications": {
     "shiftType": {

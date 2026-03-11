@@ -117,84 +117,84 @@
     "title": "Wat is jou roosterrotasie?",
     "cards": {
       "4-4-4": {
-        "name": "4-4-4 Rotation",
-        "schedule": "4 days • 4 nights • 4 off",
-        "description": "Work 4 day shifts, then 4 night shifts, then get 4 days off-common for fly-in fly-out sites"
+        "name": "4-4-4 Rotasie",
+        "schedule": "4 dae • 4 nagte • 4 af",
+        "description": "Werk 4 dagskofte, dan 4 nagskofte, en kry dan 4 dae af-gewoonlik vir invlieg-uit-weg-plekke"
       },
       "7-7-7": {
-        "name": "7-7-7 Rotation",
-        "schedule": "7 days • 7 nights • 7 off",
-        "description": "A full week of day shifts, then nights, then a week off-great for planning ahead"
+        "name": "7-7-7 Rotasie",
+        "schedule": "7 dae • 7 nagte • 7 af",
+        "description": "'n Volle week van dagskofte, dan nagte, dan 'n week af - wonderlik om vooruit te beplan"
       },
       "2-2-3": {
-        "name": "2-2-3 Rotation",
-        "schedule": "2 days • 2 nights • 3 off",
-        "description": "Short swings of 2 days, 2 nights, then 3 days off-you get breaks more often"
+        "name": "2-2-3 Rotasie",
+        "schedule": "2 dae • 2 nagte • 3 af",
+        "description": "Kort swaaie van 2 dae, 2 nagte, dan 3 dae af - jy kry meer gereeld pouses"
       },
       "5-5-5": {
-        "name": "5-5-5 Rotation",
-        "schedule": "5 days • 5 nights • 5 off",
-        "description": "Work 5 day shifts, then 5 night shifts, then 5 days off-a good middle ground"
+        "name": "5-5-5 Rotasie",
+        "schedule": "5 dae • 5 nagte • 5 af",
+        "description": "Werk 5 dagskofte, dan 5 nagskofte, dan 5 dae af - 'n goeie middelweg"
       },
       "3-3-3": {
-        "name": "3-3-3 Rotation",
-        "schedule": "3 days • 3 nights • 3 off",
-        "description": "Short swings of 3 day shifts, 3 night shifts, then 3 days off-faster rotation"
+        "name": "3-3-3 Rotasie",
+        "schedule": "3 dae • 3 nagte • 3 af",
+        "description": "Kort swaaie van 3 dagskofte, 3 nagskofte, dan 3 dae af - vinniger rotasie"
       },
       "10-10-10": {
-        "name": "10-10-10 Rotation",
-        "schedule": "10 days • 10 nights • 10 off",
-        "description": "Long swings of 10 days, 10 nights, then 10 off-maximizes your time at home"
+        "name": "10-10-10 Rotasie",
+        "schedule": "10 dae • 10 nagte • 10 af",
+        "description": "Lang swaaie van 10 dae, 10 nagte, dan 10 af, maksimeer jou tyd by die huis"
       },
       "continental": {
-        "name": "Continental Rotation",
-        "schedule": "2 mornings • 2 afternoons • 2 nights • 4 off",
-        "description": "Work 2 morning shifts, 2 afternoon, 2 night, then 4 days off-for 8-hour shift sites"
+        "name": "Kontinentale rotasie",
+        "schedule": "2 oggende • 2 middae • 2 nagte • 4 af",
+        "description": "Werk 2 oggendskofte, 2 middag, 2 nagte, dan 4 dae af vir 8-uur skofpersele"
       },
       "pitman": {
-        "name": "Pitman Schedule",
-        "schedule": "2 days • 2 nights • 3 off",
-        "description": "Short swings of 2 day shifts, then 2 night shifts, then 3 days off-a compact 7-day cycle"
+        "name": "Pitman-skedule",
+        "schedule": "2 dae • 2 nagte • 3 af",
+        "description": "Kort swaaie van 2 dagskofte, dan 2 nagskofte, dan 3 dae af - 'n kompakte 7-dag siklus"
       },
       "custom": {
-        "name": "Custom Rotation",
-        "schedule": "You choose",
-        "description": "Your site uses something different? Build your own rotation here"
+        "name": "Pasgemaakte rotasie",
+        "schedule": "Jy kies",
+        "description": "Gebruik jou werf iets anders? Bou jou eie rotasie hier"
       },
       "fifo-8-6": {
-        "name": "FIFO 8/6",
-        "schedule": "8 days work • 6 days home",
-        "description": "Work 8 consecutive days on-site, then 6 days at home-popular in WA mining"
+        "name": "EIEU 8/6",
+        "schedule": "8 dae werk • 6 dae tuis",
+        "description": "Werk 8 opeenvolgende dae ter plaatse, dan 6 dae by die huis - gewild in WA mynbou"
       },
       "fifo-7-7": {
-        "name": "FIFO 7/7 (Even-Time)",
-        "schedule": "1 week work • 1 week home",
-        "description": "One week on-site, one week at home-perfect 50/50 balance"
+        "name": "EIEU 7/7 (Ewe-tyd)",
+        "schedule": "1 week werk • 1 week tuis",
+        "description": "Een week op die perseel, een week by die huis - perfekte 50/50 balans"
       },
       "fifo-14-14": {
-        "name": "FIFO 14/14 (Even-Time)",
-        "schedule": "2 weeks work • 2 weeks home",
-        "description": "Two weeks on-site, two weeks at home-perfect work-life balance"
+        "name": "EIEU 14/14 (Ewe-tyd)",
+        "schedule": "2 weke werk • 2 weke tuis",
+        "description": "Twee weke op die terrein, twee weke by die huis-perfekte werk-lewe balans"
       },
       "fifo-14-7": {
-        "name": "FIFO 14/7 (2:1)",
-        "schedule": "2 weeks work • 1 week home",
-        "description": "Two weeks on-site, one week at home-high earning potential"
+        "name": "EIEU 14/7 (2:1)",
+        "schedule": "2 weke werk • 1 week tuis",
+        "description": "Twee weke op die perseel, een week by die huis-hoë verdienstepotensiaal"
       },
       "fifo-21-7": {
-        "name": "FIFO 21/7 (3:1)",
-        "schedule": "3 weeks work • 1 week home",
-        "description": "Three weeks on-site, one week at home-for very remote operations"
+        "name": "EIEU 21/7 (3:1)",
+        "schedule": "3 weke werk • 1 week tuis",
+        "description": "Drie weke op die perseel, een week by die huis - vir baie afgeleë bedrywighede"
       },
       "fifo-28-14": {
-        "name": "FIFO 28/14 (2:1)",
-        "schedule": "4 weeks work • 2 weeks home",
-        "description": "Four weeks on-site, two weeks at home-for long-haul remote sites"
+        "name": "EIEU 28/14 (2:1)",
+        "schedule": "4 weke werk • 2 weke tuis",
+        "description": "Vier weke op die perseel, twee weke by die huis - vir langafstand-afgeleë terreine"
       },
       "fifo-custom": {
-        "name": "Custom FIFO",
-        "schedule": "Build your own",
-        "description": "Your FIFO site uses a unique roster? Configure your own work/rest blocks"
+        "name": "Pasgemaakte EIEU",
+        "schedule": "Bou jou eie",
+        "description": "Gebruik jou EIEU-werf 'n unieke rooster? Stel jou eie werk-/rusblokke op"
       }
     }
   },
@@ -382,7 +382,7 @@
     "options": {
       "day": "Dagskof",
       "night": "Nagskof",
-      "off": "Off Days"
+      "off": "Af dae"
     }
   },
   "fifoPhaseSelector": {
@@ -862,58 +862,58 @@
     "workPatternTitle": "Werkpatroon tydens werkblok",
     "workPatterns": {
       "straight-days": {
-        "title": "Straight Days",
-        "description": "Work day shifts only for the entire work block (e.g., 7am-7pm)"
+        "title": "Reguit Dae",
+        "description": "Werk dagskofte slegs vir die hele werkblok (bv. 07:00-19:00)"
       },
       "straight-nights": {
-        "title": "Straight Nights",
-        "description": "Work night shifts only for the entire work block (e.g., 7pm-7am)"
+        "title": "Reguit nagte",
+        "description": "Werk slegs nagskof vir die hele werkblok (bv. 19:00-07:00)"
       },
       "swing": {
-        "title": "Swing Roster",
-        "description": "Alternate between day shifts and night shifts during work block"
+        "title": "Swaairooster",
+        "description": "Wissel af tussen dagskof en nagskofte tydens werkblok"
       }
     }
   },
   "progressHeader": {
-    "goBackA11y": "Go back",
-    "skip": "Skip",
-    "skipA11y": "Skip",
-    "percentageComplete": "{{percentage}}% Complete"
+    "goBackA11y": "Gaan terug",
+    "skip": "Slaan oor",
+    "skipA11y": "Slaan oor",
+    "percentageComplete": "{{percentage}}% voltooi"
   },
   "countrySelector": {
-    "searchPlaceholder": "Search countries...",
-    "searchA11y": "Search countries",
-    "empty": "No countries found",
-    "modalTitle": "Select Country",
-    "modalCloseA11y": "Close country selector"
+    "searchPlaceholder": "Soek lande...",
+    "searchA11y": "Soek lande",
+    "empty": "Geen lande gevind nie",
+    "modalTitle": "Kies Land",
+    "modalCloseA11y": "Maak landkieser toe"
   },
   "timePicker": {
-    "title": "Select Time",
+    "title": "Kies Tyd",
     "labels": {
-      "hour": "Hour",
-      "minute": "Minute",
-      "period": "Period"
+      "hour": "Uur",
+      "minute": "Minuut",
+      "period": "Tydperk"
     }
   },
   "livePatternPreview": {
-    "summary": "Your {{cycleLength}}-day cycle: {{daysOn}}D / {{nightsOn}}N / {{daysOff}}O",
+    "summary": "Jou {{cycleLength}}-dag siklus: {{daysOn}}D / {{nightsOn}}N / {{daysOff}}O",
     "legend": {
-      "offDays": "Off Days"
+      "offDays": "Af dae"
     }
   },
   "chatInput": {
-    "submitA11y": "Submit response"
+    "submitA11y": "Dien antwoord in"
   },
   "typingIndicator": {
-    "a11y": "Bot is typing"
+    "a11y": "Bot tik"
   },
   "chatAvatar": {
     "a11y": "Myn-assistent avatar"
   },
   "premiumCalendar": {
-    "previousMonthA11y": "Previous month",
-    "nextMonthA11y": "Next month"
+    "previousMonthA11y": "Vorige maand",
+    "nextMonthA11y": "Volgende maand"
   },
   "dayCell": {
     "a11y": {

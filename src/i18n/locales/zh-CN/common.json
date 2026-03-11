@@ -52,8 +52,8 @@
   "language": {
     "label": "语言",
     "selector": "选择语言",
-    "restartRequiredTitle": "Restart Required",
-    "restartRequiredMessage": "Please restart Ellie to apply language direction changes.",
+    "restartRequiredTitle": "需要重新启动",
+    "restartRequiredMessage": "请重新启动 Ellie 以应用语言方向更改。",
     "names": {
       "en": "English",
       "es": "Español",

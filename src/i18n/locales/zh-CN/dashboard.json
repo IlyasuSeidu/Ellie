@@ -49,11 +49,11 @@
     "blockDayOf": "{{total}} 的 {{blockName}} 区块日 {{day}}",
     "days": "天",
     "tooltip": {
-      "blockDay": "{{blockName}} Block Day {{day}}/{{total}}",
-      "home": "Home",
-      "flyInSuffix": " — Fly In",
-      "flyOutSuffix": " — Fly Out",
-      "shiftTransition": "Shift transition"
+      "blockDay": "{{blockName}} 区块日 {{day}}/{{total}}",
+      "home": "家",
+      "flyInSuffix": "— 飞来",
+      "flyOutSuffix": "— 飞出",
+      "shiftTransition": "换档过渡"
     }
   },
   "stats": {
@@ -92,58 +92,58 @@
     "active": "积极的"
   },
   "voiceAssistant": {
-    "subtitle": "Voice Assistant",
-    "clearHistoryA11y": "Clear conversation history",
-    "closeA11y": "Close voice assistant",
-    "conversationHistoryA11y": "Conversation history",
+    "subtitle": "语音助手",
+    "clearHistoryA11y": "清除通话记录",
+    "closeA11y": "关闭语音助手",
+    "conversationHistoryA11y": "对话历史记录",
     "empty": {
-      "prompt": "Ask me about your shift schedule",
-      "trySaying": "Try saying:",
-      "example1": "What shift do I have tomorrow?",
-      "example2": "When is my next day off?",
-      "example3": "How many night shifts this month?"
+      "prompt": "询问我你的轮班安排",
+      "trySaying": "尝试说：",
+      "example1": "明天我有什么轮班？",
+      "example2": "我第二天什么时候休息？",
+      "example3": "这个月有多少夜班？"
     },
     "permission": {
-      "notice": "Ellie needs microphone access to hear your questions.",
-      "grant": "Grant Permission",
-      "grantA11y": "Grant microphone permission",
-      "requestA11y": "Request microphone permission"
+      "notice": "艾莉需要使用麦克风才能听到您的问题。",
+      "grant": "授予许可",
+      "grantA11y": "授予麦克风权限",
+      "requestA11y": "请求麦克风权限"
     },
     "status": {
-      "listening": "Listening...",
-      "processing": "Thinking...",
-      "speaking": "Tap to stop speaking",
+      "listening": "听...",
+      "processing": "思维...",
+      "speaking": "点击即可停止说话",
       "wakeWordUnavailable": "唤醒词不可用，点击麦克风进行对话。",
-      "sayWakeWordOrTap": "Say \"{{wakeWordPhrase}}\" or tap the mic",
-      "askAnother": "Tap the mic to ask another question",
-      "askEllie": "Tap the mic to ask Ellie"
+      "sayWakeWordOrTap": "说“{{wakeWordPhrase}}”或轻按麦克风",
+      "askAnother": "轻按麦克风询问另一个问题",
+      "askEllie": "轻按麦克风询问艾莉"
     },
     "errors": {
-      "default": "Something went wrong",
-      "permissionDeniedIos": "Microphone access denied. Enable in Settings > Ellie.",
-      "permissionDenied": "Microphone access denied. Please grant permission.",
-      "network": "Check your connection and retry.",
-      "recognition": "I didn't catch that. Please try again.",
-      "backend": "Service temporarily unavailable. Please try again.",
-      "rateLimited": "Please wait briefly and retry.",
-      "timeout": "Request timed out. Please retry.",
+      "default": "出了点问题",
+      "permissionDeniedIos": "麦克风访问被拒绝。在“设置”>“艾莉”中启用。",
+      "permissionDenied": "麦克风访问被拒绝。请授予许可。",
+      "network": "检查您的连接并重试。",
+      "recognition": "我没听清。请再试一次。",
+      "backend": "服务暂时不可用。请再试一次。",
+      "rateLimited": "请稍等片刻然后重试。",
+      "timeout": "请求超时。请重试。",
       "wakeWordUnavailable": "唤醒词不可用，点击麦克风进行对话。",
-      "tts": "Could not play audio response."
+      "tts": "无法播放音频响应。"
     },
     "micA11y": {
-      "listening": "Stop listening. Double tap to finish speaking.",
-      "processing": "Processing your question. Please wait.",
-      "speaking": "Ellie is speaking. Double tap to stop.",
-      "error": "Error: {{message}}. Double tap to try again.",
-      "idle": "Ask Ellie a question. Double tap to start speaking."
+      "listening": "别再听了。双击即可结束讲话。",
+      "processing": "处理你的问题。请稍等。",
+      "speaking": "艾莉正在讲话。双击即可停止。",
+      "error": "错误：{{message}}。双击重试。",
+      "idle": "问艾莉一个问题。双击即可开始说话。"
     },
-    "partialTranscriptA11y": "You are saying: {{text}}",
-    "processingInline": "Ellie is thinking...",
-    "retryHint": "Tap the mic to try again",
-    "requestRef": "Ref: {{requestId}}",
+    "partialTranscriptA11y": "你是说：{{text}}",
+    "processingInline": "艾莉在想……",
+    "retryHint": "点击麦克风重试",
+    "requestRef": "参考：{{requestId}}",
     "responseBubble": {
-      "userSaidA11y": "You said: {{text}}",
-      "assistantSaidA11y": "Ellie said: {{text}}"
+      "userSaidA11y": "你说：{{text}}",
+      "assistantSaidA11y": "艾莉说：{{text}}"
     },
     "warnings": {
       "microphonePermissionRequired": "Hey Ellie 需要麦克风权限。点击麦克风开始说话。",
@@ -161,18 +161,18 @@
     }
   },
   "tabs": {
-    "home": "Home",
-    "schedule": "Schedule",
-    "stats": "Stats",
-    "profile": "Profile",
+    "home": "家",
+    "schedule": "日程",
+    "stats": "统计数据",
+    "profile": "轮廓",
     "ellie": "Ellie",
-    "openVoiceAssistantA11y": "Open Ellie voice assistant"
+    "openVoiceAssistantA11y": "打开艾莉语音助手"
   },
   "quickActions": {
-    "settings": "Settings",
-    "alerts": "Alerts",
-    "profile": "Profile",
-    "export": "Export"
+    "settings": "设置",
+    "alerts": "警报",
+    "profile": "轮廓",
+    "export": "出口"
   },
   "notifications": {
     "shiftType": {

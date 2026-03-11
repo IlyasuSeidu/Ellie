@@ -52,8 +52,8 @@
   "language": {
     "label": "Ulimi",
     "selector": "Khetha Ulimi",
-    "restartRequiredTitle": "Restart Required",
-    "restartRequiredMessage": "Please restart Ellie to apply language direction changes.",
+    "restartRequiredTitle": "Ukuqala kabusha Kudingeka",
+    "restartRequiredMessage": "Sicela uqale kabusha u-Ellie ukuze usebenzise izinguquko zesiqondisindlela solimi.",
     "names": {
       "en": "English",
       "es": "Español",

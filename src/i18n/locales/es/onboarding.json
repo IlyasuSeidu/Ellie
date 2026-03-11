@@ -401,7 +401,7 @@
     "options": {
       "day": "Turno de día",
       "night": "Turno de noche",
-      "off": "Off Days"
+      "off": "Días libres"
     }
   },
   "fifoPhaseSelector": {
@@ -895,44 +895,44 @@
     }
   },
   "progressHeader": {
-    "goBackA11y": "Go back",
-    "skip": "Skip",
-    "skipA11y": "Skip",
-    "percentageComplete": "{{percentage}}% Complete"
+    "goBackA11y": "Volver",
+    "skip": "Saltar",
+    "skipA11y": "Saltar",
+    "percentageComplete": "{{percentage}}% completo"
   },
   "countrySelector": {
-    "searchPlaceholder": "Search countries...",
-    "searchA11y": "Search countries",
-    "empty": "No countries found",
-    "modalTitle": "Select Country",
-    "modalCloseA11y": "Close country selector"
+    "searchPlaceholder": "Buscar países...",
+    "searchA11y": "Buscar países",
+    "empty": "No se encontraron países",
+    "modalTitle": "Seleccionar país",
+    "modalCloseA11y": "Cerrar selector de países"
   },
   "timePicker": {
-    "title": "Select Time",
+    "title": "Seleccionar hora",
     "labels": {
-      "hour": "Hour",
-      "minute": "Minute",
-      "period": "Period"
+      "hour": "Hora",
+      "minute": "Minuto",
+      "period": "Período"
     }
   },
   "livePatternPreview": {
-    "summary": "Your {{cycleLength}}-day cycle: {{daysOn}}D / {{nightsOn}}N / {{daysOff}}O",
+    "summary": "Tu ciclo de {{cycleLength}}-día: {{daysOn}}D / {{nightsOn}}N / {{daysOff}}O",
     "legend": {
-      "offDays": "Off Days"
+      "offDays": "Días libres"
     }
   },
   "chatInput": {
-    "submitA11y": "Submit response"
+    "submitA11y": "Enviar respuesta"
   },
   "typingIndicator": {
-    "a11y": "Bot is typing"
+    "a11y": "El robot está escribiendo"
   },
   "chatAvatar": {
     "a11y": "Avatar del asistente minero"
   },
   "premiumCalendar": {
-    "previousMonthA11y": "Previous month",
-    "nextMonthA11y": "Next month"
+    "previousMonthA11y": "Mes anterior",
+    "nextMonthA11y": "Mes próximo"
   },
   "chatMessage": {
     "skipped": "Omitido",

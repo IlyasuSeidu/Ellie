@@ -127,107 +127,107 @@
     "cyclePhase": "{{phase}} - Dag {{day}} van {{total}}",
     "cycleDay": "Dag {{day}} van siklus",
     "startDatePicker": {
-      "title": "Select Start Date",
-      "backdropCloseA11y": "Close",
-      "closeA11y": "Close date picker",
-      "previousMonthA11y": "Previous month",
-      "nextMonthA11y": "Next month",
+      "title": "Kies Begindatum",
+      "backdropCloseA11y": "Maak toe",
+      "closeA11y": "Maak datumkieser toe",
+      "previousMonthA11y": "Vorige maand",
+      "nextMonthA11y": "Volgende maand",
       "dayA11y": "{{day}} {{month}} {{year}}",
-      "todayTag": "today",
-      "unavailableTag": "unavailable",
-      "legendToday": "Today",
-      "legendSelected": "Selected"
+      "todayTag": "vandag",
+      "unavailableTag": "nie beskikbaar nie",
+      "legendToday": "Vandag",
+      "legendSelected": "Gekies"
     },
     "patternSelector": {
-      "title": "Select Pattern",
-      "closeA11y": "Close pattern selector",
-      "backdropCloseA11y": "Close",
-      "currentlySelected": "currently selected",
-      "cardHint": "Double tap to select this pattern",
+      "title": "Kies Patroon",
+      "closeA11y": "Maak patroonkieser toe",
+      "backdropCloseA11y": "Maak toe",
+      "currentlySelected": "tans gekies",
+      "cardHint": "Dubbeltik om hierdie patroon te kies",
       "subtitle": {
-        "fifo": "FIFO block rosters",
-        "threeShift": "3-shift (8h) rotating patterns",
-        "twoShift": "2-shift (12h) rotating patterns"
+        "fifo": "EIEU-blokroosters",
+        "threeShift": "3-skof (8h) roterende patrone",
+        "twoShift": "2-skof (12h) roterende patrone"
       },
       "patterns": {
         "STANDARD_3_3_3": {
-          "name": "3-3-3 Rotation",
-          "subtitle": "9-day cycle"
+          "name": "3-3-3 Rotasie",
+          "subtitle": "9-dae siklus"
         },
         "STANDARD_4_4_4": {
-          "name": "4-4-4 Rotation",
-          "subtitle": "12-day cycle"
+          "name": "4-4-4 Rotasie",
+          "subtitle": "12-dae siklus"
         },
         "STANDARD_5_5_5": {
-          "name": "5-5-5 Rotation",
-          "subtitle": "15-day cycle"
+          "name": "5-5-5 Rotasie",
+          "subtitle": "15 dae siklus"
         },
         "STANDARD_7_7_7": {
-          "name": "7-7-7 Rotation",
-          "subtitle": "21-day cycle"
+          "name": "7-7-7 Rotasie",
+          "subtitle": "21 dae siklus"
         },
         "STANDARD_10_10_10": {
-          "name": "10-10-10 Rotation",
-          "subtitle": "30-day cycle"
+          "name": "10-10-10 Rotasie",
+          "subtitle": "30 dae siklus"
         },
         "STANDARD_2_2_3": {
           "name": "Pitman (2-2-3)",
-          "subtitle": "7-day cycle"
+          "subtitle": "7-dag siklus"
         },
         "CONTINENTAL": {
-          "name": "Continental",
-          "subtitle": "10-day cycle"
+          "name": "Kontinentaal",
+          "subtitle": "10 dae siklus"
         },
         "PITMAN": {
           "name": "Pitman",
-          "subtitle": "7-day cycle"
+          "subtitle": "7-dag siklus"
         },
         "CUSTOM": {
-          "name": "Custom Rotation",
-          "subtitle": "Build your own"
+          "name": "Pasgemaakte rotasie",
+          "subtitle": "Bou jou eie"
         },
         "FIFO_7_7": {
-          "name": "7/7 FIFO",
-          "subtitle": "14-day cycle"
+          "name": "7/7 EIEU",
+          "subtitle": "14 dae siklus"
         },
         "FIFO_8_6": {
-          "name": "8/6 FIFO",
-          "subtitle": "14-day cycle"
+          "name": "8/6 EIEU",
+          "subtitle": "14 dae siklus"
         },
         "FIFO_14_14": {
-          "name": "14/14 FIFO",
-          "subtitle": "28-day cycle"
+          "name": "14/14 EIEU",
+          "subtitle": "28 dae siklus"
         },
         "FIFO_14_7": {
-          "name": "14/7 FIFO",
-          "subtitle": "21-day cycle"
+          "name": "14/7 EIEU",
+          "subtitle": "21 dae siklus"
         },
         "FIFO_21_7": {
-          "name": "21/7 FIFO",
-          "subtitle": "28-day cycle"
+          "name": "21/7 EIEU",
+          "subtitle": "28 dae siklus"
         },
         "FIFO_28_14": {
-          "name": "28/14 FIFO",
-          "subtitle": "42-day cycle"
+          "name": "28/14 EIEU",
+          "subtitle": "42 dae siklus"
         },
         "FIFO_CUSTOM": {
-          "name": "Custom FIFO",
-          "subtitle": "Configure blocks"
+          "name": "Pasgemaakte EIEU",
+          "subtitle": "Stel blokke op"
         }
       }
     },
     "cycleResync": {
-      "title": "Re-sync Cycle",
-      "subtitleFifo": "Are you at work or home?",
-      "subtitleRotating": "Which shift phase are you on?",
-      "closeA11y": "Close",
-      "backdropCloseA11y": "Close",
-      "backToPhaseA11y": "Back to phase selection",
-      "daySubtitle": "Which day are you on?",
-      "dayA11y": "Day {{day}}",
-      "confirmA11y": "Confirm cycle position",
-      "confirm": "Confirm Position",
-      "empty": "Configure a shift pattern first to re-sync your cycle.",
+      "title": "Hersinkroniseer siklus",
+      "subtitleFifo": "Is jy by die werk of by die huis?",
+      "subtitleRotating": "In watter skoffase is jy?",
+      "closeA11y": "Maak toe",
+      "backdropCloseA11y": "Maak toe",
+      "backToPhaseA11y": "Terug na fasekeuse",
+      "daySubtitle": "Op watter dag is jy?",
+      "dayA11y": "Dag {{day}}",
+      "confirmA11y": "Bevestig siklusposisie",
+      "confirm": "Bevestig posisie",
+      "empty": "Stel eers 'n verskuiwingpatroon op om jou siklus te hersinkroniseer.",
       "phaseLabels": {
         "day": "Dagskof",
         "night": "Nagskof",
@@ -238,23 +238,23 @@
         "rest": "Rusblok"
       },
       "dayDescriptions": {
-        "first": "First day of {{phase}}",
-        "last": "Last day of {{phase}}",
-        "midpoint": "Midpoint of {{phase}}",
-        "dayOf": "Day {{day}} of {{phase}}"
+        "first": "Eerste dag van {{phase}}",
+        "last": "Laaste dag van {{phase}}",
+        "midpoint": "Middelpunt van {{phase}}",
+        "dayOf": "Dag {{day}} van {{phase}}"
       }
     },
     "configCard": {
-      "timesLabel": "Times",
-      "workDaysOnSite": "{{count}} days on-site",
-      "restDaysAtHome": "{{count}} days at home",
-      "empty": "No shift configuration set",
-      "footer": "Shift settings can be updated in Settings"
+      "timesLabel": "Tye",
+      "workDaysOnSite": "{{count}} dae op die terrein",
+      "restDaysAtHome": "{{count}} dae by die huis",
+      "empty": "Geen skofkonfigurasie gestel nie",
+      "footer": "Shift-instellings kan in Instellings opgedateer word"
     },
     "profileUtils": {
-      "customFIFO": "{{workBlockDays}}/{{restBlockDays}} Custom FIFO",
-      "customRotationTwoShift": "{{daysOn}}-{{nightsOn}}-{{daysOff}} Custom Rotation",
-      "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} Custom Rotation",
+      "customFIFO": "{{workBlockDays}}/{{restBlockDays}} Pasgemaakte EIEU",
+      "customRotationTwoShift": "{{daysOn}}-{{nightsOn}}-{{daysOff}} Pasgemaakte rotasie",
+      "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} Pasgemaakte rotasie",
       "dayAbbrev": "D",
       "nightAbbrev": "N"
     }

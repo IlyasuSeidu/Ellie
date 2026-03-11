@@ -126,84 +126,84 @@
     "title": "Какая у вас ротация в составе?",
     "cards": {
       "4-4-4": {
-        "name": "4-4-4 Rotation",
-        "schedule": "4 days • 4 nights • 4 off",
-        "description": "Work 4 day shifts, then 4 night shifts, then get 4 days off-common for fly-in fly-out sites"
+        "name": "4-4-4 Ротация",
+        "schedule": "4 дня • 4 ночи • 4 скидки",
+        "description": "Работайте в 4 дневные смены, затем 4 ночные смены, затем получите 4 выходных дня для мест прилета и отлета."
       },
       "7-7-7": {
-        "name": "7-7-7 Rotation",
-        "schedule": "7 days • 7 nights • 7 off",
-        "description": "A full week of day shifts, then nights, then a week off-great for planning ahead"
+        "name": "7-7-7 Ротация",
+        "schedule": "7 дней • 7 ночей • 7 скидок",
+        "description": "Полная неделя дневных смен, затем ночных, а затем неделя выходных — отлично подходит для планирования на будущее."
       },
       "2-2-3": {
-        "name": "2-2-3 Rotation",
-        "schedule": "2 days • 2 nights • 3 off",
-        "description": "Short swings of 2 days, 2 nights, then 3 days off-you get breaks more often"
+        "name": "2-2-3 Ротация",
+        "schedule": "2 дня • 2 ночи • 3 скидки",
+        "description": "Короткие смены: 2 дня, 2 ночи, затем 3 выходных — перерывы будут чаще."
       },
       "5-5-5": {
-        "name": "5-5-5 Rotation",
-        "schedule": "5 days • 5 nights • 5 off",
-        "description": "Work 5 day shifts, then 5 night shifts, then 5 days off-a good middle ground"
+        "name": "5-5-5 Ротация",
+        "schedule": "5 дней • 5 ночей • скидка 5",
+        "description": "Работайте 5 дневных смен, затем 5 ночных, затем 5 выходных — хорошая золотая середина."
       },
       "3-3-3": {
-        "name": "3-3-3 Rotation",
-        "schedule": "3 days • 3 nights • 3 off",
-        "description": "Short swings of 3 day shifts, 3 night shifts, then 3 days off-faster rotation"
+        "name": "3-3-3 Ротация",
+        "schedule": "3 дня • 3 ночи • 3 скидки",
+        "description": "Короткие смены: 3 дневные смены, 3 ночные смены, затем 3 выходных - более быстрая ротация."
       },
       "10-10-10": {
-        "name": "10-10-10 Rotation",
-        "schedule": "10 days • 10 nights • 10 off",
-        "description": "Long swings of 10 days, 10 nights, then 10 off-maximizes your time at home"
+        "name": "10-10-10 Ротация",
+        "schedule": "10 дней • 10 ночей • 10 скидок",
+        "description": "Длинные колебания: 10 дней, 10 ночей, а затем 10 выходных, позволяют максимально увеличить время, проведенное дома."
       },
       "continental": {
-        "name": "Continental Rotation",
-        "schedule": "2 mornings • 2 afternoons • 2 nights • 4 off",
-        "description": "Work 2 morning shifts, 2 afternoon, 2 night, then 4 days off-for 8-hour shift sites"
+        "name": "Континентальное вращение",
+        "schedule": "2 утра • 2 дня • 2 ночи • 4 выходных",
+        "description": "Работа в 2 утренние смены, 2 дневные, 2 ночные, затем 4 выходных по 8-часовым сменам."
       },
       "pitman": {
-        "name": "Pitman Schedule",
-        "schedule": "2 days • 2 nights • 3 off",
-        "description": "Short swings of 2 day shifts, then 2 night shifts, then 3 days off-a compact 7-day cycle"
+        "name": "Расписание Питмана",
+        "schedule": "2 дня • 2 ночи • 3 скидки",
+        "description": "Короткие смены: 2 дневные смены, затем 2 ночные смены, затем 3 выходных – компактный 7-дневный цикл."
       },
       "custom": {
-        "name": "Custom Rotation",
-        "schedule": "You choose",
-        "description": "Your site uses something different? Build your own rotation here"
+        "name": "Пользовательское вращение",
+        "schedule": "Вы выбираете",
+        "description": "Ваш сайт использует что-то другое? Создайте свою собственную ротацию здесь"
       },
       "fifo-8-6": {
-        "name": "FIFO 8/6",
-        "schedule": "8 days work • 6 days home",
-        "description": "Work 8 consecutive days on-site, then 6 days at home-popular in WA mining"
+        "name": "ФИФО 8/6",
+        "schedule": "8 дней работа • 6 дней дома",
+        "description": "Работайте 8 дней подряд на месте, затем 6 дней дома — популярно в горнодобывающей промышленности штата Вашингтон."
       },
       "fifo-7-7": {
-        "name": "FIFO 7/7 (Even-Time)",
-        "schedule": "1 week work • 1 week home",
-        "description": "One week on-site, one week at home-perfect 50/50 balance"
+        "name": "ФИФО 7/7 (четное время)",
+        "schedule": "1 неделя работы • 1 неделя дома",
+        "description": "Одна неделя на месте, одна неделя дома — идеальный баланс 50/50."
       },
       "fifo-14-14": {
-        "name": "FIFO 14/14 (Even-Time)",
-        "schedule": "2 weeks work • 2 weeks home",
-        "description": "Two weeks on-site, two weeks at home-perfect work-life balance"
+        "name": "ФИФО 14/14 (четное время)",
+        "schedule": "2 недели работы • 2 недели дома",
+        "description": "Две недели на месте, две недели дома — идеальный баланс между работой и личной жизнью"
       },
       "fifo-14-7": {
-        "name": "FIFO 14/7 (2:1)",
-        "schedule": "2 weeks work • 1 week home",
-        "description": "Two weeks on-site, one week at home-high earning potential"
+        "name": "ФИФО 14/7 (2:1)",
+        "schedule": "2 недели работы • 1 неделя дома",
+        "description": "Две недели на месте, одна неделя дома — высокий потенциал заработка"
       },
       "fifo-21-7": {
-        "name": "FIFO 21/7 (3:1)",
-        "schedule": "3 weeks work • 1 week home",
-        "description": "Three weeks on-site, one week at home-for very remote operations"
+        "name": "ФИФО 21/7 (3:1)",
+        "schedule": "3 недели работы • 1 неделя дома",
+        "description": "Три недели на месте, одна неделя дома — для очень удаленных операций."
       },
       "fifo-28-14": {
-        "name": "FIFO 28/14 (2:1)",
-        "schedule": "4 weeks work • 2 weeks home",
-        "description": "Four weeks on-site, two weeks at home-for long-haul remote sites"
+        "name": "ФИФО 28/14 (2:1)",
+        "schedule": "4 недели работы • 2 недели дома",
+        "description": "Четыре недели на месте, две недели дома — для удаленных объектов на большие расстояния"
       },
       "fifo-custom": {
-        "name": "Custom FIFO",
-        "schedule": "Build your own",
-        "description": "Your FIFO site uses a unique roster? Configure your own work/rest blocks"
+        "name": "Пользовательский ФИФО",
+        "schedule": "Создайте свой собственный",
+        "description": "На вашем сайте FIFO используется уникальный реестр? Настройте свои собственные блоки работы/отдыха"
       }
     }
   },
@@ -391,7 +391,7 @@
     "options": {
       "day": "Дневная смена",
       "night": "Ночная смена",
-      "off": "Off Days"
+      "off": "Выходные дни"
     }
   },
   "fifoPhaseSelector": {
@@ -871,58 +871,58 @@
     "workPatternTitle": "Схема работы во время рабочего блока",
     "workPatterns": {
       "straight-days": {
-        "title": "Straight Days",
-        "description": "Work day shifts only for the entire work block (e.g., 7am-7pm)"
+        "title": "Прямые дни",
+        "description": "Смены рабочего дня только для всего рабочего блока (например, с 7:00 до 19:00)"
       },
       "straight-nights": {
-        "title": "Straight Nights",
-        "description": "Work night shifts only for the entire work block (e.g., 7pm-7am)"
+        "title": "Прямые ночи",
+        "description": "Работайте в ночные смены только для всего рабочего блока (например, с 19:00 до 7:00)."
       },
       "swing": {
-        "title": "Swing Roster",
-        "description": "Alternate between day shifts and night shifts during work block"
+        "title": "Свинговый состав",
+        "description": "Чередование дневных и ночных смен во время рабочего блока"
       }
     }
   },
   "progressHeader": {
-    "goBackA11y": "Go back",
-    "skip": "Skip",
-    "skipA11y": "Skip",
-    "percentageComplete": "{{percentage}}% Complete"
+    "goBackA11y": "Возвращаться",
+    "skip": "Пропускать",
+    "skipA11y": "Пропускать",
+    "percentageComplete": "{{percentage}}>% завершено"
   },
   "countrySelector": {
-    "searchPlaceholder": "Search countries...",
-    "searchA11y": "Search countries",
-    "empty": "No countries found",
-    "modalTitle": "Select Country",
-    "modalCloseA11y": "Close country selector"
+    "searchPlaceholder": "Поиск стран...",
+    "searchA11y": "Поиск стран",
+    "empty": "Страны не найдены",
+    "modalTitle": "Выберите страну",
+    "modalCloseA11y": "Закрыть выбор страны"
   },
   "timePicker": {
-    "title": "Select Time",
+    "title": "Выберите время",
     "labels": {
-      "hour": "Hour",
-      "minute": "Minute",
-      "period": "Period"
+      "hour": "Час",
+      "minute": "минута",
+      "period": "Период"
     }
   },
   "livePatternPreview": {
-    "summary": "Your {{cycleLength}}-day cycle: {{daysOn}}D / {{nightsOn}}N / {{daysOff}}O",
+    "summary": "Ваш {{cycleLength}}-дневной цикл: {{daysOn}}D / {{nightsOn}}N / {{daysOff}}O",
     "legend": {
-      "offDays": "Off Days"
+      "offDays": "Выходные дни"
     }
   },
   "chatInput": {
-    "submitA11y": "Submit response"
+    "submitA11y": "Отправить ответ"
   },
   "typingIndicator": {
-    "a11y": "Bot is typing"
+    "a11y": "Бот печатает"
   },
   "chatAvatar": {
     "a11y": "Аватар помощника по сменам"
   },
   "premiumCalendar": {
-    "previousMonthA11y": "Previous month",
-    "nextMonthA11y": "Next month"
+    "previousMonthA11y": "Предыдущий месяц",
+    "nextMonthA11y": "В следующем месяце"
   },
   "dayCell": {
     "a11y": {

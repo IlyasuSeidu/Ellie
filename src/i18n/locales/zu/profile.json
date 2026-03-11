@@ -127,107 +127,107 @@
     "cyclePhase": "{{phase}} - Usuku {{day}} lwe-{{total}}",
     "cycleDay": "Usuku {{day}} lomjikelezo",
     "startDatePicker": {
-      "title": "Select Start Date",
-      "backdropCloseA11y": "Close",
-      "closeA11y": "Close date picker",
-      "previousMonthA11y": "Previous month",
-      "nextMonthA11y": "Next month",
+      "title": "Khetha Idethi Yokuqala",
+      "backdropCloseA11y": "Vala",
+      "closeA11y": "Vala isikhethi sosuku",
+      "previousMonthA11y": "Inyanga edlule",
+      "nextMonthA11y": "Inyanga ezayo",
       "dayA11y": "{{day}} {{month}} {{year}}",
-      "todayTag": "today",
-      "unavailableTag": "unavailable",
-      "legendToday": "Today",
-      "legendSelected": "Selected"
+      "todayTag": "namuhla",
+      "unavailableTag": "akutholakali",
+      "legendToday": "Namuhla",
+      "legendSelected": "Ikhethiwe"
     },
     "patternSelector": {
-      "title": "Select Pattern",
-      "closeA11y": "Close pattern selector",
-      "backdropCloseA11y": "Close",
-      "currentlySelected": "currently selected",
-      "cardHint": "Double tap to select this pattern",
+      "title": "Khetha Iphethini",
+      "closeA11y": "Vala isikhethi sephethini",
+      "backdropCloseA11y": "Vala",
+      "currentlySelected": "okukhethiwe okwamanje",
+      "cardHint": "Thepha kabili ukuze ukhethe le phethini",
       "subtitle": {
-        "fifo": "FIFO block rosters",
-        "threeShift": "3-shift (8h) rotating patterns",
-        "twoShift": "2-shift (12h) rotating patterns"
+        "fifo": "I-FIFO block rosters",
+        "threeShift": "3-shift (8h) amaphethini ajikelezayo",
+        "twoShift": "2-shift (12h) amaphethini ajikelezayo"
       },
       "patterns": {
         "STANDARD_3_3_3": {
-          "name": "3-3-3 Rotation",
-          "subtitle": "9-day cycle"
+          "name": "3-3-3 Ukujikeleza",
+          "subtitle": "umjikelezo wezinsuku ezingu-9"
         },
         "STANDARD_4_4_4": {
-          "name": "4-4-4 Rotation",
-          "subtitle": "12-day cycle"
+          "name": "4-4-4 Ukujikeleza",
+          "subtitle": "Umjikelezo wezinsuku eziyi-12"
         },
         "STANDARD_5_5_5": {
-          "name": "5-5-5 Rotation",
-          "subtitle": "15-day cycle"
+          "name": "5-5-5 Ukujikeleza",
+          "subtitle": "Umjikelezo wezinsuku eziyi-15"
         },
         "STANDARD_7_7_7": {
-          "name": "7-7-7 Rotation",
-          "subtitle": "21-day cycle"
+          "name": "7-7-7 Ukujikeleza",
+          "subtitle": "Umjikelezo wezinsuku ezingama-21"
         },
         "STANDARD_10_10_10": {
-          "name": "10-10-10 Rotation",
-          "subtitle": "30-day cycle"
+          "name": "10-10-10 Ukujikeleza",
+          "subtitle": "Umjikelezo wezinsuku ezingama-30"
         },
         "STANDARD_2_2_3": {
-          "name": "Pitman (2-2-3)",
-          "subtitle": "7-day cycle"
+          "name": "U-Pitman (2-2-3)",
+          "subtitle": "umjikelezo wezinsuku ezingu-7"
         },
         "CONTINENTAL": {
-          "name": "Continental",
-          "subtitle": "10-day cycle"
+          "name": "Izwekazi",
+          "subtitle": "Umjikelezo wezinsuku eziyi-10"
         },
         "PITMAN": {
-          "name": "Pitman",
-          "subtitle": "7-day cycle"
+          "name": "U-Pitman",
+          "subtitle": "umjikelezo wezinsuku ezingu-7"
         },
         "CUSTOM": {
-          "name": "Custom Rotation",
-          "subtitle": "Build your own"
+          "name": "Ukuzungezisa Ngokwezifiso",
+          "subtitle": "Yakha eyakho"
         },
         "FIFO_7_7": {
           "name": "7/7 FIFO",
-          "subtitle": "14-day cycle"
+          "subtitle": "Umjikelezo wezinsuku eziyi-14"
         },
         "FIFO_8_6": {
           "name": "8/6 FIFO",
-          "subtitle": "14-day cycle"
+          "subtitle": "Umjikelezo wezinsuku eziyi-14"
         },
         "FIFO_14_14": {
           "name": "14/14 FIFO",
-          "subtitle": "28-day cycle"
+          "subtitle": "Umjikelezo wezinsuku ezingama-28"
         },
         "FIFO_14_7": {
           "name": "14/7 FIFO",
-          "subtitle": "21-day cycle"
+          "subtitle": "Umjikelezo wezinsuku ezingama-21"
         },
         "FIFO_21_7": {
           "name": "21/7 FIFO",
-          "subtitle": "28-day cycle"
+          "subtitle": "Umjikelezo wezinsuku ezingama-28"
         },
         "FIFO_28_14": {
           "name": "28/14 FIFO",
-          "subtitle": "42-day cycle"
+          "subtitle": "Umjikelezo wezinsuku ezingama-42"
         },
         "FIFO_CUSTOM": {
-          "name": "Custom FIFO",
-          "subtitle": "Configure blocks"
+          "name": "I-FIFO yangokwezifiso",
+          "subtitle": "Lungiselela amabhlogo"
         }
       }
     },
     "cycleResync": {
-      "title": "Re-sync Cycle",
-      "subtitleFifo": "Are you at work or home?",
-      "subtitleRotating": "Which shift phase are you on?",
-      "closeA11y": "Close",
-      "backdropCloseA11y": "Close",
-      "backToPhaseA11y": "Back to phase selection",
-      "daySubtitle": "Which day are you on?",
-      "dayA11y": "Day {{day}}",
-      "confirmA11y": "Confirm cycle position",
-      "confirm": "Confirm Position",
-      "empty": "Configure a shift pattern first to re-sync your cycle.",
+      "title": "Vumelanisa kabusha umjikelezo",
+      "subtitleFifo": "Ingabe usemsebenzini noma ekhaya?",
+      "subtitleRotating": "Ukusiphi isigaba sokushintsha?",
+      "closeA11y": "Vala",
+      "backdropCloseA11y": "Vala",
+      "backToPhaseA11y": "Emuva ekukhethweni kwesigaba",
+      "daySubtitle": "Ukuluphi usuku?",
+      "dayA11y": "Usuku {{day}}",
+      "confirmA11y": "Qinisekisa indawo yomjikelezo",
+      "confirm": "Qinisekisa Isikhundla",
+      "empty": "Lungiselela iphethini ye-shift kuqala ukuze uvumelanise kabusha umjikelezo wakho.",
       "phaseLabels": {
         "day": "Ishifu lasemini",
         "night": "Ishifu yasebusuku",
@@ -238,23 +238,23 @@
         "rest": "Ibhulokhi yokuphumula"
       },
       "dayDescriptions": {
-        "first": "First day of {{phase}}",
-        "last": "Last day of {{phase}}",
-        "midpoint": "Midpoint of {{phase}}",
-        "dayOf": "Day {{day}} of {{phase}}"
+        "first": "Usuku lokuqala {{phase}}",
+        "last": "Usuku lokugcina {{phase}}",
+        "midpoint": "Iphoyinti elimaphakathi le-{{phase}}",
+        "dayOf": "Usuku {{day}} lwe-{{phase}}"
       }
     },
     "configCard": {
-      "timesLabel": "Times",
-      "workDaysOnSite": "{{count}} days on-site",
-      "restDaysAtHome": "{{count}} days at home",
-      "empty": "No shift configuration set",
-      "footer": "Shift settings can be updated in Settings"
+      "timesLabel": "Izikhathi",
+      "workDaysOnSite": "{{count}} izinsuku kusayithi",
+      "restDaysAtHome": "{{count}} izinsuku ekhaya",
+      "empty": "Akukho ukucushwa kwe-shift okusethiwe",
+      "footer": "Izilungiselelo ze-Shift zingabuyekezwa kokuthi Izilungiselelo"
     },
     "profileUtils": {
-      "customFIFO": "{{workBlockDays}}/{{restBlockDays}} Custom FIFO",
-      "customRotationTwoShift": "{{daysOn}}-{{nightsOn}}-{{daysOff}} Custom Rotation",
-      "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} Custom Rotation",
+      "customFIFO": "{{workBlockDays}}/{{restBlockDays}} I-FIFO Yangokwezifiso",
+      "customRotationTwoShift": "{{daysOn}}-{{nightsOn}}-{{daysOff}} Ukuzungezisa Ngokwezifiso",
+      "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} Ukuzungezisa Ngokwezifiso",
       "dayAbbrev": "D",
       "nightAbbrev": "N"
     }

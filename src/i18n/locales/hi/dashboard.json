@@ -49,11 +49,11 @@
     "blockDayOf": "{{blockName}} ब्लॉक दिवस {{total}} का {{day}}",
     "days": "दिन",
     "tooltip": {
-      "blockDay": "{{blockName}} Block Day {{day}}/{{total}}",
-      "home": "Home",
-      "flyInSuffix": " — Fly In",
-      "flyOutSuffix": " — Fly Out",
-      "shiftTransition": "Shift transition"
+      "blockDay": "{{blockName}} ब्लॉक दिवस {{day}}/{{total}}",
+      "home": "घर",
+      "flyInSuffix": "- में उड़ें",
+      "flyOutSuffix": "- बहार उड़",
+      "shiftTransition": "शिफ्ट संक्रमण"
     }
   },
   "stats": {
@@ -92,58 +92,58 @@
     "active": "सक्रिय"
   },
   "voiceAssistant": {
-    "subtitle": "Voice Assistant",
-    "clearHistoryA11y": "Clear conversation history",
-    "closeA11y": "Close voice assistant",
-    "conversationHistoryA11y": "Conversation history",
+    "subtitle": "आवाज सहायक",
+    "clearHistoryA11y": "बातचीत का इतिहास साफ़ करें",
+    "closeA11y": "ध्वनि सहायक बंद करें",
+    "conversationHistoryA11y": "बातचीत का इतिहास",
     "empty": {
-      "prompt": "Ask me about your shift schedule",
-      "trySaying": "Try saying:",
-      "example1": "What shift do I have tomorrow?",
-      "example2": "When is my next day off?",
-      "example3": "How many night shifts this month?"
+      "prompt": "मुझसे अपने शिफ्ट शेड्यूल के बारे में पूछें",
+      "trySaying": "कहने का प्रयास करें:",
+      "example1": "कल मेरी कौन सी शिफ्ट है?",
+      "example2": "मेरी अगली छुट्टी कब है?",
+      "example3": "इस माह कितनी रात्रि पाली?"
     },
     "permission": {
-      "notice": "Ellie needs microphone access to hear your questions.",
-      "grant": "Grant Permission",
-      "grantA11y": "Grant microphone permission",
-      "requestA11y": "Request microphone permission"
+      "notice": "आपके प्रश्नों को सुनने के लिए ऐली को माइक्रोफ़ोन एक्सेस की आवश्यकता है।",
+      "grant": "अनुमति प्रदान करें",
+      "grantA11y": "माइक्रोफ़ोन अनुमति प्रदान करें",
+      "requestA11y": "माइक्रोफ़ोन अनुमति का अनुरोध करें"
     },
     "status": {
-      "listening": "Listening...",
-      "processing": "Thinking...",
-      "speaking": "Tap to stop speaking",
+      "listening": "सुनना...",
+      "processing": "सोच...",
+      "speaking": "बोलना बंद करने के लिए टैप करें",
       "wakeWordUnavailable": "वेक-वर्ड उपलब्ध नहीं है, बात करने के लिए माइक्रोफ़ोन टैप करें।",
-      "sayWakeWordOrTap": "Say \"{{wakeWordPhrase}}\" or tap the mic",
-      "askAnother": "Tap the mic to ask another question",
-      "askEllie": "Tap the mic to ask Ellie"
+      "sayWakeWordOrTap": "\"{{wakeWordPhrase}}\" कहें या माइक टैप करें",
+      "askAnother": "दूसरा प्रश्न पूछने के लिए माइक टैप करें",
+      "askEllie": "ऐली से पूछने के लिए माइक टैप करें"
     },
     "errors": {
-      "default": "Something went wrong",
-      "permissionDeniedIos": "Microphone access denied. Enable in Settings > Ellie.",
-      "permissionDenied": "Microphone access denied. Please grant permission.",
-      "network": "Check your connection and retry.",
-      "recognition": "I didn't catch that. Please try again.",
-      "backend": "Service temporarily unavailable. Please try again.",
-      "rateLimited": "Please wait briefly and retry.",
-      "timeout": "Request timed out. Please retry.",
+      "default": "कुछ गलत हो गया",
+      "permissionDeniedIos": "माइक्रोफ़ोन पहुंच अस्वीकृत. सेटिंग्स > ऐली में सक्षम करें।",
+      "permissionDenied": "माइक्रोफ़ोन पहुंच अस्वीकृत. कृपया अनुमति प्रदान करें.",
+      "network": "अपना कनेक्शन जांचें और पुनः प्रयास करें.",
+      "recognition": "मैं उसे समझ नहीं पाया. कृपया पुन: प्रयास करें।",
+      "backend": "सेवा अस्थाई रूप से अनुपलब्ध। कृपया पुन: प्रयास करें।",
+      "rateLimited": "कृपया थोड़ी देर प्रतीक्षा करें और पुनः प्रयास करें।",
+      "timeout": "अनुरोध का समय समाप्त हो गया. कृपया फिर से कोशिश करें।",
       "wakeWordUnavailable": "वेक-वर्ड उपलब्ध नहीं है, बात करने के लिए माइक्रोफ़ोन टैप करें।",
-      "tts": "Could not play audio response."
+      "tts": "ऑडियो प्रतिक्रिया नहीं चल सकी."
     },
     "micA11y": {
-      "listening": "Stop listening. Double tap to finish speaking.",
-      "processing": "Processing your question. Please wait.",
-      "speaking": "Ellie is speaking. Double tap to stop.",
-      "error": "Error: {{message}}. Double tap to try again.",
-      "idle": "Ask Ellie a question. Double tap to start speaking."
+      "listening": "सुनना बंद करो. बोलना समाप्त करने के लिए दो बार टैप करें।",
+      "processing": "आपके प्रश्न पर कार्रवाई हो रही है. कृपया प्रतीक्षा करें।",
+      "speaking": "ऐली बोल रही है. रोकने के लिए दो बार टैप करें.",
+      "error": "त्रुटि: {{message}}. पुनः प्रयास करने के लिए दो बार टैप करें।",
+      "idle": "ऐली से एक प्रश्न पूछें. बोलना शुरू करने के लिए दो बार टैप करें।"
     },
-    "partialTranscriptA11y": "You are saying: {{text}}",
-    "processingInline": "Ellie is thinking...",
-    "retryHint": "Tap the mic to try again",
-    "requestRef": "Ref: {{requestId}}",
+    "partialTranscriptA11y": "आप कह रहे हैं: {{text}}",
+    "processingInline": "ऐली सोच रही है...",
+    "retryHint": "पुनः प्रयास करने के लिए माइक टैप करें",
+    "requestRef": "संदर्भ: {{requestId}}",
     "responseBubble": {
-      "userSaidA11y": "You said: {{text}}",
-      "assistantSaidA11y": "Ellie said: {{text}}"
+      "userSaidA11y": "आपने कहा: {{text}}",
+      "assistantSaidA11y": "ऐली ने कहा: {{text}}"
     },
     "warnings": {
       "microphonePermissionRequired": "Hey Ellie के लिए माइक्रोफ़ोन अनुमति आवश्यक है। बोलने के लिए माइक्रोफ़ोन टैप करें।",
@@ -161,18 +161,18 @@
     }
   },
   "tabs": {
-    "home": "Home",
-    "schedule": "Schedule",
-    "stats": "Stats",
-    "profile": "Profile",
+    "home": "घर",
+    "schedule": "अनुसूची",
+    "stats": "आँकड़े",
+    "profile": "प्रोफ़ाइल",
     "ellie": "Ellie",
-    "openVoiceAssistantA11y": "Open Ellie voice assistant"
+    "openVoiceAssistantA11y": "ऐली वॉयस असिस्टेंट खोलें"
   },
   "quickActions": {
-    "settings": "Settings",
-    "alerts": "Alerts",
-    "profile": "Profile",
-    "export": "Export"
+    "settings": "सेटिंग्स",
+    "alerts": "अलर्ट",
+    "profile": "प्रोफ़ाइल",
+    "export": "निर्यात"
   },
   "notifications": {
     "shiftType": {

@@ -127,107 +127,107 @@
     "cyclePhase": "{{phase}} - Jour {{day}} du {{total}}",
     "cycleDay": "Jour {{day}} du cycle",
     "startDatePicker": {
-      "title": "Select Start Date",
-      "backdropCloseA11y": "Close",
-      "closeA11y": "Close date picker",
-      "previousMonthA11y": "Previous month",
-      "nextMonthA11y": "Next month",
+      "title": "Sélectionnez la date de début",
+      "backdropCloseA11y": "Fermer",
+      "closeA11y": "Fermer le sélecteur de date",
+      "previousMonthA11y": "Mois précédent",
+      "nextMonthA11y": "Mois prochain",
       "dayA11y": "{{day}} {{month}} {{year}}",
-      "todayTag": "today",
-      "unavailableTag": "unavailable",
-      "legendToday": "Today",
-      "legendSelected": "Selected"
+      "todayTag": "aujourd'hui",
+      "unavailableTag": "indisponible",
+      "legendToday": "Aujourd'hui",
+      "legendSelected": "Choisi"
     },
     "patternSelector": {
-      "title": "Select Pattern",
-      "closeA11y": "Close pattern selector",
-      "backdropCloseA11y": "Close",
-      "currentlySelected": "currently selected",
-      "cardHint": "Double tap to select this pattern",
+      "title": "Sélectionnez un motif",
+      "closeA11y": "Fermer le sélecteur de motif",
+      "backdropCloseA11y": "Fermer",
+      "currentlySelected": "actuellement sélectionné",
+      "cardHint": "Appuyez deux fois pour sélectionner ce modèle",
       "subtitle": {
-        "fifo": "FIFO block rosters",
-        "threeShift": "3-shift (8h) rotating patterns",
-        "twoShift": "2-shift (12h) rotating patterns"
+        "fifo": "Listes de blocs FIFO",
+        "threeShift": "Modèles rotatifs en 3 équipes (8h)",
+        "twoShift": "Modèles rotatifs en 2 équipes (12h)"
       },
       "patterns": {
         "STANDARD_3_3_3": {
-          "name": "3-3-3 Rotation",
-          "subtitle": "9-day cycle"
+          "name": "Rotation 3-3-3",
+          "subtitle": "cycle de 9 jours"
         },
         "STANDARD_4_4_4": {
-          "name": "4-4-4 Rotation",
-          "subtitle": "12-day cycle"
+          "name": "Rotation en 4-4-4",
+          "subtitle": "cycle de 12 jours"
         },
         "STANDARD_5_5_5": {
-          "name": "5-5-5 Rotation",
-          "subtitle": "15-day cycle"
+          "name": "Rotation 5-5-5",
+          "subtitle": "cycle de 15 jours"
         },
         "STANDARD_7_7_7": {
-          "name": "7-7-7 Rotation",
-          "subtitle": "21-day cycle"
+          "name": "Rotation 7-7-7",
+          "subtitle": "cycle de 21 jours"
         },
         "STANDARD_10_10_10": {
-          "name": "10-10-10 Rotation",
-          "subtitle": "30-day cycle"
+          "name": "Rotation 10-10-10",
+          "subtitle": "cycle de 30 jours"
         },
         "STANDARD_2_2_3": {
           "name": "Pitman (2-2-3)",
-          "subtitle": "7-day cycle"
+          "subtitle": "cycle de 7 jours"
         },
         "CONTINENTAL": {
           "name": "Continental",
-          "subtitle": "10-day cycle"
+          "subtitle": "cycle de 10 jours"
         },
         "PITMAN": {
           "name": "Pitman",
-          "subtitle": "7-day cycle"
+          "subtitle": "cycle de 7 jours"
         },
         "CUSTOM": {
-          "name": "Custom Rotation",
-          "subtitle": "Build your own"
+          "name": "Rotation personnalisée",
+          "subtitle": "Construisez le vôtre"
         },
         "FIFO_7_7": {
           "name": "7/7 FIFO",
-          "subtitle": "14-day cycle"
+          "subtitle": "cycle de 14 jours"
         },
         "FIFO_8_6": {
           "name": "8/6 FIFO",
-          "subtitle": "14-day cycle"
+          "subtitle": "cycle de 14 jours"
         },
         "FIFO_14_14": {
           "name": "14/14 FIFO",
-          "subtitle": "28-day cycle"
+          "subtitle": "cycle de 28 jours"
         },
         "FIFO_14_7": {
-          "name": "14/7 FIFO",
-          "subtitle": "21-day cycle"
+          "name": "FIFO 14/7",
+          "subtitle": "cycle de 21 jours"
         },
         "FIFO_21_7": {
-          "name": "21/7 FIFO",
-          "subtitle": "28-day cycle"
+          "name": "FIFO 21/7",
+          "subtitle": "cycle de 28 jours"
         },
         "FIFO_28_14": {
           "name": "28/14 FIFO",
-          "subtitle": "42-day cycle"
+          "subtitle": "cycle de 42 jours"
         },
         "FIFO_CUSTOM": {
-          "name": "Custom FIFO",
-          "subtitle": "Configure blocks"
+          "name": "FIFO personnalisé",
+          "subtitle": "Configurer les blocs"
         }
       }
     },
     "cycleResync": {
-      "title": "Re-sync Cycle",
-      "subtitleFifo": "Are you at work or home?",
-      "subtitleRotating": "Which shift phase are you on?",
-      "closeA11y": "Close",
-      "backdropCloseA11y": "Close",
-      "backToPhaseA11y": "Back to phase selection",
-      "daySubtitle": "Which day are you on?",
-      "dayA11y": "Day {{day}}",
-      "confirmA11y": "Confirm cycle position",
-      "confirm": "Confirm Position",
-      "empty": "Configure a shift pattern first to re-sync your cycle.",
+      "title": "Cycle de resynchronisation",
+      "subtitleFifo": "Êtes-vous au travail ou à la maison?",
+      "subtitleRotating": "Dans quelle phase de changement êtes-vous ?",
+      "closeA11y": "Fermer",
+      "backdropCloseA11y": "Fermer",
+      "backToPhaseA11y": "Retour à la sélection des phases",
+      "daySubtitle": "Quel jour es-tu ?",
+      "dayA11y": "Jour {{day}}",
+      "confirmA11y": "Confirmer la position du cycle",
+      "confirm": "Confirmer la position",
+      "empty": "Configurez d’abord un modèle de quart de travail pour resynchroniser votre cycle.",
       "phaseLabels": {
         "day": "Quart de jour",
         "night": "Quart de nuit",
@@ -238,18 +238,18 @@
         "rest": "Bloc de repos"
       },
       "dayDescriptions": {
-        "first": "First day of {{phase}}",
-        "last": "Last day of {{phase}}",
-        "midpoint": "Midpoint of {{phase}}",
-        "dayOf": "Day {{day}} of {{phase}}"
+        "first": "Premier jour de {{phase}}",
+        "last": "Dernier jour de {{phase}}",
+        "midpoint": "Point médian de {{phase}}",
+        "dayOf": "Jour {{day}} de {{phase}}"
       }
     },
     "configCard": {
-      "timesLabel": "Times",
-      "workDaysOnSite": "{{count}} days on-site",
-      "restDaysAtHome": "{{count}} days at home",
-      "empty": "No shift configuration set",
-      "footer": "Shift settings can be updated in Settings"
+      "timesLabel": "Fois",
+      "workDaysOnSite": "{{count}} jours sur place",
+      "restDaysAtHome": "{{count}} jours à la maison",
+      "empty": "Aucune configuration de quart de travail définie",
+      "footer": "Les paramètres de changement peuvent être mis à jour dans Paramètres"
     },
     "profileUtils": {
       "customFIFO": "FIFO personnalisé {{workBlockDays}}/{{restBlockDays}}",

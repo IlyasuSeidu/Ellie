@@ -130,84 +130,84 @@
     "title": "Kuyini Ukuzungeziswa Kohlelo lwakho?",
     "cards": {
       "4-4-4": {
-        "name": "4-4-4 Rotation",
-        "schedule": "4 days • 4 nights • 4 off",
-        "description": "Work 4 day shifts, then 4 night shifts, then get 4 days off-common for fly-in fly-out sites"
+        "name": "4-4-4 Ukujikeleza",
+        "schedule": "Izinsuku ezi-4 • ubusuku obu-4 • 4 isaphulelo",
+        "description": "Sebenza amashifu ezinsuku ezi-4, bese kuba amashifu ama-4 ebusuku, bese uthola izinsuku ezi-4 ungekho okuvamile kumasayithi okundiza okungena ngaphakathi."
       },
       "7-7-7": {
-        "name": "7-7-7 Rotation",
-        "schedule": "7 days • 7 nights • 7 off",
-        "description": "A full week of day shifts, then nights, then a week off-great for planning ahead"
+        "name": "7-7-7 Ukujikeleza",
+        "schedule": "izinsuku eziyisi-7 • ubusuku obuyisi-7 • isaphulelo sika-7",
+        "description": "Iviki eligcwele lamashifu osuku, bese kuba ubusuku, bese kuba isonto lekhefu-elihle kakhulu ukuhlela kusengaphambili"
       },
       "2-2-3": {
-        "name": "2-2-3 Rotation",
-        "schedule": "2 days • 2 nights • 3 off",
-        "description": "Short swings of 2 days, 2 nights, then 3 days off-you get breaks more often"
+        "name": "2-2-3 Ukujikeleza",
+        "schedule": "Izinsuku ezi-2 • ubusuku obu-2 • 3 isaphulelo",
+        "description": "Ukushintshashintsha okufushane kwezinsuku ezi-2, ubusuku obu-2, bese kuba izinsuku ezi-3 zokuphumula-uthola amakhefu kaningi"
       },
       "5-5-5": {
-        "name": "5-5-5 Rotation",
-        "schedule": "5 days • 5 nights • 5 off",
-        "description": "Work 5 day shifts, then 5 night shifts, then 5 days off-a good middle ground"
+        "name": "5-5-5 Ukujikeleza",
+        "schedule": "Izinsuku ezi-5 • Ubusuku obu-5 • Isaphulelo sika-5",
+        "description": "Sebenza amashifu osuku olu-5, bese kuba amashifu ama-5 ebusuku, bese izinsuku ezi-5 ungasebenzi - endaweni ephakathi nendawo"
       },
       "3-3-3": {
-        "name": "3-3-3 Rotation",
-        "schedule": "3 days • 3 nights • 3 off",
-        "description": "Short swings of 3 day shifts, 3 night shifts, then 3 days off-faster rotation"
+        "name": "3-3-3 Ukujikeleza",
+        "schedule": "Izinsuku ezi-3 • ubusuku obu-3 • 3 isaphulelo",
+        "description": "Ukushintshashintsha okufushane kwamashifu wezinsuku ezi-3, amashifu ama-3 ebusuku, bese kuba yizinsuku ezi-3 zokujikeleza ngokushesha"
       },
       "10-10-10": {
-        "name": "10-10-10 Rotation",
-        "schedule": "10 days • 10 nights • 10 off",
-        "description": "Long swings of 10 days, 10 nights, then 10 off-maximizes your time at home"
+        "name": "10-10-10 Ukujikeleza",
+        "schedule": "Izinsuku eziyi-10 • ubusuku obuyi-10 • ikhefu le-10",
+        "description": "Ukushintshashintsha okude kwezinsuku eziyi-10, ubusuku obuyi-10, bese kuthi i-10 ikhuphule isikhathi sakho ekhaya"
       },
       "continental": {
-        "name": "Continental Rotation",
-        "schedule": "2 mornings • 2 afternoons • 2 nights • 4 off",
-        "description": "Work 2 morning shifts, 2 afternoon, 2 night, then 4 days off-for 8-hour shift sites"
+        "name": "Ukujikeleza Kwezwekazi",
+        "schedule": "2 ekuseni • 2 ntambama • 2 ubusuku • 4 ikhefu",
+        "description": "Sebenza amashifu ama-2 ekuseni, 2 ntambama, 2 ebusuku, bese izinsuku ezi-4 ungasebenzi - amahora angama-8 weshifu"
       },
       "pitman": {
-        "name": "Pitman Schedule",
-        "schedule": "2 days • 2 nights • 3 off",
-        "description": "Short swings of 2 day shifts, then 2 night shifts, then 3 days off-a compact 7-day cycle"
+        "name": "Pitman Isheduli",
+        "schedule": "Izinsuku ezi-2 • ubusuku obu-2 • 3 isaphulelo",
+        "description": "Ukushintshashintsha okufushane kwamashifu wezinsuku ezi-2, bese kuba amashifu amabili ebusuku, bese kuba izinsuku ezi-3 ngaphandle komjikelezo ohlangene wezinsuku eziyi-7"
       },
       "custom": {
-        "name": "Custom Rotation",
-        "schedule": "You choose",
-        "description": "Your site uses something different? Build your own rotation here"
+        "name": "Ukuzungezisa Ngokwezifiso",
+        "schedule": "Uyakhetha",
+        "description": "Isayithi lakho lisebenzisa okuthile okuhlukile? Yakha okwakho ukuzungezisa lapha"
       },
       "fifo-8-6": {
-        "name": "FIFO 8/6",
-        "schedule": "8 days work • 6 days home",
-        "description": "Work 8 consecutive days on-site, then 6 days at home-popular in WA mining"
+        "name": "I-FIFO 8/6",
+        "schedule": "Ukusebenza kwezinsuku eziyi-8 • Izinsuku eziyisi-6 ekhaya",
+        "description": "Sebenza izinsuku eziyi-8 ezilandelanayo endaweni, bese izinsuku eziyisi-6 usekhaya-okudumile ezimayini ze-WA"
       },
       "fifo-7-7": {
-        "name": "FIFO 7/7 (Even-Time)",
-        "schedule": "1 week work • 1 week home",
-        "description": "One week on-site, one week at home-perfect 50/50 balance"
+        "name": "I-FIFO 7/7 (Isikhathi Esilinganayo)",
+        "schedule": "Umsebenzi wesonto eli-1 • Isonto eli-1 ekhaya",
+        "description": "Isonto elilodwa esizeni, isonto elilodwa ekhaya-ibhalansi ephelele engu-50/50"
       },
       "fifo-14-14": {
-        "name": "FIFO 14/14 (Even-Time)",
-        "schedule": "2 weeks work • 2 weeks home",
-        "description": "Two weeks on-site, two weeks at home-perfect work-life balance"
+        "name": "I-FIFO 14/14 (Isikhathi Sokulingana)",
+        "schedule": "2 amasonto ukusebenza • 2 amasonto ekhaya",
+        "description": "Amaviki amabili esizeni, amaviki amabili ebhalansi yempilo esebenza kahle ekhaya"
       },
       "fifo-14-7": {
-        "name": "FIFO 14/7 (2:1)",
-        "schedule": "2 weeks work • 1 week home",
-        "description": "Two weeks on-site, one week at home-high earning potential"
+        "name": "I-FIFO 14/7 (2:1)",
+        "schedule": "Umsebenzi wamaviki ama-2 • Isonto eli-1 ekhaya",
+        "description": "Amaviki amabili esizeni, isonto elilodwa emandleni okuthola imali ephezulu ekhaya"
       },
       "fifo-21-7": {
-        "name": "FIFO 21/7 (3:1)",
-        "schedule": "3 weeks work • 1 week home",
-        "description": "Three weeks on-site, one week at home-for very remote operations"
+        "name": "I-FIFO 21/7 (3:1)",
+        "schedule": "Umsebenzi wamaviki ama-3 • Isonto eli-1 ekhaya",
+        "description": "Amaviki amathathu esizeni, isonto elilodwa usekhaya-ngemisebenzi ekude kakhulu"
       },
       "fifo-28-14": {
-        "name": "FIFO 28/14 (2:1)",
-        "schedule": "4 weeks work • 2 weeks home",
-        "description": "Four weeks on-site, two weeks at home-for long-haul remote sites"
+        "name": "I-FIFO 28/14 (2:1)",
+        "schedule": "Umsebenzi wamaviki ama-4 • Amaviki ama-2 usekhaya",
+        "description": "Amaviki amane esizeni, amasonto amabili ekhaya-ezindaweni ezikude ezikude"
       },
       "fifo-custom": {
-        "name": "Custom FIFO",
-        "schedule": "Build your own",
-        "description": "Your FIFO site uses a unique roster? Configure your own work/rest blocks"
+        "name": "I-FIFO yangokwezifiso",
+        "schedule": "Yakha eyakho",
+        "description": "Isayithi lakho le-FIFO lisebenzisa uhlelo oluhlukile? Lungiselela amabhlogo akho omsebenzi/ukuphumula"
       }
     }
   },
@@ -401,7 +401,7 @@
     "options": {
       "day": "Ishifu lasemini",
       "night": "Ishifu yasebusuku",
-      "off": "Off Days"
+      "off": "Izinsuku Zokungasebenzi"
     }
   },
   "fifoPhaseSelector": {
@@ -881,58 +881,58 @@
     "workPatternTitle": "Iphethini Yomsebenzi Ngesikhathi Sokuvimbela Umsebenzi",
     "workPatterns": {
       "straight-days": {
-        "title": "Straight Days",
-        "description": "Work day shifts only for the entire work block (e.g., 7am-7pm)"
+        "title": "Izinsuku Eziqondile",
+        "description": "Amashifu osuku lokusebenza kuphela kulo lonke ibhulokhi yomsebenzi (isb., 7am-7pm)"
       },
       "straight-nights": {
-        "title": "Straight Nights",
-        "description": "Work night shifts only for the entire work block (e.g., 7pm-7am)"
+        "title": "Ubusuku obuqondile",
+        "description": "Amashifu okusebenza ebusuku alo lonke ibhulokhi yomsebenzi (isb., 7pm-7am)"
       },
       "swing": {
-        "title": "Swing Roster",
-        "description": "Alternate between day shifts and night shifts during work block"
+        "title": "I-Swing Roster",
+        "description": "Shintshanisa amashifu emini kanye namashifu ebusuku ngesikhathi sokuvimba umsebenzi"
       }
     }
   },
   "progressHeader": {
-    "goBackA11y": "Go back",
-    "skip": "Skip",
-    "skipA11y": "Skip",
-    "percentageComplete": "{{percentage}}% Complete"
+    "goBackA11y": "Buyela emuva",
+    "skip": "Yeqa",
+    "skipA11y": "Yeqa",
+    "percentageComplete": "{{percentage}}% Qeda"
   },
   "countrySelector": {
-    "searchPlaceholder": "Search countries...",
-    "searchA11y": "Search countries",
-    "empty": "No countries found",
-    "modalTitle": "Select Country",
-    "modalCloseA11y": "Close country selector"
+    "searchPlaceholder": "Sesha amazwe...",
+    "searchA11y": "Sesha amazwe",
+    "empty": "Awekho amazwe atholiwe",
+    "modalTitle": "Khetha Izwe",
+    "modalCloseA11y": "Vala isikhethi sezwe"
   },
   "timePicker": {
-    "title": "Select Time",
+    "title": "Khetha Isikhathi",
     "labels": {
-      "hour": "Hour",
-      "minute": "Minute",
-      "period": "Period"
+      "hour": "Ihora",
+      "minute": "Iminithi",
+      "period": "Isikhathi"
     }
   },
   "livePatternPreview": {
-    "summary": "Your {{cycleLength}}-day cycle: {{daysOn}}D / {{nightsOn}}N / {{daysOff}}O",
+    "summary": "{{cycleLength}}-umjikelezo wakho wosuku: {{daysOn}}D / {{nightsOn}}N / {{daysOff}}O",
     "legend": {
-      "offDays": "Off Days"
+      "offDays": "Izinsuku Zokungasebenzi"
     }
   },
   "chatInput": {
-    "submitA11y": "Submit response"
+    "submitA11y": "Thumela impendulo"
   },
   "typingIndicator": {
-    "a11y": "Bot is typing"
+    "a11y": "I-Bot iyathayipha"
   },
   "chatAvatar": {
     "a11y": "I-avatar yomsizi wezokumba"
   },
   "premiumCalendar": {
-    "previousMonthA11y": "Previous month",
-    "nextMonthA11y": "Next month"
+    "previousMonthA11y": "Inyanga edlule",
+    "nextMonthA11y": "Inyanga ezayo"
   },
   "dayCell": {
     "a11y": {

@@ -92,58 +92,58 @@
     "active": "ATIVO"
   },
   "voiceAssistant": {
-    "subtitle": "Voice Assistant",
-    "clearHistoryA11y": "Clear conversation history",
-    "closeA11y": "Close voice assistant",
-    "conversationHistoryA11y": "Conversation history",
+    "subtitle": "Assistente de voz",
+    "clearHistoryA11y": "Limpar histórico de conversas",
+    "closeA11y": "Fechar assistente de voz",
+    "conversationHistoryA11y": "Histórico de conversas",
     "empty": {
-      "prompt": "Ask me about your shift schedule",
-      "trySaying": "Try saying:",
-      "example1": "What shift do I have tomorrow?",
-      "example2": "When is my next day off?",
-      "example3": "How many night shifts this month?"
+      "prompt": "Pergunte-me sobre seu horário de turno",
+      "trySaying": "Tente dizer:",
+      "example1": "Que turno eu tenho amanhã?",
+      "example2": "Quando é meu próximo dia de folga?",
+      "example3": "Quantos turnos noturnos este mês?"
     },
     "permission": {
-      "notice": "Ellie needs microphone access to hear your questions.",
-      "grant": "Grant Permission",
-      "grantA11y": "Grant microphone permission",
-      "requestA11y": "Request microphone permission"
+      "notice": "Ellie precisa de acesso ao microfone para ouvir suas perguntas.",
+      "grant": "Conceder permissão",
+      "grantA11y": "Conceder permissão ao microfone",
+      "requestA11y": "Solicitar permissão de microfone"
     },
     "status": {
-      "listening": "Listening...",
-      "processing": "Thinking...",
-      "speaking": "Tap to stop speaking",
+      "listening": "Audição...",
+      "processing": "Pensamento...",
+      "speaking": "Toque para parar de falar",
       "wakeWordUnavailable": "Palavra de ativação indisponível; toque no microfone para falar",
-      "sayWakeWordOrTap": "Say \"{{wakeWordPhrase}}\" or tap the mic",
-      "askAnother": "Tap the mic to ask another question",
-      "askEllie": "Tap the mic to ask Ellie"
+      "sayWakeWordOrTap": "Diga \"{{wakeWordPhrase}}\" ou toque no microfone",
+      "askAnother": "Toque no microfone para fazer outra pergunta",
+      "askEllie": "Toque no microfone para perguntar a Ellie"
     },
     "errors": {
-      "default": "Something went wrong",
-      "permissionDeniedIos": "Microphone access denied. Enable in Settings > Ellie.",
-      "permissionDenied": "Microphone access denied. Please grant permission.",
-      "network": "Check your connection and retry.",
-      "recognition": "I didn't catch that. Please try again.",
-      "backend": "Service temporarily unavailable. Please try again.",
-      "rateLimited": "Please wait briefly and retry.",
-      "timeout": "Request timed out. Please retry.",
+      "default": "Algo deu errado",
+      "permissionDeniedIos": "Acesso ao microfone negado. Ative em Configurações > Ellie.",
+      "permissionDenied": "Acesso ao microfone negado. Por favor, conceda permissão.",
+      "network": "Verifique sua conexão e tente novamente.",
+      "recognition": "Eu não entendi isso. Por favor, tente novamente.",
+      "backend": "Serviço temporariamente indisponível. Por favor, tente novamente.",
+      "rateLimited": "Aguarde um pouco e tente novamente.",
+      "timeout": "A solicitação expirou. Por favor, tente novamente.",
       "wakeWordUnavailable": "Palavra de ativação indisponível; toque no microfone para falar.",
-      "tts": "Could not play audio response."
+      "tts": "Não foi possível reproduzir a resposta de áudio."
     },
     "micA11y": {
-      "listening": "Stop listening. Double tap to finish speaking.",
-      "processing": "Processing your question. Please wait.",
-      "speaking": "Ellie is speaking. Double tap to stop.",
-      "error": "Error: {{message}}. Double tap to try again.",
-      "idle": "Ask Ellie a question. Double tap to start speaking."
+      "listening": "Pare de ouvir. Toque duas vezes para terminar de falar.",
+      "processing": "Processando sua pergunta. Por favor, aguarde.",
+      "speaking": "Ellie está falando. Toque duas vezes para parar.",
+      "error": "Erro: {{message}}. Toque duas vezes para tentar novamente.",
+      "idle": "Faça uma pergunta a Ellie. Toque duas vezes para começar a falar."
     },
-    "partialTranscriptA11y": "You are saying: {{text}}",
-    "processingInline": "Ellie is thinking...",
-    "retryHint": "Tap the mic to try again",
-    "requestRef": "Ref: {{requestId}}",
+    "partialTranscriptA11y": "Você está dizendo: {{text}}",
+    "processingInline": "Ellie está pensando...",
+    "retryHint": "Toque no microfone para tentar novamente",
+    "requestRef": "Referência: {{requestId}}",
     "responseBubble": {
-      "userSaidA11y": "You said: {{text}}",
-      "assistantSaidA11y": "Ellie said: {{text}}"
+      "userSaidA11y": "Você disse: {{text}}",
+      "assistantSaidA11y": "Ellie disse: {{text}}"
     },
     "warnings": {
       "microphonePermissionRequired": "Permissão do microfone necessária para \"Hey Ellie\". Toque no microfone para falar.",
@@ -161,18 +161,18 @@
     }
   },
   "tabs": {
-    "home": "Home",
-    "schedule": "Schedule",
-    "stats": "Stats",
-    "profile": "Profile",
+    "home": "Lar",
+    "schedule": "Agendar",
+    "stats": "Estatísticas",
+    "profile": "Perfil",
     "ellie": "Ellie",
-    "openVoiceAssistantA11y": "Open Ellie voice assistant"
+    "openVoiceAssistantA11y": "Abra o assistente de voz Ellie"
   },
   "quickActions": {
-    "settings": "Settings",
-    "alerts": "Alerts",
-    "profile": "Profile",
-    "export": "Export"
+    "settings": "Configurações",
+    "alerts": "Alertas",
+    "profile": "Perfil",
+    "export": "Exportar"
   },
   "notifications": {
     "shiftType": {

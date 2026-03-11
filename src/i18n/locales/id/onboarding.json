@@ -125,84 +125,84 @@
     "title": "Bagaimana Rotasi Rostermu?",
     "cards": {
       "4-4-4": {
-        "name": "4-4-4 Rotation",
-        "schedule": "4 days • 4 nights • 4 off",
-        "description": "Work 4 day shifts, then 4 night shifts, then get 4 days off-common for fly-in fly-out sites"
+        "name": "4-4-4 Rotasi",
+        "schedule": "4 hari • 4 malam • 4 libur",
+        "description": "Bekerja 4 shift hari, lalu 4 shift malam, lalu mendapat libur 4 hari yang umum untuk lokasi fly-in fly-out"
       },
       "7-7-7": {
-        "name": "7-7-7 Rotation",
-        "schedule": "7 days • 7 nights • 7 off",
-        "description": "A full week of day shifts, then nights, then a week off-great for planning ahead"
+        "name": "7-7-7 Rotasi",
+        "schedule": "7 hari • 7 malam • 7 libur",
+        "description": "Seminggu penuh yang berganti siang, lalu malam, lalu satu minggu libur - bagus untuk perencanaan ke depan"
       },
       "2-2-3": {
-        "name": "2-2-3 Rotation",
-        "schedule": "2 days • 2 nights • 3 off",
-        "description": "Short swings of 2 days, 2 nights, then 3 days off-you get breaks more often"
+        "name": "2-2-3 Rotasi",
+        "schedule": "2 hari • 2 malam • libur 3 hari",
+        "description": "Perubahan singkat 2 hari, 2 malam, lalu 3 hari libur-Anda lebih sering mendapat istirahat"
       },
       "5-5-5": {
-        "name": "5-5-5 Rotation",
-        "schedule": "5 days • 5 nights • 5 off",
-        "description": "Work 5 day shifts, then 5 night shifts, then 5 days off-a good middle ground"
+        "name": "5-5-5 Rotasi",
+        "schedule": "5 hari • 5 malam • diskon 5",
+        "description": "Bekerja 5 shift hari, lalu 5 shift malam, lalu 5 hari libur – jalan tengah yang baik"
       },
       "3-3-3": {
-        "name": "3-3-3 Rotation",
-        "schedule": "3 days • 3 nights • 3 off",
-        "description": "Short swings of 3 day shifts, 3 night shifts, then 3 days off-faster rotation"
+        "name": "3-3-3 Rotasi",
+        "schedule": "3 hari • 3 malam • 3 libur",
+        "description": "Pergantian pendek 3 shift siang, 3 shift malam, lalu 3 hari libur-rotasi lebih cepat"
       },
       "10-10-10": {
-        "name": "10-10-10 Rotation",
-        "schedule": "10 days • 10 nights • 10 off",
-        "description": "Long swings of 10 days, 10 nights, then 10 off-maximizes your time at home"
+        "name": "10-10-10 Rotasi",
+        "schedule": "10 hari • 10 malam • diskon 10",
+        "description": "Perubahan panjang 10 hari, 10 malam, lalu 10 malam akan memaksimalkan waktu Anda di rumah"
       },
       "continental": {
-        "name": "Continental Rotation",
-        "schedule": "2 mornings • 2 afternoons • 2 nights • 4 off",
-        "description": "Work 2 morning shifts, 2 afternoon, 2 night, then 4 days off-for 8-hour shift sites"
+        "name": "Rotasi Kontinental",
+        "schedule": "2 pagi • 2 siang • 2 malam • 4 libur",
+        "description": "Bekerja 2 shift pagi, 2 siang, 2 malam, lalu 4 hari libur-untuk lokasi shift 8 jam"
       },
       "pitman": {
-        "name": "Pitman Schedule",
-        "schedule": "2 days • 2 nights • 3 off",
-        "description": "Short swings of 2 day shifts, then 2 night shifts, then 3 days off-a compact 7-day cycle"
+        "name": "Jadwal Pitman",
+        "schedule": "2 hari • 2 malam • libur 3 hari",
+        "description": "Pergantian singkat 2 shift hari, lalu 2 shift malam, lalu 3 hari libur – siklus 7 hari yang ringkas"
       },
       "custom": {
-        "name": "Custom Rotation",
-        "schedule": "You choose",
-        "description": "Your site uses something different? Build your own rotation here"
+        "name": "Rotasi Kustom",
+        "schedule": "Anda memilih",
+        "description": "Situs Anda menggunakan sesuatu yang berbeda? Bangun rotasi Anda sendiri di sini"
       },
       "fifo-8-6": {
         "name": "FIFO 8/6",
-        "schedule": "8 days work • 6 days home",
-        "description": "Work 8 consecutive days on-site, then 6 days at home-popular in WA mining"
+        "schedule": "8 hari kerja • 6 hari di rumah",
+        "description": "Bekerja 8 hari berturut-turut di lokasi, lalu 6 hari di rumah-populer di penambangan WA"
       },
       "fifo-7-7": {
-        "name": "FIFO 7/7 (Even-Time)",
-        "schedule": "1 week work • 1 week home",
-        "description": "One week on-site, one week at home-perfect 50/50 balance"
+        "name": "FIFO 7/7 (Waktu Genap)",
+        "schedule": "1 minggu kerja • 1 minggu di rumah",
+        "description": "Satu minggu di lokasi, satu minggu di rumah dengan keseimbangan 50/50 yang sempurna"
       },
       "fifo-14-14": {
-        "name": "FIFO 14/14 (Even-Time)",
-        "schedule": "2 weeks work • 2 weeks home",
-        "description": "Two weeks on-site, two weeks at home-perfect work-life balance"
+        "name": "FIFO 14/14 (Waktu Genap)",
+        "schedule": "2 minggu bekerja • 2 minggu di rumah",
+        "description": "Dua minggu di tempat, dua minggu di rumah—keseimbangan kehidupan kerja dan kehidupan yang sempurna"
       },
       "fifo-14-7": {
         "name": "FIFO 14/7 (2:1)",
-        "schedule": "2 weeks work • 1 week home",
-        "description": "Two weeks on-site, one week at home-high earning potential"
+        "schedule": "2 minggu kerja • 1 minggu di rumah",
+        "description": "Dua minggu di lokasi, satu minggu di rumah-potensi penghasilan tinggi"
       },
       "fifo-21-7": {
         "name": "FIFO 21/7 (3:1)",
-        "schedule": "3 weeks work • 1 week home",
-        "description": "Three weeks on-site, one week at home-for very remote operations"
+        "schedule": "3 minggu kerja • 1 minggu di rumah",
+        "description": "Tiga minggu di lokasi, satu minggu di rumah-untuk pengoperasian yang sangat jarak jauh"
       },
       "fifo-28-14": {
         "name": "FIFO 28/14 (2:1)",
-        "schedule": "4 weeks work • 2 weeks home",
-        "description": "Four weeks on-site, two weeks at home-for long-haul remote sites"
+        "schedule": "4 minggu bekerja • 2 minggu di rumah",
+        "description": "Empat minggu di lokasi, dua minggu di rumah-untuk lokasi terpencil jarak jauh"
       },
       "fifo-custom": {
-        "name": "Custom FIFO",
-        "schedule": "Build your own",
-        "description": "Your FIFO site uses a unique roster? Configure your own work/rest blocks"
+        "name": "FIFO khusus",
+        "schedule": "Bangun milik Anda sendiri",
+        "description": "Situs FIFO Anda menggunakan daftar nama yang unik? Konfigurasikan blok kerja/istirahat Anda sendiri"
       }
     }
   },
@@ -396,7 +396,7 @@
     "options": {
       "day": "Shift siang",
       "night": "Shift malam",
-      "off": "Off Days"
+      "off": "Hari Libur"
     }
   },
   "fifoPhaseSelector": {
@@ -876,58 +876,58 @@
     "workPatternTitle": "Pola Kerja Selama Blok Kerja",
     "workPatterns": {
       "straight-days": {
-        "title": "Straight Days",
-        "description": "Work day shifts only for the entire work block (e.g., 7am-7pm)"
+        "title": "Hari Lurus",
+        "description": "Shift hari kerja hanya untuk seluruh blok kerja (misalnya, pukul 07.00-19.00)"
       },
       "straight-nights": {
-        "title": "Straight Nights",
-        "description": "Work night shifts only for the entire work block (e.g., 7pm-7am)"
+        "title": "Malam Lurus",
+        "description": "Shift malam kerja hanya untuk seluruh blok kerja (misalnya, pukul 19.00-07.00)"
       },
       "swing": {
-        "title": "Swing Roster",
-        "description": "Alternate between day shifts and night shifts during work block"
+        "title": "Daftar Ayunan",
+        "description": "Bergantian antara shift siang dan shift malam selama blok kerja"
       }
     }
   },
   "progressHeader": {
-    "goBackA11y": "Go back",
-    "skip": "Skip",
-    "skipA11y": "Skip",
-    "percentageComplete": "{{percentage}}% Complete"
+    "goBackA11y": "Kembali",
+    "skip": "Melewati",
+    "skipA11y": "Melewati",
+    "percentageComplete": "{{percentage}}% Selesai"
   },
   "countrySelector": {
-    "searchPlaceholder": "Search countries...",
-    "searchA11y": "Search countries",
-    "empty": "No countries found",
-    "modalTitle": "Select Country",
-    "modalCloseA11y": "Close country selector"
+    "searchPlaceholder": "Telusuri negara...",
+    "searchA11y": "Cari negara",
+    "empty": "Tidak ada negara yang ditemukan",
+    "modalTitle": "Pilih Negara",
+    "modalCloseA11y": "Tutup pemilih negara"
   },
   "timePicker": {
-    "title": "Select Time",
+    "title": "Pilih Waktu",
     "labels": {
-      "hour": "Hour",
-      "minute": "Minute",
-      "period": "Period"
+      "hour": "Jam",
+      "minute": "Menit",
+      "period": "Periode"
     }
   },
   "livePatternPreview": {
-    "summary": "Your {{cycleLength}}-day cycle: {{daysOn}}D / {{nightsOn}}N / {{daysOff}}O",
+    "summary": "Siklus {{cycleLength}}hari Anda: {{daysOn}}D / {{nightsOn}}N / {{daysOff}}O",
     "legend": {
-      "offDays": "Off Days"
+      "offDays": "Hari Libur"
     }
   },
   "chatInput": {
-    "submitA11y": "Submit response"
+    "submitA11y": "Kirim tanggapan"
   },
   "typingIndicator": {
-    "a11y": "Bot is typing"
+    "a11y": "Bot sedang mengetik"
   },
   "chatAvatar": {
     "a11y": "Avatar asisten tambang"
   },
   "premiumCalendar": {
-    "previousMonthA11y": "Previous month",
-    "nextMonthA11y": "Next month"
+    "previousMonthA11y": "Bulan sebelumnya",
+    "nextMonthA11y": "Bulan depan"
   },
   "dayCell": {
     "a11y": {

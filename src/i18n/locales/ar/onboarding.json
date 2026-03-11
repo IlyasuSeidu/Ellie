@@ -153,7 +153,7 @@
         "description": "إذا كان موقعك يستخدم نمطًا مختلفًا، أنشئ تناوبك الخاص."
       },
       "fifo-8-6": {
-        "name": "FIFO 8/6",
+        "name": "فيفو 8/6",
         "schedule": "8 أيام عمل • 6 أيام في المنزل",
         "description": "8 أيام متتالية في الموقع ثم 6 أيام في المنزل."
       },
@@ -168,17 +168,17 @@
         "description": "أسبوعان في الموقع وأسبوعان في المنزل بتوازن جيد."
       },
       "fifo-14-7": {
-        "name": "FIFO 14/7 (2:1)",
+        "name": "فيفو 14/7 (2:1)",
         "schedule": "أسبوعان عمل • أسبوع منزل",
         "description": "أسبوعان في الموقع وأسبوع في المنزل مع دخل أعلى غالبًا."
       },
       "fifo-21-7": {
-        "name": "FIFO 21/7 (3:1)",
+        "name": "ما يرد أولاً يصرف 21/7 (3:1)",
         "schedule": "3 أسابيع عمل • أسبوع منزل",
         "description": "3 أسابيع في الموقع وأسبوع في المنزل للعمليات الأبعد."
       },
       "fifo-28-14": {
-        "name": "FIFO 28/14 (2:1)",
+        "name": "فيفو 28/14 (2:1)",
         "schedule": "4 أسابيع عمل • أسبوعان منزل",
         "description": "4 أسابيع في الموقع وأسبوعان في المنزل للمواقع البعيدة جدًا."
       },
@@ -379,7 +379,7 @@
     "options": {
       "day": "الوردية النهارية",
       "night": "الوردية الليلية",
-      "off": "Off Days"
+      "off": "أيام العطلة"
     }
   },
   "fifoPhaseSelector": {
@@ -873,44 +873,44 @@
     }
   },
   "progressHeader": {
-    "goBackA11y": "Go back",
-    "skip": "Skip",
-    "skipA11y": "Skip",
-    "percentageComplete": "{{percentage}}% Complete"
+    "goBackA11y": "عُد",
+    "skip": "يتخطى",
+    "skipA11y": "يتخطى",
+    "percentageComplete": "{{percentage}}% اكتمل"
   },
   "countrySelector": {
-    "searchPlaceholder": "Search countries...",
-    "searchA11y": "Search countries",
-    "empty": "No countries found",
-    "modalTitle": "Select Country",
-    "modalCloseA11y": "Close country selector"
+    "searchPlaceholder": "بحث عن الدول...",
+    "searchA11y": "دول البحث",
+    "empty": "لم يتم العثور على بلدان",
+    "modalTitle": "اختر البلد",
+    "modalCloseA11y": "إغلاق محدد البلد"
   },
   "timePicker": {
-    "title": "Select Time",
+    "title": "حدد الوقت",
     "labels": {
-      "hour": "Hour",
-      "minute": "Minute",
-      "period": "Period"
+      "hour": "ساعة",
+      "minute": "دقيقة",
+      "period": "فترة"
     }
   },
   "livePatternPreview": {
-    "summary": "Your {{cycleLength}}-day cycle: {{daysOn}}D / {{nightsOn}}N / {{daysOff}}O",
+    "summary": "{{cycleLength}}دورتك اليومية: {{daysOn}}D / {{nightsOn}}N / {{daysOff}}O",
     "legend": {
-      "offDays": "Off Days"
+      "offDays": "أيام العطلة"
     }
   },
   "chatInput": {
-    "submitA11y": "Submit response"
+    "submitA11y": "إرسال الرد"
   },
   "typingIndicator": {
-    "a11y": "Bot is typing"
+    "a11y": "بوت يكتب"
   },
   "chatAvatar": {
     "a11y": "صورة مساعد التعدين"
   },
   "premiumCalendar": {
-    "previousMonthA11y": "Previous month",
-    "nextMonthA11y": "Next month"
+    "previousMonthA11y": "الشهر السابق",
+    "nextMonthA11y": "الشهر المقبل"
   },
   "chatMessage": {
     "skipped": "تم التخطي",

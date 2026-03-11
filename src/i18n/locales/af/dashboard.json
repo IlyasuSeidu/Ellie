@@ -49,11 +49,11 @@
     "blockDayOf": "{{blockName}} Blokdag {{day}} van {{total}}",
     "days": "dae",
     "tooltip": {
-      "blockDay": "{{blockName}} Block Day {{day}}/{{total}}",
-      "home": "Home",
-      "flyInSuffix": " — Fly In",
-      "flyOutSuffix": " — Fly Out",
-      "shiftTransition": "Shift transition"
+      "blockDay": "{{blockName}} Blokdag {{day}}/{{total}}",
+      "home": "Tuis",
+      "flyInSuffix": "— Vlieg in",
+      "flyOutSuffix": "— Vlieg weg",
+      "shiftTransition": "Verskuiwing oorgang"
     }
   },
   "stats": {
@@ -92,58 +92,58 @@
     "active": "AKTIEF"
   },
   "voiceAssistant": {
-    "subtitle": "Voice Assistant",
-    "clearHistoryA11y": "Clear conversation history",
-    "closeA11y": "Close voice assistant",
-    "conversationHistoryA11y": "Conversation history",
+    "subtitle": "Stemassistent",
+    "clearHistoryA11y": "Vee gesprekgeskiedenis uit",
+    "closeA11y": "Maak stemassistent toe",
+    "conversationHistoryA11y": "Gesprek geskiedenis",
     "empty": {
-      "prompt": "Ask me about your shift schedule",
-      "trySaying": "Try saying:",
-      "example1": "What shift do I have tomorrow?",
-      "example2": "When is my next day off?",
-      "example3": "How many night shifts this month?"
+      "prompt": "Vra my oor jou skofskedule",
+      "trySaying": "Probeer sê:",
+      "example1": "Watter skof het ek môre?",
+      "example2": "Wanneer is my volgende dag af?",
+      "example3": "Hoeveel nagskofte hierdie maand?"
     },
     "permission": {
-      "notice": "Ellie needs microphone access to hear your questions.",
-      "grant": "Grant Permission",
-      "grantA11y": "Grant microphone permission",
-      "requestA11y": "Request microphone permission"
+      "notice": "Ellie het mikrofoontoegang nodig om jou vrae te hoor.",
+      "grant": "Gee toestemming",
+      "grantA11y": "Gee mikrofoontoestemming",
+      "requestA11y": "Versoek mikrofoontoestemming"
     },
     "status": {
-      "listening": "Listening...",
-      "processing": "Thinking...",
-      "speaking": "Tap to stop speaking",
+      "listening": "Luister tans...",
+      "processing": "Dink...",
+      "speaking": "Tik om op te hou praat",
       "wakeWordUnavailable": "Wekwoord is nie beskikbaar nie, tik die mikrofoon om te praat",
-      "sayWakeWordOrTap": "Say \"{{wakeWordPhrase}}\" or tap the mic",
-      "askAnother": "Tap the mic to ask another question",
-      "askEllie": "Tap the mic to ask Ellie"
+      "sayWakeWordOrTap": "Sê \"{{wakeWordPhrase}}\" of tik op die mikrofoon",
+      "askAnother": "Tik die mikrofoon om nog 'n vraag te vra",
+      "askEllie": "Tik die mikrofoon om Ellie te vra"
     },
     "errors": {
-      "default": "Something went wrong",
-      "permissionDeniedIos": "Microphone access denied. Enable in Settings > Ellie.",
-      "permissionDenied": "Microphone access denied. Please grant permission.",
-      "network": "Check your connection and retry.",
-      "recognition": "I didn't catch that. Please try again.",
-      "backend": "Service temporarily unavailable. Please try again.",
-      "rateLimited": "Please wait briefly and retry.",
-      "timeout": "Request timed out. Please retry.",
+      "default": "Iets het verkeerd geloop",
+      "permissionDeniedIos": "Mikrofoontoegang geweier. Aktiveer in Instellings > Ellie.",
+      "permissionDenied": "Mikrofoontoegang geweier. Gee asseblief toestemming.",
+      "network": "Gaan jou verbinding na en probeer weer.",
+      "recognition": "Ek het dit nie gevang nie. Probeer asseblief weer.",
+      "backend": "Diens tydelik onbeskikbaar. Probeer asseblief weer.",
+      "rateLimited": "Wag asseblief kortliks en probeer weer.",
+      "timeout": "Versoek het uitgetel. Probeer asseblief weer.",
       "wakeWordUnavailable": "Wekwoord is nie beskikbaar nie, tik die mikrofoon om te praat.",
-      "tts": "Could not play audio response."
+      "tts": "Kon nie oudio-reaksie speel nie."
     },
     "micA11y": {
-      "listening": "Stop listening. Double tap to finish speaking.",
-      "processing": "Processing your question. Please wait.",
-      "speaking": "Ellie is speaking. Double tap to stop.",
-      "error": "Error: {{message}}. Double tap to try again.",
-      "idle": "Ask Ellie a question. Double tap to start speaking."
+      "listening": "Hou op luister. Dubbeltik om klaar te praat.",
+      "processing": "Verwerk tans jou vraag. Wag asseblief.",
+      "speaking": "Ellie praat. Dubbeltik om te stop.",
+      "error": "Fout: {{message}}. Dubbeltik om weer te probeer.",
+      "idle": "Vra vir Ellie 'n vraag. Dubbeltik om te begin praat."
     },
-    "partialTranscriptA11y": "You are saying: {{text}}",
-    "processingInline": "Ellie is thinking...",
-    "retryHint": "Tap the mic to try again",
-    "requestRef": "Ref: {{requestId}}",
+    "partialTranscriptA11y": "Jy sê: {{text}}",
+    "processingInline": "Ellie dink...",
+    "retryHint": "Tik die mikrofoon om weer te probeer",
+    "requestRef": "Verw: {{requestId}}",
     "responseBubble": {
-      "userSaidA11y": "You said: {{text}}",
-      "assistantSaidA11y": "Ellie said: {{text}}"
+      "userSaidA11y": "Jy het gesê: {{text}}",
+      "assistantSaidA11y": "Ellie het gesê: {{text}}"
     },
     "warnings": {
       "microphonePermissionRequired": "Mikrofoontoestemming word vir Hey Ellie vereis. Tik die mikrofoon om te praat.",
@@ -161,18 +161,18 @@
     }
   },
   "tabs": {
-    "home": "Home",
-    "schedule": "Schedule",
-    "stats": "Stats",
-    "profile": "Profile",
+    "home": "Tuis",
+    "schedule": "Skedule",
+    "stats": "Statistieke",
+    "profile": "Profiel",
     "ellie": "Ellie",
-    "openVoiceAssistantA11y": "Open Ellie voice assistant"
+    "openVoiceAssistantA11y": "Maak Ellie-stemassistent oop"
   },
   "quickActions": {
-    "settings": "Settings",
-    "alerts": "Alerts",
-    "profile": "Profile",
-    "export": "Export"
+    "settings": "Instellings",
+    "alerts": "Waarskuwings",
+    "profile": "Profiel",
+    "export": "Uitvoer"
   },
   "notifications": {
     "shiftType": {

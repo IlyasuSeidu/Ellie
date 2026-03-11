@@ -127,107 +127,107 @@
     "cyclePhase": "{{phase}} – день {{day}} {{total}}",
     "cycleDay": "День {{day}} цикла",
     "startDatePicker": {
-      "title": "Select Start Date",
-      "backdropCloseA11y": "Close",
-      "closeA11y": "Close date picker",
-      "previousMonthA11y": "Previous month",
-      "nextMonthA11y": "Next month",
+      "title": "Выберите дату начала",
+      "backdropCloseA11y": "Закрывать",
+      "closeA11y": "Закрыть выбор даты",
+      "previousMonthA11y": "Предыдущий месяц",
+      "nextMonthA11y": "В следующем месяце",
       "dayA11y": "{{day}} {{month}} {{year}}",
-      "todayTag": "today",
-      "unavailableTag": "unavailable",
-      "legendToday": "Today",
-      "legendSelected": "Selected"
+      "todayTag": "сегодня",
+      "unavailableTag": "недоступен",
+      "legendToday": "Сегодня",
+      "legendSelected": "Выбрано"
     },
     "patternSelector": {
-      "title": "Select Pattern",
-      "closeA11y": "Close pattern selector",
-      "backdropCloseA11y": "Close",
-      "currentlySelected": "currently selected",
-      "cardHint": "Double tap to select this pattern",
+      "title": "Выберите шаблон",
+      "closeA11y": "Закрыть выбор шаблона",
+      "backdropCloseA11y": "Закрывать",
+      "currentlySelected": "текущий выбранный",
+      "cardHint": "Нажмите дважды, чтобы выбрать этот узор",
       "subtitle": {
-        "fifo": "FIFO block rosters",
-        "threeShift": "3-shift (8h) rotating patterns",
-        "twoShift": "2-shift (12h) rotating patterns"
+        "fifo": "Реестры блоков FIFO",
+        "threeShift": "График работы в 3 смены (8 часов)",
+        "twoShift": "График работы в 2 смены (12 часов)"
       },
       "patterns": {
         "STANDARD_3_3_3": {
-          "name": "3-3-3 Rotation",
-          "subtitle": "9-day cycle"
+          "name": "3-3-3 Ротация",
+          "subtitle": "9-дневный цикл"
         },
         "STANDARD_4_4_4": {
-          "name": "4-4-4 Rotation",
-          "subtitle": "12-day cycle"
+          "name": "4-4-4 Ротация",
+          "subtitle": "12-дневный цикл"
         },
         "STANDARD_5_5_5": {
-          "name": "5-5-5 Rotation",
-          "subtitle": "15-day cycle"
+          "name": "5-5-5 Ротация",
+          "subtitle": "15-дневный цикл"
         },
         "STANDARD_7_7_7": {
-          "name": "7-7-7 Rotation",
-          "subtitle": "21-day cycle"
+          "name": "7-7-7 Ротация",
+          "subtitle": "21-дневный цикл"
         },
         "STANDARD_10_10_10": {
-          "name": "10-10-10 Rotation",
-          "subtitle": "30-day cycle"
+          "name": "10-10-10 Ротация",
+          "subtitle": "30-дневный цикл"
         },
         "STANDARD_2_2_3": {
-          "name": "Pitman (2-2-3)",
-          "subtitle": "7-day cycle"
+          "name": "Питмэн (2-2-3)",
+          "subtitle": "7-дневный цикл"
         },
         "CONTINENTAL": {
-          "name": "Continental",
-          "subtitle": "10-day cycle"
+          "name": "Континентальный",
+          "subtitle": "10-дневный цикл"
         },
         "PITMAN": {
-          "name": "Pitman",
-          "subtitle": "7-day cycle"
+          "name": "Питман",
+          "subtitle": "7-дневный цикл"
         },
         "CUSTOM": {
-          "name": "Custom Rotation",
-          "subtitle": "Build your own"
+          "name": "Пользовательское вращение",
+          "subtitle": "Создайте свой собственный"
         },
         "FIFO_7_7": {
-          "name": "7/7 FIFO",
-          "subtitle": "14-day cycle"
+          "name": "7/7 ФИФО",
+          "subtitle": "14-дневный цикл"
         },
         "FIFO_8_6": {
-          "name": "8/6 FIFO",
-          "subtitle": "14-day cycle"
+          "name": "8/6 ФИФО",
+          "subtitle": "14-дневный цикл"
         },
         "FIFO_14_14": {
-          "name": "14/14 FIFO",
-          "subtitle": "28-day cycle"
+          "name": "14/14 ФИФО",
+          "subtitle": "28-дневный цикл"
         },
         "FIFO_14_7": {
-          "name": "14/7 FIFO",
-          "subtitle": "21-day cycle"
+          "name": "14/7 ФИФО",
+          "subtitle": "21-дневный цикл"
         },
         "FIFO_21_7": {
-          "name": "21/7 FIFO",
-          "subtitle": "28-day cycle"
+          "name": "21/7 ФИФО",
+          "subtitle": "28-дневный цикл"
         },
         "FIFO_28_14": {
-          "name": "28/14 FIFO",
-          "subtitle": "42-day cycle"
+          "name": "28/14 ФИФО",
+          "subtitle": "42-дневный цикл"
         },
         "FIFO_CUSTOM": {
-          "name": "Custom FIFO",
-          "subtitle": "Configure blocks"
+          "name": "Пользовательский ФИФО",
+          "subtitle": "Настройка блоков"
         }
       }
     },
     "cycleResync": {
-      "title": "Re-sync Cycle",
-      "subtitleFifo": "Are you at work or home?",
-      "subtitleRotating": "Which shift phase are you on?",
-      "closeA11y": "Close",
-      "backdropCloseA11y": "Close",
-      "backToPhaseA11y": "Back to phase selection",
-      "daySubtitle": "Which day are you on?",
-      "dayA11y": "Day {{day}}",
-      "confirmA11y": "Confirm cycle position",
-      "confirm": "Confirm Position",
-      "empty": "Configure a shift pattern first to re-sync your cycle.",
+      "title": "Цикл повторной синхронизации",
+      "subtitleFifo": "Вы на работе или дома?",
+      "subtitleRotating": "На какой фазе смены вы находитесь?",
+      "closeA11y": "Закрывать",
+      "backdropCloseA11y": "Закрывать",
+      "backToPhaseA11y": "Вернуться к выбору фазы",
+      "daySubtitle": "В какой день ты?",
+      "dayA11y": "День {{day}}",
+      "confirmA11y": "Подтвердить положение цикла",
+      "confirm": "Подтвердить позицию",
+      "empty": "Сначала настройте график смен, чтобы повторно синхронизировать цикл.",
       "phaseLabels": {
         "day": "Дневная смена",
         "night": "Ночная смена",
@@ -238,25 +238,25 @@
         "rest": "Блок отдыха"
       },
       "dayDescriptions": {
-        "first": "First day of {{phase}}",
-        "last": "Last day of {{phase}}",
-        "midpoint": "Midpoint of {{phase}}",
-        "dayOf": "Day {{day}} of {{phase}}"
+        "first": "Первый день {{phase}}",
+        "last": "Последний день {{phase}}",
+        "midpoint": "Середина {{phase}}",
+        "dayOf": "День {{day}} из {{phase}}"
       }
     },
     "configCard": {
-      "timesLabel": "Times",
-      "workDaysOnSite": "{{count}} days on-site",
-      "restDaysAtHome": "{{count}} days at home",
-      "empty": "No shift configuration set",
-      "footer": "Shift settings can be updated in Settings"
+      "timesLabel": "Время",
+      "workDaysOnSite": "{{count}} дней на месте",
+      "restDaysAtHome": "{{count}} дней дома",
+      "empty": "Конфигурация смены не задана",
+      "footer": "Настройки смены можно обновить в Настройках."
     },
     "profileUtils": {
-      "customFIFO": "{{workBlockDays}}/{{restBlockDays}} Custom FIFO",
-      "customRotationTwoShift": "{{daysOn}}-{{nightsOn}}-{{daysOff}} Custom Rotation",
-      "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} Custom Rotation",
-      "dayAbbrev": "D",
-      "nightAbbrev": "N"
+      "customFIFO": "{{workBlockDays}}/{{restBlockDays}} Пользовательский FIFO",
+      "customRotationTwoShift": "{{daysOn}}-{{nightsOn}}-{{daysOff}} Пользовательская ротация",
+      "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} Пользовательская ротация",
+      "dayAbbrev": "Д",
+      "nightAbbrev": "Н"
     }
   }
 }

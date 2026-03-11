@@ -127,107 +127,107 @@
     "cyclePhase": "{{phase}} - Hari {{day}} tanggal {{total}}",
     "cycleDay": "Hari {{day}} siklus",
     "startDatePicker": {
-      "title": "Select Start Date",
-      "backdropCloseA11y": "Close",
-      "closeA11y": "Close date picker",
-      "previousMonthA11y": "Previous month",
-      "nextMonthA11y": "Next month",
+      "title": "Pilih Tanggal Mulai",
+      "backdropCloseA11y": "Menutup",
+      "closeA11y": "Pemilih tanggal tutup",
+      "previousMonthA11y": "Bulan sebelumnya",
+      "nextMonthA11y": "Bulan depan",
       "dayA11y": "{{day}} {{month}} {{year}}",
-      "todayTag": "today",
-      "unavailableTag": "unavailable",
-      "legendToday": "Today",
-      "legendSelected": "Selected"
+      "todayTag": "Hari ini",
+      "unavailableTag": "tidak tersedia",
+      "legendToday": "Hari ini",
+      "legendSelected": "Terpilih"
     },
     "patternSelector": {
-      "title": "Select Pattern",
-      "closeA11y": "Close pattern selector",
-      "backdropCloseA11y": "Close",
-      "currentlySelected": "currently selected",
-      "cardHint": "Double tap to select this pattern",
+      "title": "Pilih Pola",
+      "closeA11y": "Tutup pemilih pola",
+      "backdropCloseA11y": "Menutup",
+      "currentlySelected": "dipilih saat ini",
+      "cardHint": "Ketuk dua kali untuk memilih pola ini",
       "subtitle": {
-        "fifo": "FIFO block rosters",
-        "threeShift": "3-shift (8h) rotating patterns",
-        "twoShift": "2-shift (12h) rotating patterns"
+        "fifo": "Daftar nama blok FIFO",
+        "threeShift": "Pola rotasi 3 shift (8 jam).",
+        "twoShift": "Pola rotasi 2 shift (12 jam)."
       },
       "patterns": {
         "STANDARD_3_3_3": {
-          "name": "3-3-3 Rotation",
-          "subtitle": "9-day cycle"
+          "name": "3-3-3 Rotasi",
+          "subtitle": "siklus 9 hari"
         },
         "STANDARD_4_4_4": {
-          "name": "4-4-4 Rotation",
-          "subtitle": "12-day cycle"
+          "name": "4-4-4 Rotasi",
+          "subtitle": "siklus 12 hari"
         },
         "STANDARD_5_5_5": {
-          "name": "5-5-5 Rotation",
-          "subtitle": "15-day cycle"
+          "name": "5-5-5 Rotasi",
+          "subtitle": "siklus 15 hari"
         },
         "STANDARD_7_7_7": {
-          "name": "7-7-7 Rotation",
-          "subtitle": "21-day cycle"
+          "name": "7-7-7 Rotasi",
+          "subtitle": "siklus 21 hari"
         },
         "STANDARD_10_10_10": {
-          "name": "10-10-10 Rotation",
-          "subtitle": "30-day cycle"
+          "name": "10-10-10 Rotasi",
+          "subtitle": "siklus 30 hari"
         },
         "STANDARD_2_2_3": {
           "name": "Pitman (2-2-3)",
-          "subtitle": "7-day cycle"
+          "subtitle": "siklus 7 hari"
         },
         "CONTINENTAL": {
-          "name": "Continental",
-          "subtitle": "10-day cycle"
+          "name": "Kontinental",
+          "subtitle": "siklus 10 hari"
         },
         "PITMAN": {
-          "name": "Pitman",
-          "subtitle": "7-day cycle"
+          "name": "manusia pit",
+          "subtitle": "siklus 7 hari"
         },
         "CUSTOM": {
-          "name": "Custom Rotation",
-          "subtitle": "Build your own"
+          "name": "Rotasi Kustom",
+          "subtitle": "Bangun milik Anda sendiri"
         },
         "FIFO_7_7": {
           "name": "7/7 FIFO",
-          "subtitle": "14-day cycle"
+          "subtitle": "siklus 14 hari"
         },
         "FIFO_8_6": {
           "name": "8/6 FIFO",
-          "subtitle": "14-day cycle"
+          "subtitle": "siklus 14 hari"
         },
         "FIFO_14_14": {
-          "name": "14/14 FIFO",
-          "subtitle": "28-day cycle"
+          "name": "14/14FIFO",
+          "subtitle": "siklus 28 hari"
         },
         "FIFO_14_7": {
           "name": "14/7 FIFO",
-          "subtitle": "21-day cycle"
+          "subtitle": "siklus 21 hari"
         },
         "FIFO_21_7": {
           "name": "21/7 FIFO",
-          "subtitle": "28-day cycle"
+          "subtitle": "siklus 28 hari"
         },
         "FIFO_28_14": {
           "name": "28/14 FIFO",
-          "subtitle": "42-day cycle"
+          "subtitle": "siklus 42 hari"
         },
         "FIFO_CUSTOM": {
-          "name": "Custom FIFO",
-          "subtitle": "Configure blocks"
+          "name": "FIFO khusus",
+          "subtitle": "Konfigurasikan blok"
         }
       }
     },
     "cycleResync": {
-      "title": "Re-sync Cycle",
-      "subtitleFifo": "Are you at work or home?",
-      "subtitleRotating": "Which shift phase are you on?",
-      "closeA11y": "Close",
-      "backdropCloseA11y": "Close",
-      "backToPhaseA11y": "Back to phase selection",
-      "daySubtitle": "Which day are you on?",
-      "dayA11y": "Day {{day}}",
-      "confirmA11y": "Confirm cycle position",
-      "confirm": "Confirm Position",
-      "empty": "Configure a shift pattern first to re-sync your cycle.",
+      "title": "Sinkronisasi ulang Siklus",
+      "subtitleFifo": "Apakah Anda di tempat kerja atau di rumah?",
+      "subtitleRotating": "Anda berada pada fase shift yang mana?",
+      "closeA11y": "Menutup",
+      "backdropCloseA11y": "Menutup",
+      "backToPhaseA11y": "Kembali ke pemilihan fase",
+      "daySubtitle": "Kamu berada pada hari apa?",
+      "dayA11y": "Hari {{day}}",
+      "confirmA11y": "Konfirmasikan posisi siklus",
+      "confirm": "Konfirmasikan Posisi",
+      "empty": "Konfigurasikan pola shift terlebih dahulu untuk menyinkronkan ulang siklus Anda.",
       "phaseLabels": {
         "day": "Shift siang",
         "night": "Shift malam",
@@ -238,23 +238,23 @@
         "rest": "Blok istirahat"
       },
       "dayDescriptions": {
-        "first": "First day of {{phase}}",
-        "last": "Last day of {{phase}}",
-        "midpoint": "Midpoint of {{phase}}",
-        "dayOf": "Day {{day}} of {{phase}}"
+        "first": "Hari pertama {{phase}}",
+        "last": "Hari terakhir {{phase}}",
+        "midpoint": "Titik tengah {{phase}}",
+        "dayOf": "Hari {{day}} {{phase}}"
       }
     },
     "configCard": {
-      "timesLabel": "Times",
-      "workDaysOnSite": "{{count}} days on-site",
-      "restDaysAtHome": "{{count}} days at home",
-      "empty": "No shift configuration set",
-      "footer": "Shift settings can be updated in Settings"
+      "timesLabel": "Kali",
+      "workDaysOnSite": "{{count}} hari di lokasi",
+      "restDaysAtHome": "{{count}} hari di rumah",
+      "empty": "Tidak ada konfigurasi shift yang disetel",
+      "footer": "Pengaturan shift dapat diperbarui di Pengaturan"
     },
     "profileUtils": {
-      "customFIFO": "{{workBlockDays}}/{{restBlockDays}} Custom FIFO",
-      "customRotationTwoShift": "{{daysOn}}-{{nightsOn}}-{{daysOff}} Custom Rotation",
-      "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} Custom Rotation",
+      "customFIFO": "{{workBlockDays}}/{{restBlockDays}} FIFO Khusus",
+      "customRotationTwoShift": "{{daysOn}}-{{nightsOn}}-{{daysOff}} Rotasi Kustom",
+      "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} Rotasi Kustom",
       "dayAbbrev": "D",
       "nightAbbrev": "N"
     }

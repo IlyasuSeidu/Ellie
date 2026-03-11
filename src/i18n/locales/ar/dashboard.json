@@ -92,58 +92,58 @@
     "active": "نشيط"
   },
   "voiceAssistant": {
-    "subtitle": "Voice Assistant",
-    "clearHistoryA11y": "Clear conversation history",
-    "closeA11y": "Close voice assistant",
-    "conversationHistoryA11y": "Conversation history",
+    "subtitle": "مساعد صوت",
+    "clearHistoryA11y": "مسح سجل المحادثات",
+    "closeA11y": "إغلاق المساعد الصوتي",
+    "conversationHistoryA11y": "تاريخ المحادثة",
     "empty": {
-      "prompt": "Ask me about your shift schedule",
-      "trySaying": "Try saying:",
-      "example1": "What shift do I have tomorrow?",
-      "example2": "When is my next day off?",
-      "example3": "How many night shifts this month?"
+      "prompt": "اسألني عن جدول التحول الخاص بك",
+      "trySaying": "حاول أن تقول:",
+      "example1": "ما التحول لدي غدا؟",
+      "example2": "متى يكون يوم عطلتي التالي؟",
+      "example3": "كم عدد المناوبات الليلية هذا الشهر؟"
     },
     "permission": {
-      "notice": "Ellie needs microphone access to hear your questions.",
-      "grant": "Grant Permission",
-      "grantA11y": "Grant microphone permission",
-      "requestA11y": "Request microphone permission"
+      "notice": "تحتاج إيلي إلى الوصول إلى الميكروفون لسماع أسئلتك.",
+      "grant": "إذن المنح",
+      "grantA11y": "منح إذن الميكروفون",
+      "requestA11y": "طلب إذن الميكروفون"
     },
     "status": {
-      "listening": "Listening...",
-      "processing": "Thinking...",
-      "speaking": "Tap to stop speaking",
+      "listening": "جاري الاستماع...",
+      "processing": "أفكر...",
+      "speaking": "انقر للتوقف عن التحدث",
       "wakeWordUnavailable": "عبارة التنبيه غير متاحة، اضغط على الميكروفون للتحدث",
-      "sayWakeWordOrTap": "Say \"{{wakeWordPhrase}}\" or tap the mic",
-      "askAnother": "Tap the mic to ask another question",
-      "askEllie": "Tap the mic to ask Ellie"
+      "sayWakeWordOrTap": "قل \"{{wakeWordPhrase}}\" أو اضغط على الميكروفون",
+      "askAnother": "اضغط على الميكروفون لطرح سؤال آخر",
+      "askEllie": "اضغط على الميكروفون لسؤال إيلي"
     },
     "errors": {
-      "default": "Something went wrong",
-      "permissionDeniedIos": "Microphone access denied. Enable in Settings > Ellie.",
-      "permissionDenied": "Microphone access denied. Please grant permission.",
-      "network": "Check your connection and retry.",
-      "recognition": "I didn't catch that. Please try again.",
-      "backend": "Service temporarily unavailable. Please try again.",
-      "rateLimited": "Please wait briefly and retry.",
-      "timeout": "Request timed out. Please retry.",
+      "default": "حدث خطأ ما",
+      "permissionDeniedIos": "تم رفض الوصول إلى الميكروفون. قم بالتمكين في الإعدادات> Ellie.",
+      "permissionDenied": "تم رفض الوصول إلى الميكروفون. يرجى منح الإذن.",
+      "network": "تحقق من اتصالك وأعد المحاولة.",
+      "recognition": "لم أفهم ذلك. يرجى المحاولة مرة أخرى.",
+      "backend": "الخدمة غير متاحة مؤقتا. يرجى المحاولة مرة أخرى.",
+      "rateLimited": "الرجاء الانتظار لفترة وجيزة ثم أعد المحاولة.",
+      "timeout": "انتهت مهلة الطلب. يرجى إعادة المحاولة.",
       "wakeWordUnavailable": "عبارة التنبيه غير متاحة، اضغط على الميكروفون للتحدث.",
-      "tts": "Could not play audio response."
+      "tts": "تعذر تشغيل الاستجابة الصوتية."
     },
     "micA11y": {
-      "listening": "Stop listening. Double tap to finish speaking.",
-      "processing": "Processing your question. Please wait.",
-      "speaking": "Ellie is speaking. Double tap to stop.",
-      "error": "Error: {{message}}. Double tap to try again.",
-      "idle": "Ask Ellie a question. Double tap to start speaking."
+      "listening": "توقف عن الاستماع. انقر نقرًا مزدوجًا لإنهاء التحدث.",
+      "processing": "جارٍ معالجة سؤالك. انتظر من فضلك.",
+      "speaking": "ايلي يتكلم. انقر نقرًا مزدوجًا للإيقاف.",
+      "error": "خطأ: {{message}}. انقر نقرًا مزدوجًا للمحاولة مرة أخرى.",
+      "idle": "اسأل إيلي سؤالاً. انقر نقرًا مزدوجًا لبدء التحدث."
     },
-    "partialTranscriptA11y": "You are saying: {{text}}",
-    "processingInline": "Ellie is thinking...",
-    "retryHint": "Tap the mic to try again",
-    "requestRef": "Ref: {{requestId}}",
+    "partialTranscriptA11y": "أنت تقول: {{text}}",
+    "processingInline": "إيلي يفكر..",
+    "retryHint": "اضغط على الميكروفون للمحاولة مرة أخرى",
+    "requestRef": "المرجع: {{requestId}}",
     "responseBubble": {
-      "userSaidA11y": "You said: {{text}}",
-      "assistantSaidA11y": "Ellie said: {{text}}"
+      "userSaidA11y": "قلت: {{text}}",
+      "assistantSaidA11y": "قال إيلي: {{text}}"
     },
     "warnings": {
       "microphonePermissionRequired": "يلزم إذن الميكروفون لعبارة «Hey Ellie». اضغط على الميكروفون للتحدث.",
@@ -161,18 +161,18 @@
     }
   },
   "tabs": {
-    "home": "Home",
-    "schedule": "Schedule",
-    "stats": "Stats",
-    "profile": "Profile",
+    "home": "بيت",
+    "schedule": "جدول",
+    "stats": "احصائيات",
+    "profile": "حساب تعريفي",
     "ellie": "Ellie",
-    "openVoiceAssistantA11y": "Open Ellie voice assistant"
+    "openVoiceAssistantA11y": "افتح المساعد الصوتي Ellie"
   },
   "quickActions": {
-    "settings": "Settings",
-    "alerts": "Alerts",
-    "profile": "Profile",
-    "export": "Export"
+    "settings": "إعدادات",
+    "alerts": "التنبيهات",
+    "profile": "حساب تعريفي",
+    "export": "يصدّر"
   },
   "notifications": {
     "shiftType": {

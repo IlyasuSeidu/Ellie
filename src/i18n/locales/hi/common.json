@@ -52,8 +52,8 @@
   "language": {
     "label": "भाषा",
     "selector": "भाषा चुने",
-    "restartRequiredTitle": "Restart Required",
-    "restartRequiredMessage": "Please restart Ellie to apply language direction changes.",
+    "restartRequiredTitle": "पुनरारंभ करना आवश्यक है",
+    "restartRequiredMessage": "कृपया भाषा दिशा परिवर्तन लागू करने के लिए ऐली को पुनः आरंभ करें।",
     "names": {
       "en": "English",
       "es": "Español",

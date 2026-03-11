@@ -127,107 +127,107 @@
     "cyclePhase": "{{phase}} - {{total}} 第 {{day}} 天",
     "cycleDay": "周期第 {{day}} 天",
     "startDatePicker": {
-      "title": "Select Start Date",
-      "backdropCloseA11y": "Close",
-      "closeA11y": "Close date picker",
-      "previousMonthA11y": "Previous month",
-      "nextMonthA11y": "Next month",
+      "title": "选择开始日期",
+      "backdropCloseA11y": "关闭",
+      "closeA11y": "关闭日期选择器",
+      "previousMonthA11y": "上个月",
+      "nextMonthA11y": "下个月",
       "dayA11y": "{{day}} {{month}} {{year}}",
-      "todayTag": "today",
-      "unavailableTag": "unavailable",
-      "legendToday": "Today",
-      "legendSelected": "Selected"
+      "todayTag": "今天",
+      "unavailableTag": "不可用",
+      "legendToday": "今天",
+      "legendSelected": "已选择"
     },
     "patternSelector": {
-      "title": "Select Pattern",
-      "closeA11y": "Close pattern selector",
-      "backdropCloseA11y": "Close",
-      "currentlySelected": "currently selected",
-      "cardHint": "Double tap to select this pattern",
+      "title": "选择图案",
+      "closeA11y": "关闭模式选择器",
+      "backdropCloseA11y": "关闭",
+      "currentlySelected": "当前选择的",
+      "cardHint": "双击选择该图案",
       "subtitle": {
-        "fifo": "FIFO block rosters",
-        "threeShift": "3-shift (8h) rotating patterns",
-        "twoShift": "2-shift (12h) rotating patterns"
+        "fifo": "FIFO 块名册",
+        "threeShift": "3 班（8 小时）轮换模式",
+        "twoShift": "2 班（12 小时）轮换模式"
       },
       "patterns": {
         "STANDARD_3_3_3": {
-          "name": "3-3-3 Rotation",
-          "subtitle": "9-day cycle"
+          "name": "3-3-3 轮换",
+          "subtitle": "9天为一个周期"
         },
         "STANDARD_4_4_4": {
-          "name": "4-4-4 Rotation",
-          "subtitle": "12-day cycle"
+          "name": "4-4-4 轮换",
+          "subtitle": "12天为一个周期"
         },
         "STANDARD_5_5_5": {
-          "name": "5-5-5 Rotation",
-          "subtitle": "15-day cycle"
+          "name": "5-5-5轮换",
+          "subtitle": "15天为一个周期"
         },
         "STANDARD_7_7_7": {
-          "name": "7-7-7 Rotation",
-          "subtitle": "21-day cycle"
+          "name": "7-7-7轮换",
+          "subtitle": "21天为一个周期"
         },
         "STANDARD_10_10_10": {
-          "name": "10-10-10 Rotation",
-          "subtitle": "30-day cycle"
+          "name": "10-10-10轮换",
+          "subtitle": "30天为一个周期"
         },
         "STANDARD_2_2_3": {
-          "name": "Pitman (2-2-3)",
-          "subtitle": "7-day cycle"
+          "name": "皮特曼 (2-2-3)",
+          "subtitle": "7天为一个周期"
         },
         "CONTINENTAL": {
-          "name": "Continental",
-          "subtitle": "10-day cycle"
+          "name": "大陆航空",
+          "subtitle": "10天为一个周期"
         },
         "PITMAN": {
-          "name": "Pitman",
-          "subtitle": "7-day cycle"
+          "name": "皮特曼",
+          "subtitle": "7天为一个周期"
         },
         "CUSTOM": {
-          "name": "Custom Rotation",
-          "subtitle": "Build your own"
+          "name": "自定义旋转",
+          "subtitle": "建立你自己的"
         },
         "FIFO_7_7": {
-          "name": "7/7 FIFO",
-          "subtitle": "14-day cycle"
+          "name": "7/7先进先出",
+          "subtitle": "14天为一个周期"
         },
         "FIFO_8_6": {
-          "name": "8/6 FIFO",
-          "subtitle": "14-day cycle"
+          "name": "8/6先进先出",
+          "subtitle": "14天为一个周期"
         },
         "FIFO_14_14": {
-          "name": "14/14 FIFO",
-          "subtitle": "28-day cycle"
+          "name": "14/14先进先出",
+          "subtitle": "28天为一个周期"
         },
         "FIFO_14_7": {
-          "name": "14/7 FIFO",
-          "subtitle": "21-day cycle"
+          "name": "14/7先进先出",
+          "subtitle": "21天为一个周期"
         },
         "FIFO_21_7": {
-          "name": "21/7 FIFO",
-          "subtitle": "28-day cycle"
+          "name": "21/7先进先出",
+          "subtitle": "28天为一个周期"
         },
         "FIFO_28_14": {
-          "name": "28/14 FIFO",
-          "subtitle": "42-day cycle"
+          "name": "28/14先进先出",
+          "subtitle": "42天为一个周期"
         },
         "FIFO_CUSTOM": {
-          "name": "Custom FIFO",
-          "subtitle": "Configure blocks"
+          "name": "定制先进先出",
+          "subtitle": "配置块"
         }
       }
     },
     "cycleResync": {
-      "title": "Re-sync Cycle",
-      "subtitleFifo": "Are you at work or home?",
-      "subtitleRotating": "Which shift phase are you on?",
-      "closeA11y": "Close",
-      "backdropCloseA11y": "Close",
-      "backToPhaseA11y": "Back to phase selection",
-      "daySubtitle": "Which day are you on?",
-      "dayA11y": "Day {{day}}",
-      "confirmA11y": "Confirm cycle position",
-      "confirm": "Confirm Position",
-      "empty": "Configure a shift pattern first to re-sync your cycle.",
+      "title": "重新同步周期",
+      "subtitleFifo": "你在工作还是在家？",
+      "subtitleRotating": "您处于哪个转变阶段？",
+      "closeA11y": "关闭",
+      "backdropCloseA11y": "关闭",
+      "backToPhaseA11y": "返回相选择",
+      "daySubtitle": "你是哪一天？",
+      "dayA11y": "日 {{day}}",
+      "confirmA11y": "确认循环位置",
+      "confirm": "确认位置",
+      "empty": "首先配置轮班模式以重新同步您的周期。",
       "phaseLabels": {
         "day": "白班",
         "night": "夜班",
@@ -238,25 +238,25 @@
         "rest": "休息区块"
       },
       "dayDescriptions": {
-        "first": "First day of {{phase}}",
-        "last": "Last day of {{phase}}",
-        "midpoint": "Midpoint of {{phase}}",
-        "dayOf": "Day {{day}} of {{phase}}"
+        "first": "{{phase}}的第一天",
+        "last": "{{phase}} 的最后一天",
+        "midpoint": "{{phase}} 的中点",
+        "dayOf": "{{phase}} 的 {{day}} 日"
       }
     },
     "configCard": {
-      "timesLabel": "Times",
-      "workDaysOnSite": "{{count}} days on-site",
-      "restDaysAtHome": "{{count}} days at home",
-      "empty": "No shift configuration set",
-      "footer": "Shift settings can be updated in Settings"
+      "timesLabel": "时代",
+      "workDaysOnSite": "{{count}} 现场天数",
+      "restDaysAtHome": "{{count}} 在家的日子",
+      "empty": "无班次配置集",
+      "footer": "轮班设置可以在“设置”中更新"
     },
     "profileUtils": {
-      "customFIFO": "{{workBlockDays}}/{{restBlockDays}} Custom FIFO",
-      "customRotationTwoShift": "{{daysOn}}-{{nightsOn}}-{{daysOff}} Custom Rotation",
-      "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} Custom Rotation",
+      "customFIFO": "{{workBlockDays}}/{{restBlockDays}} 自定义 FIFO",
+      "customRotationTwoShift": "{{daysOn}}-{{nightsOn}}-{{daysOff}} 自定义旋转",
+      "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} 自定义旋转",
       "dayAbbrev": "D",
-      "nightAbbrev": "N"
+      "nightAbbrev": "氮"
     }
   }
 }

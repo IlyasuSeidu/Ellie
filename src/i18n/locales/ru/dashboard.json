@@ -49,11 +49,11 @@
     "blockDayOf": "{{blockName}} Блок-день {{day}} {{total}}",
     "days": "дни",
     "tooltip": {
-      "blockDay": "{{blockName}} Block Day {{day}}/{{total}}",
-      "home": "Home",
-      "flyInSuffix": " — Fly In",
-      "flyOutSuffix": " — Fly Out",
-      "shiftTransition": "Shift transition"
+      "blockDay": "{{blockName}} Блок-день {{day}}/{{total}}",
+      "home": "Дом",
+      "flyInSuffix": "— Прилететь",
+      "flyOutSuffix": "— Вылететь",
+      "shiftTransition": "Сдвиговый переход"
     }
   },
   "stats": {
@@ -92,58 +92,58 @@
     "active": "АКТИВНЫЙ"
   },
   "voiceAssistant": {
-    "subtitle": "Voice Assistant",
-    "clearHistoryA11y": "Clear conversation history",
-    "closeA11y": "Close voice assistant",
-    "conversationHistoryA11y": "Conversation history",
+    "subtitle": "Голосовой помощник",
+    "clearHistoryA11y": "Очистить историю разговоров",
+    "closeA11y": "Закрыть голосовой помощник",
+    "conversationHistoryA11y": "История разговоров",
     "empty": {
-      "prompt": "Ask me about your shift schedule",
-      "trySaying": "Try saying:",
-      "example1": "What shift do I have tomorrow?",
-      "example2": "When is my next day off?",
-      "example3": "How many night shifts this month?"
+      "prompt": "Спросите меня о графике смен",
+      "trySaying": "Попробуйте сказать:",
+      "example1": "Какая смена у меня завтра?",
+      "example2": "Когда у меня следующий выходной?",
+      "example3": "Сколько ночных смен в этом месяце?"
     },
     "permission": {
-      "notice": "Ellie needs microphone access to hear your questions.",
-      "grant": "Grant Permission",
-      "grantA11y": "Grant microphone permission",
-      "requestA11y": "Request microphone permission"
+      "notice": "Элли нужен доступ к микрофону, чтобы услышать ваши вопросы.",
+      "grant": "Предоставить разрешение",
+      "grantA11y": "Предоставить разрешение на использование микрофона",
+      "requestA11y": "Запросить разрешение на использование микрофона"
     },
     "status": {
-      "listening": "Listening...",
-      "processing": "Thinking...",
-      "speaking": "Tap to stop speaking",
+      "listening": "Слушаю...",
+      "processing": "Думая...",
+      "speaking": "Нажмите, чтобы перестать говорить",
       "wakeWordUnavailable": "Ключевая фраза недоступна, нажмите на микрофон, чтобы говорить",
-      "sayWakeWordOrTap": "Say \"{{wakeWordPhrase}}\" or tap the mic",
-      "askAnother": "Tap the mic to ask another question",
-      "askEllie": "Tap the mic to ask Ellie"
+      "sayWakeWordOrTap": "Скажите «{{wakeWordPhrase}}» или коснитесь микрофона.",
+      "askAnother": "Коснитесь микрофона, чтобы задать еще один вопрос.",
+      "askEllie": "Коснитесь микрофона, чтобы задать вопрос Элли."
     },
     "errors": {
-      "default": "Something went wrong",
-      "permissionDeniedIos": "Microphone access denied. Enable in Settings > Ellie.",
-      "permissionDenied": "Microphone access denied. Please grant permission.",
-      "network": "Check your connection and retry.",
-      "recognition": "I didn't catch that. Please try again.",
-      "backend": "Service temporarily unavailable. Please try again.",
-      "rateLimited": "Please wait briefly and retry.",
-      "timeout": "Request timed out. Please retry.",
+      "default": "Что-то пошло не так",
+      "permissionDeniedIos": "Доступ к микрофону запрещен. Включите параметр «Настройки» > «Элли».",
+      "permissionDenied": "Доступ к микрофону запрещен. Пожалуйста, дайте разрешение.",
+      "network": "Проверьте соединение и повторите попытку.",
+      "recognition": "Я этого не уловил. Пожалуйста, попробуйте еще раз.",
+      "backend": "Сервис временно недоступен. Пожалуйста, попробуйте еще раз.",
+      "rateLimited": "Пожалуйста, подождите немного и повторите попытку.",
+      "timeout": "Время запроса истекло. Пожалуйста, повторите попытку.",
       "wakeWordUnavailable": "Ключевая фраза недоступна, нажмите на микрофон, чтобы говорить.",
-      "tts": "Could not play audio response."
+      "tts": "Не удалось воспроизвести аудиоответ."
     },
     "micA11y": {
-      "listening": "Stop listening. Double tap to finish speaking.",
-      "processing": "Processing your question. Please wait.",
-      "speaking": "Ellie is speaking. Double tap to stop.",
-      "error": "Error: {{message}}. Double tap to try again.",
-      "idle": "Ask Ellie a question. Double tap to start speaking."
+      "listening": "Хватит слушать. Нажмите дважды, чтобы закончить говорить.",
+      "processing": "Обработка вашего вопроса. Пожалуйста, подождите.",
+      "speaking": "Элли говорит. Нажмите дважды, чтобы остановить.",
+      "error": "Ошибка: {{message}}. Нажмите дважды, чтобы повторить попытку.",
+      "idle": "Задайте Элли вопрос. Нажмите дважды, чтобы начать говорить."
     },
-    "partialTranscriptA11y": "You are saying: {{text}}",
-    "processingInline": "Ellie is thinking...",
-    "retryHint": "Tap the mic to try again",
-    "requestRef": "Ref: {{requestId}}",
+    "partialTranscriptA11y": "Вы говорите: {{text}}",
+    "processingInline": "Элли думает...",
+    "retryHint": "Коснитесь микрофона, чтобы повторить попытку.",
+    "requestRef": "Ссылка: {{requestId}}",
     "responseBubble": {
-      "userSaidA11y": "You said: {{text}}",
-      "assistantSaidA11y": "Ellie said: {{text}}"
+      "userSaidA11y": "Вы сказали: {{text}}",
+      "assistantSaidA11y": "Элли сказала: {{text}}"
     },
     "warnings": {
       "microphonePermissionRequired": "Для Hey Ellie требуется доступ к микрофону. Нажмите на микрофон, чтобы говорить.",
@@ -161,18 +161,18 @@
     }
   },
   "tabs": {
-    "home": "Home",
-    "schedule": "Schedule",
-    "stats": "Stats",
-    "profile": "Profile",
+    "home": "Дом",
+    "schedule": "Расписание",
+    "stats": "Статистика",
+    "profile": "Профиль",
     "ellie": "Ellie",
-    "openVoiceAssistantA11y": "Open Ellie voice assistant"
+    "openVoiceAssistantA11y": "Открыть голосовой помощник Элли"
   },
   "quickActions": {
-    "settings": "Settings",
-    "alerts": "Alerts",
-    "profile": "Profile",
-    "export": "Export"
+    "settings": "Настройки",
+    "alerts": "Оповещения",
+    "profile": "Профиль",
+    "export": "Экспорт"
   },
   "notifications": {
     "shiftType": {

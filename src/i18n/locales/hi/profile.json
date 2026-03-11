@@ -127,107 +127,107 @@
     "cyclePhase": "{{phase}} - {{total}} का दिन {{day}}",
     "cycleDay": "चक्र का दिन {{day}}",
     "startDatePicker": {
-      "title": "Select Start Date",
-      "backdropCloseA11y": "Close",
-      "closeA11y": "Close date picker",
-      "previousMonthA11y": "Previous month",
-      "nextMonthA11y": "Next month",
+      "title": "आरंभ तिथि चुनें",
+      "backdropCloseA11y": "बंद करना",
+      "closeA11y": "दिनांक चयनकर्ता बंद करें",
+      "previousMonthA11y": "पिछला महीना",
+      "nextMonthA11y": "अगले महीने",
       "dayA11y": "{{day}} {{month}} {{year}}",
-      "todayTag": "today",
-      "unavailableTag": "unavailable",
-      "legendToday": "Today",
-      "legendSelected": "Selected"
+      "todayTag": "आज",
+      "unavailableTag": "अनुपलब्ध",
+      "legendToday": "आज",
+      "legendSelected": "चयनित"
     },
     "patternSelector": {
-      "title": "Select Pattern",
-      "closeA11y": "Close pattern selector",
-      "backdropCloseA11y": "Close",
-      "currentlySelected": "currently selected",
-      "cardHint": "Double tap to select this pattern",
+      "title": "पैटर्न चुनें",
+      "closeA11y": "पैटर्न चयनकर्ता बंद करें",
+      "backdropCloseA11y": "बंद करना",
+      "currentlySelected": "वर्तमान में चयनित",
+      "cardHint": "इस पैटर्न को चुनने के लिए डबल टैप करें",
       "subtitle": {
-        "fifo": "FIFO block rosters",
-        "threeShift": "3-shift (8h) rotating patterns",
-        "twoShift": "2-shift (12h) rotating patterns"
+        "fifo": "फीफो ब्लॉक रोस्टर",
+        "threeShift": "3-शिफ्ट (8 घंटे) घूर्णन पैटर्न",
+        "twoShift": "2-शिफ्ट (12 घंटे) घूर्णन पैटर्न"
       },
       "patterns": {
         "STANDARD_3_3_3": {
-          "name": "3-3-3 Rotation",
-          "subtitle": "9-day cycle"
+          "name": "3-3-3 रोटेशन",
+          "subtitle": "9 दिन का चक्र"
         },
         "STANDARD_4_4_4": {
-          "name": "4-4-4 Rotation",
-          "subtitle": "12-day cycle"
+          "name": "4-4-4 रोटेशन",
+          "subtitle": "12 दिन का चक्र"
         },
         "STANDARD_5_5_5": {
-          "name": "5-5-5 Rotation",
-          "subtitle": "15-day cycle"
+          "name": "5-5-5 रोटेशन",
+          "subtitle": "15 दिवसीय चक्र"
         },
         "STANDARD_7_7_7": {
-          "name": "7-7-7 Rotation",
-          "subtitle": "21-day cycle"
+          "name": "7-7-7 रोटेशन",
+          "subtitle": "21 दिन का चक्र"
         },
         "STANDARD_10_10_10": {
-          "name": "10-10-10 Rotation",
-          "subtitle": "30-day cycle"
+          "name": "10-10-10 रोटेशन",
+          "subtitle": "30 दिन का चक्र"
         },
         "STANDARD_2_2_3": {
-          "name": "Pitman (2-2-3)",
-          "subtitle": "7-day cycle"
+          "name": "पिटमैन (2-2-3)",
+          "subtitle": "7 दिवसीय चक्र"
         },
         "CONTINENTAL": {
-          "name": "Continental",
-          "subtitle": "10-day cycle"
+          "name": "CONTINENTAL",
+          "subtitle": "10 दिवसीय चक्र"
         },
         "PITMAN": {
-          "name": "Pitman",
-          "subtitle": "7-day cycle"
+          "name": "गड्ढे में काम करनेवाला",
+          "subtitle": "7 दिवसीय चक्र"
         },
         "CUSTOM": {
-          "name": "Custom Rotation",
-          "subtitle": "Build your own"
+          "name": "कस्टम रोटेशन",
+          "subtitle": "अपना खुद का निर्माण करें"
         },
         "FIFO_7_7": {
-          "name": "7/7 FIFO",
-          "subtitle": "14-day cycle"
+          "name": "7/7 फीफो",
+          "subtitle": "14 दिन का चक्र"
         },
         "FIFO_8_6": {
-          "name": "8/6 FIFO",
-          "subtitle": "14-day cycle"
+          "name": "8/6 फीफो",
+          "subtitle": "14 दिन का चक्र"
         },
         "FIFO_14_14": {
-          "name": "14/14 FIFO",
-          "subtitle": "28-day cycle"
+          "name": "14/14 फीफो",
+          "subtitle": "28 दिन का चक्र"
         },
         "FIFO_14_7": {
-          "name": "14/7 FIFO",
-          "subtitle": "21-day cycle"
+          "name": "14/7 फीफो",
+          "subtitle": "21 दिन का चक्र"
         },
         "FIFO_21_7": {
-          "name": "21/7 FIFO",
-          "subtitle": "28-day cycle"
+          "name": "21/7 फीफो",
+          "subtitle": "28 दिन का चक्र"
         },
         "FIFO_28_14": {
-          "name": "28/14 FIFO",
-          "subtitle": "42-day cycle"
+          "name": "28/14 फीफो",
+          "subtitle": "42 दिन का चक्र"
         },
         "FIFO_CUSTOM": {
-          "name": "Custom FIFO",
-          "subtitle": "Configure blocks"
+          "name": "कस्टम फीफो",
+          "subtitle": "ब्लॉक कॉन्फ़िगर करें"
         }
       }
     },
     "cycleResync": {
-      "title": "Re-sync Cycle",
-      "subtitleFifo": "Are you at work or home?",
-      "subtitleRotating": "Which shift phase are you on?",
-      "closeA11y": "Close",
-      "backdropCloseA11y": "Close",
-      "backToPhaseA11y": "Back to phase selection",
-      "daySubtitle": "Which day are you on?",
-      "dayA11y": "Day {{day}}",
-      "confirmA11y": "Confirm cycle position",
-      "confirm": "Confirm Position",
-      "empty": "Configure a shift pattern first to re-sync your cycle.",
+      "title": "चक्र पुनः सिंक करें",
+      "subtitleFifo": "आप ऑफिस या घर पर हैं?",
+      "subtitleRotating": "आप किस शिफ्ट चरण पर हैं?",
+      "closeA11y": "बंद करना",
+      "backdropCloseA11y": "बंद करना",
+      "backToPhaseA11y": "चरण चयन पर वापस जाएँ",
+      "daySubtitle": "आप कौन से दिन पर हैं?",
+      "dayA11y": "दिन {{day}}",
+      "confirmA11y": "चक्र स्थिति की पुष्टि करें",
+      "confirm": "स्थिति की पुष्टि करें",
+      "empty": "अपने चक्र को पुनः सिंक करने के लिए पहले एक शिफ्ट पैटर्न कॉन्फ़िगर करें।",
       "phaseLabels": {
         "day": "दिन की शिफ्ट",
         "night": "रात की शिफ्ट",
@@ -238,25 +238,25 @@
         "rest": "आराम ब्लॉक"
       },
       "dayDescriptions": {
-        "first": "First day of {{phase}}",
-        "last": "Last day of {{phase}}",
-        "midpoint": "Midpoint of {{phase}}",
-        "dayOf": "Day {{day}} of {{phase}}"
+        "first": "{{phase}} का पहला दिन",
+        "last": "{{phase}} का अंतिम दिन",
+        "midpoint": "{{phase}} का मध्यबिंदु",
+        "dayOf": "दिन {{day}} का {{phase}}"
       }
     },
     "configCard": {
-      "timesLabel": "Times",
-      "workDaysOnSite": "{{count}} days on-site",
-      "restDaysAtHome": "{{count}} days at home",
-      "empty": "No shift configuration set",
-      "footer": "Shift settings can be updated in Settings"
+      "timesLabel": "टाइम्स",
+      "workDaysOnSite": "{{count}} साइट पर दिन",
+      "restDaysAtHome": "{{count}} दिन घर पर",
+      "empty": "कोई शिफ्ट कॉन्फ़िगरेशन सेट नहीं",
+      "footer": "सेटिंग्स में शिफ्ट सेटिंग्स को अपडेट किया जा सकता है"
     },
     "profileUtils": {
-      "customFIFO": "{{workBlockDays}}/{{restBlockDays}} Custom FIFO",
-      "customRotationTwoShift": "{{daysOn}}-{{nightsOn}}-{{daysOff}} Custom Rotation",
-      "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} Custom Rotation",
-      "dayAbbrev": "D",
-      "nightAbbrev": "N"
+      "customFIFO": "{{workBlockDays}}/{{restBlockDays}} कस्टम फीफो",
+      "customRotationTwoShift": "{{daysOn}}-{{nightsOn}}-{{daysOff}} कस्टम रोटेशन",
+      "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} कस्टम रोटेशन",
+      "dayAbbrev": "डी",
+      "nightAbbrev": "एन"
     }
   }
 }
