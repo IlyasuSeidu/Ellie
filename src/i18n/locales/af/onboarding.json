@@ -26,13 +26,13 @@
   "intro": {
     "welcome": "Welkom aan Ellie! Ek is hier om jou te help om jou skofkalender op te stel. Kom ons begin deur jou 'n bietjie beter te leer ken.",
     "askName": "Wat is jou naam?",
-    "askOccupation": "Wonderlik om jou te ontmoet, {{name}}! Wat is jou beroep?",
+    "askOccupation": "Wonderlik om jou te ontmoet, {{name}}! Wat is jou rol op die terrein?",
     "askCompany": "Het dit! Vir watter maatskappy werk jy?",
     "askCountry": "Amper klaar! In watter land is jy gebaseer?",
     "allSet": "Perfek! Jy is gereed, {{name}}. Kom ons kry jou skofkalender opgestel.",
     "placeholders": {
       "name": "Voer jou naam in",
-      "occupation": "Voer jou beroep in",
+      "occupation": "bv. Kliprydertjie-operateur, Ketelmaker, Elektrisien",
       "company": "Voer maatskappy se naam in",
       "country": "Voer jou land in"
     },
@@ -68,7 +68,7 @@
       "2-shift": {
         "title": "2 skofte (12 uur)",
         "schedule": "Dag & nag",
-        "description": "Jou werkplek loop twee 12-uur skofte—een gedurende die dag, een in die nag",
+        "description": "Jou myn loop twee 12-uur skofte—een gedurende die dag, een in die nag",
         "details": {
           "workRestRatio": "12 uur aan, 12 uur af",
           "useCases": ["Mynterreine", "Olie en gas", "24/7 operasies", "Werk op afstand"],
@@ -83,10 +83,15 @@
       "3-shift": {
         "title": "3 skofte (8 uur)",
         "schedule": "Oggend, middag & nag",
-        "description": "Jou werkplek loop drie 8-uur skofte—oggend, middag en nag",
+        "description": "Jou verwerkingsaanleg loop drie 8-uur skofte—oggend, middag en nag",
         "details": {
           "workRestRatio": "8 uur aan, 16 uur af",
-          "useCases": ["Vervaardiging", "Gesondheidsorg", "Inbelsentrums", "24/7 operasies"],
+          "useCases": [
+            "Ondergrondse myne",
+            "Verwerkingsaanlegte",
+            "Myninfrastruktuur",
+            "24/7 operasies"
+          ],
           "pros": ["Korter skofte", "Meer tyd vir familie", "Makliker om wakker te bly"],
           "cons": [
             "Meer gereelde skofveranderinge",
@@ -108,7 +113,7 @@
       "reviewedSubtitle": "Het jy nie joune gesien nie? Jy kan 'n pasgemaakte een bou, of weer kyk",
       "reviewedTitle": "Dit is al {{count}} rotasies wat ons het!"
     },
-    "instruction": "Kies die rotasie wat jou werkplek gebruik—ons sal jou kalender hieruit bou\nSwiep regs om te kies, links om meer te sien, op vir inligting",
+    "instruction": "Kies die rotasie wat jou mynterrein gebruik—ons sal jou kalender hieruit bou\nSwiep regs om te kies, links om meer te sien, op vir inligting",
     "title": "Wat is jou roosterrotasie?",
     "cards": {
       "4-4-4": {
@@ -195,7 +200,7 @@
   },
   "rosterType": {
     "title": "Hoe werk jou rooster?",
-    "instruction": "Kies die roosterstyl wat jou werkplek gebruik - dit vorm jou hele skedule\nSwiep regs om te kies, links om meer te sien, op vir besonderhede",
+    "instruction": "Kies die roosterstyl wat jou mynterrein gebruik - dit vorm jou hele skedule\nSwiep regs om te kies, links om meer te sien, op vir besonderhede",
     "preparingNextStep": "Berei tans volgende stap voor...",
     "learnMore": {
       "examples": "Voorbeelde",
@@ -263,25 +268,25 @@
     "saveFailed": "Kon nie jou data stoor nie. Probeer asseblief weer.",
     "features": {
       "reminders": "Slim skof-herinneringe",
-      "remindersDesc": "Moet nooit 'n skof mis met intelligente kennisgewings wat aanpas by jou rotasie nie",
+      "remindersDesc": "Moet nooit 'n oproepe mis nie — slim herinneringe wat aanpas by jou roosterskof",
       "sleep": "Slaap dop en insigte",
       "sleepDesc": "Optimaliseer jou rus tussen skofte met gepersonaliseerde slaapanalise",
       "fatigue": "Moegheidsmonitering",
-      "fatigueDesc": "Volg jou energievlakke en kry waarskuwings wanneer die moegheidsrisiko hoog is",
+      "fatigueDesc": "Monitor moegheidsrisiko op lang skofte — krities vir ondergrondse veiligheid",
       "team": "Span koördinering",
       "teamDesc": "Sien jou bemanningskedule en koördineer oorhandigings naatloos",
       "balance": "Werk-lewe balans",
-      "balanceDesc": "Handhaaf gesonde roetines met aktiwiteit en welstand dop",
+      "balanceDesc": "Bly gesond tussen FIFO-swaai met roetine- en welstandopsporing",
       "earnings": "Verdienste sakrekenaar",
-      "earningsDesc": "Bereken outomaties oortyd, boetes en skoftoelaes",
+      "earningsDesc": "Bereken terreintoelae, FIFO-ladings en oortyd outomaties",
       "meals": "Ete & hidrasie",
-      "mealsDesc": "Bly gesond met maaltydtydvoorstelle en hidrasie-herinneringe"
+      "mealsDesc": "Bly gehidreer en brandstof deur 12-uur ondergrondse skofte"
     },
     "featureHint": "Tik 'n kenmerkskyfie om meer besonderhede te sien.",
     "featuresTitle": "Wat jy met Ellie kan doen",
     "getStartedA11yHint": "Tik om die toepassing te begin gebruik",
     "getStartedA11yLabel": "Begin met Ellie",
-    "loading": "Stel tans jou kalender op...",
+    "loading": "Bou jou roosterskalender...",
     "retryA11yHint": "Tik om weer te probeer om jou data te stoor",
     "retryA11yLabel": "Probeer weer om jou data te stoor",
     "subtitle": "Welkom aan Ellie",

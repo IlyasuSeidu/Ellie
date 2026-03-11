@@ -26,13 +26,13 @@
   "intro": {
     "welcome": "Selamat datang di Ellie! Saya di sini untuk membantu Anda mengatur kalender shift Anda. Mari kita mulai dengan mengenal Anda lebih baik.",
     "askName": "Siapa namamu?",
-    "askOccupation": "Senang bertemu dengan Anda, {{name}}! Apa pekerjaanmu?",
+    "askOccupation": "Senang bertemu dengan Anda, {{name}}! Apa peran Anda di lokasi?",
     "askCompany": "Mengerti! Di perusahaan mana Anda bekerja?",
     "askCountry": "Hampir selesai! Di negara mana Anda tinggal?",
     "allSet": "Sempurna! Anda sudah siap, {{name}}. Mari konfigurasikan kalender shift Anda.",
     "placeholders": {
       "name": "Masukkan nama Anda",
-      "occupation": "Masukkan pekerjaan Anda",
+      "occupation": "mis. Operator truk, Juru las, Teknisi listrik",
       "company": "Masukkan nama perusahaan",
       "country": "Masukkan negara Anda"
     },
@@ -68,7 +68,7 @@
       "2-shift": {
         "title": "2 Shift (12 jam)",
         "schedule": "Siang & malam",
-        "description": "Tempat kerja Anda menjalankan dua shift masing-masing 12 jam—satu di siang hari, satu lagi di malam hari",
+        "description": "Tambang Anda menjalankan dua shift masing-masing 12 jam—satu di siang hari, satu lagi di malam hari",
         "details": {
           "workRestRatio": "12 jam aktif, 12 jam libur",
           "useCases": ["Situs penambangan", "Minyak & gas", "Operasi 24/7", "Pekerjaan jarak jauh"],
@@ -87,10 +87,15 @@
       "3-shift": {
         "title": "3 Shift (8 jam)",
         "schedule": "Pagi, siang & malam",
-        "description": "Tempat kerja Anda menjalankan tiga shift masing-masing 8 jam—pagi, siang, dan malam",
+        "description": "Pabrik pengolahan Anda menjalankan tiga shift masing-masing 8 jam—pagi, siang, dan malam",
         "details": {
           "workRestRatio": "8 jam aktif, 16 jam nonaktif",
-          "useCases": ["Manufaktur", "Kesehatan", "Pusat panggilan", "Operasi 24/7"],
+          "useCases": [
+            "Tambang bawah tanah",
+            "Pabrik pengolahan",
+            "Infrastruktur tambang",
+            "Operasi 24/7"
+          ],
           "pros": [
             "Pergeseran yang lebih pendek",
             "Lebih banyak waktu untuk keluarga",
@@ -116,7 +121,7 @@
       "reviewedSubtitle": "Tidak melihat milikmu? Anda dapat membuat yang khusus, atau melihat lagi",
       "reviewedTitle": "Itu saja {{count}} rotasi yang kami punya!"
     },
-    "instruction": "Pilih rotasi yang digunakan di tempat kerja Anda—kami akan membuat kalender Anda dari ini\nGeser ke kanan untuk memilih, ke kiri untuk melihat lebih lanjut, ke atas untuk info",
+    "instruction": "Pilih rotasi yang digunakan di lokasi tambang Anda—kami akan membuat kalender Anda dari ini\nGeser ke kanan untuk memilih, ke kiri untuk melihat lebih lanjut, ke atas untuk info",
     "title": "Bagaimana Rotasi Rostermu?",
     "cards": {
       "4-4-4": {
@@ -203,7 +208,7 @@
   },
   "rosterType": {
     "title": "Bagaimana Cara Kerja Daftar Anda?",
-    "instruction": "Pilih gaya daftar nama yang digunakan di tempat kerja Anda — ini akan membentuk keseluruhan jadwal Anda\nGeser ke kanan untuk memilih, ke kiri untuk melihat selengkapnya, ke atas untuk mengetahui detailnya",
+    "instruction": "Pilih gaya daftar nama yang digunakan di lokasi tambang Anda — ini akan membentuk keseluruhan jadwal Anda\nGeser ke kanan untuk memilih, ke kiri untuk melihat selengkapnya, ke atas untuk mengetahui detailnya",
     "preparingNextStep": "Mempersiapkan langkah selanjutnya...",
     "learnMore": {
       "examples": "Contoh",
@@ -277,25 +282,25 @@
     "saveFailed": "Gagal menyimpan data Anda. Silakan coba lagi.",
     "features": {
       "reminders": "Pengingat shift cerdas",
-      "remindersDesc": "Jangan pernah melewatkan shift dengan notifikasi cerdas yang menyesuaikan dengan rotasi Anda",
+      "remindersDesc": "Jangan pernah melewatkan panggilan kerja — pengingat cerdas yang menyesuaikan dengan swing roster Anda",
       "sleep": "Pelacakan & wawasan tidur",
       "sleepDesc": "Optimalkan istirahat Anda di antara giliran kerja dengan analisis tidur yang dipersonalisasi",
       "fatigue": "Pemantauan kelelahan",
-      "fatigueDesc": "Lacak tingkat energi Anda dan dapatkan peringatan ketika risiko kelelahan tinggi",
+      "fatigueDesc": "Pantau risiko kelelahan pada shift panjang — kritis untuk keselamatan bawah tanah",
       "team": "Koordinasi tim",
       "teamDesc": "Lihat jadwal kru Anda dan koordinasikan serah terima dengan lancar",
       "balance": "Keseimbangan kehidupan kerja",
-      "balanceDesc": "Pertahankan rutinitas yang sehat dengan pelacakan aktivitas dan kesehatan",
+      "balanceDesc": "Tetap sehat di antara swing FIFO dengan pelacakan rutinitas dan kesehatan",
       "earnings": "Kalkulator penghasilan",
-      "earningsDesc": "Secara otomatis menghitung lembur, penalti, dan tunjangan shift",
+      "earningsDesc": "Hitung tunjangan lokasi, muatan FIFO, dan lembur secara otomatis",
       "meals": "Makanan & hidrasi",
-      "mealsDesc": "Tetap sehat dengan saran waktu makan dan pengingat hidrasi"
+      "mealsDesc": "Tetap terhidrasi dan berenergi selama shift bawah tanah 12 jam"
     },
     "featureHint": "Ketuk chip fitur untuk melihat detail selengkapnya.",
     "featuresTitle": "Apa yang dapat kamu lakukan dengan Ellie",
     "getStartedA11yHint": "Ketuk untuk mulai menggunakan aplikasi",
     "getStartedA11yLabel": "Mulailah dengan Ellie",
-    "loading": "Menyiapkan kalender Anda...",
+    "loading": "Membuat kalender roster Anda...",
     "retryA11yHint": "Ketuk untuk mencoba menyimpan data Anda lagi",
     "retryA11yLabel": "Coba lagi simpan data Anda",
     "subtitle": "Selamat datang di Ellie",

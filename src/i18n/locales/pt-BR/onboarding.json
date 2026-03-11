@@ -26,13 +26,13 @@
   "intro": {
     "welcome": "Bem-vindo ao Ellie! Estou aqui para ajudar a configurar seu calendario de turnos. Vamos comecar com seus dados.",
     "askName": "Qual e o seu nome?",
-    "askOccupation": "Prazer em conhecer voce, {{name}}! Qual e a sua ocupacao?",
+    "askOccupation": "Prazer em conhecer voce, {{name}}! Qual e a sua funcao no site?",
     "askCompany": "Perfeito! Em qual empresa voce trabalha?",
     "askCountry": "Quase pronto! Em qual pais voce esta?",
     "allSet": "Perfeito! Tudo pronto, {{name}}. Vamos configurar seu calendario de turnos.",
     "placeholders": {
       "name": "Digite seu nome",
-      "occupation": "Digite sua ocupacao",
+      "occupation": "ex. Operador de caminhão, Caldeireiro, Eletricista",
       "company": "Digite a empresa",
       "country": "Digite seu pais"
     },
@@ -68,7 +68,7 @@
       "2-shift": {
         "title": "2 turnos (12 horas)",
         "schedule": "Dia e noite",
-        "description": "Seu local de trabalho funciona em dois turnos de 12 horas – um durante o dia e outro à noite",
+        "description": "Sua mina funciona em dois turnos de 12 horas – um durante o dia e outro à noite",
         "details": {
           "workRestRatio": "12 horas ligado, 12 horas desligado",
           "useCases": [
@@ -92,14 +92,14 @@
       "3-shift": {
         "title": "3 turnos (8 horas)",
         "schedule": "Manhã, tarde e noite",
-        "description": "Seu local de trabalho funciona em três turnos de 8 horas – manhã, tarde e noite",
+        "description": "Sua planta de processamento funciona em três turnos de 8 horas – manhã, tarde e noite",
         "details": {
           "workRestRatio": "8 horas ligado, 16 horas desligado",
           "useCases": [
-            "Fabricação",
-            "Assistência médica",
-            "Centrais de atendimento",
-            "Operações 24 horas por dia, 7 dias por semana"
+            "Minas subterrâneas",
+            "Plantas de processamento",
+            "Infraestrutura de mineração",
+            "Operações 24/7"
           ],
           "pros": ["Turnos mais curtos", "Mais tempo para a família", "Mais fácil de ficar alerta"],
           "cons": [
@@ -122,7 +122,7 @@
       "reviewedSubtitle": "Não viu o seu? Você pode construir um personalizado ou dar uma outra olhada",
       "reviewedTitle": "Essas são todas as rotações {{count}} que temos!"
     },
-    "instruction": "Escolha o rodízio que seu local de trabalho usa. Criaremos seu calendário a partir dele\nDeslize para a direita para escolher, para a esquerda para ver mais, para cima para obter informações",
+    "instruction": "Escolha o rodízio que seu site de mineração usa. Criaremos seu calendário a partir dele\nDeslize para a direita para escolher, para a esquerda para ver mais, para cima para obter informações",
     "title": "Qual é a rotação da sua lista?",
     "cards": {
       "4-4-4": {
@@ -211,25 +211,25 @@
     "saveFailed": "Falha ao salvar seus dados. Tente novamente.",
     "features": {
       "reminders": "Lembretes inteligentes",
-      "remindersDesc": "Nao perca nenhum turno com notificacoes que se adaptam a sua rotacao",
+      "remindersDesc": "Nunca perca um chamado — lembretes inteligentes que se adaptam ao swing do seu turno",
       "sleep": "Rastreamento de sono",
       "sleepDesc": "Otimize seu descanso entre turnos com analises personalizadas",
       "fatigue": "Monitoramento de fadiga",
-      "fatigueDesc": "Acompanhe sua energia e receba alertas quando o risco aumentar",
+      "fatigueDesc": "Monitore o risco de fadiga em turnos longos — crítico para segurança subterrânea",
       "team": "Coordenacao de equipe",
       "teamDesc": "Veja a escala da equipe e coordene passagens de turno",
       "balance": "Equilibrio trabalho vida",
-      "balanceDesc": "Mantenha rotinas saudaveis com acompanhamento de bem estar",
+      "balanceDesc": "Mantenha a saúde entre swings FIFO com acompanhamento de rotina e bem-estar",
       "earnings": "Calculadora de ganhos",
-      "earningsDesc": "Calcule horas extras e adicionais automaticamente",
+      "earningsDesc": "Calcule adições do site, cargas FIFO e horas extras automaticamente",
       "meals": "Refeicoes e hidratacao",
-      "mealsDesc": "Mantenha saude com sugestoes de refeicao e hidratacao"
+      "mealsDesc": "Fique hidratado e com energia durante turnos subterrâneos de 12 horas"
     },
     "featureHint": "Toque em um ícone de recurso para ver mais detalhes.",
     "featuresTitle": "O que você pode fazer com Ellie",
     "getStartedA11yHint": "Toque para começar a usar o aplicativo",
     "getStartedA11yLabel": "Comece com Ellie",
-    "loading": "Configurando seu calendário...",
+    "loading": "Construindo seu calendário de turnos...",
     "retryA11yHint": "Toque para tentar salvar seus dados novamente",
     "retryA11yLabel": "Tente salvar seus dados novamente",
     "subtitle": "Bem vindo a Ellie",
@@ -273,7 +273,7 @@
   },
   "rosterType": {
     "title": "Como funciona sua lista?",
-    "instruction": "Escolha o estilo de lista que seu local de trabalho usa – isso molda toda a sua programação\nDeslize para a direita para escolher, para a esquerda para ver mais, para cima para ver detalhes",
+    "instruction": "Escolha o estilo de lista que seu site de mineração usa – isso molda toda a sua programação\nDeslize para a direita para escolher, para a esquerda para ver mais, para cima para ver detalhes",
     "preparingNextStep": "Preparando o próximo passo...",
     "learnMore": {
       "examples": "Exemplos",

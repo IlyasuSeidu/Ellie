@@ -26,13 +26,13 @@
   "intro": {
     "welcome": "Bienvenue à Ellie ! Je suis là pour vous aider à établir votre calendrier de travail. Commençons par mieux vous connaître.",
     "askName": "Quel est ton nom?",
-    "askOccupation": "Ravi de vous rencontrer, {{name}} ! Quelle est votre profession?",
+    "askOccupation": "Ravi de vous rencontrer, {{name}} ! Quel est votre rôle sur site ?",
     "askCompany": "J'ai compris! Pour quelle entreprise travaillez-vous ?",
     "askCountry": "Presque terminé ! Dans quel pays êtes-vous basé ?",
     "allSet": "Parfait! Vous êtes prêt, {{name}}. Configureons votre calendrier de travail.",
     "placeholders": {
       "name": "Entrez votre nom",
-      "occupation": "Entrez votre profession",
+      "occupation": "p.ex. Conducteur de camion, Chaudronnier, Électricien",
       "company": "Entrez le nom de l'entreprise",
       "country": "Entrez votre pays"
     },
@@ -68,7 +68,7 @@
       "2-shift": {
         "title": "2 équipes (12 heures)",
         "schedule": "Jour et nuit",
-        "description": "Votre lieu de travail comporte deux équipes de 12 heures : une de jour et une de nuit.",
+        "description": "Votre mine comporte deux équipes de 12 heures : une de jour et une de nuit.",
         "details": {
           "workRestRatio": "12 heures allumées, 12 heures éteintes",
           "useCases": [
@@ -92,13 +92,13 @@
       "3-shift": {
         "title": "3 équipes (8 heures)",
         "schedule": "Matin, après-midi et soir",
-        "description": "Votre lieu de travail fonctionne sur trois équipes de 8 heures : matin, après-midi et nuit.",
+        "description": "Votre usine de traitement fonctionne sur trois équipes de 8 heures : matin, après-midi et nuit.",
         "details": {
           "workRestRatio": "8 heures allumées, 16 heures éteintes",
           "useCases": [
-            "Fabrication",
-            "Soins de santé",
-            "Centres d'appels",
+            "Mines souterraines",
+            "Usines de traitement",
+            "Infrastructure minière",
             "Opérations 24h/24 et 7j/7"
           ],
           "pros": [
@@ -126,7 +126,7 @@
       "reviewedSubtitle": "Vous n'avez pas vu le vôtre ? Vous pouvez en créer un personnalisé ou y jeter un autre coup d'œil.",
       "reviewedTitle": "C'est tout ce que nous avons pour {{count}} rotations !"
     },
-    "instruction": "Choisissez la rotation utilisée par votre lieu de travail : nous construirons votre calendrier à partir de cela\nFaites glisser votre doigt vers la droite pour choisir, vers la gauche pour en voir plus, vers le haut pour plus d'informations",
+    "instruction": "Choisissez la rotation utilisée par votre site minier : nous construirons votre calendrier à partir de cela\nFaites glisser votre doigt vers la droite pour choisir, vers la gauche pour en voir plus, vers le haut pour plus d'informations",
     "title": "Quelle est la rotation de votre équipe ?",
     "cards": {
       "4-4-4": {
@@ -213,7 +213,7 @@
   },
   "rosterType": {
     "title": "Comment fonctionne votre liste ?",
-    "instruction": "Choisissez le style de liste utilisé par votre lieu de travail – cela façonne l’ensemble de votre emploi du temps\nFaites glisser votre doigt vers la droite pour choisir, vers la gauche pour en voir plus, vers le haut pour plus de détails",
+    "instruction": "Choisissez le style de liste utilisé par votre site minier – cela façonne l'ensemble de votre emploi du temps\nFaites glisser votre doigt vers la droite pour choisir, vers la gauche pour en voir plus, vers le haut pour plus de détails",
     "preparingNextStep": "Préparation de la prochaine étape...",
     "learnMore": {
       "examples": "Exemples",
@@ -291,25 +291,25 @@
     "saveFailed": "Échec de l'enregistrement de vos données. Veuillez réessayer.",
     "features": {
       "reminders": "Rappels de quarts de travail intelligents",
-      "remindersDesc": "Ne manquez jamais un quart de travail grâce aux notifications intelligentes qui s'adaptent à votre rotation",
+      "remindersDesc": "Ne manquez jamais un appel — rappels intelligents qui s'adaptent à votre swing de rotation",
       "sleep": "Suivi et informations sur le sommeil",
       "sleepDesc": "Optimisez votre repos entre les quarts de travail grâce à des analyses personnalisées du sommeil",
       "fatigue": "Surveillance de la fatigue",
-      "fatigueDesc": "Suivez votre niveau d'énergie et recevez des alertes lorsque le risque de fatigue est élevé",
+      "fatigueDesc": "Surveillez le risque de fatigue sur les longs quarts — essentiel pour la sécurité souterraine",
       "team": "Coordination d'équipe",
       "teamDesc": "Consultez le calendrier de votre équipe et coordonnez les transferts en toute transparence",
       "balance": "Équilibre travail-vie personnelle",
-      "balanceDesc": "Maintenez des routines saines grâce au suivi de l'activité et du bien-être",
+      "balanceDesc": "Restez en bonne santé entre les swings FIFO avec le suivi de la routine et du bien-être",
       "earnings": "Calculateur de gains",
-      "earningsDesc": "Calculez automatiquement les heures supplémentaires, les pénalités et les indemnités de poste",
+      "earningsDesc": "Calculez automatiquement les allocations de site, les chargements FIFO et les heures supplémentaires",
       "meals": "Repas & hydratation",
-      "mealsDesc": "Restez en bonne santé grâce à des suggestions d'horaires de repas et des rappels d'hydratation"
+      "mealsDesc": "Restez hydraté et alimenté lors de quarts souterrains de 12 heures"
     },
     "featureHint": "Appuyez sur une puce de fonctionnalité pour voir plus de détails.",
     "featuresTitle": "Ce que vous pouvez faire avec Ellie",
     "getStartedA11yHint": "Appuyez pour commencer à utiliser l'application",
     "getStartedA11yLabel": "Commencez avec Ellie",
-    "loading": "Configurer votre calendrier...",
+    "loading": "Construction de votre calendrier de roulement...",
     "retryA11yHint": "Appuyez pour réessayer de sauvegarder vos données",
     "retryA11yLabel": "Réessayez de sauvegarder vos données",
     "subtitle": "Bienvenue à Ellie",

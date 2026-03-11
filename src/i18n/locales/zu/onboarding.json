@@ -26,13 +26,13 @@
   "intro": {
     "welcome": "Siyakwamukela ku-Ellie! Ngilapha ukuze ngikusize uhlele ikhalenda lakho leshifu. Ake siqale ngokukwazi kangcono.",
     "askName": "Ubani igama lakho?",
-    "askOccupation": "Kuhle ukuhlangana nawe, {{name}}! Wenza muphi umsebenzi?",
+    "askOccupation": "Kuhle ukuhlangana nawe, {{name}}! Yini indima yakho eceleni?",
     "askCompany": "Ngiyitholile! Iyiphi inkampani oyisebenzelayo?",
     "askCountry": "Sengiyaqeda! Uzinze kuliphi izwe?",
     "allSet": "Iphelele! Usulungile, {{name}}. Masilungise ikhalenda lakho leshifu.",
     "placeholders": {
       "name": "Faka igama lakho",
-      "occupation": "Faka umsebenzi wakho",
+      "occupation": "isb. Ummeli we-haul truck, Boilermaker, Ugesi",
       "company": "Faka igama lenkampani",
       "country": "Faka izwe lakini"
     },
@@ -68,7 +68,7 @@
       "2-shift": {
         "title": "2 Amashifu (amahora ayi-12)",
         "schedule": "Imini nobusuku",
-        "description": "Indawo yakho yokusebenzela inamashifu amabili amahora ayi-12—eyodwa emini, enye ebusuku",
+        "description": "Imigodi yakho isebenza ngamashifu amabili amahora ayi-12—eyodwa emini, enye ebusuku",
         "details": {
           "workRestRatio": "Amahora angu-12, amahora angu-12 ekhefu",
           "useCases": [
@@ -92,13 +92,13 @@
       "3-shift": {
         "title": "3 Amashifu (amahora angu-8)",
         "schedule": "Ekuseni, ntambama nasebusuku",
-        "description": "Indawo yakho yokusebenza isebenza ngamashifu amathathu wamahora angu-8—ekuseni, ntambama nasebusuku",
+        "description": "Indawo yakho yokucubungula isebenza ngamashifu amathathu wamahora angu-8—ekuseni, ntambama nasebusuku",
         "details": {
           "workRestRatio": "Amahora angu-8, amahora angu-16",
           "useCases": [
-            "Ukukhiqiza",
-            "Ukunakekela impilo",
-            "Izikhungo zezingcingo",
+            "Imigodi engaphansi komhlaba",
+            "Izindawo zokucubungula",
+            "Ingqalasizinda yemigodi",
             "24/7 ukusebenza"
           ],
           "pros": [
@@ -126,7 +126,7 @@
       "reviewedSubtitle": "Awuzange uyibone eyakho? Ungakha engokwezifiso, noma ubheke okunye",
       "reviewedTitle": "Yilokho kuphela {{count}} ukuzungezisa esinakho!"
     },
-    "instruction": "Khetha ukuzungezisa okusetshenziswa indawo yakho yokusebenza—sizokwakha ikhalenda lakho kulokhu\nSwayiphela kwesokudla ukuze ukhethe, kwesokunxele ukuze ubone okwengeziwe, ukuze uthole ulwazi",
+    "instruction": "Khetha ukuzungezisa okusetshenziswa esikhundleni sakho semigodi—sizokwakha ikhalenda lakho kulokhu\nSwayiphela kwesokudla ukuze ukhethe, kwesokunxele ukuze ubone okwengeziwe, ukuze uthole ulwazi",
     "title": "Kuyini Ukuzungeziswa Kohlelo lwakho?",
     "cards": {
       "4-4-4": {
@@ -213,7 +213,7 @@
   },
   "rosterType": {
     "title": "Lusebenza Kanjani Uhlu Lwakho?",
-    "instruction": "Khetha isitayela sohlelo olusetshenziswa indawo yakho yokusebenza - lokhu kulolonga uhlelo lwakho lonke\nSwayiphela kwesokudla ukuze ukhethe, kwesokunxele ukuze ubone okwengeziwe, ukuze uthole imininingwane",
+    "instruction": "Khetha isitayela sohlelo olusetshenziswa esikhundleni sakho semigodi - lokhu kulolonga uhlelo lwakho lonke\nSwayiphela kwesokudla ukuze ukhethe, kwesokunxele ukuze ubone okwengeziwe, ukuze uthole imininingwane",
     "preparingNextStep": "Ilungiselela isinyathelo esilandelayo...",
     "learnMore": {
       "examples": "Izibonelo",
@@ -287,25 +287,25 @@
     "saveFailed": "Yehlulekile ukulondoloza idatha yakho. Sicela uzame futhi.",
     "features": {
       "reminders": "Izikhumbuzi ze-smart shift",
-      "remindersDesc": "Ungalokothi uphuthelwe ukushintsha ngezaziso ezihlakaniphile ezijwayela ukuzungezisa kwakho",
+      "remindersDesc": "Ungalokothi uphuthelwe ukubizwa — izikhumbuzi ezihlakaniphile ezijwayelana ne-roster swing yakho",
       "sleep": "Ukulandelela ukulala nemininingwane",
       "sleepDesc": "Lungiselela ukuphumula kwakho phakathi kwamashifu ngezibalo zokulala eziqondene nawe",
       "fatigue": "Ukuqapha ukukhathala",
-      "fatigueDesc": "Landelela amazinga akho wamandla futhi uthole izexwayiso uma ingozi yokukhathala iphezulu",
+      "fatigueDesc": "Qaphela ingozi yokukhathala kumashifu amade — kubalulekile kuphepha engaphansi komhlaba",
       "team": "Ukuxhumana kweqembu",
       "teamDesc": "Bona ishejuli yeqembu lakho futhi uhlanganise ukunikezela kalula",
       "balance": "Ibhalansi yokuphila komsebenzi",
-      "balanceDesc": "Gcina imizila enempilo ngomsebenzi kanye nokulandelela ukuphila kahle",
+      "balanceDesc": "Hlala unempilo phakathi kwama-FIFO swings nge-routine ne-wellness tracking",
       "earnings": "Isibali samaholo",
-      "earningsDesc": "Bala ngokuzenzakalelayo isikhathi esengeziwe, izinhlawulo, nezibonelelo zamashifu",
+      "earningsDesc": "Bala izibonelelo zesite, i-FIFO loadings, nokungeziwe ngokuzenzakalelayo",
       "meals": "Ukudla & hydration",
-      "mealsDesc": "Hlala unempilo ngeziphakamiso zesikhathi sokudla nezikhumbuzi ze-hydration"
+      "mealsDesc": "Hlala ugcwele amanzi nonamandla ngamashifu amahora ayi-12 engaphansi komhlaba"
     },
     "featureHint": "Thepha i-chip yesici ukuze ubone imininingwane eyengeziwe.",
     "featuresTitle": "Ongakwenza ngo-Ellie",
     "getStartedA11yHint": "Thepha ukuze uqale ukusebenzisa uhlelo lokusebenza",
     "getStartedA11yLabel": "Qala ngo-Ellie",
-    "loading": "Isetha ikhalenda yakho...",
+    "loading": "Yakha ikhalenda lika-roster wakho...",
     "retryA11yHint": "Thepha ukuze uzame ukulondoloza idatha yakho futhi",
     "retryA11yLabel": "Zama futhi ukulondoloza idatha yakho",
     "subtitle": "Siyakwamukela ku-Ellie",
