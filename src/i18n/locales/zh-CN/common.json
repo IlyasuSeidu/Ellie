@@ -21,7 +21,13 @@
     "message": "选择你的头像",
     "chooseFromLibrary": "从库中选择",
     "takePhoto": "拍照",
-    "removePhoto": "删除照片"
+    "removePhoto": "删除照片",
+    "permissions": {
+      "photoLibraryTitle": "相册权限",
+      "photoLibraryMessage": "请在设备设置中开启相册访问权限，以便选择头像照片。",
+      "cameraTitle": "相机权限",
+      "cameraMessage": "请在设备设置中开启相机访问权限，以便拍摄头像照片。"
+    }
   },
   "language": {
     "label": "语言",
@@ -41,5 +47,8 @@
       "zu": "isiZulu",
       "id": "Bahasa Indonesia"
     }
+  },
+  "accessibility": {
+    "toggle": "切换开关"
   }
 }

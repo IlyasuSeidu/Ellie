@@ -21,7 +21,13 @@
     "message": "Выберите свой аватар",
     "chooseFromLibrary": "Выбрать из библиотеки",
     "takePhoto": "Сфотографироваться",
-    "removePhoto": "Удалить фото"
+    "removePhoto": "Удалить фото",
+    "permissions": {
+      "photoLibraryTitle": "Доступ к фото",
+      "photoLibraryMessage": "Пожалуйста, включите доступ к фотогалерее в настройках устройства, чтобы выбрать фото профиля.",
+      "cameraTitle": "Доступ к камере",
+      "cameraMessage": "Пожалуйста, включите доступ к камере в настройках устройства, чтобы сделать фото профиля."
+    }
   },
   "language": {
     "label": "Язык",
@@ -41,5 +47,8 @@
       "zu": "isiZulu",
       "id": "Bahasa Indonesia"
     }
+  },
+  "accessibility": {
+    "toggle": "Переключатель"
   }
 }

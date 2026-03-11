@@ -71,7 +71,22 @@
     "legendRestBlock": "Phumula Block",
     "cycle": "umjikelezo",
     "previousMonth": "Inyanga edlule",
-    "nextMonth": "Inyanga ezayo"
+    "nextMonth": "Inyanga ezayo",
+    "accessibility": {
+      "dayLabel": "Usuku {{day}}{{todayText}}{{shiftText}}",
+      "todaySuffix": ", Namuhla",
+      "blockSuffix": ", ibhulokhi ye-{{blockName}}",
+      "shiftSuffix": ", {{shiftName}}",
+      "workBlockName": "umsebenzi",
+      "homeBlockName": "ekhaya",
+      "shiftNames": {
+        "day": "i-day shift",
+        "night": "i-night shift",
+        "morning": "i-morning shift",
+        "afternoon": "i-afternoon shift",
+        "off": "usuku lokuphumula"
+      }
+    }
   },
   "badges": {
     "active": "OKUSEBENZA"
@@ -133,6 +148,16 @@
     "warnings": {
       "microphonePermissionRequired": "Imvume yemakrofoni iyadingeka ku-Hey Ellie. Thepha imakrofoni ukuze ukhulume.",
       "wakeWordUnavailableTapToTalk": "Igama lokuvusa alitholakali, thepha imakrofoni ukuze ukhulume."
+    },
+    "offlineFallback": {
+      "workingTodayYes": "Yebo, namuhla use-{{shiftType}}.",
+      "workingTodayNo": "Cha, namuhla usuku lwakho lokuphumula.",
+      "shiftTodayWork": "Namuhla une-{{shiftType}}, {{userName}}.",
+      "shiftTodayOff": "Namuhla uphumule, {{userName}}! Phumula futhi uvuselele amandla.",
+      "shiftTomorrowWork": "Kusasa ({{date}}) une-{{shiftType}}.",
+      "shiftTomorrowOff": "Kusasa ({{date}}) usuku lwakho lokuphumula!",
+      "nextDayOff": "Usuku lwakho olulandelayo lokuphumula ngu-{{date}}.",
+      "nextNightShift": "Ishifu yakho yasebusuku elandelayo ngu-{{date}}."
     }
   },
   "tabs": {
@@ -148,5 +173,25 @@
     "alerts": "Alerts",
     "profile": "Profile",
     "export": "Export"
+  },
+  "notifications": {
+    "shiftType": {
+      "day": "ishifu lasemini",
+      "night": "ishifu yasebusuku"
+    },
+    "shiftCalloutTitle": {
+      "day": "Isaziso se-Day Shift",
+      "night": "Isaziso se-Night Shift"
+    },
+    "shiftBody": {
+      "tomorrow": "I-{{shiftType}} yakho iqala kusasa ({{date}})",
+      "inHours": "I-{{shiftType}} yakho iqala emahoreni angu-{{hoursBefore}}"
+    },
+    "holiday": {
+      "title": "Iholide elizayo",
+      "today": "Namuhla yi-{{holidayName}}!",
+      "tomorrow": "Kusasa yi-{{holidayName}}",
+      "inDays": "{{holidayName}} isezinsukwini ezi-{{daysBefore}} ({{holidayDate}})"
+    }
   }
 }

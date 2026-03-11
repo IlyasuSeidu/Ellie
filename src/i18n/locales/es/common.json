@@ -21,7 +21,13 @@
     "message": "Elige tu avatar",
     "chooseFromLibrary": "Elegir de galeria",
     "takePhoto": "Tomar foto",
-    "removePhoto": "Eliminar foto"
+    "removePhoto": "Eliminar foto",
+    "permissions": {
+      "photoLibraryTitle": "Permiso de fotos",
+      "photoLibraryMessage": "Activa el acceso a la fototeca en la configuración de tu dispositivo para elegir una foto de perfil.",
+      "cameraTitle": "Permiso de cámara",
+      "cameraMessage": "Activa el acceso a la cámara en la configuración de tu dispositivo para tomar una foto de perfil."
+    }
   },
   "language": {
     "label": "Idioma",
@@ -41,5 +47,8 @@
       "zu": "isiZulu",
       "id": "Bahasa Indonesia"
     }
+  },
+  "accessibility": {
+    "toggle": "Interruptor"
   }
 }

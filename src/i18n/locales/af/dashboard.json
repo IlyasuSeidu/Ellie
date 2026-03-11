@@ -71,7 +71,22 @@
     "legendRestBlock": "Rusblok",
     "cycle": "siklus",
     "previousMonth": "Vorige maand",
-    "nextMonth": "Volgende maand"
+    "nextMonth": "Volgende maand",
+    "accessibility": {
+      "dayLabel": "Dag {{day}}{{todayText}}{{shiftText}}",
+      "todaySuffix": ", Vandag",
+      "blockSuffix": ", {{blockName}}-blok",
+      "shiftSuffix": ", {{shiftName}}",
+      "workBlockName": "werk",
+      "homeBlockName": "huis",
+      "shiftNames": {
+        "day": "dagskof",
+        "night": "nagskof",
+        "morning": "oggendskof",
+        "afternoon": "middagskof",
+        "off": "afdag"
+      }
+    }
   },
   "badges": {
     "active": "AKTIEF"
@@ -133,6 +148,16 @@
     "warnings": {
       "microphonePermissionRequired": "Mikrofoontoestemming word vir Hey Ellie vereis. Tik die mikrofoon om te praat.",
       "wakeWordUnavailableTapToTalk": "Wekwoord onbeskikbaar, tik die mikrofoon om te praat."
+    },
+    "offlineFallback": {
+      "workingTodayYes": "Ja, jy is vandag op {{shiftType}}.",
+      "workingTodayNo": "Nee, vandag is jou afdag.",
+      "shiftTodayWork": "Jy het vandag ’n {{shiftType}}, {{userName}}.",
+      "shiftTodayOff": "Jy is vandag af, {{userName}}! Rus en herlaai.",
+      "shiftTomorrowWork": "Môre ({{date}}) het jy ’n {{shiftType}}.",
+      "shiftTomorrowOff": "Môre ({{date}}) is jou afdag!",
+      "nextDayOff": "Jou volgende afdag is {{date}}.",
+      "nextNightShift": "Jou volgende nagskof is {{date}}."
     }
   },
   "tabs": {
@@ -148,5 +173,25 @@
     "alerts": "Alerts",
     "profile": "Profile",
     "export": "Export"
+  },
+  "notifications": {
+    "shiftType": {
+      "day": "dagskof",
+      "night": "nagskof"
+    },
+    "shiftCalloutTitle": {
+      "day": "Dagskof kennisgewing",
+      "night": "Nagskof kennisgewing"
+    },
+    "shiftBody": {
+      "tomorrow": "Jou {{shiftType}} begin môre ({{date}})",
+      "inHours": "Jou {{shiftType}} begin oor {{hoursBefore}} ure"
+    },
+    "holiday": {
+      "title": "Opkomende vakansiedag",
+      "today": "Vandag is {{holidayName}}!",
+      "tomorrow": "Môre is {{holidayName}}",
+      "inDays": "{{holidayName}} is oor {{daysBefore}} dae ({{holidayDate}})"
+    }
   }
 }

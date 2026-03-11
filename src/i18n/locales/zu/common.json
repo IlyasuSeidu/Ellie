@@ -21,7 +21,13 @@
     "message": "Khetha isithombe sakho",
     "chooseFromLibrary": "Khetha kokuthi Ilabhulali",
     "takePhoto": "Thatha Isithombe",
-    "removePhoto": "Susa Isithombe"
+    "removePhoto": "Susa Isithombe",
+    "permissions": {
+      "photoLibraryTitle": "Imvume ye-Photo Library",
+      "photoLibraryMessage": "Sicela uvule ukufinyelela ku-Photo Library kuzilungiselelo zedivayisi yakho ukuze ukhethe isithombe sephrofayela.",
+      "cameraTitle": "Imvume yekhamera",
+      "cameraMessage": "Sicela uvule ukufinyelela kukhamera kuzilungiselelo zedivayisi yakho ukuze uthathe isithombe sephrofayela."
+    }
   },
   "language": {
     "label": "Ulimi",
@@ -41,5 +47,8 @@
       "zu": "isiZulu",
       "id": "Bahasa Indonesia"
     }
+  },
+  "accessibility": {
+    "toggle": "Shintsha"
   }
 }

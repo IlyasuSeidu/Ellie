@@ -21,7 +21,13 @@
     "message": "अपना अवतार चुनें",
     "chooseFromLibrary": "लाइब्रेरी से चुनें",
     "takePhoto": "फोटो लो",
-    "removePhoto": "फ़ोटो हटाएँ"
+    "removePhoto": "फ़ोटो हटाएँ",
+    "permissions": {
+      "photoLibraryTitle": "फोटो लाइब्रेरी अनुमति",
+      "photoLibraryMessage": "प्रोफ़ाइल फ़ोटो चुनने के लिए अपने डिवाइस सेटिंग्स में फोटो लाइब्रेरी एक्सेस सक्षम करें।",
+      "cameraTitle": "कैमरा अनुमति",
+      "cameraMessage": "प्रोफ़ाइल फ़ोटो लेने के लिए अपने डिवाइस सेटिंग्स में कैमरा एक्सेस सक्षम करें।"
+    }
   },
   "language": {
     "label": "भाषा",
@@ -41,5 +47,8 @@
       "zu": "isiZulu",
       "id": "Bahasa Indonesia"
     }
+  },
+  "accessibility": {
+    "toggle": "टॉगल"
   }
 }

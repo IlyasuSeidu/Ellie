@@ -71,7 +71,22 @@
     "legendRestBlock": "كتلة الراحة",
     "cycle": "دورة",
     "previousMonth": "الشهر السابق",
-    "nextMonth": "الشهر المقبل"
+    "nextMonth": "الشهر المقبل",
+    "accessibility": {
+      "dayLabel": "اليوم {{day}}{{todayText}}{{shiftText}}",
+      "todaySuffix": "، اليوم",
+      "blockSuffix": "، كتلة {{blockName}}",
+      "shiftSuffix": "، {{shiftName}}",
+      "workBlockName": "العمل",
+      "homeBlockName": "المنزل",
+      "shiftNames": {
+        "day": "الوردية النهارية",
+        "night": "الوردية الليلية",
+        "morning": "الوردية الصباحية",
+        "afternoon": "وردية بعد الظهر",
+        "off": "يوم راحة"
+      }
+    }
   },
   "badges": {
     "active": "نشيط"
@@ -133,6 +148,16 @@
     "warnings": {
       "microphonePermissionRequired": "يلزم إذن الميكروفون لعبارة «Hey Ellie». اضغط على الميكروفون للتحدث.",
       "wakeWordUnavailableTapToTalk": "عبارة التنبيه غير متاحة، اضغط على الميكروفون للتحدث."
+    },
+    "offlineFallback": {
+      "workingTodayYes": "نعم، أنت في {{shiftType}} اليوم.",
+      "workingTodayNo": "لا، اليوم يوم إجازتك.",
+      "shiftTodayWork": "لديك {{shiftType}} اليوم، {{userName}}.",
+      "shiftTodayOff": "أنت في إجازة اليوم، {{userName}}! استرح واستعد نشاطك.",
+      "shiftTomorrowWork": "غدًا ({{date}}) لديك {{shiftType}}.",
+      "shiftTomorrowOff": "غدًا ({{date}}) هو يوم إجازتك!",
+      "nextDayOff": "يوم إجازتك القادم هو {{date}}.",
+      "nextNightShift": "ورديتك الليلية القادمة هي {{date}}."
     }
   },
   "tabs": {
@@ -148,5 +173,25 @@
     "alerts": "Alerts",
     "profile": "Profile",
     "export": "Export"
+  },
+  "notifications": {
+    "shiftType": {
+      "day": "الوردية النهارية",
+      "night": "الوردية الليلية"
+    },
+    "shiftCalloutTitle": {
+      "day": "تنبيه وردية نهارية",
+      "night": "تنبيه وردية ليلية"
+    },
+    "shiftBody": {
+      "tomorrow": "ستبدأ {{shiftType}} غدًا ({{date}})",
+      "inHours": "ستبدأ {{shiftType}} خلال {{hoursBefore}} ساعة"
+    },
+    "holiday": {
+      "title": "عطلة قادمة",
+      "today": "اليوم هو {{holidayName}}!",
+      "tomorrow": "غدًا هو {{holidayName}}",
+      "inDays": "{{holidayName}} بعد {{daysBefore}} أيام ({{holidayDate}})"
+    }
   }
 }

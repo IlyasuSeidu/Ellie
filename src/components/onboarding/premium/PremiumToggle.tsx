@@ -14,6 +14,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
 
@@ -50,6 +51,7 @@ export const PremiumToggle: React.FC<PremiumToggleProps> = ({
   accessibilityHint,
   testID,
 }) => {
+  const { t } = useTranslation('common');
   const thumbPosition = useSharedValue(value ? 1 : 0);
   const scale = useSharedValue(1);
 
@@ -112,7 +114,9 @@ export const PremiumToggle: React.FC<PremiumToggleProps> = ({
         activeOpacity={1}
         style={[animatedContainerStyle, disabled && styles.disabledContainer]}
         accessibilityRole="switch"
-        accessibilityLabel={accessibilityLabel || label || 'Toggle'}
+        accessibilityLabel={
+          accessibilityLabel || label || t('accessibility.toggle', { defaultValue: 'Toggle' })
+        }
         accessibilityHint={accessibilityHint}
         accessibilityState={{ checked: value, disabled }}
         testID={testID}

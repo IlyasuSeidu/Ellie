@@ -71,7 +71,22 @@
     "legendRestBlock": "Блок отдыха",
     "cycle": "цикл",
     "previousMonth": "Предыдущий месяц",
-    "nextMonth": "В следующем месяце"
+    "nextMonth": "В следующем месяце",
+    "accessibility": {
+      "dayLabel": "День {{day}}{{todayText}}{{shiftText}}",
+      "todaySuffix": ", сегодня",
+      "blockSuffix": ", блок {{blockName}}",
+      "shiftSuffix": ", {{shiftName}}",
+      "workBlockName": "работа",
+      "homeBlockName": "дом",
+      "shiftNames": {
+        "day": "дневная смена",
+        "night": "ночная смена",
+        "morning": "утренняя смена",
+        "afternoon": "дневная смена",
+        "off": "выходной"
+      }
+    }
   },
   "badges": {
     "active": "АКТИВНЫЙ"
@@ -133,6 +148,16 @@
     "warnings": {
       "microphonePermissionRequired": "Для Hey Ellie требуется доступ к микрофону. Нажмите на микрофон, чтобы говорить.",
       "wakeWordUnavailableTapToTalk": "Активационная фраза недоступна, нажмите на микрофон, чтобы говорить."
+    },
+    "offlineFallback": {
+      "workingTodayYes": "Да, сегодня у вас {{shiftType}}.",
+      "workingTodayNo": "Нет, сегодня у вас выходной.",
+      "shiftTodayWork": "{{userName}}, сегодня у вас {{shiftType}}.",
+      "shiftTodayOff": "{{userName}}, сегодня у вас выходной! Отдохните и восстановитесь.",
+      "shiftTomorrowWork": "Завтра ({{date}}) у вас {{shiftType}}.",
+      "shiftTomorrowOff": "Завтра ({{date}}) у вас выходной!",
+      "nextDayOff": "Ваш следующий выходной — {{date}}.",
+      "nextNightShift": "Ваша следующая ночная смена — {{date}}."
     }
   },
   "tabs": {
@@ -148,5 +173,25 @@
     "alerts": "Alerts",
     "profile": "Profile",
     "export": "Export"
+  },
+  "notifications": {
+    "shiftType": {
+      "day": "дневная смена",
+      "night": "ночная смена"
+    },
+    "shiftCalloutTitle": {
+      "day": "Напоминание о дневной смене",
+      "night": "Напоминание о ночной смене"
+    },
+    "shiftBody": {
+      "tomorrow": "Ваша {{shiftType}} начинается завтра ({{date}})",
+      "inHours": "Ваша {{shiftType}} начнётся через {{hoursBefore}} ч."
+    },
+    "holiday": {
+      "title": "Скоро праздник",
+      "today": "Сегодня {{holidayName}}!",
+      "tomorrow": "Завтра {{holidayName}}",
+      "inDays": "{{holidayName}} через {{daysBefore}} дн. ({{holidayDate}})"
+    }
   }
 }

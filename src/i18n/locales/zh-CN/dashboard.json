@@ -71,7 +71,22 @@
     "legendRestBlock": "休息区",
     "cycle": "循环",
     "previousMonth": "上个月",
-    "nextMonth": "下个月"
+    "nextMonth": "下个月",
+    "accessibility": {
+      "dayLabel": "第{{day}}天{{todayText}}{{shiftText}}",
+      "todaySuffix": "，今天",
+      "blockSuffix": "，{{blockName}}区块",
+      "shiftSuffix": "，{{shiftName}}",
+      "workBlockName": "工作",
+      "homeBlockName": "休息",
+      "shiftNames": {
+        "day": "白班",
+        "night": "夜班",
+        "morning": "早班",
+        "afternoon": "下午班",
+        "off": "休息日"
+      }
+    }
   },
   "badges": {
     "active": "积极的"
@@ -133,6 +148,16 @@
     "warnings": {
       "microphonePermissionRequired": "Hey Ellie 需要麦克风权限。点击麦克风开始说话。",
       "wakeWordUnavailableTapToTalk": "唤醒词不可用，请点击麦克风说话。"
+    },
+    "offlineFallback": {
+      "workingTodayYes": "是的，你今天是{{shiftType}}。",
+      "workingTodayNo": "不是，今天你休息。",
+      "shiftTodayWork": "{{userName}}，你今天是{{shiftType}}。",
+      "shiftTodayOff": "{{userName}}，你今天休息！好好放松补充精力。",
+      "shiftTomorrowWork": "明天（{{date}}）你是{{shiftType}}。",
+      "shiftTomorrowOff": "明天（{{date}}）你休息！",
+      "nextDayOff": "你下一个休息日是{{date}}。",
+      "nextNightShift": "你下一次夜班是{{date}}。"
     }
   },
   "tabs": {
@@ -148,5 +173,25 @@
     "alerts": "Alerts",
     "profile": "Profile",
     "export": "Export"
+  },
+  "notifications": {
+    "shiftType": {
+      "day": "白班",
+      "night": "夜班"
+    },
+    "shiftCalloutTitle": {
+      "day": "白班提醒",
+      "night": "夜班提醒"
+    },
+    "shiftBody": {
+      "tomorrow": "你的{{shiftType}}将在明天开始（{{date}}）",
+      "inHours": "你的{{shiftType}}将在{{hoursBefore}}小时后开始"
+    },
+    "holiday": {
+      "title": "即将到来的假日",
+      "today": "今天是{{holidayName}}！",
+      "tomorrow": "明天是{{holidayName}}",
+      "inDays": "{{holidayName}}还有{{daysBefore}}天（{{holidayDate}}）"
+    }
   }
 }

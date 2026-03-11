@@ -71,7 +71,22 @@
     "legendRestBlock": "Bloc de repos",
     "cycle": "Cycle",
     "previousMonth": "Mois précédent",
-    "nextMonth": "Mois prochain"
+    "nextMonth": "Mois prochain",
+    "accessibility": {
+      "dayLabel": "Jour {{day}}{{todayText}}{{shiftText}}",
+      "todaySuffix": ", Aujourd’hui",
+      "blockSuffix": ", bloc {{blockName}}",
+      "shiftSuffix": ", {{shiftName}}",
+      "workBlockName": "travail",
+      "homeBlockName": "maison",
+      "shiftNames": {
+        "day": "quart de jour",
+        "night": "quart de nuit",
+        "morning": "quart du matin",
+        "afternoon": "quart de l’après-midi",
+        "off": "jour de repos"
+      }
+    }
   },
   "badges": {
     "active": "ACTIF"
@@ -133,6 +148,16 @@
     "warnings": {
       "microphonePermissionRequired": "L’autorisation du micro est requise pour « Hey Ellie ». Touchez le micro pour parler.",
       "wakeWordUnavailableTapToTalk": "Mot d’activation indisponible, touchez le micro pour parler."
+    },
+    "offlineFallback": {
+      "workingTodayYes": "Oui, vous êtes en poste {{shiftType}} aujourd’hui.",
+      "workingTodayNo": "Non, aujourd’hui est votre jour de repos.",
+      "shiftTodayWork": "Vous avez un poste {{shiftType}} aujourd’hui, {{userName}}.",
+      "shiftTodayOff": "Vous êtes en repos aujourd’hui, {{userName}} ! Reposez-vous et rechargez.",
+      "shiftTomorrowWork": "Demain ({{date}}), vous avez un poste {{shiftType}}.",
+      "shiftTomorrowOff": "Demain ({{date}}) est votre jour de repos !",
+      "nextDayOff": "Votre prochain jour de repos est le {{date}}.",
+      "nextNightShift": "Votre prochain quart de nuit est le {{date}}."
     }
   },
   "tabs": {
@@ -148,5 +173,25 @@
     "alerts": "Alerts",
     "profile": "Profile",
     "export": "Export"
+  },
+  "notifications": {
+    "shiftType": {
+      "day": "quart de jour",
+      "night": "quart de nuit"
+    },
+    "shiftCalloutTitle": {
+      "day": "Alerte quart de jour",
+      "night": "Alerte quart de nuit"
+    },
+    "shiftBody": {
+      "tomorrow": "Votre {{shiftType}} commence demain ({{date}})",
+      "inHours": "Votre {{shiftType}} commence dans {{hoursBefore}} heures"
+    },
+    "holiday": {
+      "title": "Jour férié à venir",
+      "today": "Aujourd’hui, c’est {{holidayName}} !",
+      "tomorrow": "Demain, c’est {{holidayName}}",
+      "inDays": "{{holidayName}} est dans {{daysBefore}} jours ({{holidayDate}})"
+    }
   }
 }

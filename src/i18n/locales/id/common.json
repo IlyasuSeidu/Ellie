@@ -21,7 +21,13 @@
     "message": "Pilih avatar Anda",
     "chooseFromLibrary": "Pilih dari Perpustakaan",
     "takePhoto": "Ambil Foto",
-    "removePhoto": "Hapus Foto"
+    "removePhoto": "Hapus Foto",
+    "permissions": {
+      "photoLibraryTitle": "Izin galeri foto",
+      "photoLibraryMessage": "Aktifkan akses galeri foto di pengaturan perangkat Anda untuk memilih foto profil.",
+      "cameraTitle": "Izin kamera",
+      "cameraMessage": "Aktifkan akses kamera di pengaturan perangkat Anda untuk mengambil foto profil."
+    }
   },
   "language": {
     "label": "Bahasa",
@@ -41,5 +47,8 @@
       "zu": "isiZulu",
       "id": "Bahasa Indonesia"
     }
+  },
+  "accessibility": {
+    "toggle": "Sakelar"
   }
 }

@@ -10,9 +10,18 @@
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system/legacy';
 import { Alert } from 'react-native';
+import i18n from '@/i18n';
 
 const AVATAR_DIR = `${FileSystem.documentDirectory}avatars/`;
 const AVATAR_FILENAME = 'profile-avatar.jpg';
+
+const translateAvatar = (key: string, fallback: string): string =>
+  String(
+    i18n.t(key, {
+      ns: 'common',
+      defaultValue: fallback,
+    })
+  );
 
 class AvatarService {
   /**
@@ -33,9 +42,12 @@ class AvatarService {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
       Alert.alert(
-        'Photo Library Permission',
-        'Please enable photo library access in your device settings to choose a profile photo.',
-        [{ text: 'OK' }]
+        translateAvatar('avatar.permissions.photoLibraryTitle', 'Photo Library Permission'),
+        translateAvatar(
+          'avatar.permissions.photoLibraryMessage',
+          'Please enable photo library access in your device settings to choose a profile photo.'
+        ),
+        [{ text: translateAvatar('buttons.confirm', 'Confirm') }]
       );
       return null;
     }
@@ -62,9 +74,12 @@ class AvatarService {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
     if (status !== 'granted') {
       Alert.alert(
-        'Camera Permission',
-        'Please enable camera access in your device settings to take a profile photo.',
-        [{ text: 'OK' }]
+        translateAvatar('avatar.permissions.cameraTitle', 'Camera Permission'),
+        translateAvatar(
+          'avatar.permissions.cameraMessage',
+          'Please enable camera access in your device settings to take a profile photo.'
+        ),
+        [{ text: translateAvatar('buttons.confirm', 'Confirm') }]
       );
       return null;
     }

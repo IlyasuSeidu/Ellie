@@ -21,7 +21,13 @@
     "message": "Kies jou avatar",
     "chooseFromLibrary": "Kies uit Biblioteek",
     "takePhoto": "Neem Foto",
-    "removePhoto": "Verwyder foto"
+    "removePhoto": "Verwyder foto",
+    "permissions": {
+      "photoLibraryTitle": "Fotobiblioteek-toestemming",
+      "photoLibraryMessage": "Skakel asseblief toegang tot jou fotobiblioteek in toestelinstellings aan om ’n profielfoto te kies.",
+      "cameraTitle": "Kamera-toestemming",
+      "cameraMessage": "Skakel asseblief toegang tot jou kamera in toestelinstellings aan om ’n profielfoto te neem."
+    }
   },
   "language": {
     "label": "Taal",
@@ -41,5 +47,8 @@
       "zu": "isiZulu",
       "id": "Bahasa Indonesia"
     }
+  },
+  "accessibility": {
+    "toggle": "Wissel"
   }
 }

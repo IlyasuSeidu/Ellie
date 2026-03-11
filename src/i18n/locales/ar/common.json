@@ -21,7 +21,13 @@
     "message": "اختر الصورة الرمزية الخاصة بك",
     "chooseFromLibrary": "اختر من المكتبة",
     "takePhoto": "التقط صورة",
-    "removePhoto": "إزالة الصورة"
+    "removePhoto": "إزالة الصورة",
+    "permissions": {
+      "photoLibraryTitle": "إذن مكتبة الصور",
+      "photoLibraryMessage": "يرجى تفعيل الوصول إلى مكتبة الصور من إعدادات جهازك لاختيار صورة الملف الشخصي.",
+      "cameraTitle": "إذن الكاميرا",
+      "cameraMessage": "يرجى تفعيل الوصول إلى الكاميرا من إعدادات جهازك لالتقاط صورة الملف الشخصي."
+    }
   },
   "language": {
     "label": "لغة",
@@ -41,5 +47,8 @@
       "zu": "isiZulu",
       "id": "Bahasa Indonesia"
     }
+  },
+  "accessibility": {
+    "toggle": "تبديل"
   }
 }

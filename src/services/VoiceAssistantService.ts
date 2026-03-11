@@ -13,6 +13,7 @@ import { ellieBrainService, EllieBrainServiceError } from './EllieBrainService';
 import { voiceAssistantConfig } from '@/config/env';
 import { logger } from '@/utils/logger';
 import { tryOfflineFallback } from '@/utils/offlineFallback';
+import i18n from '@/i18n';
 import type {
   VoiceAssistantState,
   VoiceAssistantUserContext,
@@ -60,6 +61,15 @@ class VoiceAssistantService {
   private listeningStopFallbackTimeout: ReturnType<typeof setTimeout> | null = null;
   private hasSpeechInCurrentListen = false;
   private stopRequestedForCurrentListen = false;
+
+  private translateDashboard(key: string, fallback: string): string {
+    return String(
+      i18n.t(key, {
+        ns: 'dashboard',
+        defaultValue: fallback,
+      })
+    );
+  }
 
   /**
    * Initialize the service with callbacks and user context.
@@ -509,24 +519,51 @@ class VoiceAssistantService {
   private toUserFacingErrorMessage(type: VoiceAssistantErrorType, rawMessage: string): string {
     switch (type) {
       case 'permission_denied':
-        return 'Microphone permission is required. Please grant access and try again.';
+        return this.translateDashboard(
+          'voiceAssistant.errors.permissionDenied',
+          'Microphone access denied. Please grant permission.'
+        );
       case 'speech_recognition_failed':
-        return "I couldn't understand that. Please try again.";
+        return this.translateDashboard(
+          'voiceAssistant.errors.recognition',
+          "I didn't catch that. Please try again."
+        );
       case 'network_error':
-        return 'Check your internet connection and retry.';
+        return this.translateDashboard(
+          'voiceAssistant.errors.network',
+          'Check your connection and retry.'
+        );
       case 'backend_error':
-        return 'Service is temporarily unavailable. Please try again.';
+        return this.translateDashboard(
+          'voiceAssistant.errors.backend',
+          'Service temporarily unavailable. Please try again.'
+        );
       case 'rate_limited':
-        return 'Please wait briefly, then try again.';
+        return this.translateDashboard(
+          'voiceAssistant.errors.rateLimited',
+          'Please wait briefly and retry.'
+        );
       case 'timeout':
-        return 'The request timed out. Please retry.';
+        return this.translateDashboard(
+          'voiceAssistant.errors.timeout',
+          'Request timed out. Please retry.'
+        );
       case 'wake_word_unavailable':
-        return 'Wake-word unavailable. Tap the mic to talk.';
+        return this.translateDashboard(
+          'voiceAssistant.errors.wakeWordUnavailable',
+          'Wake-word unavailable, tap the mic to talk.'
+        );
       case 'tts_error':
-        return 'I could not play audio response.';
+        return this.translateDashboard(
+          'voiceAssistant.errors.tts',
+          'Could not play audio response.'
+        );
       case 'unknown':
       default:
-        return rawMessage?.trim() || 'Something went wrong. Please try again.';
+        return (
+          rawMessage?.trim() ||
+          this.translateDashboard('voiceAssistant.errors.default', 'Something went wrong')
+        );
     }
   }
 

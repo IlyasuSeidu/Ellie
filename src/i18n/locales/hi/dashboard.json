@@ -71,7 +71,22 @@
     "legendRestBlock": "बाकी ब्लॉक",
     "cycle": "चक्र",
     "previousMonth": "पिछला महीना",
-    "nextMonth": "अगले महीने"
+    "nextMonth": "अगले महीने",
+    "accessibility": {
+      "dayLabel": "दिन {{day}}{{todayText}}{{shiftText}}",
+      "todaySuffix": ", आज",
+      "blockSuffix": ", {{blockName}} ब्लॉक",
+      "shiftSuffix": ", {{shiftName}}",
+      "workBlockName": "कार्य",
+      "homeBlockName": "घर",
+      "shiftNames": {
+        "day": "दिन की शिफ्ट",
+        "night": "रात की शिफ्ट",
+        "morning": "सुबह की शिफ्ट",
+        "afternoon": "दोपहर की शिफ्ट",
+        "off": "छुट्टी का दिन"
+      }
+    }
   },
   "badges": {
     "active": "सक्रिय"
@@ -133,6 +148,16 @@
     "warnings": {
       "microphonePermissionRequired": "Hey Ellie के लिए माइक्रोफ़ोन अनुमति आवश्यक है। बोलने के लिए माइक्रोफ़ोन टैप करें।",
       "wakeWordUnavailableTapToTalk": "वेक-वर्ड उपलब्ध नहीं है, बोलने के लिए माइक्रोफ़ोन टैप करें।"
+    },
+    "offlineFallback": {
+      "workingTodayYes": "हाँ, आज आपकी {{shiftType}} है।",
+      "workingTodayNo": "नहीं, आज आपकी छुट्टी है।",
+      "shiftTodayWork": "{{userName}}, आज आपकी {{shiftType}} है।",
+      "shiftTodayOff": "{{userName}}, आज आपका अवकाश है! आराम करें और तरोताज़ा हों।",
+      "shiftTomorrowWork": "कल ({{date}}) आपकी {{shiftType}} है।",
+      "shiftTomorrowOff": "कल ({{date}}) आपकी छुट्टी है!",
+      "nextDayOff": "आपका अगला अवकाश {{date}} को है।",
+      "nextNightShift": "आपकी अगली रात की शिफ्ट {{date}} को है।"
     }
   },
   "tabs": {
@@ -148,5 +173,25 @@
     "alerts": "Alerts",
     "profile": "Profile",
     "export": "Export"
+  },
+  "notifications": {
+    "shiftType": {
+      "day": "दिन की शिफ्ट",
+      "night": "रात की शिफ्ट"
+    },
+    "shiftCalloutTitle": {
+      "day": "दिन की शिफ्ट अलर्ट",
+      "night": "रात की शिफ्ट अलर्ट"
+    },
+    "shiftBody": {
+      "tomorrow": "आपकी {{shiftType}} कल शुरू होगी ({{date}})",
+      "inHours": "आपकी {{shiftType}} {{hoursBefore}} घंटे में शुरू होगी"
+    },
+    "holiday": {
+      "title": "आने वाली छुट्टी",
+      "today": "आज {{holidayName}} है!",
+      "tomorrow": "कल {{holidayName}} है",
+      "inDays": "{{holidayName}} {{daysBefore}} दिनों में है ({{holidayDate}})"
+    }
   }
 }

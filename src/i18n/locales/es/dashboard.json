@@ -71,7 +71,22 @@
     "legendRestBlock": "Bloque descanso",
     "cycle": "ciclo",
     "previousMonth": "Mes anterior",
-    "nextMonth": "Mes siguiente"
+    "nextMonth": "Mes siguiente",
+    "accessibility": {
+      "dayLabel": "Día {{day}}{{todayText}}{{shiftText}}",
+      "todaySuffix": ", Hoy",
+      "blockSuffix": ", bloque de {{blockName}}",
+      "shiftSuffix": ", {{shiftName}}",
+      "workBlockName": "trabajo",
+      "homeBlockName": "casa",
+      "shiftNames": {
+        "day": "turno de día",
+        "night": "turno de noche",
+        "morning": "turno de mañana",
+        "afternoon": "turno de tarde",
+        "off": "día libre"
+      }
+    }
   },
   "badges": {
     "active": "ACTIVO"
@@ -133,6 +148,16 @@
     "warnings": {
       "microphonePermissionRequired": "Se necesita permiso de micrófono para \"Hey Ellie\". Toca el micrófono para hablar.",
       "wakeWordUnavailableTapToTalk": "La palabra de activación no está disponible; toca el micrófono para hablar."
+    },
+    "offlineFallback": {
+      "workingTodayYes": "Sí, hoy estás en turno de {{shiftType}}.",
+      "workingTodayNo": "No, hoy es tu día libre.",
+      "shiftTodayWork": "Hoy tienes un turno de {{shiftType}}, {{userName}}.",
+      "shiftTodayOff": "Hoy tienes el día libre, {{userName}}. ¡Descansa y recupérate!",
+      "shiftTomorrowWork": "Mañana ({{date}}) tienes un turno de {{shiftType}}.",
+      "shiftTomorrowOff": "Mañana ({{date}}) es tu día libre.",
+      "nextDayOff": "Tu próximo día libre es el {{date}}.",
+      "nextNightShift": "Tu próximo turno de noche es el {{date}}."
     }
   },
   "tabs": {
@@ -148,5 +173,25 @@
     "alerts": "Alerts",
     "profile": "Profile",
     "export": "Export"
+  },
+  "notifications": {
+    "shiftType": {
+      "day": "turno de día",
+      "night": "turno de noche"
+    },
+    "shiftCalloutTitle": {
+      "day": "Aviso de turno de día",
+      "night": "Aviso de turno de noche"
+    },
+    "shiftBody": {
+      "tomorrow": "Tu {{shiftType}} empieza mañana ({{date}})",
+      "inHours": "Tu {{shiftType}} empieza en {{hoursBefore}} horas"
+    },
+    "holiday": {
+      "title": "Próximo feriado",
+      "today": "¡Hoy es {{holidayName}}!",
+      "tomorrow": "Mañana es {{holidayName}}",
+      "inDays": "{{holidayName}} es en {{daysBefore}} días ({{holidayDate}})"
+    }
   }
 }

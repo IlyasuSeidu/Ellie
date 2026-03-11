@@ -22,6 +22,7 @@ import Animated, {
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { RosterType, type ShiftType } from '@/types';
 import { fifoBlockColors } from '@/constants/shiftStyles';
@@ -123,6 +124,7 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
   onLongPress,
   testID,
 }) => {
+  const { t } = useTranslation('dashboard');
   const fifoBlockType = useMemo(() => {
     if (rosterType !== RosterType.FIFO || !shiftType) {
       return null;
@@ -250,6 +252,32 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
     return 'day'; // default for day/morning/afternoon in work block
   }, [fifoPosition]);
 
+  const todayText = isToday
+    ? t('calendar.accessibility.todaySuffix', { defaultValue: ', Today' })
+    : '';
+  const shiftText = shiftType
+    ? fifoBlockType
+      ? t('calendar.accessibility.blockSuffix', {
+          blockName:
+            fifoBlockType === 'work'
+              ? t('calendar.accessibility.workBlockName', { defaultValue: 'work' })
+              : t('calendar.accessibility.homeBlockName', { defaultValue: 'home' }),
+          defaultValue: ', {{blockName}} block',
+        })
+      : t('calendar.accessibility.shiftSuffix', {
+          shiftName: t(`calendar.accessibility.shiftNames.${shiftType}`, {
+            defaultValue: `${shiftType} shift`,
+          }),
+          defaultValue: ', {{shiftName}}',
+        })
+    : '';
+  const accessibilityLabel = t('calendar.accessibility.dayLabel', {
+    day,
+    todayText,
+    shiftText,
+    defaultValue: 'Day {{day}}{{todayText}}{{shiftText}}',
+  });
+
   return (
     <AnimatedTouchable
       onPress={handlePress}
@@ -261,9 +289,7 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
       disabled={isOtherMonth}
       style={[styles.container, pressStyle]}
       accessibilityRole="button"
-      accessibilityLabel={`Day ${day}${isToday ? ', Today' : ''}${
-        shiftType ? `, ${fifoBlockType ? `${fifoBlockType} block` : `${shiftType} shift`}` : ''
-      }`}
+      accessibilityLabel={accessibilityLabel}
       accessibilityState={{ disabled: isOtherMonth, selected }}
       testID={testID}
     >

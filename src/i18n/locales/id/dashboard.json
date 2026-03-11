@@ -71,7 +71,22 @@
     "legendRestBlock": "Blok Istirahat",
     "cycle": "siklus",
     "previousMonth": "Bulan sebelumnya",
-    "nextMonth": "Bulan depan"
+    "nextMonth": "Bulan depan",
+    "accessibility": {
+      "dayLabel": "Hari {{day}}{{todayText}}{{shiftText}}",
+      "todaySuffix": ", Hari ini",
+      "blockSuffix": ", blok {{blockName}}",
+      "shiftSuffix": ", {{shiftName}}",
+      "workBlockName": "kerja",
+      "homeBlockName": "rumah",
+      "shiftNames": {
+        "day": "shift siang",
+        "night": "shift malam",
+        "morning": "shift pagi",
+        "afternoon": "shift sore",
+        "off": "hari libur"
+      }
+    }
   },
   "badges": {
     "active": "AKTIF"
@@ -133,6 +148,16 @@
     "warnings": {
       "microphonePermissionRequired": "Izin mikrofon diperlukan untuk Hey Ellie. Ketuk mikrofon untuk berbicara.",
       "wakeWordUnavailableTapToTalk": "Kata pemicu tidak tersedia, ketuk mikrofon untuk berbicara."
+    },
+    "offlineFallback": {
+      "workingTodayYes": "Ya, hari ini Anda masuk {{shiftType}}.",
+      "workingTodayNo": "Tidak, hari ini Anda libur.",
+      "shiftTodayWork": "Hari ini Anda mendapat {{shiftType}}, {{userName}}.",
+      "shiftTodayOff": "Hari ini Anda libur, {{userName}}! Istirahat dan pulihkan tenaga.",
+      "shiftTomorrowWork": "Besok ({{date}}) Anda mendapat {{shiftType}}.",
+      "shiftTomorrowOff": "Besok ({{date}}) Anda libur!",
+      "nextDayOff": "Hari libur Anda berikutnya adalah {{date}}.",
+      "nextNightShift": "Shift malam Anda berikutnya adalah {{date}}."
     }
   },
   "tabs": {
@@ -148,5 +173,25 @@
     "alerts": "Alerts",
     "profile": "Profile",
     "export": "Export"
+  },
+  "notifications": {
+    "shiftType": {
+      "day": "shift siang",
+      "night": "shift malam"
+    },
+    "shiftCalloutTitle": {
+      "day": "Pengingat shift siang",
+      "night": "Pengingat shift malam"
+    },
+    "shiftBody": {
+      "tomorrow": "Shift {{shiftType}} Anda dimulai besok ({{date}})",
+      "inHours": "Shift {{shiftType}} Anda dimulai dalam {{hoursBefore}} jam"
+    },
+    "holiday": {
+      "title": "Hari libur mendatang",
+      "today": "Hari ini adalah {{holidayName}}!",
+      "tomorrow": "Besok adalah {{holidayName}}",
+      "inDays": "{{holidayName}} dalam {{daysBefore}} hari ({{holidayDate}})"
+    }
   }
 }

@@ -71,7 +71,22 @@
     "legendRestBlock": "Rest Block",
     "cycle": "cycle",
     "previousMonth": "Previous month",
-    "nextMonth": "Next month"
+    "nextMonth": "Next month",
+    "accessibility": {
+      "dayLabel": "Day {{day}}{{todayText}}{{shiftText}}",
+      "todaySuffix": ", Today",
+      "blockSuffix": ", {{blockName}} block",
+      "shiftSuffix": ", {{shiftName}}",
+      "workBlockName": "work",
+      "homeBlockName": "home",
+      "shiftNames": {
+        "day": "day shift",
+        "night": "night shift",
+        "morning": "morning shift",
+        "afternoon": "afternoon shift",
+        "off": "day off"
+      }
+    }
   },
   "badges": {
     "active": "ACTIVE"
@@ -147,6 +162,36 @@
     "warnings": {
       "microphonePermissionRequired": "Microphone permission required for Hey Ellie. Tap mic to talk.",
       "wakeWordUnavailableTapToTalk": "Wake-word unavailable, tap mic to talk."
+    },
+    "offlineFallback": {
+      "workingTodayYes": "Yes, you're on a {{shiftType}} shift today.",
+      "workingTodayNo": "No, today is your day off.",
+      "shiftTodayWork": "You have a {{shiftType}} shift today, {{userName}}.",
+      "shiftTodayOff": "You have the day off today, {{userName}}! Rest and recharge.",
+      "shiftTomorrowWork": "Tomorrow ({{date}}) you have a {{shiftType}} shift.",
+      "shiftTomorrowOff": "Tomorrow ({{date}}) is your day off!",
+      "nextDayOff": "Your next day off is {{date}}.",
+      "nextNightShift": "Your next night shift is {{date}}."
+    }
+  },
+  "notifications": {
+    "shiftType": {
+      "day": "day shift",
+      "night": "night shift"
+    },
+    "shiftCalloutTitle": {
+      "day": "Day Shift Callout",
+      "night": "Night Shift Callout"
+    },
+    "shiftBody": {
+      "tomorrow": "Your {{shiftType}} starts tomorrow ({{date}})",
+      "inHours": "Your {{shiftType}} starts in {{hoursBefore}} hours"
+    },
+    "holiday": {
+      "title": "Upcoming Holiday",
+      "today": "Today is {{holidayName}}!",
+      "tomorrow": "Tomorrow is {{holidayName}}",
+      "inDays": "{{holidayName}} is in {{daysBefore}} days ({{holidayDate}})"
     }
   }
 }

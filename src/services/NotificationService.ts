@@ -8,6 +8,7 @@
 import { ShiftDay, Holiday } from '@/types';
 import { logger } from '@/utils/logger';
 import { FirebaseService } from './firebase/FirebaseService';
+import i18n from '@/i18n';
 
 /**
  * Notification types
@@ -68,6 +69,16 @@ export interface INotificationScheduler {
 export class NotificationService extends FirebaseService {
   private readonly NOTIFICATIONS_COLLECTION = 'notifications';
   private scheduler: INotificationScheduler | null = null;
+
+  private translate(key: string, options: Record<string, unknown>, fallback: string): string {
+    return String(
+      i18n.t(key, {
+        ns: 'dashboard',
+        defaultValue: fallback,
+        ...options,
+      })
+    );
+  }
 
   /**
    * Set the notification scheduler (injected dependency)
@@ -273,12 +284,24 @@ export class NotificationService extends FirebaseService {
    * Build shift reminder content
    */
   buildShiftReminderContent(shift: ShiftDay, hoursBefore: number): NotificationContent {
-    const shiftType = shift.isNightShift ? 'Night Shift' : 'Day Shift';
-    const title = `${shiftType} Reminder`;
+    const shiftType = shift.isNightShift
+      ? this.translate('notifications.shiftType.night', {}, 'Night Shift')
+      : this.translate('notifications.shiftType.day', {}, 'Day Shift');
+    const title = shift.isNightShift
+      ? this.translate('notifications.shiftCalloutTitle.night', {}, 'Night Shift Callout')
+      : this.translate('notifications.shiftCalloutTitle.day', {}, 'Day Shift Callout');
     const body =
       hoursBefore === 24
-        ? `Your ${shiftType.toLowerCase()} starts tomorrow (${shift.date})`
-        : `Your ${shiftType.toLowerCase()} starts in ${hoursBefore} hours`;
+        ? this.translate(
+            'notifications.shiftBody.tomorrow',
+            { shiftType: shiftType.toLowerCase(), date: shift.date },
+            'Your {{shiftType}} starts tomorrow ({{date}})'
+          )
+        : this.translate(
+            'notifications.shiftBody.inHours',
+            { shiftType: shiftType.toLowerCase(), hoursBefore },
+            'Your {{shiftType}} starts in {{hoursBefore}} hours'
+          );
 
     return {
       title,
@@ -297,13 +320,25 @@ export class NotificationService extends FirebaseService {
    * Build holiday alert content
    */
   buildHolidayAlertContent(holiday: Holiday, daysBefore: number): NotificationContent {
-    const title = 'Upcoming Holiday';
+    const title = this.translate('notifications.holiday.title', {}, 'Upcoming Holiday');
     const body =
       daysBefore === 0
-        ? `Today is ${holiday.name}!`
+        ? this.translate(
+            'notifications.holiday.today',
+            { holidayName: holiday.name },
+            'Today is {{holidayName}}!'
+          )
         : daysBefore === 1
-          ? `Tomorrow is ${holiday.name}`
-          : `${holiday.name} is in ${daysBefore} days (${holiday.date})`;
+          ? this.translate(
+              'notifications.holiday.tomorrow',
+              { holidayName: holiday.name },
+              'Tomorrow is {{holidayName}}'
+            )
+          : this.translate(
+              'notifications.holiday.inDays',
+              { holidayName: holiday.name, daysBefore, holidayDate: holiday.date },
+              '{{holidayName}} is in {{daysBefore}} days ({{holidayDate}})'
+            );
 
     return {
       title,
