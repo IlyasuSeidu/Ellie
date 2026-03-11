@@ -1,0 +1,121 @@
+# Environment Configuration Template
+
+# Copy this file to .env and fill in your actual values
+
+# DO NOT commit .env to version control
+
+# App Environment (development, staging, production)
+
+APP_ENV=development
+
+# Firebase Configuration
+
+# Replace with your Firebase project's Web app config
+
+FIREBASE_API_KEY=your-firebase-api-key
+FIREBASE_AUTH_DOMAIN=your-project-id.firebaseapp.com
+FIREBASE_PROJECT_ID=your-project-id
+FIREBASE_STORAGE_BUCKET=your-project-id.firebasestorage.app
+FIREBASE_MESSAGING_SENDER_ID=your-messaging-sender-id
+FIREBASE_APP_ID=your-firebase-app-id
+FIREBASE_MEASUREMENT_ID=
+
+# Google Sign-In Configuration
+
+# Get this from Google Cloud Console > APIs & Services > Credentials
+
+# Use the Web Client ID (not the iOS or Android client ID)
+
+GOOGLE_WEB_CLIENT_ID=your-google-web-client-id.apps.googleusercontent.com
+EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=your-google-web-client-id.apps.googleusercontent.com
+GOOGLE_IOS_CLIENT_ID=your-google-ios-client-id.apps.googleusercontent.com
+EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=your-google-ios-client-id.apps.googleusercontent.com
+
+# API Configuration
+
+API_BASE_URL=https://api.shiftsync.app
+API_TIMEOUT=30000
+
+# Ellie Brain (Firebase Cloud Function)
+
+ELLIE_BRAIN_URL=https://us-central1-your-project-id.cloudfunctions.net/ellieBrain
+ELLIE_BRAIN_TIMEOUT=30000
+
+# Wake Word Provider
+
+# Default uses OpenWakeWord local ONNX model (no cloud key required).
+
+WAKE_WORD_PROVIDER=openwakeword
+PICOVOICE_ACCESS_KEY=
+WAKE_WORD_ENABLED=false
+WAKE_WORD_AUTO_START=true
+WAKE_WORD_SENSITIVITY=0.65
+WAKE_WORD_PHRASE=Hey Ellie
+
+# Optional fallback paths (used if platform-specific variables are empty)
+
+WAKE_WORD_KEYWORD_PATHS=
+
+# Recommended for custom "Ellie" wake word:
+
+# Android: place ellie_android.ppn in android/app/src/main/assets/
+
+WAKE_WORD_KEYWORD_PATHS_ANDROID=ellie_android.ppn
+
+# iOS: add ellie_ios.ppn to Xcode app target resources (under ios/Ellie or similar)
+
+WAKE_WORD_KEYWORD_PATHS_IOS=ellie_ios.ppn
+
+# Optional: built-in keywords (used when custom paths are empty)
+
+# Available examples: PORCUPINE, ALEXA, HEY_GOOGLE, JARVIS
+
+WAKE_WORD_BUILT_IN_KEYWORDS=
+
+# OpenWakeWord (custom provider, no cloud key required)
+
+# Set WAKE_WORD_PROVIDER=openwakeword to use these settings.
+
+# Use ONNX model path bundled in native assets.
+
+# Example classifier bundled by this repo:
+
+OPENWAKEWORD_MODEL_PATH=openwakeword/hey_ellie_v0.1.onnx
+OPENWAKEWORD_MODEL_PATH_ANDROID=openwakeword/hey_ellie_v0.1.onnx
+OPENWAKEWORD_MODEL_PATH_IOS=openwakeword/hey_ellie_v0.1.onnx
+
+# Optional advanced feature-model overrides (defaults are bundled in native module):
+
+OPENWAKEWORD_MELSPECTROGRAM_MODEL_PATH=
+OPENWAKEWORD_MELSPECTROGRAM_MODEL_PATH_ANDROID=
+OPENWAKEWORD_MELSPECTROGRAM_MODEL_PATH_IOS=
+OPENWAKEWORD_EMBEDDING_MODEL_PATH=
+OPENWAKEWORD_EMBEDDING_MODEL_PATH_ANDROID=
+OPENWAKEWORD_EMBEDDING_MODEL_PATH_IOS=
+OPENWAKEWORD_THRESHOLD=0.45
+OPENWAKEWORD_TRIGGER_COOLDOWN_MS=1200
+
+# Anti-false-trigger tuning (recommended for mobile):
+
+# Minimum RMS (voice energy) required to count a trigger candidate.
+
+OPENWAKEWORD_MIN_RMS=0.0025
+
+# Number of consecutive inference frames that must meet threshold + min RMS.
+
+OPENWAKEWORD_ACTIVATION_FRAMES=3
+
+# Exponential smoothing applied to raw classifier score (0 = off, 1 = no smoothing).
+
+OPENWAKEWORD_SCORE_SMOOTHING_ALPHA=0.35
+
+# EAS Configuration (for Expo Application Services)
+
+# Get this from https://expo.dev after creating your project
+
+EAS_PROJECT_ID=your-eas-project-id
+
+# Development/Debugging
+
+DEBUG=false
+LOG_LEVEL=info
