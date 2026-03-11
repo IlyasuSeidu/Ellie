@@ -403,8 +403,8 @@
       "dayOfTotal": "Jour {{day}} du {{total}}"
     },
     "options": {
-      "day": "Day Shift",
-      "night": "Night Shift",
+      "day": "Quart de jour",
+      "night": "Quart de nuit",
       "off": "Off Days"
     }
   },
@@ -759,6 +759,14 @@
         "name": "Cycle Pitman",
         "stats": "Cycle de 7 jours - 2J/2N/3O"
       }
+    },
+    "presetDescriptions": {
+      "earlyStart": "Début tôt",
+      "dayShift": "Quart de jour",
+      "afternoon": "Après-midi",
+      "evening": "Soir",
+      "nightShift": "Quart de nuit",
+      "tapToSet": "Touchez pour régler"
     }
   },
   "customPattern": {
@@ -924,7 +932,7 @@
     "a11y": "Bot is typing"
   },
   "chatAvatar": {
-    "a11y": "Mining assistant avatar"
+    "a11y": "Avatar de l’assistant minier"
   },
   "premiumCalendar": {
     "previousMonthA11y": "Previous month",
@@ -958,6 +966,29 @@
       "currentValueMinimum": "La valeur actuelle est {{value}}. Le minimum est {{min}}.",
       "currentValueMaximum": "La valeur actuelle est {{value}}. Le maximum est {{max}}.",
       "adjustHint": "Balayez vers la gauche ou la droite pour ajuster la valeur"
+    }
+  },
+  "reportOptions": {
+    "shiftSummary": {
+      "title": "Résumé des quarts",
+      "description": "Voir le nombre de quarts par type"
+    },
+    "earnings": {
+      "title": "Rapport des gains",
+      "description": "Calculer la paie totale et la répartition"
+    },
+    "workLife": {
+      "title": "Équilibre vie-travail",
+      "description": "Analyser les jours de repos et le pourcentage de travail"
+    },
+    "holidayImpact": {
+      "title": "Impact des jours fériés",
+      "description": "Voir les jours fériés qui tombent sur des jours de quart"
+    },
+    "accessibility": {
+      "checked": "sélectionné",
+      "unchecked": "non sélectionné",
+      "label": "{{title}}, {{status}}"
     }
   }
 }

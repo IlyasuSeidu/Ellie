@@ -366,7 +366,7 @@
       },
       "day": {
         "description": "Ukusebenza emini (isb., 6am-6pm)",
-        "title": "I-Day Shift"
+        "title": "Ishifu lasemini"
       },
       "morning": {
         "description": "Amahora asekuseni (isb., 4am-12pm)",
@@ -375,7 +375,7 @@
       "night": {
         "description": "Ukusebenza ebusuku (isb., 6pm-6am)",
         "descriptionThreeShift": "Amahora obusuku (isb., 8pm-4am)",
-        "title": "I-Night Shift"
+        "title": "Ishifu yasebusuku"
       },
       "off": {
         "description": "Ukuphumula nokululama ekhaya",
@@ -399,8 +399,8 @@
       "dayOfTotal": "Usuku {{day}} lwe-{{total}}"
     },
     "options": {
-      "day": "Day Shift",
-      "night": "Night Shift",
+      "day": "Ishifu lasemini",
+      "night": "Ishifu yasebusuku",
       "off": "Off Days"
     }
   },
@@ -455,8 +455,8 @@
       }
     },
     "swingConfig": {
-      "daysOnDayShift": "Izinsuku ku-Day Shift",
-      "daysOnNightShift": "Izinsuku ku-Night Shift",
+      "daysOnDayShift": "Izinsuku eshifini lasemini",
+      "daysOnNightShift": "Izinsuku eshifini yasebusuku",
       "splitTotal": "Isamba sokuhlukaniswa: {{swingSplitTotal}}/{{workBlockDays}} izinsuku",
       "validation": "Ukuhlukaniswa kwe-Swing kufanele kulingane nezinsuku ezingu-{{workBlockDays}} okungenani nosuku olungu-1 kushifti ngayinye.",
       "changePattern": "Shintsha Iphethini",
@@ -488,7 +488,7 @@
         "firstDayShiftAtSite": "Usuku lokuqala lokubuyela endaweni",
         "finalDayShiftBeforeNights": "Ukushintsha usuku lokugcina ngaphambi kokushintshela ebusuku",
         "dayShiftDayDescription": "Usuku lweshifu yosuku {{dayNumber}} lwebhulogi yakho yomsebenzi",
-        "nightShiftTitle": "I-Night Shift Day {{dayNumber}}",
+        "nightShiftTitle": "Usuku lweshifu yasebusuku {{dayNumber}}",
         "firstNightShiftInBlock": "Ishifu yokuqala yasebusuku kule block swing",
         "finalNightShiftBeforeHome": "Ishifu lokugcina lasebusuku ngaphambi kokundizela ekhaya",
         "nightShiftDayDescription": "Usuku lweshifu yasebusuku engu-{{dayNumber}} yendawo yakho yomsebenzi"
@@ -505,8 +505,8 @@
       "subtitleDefault": "Khetha idethi ofuna ikhalenda yakho iqale ngalo—abantu abaningi bayayikhetha namuhla"
     },
     "phaseLabels": {
-      "day": "I-Day Shift",
-      "night": "I-Night Shift",
+      "day": "Ishifu lasemini",
+      "night": "Ishifu yasebusuku",
       "morning": "Ishifthi lasekuseni",
       "afternoon": "I-Ntambama Shift",
       "off": "Izinsuku Zokuvala",
@@ -523,8 +523,8 @@
         "sat": "Mgq"
       },
       "legend": {
-        "dayShift": "I-Day Shift",
-        "nightShift": "I-Night Shift",
+        "dayShift": "Ishifu lasemini",
+        "nightShift": "Ishifu yasebusuku",
         "dayOff": "Usuku Lokusebenza",
         "morning": "Ekuseni",
         "afternoon": "Ntambama",
@@ -604,8 +604,8 @@
     "header": {
       "title": {
         "single": "Ingabe Ukushintsha Kwakho Kuqala Nini?",
-        "day": "I-Day Shift Times",
-        "night": "I-Night Shift Times",
+        "day": "Izikhathi zeshifu lasemini",
+        "night": "Izikhathi zeshifu yasebusuku",
         "morning": "Izikhathi zeshifthi lasekuseni",
         "afternoon": "Ntambama Shift Times",
         "default": "Izikhathi zamashifthi"
@@ -632,10 +632,10 @@
         "label": "Isikhathi Ngokwezifiso"
       },
       "early_day": {
-        "label": "I-Early Day Shift"
+        "label": "Ishifu lasemini eliqala kusenesikhathi"
       },
       "standard_day": {
-        "label": "I-Standard Day Shift"
+        "label": "Ishifu lasemini elijwayelekile"
       },
       "late_day": {
         "label": "Ishifthi losuku elibambezelwe"
@@ -644,7 +644,7 @@
         "label": "Ishifthi yasebusuku yokuqala"
       },
       "standard_night": {
-        "label": "I-Standard Night Shift"
+        "label": "Ishifu yasebusuku ejwayelekile"
       },
       "late_night": {
         "label": "Ishifthi yasebusuku ebambezelwe"
@@ -755,6 +755,14 @@
         "name": "U-Pitman",
         "stats": "Umjikelezo wezinsuku ezingu-7 - 2D/2N/3O"
       }
+    },
+    "presetDescriptions": {
+      "earlyStart": "Ukuqala kusenesikhathi",
+      "dayShift": "Ishifu lasemini",
+      "afternoon": "Ntambama",
+      "evening": "Kusihlwa",
+      "nightShift": "Ishifu yasebusuku",
+      "tapToSet": "Thepha ukuze usethe"
     }
   },
   "customPattern": {
@@ -781,10 +789,10 @@
       "legend": {
         "afternoon": "Ntambama",
         "dayOff": "Usuku Lokusebenza",
-        "dayShift": "I-Day Shift",
+        "dayShift": "Ishifu lasemini",
         "morning": "Ekuseni",
         "night": "Ebusuku",
-        "nightShift": "I-Night Shift"
+        "nightShift": "Ishifu yasebusuku"
       },
       "ratioLabel": "Konke ukuzungezisa okwenzayo",
       "restLabel": "Ukuphumula: {{count}} izinsuku",
@@ -852,12 +860,12 @@
     "sliders": {
       "daysAtHome": "Izinsuku Ekhaya (Ibhulokhi Yokuphumula)",
       "daysAtSite": "Izinsuku Esayithini (Ibhulokhi Yomsebenzi)",
-      "daysOnDayShift": "Izinsuku ku-Day Shift",
-      "daysOnNightShift": "Izinsuku ku-Night Shift"
+      "daysOnDayShift": "Izinsuku eshifini lasemini",
+      "daysOnNightShift": "Izinsuku eshifini yasebusuku"
     },
     "slidersTitle": "Setha Iphethini Yakho ye-FIFO",
     "subtitle": "Setha ibhulokhi yakho ekusayithi, ibhulokhi yasekhaya, nesitayela seshifu yebhulokhi yomsebenzi ukuze uthole ishejuli efanelana nomjikelezo wesayithi lakho.",
-    "subtitleSecondary": "I-Work Block, I-Rest Block & I-Pattern Split",
+    "subtitleSecondary": "Ibhulokhi yomsebenzi, ibhulokhi yokuphumula nohlukaniso lwephethini",
     "success": "Ukusethwa okuqinile kwe-FIFO. {{workBlockDays}} izinsuku endaweni, bese {{restBlockDays}} izinsuku ekhaya.",
     "swingSubtitle": "Hlukanisa ibhulokhi yakho yomsebenzi phakathi kwamashifu emini nasebusuku.",
     "swingTitle": "Ukucushwa kwe-Swing",
@@ -920,7 +928,7 @@
     "a11y": "Bot is typing"
   },
   "chatAvatar": {
-    "a11y": "Mining assistant avatar"
+    "a11y": "I-avatar yomsizi wezokumba"
   },
   "premiumCalendar": {
     "previousMonthA11y": "Previous month",
@@ -954,6 +962,29 @@
     "a11y": {
       "label": "Iphethini {{name}}",
       "hint": "Khetha iphethini yeshifu ethi {{description}}"
+    }
+  },
+  "reportOptions": {
+    "shiftSummary": {
+      "title": "Isifinyezo samashifu",
+      "description": "Bona inani lamashifu ngohlobo"
+    },
+    "earnings": {
+      "title": "Umbiko wemiholo",
+      "description": "Bala umholo ophelele nokuhlukaniswa kwawo"
+    },
+    "workLife": {
+      "title": "Ibhalansi yomsebenzi nempilo",
+      "description": "Hlaziya izinsuku zokuphumula nephesenti lomsebenzi"
+    },
+    "holidayImpact": {
+      "title": "Umthelela wamaholide",
+      "description": "Bona amaholide awela ezinsukwini zomsebenzi"
+    },
+    "accessibility": {
+      "checked": "kukhethiwe",
+      "unchecked": "akukhethwanga",
+      "label": "{{title}}, {{status}}"
     }
   }
 }

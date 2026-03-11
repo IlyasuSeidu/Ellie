@@ -113,7 +113,7 @@
       "listening": "Listening...",
       "processing": "Thinking...",
       "speaking": "Tap to stop speaking",
-      "wakeWordUnavailable": "Wake-word unavailable, tap the mic to talk",
+      "wakeWordUnavailable": "La palabra de activación no está disponible; toca el micrófono para hablar",
       "sayWakeWordOrTap": "Say \"{{wakeWordPhrase}}\" or tap the mic",
       "askAnother": "Tap the mic to ask another question",
       "askEllie": "Tap the mic to ask Ellie"
@@ -127,7 +127,7 @@
       "backend": "Service temporarily unavailable. Please try again.",
       "rateLimited": "Please wait briefly and retry.",
       "timeout": "Request timed out. Please retry.",
-      "wakeWordUnavailable": "Wake-word unavailable, tap the mic to talk.",
+      "wakeWordUnavailable": "La palabra de activación no está disponible; toca el micrófono para hablar.",
       "tts": "Could not play audio response."
     },
     "micA11y": {
@@ -192,6 +192,20 @@
       "today": "¡Hoy es {{holidayName}}!",
       "tomorrow": "Mañana es {{holidayName}}",
       "inDays": "{{holidayName}} es en {{daysBefore}} días ({{holidayDate}})"
+    }
+  },
+  "countdown": {
+    "leftIn": "Quedan {{time}} de {{shiftName}}",
+    "untilStarts": "{{time}} hasta que empiece {{shiftName}}",
+    "until": "{{time}} hasta {{shiftName}}",
+    "tomorrow": "{{shiftName}} mañana",
+    "daysUntil": "{{days}} días hasta {{shiftName}}",
+    "shiftNames": {
+      "day": "turno de día",
+      "night": "turno de noche",
+      "morning": "turno de mañana",
+      "afternoon": "turno de tarde",
+      "off": "día libre"
     }
   }
 }

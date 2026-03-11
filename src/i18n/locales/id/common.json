@@ -14,7 +14,27 @@
   },
   "errors": {
     "loadFailed": "Gagal memuat data",
-    "saveFailed": "Gagal menyimpan perubahan"
+    "saveFailed": "Gagal menyimpan perubahan",
+    "runtime": {
+      "authFailed": "Autentikasi gagal. Silakan masuk lagi.",
+      "network": "Kesalahan jaringan. Periksa koneksi Anda dan coba lagi.",
+      "server": "Terjadi kesalahan server. Coba lagi nanti.",
+      "unexpected": "Terjadi kesalahan yang tidak terduga. Coba lagi."
+    },
+    "auth": {
+      "userNotFound": "Tidak ada akun dengan email ini.",
+      "wrongPassword": "Kata sandi salah.",
+      "emailAlreadyInUse": "Akun dengan email ini sudah ada.",
+      "weakPassword": "Kata sandi terlalu lemah. Gunakan minimal 6 karakter.",
+      "invalidEmail": "Alamat email tidak valid.",
+      "operationNotAllowed": "Operasi ini tidak diizinkan.",
+      "tooManyRequests": "Terlalu banyak percobaan. Coba lagi nanti.",
+      "networkRequestFailed": "Kesalahan jaringan. Periksa koneksi Anda."
+    },
+    "titles": {
+      "error": "Kesalahan",
+      "unexpected": "Kesalahan tak terduga"
+    }
   },
   "avatar": {
     "title": "Foto Profil",

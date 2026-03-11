@@ -14,7 +14,27 @@
   },
   "errors": {
     "loadFailed": "Yehlulekile ukulayisha idatha",
-    "saveFailed": "Yehlulekile ukulondoloza izinguquko"
+    "saveFailed": "Yehlulekile ukulondoloza izinguquko",
+    "runtime": {
+      "authFailed": "Ukuqinisekisa kwehlulekile. Sicela ungene futhi.",
+      "network": "Iphutha lenethiwekhi. Hlola uxhumano lwakho bese uzama futhi.",
+      "server": "Kwenzeke iphutha leseva. Zama futhi kamuva.",
+      "unexpected": "Kwenzeke iphutha elingalindelekile. Sicela uzame futhi."
+    },
+    "auth": {
+      "userNotFound": "Ayikho i-akhawunti etholakele ngaleyo imeyili.",
+      "wrongPassword": "Iphasiwedi ayilungile.",
+      "emailAlreadyInUse": "I-akhawunti ngaleyo imeyili isivele ikhona.",
+      "weakPassword": "Iphasiwedi ibuthaka kakhulu. Sebenzisa okungenani izinhlamvu ezi-6.",
+      "invalidEmail": "Ikheli le-imeyili alivumelekile.",
+      "operationNotAllowed": "Lo msebenzi awuvunyelwe.",
+      "tooManyRequests": "Imizamo eminingi kakhulu. Sicela uzame futhi kamuva.",
+      "networkRequestFailed": "Iphutha lenethiwekhi. Hlola uxhumano lwakho."
+    },
+    "titles": {
+      "error": "Iphutha",
+      "unexpected": "Iphutha elingalindelekile"
+    }
   },
   "avatar": {
     "title": "Isithombe Sephrofayela",

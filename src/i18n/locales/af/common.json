@@ -14,7 +14,27 @@
   },
   "errors": {
     "loadFailed": "Kon nie data laai nie",
-    "saveFailed": "Kon nie veranderinge stoor nie"
+    "saveFailed": "Kon nie veranderinge stoor nie",
+    "runtime": {
+      "authFailed": "Verifikasie het misluk. Meld asseblief weer aan.",
+      "network": "Netwerkfout. Gaan jou verbinding na en probeer weer.",
+      "server": "Daar was ’n bedienerfout. Probeer later weer.",
+      "unexpected": "’n Onverwagte fout het voorgekom. Probeer weer."
+    },
+    "auth": {
+      "userNotFound": "Geen rekening met hierdie e-pos gevind nie.",
+      "wrongPassword": "Verkeerde wagwoord.",
+      "emailAlreadyInUse": "’n Rekening met hierdie e-pos bestaan reeds.",
+      "weakPassword": "Wagwoord is te swak. Gebruik minstens 6 karakters.",
+      "invalidEmail": "Ongeldige e-posadres.",
+      "operationNotAllowed": "Hierdie aksie word nie toegelaat nie.",
+      "tooManyRequests": "Te veel pogings. Probeer later weer.",
+      "networkRequestFailed": "Netwerkfout. Gaan jou verbinding na."
+    },
+    "titles": {
+      "error": "Fout",
+      "unexpected": "Onverwagte fout"
+    }
   },
   "avatar": {
     "title": "Profielfoto",

@@ -24,8 +24,8 @@
     "title": "Amashifu Azayo"
   },
   "shiftLabels": {
-    "day": "I-Day Shift",
-    "night": "I-Night Shift",
+    "day": "Ishifu lasemini",
+    "night": "Ishifu yasebusuku",
     "morning": "Ishifthi lasekuseni",
     "afternoon": "I-Ntambama Shift",
     "off": "Usuku Lokusebenza"
@@ -113,7 +113,7 @@
       "listening": "Listening...",
       "processing": "Thinking...",
       "speaking": "Tap to stop speaking",
-      "wakeWordUnavailable": "Wake-word unavailable, tap the mic to talk",
+      "wakeWordUnavailable": "Igama lokuvusa alitholakali, thepha imakrofoni ukuze ukhulume",
       "sayWakeWordOrTap": "Say \"{{wakeWordPhrase}}\" or tap the mic",
       "askAnother": "Tap the mic to ask another question",
       "askEllie": "Tap the mic to ask Ellie"
@@ -127,7 +127,7 @@
       "backend": "Service temporarily unavailable. Please try again.",
       "rateLimited": "Please wait briefly and retry.",
       "timeout": "Request timed out. Please retry.",
-      "wakeWordUnavailable": "Wake-word unavailable, tap the mic to talk.",
+      "wakeWordUnavailable": "Igama lokuvusa alitholakali, thepha imakrofoni ukuze ukhulume.",
       "tts": "Could not play audio response."
     },
     "micA11y": {
@@ -180,8 +180,8 @@
       "night": "ishifu yasebusuku"
     },
     "shiftCalloutTitle": {
-      "day": "Isaziso se-Day Shift",
-      "night": "Isaziso se-Night Shift"
+      "day": "Isaziso seshifu lasemini",
+      "night": "Isaziso seshifu yasebusuku"
     },
     "shiftBody": {
       "tomorrow": "I-{{shiftType}} yakho iqala kusasa ({{date}})",
@@ -192,6 +192,20 @@
       "today": "Namuhla yi-{{holidayName}}!",
       "tomorrow": "Kusasa yi-{{holidayName}}",
       "inDays": "{{holidayName}} isezinsukwini ezi-{{daysBefore}} ({{holidayDate}})"
+    }
+  },
+  "countdown": {
+    "leftIn": "{{time}} esele ku-{{shiftName}}",
+    "untilStarts": "{{time}} kuze kuqale {{shiftName}}",
+    "until": "{{time}} kuze kube {{shiftName}}",
+    "tomorrow": "{{shiftName}} kusasa",
+    "daysUntil": "{{days}} izinsuku kuze kube {{shiftName}}",
+    "shiftNames": {
+      "day": "ishifu lasemini",
+      "night": "ishifu yasebusuku",
+      "morning": "ishifu yasekuseni",
+      "afternoon": "ishifu yantambama",
+      "off": "usuku lokuphumula"
     }
   }
 }

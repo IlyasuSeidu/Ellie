@@ -377,8 +377,8 @@
       "dayOfTotal": "اليوم {{day}} من {{total}}"
     },
     "options": {
-      "day": "Day Shift",
-      "night": "Night Shift",
+      "day": "الوردية النهارية",
+      "night": "الوردية الليلية",
       "off": "Off Days"
     }
   },
@@ -733,6 +733,14 @@
         "name": "بيتمان",
         "stats": "دورة مدتها 7 أيام - 2D/2N/3O"
       }
+    },
+    "presetDescriptions": {
+      "earlyStart": "بداية مبكرة",
+      "dayShift": "الوردية النهارية",
+      "afternoon": "بعد الظهر",
+      "evening": "المساء",
+      "nightShift": "الوردية الليلية",
+      "tapToSet": "اضغط للتعيين"
     }
   },
   "customPattern": {
@@ -898,7 +906,7 @@
     "a11y": "Bot is typing"
   },
   "chatAvatar": {
-    "a11y": "Mining assistant avatar"
+    "a11y": "صورة مساعد التعدين"
   },
   "premiumCalendar": {
     "previousMonthA11y": "Previous month",
@@ -932,6 +940,29 @@
       "currentValueMinimum": "القيمة الحالية هي {{value}}. الحد الأدنى هو {{min}}.",
       "currentValueMaximum": "القيمة الحالية هي {{value}}. الحد الأقصى هو {{max}}.",
       "adjustHint": "اسحب لليسار أو اليمين لضبط القيمة"
+    }
+  },
+  "reportOptions": {
+    "shiftSummary": {
+      "title": "ملخص الورديات",
+      "description": "عرض عدد الورديات حسب النوع"
+    },
+    "earnings": {
+      "title": "تقرير الدخل",
+      "description": "حساب إجمالي الدخل والتفصيل"
+    },
+    "workLife": {
+      "title": "توازن العمل والحياة",
+      "description": "تحليل أيام الراحة ونسبة العمل"
+    },
+    "holidayImpact": {
+      "title": "تأثير العطلات",
+      "description": "عرض العطلات التي تقع في أيام الورديات"
+    },
+    "accessibility": {
+      "checked": "محدد",
+      "unchecked": "غير محدد",
+      "label": "{{title}}، {{status}}"
     }
   }
 }

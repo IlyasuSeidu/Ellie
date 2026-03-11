@@ -14,6 +14,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTranslation } from 'react-i18next';
+import i18n from '@/i18n';
 import { theme } from '@/utils/theme';
 import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
 
@@ -51,6 +53,7 @@ export const ReportCheckbox: React.FC<ReportCheckboxProps> = ({
   accessibilityLabel,
   testID,
 }) => {
+  const { t } = useTranslation('onboarding');
   const scale = useSharedValue(1);
   const checkScale = useSharedValue(checked ? 1 : 0);
 
@@ -107,7 +110,14 @@ export const ReportCheckbox: React.FC<ReportCheckboxProps> = ({
       ]}
       accessibilityRole="checkbox"
       accessibilityLabel={
-        accessibilityLabel || `${report.title}, ${checked ? 'checked' : 'unchecked'}`
+        accessibilityLabel ||
+        t('reportOptions.accessibility.label', {
+          title: report.title,
+          status: checked
+            ? t('reportOptions.accessibility.checked', { defaultValue: 'checked' })
+            : t('reportOptions.accessibility.unchecked', { defaultValue: 'unchecked' }),
+          defaultValue: '{{title}}, {{status}}',
+        })
       }
       accessibilityState={{ checked, disabled }}
       testID={testID}
@@ -258,20 +268,60 @@ const styles = StyleSheet.create({
 export const createReportMetadata = (type: ReportType, badgeCount?: number): ReportMetadata => {
   const reportConfig: Record<ReportType, { title: string; description: string }> = {
     'shift-summary': {
-      title: 'Shift Summary',
-      description: 'View count of shifts by type',
+      title: String(
+        i18n.t('reportOptions.shiftSummary.title', {
+          ns: 'onboarding',
+          defaultValue: 'Shift Summary',
+        })
+      ),
+      description: String(
+        i18n.t('reportOptions.shiftSummary.description', {
+          ns: 'onboarding',
+          defaultValue: 'View count of shifts by type',
+        })
+      ),
     },
     earnings: {
-      title: 'Earnings Report',
-      description: 'Calculate total pay and breakdown',
+      title: String(
+        i18n.t('reportOptions.earnings.title', {
+          ns: 'onboarding',
+          defaultValue: 'Earnings Report',
+        })
+      ),
+      description: String(
+        i18n.t('reportOptions.earnings.description', {
+          ns: 'onboarding',
+          defaultValue: 'Calculate total pay and breakdown',
+        })
+      ),
     },
     'work-life': {
-      title: 'Work-Life Balance',
-      description: 'Analyze off days and work percentage',
+      title: String(
+        i18n.t('reportOptions.workLife.title', {
+          ns: 'onboarding',
+          defaultValue: 'Work-Life Balance',
+        })
+      ),
+      description: String(
+        i18n.t('reportOptions.workLife.description', {
+          ns: 'onboarding',
+          defaultValue: 'Analyze off days and work percentage',
+        })
+      ),
     },
     'holiday-impact': {
-      title: 'Holiday Impact',
-      description: 'See holidays falling on shift days',
+      title: String(
+        i18n.t('reportOptions.holidayImpact.title', {
+          ns: 'onboarding',
+          defaultValue: 'Holiday Impact',
+        })
+      ),
+      description: String(
+        i18n.t('reportOptions.holidayImpact.description', {
+          ns: 'onboarding',
+          defaultValue: 'See holidays falling on shift days',
+        })
+      ),
     },
   };
 

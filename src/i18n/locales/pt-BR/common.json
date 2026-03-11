@@ -14,7 +14,27 @@
   },
   "errors": {
     "loadFailed": "Falha ao carregar dados",
-    "saveFailed": "Falha ao salvar alteracoes"
+    "saveFailed": "Falha ao salvar alteracoes",
+    "runtime": {
+      "authFailed": "Falha na autenticação. Faça login novamente.",
+      "network": "Erro de rede. Verifique sua conexão e tente novamente.",
+      "server": "Ocorreu um erro no servidor. Tente novamente mais tarde.",
+      "unexpected": "Ocorreu um erro inesperado. Tente novamente."
+    },
+    "auth": {
+      "userNotFound": "Nenhuma conta encontrada com este e-mail.",
+      "wrongPassword": "Senha incorreta.",
+      "emailAlreadyInUse": "Já existe uma conta com este e-mail.",
+      "weakPassword": "A senha é fraca. Use pelo menos 6 caracteres.",
+      "invalidEmail": "Endereço de e-mail inválido.",
+      "operationNotAllowed": "Esta operação não é permitida.",
+      "tooManyRequests": "Muitas tentativas. Tente novamente mais tarde.",
+      "networkRequestFailed": "Erro de rede. Verifique sua conexão."
+    },
+    "titles": {
+      "error": "Erro",
+      "unexpected": "Erro inesperado"
+    }
   },
   "avatar": {
     "title": "Foto de perfil",

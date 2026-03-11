@@ -14,7 +14,27 @@
   },
   "errors": {
     "loadFailed": "Failed to load data",
-    "saveFailed": "Failed to save changes"
+    "saveFailed": "Failed to save changes",
+    "runtime": {
+      "authFailed": "Authentication failed. Please sign in again.",
+      "network": "Network error. Please check your connection and try again.",
+      "server": "A server error occurred. Please try again later.",
+      "unexpected": "An unexpected error occurred. Please try again."
+    },
+    "auth": {
+      "userNotFound": "No account found with this email.",
+      "wrongPassword": "Incorrect password.",
+      "emailAlreadyInUse": "An account with this email already exists.",
+      "weakPassword": "Password is too weak. Use at least 6 characters.",
+      "invalidEmail": "Invalid email address.",
+      "operationNotAllowed": "This operation is not allowed.",
+      "tooManyRequests": "Too many attempts. Please try again later.",
+      "networkRequestFailed": "Network error. Please check your connection."
+    },
+    "titles": {
+      "error": "Error",
+      "unexpected": "Unexpected Error"
+    }
   },
   "avatar": {
     "title": "Profile Photo",

@@ -113,7 +113,7 @@
       "listening": "Listening...",
       "processing": "Thinking...",
       "speaking": "Tap to stop speaking",
-      "wakeWordUnavailable": "Wake-word unavailable, tap the mic to talk",
+      "wakeWordUnavailable": "Kata pemicu tidak tersedia, ketuk mikrofon untuk berbicara",
       "sayWakeWordOrTap": "Say \"{{wakeWordPhrase}}\" or tap the mic",
       "askAnother": "Tap the mic to ask another question",
       "askEllie": "Tap the mic to ask Ellie"
@@ -127,7 +127,7 @@
       "backend": "Service temporarily unavailable. Please try again.",
       "rateLimited": "Please wait briefly and retry.",
       "timeout": "Request timed out. Please retry.",
-      "wakeWordUnavailable": "Wake-word unavailable, tap the mic to talk.",
+      "wakeWordUnavailable": "Kata pemicu tidak tersedia, ketuk mikrofon untuk berbicara.",
       "tts": "Could not play audio response."
     },
     "micA11y": {
@@ -192,6 +192,20 @@
       "today": "Hari ini adalah {{holidayName}}!",
       "tomorrow": "Besok adalah {{holidayName}}",
       "inDays": "{{holidayName}} dalam {{daysBefore}} hari ({{holidayDate}})"
+    }
+  },
+  "countdown": {
+    "leftIn": "{{time}} tersisa di {{shiftName}}",
+    "untilStarts": "{{time}} hingga {{shiftName}} dimulai",
+    "until": "{{time}} hingga {{shiftName}}",
+    "tomorrow": "{{shiftName}} besok",
+    "daysUntil": "{{days}} hari hingga {{shiftName}}",
+    "shiftNames": {
+      "day": "shift siang",
+      "night": "shift malam",
+      "morning": "shift pagi",
+      "afternoon": "shift sore",
+      "off": "hari libur"
     }
   }
 }

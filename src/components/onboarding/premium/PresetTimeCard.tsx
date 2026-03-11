@@ -9,6 +9,7 @@ import { TouchableOpacity, View, StyleSheet, Platform } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
+import i18n from '@/i18n';
 import { theme } from '@/utils/theme';
 import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
 
@@ -17,8 +18,12 @@ export interface TimePreset {
   time: string;
   /** Display label for the time */
   label: string;
+  /** Optional i18n key for label */
+  labelKey?: string;
   /** Description of the preset */
   description: string;
+  /** Optional i18n key for description */
+  descriptionKey?: string;
 }
 
 export interface PresetTimeCardProps {
@@ -47,6 +52,12 @@ export const PresetTimeCard: React.FC<PresetTimeCardProps> = ({
   testID,
 }) => {
   const scale = useSharedValue(1);
+  const displayLabel = preset.labelKey
+    ? String(i18n.t(preset.labelKey, { ns: 'onboarding', defaultValue: preset.label }))
+    : preset.label;
+  const displayDescription = preset.descriptionKey
+    ? String(i18n.t(preset.descriptionKey, { ns: 'onboarding', defaultValue: preset.description }))
+    : preset.description;
 
   const handlePressIn = () => {
     if (!disabled) {
@@ -86,7 +97,7 @@ export const PresetTimeCard: React.FC<PresetTimeCardProps> = ({
         activeOpacity={1}
         style={[animatedStyle, styles.container, disabled && styles.disabledContainer]}
         accessibilityRole="button"
-        accessibilityLabel={accessibilityLabel || `${preset.label}, ${preset.description}`}
+        accessibilityLabel={accessibilityLabel || `${displayLabel}, ${displayDescription}`}
         accessibilityState={{ selected, disabled }}
         testID={testID}
       >
@@ -97,8 +108,8 @@ export const PresetTimeCard: React.FC<PresetTimeCardProps> = ({
           style={styles.selectedGradient}
         >
           <View style={styles.goldGlow} />
-          <Animated.Text style={styles.selectedTimeLabel}>{preset.label}</Animated.Text>
-          <Animated.Text style={styles.selectedDescription}>{preset.description}</Animated.Text>
+          <Animated.Text style={styles.selectedTimeLabel}>{displayLabel}</Animated.Text>
+          <Animated.Text style={styles.selectedDescription}>{displayDescription}</Animated.Text>
         </LinearGradient>
       </AnimatedTouchable>
     );
@@ -118,12 +129,12 @@ export const PresetTimeCard: React.FC<PresetTimeCardProps> = ({
         disabled && styles.disabledContainer,
       ]}
       accessibilityRole="button"
-      accessibilityLabel={accessibilityLabel || `${preset.label}, ${preset.description}`}
+      accessibilityLabel={accessibilityLabel || `${displayLabel}, ${displayDescription}`}
       accessibilityState={{ selected, disabled }}
       testID={testID}
     >
-      <Animated.Text style={styles.timeLabel}>{preset.label}</Animated.Text>
-      <Animated.Text style={styles.description}>{preset.description}</Animated.Text>
+      <Animated.Text style={styles.timeLabel}>{displayLabel}</Animated.Text>
+      <Animated.Text style={styles.description}>{displayDescription}</Animated.Text>
     </AnimatedTouchable>
   );
 };
@@ -217,26 +228,31 @@ export const TIME_PRESETS: TimePreset[] = [
     time: '06:00',
     label: '6:00 AM',
     description: 'Early Start',
+    descriptionKey: 'shiftTime.presetDescriptions.earlyStart',
   },
   {
     time: '07:00',
     label: '7:00 AM',
     description: 'Day Shift',
+    descriptionKey: 'shiftTime.presetDescriptions.dayShift',
   },
   {
     time: '14:00',
     label: '2:00 PM',
     description: 'Afternoon',
+    descriptionKey: 'shiftTime.presetDescriptions.afternoon',
   },
   {
     time: '18:00',
     label: '6:00 PM',
     description: 'Evening',
+    descriptionKey: 'shiftTime.presetDescriptions.evening',
   },
   {
     time: '22:00',
     label: '10:00 PM',
     description: 'Night Shift',
+    descriptionKey: 'shiftTime.presetDescriptions.nightShift',
   },
 ];
 
@@ -247,4 +263,5 @@ export const CUSTOM_PRESET: TimePreset = {
   time: 'custom',
   label: 'Custom',
   description: 'Tap to set',
+  descriptionKey: 'shiftTime.presetDescriptions.tapToSet',
 };

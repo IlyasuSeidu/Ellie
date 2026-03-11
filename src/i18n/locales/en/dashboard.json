@@ -193,5 +193,19 @@
       "tomorrow": "Tomorrow is {{holidayName}}",
       "inDays": "{{holidayName}} is in {{daysBefore}} days ({{holidayDate}})"
     }
+  },
+  "countdown": {
+    "leftIn": "{{time}} left in {{shiftName}}",
+    "untilStarts": "{{time}} until {{shiftName}} starts",
+    "until": "{{time}} until {{shiftName}}",
+    "tomorrow": "{{shiftName}} tomorrow",
+    "daysUntil": "{{days}} days until {{shiftName}}",
+    "shiftNames": {
+      "day": "day shift",
+      "night": "night shift",
+      "morning": "morning shift",
+      "afternoon": "afternoon shift",
+      "off": "day off"
+    }
   }
 }

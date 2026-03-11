@@ -113,7 +113,7 @@
       "listening": "Listening...",
       "processing": "Thinking...",
       "speaking": "Tap to stop speaking",
-      "wakeWordUnavailable": "Wake-word unavailable, tap the mic to talk",
+      "wakeWordUnavailable": "Wekwoord is nie beskikbaar nie, tik die mikrofoon om te praat",
       "sayWakeWordOrTap": "Say \"{{wakeWordPhrase}}\" or tap the mic",
       "askAnother": "Tap the mic to ask another question",
       "askEllie": "Tap the mic to ask Ellie"
@@ -127,7 +127,7 @@
       "backend": "Service temporarily unavailable. Please try again.",
       "rateLimited": "Please wait briefly and retry.",
       "timeout": "Request timed out. Please retry.",
-      "wakeWordUnavailable": "Wake-word unavailable, tap the mic to talk.",
+      "wakeWordUnavailable": "Wekwoord is nie beskikbaar nie, tik die mikrofoon om te praat.",
       "tts": "Could not play audio response."
     },
     "micA11y": {
@@ -192,6 +192,20 @@
       "today": "Vandag is {{holidayName}}!",
       "tomorrow": "Môre is {{holidayName}}",
       "inDays": "{{holidayName}} is oor {{daysBefore}} dae ({{holidayDate}})"
+    }
+  },
+  "countdown": {
+    "leftIn": "{{time}} oor in {{shiftName}}",
+    "untilStarts": "{{time}} totdat {{shiftName}} begin",
+    "until": "{{time}} tot {{shiftName}}",
+    "tomorrow": "{{shiftName}} môre",
+    "daysUntil": "{{days}} dae tot {{shiftName}}",
+    "shiftNames": {
+      "day": "dagskof",
+      "night": "nagskof",
+      "morning": "oggendskof",
+      "afternoon": "middagskof",
+      "off": "afdag"
     }
   }
 }

@@ -113,7 +113,7 @@
       "listening": "Listening...",
       "processing": "Thinking...",
       "speaking": "Tap to stop speaking",
-      "wakeWordUnavailable": "Wake-word unavailable, tap the mic to talk",
+      "wakeWordUnavailable": "वेक-वर्ड उपलब्ध नहीं है, बात करने के लिए माइक्रोफ़ोन टैप करें।",
       "sayWakeWordOrTap": "Say \"{{wakeWordPhrase}}\" or tap the mic",
       "askAnother": "Tap the mic to ask another question",
       "askEllie": "Tap the mic to ask Ellie"
@@ -127,7 +127,7 @@
       "backend": "Service temporarily unavailable. Please try again.",
       "rateLimited": "Please wait briefly and retry.",
       "timeout": "Request timed out. Please retry.",
-      "wakeWordUnavailable": "Wake-word unavailable, tap the mic to talk.",
+      "wakeWordUnavailable": "वेक-वर्ड उपलब्ध नहीं है, बात करने के लिए माइक्रोफ़ोन टैप करें।",
       "tts": "Could not play audio response."
     },
     "micA11y": {
@@ -192,6 +192,20 @@
       "today": "आज {{holidayName}} है!",
       "tomorrow": "कल {{holidayName}} है",
       "inDays": "{{holidayName}} {{daysBefore}} दिनों में है ({{holidayDate}})"
+    }
+  },
+  "countdown": {
+    "leftIn": "{{shiftName}} में {{time}} बाकी",
+    "untilStarts": "{{shiftName}} शुरू होने में {{time}}",
+    "until": "{{shiftName}} तक {{time}}",
+    "tomorrow": "{{shiftName}} कल",
+    "daysUntil": "{{shiftName}} तक {{days}} दिन",
+    "shiftNames": {
+      "day": "दिन की शिफ्ट",
+      "night": "रात की शिफ्ट",
+      "morning": "सुबह की शिफ्ट",
+      "afternoon": "दोपहर की शिफ्ट",
+      "off": "छुट्टी का दिन"
     }
   }
 }

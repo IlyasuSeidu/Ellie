@@ -14,7 +14,27 @@
   },
   "errors": {
     "loadFailed": "Échec du chargement des données",
-    "saveFailed": "Échec de l'enregistrement des modifications"
+    "saveFailed": "Échec de l'enregistrement des modifications",
+    "runtime": {
+      "authFailed": "Échec de l’authentification. Veuillez vous reconnecter.",
+      "network": "Erreur réseau. Vérifiez votre connexion et réessayez.",
+      "server": "Une erreur serveur est survenue. Réessayez plus tard.",
+      "unexpected": "Une erreur inattendue est survenue. Réessayez."
+    },
+    "auth": {
+      "userNotFound": "Aucun compte trouvé avec cet e-mail.",
+      "wrongPassword": "Mot de passe incorrect.",
+      "emailAlreadyInUse": "Un compte avec cet e-mail existe déjà.",
+      "weakPassword": "Le mot de passe est trop faible. Utilisez au moins 6 caractères.",
+      "invalidEmail": "Adresse e-mail invalide.",
+      "operationNotAllowed": "Cette opération n’est pas autorisée.",
+      "tooManyRequests": "Trop de tentatives. Réessayez plus tard.",
+      "networkRequestFailed": "Erreur réseau. Vérifiez votre connexion."
+    },
+    "titles": {
+      "error": "Erreur",
+      "unexpected": "Erreur inattendue"
+    }
   },
   "avatar": {
     "title": "Photo de profil",

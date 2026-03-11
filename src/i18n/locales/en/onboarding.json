@@ -749,6 +749,14 @@
         "name": "Pitman",
         "stats": "7-day cycle - 2D/2N/3O"
       }
+    },
+    "presetDescriptions": {
+      "earlyStart": "Early Start",
+      "dayShift": "Day Shift",
+      "afternoon": "Afternoon",
+      "evening": "Evening",
+      "nightShift": "Night Shift",
+      "tapToSet": "Tap to set"
     }
   },
   "customPattern": {
@@ -935,6 +943,29 @@
       "currentValueMinimum": "Current value is {{value}}. Minimum is {{min}}.",
       "currentValueMaximum": "Current value is {{value}}. Maximum is {{max}}.",
       "adjustHint": "Swipe left or right to adjust value"
+    }
+  },
+  "reportOptions": {
+    "shiftSummary": {
+      "title": "Shift Summary",
+      "description": "View count of shifts by type"
+    },
+    "earnings": {
+      "title": "Earnings Report",
+      "description": "Calculate total pay and breakdown"
+    },
+    "workLife": {
+      "title": "Work-Life Balance",
+      "description": "Analyze off days and work percentage"
+    },
+    "holidayImpact": {
+      "title": "Holiday Impact",
+      "description": "See holidays falling on shift days"
+    },
+    "accessibility": {
+      "checked": "checked",
+      "unchecked": "unchecked",
+      "label": "{{title}}, {{status}}"
     }
   }
 }

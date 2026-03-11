@@ -343,8 +343,8 @@
       "dayOfTotal": "{{total}} 第 {{day}} 天"
     },
     "options": {
-      "day": "Day Shift",
-      "night": "Night Shift",
+      "day": "白班",
+      "night": "夜班",
       "off": "Off Days"
     }
   },
@@ -699,6 +699,14 @@
         "name": "皮特曼",
         "stats": "7 天周期 - 2D/2N/3O"
       }
+    },
+    "presetDescriptions": {
+      "earlyStart": "早开始",
+      "dayShift": "白班",
+      "afternoon": "下午",
+      "evening": "傍晚",
+      "nightShift": "夜班",
+      "tapToSet": "点击设置"
     }
   },
   "customPattern": {
@@ -864,7 +872,7 @@
     "a11y": "Bot is typing"
   },
   "chatAvatar": {
-    "a11y": "Mining assistant avatar"
+    "a11y": "矿工助手头像"
   },
   "premiumCalendar": {
     "previousMonthA11y": "Previous month",
@@ -898,6 +906,29 @@
     "a11y": {
       "label": "{{name}} 模式",
       "hint": "选择 {{description}} 班次模式"
+    }
+  },
+  "reportOptions": {
+    "shiftSummary": {
+      "title": "班次摘要",
+      "description": "按类型查看班次数量"
+    },
+    "earnings": {
+      "title": "收入报告",
+      "description": "计算总收入及明细"
+    },
+    "workLife": {
+      "title": "工作生活平衡",
+      "description": "分析休息日和工作占比"
+    },
+    "holidayImpact": {
+      "title": "节假日影响",
+      "description": "查看落在上班日的节假日"
+    },
+    "accessibility": {
+      "checked": "已选中",
+      "unchecked": "未选中",
+      "label": "{{title}}，{{status}}"
     }
   }
 }

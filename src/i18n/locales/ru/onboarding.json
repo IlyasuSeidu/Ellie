@@ -389,8 +389,8 @@
       "dayOfTotal": "День {{day}} {{total}}"
     },
     "options": {
-      "day": "Day Shift",
-      "night": "Night Shift",
+      "day": "Дневная смена",
+      "night": "Ночная смена",
       "off": "Off Days"
     }
   },
@@ -745,6 +745,14 @@
         "name": "Питман",
         "stats": "7-дневный цикл - 2Д/2Н/3О"
       }
+    },
+    "presetDescriptions": {
+      "earlyStart": "Раннее начало",
+      "dayShift": "Дневная смена",
+      "afternoon": "После обеда",
+      "evening": "Вечер",
+      "nightShift": "Ночная смена",
+      "tapToSet": "Нажмите, чтобы задать"
     }
   },
   "customPattern": {
@@ -910,7 +918,7 @@
     "a11y": "Bot is typing"
   },
   "chatAvatar": {
-    "a11y": "Mining assistant avatar"
+    "a11y": "Аватар помощника по сменам"
   },
   "premiumCalendar": {
     "previousMonthA11y": "Previous month",
@@ -944,6 +952,29 @@
     "a11y": {
       "label": "Шаблон {{name}}",
       "hint": "Выбирает шаблон смен {{description}}"
+    }
+  },
+  "reportOptions": {
+    "shiftSummary": {
+      "title": "Сводка смен",
+      "description": "Посмотреть количество смен по типам"
+    },
+    "earnings": {
+      "title": "Отчет о заработке",
+      "description": "Рассчитать общий доход и разбивку"
+    },
+    "workLife": {
+      "title": "Баланс работа-жизнь",
+      "description": "Анализировать выходные дни и долю рабочих дней"
+    },
+    "holidayImpact": {
+      "title": "Влияние праздников",
+      "description": "Посмотреть праздники, попадающие на смены"
+    },
+    "accessibility": {
+      "checked": "выбрано",
+      "unchecked": "не выбрано",
+      "label": "{{title}}, {{status}}"
     }
   }
 }

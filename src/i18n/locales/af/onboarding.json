@@ -380,8 +380,8 @@
       "dayOfTotal": "Dag {{day}} van {{total}}"
     },
     "options": {
-      "day": "Day Shift",
-      "night": "Night Shift",
+      "day": "Dagskof",
+      "night": "Nagskof",
       "off": "Off Days"
     }
   },
@@ -736,6 +736,14 @@
         "name": "Pitman-skedule",
         "stats": "7-dag siklus - 2D/2N/3O"
       }
+    },
+    "presetDescriptions": {
+      "earlyStart": "Vroeë begin",
+      "dayShift": "Dagskof",
+      "afternoon": "Middag",
+      "evening": "Aand",
+      "nightShift": "Nagskof",
+      "tapToSet": "Tik om te stel"
     }
   },
   "customPattern": {
@@ -901,7 +909,7 @@
     "a11y": "Bot is typing"
   },
   "chatAvatar": {
-    "a11y": "Mining assistant avatar"
+    "a11y": "Myn-assistent avatar"
   },
   "premiumCalendar": {
     "previousMonthA11y": "Previous month",
@@ -935,6 +943,29 @@
     "a11y": {
       "label": "{{name}} patroon",
       "hint": "Kies die {{description}}-skofpatroon"
+    }
+  },
+  "reportOptions": {
+    "shiftSummary": {
+      "title": "Skofopsomming",
+      "description": "Sien die aantal skofte per tipe"
+    },
+    "earnings": {
+      "title": "Inkomsteverslag",
+      "description": "Bereken totale betaling en uiteensetting"
+    },
+    "workLife": {
+      "title": "Werk-lewe-balans",
+      "description": "Ontleed afdae en werkpersentasie"
+    },
+    "holidayImpact": {
+      "title": "Vakansie-impak",
+      "description": "Sien vakansiedae wat op skofdae val"
+    },
+    "accessibility": {
+      "checked": "gekies",
+      "unchecked": "nie gekies nie",
+      "label": "{{title}}, {{status}}"
     }
   }
 }

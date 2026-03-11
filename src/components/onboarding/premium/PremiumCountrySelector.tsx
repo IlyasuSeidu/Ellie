@@ -9,6 +9,8 @@ import { View, TouchableOpacity, ScrollView, StyleSheet, Platform, TextInput } f
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
+import i18n from '@/i18n';
+import { normalizeLanguage } from '@/i18n/languageDetector';
 import { theme } from '@/utils/theme';
 import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
 
@@ -94,6 +96,33 @@ const DEFAULT_COUNTRIES: Country[] = [
 
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
+const getCountryDisplayLocale = (): string => {
+  const normalized = normalizeLanguage(i18n.resolvedLanguage ?? i18n.language ?? 'en');
+  if (normalized === 'es') return 'es-ES';
+  if (normalized === 'pt-BR') return 'pt-BR';
+  if (normalized === 'fr') return 'fr-FR';
+  if (normalized === 'ar') return 'ar';
+  if (normalized === 'zh-CN') return 'zh-CN';
+  if (normalized === 'ru') return 'ru-RU';
+  if (normalized === 'hi') return 'hi-IN';
+  if (normalized === 'af') return 'af-ZA';
+  if (normalized === 'zu') return 'zu-ZA';
+  if (normalized === 'id') return 'id-ID';
+  return 'en-US';
+};
+
+const resolveLocalizedCountryName = (countryCode: string, fallbackName: string): string => {
+  try {
+    if (typeof Intl === 'undefined' || typeof Intl.DisplayNames === 'undefined') {
+      return fallbackName;
+    }
+    const formatter = new Intl.DisplayNames([getCountryDisplayLocale()], { type: 'region' });
+    return formatter.of(countryCode) || fallbackName;
+  } catch {
+    return fallbackName;
+  }
+};
+
 export const PremiumCountrySelector: React.FC<PremiumCountrySelectorProps> = ({
   selectedCountry,
   onCountrySelect,
@@ -101,23 +130,40 @@ export const PremiumCountrySelector: React.FC<PremiumCountrySelectorProps> = ({
   searchPlaceholder,
   testID,
 }) => {
-  const { t } = useTranslation('onboarding');
+  const { t, i18n: i18nInstance } = useTranslation('onboarding');
   const [searchQuery, setSearchQuery] = useState('');
   const resolvedSearchPlaceholder =
     searchPlaceholder ??
     t('countrySelector.searchPlaceholder', { defaultValue: 'Search countries...' });
+  const usesDefaultCountries = countries === DEFAULT_COUNTRIES;
+
+  const displayCountries = useMemo(() => {
+    if (!usesDefaultCountries) {
+      return countries;
+    }
+    void i18nInstance.resolvedLanguage;
+    return countries.map((country) => ({
+      ...country,
+      name: resolveLocalizedCountryName(country.code, country.name),
+    }));
+  }, [countries, usesDefaultCountries, i18nInstance.resolvedLanguage]);
 
   const filteredCountries = useMemo(() => {
     if (!searchQuery.trim()) {
-      return countries;
+      return displayCountries;
     }
 
     const query = searchQuery.toLowerCase();
-    return countries.filter(
-      (country) =>
-        country.name.toLowerCase().includes(query) || country.code.toLowerCase().includes(query)
-    );
-  }, [searchQuery, countries]);
+    return displayCountries.filter((country) => {
+      const fallbackCountry = DEFAULT_COUNTRIES.find((entry) => entry.code === country.code);
+      const fallbackName = fallbackCountry?.name.toLowerCase() ?? '';
+      return (
+        country.name.toLowerCase().includes(query) ||
+        fallbackName.includes(query) ||
+        country.code.toLowerCase().includes(query)
+      );
+    });
+  }, [searchQuery, displayCountries]);
 
   const handleCountryPress = (country: Country) => {
     void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {

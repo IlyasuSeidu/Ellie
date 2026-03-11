@@ -394,8 +394,8 @@
       "dayOfTotal": "Hari {{day}} tanggal {{total}}"
     },
     "options": {
-      "day": "Day Shift",
-      "night": "Night Shift",
+      "day": "Shift siang",
+      "night": "Shift malam",
       "off": "Off Days"
     }
   },
@@ -750,6 +750,14 @@
         "name": "manusia pit",
         "stats": "Siklus 7 hari - 2H/2N/3O"
       }
+    },
+    "presetDescriptions": {
+      "earlyStart": "Mulai lebih awal",
+      "dayShift": "Shift siang",
+      "afternoon": "Sore",
+      "evening": "Malam awal",
+      "nightShift": "Shift malam",
+      "tapToSet": "Ketuk untuk mengatur"
     }
   },
   "customPattern": {
@@ -915,7 +923,7 @@
     "a11y": "Bot is typing"
   },
   "chatAvatar": {
-    "a11y": "Mining assistant avatar"
+    "a11y": "Avatar asisten tambang"
   },
   "premiumCalendar": {
     "previousMonthA11y": "Previous month",
@@ -949,6 +957,29 @@
     "a11y": {
       "label": "Pola {{name}}",
       "hint": "Memilih pola shift {{description}}"
+    }
+  },
+  "reportOptions": {
+    "shiftSummary": {
+      "title": "Ringkasan shift",
+      "description": "Lihat jumlah shift berdasarkan jenis"
+    },
+    "earnings": {
+      "title": "Laporan penghasilan",
+      "description": "Hitung total bayaran dan rinciannya"
+    },
+    "workLife": {
+      "title": "Keseimbangan kerja-hidup",
+      "description": "Analisis hari libur dan persentase kerja"
+    },
+    "holidayImpact": {
+      "title": "Dampak hari libur",
+      "description": "Lihat hari libur yang jatuh pada hari shift"
+    },
+    "accessibility": {
+      "checked": "dipilih",
+      "unchecked": "belum dipilih",
+      "label": "{{title}}, {{status}}"
     }
   }
 }

@@ -113,7 +113,7 @@
       "listening": "Listening...",
       "processing": "Thinking...",
       "speaking": "Tap to stop speaking",
-      "wakeWordUnavailable": "Wake-word unavailable, tap the mic to talk",
+      "wakeWordUnavailable": "Ключевая фраза недоступна, нажмите на микрофон, чтобы говорить",
       "sayWakeWordOrTap": "Say \"{{wakeWordPhrase}}\" or tap the mic",
       "askAnother": "Tap the mic to ask another question",
       "askEllie": "Tap the mic to ask Ellie"
@@ -127,7 +127,7 @@
       "backend": "Service temporarily unavailable. Please try again.",
       "rateLimited": "Please wait briefly and retry.",
       "timeout": "Request timed out. Please retry.",
-      "wakeWordUnavailable": "Wake-word unavailable, tap the mic to talk.",
+      "wakeWordUnavailable": "Ключевая фраза недоступна, нажмите на микрофон, чтобы говорить.",
       "tts": "Could not play audio response."
     },
     "micA11y": {
@@ -192,6 +192,20 @@
       "today": "Сегодня {{holidayName}}!",
       "tomorrow": "Завтра {{holidayName}}",
       "inDays": "{{holidayName}} через {{daysBefore}} дн. ({{holidayDate}})"
+    }
+  },
+  "countdown": {
+    "leftIn": "Осталось {{time}} в {{shiftName}}",
+    "untilStarts": "{{time}} до начала {{shiftName}}",
+    "until": "{{time}} до {{shiftName}}",
+    "tomorrow": "{{shiftName}} завтра",
+    "daysUntil": "{{days}} дн. до {{shiftName}}",
+    "shiftNames": {
+      "day": "дневной смены",
+      "night": "ночной смены",
+      "morning": "утренней смены",
+      "afternoon": "дневной смены",
+      "off": "выходного"
     }
   }
 }

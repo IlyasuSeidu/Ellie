@@ -5,6 +5,15 @@
  */
 
 import { logger } from './logger';
+import i18n from '@/i18n';
+
+const tCommon = (key: string, fallback: string): string =>
+  String(
+    i18n.t(key, {
+      ns: 'common',
+      defaultValue: fallback,
+    })
+  );
 
 /**
  * Base application error class
@@ -84,28 +93,49 @@ export function formatErrorMessage(error: Error): string {
   }
 
   if (error instanceof AuthenticationError) {
-    return 'Authentication failed. Please sign in again.';
+    return tCommon('errors.runtime.authFailed', 'Authentication failed. Please sign in again.');
   }
 
   if (error instanceof NetworkError) {
-    return 'Network error. Please check your connection and try again.';
+    return tCommon(
+      'errors.runtime.network',
+      'Network error. Please check your connection and try again.'
+    );
   }
 
   if (error instanceof FirebaseError) {
-    return 'A server error occurred. Please try again later.';
+    return tCommon('errors.runtime.server', 'A server error occurred. Please try again later.');
   }
 
   // Handle Firebase auth errors
   if (error.message.includes('auth/')) {
     const authErrorMap: Record<string, string> = {
-      'auth/user-not-found': 'No account found with this email.',
-      'auth/wrong-password': 'Incorrect password.',
-      'auth/email-already-in-use': 'An account with this email already exists.',
-      'auth/weak-password': 'Password is too weak. Use at least 6 characters.',
-      'auth/invalid-email': 'Invalid email address.',
-      'auth/operation-not-allowed': 'This operation is not allowed.',
-      'auth/too-many-requests': 'Too many attempts. Please try again later.',
-      'auth/network-request-failed': 'Network error. Please check your connection.',
+      'auth/user-not-found': tCommon(
+        'errors.auth.userNotFound',
+        'No account found with this email.'
+      ),
+      'auth/wrong-password': tCommon('errors.auth.wrongPassword', 'Incorrect password.'),
+      'auth/email-already-in-use': tCommon(
+        'errors.auth.emailAlreadyInUse',
+        'An account with this email already exists.'
+      ),
+      'auth/weak-password': tCommon(
+        'errors.auth.weakPassword',
+        'Password is too weak. Use at least 6 characters.'
+      ),
+      'auth/invalid-email': tCommon('errors.auth.invalidEmail', 'Invalid email address.'),
+      'auth/operation-not-allowed': tCommon(
+        'errors.auth.operationNotAllowed',
+        'This operation is not allowed.'
+      ),
+      'auth/too-many-requests': tCommon(
+        'errors.auth.tooManyRequests',
+        'Too many attempts. Please try again later.'
+      ),
+      'auth/network-request-failed': tCommon(
+        'errors.auth.networkRequestFailed',
+        'Network error. Please check your connection.'
+      ),
     };
 
     for (const [code, message] of Object.entries(authErrorMap)) {
@@ -116,7 +146,7 @@ export function formatErrorMessage(error: Error): string {
   }
 
   // Generic fallback
-  return 'An unexpected error occurred. Please try again.';
+  return tCommon('errors.runtime.unexpected', 'An unexpected error occurred. Please try again.');
 }
 
 /**
@@ -172,14 +202,14 @@ export function getDisplayError(error: Error): {
 } {
   if (error instanceof AppError) {
     return {
-      title: 'Error',
+      title: tCommon('errors.titles.error', 'Error'),
       message: formatErrorMessage(error),
       code: error.code,
     };
   }
 
   return {
-    title: 'Unexpected Error',
+    title: tCommon('errors.titles.unexpected', 'Unexpected Error'),
     message: formatErrorMessage(error),
   };
 }

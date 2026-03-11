@@ -399,8 +399,8 @@
       "dayOfTotal": "Día {{day}} de {{total}}"
     },
     "options": {
-      "day": "Day Shift",
-      "night": "Night Shift",
+      "day": "Turno de día",
+      "night": "Turno de noche",
       "off": "Off Days"
     }
   },
@@ -755,6 +755,14 @@
         "name": "Ciclo Pitman",
         "stats": "Ciclo de 7 días - 2D/2N/3L"
       }
+    },
+    "presetDescriptions": {
+      "earlyStart": "Inicio temprano",
+      "dayShift": "Turno de día",
+      "afternoon": "Tarde",
+      "evening": "Noche temprana",
+      "nightShift": "Turno de noche",
+      "tapToSet": "Toca para configurar"
     }
   },
   "customPattern": {
@@ -920,7 +928,7 @@
     "a11y": "Bot is typing"
   },
   "chatAvatar": {
-    "a11y": "Mining assistant avatar"
+    "a11y": "Avatar del asistente minero"
   },
   "premiumCalendar": {
     "previousMonthA11y": "Previous month",
@@ -954,6 +962,29 @@
       "currentValueMinimum": "El valor actual es {{value}}. El mínimo es {{min}}.",
       "currentValueMaximum": "El valor actual es {{value}}. El máximo es {{max}}.",
       "adjustHint": "Desliza a la izquierda o a la derecha para ajustar el valor"
+    }
+  },
+  "reportOptions": {
+    "shiftSummary": {
+      "title": "Resumen de turnos",
+      "description": "Ver el número de turnos por tipo"
+    },
+    "earnings": {
+      "title": "Informe de ingresos",
+      "description": "Calcular pago total y desglose"
+    },
+    "workLife": {
+      "title": "Equilibrio vida-trabajo",
+      "description": "Analizar días libres y porcentaje de trabajo"
+    },
+    "holidayImpact": {
+      "title": "Impacto de feriados",
+      "description": "Ver feriados que caen en días de turno"
+    },
+    "accessibility": {
+      "checked": "seleccionado",
+      "unchecked": "no seleccionado",
+      "label": "{{title}}, {{status}}"
     }
   }
 }

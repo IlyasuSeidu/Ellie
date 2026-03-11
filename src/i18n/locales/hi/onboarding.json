@@ -375,8 +375,8 @@
       "dayOfTotal": "{{total}} का दिन {{day}}"
     },
     "options": {
-      "day": "Day Shift",
-      "night": "Night Shift",
+      "day": "दिन की शिफ्ट",
+      "night": "रात की शिफ्ट",
       "off": "Off Days"
     }
   },
@@ -731,6 +731,14 @@
         "name": "गड्ढे में काम करनेवाला",
         "stats": "7-दिवसीय चक्र - 2D/2N/3O"
       }
+    },
+    "presetDescriptions": {
+      "earlyStart": "जल्दी शुरुआत",
+      "dayShift": "दिन की शिफ्ट",
+      "afternoon": "दोपहर",
+      "evening": "शाम",
+      "nightShift": "रात की शिफ्ट",
+      "tapToSet": "सेट करने के लिए टैप करें"
     }
   },
   "customPattern": {
@@ -896,7 +904,7 @@
     "a11y": "Bot is typing"
   },
   "chatAvatar": {
-    "a11y": "Mining assistant avatar"
+    "a11y": "माइनिंग सहायक अवतार"
   },
   "premiumCalendar": {
     "previousMonthA11y": "Previous month",
@@ -930,6 +938,29 @@
     "a11y": {
       "label": "{{name}} पैटर्न",
       "hint": "{{description}} शिफ्ट पैटर्न चुनता है"
+    }
+  },
+  "reportOptions": {
+    "shiftSummary": {
+      "title": "शिफ्ट सारांश",
+      "description": "प्रकार के अनुसार शिफ्ट की संख्या देखें"
+    },
+    "earnings": {
+      "title": "आय रिपोर्ट",
+      "description": "कुल भुगतान और विवरण की गणना करें"
+    },
+    "workLife": {
+      "title": "कार्य-जीवन संतुलन",
+      "description": "छुट्टी के दिन और कार्य प्रतिशत का विश्लेषण करें"
+    },
+    "holidayImpact": {
+      "title": "छुट्टी प्रभाव",
+      "description": "देखें कौन-सी छुट्टियां शिफ्ट दिनों पर पड़ती हैं"
+    },
+    "accessibility": {
+      "checked": "चयनित",
+      "unchecked": "अचयनित",
+      "label": "{{title}}, {{status}}"
     }
   }
 }

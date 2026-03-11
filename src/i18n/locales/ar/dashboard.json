@@ -113,7 +113,7 @@
       "listening": "Listening...",
       "processing": "Thinking...",
       "speaking": "Tap to stop speaking",
-      "wakeWordUnavailable": "Wake-word unavailable, tap the mic to talk",
+      "wakeWordUnavailable": "عبارة التنبيه غير متاحة، اضغط على الميكروفون للتحدث",
       "sayWakeWordOrTap": "Say \"{{wakeWordPhrase}}\" or tap the mic",
       "askAnother": "Tap the mic to ask another question",
       "askEllie": "Tap the mic to ask Ellie"
@@ -127,7 +127,7 @@
       "backend": "Service temporarily unavailable. Please try again.",
       "rateLimited": "Please wait briefly and retry.",
       "timeout": "Request timed out. Please retry.",
-      "wakeWordUnavailable": "Wake-word unavailable, tap the mic to talk.",
+      "wakeWordUnavailable": "عبارة التنبيه غير متاحة، اضغط على الميكروفون للتحدث.",
       "tts": "Could not play audio response."
     },
     "micA11y": {
@@ -192,6 +192,20 @@
       "today": "اليوم هو {{holidayName}}!",
       "tomorrow": "غدًا هو {{holidayName}}",
       "inDays": "{{holidayName}} بعد {{daysBefore}} أيام ({{holidayDate}})"
+    }
+  },
+  "countdown": {
+    "leftIn": "متبقي {{time}} في {{shiftName}}",
+    "untilStarts": "{{time}} حتى تبدأ {{shiftName}}",
+    "until": "{{time}} حتى {{shiftName}}",
+    "tomorrow": "{{shiftName}} غدًا",
+    "daysUntil": "{{days}} أيام حتى {{shiftName}}",
+    "shiftNames": {
+      "day": "الوردية النهارية",
+      "night": "الوردية الليلية",
+      "morning": "الوردية الصباحية",
+      "afternoon": "وردية بعد الظهر",
+      "off": "يوم راحة"
     }
   }
 }

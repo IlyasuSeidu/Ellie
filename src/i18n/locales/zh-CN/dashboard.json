@@ -113,7 +113,7 @@
       "listening": "Listening...",
       "processing": "Thinking...",
       "speaking": "Tap to stop speaking",
-      "wakeWordUnavailable": "Wake-word unavailable, tap the mic to talk",
+      "wakeWordUnavailable": "唤醒词不可用，点击麦克风进行对话。",
       "sayWakeWordOrTap": "Say \"{{wakeWordPhrase}}\" or tap the mic",
       "askAnother": "Tap the mic to ask another question",
       "askEllie": "Tap the mic to ask Ellie"
@@ -127,7 +127,7 @@
       "backend": "Service temporarily unavailable. Please try again.",
       "rateLimited": "Please wait briefly and retry.",
       "timeout": "Request timed out. Please retry.",
-      "wakeWordUnavailable": "Wake-word unavailable, tap the mic to talk.",
+      "wakeWordUnavailable": "唤醒词不可用，点击麦克风进行对话。",
       "tts": "Could not play audio response."
     },
     "micA11y": {
@@ -192,6 +192,20 @@
       "today": "今天是{{holidayName}}！",
       "tomorrow": "明天是{{holidayName}}",
       "inDays": "{{holidayName}}还有{{daysBefore}}天（{{holidayDate}}）"
+    }
+  },
+  "countdown": {
+    "leftIn": "{{shiftName}}还剩{{time}}",
+    "untilStarts": "{{time}}后{{shiftName}}开始",
+    "until": "{{time}}后到{{shiftName}}",
+    "tomorrow": "明天{{shiftName}}",
+    "daysUntil": "{{days}}天后到{{shiftName}}",
+    "shiftNames": {
+      "day": "白班",
+      "night": "夜班",
+      "morning": "早班",
+      "afternoon": "下午班",
+      "off": "休息日"
     }
   }
 }

@@ -229,13 +229,13 @@
       "confirm": "Confirm Position",
       "empty": "Configure a shift pattern first to re-sync your cycle.",
       "phaseLabels": {
-        "day": "Day Shift",
-        "night": "Night Shift",
-        "morning": "Morning Shift",
-        "afternoon": "Afternoon Shift",
-        "off": "Days Off",
-        "work": "Work Block",
-        "rest": "Rest Block"
+        "day": "दिन की शिफ्ट",
+        "night": "रात की शिफ्ट",
+        "morning": "सुबह की शिफ्ट",
+        "afternoon": "दोपहर की शिफ्ट",
+        "off": "छुट्टी के दिन",
+        "work": "कार्य ब्लॉक",
+        "rest": "आराम ब्लॉक"
       },
       "dayDescriptions": {
         "first": "First day of {{phase}}",

@@ -17,6 +17,7 @@ import { getToday, addDays } from '@/utils/dateUtils';
 import { formatTimeForDisplay, getShiftTimesFromData } from '@/utils/shiftTimeUtils';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
 import type { ShiftCycle, ShiftType } from '@/types';
+import i18n from '@/i18n';
 
 // ── Types ────────────────────────────────────────────────────────────
 
@@ -57,14 +58,21 @@ function formatMinutesCountdown(totalMinutes: number): string {
   return `${h}h ${m}m`;
 }
 
-/** Human-readable display name for each shift type */
-const SHIFT_DISPLAY_NAME: Record<ShiftType, string> = {
-  day: 'day shift',
-  night: 'night shift',
-  morning: 'morning shift',
-  afternoon: 'afternoon shift',
-  off: 'day off',
-};
+const tDashboard = (key: string, options: Record<string, unknown> = {}, fallback: string): string =>
+  String(
+    i18n.t(key, {
+      ns: 'dashboard',
+      defaultValue: fallback,
+      ...options,
+    })
+  );
+
+const getShiftDisplayName = (shiftType: ShiftType): string =>
+  tDashboard(
+    `countdown.shiftNames.${shiftType}`,
+    {},
+    shiftType === 'off' ? 'day off' : `${shiftType} shift`
+  );
 
 /**
  * Find the shift time entry that matches a given shift type, respecting the
@@ -156,7 +164,7 @@ function getCountdownText(
 ): string {
   const now = new Date();
   const nowMinutes = now.getHours() * 60 + now.getMinutes();
-  const currentName = SHIFT_DISPLAY_NAME[currentShiftType];
+  const currentName = getShiftDisplayName(currentShiftType);
 
   const shiftTimes = data ? getShiftTimesFromData(data) : [];
   const currentShiftTime = findShiftTime(shiftTimes, currentShiftType, data);
@@ -170,23 +178,53 @@ function getCountdownText(
       // Same-day shift
       if (nowMinutes >= startMin && nowMinutes < endMin) {
         const display = formatMinutesCountdown(endMin - nowMinutes);
-        return display ? `${display} left in ${currentName}` : '';
+        return display
+          ? tDashboard(
+              'countdown.leftIn',
+              { time: display, shiftName: currentName },
+              '{{time}} left in {{shiftName}}'
+            )
+          : '';
       } else if (nowMinutes < startMin) {
         const display = formatMinutesCountdown(startMin - nowMinutes);
-        return display ? `${display} until ${currentName} starts` : '';
+        return display
+          ? tDashboard(
+              'countdown.untilStarts',
+              { time: display, shiftName: currentName },
+              '{{time}} until {{shiftName}} starts'
+            )
+          : '';
       }
     } else {
       // Overnight shift
       if (nowMinutes >= startMin) {
         const display = formatMinutesCountdown(24 * 60 - nowMinutes + endMin);
-        return display ? `${display} left in ${currentName}` : '';
+        return display
+          ? tDashboard(
+              'countdown.leftIn',
+              { time: display, shiftName: currentName },
+              '{{time}} left in {{shiftName}}'
+            )
+          : '';
       } else if (nowMinutes < endMin) {
         const display = formatMinutesCountdown(endMin - nowMinutes);
-        return display ? `${display} left in ${currentName}` : '';
+        return display
+          ? tDashboard(
+              'countdown.leftIn',
+              { time: display, shiftName: currentName },
+              '{{time}} left in {{shiftName}}'
+            )
+          : '';
       }
       if (nowMinutes >= endMin && nowMinutes < startMin) {
         const display = formatMinutesCountdown(startMin - nowMinutes);
-        return display ? `${display} until ${currentName} starts` : '';
+        return display
+          ? tDashboard(
+              'countdown.untilStarts',
+              { time: display, shiftName: currentName },
+              '{{time}} until {{shiftName}} starts'
+            )
+          : '';
       }
     }
   }
@@ -200,20 +238,35 @@ function getCountdownText(
     const nextShift = calculateShiftDay(nextDate, cycle);
 
     if (nextShift.isWorkDay) {
-      const nextName = SHIFT_DISPLAY_NAME[nextShift.shiftType];
+      const nextName = getShiftDisplayName(nextShift.shiftType);
       const nextShiftTime = findShiftTime(shiftTimes, nextShift.shiftType, data);
 
       if (nextShiftTime) {
         const nextStartMin = parseTimeToMinutes(nextShiftTime.startTime);
         const minutesUntil = 24 * 60 - nowMinutes + (daysUntil - 1) * 24 * 60 + nextStartMin;
         const display = formatMinutesCountdown(minutesUntil);
-        if (display) return `${display} until ${nextName}`;
+        if (display) {
+          return tDashboard(
+            'countdown.until',
+            { time: display, shiftName: nextName },
+            '{{time}} until {{shiftName}}'
+          );
+        }
       }
 
       if (daysUntil === 1) {
-        return `${nextName[0].toUpperCase()}${nextName.slice(1)} tomorrow`;
+        const nextNameCapitalized = `${nextName[0].toUpperCase()}${nextName.slice(1)}`;
+        return tDashboard(
+          'countdown.tomorrow',
+          { shiftName: nextNameCapitalized },
+          '{{shiftName}} tomorrow'
+        );
       }
-      return `${daysUntil} days until ${nextName}`;
+      return tDashboard(
+        'countdown.daysUntil',
+        { days: daysUntil, shiftName: nextName },
+        '{{days}} days until {{shiftName}}'
+      );
     }
 
     nextDate = addDays(nextDate, 1);
