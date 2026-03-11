@@ -26,9 +26,12 @@ App Launch
         │     ├── ForgotPasswordScreen
         │     └── EmailVerificationScreen
         └── user !== null
-              ├── onboarding:complete === false → OnboardingNavigator
-              │     └── PremiumCompletionScreen → sync onboarding data to Firestore users/{uid}
-              └── onboarding:complete === true → MainTabNavigator
+              ├── password provider + emailVerified === false
+              │     └── AuthNavigator → EmailVerificationScreen (strict gate)
+              └── email verified (or non-password provider)
+                    ├── onboarding:complete === false → OnboardingNavigator
+                    │     └── PremiumCompletionScreen → sync onboarding data to Firestore users/{uid}
+                    └── onboarding:complete === true → MainTabNavigator
 ```
 
 ---
@@ -45,7 +48,7 @@ AuthNavigator (src/navigation/AuthNavigator.tsx)
   └── Stack: SignIn → SignUp | ForgotPassword | EmailVerification
 
 AppNavigator (MODIFIED)
-  └── Consumes useAuth() → routes to Auth | Onboarding | Main
+  └── Consumes useAuth() → routes to Auth (incl. strict email verification gate) | Onboarding | Main
 
 PremiumCompletionScreen (MODIFIED)
   └── On success: UserService.createOrSyncUserProfile(uid, onboardingData)
@@ -1441,10 +1444,9 @@ const styles = StyleSheet.create({
  * Polls `user.reload()` every 3 seconds to detect verification.
  * Also provides a "Resend" button and an "I'll do it later" option.
  *
- * Note: Email verification is not required to proceed — the user can skip
- * and verify later. The app functions fully with an unverified email.
- * This screen is navigated to optionally; the main flow goes directly to
- * OnboardingNavigator after sign-up.
+ * Note: For password-provider users, verification is enforced by AppNavigator
+ * before onboarding/main access. Unverified accounts are routed here until
+ * `emailVerified` becomes true.
  */
 
 import React, { useEffect, useCallback, useState } from 'react';
@@ -1845,6 +1847,7 @@ The current AppNavigator only checks `onboarding:complete`. It needs to check au
  *
  * Root navigator with three possible routes:
  *   • Auth (unauthenticated) — SignIn / SignUp / ForgotPassword
+ *   • Auth (authenticated but unverified password user) — EmailVerification
  *   • Onboarding (authenticated, not yet configured)
  *   • Main (authenticated + onboarding complete)
  *
@@ -2136,11 +2139,13 @@ Returning user (app restart)
 
 ## Verification Plan
 
-1. **Session persistence** — Sign in, force-close the app, reopen → user should already be authenticated (no sign-in screen). Verifies `initializeAuth` with `getReactNativePersistence(AsyncStorage)` works.
+1. **Session persistence** — Sign in, force-close the app, reopen → session should restore automatically. Verified users land in onboarding/main, unverified password users land in EmailVerification.
 
-2. **Email/password sign-up flow** — Create account → onboarding completes → verify `users/{uid}` document exists in Firestore with correct name/occupation/shiftCycle.
+2. **Email/password sign-up flow** — Create account → app routes to EmailVerification (strict gate for unverified password users). After verification, continue onboarding and verify `users/{uid}` document exists in Firestore with correct name/occupation/shiftCycle.
 
-3. **Email/password sign-in flow** — Sign out, sign back in → land on Main tab (onboarding:complete = true in AsyncStorage).
+3. **Email/password sign-in flow** — Sign out, sign back in:
+   - unverified password account → EmailVerification
+   - verified account → Main (if onboarding complete) or Onboarding (if incomplete)
 
 4. **Google Sign-In** — Tap "Continue with Google" → native OS sheet appears → select account → lands on Onboarding (new user) or Main (returning). Verify no "signInWithPopup" error.
 
@@ -2157,6 +2162,8 @@ Returning user (app restart)
 
 9. **Onboarding data sync** — After completing onboarding, open Firebase console → Firestore → `users/{uid}` → verify all fields present: name, occupation, company, country, shiftCycle, email.
 
-10. **Navigation gating** — Sign out → app routes to AuthNavigator (SignInScreen). Sign in → routes to Main (if onboarded) or Onboarding (new account).
+10. **Navigation gating** — Sign out → app routes to AuthNavigator (SignInScreen). Sign in:
+    - unverified password account → EmailVerification
+    - verified account → Main (if onboarded) or Onboarding (new account)
 
 11. **VoiceAssistant + useSmartReminders** — After auth + onboarding, verify voice assistant context has correct user name and shift context, and smart reminders are scheduled.

@@ -26,7 +26,7 @@ All checks below were actually run and passed.
 - `npm test -- --runInBand --silent src/contexts/__tests__/AuthContext.test.tsx src/navigation/__tests__/AppNavigator.test.tsx tests/config/firebase.persistence.test.ts src/screens/auth/__tests__/SignInScreen.test.tsx src/screens/auth/__tests__/SignUpScreen.test.tsx src/screens/auth/__tests__/ForgotPasswordScreen.test.tsx src/screens/auth/__tests__/EmailVerificationScreen.test.tsx`
 - Result: PASS
   - Test Suites: 7/7 passed
-  - Tests: 27/27 passed
+  - Tests: 31/31 passed
 
 ### 2.3 Provider wiring and native config verification
 
@@ -86,10 +86,10 @@ Record PASS/FAIL and evidence (screenshot/video/log snippet).
   4. Submit.
 - Expected:
   - Account is created.
-  - User reaches post-auth route (verification or onboarding as designed).
+  - User is routed to `EmailVerification` when the provider includes `password` and `emailVerified === false`.
   - No red error screen.
 - Result: [ ] PASS [ ] FAIL
-- Evidence: **********\_\_**********
+- Evidence: \***\*\*\*\*\***\_\_\***\*\*\*\*\***
 
 ### 4.2 Email/Password Sign-in
 
@@ -98,9 +98,10 @@ Record PASS/FAIL and evidence (screenshot/video/log snippet).
   2. Sign in with existing valid credentials.
 - Expected:
   - Sign-in succeeds.
-  - Correct routing to onboarding/main based on completion state.
+  - Unverified email/password users are routed to `EmailVerification`.
+  - Verified users route to onboarding/main based on completion state.
 - Result: [ ] PASS [ ] FAIL
-- Evidence: **********\_\_**********
+- Evidence: \***\*\*\*\*\***\_\_\***\*\*\*\*\***
 
 ### 4.3 Google Sign-In
 
@@ -111,7 +112,7 @@ Record PASS/FAIL and evidence (screenshot/video/log snippet).
   - Returns to app authenticated.
   - No client-id / plist / SHA mismatch error.
 - Result: [ ] PASS [ ] FAIL
-- Evidence: **********\_\_**********
+- Evidence: \***\*\*\*\*\***\_\_\***\*\*\*\*\***
 
 ### 4.4 Apple Sign-In (iOS)
 
@@ -122,7 +123,7 @@ Record PASS/FAIL and evidence (screenshot/video/log snippet).
   - Apple flow returns Firebase-authenticated user.
   - No "operation-not-allowed" / nonce / identity-token errors.
 - Result: [ ] PASS [ ] FAIL
-- Evidence: **********\_\_**********
+- Evidence: \***\*\*\*\*\***\_\_\***\*\*\*\*\***
 
 ### 4.5 Forgot Password
 
@@ -133,7 +134,7 @@ Record PASS/FAIL and evidence (screenshot/video/log snippet).
   - Reset email sent confirmation.
   - User receives reset mail.
 - Result: [ ] PASS [ ] FAIL
-- Evidence: **********\_\_**********
+- Evidence: \***\*\*\*\*\***\_\_\***\*\*\*\*\***
 
 ### 4.6 Email Verification
 
@@ -144,7 +145,7 @@ Record PASS/FAIL and evidence (screenshot/video/log snippet).
 - Expected:
   - Verification state updates correctly.
 - Result: [ ] PASS [ ] FAIL
-- Evidence: **********\_\_**********
+- Evidence: \***\*\*\*\*\***\_\_\***\*\*\*\*\***
 
 ### 4.7 Session Restore
 
@@ -154,20 +155,23 @@ Record PASS/FAIL and evidence (screenshot/video/log snippet).
   3. Reopen app.
 - Expected:
   - User session restored.
-  - No forced sign-out unless token invalidated.
+  - Verified users restore into onboarding/main.
+  - Unverified email/password users restore into `EmailVerification`.
 - Result: [ ] PASS [ ] FAIL
-- Evidence: **********\_\_**********
+- Evidence: \***\*\*\*\*\***\_\_\***\*\*\*\*\***
 
 ### 4.8 Onboarding Routing
 
 - Steps:
-  1. Test with onboarding incomplete account.
-  2. Test with onboarding complete account.
+  1. Test with onboarding incomplete + verified account.
+  2. Test with onboarding complete + verified account.
+  3. Test with onboarding complete + unverified password account.
 - Expected:
-  - Incomplete -> onboarding route.
-  - Complete -> main app route.
+  - Verified + incomplete -> onboarding route.
+  - Verified + complete -> main app route.
+  - Unverified password account -> `Auth > EmailVerification` (onboarding/main blocked).
 - Result: [ ] PASS [ ] FAIL
-- Evidence: **********\_\_**********
+- Evidence: \***\*\*\*\*\***\_\_\***\*\*\*\*\***
 
 ## 5) Failure Triage Map
 

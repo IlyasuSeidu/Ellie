@@ -6,7 +6,7 @@ Scope in this file:
 
 - Includes every implementation-order task from **1 through 13** in `ellie-auth.md`.
 - Excludes task 14 (`.env` update) because you requested up to second-to-last task.
-- Per your latest instruction, tasks 6-9 (auth screens) are listed but marked **deferred** for now.
+- Includes implemented auth screens (tasks 6-9) and strict verification gating behavior.
 
 Execution rule:
 
@@ -59,7 +59,6 @@ Execution rule:
 
 - [x] **Task 5 — `src/navigation/AuthNavigator.tsx` (new file)**
   - Create Auth stack and `AuthStackParamList`.
-  - Because tasks 6-9 are deferred, provide non-auth-screen-safe fallback route(s) without creating those screens now.
   - Hard review gate:
     - Exported types usable by `AppNavigator`.
     - Navigator compiles and does not reference missing files.
@@ -83,6 +82,7 @@ Execution rule:
 - [x] **Task 10 — `src/navigation/AppNavigator.tsx`**
   - Rewrite root navigation to gate by auth + onboarding:
     - unauthenticated -> `Auth`
+    - authenticated + unverified email/password account -> `Auth > EmailVerification`
     - authenticated + onboarding incomplete -> `Onboarding`
     - authenticated + onboarding complete -> `Main`
   - Preserve loading states for auth restore and onboarding-read.
