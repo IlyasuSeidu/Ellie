@@ -44,6 +44,8 @@ import {
   getBlockRunsForRow,
   type FIFOPositionMap,
 } from '@/utils/fifoCalendarUtils';
+import { useSubscription } from '@/hooks/useSubscription';
+import { PadlockOverlay } from '@/components/subscription/PadlockOverlay';
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 /** 3D assets for shift types */
@@ -264,6 +266,19 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
 }) => {
   const { t, i18n } = useTranslation('dashboard');
   const calendarGrid = useMemo(() => buildCalendarGrid(year, month), [year, month]);
+  const { isPro, openPaywall } = useSubscription();
+  const today = new Date();
+  const currentWeekIndex = calendarGrid.findIndex((week) =>
+    week.some((day) => {
+      if (day === null) return false;
+      const d = new Date(year, month, day);
+      return (
+        d.getFullYear() === today.getFullYear() &&
+        d.getMonth() === today.getMonth() &&
+        d.getDate() === today.getDate()
+      );
+    })
+  );
   const localeTag = useMemo(
     () => getDateLocaleTag(i18n.resolvedLanguage ?? i18n.language ?? 'en'),
     [i18n.resolvedLanguage, i18n.language]
@@ -664,67 +679,82 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
               testID="fifo-tooltip-dismiss-overlay"
             />
           )}
-          {calendarGrid.map((week, weekIndex) => (
-            <Animated.View
-              key={`week-${weekIndex}`}
-              style={[styles.weekRow, rowEntranceStyles[weekIndex]]}
-            >
-              {/* FIFO Connected Block Ribbons (rendered behind cells, animated fill) */}
-              {fifoPositionMap && gridWidth > 0 && (
-                <>
-                  {getBlockRunsForRow(week, fifoPositionMap).map((run, runIdx) => {
-                    const ribbonColor = RIBBON_COLORS[run.blockType];
-                    const leftPos =
-                      cellSpacing.offset + run.startCol * (CELL_WIDTH + cellSpacing.gap) + 2;
-                    const ribbonWidth =
-                      run.length * (CELL_WIDTH + cellSpacing.gap) - cellSpacing.gap - 4;
-                    // Stagger: row delay + 30ms per ribbon within the row
-                    const rowDelay = animationDelay + 240 + weekIndex * 80;
-                    const ribbonDelay = rowDelay + runIdx * 30;
+          {calendarGrid.map((week, weekIndex) => {
+            const isCurrentWeek = weekIndex === currentWeekIndex;
+            const isLocked = !isPro && !isCurrentWeek;
+
+            return (
+              <View key={`week-${weekIndex}`} style={styles.weekRowWrapper}>
+                <Animated.View
+                  style={[
+                    styles.weekRow,
+                    rowEntranceStyles[weekIndex],
+                    isLocked && styles.weekRowLocked,
+                  ]}
+                >
+                  {/* FIFO Connected Block Ribbons (rendered behind cells, animated fill) */}
+                  {fifoPositionMap && gridWidth > 0 && (
+                    <>
+                      {getBlockRunsForRow(week, fifoPositionMap).map((run, runIdx) => {
+                        const ribbonColor = RIBBON_COLORS[run.blockType];
+                        const leftPos =
+                          cellSpacing.offset + run.startCol * (CELL_WIDTH + cellSpacing.gap) + 2;
+                        const ribbonWidth =
+                          run.length * (CELL_WIDTH + cellSpacing.gap) - cellSpacing.gap - 4;
+                        // Stagger: row delay + 30ms per ribbon within the row
+                        const rowDelay = animationDelay + 240 + weekIndex * 80;
+                        const ribbonDelay = rowDelay + runIdx * 30;
+
+                        return (
+                          <AnimatedRibbon
+                            key={`ribbon-${weekIndex}-${runIdx}-${year}-${month}`}
+                            ribbonColor={ribbonColor}
+                            leftPos={leftPos}
+                            targetWidth={Math.max(ribbonWidth, 0)}
+                            startsBlock={run.startsBlock}
+                            endsBlock={run.endsBlock}
+                            delay={ribbonDelay}
+                            testID={`fifo-ribbon-${weekIndex}-${runIdx}`}
+                          />
+                        );
+                      })}
+                    </>
+                  )}
+
+                  {week.map((day, dayIndex) => {
+                    if (day === null) {
+                      return (
+                        <View key={`empty-${weekIndex}-${dayIndex}`} style={styles.emptyCell} />
+                      );
+                    }
+
+                    const shiftDay = shiftDayMap[day];
+                    const dayDate = new Date(year, month, day);
+                    const isTodayDate = checkIsToday(dayDate);
 
                     return (
-                      <AnimatedRibbon
-                        key={`ribbon-${weekIndex}-${runIdx}-${year}-${month}`}
-                        ribbonColor={ribbonColor}
-                        leftPos={leftPos}
-                        targetWidth={Math.max(ribbonWidth, 0)}
-                        startsBlock={run.startsBlock}
-                        endsBlock={run.endsBlock}
-                        delay={ribbonDelay}
-                        testID={`fifo-ribbon-${weekIndex}-${runIdx}`}
+                      <ShiftCalendarDayCell
+                        key={`day-${day}`}
+                        day={day}
+                        shiftType={shiftDay?.shiftType}
+                        rosterType={rosterType}
+                        fifoPosition={fifoPositionMap?.[day]}
+                        isToday={isTodayDate}
+                        selected={selectedDay === day}
+                        activeGlowColor={isTodayDate ? activeGlowColor : undefined}
+                        onPress={handleDayPress}
+                        onLongPress={fifoPositionMap ? handleLongPress : undefined}
+                        testID={`calendar-day-${day}`}
                       />
                     );
                   })}
-                </>
-              )}
-
-              {week.map((day, dayIndex) => {
-                if (day === null) {
-                  return <View key={`empty-${weekIndex}-${dayIndex}`} style={styles.emptyCell} />;
-                }
-
-                const shiftDay = shiftDayMap[day];
-                const dayDate = new Date(year, month, day);
-                const isTodayDate = checkIsToday(dayDate);
-
-                return (
-                  <ShiftCalendarDayCell
-                    key={`day-${day}`}
-                    day={day}
-                    shiftType={shiftDay?.shiftType}
-                    rosterType={rosterType}
-                    fifoPosition={fifoPositionMap?.[day]}
-                    isToday={isTodayDate}
-                    selected={selectedDay === day}
-                    activeGlowColor={isTodayDate ? activeGlowColor : undefined}
-                    onPress={handleDayPress}
-                    onLongPress={fifoPositionMap ? handleLongPress : undefined}
-                    testID={`calendar-day-${day}`}
-                  />
-                );
-              })}
-            </Animated.View>
-          ))}
+                </Animated.View>
+                {isLocked && (
+                  <PadlockOverlay onPress={openPaywall} testID={`padlock-week-${weekIndex}`} />
+                )}
+              </View>
+            );
+          })}
 
           {/* FIFO Day Tooltip */}
           {tooltipDay !== null && fifoPositionMap?.[tooltipDay] && tooltipPosition && (
@@ -909,6 +939,12 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 2,
     position: 'relative',
+  },
+  weekRowWrapper: {
+    position: 'relative',
+  },
+  weekRowLocked: {
+    opacity: 0.35,
   },
   emptyCell: {
     width: CELL_WIDTH,

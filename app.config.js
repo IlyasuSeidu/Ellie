@@ -10,13 +10,23 @@ try {
   // dotenv is optional in some environments
 }
 
-const appJson = require('./app.json');
+module.exports = ({ config = {} }) => {
+  const configExtra = config.extra || {};
+  const easProjectId = process.env.EAS_PROJECT_ID || configExtra?.eas?.projectId || '';
+  const expoUpdates = {
+    ...(config.updates || {}),
+  };
 
-module.exports = {
-  expo: {
-    ...appJson.expo,
+  if (!expoUpdates.url && easProjectId) {
+    expoUpdates.url = `https://u.expo.dev/${easProjectId}`;
+  }
+
+  return {
+    ...config,
+    updates: expoUpdates,
+    runtimeVersion: config.runtimeVersion || config.version || '1.0.0',
     extra: {
-      ...(appJson.expo.extra || {}),
+      ...configExtra,
       APP_ENV: process.env.APP_ENV || 'development',
       FIREBASE_API_KEY: process.env.FIREBASE_API_KEY || '',
       FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN || '',
@@ -25,7 +35,16 @@ module.exports = {
       FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID || '',
       FIREBASE_APP_ID: process.env.FIREBASE_APP_ID || '',
       FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID || '',
-      GOOGLE_WEB_CLIENT_ID: process.env.GOOGLE_WEB_CLIENT_ID || '',
+      EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID:
+        process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || process.env.GOOGLE_WEB_CLIENT_ID || '',
+      GOOGLE_WEB_CLIENT_ID:
+        process.env.GOOGLE_WEB_CLIENT_ID || process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || '',
+      EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID:
+        process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || process.env.GOOGLE_IOS_CLIENT_ID || '',
+      GOOGLE_IOS_CLIENT_ID:
+        process.env.GOOGLE_IOS_CLIENT_ID || process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || '',
+      REVENUECAT_IOS_KEY: process.env.REVENUECAT_IOS_KEY || '',
+      REVENUECAT_ANDROID_KEY: process.env.REVENUECAT_ANDROID_KEY || '',
       API_BASE_URL: process.env.API_BASE_URL || 'https://api.shiftsync.app',
       API_TIMEOUT: process.env.API_TIMEOUT || '30000',
       ELLIE_BRAIN_URL:
@@ -61,6 +80,10 @@ module.exports = {
       OPENWAKEWORD_MIN_RMS: process.env.OPENWAKEWORD_MIN_RMS || '',
       OPENWAKEWORD_ACTIVATION_FRAMES: process.env.OPENWAKEWORD_ACTIVATION_FRAMES || '',
       OPENWAKEWORD_SCORE_SMOOTHING_ALPHA: process.env.OPENWAKEWORD_SCORE_SMOOTHING_ALPHA || '',
+      eas: {
+        ...(configExtra?.eas || {}),
+        ...(easProjectId ? { projectId: easProjectId } : {}),
+      },
     },
-  },
+  };
 };

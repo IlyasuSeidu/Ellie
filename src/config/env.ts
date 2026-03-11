@@ -112,6 +112,7 @@ export interface AppConfig {
   firebase: FirebaseConfig;
   google: {
     webClientId: string;
+    iosClientId?: string;
   };
   api: {
     baseUrl: string;
@@ -308,6 +309,7 @@ function buildAppConfig(): AppConfig {
     firebase: buildFirebaseConfig(),
     google: {
       webClientId: getEnvVar('GOOGLE_WEB_CLIENT_ID') as string,
+      iosClientId: getEnvVar('GOOGLE_IOS_CLIENT_ID', false),
     },
     api: {
       baseUrl: getEnvVar('API_BASE_URL', false) || 'https://api.shiftsync.app',
@@ -487,6 +489,7 @@ try {
       },
       google: {
         webClientId: 'test-web-client-id',
+        iosClientId: 'test-ios-client-id',
       },
       api: {
         baseUrl: 'https://api.test.com',

@@ -44,10 +44,48 @@ jest.mock('expo-constants', () => ({
         FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID || '123456',
         FIREBASE_APP_ID: process.env.FIREBASE_APP_ID || 'test-app-id',
         GOOGLE_WEB_CLIENT_ID: process.env.GOOGLE_WEB_CLIENT_ID || 'test-client-id',
+        REVENUECAT_IOS_KEY: process.env.REVENUECAT_IOS_KEY || 'appl_test_key',
+        REVENUECAT_ANDROID_KEY: process.env.REVENUECAT_ANDROID_KEY || 'goog_test_key',
       },
     },
   },
 }));
+
+jest.mock('react-native-purchases', () => {
+  const listeners = new Set();
+  const mockCustomerInfo = {
+    entitlements: {
+      active: {},
+    },
+  };
+  const mockOfferings = {
+    current: {
+      annual: {
+        product: { priceString: '$49.99' },
+      },
+      monthly: {
+        product: { priceString: '$6.99' },
+      },
+    },
+  };
+
+  return {
+    __esModule: true,
+    LOG_LEVEL: { ERROR: 'ERROR' },
+    default: {
+      setLogLevel: jest.fn(),
+      configure: jest.fn(),
+      getCustomerInfo: jest.fn(() => Promise.resolve(mockCustomerInfo)),
+      addCustomerInfoUpdateListener: jest.fn((listener) => {
+        listeners.add(listener);
+      }),
+      removeCustomerInfoUpdateListener: jest.fn((listener) => listeners.delete(listener)),
+      restorePurchases: jest.fn(() => Promise.resolve(mockCustomerInfo)),
+      getOfferings: jest.fn(() => Promise.resolve(mockOfferings)),
+      purchasePackage: jest.fn(() => Promise.resolve({ customerInfo: mockCustomerInfo })),
+    },
+  };
+});
 
 // Mock react-native-reanimated before anything else
 jest.mock('react-native-reanimated', () => {

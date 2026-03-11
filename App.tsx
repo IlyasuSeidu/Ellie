@@ -5,10 +5,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { AppNavigator } from './src/navigation/AppNavigator';
+import { AuthProvider } from './src/contexts/AuthContext';
 import { OnboardingProvider } from './src/contexts/OnboardingContext';
 import { LanguageProvider } from './src/contexts/LanguageContext';
 import { VoiceAssistantProvider } from './src/contexts/VoiceAssistantContext';
+import { SubscriptionProvider } from './src/contexts/SubscriptionContext';
 import { useShiftAccent } from './src/hooks/useShiftAccent';
+import { PaywallScreen } from './src/screens/subscription/PaywallScreen';
 
 function AppContent() {
   const insets = useSafeAreaInsets();
@@ -35,16 +38,23 @@ function AppContent() {
 }
 
 export default function App() {
+  const [paywallVisible, setPaywallVisible] = React.useState(false);
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <OnboardingProvider>
-          <LanguageProvider>
-            <VoiceAssistantProvider>
-              <AppContent />
-            </VoiceAssistantProvider>
-          </LanguageProvider>
-        </OnboardingProvider>
+        <SubscriptionProvider onOpenPaywall={() => setPaywallVisible(true)}>
+          <AuthProvider>
+            <OnboardingProvider>
+              <LanguageProvider>
+                <VoiceAssistantProvider>
+                  <AppContent />
+                </VoiceAssistantProvider>
+              </LanguageProvider>
+            </OnboardingProvider>
+          </AuthProvider>
+          {paywallVisible && <PaywallScreen onDismiss={() => setPaywallVisible(false)} />}
+        </SubscriptionProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

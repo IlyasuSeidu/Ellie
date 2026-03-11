@@ -17,7 +17,19 @@ jest.mock('@/services/AsyncStorageService', () => ({
   },
 }));
 
+jest.mock('@/contexts/AuthContext', () => ({
+  useAuth: jest.fn(),
+}));
+
 // Mock the navigators/screens to avoid complex nesting
+jest.mock('../AuthNavigator', () => ({
+  AuthNavigator: () => {
+    const React = require('react');
+    const RN = require('react-native');
+    return React.createElement(RN.View, { testID: 'auth-navigator' });
+  },
+}));
+
 jest.mock('../OnboardingNavigator', () => ({
   OnboardingNavigator: () => {
     const React = require('react');
@@ -44,13 +56,18 @@ jest.mock('@expo/vector-icons', () => {
 });
 
 import { asyncStorageService } from '@/services/AsyncStorageService';
+import { useAuth } from '@/contexts/AuthContext';
 
 describe('AppNavigator', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    (useAuth as jest.Mock).mockReturnValue({
+      user: null,
+      isLoading: false,
+    });
   });
 
-  it('should show onboarding when no data exists', async () => {
+  it('should show auth navigator when unauthenticated', async () => {
     (asyncStorageService.get as jest.Mock).mockImplementation(async () => null);
 
     const { getByTestId } = render(
@@ -60,11 +77,15 @@ describe('AppNavigator', () => {
     );
 
     await waitFor(() => {
-      expect(getByTestId('onboarding-navigator')).toBeTruthy();
+      expect(getByTestId('auth-navigator')).toBeTruthy();
     });
   });
 
   it('should show dashboard when onboarding is complete', async () => {
+    (useAuth as jest.Mock).mockReturnValue({
+      user: { uid: 'user-1' },
+      isLoading: false,
+    });
     (asyncStorageService.get as jest.Mock).mockImplementation(async (key: string) => {
       if (key === 'onboarding:complete') return true;
       return null;
@@ -82,6 +103,10 @@ describe('AppNavigator', () => {
   });
 
   it('should show onboarding when data is incomplete', async () => {
+    (useAuth as jest.Mock).mockReturnValue({
+      user: { uid: 'user-1' },
+      isLoading: false,
+    });
     const incompleteData = {
       name: 'John',
       // Missing startDate and patternType
@@ -104,6 +129,10 @@ describe('AppNavigator', () => {
   });
 
   it('should show onboarding on storage error', async () => {
+    (useAuth as jest.Mock).mockReturnValue({
+      user: { uid: 'user-1' },
+      isLoading: false,
+    });
     (asyncStorageService.get as jest.Mock).mockRejectedValue(new Error('Storage error'));
 
     const { getByTestId } = render(
@@ -118,6 +147,10 @@ describe('AppNavigator', () => {
   });
 
   it('should show onboarding when completion flag is false even with complete data', async () => {
+    (useAuth as jest.Mock).mockReturnValue({
+      user: { uid: 'user-1' },
+      isLoading: false,
+    });
     const completeData = {
       name: 'John',
       startDate: '2026-01-01',

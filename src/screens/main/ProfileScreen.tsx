@@ -29,15 +29,18 @@ import { LANGUAGE_NAMES, LanguageSelectorSheet } from '@/components/profile/Lang
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
+import { useSubscription } from '@/hooks/useSubscription';
 
 export const ProfileScreen: React.FC = () => {
   const { t } = useTranslation('profile');
+  const { t: tCommon } = useTranslation('common');
   const insets = useSafeAreaInsets();
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const profile = useProfileData();
   const { language, setLanguage } = useLanguage();
   const { shiftType: liveShiftType, tabAccentColor } = useShiftAccent();
+  const { isPro, openPaywall } = useSubscription();
   const { isEditing, cancelEditing } = profile;
   const [languageSheetVisible, setLanguageSheetVisible] = React.useState(false);
   const personalInfoHeaderGradient = useMemo<readonly [string, string]>(() => {
@@ -214,6 +217,40 @@ export const ProfileScreen: React.FC = () => {
         />
         <WorkStatsSummary data={profile.data} animationDelay={1200} />
 
+        {/* Ellie Pro subscription row */}
+        <View style={styles.onboardingToolsSection}>
+          <Pressable
+            style={styles.onboardingButton}
+            onPress={isPro ? undefined : openPaywall}
+            disabled={isPro}
+            accessibilityRole="button"
+            accessibilityLabel={
+              isPro
+                ? tCommon('subscription.profile.rowActiveA11y')
+                : tCommon('subscription.profile.rowUpgradeA11y')
+            }
+            testID="subscription-row"
+          >
+            <View style={styles.subscriptionRowContent}>
+              <View>
+                <Text style={styles.onboardingButtonText}>
+                  {isPro
+                    ? tCommon('subscription.profile.activeLabel')
+                    : tCommon('subscription.profile.upgradeLabel')}
+                </Text>
+                <Text style={styles.onboardingButtonHint}>
+                  {isPro
+                    ? tCommon('subscription.profile.activeHint')
+                    : tCommon('subscription.profile.upgradeHint')}
+                </Text>
+              </View>
+              {!isPro && (
+                <Ionicons name="chevron-forward" size={18} color={theme.colors.paleGold} />
+              )}
+            </View>
+          </Pressable>
+        </View>
+
         <TouchableOpacity
           style={styles.languageRow}
           onPress={() => setLanguageSheetVisible(true)}
@@ -304,5 +341,10 @@ const styles = StyleSheet.create({
     color: theme.colors.dust,
     fontSize: 13,
     marginTop: 4,
+  },
+  subscriptionRowContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });

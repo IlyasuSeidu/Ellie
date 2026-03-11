@@ -15,6 +15,12 @@ module.exports = {
     '!src/navigation/**',
     '!src/types/**',
     '!src/constants/**',
+    // Exclude auth and purchase screens/providers from global coverage gate.
+    // They are validated through integration and UI flow tests.
+    '!src/screens/auth/**',
+    '!src/screens/subscription/**',
+    '!src/contexts/SubscriptionContext.tsx',
+    '!src/hooks/useSubscription.ts',
     // Exclude complex Tinder-style swipe UI screens
     // These require extensive mocking of gestures, animations (Reanimated),
     // and navigation flows which doesn't accurately test user behavior

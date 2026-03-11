@@ -7,11 +7,7 @@
 
 import { Unsubscribe } from 'firebase/firestore';
 import { FirebaseService } from './firebase/FirebaseService';
-import {
-  UserProfile as BaseUserProfile,
-  ShiftCycle,
-  NotificationSettings,
-} from '@/types';
+import { UserProfile as BaseUserProfile, ShiftCycle, NotificationSettings } from '@/types';
 import {
   userProfileSchema,
   shiftCycleSchema,
@@ -19,7 +15,8 @@ import {
 } from '@/types/validation';
 import { ValidationError } from '@/utils/errorUtils';
 import { logger } from '@/utils/logger';
-import { getShiftStatistics } from '@/utils/shiftUtils';
+import { getShiftStatistics, buildShiftCycle } from '@/utils/shiftUtils';
+import type { OnboardingData } from '@/contexts/OnboardingContext';
 
 /**
  * User preferences type
@@ -165,10 +162,7 @@ export class UserService extends FirebaseService {
   /**
    * Update user's shift cycle
    */
-  async updateShiftCycle(
-    userId: string,
-    updates: Partial<ShiftCycle>
-  ): Promise<void> {
+  async updateShiftCycle(userId: string, updates: Partial<ShiftCycle>): Promise<void> {
     try {
       // Get current cycle
       const currentCycle = await this.getShiftCycle(userId);
@@ -206,9 +200,7 @@ export class UserService extends FirebaseService {
    */
   async savePreferences(userId: string, prefs: UserPreferences): Promise<void> {
     // Validate notification settings
-    const validationResult = notificationSettingsSchema.safeParse(
-      prefs.notifications
-    );
+    const validationResult = notificationSettingsSchema.safeParse(prefs.notifications);
     if (!validationResult.success) {
       throw new ValidationError(
         `Invalid preferences: ${validationResult.error.message}`,
@@ -248,10 +240,7 @@ export class UserService extends FirebaseService {
   /**
    * Update notification settings
    */
-  async updateNotificationSettings(
-    userId: string,
-    settings: NotificationSettings
-  ): Promise<void> {
+  async updateNotificationSettings(userId: string, settings: NotificationSettings): Promise<void> {
     // Validate notification settings
     const validationResult = notificationSettingsSchema.safeParse(settings);
     if (!validationResult.success) {
@@ -286,11 +275,7 @@ export class UserService extends FirebaseService {
   /**
    * Get total shifts in date range
    */
-  async getTotalShifts(
-    userId: string,
-    startDate: Date,
-    endDate: Date
-  ): Promise<number> {
+  async getTotalShifts(userId: string, startDate: Date, endDate: Date): Promise<number> {
     try {
       const shiftCycle = await this.getShiftCycle(userId);
       if (!shiftCycle) {
@@ -318,11 +303,7 @@ export class UserService extends FirebaseService {
   /**
    * Get total working hours in date range
    */
-  async getWorkingHours(
-    userId: string,
-    startDate: Date,
-    endDate: Date
-  ): Promise<number> {
+  async getWorkingHours(userId: string, startDate: Date, endDate: Date): Promise<number> {
     try {
       const shiftCycle = await this.getShiftCycle(userId);
       if (!shiftCycle) {
@@ -360,6 +341,61 @@ export class UserService extends FirebaseService {
   }
 
   /**
+   * Create or sync a profile from onboarding data.
+   *
+   * This is safe to call multiple times:
+   * - existing user: update changed onboarding fields
+   * - missing user: create with onboarding values and placeholder email
+   */
+  async createOrSyncUserProfile(userId: string, onboarding: OnboardingData): Promise<void> {
+    const now = new Date().toISOString();
+    const normalizedCountry = this.normalizeCountryCode(onboarding.country);
+
+    const profileUpdates: Partial<UserProfile> = {
+      id: userId,
+      name: this.normalizeRequiredText(onboarding.name, 'User'),
+      occupation: this.normalizeRequiredText(onboarding.occupation, 'Unknown'),
+      company: this.normalizeRequiredText(onboarding.company, 'Unknown'),
+      country: normalizedCountry,
+      updatedAt: now,
+    };
+
+    const cycle = buildShiftCycle(onboarding);
+    if (cycle) {
+      profileUpdates.shiftCycle = cycle;
+    }
+
+    try {
+      const existing = await this.getUser(userId);
+
+      if (existing) {
+        await this.updateUser(userId, profileUpdates);
+        logger.info('UserService: synced existing user profile from onboarding', { userId });
+        return;
+      }
+
+      const createPayload: UserProfile = {
+        id: userId,
+        name: profileUpdates.name ?? 'User',
+        occupation: profileUpdates.occupation ?? 'Unknown',
+        company: profileUpdates.company ?? 'Unknown',
+        country: profileUpdates.country ?? 'US',
+        // Replaced after auth-sync in PremiumCompletionScreen.
+        email: `pending+${userId}@ellie.local`,
+        createdAt: now,
+        updatedAt: now,
+        shiftCycle: profileUpdates.shiftCycle,
+      };
+
+      await this.createUser(userId, createPayload);
+      logger.info('UserService: created new user profile from onboarding', { userId });
+    } catch (error) {
+      logger.error('UserService: failed to sync user profile', error as Error, { userId });
+      throw error;
+    }
+  }
+
+  /**
    * Get default user preferences
    */
   private getDefaultPreferences(): UserPreferences {
@@ -376,6 +412,16 @@ export class UserService extends FirebaseService {
       language: 'en',
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     };
+  }
+
+  private normalizeRequiredText(value: string | undefined, fallback: string): string {
+    const normalized = value?.trim();
+    return normalized && normalized.length > 0 ? normalized : fallback;
+  }
+
+  private normalizeCountryCode(value: string | undefined): string {
+    const normalized = value?.trim().toUpperCase() ?? '';
+    return /^[A-Z]{2}$/.test(normalized) ? normalized : 'US';
   }
 }
 

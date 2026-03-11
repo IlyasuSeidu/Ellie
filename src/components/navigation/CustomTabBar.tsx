@@ -29,6 +29,7 @@ import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
 import { useVoiceAssistant } from '@/contexts/VoiceAssistantContext';
 import { useShiftAccent } from '@/hooks/useShiftAccent';
+import { useSubscription } from '@/hooks/useSubscription';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -133,6 +134,7 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
   const { t } = useTranslation('dashboard');
   const insets = useSafeAreaInsets();
   const { state: voiceState, openModal } = useVoiceAssistant();
+  const { isPro, openPaywall } = useSubscription();
   const { tabAccentColor, tabGlowColor } = useShiftAccent();
   const centerButtonGradient = useMemo(
     () =>
@@ -216,9 +218,13 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
   const handleTabPress = (route: (typeof state.routes)[number], index: number) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
-    // Center Ellie button opens modal instead of navigating
+    // Center Ellie button — Pro: opens voice modal. Free: opens paywall.
     if (route.name === 'Ellie') {
-      openModal();
+      if (isPro) {
+        openModal();
+      } else {
+        openPaywall();
+      }
       return;
     }
 

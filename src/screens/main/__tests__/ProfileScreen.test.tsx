@@ -7,6 +7,8 @@ const mockUseIsFocused = jest.fn();
 const mockReset = jest.fn();
 const mockGetParent = jest.fn();
 const mockSet = jest.fn();
+const mockOpenPaywall = jest.fn();
+const mockUseSubscription = jest.fn();
 
 jest.mock('react-native-reanimated', () => {
   const RN = require('react-native');
@@ -54,6 +56,10 @@ jest.mock('@/services/AsyncStorageService', () => ({
   asyncStorageService: {
     set: (...args: unknown[]) => mockSet(...args),
   },
+}));
+
+jest.mock('@/hooks/useSubscription', () => ({
+  useSubscription: () => mockUseSubscription(),
 }));
 
 jest.mock('react-native-safe-area-context', () => ({
@@ -121,6 +127,12 @@ describe('ProfileScreen', () => {
     mockGetParent.mockReturnValue({ reset: mockReset });
     mockSet.mockResolvedValue(undefined);
     mockUseIsFocused.mockReturnValue(true);
+    mockUseSubscription.mockReturnValue({
+      isPro: false,
+      isLoading: false,
+      openPaywall: mockOpenPaywall,
+      restorePurchases: jest.fn(),
+    });
     mockUseProfileData.mockReturnValue({
       data: {
         name: 'Jane Doe',
@@ -157,7 +169,26 @@ describe('ProfileScreen', () => {
     expect(getByTestId('profile-edit-form')).toBeTruthy();
     expect(getByTestId('profile-shift-settings')).toBeTruthy();
     expect(getByTestId('profile-work-stats')).toBeTruthy();
+    expect(getByTestId('subscription-row')).toBeTruthy();
+    expect(getByText('Upgrade to Ellie Pro')).toBeTruthy();
     expect(getByTestId('run-onboarding-again-button')).toBeTruthy();
+  });
+
+  it('opens paywall when free-user subscription row is pressed', () => {
+    const { getByTestId } = render(<ProfileScreen />);
+    fireEvent.press(getByTestId('subscription-row'));
+    expect(mockOpenPaywall).toHaveBeenCalledTimes(1);
+  });
+
+  it('shows active subscription row state for Pro users', () => {
+    mockUseSubscription.mockReturnValue({
+      isPro: true,
+      isLoading: false,
+      openPaywall: mockOpenPaywall,
+      restorePurchases: jest.fn(),
+    });
+    const { getByText } = render(<ProfileScreen />);
+    expect(getByText('Ellie Pro — Active ✓')).toBeTruthy();
   });
 
   it('cancels edit mode when screen loses focus', () => {

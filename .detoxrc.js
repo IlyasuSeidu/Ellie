@@ -13,21 +13,22 @@ module.exports = {
     'ios.release': {
       type: 'ios.app',
       build:
-        'eas build --platform ios --profile preview --local --output ./ios/build/Ellie.app --non-interactive',
-      binaryPath: './ios/build/Ellie.app',
+        'xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 16 Pro" -derivedDataPath ios/build CODE_SIGNING_ALLOWED=NO build',
+      binaryPath: './ios/build/Build/Products/Release-iphonesimulator/Ellie.app',
     },
     'android.release': {
       type: 'android.apk',
-      build:
-        'eas build --platform android --profile preview --local --output ./android/app/build/Ellie.apk --non-interactive',
-      binaryPath: './android/app/build/Ellie.apk',
+      build: 'cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release',
+      binaryPath: './android/app/build/outputs/apk/release/app-release.apk',
+      testBinaryPath:
+        './android/app/build/outputs/apk/androidTest/release/app-release-androidTest.apk',
     },
   },
   devices: {
     simulator: {
       type: 'ios.simulator',
       device: {
-        type: 'iPhone 15 Pro',
+        type: 'iPhone 16 Pro',
       },
     },
     emulator: {

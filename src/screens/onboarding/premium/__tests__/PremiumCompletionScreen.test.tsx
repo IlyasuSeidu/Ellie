@@ -81,8 +81,16 @@ jest.mock('@/utils/hapticsDiagnostics', () => ({
 jest.mock('@/services/UserService', () => ({
   userService: {
     createUser: jest.fn(),
+    createOrSyncUserProfile: jest.fn(),
     saveShiftCycle: jest.fn(),
+    updateUser: jest.fn(),
   },
+}));
+
+jest.mock('@/contexts/AuthContext', () => ({
+  useAuth: () => ({
+    user: null,
+  }),
 }));
 
 // Mock AsyncStorageService
@@ -376,7 +384,9 @@ describe('PremiumCompletionScreen', () => {
       const { getByText } = renderWithProviders(<PremiumCompletionScreen />);
 
       return waitFor(() => {
-        expect(getByText(/Network error/i)).toBeTruthy();
+        expect(
+          getByText(/could not connect to save your setup\. check your connection/i)
+        ).toBeTruthy();
       });
     });
 
@@ -430,7 +440,7 @@ describe('PremiumCompletionScreen', () => {
       const { getByText } = renderWithProviders(<PremiumCompletionScreen />);
 
       await waitFor(() => {
-        expect(getByText(/Failed to save your data/i)).toBeTruthy();
+        expect(getByText(/could not save your setup right now/i)).toBeTruthy();
       });
     });
   });

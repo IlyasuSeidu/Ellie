@@ -15,8 +15,9 @@
     },
     "ios": {
       "supportsTablet": true,
-      "deploymentTarget": "16.0",
       "buildNumber": "1",
+      "usesAppleSignIn": true,
+      "googleServicesFile": "./ios/Ellie/GoogleService-Info.plist",
       "infoPlist": {
         "NSSpeechRecognitionUsageDescription": "Ellie needs speech recognition to understand your questions.",
         "NSMicrophoneUsageDescription": "Ellie needs microphone access for voice commands."
@@ -40,6 +41,13 @@
     "plugins": [
       "expo-localization",
       "expo-font",
+      "expo-asset",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.197162533368-5mhtc7pnngbq2n50rll6857n90n3t97r"
+        }
+      ],
       [
         "expo-image-picker",
         {

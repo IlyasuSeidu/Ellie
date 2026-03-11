@@ -140,7 +140,9 @@ describe('Error Utilities', () => {
 
     it('should format AuthenticationError', () => {
       const error = new AuthenticationError('Invalid token');
-      expect(formatErrorMessage(error)).toBe('Authentication failed. Please sign in again.');
+      expect(formatErrorMessage(error)).toBe(
+        'Unable to restore your session. Please sign in again.'
+      );
     });
 
     it('should format NetworkError', () => {

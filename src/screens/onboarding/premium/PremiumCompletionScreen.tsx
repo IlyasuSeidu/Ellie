@@ -41,7 +41,9 @@ import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
 import { useOnboarding } from '@/contexts/OnboardingContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { asyncStorageService } from '@/services/AsyncStorageService';
+import { userService } from '@/services/UserService';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { getShiftTimesFromData } from '@/utils/shiftTimeUtils';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
@@ -54,6 +56,8 @@ import {
 } from '@/utils/profileUtils';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 import { normalizeLanguage } from '@/i18n/languageDetector';
+import { logger } from '@/utils/logger';
+import { getOnboardingSaveErrorMessage } from '@/utils/onboardingErrorMessage';
 
 // Animated SVG components
 const AnimatedPath = Animated.createAnimatedComponent(Path);
@@ -241,6 +245,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
 }) => {
   const { t, i18n } = useTranslation('onboarding');
   const { data, validateData } = useOnboarding();
+  const { user } = useAuth();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   // State
@@ -313,26 +318,43 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
     setIsSaving(true);
     setSaveError(null);
 
+    // Validate data BEFORE saving (using context validation)
+    const validation = validateData();
+
+    if (!validation.isValid) {
+      setSaveError(
+        String(
+          t('completion.errors.missingRequiredInformation', {
+            fields: validation.missingFields.join(', '),
+            defaultValue:
+              'Missing required information: {{fields}}. Please go back and complete all steps.',
+          })
+        )
+      );
+      await triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+        source: 'PremiumCompletionScreen.saveOnboardingData.error',
+      });
+      setIsSaving(false);
+      return;
+    }
+
     try {
-      // Validate data BEFORE saving (using context validation)
-      const validation = validateData();
-
-      if (!validation.isValid) {
-        throw new Error(
-          String(
-            t('completion.errors.missingRequiredInformation', {
-              fields: validation.missingFields.join(', '),
-              defaultValue:
-                'Missing required information: {{fields}}. Please go back and complete all steps.',
-            })
-          )
-        );
-      }
-
-      // For now, just save to AsyncStorage
-      // Full UserService integration will come after proper backend setup
       await asyncStorageService.set('onboarding:complete', true);
       await asyncStorageService.set('onboarding:data', data);
+
+      // Sync onboarding data to Firestore if user is authenticated.
+      if (user) {
+        try {
+          await userService.createOrSyncUserProfile(user.uid, data);
+          await userService.updateUser(user.uid, { email: user.email ?? '' });
+          logger.info('Onboarding data synced to Firestore', { userId: user.uid });
+        } catch (syncError) {
+          // Do not block completion flow if sync fails; local onboarding save already succeeded.
+          logger.error('Failed to sync onboarding data to Firestore', syncError as Error, {
+            userId: user.uid,
+          });
+        }
+      }
 
       setIsSaved(true);
 
@@ -341,8 +363,8 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
         source: 'PremiumCompletionScreen.saveOnboardingData.success',
       });
     } catch (error) {
-      console.error('Failed to save onboarding data:', error);
-      setSaveError(error instanceof Error ? error.message : String(t('completion.saveFailed')));
+      logger.error('Failed to save onboarding data', error as Error);
+      setSaveError(getOnboardingSaveErrorMessage(error));
       await triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
         source: 'PremiumCompletionScreen.saveOnboardingData.error',
       });

@@ -8,7 +8,9 @@
 /* eslint-disable no-console */
 
 import { initializeApp, FirebaseApp, FirebaseOptions } from 'firebase/app';
-import { getAuth, Auth } from 'firebase/auth';
+import { initializeAuth, Auth, type Dependencies } from 'firebase/auth';
+import * as FirebaseAuthPackage from '@firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getFirestore, Firestore } from 'firebase/firestore';
 import { getStorage, FirebaseStorage } from 'firebase/storage';
 import { getFunctions, Functions } from 'firebase/functions';
@@ -66,10 +68,24 @@ function initializeFirebaseAuth(firebaseApp: FirebaseApp): Auth {
   }
 
   try {
-    // Get Auth instance for the app
-    auth = getAuth(firebaseApp);
+    // firebase/auth typings in this SDK don't expose getReactNativePersistence,
+    // but the RN runtime export is available via @firebase/auth.
+    const reactNativeAuth = FirebaseAuthPackage as unknown as {
+      getReactNativePersistence?: (
+        storage: typeof AsyncStorage
+      ) => NonNullable<Dependencies['persistence']>;
+    };
+    const persistence = reactNativeAuth.getReactNativePersistence?.(AsyncStorage);
+    if (!persistence) {
+      throw new Error('React Native auth persistence is unavailable');
+    }
 
-    console.log('Firebase Auth initialized successfully');
+    // initializeAuth + ReactNativePersistence ensures sessions survive app restarts.
+    auth = initializeAuth(firebaseApp, {
+      persistence,
+    });
+
+    console.log('Firebase Auth initialized successfully (AsyncStorage persistence)');
     return auth;
   } catch (error) {
     console.error('Failed to initialize Firebase Auth:', error);
