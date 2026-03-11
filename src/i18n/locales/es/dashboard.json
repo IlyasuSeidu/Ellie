@@ -140,7 +140,7 @@
     "partialTranscriptA11y": "Estás diciendo: {{text}}",
     "processingInline": "Ellie está pensando...",
     "retryHint": "Toca el micrófono para intentarlo de nuevo.",
-    "requestRef": "Ref: {{requestId}}",
+    "requestRef": "Referencia: {{requestId}}",
     "responseBubble": {
       "userSaidA11y": "Dijiste: {{text}}",
       "assistantSaidA11y": "Ellie dijo: {{text}}"

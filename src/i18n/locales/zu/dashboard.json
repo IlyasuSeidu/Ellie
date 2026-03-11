@@ -140,7 +140,7 @@
     "partialTranscriptA11y": "Uthi: {{text}}",
     "processingInline": "U-Ellie uyacabanga...",
     "retryHint": "Thepha imakrofoni ukuze uzame futhi",
-    "requestRef": "Ref: {{requestId}}",
+    "requestRef": "Inkomba: {{requestId}}",
     "responseBubble": {
       "userSaidA11y": "Uthe: {{text}}",
       "assistantSaidA11y": "U-Ellie uthe: {{text}}"
