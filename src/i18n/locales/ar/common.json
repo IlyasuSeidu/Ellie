@@ -27,6 +27,19 @@
     "label": "لغة",
     "selector": "اختر اللغة",
     "restartRequiredTitle": "إعادة التشغيل مطلوبة",
-    "restartRequiredMessage": "يرجى إعادة تشغيل Ellie لتطبيق تغييرات اتجاه اللغة."
+    "restartRequiredMessage": "يرجى إعادة تشغيل Ellie لتطبيق تغييرات اتجاه اللغة.",
+    "names": {
+      "en": "English",
+      "es": "Español",
+      "pt-BR": "Português (Brasil)",
+      "fr": "Français",
+      "ar": "العربية",
+      "zh-CN": "中文",
+      "ru": "Русский",
+      "hi": "हिन्दी",
+      "af": "Afrikaans",
+      "zu": "isiZulu",
+      "id": "Bahasa Indonesia"
+    }
   }
 }

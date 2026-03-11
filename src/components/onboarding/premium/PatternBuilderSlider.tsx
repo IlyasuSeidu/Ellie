@@ -22,6 +22,7 @@ import Animated, {
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 
@@ -65,6 +66,7 @@ export const PatternBuilderSlider: React.FC<PatternBuilderSliderProps> = ({
   customThumbIcon,
   customHeaderIcon,
 }) => {
+  const { t } = useTranslation('onboarding');
   const [trackWidth, setTrackWidth] = useState(SLIDER_WIDTH);
   const translateX = useSharedValue(((value - min) / Math.max(1, max - min)) * trackWidth);
   const startX = useSharedValue(0);
@@ -249,8 +251,19 @@ export const PatternBuilderSlider: React.FC<PatternBuilderSliderProps> = ({
           style={[styles.controlButton, value === min && styles.controlButtonDisabled]}
           accessible={true}
           accessibilityRole="button"
-          accessibilityLabel={`Decrease ${label}`}
-          accessibilityHint={`Current value is ${value}. Minimum is ${min}.`}
+          accessibilityLabel={String(
+            t('patternBuilderSlider.a11y.decrease', {
+              label,
+              defaultValue: 'Decrease {{label}}',
+            })
+          )}
+          accessibilityHint={String(
+            t('patternBuilderSlider.a11y.currentValueMinimum', {
+              value,
+              min,
+              defaultValue: 'Current value is {{value}}. Minimum is {{min}}.',
+            })
+          )}
           accessibilityState={{ disabled: value === min }}
         >
           <Ionicons name="remove" size={20} color={value === min ? theme.colors.dust : color} />
@@ -305,7 +318,11 @@ export const PatternBuilderSlider: React.FC<PatternBuilderSliderProps> = ({
               accessibilityRole="adjustable"
               accessibilityLabel={label}
               accessibilityValue={{ min, max, now: value, text: `${value} ${label.toLowerCase()}` }}
-              accessibilityHint="Swipe left or right to adjust value"
+              accessibilityHint={String(
+                t('patternBuilderSlider.a11y.adjustHint', {
+                  defaultValue: 'Swipe left or right to adjust value',
+                })
+              )}
             >
               {customThumbIcon ? (
                 <Image source={customThumbIcon} style={styles.thumbIcon} resizeMode="contain" />
@@ -327,8 +344,19 @@ export const PatternBuilderSlider: React.FC<PatternBuilderSliderProps> = ({
           style={[styles.controlButton, value === max && styles.controlButtonDisabled]}
           accessible={true}
           accessibilityRole="button"
-          accessibilityLabel={`Increase ${label}`}
-          accessibilityHint={`Current value is ${value}. Maximum is ${max}.`}
+          accessibilityLabel={String(
+            t('patternBuilderSlider.a11y.increase', {
+              label,
+              defaultValue: 'Increase {{label}}',
+            })
+          )}
+          accessibilityHint={String(
+            t('patternBuilderSlider.a11y.currentValueMaximum', {
+              value,
+              max,
+              defaultValue: 'Current value is {{value}}. Maximum is {{max}}.',
+            })
+          )}
           accessibilityState={{ disabled: value === max }}
         >
           <Ionicons name="add" size={20} color={value === max ? theme.colors.dust : color} />

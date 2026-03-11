@@ -317,7 +317,25 @@
       "workPattern": "Схема работы"
     },
     "title": "Все готово!",
-    "tryAgain": "Попробуйте еще раз"
+    "tryAgain": "Попробуйте еще раз",
+    "errors": {
+      "missingRequiredInformation": "Не заполнена обязательная информация: {{fields}}. Вернитесь назад и завершите все шаги."
+    },
+    "validation": {
+      "fields": {
+        "name": "Имя",
+        "occupation": "Должность",
+        "company": "Компания",
+        "country": "Страна",
+        "shiftSystem": "Сменная система",
+        "shiftPattern": "Сменный шаблон",
+        "fifoConfiguration": "Конфигурация FIFO",
+        "customPatternConfiguration": "Конфигурация пользовательского шаблона",
+        "phaseOffset": "Смещение фазы",
+        "startDate": "Дата начала",
+        "shiftTimes": "Время смен"
+      }
+    }
   },
   "phaseSelector": {
     "hints": {
@@ -897,5 +915,35 @@
   "premiumCalendar": {
     "previousMonthA11y": "Previous month",
     "nextMonthA11y": "Next month"
+  },
+  "dayCell": {
+    "a11y": {
+      "today": "Сегодня",
+      "selected": "Выбрано",
+      "day": "День {{day}}"
+    }
+  },
+  "patternBuilderSlider": {
+    "a11y": {
+      "decrease": "Уменьшить {{label}}",
+      "increase": "Увеличить {{label}}",
+      "currentValueMinimum": "Текущее значение: {{value}}. Минимум: {{min}}.",
+      "currentValueMaximum": "Текущее значение: {{value}}. Максимум: {{max}}.",
+      "adjustHint": "Проведите влево или вправо, чтобы изменить значение"
+    }
+  },
+  "chatMessage": {
+    "skipped": "Пропущено",
+    "a11y": {
+      "botMessage": "Сообщение Ellie: {{content}}",
+      "userMessage": "Ваше сообщение: {{content}}",
+      "longPressToEdit": "Нажмите и удерживайте для редактирования"
+    }
+  },
+  "patternCard": {
+    "a11y": {
+      "label": "Шаблон {{name}}",
+      "hint": "Выбирает шаблон смен {{description}}"
+    }
   }
 }

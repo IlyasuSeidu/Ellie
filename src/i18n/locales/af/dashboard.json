@@ -129,6 +129,10 @@
     "responseBubble": {
       "userSaidA11y": "You said: {{text}}",
       "assistantSaidA11y": "Ellie said: {{text}}"
+    },
+    "warnings": {
+      "microphonePermissionRequired": "Mikrofoontoestemming word vir Hey Ellie vereis. Tik die mikrofoon om te praat.",
+      "wakeWordUnavailableTapToTalk": "Wekwoord onbeskikbaar, tik die mikrofoon om te praat."
     }
   },
   "tabs": {

@@ -129,6 +129,10 @@
     "responseBubble": {
       "userSaidA11y": "You said: {{text}}",
       "assistantSaidA11y": "Ellie said: {{text}}"
+    },
+    "warnings": {
+      "microphonePermissionRequired": "Izin mikrofon diperlukan untuk Hey Ellie. Ketuk mikrofon untuk berbicara.",
+      "wakeWordUnavailableTapToTalk": "Kata pemicu tidak tersedia, ketuk mikrofon untuk berbicara."
     }
   },
   "tabs": {

@@ -939,5 +939,21 @@
       "label": "Patrón {{name}}",
       "hint": "Selecciona el patrón de turnos {{description}}"
     }
+  },
+  "dayCell": {
+    "a11y": {
+      "today": "Hoy",
+      "selected": "Seleccionado",
+      "day": "Día {{day}}"
+    }
+  },
+  "patternBuilderSlider": {
+    "a11y": {
+      "decrease": "Disminuir {{label}}",
+      "increase": "Aumentar {{label}}",
+      "currentValueMinimum": "El valor actual es {{value}}. El mínimo es {{min}}.",
+      "currentValueMaximum": "El valor actual es {{value}}. El máximo es {{max}}.",
+      "adjustHint": "Desliza a la izquierda o a la derecha para ajustar el valor"
+    }
   }
 }

@@ -308,7 +308,25 @@
       "workPattern": "Werkpatroon"
     },
     "title": "Jy is gereed!",
-    "tryAgain": "Probeer weer"
+    "tryAgain": "Probeer weer",
+    "errors": {
+      "missingRequiredInformation": "Vereiste inligting ontbreek: {{fields}}. Gaan terug en voltooi al die stappe."
+    },
+    "validation": {
+      "fields": {
+        "name": "Naam",
+        "occupation": "Beroep",
+        "company": "Maatskappy",
+        "country": "Land",
+        "shiftSystem": "Skofstelsel",
+        "shiftPattern": "Skofpatroon",
+        "fifoConfiguration": "FIFO-opstelling",
+        "customPatternConfiguration": "Pasgemaakte patroonopstelling",
+        "phaseOffset": "Faseverskuiwing",
+        "startDate": "Begindatum",
+        "shiftTimes": "Skofure"
+      }
+    }
   },
   "phaseSelector": {
     "hints": {
@@ -888,5 +906,35 @@
   "premiumCalendar": {
     "previousMonthA11y": "Previous month",
     "nextMonthA11y": "Next month"
+  },
+  "dayCell": {
+    "a11y": {
+      "today": "Vandag",
+      "selected": "Gekies",
+      "day": "Dag {{day}}"
+    }
+  },
+  "patternBuilderSlider": {
+    "a11y": {
+      "decrease": "Verlaag {{label}}",
+      "increase": "Verhoog {{label}}",
+      "currentValueMinimum": "Huidige waarde is {{value}}. Minimum is {{min}}.",
+      "currentValueMaximum": "Huidige waarde is {{value}}. Maksimum is {{max}}.",
+      "adjustHint": "Swiep links of regs om die waarde aan te pas"
+    }
+  },
+  "chatMessage": {
+    "skipped": "Oorgeslaan",
+    "a11y": {
+      "botMessage": "Ellie-boodskap: {{content}}",
+      "userMessage": "Jou boodskap: {{content}}",
+      "longPressToEdit": "Hou lank in om te wysig"
+    }
+  },
+  "patternCard": {
+    "a11y": {
+      "label": "{{name}} patroon",
+      "hint": "Kies die {{description}}-skofpatroon"
+    }
   }
 }

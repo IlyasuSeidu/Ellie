@@ -25,22 +25,21 @@ const SHEET_MAX_HEIGHT = SCREEN_HEIGHT * 0.72;
 
 interface LanguageOption {
   code: SupportedLanguage;
-  name: string;
   nativeName: string;
 }
 
 const LANGUAGE_OPTIONS: LanguageOption[] = [
-  { code: 'en', name: 'English', nativeName: 'English' },
-  { code: 'es', name: 'Spanish', nativeName: 'Español' },
-  { code: 'pt-BR', name: 'Portuguese', nativeName: 'Português (Brasil)' },
-  { code: 'fr', name: 'French', nativeName: 'Français' },
-  { code: 'ar', name: 'Arabic', nativeName: 'العربية' },
-  { code: 'zh-CN', name: 'Chinese', nativeName: '中文' },
-  { code: 'ru', name: 'Russian', nativeName: 'Русский' },
-  { code: 'hi', name: 'Hindi', nativeName: 'हिन्दी' },
-  { code: 'af', name: 'Afrikaans', nativeName: 'Afrikaans' },
-  { code: 'zu', name: 'Zulu', nativeName: 'isiZulu' },
-  { code: 'id', name: 'Indonesian', nativeName: 'Bahasa Indonesia' },
+  { code: 'en', nativeName: 'English' },
+  { code: 'es', nativeName: 'Español' },
+  { code: 'pt-BR', nativeName: 'Português (Brasil)' },
+  { code: 'fr', nativeName: 'Français' },
+  { code: 'ar', nativeName: 'العربية' },
+  { code: 'zh-CN', nativeName: '中文' },
+  { code: 'ru', nativeName: 'Русский' },
+  { code: 'hi', nativeName: 'हिन्दी' },
+  { code: 'af', nativeName: 'Afrikaans' },
+  { code: 'zu', nativeName: 'isiZulu' },
+  { code: 'id', nativeName: 'Bahasa Indonesia' },
 ];
 
 export const LANGUAGE_NAMES: Record<string, string> = {
@@ -166,6 +165,12 @@ export const LanguageSelectorSheet: React.FC<LanguageSelectorSheetProps> = ({
         >
           {selectableLanguages.map((language) => {
             const isSelected = currentLanguage === language.code;
+            const localizedLanguageName = String(
+              t(`language.names.${language.code}`, {
+                defaultValue: language.nativeName,
+              })
+            );
+            const showNativeSubtitle = localizedLanguageName !== language.nativeName;
 
             return (
               <TouchableOpacity
@@ -175,15 +180,17 @@ export const LanguageSelectorSheet: React.FC<LanguageSelectorSheetProps> = ({
                 disabled={isSubmitting}
                 activeOpacity={0.85}
                 accessibilityRole="button"
-                accessibilityLabel={`${language.name}`}
+                accessibilityLabel={localizedLanguageName}
               >
                 <View style={styles.optionTextWrap}>
                   <Animated.Text
                     style={[styles.optionName, isSelected && styles.optionNameSelected]}
                   >
-                    {language.name}
+                    {localizedLanguageName}
                   </Animated.Text>
-                  <Animated.Text style={styles.optionNative}>{language.nativeName}</Animated.Text>
+                  {showNativeSubtitle ? (
+                    <Animated.Text style={styles.optionNative}>{language.nativeName}</Animated.Text>
+                  ) : null}
                 </View>
                 {isSelected ? (
                   <Ionicons name="checkmark-circle" size={20} color={theme.colors.sacredGold} />

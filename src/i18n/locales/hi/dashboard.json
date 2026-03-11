@@ -129,6 +129,10 @@
     "responseBubble": {
       "userSaidA11y": "You said: {{text}}",
       "assistantSaidA11y": "Ellie said: {{text}}"
+    },
+    "warnings": {
+      "microphonePermissionRequired": "Hey Ellie के लिए माइक्रोफ़ोन अनुमति आवश्यक है। बोलने के लिए माइक्रोफ़ोन टैप करें।",
+      "wakeWordUnavailableTapToTalk": "वेक-वर्ड उपलब्ध नहीं है, बोलने के लिए माइक्रोफ़ोन टैप करें।"
     }
   },
   "tabs": {

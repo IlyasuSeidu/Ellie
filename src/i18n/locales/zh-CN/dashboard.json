@@ -129,6 +129,10 @@
     "responseBubble": {
       "userSaidA11y": "You said: {{text}}",
       "assistantSaidA11y": "Ellie said: {{text}}"
+    },
+    "warnings": {
+      "microphonePermissionRequired": "Hey Ellie 需要麦克风权限。点击麦克风开始说话。",
+      "wakeWordUnavailableTapToTalk": "唤醒词不可用，请点击麦克风说话。"
     }
   },
   "tabs": {

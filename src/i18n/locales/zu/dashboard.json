@@ -129,6 +129,10 @@
     "responseBubble": {
       "userSaidA11y": "You said: {{text}}",
       "assistantSaidA11y": "Ellie said: {{text}}"
+    },
+    "warnings": {
+      "microphonePermissionRequired": "Imvume yemakrofoni iyadingeka ku-Hey Ellie. Thepha imakrofoni ukuze ukhulume.",
+      "wakeWordUnavailableTapToTalk": "Igama lokuvusa alitholakali, thepha imakrofoni ukuze ukhulume."
     }
   },
   "tabs": {

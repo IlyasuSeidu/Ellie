@@ -4,12 +4,13 @@ import { LanguageSelectorSheet } from '../LanguageSelectorSheet';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => key,
+    t: (key: string, options?: Record<string, unknown>) =>
+      (options?.defaultValue as string | undefined) ?? key,
   }),
 }));
 
 describe('LanguageSelectorSheet', () => {
-  it('shows all runtime language options including fr and ar', () => {
+  it('shows all runtime language options', () => {
     const { getAllByText, getByText } = render(
       <LanguageSelectorSheet
         visible
@@ -20,10 +21,16 @@ describe('LanguageSelectorSheet', () => {
     );
 
     expect(getAllByText('English').length).toBeGreaterThan(0);
-    expect(getByText('Spanish')).toBeTruthy();
-    expect(getByText('Portuguese')).toBeTruthy();
-    expect(getByText('French')).toBeTruthy();
-    expect(getByText('Arabic')).toBeTruthy();
+    expect(getByText('Español')).toBeTruthy();
+    expect(getByText('Português (Brasil)')).toBeTruthy();
+    expect(getByText('Français')).toBeTruthy();
+    expect(getByText('العربية')).toBeTruthy();
+    expect(getByText('中文')).toBeTruthy();
+    expect(getByText('Русский')).toBeTruthy();
+    expect(getByText('हिन्दी')).toBeTruthy();
+    expect(getByText('Afrikaans')).toBeTruthy();
+    expect(getByText('isiZulu')).toBeTruthy();
+    expect(getByText('Bahasa Indonesia')).toBeTruthy();
   });
 
   it('selects French', async () => {
@@ -34,7 +41,7 @@ describe('LanguageSelectorSheet', () => {
       <LanguageSelectorSheet visible onClose={onClose} currentLanguage="en" onSelect={onSelect} />
     );
 
-    fireEvent.press(getByLabelText('French'));
+    fireEvent.press(getByLabelText('Français'));
 
     await waitFor(() => {
       expect(onSelect).toHaveBeenCalledWith('fr');
@@ -50,7 +57,7 @@ describe('LanguageSelectorSheet', () => {
       <LanguageSelectorSheet visible onClose={onClose} currentLanguage="en" onSelect={onSelect} />
     );
 
-    fireEvent.press(getByLabelText('Arabic'));
+    fireEvent.press(getByLabelText('العربية'));
 
     await waitFor(() => {
       expect(onSelect).toHaveBeenCalledWith('ar');

@@ -920,5 +920,21 @@
       "label": "{{name}} pattern",
       "hint": "Selects {{description}} shift pattern"
     }
+  },
+  "dayCell": {
+    "a11y": {
+      "today": "Today",
+      "selected": "Selected",
+      "day": "Day {{day}}"
+    }
+  },
+  "patternBuilderSlider": {
+    "a11y": {
+      "decrease": "Decrease {{label}}",
+      "increase": "Increase {{label}}",
+      "currentValueMinimum": "Current value is {{value}}. Minimum is {{min}}.",
+      "currentValueMaximum": "Current value is {{value}}. Maximum is {{max}}.",
+      "adjustHint": "Swipe left or right to adjust value"
+    }
   }
 }

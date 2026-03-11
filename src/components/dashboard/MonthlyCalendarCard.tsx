@@ -33,7 +33,6 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import dayjs from 'dayjs';
 import { theme } from '@/utils/theme';
 import { getDaysInMonth, getFirstDayOfMonth, isToday as checkIsToday } from '@/utils/dateUtils';
 import { ShiftCalendarDayCell } from './ShiftCalendarDayCell';
@@ -85,6 +84,21 @@ export interface MonthlyCalendarCardProps {
 }
 
 const WEEKDAY_LABELS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+
+const getDateLocaleTag = (language: string): string => {
+  const normalized = normalizeLanguage(language);
+  if (normalized === 'es') return 'es-ES';
+  if (normalized === 'pt-BR') return 'pt-BR';
+  if (normalized === 'fr') return 'fr-FR';
+  if (normalized === 'ar') return 'ar';
+  if (normalized === 'zh-CN') return 'zh-CN';
+  if (normalized === 'ru') return 'ru-RU';
+  if (normalized === 'hi') return 'hi-IN';
+  if (normalized === 'af') return 'af-ZA';
+  if (normalized === 'zu') return 'zu-ZA';
+  if (normalized === 'id') return 'id-ID';
+  return 'en-US';
+};
 
 /**
  * Build the calendar grid for a given month.
@@ -250,16 +264,16 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
 }) => {
   const { t, i18n } = useTranslation('dashboard');
   const calendarGrid = useMemo(() => buildCalendarGrid(year, month), [year, month]);
-  const dayjsLocale = useMemo(() => {
-    const normalizedLanguage = normalizeLanguage(i18n.resolvedLanguage ?? i18n.language ?? 'en');
-    return normalizedLanguage === 'pt-BR' ? 'pt-br' : normalizedLanguage;
-  }, [i18n.resolvedLanguage, i18n.language]);
+  const localeTag = useMemo(
+    () => getDateLocaleTag(i18n.resolvedLanguage ?? i18n.language ?? 'en'),
+    [i18n.resolvedLanguage, i18n.language]
+  );
   const monthLabel = useMemo(
     () =>
-      dayjs(new Date(year, month, 1))
-        .locale(dayjsLocale)
-        .format('MMMM'),
-    [year, month, dayjsLocale]
+      new Date(year, month, 1).toLocaleDateString(localeTag, {
+        month: 'long',
+      }),
+    [year, month, localeTag]
   );
 
   // Create a lookup from day number to ShiftDay

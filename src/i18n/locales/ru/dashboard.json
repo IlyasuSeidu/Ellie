@@ -129,6 +129,10 @@
     "responseBubble": {
       "userSaidA11y": "You said: {{text}}",
       "assistantSaidA11y": "Ellie said: {{text}}"
+    },
+    "warnings": {
+      "microphonePermissionRequired": "Для Hey Ellie требуется доступ к микрофону. Нажмите на микрофон, чтобы говорить.",
+      "wakeWordUnavailableTapToTalk": "Активационная фраза недоступна, нажмите на микрофон, чтобы говорить."
     }
   },
   "tabs": {

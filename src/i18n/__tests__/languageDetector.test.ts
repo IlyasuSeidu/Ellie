@@ -14,6 +14,12 @@ describe('languageDetector', () => {
       expect(normalizeLanguage('pt-PT')).toBe('pt-BR');
       expect(normalizeLanguage('fr-FR')).toBe('fr');
       expect(normalizeLanguage('ar-SA')).toBe('ar');
+      expect(normalizeLanguage('zh-TW')).toBe('zh-CN');
+      expect(normalizeLanguage('ru-RU')).toBe('ru');
+      expect(normalizeLanguage('hi-IN')).toBe('hi');
+      expect(normalizeLanguage('af-ZA')).toBe('af');
+      expect(normalizeLanguage('zu-ZA')).toBe('zu');
+      expect(normalizeLanguage('id-ID')).toBe('id');
       expect(normalizeLanguage('de-DE')).toBe('en');
       expect(normalizeLanguage(undefined)).toBe('en');
     });

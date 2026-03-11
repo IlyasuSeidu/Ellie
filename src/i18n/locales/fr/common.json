@@ -27,6 +27,19 @@
     "label": "Langue",
     "selector": "Sélectionnez la langue",
     "restartRequiredTitle": "Redémarrage requis",
-    "restartRequiredMessage": "Veuillez redémarrer Ellie pour appliquer les changements de direction de la langue."
+    "restartRequiredMessage": "Veuillez redémarrer Ellie pour appliquer les changements de direction de la langue.",
+    "names": {
+      "en": "English",
+      "es": "Español",
+      "pt-BR": "Português (Brasil)",
+      "fr": "Français",
+      "ar": "العربية",
+      "zh-CN": "中文",
+      "ru": "Русский",
+      "hi": "हिन्दी",
+      "af": "Afrikaans",
+      "zu": "isiZulu",
+      "id": "Bahasa Indonesia"
+    }
   }
 }

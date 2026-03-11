@@ -27,6 +27,19 @@
     "label": "Idioma",
     "selector": "Seleccionar idioma",
     "restartRequiredTitle": "Reinicio requerido",
-    "restartRequiredMessage": "Reinicia Ellie para aplicar los cambios de dirección del idioma."
+    "restartRequiredMessage": "Reinicia Ellie para aplicar los cambios de dirección del idioma.",
+    "names": {
+      "en": "English",
+      "es": "Español",
+      "pt-BR": "Português (Brasil)",
+      "fr": "Français",
+      "ar": "العربية",
+      "zh-CN": "中文",
+      "ru": "Русский",
+      "hi": "हिन्दी",
+      "af": "Afrikaans",
+      "zu": "isiZulu",
+      "id": "Bahasa Indonesia"
+    }
   }
 }

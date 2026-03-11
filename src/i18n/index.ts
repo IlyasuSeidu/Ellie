@@ -9,6 +9,7 @@ import 'dayjs/locale/zh-cn';
 import 'dayjs/locale/ru';
 import 'dayjs/locale/hi';
 import 'dayjs/locale/id';
+import 'dayjs/locale/af';
 
 import { languageDetector, normalizeLanguage } from './languageDetector';
 
@@ -200,6 +201,11 @@ function syncDayjsLocale(language: string): void {
 
   if (normalized === 'id') {
     dayjs.locale('id');
+    return;
+  }
+
+  if (normalized === 'af') {
+    dayjs.locale('af');
     return;
   }
 

@@ -13,6 +13,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
 
@@ -47,6 +48,7 @@ export const DayCell: React.FC<DayCellProps> = ({
   accessibilityLabel,
   testID,
 }) => {
+  const { t } = useTranslation('onboarding');
   const scale = useSharedValue(1);
   const opacity = useSharedValue(1);
 
@@ -95,6 +97,36 @@ export const DayCell: React.FC<DayCellProps> = ({
     disabled && styles.disabledText,
     isOtherMonth && styles.otherMonthText,
   ];
+  const computedAccessibilityLabel = React.useMemo(() => {
+    const labelParts: string[] = [];
+    if (isToday) {
+      labelParts.push(
+        String(
+          t('dayCell.a11y.today', {
+            defaultValue: 'Today',
+          })
+        )
+      );
+    }
+    if (selected) {
+      labelParts.push(
+        String(
+          t('dayCell.a11y.selected', {
+            defaultValue: 'Selected',
+          })
+        )
+      );
+    }
+    labelParts.push(
+      String(
+        t('dayCell.a11y.day', {
+          day,
+          defaultValue: 'Day {{day}}',
+        })
+      )
+    );
+    return labelParts.join(', ');
+  }, [day, isToday, selected, t]);
 
   return (
     <AnimatedTouchable
@@ -105,9 +137,7 @@ export const DayCell: React.FC<DayCellProps> = ({
       activeOpacity={1}
       style={[animatedStyle, containerStyle]}
       accessibilityRole="button"
-      accessibilityLabel={
-        accessibilityLabel || `${isToday ? 'Today, ' : ''}${selected ? 'Selected, ' : ''}Day ${day}`
-      }
+      accessibilityLabel={accessibilityLabel || computedAccessibilityLabel}
       accessibilityState={{ disabled, selected }}
       testID={testID}
     >

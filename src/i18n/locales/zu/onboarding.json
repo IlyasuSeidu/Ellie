@@ -327,7 +327,25 @@
       "workPattern": "Iphethini Yomsebenzi"
     },
     "title": "Usulungile!",
-    "tryAgain": "Zama futhi"
+    "tryAgain": "Zama futhi",
+    "errors": {
+      "missingRequiredInformation": "Ulwazi oludingekayo luyashoda: {{fields}}. Sicela ubuyele emuva uqede zonke izinyathelo."
+    },
+    "validation": {
+      "fields": {
+        "name": "Igama",
+        "occupation": "Umsebenzi",
+        "company": "Inkampani",
+        "country": "Izwe",
+        "shiftSystem": "Uhlelo lwamashifu",
+        "shiftPattern": "Iphethini yamashifu",
+        "fifoConfiguration": "Ukucushwa kwe-FIFO",
+        "customPatternConfiguration": "Ukucushwa kwephethini yangokwezifiso",
+        "phaseOffset": "Ukushintsha kwesigaba",
+        "startDate": "Usuku lokuqala",
+        "shiftTimes": "Izikhathi zamashifu"
+      }
+    }
   },
   "phaseSelector": {
     "hints": {
@@ -907,5 +925,35 @@
   "premiumCalendar": {
     "previousMonthA11y": "Previous month",
     "nextMonthA11y": "Next month"
+  },
+  "dayCell": {
+    "a11y": {
+      "today": "Namuhla",
+      "selected": "Okukhethiwe",
+      "day": "Usuku {{day}}"
+    }
+  },
+  "patternBuilderSlider": {
+    "a11y": {
+      "decrease": "Yehlisa {{label}}",
+      "increase": "Khuphula {{label}}",
+      "currentValueMinimum": "Inani lamanje lingu-{{value}}. Elincane lingu-{{min}}.",
+      "currentValueMaximum": "Inani lamanje lingu-{{value}}. Elikhulu lingu-{{max}}.",
+      "adjustHint": "Swayipha kwesobunxele noma kwesokudla ukulungisa inani"
+    }
+  },
+  "chatMessage": {
+    "skipped": "Kweqiwe",
+    "a11y": {
+      "botMessage": "Umlayezo ka-Ellie: {{content}}",
+      "userMessage": "Umlayezo wakho: {{content}}",
+      "longPressToEdit": "Cindezela isikhathi eside ukuze uhlele"
+    }
+  },
+  "patternCard": {
+    "a11y": {
+      "label": "Iphethini {{name}}",
+      "hint": "Khetha iphethini yeshifu ethi {{description}}"
+    }
   }
 }

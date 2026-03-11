@@ -943,5 +943,21 @@
       "label": "Schéma {{name}}",
       "hint": "Sélectionne le schéma de quarts {{description}}"
     }
+  },
+  "dayCell": {
+    "a11y": {
+      "today": "Aujourd'hui",
+      "selected": "Sélectionné",
+      "day": "Jour {{day}}"
+    }
+  },
+  "patternBuilderSlider": {
+    "a11y": {
+      "decrease": "Diminuer {{label}}",
+      "increase": "Augmenter {{label}}",
+      "currentValueMinimum": "La valeur actuelle est {{value}}. Le minimum est {{min}}.",
+      "currentValueMaximum": "La valeur actuelle est {{value}}. Le maximum est {{max}}.",
+      "adjustHint": "Balayez vers la gauche ou la droite pour ajuster la valeur"
+    }
   }
 }

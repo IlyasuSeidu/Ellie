@@ -917,5 +917,21 @@
       "label": "نمط {{name}}",
       "hint": "يحدد نمط الورديات {{description}}"
     }
+  },
+  "dayCell": {
+    "a11y": {
+      "today": "اليوم",
+      "selected": "محدد",
+      "day": "اليوم {{day}}"
+    }
+  },
+  "patternBuilderSlider": {
+    "a11y": {
+      "decrease": "تقليل {{label}}",
+      "increase": "زيادة {{label}}",
+      "currentValueMinimum": "القيمة الحالية هي {{value}}. الحد الأدنى هو {{min}}.",
+      "currentValueMaximum": "القيمة الحالية هي {{value}}. الحد الأقصى هو {{max}}.",
+      "adjustHint": "اسحب لليسار أو اليمين لضبط القيمة"
+    }
   }
 }

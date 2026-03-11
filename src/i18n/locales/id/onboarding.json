@@ -322,7 +322,25 @@
       "workPattern": "Pola Kerja"
     },
     "title": "Anda sudah siap!",
-    "tryAgain": "Coba Lagi"
+    "tryAgain": "Coba Lagi",
+    "errors": {
+      "missingRequiredInformation": "Informasi wajib belum lengkap: {{fields}}. Silakan kembali dan selesaikan semua langkah."
+    },
+    "validation": {
+      "fields": {
+        "name": "Nama",
+        "occupation": "Pekerjaan",
+        "company": "Perusahaan",
+        "country": "Negara",
+        "shiftSystem": "Sistem Shift",
+        "shiftPattern": "Pola Shift",
+        "fifoConfiguration": "Konfigurasi FIFO",
+        "customPatternConfiguration": "Konfigurasi Pola Kustom",
+        "phaseOffset": "Offset Fase",
+        "startDate": "Tanggal Mulai",
+        "shiftTimes": "Waktu Shift"
+      }
+    }
   },
   "phaseSelector": {
     "hints": {
@@ -902,5 +920,35 @@
   "premiumCalendar": {
     "previousMonthA11y": "Previous month",
     "nextMonthA11y": "Next month"
+  },
+  "dayCell": {
+    "a11y": {
+      "today": "Hari ini",
+      "selected": "Dipilih",
+      "day": "Hari {{day}}"
+    }
+  },
+  "patternBuilderSlider": {
+    "a11y": {
+      "decrease": "Kurangi {{label}}",
+      "increase": "Tambah {{label}}",
+      "currentValueMinimum": "Nilai saat ini {{value}}. Nilai minimum {{min}}.",
+      "currentValueMaximum": "Nilai saat ini {{value}}. Nilai maksimum {{max}}.",
+      "adjustHint": "Geser ke kiri atau kanan untuk menyesuaikan nilai"
+    }
+  },
+  "chatMessage": {
+    "skipped": "Dilewati",
+    "a11y": {
+      "botMessage": "Pesan Ellie: {{content}}",
+      "userMessage": "Pesan Anda: {{content}}",
+      "longPressToEdit": "Tekan lama untuk mengedit"
+    }
+  },
+  "patternCard": {
+    "a11y": {
+      "label": "Pola {{name}}",
+      "hint": "Memilih pola shift {{description}}"
+    }
   }
 }

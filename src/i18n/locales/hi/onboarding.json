@@ -303,7 +303,25 @@
       "workPattern": "कार्य पैटर्न"
     },
     "title": "तुम सब सेट हो!",
-    "tryAgain": "पुनः प्रयास करें"
+    "tryAgain": "पुनः प्रयास करें",
+    "errors": {
+      "missingRequiredInformation": "आवश्यक जानकारी नहीं मिली: {{fields}}। कृपया वापस जाएँ और सभी चरण पूरे करें।"
+    },
+    "validation": {
+      "fields": {
+        "name": "नाम",
+        "occupation": "पेशा",
+        "company": "कंपनी",
+        "country": "देश",
+        "shiftSystem": "शिफ्ट सिस्टम",
+        "shiftPattern": "शिफ्ट पैटर्न",
+        "fifoConfiguration": "FIFO कॉन्फ़िगरेशन",
+        "customPatternConfiguration": "कस्टम पैटर्न कॉन्फ़िगरेशन",
+        "phaseOffset": "फेज़ ऑफ़सेट",
+        "startDate": "प्रारंभ तिथि",
+        "shiftTimes": "शिफ्ट समय"
+      }
+    }
   },
   "phaseSelector": {
     "hints": {
@@ -883,5 +901,35 @@
   "premiumCalendar": {
     "previousMonthA11y": "Previous month",
     "nextMonthA11y": "Next month"
+  },
+  "dayCell": {
+    "a11y": {
+      "today": "आज",
+      "selected": "चयनित",
+      "day": "दिन {{day}}"
+    }
+  },
+  "patternBuilderSlider": {
+    "a11y": {
+      "decrease": "{{label}} घटाएँ",
+      "increase": "{{label}} बढ़ाएँ",
+      "currentValueMinimum": "वर्तमान मान {{value}} है। न्यूनतम {{min}} है।",
+      "currentValueMaximum": "वर्तमान मान {{value}} है। अधिकतम {{max}} है।",
+      "adjustHint": "मान बदलने के लिए बाएँ या दाएँ स्वाइप करें"
+    }
+  },
+  "chatMessage": {
+    "skipped": "छोड़ा गया",
+    "a11y": {
+      "botMessage": "एली संदेश: {{content}}",
+      "userMessage": "आपका संदेश: {{content}}",
+      "longPressToEdit": "संपादित करने के लिए लंबा दबाएं"
+    }
+  },
+  "patternCard": {
+    "a11y": {
+      "label": "{{name}} पैटर्न",
+      "hint": "{{description}} शिफ्ट पैटर्न चुनता है"
+    }
   }
 }
