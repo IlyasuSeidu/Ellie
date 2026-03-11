@@ -307,7 +307,12 @@
     "title": "أنت جاهز تمامًا!",
     "tryAgain": "حاول ثانية",
     "errors": {
-      "missingRequiredInformation": "معلومات مطلوبة مفقودة: {{fields}}. يرجى الرجوع وإكمال جميع الخطوات."
+      "missingRequiredInformation": "معلومات مطلوبة مفقودة: {{fields}}. يرجى الرجوع وإكمال جميع الخطوات.",
+      "networkUnavailable": "We could not connect to save your setup. Check your connection and try again.",
+      "permissionDenied": "We don't have permission to save your setup. Please sign in again and retry.",
+      "storageUnavailable": "Your device storage is full. Free up space and try again.",
+      "timeout": "Saving took too long. Please try again.",
+      "genericSaveFailed": "We could not save your setup right now. Please try again."
     },
     "validation": {
       "fields": {

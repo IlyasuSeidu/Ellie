@@ -305,7 +305,12 @@
     "title": "तुम सब सेट हो!",
     "tryAgain": "पुनः प्रयास करें",
     "errors": {
-      "missingRequiredInformation": "आवश्यक जानकारी नहीं मिली: {{fields}}। कृपया वापस जाएँ और सभी चरण पूरे करें।"
+      "missingRequiredInformation": "आवश्यक जानकारी नहीं मिली: {{fields}}। कृपया वापस जाएँ और सभी चरण पूरे करें।",
+      "networkUnavailable": "We could not connect to save your setup. Check your connection and try again.",
+      "permissionDenied": "We don't have permission to save your setup. Please sign in again and retry.",
+      "storageUnavailable": "Your device storage is full. Free up space and try again.",
+      "timeout": "Saving took too long. Please try again.",
+      "genericSaveFailed": "We could not save your setup right now. Please try again."
     },
     "validation": {
       "fields": {

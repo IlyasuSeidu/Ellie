@@ -253,7 +253,12 @@
     "title": "Está tudo pronto!",
     "tryAgain": "Tente novamente",
     "errors": {
-      "missingRequiredInformation": "Informações obrigatórias ausentes: {{fields}}. Volte e conclua todas as etapas."
+      "missingRequiredInformation": "Informações obrigatórias ausentes: {{fields}}. Volte e conclua todas as etapas.",
+      "networkUnavailable": "We could not connect to save your setup. Check your connection and try again.",
+      "permissionDenied": "We don't have permission to save your setup. Please sign in again and retry.",
+      "storageUnavailable": "Your device storage is full. Free up space and try again.",
+      "timeout": "Saving took too long. Please try again.",
+      "genericSaveFailed": "We could not save your setup right now. Please try again."
     },
     "validation": {
       "fields": {

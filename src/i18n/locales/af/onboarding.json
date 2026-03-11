@@ -310,7 +310,12 @@
     "title": "Jy is gereed!",
     "tryAgain": "Probeer weer",
     "errors": {
-      "missingRequiredInformation": "Vereiste inligting ontbreek: {{fields}}. Gaan terug en voltooi al die stappe."
+      "missingRequiredInformation": "Vereiste inligting ontbreek: {{fields}}. Gaan terug en voltooi al die stappe.",
+      "networkUnavailable": "We could not connect to save your setup. Check your connection and try again.",
+      "permissionDenied": "We don't have permission to save your setup. Please sign in again and retry.",
+      "storageUnavailable": "Your device storage is full. Free up space and try again.",
+      "timeout": "Saving took too long. Please try again.",
+      "genericSaveFailed": "We could not save your setup right now. Please try again."
     },
     "validation": {
       "fields": {
