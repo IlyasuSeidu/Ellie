@@ -16,6 +16,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as Haptics from 'expo-haptics';
 import { useTranslation } from 'react-i18next';
 import { getFirebaseAuth } from '@/config/firebase';
+import { asyncStorageService } from '@/services/AsyncStorageService';
 import { theme } from '@/utils/theme';
 import { useAuth } from '@/contexts/AuthContext';
 import type { AuthStackParamList } from '@/navigation/AuthNavigator';
@@ -37,28 +38,67 @@ export const EmailVerificationScreen: React.FC = () => {
   const [isResending, setIsResending] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
   const cooldownIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const hasNavigatedAfterVerificationRef = useRef(false);
 
   useEffect(() => {
     clearError();
   }, [clearError]);
 
+  const navigateAfterVerification = useCallback(async () => {
+    if (hasNavigatedAfterVerificationRef.current) {
+      return;
+    }
+    hasNavigatedAfterVerificationRef.current = true;
+
+    const parentNavigation =
+      typeof navigation.getParent === 'function'
+        ? navigation.getParent<NativeStackNavigationProp<RootStackParamList>>()
+        : undefined;
+
+    if (parentNavigation && typeof parentNavigation.reset === 'function') {
+      try {
+        const onboardingComplete = await asyncStorageService.get<boolean>('onboarding:complete');
+        const nextRoute: 'Main' | 'Onboarding' =
+          onboardingComplete === true ? 'Main' : 'Onboarding';
+        parentNavigation.reset({
+          index: 0,
+          routes: [{ name: nextRoute }],
+        });
+        return;
+      } catch {
+        parentNavigation.reset({
+          index: 0,
+          routes: [{ name: 'Onboarding' }],
+        });
+        return;
+      }
+    }
+
+    navigation.navigate('SignIn');
+  }, [navigation]);
+
   useEffect(() => {
-    const interval = setInterval(async () => {
+    const checkVerificationStatus = async () => {
       try {
         const auth = getFirebaseAuth();
         const user = auth.currentUser;
         if (!user) return;
         await user.reload();
         if (user.emailVerified) {
-          clearInterval(interval);
+          await navigateAfterVerification();
         }
       } catch {
         // Keep polling on transient errors.
       }
+    };
+
+    void checkVerificationStatus();
+    const interval = setInterval(() => {
+      void checkVerificationStatus();
     }, POLL_INTERVAL_MS);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [navigateAfterVerification]);
 
   useEffect(() => {
     return () => {

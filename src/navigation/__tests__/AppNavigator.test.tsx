@@ -83,7 +83,11 @@ describe('AppNavigator', () => {
 
   it('should show dashboard when onboarding is complete', async () => {
     (useAuth as jest.Mock).mockReturnValue({
-      user: { uid: 'user-1' },
+      user: {
+        uid: 'user-1',
+        emailVerified: true,
+        providerData: [{ providerId: 'password' }],
+      },
       isLoading: false,
     });
     (asyncStorageService.get as jest.Mock).mockImplementation(async (key: string) => {
@@ -104,7 +108,11 @@ describe('AppNavigator', () => {
 
   it('should show onboarding when data is incomplete', async () => {
     (useAuth as jest.Mock).mockReturnValue({
-      user: { uid: 'user-1' },
+      user: {
+        uid: 'user-1',
+        emailVerified: true,
+        providerData: [{ providerId: 'password' }],
+      },
       isLoading: false,
     });
     const incompleteData = {
@@ -130,7 +138,11 @@ describe('AppNavigator', () => {
 
   it('should show onboarding on storage error', async () => {
     (useAuth as jest.Mock).mockReturnValue({
-      user: { uid: 'user-1' },
+      user: {
+        uid: 'user-1',
+        emailVerified: true,
+        providerData: [{ providerId: 'password' }],
+      },
       isLoading: false,
     });
     (asyncStorageService.get as jest.Mock).mockRejectedValue(new Error('Storage error'));
@@ -148,7 +160,11 @@ describe('AppNavigator', () => {
 
   it('should show onboarding when completion flag is false even with complete data', async () => {
     (useAuth as jest.Mock).mockReturnValue({
-      user: { uid: 'user-1' },
+      user: {
+        uid: 'user-1',
+        emailVerified: true,
+        providerData: [{ providerId: 'password' }],
+      },
       isLoading: false,
     });
     const completeData = {
@@ -173,5 +189,29 @@ describe('AppNavigator', () => {
     await waitFor(() => {
       expect(getByTestId('onboarding-navigator')).toBeTruthy();
     });
+  });
+
+  it('should gate unverified password users in auth and skip onboarding checks', async () => {
+    (useAuth as jest.Mock).mockReturnValue({
+      user: {
+        uid: 'user-1',
+        email: 'verify@example.com',
+        emailVerified: false,
+        providerData: [{ providerId: 'password' }],
+      },
+      isLoading: false,
+    });
+
+    const { getByTestId } = render(
+      <NavigationContainer>
+        <AppNavigator />
+      </NavigationContainer>
+    );
+
+    await waitFor(() => {
+      expect(getByTestId('auth-navigator')).toBeTruthy();
+    });
+
+    expect(asyncStorageService.get).not.toHaveBeenCalled();
   });
 });

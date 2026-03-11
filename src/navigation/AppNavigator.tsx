@@ -18,6 +18,22 @@ import { AuthNavigator, type AuthStackParamList } from './AuthNavigator';
 import { OnboardingNavigator, type OnboardingStackParamList } from './OnboardingNavigator';
 import { MainTabNavigator } from './MainTabNavigator';
 
+function requiresEmailVerification(
+  user: {
+    emailVerified?: boolean;
+    providerData?: Array<{ providerId?: string | null }>;
+  } | null
+): boolean {
+  if (!user) {
+    return false;
+  }
+
+  const providerData = Array.isArray(user.providerData) ? user.providerData : [];
+  const hasPasswordProvider = providerData.some((provider) => provider?.providerId === 'password');
+
+  return hasPasswordProvider && user.emailVerified === false;
+}
+
 /**
  * Root Stack Parameter List
  */
@@ -32,9 +48,10 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export const AppNavigator: React.FC = () => {
   const { user, isLoading: isAuthLoading } = useAuth();
   const [isOnboardingComplete, setIsOnboardingComplete] = useState<boolean | null>(null);
+  const needsEmailVerification = requiresEmailVerification(user);
 
   useEffect(() => {
-    if (!user) {
+    if (!user || needsEmailVerification) {
       setIsOnboardingComplete(null);
       return;
     }
@@ -71,7 +88,7 @@ export const AppNavigator: React.FC = () => {
     };
 
     checkOnboardingStatus();
-  }, [user]);
+  }, [user, needsEmailVerification]);
 
   if (isAuthLoading) {
     return (
@@ -81,7 +98,7 @@ export const AppNavigator: React.FC = () => {
     );
   }
 
-  if (user && isOnboardingComplete === null) {
+  if (user && !needsEmailVerification && isOnboardingComplete === null) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color={theme.colors.sacredGold} />
@@ -90,8 +107,17 @@ export const AppNavigator: React.FC = () => {
   }
 
   let initialRoute: keyof RootStackParamList;
+  let authInitialParams: NavigatorScreenParams<AuthStackParamList> | undefined;
   if (!user) {
     initialRoute = 'Auth';
+  } else if (needsEmailVerification) {
+    initialRoute = 'Auth';
+    authInitialParams = {
+      screen: 'EmailVerification',
+      params: {
+        email: user.email ?? '',
+      },
+    };
   } else if (!isOnboardingComplete) {
     initialRoute = 'Onboarding';
   } else {
@@ -108,7 +134,7 @@ export const AppNavigator: React.FC = () => {
       }}
       initialRouteName={initialRoute}
     >
-      <Stack.Screen name="Auth" component={AuthNavigator} />
+      <Stack.Screen name="Auth" component={AuthNavigator} initialParams={authInitialParams} />
       <Stack.Screen name="Onboarding" component={OnboardingNavigator} />
       <Stack.Screen name="Main" component={MainTabNavigator} />
     </Stack.Navigator>
