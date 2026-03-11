@@ -29,7 +29,25 @@
       "invalidEmail": "邮箱地址无效。",
       "operationNotAllowed": "此操作不被允许。",
       "tooManyRequests": "尝试次数过多。请稍后再试。",
-      "networkRequestFailed": "网络错误。请检查你的连接。"
+      "networkRequestFailed": "网络错误。请检查你的连接。",
+      "invalidCredentials": "The email or password you entered is incorrect.",
+      "missingEmail": "Please enter your email address.",
+      "missingPassword": "Please enter your password.",
+      "userDisabled": "This account has been disabled. Contact support for help.",
+      "sessionExpired": "For security reasons, please sign in again and retry.",
+      "accountExistsWithDifferentCredential": "An account already exists with this email using a different sign-in method.",
+      "credentialAlreadyInUse": "This credential is already linked to another account.",
+      "signInCancelled": "Sign-in was canceled.",
+      "googlePlayServicesUnavailable": "Google Play Services is unavailable on this device.",
+      "googleMissingIdToken": "Google sign-in could not be completed. Please try again.",
+      "appleMissingIdentityToken": "Apple sign-in could not be completed. Please try again.",
+      "actionSignInFailed": "Unable to sign in right now. Please try again.",
+      "actionSignUpFailed": "Unable to create your account right now. Please try again.",
+      "actionSocialSignInFailed": "Social sign-in is unavailable right now. Please try email sign-in.",
+      "actionPasswordResetFailed": "Unable to send a reset link right now. Please try again.",
+      "actionEmailVerificationFailed": "Unable to send verification email right now. Please try again.",
+      "actionSignOutFailed": "Unable to sign out right now.",
+      "actionSessionRestoreFailed": "Unable to restore your session. Please sign in again."
     },
     "titles": {
       "error": "错误",
@@ -70,5 +88,99 @@
   },
   "accessibility": {
     "toggle": "切换开关"
+  },
+  "auth": {
+    "fields": {
+      "emailLabel": "电子邮箱",
+      "emailPlaceholder": "you@email.com",
+      "passwordLabel": "密码",
+      "passwordPlaceholder": "密码"
+    },
+    "validation": {
+      "validEmail": "请输入有效的电子邮箱地址",
+      "passwordRequired": "请输入密码",
+      "passwordMin": "密码至少需要 8 个字符",
+      "passwordUpper": "必须包含一个大写字母",
+      "passwordLower": "必须包含一个小写字母",
+      "passwordNumber": "必须包含一个数字",
+      "passwordsMatch": "两次输入的密码不一致"
+    },
+    "social": {
+      "google": "使用 Google 继续",
+      "apple": "使用 Apple 继续"
+    },
+    "signIn": {
+      "appName": "ELLIE",
+      "subtitle": "登录你的账户",
+      "forgotPassword": "忘记密码？",
+      "primaryButton": "登录",
+      "socialDivider": "或使用以下方式继续",
+      "noAccount": "还没有账户？",
+      "createAccount": "创建账户"
+    },
+    "signUp": {
+      "title": "创建账户",
+      "subtitle": "开始使用 Ellie 追踪你的班次",
+      "passwordHint": "至少 8 位，含大写字母和数字",
+      "confirmPasswordLabel": "确认密码",
+      "confirmPasswordPlaceholder": "再次输入密码",
+      "primaryButton": "创建账户",
+      "socialDivider": "或",
+      "haveAccount": "已有账户？",
+      "signInLink": "登录"
+    },
+    "forgotPassword": {
+      "title": "重置密码",
+      "subtitle": "输入你的邮箱，我们会发送重置密码链接。",
+      "sendResetLink": "发送重置链接",
+      "checkInboxTitle": "请检查收件箱",
+      "checkInboxBody": "我们已向 {{email}} 发送重置链接",
+      "backToSignIn": "返回登录"
+    },
+    "emailVerification": {
+      "title": "验证你的邮箱",
+      "subtitle": "我们已向 {{email}} 发送验证链接",
+      "instructions": "点击邮件中的链接激活账户。此页面会自动更新。",
+      "waiting": "等待验证中…",
+      "resendIn": "{{seconds}} 秒后可重发",
+      "resend": "重新发送验证邮件",
+      "skip": "稍后再验证"
+    }
+  },
+  "subscription": {
+    "paywall": {
+      "closeA11y": "Close paywall",
+      "title": "Ellie Pro",
+      "subtitle": "For shift workers who mean business",
+      "features": {
+        "askRoster": "Ask \"Hey Ellie\" anything about your roster",
+        "fullYear": "See your full year at a glance",
+        "offline": "Works underground, no signal needed",
+        "instantAnswers": "Instant answers about leave and patterns",
+        "aiPowered": "Powered by AI and always improving"
+      },
+      "plans": {
+        "annual": "Annual",
+        "monthly": "Monthly",
+        "annualSuffix": "/yr",
+        "monthlySuffix": "/mo",
+        "save": "SAVE 40%"
+      },
+      "cta": "Start 7-Day Free Trial",
+      "noCard": "No credit card required · Cancel anytime",
+      "restorePurchases": "Restore Purchases",
+      "privacyPolicy": "Privacy Policy"
+    },
+    "profile": {
+      "rowActiveA11y": "Ellie Pro active subscription",
+      "rowUpgradeA11y": "Upgrade to Ellie Pro",
+      "activeLabel": "Ellie Pro — Active ✓",
+      "upgradeLabel": "Upgrade to Ellie Pro",
+      "activeHint": "Full calendar · Hey Ellie voice assistant",
+      "upgradeHint": "7-day free trial · $6.99/mo or $49.99/yr"
+    },
+    "padlock": {
+      "a11yLabel": "Upgrade to Ellie Pro to see full calendar"
+    }
   }
 }

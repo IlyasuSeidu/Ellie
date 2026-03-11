@@ -29,7 +29,25 @@
       "invalidEmail": "Alamat email tidak valid.",
       "operationNotAllowed": "Operasi ini tidak diizinkan.",
       "tooManyRequests": "Terlalu banyak percobaan. Coba lagi nanti.",
-      "networkRequestFailed": "Kesalahan jaringan. Periksa koneksi Anda."
+      "networkRequestFailed": "Kesalahan jaringan. Periksa koneksi Anda.",
+      "invalidCredentials": "The email or password you entered is incorrect.",
+      "missingEmail": "Please enter your email address.",
+      "missingPassword": "Please enter your password.",
+      "userDisabled": "This account has been disabled. Contact support for help.",
+      "sessionExpired": "For security reasons, please sign in again and retry.",
+      "accountExistsWithDifferentCredential": "An account already exists with this email using a different sign-in method.",
+      "credentialAlreadyInUse": "This credential is already linked to another account.",
+      "signInCancelled": "Sign-in was canceled.",
+      "googlePlayServicesUnavailable": "Google Play Services is unavailable on this device.",
+      "googleMissingIdToken": "Google sign-in could not be completed. Please try again.",
+      "appleMissingIdentityToken": "Apple sign-in could not be completed. Please try again.",
+      "actionSignInFailed": "Unable to sign in right now. Please try again.",
+      "actionSignUpFailed": "Unable to create your account right now. Please try again.",
+      "actionSocialSignInFailed": "Social sign-in is unavailable right now. Please try email sign-in.",
+      "actionPasswordResetFailed": "Unable to send a reset link right now. Please try again.",
+      "actionEmailVerificationFailed": "Unable to send verification email right now. Please try again.",
+      "actionSignOutFailed": "Unable to sign out right now.",
+      "actionSessionRestoreFailed": "Unable to restore your session. Please sign in again."
     },
     "titles": {
       "error": "Kesalahan",
@@ -70,5 +88,99 @@
   },
   "accessibility": {
     "toggle": "Sakelar"
+  },
+  "auth": {
+    "fields": {
+      "emailLabel": "Email",
+      "emailPlaceholder": "anda@email.com",
+      "passwordLabel": "Kata sandi",
+      "passwordPlaceholder": "Kata sandi"
+    },
+    "validation": {
+      "validEmail": "Masukkan alamat email yang valid",
+      "passwordRequired": "Kata sandi wajib diisi",
+      "passwordMin": "Kata sandi harus minimal 8 karakter",
+      "passwordUpper": "Harus mengandung huruf kapital",
+      "passwordLower": "Harus mengandung huruf kecil",
+      "passwordNumber": "Harus mengandung angka",
+      "passwordsMatch": "Kata sandi tidak cocok"
+    },
+    "social": {
+      "google": "Lanjutkan dengan Google",
+      "apple": "Lanjutkan dengan Apple"
+    },
+    "signIn": {
+      "appName": "ELLIE",
+      "subtitle": "Masuk ke akun Anda",
+      "forgotPassword": "Lupa kata sandi?",
+      "primaryButton": "Masuk",
+      "socialDivider": "atau lanjutkan dengan",
+      "noAccount": "Belum punya akun? ",
+      "createAccount": "Buat akun"
+    },
+    "signUp": {
+      "title": "Buat akun",
+      "subtitle": "Mulai lacak shift Anda dengan Ellie",
+      "passwordHint": "Min. 8 karakter, huruf kapital, dan angka",
+      "confirmPasswordLabel": "Konfirmasi kata sandi",
+      "confirmPasswordPlaceholder": "Ulangi kata sandi",
+      "primaryButton": "Buat Akun",
+      "socialDivider": "atau",
+      "haveAccount": "Sudah punya akun? ",
+      "signInLink": "Masuk"
+    },
+    "forgotPassword": {
+      "title": "Setel ulang kata sandi",
+      "subtitle": "Masukkan email Anda dan kami akan mengirim tautan untuk menyetel ulang kata sandi.",
+      "sendResetLink": "Kirim tautan reset",
+      "checkInboxTitle": "Periksa kotak masuk Anda",
+      "checkInboxBody": "Kami mengirim tautan reset kata sandi ke {{email}}",
+      "backToSignIn": "Kembali ke Masuk"
+    },
+    "emailVerification": {
+      "title": "Verifikasi email Anda",
+      "subtitle": "Kami mengirim tautan verifikasi ke {{email}}",
+      "instructions": "Klik tautan di email untuk mengaktifkan akun Anda. Layar ini akan diperbarui secara otomatis.",
+      "waiting": "Menunggu verifikasi…",
+      "resendIn": "Kirim ulang dalam {{seconds}} dtk",
+      "resend": "Kirim ulang email verifikasi",
+      "skip": "Saya akan verifikasi nanti"
+    }
+  },
+  "subscription": {
+    "paywall": {
+      "closeA11y": "Close paywall",
+      "title": "Ellie Pro",
+      "subtitle": "For shift workers who mean business",
+      "features": {
+        "askRoster": "Ask \"Hey Ellie\" anything about your roster",
+        "fullYear": "See your full year at a glance",
+        "offline": "Works underground, no signal needed",
+        "instantAnswers": "Instant answers about leave and patterns",
+        "aiPowered": "Powered by AI and always improving"
+      },
+      "plans": {
+        "annual": "Annual",
+        "monthly": "Monthly",
+        "annualSuffix": "/yr",
+        "monthlySuffix": "/mo",
+        "save": "SAVE 40%"
+      },
+      "cta": "Start 7-Day Free Trial",
+      "noCard": "No credit card required · Cancel anytime",
+      "restorePurchases": "Restore Purchases",
+      "privacyPolicy": "Privacy Policy"
+    },
+    "profile": {
+      "rowActiveA11y": "Ellie Pro active subscription",
+      "rowUpgradeA11y": "Upgrade to Ellie Pro",
+      "activeLabel": "Ellie Pro — Active ✓",
+      "upgradeLabel": "Upgrade to Ellie Pro",
+      "activeHint": "Full calendar · Hey Ellie voice assistant",
+      "upgradeHint": "7-day free trial · $6.99/mo or $49.99/yr"
+    },
+    "padlock": {
+      "a11yLabel": "Upgrade to Ellie Pro to see full calendar"
+    }
   }
 }

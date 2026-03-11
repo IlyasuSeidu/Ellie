@@ -6,6 +6,7 @@
 
 import { logger } from './logger';
 import i18n from '@/i18n';
+import { getAuthErrorMessage } from '@/utils/authErrorMessage';
 
 const tCommon = (key: string, fallback: string): string =>
   String(
@@ -93,7 +94,7 @@ export function formatErrorMessage(error: Error): string {
   }
 
   if (error instanceof AuthenticationError) {
-    return tCommon('errors.runtime.authFailed', 'Authentication failed. Please sign in again.');
+    return getAuthErrorMessage(error, 'sessionRestore');
   }
 
   if (error instanceof NetworkError) {

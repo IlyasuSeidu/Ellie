@@ -21,9 +21,17 @@ import {
   EmailAuthProvider,
   onAuthStateChanged as firebaseOnAuthStateChanged,
   GoogleAuthProvider,
-  signInWithPopup,
+  signInWithCredential,
   OAuthProvider,
 } from 'firebase/auth';
+import {
+  AppState,
+  type AppStateStatus,
+  type NativeEventSubscription,
+  Platform,
+} from 'react-native';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import * as AppleAuthentication from 'expo-apple-authentication';
 import { logger } from '@/utils/logger';
 import { ValidationError, AuthenticationError } from '@/utils/errorUtils';
 
@@ -91,6 +99,8 @@ export class AuthService {
   private inactivityTimer: NodeJS.Timeout | null = null;
   private lastActivity: number = Date.now();
   private authStateUnsubscribe: Unsubscribe | null = null;
+  private appStateSubscription: NativeEventSubscription | null = null;
+  private webActivityHandlers: Array<{ event: string; handler: () => void }> = [];
 
   constructor(auth: Auth) {
     this.auth = auth;
@@ -111,9 +121,7 @@ export class AuthService {
     // Validate password strength
     const passwordValidation = this.validatePasswordStrength(password);
     if (!passwordValidation.isValid) {
-      throw new ValidationError(
-        `Weak password: ${passwordValidation.errors.join(', ')}`
-      );
+      throw new ValidationError(`Weak password: ${passwordValidation.errors.join(', ')}`);
     }
 
     try {
@@ -179,15 +187,22 @@ export class AuthService {
    * Sign in with Google
    */
   async signInWithGoogle(): Promise<User> {
-    logger.info('Signing in with Google');
+    logger.info('Signing in with Google (native)');
 
     try {
-      const provider = new GoogleAuthProvider();
-      const userCredential = await signInWithPopup(this.auth, provider);
+      await GoogleSignin.hasPlayServices();
+      await GoogleSignin.signIn();
+      const { idToken } = await GoogleSignin.getTokens();
+
+      if (!idToken) {
+        throw new AuthenticationError('No ID token from Google', 'google/no-id-token');
+      }
+
+      const credential = GoogleAuthProvider.credential(idToken);
+      const userCredential = await signInWithCredential(this.auth, credential);
 
       this.resetInactivityTimer();
-
-      logger.info('User signed in with Google', { userId: userCredential.user.uid });
+      logger.info('Google sign-in success', { userId: userCredential.user.uid });
       return userCredential.user;
     } catch (error: unknown) {
       logger.error('Google sign in failed', error as Error);
@@ -199,15 +214,28 @@ export class AuthService {
    * Sign in with Apple
    */
   async signInWithApple(): Promise<User> {
-    logger.info('Signing in with Apple');
+    logger.info('Signing in with Apple (native)');
 
     try {
+      const appleCredential = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          AppleAuthentication.AppleAuthenticationScope.EMAIL,
+        ],
+      });
+
+      if (!appleCredential.identityToken) {
+        throw new AuthenticationError('No identity token from Apple', 'apple/no-identity-token');
+      }
+
       const provider = new OAuthProvider('apple.com');
-      const userCredential = await signInWithPopup(this.auth, provider);
+      const credential = provider.credential({
+        idToken: appleCredential.identityToken,
+      });
+      const userCredential = await signInWithCredential(this.auth, credential);
 
       this.resetInactivityTimer();
-
-      logger.info('User signed in with Apple', { userId: userCredential.user.uid });
+      logger.info('Apple sign-in success', { userId: userCredential.user.uid });
       return userCredential.user;
     } catch (error: unknown) {
       logger.error('Apple sign in failed', error as Error);
@@ -342,10 +370,7 @@ export class AuthService {
   /**
    * Update password
    */
-  async updatePassword(
-    currentPassword: string,
-    newPassword: string
-  ): Promise<void> {
+  async updatePassword(currentPassword: string, newPassword: string): Promise<void> {
     const user = this.getCurrentUser();
 
     if (!user || !user.email) {
@@ -355,9 +380,7 @@ export class AuthService {
     // Validate new password strength
     const passwordValidation = this.validatePasswordStrength(newPassword);
     if (!passwordValidation.isValid) {
-      throw new ValidationError(
-        `Weak password: ${passwordValidation.errors.join(', ')}`
-      );
+      throw new ValidationError(`Weak password: ${passwordValidation.errors.join(', ')}`);
     }
 
     logger.info('Updating password', { userId: user.uid });
@@ -471,8 +494,7 @@ export class AuthService {
     }
 
     const isLocked = attempt.attempts >= RATE_LIMIT_CONFIG.maxAttempts;
-    const lockoutExpired =
-      Date.now() - attempt.lastAttempt > RATE_LIMIT_CONFIG.lockoutDurationMs;
+    const lockoutExpired = Date.now() - attempt.lastAttempt > RATE_LIMIT_CONFIG.lockoutDurationMs;
 
     if (isLocked && lockoutExpired) {
       // Clear expired lockout
@@ -533,15 +555,52 @@ export class AuthService {
       return;
     }
 
-    // Track user activity
-    if (typeof window !== 'undefined') {
-      const activityEvents = ['mousedown', 'keydown', 'scroll', 'touchstart'];
-      activityEvents.forEach((event) => {
-        window.addEventListener(event, () => this.recordActivity());
-      });
+    if (Platform.OS === 'web') {
+      const maybeWindow = typeof window !== 'undefined' ? window : undefined;
+
+      // Web: track direct interaction events.
+      if (maybeWindow && typeof maybeWindow.addEventListener === 'function') {
+        const activityEvents = ['mousedown', 'keydown', 'scroll', 'touchstart'];
+        activityEvents.forEach((event) => {
+          const handler = () => this.recordActivity();
+          maybeWindow.addEventListener(event, handler);
+          this.webActivityHandlers.push({ event, handler });
+        });
+      }
+    } else {
+      // Native: use app lifecycle transitions to refresh activity safely.
+      this.appStateSubscription = AppState.addEventListener('change', this.handleAppStateChange);
     }
 
     this.resetInactivityTimer();
+  }
+
+  /**
+   * Handle app state transitions for native platforms
+   */
+  private handleAppStateChange = (nextState: AppStateStatus): void => {
+    if (nextState === 'active') {
+      this.recordActivity();
+    }
+  };
+
+  /**
+   * Remove activity listeners
+   */
+  private cleanupActivityTracking(): void {
+    if (this.appStateSubscription) {
+      this.appStateSubscription.remove();
+      this.appStateSubscription = null;
+    }
+
+    const maybeWindow = typeof window !== 'undefined' ? window : undefined;
+    if (maybeWindow && typeof maybeWindow.removeEventListener === 'function') {
+      this.webActivityHandlers.forEach(({ event, handler }) => {
+        maybeWindow.removeEventListener(event, handler);
+      });
+    }
+
+    this.webActivityHandlers = [];
   }
 
   /**
@@ -587,31 +646,51 @@ export class AuthService {
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private mapFirebaseError(error: any): Error {
-    const code = error?.code || 'unknown';
-    const message = error?.message || 'An unknown error occurred';
+    const code = (
+      typeof error?.code === 'string' && error.code.trim().length > 0
+        ? error.code.trim()
+        : 'auth/unknown'
+    ).toLowerCase();
 
     switch (code) {
       case 'auth/user-not-found':
         return new AuthenticationError('No account found with this email', code);
       case 'auth/wrong-password':
         return new AuthenticationError('Incorrect password', code);
+      case 'auth/invalid-credential':
+      case 'auth/invalid-login-credentials':
+        return new AuthenticationError('Invalid credentials', code);
       case 'auth/email-already-in-use':
         return new AuthenticationError('An account with this email already exists', code);
       case 'auth/weak-password':
         return new AuthenticationError('Password is too weak', code);
+      case 'auth/invalid-email':
+        return new AuthenticationError('Invalid email address', code);
+      case 'auth/missing-email':
+        return new AuthenticationError('Email is required', code);
+      case 'auth/missing-password':
+        return new AuthenticationError('Password is required', code);
+      case 'auth/user-disabled':
+        return new AuthenticationError('This account has been disabled', code);
       case 'auth/too-many-requests':
         return new AuthenticationError('Too many requests. Please try again later', code);
       case 'auth/network-request-failed':
         return new AuthenticationError('Network error. Please check your connection', code);
       case 'auth/popup-closed-by-user':
+      case 'auth/cancelled-popup-request':
+      case 'sign_in_cancelled':
+      case 'err_request_canceled':
         return new AuthenticationError('Sign in was cancelled', code);
+      case 'google/no-id-token':
+      case 'apple/no-identity-token':
+        return new AuthenticationError('Sign in could not be completed', code);
       case 'auth/requires-recent-login':
         return new AuthenticationError(
           'This operation requires recent authentication. Please sign in again',
           code
         );
       default:
-        return new AuthenticationError(message, code);
+        return new AuthenticationError('Authentication failed. Please try again.', code);
     }
   }
 
@@ -620,6 +699,7 @@ export class AuthService {
    */
   cleanup(): void {
     this.clearInactivityTimer();
+    this.cleanupActivityTracking();
     if (this.authStateUnsubscribe) {
       this.authStateUnsubscribe();
     }

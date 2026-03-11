@@ -29,7 +29,25 @@
       "invalidEmail": "Ongeldige e-posadres.",
       "operationNotAllowed": "Hierdie aksie word nie toegelaat nie.",
       "tooManyRequests": "Te veel pogings. Probeer later weer.",
-      "networkRequestFailed": "Netwerkfout. Gaan jou verbinding na."
+      "networkRequestFailed": "Netwerkfout. Gaan jou verbinding na.",
+      "invalidCredentials": "The email or password you entered is incorrect.",
+      "missingEmail": "Please enter your email address.",
+      "missingPassword": "Please enter your password.",
+      "userDisabled": "This account has been disabled. Contact support for help.",
+      "sessionExpired": "For security reasons, please sign in again and retry.",
+      "accountExistsWithDifferentCredential": "An account already exists with this email using a different sign-in method.",
+      "credentialAlreadyInUse": "This credential is already linked to another account.",
+      "signInCancelled": "Sign-in was canceled.",
+      "googlePlayServicesUnavailable": "Google Play Services is unavailable on this device.",
+      "googleMissingIdToken": "Google sign-in could not be completed. Please try again.",
+      "appleMissingIdentityToken": "Apple sign-in could not be completed. Please try again.",
+      "actionSignInFailed": "Unable to sign in right now. Please try again.",
+      "actionSignUpFailed": "Unable to create your account right now. Please try again.",
+      "actionSocialSignInFailed": "Social sign-in is unavailable right now. Please try email sign-in.",
+      "actionPasswordResetFailed": "Unable to send a reset link right now. Please try again.",
+      "actionEmailVerificationFailed": "Unable to send verification email right now. Please try again.",
+      "actionSignOutFailed": "Unable to sign out right now.",
+      "actionSessionRestoreFailed": "Unable to restore your session. Please sign in again."
     },
     "titles": {
       "error": "Fout",
@@ -70,5 +88,99 @@
   },
   "accessibility": {
     "toggle": "Wissel"
+  },
+  "auth": {
+    "fields": {
+      "emailLabel": "E-pos",
+      "emailPlaceholder": "jy@epos.com",
+      "passwordLabel": "Wagwoord",
+      "passwordPlaceholder": "Wagwoord"
+    },
+    "validation": {
+      "validEmail": "Voer ’n geldige e-posadres in",
+      "passwordRequired": "Wagwoord is verpligtend",
+      "passwordMin": "Wagwoord moet minstens 8 karakters wees",
+      "passwordUpper": "Moet ’n hoofletter bevat",
+      "passwordLower": "Moet ’n kleinletter bevat",
+      "passwordNumber": "Moet ’n syfer bevat",
+      "passwordsMatch": "Wagwoorde stem nie ooreen nie"
+    },
+    "social": {
+      "google": "Gaan voort met Google",
+      "apple": "Gaan voort met Apple"
+    },
+    "signIn": {
+      "appName": "ELLIE",
+      "subtitle": "Meld by jou rekening aan",
+      "forgotPassword": "Wagwoord vergeet?",
+      "primaryButton": "Meld aan",
+      "socialDivider": "of gaan voort met",
+      "noAccount": "Het jy nie ’n rekening nie? ",
+      "createAccount": "Skep rekening"
+    },
+    "signUp": {
+      "title": "Skep rekening",
+      "subtitle": "Begin jou skofte met Ellie naspoor",
+      "passwordHint": "Min. 8 karakters, hoofletter en syfer",
+      "confirmPasswordLabel": "Bevestig wagwoord",
+      "confirmPasswordPlaceholder": "Herhaal wagwoord",
+      "primaryButton": "Skep rekening",
+      "socialDivider": "of",
+      "haveAccount": "Het jy reeds ’n rekening? ",
+      "signInLink": "Meld aan"
+    },
+    "forgotPassword": {
+      "title": "Stel wagwoord terug",
+      "subtitle": "Voer jou e-pos in en ons stuur ’n skakel om jou wagwoord terug te stel.",
+      "sendResetLink": "Stuur terugstelskakel",
+      "checkInboxTitle": "Gaan jou inkassie na",
+      "checkInboxBody": "Ons het ’n terugstelskakel na {{email}} gestuur",
+      "backToSignIn": "Terug na aanmeld"
+    },
+    "emailVerification": {
+      "title": "Verifieer jou e-pos",
+      "subtitle": "Ons het ’n verifikasieskakel na {{email}} gestuur",
+      "instructions": "Klik die skakel in die e-pos om jou rekening te aktiveer. Hierdie skerm sal outomaties opdateer.",
+      "waiting": "Wag vir verifikasie…",
+      "resendIn": "Stuur weer oor {{seconds}}s",
+      "resend": "Stuur verifikasie-e-pos weer",
+      "skip": "Ek sal later verifieer"
+    }
+  },
+  "subscription": {
+    "paywall": {
+      "closeA11y": "Close paywall",
+      "title": "Ellie Pro",
+      "subtitle": "For shift workers who mean business",
+      "features": {
+        "askRoster": "Ask \"Hey Ellie\" anything about your roster",
+        "fullYear": "See your full year at a glance",
+        "offline": "Works underground, no signal needed",
+        "instantAnswers": "Instant answers about leave and patterns",
+        "aiPowered": "Powered by AI and always improving"
+      },
+      "plans": {
+        "annual": "Annual",
+        "monthly": "Monthly",
+        "annualSuffix": "/yr",
+        "monthlySuffix": "/mo",
+        "save": "SAVE 40%"
+      },
+      "cta": "Start 7-Day Free Trial",
+      "noCard": "No credit card required · Cancel anytime",
+      "restorePurchases": "Restore Purchases",
+      "privacyPolicy": "Privacy Policy"
+    },
+    "profile": {
+      "rowActiveA11y": "Ellie Pro active subscription",
+      "rowUpgradeA11y": "Upgrade to Ellie Pro",
+      "activeLabel": "Ellie Pro — Active ✓",
+      "upgradeLabel": "Upgrade to Ellie Pro",
+      "activeHint": "Full calendar · Hey Ellie voice assistant",
+      "upgradeHint": "7-day free trial · $6.99/mo or $49.99/yr"
+    },
+    "padlock": {
+      "a11yLabel": "Upgrade to Ellie Pro to see full calendar"
+    }
   }
 }

@@ -29,7 +29,25 @@
       "invalidEmail": "Adresse e-mail invalide.",
       "operationNotAllowed": "Cette opération n’est pas autorisée.",
       "tooManyRequests": "Trop de tentatives. Réessayez plus tard.",
-      "networkRequestFailed": "Erreur réseau. Vérifiez votre connexion."
+      "networkRequestFailed": "Erreur réseau. Vérifiez votre connexion.",
+      "invalidCredentials": "The email or password you entered is incorrect.",
+      "missingEmail": "Please enter your email address.",
+      "missingPassword": "Please enter your password.",
+      "userDisabled": "This account has been disabled. Contact support for help.",
+      "sessionExpired": "For security reasons, please sign in again and retry.",
+      "accountExistsWithDifferentCredential": "An account already exists with this email using a different sign-in method.",
+      "credentialAlreadyInUse": "This credential is already linked to another account.",
+      "signInCancelled": "Sign-in was canceled.",
+      "googlePlayServicesUnavailable": "Google Play Services is unavailable on this device.",
+      "googleMissingIdToken": "Google sign-in could not be completed. Please try again.",
+      "appleMissingIdentityToken": "Apple sign-in could not be completed. Please try again.",
+      "actionSignInFailed": "Unable to sign in right now. Please try again.",
+      "actionSignUpFailed": "Unable to create your account right now. Please try again.",
+      "actionSocialSignInFailed": "Social sign-in is unavailable right now. Please try email sign-in.",
+      "actionPasswordResetFailed": "Unable to send a reset link right now. Please try again.",
+      "actionEmailVerificationFailed": "Unable to send verification email right now. Please try again.",
+      "actionSignOutFailed": "Unable to sign out right now.",
+      "actionSessionRestoreFailed": "Unable to restore your session. Please sign in again."
     },
     "titles": {
       "error": "Erreur",
@@ -70,5 +88,99 @@
   },
   "accessibility": {
     "toggle": "Commutateur"
+  },
+  "auth": {
+    "fields": {
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "vous@email.com",
+      "passwordLabel": "Mot de passe",
+      "passwordPlaceholder": "Mot de passe"
+    },
+    "validation": {
+      "validEmail": "Saisissez une adresse e-mail valide",
+      "passwordRequired": "Le mot de passe est requis",
+      "passwordMin": "Le mot de passe doit contenir au moins 8 caractères",
+      "passwordUpper": "Doit contenir une lettre majuscule",
+      "passwordLower": "Doit contenir une lettre minuscule",
+      "passwordNumber": "Doit contenir un chiffre",
+      "passwordsMatch": "Les mots de passe ne correspondent pas"
+    },
+    "social": {
+      "google": "Continuer avec Google",
+      "apple": "Continuer avec Apple"
+    },
+    "signIn": {
+      "appName": "ELLIE",
+      "subtitle": "Connectez-vous à votre compte",
+      "forgotPassword": "Mot de passe oublié ?",
+      "primaryButton": "Se connecter",
+      "socialDivider": "ou continuer avec",
+      "noAccount": "Vous n'avez pas de compte ? ",
+      "createAccount": "Créer un compte"
+    },
+    "signUp": {
+      "title": "Créer un compte",
+      "subtitle": "Commencez à suivre vos rotations avec Ellie",
+      "passwordHint": "Min. 8 caractères, majuscule et chiffre",
+      "confirmPasswordLabel": "Confirmer le mot de passe",
+      "confirmPasswordPlaceholder": "Répétez le mot de passe",
+      "primaryButton": "Créer un compte",
+      "socialDivider": "ou",
+      "haveAccount": "Vous avez déjà un compte ? ",
+      "signInLink": "Se connecter"
+    },
+    "forgotPassword": {
+      "title": "Réinitialiser le mot de passe",
+      "subtitle": "Entrez votre e-mail et nous vous enverrons un lien de réinitialisation.",
+      "sendResetLink": "Envoyer le lien",
+      "checkInboxTitle": "Vérifiez votre boîte mail",
+      "checkInboxBody": "Nous avons envoyé un lien de réinitialisation à {{email}}",
+      "backToSignIn": "Retour à la connexion"
+    },
+    "emailVerification": {
+      "title": "Vérifiez votre e-mail",
+      "subtitle": "Nous avons envoyé un lien de vérification à {{email}}",
+      "instructions": "Cliquez sur le lien reçu par e-mail pour activer votre compte. Cet écran se mettra à jour automatiquement.",
+      "waiting": "En attente de vérification…",
+      "resendIn": "Renvoyer dans {{seconds}} s",
+      "resend": "Renvoyer l'e-mail de vérification",
+      "skip": "Je vérifierai plus tard"
+    }
+  },
+  "subscription": {
+    "paywall": {
+      "closeA11y": "Close paywall",
+      "title": "Ellie Pro",
+      "subtitle": "For shift workers who mean business",
+      "features": {
+        "askRoster": "Ask \"Hey Ellie\" anything about your roster",
+        "fullYear": "See your full year at a glance",
+        "offline": "Works underground, no signal needed",
+        "instantAnswers": "Instant answers about leave and patterns",
+        "aiPowered": "Powered by AI and always improving"
+      },
+      "plans": {
+        "annual": "Annual",
+        "monthly": "Monthly",
+        "annualSuffix": "/yr",
+        "monthlySuffix": "/mo",
+        "save": "SAVE 40%"
+      },
+      "cta": "Start 7-Day Free Trial",
+      "noCard": "No credit card required · Cancel anytime",
+      "restorePurchases": "Restore Purchases",
+      "privacyPolicy": "Privacy Policy"
+    },
+    "profile": {
+      "rowActiveA11y": "Ellie Pro active subscription",
+      "rowUpgradeA11y": "Upgrade to Ellie Pro",
+      "activeLabel": "Ellie Pro — Active ✓",
+      "upgradeLabel": "Upgrade to Ellie Pro",
+      "activeHint": "Full calendar · Hey Ellie voice assistant",
+      "upgradeHint": "7-day free trial · $6.99/mo or $49.99/yr"
+    },
+    "padlock": {
+      "a11yLabel": "Upgrade to Ellie Pro to see full calendar"
+    }
   }
 }

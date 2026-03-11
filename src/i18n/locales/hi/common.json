@@ -29,7 +29,25 @@
       "invalidEmail": "अमान्य ईमेल पता।",
       "operationNotAllowed": "यह कार्य अनुमत नहीं है।",
       "tooManyRequests": "बहुत अधिक प्रयास। कृपया बाद में फिर प्रयास करें।",
-      "networkRequestFailed": "नेटवर्क त्रुटि। अपना कनेक्शन जांचें।"
+      "networkRequestFailed": "नेटवर्क त्रुटि। अपना कनेक्शन जांचें।",
+      "invalidCredentials": "The email or password you entered is incorrect.",
+      "missingEmail": "Please enter your email address.",
+      "missingPassword": "Please enter your password.",
+      "userDisabled": "This account has been disabled. Contact support for help.",
+      "sessionExpired": "For security reasons, please sign in again and retry.",
+      "accountExistsWithDifferentCredential": "An account already exists with this email using a different sign-in method.",
+      "credentialAlreadyInUse": "This credential is already linked to another account.",
+      "signInCancelled": "Sign-in was canceled.",
+      "googlePlayServicesUnavailable": "Google Play Services is unavailable on this device.",
+      "googleMissingIdToken": "Google sign-in could not be completed. Please try again.",
+      "appleMissingIdentityToken": "Apple sign-in could not be completed. Please try again.",
+      "actionSignInFailed": "Unable to sign in right now. Please try again.",
+      "actionSignUpFailed": "Unable to create your account right now. Please try again.",
+      "actionSocialSignInFailed": "Social sign-in is unavailable right now. Please try email sign-in.",
+      "actionPasswordResetFailed": "Unable to send a reset link right now. Please try again.",
+      "actionEmailVerificationFailed": "Unable to send verification email right now. Please try again.",
+      "actionSignOutFailed": "Unable to sign out right now.",
+      "actionSessionRestoreFailed": "Unable to restore your session. Please sign in again."
     },
     "titles": {
       "error": "त्रुटि",
@@ -70,5 +88,99 @@
   },
   "accessibility": {
     "toggle": "टॉगल"
+  },
+  "auth": {
+    "fields": {
+      "emailLabel": "ईमेल",
+      "emailPlaceholder": "you@email.com",
+      "passwordLabel": "पासवर्ड",
+      "passwordPlaceholder": "पासवर्ड"
+    },
+    "validation": {
+      "validEmail": "कृपया मान्य ईमेल पता दर्ज करें",
+      "passwordRequired": "पासवर्ड आवश्यक है",
+      "passwordMin": "पासवर्ड कम से कम 8 अक्षरों का होना चाहिए",
+      "passwordUpper": "कम से कम एक बड़ा अक्षर होना चाहिए",
+      "passwordLower": "कम से कम एक छोटा अक्षर होना चाहिए",
+      "passwordNumber": "कम से कम एक संख्या होनी चाहिए",
+      "passwordsMatch": "पासवर्ड मेल नहीं खाते"
+    },
+    "social": {
+      "google": "Google के साथ जारी रखें",
+      "apple": "Apple के साथ जारी रखें"
+    },
+    "signIn": {
+      "appName": "ELLIE",
+      "subtitle": "अपने खाते में साइन इन करें",
+      "forgotPassword": "पासवर्ड भूल गए?",
+      "primaryButton": "साइन इन",
+      "socialDivider": "या इनके साथ जारी रखें",
+      "noAccount": "क्या आपका खाता नहीं है? ",
+      "createAccount": "खाता बनाएं"
+    },
+    "signUp": {
+      "title": "खाता बनाएं",
+      "subtitle": "Ellie के साथ अपनी शिफ्ट ट्रैकिंग शुरू करें",
+      "passwordHint": "कम से कम 8 अक्षर, बड़ा अक्षर और संख्या",
+      "confirmPasswordLabel": "पासवर्ड की पुष्टि करें",
+      "confirmPasswordPlaceholder": "पासवर्ड दोबारा दर्ज करें",
+      "primaryButton": "खाता बनाएं",
+      "socialDivider": "या",
+      "haveAccount": "क्या आपका पहले से खाता है? ",
+      "signInLink": "साइन इन"
+    },
+    "forgotPassword": {
+      "title": "पासवर्ड रीसेट करें",
+      "subtitle": "अपना ईमेल दर्ज करें, हम पासवर्ड रीसेट लिंक भेजेंगे।",
+      "sendResetLink": "रीसेट लिंक भेजें",
+      "checkInboxTitle": "अपना इनबॉक्स देखें",
+      "checkInboxBody": "हमने {{email}} पर पासवर्ड रीसेट लिंक भेजा है",
+      "backToSignIn": "साइन इन पर वापस जाएँ"
+    },
+    "emailVerification": {
+      "title": "अपना ईमेल सत्यापित करें",
+      "subtitle": "हमने {{email}} पर सत्यापन लिंक भेजा है",
+      "instructions": "अपने खाते को सक्रिय करने के लिए ईमेल में दिए लिंक पर क्लिक करें। यह स्क्रीन स्वतः अपडेट होगी।",
+      "waiting": "सत्यापन की प्रतीक्षा में…",
+      "resendIn": "{{seconds}} सेकंड में फिर भेजें",
+      "resend": "सत्यापन ईमेल फिर भेजें",
+      "skip": "मैं बाद में सत्यापित करूंगा/करूंगी"
+    }
+  },
+  "subscription": {
+    "paywall": {
+      "closeA11y": "Close paywall",
+      "title": "Ellie Pro",
+      "subtitle": "For shift workers who mean business",
+      "features": {
+        "askRoster": "Ask \"Hey Ellie\" anything about your roster",
+        "fullYear": "See your full year at a glance",
+        "offline": "Works underground, no signal needed",
+        "instantAnswers": "Instant answers about leave and patterns",
+        "aiPowered": "Powered by AI and always improving"
+      },
+      "plans": {
+        "annual": "Annual",
+        "monthly": "Monthly",
+        "annualSuffix": "/yr",
+        "monthlySuffix": "/mo",
+        "save": "SAVE 40%"
+      },
+      "cta": "Start 7-Day Free Trial",
+      "noCard": "No credit card required · Cancel anytime",
+      "restorePurchases": "Restore Purchases",
+      "privacyPolicy": "Privacy Policy"
+    },
+    "profile": {
+      "rowActiveA11y": "Ellie Pro active subscription",
+      "rowUpgradeA11y": "Upgrade to Ellie Pro",
+      "activeLabel": "Ellie Pro — Active ✓",
+      "upgradeLabel": "Upgrade to Ellie Pro",
+      "activeHint": "Full calendar · Hey Ellie voice assistant",
+      "upgradeHint": "7-day free trial · $6.99/mo or $49.99/yr"
+    },
+    "padlock": {
+      "a11yLabel": "Upgrade to Ellie Pro to see full calendar"
+    }
   }
 }

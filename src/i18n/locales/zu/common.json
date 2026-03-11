@@ -29,7 +29,25 @@
       "invalidEmail": "Ikheli le-imeyili alivumelekile.",
       "operationNotAllowed": "Lo msebenzi awuvunyelwe.",
       "tooManyRequests": "Imizamo eminingi kakhulu. Sicela uzame futhi kamuva.",
-      "networkRequestFailed": "Iphutha lenethiwekhi. Hlola uxhumano lwakho."
+      "networkRequestFailed": "Iphutha lenethiwekhi. Hlola uxhumano lwakho.",
+      "invalidCredentials": "The email or password you entered is incorrect.",
+      "missingEmail": "Please enter your email address.",
+      "missingPassword": "Please enter your password.",
+      "userDisabled": "This account has been disabled. Contact support for help.",
+      "sessionExpired": "For security reasons, please sign in again and retry.",
+      "accountExistsWithDifferentCredential": "An account already exists with this email using a different sign-in method.",
+      "credentialAlreadyInUse": "This credential is already linked to another account.",
+      "signInCancelled": "Sign-in was canceled.",
+      "googlePlayServicesUnavailable": "Google Play Services is unavailable on this device.",
+      "googleMissingIdToken": "Google sign-in could not be completed. Please try again.",
+      "appleMissingIdentityToken": "Apple sign-in could not be completed. Please try again.",
+      "actionSignInFailed": "Unable to sign in right now. Please try again.",
+      "actionSignUpFailed": "Unable to create your account right now. Please try again.",
+      "actionSocialSignInFailed": "Social sign-in is unavailable right now. Please try email sign-in.",
+      "actionPasswordResetFailed": "Unable to send a reset link right now. Please try again.",
+      "actionEmailVerificationFailed": "Unable to send verification email right now. Please try again.",
+      "actionSignOutFailed": "Unable to sign out right now.",
+      "actionSessionRestoreFailed": "Unable to restore your session. Please sign in again."
     },
     "titles": {
       "error": "Iphutha",
@@ -70,5 +88,99 @@
   },
   "accessibility": {
     "toggle": "Shintsha"
+  },
+  "auth": {
+    "fields": {
+      "emailLabel": "I-imeyili",
+      "emailPlaceholder": "you@email.com",
+      "passwordLabel": "Iphasiwedi",
+      "passwordPlaceholder": "Iphasiwedi"
+    },
+    "validation": {
+      "validEmail": "Faka ikheli le-imeyili elivumelekile",
+      "passwordRequired": "Iphasiwedi iyadingeka",
+      "passwordMin": "Iphasiwedi kumele ibe nezinhlamvu okungenani eziyi-8",
+      "passwordUpper": "Kumele ibe nohlamvu olukhulu",
+      "passwordLower": "Kumele ibe nohlamvu oluncane",
+      "passwordNumber": "Kumele ibe nenombolo",
+      "passwordsMatch": "Amaphasiwedi awafani"
+    },
+    "social": {
+      "google": "Qhubeka nge-Google",
+      "apple": "Qhubeka nge-Apple"
+    },
+    "signIn": {
+      "appName": "ELLIE",
+      "subtitle": "Ngena ku-akhawunti yakho",
+      "forgotPassword": "Ukhohlwe iphasiwedi?",
+      "primaryButton": "Ngena",
+      "socialDivider": "noma qhubeka nge",
+      "noAccount": "Awunayo i-akhawunti? ",
+      "createAccount": "Dala i-akhawunti"
+    },
+    "signUp": {
+      "title": "Dala i-akhawunti",
+      "subtitle": "Qala ukulandelela amashifu akho nge-Ellie",
+      "passwordHint": "Okungenani izinhlamvu eziyi-8, uhlamvu olukhulu nenombolo",
+      "confirmPasswordLabel": "Qinisekisa iphasiwedi",
+      "confirmPasswordPlaceholder": "Phinda iphasiwedi",
+      "primaryButton": "Dala i-akhawunti",
+      "socialDivider": "noma",
+      "haveAccount": "Usunayo i-akhawunti? ",
+      "signInLink": "Ngena"
+    },
+    "forgotPassword": {
+      "title": "Setha kabusha iphasiwedi",
+      "subtitle": "Faka i-imeyili yakho sizokuthumela isixhumanisi sokusetha kabusha.",
+      "sendResetLink": "Thumela isixhumanisi",
+      "checkInboxTitle": "Bheka ibhokisi lakho lokungenayo",
+      "checkInboxBody": "Sithumele isixhumanisi ku-{{email}}",
+      "backToSignIn": "Buyela ekungeneni"
+    },
+    "emailVerification": {
+      "title": "Qinisekisa i-imeyili yakho",
+      "subtitle": "Sithumele isixhumanisi sokuqinisekisa ku-{{email}}",
+      "instructions": "Chofoza isixhumanisi ku-imeyili ukuze uvule i-akhawunti yakho. Lesi sikrini sizovuselelwa ngokuzenzakalelayo.",
+      "waiting": "Kulindwe ukuqinisekiswa…",
+      "resendIn": "Phinda uthumele emizuzwaneni engu-{{seconds}}",
+      "resend": "Phinda uthumele i-imeyili yokuqinisekisa",
+      "skip": "Ngizokuqinisekisa kamuva"
+    }
+  },
+  "subscription": {
+    "paywall": {
+      "closeA11y": "Close paywall",
+      "title": "Ellie Pro",
+      "subtitle": "For shift workers who mean business",
+      "features": {
+        "askRoster": "Ask \"Hey Ellie\" anything about your roster",
+        "fullYear": "See your full year at a glance",
+        "offline": "Works underground, no signal needed",
+        "instantAnswers": "Instant answers about leave and patterns",
+        "aiPowered": "Powered by AI and always improving"
+      },
+      "plans": {
+        "annual": "Annual",
+        "monthly": "Monthly",
+        "annualSuffix": "/yr",
+        "monthlySuffix": "/mo",
+        "save": "SAVE 40%"
+      },
+      "cta": "Start 7-Day Free Trial",
+      "noCard": "No credit card required · Cancel anytime",
+      "restorePurchases": "Restore Purchases",
+      "privacyPolicy": "Privacy Policy"
+    },
+    "profile": {
+      "rowActiveA11y": "Ellie Pro active subscription",
+      "rowUpgradeA11y": "Upgrade to Ellie Pro",
+      "activeLabel": "Ellie Pro — Active ✓",
+      "upgradeLabel": "Upgrade to Ellie Pro",
+      "activeHint": "Full calendar · Hey Ellie voice assistant",
+      "upgradeHint": "7-day free trial · $6.99/mo or $49.99/yr"
+    },
+    "padlock": {
+      "a11yLabel": "Upgrade to Ellie Pro to see full calendar"
+    }
   }
 }
