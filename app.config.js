@@ -21,10 +21,14 @@ module.exports = ({ config = {} }) => {
     expoUpdates.url = `https://u.expo.dev/${easProjectId}`;
   }
 
+  // Fingerprint runtime versions prevent OTA/native mismatches when native dependencies change.
+  // This is critical for modules like react-native-purchases that require native binaries.
+  const runtimeVersion = config.runtimeVersion || { policy: 'fingerprint' };
+
   return {
     ...config,
     updates: expoUpdates,
-    runtimeVersion: config.runtimeVersion || config.version || '1.0.0',
+    runtimeVersion,
     extra: {
       ...configExtra,
       APP_ENV: process.env.APP_ENV || 'development',

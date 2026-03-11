@@ -327,22 +327,25 @@ describe('MonthlyCalendarCard', () => {
   });
 
   describe('Subscription gating', () => {
-    it('shows padlock overlays for locked weeks and opens paywall on tap for free users', () => {
+    it('redacts locked weeks and opens paywall on padlock tap for free users', () => {
       mockUseSubscription.mockReturnValue({
         isPro: false,
         isLoading: false,
         openPaywall: mockOpenPaywall,
         restorePurchases: jest.fn(),
       });
-      const { getByTestId } = render(
+      const { getByTestId, queryByTestId } = render(
         <MonthlyCalendarCard
-          year={2026}
+          year={2099}
           month={1}
           shiftDays={shiftDays}
           onPreviousMonth={mockPrevMonth}
           onNextMonth={mockNextMonth}
         />
       );
+
+      expect(getByTestId('locked-calendar-day-1')).toBeTruthy();
+      expect(queryByTestId('calendar-day-1')).toBeNull();
 
       fireEvent.press(getByTestId('padlock-week-0'));
 

@@ -693,7 +693,7 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
                   ]}
                 >
                   {/* FIFO Connected Block Ribbons (rendered behind cells, animated fill) */}
-                  {fifoPositionMap && gridWidth > 0 && (
+                  {fifoPositionMap && gridWidth > 0 && !isLocked && (
                     <>
                       {getBlockRunsForRow(week, fifoPositionMap).map((run, runIdx) => {
                         const ribbonColor = RIBBON_COLORS[run.blockType];
@@ -725,6 +725,18 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
                     if (day === null) {
                       return (
                         <View key={`empty-${weekIndex}-${dayIndex}`} style={styles.emptyCell} />
+                      );
+                    }
+
+                    if (isLocked) {
+                      return (
+                        <View
+                          key={`locked-day-${day}`}
+                          style={styles.lockedDayCell}
+                          testID={`locked-calendar-day-${day}`}
+                        >
+                          <View style={styles.lockedDaySkeleton} />
+                        </View>
                       );
                     }
 
@@ -944,11 +956,23 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   weekRowLocked: {
-    opacity: 0.35,
+    opacity: 0.95,
   },
   emptyCell: {
     width: CELL_WIDTH,
     height: CELL_HEIGHT,
+  },
+  lockedDayCell: {
+    width: CELL_WIDTH,
+    height: CELL_HEIGHT,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  lockedDaySkeleton: {
+    width: 16,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: 'rgba(255, 255, 255, 0.24)',
   },
   legend: {
     flexDirection: 'row',

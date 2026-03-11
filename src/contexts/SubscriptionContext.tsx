@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
-import Purchases, { CustomerInfo, LOG_LEVEL } from 'react-native-purchases';
+import { getRevenueCatRuntime, type RevenueCatCustomerInfo } from '@/services/RevenueCatRuntime';
 
 const ENTITLEMENT_ID = 'pro';
 
@@ -24,7 +24,7 @@ interface SubscriptionProviderProps {
   onOpenPaywall: () => void;
 }
 
-const hasProEntitlement = (info: CustomerInfo): boolean =>
+const hasProEntitlement = (info: RevenueCatCustomerInfo): boolean =>
   info.entitlements.active[ENTITLEMENT_ID] !== undefined;
 
 const getRevenueCatApiKey = (): string => {
@@ -47,18 +47,27 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({
   useEffect(() => {
     let isMounted = true;
     const apiKey = getRevenueCatApiKey();
+    const revenueCatRuntime = getRevenueCatRuntime();
 
-    if (!apiKey) {
+    if (!apiKey || !revenueCatRuntime) {
       setIsPro(false);
       setIsLoading(false);
       return undefined;
     }
 
-    Purchases.setLogLevel(LOG_LEVEL.ERROR);
-    Purchases.configure({ apiKey });
+    const { Purchases, LOG_LEVEL } = revenueCatRuntime;
+
+    try {
+      Purchases.setLogLevel(LOG_LEVEL.ERROR);
+      Purchases.configure({ apiKey });
+    } catch {
+      setIsPro(false);
+      setIsLoading(false);
+      return undefined;
+    }
 
     void Purchases.getCustomerInfo()
-      .then((info: CustomerInfo) => {
+      .then((info: RevenueCatCustomerInfo) => {
         if (isMounted) {
           setIsPro(hasProEntitlement(info));
         }
@@ -74,21 +83,33 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({
         }
       });
 
-    const customerInfoListener = (info: CustomerInfo) => {
+    const customerInfoListener = (info: RevenueCatCustomerInfo) => {
       if (isMounted) {
         setIsPro(hasProEntitlement(info));
       }
     };
 
-    Purchases.addCustomerInfoUpdateListener(customerInfoListener);
+    try {
+      Purchases.addCustomerInfoUpdateListener(customerInfoListener);
+    } catch {
+      // If the native bridge is unavailable, keep app in free mode without crashing.
+    }
 
     return () => {
       isMounted = false;
-      Purchases.removeCustomerInfoUpdateListener(customerInfoListener);
+      try {
+        Purchases.removeCustomerInfoUpdateListener(customerInfoListener);
+      } catch {
+        // No-op: listener cleanup is best-effort.
+      }
     };
   }, []);
 
   const restorePurchases = useCallback(async () => {
+    const revenueCatRuntime = getRevenueCatRuntime();
+    if (!revenueCatRuntime) return;
+
+    const { Purchases } = revenueCatRuntime;
     try {
       const info = await Purchases.restorePurchases();
       setIsPro(hasProEntitlement(info));

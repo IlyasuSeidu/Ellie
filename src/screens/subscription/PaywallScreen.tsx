@@ -11,8 +11,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import Purchases, { PurchasesPackage } from 'react-native-purchases';
+import type { PurchasesPackage } from 'react-native-purchases';
 import { useSubscription } from '@/hooks/useSubscription';
+import { getRevenueCatRuntime, isRevenueCatAvailable } from '@/services/RevenueCatRuntime';
 import { theme } from '@/utils/theme';
 
 interface PaywallScreenProps {
@@ -35,6 +36,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss }) => {
   const [selectedPlan, setSelectedPlan] = useState<PlanKey>('annual');
   const [loading, setLoading] = useState(true);
   const [purchasing, setPurchasing] = useState(false);
+  const purchasesAvailable = useMemo(() => isRevenueCatAvailable(), []);
 
   const featureRows: FeatureRow[] = useMemo(
     () => [
@@ -51,6 +53,16 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss }) => {
   );
 
   useEffect(() => {
+    const revenueCatRuntime = getRevenueCatRuntime();
+    if (!revenueCatRuntime) {
+      setAnnualPackage(null);
+      setMonthlyPackage(null);
+      setLoading(false);
+      return;
+    }
+
+    const { Purchases } = revenueCatRuntime;
+
     void Purchases.getOfferings()
       .then((offerings) => {
         const current = offerings.current;
@@ -72,9 +84,12 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss }) => {
 
   const handlePurchase = async () => {
     if (!selectedPackage) return;
+    const revenueCatRuntime = getRevenueCatRuntime();
+    if (!revenueCatRuntime) return;
 
     try {
       setPurchasing(true);
+      const { Purchases } = revenueCatRuntime;
       await Purchases.purchasePackage(selectedPackage);
       onDismiss();
     } catch {
@@ -194,7 +209,16 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss }) => {
           </LinearGradient>
         </TouchableOpacity>
 
-        <Text style={styles.noCard}>{t('subscription.paywall.noCard')}</Text>
+        {purchasesAvailable ? (
+          <Text style={styles.noCard}>{t('subscription.paywall.noCard')}</Text>
+        ) : (
+          <Text style={styles.unavailableNotice}>
+            {t('subscription.paywall.unavailable', {
+              defaultValue:
+                'Subscriptions are unavailable in this app build. Install the latest EAS development/production build.',
+            })}
+          </Text>
+        )}
 
         <View style={styles.footer}>
           <TouchableOpacity onPress={handleRestore} accessibilityRole="button">
@@ -344,6 +368,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: theme.colors.dust,
     fontSize: 13,
+    marginTop: 12,
+  },
+  unavailableNotice: {
+    textAlign: 'center',
+    color: theme.colors.dust,
+    fontSize: 13,
+    lineHeight: 18,
     marginTop: 12,
   },
   footer: {

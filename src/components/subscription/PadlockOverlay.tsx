@@ -31,7 +31,7 @@ export const PadlockOverlay: React.FC<PadlockOverlayProps> = ({ onPress, testID 
 const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(12, 10, 9, 0.72)',
+    backgroundColor: 'rgba(12, 10, 9, 0.92)',
     borderRadius: 6,
     alignItems: 'center',
     justifyContent: 'center',
