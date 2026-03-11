@@ -7,6 +7,7 @@ import React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import { PremiumCustomPatternScreen } from '../PremiumCustomPatternScreen';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
+import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import * as OnboardingContext from '@/contexts/OnboardingContext';
 import { ShiftPattern } from '@/types';
@@ -128,6 +129,7 @@ const renderWithContext = (component: any) => {
 describe('PremiumCustomPatternScreen', () => {
   const mockOnBack = jest.fn();
   const mockOnContinue = jest.fn();
+  const expectedProgressText = `Step ${ONBOARDING_STEPS.CUSTOM_PATTERN} of ${TOTAL_ONBOARDING_STEPS}`;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -148,9 +150,9 @@ describe('PremiumCustomPatternScreen', () => {
       expect(getByText(/Set how many shifts you work/)).toBeTruthy();
     });
 
-    it('should render progress header with step 4 of 8', () => {
+    it('should render progress header with current onboarding step', () => {
       const { getByText } = renderWithContext(<PremiumCustomPatternScreen />);
-      expect(getByText('Step 4 of 8')).toBeTruthy();
+      expect(getByText(expectedProgressText)).toBeTruthy();
     });
 
     it('should render with default values (4-4-4)', () => {

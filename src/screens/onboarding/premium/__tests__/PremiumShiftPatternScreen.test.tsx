@@ -13,6 +13,7 @@ import {
 } from '../PremiumShiftPatternScreen';
 import { ShiftPattern } from '@/types';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
+import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 
 // Mock haptics
 // Mock AsyncStorage
@@ -90,6 +91,7 @@ const renderWithContext = (component: any) => {
 
 describe('PremiumShiftPatternScreen', () => {
   const mockOnContinue = jest.fn();
+  const expectedProgressText = `Step ${ONBOARDING_STEPS.SHIFT_PATTERN} of ${TOTAL_ONBOARDING_STEPS}`;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -109,9 +111,9 @@ describe('PremiumShiftPatternScreen', () => {
       expect(getByText(/Swipe right to choose, left to see more/i)).toBeTruthy();
     });
 
-    it('should render progress header with step 4 of 8', () => {
+    it('should render progress header with current onboarding step', () => {
       const { getByText } = renderWithContext(<PremiumShiftPatternScreen />);
-      expect(getByText('Step 4 of 8')).toBeTruthy();
+      expect(getByText(expectedProgressText)).toBeTruthy();
     });
 
     it('should render first card (4-4-4 Rotation)', () => {

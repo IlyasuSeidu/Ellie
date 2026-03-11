@@ -39,6 +39,7 @@ import {
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
 import { ShiftPattern, ShiftSystem } from '@/types';
 import { asyncStorageService } from '@/services/AsyncStorageService';
+import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import * as OnboardingContext from '@/contexts/OnboardingContext';
 import * as Haptics from 'expo-haptics';
@@ -154,6 +155,7 @@ const renderWithContext = (component: React.ReactElement) => {
 describe('PremiumStartDateScreen', () => {
   const mockOnBack = jest.fn();
   const mockOnContinue = jest.fn();
+  const expectedProgressText = `Step ${ONBOARDING_STEPS.START_DATE} of ${TOTAL_ONBOARDING_STEPS}`;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -180,7 +182,7 @@ describe('PremiumStartDateScreen', () => {
 
     it('should render progress header correctly', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('Step 6 of 8')).toBeTruthy();
+      expect(getByText(expectedProgressText)).toBeTruthy();
     });
 
     it('should render without crashing when no callbacks provided', () => {

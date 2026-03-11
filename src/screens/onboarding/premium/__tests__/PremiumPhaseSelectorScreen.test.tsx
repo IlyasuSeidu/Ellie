@@ -7,6 +7,7 @@ import React from 'react';
 import { render, waitFor } from '@testing-library/react-native';
 import { PremiumPhaseSelectorScreen } from '../PremiumPhaseSelectorScreen';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
+import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -130,6 +131,8 @@ const renderWithProvider = (component: React.ReactElement) => {
 };
 
 describe('PremiumPhaseSelectorScreen', () => {
+  const expectedProgressText = `Step ${ONBOARDING_STEPS.PHASE_SELECTOR} of ${TOTAL_ONBOARDING_STEPS}`;
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -152,9 +155,9 @@ describe('PremiumPhaseSelectorScreen', () => {
       ).toBeTruthy();
     });
 
-    it('should render progress header with step 5 of 11', () => {
+    it('should render progress header with current onboarding step', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
-      expect(getByText('Step 5 of 8')).toBeTruthy();
+      expect(getByText(expectedProgressText)).toBeTruthy();
     });
 
     it('should render without crashing', () => {
@@ -271,7 +274,7 @@ describe('PremiumPhaseSelectorScreen', () => {
   describe('Rendering Consistency', () => {
     it('should render consistently with default data', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
-      expect(getByText('Step 5 of 8')).toBeTruthy();
+      expect(getByText(expectedProgressText)).toBeTruthy();
       expect(getByText('What shift are you on right now?')).toBeTruthy();
     });
 
