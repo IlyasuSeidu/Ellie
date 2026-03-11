@@ -87,6 +87,7 @@ import React, {
 import { ShiftPattern, FIFOConfig } from '@/types';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import { migrateOnboardingDataToV2 } from '@/utils/migrationUtils';
+import i18n from '@/i18n';
 
 export interface OnboardingData {
   // Step 2: Introduction (PremiumIntroductionScreen)
@@ -333,24 +334,31 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
    */
   const validateData = (): ValidationResult => {
     const missingFields: string[] = [];
+    const localizedField = (key: string, fallback: string): string =>
+      String(
+        i18n.t(`completion.validation.fields.${key}`, {
+          ns: 'onboarding',
+          defaultValue: fallback,
+        })
+      );
 
     // Step 2: Profile data (required)
     if (!data.name || data.name.trim().length === 0) {
-      missingFields.push('Name');
+      missingFields.push(localizedField('name', 'Name'));
     }
     if (!data.occupation || data.occupation.trim().length === 0) {
-      missingFields.push('Occupation');
+      missingFields.push(localizedField('occupation', 'Occupation'));
     }
     if (!data.company || data.company.trim().length === 0) {
-      missingFields.push('Company');
+      missingFields.push(localizedField('company', 'Company'));
     }
     if (!data.country || data.country.trim().length === 0) {
-      missingFields.push('Country');
+      missingFields.push(localizedField('country', 'Country'));
     }
 
     // Step 3: Shift system (required)
     if (!data.shiftSystem) {
-      missingFields.push('Shift System');
+      missingFields.push(localizedField('shiftSystem', 'Shift System'));
     }
 
     // Step 3.5: Roster type (optional - defaults to rotating if not set)
@@ -358,30 +366,32 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
 
     // Step 4: Pattern type (required)
     if (!data.patternType) {
-      missingFields.push('Shift Pattern');
+      missingFields.push(localizedField('shiftPattern', 'Shift Pattern'));
     }
 
     // Step 4b: Custom pattern validation (depends on roster type)
     if (data.rosterType === 'fifo') {
       // FIFO custom pattern
       if (data.patternType === ShiftPattern.FIFO_CUSTOM && !data.fifoConfig) {
-        missingFields.push('FIFO Configuration');
+        missingFields.push(localizedField('fifoConfiguration', 'FIFO Configuration'));
       }
     } else {
       // Rotating custom pattern (default behavior)
       if (data.patternType === ShiftPattern.CUSTOM && !data.customPattern) {
-        missingFields.push('Custom Pattern Configuration');
+        missingFields.push(
+          localizedField('customPatternConfiguration', 'Custom Pattern Configuration')
+        );
       }
     }
 
     // Step 5: Phase offset (required)
     if (data.phaseOffset === undefined) {
-      missingFields.push('Phase Offset');
+      missingFields.push(localizedField('phaseOffset', 'Phase Offset'));
     }
 
     // Step 6: Start date (required)
     if (!data.startDate) {
-      missingFields.push('Start Date');
+      missingFields.push(localizedField('startDate', 'Start Date'));
     }
 
     // Step 7: Shift times (required - either new or legacy structure)
@@ -389,7 +399,7 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
     const hasLegacyStructure = data.shiftStartTime && data.shiftEndTime;
 
     if (!hasNewStructure && !hasLegacyStructure) {
-      missingFields.push('Shift Times');
+      missingFields.push(localizedField('shiftTimes', 'Shift Times'));
     }
 
     return {

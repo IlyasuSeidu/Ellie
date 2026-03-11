@@ -305,7 +305,25 @@
       "workPattern": "نمط العمل"
     },
     "title": "أنت جاهز تمامًا!",
-    "tryAgain": "حاول ثانية"
+    "tryAgain": "حاول ثانية",
+    "errors": {
+      "missingRequiredInformation": "معلومات مطلوبة مفقودة: {{fields}}. يرجى الرجوع وإكمال جميع الخطوات."
+    },
+    "validation": {
+      "fields": {
+        "name": "الاسم",
+        "occupation": "المهنة",
+        "company": "الشركة",
+        "country": "الدولة",
+        "shiftSystem": "نظام الورديات",
+        "shiftPattern": "نمط الورديات",
+        "fifoConfiguration": "إعداد FIFO",
+        "customPatternConfiguration": "إعداد النمط المخصص",
+        "phaseOffset": "إزاحة المرحلة",
+        "startDate": "تاريخ البدء",
+        "shiftTimes": "أوقات الورديات"
+      }
+    }
   },
   "phaseSelector": {
     "hints": {
@@ -885,5 +903,19 @@
   "premiumCalendar": {
     "previousMonthA11y": "Previous month",
     "nextMonthA11y": "Next month"
+  },
+  "chatMessage": {
+    "skipped": "تم التخطي",
+    "a11y": {
+      "botMessage": "رسالة إيلي: {{content}}",
+      "userMessage": "رسالتك: {{content}}",
+      "longPressToEdit": "اضغط مطولاً للتعديل"
+    }
+  },
+  "patternCard": {
+    "a11y": {
+      "label": "نمط {{name}}",
+      "hint": "يحدد نمط الورديات {{description}}"
+    }
   }
 }

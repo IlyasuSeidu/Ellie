@@ -38,6 +38,7 @@ import { buildShiftCycle } from '@/utils/shiftUtils';
 import { toDateString } from '@/utils/dateUtils';
 import { voiceAssistantConfig } from '@/config/env';
 import { logger } from '@/utils/logger';
+import i18n from '@/i18n';
 import type {
   VoiceAssistantDiagnosticCategory,
   VoiceAssistantState,
@@ -98,6 +99,18 @@ const DEFAULT_WAKE_WORD_LABEL = 'wake word';
 const DEFAULT_VOICE_PERSIST_TTL_SECONDS = 12 * 60 * 60;
 const NOTICE_AUTO_DISMISS_MS = 4_000;
 const PERSISTENCE_DEBOUNCE_MS = 2_000;
+
+const getWakeWordUnavailableWarning = (): string =>
+  i18n.t('voiceAssistant.warnings.wakeWordUnavailableTapToTalk', {
+    ns: 'dashboard',
+    defaultValue: 'Wake-word unavailable, tap mic to talk.',
+  });
+
+const getWakeWordPermissionRequiredWarning = (): string =>
+  i18n.t('voiceAssistant.warnings.microphonePermissionRequired', {
+    ns: 'dashboard',
+    defaultValue: 'Microphone permission required for Hey Ellie. Tap mic to talk.',
+  });
 
 export function getVoicePersistenceTTLSeconds(): number | undefined {
   const rawValue = process.env.EXPO_PUBLIC_VOICE_ASSISTANT_PERSIST_TTL_SECONDS;
@@ -519,7 +532,7 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
         setIsWakeWordListening(false);
         setIsWakeWordAvailable(false);
         setWakeWordWarning(
-          persistedState.wakeWordSession.reason ?? 'Wake-word unavailable, tap mic to talk.'
+          persistedState.wakeWordSession.reason ?? getWakeWordUnavailableWarning()
         );
       } else {
         wakeWordUnavailableHydratedRef.current = false;
@@ -687,10 +700,7 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
       try {
         const granted = await requestPermissions();
         if (!isCancelled && !granted) {
-          setWakeWordWarning(
-            (previous) =>
-              previous ?? 'Microphone permission required for Hey Ellie. Tap mic to talk.'
-          );
+          setWakeWordWarning((previous) => previous ?? getWakeWordPermissionRequiredWarning());
           appendDiagnostic(
             'speech_recognition',
             'wake_word_permission_denied',
@@ -704,10 +714,7 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
             error:
               permissionError instanceof Error ? permissionError.message : String(permissionError),
           });
-          setWakeWordWarning(
-            (previous) =>
-              previous ?? 'Microphone permission required for Hey Ellie. Tap mic to talk.'
-          );
+          setWakeWordWarning((previous) => previous ?? getWakeWordPermissionRequiredWarning());
           appendDiagnostic(
             'speech_recognition',
             'wake_word_permission_request_failed',
@@ -784,7 +791,7 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
           setIsWakeWordListening(false);
           setIsWakeWordReady(false);
           setIsWakeWordAvailable(false);
-          setWakeWordWarning((previous) => previous ?? 'Wake-word unavailable, tap mic to talk.');
+          setWakeWordWarning((previous) => previous ?? getWakeWordUnavailableWarning());
         }
         return;
       }
@@ -904,7 +911,7 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
         const unavailableReason =
           wakeWordInitErrorMessage ??
           wakeWordService.getUnavailableReason() ??
-          'Wake-word unavailable, tap mic to talk.';
+          getWakeWordUnavailableWarning();
         setIsWakeWordAvailable(false);
         setWakeWordWarning(unavailableReason);
 
@@ -985,7 +992,7 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
           const message =
             wakeWordError instanceof Error
               ? wakeWordError.message
-              : 'Wake-word unavailable, tap mic to talk.';
+              : getWakeWordUnavailableWarning();
           const isFatalWakeWordFailure =
             wakeWordError instanceof WakeWordError ? wakeWordError.fatal : false;
 

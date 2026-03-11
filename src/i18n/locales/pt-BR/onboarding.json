@@ -251,7 +251,25 @@
       "workPattern": "Padrão de Trabalho"
     },
     "title": "Está tudo pronto!",
-    "tryAgain": "Tente novamente"
+    "tryAgain": "Tente novamente",
+    "errors": {
+      "missingRequiredInformation": "Informações obrigatórias ausentes: {{fields}}. Volte e conclua todas as etapas."
+    },
+    "validation": {
+      "fields": {
+        "name": "Nome",
+        "occupation": "Ocupação",
+        "company": "Empresa",
+        "country": "País",
+        "shiftSystem": "Sistema de turnos",
+        "shiftPattern": "Padrão de turnos",
+        "fifoConfiguration": "Configuração FIFO",
+        "customPatternConfiguration": "Configuração de padrão personalizado",
+        "phaseOffset": "Deslocamento de fase",
+        "startDate": "Data de início",
+        "shiftTimes": "Horários de turno"
+      }
+    }
   },
   "rosterType": {
     "title": "Como funciona sua lista?",
@@ -897,5 +915,19 @@
   "premiumCalendar": {
     "previousMonthA11y": "Previous month",
     "nextMonthA11y": "Next month"
+  },
+  "chatMessage": {
+    "skipped": "Ignorado",
+    "a11y": {
+      "botMessage": "Mensagem da Ellie: {{content}}",
+      "userMessage": "Sua mensagem: {{content}}",
+      "longPressToEdit": "Pressione e segure para editar"
+    }
+  },
+  "patternCard": {
+    "a11y": {
+      "label": "Padrão {{name}}",
+      "hint": "Seleciona o padrão de turnos {{description}}"
+    }
   }
 }

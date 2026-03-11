@@ -223,7 +223,7 @@ describe('PremiumShiftSystemScreen', () => {
       const { getByText } = renderWithProviders(<PremiumShiftSystemScreen />);
 
       // 2-shift description
-      expect(getByText(/Your workplace runs two 12-hour shifts/i)).toBeTruthy();
+      expect(getByText(/Your mine runs two 12-hour shifts/i)).toBeTruthy();
     });
   });
 

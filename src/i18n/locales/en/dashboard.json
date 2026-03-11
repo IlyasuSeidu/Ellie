@@ -143,6 +143,10 @@
     "responseBubble": {
       "userSaidA11y": "You said: {{text}}",
       "assistantSaidA11y": "Ellie said: {{text}}"
+    },
+    "warnings": {
+      "microphonePermissionRequired": "Microphone permission required for Hey Ellie. Tap mic to talk.",
+      "wakeWordUnavailableTapToTalk": "Wake-word unavailable, tap mic to talk."
     }
   }
 }

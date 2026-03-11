@@ -39,13 +39,13 @@
   "intro": {
     "welcome": "Welcome to Ellie! I'm here to help you set up your shift calendar. Let's start by getting to know you a bit better.",
     "askName": "What's your name?",
-    "askOccupation": "Great to meet you, {{name}}! What's your occupation?",
+    "askOccupation": "Great to meet you, {{name}}! What's your role on site?",
     "askCompany": "Got it! Which company do you work for?",
     "askCountry": "Almost done! Which country are you based in?",
     "allSet": "Perfect! You're all set, {{name}}. Let's get your shift calendar configured.",
     "placeholders": {
       "name": "Enter your name",
-      "occupation": "Enter your occupation",
+      "occupation": "e.g. Haul truck operator, Boilermaker, Electrician",
       "company": "Enter company name",
       "country": "Enter your country"
     },
@@ -81,7 +81,7 @@
       "2-shift": {
         "title": "2 Shifts (12 hours)",
         "schedule": "Day & night",
-        "description": "Your workplace runs two 12-hour shifts—one during the day, one at night",
+        "description": "Your mine runs two 12-hour shifts—one during the day, one at night",
         "details": {
           "workRestRatio": "12 hours on, 12 hours off",
           "useCases": ["Mining sites", "Oil & gas", "24/7 operations", "Remote work"],
@@ -96,10 +96,15 @@
       "3-shift": {
         "title": "3 Shifts (8 hours)",
         "schedule": "Morning, afternoon & night",
-        "description": "Your workplace runs three 8-hour shifts—morning, afternoon, and night",
+        "description": "Your processing plant runs three 8-hour shifts—morning, afternoon, and night",
         "details": {
           "workRestRatio": "8 hours on, 16 hours off",
-          "useCases": ["Manufacturing", "Healthcare", "Call centers", "24/7 operations"],
+          "useCases": [
+            "Underground mines",
+            "Processing plants",
+            "Mine infrastructure",
+            "24/7 operations"
+          ],
           "pros": ["Shorter shifts", "More time for family", "Easier to stay alert"],
           "cons": [
             "More frequent shift changes",
@@ -121,7 +126,7 @@
       "reviewedSubtitle": "Didn't see yours? You can build a custom one, or take another look",
       "reviewedTitle": "That's all {{count}} rotations we've got!"
     },
-    "instruction": "Choose the rotation your workplace uses—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info",
+    "instruction": "Choose the rotation your mine site uses—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info",
     "title": "What's Your Roster Rotation?",
     "cards": {
       "4-4-4": {
@@ -208,7 +213,7 @@
   },
   "rosterType": {
     "title": "How Does Your Roster Work?",
-    "instruction": "Choose the roster style your workplace uses — this shapes your entire schedule\nSwipe right to choose, left to see more, up for details",
+    "instruction": "Choose the roster style your mine site uses — this shapes your entire schedule\nSwipe right to choose, left to see more, up for details",
     "preparingNextStep": "Preparing next step...",
     "learnMore": {
       "examples": "Examples",
@@ -276,25 +281,25 @@
     "saveFailed": "Failed to save your data. Please try again.",
     "features": {
       "reminders": "Smart shift reminders",
-      "remindersDesc": "Never miss a shift with intelligent notifications that adapt to your rotation",
+      "remindersDesc": "Never miss a callout — smart reminders that adapt to your roster swing",
       "sleep": "Sleep tracking & insights",
       "sleepDesc": "Optimize your rest between shifts with personalized sleep analytics",
       "fatigue": "Fatigue monitoring",
-      "fatigueDesc": "Track your energy levels and get alerts when fatigue risk is high",
+      "fatigueDesc": "Monitor fatigue risk on long shifts — critical for underground safety",
       "team": "Team coordination",
       "teamDesc": "See your crew schedule and coordinate handovers seamlessly",
       "balance": "Work-life balance",
-      "balanceDesc": "Maintain healthy routines with activity and wellness tracking",
+      "balanceDesc": "Stay healthy between FIFO swings with routine and wellness tracking",
       "earnings": "Earnings calculator",
-      "earningsDesc": "Automatically calculate overtime, penalties, and shift allowances",
+      "earningsDesc": "Calculate site allowances, FIFO loadings, and overtime automatically",
       "meals": "Meal & hydration",
-      "mealsDesc": "Stay healthy with meal timing suggestions and hydration reminders"
+      "mealsDesc": "Stay hydrated and fuelled through 12-hour underground shifts"
     },
     "featureHint": "Tap a feature chip to see more details.",
     "featuresTitle": "What you can do with Ellie",
     "getStartedA11yHint": "Tap to start using the app",
     "getStartedA11yLabel": "Get started with Ellie",
-    "loading": "Setting up your calendar...",
+    "loading": "Building your roster calendar...",
     "retryA11yHint": "Tap to try saving your data again",
     "retryA11yLabel": "Retry saving your data",
     "subtitle": "Welcome to Ellie",
@@ -316,7 +321,25 @@
       "workPattern": "Work Pattern"
     },
     "title": "You're all set!",
-    "tryAgain": "Try Again"
+    "tryAgain": "Try Again",
+    "errors": {
+      "missingRequiredInformation": "Missing required information: {{fields}}. Please go back and complete all steps."
+    },
+    "validation": {
+      "fields": {
+        "name": "Name",
+        "occupation": "Occupation",
+        "company": "Company",
+        "country": "Country",
+        "shiftSystem": "Shift System",
+        "shiftPattern": "Shift Pattern",
+        "fifoConfiguration": "FIFO Configuration",
+        "customPatternConfiguration": "Custom Pattern Configuration",
+        "phaseOffset": "Phase Offset",
+        "startDate": "Start Date",
+        "shiftTimes": "Shift Times"
+      }
+    }
   },
   "phaseSelector": {
     "options": {
@@ -882,6 +905,20 @@
     "summary": "Your {{cycleLength}}-day cycle: {{daysOn}}D / {{nightsOn}}N / {{daysOff}}O",
     "legend": {
       "offDays": "Off Days"
+    }
+  },
+  "chatMessage": {
+    "skipped": "Skipped",
+    "a11y": {
+      "botMessage": "Bot message: {{content}}",
+      "userMessage": "Your message: {{content}}",
+      "longPressToEdit": "Long press to edit"
+    }
+  },
+  "patternCard": {
+    "a11y": {
+      "label": "{{name}} pattern",
+      "hint": "Selects {{description}} shift pattern"
     }
   }
 }

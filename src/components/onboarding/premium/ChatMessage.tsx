@@ -16,6 +16,7 @@ import Animated, {
   withTiming,
   Easing,
 } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import { ChatAvatar } from './ChatAvatar';
 import { theme } from '@/utils/theme';
 
@@ -52,6 +53,8 @@ export interface ChatMessageProps {
 
 export const ChatMessage = React.memo<ChatMessageProps>(
   ({ message, isBot, delay = 0, reducedMotion, onLongPress, testID }) => {
+    const { t } = useTranslation('onboarding');
+
     // Animation values
     const slideUp = useSharedValue(isBot ? 30 : 0);
     const slideFromRight = useSharedValue(isBot ? 0 : 50);
@@ -107,7 +110,7 @@ export const ChatMessage = React.memo<ChatMessageProps>(
     }));
 
     const displayContent = message.metadata?.isSkipped
-      ? 'Skipped'
+      ? String(t('chatMessage.skipped', { defaultValue: 'Skipped' }))
       : message.metadata?.countryFlag
         ? `${message.metadata.countryFlag} ${message.content}`
         : message.content;
@@ -118,7 +121,12 @@ export const ChatMessage = React.memo<ChatMessageProps>(
           style={[styles.messageContainer, styles.botContainer, animatedStyle]}
           testID={testID}
           accessibilityRole="text"
-          accessibilityLabel={`Bot message: ${message.content}`}
+          accessibilityLabel={String(
+            t('chatMessage.a11y.botMessage', {
+              content: message.content,
+              defaultValue: 'Bot message: {{content}}',
+            })
+          )}
         >
           <ChatAvatar
             size={40}
@@ -140,8 +148,21 @@ export const ChatMessage = React.memo<ChatMessageProps>(
           onLongPress={handleLongPress}
           testID={testID}
           accessibilityRole="text"
-          accessibilityLabel={`Your message: ${message.content}`}
-          accessibilityHint={onLongPress ? 'Long press to edit' : undefined}
+          accessibilityLabel={String(
+            t('chatMessage.a11y.userMessage', {
+              content: message.content,
+              defaultValue: 'Your message: {{content}}',
+            })
+          )}
+          accessibilityHint={
+            onLongPress
+              ? String(
+                  t('chatMessage.a11y.longPressToEdit', {
+                    defaultValue: 'Long press to edit',
+                  })
+                )
+              : undefined
+          }
         >
           <View style={[styles.userBubble, message.metadata?.isSkipped && styles.skippedBubble]}>
             <Text style={[styles.userText, message.metadata?.isSkipped && styles.skippedText]}>

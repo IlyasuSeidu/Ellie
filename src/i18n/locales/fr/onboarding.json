@@ -331,7 +331,25 @@
       "workPattern": "Modèle de travail"
     },
     "title": "Vous êtes prêt !",
-    "tryAgain": "Essayer à nouveau"
+    "tryAgain": "Essayer à nouveau",
+    "errors": {
+      "missingRequiredInformation": "Informations requises manquantes : {{fields}}. Revenez en arrière et terminez toutes les étapes."
+    },
+    "validation": {
+      "fields": {
+        "name": "Nom",
+        "occupation": "Profession",
+        "company": "Entreprise",
+        "country": "Pays",
+        "shiftSystem": "Système de quarts",
+        "shiftPattern": "Schéma de quarts",
+        "fifoConfiguration": "Configuration FIFO",
+        "customPatternConfiguration": "Configuration du schéma personnalisé",
+        "phaseOffset": "Décalage de phase",
+        "startDate": "Date de début",
+        "shiftTimes": "Horaires des quarts"
+      }
+    }
   },
   "phaseSelector": {
     "hints": {
@@ -911,5 +929,19 @@
   "premiumCalendar": {
     "previousMonthA11y": "Previous month",
     "nextMonthA11y": "Next month"
+  },
+  "chatMessage": {
+    "skipped": "Ignoré",
+    "a11y": {
+      "botMessage": "Message d'Ellie : {{content}}",
+      "userMessage": "Votre message : {{content}}",
+      "longPressToEdit": "Appuyez longuement pour modifier"
+    }
+  },
+  "patternCard": {
+    "a11y": {
+      "label": "Schéma {{name}}",
+      "hint": "Sélectionne le schéma de quarts {{description}}"
+    }
   }
 }

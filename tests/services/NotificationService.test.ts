@@ -68,11 +68,7 @@ describe('NotificationService', () => {
 
     describe('scheduleShiftReminder', () => {
       it('should schedule a 24-hour shift reminder', async () => {
-        const notificationId = await service.scheduleShiftReminder(
-          mockUserId,
-          mockShift,
-          24
-        );
+        const notificationId = await service.scheduleShiftReminder(mockUserId, mockShift, 24);
 
         expect(notificationId).toBeDefined();
         expect(notificationId).toMatch(/^notification-\d+$/);
@@ -80,16 +76,12 @@ describe('NotificationService', () => {
 
         const scheduled = mockScheduler.getScheduledNotification(notificationId);
         expect(scheduled).toBeDefined();
-        expect(scheduled?.content.title).toBe('Night Shift Reminder');
+        expect(scheduled?.content.title).toBe('Night Shift Callout');
         expect(scheduled?.content.body).toContain('starts tomorrow');
       });
 
       it('should schedule a 4-hour shift reminder', async () => {
-        const notificationId = await service.scheduleShiftReminder(
-          mockUserId,
-          mockShift,
-          4
-        );
+        const notificationId = await service.scheduleShiftReminder(mockUserId, mockShift, 4);
 
         expect(notificationId).toBeDefined();
         expect(mockScheduler.getScheduledCount()).toBe(1);
@@ -105,22 +97,14 @@ describe('NotificationService', () => {
           shiftType: 'day',
         };
 
-        const notificationId = await service.scheduleShiftReminder(
-          mockUserId,
-          dayShift,
-          24
-        );
+        const notificationId = await service.scheduleShiftReminder(mockUserId, dayShift, 24);
 
         const scheduled = mockScheduler.getScheduledNotification(notificationId);
-        expect(scheduled?.content.title).toBe('Day Shift Reminder');
+        expect(scheduled?.content.title).toBe('Day Shift Callout');
       });
 
       it('should calculate correct trigger time for 24-hour reminder', async () => {
-        const notificationId = await service.scheduleShiftReminder(
-          mockUserId,
-          mockShift,
-          24
-        );
+        const notificationId = await service.scheduleShiftReminder(mockUserId, mockShift, 24);
 
         const scheduled = mockScheduler.getScheduledNotification(notificationId);
         const shiftDate = new Date(mockShift.date);
@@ -130,11 +114,7 @@ describe('NotificationService', () => {
       });
 
       it('should include shift data in notification payload', async () => {
-        const notificationId = await service.scheduleShiftReminder(
-          mockUserId,
-          mockShift,
-          24
-        );
+        const notificationId = await service.scheduleShiftReminder(mockUserId, mockShift, 24);
 
         const scheduled = mockScheduler.getScheduledNotification(notificationId);
         expect(scheduled?.content.data).toMatchObject({
@@ -147,11 +127,7 @@ describe('NotificationService', () => {
 
     describe('scheduleHolidayAlert', () => {
       it('should schedule a holiday alert', async () => {
-        const notificationId = await service.scheduleHolidayAlert(
-          mockUserId,
-          mockHoliday,
-          7
-        );
+        const notificationId = await service.scheduleHolidayAlert(mockUserId, mockHoliday, 7);
 
         expect(notificationId).toBeDefined();
         expect(mockScheduler.getScheduledCount()).toBe(1);
@@ -163,11 +139,7 @@ describe('NotificationService', () => {
       });
 
       it('should calculate correct trigger time for holiday alert', async () => {
-        const notificationId = await service.scheduleHolidayAlert(
-          mockUserId,
-          mockHoliday,
-          7
-        );
+        const notificationId = await service.scheduleHolidayAlert(mockUserId, mockHoliday, 7);
 
         const scheduled = mockScheduler.getScheduledNotification(notificationId);
         const holidayDate = new Date(mockHoliday.date);
@@ -177,11 +149,7 @@ describe('NotificationService', () => {
       });
 
       it('should include holiday data in notification payload', async () => {
-        const notificationId = await service.scheduleHolidayAlert(
-          mockUserId,
-          mockHoliday,
-          7
-        );
+        const notificationId = await service.scheduleHolidayAlert(mockUserId, mockHoliday, 7);
 
         const scheduled = mockScheduler.getScheduledNotification(notificationId);
         expect(scheduled?.content.data).toMatchObject({
@@ -192,11 +160,7 @@ describe('NotificationService', () => {
 
     describe('cancelNotification', () => {
       it('should cancel a scheduled notification', async () => {
-        const notificationId = await service.scheduleShiftReminder(
-          mockUserId,
-          mockShift,
-          24
-        );
+        const notificationId = await service.scheduleShiftReminder(mockUserId, mockShift, 24);
 
         expect(mockScheduler.getScheduledCount()).toBe(1);
 
@@ -247,7 +211,7 @@ describe('NotificationService', () => {
       it('should build content for 24-hour night shift reminder', () => {
         const content = service.buildShiftReminderContent(mockShift, 24);
 
-        expect(content.title).toBe('Night Shift Reminder');
+        expect(content.title).toBe('Night Shift Callout');
         expect(content.body).toContain('night shift starts tomorrow');
         expect(content.body).toContain(mockShift.date);
         expect(content.data).toMatchObject({
@@ -261,7 +225,7 @@ describe('NotificationService', () => {
       it('should build content for 4-hour night shift reminder', () => {
         const content = service.buildShiftReminderContent(mockShift, 4);
 
-        expect(content.title).toBe('Night Shift Reminder');
+        expect(content.title).toBe('Night Shift Callout');
         expect(content.body).toContain('starts in 4 hours');
         expect(content.body).not.toContain('tomorrow');
       });
@@ -275,7 +239,7 @@ describe('NotificationService', () => {
 
         const content = service.buildShiftReminderContent(dayShift, 24);
 
-        expect(content.title).toBe('Day Shift Reminder');
+        expect(content.title).toBe('Day Shift Callout');
         expect(content.body).toContain('day shift starts tomorrow');
       });
 
@@ -327,7 +291,8 @@ describe('NotificationService', () => {
   describe('Permissions', () => {
     describe('requestPermissions', () => {
       it('should request and grant permissions when undetermined', async () => {
-        await Promise.resolve(); mockScheduler.setPermissionStatus('undetermined');
+        await Promise.resolve();
+        mockScheduler.setPermissionStatus('undetermined');
 
         const granted = await service.requestPermissions();
 
@@ -336,7 +301,8 @@ describe('NotificationService', () => {
       });
 
       it('should return true when permissions already granted', async () => {
-        await Promise.resolve(); mockScheduler.setPermissionStatus('granted');
+        await Promise.resolve();
+        mockScheduler.setPermissionStatus('granted');
 
         const granted = await service.requestPermissions();
 
@@ -344,7 +310,8 @@ describe('NotificationService', () => {
       });
 
       it('should return false when permissions denied', async () => {
-        await Promise.resolve(); mockScheduler.setPermissionStatus('denied');
+        await Promise.resolve();
+        mockScheduler.setPermissionStatus('denied');
 
         const granted = await service.requestPermissions();
 
@@ -354,7 +321,8 @@ describe('NotificationService', () => {
 
     describe('checkPermissions', () => {
       it('should return true when permissions granted', async () => {
-        await Promise.resolve(); mockScheduler.setPermissionStatus('granted');
+        await Promise.resolve();
+        mockScheduler.setPermissionStatus('granted');
 
         const hasPermissions = await service.checkPermissions();
 
@@ -362,7 +330,8 @@ describe('NotificationService', () => {
       });
 
       it('should return false when permissions denied', async () => {
-        await Promise.resolve(); mockScheduler.setPermissionStatus('denied');
+        await Promise.resolve();
+        mockScheduler.setPermissionStatus('denied');
 
         const hasPermissions = await service.checkPermissions();
 
@@ -370,7 +339,8 @@ describe('NotificationService', () => {
       });
 
       it('should return false when permissions undetermined', async () => {
-        await Promise.resolve(); mockScheduler.setPermissionStatus('undetermined');
+        await Promise.resolve();
+        mockScheduler.setPermissionStatus('undetermined');
 
         const hasPermissions = await service.checkPermissions();
 
@@ -380,7 +350,8 @@ describe('NotificationService', () => {
 
     describe('getPermissionStatus', () => {
       it('should return current permission status', async () => {
-        await Promise.resolve(); mockScheduler.setPermissionStatus('granted');
+        await Promise.resolve();
+        mockScheduler.setPermissionStatus('granted');
         expect(await service.getPermissionStatus()).toBe('granted');
 
         mockScheduler.setPermissionStatus('denied');
@@ -393,7 +364,8 @@ describe('NotificationService', () => {
 
     describe('handling denied permissions', () => {
       it('should not throw when scheduling with denied permissions', async () => {
-        await Promise.resolve(); mockScheduler.setPermissionStatus('denied');
+        await Promise.resolve();
+        mockScheduler.setPermissionStatus('denied');
 
         const mockShift: ShiftDay = {
           date: '2025-02-01',
@@ -421,11 +393,7 @@ describe('NotificationService', () => {
 
     describe('saveNotification', () => {
       it('should save notification to history', async () => {
-        const notificationId = await service.scheduleShiftReminder(
-          mockUserId,
-          mockShift,
-          24
-        );
+        const notificationId = await service.scheduleShiftReminder(mockUserId, mockShift, 24);
 
         // Notification should be saved during scheduling
         expect(notificationId).toBeDefined();
@@ -465,11 +433,7 @@ describe('NotificationService', () => {
 
     describe('markAsDelivered', () => {
       it('should mark notification as delivered', async () => {
-        const notificationId = await service.scheduleShiftReminder(
-          mockUserId,
-          mockShift,
-          24
-        );
+        const notificationId = await service.scheduleShiftReminder(mockUserId, mockShift, 24);
 
         await service.markAsDelivered(notificationId);
 
@@ -478,9 +442,7 @@ describe('NotificationService', () => {
       });
 
       it('should handle marking non-existent notification', async () => {
-        await expect(
-          service.markAsDelivered('non-existent-id')
-        ).resolves.not.toThrow();
+        await expect(service.markAsDelivered('non-existent-id')).resolves.not.toThrow();
       });
     });
   });
@@ -505,15 +467,11 @@ describe('NotificationService', () => {
 
     describe('invalid notification IDs', () => {
       it('should handle canceling with invalid ID', async () => {
-        await expect(
-          service.cancelNotification(mockUserId, '')
-        ).resolves.not.toThrow();
+        await expect(service.cancelNotification(mockUserId, '')).resolves.not.toThrow();
       });
 
       it('should handle marking delivered with invalid ID', async () => {
-        await expect(
-          service.markAsDelivered('')
-        ).resolves.not.toThrow();
+        await expect(service.markAsDelivered('')).resolves.not.toThrow();
       });
     });
 
@@ -524,9 +482,7 @@ describe('NotificationService', () => {
           date: 'invalid-date',
         };
 
-        await expect(
-          service.scheduleShiftReminder(mockUserId, invalidShift, 24)
-        ).rejects.toThrow();
+        await expect(service.scheduleShiftReminder(mockUserId, invalidShift, 24)).rejects.toThrow();
       });
     });
 
@@ -540,9 +496,7 @@ describe('NotificationService', () => {
           country: 'US',
         };
 
-        await expect(
-          service.scheduleHolidayAlert(mockUserId, invalidHoliday, 7)
-        ).rejects.toThrow();
+        await expect(service.scheduleHolidayAlert(mockUserId, invalidHoliday, 7)).rejects.toThrow();
       });
     });
   });

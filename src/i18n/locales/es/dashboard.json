@@ -129,6 +129,10 @@
     "responseBubble": {
       "userSaidA11y": "You said: {{text}}",
       "assistantSaidA11y": "Ellie said: {{text}}"
+    },
+    "warnings": {
+      "microphonePermissionRequired": "Se necesita permiso de micrófono para \"Hey Ellie\". Toca el micrófono para hablar.",
+      "wakeWordUnavailableTapToTalk": "La palabra de activación no está disponible; toca el micrófono para hablar."
     }
   },
   "tabs": {

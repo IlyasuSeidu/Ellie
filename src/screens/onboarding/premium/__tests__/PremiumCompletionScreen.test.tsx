@@ -310,7 +310,7 @@ describe('PremiumCompletionScreen', () => {
     it('should show loading state initially', async () => {
       const { getByText } = renderWithProviders(<PremiumCompletionScreen />);
       await waitFor(() => {
-        expect(getByText(/Setting up your calendar.../i)).toBeTruthy();
+        expect(getByText(/Building your roster calendar.../i)).toBeTruthy();
       });
     });
 

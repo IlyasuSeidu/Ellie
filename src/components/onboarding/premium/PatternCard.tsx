@@ -8,6 +8,7 @@ import React from 'react';
 import { View, TouchableOpacity, Text, ViewStyle, StyleSheet } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { ShiftPattern } from '@/types';
 import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
@@ -48,6 +49,7 @@ export const PatternCard: React.FC<PatternCardProps> = ({
   style,
   testID,
 }) => {
+  const { t } = useTranslation('onboarding');
   const scale = useSharedValue(1);
 
   const handlePressIn = () => {
@@ -103,8 +105,18 @@ export const PatternCard: React.FC<PatternCardProps> = ({
       onPressOut={handlePressOut}
       activeOpacity={1}
       accessibilityRole="button"
-      accessibilityLabel={`${metadata.name} pattern`}
-      accessibilityHint={`Selects ${metadata.description} shift pattern`}
+      accessibilityLabel={String(
+        t('patternCard.a11y.label', {
+          name: metadata.name,
+          defaultValue: '{{name}} pattern',
+        })
+      )}
+      accessibilityHint={String(
+        t('patternCard.a11y.hint', {
+          description: metadata.description,
+          defaultValue: 'Selects {{description}} shift pattern',
+        })
+      )}
       accessibilityState={{ selected }}
       style={[animatedStyle, styles.container, selected && styles.selectedContainer, style]}
       testID={testID}

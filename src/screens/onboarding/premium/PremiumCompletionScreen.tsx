@@ -319,7 +319,13 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
 
       if (!validation.isValid) {
         throw new Error(
-          `Missing required information: ${validation.missingFields.join(', ')}. Please go back and complete all steps.`
+          String(
+            t('completion.errors.missingRequiredInformation', {
+              fields: validation.missingFields.join(', '),
+              defaultValue:
+                'Missing required information: {{fields}}. Please go back and complete all steps.',
+            })
+          )
         );
       }
 
