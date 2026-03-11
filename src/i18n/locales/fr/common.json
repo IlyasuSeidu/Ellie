@@ -25,6 +25,8 @@
   },
   "language": {
     "label": "Langue",
-    "selector": "Sélectionnez la langue"
+    "selector": "Sélectionnez la langue",
+    "restartRequiredTitle": "Redémarrage requis",
+    "restartRequiredMessage": "Veuillez redémarrer Ellie pour appliquer les changements de direction de la langue."
   }
 }

@@ -25,6 +25,8 @@
   },
   "language": {
     "label": "Taal",
-    "selector": "Kies Taal"
+    "selector": "Kies Taal",
+    "restartRequiredTitle": "Restart Required",
+    "restartRequiredMessage": "Please restart Ellie to apply language direction changes."
   }
 }

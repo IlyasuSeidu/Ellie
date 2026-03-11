@@ -25,6 +25,8 @@
   },
   "language": {
     "label": "لغة",
-    "selector": "اختر اللغة"
+    "selector": "اختر اللغة",
+    "restartRequiredTitle": "إعادة التشغيل مطلوبة",
+    "restartRequiredMessage": "يرجى إعادة تشغيل Ellie لتطبيق تغييرات اتجاه اللغة."
   }
 }

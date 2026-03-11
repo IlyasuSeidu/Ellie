@@ -25,6 +25,8 @@
   },
   "language": {
     "label": "Idioma",
-    "selector": "Selecionar idioma"
+    "selector": "Selecionar idioma",
+    "restartRequiredTitle": "Reinicialização necessária",
+    "restartRequiredMessage": "Reinicie o Ellie para aplicar as mudanças de direção do idioma."
   }
 }

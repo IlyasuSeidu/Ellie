@@ -25,6 +25,8 @@
   },
   "language": {
     "label": "Язык",
-    "selector": "Выберите язык"
+    "selector": "Выберите язык",
+    "restartRequiredTitle": "Restart Required",
+    "restartRequiredMessage": "Please restart Ellie to apply language direction changes."
   }
 }

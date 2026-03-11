@@ -250,6 +250,13 @@
       "restDaysAtHome": "{{count}} days at home",
       "empty": "No shift configuration set",
       "footer": "Shift settings can be updated in Settings"
+    },
+    "profileUtils": {
+      "customFIFO": "FIFO personalizado {{workBlockDays}}/{{restBlockDays}}",
+      "customRotationTwoShift": "Rotação personalizada {{daysOn}}-{{nightsOn}}-{{daysOff}}",
+      "customRotationThreeShift": "Rotação personalizada {{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}}",
+      "dayAbbrev": "D",
+      "nightAbbrev": "N"
     }
   }
 }

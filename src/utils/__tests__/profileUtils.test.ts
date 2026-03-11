@@ -48,7 +48,7 @@ describe('profileUtils', () => {
         patternType: ShiftPattern.STANDARD_2_2_3,
       });
 
-      expect(result).toBe('2-2-3 (Pitman)');
+      expect(result).toBe('Pitman (2-2-3)');
     });
   });
 
@@ -90,7 +90,7 @@ describe('profileUtils', () => {
           restBlockDays: 7,
           workBlockPattern: 'straight-days',
         })
-      ).toBe('14 days work, 7 days home');
+      ).toBe('14 days on-site, 7 days at home');
     });
   });
 

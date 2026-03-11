@@ -1,6 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Alert, I18nManager } from 'react-native';
-import { reloadAsync } from 'expo-updates';
 import i18n from '@/i18n';
 import { normalizeLanguage, type SupportedLanguage } from '@/i18n/languageDetector';
 
@@ -22,6 +21,21 @@ const isRtlLanguage = (language: string): boolean =>
   String(language ?? '')
     .toLowerCase()
     .startsWith('ar');
+
+const tryReloadAppAsync = async (): Promise<boolean> => {
+  try {
+    // Use `require` so this remains compatible with stale native builds and Jest mocks.
+    // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
+    const updatesModule = require('expo-updates') as { reloadAsync?: () => Promise<void> };
+    if (typeof updatesModule.reloadAsync === 'function') {
+      await updatesModule.reloadAsync();
+      return true;
+    }
+  } catch {
+    // expo-updates may be unavailable in stale native builds.
+  }
+  return false;
+};
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<SupportedLanguage>(
@@ -47,16 +61,21 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       I18nManager.forceRTL(shouldUseRtl);
     }
 
-    try {
-      if (typeof reloadAsync === 'function') {
-        await reloadAsync();
-        return;
-      }
-    } catch {
-      // Fallback alert handled below.
+    const didReload = await tryReloadAppAsync();
+    if (didReload) {
+      return;
     }
 
-    Alert.alert('Restart Required', 'Please restart Ellie to apply language direction changes.');
+    Alert.alert(
+      i18n.t('language.restartRequiredTitle', {
+        ns: 'common',
+        defaultValue: 'Restart Required',
+      }),
+      i18n.t('language.restartRequiredMessage', {
+        ns: 'common',
+        defaultValue: 'Please restart Ellie to apply language direction changes.',
+      })
+    );
   }, []);
 
   useEffect(() => {

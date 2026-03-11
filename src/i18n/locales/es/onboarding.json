@@ -127,7 +127,89 @@
       "reviewedTitle": "¡Esas son todas las rotaciones {{count}} que tenemos!"
     },
     "instruction": "Elija la rotación que utiliza su lugar de trabajo; crearemos su calendario a partir de esto\nDesliza hacia la derecha para elegir, hacia la izquierda para ver más, hacia arriba para obtener información",
-    "title": "¿Cuál es su rotación de plantilla?"
+    "title": "¿Cuál es su rotación de plantilla?",
+    "cards": {
+      "4-4-4": {
+        "name": "Rotación 4-4-4",
+        "schedule": "4 días • 4 noches • 4 libres",
+        "description": "Trabajas 4 turnos de día, luego 4 de noche y después 4 días libres; común en esquemas FIFO."
+      },
+      "7-7-7": {
+        "name": "Rotación 7-7-7",
+        "schedule": "7 días • 7 noches • 7 libres",
+        "description": "Una semana completa de día, luego noche y después una semana libre."
+      },
+      "2-2-3": {
+        "name": "Rotación 2-2-3",
+        "schedule": "2 días • 2 noches • 3 libres",
+        "description": "Bloques cortos de 2 días, 2 noches y 3 libres para descansos frecuentes."
+      },
+      "5-5-5": {
+        "name": "Rotación 5-5-5",
+        "schedule": "5 días • 5 noches • 5 libres",
+        "description": "5 turnos de día, 5 de noche y 5 libres como equilibrio intermedio."
+      },
+      "3-3-3": {
+        "name": "Rotación 3-3-3",
+        "schedule": "3 días • 3 noches • 3 libres",
+        "description": "Rotación más rápida con 3 días, 3 noches y 3 libres."
+      },
+      "10-10-10": {
+        "name": "Rotación 10-10-10",
+        "schedule": "10 días • 10 noches • 10 libres",
+        "description": "Bloques largos para maximizar tu tiempo en casa."
+      },
+      "continental": {
+        "name": "Rotación continental",
+        "schedule": "2 mañanas • 2 tardes • 2 noches • 4 libres",
+        "description": "2 mañanas, 2 tardes, 2 noches y 4 días libres para sitios de 8 horas."
+      },
+      "pitman": {
+        "name": "Patrón Pitman",
+        "schedule": "2 días • 2 noches • 3 libres",
+        "description": "Ciclo compacto de 7 días con cambios rápidos entre día y noche."
+      },
+      "custom": {
+        "name": "Rotación personalizada",
+        "schedule": "Tú eliges",
+        "description": "Si tu sitio usa otro esquema, crea tu propia rotación."
+      },
+      "fifo-8-6": {
+        "name": "FIFO 8/6",
+        "schedule": "8 días trabajo • 6 días en casa",
+        "description": "8 días consecutivos en sitio y 6 días en casa, común en minería WA."
+      },
+      "fifo-7-7": {
+        "name": "FIFO 7/7 (tiempo parejo)",
+        "schedule": "1 semana trabajo • 1 semana casa",
+        "description": "Una semana en sitio y una semana en casa para balance 50/50."
+      },
+      "fifo-14-14": {
+        "name": "FIFO 14/14 (tiempo parejo)",
+        "schedule": "2 semanas trabajo • 2 semanas casa",
+        "description": "Dos semanas en sitio y dos en casa, gran equilibrio vida-trabajo."
+      },
+      "fifo-14-7": {
+        "name": "FIFO 14/7 (2:1)",
+        "schedule": "2 semanas trabajo • 1 semana casa",
+        "description": "Dos semanas en sitio y una en casa con mayor potencial de ingresos."
+      },
+      "fifo-21-7": {
+        "name": "FIFO 21/7 (3:1)",
+        "schedule": "3 semanas trabajo • 1 semana casa",
+        "description": "Tres semanas en sitio y una en casa para operaciones muy remotas."
+      },
+      "fifo-28-14": {
+        "name": "FIFO 28/14 (2:1)",
+        "schedule": "4 semanas trabajo • 2 semanas casa",
+        "description": "Cuatro semanas en sitio y dos en casa para sitios de larga distancia."
+      },
+      "fifo-custom": {
+        "name": "FIFO personalizado",
+        "schedule": "Crea el tuyo",
+        "description": "Si tu sitio FIFO es único, configura tus propios bloques trabajo/descanso."
+      }
+    }
   },
   "completion": {
     "saveFailed": "No se pudo guardar tu informacion. Intentalo otra vez.",
@@ -770,7 +852,21 @@
     },
     "warning": "Esta lista es pesada ({{workPercentage}}% de trabajo). Considere equilibrar con más días en casa si la fatiga se convierte en un problema.",
     "workPatternSubtitle": "¿Cómo se organizan sus turnos mientras está en el sitio?",
-    "workPatternTitle": "Patrón de trabajo durante el bloque de trabajo"
+    "workPatternTitle": "Patrón de trabajo durante el bloque de trabajo",
+    "workPatterns": {
+      "straight-days": {
+        "title": "Días continuos",
+        "description": "Trabajas solo turnos de día durante todo el bloque de trabajo."
+      },
+      "straight-nights": {
+        "title": "Noches continuas",
+        "description": "Trabajas solo turnos de noche durante todo el bloque de trabajo."
+      },
+      "swing": {
+        "title": "Régimen mixto",
+        "description": "Alternas entre turnos de día y de noche durante el bloque de trabajo."
+      }
+    }
   },
   "progressHeader": {
     "goBackA11y": "Go back",

@@ -127,7 +127,89 @@
       "reviewedTitle": "C'est tout ce que nous avons pour {{count}} rotations !"
     },
     "instruction": "Choisissez la rotation utilisée par votre lieu de travail : nous construirons votre calendrier à partir de cela\nFaites glisser votre doigt vers la droite pour choisir, vers la gauche pour en voir plus, vers le haut pour plus d'informations",
-    "title": "Quelle est la rotation de votre équipe ?"
+    "title": "Quelle est la rotation de votre équipe ?",
+    "cards": {
+      "4-4-4": {
+        "name": "Rotation 4-4-4",
+        "schedule": "4 jours • 4 nuits • 4 repos",
+        "description": "4 jours, puis 4 nuits, puis 4 jours de repos ; courant en FIFO."
+      },
+      "7-7-7": {
+        "name": "Rotation 7-7-7",
+        "schedule": "7 jours • 7 nuits • 7 repos",
+        "description": "Une semaine de jour, puis nuit, puis une semaine de repos."
+      },
+      "2-2-3": {
+        "name": "Rotation 2-2-3",
+        "schedule": "2 jours • 2 nuits • 3 repos",
+        "description": "Cycles courts avec pauses fréquentes : 2 jours, 2 nuits, 3 repos."
+      },
+      "5-5-5": {
+        "name": "Rotation 5-5-5",
+        "schedule": "5 jours • 5 nuits • 5 repos",
+        "description": "5 jours, 5 nuits, puis 5 repos comme compromis équilibré."
+      },
+      "3-3-3": {
+        "name": "Rotation 3-3-3",
+        "schedule": "3 jours • 3 nuits • 3 repos",
+        "description": "Rotation plus rapide : 3 jours, 3 nuits, 3 repos."
+      },
+      "10-10-10": {
+        "name": "Rotation 10-10-10",
+        "schedule": "10 jours • 10 nuits • 10 repos",
+        "description": "Longues séquences pour maximiser le temps à la maison."
+      },
+      "continental": {
+        "name": "Rotation continentale",
+        "schedule": "2 matins • 2 après-midis • 2 nuits • 4 repos",
+        "description": "2 matins, 2 après-midis, 2 nuits et 4 repos pour sites en 8 heures."
+      },
+      "pitman": {
+        "name": "Cycle Pitman",
+        "schedule": "2 jours • 2 nuits • 3 repos",
+        "description": "Cycle compact de 7 jours avec alternance rapide jour/nuit."
+      },
+      "custom": {
+        "name": "Rotation personnalisée",
+        "schedule": "Vous choisissez",
+        "description": "Votre site a un autre schéma ? Construisez votre rotation."
+      },
+      "fifo-8-6": {
+        "name": "FIFO 8/6",
+        "schedule": "8 jours travail • 6 jours maison",
+        "description": "8 jours consécutifs sur site, puis 6 jours à la maison."
+      },
+      "fifo-7-7": {
+        "name": "FIFO 7/7 (temps égal)",
+        "schedule": "1 semaine travail • 1 semaine maison",
+        "description": "Une semaine sur site et une semaine à la maison (50/50)."
+      },
+      "fifo-14-14": {
+        "name": "FIFO 14/14 (temps égal)",
+        "schedule": "2 semaines travail • 2 semaines maison",
+        "description": "Deux semaines sur site et deux semaines à la maison."
+      },
+      "fifo-14-7": {
+        "name": "FIFO 14/7 (2:1)",
+        "schedule": "2 semaines travail • 1 semaine maison",
+        "description": "Deux semaines sur site et une semaine à la maison."
+      },
+      "fifo-21-7": {
+        "name": "FIFO 21/7 (3:1)",
+        "schedule": "3 semaines travail • 1 semaine maison",
+        "description": "Trois semaines sur site et une semaine à la maison."
+      },
+      "fifo-28-14": {
+        "name": "FIFO 28/14 (2:1)",
+        "schedule": "4 semaines travail • 2 semaines maison",
+        "description": "Quatre semaines sur site et deux semaines à la maison."
+      },
+      "fifo-custom": {
+        "name": "FIFO personnalisé",
+        "schedule": "Créez le vôtre",
+        "description": "Votre site FIFO est unique ? Configurez vos blocs travail/repos."
+      }
+    }
   },
   "rosterType": {
     "title": "Comment fonctionne votre liste ?",
@@ -774,7 +856,21 @@
     },
     "warning": "Cette liste est lourde ({{workPercentage}}% de travail). Pensez à équilibrer davantage de journées à la maison si la fatigue devient un problème.",
     "workPatternSubtitle": "Comment sont organisés vos quarts de travail sur site ?",
-    "workPatternTitle": "Modèle de travail pendant le bloc de travail"
+    "workPatternTitle": "Modèle de travail pendant le bloc de travail",
+    "workPatterns": {
+      "straight-days": {
+        "title": "Jours continus",
+        "description": "Travail uniquement en équipe de jour pendant tout le bloc de travail."
+      },
+      "straight-nights": {
+        "title": "Nuits continues",
+        "description": "Travail uniquement en équipe de nuit pendant tout le bloc de travail."
+      },
+      "swing": {
+        "title": "Rotation alternée",
+        "description": "Alternez entre équipes de jour et de nuit pendant le bloc de travail."
+      }
+    }
   },
   "progressHeader": {
     "goBackA11y": "Go back",

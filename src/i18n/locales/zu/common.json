@@ -25,6 +25,8 @@
   },
   "language": {
     "label": "Ulimi",
-    "selector": "Khetha Ulimi"
+    "selector": "Khetha Ulimi",
+    "restartRequiredTitle": "Restart Required",
+    "restartRequiredMessage": "Please restart Ellie to apply language direction changes."
   }
 }

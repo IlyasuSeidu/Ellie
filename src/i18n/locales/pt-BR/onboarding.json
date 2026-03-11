@@ -123,7 +123,89 @@
       "reviewedTitle": "Essas são todas as rotações {{count}} que temos!"
     },
     "instruction": "Escolha o rodízio que seu local de trabalho usa. Criaremos seu calendário a partir dele\nDeslize para a direita para escolher, para a esquerda para ver mais, para cima para obter informações",
-    "title": "Qual é a rotação da sua lista?"
+    "title": "Qual é a rotação da sua lista?",
+    "cards": {
+      "4-4-4": {
+        "name": "Rotação 4-4-4",
+        "schedule": "4 dias • 4 noites • 4 folgas",
+        "description": "Você faz 4 turnos diurnos, 4 noturnos e depois 4 dias de folga; comum no FIFO."
+      },
+      "7-7-7": {
+        "name": "Rotação 7-7-7",
+        "schedule": "7 dias • 7 noites • 7 folgas",
+        "description": "Uma semana de dia, depois noite e mais uma semana de folga."
+      },
+      "2-2-3": {
+        "name": "Rotação 2-2-3",
+        "schedule": "2 dias • 2 noites • 3 folgas",
+        "description": "Blocos curtos com pausas frequentes: 2 dias, 2 noites e 3 folgas."
+      },
+      "5-5-5": {
+        "name": "Rotação 5-5-5",
+        "schedule": "5 dias • 5 noites • 5 folgas",
+        "description": "5 turnos de dia, 5 de noite e 5 folgas como equilíbrio intermediário."
+      },
+      "3-3-3": {
+        "name": "Rotação 3-3-3",
+        "schedule": "3 dias • 3 noites • 3 folgas",
+        "description": "Rotação mais rápida com 3 dias, 3 noites e 3 folgas."
+      },
+      "10-10-10": {
+        "name": "Rotação 10-10-10",
+        "schedule": "10 dias • 10 noites • 10 folgas",
+        "description": "Blocos longos para maximizar seu tempo em casa."
+      },
+      "continental": {
+        "name": "Rotação Continental",
+        "schedule": "2 manhãs • 2 tardes • 2 noites • 4 folgas",
+        "description": "2 manhãs, 2 tardes, 2 noites e 4 folgas para sites de 8 horas."
+      },
+      "pitman": {
+        "name": "Escala Pitman",
+        "schedule": "2 dias • 2 noites • 3 folgas",
+        "description": "Ciclo compacto de 7 dias com alternância rápida entre dia e noite."
+      },
+      "custom": {
+        "name": "Rotação personalizada",
+        "schedule": "Você escolhe",
+        "description": "Se seu site usa outro modelo, monte sua própria rotação."
+      },
+      "fifo-8-6": {
+        "name": "FIFO 8/6",
+        "schedule": "8 dias trabalho • 6 dias em casa",
+        "description": "8 dias consecutivos no site e 6 em casa, comum na mineração WA."
+      },
+      "fifo-7-7": {
+        "name": "FIFO 7/7 (tempo igual)",
+        "schedule": "1 semana trabalho • 1 semana casa",
+        "description": "Uma semana no site e uma em casa para equilíbrio 50/50."
+      },
+      "fifo-14-14": {
+        "name": "FIFO 14/14 (tempo igual)",
+        "schedule": "2 semanas trabalho • 2 semanas casa",
+        "description": "Duas semanas no site e duas em casa, ótimo equilíbrio."
+      },
+      "fifo-14-7": {
+        "name": "FIFO 14/7 (2:1)",
+        "schedule": "2 semanas trabalho • 1 semana casa",
+        "description": "Duas semanas no site e uma em casa com maior potencial de ganhos."
+      },
+      "fifo-21-7": {
+        "name": "FIFO 21/7 (3:1)",
+        "schedule": "3 semanas trabalho • 1 semana casa",
+        "description": "Três semanas no site e uma em casa para operações muito remotas."
+      },
+      "fifo-28-14": {
+        "name": "FIFO 28/14 (2:1)",
+        "schedule": "4 semanas trabalho • 2 semanas casa",
+        "description": "Quatro semanas no site e duas em casa para locais muito distantes."
+      },
+      "fifo-custom": {
+        "name": "FIFO personalizado",
+        "schedule": "Monte o seu",
+        "description": "Se seu site FIFO é único, configure seus próprios blocos de trabalho/descanso."
+      }
+    }
   },
   "completion": {
     "saveFailed": "Falha ao salvar seus dados. Tente novamente.",
@@ -760,7 +842,21 @@
     },
     "warning": "Esta lista é pesada ({{workPercentage}}% trabalho). Considere equilibrar com mais dias em casa se a fadiga se tornar um problema.",
     "workPatternSubtitle": "Como seus turnos são organizados no local?",
-    "workPatternTitle": "Padrão de trabalho durante o bloco de trabalho"
+    "workPatternTitle": "Padrão de trabalho durante o bloco de trabalho",
+    "workPatterns": {
+      "straight-days": {
+        "title": "Dias contínuos",
+        "description": "Trabalhe apenas turnos diurnos durante todo o bloco de trabalho."
+      },
+      "straight-nights": {
+        "title": "Noites contínuas",
+        "description": "Trabalhe apenas turnos noturnos durante todo o bloco de trabalho."
+      },
+      "swing": {
+        "title": "Escala alternada",
+        "description": "Alterne entre turnos diurnos e noturnos durante o bloco de trabalho."
+      }
+    }
   },
   "progressHeader": {
     "goBackA11y": "Go back",
