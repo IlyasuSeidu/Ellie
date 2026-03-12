@@ -644,7 +644,7 @@ describe('PremiumFIFOPhaseSelectorScreen', () => {
 
     setSwingSliderValue(getByTestId, 'mock-slider-days-on-day-shift', 5);
     await waitFor(() => {
-      expect(getByText('Split total: 8/8 days')).toBeTruthy();
+      expect(getByText('Split total: 5 + 3 = 8/8 days')).toBeTruthy();
     });
 
     continueFromSwingConfig(getByTestId);

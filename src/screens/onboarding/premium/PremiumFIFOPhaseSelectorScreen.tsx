@@ -1264,6 +1264,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
 
   const stageDayCount = selectedBlockType === 'work' ? workBlockDays : restBlockDays;
   const swingSplitTotal = daysOnDayShift + daysOnNightShift;
+  const swingSplitSummary = `${daysOnDayShift} + ${daysOnNightShift} = ${swingSplitTotal}`;
   const canConfigureSwingSplit = workBlockDays > 1;
   const isSwingSplitValid =
     canConfigureSwingSplit &&
@@ -1639,9 +1640,9 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
               <Text style={styles.swingSplitText} testID="swing-split-total-text">
                 {String(
                   t('fifoPhaseSelector.swingConfig.splitTotal', {
-                    swingSplitTotal,
+                    swingSplitTotal: swingSplitSummary,
                     workBlockDays,
-                    defaultValue: `Split total: ${swingSplitTotal}/${workBlockDays} days`,
+                    defaultValue: `Split total: ${swingSplitSummary}/${workBlockDays} days`,
                   })
                 )}
               </Text>
@@ -1663,7 +1664,12 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
                   style={styles.changePatternButton}
                   testID="swing-config-change-pattern-button"
                 >
-                  <Text style={styles.changePatternButtonText}>
+                  <Text
+                    style={styles.changePatternButtonText}
+                    numberOfLines={1}
+                    adjustsFontSizeToFit={true}
+                    minimumFontScale={0.85}
+                  >
                     {String(
                       t('fifoPhaseSelector.swingConfig.changePattern', {
                         defaultValue: 'Change Pattern',
@@ -1801,7 +1807,7 @@ const styles = StyleSheet.create({
   },
   swingActions: {
     flexDirection: 'row',
-    gap: theme.spacing.md,
+    gap: theme.spacing.sm,
     marginTop: theme.spacing.lg,
   },
   changePatternButton: {
@@ -1818,8 +1824,10 @@ const styles = StyleSheet.create({
   },
   changePatternButtonText: {
     color: theme.colors.paper,
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '700',
+    textAlign: 'center',
+    flexShrink: 1,
   },
   swingContinueButton: {
     flex: 1,
