@@ -1288,6 +1288,12 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       const rawOffset =
         blockType === 'work' ? safeDayWithinBlock - 1 : workBlockDays + (safeDayWithinBlock - 1);
       const phaseOffset = Math.max(0, Math.min(cycleLength - 1, rawOffset));
+      if (__DEV__ && phaseOffset !== rawOffset) {
+        console.warn(
+          '[FIFOPhaseSelector] phaseOffset was clamped — day card exceeded cycle bounds.',
+          { blockType, dayWithinBlock, workBlockDays, restBlockDays, rawOffset, phaseOffset }
+        );
+      }
       isTransitioningRef.current = true;
       setIsTransitioning(true);
 
@@ -1495,7 +1501,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <ProgressHeader
-        currentStep={ONBOARDING_STEPS.PHASE_SELECTOR}
+        currentStep={ONBOARDING_STEPS.FIFO_PHASE_SELECTOR}
         totalSteps={TOTAL_ONBOARDING_STEPS}
         testID="fifo-phase-selector-progress-header"
       />
@@ -1747,7 +1753,8 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 16,
-    color: theme.colors.dust,
+    color: theme.colors.paper,
+    opacity: 0.88,
     textAlign: 'center',
     marginTop: theme.spacing.sm,
     marginBottom: theme.spacing.xl,
@@ -1780,9 +1787,9 @@ const styles = StyleSheet.create({
     gap: theme.spacing.sm,
   },
   swingSplitText: {
-    fontSize: 16,
+    fontSize: 18,
     color: theme.colors.paper,
-    fontWeight: '600',
+    fontWeight: '700',
     textAlign: 'center',
     marginTop: theme.spacing.sm,
   },
@@ -1794,28 +1801,32 @@ const styles = StyleSheet.create({
   },
   swingActions: {
     flexDirection: 'row',
-    gap: theme.spacing.sm,
-    marginTop: theme.spacing.md,
+    gap: theme.spacing.md,
+    marginTop: theme.spacing.lg,
   },
   changePatternButton: {
     flex: 1,
-    borderRadius: 14,
+    borderRadius: 16,
     borderWidth: 1,
-    borderColor: theme.colors.opacity.white20,
-    paddingVertical: theme.spacing.sm,
+    borderColor: theme.colors.opacity.white30,
+    minHeight: 56,
+    paddingVertical: theme.spacing.md,
+    paddingHorizontal: theme.spacing.sm,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: theme.colors.opacity.black40,
+    backgroundColor: theme.colors.opacity.black60,
   },
   changePatternButtonText: {
     color: theme.colors.paper,
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: 16,
+    fontWeight: '700',
   },
   swingContinueButton: {
     flex: 1,
-    borderRadius: 14,
-    paddingVertical: theme.spacing.sm,
+    borderRadius: 16,
+    minHeight: 56,
+    paddingVertical: theme.spacing.md,
+    paddingHorizontal: theme.spacing.sm,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: theme.colors.sacredGold,
@@ -1826,7 +1837,7 @@ const styles = StyleSheet.create({
   },
   swingContinueButtonText: {
     color: theme.colors.deepVoid,
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '700',
   },
   card: {

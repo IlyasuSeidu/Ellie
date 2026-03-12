@@ -242,7 +242,9 @@ export const PatternBuilderSlider: React.FC<PatternBuilderSliderProps> = ({
           )}
           <Text style={styles.sliderLabel}>{label}</Text>
         </View>
-        <Text style={[styles.sliderValue, { color }]}>{value}</Text>
+        <View style={styles.sliderValuePill}>
+          <Text style={[styles.sliderValue, { color }]}>{value}</Text>
+        </View>
       </View>
 
       <View style={styles.sliderControls}>
@@ -394,10 +396,22 @@ const styles = StyleSheet.create({
     color: theme.colors.paper,
     flexShrink: 1,
   },
-  sliderValue: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  sliderValuePill: {
+    minWidth: 34,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.opacity.black40,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.white30,
     marginLeft: theme.spacing.sm,
+  },
+  sliderValue: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    lineHeight: 24,
   },
   sliderControls: {
     flexDirection: 'row',
@@ -405,15 +419,17 @@ const styles = StyleSheet.create({
     gap: theme.spacing.md,
   },
   controlButton: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: theme.colors.opacity.white10,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: theme.colors.opacity.white20,
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.white30,
   },
   controlButtonDisabled: {
-    opacity: 0.3,
+    opacity: 0.45,
   },
   sliderTrackContainer: {
     flex: 1,
@@ -459,8 +475,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   rangeLabel: {
-    fontSize: 10,
-    color: theme.colors.dust,
+    fontSize: 11,
+    color: theme.colors.paper,
+    fontWeight: '600',
   },
   valueBadge: {
     position: 'absolute',

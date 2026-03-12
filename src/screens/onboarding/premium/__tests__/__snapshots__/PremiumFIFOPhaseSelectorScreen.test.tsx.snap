@@ -31,11 +31,12 @@ exports[`PremiumFIFOPhaseSelectorScreen matches snapshot 1`] = `
   <Text
     style={
       {
-        "color": "#a8a29e",
+        "color": "#e7e5e4",
         "fontFamily": "System",
         "fontSize": 16,
         "marginBottom": 32,
         "marginTop": 8,
+        "opacity": 0.88,
         "paddingHorizontal": 24,
         "textAlign": "center",
       }
