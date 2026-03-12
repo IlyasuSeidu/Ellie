@@ -862,7 +862,7 @@ export const PremiumRosterTypeScreen: React.FC = () => {
     <View style={styles.container}>
       {/* Progress Header */}
       <ProgressHeader
-        currentStep={ONBOARDING_STEPS.SHIFT_SYSTEM + 0.5}
+        currentStep={ONBOARDING_STEPS.ROSTER_TYPE}
         totalSteps={TOTAL_ONBOARDING_STEPS}
         testID="roster-type-progress-header"
       />

@@ -510,6 +510,39 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
     return getFIFOCycleDescription(data.fifoConfig).replace(', ', ' → ');
   };
 
+  // Get current cycle position (FIFO block day or rotating phase day)
+  const getCurrentPosition = (): string | null => {
+    const { phaseOffset, fifoConfig, rosterType } = data;
+    if (phaseOffset === undefined || phaseOffset === null) return null;
+
+    if (rosterType === 'fifo' && fifoConfig) {
+      const workBlockDays = fifoConfig.workBlockDays;
+      const restBlockDays = fifoConfig.restBlockDays;
+      const cycleLength = workBlockDays + restBlockDays;
+      if (cycleLength <= 0) return null;
+      const normalizedOffset = ((phaseOffset % cycleLength) + cycleLength) % cycleLength;
+      if (normalizedOffset < workBlockDays) {
+        return String(
+          t('completion.summary.currentPositionWork', {
+            day: normalizedOffset + 1,
+            total: workBlockDays,
+            defaultValue: `Day ${normalizedOffset + 1} of ${workBlockDays} (Work Block)`,
+          })
+        );
+      }
+      const restDay = normalizedOffset - workBlockDays + 1;
+      return String(
+        t('completion.summary.currentPositionRest', {
+          day: restDay,
+          total: restBlockDays,
+          defaultValue: `Day ${restDay} of ${restBlockDays} (Rest Block)`,
+        })
+      );
+    }
+
+    return null;
+  };
+
   // Format date
   const formatDate = (date?: Date): string => {
     if (!date) return String(t('completion.summary.notSet', { defaultValue: 'Not set' }));
@@ -700,7 +733,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
                 },
                 // FIFO-specific fields
                 ...(data.rosterType === 'fifo'
-                  ? [
+                  ? ([
                       {
                         icon: 'sync-outline',
                         label: String(t('completion.summary.cycle', { defaultValue: 'Cycle' })),
@@ -713,7 +746,18 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
                         ),
                         value: getFIFOShiftPatternName(),
                       },
-                    ]
+                      getCurrentPosition()
+                        ? {
+                            icon: 'locate-outline',
+                            label: String(
+                              t('completion.summary.currentPosition', {
+                                defaultValue: 'Current Position',
+                              })
+                            ),
+                            value: getCurrentPosition() as string,
+                          }
+                        : undefined,
+                    ] as Array<{ icon: string; label: string; value: string } | undefined>)
                   : []),
                 {
                   icon: 'calendar-outline',

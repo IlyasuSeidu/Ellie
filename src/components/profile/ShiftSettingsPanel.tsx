@@ -962,7 +962,8 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                 )}
               {/* FIFO shift times */}
               {(currentFifoConfig.workBlockPattern === 'straight-days' ||
-                currentFifoConfig.workBlockPattern === 'swing') &&
+                currentFifoConfig.workBlockPattern === 'swing' ||
+                currentFifoConfig.workBlockPattern === 'custom') &&
                 d.shiftTimes?.dayShift && (
                   <>
                     <Divider />
@@ -975,7 +976,8 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                   </>
                 )}
               {(currentFifoConfig.workBlockPattern === 'straight-nights' ||
-                currentFifoConfig.workBlockPattern === 'swing') &&
+                currentFifoConfig.workBlockPattern === 'swing' ||
+                currentFifoConfig.workBlockPattern === 'custom') &&
                 d.shiftTimes?.nightShift && (
                   <>
                     <Divider />
@@ -1539,9 +1541,11 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                       />
                     </Animated.View>
                   )}
-                  {(fifoWorkPattern === 'straight-nights' || fifoWorkPattern === 'swing') && (
+                  {(fifoWorkPattern === 'straight-nights' ||
+                    fifoWorkPattern === 'swing' ||
+                    fifoWorkPattern === 'custom') && (
                     <Animated.View entering={FadeInUp.duration(300)}>
-                      {fifoWorkPattern === 'straight-nights' && (
+                      {(fifoWorkPattern === 'straight-nights' || fifoWorkPattern === 'custom') && (
                         <EditSectionLabel
                           label={t('shift.sections.shiftTimes')}
                           icon="alarm-outline"
@@ -1621,7 +1625,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                     label={t('shift.flyOutDay')}
                     value={currentFifoConfig.flyOutDay}
                     min={1}
-                    max={currentFifoConfig.workBlockDays + currentFifoConfig.restBlockDays}
+                    max={currentFifoConfig.workBlockDays}
                     onChange={(v) => updateFifoConfig({ flyOutDay: v })}
                     onClear={() => updateFifoConfig({ flyOutDay: undefined })}
                   />

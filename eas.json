@@ -1,19 +1,32 @@
 {
   "cli": {
-    "version": ">= 12.0.0"
+    "version": ">= 12.0.0",
+    "appVersionSource": "remote"
   },
   "build": {
     "development": {
       "node": "20.19.4",
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "RCT_USE_RN_DEP": "0",
+        "RCT_USE_PREBUILT_RNCORE": "0"
+      }
     },
     "preview": {
       "node": "20.19.4",
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "RCT_USE_RN_DEP": "0",
+        "RCT_USE_PREBUILT_RNCORE": "0"
+      }
     },
     "production": {
       "node": "20.19.4",
+      "env": {
+        "RCT_USE_RN_DEP": "0",
+        "RCT_USE_PREBUILT_RNCORE": "0"
+      },
       "ios": {
         "buildConfiguration": "Release"
       },

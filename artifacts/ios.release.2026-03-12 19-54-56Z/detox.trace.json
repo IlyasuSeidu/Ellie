@@ -1,0 +1,2774 @@
+[
+  {
+    "ph": "M",
+    "args": { "name": "primary" },
+    "ts": 1773345296890000,
+    "tid": 0,
+    "pid": 47741,
+    "name": "process_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 0 },
+    "ts": 1773345296890000,
+    "tid": 0,
+    "pid": 47741,
+    "name": "process_sort_index"
+  },
+  {
+    "ph": "M",
+    "args": { "name": "lifecycle" },
+    "ts": 1773345296890000,
+    "tid": 0,
+    "pid": 47741,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 0 },
+    "ts": 1773345296890000,
+    "tid": 0,
+    "pid": 47741,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "B",
+    "name": "node_modules/.bin/detox test --configuration ios.release --record-logs all --loglevel info",
+    "pid": 47741,
+    "tid": 0,
+    "cat": "lifecycle",
+    "ts": 1773345296890000,
+    "args": {
+      "level": 10,
+      "cwd": "/Users/Shared/Ellie",
+      "data": {
+        "id": "82d5d1c8-ad5a-66dd-0b13-60779742ae4a",
+        "detoxConfig": {
+          "configurationName": "ios.release",
+          "apps": {
+            "default": {
+              "type": "ios.app",
+              "build": "xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -sdk iphonesimulator -destination \"platform=iOS Simulator,name=iPhone 16 Pro\" -derivedDataPath ios/build CODE_SIGNING_ALLOWED=NO build",
+              "binaryPath": "./ios/build/Build/Products/Release-iphonesimulator/Ellie.app"
+            }
+          },
+          "artifacts": {
+            "rootDir": "artifacts/ios.release.2026-03-12 19-54-56Z",
+            "plugins": {
+              "log": { "enabled": true, "keepOnlyFailedTestsArtifacts": false },
+              "screenshot": {
+                "enabled": true,
+                "shouldTakeAutomaticSnapshots": false,
+                "keepOnlyFailedTestsArtifacts": false
+              },
+              "video": { "enabled": false, "keepOnlyFailedTestsArtifacts": false },
+              "instruments": { "enabled": false, "keepOnlyFailedTestsArtifacts": false },
+              "uiHierarchy": { "enabled": false, "keepOnlyFailedTestsArtifacts": false }
+            }
+          },
+          "behavior": {
+            "init": { "keepLockFile": false, "reinstallApp": true, "exposeGlobals": true },
+            "cleanup": { "shutdownDevice": false },
+            "launchApp": "auto"
+          },
+          "cli": {
+            "recordLogs": "all",
+            "configuration": "ios.release",
+            "loglevel": "info",
+            "start": true
+          },
+          "commands": [
+            {
+              "appName": "default",
+              "build": "xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -sdk iphonesimulator -destination \"platform=iOS Simulator,name=iPhone 16 Pro\" -derivedDataPath ios/build CODE_SIGNING_ALLOWED=NO build"
+            }
+          ],
+          "device": { "type": "ios.simulator", "device": { "type": "iPhone 16 Pro" } },
+          "logger": {
+            "level": "info",
+            "overrideConsole": true,
+            "options": {
+              "showLoggerName": true,
+              "showPid": true,
+              "showLevel": false,
+              "showMetadata": false,
+              "basepath": "/Users/Shared/Ellie/node_modules/detox/src",
+              "prefixers": {},
+              "stringifiers": {}
+            }
+          },
+          "testRunner": {
+            "retries": 0,
+            "forwardEnv": false,
+            "detached": false,
+            "bail": false,
+            "noRetryArgs": ["shard"],
+            "jest": {
+              "setupTimeout": 120000,
+              "teardownTimeout": 30000,
+              "retryAfterCircusRetries": false,
+              "reportWorkerAssign": true
+            },
+            "args": { "$0": "jest", "_": [], "config": "e2e/jest.config.js", "--": [] }
+          },
+          "session": { "autoStart": true, "debugSynchronization": 10000 }
+        },
+        "detoxIPCServer": "primary-47741",
+        "testResults": [],
+        "testSessionIndex": 0,
+        "workersCount": 0
+      },
+      "v": 0
+    }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "ipc" },
+    "ts": 1773345296895000,
+    "tid": 1,
+    "pid": 47741,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 1 },
+    "ts": 1773345296895000,
+    "tid": 1,
+    "pid": 47741,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "i",
+    "name": "Server path not specified, so defaulting to ipc.config.socketRoot + ipc.config.appspace + ipc.config.id /tmp/detox.primary-47741",
+    "pid": 47741,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1773345296895000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "starting server on  /tmp/detox.primary-47741 ",
+    "pid": 47741,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1773345296897000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "starting TLS server false",
+    "pid": 47741,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1773345296897000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "starting server as Unix || Windows Socket",
+    "pid": 47741,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1773345296897000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "ws-server" },
+    "ts": 1773345296898000,
+    "tid": 2,
+    "pid": 47741,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 2 },
+    "ts": 1773345296898000,
+    "tid": 2,
+    "pid": 47741,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "i",
+    "name": "Detox server listening on localhost:57848...",
+    "pid": 47741,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1773345296898000,
+    "args": { "level": 20, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "Serialized the session state at: /private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/82d5d1c8-ad5a-66dd-0b13-60779742ae4a.detox.json",
+    "pid": 47741,
+    "tid": 0,
+    "cat": "lifecycle",
+    "ts": 1773345296902000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "jest --config e2e/jest.config.js",
+    "pid": 47741,
+    "tid": 0,
+    "cat": "lifecycle,cli",
+    "ts": 1773345296903000,
+    "args": { "level": 30, "env": {}, "v": 0 }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "secondary" },
+    "ts": 1773345304573000,
+    "tid": 0,
+    "pid": 47742,
+    "name": "process_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 1 },
+    "ts": 1773345304573000,
+    "tid": 0,
+    "pid": 47742,
+    "name": "process_sort_index"
+  },
+  {
+    "ph": "M",
+    "args": { "name": "ipc" },
+    "ts": 1773345304573000,
+    "tid": 6,
+    "pid": 47742,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 6 },
+    "ts": 1773345304573000,
+    "tid": 6,
+    "pid": 47742,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "i",
+    "name": "Service path not specified, so defaulting to ipc.config.socketRoot + ipc.config.appspace + id ",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345304573000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "requested connection to  primary-47741 /tmp/detox.primary-47741",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345304577000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "Connecting client on Unix Socket : /tmp/detox.primary-47741",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345304577000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "## socket connection to server detected ##",
+    "pid": 47741,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1773345304578000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "retrying reset",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345304578000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "dispatching event to  primary-47741 /tmp/detox.primary-47741  :  registerContext , { id: 'secondary-47742' }",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345304580000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "received event of :  registerContext { id: 'secondary-47742' }",
+    "pid": 47741,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1773345304582000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "dispatching event to socket  :  registerContextDone {\n  testResults: [],\n  testSessionIndex: 0,\n  unsafe_earlyTeardown: undefined\n}",
+    "pid": 47741,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1773345304582000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "## received events ##",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345304584000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "detected event registerContextDone { testResults: [], testSessionIndex: 0 }",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345304585000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "lifecycle" },
+    "ts": 1773345304667000,
+    "tid": 7,
+    "pid": 47742,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 7 },
+    "ts": 1773345304667000,
+    "tid": 7,
+    "pid": 47742,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "B",
+    "name": "e2e/app.test.ts",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345304667000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "set up environment",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345304675000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "received event of :  registerWorker { workerId: 'w1' }",
+    "pid": 47741,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1773345304676000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "dispatching event to  primary-47741 /tmp/detox.primary-47741  :  registerWorker , { workerId: 'w1' }",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345304676000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "dispatching event to socket  :  registerWorkerDone { workersCount: 1 }",
+    "pid": 47741,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1773345304677000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "broadcasting event to all known sockets listening to  /tmp/detox.primary-47741  :   sessionStateUpdate { workersCount: 1 }",
+    "pid": 47741,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1773345304677000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "## received events ##",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345304677000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "detected event registerWorkerDone { workersCount: 1 }",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345304677000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "## received events ##",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345304942000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "detected event sessionStateUpdate { workersCount: 1 }",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345304943000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "connection :57848<->:57851",
+    "pid": 47741,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1773345304963000,
+    "args": { "level": 20, "id": 57851, "v": 0 }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "ws-client" },
+    "ts": 1773345304965000,
+    "tid": 8,
+    "pid": 47742,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 8 },
+    "ts": 1773345304965000,
+    "tid": 8,
+    "pid": 47742,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "i",
+    "name": "opened web socket to: ws://localhost:57848",
+    "pid": 47742,
+    "tid": 8,
+    "cat": "ws-client,ws",
+    "ts": 1773345304965000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "send message",
+    "pid": 47742,
+    "tid": 8,
+    "cat": "ws-client,ws",
+    "ts": 1773345304968000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"login\",\"params\":{\"sessionId\":\"98ba5fa8-e568-38e6-6888-e8a103aa1453\",\"role\":\"tester\"},\"messageId\":0}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 47741,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1773345304970000,
+    "args": {
+      "level": 10,
+      "id": 57851,
+      "data": "{\"type\":\"login\",\"params\":{\"sessionId\":\"98ba5fa8-e568-38e6-6888-e8a103aa1453\",\"role\":\"tester\"},\"messageId\":0}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "ws-server" },
+    "ts": 1773345304971000,
+    "tid": 3,
+    "pid": 47741,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 3 },
+    "ts": 1773345304971000,
+    "tid": 3,
+    "pid": 47741,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "i",
+    "name": "created session 98ba5fa8-e568-38e6-6888-e8a103aa1453",
+    "pid": 47741,
+    "tid": 3,
+    "cat": "ws-server,ws-session",
+    "ts": 1773345304971000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 47741,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1773345304972000,
+    "args": {
+      "level": 10,
+      "id": 57851,
+      "trackingId": "tester",
+      "sessionId": "98ba5fa8-e568-38e6-6888-e8a103aa1453",
+      "role": "tester",
+      "data": {
+        "type": "loginSuccess",
+        "params": { "testerConnected": true, "appConnected": false },
+        "messageId": 0
+      },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "tester joined session 98ba5fa8-e568-38e6-6888-e8a103aa1453",
+    "pid": 47741,
+    "tid": 3,
+    "cat": "ws-server,ws-session",
+    "ts": 1773345304972000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "get message",
+    "pid": 47742,
+    "tid": 8,
+    "cat": "ws-client,ws",
+    "ts": 1773345304973000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"loginSuccess\",\"params\":{\"testerConnected\":true,\"appConnected\":false},\"messageId\":0}\n ",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "received event of :  allocateDevice {\n  deviceConfig: { type: 'ios.simulator', device: { type: 'iPhone 16 Pro' } }\n}",
+    "pid": 47741,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1773345305332000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "dispatching event to  primary-47741 /tmp/detox.primary-47741  :  allocateDevice , {\n  deviceConfig: { type: 'ios.simulator', device: { type: 'iPhone 16 Pro' } }\n}",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345305332000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "device" },
+    "ts": 1773345305337000,
+    "tid": 4,
+    "pid": 47741,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 4 },
+    "ts": 1773345305337000,
+    "tid": 4,
+    "pid": 47741,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "B",
+    "name": "init",
+    "pid": 47741,
+    "tid": 4,
+    "cat": "device,device-allocation",
+    "ts": 1773345305337000,
+    "args": { "level": 10, "args": [], "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47741,
+    "tid": 4,
+    "cat": "device,device-allocation",
+    "ts": 1773345305340000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "allocate",
+    "pid": 47741,
+    "tid": 4,
+    "cat": "device,device-allocation",
+    "ts": 1773345305340000,
+    "args": {
+      "level": 10,
+      "data": { "type": "ios.simulator", "device": { "type": "iPhone 16 Pro" } },
+      "id": 0,
+      "v": 0
+    }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "child-process" },
+    "ts": 1773345305364000,
+    "tid": 5,
+    "pid": 47741,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 5 },
+    "ts": 1773345305364000,
+    "tid": 5,
+    "pid": 47741,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "i",
+    "name": "applesimutils --list --byType \"iPhone 16 Pro\" --fields udid,name,deviceType,os,identifier",
+    "pid": 47741,
+    "tid": 5,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345305364000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "applesimutils --list --byType \"iPhone 16 Pro\" --fields udid,name,deviceType,os,identifier",
+      "trackingId": 0,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Searching for device by type = \"iPhone 16 Pro\" ...",
+    "pid": 47741,
+    "tid": 5,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345305364000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "applesimutils --list --byType \"iPhone 16 Pro\" --fields udid,name,deviceType,os,identifier",
+      "trackingId": 0,
+      "event": "EXEC_TRY",
+      "retryNumber": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "[\n  {\n    \"os\" : {\n      \"name\" : \"iOS 18.5\",\n      \"identifier\" : \"com.apple.CoreSimulator.SimRuntime.iOS-18-5\"\n    },\n    \"name\" : \"iPhone 16 Pro\",\n    \"udid\" : \"85DD3162-206C-44DB-A723-F4B933896B6E\",\n    \"deviceType\" : {\n      \"name\" : \"iPhone 16 Pro\",\n      \"identifier\" : \"com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro\"\n    }\n  }\n]\n",
+    "pid": 47741,
+    "tid": 5,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345305622000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "applesimutils --list --byType \"iPhone 16 Pro\" --fields udid,name,deviceType,os,identifier",
+      "trackingId": 0,
+      "event": "EXEC_SUCCESS",
+      "stdout": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "settled on 85DD3162-206C-44DB-A723-F4B933896B6E",
+    "pid": 47741,
+    "tid": 4,
+    "cat": "device,device-allocation",
+    "ts": 1773345305623000,
+    "args": {
+      "level": 20,
+      "data": {
+        "id": "85DD3162-206C-44DB-A723-F4B933896B6E",
+        "udid": "85DD3162-206C-44DB-A723-F4B933896B6E"
+      },
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 47741,
+    "tid": 4,
+    "cat": "device,device-allocation",
+    "ts": 1773345305623000,
+    "args": { "level": 10, "id": 0, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "post-allocate: 85DD3162-206C-44DB-A723-F4B933896B6E",
+    "pid": 47741,
+    "tid": 4,
+    "cat": "device,device-allocation",
+    "ts": 1773345305623000,
+    "args": {
+      "level": 10,
+      "data": {
+        "id": "85DD3162-206C-44DB-A723-F4B933896B6E",
+        "udid": "85DD3162-206C-44DB-A723-F4B933896B6E"
+      },
+      "id": 0,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "applesimutils --list --byId 85DD3162-206C-44DB-A723-F4B933896B6E --maxResults 1 --fields udid,os,version,state",
+    "pid": 47741,
+    "tid": 5,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345305623000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "applesimutils --list --byId 85DD3162-206C-44DB-A723-F4B933896B6E --maxResults 1 --fields udid,os,version,state",
+      "trackingId": 1,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "[\n  {\n    \"state\" : \"Shutdown\",\n    \"os\" : {\n      \"version\" : \"18.5\"\n    },\n    \"udid\" : \"85DD3162-206C-44DB-A723-F4B933896B6E\"\n  }\n]\n",
+    "pid": 47741,
+    "tid": 5,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345305814000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "applesimutils --list --byId 85DD3162-206C-44DB-A723-F4B933896B6E --maxResults 1 --fields udid,os,version,state",
+      "trackingId": 1,
+      "event": "EXEC_SUCCESS",
+      "stdout": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl boot 85DD3162-206C-44DB-A723-F4B933896B6E ",
+    "pid": 47741,
+    "tid": 5,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345305815000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl boot 85DD3162-206C-44DB-A723-F4B933896B6E ",
+      "trackingId": 2,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Booting device 85DD3162-206C-44DB-A723-F4B933896B6E...",
+    "pid": 47741,
+    "tid": 5,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345305815000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl boot 85DD3162-206C-44DB-A723-F4B933896B6E ",
+      "trackingId": 2,
+      "event": "EXEC_TRY",
+      "retryNumber": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "",
+    "pid": 47741,
+    "tid": 5,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345307269000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl boot 85DD3162-206C-44DB-A723-F4B933896B6E ",
+      "trackingId": 2,
+      "event": "EXEC_SUCCESS",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl bootstatus 85DD3162-206C-44DB-A723-F4B933896B6E",
+    "pid": 47741,
+    "tid": 5,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345307272000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl bootstatus 85DD3162-206C-44DB-A723-F4B933896B6E",
+      "trackingId": 3,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Monitoring boot status for iPhone 16 Pro (85DD3162-206C-44DB-A723-F4B933896B6E).\n[2026-03-12 19:55:08 +0000] Status=1, isTerminal=NO, Elapsed=00:02.\n\tWaiting on BackBoard\n\n[2026-03-12 19:55:20 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:14.\n\tFinished\n\n",
+    "pid": 47741,
+    "tid": 5,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345320545000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl bootstatus 85DD3162-206C-44DB-A723-F4B933896B6E",
+      "trackingId": 3,
+      "event": "EXEC_SUCCESS",
+      "stdout": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "open -a Simulator --args -CurrentDeviceUDID 85DD3162-206C-44DB-A723-F4B933896B6E",
+    "pid": 47741,
+    "tid": 5,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345320546000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "open -a Simulator --args -CurrentDeviceUDID 85DD3162-206C-44DB-A723-F4B933896B6E",
+      "trackingId": 4,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "",
+    "pid": 47741,
+    "tid": 5,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345321548000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "open -a Simulator --args -CurrentDeviceUDID 85DD3162-206C-44DB-A723-F4B933896B6E",
+      "trackingId": 4,
+      "event": "EXEC_SUCCESS",
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 47741,
+    "tid": 4,
+    "cat": "device,device-allocation",
+    "ts": 1773345321550000,
+    "args": { "level": 10, "id": 0, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "dispatching event to socket  :  allocateDeviceDone {\n  deviceCookie: {\n    id: '85DD3162-206C-44DB-A723-F4B933896B6E',\n    udid: '85DD3162-206C-44DB-A723-F4B933896B6E',\n    type: 'ios.simulator',\n    bootArgs: undefined,\n    headless: undefined\n  }\n}",
+    "pid": 47741,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1773345321551000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "## received events ##",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345321551000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "detected event allocateDeviceDone {\n  deviceCookie: {\n    id: '85DD3162-206C-44DB-A723-F4B933896B6E',\n    udid: '85DD3162-206C-44DB-A723-F4B933896B6E',\n    type: 'ios.simulator'\n  }\n}",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345321554000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "artifacts-manager" },
+    "ts": 1773345321586000,
+    "tid": 9,
+    "pid": 47742,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 9 },
+    "ts": 1773345321586000,
+    "tid": 9,
+    "pid": 47742,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "B",
+    "name": "onBootDevice",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345321586000,
+    "args": {
+      "level": 10,
+      "args": [{ "deviceId": "85DD3162-206C-44DB-A723-F4B933896B6E" }],
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345321586000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "device" },
+    "ts": 1773345321588000,
+    "tid": 10,
+    "pid": 47742,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 10 },
+    "ts": 1773345321588000,
+    "tid": 10,
+    "pid": 47742,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "B",
+    "name": "installUtilBinaries",
+    "pid": 47742,
+    "tid": 10,
+    "cat": "device",
+    "ts": 1773345321588000,
+    "args": { "level": 10, "args": [], "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 10,
+    "cat": "device",
+    "ts": 1773345321588000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "selectApp",
+    "pid": 47742,
+    "tid": 10,
+    "cat": "device",
+    "ts": 1773345321589000,
+    "args": { "level": 10, "args": ["default"], "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 10,
+    "cat": "device",
+    "ts": 1773345321605000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "uninstallApp",
+    "pid": 47742,
+    "tid": 10,
+    "cat": "device",
+    "ts": 1773345321606000,
+    "args": { "level": 10, "args": [], "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onBeforeUninstallApp",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345321606000,
+    "args": {
+      "level": 10,
+      "args": [
+        {
+          "deviceId": "85DD3162-206C-44DB-A723-F4B933896B6E",
+          "bundleId": "com.ellie.minershiftassistant"
+        }
+      ],
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345321607000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "child-process" },
+    "ts": 1773345321607000,
+    "tid": 11,
+    "pid": 47742,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 11 },
+    "ts": 1773345321607000,
+    "tid": 11,
+    "pid": 47742,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl uninstall 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345321607000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl uninstall 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 0,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Uninstalling com.ellie.minershiftassistant...",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345321607000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl uninstall 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 0,
+      "event": "EXEC_TRY",
+      "retryNumber": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "com.ellie.minershiftassistant uninstalled",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345330122000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl uninstall 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 0,
+      "event": "EXEC_SUCCESS",
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 10,
+    "cat": "device",
+    "ts": 1773345330125000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "selectApp",
+    "pid": 47742,
+    "tid": 10,
+    "cat": "device",
+    "ts": 1773345330126000,
+    "args": { "level": 10, "args": ["default"], "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "terminateApp",
+    "pid": 47742,
+    "tid": 10,
+    "cat": "device",
+    "ts": 1773345330128000,
+    "args": { "level": 10, "args": [], "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onBeforeTerminateApp",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345330128000,
+    "args": {
+      "level": 10,
+      "args": [
+        {
+          "deviceId": "85DD3162-206C-44DB-A723-F4B933896B6E",
+          "bundleId": "com.ellie.minershiftassistant"
+        }
+      ],
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345330128000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345330128000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 1,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Terminating com.ellie.minershiftassistant...",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345330128000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 1,
+      "event": "EXEC_TRY",
+      "retryNumber": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):\nSimulator device failed to terminate com.ellie.minershiftassistant.\nfound nothing to terminate\nUnderlying error (domain=NSPOSIXErrorDomain, code=3):\n\tThe request to terminate \"com.ellie.minershiftassistant\" failed. found nothing to terminate\n\tfound nothing to terminate\n",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345331441000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 1,
+      "event": "EXEC_TRY_FAIL",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Terminating com.ellie.minershiftassistant...",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345331441000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 1,
+      "event": "EXEC_TRY",
+      "retryNumber": 2,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "\"/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant\" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant\nAn error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):\nSimulator device failed to terminate com.ellie.minershiftassistant.\nfound nothing to terminate\nUnderlying error (domain=NSPOSIXErrorDomain, code=3):\n\tThe request to terminate \"com.ellie.minershiftassistant\" failed. found nothing to terminate\n\tfound nothing to terminate\n (code=3), stdout and stderr:\n",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345331755000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 1,
+      "event": "EXEC_FAIL",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345331755000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 1,
+      "event": "EXEC_FAIL",
+      "stdout": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):\nSimulator device failed to terminate com.ellie.minershiftassistant.\nfound nothing to terminate\nUnderlying error (domain=NSPOSIXErrorDomain, code=3):\n\tThe request to terminate \"com.ellie.minershiftassistant\" failed. found nothing to terminate\n\tfound nothing to terminate\n",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345331755000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 1,
+      "event": "EXEC_FAIL",
+      "stderr": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "B",
+    "name": "onTerminateApp",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345331755000,
+    "args": {
+      "level": 10,
+      "args": [
+        {
+          "deviceId": "85DD3162-206C-44DB-A723-F4B933896B6E",
+          "bundleId": "com.ellie.minershiftassistant"
+        }
+      ],
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345331756000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 10,
+    "cat": "device",
+    "ts": 1773345331756000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 10,
+    "cat": "device",
+    "ts": 1773345331756000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "installApp",
+    "pid": 47742,
+    "tid": 10,
+    "cat": "device",
+    "ts": 1773345331756000,
+    "args": { "level": 10, "args": [], "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl install 85DD3162-206C-44DB-A723-F4B933896B6E \"/Users/Shared/Ellie/ios/build/Build/Products/Release-iphonesimulator/Ellie.app\"",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345331756000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl install 85DD3162-206C-44DB-A723-F4B933896B6E \"/Users/Shared/Ellie/ios/build/Build/Products/Release-iphonesimulator/Ellie.app\"",
+      "trackingId": 2,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Installing /Users/Shared/Ellie/ios/build/Build/Products/Release-iphonesimulator/Ellie.app...",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345331756000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl install 85DD3162-206C-44DB-A723-F4B933896B6E \"/Users/Shared/Ellie/ios/build/Build/Products/Release-iphonesimulator/Ellie.app\"",
+      "trackingId": 2,
+      "event": "EXEC_TRY",
+      "retryNumber": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "/Users/Shared/Ellie/ios/build/Build/Products/Release-iphonesimulator/Ellie.app installed",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345337887000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl install 85DD3162-206C-44DB-A723-F4B933896B6E \"/Users/Shared/Ellie/ios/build/Build/Products/Release-iphonesimulator/Ellie.app\"",
+      "trackingId": 2,
+      "event": "EXEC_SUCCESS",
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 10,
+    "cat": "device",
+    "ts": 1773345337890000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "selectApp",
+    "pid": 47742,
+    "tid": 10,
+    "cat": "device",
+    "ts": 1773345337891000,
+    "args": { "level": 10, "args": ["default"], "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "terminateApp",
+    "pid": 47742,
+    "tid": 10,
+    "cat": "device",
+    "ts": 1773345337891000,
+    "args": { "level": 10, "args": [], "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onBeforeTerminateApp",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345337892000,
+    "args": {
+      "level": 10,
+      "args": [
+        {
+          "deviceId": "85DD3162-206C-44DB-A723-F4B933896B6E",
+          "bundleId": "com.ellie.minershiftassistant"
+        }
+      ],
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345337892000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345337892000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 3,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Terminating com.ellie.minershiftassistant...",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345337892000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 3,
+      "event": "EXEC_TRY",
+      "retryNumber": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):\nSimulator device failed to terminate com.ellie.minershiftassistant.\nfound nothing to terminate\nUnderlying error (domain=NSPOSIXErrorDomain, code=3):\n\tThe request to terminate \"com.ellie.minershiftassistant\" failed. found nothing to terminate\n\tfound nothing to terminate\n",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345339068000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 3,
+      "event": "EXEC_TRY_FAIL",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Terminating com.ellie.minershiftassistant...",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345339068000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 3,
+      "event": "EXEC_TRY",
+      "retryNumber": 2,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "\"/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant\" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant\nAn error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):\nSimulator device failed to terminate com.ellie.minershiftassistant.\nfound nothing to terminate\nUnderlying error (domain=NSPOSIXErrorDomain, code=3):\n\tThe request to terminate \"com.ellie.minershiftassistant\" failed. found nothing to terminate\n\tfound nothing to terminate\n (code=3), stdout and stderr:\n",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345339377000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 3,
+      "event": "EXEC_FAIL",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345339378000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 3,
+      "event": "EXEC_FAIL",
+      "stdout": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):\nSimulator device failed to terminate com.ellie.minershiftassistant.\nfound nothing to terminate\nUnderlying error (domain=NSPOSIXErrorDomain, code=3):\n\tThe request to terminate \"com.ellie.minershiftassistant\" failed. found nothing to terminate\n\tfound nothing to terminate\n",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345339378000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 3,
+      "event": "EXEC_FAIL",
+      "stderr": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "B",
+    "name": "onTerminateApp",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345339378000,
+    "args": {
+      "level": 10,
+      "args": [
+        {
+          "deviceId": "85DD3162-206C-44DB-A723-F4B933896B6E",
+          "bundleId": "com.ellie.minershiftassistant"
+        }
+      ],
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345339378000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 10,
+    "cat": "device",
+    "ts": 1773345339378000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 10,
+    "cat": "device",
+    "ts": 1773345339378000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345339379000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "app.test.ts is assigned to 85DD3162-206C-44DB-A723-F4B933896B6E (iPhone 16 Pro)",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle",
+    "ts": 1773345339712000,
+    "args": { "level": 30, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "run the tests",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345339713000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onRunDescribeStart",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345339713000,
+    "args": { "level": 10, "args": [{ "name": "ROOT_DESCRIBE_BLOCK" }], "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345339713000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "Ellie Auth Flow",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345339713000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onRunDescribeStart",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345339714000,
+    "args": { "level": 10, "args": [{ "name": "Ellie Auth Flow" }], "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345339714000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "beforeAll",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345339714000,
+    "args": {
+      "level": 10,
+      "functionCode": "function () {\n    var t = this,\n      e = arguments;\n    return new Promise(function (r, o) {\n      var a = n.apply(t, e);\n      function _next(n) {\n        asyncGeneratorStep(a, r, o, _next, _throw, \"next\", n);\n      }\n      function _throw(n) {\n        asyncGeneratorStep(a, r, o, _next, _throw, \"throw\", n);\n      }\n      _next(void 0);\n    });\n  }",
+      "v": 0
+    }
+  },
+  {
+    "ph": "B",
+    "name": "launchApp",
+    "pid": 47742,
+    "tid": 10,
+    "cat": "device",
+    "ts": 1773345339719000,
+    "args": { "level": 10, "args": [], "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "terminateApp",
+    "pid": 47742,
+    "tid": 10,
+    "cat": "device",
+    "ts": 1773345339719000,
+    "args": { "level": 10, "args": ["com.ellie.minershiftassistant"], "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onBeforeTerminateApp",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345339719000,
+    "args": {
+      "level": 10,
+      "args": [
+        {
+          "deviceId": "85DD3162-206C-44DB-A723-F4B933896B6E",
+          "bundleId": "com.ellie.minershiftassistant"
+        }
+      ],
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345339719000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345339719000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 4,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Terminating com.ellie.minershiftassistant...",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345339719000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 4,
+      "event": "EXEC_TRY",
+      "retryNumber": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):\nSimulator device failed to terminate com.ellie.minershiftassistant.\nfound nothing to terminate\nUnderlying error (domain=NSPOSIXErrorDomain, code=3):\n\tThe request to terminate \"com.ellie.minershiftassistant\" failed. found nothing to terminate\n\tfound nothing to terminate\n",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345340920000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 4,
+      "event": "EXEC_TRY_FAIL",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Terminating com.ellie.minershiftassistant...",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345340921000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 4,
+      "event": "EXEC_TRY",
+      "retryNumber": 2,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "\"/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant\" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant\nAn error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):\nSimulator device failed to terminate com.ellie.minershiftassistant.\nfound nothing to terminate\nUnderlying error (domain=NSPOSIXErrorDomain, code=3):\n\tThe request to terminate \"com.ellie.minershiftassistant\" failed. found nothing to terminate\n\tfound nothing to terminate\n (code=3), stdout and stderr:\n",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345341174000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 4,
+      "event": "EXEC_FAIL",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345341174000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 4,
+      "event": "EXEC_FAIL",
+      "stdout": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):\nSimulator device failed to terminate com.ellie.minershiftassistant.\nfound nothing to terminate\nUnderlying error (domain=NSPOSIXErrorDomain, code=3):\n\tThe request to terminate \"com.ellie.minershiftassistant\" failed. found nothing to terminate\n\tfound nothing to terminate\n",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345341174000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 4,
+      "event": "EXEC_FAIL",
+      "stderr": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "B",
+    "name": "onTerminateApp",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345341174000,
+    "args": {
+      "level": 10,
+      "args": [
+        {
+          "deviceId": "85DD3162-206C-44DB-A723-F4B933896B6E",
+          "bundleId": "com.ellie.minershiftassistant"
+        }
+      ],
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345341174000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 10,
+    "cat": "device",
+    "ts": 1773345341174000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onBeforeLaunchApp",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345341175000,
+    "args": {
+      "level": 10,
+      "args": [
+        {
+          "bundleId": "com.ellie.minershiftassistant",
+          "deviceId": "85DD3162-206C-44DB-A723-F4B933896B6E",
+          "launchArgs": {
+            "detoxServer": "ws://localhost:57848",
+            "detoxSessionId": "98ba5fa8-e568-38e6-6888-e8a103aa1453"
+          }
+        }
+      ],
+      "v": 0
+    }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "artifact" },
+    "ts": 1773345341175000,
+    "tid": 12,
+    "pid": 47742,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 12 },
+    "ts": 1773345341175000,
+    "tid": 12,
+    "pid": 47742,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "i",
+    "name": "starting SimulatorLogRecording {\n  udid: '85DD3162-206C-44DB-A723-F4B933896B6E',\n  bundleId: 'com.ellie.minershiftassistant'\n}",
+    "pid": 47742,
+    "tid": 12,
+    "cat": "artifact",
+    "ts": 1773345341175000,
+    "args": { "level": 10, "class": "SimulatorLogRecording", "event": "ARTIFACT_START", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345341180000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 5,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/444A4E3F-C914-4287-B556-231EFD5D1388/EllieMinerShiftAssistant.app\n",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345341407000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 5,
+      "event": "EXEC_SUCCESS",
+      "stdout": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate \"processImagePath beginsWith \\\"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/444A4E3F-C914-4287-B556-231EFD5D1388/EllieMinerShiftAssistant.app\\\"\"",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-spawn",
+    "ts": 1773345341410000,
+    "args": {
+      "level": 20,
+      "fn": "spawnAndLog",
+      "command": "/usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate \"processImagePath beginsWith \\\"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/444A4E3F-C914-4287-B556-231EFD5D1388/EllieMinerShiftAssistant.app\\\"\"",
+      "trackingId": 6,
+      "cpid": 48000,
+      "event": "SPAWN_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345341460000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "SIMCTL_CHILD_GULGeneratedClassDisposeDisabled=YES SIMCTL_CHILD_DYLD_INSERT_LIBRARIES=\"/Users/user/Library/Detox/ios/framework/7a593ed1f90c0350964e0c75f65f6f0a8382c0f9/Detox.framework/Detox\" /usr/bin/xcrun simctl launch 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant --args -detoxServer ws://localhost:57848 -detoxSessionId 98ba5fa8-e568-38e6-6888-e8a103aa1453 -detoxDisableHierarchyDump YES",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345341461000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "SIMCTL_CHILD_GULGeneratedClassDisposeDisabled=YES SIMCTL_CHILD_DYLD_INSERT_LIBRARIES=\"/Users/user/Library/Detox/ios/framework/7a593ed1f90c0350964e0c75f65f6f0a8382c0f9/Detox.framework/Detox\" /usr/bin/xcrun simctl launch 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant --args -detoxServer ws://localhost:57848 -detoxSessionId 98ba5fa8-e568-38e6-6888-e8a103aa1453 -detoxDisableHierarchyDump YES",
+      "trackingId": 7,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Launching com.ellie.minershiftassistant...",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345341461000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "SIMCTL_CHILD_GULGeneratedClassDisposeDisabled=YES SIMCTL_CHILD_DYLD_INSERT_LIBRARIES=\"/Users/user/Library/Detox/ios/framework/7a593ed1f90c0350964e0c75f65f6f0a8382c0f9/Detox.framework/Detox\" /usr/bin/xcrun simctl launch 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant --args -detoxServer ws://localhost:57848 -detoxSessionId 98ba5fa8-e568-38e6-6888-e8a103aa1453 -detoxDisableHierarchyDump YES",
+      "trackingId": 7,
+      "event": "EXEC_TRY",
+      "retryNumber": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "com.ellie.minershiftassistant: 48011\n",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345342967000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "SIMCTL_CHILD_GULGeneratedClassDisposeDisabled=YES SIMCTL_CHILD_DYLD_INSERT_LIBRARIES=\"/Users/user/Library/Detox/ios/framework/7a593ed1f90c0350964e0c75f65f6f0a8382c0f9/Detox.framework/Detox\" /usr/bin/xcrun simctl launch 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant --args -detoxServer ws://localhost:57848 -detoxSessionId 98ba5fa8-e568-38e6-6888-e8a103aa1453 -detoxDisableHierarchyDump YES",
+      "trackingId": 7,
+      "event": "EXEC_SUCCESS",
+      "stdout": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345342968000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 8,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/444A4E3F-C914-4287-B556-231EFD5D1388/EllieMinerShiftAssistant.app\n",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-exec",
+    "ts": 1773345343203000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 8,
+      "event": "EXEC_SUCCESS",
+      "stdout": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "com.ellie.minershiftassistant launched. To watch simulator logs, run:\n        /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate 'process == \"EllieMinerShiftAssistant\"'",
+    "pid": 47742,
+    "tid": 10,
+    "cat": "device",
+    "ts": 1773345343215000,
+    "args": { "level": 30, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onLaunchApp",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345343216000,
+    "args": {
+      "level": 10,
+      "args": [
+        {
+          "bundleId": "com.ellie.minershiftassistant",
+          "deviceId": "85DD3162-206C-44DB-A723-F4B933896B6E",
+          "launchArgs": {
+            "detoxServer": "ws://localhost:57848",
+            "detoxSessionId": "98ba5fa8-e568-38e6-6888-e8a103aa1453",
+            "detoxDisableHierarchyDump": "YES"
+          },
+          "pid": 48011
+        }
+      ],
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345343216000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onHookFailure",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345459717000,
+    "args": {
+      "level": 10,
+      "args": [
+        {
+          "error": "Exceeded timeout of 120000 ms for a hook.\nAdd a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.",
+          "hook": "beforeAll"
+        }
+      ],
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345459720000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345459721000,
+    "args": {
+      "level": 10,
+      "success": false,
+      "error": "'Exceeded timeout of 120000 ms for a hook.\\n' +\n  'Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.'",
+      "v": 0
+    }
+  },
+  {
+    "ph": "B",
+    "name": "shows sign-in screen by default",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345459723000,
+    "args": {
+      "level": 10,
+      "context": "test",
+      "status": "failed",
+      "fullName": "Ellie Auth Flow shows sign-in screen by default",
+      "invocations": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Ellie Auth Flow: shows sign-in screen by default",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle",
+    "ts": 1773345459723000,
+    "args": { "level": 30, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345459728000,
+    "args": { "level": 10, "status": "failed", "timedOut": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "Ellie Auth Flow: shows sign-in screen by default [FAIL]",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle",
+    "ts": 1773345459729000,
+    "args": { "level": 30, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "navigates from sign in to sign up and back",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345459741000,
+    "args": {
+      "level": 10,
+      "context": "test",
+      "status": "failed",
+      "fullName": "Ellie Auth Flow navigates from sign in to sign up and back",
+      "invocations": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Ellie Auth Flow: navigates from sign in to sign up and back",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle",
+    "ts": 1773345459742000,
+    "args": { "level": 30, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345459742000,
+    "args": { "level": 10, "status": "failed", "timedOut": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "Ellie Auth Flow: navigates from sign in to sign up and back [FAIL]",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle",
+    "ts": 1773345459743000,
+    "args": { "level": 30, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "validates required sign-in inputs",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345459743000,
+    "args": {
+      "level": 10,
+      "context": "test",
+      "status": "failed",
+      "fullName": "Ellie Auth Flow validates required sign-in inputs",
+      "invocations": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Ellie Auth Flow: validates required sign-in inputs",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle",
+    "ts": 1773345459743000,
+    "args": { "level": 30, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345459744000,
+    "args": { "level": 10, "status": "failed", "timedOut": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "Ellie Auth Flow: validates required sign-in inputs [FAIL]",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle",
+    "ts": 1773345459744000,
+    "args": { "level": 30, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "navigates to forgot password screen",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345459745000,
+    "args": {
+      "level": 10,
+      "context": "test",
+      "status": "failed",
+      "fullName": "Ellie Auth Flow navigates to forgot password screen",
+      "invocations": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Ellie Auth Flow: navigates to forgot password screen",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle",
+    "ts": 1773345459745000,
+    "args": { "level": 30, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345459750000,
+    "args": { "level": 10, "status": "failed", "timedOut": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "Ellie Auth Flow: navigates to forgot password screen [FAIL]",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle",
+    "ts": 1773345459750000,
+    "args": { "level": 30, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "validates required forgot-password email input",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345459751000,
+    "args": {
+      "level": 10,
+      "context": "test",
+      "status": "failed",
+      "fullName": "Ellie Auth Flow validates required forgot-password email input",
+      "invocations": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Ellie Auth Flow: validates required forgot-password email input",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle",
+    "ts": 1773345459751000,
+    "args": { "level": 30, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345459753000,
+    "args": { "level": 10, "status": "failed", "timedOut": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "Ellie Auth Flow: validates required forgot-password email input [FAIL]",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle",
+    "ts": 1773345459753000,
+    "args": { "level": 30, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "validates sign-up fields and password mismatch",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345459753000,
+    "args": {
+      "level": 10,
+      "context": "test",
+      "status": "failed",
+      "fullName": "Ellie Auth Flow validates sign-up fields and password mismatch",
+      "invocations": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Ellie Auth Flow: validates sign-up fields and password mismatch",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle",
+    "ts": 1773345459753000,
+    "args": { "level": 30, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345459754000,
+    "args": { "level": 10, "status": "failed", "timedOut": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "Ellie Auth Flow: validates sign-up fields and password mismatch [FAIL]",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle",
+    "ts": 1773345459754000,
+    "args": { "level": 30, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onRunDescribeFinish",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345459755000,
+    "args": { "level": 10, "args": [{ "name": "Ellie Auth Flow" }], "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345459755000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345459755000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onRunDescribeFinish",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345459755000,
+    "args": { "level": 10, "args": [{ "name": "ROOT_DESCRIBE_BLOCK" }], "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345459755000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345459755000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "tear down environment",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345459791000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onBeforeCleanup",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345459792000,
+    "args": { "level": 10, "args": [], "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "saving SimulatorLogRecording to: artifacts/ios.release.2026-03-12 19-54-56Z/85DD3162-206C-44DB-A723-F4B933896B6E 2026-03-12 19-57-39Z.startup.log",
+    "pid": 47742,
+    "tid": 12,
+    "cat": "artifact",
+    "ts": 1773345459803000,
+    "args": { "level": 10, "class": "SimulatorLogRecording", "event": "ARTIFACT_SAVE", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "stopping SimulatorLogRecording",
+    "pid": 47742,
+    "tid": 12,
+    "cat": "artifact",
+    "ts": 1773345459804000,
+    "args": { "level": 10, "class": "SimulatorLogRecording", "event": "ARTIFACT_STOP", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "sending SIGINT to: /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate processImagePath beginsWith \"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/444A4E3F-C914-4287-B556-231EFD5D1388/EllieMinerShiftAssistant.app\"",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-spawn",
+    "ts": 1773345459856000,
+    "args": { "level": 10, "event": "SPAWN_KILL", "cpid": 48000, "signal": "SIGINT", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate \"processImagePath beginsWith \\\"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/444A4E3F-C914-4287-B556-231EFD5D1388/EllieMinerShiftAssistant.app\\\"\" exited with code #0",
+    "pid": 47742,
+    "tid": 11,
+    "cat": "child-process,child-process-spawn",
+    "ts": 1773345459867000,
+    "args": {
+      "level": 20,
+      "fn": "spawnAndLog",
+      "command": "/usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate \"processImagePath beginsWith \\\"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/444A4E3F-C914-4287-B556-231EFD5D1388/EllieMinerShiftAssistant.app\\\"\"",
+      "trackingId": 6,
+      "cpid": 48000,
+      "event": "SPAWN_END",
+      "signal": "",
+      "code": 0,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "moving \"/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-47742-312zln.detox.log\" to artifacts/ios.release.2026-03-12 19-54-56Z/85DD3162-206C-44DB-A723-F4B933896B6E 2026-03-12 19-57-39Z.startup.log",
+    "pid": 47742,
+    "tid": 12,
+    "cat": "artifact",
+    "ts": 1773345459870000,
+    "args": { "level": 20, "event": "MOVE_FILE", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "saving FileArtifact to: artifacts/ios.release.2026-03-12 19-54-56Z/detox_pid_47742.json.log { append: true }",
+    "pid": 47742,
+    "tid": 12,
+    "cat": "artifact",
+    "ts": 1773345459882000,
+    "args": { "level": 10, "class": "FileArtifact", "event": "ARTIFACT_SAVE", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "saving FileArtifact to: artifacts/ios.release.2026-03-12 19-54-56Z/detox_pid_47742.log { append: true }",
+    "pid": 47742,
+    "tid": 12,
+    "cat": "artifact",
+    "ts": 1773345459882000,
+    "args": { "level": 10, "class": "FileArtifact", "event": "ARTIFACT_SAVE", "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 9,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1773345459882000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "Detox can't seem to connect to the test app(s)!\n\nHINT: \n\nThe test app might have crashed prematurely, or has had trouble setting up the connection.\nRefer to our troubleshooting guide, for full details: https://wix.github.io/Detox/docs/troubleshooting/running-tests#tests-execution-hangs \n\n\n",
+    "pid": 47742,
+    "tid": 8,
+    "cat": "ws-client,ws",
+    "ts": 1773345459883000,
+    "args": { "level": 50, "event": "APP_UNREACHABLE", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "tester exited session 98ba5fa8-e568-38e6-6888-e8a103aa1453",
+    "pid": 47741,
+    "tid": 3,
+    "cat": "ws-server,ws-session",
+    "ts": 1773345459886000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "dispatching event to  primary-47741 /tmp/detox.primary-47741  :  deallocateDevice , {\n  deviceCookie: {\n    id: '85DD3162-206C-44DB-A723-F4B933896B6E',\n    udid: '85DD3162-206C-44DB-A723-F4B933896B6E',\n    type: 'ios.simulator'\n  }\n}",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345459886000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47741,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1773345459887000,
+    "args": {
+      "level": 20,
+      "id": 57851,
+      "trackingId": "tester",
+      "sessionId": "98ba5fa8-e568-38e6-6888-e8a103aa1453",
+      "role": "tester",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "received event of :  deallocateDevice {\n  deviceCookie: {\n    id: '85DD3162-206C-44DB-A723-F4B933896B6E',\n    udid: '85DD3162-206C-44DB-A723-F4B933896B6E',\n    type: 'ios.simulator'\n  }\n}",
+    "pid": 47741,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1773345459888000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "free: 85DD3162-206C-44DB-A723-F4B933896B6E",
+    "pid": 47741,
+    "tid": 4,
+    "cat": "device,device-allocation",
+    "ts": 1773345459888000,
+    "args": { "level": 10, "data": {}, "id": 0, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47741,
+    "tid": 4,
+    "cat": "device,device-allocation",
+    "ts": 1773345459889000,
+    "args": { "level": 10, "id": 0, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "dispatching event to socket  :  deallocateDeviceDone {}",
+    "pid": 47741,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1773345459889000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "## received events ##",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345459889000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "detected event deallocateDeviceDone {}",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345459891000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345459891000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47742,
+    "tid": 7,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1773345459891000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "received event of :  reportTestResults {\n  testResults: [\n    {\n      success: false,\n      testFilePath: '/Users/Shared/Ellie/e2e/app.test.ts',\n      isPermanentFailure: false\n    }\n  ]\n}",
+    "pid": 47741,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1773345459898000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "dispatching event to  primary-47741 /tmp/detox.primary-47741  :  reportTestResults , {\n  testResults: [\n    {\n      success: false,\n      testFilePath: '/Users/Shared/Ellie/e2e/app.test.ts',\n      testExecError: undefined,\n      isPermanentFailure: false\n    }\n  ]\n}",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345459898000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "dispatching event to socket  :  reportTestResultsDone {\n  testResults: [\n    {\n      success: false,\n      testFilePath: '/Users/Shared/Ellie/e2e/app.test.ts',\n      isPermanentFailure: false\n    }\n  ]\n}",
+    "pid": 47741,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1773345459900000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "broadcasting event to all known sockets listening to  /tmp/detox.primary-47741  :   sessionStateUpdate {\n  testResults: [\n    {\n      success: false,\n      testFilePath: '/Users/Shared/Ellie/e2e/app.test.ts',\n      isPermanentFailure: false\n    }\n  ]\n}",
+    "pid": 47741,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1773345459900000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "## received events ##",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345459900000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "detected event reportTestResultsDone {\n  testResults: [\n    {\n      success: false,\n      testFilePath: '/Users/Shared/Ellie/e2e/app.test.ts',\n      isPermanentFailure: false\n    }\n  ]\n}",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345459900000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "socket disconnected secondary-47742",
+    "pid": 47741,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1773345459902000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "connection closed primary-47741 /tmp/detox.primary-47741 0 tries remaining of 0",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345459902000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "secondary-47742 exceeded connection rety amount of  or stopRetrying flag set.",
+    "pid": 47742,
+    "tid": 6,
+    "cat": "ipc",
+    "ts": 1773345459902000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47741,
+    "tid": 0,
+    "cat": "lifecycle,cli",
+    "ts": 1773345459965000,
+    "args": { "level": 50, "success": false, "code": 1, "signal": null, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "cleanup",
+    "pid": 47741,
+    "tid": 4,
+    "cat": "device,device-allocation",
+    "ts": 1773345459967000,
+    "args": { "level": 10, "args": [], "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47741,
+    "tid": 4,
+    "cat": "device,device-allocation",
+    "ts": 1773345459969000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "Detox server has been closed gracefully",
+    "pid": 47741,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1773345459969000,
+    "args": { "level": 20, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 47741,
+    "tid": 0,
+    "cat": "lifecycle",
+    "ts": 1773345459973000,
+    "args": { "level": 10, "v": 0 }
+  }
+]

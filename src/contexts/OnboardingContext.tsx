@@ -371,9 +371,21 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
 
     // Step 4b: Custom pattern validation (depends on roster type)
     if (data.rosterType === 'fifo') {
-      // FIFO custom pattern
-      if (data.patternType === ShiftPattern.FIFO_CUSTOM && !data.fifoConfig) {
+      // All FIFO patterns require a fifoConfig with at minimum workBlockDays and restBlockDays.
+      // Preset patterns (FIFO_8_6 etc.) have these written by FIFOPhaseSelector; custom patterns
+      // have them written by FIFOCustomPatternScreen.
+      if (!data.fifoConfig) {
         missingFields.push(localizedField('fifoConfiguration', 'FIFO Configuration'));
+      } else {
+        if (!data.fifoConfig.workBlockDays) {
+          missingFields.push(localizedField('fifoWorkBlockDays', 'Work Block Days'));
+        }
+        if (!data.fifoConfig.restBlockDays) {
+          missingFields.push(localizedField('fifoRestBlockDays', 'Rest Block Days'));
+        }
+        if (!data.fifoConfig.workBlockPattern) {
+          missingFields.push(localizedField('fifoWorkPattern', 'Work Pattern'));
+        }
       }
     } else {
       // Rotating custom pattern (default behavior)

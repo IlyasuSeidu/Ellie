@@ -17,10 +17,10 @@
       "supportsTablet": true,
       "buildNumber": "1",
       "usesAppleSignIn": true,
-      "googleServicesFile": "./ios/Ellie/GoogleService-Info.plist",
       "infoPlist": {
         "NSSpeechRecognitionUsageDescription": "Ellie needs speech recognition to understand your questions.",
-        "NSMicrophoneUsageDescription": "Ellie needs microphone access for voice commands."
+        "NSMicrophoneUsageDescription": "Ellie needs microphone access for voice commands.",
+        "ITSAppUsesNonExemptEncryption": false
       },
       "bundleIdentifier": "com.ellie.minershiftassistant"
     },
@@ -42,6 +42,14 @@
       "expo-localization",
       "expo-font",
       "expo-asset",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "16.0"
+          }
+        }
+      ],
       [
         "@react-native-google-signin/google-signin",
         {

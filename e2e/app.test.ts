@@ -44,9 +44,10 @@ describe('Ellie Auth Flow', () => {
     await element(by.id('email-input')).typeText('invalid-email');
     await element(by.id('password-input')).typeText('Password123');
     await element(by.id('confirm-password-input')).typeText('Password321');
+    await element(by.id('confirm-password-input')).tapReturnKey();
     await element(by.id('create-account-button')).tap();
 
     await detoxExpect(element(by.text('Enter a valid email address'))).toBeVisible();
-    await detoxExpect(element(by.text('Passwords do not match'))).toBeVisible();
+    await detoxExpect(element(by.text('Passwords do not match'))).toExist();
   });
 });

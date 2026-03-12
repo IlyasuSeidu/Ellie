@@ -1,0 +1,562 @@
+19:54:56.890 detox[47741] B node_modules/.bin/detox test --configuration ios.release --record-logs all --loglevel info
+  data: {
+    "id": "82d5d1c8-ad5a-66dd-0b13-60779742ae4a",
+    "detoxConfig": {
+      "configurationName": "ios.release",
+      "apps": {
+        "default": {
+          "type": "ios.app",
+          "build": "xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -sdk iphonesimulator -destination \"platform=iOS Simulator,name=iPhone 16 Pro\" -derivedDataPath ios/build CODE_SIGNING_ALLOWED=NO build",
+          "binaryPath": "./ios/build/Build/Products/Release-iphonesimulator/Ellie.app"
+        }
+      },
+      "artifacts": {
+        "rootDir": "artifacts/ios.release.2026-03-12 19-54-56Z",
+        "plugins": {
+          "log": {
+            "enabled": true,
+            "keepOnlyFailedTestsArtifacts": false
+          },
+          "screenshot": {
+            "enabled": true,
+            "shouldTakeAutomaticSnapshots": false,
+            "keepOnlyFailedTestsArtifacts": false
+          },
+          "video": {
+            "enabled": false,
+            "keepOnlyFailedTestsArtifacts": false
+          },
+          "instruments": {
+            "enabled": false,
+            "keepOnlyFailedTestsArtifacts": false
+          },
+          "uiHierarchy": {
+            "enabled": false,
+            "keepOnlyFailedTestsArtifacts": false
+          }
+        }
+      },
+      "behavior": {
+        "init": {
+          "keepLockFile": false,
+          "reinstallApp": true,
+          "exposeGlobals": true
+        },
+        "cleanup": {
+          "shutdownDevice": false
+        },
+        "launchApp": "auto"
+      },
+      "cli": {
+        "recordLogs": "all",
+        "configuration": "ios.release",
+        "loglevel": "info",
+        "start": true
+      },
+      "commands": [
+        {
+          "appName": "default",
+          "build": "xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -sdk iphonesimulator -destination \"platform=iOS Simulator,name=iPhone 16 Pro\" -derivedDataPath ios/build CODE_SIGNING_ALLOWED=NO build"
+        }
+      ],
+      "device": {
+        "type": "ios.simulator",
+        "device": {
+          "type": "iPhone 16 Pro"
+        }
+      },
+      "logger": {
+        "level": "info",
+        "overrideConsole": true,
+        "options": {
+          "showLoggerName": true,
+          "showPid": true,
+          "showLevel": false,
+          "showMetadata": false,
+          "basepath": "/Users/Shared/Ellie/node_modules/detox/src",
+          "prefixers": {},
+          "stringifiers": {}
+        }
+      },
+      "testRunner": {
+        "retries": 0,
+        "forwardEnv": false,
+        "detached": false,
+        "bail": false,
+        "noRetryArgs": [
+          "shard"
+        ],
+        "jest": {
+          "setupTimeout": 120000,
+          "teardownTimeout": 30000,
+          "retryAfterCircusRetries": false,
+          "reportWorkerAssign": true
+        },
+        "args": {
+          "$0": "jest",
+          "_": [],
+          "config": "e2e/jest.config.js",
+          "--": []
+        }
+      },
+      "session": {
+        "autoStart": true,
+        "debugSynchronization": 10000
+      }
+    },
+    "detoxIPCServer": "primary-47741",
+    "testResults": [],
+    "testSessionIndex": 0,
+    "workersCount": 0
+  }
+19:54:56.895 detox[47741] i Server path not specified, so defaulting to ipc.config.socketRoot + ipc.config.appspace + ipc.config.id /tmp/detox.primary-47741
+19:54:56.897 detox[47741] i starting server on  /tmp/detox.primary-47741 
+19:54:56.897 detox[47741] i starting TLS server false
+19:54:56.897 detox[47741] i starting server as Unix || Windows Socket
+19:54:56.898 detox[47741] i Detox server listening on localhost:57848...
+19:54:56.902 detox[47741] i Serialized the session state at: /private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/82d5d1c8-ad5a-66dd-0b13-60779742ae4a.detox.json
+19:54:56.903 detox[47741] B jest --config e2e/jest.config.js
+19:55:04.573 detox[47742] i Service path not specified, so defaulting to ipc.config.socketRoot + ipc.config.appspace + id 
+19:55:04.577 detox[47742] i requested connection to  primary-47741 /tmp/detox.primary-47741
+19:55:04.577 detox[47742] i Connecting client on Unix Socket : /tmp/detox.primary-47741
+19:55:04.578 detox[47741] i ## socket connection to server detected ##
+19:55:04.578 detox[47742] i retrying reset
+19:55:04.580 detox[47742] i dispatching event to  primary-47741 /tmp/detox.primary-47741  :  registerContext , { id: 'secondary-47742' }
+19:55:04.582 detox[47741] i received event of :  registerContext { id: 'secondary-47742' }
+19:55:04.582 detox[47741] i dispatching event to socket  :  registerContextDone {
+  testResults: [],
+  testSessionIndex: 0,
+  unsafe_earlyTeardown: undefined
+}
+19:55:04.584 detox[47742] i ## received events ##
+19:55:04.585 detox[47742] i detected event registerContextDone { testResults: [], testSessionIndex: 0 }
+19:55:04.667 detox[47742] B e2e/app.test.ts
+19:55:04.675 detox[47742] B set up environment
+19:55:04.676 detox[47741] i received event of :  registerWorker { workerId: 'w1' }
+19:55:04.676 detox[47742] i dispatching event to  primary-47741 /tmp/detox.primary-47741  :  registerWorker , { workerId: 'w1' }
+19:55:04.677 detox[47741] i dispatching event to socket  :  registerWorkerDone { workersCount: 1 }
+19:55:04.677 detox[47741] i broadcasting event to all known sockets listening to  /tmp/detox.primary-47741  :   sessionStateUpdate { workersCount: 1 }
+19:55:04.677 detox[47742] i ## received events ##
+19:55:04.677 detox[47742] i detected event registerWorkerDone { workersCount: 1 }
+19:55:04.942 detox[47742] i ## received events ##
+19:55:04.943 detox[47742] i detected event sessionStateUpdate { workersCount: 1 }
+19:55:04.963 detox[47741] B connection :57848<->:57851
+19:55:04.965 detox[47742] i opened web socket to: ws://localhost:57848
+19:55:04.968 detox[47742] i send message
+  data: {"type":"login","params":{"sessionId":"98ba5fa8-e568-38e6-6888-e8a103aa1453","role":"tester"},"messageId":0}
+19:55:04.970 detox[47741] i get
+  data: {"type":"login","params":{"sessionId":"98ba5fa8-e568-38e6-6888-e8a103aa1453","role":"tester"},"messageId":0}
+19:55:04.971 detox[47741] i created session 98ba5fa8-e568-38e6-6888-e8a103aa1453
+19:55:04.972 detox[47741] i send
+  data: {
+    "type": "loginSuccess",
+    "params": {
+      "testerConnected": true,
+      "appConnected": false
+    },
+    "messageId": 0
+  }
+19:55:04.972 detox[47741] i tester joined session 98ba5fa8-e568-38e6-6888-e8a103aa1453
+19:55:04.973 detox[47742] i get message
+  data: {"type":"loginSuccess","params":{"testerConnected":true,"appConnected":false},"messageId":0}
+   
+19:55:05.332 detox[47741] i received event of :  allocateDevice {
+  deviceConfig: { type: 'ios.simulator', device: { type: 'iPhone 16 Pro' } }
+}
+19:55:05.332 detox[47742] i dispatching event to  primary-47741 /tmp/detox.primary-47741  :  allocateDevice , {
+  deviceConfig: { type: 'ios.simulator', device: { type: 'iPhone 16 Pro' } }
+}
+19:55:05.337 detox[47741] B init
+  args: ()
+19:55:05.340 detox[47741] E init
+19:55:05.340 detox[47741] B allocate
+  data: {
+    "type": "ios.simulator",
+    "device": {
+      "type": "iPhone 16 Pro"
+    }
+  }
+19:55:05.364 detox[47741] i applesimutils --list --byType "iPhone 16 Pro" --fields udid,name,deviceType,os,identifier
+19:55:05.364 detox[47741] i Searching for device by type = "iPhone 16 Pro" ...
+19:55:05.622 detox[47741] i [
+  {
+    "os" : {
+      "name" : "iOS 18.5",
+      "identifier" : "com.apple.CoreSimulator.SimRuntime.iOS-18-5"
+    },
+    "name" : "iPhone 16 Pro",
+    "udid" : "85DD3162-206C-44DB-A723-F4B933896B6E",
+    "deviceType" : {
+      "name" : "iPhone 16 Pro",
+      "identifier" : "com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro"
+    }
+  }
+]
+
+19:55:05.623 detox[47741] i settled on 85DD3162-206C-44DB-A723-F4B933896B6E
+  data: {
+    "id": "85DD3162-206C-44DB-A723-F4B933896B6E",
+    "udid": "85DD3162-206C-44DB-A723-F4B933896B6E"
+  }
+19:55:05.623 detox[47741] E allocate
+19:55:05.623 detox[47741] B post-allocate: 85DD3162-206C-44DB-A723-F4B933896B6E
+  data: {
+    "id": "85DD3162-206C-44DB-A723-F4B933896B6E",
+    "udid": "85DD3162-206C-44DB-A723-F4B933896B6E"
+  }
+19:55:05.623 detox[47741] i applesimutils --list --byId 85DD3162-206C-44DB-A723-F4B933896B6E --maxResults 1 --fields udid,os,version,state
+19:55:05.814 detox[47741] i [
+  {
+    "state" : "Shutdown",
+    "os" : {
+      "version" : "18.5"
+    },
+    "udid" : "85DD3162-206C-44DB-A723-F4B933896B6E"
+  }
+]
+
+19:55:05.815 detox[47741] i /usr/bin/xcrun simctl boot 85DD3162-206C-44DB-A723-F4B933896B6E 
+19:55:05.815 detox[47741] i Booting device 85DD3162-206C-44DB-A723-F4B933896B6E...
+19:55:07.269 detox[47741] i 
+19:55:07.272 detox[47741] i /usr/bin/xcrun simctl bootstatus 85DD3162-206C-44DB-A723-F4B933896B6E
+19:55:20.545 detox[47741] i Monitoring boot status for iPhone 16 Pro (85DD3162-206C-44DB-A723-F4B933896B6E).
+[2026-03-12 19:55:08 +0000] Status=1, isTerminal=NO, Elapsed=00:02.
+	Waiting on BackBoard
+
+[2026-03-12 19:55:20 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:14.
+	Finished
+
+
+19:55:20.546 detox[47741] i open -a Simulator --args -CurrentDeviceUDID 85DD3162-206C-44DB-A723-F4B933896B6E
+19:55:21.548 detox[47741] i 
+19:55:21.550 detox[47741] E post-allocate: 85DD3162-206C-44DB-A723-F4B933896B6E
+19:55:21.551 detox[47741] i dispatching event to socket  :  allocateDeviceDone {
+  deviceCookie: {
+    id: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    udid: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    type: 'ios.simulator',
+    bootArgs: undefined,
+    headless: undefined
+  }
+}
+19:55:21.551 detox[47742] i ## received events ##
+19:55:21.554 detox[47742] i detected event allocateDeviceDone {
+  deviceCookie: {
+    id: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    udid: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    type: 'ios.simulator'
+  }
+}
+19:55:21.586 detox[47742] B onBootDevice
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E"})
+19:55:21.586 detox[47742] E onBootDevice
+19:55:21.588 detox[47742] B installUtilBinaries
+  args: ()
+19:55:21.588 detox[47742] E installUtilBinaries
+19:55:21.589 detox[47742] B selectApp
+  args: ("default")
+19:55:21.605 detox[47742] E selectApp
+19:55:21.606 detox[47742] B uninstallApp
+  args: ()
+19:55:21.606 detox[47742] B onBeforeUninstallApp
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant"})
+19:55:21.607 detox[47742] E onBeforeUninstallApp
+19:55:21.607 detox[47742] i /usr/bin/xcrun simctl uninstall 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+19:55:21.607 detox[47742] i Uninstalling com.ellie.minershiftassistant...
+19:55:30.122 detox[47742] i com.ellie.minershiftassistant uninstalled
+19:55:30.125 detox[47742] E uninstallApp
+19:55:30.126 detox[47742] B selectApp
+  args: ("default")
+19:55:30.128 detox[47742] B terminateApp
+  args: ()
+19:55:30.128 detox[47742] B onBeforeTerminateApp
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant"})
+19:55:30.128 detox[47742] E onBeforeTerminateApp
+19:55:30.128 detox[47742] i /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+19:55:30.128 detox[47742] i Terminating com.ellie.minershiftassistant...
+19:55:31.441 detox[47742] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+
+19:55:31.441 detox[47742] i Terminating com.ellie.minershiftassistant...
+19:55:31.755 detox[47742] i "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+ (code=3), stdout and stderr:
+
+19:55:31.755 detox[47742] i 
+19:55:31.755 detox[47742] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+
+19:55:31.755 detox[47742] B onTerminateApp
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant"})
+19:55:31.756 detox[47742] E onTerminateApp
+19:55:31.756 detox[47742] E terminateApp
+19:55:31.756 detox[47742] E selectApp
+19:55:31.756 detox[47742] B installApp
+  args: ()
+19:55:31.756 detox[47742] i /usr/bin/xcrun simctl install 85DD3162-206C-44DB-A723-F4B933896B6E "/Users/Shared/Ellie/ios/build/Build/Products/Release-iphonesimulator/Ellie.app"
+19:55:31.756 detox[47742] i Installing /Users/Shared/Ellie/ios/build/Build/Products/Release-iphonesimulator/Ellie.app...
+19:55:37.887 detox[47742] i /Users/Shared/Ellie/ios/build/Build/Products/Release-iphonesimulator/Ellie.app installed
+19:55:37.890 detox[47742] E installApp
+19:55:37.891 detox[47742] B selectApp
+  args: ("default")
+19:55:37.891 detox[47742] B terminateApp
+  args: ()
+19:55:37.892 detox[47742] B onBeforeTerminateApp
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant"})
+19:55:37.892 detox[47742] E onBeforeTerminateApp
+19:55:37.892 detox[47742] i /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+19:55:37.892 detox[47742] i Terminating com.ellie.minershiftassistant...
+19:55:39.068 detox[47742] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+
+19:55:39.068 detox[47742] i Terminating com.ellie.minershiftassistant...
+19:55:39.377 detox[47742] i "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+ (code=3), stdout and stderr:
+
+19:55:39.378 detox[47742] i 
+19:55:39.378 detox[47742] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+
+19:55:39.378 detox[47742] B onTerminateApp
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant"})
+19:55:39.378 detox[47742] E onTerminateApp
+19:55:39.378 detox[47742] E terminateApp
+19:55:39.378 detox[47742] E selectApp
+19:55:39.379 detox[47742] E set up environment
+19:55:39.712 detox[47742] i app.test.ts is assigned to 85DD3162-206C-44DB-A723-F4B933896B6E (iPhone 16 Pro)
+19:55:39.713 detox[47742] B run the tests
+19:55:39.713 detox[47742] B onRunDescribeStart
+  args: ({"name":"ROOT_DESCRIBE_BLOCK"})
+19:55:39.713 detox[47742] E onRunDescribeStart
+19:55:39.713 detox[47742] B Ellie Auth Flow
+19:55:39.714 detox[47742] B onRunDescribeStart
+  args: ({"name":"Ellie Auth Flow"})
+19:55:39.714 detox[47742] E onRunDescribeStart
+19:55:39.714 detox[47742] B beforeAll
+19:55:39.719 detox[47742] B launchApp
+  args: ()
+19:55:39.719 detox[47742] B terminateApp
+  args: ("com.ellie.minershiftassistant")
+19:55:39.719 detox[47742] B onBeforeTerminateApp
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant"})
+19:55:39.719 detox[47742] E onBeforeTerminateApp
+19:55:39.719 detox[47742] i /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+19:55:39.719 detox[47742] i Terminating com.ellie.minershiftassistant...
+19:55:40.920 detox[47742] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+
+19:55:40.921 detox[47742] i Terminating com.ellie.minershiftassistant...
+19:55:41.174 detox[47742] i "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+ (code=3), stdout and stderr:
+
+19:55:41.174 detox[47742] i 
+19:55:41.174 detox[47742] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+
+19:55:41.174 detox[47742] B onTerminateApp
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant"})
+19:55:41.174 detox[47742] E onTerminateApp
+19:55:41.174 detox[47742] E terminateApp
+19:55:41.175 detox[47742] B onBeforeLaunchApp
+  args: ({"bundleId":"com.ellie.minershiftassistant","deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","launchArgs":{"detoxServer":"ws://localhost:57848","detoxSessionId":"98ba5fa8-e568-38e6-6888-e8a103aa1453"}})
+19:55:41.175 detox[47742] i starting SimulatorLogRecording {
+  udid: '85DD3162-206C-44DB-A723-F4B933896B6E',
+  bundleId: 'com.ellie.minershiftassistant'
+}
+19:55:41.180 detox[47742] i /usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+19:55:41.407 detox[47742] i /Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/444A4E3F-C914-4287-B556-231EFD5D1388/EllieMinerShiftAssistant.app
+
+19:55:41.410 detox[47742] i /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate "processImagePath beginsWith \"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/444A4E3F-C914-4287-B556-231EFD5D1388/EllieMinerShiftAssistant.app\""
+19:55:41.460 detox[47742] E onBeforeLaunchApp
+19:55:41.461 detox[47742] i SIMCTL_CHILD_GULGeneratedClassDisposeDisabled=YES SIMCTL_CHILD_DYLD_INSERT_LIBRARIES="/Users/user/Library/Detox/ios/framework/7a593ed1f90c0350964e0c75f65f6f0a8382c0f9/Detox.framework/Detox" /usr/bin/xcrun simctl launch 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant --args -detoxServer ws://localhost:57848 -detoxSessionId 98ba5fa8-e568-38e6-6888-e8a103aa1453 -detoxDisableHierarchyDump YES
+19:55:41.461 detox[47742] i Launching com.ellie.minershiftassistant...
+19:55:42.967 detox[47742] i com.ellie.minershiftassistant: 48011
+
+19:55:42.968 detox[47742] i /usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+19:55:43.203 detox[47742] i /Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/444A4E3F-C914-4287-B556-231EFD5D1388/EllieMinerShiftAssistant.app
+
+19:55:43.215 detox[47742] i com.ellie.minershiftassistant launched. To watch simulator logs, run:
+        /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate 'process == "EllieMinerShiftAssistant"'
+19:55:43.216 detox[47742] B onLaunchApp
+  args: ({"bundleId":"com.ellie.minershiftassistant","deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","launchArgs":{"detoxServer":"ws://localhost:57848","detoxSessionId":"98ba5fa8-e568-38e6-6888-e8a103aa1453","detoxDisableHierarchyDump":"YES"},"pid":48011})
+19:55:43.216 detox[47742] E onLaunchApp
+19:57:39.717 detox[47742] B onHookFailure
+  args: ({"error":"Exceeded timeout of 120000 ms for a hook.\nAdd a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.","hook":"beforeAll"})
+19:57:39.720 detox[47742] E onHookFailure
+19:57:39.721 detox[47742] E beforeAll
+  error: 'Exceeded timeout of 120000 ms for a hook.\n' +
+    'Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.'
+19:57:39.723 detox[47742] B shows sign-in screen by default
+19:57:39.723 detox[47742] i Ellie Auth Flow: shows sign-in screen by default
+19:57:39.728 detox[47742] E shows sign-in screen by default
+19:57:39.729 detox[47742] i Ellie Auth Flow: shows sign-in screen by default [FAIL]
+19:57:39.741 detox[47742] B navigates from sign in to sign up and back
+19:57:39.742 detox[47742] i Ellie Auth Flow: navigates from sign in to sign up and back
+19:57:39.742 detox[47742] E navigates from sign in to sign up and back
+19:57:39.743 detox[47742] i Ellie Auth Flow: navigates from sign in to sign up and back [FAIL]
+19:57:39.743 detox[47742] B validates required sign-in inputs
+19:57:39.743 detox[47742] i Ellie Auth Flow: validates required sign-in inputs
+19:57:39.744 detox[47742] E validates required sign-in inputs
+19:57:39.744 detox[47742] i Ellie Auth Flow: validates required sign-in inputs [FAIL]
+19:57:39.745 detox[47742] B navigates to forgot password screen
+19:57:39.745 detox[47742] i Ellie Auth Flow: navigates to forgot password screen
+19:57:39.750 detox[47742] E navigates to forgot password screen
+19:57:39.750 detox[47742] i Ellie Auth Flow: navigates to forgot password screen [FAIL]
+19:57:39.751 detox[47742] B validates required forgot-password email input
+19:57:39.751 detox[47742] i Ellie Auth Flow: validates required forgot-password email input
+19:57:39.753 detox[47742] E validates required forgot-password email input
+19:57:39.753 detox[47742] i Ellie Auth Flow: validates required forgot-password email input [FAIL]
+19:57:39.753 detox[47742] B validates sign-up fields and password mismatch
+19:57:39.753 detox[47742] i Ellie Auth Flow: validates sign-up fields and password mismatch
+19:57:39.754 detox[47742] E validates sign-up fields and password mismatch
+19:57:39.754 detox[47742] i Ellie Auth Flow: validates sign-up fields and password mismatch [FAIL]
+19:57:39.755 detox[47742] B onRunDescribeFinish
+  args: ({"name":"Ellie Auth Flow"})
+19:57:39.755 detox[47742] E onRunDescribeFinish
+19:57:39.755 detox[47742] E Ellie Auth Flow
+19:57:39.755 detox[47742] B onRunDescribeFinish
+  args: ({"name":"ROOT_DESCRIBE_BLOCK"})
+19:57:39.755 detox[47742] E onRunDescribeFinish
+19:57:39.755 detox[47742] E run the tests
+19:57:39.791 detox[47742] B tear down environment
+19:57:39.792 detox[47742] B onBeforeCleanup
+  args: ()
+19:57:39.803 detox[47742] i saving SimulatorLogRecording to: artifacts/ios.release.2026-03-12 19-54-56Z/85DD3162-206C-44DB-A723-F4B933896B6E 2026-03-12 19-57-39Z.startup.log
+19:57:39.804 detox[47742] i stopping SimulatorLogRecording
+19:57:39.856 detox[47742] i sending SIGINT to: /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate processImagePath beginsWith "/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/444A4E3F-C914-4287-B556-231EFD5D1388/EllieMinerShiftAssistant.app"
+19:57:39.867 detox[47742] i /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate "processImagePath beginsWith \"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/444A4E3F-C914-4287-B556-231EFD5D1388/EllieMinerShiftAssistant.app\"" exited with code #0
+19:57:39.870 detox[47742] i moving "/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-47742-312zln.detox.log" to artifacts/ios.release.2026-03-12 19-54-56Z/85DD3162-206C-44DB-A723-F4B933896B6E 2026-03-12 19-57-39Z.startup.log
+19:57:39.882 detox[47742] i saving FileArtifact to: artifacts/ios.release.2026-03-12 19-54-56Z/detox_pid_47742.json.log { append: true }
+19:57:39.882 detox[47742] i saving FileArtifact to: artifacts/ios.release.2026-03-12 19-54-56Z/detox_pid_47742.log { append: true }
+19:57:39.882 detox[47742] E onBeforeCleanup
+19:57:39.883 detox[47742] i Detox can't seem to connect to the test app(s)!
+
+HINT: 
+
+The test app might have crashed prematurely, or has had trouble setting up the connection.
+Refer to our troubleshooting guide, for full details: https://wix.github.io/Detox/docs/troubleshooting/running-tests#tests-execution-hangs 
+
+
+
+19:57:39.886 detox[47741] i tester exited session 98ba5fa8-e568-38e6-6888-e8a103aa1453
+19:57:39.886 detox[47742] i dispatching event to  primary-47741 /tmp/detox.primary-47741  :  deallocateDevice , {
+  deviceCookie: {
+    id: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    udid: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    type: 'ios.simulator'
+  }
+}
+19:57:39.887 detox[47741] E connection :57848<->:57851
+19:57:39.888 detox[47741] i received event of :  deallocateDevice {
+  deviceCookie: {
+    id: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    udid: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    type: 'ios.simulator'
+  }
+}
+19:57:39.888 detox[47741] B free: 85DD3162-206C-44DB-A723-F4B933896B6E
+  data: {}
+19:57:39.889 detox[47741] E free: 85DD3162-206C-44DB-A723-F4B933896B6E
+19:57:39.889 detox[47741] i dispatching event to socket  :  deallocateDeviceDone {}
+19:57:39.889 detox[47742] i ## received events ##
+19:57:39.891 detox[47742] i detected event deallocateDeviceDone {}
+19:57:39.891 detox[47742] E tear down environment
+19:57:39.891 detox[47742] E e2e/app.test.ts
+19:57:39.898 detox[47741] i received event of :  reportTestResults {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/Shared/Ellie/e2e/app.test.ts',
+      isPermanentFailure: false
+    }
+  ]
+}
+19:57:39.898 detox[47742] i dispatching event to  primary-47741 /tmp/detox.primary-47741  :  reportTestResults , {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/Shared/Ellie/e2e/app.test.ts',
+      testExecError: undefined,
+      isPermanentFailure: false
+    }
+  ]
+}
+19:57:39.900 detox[47741] i dispatching event to socket  :  reportTestResultsDone {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/Shared/Ellie/e2e/app.test.ts',
+      isPermanentFailure: false
+    }
+  ]
+}
+19:57:39.900 detox[47741] i broadcasting event to all known sockets listening to  /tmp/detox.primary-47741  :   sessionStateUpdate {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/Shared/Ellie/e2e/app.test.ts',
+      isPermanentFailure: false
+    }
+  ]
+}
+19:57:39.900 detox[47742] i ## received events ##
+19:57:39.900 detox[47742] i detected event reportTestResultsDone {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/Shared/Ellie/e2e/app.test.ts',
+      isPermanentFailure: false
+    }
+  ]
+}
+19:57:39.902 detox[47741] i socket disconnected secondary-47742
+19:57:39.902 detox[47742] i connection closed primary-47741 /tmp/detox.primary-47741 0 tries remaining of 0
+19:57:39.902 detox[47742] i secondary-47742 exceeded connection rety amount of  or stopRetrying flag set.
+19:57:39.965 detox[47741] E Command failed with exit code = 1:
+jest --config e2e/jest.config.js
+19:57:39.967 detox[47741] B cleanup
+  args: ()
+19:57:39.969 detox[47741] E cleanup
+19:57:39.969 detox[47741] i Detox server has been closed gracefully
+19:57:39.973 detox[47741] E node_modules/.bin/detox test --configuration ios.release --record-logs all --loglevel info

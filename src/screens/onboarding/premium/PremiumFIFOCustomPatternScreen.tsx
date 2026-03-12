@@ -777,7 +777,11 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
             rosterType: 'fifo',
             fifoConfig,
           }
-        : { fifoConfig }
+        : {
+            patternType: ShiftPattern.FIFO_CUSTOM,
+            rosterType: 'fifo',
+            fifoConfig,
+          }
     );
     void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
       source: 'PremiumFIFOCustomPatternScreen.handleContinue.success',
@@ -815,7 +819,7 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <ProgressHeader
-        currentStep={ONBOARDING_STEPS.SHIFT_PATTERN + 0.5}
+        currentStep={ONBOARDING_STEPS.FIFO_CUSTOM_PATTERN}
         totalSteps={TOTAL_ONBOARDING_STEPS}
         testID="fifo-custom-pattern-progress-header"
       />
@@ -942,7 +946,7 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
                 trackColor="#60A5FA"
                 onChange={(val) => {
                   setDaysOnDayShift(val);
-                  setDaysOnNightShift(Math.max(0, workBlockDays - val));
+                  setDaysOnNightShift(Math.max(1, workBlockDays - val));
                 }}
                 hapticSourcePrefix="PremiumFIFOCustomPatternScreen"
                 delayIndex={2}
@@ -963,7 +967,7 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
                 trackColor="#A78BFA"
                 onChange={(val) => {
                   setDaysOnNightShift(val);
-                  setDaysOnDayShift(Math.max(0, workBlockDays - val));
+                  setDaysOnDayShift(Math.max(1, workBlockDays - val));
                 }}
                 hapticSourcePrefix="PremiumFIFOCustomPatternScreen"
                 delayIndex={3}

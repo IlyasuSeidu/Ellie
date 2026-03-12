@@ -11,27 +11,38 @@ try {
 }
 
 module.exports = ({ config = {} }) => {
+  const appEnv = process.env.APP_ENV || 'development';
   const configExtra = config.extra || {};
   const easProjectId = process.env.EAS_PROJECT_ID || configExtra?.eas?.projectId || '';
   const expoUpdates = {
     ...(config.updates || {}),
   };
+  const iosGoogleServicesFile =
+    process.env.EXPO_IOS_GOOGLE_SERVICES_FILE ||
+    process.env.IOS_GOOGLE_SERVICES_FILE ||
+    process.env.GOOGLE_SERVICES_FILE;
 
   if (!expoUpdates.url && easProjectId) {
     expoUpdates.url = `https://u.expo.dev/${easProjectId}`;
   }
 
-  // Fingerprint runtime versions prevent OTA/native mismatches when native dependencies change.
-  // This is critical for modules like react-native-purchases that require native binaries.
-  const runtimeVersion = config.runtimeVersion || { policy: 'fingerprint' };
+  // Use appVersion runtime in non-production to avoid local-vs-cloud fingerprint drift in dev builds.
+  // Keep fingerprint policy in production to protect OTA/native compatibility.
+  const runtimeVersion =
+    config.runtimeVersion ||
+    (appEnv === 'production' ? { policy: 'fingerprint' } : { policy: 'appVersion' });
 
   return {
     ...config,
     updates: expoUpdates,
     runtimeVersion,
+    ios: {
+      ...(config.ios || {}),
+      ...(iosGoogleServicesFile ? { googleServicesFile: iosGoogleServicesFile } : {}),
+    },
     extra: {
       ...configExtra,
-      APP_ENV: process.env.APP_ENV || 'development',
+      APP_ENV: appEnv,
       FIREBASE_API_KEY: process.env.FIREBASE_API_KEY || '',
       FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN || '',
       FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID || '',
