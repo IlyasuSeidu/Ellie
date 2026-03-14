@@ -851,7 +851,7 @@
       "title": "Your FIFO Rotation Preview",
       "workLabel": "Work: {{workBlockDays}} days"
     },
-    "previewGuide": "See your FIFO pattern below",
+    "previewGuide": "Step 3: Review your FIFO preview before saving",
     "saveA11y": "Save FIFO pattern and continue",
     "saveButton": "Save FIFO Pattern",
     "saveHintInvalid": "Fix the validation issue before continuing",
@@ -862,34 +862,34 @@
       "daysOnDayShift": "Days on Day Shift",
       "daysOnNightShift": "Days on Night Shift"
     },
-    "slidersTitle": "Set Up Your FIFO Pattern",
-    "subtitle": "Set your on-site block, home block, and work-block shift style for a schedule that fits your site cycle.",
-    "subtitleSecondary": "Work Block, Rest Block & Pattern Split",
+    "slidersTitle": "Step 1: Set block lengths",
+    "subtitle": "Step 1: Set days at site and days at home. Step 2: Choose how shifts run while you are on site.",
+    "subtitleSecondary": "Step 3: Review preview and save",
     "success": "Solid FIFO setup. {{workBlockDays}} days at site, then {{restBlockDays}} days at home.",
-    "swingSubtitle": "Split your work block between day and night shifts.",
-    "swingTitle": "Swing Configuration",
+    "swingSubtitle": "Set exactly how many work-block days are day shift vs night shift.",
+    "swingTitle": "Step 2A: Swing Split",
     "swingTotal": "Split total: {{swingTotal}}/{{workBlockDays}} days",
-    "tip": "Tip: Match your home block to recovery and travel demands. FIFO patterns work best when the rest block is long enough to reset before your next site run.",
-    "title": "Build Your FIFO Rotation",
+    "tip": "Tip: Start with your real travel + recovery rhythm. Then adjust site/home days until the cycle is sustainable.",
+    "title": "Build Your FIFO Roster",
     "validation": {
       "blocksMinimum": "Work and rest blocks must each be at least 1 day.",
       "swingMismatch": "Swing split must equal {{workBlockDays}} days before saving."
     },
     "warning": "This roster is heavy ({{workPercentage}}% work). Consider balancing with more home days if fatigue becomes an issue.",
-    "workPatternSubtitle": "How are your shifts organized while at site?",
-    "workPatternTitle": "Work Pattern During Work Block",
+    "workPatternSubtitle": "Choose how shifts run during your site block.",
+    "workPatternTitle": "Step 2: Work-Block Shift Style",
     "workPatterns": {
       "straight-days": {
         "title": "Straight Days",
-        "description": "Work day shifts only for the entire work block (e.g., 7am-7pm)"
+        "description": "All site days are day shift."
       },
       "straight-nights": {
         "title": "Straight Nights",
-        "description": "Work night shifts only for the entire work block (e.g., 7pm-7am)"
+        "description": "All site days are night shift."
       },
       "swing": {
-        "title": "Swing Roster",
-        "description": "Alternate between day shifts and night shifts during work block"
+        "title": "Swing (Days + Nights)",
+        "description": "Site block includes both day shifts and night shifts."
       }
     }
   },

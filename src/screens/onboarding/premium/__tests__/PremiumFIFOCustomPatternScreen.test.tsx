@@ -123,10 +123,10 @@ describe('PremiumFIFOCustomPatternScreen', () => {
 
   it('renders parity shell with FIFO-specific controls', () => {
     const { getByText, getByTestId } = renderWithContext();
-    expect(getByText('Build Your FIFO Rotation')).toBeTruthy();
-    expect(getByText('Work Block, Rest Block & Pattern Split')).toBeTruthy();
-    expect(getByText(/See your FIFO pattern below/)).toBeTruthy();
-    expect(getByText('Work Pattern During Work Block')).toBeTruthy();
+    expect(getByText('Build Your FIFO Roster')).toBeTruthy();
+    expect(getByText('Step 3: Review preview and save')).toBeTruthy();
+    expect(getByText(/Step 3: Review your FIFO preview before saving/)).toBeTruthy();
+    expect(getByText('Step 2: Work-Block Shift Style')).toBeTruthy();
     expect(getByTestId('fifo-custom-pattern-progress-header')).toBeTruthy();
     expect(getByTestId('fifo-custom-save-button')).toBeTruthy();
     expect(getByTestId('fifo-custom-back-button')).toBeTruthy();
@@ -171,7 +171,7 @@ describe('PremiumFIFOCustomPatternScreen', () => {
     const { queryByTestId, getByText } = renderWithContext();
     expect(queryByTestId('swing-config-section')).toBeNull();
 
-    fireEvent.press(getByText('Swing Roster'));
+    fireEvent.press(getByText('Swing (Days + Nights)'));
 
     await waitFor(() => {
       expect(queryByTestId('swing-config-section')).toBeTruthy();
@@ -183,7 +183,7 @@ describe('PremiumFIFOCustomPatternScreen', () => {
   it('keeps swing sliders synchronized with work block total', async () => {
     const { getByText, getByLabelText } = renderWithContext();
 
-    fireEvent.press(getByText('Swing Roster'));
+    fireEvent.press(getByText('Swing (Days + Nights)'));
     await waitFor(() => {
       expect(getByText('Split total: 14/14 days')).toBeTruthy();
     });
@@ -204,7 +204,7 @@ describe('PremiumFIFOCustomPatternScreen', () => {
   it('persists fifoConfig with work pattern and swing details on save', async () => {
     const { getByText, getByLabelText, getByTestId } = renderWithContext();
 
-    fireEvent.press(getByText('Swing Roster'));
+    fireEvent.press(getByText('Swing (Days + Nights)'));
     fireEvent.press(getByLabelText('Increase Days at Site (Work Block)'));
     fireEvent.press(getByLabelText('Increase Days on Day Shift'));
     fireEvent.press(getByTestId('fifo-custom-save-button'));
