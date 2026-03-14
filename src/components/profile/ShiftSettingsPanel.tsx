@@ -97,16 +97,6 @@ type TimeTarget = {
 
 type FIFOWorkPattern = 'straight-days' | 'straight-nights' | 'swing' | 'custom';
 
-const SHIFT_TYPE_COLORS: Record<ShiftType, string> = {
-  day: '#2196F3',
-  night: '#9C27B0',
-  morning: '#F59E0B',
-  afternoon: '#06B6D4',
-  off: '#4CAF50',
-};
-
-const DEFAULT_CUSTOM_SEQUENCE: ShiftType[] = ['day', 'day', 'night', 'night', 'off', 'off', 'off'];
-
 // ── Module-level helpers ───────────────────────────────────────────────────────
 
 function parseStartDateValue(value: Date | string | undefined): Date | null {
@@ -238,14 +228,6 @@ function getCyclePositionLabel(
   }
 
   return translate('shift.cycleDay', { day: normalizedOffset + 1 });
-}
-
-function getShiftTypeLabel(t: TFunction<'profile', undefined>, shiftType: ShiftType): string {
-  if (shiftType === 'day') return String(t('shift.day'));
-  if (shiftType === 'night') return String(t('shift.night'));
-  if (shiftType === 'morning') return String(t('shift.morning'));
-  if (shiftType === 'afternoon') return String(t('shift.afternoon'));
-  return String(t('shift.off'));
 }
 
 function getFIFOWorkPatternLabel(
@@ -751,7 +733,6 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
   const effectivePattern = d.patternType;
   const isCustomRotating =
     effectivePattern === ShiftPattern.CUSTOM && effectiveRosterType === 'rotating';
-  const isFIFOCustom = effectivePattern === ShiftPattern.FIFO_CUSTOM;
   const isFIFORoster = effectiveRosterType === 'fifo';
   const is3Shift = effectiveShiftSystem === '3-shift';
 
@@ -1381,235 +1362,52 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                     </TouchableOpacity>
                   ) : null}
 
-                  <View style={styles.sliderWrapper}>
-                    <PatternBuilderSlider
-                      label={t('shift.workBlock')}
-                      icon="construct-outline"
-                      value={currentFifoConfig.workBlockDays}
-                      min={1}
-                      max={60}
-                      color="#2196F3"
-                      trackColor="rgba(33,150,243,0.5)"
-                      onChange={(v) => updateFifoConfig({ workBlockDays: v })}
-                      hapticSourcePrefix="ShiftSettingsPanel"
-                      delayIndex={0}
-                    />
-                  </View>
-
-                  <View style={[styles.sliderWrapper, { marginTop: theme.spacing.md }]}>
-                    <PatternBuilderSlider
-                      label={t('shift.restBlock')}
-                      icon="home-outline"
-                      value={currentFifoConfig.restBlockDays}
-                      min={1}
-                      max={60}
-                      color="#78716c"
-                      trackColor="rgba(120,113,108,0.5)"
-                      onChange={(v) => updateFifoConfig({ restBlockDays: v })}
-                      hapticSourcePrefix="ShiftSettingsPanel"
-                      delayIndex={1}
-                    />
-                  </View>
-
-                  <EditSectionLabel
-                    label={t('shift.sections.workPattern')}
-                    icon="flash-outline"
-                    iconColor={theme.colors.sacredGold}
-                    delay={320}
-                  />
-                  <View style={styles.workPatternGrid}>
-                    {(
-                      ['straight-days', 'straight-nights', 'swing', 'custom'] as FIFOWorkPattern[]
-                    ).map((wp) => (
-                      <TouchableOpacity
-                        key={wp}
-                        style={[
-                          styles.workPatternChip,
-                          fifoWorkPattern === wp && styles.workPatternChipSelected,
-                        ]}
-                        onPress={() => {
-                          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                          updateFifoConfig({ workBlockPattern: wp });
-                        }}
-                        activeOpacity={0.7}
-                        accessibilityLabel={getFIFOWorkPatternLabel(t, wp)}
-                        accessibilityRole="radio"
-                        accessibilityState={{ checked: fifoWorkPattern === wp }}
-                      >
-                        <Animated.Text
+                  {onOpenFIFOCustomPatternOnboarding ? (
+                    <TouchableOpacity
+                      style={styles.patternRow}
+                      onPress={handleOpenFIFOCustomPatternBuilder}
+                      activeOpacity={0.7}
+                      accessibilityLabel={t('shift.fifoSummaryA11y', {
+                        defaultValue: 'FIFO configuration summary',
+                      })}
+                      accessibilityRole="button"
+                      accessibilityHint={t('shift.fifoSummaryHint', {
+                        defaultValue:
+                          'Shows current FIFO pattern and block lengths. Tap to edit in FIFO onboarding builder.',
+                      })}
+                    >
+                      <View style={styles.patternRowLeft}>
+                        <View
                           style={[
-                            styles.workPatternChipText,
-                            fifoWorkPattern === wp && styles.workPatternChipTextSelected,
+                            styles.patternIconBg,
+                            { backgroundColor: 'rgba(180, 83, 9, 0.15)' },
                           ]}
                         >
-                          {getFIFOWorkPatternLabel(t, wp)}
-                        </Animated.Text>
-                      </TouchableOpacity>
-                    ))}
-                  </View>
-
-                  {/* Swing sub-section */}
-                  {fifoWorkPattern === 'swing' && (
-                    <Animated.View entering={FadeInUp.duration(300)}>
-                      <View style={[styles.sliderWrapper, { marginTop: theme.spacing.md }]}>
-                        <PatternBuilderSlider
-                          label={t('shift.dayShifts')}
-                          icon="sunny-outline"
-                          value={currentFifoConfig.swingPattern?.daysOnDayShift ?? 5}
-                          min={1}
-                          max={30}
-                          color="#F59E0B"
-                          trackColor="rgba(245,158,11,0.5)"
-                          onChange={(v) =>
-                            updateFifoConfig({
-                              swingPattern: {
-                                daysOnDayShift: v,
-                                daysOnNightShift:
-                                  currentFifoConfig.swingPattern?.daysOnNightShift ?? 5,
-                              },
-                            })
-                          }
-                          hapticSourcePrefix="ShiftSettingsPanel"
-                          delayIndex={0}
-                        />
-                      </View>
-                      <View style={[styles.sliderWrapper, { marginTop: theme.spacing.md }]}>
-                        <PatternBuilderSlider
-                          label={t('shift.nightShifts')}
-                          icon="moon-outline"
-                          value={currentFifoConfig.swingPattern?.daysOnNightShift ?? 5}
-                          min={1}
-                          max={30}
-                          color="#9C27B0"
-                          trackColor="rgba(156,39,176,0.5)"
-                          onChange={(v) =>
-                            updateFifoConfig({
-                              swingPattern: {
-                                daysOnDayShift: currentFifoConfig.swingPattern?.daysOnDayShift ?? 5,
-                                daysOnNightShift: v,
-                              },
-                            })
-                          }
-                          hapticSourcePrefix="ShiftSettingsPanel"
-                          delayIndex={1}
-                        />
-                      </View>
-                    </Animated.View>
-                  )}
-
-                  {/* Custom work sequence (FIFO_CUSTOM or workBlockPattern === 'custom') */}
-                  {(isFIFOCustom || fifoWorkPattern === 'custom') && (
-                    <Animated.View entering={FadeInUp.duration(300)}>
-                      <EditSectionLabel
-                        label={t('shift.sections.customSequence')}
-                        icon="list-outline"
-                        iconColor={theme.colors.sacredGold}
-                        delay={400}
-                      />
-                      <View style={styles.sequenceBuilderWrapper}>
-                        <Animated.Text style={styles.sequenceHelp}>
-                          {t('shift.sequenceHelp')}
-                        </Animated.Text>
-                        {/* Current sequence display */}
-                        <View style={styles.sequenceRow}>
-                          {(currentFifoConfig.customWorkSequence ?? DEFAULT_CUSTOM_SEQUENCE).map(
-                            (shiftType, idx) => (
-                              <TouchableOpacity
-                                key={`seq-${idx}`}
-                                style={[
-                                  styles.sequenceChip,
-                                  {
-                                    backgroundColor: SHIFT_TYPE_COLORS[shiftType] + '30',
-                                    borderColor: SHIFT_TYPE_COLORS[shiftType] + '80',
-                                  },
-                                ]}
-                                onPress={() => {
-                                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                                  const seq = [
-                                    ...(currentFifoConfig.customWorkSequence ??
-                                      DEFAULT_CUSTOM_SEQUENCE),
-                                  ];
-                                  seq.splice(idx, 1);
-                                  updateFifoConfig({ customWorkSequence: seq });
-                                }}
-                                accessibilityLabel={`${t('buttons.clear', { ns: 'common' })} ${getShiftTypeLabel(t, shiftType)} ${idx + 1}`}
-                              >
-                                <Animated.Text
-                                  style={[
-                                    styles.sequenceChipText,
-                                    { color: SHIFT_TYPE_COLORS[shiftType] },
-                                  ]}
-                                >
-                                  {getShiftTypeLabel(t, shiftType)[0]}
-                                </Animated.Text>
-                              </TouchableOpacity>
-                            )
-                          )}
-                          {(currentFifoConfig.customWorkSequence ?? DEFAULT_CUSTOM_SEQUENCE)
-                            .length < 20 && (
-                            <TouchableOpacity
-                              style={styles.sequenceAddBtn}
-                              onPress={() => {
-                                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                                const seq = [
-                                  ...(currentFifoConfig.customWorkSequence ??
-                                    DEFAULT_CUSTOM_SEQUENCE),
-                                  'day' as ShiftType,
-                                ];
-                                if (seq.length <= 20) {
-                                  updateFifoConfig({ customWorkSequence: seq });
-                                }
-                              }}
-                              activeOpacity={0.7}
-                              accessibilityLabel={t('shift.addDayShiftToSequence')}
-                              accessibilityRole="button"
-                            >
-                              <Ionicons name="add" size={14} color={theme.colors.dust} />
-                            </TouchableOpacity>
-                          )}
+                          <Ionicons
+                            name="flash-outline"
+                            size={18}
+                            color={theme.colors.sacredGold}
+                          />
                         </View>
-                        {/* Shift type palette */}
-                        <View style={styles.sequencePalette}>
-                          {(['day', 'night', 'morning', 'afternoon', 'off'] as ShiftType[]).map(
-                            (type) => (
-                              <TouchableOpacity
-                                key={type}
-                                style={[
-                                  styles.paletteChip,
-                                  {
-                                    borderColor: SHIFT_TYPE_COLORS[type] + '60',
-                                    backgroundColor: SHIFT_TYPE_COLORS[type] + '18',
-                                  },
-                                ]}
-                                onPress={() => {
-                                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                                  const seq = [
-                                    ...(currentFifoConfig.customWorkSequence ??
-                                      DEFAULT_CUSTOM_SEQUENCE),
-                                    type,
-                                  ];
-                                  if (seq.length <= 20)
-                                    updateFifoConfig({ customWorkSequence: seq });
-                                }}
-                                accessibilityLabel={t('shift.addShiftA11y', {
-                                  shift: getShiftTypeLabel(t, type),
-                                })}
-                              >
-                                <Animated.Text
-                                  style={[
-                                    styles.paletteChipText,
-                                    { color: SHIFT_TYPE_COLORS[type] },
-                                  ]}
-                                >
-                                  + {getShiftTypeLabel(t, type)}
-                                </Animated.Text>
-                              </TouchableOpacity>
-                            )
-                          )}
+                        <View>
+                          <Animated.Text style={styles.patternName}>
+                            {getFIFOWorkPatternLabel(
+                              t,
+                              currentFifoConfig.workBlockPattern as FIFOWorkPattern
+                            )}
+                          </Animated.Text>
+                          <Animated.Text style={styles.patternRowSub}>
+                            {t('shift.fifoSummarySubtitle', {
+                              workDays: currentFifoConfig.workBlockDays,
+                              restDays: currentFifoConfig.restBlockDays,
+                              defaultValue: '{{workDays}} work days · {{restDays}} rest days',
+                            })}
+                          </Animated.Text>
                         </View>
                       </View>
-                    </Animated.View>
-                  )}
+                      <Ionicons name="chevron-forward" size={18} color={theme.colors.dust} />
+                    </TouchableOpacity>
+                  ) : null}
 
                   {/* FIFO Shift Times */}
                   {(fifoWorkPattern === 'straight-days' ||
@@ -2512,93 +2310,6 @@ const styles = StyleSheet.create({
     padding: theme.spacing.md,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.06)',
-  },
-
-  // FIFO work pattern chips
-  workPatternGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: theme.spacing.sm,
-  },
-  workPatternChip: {
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: theme.borderRadius.full,
-    backgroundColor: theme.colors.softStone,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
-  },
-  workPatternChipSelected: {
-    backgroundColor: theme.colors.opacity.gold10,
-    borderColor: 'rgba(180, 83, 9, 0.4)',
-  },
-  workPatternChipText: {
-    fontSize: theme.typography.fontSizes.xs,
-    color: theme.colors.shadow,
-    fontWeight: theme.typography.fontWeights.medium,
-  },
-  workPatternChipTextSelected: {
-    color: theme.colors.sacredGold,
-    fontWeight: theme.typography.fontWeights.semibold,
-  },
-
-  // Custom work sequence builder
-  sequenceBuilderWrapper: {
-    backgroundColor: theme.colors.softStone,
-    borderRadius: theme.borderRadius.sm,
-    padding: theme.spacing.md,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.06)',
-    gap: theme.spacing.sm,
-  },
-  sequenceHelp: {
-    fontSize: theme.typography.fontSizes.xs,
-    color: theme.colors.shadow,
-    fontStyle: 'italic',
-  },
-  sequenceRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 6,
-    minHeight: 32,
-  },
-  sequenceChip: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  sequenceChipText: {
-    fontSize: 11,
-    fontWeight: theme.typography.fontWeights.bold,
-  },
-  sequenceAddBtn: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.15)',
-    borderStyle: 'dashed',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  sequencePalette: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 6,
-    marginTop: 4,
-  },
-  paletteChip: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: theme.borderRadius.full,
-    borderWidth: 1,
-  },
-  paletteChipText: {
-    fontSize: 11,
-    fontWeight: theme.typography.fontWeights.semibold,
   },
 
   // Fly stepper
