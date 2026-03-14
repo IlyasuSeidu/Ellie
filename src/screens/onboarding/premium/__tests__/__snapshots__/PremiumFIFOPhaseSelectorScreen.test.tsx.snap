@@ -43,6 +43,7 @@ exports[`PremiumFIFOPhaseSelectorScreen matches snapshot 1`] = `
     }
   >
     Swipe right to choose your work-block pattern, left for next option, or up for info
+This option means straight days only.
   </Text>
   <View
     style={

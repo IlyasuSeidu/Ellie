@@ -289,11 +289,8 @@ describe('PremiumFIFOPhaseSelectorScreen', () => {
   it('renders swipeable work-pattern stage first for standard FIFO', () => {
     const { getByText, getByTestId } = renderWithContext();
     expect(getByText('How are shifts run during your FIFO work block?')).toBeTruthy();
-    expect(
-      getByText(
-        'Swipe right to choose your work-block pattern, left for next option, or up for info'
-      )
-    ).toBeTruthy();
+    expect(getByText(/Swipe right to choose your work-block pattern/)).toBeTruthy();
+    expect(getByText(/This option means straight days only\./)).toBeTruthy();
     expect(getByText('Straight Days')).toBeTruthy();
     expect(getByText('Straight Nights')).toBeTruthy();
     expect(getByText('Swing')).toBeTruthy();

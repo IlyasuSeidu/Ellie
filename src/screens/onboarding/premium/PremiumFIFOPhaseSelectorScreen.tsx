@@ -1499,6 +1499,37 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     setShowInfoModal(true);
   }, [currentCardIndex, currentCards]);
 
+  const activeWorkPatternSubtitle = useMemo(() => {
+    const activeCard =
+      stage === SelectionStage.WORK_PATTERN ? currentCards[currentCardIndex] : undefined;
+
+    if (!activeCard || activeCard.type !== 'workPattern') {
+      return '';
+    }
+
+    if (activeCard.id === 'straight-days') {
+      return String(
+        t('fifoPhaseSelector.subtitle.workPatternMode.straightDays', {
+          defaultValue: 'This option means straight days only.',
+        })
+      );
+    }
+
+    if (activeCard.id === 'straight-nights') {
+      return String(
+        t('fifoPhaseSelector.subtitle.workPatternMode.straightNights', {
+          defaultValue: 'This option means straight nights only.',
+        })
+      );
+    }
+
+    return String(
+      t('fifoPhaseSelector.subtitle.workPatternMode.swing', {
+        defaultValue: 'This option mixes day and night shifts.',
+      })
+    );
+  }, [currentCardIndex, currentCards, stage, t]);
+
   return (
     <View style={styles.container}>
       <ProgressHeader
@@ -1536,12 +1567,12 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
 
       <Text style={styles.subtitle}>
         {stage === SelectionStage.WORK_PATTERN
-          ? String(
+          ? `${String(
               t('fifoPhaseSelector.subtitle.workPattern', {
                 defaultValue:
                   'Swipe right to choose your work-block pattern, left for next option, or up for info',
               })
-            )
+            )}\n${activeWorkPatternSubtitle}`
           : stage === SelectionStage.SWING_CONFIG
             ? String(
                 t('fifoPhaseSelector.subtitle.swingConfig', {
