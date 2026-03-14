@@ -34,6 +34,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
+import { SettingsEntryActionButtons } from '@/components/onboarding/premium/SettingsEntryActionButtons';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ShiftPattern, ShiftSystem } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
@@ -1239,74 +1240,102 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
 
       {/* Bottom Navigation */}
       <View style={styles.bottomNav}>
-        <Pressable
-          onPress={handleBack}
-          style={styles.backButton}
-          accessible={true}
-          accessibilityRole="button"
-          accessibilityLabel={
-            isSettingsMode
-              ? t('common.backToSettings')
-              : t('customPattern.backA11y', { defaultValue: 'Go back' })
-          }
-          accessibilityHint={
-            isSettingsMode
-              ? t('customPattern.backHint.settings', {
-                  defaultValue: 'Discard changes and return to settings',
-                })
-              : t('customPattern.backHint.default', {
-                  defaultValue: 'Return to shift pattern selection',
-                })
-          }
-        >
-          <Ionicons name="arrow-back" size={24} color={theme.colors.paper} />
-        </Pressable>
-
-        <Animated.View style={continueButtonAnimatedStyle}>
-          <Pressable
-            onPress={handleSave}
-            style={[styles.continueButton, !isValid && styles.continueButtonDisabled]}
-            disabled={!isValid || isTransitioning}
-            accessible={true}
-            accessibilityRole="button"
-            accessibilityLabel={t('customPattern.saveA11y', {
-              defaultValue: 'Save your rotation and continue',
-            })}
-            accessibilityHint={
+        {isSettingsMode ? (
+          <SettingsEntryActionButtons
+            backLabel={String(t('common.backToSettings', { defaultValue: 'Back to Settings' }))}
+            saveLabel={String(t('common.saveAndReturn', { defaultValue: 'Save & Return' }))}
+            onBack={handleBack}
+            onSave={handleSave}
+            saveDisabled={!isValid || isTransitioning}
+            backAccessibilityLabel={String(
+              t('common.backToSettings', { defaultValue: 'Back to Settings' })
+            )}
+            backAccessibilityHint={String(
+              t('customPattern.backHint.settings', {
+                defaultValue: 'Discard changes and return to settings',
+              })
+            )}
+            saveAccessibilityLabel={String(
+              t('customPattern.saveA11y', {
+                defaultValue: 'Save your rotation and continue',
+              })
+            )}
+            saveAccessibilityHint={
               isValid
-                ? t('customPattern.saveHintValid', {
-                    totalDays,
-                    daysOn,
-                    nightsOn,
-                    daysOff,
-                    defaultValue: `Your ${totalDays}-day cycle: ${daysOn} days on, ${nightsOn} nights on, ${daysOff} days off`,
-                  })
+                ? String(
+                    t('customPattern.saveHintValid', {
+                      totalDays,
+                      daysOn,
+                      nightsOn,
+                      daysOff,
+                      defaultValue: `Your ${totalDays}-day cycle: ${daysOn} days on, ${nightsOn} nights on, ${daysOff} days off`,
+                    })
+                  )
                 : validationMessage
             }
-            accessibilityState={{ disabled: !isValid || isTransitioning }}
-          >
-            <LinearGradient
-              colors={
-                isValid
-                  ? [theme.colors.sacredGold, theme.colors.brightGold]
-                  : [theme.colors.shadow, theme.colors.shadow]
-              }
-              style={styles.continueGradient}
+          />
+        ) : (
+          <>
+            <Pressable
+              onPress={handleBack}
+              style={styles.backButton}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel={t('customPattern.backA11y', { defaultValue: 'Go back' })}
+              accessibilityHint={t('customPattern.backHint.default', {
+                defaultValue: 'Return to shift pattern selection',
+              })}
             >
-              <Image
-                source={require('../../../../assets/onboarding/icons/consolidated/navigation-save-trophy.png')}
-                style={styles.trophyIconSmaller}
-                resizeMode="contain"
-              />
-              <Text style={styles.continueButtonText}>
-                {isValid
-                  ? t('customPattern.saveButton', { defaultValue: 'Save This Rotation' })
-                  : t('customPattern.needMoreChanges', { defaultValue: 'Need More Changes' })}
-              </Text>
-              <Ionicons name="arrow-forward" size={24} color={theme.colors.paper} />
-            </LinearGradient>
-          </Pressable>
-        </Animated.View>
+              <Ionicons name="arrow-back" size={24} color={theme.colors.paper} />
+            </Pressable>
+
+            <Animated.View style={continueButtonAnimatedStyle}>
+              <Pressable
+                onPress={handleSave}
+                style={[styles.continueButton, !isValid && styles.continueButtonDisabled]}
+                disabled={!isValid || isTransitioning}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel={t('customPattern.saveA11y', {
+                  defaultValue: 'Save your rotation and continue',
+                })}
+                accessibilityHint={
+                  isValid
+                    ? t('customPattern.saveHintValid', {
+                        totalDays,
+                        daysOn,
+                        nightsOn,
+                        daysOff,
+                        defaultValue: `Your ${totalDays}-day cycle: ${daysOn} days on, ${nightsOn} nights on, ${daysOff} days off`,
+                      })
+                    : validationMessage
+                }
+                accessibilityState={{ disabled: !isValid || isTransitioning }}
+              >
+                <LinearGradient
+                  colors={
+                    isValid
+                      ? [theme.colors.sacredGold, theme.colors.brightGold]
+                      : [theme.colors.shadow, theme.colors.shadow]
+                  }
+                  style={styles.continueGradient}
+                >
+                  <Image
+                    source={require('../../../../assets/onboarding/icons/consolidated/navigation-save-trophy.png')}
+                    style={styles.trophyIconSmaller}
+                    resizeMode="contain"
+                  />
+                  <Text style={styles.continueButtonText}>
+                    {isValid
+                      ? t('customPattern.saveButton', { defaultValue: 'Save This Rotation' })
+                      : t('customPattern.needMoreChanges', { defaultValue: 'Need More Changes' })}
+                  </Text>
+                  <Ionicons name="arrow-forward" size={24} color={theme.colors.paper} />
+                </LinearGradient>
+              </Pressable>
+            </Animated.View>
+          </>
+        )}
       </View>
 
       {isTransitioning ? (

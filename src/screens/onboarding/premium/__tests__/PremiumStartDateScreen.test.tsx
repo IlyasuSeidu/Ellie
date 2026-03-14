@@ -394,7 +394,7 @@ describe('PremiumStartDateScreen', () => {
 
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
       expect(getByText('Save & Return')).toBeTruthy();
-      expect(getByText('arrow-back')).toBeTruthy();
+      expect(getByText('Back to Settings')).toBeTruthy();
     });
 
     it('back exits directly to settings parent navigator', () => {
@@ -404,7 +404,7 @@ describe('PremiumStartDateScreen', () => {
       };
 
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      fireEvent.press(getByText('arrow-back'));
+      fireEvent.press(getByText('Back to Settings'));
 
       expect(mockRootGoBack).toHaveBeenCalled();
       expect(mockGoBack).not.toHaveBeenCalled();

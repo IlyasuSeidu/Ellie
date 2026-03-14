@@ -41,6 +41,7 @@ import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
+import { SettingsEntryActionButtons } from '@/components/onboarding/premium/SettingsEntryActionButtons';
 import { useOnboarding, type OnboardingData } from '@/contexts/OnboardingContext';
 import { ShiftPattern, ShiftSystem } from '@/types';
 import type {
@@ -1278,36 +1279,22 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
 
       {isSettingsEntry ? (
         <View style={styles.settingsEntryActions}>
-          <Pressable
-            style={styles.settingsExitButton}
-            onPress={closeSettingsEditor}
-            accessibilityRole="button"
-            accessibilityLabel={t('common.backToSettings')}
-          >
-            <Text style={styles.settingsExitButtonText}>{t('common.backToSettings')}</Text>
-          </Pressable>
-          <Pressable
-            style={[
-              styles.settingsSaveButton,
-              pendingSettingsPatternType === null && styles.settingsSaveButtonDisabled,
-            ]}
-            onPress={handleSaveSettingsPattern}
-            disabled={pendingSettingsPatternType === null}
-            accessibilityRole="button"
-            accessibilityLabel={t('common.saveAndReturn', {
-              defaultValue: 'Save and return to settings',
-            })}
-            testID="shift-pattern-save-settings-button"
-          >
-            <Text
-              style={[
-                styles.settingsSaveButtonText,
-                pendingSettingsPatternType === null && styles.settingsSaveButtonTextDisabled,
-              ]}
-            >
-              {t('common.saveAndReturn', { defaultValue: 'Save & Return' })}
-            </Text>
-          </Pressable>
+          <SettingsEntryActionButtons
+            backLabel={String(t('common.backToSettings', { defaultValue: 'Back to Settings' }))}
+            saveLabel={String(t('common.saveAndReturn', { defaultValue: 'Save & Return' }))}
+            onBack={closeSettingsEditor}
+            onSave={handleSaveSettingsPattern}
+            saveDisabled={pendingSettingsPatternType === null}
+            backAccessibilityLabel={String(
+              t('common.backToSettings', { defaultValue: 'Back to Settings' })
+            )}
+            saveAccessibilityLabel={String(
+              t('common.saveAndReturn', {
+                defaultValue: 'Save and return to settings',
+              })
+            )}
+            saveTestID="shift-pattern-save-settings-button"
+          />
         </View>
       ) : null}
 

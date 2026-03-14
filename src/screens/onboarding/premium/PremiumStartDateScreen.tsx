@@ -38,6 +38,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
+import { SettingsEntryActionButtons } from '@/components/onboarding/premium/SettingsEntryActionButtons';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
@@ -2539,50 +2540,60 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
 
       {/* Bottom Navigation */}
       <View style={styles.bottomNav}>
-        <LinearGradient
-          colors={['rgba(43, 24, 10, 0.82)', 'rgba(22, 14, 9, 0.92)']}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.bottomNavShell}
-        >
-          <Pressable
-            onPress={handleBack}
-            style={({ pressed }) => [styles.backButton, pressed && styles.backButtonPressed]}
-            accessibilityLabel={
-              isSettingsMode
-                ? t('startDate.actions.backToSettings', { defaultValue: 'Back to Settings' })
-                : t('startDate.actions.goBack', { defaultValue: 'Go back' })
-            }
-            accessibilityRole="button"
-          >
-            <LinearGradient
-              colors={['rgba(255,255,255,0.18)', 'rgba(255,255,255,0.06)']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.backButtonGradient}
-            >
-              <Ionicons name="arrow-back" size={24} color={theme.colors.paper} />
-            </LinearGradient>
-          </Pressable>
-
-          <ContinueButton
-            enabled={canContinue}
-            onPress={handleContinue}
-            reducedMotion={reducedMotion}
-            label={
-              isSettingsMode
-                ? t('startDate.actions.saveAndReturn', { defaultValue: 'Save & Return' })
-                : t('startDate.actions.setShiftTimes', { defaultValue: 'Set Shift Times' })
-            }
-            accessibilityLabel={
-              isSettingsMode
-                ? t('startDate.actions.saveAndReturnToSettings', {
-                    defaultValue: 'Save start date and return to settings',
-                  })
-                : t('startDate.actions.setShiftTimesA11y', { defaultValue: 'Set shift times' })
-            }
+        {isSettingsMode ? (
+          <SettingsEntryActionButtons
+            backLabel={String(
+              t('startDate.actions.backToSettings', { defaultValue: 'Back to Settings' })
+            )}
+            saveLabel={String(
+              t('startDate.actions.saveAndReturn', { defaultValue: 'Save & Return' })
+            )}
+            onBack={handleBack}
+            onSave={handleContinue}
+            saveDisabled={!canContinue}
+            backAccessibilityLabel={String(
+              t('startDate.actions.backToSettings', { defaultValue: 'Back to Settings' })
+            )}
+            saveAccessibilityLabel={String(
+              t('startDate.actions.saveAndReturnToSettings', {
+                defaultValue: 'Save start date and return to settings',
+              })
+            )}
           />
-        </LinearGradient>
+        ) : (
+          <LinearGradient
+            colors={['rgba(43, 24, 10, 0.82)', 'rgba(22, 14, 9, 0.92)']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.bottomNavShell}
+          >
+            <Pressable
+              onPress={handleBack}
+              style={({ pressed }) => [styles.backButton, pressed && styles.backButtonPressed]}
+              accessibilityLabel={t('startDate.actions.goBack', { defaultValue: 'Go back' })}
+              accessibilityRole="button"
+            >
+              <LinearGradient
+                colors={['rgba(255,255,255,0.18)', 'rgba(255,255,255,0.06)']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.backButtonGradient}
+              >
+                <Ionicons name="arrow-back" size={24} color={theme.colors.paper} />
+              </LinearGradient>
+            </Pressable>
+
+            <ContinueButton
+              enabled={canContinue}
+              onPress={handleContinue}
+              reducedMotion={reducedMotion}
+              label={t('startDate.actions.setShiftTimes', { defaultValue: 'Set Shift Times' })}
+              accessibilityLabel={t('startDate.actions.setShiftTimesA11y', {
+                defaultValue: 'Set shift times',
+              })}
+            />
+          </LinearGradient>
+        )}
       </View>
     </View>
   );

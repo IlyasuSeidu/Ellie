@@ -43,6 +43,7 @@ import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
+import { SettingsEntryActionButtons } from '@/components/onboarding/premium/SettingsEntryActionButtons';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ShiftSystem, Phase, ShiftPattern } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
@@ -1417,56 +1418,33 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
 
       {isSettingsMode ? (
         <View style={styles.settingsActions}>
-          <View style={styles.settingsActionsRow}>
-            <Pressable
-              onPress={returnToSettings}
-              style={styles.settingsBackButton}
-              accessibilityRole="button"
-              accessibilityLabel={t('phaseSelector.actions.backToSettingsA11y', {
+          <SettingsEntryActionButtons
+            backLabel={String(
+              t('phaseSelector.actions.backToSettings', {
+                defaultValue: 'Back to Settings',
+              })
+            )}
+            saveLabel={String(
+              t('phaseSelector.actions.saveAndReturn', {
+                defaultValue: 'Save & Return',
+              })
+            )}
+            onBack={returnToSettings}
+            onSave={handleSaveSettingsSelection}
+            saveDisabled={pendingSettingsPhaseOffset === null}
+            backAccessibilityLabel={String(
+              t('phaseSelector.actions.backToSettingsA11y', {
                 defaultValue: 'Back to settings',
-              })}
-              testID="phase-selector-back-settings-button"
-            >
-              <Ionicons name="arrow-back-outline" size={16} color={theme.colors.paper} />
-              <Text style={styles.settingsBackButtonText}>
-                {t('phaseSelector.actions.backToSettings', {
-                  defaultValue: 'Back to Settings',
-                })}
-              </Text>
-            </Pressable>
-
-            <Pressable
-              onPress={handleSaveSettingsSelection}
-              style={[
-                styles.settingsSaveButton,
-                pendingSettingsPhaseOffset === null && styles.settingsSaveButtonDisabled,
-              ]}
-              disabled={pendingSettingsPhaseOffset === null}
-              accessibilityRole="button"
-              accessibilityLabel={t('phaseSelector.actions.saveAndReturnA11y', {
+              })
+            )}
+            saveAccessibilityLabel={String(
+              t('phaseSelector.actions.saveAndReturnA11y', {
                 defaultValue: 'Save selection and return to settings',
-              })}
-              testID="phase-selector-save-settings-button"
-            >
-              <Ionicons
-                name="checkmark-circle-outline"
-                size={16}
-                color={
-                  pendingSettingsPhaseOffset === null ? theme.colors.shadow : theme.colors.deepVoid
-                }
-              />
-              <Text
-                style={[
-                  styles.settingsSaveButtonText,
-                  pendingSettingsPhaseOffset === null && styles.settingsSaveButtonTextDisabled,
-                ]}
-              >
-                {t('phaseSelector.actions.saveAndReturn', {
-                  defaultValue: 'Save & Return',
-                })}
-              </Text>
-            </Pressable>
-          </View>
+              })
+            )}
+            backTestID="phase-selector-back-settings-button"
+            saveTestID="phase-selector-save-settings-button"
+          />
         </View>
       ) : null}
 

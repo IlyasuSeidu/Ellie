@@ -37,6 +37,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
+import { SettingsEntryActionButtons } from '@/components/onboarding/premium/SettingsEntryActionButtons';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
@@ -1070,74 +1071,106 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
       </ScrollView>
 
       <View style={styles.bottomNav}>
-        <Pressable
-          onPress={handleBack}
-          style={styles.backButton}
-          accessible={true}
-          accessibilityRole="button"
-          accessibilityLabel={
-            isSettingsMode
-              ? t('common.backToSettings')
-              : t('fifoCustom.backA11y', { defaultValue: 'Go back' })
-          }
-          accessibilityHint={
-            isSettingsMode
-              ? t('fifoCustom.backHint.settings', {
-                  defaultValue: 'Discard changes and return to settings',
-                })
-              : t('fifoCustom.backHint.default', {
-                  defaultValue: 'Return to shift pattern selection',
-                })
-          }
-          testID="fifo-custom-back-button"
-        >
-          <Ionicons name="arrow-back" size={24} color={theme.colors.paper} />
-        </Pressable>
-
-        <Animated.View style={[styles.continueButtonWrap, continueButtonAnimatedStyle]}>
-          <Pressable
-            onPress={handleContinue}
-            style={[styles.continueButton, hasHardError && styles.continueButtonDisabled]}
-            disabled={hasHardError || isTransitioning}
-            accessible={true}
-            accessibilityRole="button"
-            accessibilityLabel={t('fifoCustom.saveA11y', {
-              defaultValue: 'Save FIFO pattern and continue',
-            })}
-            accessibilityHint={
+        {isSettingsMode ? (
+          <SettingsEntryActionButtons
+            backLabel={String(t('common.backToSettings', { defaultValue: 'Back to Settings' }))}
+            saveLabel={String(t('common.saveAndReturn', { defaultValue: 'Save & Return' }))}
+            onBack={handleBack}
+            onSave={handleContinue}
+            saveDisabled={hasHardError || isTransitioning}
+            backAccessibilityLabel={String(
+              t('common.backToSettings', { defaultValue: 'Back to Settings' })
+            )}
+            backAccessibilityHint={String(
+              t('fifoCustom.backHint.settings', {
+                defaultValue: 'Discard changes and return to settings',
+              })
+            )}
+            saveAccessibilityLabel={String(
+              t('fifoCustom.saveA11y', {
+                defaultValue: 'Save FIFO pattern and continue',
+              })
+            )}
+            saveAccessibilityHint={
               hasHardError
-                ? t('fifoCustom.saveHintInvalid', {
-                    defaultValue: 'Fix the validation issue before continuing',
-                  })
-                : t('fifoCustom.saveHintValid', {
-                    workBlockDays,
-                    restBlockDays,
-                    defaultValue: `${workBlockDays} days work, ${restBlockDays} days rest`,
-                  })
+                ? String(
+                    t('fifoCustom.saveHintInvalid', {
+                      defaultValue: 'Fix the validation issue before continuing',
+                    })
+                  )
+                : String(
+                    t('fifoCustom.saveHintValid', {
+                      workBlockDays,
+                      restBlockDays,
+                      defaultValue: `${workBlockDays} days work, ${restBlockDays} days rest`,
+                    })
+                  )
             }
-            accessibilityState={{ disabled: hasHardError || isTransitioning }}
-            testID="fifo-custom-save-button"
-          >
-            <LinearGradient
-              colors={
-                hasHardError
-                  ? [theme.colors.shadow, theme.colors.shadow]
-                  : [theme.colors.sacredGold, theme.colors.brightGold]
-              }
-              style={styles.continueGradient}
+            backTestID="fifo-custom-back-button"
+            saveTestID="fifo-custom-save-button"
+          />
+        ) : (
+          <>
+            <Pressable
+              onPress={handleBack}
+              style={styles.backButton}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel={t('fifoCustom.backA11y', { defaultValue: 'Go back' })}
+              accessibilityHint={t('fifoCustom.backHint.default', {
+                defaultValue: 'Return to shift pattern selection',
+              })}
+              testID="fifo-custom-back-button"
             >
-              <Image
-                source={require('../../../../assets/onboarding/icons/consolidated/navigation-save-trophy.png')}
-                style={styles.trophyIconSmaller}
-                resizeMode="contain"
-              />
-              <Text style={styles.continueButtonText}>
-                {t('fifoCustom.saveButton', { defaultValue: 'Save FIFO Pattern' })}
-              </Text>
-              <Ionicons name="arrow-forward" size={24} color={theme.colors.paper} />
-            </LinearGradient>
-          </Pressable>
-        </Animated.View>
+              <Ionicons name="arrow-back" size={24} color={theme.colors.paper} />
+            </Pressable>
+
+            <Animated.View style={[styles.continueButtonWrap, continueButtonAnimatedStyle]}>
+              <Pressable
+                onPress={handleContinue}
+                style={[styles.continueButton, hasHardError && styles.continueButtonDisabled]}
+                disabled={hasHardError || isTransitioning}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel={t('fifoCustom.saveA11y', {
+                  defaultValue: 'Save FIFO pattern and continue',
+                })}
+                accessibilityHint={
+                  hasHardError
+                    ? t('fifoCustom.saveHintInvalid', {
+                        defaultValue: 'Fix the validation issue before continuing',
+                      })
+                    : t('fifoCustom.saveHintValid', {
+                        workBlockDays,
+                        restBlockDays,
+                        defaultValue: `${workBlockDays} days work, ${restBlockDays} days rest`,
+                      })
+                }
+                accessibilityState={{ disabled: hasHardError || isTransitioning }}
+                testID="fifo-custom-save-button"
+              >
+                <LinearGradient
+                  colors={
+                    hasHardError
+                      ? [theme.colors.shadow, theme.colors.shadow]
+                      : [theme.colors.sacredGold, theme.colors.brightGold]
+                  }
+                  style={styles.continueGradient}
+                >
+                  <Image
+                    source={require('../../../../assets/onboarding/icons/consolidated/navigation-save-trophy.png')}
+                    style={styles.trophyIconSmaller}
+                    resizeMode="contain"
+                  />
+                  <Text style={styles.continueButtonText}>
+                    {t('fifoCustom.saveButton', { defaultValue: 'Save FIFO Pattern' })}
+                  </Text>
+                  <Ionicons name="arrow-forward" size={24} color={theme.colors.paper} />
+                </LinearGradient>
+              </Pressable>
+            </Animated.View>
+          </>
+        )}
       </View>
 
       {isTransitioning ? (

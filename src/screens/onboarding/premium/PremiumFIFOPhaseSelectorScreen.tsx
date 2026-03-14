@@ -51,6 +51,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { PatternBuilderSlider } from '@/components/onboarding/premium/PatternBuilderSlider';
+import { SettingsEntryActionButtons } from '@/components/onboarding/premium/SettingsEntryActionButtons';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
@@ -1860,62 +1861,33 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
 
       {isSettingsMode ? (
         <View style={styles.settingsActions}>
-          <View style={styles.settingsActionsRow}>
-            <Pressable
-              onPress={returnToSettings}
-              style={styles.settingsBackButton}
-              accessibilityRole="button"
-              accessibilityLabel={String(
-                t('fifoPhaseSelector.actions.backToSettingsA11y', {
-                  defaultValue: 'Back to settings',
-                })
-              )}
-              testID="fifo-phase-selector-back-settings-button"
-            >
-              <Ionicons name="arrow-back-outline" size={16} color={theme.colors.paper} />
-              <Text style={styles.settingsBackButtonText}>
-                {String(
-                  t('fifoPhaseSelector.actions.backToSettings', {
-                    defaultValue: 'Back to Settings',
-                  })
-                )}
-              </Text>
-            </Pressable>
-
-            <Pressable
-              onPress={handleSaveSettingsSelection}
-              style={[
-                styles.settingsSaveButton,
-                !pendingSettingsSelection && styles.settingsSaveButtonDisabled,
-              ]}
-              disabled={!pendingSettingsSelection}
-              accessibilityRole="button"
-              accessibilityLabel={String(
-                t('fifoPhaseSelector.actions.saveAndReturnA11y', {
-                  defaultValue: 'Save selection and return to settings',
-                })
-              )}
-              testID="fifo-phase-selector-save-settings-button"
-            >
-              <Ionicons
-                name="checkmark-circle-outline"
-                size={16}
-                color={!pendingSettingsSelection ? theme.colors.shadow : theme.colors.deepVoid}
-              />
-              <Text
-                style={[
-                  styles.settingsSaveButtonText,
-                  !pendingSettingsSelection && styles.settingsSaveButtonTextDisabled,
-                ]}
-              >
-                {String(
-                  t('fifoPhaseSelector.actions.saveAndReturn', {
-                    defaultValue: 'Save & Return',
-                  })
-                )}
-              </Text>
-            </Pressable>
-          </View>
+          <SettingsEntryActionButtons
+            backLabel={String(
+              t('fifoPhaseSelector.actions.backToSettings', {
+                defaultValue: 'Back to Settings',
+              })
+            )}
+            saveLabel={String(
+              t('fifoPhaseSelector.actions.saveAndReturn', {
+                defaultValue: 'Save & Return',
+              })
+            )}
+            onBack={returnToSettings}
+            onSave={handleSaveSettingsSelection}
+            saveDisabled={!pendingSettingsSelection}
+            backAccessibilityLabel={String(
+              t('fifoPhaseSelector.actions.backToSettingsA11y', {
+                defaultValue: 'Back to settings',
+              })
+            )}
+            saveAccessibilityLabel={String(
+              t('fifoPhaseSelector.actions.saveAndReturnA11y', {
+                defaultValue: 'Save selection and return to settings',
+              })
+            )}
+            backTestID="fifo-phase-selector-back-settings-button"
+            saveTestID="fifo-phase-selector-save-settings-button"
+          />
         </View>
       ) : null}
 

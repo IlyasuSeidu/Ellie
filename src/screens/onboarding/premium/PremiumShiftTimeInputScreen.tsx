@@ -46,6 +46,7 @@ import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
+import { SettingsEntryActionButtons } from '@/components/onboarding/premium/SettingsEntryActionButtons';
 import { useOnboarding, OnboardingData } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
@@ -1592,47 +1593,64 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
           entering={reducedMotion ? undefined : FadeInUp.duration(400).springify().delay(1200)}
         >
           <View style={styles.bottomNav}>
-            <LinearGradient
-              colors={['rgba(43, 24, 10, 0.84)', 'rgba(22, 14, 9, 0.95)']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.bottomNavShell}
-            >
-              <Pressable
-                style={({ pressed }) => [styles.backButton, pressed && styles.backButtonPressed]}
-                onPress={handleBack}
-                accessibilityLabel={
-                  isSettingsMode
-                    ? t('shiftTime.actions.backToSettings', {
-                        defaultValue: 'Back to Settings',
-                      })
-                    : t('shiftTime.actions.goBack', { defaultValue: 'Go back' })
-                }
-                accessibilityRole="button"
+            {isSettingsMode ? (
+              <SettingsEntryActionButtons
+                backLabel={String(
+                  t('shiftTime.actions.backToSettings', {
+                    defaultValue: 'Back to Settings',
+                  })
+                )}
+                saveLabel={String(
+                  t('shiftTime.actions.saveAndReturn', {
+                    defaultValue: 'Save & Return',
+                  })
+                )}
+                onBack={handleBack}
+                onSave={handleContinue}
+                saveDisabled={!canContinue}
+                backAccessibilityLabel={String(
+                  t('shiftTime.actions.backToSettings', {
+                    defaultValue: 'Back to Settings',
+                  })
+                )}
+                saveAccessibilityLabel={String(
+                  t('shiftTime.actions.saveAndReturnA11y', {
+                    defaultValue: 'Save shift time and return to settings',
+                  })
+                )}
+              />
+            ) : (
+              <LinearGradient
+                colors={['rgba(43, 24, 10, 0.84)', 'rgba(22, 14, 9, 0.95)']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.bottomNavShell}
               >
-                <LinearGradient
-                  colors={['rgba(255,255,255,0.18)', 'rgba(255,255,255,0.08)']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.backButtonGradient}
+                <Pressable
+                  style={({ pressed }) => [styles.backButton, pressed && styles.backButtonPressed]}
+                  onPress={handleBack}
+                  accessibilityLabel={t('shiftTime.actions.goBack', { defaultValue: 'Go back' })}
+                  accessibilityRole="button"
                 >
-                  <Ionicons name="arrow-back" size={24} color={theme.colors.paper} />
-                </LinearGradient>
-              </Pressable>
+                  <LinearGradient
+                    colors={['rgba(255,255,255,0.18)', 'rgba(255,255,255,0.08)']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.backButtonGradient}
+                  >
+                    <Ionicons name="arrow-back" size={24} color={theme.colors.paper} />
+                  </LinearGradient>
+                </Pressable>
 
-              <Pressable
-                style={({ pressed }) => [
-                  styles.continueButtonContainer,
-                  pressed && canContinue && styles.continueButtonPressed,
-                ]}
-                onPress={handleContinue}
-                disabled={!canContinue}
-                accessibilityLabel={
-                  isSettingsMode
-                    ? t('shiftTime.actions.saveAndReturnA11y', {
-                        defaultValue: 'Save shift time and return to settings',
-                      })
-                    : totalStages === 1
+                <Pressable
+                  style={({ pressed }) => [
+                    styles.continueButtonContainer,
+                    pressed && canContinue && styles.continueButtonPressed,
+                  ]}
+                  onPress={handleContinue}
+                  disabled={!canContinue}
+                  accessibilityLabel={
+                    totalStages === 1
                       ? t('shiftTime.actions.continueToNextStep', {
                           defaultValue: 'Continue to next step',
                         })
@@ -1647,33 +1665,29 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                               'lower'
                             )} shift times`,
                           })
-                }
-                accessibilityRole="button"
-                accessibilityState={{ disabled: !canContinue }}
-              >
-                <View
-                  style={[styles.continueButton, !canContinue && styles.continueButtonDisabled]}
+                  }
+                  accessibilityRole="button"
+                  accessibilityState={{ disabled: !canContinue }}
                 >
-                  <LinearGradient
-                    colors={
-                      canContinue
-                        ? [
-                            theme.colors.sacredGold,
-                            theme.colors.brightGold,
-                            theme.colors.sacredGold,
-                          ]
-                        : ['rgba(78, 67, 61, 0.85)', 'rgba(58, 52, 49, 0.85)']
-                    }
-                    locations={canContinue ? [0, 0.5, 1] : undefined}
-                    style={styles.continueGradient}
+                  <View
+                    style={[styles.continueButton, !canContinue && styles.continueButtonDisabled]}
                   >
-                    <Ionicons name="checkmark-circle" size={24} color={theme.colors.paper} />
-                    <Text style={styles.continueButtonText}>
-                      {isSettingsMode
-                        ? t('shiftTime.actions.saveAndReturn', {
-                            defaultValue: 'Save & Return',
-                          })
-                        : totalStages === 1
+                    <LinearGradient
+                      colors={
+                        canContinue
+                          ? [
+                              theme.colors.sacredGold,
+                              theme.colors.brightGold,
+                              theme.colors.sacredGold,
+                            ]
+                          : ['rgba(78, 67, 61, 0.85)', 'rgba(58, 52, 49, 0.85)']
+                      }
+                      locations={canContinue ? [0, 0.5, 1] : undefined}
+                      style={styles.continueGradient}
+                    >
+                      <Ionicons name="checkmark-circle" size={24} color={theme.colors.paper} />
+                      <Text style={styles.continueButtonText}>
+                        {totalStages === 1
                           ? t('shiftTime.actions.saveAndContinue', {
                               defaultValue: 'Save & Continue',
                             })
@@ -1684,12 +1698,13 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                             : t('shiftTime.actions.nextShiftType', {
                                 defaultValue: 'Next Shift Type',
                               })}
-                    </Text>
-                    <Ionicons name="arrow-forward" size={22} color={theme.colors.paper} />
-                  </LinearGradient>
-                </View>
-              </Pressable>
-            </LinearGradient>
+                      </Text>
+                      <Ionicons name="arrow-forward" size={22} color={theme.colors.paper} />
+                    </LinearGradient>
+                  </View>
+                </Pressable>
+              </LinearGradient>
+            )}
           </View>
         </Animated.View>
       </KeyboardAvoidingView>
