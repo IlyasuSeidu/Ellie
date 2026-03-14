@@ -1530,6 +1530,27 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     );
   }, [currentCardIndex, currentCards, stage, t]);
 
+  const activeStageContextSubtitle = useMemo(() => {
+    const activeCard =
+      stage === SelectionStage.BLOCK || stage === SelectionStage.DAY_WITHIN_BLOCK
+        ? currentCards[currentCardIndex]
+        : undefined;
+
+    if (!activeCard) {
+      return '';
+    }
+
+    if (stage === SelectionStage.BLOCK && activeCard.type === 'block') {
+      return activeCard.description;
+    }
+
+    if (stage === SelectionStage.DAY_WITHIN_BLOCK && activeCard.type === 'day') {
+      return `${activeCard.title}: ${activeCard.description}`;
+    }
+
+    return '';
+  }, [currentCardIndex, currentCards, stage]);
+
   return (
     <View style={styles.container}>
       <ProgressHeader
@@ -1581,19 +1602,19 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
                 })
               )
             : stage === SelectionStage.BLOCK
-              ? String(
+              ? `${String(
                   t('fifoPhaseSelector.subtitle.block', {
                     defaultValue: 'Swipe right to select, left to see next, or up for more info',
                   })
-                )
-              : String(
+                )}\n${activeStageContextSubtitle}`
+              : `${String(
                   t('fifoPhaseSelector.subtitle.dayWithinBlock', {
                     ordinalList: generateOrdinalList(stageDayCount),
                     defaultValue: `Swipe right to select, left to see next, or up for more info. Is it the ${generateOrdinalList(
                       stageDayCount
                     )}?`,
                   })
-                )}
+                )}\n${activeStageContextSubtitle}`}
       </Text>
 
       <>
