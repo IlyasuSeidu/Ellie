@@ -334,11 +334,11 @@
     "tryAgain": "Essayer à nouveau",
     "errors": {
       "missingRequiredInformation": "Informations requises manquantes : {{fields}}. Revenez en arrière et terminez toutes les étapes.",
-      "networkUnavailable": "We could not connect to save your setup. Check your connection and try again.",
-      "permissionDenied": "We don't have permission to save your setup. Please sign in again and retry.",
-      "storageUnavailable": "Your device storage is full. Free up space and try again.",
-      "timeout": "Saving took too long. Please try again.",
-      "genericSaveFailed": "We could not save your setup right now. Please try again."
+      "networkUnavailable": "Nous n'avons pas pu nous connecter pour enregistrer votre configuration. Vérifiez votre connexion et réessayez.",
+      "permissionDenied": "Nous ne sommes pas autorisés à enregistrer votre configuration. Veuillez vous reconnecter et réessayer.",
+      "storageUnavailable": "Le stockage de votre appareil est plein. Libérez de l'espace et réessayez.",
+      "timeout": "L'enregistrement a pris trop de temps. Veuillez réessayer.",
+      "genericSaveFailed": "Nous n'avons pas pu enregistrer votre configuration pour le moment. Veuillez réessayer."
     },
     "validation": {
       "fields": {

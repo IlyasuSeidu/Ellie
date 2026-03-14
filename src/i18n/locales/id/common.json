@@ -30,35 +30,35 @@
       "operationNotAllowed": "Operasi ini tidak diizinkan.",
       "tooManyRequests": "Terlalu banyak percobaan. Coba lagi nanti.",
       "networkRequestFailed": "Kesalahan jaringan. Periksa koneksi Anda.",
-      "invalidCredentials": "The email or password you entered is incorrect.",
-      "missingEmail": "Please enter your email address.",
-      "missingPassword": "Please enter your password.",
-      "userDisabled": "This account has been disabled. Contact support for help.",
-      "sessionExpired": "For security reasons, please sign in again and retry.",
-      "accountExistsWithDifferentCredential": "An account already exists with this email using a different sign-in method.",
-      "credentialAlreadyInUse": "This credential is already linked to another account.",
-      "signInCancelled": "Sign-in was canceled.",
-      "googlePlayServicesUnavailable": "Google Play Services is unavailable on this device.",
-      "googleMissingIdToken": "Google sign-in could not be completed. Please try again.",
-      "appleMissingIdentityToken": "Apple sign-in could not be completed. Please try again.",
-      "actionSignInFailed": "Unable to sign in right now. Please try again.",
-      "actionSignUpFailed": "Unable to create your account right now. Please try again.",
-      "actionSocialSignInFailed": "Social sign-in is unavailable right now. Please try email sign-in.",
-      "actionPasswordResetFailed": "Unable to send a reset link right now. Please try again.",
-      "actionEmailVerificationFailed": "Unable to send verification email right now. Please try again.",
-      "actionSignOutFailed": "Unable to sign out right now.",
-      "actionSessionRestoreFailed": "Unable to restore your session. Please sign in again."
+      "invalidCredentials": "Email atau kata sandi yang Anda masukkan salah.",
+      "missingEmail": "Silakan masukkan alamat email Anda.",
+      "missingPassword": "Silakan masukkan kata sandi Anda.",
+      "userDisabled": "Akun ini telah dinonaktifkan. Hubungi dukungan untuk mendapatkan bantuan.",
+      "sessionExpired": "Demi alasan keamanan, silakan masuk lagi dan coba lagi.",
+      "accountExistsWithDifferentCredential": "Akun sudah ada dengan email ini menggunakan metode masuk yang berbeda.",
+      "credentialAlreadyInUse": "Kredensial ini sudah ditautkan ke akun lain.",
+      "signInCancelled": "Proses masuk dibatalkan.",
+      "googlePlayServicesUnavailable": "Layanan Google Play tidak tersedia di perangkat ini.",
+      "googleMissingIdToken": "Proses masuk dengan Google tidak dapat diselesaikan. Silakan coba lagi.",
+      "appleMissingIdentityToken": "Proses masuk Apple tidak dapat diselesaikan. Silakan coba lagi.",
+      "actionSignInFailed": "Tidak dapat masuk sekarang. Silakan coba lagi.",
+      "actionSignUpFailed": "Tidak dapat membuat akun Anda sekarang. Silakan coba lagi.",
+      "actionSocialSignInFailed": "Login sosial tidak tersedia saat ini. Silakan coba masuk email.",
+      "actionPasswordResetFailed": "Tidak dapat mengirim tautan setel ulang saat ini. Silakan coba lagi.",
+      "actionEmailVerificationFailed": "Tidak dapat mengirim email verifikasi saat ini. Silakan coba lagi.",
+      "actionSignOutFailed": "Tidak dapat keluar sekarang.",
+      "actionSessionRestoreFailed": "Tidak dapat memulihkan sesi Anda. Silakan masuk lagi."
     },
     "titles": {
       "error": "Kesalahan",
       "unexpected": "Kesalahan tak terduga"
     },
     "settings": {
-      "languageChangeFailed": "Unable to change language right now. Please try again.",
-      "onboardingResetFailed": "Unable to restart onboarding right now. Please try again.",
-      "profileSaveFailed": "Unable to save your settings right now. Please try again.",
-      "permissionDenied": "You don't have permission to update these settings.",
-      "timeout": "The request took too long. Please try again."
+      "languageChangeFailed": "Tidak dapat mengubah bahasa saat ini. Silakan coba lagi.",
+      "onboardingResetFailed": "Tidak dapat memulai kembali orientasi saat ini. Silakan coba lagi.",
+      "profileSaveFailed": "Tidak dapat menyimpan pengaturan Anda saat ini. Silakan coba lagi.",
+      "permissionDenied": "Anda tidak memiliki izin untuk memperbarui setelan ini.",
+      "timeout": "Permintaan itu memakan waktu terlalu lama. Silakan coba lagi."
     }
   },
   "avatar": {
@@ -74,12 +74,12 @@
       "cameraMessage": "Aktifkan akses kamera di pengaturan perangkat Anda untuk mengambil foto profil."
     },
     "errors": {
-      "selectFailedTitle": "Photo Selection Failed",
-      "selectFailedMessage": "We could not update your profile photo right now. Please try again.",
-      "captureFailedTitle": "Camera Failed",
-      "captureFailedMessage": "We could not capture your profile photo right now. Please try again.",
-      "removeFailedTitle": "Unable to Remove Photo",
-      "removeFailedMessage": "We could not remove your profile photo right now. Please try again."
+      "selectFailedTitle": "Pemilihan Foto Gagal",
+      "selectFailedMessage": "Kami tidak dapat memperbarui foto profil Anda saat ini. Silakan coba lagi.",
+      "captureFailedTitle": "Kamera Gagal",
+      "captureFailedMessage": "Kami tidak dapat mengambil foto profil Anda saat ini. Silakan coba lagi.",
+      "removeFailedTitle": "Tidak Dapat Menghapus Foto",
+      "removeFailedMessage": "Kami tidak dapat menghapus foto profil Anda saat ini. Silakan coba lagi."
     }
   },
   "language": {
@@ -88,15 +88,15 @@
     "restartRequiredTitle": "Diperlukan Mulai Ulang",
     "restartRequiredMessage": "Silakan mulai ulang Ellie untuk menerapkan perubahan arah bahasa.",
     "names": {
-      "en": "English",
-      "es": "Español",
-      "pt-BR": "Português (Brasil)",
-      "fr": "Français",
+      "en": "Bahasa inggris",
+      "es": "Spanyol",
+      "pt-BR": "Portugis (Brasil)",
+      "fr": "Perancis",
       "ar": "العربية",
-      "zh-CN": "中文",
+      "zh-CN": "tidak",
       "ru": "Русский",
       "hi": "हिन्दी",
-      "af": "Afrikaans",
+      "af": "Afrikanas",
       "zu": "isiZulu",
       "id": "Bahasa Indonesia"
     }
@@ -106,7 +106,7 @@
   },
   "auth": {
     "fields": {
-      "emailLabel": "Email",
+      "emailLabel": "E-mail",
       "emailPlaceholder": "anda@email.com",
       "passwordLabel": "Kata sandi",
       "passwordPlaceholder": "Kata sandi"
@@ -164,38 +164,38 @@
   },
   "subscription": {
     "paywall": {
-      "closeA11y": "Close paywall",
-      "title": "Ellie Pro",
-      "subtitle": "For shift workers who mean business",
+      "closeA11y": "Tutup penghalang pembayaran",
+      "title": "__TK1__ Pro",
+      "subtitle": "Untuk pekerja shift yang serius",
       "features": {
-        "askRoster": "Ask \"Hey Ellie\" anything about your roster",
-        "fullYear": "See your full year at a glance",
-        "offline": "Works underground, no signal needed",
-        "instantAnswers": "Instant answers about leave and patterns",
-        "aiPowered": "Powered by AI and always improving"
+        "askRoster": "Tanyakan \"Hai __TK1__\" apa pun tentang daftar pemain Anda",
+        "fullYear": "Lihat sekilas setahun penuh Anda",
+        "offline": "Bekerja di bawah tanah, tidak diperlukan sinyal",
+        "instantAnswers": "Jawaban instan tentang cuti dan pola",
+        "aiPowered": "Didukung oleh AI dan selalu berkembang"
       },
       "plans": {
-        "annual": "Annual",
-        "monthly": "Monthly",
-        "annualSuffix": "/yr",
-        "monthlySuffix": "/mo",
-        "save": "SAVE 40%"
+        "annual": "Tahunan",
+        "monthly": "Bulanan",
+        "annualSuffix": "/ tahun",
+        "monthlySuffix": "/bln",
+        "save": "HEMAT 40%"
       },
-      "cta": "Start 7-Day Free Trial",
-      "noCard": "No credit card required · Cancel anytime",
-      "restorePurchases": "Restore Purchases",
-      "privacyPolicy": "Privacy Policy"
+      "cta": "Mulai Uji Coba Gratis 7 Hari",
+      "noCard": "Tidak diperlukan kartu kredit · Batalkan kapan saja",
+      "restorePurchases": "Pulihkan Pembelian",
+      "privacyPolicy": "Kebijakan Privasi"
     },
     "profile": {
-      "rowActiveA11y": "Ellie Pro active subscription",
-      "rowUpgradeA11y": "Upgrade to Ellie Pro",
-      "activeLabel": "Ellie Pro — Active ✓",
-      "upgradeLabel": "Upgrade to Ellie Pro",
-      "activeHint": "Full calendar · Hey Ellie voice assistant",
-      "upgradeHint": "7-day free trial · $6.99/mo or $49.99/yr"
+      "rowActiveA11y": "__TK1__ Pro langganan aktif",
+      "rowUpgradeA11y": "Tingkatkan ke __TK1__ Pro",
+      "activeLabel": "__TK1__ Pro — Aktif ✓",
+      "upgradeLabel": "Tingkatkan ke __TK1__ Pro",
+      "activeHint": "Kalender lengkap · Hai __TK1__ asisten suara",
+      "upgradeHint": "Uji coba gratis 7 hari · $6,99/bln atau $49,99/tahun"
     },
     "padlock": {
-      "a11yLabel": "Upgrade to Ellie Pro to see full calendar"
+      "a11yLabel": "Tingkatkan ke __TK1__ Pro untuk melihat kalender lengkap"
     }
   }
 }

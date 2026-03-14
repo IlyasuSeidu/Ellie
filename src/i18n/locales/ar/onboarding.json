@@ -308,11 +308,11 @@
     "tryAgain": "حاول ثانية",
     "errors": {
       "missingRequiredInformation": "معلومات مطلوبة مفقودة: {{fields}}. يرجى الرجوع وإكمال جميع الخطوات.",
-      "networkUnavailable": "We could not connect to save your setup. Check your connection and try again.",
-      "permissionDenied": "We don't have permission to save your setup. Please sign in again and retry.",
-      "storageUnavailable": "Your device storage is full. Free up space and try again.",
-      "timeout": "Saving took too long. Please try again.",
-      "genericSaveFailed": "We could not save your setup right now. Please try again."
+      "networkUnavailable": "لم نتمكن من الاتصال لحفظ الإعداد الخاص بك. تحقق من اتصالك وحاول مرة أخرى.",
+      "permissionDenied": "ليس لدينا إذن لحفظ الإعداد الخاص بك. الرجاء تسجيل الدخول مرة أخرى وإعادة المحاولة.",
+      "storageUnavailable": "مساحة تخزين جهازك ممتلئة. قم بتحرير مساحة وحاول مرة أخرى.",
+      "timeout": "استغرق الادخار وقتا طويلا. يرجى المحاولة مرة أخرى.",
+      "genericSaveFailed": "لم نتمكن من حفظ الإعداد الخاص بك الآن. يرجى المحاولة مرة أخرى."
     },
     "validation": {
       "fields": {

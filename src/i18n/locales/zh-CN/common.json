@@ -30,35 +30,35 @@
       "operationNotAllowed": "此操作不被允许。",
       "tooManyRequests": "尝试次数过多。请稍后再试。",
       "networkRequestFailed": "网络错误。请检查你的连接。",
-      "invalidCredentials": "The email or password you entered is incorrect.",
-      "missingEmail": "Please enter your email address.",
-      "missingPassword": "Please enter your password.",
-      "userDisabled": "This account has been disabled. Contact support for help.",
-      "sessionExpired": "For security reasons, please sign in again and retry.",
-      "accountExistsWithDifferentCredential": "An account already exists with this email using a different sign-in method.",
-      "credentialAlreadyInUse": "This credential is already linked to another account.",
-      "signInCancelled": "Sign-in was canceled.",
-      "googlePlayServicesUnavailable": "Google Play Services is unavailable on this device.",
-      "googleMissingIdToken": "Google sign-in could not be completed. Please try again.",
-      "appleMissingIdentityToken": "Apple sign-in could not be completed. Please try again.",
-      "actionSignInFailed": "Unable to sign in right now. Please try again.",
-      "actionSignUpFailed": "Unable to create your account right now. Please try again.",
-      "actionSocialSignInFailed": "Social sign-in is unavailable right now. Please try email sign-in.",
-      "actionPasswordResetFailed": "Unable to send a reset link right now. Please try again.",
-      "actionEmailVerificationFailed": "Unable to send verification email right now. Please try again.",
-      "actionSignOutFailed": "Unable to sign out right now.",
-      "actionSessionRestoreFailed": "Unable to restore your session. Please sign in again."
+      "invalidCredentials": "您输入的电子邮件或密码不正确。",
+      "missingEmail": "请输入您的电子邮件地址。",
+      "missingPassword": "请输入您的密码。",
+      "userDisabled": "该帐户已被禁用。请联系支持人员寻求帮助。",
+      "sessionExpired": "出于安全原因，请重新登录并重试。",
+      "accountExistsWithDifferentCredential": "已存在使用此电子邮件使用不同登录方法的帐户。",
+      "credentialAlreadyInUse": "该凭证已链接到另一个帐户。",
+      "signInCancelled": "登录已取消。",
+      "googlePlayServicesUnavailable": "此设备上无法使用 Google Play 服务。",
+      "googleMissingIdToken": "无法完成 Google 登录。请再试一次。",
+      "appleMissingIdentityToken": "Apple 登录无法完成。请再试一次。",
+      "actionSignInFailed": "现在无法登录。请再试一次。",
+      "actionSignUpFailed": "现在无法创建您的帐户。请再试一次。",
+      "actionSocialSignInFailed": "目前无法使用社交登录。请尝试使用电子邮件登录。",
+      "actionPasswordResetFailed": "目前无法发送重置链接。请再试一次。",
+      "actionEmailVerificationFailed": "目前无法发送验证电子邮件。请再试一次。",
+      "actionSignOutFailed": "现在无法退出。",
+      "actionSessionRestoreFailed": "无法恢复您的会话。请重新登录。"
     },
     "titles": {
       "error": "错误",
       "unexpected": "意外错误"
     },
     "settings": {
-      "languageChangeFailed": "Unable to change language right now. Please try again.",
-      "onboardingResetFailed": "Unable to restart onboarding right now. Please try again.",
-      "profileSaveFailed": "Unable to save your settings right now. Please try again.",
-      "permissionDenied": "You don't have permission to update these settings.",
-      "timeout": "The request took too long. Please try again."
+      "languageChangeFailed": "目前无法更改语言。请再试一次。",
+      "onboardingResetFailed": "目前无法重新启动入职。请再试一次。",
+      "profileSaveFailed": "目前无法保存您的设置。请再试一次。",
+      "permissionDenied": "您无权更新这些设置。",
+      "timeout": "该请求花费的时间太长。请再试一次。"
     }
   },
   "avatar": {
@@ -74,12 +74,12 @@
       "cameraMessage": "请在设备设置中开启相机访问权限，以便拍摄头像照片。"
     },
     "errors": {
-      "selectFailedTitle": "Photo Selection Failed",
-      "selectFailedMessage": "We could not update your profile photo right now. Please try again.",
-      "captureFailedTitle": "Camera Failed",
-      "captureFailedMessage": "We could not capture your profile photo right now. Please try again.",
-      "removeFailedTitle": "Unable to Remove Photo",
-      "removeFailedMessage": "We could not remove your profile photo right now. Please try again."
+      "selectFailedTitle": "照片选择失败",
+      "selectFailedMessage": "我们现在无法更新您的个人资料照片。请再试一次。",
+      "captureFailedTitle": "相机失败",
+      "captureFailedMessage": "我们现在无法拍摄您的个人资料照片。请再试一次。",
+      "removeFailedTitle": "无法删除照片",
+      "removeFailedMessage": "我们现在无法删除您的个人资料照片。请再试一次。"
     }
   },
   "language": {
@@ -88,17 +88,17 @@
     "restartRequiredTitle": "需要重新启动",
     "restartRequiredMessage": "请重新启动 Ellie 以应用语言方向更改。",
     "names": {
-      "en": "English",
-      "es": "Español",
-      "pt-BR": "Português (Brasil)",
-      "fr": "Français",
-      "ar": "العربية",
+      "en": "英语",
+      "es": "西班牙语",
+      "pt-BR": "葡萄牙语（巴西）",
+      "fr": "法国人",
+      "ar": "巴黎",
       "zh-CN": "中文",
-      "ru": "Русский",
+      "ru": "俄罗斯",
       "hi": "हिन्दी",
-      "af": "Afrikaans",
-      "zu": "isiZulu",
-      "id": "Bahasa Indonesia"
+      "af": "南非荷兰语",
+      "zu": "伊西祖鲁语",
+      "id": "印度尼西亚语"
     }
   },
   "accessibility": {
@@ -125,7 +125,7 @@
       "apple": "使用 Apple 继续"
     },
     "signIn": {
-      "appName": "ELLIE",
+      "appName": "艾莉",
       "subtitle": "登录你的账户",
       "forgotPassword": "忘记密码？",
       "primaryButton": "登录",
@@ -164,38 +164,38 @@
   },
   "subscription": {
     "paywall": {
-      "closeA11y": "Close paywall",
-      "title": "Ellie Pro",
-      "subtitle": "For shift workers who mean business",
+      "closeA11y": "关闭付费专区",
+      "title": "__TK1__ 专业版",
+      "subtitle": "对于认真的轮班工人",
       "features": {
-        "askRoster": "Ask \"Hey Ellie\" anything about your roster",
-        "fullYear": "See your full year at a glance",
-        "offline": "Works underground, no signal needed",
-        "instantAnswers": "Instant answers about leave and patterns",
-        "aiPowered": "Powered by AI and always improving"
+        "askRoster": "询问“嘿__TK1__”有关您的名单的任何信息",
+        "fullYear": "一目了然地了解您的全年情况",
+        "offline": "地下工作，无需信号",
+        "instantAnswers": "有关休假和模式的即时答案",
+        "aiPowered": "由人工智能提供支持并不断改进"
       },
       "plans": {
-        "annual": "Annual",
-        "monthly": "Monthly",
-        "annualSuffix": "/yr",
-        "monthlySuffix": "/mo",
-        "save": "SAVE 40%"
+        "annual": "年度的",
+        "monthly": "每月",
+        "annualSuffix": "/年",
+        "monthlySuffix": "/月",
+        "save": "节省 40%"
       },
-      "cta": "Start 7-Day Free Trial",
-      "noCard": "No credit card required · Cancel anytime",
-      "restorePurchases": "Restore Purchases",
-      "privacyPolicy": "Privacy Policy"
+      "cta": "开始 7 天免费试用",
+      "noCard": "无需信用卡 · 随时取消",
+      "restorePurchases": "恢复购买",
+      "privacyPolicy": "隐私政策"
     },
     "profile": {
-      "rowActiveA11y": "Ellie Pro active subscription",
-      "rowUpgradeA11y": "Upgrade to Ellie Pro",
-      "activeLabel": "Ellie Pro — Active ✓",
-      "upgradeLabel": "Upgrade to Ellie Pro",
-      "activeHint": "Full calendar · Hey Ellie voice assistant",
-      "upgradeHint": "7-day free trial · $6.99/mo or $49.99/yr"
+      "rowActiveA11y": "__TK1__ Pro 主动订阅",
+      "rowUpgradeA11y": "升级到 __TK1__ 专业版",
+      "activeLabel": "__TK1__ Pro — 主动 ✓",
+      "upgradeLabel": "升级到 __TK1__ 专业版",
+      "activeHint": "全日历·嘿__TK1__语音助手",
+      "upgradeHint": "7 天免费试用 · 每月 6.99 美元或每年 49.99 美元"
     },
     "padlock": {
-      "a11yLabel": "Upgrade to Ellie Pro to see full calendar"
+      "a11yLabel": "升级到 __TK1__ Pro 以查看完整日历"
     }
   }
 }

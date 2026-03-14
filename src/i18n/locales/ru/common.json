@@ -30,35 +30,35 @@
       "operationNotAllowed": "Эта операция не разрешена.",
       "tooManyRequests": "Слишком много попыток. Попробуйте позже.",
       "networkRequestFailed": "Ошибка сети. Проверьте подключение.",
-      "invalidCredentials": "The email or password you entered is incorrect.",
-      "missingEmail": "Please enter your email address.",
-      "missingPassword": "Please enter your password.",
-      "userDisabled": "This account has been disabled. Contact support for help.",
-      "sessionExpired": "For security reasons, please sign in again and retry.",
-      "accountExistsWithDifferentCredential": "An account already exists with this email using a different sign-in method.",
-      "credentialAlreadyInUse": "This credential is already linked to another account.",
-      "signInCancelled": "Sign-in was canceled.",
-      "googlePlayServicesUnavailable": "Google Play Services is unavailable on this device.",
-      "googleMissingIdToken": "Google sign-in could not be completed. Please try again.",
-      "appleMissingIdentityToken": "Apple sign-in could not be completed. Please try again.",
-      "actionSignInFailed": "Unable to sign in right now. Please try again.",
-      "actionSignUpFailed": "Unable to create your account right now. Please try again.",
-      "actionSocialSignInFailed": "Social sign-in is unavailable right now. Please try email sign-in.",
-      "actionPasswordResetFailed": "Unable to send a reset link right now. Please try again.",
-      "actionEmailVerificationFailed": "Unable to send verification email right now. Please try again.",
-      "actionSignOutFailed": "Unable to sign out right now.",
-      "actionSessionRestoreFailed": "Unable to restore your session. Please sign in again."
+      "invalidCredentials": "Введенный вами адрес электронной почты или пароль неверен.",
+      "missingEmail": "Пожалуйста, введите свой адрес электронной почты.",
+      "missingPassword": "Пожалуйста, введите свой пароль.",
+      "userDisabled": "Эта учетная запись отключена. Обратитесь в службу поддержки за помощью.",
+      "sessionExpired": "В целях безопасности войдите в систему еще раз и повторите попытку.",
+      "accountExistsWithDifferentCredential": "Учетная запись с этим адресом электронной почты уже существует, но используется другой метод входа.",
+      "credentialAlreadyInUse": "Эти учетные данные уже привязаны к другой учетной записи.",
+      "signInCancelled": "Вход в систему отменен.",
+      "googlePlayServicesUnavailable": "Сервисы Google Play недоступны на этом устройстве.",
+      "googleMissingIdToken": "Не удалось выполнить вход в Google. Пожалуйста, попробуйте еще раз.",
+      "appleMissingIdentityToken": "Не удалось выполнить вход в Apple. Пожалуйста, попробуйте еще раз.",
+      "actionSignInFailed": "Не удалось войти в систему прямо сейчас. Пожалуйста, попробуйте еще раз.",
+      "actionSignUpFailed": "Невозможно создать учетную запись прямо сейчас. Пожалуйста, попробуйте еще раз.",
+      "actionSocialSignInFailed": "Вход через социальные сети сейчас недоступен. Попробуйте войти в систему по электронной почте.",
+      "actionPasswordResetFailed": "Сейчас невозможно отправить ссылку для сброса. Пожалуйста, попробуйте еще раз.",
+      "actionEmailVerificationFailed": "Сейчас невозможно отправить письмо с подтверждением. Пожалуйста, попробуйте еще раз.",
+      "actionSignOutFailed": "Невозможно выйти прямо сейчас.",
+      "actionSessionRestoreFailed": "Невозможно восстановить сеанс. Пожалуйста, войдите снова."
     },
     "titles": {
       "error": "Ошибка",
       "unexpected": "Непредвиденная ошибка"
     },
     "settings": {
-      "languageChangeFailed": "Unable to change language right now. Please try again.",
-      "onboardingResetFailed": "Unable to restart onboarding right now. Please try again.",
-      "profileSaveFailed": "Unable to save your settings right now. Please try again.",
-      "permissionDenied": "You don't have permission to update these settings.",
-      "timeout": "The request took too long. Please try again."
+      "languageChangeFailed": "Невозможно изменить язык прямо сейчас. Пожалуйста, попробуйте еще раз.",
+      "onboardingResetFailed": "Невозможно возобновить регистрацию прямо сейчас. Пожалуйста, попробуйте еще раз.",
+      "profileSaveFailed": "Невозможно сохранить настройки прямо сейчас. Пожалуйста, попробуйте еще раз.",
+      "permissionDenied": "У вас недостаточно прав для обновления этих настроек.",
+      "timeout": "Запрос занял слишком много времени. Пожалуйста, попробуйте еще раз."
     }
   },
   "avatar": {
@@ -74,12 +74,12 @@
       "cameraMessage": "Пожалуйста, включите доступ к камере в настройках устройства, чтобы сделать фото профиля."
     },
     "errors": {
-      "selectFailedTitle": "Photo Selection Failed",
-      "selectFailedMessage": "We could not update your profile photo right now. Please try again.",
-      "captureFailedTitle": "Camera Failed",
-      "captureFailedMessage": "We could not capture your profile photo right now. Please try again.",
-      "removeFailedTitle": "Unable to Remove Photo",
-      "removeFailedMessage": "We could not remove your profile photo right now. Please try again."
+      "selectFailedTitle": "Не удалось выбрать фотографию",
+      "selectFailedMessage": "Нам не удалось обновить фотографию вашего профиля прямо сейчас. Пожалуйста, попробуйте еще раз.",
+      "captureFailedTitle": "Ошибка камеры",
+      "captureFailedMessage": "Сейчас нам не удалось сделать фотографию вашего профиля. Пожалуйста, попробуйте еще раз.",
+      "removeFailedTitle": "Невозможно удалить фотографию",
+      "removeFailedMessage": "В данный момент нам не удалось удалить фотографию вашего профиля. Пожалуйста, попробуйте еще раз."
     }
   },
   "language": {
@@ -88,17 +88,17 @@
     "restartRequiredTitle": "Требуется перезагрузка",
     "restartRequiredMessage": "Перезапустите Элли, чтобы применить изменения направления языка.",
     "names": {
-      "en": "English",
-      "es": "Español",
-      "pt-BR": "Português (Brasil)",
-      "fr": "Français",
-      "ar": "العربية",
+      "en": "Английский",
+      "es": "испанский",
+      "pt-BR": "Португальский (Бразилия)",
+      "fr": "Франсэ",
+      "ar": "عربية",
       "zh-CN": "中文",
       "ru": "Русский",
       "hi": "हिन्दी",
-      "af": "Afrikaans",
-      "zu": "isiZulu",
-      "id": "Bahasa Indonesia"
+      "af": "африкаанс",
+      "zu": "ИсиЗулу",
+      "id": "Бахаса Индонезия"
     }
   },
   "accessibility": {
@@ -125,7 +125,7 @@
       "apple": "Продолжить с Apple"
     },
     "signIn": {
-      "appName": "ELLIE",
+      "appName": "ЭЛЛИ",
       "subtitle": "Войдите в свою учетную запись",
       "forgotPassword": "Забыли пароль?",
       "primaryButton": "Войти",
@@ -164,38 +164,38 @@
   },
   "subscription": {
     "paywall": {
-      "closeA11y": "Close paywall",
-      "title": "Ellie Pro",
-      "subtitle": "For shift workers who mean business",
+      "closeA11y": "Закрыть платный доступ",
+      "title": "__TK1__ Про",
+      "subtitle": "Для вахтовых работников, которые серьезно относятся к делу",
       "features": {
-        "askRoster": "Ask \"Hey Ellie\" anything about your roster",
-        "fullYear": "See your full year at a glance",
-        "offline": "Works underground, no signal needed",
-        "instantAnswers": "Instant answers about leave and patterns",
-        "aiPowered": "Powered by AI and always improving"
+        "askRoster": "Спросите «Эй, __TK1__» о своем составе.",
+        "fullYear": "Посмотрите весь год с первого взгляда",
+        "offline": "Работает под землей, сигнал не нужен",
+        "instantAnswers": "Мгновенные ответы об отпусках и схемах",
+        "aiPowered": "Работает на базе искусственного интеллекта и постоянно совершенствуется"
       },
       "plans": {
-        "annual": "Annual",
-        "monthly": "Monthly",
-        "annualSuffix": "/yr",
-        "monthlySuffix": "/mo",
-        "save": "SAVE 40%"
+        "annual": "Ежегодный",
+        "monthly": "Ежемесячно",
+        "annualSuffix": "/год",
+        "monthlySuffix": "/мес.",
+        "save": "СЭКОНОМЬТЕ 40%"
       },
-      "cta": "Start 7-Day Free Trial",
-      "noCard": "No credit card required · Cancel anytime",
-      "restorePurchases": "Restore Purchases",
-      "privacyPolicy": "Privacy Policy"
+      "cta": "Начать 7-дневную бесплатную пробную версию",
+      "noCard": "Кредитная карта не требуется · Отмена в любое время",
+      "restorePurchases": "Восстановить покупки",
+      "privacyPolicy": "политика конфиденциальности"
     },
     "profile": {
-      "rowActiveA11y": "Ellie Pro active subscription",
-      "rowUpgradeA11y": "Upgrade to Ellie Pro",
-      "activeLabel": "Ellie Pro — Active ✓",
-      "upgradeLabel": "Upgrade to Ellie Pro",
-      "activeHint": "Full calendar · Hey Ellie voice assistant",
-      "upgradeHint": "7-day free trial · $6.99/mo or $49.99/yr"
+      "rowActiveA11y": "__TK1__ Активная подписка Pro",
+      "rowUpgradeA11y": "Обновите до __TK1__ Pro",
+      "activeLabel": "__TK1__ Pro — Активный ✓",
+      "upgradeLabel": "Обновите до __TK1__ Pro",
+      "activeHint": "Полный календарь · Привет, голосовой помощник __TK1__",
+      "upgradeHint": "7-дневная бесплатная пробная версия · 6,99 долларов США в месяц или 49,99 долларов США в год"
     },
     "padlock": {
-      "a11yLabel": "Upgrade to Ellie Pro to see full calendar"
+      "a11yLabel": "Обновите версию __TK1__ Pro, чтобы увидеть полный календарь."
     }
   }
 }

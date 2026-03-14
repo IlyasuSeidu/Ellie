@@ -170,7 +170,7 @@
         "description": "Situs Anda menggunakan sesuatu yang berbeda? Bangun rotasi Anda sendiri di sini"
       },
       "fifo-8-6": {
-        "name": "FIFO 8/6",
+        "name": "__TK1__ 8/6",
         "schedule": "8 hari kerja • 6 hari di rumah",
         "description": "Bekerja 8 hari berturut-turut di lokasi, lalu 6 hari di rumah-populer di penambangan WA"
       },
@@ -185,17 +185,17 @@
         "description": "Dua minggu di tempat, dua minggu di rumah—keseimbangan kehidupan kerja dan kehidupan yang sempurna"
       },
       "fifo-14-7": {
-        "name": "FIFO 14/7 (2:1)",
+        "name": "__TK1__ 14/7 (2:1)",
         "schedule": "2 minggu kerja • 1 minggu di rumah",
         "description": "Dua minggu di lokasi, satu minggu di rumah-potensi penghasilan tinggi"
       },
       "fifo-21-7": {
-        "name": "FIFO 21/7 (3:1)",
+        "name": "__TK1__ 21/7 (3:1)",
         "schedule": "3 minggu kerja • 1 minggu di rumah",
         "description": "Tiga minggu di lokasi, satu minggu di rumah-untuk pengoperasian yang sangat jarak jauh"
       },
       "fifo-28-14": {
-        "name": "FIFO 28/14 (2:1)",
+        "name": "__TK1__ 28/14 (2:1)",
         "schedule": "4 minggu bekerja • 2 minggu di rumah",
         "description": "Empat minggu di lokasi, dua minggu di rumah-untuk lokasi terpencil jarak jauh"
       },
@@ -325,11 +325,11 @@
     "tryAgain": "Coba Lagi",
     "errors": {
       "missingRequiredInformation": "Informasi wajib belum lengkap: {{fields}}. Silakan kembali dan selesaikan semua langkah.",
-      "networkUnavailable": "We could not connect to save your setup. Check your connection and try again.",
-      "permissionDenied": "We don't have permission to save your setup. Please sign in again and retry.",
-      "storageUnavailable": "Your device storage is full. Free up space and try again.",
-      "timeout": "Saving took too long. Please try again.",
-      "genericSaveFailed": "We could not save your setup right now. Please try again."
+      "networkUnavailable": "Kami tidak dapat terhubung untuk menyimpan pengaturan Anda. Periksa koneksi Anda dan coba lagi.",
+      "permissionDenied": "Kami tidak memiliki izin untuk menyimpan pengaturan Anda. Silakan masuk lagi dan coba lagi.",
+      "storageUnavailable": "Penyimpanan perangkat Anda penuh. Kosongkan ruang dan coba lagi.",
+      "timeout": "Penghematan memakan waktu terlalu lama. Silakan coba lagi.",
+      "genericSaveFailed": "Kami tidak dapat menyimpan penyiapan Anda saat ini. Silakan coba lagi."
     },
     "validation": {
       "fields": {

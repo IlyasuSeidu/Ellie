@@ -274,11 +274,11 @@
     "tryAgain": "再试一次",
     "errors": {
       "missingRequiredInformation": "缺少必填信息：{{fields}}。请返回并完成所有步骤。",
-      "networkUnavailable": "We could not connect to save your setup. Check your connection and try again.",
-      "permissionDenied": "We don't have permission to save your setup. Please sign in again and retry.",
-      "storageUnavailable": "Your device storage is full. Free up space and try again.",
-      "timeout": "Saving took too long. Please try again.",
-      "genericSaveFailed": "We could not save your setup right now. Please try again."
+      "networkUnavailable": "我们无法连接以保存您的设置。检查您的连接并重试。",
+      "permissionDenied": "我们无权保存您的设置。请重新登录并重试。",
+      "storageUnavailable": "您的设备存储空间已满。释放空间并重试。",
+      "timeout": "保存时间太长了。请再试一次。",
+      "genericSaveFailed": "我们现在无法保存您的设置。请再试一次。"
     },
     "validation": {
       "fields": {

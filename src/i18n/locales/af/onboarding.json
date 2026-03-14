@@ -311,11 +311,11 @@
     "tryAgain": "Probeer weer",
     "errors": {
       "missingRequiredInformation": "Vereiste inligting ontbreek: {{fields}}. Gaan terug en voltooi al die stappe.",
-      "networkUnavailable": "We could not connect to save your setup. Check your connection and try again.",
-      "permissionDenied": "We don't have permission to save your setup. Please sign in again and retry.",
-      "storageUnavailable": "Your device storage is full. Free up space and try again.",
-      "timeout": "Saving took too long. Please try again.",
-      "genericSaveFailed": "We could not save your setup right now. Please try again."
+      "networkUnavailable": "Ons kon nie koppel om jou opstelling te stoor nie. Gaan jou verbinding na en probeer weer.",
+      "permissionDenied": "Ons het nie toestemming om jou opstelling te stoor nie. Meld asseblief weer aan en probeer weer.",
+      "storageUnavailable": "Jou toestelberging is vol. Maak spasie vry en probeer weer.",
+      "timeout": "Spaar het te lank geneem. Probeer asseblief weer.",
+      "genericSaveFailed": "Ons kon nie nou jou opstelling stoor nie. Probeer asseblief weer."
     },
     "validation": {
       "fields": {

@@ -306,11 +306,11 @@
     "tryAgain": "पुनः प्रयास करें",
     "errors": {
       "missingRequiredInformation": "आवश्यक जानकारी नहीं मिली: {{fields}}। कृपया वापस जाएँ और सभी चरण पूरे करें।",
-      "networkUnavailable": "We could not connect to save your setup. Check your connection and try again.",
-      "permissionDenied": "We don't have permission to save your setup. Please sign in again and retry.",
-      "storageUnavailable": "Your device storage is full. Free up space and try again.",
-      "timeout": "Saving took too long. Please try again.",
-      "genericSaveFailed": "We could not save your setup right now. Please try again."
+      "networkUnavailable": "हम आपका सेटअप सहेजने के लिए कनेक्ट नहीं कर सके. अपना कनेक्शन जांचें और पुनः प्रयास करें।",
+      "permissionDenied": "हमें आपका सेटअप सहेजने की अनुमति नहीं है. कृपया पुनः साइन इन करें और पुनः प्रयास करें।",
+      "storageUnavailable": "आपके डिवाइस का स्टोरेज भर गया है. स्थान खाली करें और पुनः प्रयास करें।",
+      "timeout": "बचत करने में बहुत अधिक समय लगा. कृपया पुन: प्रयास करें।",
+      "genericSaveFailed": "हम अभी आपका सेटअप सहेज नहीं सके. कृपया पुन: प्रयास करें।"
     },
     "validation": {
       "fields": {

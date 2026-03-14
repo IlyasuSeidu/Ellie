@@ -30,35 +30,35 @@
       "operationNotAllowed": "Esta operación no está permitida.",
       "tooManyRequests": "Demasiados intentos. Inténtalo más tarde.",
       "networkRequestFailed": "Error de red. Revisa tu conexión.",
-      "invalidCredentials": "The email or password you entered is incorrect.",
-      "missingEmail": "Please enter your email address.",
-      "missingPassword": "Please enter your password.",
-      "userDisabled": "This account has been disabled. Contact support for help.",
-      "sessionExpired": "For security reasons, please sign in again and retry.",
-      "accountExistsWithDifferentCredential": "An account already exists with this email using a different sign-in method.",
-      "credentialAlreadyInUse": "This credential is already linked to another account.",
-      "signInCancelled": "Sign-in was canceled.",
-      "googlePlayServicesUnavailable": "Google Play Services is unavailable on this device.",
-      "googleMissingIdToken": "Google sign-in could not be completed. Please try again.",
-      "appleMissingIdentityToken": "Apple sign-in could not be completed. Please try again.",
-      "actionSignInFailed": "Unable to sign in right now. Please try again.",
-      "actionSignUpFailed": "Unable to create your account right now. Please try again.",
-      "actionSocialSignInFailed": "Social sign-in is unavailable right now. Please try email sign-in.",
-      "actionPasswordResetFailed": "Unable to send a reset link right now. Please try again.",
-      "actionEmailVerificationFailed": "Unable to send verification email right now. Please try again.",
-      "actionSignOutFailed": "Unable to sign out right now.",
-      "actionSessionRestoreFailed": "Unable to restore your session. Please sign in again."
+      "invalidCredentials": "El correo electrónico o la contraseña que ingresó son incorrectos.",
+      "missingEmail": "Por favor ingrese su dirección de correo electrónico.",
+      "missingPassword": "Por favor ingrese su contraseña.",
+      "userDisabled": "Esta cuenta ha sido deshabilitada. Póngase en contacto con el soporte para obtener ayuda.",
+      "sessionExpired": "Por razones de seguridad, inicie sesión nuevamente y vuelva a intentarlo.",
+      "accountExistsWithDifferentCredential": "Ya existe una cuenta con este correo electrónico utilizando un método de inicio de sesión diferente.",
+      "credentialAlreadyInUse": "Esta credencial ya está vinculada a otra cuenta.",
+      "signInCancelled": "El inicio de sesión fue cancelado.",
+      "googlePlayServicesUnavailable": "Los servicios de Google Play no están disponibles en este dispositivo.",
+      "googleMissingIdToken": "No se pudo completar el inicio de sesión de Google. Por favor inténtalo de nuevo.",
+      "appleMissingIdentityToken": "No se pudo completar el inicio de sesión de Apple. Por favor inténtalo de nuevo.",
+      "actionSignInFailed": "No se puede iniciar sesión en este momento. Por favor inténtalo de nuevo.",
+      "actionSignUpFailed": "No se puede crear su cuenta en este momento. Por favor inténtalo de nuevo.",
+      "actionSocialSignInFailed": "El inicio de sesión social no está disponible en este momento. Intente iniciar sesión por correo electrónico.",
+      "actionPasswordResetFailed": "No se puede enviar un enlace de reinicio en este momento. Por favor inténtalo de nuevo.",
+      "actionEmailVerificationFailed": "No se puede enviar el correo electrónico de verificación en este momento. Por favor inténtalo de nuevo.",
+      "actionSignOutFailed": "No se puede cerrar sesión en este momento.",
+      "actionSessionRestoreFailed": "No se puede restaurar su sesión. Por favor inicia sesión nuevamente."
     },
     "titles": {
       "error": "Error",
       "unexpected": "Error inesperado"
     },
     "settings": {
-      "languageChangeFailed": "Unable to change language right now. Please try again.",
-      "onboardingResetFailed": "Unable to restart onboarding right now. Please try again.",
-      "profileSaveFailed": "Unable to save your settings right now. Please try again.",
-      "permissionDenied": "You don't have permission to update these settings.",
-      "timeout": "The request took too long. Please try again."
+      "languageChangeFailed": "No se puede cambiar el idioma en este momento. Por favor inténtalo de nuevo.",
+      "onboardingResetFailed": "No se puede reiniciar la incorporación en este momento. Por favor inténtalo de nuevo.",
+      "profileSaveFailed": "No se puede guardar su configuración en este momento. Por favor inténtalo de nuevo.",
+      "permissionDenied": "No tienes permiso para actualizar esta configuración.",
+      "timeout": "La solicitud tardó demasiado. Por favor inténtalo de nuevo."
     }
   },
   "avatar": {
@@ -74,12 +74,12 @@
       "cameraMessage": "Activa el acceso a la cámara en la configuración de tu dispositivo para tomar una foto de perfil."
     },
     "errors": {
-      "selectFailedTitle": "Photo Selection Failed",
-      "selectFailedMessage": "We could not update your profile photo right now. Please try again.",
-      "captureFailedTitle": "Camera Failed",
-      "captureFailedMessage": "We could not capture your profile photo right now. Please try again.",
-      "removeFailedTitle": "Unable to Remove Photo",
-      "removeFailedMessage": "We could not remove your profile photo right now. Please try again."
+      "selectFailedTitle": "Error en la selección de fotos",
+      "selectFailedMessage": "No pudimos actualizar tu foto de perfil en este momento. Por favor inténtalo de nuevo.",
+      "captureFailedTitle": "La cámara falló",
+      "captureFailedMessage": "No pudimos capturar tu foto de perfil en este momento. Por favor inténtalo de nuevo.",
+      "removeFailedTitle": "No se puede eliminar la foto",
+      "removeFailedMessage": "No pudimos eliminar tu foto de perfil en este momento. Por favor inténtalo de nuevo."
     }
   },
   "language": {
@@ -88,15 +88,15 @@
     "restartRequiredTitle": "Reinicio requerido",
     "restartRequiredMessage": "Reinicia Ellie para aplicar los cambios de dirección del idioma.",
     "names": {
-      "en": "English",
+      "en": "Inglés",
       "es": "Español",
       "pt-BR": "Português (Brasil)",
-      "fr": "Français",
+      "fr": "francés",
       "ar": "العربية",
       "zh-CN": "中文",
-      "ru": "Русский",
+      "ru": "ruso",
       "hi": "हिन्दी",
-      "af": "Afrikaans",
+      "af": "africaans",
       "zu": "isiZulu",
       "id": "Bahasa Indonesia"
     }
@@ -125,7 +125,7 @@
       "apple": "Continuar con Apple"
     },
     "signIn": {
-      "appName": "ELLIE",
+      "appName": "ellie",
       "subtitle": "Inicia sesión en tu cuenta",
       "forgotPassword": "¿Olvidaste tu contraseña?",
       "primaryButton": "Iniciar sesión",
@@ -164,38 +164,38 @@
   },
   "subscription": {
     "paywall": {
-      "closeA11y": "Close paywall",
-      "title": "Ellie Pro",
-      "subtitle": "For shift workers who mean business",
+      "closeA11y": "Cerrar muro de pago",
+      "title": "Ellie Profesional",
+      "subtitle": "Para trabajadores por turnos que van en serio",
       "features": {
-        "askRoster": "Ask \"Hey Ellie\" anything about your roster",
-        "fullYear": "See your full year at a glance",
-        "offline": "Works underground, no signal needed",
-        "instantAnswers": "Instant answers about leave and patterns",
-        "aiPowered": "Powered by AI and always improving"
+        "askRoster": "Pregúntale a \"Hola Ellie\" cualquier cosa sobre tu plantilla.",
+        "fullYear": "Vea su año completo de un vistazo",
+        "offline": "Funciona bajo tierra, no necesita señal.",
+        "instantAnswers": "Respuestas instantáneas sobre permisos y patrones.",
+        "aiPowered": "Desarrollado por IA y siempre mejorando"
       },
       "plans": {
-        "annual": "Annual",
-        "monthly": "Monthly",
-        "annualSuffix": "/yr",
-        "monthlySuffix": "/mo",
-        "save": "SAVE 40%"
+        "annual": "Anual",
+        "monthly": "Mensual",
+        "annualSuffix": "/año",
+        "monthlySuffix": "/mes",
+        "save": "AHORRE 40%"
       },
-      "cta": "Start 7-Day Free Trial",
-      "noCard": "No credit card required · Cancel anytime",
-      "restorePurchases": "Restore Purchases",
-      "privacyPolicy": "Privacy Policy"
+      "cta": "Comience la prueba gratuita de 7 días",
+      "noCard": "No se requiere tarjeta de crédito · Cancelar en cualquier momento",
+      "restorePurchases": "Restaurar compras",
+      "privacyPolicy": "política de privacidad"
     },
     "profile": {
-      "rowActiveA11y": "Ellie Pro active subscription",
-      "rowUpgradeA11y": "Upgrade to Ellie Pro",
-      "activeLabel": "Ellie Pro — Active ✓",
-      "upgradeLabel": "Upgrade to Ellie Pro",
-      "activeHint": "Full calendar · Hey Ellie voice assistant",
-      "upgradeHint": "7-day free trial · $6.99/mo or $49.99/yr"
+      "rowActiveA11y": "Ellie Suscripción activa profesional",
+      "rowUpgradeA11y": "Actualizar a Ellie Pro",
+      "activeLabel": "Ellie Pro — Activo ✓",
+      "upgradeLabel": "Actualizar a Ellie Pro",
+      "activeHint": "Calendario completo · Hola Ellie asistente de voz",
+      "upgradeHint": "Prueba gratuita de 7 días · $6,99/mes o $49,99/año"
     },
     "padlock": {
-      "a11yLabel": "Upgrade to Ellie Pro to see full calendar"
+      "a11yLabel": "Actualice a Ellie Pro para ver el calendario completo"
     }
   }
 }

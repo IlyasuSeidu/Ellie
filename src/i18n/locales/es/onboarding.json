@@ -258,11 +258,11 @@
     "tryAgain": "Intentar otra vez",
     "errors": {
       "missingRequiredInformation": "Falta información obligatoria: {{fields}}. Vuelve atrás y completa todos los pasos.",
-      "networkUnavailable": "We could not connect to save your setup. Check your connection and try again.",
-      "permissionDenied": "We don't have permission to save your setup. Please sign in again and retry.",
-      "storageUnavailable": "Your device storage is full. Free up space and try again.",
-      "timeout": "Saving took too long. Please try again.",
-      "genericSaveFailed": "We could not save your setup right now. Please try again."
+      "networkUnavailable": "No pudimos conectarnos para guardar su configuración. Comprueba tu conexión y vuelve a intentarlo.",
+      "permissionDenied": "No tenemos permiso para guardar su configuración. Inicie sesión nuevamente y vuelva a intentarlo.",
+      "storageUnavailable": "El almacenamiento de su dispositivo está lleno. Libera espacio y vuelve a intentarlo.",
+      "timeout": "Guardar tomó demasiado tiempo. Por favor inténtalo de nuevo.",
+      "genericSaveFailed": "No pudimos guardar su configuración en este momento. Por favor inténtalo de nuevo."
     },
     "validation": {
       "fields": {

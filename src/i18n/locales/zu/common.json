@@ -30,35 +30,35 @@
       "operationNotAllowed": "Lo msebenzi awuvunyelwe.",
       "tooManyRequests": "Imizamo eminingi kakhulu. Sicela uzame futhi kamuva.",
       "networkRequestFailed": "Iphutha lenethiwekhi. Hlola uxhumano lwakho.",
-      "invalidCredentials": "The email or password you entered is incorrect.",
-      "missingEmail": "Please enter your email address.",
-      "missingPassword": "Please enter your password.",
-      "userDisabled": "This account has been disabled. Contact support for help.",
-      "sessionExpired": "For security reasons, please sign in again and retry.",
-      "accountExistsWithDifferentCredential": "An account already exists with this email using a different sign-in method.",
-      "credentialAlreadyInUse": "This credential is already linked to another account.",
-      "signInCancelled": "Sign-in was canceled.",
-      "googlePlayServicesUnavailable": "Google Play Services is unavailable on this device.",
-      "googleMissingIdToken": "Google sign-in could not be completed. Please try again.",
-      "appleMissingIdentityToken": "Apple sign-in could not be completed. Please try again.",
-      "actionSignInFailed": "Unable to sign in right now. Please try again.",
-      "actionSignUpFailed": "Unable to create your account right now. Please try again.",
-      "actionSocialSignInFailed": "Social sign-in is unavailable right now. Please try email sign-in.",
-      "actionPasswordResetFailed": "Unable to send a reset link right now. Please try again.",
-      "actionEmailVerificationFailed": "Unable to send verification email right now. Please try again.",
-      "actionSignOutFailed": "Unable to sign out right now.",
-      "actionSessionRestoreFailed": "Unable to restore your session. Please sign in again."
+      "invalidCredentials": "I-imeyili noma iphasiwedi oyifakile ayilungile.",
+      "missingEmail": "Sicela ufake ikheli lakho le-imeyili.",
+      "missingPassword": "Sicela ufake iphasiwedi yakho.",
+      "userDisabled": "Le akhawunti ivaliwe. Xhumana nosekelo ukuze uthole usizo.",
+      "sessionExpired": "Ngezizathu zokuphepha, sicela ungene ngemvume futhi bese uzama futhi.",
+      "accountExistsWithDifferentCredential": "I-akhawunti isivele ikhona ngale imeyili isebenzisa indlela yokungena ehlukile.",
+      "credentialAlreadyInUse": "Lokhu kuqinisekisa sekuvele kuxhunywe kwenye i-akhawunti.",
+      "signInCancelled": "Ukungena ngemvume kukhanseliwe.",
+      "googlePlayServicesUnavailable": "Izinsiza ze-Google Play azitholakali kule divayisi.",
+      "googleMissingIdToken": "Ukungena ngemvume kwe-Google akukwazanga ukuqedelwa. Sicela uzame futhi.",
+      "appleMissingIdentityToken": "Ukungena ngemvume kwe-Apple akukwazanga ukuqedelwa. Sicela uzame futhi.",
+      "actionSignInFailed": "Ayikwazi ukungena ngemvume njengamanje. Sicela uzame futhi.",
+      "actionSignUpFailed": "Ayikwazi ukudala i-akhawunti yakho njengamanje. Sicela uzame futhi.",
+      "actionSocialSignInFailed": "Ukungena ngemvume komphakathi akutholakali okwamanje. Sicela uzame ukungena ngemvume nge-imeyili.",
+      "actionPasswordResetFailed": "Ayikwazi ukuthumela isixhumanisi sokusetha kabusha okwamanje. Sicela uzame futhi.",
+      "actionEmailVerificationFailed": "Ayikwazi ukuthumela i-imeyili yokuqinisekisa njengamanje. Sicela uzame futhi.",
+      "actionSignOutFailed": "Ayikwazi ukuphuma ngemvume njengamanje.",
+      "actionSessionRestoreFailed": "Ayikwazi ukubuyisela iseshini yakho. Sicela ungene ngemvume futhi."
     },
     "titles": {
       "error": "Iphutha",
       "unexpected": "Iphutha elingalindelekile"
     },
     "settings": {
-      "languageChangeFailed": "Unable to change language right now. Please try again.",
-      "onboardingResetFailed": "Unable to restart onboarding right now. Please try again.",
-      "profileSaveFailed": "Unable to save your settings right now. Please try again.",
-      "permissionDenied": "You don't have permission to update these settings.",
-      "timeout": "The request took too long. Please try again."
+      "languageChangeFailed": "Ayikwazi ukushintsha ulimi njengamanje. Sicela uzame futhi.",
+      "onboardingResetFailed": "Ayikwazi ukuqala kabusha ukugibela khona manje. Sicela uzame futhi.",
+      "profileSaveFailed": "Ayikwazi ukulondoloza izilungiselelo zakho njengamanje. Sicela uzame futhi.",
+      "permissionDenied": "Awunayo imvume yokubuyekeza lezi zilungiselelo.",
+      "timeout": "Isicelo sithathe isikhathi eside kakhulu. Sicela uzame futhi."
     }
   },
   "avatar": {
@@ -74,12 +74,12 @@
       "cameraMessage": "Sicela uvule ukufinyelela kukhamera kuzilungiselelo zedivayisi yakho ukuze uthathe isithombe sephrofayela."
     },
     "errors": {
-      "selectFailedTitle": "Photo Selection Failed",
-      "selectFailedMessage": "We could not update your profile photo right now. Please try again.",
-      "captureFailedTitle": "Camera Failed",
-      "captureFailedMessage": "We could not capture your profile photo right now. Please try again.",
-      "removeFailedTitle": "Unable to Remove Photo",
-      "removeFailedMessage": "We could not remove your profile photo right now. Please try again."
+      "selectFailedTitle": "Ukukhethwa Kwesithombe Kwehlulekile",
+      "selectFailedMessage": "Asikwazanga ukubuyekeza isithombe sakho sephrofayela okwamanje. Sicela uzame futhi.",
+      "captureFailedTitle": "Ikhamera Yehlulekile",
+      "captureFailedMessage": "Asikwazanga ukuthwebula isithombe sakho sephrofayela okwamanje. Sicela uzame futhi.",
+      "removeFailedTitle": "Ayikwazi Ukukhipha Isithombe",
+      "removeFailedMessage": "Asikwazanga ukususa isithombe sakho sephrofayela okwamanje. Sicela uzame futhi."
     }
   },
   "language": {
@@ -88,17 +88,17 @@
     "restartRequiredTitle": "Ukuqala kabusha Kudingeka",
     "restartRequiredMessage": "Sicela uqale kabusha u-Ellie ukuze usebenzise izinguquko zesiqondisindlela solimi.",
     "names": {
-      "en": "English",
-      "es": "Español",
-      "pt-BR": "Português (Brasil)",
-      "fr": "Français",
+      "en": "IsiNgisi",
+      "es": "Isi-Español",
+      "pt-BR": "Isi-Portuguese (Brasil)",
+      "fr": "isi-Français",
       "ar": "العربية",
       "zh-CN": "中文",
       "ru": "Русский",
       "hi": "हिन्दी",
-      "af": "Afrikaans",
+      "af": "IsiBhunu",
       "zu": "isiZulu",
-      "id": "Bahasa Indonesia"
+      "id": "I-Bahasa Indonesia"
     }
   },
   "accessibility": {
@@ -164,38 +164,38 @@
   },
   "subscription": {
     "paywall": {
-      "closeA11y": "Close paywall",
-      "title": "Ellie Pro",
-      "subtitle": "For shift workers who mean business",
+      "closeA11y": "Vala i-paywall",
+      "title": "__TK1__ Iphrofayili",
+      "subtitle": "Kwabasebenzi bamashifu abasho ibhizinisi",
       "features": {
-        "askRoster": "Ask \"Hey Ellie\" anything about your roster",
-        "fullYear": "See your full year at a glance",
-        "offline": "Works underground, no signal needed",
-        "instantAnswers": "Instant answers about leave and patterns",
-        "aiPowered": "Powered by AI and always improving"
+        "askRoster": "Buza okuthi \"Hey __TK1__\" noma yini ngohlelo lwakho",
+        "fullYear": "Bona unyaka wakho ogcwele ngokubuka nje",
+        "offline": "Isebenza ngaphansi komhlaba, asikho isignali edingekayo",
+        "instantAnswers": "Izimpendulo ezisheshayo mayelana nekhefu namaphethini",
+        "aiPowered": "Inikwa amandla yi-AI futhi ithuthuka njalo"
       },
       "plans": {
-        "annual": "Annual",
-        "monthly": "Monthly",
-        "annualSuffix": "/yr",
+        "annual": "Ngonyaka",
+        "monthly": "Nyanga zonke",
+        "annualSuffix": "/unyaka",
         "monthlySuffix": "/mo",
-        "save": "SAVE 40%"
+        "save": "Londoloza u-40%"
       },
-      "cta": "Start 7-Day Free Trial",
-      "noCard": "No credit card required · Cancel anytime",
-      "restorePurchases": "Restore Purchases",
-      "privacyPolicy": "Privacy Policy"
+      "cta": "Qala Isivivinyo Samahhala Sezinsuku Eziyisi-7",
+      "noCard": "Alikho ikhadi lesikweletu elidingekayo · Khansela noma nini",
+      "restorePurchases": "Buyisela Okuthengiwe",
+      "privacyPolicy": "Inqubomgomo yobumfihlo"
     },
     "profile": {
-      "rowActiveA11y": "Ellie Pro active subscription",
-      "rowUpgradeA11y": "Upgrade to Ellie Pro",
-      "activeLabel": "Ellie Pro — Active ✓",
-      "upgradeLabel": "Upgrade to Ellie Pro",
-      "activeHint": "Full calendar · Hey Ellie voice assistant",
-      "upgradeHint": "7-day free trial · $6.99/mo or $49.99/yr"
+      "rowActiveA11y": "__TK1__ Ukubhalisa okusebenzayo kwe-Pro",
+      "rowUpgradeA11y": "Thuthukela ku-__TK1__ Pro",
+      "activeLabel": "__TK1__ Pro — Iyasebenza ✓",
+      "upgradeLabel": "Thuthukela ku-__TK1__ Pro",
+      "activeHint": "Ikhalenda eligcwele · Sawubona __TK1__ umsizi wezwi",
+      "upgradeHint": "Isivivinyo samahhala sezinsuku ezingu-7 · $6.99/mo noma $49.99 ngonyaka"
     },
     "padlock": {
-      "a11yLabel": "Upgrade to Ellie Pro to see full calendar"
+      "a11yLabel": "Thuthukela ku-__TK1__ Pro ukuze ubone ikhalenda eligcwele"
     }
   }
 }

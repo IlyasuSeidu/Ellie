@@ -30,35 +30,35 @@
       "operationNotAllowed": "هذه العملية غير مسموح بها.",
       "tooManyRequests": "محاولات كثيرة جدًا. حاول مرة أخرى لاحقًا.",
       "networkRequestFailed": "خطأ في الشبكة. تحقق من اتصالك.",
-      "invalidCredentials": "The email or password you entered is incorrect.",
-      "missingEmail": "Please enter your email address.",
-      "missingPassword": "Please enter your password.",
-      "userDisabled": "This account has been disabled. Contact support for help.",
-      "sessionExpired": "For security reasons, please sign in again and retry.",
-      "accountExistsWithDifferentCredential": "An account already exists with this email using a different sign-in method.",
-      "credentialAlreadyInUse": "This credential is already linked to another account.",
-      "signInCancelled": "Sign-in was canceled.",
-      "googlePlayServicesUnavailable": "Google Play Services is unavailable on this device.",
-      "googleMissingIdToken": "Google sign-in could not be completed. Please try again.",
-      "appleMissingIdentityToken": "Apple sign-in could not be completed. Please try again.",
-      "actionSignInFailed": "Unable to sign in right now. Please try again.",
-      "actionSignUpFailed": "Unable to create your account right now. Please try again.",
-      "actionSocialSignInFailed": "Social sign-in is unavailable right now. Please try email sign-in.",
-      "actionPasswordResetFailed": "Unable to send a reset link right now. Please try again.",
-      "actionEmailVerificationFailed": "Unable to send verification email right now. Please try again.",
-      "actionSignOutFailed": "Unable to sign out right now.",
-      "actionSessionRestoreFailed": "Unable to restore your session. Please sign in again."
+      "invalidCredentials": "البريد الإلكتروني أو كلمة المرور التي أدخلتها غير صحيحة.",
+      "missingEmail": "الرجاء إدخال عنوان البريد الإلكتروني الخاص بك.",
+      "missingPassword": "الرجاء إدخال كلمة المرور الخاصة بك.",
+      "userDisabled": "لقد تم تعطيل هذا الحساب. اتصل بالدعم للحصول على المساعدة.",
+      "sessionExpired": "لأسباب أمنية، يرجى تسجيل الدخول مرة أخرى وإعادة المحاولة.",
+      "accountExistsWithDifferentCredential": "يوجد حساب بالفعل بهذا البريد الإلكتروني باستخدام طريقة تسجيل دخول مختلفة.",
+      "credentialAlreadyInUse": "تم ربط بيانات الاعتماد هذه بالفعل بحساب آخر.",
+      "signInCancelled": "تم إلغاء تسجيل الدخول.",
+      "googlePlayServicesUnavailable": "خدمات Google Play غير متاحة على هذا الجهاز.",
+      "googleMissingIdToken": "تعذر إكمال تسجيل الدخول إلى Google. يرجى المحاولة مرة أخرى.",
+      "appleMissingIdentityToken": "تعذر إكمال تسجيل الدخول إلى Apple. يرجى المحاولة مرة أخرى.",
+      "actionSignInFailed": "غير قادر على تسجيل الدخول الآن. يرجى المحاولة مرة أخرى.",
+      "actionSignUpFailed": "غير قادر على إنشاء حسابك الآن. يرجى المحاولة مرة أخرى.",
+      "actionSocialSignInFailed": "تسجيل الدخول الاجتماعي غير متاح الآن. يرجى محاولة تسجيل الدخول عبر البريد الإلكتروني.",
+      "actionPasswordResetFailed": "غير قادر على إرسال رابط إعادة التعيين الآن. يرجى المحاولة مرة أخرى.",
+      "actionEmailVerificationFailed": "غير قادر على إرسال البريد الإلكتروني للتحقق الآن. يرجى المحاولة مرة أخرى.",
+      "actionSignOutFailed": "غير قادر على تسجيل الخروج الآن.",
+      "actionSessionRestoreFailed": "غير قادر على استعادة جلسة العمل الخاصة بك. الرجاء تسجيل الدخول مرة أخرى."
     },
     "titles": {
       "error": "خطأ",
       "unexpected": "خطأ غير متوقع"
     },
     "settings": {
-      "languageChangeFailed": "Unable to change language right now. Please try again.",
-      "onboardingResetFailed": "Unable to restart onboarding right now. Please try again.",
-      "profileSaveFailed": "Unable to save your settings right now. Please try again.",
-      "permissionDenied": "You don't have permission to update these settings.",
-      "timeout": "The request took too long. Please try again."
+      "languageChangeFailed": "غير قادر على تغيير اللغة الآن. يرجى المحاولة مرة أخرى.",
+      "onboardingResetFailed": "غير قادر على إعادة تشغيل الإعداد الآن. يرجى المحاولة مرة أخرى.",
+      "profileSaveFailed": "غير قادر على حفظ الإعدادات الخاصة بك الآن. يرجى المحاولة مرة أخرى.",
+      "permissionDenied": "ليس لديك إذن لتحديث هذه الإعدادات.",
+      "timeout": "استغرق الطلب وقتا طويلا. يرجى المحاولة مرة أخرى."
     }
   },
   "avatar": {
@@ -74,12 +74,12 @@
       "cameraMessage": "يرجى تفعيل الوصول إلى الكاميرا من إعدادات جهازك لالتقاط صورة الملف الشخصي."
     },
     "errors": {
-      "selectFailedTitle": "Photo Selection Failed",
-      "selectFailedMessage": "We could not update your profile photo right now. Please try again.",
-      "captureFailedTitle": "Camera Failed",
-      "captureFailedMessage": "We could not capture your profile photo right now. Please try again.",
-      "removeFailedTitle": "Unable to Remove Photo",
-      "removeFailedMessage": "We could not remove your profile photo right now. Please try again."
+      "selectFailedTitle": "فشل اختيار الصورة",
+      "selectFailedMessage": "لم نتمكن من تحديث صورة ملفك الشخصي الآن. يرجى المحاولة مرة أخرى.",
+      "captureFailedTitle": "فشل الكاميرا",
+      "captureFailedMessage": "لم نتمكن من التقاط صورة ملفك الشخصي الآن. يرجى المحاولة مرة أخرى.",
+      "removeFailedTitle": "غير قادر على إزالة الصورة",
+      "removeFailedMessage": "لم نتمكن من إزالة صورة ملفك الشخصي الآن. يرجى المحاولة مرة أخرى."
     }
   },
   "language": {
@@ -88,17 +88,17 @@
     "restartRequiredTitle": "إعادة التشغيل مطلوبة",
     "restartRequiredMessage": "يرجى إعادة تشغيل Ellie لتطبيق تغييرات اتجاه اللغة.",
     "names": {
-      "en": "English",
-      "es": "Español",
-      "pt-BR": "Português (Brasil)",
-      "fr": "Français",
+      "en": "إنجليزي",
+      "es": "الاسبانية",
+      "pt-BR": "البرتغالية (البرازيل)",
+      "fr": "الفرنسية",
       "ar": "العربية",
       "zh-CN": "中文",
-      "ru": "Русский",
-      "hi": "हिन्दी",
-      "af": "Afrikaans",
-      "zu": "isiZulu",
-      "id": "Bahasa Indonesia"
+      "ru": "الروسية",
+      "hi": "الهندية",
+      "af": "الأفريكانية",
+      "zu": "com.isiZulu",
+      "id": "البهاسا الاندونيسية"
     }
   },
   "accessibility": {
@@ -125,7 +125,7 @@
       "apple": "المتابعة باستخدام Apple"
     },
     "signIn": {
-      "appName": "ELLIE",
+      "appName": "إيلي",
       "subtitle": "سجّل الدخول إلى حسابك",
       "forgotPassword": "هل نسيت كلمة المرور؟",
       "primaryButton": "تسجيل الدخول",
@@ -164,38 +164,38 @@
   },
   "subscription": {
     "paywall": {
-      "closeA11y": "Close paywall",
-      "title": "Ellie Pro",
-      "subtitle": "For shift workers who mean business",
+      "closeA11y": "إغلاق نظام حظر الاشتراك غير المدفوع",
+      "title": "Ellie برو",
+      "subtitle": "لعمال المناوبة الذين يقصدون الأعمال",
       "features": {
-        "askRoster": "Ask \"Hey Ellie\" anything about your roster",
-        "fullYear": "See your full year at a glance",
-        "offline": "Works underground, no signal needed",
-        "instantAnswers": "Instant answers about leave and patterns",
-        "aiPowered": "Powered by AI and always improving"
+        "askRoster": "اسأل \"مرحبًا Ellie\" أي شيء يتعلق بقائمتك",
+        "fullYear": "شاهد عامك الكامل في لمحة",
+        "offline": "يعمل تحت الأرض، لا حاجة للإشارة",
+        "instantAnswers": "إجابات فورية حول الإجازة والأنماط",
+        "aiPowered": "مدعوم بالذكاء الاصطناعي ويتحسن دائمًا"
       },
       "plans": {
-        "annual": "Annual",
-        "monthly": "Monthly",
-        "annualSuffix": "/yr",
-        "monthlySuffix": "/mo",
-        "save": "SAVE 40%"
+        "annual": "سنوي",
+        "monthly": "شهريا",
+        "annualSuffix": "/ سنة",
+        "monthlySuffix": "/شهر",
+        "save": "وفر 40%"
       },
-      "cta": "Start 7-Day Free Trial",
-      "noCard": "No credit card required · Cancel anytime",
-      "restorePurchases": "Restore Purchases",
-      "privacyPolicy": "Privacy Policy"
+      "cta": "ابدأ النسخة التجريبية المجانية لمدة 7 أيام",
+      "noCard": "لا حاجة لبطاقة ائتمان · قم بالإلغاء في أي وقت",
+      "restorePurchases": "استعادة المشتريات",
+      "privacyPolicy": "سياسة الخصوصية"
     },
     "profile": {
-      "rowActiveA11y": "Ellie Pro active subscription",
-      "rowUpgradeA11y": "Upgrade to Ellie Pro",
-      "activeLabel": "Ellie Pro — Active ✓",
-      "upgradeLabel": "Upgrade to Ellie Pro",
-      "activeHint": "Full calendar · Hey Ellie voice assistant",
-      "upgradeHint": "7-day free trial · $6.99/mo or $49.99/yr"
+      "rowActiveA11y": "Ellie اشتراك احترافي نشط",
+      "rowUpgradeA11y": "الترقية إلى Ellie برو",
+      "activeLabel": "Ellie برو — نشط ✓",
+      "upgradeLabel": "الترقية إلى Ellie برو",
+      "activeHint": "التقويم الكامل · مرحبًا بالمساعد الصوتي Ellie",
+      "upgradeHint": "نسخة تجريبية مجانية مدتها 7 أيام · 6.99 دولارًا أمريكيًا شهريًا أو 49.99 دولارًا أمريكيًا سنويًا"
     },
     "padlock": {
-      "a11yLabel": "Upgrade to Ellie Pro to see full calendar"
+      "a11yLabel": "قم بالترقية إلى Ellie Pro لرؤية التقويم الكامل"
     }
   }
 }

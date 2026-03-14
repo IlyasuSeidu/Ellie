@@ -320,11 +320,11 @@
     "tryAgain": "Попробуйте еще раз",
     "errors": {
       "missingRequiredInformation": "Не заполнена обязательная информация: {{fields}}. Вернитесь назад и завершите все шаги.",
-      "networkUnavailable": "We could not connect to save your setup. Check your connection and try again.",
-      "permissionDenied": "We don't have permission to save your setup. Please sign in again and retry.",
-      "storageUnavailable": "Your device storage is full. Free up space and try again.",
-      "timeout": "Saving took too long. Please try again.",
-      "genericSaveFailed": "We could not save your setup right now. Please try again."
+      "networkUnavailable": "Не удалось подключиться, чтобы сохранить настройки. Проверьте подключение и повторите попытку.",
+      "permissionDenied": "У нас нет разрешения на сохранение ваших настроек. Пожалуйста, войдите еще раз и повторите попытку.",
+      "storageUnavailable": "Память вашего устройства заполнена. Освободите место и повторите попытку.",
+      "timeout": "Сохранение заняло слишком много времени. Пожалуйста, попробуйте еще раз.",
+      "genericSaveFailed": "Не удалось сохранить настройки прямо сейчас. Пожалуйста, попробуйте еще раз."
     },
     "validation": {
       "fields": {

@@ -30,35 +30,35 @@
       "operationNotAllowed": "यह कार्य अनुमत नहीं है।",
       "tooManyRequests": "बहुत अधिक प्रयास। कृपया बाद में फिर प्रयास करें।",
       "networkRequestFailed": "नेटवर्क त्रुटि। अपना कनेक्शन जांचें।",
-      "invalidCredentials": "The email or password you entered is incorrect.",
-      "missingEmail": "Please enter your email address.",
-      "missingPassword": "Please enter your password.",
-      "userDisabled": "This account has been disabled. Contact support for help.",
-      "sessionExpired": "For security reasons, please sign in again and retry.",
-      "accountExistsWithDifferentCredential": "An account already exists with this email using a different sign-in method.",
-      "credentialAlreadyInUse": "This credential is already linked to another account.",
-      "signInCancelled": "Sign-in was canceled.",
-      "googlePlayServicesUnavailable": "Google Play Services is unavailable on this device.",
-      "googleMissingIdToken": "Google sign-in could not be completed. Please try again.",
-      "appleMissingIdentityToken": "Apple sign-in could not be completed. Please try again.",
-      "actionSignInFailed": "Unable to sign in right now. Please try again.",
-      "actionSignUpFailed": "Unable to create your account right now. Please try again.",
-      "actionSocialSignInFailed": "Social sign-in is unavailable right now. Please try email sign-in.",
-      "actionPasswordResetFailed": "Unable to send a reset link right now. Please try again.",
-      "actionEmailVerificationFailed": "Unable to send verification email right now. Please try again.",
-      "actionSignOutFailed": "Unable to sign out right now.",
-      "actionSessionRestoreFailed": "Unable to restore your session. Please sign in again."
+      "invalidCredentials": "आपके द्वारा दर्ज ईमेल या पासवर्ड गलत है।",
+      "missingEmail": "कृपया अपना ईमेल एड्रेस इंटर करें।",
+      "missingPassword": "अपना पासवर्ड दर्ज करें।",
+      "userDisabled": "यह खाता बंद कर दिया गया है। सहायता के लिए समर्थन से संपर्क करें.",
+      "sessionExpired": "सुरक्षा कारणों से, कृपया दोबारा साइन इन करें और पुनः प्रयास करें।",
+      "accountExistsWithDifferentCredential": "इस ईमेल के साथ एक अलग साइन-इन विधि का उपयोग करके एक खाता पहले से मौजूद है।",
+      "credentialAlreadyInUse": "यह क्रेडेंशियल पहले से ही दूसरे खाते से लिंक है.",
+      "signInCancelled": "साइन-इन रद्द कर दिया गया.",
+      "googlePlayServicesUnavailable": "इस डिवाइस पर Google Play सेवाएँ उपलब्ध नहीं हैं।",
+      "googleMissingIdToken": "Google साइन-इन पूरा नहीं हो सका. कृपया पुन: प्रयास करें।",
+      "appleMissingIdentityToken": "Apple साइन-इन पूरा नहीं हो सका. कृपया पुन: प्रयास करें।",
+      "actionSignInFailed": "अभी साइन इन करने में असमर्थ. कृपया पुन: प्रयास करें।",
+      "actionSignUpFailed": "अभी आपका खाता बनाने में असमर्थ. कृपया पुन: प्रयास करें।",
+      "actionSocialSignInFailed": "सामाजिक साइन-इन अभी उपलब्ध नहीं है. कृपया ईमेल साइन-इन का प्रयास करें.",
+      "actionPasswordResetFailed": "अभी रीसेट लिंक भेजने में असमर्थ. कृपया पुन: प्रयास करें।",
+      "actionEmailVerificationFailed": "अभी सत्यापन ईमेल भेजने में असमर्थ. कृपया पुन: प्रयास करें।",
+      "actionSignOutFailed": "अभी साइन आउट करने में असमर्थ.",
+      "actionSessionRestoreFailed": "आपका सत्र पुनर्स्थापित करने में असमर्थ. कृपया पुनः साइन इन करें."
     },
     "titles": {
       "error": "त्रुटि",
       "unexpected": "अप्रत्याशित त्रुटि"
     },
     "settings": {
-      "languageChangeFailed": "Unable to change language right now. Please try again.",
-      "onboardingResetFailed": "Unable to restart onboarding right now. Please try again.",
-      "profileSaveFailed": "Unable to save your settings right now. Please try again.",
-      "permissionDenied": "You don't have permission to update these settings.",
-      "timeout": "The request took too long. Please try again."
+      "languageChangeFailed": "अभी भाषा बदलने में असमर्थ. कृपया पुन: प्रयास करें।",
+      "onboardingResetFailed": "अभी ऑनबोर्डिंग पुनः प्रारंभ करने में असमर्थ. कृपया पुन: प्रयास करें।",
+      "profileSaveFailed": "अभी आपकी सेटिंग सहेजने में असमर्थ. कृपया पुन: प्रयास करें।",
+      "permissionDenied": "आपके पास इन सेटिंग्स को अपडेट करने की अनुमति नहीं है.",
+      "timeout": "अनुरोध में बहुत लंबा समय लगा. कृपया पुन: प्रयास करें।"
     }
   },
   "avatar": {
@@ -74,12 +74,12 @@
       "cameraMessage": "प्रोफ़ाइल फ़ोटो लेने के लिए अपने डिवाइस सेटिंग्स में कैमरा एक्सेस सक्षम करें।"
     },
     "errors": {
-      "selectFailedTitle": "Photo Selection Failed",
-      "selectFailedMessage": "We could not update your profile photo right now. Please try again.",
-      "captureFailedTitle": "Camera Failed",
-      "captureFailedMessage": "We could not capture your profile photo right now. Please try again.",
-      "removeFailedTitle": "Unable to Remove Photo",
-      "removeFailedMessage": "We could not remove your profile photo right now. Please try again."
+      "selectFailedTitle": "फ़ोटो चयन विफल",
+      "selectFailedMessage": "हम अभी आपकी प्रोफ़ाइल फ़ोटो अपडेट नहीं कर सके. कृपया पुन: प्रयास करें।",
+      "captureFailedTitle": "कैमरा विफल",
+      "captureFailedMessage": "हम अभी आपकी प्रोफ़ाइल फ़ोटो कैप्चर नहीं कर सके. कृपया पुन: प्रयास करें।",
+      "removeFailedTitle": "फ़ोटो हटाने में असमर्थ",
+      "removeFailedMessage": "हम अभी आपकी प्रोफ़ाइल फ़ोटो नहीं हटा सके. कृपया पुन: प्रयास करें।"
     }
   },
   "language": {
@@ -88,17 +88,17 @@
     "restartRequiredTitle": "पुनरारंभ करना आवश्यक है",
     "restartRequiredMessage": "कृपया भाषा दिशा परिवर्तन लागू करने के लिए ऐली को पुनः आरंभ करें।",
     "names": {
-      "en": "English",
+      "en": "अंग्रेज़ी",
       "es": "Español",
-      "pt-BR": "Português (Brasil)",
-      "fr": "Français",
-      "ar": "العربية",
+      "pt-BR": "पोर्टुगुएस (ब्राजील)",
+      "fr": "फ़्रांसीसी",
+      "ar": "धन्यवाद",
       "zh-CN": "中文",
       "ru": "Русский",
       "hi": "हिन्दी",
-      "af": "Afrikaans",
-      "zu": "isiZulu",
-      "id": "Bahasa Indonesia"
+      "af": "अफ्रीकी",
+      "zu": "इसिज़ूलू",
+      "id": "बहासा इंडोनेशिया"
     }
   },
   "accessibility": {
@@ -125,7 +125,7 @@
       "apple": "Apple के साथ जारी रखें"
     },
     "signIn": {
-      "appName": "ELLIE",
+      "appName": "ऐली",
       "subtitle": "अपने खाते में साइन इन करें",
       "forgotPassword": "पासवर्ड भूल गए?",
       "primaryButton": "साइन इन",
@@ -164,38 +164,38 @@
   },
   "subscription": {
     "paywall": {
-      "closeA11y": "Close paywall",
-      "title": "Ellie Pro",
-      "subtitle": "For shift workers who mean business",
+      "closeA11y": "पेवॉल बंद करें",
+      "title": "__TK1__ प्रो",
+      "subtitle": "शिफ्ट में काम करने वाले श्रमिकों के लिए जिन्हें व्यवसाय से मतलब है",
       "features": {
-        "askRoster": "Ask \"Hey Ellie\" anything about your roster",
-        "fullYear": "See your full year at a glance",
-        "offline": "Works underground, no signal needed",
-        "instantAnswers": "Instant answers about leave and patterns",
-        "aiPowered": "Powered by AI and always improving"
+        "askRoster": "अपने रोस्टर के बारे में \"अरे __TK1__\" से कुछ भी पूछें",
+        "fullYear": "एक नज़र में अपना पूरा साल देखें",
+        "offline": "भूमिगत काम करता है, किसी सिग्नल की आवश्यकता नहीं",
+        "instantAnswers": "छुट्टी और पैटर्न के बारे में त्वरित उत्तर",
+        "aiPowered": "एआई द्वारा संचालित और हमेशा सुधार होता रहता है"
       },
       "plans": {
-        "annual": "Annual",
-        "monthly": "Monthly",
-        "annualSuffix": "/yr",
-        "monthlySuffix": "/mo",
-        "save": "SAVE 40%"
+        "annual": "वार्षिक",
+        "monthly": "महीने के",
+        "annualSuffix": "/वर्ष",
+        "monthlySuffix": "/मो",
+        "save": "40% बचाएं"
       },
-      "cta": "Start 7-Day Free Trial",
-      "noCard": "No credit card required · Cancel anytime",
-      "restorePurchases": "Restore Purchases",
-      "privacyPolicy": "Privacy Policy"
+      "cta": "7-दिवसीय निःशुल्क परीक्षण प्रारंभ करें",
+      "noCard": "किसी क्रेडिट कार्ड की आवश्यकता नहीं · किसी भी समय रद्द करें",
+      "restorePurchases": "खरीदारी वापस लौटाएं",
+      "privacyPolicy": "गोपनीयता नीति"
     },
     "profile": {
-      "rowActiveA11y": "Ellie Pro active subscription",
-      "rowUpgradeA11y": "Upgrade to Ellie Pro",
-      "activeLabel": "Ellie Pro — Active ✓",
-      "upgradeLabel": "Upgrade to Ellie Pro",
-      "activeHint": "Full calendar · Hey Ellie voice assistant",
-      "upgradeHint": "7-day free trial · $6.99/mo or $49.99/yr"
+      "rowActiveA11y": "__TK1__ प्रो सक्रिय सदस्यता",
+      "rowUpgradeA11y": "__TK1__ प्रो में अपग्रेड करें",
+      "activeLabel": "__TK1__ प्रो - सक्रिय ✓",
+      "upgradeLabel": "__TK1__ प्रो में अपग्रेड करें",
+      "activeHint": "पूरा कैलेंडर · अरे __TK1__ वॉयस असिस्टेंट",
+      "upgradeHint": "7-दिवसीय निःशुल्क परीक्षण · $6.99/महीना या $49.99/वर्ष"
     },
     "padlock": {
-      "a11yLabel": "Upgrade to Ellie Pro to see full calendar"
+      "a11yLabel": "पूरा कैलेंडर देखने के लिए __TK1__ प्रो में अपग्रेड करें"
     }
   }
 }

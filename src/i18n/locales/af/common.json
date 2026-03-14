@@ -30,35 +30,35 @@
       "operationNotAllowed": "Hierdie aksie word nie toegelaat nie.",
       "tooManyRequests": "Te veel pogings. Probeer later weer.",
       "networkRequestFailed": "Netwerkfout. Gaan jou verbinding na.",
-      "invalidCredentials": "The email or password you entered is incorrect.",
-      "missingEmail": "Please enter your email address.",
-      "missingPassword": "Please enter your password.",
-      "userDisabled": "This account has been disabled. Contact support for help.",
-      "sessionExpired": "For security reasons, please sign in again and retry.",
-      "accountExistsWithDifferentCredential": "An account already exists with this email using a different sign-in method.",
-      "credentialAlreadyInUse": "This credential is already linked to another account.",
-      "signInCancelled": "Sign-in was canceled.",
-      "googlePlayServicesUnavailable": "Google Play Services is unavailable on this device.",
-      "googleMissingIdToken": "Google sign-in could not be completed. Please try again.",
-      "appleMissingIdentityToken": "Apple sign-in could not be completed. Please try again.",
-      "actionSignInFailed": "Unable to sign in right now. Please try again.",
-      "actionSignUpFailed": "Unable to create your account right now. Please try again.",
-      "actionSocialSignInFailed": "Social sign-in is unavailable right now. Please try email sign-in.",
-      "actionPasswordResetFailed": "Unable to send a reset link right now. Please try again.",
-      "actionEmailVerificationFailed": "Unable to send verification email right now. Please try again.",
-      "actionSignOutFailed": "Unable to sign out right now.",
-      "actionSessionRestoreFailed": "Unable to restore your session. Please sign in again."
+      "invalidCredentials": "Die e-posadres of wagwoord wat jy ingevoer het, is verkeerd.",
+      "missingEmail": "Voer asseblief jou e-posadres in.",
+      "missingPassword": "Voer asseblief jou wagwoord in.",
+      "userDisabled": "Hierdie rekening is gedeaktiveer. Kontak ondersteuning vir hulp.",
+      "sessionExpired": "Om sekuriteitsredes, meld asseblief weer aan en probeer weer.",
+      "accountExistsWithDifferentCredential": "'n Rekening bestaan ​​reeds met hierdie e-pos met 'n ander aanmeldmetode.",
+      "credentialAlreadyInUse": "Hierdie eiebewys is reeds aan 'n ander rekening gekoppel.",
+      "signInCancelled": "Aanmelding is gekanselleer.",
+      "googlePlayServicesUnavailable": "Google Play Dienste is nie op hierdie toestel beskikbaar nie.",
+      "googleMissingIdToken": "Google-aanmelding kon nie voltooi word nie. Probeer asseblief weer.",
+      "appleMissingIdentityToken": "Apple-aanmelding kon nie voltooi word nie. Probeer asseblief weer.",
+      "actionSignInFailed": "Kan nie nou aanmeld nie. Probeer asseblief weer.",
+      "actionSignUpFailed": "Kan nie jou rekening op die oomblik skep nie. Probeer asseblief weer.",
+      "actionSocialSignInFailed": "Sosiale aanmelding is tans nie beskikbaar nie. Probeer asseblief e-posaanmelding.",
+      "actionPasswordResetFailed": "Kan nie nou 'n terugstelskakel stuur nie. Probeer asseblief weer.",
+      "actionEmailVerificationFailed": "Kan nie nou verifikasie-e-pos stuur nie. Probeer asseblief weer.",
+      "actionSignOutFailed": "Kan nie nou afmeld nie.",
+      "actionSessionRestoreFailed": "Kan nie jou sessie herstel nie. Meld asseblief weer aan."
     },
     "titles": {
       "error": "Fout",
       "unexpected": "Onverwagte fout"
     },
     "settings": {
-      "languageChangeFailed": "Unable to change language right now. Please try again.",
-      "onboardingResetFailed": "Unable to restart onboarding right now. Please try again.",
-      "profileSaveFailed": "Unable to save your settings right now. Please try again.",
-      "permissionDenied": "You don't have permission to update these settings.",
-      "timeout": "The request took too long. Please try again."
+      "languageChangeFailed": "Kan nie tans taal verander nie. Probeer asseblief weer.",
+      "onboardingResetFailed": "Kan nie nou aan boord herbegin nie. Probeer asseblief weer.",
+      "profileSaveFailed": "Kan nie jou instellings op die oomblik stoor nie. Probeer asseblief weer.",
+      "permissionDenied": "Jy het nie toestemming om hierdie instellings op te dateer nie.",
+      "timeout": "Die versoek het te lank geneem. Probeer asseblief weer."
     }
   },
   "avatar": {
@@ -74,12 +74,12 @@
       "cameraMessage": "Skakel asseblief toegang tot jou kamera in toestelinstellings aan om ’n profielfoto te neem."
     },
     "errors": {
-      "selectFailedTitle": "Photo Selection Failed",
-      "selectFailedMessage": "We could not update your profile photo right now. Please try again.",
-      "captureFailedTitle": "Camera Failed",
-      "captureFailedMessage": "We could not capture your profile photo right now. Please try again.",
-      "removeFailedTitle": "Unable to Remove Photo",
-      "removeFailedMessage": "We could not remove your profile photo right now. Please try again."
+      "selectFailedTitle": "Fotoseleksie het misluk",
+      "selectFailedMessage": "Ons kon nie nou jou profielfoto opdateer nie. Probeer asseblief weer.",
+      "captureFailedTitle": "Kamera het misluk",
+      "captureFailedMessage": "Ons kon nie jou profielfoto op die oomblik vaslê nie. Probeer asseblief weer.",
+      "removeFailedTitle": "Kan nie foto verwyder nie",
+      "removeFailedMessage": "Ons kon nie jou profielfoto op die oomblik verwyder nie. Probeer asseblief weer."
     }
   },
   "language": {
@@ -88,17 +88,17 @@
     "restartRequiredTitle": "Herbegin vereis",
     "restartRequiredMessage": "Herbegin asseblief Ellie om taalrigtingveranderinge toe te pas.",
     "names": {
-      "en": "English",
+      "en": "Engels",
       "es": "Español",
-      "pt-BR": "Português (Brasil)",
-      "fr": "Français",
+      "pt-BR": "Português (Brasilië)",
+      "fr": "Frans",
       "ar": "العربية",
       "zh-CN": "中文",
       "ru": "Русский",
       "hi": "हिन्दी",
       "af": "Afrikaans",
       "zu": "isiZulu",
-      "id": "Bahasa Indonesia"
+      "id": "Bahasa Indonesië"
     }
   },
   "accessibility": {
@@ -164,38 +164,38 @@
   },
   "subscription": {
     "paywall": {
-      "closeA11y": "Close paywall",
-      "title": "Ellie Pro",
-      "subtitle": "For shift workers who mean business",
+      "closeA11y": "Maak betaalmuur toe",
+      "title": "__TK1__ Pro",
+      "subtitle": "Vir skofwerkers wat besigheid bedoel",
       "features": {
-        "askRoster": "Ask \"Hey Ellie\" anything about your roster",
-        "fullYear": "See your full year at a glance",
-        "offline": "Works underground, no signal needed",
-        "instantAnswers": "Instant answers about leave and patterns",
-        "aiPowered": "Powered by AI and always improving"
+        "askRoster": "Vra \"Hey __TK1__\" enigiets oor jou rooster",
+        "fullYear": "Sien jou volle jaar in 'n oogopslag",
+        "offline": "Werk ondergronds, geen sein nodig nie",
+        "instantAnswers": "Kitsantwoorde oor verlof en patrone",
+        "aiPowered": "Aangedryf deur AI en word altyd verbeter"
       },
       "plans": {
-        "annual": "Annual",
-        "monthly": "Monthly",
-        "annualSuffix": "/yr",
-        "monthlySuffix": "/mo",
-        "save": "SAVE 40%"
+        "annual": "Jaarliks",
+        "monthly": "Maandeliks",
+        "annualSuffix": "/jr",
+        "monthlySuffix": "/ma",
+        "save": "SPAAR 40%"
       },
-      "cta": "Start 7-Day Free Trial",
-      "noCard": "No credit card required · Cancel anytime",
-      "restorePurchases": "Restore Purchases",
-      "privacyPolicy": "Privacy Policy"
+      "cta": "Begin 7-dae gratis proeflopie",
+      "noCard": "Geen kredietkaart vereis nie · Kanselleer enige tyd",
+      "restorePurchases": "Herstel aankope",
+      "privacyPolicy": "Privaatheidsbeleid"
     },
     "profile": {
-      "rowActiveA11y": "Ellie Pro active subscription",
-      "rowUpgradeA11y": "Upgrade to Ellie Pro",
-      "activeLabel": "Ellie Pro — Active ✓",
-      "upgradeLabel": "Upgrade to Ellie Pro",
-      "activeHint": "Full calendar · Hey Ellie voice assistant",
-      "upgradeHint": "7-day free trial · $6.99/mo or $49.99/yr"
+      "rowActiveA11y": "__TK1__ Pro aktiewe intekening",
+      "rowUpgradeA11y": "Gradeer op na __TK1__ Pro",
+      "activeLabel": "__TK1__ Pro — Aktief ✓",
+      "upgradeLabel": "Gradeer op na __TK1__ Pro",
+      "activeHint": "Volledige kalender · Hey __TK1__ stemassistent",
+      "upgradeHint": "Gratis proeftydperk van 7 dae · $6,99/maand of $49,99/jr"
     },
     "padlock": {
-      "a11yLabel": "Upgrade to Ellie Pro to see full calendar"
+      "a11yLabel": "Gradeer op na __TK1__ Pro om volledige kalender te sien"
     }
   }
 }

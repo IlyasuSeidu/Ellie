@@ -187,11 +187,11 @@
           "subtitle": "Bangun milik Anda sendiri"
         },
         "FIFO_7_7": {
-          "name": "7/7 FIFO",
+          "name": "7/7 __TK1__",
           "subtitle": "siklus 14 hari"
         },
         "FIFO_8_6": {
-          "name": "8/6 FIFO",
+          "name": "8/6 __TK1__",
           "subtitle": "siklus 14 hari"
         },
         "FIFO_14_14": {
@@ -199,15 +199,15 @@
           "subtitle": "siklus 28 hari"
         },
         "FIFO_14_7": {
-          "name": "14/7 FIFO",
+          "name": "14/7 __TK1__",
           "subtitle": "siklus 21 hari"
         },
         "FIFO_21_7": {
-          "name": "21/7 FIFO",
+          "name": "21/7 __TK1__",
           "subtitle": "siklus 28 hari"
         },
         "FIFO_28_14": {
-          "name": "28/14 FIFO",
+          "name": "28/14 __TK1__",
           "subtitle": "siklus 42 hari"
         },
         "FIFO_CUSTOM": {

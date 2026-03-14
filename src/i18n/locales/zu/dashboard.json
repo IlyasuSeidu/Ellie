@@ -80,10 +80,10 @@
       "workBlockName": "umsebenzi",
       "homeBlockName": "ekhaya",
       "shiftNames": {
-        "day": "i-day shift",
-        "night": "i-night shift",
-        "morning": "i-morning shift",
-        "afternoon": "i-afternoon shift",
+        "day": "ishifu lasemini",
+        "night": "ishifu yasebusuku",
+        "morning": "ishifu yasekuseni",
+        "afternoon": "ishifu yantambama",
         "off": "usuku lokuphumula"
       }
     }
