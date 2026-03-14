@@ -109,11 +109,11 @@ export const LanguageSelectorSheet: React.FC<LanguageSelectorSheetProps> = ({
     setErrorMessage(null);
 
     try {
-      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
       await onSelect(language);
       onClose();
     } catch (error) {
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       setErrorMessage(getSettingsErrorMessage(error, 'languageChange'));
     } finally {
       setIsSubmitting(false);
