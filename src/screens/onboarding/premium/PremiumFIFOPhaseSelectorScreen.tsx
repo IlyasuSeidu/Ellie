@@ -935,6 +935,10 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
   const hasUserSelectedWorkPatternRef = useRef(false);
   const hasUserAdjustedSwingSplitRef = useRef(false);
   const allowSettingsExitRef = useRef(false);
+  const [pendingSettingsSelection, setPendingSettingsSelection] = useState<{
+    phaseOffset: number;
+    fifoConfig: FIFOConfig;
+  } | null>(null);
 
   const closeSettingsEditor = useCallback(() => {
     const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
@@ -1337,9 +1341,6 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
           { blockType, dayWithinBlock, workBlockDays, restBlockDays, rawOffset, phaseOffset }
         );
       }
-      isTransitioningRef.current = true;
-      setIsTransitioning(true);
-
       const fifoConfig: FIFOConfig = isCustomFIFOPattern
         ? {
             workBlockDays,
@@ -1365,6 +1366,18 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
                 }
               : {}),
           };
+      if (isSettingsMode) {
+        setPendingSettingsSelection({
+          phaseOffset,
+          fifoConfig,
+        });
+        void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
+          source: 'PremiumFIFOPhaseSelectorScreen.handleDaySelect.settingsPending',
+        });
+        return;
+      }
+      isTransitioningRef.current = true;
+      setIsTransitioning(true);
       updateData({ phaseOffset, fifoConfig });
       void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
         source: 'PremiumFIFOPhaseSelectorScreen.handleDaySelect',
@@ -1396,6 +1409,21 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       workBlockPattern,
     ]
   );
+
+  const handleSaveSettingsSelection = useCallback(() => {
+    if (!isSettingsMode || !pendingSettingsSelection) {
+      return;
+    }
+
+    updateData({
+      phaseOffset: pendingSettingsSelection.phaseOffset,
+      fifoConfig: pendingSettingsSelection.fifoConfig,
+    });
+    void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
+      source: 'PremiumFIFOPhaseSelectorScreen.handleSaveSettingsSelection',
+    });
+    returnToSettings();
+  }, [isSettingsMode, pendingSettingsSelection, returnToSettings, updateData]);
 
   const handleContinueFromSwingConfig = useCallback(() => {
     if (!isSwingSplitValid) {
@@ -1832,26 +1860,62 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
 
       {isSettingsMode ? (
         <View style={styles.settingsActions}>
-          <Pressable
-            onPress={returnToSettings}
-            style={styles.settingsBackButton}
-            accessibilityRole="button"
-            accessibilityLabel={String(
-              t('fifoPhaseSelector.actions.backToSettingsA11y', {
-                defaultValue: 'Back to settings',
-              })
-            )}
-            testID="fifo-phase-selector-back-settings-button"
-          >
-            <Ionicons name="arrow-back-outline" size={16} color={theme.colors.paper} />
-            <Text style={styles.settingsBackButtonText}>
-              {String(
-                t('fifoPhaseSelector.actions.backToSettings', {
-                  defaultValue: 'Back to Settings',
+          <View style={styles.settingsActionsRow}>
+            <Pressable
+              onPress={returnToSettings}
+              style={styles.settingsBackButton}
+              accessibilityRole="button"
+              accessibilityLabel={String(
+                t('fifoPhaseSelector.actions.backToSettingsA11y', {
+                  defaultValue: 'Back to settings',
                 })
               )}
-            </Text>
-          </Pressable>
+              testID="fifo-phase-selector-back-settings-button"
+            >
+              <Ionicons name="arrow-back-outline" size={16} color={theme.colors.paper} />
+              <Text style={styles.settingsBackButtonText}>
+                {String(
+                  t('fifoPhaseSelector.actions.backToSettings', {
+                    defaultValue: 'Back to Settings',
+                  })
+                )}
+              </Text>
+            </Pressable>
+
+            <Pressable
+              onPress={handleSaveSettingsSelection}
+              style={[
+                styles.settingsSaveButton,
+                !pendingSettingsSelection && styles.settingsSaveButtonDisabled,
+              ]}
+              disabled={!pendingSettingsSelection}
+              accessibilityRole="button"
+              accessibilityLabel={String(
+                t('fifoPhaseSelector.actions.saveAndReturnA11y', {
+                  defaultValue: 'Save selection and return to settings',
+                })
+              )}
+              testID="fifo-phase-selector-save-settings-button"
+            >
+              <Ionicons
+                name="checkmark-circle-outline"
+                size={16}
+                color={!pendingSettingsSelection ? theme.colors.shadow : theme.colors.deepVoid}
+              />
+              <Text
+                style={[
+                  styles.settingsSaveButtonText,
+                  !pendingSettingsSelection && styles.settingsSaveButtonTextDisabled,
+                ]}
+              >
+                {String(
+                  t('fifoPhaseSelector.actions.saveAndReturn', {
+                    defaultValue: 'Save & Return',
+                  })
+                )}
+              </Text>
+            </Pressable>
+          </View>
         </View>
       ) : null}
 
@@ -2076,7 +2140,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.spacing.lg,
     paddingBottom: theme.spacing.lg,
   },
+  settingsActionsRow: {
+    flexDirection: 'row',
+    gap: theme.spacing.sm,
+  },
   settingsBackButton: {
+    flex: 1,
     minHeight: 48,
     borderRadius: theme.borderRadius.full,
     borderWidth: 1,
@@ -2090,6 +2159,31 @@ const styles = StyleSheet.create({
   settingsBackButtonText: {
     fontSize: 15,
     color: theme.colors.paper,
+    fontWeight: '600',
+  },
+  settingsSaveButton: {
+    flex: 1,
+    minHeight: 48,
+    borderRadius: theme.borderRadius.full,
+    borderWidth: 1,
+    borderColor: 'rgba(180, 83, 9, 0.45)',
+    backgroundColor: theme.colors.sacredGold,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: theme.spacing.xs,
+  },
+  settingsSaveButtonDisabled: {
+    backgroundColor: theme.colors.softStone,
+    borderColor: theme.colors.opacity.white30,
+  },
+  settingsSaveButtonText: {
+    fontSize: 15,
+    color: theme.colors.deepVoid,
+    fontWeight: '700',
+  },
+  settingsSaveButtonTextDisabled: {
+    color: theme.colors.shadow,
     fontWeight: '600',
   },
   dot: {

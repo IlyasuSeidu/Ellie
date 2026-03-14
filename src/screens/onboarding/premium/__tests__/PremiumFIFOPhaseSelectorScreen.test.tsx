@@ -431,16 +431,22 @@ describe('PremiumFIFOPhaseSelectorScreen', () => {
     });
   });
 
-  it('saves and returns to settings in settings-entry mode instead of progressing onboarding', async () => {
+  it('stages selection in settings-entry mode until save button is tapped', async () => {
     mockRouteParams = { entryPoint: 'settings', returnToMainOnSelect: true };
 
-    renderWithContext();
+    const { getByTestId } = renderWithContext();
     swipeRight(); // select straight-days pattern
     swipeRight(); // select work block
     swipeRight(); // select day 1
 
     await waitFor(() => {
       expect(goToNextScreen).not.toHaveBeenCalled();
+      expect(mockRootGoBack).not.toHaveBeenCalled();
+    });
+
+    fireEvent.press(getByTestId('fifo-phase-selector-save-settings-button'));
+
+    await waitFor(() => {
       expect(mockRootGoBack).toHaveBeenCalledTimes(1);
       const setCalls = (asyncStorageService.set as jest.Mock).mock.calls;
       const latestPayload = setCalls[setCalls.length - 1]?.[1];

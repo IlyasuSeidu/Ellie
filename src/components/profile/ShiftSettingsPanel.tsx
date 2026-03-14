@@ -440,8 +440,6 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
       fifoConfig: editFIFOConfig,
     };
 
-    // Ensure onboarding screens open with the same active config the user sees in edit mode.
-    onUpdate(seed);
     setPatternSheetVisible(false);
     setTimePickerTarget(null);
     setStartDatePickerVisible(false);
@@ -457,7 +455,6 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
     editRosterType,
     editShiftSystem,
     onOpenPatternOnboarding,
-    onUpdate,
   ]);
 
   const handleOpenShiftTimePicker = useCallback(
@@ -494,7 +491,6 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                 ? 'afternoon'
                 : undefined;
 
-      onUpdate(seed);
       setPatternSheetVisible(false);
       setTimePickerTarget(null);
       setStartDatePickerVisible(false);
@@ -517,7 +513,6 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
       editShiftTimes,
       editShiftType,
       onOpenShiftTimeOnboarding,
-      onUpdate,
     ]
   );
 
@@ -539,7 +534,6 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
       phaseOffset: editPhaseOffset,
     };
 
-    onUpdate(seed);
     setPatternSheetVisible(false);
     setTimePickerTarget(null);
     setStartDatePickerVisible(false);
@@ -557,7 +551,6 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
     editShiftSystem,
     editStartDate,
     onOpenStartDateOnboarding,
-    onUpdate,
   ]);
 
   const handleOpenCyclePhasePicker = useCallback(() => {
@@ -583,7 +576,6 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
       phaseOffset: editPhaseOffset,
     };
 
-    onUpdate(seed);
     setPatternSheetVisible(false);
     setTimePickerTarget(null);
     setStartDatePickerVisible(false);
@@ -606,7 +598,6 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
     editStartDate,
     onOpenPhaseOnboarding,
     onOpenFIFOPhaseOnboarding,
-    onUpdate,
   ]);
 
   const handleOpenFIFOCustomPatternBuilder = useCallback(() => {
@@ -623,7 +614,6 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
       fifoConfig: editFIFOConfig,
     };
 
-    onUpdate(seed);
     setPatternSheetVisible(false);
     setTimePickerTarget(null);
     setStartDatePickerVisible(false);
@@ -638,7 +628,6 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
     editPatternType,
     editShiftSystem,
     onOpenFIFOCustomPatternOnboarding,
-    onUpdate,
   ]);
 
   const handleOpenCustomPatternBuilder = useCallback(() => {
@@ -655,7 +644,6 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
       fifoConfig: editFIFOConfig,
     };
 
-    onUpdate(seed);
     setPatternSheetVisible(false);
     setTimePickerTarget(null);
     setStartDatePickerVisible(false);
@@ -670,7 +658,6 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
     editPatternType,
     editShiftSystem,
     onOpenCustomPatternOnboarding,
-    onUpdate,
   ]);
 
   // ── Time picker ────────────────────────────────────────────────────────────

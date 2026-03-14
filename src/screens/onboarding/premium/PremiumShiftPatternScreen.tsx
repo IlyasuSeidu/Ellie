@@ -1007,6 +1007,9 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
   const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
   const isSettingsMode = isSettingsEntry && returnToMainOnSelect;
   const settingsBaselineRef = useRef<SettingsPatternBaseline | null>(null);
+  const [pendingSettingsPatternType, setPendingSettingsPatternType] = useState<ShiftPattern | null>(
+    null
+  );
 
   const closeSettingsEditor = useCallback(() => {
     const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
@@ -1149,10 +1152,27 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
     if (isTransitioningRef.current) return;
     const pattern = filteredPatterns[currentIndex];
     if (!pattern) return;
-    const selectionAction = _resolveShiftPatternSettingsAction(isSettingsMode, pattern.type);
-    if (selectionAction !== 'navigate-custom') {
-      updateData({ patternType: pattern.type });
+    if (isSettingsMode) {
+      if (isCustomPatternType(pattern.type)) {
+        isTransitioningRef.current = true;
+        setIsTransitioning(true);
+        interactionHandleRef.current = InteractionManager.runAfterInteractions(() => {
+          navigationTimeoutRef.current = setTimeout(() => {
+            navigationTimeoutRef.current = null;
+            const customRoute =
+              pattern.type === ShiftPattern.FIFO_CUSTOM ? 'FIFOCustomPattern' : 'CustomPattern';
+            navigation.navigate(customRoute, getSettingsCustomRouteParams());
+          }, 300);
+        });
+        return;
+      }
+      setPendingSettingsPatternType(pattern.type);
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
+        source: 'PremiumShiftPatternScreen.handleSwipeRight.settingsPending',
+      });
+      return;
     }
+
     isTransitioningRef.current = true;
     setIsTransitioning(true);
 
@@ -1160,18 +1180,9 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
     interactionHandleRef.current = InteractionManager.runAfterInteractions(() => {
       navigationTimeoutRef.current = setTimeout(() => {
         navigationTimeoutRef.current = null;
+        updateData({ patternType: pattern.type });
         if (onContinue) {
           onContinue(pattern.type);
-          return;
-        }
-        if (selectionAction === 'exit-settings') {
-          closeSettingsEditor();
-          return;
-        }
-        if (selectionAction === 'navigate-custom') {
-          const customRoute =
-            pattern.type === ShiftPattern.FIFO_CUSTOM ? 'FIFOCustomPattern' : 'CustomPattern';
-          navigation.navigate(customRoute, getSettingsCustomRouteParams());
           return;
         }
         // Use the navigation helper which handles conditional routing
@@ -1179,7 +1190,6 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
       }, 300);
     });
   }, [
-    closeSettingsEditor,
     currentIndex,
     data,
     filteredPatterns,
@@ -1189,6 +1199,17 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
     onContinue,
     updateData,
   ]);
+
+  const handleSaveSettingsPattern = useCallback(() => {
+    if (!isSettingsMode || pendingSettingsPatternType === null) {
+      return;
+    }
+    updateData({ patternType: pendingSettingsPatternType });
+    void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
+      source: 'PremiumShiftPatternScreen.handleSaveSettingsPattern',
+    });
+    closeSettingsEditor();
+  }, [closeSettingsEditor, isSettingsMode, pendingSettingsPatternType, updateData]);
 
   const handleSwipeUp = useCallback(() => {
     if (isTransitioningRef.current) return;
@@ -1257,6 +1278,28 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
             accessibilityLabel={t('common.backToSettings')}
           >
             <Text style={styles.settingsExitButtonText}>{t('common.backToSettings')}</Text>
+          </Pressable>
+          <Pressable
+            style={[
+              styles.settingsSaveButton,
+              pendingSettingsPatternType === null && styles.settingsSaveButtonDisabled,
+            ]}
+            onPress={handleSaveSettingsPattern}
+            disabled={pendingSettingsPatternType === null}
+            accessibilityRole="button"
+            accessibilityLabel={t('common.saveAndReturn', {
+              defaultValue: 'Save and return to settings',
+            })}
+            testID="shift-pattern-save-settings-button"
+          >
+            <Text
+              style={[
+                styles.settingsSaveButtonText,
+                pendingSettingsPatternType === null && styles.settingsSaveButtonTextDisabled,
+              ]}
+            >
+              {t('common.saveAndReturn', { defaultValue: 'Save & Return' })}
+            </Text>
           </Pressable>
         </View>
       ) : null}
@@ -1327,7 +1370,9 @@ const styles = StyleSheet.create({
   },
   settingsEntryActions: {
     paddingHorizontal: theme.spacing.lg,
-    alignItems: 'flex-end',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: theme.spacing.sm,
     marginTop: theme.spacing.sm,
   },
   settingsExitButton: {
@@ -1343,6 +1388,28 @@ const styles = StyleSheet.create({
     fontSize: theme.typography.fontSizes.xs,
     fontWeight: theme.typography.fontWeights.semibold,
     letterSpacing: 0.3,
+  },
+  settingsSaveButton: {
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: 8,
+    borderRadius: theme.borderRadius.full,
+    borderWidth: 1,
+    borderColor: 'rgba(180, 83, 9, 0.45)',
+    backgroundColor: theme.colors.sacredGold,
+  },
+  settingsSaveButtonDisabled: {
+    backgroundColor: theme.colors.darkStone,
+    borderColor: theme.colors.softStone,
+  },
+  settingsSaveButtonText: {
+    color: theme.colors.deepVoid,
+    fontSize: theme.typography.fontSizes.xs,
+    fontWeight: theme.typography.fontWeights.bold,
+    letterSpacing: 0.3,
+  },
+  settingsSaveButtonTextDisabled: {
+    color: theme.colors.shadow,
+    fontWeight: theme.typography.fontWeights.semibold,
   },
   title: {
     fontSize: 28,

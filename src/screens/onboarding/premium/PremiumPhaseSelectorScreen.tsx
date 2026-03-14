@@ -821,6 +821,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
   const navigationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const interactionHandleRef = useRef<{ cancel?: () => void } | null>(null);
   const allowSettingsExitRef = useRef(false);
+  const [pendingSettingsPhaseOffset, setPendingSettingsPhaseOffset] = useState<number | null>(null);
 
   const closeSettingsEditor = useCallback(() => {
     const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
@@ -1200,6 +1201,13 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
       const shiftSystem = data.shiftSystem as ShiftSystem;
 
       const phaseOffset = calculateEnhancedPhaseOffset(phase, dayWithinPhase, pattern, shiftSystem);
+      if (isSettingsMode) {
+        setPendingSettingsPhaseOffset(phaseOffset);
+        void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
+          source: 'PremiumPhaseSelectorScreen.calculateAndNavigate.settingsPending',
+        });
+        return;
+      }
       isTransitioningRef.current = true;
       setIsTransitioning(true);
 
@@ -1222,6 +1230,18 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
     },
     [data.shiftSystem, isSettingsMode, navigation, pattern, returnToSettings, updateData]
   );
+
+  const handleSaveSettingsSelection = useCallback(() => {
+    if (!isSettingsMode || pendingSettingsPhaseOffset === null) {
+      return;
+    }
+
+    updateData({ phaseOffset: pendingSettingsPhaseOffset });
+    void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
+      source: 'PremiumPhaseSelectorScreen.handleSaveSettingsSelection',
+    });
+    returnToSettings();
+  }, [isSettingsMode, pendingSettingsPhaseOffset, returnToSettings, updateData]);
 
   // Handle swipe right (select)
   const handleSwipeRight = useCallback(() => {
@@ -1397,22 +1417,56 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
 
       {isSettingsMode ? (
         <View style={styles.settingsActions}>
-          <Pressable
-            onPress={returnToSettings}
-            style={styles.settingsBackButton}
-            accessibilityRole="button"
-            accessibilityLabel={t('phaseSelector.actions.backToSettingsA11y', {
-              defaultValue: 'Back to settings',
-            })}
-            testID="phase-selector-back-settings-button"
-          >
-            <Ionicons name="arrow-back-outline" size={16} color={theme.colors.paper} />
-            <Text style={styles.settingsBackButtonText}>
-              {t('phaseSelector.actions.backToSettings', {
-                defaultValue: 'Back to Settings',
+          <View style={styles.settingsActionsRow}>
+            <Pressable
+              onPress={returnToSettings}
+              style={styles.settingsBackButton}
+              accessibilityRole="button"
+              accessibilityLabel={t('phaseSelector.actions.backToSettingsA11y', {
+                defaultValue: 'Back to settings',
               })}
-            </Text>
-          </Pressable>
+              testID="phase-selector-back-settings-button"
+            >
+              <Ionicons name="arrow-back-outline" size={16} color={theme.colors.paper} />
+              <Text style={styles.settingsBackButtonText}>
+                {t('phaseSelector.actions.backToSettings', {
+                  defaultValue: 'Back to Settings',
+                })}
+              </Text>
+            </Pressable>
+
+            <Pressable
+              onPress={handleSaveSettingsSelection}
+              style={[
+                styles.settingsSaveButton,
+                pendingSettingsPhaseOffset === null && styles.settingsSaveButtonDisabled,
+              ]}
+              disabled={pendingSettingsPhaseOffset === null}
+              accessibilityRole="button"
+              accessibilityLabel={t('phaseSelector.actions.saveAndReturnA11y', {
+                defaultValue: 'Save selection and return to settings',
+              })}
+              testID="phase-selector-save-settings-button"
+            >
+              <Ionicons
+                name="checkmark-circle-outline"
+                size={16}
+                color={
+                  pendingSettingsPhaseOffset === null ? theme.colors.shadow : theme.colors.deepVoid
+                }
+              />
+              <Text
+                style={[
+                  styles.settingsSaveButtonText,
+                  pendingSettingsPhaseOffset === null && styles.settingsSaveButtonTextDisabled,
+                ]}
+              >
+                {t('phaseSelector.actions.saveAndReturn', {
+                  defaultValue: 'Save & Return',
+                })}
+              </Text>
+            </Pressable>
+          </View>
         </View>
       ) : null}
 
@@ -1486,7 +1540,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.spacing.lg,
     paddingBottom: theme.spacing.lg,
   },
+  settingsActionsRow: {
+    flexDirection: 'row',
+    gap: theme.spacing.sm,
+  },
   settingsBackButton: {
+    flex: 1,
     minHeight: 48,
     borderRadius: theme.borderRadius.full,
     borderWidth: 1,
@@ -1500,6 +1559,31 @@ const styles = StyleSheet.create({
   settingsBackButtonText: {
     fontSize: 15,
     color: theme.colors.paper,
+    fontWeight: '600',
+  },
+  settingsSaveButton: {
+    flex: 1,
+    minHeight: 48,
+    borderRadius: theme.borderRadius.full,
+    borderWidth: 1,
+    borderColor: 'rgba(180, 83, 9, 0.45)',
+    backgroundColor: theme.colors.sacredGold,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: theme.spacing.xs,
+  },
+  settingsSaveButtonDisabled: {
+    backgroundColor: theme.colors.softStone,
+    borderColor: theme.colors.opacity.white30,
+  },
+  settingsSaveButtonText: {
+    fontSize: 15,
+    color: theme.colors.deepVoid,
+    fontWeight: '700',
+  },
+  settingsSaveButtonTextDisabled: {
+    color: theme.colors.shadow,
     fontWeight: '600',
   },
   card: {
