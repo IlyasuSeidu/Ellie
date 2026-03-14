@@ -134,6 +134,45 @@ export const ProfileScreen: React.FC = () => {
     [navigation]
   );
 
+  const handleOpenPhaseOnboarding = useCallback(
+    (_seed: Partial<OnboardingData>) => {
+      const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+      if (!rootNavigation) return;
+
+      rootNavigation.navigate('Onboarding', {
+        screen: 'PhaseSelector',
+        params: {
+          entryPoint: 'settings',
+          returnToMainOnSelect: true,
+        } satisfies OnboardingStackParamList['PhaseSelector'],
+      });
+    },
+    [navigation]
+  );
+
+  const handleOpenCustomPatternOnboarding = useCallback(
+    (seed: Partial<OnboardingData>) => {
+      const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+      if (!rootNavigation) return;
+
+      rootNavigation.navigate('Onboarding', {
+        screen: 'CustomPattern',
+        params: {
+          entryPoint: 'settings',
+          returnToMainOnSelect: true,
+          settingsBaseline: {
+            patternType: seed.patternType,
+            customPattern: seed.customPattern,
+            fifoConfig: seed.fifoConfig,
+            rosterType: seed.rosterType,
+            shiftSystem: seed.shiftSystem,
+          },
+        } satisfies OnboardingStackParamList['CustomPattern'],
+      });
+    },
+    [navigation]
+  );
+
   const handleOpenFIFOPhaseOnboarding = useCallback(
     (_seed: Partial<OnboardingData>) => {
       const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
@@ -254,6 +293,8 @@ export const ProfileScreen: React.FC = () => {
           onOpenPatternOnboarding={handleOpenPatternOnboarding}
           onOpenStartDateOnboarding={handleOpenStartDateOnboarding}
           onOpenShiftTimeOnboarding={handleOpenShiftTimeOnboarding}
+          onOpenPhaseOnboarding={handleOpenPhaseOnboarding}
+          onOpenCustomPatternOnboarding={handleOpenCustomPatternOnboarding}
           onOpenFIFOPhaseOnboarding={handleOpenFIFOPhaseOnboarding}
           onOpenFIFOCustomPatternOnboarding={handleOpenFIFOCustomPatternOnboarding}
           animationDelay={800}

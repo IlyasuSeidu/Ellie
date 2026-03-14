@@ -37,7 +37,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useNavigation, useFocusEffect, useRoute, type RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
@@ -46,11 +46,13 @@ import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ShiftSystem, Phase, ShiftPattern } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
+import type { RootStackParamList } from '@/navigation/AppNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
+type PhaseRouteProp = RouteProp<OnboardingStackParamList, 'PhaseSelector'>;
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const CARD_WIDTH = SCREEN_WIDTH * 0.85;
@@ -793,7 +795,11 @@ const ProgressDots: React.FC<ProgressDotsProps> = ({ total, current }) => {
 export const PremiumPhaseSelectorScreen: React.FC = () => {
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
+  const route = useRoute<PhaseRouteProp>();
   const { data, updateData } = useOnboarding();
+  const isSettingsEntry = route.params?.entryPoint === 'settings';
+  const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
+  const isSettingsMode = isSettingsEntry && returnToMainOnSelect;
 
   // State
   const [stage, setStage] = useState<SelectionStage>(SelectionStage.PHASE);
@@ -814,6 +820,26 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
   const isTransitioningRef = useRef(false);
   const navigationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const interactionHandleRef = useRef<{ cancel?: () => void } | null>(null);
+  const allowSettingsExitRef = useRef(false);
+
+  const closeSettingsEditor = useCallback(() => {
+    const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+    if (rootNavigation?.canGoBack()) {
+      rootNavigation.goBack();
+      return;
+    }
+    if (rootNavigation?.reset) {
+      rootNavigation.reset({
+        index: 0,
+        routes: [{ name: 'Main' }],
+      });
+    }
+  }, [navigation]);
+
+  const returnToSettings = useCallback(() => {
+    allowSettingsExitRef.current = true;
+    closeSettingsEditor();
+  }, [closeSettingsEditor]);
 
   // Title animations
   const titleOpacity = useSharedValue(0);
@@ -921,6 +947,22 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
       clearPendingTransition();
     };
   }, [clearPendingTransition]);
+
+  useEffect(() => {
+    if (!isSettingsMode) {
+      return () => undefined;
+    }
+
+    const unsubscribe = navigation.addListener('beforeRemove', (event) => {
+      if (allowSettingsExitRef.current) {
+        return;
+      }
+      event.preventDefault();
+      returnToSettings();
+    });
+
+    return unsubscribe;
+  }, [isSettingsMode, navigation, returnToSettings]);
 
   const titleAnimatedStyle = useAnimatedStyle(() => ({
     opacity: titleOpacity.value,
@@ -1170,11 +1212,15 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
       interactionHandleRef.current = InteractionManager.runAfterInteractions(() => {
         navigationTimeoutRef.current = setTimeout(() => {
           navigationTimeoutRef.current = null;
+          if (isSettingsMode) {
+            returnToSettings();
+            return;
+          }
           goToNextScreen(navigation, 'PhaseSelector');
         }, 300);
       });
     },
-    [pattern, data.shiftSystem, updateData, navigation]
+    [data.shiftSystem, isSettingsMode, navigation, pattern, returnToSettings, updateData]
   );
 
   // Handle swipe right (select)
@@ -1349,6 +1395,27 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
         </View>
       ) : null}
 
+      {isSettingsMode ? (
+        <View style={styles.settingsActions}>
+          <Pressable
+            onPress={returnToSettings}
+            style={styles.settingsBackButton}
+            accessibilityRole="button"
+            accessibilityLabel={t('phaseSelector.actions.backToSettingsA11y', {
+              defaultValue: 'Back to settings',
+            })}
+            testID="phase-selector-back-settings-button"
+          >
+            <Ionicons name="arrow-back-outline" size={16} color={theme.colors.paper} />
+            <Text style={styles.settingsBackButtonText}>
+              {t('phaseSelector.actions.backToSettings', {
+                defaultValue: 'Back to Settings',
+              })}
+            </Text>
+          </Pressable>
+        </View>
+      ) : null}
+
       <PhaseInfoModal
         visible={showInfoModal}
         content={infoModalContent}
@@ -1413,6 +1480,26 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: theme.colors.dust,
     textAlign: 'center',
+    fontWeight: '600',
+  },
+  settingsActions: {
+    paddingHorizontal: theme.spacing.lg,
+    paddingBottom: theme.spacing.lg,
+  },
+  settingsBackButton: {
+    minHeight: 48,
+    borderRadius: theme.borderRadius.full,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.white30,
+    backgroundColor: theme.colors.softStone,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: theme.spacing.xs,
+  },
+  settingsBackButtonText: {
+    fontSize: 15,
+    color: theme.colors.paper,
     fontWeight: '600',
   },
   card: {

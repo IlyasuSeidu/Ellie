@@ -247,6 +247,8 @@ export interface ShiftSettingsPanelProps {
   onUpdate: (updates: Partial<OnboardingData>) => void;
   onOpenPatternOnboarding?: (seed: Partial<OnboardingData>) => void;
   onOpenStartDateOnboarding?: (seed: Partial<OnboardingData>) => void;
+  onOpenPhaseOnboarding?: (seed: Partial<OnboardingData>) => void;
+  onOpenCustomPatternOnboarding?: (seed: Partial<OnboardingData>) => void;
   onOpenFIFOPhaseOnboarding?: (seed: Partial<OnboardingData>) => void;
   onOpenFIFOCustomPatternOnboarding?: (seed: Partial<OnboardingData>) => void;
   onOpenShiftTimeOnboarding?: (
@@ -263,6 +265,8 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
   onUpdate,
   onOpenPatternOnboarding,
   onOpenStartDateOnboarding,
+  onOpenPhaseOnboarding,
+  onOpenCustomPatternOnboarding,
   onOpenFIFOPhaseOnboarding,
   onOpenFIFOCustomPatternOnboarding,
   onOpenShiftTimeOnboarding,
@@ -556,18 +560,22 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
     onUpdate,
   ]);
 
-  const handleOpenFIFOPhasePicker = useCallback(() => {
+  const handleOpenCyclePhasePicker = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
     const isFIFORoute = (editRosterType ?? 'rotating') === 'fifo';
-    if (!isFIFORoute || !onOpenFIFOPhaseOnboarding) {
+    const isRotatingRoute = !isFIFORoute;
+    if (
+      (isFIFORoute && !onOpenFIFOPhaseOnboarding) ||
+      (isRotatingRoute && !onOpenPhaseOnboarding)
+    ) {
       setResyncSheetVisible(true);
       return;
     }
 
     const seed: Partial<OnboardingData> = {
       shiftSystem: editShiftSystem,
-      rosterType: 'fifo',
+      rosterType: isFIFORoute ? 'fifo' : 'rotating',
       patternType: editPatternType,
       customPattern: editCustomPattern,
       fifoConfig: editFIFOConfig,
@@ -583,7 +591,11 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
     setAutoResetNotice(null);
     setLocalData({});
     setIsEditing(false);
-    onOpenFIFOPhaseOnboarding(seed);
+    if (isFIFORoute) {
+      onOpenFIFOPhaseOnboarding?.(seed);
+      return;
+    }
+    onOpenPhaseOnboarding?.(seed);
   }, [
     editCustomPattern,
     editFIFOConfig,
@@ -592,6 +604,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
     editRosterType,
     editShiftSystem,
     editStartDate,
+    onOpenPhaseOnboarding,
     onOpenFIFOPhaseOnboarding,
     onUpdate,
   ]);
@@ -625,6 +638,38 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
     editPatternType,
     editShiftSystem,
     onOpenFIFOCustomPatternOnboarding,
+    onUpdate,
+  ]);
+
+  const handleOpenCustomPatternBuilder = useCallback(() => {
+    if (!onOpenCustomPatternOnboarding) {
+      return;
+    }
+
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    const seed: Partial<OnboardingData> = {
+      shiftSystem: editShiftSystem,
+      rosterType: 'rotating',
+      patternType: editPatternType,
+      customPattern: editCustomPattern,
+      fifoConfig: editFIFOConfig,
+    };
+
+    onUpdate(seed);
+    setPatternSheetVisible(false);
+    setTimePickerTarget(null);
+    setStartDatePickerVisible(false);
+    setResyncSheetVisible(false);
+    setAutoResetNotice(null);
+    setLocalData({});
+    setIsEditing(false);
+    onOpenCustomPatternOnboarding(seed);
+  }, [
+    editCustomPattern,
+    editFIFOConfig,
+    editPatternType,
+    editShiftSystem,
+    onOpenCustomPatternOnboarding,
     onUpdate,
   ]);
 
@@ -1548,7 +1593,58 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
               )}
 
               {/* Custom rotating pattern */}
-              {isCustomRotating && (
+              {isCustomRotating && onOpenCustomPatternOnboarding ? (
+                <>
+                  <EditSectionLabel
+                    label={t('shift.sections.customPattern')}
+                    icon="construct-outline"
+                    iconColor={theme.colors.sacredGold}
+                    delay={240}
+                  />
+                  <TouchableOpacity
+                    style={styles.patternRow}
+                    onPress={handleOpenCustomPatternBuilder}
+                    activeOpacity={0.7}
+                    accessibilityLabel={t('shift.openCustomBuilderA11y', {
+                      defaultValue: 'Open custom rotation builder',
+                    })}
+                    accessibilityRole="button"
+                    accessibilityHint={t('shift.openCustomBuilderHint', {
+                      defaultValue:
+                        'Open onboarding custom pattern builder to edit days, nights, and off days.',
+                    })}
+                  >
+                    <View style={styles.patternRowLeft}>
+                      <View
+                        style={[
+                          styles.patternIconBg,
+                          { backgroundColor: 'rgba(180, 83, 9, 0.15)' },
+                        ]}
+                      >
+                        <Ionicons
+                          name="construct-outline"
+                          size={18}
+                          color={theme.colors.sacredGold}
+                        />
+                      </View>
+                      <View>
+                        <Animated.Text style={styles.patternName}>
+                          {t('shift.openCustomBuilderTitle', {
+                            defaultValue: 'Open Custom Rotation Builder',
+                          })}
+                        </Animated.Text>
+                        <Animated.Text style={styles.patternRowSub}>
+                          {t('shift.openCustomBuilderSubtitle', {
+                            defaultValue:
+                              'Configure day, night, and off blocks in onboarding custom pattern flow',
+                          })}
+                        </Animated.Text>
+                      </View>
+                    </View>
+                    <Ionicons name="chevron-forward" size={18} color={theme.colors.dust} />
+                  </TouchableOpacity>
+                </>
+              ) : isCustomRotating ? (
                 <>
                   <EditSectionLabel
                     label={t('shift.sections.customPattern')}
@@ -1648,7 +1744,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                     />
                   </View>
                 </>
-              )}
+              ) : null}
 
               {/* Schedule Anchor */}
               <EditSectionLabel
@@ -1684,7 +1780,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.patternRow}
-                onPress={handleOpenFIFOPhasePicker}
+                onPress={handleOpenCyclePhasePicker}
                 activeOpacity={0.7}
                 accessibilityLabel={t('shift.cyclePositionA11y', {
                   position: getCyclePositionLabel(d, t) ?? t('fields.notSet'),

@@ -87,6 +87,12 @@ jest.mock('expo-linear-gradient', () => {
 // Mock navigation
 const mockNavigate = jest.fn();
 const mockGoBack = jest.fn();
+const mockAddListener = jest.fn(() => jest.fn());
+const mockGetParent = jest.fn(() => ({
+  canGoBack: () => true,
+  goBack: mockGoBack,
+  reset: jest.fn(),
+}));
 
 jest.mock('@react-navigation/native', () => {
   const actualNav = jest.requireActual('@react-navigation/native');
@@ -95,6 +101,8 @@ jest.mock('@react-navigation/native', () => {
     useNavigation: () => ({
       navigate: mockNavigate,
       goBack: mockGoBack,
+      addListener: mockAddListener,
+      getParent: mockGetParent,
     }),
   };
 });
