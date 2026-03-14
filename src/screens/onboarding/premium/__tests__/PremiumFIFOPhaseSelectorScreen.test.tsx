@@ -5,6 +5,7 @@ import { OnboardingProvider } from '@/contexts/OnboardingContext';
 import { PremiumFIFOPhaseSelectorScreen } from '../PremiumFIFOPhaseSelectorScreen';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { asyncStorageService } from '@/services/AsyncStorageService';
+import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 
 jest.mock('@/services/AsyncStorageService', () => ({
   asyncStorageService: {
@@ -33,10 +34,24 @@ jest.mock('expo-linear-gradient', () => {
   };
 });
 
+let mockRouteParams: OnboardingStackParamList['FIFOPhaseSelector'] = undefined;
+const mockNavigate = jest.fn();
+const mockAddListener = jest.fn();
+const mockRootGoBack = jest.fn();
+const mockRootReset = jest.fn();
+const mockGetParent = jest.fn(() => ({
+  canGoBack: () => true,
+  goBack: mockRootGoBack,
+  reset: mockRootReset,
+}));
+
 jest.mock('@react-navigation/native', () => ({
   useNavigation: () => ({
-    navigate: jest.fn(),
+    navigate: mockNavigate,
+    addListener: mockAddListener,
+    getParent: mockGetParent,
   }),
+  useRoute: () => ({ params: mockRouteParams }),
   useFocusEffect: jest.fn(),
 }));
 
@@ -265,6 +280,13 @@ const setSwingSliderValue = (
 describe('PremiumFIFOPhaseSelectorScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockRouteParams = undefined;
+    mockAddListener.mockImplementation(() => jest.fn());
+    mockGetParent.mockReturnValue({
+      canGoBack: () => true,
+      goBack: mockRootGoBack,
+      reset: mockRootReset,
+    });
     jest.spyOn(InteractionManager, 'runAfterInteractions').mockImplementation((task?: unknown) => {
       if (typeof task === 'function') {
         task();
@@ -406,6 +428,23 @@ describe('PremiumFIFOPhaseSelectorScreen', () => {
       const setCalls = (asyncStorageService.set as jest.Mock).mock.calls;
       const latestPayload = setCalls[setCalls.length - 1]?.[1];
       expect(latestPayload).toEqual(expect.objectContaining({ phaseOffset: 2 }));
+    });
+  });
+
+  it('saves and returns to settings in settings-entry mode instead of progressing onboarding', async () => {
+    mockRouteParams = { entryPoint: 'settings', returnToMainOnSelect: true };
+
+    renderWithContext();
+    swipeRight(); // select straight-days pattern
+    swipeRight(); // select work block
+    swipeRight(); // select day 1
+
+    await waitFor(() => {
+      expect(goToNextScreen).not.toHaveBeenCalled();
+      expect(mockRootGoBack).toHaveBeenCalledTimes(1);
+      const setCalls = (asyncStorageService.set as jest.Mock).mock.calls;
+      const latestPayload = setCalls[setCalls.length - 1]?.[1];
+      expect(latestPayload).toEqual(expect.objectContaining({ phaseOffset: 0 }));
     });
   });
 

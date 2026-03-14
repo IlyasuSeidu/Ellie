@@ -265,6 +265,8 @@ export interface ShiftSettingsPanelProps {
   onUpdate: (updates: Partial<OnboardingData>) => void;
   onOpenPatternOnboarding?: (seed: Partial<OnboardingData>) => void;
   onOpenStartDateOnboarding?: (seed: Partial<OnboardingData>) => void;
+  onOpenFIFOPhaseOnboarding?: (seed: Partial<OnboardingData>) => void;
+  onOpenFIFOCustomPatternOnboarding?: (seed: Partial<OnboardingData>) => void;
   onOpenShiftTimeOnboarding?: (
     seed: Partial<OnboardingData>,
     initialShiftType?: 'day' | 'night' | 'morning' | 'afternoon'
@@ -279,6 +281,8 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
   onUpdate,
   onOpenPatternOnboarding,
   onOpenStartDateOnboarding,
+  onOpenFIFOPhaseOnboarding,
+  onOpenFIFOCustomPatternOnboarding,
   onOpenShiftTimeOnboarding,
   animationDelay = 0,
 }) => {
@@ -567,6 +571,78 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
     editShiftSystem,
     editStartDate,
     onOpenStartDateOnboarding,
+    onUpdate,
+  ]);
+
+  const handleOpenFIFOPhasePicker = useCallback(() => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+
+    const isFIFORoute = (editRosterType ?? 'rotating') === 'fifo';
+    if (!isFIFORoute || !onOpenFIFOPhaseOnboarding) {
+      setResyncSheetVisible(true);
+      return;
+    }
+
+    const seed: Partial<OnboardingData> = {
+      shiftSystem: editShiftSystem,
+      rosterType: 'fifo',
+      patternType: editPatternType,
+      customPattern: editCustomPattern,
+      fifoConfig: editFIFOConfig,
+      startDate: editStartDate,
+      phaseOffset: editPhaseOffset,
+    };
+
+    onUpdate(seed);
+    setPatternSheetVisible(false);
+    setTimePickerTarget(null);
+    setStartDatePickerVisible(false);
+    setResyncSheetVisible(false);
+    setAutoResetNotice(null);
+    setLocalData({});
+    setIsEditing(false);
+    onOpenFIFOPhaseOnboarding(seed);
+  }, [
+    editCustomPattern,
+    editFIFOConfig,
+    editPatternType,
+    editPhaseOffset,
+    editRosterType,
+    editShiftSystem,
+    editStartDate,
+    onOpenFIFOPhaseOnboarding,
+    onUpdate,
+  ]);
+
+  const handleOpenFIFOCustomPatternBuilder = useCallback(() => {
+    if (!onOpenFIFOCustomPatternOnboarding) {
+      return;
+    }
+
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    const seed: Partial<OnboardingData> = {
+      shiftSystem: editShiftSystem,
+      rosterType: 'fifo',
+      patternType: editPatternType,
+      customPattern: editCustomPattern,
+      fifoConfig: editFIFOConfig,
+    };
+
+    onUpdate(seed);
+    setPatternSheetVisible(false);
+    setTimePickerTarget(null);
+    setStartDatePickerVisible(false);
+    setResyncSheetVisible(false);
+    setAutoResetNotice(null);
+    setLocalData({});
+    setIsEditing(false);
+    onOpenFIFOCustomPatternOnboarding(seed);
+  }, [
+    editCustomPattern,
+    editFIFOConfig,
+    editPatternType,
+    editShiftSystem,
+    onOpenFIFOCustomPatternOnboarding,
     onUpdate,
   ]);
 
@@ -1264,6 +1340,47 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                     delay={240}
                   />
 
+                  {onOpenFIFOCustomPatternOnboarding ? (
+                    <TouchableOpacity
+                      style={styles.patternRow}
+                      onPress={handleOpenFIFOCustomPatternBuilder}
+                      activeOpacity={0.7}
+                      accessibilityLabel={t('shift.openFIFOBuilderA11y', {
+                        defaultValue: 'Open FIFO builder',
+                      })}
+                      accessibilityRole="button"
+                      accessibilityHint={t('shift.openFIFOBuilderHint', {
+                        defaultValue:
+                          'Use the FIFO onboarding builder to configure work and rest blocks, work pattern, and swing split.',
+                      })}
+                    >
+                      <View style={styles.patternRowLeft}>
+                        <View
+                          style={[
+                            styles.patternIconBg,
+                            { backgroundColor: 'rgba(33,150,243,0.15)' },
+                          ]}
+                        >
+                          <Ionicons name="construct-outline" size={18} color="#2196F3" />
+                        </View>
+                        <View>
+                          <Animated.Text style={styles.patternName}>
+                            {t('shift.openFIFOBuilderTitle', {
+                              defaultValue: 'Open FIFO Pattern Builder',
+                            })}
+                          </Animated.Text>
+                          <Animated.Text style={styles.patternRowSub}>
+                            {t('shift.openFIFOBuilderSubtitle', {
+                              defaultValue:
+                                'Configure work/rest days, day-night mix, and custom sequence in onboarding flow',
+                            })}
+                          </Animated.Text>
+                        </View>
+                      </View>
+                      <Ionicons name="chevron-forward" size={18} color={theme.colors.dust} />
+                    </TouchableOpacity>
+                  ) : null}
+
                   <View style={styles.sliderWrapper}>
                     <PatternBuilderSlider
                       label={t('shift.workBlock')}
@@ -1769,10 +1886,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.patternRow}
-                onPress={() => {
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                  setResyncSheetVisible(true);
-                }}
+                onPress={handleOpenFIFOPhasePicker}
                 activeOpacity={0.7}
                 accessibilityLabel={t('shift.cyclePositionA11y', {
                   position: getCyclePositionLabel(d, t) ?? t('fields.notSet'),

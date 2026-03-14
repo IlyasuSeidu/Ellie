@@ -134,6 +134,45 @@ export const ProfileScreen: React.FC = () => {
     [navigation]
   );
 
+  const handleOpenFIFOPhaseOnboarding = useCallback(
+    (_seed: Partial<OnboardingData>) => {
+      const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+      if (!rootNavigation) return;
+
+      rootNavigation.navigate('Onboarding', {
+        screen: 'FIFOPhaseSelector',
+        params: {
+          entryPoint: 'settings',
+          returnToMainOnSelect: true,
+        } satisfies OnboardingStackParamList['FIFOPhaseSelector'],
+      });
+    },
+    [navigation]
+  );
+
+  const handleOpenFIFOCustomPatternOnboarding = useCallback(
+    (seed: Partial<OnboardingData>) => {
+      const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+      if (!rootNavigation) return;
+
+      rootNavigation.navigate('Onboarding', {
+        screen: 'FIFOCustomPattern',
+        params: {
+          entryPoint: 'settings',
+          returnToMainOnSelect: true,
+          settingsBaseline: {
+            patternType: seed.patternType,
+            customPattern: seed.customPattern,
+            fifoConfig: seed.fifoConfig,
+            rosterType: seed.rosterType,
+            shiftSystem: seed.shiftSystem,
+          },
+        } satisfies OnboardingStackParamList['FIFOCustomPattern'],
+      });
+    },
+    [navigation]
+  );
+
   return (
     <View style={styles.screen}>
       <LinearGradient
@@ -215,6 +254,8 @@ export const ProfileScreen: React.FC = () => {
           onOpenPatternOnboarding={handleOpenPatternOnboarding}
           onOpenStartDateOnboarding={handleOpenStartDateOnboarding}
           onOpenShiftTimeOnboarding={handleOpenShiftTimeOnboarding}
+          onOpenFIFOPhaseOnboarding={handleOpenFIFOPhaseOnboarding}
+          onOpenFIFOCustomPatternOnboarding={handleOpenFIFOCustomPatternOnboarding}
           animationDelay={800}
         />
 

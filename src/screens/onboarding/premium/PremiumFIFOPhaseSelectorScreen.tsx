@@ -43,7 +43,7 @@ import Animated, {
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useNavigation, useFocusEffect, useRoute, type RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
@@ -58,8 +58,10 @@ import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { ShiftPattern, type FIFOConfig } from '@/types';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 import { getDefaultFIFOConfig } from '@/utils/shiftUtils';
+import type { RootStackParamList } from '@/navigation/AppNavigator';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
+type FIFOPhaseRouteProp = RouteProp<OnboardingStackParamList, 'FIFOPhaseSelector'>;
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const CARD_WIDTH = SCREEN_WIDTH * 0.85;
@@ -906,7 +908,11 @@ const normalizePositiveInt = (value: unknown, fallback: number): number => {
 export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
+  const route = useRoute<FIFOPhaseRouteProp>();
   const { data, updateData } = useOnboarding();
+  const isSettingsEntry = route.params?.entryPoint === 'settings';
+  const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
+  const isSettingsMode = isSettingsEntry && returnToMainOnSelect;
 
   const isCustomFIFOPattern = data.patternType === ShiftPattern.FIFO_CUSTOM;
   const [stage, setStage] = useState<SelectionStage>(
@@ -928,6 +934,26 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
   const isCustomFIFOPatternRef = useRef(isCustomFIFOPattern);
   const hasUserSelectedWorkPatternRef = useRef(false);
   const hasUserAdjustedSwingSplitRef = useRef(false);
+  const allowSettingsExitRef = useRef(false);
+
+  const closeSettingsEditor = useCallback(() => {
+    const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+    if (rootNavigation?.canGoBack()) {
+      rootNavigation.goBack();
+      return;
+    }
+    if (rootNavigation?.reset) {
+      rootNavigation.reset({
+        index: 0,
+        routes: [{ name: 'Main' }],
+      });
+    }
+  }, [navigation]);
+
+  const returnToSettings = useCallback(() => {
+    allowSettingsExitRef.current = true;
+    closeSettingsEditor();
+  }, [closeSettingsEditor]);
 
   const cardAnimations = [
     useSharedValue(0),
@@ -1244,6 +1270,22 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     };
   }, [clearPendingTransition]);
 
+  useEffect(() => {
+    if (!isSettingsMode) {
+      return () => undefined;
+    }
+
+    const unsubscribe = navigation.addListener('beforeRemove', (event) => {
+      if (allowSettingsExitRef.current) {
+        return;
+      }
+      event.preventDefault();
+      returnToSettings();
+    });
+
+    return unsubscribe;
+  }, [isSettingsMode, navigation, returnToSettings]);
+
   const currentCards = useMemo<FIFOSelectableCardData[]>(() => {
     if (stage === SelectionStage.WORK_PATTERN) {
       return workPatternCards;
@@ -1330,16 +1372,22 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       interactionHandleRef.current = InteractionManager.runAfterInteractions(() => {
         navigationTimeoutRef.current = setTimeout(() => {
           navigationTimeoutRef.current = null;
+          if (isSettingsMode) {
+            returnToSettings();
+            return;
+          }
           goToNextScreen(navigation, 'FIFOPhaseSelector');
         }, 300);
       });
     },
     [
+      isSettingsMode,
       isCustomFIFOPattern,
       navigation,
       restBlockDays,
       resolvedFIFOConfig.customWorkSequence,
       resolvedFIFOConfig.swingPattern,
+      returnToSettings,
       daysOnDayShift,
       daysOnNightShift,
       selectedWorkPattern,
@@ -1782,6 +1830,31 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
         </View>
       ) : null}
 
+      {isSettingsMode ? (
+        <View style={styles.settingsActions}>
+          <Pressable
+            onPress={returnToSettings}
+            style={styles.settingsBackButton}
+            accessibilityRole="button"
+            accessibilityLabel={String(
+              t('fifoPhaseSelector.actions.backToSettingsA11y', {
+                defaultValue: 'Back to settings',
+              })
+            )}
+            testID="fifo-phase-selector-back-settings-button"
+          >
+            <Ionicons name="arrow-back-outline" size={16} color={theme.colors.paper} />
+            <Text style={styles.settingsBackButtonText}>
+              {String(
+                t('fifoPhaseSelector.actions.backToSettings', {
+                  defaultValue: 'Back to Settings',
+                })
+              )}
+            </Text>
+          </Pressable>
+        </View>
+      ) : null}
+
       <FIFOInfoModal
         visible={showInfoModal}
         content={infoModalContent}
@@ -1997,6 +2070,26 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: theme.colors.dust,
     textAlign: 'center',
+    fontWeight: '600',
+  },
+  settingsActions: {
+    paddingHorizontal: theme.spacing.lg,
+    paddingBottom: theme.spacing.lg,
+  },
+  settingsBackButton: {
+    minHeight: 48,
+    borderRadius: theme.borderRadius.full,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.white30,
+    backgroundColor: theme.colors.softStone,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: theme.spacing.xs,
+  },
+  settingsBackButtonText: {
+    fontSize: 15,
+    color: theme.colors.paper,
     fontWeight: '600',
   },
   dot: {
