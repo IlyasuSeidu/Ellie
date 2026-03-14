@@ -52,6 +52,14 @@ export type SettingsPatternBaseline = {
   shiftSystem?: OnboardingData['shiftSystem'];
 };
 
+export type ShiftPatternSettingsSeed = {
+  shiftSystem?: OnboardingData['shiftSystem'];
+  rosterType?: OnboardingData['rosterType'];
+  patternType?: OnboardingData['patternType'];
+  customPattern?: OnboardingData['customPattern'];
+  fifoConfig?: OnboardingData['fifoConfig'];
+};
+
 /**
  * Onboarding Stack Parameter List
  *
@@ -73,6 +81,7 @@ export type OnboardingStackParamList = {
     | {
         entryPoint?: 'onboarding' | 'settings';
         returnToMainOnSelect?: boolean;
+        settingsSeed?: ShiftPatternSettingsSeed;
       }
     | undefined;
   /** Step 4b-R: Configure custom rotating pattern (only if CUSTOM selected) */

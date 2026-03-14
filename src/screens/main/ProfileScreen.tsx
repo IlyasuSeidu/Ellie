@@ -85,18 +85,28 @@ export const ProfileScreen: React.FC = () => {
     }
   }, [navigation, tCommon]);
 
-  const handleOpenPatternOnboarding = useCallback(() => {
-    const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
-    if (!rootNavigation) return;
+  const handleOpenPatternOnboarding = useCallback(
+    (seed: Partial<OnboardingData>) => {
+      const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+      if (!rootNavigation) return;
 
-    rootNavigation.navigate('Onboarding', {
-      screen: 'ShiftPattern',
-      params: {
-        entryPoint: 'settings',
-        returnToMainOnSelect: true,
-      } satisfies OnboardingStackParamList['ShiftPattern'],
-    });
-  }, [navigation]);
+      rootNavigation.navigate('Onboarding', {
+        screen: 'ShiftPattern',
+        params: {
+          entryPoint: 'settings',
+          returnToMainOnSelect: true,
+          settingsSeed: {
+            shiftSystem: seed.shiftSystem,
+            rosterType: seed.rosterType,
+            patternType: seed.patternType,
+            customPattern: seed.customPattern,
+            fifoConfig: seed.fifoConfig,
+          },
+        } satisfies OnboardingStackParamList['ShiftPattern'],
+      });
+    },
+    [navigation]
+  );
 
   const handleOpenShiftTimeOnboarding = useCallback(
     (

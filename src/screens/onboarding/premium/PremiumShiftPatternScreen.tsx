@@ -1006,6 +1006,7 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
   const isSettingsEntry = route.params?.entryPoint === 'settings';
   const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
   const isSettingsMode = isSettingsEntry && returnToMainOnSelect;
+  const settingsSeed = route.params?.settingsSeed;
   const settingsBaselineRef = useRef<SettingsPatternBaseline | null>(null);
   const [pendingSettingsPatternType, setPendingSettingsPatternType] = useState<ShiftPattern | null>(
     null
@@ -1025,9 +1026,15 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
     }
   }, [navigation]);
 
-  // Filter patterns based on selected shift system AND roster type
-  const shiftSystem: ShiftSystem = (data.shiftSystem as ShiftSystem) || ShiftSystem.TWO_SHIFT; // Default to 2-shift
-  const rosterType = data.rosterType || 'rotating'; // Default to rotating for backward compatibility
+  // In settings-entry mode, use the active settings pills passed as route seed.
+  // In onboarding mode, keep using context data.
+  const effectiveShiftSystem = (
+    isSettingsMode ? (settingsSeed?.shiftSystem ?? data.shiftSystem) : data.shiftSystem
+  ) as ShiftSystem | undefined;
+  const shiftSystem: ShiftSystem = effectiveShiftSystem || ShiftSystem.TWO_SHIFT;
+  const rosterType =
+    (isSettingsMode ? (settingsSeed?.rosterType ?? data.rosterType) : data.rosterType) ||
+    'rotating';
 
   const filteredPatterns = SHIFT_PATTERNS.filter(
     (pattern) => pattern.supportedSystems.includes(shiftSystem) && pattern.rosterType === rosterType
