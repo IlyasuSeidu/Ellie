@@ -88,17 +88,17 @@
     "restartRequiredTitle": "Redémarrage requis",
     "restartRequiredMessage": "Veuillez redémarrer Ellie pour appliquer les changements de direction de la langue.",
     "names": {
-      "en": "Anglais",
-      "es": "espagnol",
-      "pt-BR": "Portugais (Brésil)",
-      "fr": "Français",
-      "ar": "العربية",
-      "zh-CN": "Chine",
-      "ru": "russe",
-      "hi": "हिन्दी",
-      "af": "afrikaans",
-      "zu": "isiZulu",
-      "id": "Bahasa Indonésie"
+      "en": "Anglais (Anglais)",
+      "es": "Espagnol (espagnol)",
+      "pt-BR": "Portugais (Brésil) (Portugais (Brésil))",
+      "fr": "Français (Français)",
+      "ar": "arabe (العربية)",
+      "zh-CN": "Chinois (simplifié) (Chine)",
+      "ru": "russe (russe)",
+      "hi": "hindi (हिन्दी)",
+      "af": "afrikaans (afrikaans)",
+      "zu": "zoulou (isiZulu)",
+      "id": "indonésien (Bahasa Indonésie)"
     }
   },
   "accessibility": {
@@ -165,7 +165,7 @@
   "subscription": {
     "paywall": {
       "closeA11y": "Fermer le paywall",
-      "title": "Ellie Pro",
+      "title": "Ellie Pro (abonnement)",
       "subtitle": "Pour les travailleurs postés qui sont sérieux",
       "features": {
         "askRoster": "Demandez \"Hey Ellie\" n'importe quoi à propos de votre liste",

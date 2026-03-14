@@ -979,7 +979,7 @@
     "accessibility": {
       "checked": "выбрано",
       "unchecked": "не выбрано",
-      "label": "{{title}}, {{status}}"
+      "label": "{{title}} • {{status}}"
     }
   }
 }

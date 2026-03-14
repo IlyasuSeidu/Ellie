@@ -984,7 +984,7 @@
     "accessibility": {
       "checked": "dipilih",
       "unchecked": "belum dipilih",
-      "label": "{{title}}, {{status}}"
+      "label": "{{title}} • {{status}}"
     }
   }
 }

@@ -132,7 +132,7 @@
       "closeA11y": "दिनांक चयनकर्ता बंद करें",
       "previousMonthA11y": "पिछला महीना",
       "nextMonthA11y": "अगले महीने",
-      "dayA11y": "{{day}} {{month}} {{year}}",
+      "dayA11y": "{{day}}/{{month}}/{{year}}",
       "todayTag": "आज",
       "unavailableTag": "अनुपलब्ध",
       "legendToday": "आज",

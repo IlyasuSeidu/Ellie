@@ -76,7 +76,7 @@
       "dayLabel": "दिन {{day}}{{todayText}}{{shiftText}}",
       "todaySuffix": ", आज",
       "blockSuffix": ", {{blockName}} ब्लॉक",
-      "shiftSuffix": ", {{shiftName}}",
+      "shiftSuffix": " • {{shiftName}}",
       "workBlockName": "कार्य",
       "homeBlockName": "घर",
       "shiftNames": {

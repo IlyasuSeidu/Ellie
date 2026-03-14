@@ -76,7 +76,7 @@
       "dayLabel": "اليوم {{day}}{{todayText}}{{shiftText}}",
       "todaySuffix": "، اليوم",
       "blockSuffix": "، كتلة {{blockName}}",
-      "shiftSuffix": "، {{shiftName}}",
+      "shiftSuffix": " • {{shiftName}}",
       "workBlockName": "العمل",
       "homeBlockName": "المنزل",
       "shiftNames": {

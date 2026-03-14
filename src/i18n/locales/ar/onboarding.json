@@ -967,7 +967,7 @@
     "accessibility": {
       "checked": "محدد",
       "unchecked": "غير محدد",
-      "label": "{{title}}، {{status}}"
+      "label": "{{title}} • {{status}}"
     }
   }
 }

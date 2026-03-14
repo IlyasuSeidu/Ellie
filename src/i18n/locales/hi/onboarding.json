@@ -965,7 +965,7 @@
     "accessibility": {
       "checked": "चयनित",
       "unchecked": "अचयनित",
-      "label": "{{title}}, {{status}}"
+      "label": "{{title}} • {{status}}"
     }
   }
 }

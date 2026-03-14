@@ -76,7 +76,7 @@
       "dayLabel": "Dag {{day}}{{todayText}}{{shiftText}}",
       "todaySuffix": ", Vandag",
       "blockSuffix": ", {{blockName}}-blok",
-      "shiftSuffix": ", {{shiftName}}",
+      "shiftSuffix": " • {{shiftName}}",
       "workBlockName": "werk",
       "homeBlockName": "huis",
       "shiftNames": {

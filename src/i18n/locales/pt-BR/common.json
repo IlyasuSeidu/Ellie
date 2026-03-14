@@ -88,17 +88,17 @@
     "restartRequiredTitle": "Reinicialização necessária",
     "restartRequiredMessage": "Reinicie o Ellie para aplicar as mudanças de direção do idioma.",
     "names": {
-      "en": "Inglês",
-      "es": "Espanhol",
-      "pt-BR": "Português (Brasil)",
-      "fr": "Francês",
-      "ar": "العربية",
-      "zh-CN": "中文",
-      "ru": "Russo",
-      "hi": "Adeus",
-      "af": "afrikaans",
-      "zu": "isiZulu",
-      "id": "Bahasa Indonésia"
+      "en": "Inglês (Inglês)",
+      "es": "Espanhol (Espanhol)",
+      "pt-BR": "Português (Brasil) (Português (Brasil))",
+      "fr": "Francês (Francês)",
+      "ar": "árabe (العربية)",
+      "zh-CN": "Chinês (simplificado) (中文)",
+      "ru": "russo (Russo)",
+      "hi": "hindi (Adeus)",
+      "af": "afrikaans (afrikaans)",
+      "zu": "zulu (isiZulu)",
+      "id": "indonésio (Bahasa Indonésia)"
     }
   },
   "accessibility": {

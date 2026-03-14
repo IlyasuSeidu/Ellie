@@ -132,7 +132,7 @@
       "closeA11y": "关闭日期选择器",
       "previousMonthA11y": "上个月",
       "nextMonthA11y": "下个月",
-      "dayA11y": "{{day}} {{month}} {{year}}",
+      "dayA11y": "{{day}}/{{month}}/{{year}}",
       "todayTag": "今天",
       "unavailableTag": "不可用",
       "legendToday": "今天",
@@ -255,7 +255,7 @@
       "customFIFO": "{{workBlockDays}}/{{restBlockDays}} 自定义 FIFO",
       "customRotationTwoShift": "{{daysOn}}-{{nightsOn}}-{{daysOff}} 自定义旋转",
       "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} 自定义旋转",
-      "dayAbbrev": "D",
+      "dayAbbrev": "日",
       "nightAbbrev": "氮"
     }
   }

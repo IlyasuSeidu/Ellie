@@ -175,7 +175,7 @@
         "description": "Si tu sitio usa otro esquema, crea tu propia rotación."
       },
       "fifo-8-6": {
-        "name": "FIFO 8/6",
+        "name": "Patrón FIFO 8/6",
         "schedule": "8 días trabajo • 6 días en casa",
         "description": "8 días consecutivos en sitio y 6 días en casa, común en minería WA."
       },
@@ -190,17 +190,17 @@
         "description": "Dos semanas en sitio y dos en casa, gran equilibrio vida-trabajo."
       },
       "fifo-14-7": {
-        "name": "FIFO 14/7 (2:1)",
+        "name": "Patrón FIFO 14/7 (2:1)",
         "schedule": "2 semanas trabajo • 1 semana casa",
         "description": "Dos semanas en sitio y una en casa con mayor potencial de ingresos."
       },
       "fifo-21-7": {
-        "name": "FIFO 21/7 (3:1)",
+        "name": "Patrón FIFO 21/7 (3:1)",
         "schedule": "3 semanas trabajo • 1 semana casa",
         "description": "Tres semanas en sitio y una en casa para operaciones muy remotas."
       },
       "fifo-28-14": {
-        "name": "FIFO 28/14 (2:1)",
+        "name": "Patrón FIFO 28/14 (2:1)",
         "schedule": "4 semanas trabajo • 2 semanas casa",
         "description": "Cuatro semanas en sitio y dos en casa para sitios de larga distancia."
       },
@@ -989,7 +989,7 @@
     "accessibility": {
       "checked": "seleccionado",
       "unchecked": "no seleccionado",
-      "label": "{{title}}, {{status}}"
+      "label": "{{title}} • {{status}}"
     }
   }
 }

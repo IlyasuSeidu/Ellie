@@ -76,7 +76,7 @@
       "dayLabel": "第{{day}}天{{todayText}}{{shiftText}}",
       "todaySuffix": "，今天",
       "blockSuffix": "，{{blockName}}区块",
-      "shiftSuffix": "，{{shiftName}}",
+      "shiftSuffix": " • {{shiftName}}",
       "workBlockName": "工作",
       "homeBlockName": "休息",
       "shiftNames": {

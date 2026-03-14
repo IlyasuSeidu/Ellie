@@ -132,7 +132,7 @@
       "closeA11y": "Fechar seletor de data",
       "previousMonthA11y": "Mês anterior",
       "nextMonthA11y": "Próximo mês",
-      "dayA11y": "{{day}} {{month}} {{year}}",
+      "dayA11y": "{{day}}/{{month}}/{{year}}",
       "todayTag": "hoje",
       "unavailableTag": "indisponível",
       "legendToday": "Hoje",
@@ -171,15 +171,15 @@
           "subtitle": "Ciclo de 30 dias"
         },
         "STANDARD_2_2_3": {
-          "name": "Pitman (2-2-3)",
+          "name": "Padrão Pitman (2-2-3)",
           "subtitle": "Ciclo de 7 dias"
         },
         "CONTINENTAL": {
-          "name": "Continental",
+          "name": "Padrão Continental",
           "subtitle": "Ciclo de 10 dias"
         },
         "PITMAN": {
-          "name": "Pitman",
+          "name": "Padrão Pitman",
           "subtitle": "Ciclo de 7 dias"
         },
         "CUSTOM": {
@@ -187,27 +187,27 @@
           "subtitle": "Construa o seu próprio"
         },
         "FIFO_7_7": {
-          "name": "7/7 FIFO",
+          "name": "Padrão FIFO 7/7",
           "subtitle": "Ciclo de 14 dias"
         },
         "FIFO_8_6": {
-          "name": "8/6 FIFO",
+          "name": "Padrão FIFO 8/6",
           "subtitle": "Ciclo de 14 dias"
         },
         "FIFO_14_14": {
-          "name": "14/14 FIFO",
+          "name": "Padrão FIFO 14/14",
           "subtitle": "Ciclo de 28 dias"
         },
         "FIFO_14_7": {
-          "name": "14/7 FIFO",
+          "name": "Padrão FIFO 14/7",
           "subtitle": "Ciclo de 21 dias"
         },
         "FIFO_21_7": {
-          "name": "21/7 FIFO",
+          "name": "Padrão FIFO 21/7",
           "subtitle": "Ciclo de 28 dias"
         },
         "FIFO_28_14": {
-          "name": "28/14 FIFO",
+          "name": "Padrão FIFO 28/14",
           "subtitle": "Ciclo de 42 dias"
         },
         "FIFO_CUSTOM": {
@@ -255,8 +255,8 @@
       "customFIFO": "FIFO personalizado {{workBlockDays}}/{{restBlockDays}}",
       "customRotationTwoShift": "Rotação personalizada {{daysOn}}-{{nightsOn}}-{{daysOff}}",
       "customRotationThreeShift": "Rotação personalizada {{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}}",
-      "dayAbbrev": "D",
-      "nightAbbrev": "N"
+      "dayAbbrev": "Di",
+      "nightAbbrev": "No"
     }
   }
 }

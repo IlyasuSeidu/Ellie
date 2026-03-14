@@ -76,7 +76,7 @@
       "dayLabel": "Dia {{day}}{{todayText}}{{shiftText}}",
       "todaySuffix": ", Hoje",
       "blockSuffix": ", bloco de {{blockName}}",
-      "shiftSuffix": ", {{shiftName}}",
+      "shiftSuffix": " • {{shiftName}}",
       "workBlockName": "trabalho",
       "homeBlockName": "casa",
       "shiftNames": {

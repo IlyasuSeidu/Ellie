@@ -970,7 +970,7 @@
     "accessibility": {
       "checked": "gekies",
       "unchecked": "nie gekies nie",
-      "label": "{{title}}, {{status}}"
+      "label": "{{title}} • {{status}}"
     }
   }
 }

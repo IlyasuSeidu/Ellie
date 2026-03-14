@@ -989,7 +989,7 @@
     "accessibility": {
       "checked": "kukhethiwe",
       "unchecked": "akukhethwanga",
-      "label": "{{title}}, {{status}}"
+      "label": "{{title}} • {{status}}"
     }
   }
 }

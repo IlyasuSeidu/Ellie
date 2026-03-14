@@ -88,17 +88,17 @@
     "restartRequiredTitle": "Herbegin vereis",
     "restartRequiredMessage": "Herbegin asseblief Ellie om taalrigtingveranderinge toe te pas.",
     "names": {
-      "en": "Engels",
-      "es": "Español",
-      "pt-BR": "Português (Brasilië)",
-      "fr": "Frans",
-      "ar": "العربية",
-      "zh-CN": "中文",
-      "ru": "Русский",
-      "hi": "हिन्दी",
-      "af": "Afrikaans",
-      "zu": "isiZulu",
-      "id": "Bahasa Indonesië"
+      "en": "Engels (Engels)",
+      "es": "Spaans (Español)",
+      "pt-BR": "Portugees (Brasilië) (Português (Brasilië))",
+      "fr": "Frans (Frans)",
+      "ar": "Arabies (العربية)",
+      "zh-CN": "Chinees (vereenvoudig) (中文)",
+      "ru": "Russies (Русский)",
+      "hi": "Hindi (हिन्दी)",
+      "af": "Afrikaans (Afrikaans)",
+      "zu": "Zoeloe (isiZulu)",
+      "id": "Indonesies (Bahasa Indonesië)"
     }
   },
   "accessibility": {

@@ -132,7 +132,7 @@
       "closeA11y": "Pemilih tanggal tutup",
       "previousMonthA11y": "Bulan sebelumnya",
       "nextMonthA11y": "Bulan depan",
-      "dayA11y": "{{day}} {{month}} {{year}}",
+      "dayA11y": "{{day}}/{{month}}/{{year}}",
       "todayTag": "Hari ini",
       "unavailableTag": "tidak tersedia",
       "legendToday": "Hari ini",
@@ -171,7 +171,7 @@
           "subtitle": "siklus 30 hari"
         },
         "STANDARD_2_2_3": {
-          "name": "Pitman (2-2-3)",
+          "name": "Pola Pitman (2-2-3)",
           "subtitle": "siklus 7 hari"
         },
         "CONTINENTAL": {
@@ -255,8 +255,8 @@
       "customFIFO": "{{workBlockDays}}/{{restBlockDays}} FIFO Khusus",
       "customRotationTwoShift": "{{daysOn}}-{{nightsOn}}-{{daysOff}} Rotasi Kustom",
       "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} Rotasi Kustom",
-      "dayAbbrev": "D",
-      "nightAbbrev": "N"
+      "dayAbbrev": "Si",
+      "nightAbbrev": "Ma"
     }
   }
 }

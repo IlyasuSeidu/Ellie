@@ -76,7 +76,7 @@
       "dayLabel": "Usuku {{day}}{{todayText}}{{shiftText}}",
       "todaySuffix": ", Namuhla",
       "blockSuffix": ", ibhulokhi ye-{{blockName}}",
-      "shiftSuffix": ", {{shiftName}}",
+      "shiftSuffix": " • {{shiftName}}",
       "workBlockName": "umsebenzi",
       "homeBlockName": "ekhaya",
       "shiftNames": {

@@ -132,7 +132,7 @@
       "closeA11y": "Fermer le sélecteur de date",
       "previousMonthA11y": "Mois précédent",
       "nextMonthA11y": "Mois prochain",
-      "dayA11y": "{{day}} {{month}} {{year}}",
+      "dayA11y": "{{day}}/{{month}}/{{year}}",
       "todayTag": "aujourd'hui",
       "unavailableTag": "indisponible",
       "legendToday": "Aujourd'hui",
@@ -171,15 +171,15 @@
           "subtitle": "cycle de 30 jours"
         },
         "STANDARD_2_2_3": {
-          "name": "Pitman (2-2-3)",
+          "name": "Rotation Pitman (2-2-3)",
           "subtitle": "cycle de 7 jours"
         },
         "CONTINENTAL": {
-          "name": "Continental",
+          "name": "Rotation Continental",
           "subtitle": "cycle de 10 jours"
         },
         "PITMAN": {
-          "name": "Pitman",
+          "name": "Rotation Pitman",
           "subtitle": "cycle de 7 jours"
         },
         "CUSTOM": {
@@ -187,15 +187,15 @@
           "subtitle": "Construisez le vôtre"
         },
         "FIFO_7_7": {
-          "name": "7/7 FIFO",
+          "name": "Rotation FIFO 7/7",
           "subtitle": "cycle de 14 jours"
         },
         "FIFO_8_6": {
-          "name": "8/6 FIFO",
+          "name": "Rotation FIFO 8/6",
           "subtitle": "cycle de 14 jours"
         },
         "FIFO_14_14": {
-          "name": "14/14 FIFO",
+          "name": "Rotation FIFO 14/14",
           "subtitle": "cycle de 28 jours"
         },
         "FIFO_14_7": {
@@ -207,7 +207,7 @@
           "subtitle": "cycle de 28 jours"
         },
         "FIFO_28_14": {
-          "name": "28/14 FIFO",
+          "name": "Rotation FIFO 28/14",
           "subtitle": "cycle de 42 jours"
         },
         "FIFO_CUSTOM": {
@@ -256,7 +256,7 @@
       "customRotationTwoShift": "Rotation personnalisée {{daysOn}}-{{nightsOn}}-{{daysOff}}",
       "customRotationThreeShift": "Rotation personnalisée {{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}}",
       "dayAbbrev": "J",
-      "nightAbbrev": "N"
+      "nightAbbrev": "Nu"
     }
   }
 }

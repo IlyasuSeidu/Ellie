@@ -88,17 +88,17 @@
     "restartRequiredTitle": "Diperlukan Mulai Ulang",
     "restartRequiredMessage": "Silakan mulai ulang Ellie untuk menerapkan perubahan arah bahasa.",
     "names": {
-      "en": "Bahasa inggris",
-      "es": "Spanyol",
-      "pt-BR": "Portugis (Brasil)",
-      "fr": "Perancis",
-      "ar": "العربية",
-      "zh-CN": "tidak",
-      "ru": "Русский",
-      "hi": "हिन्दी",
-      "af": "Afrikanas",
-      "zu": "isiZulu",
-      "id": "Bahasa Indonesia"
+      "en": "Bahasa inggris (Bahasa inggris)",
+      "es": "Spanyol (Spanyol)",
+      "pt-BR": "Portugis (Brasil) (Portugis (Brasil))",
+      "fr": "Perancis (Perancis)",
+      "ar": "Arab (العربية)",
+      "zh-CN": "Cina (Sederhana) (tidak)",
+      "ru": "Rusia (Русский)",
+      "hi": "Hindi (हिन्दी)",
+      "af": "Afrikanas (Afrikanas)",
+      "zu": "Zulu (isiZulu)",
+      "id": "Indonesia (Bahasa Indonesia)"
     }
   },
   "accessibility": {

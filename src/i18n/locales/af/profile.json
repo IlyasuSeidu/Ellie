@@ -132,7 +132,7 @@
       "closeA11y": "Maak datumkieser toe",
       "previousMonthA11y": "Vorige maand",
       "nextMonthA11y": "Volgende maand",
-      "dayA11y": "{{day}} {{month}} {{year}}",
+      "dayA11y": "{{day}}/{{month}}/{{year}}",
       "todayTag": "vandag",
       "unavailableTag": "nie beskikbaar nie",
       "legendToday": "Vandag",
@@ -171,7 +171,7 @@
           "subtitle": "30 dae siklus"
         },
         "STANDARD_2_2_3": {
-          "name": "Pitman (2-2-3)",
+          "name": "Pitman-patroon (2-2-3)",
           "subtitle": "7-dag siklus"
         },
         "CONTINENTAL": {
@@ -179,7 +179,7 @@
           "subtitle": "10 dae siklus"
         },
         "PITMAN": {
-          "name": "Pitman",
+          "name": "Pitman-patroon",
           "subtitle": "7-dag siklus"
         },
         "CUSTOM": {
@@ -255,8 +255,8 @@
       "customFIFO": "{{workBlockDays}}/{{restBlockDays}} Pasgemaakte EIEU",
       "customRotationTwoShift": "{{daysOn}}-{{nightsOn}}-{{daysOff}} Pasgemaakte rotasie",
       "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} Pasgemaakte rotasie",
-      "dayAbbrev": "D",
-      "nightAbbrev": "N"
+      "dayAbbrev": "DG",
+      "nightAbbrev": "NG"
     }
   }
 }

@@ -132,7 +132,7 @@
       "closeA11y": "Закрыть выбор даты",
       "previousMonthA11y": "Предыдущий месяц",
       "nextMonthA11y": "В следующем месяце",
-      "dayA11y": "__ТК0__ __ТК1__ __ТК2__",
+      "dayA11y": "{{day}}/{{month}}/{{year}}",
       "todayTag": "сегодня",
       "unavailableTag": "недоступен",
       "legendToday": "Сегодня",

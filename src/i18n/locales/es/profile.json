@@ -132,7 +132,7 @@
       "closeA11y": "Cerrar selector de fecha",
       "previousMonthA11y": "Mes anterior",
       "nextMonthA11y": "Mes próximo",
-      "dayA11y": "{{day}} {{month}} {{year}}",
+      "dayA11y": "{{day}}/{{month}}/{{year}}",
       "todayTag": "hoy",
       "unavailableTag": "indisponible",
       "legendToday": "Hoy",
@@ -171,11 +171,11 @@
           "subtitle": "ciclo de 30 días"
         },
         "STANDARD_2_2_3": {
-          "name": "Pitman (2-2-3)",
+          "name": "Patrón Pitman (2-2-3)",
           "subtitle": "ciclo de 7 días"
         },
         "CONTINENTAL": {
-          "name": "Continental",
+          "name": "Patrón Continental",
           "subtitle": "ciclo de 10 días"
         },
         "PITMAN": {
@@ -187,15 +187,15 @@
           "subtitle": "Construye el tuyo propio"
         },
         "FIFO_7_7": {
-          "name": "7/7 FIFO",
+          "name": "Patrón FIFO 7/7",
           "subtitle": "ciclo de 14 días"
         },
         "FIFO_8_6": {
-          "name": "8/6 FIFO",
+          "name": "Patrón FIFO 8/6",
           "subtitle": "ciclo de 14 días"
         },
         "FIFO_14_14": {
-          "name": "14/14 FIFO",
+          "name": "Patrón FIFO 14/14",
           "subtitle": "ciclo de 28 días"
         },
         "FIFO_14_7": {
@@ -207,7 +207,7 @@
           "subtitle": "ciclo de 28 días"
         },
         "FIFO_28_14": {
-          "name": "28/14 FIFO",
+          "name": "Patrón FIFO 28/14",
           "subtitle": "ciclo de 42 días"
         },
         "FIFO_CUSTOM": {
@@ -255,7 +255,7 @@
       "customFIFO": "FIFO personalizado {{workBlockDays}}/{{restBlockDays}}",
       "customRotationTwoShift": "Rotación personalizada {{daysOn}}-{{nightsOn}}-{{daysOff}}",
       "customRotationThreeShift": "Rotación personalizada {{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}}",
-      "dayAbbrev": "D",
+      "dayAbbrev": "Di",
       "nightAbbrev": "norte"
     }
   }

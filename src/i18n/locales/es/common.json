@@ -50,7 +50,7 @@
       "actionSessionRestoreFailed": "No se puede restaurar su sesión. Por favor inicia sesión nuevamente."
     },
     "titles": {
-      "error": "Error",
+      "error": "Error de la app",
       "unexpected": "Error inesperado"
     },
     "settings": {
@@ -88,17 +88,17 @@
     "restartRequiredTitle": "Reinicio requerido",
     "restartRequiredMessage": "Reinicia Ellie para aplicar los cambios de dirección del idioma.",
     "names": {
-      "en": "Inglés",
-      "es": "Español",
-      "pt-BR": "Português (Brasil)",
-      "fr": "francés",
-      "ar": "العربية",
-      "zh-CN": "中文",
-      "ru": "ruso",
-      "hi": "हिन्दी",
-      "af": "africaans",
-      "zu": "isiZulu",
-      "id": "Bahasa Indonesia"
+      "en": "Inglés (Inglés)",
+      "es": "Español (Español)",
+      "pt-BR": "Portugués (Brasil) (Português (Brasil))",
+      "fr": "Francés (francés)",
+      "ar": "árabe (العربية)",
+      "zh-CN": "Chino (simplificado) (中文)",
+      "ru": "ruso (ruso)",
+      "hi": "hindi (हिन्दी)",
+      "af": "africaans (africaans)",
+      "zu": "zulú (isiZulu)",
+      "id": "indonesio (Bahasa Indonesia)"
     }
   },
   "accessibility": {

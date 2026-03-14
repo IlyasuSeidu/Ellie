@@ -132,7 +132,7 @@
       "closeA11y": "إغلاق منتقي التاريخ",
       "previousMonthA11y": "الشهر السابق",
       "nextMonthA11y": "الشهر المقبل",
-      "dayA11y": "{{day}} {{month}} {{year}}",
+      "dayA11y": "{{day}}/{{month}}/{{year}}",
       "todayTag": "اليوم",
       "unavailableTag": "غير متاح",
       "legendToday": "اليوم",

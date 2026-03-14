@@ -933,7 +933,7 @@
     "accessibility": {
       "checked": "已选中",
       "unchecked": "未选中",
-      "label": "{{title}}，{{status}}"
+      "label": "{{title}} • {{status}}"
     }
   }
 }

@@ -175,7 +175,7 @@
         "description": "Votre site a un autre schéma ? Construisez votre rotation."
       },
       "fifo-8-6": {
-        "name": "FIFO 8/6",
+        "name": "Rotation FIFO 8/6",
         "schedule": "8 jours travail • 6 jours maison",
         "description": "8 jours consécutifs sur site, puis 6 jours à la maison."
       },
@@ -190,17 +190,17 @@
         "description": "Deux semaines sur site et deux semaines à la maison."
       },
       "fifo-14-7": {
-        "name": "FIFO 14/7 (2:1)",
+        "name": "Rotation FIFO 14/7 (2:1)",
         "schedule": "2 semaines travail • 1 semaine maison",
         "description": "Deux semaines sur site et une semaine à la maison."
       },
       "fifo-21-7": {
-        "name": "FIFO 21/7 (3:1)",
+        "name": "Rotation FIFO 21/7 (3:1)",
         "schedule": "3 semaines travail • 1 semaine maison",
         "description": "Trois semaines sur site et une semaine à la maison."
       },
       "fifo-28-14": {
-        "name": "FIFO 28/14 (2:1)",
+        "name": "Rotation FIFO 28/14 (2:1)",
         "schedule": "4 semaines travail • 2 semaines maison",
         "description": "Quatre semaines sur site et deux semaines à la maison."
       },
@@ -920,7 +920,7 @@
     "title": "Sélectionnez l'heure",
     "labels": {
       "hour": "Heure",
-      "minute": "Minute",
+      "minute": "Minute (min)",
       "period": "Période"
     }
   },
@@ -993,7 +993,7 @@
     "accessibility": {
       "checked": "sélectionné",
       "unchecked": "non sélectionné",
-      "label": "{{title}}, {{status}}"
+      "label": "{{title}} • {{status}}"
     }
   }
 }

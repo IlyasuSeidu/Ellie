@@ -88,17 +88,17 @@
     "restartRequiredTitle": "Ukuqala kabusha Kudingeka",
     "restartRequiredMessage": "Sicela uqale kabusha u-Ellie ukuze usebenzise izinguquko zesiqondisindlela solimi.",
     "names": {
-      "en": "IsiNgisi",
-      "es": "Isi-Español",
-      "pt-BR": "Isi-Portuguese (Brasil)",
-      "fr": "isi-Français",
-      "ar": "العربية",
-      "zh-CN": "中文",
-      "ru": "Русский",
-      "hi": "हिन्दी",
-      "af": "IsiBhunu",
-      "zu": "isiZulu",
-      "id": "I-Bahasa Indonesia"
+      "en": "IsiNgisi (IsiNgisi)",
+      "es": "ISpanishi (Isi-Español)",
+      "pt-BR": "Isi-Portuguese (Brazil) (Isi-Portuguese (Brasil))",
+      "fr": "IsiFulentshi (isi-Français)",
+      "ar": "Isi-Arabhu (العربية)",
+      "zh-CN": "IsiShayina (Esenziwe Lula) (中文)",
+      "ru": "IsiRashiya (Русский)",
+      "hi": "IsiHindi (हिन्दी)",
+      "af": "IsiBhunu (IsiBhunu)",
+      "zu": "Zulu (isiZulu)",
+      "id": "Isi-Indonesian (I-Bahasa Indonesia)"
     }
   },
   "accessibility": {
@@ -178,7 +178,7 @@
         "annual": "Ngonyaka",
         "monthly": "Nyanga zonke",
         "annualSuffix": "/unyaka",
-        "monthlySuffix": "/mo",
+        "monthlySuffix": "/inyanga",
         "save": "Londoloza u-40%"
       },
       "cta": "Qala Isivivinyo Samahhala Sezinsuku Eziyisi-7",

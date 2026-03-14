@@ -132,7 +132,7 @@
       "closeA11y": "Vala isikhethi sosuku",
       "previousMonthA11y": "Inyanga edlule",
       "nextMonthA11y": "Inyanga ezayo",
-      "dayA11y": "{{day}} {{month}} {{year}}",
+      "dayA11y": "{{day}}/{{month}}/{{year}}",
       "todayTag": "namuhla",
       "unavailableTag": "akutholakali",
       "legendToday": "Namuhla",
@@ -255,8 +255,8 @@
       "customFIFO": "{{workBlockDays}}/{{restBlockDays}} I-FIFO Yangokwezifiso",
       "customRotationTwoShift": "{{daysOn}}-{{nightsOn}}-{{daysOff}} Ukuzungezisa Ngokwezifiso",
       "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} Ukuzungezisa Ngokwezifiso",
-      "dayAbbrev": "D",
-      "nightAbbrev": "N"
+      "dayAbbrev": "EM",
+      "nightAbbrev": "EB"
     }
   }
 }
