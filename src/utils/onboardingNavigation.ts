@@ -25,7 +25,7 @@ const NAVIGATION_FLOW: Record<
   keyof OnboardingStackParamList,
   (data?: OnboardingData) => keyof OnboardingStackParamList | null
 > = {
-  Welcome: () => 'Introduction',
+  Welcome: () => 'ShiftSystem',
   Introduction: () => 'ShiftSystem',
   ShiftSystem: (data) => {
     // 3-shift systems only support rotating rosters — skip RosterType selection
@@ -60,7 +60,8 @@ const NAVIGATION_FLOW: Record<
   FIFOCustomPattern: () => 'FIFOPhaseSelector', // NEW: FIFO custom → FIFO phase
   PhaseSelector: () => 'StartDate', // Rotating phase → start date
   FIFOPhaseSelector: () => 'StartDate', // NEW: FIFO phase → start date
-  StartDate: () => 'ShiftTimeInput',
+  StartDate: () => 'AhaMoment',
+  AhaMoment: () => 'ShiftTimeInput',
   ShiftTimeInput: () => 'Completion',
   Completion: () => null, // Final screen
 };

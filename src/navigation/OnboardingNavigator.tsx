@@ -40,6 +40,7 @@ import { PremiumFIFOCustomPatternScreen } from '@/screens/onboarding/premium/Pre
 import { PremiumPhaseSelectorScreen } from '@/screens/onboarding/premium/PremiumPhaseSelectorScreen';
 import { PremiumFIFOPhaseSelectorScreen } from '@/screens/onboarding/premium/PremiumFIFOPhaseSelectorScreen';
 import { PremiumStartDateScreen } from '@/screens/onboarding/premium/PremiumStartDateScreen';
+import { PremiumAhaMomentScreen } from '@/screens/onboarding/premium/PremiumAhaMomentScreen';
 import { PremiumShiftTimeInputScreen } from '@/screens/onboarding/premium/PremiumShiftTimeInputScreen';
 import { PremiumCompletionScreen } from '@/screens/onboarding/premium/PremiumCompletionScreen';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
@@ -121,6 +122,8 @@ export type OnboardingStackParamList = {
         returnToMainOnSelect?: boolean;
       }
     | undefined;
+  /** Step 7: Show year preview and paywall gateway */
+  AhaMoment: undefined;
   /** Step 7: Configure shift times (adjusted for roster type) */
   ShiftTimeInput:
     | {
@@ -182,6 +185,9 @@ export const OnboardingNavigator: React.FC = () => {
 
       {/* Step 6: Start Date - Select calendar start date */}
       <Stack.Screen name="StartDate" component={PremiumStartDateScreen} />
+
+      {/* Step 7: Aha Moment - Full-year preview and value reveal */}
+      <Stack.Screen name="AhaMoment" component={PremiumAhaMomentScreen} />
 
       {/* Step 7: Shift Time Input - Configure shift times (adjusted for roster type) */}
       <Stack.Screen name="ShiftTimeInput" component={PremiumShiftTimeInputScreen} />

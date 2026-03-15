@@ -342,19 +342,8 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
         })
       );
 
-    // Step 2: Profile data (required)
-    if (!data.name || data.name.trim().length === 0) {
-      missingFields.push(localizedField('name', 'Name'));
-    }
-    if (!data.occupation || data.occupation.trim().length === 0) {
-      missingFields.push(localizedField('occupation', 'Occupation'));
-    }
-    if (!data.company || data.company.trim().length === 0) {
-      missingFields.push(localizedField('company', 'Company'));
-    }
-    if (!data.country || data.country.trim().length === 0) {
-      missingFields.push(localizedField('country', 'Country'));
-    }
+    // Profile fields are optional in the compressed onboarding flow.
+    // Users can complete them later from Profile/Introduction.
 
     // Step 3: Shift system (required)
     if (!data.shiftSystem) {

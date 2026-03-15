@@ -323,7 +323,7 @@ describe('OnboardingContext', () => {
       expect(result.current.data.occupation).toBeUndefined();
     });
 
-    it('validateData reports missing required fields for blank values', () => {
+    it('validateData reports missing required roster fields for blank values', () => {
       const { result } = renderHook(() => useOnboarding(), { wrapper });
 
       act(() => {
@@ -343,10 +343,6 @@ describe('OnboardingContext', () => {
       expect(validation.isValid).toBe(false);
       expect(validation.missingFields).toEqual(
         expect.arrayContaining([
-          'Name',
-          'Occupation',
-          'Company',
-          'Country',
           'Shift System',
           'Shift Pattern',
           'Phase Offset',

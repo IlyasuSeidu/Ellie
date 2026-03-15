@@ -51,6 +51,7 @@ import type { RootStackParamList } from '@/navigation/AppNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
+import { Analytics } from '@/utils/analytics';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 type PhaseRouteProp = RouteProp<OnboardingStackParamList, 'PhaseSelector'>;
@@ -794,6 +795,10 @@ const ProgressDots: React.FC<ProgressDotsProps> = ({ total, current }) => {
 
 // Main Screen Component
 export const PremiumPhaseSelectorScreen: React.FC = () => {
+  useEffect(() => {
+    Analytics.onboardingStepViewed('phase_selector', 5);
+  }, []);
+
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<PhaseRouteProp>();

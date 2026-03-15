@@ -172,19 +172,47 @@
         "fullYear": "一目了然地了解您的全年情况",
         "offline": "地下工作，无需信号",
         "instantAnswers": "有关休假和模式的即时答案",
-        "aiPowered": "由人工智能提供支持并不断改进"
+        "aiPowered": "由人工智能提供支持并不断改进",
+        "leavePlanning": "Plan holidays without calling HR"
       },
       "plans": {
         "annual": "年度的",
         "monthly": "每月",
         "annualSuffix": "/年",
         "monthlySuffix": "/月",
-        "save": "节省 40%"
+        "save": "节省 40%",
+        "bestValue": "BEST VALUE",
+        "perMonth": "/month"
       },
       "cta": "开始 7 天免费试用",
       "noCard": "无需信用卡 · 随时取消",
       "restorePurchases": "恢复购买",
-      "privacyPolicy": "隐私政策"
+      "privacyPolicy": "隐私政策",
+      "socialProof": "4.8 · Trusted by 50,000+ shift workers",
+      "testimonials": [
+        {
+          "quote": "Finally know when I'm working Christmas. Changed my life.",
+          "author": "Sarah K., Nurse — 12h rotating shifts"
+        },
+        {
+          "quote": "Showed my wife my whole year roster in under a minute.",
+          "author": "Dave L., Firefighter — FIFO roster"
+        },
+        {
+          "quote": "Booked flights 3 months out without calling HR once.",
+          "author": "Jason M., Mine worker — 7/7 FIFO"
+        }
+      ],
+      "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
+      "timerLabel": "Introductory offer ends in",
+      "trust": {
+        "freeTrial": "7 days free",
+        "cancel": "Cancel anytime",
+        "noCharge": "No charge today"
+      },
+      "valueFrame": "Less than a coffee per week to know your entire year.",
+      "security": "Secure payment via {{platform}} · Processed by {{platform}}, not Ellie",
+      "termsOfService": "Terms"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro 主动订阅",

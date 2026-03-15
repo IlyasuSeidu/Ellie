@@ -35,6 +35,10 @@ jest.mock('@/contexts/OnboardingContext', () => ({
 
 jest.mock('@react-navigation/native', () => ({
   useIsFocused: () => true,
+  useNavigation: () => ({
+    navigate: jest.fn(),
+    getParent: () => ({ navigate: jest.fn() }),
+  }),
 }));
 
 jest.mock('@/services/AsyncStorageService', () => ({

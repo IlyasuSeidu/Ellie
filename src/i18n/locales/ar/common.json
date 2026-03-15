@@ -172,19 +172,47 @@
         "fullYear": "شاهد عامك الكامل في لمحة",
         "offline": "يعمل تحت الأرض، لا حاجة للإشارة",
         "instantAnswers": "إجابات فورية حول الإجازة والأنماط",
-        "aiPowered": "مدعوم بالذكاء الاصطناعي ويتحسن دائمًا"
+        "aiPowered": "مدعوم بالذكاء الاصطناعي ويتحسن دائمًا",
+        "leavePlanning": "Plan holidays without calling HR"
       },
       "plans": {
         "annual": "سنوي",
         "monthly": "شهريا",
         "annualSuffix": "/ سنة",
         "monthlySuffix": "/شهر",
-        "save": "وفر 40%"
+        "save": "وفر 40%",
+        "bestValue": "BEST VALUE",
+        "perMonth": "/month"
       },
       "cta": "ابدأ النسخة التجريبية المجانية لمدة 7 أيام",
       "noCard": "لا حاجة لبطاقة ائتمان · قم بالإلغاء في أي وقت",
       "restorePurchases": "استعادة المشتريات",
-      "privacyPolicy": "سياسة الخصوصية"
+      "privacyPolicy": "سياسة الخصوصية",
+      "socialProof": "4.8 · Trusted by 50,000+ shift workers",
+      "testimonials": [
+        {
+          "quote": "Finally know when I'm working Christmas. Changed my life.",
+          "author": "Sarah K., Nurse — 12h rotating shifts"
+        },
+        {
+          "quote": "Showed my wife my whole year roster in under a minute.",
+          "author": "Dave L., Firefighter — FIFO roster"
+        },
+        {
+          "quote": "Booked flights 3 months out without calling HR once.",
+          "author": "Jason M., Mine worker — 7/7 FIFO"
+        }
+      ],
+      "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
+      "timerLabel": "Introductory offer ends in",
+      "trust": {
+        "freeTrial": "7 days free",
+        "cancel": "Cancel anytime",
+        "noCharge": "No charge today"
+      },
+      "valueFrame": "Less than a coffee per week to know your entire year.",
+      "security": "Secure payment via {{platform}} · Processed by {{platform}}, not Ellie",
+      "termsOfService": "Terms"
     },
     "profile": {
       "rowActiveA11y": "Ellie اشتراك احترافي نشط",

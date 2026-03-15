@@ -4,9 +4,11 @@
  * Welcome/splash screen (Step 1 of 10) using stone and gold theme
  */
 
-import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, Platform, Image } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, StyleSheet, Platform, Image, Text } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Animated, {
+  FadeIn,
   useAnimatedStyle,
   useSharedValue,
   withDelay,
@@ -21,7 +23,7 @@ import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { PremiumButton } from '@/components/onboarding/premium';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
-import { goToNextScreen } from '@/utils/onboardingNavigation';
+import { Analytics } from '@/utils/analytics';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList, 'Welcome'>;
 
@@ -37,7 +39,6 @@ const ANIMATION_TIMINGS = {
   NAME_SLIDE: 300,
   TAGLINE_FADE: 200,
   BUTTON_SLIDE: 200,
-  AUTO_ADVANCE: 3000,
 };
 
 export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
@@ -46,7 +47,6 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
 }) => {
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
-  const autoAdvanceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Animation values
   const logoOpacity = useSharedValue(0);
@@ -58,6 +58,18 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
   const buttonOpacity = useSharedValue(0);
 
   useEffect(() => {
+    Analytics.onboardingStepViewed('welcome', 1);
+    void AsyncStorage.getItem('app:install_time')
+      .then((existingInstallTime) => {
+        if (!existingInstallTime) {
+          return AsyncStorage.setItem('app:install_time', Date.now().toString());
+        }
+        return null;
+      })
+      .catch(() => {
+        // Non-blocking analytics bootstrap.
+      });
+
     // Orchestrated entrance animation
     // 1. Logo fades in (0-500ms)
     logoOpacity.value = withTiming(1, {
@@ -82,21 +94,6 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
       1000,
       withTiming(1, { duration: ANIMATION_TIMINGS.BUTTON_SLIDE })
     );
-
-    // Auto-advance after 3 seconds
-    autoAdvanceTimerRef.current = setTimeout(() => {
-      if (onContinue) {
-        onContinue();
-      } else {
-        goToNextScreen(navigation, 'Welcome');
-      }
-    }, ANIMATION_TIMINGS.AUTO_ADVANCE);
-
-    return () => {
-      if (autoAdvanceTimerRef.current) {
-        clearTimeout(autoAdvanceTimerRef.current);
-      }
-    };
   }, [
     logoOpacity,
     logoScale,
@@ -110,13 +107,10 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
   ]);
 
   const handleContinue = () => {
-    if (autoAdvanceTimerRef.current) {
-      clearTimeout(autoAdvanceTimerRef.current);
-    }
     if (onContinue) {
       onContinue();
     } else {
-      navigation.navigate('Introduction');
+      navigation.navigate('ShiftSystem');
     }
   };
 
@@ -175,6 +169,11 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
         <Animated.Text style={[styles.tagline, taglineAnimatedStyle]}>
           {t('welcome.tagline')}
         </Animated.Text>
+
+        <Animated.View style={styles.socialProofRow} entering={FadeIn.delay(1200).duration(400)}>
+          <Text style={styles.socialProofStars}>★★★★★</Text>
+          <Text style={styles.socialProofText}>50,000+ shift workers</Text>
+        </Animated.View>
 
         {/* Get Started button */}
         <Animated.View style={[styles.buttonContainer, buttonAnimatedStyle]}>
@@ -289,6 +288,22 @@ const styles = StyleSheet.create({
         fontFamily: 'sans-serif-medium',
       },
     }),
+  },
+  socialProofRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    marginBottom: theme.spacing.lg,
+  },
+  socialProofStars: {
+    color: theme.colors.sacredGold,
+    fontSize: 12,
+    letterSpacing: 2,
+  },
+  socialProofText: {
+    color: theme.colors.dust,
+    fontSize: 13,
   },
   buttonContainer: {
     width: '100%',

@@ -52,6 +52,7 @@ import type { RootStackParamList } from '@/navigation/AppNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
+import { Analytics } from '@/utils/analytics';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -1000,6 +1001,10 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
   onContinue,
   testID = 'premium-shift-pattern-screen',
 }) => {
+  useEffect(() => {
+    Analytics.onboardingStepViewed('shift_pattern', 4);
+  }, []);
+
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProp<OnboardingStackParamList, 'ShiftPattern'>>();

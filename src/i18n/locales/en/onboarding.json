@@ -1,7 +1,7 @@
 {
   "welcome": {
-    "tagline": "Your Mining Shift Companion",
-    "getStarted": "Get Started"
+    "tagline": "Know every shift for the entire year. In 60 seconds.",
+    "getStarted": "Set Up My Roster →"
   },
   "common": {
     "swipeHint": "Swipe right to select, left to see next, or up for more info",
@@ -35,6 +35,19 @@
   "premiumCalendar": {
     "previousMonthA11y": "Previous month",
     "nextMonthA11y": "Next month"
+  },
+  "ahaMoment": {
+    "headline": "Your year, mapped.",
+    "subheadline": "Every shift. Every day off.",
+    "heyEllieTitle": "Ask Ellie about your roster",
+    "ctaPrimary": "Unlock Full Access — Free 7-Day Trial",
+    "ctaSecondary": "Continue with Limited Access →",
+    "stats": {
+      "workDays": "Work days",
+      "nightShifts": "Night shifts",
+      "daysOff": "Days off",
+      "nextShift": "Next shift"
+    }
   },
   "intro": {
     "welcome": "Welcome to Ellie! I'm here to help you set up your shift calendar. Let's start by getting to know you a bit better.",
@@ -300,6 +313,21 @@
     "getStartedA11yHint": "Tap to start using the app",
     "getStartedA11yLabel": "Get started with Ellie",
     "loading": "Building your roster calendar...",
+    "nextShiftCountdown": "Next shift in {{days}} day(s) ({{date}})",
+    "checkInTitle": "When do you check your schedule?",
+    "checkInNotificationTitle": "Your schedule today",
+    "checkInNotificationBody": "Tap to see your upcoming shifts.",
+    "checkIn": {
+      "morning": "Morning",
+      "midday": "Midday",
+      "evening": "Evening"
+    },
+    "notificationPriming": {
+      "title": "Never miss a shift",
+      "body": "Ellie will remind you 24 hours and 4 hours before every shift.\nYou control what and when.",
+      "allow": "Turn On Reminders",
+      "decline": "Not now"
+    },
     "retryA11yHint": "Tap to try saving your data again",
     "retryA11yLabel": "Retry saving your data",
     "subtitle": "Welcome to Ellie",

@@ -47,6 +47,7 @@ import { RosterType } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
+import { Analytics } from '@/utils/analytics';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -674,6 +675,10 @@ const ProgressDots: React.FC<ProgressDotsProps> = ({
 
 // Main Screen Component
 export const PremiumRosterTypeScreen: React.FC = () => {
+  useEffect(() => {
+    Analytics.onboardingStepViewed('roster_type', 3);
+  }, []);
+
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const { data, updateData } = useOnboarding();

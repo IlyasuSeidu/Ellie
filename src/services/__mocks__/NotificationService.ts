@@ -14,17 +14,12 @@ import {
  * Mock Notification Scheduler
  */
 export class MockNotificationScheduler implements INotificationScheduler {
-  private scheduledNotifications: Map<
-    string,
-    { content: NotificationContent; triggerDate: Date }
-  > = new Map();
+  private scheduledNotifications: Map<string, { content: NotificationContent; triggerDate: Date }> =
+    new Map();
   private permissionStatus: PermissionStatus = 'undetermined';
   private nextId = 1;
 
-  async scheduleNotification(
-    content: NotificationContent,
-    triggerDate: Date
-  ): Promise<string> {
+  async scheduleNotification(content: NotificationContent, triggerDate: Date): Promise<string> {
     await Promise.resolve();
     const id = `notification-${this.nextId++}`;
     this.scheduledNotifications.set(id, { content, triggerDate });
@@ -101,14 +96,12 @@ export class MockNotificationService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async scheduleShiftReminder(
     userId: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     shift: any,
     hoursBefore: number
   ): Promise<string> {
     const shiftDate = new Date(shift.date);
-    const triggerDate = new Date(
-      shiftDate.getTime() - hoursBefore * 60 * 60 * 1000
-    );
+    const triggerDate = new Date(shiftDate.getTime() - hoursBefore * 60 * 60 * 1000);
 
     const content = {
       title: shift.isNightShift ? 'Night Shift Reminder' : 'Day Shift Reminder',
@@ -123,7 +116,10 @@ export class MockNotificationService {
     const notification: ScheduledNotification = {
       id,
       userId,
-      type: hoursBefore === 24 ? NotificationType.SHIFT_REMINDER_24H : NotificationType.SHIFT_REMINDER_4H,
+      type:
+        hoursBefore === 24
+          ? NotificationType.SHIFT_REMINDER_24H
+          : NotificationType.SHIFT_REMINDER_4H,
       scheduledFor: triggerDate.toISOString(),
       content,
       status: 'pending',
@@ -137,14 +133,12 @@ export class MockNotificationService {
 
   async scheduleHolidayAlert(
     userId: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     holiday: any,
     daysBefore: number
   ): Promise<string> {
     const holidayDate = new Date(holiday.date);
-    const triggerDate = new Date(
-      holidayDate.getTime() - daysBefore * 24 * 60 * 60 * 1000
-    );
+    const triggerDate = new Date(holidayDate.getTime() - daysBefore * 24 * 60 * 60 * 1000);
 
     const content = {
       title: 'Upcoming Holiday',
@@ -203,6 +197,34 @@ export class MockNotificationService {
     return this.scheduler.getPermissionStatus();
   }
 
+  async scheduleDaily(hour: number, title: string, body: string): Promise<void> {
+    const triggerDate = new Date();
+    triggerDate.setHours(hour, 0, 0, 0);
+    if (triggerDate <= new Date()) {
+      triggerDate.setDate(triggerDate.getDate() + 1);
+    }
+    await this.scheduler.scheduleNotification({ title, body }, triggerDate);
+  }
+
+  async scheduleOnboardingEngagementSequence(userName: string): Promise<void> {
+    const now = new Date();
+    const firstName = userName.trim() || 'there';
+    const checkpoints = [0, 1, 2, 6, 13, 29];
+
+    for (const daysToAdd of checkpoints) {
+      const triggerDate = new Date(now);
+      triggerDate.setDate(triggerDate.getDate() + daysToAdd);
+      triggerDate.setHours(daysToAdd === 0 ? 18 : 9, 0, 0, 0);
+      await this.scheduler.scheduleNotification(
+        {
+          title: daysToAdd === 1 ? `Morning, ${firstName}! 👋` : 'Roster reminder',
+          body: 'Check your upcoming shifts in Ellie.',
+        },
+        triggerDate
+      );
+    }
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   buildShiftReminderContent(shift: any, hoursBefore: number): NotificationContent {
     return {
@@ -237,10 +259,7 @@ export class MockNotificationService {
     await Promise.resolve();
     return Array.from(this.notifications.values())
       .filter((n) => n.userId === userId)
-      .sort(
-        (a, b) =>
-          new Date(b.scheduledFor).getTime() - new Date(a.scheduledFor).getTime()
-      )
+      .sort((a, b) => new Date(b.scheduledFor).getTime() - new Date(a.scheduledFor).getTime())
       .slice(0, limit);
   }
 

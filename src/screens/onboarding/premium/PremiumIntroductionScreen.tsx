@@ -607,7 +607,7 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
     <View style={styles.container} testID={testID}>
       {/* Progress Header */}
       <ProgressHeader
-        currentStep={ONBOARDING_STEPS.INTRODUCTION}
+        currentStep={ONBOARDING_STEPS.SHIFT_SYSTEM}
         totalSteps={TOTAL_ONBOARDING_STEPS}
       />
 

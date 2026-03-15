@@ -45,6 +45,7 @@ import { ShiftSystem } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
+import { Analytics } from '@/utils/analytics';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -664,6 +665,10 @@ export interface PremiumShiftSystemScreenProps {
 export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> = ({
   testID = 'premium-shift-system-screen',
 }) => {
+  useEffect(() => {
+    Analytics.onboardingStepViewed('shift_system', 2);
+  }, []);
+
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const { data, updateData } = useOnboarding();

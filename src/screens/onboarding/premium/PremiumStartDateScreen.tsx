@@ -55,6 +55,7 @@ import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboarding
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 import { calculateShiftDay, getDefaultFIFOConfig } from '@/utils/shiftUtils';
+import { Analytics } from '@/utils/analytics';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -2290,6 +2291,10 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   onContinue,
   testID = 'premium-start-date-screen',
 }) => {
+  useEffect(() => {
+    Analytics.onboardingStepViewed('start_date', 6);
+  }, []);
+
   const { t, i18n } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProp<OnboardingStackParamList, 'StartDate'>>();

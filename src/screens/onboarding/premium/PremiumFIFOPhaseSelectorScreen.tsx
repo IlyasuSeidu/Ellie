@@ -60,6 +60,7 @@ import { ShiftPattern, type FIFOConfig } from '@/types';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 import { getDefaultFIFOConfig } from '@/utils/shiftUtils';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
+import { Analytics } from '@/utils/analytics';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 type FIFOPhaseRouteProp = RouteProp<OnboardingStackParamList, 'FIFOPhaseSelector'>;
@@ -907,6 +908,10 @@ const normalizePositiveInt = (value: unknown, fallback: number): number => {
 };
 
 export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
+  useEffect(() => {
+    Analytics.onboardingStepViewed('fifo_phase_selector', 5);
+  }, []);
+
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<FIFOPhaseRouteProp>();

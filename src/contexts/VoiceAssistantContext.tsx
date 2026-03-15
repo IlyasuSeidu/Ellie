@@ -81,6 +81,8 @@ interface VoiceAssistantContextValue {
   cancel: () => Promise<void>;
   /** Open the assistant modal */
   openModal: () => void;
+  /** Open modal and immediately process a text query */
+  openModalWithQuery: (query: string) => void;
   /** Close the assistant modal */
   closeModal: () => void;
   /** Clear conversation history */
@@ -255,6 +257,7 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
   const isAppActiveRef = useRef(true);
   const startListeningFromWakeWordRef = useRef<() => Promise<void>>(async () => {});
   const noticeDismissTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const modalQueryTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // ─── Native Speech Recognition Event Bridge ───────────────────────
   // These hooks listen for native events from expo-speech-recognition
@@ -309,7 +312,7 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
   // ─── Build User Context ───────────────────────────────────────────
 
   const buildUserContext = useCallback((): VoiceAssistantUserContext | null => {
-    if (!onboardingData.name || !onboardingData.patternType || !onboardingData.startDate) {
+    if (!onboardingData.patternType || !onboardingData.startDate) {
       return null;
     }
 
@@ -756,7 +759,25 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
     setIsModalVisible(true);
   }, []);
 
+  const openModalWithQuery = useCallback((query: string) => {
+    setIsModalVisible(true);
+
+    if (modalQueryTimeoutRef.current) {
+      clearTimeout(modalQueryTimeoutRef.current);
+      modalQueryTimeoutRef.current = null;
+    }
+
+    // Allow the modal transition to finish before rendering chat activity.
+    modalQueryTimeoutRef.current = setTimeout(() => {
+      void voiceAssistantService.processTextQuery(query);
+    }, 350);
+  }, []);
+
   const closeModal = useCallback(async () => {
+    if (modalQueryTimeoutRef.current) {
+      clearTimeout(modalQueryTimeoutRef.current);
+      modalQueryTimeoutRef.current = null;
+    }
     if (state !== 'idle') {
       await voiceAssistantService.cancel();
     }
@@ -1035,6 +1056,14 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
     state,
   ]);
 
+  useEffect(() => {
+    return () => {
+      if (modalQueryTimeoutRef.current) {
+        clearTimeout(modalQueryTimeoutRef.current);
+      }
+    };
+  }, []);
+
   return (
     <VoiceAssistantContext.Provider
       value={{
@@ -1054,6 +1083,7 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
         stopListening,
         cancel,
         openModal,
+        openModalWithQuery,
         closeModal,
         clearHistory,
         requestPermissions,

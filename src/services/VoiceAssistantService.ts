@@ -157,6 +157,18 @@ class VoiceAssistantService {
     }
   }
 
+  /**
+   * Process a text query directly, bypassing STT.
+   * Used by onboarding suggestion chips and non-voice entry points.
+   */
+  async processTextQuery(query: string): Promise<void> {
+    if (this.currentState === 'processing' || this.currentState === 'speaking') {
+      return;
+    }
+
+    await this.processTranscript(query, false);
+  }
+
   private isNoSpeechError(error: Error): boolean {
     const errorWithCode = error as Error & { code?: string };
     const code = errorWithCode.code?.toLowerCase().trim();
@@ -302,9 +314,16 @@ class VoiceAssistantService {
       return;
     }
 
-    if (!transcript.trim()) {
-      this.resetEphemeralState();
-      this.setState('idle');
+    await this.processTranscript(transcript, true);
+  }
+
+  private async processTranscript(transcript: string, fromListening: boolean): Promise<void> {
+    const trimmedTranscript = transcript.trim();
+    if (!trimmedTranscript) {
+      if (fromListening) {
+        this.resetEphemeralState();
+        this.setState('idle');
+      }
       return;
     }
 
@@ -312,7 +331,7 @@ class VoiceAssistantService {
     const userMessage: VoiceMessage = {
       id: generateMessageId(),
       role: 'user',
-      text: transcript.trim(),
+      text: trimmedTranscript,
       timestamp: Date.now(),
     };
 
@@ -348,7 +367,7 @@ class VoiceAssistantService {
     const offlineResult = tryOfflineFallback(
       query,
       this.userContext.shiftCycle,
-      this.userContext.name
+      this.userContext.name ?? ''
     );
 
     if (offlineResult.handled && offlineResult.text) {

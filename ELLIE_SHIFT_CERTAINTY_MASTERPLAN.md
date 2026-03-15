@@ -34,8 +34,8 @@ import analytics from '@react-native-firebase/analytics';
 // Typed event names — prevents typos and keeps the event schema consistent
 export type OnboardingStep =
   | 'welcome'
-  | 'introduction'
-  | 'quick_select'
+  | 'shift_system'
+  | 'roster_type'
   | 'shift_pattern'
   | 'custom_pattern'
   | 'fifo_custom_pattern'
@@ -67,6 +67,9 @@ export const Analytics = {
   // The moment that makes or breaks retention
   ahaMomentReached: (secondsSinceInstall: number) =>
     analytics().logEvent('aha_moment_reached', { seconds_since_install: secondsSinceInstall }),
+
+  // Hey Ellie demo on AhaMoment screen — tracks which suggestion drives most taps
+  ahaMomentVoiceTried: (query: string) => analytics().logEvent('aha_moment_voice_tried', { query }),
 
   // Paywall funnel
   paywallViewed: (source: 'post_aha' | 'profile' | 'feature_gate') =>
@@ -100,142 +103,68 @@ export const Analytics = {
 **Add `Analytics.onboardingStepViewed()` to every onboarding screen** in its mount `useEffect`:
 
 - `PremiumWelcomeScreen.tsx` → `Analytics.onboardingStepViewed('welcome', 1)`
-- `PremiumIntroductionScreen.tsx` → `Analytics.onboardingStepViewed('introduction', 2)`
-- New `PremiumQuickSelectScreen.tsx` → `Analytics.onboardingStepViewed('quick_select', 2)`
-- `PremiumShiftPatternScreen.tsx` → `Analytics.onboardingStepViewed('shift_pattern', 3)`
-- `PremiumStartDateScreen.tsx` → `Analytics.onboardingStepViewed('start_date', 4)`
-- New `PremiumAhaMomentScreen.tsx` → `Analytics.onboardingStepViewed('aha_moment', 5); Analytics.ahaMomentReached(secondsSinceInstall)`
-- `PremiumShiftTimeInputScreen.tsx` → `Analytics.onboardingStepViewed('shift_time_input', 6)`
-- `PremiumCompletionScreen.tsx` → `Analytics.onboardingStepViewed('completion', 7)`
+- `PremiumShiftSystemScreen.tsx` → `Analytics.onboardingStepViewed('shift_system', 2)`
+- `PremiumRosterTypeScreen.tsx` → `Analytics.onboardingStepViewed('roster_type', 3)`
+- `PremiumShiftPatternScreen.tsx` → `Analytics.onboardingStepViewed('shift_pattern', 4)`
+- `PremiumPhaseSelectorScreen.tsx` → `Analytics.onboardingStepViewed('phase_selector', 5)`
+- `PremiumFIFOPhaseSelectorScreen.tsx` → `Analytics.onboardingStepViewed('fifo_phase_selector', 5)`
+- `PremiumStartDateScreen.tsx` → `Analytics.onboardingStepViewed('start_date', 6)`
+- New `PremiumAhaMomentScreen.tsx` → `Analytics.onboardingStepViewed('aha_moment', 7); Analytics.ahaMomentReached(secondsSinceInstall)`
+- `PremiumShiftTimeInputScreen.tsx` → `Analytics.onboardingStepViewed('shift_time_input', 8)`
+- `PremiumCompletionScreen.tsx` → `Analytics.onboardingStepViewed('completion', 8)`
 - `PaywallScreen.tsx` → `Analytics.paywallViewed('post_aha')`
 
 ---
 
-## CHANGE 2: COMPRESS THE ONBOARDING FLOW
+## CHANGE 2: COMPRESS THE ONBOARDING FLOW — WITHOUT TOUCHING SWIPES
 
 **Current:** 9 visible steps, up to 12 screens depending on conditional routing (confirmed from `onboardingProgress.ts` — `TOTAL_ONBOARDING_STEPS = 9`)
 
-**Target:** 5 visible steps, 7 screens maximum (including conditional pattern screens)
+**Target:** 7 visible steps (6 before paywall + AhaMoment as the gateway)
 
-**Core insight:** The Introduction screen (Step 2) collects name, occupation, company, and country before the user has seen ANY value. The `CompletionScreen` already handles missing values gracefully (lines 699–714 in `PremiumCompletionScreen.tsx` use `data.name ? {...} : undefined`, so name/company are already optional in the data model). Move all personal info to a post-onboarding "Complete your profile" nudge in `ProfileScreen`.
+**Hard constraint — ALL swipe screens are UNTOUCHED.** Confirmed swipe screens in the codebase:
 
-### 2A. Make `PremiumIntroductionScreen.tsx` Fully Skippable
+- `PremiumShiftSystemScreen.tsx` — Tinder-style swipe
+- `PremiumRosterTypeScreen.tsx` — Tinder-style swipe (skipped automatically for 3-shift, per `onboardingNavigation.ts` line 31–35)
+- `PremiumShiftPatternScreen.tsx` — Gesture-based card selection
+- `PremiumPhaseSelectorScreen.tsx` — Tinder-style swipe, 2-stage (PHASE → DAY_WITHIN_PHASE)
+- `PremiumFIFOPhaseSelectorScreen.tsx` — Tinder-style swipe, 3-stage (work pattern → block → day within block)
 
-**File:** `src/screens/onboarding/premium/PremiumIntroductionScreen.tsx`
+Zero changes to their UX, animation, gesture logic, or component structure.
 
-Add a "Skip for now →" `TouchableOpacity` below the chat UI that:
+### What Can Be Cut Without Touching Any Swipe
 
-1. Calls `goToNextScreen(navigation, 'Introduction')` immediately
-2. Fires `Analytics.onboardingStepCompleted('introduction', 0)`
+**Introduction screen** (`PremiumIntroductionScreen.tsx`) — the only mandatory non-swipe screen before the first swipe. It collects name, occupation, company, and country via a chat interface. None of these fields affect `buildShiftCycle()` or any calendar calculation. The `PremiumCompletionScreen.tsx` already handles their absence gracefully (lines 699–714 use `data.name ? {...} : undefined`, confirming these are optional in the data model).
 
-The chat still plays for users who want it. Users in a hurry can skip. Keep the Ellie personality — just don't gate progress behind it.
+**ShiftTimeInput screen** (`PremiumShiftTimeInputScreen.tsx`) — needed for exact hour tracking and earnings, but NOT for the core calendar. Moving it after the paywall removes it from the path to the aha moment.
 
-**Also:** Make all form fields in the chat optional. If user skips without entering name, `data.name` remains undefined — the completion screen already handles this.
+### 2A. Remove `PremiumIntroductionScreen.tsx` From the Onboarding Flow
 
-### 2B. Combine ShiftSystem + RosterType Into One Screen
+**File:** `src/utils/onboardingNavigation.ts`
 
-**Current situation:**
-
-- `PremiumShiftSystemScreen.tsx` (Step 3): Tinder-swipe cards for "2-shift" vs "3-shift"
-- `PremiumRosterTypeScreen.tsx` (Step 3.5): Tinder-swipe cards for "Rotating" vs "FIFO"
-- These are two separate screens requiring two swipes. For 2-shift users this is 2 full screens. For 3-shift users `onboardingNavigation.ts` line 31-35 skips RosterType automatically.
-
-**Create:** `src/screens/onboarding/premium/PremiumQuickSelectScreen.tsx`
-
-This screen replaces both ShiftSystem and RosterType with a single grid of 3 cards:
-
-```
-┌─────────────────────────────────────────┐
-│  What type of roster do you work?       │
-│                                         │
-│  ┌──────────────┐  ┌──────────────┐     │
-│  │  🔄 2-Shift  │  │  ✈️ 2-Shift  │     │
-│  │   Rotating   │  │    FIFO      │     │
-│  │  12h shifts  │  │  12h shifts  │     │
-│  └──────────────┘  └──────────────┘     │
-│                                         │
-│  ┌──────────────────────────────────┐   │
-│  │    ⚡ 3-Shift Rotating            │   │
-│  │    8h shifts (days/arvo/nights)  │   │
-│  └──────────────────────────────────┘   │
-│                                         │
-│  [        Continue →        ]           │
-└─────────────────────────────────────────┘
-```
-
-One tap sets BOTH `shiftSystem` AND `rosterType` in `OnboardingContext`. No swipes, no two-screen sequence.
-
-**Implementation:**
-
-- Use `useOnboarding()` hook (same as all other screens)
-- On card tap: `updateData({ shiftSystem: '2-shift', rosterType: 'rotating' })` etc.
-- Cards use existing `PremiumCard` component from `src/components/onboarding/premium/PremiumCard.tsx`
-- Gold border + gold fill on selected card (same pattern as `PremiumRosterTypeScreen`)
-- Continue button uses `PremiumButton` (same as all other screens)
-- On continue: `goToNextScreen(navigation, 'QuickSelect', data)` → navigates to ShiftPattern
-
-**Update `src/utils/onboardingNavigation.ts`:**
-Add `QuickSelect` to `NAVIGATION_FLOW`:
+Change the `Welcome` navigation target to skip Introduction entirely:
 
 ```typescript
-QuickSelect: (data) => {
-  // Same routing as current RosterType → ShiftPattern
-  return 'ShiftPattern';
-},
-```
-
-**Update `src/navigation/OnboardingNavigator.tsx`:**
-Add `QuickSelect: undefined` to `OnboardingStackParamList` and add the screen to the Stack:
-
-```tsx
-<Stack.Screen name="QuickSelect" component={PremiumQuickSelectScreen} />
-```
-
-**Update `src/utils/onboardingNavigation.ts` line 28-31:**
-Change Welcome → Introduction → **QuickSelect** instead of Introduction → ShiftSystem:
-
-```typescript
+// Old:
 Welcome: () => 'Introduction',
-Introduction: () => 'QuickSelect',   // ← changed from 'ShiftSystem'
-QuickSelect: () => 'ShiftPattern',
-// Keep ShiftSystem and RosterType routes for settings/edit flows
-ShiftSystem: (data) => { ... },      // unchanged — still used in settings
-RosterType: () => 'ShiftPattern',    // unchanged — still used in settings
+Introduction: () => 'ShiftSystem',
+
+// New:
+Welcome: () => 'ShiftSystem',      // ← skip Introduction in the onboarding flow
+Introduction: () => 'ShiftSystem', // ← kept, accessible from Profile later
 ```
 
-**Update `src/constants/onboardingProgress.ts`:**
+**Keep the screen registered** in `OnboardingNavigator.tsx` — it stays in the navigator stack, just not visited during the initial flow. It is later accessible from `ProfileScreen` as a "Tell us about yourself" prompt.
 
-```typescript
-export const ONBOARDING_STEPS = {
-  WELCOME: 1,
-  INTRODUCTION: 2,
-  QUICK_SELECT: 2, // same visual step as introduction (combined)
-  SHIFT_PATTERN: 3,
-  CUSTOM_PATTERN: 3, // conditional — same visual step
-  FIFO_CUSTOM_PATTERN: 3,
-  PHASE_SELECTOR: 4,
-  FIFO_PHASE_SELECTOR: 4,
-  START_DATE: 5,
-  AHA_MOMENT: 6, // new — appears before paywall
-  SHIFT_TIME_INPUT: 7, // moved to after paywall
-  COMPLETION: 7, // same visual step as shift time (post-paywall setup)
-} as const;
+**Add a card in the post-onboarding checklist** (`OnboardingChecklist.tsx`, created in Change 7) as: "Complete your profile →" that navigates to Introduction and back to Profile. This ensures the data is collected without blocking the calendar.
 
-export const TOTAL_ONBOARDING_STEPS = 7; // ← updated from 9
-```
+**Why this is safe:** The `validateData()` method in `OnboardingContext.tsx` only validates roster config fields (shiftSystem, rosterType, patternType, startDate) — never name/company/country. Removal has zero effect on the completion flow.
 
-### 2C. Move ShiftTimeInput to After Paywall
+**Saved:** 1 full screen, ~1–3 minutes of chat interaction removed from the critical path
 
-**Current position:** Step 8 of 9 (before completion)
-**New position:** After paywall conversion, shown as "Fine-tune your schedule" step
+### 2B. Move `PremiumShiftTimeInputScreen.tsx` to After Paywall
 
-**Why:** Shift times are needed for hour tracking and earnings calculations, but NOT for the core aha moment (which is seeing the year-view calendar). By moving ShiftTimeInput after the paywall:
-
-- Users reach the aha moment faster (one less step)
-- Users who subscribe have higher intent and will complete time setup
-- Users who don't subscribe still have a calendar (just without exact times)
-
-**Change in `src/utils/onboardingNavigation.ts`:**
+**File:** `src/utils/onboardingNavigation.ts`
 
 ```typescript
 // Old:
@@ -243,13 +172,66 @@ StartDate: () => 'ShiftTimeInput',
 ShiftTimeInput: () => 'Completion',
 
 // New:
-StartDate: () => 'AhaMoment',       // ← goes to aha moment, not time input
-AhaMoment: () => 'ShiftTimeInput',  // ← after paywall (PaywallScreen calls this)
-ShiftTimeInput: () => 'Completion',
+StartDate: () => 'AhaMoment',        // ← aha moment directly after start date
+AhaMoment: () => 'ShiftTimeInput',   // ← time input runs after paywall resolves
+ShiftTimeInput: () => 'Completion',  // ← unchanged
 ```
 
-**Change in `src/navigation/OnboardingNavigator.tsx`:**
-Add `AhaMoment: undefined` to `OnboardingStackParamList` and the Stack.
+**File:** `src/navigation/OnboardingNavigator.tsx`
+
+Add `AhaMoment: undefined` to `OnboardingStackParamList` and register:
+
+```tsx
+<Stack.Screen name="AhaMoment" component={PremiumAhaMomentScreen} />
+```
+
+**Saved:** 1 screen from the pre-paywall critical path
+
+### 2C. Update Step Numbers
+
+**File:** `src/constants/onboardingProgress.ts`
+
+```typescript
+export const ONBOARDING_STEPS = {
+  WELCOME: 1,
+  // Introduction removed from flow — no step number in initial path
+  SHIFT_SYSTEM: 2, // ← renumbered (was 3)
+  ROSTER_TYPE: 3, // ← renumbered (was 4, skipped for 3-shift)
+  SHIFT_PATTERN: 4, // ← renumbered (was 5)
+  CUSTOM_PATTERN: 4, // conditional — same visual step as SHIFT_PATTERN
+  FIFO_CUSTOM_PATTERN: 4,
+  PHASE_SELECTOR: 5, // ← renumbered (was 6) — SWIPE UNTOUCHED
+  FIFO_PHASE_SELECTOR: 5,
+  START_DATE: 6, // ← renumbered (was 7)
+  AHA_MOMENT: 7, // ← new — paywall gateway
+  SHIFT_TIME_INPUT: 8, // ← moved to post-paywall
+  COMPLETION: 8, // same visual step as shift time
+} as const;
+
+export const TOTAL_ONBOARDING_STEPS = 7; // ← updated from 9
+```
+
+### Resulting Flow — All Screens Accounted For
+
+```
+Step 1: PremiumWelcomeScreen           — "Set Up My Roster →" (no auto-advance)
+Step 2: PremiumShiftSystemScreen       — ⟵ SWIPE: 2-shift vs 3-shift [UNTOUCHED]
+Step 3: PremiumRosterTypeScreen        — ⟵ SWIPE: Rotating vs FIFO [UNTOUCHED, auto-skipped for 3-shift]
+Step 4: PremiumShiftPatternScreen      — Card select: which pattern [UNTOUCHED]
+  [4b]: PremiumCustomPatternScreen     — Conditional: custom rotating [UNTOUCHED]
+  [4b]: PremiumFIFOCustomPatternScreen — Conditional: custom FIFO [UNTOUCHED]
+Step 5: PremiumPhaseSelectorScreen     — ⟵ SWIPE 2-stage: day in cycle [UNTOUCHED]
+    OR: PremiumFIFOPhaseSelectorScreen — ⟵ SWIPE 3-stage: FIFO position [UNTOUCHED]
+Step 6: PremiumStartDateScreen         — Calendar: when pattern started [UNTOUCHED]
+Step 7: PremiumAhaMomentScreen         — ★ FULL YEAR PREVIEW → Paywall ★ [NEW]
+   []:  PaywallScreen                  — Opens as modal [REDESIGNED — see Change 4]
+   []:  PremiumShiftTimeInputScreen    — Time config, post-paywall [UNTOUCHED, moved]
+   []:  PremiumCompletionScreen        — Celebration + hooks [MODIFIED — see Change 6]
+```
+
+**Before:** 9 mandatory steps to reach Completion, ShiftTimeInput at step 8
+**After:** 6 mandatory steps to reach AhaMoment/paywall, ~4 min from install to aha
+**Swipe screens:** 0 changes — ShiftSystem, RosterType, PhaseSelector, FIFOPhaseSelector all identical
 
 ---
 
@@ -257,13 +239,13 @@ Add `AhaMoment: undefined` to `OnboardingStackParamList` and the Stack.
 
 **New file:** `src/screens/onboarding/premium/PremiumAhaMomentScreen.tsx`
 
-This is the most important new screen. It runs the shift calendar computation using existing utils and shows the user their ACTUAL personalized year — before they've paid anything.
+This is the most important new screen. It runs the shift calendar computation using existing utils and shows the user their ACTUAL personalized year — before they've paid anything. It also lets them try the "Hey Ellie" voice assistant live, experiencing the full product value before the paywall.
 
 ### Layout:
 
 ```
 ┌─────────────────────────────────────────┐
-│  ← [Progress: Step 5 of 7]             │
+│  ← [Progress: Step 7 of 7]             │
 │                                         │
 │  "Your year, mapped."                   │
 │  Every shift. Every day off.            │
@@ -279,8 +261,20 @@ This is the most important new screen. It runs the shift calendar computation us
 │  📅 187 work days  🌙 45 night shifts   │
 │  🏖️ 178 days off   📆 Next: Tue, 6am  │
 │                                         │
+│  ─────────────────────────────────────  │
+│                                         │
+│  ✨ Ask Ellie about your roster         │
+│                                         │
+│  ["Am I working Christmas?"]            │
+│  ["When's my next day off?"]            │
+│  ["How many nights this month?"]        │
+│                                         │
+│         ◉  Hey Ellie  (gold mic btn)   │
+│                                         │
+│  ─────────────────────────────────────  │
+│                                         │
 │  [   Unlock Full Access — Free Trial  ] │
-│  [   Continue with Limited View       ] │  ← small link
+│  [   Continue with Limited View       ] │
 └─────────────────────────────────────────┘
 ```
 
@@ -304,14 +298,242 @@ Animate the calendar using Reanimated `FadeInDown` staggered per month row (dela
 - Total days off
 - Next shift date (iterate shiftDays array to find first day/night/morning/afternoon after today)
 
+---
+
+### Hey Ellie Section
+
+This section is placed between the stats row and the primary CTA. It lets the user experience the voice assistant live — before seeing the paywall. This is the second most powerful conversion lever on this screen (after the calendar itself).
+
+#### Layout:
+
+```tsx
+{
+  /* Divider */
+}
+<View style={styles.sectionDivider} />;
+
+{
+  /* Hey Ellie Demo Section */
+}
+<View style={styles.heyEllieSection}>
+  <Text style={styles.heyEllieTitle}>Ask Ellie about your roster</Text>
+
+  {/* Tappable suggestion chips */}
+  <View style={styles.suggestionChips}>
+    {SUGGESTION_QUERIES.map((query, i) => (
+      <TouchableOpacity
+        key={i}
+        style={styles.suggestionChip}
+        onPress={() => handleSuggestionTap(query)}
+      >
+        <Ionicons name="mic-outline" size={13} color={theme.colors.sacredGold} />
+        <Text style={styles.suggestionChipText}>{query}</Text>
+      </TouchableOpacity>
+    ))}
+  </View>
+
+  {/* Gold mic button */}
+  <TouchableOpacity style={styles.heyEllieButton} onPress={handleHeyElliePress}>
+    <View style={styles.heyEllieGlow} />
+    <Ionicons name="mic" size={24} color={theme.colors.sacredGold} />
+    <Text style={styles.heyEllieLabel}>Hey Ellie</Text>
+  </TouchableOpacity>
+</View>;
+
+{
+  /* Divider */
+}
+<View style={styles.sectionDivider} />;
+```
+
+#### Suggestion queries:
+
+```typescript
+const SUGGESTION_QUERIES = [
+  'Am I working Christmas?',
+  "When's my next day off?",
+  'How many night shifts this month?',
+];
+```
+
+These are personalised to the type of shift worker — future improvement: show different suggestions based on `rosterType` (FIFO workers see "When do I fly home?", rotating workers see the above).
+
+#### Handler — tapping a suggestion chip:
+
+```typescript
+const { openModalWithQuery } = useVoiceAssistant();
+
+const handleSuggestionTap = (query: string) => {
+  Analytics.ahaMomentVoiceTried(query);
+  openModalWithQuery(query);
+};
+
+const handleHeyElliePress = () => {
+  Analytics.ahaMomentVoiceTried('manual_mic');
+  openModal();
+};
+```
+
+When `openModalWithQuery(query)` is called:
+
+1. The `VoiceAssistantModal` opens (already globally rendered)
+2. The query is sent directly to Ellie Brain — **bypassing STT** — shown as a user bubble
+3. The response appears within 1–2 seconds as Ellie's answer
+4. TTS speaks the answer aloud
+
+This creates a magical "tap to get answer" experience. The user never has to speak — they tap a chip and the answer comes back as if they asked.
+
+#### `openModalWithQuery` — new method on VoiceAssistantContext:
+
+**File:** `src/contexts/VoiceAssistantContext.tsx`
+
+Add to the context interface:
+
+```typescript
+openModalWithQuery: (query: string) => void;
+```
+
+Implementation (add alongside `openModal`):
+
+```typescript
+const openModalWithQuery = useCallback(
+  (query: string) => {
+    setIsModalVisible(true);
+    // Brief delay for modal slide-up animation to complete before processing
+    setTimeout(() => {
+      void voiceAssistantService.processTextQuery(query);
+    }, 350);
+  },
+  [voiceAssistantService]
+);
+```
+
+**File:** `src/services/VoiceAssistantService.ts`
+
+Add `processTextQuery` method (reuses the same `handleFinalTranscript` pipeline):
+
+```typescript
+async processTextQuery(query: string): Promise<void> {
+  if (this.state === 'processing' || this.state === 'speaking') return;
+  // Fires through the same pipeline as a voice query — adds user bubble,
+  // sends to EllieBrainService, plays TTS response
+  await this.handleFinalTranscript(query);
+}
+```
+
+`handleFinalTranscript` already exists and handles the full query → response → TTS pipeline. `processTextQuery` is a one-method shim that routes text into the same flow.
+
+#### `buildUserContext` — make `name` optional:
+
+**File:** `src/contexts/VoiceAssistantContext.tsx`
+
+The current guard rejects context building if `name` is not set. Since Introduction is removed from the initial flow, `name` will be null for new users.
+
+**Change the null guard** (find the `buildUserContext` useCallback):
+
+```typescript
+// Old:
+if (!onboardingData.name || !onboardingData.patternType || !onboardingData.startDate) {
+  return null;
+}
+
+// New:
+if (!onboardingData.patternType || !onboardingData.startDate) {
+  return null;
+}
+// name is optional — backend handles null name gracefully (uses "there" or omits greeting)
+```
+
+This is a one-line removal. The backend Claude system prompt already handles missing names (confirmed: the system prompt uses conditional language for greetings, and shift data queries don't require a name at all).
+
+#### Styles for Hey Ellie section:
+
+```typescript
+sectionDivider: {
+  height: 1,
+  backgroundColor: theme.colors.softStone,
+  opacity: 0.3,
+  marginVertical: theme.spacing.lg,
+  marginHorizontal: -theme.spacing.xl,
+},
+heyEllieSection: {
+  alignItems: 'center',
+  paddingHorizontal: theme.spacing.md,
+},
+heyEllieTitle: {
+  fontSize: 14,
+  color: theme.colors.dust,
+  fontWeight: theme.typography.fontWeights.semibold,
+  letterSpacing: 0.5,
+  marginBottom: theme.spacing.md,
+  textTransform: 'uppercase',
+},
+suggestionChips: {
+  gap: 8,
+  width: '100%',
+  marginBottom: theme.spacing.lg,
+},
+suggestionChip: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  gap: 8,
+  paddingVertical: 10,
+  paddingHorizontal: 14,
+  backgroundColor: 'rgba(212, 168, 106, 0.08)',  // gold tint
+  borderRadius: 20,
+  borderWidth: 1,
+  borderColor: 'rgba(212, 168, 106, 0.2)',
+},
+suggestionChipText: {
+  fontSize: 14,
+  color: theme.colors.paper,
+  flex: 1,
+},
+heyEllieButton: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  gap: 10,
+  paddingVertical: 14,
+  paddingHorizontal: 28,
+  borderRadius: 30,
+  borderWidth: 1.5,
+  borderColor: theme.colors.sacredGold,
+  backgroundColor: 'rgba(212, 168, 106, 0.1)',
+  position: 'relative',
+},
+heyEllieGlow: {
+  ...StyleSheet.absoluteFillObject,
+  borderRadius: 30,
+  backgroundColor: theme.colors.sacredGold,
+  opacity: 0.05,
+},
+heyEllieLabel: {
+  fontSize: 16,
+  fontWeight: theme.typography.fontWeights.semibold,
+  color: theme.colors.sacredGold,
+  letterSpacing: 0.5,
+},
+```
+
+#### Why Hey Ellie on the AhaMoment screen converts:
+
+The calendar shows the user their year. But Hey Ellie makes it **interactive**. When a shift worker taps "Am I working Christmas?" and Ellie responds "You're off on Christmas Day — it falls on your rest phase" — that is the moment the product becomes indispensable. They've just answered a question they've been wondering about for months, in 2 seconds, for free.
+
+After that experience, the paywall CTA "Unlock Full Access" is an easy yes.
+
+---
+
 **Primary CTA button:** `"Unlock Full Access — Free 7-Day Trial"` using `PremiumButton` variant `"primary"`.
 
 - `onPress`: opens `PaywallScreen` as a modal (same pattern used in `SubscriptionContext`)
-- After `PaywallScreen.onDismiss()`: if user is now `isPro`, navigate to `'ShiftTimeInput'`; if not, navigate to `'ShiftTimeInput'` anyway (they still get the app, just with limited access)
+- After `PaywallScreen.onDismiss()`: navigate to `'ShiftTimeInput'` regardless of subscription state (they still proceed through onboarding)
 
 **Secondary link:** `"Continue with Limited Access →"` as a plain `Text` `TouchableOpacity`. Navigates directly to `'ShiftTimeInput'` without showing paywall.
 
-**Analytics:** Fire `Analytics.ahaMomentReached(secondsSinceInstall)` on mount. Track the install timestamp in `AsyncStorage` key `'app:install_time'` set during `PremiumWelcomeScreen` first mount.
+**Analytics:**
+
+- Fire `Analytics.ahaMomentReached(secondsSinceInstall)` on mount. Track the install timestamp in `AsyncStorage` key `'app:install_time'` set during `PremiumWelcomeScreen` first mount.
+- Add new event to `src/utils/analytics.ts`: `ahaMomentVoiceTried: (query: string) => analytics().logEvent('aha_moment_voice_tried', { query })` — tracks which suggestion gets the most taps (informs which questions to show first).
 
 ---
 
@@ -1173,10 +1395,8 @@ Update `src/i18n/locales/en/onboarding.json` key `welcome.getStarted` to: `"Set 
 navigation.navigate('Introduction');
 
 // New:
-navigation.navigate('Introduction'); // unchanged — Introduction now has a skip button
+navigation.navigate('ShiftSystem'); // Introduction removed from initial flow
 ```
-
-No change needed here since Introduction now has a skip button.
 
 ---
 
@@ -1448,20 +1668,22 @@ if (data.name) {
 ### New flow (what the user actually experiences):
 
 ```
-Screen 1: PremiumWelcomeScreen         — "Set Up My Roster →" (no auto-advance)
-Screen 2: PremiumIntroductionScreen    — chat intro, "Skip for now →" always visible
-Screen 3: PremiumQuickSelectScreen     — 3-card grid: 2-shift Rotating / 2-shift FIFO / 3-shift Rotating
-Screen 4: PremiumShiftPatternScreen    — select pattern (unchanged)
-    [4b]: PremiumCustomPatternScreen   — conditional, if CUSTOM selected (unchanged)
-    [4b]: PremiumFIFOCustomPatternScreen — conditional, if FIFO_CUSTOM selected (unchanged)
-Screen 5: PremiumPhaseSelectorScreen   — which day in your cycle? (unchanged)
-    OR: PremiumFIFOPhaseSelectorScreen
-Screen 6: PremiumStartDateScreen       — calendar date picker (unchanged)
-Screen 7: PremiumAhaMomentScreen       — ★ FULL YEAR CALENDAR PREVIEW + PAYWALL CTA ★
-    [7]: PaywallScreen                 — opens as modal, redesigned
-Screen 8: PremiumShiftTimeInputScreen  — exact shift times (now post-paywall)
-Screen 9: PremiumCompletionScreen      — celebration + notification priming + commitment hook
+Screen 1: PremiumWelcomeScreen             — "Set Up My Roster →" (no auto-advance, social proof added)
+Screen 2: PremiumShiftSystemScreen         — ⟵ SWIPE: 2-shift vs 3-shift [UNTOUCHED]
+Screen 3: PremiumRosterTypeScreen          — ⟵ SWIPE: Rotating vs FIFO [UNTOUCHED, auto-skipped for 3-shift]
+Screen 4: PremiumShiftPatternScreen        — card select pattern [UNTOUCHED]
+  [4b]: PremiumCustomPatternScreen         — conditional [UNTOUCHED]
+  [4b]: PremiumFIFOCustomPatternScreen     — conditional [UNTOUCHED]
+Screen 5: PremiumPhaseSelectorScreen       — ⟵ SWIPE 2-stage: day in cycle [UNTOUCHED]
+       OR PremiumFIFOPhaseSelectorScreen   — ⟵ SWIPE 3-stage: FIFO position [UNTOUCHED]
+Screen 6: PremiumStartDateScreen           — calendar: when pattern started [UNTOUCHED]
+Screen 7: PremiumAhaMomentScreen           — ★ FULL YEAR CALENDAR PREVIEW + PAYWALL CTA ★ [NEW]
+   [7]: PaywallScreen                      — opens as modal [REDESIGNED]
+   [ ]: PremiumShiftTimeInputScreen        — exact shift times, post-paywall [UNTOUCHED, moved]
+   [ ]: PremiumCompletionScreen            — celebration + notification priming + commitment hooks [MODIFIED]
 ```
+
+**Introduction screen:** Removed from initial flow. Stays registered in the navigator. Accessible from Profile via "Complete your profile →" in the OnboardingChecklist post-onboarding.
 
 ### Progress bar: 7 visible steps (down from 9)
 
@@ -1474,30 +1696,31 @@ export const TOTAL_ONBOARDING_STEPS = 7;
 
 ## FILES TO MODIFY (With Exact Change Descriptions)
 
-| File                                                           | Exact Change                                                                                                                                                                                                                                                         |
-| -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/screens/onboarding/premium/PremiumWelcomeScreen.tsx`      | Delete lines 87–93 (setTimeout auto-advance). Add social proof `Animated.View` between tagline and button. Update i18n tagline/button copy.                                                                                                                          |
-| `src/screens/onboarding/premium/PremiumIntroductionScreen.tsx` | Add "Skip for now →" `TouchableOpacity` that calls `goToNextScreen(navigation, 'Introduction')`. Make all form fields optional (remove required validation). Add `Analytics.onboardingStepViewed('introduction', 2)`.                                                |
-| `src/screens/onboarding/premium/PremiumCompletionScreen.tsx`   | Add `showNotificationModal` state. Trigger `NotificationPrimingModal` 1.5s after `setIsSaved(true)`. Add next-shift countdown below summary rows. Add daily check-in time picker section above Get Started button. Call `scheduleOnboardingEngagementSequence`.      |
-| `src/screens/subscription/PaywallScreen.tsx`                   | Replace mic-circle hero with blurred calendar preview + social proof. Add testimonials `ScrollView`. Rewrite feature copy (update i18n keys). Change CTA text. Add countdown timer `useState`/`useEffect`. Add `Analytics` calls to purchase, cancel, dismiss paths. |
-| `src/screens/main/MainDashboardScreen.tsx`                     | Add `showChecklist` state from AsyncStorage. Render `<OnboardingChecklist>` below `CurrentShiftStatusCard`. Ensure `CurrentShiftStatusCard` shows "Add shift times →" CTA when times not set.                                                                        |
-| `src/navigation/OnboardingNavigator.tsx`                       | Add `QuickSelect: undefined` and `AhaMoment: undefined` to `OnboardingStackParamList`. Add `<Stack.Screen name="QuickSelect" component={PremiumQuickSelectScreen} />` and `<Stack.Screen name="AhaMoment" component={PremiumAhaMomentScreen} />`.                    |
-| `src/utils/onboardingNavigation.ts`                            | Change `Introduction` target from `'ShiftSystem'` to `'QuickSelect'`. Add `QuickSelect: () => 'ShiftPattern'`. Change `StartDate` target from `'ShiftTimeInput'` to `'AhaMoment'`. Add `AhaMoment: () => 'ShiftTimeInput'`.                                          |
-| `src/constants/onboardingProgress.ts`                          | Add `QUICK_SELECT: 2`, `AHA_MOMENT: 6`. Change `SHIFT_TIME_INPUT: 7`, `COMPLETION: 7`. Change `TOTAL_ONBOARDING_STEPS = 7`.                                                                                                                                          |
-| `src/services/NotificationService.ts`                          | Add `scheduleOnboardingEngagementSequence(userName: string)` method with the 6-notification sequence. Add `scheduleDaily(hour: number, title: string, body: string)` method for the daily check-in reminder.                                                         |
-| `src/i18n/locales/en/onboarding.json`                          | Update `welcome.tagline`, `welcome.getStarted`. Add keys for `quickSelect.*` screen. Add keys for `ahaMoment.*` screen.                                                                                                                                              |
-| `src/i18n/locales/en/common.json`                              | Update `subscription.paywall.features.*` (all 5 features). Update `subscription.paywall.cta`, `subscription.paywall.noCard`. Add `subscription.paywall.testimonials.*`.                                                                                              |
-| All 10 other locale files                                      | Update same keys (use existing fallback pattern already in codebase, e.g., `defaultValue: '...'` handles missing translations gracefully)                                                                                                                            |
+| File                                                         | Exact Change                                                                                                                                                                                                                                                         |
+| ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/screens/onboarding/premium/PremiumWelcomeScreen.tsx`    | Delete lines 87–93 (setTimeout auto-advance). Add social proof `Animated.View` between tagline and button. Update i18n tagline/button copy.                                                                                                                          |
+| `src/screens/onboarding/premium/PremiumCompletionScreen.tsx` | Add `showNotificationModal` state. Trigger `NotificationPrimingModal` 1.5s after `setIsSaved(true)`. Add next-shift countdown below summary rows. Add daily check-in time picker section above Get Started button. Call `scheduleOnboardingEngagementSequence`.      |
+| `src/screens/subscription/PaywallScreen.tsx`                 | Replace mic-circle hero with blurred calendar preview + social proof. Add testimonials `ScrollView`. Rewrite feature copy (update i18n keys). Change CTA text. Add countdown timer `useState`/`useEffect`. Add `Analytics` calls to purchase, cancel, dismiss paths. |
+| `src/contexts/VoiceAssistantContext.tsx`                     | Remove `name` from `buildUserContext` null guard (name now optional — Introduction removed from flow). Add `openModalWithQuery(query: string)` method to context interface and implementation.                                                                       |
+| `src/services/VoiceAssistantService.ts`                      | Add `processTextQuery(query: string): Promise<void>` method that routes a text string through the existing `handleFinalTranscript` pipeline, bypassing STT.                                                                                                          |
+| `src/screens/main/MainDashboardScreen.tsx`                   | Add `showChecklist` state from AsyncStorage. Render `<OnboardingChecklist>` below `CurrentShiftStatusCard`. Ensure `CurrentShiftStatusCard` shows "Add shift times →" CTA when times not set.                                                                        |
+| `src/navigation/OnboardingNavigator.tsx`                     | Add `AhaMoment: undefined` to `OnboardingStackParamList`. Add `<Stack.Screen name="AhaMoment" component={PremiumAhaMomentScreen} />`.                                                                                                                                |
+| `src/utils/onboardingNavigation.ts`                          | Change `Welcome` target from `'Introduction'` to `'ShiftSystem'`. Change `StartDate` target from `'ShiftTimeInput'` to `'AhaMoment'`. Add `AhaMoment: () => 'ShiftTimeInput'`.                                                                                       |
+| `src/constants/onboardingProgress.ts`                        | Renumber all steps (SHIFT_SYSTEM=2, ROSTER_TYPE=3, SHIFT_PATTERN=4, PHASE_SELECTOR=5, START_DATE=6, AHA_MOMENT=7). Change `TOTAL_ONBOARDING_STEPS = 7`.                                                                                                              |
+| `src/services/NotificationService.ts`                        | Add `scheduleOnboardingEngagementSequence(userName: string)` method with the 6-notification sequence. Add `scheduleDaily(hour: number, title: string, body: string)` method for the daily check-in reminder.                                                         |
+| `src/i18n/locales/en/onboarding.json`                        | Update `welcome.tagline`, `welcome.getStarted`. Add keys for `ahaMoment.*` screen.                                                                                                                                                                                   |
+| `src/i18n/locales/en/common.json`                            | Update `subscription.paywall.features.*` (all 5 features). Update `subscription.paywall.title`, `subscription.paywall.subtitle`, `subscription.paywall.cta`. Add `subscription.paywall.testimonials.*`, trust, valueFrame, security keys.                            |
+| All 10 other locale files                                    | Update same keys with `defaultValue` fallbacks — existing pattern in codebase handles this gracefully.                                                                                                                                                               |
 
 ## FILES TO CREATE
 
-| File                                                          | Purpose                                                  |
-| ------------------------------------------------------------- | -------------------------------------------------------- |
-| `src/utils/analytics.ts`                                      | Firebase Analytics typed event wrapper (full code above) |
-| `src/screens/onboarding/premium/PremiumQuickSelectScreen.tsx` | 3-card roster type + shift system combined selection     |
-| `src/screens/onboarding/premium/PremiumAhaMomentScreen.tsx`   | Full-year calendar preview + paywall gateway             |
-| `src/components/onboarding/NotificationPrimingModal.tsx`      | Soft-ask notification permission modal                   |
-| `src/components/dashboard/OnboardingChecklist.tsx`            | Post-onboarding task checklist widget                    |
+| File                                                        | Purpose                                                        |
+| ----------------------------------------------------------- | -------------------------------------------------------------- |
+| `src/utils/analytics.ts`                                    | Firebase Analytics typed event wrapper (full code in Change 1) |
+| `src/screens/onboarding/premium/PremiumAhaMomentScreen.tsx` | Full-year calendar preview + paywall gateway                   |
+| `src/components/paywall/MiniYearCalendar.tsx`               | Compact dot-grid year calendar for paywall background          |
+| `src/components/onboarding/NotificationPrimingModal.tsx`    | Soft-ask notification permission modal                         |
+| `src/components/dashboard/OnboardingChecklist.tsx`          | Post-onboarding task checklist widget                          |
 
 ---
 
@@ -1506,28 +1729,30 @@ export const TOTAL_ONBOARDING_STEPS = 7;
 ### Sprint 1 — Analytics Foundation (before anything else ships)
 
 1. Create `src/utils/analytics.ts`
-2. Add `Analytics.onboardingStepViewed()` + `Analytics.onboardingStepCompleted()` to all 12 existing onboarding screens
+2. Add `Analytics.onboardingStepViewed()` + `Analytics.onboardingStepCompleted()` to all onboarding screens (ShiftSystem, RosterType, ShiftPattern, PhaseSelector, FIFOPhaseSelector, StartDate, Completion)
 3. Add `Analytics.paywallViewed()`, `Analytics.trialStarted()`, `Analytics.purchaseCompleted()`, `Analytics.paywallDismissed()` to `PaywallScreen.tsx`
 4. Deploy to TestFlight/internal track
 5. Let it run for 1 week — identify the single biggest drop-off step in Firebase Analytics funnel
 
-### Sprint 2 — The Aha Moment + Paywall (highest-impact UX change)
+### Sprint 2 — Remove Introduction + The Aha Moment + Paywall (highest-impact changes)
 
-1. Create `PremiumAhaMomentScreen.tsx` with calendar preview + stats
-2. Update `onboardingNavigation.ts`: `StartDate` → `AhaMoment` → `ShiftTimeInput`
-3. Update `OnboardingNavigator.tsx`: add `AhaMoment` screen
-4. Update `onboardingProgress.ts`: step numbers
-5. Redesign `PaywallScreen.tsx`: testimonials, outcome-focused copy, timer, trial CTA
-6. Measure: compare paywall conversion before/after in RevenueCat dashboard
+1. Update `onboardingNavigation.ts`: `Welcome` → `ShiftSystem` (skip Introduction)
+2. Update `onboardingProgress.ts`: renumber steps, set `TOTAL_ONBOARDING_STEPS = 7`
+3. Patch `VoiceAssistantContext.tsx`: remove `name` from `buildUserContext` null guard
+4. Add `processTextQuery()` to `VoiceAssistantService.ts`
+5. Add `openModalWithQuery()` to `VoiceAssistantContext.tsx`
+6. Create `PremiumAhaMomentScreen.tsx` with year calendar + stats + Hey Ellie section
+7. Update `onboardingNavigation.ts`: `StartDate` → `AhaMoment` → `ShiftTimeInput`
+8. Update `OnboardingNavigator.tsx`: add `AhaMoment` screen
+9. Redesign `PaywallScreen.tsx` (all 13 sections from Change 4)
+10. Measure: compare paywall conversion before/after in RevenueCat dashboard
 
-### Sprint 3 — Compression + Welcome (remove friction)
+### Sprint 3 — Welcome Screen Upgrade
 
-1. Remove auto-advance timer from `PremiumWelcomeScreen.tsx`
-2. Add social proof to `PremiumWelcomeScreen.tsx`
-3. Add "Skip for now" to `PremiumIntroductionScreen.tsx`
-4. Create `PremiumQuickSelectScreen.tsx`
-5. Update navigation: `Introduction` → `QuickSelect` → `ShiftPattern`
-6. Measure: compare onboarding completion rate before/after
+1. Remove auto-advance timer from `PremiumWelcomeScreen.tsx` (delete lines 87–93)
+2. Add social proof `Animated.View` to `PremiumWelcomeScreen.tsx`
+3. Update i18n copy: `welcome.tagline` and `welcome.getStarted`
+4. Measure: compare onboarding start-to-step-2 completion rate before/after
 
 ### Sprint 4 — Habit Formation + Retention
 
@@ -1541,26 +1766,27 @@ export const TOTAL_ONBOARDING_STEPS = 7;
 
 1. Create `OnboardingChecklist.tsx`
 2. Add to `MainDashboardScreen.tsx`
-3. Upgrade `CurrentShiftStatusCard` to show "Add shift times →" CTA when times not set
-4. Measure: checklist item completion rates
+3. Add "Complete your profile →" item to checklist that navigates to Introduction screen
+4. Upgrade `CurrentShiftStatusCard` to show "Add shift times →" CTA when times not set
+5. Measure: checklist item completion rates
 
 ---
 
 ## HOW TO VERIFY EACH CHANGE
 
-| Change                 | How to Verify                                                                                                                                                                                                                                                                                |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Analytics              | Firebase Console → DebugView mode. Enable with `adb shell setprop debug.firebase.analytics.app au.com.ellie` (Android) or `Instruments` on iOS. Should see all events within seconds of triggering them.                                                                                     |
-| Aha Moment screen      | Fresh install → sign up → complete through StartDate. Should arrive on `PremiumAhaMomentScreen` with a populated calendar showing your actual shift pattern. Time from install to aha moment should be under 90 seconds.                                                                     |
-| Paywall redesign       | Tap "Unlock Full Access" on AhaMoment screen. Verify: (1) calendar preview visible blurred, (2) testimonials horizontally scrollable, (3) countdown timer counting down, (4) CTA says "Start Free 7-Day Trial", (5) RevenueCat sandbox purchase flow completes.                              |
-| Welcome screen         | Fresh install. Verify: (1) screen does NOT auto-advance after 3 seconds, (2) social proof text appears after animations, (3) tapping button navigates to Introduction.                                                                                                                       |
-| Skip button            | On Introduction screen: tap "Skip for now →". Should navigate directly to QuickSelect without entering any data. Verify `data.name` is undefined in OnboardingContext after skip.                                                                                                            |
-| QuickSelect screen     | 3 cards render. Tapping "2-Shift Rotating" sets `data.shiftSystem === '2-shift'` and `data.rosterType === 'rotating'`. Continue button navigates to ShiftPattern.                                                                                                                            |
-| Notification priming   | Complete full onboarding. After confetti animation, notification modal should appear. Tapping "Not now" should NOT trigger iOS system permission dialog. Tapping "Turn On Reminders" SHOULD trigger system dialog. Check AsyncStorage key `'notifications:soft_declined'` is set on decline. |
-| Next-shift countdown   | On CompletionScreen summary card, a countdown row should show "Next shift in X days (date)". Verify the date matches manual calculation from pattern + start date + phase offset.                                                                                                            |
-| Re-engagement sequence | After completing onboarding (with notification permission granted), check `expo-notifications` scheduled notifications list — should have 6 future-dated notifications.                                                                                                                      |
-| Onboarding checklist   | On MainDashboardScreen (first launch after onboarding), checklist widget should appear. Tapping "Do it" on "Add shift times" should navigate to ShiftTimeInput with `entryPoint: 'settings'`. Tapping "Dismiss" should hide the widget permanently (AsyncStorage flag).                      |
-| Progress bar           | After all changes, progress bar should show steps 1–7 (not 1–9). Verify `TOTAL_ONBOARDING_STEPS = 7` in `onboardingProgress.ts`.                                                                                                                                                             |
+| Change                 | How to Verify                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Analytics              | Firebase Console → DebugView mode. Enable with `adb shell setprop debug.firebase.analytics.app au.com.ellie` (Android) or Xcode scheme environment var (iOS). Should see all events within seconds of triggering them.                                                                                                                                                                                                                                                       |
+| Introduction removed   | Fresh install → sign up → tap "Set Up My Roster →". Should land directly on ShiftSystem swipe screen, NOT Introduction chat. Verify no regression in existing users via AppNavigator's backward-compat check.                                                                                                                                                                                                                                                                |
+| Aha Moment screen      | Complete through StartDate. Should arrive on `PremiumAhaMomentScreen` with a populated year calendar showing actual shift pattern in correct colors. Stats row should show accurate work day count. Time from install to this screen: under 4 minutes.                                                                                                                                                                                                                       |
+| Hey Ellie on AhaMoment | On `PremiumAhaMomentScreen`: (1) three suggestion chips visible below stats row, (2) gold "Hey Ellie" mic button visible, (3) tapping a chip calls `openModalWithQuery` — modal slides up and processes the query without STT, user sees their question as a bubble and gets a spoken answer within ~2 seconds, (4) `aha_moment_voice_tried` event fires in Firebase DebugView with the query text, (5) manual mic button opens modal normally for voice input.              |
+| Paywall redesign       | Tap "Unlock Full Access" on AhaMoment. Verify: (1) dismiss button NOT visible for first 4 seconds, (2) blurred calendar dots visible in top section, (3) social proof stars + count, (4) headline "Your year is ready.", (5) 3 testimonial cards scroll, (6) annual plan has "BEST VALUE" badge + per-month equivalent, (7) timer counting down, (8) CTA says "Start Free 7-Day Trial →" with pulse, (9) trust row shows 3 items, (10) footer has Restore · Privacy · Terms. |
+| Welcome screen         | Fresh install. Verify: (1) screen does NOT auto-advance after 3 seconds, (2) social proof appears after button animation, (3) tapping "Set Up My Roster →" goes directly to ShiftSystem (not Introduction).                                                                                                                                                                                                                                                                  |
+| Notification priming   | Complete full onboarding. After confetti animation (1.5s delay), notification modal appears. "Not now" → NO system dialog. "Turn On Reminders" → system dialog appears. Check AsyncStorage `'notifications:soft_declined'` = true after decline.                                                                                                                                                                                                                             |
+| Next-shift countdown   | On CompletionScreen summary card, a countdown row shows "Next shift in X days (date)". Verify date matches manual calculation from pattern + start date + phase offset.                                                                                                                                                                                                                                                                                                      |
+| Re-engagement sequence | After onboarding completion with notification permission granted, verify 6 scheduled notifications in `expo-notifications` pending list. Day 1 trigger should be today at 6 PM.                                                                                                                                                                                                                                                                                              |
+| Onboarding checklist   | On MainDashboardScreen first launch after onboarding, checklist shows. "Complete your profile →" taps to Introduction screen. "Add shift times →" navigates to ShiftTimeInput with `entryPoint: 'settings'`. Dismissing saves `'onboarding_checklist:dismissed'` to AsyncStorage and hides widget permanently.                                                                                                                                                               |
+| Progress bar           | After all changes, progress bar should show steps 1–7 (not 1–9). Verify `TOTAL_ONBOARDING_STEPS = 7` in `onboardingProgress.ts`.                                                                                                                                                                                                                                                                                                                                             |
 
 ---
 

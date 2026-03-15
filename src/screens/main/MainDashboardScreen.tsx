@@ -16,6 +16,7 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Animated, {
   FadeIn,
   FadeOut,
@@ -32,7 +33,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { theme } from '@/utils/theme';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import {
@@ -47,12 +48,15 @@ import { RosterType, type ShiftCycle } from '@/types';
 import { useActiveShift } from '@/hooks/useActiveShift';
 import { getNextShiftAccentRefreshAt } from '@/hooks/useShiftAccent';
 import type { MonthStatistics } from '@/types/dashboard';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RootStackParamList } from '@/navigation/AppNavigator';
 
 // Dashboard components
 import { PersonalizedHeader } from '@/components/dashboard/PersonalizedHeader';
 import { CurrentShiftStatusCard } from '@/components/dashboard/CurrentShiftStatusCard';
 import { MonthlyCalendarCard } from '@/components/dashboard/MonthlyCalendarCard';
 import { StatisticsRow } from '@/components/dashboard/StatisticsCard';
+import { OnboardingChecklist } from '@/components/dashboard/OnboardingChecklist';
 
 // Voice assistant is now in MainTabNavigator (center tab + global modal)
 // QuickActionsBar hidden for v1 — actions not yet implemented
@@ -87,11 +91,13 @@ const SHIFT_GLOW_COLORS: Record<string, string> = {
 export const MainDashboardScreen: React.FC = () => {
   const { t } = useTranslation('dashboard');
   const isFocused = useIsFocused();
+  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const { data: onboardingContextData } = useOnboarding();
   const [userData, setUserData] = useState<OnboardingData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [showChecklist, setShowChecklist] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(() => {
     const now = new Date();
     return { year: now.getFullYear(), month: now.getMonth() };
@@ -202,6 +208,17 @@ export const MainDashboardScreen: React.FC = () => {
   useEffect(() => {
     onboardingContextDataRef.current = onboardingContextData;
   }, [onboardingContextData]);
+
+  useEffect(() => {
+    let isMounted = true;
+    void AsyncStorage.getItem('onboarding_checklist:dismissed').then((value) => {
+      if (!isMounted) return;
+      setShowChecklist(value !== 'true');
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Ensure Home reflects latest profile/settings saves whenever the tab regains focus.
   useEffect(() => {
@@ -342,6 +359,36 @@ export const MainDashboardScreen: React.FC = () => {
     setSelectedDay((prev) => (prev === day ? undefined : day));
   }, []);
 
+  const handleOpenShiftTimeSettings = useCallback(() => {
+    const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+    rootNavigation?.navigate('Onboarding', {
+      screen: 'ShiftTimeInput',
+      params: {
+        entryPoint: 'settings',
+        returnToMainOnSelect: true,
+      },
+    });
+  }, [navigation]);
+
+  const handleOpenProfileIntroduction = useCallback(() => {
+    const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+    rootNavigation?.navigate('Onboarding', {
+      screen: 'Introduction',
+    });
+  }, [navigation]);
+
+  const handleOpenEllieTab = useCallback(() => {
+    if (typeof navigation.navigate === 'function') {
+      navigation.navigate('Ellie' as never);
+    }
+  }, [navigation]);
+
+  const handleOpenProfileTab = useCallback(() => {
+    if (typeof navigation.navigate === 'function') {
+      navigation.navigate('Profile' as never);
+    }
+  }, [navigation]);
+
   // Avatar change handler — persists new URI to AsyncStorage
   const handleAvatarChange = useCallback(
     async (newUri: string | null) => {
@@ -456,9 +503,23 @@ export const MainDashboardScreen: React.FC = () => {
               : (activeShift.countdown ?? undefined)
           }
           isOnShift={activeShift.isOnShift}
+          onAddShiftTimesPress={handleOpenShiftTimeSettings}
           animationDelay={100}
           testID="dashboard-shift-status"
         />
+
+        {showChecklist && (
+          <OnboardingChecklist
+            onAddShiftTimes={handleOpenShiftTimeSettings}
+            onCompleteProfile={handleOpenProfileIntroduction}
+            onAskEllie={handleOpenEllieTab}
+            onSetHourlyRate={handleOpenProfileTab}
+            onDismiss={() => {
+              void AsyncStorage.setItem('onboarding_checklist:dismissed', 'true');
+              setShowChecklist(false);
+            }}
+          />
+        )}
 
         {/* Monthly Calendar */}
         <MonthlyCalendarCard

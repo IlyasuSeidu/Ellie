@@ -172,19 +172,47 @@
         "fullYear": "Bona unyaka wakho ogcwele ngokubuka nje",
         "offline": "Isebenza ngaphansi komhlaba, asikho isignali edingekayo",
         "instantAnswers": "Izimpendulo ezisheshayo mayelana nekhefu namaphethini",
-        "aiPowered": "Inikwa amandla yi-AI futhi ithuthuka njalo"
+        "aiPowered": "Inikwa amandla yi-AI futhi ithuthuka njalo",
+        "leavePlanning": "Plan holidays without calling HR"
       },
       "plans": {
         "annual": "Ngonyaka",
         "monthly": "Nyanga zonke",
         "annualSuffix": "/unyaka",
         "monthlySuffix": "/inyanga",
-        "save": "Londoloza u-40%"
+        "save": "Londoloza u-40%",
+        "bestValue": "BEST VALUE",
+        "perMonth": "/month"
       },
       "cta": "Qala Isivivinyo Samahhala Sezinsuku Eziyisi-7",
       "noCard": "Alikho ikhadi lesikweletu elidingekayo · Khansela noma nini",
       "restorePurchases": "Buyisela Okuthengiwe",
-      "privacyPolicy": "Inqubomgomo yobumfihlo"
+      "privacyPolicy": "Inqubomgomo yobumfihlo",
+      "socialProof": "4.8 · Trusted by 50,000+ shift workers",
+      "testimonials": [
+        {
+          "quote": "Finally know when I'm working Christmas. Changed my life.",
+          "author": "Sarah K., Nurse — 12h rotating shifts"
+        },
+        {
+          "quote": "Showed my wife my whole year roster in under a minute.",
+          "author": "Dave L., Firefighter — FIFO roster"
+        },
+        {
+          "quote": "Booked flights 3 months out without calling HR once.",
+          "author": "Jason M., Mine worker — 7/7 FIFO"
+        }
+      ],
+      "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
+      "timerLabel": "Introductory offer ends in",
+      "trust": {
+        "freeTrial": "7 days free",
+        "cancel": "Cancel anytime",
+        "noCharge": "No charge today"
+      },
+      "valueFrame": "Less than a coffee per week to know your entire year.",
+      "security": "Secure payment via {{platform}} · Processed by {{platform}}, not Ellie",
+      "termsOfService": "Terms"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Ukubhalisa okusebenzayo kwe-Pro",

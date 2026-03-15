@@ -340,6 +340,21 @@
         "startDate": "Дата начала",
         "shiftTimes": "Время смен"
       }
+    },
+    "nextShiftCountdown": "Next shift in {{days}} day(s) ({{date}})",
+    "checkInTitle": "When do you check your schedule?",
+    "checkInNotificationTitle": "Your schedule today",
+    "checkInNotificationBody": "Tap to see your upcoming shifts.",
+    "checkIn": {
+      "morning": "Morning",
+      "midday": "Midday",
+      "evening": "Evening"
+    },
+    "notificationPriming": {
+      "title": "Never miss a shift",
+      "body": "Ellie will remind you 24 hours and 4 hours before every shift.\nYou control what and when.",
+      "allow": "Turn On Reminders",
+      "decline": "Not now"
     }
   },
   "phaseSelector": {
@@ -980,6 +995,19 @@
       "checked": "выбрано",
       "unchecked": "не выбрано",
       "label": "{{title}} • {{status}}"
+    }
+  },
+  "ahaMoment": {
+    "headline": "Your year, mapped.",
+    "subheadline": "Every shift. Every day off.",
+    "heyEllieTitle": "Ask Ellie about your roster",
+    "ctaPrimary": "Unlock Full Access — Free 7-Day Trial",
+    "ctaSecondary": "Continue with Limited Access →",
+    "stats": {
+      "workDays": "Work days",
+      "nightShifts": "Night shifts",
+      "daysOff": "Days off",
+      "nextShift": "Next shift"
     }
   }
 }

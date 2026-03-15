@@ -566,7 +566,7 @@ describe('VoiceAssistantContext', () => {
   // ─── buildUserContext ─────────────────────────────────────────────
 
   describe('buildUserContext', () => {
-    it('returns null and does not initialize when name is missing', async () => {
+    it('initializes with empty name when name is missing', async () => {
       mockOnboardingData.name = '';
       (voiceAssistantService.initialize as jest.Mock).mockClear();
 
@@ -576,7 +576,10 @@ describe('VoiceAssistantContext', () => {
         await Promise.resolve();
       });
 
-      expect(voiceAssistantService.initialize).not.toHaveBeenCalled();
+      expect(voiceAssistantService.initialize).toHaveBeenCalled();
+      const initCall = (voiceAssistantService.initialize as jest.Mock).mock.calls[0];
+      const userContext = initCall[1];
+      expect(userContext.name).toBe('');
     });
 
     it('returns null and does not initialize when patternType is missing', async () => {

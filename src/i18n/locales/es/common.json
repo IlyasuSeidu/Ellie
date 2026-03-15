@@ -172,19 +172,47 @@
         "fullYear": "Vea su año completo de un vistazo",
         "offline": "Funciona bajo tierra, no necesita señal.",
         "instantAnswers": "Respuestas instantáneas sobre permisos y patrones.",
-        "aiPowered": "Desarrollado por IA y siempre mejorando"
+        "aiPowered": "Desarrollado por IA y siempre mejorando",
+        "leavePlanning": "Plan holidays without calling HR"
       },
       "plans": {
         "annual": "Anual",
         "monthly": "Mensual",
         "annualSuffix": "/año",
         "monthlySuffix": "/mes",
-        "save": "AHORRE 40%"
+        "save": "AHORRE 40%",
+        "bestValue": "BEST VALUE",
+        "perMonth": "/month"
       },
       "cta": "Comience la prueba gratuita de 7 días",
       "noCard": "No se requiere tarjeta de crédito · Cancelar en cualquier momento",
       "restorePurchases": "Restaurar compras",
-      "privacyPolicy": "política de privacidad"
+      "privacyPolicy": "política de privacidad",
+      "socialProof": "4.8 · Trusted by 50,000+ shift workers",
+      "testimonials": [
+        {
+          "quote": "Finally know when I'm working Christmas. Changed my life.",
+          "author": "Sarah K., Nurse — 12h rotating shifts"
+        },
+        {
+          "quote": "Showed my wife my whole year roster in under a minute.",
+          "author": "Dave L., Firefighter — FIFO roster"
+        },
+        {
+          "quote": "Booked flights 3 months out without calling HR once.",
+          "author": "Jason M., Mine worker — 7/7 FIFO"
+        }
+      ],
+      "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
+      "timerLabel": "Introductory offer ends in",
+      "trust": {
+        "freeTrial": "7 days free",
+        "cancel": "Cancel anytime",
+        "noCharge": "No charge today"
+      },
+      "valueFrame": "Less than a coffee per week to know your entire year.",
+      "security": "Secure payment via {{platform}} · Processed by {{platform}}, not Ellie",
+      "termsOfService": "Terms"
     },
     "profile": {
       "rowActiveA11y": "Ellie Suscripción activa profesional",

@@ -58,12 +58,12 @@ describe('PremiumWelcomeScreen', () => {
 
     it('should render tagline', () => {
       const { getByText } = render(<PremiumWelcomeScreen onContinue={mockOnContinue} />);
-      expect(getByText('Your Mining Shift Companion')).toBeTruthy();
+      expect(getByText('Know every shift for the entire year. In 60 seconds.')).toBeTruthy();
     });
 
     it('should render Get Started button', () => {
       const { getByText } = render(<PremiumWelcomeScreen onContinue={mockOnContinue} />);
-      expect(getByText('Get Started')).toBeTruthy();
+      expect(getByText('Set Up My Roster →')).toBeTruthy();
     });
 
     it('should render logo image', () => {
@@ -85,7 +85,7 @@ describe('PremiumWelcomeScreen', () => {
       expect(mockOnContinue).toHaveBeenCalledTimes(1);
     });
 
-    it('should clear auto-advance timer when button is pressed', () => {
+    it('should not trigger extra callbacks after timers advance', () => {
       const { getByTestId } = render(
         <PremiumWelcomeScreen onContinue={mockOnContinue} testID="welcome" />
       );
@@ -93,7 +93,7 @@ describe('PremiumWelcomeScreen', () => {
       const button = getByTestId('welcome-button');
       fireEvent.press(button);
 
-      // Advance timers to auto-advance time
+      // Advance timers (screen has no auto-advance now)
       jest.advanceTimersByTime(3000);
 
       // onContinue should only be called once (from button press)
@@ -111,17 +111,17 @@ describe('PremiumWelcomeScreen', () => {
     });
   });
 
-  describe('Auto-advance', () => {
-    it('should auto-advance after 3 seconds', () => {
+  describe('No auto-advance', () => {
+    it('should not auto-advance after 3 seconds', () => {
       render(<PremiumWelcomeScreen onContinue={mockOnContinue} testID="welcome" />);
 
       // Fast-forward time by 3 seconds
       jest.advanceTimersByTime(3000);
 
-      expect(mockOnContinue).toHaveBeenCalledTimes(1);
+      expect(mockOnContinue).not.toHaveBeenCalled();
     });
 
-    it('should not auto-advance before 3 seconds', () => {
+    it('should still not auto-advance before 3 seconds', () => {
       render(<PremiumWelcomeScreen onContinue={mockOnContinue} testID="welcome" />);
 
       // Fast-forward time by 2 seconds
@@ -130,7 +130,7 @@ describe('PremiumWelcomeScreen', () => {
       expect(mockOnContinue).not.toHaveBeenCalled();
     });
 
-    it('should not crash if onContinue is not provided', () => {
+    it('should not crash if onContinue is not provided when timers run', () => {
       render(<PremiumWelcomeScreen testID="welcome" />);
 
       // Fast-forward time by 3 seconds
@@ -140,7 +140,7 @@ describe('PremiumWelcomeScreen', () => {
       expect(true).toBe(true);
     });
 
-    it('should clear timer on unmount', () => {
+    it('should keep callback untouched after unmount and timers', () => {
       const { unmount } = render(
         <PremiumWelcomeScreen onContinue={mockOnContinue} testID="welcome" />
       );
@@ -171,8 +171,8 @@ describe('PremiumWelcomeScreen', () => {
 
       expect(UNSAFE_root.findByType('Image')).toBeTruthy(); // Logo
       expect(getByText('Ellie')).toBeTruthy(); // App name
-      expect(getByText('Your Mining Shift Companion')).toBeTruthy(); // Tagline
-      expect(getByText('Get Started')).toBeTruthy(); // Button
+      expect(getByText('Know every shift for the entire year. In 60 seconds.')).toBeTruthy(); // Tagline
+      expect(getByText('Set Up My Roster →')).toBeTruthy(); // Button
     });
   });
 
@@ -207,7 +207,7 @@ describe('PremiumWelcomeScreen', () => {
       expect(mockOnContinue).toHaveBeenCalledTimes(3);
     });
 
-    it('should handle button press after partial auto-advance', () => {
+    it('should handle button press after partial timer advancement', () => {
       const { getByTestId } = render(
         <PremiumWelcomeScreen onContinue={mockOnContinue} testID="welcome" />
       );
@@ -244,8 +244,8 @@ describe('PremiumWelcomeScreen', () => {
       // All elements should be present
       expect(UNSAFE_root.findByType('Image')).toBeTruthy();
       expect(getByText('Ellie')).toBeTruthy();
-      expect(getByText('Your Mining Shift Companion')).toBeTruthy();
-      expect(getByText('Get Started')).toBeTruthy();
+      expect(getByText('Know every shift for the entire year. In 60 seconds.')).toBeTruthy();
+      expect(getByText('Set Up My Roster →')).toBeTruthy();
     });
 
     it('should render gradient overlay', () => {
@@ -258,14 +258,13 @@ describe('PremiumWelcomeScreen', () => {
   });
 
   describe('Timer Management', () => {
-    it('should only set one auto-advance timer', () => {
+    it('should not create an auto-advance timer', () => {
       render(<PremiumWelcomeScreen onContinue={mockOnContinue} testID="welcome" />);
 
-      // Check that there's a pending timer
-      expect(jest.getTimerCount()).toBeGreaterThan(0);
+      expect(jest.getTimerCount()).toBe(0);
     });
 
-    it('should clear timer when button is pressed before auto-advance', () => {
+    it('should keep callback count stable when timers run after button press', () => {
       const { getByTestId } = render(
         <PremiumWelcomeScreen onContinue={mockOnContinue} testID="welcome" />
       );

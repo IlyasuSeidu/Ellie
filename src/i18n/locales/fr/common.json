@@ -172,19 +172,47 @@
         "fullYear": "Visualisez votre année complète en un coup d'oeil",
         "offline": "Fonctionne sous terre, aucun signal nécessaire",
         "instantAnswers": "Réponses instantanées sur les congés et les modèles",
-        "aiPowered": "Propulsé par l'IA et en constante amélioration"
+        "aiPowered": "Propulsé par l'IA et en constante amélioration",
+        "leavePlanning": "Plan holidays without calling HR"
       },
       "plans": {
         "annual": "Annuel",
         "monthly": "Mensuel",
         "annualSuffix": "/an",
         "monthlySuffix": "/mois",
-        "save": "ÉCONOMISEZ 40 %"
+        "save": "ÉCONOMISEZ 40 %",
+        "bestValue": "BEST VALUE",
+        "perMonth": "/month"
       },
       "cta": "Commencez l'essai gratuit de 7 jours",
       "noCard": "Aucune carte de crédit requise · Annulez à tout moment",
       "restorePurchases": "Restaurer les achats",
-      "privacyPolicy": "politique de confidentialité"
+      "privacyPolicy": "politique de confidentialité",
+      "socialProof": "4.8 · Trusted by 50,000+ shift workers",
+      "testimonials": [
+        {
+          "quote": "Finally know when I'm working Christmas. Changed my life.",
+          "author": "Sarah K., Nurse — 12h rotating shifts"
+        },
+        {
+          "quote": "Showed my wife my whole year roster in under a minute.",
+          "author": "Dave L., Firefighter — FIFO roster"
+        },
+        {
+          "quote": "Booked flights 3 months out without calling HR once.",
+          "author": "Jason M., Mine worker — 7/7 FIFO"
+        }
+      ],
+      "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
+      "timerLabel": "Introductory offer ends in",
+      "trust": {
+        "freeTrial": "7 days free",
+        "cancel": "Cancel anytime",
+        "noCharge": "No charge today"
+      },
+      "valueFrame": "Less than a coffee per week to know your entire year.",
+      "security": "Secure payment via {{platform}} · Processed by {{platform}}, not Ellie",
+      "termsOfService": "Terms"
     },
     "profile": {
       "rowActiveA11y": "Ellie Abonnement Pro actif",

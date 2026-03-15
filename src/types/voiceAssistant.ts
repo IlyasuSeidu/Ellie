@@ -54,7 +54,7 @@ export interface ShiftQueryResult {
  */
 export interface VoiceAssistantUserContext {
   /** User's first name */
-  name: string;
+  name?: string;
   /** User's occupation */
   occupation?: string;
   /** Serialized ShiftCycle */

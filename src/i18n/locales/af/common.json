@@ -172,19 +172,47 @@
         "fullYear": "Sien jou volle jaar in 'n oogopslag",
         "offline": "Werk ondergronds, geen sein nodig nie",
         "instantAnswers": "Kitsantwoorde oor verlof en patrone",
-        "aiPowered": "Aangedryf deur AI en word altyd verbeter"
+        "aiPowered": "Aangedryf deur AI en word altyd verbeter",
+        "leavePlanning": "Plan holidays without calling HR"
       },
       "plans": {
         "annual": "Jaarliks",
         "monthly": "Maandeliks",
         "annualSuffix": "/jr",
         "monthlySuffix": "/ma",
-        "save": "SPAAR 40%"
+        "save": "SPAAR 40%",
+        "bestValue": "BEST VALUE",
+        "perMonth": "/month"
       },
       "cta": "Begin 7-dae gratis proeflopie",
       "noCard": "Geen kredietkaart vereis nie · Kanselleer enige tyd",
       "restorePurchases": "Herstel aankope",
-      "privacyPolicy": "Privaatheidsbeleid"
+      "privacyPolicy": "Privaatheidsbeleid",
+      "socialProof": "4.8 · Trusted by 50,000+ shift workers",
+      "testimonials": [
+        {
+          "quote": "Finally know when I'm working Christmas. Changed my life.",
+          "author": "Sarah K., Nurse — 12h rotating shifts"
+        },
+        {
+          "quote": "Showed my wife my whole year roster in under a minute.",
+          "author": "Dave L., Firefighter — FIFO roster"
+        },
+        {
+          "quote": "Booked flights 3 months out without calling HR once.",
+          "author": "Jason M., Mine worker — 7/7 FIFO"
+        }
+      ],
+      "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
+      "timerLabel": "Introductory offer ends in",
+      "trust": {
+        "freeTrial": "7 days free",
+        "cancel": "Cancel anytime",
+        "noCharge": "No charge today"
+      },
+      "valueFrame": "Less than a coffee per week to know your entire year.",
+      "security": "Secure payment via {{platform}} · Processed by {{platform}}, not Ellie",
+      "termsOfService": "Terms"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro aktiewe intekening",

@@ -246,7 +246,7 @@ export class NotificationService extends FirebaseService {
     logger.debug('Requesting notification permissions');
 
     if (!this.scheduler) {
-      throw new Error('Notification scheduler not configured');
+      return false;
     }
 
     const granted = await this.scheduler.requestPermissions();
@@ -278,6 +278,84 @@ export class NotificationService extends FirebaseService {
     }
 
     return this.scheduler.getPermissionStatus();
+  }
+
+  /**
+   * Schedule a recurring daily notification at a specific hour.
+   * Used by onboarding completion check-in preferences.
+   */
+  async scheduleDaily(hour: number, title: string, body: string): Promise<void> {
+    if (!this.scheduler) return;
+    const triggerDate = new Date();
+    triggerDate.setHours(hour, 0, 0, 0);
+    if (triggerDate <= new Date()) {
+      triggerDate.setDate(triggerDate.getDate() + 1);
+    }
+    await this.scheduler.scheduleNotification({ title, body }, triggerDate);
+  }
+
+  private addDays(base: Date, days: number, hour: number): Date {
+    const nextDate = new Date(base);
+    nextDate.setDate(nextDate.getDate() + days);
+    nextDate.setHours(hour, 0, 0, 0);
+    return nextDate;
+  }
+
+  /**
+   * Schedule first-month engagement nudges after onboarding completion.
+   */
+  async scheduleOnboardingEngagementSequence(userName: string): Promise<void> {
+    if (!this.scheduler) return;
+
+    const now = new Date();
+    const firstName = userName.trim().length > 0 ? userName : 'there';
+    const dayOneAtSixPm = new Date(now);
+    dayOneAtSixPm.setHours(18, 0, 0, 0);
+    if (dayOneAtSixPm <= now) {
+      dayOneAtSixPm.setDate(dayOneAtSixPm.getDate() + 1);
+    }
+
+    const notifications = [
+      {
+        trigger: dayOneAtSixPm,
+        title: 'Your roster is live',
+        body: 'See what shifts are coming up this week. Tap to open your calendar.',
+      },
+      {
+        trigger: this.addDays(now, 1, 8),
+        title: `Morning, ${firstName}! 👋`,
+        body: 'Did you know you can ask Ellie "When am I next off?" — try it now.',
+      },
+      {
+        trigger: this.addDays(now, 2, 18),
+        title: 'Your month at a glance',
+        body: 'Check your shift balance for this month. Open Ellie to see.',
+      },
+      {
+        trigger: this.addDays(now, 6, 9),
+        title: 'One week with Ellie 🎉',
+        body: "You've mapped your shifts for the entire year. Keep it up.",
+      },
+      {
+        trigger: this.addDays(now, 13, 9),
+        title: 'Pattern cycle update',
+        body: 'Your roster cycle changes soon. Ellie has already updated your calendar.',
+      },
+      {
+        trigger: this.addDays(now, 29, 9),
+        title: '30 days of shift certainty',
+        body: "Your next month is mapped. Tap to see what's coming.",
+      },
+    ];
+
+    for (const notification of notifications) {
+      if (notification.trigger > now) {
+        await this.scheduler.scheduleNotification(
+          { title: notification.title, body: notification.body },
+          notification.trigger
+        );
+      }
+    }
   }
 
   /**

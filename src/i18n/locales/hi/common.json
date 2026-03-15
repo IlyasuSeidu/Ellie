@@ -172,19 +172,47 @@
         "fullYear": "एक नज़र में अपना पूरा साल देखें",
         "offline": "भूमिगत काम करता है, किसी सिग्नल की आवश्यकता नहीं",
         "instantAnswers": "छुट्टी और पैटर्न के बारे में त्वरित उत्तर",
-        "aiPowered": "एआई द्वारा संचालित और हमेशा सुधार होता रहता है"
+        "aiPowered": "एआई द्वारा संचालित और हमेशा सुधार होता रहता है",
+        "leavePlanning": "Plan holidays without calling HR"
       },
       "plans": {
         "annual": "वार्षिक",
         "monthly": "महीने के",
         "annualSuffix": "/वर्ष",
         "monthlySuffix": "/मो",
-        "save": "40% बचाएं"
+        "save": "40% बचाएं",
+        "bestValue": "BEST VALUE",
+        "perMonth": "/month"
       },
       "cta": "7-दिवसीय निःशुल्क परीक्षण प्रारंभ करें",
       "noCard": "किसी क्रेडिट कार्ड की आवश्यकता नहीं · किसी भी समय रद्द करें",
       "restorePurchases": "खरीदारी वापस लौटाएं",
-      "privacyPolicy": "गोपनीयता नीति"
+      "privacyPolicy": "गोपनीयता नीति",
+      "socialProof": "4.8 · Trusted by 50,000+ shift workers",
+      "testimonials": [
+        {
+          "quote": "Finally know when I'm working Christmas. Changed my life.",
+          "author": "Sarah K., Nurse — 12h rotating shifts"
+        },
+        {
+          "quote": "Showed my wife my whole year roster in under a minute.",
+          "author": "Dave L., Firefighter — FIFO roster"
+        },
+        {
+          "quote": "Booked flights 3 months out without calling HR once.",
+          "author": "Jason M., Mine worker — 7/7 FIFO"
+        }
+      ],
+      "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
+      "timerLabel": "Introductory offer ends in",
+      "trust": {
+        "freeTrial": "7 days free",
+        "cancel": "Cancel anytime",
+        "noCharge": "No charge today"
+      },
+      "valueFrame": "Less than a coffee per week to know your entire year.",
+      "security": "Secure payment via {{platform}} · Processed by {{platform}}, not Ellie",
+      "termsOfService": "Terms"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ प्रो सक्रिय सदस्यता",

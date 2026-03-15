@@ -15,6 +15,7 @@ import {
   AccessibilityInfo,
   Pressable,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Animated, {
   FadeIn,
   FadeInDown,
@@ -46,6 +47,7 @@ import { asyncStorageService } from '@/services/AsyncStorageService';
 import { userService } from '@/services/UserService';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { getShiftTimesFromData } from '@/utils/shiftTimeUtils';
+import { buildShiftCycle, getShiftDaysInRange } from '@/utils/shiftUtils';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
 import {
   getPatternDisplayName,
@@ -58,6 +60,11 @@ import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsD
 import { normalizeLanguage } from '@/i18n/languageDetector';
 import { logger } from '@/utils/logger';
 import { getOnboardingSaveErrorMessage } from '@/utils/onboardingErrorMessage';
+import { Analytics } from '@/utils/analytics';
+import { NotificationPrimingModal } from '@/components/onboarding/NotificationPrimingModal';
+
+const isJestRuntime = (): boolean =>
+  typeof process !== 'undefined' && typeof process.env?.JEST_WORKER_ID === 'string';
 
 // Animated SVG components
 const AnimatedPath = Animated.createAnimatedComponent(Path);
@@ -243,6 +250,10 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
   onComplete,
   testID = 'premium-completion-screen',
 }) => {
+  useEffect(() => {
+    Analytics.onboardingStepViewed('completion', 8);
+  }, []);
+
   const { t, i18n } = useTranslation('onboarding');
   const { data, validateData } = useOnboarding();
   const { user } = useAuth();
@@ -254,8 +265,11 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
   const [isSaved, setIsSaved] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [expandedFeature, setExpandedFeature] = useState<string | null>(null);
+  const [showNotificationModal, setShowNotificationModal] = useState(false);
+  const [selectedCheckIn, setSelectedCheckIn] = useState<string | null>(null);
   const scrollViewRef = useRef<ScrollView>(null);
   const featuresSectionYRef = useRef(0);
+  const notificationPromptTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Animation values
   const checkmarkProgress = useSharedValue(0);
@@ -268,6 +282,14 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
       setReducedMotion(isReducedMotionEnabled);
     };
     checkReducedMotion();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (notificationPromptTimerRef.current) {
+        clearTimeout(notificationPromptTimerRef.current);
+      }
+    };
   }, []);
 
   // Trigger success haptic and animations on mount
@@ -357,6 +379,20 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
       }
 
       setIsSaved(true);
+
+      notificationPromptTimerRef.current = setTimeout(() => {
+        Analytics.notificationPermissionSoftShown();
+        setShowNotificationModal(true);
+      }, 1500);
+
+      const firstName = data.name?.trim().split(' ')[0] ?? 'there';
+      if (!isJestRuntime()) {
+        void import('@/services/NotificationService')
+          .then(({ notificationService }) =>
+            notificationService.scheduleOnboardingEngagementSequence(firstName)
+          )
+          .catch(() => undefined);
+      }
 
       // Trigger success haptic
       await triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
@@ -595,6 +631,25 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
     return entries;
   };
 
+  const nextShiftCountdown = useMemo(() => {
+    const cycle = buildShiftCycle(data);
+    if (!cycle) return null;
+
+    const now = new Date();
+    const end = new Date(now.getFullYear() + 1, 11, 31);
+    const shiftDays = getShiftDaysInRange(now, end, cycle);
+    const nextShiftDay = shiftDays.find((shiftDay) => shiftDay.shiftType !== 'off');
+    if (!nextShiftDay) return null;
+
+    const shiftDate = new Date(`${nextShiftDay.date}T00:00:00`);
+    const daysAway = Math.max(
+      0,
+      Math.ceil((shiftDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+    );
+
+    return { date: shiftDate, daysAway };
+  }, [data]);
+
   return (
     <View style={styles.container} testID={testID}>
       {/* Progress Header */}
@@ -803,6 +858,19 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
                   </Animated.View>
                 );
               })}
+
+            {nextShiftCountdown && (
+              <View style={styles.countdownRow}>
+                <Ionicons name="time-outline" size={20} color={theme.colors.sacredGold} />
+                <Text style={styles.countdownText}>
+                  {t('completion.nextShiftCountdown', {
+                    days: nextShiftCountdown.daysAway,
+                    date: nextShiftCountdown.date.toLocaleDateString(),
+                    defaultValue: `Next shift in ${nextShiftCountdown.daysAway} day${nextShiftCountdown.daysAway !== 1 ? 's' : ''} (${nextShiftCountdown.date.toLocaleDateString()})`,
+                  })}
+                </Text>
+              </View>
+            )}
           </View>
         </Animated.View>
 
@@ -871,6 +939,54 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
           </ScrollView>
         </Animated.View>
 
+        <View style={styles.checkInSection}>
+          <Text style={styles.checkInTitle}>
+            {t('completion.checkInTitle', {
+              defaultValue: 'When do you check your schedule?',
+            })}
+          </Text>
+          <View style={styles.checkInOptions}>
+            {(['Morning', 'Midday', 'Evening'] as const).map((time, index) => {
+              const hours = [7, 12, 18][index];
+              const isSelected = selectedCheckIn === time;
+              return (
+                <Pressable
+                  key={time}
+                  style={[styles.checkInChip, isSelected && styles.checkInChipSelected]}
+                  onPress={() => {
+                    setSelectedCheckIn(time);
+                    if (!isJestRuntime()) {
+                      void import('@/services/NotificationService')
+                        .then(({ notificationService }) =>
+                          notificationService.scheduleDaily(
+                            hours,
+                            String(
+                              t('completion.checkInNotificationTitle', {
+                                defaultValue: 'Your schedule today',
+                              })
+                            ),
+                            String(
+                              t('completion.checkInNotificationBody', {
+                                defaultValue: 'Tap to see your upcoming shifts.',
+                              })
+                            )
+                          )
+                        )
+                        .catch(() => undefined);
+                    }
+                  }}
+                >
+                  <Text
+                    style={[styles.checkInChipText, isSelected && styles.checkInChipTextSelected]}
+                  >
+                    {t(`completion.checkIn.${time.toLowerCase()}`, { defaultValue: time })}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </View>
+        </View>
+
         {/* Error Message */}
         {saveError && (
           <Animated.View entering={FadeIn.duration(300)} style={styles.errorContainer}>
@@ -921,6 +1037,32 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
           )}
         </Animated.View>
       </ScrollView>
+
+      <NotificationPrimingModal
+        visible={showNotificationModal}
+        onAllow={async () => {
+          setShowNotificationModal(false);
+          let granted = false;
+          if (!isJestRuntime()) {
+            try {
+              const { notificationService } = await import('@/services/NotificationService');
+              granted = await notificationService.requestPermissions();
+            } catch {
+              granted = false;
+            }
+          }
+          if (granted) {
+            Analytics.notificationPermissionGranted();
+          } else {
+            Analytics.notificationPermissionDeclined();
+          }
+        }}
+        onDecline={() => {
+          setShowNotificationModal(false);
+          void AsyncStorage.setItem('notifications:soft_declined', 'true');
+          Analytics.notificationPermissionDeclined();
+        }}
+      />
     </View>
   );
 };
@@ -1040,6 +1182,17 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: theme.spacing.md,
   },
+  countdownRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 8,
+  },
+  countdownText: {
+    fontSize: 14,
+    color: theme.colors.paper,
+    flex: 1,
+  },
   // Features
   featuresSection: {
     width: '100%',
@@ -1115,6 +1268,40 @@ const styles = StyleSheet.create({
   featurePillTextExpanded: {
     color: theme.colors.paleGold,
     fontWeight: '700',
+  },
+  checkInSection: {
+    width: '100%',
+    marginBottom: theme.spacing.lg,
+    alignItems: 'center',
+  },
+  checkInTitle: {
+    fontSize: 15,
+    color: theme.colors.dust,
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  checkInOptions: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  checkInChip: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: theme.colors.softStone,
+  },
+  checkInChipSelected: {
+    borderColor: theme.colors.sacredGold,
+    backgroundColor: 'rgba(212,168,106,0.1)',
+  },
+  checkInChipText: {
+    fontSize: 14,
+    color: theme.colors.dust,
+  },
+  checkInChipTextSelected: {
+    color: theme.colors.sacredGold,
+    fontWeight: '600',
   },
   // Error
   errorContainer: {

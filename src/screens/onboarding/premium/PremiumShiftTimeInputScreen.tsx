@@ -62,6 +62,7 @@ import {
 } from '@/utils/shiftTimeUtils';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 import { getDefaultFIFOConfig } from '@/utils/shiftUtils';
+import { Analytics } from '@/utils/analytics';
 
 // Helper to get pattern display info
 const getPatternInfo = (
@@ -413,6 +414,10 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   onBack,
   testID = 'premium-shift-time-input-screen',
 }) => {
+  useEffect(() => {
+    Analytics.onboardingStepViewed('shift_time_input', 8);
+  }, []);
+
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProp<OnboardingStackParamList, 'ShiftTimeInput'>>();

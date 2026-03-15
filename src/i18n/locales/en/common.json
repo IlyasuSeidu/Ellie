@@ -165,26 +165,52 @@
   "subscription": {
     "paywall": {
       "closeA11y": "Close paywall",
-      "title": "Ellie Pro",
-      "subtitle": "For shift workers who mean business",
+      "title": "Your year is ready.",
+      "subtitle": "Every shift. Every day off. Yours to unlock.",
+      "socialProof": "4.8 · Trusted by 50,000+ shift workers",
+      "testimonials": [
+        {
+          "quote": "Finally know when I'm working Christmas. Changed my life.",
+          "author": "Sarah K., Nurse — 12h rotating shifts"
+        },
+        {
+          "quote": "Showed my wife my whole year roster in under a minute.",
+          "author": "Dave L., Firefighter — FIFO roster"
+        },
+        {
+          "quote": "Booked flights 3 months out without calling HR once.",
+          "author": "Jason M., Mine worker — 7/7 FIFO"
+        }
+      ],
       "features": {
-        "askRoster": "Ask \"Hey Ellie\" anything about your roster",
-        "fullYear": "See your full year at a glance",
-        "offline": "Works underground, no signal needed",
-        "instantAnswers": "Instant answers about leave and patterns",
-        "aiPowered": "Powered by AI and always improving"
+        "fullYear": "See every shift for the next 365 days",
+        "askRoster": "Ask Ellie anything — \"When's my next day off?\"",
+        "offline": "Works underground with zero signal",
+        "leavePlanning": "Plan holidays without calling HR",
+        "aiPowered": "AI that knows YOUR exact pattern, not a generic one"
       },
+      "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
+      "timerLabel": "Introductory offer ends in",
       "plans": {
         "annual": "Annual",
         "monthly": "Monthly",
         "annualSuffix": "/yr",
         "monthlySuffix": "/mo",
-        "save": "SAVE 40%"
+        "bestValue": "BEST VALUE",
+        "perMonth": "/month"
       },
-      "cta": "Start 7-Day Free Trial",
+      "cta": "Start Free 7-Day Trial",
+      "trust": {
+        "freeTrial": "7 days free",
+        "cancel": "Cancel anytime",
+        "noCharge": "No charge today"
+      },
+      "valueFrame": "Less than a coffee per week to know your entire year.",
+      "security": "Secure payment via {{platform}} · Processed by {{platform}}, not Ellie",
       "noCard": "No credit card required · Cancel anytime",
-      "restorePurchases": "Restore Purchases",
-      "privacyPolicy": "Privacy Policy"
+      "restorePurchases": "Restore",
+      "privacyPolicy": "Privacy",
+      "termsOfService": "Terms"
     },
     "profile": {
       "rowActiveA11y": "Ellie Pro active subscription",
