@@ -29,7 +29,8 @@ import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
 import { useVoiceAssistant } from '@/contexts/VoiceAssistantContext';
 import { useShiftAccent } from '@/hooks/useShiftAccent';
-import { useSubscription } from '@/hooks/useSubscription';
+// Temporarily disabled for physical-device regression testing.
+// import { useSubscription } from '@/hooks/useSubscription';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -134,7 +135,6 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
   const { t } = useTranslation('dashboard');
   const insets = useSafeAreaInsets();
   const { state: voiceState, openModal } = useVoiceAssistant();
-  const { isPro, openPaywall } = useSubscription();
   const { tabAccentColor, tabGlowColor } = useShiftAccent();
   const centerButtonGradient = useMemo(
     () =>
@@ -218,13 +218,9 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
   const handleTabPress = (route: (typeof state.routes)[number], index: number) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
-    // Center Ellie button — Pro: opens voice modal. Free: opens paywall.
+    // Subscription gating is temporarily disabled for physical-device regression testing.
     if (route.name === 'Ellie') {
-      if (isPro) {
-        openModal();
-      } else {
-        openPaywall();
-      }
+      openModal();
       return;
     }
 

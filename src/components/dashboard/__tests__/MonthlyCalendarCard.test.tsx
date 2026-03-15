@@ -8,9 +8,6 @@ import { render, fireEvent, act } from '@testing-library/react-native';
 import { MonthlyCalendarCard } from '../MonthlyCalendarCard';
 import { RosterType, ShiftPattern, ShiftSystem, type ShiftCycle, type ShiftDay } from '@/types';
 
-const mockOpenPaywall = jest.fn();
-const mockUseSubscription = jest.fn();
-
 // Mock Ionicons
 jest.mock('@expo/vector-icons', () => {
   const React = require('react');
@@ -70,10 +67,6 @@ jest.mock('react-native-reanimated', () => {
   };
 });
 
-jest.mock('@/hooks/useSubscription', () => ({
-  useSubscription: () => mockUseSubscription(),
-}));
-
 // Sample shift days for February 2026
 const createShiftDays = (): ShiftDay[] => {
   const days: ShiftDay[] = [];
@@ -119,12 +112,6 @@ describe('MonthlyCalendarCard', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockUseSubscription.mockReturnValue({
-      isPro: true,
-      isLoading: false,
-      openPaywall: mockOpenPaywall,
-      restorePurchases: jest.fn(),
-    });
   });
 
   describe('Rendering', () => {
@@ -323,33 +310,6 @@ describe('MonthlyCalendarCard', () => {
       );
       fireEvent.press(getByTestId('calendar-day-15'));
       expect(mockDayPress).toHaveBeenCalledWith(15);
-    });
-  });
-
-  describe('Subscription gating', () => {
-    it('redacts locked weeks and opens paywall on padlock tap for free users', () => {
-      mockUseSubscription.mockReturnValue({
-        isPro: false,
-        isLoading: false,
-        openPaywall: mockOpenPaywall,
-        restorePurchases: jest.fn(),
-      });
-      const { getByTestId, queryByTestId } = render(
-        <MonthlyCalendarCard
-          year={2099}
-          month={1}
-          shiftDays={shiftDays}
-          onPreviousMonth={mockPrevMonth}
-          onNextMonth={mockNextMonth}
-        />
-      );
-
-      expect(getByTestId('locked-calendar-day-1')).toBeTruthy();
-      expect(queryByTestId('calendar-day-1')).toBeNull();
-
-      fireEvent.press(getByTestId('padlock-week-0'));
-
-      expect(mockOpenPaywall).toHaveBeenCalledTimes(1);
     });
   });
 

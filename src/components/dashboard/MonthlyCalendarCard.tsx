@@ -44,8 +44,9 @@ import {
   getBlockRunsForRow,
   type FIFOPositionMap,
 } from '@/utils/fifoCalendarUtils';
-import { useSubscription } from '@/hooks/useSubscription';
-import { PadlockOverlay } from '@/components/subscription/PadlockOverlay';
+// Temporarily disabled for physical-device regression testing.
+// import { useSubscription } from '@/hooks/useSubscription';
+// import { PadlockOverlay } from '@/components/subscription/PadlockOverlay';
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 /** 3D assets for shift types */
@@ -266,19 +267,6 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
 }) => {
   const { t, i18n } = useTranslation('dashboard');
   const calendarGrid = useMemo(() => buildCalendarGrid(year, month), [year, month]);
-  const { isPro, openPaywall } = useSubscription();
-  const today = new Date();
-  const currentWeekIndex = calendarGrid.findIndex((week) =>
-    week.some((day) => {
-      if (day === null) return false;
-      const d = new Date(year, month, day);
-      return (
-        d.getFullYear() === today.getFullYear() &&
-        d.getMonth() === today.getMonth() &&
-        d.getDate() === today.getDate()
-      );
-    })
-  );
   const localeTag = useMemo(
     () => getDateLocaleTag(i18n.resolvedLanguage ?? i18n.language ?? 'en'),
     [i18n.resolvedLanguage, i18n.language]
@@ -680,20 +668,11 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
             />
           )}
           {calendarGrid.map((week, weekIndex) => {
-            const isCurrentWeek = weekIndex === currentWeekIndex;
-            const isLocked = !isPro && !isCurrentWeek;
-
             return (
               <View key={`week-${weekIndex}`} style={styles.weekRowWrapper}>
-                <Animated.View
-                  style={[
-                    styles.weekRow,
-                    rowEntranceStyles[weekIndex],
-                    isLocked && styles.weekRowLocked,
-                  ]}
-                >
+                <Animated.View style={[styles.weekRow, rowEntranceStyles[weekIndex]]}>
                   {/* FIFO Connected Block Ribbons (rendered behind cells, animated fill) */}
-                  {fifoPositionMap && gridWidth > 0 && !isLocked && (
+                  {fifoPositionMap && gridWidth > 0 && (
                     <>
                       {getBlockRunsForRow(week, fifoPositionMap).map((run, runIdx) => {
                         const ribbonColor = RIBBON_COLORS[run.blockType];
@@ -728,18 +707,6 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
                       );
                     }
 
-                    if (isLocked) {
-                      return (
-                        <View
-                          key={`locked-day-${day}`}
-                          style={styles.lockedDayCell}
-                          testID={`locked-calendar-day-${day}`}
-                        >
-                          <View style={styles.lockedDaySkeleton} />
-                        </View>
-                      );
-                    }
-
                     const shiftDay = shiftDayMap[day];
                     const dayDate = new Date(year, month, day);
                     const isTodayDate = checkIsToday(dayDate);
@@ -761,9 +728,6 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
                     );
                   })}
                 </Animated.View>
-                {isLocked && (
-                  <PadlockOverlay onPress={openPaywall} testID={`padlock-week-${weekIndex}`} />
-                )}
               </View>
             );
           })}
