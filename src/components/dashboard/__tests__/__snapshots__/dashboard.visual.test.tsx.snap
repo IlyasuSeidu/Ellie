@@ -1089,232 +1089,897 @@ exports[`dashboard visual snapshots MonthlyCalendarCard FIFO snapshot 1`] = `
                 "width": "100%",
               },
               {},
-              {
-                "opacity": 0.95,
-              },
             ]
           }
         >
           <View
+            accessibilityLabel="Day 1, work block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
               {
                 "alignItems": "center",
                 "height": 72,
                 "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
                 "width": 44,
+                "zIndex": 1,
               }
             }
-            testID="locked-calendar-day-1"
+            testID="calendar-day-1"
           >
             <View
               style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(33, 150, 243, 0.14)",
+                  },
+                  false,
+                ]
               }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-2"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-3"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-4"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-5"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-6"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-7"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-        </View>
-        <View
-          accessibilityLabel="Upgrade to Ellie Pro to see full calendar"
-          accessibilityRole="button"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            {
-              "alignItems": "center",
-              "backgroundColor": "rgba(12, 10, 9, 0.92)",
-              "borderRadius": 6,
-              "bottom": 0,
-              "justifyContent": "center",
-              "left": 0,
-              "opacity": 1,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-              "zIndex": 10,
-            }
-          }
-          testID="padlock-week-0"
-        >
-          <View
-            style={
-              {
-                "backgroundColor": "#1c1917",
-                "borderColor": "rgba(180, 83, 9, 0.2)",
-                "borderRadius": 12,
-                "borderWidth": 1,
-                "padding": 4,
-              }
-            }
-          >
-            <Text
-              color="#f59e0b"
-              name="lock-closed"
-              size={14}
             >
-              lock-closed
-            </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                1
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#BBDEFB",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 2, work block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-2"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(33, 150, 243, 0.14)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                2
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#BBDEFB",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 3, home block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-3"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(120, 113, 108, 0.1)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                3
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 4, work block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-4"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(33, 150, 243, 0.14)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                4
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#BBDEFB",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 5, work block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-5"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(33, 150, 243, 0.14)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                5
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#BBDEFB",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 6, home block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-6"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(120, 113, 108, 0.1)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                6
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 7, work block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-7"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(33, 150, 243, 0.14)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                7
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#BBDEFB",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
           </View>
         </View>
       </View>
@@ -1336,232 +2001,897 @@ exports[`dashboard visual snapshots MonthlyCalendarCard FIFO snapshot 1`] = `
                 "width": "100%",
               },
               {},
-              {
-                "opacity": 0.95,
-              },
             ]
           }
         >
           <View
+            accessibilityLabel="Day 8, work block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
               {
                 "alignItems": "center",
                 "height": 72,
                 "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
                 "width": 44,
+                "zIndex": 1,
               }
             }
-            testID="locked-calendar-day-8"
+            testID="calendar-day-8"
           >
             <View
               style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(33, 150, 243, 0.14)",
+                  },
+                  false,
+                ]
               }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-9"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-10"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-11"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-12"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-13"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-14"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-        </View>
-        <View
-          accessibilityLabel="Upgrade to Ellie Pro to see full calendar"
-          accessibilityRole="button"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            {
-              "alignItems": "center",
-              "backgroundColor": "rgba(12, 10, 9, 0.92)",
-              "borderRadius": 6,
-              "bottom": 0,
-              "justifyContent": "center",
-              "left": 0,
-              "opacity": 1,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-              "zIndex": 10,
-            }
-          }
-          testID="padlock-week-1"
-        >
-          <View
-            style={
-              {
-                "backgroundColor": "#1c1917",
-                "borderColor": "rgba(180, 83, 9, 0.2)",
-                "borderRadius": 12,
-                "borderWidth": 1,
-                "padding": 4,
-              }
-            }
-          >
-            <Text
-              color="#f59e0b"
-              name="lock-closed"
-              size={14}
             >
-              lock-closed
-            </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                8
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#BBDEFB",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 9, home block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-9"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(120, 113, 108, 0.1)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                9
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 10, work block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-10"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(33, 150, 243, 0.14)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                10
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#BBDEFB",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 11, work block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-11"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(33, 150, 243, 0.14)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                11
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#BBDEFB",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 12, home block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-12"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(120, 113, 108, 0.1)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                12
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 13, work block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-13"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(33, 150, 243, 0.14)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                13
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#BBDEFB",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 14, work block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-14"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(33, 150, 243, 0.14)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                14
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#BBDEFB",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
           </View>
         </View>
       </View>
@@ -1583,232 +2913,897 @@ exports[`dashboard visual snapshots MonthlyCalendarCard FIFO snapshot 1`] = `
                 "width": "100%",
               },
               {},
-              {
-                "opacity": 0.95,
-              },
             ]
           }
         >
           <View
+            accessibilityLabel="Day 15, home block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
               {
                 "alignItems": "center",
                 "height": 72,
                 "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
                 "width": 44,
+                "zIndex": 1,
               }
             }
-            testID="locked-calendar-day-15"
+            testID="calendar-day-15"
           >
             <View
               style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(120, 113, 108, 0.1)",
+                  },
+                  false,
+                ]
               }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-16"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-17"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-18"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-19"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-20"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-21"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-        </View>
-        <View
-          accessibilityLabel="Upgrade to Ellie Pro to see full calendar"
-          accessibilityRole="button"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            {
-              "alignItems": "center",
-              "backgroundColor": "rgba(12, 10, 9, 0.92)",
-              "borderRadius": 6,
-              "bottom": 0,
-              "justifyContent": "center",
-              "left": 0,
-              "opacity": 1,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-              "zIndex": 10,
-            }
-          }
-          testID="padlock-week-2"
-        >
-          <View
-            style={
-              {
-                "backgroundColor": "#1c1917",
-                "borderColor": "rgba(180, 83, 9, 0.2)",
-                "borderRadius": 12,
-                "borderWidth": 1,
-                "padding": 4,
-              }
-            }
-          >
-            <Text
-              color="#f59e0b"
-              name="lock-closed"
-              size={14}
             >
-              lock-closed
-            </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                15
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 16, work block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-16"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(33, 150, 243, 0.14)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                16
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#BBDEFB",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 17, work block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-17"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(33, 150, 243, 0.14)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                17
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#BBDEFB",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 18, home block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-18"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(120, 113, 108, 0.1)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                18
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 19, work block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-19"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(33, 150, 243, 0.14)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                19
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#BBDEFB",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 20, work block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-20"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(33, 150, 243, 0.14)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                20
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#BBDEFB",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 21, home block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-21"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(120, 113, 108, 0.1)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                21
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
           </View>
         </View>
       </View>
@@ -1830,232 +3825,897 @@ exports[`dashboard visual snapshots MonthlyCalendarCard FIFO snapshot 1`] = `
                 "width": "100%",
               },
               {},
-              {
-                "opacity": 0.95,
-              },
             ]
           }
         >
           <View
+            accessibilityLabel="Day 22, work block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
             style={
               {
                 "alignItems": "center",
                 "height": 72,
                 "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
                 "width": 44,
+                "zIndex": 1,
               }
             }
-            testID="locked-calendar-day-22"
+            testID="calendar-day-22"
           >
             <View
               style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(33, 150, 243, 0.14)",
+                  },
+                  false,
+                ]
               }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-23"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-24"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-25"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-26"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-27"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-          <View
-            style={
-              {
-                "alignItems": "center",
-                "height": 72,
-                "justifyContent": "center",
-                "width": 44,
-              }
-            }
-            testID="locked-calendar-day-28"
-          >
-            <View
-              style={
-                {
-                  "backgroundColor": "rgba(255, 255, 255, 0.24)",
-                  "borderRadius": 3,
-                  "height": 6,
-                  "width": 16,
-                }
-              }
-            />
-          </View>
-        </View>
-        <View
-          accessibilityLabel="Upgrade to Ellie Pro to see full calendar"
-          accessibilityRole="button"
-          accessibilityState={
-            {
-              "busy": undefined,
-              "checked": undefined,
-              "disabled": undefined,
-              "expanded": undefined,
-              "selected": undefined,
-            }
-          }
-          accessibilityValue={
-            {
-              "max": undefined,
-              "min": undefined,
-              "now": undefined,
-              "text": undefined,
-            }
-          }
-          accessible={true}
-          collapsable={false}
-          focusable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            {
-              "alignItems": "center",
-              "backgroundColor": "rgba(12, 10, 9, 0.92)",
-              "borderRadius": 6,
-              "bottom": 0,
-              "justifyContent": "center",
-              "left": 0,
-              "opacity": 1,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-              "zIndex": 10,
-            }
-          }
-          testID="padlock-week-3"
-        >
-          <View
-            style={
-              {
-                "backgroundColor": "#1c1917",
-                "borderColor": "rgba(180, 83, 9, 0.2)",
-                "borderRadius": 12,
-                "borderWidth": 1,
-                "padding": 4,
-              }
-            }
-          >
-            <Text
-              color="#f59e0b"
-              name="lock-closed"
-              size={14}
             >
-              lock-closed
-            </Text>
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                22
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#BBDEFB",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 23, work block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-23"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(33, 150, 243, 0.14)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                23
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#BBDEFB",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 24, home block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-24"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(120, 113, 108, 0.1)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                24
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 25, work block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-25"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(33, 150, 243, 0.14)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                25
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#BBDEFB",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 26, work block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-26"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(33, 150, 243, 0.14)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                26
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#BBDEFB",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 27, home block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-27"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(120, 113, 108, 0.1)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                27
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#78716c",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            accessibilityLabel="Day 28, work block"
+            accessibilityRole="button"
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": false,
+                "expanded": undefined,
+                "selected": false,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "height": 72,
+                "justifyContent": "center",
+                "opacity": 1,
+                "position": "relative",
+                "width": 44,
+                "zIndex": 1,
+              }
+            }
+            testID="calendar-day-28"
+          >
+            <View
+              style={
+                [
+                  {
+                    "borderRadius": 8,
+                    "height": 66,
+                    "position": "relative",
+                    "width": 40,
+                    "zIndex": 2,
+                  },
+                  {
+                    "backgroundColor": "rgba(33, 150, 243, 0.14)",
+                  },
+                  false,
+                ]
+              }
+            >
+              <Text
+                style={
+                  [
+                    {
+                      "fontSize": 18,
+                      "fontWeight": "600",
+                      "left": 6,
+                      "position": "absolute",
+                      "top": 4,
+                    },
+                    {
+                      "color": "#e7e5e4",
+                    },
+                    false,
+                  ]
+                }
+              >
+                28
+              </Text>
+              <View
+                style={
+                  [
+                    {
+                      "alignItems": "center",
+                      "borderRadius": 12,
+                      "bottom": 1,
+                      "height": 24,
+                      "justifyContent": "center",
+                      "position": "absolute",
+                      "right": 1,
+                      "shadowColor": "#000",
+                      "shadowOffset": {
+                        "height": 1,
+                        "width": 0,
+                      },
+                      "shadowOpacity": 0.3,
+                      "shadowRadius": 2,
+                      "width": 24,
+                    },
+                    {
+                      "borderRadius": 14,
+                      "height": 28,
+                      "width": 28,
+                    },
+                    {
+                      "backgroundColor": "#BBDEFB",
+                    },
+                  ]
+                }
+              >
+                <Image
+                  source={
+                    {
+                      "testUri": "../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png",
+                    }
+                  }
+                  style={
+                    {
+                      "height": 28,
+                      "resizeMode": "contain",
+                      "width": 28,
+                    }
+                  }
+                />
+              </View>
+            </View>
           </View>
         </View>
       </View>
