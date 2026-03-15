@@ -13,6 +13,10 @@ jest.mock('@/contexts/OnboardingContext', () => ({
   useOnboarding: jest.fn(() => ({ data: {}, updateData: jest.fn() })),
 }));
 
+jest.mock('@react-navigation/native', () => ({
+  useIsFocused: () => true,
+}));
+
 // Mock AsyncStorageService
 jest.mock('@/services/AsyncStorageService', () => ({
   asyncStorageService: {

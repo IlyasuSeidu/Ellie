@@ -32,6 +32,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
+import { useIsFocused } from '@react-navigation/native';
 import { theme } from '@/utils/theme';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import {
@@ -85,7 +86,9 @@ const SHIFT_GLOW_COLORS: Record<string, string> = {
 
 export const MainDashboardScreen: React.FC = () => {
   const { t } = useTranslation('dashboard');
+  const isFocused = useIsFocused();
   const insets = useSafeAreaInsets();
+  const { data: onboardingContextData } = useOnboarding();
   const [userData, setUserData] = useState<OnboardingData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -100,6 +103,9 @@ export const MainDashboardScreen: React.FC = () => {
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [showRefreshSuccess, setShowRefreshSuccess] = useState(false);
   const refreshSuccessTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hasOnboardingContextData = Object.keys(onboardingContextData).length > 0;
+  const hasOnboardingContextDataRef = useRef(hasOnboardingContextData);
+  const onboardingContextDataRef = useRef(onboardingContextData);
 
   // Refresh success animation values
   const successBannerOpacity = useSharedValue(0);
@@ -123,7 +129,10 @@ export const MainDashboardScreen: React.FC = () => {
       // asyncStorageService.get() auto-deserializes JSON, returns object directly
       const savedData = await asyncStorageService.get<OnboardingData>('onboarding:data');
       if (savedData && typeof savedData === 'object') {
-        setUserData(savedData);
+        // Avoid overriding fresher in-memory settings updates with potentially stale storage reads.
+        if (isRefresh || !hasOnboardingContextDataRef.current) {
+          setUserData(savedData);
+        }
       }
 
       if (isRefresh) {
@@ -187,17 +196,39 @@ export const MainDashboardScreen: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    hasOnboardingContextDataRef.current = hasOnboardingContextData;
+  }, [hasOnboardingContextData]);
+
+  useEffect(() => {
+    onboardingContextDataRef.current = onboardingContextData;
+  }, [onboardingContextData]);
+
+  // Ensure Home reflects latest profile/settings saves whenever the tab regains focus.
+  useEffect(() => {
+    if (!isFocused) return;
+    if (hasOnboardingContextData) {
+      setUserData(onboardingContextDataRef.current as OnboardingData);
+      setLoading(false);
+      setRefreshing(false);
+      return;
+    }
     loadData(false);
-  }, [loadData]);
+  }, [isFocused, hasOnboardingContextData, loadData]);
 
   // Subscribe to OnboardingContext so Profile → ShiftSettingsPanel saves are
   // reflected immediately on the Dashboard without requiring a pull-to-refresh.
-  const { data: onboardingContextData } = useOnboarding();
   useEffect(() => {
-    if (onboardingContextData.shiftSystem) {
-      setUserData(onboardingContextData as OnboardingData);
+    if (hasOnboardingContextData) {
+      setUserData((prev) => {
+        const next = onboardingContextData as OnboardingData;
+        if (prev && JSON.stringify(prev) === JSON.stringify(next)) {
+          return prev;
+        }
+        return next;
+      });
+      setLoading(false);
     }
-  }, [onboardingContextData]);
+  }, [hasOnboardingContextData, onboardingContextData]);
 
   const handleRefresh = useCallback(() => {
     setRefreshing(true);
