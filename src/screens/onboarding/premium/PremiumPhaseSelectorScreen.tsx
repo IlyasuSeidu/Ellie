@@ -146,6 +146,27 @@ interface DayCardData {
   description: string;
 }
 
+const KNOWN_SHIFT_PATTERNS = Object.values(ShiftPattern) as string[];
+
+const normalizePatternType = (
+  patternType: ShiftPattern | string | null | undefined
+): ShiftPattern => {
+  if (!patternType) {
+    return ShiftPattern.CUSTOM;
+  }
+
+  if (KNOWN_SHIFT_PATTERNS.includes(patternType)) {
+    return patternType as ShiftPattern;
+  }
+
+  const upperCasedPattern = String(patternType).toUpperCase();
+  if (KNOWN_SHIFT_PATTERNS.includes(upperCasedPattern)) {
+    return upperCasedPattern as ShiftPattern;
+  }
+
+  return ShiftPattern.CUSTOM;
+};
+
 // Shadow utility function
 const getShadowStyle = (cardIndex: number, isActiveCard: boolean) => {
   if (isActiveCard) {
@@ -1058,7 +1079,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
 
   // Get current pattern (convert preset or use custom)
   const pattern = useMemo(() => {
-    const patternType = data.patternType || ShiftPattern.CUSTOM;
+    const patternType = normalizePatternType(data.patternType);
     return getPatternValues(patternType);
   }, [data.patternType, getPatternValues]);
 
@@ -1336,32 +1357,34 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
       return;
     }
     const totalCards = stage === SelectionStage.PHASE ? phaseCards.length : dayCards.length;
+    if (totalCards === 0) {
+      return;
+    }
 
-    setTimeout(() => {
-      if (currentCardIndex < totalCards - 1) {
-        setCurrentCardIndex((prev) => prev + 1);
-      } else {
-        // Loop back to first card with fresh animations
-        setCurrentCardIndex(0);
-        setCardRemountKey((prev) => prev + 1);
-
-        // Haptic feedback for loop-back
-        void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
-          source: 'PremiumPhaseSelectorScreen.handleSwipeLeft.loopback',
-        });
-
-        // Re-trigger card entrance animations
-        cardAnimations.forEach((anim, index) => {
-          anim.value = 0;
-          anim.value = withDelay(
-            index * 100,
-            withTiming(1, { duration: 400, easing: Easing.out(Easing.ease) })
-          );
-        });
+    setCurrentCardIndex((prev) => {
+      if (prev < totalCards - 1) {
+        return prev + 1;
       }
-    }, 300);
+
+      // Loop back to first card with fresh animations.
+      setCardRemountKey((key) => key + 1);
+
+      void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
+        source: 'PremiumPhaseSelectorScreen.handleSwipeLeft.loopback',
+      });
+
+      // Re-trigger card entrance animations.
+      cardAnimations.forEach((anim, index) => {
+        anim.value = 0;
+        anim.value = withDelay(
+          index * 100,
+          withTiming(1, { duration: 400, easing: Easing.out(Easing.ease) })
+        );
+      });
+      return 0;
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stage, phaseCards.length, dayCards.length, currentCardIndex]);
+  }, [stage, phaseCards.length, dayCards.length]);
 
   // Handle swipe up (info)
   const handleSwipeUp = useCallback(() => {
