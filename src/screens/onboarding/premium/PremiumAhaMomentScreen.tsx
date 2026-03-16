@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { useVoiceAssistant } from '@/contexts/VoiceAssistantContext';
 import { buildShiftCycle, getShiftDaysInRange, getShiftStatistics } from '@/utils/shiftUtils';
-import { toDateString } from '@/utils/dateUtils';
 import { Analytics } from '@/utils/analytics';
 import { theme } from '@/utils/theme';
 import { PremiumButton } from '@/components/onboarding/premium';
@@ -86,7 +85,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
     return getShiftStatistics(yearStart, yearEnd, shiftCycle);
   }, [shiftCycle, yearStart, yearEnd]);
 
-  const todayStr = useMemo(() => toDateString(today), [today]);
+  const todayStr = useMemo(() => today.toISOString().split('T')[0], [today]);
 
   const nextShift = useMemo(
     () => shiftDays.find((d) => d.shiftType !== 'off' && d.date > todayStr),

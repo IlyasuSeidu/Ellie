@@ -2,13 +2,12 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PremiumAhaMomentScreen } from '../PremiumAhaMomentScreen';
-import { ShiftPattern } from '@/types';
 
 const mockNavigate = jest.fn();
 const mockOpenModal = jest.fn();
 const mockOpenModalWithQuery = jest.fn();
 const mockOnboardingData = {
-  patternType: ShiftPattern.STANDARD_4_4_4,
+  patternType: '4-4-4',
   shiftSystem: '2-shift',
   rosterType: 'rotating',
   startDate: new Date('2026-03-10'),

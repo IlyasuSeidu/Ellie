@@ -43,7 +43,6 @@ import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
 import { normalizeLanguage } from '@/i18n/languageDetector';
-import { parseCalendarDate, toCalendarDateString, toDateString } from '@/utils/dateUtils';
 import {
   ShiftPattern,
   ShiftSystem,
@@ -807,7 +806,9 @@ export const _resolvePatternValues = (
 
 // Get today's date as default
 const getTodayDate = (): string => {
-  return toDateString(new Date());
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return today.toISOString().split('T')[0];
 };
 
 // Get user-friendly phase label
@@ -844,7 +845,7 @@ export const _getPhaseLabel = (
 export const _applyDateSelection = (date: Date, onDateSelect: (date: string) => void): void => {
   if (isDateValid(date)) {
     HAPTIC_PATTERNS.MEDIUM();
-    onDateSelect(toDateString(date));
+    onDateSelect(date.toISOString().split('T')[0]);
     return;
   }
 
@@ -1170,7 +1171,7 @@ export const _InteractiveCalendar: React.FC<CalendarProps> = ({
       <GestureDetector gesture={panGesture}>
         <Animated.View style={[styles.calendarGrid, gridAnimatedStyle]}>
           {days.map((date, index) => {
-            const dateString = toDateString(date);
+            const dateString = date.toISOString().split('T')[0];
             const isSelected = selectedDate === dateString;
             const isToday =
               date.toDateString() === new Date().toDateString() &&
@@ -1181,7 +1182,7 @@ export const _InteractiveCalendar: React.FC<CalendarProps> = ({
             // Calculate shift type for this date if selected date exists
             let shiftType: 'day' | 'night' | 'morning' | 'afternoon' | 'off' | null = null;
             if (selectedDate && isValid && isCurrentMonth) {
-              const startDate = parseCalendarDate(selectedDate) ?? new Date(selectedDate);
+              const startDate = new Date(selectedDate);
               shiftType = getShiftTypeForDate(
                 date,
                 startDate,
@@ -1339,7 +1340,7 @@ export const _SelectedDateCard: React.FC<SelectedDateCardProps> = ({
 
   if (!selectedDate) return null;
 
-  const date = parseCalendarDate(selectedDate) ?? new Date(selectedDate);
+  const date = new Date(selectedDate);
   const formattedDate = formatDate(date);
 
   return (
@@ -2017,11 +2018,8 @@ export const _LivePreviewCard: React.FC<LivePreviewCardProps> = ({
     opacity: contentOpacity.value,
   }));
 
-  const selectedDateValue = selectedDate
-    ? (parseCalendarDate(selectedDate) ?? new Date(selectedDate))
-    : null;
-  const formattedDate = selectedDateValue
-    ? formatDate(selectedDateValue, dateLocaleTag)
+  const formattedDate = selectedDate
+    ? formatDate(new Date(selectedDate), dateLocaleTag)
     : t('startDate.preview.notSelected', { defaultValue: 'Not selected' });
   const phaseLabel = selectedPhase
     ? selectedPhase === 'day'
@@ -2096,12 +2094,12 @@ export const _LivePreviewCard: React.FC<LivePreviewCardProps> = ({
                 {Array(7)
                   .fill(null)
                   .map((_, dayIndex) => {
-                    const date = parseCalendarDate(selectedDate) ?? new Date(selectedDate);
+                    const date = new Date(selectedDate);
                     date.setDate(date.getDate() + dayIndex);
                     const dayLabel = date.toLocaleDateString(dateLocaleTag, { weekday: 'narrow' });
                     const shiftType = getShiftTypeForDate(
                       date,
-                      selectedDateValue ?? date,
+                      new Date(selectedDate),
                       phaseOffset,
                       customPattern,
                       shiftSystem
@@ -2308,8 +2306,15 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   const allowSettingsExitRef = useRef(false);
   const existingStartDate = useMemo(() => {
     const rawStartDate = data.startDate as Date | string | undefined;
-    const normalized = rawStartDate ? toCalendarDateString(rawStartDate) : null;
-    if (normalized) return normalized;
+    if (rawStartDate instanceof Date && !Number.isNaN(rawStartDate.getTime())) {
+      return rawStartDate.toISOString().split('T')[0] ?? getTodayDate();
+    }
+    if (typeof rawStartDate === 'string' && rawStartDate.length > 0) {
+      const parsedDate = new Date(rawStartDate);
+      if (!Number.isNaN(parsedDate.getTime())) {
+        return parsedDate.toISOString().split('T')[0] ?? getTodayDate();
+      }
+    }
     return getTodayDate();
   }, [data.startDate]);
   // Smart default: today
@@ -2382,31 +2387,29 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   // - onboarding mode requires phaseOffset from Phase Selector
   // - settings mode allows date update independently and resets phase to day 1
   const canContinue = selectedDate !== null && (isSettingsMode || data.phaseOffset !== undefined);
-  const selectedDateValue = useMemo(() => {
-    if (!selectedDate) return null;
-    return parseCalendarDate(selectedDate) ?? new Date(selectedDate);
-  }, [selectedDate]);
-  const selectedDateGuidanceLabel = useMemo(() => {
-    if (!selectedDateValue) return null;
-    const label = formatDate(selectedDateValue, dateLocaleTag);
-    return t('startDate.guidance.selectedDate', {
-      date: label,
-      defaultValue: `Selected: ${label}`,
-    });
-  }, [dateLocaleTag, selectedDateValue, t]);
+  const selectedDateGuidanceLabel = useMemo(
+    () =>
+      selectedDate
+        ? t('startDate.guidance.selectedDate', {
+            date: formatDate(new Date(selectedDate), dateLocaleTag),
+            defaultValue: `Selected: ${formatDate(new Date(selectedDate), dateLocaleTag)}`,
+          })
+        : null,
+    [dateLocaleTag, selectedDate, t]
+  );
 
   const handleContinue = useCallback(() => {
-    if (!canContinue || !selectedDate || !selectedDateValue) return;
+    if (!canContinue || !selectedDate) return;
     if (!isSettingsMode && data.phaseOffset === undefined) return;
 
     updateData(
       isSettingsMode
         ? {
-            startDate: selectedDateValue,
+            startDate: new Date(selectedDate),
             phaseOffset: 0,
           }
         : {
-            startDate: selectedDateValue,
+            startDate: new Date(selectedDate),
           }
     );
 
@@ -2426,7 +2429,6 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   }, [
     canContinue,
     selectedDate,
-    selectedDateValue,
     isSettingsMode,
     data.phaseOffset,
     updateData,
