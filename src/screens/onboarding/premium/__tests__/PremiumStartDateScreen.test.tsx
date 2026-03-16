@@ -32,6 +32,7 @@ import {
   _getDayWithinPhaseLength,
   _getDayWithinPhaseLabel,
   _isDateValid,
+  _getPreviewPhaseOffset,
   _getShiftTypeForDate,
   _getPhaseLabel,
   _resolvePatternValues,
@@ -1178,6 +1179,37 @@ describe('PremiumStartDateScreen', () => {
           ShiftSystem.THREE_SHIFT
         )
       ).toEqual({ morningOn: 3, afternoonOn: 2, nightOn: 1, daysOff: 2 });
+    });
+
+    it('re-anchors onboarding preview phase offset when selected date is not today', () => {
+      const previewOffset = _getPreviewPhaseOffset({
+        rawPhaseOffset: 5, // Night day 2 selected for "today"
+        selectedDate: '2026-03-10',
+        isSettingsMode: false,
+        customPattern: { daysOn: 4, nightsOn: 4, daysOff: 4 },
+        shiftSystem: ShiftSystem.TWO_SHIFT,
+        patternType: ShiftPattern.STANDARD_4_4_4,
+        rosterType: 'rotating',
+        referenceDate: new Date('2026-03-16T09:00:00.000Z'),
+      });
+
+      // 6 days between selected date and today => (5 - 6) mod 12 = 11
+      expect(previewOffset).toBe(11);
+    });
+
+    it('keeps settings preview phase offset unchanged', () => {
+      const previewOffset = _getPreviewPhaseOffset({
+        rawPhaseOffset: 7,
+        selectedDate: '2026-03-10',
+        isSettingsMode: true,
+        customPattern: { daysOn: 4, nightsOn: 4, daysOff: 4 },
+        shiftSystem: ShiftSystem.TWO_SHIFT,
+        patternType: ShiftPattern.STANDARD_4_4_4,
+        rosterType: 'rotating',
+        referenceDate: new Date('2026-03-16T09:00:00.000Z'),
+      });
+
+      expect(previewOffset).toBe(7);
     });
 
     it('covers all predefined pattern mapping branches', () => {

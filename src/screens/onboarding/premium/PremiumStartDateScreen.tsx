@@ -626,6 +626,91 @@ const getEffectiveFIFOConfigForDate = (
   };
 };
 
+const getCycleLengthForAnchoring = (
+  pattern: ShiftPatternValues,
+  shiftSystem: ShiftSystem,
+  patternType: ShiftPattern | string | undefined,
+  rosterType?: string | null,
+  fifoConfig?: FIFOConfig | null
+): number => {
+  const normalizedPattern = normalizePatternType(patternType);
+  const isFIFORoster =
+    rosterType === RosterType.FIFO || String(normalizedPattern).startsWith('FIFO_');
+
+  if (isFIFORoster) {
+    const effectiveFIFOConfig = getEffectiveFIFOConfigForDate(pattern, {
+      patternType: normalizedPattern,
+      rosterType: RosterType.FIFO,
+      fifoConfig,
+    });
+    const fifoCycleLength =
+      (effectiveFIFOConfig?.workBlockDays ?? 0) + (effectiveFIFOConfig?.restBlockDays ?? 0);
+    return Math.max(1, fifoCycleLength);
+  }
+
+  const cycleLength =
+    shiftSystem === ShiftSystem.THREE_SHIFT
+      ? (pattern.morningOn || 0) +
+        (pattern.afternoonOn || 0) +
+        (pattern.nightOn || 0) +
+        (pattern.daysOff || 0)
+      : (pattern.daysOn || 0) + (pattern.nightsOn || 0) + (pattern.daysOff || 0);
+
+  return Math.max(1, cycleLength);
+};
+
+type PreviewPhaseOffsetOptions = {
+  rawPhaseOffset: number;
+  selectedDate: string | null;
+  isSettingsMode: boolean;
+  customPattern: ShiftPatternValues;
+  shiftSystem: ShiftSystem;
+  patternType: ShiftPattern | string | undefined;
+  rosterType?: string | null;
+  fifoConfig?: FIFOConfig | null;
+  referenceDate?: Date;
+};
+
+export const _getPreviewPhaseOffset = ({
+  rawPhaseOffset,
+  selectedDate,
+  isSettingsMode,
+  customPattern,
+  shiftSystem,
+  patternType,
+  rosterType,
+  fifoConfig,
+  referenceDate = new Date(),
+}: PreviewPhaseOffsetOptions): number => {
+  if (isSettingsMode) {
+    return rawPhaseOffset;
+  }
+
+  if (!selectedDate) {
+    return rawPhaseOffset;
+  }
+
+  const parsedSelectedDate = parseCalendarDate(selectedDate);
+  if (!parsedSelectedDate) {
+    return rawPhaseOffset;
+  }
+
+  const cycleLength = getCycleLengthForAnchoring(
+    customPattern,
+    shiftSystem,
+    patternType,
+    rosterType,
+    fifoConfig
+  );
+
+  return alignPhaseOffsetToReferenceDate(
+    rawPhaseOffset,
+    cycleLength,
+    parsedSelectedDate,
+    referenceDate
+  );
+};
+
 // Calculate which shift type for a given date
 export const _getShiftTypeForDate = (
   date: Date,
@@ -2446,31 +2531,43 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
     });
   }, [dateLocaleTag, selectedDate, t]);
 
+  const previewPhaseOffset = useMemo(
+    () =>
+      _getPreviewPhaseOffset({
+        rawPhaseOffset: data.phaseOffset ?? 0,
+        selectedDate,
+        isSettingsMode,
+        customPattern,
+        shiftSystem,
+        patternType: pattern,
+        rosterType: data.rosterType,
+        fifoConfig: data.fifoConfig,
+      }),
+    [
+      customPattern,
+      data.phaseOffset,
+      data.fifoConfig,
+      data.rosterType,
+      isSettingsMode,
+      pattern,
+      selectedDate,
+      shiftSystem,
+    ]
+  );
+
   const handleContinue = useCallback(() => {
     if (!canContinue || !selectedDate) return;
     if (!isSettingsMode && data.phaseOffset === undefined) return;
     const parsedStartDate = parseCalendarDate(selectedDate);
     if (!parsedStartDate) return;
 
-    const isFIFORosterForAnchoring =
-      data.rosterType === RosterType.FIFO || String(pattern).startsWith('FIFO_');
-    const fifoConfigForAnchoring = isFIFORosterForAnchoring
-      ? getEffectiveFIFOConfigForDate(customPattern, {
-          patternType: pattern,
-          rosterType: RosterType.FIFO,
-          fifoConfig: data.fifoConfig,
-        })
-      : null;
-    const cycleLengthForAnchoring = isFIFORosterForAnchoring
-      ? (fifoConfigForAnchoring?.workBlockDays ?? 0) + (fifoConfigForAnchoring?.restBlockDays ?? 0)
-      : shiftSystem === ShiftSystem.THREE_SHIFT
-        ? (customPattern.morningOn || 0) +
-          (customPattern.afternoonOn || 0) +
-          (customPattern.nightOn || 0) +
-          (customPattern.daysOff || 0)
-        : (customPattern.daysOn || 0) +
-          (customPattern.nightsOn || 0) +
-          (customPattern.daysOff || 0);
+    const cycleLengthForAnchoring = getCycleLengthForAnchoring(
+      customPattern,
+      shiftSystem,
+      pattern,
+      data.rosterType,
+      data.fifoConfig
+    );
     const anchoredPhaseOffset = alignPhaseOffsetToReferenceDate(
       data.phaseOffset ?? 0,
       cycleLengthForAnchoring,
@@ -2569,7 +2666,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
             onDateSelect={setSelectedDate}
             reducedMotion={reducedMotion}
             customPattern={customPattern}
-            phaseOffset={data.phaseOffset ?? 0}
+            phaseOffset={previewPhaseOffset}
             shiftSystem={shiftSystem}
             patternType={data.patternType}
             rosterType={data.rosterType}
