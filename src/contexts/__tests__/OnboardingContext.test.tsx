@@ -588,5 +588,26 @@ describe('OnboardingContext', () => {
         expect(result.current.data.shiftTimes).toEqual(savedData.shiftTimes);
       });
     });
+
+    it('should normalize date-only startDate strings to a valid Date', async () => {
+      const savedData = {
+        name: 'John Doe',
+        startDate: '2026-03-16',
+      };
+
+      (asyncStorageService.get as jest.Mock).mockResolvedValue(savedData);
+
+      const { result } = renderHook(() => useOnboarding(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.data.startDate).toBeInstanceOf(Date);
+      });
+
+      const restored = result.current.data.startDate as Date;
+      expect(Number.isNaN(restored.getTime())).toBe(false);
+      expect(restored.getFullYear()).toBe(2026);
+      expect(restored.getMonth()).toBe(2);
+      expect(restored.getDate()).toBe(16);
+    });
   });
 });

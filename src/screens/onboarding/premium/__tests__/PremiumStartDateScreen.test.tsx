@@ -44,6 +44,7 @@ import { goToNextScreen } from '@/utils/onboardingNavigation';
 import * as OnboardingContext from '@/contexts/OnboardingContext';
 import * as Haptics from 'expo-haptics';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
+import { toDateString } from '@/utils/dateUtils';
 
 const mockNavigate = jest.fn();
 const mockGoBack = jest.fn();
@@ -1249,12 +1250,28 @@ describe('PremiumStartDateScreen', () => {
       ).toBe('night');
     });
 
+    it('treats same-calendar-day anchors correctly even with non-midnight start times', () => {
+      const selectedDay = new Date(2026, 1, 2, 0, 0, 0, 0);
+      const startDateWithTime = new Date(2026, 1, 2, 12, 0, 0, 0);
+
+      expect(
+        _getShiftTypeForDate(
+          selectedDay,
+          startDateWithTime,
+          3,
+          { daysOn: 2, nightsOn: 2, daysOff: 3 },
+          ShiftSystem.TWO_SHIFT
+        )
+      ).toBe('night');
+    });
+
     it('covers calendar selection and pan-end helper branches', () => {
       const onDateSelect = jest.fn();
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       _applyDateSelection(today, onDateSelect);
       expect(onDateSelect).toHaveBeenCalled();
+      expect(onDateSelect).toHaveBeenCalledWith(toDateString(today));
       expect(Haptics.impactAsync).toHaveBeenCalled();
 
       onDateSelect.mockClear();
