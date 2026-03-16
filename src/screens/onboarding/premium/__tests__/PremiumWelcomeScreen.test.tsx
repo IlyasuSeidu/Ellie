@@ -58,7 +58,7 @@ describe('PremiumWelcomeScreen', () => {
 
     it('should render tagline', () => {
       const { getByText } = render(<PremiumWelcomeScreen onContinue={mockOnContinue} />);
-      expect(getByText('Know every shift for the entire year. In 60 seconds.')).toBeTruthy();
+      expect(getByText('Stop counting shifts on your hands. No second-guessing.')).toBeTruthy();
     });
 
     it('should render Get Started button', () => {
@@ -171,7 +171,7 @@ describe('PremiumWelcomeScreen', () => {
 
       expect(UNSAFE_root.findByType('Image')).toBeTruthy(); // Logo
       expect(getByText('Ellie')).toBeTruthy(); // App name
-      expect(getByText('Know every shift for the entire year. In 60 seconds.')).toBeTruthy(); // Tagline
+      expect(getByText('Stop counting shifts on your hands. No second-guessing.')).toBeTruthy(); // Tagline
       expect(getByText('Set Up My Roster →')).toBeTruthy(); // Button
     });
   });
@@ -244,7 +244,7 @@ describe('PremiumWelcomeScreen', () => {
       // All elements should be present
       expect(UNSAFE_root.findByType('Image')).toBeTruthy();
       expect(getByText('Ellie')).toBeTruthy();
-      expect(getByText('Know every shift for the entire year. In 60 seconds.')).toBeTruthy();
+      expect(getByText('Stop counting shifts on your hands. No second-guessing.')).toBeTruthy();
       expect(getByText('Set Up My Roster →')).toBeTruthy();
     });
 

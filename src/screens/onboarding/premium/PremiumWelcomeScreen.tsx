@@ -171,8 +171,7 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
         </Animated.Text>
 
         <Animated.View style={styles.socialProofRow} entering={FadeIn.delay(1200).duration(400)}>
-          <Text style={styles.socialProofStars}>★★★★★</Text>
-          <Text style={styles.socialProofText}>50,000+ shift workers</Text>
+          <Text style={styles.socialProofText}>Built for shift workers</Text>
         </Animated.View>
 
         {/* Get Started button */}

@@ -1,17 +1,20 @@
 /**
  * Onboarding Navigator
  *
- * Handles navigation between 9-10 premium onboarding screens (depends on roster type).
+ * Handles navigation between 7 visible onboarding steps (plus post-paywall screens).
  *
  * ## Flow (Rotating Rosters):
- * 1. Welcome → 2. Introduction → 3. ShiftSystem → 3.5 RosterType → 4. ShiftPattern
+ * 1. Welcome → 2. ShiftSystem → 3. RosterType → 4. ShiftPattern
  * → [4b-R. CustomPattern (conditional)] → 5-R. PhaseSelector → 6. StartDate
- * → 7. ShiftTimeInput → 8. Completion
+ * → 7. AhaMoment → [Paywall modal] → ShiftTimeInput → Completion
  *
  * ## Flow (FIFO Rosters):
- * 1. Welcome → 2. Introduction → 3. ShiftSystem → 3.5 RosterType → 4. ShiftPattern
+ * 1. Welcome → 2. ShiftSystem → 3. RosterType → 4. ShiftPattern
  * → [4b-F. FIFOCustomPattern (conditional)] → 5-F. FIFOPhaseSelector → 6. StartDate
- * → 7. ShiftTimeInput → 8. Completion
+ * → 7. AhaMoment → [Paywall modal] → ShiftTimeInput → Completion
+ *
+ * ## Note: Introduction screen is registered but not in the initial flow.
+ * It is accessible post-onboarding via the OnboardingChecklist "Complete your profile" action.
  *
  * ## Conditional Navigation:
  * - **RosterType** screen added between ShiftSystem and ShiftPattern
@@ -71,8 +74,10 @@ export type ShiftPatternSettingsSeed = {
 export type OnboardingStackParamList = {
   /** Step 1: Welcome screen with app intro (auto-advances) */
   Welcome: undefined;
-  /** Step 2: Collect user profile via chat (name, occupation, company, country) */
-  Introduction: undefined;
+  /** Step 2: Collect user profile via chat (name, occupation, company, country).
+   *  entryPoint 'settings' — launched post-onboarding (e.g. from dashboard checklist);
+   *  saves data and returns to the previous screen instead of advancing the flow. */
+  Introduction: { entryPoint?: 'settings' } | undefined;
   /** Step 3: Select shift system (2-shift or 3-shift) */
   ShiftSystem: undefined;
   /** Step 3.5: Select roster type (rotating or FIFO) - NEW */

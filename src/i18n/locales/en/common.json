@@ -166,8 +166,8 @@
     "paywall": {
       "closeA11y": "Close paywall",
       "title": "Your year is ready.",
-      "subtitle": "Every shift. Every day off. Yours to unlock.",
-      "socialProof": "4.8 · Trusted by 50,000+ shift workers",
+      "subtitle": "Stop counting shifts on your hands. No second-guessing.",
+      "socialProof": "Built for shift workers like you",
       "testimonials": [
         {
           "quote": "Finally know when I'm working Christmas. Changed my life.",
@@ -189,7 +189,7 @@
         "leavePlanning": "Plan holidays without calling HR",
         "aiPowered": "AI that knows YOUR exact pattern, not a generic one"
       },
-      "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
+      "lossAversion": "Without Pro, you're back to counting shifts on your hands.",
       "timerLabel": "Introductory offer ends in",
       "plans": {
         "annual": "Annual",

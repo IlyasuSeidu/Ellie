@@ -15,7 +15,7 @@ import {
   RosterType,
 } from '@/types';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
-import { diffInDays, addDays, toDateString, getDateRange } from './dateUtils';
+import { diffInDays, addDays, toDateString, toCalendarDateString, getDateRange } from './dateUtils';
 
 function isFIFOPattern(patternType: ShiftPattern): boolean {
   switch (patternType) {
@@ -864,9 +864,10 @@ export function getPhaseInfo(
 export function buildShiftCycle(data: OnboardingData): ShiftCycle | null {
   if (!data.patternType || !data.startDate) return null;
 
-  const startDateStr = toDateString(
-    typeof data.startDate === 'string' ? new Date(data.startDate) : data.startDate
-  );
+  const startDateStr = toCalendarDateString(data.startDate);
+  if (!startDateStr) {
+    return null;
+  }
 
   const inferredRosterType: RosterType =
     data.rosterType === RosterType.FIFO || isFIFOPattern(data.patternType)

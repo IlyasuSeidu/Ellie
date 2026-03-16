@@ -14,8 +14,8 @@ import { View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MainDashboardScreen } from '@/screens/main/MainDashboardScreen';
 import { ProfileScreen } from '@/screens/main/ProfileScreen';
-import { VoiceAssistantModal } from '@/components/voice';
 import { CustomTabBar } from '@/components/navigation/CustomTabBar';
+import { VoiceAssistantModal } from '@/components/voice';
 
 export type MainTabParamList = {
   Home: undefined;

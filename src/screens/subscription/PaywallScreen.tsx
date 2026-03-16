@@ -230,10 +230,9 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
         )}
 
         <View style={styles.socialProofBar}>
-          <Text style={styles.socialStars}>★★★★★</Text>
           <Text style={styles.socialProofText}>
             {t('subscription.paywall.socialProof', {
-              defaultValue: '4.8 - Trusted by 50,000+ shift workers',
+              defaultValue: 'Built for shift workers like you',
             })}
           </Text>
         </View>
@@ -294,7 +293,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
           <Ionicons name="lock-closed-outline" size={14} color={theme.colors.shadow} />
           <Text style={styles.lossAversionText}>
             {t('subscription.paywall.lossAversion', {
-              defaultValue: 'Without Pro, you can only see 2 weeks of your roster.',
+              defaultValue: "Without Pro, you're back to counting shifts on your hands.",
             })}
           </Text>
         </View>
@@ -339,13 +338,13 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
                 </View>
               </View>
               <View style={styles.planRight}>
-                <Text style={styles.planPrice}>
-                  {annualPrice}
-                  {t('subscription.paywall.plans.annualSuffix')}
-                </Text>
                 <Text style={styles.planPriceStrikethrough}>
                   {monthlyPrice}
                   {t('subscription.paywall.plans.monthlySuffix')}
+                </Text>
+                <Text style={styles.planPrice}>
+                  {annualPrice}
+                  {t('subscription.paywall.plans.annualSuffix')}
                 </Text>
               </View>
             </TouchableOpacity>

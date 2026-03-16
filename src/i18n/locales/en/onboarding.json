@@ -1,6 +1,6 @@
 {
   "welcome": {
-    "tagline": "Know every shift for the entire year. In 60 seconds.",
+    "tagline": "Stop counting shifts on your hands. No second-guessing.",
     "getStarted": "Set Up My Roster →"
   },
   "common": {
@@ -37,8 +37,8 @@
     "nextMonthA11y": "Next month"
   },
   "ahaMoment": {
-    "headline": "Your year, mapped.",
-    "subheadline": "Every shift. Every day off.",
+    "headline": "Your shifts, mapped.",
+    "subheadline": "Stop counting shifts on your hands. No second-guessing.",
     "heyEllieTitle": "Ask Ellie about your roster",
     "ctaPrimary": "Unlock Full Access — Free 7-Day Trial",
     "ctaSecondary": "Continue with Limited Access →",

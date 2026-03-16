@@ -87,6 +87,7 @@ import React, {
 import { ShiftPattern, FIFOConfig } from '@/types';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import { migrateOnboardingDataToV2 } from '@/utils/migrationUtils';
+import { parseCalendarDate } from '@/utils/dateUtils';
 import i18n from '@/i18n';
 
 export interface OnboardingData {
@@ -238,8 +239,15 @@ function normalizeStartDate(data: OnboardingData): OnboardingData {
     return data;
   }
 
-  const parsed = typeof rawStartDate === 'string' ? new Date(rawStartDate) : rawStartDate;
-  if (Number.isNaN(parsed.getTime())) {
+  if (rawStartDate instanceof Date) {
+    if (Number.isNaN(rawStartDate.getTime())) {
+      return { ...data, startDate: undefined };
+    }
+    return { ...data, startDate: rawStartDate };
+  }
+
+  const parsed = parseCalendarDate(rawStartDate);
+  if (!parsed) {
     return { ...data, startDate: undefined };
   }
 

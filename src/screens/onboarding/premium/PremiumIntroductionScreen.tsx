@@ -15,8 +15,9 @@ import {
   Alert,
   AccessibilityInfo,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, type RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RootStackParamList } from '@/navigation/AppNavigator';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 import * as Haptics from 'expo-haptics';
@@ -77,6 +78,11 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
 }) => {
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
+  const route =
+    useRoute<
+      RouteProp<{ Introduction: { entryPoint?: 'settings' } | undefined }, 'Introduction'>
+    >();
+  const isSettingsEntry = route.params?.entryPoint === 'settings';
   const { data, updateData } = useOnboarding();
   const flatListRef = useRef<FlatList>(null);
 
@@ -366,6 +372,14 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
                 company: formData.company,
                 country: formData.country,
               });
+            } else if (isSettingsEntry) {
+              // Launched post-onboarding (e.g. from dashboard checklist) — pop back to the
+              // caller instead of advancing into the onboarding flow.
+              const rootNavigation =
+                navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+              if (rootNavigation?.canGoBack()) {
+                rootNavigation.goBack();
+              }
             } else {
               goToNextScreen(navigation, 'Introduction');
             }
@@ -382,6 +396,7 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
     updateData,
     reducedMotion,
     onContinue,
+    isSettingsEntry,
     navigation,
     t,
   ]);

@@ -57,6 +57,63 @@ export function parseDate(dateString: string, format?: string): Date {
   return dayjs(dateString, format).toDate();
 }
 
+const DATE_ONLY_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+const DATE_PREFIX_PATTERN = /^(\d{4}-\d{2}-\d{2})T/;
+
+/**
+ * Parse a calendar date string while preserving date-only semantics.
+ *
+ * Date-only strings (`YYYY-MM-DD`) are parsed as local calendar dates to avoid
+ * timezone day-shifts from `new Date('YYYY-MM-DD')`.
+ */
+export function parseCalendarDate(dateString: string): Date | null {
+  const trimmed = dateString.trim();
+  const directDateMatch = DATE_ONLY_PATTERN.exec(trimmed);
+  if (directDateMatch) {
+    const year = Number(directDateMatch[1]);
+    const monthIndex = Number(directDateMatch[2]) - 1;
+    const day = Number(directDateMatch[3]);
+    const parsed = new Date(year, monthIndex, day);
+    if (
+      parsed.getFullYear() === year &&
+      parsed.getMonth() === monthIndex &&
+      parsed.getDate() === day
+    ) {
+      return parsed;
+    }
+    return null;
+  }
+
+  const isoPrefixMatch = DATE_PREFIX_PATTERN.exec(trimmed);
+  if (isoPrefixMatch) {
+    return parseCalendarDate(isoPrefixMatch[1]);
+  }
+
+  const parsed = dayjs(trimmed);
+  if (!parsed.isValid()) {
+    return null;
+  }
+  return parsed.toDate();
+}
+
+/**
+ * Convert a Date/string value to a stable local calendar key (`YYYY-MM-DD`).
+ */
+export function toCalendarDateString(value: Date | string): string | null {
+  if (typeof value === 'string') {
+    const parsed = parseCalendarDate(value);
+    if (!parsed) {
+      return null;
+    }
+    return dayjs(parsed).format('YYYY-MM-DD');
+  }
+
+  if (!(value instanceof Date) || Number.isNaN(value.getTime())) {
+    return null;
+  }
+  return dayjs(value).format('YYYY-MM-DD');
+}
+
 /**
  * Get the number of days in a specific month and year
  *

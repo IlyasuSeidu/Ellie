@@ -374,18 +374,13 @@ export const MainDashboardScreen: React.FC = () => {
     const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
     rootNavigation?.navigate('Onboarding', {
       screen: 'Introduction',
+      params: { entryPoint: 'settings' },
     });
   }, [navigation]);
 
   const handleOpenEllieTab = useCallback(() => {
     if (typeof navigation.navigate === 'function') {
       navigation.navigate('Ellie' as never);
-    }
-  }, [navigation]);
-
-  const handleOpenProfileTab = useCallback(() => {
-    if (typeof navigation.navigate === 'function') {
-      navigation.navigate('Profile' as never);
     }
   }, [navigation]);
 
@@ -510,10 +505,10 @@ export const MainDashboardScreen: React.FC = () => {
 
         {showChecklist && (
           <OnboardingChecklist
+            userData={userData}
             onAddShiftTimes={handleOpenShiftTimeSettings}
             onCompleteProfile={handleOpenProfileIntroduction}
             onAskEllie={handleOpenEllieTab}
-            onSetHourlyRate={handleOpenProfileTab}
             onDismiss={() => {
               void AsyncStorage.setItem('onboarding_checklist:dismissed', 'true');
               setShowChecklist(false);
