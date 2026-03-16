@@ -2,7 +2,7 @@
  * Tests for Shift Calculation Utilities
  */
 
-import { calculateShiftDay } from '../shiftUtils';
+import { calculateShiftDay, getPhaseInfo } from '../shiftUtils';
 import { ShiftPattern, ShiftSystem, ShiftCycle } from '@/types';
 
 describe('calculateShiftDay', () => {
@@ -261,6 +261,26 @@ describe('calculateShiftDay', () => {
       const day1 = calculateShiftDay(new Date('2024-01-01'), shiftCycle);
       expect(day1.shiftType).toBe('afternoon');
       expect(day1.isWorkDay).toBe(true);
+    });
+
+    it('keeps selected night day stable when startDate is restored from ISO timestamp', () => {
+      const selectedLocalDate = new Date(2026, 2, 15);
+      const cycle: ShiftCycle = {
+        patternType: ShiftPattern.STANDARD_4_4_4,
+        shiftSystem: ShiftSystem.TWO_SHIFT,
+        daysOn: 4,
+        nightsOn: 4,
+        daysOff: 4,
+        startDate: selectedLocalDate.toISOString(),
+        phaseOffset: 5, // Night day 2 in a 4-4-4 cycle
+      };
+
+      const selectedDay = calculateShiftDay(selectedLocalDate, cycle);
+      expect(selectedDay.shiftType).toBe('night');
+
+      const cyclePosition = getPhaseInfo(selectedLocalDate, cycle);
+      expect(cyclePosition.position).toBe(5);
+      expect(cyclePosition.phaseType).toBe('night');
     });
   });
 

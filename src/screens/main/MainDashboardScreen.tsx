@@ -42,7 +42,7 @@ import {
   buildShiftCycle,
   getFIFOBlockInfo,
 } from '@/utils/shiftUtils';
-import { toDateString, getDaysInMonth } from '@/utils/dateUtils';
+import { parseCalendarDate, toDateString, getDaysInMonth } from '@/utils/dateUtils';
 import { useOnboarding, type OnboardingData } from '@/contexts/OnboardingContext';
 import { RosterType, type ShiftCycle } from '@/types';
 import { useActiveShift } from '@/hooks/useActiveShift';
@@ -311,7 +311,8 @@ export const MainDashboardScreen: React.FC = () => {
     if (!shiftCycle || shiftCycle.rosterType !== RosterType.FIFO) {
       return null;
     }
-    return getFIFOBlockInfo(new Date(currentDateStr), shiftCycle);
+    const currentDate = parseCalendarDate(currentDateStr) ?? new Date(currentDateStr);
+    return getFIFOBlockInfo(currentDate, shiftCycle);
   }, [shiftCycle, currentDateStr]);
 
   // Current month shift days (recalculates on day change for today highlight)

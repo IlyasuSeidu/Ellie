@@ -58,7 +58,6 @@ export function parseDate(dateString: string, format?: string): Date {
 }
 
 const DATE_ONLY_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
-const DATE_PREFIX_PATTERN = /^(\d{4}-\d{2}-\d{2})T/;
 
 /**
  * Parse a calendar date string while preserving date-only semantics.
@@ -84,11 +83,6 @@ export function parseCalendarDate(dateString: string): Date | null {
     return null;
   }
 
-  const isoPrefixMatch = DATE_PREFIX_PATTERN.exec(trimmed);
-  if (isoPrefixMatch) {
-    return parseCalendarDate(isoPrefixMatch[1]);
-  }
-
   const parsed = dayjs(trimmed);
   if (!parsed.isValid()) {
     return null;
@@ -101,11 +95,20 @@ export function parseCalendarDate(dateString: string): Date | null {
  */
 export function toCalendarDateString(value: Date | string): string | null {
   if (typeof value === 'string') {
-    const parsed = parseCalendarDate(value);
-    if (!parsed) {
+    const trimmed = value.trim();
+    const directDateMatch = DATE_ONLY_PATTERN.exec(trimmed);
+    if (directDateMatch) {
+      const parsedDateOnly = parseCalendarDate(trimmed);
+      if (!parsedDateOnly) {
+        return null;
+      }
+      return dayjs(parsedDateOnly).format('YYYY-MM-DD');
+    }
+    const parsedTimestamp = dayjs(trimmed);
+    if (!parsedTimestamp.isValid()) {
       return null;
     }
-    return dayjs(parsed).format('YYYY-MM-DD');
+    return parsedTimestamp.format('YYYY-MM-DD');
   }
 
   if (!(value instanceof Date) || Number.isNaN(value.getTime())) {

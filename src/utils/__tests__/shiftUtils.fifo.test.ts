@@ -44,33 +44,39 @@ describe('shiftUtils FIFO', () => {
     expect(cycle?.daysOff).toBe(5);
   });
 
-  it('preserves date-only semantics for fifo startDate strings with timezone offsets', () => {
+  it('preserves local calendar day for fifo startDate Date -> ISO string roundtrip', () => {
+    const localCalendarDate = new Date(2026, 2, 15);
     const data = {
       name: 'Worker',
       patternType: ShiftPattern.FIFO_14_7,
       rosterType: 'fifo',
-      startDate: '2026-03-15T00:00:00.000+10:00',
+      startDate: localCalendarDate.toISOString(),
       phaseOffset: 0,
     } as unknown as OnboardingData;
 
     const cycle = buildShiftCycle(data);
     expect(cycle).not.toBeNull();
-    expect(cycle?.startDate).toBe('2026-03-15');
+    expect(cycle?.startDate).toBe(
+      buildShiftCycle({ ...data, startDate: localCalendarDate })?.startDate
+    );
   });
 
-  it('preserves date-only semantics for rotating startDate strings with timezone offsets', () => {
+  it('preserves local calendar day for rotating startDate Date -> ISO string roundtrip', () => {
+    const localCalendarDate = new Date(2026, 2, 15);
     const data = {
       name: 'Worker',
       patternType: ShiftPattern.STANDARD_4_4_4,
       rosterType: 'rotating',
       shiftSystem: '2-shift',
-      startDate: '2026-03-15T00:00:00.000+10:00',
+      startDate: localCalendarDate.toISOString(),
       phaseOffset: 0,
     } as unknown as OnboardingData;
 
     const cycle = buildShiftCycle(data);
     expect(cycle).not.toBeNull();
-    expect(cycle?.startDate).toBe('2026-03-15');
+    expect(cycle?.startDate).toBe(
+      buildShiftCycle({ ...data, startDate: localCalendarDate })?.startDate
+    );
   });
 
   it('calculates work and rest days for fifo cycles', () => {

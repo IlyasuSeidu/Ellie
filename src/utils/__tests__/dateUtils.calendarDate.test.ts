@@ -9,9 +9,10 @@ describe('calendar date helpers', () => {
     expect(parsed?.getDate()).toBe(15);
   });
 
-  it('keeps ISO datetime date prefix stable for calendar semantics', () => {
-    expect(toCalendarDateString('2026-03-15T00:00:00.000+10:00')).toBe('2026-03-15');
-    expect(toCalendarDateString('2026-03-15T23:59:59.999Z')).toBe('2026-03-15');
+  it('keeps Date -> ISO string roundtrip on the same local calendar day', () => {
+    const localCalendarDate = new Date(2026, 2, 15);
+    const isoTimestamp = localCalendarDate.toISOString();
+    expect(toCalendarDateString(isoTimestamp)).toBe(toCalendarDateString(localCalendarDate));
   });
 
   it('returns null for invalid calendar date strings', () => {

@@ -15,7 +15,14 @@ import {
   RosterType,
 } from '@/types';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
-import { diffInDays, addDays, toDateString, toCalendarDateString, getDateRange } from './dateUtils';
+import {
+  diffInDays,
+  addDays,
+  toDateString,
+  parseCalendarDate,
+  toCalendarDateString,
+  getDateRange,
+} from './dateUtils';
 
 function isFIFOPattern(patternType: ShiftPattern): boolean {
   switch (patternType) {
@@ -470,7 +477,7 @@ export function getFIFOBlockInfo(date: Date, shiftCycle: ShiftCycle): FIFOBlockI
 
   const config = shiftCycle.fifoConfig;
   const cycleLength = config.workBlockDays + config.restBlockDays;
-  const startDate = new Date(shiftCycle.startDate);
+  const startDate = parseCalendarDate(shiftCycle.startDate) ?? new Date(shiftCycle.startDate);
   let daysSinceStart = diffInDays(date, startDate) + shiftCycle.phaseOffset;
 
   if (daysSinceStart < 0) {
@@ -617,7 +624,7 @@ function calculateRotatingShiftDay(
  */
 export function calculateShiftDay(date: Date, shiftCycle: ShiftCycle): ShiftDay {
   // Calculate days since cycle start
-  const startDate = new Date(shiftCycle.startDate);
+  const startDate = parseCalendarDate(shiftCycle.startDate) ?? new Date(shiftCycle.startDate);
   let daysSinceStart = diffInDays(date, startDate);
 
   // Apply phase offset (add to shift the cycle forward)
@@ -835,7 +842,7 @@ export function getPhaseInfo(
     cycleLength = shiftCycle.daysOn + shiftCycle.nightsOn + shiftCycle.daysOff;
   }
 
-  const startDate = new Date(shiftCycle.startDate);
+  const startDate = parseCalendarDate(shiftCycle.startDate) ?? new Date(shiftCycle.startDate);
   let daysSinceStart = diffInDays(date, startDate);
   daysSinceStart += shiftCycle.phaseOffset;
 
