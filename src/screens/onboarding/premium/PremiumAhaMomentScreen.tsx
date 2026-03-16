@@ -1,6 +1,17 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Animated, { FadeIn, FadeInDown, FadeInUp } from 'react-native-reanimated';
+import Animated, {
+  Easing,
+  FadeIn,
+  FadeInDown,
+  FadeInUp,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -28,7 +39,6 @@ const SUGGESTION_QUERIES = [
   'How many night shifts this month?',
 ];
 
-// Shift type dot colors — matches ShiftCalendarDayCell on the dashboard
 const SHIFT_DOT_COLOR: Record<string, string> = {
   day: '#2196F3',
   night: '#651FFF',
@@ -36,21 +46,32 @@ const SHIFT_DOT_COLOR: Record<string, string> = {
   afternoon: '#06B6D4',
 };
 
-// How many months the user can browse on this screen
 const MAX_PREVIEW_MONTHS = 3;
 
-// ─── Main screen ──────────────────────────────────────────────────────────────
 export const PremiumAhaMomentScreen: React.FC = () => {
   const { t } = useTranslation('onboarding');
   const { data } = useOnboarding();
   const { openModalWithQuery, openModal } = useVoiceAssistant();
   const navigation = useNavigation<NavigationProp>();
-  const [showPaywall, setShowPaywall] = useState(false);
+  const [showPaywall, setShowPaywall] = React.useState(false);
+  const [monthOffset, setMonthOffset] = React.useState(0);
 
-  // Month navigation: 0 = current month, capped at MAX_PREVIEW_MONTHS - 1
-  const [monthOffset, setMonthOffset] = useState(0);
+  // ── Pulse animation for Hey Ellie button ────────────────────────────────────
+  const pulseScale = useSharedValue(1);
+  const pulseStyle = useAnimatedStyle(() => ({ transform: [{ scale: pulseScale.value }] }));
 
-  // ── Shift data ──────────────────────────────────────────────────────────────
+  useEffect(() => {
+    pulseScale.value = withRepeat(
+      withSequence(
+        withTiming(1.025, { duration: 1200, easing: Easing.inOut(Easing.ease) }),
+        withTiming(1.0, { duration: 1200, easing: Easing.inOut(Easing.ease) })
+      ),
+      -1,
+      false
+    );
+  }, [pulseScale]);
+
+  // ── Shift data ───────────────────────────────────────────────────────────────
   const shiftCycle = useMemo(() => buildShiftCycle(data), [data]);
 
   const today = useMemo(() => {
@@ -67,13 +88,11 @@ export const PremiumAhaMomentScreen: React.FC = () => {
     return getShiftDaysInRange(yearStart, yearEnd, shiftCycle);
   }, [shiftCycle, yearStart, yearEnd]);
 
-  // Displayed month, derived from navigation offset
   const displayDate = useMemo(() => {
     const d = new Date(today.getFullYear(), today.getMonth() + monthOffset, 1);
     return { year: d.getFullYear(), month: d.getMonth() };
   }, [today, monthOffset]);
 
-  // Filter shift days to just the displayed month — what MonthlyCalendarCard expects
   const displayShiftDays = useMemo(() => {
     const { year, month } = displayDate;
     const prefix = `${year}-${String(month + 1).padStart(2, '0')}-`;
@@ -91,18 +110,46 @@ export const PremiumAhaMomentScreen: React.FC = () => {
     () => shiftDays.find((d) => d.shiftType !== 'off' && d.date > todayStr),
     [shiftDays, todayStr]
   );
-
   const nextShiftDate = useMemo(
     () => (nextShift ? new Date(`${nextShift.date}T00:00:00`) : null),
     [nextShift]
   );
-
   const nextShiftDaysAway = useMemo(() => {
     if (!nextShiftDate) return null;
     return Math.ceil((nextShiftDate.getTime() - today.getTime()) / 86_400_000);
   }, [nextShiftDate, today]);
 
-  // ── Analytics ───────────────────────────────────────────────────────────────
+  const nextDayOff = useMemo(
+    () => shiftDays.find((d) => d.shiftType === 'off' && d.date > todayStr),
+    [shiftDays, todayStr]
+  );
+  const nextDayOffDate = useMemo(
+    () => (nextDayOff ? new Date(`${nextDayOff.date}T00:00:00`) : null),
+    [nextDayOff]
+  );
+  const nextDayOffDaysAway = useMemo(() => {
+    if (!nextDayOffDate) return null;
+    return Math.ceil((nextDayOffDate.getTime() - today.getTime()) / 86_400_000);
+  }, [nextDayOffDate, today]);
+
+  const totalWorkDays =
+    (stats?.dayShifts ?? 0) +
+    (stats?.nightShifts ?? 0) +
+    (stats?.morningShifts ?? 0) +
+    (stats?.afternoonShifts ?? 0);
+
+  const shiftDotColor = nextShift
+    ? (SHIFT_DOT_COLOR[nextShift.shiftType] ?? SHIFT_DOT_COLOR.day)
+    : SHIFT_DOT_COLOR.day;
+
+  const nextDayOffLabel = (() => {
+    if (nextDayOffDaysAway === null) return '—';
+    if (nextDayOffDaysAway === 0) return 'Today';
+    if (nextDayOffDaysAway === 1) return 'Tmrw';
+    return `${nextDayOffDaysAway}d`;
+  })();
+
+  // ── Analytics ────────────────────────────────────────────────────────────────
   useEffect(() => {
     Analytics.onboardingStepViewed('aha_moment', 7);
     void AsyncStorage.getItem('app:install_time').then((value) => {
@@ -118,18 +165,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
     navigation.navigate('ShiftTimeInput');
   };
 
-  // ── Derived helpers ──────────────────────────────────────────────────────────
-  const shiftDotColor = nextShift
-    ? (SHIFT_DOT_COLOR[nextShift.shiftType] ?? SHIFT_DOT_COLOR.day)
-    : SHIFT_DOT_COLOR.day;
-
-  const totalWorkDays =
-    (stats?.dayShifts ?? 0) +
-    (stats?.nightShifts ?? 0) +
-    (stats?.morningShifts ?? 0) +
-    (stats?.afternoonShifts ?? 0);
-
-  // ── Render ──────────────────────────────────────────────────────────────────
+  // ── Render ───────────────────────────────────────────────────────────────────
   return (
     <View style={styles.container}>
       <ProgressHeader
@@ -197,7 +233,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
           </Animated.View>
         )}
 
-        {/* ── Dashboard Calendar — identical to main app, bounded to 3 months ── */}
+        {/* ── Dashboard Calendar ── */}
         <Animated.View entering={FadeInDown.delay(250).duration(450)}>
           <MonthlyCalendarCard
             year={displayDate.year}
@@ -211,7 +247,6 @@ export const PremiumAhaMomentScreen: React.FC = () => {
             animationDelay={250}
           />
 
-          {/* Month progress dots */}
           <View style={styles.monthDots}>
             {Array.from({ length: MAX_PREVIEW_MONTHS }).map((_, i) => (
               <View key={i} style={[styles.monthDot, i === monthOffset && styles.monthDotActive]} />
@@ -219,80 +254,130 @@ export const PremiumAhaMomentScreen: React.FC = () => {
           </View>
         </Animated.View>
 
-        {/* ── Year stats row ── */}
-        <Animated.View entering={FadeInDown.delay(420).duration(380)} style={styles.padded}>
+        {/* ── Stats 2×2 grid ── */}
+        <Animated.View entering={FadeInDown.delay(380).duration(380)} style={styles.padded}>
           <View style={styles.statsCard}>
-            <View style={styles.statItem}>
-              <Text style={styles.statValue}>{totalWorkDays}</Text>
-              <Text style={styles.statLabel}>
-                {t('ahaMoment.stats.workDays', { defaultValue: 'Work days' })}
-              </Text>
+            <View style={styles.statsTopAccent} />
+
+            <View style={styles.statsRow}>
+              <View style={styles.statCell}>
+                <Text style={styles.statValue}>{totalWorkDays}</Text>
+                <Text style={styles.statLabel}>
+                  {t('ahaMoment.stats.workDays', { defaultValue: 'Work Days' })}
+                </Text>
+              </View>
+              <View style={styles.statVertDivider} />
+              <View style={styles.statCell}>
+                <Text style={styles.statValue}>{stats?.daysOff ?? 0}</Text>
+                <Text style={styles.statLabel}>
+                  {t('ahaMoment.stats.daysOff', { defaultValue: 'Days Off' })}
+                </Text>
+              </View>
             </View>
-            <View style={styles.statDivider} />
-            <View style={styles.statItem}>
-              <Text style={styles.statValue}>{stats?.nightShifts ?? 0}</Text>
-              <Text style={styles.statLabel}>
-                {t('ahaMoment.stats.nightShifts', { defaultValue: 'Night shifts' })}
-              </Text>
-            </View>
-            <View style={styles.statDivider} />
-            <View style={styles.statItem}>
-              <Text style={styles.statValue}>{stats?.daysOff ?? 0}</Text>
-              <Text style={styles.statLabel}>
-                {t('ahaMoment.stats.daysOff', { defaultValue: 'Days off' })}
-              </Text>
+
+            <View style={styles.statsHorizDivider} />
+
+            <View style={styles.statsRow}>
+              <View style={styles.statCell}>
+                <Text style={styles.statValue}>{stats?.nightShifts ?? 0}</Text>
+                <Text style={styles.statLabel}>
+                  {t('ahaMoment.stats.nightShifts', { defaultValue: 'Night Shifts' })}
+                </Text>
+              </View>
+              <View style={styles.statVertDivider} />
+              <View style={styles.statCell}>
+                <Text
+                  style={[
+                    styles.statValue,
+                    nextDayOffDaysAway !== null && { color: theme.colors.sacredGold },
+                  ]}
+                >
+                  {nextDayOffLabel}
+                </Text>
+                <Text style={styles.statLabel}>
+                  {t('ahaMoment.stats.nextDayOff', { defaultValue: 'Next Day Off' })}
+                </Text>
+              </View>
             </View>
           </View>
         </Animated.View>
 
-        {/* ── Hey Ellie section ── */}
-        <Animated.View entering={FadeInDown.delay(520).duration(380)} style={styles.padded}>
-          <View style={styles.divider} />
+        {/* ── Hey Ellie card ── */}
+        <Animated.View entering={FadeInDown.delay(480).duration(380)} style={styles.padded}>
+          <View style={styles.ellieCard}>
+            <View style={styles.ellieTopAccent} />
 
-          <View style={styles.heyEllieSection}>
-            <Text style={styles.heyEllieTitle}>
-              {t('ahaMoment.heyEllieTitle', {
-                defaultValue: 'Ask Ellie about your roster',
-              })}
-            </Text>
+            {/* Header */}
+            <View style={styles.ellieHeader}>
+              <View style={styles.ellieHeaderIcon}>
+                <Ionicons name="mic" size={18} color={theme.colors.sacredGold} />
+              </View>
+              <View>
+                <Text style={styles.ellieTitle}>
+                  {t('ahaMoment.heyEllieTitle', { defaultValue: 'Ask Ellie' })}
+                </Text>
+                <Text style={styles.ellieSubtitle}>Try asking…</Text>
+              </View>
+            </View>
 
-            <View style={styles.chips}>
-              {SUGGESTION_QUERIES.map((query) => (
+            {/* Suggestion rows */}
+            <View style={styles.ellieChips}>
+              {SUGGESTION_QUERIES.map((query, index) => (
                 <TouchableOpacity
                   key={query}
-                  style={styles.chip}
+                  activeOpacity={0.7}
+                  style={[
+                    styles.ellieChip,
+                    index < SUGGESTION_QUERIES.length - 1 && styles.ellieChipBorder,
+                  ]}
                   onPress={() => {
                     Analytics.ahaMomentVoiceTried(query);
                     openModalWithQuery(query);
                   }}
                 >
-                  <Ionicons name="mic-outline" size={13} color={theme.colors.sacredGold} />
-                  <Text style={styles.chipText}>{query}</Text>
+                  <Ionicons
+                    name="mic-outline"
+                    size={14}
+                    color={theme.colors.sacredGold}
+                    style={styles.ellieChipMic}
+                  />
+                  <Text style={styles.ellieChipText}>{query}</Text>
+                  <Ionicons name="chevron-forward" size={15} color={theme.colors.shadow} />
                 </TouchableOpacity>
               ))}
             </View>
 
-            <TouchableOpacity
-              style={styles.heyEllieButton}
-              onPress={() => {
-                Analytics.ahaMomentVoiceTried('manual_mic');
-                openModal();
-              }}
-            >
-              <View style={styles.heyEllieGlow} />
-              <Ionicons name="mic" size={24} color={theme.colors.sacredGold} />
-              <Text style={styles.heyEllieLabel}>Hey Ellie</Text>
-            </TouchableOpacity>
+            {/* Hey Ellie mic button */}
+            <Animated.View style={[styles.ellieButtonWrapper, pulseStyle]}>
+              <TouchableOpacity
+                activeOpacity={0.88}
+                onPress={() => {
+                  Analytics.ahaMomentVoiceTried('manual_mic');
+                  openModal();
+                }}
+              >
+                <LinearGradient
+                  colors={['rgba(180,83,9,0.22)', 'rgba(180,83,9,0.07)']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.ellieButtonGradient}
+                >
+                  <Ionicons name="mic" size={22} color={theme.colors.sacredGold} />
+                  <Text style={styles.ellieButtonLabel}>Hey Ellie</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </Animated.View>
           </View>
-
-          <View style={styles.divider} />
         </Animated.View>
 
         {/* ── CTAs ── */}
-        <Animated.View entering={FadeInUp.delay(600).duration(380)} style={styles.padded}>
+        <Animated.View
+          entering={FadeInUp.delay(580).duration(380)}
+          style={[styles.padded, styles.ctaSection]}
+        >
           <PremiumButton
             title={t('ahaMoment.ctaPrimary', {
-              defaultValue: 'Unlock Full Access — Free 7-Day Trial',
+              defaultValue: 'Unlock Full Access\nFree 7-Day Trial',
             })}
             onPress={() => setShowPaywall(true)}
             variant="primary"
@@ -325,10 +410,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.deepVoid,
   },
-  // No horizontal padding on scroll — MonthlyCalendarCard handles its own margins.
-  // All other sections use the `padded` wrapper to stay visually aligned with the card.
   scroll: {
-    paddingBottom: 44,
+    paddingTop: 8,
+    paddingBottom: 48,
   },
   padded: {
     paddingHorizontal: theme.spacing.lg,
@@ -347,21 +431,21 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: theme.colors.dust,
     lineHeight: 22,
-    marginBottom: 18,
+    marginBottom: 20,
     textAlign: 'center',
   },
 
-  // ── Next shift hero card ──
+  // ── Hero card ──
   heroCard: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: theme.colors.darkStone,
-    borderRadius: 16,
+    borderRadius: 18,
     borderWidth: 1,
     borderColor: theme.colors.sacredGold + '35',
     padding: 16,
-    marginBottom: 4,
+    marginBottom: 12,
   },
   heroLeft: {
     flex: 1,
@@ -435,14 +519,14 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
 
-  // ── Month progress dots ──
+  // ── Month dots ──
   monthDots: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     gap: 6,
-    marginTop: 6,
-    marginBottom: 8,
+    marginTop: 8,
+    marginBottom: 4,
   },
   monthDot: {
     width: 6,
@@ -455,111 +539,154 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.sacredGold,
   },
 
-  // ── Stats card ──
+  // ── Stats 2×2 grid ──
   statsCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
     backgroundColor: theme.colors.darkStone,
-    borderRadius: 14,
+    borderRadius: 18,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.07)',
-    paddingVertical: 14,
-    paddingHorizontal: 8,
+    overflow: 'hidden',
+    marginTop: 10,
     marginBottom: 4,
   },
-  statItem: {
+  statsTopAccent: {
+    height: 2,
+    backgroundColor: theme.colors.sacredGold,
+    opacity: 0.35,
+  },
+  statsRow: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+  },
+  statCell: {
     flex: 1,
     alignItems: 'center',
+    paddingVertical: 18,
+    paddingHorizontal: 8,
   },
   statValue: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: '800',
     color: theme.colors.paper,
-    lineHeight: 28,
+    lineHeight: 32,
   },
   statLabel: {
-    fontSize: 10,
+    fontSize: 11,
     color: theme.colors.dust,
-    marginTop: 3,
+    marginTop: 4,
     textAlign: 'center',
-    lineHeight: 13,
+    lineHeight: 14,
   },
-  statDivider: {
+  statVertDivider: {
     width: 1,
-    height: 36,
-    backgroundColor: 'rgba(255,255,255,0.08)',
+    backgroundColor: 'rgba(255,255,255,0.07)',
+    marginVertical: 12,
   },
-
-  // ── Section divider ──
-  divider: {
+  statsHorizDivider: {
     height: 1,
-    backgroundColor: theme.colors.softStone,
-    opacity: 0.3,
-    marginVertical: theme.spacing.lg,
-    marginHorizontal: -theme.spacing.lg,
+    backgroundColor: 'rgba(255,255,255,0.07)',
+    marginHorizontal: 16,
   },
 
-  // ── Hey Ellie ──
-  heyEllieSection: {
-    alignItems: 'center',
-  },
-  heyEllieTitle: {
-    fontSize: 14,
-    color: theme.colors.dust,
-    fontWeight: '600',
-    letterSpacing: 0.5,
-    marginBottom: theme.spacing.md,
-    textTransform: 'uppercase',
-  },
-  chips: {
-    gap: 8,
-    width: '100%',
-    marginBottom: theme.spacing.lg,
-  },
-  chip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-    backgroundColor: 'rgba(180,83,9,0.08)',
+  // ── Hey Ellie card ──
+  ellieCard: {
+    backgroundColor: theme.colors.darkStone,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: 'rgba(180,83,9,0.20)',
+    borderColor: 'rgba(255,255,255,0.07)',
+    overflow: 'hidden',
+    marginTop: 12,
+    marginBottom: 4,
   },
-  chipText: {
-    fontSize: 14,
-    color: theme.colors.paper,
-    flex: 1,
+  ellieTopAccent: {
+    height: 2,
+    backgroundColor: theme.colors.sacredGold,
+    opacity: 0.2,
   },
-  heyEllieButton: {
+  ellieHeader: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 12,
+    paddingHorizontal: 18,
+    paddingTop: 18,
+    paddingBottom: 14,
+  },
+  ellieHeaderIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(180,83,9,0.12)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(180,83,9,0.25)',
+  },
+  ellieTitle: {
+    fontSize: 17,
+    fontWeight: '700',
+    color: theme.colors.paper,
+    lineHeight: 21,
+  },
+  ellieSubtitle: {
+    fontSize: 13,
+    color: theme.colors.dust,
+    marginTop: 1,
+  },
+  ellieChips: {
+    marginHorizontal: 14,
+    borderRadius: 14,
+    backgroundColor: 'rgba(180,83,9,0.05)',
+    borderWidth: 1,
+    borderColor: 'rgba(180,83,9,0.14)',
+    overflow: 'hidden',
+    marginBottom: 16,
+  },
+  ellieChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 13,
+    paddingHorizontal: 14,
+  },
+  ellieChipBorder: {
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(180,83,9,0.10)',
+  },
+  ellieChipMic: {
+    marginRight: 10,
+  },
+  ellieChipText: {
+    flex: 1,
+    fontSize: 15,
+    color: theme.colors.paper,
+  },
+  ellieButtonWrapper: {
+    paddingBottom: 18,
+    paddingHorizontal: 14,
+  },
+  ellieButtonGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     gap: 10,
-    paddingVertical: 14,
-    paddingHorizontal: 28,
+    paddingVertical: 15,
+    paddingHorizontal: 40,
     borderRadius: 30,
     borderWidth: 1.5,
-    borderColor: theme.colors.sacredGold,
-    backgroundColor: 'rgba(180,83,9,0.10)',
-    position: 'relative',
+    borderColor: theme.colors.sacredGold + '80',
   },
-  heyEllieGlow: {
-    ...StyleSheet.absoluteFillObject,
-    borderRadius: 30,
-    backgroundColor: theme.colors.sacredGold,
-    opacity: 0.05,
-  },
-  heyEllieLabel: {
-    fontSize: 16,
-    fontWeight: '600',
+  ellieButtonLabel: {
+    fontSize: 17,
+    fontWeight: '700',
     color: theme.colors.sacredGold,
-    letterSpacing: 0.5,
+    letterSpacing: 0.4,
   },
 
   // ── CTAs ──
-  secondaryLink: {
+  ctaSection: {
     marginTop: 12,
+  },
+  secondaryLink: {
+    marginTop: 14,
     alignItems: 'center',
   },
   secondaryLinkText: {

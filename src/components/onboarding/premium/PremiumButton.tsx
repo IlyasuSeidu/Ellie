@@ -192,8 +192,8 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
             textStyle,
             isDisabled && styles.disabledText,
           ]}
-          numberOfLines={1}
-          adjustsFontSizeToFit
+          numberOfLines={size === 'large' ? 2 : 1}
+          adjustsFontSizeToFit={size !== 'large'}
           minimumFontScale={0.85}
         >
           {title}
