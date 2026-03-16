@@ -2,7 +2,7 @@
  * Tests for Shift Calculation Utilities
  */
 
-import { calculateShiftDay, getPhaseInfo } from '../shiftUtils';
+import { alignPhaseOffsetToReferenceDate, calculateShiftDay, getPhaseInfo } from '../shiftUtils';
 import { ShiftPattern, ShiftSystem, ShiftCycle } from '@/types';
 
 describe('calculateShiftDay', () => {
@@ -285,6 +285,46 @@ describe('calculateShiftDay', () => {
   });
 
   describe('edge cases', () => {
+    it('aligns settings phase selection to anchored startDate for rotating cycles', () => {
+      const cycleLength = 12; // 4-4-4
+      const today = new Date('2026-03-16T09:00:00.000Z');
+      const startDate = '2026-03-10';
+      // User selects "Night Day 2" => position 5.
+      const selectedPosition = 5;
+
+      const anchoredOffset = alignPhaseOffsetToReferenceDate(
+        selectedPosition,
+        cycleLength,
+        startDate,
+        today
+      );
+
+      const daysSinceStart = 6;
+      expect((daysSinceStart + anchoredOffset) % cycleLength).toBe(selectedPosition);
+    });
+
+    it('aligns settings phase selection to anchored startDate for FIFO cycles', () => {
+      const cycleLength = 14; // 8/6
+      const today = new Date('2026-03-16T09:00:00.000Z');
+      const startDate = '2026-03-01';
+      // User selects "work block day 2" => position 1.
+      const selectedPosition = 1;
+
+      const anchoredOffset = alignPhaseOffsetToReferenceDate(
+        selectedPosition,
+        cycleLength,
+        startDate,
+        today
+      );
+
+      const daysSinceStart = 15;
+      expect((daysSinceStart + anchoredOffset) % cycleLength).toBe(selectedPosition);
+    });
+
+    it('falls back to normalized selected position when startDate is missing', () => {
+      expect(alignPhaseOffsetToReferenceDate(17, 12, undefined, new Date('2026-03-16'))).toBe(5);
+    });
+
     it('should handle custom pattern with daysOn=0 for 3-shift system', () => {
       const shiftCycle: ShiftCycle = {
         patternType: ShiftPattern.CUSTOM,

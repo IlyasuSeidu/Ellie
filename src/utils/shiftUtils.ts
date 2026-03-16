@@ -22,6 +22,7 @@ import {
   parseCalendarDate,
   toCalendarDateString,
   getDateRange,
+  startOfDay,
 } from './dateUtils';
 
 function isFIFOPattern(patternType: ShiftPattern): boolean {
@@ -857,6 +858,43 @@ export function getPhaseInfo(
     cycleLength,
     phaseType: shiftDay.shiftType,
   };
+}
+
+/**
+ * Convert a "current position in cycle" selection into an anchored phaseOffset.
+ *
+ * `phaseOffset` is anchored at `startDate` (position when `date === startDate`), while phase
+ * selector UI captures the user's current position today. This helper bridges that difference.
+ */
+export function alignPhaseOffsetToReferenceDate(
+  selectedPosition: number,
+  cycleLength: number,
+  startDate: Date | string | undefined,
+  referenceDate: Date = new Date()
+): number {
+  const safeCycleLength = Math.max(1, Math.floor(cycleLength));
+  const normalizedSelection =
+    ((Math.floor(selectedPosition) % safeCycleLength) + safeCycleLength) % safeCycleLength;
+
+  if (!startDate) {
+    return normalizedSelection;
+  }
+
+  const parsedStartDate = typeof startDate === 'string' ? parseCalendarDate(startDate) : startDate;
+  if (!parsedStartDate || Number.isNaN(parsedStartDate.getTime())) {
+    return normalizedSelection;
+  }
+
+  const normalizedReferenceDate = startOfDay(referenceDate);
+  const normalizedStartDate = startOfDay(parsedStartDate);
+  const daysSinceStart = diffInDays(normalizedReferenceDate, normalizedStartDate);
+  const normalizedDaysSinceStart =
+    ((daysSinceStart % safeCycleLength) + safeCycleLength) % safeCycleLength;
+
+  return (
+    (((normalizedSelection - normalizedDaysSinceStart) % safeCycleLength) + safeCycleLength) %
+    safeCycleLength
+  );
 }
 
 /**

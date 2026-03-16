@@ -342,6 +342,53 @@ describe('PremiumStartDateScreen', () => {
       runAfterInteractionsSpy.mockRestore();
     });
 
+    it('re-anchors onboarding phaseOffset to the selected cycle reference date', async () => {
+      const updateDataMock = jest.fn();
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const selectedStartDate = new Date(today);
+      selectedStartDate.setDate(selectedStartDate.getDate() - 6);
+      const selectedPhasePosition = 5; // Night day 2 in 4-4-4
+      const cycleLength = 12;
+      const expectedAnchoredPhaseOffset =
+        (((selectedPhasePosition - (6 % cycleLength)) % cycleLength) + cycleLength) % cycleLength;
+
+      const onboardingSpy = jest.spyOn(OnboardingContext, 'useOnboarding').mockReturnValue({
+        data: {
+          name: 'Alex',
+          occupation: 'Engineer',
+          company: 'Site',
+          country: 'US',
+          shiftSystem: '2-shift',
+          patternType: 'standard_4_4_4',
+          phaseOffset: selectedPhasePosition,
+          startDate: selectedStartDate,
+        },
+        updateData: updateDataMock,
+      } as unknown as ReturnType<typeof OnboardingContext.useOnboarding>);
+
+      const runAfterInteractionsSpy = jest
+        .spyOn(require('react-native').InteractionManager, 'runAfterInteractions')
+        .mockImplementation((...args: unknown[]) => {
+          const callback = args[0] as (() => void) | undefined;
+          callback?.();
+          return { cancel: jest.fn() };
+        });
+
+      const { getByText } = render(<PremiumStartDateScreen />);
+      fireEvent.press(getByText('Set Shift Times'));
+
+      expect(updateDataMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          startDate: expect.any(Date),
+          phaseOffset: expectedAnchoredPhaseOffset,
+        })
+      );
+
+      onboardingSpy.mockRestore();
+      runAfterInteractionsSpy.mockRestore();
+    });
+
     it('uses onContinue callback when provided', async () => {
       const updateDataMock = jest.fn();
       const onboardingSpy = jest.spyOn(OnboardingContext, 'useOnboarding').mockReturnValue({

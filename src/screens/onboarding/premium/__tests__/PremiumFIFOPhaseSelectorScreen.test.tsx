@@ -277,6 +277,13 @@ const setSwingSliderValue = (
   });
 };
 
+const toLocalDateKey = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 describe('PremiumFIFOPhaseSelectorScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -451,6 +458,41 @@ describe('PremiumFIFOPhaseSelectorScreen', () => {
       const setCalls = (asyncStorageService.set as jest.Mock).mock.calls;
       const latestPayload = setCalls[setCalls.length - 1]?.[1];
       expect(latestPayload).toEqual(expect.objectContaining({ phaseOffset: 0 }));
+    });
+  });
+
+  it('anchors settings-entry phaseOffset to existing startDate for current-day selections', async () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const startDate = new Date(today);
+    startDate.setDate(startDate.getDate() - 6);
+    const startDateKey = toLocalDateKey(startDate);
+    const cycleLength = 28; // FIFO 14/14
+    const selectedPosition = 0; // Work block day 1
+    const expectedPhaseOffset =
+      (((selectedPosition - (6 % cycleLength)) % cycleLength) + cycleLength) % cycleLength;
+
+    (asyncStorageService.get as jest.Mock).mockResolvedValue({
+      rosterType: 'fifo',
+      patternType: 'FIFO_14_14',
+      startDate: startDateKey,
+    });
+
+    mockRouteParams = { entryPoint: 'settings', returnToMainOnSelect: true };
+    const { getByTestId } = renderWithContext();
+    await waitFor(() => {
+      expect(asyncStorageService.get).toHaveBeenCalled();
+    });
+    swipeRight(); // select straight-days pattern
+    swipeRight(); // select work block
+    swipeRight(); // select day 1
+
+    fireEvent.press(getByTestId('fifo-phase-selector-save-settings-button'));
+
+    await waitFor(() => {
+      const setCalls = (asyncStorageService.set as jest.Mock).mock.calls;
+      const latestPayload = setCalls[setCalls.length - 1]?.[1];
+      expect(latestPayload).toEqual(expect.objectContaining({ phaseOffset: expectedPhaseOffset }));
     });
   });
 

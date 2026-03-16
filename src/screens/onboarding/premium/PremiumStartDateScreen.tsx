@@ -54,7 +54,11 @@ import {
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
-import { calculateShiftDay, getDefaultFIFOConfig } from '@/utils/shiftUtils';
+import {
+  alignPhaseOffsetToReferenceDate,
+  calculateShiftDay,
+  getDefaultFIFOConfig,
+} from '@/utils/shiftUtils';
 import { Analytics } from '@/utils/analytics';
 import {
   parseCalendarDate,
@@ -704,13 +708,35 @@ type StartDatePatternResolutionData = {
   rosterType?: string | null;
 };
 
+const KNOWN_SHIFT_PATTERNS = Object.values(ShiftPattern) as string[];
+
+const normalizePatternType = (
+  patternType: ShiftPattern | string | null | undefined
+): ShiftPattern => {
+  if (!patternType) {
+    return ShiftPattern.CUSTOM;
+  }
+
+  if (KNOWN_SHIFT_PATTERNS.includes(patternType)) {
+    return patternType as ShiftPattern;
+  }
+
+  const upperCasedPattern = String(patternType).toUpperCase();
+  if (KNOWN_SHIFT_PATTERNS.includes(upperCasedPattern)) {
+    return upperCasedPattern as ShiftPattern;
+  }
+
+  return ShiftPattern.CUSTOM;
+};
+
 export const _resolvePatternValues = (
-  patternType: ShiftPattern,
+  patternType: ShiftPattern | string,
   data: StartDatePatternResolutionData,
   shiftSystem: ShiftSystem
 ): ShiftPatternValues => {
+  const resolvedPatternType = normalizePatternType(patternType);
   let basePattern: ShiftPatternValues;
-  switch (patternType) {
+  switch (resolvedPatternType) {
     case ShiftPattern.STANDARD_4_4_4:
       basePattern = { daysOn: 4, nightsOn: 4, daysOff: 4 };
       break;
@@ -2381,7 +2407,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   }));
 
   // Get pattern data from context
-  const pattern = data.patternType || ShiftPattern.CUSTOM;
+  const pattern = normalizePatternType(data.patternType);
 
   // Convert predefined patterns to numeric values
   const getPatternValues = useCallback(
@@ -2426,6 +2452,32 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
     const parsedStartDate = parseCalendarDate(selectedDate);
     if (!parsedStartDate) return;
 
+    const isFIFORosterForAnchoring =
+      data.rosterType === RosterType.FIFO || String(pattern).startsWith('FIFO_');
+    const fifoConfigForAnchoring = isFIFORosterForAnchoring
+      ? getEffectiveFIFOConfigForDate(customPattern, {
+          patternType: pattern,
+          rosterType: RosterType.FIFO,
+          fifoConfig: data.fifoConfig,
+        })
+      : null;
+    const cycleLengthForAnchoring = isFIFORosterForAnchoring
+      ? (fifoConfigForAnchoring?.workBlockDays ?? 0) + (fifoConfigForAnchoring?.restBlockDays ?? 0)
+      : shiftSystem === ShiftSystem.THREE_SHIFT
+        ? (customPattern.morningOn || 0) +
+          (customPattern.afternoonOn || 0) +
+          (customPattern.nightOn || 0) +
+          (customPattern.daysOff || 0)
+        : (customPattern.daysOn || 0) +
+          (customPattern.nightsOn || 0) +
+          (customPattern.daysOff || 0);
+    const anchoredPhaseOffset = alignPhaseOffsetToReferenceDate(
+      data.phaseOffset ?? 0,
+      cycleLengthForAnchoring,
+      parsedStartDate,
+      new Date()
+    );
+
     updateData(
       isSettingsMode
         ? {
@@ -2434,6 +2486,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
           }
         : {
             startDate: parsedStartDate,
+            phaseOffset: anchoredPhaseOffset,
           }
     );
 
@@ -2452,9 +2505,14 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
     });
   }, [
     canContinue,
+    customPattern,
     selectedDate,
     isSettingsMode,
+    pattern,
+    shiftSystem,
     data.phaseOffset,
+    data.fifoConfig,
+    data.rosterType,
     updateData,
     onContinue,
     returnToSettings,

@@ -58,7 +58,7 @@ import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboarding
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { ShiftPattern, type FIFOConfig } from '@/types';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
-import { getDefaultFIFOConfig } from '@/utils/shiftUtils';
+import { alignPhaseOffsetToReferenceDate, getDefaultFIFOConfig } from '@/utils/shiftUtils';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
 import { Analytics } from '@/utils/analytics';
 
@@ -1340,13 +1340,28 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       const cycleLength = Math.max(1, workBlockDays + restBlockDays);
       const rawOffset =
         blockType === 'work' ? safeDayWithinBlock - 1 : workBlockDays + (safeDayWithinBlock - 1);
-      const phaseOffset = Math.max(0, Math.min(cycleLength - 1, rawOffset));
-      if (__DEV__ && phaseOffset !== rawOffset) {
+      const selectedPhasePosition = Math.max(0, Math.min(cycleLength - 1, rawOffset));
+      if (__DEV__ && selectedPhasePosition !== rawOffset) {
         console.warn(
           '[FIFOPhaseSelector] phaseOffset was clamped — day card exceeded cycle bounds.',
-          { blockType, dayWithinBlock, workBlockDays, restBlockDays, rawOffset, phaseOffset }
+          {
+            blockType,
+            dayWithinBlock,
+            workBlockDays,
+            restBlockDays,
+            rawOffset,
+            phaseOffset: selectedPhasePosition,
+          }
         );
       }
+      const phaseOffset = isSettingsMode
+        ? alignPhaseOffsetToReferenceDate(
+            selectedPhasePosition,
+            cycleLength,
+            data.startDate,
+            new Date()
+          )
+        : selectedPhasePosition;
       const fifoConfig: FIFOConfig = isCustomFIFOPattern
         ? {
             workBlockDays,
@@ -1400,6 +1415,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       });
     },
     [
+      data.startDate,
       isSettingsMode,
       isCustomFIFOPattern,
       navigation,

@@ -52,6 +52,7 @@ import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboarding
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 import { Analytics } from '@/utils/analytics';
+import { alignPhaseOffsetToReferenceDate } from '@/utils/shiftUtils';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 type PhaseRouteProp = RouteProp<OnboardingStackParamList, 'PhaseSelector'>;
@@ -1206,7 +1207,29 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
 
       const shiftSystem = data.shiftSystem as ShiftSystem;
 
-      const phaseOffset = calculateEnhancedPhaseOffset(phase, dayWithinPhase, pattern, shiftSystem);
+      const selectedPhasePosition = calculateEnhancedPhaseOffset(
+        phase,
+        dayWithinPhase,
+        pattern,
+        shiftSystem
+      );
+      const cycleLength =
+        shiftSystem === ShiftSystem.THREE_SHIFT
+          ? (pattern.morningOn ?? 0) +
+            (pattern.afternoonOn ?? 0) +
+            (pattern.nightOn ?? 0) +
+            pattern.daysOff
+          : ('daysOn' in pattern ? pattern.daysOn : 0) +
+            ('nightsOn' in pattern ? pattern.nightsOn : 0) +
+            pattern.daysOff;
+      const phaseOffset = isSettingsMode
+        ? alignPhaseOffsetToReferenceDate(
+            selectedPhasePosition,
+            cycleLength,
+            data.startDate,
+            new Date()
+          )
+        : selectedPhasePosition;
       if (isSettingsMode) {
         setPendingSettingsPhaseOffset(phaseOffset);
         void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
@@ -1234,7 +1257,15 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
         }, 300);
       });
     },
-    [data.shiftSystem, isSettingsMode, navigation, pattern, returnToSettings, updateData]
+    [
+      data.shiftSystem,
+      data.startDate,
+      isSettingsMode,
+      navigation,
+      pattern,
+      returnToSettings,
+      updateData,
+    ]
   );
 
   const handleSaveSettingsSelection = useCallback(() => {
