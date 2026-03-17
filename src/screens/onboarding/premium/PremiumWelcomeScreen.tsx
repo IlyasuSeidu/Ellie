@@ -170,8 +170,11 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
           {t('welcome.tagline')}
         </Animated.Text>
 
-        <Animated.View style={styles.socialProofRow} entering={FadeIn.delay(1200).duration(400)}>
-          <Text style={styles.socialProofText}>Built for shift workers</Text>
+        {/* Social proof badge */}
+        <Animated.View style={styles.socialProofBadge} entering={FadeIn.delay(1200).duration(400)}>
+          <Text style={styles.socialProofText}>
+            {t('welcome.socialProof', { defaultValue: 'Built for shift workers like you' })}
+          </Text>
         </Animated.View>
 
         {/* Get Started button */}
@@ -183,6 +186,21 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
             size="large"
             testID={`${testID}-button`}
           />
+        </Animated.View>
+
+        {/* Trust chips */}
+        <Animated.View style={styles.trustRow} entering={FadeIn.delay(1400).duration(400)}>
+          <Text style={styles.trustChip}>
+            {t('welcome.trust.freeTrial', { defaultValue: 'Free 7-day trial' })}
+          </Text>
+          <Text style={styles.trustDivider}>·</Text>
+          <Text style={styles.trustChip}>
+            {t('welcome.trust.noCard', { defaultValue: 'No credit card' })}
+          </Text>
+          <Text style={styles.trustDivider}>·</Text>
+          <Text style={styles.trustChip}>
+            {t('welcome.trust.cancelAnytime', { defaultValue: 'Cancel anytime' })}
+          </Text>
         </Animated.View>
       </View>
     </View>
@@ -273,12 +291,13 @@ const styles = StyleSheet.create({
     }),
   },
   tagline: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: theme.typography.fontWeights.semibold,
-    color: theme.colors.dust,
+    color: theme.colors.paper,
     textAlign: 'center',
-    marginBottom: theme.spacing.xxxl,
-    letterSpacing: 1,
+    marginBottom: theme.spacing.lg,
+    letterSpacing: 0.3,
+    lineHeight: 30,
     ...Platform.select({
       ios: {
         fontFamily: 'System',
@@ -288,24 +307,37 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  socialProofRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-    marginBottom: theme.spacing.lg,
-  },
-  socialProofStars: {
-    color: theme.colors.sacredGold,
-    fontSize: 12,
-    letterSpacing: 2,
+  socialProofBadge: {
+    backgroundColor: 'rgba(180,83,9,0.10)',
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(180,83,9,0.30)',
+    paddingHorizontal: 16,
+    paddingVertical: 7,
+    marginBottom: theme.spacing.xl,
   },
   socialProofText: {
-    color: theme.colors.dust,
+    color: theme.colors.sacredGold,
     fontSize: 13,
+    fontWeight: '600',
+    letterSpacing: 0.4,
   },
   buttonContainer: {
     width: '100%',
-    maxWidth: 300,
+  },
+  trustRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    marginTop: theme.spacing.md,
+  },
+  trustChip: {
+    color: theme.colors.shadow,
+    fontSize: 12,
+  },
+  trustDivider: {
+    color: theme.colors.shadow,
+    fontSize: 12,
   },
 });
