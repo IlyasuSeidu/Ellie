@@ -196,7 +196,8 @@ export const PremiumAhaMomentScreen: React.FC = () => {
           </Text>
           <Text style={styles.subheadline}>
             {t('ahaMoment.subheadline', {
-              defaultValue: 'Stop counting shifts on your hands. No second-guessing.',
+              defaultValue:
+                'Stop counting shifts on your hands. No second-guessing with your heads.',
             })}
           </Text>
         </Animated.View>
