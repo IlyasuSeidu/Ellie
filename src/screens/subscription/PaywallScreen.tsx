@@ -163,6 +163,14 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
     return `${currencySymbol}${monthlyEquivalent.toFixed(2)}`;
   }, [annualPackage]);
 
+  const savingsPercent = useMemo(() => {
+    if (!annualPackage || !monthlyPackage) return 57;
+    const annualAsMonthly = annualPackage.product.price / 12;
+    const monthly = monthlyPackage.product.price;
+    if (monthly <= 0) return 57;
+    return Math.round((1 - annualAsMonthly / monthly) * 100);
+  }, [annualPackage, monthlyPackage]);
+
   const handleDismiss = () => {
     Analytics.paywallDismissed();
     onDismiss();
@@ -185,7 +193,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
       Analytics.trialStarted(selectedPlan, selectedPackage.product.price ?? 0);
       onDismiss();
     } catch {
-      // User cancelled or purchase failed. Keep paywall visible.
+      // User cancelled or purchase failed — keep paywall visible.
     } finally {
       setPurchasing(false);
     }
@@ -198,6 +206,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
+      {/* Blurred calendar background */}
       <View style={styles.calendarBackground} pointerEvents="none">
         {onboardingData ? <MiniYearCalendar data={onboardingData} blurred compact /> : null}
         <LinearGradient
@@ -216,6 +225,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
         showsVerticalScrollIndicator={false}
         bounces={false}
       >
+        {/* Dismiss / spacer */}
         {dismissVisible ? (
           <TouchableOpacity
             style={styles.dismissButton}
@@ -229,19 +239,19 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
           <View style={styles.dismissSpacer} />
         )}
 
-        <View style={styles.socialProofBar}>
-          <Text style={styles.socialProofText}>
-            {t('subscription.paywall.socialProof', {
-              defaultValue: 'Built for shift workers like you',
-            })}
-          </Text>
+        {/* FREE TRIAL badge — the #1 conversion signal */}
+        <View style={styles.trialBadge}>
+          <Ionicons name="gift-outline" size={14} color={theme.colors.sacredGold} />
+          <Text style={styles.trialBadgeText}>FREE 7-DAY TRIAL · NO CHARGE TODAY</Text>
         </View>
 
+        {/* Hero */}
         <View style={styles.hero}>
           <Text style={styles.title}>{t('subscription.paywall.title')}</Text>
           <Text style={styles.subtitle}>{t('subscription.paywall.subtitle')}</Text>
         </View>
 
+        {/* ── Testimonials ── */}
         <View style={styles.testimonialsSection}>
           <ScrollView
             horizontal
@@ -259,13 +269,17 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
                 key={`${testimonial.author}-${index}`}
                 style={[styles.testimonialCard, { width: CARD_WIDTH }]}
               >
-                <Text style={styles.testimonialStars}>{'★'.repeat(testimonial.stars)}</Text>
-                <Text style={styles.testimonialQuote}>“{testimonial.quote}”</Text>
-                <Text style={styles.testimonialAuthor}>- {testimonial.author}</Text>
+                {/* Gold top accent */}
+                <View style={styles.cardTopAccent} />
+                <View style={styles.testimonialInner}>
+                  <Text style={styles.testimonialStars}>{'★'.repeat(testimonial.stars)}</Text>
+                  <Text style={styles.testimonialQuote}>{`"${testimonial.quote}"`}</Text>
+                  <Text style={styles.testimonialAuthor}>— {testimonial.author}</Text>
+                </View>
               </View>
             ))}
           </ScrollView>
-          <View style={styles.testimonialDots}>
+          <View style={styles.pageDots}>
             {testimonials.map((_, index) => (
               <View
                 key={index}
@@ -275,43 +289,41 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
           </View>
         </View>
 
-        <View style={styles.features}>
-          {featureRows.map((feature) => (
-            <View key={feature.text} style={styles.featureRow}>
-              <Ionicons
-                name={feature.icon}
-                size={18}
-                color={theme.colors.paleGold}
-                style={styles.featureIcon}
-              />
+        {/* ── Features card ── */}
+        <View style={styles.featuresCard}>
+          <View style={styles.cardTopAccent} />
+          {featureRows.map((feature, index) => (
+            <View
+              key={feature.text}
+              style={[styles.featureRow, index < featureRows.length - 1 && styles.featureRowBorder]}
+            >
+              <View style={styles.featureIconBadge}>
+                <Ionicons name={feature.icon} size={15} color={theme.colors.sacredGold} />
+              </View>
               <Text style={styles.featureText}>{feature.text}</Text>
             </View>
           ))}
         </View>
 
-        <View style={styles.lossAversion}>
-          <Ionicons name="lock-closed-outline" size={14} color={theme.colors.shadow} />
-          <Text style={styles.lossAversionText}>
-            {t('subscription.paywall.lossAversion', {
-              defaultValue: "Without Pro, you're back to counting shifts on your hands.",
-            })}
-          </Text>
-        </View>
-
+        {/* ── Timer ── */}
         {secondsLeft > 0 ? (
           <View style={styles.timerRow}>
             <Ionicons name="time-outline" size={14} color={theme.colors.sacredGold} />
             <Text style={styles.timerText}>
-              {t('subscription.paywall.timerLabel', { defaultValue: 'Introductory offer ends in' })}{' '}
-              {timerText}
+              {t('subscription.paywall.timerLabel', {
+                defaultValue: 'Introductory offer ends in',
+              })}{' '}
+              <Text style={styles.timerValue}>{timerText}</Text>
             </Text>
           </View>
         ) : null}
 
+        {/* ── Plan selector ── */}
         {loading ? (
           <ActivityIndicator color={theme.colors.paleGold} style={styles.loader} />
         ) : (
           <View style={styles.plans}>
+            {/* Annual plan */}
             <TouchableOpacity
               style={[
                 styles.planOption,
@@ -328,9 +340,16 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
                 </Text>
               </View>
               <View style={styles.planLeft}>
-                <View style={[styles.radio, selectedPlan === 'annual' && styles.radioSelected]} />
+                <View style={[styles.radio, selectedPlan === 'annual' && styles.radioSelected]}>
+                  {selectedPlan === 'annual' && <View style={styles.radioDot} />}
+                </View>
                 <View>
-                  <Text style={styles.planName}>{t('subscription.paywall.plans.annual')}</Text>
+                  <View style={styles.planNameRow}>
+                    <Text style={styles.planName}>{t('subscription.paywall.plans.annual')}</Text>
+                    <View style={styles.savingsBadge}>
+                      <Text style={styles.savingsText}>SAVE {savingsPercent}%</Text>
+                    </View>
+                  </View>
                   <Text style={styles.planMonthlyEquivalent}>
                     {annualMonthlyEquivalent}
                     {t('subscription.paywall.plans.perMonth', { defaultValue: '/month' })}
@@ -349,6 +368,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
               </View>
             </TouchableOpacity>
 
+            {/* Monthly plan */}
             <TouchableOpacity
               style={[styles.planOption, selectedPlan === 'monthly' && styles.planOptionSelected]}
               onPress={() => handleSelectPlan('monthly')}
@@ -356,7 +376,9 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
               accessibilityState={{ checked: selectedPlan === 'monthly' }}
             >
               <View style={styles.planLeft}>
-                <View style={[styles.radio, selectedPlan === 'monthly' && styles.radioSelected]} />
+                <View style={[styles.radio, selectedPlan === 'monthly' && styles.radioSelected]}>
+                  {selectedPlan === 'monthly' && <View style={styles.radioDot} />}
+                </View>
                 <Text style={styles.planName}>{t('subscription.paywall.plans.monthly')}</Text>
               </View>
               <Text style={styles.planPriceMonthly}>
@@ -367,6 +389,17 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
           </View>
         )}
 
+        {/* ── Loss aversion — placed directly above CTA for max impact ── */}
+        <View style={styles.lossAversion}>
+          <Ionicons name="lock-closed-outline" size={15} color={theme.colors.sacredGold} />
+          <Text style={styles.lossAversionText}>
+            {t('subscription.paywall.lossAversion', {
+              defaultValue: "Without Pro, you're back to counting shifts on your hands.",
+            })}
+          </Text>
+        </View>
+
+        {/* ── CTA button ── */}
         <Animated.View style={ctaAnimatedStyle}>
           <TouchableOpacity
             onPress={handlePurchase}
@@ -388,7 +421,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
                   <Text style={styles.ctaText}>{t('subscription.paywall.cta')}</Text>
                   <Ionicons
                     name="arrow-forward"
-                    size={18}
+                    size={20}
                     color={theme.colors.deepVoid}
                     style={styles.ctaArrow}
                   />
@@ -398,35 +431,38 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
           </TouchableOpacity>
         </Animated.View>
 
-        <View style={styles.trustRow}>
+        {/* ── Trust row ── */}
+        <View style={styles.trustCard}>
           <View style={styles.trustItem}>
-            <Ionicons name="calendar-outline" size={14} color={theme.colors.dust} />
+            <Ionicons name="calendar-outline" size={15} color={theme.colors.sacredGold} />
             <Text style={styles.trustText}>
               {t('subscription.paywall.trust.freeTrial', { defaultValue: '7 days free' })}
             </Text>
           </View>
           <View style={styles.trustDivider} />
           <View style={styles.trustItem}>
-            <Ionicons name="close-circle-outline" size={14} color={theme.colors.dust} />
+            <Ionicons name="close-circle-outline" size={15} color={theme.colors.sacredGold} />
             <Text style={styles.trustText}>
               {t('subscription.paywall.trust.cancel', { defaultValue: 'Cancel anytime' })}
             </Text>
           </View>
           <View style={styles.trustDivider} />
           <View style={styles.trustItem}>
-            <Ionicons name="card-outline" size={14} color={theme.colors.dust} />
+            <Ionicons name="card-outline" size={15} color={theme.colors.sacredGold} />
             <Text style={styles.trustText}>
               {t('subscription.paywall.trust.noCharge', { defaultValue: 'No charge today' })}
             </Text>
           </View>
         </View>
 
+        {/* Value frame */}
         <Text style={styles.valueFrame}>
           {t('subscription.paywall.valueFrame', {
             defaultValue: 'Less than a coffee per week to know your entire year.',
           })}
         </Text>
 
+        {/* Security */}
         <View style={styles.securityRow}>
           <Ionicons name="lock-closed" size={12} color={theme.colors.shadow} />
           <Text style={styles.securityText}>
@@ -448,6 +484,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
           </Text>
         ) : null}
 
+        {/* Footer links */}
         <View style={styles.footer}>
           <TouchableOpacity onPress={handleRestore} accessibilityRole="button">
             <Text style={styles.footerLink}>{t('subscription.paywall.restorePurchases')}</Text>
@@ -493,27 +530,34 @@ const styles = StyleSheet.create({
     padding: 8,
     marginTop: 8,
   },
-  socialProofBar: {
+
+  // ── FREE TRIAL badge ──
+  trialBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    alignSelf: 'center',
     gap: 6,
-    marginBottom: 8,
-    marginTop: 16,
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+    borderRadius: 999,
+    backgroundColor: 'rgba(180,83,9,0.12)',
+    borderWidth: 1,
+    borderColor: 'rgba(180,83,9,0.30)',
+    marginTop: 8,
+    marginBottom: 14,
   },
-  socialStars: {
-    color: theme.colors.paleGold,
-    fontSize: 14,
+  trialBadgeText: {
+    color: theme.colors.sacredGold,
+    fontSize: 11,
+    fontWeight: '800',
     letterSpacing: 1,
   },
-  socialProofText: {
-    color: theme.colors.dust,
-    fontSize: 13,
-  },
+
+  // ── Hero ──
   hero: {
     alignItems: 'center',
     marginTop: 4,
-    marginBottom: 16,
+    marginBottom: 20,
   },
   title: {
     color: theme.colors.paper,
@@ -528,34 +572,47 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 6,
   },
+
+  // ── Shared card accent ──
+  cardTopAccent: {
+    height: 2,
+    backgroundColor: theme.colors.sacredGold,
+    opacity: 0.3,
+  },
+
+  // ── Testimonials ──
   testimonialsSection: {
     marginBottom: 16,
   },
   testimonialCard: {
     marginRight: 12,
     backgroundColor: theme.colors.darkStone,
-    borderRadius: 14,
-    padding: 14,
+    borderRadius: 18,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.07)',
+    overflow: 'hidden',
+  },
+  testimonialInner: {
+    padding: 16,
   },
   testimonialStars: {
     color: theme.colors.paleGold,
-    fontSize: 13,
-    letterSpacing: 1,
-    marginBottom: 8,
+    fontSize: 15,
+    letterSpacing: 2,
+    marginBottom: 10,
   },
   testimonialQuote: {
     color: theme.colors.paper,
     fontSize: 14,
-    lineHeight: 20,
-    marginBottom: 8,
+    lineHeight: 21,
+    marginBottom: 10,
+    fontStyle: 'italic',
   },
   testimonialAuthor: {
     color: theme.colors.dust,
     fontSize: 12,
   },
-  testimonialDots: {
+  pageDots: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -574,69 +631,104 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.sacredGold,
     opacity: 1,
   },
-  features: {
+
+  // ── Features ──
+  featuresCard: {
     backgroundColor: theme.colors.darkStone,
-    borderRadius: 14,
+    borderRadius: 18,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.06)',
-    paddingVertical: 10,
+    borderColor: 'rgba(255,255,255,0.07)',
+    overflow: 'hidden',
     marginBottom: 14,
   },
   featureRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 14,
-    paddingVertical: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 13,
+    gap: 12,
   },
-  featureIcon: {
-    marginRight: 10,
+  featureRowBorder: {
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.05)',
+  },
+  featureIconBadge: {
+    width: 32,
+    height: 32,
+    borderRadius: 10,
+    backgroundColor: 'rgba(180,83,9,0.12)',
+    borderWidth: 1,
+    borderColor: 'rgba(180,83,9,0.22)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   featureText: {
     color: theme.colors.paper,
     fontSize: 14,
     flex: 1,
+    lineHeight: 20,
   },
+
+  // ── Loss aversion ──
   lossAversion: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: 8,
     paddingHorizontal: 16,
-    paddingVertical: 8,
-    backgroundColor: 'rgba(120, 113, 108, 0.15)',
-    borderRadius: 8,
+    paddingVertical: 12,
+    backgroundColor: 'rgba(180,83,9,0.08)',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: 'rgba(180,83,9,0.20)',
     marginBottom: 16,
   },
   lossAversionText: {
     fontSize: 13,
-    color: theme.colors.shadow,
+    color: theme.colors.paper,
     flex: 1,
+    lineHeight: 18,
   },
+
+  // ── Timer ──
   timerRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
-    marginBottom: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    backgroundColor: 'rgba(180,83,9,0.07)',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(180,83,9,0.15)',
+    marginBottom: 14,
   },
   timerText: {
     fontSize: 13,
-    color: theme.colors.sacredGold,
-    fontWeight: '600',
+    color: theme.colors.dust,
+    fontWeight: '500',
   },
+  timerValue: {
+    color: theme.colors.sacredGold,
+    fontWeight: '700',
+  },
+
   loader: {
     marginVertical: 20,
   },
+
+  // ── Plan selector ──
   plans: {
     marginBottom: 14,
     gap: 10,
   },
   planOption: {
     backgroundColor: theme.colors.darkStone,
-    borderRadius: 14,
+    borderRadius: 16,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.08)',
-    paddingHorizontal: 14,
-    paddingVertical: 14,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -644,17 +736,17 @@ const styles = StyleSheet.create({
   planOptionAnnual: {
     borderWidth: 2,
     borderColor: theme.colors.paleGold,
-    paddingTop: 18,
+    paddingTop: 20,
   },
   planOptionSelected: {
     borderColor: theme.colors.sacredGold,
-    backgroundColor: 'rgba(212, 168, 106, 0.12)',
+    backgroundColor: 'rgba(180,83,9,0.10)',
   },
   bestValueBadge: {
     position: 'absolute',
     top: -10,
     right: 12,
-    paddingHorizontal: 8,
+    paddingHorizontal: 10,
     paddingVertical: 3,
     borderRadius: 999,
     backgroundColor: theme.colors.paleGold,
@@ -663,27 +755,51 @@ const styles = StyleSheet.create({
     color: theme.colors.deepVoid,
     fontSize: 10,
     fontWeight: '800',
-    letterSpacing: 0.4,
+    letterSpacing: 0.5,
   },
   planLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: 12,
     flex: 1,
   },
   planRight: {
     alignItems: 'flex-end',
   },
   radio: {
-    width: 18,
-    height: 18,
+    width: 20,
+    height: 20,
     borderRadius: 999,
-    borderWidth: 1.5,
+    borderWidth: 2,
     borderColor: theme.colors.softStone,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   radioSelected: {
     borderColor: theme.colors.sacredGold,
-    backgroundColor: 'rgba(212, 168, 106, 0.24)',
+  },
+  radioDot: {
+    width: 9,
+    height: 9,
+    borderRadius: 999,
+    backgroundColor: theme.colors.sacredGold,
+  },
+  planNameRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  savingsBadge: {
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 6,
+    backgroundColor: 'rgba(180,83,9,0.18)',
+  },
+  savingsText: {
+    color: theme.colors.sacredGold,
+    fontSize: 10,
+    fontWeight: '800',
+    letterSpacing: 0.3,
   },
   planName: {
     color: theme.colors.paper,
@@ -703,7 +819,7 @@ const styles = StyleSheet.create({
   planPriceStrikethrough: {
     color: theme.colors.shadow,
     fontSize: 12,
-    marginTop: 2,
+    marginBottom: 2,
     textDecorationLine: 'line-through',
   },
   planPriceMonthly: {
@@ -711,13 +827,24 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '600',
   },
+
+  // ── CTA ──
   ctaButton: {
     marginTop: 2,
     marginBottom: 14,
-    minHeight: 56,
-    borderRadius: 16,
+    height: 64,
+    borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
+    ...Platform.select({
+      ios: {
+        shadowColor: theme.colors.sacredGold,
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.45,
+        shadowRadius: 16,
+      },
+      android: { elevation: 10 },
+    }),
   },
   ctaContent: {
     flexDirection: 'row',
@@ -728,40 +855,51 @@ const styles = StyleSheet.create({
     color: theme.colors.deepVoid,
     fontSize: 18,
     fontWeight: '800',
+    letterSpacing: 0.2,
   },
   ctaArrow: {
-    marginLeft: 6,
+    marginLeft: 8,
   },
-  trustRow: {
+
+  // ── Trust row ──
+  trustCard: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 10,
-    paddingHorizontal: 4,
+    backgroundColor: theme.colors.darkStone,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.07)',
+    paddingVertical: 12,
+    paddingHorizontal: 8,
+    marginBottom: 14,
   },
   trustItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: 5,
     flex: 1,
     justifyContent: 'center',
   },
   trustDivider: {
     width: 1,
-    height: 12,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    marginHorizontal: 6,
+    height: 20,
+    backgroundColor: 'rgba(255,255,255,0.08)',
   },
   trustText: {
     color: theme.colors.dust,
     fontSize: 11,
     textAlign: 'center',
+    flexShrink: 1,
   },
+
+  // ── Value frame + security ──
   valueFrame: {
     color: theme.colors.paper,
     fontSize: 13,
     textAlign: 'center',
     marginBottom: 10,
+    lineHeight: 19,
   },
   securityRow: {
     flexDirection: 'row',
@@ -782,6 +920,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 8,
   },
+
+  // ── Footer ──
   footer: {
     flexDirection: 'row',
     alignItems: 'center',
