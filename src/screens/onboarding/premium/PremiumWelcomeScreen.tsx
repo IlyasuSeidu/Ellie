@@ -187,21 +187,6 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
             testID={`${testID}-button`}
           />
         </Animated.View>
-
-        {/* Trust chips */}
-        <Animated.View style={styles.trustRow} entering={FadeIn.delay(1400).duration(400)}>
-          <Text style={styles.trustChip}>
-            {t('welcome.trust.freeTrial', { defaultValue: 'Free 7-day trial' })}
-          </Text>
-          <Text style={styles.trustDivider}>·</Text>
-          <Text style={styles.trustChip}>
-            {t('welcome.trust.noCard', { defaultValue: 'No credit card' })}
-          </Text>
-          <Text style={styles.trustDivider}>·</Text>
-          <Text style={styles.trustChip}>
-            {t('welcome.trust.cancelAnytime', { defaultValue: 'Cancel anytime' })}
-          </Text>
-        </Animated.View>
       </View>
     </View>
   );
@@ -324,20 +309,5 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: '100%',
-  },
-  trustRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    marginTop: theme.spacing.md,
-  },
-  trustChip: {
-    color: theme.colors.shadow,
-    fontSize: 12,
-  },
-  trustDivider: {
-    color: theme.colors.shadow,
-    fontSize: 12,
   },
 });
