@@ -206,6 +206,25 @@
       "morning": "सुबह की शिफ्ट",
       "afternoon": "दोपहर की शिफ्ट",
       "off": "छुट्टी का दिन"
+    },
+    "duration": {
+      "minutesOnly": "{{minutes}} मि",
+      "hoursOnly": "{{hours}} घं",
+      "hoursMinutes": "{{hours}} घं {{minutes}} मि"
+    }
+  },
+  "onboardingChecklist": {
+    "title": "Ellie से अधिकतम लाभ लें",
+    "items": {
+      "roster": "अपना रोस्टर सेट करें",
+      "shiftTimes": "अपनी शिफ्ट समय जोड़ें",
+      "profile": "अपना प्रोफ़ाइल पूरा करें",
+      "askEllie": "Ellie से एक सवाल पूछें"
+    },
+    "actions": {
+      "done": "पूर्ण",
+      "doIt": "करें",
+      "dismiss": "हटाएँ"
     }
   }
 }

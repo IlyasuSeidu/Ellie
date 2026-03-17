@@ -125,7 +125,7 @@
       "apple": "Continue with Apple"
     },
     "signIn": {
-      "appName": "ELLIE",
+      "appName": "Ellie",
       "subtitle": "Sign in to your account",
       "forgotPassword": "Forgot password?",
       "primaryButton": "Sign In",
@@ -197,7 +197,8 @@
         "annualSuffix": "/yr",
         "monthlySuffix": "/mo",
         "bestValue": "BEST VALUE",
-        "perMonth": "/month"
+        "perMonth": "/month",
+        "savePercent": "SAVE {{percent}}%"
       },
       "cta": "Start Free 7-Day Trial",
       "trust": {
@@ -210,7 +211,8 @@
       "noCard": "No credit card required · Cancel anytime",
       "restorePurchases": "Restore",
       "privacyPolicy": "Privacy",
-      "termsOfService": "Terms"
+      "termsOfService": "Terms",
+      "trialBadge": "FREE 7-DAY TRIAL · NO CHARGE TODAY"
     },
     "profile": {
       "rowActiveA11y": "Ellie Pro active subscription",
@@ -222,6 +224,12 @@
     },
     "padlock": {
       "a11yLabel": "Upgrade to Ellie Pro to see full calendar"
+    }
+  },
+  "time": {
+    "periods": {
+      "am": "AM",
+      "pm": "PM"
     }
   }
 }

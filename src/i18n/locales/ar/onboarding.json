@@ -1,7 +1,13 @@
 {
   "welcome": {
     "tagline": "رفيقك في التحول التعدين",
-    "getStarted": "ابدأ"
+    "getStarted": "ابدأ",
+    "socialProof": "مصمم للعاملين بنظام المناوبات مثلك",
+    "trust": {
+      "freeTrial": "تجربة مجانية 7 أيام",
+      "noCard": "بدون بطاقة ائتمان",
+      "cancelAnytime": "يمكن الإلغاء في أي وقت"
+    }
   },
   "common": {
     "swipeHint": "اسحب لليمين للاختيار، أو لليسار لرؤية التالي، أو للأعلى لمزيد من المعلومات",
@@ -329,20 +335,20 @@
         "shiftTimes": "أوقات الورديات"
       }
     },
-    "nextShiftCountdown": "Next shift in {{days}} day(s) ({{date}})",
-    "checkInTitle": "When do you check your schedule?",
-    "checkInNotificationTitle": "Your schedule today",
-    "checkInNotificationBody": "Tap to see your upcoming shifts.",
+    "nextShiftCountdown": "النوبة القادمة خلال {{days}} يوم ({{date}})",
+    "checkInTitle": "متى تراجع جدولك؟",
+    "checkInNotificationTitle": "جدولك اليوم",
+    "checkInNotificationBody": "اضغط لرؤية نوباتك القادمة.",
     "checkIn": {
-      "morning": "Morning",
-      "midday": "Midday",
-      "evening": "Evening"
+      "morning": "صباحًا",
+      "midday": "منتصف النهار",
+      "evening": "مساءً"
     },
     "notificationPriming": {
-      "title": "Never miss a shift",
-      "body": "Ellie will remind you 24 hours and 4 hours before every shift.\nYou control what and when.",
-      "allow": "Turn On Reminders",
-      "decline": "Not now"
+      "title": "لا تفوّت أي نوبة",
+      "body": "ستذكّرك Ellie قبل كل نوبة بـ 24 ساعة و4 ساعات.\nأنت تتحكم بما ومتى.",
+      "allow": "تفعيل التذكيرات",
+      "decline": "ليس الآن"
     }
   },
   "phaseSelector": {
@@ -677,7 +683,11 @@
     },
     "customInput": {
       "label": "ما هو الوقت الذي تلتزم فيه عادة؟",
-      "helper": "استخدم تنسيق 12 ساعة (على سبيل المثال، 6:00 صباحًا)"
+      "helper": "استخدم تنسيق 12 ساعة (على سبيل المثال، 6:00 صباحًا)",
+      "period": {
+        "am": "ص",
+        "pm": "م"
+      }
     },
     "validation": {
       "hoursRange": "يجب أن تكون الساعات بين 1 و 12",
@@ -761,6 +771,9 @@
       "evening": "المساء",
       "nightShift": "الوردية الليلية",
       "tapToSet": "اضغط للتعيين"
+    },
+    "units": {
+      "hourShort": "{{hours}} س"
     }
   },
   "customPattern": {
@@ -988,14 +1001,33 @@
   "ahaMoment": {
     "headline": "Your year, mapped.",
     "subheadline": "Every shift. Every day off.",
-    "heyEllieTitle": "Ask Ellie about your roster",
-    "ctaPrimary": "Unlock Full Access — Free 7-Day Trial",
-    "ctaSecondary": "Continue with Limited Access →",
+    "heyEllieTitle": "اسأل Ellie عن جدولك",
+    "ctaPrimary": "افتح الوصول الكامل — تجربة مجانية لمدة 7 أيام",
+    "ctaSecondary": "المتابعة بوصول محدود ←",
     "stats": {
-      "workDays": "Work days",
-      "nightShifts": "Night shifts",
-      "daysOff": "Days off",
-      "nextShift": "Next shift"
-    }
+      "workDays": "أيام العمل",
+      "nightShifts": "نوبات ليلية",
+      "daysOff": "أيام الراحة",
+      "nextShift": "النوبة القادمة",
+      "nextDayOff": "يوم الإجازة القادم"
+    },
+    "nextShiftLabel": "نوبتك القادمة",
+    "shiftBadge": "نوبة {{shiftName}}",
+    "countdown": {
+      "tomorrow": "غدًا",
+      "inDays": "خلال {{days}} أيام"
+    },
+    "relative": {
+      "today": "اليوم",
+      "tomorrowShort": "غدًا",
+      "inDaysShort": "{{days}}ي"
+    },
+    "tryAsking": "جرّب أن تسأل…",
+    "suggestions": {
+      "workingChristmas": "هل أعمل في عيد الميلاد؟",
+      "nextDayOff": "متى يوم إجازتي القادم؟",
+      "nightShiftsThisMonth": "كم نوبة ليلية لدي هذا الشهر؟"
+    },
+    "buttonLabel": "مرحبًا Ellie"
   }
 }

@@ -161,6 +161,49 @@ const resources = {
 
 const isTestEnv = process.env.NODE_ENV === 'test';
 
+const LOCALE_TAG_BY_LANGUAGE: Record<string, string> = {
+  en: 'en-US',
+  es: 'es-ES',
+  'pt-BR': 'pt-BR',
+  fr: 'fr-FR',
+  ar: 'ar',
+  'zh-CN': 'zh-CN',
+  ru: 'ru-RU',
+  hi: 'hi-IN',
+  af: 'af-ZA',
+  zu: 'zu-ZA',
+  id: 'id-ID',
+};
+
+function resolveLocaleTag(language?: string): string {
+  const normalized = normalizeLanguage(language);
+  return LOCALE_TAG_BY_LANGUAGE[normalized] ?? 'en-US';
+}
+
+function formatInterpolationValue(value: unknown, language?: string, format?: string): string {
+  if (value === null || value === undefined) {
+    return '';
+  }
+
+  if (typeof value === 'number') {
+    const numberFormatter = new Intl.NumberFormat(resolveLocaleTag(language));
+    return numberFormatter.format(value);
+  }
+
+  if (value instanceof Date) {
+    if (format === 'time') {
+      return new Intl.DateTimeFormat(resolveLocaleTag(language), {
+        hour: 'numeric',
+        minute: '2-digit',
+      }).format(value);
+    }
+
+    return new Intl.DateTimeFormat(resolveLocaleTag(language)).format(value);
+  }
+
+  return String(value);
+}
+
 function syncDayjsLocale(language: string): void {
   const normalized = normalizeLanguage(language);
 
@@ -225,6 +268,7 @@ void i18n.use(initReactI18next).init({
   initImmediate: false,
   interpolation: {
     escapeValue: false,
+    format: (value, format, lng) => formatInterpolationValue(value, lng, format),
   },
   compatibilityJSON: 'v4',
   returnNull: false,

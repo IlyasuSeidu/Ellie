@@ -12,6 +12,7 @@ import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { theme } from '@/utils/theme';
 import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
+import { formatLocalizedNumber } from '@/utils/i18nFormat';
 
 export interface TimePickerModalProps {
   /** Modal visible state */
@@ -102,6 +103,11 @@ export const TimePickerModal: React.FC<TimePickerModalProps> = ({
   };
 
   const hours = use12HourFormat ? HOURS_12 : HOURS_24;
+  const formatTwoDigits = (value: number) =>
+    formatLocalizedNumber(value, {
+      minimumIntegerDigits: 2,
+      useGrouping: false,
+    });
 
   return (
     <Modal
@@ -146,7 +152,7 @@ export const TimePickerModal: React.FC<TimePickerModalProps> = ({
                         selectedHour === hour && styles.selectedPickerItemText,
                       ]}
                     >
-                      {hour.toString().padStart(2, '0')}
+                      {formatTwoDigits(hour)}
                     </Animated.Text>
                   </TouchableOpacity>
                 ))}
@@ -175,7 +181,7 @@ export const TimePickerModal: React.FC<TimePickerModalProps> = ({
                         selectedMinute === minute && styles.selectedPickerItemText,
                       ]}
                     >
-                      {minute.toString().padStart(2, '0')}
+                      {formatTwoDigits(minute)}
                     </Animated.Text>
                   </TouchableOpacity>
                 ))}
@@ -195,7 +201,7 @@ export const TimePickerModal: React.FC<TimePickerModalProps> = ({
                     testID={`${testID}-am`}
                   >
                     <Animated.Text style={[styles.ampmText, !isPM && styles.selectedAmpmText]}>
-                      AM
+                      {t('time.periods.am', { ns: 'common', defaultValue: 'AM' })}
                     </Animated.Text>
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -204,7 +210,7 @@ export const TimePickerModal: React.FC<TimePickerModalProps> = ({
                     testID={`${testID}-pm`}
                   >
                     <Animated.Text style={[styles.ampmText, isPM && styles.selectedAmpmText]}>
-                      PM
+                      {t('time.periods.pm', { ns: 'common', defaultValue: 'PM' })}
                     </Animated.Text>
                   </TouchableOpacity>
                 </View>

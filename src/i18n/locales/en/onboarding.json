@@ -1,7 +1,13 @@
 {
   "welcome": {
     "tagline": "Stop counting shifts on your hands. No second-guessing.",
-    "getStarted": "Set Up My Roster →"
+    "getStarted": "Set Up My Roster →",
+    "socialProof": "Built for shift workers like you",
+    "trust": {
+      "freeTrial": "Free 7-day trial",
+      "noCard": "No credit card",
+      "cancelAnytime": "Cancel anytime"
+    }
   },
   "common": {
     "swipeHint": "Swipe right to select, left to see next, or up for more info",
@@ -46,8 +52,27 @@
       "workDays": "Work days",
       "nightShifts": "Night shifts",
       "daysOff": "Days off",
-      "nextShift": "Next shift"
-    }
+      "nextShift": "Next shift",
+      "nextDayOff": "Next Day Off"
+    },
+    "nextShiftLabel": "YOUR NEXT SHIFT",
+    "shiftBadge": "{{shiftName}}",
+    "countdown": {
+      "tomorrow": "tomorrow",
+      "inDays": "in {{days}} days"
+    },
+    "relative": {
+      "today": "Today",
+      "tomorrowShort": "Tmrw",
+      "inDaysShort": "{{days}}d"
+    },
+    "tryAsking": "Try asking…",
+    "suggestions": {
+      "workingChristmas": "Am I working Christmas?",
+      "nextDayOff": "When's my next day off?",
+      "nightShiftsThisMonth": "How many night shifts this month?"
+    },
+    "buttonLabel": "Hey Ellie"
   },
   "intro": {
     "welcome": "Welcome to Ellie! I'm here to help you set up your shift calendar. Let's start by getting to know you a bit better.",
@@ -706,7 +731,11 @@
     },
     "customInput": {
       "label": "What time do you usually clock in?",
-      "helper": "Use 12-hour format (e.g., 6:00 AM)"
+      "helper": "Use 12-hour format (e.g., 6:00 AM)",
+      "period": {
+        "am": "AM",
+        "pm": "PM"
+      }
     },
     "validation": {
       "hoursRange": "Hours must be between 1 and 12",
@@ -790,6 +819,9 @@
       "evening": "Evening",
       "nightShift": "Night Shift",
       "tapToSet": "Tap to set"
+    },
+    "units": {
+      "hourShort": "{{hours}}h"
     }
   },
   "customPattern": {

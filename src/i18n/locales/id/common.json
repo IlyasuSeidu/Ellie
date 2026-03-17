@@ -125,7 +125,7 @@
       "apple": "Lanjutkan dengan Apple"
     },
     "signIn": {
-      "appName": "ELLIE",
+      "appName": "Ellie",
       "subtitle": "Masuk ke akun Anda",
       "forgotPassword": "Lupa kata sandi?",
       "primaryButton": "Masuk",
@@ -173,7 +173,7 @@
         "offline": "Bekerja di bawah tanah, tidak diperlukan sinyal",
         "instantAnswers": "Jawaban instan tentang cuti dan pola",
         "aiPowered": "Didukung oleh AI dan selalu berkembang",
-        "leavePlanning": "Plan holidays without calling HR"
+        "leavePlanning": "Rencanakan libur tanpa menelepon HR"
       },
       "plans": {
         "annual": "Tahunan",
@@ -181,8 +181,9 @@
         "annualSuffix": "/ tahun",
         "monthlySuffix": "/bln",
         "save": "HEMAT 40%",
-        "bestValue": "BEST VALUE",
-        "perMonth": "/month"
+        "bestValue": "NILAI TERBAIK",
+        "perMonth": "/bulan",
+        "savePercent": "HEMAT {{percent}}%"
       },
       "cta": "Mulai Uji Coba Gratis 7 Hari",
       "noCard": "Tidak diperlukan kartu kredit · Batalkan kapan saja",
@@ -191,28 +192,29 @@
       "socialProof": "4.8 · Trusted by 50,000+ shift workers",
       "testimonials": [
         {
-          "quote": "Finally know when I'm working Christmas. Changed my life.",
-          "author": "Sarah K., Nurse — 12h rotating shifts"
+          "quote": "Akhirnya saya tahu kapan saya kerja saat Natal. Mengubah hidup saya.",
+          "author": "Sarah K., perawat — shift rotasi 12 jam"
         },
         {
-          "quote": "Showed my wife my whole year roster in under a minute.",
-          "author": "Dave L., Firefighter — FIFO roster"
+          "quote": "Saya menunjukkan roster setahun penuh ke istri saya dalam kurang dari semenit.",
+          "author": "Dave L., petugas pemadam — roster FIFO"
         },
         {
-          "quote": "Booked flights 3 months out without calling HR once.",
-          "author": "Jason M., Mine worker — 7/7 FIFO"
+          "quote": "Saya pesan tiket 3 bulan sebelumnya tanpa menelepon HR sama sekali.",
+          "author": "Jason M., pekerja tambang — FIFO 7/7"
         }
       ],
       "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
-      "timerLabel": "Introductory offer ends in",
+      "timerLabel": "Penawaran awal berakhir dalam",
       "trust": {
-        "freeTrial": "7 days free",
-        "cancel": "Cancel anytime",
-        "noCharge": "No charge today"
+        "freeTrial": "Gratis 7 hari",
+        "cancel": "Batalkan kapan saja",
+        "noCharge": "Tidak ada biaya hari ini"
       },
-      "valueFrame": "Less than a coffee per week to know your entire year.",
-      "security": "Secure payment via {{platform}} · Processed by {{platform}}, not Ellie",
-      "termsOfService": "Terms"
+      "valueFrame": "Kurang dari harga kopi per minggu untuk mengetahui jadwal setahun penuh.",
+      "security": "Pembayaran aman via {{platform}} · Diproses oleh {{platform}}, bukan Ellie",
+      "termsOfService": "Syarat",
+      "trialBadge": "UJI COBA GRATIS 7 HARI · TANPA BIAYA HARI INI"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro langganan aktif",
@@ -224,6 +226,12 @@
     },
     "padlock": {
       "a11yLabel": "Tingkatkan ke __TK1__ Pro untuk melihat kalender lengkap"
+    }
+  },
+  "time": {
+    "periods": {
+      "am": "AM",
+      "pm": "PM"
     }
   }
 }

@@ -125,7 +125,7 @@
       "apple": "使用 Apple 继续"
     },
     "signIn": {
-      "appName": "艾莉",
+      "appName": "Ellie",
       "subtitle": "登录你的账户",
       "forgotPassword": "忘记密码？",
       "primaryButton": "登录",
@@ -173,7 +173,7 @@
         "offline": "地下工作，无需信号",
         "instantAnswers": "有关休假和模式的即时答案",
         "aiPowered": "由人工智能提供支持并不断改进",
-        "leavePlanning": "Plan holidays without calling HR"
+        "leavePlanning": "无需联系人事即可规划休假"
       },
       "plans": {
         "annual": "年度的",
@@ -181,8 +181,9 @@
         "annualSuffix": "/年",
         "monthlySuffix": "/月",
         "save": "节省 40%",
-        "bestValue": "BEST VALUE",
-        "perMonth": "/month"
+        "bestValue": "最超值",
+        "perMonth": "/月",
+        "savePercent": "节省 {{percent}}%"
       },
       "cta": "开始 7 天免费试用",
       "noCard": "无需信用卡 · 随时取消",
@@ -191,28 +192,29 @@
       "socialProof": "4.8 · Trusted by 50,000+ shift workers",
       "testimonials": [
         {
-          "quote": "Finally know when I'm working Christmas. Changed my life.",
-          "author": "Sarah K., Nurse — 12h rotating shifts"
+          "quote": "终于知道圣诞节我是否上班了，真的改变了我的生活。",
+          "author": "Sarah K.，护士 — 12小时轮班"
         },
         {
-          "quote": "Showed my wife my whole year roster in under a minute.",
-          "author": "Dave L., Firefighter — FIFO roster"
+          "quote": "我不到一分钟就把全年班表展示给我妻子看。",
+          "author": "Dave L.，消防员 — FIFO 班表"
         },
         {
-          "quote": "Booked flights 3 months out without calling HR once.",
-          "author": "Jason M., Mine worker — 7/7 FIFO"
+          "quote": "提前3个月订机票，再也不用给人事打电话。",
+          "author": "Jason M.，矿工 — FIFO 7/7"
         }
       ],
       "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
-      "timerLabel": "Introductory offer ends in",
+      "timerLabel": "首发优惠结束倒计时",
       "trust": {
-        "freeTrial": "7 days free",
-        "cancel": "Cancel anytime",
-        "noCharge": "No charge today"
+        "freeTrial": "7天免费",
+        "cancel": "可随时取消",
+        "noCharge": "今天不收费"
       },
-      "valueFrame": "Less than a coffee per week to know your entire year.",
-      "security": "Secure payment via {{platform}} · Processed by {{platform}}, not Ellie",
-      "termsOfService": "Terms"
+      "valueFrame": "每周不到一杯咖啡的钱，就能掌握你整年的班表。",
+      "security": "通过 {{platform}} 安全支付 · 由 {{platform}} 处理，而非 Ellie",
+      "termsOfService": "条款",
+      "trialBadge": "免费试用7天 · 今天不收费"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro 主动订阅",
@@ -224,6 +226,12 @@
     },
     "padlock": {
       "a11yLabel": "升级到 __TK1__ Pro 以查看完整日历"
+    }
+  },
+  "time": {
+    "periods": {
+      "am": "上午",
+      "pm": "下午"
     }
   }
 }

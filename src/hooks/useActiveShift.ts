@@ -53,9 +53,17 @@ function formatMinutesCountdown(totalMinutes: number): string {
   if (totalMinutes <= 0) return '';
   const h = Math.floor(totalMinutes / 60);
   const m = totalMinutes % 60;
-  if (h === 0) return `${m}m`;
-  if (m === 0) return `${h}h`;
-  return `${h}h ${m}m`;
+  if (h === 0) {
+    return tDashboard('countdown.duration.minutesOnly', { minutes: m }, '{{minutes}}m');
+  }
+  if (m === 0) {
+    return tDashboard('countdown.duration.hoursOnly', { hours: h }, '{{hours}}h');
+  }
+  return tDashboard(
+    'countdown.duration.hoursMinutes',
+    { hours: h, minutes: m },
+    '{{hours}}h {{minutes}}m'
+  );
 }
 
 const tDashboard = (key: string, options: Record<string, unknown> = {}, fallback: string): string =>

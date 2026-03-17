@@ -206,6 +206,25 @@
       "morning": "утренней смены",
       "afternoon": "дневной смены",
       "off": "выходного"
+    },
+    "duration": {
+      "minutesOnly": "{{minutes}}м",
+      "hoursOnly": "{{hours}}ч",
+      "hoursMinutes": "{{hours}}ч {{minutes}}м"
+    }
+  },
+  "onboardingChecklist": {
+    "title": "Используйте Ellie по максимуму",
+    "items": {
+      "roster": "Настройте ваш график",
+      "shiftTimes": "Добавьте время смен",
+      "profile": "Заполните профиль",
+      "askEllie": "Задайте вопрос Ellie"
+    },
+    "actions": {
+      "done": "Готово",
+      "doIt": "Сделать",
+      "dismiss": "Скрыть"
     }
   }
 }

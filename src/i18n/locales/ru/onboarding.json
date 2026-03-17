@@ -1,7 +1,13 @@
 {
   "welcome": {
     "tagline": "Ваш помощник в горной смене",
-    "getStarted": "Начать"
+    "getStarted": "Начать",
+    "socialProof": "Создано для посменных работников, как вы",
+    "trust": {
+      "freeTrial": "Бесплатно 7 дней",
+      "noCard": "Без банковской карты",
+      "cancelAnytime": "Отмена в любой момент"
+    }
   },
   "common": {
     "swipeHint": "Проведите пальцем вправо, чтобы выбрать, влево, чтобы увидеть следующее, или вверх, чтобы получить дополнительную информацию.",
@@ -341,20 +347,20 @@
         "shiftTimes": "Время смен"
       }
     },
-    "nextShiftCountdown": "Next shift in {{days}} day(s) ({{date}})",
-    "checkInTitle": "When do you check your schedule?",
-    "checkInNotificationTitle": "Your schedule today",
-    "checkInNotificationBody": "Tap to see your upcoming shifts.",
+    "nextShiftCountdown": "Следующая смена через {{days}} дн. ({{date}})",
+    "checkInTitle": "Когда вы проверяете свой график?",
+    "checkInNotificationTitle": "Ваш график на сегодня",
+    "checkInNotificationBody": "Нажмите, чтобы увидеть предстоящие смены.",
     "checkIn": {
-      "morning": "Morning",
-      "midday": "Midday",
-      "evening": "Evening"
+      "morning": "Утро",
+      "midday": "Полдень",
+      "evening": "Вечер"
     },
     "notificationPriming": {
-      "title": "Never miss a shift",
-      "body": "Ellie will remind you 24 hours and 4 hours before every shift.\nYou control what and when.",
-      "allow": "Turn On Reminders",
-      "decline": "Not now"
+      "title": "Не пропускайте смены",
+      "body": "Ellie напомнит за 24 часа и за 4 часа до каждой смены.\nВы сами выбираете что и когда.",
+      "allow": "Включить напоминания",
+      "decline": "Не сейчас"
     }
   },
   "phaseSelector": {
@@ -689,7 +695,11 @@
     },
     "customInput": {
       "label": "В какое время вы обычно приходите?",
-      "helper": "Используйте 12-часовой формат (например, 6:00 утра)."
+      "helper": "Используйте 12-часовой формат (например, 6:00 утра).",
+      "period": {
+        "am": "ДП",
+        "pm": "ПП"
+      }
     },
     "validation": {
       "hoursRange": "Часы должны быть от 1 до 12.",
@@ -773,6 +783,9 @@
       "evening": "Вечер",
       "nightShift": "Ночная смена",
       "tapToSet": "Нажмите, чтобы задать"
+    },
+    "units": {
+      "hourShort": "{{hours}} ч"
     }
   },
   "customPattern": {
@@ -1000,14 +1013,33 @@
   "ahaMoment": {
     "headline": "Your year, mapped.",
     "subheadline": "Every shift. Every day off.",
-    "heyEllieTitle": "Ask Ellie about your roster",
-    "ctaPrimary": "Unlock Full Access — Free 7-Day Trial",
-    "ctaSecondary": "Continue with Limited Access →",
+    "heyEllieTitle": "Спросите Ellie о вашем графике",
+    "ctaPrimary": "Откройте полный доступ — 7 дней бесплатно",
+    "ctaSecondary": "Продолжить с ограниченным доступом →",
     "stats": {
-      "workDays": "Work days",
-      "nightShifts": "Night shifts",
-      "daysOff": "Days off",
-      "nextShift": "Next shift"
-    }
+      "workDays": "Рабочие дни",
+      "nightShifts": "Ночные смены",
+      "daysOff": "Выходные дни",
+      "nextShift": "Следующая смена",
+      "nextDayOff": "Следующий выходной"
+    },
+    "nextShiftLabel": "ВАША СЛЕДУЮЩАЯ СМЕНА",
+    "shiftBadge": "{{shiftName}} смена",
+    "countdown": {
+      "tomorrow": "завтра",
+      "inDays": "через {{days}} дн."
+    },
+    "relative": {
+      "today": "Сегодня",
+      "tomorrowShort": "Завтра",
+      "inDaysShort": "{{days}}д"
+    },
+    "tryAsking": "Попробуйте спросить…",
+    "suggestions": {
+      "workingChristmas": "Я работаю на Рождество?",
+      "nextDayOff": "Когда мой следующий выходной?",
+      "nightShiftsThisMonth": "Сколько у меня ночных смен в этом месяце?"
+    },
+    "buttonLabel": "Привет, Ellie"
   }
 }

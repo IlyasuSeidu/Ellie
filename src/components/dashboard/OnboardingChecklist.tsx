@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
 
@@ -23,6 +24,7 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({
   onCompleteProfile,
   onAskEllie,
 }) => {
+  const { t } = useTranslation('dashboard');
   // Only ask_ellie needs AsyncStorage — its completion has no data-derived equivalent.
   const [askEllieDone, setAskEllieDone] = useState(false);
 
@@ -53,30 +55,38 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({
     () => [
       {
         key: 'roster',
-        label: 'Set up your roster',
+        label: t('onboardingChecklist.items.roster', { defaultValue: 'Set up your roster' }),
         done: true,
         onDoIt: undefined,
       },
       {
         key: 'shift_times',
-        label: 'Add your shift times',
+        label: t('onboardingChecklist.items.shiftTimes', { defaultValue: 'Add your shift times' }),
         done: shiftTimesDone,
         onDoIt: onAddShiftTimes,
       },
       {
         key: 'profile',
-        label: 'Complete your profile',
+        label: t('onboardingChecklist.items.profile', { defaultValue: 'Complete your profile' }),
         done: profileDone,
         onDoIt: onCompleteProfile,
       },
       {
         key: 'ask_ellie',
-        label: 'Ask Ellie a question',
+        label: t('onboardingChecklist.items.askEllie', { defaultValue: 'Ask Ellie a question' }),
         done: askEllieDone,
         onDoIt: handleAskEllie,
       },
     ],
-    [shiftTimesDone, profileDone, askEllieDone, onAddShiftTimes, onCompleteProfile, handleAskEllie]
+    [
+      askEllieDone,
+      handleAskEllie,
+      onAddShiftTimes,
+      onCompleteProfile,
+      profileDone,
+      shiftTimesDone,
+      t,
+    ]
   );
 
   const allComplete = items.every((item) => item.done);
@@ -90,7 +100,9 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Get the most out of Ellie</Text>
+      <Text style={styles.title}>
+        {t('onboardingChecklist.title', { defaultValue: 'Get the most out of Ellie' })}
+      </Text>
 
       {items.map((item, index) => {
         const isLast = index === items.length - 1;
@@ -103,10 +115,14 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({
             />
             <Text style={[styles.label, item.done && styles.labelDone]}>{item.label}</Text>
             {item.done || item.key === 'roster' ? (
-              <Text style={styles.doneText}>Done</Text>
+              <Text style={styles.doneText}>
+                {t('onboardingChecklist.actions.done', { defaultValue: 'Done' })}
+              </Text>
             ) : (
               <TouchableOpacity style={styles.doItButton} onPress={item.onDoIt}>
-                <Text style={styles.doItText}>Do it</Text>
+                <Text style={styles.doItText}>
+                  {t('onboardingChecklist.actions.doIt', { defaultValue: 'Do it' })}
+                </Text>
               </TouchableOpacity>
             )}
           </View>
@@ -115,7 +131,9 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({
 
       {!allComplete && (
         <TouchableOpacity style={styles.dismissButton} onPress={onDismiss}>
-          <Text style={styles.dismissText}>Dismiss</Text>
+          <Text style={styles.dismissText}>
+            {t('onboardingChecklist.actions.dismiss', { defaultValue: 'Dismiss' })}
+          </Text>
         </TouchableOpacity>
       )}
     </View>

@@ -1,7 +1,13 @@
 {
   "welcome": {
     "tagline": "Pendamping Pergeseran Penambangan Anda",
-    "getStarted": "Memulai"
+    "getStarted": "Memulai",
+    "socialProof": "Dibuat untuk pekerja shift seperti Anda",
+    "trust": {
+      "freeTrial": "Uji coba gratis 7 hari",
+      "noCard": "Tanpa kartu kredit",
+      "cancelAnytime": "Batalkan kapan saja"
+    }
   },
   "common": {
     "swipeHint": "Gesek ke kanan untuk memilih, ke kiri untuk melihat berikutnya, atau ke atas untuk info lebih lanjut",
@@ -346,20 +352,20 @@
         "shiftTimes": "Waktu Shift"
       }
     },
-    "nextShiftCountdown": "Next shift in {{days}} day(s) ({{date}})",
-    "checkInTitle": "When do you check your schedule?",
-    "checkInNotificationTitle": "Your schedule today",
-    "checkInNotificationBody": "Tap to see your upcoming shifts.",
+    "nextShiftCountdown": "Shift berikutnya dalam {{days}} hari ({{date}})",
+    "checkInTitle": "Kapan Anda mengecek jadwal?",
+    "checkInNotificationTitle": "Jadwal Anda hari ini",
+    "checkInNotificationBody": "Ketuk untuk melihat shift Anda berikutnya.",
     "checkIn": {
-      "morning": "Morning",
-      "midday": "Midday",
-      "evening": "Evening"
+      "morning": "Pagi",
+      "midday": "Siang",
+      "evening": "Malam"
     },
     "notificationPriming": {
-      "title": "Never miss a shift",
-      "body": "Ellie will remind you 24 hours and 4 hours before every shift.\nYou control what and when.",
-      "allow": "Turn On Reminders",
-      "decline": "Not now"
+      "title": "Jangan pernah melewatkan shift",
+      "body": "Ellie akan mengingatkan Anda 24 jam dan 4 jam sebelum setiap shift.\nAnda yang menentukan apa dan kapan.",
+      "allow": "Aktifkan Pengingat",
+      "decline": "Nanti saja"
     }
   },
   "phaseSelector": {
@@ -694,7 +700,11 @@
     },
     "customInput": {
       "label": "Jam berapa biasanya Anda masuk?",
-      "helper": "Gunakan format 12 jam (misalnya, 06.00)"
+      "helper": "Gunakan format 12 jam (misalnya, 06.00)",
+      "period": {
+        "am": "AM",
+        "pm": "PM"
+      }
     },
     "validation": {
       "hoursRange": "Jam harus antara 1 dan 12",
@@ -778,6 +788,9 @@
       "evening": "Malam awal",
       "nightShift": "Shift malam",
       "tapToSet": "Ketuk untuk mengatur"
+    },
+    "units": {
+      "hourShort": "{{hours}} j"
     }
   },
   "customPattern": {
@@ -1005,14 +1018,33 @@
   "ahaMoment": {
     "headline": "Your year, mapped.",
     "subheadline": "Every shift. Every day off.",
-    "heyEllieTitle": "Ask Ellie about your roster",
-    "ctaPrimary": "Unlock Full Access — Free 7-Day Trial",
-    "ctaSecondary": "Continue with Limited Access →",
+    "heyEllieTitle": "Tanya Ellie tentang roster Anda",
+    "ctaPrimary": "Buka Akses Penuh — Uji Coba Gratis 7 Hari",
+    "ctaSecondary": "Lanjutkan dengan Akses Terbatas →",
     "stats": {
-      "workDays": "Work days",
-      "nightShifts": "Night shifts",
-      "daysOff": "Days off",
-      "nextShift": "Next shift"
-    }
+      "workDays": "Hari kerja",
+      "nightShifts": "Shift malam",
+      "daysOff": "Hari libur",
+      "nextShift": "Shift berikutnya",
+      "nextDayOff": "Hari libur berikutnya"
+    },
+    "nextShiftLabel": "SHIFT BERIKUTNYA",
+    "shiftBadge": "Shift {{shiftName}}",
+    "countdown": {
+      "tomorrow": "besok",
+      "inDays": "dalam {{days}} hari"
+    },
+    "relative": {
+      "today": "Hari ini",
+      "tomorrowShort": "Besok",
+      "inDaysShort": "{{days}}h"
+    },
+    "tryAsking": "Coba tanyakan…",
+    "suggestions": {
+      "workingChristmas": "Apakah saya bekerja saat Natal?",
+      "nextDayOff": "Kapan hari libur saya berikutnya?",
+      "nightShiftsThisMonth": "Berapa shift malam saya bulan ini?"
+    },
+    "buttonLabel": "Hai Ellie"
   }
 }

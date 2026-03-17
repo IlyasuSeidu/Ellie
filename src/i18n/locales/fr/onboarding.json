@@ -1,7 +1,13 @@
 {
   "welcome": {
     "tagline": "Votre compagnon de quart minier",
-    "getStarted": "Commencer"
+    "getStarted": "Commencer",
+    "socialProof": "Conçu pour les travailleurs postés comme vous",
+    "trust": {
+      "freeTrial": "Essai gratuit 7 jours",
+      "noCard": "Aucune carte bancaire",
+      "cancelAnytime": "Annulez à tout moment"
+    }
   },
   "common": {
     "swipeHint": "Faites glisser votre doigt vers la droite pour sélectionner, vers la gauche pour voir ensuite ou vers le haut pour plus d'informations.",
@@ -355,20 +361,20 @@
         "shiftTimes": "Horaires des quarts"
       }
     },
-    "nextShiftCountdown": "Next shift in {{days}} day(s) ({{date}})",
-    "checkInTitle": "When do you check your schedule?",
-    "checkInNotificationTitle": "Your schedule today",
-    "checkInNotificationBody": "Tap to see your upcoming shifts.",
+    "nextShiftCountdown": "Prochain poste dans {{days}} jour(s) ({{date}})",
+    "checkInTitle": "Quand consultez-vous votre planning ?",
+    "checkInNotificationTitle": "Votre planning du jour",
+    "checkInNotificationBody": "Touchez pour voir vos prochains postes.",
     "checkIn": {
-      "morning": "Morning",
-      "midday": "Midday",
-      "evening": "Evening"
+      "morning": "Matin",
+      "midday": "Midi",
+      "evening": "Soir"
     },
     "notificationPriming": {
-      "title": "Never miss a shift",
-      "body": "Ellie will remind you 24 hours and 4 hours before every shift.\nYou control what and when.",
-      "allow": "Turn On Reminders",
-      "decline": "Not now"
+      "title": "Ne manquez plus aucun poste",
+      "body": "Ellie vous rappellera 24 h et 4 h avant chaque poste.\nVous choisissez quoi et quand.",
+      "allow": "Activer les rappels",
+      "decline": "Pas maintenant"
     }
   },
   "phaseSelector": {
@@ -703,7 +709,11 @@
     },
     "customInput": {
       "label": "À quelle heure pointez-vous habituellement ?",
-      "helper": "Utilisez le format 12 heures (par exemple, 6h00)"
+      "helper": "Utilisez le format 12 heures (par exemple, 6h00)",
+      "period": {
+        "am": "AM",
+        "pm": "PM"
+      }
     },
     "validation": {
       "hoursRange": "Les heures doivent être comprises entre 1 et 12",
@@ -787,6 +797,9 @@
       "evening": "Soir",
       "nightShift": "Quart de nuit",
       "tapToSet": "Touchez pour régler"
+    },
+    "units": {
+      "hourShort": "{{hours}} h"
     }
   },
   "customPattern": {
@@ -1014,14 +1027,33 @@
   "ahaMoment": {
     "headline": "Your year, mapped.",
     "subheadline": "Every shift. Every day off.",
-    "heyEllieTitle": "Ask Ellie about your roster",
-    "ctaPrimary": "Unlock Full Access — Free 7-Day Trial",
-    "ctaSecondary": "Continue with Limited Access →",
+    "heyEllieTitle": "Demandez à Ellie votre planning",
+    "ctaPrimary": "Débloquez l’accès complet — Essai gratuit 7 jours",
+    "ctaSecondary": "Continuer avec un accès limité →",
     "stats": {
-      "workDays": "Work days",
-      "nightShifts": "Night shifts",
-      "daysOff": "Days off",
-      "nextShift": "Next shift"
-    }
+      "workDays": "Jours travaillés",
+      "nightShifts": "Postes de nuit",
+      "daysOff": "Jours de repos",
+      "nextShift": "Prochain poste",
+      "nextDayOff": "Prochain jour off"
+    },
+    "nextShiftLabel": "VOTRE PROCHAIN POSTE",
+    "shiftBadge": "Poste {{shiftName}}",
+    "countdown": {
+      "tomorrow": "demain",
+      "inDays": "dans {{days}} jours"
+    },
+    "relative": {
+      "today": "Aujourd'hui",
+      "tomorrowShort": "Dem.",
+      "inDaysShort": "{{days}}j"
+    },
+    "tryAsking": "Essayez de demander…",
+    "suggestions": {
+      "workingChristmas": "Est-ce que je travaille à Noël ?",
+      "nextDayOff": "Quand est mon prochain jour off ?",
+      "nightShiftsThisMonth": "Combien de postes de nuit ce mois-ci ?"
+    },
+    "buttonLabel": "Salut Ellie"
   }
 }

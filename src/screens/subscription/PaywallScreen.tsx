@@ -49,27 +49,10 @@ type Testimonial = {
 
 const CARD_WIDTH = Dimensions.get('window').width - 48;
 
-const DEFAULT_TESTIMONIALS: Testimonial[] = [
-  {
-    quote: "Finally know when I'm working Christmas. Changed my life.",
-    author: 'Sarah K., Nurse - 12h rotating shifts',
-    stars: 5,
-  },
-  {
-    quote: 'Showed my wife my whole year roster in under a minute.',
-    author: 'Dave L., Firefighter - FIFO roster',
-    stars: 5,
-  },
-  {
-    quote: 'Booked flights 3 months out without calling HR once.',
-    author: 'Jason M., Mine worker - 7/7 FIFO',
-    stars: 5,
-  },
-];
-
 export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboardingData }) => {
   const insets = useSafeAreaInsets();
   const { t } = useTranslation('common');
+  const tLoose = t as unknown as (key: string, options?: Record<string, unknown>) => string;
   const { restorePurchases } = useSubscription();
   const [annualPackage, setAnnualPackage] = useState<PurchasesPackage | null>(null);
   const [monthlyPackage, setMonthlyPackage] = useState<PurchasesPackage | null>(null);
@@ -93,7 +76,26 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
     [t]
   );
 
-  const testimonials = DEFAULT_TESTIMONIALS;
+  const testimonials: Testimonial[] = useMemo(
+    () => [
+      {
+        quote: String(tLoose('subscription.paywall.testimonials.0.quote')),
+        author: String(tLoose('subscription.paywall.testimonials.0.author')),
+        stars: 5,
+      },
+      {
+        quote: String(tLoose('subscription.paywall.testimonials.1.quote')),
+        author: String(tLoose('subscription.paywall.testimonials.1.author')),
+        stars: 5,
+      },
+      {
+        quote: String(tLoose('subscription.paywall.testimonials.2.quote')),
+        author: String(tLoose('subscription.paywall.testimonials.2.author')),
+        stars: 5,
+      },
+    ],
+    [tLoose]
+  );
 
   const ctaAnimatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: ctaPulse.value }],
@@ -242,7 +244,11 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
         {/* FREE TRIAL badge — the #1 conversion signal */}
         <View style={styles.trialBadge}>
           <Ionicons name="gift-outline" size={14} color={theme.colors.sacredGold} />
-          <Text style={styles.trialBadgeText}>FREE 7-DAY TRIAL · NO CHARGE TODAY</Text>
+          <Text style={styles.trialBadgeText}>
+            {t('subscription.paywall.trialBadge', {
+              defaultValue: 'FREE 7-DAY TRIAL · NO CHARGE TODAY',
+            })}
+          </Text>
         </View>
 
         {/* Hero */}
@@ -347,7 +353,12 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
                   <View style={styles.planNameRow}>
                     <Text style={styles.planName}>{t('subscription.paywall.plans.annual')}</Text>
                     <View style={styles.savingsBadge}>
-                      <Text style={styles.savingsText}>SAVE {savingsPercent}%</Text>
+                      <Text style={styles.savingsText}>
+                        {t('subscription.paywall.plans.savePercent', {
+                          percent: savingsPercent,
+                          defaultValue: 'SAVE {{percent}}%',
+                        })}
+                      </Text>
                     </View>
                   </View>
                   <Text style={styles.planMonthlyEquivalent}>

@@ -206,6 +206,25 @@
       "morning": "turno de mañana",
       "afternoon": "turno de tarde",
       "off": "día libre"
+    },
+    "duration": {
+      "minutesOnly": "{{minutes}} min",
+      "hoursOnly": "{{hours}} h",
+      "hoursMinutes": "{{hours}} h {{minutes}} min"
+    }
+  },
+  "onboardingChecklist": {
+    "title": "Aprovecha al máximo Ellie",
+    "items": {
+      "roster": "Configura tu roster",
+      "shiftTimes": "Añade tus horarios de turno",
+      "profile": "Completa tu perfil",
+      "askEllie": "Hazle una pregunta a Ellie"
+    },
+    "actions": {
+      "done": "Hecho",
+      "doIt": "Hacerlo",
+      "dismiss": "Descartar"
     }
   }
 }

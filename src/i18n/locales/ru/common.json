@@ -125,7 +125,7 @@
       "apple": "Продолжить с Apple"
     },
     "signIn": {
-      "appName": "ЭЛЛИ",
+      "appName": "Ellie",
       "subtitle": "Войдите в свою учетную запись",
       "forgotPassword": "Забыли пароль?",
       "primaryButton": "Войти",
@@ -173,7 +173,7 @@
         "offline": "Работает под землей, сигнал не нужен",
         "instantAnswers": "Мгновенные ответы об отпусках и схемах",
         "aiPowered": "Работает на базе искусственного интеллекта и постоянно совершенствуется",
-        "leavePlanning": "Plan holidays without calling HR"
+        "leavePlanning": "Планируйте выходные без звонков в HR"
       },
       "plans": {
         "annual": "Ежегодный",
@@ -181,8 +181,9 @@
         "annualSuffix": "/год",
         "monthlySuffix": "/мес.",
         "save": "СЭКОНОМЬТЕ 40%",
-        "bestValue": "BEST VALUE",
-        "perMonth": "/month"
+        "bestValue": "ЛУЧШАЯ ЦЕННОСТЬ",
+        "perMonth": "/мес",
+        "savePercent": "ЭКОНОМИЯ {{percent}}%"
       },
       "cta": "Начать 7-дневную бесплатную пробную версию",
       "noCard": "Кредитная карта не требуется · Отмена в любое время",
@@ -191,28 +192,29 @@
       "socialProof": "4.8 · Trusted by 50,000+ shift workers",
       "testimonials": [
         {
-          "quote": "Finally know when I'm working Christmas. Changed my life.",
-          "author": "Sarah K., Nurse — 12h rotating shifts"
+          "quote": "Наконец-то знаю, работаю ли я на Рождество. Это изменило мою жизнь.",
+          "author": "Sarah K., медсестра — 12-часовые ротационные смены"
         },
         {
-          "quote": "Showed my wife my whole year roster in under a minute.",
-          "author": "Dave L., Firefighter — FIFO roster"
+          "quote": "Показал жене свой график на весь год меньше чем за минуту.",
+          "author": "Dave L., пожарный — FIFO график"
         },
         {
-          "quote": "Booked flights 3 months out without calling HR once.",
-          "author": "Jason M., Mine worker — 7/7 FIFO"
+          "quote": "Забронировал рейсы за 3 месяца без единого звонка в HR.",
+          "author": "Jason M., шахтёр — FIFO 7/7"
         }
       ],
       "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
-      "timerLabel": "Introductory offer ends in",
+      "timerLabel": "Стартовое предложение закончится через",
       "trust": {
-        "freeTrial": "7 days free",
-        "cancel": "Cancel anytime",
-        "noCharge": "No charge today"
+        "freeTrial": "7 дней бесплатно",
+        "cancel": "Отмена в любой момент",
+        "noCharge": "Сегодня без списания"
       },
-      "valueFrame": "Less than a coffee per week to know your entire year.",
-      "security": "Secure payment via {{platform}} · Processed by {{platform}}, not Ellie",
-      "termsOfService": "Terms"
+      "valueFrame": "Меньше стоимости кофе в неделю, чтобы знать график на весь год.",
+      "security": "Безопасная оплата через {{platform}} · Обрабатывается {{platform}}, а не Ellie",
+      "termsOfService": "Условия",
+      "trialBadge": "БЕСПЛАТНО 7 ДНЕЙ · СЕГОДНЯ БЕЗ СПИСАНИЯ"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Активная подписка Pro",
@@ -224,6 +226,12 @@
     },
     "padlock": {
       "a11yLabel": "Обновите версию __TK1__ Pro, чтобы увидеть полный календарь."
+    }
+  },
+  "time": {
+    "periods": {
+      "am": "ДП",
+      "pm": "ПП"
     }
   }
 }

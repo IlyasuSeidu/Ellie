@@ -1,7 +1,13 @@
 {
   "welcome": {
     "tagline": "आपका खनन शिफ्ट साथी",
-    "getStarted": "शुरू हो जाओ"
+    "getStarted": "शुरू हो जाओ",
+    "socialProof": "आप जैसे शिफ्ट वर्करों के लिए बनाया गया",
+    "trust": {
+      "freeTrial": "7-दिन का मुफ्त ट्रायल",
+      "noCard": "क्रेडिट कार्ड नहीं चाहिए",
+      "cancelAnytime": "कभी भी रद्द करें"
+    }
   },
   "common": {
     "swipeHint": "चयन करने के लिए दाएं स्वाइप करें, अगला देखने के लिए बाएं स्वाइप करें, या अधिक जानकारी के लिए ऊपर स्वाइप करें",
@@ -327,20 +333,20 @@
         "shiftTimes": "शिफ्ट समय"
       }
     },
-    "nextShiftCountdown": "Next shift in {{days}} day(s) ({{date}})",
-    "checkInTitle": "When do you check your schedule?",
-    "checkInNotificationTitle": "Your schedule today",
-    "checkInNotificationBody": "Tap to see your upcoming shifts.",
+    "nextShiftCountdown": "अगली शिफ्ट {{days}} दिन में ({{date}})",
+    "checkInTitle": "आप अपना शेड्यूल कब देखते हैं?",
+    "checkInNotificationTitle": "आज का आपका शेड्यूल",
+    "checkInNotificationBody": "अपनी आने वाली शिफ्ट देखने के लिए टैप करें।",
     "checkIn": {
-      "morning": "Morning",
-      "midday": "Midday",
-      "evening": "Evening"
+      "morning": "सुबह",
+      "midday": "दोपहर",
+      "evening": "शाम"
     },
     "notificationPriming": {
-      "title": "Never miss a shift",
-      "body": "Ellie will remind you 24 hours and 4 hours before every shift.\nYou control what and when.",
-      "allow": "Turn On Reminders",
-      "decline": "Not now"
+      "title": "कभी शिफ्ट मिस न करें",
+      "body": "Ellie हर शिफ्ट से 24 घंटे और 4 घंटे पहले याद दिलाएगी।\nक्या और कब, यह आपके नियंत्रण में है।",
+      "allow": "रिमाइंडर चालू करें",
+      "decline": "अभी नहीं"
     }
   },
   "phaseSelector": {
@@ -675,7 +681,11 @@
     },
     "customInput": {
       "label": "आप आमतौर पर कौन सा समय देखते हैं?",
-      "helper": "12-घंटे के प्रारूप का उपयोग करें (उदाहरण के लिए, सुबह 6:00 बजे)"
+      "helper": "12-घंटे के प्रारूप का उपयोग करें (उदाहरण के लिए, सुबह 6:00 बजे)",
+      "period": {
+        "am": "पूर्वाह्न",
+        "pm": "अपराह्न"
+      }
     },
     "validation": {
       "hoursRange": "घंटे 1 से 12 के बीच होने चाहिए",
@@ -759,6 +769,9 @@
       "evening": "शाम",
       "nightShift": "रात की शिफ्ट",
       "tapToSet": "सेट करने के लिए टैप करें"
+    },
+    "units": {
+      "hourShort": "{{hours}} घं"
     }
   },
   "customPattern": {
@@ -986,14 +999,33 @@
   "ahaMoment": {
     "headline": "Your year, mapped.",
     "subheadline": "Every shift. Every day off.",
-    "heyEllieTitle": "Ask Ellie about your roster",
-    "ctaPrimary": "Unlock Full Access — Free 7-Day Trial",
-    "ctaSecondary": "Continue with Limited Access →",
+    "heyEllieTitle": "अपने रोस्टर के बारे में Ellie से पूछें",
+    "ctaPrimary": "पूर्ण एक्सेस अनलॉक करें — 7 दिन का मुफ्त ट्रायल",
+    "ctaSecondary": "सीमित एक्सेस के साथ जारी रखें →",
     "stats": {
-      "workDays": "Work days",
-      "nightShifts": "Night shifts",
-      "daysOff": "Days off",
-      "nextShift": "Next shift"
-    }
+      "workDays": "कार्य दिवस",
+      "nightShifts": "रात की शिफ्टें",
+      "daysOff": "छुट्टी के दिन",
+      "nextShift": "अगली शिफ्ट",
+      "nextDayOff": "अगला छुट्टी का दिन"
+    },
+    "nextShiftLabel": "आपकी अगली शिफ्ट",
+    "shiftBadge": "{{shiftName}} शिफ्ट",
+    "countdown": {
+      "tomorrow": "कल",
+      "inDays": "{{days}} दिन में"
+    },
+    "relative": {
+      "today": "आज",
+      "tomorrowShort": "कल",
+      "inDaysShort": "{{days}}दि"
+    },
+    "tryAsking": "ऐसे पूछकर देखें…",
+    "suggestions": {
+      "workingChristmas": "क्या मैं क्रिसमस पर काम कर रहा हूँ?",
+      "nextDayOff": "मेरा अगला छुट्टी का दिन कब है?",
+      "nightShiftsThisMonth": "इस महीने मेरी कितनी नाइट शिफ्ट हैं?"
+    },
+    "buttonLabel": "हाय Ellie"
   }
 }

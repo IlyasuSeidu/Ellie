@@ -125,7 +125,7 @@
       "apple": "Apple के साथ जारी रखें"
     },
     "signIn": {
-      "appName": "ऐली",
+      "appName": "Ellie",
       "subtitle": "अपने खाते में साइन इन करें",
       "forgotPassword": "पासवर्ड भूल गए?",
       "primaryButton": "साइन इन",
@@ -173,7 +173,7 @@
         "offline": "भूमिगत काम करता है, किसी सिग्नल की आवश्यकता नहीं",
         "instantAnswers": "छुट्टी और पैटर्न के बारे में त्वरित उत्तर",
         "aiPowered": "एआई द्वारा संचालित और हमेशा सुधार होता रहता है",
-        "leavePlanning": "Plan holidays without calling HR"
+        "leavePlanning": "HR को कॉल किए बिना छुट्टियों की योजना बनाएं"
       },
       "plans": {
         "annual": "वार्षिक",
@@ -181,8 +181,9 @@
         "annualSuffix": "/वर्ष",
         "monthlySuffix": "/मो",
         "save": "40% बचाएं",
-        "bestValue": "BEST VALUE",
-        "perMonth": "/month"
+        "bestValue": "सबसे बेहतर मूल्य",
+        "perMonth": "/माह",
+        "savePercent": "{{percent}}% बचाएँ"
       },
       "cta": "7-दिवसीय निःशुल्क परीक्षण प्रारंभ करें",
       "noCard": "किसी क्रेडिट कार्ड की आवश्यकता नहीं · किसी भी समय रद्द करें",
@@ -191,28 +192,29 @@
       "socialProof": "4.8 · Trusted by 50,000+ shift workers",
       "testimonials": [
         {
-          "quote": "Finally know when I'm working Christmas. Changed my life.",
-          "author": "Sarah K., Nurse — 12h rotating shifts"
+          "quote": "आख़िरकार पता चलता है कि मैं क्रिसमस पर काम कर रहा हूँ या नहीं। मेरी ज़िंदगी बदल गई।",
+          "author": "Sarah K., नर्स — 12 घंटे रोटेटिंग शिफ्ट"
         },
         {
-          "quote": "Showed my wife my whole year roster in under a minute.",
-          "author": "Dave L., Firefighter — FIFO roster"
+          "quote": "मैंने अपनी पत्नी को एक मिनट से कम में पूरा साल का रोस्टर दिखा दिया।",
+          "author": "Dave L., फायरफाइटर — FIFO रोस्टर"
         },
         {
-          "quote": "Booked flights 3 months out without calling HR once.",
-          "author": "Jason M., Mine worker — 7/7 FIFO"
+          "quote": "HR को कॉल किए बिना 3 महीने पहले फ्लाइट बुक कर ली।",
+          "author": "Jason M., माइन वर्कर — FIFO 7/7"
         }
       ],
       "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
-      "timerLabel": "Introductory offer ends in",
+      "timerLabel": "प्रारंभिक ऑफर समाप्त होगा",
       "trust": {
-        "freeTrial": "7 days free",
-        "cancel": "Cancel anytime",
-        "noCharge": "No charge today"
+        "freeTrial": "7 दिन मुफ्त",
+        "cancel": "कभी भी रद्द करें",
+        "noCharge": "आज कोई शुल्क नहीं"
       },
-      "valueFrame": "Less than a coffee per week to know your entire year.",
-      "security": "Secure payment via {{platform}} · Processed by {{platform}}, not Ellie",
-      "termsOfService": "Terms"
+      "valueFrame": "पूरे साल का शेड्यूल जानने के लिए हर हफ्ते एक कॉफी से भी कम।",
+      "security": "{{platform}} के माध्यम से सुरक्षित भुगतान · {{platform}} द्वारा प्रोसेस, Ellie द्वारा नहीं",
+      "termsOfService": "नियम",
+      "trialBadge": "7-दिन का मुफ्त ट्रायल · आज कोई शुल्क नहीं"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ प्रो सक्रिय सदस्यता",
@@ -224,6 +226,12 @@
     },
     "padlock": {
       "a11yLabel": "पूरा कैलेंडर देखने के लिए __TK1__ प्रो में अपग्रेड करें"
+    }
+  },
+  "time": {
+    "periods": {
+      "am": "पूर्वाह्न",
+      "pm": "अपराह्न"
     }
   }
 }

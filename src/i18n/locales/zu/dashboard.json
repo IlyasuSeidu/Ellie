@@ -206,6 +206,25 @@
       "morning": "ishifu yasekuseni",
       "afternoon": "ishifu yantambama",
       "off": "usuku lokuphumula"
+    },
+    "duration": {
+      "minutesOnly": "{{minutes}} umz",
+      "hoursOnly": "{{hours}} ih",
+      "hoursMinutes": "{{hours}} ih {{minutes}} umz"
+    }
+  },
+  "onboardingChecklist": {
+    "title": "Thola okuningi ku-Ellie",
+    "items": {
+      "roster": "Setha irosta yakho",
+      "shiftTimes": "Faka izikhathi zamashifu akho",
+      "profile": "Qedela iphrofayela yakho",
+      "askEllie": "Buza u-Ellie umbuzo"
+    },
+    "actions": {
+      "done": "Kwenziwe",
+      "doIt": "Yenza",
+      "dismiss": "Vala"
     }
   }
 }

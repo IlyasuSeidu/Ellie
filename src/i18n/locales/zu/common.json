@@ -125,7 +125,7 @@
       "apple": "Qhubeka nge-Apple"
     },
     "signIn": {
-      "appName": "ELLIE",
+      "appName": "Ellie",
       "subtitle": "Ngena ku-akhawunti yakho",
       "forgotPassword": "Ukhohlwe iphasiwedi?",
       "primaryButton": "Ngena",
@@ -173,7 +173,7 @@
         "offline": "Isebenza ngaphansi komhlaba, asikho isignali edingekayo",
         "instantAnswers": "Izimpendulo ezisheshayo mayelana nekhefu namaphethini",
         "aiPowered": "Inikwa amandla yi-AI futhi ithuthuka njalo",
-        "leavePlanning": "Plan holidays without calling HR"
+        "leavePlanning": "Hlela amaholidi ngaphandle kokushayela i-HR"
       },
       "plans": {
         "annual": "Ngonyaka",
@@ -181,8 +181,9 @@
         "annualSuffix": "/unyaka",
         "monthlySuffix": "/inyanga",
         "save": "Londoloza u-40%",
-        "bestValue": "BEST VALUE",
-        "perMonth": "/month"
+        "bestValue": "INANI ELINGCONO KAKHULU",
+        "perMonth": "/inyanga",
+        "savePercent": "YONGA {{percent}}%"
       },
       "cta": "Qala Isivivinyo Samahhala Sezinsuku Eziyisi-7",
       "noCard": "Alikho ikhadi lesikweletu elidingekayo · Khansela noma nini",
@@ -191,28 +192,29 @@
       "socialProof": "4.8 · Trusted by 50,000+ shift workers",
       "testimonials": [
         {
-          "quote": "Finally know when I'm working Christmas. Changed my life.",
-          "author": "Sarah K., Nurse — 12h rotating shifts"
+          "quote": "Ekugcineni sengiyazi ukuthi ngisebenza nini ngoKhisimusi. Kushintshe impilo yami.",
+          "author": "Sarah K., unesi — amashifu ajikeleza amahora ayi-12"
         },
         {
-          "quote": "Showed my wife my whole year roster in under a minute.",
-          "author": "Dave L., Firefighter — FIFO roster"
+          "quote": "Ngikhombise unkosikazi wami i-roster yonyaka wonke ngomzuzu ongaphansi kweyodwa.",
+          "author": "Dave L., isicishamlilo — i-FIFO roster"
         },
         {
-          "quote": "Booked flights 3 months out without calling HR once.",
-          "author": "Jason M., Mine worker — 7/7 FIFO"
+          "quote": "Ngibhukhe izindiza izinyanga ezi-3 ngaphambili ngaphandle kokushayela i-HR.",
+          "author": "Jason M., umsebenzi wemayini — i-FIFO 7/7"
         }
       ],
       "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
-      "timerLabel": "Introductory offer ends in",
+      "timerLabel": "Isipho sokuqala siphela ngo",
       "trust": {
-        "freeTrial": "7 days free",
-        "cancel": "Cancel anytime",
-        "noCharge": "No charge today"
+        "freeTrial": "izinsuku ezi-7 mahhala",
+        "cancel": "Khansela noma nini",
+        "noCharge": "Akukho mali namuhla"
       },
-      "valueFrame": "Less than a coffee per week to know your entire year.",
-      "security": "Secure payment via {{platform}} · Processed by {{platform}}, not Ellie",
-      "termsOfService": "Terms"
+      "valueFrame": "Kungaphansi kwekhofi ngesonto ukuze wazi unyaka wakho wonke.",
+      "security": "Inkokhelo ephephile nge-{{platform}} · Icutshungulwa yi-{{platform}}, hhayi i-Ellie",
+      "termsOfService": "Imigomo",
+      "trialBadge": "ISILINGO SAMAHHALA SEZINSUKU EZI-7 · AKUKHO MALI NAMUHLA"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Ukubhalisa okusebenzayo kwe-Pro",
@@ -224,6 +226,12 @@
     },
     "padlock": {
       "a11yLabel": "Thuthukela ku-__TK1__ Pro ukuze ubone ikhalenda eligcwele"
+    }
+  },
+  "time": {
+    "periods": {
+      "am": "AM",
+      "pm": "PM"
     }
   }
 }

@@ -1,7 +1,13 @@
 {
   "welcome": {
     "tagline": "您的采矿轮班伴侣",
-    "getStarted": "开始使用"
+    "getStarted": "开始使用",
+    "socialProof": "专为像你这样的轮班工作者打造",
+    "trust": {
+      "freeTrial": "7天免费试用",
+      "noCard": "无需信用卡",
+      "cancelAnytime": "可随时取消"
+    }
   },
   "common": {
     "swipeHint": "向右滑动进行选择，向左滑动查看下一个，向上滑动查看更多信息",
@@ -295,20 +301,20 @@
         "shiftTimes": "班次时间"
       }
     },
-    "nextShiftCountdown": "Next shift in {{days}} day(s) ({{date}})",
-    "checkInTitle": "When do you check your schedule?",
-    "checkInNotificationTitle": "Your schedule today",
-    "checkInNotificationBody": "Tap to see your upcoming shifts.",
+    "nextShiftCountdown": "下一班将在 {{days}} 天后（{{date}}）",
+    "checkInTitle": "你通常什么时候查看班表？",
+    "checkInNotificationTitle": "你今天的班表",
+    "checkInNotificationBody": "点击查看你即将到来的班次。",
     "checkIn": {
-      "morning": "Morning",
-      "midday": "Midday",
-      "evening": "Evening"
+      "morning": "早上",
+      "midday": "中午",
+      "evening": "晚上"
     },
     "notificationPriming": {
-      "title": "Never miss a shift",
-      "body": "Ellie will remind you 24 hours and 4 hours before every shift.\nYou control what and when.",
-      "allow": "Turn On Reminders",
-      "decline": "Not now"
+      "title": "不错过任何班次",
+      "body": "Ellie 会在每个班次前 24 小时和 4 小时提醒你。\n提醒内容和时间由你掌控。",
+      "allow": "开启提醒",
+      "decline": "暂不"
     }
   },
   "phaseSelector": {
@@ -643,7 +649,11 @@
     },
     "customInput": {
       "label": "你通常几点钟打卡？",
-      "helper": "使用 12 小时格式（例如 6:00 AM）"
+      "helper": "使用 12 小时格式（例如 6:00 AM）",
+      "period": {
+        "am": "上午",
+        "pm": "下午"
+      }
     },
     "validation": {
       "hoursRange": "时间必须介于 1 点到 12 点之间",
@@ -727,6 +737,9 @@
       "evening": "傍晚",
       "nightShift": "夜班",
       "tapToSet": "点击设置"
+    },
+    "units": {
+      "hourShort": "{{hours}}小时"
     }
   },
   "customPattern": {
@@ -954,14 +967,33 @@
   "ahaMoment": {
     "headline": "Your year, mapped.",
     "subheadline": "Every shift. Every day off.",
-    "heyEllieTitle": "Ask Ellie about your roster",
-    "ctaPrimary": "Unlock Full Access — Free 7-Day Trial",
-    "ctaSecondary": "Continue with Limited Access →",
+    "heyEllieTitle": "向 Ellie 询问你的班表",
+    "ctaPrimary": "解锁完整权限 — 7天免费试用",
+    "ctaSecondary": "继续使用受限访问 →",
     "stats": {
-      "workDays": "Work days",
-      "nightShifts": "Night shifts",
-      "daysOff": "Days off",
-      "nextShift": "Next shift"
-    }
+      "workDays": "工作日",
+      "nightShifts": "夜班",
+      "daysOff": "休息日",
+      "nextShift": "下一班",
+      "nextDayOff": "下一个休息日"
+    },
+    "nextShiftLabel": "你的下一班",
+    "shiftBadge": "{{shiftName}}班",
+    "countdown": {
+      "tomorrow": "明天",
+      "inDays": "{{days}}天后"
+    },
+    "relative": {
+      "today": "今天",
+      "tomorrowShort": "明天",
+      "inDaysShort": "{{days}}天"
+    },
+    "tryAsking": "你可以这样问…",
+    "suggestions": {
+      "workingChristmas": "圣诞节我上班吗？",
+      "nextDayOff": "我下一个休息日是什么时候？",
+      "nightShiftsThisMonth": "我这个月有多少个夜班？"
+    },
+    "buttonLabel": "你好 Ellie"
   }
 }

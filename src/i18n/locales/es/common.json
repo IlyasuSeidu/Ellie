@@ -125,7 +125,7 @@
       "apple": "Continuar con Apple"
     },
     "signIn": {
-      "appName": "ellie",
+      "appName": "Ellie",
       "subtitle": "Inicia sesión en tu cuenta",
       "forgotPassword": "¿Olvidaste tu contraseña?",
       "primaryButton": "Iniciar sesión",
@@ -173,7 +173,7 @@
         "offline": "Funciona bajo tierra, no necesita señal.",
         "instantAnswers": "Respuestas instantáneas sobre permisos y patrones.",
         "aiPowered": "Desarrollado por IA y siempre mejorando",
-        "leavePlanning": "Plan holidays without calling HR"
+        "leavePlanning": "Planifica vacaciones sin llamar a RR. HH."
       },
       "plans": {
         "annual": "Anual",
@@ -181,8 +181,9 @@
         "annualSuffix": "/año",
         "monthlySuffix": "/mes",
         "save": "AHORRE 40%",
-        "bestValue": "BEST VALUE",
-        "perMonth": "/month"
+        "bestValue": "MEJOR VALOR",
+        "perMonth": "/mes",
+        "savePercent": "AHORRA {{percent}}%"
       },
       "cta": "Comience la prueba gratuita de 7 días",
       "noCard": "No se requiere tarjeta de crédito · Cancelar en cualquier momento",
@@ -191,28 +192,29 @@
       "socialProof": "4.8 · Trusted by 50,000+ shift workers",
       "testimonials": [
         {
-          "quote": "Finally know when I'm working Christmas. Changed my life.",
-          "author": "Sarah K., Nurse — 12h rotating shifts"
+          "quote": "Por fin sé cuándo trabajo en Navidad. Me cambió la vida.",
+          "author": "Sarah K., enfermera — turnos rotativos de 12 h"
         },
         {
-          "quote": "Showed my wife my whole year roster in under a minute.",
-          "author": "Dave L., Firefighter — FIFO roster"
+          "quote": "Le mostré a mi esposa todo mi calendario anual en menos de un minuto.",
+          "author": "Dave L., bombero — roster FIFO"
         },
         {
-          "quote": "Booked flights 3 months out without calling HR once.",
-          "author": "Jason M., Mine worker — 7/7 FIFO"
+          "quote": "Reservé vuelos con 3 meses de anticipación sin llamar a RR. HH.",
+          "author": "Jason M., minero — FIFO 7/7"
         }
       ],
       "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
-      "timerLabel": "Introductory offer ends in",
+      "timerLabel": "La oferta de lanzamiento termina en",
       "trust": {
-        "freeTrial": "7 days free",
-        "cancel": "Cancel anytime",
-        "noCharge": "No charge today"
+        "freeTrial": "7 días gratis",
+        "cancel": "Cancela cuando quieras",
+        "noCharge": "Sin cobro hoy"
       },
-      "valueFrame": "Less than a coffee per week to know your entire year.",
-      "security": "Secure payment via {{platform}} · Processed by {{platform}}, not Ellie",
-      "termsOfService": "Terms"
+      "valueFrame": "Menos que un café por semana para conocer todo tu año.",
+      "security": "Pago seguro con {{platform}} · Procesado por {{platform}}, no por Ellie",
+      "termsOfService": "Términos",
+      "trialBadge": "PRUEBA GRATIS DE 7 DÍAS · SIN COBRO HOY"
     },
     "profile": {
       "rowActiveA11y": "Ellie Suscripción activa profesional",
@@ -224,6 +226,12 @@
     },
     "padlock": {
       "a11yLabel": "Actualice a Ellie Pro para ver el calendario completo"
+    }
+  },
+  "time": {
+    "periods": {
+      "am": "a. m.",
+      "pm": "p. m."
     }
   }
 }

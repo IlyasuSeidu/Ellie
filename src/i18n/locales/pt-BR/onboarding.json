@@ -1,7 +1,13 @@
 {
   "welcome": {
     "tagline": "Seu assistente de turnos na mineracao",
-    "getStarted": "Comecar"
+    "getStarted": "Comecar",
+    "socialProof": "Feito para trabalhadores em turno como você",
+    "trust": {
+      "freeTrial": "Teste grátis de 7 dias",
+      "noCard": "Sem cartão de crédito",
+      "cancelAnytime": "Cancele quando quiser"
+    }
   },
   "common": {
     "swipeHint": "Deslize para a direita para selecionar, esquerda para ver o proximo ou para cima para mais informacoes",
@@ -275,20 +281,20 @@
         "shiftTimes": "Horários de turno"
       }
     },
-    "nextShiftCountdown": "Next shift in {{days}} day(s) ({{date}})",
-    "checkInTitle": "When do you check your schedule?",
-    "checkInNotificationTitle": "Your schedule today",
-    "checkInNotificationBody": "Tap to see your upcoming shifts.",
+    "nextShiftCountdown": "Próximo turno em {{days}} dia(s) ({{date}})",
+    "checkInTitle": "Quando você confere sua escala?",
+    "checkInNotificationTitle": "Sua escala de hoje",
+    "checkInNotificationBody": "Toque para ver seus próximos turnos.",
     "checkIn": {
-      "morning": "Morning",
-      "midday": "Midday",
-      "evening": "Evening"
+      "morning": "Manhã",
+      "midday": "Meio-dia",
+      "evening": "Noite"
     },
     "notificationPriming": {
-      "title": "Never miss a shift",
-      "body": "Ellie will remind you 24 hours and 4 hours before every shift.\nYou control what and when.",
-      "allow": "Turn On Reminders",
-      "decline": "Not now"
+      "title": "Nunca perca um turno",
+      "body": "A Ellie vai te lembrar 24 horas e 4 horas antes de cada turno.\nVocê decide o que e quando.",
+      "allow": "Ativar lembretes",
+      "decline": "Agora não"
     }
   },
   "rosterType": {
@@ -689,7 +695,11 @@
     },
     "customInput": {
       "label": "Que horas você costuma bater o ponto?",
-      "helper": "Use formato de 12 horas (ex.: 6:00 AM)"
+      "helper": "Use formato de 12 horas (ex.: 6:00 AM)",
+      "period": {
+        "am": "AM",
+        "pm": "PM"
+      }
     },
     "validation": {
       "hoursRange": "A hora deve estar entre 1 e 12",
@@ -773,6 +783,9 @@
       "evening": "Noite cedo",
       "nightShift": "Turno noturno",
       "tapToSet": "Toque para definir"
+    },
+    "units": {
+      "hourShort": "{{hours}} h"
     }
   },
   "customPattern": {
@@ -1000,14 +1013,33 @@
   "ahaMoment": {
     "headline": "Your year, mapped.",
     "subheadline": "Every shift. Every day off.",
-    "heyEllieTitle": "Ask Ellie about your roster",
-    "ctaPrimary": "Unlock Full Access — Free 7-Day Trial",
-    "ctaSecondary": "Continue with Limited Access →",
+    "heyEllieTitle": "Pergunte à Ellie sobre seu roster",
+    "ctaPrimary": "Desbloqueie acesso total — Teste grátis por 7 dias",
+    "ctaSecondary": "Continuar com acesso limitado →",
     "stats": {
-      "workDays": "Work days",
-      "nightShifts": "Night shifts",
-      "daysOff": "Days off",
-      "nextShift": "Next shift"
-    }
+      "workDays": "Dias de trabalho",
+      "nightShifts": "Turnos noturnos",
+      "daysOff": "Dias de folga",
+      "nextShift": "Próximo turno",
+      "nextDayOff": "Próxima folga"
+    },
+    "nextShiftLabel": "SEU PRÓXIMO TURNO",
+    "shiftBadge": "Turno de {{shiftName}}",
+    "countdown": {
+      "tomorrow": "amanhã",
+      "inDays": "em {{days}} dias"
+    },
+    "relative": {
+      "today": "Hoje",
+      "tomorrowShort": "Aman.",
+      "inDaysShort": "{{days}} d"
+    },
+    "tryAsking": "Experimente perguntar…",
+    "suggestions": {
+      "workingChristmas": "Vou trabalhar no Natal?",
+      "nextDayOff": "Quando é minha próxima folga?",
+      "nightShiftsThisMonth": "Quantos turnos noturnos tenho este mês?"
+    },
+    "buttonLabel": "Oi Ellie"
   }
 }

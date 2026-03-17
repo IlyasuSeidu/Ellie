@@ -1442,7 +1442,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                             customPeriod === 'AM' && styles.periodButtonTextSelected,
                           ]}
                         >
-                          AM
+                          {t('shiftTime.customInput.period.am', { defaultValue: 'AM' })}
                         </Text>
                       </Pressable>
                       <Pressable
@@ -1458,7 +1458,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                             customPeriod === 'PM' && styles.periodButtonTextSelected,
                           ]}
                         >
-                          PM
+                          {t('shiftTime.customInput.period.pm', { defaultValue: 'PM' })}
                         </Text>
                       </Pressable>
                     </View>
@@ -1789,12 +1789,22 @@ const PresetCard: React.FC<PresetCardProps> = ({
         >
           {!isCustom && preset.duration === 12 && (
             <View style={styles.durationBadge}>
-              <Text style={styles.durationBadgeText}>{preset.duration}h</Text>
+              <Text style={styles.durationBadgeText}>
+                {t('shiftTime.units.hourShort', {
+                  hours: preset.duration,
+                  defaultValue: '{{hours}}h',
+                })}
+              </Text>
             </View>
           )}
           {!isCustom && preset.duration === 8 && (
             <View style={styles.durationBadge}>
-              <Text style={styles.durationBadgeText}>{preset.duration}h</Text>
+              <Text style={styles.durationBadgeText}>
+                {t('shiftTime.units.hourShort', {
+                  hours: preset.duration,
+                  defaultValue: '{{hours}}h',
+                })}
+              </Text>
             </View>
           )}
 

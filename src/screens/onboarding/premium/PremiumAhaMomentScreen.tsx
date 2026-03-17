@@ -22,6 +22,7 @@ import { useVoiceAssistant } from '@/contexts/VoiceAssistantContext';
 import { buildShiftCycle, getShiftDaysInRange, getShiftStatistics } from '@/utils/shiftUtils';
 import { Analytics } from '@/utils/analytics';
 import { theme } from '@/utils/theme';
+import { formatLocalizedDate, formatLocalizedNumber } from '@/utils/i18nFormat';
 import { PremiumButton } from '@/components/onboarding/premium';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { PaywallScreen } from '@/screens/subscription/PaywallScreen';
@@ -32,12 +33,6 @@ import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator'
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
-
-const SUGGESTION_QUERIES = [
-  'Am I working Christmas?',
-  "When's my next day off?",
-  'How many night shifts this month?',
-];
 
 const SHIFT_DOT_COLOR: Record<string, string> = {
   day: '#2196F3',
@@ -142,11 +137,31 @@ export const PremiumAhaMomentScreen: React.FC = () => {
     ? (SHIFT_DOT_COLOR[nextShift.shiftType] ?? SHIFT_DOT_COLOR.day)
     : SHIFT_DOT_COLOR.day;
 
+  const suggestionQueries = useMemo(
+    () => [
+      t('ahaMoment.suggestions.workingChristmas', { defaultValue: 'Am I working Christmas?' }),
+      t('ahaMoment.suggestions.nextDayOff', { defaultValue: "When's my next day off?" }),
+      t('ahaMoment.suggestions.nightShiftsThisMonth', {
+        defaultValue: 'How many night shifts this month?',
+      }),
+    ],
+    [t]
+  );
+
   const nextDayOffLabel = (() => {
     if (nextDayOffDaysAway === null) return '—';
-    if (nextDayOffDaysAway === 0) return 'Today';
-    if (nextDayOffDaysAway === 1) return 'Tmrw';
-    return `${nextDayOffDaysAway}d`;
+    if (nextDayOffDaysAway === 0) {
+      return String(t('ahaMoment.relative.today', { defaultValue: 'Today' }));
+    }
+    if (nextDayOffDaysAway === 1) {
+      return String(t('ahaMoment.relative.tomorrowShort', { defaultValue: 'Tmrw' }));
+    }
+    return String(
+      t('ahaMoment.relative.inDaysShort', {
+        defaultValue: '{{days}}d',
+        days: nextDayOffDaysAway,
+      })
+    );
   })();
 
   // ── Analytics ────────────────────────────────────────────────────────────────
@@ -195,10 +210,10 @@ export const PremiumAhaMomentScreen: React.FC = () => {
                   {t('ahaMoment.nextShiftLabel', { defaultValue: 'YOUR NEXT SHIFT' })}
                 </Text>
                 <Text style={styles.heroDay}>
-                  {nextShiftDate.toLocaleDateString(undefined, { weekday: 'long' })}
+                  {formatLocalizedDate(nextShiftDate, { weekday: 'long' })}
                 </Text>
                 <Text style={styles.heroFullDate}>
-                  {nextShiftDate.toLocaleDateString(undefined, {
+                  {formatLocalizedDate(nextShiftDate, {
                     day: 'numeric',
                     month: 'long',
                   })}
@@ -207,15 +222,27 @@ export const PremiumAhaMomentScreen: React.FC = () => {
                   <View style={[styles.heroBadge, { backgroundColor: shiftDotColor + '26' }]}>
                     <View style={[styles.heroBadgeDot, { backgroundColor: shiftDotColor }]} />
                     <Text style={[styles.heroBadgeText, { color: shiftDotColor }]}>
-                      {(
-                        nextShift.shiftType.charAt(0).toUpperCase() + nextShift.shiftType.slice(1)
-                      ).replace('_', ' ')}{' '}
-                      shift
+                      {String(
+                        t('ahaMoment.shiftBadge', {
+                          defaultValue: '{{shiftName}} shift',
+                          shiftName: t(`shiftTime.shiftLabels.${nextShift.shiftType}Title`, {
+                            defaultValue: (
+                              nextShift.shiftType.charAt(0).toUpperCase() +
+                              nextShift.shiftType.slice(1)
+                            ).replace('_', ' '),
+                          }),
+                        })
+                      )}
                     </Text>
                   </View>
                   {nextShiftDaysAway !== null && nextShiftDaysAway > 0 && (
                     <Text style={styles.heroCountdown}>
-                      {nextShiftDaysAway === 1 ? 'tomorrow' : `in ${nextShiftDaysAway} days`}
+                      {nextShiftDaysAway === 1
+                        ? t('ahaMoment.countdown.tomorrow', { defaultValue: 'tomorrow' })
+                        : t('ahaMoment.countdown.inDays', {
+                            defaultValue: 'in {{days}} days',
+                            days: nextShiftDaysAway,
+                          })}
                     </Text>
                   )}
                 </View>
@@ -223,10 +250,10 @@ export const PremiumAhaMomentScreen: React.FC = () => {
 
               <View style={[styles.heroRight, { borderColor: shiftDotColor + '40' }]}>
                 <Text style={[styles.heroBigDate, { color: shiftDotColor }]}>
-                  {nextShiftDate.getDate()}
+                  {formatLocalizedNumber(nextShiftDate.getDate())}
                 </Text>
                 <Text style={[styles.heroMonth, { color: shiftDotColor }]}>
-                  {nextShiftDate.toLocaleDateString(undefined, { month: 'short' }).toUpperCase()}
+                  {formatLocalizedDate(nextShiftDate, { month: 'short' }).toUpperCase()}
                 </Text>
               </View>
             </View>
@@ -261,14 +288,14 @@ export const PremiumAhaMomentScreen: React.FC = () => {
 
             <View style={styles.statsRow}>
               <View style={styles.statCell}>
-                <Text style={styles.statValue}>{totalWorkDays}</Text>
+                <Text style={styles.statValue}>{formatLocalizedNumber(totalWorkDays)}</Text>
                 <Text style={styles.statLabel}>
                   {t('ahaMoment.stats.workDays', { defaultValue: 'Work Days' })}
                 </Text>
               </View>
               <View style={styles.statVertDivider} />
               <View style={styles.statCell}>
-                <Text style={styles.statValue}>{stats?.daysOff ?? 0}</Text>
+                <Text style={styles.statValue}>{formatLocalizedNumber(stats?.daysOff ?? 0)}</Text>
                 <Text style={styles.statLabel}>
                   {t('ahaMoment.stats.daysOff', { defaultValue: 'Days Off' })}
                 </Text>
@@ -279,7 +306,9 @@ export const PremiumAhaMomentScreen: React.FC = () => {
 
             <View style={styles.statsRow}>
               <View style={styles.statCell}>
-                <Text style={styles.statValue}>{stats?.nightShifts ?? 0}</Text>
+                <Text style={styles.statValue}>
+                  {formatLocalizedNumber(stats?.nightShifts ?? 0)}
+                </Text>
                 <Text style={styles.statLabel}>
                   {t('ahaMoment.stats.nightShifts', { defaultValue: 'Night Shifts' })}
                 </Text>
@@ -316,19 +345,21 @@ export const PremiumAhaMomentScreen: React.FC = () => {
                 <Text style={styles.ellieTitle}>
                   {t('ahaMoment.heyEllieTitle', { defaultValue: 'Ask Ellie' })}
                 </Text>
-                <Text style={styles.ellieSubtitle}>Try asking…</Text>
+                <Text style={styles.ellieSubtitle}>
+                  {t('ahaMoment.tryAsking', { defaultValue: 'Try asking…' })}
+                </Text>
               </View>
             </View>
 
             {/* Suggestion rows */}
             <View style={styles.ellieChips}>
-              {SUGGESTION_QUERIES.map((query, index) => (
+              {suggestionQueries.map((query, index) => (
                 <TouchableOpacity
                   key={query}
                   activeOpacity={0.7}
                   style={[
                     styles.ellieChip,
-                    index < SUGGESTION_QUERIES.length - 1 && styles.ellieChipBorder,
+                    index < suggestionQueries.length - 1 && styles.ellieChipBorder,
                   ]}
                   onPress={() => {
                     Analytics.ahaMomentVoiceTried(query);
@@ -363,7 +394,9 @@ export const PremiumAhaMomentScreen: React.FC = () => {
                   style={styles.ellieButtonGradient}
                 >
                   <Ionicons name="mic" size={22} color={theme.colors.sacredGold} />
-                  <Text style={styles.ellieButtonLabel}>Hey Ellie</Text>
+                  <Text style={styles.ellieButtonLabel}>
+                    {t('ahaMoment.buttonLabel', { defaultValue: 'Hey Ellie' })}
+                  </Text>
                 </LinearGradient>
               </TouchableOpacity>
             </Animated.View>

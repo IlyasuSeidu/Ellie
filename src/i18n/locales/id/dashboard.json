@@ -206,6 +206,25 @@
       "morning": "shift pagi",
       "afternoon": "shift sore",
       "off": "hari libur"
+    },
+    "duration": {
+      "minutesOnly": "{{minutes}} menit",
+      "hoursOnly": "{{hours}}j",
+      "hoursMinutes": "{{hours}}j {{minutes}}m"
+    }
+  },
+  "onboardingChecklist": {
+    "title": "Maksimalkan Ellie",
+    "items": {
+      "roster": "Siapkan roster Anda",
+      "shiftTimes": "Tambahkan waktu shift Anda",
+      "profile": "Lengkapi profil Anda",
+      "askEllie": "Tanyakan sesuatu ke Ellie"
+    },
+    "actions": {
+      "done": "Selesai",
+      "doIt": "Lakukan",
+      "dismiss": "Tutup"
     }
   }
 }

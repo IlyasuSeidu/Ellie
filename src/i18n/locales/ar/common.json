@@ -125,7 +125,7 @@
       "apple": "المتابعة باستخدام Apple"
     },
     "signIn": {
-      "appName": "إيلي",
+      "appName": "Ellie",
       "subtitle": "سجّل الدخول إلى حسابك",
       "forgotPassword": "هل نسيت كلمة المرور؟",
       "primaryButton": "تسجيل الدخول",
@@ -173,7 +173,7 @@
         "offline": "يعمل تحت الأرض، لا حاجة للإشارة",
         "instantAnswers": "إجابات فورية حول الإجازة والأنماط",
         "aiPowered": "مدعوم بالذكاء الاصطناعي ويتحسن دائمًا",
-        "leavePlanning": "Plan holidays without calling HR"
+        "leavePlanning": "خطط لإجازاتك بدون الاتصال بالموارد البشرية"
       },
       "plans": {
         "annual": "سنوي",
@@ -181,8 +181,9 @@
         "annualSuffix": "/ سنة",
         "monthlySuffix": "/شهر",
         "save": "وفر 40%",
-        "bestValue": "BEST VALUE",
-        "perMonth": "/month"
+        "bestValue": "أفضل قيمة",
+        "perMonth": "/شهريًا",
+        "savePercent": "وفّر {{percent}}%"
       },
       "cta": "ابدأ النسخة التجريبية المجانية لمدة 7 أيام",
       "noCard": "لا حاجة لبطاقة ائتمان · قم بالإلغاء في أي وقت",
@@ -191,28 +192,29 @@
       "socialProof": "4.8 · Trusted by 50,000+ shift workers",
       "testimonials": [
         {
-          "quote": "Finally know when I'm working Christmas. Changed my life.",
-          "author": "Sarah K., Nurse — 12h rotating shifts"
+          "quote": "أخيرًا عرفت متى أعمل في عيد الميلاد. غيّر حياتي.",
+          "author": "Sarah K.، ممرضة — نوبات دوّارة 12 ساعة"
         },
         {
-          "quote": "Showed my wife my whole year roster in under a minute.",
-          "author": "Dave L., Firefighter — FIFO roster"
+          "quote": "أريت زوجتي جدول السنة كاملًا في أقل من دقيقة.",
+          "author": "Dave L.، رجل إطفاء — نظام FIFO"
         },
         {
-          "quote": "Booked flights 3 months out without calling HR once.",
-          "author": "Jason M., Mine worker — 7/7 FIFO"
+          "quote": "حجزت رحلات قبل 3 أشهر بدون الاتصال بالموارد البشرية.",
+          "author": "Jason M.، عامل منجم — FIFO 7/7"
         }
       ],
       "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
-      "timerLabel": "Introductory offer ends in",
+      "timerLabel": "ينتهي العرض التمهيدي خلال",
       "trust": {
-        "freeTrial": "7 days free",
-        "cancel": "Cancel anytime",
-        "noCharge": "No charge today"
+        "freeTrial": "7 أيام مجانًا",
+        "cancel": "يمكن الإلغاء في أي وقت",
+        "noCharge": "لا يوجد خصم اليوم"
       },
-      "valueFrame": "Less than a coffee per week to know your entire year.",
-      "security": "Secure payment via {{platform}} · Processed by {{platform}}, not Ellie",
-      "termsOfService": "Terms"
+      "valueFrame": "أقل من ثمن قهوة أسبوعيًا لمعرفة جدول عامك كاملًا.",
+      "security": "دفع آمن عبر {{platform}} · تتم المعالجة بواسطة {{platform}} وليس Ellie",
+      "termsOfService": "الشروط",
+      "trialBadge": "تجربة مجانية 7 أيام · بدون خصم اليوم"
     },
     "profile": {
       "rowActiveA11y": "Ellie اشتراك احترافي نشط",
@@ -224,6 +226,12 @@
     },
     "padlock": {
       "a11yLabel": "قم بالترقية إلى Ellie Pro لرؤية التقويم الكامل"
+    }
+  },
+  "time": {
+    "periods": {
+      "am": "ص",
+      "pm": "م"
     }
   }
 }

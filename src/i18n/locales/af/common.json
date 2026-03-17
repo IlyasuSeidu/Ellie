@@ -125,7 +125,7 @@
       "apple": "Gaan voort met Apple"
     },
     "signIn": {
-      "appName": "ELLIE",
+      "appName": "Ellie",
       "subtitle": "Meld by jou rekening aan",
       "forgotPassword": "Wagwoord vergeet?",
       "primaryButton": "Meld aan",
@@ -173,7 +173,7 @@
         "offline": "Werk ondergronds, geen sein nodig nie",
         "instantAnswers": "Kitsantwoorde oor verlof en patrone",
         "aiPowered": "Aangedryf deur AI en word altyd verbeter",
-        "leavePlanning": "Plan holidays without calling HR"
+        "leavePlanning": "Beplan verlof sonder om HR te bel"
       },
       "plans": {
         "annual": "Jaarliks",
@@ -181,8 +181,9 @@
         "annualSuffix": "/jr",
         "monthlySuffix": "/ma",
         "save": "SPAAR 40%",
-        "bestValue": "BEST VALUE",
-        "perMonth": "/month"
+        "bestValue": "BESTE WAARDE",
+        "perMonth": "/maand",
+        "savePercent": "BESPAAR {{percent}}%"
       },
       "cta": "Begin 7-dae gratis proeflopie",
       "noCard": "Geen kredietkaart vereis nie · Kanselleer enige tyd",
@@ -191,28 +192,29 @@
       "socialProof": "4.8 · Trusted by 50,000+ shift workers",
       "testimonials": [
         {
-          "quote": "Finally know when I'm working Christmas. Changed my life.",
-          "author": "Sarah K., Nurse — 12h rotating shifts"
+          "quote": "Ek weet uiteindelik wanneer ek Kersfees werk. Dit het my lewe verander.",
+          "author": "Sarah K., verpleegster — 12h roterende skofte"
         },
         {
-          "quote": "Showed my wife my whole year roster in under a minute.",
-          "author": "Dave L., Firefighter — FIFO roster"
+          "quote": "Ek het my hele jaarrooster binne ’n minuut vir my vrou gewys.",
+          "author": "Dave L., brandweerman — FIFO-rooster"
         },
         {
-          "quote": "Booked flights 3 months out without calling HR once.",
-          "author": "Jason M., Mine worker — 7/7 FIFO"
+          "quote": "Ek het vlugte 3 maande vooruit bespreek sonder om HR te bel.",
+          "author": "Jason M., mynwerker — 7/7 FIFO"
         }
       ],
       "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
-      "timerLabel": "Introductory offer ends in",
+      "timerLabel": "Inleidende aanbod eindig oor",
       "trust": {
-        "freeTrial": "7 days free",
-        "cancel": "Cancel anytime",
-        "noCharge": "No charge today"
+        "freeTrial": "7 dae gratis",
+        "cancel": "Kanselleer enige tyd",
+        "noCharge": "Geen heffing vandag"
       },
-      "valueFrame": "Less than a coffee per week to know your entire year.",
-      "security": "Secure payment via {{platform}} · Processed by {{platform}}, not Ellie",
-      "termsOfService": "Terms"
+      "valueFrame": "Minder as ’n koffie per week om jou hele jaar te ken.",
+      "security": "Veilige betaling via {{platform}} · Verwerk deur {{platform}}, nie Ellie nie",
+      "termsOfService": "Voorwaardes",
+      "trialBadge": "GRATIS 7-DAE PROEF · GEEN HEFFING VANDAG"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro aktiewe intekening",
@@ -224,6 +226,12 @@
     },
     "padlock": {
       "a11yLabel": "Gradeer op na __TK1__ Pro om volledige kalender te sien"
+    }
+  },
+  "time": {
+    "periods": {
+      "am": "VM",
+      "pm": "NM"
     }
   }
 }

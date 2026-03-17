@@ -206,6 +206,25 @@
       "morning": "oggendskof",
       "afternoon": "middagskof",
       "off": "afdag"
+    },
+    "duration": {
+      "minutesOnly": "{{minutes}} min",
+      "hoursOnly": "{{hours}}u",
+      "hoursMinutes": "{{hours}}u {{minutes}}m"
+    }
+  },
+  "onboardingChecklist": {
+    "title": "Kry die meeste uit Ellie",
+    "items": {
+      "roster": "Stel jou rooster op",
+      "shiftTimes": "Voeg jou skoftye by",
+      "profile": "Voltooi jou profiel",
+      "askEllie": "Vra Ellie ’n vraag"
+    },
+    "actions": {
+      "done": "Klaar",
+      "doIt": "Doen dit",
+      "dismiss": "Sluit"
     }
   }
 }

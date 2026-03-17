@@ -1,7 +1,13 @@
 {
   "welcome": {
     "tagline": "Umngane wakho we-Mining Shift",
-    "getStarted": "Qalisa"
+    "getStarted": "Qalisa",
+    "socialProof": "Yakhelwe abasebenzi bamashifu abafana nawe",
+    "trust": {
+      "freeTrial": "Isilingo samahhala sezinsuku ezi-7",
+      "noCard": "Alikho ikhadi lesikweletu",
+      "cancelAnytime": "Khansela noma nini"
+    }
   },
   "common": {
     "swipeHint": "Swayiphela kwesokudla ukuze ukhethe, kwesokunxele ukuze ubone okulandelayo, noma phezulu ukuze uthole ulwazi olwengeziwe",
@@ -351,20 +357,20 @@
         "shiftTimes": "Izikhathi zamashifu"
       }
     },
-    "nextShiftCountdown": "Next shift in {{days}} day(s) ({{date}})",
-    "checkInTitle": "When do you check your schedule?",
-    "checkInNotificationTitle": "Your schedule today",
-    "checkInNotificationBody": "Tap to see your upcoming shifts.",
+    "nextShiftCountdown": "Ishifu elilandelayo ngezinsuku ezi-{{days}} ({{date}})",
+    "checkInTitle": "Ubheka nini ishejuli yakho?",
+    "checkInNotificationTitle": "Ishejuli yakho yanamuhla",
+    "checkInNotificationBody": "Thepha ukuze ubone amashifu akho azayo.",
     "checkIn": {
-      "morning": "Morning",
-      "midday": "Midday",
-      "evening": "Evening"
+      "morning": "Ekuseni",
+      "midday": "Emini",
+      "evening": "Ntambama"
     },
     "notificationPriming": {
-      "title": "Never miss a shift",
-      "body": "Ellie will remind you 24 hours and 4 hours before every shift.\nYou control what and when.",
-      "allow": "Turn On Reminders",
-      "decline": "Not now"
+      "title": "Ungaphuthelwa ishifu",
+      "body": "U-Ellie uzokukhumbuza amahora angu-24 no-4 ngaphambi kweshifu ngalinye.\nWena ulawula ukuthi yini nokuthi nini.",
+      "allow": "Vula izikhumbuzi",
+      "decline": "Hhayi manje"
     }
   },
   "phaseSelector": {
@@ -699,7 +705,11 @@
     },
     "customInput": {
       "label": "Uvamise ukungena ngasiphi isikhathi?",
-      "helper": "Sebenzisa ifomethi yamahora angu-12 (isb., 6:00 AM)"
+      "helper": "Sebenzisa ifomethi yamahora angu-12 (isb., 6:00 AM)",
+      "period": {
+        "am": "AM",
+        "pm": "PM"
+      }
     },
     "validation": {
       "hoursRange": "Amahora kufanele abe phakathi kuka-1 no-12",
@@ -783,6 +793,9 @@
       "evening": "Kusihlwa",
       "nightShift": "Ishifu yasebusuku",
       "tapToSet": "Thepha ukuze usethe"
+    },
+    "units": {
+      "hourShort": "{{hours}} ih"
     }
   },
   "customPattern": {
@@ -1010,14 +1023,33 @@
   "ahaMoment": {
     "headline": "Your year, mapped.",
     "subheadline": "Every shift. Every day off.",
-    "heyEllieTitle": "Ask Ellie about your roster",
-    "ctaPrimary": "Unlock Full Access — Free 7-Day Trial",
-    "ctaSecondary": "Continue with Limited Access →",
+    "heyEllieTitle": "Buza u-Ellie nge-roster yakho",
+    "ctaPrimary": "Vula ukufinyelela okuphelele — Isilingo samahhala sezinsuku ezi-7",
+    "ctaSecondary": "Qhubeka ngokufinyelela okulinganiselwe →",
     "stats": {
-      "workDays": "Work days",
-      "nightShifts": "Night shifts",
-      "daysOff": "Days off",
-      "nextShift": "Next shift"
-    }
+      "workDays": "Izinsuku zomsebenzi",
+      "nightShifts": "Amashifu asebusuku",
+      "daysOff": "Izinsuku zokuphumula",
+      "nextShift": "Ishifu elilandelayo",
+      "nextDayOff": "Usuku olulandelayo lokuphumula"
+    },
+    "nextShiftLabel": "ISHIFU LAKHO ELILANDELAYO",
+    "shiftBadge": "Ishifu le-{{shiftName}}",
+    "countdown": {
+      "tomorrow": "kusasa",
+      "inDays": "ezinsukwini ezi-{{days}}"
+    },
+    "relative": {
+      "today": "Namuhla",
+      "tomorrowShort": "Kusasa",
+      "inDaysShort": "{{days}} z"
+    },
+    "tryAsking": "Zama ukubuza…",
+    "suggestions": {
+      "workingChristmas": "Ngiyasebenza ngoKhisimusi?",
+      "nextDayOff": "Usuku lwami olulandelayo lokuphumula lunjani?",
+      "nightShiftsThisMonth": "Mangaki amashifu ebusuku enginawo kule nyanga?"
+    },
+    "buttonLabel": "Sawubona Ellie"
   }
 }

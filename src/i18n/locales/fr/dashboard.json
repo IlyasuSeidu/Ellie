@@ -206,6 +206,25 @@
       "morning": "quart du matin",
       "afternoon": "quart de l’après-midi",
       "off": "jour de repos"
+    },
+    "duration": {
+      "minutesOnly": "{{minutes}} min",
+      "hoursOnly": "{{hours}} h",
+      "hoursMinutes": "{{hours}} h {{minutes}} min"
+    }
+  },
+  "onboardingChecklist": {
+    "title": "Profitez au maximum d’Ellie",
+    "items": {
+      "roster": "Configurez votre planning",
+      "shiftTimes": "Ajoutez vos horaires de poste",
+      "profile": "Complétez votre profil",
+      "askEllie": "Posez une question à Ellie"
+    },
+    "actions": {
+      "done": "Terminé",
+      "doIt": "Le faire",
+      "dismiss": "Ignorer"
     }
   }
 }

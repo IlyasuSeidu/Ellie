@@ -1,7 +1,13 @@
 {
   "welcome": {
     "tagline": "Jou Mynskof-metgesel",
-    "getStarted": "Begin"
+    "getStarted": "Begin",
+    "socialProof": "Gebou vir skofwerkers soos jy",
+    "trust": {
+      "freeTrial": "Gratis 7-dae proef",
+      "noCard": "Geen kredietkaart",
+      "cancelAnytime": "Kanselleer enige tyd"
+    }
   },
   "common": {
     "swipeHint": "Swiep regs om te kies, links om volgende te sien, of op vir meer inligting",
@@ -332,20 +338,20 @@
         "shiftTimes": "Skofure"
       }
     },
-    "nextShiftCountdown": "Next shift in {{days}} day(s) ({{date}})",
-    "checkInTitle": "When do you check your schedule?",
-    "checkInNotificationTitle": "Your schedule today",
-    "checkInNotificationBody": "Tap to see your upcoming shifts.",
+    "nextShiftCountdown": "Volgende skof oor {{days}} dag(e) ({{date}})",
+    "checkInTitle": "Wanneer kyk jy na jou skedule?",
+    "checkInNotificationTitle": "Jou skedule vandag",
+    "checkInNotificationBody": "Tik om jou komende skofte te sien.",
     "checkIn": {
-      "morning": "Morning",
-      "midday": "Midday",
-      "evening": "Evening"
+      "morning": "Oggend",
+      "midday": "Middag",
+      "evening": "Aand"
     },
     "notificationPriming": {
-      "title": "Never miss a shift",
-      "body": "Ellie will remind you 24 hours and 4 hours before every shift.\nYou control what and when.",
-      "allow": "Turn On Reminders",
-      "decline": "Not now"
+      "title": "Moenie weer ’n skof mis nie",
+      "body": "Ellie sal jou 24 uur en 4 uur voor elke skof herinner.\nJy beheer wat en wanneer.",
+      "allow": "Skakel herinnerings aan",
+      "decline": "Nie nou nie"
     }
   },
   "phaseSelector": {
@@ -680,7 +686,11 @@
     },
     "customInput": {
       "label": "Hoe laat klok jy gewoonlik in?",
-      "helper": "Gebruik 12-uur-formaat (bv. 06:00)"
+      "helper": "Gebruik 12-uur-formaat (bv. 06:00)",
+      "period": {
+        "am": "VM",
+        "pm": "NM"
+      }
     },
     "validation": {
       "hoursRange": "Ure moet tussen 1 en 12 wees",
@@ -764,6 +774,9 @@
       "evening": "Aand",
       "nightShift": "Nagskof",
       "tapToSet": "Tik om te stel"
+    },
+    "units": {
+      "hourShort": "{{hours}} u"
     }
   },
   "customPattern": {
@@ -991,14 +1004,33 @@
   "ahaMoment": {
     "headline": "Your year, mapped.",
     "subheadline": "Every shift. Every day off.",
-    "heyEllieTitle": "Ask Ellie about your roster",
-    "ctaPrimary": "Unlock Full Access — Free 7-Day Trial",
-    "ctaSecondary": "Continue with Limited Access →",
+    "heyEllieTitle": "Vra vir Ellie oor jou rooster",
+    "ctaPrimary": "Ontsluit volle toegang — Gratis 7-dae proef",
+    "ctaSecondary": "Gaan voort met beperkte toegang →",
     "stats": {
-      "workDays": "Work days",
-      "nightShifts": "Night shifts",
-      "daysOff": "Days off",
-      "nextShift": "Next shift"
-    }
+      "workDays": "Werksdae",
+      "nightShifts": "Nagskofte",
+      "daysOff": "Afdag",
+      "nextShift": "Volgende skof",
+      "nextDayOff": "Volgende afdag"
+    },
+    "nextShiftLabel": "JOU VOLGENDE SKOF",
+    "shiftBadge": "{{shiftName}} skof",
+    "countdown": {
+      "tomorrow": "môre",
+      "inDays": "oor {{days}} dae"
+    },
+    "relative": {
+      "today": "Vandag",
+      "tomorrowShort": "Môre",
+      "inDaysShort": "{{days}} d"
+    },
+    "tryAsking": "Probeer vra…",
+    "suggestions": {
+      "workingChristmas": "Werk ek oor Kersfees?",
+      "nextDayOff": "Wanneer is my volgende afdag?",
+      "nightShiftsThisMonth": "Hoeveel nagskofte het ek hierdie maand?"
+    },
+    "buttonLabel": "Hallo Ellie"
   }
 }
