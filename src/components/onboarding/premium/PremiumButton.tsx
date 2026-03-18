@@ -63,6 +63,8 @@ export interface PremiumButtonProps {
   accessibilityHint?: string;
   /** Test ID */
   testID?: string;
+  /** Optional title line limit override */
+  titleNumberOfLines?: number;
 }
 
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
@@ -82,6 +84,7 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
   accessibilityLabel,
   accessibilityHint,
   testID,
+  titleNumberOfLines,
 }) => {
   const scale = useSharedValue(1);
   const opacity = useSharedValue(1);
@@ -167,6 +170,7 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
 
   const sizeStyles = getSizeStyles(size);
   const isDisabled = disabled || loading;
+  const resolvedTitleNumberOfLines = titleNumberOfLines ?? (size === 'large' ? 2 : 1);
 
   const renderContent = () => {
     if (loading) {
@@ -192,8 +196,8 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
             textStyle,
             isDisabled && styles.disabledText,
           ]}
-          numberOfLines={size === 'large' ? 2 : 1}
-          adjustsFontSizeToFit={size !== 'large'}
+          numberOfLines={resolvedTitleNumberOfLines}
+          adjustsFontSizeToFit={resolvedTitleNumberOfLines === 1 || size !== 'large'}
           minimumFontScale={0.85}
         >
           {title}

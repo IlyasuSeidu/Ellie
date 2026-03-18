@@ -184,6 +184,7 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
             onPress={handleContinue}
             variant="primary"
             size="large"
+            titleNumberOfLines={1}
             testID={`${testID}-button`}
           />
         </Animated.View>
