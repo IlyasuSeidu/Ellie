@@ -183,7 +183,7 @@
         }
       ],
       "features": {
-        "fullYear": "See every shift for the next 365 days",
+        "fullYear": "See every shift for 365 days plus",
         "askRoster": "Ask Ellie anything — \"When's my next day off?\"",
         "offline": "Works underground with zero signal",
         "leavePlanning": "Plan holidays without calling HR",
