@@ -69,6 +69,7 @@ class EllieOpenWakeWordModule : Module() {
   private val melspectrogramBuffer = MutableFrameBuffer(MELSPECTROGRAM_MAX_FRAMES, MELSPECTROGRAM_BINS)
   private val featureBuffer = MutableFrameBuffer(FEATURE_BUFFER_MAX_FRAMES, EMBEDDING_DIMENSION)
   private var warmupFrames = 0
+  private var quietFrameSkipCounter = 0
 
   override fun definition() = ModuleDefinition {
     Name("EllieOpenWakeWord")
@@ -379,7 +380,19 @@ class EllieOpenWakeWordModule : Module() {
   }
 
   private fun processFrame(frame: FloatArray) {
-    lastFrameRms = computeNormalizedRms(frame)
+    val frameRms = computeNormalizedRms(frame)
+    lastFrameRms = frameRms
+
+    val inferenceRmsFloor = max(minRmsForDetection, DEFAULT_MIN_RMS_FOR_INFERENCE)
+    if (frameRms < inferenceRmsFloor) {
+      quietFrameSkipCounter = (quietFrameSkipCounter + 1) % QUIET_INFERENCE_STRIDE
+      if (quietFrameSkipCounter != 0) {
+        return
+      }
+    } else {
+      quietFrameSkipCounter = 0
+    }
+
     rawAudioBuffer.append(frame)
 
     val melspectrogramInput = rawAudioBuffer.tail(FRAME_SAMPLES + MELSPECTROGRAM_CONTEXT_SAMPLES)
@@ -627,8 +640,19 @@ class EllieOpenWakeWordModule : Module() {
       ortEnvironment = env
 
       OrtSession.SessionOptions().use { options ->
+        options.setOptimizationLevel(OrtSession.SessionOptions.OptLevel.ALL_OPT)
         options.setInterOpNumThreads(1)
         options.setIntraOpNumThreads(1)
+        options.addConfigEntry(ONNX_SESSION_ALLOW_INTRA_OP_SPINNING_KEY, "0")
+        options.addConfigEntry(ONNX_SESSION_ALLOW_INTER_OP_SPINNING_KEY, "0")
+        val xnnpackThreads = max(1, Runtime.getRuntime().availableProcessors() - 1)
+        runCatching {
+          options.addXnnpack(
+            mapOf(
+              "intra_op_num_threads" to xnnpackThreads.toString(),
+            ),
+          )
+        }
 
         melspectrogramSession = env.createSession(melPath, options)
         embeddingSession = env.createSession(embeddingPath, options)
@@ -740,6 +764,7 @@ class EllieOpenWakeWordModule : Module() {
     warmupFrames = 0
     smoothedScore = null
     consecutiveTriggerFrames = 0
+    quietFrameSkipCounter = 0
   }
 
   private fun resolveModelPath(context: Context, configuredPath: String?, optionName: String): String {
@@ -887,8 +912,13 @@ class EllieOpenWakeWordModule : Module() {
     private const val MELSPECTROGRAM_SCALE_DIVISOR = 10f
     private const val MELSPECTROGRAM_SCALE_OFFSET = 2f
     private const val DEFAULT_MIN_RMS_FOR_DETECTION = 0.0025
+    private const val DEFAULT_MIN_RMS_FOR_INFERENCE = 0.008
     private const val DEFAULT_ACTIVATION_FRAMES = 3
     private const val DEFAULT_SCORE_SMOOTHING_ALPHA = 0.35
+    private const val QUIET_INFERENCE_STRIDE = 4
+
+    private const val ONNX_SESSION_ALLOW_INTRA_OP_SPINNING_KEY = "session.intra_op.allow_spinning"
+    private const val ONNX_SESSION_ALLOW_INTER_OP_SPINNING_KEY = "session.inter_op.allow_spinning"
 
     private const val DEFAULT_MELSPECTROGRAM_ASSET_PATH = "openwakeword/melspectrogram.onnx"
     private const val DEFAULT_EMBEDDING_ASSET_PATH = "openwakeword/embedding_model.onnx"

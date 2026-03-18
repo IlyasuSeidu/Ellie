@@ -38,6 +38,8 @@ export interface SpeechRecognitionCallbacks {
 class SpeechRecognitionService {
   private isListening = false;
   private callbacks: SpeechRecognitionCallbacks | null = null;
+  private supportedLocalesByLowercase: Map<string, string> | null = null;
+  private supportedLocalesFetchPromise: Promise<Map<string, string> | null> | null = null;
 
   private static readonly SOFT_END_ERROR_CODES = new Set([
     'aborted',
@@ -104,13 +106,17 @@ class SpeechRecognitionService {
     this.isListening = true;
 
     try {
+      const resolvedLocale = await this.resolveRecognizerLocale(locale);
       ExpoSpeechRecognitionModule.start({
-        lang: locale,
+        lang: resolvedLocale,
         interimResults: true,
         continuous: true,
         addsPunctuation: true,
       });
-      logger.info('Speech recognition started', { locale });
+      logger.info('Speech recognition started', {
+        locale: resolvedLocale,
+        requestedLocale: locale,
+      });
     } catch (error) {
       this.isListening = false;
       this.callbacks = null;
@@ -230,12 +236,99 @@ class SpeechRecognitionService {
     }
     this.callbacks = null;
     this.isListening = false;
+    this.supportedLocalesByLowercase = null;
+    this.supportedLocalesFetchPromise = null;
   }
 
   private createRecognitionError(code: string, message: string): SpeechRecognitionServiceError {
     const error = new Error(message) as SpeechRecognitionServiceError;
     error.code = code;
     return error;
+  }
+
+  private async resolveRecognizerLocale(locale: string): Promise<string> {
+    const requestedLocale = locale.trim() || 'en-US';
+    const locales = await this.getSupportedLocalesByLowercase();
+    if (!locales || locales.size === 0) {
+      return requestedLocale;
+    }
+
+    const exactMatch = locales.get(requestedLocale.toLowerCase());
+    if (exactMatch) {
+      return exactMatch;
+    }
+
+    const requestedLanguage = requestedLocale.split(/[-_]/)[0]?.toLowerCase();
+    if (!requestedLanguage) {
+      return requestedLocale;
+    }
+
+    for (const [normalizedLocale, candidate] of locales.entries()) {
+      if (
+        normalizedLocale === requestedLanguage ||
+        normalizedLocale.startsWith(`${requestedLanguage}-`)
+      ) {
+        logger.warn('Requested speech locale unavailable; using supported language variant', {
+          requestedLocale,
+          fallbackLocale: candidate,
+        });
+        return candidate;
+      }
+    }
+
+    logger.warn(
+      'Requested speech locale not in recognizer supported locales; using requested locale',
+      {
+        requestedLocale,
+      }
+    );
+    return requestedLocale;
+  }
+
+  private getSupportedLocalesByLowercase(): Promise<Map<string, string> | null> {
+    if (this.supportedLocalesByLowercase) {
+      return Promise.resolve(this.supportedLocalesByLowercase);
+    }
+
+    if (this.supportedLocalesFetchPromise) {
+      return this.supportedLocalesFetchPromise;
+    }
+
+    const getSupportedLocales = ExpoSpeechRecognitionModule.getSupportedLocales;
+    if (!getSupportedLocales) {
+      return Promise.resolve(null);
+    }
+
+    this.supportedLocalesFetchPromise = (async () => {
+      try {
+        const result = await getSupportedLocales({});
+        const allLocales = [...(result.locales ?? []), ...(result.installedLocales ?? [])]
+          .map((value) => value.trim())
+          .filter((value) => value.length > 0);
+
+        if (allLocales.length === 0) {
+          return null;
+        }
+
+        const uniqueLocales = Array.from(new Set(allLocales));
+        const normalizedMap = new Map<string, string>();
+        uniqueLocales.forEach((value) => {
+          normalizedMap.set(value.toLowerCase(), value);
+        });
+
+        this.supportedLocalesByLowercase = normalizedMap;
+        return normalizedMap;
+      } catch (error) {
+        logger.warn('Failed to fetch supported speech locales; using requested locale', {
+          error: error instanceof Error ? error.message : String(error),
+        });
+        return null;
+      } finally {
+        this.supportedLocalesFetchPromise = null;
+      }
+    })();
+
+    return this.supportedLocalesFetchPromise;
   }
 }
 

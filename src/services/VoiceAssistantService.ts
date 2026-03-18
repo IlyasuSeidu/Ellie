@@ -14,6 +14,7 @@ import { voiceAssistantConfig } from '@/config/env';
 import { logger } from '@/utils/logger';
 import { tryOfflineFallback } from '@/utils/offlineFallback';
 import i18n from '@/i18n';
+import { normalizeLanguage } from '@/i18n/languageDetector';
 import type {
   VoiceAssistantState,
   VoiceAssistantUserContext,
@@ -28,6 +29,19 @@ const MAX_HISTORY_LENGTH = 50;
 const LISTENING_MAX_DURATION_MS = 15_000;
 const LISTENING_SILENCE_STOP_MS = 1_400;
 const LISTENING_STOP_FALLBACK_MS = 2_500;
+const VOICE_LOCALE_BY_APP_LANGUAGE: Record<string, string> = {
+  en: 'en-US',
+  es: 'es-ES',
+  'pt-BR': 'pt-BR',
+  fr: 'fr-FR',
+  ar: 'ar-SA',
+  'zh-CN': 'zh-CN',
+  ru: 'ru-RU',
+  hi: 'hi-IN',
+  af: 'af-ZA',
+  zu: 'zu-ZA',
+  id: 'id-ID',
+};
 
 export interface VoiceAssistantCallbacks {
   onStateChange: (state: VoiceAssistantState) => void;
@@ -150,7 +164,7 @@ class VoiceAssistantService {
             }
           },
         },
-        voiceAssistantConfig.locale
+        this.resolveVoiceLocale()
       );
     } finally {
       this.isStartingListening = false;
@@ -464,11 +478,11 @@ class VoiceAssistantService {
     this.currentSpeechToken = requestToken;
     this.setState('speaking');
 
-    // Resolve TTS language from the configured locale
+    const speechLocale = this.resolveVoiceLocale();
     const localeConfig = voiceAssistantConfig.supportedLocales?.find(
-      (l) => l.code === voiceAssistantConfig.locale
+      (l) => l.code === speechLocale
     );
-    const ttsLanguage = localeConfig?.ttsLanguage ?? voiceAssistantConfig.locale;
+    const ttsLanguage = localeConfig?.ttsLanguage ?? speechLocale;
 
     await textToSpeechService.speak(text, {
       language: ttsLanguage,
@@ -497,6 +511,11 @@ class VoiceAssistantService {
         this.handleError('tts_error', error.message);
       },
     });
+  }
+
+  private resolveVoiceLocale(): string {
+    const normalizedLanguage = normalizeLanguage(i18n.resolvedLanguage ?? i18n.language ?? 'en');
+    return VOICE_LOCALE_BY_APP_LANGUAGE[normalizedLanguage] ?? voiceAssistantConfig.locale;
   }
 
   /**

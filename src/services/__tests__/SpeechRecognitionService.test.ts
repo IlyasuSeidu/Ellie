@@ -13,6 +13,7 @@ jest.mock('../speechRecognitionNative', () => ({
   ExpoSpeechRecognitionModule: {
     requestPermissionsAsync: jest.fn(() => Promise.resolve({ granted: true })),
     getPermissionsAsync: jest.fn(() => Promise.resolve({ granted: true })),
+    getSupportedLocales: jest.fn(() => Promise.resolve({ locales: [], installedLocales: [] })),
     start: jest.fn(),
     stop: jest.fn(),
     abort: jest.fn(),
@@ -30,6 +31,10 @@ function resetPermissionMocks() {
   });
   (ExpoSpeechRecognitionModule.requestPermissionsAsync as jest.Mock).mockResolvedValue({
     granted: true,
+  });
+  (ExpoSpeechRecognitionModule.getSupportedLocales as jest.Mock).mockResolvedValue({
+    locales: [],
+    installedLocales: [],
   });
 }
 
@@ -153,6 +158,33 @@ describe('SpeechRecognitionService', () => {
 
       expect(ExpoSpeechRecognitionModule.start).toHaveBeenCalledWith(
         expect.objectContaining({ lang: 'de-DE' })
+      );
+    });
+
+    it('should fall back to a supported locale variant for the same language', async () => {
+      (ExpoSpeechRecognitionModule.getSupportedLocales as jest.Mock).mockResolvedValue({
+        locales: ['es-US'],
+        installedLocales: [],
+      });
+
+      const cbs = createCallbacks();
+      await speechRecognitionService.startListening(cbs, 'es-ES');
+
+      expect(ExpoSpeechRecognitionModule.start).toHaveBeenCalledWith(
+        expect.objectContaining({ lang: 'es-US' })
+      );
+    });
+
+    it('should keep the requested locale when supported locales lookup fails', async () => {
+      (ExpoSpeechRecognitionModule.getSupportedLocales as jest.Mock).mockRejectedValue(
+        new Error('lookup failed')
+      );
+
+      const cbs = createCallbacks();
+      await speechRecognitionService.startListening(cbs, 'fr-FR');
+
+      expect(ExpoSpeechRecognitionModule.start).toHaveBeenCalledWith(
+        expect.objectContaining({ lang: 'fr-FR' })
       );
     });
   });

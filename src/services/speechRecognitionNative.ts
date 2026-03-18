@@ -41,12 +41,20 @@ interface StartOptions {
   addsPunctuation: boolean;
 }
 
+interface SupportedLocalesResult {
+  locales: string[];
+  installedLocales: string[];
+}
+
 interface SpeechRecognitionModuleShape {
   requestPermissionsAsync: () => Promise<PermissionStatus>;
   getPermissionsAsync: () => Promise<PermissionStatus>;
   start: (options: StartOptions) => void;
   stop: () => void;
   abort: () => void;
+  getSupportedLocales?: (options?: {
+    androidRecognitionServicePackage?: string;
+  }) => Promise<SupportedLocalesResult>;
 }
 
 type UseSpeechRecognitionEvent = <TEventName extends SpeechRecognitionEventName>(
@@ -95,7 +103,7 @@ try {
 
 export const isSpeechRecognitionNativeAvailable = Boolean(
   speechRecognitionPackage?.ExpoSpeechRecognitionModule &&
-    speechRecognitionPackage?.useSpeechRecognitionEvent
+  speechRecognitionPackage?.useSpeechRecognitionEvent
 );
 
 export const ExpoSpeechRecognitionModule =

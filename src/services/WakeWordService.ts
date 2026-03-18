@@ -80,6 +80,9 @@ const DEFAULT_OPENWAKEWORD_TRIGGER_COOLDOWN_MS = 2000;
 const DEFAULT_OPENWAKEWORD_MIN_RMS = 0.01;
 const DEFAULT_OPENWAKEWORD_ACTIVATION_FRAMES = 1;
 const DEFAULT_OPENWAKEWORD_SCORE_SMOOTHING_ALPHA = 0.35;
+const ENABLE_OPENWAKEWORD_INFERENCE_LOGGING =
+  process.env.NODE_ENV === 'test' ||
+  (__DEV__ && process.env.EXPO_PUBLIC_WAKE_WORD_DEBUG_INFERENCE === 'true');
 
 function clampSensitivity(value: number): number {
   if (!Number.isFinite(value)) return DEFAULT_SENSITIVITY;
@@ -276,23 +279,27 @@ class WakeWordService {
         addOpenWakeWordErrorListener((event) => {
           callbacks.onError(new Error(event.message));
         }),
-        addOpenWakeWordInferenceListener(
-          (() => {
-            let sampleCount = 0;
-            return (event: { score: number; threshold: number; rms?: number }) => {
-              // Only log every 50th sample to avoid CPU overhead from constant serialization
-              sampleCount += 1;
-              if (sampleCount % 50 === 0) {
-                logger.debug('OpenWakeWord inference sample', {
-                  score: Number(event.score.toFixed(4)),
-                  threshold: event.threshold,
-                  rms: typeof event.rms === 'number' ? Number(event.rms.toFixed(4)) : undefined,
-                });
-              }
-            };
-          })()
-        ),
       ];
+
+      if (ENABLE_OPENWAKEWORD_INFERENCE_LOGGING) {
+        this.openWakeWordSubscriptions.push(
+          addOpenWakeWordInferenceListener(
+            (() => {
+              let sampleCount = 0;
+              return (event: { score: number; threshold: number; rms?: number }) => {
+                sampleCount += 1;
+                if (sampleCount % 50 === 0) {
+                  logger.debug('OpenWakeWord inference sample', {
+                    score: Number(event.score.toFixed(4)),
+                    threshold: event.threshold,
+                    rms: typeof event.rms === 'number' ? Number(event.rms.toFixed(4)) : undefined,
+                  });
+                }
+              };
+            })()
+          )
+        );
+      }
 
       await initializeOpenWakeWord({
         modelPath,

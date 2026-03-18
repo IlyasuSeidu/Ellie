@@ -12,7 +12,7 @@ private final class WakeWordException: GenericException<String> {
 
 public final class EllieOpenWakeWordModule: Module {
   private let stateLock = NSLock()
-  private let inferenceQueue = DispatchQueue(label: "ellie.openwakeword.inference", qos: .userInitiated)
+  private let inferenceQueue = DispatchQueue(label: "ellie.openwakeword.inference", qos: .utility)
 
   private var initialized = false
   private var listening = false
@@ -55,6 +55,8 @@ public final class EllieOpenWakeWordModule: Module {
   private let melspectrogramBuffer = MutableFrameBuffer(maxFrames: melspectrogramMaxFrames, frameWidth: melspectrogramBins)
   private let featureBuffer = MutableFrameBuffer(maxFrames: featureBufferMaxFrames, frameWidth: embeddingDimension)
   private var warmupFrames = 0
+  private var quietFrameSkipCounter = 0
+  private var pendingInferenceWorkItems = 0
 
   public func definition() -> ModuleDefinition {
     Name("EllieOpenWakeWord")
@@ -91,7 +93,15 @@ public final class EllieOpenWakeWordModule: Module {
     }
 
     AsyncFunction("initialize") { (options: [String: Any]) in
+      var detachedEngine: AVAudioEngine?
       do {
+        detachedEngine = self.stateLock.withLock {
+          let engine = self.detachAudioEngineLocked()
+          self.destroySessionsLocked()
+          return engine
+        }
+        self.finalizeAudioEngineStop(detachedEngine, deactivateSession: true)
+
         try self.stateLock.withLockThrowing {
           let modelPath = try self.resolveModelPath(configuredPath: options["modelPath"] as? String, optionName: "modelPath")
 
@@ -164,9 +174,6 @@ public final class EllieOpenWakeWordModule: Module {
             self.scoreSmoothingAlpha = defaultScoreSmoothingAlpha
           }
 
-          self.stopListeningLocked()
-          self.destroySessionsLocked()
-
           self.classifierModelPath = modelPath
           self.melspectrogramModelPath = resolvedMelspectrogramPath
           self.embeddingModelPath = resolvedEmbeddingPath
@@ -207,14 +214,15 @@ public final class EllieOpenWakeWordModule: Module {
     }
 
     AsyncFunction("stop") {
-      self.stateLock.withLock {
-        self.stopListeningLocked()
+      let detachedEngine = self.stateLock.withLock {
+        self.detachAudioEngineLocked()
       }
+      self.finalizeAudioEngineStop(detachedEngine, deactivateSession: true)
     }
 
     AsyncFunction("destroy") {
-      self.stateLock.withLock {
-        self.stopListeningLocked()
+      let detachedEngine = self.stateLock.withLock {
+        let engine = self.detachAudioEngineLocked()
         self.destroySessionsLocked()
 
         self.initialized = false
@@ -225,7 +233,9 @@ public final class EllieOpenWakeWordModule: Module {
         self.smoothedScore = nil
         self.consecutiveTriggerFrames = 0
         self.resetStreamingStateLocked()
+        return engine
       }
+      self.finalizeAudioEngineStop(detachedEngine, deactivateSession: true)
     }
 
     AsyncFunction("simulateDetection") { (score: Double?) in
@@ -255,7 +265,7 @@ public final class EllieOpenWakeWordModule: Module {
     let audioSession = AVAudioSession.sharedInstance()
     try audioSession.setCategory(.playAndRecord, mode: .measurement, options: [.defaultToSpeaker, .allowBluetooth])
     try audioSession.setPreferredSampleRate(Double(sampleRate))
-    try audioSession.setPreferredIOBufferDuration(0.02)
+    try audioSession.setPreferredIOBufferDuration(preferredIoBufferDurationSeconds)
     try audioSession.setActive(true)
 
     let engine = AVAudioEngine()
@@ -288,19 +298,28 @@ public final class EllieOpenWakeWordModule: Module {
     listening = true
   }
 
-  private func stopListeningLocked() {
+  private func detachAudioEngineLocked() -> AVAudioEngine? {
     stopRequested = true
-
-    if let engine = audioEngine {
-      engine.inputNode.removeTap(onBus: 0)
-      engine.stop()
-    }
+    let detachedEngine = audioEngine
 
     audioEngine = nil
     audioConverter = nil
     inputFormat = nil
     targetFormat = nil
     listening = false
+    pendingInferenceWorkItems = 0
+    return detachedEngine
+  }
+
+  private func finalizeAudioEngineStop(_ engine: AVAudioEngine?, deactivateSession: Bool) {
+    if let engine {
+      engine.inputNode.removeTap(onBus: 0)
+      engine.stop()
+    }
+
+    if deactivateSession {
+      try? AVAudioSession.sharedInstance().setActive(false, options: [.notifyOthersOnDeactivation])
+    }
   }
 
   private func handleIncomingAudio(
@@ -310,7 +329,16 @@ public final class EllieOpenWakeWordModule: Module {
     converter: AVAudioConverter
   ) {
     let shouldProcess = stateLock.withLock {
-      listening && !stopRequested
+      guard listening, !stopRequested else {
+        return false
+      }
+
+      if pendingInferenceWorkItems >= maxPendingInferenceWorkItems {
+        return false
+      }
+
+      pendingInferenceWorkItems += 1
+      return true
     }
 
     guard shouldProcess else {
@@ -323,6 +351,9 @@ public final class EllieOpenWakeWordModule: Module {
       targetFormat: targetFormat,
       converter: converter
     ), !samples.isEmpty else {
+      stateLock.withLock {
+        pendingInferenceWorkItems = max(0, pendingInferenceWorkItems - 1)
+      }
       return
     }
 
@@ -332,6 +363,12 @@ public final class EllieOpenWakeWordModule: Module {
   }
 
   private func processSamples(_ samples: [Float]) {
+    defer {
+      stateLock.withLock {
+        pendingInferenceWorkItems = max(0, pendingInferenceWorkItems - 1)
+      }
+    }
+
     let shouldProcess = stateLock.withLock {
       listening && !stopRequested
     }
@@ -348,17 +385,31 @@ public final class EllieOpenWakeWordModule: Module {
       do {
         try processFrame(frame)
       } catch {
-        stateLock.withLock {
+        let detachedEngine = stateLock.withLock {
           emitWakeWordError(code: "inference_runtime_error", message: "\(error.localizedDescription)")
-          stopListeningLocked()
+          return detachAudioEngineLocked()
         }
+        finalizeAudioEngineStop(detachedEngine, deactivateSession: true)
         return
       }
     }
   }
 
   private func processFrame(_ frame: [Float]) throws {
-    lastFrameRms = computeNormalizedRms(frame)
+    let frameRms = computeNormalizedRms(frame)
+    lastFrameRms = frameRms
+
+    // Skip most heavy inference work when the frame appears silent.
+    let inferenceRmsFloor = max(minRmsForDetection, defaultMinRmsForInference)
+    if frameRms < inferenceRmsFloor {
+      quietFrameSkipCounter = (quietFrameSkipCounter + 1) % quietInferenceStride
+      if quietFrameSkipCounter != 0 {
+        return
+      }
+    } else {
+      quietFrameSkipCounter = 0
+    }
+
     rawAudioBuffer.append(frame)
 
     let melspectrogramInput = rawAudioBuffer.tail(count: frameSamples + melspectrogramContextSamples)
@@ -628,7 +679,16 @@ public final class EllieOpenWakeWordModule: Module {
     do {
       let env = try ORTEnv(loggingLevel: ORTLoggingLevel.warning)
       let options = try ORTSessionOptions()
+      try options.setGraphOptimizationLevel(.all)
+      try options.setInterOpNumThreads(1)
       try options.setIntraOpNumThreads(1)
+      try? options.addConfigEntry(withKey: onnxSessionAllowIntraOpSpinningKey, value: "0")
+      try? options.addConfigEntry(withKey: onnxSessionAllowInterOpSpinningKey, value: "0")
+      let xnnpackThreads = max(1, ProcessInfo.processInfo.activeProcessorCount - 1)
+      try? options.appendExecutionProvider(
+        onnxExecutionProviderXnnpack,
+        providerOptions: ["intra_op_num_threads": "\(xnnpackThreads)"]
+      )
 
       let melspecSession = try ORTSession(env: env, modelPath: melspectrogramModelPath, sessionOptions: options)
       let embedSession = try ORTSession(env: env, modelPath: embeddingModelPath, sessionOptions: options)
@@ -696,6 +756,8 @@ public final class EllieOpenWakeWordModule: Module {
     warmupFrames = 0
     smoothedScore = nil
     consecutiveTriggerFrames = 0
+    quietFrameSkipCounter = 0
+    pendingInferenceWorkItems = 0
   }
 
   private func makeFloatTensor(values: [Float], shape: [NSNumber]) throws -> ORTValue {
@@ -1049,11 +1111,18 @@ private let classifierFeatureFrames = 16
 private let featureBufferMaxFrames = 120
 private let minWarmupFrames = 5
 private let inferenceSampleIntervalMs = 1000.0
+private let preferredIoBufferDurationSeconds = 0.04
 private let melspectrogramScaleDivisor: Float = 10.0
 private let melspectrogramScaleOffset: Float = 2.0
 private let defaultMinRmsForDetection = 0.01
+private let defaultMinRmsForInference = 0.008
 private let defaultActivationFrames = 1
 private let defaultScoreSmoothingAlpha = 0.35
+private let quietInferenceStride = 4
+private let maxPendingInferenceWorkItems = 2
+private let onnxSessionAllowIntraOpSpinningKey = "session.intra_op.allow_spinning"
+private let onnxSessionAllowInterOpSpinningKey = "session.inter_op.allow_spinning"
+private let onnxExecutionProviderXnnpack = "XNNPACK"
 
 private let defaultMelspectrogramAssetPath = "openwakeword/melspectrogram.onnx"
 private let defaultEmbeddingAssetPath = "openwakeword/embedding_model.onnx"

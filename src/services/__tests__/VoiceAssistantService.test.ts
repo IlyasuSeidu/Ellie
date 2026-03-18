@@ -9,6 +9,7 @@ import { voiceAssistantService } from '../VoiceAssistantService';
 import { speechRecognitionService } from '../SpeechRecognitionService';
 import { textToSpeechService } from '../TextToSpeechService';
 import { ellieBrainService, EllieBrainServiceError } from '../EllieBrainService';
+import i18n from '@/i18n';
 import type {
   VoiceAssistantState,
   VoiceAssistantUserContext,
@@ -109,8 +110,9 @@ function createCallbacks() {
 describe('VoiceAssistantService', () => {
   let callbacks: ReturnType<typeof createCallbacks>;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.clearAllMocks();
+    await i18n.changeLanguage('en');
     callbacks = createCallbacks();
     voiceAssistantService.destroy();
     voiceAssistantService.initialize(callbacks, mockUserContext);
@@ -154,6 +156,14 @@ describe('VoiceAssistantService', () => {
 
       const startCall = (speechRecognitionService.startListening as jest.Mock).mock.calls[0];
       expect(startCall[1]).toBe('en-US'); // default locale from config
+    });
+
+    it('should match speech recognition locale to selected app language', async () => {
+      await i18n.changeLanguage('es');
+      await voiceAssistantService.startListening();
+
+      const startCall = (speechRecognitionService.startListening as jest.Mock).mock.calls[0];
+      expect(startCall[1]).toBe('es-ES');
     });
 
     it('should register onPartialResult callback', async () => {
