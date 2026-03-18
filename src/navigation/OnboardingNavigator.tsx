@@ -154,10 +154,10 @@ export const OnboardingNavigator: React.FC = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        animation: 'fade',
+        animation: 'slide_from_right',
         contentStyle: { backgroundColor: '#0c0a09' }, // deepVoid from theme
-        gestureEnabled: false, // Disable swipe back gesture for controlled flow
-        fullScreenGestureEnabled: false, // Disable full-screen swipe as well
+        gestureEnabled: true,
+        fullScreenGestureEnabled: true,
       }}
       initialRouteName="Welcome"
     >
