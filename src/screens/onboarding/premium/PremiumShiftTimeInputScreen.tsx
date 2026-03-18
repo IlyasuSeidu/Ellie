@@ -24,6 +24,7 @@ import {
   AccessibilityInfo,
   Image,
   ImageSourcePropType,
+  BackHandler,
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -906,6 +907,18 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     resetStageInput,
     returnToSettings,
   ]);
+
+  // Android hardware back button — mirrors handleBack so stage nav works correctly
+  useEffect(() => {
+    if (Platform.OS !== 'android') {
+      return undefined;
+    }
+    const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+      handleBack();
+      return true; // prevent default (which would exit the app or pop via React Navigation)
+    });
+    return () => subscription.remove();
+  }, [handleBack]);
 
   // Animated styles
   const floatingStyle = useAnimatedStyle(() => ({
