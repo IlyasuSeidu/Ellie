@@ -57,12 +57,12 @@ import {
   convertTo24Hour,
   calculateEndTime,
   detectShiftType,
-  formatTimeForDisplay,
   getRequiredShiftTypes,
 } from '@/utils/shiftTimeUtils';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 import { getDefaultFIFOConfig } from '@/utils/shiftUtils';
 import { Analytics } from '@/utils/analytics';
+import { formatLocalizedNumber, formatLocalizedTime } from '@/utils/i18nFormat';
 
 // Helper to get pattern display info
 const getPatternInfo = (
@@ -203,14 +203,12 @@ type StageShiftTimes = {
 // Preset shift configurations
 interface ShiftPreset {
   id: string;
-  label: string;
   startTime: string; // HH:MM (12-hour format)
   period: 'AM' | 'PM';
   duration: 8 | 12;
   icon: keyof typeof Ionicons.glyphMap | string; // Can be Ionicon name or emoji
   imageSource?: ImageSourcePropType; // 3D PNG icon (takes priority over icon)
   type: 'day' | 'night' | 'morning' | 'afternoon';
-  endTimeLabel: string;
   shiftSystem: ShiftSystem;
 }
 
@@ -218,186 +216,154 @@ const SHIFT_PRESETS: ShiftPreset[] = [
   // 2-Shift (12-hour) Presets
   {
     id: 'early_day',
-    label: 'Early Day Shift',
     startTime: '06:00',
     period: 'AM',
     duration: 12,
     icon: 'sunny',
     type: 'day',
-    endTimeLabel: 'Ends at 6:00 PM',
     shiftSystem: ShiftSystem.TWO_SHIFT,
   },
   {
     id: 'standard_day',
-    label: 'Standard Day Shift',
     startTime: '07:00',
     period: 'AM',
     duration: 12,
     icon: 'partly-sunny',
     type: 'day',
-    endTimeLabel: 'Ends at 7:00 PM',
     shiftSystem: ShiftSystem.TWO_SHIFT,
   },
   {
     id: 'late_day',
-    label: 'Late Day Shift',
     startTime: '01:00',
     period: 'PM',
     duration: 12,
     icon: 'cloudy',
     type: 'day',
-    endTimeLabel: 'Ends at 1:00 AM',
     shiftSystem: ShiftSystem.TWO_SHIFT,
   },
   {
     id: 'early_night',
-    label: 'Early Night Shift',
     startTime: '06:00',
     period: 'PM',
     duration: 12,
     icon: 'moon',
     type: 'night',
-    endTimeLabel: 'Ends at 6:00 AM',
     shiftSystem: ShiftSystem.TWO_SHIFT,
   },
   {
     id: 'standard_night',
-    label: 'Standard Night Shift',
     startTime: '07:00',
     period: 'PM',
     duration: 12,
     icon: 'moon',
     type: 'night',
-    endTimeLabel: 'Ends at 7:00 AM',
     shiftSystem: ShiftSystem.TWO_SHIFT,
   },
   {
     id: 'late_night',
-    label: 'Late Night Shift',
     startTime: '10:00',
     period: 'PM',
     duration: 12,
     icon: 'moon',
     type: 'night',
-    endTimeLabel: 'Ends at 10:00 AM',
     shiftSystem: ShiftSystem.TWO_SHIFT,
   },
 
   // 3-Shift (8-hour) Presets - Morning
   {
     id: 'early_morning',
-    label: 'Early Morning',
     startTime: '05:00',
     period: 'AM',
     duration: 8,
     icon: 'sunny',
     type: 'morning',
-    endTimeLabel: 'Ends at 1:00 PM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
   },
   {
     id: 'standard_morning',
-    label: 'Standard Morning',
     startTime: '06:00',
     period: 'AM',
     duration: 8,
     icon: 'partly-sunny',
     type: 'morning',
-    endTimeLabel: 'Ends at 2:00 PM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
   },
   {
     id: 'late_morning',
-    label: 'Late Morning',
     startTime: '08:00',
     period: 'AM',
     duration: 8,
     icon: 'sunny-outline',
     type: 'morning',
-    endTimeLabel: 'Ends at 4:00 PM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
   },
 
   // 3-Shift (8-hour) Presets - Afternoon
   {
     id: 'early_afternoon',
-    label: 'Early Afternoon',
     startTime: '01:00',
     period: 'PM',
     duration: 8,
     icon: 'cloudy',
     type: 'afternoon',
-    endTimeLabel: 'Ends at 9:00 PM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
   },
   {
     id: 'standard_afternoon',
-    label: 'Standard Afternoon',
     startTime: '02:00',
     period: 'PM',
     duration: 8,
     icon: 'cloudy-outline',
     type: 'afternoon',
-    endTimeLabel: 'Ends at 10:00 PM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
   },
   {
     id: 'late_afternoon',
-    label: 'Late Afternoon',
     startTime: '03:00',
     period: 'PM',
     duration: 8,
     icon: 'partly-sunny-outline',
     type: 'afternoon',
-    endTimeLabel: 'Ends at 11:00 PM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
   },
 
   // 3-Shift (8-hour) Presets - Night
   {
     id: 'early_night_8h',
-    label: 'Early Night',
     startTime: '09:00',
     period: 'PM',
     duration: 8,
     icon: 'moon',
     type: 'night',
-    endTimeLabel: 'Ends at 5:00 AM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
   },
   {
     id: 'standard_night_8h',
-    label: 'Standard Night',
     startTime: '10:00',
     period: 'PM',
     duration: 8,
     icon: 'moon',
     type: 'night',
-    endTimeLabel: 'Ends at 6:00 AM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
   },
   {
     id: 'late_night_8h',
-    label: 'Late Night',
     startTime: '11:00',
     period: 'PM',
     duration: 8,
     icon: 'moon-outline',
     type: 'night',
-    endTimeLabel: 'Ends at 7:00 AM',
     shiftSystem: ShiftSystem.THREE_SHIFT,
   },
 
   // Custom (available for both)
   {
     id: 'custom',
-    label: 'Custom',
     startTime: '',
     period: 'AM',
     duration: 12,
     icon: 'create-outline',
     type: 'day',
-    endTimeLabel: '',
     shiftSystem: ShiftSystem.TWO_SHIFT, // Default to 2-shift
   },
 ];
@@ -1007,18 +973,16 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     shiftSystem === ShiftSystem.THREE_SHIFT
       ? String(t('shiftTime.systemLabels.threeShift', { defaultValue: '3-shift system' }))
       : String(t('shiftTime.systemLabels.twoShift', { defaultValue: '2-shift system' }));
-  const stageCollectionLabel =
-    totalStages === 1
-      ? String(t('shiftTime.stage.singleProfile', { defaultValue: 'Single shift profile' }))
-      : String(
-          t('shiftTime.stage.profileOfTotal', {
-            current: currentStageIndex + 1,
-            total: totalStages,
-            defaultValue: `Profile ${currentStageIndex + 1} of ${totalStages}`,
-          })
-        );
   const detectedShiftType = selectedPreset && isValid() ? getShiftType() : null;
   const nextShiftType = requiredShiftTypes[currentStageIndex + 1] ?? currentShiftType;
+  const customHoursPlaceholder = formatLocalizedNumber(6, {
+    minimumIntegerDigits: 2,
+    useGrouping: false,
+  });
+  const customMinutesPlaceholder = formatLocalizedNumber(0, {
+    minimumIntegerDigits: 2,
+    useGrouping: false,
+  });
 
   const detectionCardMeta = React.useMemo(() => {
     if (!detectedShiftType) {
@@ -1221,131 +1185,51 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
             style={styles.header}
           >
             {totalStages > 1 && (
-              <Text style={styles.stageIndicator}>
-                {t('shiftTime.stage.stepOfTotal', {
-                  current: currentStageIndex + 1,
-                  total: totalStages,
-                  defaultValue: `Step ${currentStageIndex + 1} of ${totalStages}`,
-                })}
-              </Text>
-            )}
-            <Text style={styles.title}>{getStageTitle()}</Text>
-            <Text style={styles.subtitle}>{getStageSubtitle()}</Text>
-          </Animated.View>
-
-          {/* Pattern Summary Card */}
-          <Animated.View
-            entering={reducedMotion ? undefined : FadeInDown.duration(400).springify()}
-            style={styles.patternCard}
-          >
-            <LinearGradient
-              colors={['rgba(217, 119, 6, 0.3)', 'rgba(35, 20, 11, 0.35)', 'rgba(18, 12, 9, 0.82)']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.patternCardShell}
-            >
-              <Animated.View style={floatingStyle}>
-                <LinearGradient
-                  colors={[
-                    'rgba(63, 46, 35, 0.95)',
-                    'rgba(34, 28, 24, 0.98)',
-                    'rgba(20, 18, 17, 0.98)',
-                  ]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.patternGradient}
-                >
-                  <View style={styles.patternIconContainer}>
-                    {patternIcon ? (
-                      <Image source={patternIcon} style={styles.patternIcon} resizeMode="contain" />
-                    ) : (
-                      <Ionicons name="calendar" size={80} color={theme.colors.sacredGold} />
-                    )}
-                  </View>
-
-                  <Text style={styles.patternName}>{patternInfo.name}</Text>
-                  <Text style={styles.patternStats}>{patternInfo.stats}</Text>
-                  <Text style={styles.patternSimpleMeta}>
-                    {shiftSystemLabel} • {stageCollectionLabel}
-                  </Text>
-                </LinearGradient>
-              </Animated.View>
-            </LinearGradient>
-          </Animated.View>
-
-          {/* Guidance Card */}
-          <Animated.View
-            entering={reducedMotion ? undefined : FadeIn.duration(300).delay(100)}
-            style={styles.guidanceCard}
-          >
-            <LinearGradient
-              colors={[
-                'rgba(217, 119, 6, 0.24)',
-                'rgba(43, 24, 10, 0.55)',
-                'rgba(24, 16, 11, 0.9)',
-              ]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.guidanceCardGradient}
-            >
-              <View style={styles.guidancePressable}>
-                <View style={styles.guidanceHeader}>
-                  <View style={styles.guidanceIconBadge}>
-                    <Ionicons
-                      name="information-circle-outline"
-                      size={20}
-                      color={theme.colors.sacredGold}
-                    />
-                  </View>
-                  <View style={styles.guidanceHeaderTextContainer}>
-                    <Text style={styles.guidanceTitle}>
-                      {t('shiftTime.guidance.aboutTitle', { defaultValue: 'About shift times' })}
-                    </Text>
-                  </View>
-                </View>
-
-                <Text style={styles.guidanceText}>
-                  {t('shiftTime.guidance.aboutBody', {
-                    patternName: patternInfo.name,
-                    defaultValue:
-                      'Your {{patternName}} rotation stays the same, but we need your shift start times so Ellie can track hours and alert you before each shift.',
-                  })}
-                </Text>
-
-                {/* Shift Type Definitions */}
-                <View style={styles.shiftTypeDefinitions}>
-                  <Text style={styles.shiftTypeDefinitionsTitle}>
-                    {shiftSystem === ShiftSystem.TWO_SHIFT
-                      ? t('shiftTime.guidance.definitions.twoShiftTitle', {
-                          defaultValue: 'Day vs Night:',
-                        })
-                      : t('shiftTime.guidance.definitions.threeShiftTitle', {
-                          defaultValue: 'Shift types:',
-                        })}
-                  </Text>
-                  {shiftSystem === ShiftSystem.TWO_SHIFT ? (
-                    <Text style={styles.shiftTypeDefinitionsText}>
-                      {t('shiftTime.guidance.definitions.twoShiftBody', {
-                        defaultValue: 'Day shifts start 6 AM–6 PM • Night shifts start 6 PM–6 AM',
-                      })}
-                    </Text>
-                  ) : (
-                    <Text style={styles.shiftTypeDefinitionsText}>
-                      {t('shiftTime.guidance.definitions.threeShiftBody', {
-                        defaultValue:
-                          'Morning: 6 AM–2 PM • Afternoon: 2 PM–10 PM • Night: 10 PM–6 AM',
-                      })}
-                    </Text>
-                  )}
-                </View>
-                <Text style={styles.guidanceHintText}>
-                  {t('shiftTime.guidance.hint', {
-                    defaultValue:
-                      'Use the closest start time now. You can fine-tune it later in settings.',
+              <View style={styles.stagePill}>
+                <View style={styles.stagePillDot} />
+                <Text style={styles.stageIndicator}>
+                  {t('shiftTime.stage.stepOfTotal', {
+                    current: currentStageIndex + 1,
+                    total: totalStages,
+                    defaultValue: `Step ${currentStageIndex + 1} of ${totalStages}`,
                   })}
                 </Text>
               </View>
-            </LinearGradient>
+            )}
+            <Text style={styles.title}>{getStageTitle()}</Text>
+            <View style={styles.titleAccentRule} />
+            <Text style={styles.subtitle}>{getStageSubtitle()}</Text>
+            <Text style={styles.inlineHint}>
+              {t('shiftTime.guidance.hint', {
+                defaultValue:
+                  'Use the closest start time now. You can fine-tune it later in settings.',
+              })}
+            </Text>
+          </Animated.View>
+
+          {/* Pattern Summary Strip */}
+          <Animated.View
+            entering={reducedMotion ? undefined : FadeInDown.duration(400).springify()}
+            style={styles.patternStrip}
+          >
+            <Animated.View style={[styles.patternStripInner, floatingStyle]}>
+              {patternIcon ? (
+                <Image source={patternIcon} style={styles.patternStripIcon} resizeMode="contain" />
+              ) : (
+                <Ionicons name="calendar" size={18} color={theme.colors.sacredGold} />
+              )}
+              <Text style={styles.patternStripName} numberOfLines={1}>
+                {patternInfo.name}
+              </Text>
+              <View style={styles.patternStripDivider} />
+              <Text style={styles.patternStripStats} numberOfLines={1} ellipsizeMode="tail">
+                {patternInfo.stats}
+              </Text>
+              <View style={styles.patternStripDivider} />
+              <Text style={styles.patternStripMeta} numberOfLines={1}>
+                {shiftSystemLabel}
+              </Text>
+            </Animated.View>
           </Animated.View>
 
           {/* Preset Shift Time Cards Section */}
@@ -1354,7 +1238,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
             style={styles.presetsSection}
           >
             <View style={styles.presetsSectionHeader}>
-              <Ionicons name="time-outline" size={32} color={theme.colors.sacredGold} />
+              <Ionicons name="time-outline" size={16} color={theme.colors.dust} />
               <Text style={styles.presetsSectionTitle}>
                 {t('shiftTime.presets.sectionTitle', { defaultValue: 'Pick a Common Start Time' })}
               </Text>
@@ -1364,7 +1248,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={styles.presetsScrollContent}
-              snapToInterval={156} // 140px card + 16px gap
+              snapToInterval={148} // 132px card + 16px gap
               decelerationRate="fast"
             >
               {filteredPresets.map((preset, index) => (
@@ -1390,81 +1274,86 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                 colors={[theme.colors.softStone, theme.colors.darkStone]}
                 style={styles.customInputCard}
               >
-                {/* Shift Start Time */}
-                <View style={styles.inputRow}>
-                  <View style={styles.inputLabelContainer}>
-                    <Text style={styles.inputLabel}>
-                      {t('shiftTime.customInput.label', {
-                        defaultValue: 'What time do you usually clock in?',
-                      })}
-                    </Text>
-                    <Text style={styles.inputHelper}>
-                      {t('shiftTime.customInput.helper', {
-                        defaultValue: 'Use 12-hour format (e.g., 6:00 AM)',
-                      })}
-                    </Text>
-                  </View>
-                  <View style={styles.timeInputContainer}>
-                    <TextInput
-                      style={[styles.timeInput, timeError && styles.timeInputError]}
-                      value={customHours}
-                      onChangeText={(value) => handleCustomTimeChange('hours', value)}
-                      onBlur={validateCustomTime}
-                      placeholder="06"
-                      placeholderTextColor={theme.colors.shadow}
-                      keyboardType="number-pad"
-                      maxLength={2}
-                      selectTextOnFocus
-                    />
-                    <Text style={styles.timeSeparator}>:</Text>
-                    <TextInput
-                      style={[styles.timeInput, timeError && styles.timeInputError]}
-                      value={customMinutes}
-                      onChangeText={(value) => handleCustomTimeChange('minutes', value)}
-                      onBlur={validateCustomTime}
-                      placeholder="00"
-                      placeholderTextColor={theme.colors.shadow}
-                      keyboardType="number-pad"
-                      maxLength={2}
-                      selectTextOnFocus
-                    />
-                    <View style={styles.periodSelector}>
-                      <Pressable
-                        style={[
-                          styles.periodButton,
-                          customPeriod === 'AM' && styles.periodButtonSelected,
-                        ]}
-                        onPress={() => handlePeriodToggle('AM')}
-                      >
-                        <Text
-                          style={[
-                            styles.periodButtonText,
-                            customPeriod === 'AM' && styles.periodButtonTextSelected,
-                          ]}
-                        >
-                          {t('shiftTime.customInput.period.am', { defaultValue: 'AM' })}
-                        </Text>
-                      </Pressable>
-                      <Pressable
-                        style={[
-                          styles.periodButton,
-                          customPeriod === 'PM' && styles.periodButtonSelected,
-                        ]}
-                        onPress={() => handlePeriodToggle('PM')}
-                      >
-                        <Text
-                          style={[
-                            styles.periodButtonText,
-                            customPeriod === 'PM' && styles.periodButtonTextSelected,
-                          ]}
-                        >
-                          {t('shiftTime.customInput.period.pm', { defaultValue: 'PM' })}
-                        </Text>
-                      </Pressable>
-                    </View>
-                  </View>
-                  {timeError && <Text style={styles.errorText}>{timeError}</Text>}
+                {/* Label row */}
+                <View style={styles.customInputLabelRow}>
+                  <Ionicons name="create-outline" size={14} color={theme.colors.dust} />
+                  <Text style={styles.inputLabel}>
+                    {t('shiftTime.customInput.label', {
+                      defaultValue: 'What time do you usually clock in?',
+                    })}
+                  </Text>
                 </View>
+
+                {/* Large clock row: HH : MM */}
+                <View style={styles.clockRow}>
+                  <TextInput
+                    style={[styles.timeInput, timeError && styles.timeInputError]}
+                    value={customHours}
+                    onChangeText={(value) => handleCustomTimeChange('hours', value)}
+                    onBlur={validateCustomTime}
+                    placeholder={customHoursPlaceholder}
+                    placeholderTextColor={theme.colors.shadow}
+                    keyboardType="number-pad"
+                    maxLength={2}
+                    selectTextOnFocus
+                  />
+                  <Text style={styles.timeSeparator}>:</Text>
+                  <TextInput
+                    style={[styles.timeInput, timeError && styles.timeInputError]}
+                    value={customMinutes}
+                    onChangeText={(value) => handleCustomTimeChange('minutes', value)}
+                    onBlur={validateCustomTime}
+                    placeholder={customMinutesPlaceholder}
+                    placeholderTextColor={theme.colors.shadow}
+                    keyboardType="number-pad"
+                    maxLength={2}
+                    selectTextOnFocus
+                  />
+                </View>
+
+                {timeError && <Text style={styles.errorText}>{timeError}</Text>}
+
+                {/* AM/PM segmented pill */}
+                <View style={styles.periodSelector}>
+                  <Pressable
+                    style={[
+                      styles.periodButton,
+                      customPeriod === 'AM' && styles.periodButtonSelected,
+                    ]}
+                    onPress={() => handlePeriodToggle('AM')}
+                  >
+                    <Text
+                      style={[
+                        styles.periodButtonText,
+                        customPeriod === 'AM' && styles.periodButtonTextSelected,
+                      ]}
+                    >
+                      {t('shiftTime.customInput.period.am', { defaultValue: 'AM' })}
+                    </Text>
+                  </Pressable>
+                  <Pressable
+                    style={[
+                      styles.periodButton,
+                      customPeriod === 'PM' && styles.periodButtonSelected,
+                    ]}
+                    onPress={() => handlePeriodToggle('PM')}
+                  >
+                    <Text
+                      style={[
+                        styles.periodButtonText,
+                        customPeriod === 'PM' && styles.periodButtonTextSelected,
+                      ]}
+                    >
+                      {t('shiftTime.customInput.period.pm', { defaultValue: 'PM' })}
+                    </Text>
+                  </Pressable>
+                </View>
+
+                <Text style={styles.inputHelper}>
+                  {t('shiftTime.customInput.helper', {
+                    defaultValue: 'Use 12-hour format (e.g., 6:00 AM)',
+                  })}
+                </Text>
 
                 {/* Live Preview Card */}
                 {isValid() && (
@@ -1482,8 +1371,8 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                         {t('shiftTime.preview.yourShift', { defaultValue: 'Your shift:' })}
                       </Text>
                       <Text style={styles.livePreviewTime}>
-                        {formatTimeForDisplay(getStartTime24h())} →{' '}
-                        {formatTimeForDisplay(getEndTime24h())}
+                        {formatLocalizedTime(getStartTime24h())} →{' '}
+                        {formatLocalizedTime(getEndTime24h())}
                       </Text>
                       <Text style={styles.livePreviewDuration}>
                         {t('shiftTime.preview.durationHours', {
@@ -1499,97 +1388,52 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
           )}
 
           {/* Shift Type Auto-Detection Card */}
+          {/* Shift Type Auto-Detection Chip */}
           {detectionCardMeta && (
             <Animated.View
               entering={reducedMotion ? undefined : FadeInUp.duration(300)}
-              style={styles.detectionCard}
+              style={styles.detectionInlineRow}
             >
-              <LinearGradient
-                colors={detectionCardMeta.colors}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.detectionCardGradient}
+              <View
+                style={[
+                  styles.detectionInlineChip,
+                  { borderColor: `${detectionCardMeta.accent}40` },
+                ]}
               >
-                <View style={styles.detectionPressable}>
-                  <View style={styles.detectionHeaderRow}>
-                    <View
-                      style={[
-                        styles.detectionIconBadge,
-                        { backgroundColor: detectionCardMeta.iconBackground },
-                      ]}
-                    >
-                      <Ionicons
-                        name={detectionCardMeta.icon}
-                        size={18}
-                        color={detectionCardMeta.accent}
-                      />
-                    </View>
-                    <View style={styles.detectionContent}>
-                      <Text style={[styles.detectionText, { color: detectionCardMeta.accent }]}>
-                        {detectionCardMeta.title}
-                      </Text>
-                      <Text style={styles.detectionHelper}>
-                        {t('shiftTime.detection.helper', {
-                          defaultValue: 'This is when your shift begins',
-                        })}
-                      </Text>
-                    </View>
-                  </View>
-
-                  <Text style={styles.detectionMetaText}>
-                    {t('shiftTime.detection.autoDetected', { defaultValue: 'Auto-detected' })}
-                  </Text>
-                  <Text style={styles.detectionWindowText}>{detectionCardMeta.windowLabel}</Text>
-                </View>
-              </LinearGradient>
+                <View
+                  style={[styles.detectionChipDot, { backgroundColor: detectionCardMeta.accent }]}
+                />
+                <Ionicons
+                  name={detectionCardMeta.icon}
+                  size={13}
+                  color={detectionCardMeta.accent}
+                />
+                <Text style={[styles.detectionChipLabel, { color: detectionCardMeta.accent }]}>
+                  {detectionCardMeta.title}
+                </Text>
+                <View style={styles.detectionChipSep} />
+                <Text style={styles.detectionChipWindow}>{detectionCardMeta.windowLabel}</Text>
+              </View>
             </Animated.View>
           )}
 
-          {/* Tips Section */}
+          {/* Tips Footnote */}
           <Animated.View
             entering={reducedMotion ? undefined : FadeIn.duration(300).delay(1000)}
-            style={styles.tipsSection}
+            style={styles.tipFootnote}
           >
-            <LinearGradient
-              colors={[
-                'rgba(217, 119, 6, 0.22)',
-                'rgba(42, 26, 14, 0.56)',
-                'rgba(22, 16, 12, 0.94)',
-              ]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.tipsSectionGradient}
-            >
-              <View style={styles.tipPressable}>
-                <View style={styles.tipHeaderRow}>
-                  <View style={styles.tipIconContainer}>
-                    <Ionicons name="bulb-outline" size={22} color={theme.colors.sacredGold} />
-                  </View>
-                  <View style={styles.tipHeaderTextContainer}>
-                    <Text style={styles.tipTitle}>
-                      {t('shiftTime.tips.title', { defaultValue: 'Pro Tip' })}
-                    </Text>
-                    <Text style={styles.tipSubtitle}>
-                      {t('shiftTime.tips.subtitle', {
-                        defaultValue: 'Fastest way to pick a reliable start time',
-                      })}
-                    </Text>
-                  </View>
-                </View>
-
-                <Text style={styles.tipText}>
-                  {shiftSystem === ShiftSystem.TWO_SHIFT
-                    ? t('shiftTime.tips.twoShift', {
-                        defaultValue:
-                          'Not sure? Most shift workers on 12-hour rotations start at 6 AM or 6 PM. Pick the closest match—you can adjust it later in settings if needed.',
-                      })
-                    : t('shiftTime.tips.threeShift', {
-                        defaultValue:
-                          'Not sure? Most 8-hour shift workers start at 6 AM, 2 PM, or 10 PM. Pick the closest match—you can adjust it later in settings if needed.',
-                      })}
-                </Text>
-              </View>
-            </LinearGradient>
+            <Ionicons name="bulb-outline" size={12} color={theme.colors.shadow} />
+            <Text style={styles.tipFootnoteText}>
+              {shiftSystem === ShiftSystem.TWO_SHIFT
+                ? t('shiftTime.tips.twoShift', {
+                    defaultValue:
+                      'Not sure? Most shift workers on 12-hour rotations start at 6 AM or 6 PM. Pick the closest match—you can adjust it later in settings if needed.',
+                  })
+                : t('shiftTime.tips.threeShift', {
+                    defaultValue:
+                      'Not sure? Most 8-hour shift workers start at 6 AM, 2 PM, or 10 PM. Pick the closest match—you can adjust it later in settings if needed.',
+                  })}
+            </Text>
           </Animated.View>
         </ScrollView>
 
@@ -1743,16 +1587,18 @@ const PresetCard: React.FC<PresetCardProps> = ({
 }) => {
   const { t } = useTranslation('onboarding');
   const presetIconSource = getPresetIconSource(preset);
-  const localizedPresetLabel = String(
-    t(`shiftTime.presets.${preset.id}.label`, {
-      defaultValue: preset.label,
-    })
-  );
+  const isCustom = preset.id === 'custom';
+  const localizedPresetLabel = String(t(`shiftTime.presets.${preset.id}.label` as never));
   const scale = useSharedValue(1);
-  const localizedEndTimeLabel = preset.endTimeLabel
+  const presetStartTime = !isCustom
+    ? formatLocalizedTime(convertTo24Hour(preset.startTime, preset.period))
+    : '';
+  const localizedEndTimeLabel = !isCustom
     ? String(
-        t(`shiftTime.presets.${preset.id}.endTimeLabel`, {
-          defaultValue: preset.endTimeLabel,
+        t('shiftTime.presets.endsAt', {
+          time: formatLocalizedTime(
+            calculateEndTime(convertTo24Hour(preset.startTime, preset.period), preset.duration)
+          ),
         })
       )
     : '';
@@ -1765,8 +1611,6 @@ const PresetCard: React.FC<PresetCardProps> = ({
     scale.value = withSequence(withSpring(0.98, { damping: 20 }), withSpring(1, { damping: 20 }));
     onSelect(preset.id);
   };
-
-  const isCustom = preset.id === 'custom';
 
   return (
     <Animated.View
@@ -1785,19 +1629,17 @@ const PresetCard: React.FC<PresetCardProps> = ({
             selected && styles.presetCardSelected,
             isCustom && styles.presetCardCustom,
             preset.type === 'night' && !isCustom && styles.presetCardNight,
+            preset.type === 'morning' && !isCustom && styles.presetCardMorning,
+            preset.type === 'afternoon' && !isCustom && styles.presetCardAfternoon,
+            selected && !isCustom && preset.type === 'night' && styles.presetCardSelectedNight,
+            selected && !isCustom && preset.type === 'morning' && styles.presetCardSelectedMorning,
+            selected &&
+              !isCustom &&
+              preset.type === 'afternoon' &&
+              styles.presetCardSelectedAfternoon,
           ]}
         >
-          {!isCustom && preset.duration === 12 && (
-            <View style={styles.durationBadge}>
-              <Text style={styles.durationBadgeText}>
-                {t('shiftTime.units.hourShort', {
-                  hours: preset.duration,
-                  defaultValue: '{{hours}}h',
-                })}
-              </Text>
-            </View>
-          )}
-          {!isCustom && preset.duration === 8 && (
+          {!isCustom && (
             <View style={styles.durationBadge}>
               <Text style={styles.durationBadgeText}>
                 {t('shiftTime.units.hourShort', {
@@ -1821,11 +1663,11 @@ const PresetCard: React.FC<PresetCardProps> = ({
             {presetIconSource ? (
               <Image source={presetIconSource} style={styles.presetIconImage} />
             ) : preset.icon.length <= 2 ? (
-              <Text style={{ fontSize: 32 }}>{preset.icon}</Text>
+              <Text style={{ fontSize: 28 }}>{preset.icon}</Text>
             ) : (
               <Ionicons
                 name={preset.icon as keyof typeof Ionicons.glyphMap}
-                size={32}
+                size={28}
                 color={theme.colors.paper}
               />
             )}
@@ -1833,13 +1675,23 @@ const PresetCard: React.FC<PresetCardProps> = ({
 
           {!isCustom ? (
             <>
-              <Text style={styles.presetTime}>
-                {preset.startTime.replace(/^0/, '')} {preset.period}
+              <Text style={styles.presetTime} numberOfLines={1} adjustsFontSizeToFit>
+                {presetStartTime}
               </Text>
-              <Text style={styles.presetEndTime}>{localizedEndTimeLabel}</Text>
+              <Text style={styles.presetEndTime} numberOfLines={1}>
+                {localizedEndTimeLabel}
+              </Text>
             </>
           ) : (
-            <Text style={styles.presetCustomText}>{localizedPresetLabel}</Text>
+            <>
+              <Ionicons
+                name="add-circle-outline"
+                size={22}
+                color={theme.colors.sacredGold}
+                style={{ marginBottom: 4 }}
+              />
+              <Text style={styles.presetCustomText}>{localizedPresetLabel}</Text>
+            </>
           )}
         </Pressable>
       </Animated.View>
@@ -1863,16 +1715,43 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
   header: {
-    marginTop: theme.spacing.lg,
-    marginBottom: theme.spacing.xl,
+    marginTop: 12,
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  stagePill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: 'rgba(180,83,9,0.12)',
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
+    borderRadius: 999,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    marginBottom: 12,
+    alignSelf: 'center',
+  },
+  stagePillDot: {
+    width: 5,
+    height: 5,
+    borderRadius: 3,
+    backgroundColor: theme.colors.sacredGold,
+  },
+  stageIndicator: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: theme.colors.sacredGold,
+    letterSpacing: 0.5,
+    textTransform: 'uppercase',
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     color: theme.colors.paper,
     textAlign: 'center',
-    marginBottom: theme.spacing.sm,
-    letterSpacing: 1,
+    marginBottom: 6,
+    letterSpacing: -0.3,
     ...Platform.select({
       ios: {
         fontFamily: 'System',
@@ -1882,22 +1761,73 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  titleAccentRule: {
+    width: 40,
+    height: 2,
+    borderRadius: 1,
+    backgroundColor: theme.colors.sacredGold,
+    alignSelf: 'center',
+    marginBottom: 10,
+    opacity: 0.7,
+  },
   subtitle: {
     fontSize: 15,
     color: theme.colors.dust,
     textAlign: 'center',
-    paddingHorizontal: theme.spacing.lg,
+    paddingHorizontal: theme.spacing.md,
   },
-  stageIndicator: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: theme.colors.sacredGold,
+  inlineHint: {
+    fontSize: 12,
+    color: theme.colors.shadow,
     textAlign: 'center',
-    marginBottom: theme.spacing.sm,
-    letterSpacing: 0.5,
-    textTransform: 'uppercase',
+    marginTop: 6,
+    paddingHorizontal: theme.spacing.lg,
+    fontStyle: 'italic',
   },
-  // Pattern Summary Card
+  // Pattern Summary Strip (new compact design)
+  patternStrip: {
+    marginBottom: 20,
+    alignSelf: 'stretch',
+  },
+  patternStripInner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: theme.colors.darkStone,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
+    borderRadius: 999,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    height: 44,
+    overflow: 'hidden',
+  },
+  patternStripIcon: {
+    width: 20,
+    height: 20,
+  },
+  patternStripName: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: theme.colors.sacredGold,
+    letterSpacing: 0.2,
+  },
+  patternStripDivider: {
+    width: 1,
+    height: 12,
+    backgroundColor: theme.colors.opacity.gold20,
+  },
+  patternStripStats: {
+    fontSize: 12,
+    color: theme.colors.dust,
+    flexShrink: 1,
+  },
+  patternStripMeta: {
+    fontSize: 12,
+    color: theme.colors.shadow,
+    flexShrink: 0,
+  },
+  // Pattern Summary Card (legacy - kept to avoid dead-style errors)
   patternCard: {
     marginBottom: theme.spacing.xl,
     borderRadius: 22,
@@ -2050,35 +1980,38 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: theme.spacing.sm,
-    marginBottom: theme.spacing.lg,
+    gap: 6,
+    marginBottom: 14,
   },
   presetsSectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: theme.colors.sacredGold,
+    fontSize: 13,
+    fontWeight: '600',
+    color: theme.colors.dust,
+    letterSpacing: 0.3,
+    textTransform: 'uppercase',
   },
   presetsScrollContent: {
     paddingRight: theme.spacing.lg,
     gap: theme.spacing.md,
   },
   presetCard: {
-    width: 140,
+    width: 132,
   },
   presetCardInner: {
-    height: 120,
+    height: 172,
     backgroundColor: theme.colors.darkStone,
-    borderRadius: 16,
-    padding: theme.spacing.sm,
-    borderWidth: 1,
+    borderRadius: 20,
+    padding: 12,
+    paddingTop: 14,
+    borderWidth: 1.5,
     borderColor: theme.colors.softStone,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
   presetCardSelected: {
     borderWidth: 2,
     borderColor: theme.colors.sacredGold,
-    backgroundColor: theme.colors.opacity.gold10,
+    backgroundColor: 'rgba(180,83,9,0.08)',
     ...Platform.select({
       ios: {
         shadowColor: theme.colors.sacredGold,
@@ -2092,32 +2025,86 @@ const styles = StyleSheet.create({
     }),
   },
   presetCardNight: {
-    backgroundColor: 'rgba(101, 31, 255, 0.05)',
+    backgroundColor: 'rgba(101, 31, 255, 0.10)',
+  },
+  presetCardMorning: {
+    backgroundColor: 'rgba(245, 158, 11, 0.08)',
+  },
+  presetCardAfternoon: {
+    backgroundColor: 'rgba(6, 182, 212, 0.08)',
   },
   presetCardCustom: {
-    backgroundColor: 'rgba(180, 83, 9, 0.05)',
+    backgroundColor: 'rgba(180, 83, 9, 0.07)',
+  },
+  presetCardSelectedNight: {
+    borderColor: '#651FFF',
+    backgroundColor: 'rgba(101, 31, 255, 0.15)',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#651FFF',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.5,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
+  },
+  presetCardSelectedMorning: {
+    borderColor: '#F59E0B',
+    backgroundColor: 'rgba(245, 158, 11, 0.12)',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#F59E0B',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.45,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
+  },
+  presetCardSelectedAfternoon: {
+    borderColor: '#06B6D4',
+    backgroundColor: 'rgba(6, 182, 212, 0.12)',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#06B6D4',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.45,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
   },
   durationBadge: {
     position: 'absolute',
-    top: 4,
-    right: 4,
-    backgroundColor: theme.colors.opacity.gold20,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 8,
+    top: 8,
+    right: 8,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold20,
+    backgroundColor: 'rgba(0,0,0,0.35)',
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+    borderRadius: 10,
   },
   durationBadgeText: {
-    fontSize: 10,
-    fontWeight: '600',
-    color: theme.colors.sacredGold,
+    fontSize: 11,
+    fontWeight: '700',
+    color: theme.colors.paleGold,
   },
   presetIconCircle: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 52,
+    height: 52,
+    borderRadius: 26,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: theme.spacing.xs,
+    marginBottom: 8,
+    marginTop: 4,
   },
   presetIconCircleDay: {
     backgroundColor: 'rgba(33, 150, 243, 0.2)',
@@ -2132,97 +2119,114 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(6, 182, 212, 0.25)',
   },
   presetIconImage: {
-    width: 32,
-    height: 32,
+    width: 36,
+    height: 36,
     resizeMode: 'contain',
   },
   presetIconCircleCustom: {
     backgroundColor: theme.colors.opacity.gold20,
   },
   presetTime: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 26,
+    fontWeight: '800',
     color: theme.colors.paper,
     marginBottom: 2,
+    letterSpacing: -0.5,
   },
   presetEndTime: {
-    fontSize: 12,
-    color: theme.colors.dust,
+    fontSize: 11,
+    color: theme.colors.shadow,
     textAlign: 'center',
+    paddingBottom: 4,
   },
   presetCustomText: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 14,
+    fontWeight: '700',
     color: theme.colors.sacredGold,
+    textAlign: 'center',
   },
   // Custom Input Section
   customInputSection: {
     marginBottom: theme.spacing.xl,
   },
   customInputCard: {
-    borderRadius: 20,
-    padding: theme.spacing.lg,
+    borderRadius: 24,
+    padding: 20,
     borderWidth: 1,
     borderColor: theme.colors.opacity.gold20,
-    gap: theme.spacing.lg,
+    gap: 16,
   },
   inputRow: {
     gap: theme.spacing.md,
   },
+  customInputLabelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
   inputLabel: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: theme.colors.sacredGold,
+    fontSize: 13,
+    fontWeight: '600',
+    color: theme.colors.dust,
   },
   timeInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: theme.spacing.sm,
   },
+  clockRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+  },
   timeInput: {
-    width: 60,
-    height: 48,
+    width: 96,
+    height: 80,
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    borderRadius: 8,
-    borderWidth: 1,
+    borderRadius: 16,
+    borderWidth: 1.5,
     borderColor: theme.colors.softStone,
     color: theme.colors.paper,
-    fontSize: 32,
-    fontWeight: 'bold',
+    fontSize: 48,
+    fontWeight: '800',
     textAlign: 'center',
     fontVariant: ['tabular-nums'],
   },
   timeInputError: {
     borderColor: theme.colors.error,
+    backgroundColor: 'rgba(239,68,68,0.06)',
   },
   timeSeparator: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: theme.colors.paper,
+    fontSize: 48,
+    fontWeight: '800',
+    color: theme.colors.sacredGold,
+    marginHorizontal: 4,
+    lineHeight: 56,
   },
   periodSelector: {
     flexDirection: 'row',
-    gap: theme.spacing.xs,
-    marginLeft: theme.spacing.sm,
+    backgroundColor: theme.colors.darkStone,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: theme.colors.softStone,
+    padding: 3,
   },
   periodButton: {
-    width: 48,
-    height: 36,
-    borderRadius: 8,
+    flex: 1,
+    height: 44,
+    borderRadius: 999,
     backgroundColor: 'transparent',
-    borderWidth: 1,
-    borderColor: theme.colors.dust,
     alignItems: 'center',
     justifyContent: 'center',
   },
   periodButtonSelected: {
     backgroundColor: theme.colors.sacredGold,
-    borderColor: theme.colors.sacredGold,
   },
   periodButtonText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: theme.colors.dust,
+    fontSize: 15,
+    fontWeight: '700',
+    color: theme.colors.shadow,
   },
   periodButtonTextSelected: {
     color: theme.colors.paper,
@@ -2540,6 +2544,56 @@ const styles = StyleSheet.create({
     color: theme.colors.dust,
     fontStyle: 'italic',
   },
+  // Tip Footnote (new compact design)
+  tipFootnote: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 5,
+    paddingHorizontal: theme.spacing.lg,
+    marginBottom: theme.spacing.xl,
+  },
+  tipFootnoteText: {
+    flex: 1,
+    fontSize: 11,
+    color: theme.colors.shadow,
+    lineHeight: 16,
+    fontStyle: 'italic',
+  },
+  // Detection Inline Chip (new compact design)
+  detectionInlineRow: {
+    alignItems: 'center',
+    marginBottom: theme.spacing.md,
+  },
+  detectionInlineChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    alignSelf: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderRadius: 999,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    borderWidth: 1,
+  },
+  detectionChipDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+  },
+  detectionChipLabel: {
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  detectionChipSep: {
+    width: 1,
+    height: 11,
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    marginHorizontal: 2,
+  },
+  detectionChipWindow: {
+    fontSize: 12,
+    color: theme.colors.shadow,
+  },
   // Bottom Navigation
   bottomNav: {
     position: 'absolute',
@@ -2785,9 +2839,11 @@ const styles = StyleSheet.create({
     gap: theme.spacing.xs,
   },
   inputHelper: {
-    fontSize: 12,
-    color: theme.colors.dust,
+    fontSize: 11,
+    color: theme.colors.shadow,
+    textAlign: 'center',
     fontStyle: 'italic',
+    marginTop: 2,
   },
 });
 

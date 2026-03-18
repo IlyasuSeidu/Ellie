@@ -682,7 +682,8 @@
       },
       "late_night_8h": {
         "label": "Laataand"
-      }
+      },
+      "endsAt": "Eindig om {{time}}"
     },
     "customInput": {
       "label": "Hoe laat klok jy gewoonlik in?",

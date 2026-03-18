@@ -129,12 +129,11 @@ describe('PremiumShiftTimeInputScreen', () => {
       expect(getByText('Pick a Common Start Time')).toBeTruthy();
     });
 
-    it('should render guidance card with shift type definitions', () => {
+    it('should render the inline guidance hint', () => {
       const { getByText } = renderWithProviders(<PremiumShiftTimeInputScreen />);
-      expect(getByText('About shift times')).toBeTruthy();
-      expect(getByText(/rotation stays the same/i)).toBeTruthy();
-      // Should show shift type definitions (varies by shift system)
-      expect(getByText(/Day vs Night:|Shift types:/i)).toBeTruthy();
+      expect(
+        getByText('Use the closest start time now. You can fine-tune it later in settings.')
+      ).toBeTruthy();
     });
   });
 
@@ -286,14 +285,14 @@ describe('PremiumShiftTimeInputScreen', () => {
       });
     });
 
-    it('should show auto-detected metadata for detected shift type', async () => {
+    it('should show the detected shift window for the selected preset', async () => {
       const { getByText, getAllByText } = renderWithProviders(<PremiumShiftTimeInputScreen />);
 
       const presets = getAllByText(/6:00 AM/i);
       fireEvent.press(presets[0]);
 
       await waitFor(() => {
-        expect(getByText(/Auto-detected/i)).toBeTruthy();
+        expect(getByText(/Typical window: 6:00 AM - 5:59 PM/i)).toBeTruthy();
       });
     });
   });
@@ -301,7 +300,6 @@ describe('PremiumShiftTimeInputScreen', () => {
   describe('Tips Section', () => {
     it('should render tips section', () => {
       const { getByText } = renderWithProviders(<PremiumShiftTimeInputScreen />);
-      expect(getByText('Pro Tip')).toBeTruthy();
       expect(
         getByText(/Most shift workers on 12-hour rotations start at 6 AM or 6 PM/i)
       ).toBeTruthy();

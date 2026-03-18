@@ -701,7 +701,8 @@
       },
       "late_night_8h": {
         "label": "Ishifthi yasebusuku ebambezelwe (8h)"
-      }
+      },
+      "endsAt": "Iphela ngo-{{time}}"
     },
     "customInput": {
       "label": "Uvamise ukungena ngasiphi isikhathi?",

@@ -645,7 +645,8 @@
       },
       "late_night_8h": {
         "label": "深夜"
-      }
+      },
+      "endsAt": "结束于 {{time}}"
     },
     "customInput": {
       "label": "你通常几点钟打卡？",

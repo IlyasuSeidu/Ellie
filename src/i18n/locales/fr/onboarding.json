@@ -705,7 +705,8 @@
       },
       "late_night_8h": {
         "label": "Tard dans la nuit"
-      }
+      },
+      "endsAt": "Se termine à {{time}}"
     },
     "customInput": {
       "label": "À quelle heure pointez-vous habituellement ?",

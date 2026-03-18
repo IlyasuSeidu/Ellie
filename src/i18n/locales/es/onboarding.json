@@ -701,7 +701,8 @@
       },
       "late_night_8h": {
         "label": "Tarde en la noche"
-      }
+      },
+      "endsAt": "Termina a las {{time}}"
     },
     "customInput": {
       "label": "¿A qué hora sueles fichar entrada?",

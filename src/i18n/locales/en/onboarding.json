@@ -727,7 +727,8 @@
       },
       "late_night_8h": {
         "label": "Late Night"
-      }
+      },
+      "endsAt": "Ends at {{time}}"
     },
     "customInput": {
       "label": "What time do you usually clock in?",

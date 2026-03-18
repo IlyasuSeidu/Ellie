@@ -35,3 +35,25 @@ export function formatLocalizedDate(
 ): string {
   return date.toLocaleDateString(getLocaleTag(language), options);
 }
+
+export function formatLocalizedTime(
+  time24h: string,
+  options?: Intl.DateTimeFormatOptions,
+  language: string = i18n.language
+): string {
+  const match = /^(\d{2}):(\d{2})$/.exec(time24h);
+  if (!match) {
+    return time24h;
+  }
+
+  const [, hours, minutes] = match;
+  const date = new Date(Date.UTC(2000, 0, 1, Number(hours), Number(minutes)));
+
+  return date.toLocaleTimeString(getLocaleTag(language), {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+    timeZone: 'UTC',
+    ...options,
+  });
+}

@@ -95,7 +95,7 @@ describe('PresetTimeCard', () => {
       const { getByText } = render(
         <PresetTimeCard preset={CUSTOM_PRESET} onSelect={mockOnSelect} />
       );
-      expect(getByText('Custom')).toBeTruthy();
+      expect(getByText('Custom Time')).toBeTruthy();
       expect(getByText('Tap to set')).toBeTruthy();
     });
   });
@@ -272,8 +272,8 @@ describe('PresetTimeCard', () => {
 
     it('should have label and description', () => {
       TIME_PRESETS.forEach((preset) => {
-        expect(preset.label).toBeTruthy();
-        expect(preset.description).toBeTruthy();
+        expect(preset.time).toBeTruthy();
+        expect(preset.descriptionKey).toBeTruthy();
       });
     });
   });
@@ -283,12 +283,12 @@ describe('PresetTimeCard', () => {
       expect(CUSTOM_PRESET.time).toBe('custom');
     });
 
-    it('should have Custom label', () => {
-      expect(CUSTOM_PRESET.label).toBe('Custom');
+    it('should have translated custom label key', () => {
+      expect(CUSTOM_PRESET.labelKey).toBe('shiftTime.presets.custom.label');
     });
 
-    it('should have Tap to set description', () => {
-      expect(CUSTOM_PRESET.description).toBe('Tap to set');
+    it('should have tap-to-set description key', () => {
+      expect(CUSTOM_PRESET.descriptionKey).toBe('shiftTime.presetDescriptions.tapToSet');
     });
   });
 });

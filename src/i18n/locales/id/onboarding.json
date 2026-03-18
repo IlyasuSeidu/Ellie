@@ -696,7 +696,8 @@
       },
       "late_night_8h": {
         "label": "Larut Malam"
-      }
+      },
+      "endsAt": "Berakhir pukul {{time}}"
     },
     "customInput": {
       "label": "Jam berapa biasanya Anda masuk?",

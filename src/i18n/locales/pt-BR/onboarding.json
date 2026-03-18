@@ -691,7 +691,8 @@
       },
       "late_night_8h": {
         "label": "Tarde da noite"
-      }
+      },
+      "endsAt": "Termina às {{time}}"
     },
     "customInput": {
       "label": "Que horas você costuma bater o ponto?",

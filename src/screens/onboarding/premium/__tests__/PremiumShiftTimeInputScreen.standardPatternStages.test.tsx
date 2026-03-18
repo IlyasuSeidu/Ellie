@@ -316,7 +316,7 @@ describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
 
     const { getByText, queryByText } = renderScreen();
     expect(queryByText('Step 1 of 2')).toBeNull();
-    expect(getByText(/Single shift profile/i)).toBeTruthy();
+    expect(getByText('When Do Your Shifts Start?')).toBeTruthy();
     expect(queryByText('Night Shift Times')).toBeNull();
     expect(getByText(/6:00 AM/i)).toBeTruthy();
     expect(queryByText(/Ends at 6:00 AM/i)).toBeNull();
@@ -336,7 +336,7 @@ describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
 
     const { getByText, queryByText } = renderScreen();
     expect(queryByText('Step 1 of 2')).toBeNull();
-    expect(getByText(/Single shift profile/i)).toBeTruthy();
+    expect(getByText('When Do Your Shifts Start?')).toBeTruthy();
     expect(queryByText('Day Shift Times')).toBeNull();
     expect(getByText(/6:00 PM/i)).toBeTruthy();
     expect(getByText(/Ends at 6:00 AM/i)).toBeTruthy();

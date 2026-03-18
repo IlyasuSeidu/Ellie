@@ -12,16 +12,17 @@ import { LinearGradient } from 'expo-linear-gradient';
 import i18n from '@/i18n';
 import { theme } from '@/utils/theme';
 import { triggerImpactHaptic } from '@/utils/hapticsDiagnostics';
+import { formatLocalizedTime } from '@/utils/i18nFormat';
 
 export interface TimePreset {
   /** Time in 24h format (HH:mm) */
   time: string;
   /** Display label for the time */
-  label: string;
+  label?: string;
   /** Optional i18n key for label */
   labelKey?: string;
   /** Description of the preset */
-  description: string;
+  description?: string;
   /** Optional i18n key for description */
   descriptionKey?: string;
 }
@@ -52,12 +53,23 @@ export const PresetTimeCard: React.FC<PresetTimeCardProps> = ({
   testID,
 }) => {
   const scale = useSharedValue(1);
-  const displayLabel = preset.labelKey
-    ? String(i18n.t(preset.labelKey, { ns: 'onboarding', defaultValue: preset.label }))
-    : preset.label;
+  const isCustomPreset = preset.time === 'custom';
+  const displayLabel = isCustomPreset
+    ? String(
+        i18n.t(preset.labelKey ?? 'shiftTime.presets.custom.label', {
+          ns: 'onboarding',
+          defaultValue: preset.label ?? '',
+        })
+      )
+    : formatLocalizedTime(preset.time);
   const displayDescription = preset.descriptionKey
-    ? String(i18n.t(preset.descriptionKey, { ns: 'onboarding', defaultValue: preset.description }))
-    : preset.description;
+    ? String(
+        i18n.t(preset.descriptionKey, {
+          ns: 'onboarding',
+          defaultValue: preset.description ?? '',
+        })
+      )
+    : (preset.description ?? '');
 
   const handlePressIn = () => {
     if (!disabled) {
@@ -226,32 +238,22 @@ const styles = StyleSheet.create({
 export const TIME_PRESETS: TimePreset[] = [
   {
     time: '06:00',
-    label: '6:00 AM',
-    description: 'Early Start',
     descriptionKey: 'shiftTime.presetDescriptions.earlyStart',
   },
   {
     time: '07:00',
-    label: '7:00 AM',
-    description: 'Day Shift',
     descriptionKey: 'shiftTime.presetDescriptions.dayShift',
   },
   {
     time: '14:00',
-    label: '2:00 PM',
-    description: 'Afternoon',
     descriptionKey: 'shiftTime.presetDescriptions.afternoon',
   },
   {
     time: '18:00',
-    label: '6:00 PM',
-    description: 'Evening',
     descriptionKey: 'shiftTime.presetDescriptions.evening',
   },
   {
     time: '22:00',
-    label: '10:00 PM',
-    description: 'Night Shift',
     descriptionKey: 'shiftTime.presetDescriptions.nightShift',
   },
 ];
@@ -261,7 +263,6 @@ export const TIME_PRESETS: TimePreset[] = [
  */
 export const CUSTOM_PRESET: TimePreset = {
   time: 'custom',
-  label: 'Custom',
-  description: 'Tap to set',
+  labelKey: 'shiftTime.presets.custom.label',
   descriptionKey: 'shiftTime.presetDescriptions.tapToSet',
 };
