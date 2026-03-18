@@ -908,14 +908,12 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     returnToSettings,
   ]);
 
-  // Android hardware back button — mirrors handleBack so stage nav works correctly
+  // Android hardware back button — mirrors handleBack so stage nav works correctly.
+  // BackHandler is a no-op on iOS so no Platform guard is needed.
   useEffect(() => {
-    if (Platform.OS !== 'android') {
-      return undefined;
-    }
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
       handleBack();
-      return true; // prevent default (which would exit the app or pop via React Navigation)
+      return true; // signal handled — prevents system/React Navigation default
     });
     return () => subscription.remove();
   }, [handleBack]);
