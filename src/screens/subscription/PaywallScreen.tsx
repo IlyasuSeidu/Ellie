@@ -682,7 +682,7 @@ const styles = StyleSheet.create({
 
   // ── Loss aversion ──
   lossAversion: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
     gap: 8,
     paddingHorizontal: 16,
@@ -696,8 +696,8 @@ const styles = StyleSheet.create({
   lossAversionText: {
     fontSize: 13,
     color: theme.colors.paper,
-    flex: 1,
     lineHeight: 18,
+    textAlign: 'center',
   },
 
   // ── Timer ──
