@@ -588,9 +588,10 @@
   },
   "startDate": {
     "header": {
-      "title": "When Does Your Rotation Start?",
+      "title": "Set your start date and we'll map out your full year",
       "subtitleWithPhase": "You're on {{phaseLabel}} right now—pick today or any date, and we'll map out your whole calendar from there",
-      "subtitleDefault": "Pick the date you want your calendar to start from—most people choose today"
+      "subtitleDefault": "Pick the date you want your calendar to start from—most people choose today",
+      "title_named": "{{name}}, set your start date and we'll map out your full year"
     },
     "phaseLabels": {
       "day": "Day Shift",

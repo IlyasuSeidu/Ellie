@@ -547,9 +547,10 @@
   },
   "startDate": {
     "header": {
-      "title": "Quand commence votre rotation ?",
+      "title": "Définissez votre date de départ et nous tracerons toute votre année",
       "subtitleWithPhase": "Vous êtes actuellement le {{phaseLabel}} : choisissez aujourd'hui ou n'importe quelle date, et nous planifierons l'ensemble de votre calendrier à partir de là.",
-      "subtitleDefault": "Choisissez la date à partir de laquelle vous souhaitez que votre calendrier commence : la plupart des gens choisissent aujourd'hui"
+      "subtitleDefault": "Choisissez la date à partir de laquelle vous souhaitez que votre calendrier commence : la plupart des gens choisissent aujourd'hui",
+      "title_named": "{{name}}, définissez votre date de départ et nous tracerons toute votre année"
     },
     "phaseLabels": {
       "day": "Quart de jour",

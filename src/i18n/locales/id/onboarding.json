@@ -538,9 +538,10 @@
   },
   "startDate": {
     "header": {
-      "title": "Kapan Rotasi Anda Dimulai?",
+      "title": "Tetapkan tanggal mulai Anda dan kami akan memetakan setahun penuh Anda",
       "subtitleWithPhase": "Anda berada di {{phaseLabel}} sekarang—pilih hari ini atau tanggal mana pun, dan kami akan memetakan seluruh kalender Anda dari sana",
-      "subtitleDefault": "Pilih tanggal yang Anda inginkan untuk memulai kalender—kebanyakan orang memilih hari ini"
+      "subtitleDefault": "Pilih tanggal yang Anda inginkan untuk memulai kalender—kebanyakan orang memilih hari ini",
+      "title_named": "{{name}}, tetapkan tanggal mulai Anda dan kami akan memetakan setahun penuh Anda"
     },
     "phaseLabels": {
       "day": "Pergeseran Hari",

@@ -533,9 +533,10 @@
   },
   "startDate": {
     "header": {
-      "title": "Quando sua rotação começa?",
+      "title": "Defina sua data de início e vamos mapear seu ano inteiro",
       "subtitleWithPhase": "Você está em {{phaseLabel}} agora. Escolha hoje ou qualquer data e vamos mapear todo o seu calendário a partir dela",
-      "subtitleDefault": "Escolha a data em que seu calendário deve começar; a maioria das pessoas escolhe hoje"
+      "subtitleDefault": "Escolha a data em que seu calendário deve começar; a maioria das pessoas escolhe hoje",
+      "title_named": "{{name}}, defina sua data de início e vamos mapear seu ano inteiro"
     },
     "phaseLabels": {
       "day": "Turno diurno",

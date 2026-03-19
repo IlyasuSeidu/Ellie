@@ -524,9 +524,10 @@
   },
   "startDate": {
     "header": {
-      "title": "Wanneer begin jou rotasie?",
+      "title": "Stel jou begindatum en ons sal jou volle jaar uitwerk",
       "subtitleWithPhase": "Jy is nou op {{phaseLabel}}—kies vandag of enige datum, en ons sal jou hele kalender daarvandaan uitbeeld",
-      "subtitleDefault": "Kies die datum waarvan jy wil hê jou kalender moet begin—die meeste mense kies vandag"
+      "subtitleDefault": "Kies die datum waarvan jy wil hê jou kalender moet begin—die meeste mense kies vandag",
+      "title_named": "{{name}}, stel jou begindatum en ons sal jou volle jaar uitwerk"
     },
     "phaseLabels": {
       "day": "Dagskof",

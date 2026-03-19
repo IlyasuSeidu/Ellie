@@ -543,9 +543,10 @@
   },
   "startDate": {
     "header": {
-      "title": "¿Cuándo empieza tu rotación?",
+      "title": "Define tu fecha de inicio y trazaremos todo tu año",
       "subtitleWithPhase": "Ahora estás en {{phaseLabel}}. Elige hoy o cualquier fecha y desde ahí mapearemos todo tu calendario",
-      "subtitleDefault": "Elige la fecha desde la que quieres iniciar tu calendario; la mayoría elige hoy"
+      "subtitleDefault": "Elige la fecha desde la que quieres iniciar tu calendario; la mayoría elige hoy",
+      "title_named": "{{name}}, define tu fecha de inicio y trazaremos todo tu año"
     },
     "phaseLabels": {
       "day": "Turno de día",

@@ -680,7 +680,6 @@ public final class EllieOpenWakeWordModule: Module {
       let env = try ORTEnv(loggingLevel: ORTLoggingLevel.warning)
       let options = try ORTSessionOptions()
       try options.setGraphOptimizationLevel(.all)
-      try options.setInterOpNumThreads(1)
       try options.setIntraOpNumThreads(1)
       try? options.addConfigEntry(withKey: onnxSessionAllowIntraOpSpinningKey, value: "0")
       try? options.addConfigEntry(withKey: onnxSessionAllowInterOpSpinningKey, value: "0")

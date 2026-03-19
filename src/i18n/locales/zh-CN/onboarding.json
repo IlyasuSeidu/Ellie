@@ -487,9 +487,10 @@
   },
   "startDate": {
     "header": {
-      "title": "你的轮换什么时候开始？",
+      "title": "设定你的开始日期，我们会为你铺开完整的一年",
       "subtitleWithPhase": "您现在处于 {{phaseLabel}} — 选择今天或任何日期，我们将从那里制定您的整个日历",
-      "subtitleDefault": "选择您希望日历开始的日期 - 大多数人选择今天"
+      "subtitleDefault": "选择您希望日历开始的日期 - 大多数人选择今天",
+      "title_named": "{{name}}，设定你的开始日期，我们会为你铺开完整的一年"
     },
     "phaseLabels": {
       "day": "白班",
