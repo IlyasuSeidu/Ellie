@@ -479,7 +479,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
         {/* Value frame */}
         <Text style={styles.valueFrame}>
           {t('subscription.paywall.valueFrame', {
-            defaultValue: 'Less than a coffee per week to know your entire year.',
+            defaultValue: 'Less than a coffee per week to know your next 3 months.',
           })}
         </Text>
 

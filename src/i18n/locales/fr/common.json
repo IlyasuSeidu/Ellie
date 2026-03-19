@@ -169,13 +169,13 @@
       "subtitle": "Débloquez-le pour moins qu’un café.",
       "features": {
         "askRoster": "Demandez \"Hey Ellie\" n'importe quoi à propos de votre liste",
-        "fullYear": "Voyez votre année complète — chaque shift, 365 jours et plus",
+        "fullYear": "Voyez vos 3 prochains mois — chaque shift, mois par mois",
         "offline": "Fonctionne sous terre, aucun signal nécessaire",
         "instantAnswers": "Réponses instantanées sur les congés et les modèles",
         "aiPowered": "Propulsé par l'IA et en constante amélioration",
         "leavePlanning": "Planifiez vos congés sans appeler les RH",
-        "fullYearFIFO": "Voyez votre année FIFO complète — chaque bloc de travail, chaque période de repos",
-        "fullYearRotating": "Voyez votre année rotative complète — chaque phase, des mois à l’avance"
+        "fullYearFIFO": "Voyez vos 3 prochains mois — chaque bloc de travail, chaque période de repos",
+        "fullYearRotating": "Voyez vos 3 prochains mois — chaque phase, mois par mois"
       },
       "plans": {
         "annual": "Annuel",
@@ -213,7 +213,7 @@
         "cancel": "Annulez à tout moment",
         "noCharge": "Aucun frais aujourd'hui"
       },
-      "valueFrame": "Moins qu’un café par semaine pour connaître toute votre année.",
+      "valueFrame": "Moins qu’un café par semaine pour connaître vos 3 prochains mois.",
       "security": "Paiement sécurisé via {{platform}} · Traité par {{platform}}, pas par Ellie",
       "termsOfService": "Conditions",
       "trialBadge": "ESSAI GRATUIT 7 JOURS · AUCUN FRAIS AUJOURD’HUI",

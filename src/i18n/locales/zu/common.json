@@ -169,13 +169,13 @@
       "subtitle": "Yivule ngemali encane kunekhofi.",
       "features": {
         "askRoster": "Buza okuthi \"Hey __TK1__\" noma yini ngohlelo lwakho",
-        "fullYear": "Bona unyaka wakho wonke — ishifu ngayinye, izinsuku ezingaphezu kuka-365",
+        "fullYear": "Bona izinyanga zakho ezi-3 ezizayo — ishifu ngayinye, inyanga nenyanga",
         "offline": "Isebenza ngaphansi komhlaba, asikho isignali edingekayo",
         "instantAnswers": "Izimpendulo ezisheshayo mayelana nekhefu namaphethini",
         "aiPowered": "Inikwa amandla yi-AI futhi ithuthuka njalo",
         "leavePlanning": "Hlela amaholidi ngaphandle kokushayela i-HR",
-        "fullYearFIFO": "Bona unyaka wakho ophelele we-FIFO — ibhulokhi ngayinye yomsebenzi nesikhathi ngasinye sokuphumula",
-        "fullYearRotating": "Bona unyaka wakho ophelele ojikelezayo — isigaba ngasinye, izinyanga kusenesikhathi"
+        "fullYearFIFO": "Bona izinyanga zakho ezi-3 ezizayo — ibhulokhi ngayinye yomsebenzi nesikhathi ngasinye sokuphumula",
+        "fullYearRotating": "Bona izinyanga zakho ezi-3 ezizayo — isigaba ngasinye, inyanga nenyanga"
       },
       "plans": {
         "annual": "Ngonyaka",
@@ -213,7 +213,7 @@
         "cancel": "Khansela noma nini",
         "noCharge": "Akukho mali namuhla"
       },
-      "valueFrame": "Kungaphansi kwekhofi ngesonto ukuze wazi unyaka wakho wonke.",
+      "valueFrame": "Kungaphansi kwekhofi ngesonto ukuze wazi izinyanga zakho ezi-3 ezizayo.",
       "security": "Inkokhelo ephephile nge-{{platform}} · Icutshungulwa yi-{{platform}}, hhayi i-Ellie",
       "termsOfService": "Imigomo",
       "trialBadge": "ISILINGO SAMAHHALA SEZINSUKU EZI-7 · AKUKHO MALI NAMUHLA",

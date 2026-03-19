@@ -446,7 +446,7 @@
       "off": "Días libres"
     },
     "title_named": "¿En qué parte de tu ciclo estás ahora, {{name}}?",
-    "anticipation": "Casi listo. Un paso más y te mostraremos tu año completo."
+    "anticipation": "Casi listo. Un paso más y te mostraremos tus próximos 3 meses."
   },
   "fifoPhaseSelector": {
     "title": {
@@ -549,7 +549,7 @@
       "title": "¿Cuándo empieza tu rotación?",
       "subtitleWithPhase": "Ahora estás en {{phaseLabel}}. Elige hoy o cualquier fecha y desde ahí mapearemos todo tu calendario",
       "subtitleDefault": "Elige la fecha desde la que quieres iniciar tu calendario; la mayoría elige hoy",
-      "title_named": "{{name}}, define tu fecha de inicio y trazaremos todo tu año"
+      "title_named": "{{name}}, define tu fecha de inicio y trazaremos tus próximos 3 meses"
     },
     "phaseLabels": {
       "day": "Turno de día",
@@ -661,7 +661,7 @@
       "subtitle": {
         "single": "Elige la hora a la que entras cada día; la usaremos para registrar tus horas y activar recordatorios",
         "multi": "Tu patrón incluye {{shiftTypeLabel}}. Configura la hora de inicio de estos turnos.",
-        "preAha": "Último paso antes de mostrarte todo tu año."
+        "preAha": "Último paso antes de mostrarte tus próximos 3 meses."
       }
     },
     "guidance": {
@@ -1045,7 +1045,7 @@
     }
   },
   "ahaMoment": {
-    "headline": "Your year, mapped.",
+    "headline": "Tus próximos 3 meses, trazados.",
     "subheadline": "Every shift. Every day off.",
     "heyEllieTitle": "Pregúntale a Ellie sobre tu roster",
     "ctaPrimary": "Desbloquea el acceso completo — prueba gratis de 7 días",

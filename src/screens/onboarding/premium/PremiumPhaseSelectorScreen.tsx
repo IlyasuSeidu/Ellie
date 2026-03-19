@@ -1470,7 +1470,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
                 : `\n${String(
                     t('phaseSelector.anticipation', {
                       defaultValue:
-                        "Almost ready. One more step and we'll show you your full year.",
+                        "Almost ready. One more step and we'll show you your next 3 months.",
                     })
                   )}`
             }`

@@ -183,13 +183,13 @@
         }
       ],
       "features": {
-        "fullYear": "See your full year — every shift, 365 days plus",
+        "fullYear": "See your next 3 months — every shift, month by month",
         "askRoster": "Ask Ellie anything — \"When's my next day off?\"",
         "offline": "Works underground with zero signal",
         "leavePlanning": "Plan holidays without calling HR",
         "aiPowered": "AI that knows YOUR exact pattern, not a generic one",
-        "fullYearFIFO": "See your full FIFO year — every work block, every R&R",
-        "fullYearRotating": "See your full rotating year — every phase, months ahead"
+        "fullYearFIFO": "See your next 3 months — every work block, every R&R",
+        "fullYearRotating": "See your next 3 months — every phase, month by month"
       },
       "lossAversion": "Without Pro, you're back to counting shifts on your hands.",
       "timerLabel": "Introductory offer ends in",
@@ -208,7 +208,7 @@
         "cancel": "Cancel anytime",
         "noCharge": "No charge today"
       },
-      "valueFrame": "Less than a coffee per week to know your entire year.",
+      "valueFrame": "Less than a coffee per week to know your next 3 months.",
       "security": "Secure payment via {{platform}} · Processed by {{platform}}, not Ellie",
       "noCard": "No credit card required · Cancel anytime",
       "restorePurchases": "Restore",

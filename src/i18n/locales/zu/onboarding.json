@@ -446,7 +446,7 @@
       "off": "Izinsuku Zokungasebenzi"
     },
     "title_named": "Ukuphi manje emjikelezweni wakho, {{name}}?",
-    "anticipation": "Sekuseduze. Isinyathelo esisodwa futhi sizokukhombisa unyaka wakho wonke."
+    "anticipation": "Sekuseduze. Isinyathelo esisodwa futhi sizokukhombisa izinyanga zakho ezi-3 ezizayo."
   },
   "fifoPhaseSelector": {
     "title": {
@@ -549,7 +549,7 @@
       "title": "Ukushintshanisa Kwakho Kuqala Nini?",
       "subtitleWithPhase": "Uku-{{phaseLabel}} khona manje—khetha namuhla nanoma iyiphi idethi, futhi sizokhipha imephu yonke ikhalenda lakho kusukela lapho",
       "subtitleDefault": "Khetha idethi ofuna ikhalenda yakho iqale ngalo—abantu abaningi bayayikhetha namuhla",
-      "title_named": "{{name}}, setha usuku lwakho lokuqala bese sizokuhlela wonke unyaka wakho"
+      "title_named": "{{name}}, setha usuku lwakho lokuqala bese sizokuhlelela izinyanga zakho ezi-3 ezizayo"
     },
     "phaseLabels": {
       "day": "Ishifu lasemini",
@@ -661,7 +661,7 @@
       "subtitle": {
         "single": "Khetha ukuthi uwubamba ngasiphi isikhathi usuku nosuku-sizosebenzisa lokhu ukulandelela amahora akho futhi sisethe izikhumbuzi",
         "multi": "Iphethini yakho ihlanganisa {{shiftTypeLabel}}. Setha isikhathi sokuqala salezi zinguquko.",
-        "preAha": "Lesi yisinyathelo sokugcina ngaphambi kokuthi sikubonise unyaka wakho wonke."
+        "preAha": "Lesi yisinyathelo sokugcina ngaphambi kokuthi sikubonise izinyanga zakho ezi-3 ezizayo."
       }
     },
     "guidance": {
@@ -1045,7 +1045,7 @@
     }
   },
   "ahaMoment": {
-    "headline": "Your year, mapped.",
+    "headline": "Izinyanga zakho ezi-3 ezizayo, sezihleliwe.",
     "subheadline": "Every shift. Every day off.",
     "heyEllieTitle": "Buza u-Ellie nge-roster yakho",
     "ctaPrimary": "Vula ukufinyelela okuphelele — isivivinyo samahhala sezinsuku ezi-7",

@@ -169,13 +169,13 @@
       "subtitle": "Buka dengan biaya kurang dari secangkir kopi.",
       "features": {
         "askRoster": "Tanyakan \"Hai __TK1__\" apa pun tentang daftar pemain Anda",
-        "fullYear": "Lihat setahun penuh Anda — setiap shift, 365 hari lebih",
+        "fullYear": "Lihat 3 bulan berikutnya Anda — setiap shift, bulan demi bulan",
         "offline": "Bekerja di bawah tanah, tidak diperlukan sinyal",
         "instantAnswers": "Jawaban instan tentang cuti dan pola",
         "aiPowered": "Didukung oleh AI dan selalu berkembang",
         "leavePlanning": "Rencanakan libur tanpa menelepon HR",
-        "fullYearFIFO": "Lihat setahun FIFO Anda — setiap blok kerja, setiap masa istirahat",
-        "fullYearRotating": "Lihat setahun roster rotasi Anda — setiap fase, berbulan-bulan ke depan"
+        "fullYearFIFO": "Lihat 3 bulan berikutnya Anda — setiap blok kerja, setiap masa istirahat",
+        "fullYearRotating": "Lihat 3 bulan berikutnya Anda — setiap fase, bulan demi bulan"
       },
       "plans": {
         "annual": "Tahunan",
@@ -213,7 +213,7 @@
         "cancel": "Batalkan kapan saja",
         "noCharge": "Tidak ada biaya hari ini"
       },
-      "valueFrame": "Kurang dari harga kopi per minggu untuk mengetahui jadwal setahun penuh.",
+      "valueFrame": "Kurang dari harga kopi per minggu untuk mengetahui 3 bulan berikutnya Anda.",
       "security": "Pembayaran aman via {{platform}} · Diproses oleh {{platform}}, bukan Ellie",
       "termsOfService": "Syarat",
       "trialBadge": "UJI COBA GRATIS 7 HARI · TANPA BIAYA HARI INI",

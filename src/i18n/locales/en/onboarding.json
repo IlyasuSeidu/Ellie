@@ -489,7 +489,7 @@
     "preparing": "Preparing your calendar...",
     "title": "What shift are you on right now?",
     "title_named": "Where are you in your cycle right now, {{name}}?",
-    "anticipation": "Almost ready. One more step and we'll show you your full year.",
+    "anticipation": "Almost ready. One more step and we'll show you your next 3 months.",
     "dayOrdinal": "Day {{day}}",
     "list": {
       "or": "or"
@@ -603,7 +603,7 @@
       "title": "When Does Your Rotation Start?",
       "subtitleWithPhase": "You're on {{phaseLabel}} right now—pick today or any date, and we'll map out your whole calendar from there",
       "subtitleDefault": "Pick the date you want your calendar to start from—most people choose today",
-      "title_named": "{{name}}, set your start date and we'll map out your full year"
+      "title_named": "{{name}}, set your start date and we'll map out your next 3 months"
     },
     "phaseLabels": {
       "day": "Day Shift",
@@ -715,7 +715,7 @@
       "subtitle": {
         "single": "Pick what time you clock in each day-we'll use this to track your hours and set reminders",
         "multi": "Your pattern includes {{shiftTypeLabel}}. Set the start time for these shifts.",
-        "preAha": "Last step before we show you your full year."
+        "preAha": "Last step before we show you your next 3 months."
       }
     },
     "guidance": {

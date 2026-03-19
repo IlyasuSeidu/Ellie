@@ -169,13 +169,13 @@
       "subtitle": "Desbloquéalo por menos que un café.",
       "features": {
         "askRoster": "Pregúntale a \"Hola Ellie\" cualquier cosa sobre tu plantilla.",
-        "fullYear": "Ve tu año completo: cada turno, 365 días o más",
+        "fullYear": "Mira tus próximos 3 meses: cada turno, mes a mes",
         "offline": "Funciona bajo tierra, no necesita señal.",
         "instantAnswers": "Respuestas instantáneas sobre permisos y patrones.",
         "aiPowered": "Desarrollado por IA y siempre mejorando",
         "leavePlanning": "Planifica vacaciones sin llamar a RR. HH.",
-        "fullYearFIFO": "Ve tu año FIFO completo: cada bloque de trabajo y cada descanso",
-        "fullYearRotating": "Ve tu año rotativo completo: cada fase, con meses de anticipación"
+        "fullYearFIFO": "Mira tus próximos 3 meses: cada bloque de trabajo y cada descanso",
+        "fullYearRotating": "Mira tus próximos 3 meses: cada fase, mes a mes"
       },
       "plans": {
         "annual": "Anual",
@@ -213,7 +213,7 @@
         "cancel": "Cancela cuando quieras",
         "noCharge": "Sin cobro hoy"
       },
-      "valueFrame": "Menos que un café por semana para conocer todo tu año.",
+      "valueFrame": "Menos que un café por semana para conocer tus próximos 3 meses.",
       "security": "Pago seguro con {{platform}} · Procesado por {{platform}}, no por Ellie",
       "termsOfService": "Términos",
       "trialBadge": "PRUEBA GRATIS DE 7 DÍAS · SIN COBRO HOY",

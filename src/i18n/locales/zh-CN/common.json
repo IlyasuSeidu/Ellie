@@ -169,13 +169,13 @@
       "subtitle": "花不到一杯咖啡的钱就能解锁。",
       "features": {
         "askRoster": "询问“嘿__TK1__”有关您的名单的任何信息",
-        "fullYear": "查看你的全年班表——每一次班次，365天以上",
+        "fullYear": "查看你接下来的3个月——每一次班次，逐月清晰可见",
         "offline": "地下工作，无需信号",
         "instantAnswers": "有关休假和模式的即时答案",
         "aiPowered": "由人工智能提供支持并不断改进",
         "leavePlanning": "无需联系人事即可规划休假",
-        "fullYearFIFO": "查看你的完整 FIFO 年度班表——每个工作段、每个休息段",
-        "fullYearRotating": "查看你的完整轮班年度——每个阶段，提前数月可见"
+        "fullYearFIFO": "查看你接下来的3个月——每个工作段、每个休息段",
+        "fullYearRotating": "查看你接下来的3个月——每个阶段，逐月清晰可见"
       },
       "plans": {
         "annual": "年度的",
@@ -213,7 +213,7 @@
         "cancel": "可随时取消",
         "noCharge": "今天不收费"
       },
-      "valueFrame": "每周不到一杯咖啡的钱，就能掌握你整年的班表。",
+      "valueFrame": "每周不到一杯咖啡的钱，就能掌握你接下来的3个月。",
       "security": "通过 {{platform}} 安全支付 · 由 {{platform}} 处理，而非 Ellie",
       "termsOfService": "条款",
       "trialBadge": "免费试用7天 · 今天不收费",

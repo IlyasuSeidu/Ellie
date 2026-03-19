@@ -450,7 +450,7 @@
       "off": "Jours fériés"
     },
     "title_named": "Où en es-tu dans ton cycle en ce moment, {{name}} ?",
-    "anticipation": "On y est presque. Encore une étape et nous afficherons toute votre année."
+    "anticipation": "On y est presque. Encore une étape et nous afficherons vos 3 prochains mois."
   },
   "fifoPhaseSelector": {
     "title": {
@@ -553,7 +553,7 @@
       "title": "Quand commence votre rotation ?",
       "subtitleWithPhase": "Vous êtes actuellement le {{phaseLabel}} : choisissez aujourd'hui ou n'importe quelle date, et nous planifierons l'ensemble de votre calendrier à partir de là.",
       "subtitleDefault": "Choisissez la date à partir de laquelle vous souhaitez que votre calendrier commence : la plupart des gens choisissent aujourd'hui",
-      "title_named": "{{name}}, définissez votre date de départ et nous tracerons toute votre année"
+      "title_named": "{{name}}, définissez votre date de départ et nous tracerons vos 3 prochains mois"
     },
     "phaseLabels": {
       "day": "Quart de jour",
@@ -665,7 +665,7 @@
       "subtitle": {
         "single": "Choisissez l'heure à laquelle vous pointez chaque jour. Nous l'utiliserons pour suivre vos heures et définir des rappels.",
         "multi": "Votre modèle comprend {{shiftTypeLabel}}. Définissez l’heure de début de ces quarts de travail.",
-        "preAha": "Dernière étape avant de vous montrer toute votre année."
+        "preAha": "Dernière étape avant de vous montrer vos 3 prochains mois."
       }
     },
     "guidance": {
@@ -1049,7 +1049,7 @@
     }
   },
   "ahaMoment": {
-    "headline": "Your year, mapped.",
+    "headline": "Vos 3 prochains mois, cartographiés.",
     "subheadline": "Every shift. Every day off.",
     "heyEllieTitle": "Demandez à Ellie votre planning",
     "ctaPrimary": "Débloquer l’accès complet — essai gratuit de 7 jours",
