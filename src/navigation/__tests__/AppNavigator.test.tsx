@@ -6,7 +6,7 @@
 import React from 'react';
 import { render, waitFor } from '@testing-library/react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { AppNavigator } from '../AppNavigator';
+import { AppNavigator, MainRouteGate, readOnboardingCompletionStatus } from '../AppNavigator';
 
 // Mock AsyncStorageService
 jest.mock('@/services/AsyncStorageService', () => ({
@@ -19,6 +19,15 @@ jest.mock('@/services/AsyncStorageService', () => ({
 
 jest.mock('@/contexts/AuthContext', () => ({
   useAuth: jest.fn(),
+}));
+
+const mockReset = jest.fn();
+
+jest.mock('@react-navigation/native', () => ({
+  ...jest.requireActual('@react-navigation/native'),
+  useNavigation: () => ({
+    reset: mockReset,
+  }),
 }));
 
 // Mock the navigators/screens to avoid complex nesting
@@ -61,6 +70,7 @@ import { useAuth } from '@/contexts/AuthContext';
 describe('AppNavigator', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockReset.mockReset();
     (useAuth as jest.Mock).mockReturnValue({
       user: null,
       isLoading: false,
@@ -213,5 +223,59 @@ describe('AppNavigator', () => {
     });
 
     expect(asyncStorageService.get).not.toHaveBeenCalled();
+  });
+
+  it('readOnboardingCompletionStatus returns true when completion flag is true', async () => {
+    (asyncStorageService.get as jest.Mock).mockImplementation(async (key: string) => {
+      if (key === 'onboarding:complete') return true;
+      return null;
+    });
+
+    await expect(readOnboardingCompletionStatus()).resolves.toBe(true);
+  });
+
+  it('readOnboardingCompletionStatus returns false when data is incomplete', async () => {
+    (asyncStorageService.get as jest.Mock).mockImplementation(async (key: string) => {
+      if (key === 'onboarding:complete') return null;
+      if (key === 'onboarding:data') return { name: 'John' };
+      return null;
+    });
+
+    await expect(readOnboardingCompletionStatus()).resolves.toBe(false);
+  });
+
+  it('MainRouteGate redirects incomplete onboarding away from Main', async () => {
+    (asyncStorageService.get as jest.Mock).mockImplementation(async (key: string) => {
+      if (key === 'onboarding:complete') return false;
+      return null;
+    });
+
+    const { getByTestId, queryByTestId } = render(<MainRouteGate />);
+
+    expect(getByTestId('main-route-gate-loading')).toBeTruthy();
+
+    await waitFor(() => {
+      expect(mockReset).toHaveBeenCalledWith({
+        index: 0,
+        routes: [{ name: 'Onboarding' }],
+      });
+    });
+
+    expect(queryByTestId('main-dashboard')).toBeNull();
+  });
+
+  it('MainRouteGate allows Main when onboarding is complete', async () => {
+    (asyncStorageService.get as jest.Mock).mockImplementation(async (key: string) => {
+      if (key === 'onboarding:complete') return true;
+      return null;
+    });
+
+    const { getByTestId } = render(<MainRouteGate />);
+
+    await waitFor(() => {
+      expect(getByTestId('main-dashboard')).toBeTruthy();
+    });
+
+    expect(mockReset).not.toHaveBeenCalled();
   });
 });

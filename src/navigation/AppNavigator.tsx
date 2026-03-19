@@ -7,10 +7,14 @@
  * - Main (authenticated and onboarding complete)
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import type { NavigatorScreenParams } from '@react-navigation/native';
+import {
+  useNavigation,
+  type NavigationProp,
+  type NavigatorScreenParams,
+} from '@react-navigation/native';
 import { theme } from '@/utils/theme';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import { useAuth } from '@/contexts/AuthContext';
@@ -45,6 +49,70 @@ export type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+export async function readOnboardingCompletionStatus(): Promise<boolean> {
+  const completionFlag = await asyncStorageService.get<boolean>('onboarding:complete');
+  if (completionFlag === true) {
+    return true;
+  }
+
+  if (completionFlag === false) {
+    return false;
+  }
+
+  const savedData = await asyncStorageService.get<Record<string, unknown>>('onboarding:data');
+  if (savedData && typeof savedData === 'object') {
+    return !!(
+      savedData.name &&
+      savedData.startDate &&
+      savedData.patternType &&
+      savedData.shiftSystem
+    );
+  }
+
+  return false;
+}
+
+export const MainRouteGate: React.FC = () => {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const [isAllowed, setIsAllowed] = useState<boolean | null>(null);
+
+  const verifyAccess = useCallback(async () => {
+    try {
+      const complete = await readOnboardingCompletionStatus();
+      if (complete) {
+        setIsAllowed(true);
+        return;
+      }
+
+      setIsAllowed(false);
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Onboarding' as never }],
+      });
+    } catch {
+      setIsAllowed(false);
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Onboarding' as never }],
+      });
+    }
+  }, [navigation]);
+
+  useEffect(() => {
+    void verifyAccess();
+  }, [verifyAccess]);
+
+  if (isAllowed !== true) {
+    return (
+      <View style={styles.loadingContainer} testID="main-route-gate-loading">
+        <ActivityIndicator size="large" color={theme.colors.sacredGold} />
+      </View>
+    );
+  }
+
+  return <MainTabNavigator />;
+};
+
 export const AppNavigator: React.FC = () => {
   const { user, isLoading: isAuthLoading } = useAuth();
   const [isOnboardingComplete, setIsOnboardingComplete] = useState<boolean | null>(null);
@@ -58,30 +126,8 @@ export const AppNavigator: React.FC = () => {
 
     const checkOnboardingStatus = async () => {
       try {
-        const completionFlag = await asyncStorageService.get<boolean>('onboarding:complete');
-        if (completionFlag === true) {
-          setIsOnboardingComplete(true);
-          return;
-        }
-
-        if (completionFlag === false) {
-          setIsOnboardingComplete(false);
-          return;
-        }
-
-        // Backward compatibility for older installs without completion flag.
-        const savedData = await asyncStorageService.get<Record<string, unknown>>('onboarding:data');
-        if (savedData && typeof savedData === 'object') {
-          const complete = !!(
-            savedData.name &&
-            savedData.startDate &&
-            savedData.patternType &&
-            savedData.shiftSystem
-          );
-          setIsOnboardingComplete(complete);
-        } else {
-          setIsOnboardingComplete(false);
-        }
+        const complete = await readOnboardingCompletionStatus();
+        setIsOnboardingComplete(complete);
       } catch {
         setIsOnboardingComplete(false);
       }
@@ -136,7 +182,7 @@ export const AppNavigator: React.FC = () => {
     >
       <Stack.Screen name="Auth" component={AuthNavigator} initialParams={authInitialParams} />
       <Stack.Screen name="Onboarding" component={OnboardingNavigator} />
-      <Stack.Screen name="Main" component={MainTabNavigator} />
+      <Stack.Screen name="Main" component={MainRouteGate} />
     </Stack.Navigator>
   );
 };
