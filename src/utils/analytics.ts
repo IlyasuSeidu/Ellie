@@ -80,6 +80,14 @@ export const Analytics = {
       { screen_name: screenName, screen_class: screenName }
     ),
 
+  // Fired once on first-ever app launch, before the first onboarding step
+  onboardingStarted: (params: { install_time_epoch: number }) =>
+    void safeCall(
+      (client) => client.logEvent('onboarding_started', params),
+      'onboarding_started',
+      params
+    ),
+
   // Onboarding funnel — call at top of each screen's useEffect
   onboardingStepViewed: (step: OnboardingStep, stepNumber: number) =>
     void safeCall(

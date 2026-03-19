@@ -4,7 +4,7 @@
  * Welcome/splash screen (Step 1 of 10) using stone and gold theme
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, Platform, Image, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Animated, {
@@ -47,6 +47,7 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
 }) => {
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
+  const mountTime = useRef(Date.now());
 
   // Animation values
   const logoOpacity = useSharedValue(0);
@@ -61,8 +62,10 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
     Analytics.onboardingStepViewed('welcome', 1);
     void AsyncStorage.getItem('app:install_time')
       .then((existingInstallTime) => {
+        const installTime = existingInstallTime ?? Date.now().toString();
         if (!existingInstallTime) {
-          return AsyncStorage.setItem('app:install_time', Date.now().toString());
+          Analytics.onboardingStarted({ install_time_epoch: Number(installTime) });
+          return AsyncStorage.setItem('app:install_time', installTime);
         }
         return null;
       })
@@ -107,6 +110,7 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
   ]);
 
   const handleContinue = () => {
+    Analytics.onboardingStepCompleted('welcome', Date.now() - mountTime.current);
     if (onContinue) {
       onContinue();
     } else {
@@ -175,6 +179,15 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
           <Text style={styles.socialProofText}>
             {t('welcome.socialProof', { defaultValue: 'Built for shift workers like you' })}
           </Text>
+        </Animated.View>
+
+        {/* Trust signals */}
+        <Animated.View style={styles.trustRow} entering={FadeIn.delay(1400).duration(400)}>
+          <Text style={styles.trustItem}>✓ {t('welcome.trust.freeTrial')}</Text>
+          <Text style={styles.trustSeparator}>·</Text>
+          <Text style={styles.trustItem}>✓ {t('welcome.trust.noCard')}</Text>
+          <Text style={styles.trustSeparator}>·</Text>
+          <Text style={styles.trustItem}>✓ {t('welcome.trust.cancelAnytime')}</Text>
         </Animated.View>
 
         {/* Get Started button */}
@@ -300,13 +313,30 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(180,83,9,0.30)',
     paddingHorizontal: 16,
     paddingVertical: 7,
-    marginBottom: theme.spacing.xl,
+    marginBottom: theme.spacing.md,
   },
   socialProofText: {
     color: theme.colors.sacredGold,
     fontSize: 13,
     fontWeight: '600',
     letterSpacing: 0.4,
+  },
+  trustRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: theme.spacing.xl,
+    gap: 6,
+  },
+  trustItem: {
+    color: theme.colors.dust,
+    fontSize: 12,
+    fontWeight: '500',
+    letterSpacing: 0.2,
+  },
+  trustSeparator: {
+    color: theme.colors.dust,
+    opacity: 0.4,
+    fontSize: 12,
   },
   buttonContainer: {
     width: '100%',
