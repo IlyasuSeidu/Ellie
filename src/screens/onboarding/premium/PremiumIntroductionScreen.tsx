@@ -381,8 +381,8 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
                 country: formData.country,
               });
             } else if (isSettingsEntry) {
-              // Launched post-onboarding (e.g. from dashboard checklist) — pop back to the
-              // caller instead of advancing into the onboarding flow.
+              // Launched post-onboarding from settings — pop back to the caller instead of
+              // advancing into the onboarding flow.
               const rootNavigation =
                 navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
               if (rootNavigation?.canGoBack()) {

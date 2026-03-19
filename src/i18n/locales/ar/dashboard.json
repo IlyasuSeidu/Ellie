@@ -212,19 +212,5 @@
       "hoursOnly": "{{hours}} س",
       "hoursMinutes": "{{hours}} س {{minutes}} د"
     }
-  },
-  "onboardingChecklist": {
-    "title": "احصل على أقصى استفادة من Ellie",
-    "items": {
-      "roster": "أكمل إعداد جدولك",
-      "shiftTimes": "أضف أوقات نوباتك",
-      "profile": "أكمل ملفك الشخصي",
-      "askEllie": "اسأل Ellie سؤالاً"
-    },
-    "actions": {
-      "done": "تم",
-      "doIt": "نفّذ",
-      "dismiss": "إخفاء"
-    }
   }
 }

@@ -212,19 +212,5 @@
       "hoursOnly": "{{hours}} h",
       "hoursMinutes": "{{hours}} h {{minutes}} min"
     }
-  },
-  "onboardingChecklist": {
-    "title": "Aproveite ao máximo a Ellie",
-    "items": {
-      "roster": "Configure seu roster",
-      "shiftTimes": "Adicione seus horários de turno",
-      "profile": "Complete seu perfil",
-      "askEllie": "Faça uma pergunta à Ellie"
-    },
-    "actions": {
-      "done": "Concluído",
-      "doIt": "Fazer",
-      "dismiss": "Dispensar"
-    }
   }
 }

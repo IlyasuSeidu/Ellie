@@ -75,7 +75,7 @@ export type OnboardingStackParamList = {
   /** Step 2: Pain hook — user selects their biggest roster problem */
   PainHook: undefined;
   /** Step 3: Collect user profile via chat (name, occupation, company, country).
-   *  entryPoint 'settings' — launched post-onboarding (e.g. from dashboard checklist);
+   *  entryPoint 'settings' — launched post-onboarding from settings;
    *  saves data and returns to the previous screen instead of advancing the flow. */
   Introduction: { entryPoint?: 'settings' } | undefined;
   /** Step 4: Select shift system (2-shift or 3-shift) */

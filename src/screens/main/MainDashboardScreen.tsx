@@ -16,7 +16,6 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Animated, {
   FadeIn,
   FadeOut,
@@ -56,7 +55,6 @@ import { PersonalizedHeader } from '@/components/dashboard/PersonalizedHeader';
 import { CurrentShiftStatusCard } from '@/components/dashboard/CurrentShiftStatusCard';
 import { MonthlyCalendarCard } from '@/components/dashboard/MonthlyCalendarCard';
 import { StatisticsRow } from '@/components/dashboard/StatisticsCard';
-import { OnboardingChecklist } from '@/components/dashboard/OnboardingChecklist';
 
 // Voice assistant is now in MainTabNavigator (center tab + global modal)
 // QuickActionsBar hidden for v1 — actions not yet implemented
@@ -97,7 +95,6 @@ export const MainDashboardScreen: React.FC = () => {
   const [userData, setUserData] = useState<OnboardingData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [showChecklist, setShowChecklist] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(() => {
     const now = new Date();
     return { year: now.getFullYear(), month: now.getMonth() };
@@ -208,17 +205,6 @@ export const MainDashboardScreen: React.FC = () => {
   useEffect(() => {
     onboardingContextDataRef.current = onboardingContextData;
   }, [onboardingContextData]);
-
-  useEffect(() => {
-    let isMounted = true;
-    void AsyncStorage.getItem('onboarding_checklist:dismissed').then((value) => {
-      if (!isMounted) return;
-      setShowChecklist(value !== 'true');
-    });
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
   // Ensure Home reflects latest profile/settings saves whenever the tab regains focus.
   useEffect(() => {
@@ -371,20 +357,6 @@ export const MainDashboardScreen: React.FC = () => {
     });
   }, [navigation]);
 
-  const handleOpenProfileIntroduction = useCallback(() => {
-    const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
-    rootNavigation?.navigate('Onboarding', {
-      screen: 'Introduction',
-      params: { entryPoint: 'settings' },
-    });
-  }, [navigation]);
-
-  const handleOpenEllieTab = useCallback(() => {
-    if (typeof navigation.navigate === 'function') {
-      navigation.navigate('Ellie' as never);
-    }
-  }, [navigation]);
-
   // Avatar change handler — persists new URI to AsyncStorage
   const handleAvatarChange = useCallback(
     async (newUri: string | null) => {
@@ -503,19 +475,6 @@ export const MainDashboardScreen: React.FC = () => {
           animationDelay={100}
           testID="dashboard-shift-status"
         />
-
-        {showChecklist && (
-          <OnboardingChecklist
-            userData={userData}
-            onAddShiftTimes={handleOpenShiftTimeSettings}
-            onCompleteProfile={handleOpenProfileIntroduction}
-            onAskEllie={handleOpenEllieTab}
-            onDismiss={() => {
-              void AsyncStorage.setItem('onboarding_checklist:dismissed', 'true');
-              setShowChecklist(false);
-            }}
-          />
-        )}
 
         {/* Monthly Calendar */}
         <MonthlyCalendarCard
