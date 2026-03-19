@@ -441,14 +441,17 @@
       "day": "Ishifu lasemini",
       "night": "Ishifu yasebusuku",
       "off": "Izinsuku Zokungasebenzi"
-    }
+    },
+    "title_named": "Ukuphi manje emjikelezweni wakho, {{name}}?",
+    "anticipation": "Sekuseduze. Isinyathelo esisodwa futhi sizokukhombisa unyaka wakho wonke."
   },
   "fifoPhaseSelector": {
     "title": {
       "workPattern": "Asebenza kanjani amashifu ngesikhathi somsebenzi wakho we-FIFO?",
       "swingConfig": "Lungiselela ukuhlukana kwakho kwe-swing",
       "block": "Ukuphi kumjikelezo wakho we-FIFO?",
-      "dayWithinBlock": "Iluphi usuku lwe-{{blockTitle}} okulo?"
+      "dayWithinBlock": "Iluphi usuku lwe-{{blockTitle}} okulo?",
+      "block_named": "Ingabe usemsebenzini noma usekhaya manje, {{name}}?"
     },
     "subtitle": {
       "workPattern": "Swayiphela kwesokudla ukuze ukhethe iphethini yakho yesivimbeli somsebenzi, kwesokunxele ukuze uthole inketho elandelayo, noma phezulu ukuze uthole ulwazi",
@@ -535,7 +538,8 @@
     },
     "transition": {
       "preparingCalendar": "Ilungiselela ikhalenda yakho..."
-    }
+    },
+    "anticipation": "Sekuseduze. Ukuthepha okukodwa futhi irosta yakho ye-FIFO isilungile."
   },
   "startDate": {
     "header": {

@@ -8,6 +8,7 @@ import { render, waitFor } from '@testing-library/react-native';
 import { PremiumPhaseSelectorScreen } from '../PremiumPhaseSelectorScreen';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
+import { asyncStorageService } from '@/services/AsyncStorageService';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -126,7 +127,11 @@ jest.mock('@/components/onboarding/premium/ProgressHeader', () => {
 const Stack = createNativeStackNavigator();
 
 // Helper to render with provider
-const renderWithProvider = (component: React.ReactElement) => {
+const renderWithProvider = (component: React.ReactElement, initialData = {}) => {
+  if (Object.keys(initialData).length > 0) {
+    jest.mocked(asyncStorageService.get).mockResolvedValue(initialData);
+  }
+
   return render(
     <NavigationContainer>
       <OnboardingProvider>
@@ -143,6 +148,7 @@ describe('PremiumPhaseSelectorScreen', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.mocked(asyncStorageService.get).mockResolvedValue(null);
   });
 
   describe('Initial Rendering', () => {
@@ -154,6 +160,17 @@ describe('PremiumPhaseSelectorScreen', () => {
     it('should render title for phase selection', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
       expect(getByText('What shift are you on right now?')).toBeTruthy();
+    });
+
+    it('should render personalized title and anticipation copy when a saved name exists', async () => {
+      const { findByText } = renderWithProvider(<PremiumPhaseSelectorScreen />, {
+        name: 'Ilyasu Seidu',
+      });
+
+      expect(await findByText('Where are you in your cycle right now, Ilyasu?')).toBeTruthy();
+      expect(
+        await findByText("Almost ready. One more step and we'll show you your full year.")
+      ).toBeTruthy();
     });
 
     it('should render subtitle with instructions', () => {

@@ -476,6 +476,8 @@
     "dayTitle": "Which day of {{selectedPhaseTitle}} are you on?",
     "preparing": "Preparing your calendar...",
     "title": "What shift are you on right now?",
+    "title_named": "Where are you in your cycle right now, {{name}}?",
+    "anticipation": "Almost ready. One more step and we'll show you your full year.",
     "dayOrdinal": "Day {{day}}",
     "list": {
       "or": "or"
@@ -493,8 +495,10 @@
       "workPattern": "How are shifts run during your FIFO work block?",
       "swingConfig": "Configure your swing split",
       "block": "Where are you in your FIFO cycle?",
+      "block_named": "Are you at site or at home right now, {{name}}?",
       "dayWithinBlock": "Which day of {{blockTitle}} are you on?"
     },
+    "anticipation": "Almost there. One more tap and your FIFO roster is ready.",
     "subtitle": {
       "workPattern": "Swipe right to choose your work-block pattern, left for next option, or up for info",
       "swingConfig": "Set how many day-shift and night-shift days you work before choosing your current block",

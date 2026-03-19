@@ -41,6 +41,7 @@ import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator'
 import type { RootStackParamList } from '@/navigation/AppNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
+import { Analytics } from '@/utils/analytics';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 import { PatternBuilderSlider } from '@/components/onboarding/premium/PatternBuilderSlider';
 
@@ -702,6 +703,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProp<OnboardingStackParamList, 'CustomPattern'>>();
   const { data, updateData } = useOnboarding();
+  const mountTime = useRef(Date.now());
   const isSettingsEntry = route.params?.entryPoint === 'settings';
   const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
   const isSettingsMode = isSettingsEntry && returnToMainOnSelect;
@@ -787,6 +789,12 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
       subscription.remove();
     };
   }, []);
+
+  useEffect(() => {
+    if (!isSettingsMode) {
+      Analytics.onboardingStepViewed('custom_pattern', ONBOARDING_STEPS.CUSTOM_PATTERN);
+    }
+  }, [isSettingsMode]);
 
   useEffect(() => {
     return () => {
@@ -914,6 +922,36 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
       );
     }
 
+    if (!isSettingsMode) {
+      if (shiftSystem === ShiftSystem.TWO_SHIFT) {
+        Analytics.onboardingQuestionAnswered({
+          question: 'days_on',
+          answer_value: daysOn.toString(),
+        });
+        Analytics.onboardingQuestionAnswered({
+          question: 'nights_on',
+          answer_value: nightsOn.toString(),
+        });
+      } else {
+        Analytics.onboardingQuestionAnswered({
+          question: 'morning_on',
+          answer_value: morningOn.toString(),
+        });
+        Analytics.onboardingQuestionAnswered({
+          question: 'afternoon_on',
+          answer_value: afternoonOn.toString(),
+        });
+        Analytics.onboardingQuestionAnswered({
+          question: 'night_on',
+          answer_value: nightOn.toString(),
+        });
+      }
+      Analytics.onboardingQuestionAnswered({
+        question: 'days_off',
+        answer_value: daysOff.toString(),
+      });
+      Analytics.onboardingStepCompleted('custom_pattern', Date.now() - mountTime.current);
+    }
     void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
       source: 'PremiumCustomPatternScreen.handleSave.success',
     });

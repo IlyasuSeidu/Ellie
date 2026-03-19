@@ -43,6 +43,7 @@ import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator'
 import type { RootStackParamList } from '@/navigation/AppNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
+import { Analytics } from '@/utils/analytics';
 import { ShiftPattern, type FIFOConfig } from '@/types';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 import { PatternBuilderSlider } from '@/components/onboarding/premium/PatternBuilderSlider';
@@ -582,6 +583,7 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProp<OnboardingStackParamList, 'FIFOCustomPattern'>>();
   const { data, updateData } = useOnboarding();
+  const mountTime = useRef(Date.now());
   const isSettingsEntry = route.params?.entryPoint === 'settings';
   const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
   const isSettingsMode = isSettingsEntry && returnToMainOnSelect;
@@ -662,6 +664,12 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
       subscription.remove();
     };
   }, []);
+
+  useEffect(() => {
+    if (!isSettingsMode) {
+      Analytics.onboardingStepViewed('fifo_custom_pattern', ONBOARDING_STEPS.FIFO_CUSTOM_PATTERN);
+    }
+  }, [isSettingsMode]);
 
   useEffect(() => {
     return () => {
@@ -784,6 +792,18 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
             fifoConfig,
           }
     );
+    if (!isSettingsMode) {
+      Analytics.onboardingQuestionAnswered({
+        question: 'work_block_days',
+        answer_value: workBlockDays.toString(),
+      });
+      Analytics.onboardingQuestionAnswered({
+        question: 'rest_block_days',
+        answer_value: restBlockDays.toString(),
+      });
+      Analytics.onboardingQuestionAnswered({ question: 'work_pattern', answer_value: workPattern });
+      Analytics.onboardingStepCompleted('fifo_custom_pattern', Date.now() - mountTime.current);
+    }
     void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
       source: 'PremiumFIFOCustomPatternScreen.handleContinue.success',
     });

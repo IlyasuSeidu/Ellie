@@ -908,17 +908,22 @@ const normalizePositiveInt = (value: unknown, fallback: number): number => {
 };
 
 export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
-  useEffect(() => {
-    Analytics.onboardingStepViewed('fifo_phase_selector', ONBOARDING_STEPS.FIFO_PHASE_SELECTOR);
-  }, []);
-
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<FIFOPhaseRouteProp>();
   const { data, updateData } = useOnboarding();
+  const mountTime = useRef(Date.now());
   const isSettingsEntry = route.params?.entryPoint === 'settings';
   const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
   const isSettingsMode = isSettingsEntry && returnToMainOnSelect;
+
+  const firstName = data.name?.split(' ')[0] ?? '';
+
+  useEffect(() => {
+    if (!isSettingsMode) {
+      Analytics.onboardingStepViewed('fifo_phase_selector', ONBOARDING_STEPS.FIFO_PHASE_SELECTOR);
+    }
+  }, [isSettingsMode]);
 
   const isCustomFIFOPattern = data.patternType === ShiftPattern.FIFO_CUSTOM;
   const [stage, setStage] = useState<SelectionStage>(
@@ -1400,6 +1405,15 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       isTransitioningRef.current = true;
       setIsTransitioning(true);
       updateData({ phaseOffset, fifoConfig });
+
+      if (!isSettingsMode) {
+        Analytics.onboardingQuestionAnswered({
+          question: 'day_in_phase',
+          answer_value: dayWithinBlock.toString(),
+        });
+        Analytics.onboardingStepCompleted('fifo_phase_selector', Date.now() - mountTime.current);
+      }
+
       void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
         source: 'PremiumFIFOPhaseSelectorScreen.handleDaySelect',
       });
@@ -1518,6 +1532,13 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       setSelectedBlockType(active.id);
       setSelectedBlockTitle(active.title);
 
+      if (!isSettingsMode) {
+        Analytics.onboardingQuestionAnswered({
+          question: 'current_phase',
+          answer_value: active.id,
+        });
+      }
+
       const totalDays = normalizePositiveInt(
         active.id === 'work' ? workBlockDays : restBlockDays,
         14
@@ -1558,6 +1579,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     handleContinueFromSwingConfig,
     currentCardIndex,
     currentCards,
+    isSettingsMode,
     isSwingSplitValid,
     restBlockDays,
     stage,
@@ -1672,9 +1694,14 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
               )
             : stage === SelectionStage.BLOCK
               ? String(
-                  t('fifoPhaseSelector.title.block', {
-                    defaultValue: 'Where are you in your FIFO cycle?',
-                  })
+                  firstName
+                    ? t('fifoPhaseSelector.title.block_named', {
+                        name: firstName,
+                        defaultValue: `Are you at site or at home right now, ${firstName}?`,
+                      })
+                    : t('fifoPhaseSelector.title.block', {
+                        defaultValue: 'Where are you in your FIFO cycle?',
+                      })
                 )
               : String(
                   t('fifoPhaseSelector.title.dayWithinBlock', {
@@ -1868,6 +1895,14 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
           </View>
         )}
       </>
+      {stage === SelectionStage.BLOCK && !isTransitioning ? (
+        <Text style={styles.anticipationText}>
+          {t('fifoPhaseSelector.anticipation', {
+            defaultValue: 'Almost there. One more tap and your FIFO roster is ready.',
+          })}
+        </Text>
+      ) : null}
+
       {isTransitioning ? (
         <View pointerEvents="none" style={styles.transitionOverlay}>
           <Text style={styles.transitionText}>
@@ -2115,6 +2150,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: theme.spacing.sm,
     marginBottom: theme.spacing.lg,
+  },
+  anticipationText: {
+    fontSize: 13,
+    color: theme.colors.dust,
+    textAlign: 'center',
+    paddingHorizontal: theme.spacing.xl,
+    marginTop: theme.spacing.sm,
+    opacity: 0.8,
   },
   transitionOverlay: {
     ...StyleSheet.absoluteFillObject,

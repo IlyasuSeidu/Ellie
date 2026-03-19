@@ -422,14 +422,17 @@
       "day": "Dagskof",
       "night": "Nagskof",
       "off": "Af dae"
-    }
+    },
+    "title_named": "Waar is jy nou in jou siklus, {{name}}?",
+    "anticipation": "Byna gereed. Nog een stap en ons wys jou volle jaar."
   },
   "fifoPhaseSelector": {
     "title": {
       "workPattern": "Hoe word skofte tydens jou EIEU-werkblok uitgevoer?",
       "swingConfig": "Stel jou swaaiverdeling op",
       "block": "Waar is jy in jou EIEU-siklus?",
-      "dayWithinBlock": "Op watter dag van {{blockTitle}} is jy?"
+      "dayWithinBlock": "Op watter dag van {{blockTitle}} is jy?",
+      "block_named": "Is jy nou op die terrein of by die huis, {{name}}?"
     },
     "subtitle": {
       "workPattern": "Swiep regs om jou werkblokpatroon te kies, links vir volgende opsie, of op vir inligting",
@@ -516,7 +519,8 @@
     },
     "transition": {
       "preparingCalendar": "Berei tans jou kalender voor..."
-    }
+    },
+    "anticipation": "Byna daar. Nog een tik en jou FIFO-rooster is gereed."
   },
   "startDate": {
     "header": {

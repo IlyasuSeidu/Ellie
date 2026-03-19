@@ -441,14 +441,17 @@
       "day": "Turno de día",
       "night": "Turno de noche",
       "off": "Días libres"
-    }
+    },
+    "title_named": "¿En qué parte de tu ciclo estás ahora, {{name}}?",
+    "anticipation": "Casi listo. Un paso más y te mostraremos tu año completo."
   },
   "fifoPhaseSelector": {
     "title": {
       "workPattern": "¿Cómo se trabajan los turnos durante tu bloque FIFO en sitio?",
       "swingConfig": "Configura tu reparto de swing",
       "block": "¿Dónde estás en tu ciclo FIFO?",
-      "dayWithinBlock": "¿Qué día de {{blockTitle}} estás cursando?"
+      "dayWithinBlock": "¿Qué día de {{blockTitle}} estás cursando?",
+      "block_named": "¿Estás en la mina o en casa ahora mismo, {{name}}?"
     },
     "subtitle": {
       "workPattern": "Desliza a la derecha para elegir el patrón de trabajo, a la izquierda para la siguiente opción, o hacia arriba para más información",
@@ -535,7 +538,8 @@
     },
     "transition": {
       "preparingCalendar": "Preparando tu calendario..."
-    }
+    },
+    "anticipation": "Ya casi. Un toque más y tu roster FIFO estará listo."
   },
   "startDate": {
     "header": {

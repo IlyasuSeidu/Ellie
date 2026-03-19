@@ -445,14 +445,17 @@
       "day": "Quart de jour",
       "night": "Quart de nuit",
       "off": "Jours fériés"
-    }
+    },
+    "title_named": "Où en es-tu dans ton cycle en ce moment, {{name}} ?",
+    "anticipation": "On y est presque. Encore une étape et nous afficherons toute votre année."
   },
   "fifoPhaseSelector": {
     "title": {
       "workPattern": "Comment se déroulent les équipes pendant votre bloc de travail FIFO ?",
       "swingConfig": "Configurez votre swing split",
       "block": "Où en es-tu dans ton cycle FIFO ?",
-      "dayWithinBlock": "Quel jour du {{blockTitle}} êtes-vous ?"
+      "dayWithinBlock": "Quel jour du {{blockTitle}} êtes-vous ?",
+      "block_named": "Es-tu sur site ou à la maison en ce moment, {{name}} ?"
     },
     "subtitle": {
       "workPattern": "Faites glisser votre doigt vers la droite pour choisir votre modèle de bloc de travail, vers la gauche pour l'option suivante ou vers le haut pour plus d'informations.",
@@ -539,7 +542,8 @@
     },
     "transition": {
       "preparingCalendar": "Préparez votre calendrier..."
-    }
+    },
+    "anticipation": "Presque fini. Encore un appui et votre roulement FIFO sera prêt."
   },
   "startDate": {
     "header": {

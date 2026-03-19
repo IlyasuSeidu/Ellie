@@ -6,6 +6,7 @@ import { PremiumFIFOPhaseSelectorScreen } from '../PremiumFIFOPhaseSelectorScree
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
+import { ShiftPattern } from '@/types';
 
 jest.mock('@/services/AsyncStorageService', () => ({
   asyncStorageService: {
@@ -183,7 +184,11 @@ jest.mock('@/components/onboarding/premium/PatternBuilderSlider', () => {
   };
 });
 
-function renderWithContext() {
+function renderWithContext(initialData = {}) {
+  if (Object.keys(initialData).length > 0) {
+    (asyncStorageService.get as jest.Mock).mockResolvedValue(initialData);
+  }
+
   return render(
     <OnboardingProvider>
       <PremiumFIFOPhaseSelectorScreen />
@@ -287,6 +292,7 @@ const toLocalDateKey = (date: Date): string => {
 describe('PremiumFIFOPhaseSelectorScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    (asyncStorageService.get as jest.Mock).mockResolvedValue(null);
     mockRouteParams = undefined;
     mockAddListener.mockImplementation(() => jest.fn());
     mockGetParent.mockReturnValue({
@@ -309,6 +315,23 @@ describe('PremiumFIFOPhaseSelectorScreen', () => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const gestureModule = require('react-native-gesture-handler');
     gestureModule.__resetGestures();
+  });
+
+  it('renders personalized block title and anticipation text for FIFO custom onboarding', async () => {
+    const { findByText } = renderWithContext({
+      name: 'Ilyasu Seidu',
+      patternType: ShiftPattern.FIFO_CUSTOM,
+      fifoConfig: {
+        workBlockDays: 14,
+        restBlockDays: 14,
+        workBlockPattern: 'straight-days',
+      },
+    });
+
+    expect(await findByText('Are you at site or at home right now, Ilyasu?')).toBeTruthy();
+    expect(
+      await findByText('Almost there. One more tap and your FIFO roster is ready.')
+    ).toBeTruthy();
   });
 
   afterEach(() => {

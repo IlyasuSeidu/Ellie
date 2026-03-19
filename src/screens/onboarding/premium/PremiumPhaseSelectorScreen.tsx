@@ -817,17 +817,22 @@ const ProgressDots: React.FC<ProgressDotsProps> = ({ total, current }) => {
 
 // Main Screen Component
 export const PremiumPhaseSelectorScreen: React.FC = () => {
-  useEffect(() => {
-    Analytics.onboardingStepViewed('phase_selector', ONBOARDING_STEPS.PHASE_SELECTOR);
-  }, []);
-
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<PhaseRouteProp>();
   const { data, updateData } = useOnboarding();
+  const mountTime = useRef(Date.now());
   const isSettingsEntry = route.params?.entryPoint === 'settings';
   const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
   const isSettingsMode = isSettingsEntry && returnToMainOnSelect;
+
+  const firstName = data.name?.split(' ')[0] ?? '';
+
+  useEffect(() => {
+    if (!isSettingsMode) {
+      Analytics.onboardingStepViewed('phase_selector', ONBOARDING_STEPS.PHASE_SELECTOR);
+    }
+  }, [isSettingsMode]);
 
   // State
   const [stage, setStage] = useState<SelectionStage>(SelectionStage.PHASE);
@@ -1263,6 +1268,14 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
 
       updateData({ phaseOffset });
 
+      if (!isSettingsMode) {
+        Analytics.onboardingQuestionAnswered({
+          question: 'day_in_phase',
+          answer_value: dayWithinPhase.toString(),
+        });
+        Analytics.onboardingStepCompleted('phase_selector', Date.now() - mountTime.current);
+      }
+
       void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
         source: 'PremiumPhaseSelectorScreen.calculateAndNavigate',
       });
@@ -1314,6 +1327,13 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
       setSelectedPhase(selectedCard.phase);
       setSelectedPhaseTitle(selectedCard.title);
 
+      if (!isSettingsMode) {
+        Analytics.onboardingQuestionAnswered({
+          question: 'current_phase',
+          answer_value: selectedCard.phase,
+        });
+      }
+
       if (selectedCard.phaseLength > 1) {
         // Multi-day phase: Generate day cards and transition to stage 2
         const cards: DayCardData[] = Array.from({ length: selectedCard.phaseLength }, (_, i) => ({
@@ -1349,7 +1369,16 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
       setSelectedDay(selectedCard.dayNumber);
       calculateAndNavigate(selectedPhase, selectedCard.dayNumber);
     }
-  }, [stage, phaseCards, dayCards, currentCardIndex, selectedPhase, calculateAndNavigate, t]);
+  }, [
+    stage,
+    phaseCards,
+    dayCards,
+    currentCardIndex,
+    isSettingsMode,
+    selectedPhase,
+    calculateAndNavigate,
+    t,
+  ]);
 
   // Handle swipe left (skip)
   const handleSwipeLeft = useCallback(() => {
@@ -1420,7 +1449,12 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
       {/* Title */}
       <Animated.Text style={[styles.title, titleAnimatedStyle]}>
         {stage === SelectionStage.PHASE
-          ? t('phaseSelector.title', { defaultValue: 'What shift are you on right now?' })
+          ? firstName
+            ? t('phaseSelector.title_named', {
+                name: firstName,
+                defaultValue: `Where are you in your cycle right now, ${firstName}?`,
+              })
+            : t('phaseSelector.title', { defaultValue: 'What shift are you on right now?' })
           : t('phaseSelector.dayTitle', {
               selectedPhaseTitle,
               defaultValue: `Which day of ${selectedPhaseTitle} are you on?`,
@@ -1466,6 +1500,14 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
           />
         ))}
       </View>
+
+      {stage === SelectionStage.PHASE && !isTransitioning ? (
+        <Text style={styles.anticipationText}>
+          {t('phaseSelector.anticipation', {
+            defaultValue: "Almost ready. One more step and we'll show you your full year.",
+          })}
+        </Text>
+      ) : null}
 
       {isTransitioning ? (
         <View pointerEvents="none" style={styles.transitionOverlay}>
@@ -1559,6 +1601,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: theme.spacing.xl,
+  },
+  anticipationText: {
+    fontSize: 13,
+    color: theme.colors.dust,
+    textAlign: 'center',
+    paddingHorizontal: theme.spacing.xl,
+    marginTop: theme.spacing.sm,
+    opacity: 0.8,
   },
   transitionOverlay: {
     ...StyleSheet.absoluteFillObject,

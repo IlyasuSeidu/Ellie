@@ -436,14 +436,17 @@
       "day": "Shift siang",
       "night": "Shift malam",
       "off": "Hari Libur"
-    }
+    },
+    "title_named": "Anda sedang berada di bagian mana dari siklus Anda, {{name}}?",
+    "anticipation": "Hampir siap. Satu langkah lagi dan kami akan menampilkan setahun penuh Anda."
   },
   "fifoPhaseSelector": {
     "title": {
       "workPattern": "Bagaimana shift dijalankan selama blok kerja FIFO Anda?",
       "swingConfig": "Konfigurasikan ayunan Anda",
       "block": "Di manakah Anda dalam siklus FIFO Anda?",
-      "dayWithinBlock": "Anda berada di hari {{blockTitle}} yang mana?"
+      "dayWithinBlock": "Anda berada di hari {{blockTitle}} yang mana?",
+      "block_named": "Apakah Anda sedang di lokasi atau di rumah sekarang, {{name}}?"
     },
     "subtitle": {
       "workPattern": "Gesek ke kanan untuk memilih pola blok kerja Anda, ke kiri untuk opsi berikutnya, atau ke atas untuk info",
@@ -530,7 +533,8 @@
     },
     "transition": {
       "preparingCalendar": "Mempersiapkan kalender Anda..."
-    }
+    },
+    "anticipation": "Hampir selesai. Satu ketukan lagi dan roster FIFO Anda siap."
   },
   "startDate": {
     "header": {

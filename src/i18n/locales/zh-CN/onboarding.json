@@ -385,14 +385,17 @@
       "day": "白班",
       "night": "夜班",
       "off": "休息日"
-    }
+    },
+    "title_named": "{{name}}，你现在处于轮班周期的哪一步？",
+    "anticipation": "快好了。再一步，我们就会显示你完整的一年。"
   },
   "fifoPhaseSelector": {
     "title": {
       "workPattern": "在 FIFO 工作块期间如何进行轮班？",
       "swingConfig": "配置你的挥杆分割",
       "block": "您处于 FIFO 周期的哪个阶段？",
-      "dayWithinBlock": "您在 {{blockTitle}} 的哪一天？"
+      "dayWithinBlock": "您在 {{blockTitle}} 的哪一天？",
+      "block_named": "{{name}}，你现在是在矿区还是在家？"
     },
     "subtitle": {
       "workPattern": "向右滑动以选择您的工作块模式，向左滑动以选择下一个选项，或向上滑动以获取信息",
@@ -479,7 +482,8 @@
     },
     "transition": {
       "preparingCalendar": "正在准备您的日历..."
-    }
+    },
+    "anticipation": "快完成了。再点一下，你的 FIFO 排班就准备好了。"
   },
   "startDate": {
     "header": {
