@@ -251,7 +251,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
   testID = 'premium-completion-screen',
 }) => {
   useEffect(() => {
-    Analytics.onboardingStepViewed('completion', 8);
+    Analytics.onboardingStepViewed('completion', ONBOARDING_STEPS.COMPLETION);
   }, []);
 
   const { t, i18n } = useTranslation('onboarding');

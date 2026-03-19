@@ -909,7 +909,7 @@ const normalizePositiveInt = (value: unknown, fallback: number): number => {
 
 export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
   useEffect(() => {
-    Analytics.onboardingStepViewed('fifo_phase_selector', 5);
+    Analytics.onboardingStepViewed('fifo_phase_selector', ONBOARDING_STEPS.FIFO_PHASE_SELECTOR);
   }, []);
 
   const { t } = useTranslation('onboarding');

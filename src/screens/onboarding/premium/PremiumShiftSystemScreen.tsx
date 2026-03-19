@@ -666,7 +666,7 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
   testID = 'premium-shift-system-screen',
 }) => {
   useEffect(() => {
-    Analytics.onboardingStepViewed('shift_system', 2);
+    Analytics.onboardingStepViewed('shift_system', ONBOARDING_STEPS.SHIFT_SYSTEM);
   }, []);
 
   const { t } = useTranslation('onboarding');

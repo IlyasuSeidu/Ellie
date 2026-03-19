@@ -1052,5 +1052,24 @@
       "nightShiftsThisMonth": "Mangaki amashifu ebusuku enginawo kule nyanga?"
     },
     "buttonLabel": "Sawubona Ellie"
+  },
+  "painHook": {
+    "title": "Yini enzima kakhulu ngohlelo lwakho manje?",
+    "subtitle": "Sizokwenza Ellie ihambisane nalokho okubaluleke kakhulu kuwe.",
+    "options": {
+      "cycle_lost": "Ngiyadideka ukuthi ngikuphi kumjikelezo wami",
+      "wrong_alarm": "Sengike ngamisa i-alamu yeshifu engalungile",
+      "days_off": "Angikwazi ukuhlela kalula ngezinsuku zami zokuphumula",
+      "family": "Ngiphuthelwa imicimbi ebengingayihlelela kusenesikhathi",
+      "mental_math": "Ngihlala ngibala ngekhanda"
+    },
+    "subs": {
+      "cycle_lost": "Angiqiniseki ukuthi ngikuphi ngosuku lohlelo lwami",
+      "wrong_alarm": "Kusasa ishifu lasemini noma namuhla ebusuku ishifu yasebusuku?",
+      "days_off": "Kunzima ukuhlela izinto uma ungazi uhlelo lwakho",
+      "family": "Izinsuku zokuzalwa, imicimbi yesikole, ama-aphoyintimenti",
+      "mental_math": "Ngibala izinsuku ezizayo ukuze ngazi ukuthi ngisebenza nini"
+    },
+    "cta": "Qhubeka"
   }
 }

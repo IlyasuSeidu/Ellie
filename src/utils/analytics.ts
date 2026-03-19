@@ -55,6 +55,8 @@ async function safeCall(
 // Typed event names — prevents typos and keeps the event schema consistent
 export type OnboardingStep =
   | 'welcome'
+  | 'pain_hook'
+  | 'introduction'
   | 'shift_system'
   | 'roster_type'
   | 'shift_pattern'
@@ -85,6 +87,14 @@ export const Analytics = {
     void safeCall(
       (client) => client.logEvent('onboarding_started', params),
       'onboarding_started',
+      params
+    ),
+
+  // Fired when user answers a qualitative question (e.g. pain hook)
+  onboardingQuestionAnswered: (params: { question: string; answer_value: string }) =>
+    void safeCall(
+      (client) => client.logEvent('onboarding_question_answered', params),
+      'onboarding_question_answered',
       params
     ),
 

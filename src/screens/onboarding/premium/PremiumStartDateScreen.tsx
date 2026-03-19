@@ -2421,7 +2421,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   testID = 'premium-start-date-screen',
 }) => {
   useEffect(() => {
-    Analytics.onboardingStepViewed('start_date', 6);
+    Analytics.onboardingStepViewed('start_date', ONBOARDING_STEPS.START_DATE);
   }, []);
 
   const { t, i18n } = useTranslation('onboarding');

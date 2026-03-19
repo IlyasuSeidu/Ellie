@@ -1056,5 +1056,24 @@
       "nightShiftsThisMonth": "Combien de postes de nuit ce mois-ci ?"
     },
     "buttonLabel": "Salut Ellie"
+  },
+  "painHook": {
+    "title": "Quelle est la partie la plus difficile de votre roulement en ce moment ?",
+    "subtitle": "Nous personnaliserons Ellie selon ce qui compte le plus pour vous.",
+    "options": {
+      "cycle_lost": "Je perds le fil de ma position dans mon cycle",
+      "wrong_alarm": "J'ai réglé mon alarme pour la mauvaise équipe",
+      "days_off": "Je ne peux pas organiser facilement mes jours de repos",
+      "family": "Je manque des événements que j'aurais pu prévoir",
+      "mental_math": "Je fais toujours des calculs dans ma tête"
+    },
+    "subs": {
+      "cycle_lost": "Je ne sais jamais vraiment à quel jour de mon roulement j'en suis",
+      "wrong_alarm": "Équipe du matin demain ou équipe de nuit ce soir ?",
+      "days_off": "Difficile de prévoir quoi que ce soit quand vous ne connaissez pas votre roulement",
+      "family": "Anniversaires, événements scolaires, rendez-vous",
+      "mental_math": "Je compte les jours pour savoir quand je travaille"
+    },
+    "cta": "Continuer"
   }
 }

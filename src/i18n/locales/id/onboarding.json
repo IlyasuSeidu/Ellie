@@ -1047,5 +1047,24 @@
       "nightShiftsThisMonth": "Berapa shift malam saya bulan ini?"
     },
     "buttonLabel": "Hai Ellie"
+  },
+  "painHook": {
+    "title": "Apa bagian tersulit dari roster Anda saat ini?",
+    "subtitle": "Kami akan menyesuaikan Ellie dengan hal yang paling penting bagi Anda.",
+    "options": {
+      "cycle_lost": "Saya kehilangan jejak posisi saya dalam siklus",
+      "wrong_alarm": "Saya pernah memasang alarm untuk shift yang salah",
+      "days_off": "Saya sulit merencanakan sesuatu di sekitar hari libur saya",
+      "family": "Saya melewatkan acara yang sebenarnya bisa saya rencanakan",
+      "mental_math": "Saya terus menghitung di kepala"
+    },
+    "subs": {
+      "cycle_lost": "Tidak pernah yakin hari roster ke berapa sekarang",
+      "wrong_alarm": "Shift siang besok atau shift malam nanti?",
+      "days_off": "Sulit membuat rencana kalau Anda tidak tahu roster Anda",
+      "family": "Ulang tahun, acara sekolah, janji temu",
+      "mental_math": "Menghitung maju untuk tahu hari kerja saya"
+    },
+    "cta": "Lanjutkan"
   }
 }

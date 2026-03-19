@@ -114,7 +114,7 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
     if (onContinue) {
       onContinue();
     } else {
-      navigation.navigate('ShiftSystem');
+      navigation.navigate('PainHook');
     }
   };
 

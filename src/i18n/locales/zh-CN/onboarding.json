@@ -996,5 +996,24 @@
       "nightShiftsThisMonth": "我这个月有多少个夜班？"
     },
     "buttonLabel": "你好 Ellie"
+  },
+  "painHook": {
+    "title": "你现在觉得排班里最难的是什么？",
+    "subtitle": "我们会围绕你最在意的事情来个性化 Ellie。",
+    "options": {
+      "cycle_lost": "我会搞不清自己现在处于哪个轮班阶段",
+      "wrong_alarm": "我曾把闹钟设成错误的班次",
+      "days_off": "我很难围绕休息日安排计划",
+      "family": "我会错过本来可以提前安排的活动",
+      "mental_math": "我总是在心里算来算去"
+    },
+    "subs": {
+      "cycle_lost": "总是不确定自己现在是排班的第几天",
+      "wrong_alarm": "明天是白班，还是今晚是夜班？",
+      "days_off": "不知道排班时，很难安排任何事情",
+      "family": "生日、学校活动、预约",
+      "mental_math": "一直往后数天数，想知道哪天要上班"
+    },
+    "cta": "继续"
   }
 }

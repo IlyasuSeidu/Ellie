@@ -1002,7 +1002,7 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
   testID = 'premium-shift-pattern-screen',
 }) => {
   useEffect(() => {
-    Analytics.onboardingStepViewed('shift_pattern', 4);
+    Analytics.onboardingStepViewed('shift_pattern', ONBOARDING_STEPS.SHIFT_PATTERN);
   }, []);
 
   const { t } = useTranslation('onboarding');

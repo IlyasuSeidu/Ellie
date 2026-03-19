@@ -15,6 +15,9 @@ jest.mock('@react-native-async-storage/async-storage', () =>
 jest.mock('@/screens/onboarding/premium/PremiumWelcomeScreen', () => ({
   PremiumWelcomeScreen: () => null,
 }));
+jest.mock('@/screens/onboarding/premium/PremiumPainHookScreen', () => ({
+  PremiumPainHookScreen: () => null,
+}));
 jest.mock('@/screens/onboarding/premium/PremiumIntroductionScreen', () => ({
   PremiumIntroductionScreen: () => null,
 }));
@@ -41,6 +44,9 @@ jest.mock('@/screens/onboarding/premium/PremiumFIFOPhaseSelectorScreen', () => (
 }));
 jest.mock('@/screens/onboarding/premium/PremiumStartDateScreen', () => ({
   PremiumStartDateScreen: () => null,
+}));
+jest.mock('@/screens/onboarding/premium/PremiumAhaMomentScreen', () => ({
+  PremiumAhaMomentScreen: () => null,
 }));
 jest.mock('@/screens/onboarding/premium/PremiumShiftTimeInputScreen', () => ({
   PremiumShiftTimeInputScreen: () => null,
@@ -77,10 +83,11 @@ describe('OnboardingNavigator', () => {
   });
 
   describe('TypeScript Types', () => {
-    it('should have correct ParamList with 12 routes', () => {
+    it('should have correct ParamList with 14 routes', () => {
       type ExpectedRoutes = keyof OnboardingStackParamList;
       const routes: ExpectedRoutes[] = [
         'Welcome',
+        'PainHook',
         'Introduction',
         'ShiftSystem',
         'RosterType',
@@ -90,12 +97,13 @@ describe('OnboardingNavigator', () => {
         'PhaseSelector',
         'FIFOPhaseSelector',
         'StartDate',
+        'AhaMoment',
         'ShiftTimeInput',
         'Completion',
       ];
 
       // Verify all routes exist
-      expect(routes.length).toBe(12);
+      expect(routes.length).toBe(14);
 
       // Verify each route is valid (TypeScript will catch type errors at compile time)
       routes.forEach((route) => {
@@ -106,6 +114,7 @@ describe('OnboardingNavigator', () => {
     it('should type params correctly for onboarding and settings-entry routes', () => {
       // Type check for base routes
       type WelcomeParams = OnboardingStackParamList['Welcome'];
+      type PainHookParams = OnboardingStackParamList['PainHook'];
       type IntroParams = OnboardingStackParamList['Introduction'];
       type ShiftSystemParams = OnboardingStackParamList['ShiftSystem'];
       type RosterTypeParams = OnboardingStackParamList['RosterType'];
@@ -115,10 +124,12 @@ describe('OnboardingNavigator', () => {
       type PhaseSelectorParams = OnboardingStackParamList['PhaseSelector'];
       type FIFOPhaseSelectorParams = OnboardingStackParamList['FIFOPhaseSelector'];
       type StartDateParams = OnboardingStackParamList['StartDate'];
+      type AhaMomentParams = OnboardingStackParamList['AhaMoment'];
       type ShiftTimeInputParams = OnboardingStackParamList['ShiftTimeInput'];
       type CompletionParams = OnboardingStackParamList['Completion'];
 
       const welcomeParams: WelcomeParams = undefined;
+      const painHookParams: PainHookParams = undefined;
       const introParams: IntroParams = undefined;
       const shiftSystemParams: ShiftSystemParams = undefined;
       const rosterTypeParams: RosterTypeParams = undefined;
@@ -158,6 +169,7 @@ describe('OnboardingNavigator', () => {
         entryPoint: 'settings',
         returnToMainOnSelect: true,
       };
+      const ahaMomentParams: AhaMomentParams = undefined;
       const shiftTimeInputParams: ShiftTimeInputParams = undefined;
       const shiftTimeInputSettingsParams: ShiftTimeInputParams = {
         entryPoint: 'settings',
@@ -167,6 +179,7 @@ describe('OnboardingNavigator', () => {
       const completionParams: CompletionParams = undefined;
 
       expect(welcomeParams).toBeUndefined();
+      expect(painHookParams).toBeUndefined();
       expect(introParams).toBeUndefined();
       expect(shiftSystemParams).toBeUndefined();
       expect(rosterTypeParams).toBeUndefined();
@@ -180,6 +193,7 @@ describe('OnboardingNavigator', () => {
       expect(fifoPhaseSelectorParams).toBeUndefined();
       expect(startDateParams).toBeUndefined();
       expect(startDateSettingsParams).toBeTruthy();
+      expect(ahaMomentParams).toBeUndefined();
       expect(shiftTimeInputParams).toBeUndefined();
       expect(shiftTimeInputSettingsParams).toBeTruthy();
       expect(completionParams).toBeUndefined();

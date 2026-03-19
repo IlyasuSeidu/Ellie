@@ -25,7 +25,8 @@ const NAVIGATION_FLOW: Record<
   keyof OnboardingStackParamList,
   (data?: OnboardingData) => keyof OnboardingStackParamList | null
 > = {
-  Welcome: () => 'ShiftSystem',
+  Welcome: () => 'PainHook',
+  PainHook: () => 'Introduction',
   Introduction: () => 'ShiftSystem',
   ShiftSystem: (data) => {
     // 3-shift systems only support rotating rosters — skip RosterType selection

@@ -382,7 +382,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   testID = 'premium-shift-time-input-screen',
 }) => {
   useEffect(() => {
-    Analytics.onboardingStepViewed('shift_time_input', 8);
+    Analytics.onboardingStepViewed('shift_time_input', ONBOARDING_STEPS.SHIFT_TIME_INPUT);
   }, []);
 
   const { t } = useTranslation('onboarding');

@@ -1033,5 +1033,24 @@
       "nightShiftsThisMonth": "Hoeveel nagskofte het ek hierdie maand?"
     },
     "buttonLabel": "Hallo Ellie"
+  },
+  "painHook": {
+    "title": "Wat is nou die moeilikste deel van jou rooster?",
+    "subtitle": "Ons sal Ellie aanpas rondom wat vir jou die meeste saak maak.",
+    "options": {
+      "cycle_lost": "Ek verloor tred met waar ek in my siklus is",
+      "wrong_alarm": "Ek het my alarm vir die verkeerde skof gestel",
+      "days_off": "Ek kan nie maklik rondom my afdae beplan nie",
+      "family": "Ek mis geleenthede waarvoor ek kon beplan het",
+      "mental_math": "Ek doen heeltyd somme in my kop"
+    },
+    "subs": {
+      "cycle_lost": "Nooit seker watter dag van jou rooster jy op is nie",
+      "wrong_alarm": "Dag skof môre of nagskof vanaand?",
+      "days_off": "Moeilik om dinge te reël as jy nie jou rooster ken nie",
+      "family": "Verjaarsdae, skoolgeleenthede, afsprake",
+      "mental_math": "Tel vorentoe om uit te werk watter dag jy werk"
+    },
+    "cta": "Gaan voort"
   }
 }

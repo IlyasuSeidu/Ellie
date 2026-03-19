@@ -1042,5 +1042,24 @@
       "nightShiftsThisMonth": "Quantos turnos noturnos tenho este mês?"
     },
     "buttonLabel": "Oi Ellie"
+  },
+  "painHook": {
+    "title": "Qual é a parte mais difícil da sua escala agora?",
+    "subtitle": "Vamos personalizar Ellie em torno do que mais importa para você.",
+    "options": {
+      "cycle_lost": "Perco a noção de onde estou no meu ciclo",
+      "wrong_alarm": "Já coloquei o alarme para o turno errado",
+      "days_off": "Não consigo me planejar bem em torno das minhas folgas",
+      "family": "Perco eventos que eu poderia ter planejado",
+      "mental_math": "Vivo fazendo conta de cabeça"
+    },
+    "subs": {
+      "cycle_lost": "Nunca tenho certeza de qual dia da escala estou",
+      "wrong_alarm": "Turno de dia amanhã ou turno da noite hoje?",
+      "days_off": "É difícil marcar coisas quando você não conhece sua escala",
+      "family": "Aniversários, eventos escolares, consultas",
+      "mental_math": "Contando os dias para descobrir quando vou trabalhar"
+    },
+    "cta": "Continuar"
   }
 }

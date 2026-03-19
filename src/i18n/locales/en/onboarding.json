@@ -9,6 +9,25 @@
       "cancelAnytime": "Cancel anytime"
     }
   },
+  "painHook": {
+    "title": "What's the hardest part of your roster right now?",
+    "subtitle": "We'll personalise Ellie around what matters most to you.",
+    "options": {
+      "cycle_lost": "I lose track of where I am in my cycle",
+      "wrong_alarm": "I've set my alarm for the wrong shift",
+      "days_off": "I can't plan around my days off easily",
+      "family": "I miss events I could have planned around",
+      "mental_math": "I'm always doing mental math"
+    },
+    "subs": {
+      "cycle_lost": "Never sure which day of your roster you're on",
+      "wrong_alarm": "Day shift tomorrow or night shift tonight?",
+      "days_off": "Hard to book things when you don't know your roster",
+      "family": "Birthdays, school events, appointments",
+      "mental_math": "Counting forward to figure out what day you're working"
+    },
+    "cta": "Continue"
+  },
   "common": {
     "swipeHint": "Swipe right to select, left to see next, or up for more info",
     "reviewAgain": "Please review options again to make your selection",

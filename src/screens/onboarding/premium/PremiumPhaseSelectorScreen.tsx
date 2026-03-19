@@ -818,7 +818,7 @@ const ProgressDots: React.FC<ProgressDotsProps> = ({ total, current }) => {
 // Main Screen Component
 export const PremiumPhaseSelectorScreen: React.FC = () => {
   useEffect(() => {
-    Analytics.onboardingStepViewed('phase_selector', 5);
+    Analytics.onboardingStepViewed('phase_selector', ONBOARDING_STEPS.PHASE_SELECTOR);
   }, []);
 
   const { t } = useTranslation('onboarding');

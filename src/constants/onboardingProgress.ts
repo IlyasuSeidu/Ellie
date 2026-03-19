@@ -2,28 +2,29 @@
  * Onboarding Progress Configuration
  *
  * Centralized source of truth for onboarding step numbers.
- * Initial flow now skips Introduction and routes:
- * Welcome -> ShiftSystem -> RosterType -> ShiftPattern -> Phase Selector -> StartDate
- * -> AhaMoment -> ShiftTimeInput -> Completion.
+ * Initial flow routes:
+ * Welcome -> PainHook -> Introduction -> ShiftSystem -> RosterType -> ShiftPattern
+ * -> Phase Selector -> StartDate -> AhaMoment -> ShiftTimeInput -> Completion.
  */
 
 export const ONBOARDING_STEPS = {
   WELCOME: 1,
-  // Introduction removed from initial flow — no step number
-  SHIFT_SYSTEM: 2,
-  ROSTER_TYPE: 3,
-  SHIFT_PATTERN: 4,
-  CUSTOM_PATTERN: 4, // Conditional — same visual step as SHIFT_PATTERN
-  FIFO_CUSTOM_PATTERN: 4, // Conditional — same visual step as SHIFT_PATTERN (FIFO)
-  PHASE_SELECTOR: 5, // SWIPE — DO NOT TOUCH THE SCREEN
-  FIFO_PHASE_SELECTOR: 5, // SWIPE — DO NOT TOUCH THE SCREEN
-  START_DATE: 6,
-  AHA_MOMENT: 7, // New paywall gateway screen
-  SHIFT_TIME_INPUT: 8,
-  COMPLETION: 8,
+  PAIN_HOOK: 2,
+  INTRODUCTION: 3,
+  SHIFT_SYSTEM: 4,
+  ROSTER_TYPE: 5,
+  SHIFT_PATTERN: 6,
+  CUSTOM_PATTERN: 6, // Conditional — same visual step as SHIFT_PATTERN
+  FIFO_CUSTOM_PATTERN: 6, // Conditional — same visual step as SHIFT_PATTERN (FIFO)
+  PHASE_SELECTOR: 7, // SWIPE — DO NOT TOUCH THE SCREEN
+  FIFO_PHASE_SELECTOR: 7, // SWIPE — DO NOT TOUCH THE SCREEN
+  START_DATE: 8,
+  AHA_MOMENT: 9, // Paywall gateway screen
+  SHIFT_TIME_INPUT: 10,
+  COMPLETION: 10,
 } as const;
 
-export const TOTAL_ONBOARDING_STEPS = 7;
+export const TOTAL_ONBOARDING_STEPS = 10;
 
 /**
  * Get step number for a given screen

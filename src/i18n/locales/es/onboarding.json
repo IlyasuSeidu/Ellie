@@ -1052,5 +1052,24 @@
       "nightShiftsThisMonth": "¿Cuántos turnos nocturnos tengo este mes?"
     },
     "buttonLabel": "Hola Ellie"
+  },
+  "painHook": {
+    "title": "¿Qué es lo más difícil de tu roster en este momento?",
+    "subtitle": "Personalizaremos Ellie según lo que más te importa.",
+    "options": {
+      "cycle_lost": "Pierdo la cuenta de dónde voy en mi ciclo",
+      "wrong_alarm": "He puesto la alarma para el turno equivocado",
+      "days_off": "No puedo planificar bien mis días libres",
+      "family": "Me pierdo eventos que podría haber planificado",
+      "mental_math": "Siempre estoy haciendo cálculos mentales"
+    },
+    "subs": {
+      "cycle_lost": "Nunca estoy seguro de qué día de mi roster me toca",
+      "wrong_alarm": "¿Turno de día mañana o turno de noche esta noche?",
+      "days_off": "Es difícil organizar cosas cuando no conoces tu roster",
+      "family": "Cumpleaños, eventos escolares, citas",
+      "mental_math": "Contando días hacia adelante para saber cuándo trabajo"
+    },
+    "cta": "Continuar"
   }
 }

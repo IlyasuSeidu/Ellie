@@ -36,6 +36,7 @@ import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
+import { Analytics } from '@/utils/analytics';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList, 'Introduction'>;
 
@@ -126,6 +127,10 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
       setReducedMotion(isReduceMotionEnabled);
     };
     checkReducedMotion();
+  }, []);
+
+  useEffect(() => {
+    Analytics.onboardingStepViewed('introduction', ONBOARDING_STEPS.INTRODUCTION);
   }, []);
 
   // Add bot message with typing indicator
@@ -622,7 +627,7 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
     <View style={styles.container} testID={testID}>
       {/* Progress Header */}
       <ProgressHeader
-        currentStep={ONBOARDING_STEPS.SHIFT_SYSTEM}
+        currentStep={ONBOARDING_STEPS.INTRODUCTION}
         totalSteps={TOTAL_ONBOARDING_STEPS}
       />
 

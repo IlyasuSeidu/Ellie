@@ -676,7 +676,7 @@ const ProgressDots: React.FC<ProgressDotsProps> = ({
 // Main Screen Component
 export const PremiumRosterTypeScreen: React.FC = () => {
   useEffect(() => {
-    Analytics.onboardingStepViewed('roster_type', 3);
+    Analytics.onboardingStepViewed('roster_type', ONBOARDING_STEPS.ROSTER_TYPE);
   }, []);
 
   const { t } = useTranslation('onboarding');

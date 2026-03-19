@@ -166,7 +166,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
 
   // ── Analytics ────────────────────────────────────────────────────────────────
   useEffect(() => {
-    Analytics.onboardingStepViewed('aha_moment', 7);
+    Analytics.onboardingStepViewed('aha_moment', ONBOARDING_STEPS.AHA_MOMENT);
     void AsyncStorage.getItem('app:install_time').then((value) => {
       if (!value) return;
       const ts = Number(value);

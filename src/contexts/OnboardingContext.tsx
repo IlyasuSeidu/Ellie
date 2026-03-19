@@ -2,60 +2,66 @@
  * OnboardingContext
  *
  * Manages state across all premium onboarding flow screens.
- * Provides centralized data storage and updates for the 8-9 step onboarding process.
+ * Provides centralized data storage and updates for the premium onboarding process.
  *
- * ## Onboarding Flow (9-10 screens, 8-9 steps - depends on roster type):
+ * ## Onboarding Flow (core path):
  *
  * 1. **Welcome** (PremiumWelcomeScreen)
- *    - Auto-advances after 3 seconds
  *    - No data collected
  *
- * 2. **Introduction** (PremiumIntroductionScreen)
+ * 2. **Pain Hook** (PremiumPainHookScreen)
+ *    - User identifies the biggest current roster pain point
+ *    - Collects: painPoint
+ *
+ * 3. **Introduction** (PremiumIntroductionScreen)
  *    - Chat-based user profile collection
  *    - Collects: name, occupation, company, country
  *
- * 3. **Shift System** (PremiumShiftSystemScreen)
+ * 4. **Shift System** (PremiumShiftSystemScreen)
  *    - Select 2-shift (12h) or 3-shift (8h) system
  *    - Collects: shiftSystem
  *
- * 3.5. **Roster Type** (PremiumRosterTypeScreen - NEW)
- *      - Select Rotating Roster or FIFO Roster
- *      - Collects: rosterType
+ * 5. **Roster Type** (PremiumRosterTypeScreen)
+ *    - Select Rotating Roster or FIFO Roster
+ *    - Collects: rosterType
  *
- * 4. **Shift Pattern** (PremiumShiftPatternScreen)
+ * 6. **Shift Pattern** (PremiumShiftPatternScreen)
  *    - Select from standard patterns (filtered by roster type) or create custom
  *    - Collects: patternType
  *    - Routes based on pattern type and roster type
  *
- * 4b-R. **Custom Pattern** (PremiumCustomPatternScreen - CONDITIONAL for Rotating)
+ * 6b-R. **Custom Pattern** (PremiumCustomPatternScreen - CONDITIONAL for Rotating)
  *       - Only shown if patternType === ShiftPattern.CUSTOM and rosterType === 'rotating'
  *       - Configure days on/off for each shift type
  *       - Collects: customPattern (daysOn, nightsOn, morningOn, afternoonOn, nightOn, daysOff)
  *
- * 4b-F. **FIFO Custom Pattern** (PremiumFIFOCustomPatternScreen - CONDITIONAL for FIFO - NEW)
+ * 6b-F. **FIFO Custom Pattern** (PremiumFIFOCustomPatternScreen - CONDITIONAL for FIFO)
  *       - Only shown if patternType === ShiftPattern.FIFO_CUSTOM and rosterType === 'fifo'
  *       - Configure work/rest blocks and work pattern
  *       - Collects: fifoConfig
  *
- * 5-R. **Phase Selector** (PremiumPhaseSelectorScreen - for Rotating)
+ * 7-R. **Phase Selector** (PremiumPhaseSelectorScreen - for Rotating)
  *      - Two-stage: Select current phase, then day within phase (if multi-day)
  *      - Collects: phaseOffset
  *
- * 5-F. **FIFO Phase Selector** (PremiumFIFOPhaseSelectorScreen - for FIFO - NEW)
+ * 7-F. **FIFO Phase Selector** (PremiumFIFOPhaseSelectorScreen - for FIFO)
  *      - Two-stage: Select work/rest block, then day within block
  *      - Collects: phaseOffset
  *
- * 6. **Start Date** (PremiumStartDateScreen)
+ * 8. **Start Date** (PremiumStartDateScreen)
  *    - Calendar-based date selection
  *    - Collects: startDate
  *
- * 7. **Shift Time Input** (PremiumShiftTimeInputScreen)
+ * 9. **Aha Moment** (PremiumAhaMomentScreen)
+ *    - Shows calendar payoff and value framing
+ *
+ * 10. **Shift Time Input** (PremiumShiftTimeInputScreen)
  *    - Multi-stage: Collect start/end times for each shift type
  *    - 2-shift: day shift + night shift times
  *    - 3-shift: morning + afternoon + night shift times
  *    - Collects: shiftTimes (new structure) + legacy fields for compatibility
  *
- * 8. **Completion** (PremiumCompletionScreen)
+ * 10. **Completion** (PremiumCompletionScreen)
  *    - Validates all collected data
  *    - Displays summary
  *    - Saves to AsyncStorage
@@ -91,7 +97,11 @@ import { parseCalendarDate } from '@/utils/dateUtils';
 import i18n from '@/i18n';
 
 export interface OnboardingData {
-  // Step 2: Introduction (PremiumIntroductionScreen)
+  // Step 2: Pain Hook (PremiumPainHookScreen)
+  /** User's self-identified pain point — used for AhaMoment personalisation and analytics segmentation */
+  painPoint?: 'cycle_lost' | 'wrong_alarm' | 'days_off' | 'family' | 'mental_math';
+
+  // Step 3: Introduction (PremiumIntroductionScreen)
   /** User's full name */
   name?: string;
 
@@ -107,16 +117,16 @@ export interface OnboardingData {
   /** URI of the user's profile avatar image (file:// URI in document directory) */
   avatarUri?: string;
 
-  // Step 3: Shift System Selection (PremiumShiftSystemScreen)
+  // Step 4: Shift System Selection (PremiumShiftSystemScreen)
   shiftSystem?: '2-shift' | '3-shift'; // Determines 2-shift (12h) vs 3-shift (8h)
 
-  // Step 3.5: Roster Type Selection (PremiumRosterTypeScreen - NEW)
+  // Step 5: Roster Type Selection (PremiumRosterTypeScreen)
   rosterType?: 'rotating' | 'fifo'; // Determines rotating roster vs FIFO roster
 
-  // Step 4: Shift Pattern Selection (PremiumShiftPatternScreen)
+  // Step 6: Shift Pattern Selection (PremiumShiftPatternScreen)
   patternType?: ShiftPattern;
 
-  // Step 4b-R: Custom Pattern Configuration (PremiumCustomPatternScreen - only if patternType === CUSTOM and rosterType === 'rotating')
+  // Step 6b-R: Custom Pattern Configuration (PremiumCustomPatternScreen - only if patternType === CUSTOM and rosterType === 'rotating')
   customPattern?: {
     // For 2-shift system
     daysOn: number; // Day shifts
@@ -131,7 +141,7 @@ export interface OnboardingData {
     daysOff: number; // Days off (both systems)
   };
 
-  // Step 4b-F: FIFO Custom Pattern Configuration (PremiumFIFOCustomPatternScreen - only if patternType === FIFO_CUSTOM and rosterType === 'fifo')
+  // Step 6b-F: FIFO Custom Pattern Configuration (PremiumFIFOCustomPatternScreen - only if patternType === FIFO_CUSTOM and rosterType === 'fifo')
   fifoConfig?: FIFOConfig;
 
   // Step 5: Current Phase Selection (PremiumPhaseSelectorScreen or PremiumFIFOPhaseSelectorScreen)

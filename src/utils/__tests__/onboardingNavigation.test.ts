@@ -25,6 +25,18 @@ describe('onboardingNavigation', () => {
   });
 
   describe('goToNextScreen', () => {
+    it('navigates Welcome to PainHook', () => {
+      const nextScreen = goToNextScreen(mockNavigation, 'Welcome');
+      expect(mockNavigation.navigate).toHaveBeenCalledWith('PainHook');
+      expect(nextScreen).toBe('PainHook');
+    });
+
+    it('navigates PainHook to Introduction', () => {
+      const nextScreen = goToNextScreen(mockNavigation, 'PainHook');
+      expect(mockNavigation.navigate).toHaveBeenCalledWith('Introduction');
+      expect(nextScreen).toBe('Introduction');
+    });
+
     it('navigates ShiftSystem to RosterType', () => {
       const nextScreen = goToNextScreen(mockNavigation, 'ShiftSystem');
       expect(mockNavigation.navigate).toHaveBeenCalledWith('RosterType');
@@ -91,6 +103,7 @@ describe('onboardingNavigation', () => {
 
   describe('canGoNext', () => {
     it('returns true for new FIFO routes', () => {
+      expect(canGoNext('PainHook')).toBe(true);
       expect(canGoNext('RosterType')).toBe(true);
       expect(canGoNext('FIFOCustomPattern')).toBe(true);
       expect(canGoNext('FIFOPhaseSelector')).toBe(true);
