@@ -1,8 +1,8 @@
 /**
- * Premium Completion Screen (Step 8 of 11)
+ * Premium Completion Screen
  *
  * Celebration and completion screen for onboarding flow.
- * Shows summary of user's configuration and saves data to Firestore.
+ * Shows summary of the user's configured roster and saves onboarding state.
  */
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -14,6 +14,7 @@ import {
   ActivityIndicator,
   AccessibilityInfo,
   Pressable,
+  Platform,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Animated, {
@@ -62,9 +63,11 @@ import { logger } from '@/utils/logger';
 import { getOnboardingSaveErrorMessage } from '@/utils/onboardingErrorMessage';
 import { Analytics } from '@/utils/analytics';
 import { NotificationPrimingModal } from '@/components/onboarding/NotificationPrimingModal';
+import { useSubscription } from '@/hooks/useSubscription';
 
 const isJestRuntime = (): boolean =>
   typeof process !== 'undefined' && typeof process.env?.JEST_WORKER_ID === 'string';
+const COMPLETION_ANALYTICS_STEP = 12;
 
 // Animated SVG components
 const AnimatedPath = Animated.createAnimatedComponent(Path);
@@ -251,13 +254,15 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
   testID = 'premium-completion-screen',
 }) => {
   useEffect(() => {
-    Analytics.onboardingStepViewed('completion', ONBOARDING_STEPS.COMPLETION);
+    Analytics.onboardingStepViewed('completion', COMPLETION_ANALYTICS_STEP);
   }, []);
 
   const { t, i18n } = useTranslation('onboarding');
   const { data, validateData } = useOnboarding();
   const { user } = useAuth();
+  const { isPro } = useSubscription();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const currentPlatform = Platform.OS;
 
   // State
   const [isSaving, setIsSaving] = useState(false);
@@ -270,6 +275,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
   const scrollViewRef = useRef<ScrollView>(null);
   const featuresSectionYRef = useRef(0);
   const notificationPromptTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const completionTrackedRef = useRef(false);
 
   // Animation values
   const checkmarkProgress = useSharedValue(0);
@@ -380,6 +386,27 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
 
       setIsSaved(true);
 
+      if (!completionTrackedRef.current) {
+        completionTrackedRef.current = true;
+        const installTimeValue = await asyncStorageService.get<string>('app:install_time');
+        const installTime = Number(installTimeValue);
+        const timeToCompleteSeconds =
+          Number.isFinite(installTime) && installTime > 0
+            ? Math.max(0, Math.round((Date.now() - installTime) / 1000))
+            : 0;
+
+        Analytics.onboardingCompleted({
+          roster_type: data.rosterType ?? null,
+          pattern_type: data.patternType ?? null,
+          shift_system: data.shiftSystem ?? null,
+          country: data.country ?? null,
+          pain_point: data.painPoint ?? null,
+          time_to_complete_seconds: timeToCompleteSeconds,
+          is_pro: isPro,
+          platform: currentPlatform,
+        });
+      }
+
       notificationPromptTimerRef.current = setTimeout(() => {
         Analytics.notificationPermissionSoftShown();
         setShowNotificationModal(true);
@@ -413,7 +440,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
   useEffect(() => {
     saveOnboardingData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentPlatform]);
 
   // Handle retry
   const handleRetry = () => {
@@ -504,8 +531,16 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
     [t]
   );
 
+  const displayName = useMemo(() => {
+    const trimmedName = data.name?.trim();
+    if (!trimmedName) return null;
+    return trimmedName.split(/\s+/)[0] ?? trimmedName;
+  }, [data.name]);
+
   // Format pattern name for display
   const getPatternName = (): string => getPatternDisplayName(data);
+
+  const getSetupLabel = (): string => getPatternName();
 
   // Format shift system
   const getShiftSystemName = (): string => {
@@ -727,7 +762,12 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
           entering={reducedMotion ? undefined : FadeInDown.delay(400).duration(500)}
           style={styles.title}
         >
-          {t('completion.title', { defaultValue: "You're all set!" })}
+          {displayName
+            ? t('completion.title_named', {
+                name: displayName,
+                defaultValue: "{{name}}, you're all set.",
+              })
+            : t('completion.title', { defaultValue: "You're all set." })}
         </Animated.Text>
 
         {/* Subtitle */}
@@ -735,7 +775,18 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
           entering={reducedMotion ? undefined : FadeInDown.delay(500).duration(500)}
           style={styles.subtitle}
         >
-          {t('completion.subtitle', { defaultValue: 'Welcome to Ellie' })}
+          {t('completion.setupReady', {
+            setup: getSetupLabel(),
+            defaultValue: 'Your {{setup}} roster is ready.',
+          })}
+        </Animated.Text>
+        <Animated.Text
+          entering={reducedMotion ? undefined : FadeInDown.delay(560).duration(500)}
+          style={styles.subtitleSecondary}
+        >
+          {t('completion.reminderPromise', {
+            defaultValue: 'Ellie will remind you before every shift.',
+          })}
         </Animated.Text>
 
         {/* Summary Card */}
@@ -1053,14 +1104,17 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
           }
           if (granted) {
             Analytics.notificationPermissionGranted();
+            Analytics.track('notification_permission_requested', { result: 'granted' });
           } else {
             Analytics.notificationPermissionDeclined();
+            Analytics.track('notification_permission_requested', { result: 'denied' });
           }
         }}
         onDecline={() => {
           setShowNotificationModal(false);
           void AsyncStorage.setItem('notifications:soft_declined', 'true');
           Analytics.notificationPermissionDeclined();
+          Analytics.track('notification_permission_requested', { result: 'skipped' });
         }}
       />
     </View>
@@ -1131,6 +1185,12 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 18,
     color: theme.colors.dust,
+    textAlign: 'center',
+    marginBottom: theme.spacing.sm,
+  },
+  subtitleSecondary: {
+    fontSize: 16,
+    color: theme.colors.shadow,
     textAlign: 'center',
     marginBottom: theme.spacing.xxxl,
   },

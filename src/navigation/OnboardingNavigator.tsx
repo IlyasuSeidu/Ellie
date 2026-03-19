@@ -6,12 +6,12 @@
  * ## Flow (Rotating Rosters):
  * 1. Welcome → 2. PainHook → 3. Introduction → 4. ShiftSystem → 5. RosterType
  * → 6. ShiftPattern → [6b-R. CustomPattern (conditional)] → 7-R. PhaseSelector
- * → 8. StartDate → 9. AhaMoment → [Paywall modal] → 10. ShiftTimeInput → Completion
+ * → 8. StartDate → 9. ShiftTimeInput → 10. AhaMoment → 11. Completion
  *
  * ## Flow (FIFO Rosters):
  * 1. Welcome → 2. PainHook → 3. Introduction → 4. ShiftSystem → 5. RosterType
  * → 6. ShiftPattern → [6b-F. FIFOCustomPattern (conditional)] → 7-F. FIFOPhaseSelector
- * → 8. StartDate → 9. AhaMoment → [Paywall modal] → 10. ShiftTimeInput → Completion
+ * → 8. StartDate → 9. ShiftTimeInput → 10. AhaMoment → 11. Completion
  *
  * ## Conditional Navigation:
  * - **RosterType** screen added between ShiftSystem and ShiftPattern
@@ -127,9 +127,7 @@ export type OnboardingStackParamList = {
         returnToMainOnSelect?: boolean;
       }
     | undefined;
-  /** Step 9: Show year preview and paywall gateway */
-  AhaMoment: undefined;
-  /** Step 10: Configure shift times (adjusted for roster type) */
+  /** Step 9: Configure shift times (adjusted for roster type) */
   ShiftTimeInput:
     | {
         entryPoint?: 'onboarding' | 'settings';
@@ -137,7 +135,9 @@ export type OnboardingStackParamList = {
         initialShiftType?: 'day' | 'night' | 'morning' | 'afternoon';
       }
     | undefined;
-  /** Step 10: Review data and complete onboarding */
+  /** Step 10: Show year preview and paywall gateway */
+  AhaMoment: undefined;
+  /** Step 11: Review data and complete onboarding */
   Completion: undefined;
 };
 
@@ -194,13 +194,13 @@ export const OnboardingNavigator: React.FC = () => {
       {/* Step 8: Start Date - Select calendar start date */}
       <Stack.Screen name="StartDate" component={PremiumStartDateScreen} />
 
-      {/* Step 9: Aha Moment - Full-year preview and value reveal */}
-      <Stack.Screen name="AhaMoment" component={PremiumAhaMomentScreen} />
-
-      {/* Step 10: Shift Time Input - Configure shift times (adjusted for roster type) */}
+      {/* Step 9: Shift Time Input - Configure shift times (adjusted for roster type) */}
       <Stack.Screen name="ShiftTimeInput" component={PremiumShiftTimeInputScreen} />
 
-      {/* Step 10: Completion - Review and save */}
+      {/* Step 10: Aha Moment - Full-year preview and value reveal */}
+      <Stack.Screen name="AhaMoment" component={PremiumAhaMomentScreen} />
+
+      {/* Step 11: Completion - Review and save */}
       <Stack.Screen name="Completion" component={PremiumCompletionScreen} />
     </Stack.Navigator>
   );

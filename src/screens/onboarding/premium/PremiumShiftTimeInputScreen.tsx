@@ -535,11 +535,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     if (isSettingsEntry && returnToMainOnSelect) {
       return;
     }
-    Analytics.onboardingStepViewed(
-      'shift_time_input',
-      ONBOARDING_STEPS.SHIFT_TIME_INPUT,
-      analyticsStepViewMetadata
-    );
+    Analytics.onboardingStepViewed('shift_time_input', 10, analyticsStepViewMetadata);
   }, [analyticsStepViewMetadata, isSettingsEntry, returnToMainOnSelect]);
 
   // Store collected shift times for all stages

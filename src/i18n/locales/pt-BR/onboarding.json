@@ -260,7 +260,7 @@
       "title": "Seu perfil",
       "workPattern": "Padrão de Trabalho"
     },
-    "title": "Está tudo pronto!",
+    "title": "Tudo pronto.",
     "tryAgain": "Tente novamente",
     "errors": {
       "missingRequiredInformation": "Informações obrigatórias ausentes: {{fields}}. Volte e conclua todas as etapas.",
@@ -295,11 +295,14 @@
       "evening": "Noite"
     },
     "notificationPriming": {
-      "title": "Nunca perca um turno",
-      "body": "A Ellie vai te lembrar 24 horas e 4 horas antes de cada turno.\nVocê decide o que e quando.",
-      "allow": "Ativar lembretes",
+      "title": "Quer um lembrete antes de cada turno?",
+      "body": "Permita as notificações que a gente cuida disso.",
+      "allow": "Permitir notificações",
       "decline": "Agora não"
-    }
+    },
+    "title_named": "{{name}}, tudo pronto.",
+    "setupReady": "Seu roster {{setup}} está pronto.",
+    "reminderPromise": "Ellie vai te lembrar antes de cada turno."
   },
   "rosterType": {
     "title": "Como funciona sua lista?",
@@ -1035,8 +1038,8 @@
     "headline": "Your year, mapped.",
     "subheadline": "Every shift. Every day off.",
     "heyEllieTitle": "Pergunte à Ellie sobre seu roster",
-    "ctaPrimary": "Desbloqueie acesso total — Teste grátis por 7 dias",
-    "ctaSecondary": "Continuar com acesso limitado →",
+    "ctaPrimary": "Desbloquear acesso total — teste grátis de 7 dias",
+    "ctaSecondary": "ou continuar com acesso limitado",
     "stats": {
       "workDays": "Dias de trabalho",
       "nightShifts": "Turnos noturnos",
@@ -1061,7 +1064,16 @@
       "nextDayOff": "Quando é minha próxima folga?",
       "nightShiftsThisMonth": "Quantos turnos noturnos tenho este mês?"
     },
-    "buttonLabel": "Oi Ellie"
+    "buttonLabel": "Oi Ellie",
+    "headline_named": "Os turnos de {{name}}, mapeados.",
+    "ctaSecondaryA11y": "Continuar com acesso limitado, sem teste grátis",
+    "painCallback": {
+      "cycle_lost": "Chega de perder onde você está. Seu ciclo está fixado.",
+      "wrong_alarm": "Chega de alarmes errados. Seus turnos estão mapeados com precisão.",
+      "days_off": "Cada folga visível com meses de antecedência.",
+      "family": "Toque em qualquer data. Saiba na hora se você trabalha.",
+      "mental_math": "Chega de contar nos dedos."
+    }
   },
   "painHook": {
     "title": "Qual é a parte mais difícil da sua escala agora?",

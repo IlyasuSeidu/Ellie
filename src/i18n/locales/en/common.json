@@ -165,8 +165,8 @@
   "subscription": {
     "paywall": {
       "closeA11y": "Close paywall",
-      "title": "Your year is ready.",
-      "subtitle": "Stop counting shifts on your hands. No second-guessing with your heads.",
+      "title": "Your roster is ready.",
+      "subtitle": "Unlock it for less than a coffee.",
       "socialProof": "Built for shift workers like you",
       "testimonials": [
         {
@@ -183,11 +183,13 @@
         }
       ],
       "features": {
-        "fullYear": "See every shift for 365 days plus",
+        "fullYear": "See your full year — every shift, 365 days plus",
         "askRoster": "Ask Ellie anything — \"When's my next day off?\"",
         "offline": "Works underground with zero signal",
         "leavePlanning": "Plan holidays without calling HR",
-        "aiPowered": "AI that knows YOUR exact pattern, not a generic one"
+        "aiPowered": "AI that knows YOUR exact pattern, not a generic one",
+        "fullYearFIFO": "See your full FIFO year — every work block, every R&R",
+        "fullYearRotating": "See your full rotating year — every phase, months ahead"
       },
       "lossAversion": "Without Pro, you're back to counting shifts on your hands.",
       "timerLabel": "Introductory offer ends in",
@@ -212,7 +214,8 @@
       "restorePurchases": "Restore",
       "privacyPolicy": "Privacy",
       "termsOfService": "Terms",
-      "trialBadge": "FREE 7-DAY TRIAL · NO CHARGE TODAY"
+      "trialBadge": "FREE 7-DAY TRIAL · NO CHARGE TODAY",
+      "title_named": "{{name}}, your roster is ready."
     },
     "profile": {
       "rowActiveA11y": "Ellie Pro active subscription",

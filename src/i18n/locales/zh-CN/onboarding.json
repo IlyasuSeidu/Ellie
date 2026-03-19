@@ -289,7 +289,7 @@
       "title": "您的个人资料",
       "workPattern": "工作模式"
     },
-    "title": "你都准备好了！",
+    "title": "一切就绪。",
     "tryAgain": "再试一次",
     "errors": {
       "missingRequiredInformation": "缺少必填信息：{{fields}}。请返回并完成所有步骤。",
@@ -324,11 +324,14 @@
       "evening": "晚上"
     },
     "notificationPriming": {
-      "title": "不错过任何班次",
-      "body": "Ellie 会在每个班次前 24 小时和 4 小时提醒你。\n提醒内容和时间由你掌控。",
-      "allow": "开启提醒",
-      "decline": "暂不"
-    }
+      "title": "想在每次上班前收到提醒吗？",
+      "body": "允许通知，剩下的交给我们。",
+      "allow": "允许通知",
+      "decline": "暂时不要"
+    },
+    "title_named": "{{name}}，一切就绪。",
+    "setupReady": "你的{{setup}}班表已经准备好了。",
+    "reminderPromise": "Ellie 会在每次班前提醒你。"
   },
   "phaseSelector": {
     "hints": {
@@ -989,8 +992,8 @@
     "headline": "Your year, mapped.",
     "subheadline": "Every shift. Every day off.",
     "heyEllieTitle": "向 Ellie 询问你的班表",
-    "ctaPrimary": "解锁完整权限 — 7天免费试用",
-    "ctaSecondary": "继续使用受限访问 →",
+    "ctaPrimary": "解锁完整访问权限 — 7天免费试用",
+    "ctaSecondary": "或继续使用受限访问",
     "stats": {
       "workDays": "工作日",
       "nightShifts": "夜班",
@@ -1015,7 +1018,16 @@
       "nextDayOff": "我下一个休息日是什么时候？",
       "nightShiftsThisMonth": "我这个月有多少个夜班？"
     },
-    "buttonLabel": "你好 Ellie"
+    "buttonLabel": "你好 Ellie",
+    "headline_named": "{{name}}的班表，已经排好。",
+    "ctaSecondaryA11y": "继续使用受限访问，无免费试用",
+    "painCallback": {
+      "cycle_lost": "不用再弄丢自己的位置了。你的周期已经锁定。",
+      "wrong_alarm": "不用再设错闹钟了。你的班次已经精确排好。",
+      "days_off": "每一个休息日，都能提前几个月看到。",
+      "family": "点任意日期，立刻知道你那天上不上班。",
+      "mental_math": "不用再掰着手指数了。"
+    }
   },
   "painHook": {
     "title": "你现在觉得排班里最难的是什么？",

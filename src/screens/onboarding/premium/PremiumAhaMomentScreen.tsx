@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, {
   Easing,
   FadeIn,
@@ -17,12 +17,16 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
-import { useOnboarding } from '@/contexts/OnboardingContext';
+import { useOnboarding, type OnboardingData } from '@/contexts/OnboardingContext';
 import { useVoiceAssistant } from '@/contexts/VoiceAssistantContext';
 import { buildShiftCycle, getShiftDaysInRange, getShiftStatistics } from '@/utils/shiftUtils';
 import { Analytics } from '@/utils/analytics';
 import { theme } from '@/utils/theme';
-import { formatLocalizedDate, formatLocalizedNumber } from '@/utils/i18nFormat';
+import {
+  formatLocalizedDate,
+  formatLocalizedNumber,
+  formatLocalizedTime,
+} from '@/utils/i18nFormat';
 import { PremiumButton } from '@/components/onboarding/premium';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { PaywallScreen } from '@/screens/subscription/PaywallScreen';
@@ -31,6 +35,7 @@ import { VoiceAssistantModal } from '@/components/voice';
 import { RosterType, ShiftSystem } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
+import { getShiftTimesFromData } from '@/utils/shiftTimeUtils';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -42,6 +47,14 @@ const SHIFT_DOT_COLOR: Record<string, string> = {
 };
 
 const MAX_PREVIEW_MONTHS = 3;
+const AHA_MOMENT_ANALYTICS_STEP = 11;
+const AHA_PAIN_CALLBACKS: Record<NonNullable<OnboardingData['painPoint']>, string> = {
+  cycle_lost: 'ahaMoment.painCallback.cycle_lost',
+  wrong_alarm: 'ahaMoment.painCallback.wrong_alarm',
+  days_off: 'ahaMoment.painCallback.days_off',
+  family: 'ahaMoment.painCallback.family',
+  mental_math: 'ahaMoment.painCallback.mental_math',
+};
 
 export const PremiumAhaMomentScreen: React.FC = () => {
   const { t } = useTranslation('onboarding');
@@ -164,19 +177,73 @@ export const PremiumAhaMomentScreen: React.FC = () => {
     );
   })();
 
+  const nextShiftTimes = useMemo(() => {
+    if (!nextShift || nextShift.shiftType === 'off') return null;
+    return (
+      getShiftTimesFromData(data).find((shiftTime) => shiftTime.type === nextShift.shiftType) ??
+      null
+    );
+  }, [data, nextShift]);
+
+  const nextShiftTimeLabel = useMemo(() => {
+    if (!nextShiftTimes) return null;
+    return `${formatLocalizedTime(nextShiftTimes.startTime)} – ${formatLocalizedTime(nextShiftTimes.endTime)}`;
+  }, [nextShiftTimes]);
+
+  const painCallback = useMemo(() => {
+    if (!data.painPoint) return null;
+    const callbackKey = AHA_PAIN_CALLBACKS[data.painPoint];
+    return callbackKey ? String(t(callbackKey as never)) : null;
+  }, [data.painPoint, t]);
+
+  const analyticsMetadata = useMemo(
+    () => ({
+      roster_type: data.rosterType ?? null,
+      pattern_type: data.patternType ?? null,
+      pain_point: data.painPoint ?? null,
+      shift_system: data.shiftSystem ?? null,
+      country: data.country ?? null,
+      platform: Platform.OS,
+    }),
+    [data.country, data.painPoint, data.patternType, data.rosterType, data.shiftSystem]
+  );
+
   // ── Analytics ────────────────────────────────────────────────────────────────
   useEffect(() => {
-    Analytics.onboardingStepViewed('aha_moment', ONBOARDING_STEPS.AHA_MOMENT);
+    Analytics.onboardingStepViewed('aha_moment', AHA_MOMENT_ANALYTICS_STEP, {
+      roster_type: data.rosterType ?? null,
+      pattern_type: data.patternType ?? null,
+      pain_point: data.painPoint ?? null,
+    });
     void AsyncStorage.getItem('app:install_time').then((value) => {
       if (!value) return;
       const ts = Number(value);
       if (!Number.isFinite(ts) || ts <= 0) return;
-      Analytics.ahaMomentReached(Math.floor((Date.now() - ts) / 1000));
+      Analytics.ahaMomentReached(Math.floor((Date.now() - ts) / 1000), analyticsMetadata);
     });
-  }, []);
+  }, [analyticsMetadata, data.painPoint, data.patternType, data.rosterType]);
 
   const handleDismissPaywall = () => {
     setShowPaywall(false);
+    navigation.navigate('Completion');
+  };
+
+  const handlePrimaryTap = () => {
+    Analytics.track('paywall_transition_started', {
+      trigger_screen: 'aha_moment',
+      roster_type: data.rosterType ?? null,
+      pattern_type: data.patternType ?? null,
+      pain_point: data.painPoint ?? null,
+    });
+    setShowPaywall(true);
+  };
+
+  const handleSecondaryTap = () => {
+    Analytics.track('aha_moment_secondary_tapped', {
+      roster_type: data.rosterType ?? null,
+      pain_point: data.painPoint ?? null,
+      platform: Platform.OS,
+    });
     navigation.navigate('Completion');
   };
 
@@ -192,7 +259,12 @@ export const PremiumAhaMomentScreen: React.FC = () => {
         {/* ── Headline ── */}
         <Animated.View entering={FadeIn.duration(350)} style={styles.padded}>
           <Text style={styles.headline}>
-            {t('ahaMoment.headline', { defaultValue: 'Your shifts, mapped.' })}
+            {data.name
+              ? t('ahaMoment.headline_named', {
+                  defaultValue: "{{name}}'s shifts, mapped.",
+                  name: data.name,
+                })
+              : t('ahaMoment.headline', { defaultValue: 'Your shifts, mapped.' })}
           </Text>
           <Text style={styles.subheadline}>
             {t('ahaMoment.subheadline', {
@@ -200,6 +272,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
                 'Stop counting shifts on your hands. No second-guessing with your heads.',
             })}
           </Text>
+          {painCallback ? <Text style={styles.painCallback}>{painCallback}</Text> : null}
         </Animated.View>
 
         {/* ── Next Shift Hero Card ── */}
@@ -219,6 +292,9 @@ export const PremiumAhaMomentScreen: React.FC = () => {
                     month: 'long',
                   })}
                 </Text>
+                {nextShiftTimeLabel ? (
+                  <Text style={styles.heroTimeRange}>{nextShiftTimeLabel}</Text>
+                ) : null}
                 <View style={styles.heroRow}>
                   <View style={[styles.heroBadge, { backgroundColor: shiftDotColor + '26' }]}>
                     <View style={[styles.heroBadgeDot, { backgroundColor: shiftDotColor }]} />
@@ -332,8 +408,23 @@ export const PremiumAhaMomentScreen: React.FC = () => {
           </View>
         </Animated.View>
 
+        {/* ── Primary CTA ── */}
+        <Animated.View
+          entering={FadeInUp.delay(480).duration(380)}
+          style={[styles.padded, styles.ctaSection]}
+        >
+          <PremiumButton
+            title={t('ahaMoment.ctaPrimary', {
+              defaultValue: 'Unlock Full Access — 7-Day Free Trial',
+            })}
+            onPress={handlePrimaryTap}
+            variant="primary"
+            size="large"
+          />
+        </Animated.View>
+
         {/* ── Hey Ellie card ── */}
-        <Animated.View entering={FadeInDown.delay(480).duration(380)} style={styles.padded}>
+        <Animated.View entering={FadeInDown.delay(540).duration(380)} style={styles.padded}>
           <View style={styles.ellieCard}>
             <View style={styles.ellieTopAccent} />
 
@@ -363,7 +454,11 @@ export const PremiumAhaMomentScreen: React.FC = () => {
                     index < suggestionQueries.length - 1 && styles.ellieChipBorder,
                   ]}
                   onPress={() => {
-                    Analytics.ahaMomentVoiceTried(query);
+                    Analytics.ahaMomentVoiceTried(query, {
+                      roster_type: data.rosterType ?? null,
+                      pattern_type: data.patternType ?? null,
+                      pain_point: data.painPoint ?? null,
+                    });
                     openModalWithQuery(query);
                   }}
                 >
@@ -384,7 +479,11 @@ export const PremiumAhaMomentScreen: React.FC = () => {
               <TouchableOpacity
                 activeOpacity={0.88}
                 onPress={() => {
-                  Analytics.ahaMomentVoiceTried('manual_mic');
+                  Analytics.ahaMomentVoiceTried('manual_mic', {
+                    roster_type: data.rosterType ?? null,
+                    pattern_type: data.patternType ?? null,
+                    pain_point: data.painPoint ?? null,
+                  });
                   openModal();
                 }}
               >
@@ -404,26 +503,18 @@ export const PremiumAhaMomentScreen: React.FC = () => {
           </View>
         </Animated.View>
 
-        {/* ── CTAs ── */}
-        <Animated.View
-          entering={FadeInUp.delay(580).duration(380)}
-          style={[styles.padded, styles.ctaSection]}
-        >
-          <PremiumButton
-            title={t('ahaMoment.ctaPrimary', {
-              defaultValue: 'Unlock Full Access\nFree 7-Day Trial',
-            })}
-            onPress={() => setShowPaywall(true)}
-            variant="primary"
-            size="large"
-          />
+        {/* ── Secondary CTA ── */}
+        <Animated.View entering={FadeInUp.delay(620).duration(380)} style={styles.padded}>
           <TouchableOpacity
-            onPress={() => navigation.navigate('Completion')}
-            style={styles.secondaryLink}
+            onPress={handleSecondaryTap}
+            style={styles.secondaryLinkMinimal}
+            accessibilityLabel={t('ahaMoment.ctaSecondaryA11y', {
+              defaultValue: 'Continue with limited access, no free trial',
+            })}
           >
-            <Text style={styles.secondaryLinkText}>
+            <Text style={styles.secondaryLinkMinimalText}>
               {t('ahaMoment.ctaSecondary', {
-                defaultValue: 'Continue with Limited Access →',
+                defaultValue: 'or continue with limited access',
               })}
             </Text>
           </TouchableOpacity>
@@ -465,8 +556,15 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: theme.colors.dust,
     lineHeight: 22,
-    marginBottom: 20,
+    marginBottom: 12,
     textAlign: 'center',
+  },
+  painCallback: {
+    fontSize: 14,
+    lineHeight: 20,
+    color: theme.colors.paleGold,
+    textAlign: 'center',
+    marginBottom: 20,
   },
 
   // ── Hero card ──
@@ -501,8 +599,14 @@ const styles = StyleSheet.create({
   heroFullDate: {
     fontSize: 14,
     color: theme.colors.dust,
-    marginBottom: 10,
+    marginBottom: 4,
     marginTop: 1,
+  },
+  heroTimeRange: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: theme.colors.paper,
+    marginBottom: 10,
   },
   heroRow: {
     flexDirection: 'row',
@@ -719,12 +823,16 @@ const styles = StyleSheet.create({
   ctaSection: {
     marginTop: 12,
   },
-  secondaryLink: {
-    marginTop: 14,
+  secondaryLinkMinimal: {
+    minHeight: 44,
+    justifyContent: 'center',
+    marginTop: 10,
+    paddingVertical: 12,
     alignItems: 'center',
   },
-  secondaryLinkText: {
-    fontSize: 14,
-    color: theme.colors.dust,
+  secondaryLinkMinimalText: {
+    fontSize: 13,
+    color: '#78716C',
+    textAlign: 'center',
   },
 });

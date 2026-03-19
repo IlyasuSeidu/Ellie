@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Dimensions,
@@ -60,20 +60,38 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
   const [loading, setLoading] = useState(true);
   const [purchasing, setPurchasing] = useState(false);
   const [dismissVisible, setDismissVisible] = useState(false);
-  const [secondsLeft, setSecondsLeft] = useState(600);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const purchasesAvailable = useMemo(() => isRevenueCatAvailable(), []);
   const ctaPulse = useSharedValue(1);
+  const openedAtRef = useRef(Date.now());
+
+  const paywallAnalyticsMetadata = useMemo(
+    () => ({
+      platform: Platform.OS,
+      country: onboardingData?.country ?? null,
+      roster_type: onboardingData?.rosterType ?? null,
+      pain_point: onboardingData?.painPoint ?? null,
+    }),
+    [onboardingData?.country, onboardingData?.painPoint, onboardingData?.rosterType]
+  );
 
   const featureRows: FeatureRow[] = useMemo(
     () => [
-      { icon: 'calendar-outline', text: t('subscription.paywall.features.fullYear') },
+      {
+        icon: 'calendar-outline',
+        text:
+          onboardingData?.rosterType === 'fifo'
+            ? t('subscription.paywall.features.fullYearFIFO')
+            : onboardingData?.rosterType === 'rotating'
+              ? t('subscription.paywall.features.fullYearRotating')
+              : t('subscription.paywall.features.fullYear'),
+      },
       { icon: 'mic-outline', text: t('subscription.paywall.features.askRoster') },
       { icon: 'cloud-offline-outline', text: t('subscription.paywall.features.offline') },
       { icon: 'airplane-outline', text: t('subscription.paywall.features.leavePlanning') },
       { icon: 'sparkles-outline', text: t('subscription.paywall.features.aiPowered') },
     ],
-    [t]
+    [onboardingData?.rosterType, t]
   );
 
   const testimonials: Testimonial[] = useMemo(
@@ -102,7 +120,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
   }));
 
   useEffect(() => {
-    Analytics.paywallViewed('post_aha');
+    Analytics.paywallViewed('aha_moment', paywallAnalyticsMetadata);
 
     const dismissTimer = setTimeout(() => setDismissVisible(true), 4000);
 
@@ -131,14 +149,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
       .finally(() => setLoading(false));
 
     return () => clearTimeout(dismissTimer);
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setSecondsLeft((current) => Math.max(0, current - 1));
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  }, [paywallAnalyticsMetadata]);
 
   useEffect(() => {
     ctaPulse.value = withRepeat(
@@ -154,9 +165,6 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
   const selectedPackage = selectedPlan === 'annual' ? annualPackage : monthlyPackage;
   const annualPrice = annualPackage?.product.priceString ?? '$49.99';
   const monthlyPrice = monthlyPackage?.product.priceString ?? '$6.99';
-  const timerText = `${Math.floor(secondsLeft / 60)
-    .toString()
-    .padStart(2, '0')}:${String(secondsLeft % 60).padStart(2, '0')}`;
 
   const annualMonthlyEquivalent = useMemo(() => {
     if (!annualPackage) return '$2.99';
@@ -173,8 +181,16 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
     return Math.round((1 - annualAsMonthly / monthly) * 100);
   }, [annualPackage, monthlyPackage]);
 
+  const paywallTitle = onboardingData?.name
+    ? t('subscription.paywall.title_named', { name: onboardingData.name })
+    : t('subscription.paywall.title');
+
   const handleDismiss = () => {
-    Analytics.paywallDismissed();
+    Analytics.paywallDismissed({
+      time_on_paywall_seconds: Math.max(0, Math.round((Date.now() - openedAtRef.current) / 1000)),
+      platform: Platform.OS,
+      trigger_source: 'aha_moment',
+    });
     onDismiss();
   };
 
@@ -190,6 +206,9 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
 
     try {
       setPurchasing(true);
+      Analytics.paywallSubscribeTapped(selectedPlan, {
+        platform: Platform.OS,
+      });
       const { Purchases } = revenueCatRuntime;
       await Purchases.purchasePackage(selectedPackage);
       Analytics.trialStarted(selectedPlan, selectedPackage.product.price ?? 0);
@@ -202,6 +221,10 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
   };
 
   const handleRestore = async () => {
+    Analytics.paywallRestoreTapped({
+      platform: Platform.OS,
+      trigger_source: 'aha_moment',
+    });
     await restorePurchases();
     onDismiss();
   };
@@ -253,7 +276,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
 
         {/* Hero */}
         <View style={styles.hero}>
-          <Text style={styles.title}>{t('subscription.paywall.title')}</Text>
+          <Text style={styles.title}>{paywallTitle}</Text>
           <Text style={styles.subtitle}>{t('subscription.paywall.subtitle')}</Text>
         </View>
 
@@ -310,19 +333,6 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
             </View>
           ))}
         </View>
-
-        {/* ── Timer ── */}
-        {secondsLeft > 0 ? (
-          <View style={styles.timerRow}>
-            <Ionicons name="time-outline" size={14} color={theme.colors.sacredGold} />
-            <Text style={styles.timerText}>
-              {t('subscription.paywall.timerLabel', {
-                defaultValue: 'Introductory offer ends in',
-              })}{' '}
-              <Text style={styles.timerValue}>{timerText}</Text>
-            </Text>
-          </View>
-        ) : null}
 
         {/* ── Plan selector ── */}
         {loading ? (

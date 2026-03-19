@@ -165,15 +165,17 @@
   "subscription": {
     "paywall": {
       "closeA11y": "Vala i-paywall",
-      "title": "__TK1__ Iphrofayili",
-      "subtitle": "Kwabasebenzi bamashifu abasho ibhizinisi",
+      "title": "Irosta yakho isilungile.",
+      "subtitle": "Yivule ngemali encane kunekhofi.",
       "features": {
         "askRoster": "Buza okuthi \"Hey __TK1__\" noma yini ngohlelo lwakho",
-        "fullYear": "Bona wonke amashifu ezinsuku ezingu-365 nangaphezulu",
+        "fullYear": "Bona unyaka wakho wonke — ishifu ngayinye, izinsuku ezingaphezu kuka-365",
         "offline": "Isebenza ngaphansi komhlaba, asikho isignali edingekayo",
         "instantAnswers": "Izimpendulo ezisheshayo mayelana nekhefu namaphethini",
         "aiPowered": "Inikwa amandla yi-AI futhi ithuthuka njalo",
-        "leavePlanning": "Hlela amaholidi ngaphandle kokushayela i-HR"
+        "leavePlanning": "Hlela amaholidi ngaphandle kokushayela i-HR",
+        "fullYearFIFO": "Bona unyaka wakho ophelele we-FIFO — ibhulokhi ngayinye yomsebenzi nesikhathi ngasinye sokuphumula",
+        "fullYearRotating": "Bona unyaka wakho ophelele ojikelezayo — isigaba ngasinye, izinyanga kusenesikhathi"
       },
       "plans": {
         "annual": "Ngonyaka",
@@ -214,7 +216,8 @@
       "valueFrame": "Kungaphansi kwekhofi ngesonto ukuze wazi unyaka wakho wonke.",
       "security": "Inkokhelo ephephile nge-{{platform}} · Icutshungulwa yi-{{platform}}, hhayi i-Ellie",
       "termsOfService": "Imigomo",
-      "trialBadge": "ISILINGO SAMAHHALA SEZINSUKU EZI-7 · AKUKHO MALI NAMUHLA"
+      "trialBadge": "ISILINGO SAMAHHALA SEZINSUKU EZI-7 · AKUKHO MALI NAMUHLA",
+      "title_named": "{{name}}, irosta yakho isilungile."
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Ukubhalisa okusebenzayo kwe-Pro",

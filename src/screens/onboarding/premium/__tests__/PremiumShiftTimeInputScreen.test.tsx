@@ -145,7 +145,7 @@ describe('PremiumShiftTimeInputScreen', () => {
     it('tracks onboarding step view with roster type and work pattern', () => {
       renderWithProviders(<PremiumShiftTimeInputScreen />);
 
-      expect(Analytics.onboardingStepViewed).toHaveBeenCalledWith('shift_time_input', 9, {
+      expect(Analytics.onboardingStepViewed).toHaveBeenCalledWith('shift_time_input', 10, {
         roster_type: 'rotating',
         work_pattern: 'custom',
       });

@@ -65,8 +65,8 @@
     "headline": "Your shifts, mapped.",
     "subheadline": "Stop counting shifts on your hands. No second-guessing with your heads.",
     "heyEllieTitle": "Ask Ellie about your roster",
-    "ctaPrimary": "Unlock Full Access — Free 7-Day Trial",
-    "ctaSecondary": "Continue with Limited Access →",
+    "ctaPrimary": "Unlock Full Access — 7-Day Free Trial",
+    "ctaSecondary": "or continue with limited access",
     "stats": {
       "workDays": "Work days",
       "nightShifts": "Night shifts",
@@ -91,7 +91,16 @@
       "nextDayOff": "When's my next day off?",
       "nightShiftsThisMonth": "How many night shifts this month?"
     },
-    "buttonLabel": "Hey Ellie"
+    "buttonLabel": "Hey Ellie",
+    "headline_named": "{{name}}'s shifts, mapped.",
+    "ctaSecondaryA11y": "Continue with limited access, no free trial",
+    "painCallback": {
+      "cycle_lost": "No more losing your place. Your cycle is locked in.",
+      "wrong_alarm": "No more wrong alarms. Your shifts are mapped, exactly.",
+      "days_off": "Every day off, visible months in advance.",
+      "family": "Tap any date. Know instantly if you're working.",
+      "mental_math": "No more counting on your fingers."
+    }
   },
   "intro": {
     "welcome": "Welcome to Ellie! I'm here to help you set up your shift calendar. Let's start by getting to know you a bit better.",
@@ -380,9 +389,9 @@
       "evening": "Evening"
     },
     "notificationPriming": {
-      "title": "Never miss a shift",
-      "body": "Ellie will remind you 24 hours and 4 hours before every shift.\nYou control what and when.",
-      "allow": "Turn On Reminders",
+      "title": "Want a reminder before each shift?",
+      "body": "Allow notifications and we'll handle it.",
+      "allow": "Allow Notifications",
       "decline": "Not now"
     },
     "retryA11yHint": "Tap to try saving your data again",
@@ -405,7 +414,7 @@
       "title": "Your profile",
       "workPattern": "Work Pattern"
     },
-    "title": "You're all set!",
+    "title": "You're all set.",
     "tryAgain": "Try Again",
     "errors": {
       "missingRequiredInformation": "Missing required information: {{fields}}. Please go back and complete all steps.",
@@ -429,7 +438,10 @@
         "startDate": "Start Date",
         "shiftTimes": "Shift Times"
       }
-    }
+    },
+    "title_named": "{{name}}, you're all set.",
+    "setupReady": "Your {{setup}} roster is ready.",
+    "reminderPromise": "Ellie will remind you before every shift."
   },
   "phaseSelector": {
     "options": {

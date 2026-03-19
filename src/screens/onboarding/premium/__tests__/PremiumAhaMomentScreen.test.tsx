@@ -8,11 +8,16 @@ const mockNavigate = jest.fn();
 const mockOpenModal = jest.fn();
 const mockOpenModalWithQuery = jest.fn();
 const mockOnboardingData = {
+  name: 'Ilyasu',
   patternType: ShiftPattern.STANDARD_4_4_4,
   shiftSystem: '2-shift',
   rosterType: 'rotating',
   startDate: new Date('2026-03-10'),
   phaseOffset: 2,
+  shiftTimes: {
+    dayShift: { startTime: '07:00', endTime: '19:00', duration: 12 },
+    nightShift: { startTime: '19:00', endTime: '07:00', duration: 12 },
+  },
 };
 
 jest.mock('@react-navigation/native', () => {
@@ -40,6 +45,7 @@ jest.mock('@/contexts/VoiceAssistantContext', () => ({
 
 jest.mock('@/utils/analytics', () => ({
   Analytics: {
+    track: jest.fn(),
     onboardingStepViewed: jest.fn(),
     ahaMomentReached: jest.fn(),
     ahaMomentVoiceTried: jest.fn(),
@@ -94,7 +100,7 @@ describe('PremiumAhaMomentScreen', () => {
   it('renders core aha-moment content', () => {
     const { getByText } = render(<PremiumAhaMomentScreen />);
 
-    expect(getByText('Your shifts, mapped.')).toBeTruthy();
+    expect(getByText("Ilyasu's shifts, mapped.")).toBeTruthy();
     expect(getByText('MonthlyCalendarCard')).toBeTruthy();
     expect(getByText('VoiceAssistantModal')).toBeTruthy();
   });
@@ -111,7 +117,7 @@ describe('PremiumAhaMomentScreen', () => {
     const { getByText, queryByText } = render(<PremiumAhaMomentScreen />);
 
     expect(queryByText('PaywallScreen')).toBeNull();
-    fireEvent.press(getByText('Unlock Full Access — Free 7-Day Trial'));
+    fireEvent.press(getByText('Unlock Full Access — 7-Day Free Trial'));
     expect(getByText('PaywallScreen')).toBeTruthy();
 
     fireEvent.press(getByText('DismissPaywall'));
@@ -121,7 +127,7 @@ describe('PremiumAhaMomentScreen', () => {
   it('navigates to Completion when limited-access CTA is pressed', () => {
     const { getByText } = render(<PremiumAhaMomentScreen />);
 
-    fireEvent.press(getByText('Continue with Limited Access →'));
+    fireEvent.press(getByText('or continue with limited access'));
 
     expect(mockNavigate).toHaveBeenCalledWith('Completion');
   });

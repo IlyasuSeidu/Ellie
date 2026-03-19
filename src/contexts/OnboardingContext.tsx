@@ -52,16 +52,16 @@
  *    - Calendar-based date selection
  *    - Collects: startDate
  *
- * 9. **Aha Moment** (PremiumAhaMomentScreen)
- *    - Shows calendar payoff and value framing
- *
- * 10. **Shift Time Input** (PremiumShiftTimeInputScreen)
+ * 9. **Shift Time Input** (PremiumShiftTimeInputScreen)
  *    - Multi-stage: Collect start/end times for each shift type
  *    - 2-shift: day shift + night shift times
  *    - 3-shift: morning + afternoon + night shift times
  *    - Collects: shiftTimes (new structure) + legacy fields for compatibility
  *
- * 10. **Completion** (PremiumCompletionScreen)
+ * 10. **Aha Moment** (PremiumAhaMomentScreen)
+ *    - Shows calendar payoff and value framing
+ *
+ * 11. **Completion** (PremiumCompletionScreen)
  *    - Validates all collected data
  *    - Displays summary
  *    - Saves to AsyncStorage

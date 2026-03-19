@@ -340,7 +340,7 @@
       "title": "Profil Anda",
       "workPattern": "Pola Kerja"
     },
-    "title": "Anda sudah siap!",
+    "title": "Semua sudah siap.",
     "tryAgain": "Coba Lagi",
     "errors": {
       "missingRequiredInformation": "Informasi wajib belum lengkap: {{fields}}. Silakan kembali dan selesaikan semua langkah.",
@@ -375,11 +375,14 @@
       "evening": "Malam"
     },
     "notificationPriming": {
-      "title": "Jangan pernah melewatkan shift",
-      "body": "Ellie akan mengingatkan Anda 24 jam dan 4 jam sebelum setiap shift.\nAnda yang menentukan apa dan kapan.",
-      "allow": "Aktifkan Pengingat",
+      "title": "Ingin pengingat sebelum setiap shift?",
+      "body": "Izinkan notifikasi dan kami yang akan mengaturnya.",
+      "allow": "Izinkan Notifikasi",
       "decline": "Nanti saja"
-    }
+    },
+    "title_named": "{{name}}, semua sudah siap.",
+    "setupReady": "Roster {{setup}} Anda sudah siap.",
+    "reminderPromise": "Ellie akan mengingatkan Anda sebelum setiap shift."
   },
   "phaseSelector": {
     "hints": {
@@ -1041,7 +1044,7 @@
     "subheadline": "Every shift. Every day off.",
     "heyEllieTitle": "Tanya Ellie tentang roster Anda",
     "ctaPrimary": "Buka Akses Penuh — Uji Coba Gratis 7 Hari",
-    "ctaSecondary": "Lanjutkan dengan Akses Terbatas →",
+    "ctaSecondary": "atau lanjutkan dengan akses terbatas",
     "stats": {
       "workDays": "Hari kerja",
       "nightShifts": "Shift malam",
@@ -1066,7 +1069,16 @@
       "nextDayOff": "Kapan hari libur saya berikutnya?",
       "nightShiftsThisMonth": "Berapa shift malam saya bulan ini?"
     },
-    "buttonLabel": "Hai Ellie"
+    "buttonLabel": "Hai Ellie",
+    "headline_named": "Shift {{name}}, sudah dipetakan.",
+    "ctaSecondaryA11y": "Lanjutkan dengan akses terbatas, tanpa uji coba gratis",
+    "painCallback": {
+      "cycle_lost": "Tidak lagi kehilangan posisi. Siklus Anda sudah terkunci.",
+      "wrong_alarm": "Tidak lagi pasang alarm yang salah. Shift Anda dipetakan dengan tepat.",
+      "days_off": "Setiap hari libur terlihat berbulan-bulan sebelumnya.",
+      "family": "Ketuk tanggal apa pun. Langsung tahu apakah Anda bekerja.",
+      "mental_math": "Tidak perlu lagi menghitung dengan jari."
+    }
   },
   "painHook": {
     "title": "Apa bagian tersulit dari roster Anda saat ini?",

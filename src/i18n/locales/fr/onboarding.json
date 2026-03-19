@@ -349,7 +349,7 @@
       "title": "Votre profil",
       "workPattern": "Modèle de travail"
     },
-    "title": "Vous êtes prêt !",
+    "title": "Tout est prêt.",
     "tryAgain": "Essayer à nouveau",
     "errors": {
       "missingRequiredInformation": "Informations requises manquantes : {{fields}}. Revenez en arrière et terminez toutes les étapes.",
@@ -384,11 +384,14 @@
       "evening": "Soir"
     },
     "notificationPriming": {
-      "title": "Ne manquez plus aucun poste",
-      "body": "Ellie vous rappellera 24 h et 4 h avant chaque poste.\nVous choisissez quoi et quand.",
-      "allow": "Activer les rappels",
+      "title": "Voulez-vous un rappel avant chaque shift ?",
+      "body": "Autorisez les notifications et nous nous en chargeons.",
+      "allow": "Autoriser les notifications",
       "decline": "Pas maintenant"
-    }
+    },
+    "title_named": "{{name}}, tout est prêt.",
+    "setupReady": "Votre roulement {{setup}} est prêt.",
+    "reminderPromise": "Ellie vous rappellera chaque shift avant qu’il commence."
   },
   "phaseSelector": {
     "hints": {
@@ -1049,8 +1052,8 @@
     "headline": "Your year, mapped.",
     "subheadline": "Every shift. Every day off.",
     "heyEllieTitle": "Demandez à Ellie votre planning",
-    "ctaPrimary": "Débloquez l’accès complet — Essai gratuit 7 jours",
-    "ctaSecondary": "Continuer avec un accès limité →",
+    "ctaPrimary": "Débloquer l’accès complet — essai gratuit de 7 jours",
+    "ctaSecondary": "ou continuer avec un accès limité",
     "stats": {
       "workDays": "Jours travaillés",
       "nightShifts": "Postes de nuit",
@@ -1075,7 +1078,16 @@
       "nextDayOff": "Quand est mon prochain jour off ?",
       "nightShiftsThisMonth": "Combien de postes de nuit ce mois-ci ?"
     },
-    "buttonLabel": "Salut Ellie"
+    "buttonLabel": "Salut Ellie",
+    "headline_named": "Les shifts de {{name}}, cartographiés.",
+    "ctaSecondaryA11y": "Continuer avec un accès limité, sans essai gratuit",
+    "painCallback": {
+      "cycle_lost": "Fini de perdre votre repère. Votre cycle est verrouillé.",
+      "wrong_alarm": "Fini les mauvaises alarmes. Vos shifts sont cartographiés avec précision.",
+      "days_off": "Chaque jour de repos, visible des mois à l’avance.",
+      "family": "Touchez une date. Sachez instantanément si vous travaillez.",
+      "mental_math": "Fini de compter sur vos doigts."
+    }
   },
   "painHook": {
     "title": "Quelle est la partie la plus difficile de votre roulement en ce moment ?",

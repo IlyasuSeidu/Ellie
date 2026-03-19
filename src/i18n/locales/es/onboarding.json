@@ -264,7 +264,7 @@
       "title": "Tu perfil",
       "workPattern": "Patrón de trabajo"
     },
-    "title": "¡Estás listo!",
+    "title": "Ya está todo listo.",
     "tryAgain": "Intentar otra vez",
     "errors": {
       "missingRequiredInformation": "Falta información obligatoria: {{fields}}. Vuelve atrás y completa todos los pasos.",
@@ -299,11 +299,14 @@
       "evening": "Noche"
     },
     "notificationPriming": {
-      "title": "No vuelvas a perder un turno",
-      "body": "Ellie te recordará 24 horas y 4 horas antes de cada turno.\nTú decides qué y cuándo.",
-      "allow": "Activar recordatorios",
+      "title": "¿Quieres un recordatorio antes de cada turno?",
+      "body": "Permite las notificaciones y nosotros nos encargamos.",
+      "allow": "Permitir notificaciones",
       "decline": "Ahora no"
-    }
+    },
+    "title_named": "{{name}}, ya está todo listo.",
+    "setupReady": "Tu roster {{setup}} ya está listo.",
+    "reminderPromise": "Ellie te recordará antes de cada turno."
   },
   "rosterType": {
     "title": "¿Cómo funciona tu lista?",
@@ -1045,8 +1048,8 @@
     "headline": "Your year, mapped.",
     "subheadline": "Every shift. Every day off.",
     "heyEllieTitle": "Pregúntale a Ellie sobre tu roster",
-    "ctaPrimary": "Desbloquea acceso total — Prueba gratis de 7 días",
-    "ctaSecondary": "Continuar con acceso limitado →",
+    "ctaPrimary": "Desbloquea el acceso completo — prueba gratis de 7 días",
+    "ctaSecondary": "o continúa con acceso limitado",
     "stats": {
       "workDays": "Días de trabajo",
       "nightShifts": "Turnos nocturnos",
@@ -1071,7 +1074,16 @@
       "nextDayOff": "¿Cuándo es mi próximo día libre?",
       "nightShiftsThisMonth": "¿Cuántos turnos nocturnos tengo este mes?"
     },
-    "buttonLabel": "Hola Ellie"
+    "buttonLabel": "Hola Ellie",
+    "headline_named": "Los turnos de {{name}}, organizados.",
+    "ctaSecondaryA11y": "Continúa con acceso limitado, sin prueba gratuita",
+    "painCallback": {
+      "cycle_lost": "Se acabó perder tu lugar. Tu ciclo ya está fijado.",
+      "wrong_alarm": "Se acabaron las alarmas equivocadas. Tus turnos están mapeados con precisión.",
+      "days_off": "Cada día libre, visible con meses de anticipación.",
+      "family": "Toca cualquier fecha. Sabrás al instante si trabajas.",
+      "mental_math": "Se acabó contar con los dedos."
+    }
   },
   "painHook": {
     "title": "¿Qué es lo más difícil de tu roster en este momento?",

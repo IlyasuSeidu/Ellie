@@ -235,8 +235,9 @@ describe('PremiumCompletionScreen', () => {
 
     it('should render title and subtitle', () => {
       const { getByText } = renderWithProviders(<PremiumCompletionScreen />);
-      expect(getByText(/You're all set!/i)).toBeTruthy();
-      expect(getByText(/Welcome to Ellie/i)).toBeTruthy();
+      expect(getByText(/Test, you're all set\./i)).toBeTruthy();
+      expect(getByText(/roster is ready\./i)).toBeTruthy();
+      expect(getByText(/Ellie will remind you before every shift\./i)).toBeTruthy();
     });
 
     it('should render checkmark circle', () => {
@@ -654,10 +655,10 @@ describe('PremiumCompletionScreen', () => {
         getMissingFields: jest.fn().mockReturnValue([]),
       }));
 
-      const { getByText } = renderWithProviders(<PremiumCompletionScreen />);
+      const { getAllByText } = renderWithProviders(<PremiumCompletionScreen />);
 
       // Should display the 3-shift custom rotation pattern
-      expect(getByText(/2-3-2-2 Custom Rotation/i)).toBeTruthy();
+      expect(getAllByText(/2-3-2-2 Custom Rotation/i).length).toBeGreaterThan(0);
 
       // Restore original mock
       useOnboardingModule.useOnboarding.mockImplementation(originalUseOnboarding);
@@ -698,10 +699,10 @@ describe('PremiumCompletionScreen', () => {
         getMissingFields: jest.fn().mockReturnValue([]),
       }));
 
-      const { getByText } = renderWithProviders(<PremiumCompletionScreen />);
+      const { getAllByText } = renderWithProviders(<PremiumCompletionScreen />);
 
       // Should display the 2-shift custom rotation pattern
-      expect(getByText(/4-4-4 Custom Rotation/i)).toBeTruthy();
+      expect(getAllByText(/4-4-4 Custom Rotation/i).length).toBeGreaterThan(0);
 
       // Restore original mock
       useOnboardingModule.useOnboarding.mockImplementation(originalUseOnboarding);

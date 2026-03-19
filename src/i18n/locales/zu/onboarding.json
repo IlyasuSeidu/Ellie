@@ -345,7 +345,7 @@
       "title": "Iphrofayela yakho",
       "workPattern": "Iphethini Yomsebenzi"
     },
-    "title": "Usulungile!",
+    "title": "Konke sekumi ngomumo.",
     "tryAgain": "Zama futhi",
     "errors": {
       "missingRequiredInformation": "Ulwazi oludingekayo luyashoda: {{fields}}. Sicela ubuyele emuva uqede zonke izinyathelo.",
@@ -380,11 +380,14 @@
       "evening": "Ntambama"
     },
     "notificationPriming": {
-      "title": "Ungaphuthelwa ishifu",
-      "body": "U-Ellie uzokukhumbuza amahora angu-24 no-4 ngaphambi kweshifu ngalinye.\nWena ulawula ukuthi yini nokuthi nini.",
-      "allow": "Vula izikhumbuzi",
+      "title": "Ufuna isikhumbuzi ngaphambi kweshifu ngayinye?",
+      "body": "Vumela izaziso bese thina sizokuphatha konke.",
+      "allow": "Vumela izaziso",
       "decline": "Hhayi manje"
-    }
+    },
+    "title_named": "{{name}}, konke sekumi ngomumo.",
+    "setupReady": "Irosta yakho ye-{{setup}} isilungile.",
+    "reminderPromise": "Ellie izokukhumbuza ngaphambi kweshifu ngayinye."
   },
   "phaseSelector": {
     "hints": {
@@ -1045,8 +1048,8 @@
     "headline": "Your year, mapped.",
     "subheadline": "Every shift. Every day off.",
     "heyEllieTitle": "Buza u-Ellie nge-roster yakho",
-    "ctaPrimary": "Vula ukufinyelela okuphelele — Isilingo samahhala sezinsuku ezi-7",
-    "ctaSecondary": "Qhubeka ngokufinyelela okulinganiselwe →",
+    "ctaPrimary": "Vula ukufinyelela okuphelele — isivivinyo samahhala sezinsuku ezi-7",
+    "ctaSecondary": "noma uqhubeke ngokufinyelela okulinganiselwe",
     "stats": {
       "workDays": "Izinsuku zomsebenzi",
       "nightShifts": "Amashifu asebusuku",
@@ -1071,7 +1074,16 @@
       "nextDayOff": "Usuku lwami olulandelayo lokuphumula lunjani?",
       "nightShiftsThisMonth": "Mangaki amashifu ebusuku enginawo kule nyanga?"
     },
-    "buttonLabel": "Sawubona Ellie"
+    "buttonLabel": "Sawubona Ellie",
+    "headline_named": "Amashifu ka-{{name}}, asehleliwe.",
+    "ctaSecondaryA11y": "Qhubeka ngokufinyelela okulinganiselwe, ngaphandle kwesivivinyo samahhala",
+    "painCallback": {
+      "cycle_lost": "Akusekho ukulahlekelwa indawo yakho. Umjikelezo wakho usubekiwe.",
+      "wrong_alarm": "Akusekho ama-alamu angalungile. Amashifu akho ahlelwe ngokunembile.",
+      "days_off": "Lonke usuku lokuphumula lubonakala izinyanga kusenesikhathi.",
+      "family": "Thepha noma yiluphi usuku. Yazi masinyane ukuthi uyasebenza yini.",
+      "mental_math": "Akusekho ukubala ngeminwe."
+    }
   },
   "painHook": {
     "title": "Yini enzima kakhulu ngohlelo lwakho manje?",

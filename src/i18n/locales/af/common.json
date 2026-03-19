@@ -165,15 +165,17 @@
   "subscription": {
     "paywall": {
       "closeA11y": "Maak betaalmuur toe",
-      "title": "__TK1__ Pro",
-      "subtitle": "Vir skofwerkers wat besigheid bedoel",
+      "title": "Jou rooster is gereed.",
+      "subtitle": "Ontsluit dit vir minder as 'n koppie koffie.",
       "features": {
         "askRoster": "Vra \"Hey __TK1__\" enigiets oor jou rooster",
-        "fullYear": "Sien elke skof vir 365 dae en meer",
+        "fullYear": "Sien jou volle jaar — elke skof, 365 dae plus",
         "offline": "Werk ondergronds, geen sein nodig nie",
         "instantAnswers": "Kitsantwoorde oor verlof en patrone",
         "aiPowered": "Aangedryf deur AI en word altyd verbeter",
-        "leavePlanning": "Beplan verlof sonder om HR te bel"
+        "leavePlanning": "Beplan verlof sonder om HR te bel",
+        "fullYearFIFO": "Sien jou volle FIFO-jaar — elke werkblok, elke rusperiode",
+        "fullYearRotating": "Sien jou volle roterende jaar — elke fase, maande vooruit"
       },
       "plans": {
         "annual": "Jaarliks",
@@ -214,7 +216,8 @@
       "valueFrame": "Minder as ’n koffie per week om jou hele jaar te ken.",
       "security": "Veilige betaling via {{platform}} · Verwerk deur {{platform}}, nie Ellie nie",
       "termsOfService": "Voorwaardes",
-      "trialBadge": "GRATIS 7-DAE PROEF · GEEN HEFFING VANDAG"
+      "trialBadge": "GRATIS 7-DAE PROEF · GEEN HEFFING VANDAG",
+      "title_named": "{{name}}, jou rooster is gereed."
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro aktiewe intekening",

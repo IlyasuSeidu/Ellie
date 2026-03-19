@@ -70,6 +70,9 @@ export type OnboardingStep =
   | 'completion';
 
 export const Analytics = {
+  track: (name: string, params?: AnalyticsPayload) =>
+    void safeCall((client) => client.logEvent(name, params), name, params),
+
   // Called on every screen mount
   screenView: (screenName: string) =>
     void safeCall(
@@ -104,11 +107,12 @@ export const Analytics = {
       (client) =>
         client.logEvent('onboarding_step_viewed', {
           step,
+          step_id: step,
           step_number: stepNumber,
           ...metadata,
         }),
       'onboarding_step_viewed',
-      { step, step_number: stepNumber, ...metadata }
+      { step, step_id: step, step_number: stepNumber, ...metadata }
     ),
 
   // Called when user taps the continue button successfully
@@ -121,11 +125,12 @@ export const Analytics = {
       (client) =>
         client.logEvent('onboarding_step_completed', {
           step,
+          step_id: step,
           time_spent_ms: timeSpentMs,
           ...metadata,
         }),
       'onboarding_step_completed',
-      { step, time_spent_ms: timeSpentMs, ...metadata }
+      { step, step_id: step, time_spent_ms: timeSpentMs, ...metadata }
     ),
 
   // Called when a user explicitly skips an optional field (e.g. company)
@@ -149,46 +154,66 @@ export const Analytics = {
     ),
 
   // The moment that makes or breaks retention
-  ahaMomentReached: (secondsSinceInstall: number) =>
+  ahaMomentReached: (secondsSinceInstall: number, metadata?: AnalyticsPayload) =>
     void safeCall(
       (client) =>
         client.logEvent('aha_moment_reached', {
           seconds_since_install: secondsSinceInstall,
+          ...metadata,
         }),
       'aha_moment_reached',
-      { seconds_since_install: secondsSinceInstall }
+      { seconds_since_install: secondsSinceInstall, ...metadata }
     ),
 
   // Hey Ellie demo on AhaMoment screen — tracks which suggestion drives most taps
-  ahaMomentVoiceTried: (query: string) =>
+  ahaMomentVoiceTried: (queryText: string, metadata?: AnalyticsPayload) =>
     void safeCall(
       (client) =>
         client.logEvent('aha_moment_voice_tried', {
-          query,
+          query: queryText,
+          query_text: queryText,
+          ...metadata,
         }),
       'aha_moment_voice_tried',
-      { query }
+      { query: queryText, query_text: queryText, ...metadata }
     ),
 
   // Paywall funnel
-  paywallViewed: (source: 'post_aha' | 'profile' | 'feature_gate') =>
+  paywallViewed: (
+    triggerSource: 'aha_moment' | 'post_aha' | 'profile' | 'feature_gate',
+    metadata?: AnalyticsPayload
+  ) =>
     void safeCall(
       (client) =>
         client.logEvent('paywall_viewed', {
-          source,
+          source: triggerSource,
+          trigger_source: triggerSource,
+          ...metadata,
         }),
       'paywall_viewed',
-      { source }
+      { source: triggerSource, trigger_source: triggerSource, ...metadata }
     ),
 
-  paywallPlanSelected: (plan: 'annual' | 'monthly') =>
+  paywallPlanSelected: (plan: 'annual' | 'monthly', metadata?: AnalyticsPayload) =>
     void safeCall(
       (client) =>
         client.logEvent('paywall_plan_selected', {
           plan,
+          ...metadata,
         }),
       'paywall_plan_selected',
-      { plan }
+      { plan, ...metadata }
+    ),
+
+  paywallSubscribeTapped: (plan: 'annual' | 'monthly', metadata?: AnalyticsPayload) =>
+    void safeCall(
+      (client) =>
+        client.logEvent('paywall_subscribe_tapped', {
+          plan,
+          ...metadata,
+        }),
+      'paywall_subscribe_tapped',
+      { plan, ...metadata }
     ),
 
   trialStarted: (plan: 'annual' | 'monthly', price: number) =>
@@ -213,8 +238,26 @@ export const Analytics = {
       { plan, price }
     ),
 
-  paywallDismissed: () =>
-    void safeCall((client) => client.logEvent('paywall_dismissed'), 'paywall_dismissed'),
+  paywallDismissed: (metadata?: AnalyticsPayload) =>
+    void safeCall(
+      (client) => client.logEvent('paywall_dismissed', metadata),
+      'paywall_dismissed',
+      metadata
+    ),
+
+  paywallRestoreTapped: (metadata?: AnalyticsPayload) =>
+    void safeCall(
+      (client) => client.logEvent('paywall_restore_tapped', metadata),
+      'paywall_restore_tapped',
+      metadata
+    ),
+
+  onboardingCompleted: (metadata: AnalyticsPayload) =>
+    void safeCall(
+      (client) => client.logEvent('onboarding_completed', metadata),
+      'onboarding_completed',
+      metadata
+    ),
 
   // Habit signals
   notificationPermissionSoftShown: () =>

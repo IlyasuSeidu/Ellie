@@ -326,7 +326,7 @@
       "title": "Jou profiel",
       "workPattern": "Werkpatroon"
     },
-    "title": "Jy is gereed!",
+    "title": "Jy is reg.",
     "tryAgain": "Probeer weer",
     "errors": {
       "missingRequiredInformation": "Vereiste inligting ontbreek: {{fields}}. Gaan terug en voltooi al die stappe.",
@@ -361,11 +361,14 @@
       "evening": "Aand"
     },
     "notificationPriming": {
-      "title": "Moenie weer ’n skof mis nie",
-      "body": "Ellie sal jou 24 uur en 4 uur voor elke skof herinner.\nJy beheer wat en wanneer.",
-      "allow": "Skakel herinnerings aan",
+      "title": "Wil jy 'n herinnering voor elke skof hê?",
+      "body": "Laat kennisgewings toe en ons hanteer dit.",
+      "allow": "Laat kennisgewings toe",
       "decline": "Nie nou nie"
-    }
+    },
+    "title_named": "{{name}}, jy is reg.",
+    "setupReady": "Jou {{setup}}-rooster is gereed.",
+    "reminderPromise": "Ellie sal jou voor elke skof herinner."
   },
   "phaseSelector": {
     "hints": {
@@ -1026,8 +1029,8 @@
     "headline": "Your year, mapped.",
     "subheadline": "Every shift. Every day off.",
     "heyEllieTitle": "Vra vir Ellie oor jou rooster",
-    "ctaPrimary": "Ontsluit volle toegang — Gratis 7-dae proef",
-    "ctaSecondary": "Gaan voort met beperkte toegang →",
+    "ctaPrimary": "Ontsluit volle toegang — 7 dae gratis proeflopie",
+    "ctaSecondary": "of gaan voort met beperkte toegang",
     "stats": {
       "workDays": "Werksdae",
       "nightShifts": "Nagskofte",
@@ -1052,7 +1055,16 @@
       "nextDayOff": "Wanneer is my volgende afdag?",
       "nightShiftsThisMonth": "Hoeveel nagskofte het ek hierdie maand?"
     },
-    "buttonLabel": "Hallo Ellie"
+    "buttonLabel": "Hallo Ellie",
+    "headline_named": "{{name}} se skofte, uitgekaart.",
+    "ctaSecondaryA11y": "Gaan voort met beperkte toegang, sonder gratis proeflopie",
+    "painCallback": {
+      "cycle_lost": "Moenie weer jou plek verloor nie. Jou siklus is vasgelê.",
+      "wrong_alarm": "Moenie weer die verkeerde alarm stel nie. Jou skofte is presies uitgewerk.",
+      "days_off": "Elke afdag, maande vooruit sigbaar.",
+      "family": "Tik op enige datum. Weet onmiddellik of jy werk.",
+      "mental_math": "Geen tel op jou vingers meer nie."
+    }
   },
   "painHook": {
     "title": "Wat is nou die moeilikste deel van jou rooster?",

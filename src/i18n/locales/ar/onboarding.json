@@ -323,7 +323,7 @@
       "title": "ملفك الشخصي",
       "workPattern": "نمط العمل"
     },
-    "title": "أنت جاهز تمامًا!",
+    "title": "أنت جاهز.",
     "tryAgain": "حاول ثانية",
     "errors": {
       "missingRequiredInformation": "معلومات مطلوبة مفقودة: {{fields}}. يرجى الرجوع وإكمال جميع الخطوات.",
@@ -358,11 +358,14 @@
       "evening": "مساءً"
     },
     "notificationPriming": {
-      "title": "لا تفوّت أي نوبة",
-      "body": "ستذكّرك Ellie قبل كل نوبة بـ 24 ساعة و4 ساعات.\nأنت تتحكم بما ومتى.",
-      "allow": "تفعيل التذكيرات",
+      "title": "هل تريد تذكيرًا قبل كل نوبة؟",
+      "body": "اسمح بالإشعارات وسنتولى الأمر.",
+      "allow": "السماح بالإشعارات",
       "decline": "ليس الآن"
-    }
+    },
+    "title_named": "{{name}}، أنت جاهز.",
+    "setupReady": "جدول {{setup}} الخاص بك جاهز.",
+    "reminderPromise": "Ellie سيذكّرك قبل كل نوبة."
   },
   "phaseSelector": {
     "hints": {
@@ -1024,7 +1027,7 @@
     "subheadline": "Every shift. Every day off.",
     "heyEllieTitle": "اسأل Ellie عن جدولك",
     "ctaPrimary": "افتح الوصول الكامل — تجربة مجانية لمدة 7 أيام",
-    "ctaSecondary": "المتابعة بوصول محدود ←",
+    "ctaSecondary": "أو تابع بوصول محدود",
     "stats": {
       "workDays": "أيام العمل",
       "nightShifts": "نوبات ليلية",
@@ -1049,7 +1052,16 @@
       "nextDayOff": "متى يوم إجازتي القادم؟",
       "nightShiftsThisMonth": "كم نوبة ليلية لدي هذا الشهر؟"
     },
-    "buttonLabel": "مرحبًا Ellie"
+    "buttonLabel": "مرحبًا Ellie",
+    "headline_named": "نوبات {{name}}، مرسومة بالكامل.",
+    "ctaSecondaryA11y": "تابع بوصول محدود، من دون تجربة مجانية",
+    "painCallback": {
+      "cycle_lost": "لن تفقد مكانك بعد الآن. دورتك مثبتة.",
+      "wrong_alarm": "لا مزيد من المنبهات الخاطئة. نوباتك محددة بدقة.",
+      "days_off": "كل يوم راحة ظاهر قبلها بأشهر.",
+      "family": "اضغط على أي تاريخ. واعرف فورًا إن كنت تعمل.",
+      "mental_math": "لا مزيد من العد على أصابعك."
+    }
   },
   "painHook": {
     "title": "ما أصعب جزء في جدول نوباتك الآن؟",
