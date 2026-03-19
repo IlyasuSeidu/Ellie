@@ -675,6 +675,8 @@ const ProgressDots: React.FC<ProgressDotsProps> = ({
 
 // Main Screen Component
 export const PremiumRosterTypeScreen: React.FC = () => {
+  const mountTime = useRef(Date.now());
+
   useEffect(() => {
     Analytics.onboardingStepViewed('roster_type', ONBOARDING_STEPS.ROSTER_TYPE);
   }, []);
@@ -781,6 +783,11 @@ export const PremiumRosterTypeScreen: React.FC = () => {
       if (isTransitioningRef.current) return;
       clearPendingTimeouts();
       const rosterTypeValue = rosterType === RosterType.ROTATING ? 'rotating' : 'fifo';
+      Analytics.onboardingQuestionAnswered({
+        question: 'roster_type',
+        answer_value: rosterTypeValue,
+      });
+      Analytics.onboardingStepCompleted('roster_type', Date.now() - mountTime.current);
       updateData({ rosterType: rosterTypeValue });
       isTransitioningRef.current = true;
       setIsTransitioning(true);
