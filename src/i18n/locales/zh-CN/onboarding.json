@@ -233,7 +233,16 @@
           "cons": ["长时间远离家人", "旅途疲劳", "营地隔离", "块间​​调整"]
         }
       }
-    }
+    },
+    "title_named": "{{name}}，你的排班是怎么运作的？",
+    "instruction_pain": {
+      "cycle_lost": "这会让 Ellie 准确知道你当前处于轮班周期的哪一步，不用再猜",
+      "wrong_alarm": "把这一步设对后，Ellie 会把每个闹钟都设到正确班次",
+      "days_off": "这会告诉 Ellie 你的休息日落在哪些天，方便你提前安排",
+      "family": "一旦 Ellie 知道你的排班，就会提醒你那些原本可能错过的活动",
+      "mental_math": "完成这一步后，所有计算都交给 Ellie"
+    },
+    "countryHint": "{{country}} 常见"
   },
   "completion": {
     "saveFailed": "无法保存您的数据。请再试一次。",

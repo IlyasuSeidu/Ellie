@@ -284,7 +284,16 @@
           ]
         }
       }
-    }
+    },
+    "title_named": "Bagaimana roster Anda bekerja, {{name}}?",
+    "instruction_pain": {
+      "cycle_lost": "Ini memberi tahu Ellie tepat di posisi mana Anda berada dalam siklus - tidak perlu menebak lagi",
+      "wrong_alarm": "Atur ini dengan benar dan Ellie akan memasang setiap alarm untuk shift yang tepat",
+      "days_off": "Ini menunjukkan kepada Ellie kapan hari libur Anda jatuh agar Anda bisa merencanakan lebih awal",
+      "family": "Ellie akan memberi tahu Anda tentang acara yang biasanya terlewat begitu ia mengetahui roster Anda",
+      "mental_math": "Setelah ini, Ellie yang akan menghitung semuanya untuk Anda"
+    },
+    "countryHint": "Umum di {{country}}"
   },
   "completion": {
     "saveFailed": "Gagal menyimpan data Anda. Silakan coba lagi.",

@@ -150,6 +150,35 @@ const ROSTER_TYPES: RosterTypeCardData[] = [
   },
 ];
 
+// Country → roster type affinity helpers
+const FIFO_COUNTRIES = ['australia', 'canada'];
+const ROTATING_COUNTRIES = [
+  'south africa',
+  'zambia',
+  'drc',
+  'democratic republic',
+  'zimbabwe',
+  'botswana',
+  'namibia',
+];
+
+const getOrderedRosterTypes = (country?: string, shiftSystem?: string): RosterTypeCardData[] => {
+  const c = country?.toLowerCase() ?? '';
+  if (FIFO_COUNTRIES.some((fc) => c.includes(fc))) {
+    return [ROSTER_TYPES[1], ROSTER_TYPES[0]]; // FIFO first for AU/CA
+  }
+  // 3-shift is a strong signal for rotating; default is already rotating-first
+  void shiftSystem;
+  return [...ROSTER_TYPES];
+};
+
+const getCountryHintCardId = (country?: string): string | null => {
+  const c = country?.toLowerCase() ?? '';
+  if (FIFO_COUNTRIES.some((fc) => c.includes(fc))) return 'fifo';
+  if (ROTATING_COUNTRIES.some((rc) => c.includes(rc))) return 'rotating';
+  return null;
+};
+
 // Shadow utility function
 const getShadowStyle = (cardIndex: number, isActiveCard: boolean) => {
   if (isActiveCard) {
@@ -203,6 +232,7 @@ interface SwipeableCardProps {
   onSwipeLeft: () => void;
   onSwipeUp: () => void;
   reducedMotion: boolean;
+  countryHint?: string | null;
 }
 
 const SwipeableCard: React.FC<SwipeableCardProps> = ({
@@ -216,6 +246,7 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
   onSwipeLeft,
   onSwipeUp,
   reducedMotion,
+  countryHint,
 }) => {
   const { t } = useTranslation('onboarding');
   // Per-card shared values
@@ -473,6 +504,12 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
         style={[styles.card, getShadowStyle(index, isActive), animatedCardStyle]}
         testID={`roster-type-card-${rosterType.id}`}
       >
+        {countryHint ? (
+          <View style={styles.countryHintBadge}>
+            <Text style={styles.countryHintText}>📍 {countryHint}</Text>
+          </View>
+        ) : null}
+
         <Animated.View style={[styles.iconContainer, iconAnimatedStyle]}>
           {rosterType.iconImage ? (
             <Image
@@ -521,7 +558,8 @@ const SwipeableCardMemoized = React.memo(SwipeableCard, (prevProps, nextProps) =
     prevProps.totalCards === nextProps.totalCards &&
     prevProps.smoothPreview === nextProps.smoothPreview &&
     prevProps.interactionLocked === nextProps.interactionLocked &&
-    prevProps.reducedMotion === nextProps.reducedMotion
+    prevProps.reducedMotion === nextProps.reducedMotion &&
+    prevProps.countryHint === nextProps.countryHint
   );
 });
 
@@ -685,6 +723,26 @@ export const PremiumRosterTypeScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
   const { data, updateData } = useOnboarding();
 
+  // Personalization derived from prior onboarding steps
+  const firstName = data.name?.split(' ')[0] ?? '';
+  const titleText = firstName
+    ? t('rosterType.title_named', { name: firstName })
+    : t('rosterType.title');
+  const painInstruction = data.painPoint
+    ? t(`rosterType.instruction_pain.${data.painPoint}`, { defaultValue: '' })
+    : '';
+  const instructionText = painInstruction || t('rosterType.instruction');
+
+  const orderedRosterTypes = useMemo(
+    () => getOrderedRosterTypes(data.country, data.shiftSystem),
+    [data.country, data.shiftSystem]
+  );
+  const countryHintCardId = useMemo(() => getCountryHintCardId(data.country), [data.country]);
+  const countryHintLabel =
+    data.country && countryHintCardId
+      ? t('rosterType.countryHint', { country: data.country })
+      : null;
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showLearnMore, setShowLearnMore] = useState(false);
   const [learnMoreRosterType, setLearnMoreRosterType] = useState<RosterTypeCardData | null>(null);
@@ -803,21 +861,22 @@ export const PremiumRosterTypeScreen: React.FC = () => {
   );
 
   const handleSwipeRight = useCallback(() => {
-    if (currentIndex >= ROSTER_TYPES.length) return;
-    const selectedCard = ROSTER_TYPES[currentIndex];
+    if (currentIndex >= orderedRosterTypes.length) return;
+    const selectedCard = orderedRosterTypes[currentIndex];
     handleSelectRosterType(selectedCard.type);
-  }, [currentIndex, handleSelectRosterType]);
+  }, [currentIndex, handleSelectRosterType, orderedRosterTypes]);
 
   const handleSwipeLeft = useCallback(() => {
     if (isTransitioningRef.current) return;
-    if (currentIndex >= ROSTER_TYPES.length) return;
+    if (currentIndex >= orderedRosterTypes.length) return;
     if (swipeLeftTimeoutRef.current) {
       clearTimeout(swipeLeftTimeoutRef.current);
     }
+    const totalCards = orderedRosterTypes.length;
     swipeLeftTimeoutRef.current = setTimeout(() => {
       swipeLeftTimeoutRef.current = null;
       setCurrentIndex((prev) => {
-        const lastIndex = ROSTER_TYPES.length - 1;
+        const lastIndex = totalCards - 1;
         if (lastIndex <= 0) return 0;
 
         // Keep swipe flow alive: when user swipes left on the last card,
@@ -829,15 +888,15 @@ export const PremiumRosterTypeScreen: React.FC = () => {
         return prev + 1;
       });
     }, 300);
-  }, [currentIndex]);
+  }, [currentIndex, orderedRosterTypes]);
 
   const handleSwipeUp = useCallback(() => {
     if (isTransitioningRef.current) return;
-    if (currentIndex >= ROSTER_TYPES.length) return;
-    const selectedCard = ROSTER_TYPES[currentIndex];
+    if (currentIndex >= orderedRosterTypes.length) return;
+    const selectedCard = orderedRosterTypes[currentIndex];
     setLearnMoreRosterType(selectedCard);
     setShowLearnMore(true);
-  }, [currentIndex]);
+  }, [currentIndex, orderedRosterTypes]);
 
   const handleModalClose = useCallback(() => {
     setShowLearnMore(false);
@@ -858,17 +917,17 @@ export const PremiumRosterTypeScreen: React.FC = () => {
   // Visible cards computed from currentIndex (non-destructive slice).
   // At the last card, also keep the previous card rendered underneath for a smooth swipe-left transition.
   const visibleCards = useMemo(() => {
-    const totalCards = ROSTER_TYPES.length;
+    const totalCards = orderedRosterTypes.length;
     if (totalCards <= 1) {
-      return ROSTER_TYPES.slice(currentIndex, currentIndex + 1);
+      return orderedRosterTypes.slice(currentIndex, currentIndex + 1);
     }
 
     if (currentIndex === totalCards - 1) {
-      return [ROSTER_TYPES[currentIndex], ROSTER_TYPES[currentIndex - 1]];
+      return [orderedRosterTypes[currentIndex], orderedRosterTypes[currentIndex - 1]];
     }
 
-    return ROSTER_TYPES.slice(currentIndex, currentIndex + 4);
-  }, [currentIndex]);
+    return orderedRosterTypes.slice(currentIndex, currentIndex + 4);
+  }, [currentIndex, orderedRosterTypes]);
 
   return (
     <View style={styles.container}>
@@ -880,20 +939,20 @@ export const PremiumRosterTypeScreen: React.FC = () => {
       />
 
       {/* Title */}
-      <Animated.Text style={[styles.title, titleStyle]}>{t('rosterType.title')}</Animated.Text>
+      <Animated.Text style={[styles.title, titleStyle]}>{titleText}</Animated.Text>
 
       {/* Subtitle */}
-      <Animated.Text style={[styles.subtitle, subtitleStyle]}>
-        {t('rosterType.instruction')}
-      </Animated.Text>
+      <Animated.Text style={[styles.subtitle, subtitleStyle]}>{instructionText}</Animated.Text>
 
       {/* Card Stack Container */}
       <View style={styles.cardStackContainer}>
         {visibleCards.map((rt, index) => {
           // When we are on the last card, render the previous card as a full-size preview
           // under the active card to avoid a visual jump on wrap-back.
-          const isLastCard = currentIndex === ROSTER_TYPES.length - 1;
+          const isLastCard = currentIndex === orderedRosterTypes.length - 1;
           const isLastCardPreview = isLastCard && index === 1;
+          const cardHint =
+            rt.id === countryHintCardId && countryHintLabel ? countryHintLabel : null;
 
           return (
             <SwipeableCardMemoized
@@ -908,6 +967,7 @@ export const PremiumRosterTypeScreen: React.FC = () => {
               onSwipeLeft={handleSwipeLeft}
               onSwipeUp={handleSwipeUp}
               reducedMotion={reducedMotion}
+              countryHint={cardHint}
             />
           );
         })}
@@ -915,7 +975,7 @@ export const PremiumRosterTypeScreen: React.FC = () => {
 
       {/* Progress Dots */}
       <ProgressDots
-        total={ROSTER_TYPES.length}
+        total={orderedRosterTypes.length}
         current={currentIndex}
         testID="roster-type-progress-dots"
       />
@@ -1154,5 +1214,22 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     color: theme.colors.dust,
     marginBottom: 6,
+  },
+  countryHintBadge: {
+    position: 'absolute',
+    top: theme.spacing.md,
+    right: theme.spacing.md,
+    backgroundColor: 'rgba(197,151,92,0.12)',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: theme.colors.opacity.gold30,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+  },
+  countryHintText: {
+    color: theme.colors.sacredGold,
+    fontSize: 11,
+    fontWeight: '600',
+    letterSpacing: 0.2,
   },
 });

@@ -289,7 +289,16 @@
           ]
         }
       }
-    }
+    },
+    "title_named": "Lusebenza kanjani uhlelo lwakho, {{name}}?",
+    "instruction_pain": {
+      "cycle_lost": "Lokhu kukhombisa u-Ellie ngqo ukuthi ukuphi kumjikelezo wakho - akukho ukuqagela futhi",
+      "wrong_alarm": "Uma usetha lokhu kahle u-Ellie uzobeka yonke i-alamu eshifini elifanele",
+      "days_off": "Lokhu kukhombisa u-Ellie ukuthi izinsuku zakho zokuphumula ziwela nini ukuze uhlele kusenesikhathi",
+      "family": "U-Ellie uzokwazisa ngezikhathi obungezaphuthelwa uma eselwazi uhlelo lwakho",
+      "mental_math": "Ngemva kwalokhu u-Ellie uzokubalela konke"
+    },
+    "countryHint": "Kuvamile e-{{country}}"
   },
   "completion": {
     "saveFailed": "Yehlulekile ukulondoloza idatha yakho. Sicela uzame futhi.",

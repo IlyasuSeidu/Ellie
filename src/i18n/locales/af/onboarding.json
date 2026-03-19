@@ -270,7 +270,16 @@
           ]
         }
       }
-    }
+    },
+    "title_named": "Hoe werk jou rooster, {{name}}?",
+    "instruction_pain": {
+      "cycle_lost": "Dit wys Ellie presies waar jy in jou siklus is - geen raaiwerk meer nie",
+      "wrong_alarm": "Kry dit reg en Ellie stel elke alarm vir die korrekte skof",
+      "days_off": "Dit wys Ellie wanneer jou afdae val sodat jy vooruit kan beplan",
+      "family": "Ellie sal jou waarsku oor gebeure wat jy andersins sou mis sodra jou rooster bekend is",
+      "mental_math": "Hierna doen Ellie al die telwerk vir jou"
+    },
+    "countryHint": "Algemeen in {{country}}"
   },
   "completion": {
     "saveFailed": "Kon nie jou data stoor nie. Probeer asseblief weer.",

@@ -293,7 +293,16 @@
           ]
         }
       }
-    }
+    },
+    "title_named": "Comment fonctionne votre roulement, {{name}} ?",
+    "instruction_pain": {
+      "cycle_lost": "Cela montre à Ellie exactement où vous en êtes dans votre cycle, sans plus devoir deviner",
+      "wrong_alarm": "Réglez cela correctement et Ellie placera chaque alarme sur le bon quart",
+      "days_off": "Cela montre à Ellie quand tombent vos jours de repos pour que vous puissiez planifier à l’avance",
+      "family": "Ellie vous alertera sur les événements que vous manqueriez autrement une fois qu’elle connaîtra votre roulement",
+      "mental_math": "Après cela, Ellie fera tous les calculs pour vous"
+    },
+    "countryHint": "Courant en {{country}}"
   },
   "completion": {
     "saveFailed": "Échec de l'enregistrement de vos données. Veuillez réessayer.",

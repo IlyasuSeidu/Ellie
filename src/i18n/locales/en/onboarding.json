@@ -272,7 +272,16 @@
   },
   "rosterType": {
     "title": "How Does Your Roster Work?",
+    "title_named": "How Does Your Roster Work, {{name}}?",
     "instruction": "Choose the roster style your mine site uses — this shapes your entire schedule\nSwipe right to choose, left to see more, up for details",
+    "instruction_pain": {
+      "cycle_lost": "This tells Ellie exactly where you are in your cycle — no more guessing",
+      "wrong_alarm": "Get this right and Ellie sets every alarm for the correct shift",
+      "days_off": "This shows Ellie when your days off fall so you can plan ahead",
+      "family": "Ellie will alert you to events you'd otherwise miss once it knows your roster",
+      "mental_math": "After this, Ellie does all the counting for you"
+    },
+    "countryHint": "Common in {{country}}",
     "preparingNextStep": "Preparing next step...",
     "learnMore": {
       "examples": "Examples",

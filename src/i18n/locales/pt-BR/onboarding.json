@@ -363,7 +363,16 @@
           ]
         }
       }
-    }
+    },
+    "title_named": "Como funciona sua escala, {{name}}?",
+    "instruction_pain": {
+      "cycle_lost": "Isso mostra à Ellie exatamente em que ponto do seu ciclo você está - sem adivinhação",
+      "wrong_alarm": "Acertando isso, a Ellie configura cada alarme para o turno correto",
+      "days_off": "Isso mostra à Ellie quando caem suas folgas para você conseguir se planejar antes",
+      "family": "A Ellie vai te avisar sobre eventos que você perderia quando souber sua escala",
+      "mental_math": "Depois disso, a Ellie faz toda a contagem por você"
+    },
+    "countryHint": "Comum em {{country}}"
   },
   "phaseSelector": {
     "hints": {

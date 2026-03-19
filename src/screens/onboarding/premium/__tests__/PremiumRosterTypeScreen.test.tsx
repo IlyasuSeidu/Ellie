@@ -126,7 +126,11 @@ jest.mock('@/components/onboarding/premium/ProgressHeader', () => {
 
 // ── Helpers ────────────────────────────────────────────────────────
 
-function renderWithContext() {
+function renderWithContext(initialData = {}) {
+  (asyncStorageService.get as jest.Mock).mockResolvedValue(
+    Object.keys(initialData).length > 0 ? initialData : null
+  );
+
   return render(
     <OnboardingProvider>
       <PremiumRosterTypeScreen />
@@ -197,6 +201,16 @@ describe('PremiumRosterTypeScreen', () => {
       expect(getByText(/Swipe right to choose, left to see more, up for details/)).toBeTruthy();
     });
 
+    it('renders personalized title and pain-aware subtitle when prior onboarding data exists', async () => {
+      const { findByText } = renderWithContext({
+        name: 'Ilyasu Seidu',
+        painPoint: 'mental_math',
+      });
+
+      expect(await findByText('How Does Your Roster Work, Ilyasu?')).toBeTruthy();
+      expect(await findByText('After this, Ellie does all the counting for you')).toBeTruthy();
+    });
+
     it('renders swipe hints on the active card', () => {
       const { getByText } = renderWithContext();
       expect(getByText('This one →')).toBeTruthy();
@@ -239,6 +253,28 @@ describe('PremiumRosterTypeScreen', () => {
           expect.anything(),
           'RosterType',
           expect.objectContaining({ rosterType: 'rotating' })
+        );
+      });
+    });
+
+    it('prioritizes FIFO for Australia and selects it first', async () => {
+      const { findByText } = renderWithContext({ country: 'Australia' });
+
+      expect(await findByText(/Common in Australia/)).toBeTruthy();
+
+      act(() => {
+        simulateSwipe({ translationX: 180, translationY: 0 });
+      });
+
+      act(() => {
+        jest.advanceTimersByTime(350);
+      });
+
+      await waitFor(() => {
+        expect(goToNextScreen).toHaveBeenCalledWith(
+          expect.anything(),
+          'RosterType',
+          expect.objectContaining({ rosterType: 'fifo' })
         );
       });
     });

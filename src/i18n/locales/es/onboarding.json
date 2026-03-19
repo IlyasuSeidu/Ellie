@@ -373,7 +373,16 @@
           ]
         }
       }
-    }
+    },
+    "title_named": "¿Cómo funciona tu roster, {{name}}?",
+    "instruction_pain": {
+      "cycle_lost": "Esto le muestra a Ellie exactamente en qué punto de su ciclo está, sin más adivinanzas",
+      "wrong_alarm": "Si aciertas esto, Ellie pondrá cada alarma para el turno correcto",
+      "days_off": "Esto le muestra a Ellie cuándo caen sus días libres para que pueda planificar con antelación",
+      "family": "Ellie le avisará de eventos que de otro modo se perdería una vez que conozca su roster",
+      "mental_math": "Después de esto, Ellie hará todos los cálculos por usted"
+    },
+    "countryHint": "Común en {{country}}"
   },
   "phaseSelector": {
     "hints": {
