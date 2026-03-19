@@ -61,6 +61,7 @@
   },
   "shiftSystem": {
     "title": "您的网站有多少班次？",
+    "title_named": "{{name}}，你好，您的站点有多少个班次？",
     "reviewAgain": "请再次查看系统以做出选择",
     "reviewButton": "审查系统",
     "continueButton": "继续",

@@ -61,6 +61,7 @@
   },
   "shiftSystem": {
     "title": "Hoeveel skofte loop u webwerf?",
+    "title_named": "Hallo {{name}}, hoeveel skofte loop jou terrein?",
     "reviewAgain": "Hersien asseblief stelsels weer om jou keuse te maak",
     "reviewButton": "Hersien stelsels",
     "continueButton": "Gaan voort",

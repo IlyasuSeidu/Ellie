@@ -680,6 +680,7 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
   const [selectedSystem, setSelectedSystem] = useState<ShiftSystem | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const isTransitioningRef = useRef(false);
+  const mountTime = useRef(Date.now());
   const swipeLeftTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const navigationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const interactionHandleRef = useRef<{ cancel?: () => void } | null>(null);
@@ -783,6 +784,8 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
     if (system.system === ShiftSystem.THREE_SHIFT) {
       updates.rosterType = 'rotating';
     }
+    Analytics.onboardingQuestionAnswered({ question: 'shift_system', answer_value: system.system });
+    Analytics.onboardingStepCompleted('shift_system', Date.now() - mountTime.current);
     updateData(updates);
     isTransitioningRef.current = true;
     setIsTransitioning(true);
@@ -886,7 +889,9 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
 
       {/* Title */}
       <Animated.Text style={[styles.title, titleAnimatedStyle]}>
-        {t('shiftSystem.title')}
+        {data.name
+          ? t('shiftSystem.title_named', { name: data.name.trim().split(' ')[0] })
+          : t('shiftSystem.title')}
       </Animated.Text>
 
       {/* Subtitle */}

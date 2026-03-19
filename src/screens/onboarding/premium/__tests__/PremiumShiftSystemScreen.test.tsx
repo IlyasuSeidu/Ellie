@@ -10,6 +10,7 @@ import { PremiumShiftSystemScreen } from '../PremiumShiftSystemScreen';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { asyncStorageService } from '@/services/AsyncStorageService';
 
 // Mock Haptics
 // Mock AsyncStorage
@@ -69,7 +70,11 @@ jest.mock('@react-navigation/native', () => {
 
 const Stack = createNativeStackNavigator();
 
-const renderWithProviders = (component: React.ReactElement, _initialData = {}) => {
+const renderWithProviders = (component: React.ReactElement, initialData = {}) => {
+  jest
+    .mocked(asyncStorageService.get)
+    .mockResolvedValue(Object.keys(initialData).length > 0 ? initialData : null);
+
   return render(
     <NavigationContainer>
       <OnboardingProvider>
@@ -97,6 +102,14 @@ describe('PremiumShiftSystemScreen', () => {
 
       expect(getByText('How Many Shifts Does Your Site Run?')).toBeTruthy();
       expect(getByText(/Swipe right to choose, left to see more/i)).toBeTruthy();
+    });
+
+    it('should render personalized title when a saved name exists', async () => {
+      const { findByText } = renderWithProviders(<PremiumShiftSystemScreen />, {
+        name: 'Ilyasu Seidu',
+      });
+
+      expect(await findByText('Hey Ilyasu, How Many Shifts Does Your Site Run?')).toBeTruthy();
     });
 
     it('should render progress header with step 3 of 11', () => {

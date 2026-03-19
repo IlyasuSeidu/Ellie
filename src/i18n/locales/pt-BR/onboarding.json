@@ -60,6 +60,7 @@
     "skipCompany": "Pular"
   },
   "shiftSystem": {
+    "title_named": "Oi {{name}}, quantos turnos seu site executa?",
     "reviewAgain": "Revise os sistemas novamente para selecionar",
     "reviewButton": "Revisar sistemas",
     "continueButton": "Continuar",

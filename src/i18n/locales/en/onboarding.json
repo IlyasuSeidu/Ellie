@@ -125,6 +125,7 @@
   },
   "shiftSystem": {
     "title": "How Many Shifts Does Your Site Run?",
+    "title_named": "Hey {{name}}, How Many Shifts Does Your Site Run?",
     "reviewAgain": "Please review systems again to make your selection",
     "reviewButton": "Review Systems",
     "continueButton": "Continue",

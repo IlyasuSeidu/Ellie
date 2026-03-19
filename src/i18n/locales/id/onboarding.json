@@ -61,6 +61,7 @@
   },
   "shiftSystem": {
     "title": "Berapa Banyak Pergeseran yang Dijalankan Situs Anda?",
+    "title_named": "Hai {{name}}, berapa banyak shift yang dijalankan situs Anda?",
     "reviewAgain": "Harap tinjau kembali sistem untuk menentukan pilihan Anda",
     "reviewButton": "Sistem Tinjauan",
     "continueButton": "Melanjutkan",

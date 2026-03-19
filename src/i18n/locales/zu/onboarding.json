@@ -61,6 +61,7 @@
   },
   "shiftSystem": {
     "title": "Isayithi Lakho Lisebenza Kangakanani?",
+    "title_named": "Sawubona {{name}}, isayithi lakho lisebenza ngamashifu amangaki?",
     "reviewAgain": "Sicela ubuyekeze amasistimu futhi ukuze ukhethe",
     "reviewButton": "Buyekeza Amasistimu",
     "continueButton": "Qhubeka",

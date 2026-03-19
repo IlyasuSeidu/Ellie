@@ -60,6 +60,7 @@
     "skipCompany": "Omitir"
   },
   "shiftSystem": {
+    "title_named": "Hola {{name}}, ¿cuántos turnos funciona tu sitio?",
     "reviewAgain": "Revisa los sistemas otra vez para seleccionar",
     "reviewButton": "Revisar sistemas",
     "continueButton": "Continuar",

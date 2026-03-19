@@ -61,6 +61,7 @@
   },
   "shiftSystem": {
     "title": "Combien d’équipes votre site gère-t-il ?",
+    "title_named": "Salut {{name}}, combien d’équipes votre site gère-t-il ?",
     "reviewAgain": "Veuillez revoir les systèmes pour faire votre sélection",
     "reviewButton": "Systèmes d'examen",
     "continueButton": "Continuer",
