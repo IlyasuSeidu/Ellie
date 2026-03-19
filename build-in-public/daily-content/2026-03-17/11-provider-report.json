@@ -1,0 +1,25 @@
+{
+  "provider": "anthropic",
+  "model": "claude-sonnet-4-6",
+  "refinedFiles": [
+    "03-hero-short.md",
+    "04-instagram-carousel.md",
+    "05-linkedin-post.md",
+    "06-x-thread.md",
+    "ready-to-post/instagram-reels/post.md",
+    "ready-to-post/tiktok/post.md",
+    "ready-to-post/youtube-shorts/post.md",
+    "ready-to-post/instagram-carousel/post.md",
+    "ready-to-post/linkedin/post.md",
+    "ready-to-post/x/post.md",
+    "ready-to-post/threads/post.md"
+  ],
+  "failedFiles": [],
+  "requestCount": 11,
+  "usage": {
+    "input_tokens": 24932,
+    "output_tokens": 5243,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0
+  }
+}

@@ -1,0 +1,594 @@
+{
+  "date": "2026-01-26",
+  "humanDate": "January 26, 2026",
+  "repository": "Ellie",
+  "branch": "main",
+  "remote": "https://github.com/IlyasuSeidu/Ellie.git",
+  "window": {
+    "mode": "rollover-time",
+    "rolloverTime": "20:30",
+    "since": "2026-01-25 20:30:00",
+    "until": "2026-01-26 20:29:59"
+  },
+  "selectedAngles": [
+    "micro-drama",
+    "build-confession",
+    "founder-opinion",
+    "before-after",
+    "community-debate"
+  ],
+  "platformAngles": {
+    "reels": ["stakes-consequence", "before-after"],
+    "tiktok": ["stakes-consequence", "build-confession"],
+    "shorts": ["stakes-consequence", "wrong-assumption"],
+    "carousel": ["wrong-assumption", "before-after"],
+    "linkedin": ["founder-opinion", "mini-case-study"],
+    "x": ["founder-opinion", "stakes-consequence"],
+    "threads": ["build-confession", "community-debate"]
+  },
+  "codebaseContext": {
+    "storyMode": "onboarding-momentum",
+    "storyHighlights": [
+      "One-question-at-a-time introduction flow that makes profile setup feel conversational instead of administrative.",
+      "First screen that frames Ellie as a premium shift companion from the opening moment.",
+      "Phase selection that helps people place themselves correctly inside a repeating roster cycle.",
+      "guided onboarding path",
+      "physics-based motion that needs to feel solid",
+      "country selection built into setup"
+    ],
+    "touchedFiles": [
+      {
+        "path": "src/screens/onboarding/premium/PremiumIntroductionScreen.tsx",
+        "role": "touched",
+        "summary": "One-question-at-a-time introduction flow that makes profile setup feel conversational instead of administrative.",
+        "signals": [
+          "guided-onboarding-path",
+          "chat-style-introduction",
+          "country-selection",
+          "onboarding-state",
+          "validated-input",
+          "localized-copy",
+          "shift-math"
+        ],
+        "relatedFiles": [
+          "src/navigation/AppNavigator.tsx",
+          "src/utils/theme.ts",
+          "src/components/onboarding/premium/ProgressHeader.tsx"
+        ]
+      },
+      {
+        "path": "src/screens/onboarding/premium/PremiumWelcomeScreen.tsx",
+        "role": "touched",
+        "summary": "First screen that frames Ellie as a premium shift companion from the opening moment.",
+        "signals": [
+          "physics-motion",
+          "localized-copy",
+          "shift-math",
+          "service-layer",
+          "premium-first-impression"
+        ],
+        "relatedFiles": [
+          "src/utils/theme.ts",
+          "src/components/onboarding/premium/index.ts",
+          "src/navigation/OnboardingNavigator.tsx"
+        ]
+      },
+      {
+        "path": "src/components/onboarding/premium/PhaseSelector.tsx",
+        "role": "touched",
+        "summary": "Phase selection that helps people place themselves correctly inside a repeating roster cycle.",
+        "signals": ["physics-motion", "localized-copy", "calendar-setup"],
+        "relatedFiles": ["src/utils/theme.ts", "src/utils/hapticsDiagnostics.ts"]
+      },
+      {
+        "path": "src/components/onboarding/premium/PremiumButton.tsx",
+        "role": "touched",
+        "summary": "Premium button with haptic feedback and animations using stone and gold theme Features: shimmer effect, pulse glow, bouncy interactions, and smooth press animations",
+        "signals": ["physics-motion"],
+        "relatedFiles": ["src/utils/theme.ts", "src/utils/hapticsDiagnostics.ts"]
+      },
+      {
+        "path": "src/components/onboarding/premium/PremiumCountrySelector.tsx",
+        "role": "touched",
+        "summary": "Country selection folded into setup so localization and future defaults start cleaner.",
+        "signals": ["country-selection", "physics-motion", "localized-copy"],
+        "relatedFiles": ["src/i18n/index.ts", "src/i18n/languageDetector.ts", "src/utils/theme.ts"]
+      },
+      {
+        "path": "src/components/onboarding/premium/PremiumCountrySelectorModal.tsx",
+        "role": "touched",
+        "summary": "PremiumCountrySelectorModal.tsx is part of the current codebase around this feature area.",
+        "signals": ["country-selection", "localized-copy"],
+        "relatedFiles": [
+          "src/utils/theme.ts",
+          "src/components/onboarding/premium/PremiumCountrySelector.tsx"
+        ]
+      }
+    ],
+    "relatedFiles": [
+      {
+        "path": "src/navigation/AppNavigator.tsx",
+        "role": "related",
+        "summary": "AppNavigator Root navigator with three route groups:",
+        "signals": ["guided-onboarding-path", "shift-math", "service-layer"],
+        "relatedFiles": [
+          "src/utils/theme.ts",
+          "src/services/AsyncStorageService.ts",
+          "src/contexts/AuthContext.tsx"
+        ]
+      },
+      {
+        "path": "src/utils/theme.ts",
+        "role": "related",
+        "summary": "Theme Configuration Comprehensive theme system with colors, typography, spacing, and design tokens.",
+        "signals": ["calendar-setup"],
+        "relatedFiles": []
+      },
+      {
+        "path": "src/components/onboarding/premium/ProgressHeader.tsx",
+        "role": "related",
+        "summary": "Progress header that makes a long setup feel finite and directed.",
+        "signals": ["guided-onboarding-path", "physics-motion", "localized-copy"],
+        "relatedFiles": ["src/utils/theme.ts", "src/utils/hapticsDiagnostics.ts"]
+      },
+      {
+        "path": "src/utils/hapticsDiagnostics.ts",
+        "role": "related",
+        "summary": "hapticsDiagnostics.ts is part of the current codebase around this feature area.",
+        "signals": ["shift-math"],
+        "relatedFiles": ["src/utils/logger.ts"]
+      }
+    ]
+  },
+  "generation": {
+    "provider": "local",
+    "usedAnthropic": false,
+    "model": null,
+    "refinedFiles": [],
+    "failedFiles": [],
+    "requestCount": 0,
+    "usage": null
+  },
+  "metaFocus": {
+    "id": "trust",
+    "label": "product trust",
+    "explanation": "how the product feels dependable under real-world use"
+  },
+  "metaArc": {
+    "series": "Trust Leaks",
+    "title": "closing a trust leak before it spreads",
+    "promise": "show how small mismatches quietly break trust before users can explain why",
+    "character": "someone looking for an answer they cannot afford to doubt"
+  },
+  "dominantAction": "update",
+  "totals": {
+    "commits": 3,
+    "filesChanged": 46,
+    "additions": 1290,
+    "deletions": 578,
+    "testsTouched": 3,
+    "localeCount": 0
+  },
+  "topThemes": [
+    {
+      "id": "testing",
+      "label": "Testing",
+      "publicLabel": "delivery confidence",
+      "score": 23
+    },
+    {
+      "id": "onboarding",
+      "label": "Onboarding",
+      "publicLabel": "first-use clarity",
+      "score": 21
+    },
+    {
+      "id": "design",
+      "label": "Design Polish",
+      "publicLabel": "visual trust",
+      "score": 20
+    },
+    {
+      "id": "foundation",
+      "label": "Foundation",
+      "publicLabel": "invisible trust",
+      "score": 12
+    }
+  ],
+  "topCategories": [
+    {
+      "id": "assets",
+      "label": "assets",
+      "count": 19
+    },
+    {
+      "id": "components",
+      "label": "components",
+      "count": 11
+    },
+    {
+      "id": "config",
+      "label": "config",
+      "count": 7
+    },
+    {
+      "id": "other",
+      "label": "other code",
+      "count": 3
+    }
+  ],
+  "allLocales": [],
+  "commits": [
+    {
+      "hash": "7fd86e403ad68cfddb88b127f7fae93e0a5a4cff",
+      "shortHash": "7fd86e4",
+      "authoredAt": "2026-01-26T07:00:23+00:00",
+      "subject": "feat: Implement onboarding navigation and premium introduction screen",
+      "action": "update",
+      "score": 23,
+      "added": 1274,
+      "deleted": 572,
+      "filesChanged": 44,
+      "testsTouched": 2,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "App.tsx",
+          "added": 11,
+          "deleted": 10,
+          "category": "other"
+        },
+        {
+          "path": "app.config.js",
+          "added": 0,
+          "deleted": 143,
+          "category": "config"
+        },
+        {
+          "path": "app.json",
+          "added": 0,
+          "deleted": 1,
+          "category": "config"
+        },
+        {
+          "path": "assets/onboarding/icons/1x/digital-id-badge.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "assets/onboarding/icons/1x/mining-helmet-sacred-flame.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "assets/onboarding/icons/1x/rotating-calendar-wheel.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "assets/onboarding/icons/2x/digital-id-badge.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "assets/onboarding/icons/2x/mining-helmet-sacred-flame.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "assets/onboarding/icons/2x/rotating-calendar-wheel.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "assets/onboarding/icons/3x/digital-id-badge.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "assets/onboarding/icons/3x/mining-helmet-sacred-flame.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "assets/onboarding/icons/3x/rotating-calendar-wheel.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "assets/onboarding/icons/consolidated/digital-id-badge.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "assets/onboarding/icons/consolidated/digital-id-badge@2x.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "assets/onboarding/icons/consolidated/digital-id-badge@3x.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "assets/onboarding/icons/consolidated/mining-helmet-sacred-flame.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "assets/onboarding/icons/consolidated/mining-helmet-sacred-flame@2x.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "assets/onboarding/icons/consolidated/mining-helmet-sacred-flame@3x.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "assets/onboarding/icons/source/README.md",
+          "added": 42,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "assets/onboarding/icons/source/digital-id-badge.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "assets/onboarding/icons/source/mining-helmet-sacred-flame.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "assets/onboarding/icons/source/rotating-calendar-wheel.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "babel.config.js",
+          "added": 22,
+          "deleted": 0,
+          "category": "config"
+        },
+        {
+          "path": "jest.setup.js",
+          "added": 3,
+          "deleted": 4,
+          "category": "other"
+        },
+        {
+          "path": "metro.config.js",
+          "added": 6,
+          "deleted": 0,
+          "category": "config"
+        },
+        {
+          "path": "package-lock.json",
+          "added": 317,
+          "deleted": 299,
+          "category": "config"
+        },
+        {
+          "path": "package.json",
+          "added": 12,
+          "deleted": 9,
+          "category": "config"
+        },
+        {
+          "path": "src/components/onboarding/premium/PhaseSelector.tsx",
+          "added": 1,
+          "deleted": 1,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/PremiumButton.tsx",
+          "added": 34,
+          "deleted": 13,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/PremiumCountrySelector.tsx",
+          "added": 57,
+          "deleted": 27,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/PremiumCountrySelectorModal.tsx",
+          "added": 142,
+          "deleted": 0,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/PremiumSlider.tsx",
+          "added": 1,
+          "deleted": 1,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/PremiumTextInput.tsx",
+          "added": 58,
+          "deleted": 17,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/PremiumToggle.tsx",
+          "added": 1,
+          "deleted": 1,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/PresetTimeCard.tsx",
+          "added": 1,
+          "deleted": 1,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/ReportCheckbox.tsx",
+          "added": 1,
+          "deleted": 1,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/TimePickerModal.tsx",
+          "added": 1,
+          "deleted": 1,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/__tests__/PremiumCountrySelector.test.tsx",
+          "added": 1,
+          "deleted": 15,
+          "category": "tests"
+        },
+        {
+          "path": "src/components/onboarding/premium/index.ts",
+          "added": 4,
+          "deleted": 0,
+          "category": "components"
+        },
+        {
+          "path": "src/navigation/OnboardingNavigator.tsx",
+          "added": 34,
+          "deleted": 0,
+          "category": "navigation"
+        },
+        {
+          "path": "src/screens/onboarding/premium/PremiumIntroductionScreen.tsx",
+          "added": 466,
+          "deleted": 0,
+          "category": "screens"
+        },
+        {
+          "path": "src/screens/onboarding/premium/PremiumWelcomeScreen.tsx",
+          "added": 46,
+          "deleted": 21,
+          "category": "screens"
+        },
+        {
+          "path": "src/screens/onboarding/premium/__tests__/PremiumWelcomeScreen.test.tsx",
+          "added": 12,
+          "deleted": 7,
+          "category": "tests"
+        },
+        {
+          "path": "tsconfig.json",
+          "added": 1,
+          "deleted": 0,
+          "category": "config"
+        }
+      ]
+    },
+    {
+      "hash": "03f1ed7d8e7bb4d3700938cd8595d6dff40e28d1",
+      "shortHash": "03f1ed7",
+      "authoredAt": "2026-01-26T07:07:17+00:00",
+      "subject": "fix: Mock React Navigation in PremiumWelcomeScreen tests",
+      "action": "fix",
+      "score": 17,
+      "added": 7,
+      "deleted": 0,
+      "filesChanged": 1,
+      "testsTouched": 1,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "src/screens/onboarding/premium/__tests__/PremiumWelcomeScreen.test.tsx",
+          "added": 7,
+          "deleted": 0,
+          "category": "tests"
+        }
+      ]
+    },
+    {
+      "hash": "2b043a0dd5337098f62085b02ea3797ad82f35e0",
+      "shortHash": "2b043a0",
+      "authoredAt": "2026-01-26T01:59:22+00:00",
+      "subject": "feat: Update App.tsx to show PremiumWelcomeScreen",
+      "action": "update",
+      "score": 4,
+      "added": 9,
+      "deleted": 6,
+      "filesChanged": 1,
+      "testsTouched": 0,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "App.tsx",
+          "added": 9,
+          "deleted": 6,
+          "category": "other"
+        }
+      ]
+    }
+  ],
+  "topMoments": [
+    {
+      "rank": 1,
+      "hash": "7fd86e4",
+      "subject": "feat: Implement onboarding navigation and premium introduction screen",
+      "slug": "01-feat-implement-onboarding-navigation-and-premium",
+      "publicLabel": "the introduction flow",
+      "focusText": "delivery confidence and invisible trust",
+      "categoryText": "assets and components",
+      "tension": "The introduction flow looks small until you notice where people hesitate.",
+      "lesson": "Treat the visible screen and the underlying state as one system.",
+      "evidence": "the introduction flow was reworked to feel clearer in motion",
+      "proof": "the introduction flow was reworked to feel clearer in motion",
+      "testsTouched": 2,
+      "localesTouched": [],
+      "score": 23
+    },
+    {
+      "rank": 2,
+      "hash": "03f1ed7",
+      "subject": "fix: Mock React Navigation in PremiumWelcomeScreen tests",
+      "slug": "02-fix-mock-react-navigation-in-premiumwelcomescree",
+      "publicLabel": "the welcome moment",
+      "focusText": "delivery confidence and first-use clarity",
+      "categoryText": "tests",
+      "tension": "If the welcome moment feels wrong once, people start doubting the whole product.",
+      "lesson": "Bug fixes become content when you explain the wrong assumption, not just the patch.",
+      "evidence": "the hesitation point inside the welcome moment resolves more cleanly now",
+      "proof": "the hesitation point inside the welcome moment resolves more cleanly now",
+      "testsTouched": 1,
+      "localesTouched": [],
+      "score": 17
+    },
+    {
+      "rank": 3,
+      "hash": "2b043a0",
+      "subject": "feat: Update App.tsx to show PremiumWelcomeScreen",
+      "slug": "03-feat-update-app-tsx-to-show-premiumwelcomescreen",
+      "publicLabel": "the welcome moment",
+      "focusText": "visual trust and first-use clarity",
+      "categoryText": "other code",
+      "tension": "The welcome moment looks small until you notice where people hesitate.",
+      "lesson": "Treat the visible screen and the underlying state as one system.",
+      "evidence": "the welcome moment was reworked to feel clearer in motion",
+      "proof": "the welcome moment was reworked to feel clearer in motion",
+      "testsTouched": 0,
+      "localesTouched": [],
+      "score": 4
+    }
+  ]
+}

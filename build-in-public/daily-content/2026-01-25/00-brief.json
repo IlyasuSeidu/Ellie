@@ -1,0 +1,1963 @@
+{
+  "date": "2026-01-25",
+  "humanDate": "January 25, 2026",
+  "repository": "Ellie",
+  "branch": "main",
+  "remote": "https://github.com/IlyasuSeidu/Ellie.git",
+  "selectedAngles": [
+    "stakes-consequence",
+    "build-confession",
+    "technical-discovery",
+    "proof-demo",
+    "open-loop"
+  ],
+  "platformAngles": {
+    "reels": ["stakes-consequence", "before-after"],
+    "tiktok": ["stakes-consequence", "build-confession"],
+    "shorts": ["stakes-consequence", "wrong-assumption"],
+    "carousel": ["wrong-assumption", "before-after"],
+    "linkedin": ["founder-opinion", "mini-case-study"],
+    "x": ["founder-opinion", "stakes-consequence"],
+    "threads": ["build-confession", "community-debate"]
+  },
+  "codebaseContext": {
+    "storyMode": "onboarding-momentum",
+    "storyHighlights": [
+      "Premium button with haptic feedback and animations using stone and gold theme Features: shimmer effect, pulse glow, bouncy interactions, and smooth press animations",
+      "Base card component with shadow and animations using stone and gold theme",
+      "Floating label text input with animations using stone and gold theme",
+      "guided onboarding path",
+      "physics-based motion that needs to feel solid",
+      "chat-style introduction that asks one thing at a time"
+    ],
+    "touchedFiles": [
+      {
+        "path": "src/components/onboarding/premium/PremiumButton.tsx",
+        "role": "touched",
+        "summary": "Premium button with haptic feedback and animations using stone and gold theme Features: shimmer effect, pulse glow, bouncy interactions, and smooth press animations",
+        "signals": ["physics-motion"],
+        "relatedFiles": ["src/utils/theme.ts", "src/utils/hapticsDiagnostics.ts"]
+      },
+      {
+        "path": "src/components/onboarding/premium/PremiumCard.tsx",
+        "role": "touched",
+        "summary": "Base card component with shadow and animations using stone and gold theme",
+        "signals": ["physics-motion"],
+        "relatedFiles": ["src/utils/theme.ts", "src/utils/hapticsDiagnostics.ts"]
+      },
+      {
+        "path": "src/components/onboarding/premium/PremiumTextInput.tsx",
+        "role": "touched",
+        "summary": "Floating label text input with animations using stone and gold theme",
+        "signals": ["physics-motion"],
+        "relatedFiles": ["src/utils/theme.ts", "src/utils/hapticsDiagnostics.ts"]
+      },
+      {
+        "path": "src/components/onboarding/premium/ProgressHeader.tsx",
+        "role": "touched",
+        "summary": "Progress header that makes a long setup feel finite and directed.",
+        "signals": ["guided-onboarding-path", "physics-motion", "localized-copy"],
+        "relatedFiles": ["src/utils/theme.ts", "src/utils/hapticsDiagnostics.ts"]
+      },
+      {
+        "path": "src/components/onboarding/premium/index.ts",
+        "role": "touched",
+        "summary": "Premium Onboarding Components Export all premium onboarding components",
+        "signals": [
+          "guided-onboarding-path",
+          "chat-style-introduction",
+          "country-selection",
+          "calendar-setup"
+        ],
+        "relatedFiles": [
+          "src/components/onboarding/premium/PremiumButton.tsx",
+          "src/components/onboarding/premium/PremiumTextInput.tsx",
+          "src/components/onboarding/premium/PremiumCard.tsx"
+        ]
+      },
+      {
+        "path": "src/components/onboarding/premium/LivePatternPreview.tsx",
+        "role": "touched",
+        "summary": "Visual preview of custom shift pattern using stone and gold theme",
+        "signals": ["physics-motion", "localized-copy", "shift-math", "calendar-setup"],
+        "relatedFiles": ["src/utils/theme.ts"]
+      }
+    ],
+    "relatedFiles": [
+      {
+        "path": "src/utils/theme.ts",
+        "role": "related",
+        "summary": "Theme Configuration Comprehensive theme system with colors, typography, spacing, and design tokens.",
+        "signals": ["calendar-setup"],
+        "relatedFiles": []
+      },
+      {
+        "path": "src/utils/hapticsDiagnostics.ts",
+        "role": "related",
+        "summary": "hapticsDiagnostics.ts is part of the current codebase around this feature area.",
+        "signals": ["shift-math"],
+        "relatedFiles": ["src/utils/logger.ts"]
+      }
+    ]
+  },
+  "generation": {
+    "provider": "anthropic",
+    "usedAnthropic": true,
+    "model": "claude-sonnet-4-6",
+    "refinedFiles": [
+      "03-hero-short.md",
+      "04-instagram-carousel.md",
+      "05-linkedin-post.md",
+      "06-x-thread.md",
+      "ready-to-post/instagram-reels/post.md",
+      "ready-to-post/tiktok/post.md",
+      "ready-to-post/youtube-shorts/post.md",
+      "ready-to-post/instagram-carousel/post.md",
+      "ready-to-post/linkedin/post.md",
+      "ready-to-post/x/post.md",
+      "ready-to-post/threads/post.md"
+    ],
+    "failedFiles": [],
+    "requestCount": 11,
+    "usage": {
+      "input_tokens": 24922,
+      "output_tokens": 5111,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0
+    }
+  },
+  "metaFocus": {
+    "id": "trust",
+    "label": "product trust",
+    "explanation": "how the product feels dependable under real-world use"
+  },
+  "metaArc": {
+    "series": "Trust Leaks",
+    "title": "closing a trust leak before it spreads",
+    "promise": "show how small mismatches quietly break trust before users can explain why",
+    "character": "someone looking for an answer they cannot afford to doubt"
+  },
+  "dominantAction": "update",
+  "totals": {
+    "commits": 25,
+    "filesChanged": 223,
+    "additions": 76071,
+    "deletions": 19068,
+    "testsTouched": 45,
+    "localeCount": 0
+  },
+  "topThemes": [
+    {
+      "id": "testing",
+      "label": "Testing",
+      "publicLabel": "delivery confidence",
+      "score": 212
+    },
+    {
+      "id": "foundation",
+      "label": "Foundation",
+      "publicLabel": "invisible trust",
+      "score": 142
+    },
+    {
+      "id": "calendar",
+      "label": "Calendar Accuracy",
+      "publicLabel": "schedule trust",
+      "score": 97
+    },
+    {
+      "id": "design",
+      "label": "Design Polish",
+      "publicLabel": "visual trust",
+      "score": 82
+    }
+  ],
+  "topCategories": [
+    {
+      "id": "other",
+      "label": "other code",
+      "count": 88
+    },
+    {
+      "id": "tests",
+      "label": "tests",
+      "count": 45
+    },
+    {
+      "id": "config",
+      "label": "config",
+      "count": 27
+    },
+    {
+      "id": "services",
+      "label": "services",
+      "count": 23
+    }
+  ],
+  "allLocales": [],
+  "commits": [
+    {
+      "hash": "6a13577f8f8bc1b03686981b2fce7e4dc8d54a0f",
+      "shortHash": "6a13577",
+      "authoredAt": "2026-01-25T04:55:29+00:00",
+      "subject": "Fix Jest configuration and test failures",
+      "action": "fix",
+      "score": 23,
+      "added": 131,
+      "deleted": 52,
+      "filesChanged": 9,
+      "testsTouched": 1,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "added": 0,
+          "deleted": 2,
+          "category": "other"
+        },
+        {
+          "path": "babel.config.js",
+          "added": 1,
+          "deleted": 0,
+          "category": "config"
+        },
+        {
+          "path": "jest.config.js",
+          "added": 25,
+          "deleted": 24,
+          "category": "config"
+        },
+        {
+          "path": "jest.setup.js",
+          "added": 65,
+          "deleted": 14,
+          "category": "other"
+        },
+        {
+          "path": "src/types/validation.ts",
+          "added": 22,
+          "deleted": 5,
+          "category": "other"
+        },
+        {
+          "path": "src/utils/dateUtils.ts",
+          "added": 12,
+          "deleted": 3,
+          "category": "utils"
+        },
+        {
+          "path": "src/utils/shiftUtils.ts",
+          "added": 3,
+          "deleted": 3,
+          "category": "utils"
+        },
+        {
+          "path": "src/utils/validationUtils.ts",
+          "added": 1,
+          "deleted": 0,
+          "category": "utils"
+        },
+        {
+          "path": "tests/utils/shiftUtils.test.ts",
+          "added": 2,
+          "deleted": 1,
+          "category": "tests"
+        }
+      ]
+    },
+    {
+      "hash": "20d9eba1c4c3dc87e05eee97a43c87ce9f42719b",
+      "shortHash": "20d9eba",
+      "authoredAt": "2026-01-25T16:27:51+00:00",
+      "subject": "feat: Add Phase 4 premium onboarding component library",
+      "action": "update",
+      "score": 23,
+      "added": 3092,
+      "deleted": 264,
+      "filesChanged": 13,
+      "testsTouched": 4,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "jest.config.js",
+          "added": 2,
+          "deleted": 10,
+          "category": "config"
+        },
+        {
+          "path": "jest.setup.js",
+          "added": 68,
+          "deleted": 4,
+          "category": "other"
+        },
+        {
+          "path": "package-lock.json",
+          "added": 76,
+          "deleted": 249,
+          "category": "config"
+        },
+        {
+          "path": "package.json",
+          "added": 2,
+          "deleted": 1,
+          "category": "config"
+        },
+        {
+          "path": "src/components/onboarding/premium/PremiumButton.tsx",
+          "added": 318,
+          "deleted": 0,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/PremiumCard.tsx",
+          "added": 145,
+          "deleted": 0,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/PremiumTextInput.tsx",
+          "added": 309,
+          "deleted": 0,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/ProgressHeader.tsx",
+          "added": 223,
+          "deleted": 0,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/__tests__/PremiumButton.test.tsx",
+          "added": 249,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/components/onboarding/premium/__tests__/PremiumCard.test.tsx",
+          "added": 488,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/components/onboarding/premium/__tests__/PremiumTextInput.test.tsx",
+          "added": 584,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/components/onboarding/premium/__tests__/ProgressHeader.test.tsx",
+          "added": 612,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/components/onboarding/premium/index.ts",
+          "added": 16,
+          "deleted": 0,
+          "category": "components"
+        }
+      ]
+    },
+    {
+      "hash": "f4827ac7c88e5019245741fc9f0e4f692c281b4f",
+      "shortHash": "f4827ac",
+      "authoredAt": "2026-01-25T17:51:53+00:00",
+      "subject": "feat: Add Phase 4.5 shift pattern selection components",
+      "action": "update",
+      "score": 23,
+      "added": 3142,
+      "deleted": 0,
+      "filesChanged": 10,
+      "testsTouched": 4,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "jest.setup.js",
+          "added": 3,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "src/components/onboarding/premium/LivePatternPreview.tsx",
+          "added": 258,
+          "deleted": 0,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/PatternCard.tsx",
+          "added": 379,
+          "deleted": 0,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/PhaseSelector.tsx",
+          "added": 227,
+          "deleted": 0,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/PremiumSlider.tsx",
+          "added": 199,
+          "deleted": 0,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/__tests__/LivePatternPreview.test.tsx",
+          "added": 401,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/components/onboarding/premium/__tests__/PatternCard.test.tsx",
+          "added": 532,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/components/onboarding/premium/__tests__/PhaseSelector.test.tsx",
+          "added": 540,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/components/onboarding/premium/__tests__/PremiumSlider.test.tsx",
+          "added": 594,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/components/onboarding/premium/index.ts",
+          "added": 9,
+          "deleted": 0,
+          "category": "components"
+        }
+      ]
+    },
+    {
+      "hash": "ff364454e8bbd00366057186405e65f322a75544",
+      "shortHash": "ff36445",
+      "authoredAt": "2026-01-25T18:58:08+00:00",
+      "subject": "feat: Add Phase 4.7 specialized input components",
+      "action": "update",
+      "score": 23,
+      "added": 2406,
+      "deleted": 0,
+      "filesChanged": 9,
+      "testsTouched": 4,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "src/components/onboarding/premium/PremiumToggle.tsx",
+          "added": 209,
+          "deleted": 0,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/PresetTimeCard.tsx",
+          "added": 245,
+          "deleted": 0,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/ReportCheckbox.tsx",
+          "added": 277,
+          "deleted": 0,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/TimePickerModal.tsx",
+          "added": 349,
+          "deleted": 0,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/__tests__/PremiumToggle.test.tsx",
+          "added": 320,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/components/onboarding/premium/__tests__/PresetTimeCard.test.tsx",
+          "added": 294,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/components/onboarding/premium/__tests__/ReportCheckbox.test.tsx",
+          "added": 312,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/components/onboarding/premium/__tests__/TimePickerModal.test.tsx",
+          "added": 384,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/components/onboarding/premium/index.ts",
+          "added": 16,
+          "deleted": 0,
+          "category": "components"
+        }
+      ]
+    },
+    {
+      "hash": "a76a367a42ef32c5d33fa7b2b09794e965500a4a",
+      "shortHash": "a76a367",
+      "authoredAt": "2026-01-25T15:28:08+00:00",
+      "subject": "fix: resolve all ESLint errors and TypeScript errors for CI pipeline",
+      "action": "fix",
+      "score": 22,
+      "added": 76,
+      "deleted": 149,
+      "filesChanged": 6,
+      "testsTouched": 1,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "src/services/DataSyncService.ts",
+          "added": 11,
+          "deleted": 26,
+          "category": "services"
+        },
+        {
+          "path": "src/services/NotificationService.ts",
+          "added": 15,
+          "deleted": 44,
+          "category": "services"
+        },
+        {
+          "path": "src/services/ShiftDataService.ts",
+          "added": 7,
+          "deleted": 31,
+          "category": "services"
+        },
+        {
+          "path": "src/services/firebase/FirebaseService.ts",
+          "added": 6,
+          "deleted": 15,
+          "category": "services"
+        },
+        {
+          "path": "src/services/firebase/__mocks__/FirebaseService.ts",
+          "added": 14,
+          "deleted": 8,
+          "category": "services"
+        },
+        {
+          "path": "tests/services/UserService.test.ts",
+          "added": 23,
+          "deleted": 25,
+          "category": "tests"
+        }
+      ]
+    },
+    {
+      "hash": "5adeb345c51c26783e425d2e03d2fa059a59e332",
+      "shortHash": "5adeb34",
+      "authoredAt": "2026-01-25T18:15:08+00:00",
+      "subject": "feat: Add Phase 4.6 calendar and country selector components",
+      "action": "update",
+      "score": 22,
+      "added": 1574,
+      "deleted": 0,
+      "filesChanged": 7,
+      "testsTouched": 3,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "src/components/onboarding/premium/DayCell.tsx",
+          "added": 167,
+          "deleted": 0,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/PremiumCalendar.tsx",
+          "added": 280,
+          "deleted": 0,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/PremiumCountrySelector.tsx",
+          "added": 265,
+          "deleted": 0,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/__tests__/DayCell.test.tsx",
+          "added": 226,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/components/onboarding/premium/__tests__/PremiumCalendar.test.tsx",
+          "added": 297,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/components/onboarding/premium/__tests__/PremiumCountrySelector.test.tsx",
+          "added": 332,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/components/onboarding/premium/index.ts",
+          "added": 7,
+          "deleted": 0,
+          "category": "components"
+        }
+      ]
+    },
+    {
+      "hash": "ed17892e9e8f530f8c4578b7864992d14fcae034",
+      "shortHash": "ed17892",
+      "authoredAt": "2026-01-25T06:08:46+00:00",
+      "subject": "Add comprehensive error handling, logging, and retry utilities",
+      "action": "implement",
+      "score": 20,
+      "added": 17140,
+      "deleted": 0,
+      "filesChanged": 31,
+      "testsTouched": 3,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "coverage/clover.xml",
+          "added": 520,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/coverage-final.json",
+          "added": 2454,
+          "deleted": 0,
+          "category": "config"
+        },
+        {
+          "path": "coverage/lcov-report/base.css",
+          "added": 224,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/block-navigation.js",
+          "added": 82,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/config/env.ts.html",
+          "added": 769,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/config/firebase.ts.html",
+          "added": 940,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/config/index.html",
+          "added": 131,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/constants/index.html",
+          "added": 116,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/constants/shiftStyles.ts.html",
+          "added": 946,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/favicon.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/index.html",
+          "added": 161,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/prettify.css",
+          "added": 1,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/prettify.js",
+          "added": 937,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/sort-arrow-sprite.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/sorter.js",
+          "added": 205,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/types/index.html",
+          "added": 131,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/types/index.ts.html",
+          "added": 1210,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/types/validation.ts.html",
+          "added": 1306,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/utils/dateUtils.ts.html",
+          "added": 1105,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/utils/index.html",
+          "added": 176,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/utils/shiftUtils.ts.html",
+          "added": 1138,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/utils/styleUtils.ts.html",
+          "added": 367,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/utils/theme.ts.html",
+          "added": 736,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/utils/validationUtils.ts.html",
+          "added": 1177,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov.info",
+          "added": 908,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "src/utils/errorUtils.ts",
+          "added": 185,
+          "deleted": 0,
+          "category": "utils"
+        },
+        {
+          "path": "src/utils/logger.ts",
+          "added": 171,
+          "deleted": 0,
+          "category": "utils"
+        },
+        {
+          "path": "src/utils/reliableRetry.ts",
+          "added": 195,
+          "deleted": 0,
+          "category": "utils"
+        },
+        {
+          "path": "tests/utils/errorUtils.test.ts",
+          "added": 287,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "tests/utils/logger.test.ts",
+          "added": 230,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "tests/utils/reliableRetry.test.ts",
+          "added": 332,
+          "deleted": 0,
+          "category": "tests"
+        }
+      ]
+    },
+    {
+      "hash": "c7c7619576c07fe733ee1644aa0f309550b06636",
+      "shortHash": "c7c7619",
+      "authoredAt": "2026-01-25T04:18:40+00:00",
+      "subject": "fix: resolve CI workflow failures and TypeScript errors",
+      "action": "fix",
+      "score": 19,
+      "added": 85,
+      "deleted": 30,
+      "filesChanged": 5,
+      "testsTouched": 1,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "added": 34,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": ".github/workflows/e2e.yml",
+          "added": 20,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "src/config/__mocks__/firebase.ts",
+          "added": 2,
+          "deleted": 2,
+          "category": "other"
+        },
+        {
+          "path": "src/config/firebase.ts",
+          "added": 10,
+          "deleted": 10,
+          "category": "other"
+        },
+        {
+          "path": "tests/config/firebase.test.ts",
+          "added": 19,
+          "deleted": 18,
+          "category": "tests"
+        }
+      ]
+    },
+    {
+      "hash": "6a4e338bc702e1b25a26edd0326cbcd3a1ec4d35",
+      "shortHash": "6a4e338",
+      "authoredAt": "2026-01-25T05:56:46+00:00",
+      "subject": "Add comprehensive theme system with Sacred design",
+      "action": "implement",
+      "score": 17,
+      "added": 1018,
+      "deleted": 0,
+      "filesChanged": 5,
+      "testsTouched": 2,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "src/constants/shiftStyles.ts",
+          "added": 287,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "src/utils/styleUtils.ts",
+          "added": 94,
+          "deleted": 0,
+          "category": "utils"
+        },
+        {
+          "path": "src/utils/theme.ts",
+          "added": 217,
+          "deleted": 0,
+          "category": "utils"
+        },
+        {
+          "path": "tests/utils/styleUtils.test.ts",
+          "added": 206,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "tests/utils/theme.test.ts",
+          "added": 214,
+          "deleted": 0,
+          "category": "tests"
+        }
+      ]
+    },
+    {
+      "hash": "2bb051d788a787462acdf1b3d6c53b1c98f3a67f",
+      "shortHash": "2bb051d",
+      "authoredAt": "2026-01-25T19:19:07+00:00",
+      "subject": "feat: Add PremiumWelcomeScreen with orchestrated animations",
+      "action": "update",
+      "score": 17,
+      "added": 528,
+      "deleted": 0,
+      "filesChanged": 2,
+      "testsTouched": 1,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "src/screens/onboarding/premium/PremiumWelcomeScreen.tsx",
+          "added": 269,
+          "deleted": 0,
+          "category": "screens"
+        },
+        {
+          "path": "src/screens/onboarding/premium/__tests__/PremiumWelcomeScreen.test.tsx",
+          "added": 259,
+          "deleted": 0,
+          "category": "tests"
+        }
+      ]
+    },
+    {
+      "hash": "2ec42316f913c873e67435c3eafaf7f06a8ce150",
+      "shortHash": "2ec4231",
+      "authoredAt": "2026-01-25T03:01:52+00:00",
+      "subject": "feat: complete development environment setup",
+      "action": "update",
+      "score": 16,
+      "added": 14524,
+      "deleted": 2252,
+      "filesChanged": 13,
+      "testsTouched": 3,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": ".detoxrc.js",
+          "added": 50,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": ".eslintrc.js",
+          "added": 59,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": ".prettierrc",
+          "added": 13,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "app.json",
+          "added": 3,
+          "deleted": 2,
+          "category": "config"
+        },
+        {
+          "path": "babel.config.js",
+          "added": 6,
+          "deleted": 0,
+          "category": "config"
+        },
+        {
+          "path": "e2e/app.test.ts",
+          "added": 21,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "e2e/jest.config.js",
+          "added": 11,
+          "deleted": 0,
+          "category": "config"
+        },
+        {
+          "path": "jest.config.js",
+          "added": 27,
+          "deleted": 0,
+          "category": "config"
+        },
+        {
+          "path": "jest.setup.js",
+          "added": 29,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "package-lock.json",
+          "added": 14223,
+          "deleted": 2247,
+          "category": "config"
+        },
+        {
+          "path": "package.json",
+          "added": 45,
+          "deleted": 3,
+          "category": "config"
+        },
+        {
+          "path": "src/__tests__/App.test.tsx",
+          "added": 16,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/__tests__/example.test.ts",
+          "added": 21,
+          "deleted": 0,
+          "category": "tests"
+        }
+      ]
+    },
+    {
+      "hash": "d7042885242e97b271745bea2cf84231fb5624e8",
+      "shortHash": "d704288",
+      "authoredAt": "2026-01-25T04:09:49+00:00",
+      "subject": "feat: add Firebase configuration with environment management",
+      "action": "update",
+      "score": 16,
+      "added": 1474,
+      "deleted": 0,
+      "filesChanged": 8,
+      "testsTouched": 2,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": ".env.example",
+          "added": 33,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": ".gitignore",
+          "added": 1,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "app.config.js",
+          "added": 143,
+          "deleted": 0,
+          "category": "config"
+        },
+        {
+          "path": "src/config/__mocks__/firebase.ts",
+          "added": 301,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "src/config/env.ts",
+          "added": 228,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "src/config/firebase.ts",
+          "added": 285,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "tests/config/env.test.ts",
+          "added": 198,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "tests/config/firebase.test.ts",
+          "added": 285,
+          "deleted": 0,
+          "category": "tests"
+        }
+      ]
+    },
+    {
+      "hash": "91c49962a8dd67bada80f3abd62dee4465c91e27",
+      "shortHash": "91c4996",
+      "authoredAt": "2026-01-25T15:11:32+00:00",
+      "subject": "feat: complete services layer with comprehensive tests",
+      "action": "update",
+      "score": 16,
+      "added": 12415,
+      "deleted": 0,
+      "filesChanged": 30,
+      "testsTouched": 11,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "src/services/AsyncStorageService.ts",
+          "added": 379,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/AuthService.ts",
+          "added": 627,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/DataSyncService.ts",
+          "added": 528,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/HolidayService.ts",
+          "added": 307,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/NotificationService.ts",
+          "added": 429,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/SessionService.ts",
+          "added": 490,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/ShiftDataService.ts",
+          "added": 362,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/StorageService.ts",
+          "added": 151,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/UserService.ts",
+          "added": 383,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/__mocks__/AsyncStorageService.ts",
+          "added": 207,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/__mocks__/AuthService.ts",
+          "added": 487,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/__mocks__/DataSyncService.ts",
+          "added": 179,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/__mocks__/NotificationService.ts",
+          "added": 268,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/__mocks__/SessionService.ts",
+          "added": 263,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/__mocks__/StorageService.ts",
+          "added": 83,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/__mocks__/UserService.ts",
+          "added": 226,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/firebase/FirebaseService.ts",
+          "added": 438,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/firebase/__mocks__/FirebaseService.ts",
+          "added": 248,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/types/async-storage.d.ts",
+          "added": 21,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "tests/integration/basic-integration.test.ts",
+          "added": 276,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "tests/integration/services.integration.test.ts",
+          "added": 582,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "tests/services/AsyncStorageService.test.ts",
+          "added": 574,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "tests/services/AuthService.test.ts",
+          "added": 609,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "tests/services/DataSyncService.test.ts",
+          "added": 639,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "tests/services/HolidayService.test.ts",
+          "added": 613,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "tests/services/NotificationService.test.ts",
+          "added": 549,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "tests/services/SessionService.test.ts",
+          "added": 675,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "tests/services/ShiftDataService.test.ts",
+          "added": 701,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "tests/services/UserService.test.ts",
+          "added": 580,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "tests/services/firebase/FirebaseService.test.ts",
+          "added": 541,
+          "deleted": 0,
+          "category": "tests"
+        }
+      ]
+    },
+    {
+      "hash": "dbf84777a18d9beefecafa1906c17ae3bcfb189a",
+      "shortHash": "dbf8477",
+      "authoredAt": "2026-01-25T05:46:40+00:00",
+      "subject": "fix: add react-native-worklets as devDependency",
+      "action": "fix",
+      "score": 15,
+      "added": 134,
+      "deleted": 0,
+      "filesChanged": 2,
+      "testsTouched": 0,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "package-lock.json",
+          "added": 133,
+          "deleted": 0,
+          "category": "config"
+        },
+        {
+          "path": "package.json",
+          "added": 1,
+          "deleted": 0,
+          "category": "config"
+        }
+      ]
+    },
+    {
+      "hash": "930aea2fc2692462a47895ca6f737115e86d5ce6",
+      "shortHash": "930aea2",
+      "authoredAt": "2026-01-25T02:23:57+00:00",
+      "subject": "feat: initial project setup",
+      "action": "update",
+      "score": 14,
+      "added": 8941,
+      "deleted": 0,
+      "filesChanged": 11,
+      "testsTouched": 0,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": ".gitignore",
+          "added": 41,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "App.tsx",
+          "added": 20,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "app.json",
+          "added": 30,
+          "deleted": 0,
+          "category": "config"
+        },
+        {
+          "path": "assets/adaptive-icon.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "assets/favicon.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "assets/icon.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "assets/splash-icon.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "assets"
+        },
+        {
+          "path": "index.ts",
+          "added": 8,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "package-lock.json",
+          "added": 8811,
+          "deleted": 0,
+          "category": "config"
+        },
+        {
+          "path": "package.json",
+          "added": 25,
+          "deleted": 0,
+          "category": "config"
+        },
+        {
+          "path": "tsconfig.json",
+          "added": 6,
+          "deleted": 0,
+          "category": "config"
+        }
+      ]
+    },
+    {
+      "hash": "28d1dccd58d053a708e8d59fa2a91e4984d0b993",
+      "shortHash": "28d1dcc",
+      "authoredAt": "2026-01-25T03:28:05+00:00",
+      "subject": "docs: add comprehensive project documentation",
+      "action": "docs",
+      "score": 14,
+      "added": 3474,
+      "deleted": 0,
+      "filesChanged": 8,
+      "testsTouched": 0,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": ".nvmrc",
+          "added": 1,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": ".ruby-version",
+          "added": 1,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "CHANGELOG.md",
+          "added": 233,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "docs/API_REFERENCE.md",
+          "added": 640,
+          "deleted": 0,
+          "category": "docs"
+        },
+        {
+          "path": "docs/ARCHITECTURE.md",
+          "added": 493,
+          "deleted": 0,
+          "category": "docs"
+        },
+        {
+          "path": "docs/CONTRIBUTING.md",
+          "added": 699,
+          "deleted": 0,
+          "category": "docs"
+        },
+        {
+          "path": "docs/DEPLOYMENT.md",
+          "added": 754,
+          "deleted": 0,
+          "category": "docs"
+        },
+        {
+          "path": "docs/TESTING_STRATEGY.md",
+          "added": 653,
+          "deleted": 0,
+          "category": "docs"
+        }
+      ]
+    },
+    {
+      "hash": "e75cebbe4d40e5e1f4e240308d58a016a00e070f",
+      "shortHash": "e75cebb",
+      "authoredAt": "2026-01-25T03:53:53+00:00",
+      "subject": "feat: add comprehensive utility functions for shift calculations and date handling",
+      "action": "update",
+      "score": 14,
+      "added": 2669,
+      "deleted": 0,
+      "filesChanged": 6,
+      "testsTouched": 3,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "src/utils/dateUtils.ts",
+          "added": 331,
+          "deleted": 0,
+          "category": "utils"
+        },
+        {
+          "path": "src/utils/shiftUtils.ts",
+          "added": 351,
+          "deleted": 0,
+          "category": "utils"
+        },
+        {
+          "path": "src/utils/validationUtils.ts",
+          "added": 363,
+          "deleted": 0,
+          "category": "utils"
+        },
+        {
+          "path": "tests/utils/dateUtils.test.ts",
+          "added": 565,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "tests/utils/shiftUtils.test.ts",
+          "added": 585,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "tests/utils/validationUtils.test.ts",
+          "added": 474,
+          "deleted": 0,
+          "category": "tests"
+        }
+      ]
+    },
+    {
+      "hash": "0f878f5187437deb4b7b5166e99c09684d339353",
+      "shortHash": "0f878f5",
+      "authoredAt": "2026-01-25T05:43:35+00:00",
+      "subject": "fix: add babel-preset-expo as devDependency",
+      "action": "fix",
+      "score": 14,
+      "added": 48,
+      "deleted": 46,
+      "filesChanged": 2,
+      "testsTouched": 0,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "package-lock.json",
+          "added": 44,
+          "deleted": 43,
+          "category": "config"
+        },
+        {
+          "path": "package.json",
+          "added": 4,
+          "deleted": 3,
+          "category": "config"
+        }
+      ]
+    },
+    {
+      "hash": "54d73f07d69d486db1a67fbd9a4692be627414c7",
+      "shortHash": "54d73f0",
+      "authoredAt": "2026-01-25T06:13:17+00:00",
+      "subject": "feat: complete foundation layer with types and utils",
+      "action": "update",
+      "score": 14,
+      "added": 3,
+      "deleted": 15740,
+      "filesChanged": 26,
+      "testsTouched": 0,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": ".gitignore",
+          "added": 3,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/clover.xml",
+          "added": 0,
+          "deleted": 520,
+          "category": "other"
+        },
+        {
+          "path": "coverage/coverage-final.json",
+          "added": 0,
+          "deleted": 2454,
+          "category": "config"
+        },
+        {
+          "path": "coverage/lcov-report/base.css",
+          "added": 0,
+          "deleted": 224,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/block-navigation.js",
+          "added": 0,
+          "deleted": 82,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/config/env.ts.html",
+          "added": 0,
+          "deleted": 769,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/config/firebase.ts.html",
+          "added": 0,
+          "deleted": 940,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/config/index.html",
+          "added": 0,
+          "deleted": 131,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/constants/index.html",
+          "added": 0,
+          "deleted": 116,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/constants/shiftStyles.ts.html",
+          "added": 0,
+          "deleted": 946,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/favicon.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/index.html",
+          "added": 0,
+          "deleted": 161,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/prettify.css",
+          "added": 0,
+          "deleted": 1,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/prettify.js",
+          "added": 0,
+          "deleted": 937,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/sort-arrow-sprite.png",
+          "added": 0,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/sorter.js",
+          "added": 0,
+          "deleted": 205,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/types/index.html",
+          "added": 0,
+          "deleted": 131,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/types/index.ts.html",
+          "added": 0,
+          "deleted": 1210,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/types/validation.ts.html",
+          "added": 0,
+          "deleted": 1306,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/utils/dateUtils.ts.html",
+          "added": 0,
+          "deleted": 1105,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/utils/index.html",
+          "added": 0,
+          "deleted": 176,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/utils/shiftUtils.ts.html",
+          "added": 0,
+          "deleted": 1138,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/utils/styleUtils.ts.html",
+          "added": 0,
+          "deleted": 367,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/utils/theme.ts.html",
+          "added": 0,
+          "deleted": 736,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov-report/utils/validationUtils.ts.html",
+          "added": 0,
+          "deleted": 1177,
+          "category": "other"
+        },
+        {
+          "path": "coverage/lcov.info",
+          "added": 0,
+          "deleted": 908,
+          "category": "other"
+        }
+      ]
+    },
+    {
+      "hash": "a7db743d574d250d8a8d2b67be0c075f25d031a1",
+      "shortHash": "a7db743",
+      "authoredAt": "2026-01-25T05:34:25+00:00",
+      "subject": "fix: use --legacy-peer-deps in CI workflows",
+      "action": "fix",
+      "score": 13,
+      "added": 5,
+      "deleted": 5,
+      "filesChanged": 2,
+      "testsTouched": 0,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "added": 3,
+          "deleted": 3,
+          "category": "other"
+        },
+        {
+          "path": ".github/workflows/e2e.yml",
+          "added": 2,
+          "deleted": 2,
+          "category": "other"
+        }
+      ]
+    },
+    {
+      "hash": "7a99cdb2e53574c4eff1c869f96a94763d1e936b",
+      "shortHash": "7a99cdb",
+      "authoredAt": "2026-01-25T03:10:28+00:00",
+      "subject": "chore: configure robust development environment",
+      "action": "update",
+      "score": 12,
+      "added": 141,
+      "deleted": 22,
+      "filesChanged": 8,
+      "testsTouched": 1,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": ".editorconfig",
+          "added": 25,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": ".eslintrc.js",
+          "added": 34,
+          "deleted": 10,
+          "category": "other"
+        },
+        {
+          "path": ".husky/pre-commit",
+          "added": 2,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": ".prettierrc",
+          "added": 2,
+          "deleted": 3,
+          "category": "other"
+        },
+        {
+          "path": "e2e/app.test.ts",
+          "added": 3,
+          "deleted": 1,
+          "category": "tests"
+        },
+        {
+          "path": "jest.config.js",
+          "added": 20,
+          "deleted": 4,
+          "category": "config"
+        },
+        {
+          "path": "package.json",
+          "added": 18,
+          "deleted": 2,
+          "category": "config"
+        },
+        {
+          "path": "tsconfig.json",
+          "added": 37,
+          "deleted": 2,
+          "category": "config"
+        }
+      ]
+    },
+    {
+      "hash": "e7af03ebea9235ee61246f19527c75c4ffdf2475",
+      "shortHash": "e7af03e",
+      "authoredAt": "2026-01-25T03:39:02+00:00",
+      "subject": "feat: add comprehensive TypeScript type definitions with Zod validation",
+      "action": "update",
+      "score": 12,
+      "added": 1663,
+      "deleted": 0,
+      "filesChanged": 4,
+      "testsTouched": 1,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "src/types/calendar.ts",
+          "added": 322,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "src/types/index.ts",
+          "added": 375,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "src/types/validation.ts",
+          "added": 390,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "tests/types/validation.test.ts",
+          "added": 576,
+          "deleted": 0,
+          "category": "tests"
+        }
+      ]
+    },
+    {
+      "hash": "1b3889ec25755162244a06f169017b399065e150",
+      "shortHash": "1b3889e",
+      "authoredAt": "2026-01-25T16:32:55+00:00",
+      "subject": "fix: skip FirebaseService test due to Jest ESM import issues",
+      "action": "fix",
+      "score": 12,
+      "added": 1,
+      "deleted": 0,
+      "filesChanged": 1,
+      "testsTouched": 0,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "jest.config.js",
+          "added": 1,
+          "deleted": 0,
+          "category": "config"
+        }
+      ]
+    },
+    {
+      "hash": "29b6e254c42a697c001a93fcb0527fae394f1037",
+      "shortHash": "29b6e25",
+      "authoredAt": "2026-01-25T03:15:31+00:00",
+      "subject": "ci: add GitHub Actions workflows and project documentation",
+      "action": "update",
+      "score": 10,
+      "added": 650,
+      "deleted": 0,
+      "filesChanged": 4,
+      "testsTouched": 0,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": ".github/PULL_REQUEST_TEMPLATE.md",
+          "added": 66,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": ".github/workflows/ci.yml",
+          "added": 138,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": ".github/workflows/e2e.yml",
+          "added": 112,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "README.md",
+          "added": 334,
+          "deleted": 0,
+          "category": "other"
+        }
+      ]
+    },
+    {
+      "hash": "f7b76e04ef5f9246a5dc13f277771ddcf7b68dba",
+      "shortHash": "f7b76e0",
+      "authoredAt": "2026-01-25T05:37:04+00:00",
+      "subject": "chore: regenerate package-lock.json with --legacy-peer-deps",
+      "action": "update",
+      "score": 7,
+      "added": 737,
+      "deleted": 508,
+      "filesChanged": 1,
+      "testsTouched": 0,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "package-lock.json",
+          "added": 737,
+          "deleted": 508,
+          "category": "config"
+        }
+      ]
+    }
+  ],
+  "topMoments": [
+    {
+      "rank": 1,
+      "hash": "6a13577",
+      "subject": "Fix Jest configuration and test failures",
+      "slug": "01-fix-jest-configuration-and-test-failures",
+      "publicLabel": "the schedule answer",
+      "focusText": "schedule trust and delivery confidence",
+      "categoryText": "other code and utility logic",
+      "tension": "If the schedule answer feels wrong once, people start doubting the whole product.",
+      "lesson": "Bug fixes become content when you explain the wrong assumption, not just the patch.",
+      "evidence": "the hesitation point inside the schedule answer resolves more cleanly now",
+      "proof": "the hesitation point inside the schedule answer resolves more cleanly now",
+      "testsTouched": 1,
+      "localesTouched": [],
+      "score": 23
+    },
+    {
+      "rank": 2,
+      "hash": "20d9eba",
+      "subject": "feat: Add Phase 4 premium onboarding component library",
+      "slug": "02-feat-add-phase-4-premium-onboarding-component-li",
+      "publicLabel": "the reliability layer",
+      "focusText": "delivery confidence and visual trust",
+      "categoryText": "components and tests",
+      "tension": "The reliability layer looks small until you notice where people hesitate.",
+      "lesson": "Treat the visible screen and the underlying state as one system.",
+      "evidence": "the reliability layer was reworked to feel clearer in motion",
+      "proof": "the reliability layer was reworked to feel clearer in motion",
+      "testsTouched": 4,
+      "localesTouched": [],
+      "score": 23
+    },
+    {
+      "rank": 3,
+      "hash": "a76a367",
+      "subject": "fix: resolve all ESLint errors and TypeScript errors for CI pipeline",
+      "slug": "03-fix-resolve-all-eslint-errors-and-typescript-err",
+      "publicLabel": "the invisible foundation",
+      "focusText": "invisible trust and delivery confidence",
+      "categoryText": "services and tests",
+      "tension": "If the invisible foundation feels wrong once, people start doubting the whole product.",
+      "lesson": "Bug fixes become content when you explain the wrong assumption, not just the patch.",
+      "evidence": "the underneath work got strong enough to support everything that comes next and the hesitation point inside the invisible foundation resolves more cleanly now",
+      "proof": "the underneath work got strong enough to support everything that comes next and the hesitation point inside the invisible foundation resolves more cleanly now",
+      "testsTouched": 1,
+      "localesTouched": [],
+      "score": 22
+    }
+  ]
+}

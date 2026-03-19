@@ -1,0 +1,624 @@
+{
+  "date": "2026-03-17",
+  "humanDate": "March 17, 2026",
+  "repository": "Ellie",
+  "branch": "main",
+  "remote": "https://github.com/IlyasuSeidu/Ellie.git",
+  "selectedAngles": [
+    "micro-drama",
+    "emotional-moment",
+    "design-tradeoff",
+    "before-after",
+    "audience-choice"
+  ],
+  "platformAngles": {
+    "reels": ["micro-drama", "before-after"],
+    "tiktok": ["micro-drama", "build-confession"],
+    "shorts": ["stakes-consequence", "wrong-assumption"],
+    "carousel": ["wrong-assumption", "before-after"],
+    "linkedin": ["founder-opinion", "mini-case-study"],
+    "x": ["founder-opinion", "stakes-consequence"],
+    "threads": ["user-empathy", "audience-choice"]
+  },
+  "codebaseContext": {
+    "storyMode": "foundation-launch",
+    "storyHighlights": [
+      "setup state carried across screens",
+      "calendar-based shift setup",
+      "shift and date math underneath the answer",
+      "Aha moment that turns setup effort into a visible long-range schedule payoff.",
+      "Shift-time step that translates a selected roster into the hours a worker actually lives by."
+    ],
+    "touchedFiles": [
+      {
+        "path": "src/screens/onboarding/premium/PremiumAhaMomentScreen.tsx",
+        "role": "touched",
+        "summary": "Aha moment that turns setup effort into a visible long-range schedule payoff.",
+        "signals": [
+          "guided-onboarding-path",
+          "physics-motion",
+          "onboarding-state",
+          "localized-copy",
+          "shift-math",
+          "service-layer",
+          "calendar-setup",
+          "proof-through-tests"
+        ],
+        "relatedFiles": [
+          "src/contexts/OnboardingContext.tsx",
+          "src/contexts/VoiceAssistantContext.tsx",
+          "src/utils/shiftUtils.ts"
+        ]
+      },
+      {
+        "path": "src/screens/onboarding/premium/PremiumShiftTimeInputScreen.tsx",
+        "role": "touched",
+        "summary": "Shift-time step that translates a selected roster into the hours a worker actually lives by.",
+        "signals": [
+          "guided-onboarding-path",
+          "physics-motion",
+          "onboarding-state",
+          "localized-copy",
+          "shift-math",
+          "calendar-setup"
+        ],
+        "relatedFiles": [
+          "src/utils/theme.ts",
+          "src/components/onboarding/premium/ProgressHeader.tsx",
+          "src/components/onboarding/premium/SettingsEntryActionButtons.tsx"
+        ]
+      },
+      {
+        "path": "src/screens/subscription/PaywallScreen.tsx",
+        "role": "touched",
+        "summary": "PaywallScreen.tsx is part of the current codebase around this feature area.",
+        "signals": ["physics-motion", "onboarding-state", "localized-copy", "calendar-setup"],
+        "relatedFiles": [
+          "src/hooks/useSubscription.ts",
+          "src/services/RevenueCatRuntime.ts",
+          "src/utils/theme.ts"
+        ]
+      },
+      {
+        "path": "src/screens/onboarding/premium/PremiumWelcomeScreen.tsx",
+        "role": "touched",
+        "summary": "First screen that frames Ellie as a premium shift companion from the opening moment.",
+        "signals": [
+          "physics-motion",
+          "localized-copy",
+          "shift-math",
+          "service-layer",
+          "premium-first-impression"
+        ],
+        "relatedFiles": [
+          "src/utils/theme.ts",
+          "src/components/onboarding/premium/index.ts",
+          "src/navigation/OnboardingNavigator.tsx"
+        ]
+      },
+      {
+        "path": "src/components/dashboard/OnboardingChecklist.tsx",
+        "role": "touched",
+        "summary": "OnboardingChecklist.tsx is part of the current codebase around this feature area.",
+        "signals": ["onboarding-state", "localized-copy", "service-layer"],
+        "relatedFiles": ["src/utils/theme.ts", "src/contexts/OnboardingContext.tsx"]
+      },
+      {
+        "path": "src/components/onboarding/premium/TimePickerModal.tsx",
+        "role": "touched",
+        "summary": "Custom time picker for earnings screen using stone and gold theme",
+        "signals": ["localized-copy", "proof-through-tests"],
+        "relatedFiles": [
+          "src/utils/theme.ts",
+          "src/utils/hapticsDiagnostics.ts",
+          "src/utils/i18nFormat.ts"
+        ]
+      }
+    ],
+    "relatedFiles": [
+      {
+        "path": "src/contexts/OnboardingContext.tsx",
+        "role": "related",
+        "summary": "OnboardingContext Manages state across all premium onboarding flow screens.",
+        "signals": [
+          "country-selection",
+          "onboarding-state",
+          "localized-copy",
+          "shift-math",
+          "service-layer",
+          "calendar-setup"
+        ],
+        "relatedFiles": [
+          "src/contexts/OnboardingContext.tsx",
+          "src/types/index.ts",
+          "src/services/AsyncStorageService.ts"
+        ]
+      },
+      {
+        "path": "src/contexts/VoiceAssistantContext.tsx",
+        "role": "related",
+        "summary": "VoiceAssistantContext React Context that connects the VoiceAssistantService orchestrator",
+        "signals": [
+          "onboarding-state",
+          "localized-copy",
+          "shift-math",
+          "service-layer",
+          "proof-through-tests"
+        ],
+        "relatedFiles": [
+          "src/contexts/VoiceAssistantContext.tsx",
+          "src/services/speechRecognitionNative.ts",
+          "src/services/VoiceAssistantService.ts"
+        ]
+      },
+      {
+        "path": "src/utils/shiftUtils.ts",
+        "role": "related",
+        "summary": "Shift Calculation Utilities Functions for calculating shift schedules, patterns, and related data.",
+        "signals": ["onboarding-state", "shift-math", "calendar-setup"],
+        "relatedFiles": [
+          "src/types/index.ts",
+          "src/contexts/OnboardingContext.tsx",
+          "src/utils/dateUtils.ts"
+        ]
+      },
+      {
+        "path": "src/utils/theme.ts",
+        "role": "related",
+        "summary": "Theme Configuration Comprehensive theme system with colors, typography, spacing, and design tokens.",
+        "signals": ["calendar-setup"],
+        "relatedFiles": []
+      }
+    ]
+  },
+  "generation": {
+    "provider": "anthropic",
+    "usedAnthropic": true,
+    "model": "claude-sonnet-4-6",
+    "refinedFiles": [
+      "03-hero-short.md",
+      "04-instagram-carousel.md",
+      "05-linkedin-post.md",
+      "06-x-thread.md",
+      "ready-to-post/instagram-reels/post.md",
+      "ready-to-post/tiktok/post.md",
+      "ready-to-post/youtube-shorts/post.md",
+      "ready-to-post/instagram-carousel/post.md",
+      "ready-to-post/linkedin/post.md",
+      "ready-to-post/x/post.md",
+      "ready-to-post/threads/post.md"
+    ],
+    "failedFiles": [],
+    "requestCount": 11,
+    "usage": {
+      "input_tokens": 24932,
+      "output_tokens": 5243,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0
+    }
+  },
+  "metaFocus": {
+    "id": "clarity",
+    "label": "product clarity",
+    "explanation": "how the product earns understanding, trust, and attention quickly"
+  },
+  "metaArc": {
+    "series": "The First Minute",
+    "title": "making the first minute easier to trust",
+    "promise": "show how tiny product choices change whether people understand the app fast enough to stay",
+    "character": "someone deciding in the first minute whether this product deserves their attention"
+  },
+  "dominantAction": "polish",
+  "totals": {
+    "commits": 3,
+    "filesChanged": 43,
+    "additions": 1558,
+    "deletions": 570,
+    "testsTouched": 0,
+    "localeCount": 11
+  },
+  "topThemes": [
+    {
+      "id": "design",
+      "label": "Design Polish",
+      "publicLabel": "visual trust",
+      "score": 23
+    },
+    {
+      "id": "paywall",
+      "label": "Paywall",
+      "publicLabel": "conversion clarity",
+      "score": 18
+    },
+    {
+      "id": "onboarding",
+      "label": "Onboarding",
+      "publicLabel": "first-use clarity",
+      "score": 15
+    },
+    {
+      "id": "localization",
+      "label": "Localization",
+      "publicLabel": "language trust",
+      "score": 14
+    }
+  ],
+  "topCategories": [
+    {
+      "id": "i18n",
+      "label": "locales",
+      "count": 34
+    },
+    {
+      "id": "screens",
+      "label": "screens",
+      "count": 5
+    },
+    {
+      "id": "components",
+      "label": "components",
+      "count": 2
+    },
+    {
+      "id": "other",
+      "label": "other code",
+      "count": 1
+    }
+  ],
+  "allLocales": ["af", "ar", "en", "es", "fr", "hi", "id", "pt-BR", "ru", "zh-CN", "zu"],
+  "commits": [
+    {
+      "hash": "0e81439c1e618b603b4dd1528d6fed20b434e29e",
+      "shortHash": "0e81439",
+      "authoredAt": "2026-03-17T06:31:10+00:00",
+      "subject": "Complete strict i18n text and number localization pass",
+      "action": "complete",
+      "score": 30,
+      "added": 1269,
+      "deleted": 453,
+      "filesChanged": 41,
+      "testsTouched": 0,
+      "localesTouched": ["af", "ar", "en", "es", "fr", "hi", "id", "pt-BR", "ru", "zh-CN", "zu"],
+      "files": [
+        {
+          "path": "src/components/dashboard/OnboardingChecklist.tsx",
+          "added": 27,
+          "deleted": 9,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/TimePickerModal.tsx",
+          "added": 10,
+          "deleted": 4,
+          "category": "components"
+        },
+        {
+          "path": "src/hooks/useActiveShift.ts",
+          "added": 11,
+          "deleted": 3,
+          "category": "other"
+        },
+        {
+          "path": "src/i18n/index.ts",
+          "added": 44,
+          "deleted": 0,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/af/common.json",
+          "added": 25,
+          "deleted": 17,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/af/dashboard.json",
+          "added": 19,
+          "deleted": 0,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/af/onboarding.json",
+          "added": 53,
+          "deleted": 21,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/ar/common.json",
+          "added": 25,
+          "deleted": 17,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/ar/dashboard.json",
+          "added": 19,
+          "deleted": 0,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/ar/onboarding.json",
+          "added": 53,
+          "deleted": 21,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/en/common.json",
+          "added": 11,
+          "deleted": 3,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/en/dashboard.json",
+          "added": 19,
+          "deleted": 0,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/en/onboarding.json",
+          "added": 36,
+          "deleted": 4,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/es/common.json",
+          "added": 25,
+          "deleted": 17,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/es/dashboard.json",
+          "added": 19,
+          "deleted": 0,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/es/onboarding.json",
+          "added": 53,
+          "deleted": 21,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/fr/common.json",
+          "added": 25,
+          "deleted": 17,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/fr/dashboard.json",
+          "added": 19,
+          "deleted": 0,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/fr/onboarding.json",
+          "added": 53,
+          "deleted": 21,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/hi/common.json",
+          "added": 25,
+          "deleted": 17,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/hi/dashboard.json",
+          "added": 19,
+          "deleted": 0,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/hi/onboarding.json",
+          "added": 53,
+          "deleted": 21,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/id/common.json",
+          "added": 25,
+          "deleted": 17,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/id/dashboard.json",
+          "added": 19,
+          "deleted": 0,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/id/onboarding.json",
+          "added": 53,
+          "deleted": 21,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/pt-BR/common.json",
+          "added": 25,
+          "deleted": 17,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/pt-BR/dashboard.json",
+          "added": 19,
+          "deleted": 0,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/pt-BR/onboarding.json",
+          "added": 53,
+          "deleted": 21,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/ru/common.json",
+          "added": 25,
+          "deleted": 17,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/ru/dashboard.json",
+          "added": 19,
+          "deleted": 0,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/ru/onboarding.json",
+          "added": 53,
+          "deleted": 21,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/zh-CN/common.json",
+          "added": 25,
+          "deleted": 17,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/zh-CN/dashboard.json",
+          "added": 19,
+          "deleted": 0,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/zh-CN/onboarding.json",
+          "added": 53,
+          "deleted": 21,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/zu/common.json",
+          "added": 25,
+          "deleted": 17,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/zu/dashboard.json",
+          "added": 19,
+          "deleted": 0,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/zu/onboarding.json",
+          "added": 53,
+          "deleted": 21,
+          "category": "i18n"
+        },
+        {
+          "path": "src/screens/onboarding/premium/PremiumAhaMomentScreen.tsx",
+          "added": 58,
+          "deleted": 25,
+          "category": "screens"
+        },
+        {
+          "path": "src/screens/onboarding/premium/PremiumShiftTimeInputScreen.tsx",
+          "added": 14,
+          "deleted": 4,
+          "category": "screens"
+        },
+        {
+          "path": "src/screens/subscription/PaywallScreen.tsx",
+          "added": 32,
+          "deleted": 21,
+          "category": "screens"
+        },
+        {
+          "path": "src/utils/i18nFormat.ts",
+          "added": 37,
+          "deleted": 0,
+          "category": "utils"
+        }
+      ]
+    },
+    {
+      "hash": "7d302425404d8090eb5fc9ca355bb6c6328246ff",
+      "shortHash": "7d30242",
+      "authoredAt": "2026-03-17T03:25:51+00:00",
+      "subject": "Polish PaywallScreen: modern cards, conversion copy, trial badge",
+      "action": "polish",
+      "score": 18,
+      "added": 238,
+      "deleted": 98,
+      "filesChanged": 1,
+      "testsTouched": 0,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "src/screens/subscription/PaywallScreen.tsx",
+          "added": 238,
+          "deleted": 98,
+          "category": "screens"
+        }
+      ]
+    },
+    {
+      "hash": "b64d6ec2435b3209042e83de8a778b118ee62f41",
+      "shortHash": "b64d6ec",
+      "authoredAt": "2026-03-17T04:22:02+00:00",
+      "subject": "Polish WelcomeScreen: conversion-first design",
+      "action": "polish",
+      "score": 15,
+      "added": 51,
+      "deleted": 19,
+      "filesChanged": 1,
+      "testsTouched": 0,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "src/screens/onboarding/premium/PremiumWelcomeScreen.tsx",
+          "added": 51,
+          "deleted": 19,
+          "category": "screens"
+        }
+      ]
+    }
+  ],
+  "topMoments": [
+    {
+      "rank": 1,
+      "hash": "0e81439",
+      "subject": "Complete strict i18n text and number localization pass",
+      "slug": "01-complete-strict-i18n-text-and-number-localizatio",
+      "publicLabel": "the language experience",
+      "focusText": "language trust and first-use clarity",
+      "categoryText": "locales and screens",
+      "tension": "Finishing the language experience only matters if it now reads instantly.",
+      "lesson": "Completion posts work when they show the last 10 percent that made the experience click.",
+      "evidence": "11 languages tightened and the last confusing edges inside the language experience were removed",
+      "proof": "11 languages tightened and the last confusing edges inside the language experience were removed",
+      "testsTouched": 0,
+      "localesTouched": ["af", "ar", "en", "es", "fr", "hi", "id", "pt-BR", "ru", "zh-CN", "zu"],
+      "score": 30
+    },
+    {
+      "rank": 2,
+      "hash": "7d30242",
+      "subject": "Polish PaywallScreen: modern cards, conversion copy, trial badge",
+      "slug": "02-polish-paywallscreen-modern-cards-conversion-cop",
+      "publicLabel": "the pricing moment",
+      "focusText": "conversion clarity and visual trust",
+      "categoryText": "screens",
+      "tension": "Nothing was technically broken, but the pricing moment still made people hesitate.",
+      "lesson": "Polish becomes stop-scrolling content when it changes comprehension, not just cosmetics.",
+      "evidence": "the pricing moment now reads faster on first contact",
+      "proof": "the pricing moment now reads faster on first contact",
+      "testsTouched": 0,
+      "localesTouched": [],
+      "score": 18
+    },
+    {
+      "rank": 3,
+      "hash": "b64d6ec",
+      "subject": "Polish WelcomeScreen: conversion-first design",
+      "slug": "03-polish-welcomescreen-conversion-first-design",
+      "publicLabel": "the welcome moment",
+      "focusText": "visual trust and first-use clarity",
+      "categoryText": "screens",
+      "tension": "Nothing was technically broken, but the welcome moment still made people hesitate.",
+      "lesson": "Polish becomes stop-scrolling content when it changes comprehension, not just cosmetics.",
+      "evidence": "the welcome moment now reads faster on first contact",
+      "proof": "the welcome moment now reads faster on first contact",
+      "testsTouched": 0,
+      "localesTouched": [],
+      "score": 15
+    }
+  ]
+}
