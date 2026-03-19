@@ -99,27 +99,33 @@ export const Analytics = {
     ),
 
   // Onboarding funnel — call at top of each screen's useEffect
-  onboardingStepViewed: (step: OnboardingStep, stepNumber: number) =>
+  onboardingStepViewed: (step: OnboardingStep, stepNumber: number, metadata?: AnalyticsPayload) =>
     void safeCall(
       (client) =>
         client.logEvent('onboarding_step_viewed', {
           step,
           step_number: stepNumber,
+          ...metadata,
         }),
       'onboarding_step_viewed',
-      { step, step_number: stepNumber }
+      { step, step_number: stepNumber, ...metadata }
     ),
 
   // Called when user taps the continue button successfully
-  onboardingStepCompleted: (step: OnboardingStep, timeSpentMs: number) =>
+  onboardingStepCompleted: (
+    step: OnboardingStep,
+    timeSpentMs: number,
+    metadata?: AnalyticsPayload
+  ) =>
     void safeCall(
       (client) =>
         client.logEvent('onboarding_step_completed', {
           step,
           time_spent_ms: timeSpentMs,
+          ...metadata,
         }),
       'onboarding_step_completed',
-      { step, time_spent_ms: timeSpentMs }
+      { step, time_spent_ms: timeSpentMs, ...metadata }
     ),
 
   // Called when a user explicitly skips an optional field (e.g. company)

@@ -533,7 +533,7 @@
   },
   "startDate": {
     "header": {
-      "title": "Defina sua data de início e vamos mapear seu ano inteiro",
+      "title": "Quando sua rotação começa?",
       "subtitleWithPhase": "Você está em {{phaseLabel}} agora. Escolha hoje ou qualquer data e vamos mapear todo o seu calendário a partir dela",
       "subtitleDefault": "Escolha a data em que seu calendário deve começar; a maioria das pessoas escolhe hoje",
       "title_named": "{{name}}, defina sua data de início e vamos mapear seu ano inteiro"
@@ -642,11 +642,13 @@
         "night": "Horário do turno noturno",
         "morning": "Horário do turno da manhã",
         "afternoon": "Horário do turno da tarde",
-        "default": "Horários de turno"
+        "default": "Horários de turno",
+        "question": "Que horas começa seu turno de {{shiftTypeLabel}}?"
       },
       "subtitle": {
         "single": "Escolha o horário em que você entra todo dia; vamos usar isso para acompanhar suas horas e enviar lembretes",
-        "multi": "Seu padrão inclui {{shiftTypeLabel}}. Defina o horário de início desses turnos."
+        "multi": "Seu padrão inclui {{shiftTypeLabel}}. Defina o horário de início desses turnos.",
+        "preAha": "Última etapa antes de mostrarmos seu ano completo."
       }
     },
     "guidance": {

@@ -107,7 +107,7 @@ describe('PremiumAhaMomentScreen', () => {
     expect(mockOpenModalWithQuery).toHaveBeenCalledWith('Am I working Christmas?');
   });
 
-  it('opens paywall and returns to ShiftTimeInput on dismiss', () => {
+  it('opens paywall and returns to Completion on dismiss', () => {
     const { getByText, queryByText } = render(<PremiumAhaMomentScreen />);
 
     expect(queryByText('PaywallScreen')).toBeNull();
@@ -115,15 +115,15 @@ describe('PremiumAhaMomentScreen', () => {
     expect(getByText('PaywallScreen')).toBeTruthy();
 
     fireEvent.press(getByText('DismissPaywall'));
-    expect(mockNavigate).toHaveBeenCalledWith('ShiftTimeInput');
+    expect(mockNavigate).toHaveBeenCalledWith('Completion');
   });
 
-  it('navigates to ShiftTimeInput when limited-access CTA is pressed', () => {
+  it('navigates to Completion when limited-access CTA is pressed', () => {
     const { getByText } = render(<PremiumAhaMomentScreen />);
 
     fireEvent.press(getByText('Continue with Limited Access →'));
 
-    expect(mockNavigate).toHaveBeenCalledWith('ShiftTimeInput');
+    expect(mockNavigate).toHaveBeenCalledWith('Completion');
   });
 
   it('opens manual mic when Hey Ellie button is pressed', () => {

@@ -92,6 +92,24 @@ describe('onboardingNavigation', () => {
       expect(mockNavigation.navigate).toHaveBeenCalledWith('StartDate');
       expect(nextScreen).toBe('StartDate');
     });
+
+    it('navigates from StartDate to ShiftTimeInput', () => {
+      const nextScreen = goToNextScreen(mockNavigation, 'StartDate');
+      expect(mockNavigation.navigate).toHaveBeenCalledWith('ShiftTimeInput');
+      expect(nextScreen).toBe('ShiftTimeInput');
+    });
+
+    it('navigates from ShiftTimeInput to AhaMoment', () => {
+      const nextScreen = goToNextScreen(mockNavigation, 'ShiftTimeInput');
+      expect(mockNavigation.navigate).toHaveBeenCalledWith('AhaMoment');
+      expect(nextScreen).toBe('AhaMoment');
+    });
+
+    it('navigates from AhaMoment to Completion', () => {
+      const nextScreen = goToNextScreen(mockNavigation, 'AhaMoment');
+      expect(mockNavigation.navigate).toHaveBeenCalledWith('Completion');
+      expect(nextScreen).toBe('Completion');
+    });
   });
 
   describe('goToPreviousScreen', () => {

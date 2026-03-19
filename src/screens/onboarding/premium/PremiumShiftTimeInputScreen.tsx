@@ -1,5 +1,5 @@
 /**
- * Premium Shift Time Input Screen (Step 6 of 7)
+ * Premium Shift Time Input Screen
  *
  * Collects essential shift timing data to accurately calculate work hours
  * and enable shift notifications.
@@ -8,10 +8,10 @@
  * - Shift start time (HH:MM format with AM/PM)
  * - Shift duration (8 hours or 12 hours)
  * - Shift end time (auto-calculated)
- * - Shift type (day/night - auto-detected)
+ * - Shift type (day/night/morning/afternoon - auto-detected)
  */
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import {
   View,
   Text,
@@ -381,14 +381,11 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   onBack,
   testID = 'premium-shift-time-input-screen',
 }) => {
-  useEffect(() => {
-    Analytics.onboardingStepViewed('shift_time_input', ONBOARDING_STEPS.SHIFT_TIME_INPUT);
-  }, []);
-
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProp<OnboardingStackParamList, 'ShiftTimeInput'>>();
   const { data, updateData } = useOnboarding();
+  const mountTime = useRef(Date.now());
   const isSettingsEntry = route.params?.entryPoint === 'settings';
   const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
   const shiftSystem: '2-shift' | '3-shift' = data.shiftSystem || ShiftSystem.TWO_SHIFT;
@@ -417,6 +414,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
 
   // Determine required shift types based on roster type and pattern
   let requiredShiftTypes: StageShiftType[];
+  let resolvedWorkPattern = 'standard';
 
   if (rosterType === 'fifo') {
     // FIFO roster: determine shift types based on work pattern
@@ -434,6 +432,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
         : hasMatchingPresetLengths
           ? data.fifoConfig?.workBlockPattern || normalizedPresetPattern
           : normalizedPresetPattern;
+    resolvedWorkPattern = workPattern;
 
     if (workPattern === 'straight-days') {
       // Only collect day shift times
@@ -449,6 +448,12 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
       requiredShiftTypes = ['day', 'night'];
     }
   } else {
+    resolvedWorkPattern =
+      data.patternType === ShiftPattern.CUSTOM
+        ? 'custom'
+        : data.patternType
+          ? String(data.patternType)
+          : 'standard';
     // Rotating roster: use existing logic
     const customPatternForStageDetection =
       data.patternType === ShiftPattern.CUSTOM ? data.customPattern : undefined;
@@ -518,6 +523,24 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   const currentShiftType = requiredShiftTypes[currentStageIndex];
   const totalStages = requiredShiftTypes.length;
   const isLastStage = currentStageIndex === totalStages - 1;
+  const analyticsStepViewMetadata = useMemo(
+    () => ({
+      roster_type: rosterType,
+      work_pattern: resolvedWorkPattern,
+    }),
+    [resolvedWorkPattern, rosterType]
+  );
+
+  useEffect(() => {
+    if (isSettingsEntry && returnToMainOnSelect) {
+      return;
+    }
+    Analytics.onboardingStepViewed(
+      'shift_time_input',
+      ONBOARDING_STEPS.SHIFT_TIME_INPUT,
+      analyticsStepViewMetadata
+    );
+  }, [analyticsStepViewMetadata, isSettingsEntry, returnToMainOnSelect]);
 
   // Store collected shift times for all stages
   const [collectedShiftTimes, setCollectedShiftTimes] = useState<
@@ -755,6 +778,14 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     return true;
   }, [customHours, customMinutes, t]);
 
+  const getAnalyticsQuestionKeys = useCallback(
+    (shiftType: StageShiftType) => ({
+      start: `${shiftType}_shift_start`,
+      end: `${shiftType}_shift_end`,
+    }),
+    []
+  );
+
   const handleContinue = useCallback(() => {
     const hasValidSelection = isValid();
     if (!hasValidSelection && !(isSettingsMode && hasExistingCurrentStageTime)) {
@@ -817,6 +848,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     }
 
     const primaryLegacyShift = updatedShiftTimes[requiredShiftTypes[0]] ?? stageShiftTime;
+    const analyticsQuestions = getAnalyticsQuestionKeys(currentShiftType);
 
     // Save to context with new structure
     updateData({
@@ -829,6 +861,17 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
       isCustomShiftTime: hasValidSelection ? selectedPreset === 'custom' : data.isCustomShiftTime,
     });
 
+    if (!isSettingsMode) {
+      Analytics.onboardingQuestionAnswered({
+        question: analyticsQuestions.start,
+        answer_value: stageShiftTime.startTime,
+      });
+      Analytics.onboardingQuestionAnswered({
+        question: analyticsQuestions.end,
+        answer_value: stageShiftTime.endTime,
+      });
+    }
+
     if (onContinue) {
       onContinue();
     }
@@ -840,7 +883,11 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
 
     // If this is the last stage, save all shift times and navigate
     if (isLastStage) {
-      // Navigate to completion screen (Step 8)
+      Analytics.onboardingStepCompleted(
+        'shift_time_input',
+        Date.now() - mountTime.current,
+        analyticsStepViewMetadata
+      );
       goToNextScreen(navigation, 'ShiftTimeInput');
     } else {
       // Move to next stage
@@ -870,6 +917,8 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     existingCurrentStageTime,
     data.isCustomShiftTime,
     data.shiftType,
+    getAnalyticsQuestionKeys,
+    analyticsStepViewMetadata,
     resetStageInput,
     returnToSettings,
     navigation,
@@ -1097,53 +1146,21 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   }, [detectedShiftType, shiftSystem, t]);
 
   // Get stage-specific title
-  const getStageTitle = (): string => {
-    if (totalStages === 1) {
-      return String(
-        t('shiftTime.header.title.single', { defaultValue: 'When Do Your Shifts Start?' })
-      );
-    }
-
-    switch (currentShiftType) {
-      case 'day':
-        return String(t('shiftTime.header.title.day', { defaultValue: 'Day Shift Times' }));
-      case 'night':
-        return String(t('shiftTime.header.title.night', { defaultValue: 'Night Shift Times' }));
-      case 'morning':
-        return String(t('shiftTime.header.title.morning', { defaultValue: 'Morning Shift Times' }));
-      case 'afternoon':
-        return String(
-          t('shiftTime.header.title.afternoon', { defaultValue: 'Afternoon Shift Times' })
-        );
-      default:
-        return String(t('shiftTime.header.title.default', { defaultValue: 'Shift Times' }));
-    }
-  };
+  const getStageTitle = (): string =>
+    String(
+      t('shiftTime.header.title.question', {
+        shiftTypeLabel: getShiftTypeLabel(currentShiftType, 'lower'),
+        defaultValue: `What time does your ${getShiftTypeLabel(currentShiftType, 'lower')} shift start?`,
+      })
+    );
 
   // Get stage-specific subtitle
-  const getStageSubtitle = (): string => {
-    if (totalStages === 1) {
-      return String(
-        t('shiftTime.header.subtitle.single', {
-          defaultValue:
-            "Pick what time you clock in each day—we'll use this to track your hours and set reminders",
-        })
-      );
-    }
-
-    const shiftTypeLabel = String(
-      t(`shiftTime.shiftLabels.${currentShiftType}Plural`, {
-        defaultValue: `${getShiftTypeLabel(currentShiftType, 'lower')} shifts`,
+  const getStageSubtitle = (): string =>
+    String(
+      t('shiftTime.header.subtitle.preAha', {
+        defaultValue: 'Last step before we show you your full year.',
       })
     );
-
-    return String(
-      t('shiftTime.header.subtitle.multi', {
-        shiftTypeLabel,
-        defaultValue: `Your pattern includes ${shiftTypeLabel}. Set the start time for these shifts.`,
-      })
-    );
-  };
 
   // Get pattern icon based on pattern type
   const patternIcon = React.useMemo((): ImageSourcePropType | null => {

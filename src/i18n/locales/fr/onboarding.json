@@ -547,7 +547,7 @@
   },
   "startDate": {
     "header": {
-      "title": "Définissez votre date de départ et nous tracerons toute votre année",
+      "title": "Quand commence votre rotation ?",
       "subtitleWithPhase": "Vous êtes actuellement le {{phaseLabel}} : choisissez aujourd'hui ou n'importe quelle date, et nous planifierons l'ensemble de votre calendrier à partir de là.",
       "subtitleDefault": "Choisissez la date à partir de laquelle vous souhaitez que votre calendrier commence : la plupart des gens choisissent aujourd'hui",
       "title_named": "{{name}}, définissez votre date de départ et nous tracerons toute votre année"
@@ -656,11 +656,13 @@
         "night": "Horaires des quarts de nuit",
         "morning": "Horaires des quarts de travail du matin",
         "afternoon": "Horaires des quarts de travail de l'après-midi",
-        "default": "Horaires des quarts de travail"
+        "default": "Horaires des quarts de travail",
+        "question": "À quelle heure commence votre quart de {{shiftTypeLabel}} ?"
       },
       "subtitle": {
         "single": "Choisissez l'heure à laquelle vous pointez chaque jour. Nous l'utiliserons pour suivre vos heures et définir des rappels.",
-        "multi": "Votre modèle comprend {{shiftTypeLabel}}. Définissez l’heure de début de ces quarts de travail."
+        "multi": "Votre modèle comprend {{shiftTypeLabel}}. Définissez l’heure de début de ces quarts de travail.",
+        "preAha": "Dernière étape avant de vous montrer toute votre année."
       }
     },
     "guidance": {

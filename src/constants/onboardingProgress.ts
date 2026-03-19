@@ -4,7 +4,7 @@
  * Centralized source of truth for onboarding step numbers.
  * Initial flow routes:
  * Welcome -> PainHook -> Introduction -> ShiftSystem -> RosterType -> ShiftPattern
- * -> Phase Selector -> StartDate -> AhaMoment -> ShiftTimeInput -> Completion.
+ * -> Phase Selector -> StartDate -> ShiftTimeInput -> AhaMoment -> Completion.
  */
 
 export const ONBOARDING_STEPS = {
@@ -19,8 +19,8 @@ export const ONBOARDING_STEPS = {
   PHASE_SELECTOR: 7, // SWIPE — DO NOT TOUCH THE SCREEN
   FIFO_PHASE_SELECTOR: 7, // SWIPE — DO NOT TOUCH THE SCREEN
   START_DATE: 8,
-  AHA_MOMENT: 9, // Paywall gateway screen
-  SHIFT_TIME_INPUT: 10,
+  SHIFT_TIME_INPUT: 9,
+  AHA_MOMENT: 10, // Paywall gateway screen
   COMPLETION: 10,
 } as const;
 

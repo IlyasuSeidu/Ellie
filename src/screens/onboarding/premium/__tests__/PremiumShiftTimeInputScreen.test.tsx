@@ -8,6 +8,7 @@ import { PremiumShiftTimeInputScreen } from '../PremiumShiftTimeInputScreen';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
 import { NavigationContainer } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
+import { Analytics } from '@/utils/analytics';
 
 // Mock haptics
 // Mock AsyncStorage
@@ -20,6 +21,14 @@ jest.mock('@/services/AsyncStorageService', () => ({
 }));
 
 jest.mock('expo-haptics');
+
+jest.mock('@/utils/analytics', () => ({
+  Analytics: {
+    onboardingStepViewed: jest.fn(),
+    onboardingQuestionAnswered: jest.fn(),
+    onboardingStepCompleted: jest.fn(),
+  },
+}));
 
 // Mock @expo/vector-icons
 jest.mock('@expo/vector-icons', () => {
@@ -104,13 +113,10 @@ describe('PremiumShiftTimeInputScreen', () => {
       expect(getByTestId('premium-shift-time-input-screen')).toBeTruthy();
     });
 
-    // TODO: Update for multi-stage flow - shows "Day Shift Times" for stage 1
-    it.skip('should render title and subtitle', () => {
+    it('should render title and subtitle', () => {
       const { getByText } = renderWithProviders(<PremiumShiftTimeInputScreen />);
-      expect(getByText('When Do Your Shifts Start?')).toBeTruthy();
-      expect(
-        getByText(/Pick what time you clock in each day.*track your hours and set reminders/i)
-      ).toBeTruthy();
+      expect(getByText('What time does your day shift start?')).toBeTruthy();
+      expect(getByText('Last step before we show you your full year.')).toBeTruthy();
     });
 
     it('should render progress header with step 6 of 7', () => {
@@ -134,6 +140,15 @@ describe('PremiumShiftTimeInputScreen', () => {
       expect(
         getByText('Use the closest start time now. You can fine-tune it later in settings.')
       ).toBeTruthy();
+    });
+
+    it('tracks onboarding step view with roster type and work pattern', () => {
+      renderWithProviders(<PremiumShiftTimeInputScreen />);
+
+      expect(Analytics.onboardingStepViewed).toHaveBeenCalledWith('shift_time_input', 9, {
+        roster_type: 'rotating',
+        work_pattern: 'custom',
+      });
     });
   });
 
@@ -440,6 +455,35 @@ describe('PremiumShiftTimeInputScreen', () => {
       // Context should be updated (we can't directly test this without accessing context,
       // but onContinue being called is a good indicator)
       expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Light);
+    });
+  });
+
+  describe('Analytics', () => {
+    it('tracks answered time fields and step completion for a single-stage flow', async () => {
+      const { getByLabelText, getAllByText } = renderWithProviders(<PremiumShiftTimeInputScreen />);
+
+      fireEvent.press(getAllByText(/6:00 AM/i)[0]);
+
+      await waitFor(() => {
+        fireEvent.press(getByLabelText('Continue to next step'));
+      });
+
+      expect(Analytics.onboardingQuestionAnswered).toHaveBeenCalledWith({
+        question: 'day_shift_start',
+        answer_value: '06:00',
+      });
+      expect(Analytics.onboardingQuestionAnswered).toHaveBeenCalledWith({
+        question: 'day_shift_end',
+        answer_value: '18:00',
+      });
+      expect(Analytics.onboardingStepCompleted).toHaveBeenCalledWith(
+        'shift_time_input',
+        expect.any(Number),
+        {
+          roster_type: 'rotating',
+          work_pattern: 'custom',
+        }
+      );
     });
   });
 

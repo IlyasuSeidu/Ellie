@@ -543,7 +543,7 @@
   },
   "startDate": {
     "header": {
-      "title": "Setha usuku lwakho lokuqala bese sizokuhlela wonke unyaka wakho",
+      "title": "Ukushintshanisa Kwakho Kuqala Nini?",
       "subtitleWithPhase": "Uku-{{phaseLabel}} khona manje—khetha namuhla nanoma iyiphi idethi, futhi sizokhipha imephu yonke ikhalenda lakho kusukela lapho",
       "subtitleDefault": "Khetha idethi ofuna ikhalenda yakho iqale ngalo—abantu abaningi bayayikhetha namuhla",
       "title_named": "{{name}}, setha usuku lwakho lokuqala bese sizokuhlela wonke unyaka wakho"
@@ -652,11 +652,13 @@
         "night": "Izikhathi zeshifu yasebusuku",
         "morning": "Izikhathi zeshifthi lasekuseni",
         "afternoon": "Ntambama Shift Times",
-        "default": "Izikhathi zamashifthi"
+        "default": "Izikhathi zamashifthi",
+        "question": "Iqala ngasiphi isikhathi ishifu yakho ye-{{shiftTypeLabel}}?"
       },
       "subtitle": {
         "single": "Khetha ukuthi uwubamba ngasiphi isikhathi usuku nosuku-sizosebenzisa lokhu ukulandelela amahora akho futhi sisethe izikhumbuzi",
-        "multi": "Iphethini yakho ihlanganisa {{shiftTypeLabel}}. Setha isikhathi sokuqala salezi zinguquko."
+        "multi": "Iphethini yakho ihlanganisa {{shiftTypeLabel}}. Setha isikhathi sokuqala salezi zinguquko.",
+        "preAha": "Lesi yisinyathelo sokugcina ngaphambi kokuthi sikubonise unyaka wakho wonke."
       }
     },
     "guidance": {

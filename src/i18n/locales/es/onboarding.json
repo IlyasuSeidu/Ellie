@@ -543,7 +543,7 @@
   },
   "startDate": {
     "header": {
-      "title": "Define tu fecha de inicio y trazaremos todo tu año",
+      "title": "¿Cuándo empieza tu rotación?",
       "subtitleWithPhase": "Ahora estás en {{phaseLabel}}. Elige hoy o cualquier fecha y desde ahí mapearemos todo tu calendario",
       "subtitleDefault": "Elige la fecha desde la que quieres iniciar tu calendario; la mayoría elige hoy",
       "title_named": "{{name}}, define tu fecha de inicio y trazaremos todo tu año"
@@ -652,11 +652,13 @@
         "night": "Horario del turno de noche",
         "morning": "Horario del turno de mañana",
         "afternoon": "Horario del turno de tarde",
-        "default": "Horarios de turno"
+        "default": "Horarios de turno",
+        "question": "¿A qué hora empieza tu turno de {{shiftTypeLabel}}?"
       },
       "subtitle": {
         "single": "Elige la hora a la que entras cada día; la usaremos para registrar tus horas y activar recordatorios",
-        "multi": "Tu patrón incluye {{shiftTypeLabel}}. Configura la hora de inicio de estos turnos."
+        "multi": "Tu patrón incluye {{shiftTypeLabel}}. Configura la hora de inicio de estos turnos.",
+        "preAha": "Último paso antes de mostrarte todo tu año."
       }
     },
     "guidance": {

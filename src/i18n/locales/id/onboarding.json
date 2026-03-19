@@ -538,7 +538,7 @@
   },
   "startDate": {
     "header": {
-      "title": "Tetapkan tanggal mulai Anda dan kami akan memetakan setahun penuh Anda",
+      "title": "Kapan Rotasi Anda Dimulai?",
       "subtitleWithPhase": "Anda berada di {{phaseLabel}} sekarang—pilih hari ini atau tanggal mana pun, dan kami akan memetakan seluruh kalender Anda dari sana",
       "subtitleDefault": "Pilih tanggal yang Anda inginkan untuk memulai kalender—kebanyakan orang memilih hari ini",
       "title_named": "{{name}}, tetapkan tanggal mulai Anda dan kami akan memetakan setahun penuh Anda"
@@ -647,11 +647,13 @@
         "night": "Waktu Shift Malam",
         "morning": "Waktu Shift Pagi",
         "afternoon": "Waktu Shift Siang",
-        "default": "Pergeseran Waktu"
+        "default": "Pergeseran Waktu",
+        "question": "Jam berapa shift {{shiftTypeLabel}} Anda mulai?"
       },
       "subtitle": {
         "single": "Pilih jam berapa Anda setiap hari-kami akan menggunakannya untuk melacak jam kerja Anda dan mengatur pengingat",
-        "multi": "Pola Anda mencakup {{shiftTypeLabel}}. Tetapkan waktu mulai untuk shift ini."
+        "multi": "Pola Anda mencakup {{shiftTypeLabel}}. Tetapkan waktu mulai untuk shift ini.",
+        "preAha": "Langkah terakhir sebelum kami menampilkan setahun penuh Anda."
       }
     },
     "guidance": {

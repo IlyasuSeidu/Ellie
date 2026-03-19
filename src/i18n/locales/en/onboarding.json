@@ -588,7 +588,7 @@
   },
   "startDate": {
     "header": {
-      "title": "Set your start date and we'll map out your full year",
+      "title": "When Does Your Rotation Start?",
       "subtitleWithPhase": "You're on {{phaseLabel}} right now—pick today or any date, and we'll map out your whole calendar from there",
       "subtitleDefault": "Pick the date you want your calendar to start from—most people choose today",
       "title_named": "{{name}}, set your start date and we'll map out your full year"
@@ -697,11 +697,13 @@
         "night": "Night Shift Times",
         "morning": "Morning Shift Times",
         "afternoon": "Afternoon Shift Times",
-        "default": "Shift Times"
+        "default": "Shift Times",
+        "question": "What time does your {{shiftTypeLabel}} shift start?"
       },
       "subtitle": {
         "single": "Pick what time you clock in each day-we'll use this to track your hours and set reminders",
-        "multi": "Your pattern includes {{shiftTypeLabel}}. Set the start time for these shifts."
+        "multi": "Your pattern includes {{shiftTypeLabel}}. Set the start time for these shifts.",
+        "preAha": "Last step before we show you your full year."
       }
     },
     "guidance": {

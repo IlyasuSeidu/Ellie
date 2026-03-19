@@ -2347,8 +2347,7 @@ const HeaderSection: React.FC<{
   reducedMotion: boolean;
   currentPhase?: Phase | null;
   selectedDay?: number | null;
-  firstName?: string;
-}> = ({ reducedMotion, currentPhase, selectedDay, firstName }) => {
+}> = ({ reducedMotion, currentPhase, selectedDay }) => {
   const { t } = useTranslation('onboarding');
   const titleOpacity = useSharedValue(0);
   const subtitleOpacity = useSharedValue(0);
@@ -2398,18 +2397,11 @@ const HeaderSection: React.FC<{
     : t('startDate.header.subtitleDefault', {
         defaultValue: 'Pick the date you want your calendar to start from—most people choose today',
       });
-  const title = firstName
-    ? t('startDate.header.title_named', {
-        name: firstName,
-        defaultValue: `${firstName}, set your start date and we'll map out your full year`,
-      })
-    : t('startDate.header.title', {
-        defaultValue: "Set your start date and we'll map out your full year",
-      });
-
   return (
     <>
-      <Animated.Text style={[styles.title, titleAnimatedStyle]}>{title}</Animated.Text>
+      <Animated.Text style={[styles.title, titleAnimatedStyle]}>
+        {t('startDate.header.title', { defaultValue: 'When Does Your Rotation Start?' })}
+      </Animated.Text>
       <Animated.Text style={[styles.subtitle, subtitleAnimatedStyle]}>{subtitle}</Animated.Text>
     </>
   );
@@ -2439,7 +2431,6 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
   const isSettingsMode = isSettingsEntry && returnToMainOnSelect;
   const shiftSystem: ShiftSystem = (data.shiftSystem as ShiftSystem) || ShiftSystem.TWO_SHIFT;
-  const firstName = data.name?.trim().split(' ')[0] ?? '';
   const allowSettingsExitRef = useRef(false);
   const existingStartDate = useMemo(() => {
     const rawStartDate = data.startDate as Date | string | undefined;
@@ -2666,12 +2657,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
           showsVerticalScrollIndicator={false}
         >
           {/* Header with entrance animation */}
-          <HeaderSection
-            reducedMotion={reducedMotion}
-            currentPhase={null}
-            selectedDay={null}
-            firstName={firstName}
-          />
+          <HeaderSection reducedMotion={reducedMotion} currentPhase={null} selectedDay={null} />
 
           {/* Interactive Calendar */}
           <InteractiveCalendar

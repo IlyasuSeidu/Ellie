@@ -61,9 +61,9 @@ const NAVIGATION_FLOW: Record<
   FIFOCustomPattern: () => 'FIFOPhaseSelector', // NEW: FIFO custom → FIFO phase
   PhaseSelector: () => 'StartDate', // Rotating phase → start date
   FIFOPhaseSelector: () => 'StartDate', // NEW: FIFO phase → start date
-  StartDate: () => 'AhaMoment',
-  AhaMoment: () => 'ShiftTimeInput',
-  ShiftTimeInput: () => 'Completion',
+  StartDate: () => 'ShiftTimeInput',
+  ShiftTimeInput: () => 'AhaMoment',
+  AhaMoment: () => 'Completion',
   Completion: () => null, // Final screen
 };
 

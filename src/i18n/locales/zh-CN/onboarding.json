@@ -487,7 +487,7 @@
   },
   "startDate": {
     "header": {
-      "title": "设定你的开始日期，我们会为你铺开完整的一年",
+      "title": "你的轮换什么时候开始？",
       "subtitleWithPhase": "您现在处于 {{phaseLabel}} — 选择今天或任何日期，我们将从那里制定您的整个日历",
       "subtitleDefault": "选择您希望日历开始的日期 - 大多数人选择今天",
       "title_named": "{{name}}，设定你的开始日期，我们会为你铺开完整的一年"
@@ -596,11 +596,13 @@
         "night": "夜班时间",
         "morning": "早班时间",
         "afternoon": "下午班时间",
-        "default": "轮班时间"
+        "default": "轮班时间",
+        "question": "你的{{shiftTypeLabel}}班次几点开始？"
       },
       "subtitle": {
         "single": "选择您每天打卡的时间 - 我们将使用它来跟踪您的时间并设置提醒",
-        "multi": "您的模式包括 {{shiftTypeLabel}}。设置这些班次的开始时间。"
+        "multi": "您的模式包括 {{shiftTypeLabel}}。设置这些班次的开始时间。",
+        "preAha": "这是我们向你展示完整一年之前的最后一步。"
       }
     },
     "guidance": {

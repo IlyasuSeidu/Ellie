@@ -176,28 +176,10 @@ describe('PremiumStartDateScreen', () => {
 
     it('should render title and subtitle', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText("Set your start date and we'll map out your full year")).toBeTruthy();
+      expect(getByText('When Does Your Rotation Start?')).toBeTruthy();
       expect(
         getByText('Pick the date you want your calendar to start from—most people choose today')
       ).toBeTruthy();
-    });
-
-    it('renders a personalized title when the user name is available', () => {
-      const onboardingSpy = jest.spyOn(OnboardingContext, 'useOnboarding').mockReturnValue({
-        data: {
-          name: 'Ilyasu Seidu',
-          shiftSystem: '2-shift',
-        },
-        updateData: jest.fn(),
-      } as unknown as ReturnType<typeof OnboardingContext.useOnboarding>);
-
-      const { getByText } = render(<PremiumStartDateScreen />);
-
-      expect(
-        getByText("Ilyasu, set your start date and we'll map out your full year")
-      ).toBeTruthy();
-
-      onboardingSpy.mockRestore();
     });
 
     it('should render progress header correctly', () => {
@@ -525,7 +507,7 @@ describe('PremiumStartDateScreen', () => {
   describe('Data Management', () => {
     it('should handle pattern data from context', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText("Set your start date and we'll map out your full year")).toBeTruthy();
+      expect(getByText('When Does Your Rotation Start?')).toBeTruthy();
     });
 
     it('should work with OnboardingProvider', () => {
@@ -566,7 +548,7 @@ describe('PremiumStartDateScreen', () => {
 
     it('should have accessible labels', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText("Set your start date and we'll map out your full year")).toBeTruthy();
+      expect(getByText('When Does Your Rotation Start?')).toBeTruthy();
     });
 
     it('should have descriptive titles and subtitles', () => {
@@ -580,7 +562,7 @@ describe('PremiumStartDateScreen', () => {
   describe('Edge Cases', () => {
     it('should handle default pattern values', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText("Set your start date and we'll map out your full year")).toBeTruthy();
+      expect(getByText('When Does Your Rotation Start?')).toBeTruthy();
     });
 
     it('should render without errors', () => {
@@ -592,7 +574,7 @@ describe('PremiumStartDateScreen', () => {
 
     it('should display all UI elements correctly', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText("Set your start date and we'll map out your full year")).toBeTruthy();
+      expect(getByText('When Does Your Rotation Start?')).toBeTruthy();
       expect(
         getByText('Pick the date you want your calendar to start from—most people choose today')
       ).toBeTruthy();

@@ -10,6 +10,7 @@ import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { PremiumShiftTimeInputScreen } from '../PremiumShiftTimeInputScreen';
 import { ShiftPattern } from '@/types';
+import { Analytics } from '@/utils/analytics';
 
 // Mock AsyncStorage
 jest.mock('@/services/AsyncStorageService', () => ({
@@ -22,6 +23,14 @@ jest.mock('@/services/AsyncStorageService', () => ({
 
 // Mock haptics
 jest.mock('expo-haptics');
+
+jest.mock('@/utils/analytics', () => ({
+  Analytics: {
+    onboardingStepViewed: jest.fn(),
+    onboardingQuestionAnswered: jest.fn(),
+    onboardingStepCompleted: jest.fn(),
+  },
+}));
 
 // Mock icons
 jest.mock('@expo/vector-icons', () => {
@@ -135,7 +144,7 @@ describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
 
     await waitFor(() => {
       expect(getByText('Step 2 of 2')).toBeTruthy();
-      expect(getByText('Night Shift Times')).toBeTruthy();
+      expect(getByText('What time does your night shift start?')).toBeTruthy();
     });
   });
 
@@ -156,7 +165,7 @@ describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
 
     const { getByText } = renderScreen();
     expect(getByText('Step 1 of 3')).toBeTruthy();
-    expect(getByText('Morning Shift Times')).toBeTruthy();
+    expect(getByText('What time does your morning shift start?')).toBeTruthy();
   });
 
   it('opens at the requested stage when initialShiftType is provided', () => {
@@ -169,7 +178,7 @@ describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
 
     const { getByText } = renderScreen();
     expect(getByText('Step 2 of 2')).toBeTruthy();
-    expect(getByText('Night Shift Times')).toBeTruthy();
+    expect(getByText('What time does your night shift start?')).toBeTruthy();
   });
 
   it('returns to settings from first stage when entered from settings', () => {
@@ -316,8 +325,8 @@ describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
 
     const { getByText, queryByText } = renderScreen();
     expect(queryByText('Step 1 of 2')).toBeNull();
-    expect(getByText('When Do Your Shifts Start?')).toBeTruthy();
-    expect(queryByText('Night Shift Times')).toBeNull();
+    expect(getByText('What time does your day shift start?')).toBeTruthy();
+    expect(queryByText('What time does your night shift start?')).toBeNull();
     expect(getByText(/6:00 AM/i)).toBeTruthy();
     expect(queryByText(/Ends at 6:00 AM/i)).toBeNull();
   });
@@ -336,8 +345,8 @@ describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
 
     const { getByText, queryByText } = renderScreen();
     expect(queryByText('Step 1 of 2')).toBeNull();
-    expect(getByText('When Do Your Shifts Start?')).toBeTruthy();
-    expect(queryByText('Day Shift Times')).toBeNull();
+    expect(getByText('What time does your night shift start?')).toBeTruthy();
+    expect(queryByText('What time does your day shift start?')).toBeNull();
     expect(getByText(/6:00 PM/i)).toBeTruthy();
     expect(getByText(/Ends at 6:00 AM/i)).toBeTruthy();
     expect(queryByText(/Ends at 6:00 PM/i)).toBeNull();
@@ -357,5 +366,51 @@ describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
 
     const { queryByText } = renderScreen();
     expect(queryByText('Step 1 of 2')).toBeNull();
+  });
+
+  it('tracks per-stage time answers and final completion for multi-stage onboarding', async () => {
+    mockOnboardingData = {
+      shiftSystem: '2-shift',
+      rosterType: 'rotating',
+      patternType: ShiftPattern.STANDARD_4_4_4,
+    };
+
+    const { getByText, getAllByText } = renderScreen();
+
+    fireEvent.press(getAllByText(/6:00 AM/i)[0]);
+    fireEvent.press(getByText('Next Shift Type'));
+
+    await waitFor(() => {
+      expect(Analytics.onboardingQuestionAnswered).toHaveBeenCalledWith({
+        question: 'day_shift_start',
+        answer_value: '06:00',
+      });
+      expect(Analytics.onboardingQuestionAnswered).toHaveBeenCalledWith({
+        question: 'day_shift_end',
+        answer_value: '18:00',
+      });
+    });
+
+    fireEvent.press(getAllByText(/6:00 PM/i)[0]);
+    fireEvent.press(getByText('Finish Setup'));
+
+    await waitFor(() => {
+      expect(Analytics.onboardingQuestionAnswered).toHaveBeenCalledWith({
+        question: 'night_shift_start',
+        answer_value: '18:00',
+      });
+      expect(Analytics.onboardingQuestionAnswered).toHaveBeenCalledWith({
+        question: 'night_shift_end',
+        answer_value: '06:00',
+      });
+      expect(Analytics.onboardingStepCompleted).toHaveBeenCalledWith(
+        'shift_time_input',
+        expect.any(Number),
+        {
+          roster_type: 'rotating',
+          work_pattern: ShiftPattern.STANDARD_4_4_4,
+        }
+      );
+    });
   });
 });

@@ -177,7 +177,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
 
   const handleDismissPaywall = () => {
     setShowPaywall(false);
-    navigation.navigate('ShiftTimeInput');
+    navigation.navigate('Completion');
   };
 
   // ── Render ───────────────────────────────────────────────────────────────────
@@ -418,7 +418,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
             size="large"
           />
           <TouchableOpacity
-            onPress={() => navigation.navigate('ShiftTimeInput')}
+            onPress={() => navigation.navigate('Completion')}
             style={styles.secondaryLink}
           >
             <Text style={styles.secondaryLinkText}>
