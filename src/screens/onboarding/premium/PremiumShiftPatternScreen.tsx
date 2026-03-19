@@ -1001,6 +1001,8 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
   onContinue,
   testID = 'premium-shift-pattern-screen',
 }) => {
+  const mountTime = useRef(Date.now());
+
   useEffect(() => {
     Analytics.onboardingStepViewed('shift_pattern', ONBOARDING_STEPS.SHIFT_PATTERN);
   }, []);
@@ -1009,6 +1011,12 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProp<OnboardingStackParamList, 'ShiftPattern'>>();
   const { data, updateData } = useOnboarding();
+
+  // Personalization
+  const firstName = data.name?.split(' ')[0] ?? '';
+  const titleText = firstName
+    ? t('shiftPattern.title_named', { name: firstName })
+    : t('shiftPattern.title', { defaultValue: "What's Your Roster Rotation?" });
   const isSettingsEntry = route.params?.entryPoint === 'settings';
   const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
   const isSettingsMode = isSettingsEntry && returnToMainOnSelect;
@@ -1186,6 +1194,8 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
       return;
     }
 
+    Analytics.onboardingQuestionAnswered({ question: 'pattern_type', answer_value: pattern.type });
+    Analytics.onboardingStepCompleted('shift_pattern', Date.now() - mountTime.current);
     isTransitioningRef.current = true;
     setIsTransitioning(true);
 
@@ -1304,8 +1314,11 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
       ) : null}
 
       {/* Title */}
-      <Animated.Text style={[styles.title, titleStyle]}>
-        {t('shiftPattern.title', { defaultValue: "What's Your Roster Rotation?" })}
+      <Animated.Text style={[styles.title, titleStyle]}>{titleText}</Animated.Text>
+
+      {/* Tagline */}
+      <Animated.Text style={[styles.tagline, subtitleStyle]}>
+        {t('shiftPattern.tagline', { defaultValue: 'We know every roster. Pick yours.' })}
       </Animated.Text>
 
       {/* Subtitle */}
@@ -1426,6 +1439,17 @@ const styles = StyleSheet.create({
         fontFamily: 'sans-serif-black',
       },
     }),
+  },
+  tagline: {
+    fontSize: 13,
+    color: theme.colors.sacredGold,
+    textAlign: 'center',
+    paddingHorizontal: theme.spacing.lg,
+    marginTop: theme.spacing.xs,
+    marginBottom: theme.spacing.xs,
+    fontWeight: '600',
+    letterSpacing: 0.4,
+    opacity: 0.85,
   },
   subtitle: {
     fontSize: 16,

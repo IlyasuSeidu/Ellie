@@ -213,7 +213,9 @@
         "schedule": "Monte o seu",
         "description": "Se seu site FIFO é único, configure seus próprios blocos de trabalho/descanso."
       }
-    }
+    },
+    "title_named": "Qual é o seu padrão, {{name}}?",
+    "tagline": "Conhecemos cada escala. Escolha a sua."
   },
   "completion": {
     "saveFailed": "Falha ao salvar seus dados. Tente novamente.",

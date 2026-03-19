@@ -212,7 +212,9 @@
         "schedule": "Bangun milik Anda sendiri",
         "description": "Situs FIFO Anda menggunakan daftar nama yang unik? Konfigurasikan blok kerja/istirahat Anda sendiri"
       }
-    }
+    },
+    "title_named": "Apa polamu, {{name}}?",
+    "tagline": "Kami tahu setiap roster. Pilih milik Anda."
   },
   "rosterType": {
     "title": "Bagaimana Cara Kerja Daftar Anda?",

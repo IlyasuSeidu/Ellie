@@ -175,6 +175,8 @@
     }
   },
   "shiftPattern": {
+    "title_named": "What's your pattern, {{name}}?",
+    "tagline": "We know every roster. Pick yours.",
     "reviewAgain": "Please review patterns again to make your selection",
     "reviewButton": "Review Patterns",
     "continueButton": "Continue",

@@ -204,7 +204,9 @@
         "schedule": "Bou jou eie",
         "description": "Gebruik jou EIEU-werf 'n unieke rooster? Stel jou eie werk-/rusblokke op"
       }
-    }
+    },
+    "title_named": "Wat is jou patroon, {{name}}?",
+    "tagline": "Ons ken elke rooster. Kies joune."
   },
   "rosterType": {
     "title": "Hoe werk jou rooster?",

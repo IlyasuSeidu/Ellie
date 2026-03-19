@@ -217,7 +217,9 @@
         "schedule": "Crea el tuyo",
         "description": "Si tu sitio FIFO es único, configura tus propios bloques trabajo/descanso."
       }
-    }
+    },
+    "title_named": "¿Cuál es tu patrón, {{name}}?",
+    "tagline": "Conocemos cada roster. Elige el tuyo."
   },
   "completion": {
     "saveFailed": "No se pudo guardar tu informacion. Intentalo otra vez.",

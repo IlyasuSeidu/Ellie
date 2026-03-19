@@ -217,7 +217,9 @@
         "schedule": "Yakha eyakho",
         "description": "Isayithi lakho le-FIFO lisebenzisa uhlelo oluhlukile? Lungiselela amabhlogo akho omsebenzi/ukuphumula"
       }
-    }
+    },
+    "title_named": "Iyiphi iphethini yakho, {{name}}?",
+    "tagline": "Sazi yonke irosta. Khetha eyakho."
   },
   "rosterType": {
     "title": "Lusebenza Kanjani Uhlu Lwakho?",

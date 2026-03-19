@@ -14,6 +14,7 @@ import {
 import { ShiftPattern } from '@/types';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
+import { asyncStorageService } from '@/services/AsyncStorageService';
 
 // Mock haptics
 // Mock AsyncStorage
@@ -85,7 +86,11 @@ jest.mock('@/components/onboarding/premium/ProgressHeader', () => {
 
 // Helper to render with context
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const renderWithContext = (component: any) => {
+const renderWithContext = (component: any, initialData = {}) => {
+  jest
+    .mocked(asyncStorageService.get)
+    .mockResolvedValue(Object.keys(initialData).length > 0 ? initialData : null);
+
   return render(<OnboardingProvider>{component}</OnboardingProvider>);
 };
 
@@ -108,7 +113,17 @@ describe('PremiumShiftPatternScreen', () => {
     it('should render title and subtitle', () => {
       const { getByText } = renderWithContext(<PremiumShiftPatternScreen />);
       expect(getByText("What's Your Roster Rotation?")).toBeTruthy();
+      expect(getByText('We know every roster. Pick yours.')).toBeTruthy();
       expect(getByText(/Swipe right to choose, left to see more/i)).toBeTruthy();
+    });
+
+    it('should render personalized title when a saved name exists', async () => {
+      const { findByText } = renderWithContext(<PremiumShiftPatternScreen />, {
+        name: 'Ilyasu Seidu',
+      });
+
+      expect(await findByText("What's your pattern, Ilyasu?")).toBeTruthy();
+      expect(await findByText('We know every roster. Pick yours.')).toBeTruthy();
     });
 
     it('should render progress header with current onboarding step', () => {

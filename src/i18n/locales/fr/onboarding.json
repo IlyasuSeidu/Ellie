@@ -217,7 +217,9 @@
         "schedule": "Créez le vôtre",
         "description": "Votre site FIFO est unique ? Configurez vos blocs travail/repos."
       }
-    }
+    },
+    "title_named": "Quel est votre modèle, {{name}} ?",
+    "tagline": "Nous connaissons chaque roulement. Choisissez le vôtre."
   },
   "rosterType": {
     "title": "Comment fonctionne votre liste ?",

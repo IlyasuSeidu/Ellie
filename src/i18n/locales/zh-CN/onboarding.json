@@ -191,7 +191,9 @@
         "schedule": "建立你自己的",
         "description": "您的 FIFO 站点使用独特的名册？配置您自己的工作/休息区"
       }
-    }
+    },
+    "title_named": "{{name}}，你的排班模式是什么？",
+    "tagline": "我们了解每一种排班。选出你的。"
   },
   "rosterType": {
     "title": "你的名册如何运作？",
