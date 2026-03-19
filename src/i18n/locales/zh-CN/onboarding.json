@@ -33,7 +33,7 @@
     "welcome": "欢迎来到艾莉！我来这里是为了帮助您设置轮班日历。让我们从更好地了解您开始。",
     "askName": "你叫什么名字？",
     "askOccupation": "很高兴认识你，{{name}}！你在现场的职责是什么？",
-    "askCompany": "知道了！你在哪家公司工作？",
+    "askCompany": "知道了！你在哪家公司工作？（可选）",
     "askCountry": "快完成了！您位于哪个国家/地区？",
     "allSet": "完美的！一切就绪，{{name}}。让我们配置您的轮班日历。",
     "placeholders": {
@@ -56,7 +56,8 @@
       "companyRequired": "公司为必填项",
       "countryTooShort": "国家/地区必须至少为 2 个字符",
       "countryTooLong": "国家/地区不得超过 100 个字符"
-    }
+    },
+    "skipCompany": "跳过"
   },
   "shiftSystem": {
     "title": "您的网站有多少班次？",

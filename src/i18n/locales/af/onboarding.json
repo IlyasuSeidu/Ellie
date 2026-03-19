@@ -33,7 +33,7 @@
     "welcome": "Welkom aan Ellie! Ek is hier om jou te help om jou skofkalender op te stel. Kom ons begin deur jou 'n bietjie beter te leer ken.",
     "askName": "Wat is jou naam?",
     "askOccupation": "Wonderlik om jou te ontmoet, {{name}}! Wat is jou rol op die terrein?",
-    "askCompany": "Het dit! Vir watter maatskappy werk jy?",
+    "askCompany": "Het dit! Vir watter maatskappy werk jy? (opsioneel)",
     "askCountry": "Amper klaar! In watter land is jy gebaseer?",
     "allSet": "Perfek! Jy is gereed, {{name}}. Kom ons kry jou skofkalender opgestel.",
     "placeholders": {
@@ -56,7 +56,8 @@
       "companyRequired": "Maatskappy word vereis",
       "countryTooShort": "Land moet ten minste 2 karakters wees",
       "countryTooLong": "Land mag nie 100 karakters oorskry nie"
-    }
+    },
+    "skipCompany": "Slaan oor"
   },
   "shiftSystem": {
     "title": "Hoeveel skofte loop u webwerf?",

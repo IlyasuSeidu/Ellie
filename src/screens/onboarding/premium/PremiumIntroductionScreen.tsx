@@ -48,7 +48,7 @@ const introductionSchema = z.object({
     .max(50)
     .regex(/^[a-zA-Z\s'-]+$/),
   occupation: z.string().min(1),
-  company: z.string().min(1),
+  company: z.string().optional(),
   country: z.string().min(2).max(100),
 });
 
@@ -86,6 +86,7 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
   const isSettingsEntry = route.params?.entryPoint === 'settings';
   const { data, updateData } = useOnboarding();
   const flatListRef = useRef<FlatList>(null);
+  const mountTime = useRef(Date.now());
 
   // Conversation state
   const [currentStep, setCurrentStep] = useState<ConversationStep>(ConversationStep.WELCOME);
@@ -369,6 +370,8 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
               });
             }
 
+            Analytics.onboardingStepCompleted('introduction', Date.now() - mountTime.current);
+
             // Call optional callback or navigate
             if (onContinue && formData.country) {
               onContinue({
@@ -446,6 +449,7 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
       }
       // Process name
       addUserMessage(currentInput);
+      Analytics.onboardingQuestionAnswered({ question: 'name', answer_value: 'answered' });
       setFormData((prev) => ({ ...prev, name: currentInput }));
       setCurrentInput('');
       setError(null);
@@ -459,6 +463,7 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
       }
       // Process occupation
       addUserMessage(currentInput);
+      Analytics.onboardingQuestionAnswered({ question: 'occupation', answer_value: 'answered' });
       setFormData((prev) => ({ ...prev, occupation: currentInput }));
       setCurrentInput('');
       setError(null);
@@ -472,6 +477,7 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
       }
       // Process company
       addUserMessage(currentInput);
+      Analytics.onboardingQuestionAnswered({ question: 'company', answer_value: 'answered' });
       setFormData((prev) => ({ ...prev, company: currentInput.trim() }));
       setCurrentInput('');
       setError(null);
@@ -485,6 +491,7 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
       }
       // Process country
       addUserMessage(currentInput);
+      Analytics.onboardingQuestionAnswered({ question: 'country', answer_value: 'answered' });
       setFormData((prev) => ({ ...prev, country: currentInput.trim() }));
       setCurrentInput('');
       setError(null);
@@ -504,11 +511,14 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
   const handleQuickReply = useCallback(
     (reply: QuickReply) => {
       if (reply.id === 'skip' && currentStep === ConversationStep.WAIT_COMPANY) {
+        Analytics.onboardingSkipped({ step_id: 'introduction', skipped_field: 'company' });
+        Analytics.onboardingQuestionAnswered({ question: 'company', answer_value: 'skipped' });
         setCurrentInput('');
-        advanceConversation();
+        setFormData((prev) => ({ ...prev, company: '' }));
+        setCurrentStep(ConversationStep.ASK_COUNTRY);
       }
     },
-    [currentStep, advanceConversation]
+    [currentStep]
   );
 
   // Handle long-press to edit
@@ -601,8 +611,11 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
     }
   };
 
-  // Quick replies (none currently used)
-  const quickReplies: QuickReply[] = [];
+  // Show Skip option when waiting for company (optional field)
+  const quickReplies: QuickReply[] =
+    currentStep === ConversationStep.WAIT_COMPANY
+      ? [{ id: 'skip', label: t('intro.skipCompany'), value: '' }]
+      : [];
 
   // Memoized render function for FlatList performance
   // CRITICAL: No inline arrow functions - pass stable function references only

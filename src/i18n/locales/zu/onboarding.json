@@ -33,7 +33,7 @@
     "welcome": "Siyakwamukela ku-Ellie! Ngilapha ukuze ngikusize uhlele ikhalenda lakho leshifu. Ake siqale ngokukwazi kangcono.",
     "askName": "Ubani igama lakho?",
     "askOccupation": "Kuhle ukuhlangana nawe, {{name}}! Yini indima yakho eceleni?",
-    "askCompany": "Ngiyitholile! Iyiphi inkampani oyisebenzelayo?",
+    "askCompany": "Ngikuzwile! Usebenzela yiphi inkampani? (akuphoqelekile)",
     "askCountry": "Sengiyaqeda! Uzinze kuliphi izwe?",
     "allSet": "Iphelele! Usulungile, {{name}}. Masilungise ikhalenda lakho leshifu.",
     "placeholders": {
@@ -56,7 +56,8 @@
       "companyRequired": "Inkampani iyadingeka",
       "countryTooShort": "Izwe kufanele okungenani libe nezinhlamvu ezingu-2",
       "countryTooLong": "Izwe akumele leqe izinhlamvu eziyi-100"
-    }
+    },
+    "skipCompany": "Yeqa"
   },
   "shiftSystem": {
     "title": "Isayithi Lakho Lisebenza Kangakanani?",

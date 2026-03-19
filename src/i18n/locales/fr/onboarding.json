@@ -33,7 +33,7 @@
     "welcome": "Bienvenue à Ellie ! Je suis là pour vous aider à établir votre calendrier de travail. Commençons par mieux vous connaître.",
     "askName": "Quel est ton nom?",
     "askOccupation": "Ravi de vous rencontrer, {{name}} ! Quel est votre rôle sur site ?",
-    "askCompany": "J'ai compris! Pour quelle entreprise travaillez-vous ?",
+    "askCompany": "D’accord. Pour quelle entreprise travaillez-vous ? (facultatif)",
     "askCountry": "Presque terminé ! Dans quel pays êtes-vous basé ?",
     "allSet": "Parfait! Vous êtes prêt, {{name}}. Configureons votre calendrier de travail.",
     "placeholders": {
@@ -56,7 +56,8 @@
       "companyRequired": "La société est requise",
       "countryTooShort": "Le pays doit comporter au moins 2 caractères",
       "countryTooLong": "Le pays ne doit pas dépasser 100 caractères"
-    }
+    },
+    "skipCompany": "Passer"
   },
   "shiftSystem": {
     "title": "Combien d’équipes votre site gère-t-il ?",

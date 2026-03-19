@@ -122,6 +122,14 @@ export const Analytics = {
       { step, time_spent_ms: timeSpentMs }
     ),
 
+  // Called when a user explicitly skips an optional field (e.g. company)
+  onboardingSkipped: (params: { step_id: OnboardingStep; skipped_field: string }) =>
+    void safeCall(
+      (client) => client.logEvent('onboarding_skipped', params),
+      'onboarding_skipped',
+      params
+    ),
+
   // Called if user backgrounds the app or the process is killed mid-onboarding
   onboardingAbandoned: (step: OnboardingStep, stepNumber: number) =>
     void safeCall(

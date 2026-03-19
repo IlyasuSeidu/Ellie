@@ -33,7 +33,7 @@
     "welcome": "Bienvenido a Ellie! Estoy aqui para ayudarte a configurar tu calendario de turnos. Empecemos con tus datos.",
     "askName": "Como te llamas?",
     "askOccupation": "Mucho gusto, {{name}}! ¿Cuál es tu función en el sitio?",
-    "askCompany": "Perfecto! En que empresa trabajas?",
+    "askCompany": "Perfecto. ¿En qué empresa trabajas? (opcional)",
     "askCountry": "Casi listo! En que pais estas?",
     "allSet": "Perfecto! Todo listo, {{name}}. Vamos a configurar tu calendario de turnos.",
     "placeholders": {
@@ -56,7 +56,8 @@
       "companyRequired": "La empresa es obligatoria",
       "countryTooShort": "El pais debe tener al menos 2 caracteres",
       "countryTooLong": "El pais no debe superar 100 caracteres"
-    }
+    },
+    "skipCompany": "Omitir"
   },
   "shiftSystem": {
     "reviewAgain": "Revisa los sistemas otra vez para seleccionar",

@@ -33,7 +33,7 @@
     "welcome": "Selamat datang di Ellie! Saya di sini untuk membantu Anda mengatur kalender shift Anda. Mari kita mulai dengan mengenal Anda lebih baik.",
     "askName": "Siapa namamu?",
     "askOccupation": "Senang bertemu dengan Anda, {{name}}! Apa peran Anda di lokasi?",
-    "askCompany": "Mengerti! Di perusahaan mana Anda bekerja?",
+    "askCompany": "Baik. Anda bekerja di perusahaan mana? (opsional)",
     "askCountry": "Hampir selesai! Di negara mana Anda tinggal?",
     "allSet": "Sempurna! Anda sudah siap, {{name}}. Mari konfigurasikan kalender shift Anda.",
     "placeholders": {
@@ -56,7 +56,8 @@
       "companyRequired": "Perusahaan diperlukan",
       "countryTooShort": "Negara harus terdiri dari minimal 2 karakter",
       "countryTooLong": "Negara tidak boleh melebihi 100 karakter"
-    }
+    },
+    "skipCompany": "Lewati"
   },
   "shiftSystem": {
     "title": "Berapa Banyak Pergeseran yang Dijalankan Situs Anda?",

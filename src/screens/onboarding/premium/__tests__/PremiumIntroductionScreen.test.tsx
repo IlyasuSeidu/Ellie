@@ -161,12 +161,45 @@ describe('PremiumIntroductionScreen', () => {
     });
   });
 
-  describe('Company Field Requirement', () => {
-    it('should have company field as required (schema validation)', () => {
-      // Company field is required in the Zod schema (not optional)
-      // This is validated at the schema level in PremiumIntroductionScreen
-      const { getByTestId } = renderWithProviders(<PremiumIntroductionScreen />);
-      expect(getByTestId('premium-introduction-screen')).toBeTruthy();
+  describe('Company Field Flow', () => {
+    it('should allow skipping the company question', async () => {
+      const { findByPlaceholderText, findByTestId } = renderWithProviders(
+        <PremiumIntroductionScreen />
+      );
+
+      await act(async () => {
+        jest.advanceTimersByTime(6000);
+      });
+
+      const nameInput = await findByPlaceholderText('Enter your name', { timeout: 3000 });
+      fireEvent.changeText(nameInput, 'John Doe');
+      fireEvent(nameInput, 'submitEditing');
+
+      await act(async () => {
+        jest.advanceTimersByTime(2000);
+      });
+
+      const occupationInput = await findByPlaceholderText(
+        'e.g. Haul truck operator, Boilermaker, Electrician',
+        { timeout: 3000 }
+      );
+      fireEvent.changeText(occupationInput, 'Driller');
+      fireEvent(occupationInput, 'submitEditing');
+
+      await act(async () => {
+        jest.advanceTimersByTime(2000);
+      });
+
+      const skipReply = await findByTestId(
+        'premium-introduction-screen-chat-input-quick-reply-skip'
+      );
+      fireEvent.press(skipReply);
+
+      await act(async () => {
+        jest.advanceTimersByTime(2000);
+      });
+
+      expect(await findByPlaceholderText('Enter your country', { timeout: 3000 })).toBeTruthy();
     });
   });
 

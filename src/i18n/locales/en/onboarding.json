@@ -97,7 +97,8 @@
     "welcome": "Welcome to Ellie! I'm here to help you set up your shift calendar. Let's start by getting to know you a bit better.",
     "askName": "What's your name?",
     "askOccupation": "Great to meet you, {{name}}! What's your role on site?",
-    "askCompany": "Got it! Which company do you work for?",
+    "askCompany": "Got it! Which company do you work for? (optional)",
+    "skipCompany": "Skip",
     "askCountry": "Almost done! Which country are you based in?",
     "allSet": "Perfect! You're all set, {{name}}. Let's get your shift calendar configured.",
     "placeholders": {
