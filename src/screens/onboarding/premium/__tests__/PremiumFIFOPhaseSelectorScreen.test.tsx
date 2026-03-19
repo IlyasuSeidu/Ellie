@@ -330,7 +330,7 @@ describe('PremiumFIFOPhaseSelectorScreen', () => {
 
     expect(await findByText('Are you at site or at home right now, Ilyasu?')).toBeTruthy();
     expect(
-      await findByText('Almost there. One more tap and your FIFO roster is ready.')
+      await findByText(/Almost there\. One more tap and your FIFO roster is ready\./)
     ).toBeTruthy();
   });
 

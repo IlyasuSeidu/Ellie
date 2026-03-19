@@ -1731,7 +1731,15 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
                   t('fifoPhaseSelector.subtitle.block', {
                     defaultValue: 'Swipe right to select, left to see next, or up for more info',
                   })
-                )}\n${activeStageContextSubtitle}`
+                )}\n${activeStageContextSubtitle}${
+                  isTransitioning
+                    ? ''
+                    : `\n${String(
+                        t('fifoPhaseSelector.anticipation', {
+                          defaultValue: 'Almost there. One more tap and your FIFO roster is ready.',
+                        })
+                      )}`
+                }`
               : `${String(
                   t('fifoPhaseSelector.subtitle.dayWithinBlock', {
                     ordinalList: generateOrdinalList(stageDayCount),
@@ -1895,13 +1903,6 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
           </View>
         )}
       </>
-      {stage === SelectionStage.BLOCK && !isTransitioning ? (
-        <Text style={styles.anticipationText}>
-          {t('fifoPhaseSelector.anticipation', {
-            defaultValue: 'Almost there. One more tap and your FIFO roster is ready.',
-          })}
-        </Text>
-      ) : null}
 
       {isTransitioning ? (
         <View pointerEvents="none" style={styles.transitionOverlay}>
@@ -2150,14 +2151,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: theme.spacing.sm,
     marginBottom: theme.spacing.lg,
-  },
-  anticipationText: {
-    fontSize: 13,
-    color: theme.colors.dust,
-    textAlign: 'center',
-    paddingHorizontal: theme.spacing.xl,
-    marginTop: theme.spacing.sm,
-    opacity: 0.8,
   },
   transitionOverlay: {
     ...StyleSheet.absoluteFillObject,

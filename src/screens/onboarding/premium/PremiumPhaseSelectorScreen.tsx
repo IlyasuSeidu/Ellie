@@ -1464,7 +1464,16 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
       {/* Subtitle */}
       <Animated.Text style={[styles.subtitle, subtitleAnimatedStyle]}>
         {stage === SelectionStage.PHASE
-          ? t('common.swipeHint')
+          ? `${String(t('common.swipeHint'))}${
+              isTransitioning
+                ? ''
+                : `\n${String(
+                    t('phaseSelector.anticipation', {
+                      defaultValue:
+                        "Almost ready. One more step and we'll show you your full year.",
+                    })
+                  )}`
+            }`
           : t('phaseSelector.daySubtitle', {
               selectedPhaseTitle,
               dayList: generateDayOrdinalList(
@@ -1500,14 +1509,6 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
           />
         ))}
       </View>
-
-      {stage === SelectionStage.PHASE && !isTransitioning ? (
-        <Text style={styles.anticipationText}>
-          {t('phaseSelector.anticipation', {
-            defaultValue: "Almost ready. One more step and we'll show you your full year.",
-          })}
-        </Text>
-      ) : null}
 
       {isTransitioning ? (
         <View pointerEvents="none" style={styles.transitionOverlay}>
@@ -1601,14 +1602,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: theme.spacing.xl,
-  },
-  anticipationText: {
-    fontSize: 13,
-    color: theme.colors.dust,
-    textAlign: 'center',
-    paddingHorizontal: theme.spacing.xl,
-    marginTop: theme.spacing.sm,
-    opacity: 0.8,
   },
   transitionOverlay: {
     ...StyleSheet.absoluteFillObject,

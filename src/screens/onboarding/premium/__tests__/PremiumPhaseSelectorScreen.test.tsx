@@ -169,14 +169,14 @@ describe('PremiumPhaseSelectorScreen', () => {
 
       expect(await findByText('Where are you in your cycle right now, Ilyasu?')).toBeTruthy();
       expect(
-        await findByText("Almost ready. One more step and we'll show you your full year.")
+        await findByText(/Almost ready\. One more step and we'll show you your full year\./)
       ).toBeTruthy();
     });
 
     it('should render subtitle with instructions', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
       expect(
-        getByText('Swipe right to select, left to see next, or up for more info')
+        getByText(/Swipe right to select, left to see next, or up for more info/)
       ).toBeTruthy();
     });
 
@@ -195,7 +195,7 @@ describe('PremiumPhaseSelectorScreen', () => {
       expect(getByTestId('progress-header')).toBeTruthy();
       expect(getByText('What shift are you on right now?')).toBeTruthy();
       expect(
-        getByText('Swipe right to select, left to see next, or up for more info')
+        getByText(/Swipe right to select, left to see next, or up for more info/)
       ).toBeTruthy();
     });
   });
@@ -235,7 +235,7 @@ describe('PremiumPhaseSelectorScreen', () => {
     it('should show phase selection instructions', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
       expect(
-        getByText('Swipe right to select, left to see next, or up for more info')
+        getByText(/Swipe right to select, left to see next, or up for more info/)
       ).toBeTruthy();
     });
 
@@ -257,7 +257,7 @@ describe('PremiumPhaseSelectorScreen', () => {
     it('should have descriptive instructions', () => {
       const { getByText } = renderWithProvider(<PremiumPhaseSelectorScreen />);
       expect(
-        getByText('Swipe right to select, left to see next, or up for more info')
+        getByText(/Swipe right to select, left to see next, or up for more info/)
       ).toBeTruthy();
     });
 
@@ -357,7 +357,7 @@ describe('PremiumPhaseSelectorScreen', () => {
       expect(getByTestId('progress-header')).toBeTruthy();
       expect(getByText('What shift are you on right now?')).toBeTruthy();
       expect(
-        getByText('Swipe right to select, left to see next, or up for more info')
+        getByText(/Swipe right to select, left to see next, or up for more info/)
       ).toBeTruthy();
     });
 
