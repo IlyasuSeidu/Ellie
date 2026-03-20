@@ -33,6 +33,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
@@ -68,7 +69,7 @@ const SPRING_CONFIGS = {
 interface SystemCardData {
   id: string;
   system: ShiftSystem;
-  icon: string;
+  icon: React.ComponentProps<typeof Ionicons>['name'];
   title: string;
   schedule: string;
   description: string;
@@ -84,7 +85,7 @@ const SHIFT_SYSTEMS: SystemCardData[] = [
   {
     id: '2-shift',
     system: ShiftSystem.TWO_SHIFT,
-    icon: '☀️',
+    icon: 'sunny',
     title: '2 Shifts (12 hours)',
     schedule: 'Day & night',
     description: 'Your workplace runs two 12-hour shifts—one during the day, one at night',
@@ -98,7 +99,7 @@ const SHIFT_SYSTEMS: SystemCardData[] = [
   {
     id: '3-shift',
     system: ShiftSystem.THREE_SHIFT,
-    icon: '🕐',
+    icon: 'time',
     title: '3 Shifts (8 hours)',
     schedule: 'Morning, afternoon & night',
     description: 'Your workplace runs three 8-hour shifts—morning, afternoon, and night',
@@ -422,7 +423,12 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
       >
         {/* Icon */}
         <Animated.View style={[styles.iconContainer, iconAnimatedStyle]}>
-          <Text style={styles.icon}>{system.icon}</Text>
+          <Ionicons
+            name={system.icon}
+            size={108}
+            color={theme.colors.brightGold}
+            testID={`shift-system-icon-${system.id}`}
+          />
         </Animated.View>
 
         {/* System Name */}
@@ -1023,10 +1029,6 @@ const styles = StyleSheet.create({
     height: 180,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  icon: {
-    fontSize: 120,
-    textAlign: 'center',
   },
   cardTitle: {
     fontSize: 24,

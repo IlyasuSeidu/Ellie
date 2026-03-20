@@ -146,10 +146,9 @@ describe('PremiumShiftSystemScreen', () => {
     });
 
     it('should render card icon', () => {
-      const { getByText } = renderWithProviders(<PremiumShiftSystemScreen />);
+      const { getByTestId } = renderWithProviders(<PremiumShiftSystemScreen />);
 
-      // Check for emoji icons
-      expect(getByText('☀️')).toBeTruthy();
+      expect(getByTestId('shift-system-icon-2-shift')).toBeTruthy();
     });
   });
 
