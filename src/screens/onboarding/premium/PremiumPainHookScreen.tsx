@@ -387,7 +387,6 @@ export const PremiumPainHookScreen: React.FC = () => {
           />
         </View>
 
-        <Text style={styles.helperText}>{t(activeOption.subKey)}</Text>
         <View style={styles.buttonSpacer} />
       </ScrollView>
 
@@ -578,16 +577,8 @@ const styles = StyleSheet.create({
     fontWeight: theme.typography.fontWeights.bold,
     letterSpacing: 0.2,
   },
-  helperText: {
-    marginTop: theme.spacing.lg,
-    color: theme.colors.dust,
-    fontSize: 15,
-    lineHeight: 22,
-    textAlign: 'center',
-    paddingHorizontal: theme.spacing.md,
-  },
   buttonSpacer: {
-    height: 16,
+    height: 8,
   },
   buttonContainer: {
     position: 'absolute',
