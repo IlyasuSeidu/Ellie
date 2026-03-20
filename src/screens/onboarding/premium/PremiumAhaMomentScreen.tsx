@@ -521,7 +521,13 @@ export const PremiumAhaMomentScreen: React.FC = () => {
         </Animated.View>
       </ScrollView>
 
-      {showPaywall && <PaywallScreen onDismiss={handleDismissPaywall} onboardingData={data} />}
+      {showPaywall && (
+        <PaywallScreen
+          onDismiss={handleDismissPaywall}
+          onboardingData={data}
+          entryPoint="aha_moment"
+        />
+      )}
 
       {/* Hey Ellie modal — only mounted on this screen during onboarding */}
       <VoiceAssistantModal />

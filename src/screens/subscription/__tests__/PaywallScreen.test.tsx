@@ -1,7 +1,10 @@
 import React from 'react';
 import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
+import { Platform } from 'react-native';
 import { PaywallScreen } from '../PaywallScreen';
 import { ShiftPattern } from '@/types';
+import { Analytics } from '@/utils/analytics';
+import { getRevenueCatRuntime, isRevenueCatAvailable } from '@/services/RevenueCatRuntime';
 
 const mockOnDismiss = jest.fn();
 const mockRestorePurchases = jest.fn().mockResolvedValue(undefined);
@@ -17,8 +20,8 @@ jest.mock('@/hooks/useSubscription', () => ({
 }));
 
 jest.mock('@/services/RevenueCatRuntime', () => ({
-  getRevenueCatRuntime: () => null,
-  isRevenueCatAvailable: () => false,
+  getRevenueCatRuntime: jest.fn(() => null),
+  isRevenueCatAvailable: jest.fn(() => false),
 }));
 
 jest.mock('@/components/paywall/MiniYearCalendar', () => {
@@ -40,11 +43,17 @@ jest.mock('@/utils/analytics', () => ({
   },
 }));
 
+const mockedAnalytics = jest.mocked(Analytics);
+const mockedGetRevenueCatRuntime = jest.mocked(getRevenueCatRuntime);
+const mockedIsRevenueCatAvailable = jest.mocked(isRevenueCatAvailable);
+
 describe('PaywallScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
     jest.setSystemTime(new Date('2026-03-20T00:00:00Z'));
+    mockedGetRevenueCatRuntime.mockReturnValue(null);
+    mockedIsRevenueCatAvailable.mockReturnValue(false);
   });
 
   afterEach(() => {
@@ -56,6 +65,7 @@ describe('PaywallScreen', () => {
     const { getByText, queryByText } = render(
       <PaywallScreen
         onDismiss={mockOnDismiss}
+        entryPoint="aha_moment"
         onboardingData={{
           name: 'Ilyasu',
           country: 'Ghana',
@@ -83,6 +93,7 @@ describe('PaywallScreen', () => {
     const { toJSON } = render(
       <PaywallScreen
         onDismiss={mockOnDismiss}
+        entryPoint="aha_moment"
         onboardingData={{
           name: 'Ilyasu',
           country: 'Ghana',
@@ -111,6 +122,7 @@ describe('PaywallScreen', () => {
     const { getByText, getByLabelText } = render(
       <PaywallScreen
         onDismiss={mockOnDismiss}
+        entryPoint="feature_gate"
         onboardingData={{
           rosterType: 'rotating',
           country: 'Australia',
@@ -124,6 +136,22 @@ describe('PaywallScreen', () => {
     await waitFor(() => {
       expect(mockRestorePurchases).toHaveBeenCalled();
     });
+    expect(mockedAnalytics.paywallViewed).toHaveBeenCalledWith(
+      'feature_gate',
+      expect.objectContaining({
+        platform: Platform.OS,
+        country: 'Australia',
+        roster_type: 'rotating',
+        pain_point: 'family',
+      })
+    );
+    expect(mockedAnalytics.paywallRestoreTapped).toHaveBeenCalledWith(
+      expect.objectContaining({
+        platform: Platform.OS,
+        source: 'feature_gate',
+        trigger_source: 'feature_gate',
+      })
+    );
 
     act(() => {
       jest.advanceTimersByTime(4000);
@@ -131,5 +159,71 @@ describe('PaywallScreen', () => {
 
     fireEvent.press(getByLabelText('Close paywall'));
     expect(mockOnDismiss).toHaveBeenCalled();
+    expect(mockedAnalytics.paywallDismissed).toHaveBeenCalledWith(
+      expect.objectContaining({
+        platform: Platform.OS,
+        source: 'feature_gate',
+        trigger_source: 'feature_gate',
+      })
+    );
+  });
+
+  it('passes entry point through plan and subscribe analytics', async () => {
+    mockedIsRevenueCatAvailable.mockReturnValue(true);
+    mockedGetRevenueCatRuntime.mockReturnValue({
+      Purchases: {
+        getOfferings: jest.fn().mockResolvedValue({
+          current: {
+            annual: null,
+            monthly: {
+              product: {
+                price: 6.99,
+                priceString: '$6.99',
+              },
+            },
+          },
+        }),
+        purchasePackage: jest.fn().mockResolvedValue(undefined),
+      },
+    } as never);
+
+    const { getByText } = render(
+      <PaywallScreen
+        onDismiss={mockOnDismiss}
+        entryPoint="settings"
+        onboardingData={{
+          rosterType: 'fifo',
+          country: 'Ghana',
+          painPoint: 'cycle_lost',
+          patternType: ShiftPattern.FIFO_8_6,
+        }}
+      />
+    );
+
+    await waitFor(() => {
+      expect(getByText('Monthly')).toBeTruthy();
+    });
+
+    fireEvent.press(getByText('Monthly'));
+    expect(mockedAnalytics.paywallPlanSelected).toHaveBeenCalledWith(
+      'monthly',
+      expect.objectContaining({
+        platform: Platform.OS,
+        source: 'settings',
+        trigger_source: 'settings',
+      })
+    );
+
+    fireEvent.press(getByText('Start Free 7-Day Trial'));
+    await waitFor(() => {
+      expect(mockedAnalytics.paywallSubscribeTapped).toHaveBeenCalledWith(
+        'monthly',
+        expect.objectContaining({
+          platform: Platform.OS,
+          source: 'settings',
+          trigger_source: 'settings',
+        })
+      );
+    });
   });
 });

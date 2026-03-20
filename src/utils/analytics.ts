@@ -1,6 +1,12 @@
 import { logger } from '@/utils/logger';
 
 type AnalyticsPayload = Record<string, string | number | boolean | null | undefined>;
+export type PaywallTriggerSource =
+  | 'aha_moment'
+  | 'post_aha'
+  | 'profile'
+  | 'feature_gate'
+  | 'settings';
 
 type AnalyticsClient = {
   logScreenView: (params: { screen_name: string; screen_class: string }) => Promise<void>;
@@ -179,10 +185,7 @@ export const Analytics = {
     ),
 
   // Paywall funnel
-  paywallViewed: (
-    triggerSource: 'aha_moment' | 'post_aha' | 'profile' | 'feature_gate',
-    metadata?: AnalyticsPayload
-  ) =>
+  paywallViewed: (triggerSource: PaywallTriggerSource, metadata?: AnalyticsPayload) =>
     void safeCall(
       (client) =>
         client.logEvent('paywall_viewed', {

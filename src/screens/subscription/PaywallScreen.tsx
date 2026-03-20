@@ -25,7 +25,7 @@ import type { PurchasesPackage } from 'react-native-purchases';
 import { useSubscription } from '@/hooks/useSubscription';
 import { getRevenueCatRuntime, isRevenueCatAvailable } from '@/services/RevenueCatRuntime';
 import { theme } from '@/utils/theme';
-import { Analytics } from '@/utils/analytics';
+import { Analytics, type PaywallTriggerSource } from '@/utils/analytics';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
 import { MiniYearCalendar } from '@/components/paywall/MiniYearCalendar';
 import { formatLocalizedDate } from '@/utils/i18nFormat';
@@ -33,6 +33,7 @@ import { formatLocalizedDate } from '@/utils/i18nFormat';
 interface PaywallScreenProps {
   onDismiss: () => void;
   onboardingData?: OnboardingData;
+  entryPoint: PaywallTriggerSource;
 }
 
 type PlanKey = 'annual' | 'monthly';
@@ -50,7 +51,11 @@ type Testimonial = {
 
 const CARD_WIDTH = Dimensions.get('window').width - 48;
 
-export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboardingData }) => {
+export const PaywallScreen: React.FC<PaywallScreenProps> = ({
+  onDismiss,
+  onboardingData,
+  entryPoint,
+}) => {
   const insets = useSafeAreaInsets();
   const { t, i18n } = useTranslation('common');
   const tLoose = t as unknown as (key: string, options?: Record<string, unknown>) => string;
@@ -121,7 +126,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
   }));
 
   useEffect(() => {
-    Analytics.paywallViewed('aha_moment', paywallAnalyticsMetadata);
+    Analytics.paywallViewed(entryPoint, paywallAnalyticsMetadata);
 
     const dismissTimer = setTimeout(() => setDismissVisible(true), 4000);
 
@@ -150,7 +155,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
       .finally(() => setLoading(false));
 
     return () => clearTimeout(dismissTimer);
-  }, [paywallAnalyticsMetadata]);
+  }, [entryPoint, paywallAnalyticsMetadata]);
 
   useEffect(() => {
     ctaPulse.value = withRepeat(
@@ -214,14 +219,19 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
     Analytics.paywallDismissed({
       time_on_paywall_seconds: Math.max(0, Math.round((Date.now() - openedAtRef.current) / 1000)),
       platform: Platform.OS,
-      trigger_source: 'aha_moment',
+      source: entryPoint,
+      trigger_source: entryPoint,
     });
     onDismiss();
   };
 
   const handleSelectPlan = (plan: PlanKey) => {
     setSelectedPlan(plan);
-    Analytics.paywallPlanSelected(plan);
+    Analytics.paywallPlanSelected(plan, {
+      platform: Platform.OS,
+      source: entryPoint,
+      trigger_source: entryPoint,
+    });
   };
 
   const handlePurchase = async () => {
@@ -233,6 +243,8 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
       setPurchasing(true);
       Analytics.paywallSubscribeTapped(selectedPlan, {
         platform: Platform.OS,
+        source: entryPoint,
+        trigger_source: entryPoint,
       });
       const { Purchases } = revenueCatRuntime;
       await Purchases.purchasePackage(selectedPackage);
@@ -248,7 +260,8 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
   const handleRestore = async () => {
     Analytics.paywallRestoreTapped({
       platform: Platform.OS,
-      trigger_source: 'aha_moment',
+      source: entryPoint,
+      trigger_source: entryPoint,
     });
     await restorePurchases();
     onDismiss();
