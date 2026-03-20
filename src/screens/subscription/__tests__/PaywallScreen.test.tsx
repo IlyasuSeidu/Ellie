@@ -68,11 +68,9 @@ describe('PaywallScreen', () => {
 
     expect(getByText('Ilyasu, your roster is ready.')).toBeTruthy();
     expect(
-      getByText(
-        'Your FIFO cycle is mapped. See every swing, every day off, for your next 3 months.'
-      )
+      getByText('Your FIFO cycle is mapped. See every swing, every day off, for your full year.')
     ).toBeTruthy();
-    expect(getByText('See your next 3 months — every work block, every R&R')).toBeTruthy();
+    expect(getByText('See your full year — every work block, every R&R')).toBeTruthy();
     expect(
       getByText(
         'Your 7-day free trial ends March 27, 2026. Cancel anytime in Settings before then to avoid charges. Subscriptions renew automatically.'
@@ -98,9 +96,7 @@ describe('PaywallScreen', () => {
     const renderedTree = JSON.stringify(toJSON());
     const annualIndex = renderedTree.indexOf('Annual');
     const ctaIndex = renderedTree.indexOf('Start Free 7-Day Trial');
-    const featureIndex = renderedTree.indexOf(
-      'See your next 3 months — every work block, every R&R'
-    );
+    const featureIndex = renderedTree.indexOf('See your full year — every work block, every R&R');
     const testimonialIndex = renderedTree.indexOf(
       'Sarah K., Underground miner — 12h rotating shifts'
     );

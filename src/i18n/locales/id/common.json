@@ -169,13 +169,13 @@
       "subtitle": "Buka dengan biaya kurang dari secangkir kopi.",
       "features": {
         "askRoster": "Tanyakan \"Hai __TK1__\" apa pun tentang daftar pemain Anda",
-        "fullYear": "Lihat 3 bulan berikutnya Anda — setiap shift, bulan demi bulan",
+        "fullYear": "Lihat setahun penuh Anda — setiap shift, bulan demi bulan",
         "offline": "Bekerja di bawah tanah, tidak diperlukan sinyal",
         "instantAnswers": "Jawaban instan tentang cuti dan pola",
         "aiPowered": "Didukung oleh AI dan selalu berkembang",
         "leavePlanning": "Rencanakan libur tanpa menelepon HR",
-        "fullYearFIFO": "Lihat 3 bulan berikutnya Anda — setiap blok kerja, setiap masa istirahat",
-        "fullYearRotating": "Lihat 3 bulan berikutnya Anda — setiap fase, bulan demi bulan"
+        "fullYearFIFO": "Lihat setahun penuh Anda — setiap blok kerja, setiap masa istirahat",
+        "fullYearRotating": "Lihat setahun penuh Anda — setiap fase, bulan demi bulan"
       },
       "plans": {
         "annual": "Tahunan",
@@ -194,7 +194,7 @@
       "socialProof": "4.8 · Trusted by 50,000+ shift workers",
       "testimonials": [
         {
-          "quote": "Akhirnya saya tahu kapan saya masuk shift malam saat Natal. Mengubah hidup saya.",
+          "quote": "Saya memesan tiket sesuai swing saya berbulan-bulan sebelumnya tanpa menelepon HR sama sekali.",
           "author": "Sarah K., penambang bawah tanah — shift rotasi 12 jam"
         },
         {
@@ -202,7 +202,7 @@
           "author": "Dave L., operator bor — roster FIFO"
         },
         {
-          "quote": "Saya pesan tiket sesuai swing saya 3 bulan sebelumnya tanpa menelepon HR sama sekali.",
+          "quote": "Saya memesan tiket sesuai swing saya berbulan-bulan sebelumnya tanpa menelepon HR sama sekali.",
           "author": "Jason M., operator haul truck — FIFO 7/7"
         }
       ],
@@ -213,13 +213,13 @@
         "cancel": "Batalkan kapan saja",
         "noCharge": "Tidak ada biaya hari ini"
       },
-      "valueFrame": "Kurang dari harga kopi per minggu untuk mengetahui 3 bulan berikutnya Anda.",
+      "valueFrame": "Kurang dari harga kopi per minggu untuk mengetahui setahun penuh Anda.",
       "security": "Pembayaran aman via {{platform}} · Diproses oleh {{platform}}, bukan Ellie",
       "termsOfService": "Syarat",
       "trialBadge": "UJI COBA GRATIS 7 HARI · TANPA BIAYA HARI INI",
       "title_named": "{{name}}, roster Anda sudah siap.",
-      "subtitle_fifo": "Siklus FIFO Anda sudah dipetakan. Lihat setiap swing dan setiap hari libur untuk 3 bulan ke depan.",
-      "subtitle_rotating": "Roster bergilir Anda sudah dipetakan. Lihat setiap shift untuk 3 bulan ke depan.",
+      "subtitle_fifo": "Siklus FIFO Anda sudah dipetakan. Lihat setiap swing dan setiap hari libur sepanjang setahun penuh Anda.",
+      "subtitle_rotating": "Roster bergilir Anda sudah dipetakan. Lihat setiap shift sepanjang setahun penuh Anda.",
       "billingDisclosure": "Uji coba gratis 7 hari Anda berakhir pada {{date}}. Batalkan kapan saja di Pengaturan sebelum itu agar tidak dikenai biaya. Langganan diperpanjang otomatis."
     },
     "profile": {

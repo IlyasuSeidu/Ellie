@@ -169,13 +169,13 @@
       "subtitle": "花不到一杯咖啡的钱就能解锁。",
       "features": {
         "askRoster": "询问“嘿__TK1__”有关您的名单的任何信息",
-        "fullYear": "查看你接下来的3个月——每一次班次，逐月清晰可见",
+        "fullYear": "查看你整整一年的安排——每一次班次，逐月清晰可见",
         "offline": "地下工作，无需信号",
         "instantAnswers": "有关休假和模式的即时答案",
         "aiPowered": "由人工智能提供支持并不断改进",
         "leavePlanning": "无需联系人事即可规划休假",
-        "fullYearFIFO": "查看你接下来的3个月——每个工作段、每个休息段",
-        "fullYearRotating": "查看你接下来的3个月——每个阶段，逐月清晰可见"
+        "fullYearFIFO": "查看你整整一年的安排——每个工作段、每个休息段",
+        "fullYearRotating": "查看你整整一年的安排——每个阶段，逐月清晰可见"
       },
       "plans": {
         "annual": "年度的",
@@ -194,7 +194,7 @@
       "socialProof": "4.8 · Trusted by 50,000+ shift workers",
       "testimonials": [
         {
-          "quote": "终于知道圣诞节那段时间我什么时候上夜班了，真的改变了我的生活。",
+          "quote": "我按自己的轮班周期提前好几个月订好了航班，连人事都不用找。",
           "author": "Sarah K.，地下矿工 — 12小时轮班"
         },
         {
@@ -202,7 +202,7 @@
           "author": "Dave L.，钻机操作员 — FIFO 班表"
         },
         {
-          "quote": "我提前3个月按我的轮班周期订好了航班，再也不用找人事。",
+          "quote": "我按自己的轮班周期提前好几个月订好了航班，连人事都不用找。",
           "author": "Jason M.，矿卡司机 — FIFO 7/7"
         }
       ],
@@ -213,13 +213,13 @@
         "cancel": "可随时取消",
         "noCharge": "今天不收费"
       },
-      "valueFrame": "每周不到一杯咖啡的钱，就能掌握你接下来的3个月。",
+      "valueFrame": "每周不到一杯咖啡的钱，就能掌握你一整年的安排。",
       "security": "通过 {{platform}} 安全支付 · 由 {{platform}} 处理，而非 Ellie",
       "termsOfService": "条款",
       "trialBadge": "免费试用7天 · 今天不收费",
       "title_named": "{{name}}，你的班表已经准备好了。",
-      "subtitle_fifo": "您的 FIFO 周期已生成。未来 3 个月内的每个轮班段和每一天休息都一目了然。",
-      "subtitle_rotating": "您的轮换排班已生成。未来 3 个月内的每个班次都一目了然。",
+      "subtitle_fifo": "您的 FIFO 周期已生成。整整一年里的每个轮班段和每一天休息都一目了然。",
+      "subtitle_rotating": "您的轮换排班已生成。整整一年里的每个班次都一目了然。",
       "billingDisclosure": "您的 7 天免费试用将于 {{date}} 结束。请在此之前随时前往设置取消，以避免扣费。订阅会自动续订。"
     },
     "profile": {

@@ -170,7 +170,7 @@
       "socialProof": "Built for shift workers like you",
       "testimonials": [
         {
-          "quote": "Finally know when I'm on night shift over Christmas. Changed my life.",
+          "quote": "Booked flights around my swing months ahead without calling HR once.",
           "author": "Sarah K., Underground miner — 12h rotating shifts"
         },
         {
@@ -178,18 +178,18 @@
           "author": "Dave L., Drill operator — FIFO roster"
         },
         {
-          "quote": "Booked flights around my swing 3 months out without calling HR once.",
+          "quote": "Booked flights around my swing months ahead without calling HR once.",
           "author": "Jason M., Haul truck operator — 7/7 FIFO"
         }
       ],
       "features": {
-        "fullYear": "See your next 3 months — every shift, month by month",
+        "fullYear": "See your full year — every shift, month by month",
         "askRoster": "Ask Ellie anything — \"When's my next day off?\"",
         "offline": "Works underground with zero signal",
         "leavePlanning": "Plan holidays without calling HR",
         "aiPowered": "AI that knows YOUR exact pattern, not a generic one",
-        "fullYearFIFO": "See your next 3 months — every work block, every R&R",
-        "fullYearRotating": "See your next 3 months — every phase, month by month"
+        "fullYearFIFO": "See your full year — every work block, every R&R",
+        "fullYearRotating": "See your full year — every phase, month by month"
       },
       "lossAversion": "Without Pro, you're back to counting shifts on your hands.",
       "timerLabel": "Introductory offer ends in",
@@ -208,7 +208,7 @@
         "cancel": "Cancel anytime",
         "noCharge": "No charge today"
       },
-      "valueFrame": "Less than a coffee per week to know your next 3 months.",
+      "valueFrame": "Less than a coffee per week to know your full year.",
       "security": "Secure payment via {{platform}} · Processed by {{platform}}, not Ellie",
       "noCard": "No credit card required · Cancel anytime",
       "restorePurchases": "Restore",
@@ -216,8 +216,8 @@
       "termsOfService": "Terms",
       "trialBadge": "FREE 7-DAY TRIAL · NO CHARGE TODAY",
       "title_named": "{{name}}, your roster is ready.",
-      "subtitle_fifo": "Your FIFO cycle is mapped. See every swing, every day off, for your next 3 months.",
-      "subtitle_rotating": "Your rotating roster is mapped. See every shift for your next 3 months.",
+      "subtitle_fifo": "Your FIFO cycle is mapped. See every swing, every day off, for your full year.",
+      "subtitle_rotating": "Your rotating roster is mapped. See every shift for your full year.",
       "billingDisclosure": "Your 7-day free trial ends {{date}}. Cancel anytime in Settings before then to avoid charges. Subscriptions renew automatically."
     },
     "profile": {

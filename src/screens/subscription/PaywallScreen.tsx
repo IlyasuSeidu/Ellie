@@ -189,11 +189,11 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
     onboardingData?.rosterType === 'fifo'
       ? t('subscription.paywall.subtitle_fifo', {
           defaultValue:
-            'Your FIFO cycle is mapped. See every swing, every day off, for your next 3 months.',
+            'Your FIFO cycle is mapped. See every swing, every day off, for your full year.',
         })
       : onboardingData?.rosterType === 'rotating'
         ? t('subscription.paywall.subtitle_rotating', {
-            defaultValue: 'Your rotating roster is mapped. See every shift for your next 3 months.',
+            defaultValue: 'Your rotating roster is mapped. See every shift for your full year.',
           })
         : t('subscription.paywall.subtitle');
   const trialEndDate = useMemo(
@@ -448,7 +448,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
         {/* Value frame */}
         <Text style={styles.valueFrame}>
           {t('subscription.paywall.valueFrame', {
-            defaultValue: 'Less than a coffee per week to know your next 3 months.',
+            defaultValue: 'Less than a coffee per week to know your full year.',
           })}
         </Text>
 

@@ -2347,7 +2347,8 @@ const HeaderSection: React.FC<{
   reducedMotion: boolean;
   currentPhase?: Phase | null;
   selectedDay?: number | null;
-}> = ({ reducedMotion, currentPhase, selectedDay }) => {
+  name?: string;
+}> = ({ reducedMotion, currentPhase, selectedDay, name }) => {
   const { t } = useTranslation('onboarding');
   const titleOpacity = useSharedValue(0);
   const subtitleOpacity = useSharedValue(0);
@@ -2392,15 +2393,21 @@ const HeaderSection: React.FC<{
     ? t('startDate.header.subtitleWithPhase', {
         phaseLabel: contextualPhaseLabel,
         defaultValue:
-          "You're on {{phaseLabel}} right now—pick today or any date, and we'll map out your whole calendar from there",
+          "You're on {{phaseLabel}} right now—pick today or any date, and we'll build a preview of your next 3 months from there",
       })
     : t('startDate.header.subtitleDefault', {
-        defaultValue: 'Pick the date you want your calendar to start from—most people choose today',
+        defaultValue:
+          'Pick the date you want your 3-month preview to start from—most people choose today',
       });
   return (
     <>
       <Animated.Text style={[styles.title, titleAnimatedStyle]}>
-        {t('startDate.header.title', { defaultValue: 'When Does Your Rotation Start?' })}
+        {name
+          ? t('startDate.header.title_named', {
+              name,
+              defaultValue: `${name}, set your start date and we'll map out a preview of your next 3 months`,
+            })
+          : t('startDate.header.title', { defaultValue: 'When Does Your Rotation Start?' })}
       </Animated.Text>
       <Animated.Text style={[styles.subtitle, subtitleAnimatedStyle]}>{subtitle}</Animated.Text>
     </>
@@ -2419,14 +2426,18 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   onContinue,
   testID = 'premium-start-date-screen',
 }) => {
-  useEffect(() => {
-    Analytics.onboardingStepViewed('start_date', ONBOARDING_STEPS.START_DATE);
-  }, []);
-
   const { t, i18n } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProp<OnboardingStackParamList, 'StartDate'>>();
   const { data, updateData } = useOnboarding();
+  const mountTime = useRef(Date.now());
+
+  useEffect(() => {
+    Analytics.onboardingStepViewed('start_date', ONBOARDING_STEPS.START_DATE, {
+      roster_type: data.rosterType,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const isSettingsEntry = route.params?.entryPoint === 'settings';
   const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
   const isSettingsMode = isSettingsEntry && returnToMainOnSelect;
@@ -2586,6 +2597,13 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
           }
     );
 
+    // Track answer and step completion
+    Analytics.onboardingQuestionAnswered({
+      question: 'start_date',
+      answer_value: parsedStartDate.toISOString().split('T')[0],
+    });
+    Analytics.onboardingStepCompleted('start_date', Date.now() - mountTime.current);
+
     // Navigate with haptic feedback
     HAPTIC_PATTERNS.SUCCESS();
 
@@ -2657,7 +2675,12 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
           showsVerticalScrollIndicator={false}
         >
           {/* Header with entrance animation */}
-          <HeaderSection reducedMotion={reducedMotion} currentPhase={null} selectedDay={null} />
+          <HeaderSection
+            reducedMotion={reducedMotion}
+            currentPhase={null}
+            selectedDay={null}
+            name={data.name?.split(' ')[0]}
+          />
 
           {/* Interactive Calendar */}
           <InteractiveCalendar

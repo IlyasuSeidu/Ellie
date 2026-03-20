@@ -427,7 +427,7 @@
       "off": "Af dae"
     },
     "title_named": "Waar is jy nou in jou siklus, {{name}}?",
-    "anticipation": "Byna gereed. Nog een stap en ons wys jou volgende 3 maande."
+    "anticipation": "Byna gereed. Nog een stap en ons wys vir jou 'n voorskou van jou volgende 3 maande."
   },
   "fifoPhaseSelector": {
     "title": {
@@ -528,9 +528,9 @@
   "startDate": {
     "header": {
       "title": "Wanneer begin jou rotasie?",
-      "subtitleWithPhase": "Jy is nou op {{phaseLabel}}—kies vandag of enige datum, en ons sal jou hele kalender daarvandaan uitbeeld",
-      "subtitleDefault": "Kies die datum waarvan jy wil hê jou kalender moet begin—die meeste mense kies vandag",
-      "title_named": "{{name}}, stel jou begindatum en ons sal jou volgende 3 maande uitwerk"
+      "subtitleWithPhase": "Jy is nou op {{phaseLabel}}—kies vandag of enige datum, en ons bou van daar af 'n voorskou van jou volgende 3 maande",
+      "subtitleDefault": "Kies die datum waarop jou 3-maande-voorskou moet begin—meeste mense kies vandag",
+      "title_named": "{{name}}, stel jou begindatum en ons sal 'n voorskou van jou volgende 3 maande uitwerk"
     },
     "phaseLabels": {
       "day": "Dagskof",
@@ -642,7 +642,7 @@
       "subtitle": {
         "single": "Kies watter tyd jy elke dag klok - ons sal dit gebruik om jou ure op te spoor en onthounotas te stel",
         "multi": "Jou patroon sluit {{shiftTypeLabel}} in. Stel die begintyd vir hierdie skofte.",
-        "preAha": "Laaste stap voordat ons jou volgende 3 maande wys."
+        "preAha": "Laaste stap voordat ons vir jou 'n voorskou van jou volgende 3 maande wys."
       }
     },
     "guidance": {
@@ -1027,7 +1027,7 @@
   },
   "ahaMoment": {
     "headline": "Jou volgende 3 maande, uitgekaart.",
-    "subheadline": "Every shift. Every day off.",
+    "subheadline": "Hier is 'n voorskou van jou volgende 3 maande. Geen tweede raaiskote meer in jou kop nie.",
     "heyEllieTitle": "Vra vir Ellie oor jou rooster",
     "ctaPrimary": "Ontsluit volle toegang — 7 dae gratis proeflopie",
     "ctaSecondary": "of gaan voort met beperkte toegang",

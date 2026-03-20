@@ -169,13 +169,13 @@
       "subtitle": "Yivule ngemali encane kunekhofi.",
       "features": {
         "askRoster": "Buza okuthi \"Hey __TK1__\" noma yini ngohlelo lwakho",
-        "fullYear": "Bona izinyanga zakho ezi-3 ezizayo — ishifu ngayinye, inyanga nenyanga",
+        "fullYear": "Bona unyaka wakho wonke — ishifu ngayinye, inyanga nenyanga",
         "offline": "Isebenza ngaphansi komhlaba, asikho isignali edingekayo",
         "instantAnswers": "Izimpendulo ezisheshayo mayelana nekhefu namaphethini",
         "aiPowered": "Inikwa amandla yi-AI futhi ithuthuka njalo",
         "leavePlanning": "Hlela amaholidi ngaphandle kokushayela i-HR",
-        "fullYearFIFO": "Bona izinyanga zakho ezi-3 ezizayo — ibhulokhi ngayinye yomsebenzi nesikhathi ngasinye sokuphumula",
-        "fullYearRotating": "Bona izinyanga zakho ezi-3 ezizayo — isigaba ngasinye, inyanga nenyanga"
+        "fullYearFIFO": "Bona unyaka wakho wonke — ibhulokhi ngayinye yomsebenzi nesikhathi ngasinye sokuphumula",
+        "fullYearRotating": "Bona unyaka wakho wonke — isigaba ngasinye, inyanga nenyanga"
       },
       "plans": {
         "annual": "Ngonyaka",
@@ -194,7 +194,7 @@
       "socialProof": "4.8 · Trusted by 50,000+ shift workers",
       "testimonials": [
         {
-          "quote": "Ekugcineni sengiyazi ukuthi nginashifthi yasebusuku nini ngoKhisimusi. Kushintshe impilo yami.",
+          "quote": "Ngibhukhe izindiza zami ngokwe-swing yami izinyanga ngaphambi kwesikhathi ngaphandle kokushayela i-HR.",
           "author": "Sarah K., umsebenzi wemayini ongaphansi komhlaba — amashifu ajikeleza amahora ayi-12"
         },
         {
@@ -213,13 +213,13 @@
         "cancel": "Khansela noma nini",
         "noCharge": "Akukho mali namuhla"
       },
-      "valueFrame": "Kungaphansi kwekhofi ngesonto ukuze wazi izinyanga zakho ezi-3 ezizayo.",
+      "valueFrame": "Kungaphansi kwekhofi ngesonto ukuze wazi unyaka wakho wonke.",
       "security": "Inkokhelo ephephile nge-{{platform}} · Icutshungulwa yi-{{platform}}, hhayi i-Ellie",
       "termsOfService": "Imigomo",
       "trialBadge": "ISILINGO SAMAHHALA SEZINSUKU EZI-7 · AKUKHO MALI NAMUHLA",
       "title_named": "{{name}}, irosta yakho isilungile.",
-      "subtitle_fifo": "Umjikelezo wakho we-FIFO usumakiwe. Bona wonke ama-swing nawo wonke amalanga okuphumula ezinyangeni zakho ezi-3 ezizayo.",
-      "subtitle_rotating": "Uhlelo lwakho olujikelezayo selumakiwe. Bona wonke amashifu ezinyangeni zakho ezi-3 ezizayo.",
+      "subtitle_fifo": "Umjikelezo wakho we-FIFO usumakiwe. Bona wonke ama-swing nawo wonke amalanga okuphumula unyaka wonke.",
+      "subtitle_rotating": "Uhlelo lwakho olujikelezayo selumakiwe. Bona wonke amashifu unyaka wonke.",
       "billingDisclosure": "Isivivinyo sakho samahhala sezinsuku ezi-7 siphela ngo-{{date}}. Khansela noma nini ku-Settings ngaphambi kwalokho ukuze ugweme izindleko. Izibhaliso zivuselelwa ngokuzenzakalela."
     },
     "profile": {

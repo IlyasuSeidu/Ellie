@@ -436,7 +436,7 @@
       "off": "Dias de folga"
     },
     "title_named": "Em que parte do seu ciclo você está agora, {{name}}?",
-    "anticipation": "Quase pronto. Só mais um passo e mostraremos seus próximos 3 meses."
+    "anticipation": "Quase pronto. Só mais um passo e mostraremos uma prévia dos seus próximos 3 meses."
   },
   "fifoPhaseSelector": {
     "title": {
@@ -537,9 +537,9 @@
   "startDate": {
     "header": {
       "title": "Quando sua rotação começa?",
-      "subtitleWithPhase": "Você está em {{phaseLabel}} agora. Escolha hoje ou qualquer data e vamos mapear todo o seu calendário a partir dela",
-      "subtitleDefault": "Escolha a data em que seu calendário deve começar; a maioria das pessoas escolhe hoje",
-      "title_named": "{{name}}, defina sua data de início e vamos mapear seus próximos 3 meses"
+      "subtitleWithPhase": "Você está em {{phaseLabel}} agora — escolha hoje ou qualquer data, e a partir daí vamos montar uma prévia dos seus próximos 3 meses",
+      "subtitleDefault": "Escolha a data em que você quer começar sua prévia de 3 meses — a maioria das pessoas escolhe hoje",
+      "title_named": "{{name}}, defina sua data de início e vamos mapear uma prévia dos seus próximos 3 meses"
     },
     "phaseLabels": {
       "day": "Turno diurno",
@@ -651,7 +651,7 @@
       "subtitle": {
         "single": "Escolha o horário em que você entra todo dia; vamos usar isso para acompanhar suas horas e enviar lembretes",
         "multi": "Seu padrão inclui {{shiftTypeLabel}}. Defina o horário de início desses turnos.",
-        "preAha": "Última etapa antes de mostrarmos seus próximos 3 meses."
+        "preAha": "Última etapa antes de mostrarmos uma prévia dos seus próximos 3 meses."
       }
     },
     "guidance": {
@@ -1036,7 +1036,7 @@
   },
   "ahaMoment": {
     "headline": "Seus próximos 3 meses, mapeados.",
-    "subheadline": "Every shift. Every day off.",
+    "subheadline": "Aqui está uma prévia dos seus próximos 3 meses. Chega de adivinhar isso na cabeça.",
     "heyEllieTitle": "Pergunte à Ellie sobre seu roster",
     "ctaPrimary": "Desbloquear acesso total — teste grátis de 7 dias",
     "ctaSecondary": "ou continuar com acesso limitado",

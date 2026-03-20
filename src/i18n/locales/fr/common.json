@@ -169,13 +169,13 @@
       "subtitle": "Débloquez-le pour moins qu’un café.",
       "features": {
         "askRoster": "Demandez \"Hey Ellie\" n'importe quoi à propos de votre liste",
-        "fullYear": "Voyez vos 3 prochains mois — chaque shift, mois par mois",
+        "fullYear": "Voyez toute votre année — chaque shift, mois par mois",
         "offline": "Fonctionne sous terre, aucun signal nécessaire",
         "instantAnswers": "Réponses instantanées sur les congés et les modèles",
         "aiPowered": "Propulsé par l'IA et en constante amélioration",
         "leavePlanning": "Planifiez vos congés sans appeler les RH",
-        "fullYearFIFO": "Voyez vos 3 prochains mois — chaque bloc de travail, chaque période de repos",
-        "fullYearRotating": "Voyez vos 3 prochains mois — chaque phase, mois par mois"
+        "fullYearFIFO": "Voyez toute votre année — chaque bloc de travail, chaque période de repos",
+        "fullYearRotating": "Voyez toute votre année — chaque phase, mois par mois"
       },
       "plans": {
         "annual": "Annuel",
@@ -194,7 +194,7 @@
       "socialProof": "4.8 · Trusted by 50,000+ shift workers",
       "testimonials": [
         {
-          "quote": "Je sais enfin quand je suis de nuit à Noël. Ça a changé ma vie.",
+          "quote": "J’ai réservé mes vols autour de mon swing des mois à l’avance sans appeler les RH.",
           "author": "Sarah K., mineuse souterraine — rotations de 12 h"
         },
         {
@@ -202,7 +202,7 @@
           "author": "Dave L., opérateur de forage — roster FIFO"
         },
         {
-          "quote": "J’ai réservé des vols autour de mon swing 3 mois à l’avance sans appeler les RH.",
+          "quote": "J’ai réservé mes vols autour de mon swing des mois à l’avance sans appeler les RH.",
           "author": "Jason M., conducteur de camion minier — FIFO 7/7"
         }
       ],
@@ -213,13 +213,13 @@
         "cancel": "Annulez à tout moment",
         "noCharge": "Aucun frais aujourd'hui"
       },
-      "valueFrame": "Moins qu’un café par semaine pour connaître vos 3 prochains mois.",
+      "valueFrame": "Moins qu’un café par semaine pour connaître toute votre année.",
       "security": "Paiement sécurisé via {{platform}} · Traité par {{platform}}, pas par Ellie",
       "termsOfService": "Conditions",
       "trialBadge": "ESSAI GRATUIT 7 JOURS · AUCUN FRAIS AUJOURD’HUI",
       "title_named": "{{name}}, votre roulement est prêt.",
-      "subtitle_fifo": "Votre cycle FIFO est cartographié. Voyez chaque swing et chaque jour de repos sur vos 3 prochains mois.",
-      "subtitle_rotating": "Votre roulement rotatif est cartographié. Voyez chaque poste sur vos 3 prochains mois.",
+      "subtitle_fifo": "Votre cycle FIFO est cartographié. Voyez chaque swing et chaque jour de repos sur toute votre année.",
+      "subtitle_rotating": "Votre roulement rotatif est cartographié. Voyez chaque poste sur toute votre année.",
       "billingDisclosure": "Votre essai gratuit de 7 jours se termine le {{date}}. Annulez à tout moment dans Réglages avant cette date pour éviter les frais. Les abonnements se renouvellent automatiquement."
     },
     "profile": {

@@ -169,13 +169,13 @@
       "subtitle": "Desbloquéalo por menos que un café.",
       "features": {
         "askRoster": "Pregúntale a \"Hola Ellie\" cualquier cosa sobre tu plantilla.",
-        "fullYear": "Mira tus próximos 3 meses: cada turno, mes a mes",
+        "fullYear": "Mira todo tu año: cada turno, mes a mes",
         "offline": "Funciona bajo tierra, no necesita señal.",
         "instantAnswers": "Respuestas instantáneas sobre permisos y patrones.",
         "aiPowered": "Desarrollado por IA y siempre mejorando",
         "leavePlanning": "Planifica vacaciones sin llamar a RR. HH.",
-        "fullYearFIFO": "Mira tus próximos 3 meses: cada bloque de trabajo y cada descanso",
-        "fullYearRotating": "Mira tus próximos 3 meses: cada fase, mes a mes"
+        "fullYearFIFO": "Mira todo tu año: cada bloque de trabajo y cada descanso",
+        "fullYearRotating": "Mira todo tu año: cada fase, mes a mes"
       },
       "plans": {
         "annual": "Anual",
@@ -194,7 +194,7 @@
       "socialProof": "4.8 · Trusted by 50,000+ shift workers",
       "testimonials": [
         {
-          "quote": "Por fin sé cuándo tengo turno nocturno en Navidad. Me cambió la vida.",
+          "quote": "Reservé vuelos alrededor de mi swing con meses de anticipación sin llamar a RR. HH.",
           "author": "Sarah K., minera subterránea — turnos rotativos de 12 h"
         },
         {
@@ -202,7 +202,7 @@
           "author": "Dave L., operador de perforación — roster FIFO"
         },
         {
-          "quote": "Reservé vuelos alrededor de mi swing con 3 meses de anticipación sin llamar a RR. HH.",
+          "quote": "Reservé vuelos alrededor de mi swing con meses de anticipación sin llamar a RR. HH.",
           "author": "Jason M., operador de camión minero — FIFO 7/7"
         }
       ],
@@ -213,13 +213,13 @@
         "cancel": "Cancela cuando quieras",
         "noCharge": "Sin cobro hoy"
       },
-      "valueFrame": "Menos que un café por semana para conocer tus próximos 3 meses.",
+      "valueFrame": "Menos que un café por semana para conocer todo tu año.",
       "security": "Pago seguro con {{platform}} · Procesado por {{platform}}, no por Ellie",
       "termsOfService": "Términos",
       "trialBadge": "PRUEBA GRATIS DE 7 DÍAS · SIN COBRO HOY",
       "title_named": "{{name}}, tu roster está listo.",
-      "subtitle_fifo": "Tu ciclo FIFO ya está trazado. Ve cada swing y cada día libre durante tus próximos 3 meses.",
-      "subtitle_rotating": "Tu roster rotativo ya está trazado. Ve cada turno durante tus próximos 3 meses.",
+      "subtitle_fifo": "Tu ciclo FIFO ya está trazado. Ve cada swing y cada día libre durante todo tu año.",
+      "subtitle_rotating": "Tu roster rotativo ya está trazado. Ve cada turno durante todo tu año.",
       "billingDisclosure": "Tu prueba gratuita de 7 días termina el {{date}}. Cancela en cualquier momento en Ajustes antes de esa fecha para evitar cargos. Las suscripciones se renuevan automáticamente."
     },
     "profile": {

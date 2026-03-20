@@ -169,7 +169,9 @@ describe('PremiumPhaseSelectorScreen', () => {
 
       expect(await findByText('Where are you in your cycle right now, Ilyasu?')).toBeTruthy();
       expect(
-        await findByText(/Almost ready\. One more step and we'll show you your next 3 months\./)
+        await findByText(
+          /Almost ready\. One more step and we'll show you a preview of your next 3 months\./
+        )
       ).toBeTruthy();
     });
 

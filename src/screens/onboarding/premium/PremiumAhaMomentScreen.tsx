@@ -269,7 +269,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
           <Text style={styles.subheadline}>
             {t('ahaMoment.subheadline', {
               defaultValue:
-                'Stop counting shifts on your hands. No second-guessing with your heads.',
+                "Here's a preview of your next 3 months. No second-guessing with your heads.",
             })}
           </Text>
           {painCallback ? <Text style={styles.painCallback}>{painCallback}</Text> : null}

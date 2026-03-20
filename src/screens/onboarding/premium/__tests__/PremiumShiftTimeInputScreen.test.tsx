@@ -116,7 +116,9 @@ describe('PremiumShiftTimeInputScreen', () => {
     it('should render title and subtitle', () => {
       const { getByText } = renderWithProviders(<PremiumShiftTimeInputScreen />);
       expect(getByText('What time does your day shift start?')).toBeTruthy();
-      expect(getByText('Last step before we show you your next 3 months.')).toBeTruthy();
+      expect(
+        getByText('Last step before we show you a preview of your next 3 months.')
+      ).toBeTruthy();
     });
 
     it('should render progress header with step 6 of 7', () => {

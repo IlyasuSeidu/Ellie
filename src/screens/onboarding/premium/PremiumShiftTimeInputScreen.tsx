@@ -1154,7 +1154,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   const getStageSubtitle = (): string =>
     String(
       t('shiftTime.header.subtitle.preAha', {
-        defaultValue: 'Last step before we show you your next 3 months.',
+        defaultValue: 'Last step before we show you a preview of your next 3 months.',
       })
     );
 

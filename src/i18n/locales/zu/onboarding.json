@@ -446,7 +446,7 @@
       "off": "Izinsuku Zokungasebenzi"
     },
     "title_named": "Ukuphi manje emjikelezweni wakho, {{name}}?",
-    "anticipation": "Sekuseduze. Isinyathelo esisodwa futhi sizokukhombisa izinyanga zakho ezi-3 ezizayo."
+    "anticipation": "Sekuseduze. Isinyathelo esisodwa futhi sizokukhombisa ukubuka kuqala kwezinyanga zakho ezi-3 ezizayo."
   },
   "fifoPhaseSelector": {
     "title": {
@@ -547,9 +547,9 @@
   "startDate": {
     "header": {
       "title": "Ukushintshanisa Kwakho Kuqala Nini?",
-      "subtitleWithPhase": "Uku-{{phaseLabel}} khona manje—khetha namuhla nanoma iyiphi idethi, futhi sizokhipha imephu yonke ikhalenda lakho kusukela lapho",
-      "subtitleDefault": "Khetha idethi ofuna ikhalenda yakho iqale ngalo—abantu abaningi bayayikhetha namuhla",
-      "title_named": "{{name}}, setha usuku lwakho lokuqala bese sizokuhlelela izinyanga zakho ezi-3 ezizayo"
+      "subtitleWithPhase": "Useku{{phaseLabel}} manje — khetha namuhla noma yiluphi usuku, bese sisuka lapho sakhe ukubuka kuqala kwezinyanga zakho ezi-3 ezizayo",
+      "subtitleDefault": "Khetha usuku ofuna ukuthi ukubuka kwakho kuqala kwezinyanga ezi-3 kuqale ngalo — abantu abaningi bakhetha namuhla",
+      "title_named": "{{name}}, setha usuku lwakho lokuqala bese sizokwakhela ukubuka kuqala kwezinyanga zakho ezi-3 ezizayo"
     },
     "phaseLabels": {
       "day": "Ishifu lasemini",
@@ -661,7 +661,7 @@
       "subtitle": {
         "single": "Khetha ukuthi uwubamba ngasiphi isikhathi usuku nosuku-sizosebenzisa lokhu ukulandelela amahora akho futhi sisethe izikhumbuzi",
         "multi": "Iphethini yakho ihlanganisa {{shiftTypeLabel}}. Setha isikhathi sokuqala salezi zinguquko.",
-        "preAha": "Lesi yisinyathelo sokugcina ngaphambi kokuthi sikubonise izinyanga zakho ezi-3 ezizayo."
+        "preAha": "Lesi yisinyathelo sokugcina ngaphambi kokuthi sikubonise ukubuka kuqala kwezinyanga zakho ezi-3 ezizayo."
       }
     },
     "guidance": {
@@ -1046,7 +1046,7 @@
   },
   "ahaMoment": {
     "headline": "Izinyanga zakho ezi-3 ezizayo, sezihleliwe.",
-    "subheadline": "Every shift. Every day off.",
+    "subheadline": "Nansi imibono yangaphambili yezinyanga zakho ezi-3 ezizayo. Akusekho ukuqagela ekhanda.",
     "heyEllieTitle": "Buza u-Ellie nge-roster yakho",
     "ctaPrimary": "Vula ukufinyelela okuphelele — isivivinyo samahhala sezinsuku ezi-7",
     "ctaSecondary": "noma uqhubeke ngokufinyelela okulinganiselwe",

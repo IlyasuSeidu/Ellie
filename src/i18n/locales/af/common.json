@@ -169,13 +169,13 @@
       "subtitle": "Ontsluit dit vir minder as 'n koppie koffie.",
       "features": {
         "askRoster": "Vra \"Hey __TK1__\" enigiets oor jou rooster",
-        "fullYear": "Sien jou volgende 3 maande — elke skof, maand vir maand",
+        "fullYear": "Sien jou volle jaar — elke skof, maand vir maand",
         "offline": "Werk ondergronds, geen sein nodig nie",
         "instantAnswers": "Kitsantwoorde oor verlof en patrone",
         "aiPowered": "Aangedryf deur AI en word altyd verbeter",
         "leavePlanning": "Beplan verlof sonder om HR te bel",
-        "fullYearFIFO": "Sien jou volgende 3 maande — elke werkblok, elke rusperiode",
-        "fullYearRotating": "Sien jou volgende 3 maande — elke fase, maand vir maand"
+        "fullYearFIFO": "Sien jou volle jaar — elke werkblok, elke rusperiode",
+        "fullYearRotating": "Sien jou volle jaar — elke fase, maand vir maand"
       },
       "plans": {
         "annual": "Jaarliks",
@@ -194,7 +194,7 @@
       "socialProof": "4.8 · Trusted by 50,000+ shift workers",
       "testimonials": [
         {
-          "quote": "Ek weet uiteindelik wanneer ek oor Kersfees nagskof werk. Dit het my lewe verander.",
+          "quote": "Ek het vlugte om my swing maande vooruit bespreek sonder om HR te bel.",
           "author": "Sarah K., ondergrondse mynwerker — 12h roterende skofte"
         },
         {
@@ -202,7 +202,7 @@
           "author": "Dave L., booroperateur — FIFO-rooster"
         },
         {
-          "quote": "Ek het vlugte om my swing 3 maande vooruit bespreek sonder om HR te bel.",
+          "quote": "Ek het vlugte om my swing maande vooruit bespreek sonder om HR te bel.",
           "author": "Jason M., vragmotoroperateur — 7/7 FIFO"
         }
       ],
@@ -213,13 +213,13 @@
         "cancel": "Kanselleer enige tyd",
         "noCharge": "Geen heffing vandag"
       },
-      "valueFrame": "Minder as ’n koffie per week om jou volgende 3 maande te ken.",
+      "valueFrame": "Minder as ’n koffie per week om jou volle jaar te ken.",
       "security": "Veilige betaling via {{platform}} · Verwerk deur {{platform}}, nie Ellie nie",
       "termsOfService": "Voorwaardes",
       "trialBadge": "GRATIS 7-DAE PROEF · GEEN HEFFING VANDAG",
       "title_named": "{{name}}, jou rooster is gereed.",
-      "subtitle_fifo": "Jou FIFO-siklus is uitgewerk. Sien elke swing en elke afdag vir jou volgende 3 maande.",
-      "subtitle_rotating": "Jou roterende rooster is uitgewerk. Sien elke skof vir jou volgende 3 maande.",
+      "subtitle_fifo": "Jou FIFO-siklus is uitgewerk. Sien elke swing en elke afdag vir jou volle jaar.",
+      "subtitle_rotating": "Jou roterende rooster is uitgewerk. Sien elke skof vir jou volle jaar.",
       "billingDisclosure": "Jou gratis proeflopie van 7 dae eindig op {{date}}. Kanselleer enige tyd in Instellings voor dan om heffings te vermy. Intekeninge hernu outomaties."
     },
     "profile": {

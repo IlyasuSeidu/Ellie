@@ -178,7 +178,9 @@ describe('PremiumStartDateScreen', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
       expect(getByText('When Does Your Rotation Start?')).toBeTruthy();
       expect(
-        getByText('Pick the date you want your calendar to start from—most people choose today')
+        getByText(
+          'Pick the date you want your 3-month preview to start from—most people choose today'
+        )
       ).toBeTruthy();
     });
 
@@ -554,7 +556,9 @@ describe('PremiumStartDateScreen', () => {
     it('should have descriptive titles and subtitles', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
       expect(
-        getByText('Pick the date you want your calendar to start from—most people choose today')
+        getByText(
+          'Pick the date you want your 3-month preview to start from—most people choose today'
+        )
       ).toBeTruthy();
     });
   });
@@ -576,7 +580,9 @@ describe('PremiumStartDateScreen', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
       expect(getByText('When Does Your Rotation Start?')).toBeTruthy();
       expect(
-        getByText('Pick the date you want your calendar to start from—most people choose today')
+        getByText(
+          'Pick the date you want your 3-month preview to start from—most people choose today'
+        )
       ).toBeTruthy();
     });
   });

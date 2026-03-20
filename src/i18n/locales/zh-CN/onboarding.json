@@ -390,7 +390,7 @@
       "off": "休息日"
     },
     "title_named": "{{name}}，你现在处于轮班周期的哪一步？",
-    "anticipation": "快好了。再一步，我们就会显示你接下来的3个月。"
+    "anticipation": "快好了。再一步，我们就会向你展示接下来3个月的预览。"
   },
   "fifoPhaseSelector": {
     "title": {
@@ -491,9 +491,9 @@
   "startDate": {
     "header": {
       "title": "你的轮换什么时候开始？",
-      "subtitleWithPhase": "您现在处于 {{phaseLabel}} — 选择今天或任何日期，我们将从那里制定您的整个日历",
-      "subtitleDefault": "选择您希望日历开始的日期 - 大多数人选择今天",
-      "title_named": "{{name}}，设定你的开始日期，我们会为你铺开接下来的3个月"
+      "subtitleWithPhase": "你现在处于{{phaseLabel}}——选择今天或任意日期，我们会从那里开始生成你接下来3个月的预览",
+      "subtitleDefault": "选择你希望3个月预览开始的日期——大多数人都会选今天",
+      "title_named": "{{name}}，设定你的开始日期，我们会为你铺开接下来3个月的预览"
     },
     "phaseLabels": {
       "day": "白班",
@@ -605,7 +605,7 @@
       "subtitle": {
         "single": "选择您每天打卡的时间 - 我们将使用它来跟踪您的时间并设置提醒",
         "multi": "您的模式包括 {{shiftTypeLabel}}。设置这些班次的开始时间。",
-        "preAha": "这是我们向你展示接下来3个月之前的最后一步。"
+        "preAha": "这是我们向你展示接下来3个月预览之前的最后一步。"
       }
     },
     "guidance": {
@@ -990,7 +990,7 @@
   },
   "ahaMoment": {
     "headline": "你接下来的3个月，已经排好。",
-    "subheadline": "Every shift. Every day off.",
+    "subheadline": "这就是你接下来3个月的预览。再也不用在脑子里反复猜了。",
     "heyEllieTitle": "向 Ellie 询问你的班表",
     "ctaPrimary": "解锁完整访问权限 — 7天免费试用",
     "ctaSecondary": "或继续使用受限访问",
