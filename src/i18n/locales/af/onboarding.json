@@ -527,7 +527,7 @@
   },
   "startDate": {
     "header": {
-      "title": "Wanneer begin jou rotasie?",
+      "title": "Stel die begindatum vir jou 3-maande-voorskou",
       "subtitleWithPhase": "Jy is nou op {{phaseLabel}}—kies vandag of enige datum, en ons bou van daar af 'n voorskou van jou volgende 3 maande",
       "subtitleDefault": "Kies die datum waarop jou 3-maande-voorskou moet begin—meeste mense kies vandag",
       "title_named": "{{name}}, stel jou begindatum en ons sal 'n voorskou van jou volgende 3 maande uitwerk"
@@ -563,7 +563,7 @@
     "guidance": {
       "title": "Kies jou datum",
       "subtitle": "Vinnige wenke vir 'n vinniger opstelling",
-      "body": "Die meeste mense kies vandag so hul kalender begin dadelik. Maar jy kan enige datum kies—ons sal jou rotasie van daar af bereken.",
+      "body": "Meeste mense kies vandag sodat hul 3-maande-voorskou dadelik begin. Maar jy kan enige datum kies—ons sal jou rotasie van daar af bereken.",
       "hint": "Kies nou die naaste datum, jy kan instellings later aanpas.",
       "selectedDate": "Gekies: {{date}}"
     },
@@ -1064,7 +1064,8 @@
       "days_off": "Elke afdag, maande vooruit sigbaar.",
       "family": "Tik op enige datum. Weet onmiddellik of jy werk.",
       "mental_math": "Geen tel op jou vingers meer nie."
-    }
+    },
+    "previewLabel": "VOORSKOU VAN JOU VOLGENDE 3 MAANDE"
   },
   "painHook": {
     "title": "Wat is nou die moeilikste deel van jou rooster?",

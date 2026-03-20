@@ -536,7 +536,7 @@
   },
   "startDate": {
     "header": {
-      "title": "Quando sua rotação começa?",
+      "title": "Defina a data de início da sua prévia de 3 meses",
       "subtitleWithPhase": "Você está em {{phaseLabel}} agora — escolha hoje ou qualquer data, e a partir daí vamos montar uma prévia dos seus próximos 3 meses",
       "subtitleDefault": "Escolha a data em que você quer começar sua prévia de 3 meses — a maioria das pessoas escolhe hoje",
       "title_named": "{{name}}, defina sua data de início e vamos mapear uma prévia dos seus próximos 3 meses"
@@ -572,7 +572,7 @@
     "guidance": {
       "title": "Escolhendo sua data",
       "subtitle": "Dicas rápidas para configurar mais rápido",
-      "body": "A maioria das pessoas escolhe hoje para o calendário começar imediatamente. Mas você pode escolher qualquer data; vamos calcular sua rotação a partir dela.",
+      "body": "A maioria das pessoas escolhe hoje para que a prévia de 3 meses comece imediatamente. Mas você pode escolher qualquer data — vamos calcular sua rotação a partir dela.",
       "hint": "Escolha agora a data mais próxima; você pode ajustar nas configurações depois.",
       "selectedDate": "Selecionada: {{date}}"
     },
@@ -1073,7 +1073,8 @@
       "days_off": "Cada folga visível com meses de antecedência.",
       "family": "Toque em qualquer data. Saiba na hora se você trabalha.",
       "mental_math": "Chega de contar nos dedos."
-    }
+    },
+    "previewLabel": "PRÉVIA DOS SEUS PRÓXIMOS 3 MESES"
   },
   "painHook": {
     "title": "Qual é a parte mais difícil da sua escala agora?",

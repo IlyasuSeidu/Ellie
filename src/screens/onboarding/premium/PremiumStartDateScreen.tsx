@@ -2407,7 +2407,9 @@ const HeaderSection: React.FC<{
               name,
               defaultValue: `${name}, set your start date and we'll map out a preview of your next 3 months`,
             })
-          : t('startDate.header.title', { defaultValue: 'When Does Your Rotation Start?' })}
+          : t('startDate.header.title', {
+              defaultValue: 'Set the start date for your 3-month preview',
+            })}
       </Animated.Text>
       <Animated.Text style={[styles.subtitle, subtitleAnimatedStyle]}>{subtitle}</Animated.Text>
     </>
@@ -2727,7 +2729,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
                 <Text style={styles.guidanceText}>
                   {t('startDate.guidance.body', {
                     defaultValue:
-                      "Most people pick today so their calendar starts right away. But you can pick any date—we'll calculate your rotation from there.",
+                      "Most people pick today so their 3-month preview starts right away. But you can pick any date—we'll calculate your rotation from there.",
                   })}
                 </Text>
                 <Text style={styles.guidanceHintText}>

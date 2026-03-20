@@ -101,6 +101,7 @@ describe('PremiumAhaMomentScreen', () => {
     const { getByText } = render(<PremiumAhaMomentScreen />);
 
     expect(getByText("Ilyasu's shifts, mapped.")).toBeTruthy();
+    expect(getByText('PREVIEW OF YOUR NEXT 3 MONTHS')).toBeTruthy();
     expect(getByText('MonthlyCalendarCard')).toBeTruthy();
     expect(getByText('VoiceAssistantModal')).toBeTruthy();
   });

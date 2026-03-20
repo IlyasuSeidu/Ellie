@@ -176,7 +176,7 @@ describe('PremiumStartDateScreen', () => {
 
     it('should render title and subtitle', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('When Does Your Rotation Start?')).toBeTruthy();
+      expect(getByText('Set the start date for your 3-month preview')).toBeTruthy();
       expect(
         getByText(
           'Pick the date you want your 3-month preview to start from—most people choose today'
@@ -509,7 +509,7 @@ describe('PremiumStartDateScreen', () => {
   describe('Data Management', () => {
     it('should handle pattern data from context', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('When Does Your Rotation Start?')).toBeTruthy();
+      expect(getByText('Set the start date for your 3-month preview')).toBeTruthy();
     });
 
     it('should work with OnboardingProvider', () => {
@@ -550,7 +550,7 @@ describe('PremiumStartDateScreen', () => {
 
     it('should have accessible labels', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('When Does Your Rotation Start?')).toBeTruthy();
+      expect(getByText('Set the start date for your 3-month preview')).toBeTruthy();
     });
 
     it('should have descriptive titles and subtitles', () => {
@@ -566,7 +566,7 @@ describe('PremiumStartDateScreen', () => {
   describe('Edge Cases', () => {
     it('should handle default pattern values', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('When Does Your Rotation Start?')).toBeTruthy();
+      expect(getByText('Set the start date for your 3-month preview')).toBeTruthy();
     });
 
     it('should render without errors', () => {
@@ -578,7 +578,7 @@ describe('PremiumStartDateScreen', () => {
 
     it('should display all UI elements correctly', () => {
       const { getByText } = renderWithContext(<PremiumStartDateScreen />);
-      expect(getByText('When Does Your Rotation Start?')).toBeTruthy();
+      expect(getByText('Set the start date for your 3-month preview')).toBeTruthy();
       expect(
         getByText(
           'Pick the date you want your 3-month preview to start from—most people choose today'

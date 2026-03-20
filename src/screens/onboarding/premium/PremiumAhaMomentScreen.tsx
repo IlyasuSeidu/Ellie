@@ -339,6 +339,13 @@ export const PremiumAhaMomentScreen: React.FC = () => {
 
         {/* ── Dashboard Calendar ── */}
         <Animated.View entering={FadeInDown.delay(250).duration(450)}>
+          <View style={styles.calendarPreviewHeader}>
+            <Text style={styles.calendarPreviewLabel}>
+              {t('ahaMoment.previewLabel', {
+                defaultValue: 'PREVIEW OF YOUR NEXT 3 MONTHS',
+              })}
+            </Text>
+          </View>
           <MonthlyCalendarCard
             year={displayDate.year}
             month={displayDate.month}
@@ -661,6 +668,18 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     letterSpacing: 1.2,
     marginTop: 2,
+  },
+
+  calendarPreviewHeader: {
+    paddingHorizontal: 24,
+    marginBottom: 10,
+  },
+  calendarPreviewLabel: {
+    fontSize: 11,
+    fontWeight: '800',
+    letterSpacing: 1.4,
+    textTransform: 'uppercase',
+    color: theme.colors.paleGold,
   },
 
   // ── Month dots ──

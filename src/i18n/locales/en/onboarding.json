@@ -100,7 +100,8 @@
       "days_off": "Every day off, visible months in advance.",
       "family": "Tap any date. Know instantly if you're working.",
       "mental_math": "No more counting on your fingers."
-    }
+    },
+    "previewLabel": "PREVIEW OF YOUR NEXT 3 MONTHS"
   },
   "intro": {
     "welcome": "Welcome to Ellie! I'm here to help you set up your shift calendar. Let's start by getting to know you a bit better.",
@@ -600,7 +601,7 @@
   },
   "startDate": {
     "header": {
-      "title": "When Does Your Rotation Start?",
+      "title": "Set the start date for your 3-month preview",
       "subtitleWithPhase": "You're on {{phaseLabel}} right now—pick today or any date, and we'll build a preview of your next 3 months from there",
       "subtitleDefault": "Pick the date you want your 3-month preview to start from—most people choose today",
       "title_named": "{{name}}, set your start date and we'll map out a preview of your next 3 months"
@@ -636,7 +637,7 @@
     "guidance": {
       "title": "Picking your date",
       "subtitle": "Quick tips for a faster setup",
-      "body": "Most people pick today so their calendar starts right away. But you can pick any date—we'll calculate your rotation from there.",
+      "body": "Most people pick today so their 3-month preview starts right away. But you can pick any date—we'll calculate your rotation from there.",
       "hint": "Pick the closest date now, you can adjust settings later.",
       "selectedDate": "Selected: {{date}}"
     },

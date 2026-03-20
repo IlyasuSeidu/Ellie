@@ -546,7 +546,7 @@
   },
   "startDate": {
     "header": {
-      "title": "¿Cuándo empieza tu rotación?",
+      "title": "Elige la fecha de inicio de tu vista previa de 3 meses",
       "subtitleWithPhase": "Ahora estás en {{phaseLabel}}; elige hoy o cualquier fecha y desde ahí construiremos una vista previa de tus próximos 3 meses",
       "subtitleDefault": "Elige la fecha en la que quieres que comience tu vista previa de 3 meses; la mayoría elige hoy",
       "title_named": "{{name}}, define tu fecha de inicio y trazaremos una vista previa de tus próximos 3 meses"
@@ -582,7 +582,7 @@
     "guidance": {
       "title": "Cómo elegir la fecha",
       "subtitle": "Consejos rápidos para configurar más rápido",
-      "body": "La mayoría elige hoy para que el calendario empiece de inmediato. Pero puedes elegir cualquier fecha y calcularemos tu rotación desde ahí.",
+      "body": "La mayoría elige hoy para que su vista previa de 3 meses empiece de inmediato. Pero puedes elegir cualquier fecha: calcularemos tu rotación desde ahí.",
       "hint": "Elige ahora la fecha más cercana; luego puedes ajustarla en configuración.",
       "selectedDate": "Seleccionada: {{date}}"
     },
@@ -1083,7 +1083,8 @@
       "days_off": "Cada día libre, visible con meses de anticipación.",
       "family": "Toca cualquier fecha. Sabrás al instante si trabajas.",
       "mental_math": "Se acabó contar con los dedos."
-    }
+    },
+    "previewLabel": "VISTA PREVIA DE TUS PRÓXIMOS 3 MESES"
   },
   "painHook": {
     "title": "¿Qué es lo más difícil de tu roster en este momento?",

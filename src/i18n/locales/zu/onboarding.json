@@ -546,7 +546,7 @@
   },
   "startDate": {
     "header": {
-      "title": "Ukushintshanisa Kwakho Kuqala Nini?",
+      "title": "Setha usuku lokuqala lokubuka kwakho kwezinyanga ezi-3",
       "subtitleWithPhase": "Useku{{phaseLabel}} manje — khetha namuhla noma yiluphi usuku, bese sisuka lapho sakhe ukubuka kuqala kwezinyanga zakho ezi-3 ezizayo",
       "subtitleDefault": "Khetha usuku ofuna ukuthi ukubuka kwakho kuqala kwezinyanga ezi-3 kuqale ngalo — abantu abaningi bakhetha namuhla",
       "title_named": "{{name}}, setha usuku lwakho lokuqala bese sizokwakhela ukubuka kuqala kwezinyanga zakho ezi-3 ezizayo"
@@ -582,7 +582,7 @@
     "guidance": {
       "title": "Ukukhetha usuku lwakho",
       "subtitle": "Amathiphu asheshayo okusetha okusheshayo",
-      "body": "Abantu abaningi bakhetha namuhla ukuze ikhalenda yabo iqale ngaso leso sikhathi. Kodwa ungakhetha noma iyiphi idethi—sizobala ukuzungezisa kwakho sisuka lapho.",
+      "body": "Abantu abaningi bakhetha namuhla ukuze ukubuka kwabo kwezinyanga ezi-3 kuqale khona manjalo. Kodwa ungakhetha noma yiluphi usuku — sizobala uhlelo lwakho sisuke lapho.",
       "hint": "Khetha idethi eseduze kakhulu manje, ungalungisa izilungiselelo kamuva.",
       "selectedDate": "Okukhethiwe: {{date}}"
     },
@@ -1083,7 +1083,8 @@
       "days_off": "Lonke usuku lokuphumula lubonakala izinyanga kusenesikhathi.",
       "family": "Thepha noma yiluphi usuku. Yazi masinyane ukuthi uyasebenza yini.",
       "mental_math": "Akusekho ukubala ngeminwe."
-    }
+    },
+    "previewLabel": "UKUBUKA KWEZINYANGA EZINGU-3 EZIZAYO"
   },
   "painHook": {
     "title": "Yini enzima kakhulu ngohlelo lwakho manje?",

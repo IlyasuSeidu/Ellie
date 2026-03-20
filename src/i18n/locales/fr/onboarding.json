@@ -550,7 +550,7 @@
   },
   "startDate": {
     "header": {
-      "title": "Quand commence votre rotation ?",
+      "title": "Définissez la date de départ de votre aperçu sur 3 mois",
       "subtitleWithPhase": "Vous êtes actuellement sur {{phaseLabel}} — choisissez aujourd’hui ou n’importe quelle date, et nous construirons à partir de là un aperçu de vos 3 prochains mois",
       "subtitleDefault": "Choisissez la date à laquelle vous voulez démarrer votre aperçu sur 3 mois — la plupart des gens choisissent aujourd’hui",
       "title_named": "{{name}}, définissez votre date de départ et nous tracerons un aperçu de vos 3 prochains mois"
@@ -586,7 +586,7 @@
     "guidance": {
       "title": "Choisir votre date",
       "subtitle": "Conseils rapides pour une configuration plus rapide",
-      "body": "La plupart des gens choisissent aujourd'hui pour que leur calendrier démarre immédiatement. Mais vous pouvez choisir n’importe quelle date : nous calculerons votre rotation à partir de là.",
+      "body": "La plupart des gens choisissent aujourd’hui pour que leur aperçu sur 3 mois commence tout de suite. Mais vous pouvez choisir n’importe quelle date : nous calculerons votre rotation à partir de là.",
       "hint": "Choisissez la date la plus proche maintenant, vous pourrez ajuster les paramètres plus tard.",
       "selectedDate": "Sélectionné : {{date}}"
     },
@@ -1087,7 +1087,8 @@
       "days_off": "Chaque jour de repos, visible des mois à l’avance.",
       "family": "Touchez une date. Sachez instantanément si vous travaillez.",
       "mental_math": "Fini de compter sur vos doigts."
-    }
+    },
+    "previewLabel": "APERÇU DE VOS 3 PROCHAINS MOIS"
   },
   "painHook": {
     "title": "Quelle est la partie la plus difficile de votre roulement en ce moment ?",

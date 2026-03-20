@@ -541,7 +541,7 @@
   },
   "startDate": {
     "header": {
-      "title": "Kapan Rotasi Anda Dimulai?",
+      "title": "Tetapkan tanggal mulai untuk pratinjau 3 bulan Anda",
       "subtitleWithPhase": "Anda sedang berada di {{phaseLabel}} sekarang—pilih hari ini atau tanggal apa pun, dan dari sana kami akan membuat pratinjau 3 bulan berikutnya untuk Anda",
       "subtitleDefault": "Pilih tanggal saat Anda ingin pratinjau 3 bulan Anda dimulai—kebanyakan orang memilih hari ini",
       "title_named": "{{name}}, tetapkan tanggal mulai Anda dan kami akan memetakan pratinjau 3 bulan berikutnya untuk Anda"
@@ -577,7 +577,7 @@
     "guidance": {
       "title": "Memilih teman kencan Anda",
       "subtitle": "Kiat cepat untuk penyiapan yang lebih cepat",
-      "body": "Kebanyakan orang memilih hari ini agar kalender mereka segera dimulai. Namun Anda dapat memilih tanggal mana saja—kami akan menghitung rotasi Anda dari sana.",
+      "body": "Sebagian besar orang memilih hari ini agar pratinjau 3 bulan mereka langsung dimulai. Namun Anda bisa memilih tanggal apa pun—kami akan menghitung rotasi Anda dari sana.",
       "hint": "Pilih tanggal terdekat sekarang, Anda dapat menyesuaikan pengaturannya nanti.",
       "selectedDate": "Dipilih: {{date}}"
     },
@@ -1078,7 +1078,8 @@
       "days_off": "Setiap hari libur terlihat berbulan-bulan sebelumnya.",
       "family": "Ketuk tanggal apa pun. Langsung tahu apakah Anda bekerja.",
       "mental_math": "Tidak perlu lagi menghitung dengan jari."
-    }
+    },
+    "previewLabel": "PRATINJAU 3 BULAN BERIKUTNYA"
   },
   "painHook": {
     "title": "Apa bagian tersulit dari roster Anda saat ini?",
