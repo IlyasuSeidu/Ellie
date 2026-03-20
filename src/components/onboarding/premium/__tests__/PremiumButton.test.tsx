@@ -7,6 +7,7 @@ import { render, fireEvent } from '@testing-library/react-native';
 import { Text } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { PremiumButton } from '../PremiumButton';
+import { theme } from '@/utils/theme';
 
 describe('PremiumButton', () => {
   const mockOnPress = jest.fn();
@@ -54,6 +55,17 @@ describe('PremiumButton', () => {
         <PremiumButton title="With Icon" onPress={mockOnPress} icon={icon} iconPosition="right" />
       );
       expect(getByTestId('test-icon')).toBeTruthy();
+    });
+
+    it('should make icon color match the button text color', () => {
+      const icon = <Text testID="test-icon">Icon</Text>;
+      const { getByTestId } = render(
+        <PremiumButton title="With Icon" onPress={mockOnPress} icon={icon} iconPosition="right" />
+      );
+
+      expect(getByTestId('test-icon').props.style).toEqual(
+        expect.arrayContaining([expect.objectContaining({ color: theme.colors.paper })])
+      );
     });
   });
 

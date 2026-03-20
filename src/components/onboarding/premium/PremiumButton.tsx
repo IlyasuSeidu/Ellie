@@ -9,6 +9,7 @@ import React, { useEffect } from 'react';
 import {
   TouchableOpacity,
   ActivityIndicator,
+  StyleProp,
   ViewStyle,
   TextStyle,
   StyleSheet,
@@ -171,6 +172,30 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
   const sizeStyles = getSizeStyles(size);
   const isDisabled = disabled || loading;
   const resolvedTitleNumberOfLines = titleNumberOfLines ?? (size === 'large' ? 2 : 1);
+  const resolvedTextStyles = [
+    styles.text,
+    sizeStyles.text,
+    getTextColor(variant),
+    textStyle,
+    isDisabled && styles.disabledText,
+  ];
+  const flattenedTextStyle = StyleSheet.flatten(resolvedTextStyles as StyleProp<TextStyle>);
+  const resolvedIconColor =
+    typeof flattenedTextStyle?.color === 'string' ? flattenedTextStyle.color : undefined;
+
+  const renderIcon = () => {
+    if (!icon) return null;
+    if (!React.isValidElement<{ color?: string; style?: StyleProp<TextStyle> }>(icon)) {
+      return icon;
+    }
+
+    const existingStyle = icon.props.style;
+
+    return React.cloneElement(icon, {
+      color: resolvedIconColor,
+      style: [existingStyle, resolvedIconColor ? { color: resolvedIconColor } : null],
+    });
+  };
 
   const renderContent = () => {
     if (loading) {
@@ -186,16 +211,10 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
     return (
       <>
         {icon && iconPosition === 'left' && (
-          <Animated.View style={styles.iconContainer}>{icon}</Animated.View>
+          <Animated.View style={styles.iconContainer}>{renderIcon()}</Animated.View>
         )}
         <Animated.Text
-          style={[
-            styles.text,
-            sizeStyles.text,
-            getTextColor(variant),
-            textStyle,
-            isDisabled && styles.disabledText,
-          ]}
+          style={resolvedTextStyles}
           numberOfLines={resolvedTitleNumberOfLines}
           adjustsFontSizeToFit={resolvedTitleNumberOfLines === 1 || size !== 'large'}
           minimumFontScale={0.85}
@@ -203,7 +222,7 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
           {title}
         </Animated.Text>
         {icon && iconPosition === 'right' && (
-          <Animated.View style={styles.iconContainer}>{icon}</Animated.View>
+          <Animated.View style={styles.iconContainer}>{renderIcon()}</Animated.View>
         )}
       </>
     );
