@@ -32,7 +32,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import { theme } from '@/utils/theme';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import {
@@ -47,8 +47,6 @@ import { RosterType, type ShiftCycle } from '@/types';
 import { useActiveShift } from '@/hooks/useActiveShift';
 import { getNextShiftAccentRefreshAt } from '@/hooks/useShiftAccent';
 import type { MonthStatistics } from '@/types/dashboard';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import type { RootStackParamList } from '@/navigation/AppNavigator';
 
 // Dashboard components
 import { PersonalizedHeader } from '@/components/dashboard/PersonalizedHeader';
@@ -89,7 +87,6 @@ const SHIFT_GLOW_COLORS: Record<string, string> = {
 export const MainDashboardScreen: React.FC = () => {
   const { t } = useTranslation('dashboard');
   const isFocused = useIsFocused();
-  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const { data: onboardingContextData } = useOnboarding();
   const [userData, setUserData] = useState<OnboardingData | null>(null);
@@ -346,17 +343,6 @@ export const MainDashboardScreen: React.FC = () => {
     setSelectedDay((prev) => (prev === day ? undefined : day));
   }, []);
 
-  const handleOpenShiftTimeSettings = useCallback(() => {
-    const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
-    rootNavigation?.navigate('Onboarding', {
-      screen: 'ShiftTimeInput',
-      params: {
-        entryPoint: 'settings',
-        returnToMainOnSelect: true,
-      },
-    });
-  }, [navigation]);
-
   // Avatar change handler — persists new URI to AsyncStorage
   const handleAvatarChange = useCallback(
     async (newUri: string | null) => {
@@ -462,7 +448,6 @@ export const MainDashboardScreen: React.FC = () => {
           accentShiftType={activeShift.scheduledShiftType}
           rosterType={shiftCycle.rosterType}
           fifoBlockInfo={fifoBlockInfo}
-          timeDisplay={activeShift.timeDisplay || undefined}
           countdown={
             shiftCycle.rosterType === RosterType.FIFO && fifoBlockInfo
               ? t(fifoBlockInfo.inWorkBlock ? 'fifo.untilRest' : 'fifo.untilWork', {
@@ -471,7 +456,6 @@ export const MainDashboardScreen: React.FC = () => {
               : (activeShift.countdown ?? undefined)
           }
           isOnShift={activeShift.isOnShift}
-          onAddShiftTimesPress={handleOpenShiftTimeSettings}
           animationDelay={100}
           testID="dashboard-shift-status"
         />

@@ -7,7 +7,7 @@
  */
 
 import React, { useEffect, useMemo } from 'react';
-import { View, Image, StyleSheet, Platform, TouchableOpacity } from 'react-native';
+import { View, Image, StyleSheet, Platform } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -43,8 +43,6 @@ export interface CurrentShiftStatusCardProps {
     blockLength: number;
     daysUntilBlockChange: number;
   } | null;
-  /** Shift time display (e.g., "7:00 AM - 7:00 PM") */
-  timeDisplay?: string;
   /** Countdown text (e.g., "6h 32m until next shift") */
   countdown?: string;
   /** Whether the user is currently on shift */
@@ -53,8 +51,6 @@ export interface CurrentShiftStatusCardProps {
   animationDelay?: number;
   /** Test ID */
   testID?: string;
-  /** Optional callback to route users to shift-time setup */
-  onAddShiftTimesPress?: () => void;
 }
 
 /* eslint-disable @typescript-eslint/no-var-requires */
@@ -97,15 +93,12 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
   accentShiftType,
   rosterType = RosterType.ROTATING,
   fifoBlockInfo,
-  timeDisplay,
   countdown,
   isOnShift = false,
   animationDelay = 100,
   testID,
-  onAddShiftTimesPress,
 }) => {
   const { t } = useTranslation('dashboard');
-  const shiftTimesSet = Boolean(timeDisplay && timeDisplay.trim().length > 0);
 
   const liveAccentShiftType = accentShiftType ?? shiftType;
 
@@ -505,21 +498,6 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                 <Animated.Text style={styles.shiftSubtitle}>{shiftSubtitle}</Animated.Text>
               </View>
 
-              {!shiftTimesSet && (
-                <TouchableOpacity
-                  style={styles.addTimesRow}
-                  onPress={() => {
-                    onAddShiftTimesPress?.();
-                  }}
-                >
-                  <Ionicons name="time-outline" size={16} color={theme.colors.sacredGold} />
-                  <Animated.Text style={styles.addTimesText}>
-                    {t('shiftStatus.addShiftTimes', { defaultValue: 'Add shift times' })}
-                  </Animated.Text>
-                  <Ionicons name="chevron-forward" size={16} color={theme.colors.sacredGold} />
-                </TouchableOpacity>
-              )}
-
               {/* FIFO Block Progress Bar */}
               {rosterType === RosterType.FIFO && fifoBlockInfo && (
                 <View style={styles.progressBarContainer}>
@@ -779,20 +757,6 @@ const styles = StyleSheet.create({
   subtitleTimeRowCentered: {
     justifyContent: 'center',
   },
-  addTimesRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-    marginTop: 8,
-    paddingVertical: 6,
-  },
-  addTimesText: {
-    fontSize: theme.typography.fontSizes.sm,
-    color: theme.colors.sacredGold,
-    fontWeight: theme.typography.fontWeights.semibold,
-  },
-
   // ── Time & Countdown ───────────────────────────────────────
   timeContainer: {
     flexDirection: 'row',
