@@ -217,7 +217,9 @@
       "security": "Pagamento seguro via {{platform}} · Processado por {{platform}}, não pela Ellie",
       "termsOfService": "Termos",
       "trialBadge": "TESTE GRÁTIS DE 7 DIAS · SEM COBRANÇA HOJE",
-      "title_named": "{{name}}, seu roster está pronto."
+      "title_named": "{{name}}, seu roster está pronto.",
+      "subtitle_fifo": "Seu ciclo FIFO está mapeado. Veja cada swing e cada folga nos seus próximos 3 meses.",
+      "subtitle_rotating": "Seu rodízio rotativo está mapeado. Veja cada turno nos seus próximos 3 meses."
     },
     "profile": {
       "rowActiveA11y": "Ellie Assinatura Pro ativa",

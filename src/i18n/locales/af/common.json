@@ -217,7 +217,9 @@
       "security": "Veilige betaling via {{platform}} · Verwerk deur {{platform}}, nie Ellie nie",
       "termsOfService": "Voorwaardes",
       "trialBadge": "GRATIS 7-DAE PROEF · GEEN HEFFING VANDAG",
-      "title_named": "{{name}}, jou rooster is gereed."
+      "title_named": "{{name}}, jou rooster is gereed.",
+      "subtitle_fifo": "Jou FIFO-siklus is uitgewerk. Sien elke swing en elke afdag vir jou volgende 3 maande.",
+      "subtitle_rotating": "Jou roterende rooster is uitgewerk. Sien elke skof vir jou volgende 3 maande."
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro aktiewe intekening",

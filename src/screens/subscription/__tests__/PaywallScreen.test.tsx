@@ -66,7 +66,11 @@ describe('PaywallScreen', () => {
     );
 
     expect(getByText('Ilyasu, your roster is ready.')).toBeTruthy();
-    expect(getByText('Unlock it for less than a coffee.')).toBeTruthy();
+    expect(
+      getByText(
+        'Your FIFO cycle is mapped. See every swing, every day off, for your next 3 months.'
+      )
+    ).toBeTruthy();
     expect(getByText('See your next 3 months — every work block, every R&R')).toBeTruthy();
     expect(queryByText(/Introductory offer ends in/i)).toBeNull();
   });

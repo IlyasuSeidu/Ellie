@@ -217,7 +217,9 @@
       "security": "Pembayaran aman via {{platform}} · Diproses oleh {{platform}}, bukan Ellie",
       "termsOfService": "Syarat",
       "trialBadge": "UJI COBA GRATIS 7 HARI · TANPA BIAYA HARI INI",
-      "title_named": "{{name}}, roster Anda sudah siap."
+      "title_named": "{{name}}, roster Anda sudah siap.",
+      "subtitle_fifo": "Siklus FIFO Anda sudah dipetakan. Lihat setiap swing dan setiap hari libur untuk 3 bulan ke depan.",
+      "subtitle_rotating": "Roster bergilir Anda sudah dipetakan. Lihat setiap shift untuk 3 bulan ke depan."
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro langganan aktif",

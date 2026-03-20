@@ -217,7 +217,9 @@
       "security": "Pago seguro con {{platform}} · Procesado por {{platform}}, no por Ellie",
       "termsOfService": "Términos",
       "trialBadge": "PRUEBA GRATIS DE 7 DÍAS · SIN COBRO HOY",
-      "title_named": "{{name}}, tu roster está listo."
+      "title_named": "{{name}}, tu roster está listo.",
+      "subtitle_fifo": "Tu ciclo FIFO ya está trazado. Ve cada swing y cada día libre durante tus próximos 3 meses.",
+      "subtitle_rotating": "Tu roster rotativo ya está trazado. Ve cada turno durante tus próximos 3 meses."
     },
     "profile": {
       "rowActiveA11y": "Ellie Suscripción activa profesional",

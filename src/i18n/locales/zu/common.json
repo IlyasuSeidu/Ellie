@@ -217,7 +217,9 @@
       "security": "Inkokhelo ephephile nge-{{platform}} · Icutshungulwa yi-{{platform}}, hhayi i-Ellie",
       "termsOfService": "Imigomo",
       "trialBadge": "ISILINGO SAMAHHALA SEZINSUKU EZI-7 · AKUKHO MALI NAMUHLA",
-      "title_named": "{{name}}, irosta yakho isilungile."
+      "title_named": "{{name}}, irosta yakho isilungile.",
+      "subtitle_fifo": "Umjikelezo wakho we-FIFO usumakiwe. Bona wonke ama-swing nawo wonke amalanga okuphumula ezinyangeni zakho ezi-3 ezizayo.",
+      "subtitle_rotating": "Uhlelo lwakho olujikelezayo selumakiwe. Bona wonke amashifu ezinyangeni zakho ezi-3 ezizayo."
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Ukubhalisa okusebenzayo kwe-Pro",

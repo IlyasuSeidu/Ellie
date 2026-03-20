@@ -217,7 +217,9 @@
       "security": "通过 {{platform}} 安全支付 · 由 {{platform}} 处理，而非 Ellie",
       "termsOfService": "条款",
       "trialBadge": "免费试用7天 · 今天不收费",
-      "title_named": "{{name}}，你的班表已经准备好了。"
+      "title_named": "{{name}}，你的班表已经准备好了。",
+      "subtitle_fifo": "您的 FIFO 周期已生成。未来 3 个月内的每个轮班段和每一天休息都一目了然。",
+      "subtitle_rotating": "您的轮换排班已生成。未来 3 个月内的每个班次都一目了然。"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro 主动订阅",

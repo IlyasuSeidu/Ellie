@@ -217,7 +217,9 @@
       "security": "Paiement sécurisé via {{platform}} · Traité par {{platform}}, pas par Ellie",
       "termsOfService": "Conditions",
       "trialBadge": "ESSAI GRATUIT 7 JOURS · AUCUN FRAIS AUJOURD’HUI",
-      "title_named": "{{name}}, votre roulement est prêt."
+      "title_named": "{{name}}, votre roulement est prêt.",
+      "subtitle_fifo": "Votre cycle FIFO est cartographié. Voyez chaque swing et chaque jour de repos sur vos 3 prochains mois.",
+      "subtitle_rotating": "Votre roulement rotatif est cartographié. Voyez chaque poste sur vos 3 prochains mois."
     },
     "profile": {
       "rowActiveA11y": "Ellie Abonnement Pro actif",

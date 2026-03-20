@@ -184,6 +184,17 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
   const paywallTitle = onboardingData?.name
     ? t('subscription.paywall.title_named', { name: onboardingData.name })
     : t('subscription.paywall.title');
+  const paywallSubtitle =
+    onboardingData?.rosterType === 'fifo'
+      ? t('subscription.paywall.subtitle_fifo', {
+          defaultValue:
+            'Your FIFO cycle is mapped. See every swing, every day off, for your next 3 months.',
+        })
+      : onboardingData?.rosterType === 'rotating'
+        ? t('subscription.paywall.subtitle_rotating', {
+            defaultValue: 'Your rotating roster is mapped. See every shift for your next 3 months.',
+          })
+        : t('subscription.paywall.subtitle');
 
   const handleDismiss = () => {
     Analytics.paywallDismissed({
@@ -277,7 +288,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
         {/* Hero */}
         <View style={styles.hero}>
           <Text style={styles.title}>{paywallTitle}</Text>
-          <Text style={styles.subtitle}>{t('subscription.paywall.subtitle')}</Text>
+          <Text style={styles.subtitle}>{paywallSubtitle}</Text>
         </View>
 
         {/* ── Plan selector ── */}
