@@ -27,13 +27,15 @@ export const SwipeHintLabel: React.FC<SwipeHintLabelProps> = ({
   direction,
   text,
   textStyle,
-  iconColor = theme.colors.paper,
+  iconColor,
   iconSize = 14,
   style,
 }) => {
   const { iconName, iconFirst } = DIRECTION_CONFIG[direction];
+  const resolvedTextColor = StyleSheet.flatten(textStyle)?.color;
+  const resolvedIconColor = iconColor ?? resolvedTextColor ?? theme.colors.paper;
 
-  const icon = <Ionicons name={iconName} size={iconSize} color={iconColor} />;
+  const icon = <Ionicons name={iconName} size={iconSize} color={resolvedIconColor} />;
 
   return (
     <View style={[styles.container, style]}>
