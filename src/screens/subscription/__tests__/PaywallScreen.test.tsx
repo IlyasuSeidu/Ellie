@@ -40,6 +40,7 @@ jest.mock('@/utils/analytics', () => ({
     paywallSubscribeTapped: jest.fn(),
     paywallRestoreTapped: jest.fn(),
     trialStarted: jest.fn(),
+    purchaseCompleted: jest.fn(),
   },
 }));
 
@@ -183,7 +184,15 @@ describe('PaywallScreen', () => {
             },
           },
         }),
-        purchasePackage: jest.fn().mockResolvedValue(undefined),
+        purchasePackage: jest.fn().mockResolvedValue({
+          customerInfo: {
+            entitlements: {
+              active: {
+                pro: { periodType: 'TRIAL' },
+              },
+            },
+          },
+        }),
       },
     } as never);
 
@@ -225,5 +234,50 @@ describe('PaywallScreen', () => {
         })
       );
     });
+  });
+
+  it('does not render the weekly option when no weekly package is available', async () => {
+    mockedIsRevenueCatAvailable.mockReturnValue(true);
+    mockedGetRevenueCatRuntime.mockReturnValue({
+      Purchases: {
+        getOfferings: jest.fn().mockResolvedValue({
+          current: {
+            annual: {
+              product: {
+                price: 49.99,
+                priceString: '$49.99',
+              },
+            },
+            monthly: {
+              product: {
+                price: 6.99,
+                priceString: '$6.99',
+              },
+            },
+            weekly: null,
+          },
+        }),
+        purchasePackage: jest.fn(),
+      },
+    } as never);
+
+    const { queryByText } = render(
+      <PaywallScreen
+        onDismiss={mockOnDismiss}
+        entryPoint="aha_moment"
+        onboardingData={{
+          rosterType: 'rotating',
+          country: 'Australia',
+          painPoint: 'family',
+          patternType: ShiftPattern.STANDARD_4_4_4,
+        }}
+      />
+    );
+
+    await waitFor(() => {
+      expect(queryByText('Annual')).toBeTruthy();
+    });
+
+    expect(queryByText('Weekly')).toBeNull();
   });
 });

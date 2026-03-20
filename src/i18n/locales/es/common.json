@@ -229,7 +229,8 @@
       "lossAversion_rotating": "Sin Pro, tu roster se apaga. Sin aviso temprano, sin planificación anticipada. Vuelves a adivinar frente al tablón.",
       "lossAversion_family": "Sin Pro, tu familia vuelve a no saber cuándo estás en casa.",
       "testimonialAnchor": "4.8 · más de 2,400 valoraciones",
-      "purchaseSuccess": "Tu prueba de 7 días ha comenzado"
+      "purchaseSuccess": "Tu prueba de 7 días ha comenzado",
+      "purchaseError": "La compra falló. Inténtalo de nuevo."
     },
     "profile": {
       "rowActiveA11y": "Ellie Suscripción activa profesional",

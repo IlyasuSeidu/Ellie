@@ -229,7 +229,8 @@
       "lossAversion_rotating": "Ngaphandle kwe-Pro, irosta yakho iphinde ibe mnyama. Asikho isexwayiso sangaphambi kwesikhathi, akukho ukuhlela kusenesikhathi. Buyela ekuqageleni ebhodini lezaziso.",
       "lossAversion_family": "Ngaphandle kwe-Pro, umndeni wakho ubuye ungazi ukuthi usekhaya nini.",
       "testimonialAnchor": "4.8 · izilinganiso ezingaphezu kuka-2,400",
-      "purchaseSuccess": "Isivivinyo sakho sezinsuku eziyi-7 siqalile"
+      "purchaseSuccess": "Isivivinyo sakho sezinsuku eziyi-7 siqalile",
+      "purchaseError": "Ukuthenga kuhlulekile. Sicela uzame futhi."
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Ukubhalisa okusebenzayo kwe-Pro",

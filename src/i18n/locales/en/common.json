@@ -227,7 +227,8 @@
       "subtitle_rotating": "Your rotating roster is mapped. See every shift for your full year.",
       "billingDisclosure": "Your 7-day free trial ends {{date}}. Cancel anytime in Settings before then to avoid charges. Subscriptions renew automatically.",
       "testimonialAnchor": "4.8 · 2,400+ ratings",
-      "purchaseSuccess": "Your 7-day trial has started"
+      "purchaseSuccess": "Your 7-day trial has started",
+      "purchaseError": "Purchase failed. Please try again."
     },
     "profile": {
       "rowActiveA11y": "Ellie Pro active subscription",

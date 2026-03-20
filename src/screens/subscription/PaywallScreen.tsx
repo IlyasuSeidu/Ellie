@@ -66,6 +66,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
   const [selectedPlan, setSelectedPlan] = useState<PlanKey>('annual');
   const [loading, setLoading] = useState(true);
   const [purchasing, setPurchasing] = useState(false);
+  const [purchaseError, setPurchaseError] = useState<string | null>(null);
   const [dismissVisible, setDismissVisible] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const purchasesAvailable = useMemo(() => isRevenueCatAvailable(), []);
@@ -272,6 +273,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
 
   const handleSelectPlan = (plan: PlanKey) => {
     setSelectedPlan(plan);
+    setPurchaseError(null);
     Analytics.paywallPlanSelected(plan, {
       platform: Platform.OS,
       source: entryPoint,
@@ -286,18 +288,35 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
 
     try {
       setPurchasing(true);
+      setPurchaseError(null);
       Analytics.paywallSubscribeTapped(selectedPlan, {
         platform: Platform.OS,
         source: entryPoint,
         trigger_source: entryPoint,
       });
       const { Purchases } = revenueCatRuntime;
-      await Purchases.purchasePackage(selectedPackage);
-      Analytics.trialStarted(selectedPlan, selectedPackage.product.price ?? 0);
+      const { customerInfo } = await Purchases.purchasePackage(selectedPackage);
+      const price = selectedPackage.product.price ?? 0;
+      if (customerInfo.entitlements.active['pro']?.periodType === 'TRIAL') {
+        Analytics.trialStarted(selectedPlan, price);
+      } else {
+        Analytics.purchaseCompleted(selectedPlan, price);
+      }
       setPurchaseSuccess(true);
       purchaseSuccessDismissTimerRef.current = setTimeout(() => onDismiss(), 700);
-    } catch {
-      // User cancelled or purchase failed — keep paywall visible.
+    } catch (error) {
+      const isCancelled =
+        error !== null &&
+        typeof error === 'object' &&
+        'userCancelled' in error &&
+        error.userCancelled === true;
+      if (!isCancelled) {
+        setPurchaseError(
+          t('subscription.paywall.purchaseError', {
+            defaultValue: 'Purchase failed. Please try again.',
+          })
+        );
+      }
     } finally {
       setPurchasing(false);
     }
@@ -527,6 +546,9 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
             </TouchableOpacity>
           </Animated.View>
         )}
+
+        {/* ── Purchase error ── */}
+        {purchaseError ? <Text style={styles.purchaseErrorText}>{purchaseError}</Text> : null}
 
         {/* ── Trust row ── */}
         <View style={styles.trustCard}>
@@ -1015,6 +1037,14 @@ const styles = StyleSheet.create({
     color: theme.colors.shadow,
     fontSize: 15,
     fontWeight: '600',
+  },
+
+  // ── Purchase error ──
+  purchaseErrorText: {
+    color: '#F87171',
+    fontSize: 13,
+    textAlign: 'center',
+    marginBottom: 10,
   },
 
   // ── Purchase success ──

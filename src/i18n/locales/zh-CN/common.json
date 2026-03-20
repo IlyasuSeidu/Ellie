@@ -229,7 +229,8 @@
       "lossAversion_rotating": "没有 Pro，你的轮班安排又会陷入黑箱。没有提前提醒，也无法提前规划，只能回到公告板前猜。",
       "lossAversion_family": "没有 Pro，你的家人又不知道你什么时候在家。",
       "testimonialAnchor": "4.8 · 2,400+ 条评分",
-      "purchaseSuccess": "你的 7 天试用已开始"
+      "purchaseSuccess": "你的 7 天试用已开始",
+      "purchaseError": "购买失败。请重试。"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro 主动订阅",

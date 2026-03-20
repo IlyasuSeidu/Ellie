@@ -229,7 +229,8 @@
       "lossAversion_rotating": "Sans Pro, votre roster redevient opaque. Aucun préavis, aucune planification en avance. Retour aux suppositions devant le panneau.",
       "lossAversion_family": "Sans Pro, votre famille ne sait plus quand vous êtes à la maison.",
       "testimonialAnchor": "4.8 · plus de 2 400 avis",
-      "purchaseSuccess": "Votre essai de 7 jours a commencé"
+      "purchaseSuccess": "Votre essai de 7 jours a commencé",
+      "purchaseError": "L'achat a échoué. Veuillez réessayer."
     },
     "profile": {
       "rowActiveA11y": "Ellie Abonnement Pro actif",

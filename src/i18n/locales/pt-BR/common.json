@@ -229,7 +229,8 @@
       "lossAversion_rotating": "Sem Pro, sua escala fica no escuro de novo. Sem aviso antecipado, sem planejamento à frente. Volta a adivinhar no quadro de avisos.",
       "lossAversion_family": "Sem Pro, sua família volta a não saber quando você estará em casa.",
       "testimonialAnchor": "4,8 · mais de 2.400 avaliações",
-      "purchaseSuccess": "Seu teste de 7 dias começou"
+      "purchaseSuccess": "Seu teste de 7 dias começou",
+      "purchaseError": "A compra falhou. Tente novamente."
     },
     "profile": {
       "rowActiveA11y": "Ellie Assinatura Pro ativa",

@@ -229,7 +229,8 @@
       "lossAversion_rotating": "Tanpa Pro, roster Anda kembali gelap. Tidak ada peringatan dini, tidak ada perencanaan ke depan. Kembali menebak dari papan pengumuman.",
       "lossAversion_family": "Tanpa Pro, keluarga Anda kembali tidak tahu kapan Anda ada di rumah.",
       "testimonialAnchor": "4.8 · 2.400+ penilaian",
-      "purchaseSuccess": "Masa uji coba 7 hari Anda telah dimulai"
+      "purchaseSuccess": "Masa uji coba 7 hari Anda telah dimulai",
+      "purchaseError": "Pembelian gagal. Silakan coba lagi."
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro langganan aktif",

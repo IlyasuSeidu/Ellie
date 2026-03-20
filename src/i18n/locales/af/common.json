@@ -229,7 +229,8 @@
       "lossAversion_rotating": "Sonder Pro raak jou rooster donker. Geen vroeë waarskuwing, geen beplanning vooruit nie. Terug na raai by die kennisgewingbord.",
       "lossAversion_family": "Sonder Pro weet jou familie weer nie wanneer jy by die huis is nie.",
       "testimonialAnchor": "4.8 · 2 400+ graderings",
-      "purchaseSuccess": "Jou 7-dae-proef het begin"
+      "purchaseSuccess": "Jou 7-dae-proef het begin",
+      "purchaseError": "Aankoop het misluk. Probeer asseblief weer."
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro aktiewe intekening",
