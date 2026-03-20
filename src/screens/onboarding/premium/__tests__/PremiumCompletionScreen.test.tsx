@@ -356,11 +356,11 @@ describe('PremiumCompletionScreen', () => {
       });
     });
 
-    it('should show Set Up My Roster → button after successful save', async () => {
+    it('should show Set Up My Roster button after successful save', async () => {
       const { getByText } = renderWithProviders(<PremiumCompletionScreen />);
 
       await waitFor(() => {
-        expect(getByText('Set Up My Roster →')).toBeTruthy();
+        expect(getByText('Set Up My Roster')).toBeTruthy();
       });
     });
 
@@ -446,7 +446,7 @@ describe('PremiumCompletionScreen', () => {
     });
   });
 
-  describe('Set Up My Roster → Button', () => {
+  describe('Set Up My Roster Button', () => {
     it('should be disabled while saving', () => {
       // Make save take a long time
       (asyncStorageService.set as jest.Mock).mockImplementation(
@@ -455,15 +455,15 @@ describe('PremiumCompletionScreen', () => {
 
       const { queryByText } = renderWithProviders(<PremiumCompletionScreen />);
 
-      // Set Up My Roster → button should not be visible while saving
-      expect(queryByText('Set Up My Roster →')).toBeNull();
+      // Set Up My Roster button should not be visible while saving
+      expect(queryByText('Set Up My Roster')).toBeNull();
     });
 
     it('should be enabled after successful save', async () => {
       const { getByText } = renderWithProviders(<PremiumCompletionScreen />);
 
       await waitFor(() => {
-        const button = getByText('Set Up My Roster →');
+        const button = getByText('Set Up My Roster');
         expect(button).toBeTruthy();
       });
     });
@@ -476,11 +476,11 @@ describe('PremiumCompletionScreen', () => {
 
       // Wait for save to complete and button to be enabled
       await waitFor(() => {
-        expect(getByText('Set Up My Roster →')).toBeTruthy();
+        expect(getByText('Set Up My Roster')).toBeTruthy();
       });
 
       // Press the button
-      const button = getByText('Set Up My Roster →');
+      const button = getByText('Set Up My Roster');
       fireEvent.press(button);
 
       // Check haptic was called
@@ -497,11 +497,11 @@ describe('PremiumCompletionScreen', () => {
 
       // Wait for save to complete and button to be enabled
       await waitFor(() => {
-        expect(getByText('Set Up My Roster →')).toBeTruthy();
+        expect(getByText('Set Up My Roster')).toBeTruthy();
       });
 
       // Press the button
-      const button = getByText('Set Up My Roster →');
+      const button = getByText('Set Up My Roster');
       fireEvent.press(button);
 
       // Check callback was called
@@ -548,7 +548,7 @@ describe('PremiumCompletionScreen', () => {
   });
 
   describe('Accessibility', () => {
-    it('should have accessible label on Set Up My Roster → button', async () => {
+    it('should have accessible label on Set Up My Roster button', async () => {
       const { getByLabelText } = renderWithProviders(<PremiumCompletionScreen />);
 
       await waitFor(() => {
@@ -597,7 +597,7 @@ describe('PremiumCompletionScreen', () => {
       const { getByText } = renderWithProviders(<PremiumCompletionScreen />);
 
       await waitFor(() => {
-        const button = getByText('Set Up My Roster →');
+        const button = getByText('Set Up My Roster');
         fireEvent.press(button);
       });
 

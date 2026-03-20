@@ -18,9 +18,9 @@
     "backToSettings": "Buyela kuzilungiselelo",
     "saveAndReturn": "Londoloza & Ubuye",
     "hints": {
-      "nextOption": "← Inketho elandelayo",
-      "selectThis": "Lona →",
-      "learnMore": "↑ Funda kabanzi"
+      "nextOption": "Inketho elandelayo",
+      "selectThis": "Lona",
+      "learnMore": "Funda kabanzi"
     },
     "learnMore": {
       "howItWorks": "Isebenza kanjani",
@@ -234,7 +234,7 @@
     "cards": {
       "rotating": {
         "title": "Uhlu Oluzungezayo",
-        "subtitle": "Izinsuku → Ubusuku → Iphethini evaliwe",
+        "subtitle": "Izinsuku • Ubusuku • Iphethini evaliwe",
         "description": "Uzungezisa izikhathi zokushintsha ezahlukene emjikelezweni ophindayo",
         "details": {
           "howItWorks": "Abasebenzi bashintshana ngezikhathi ezihlukene zamashifu (amashifu osuku, amashifu ebusuku, izinsuku zokuphumula) ngomjikelezo oqhubekayo",
@@ -266,7 +266,7 @@
       },
       "fifo": {
         "title": "I-FIFO / Swing Roster",
-        "subtitle": "Amabhulokhi okusebenza → Amabhulokhi asekhaya",
+        "subtitle": "Amabhulokhi okusebenza • Amabhulokhi asekhaya",
         "description": "Usebenza izinsuku ezilandelanayo endaweni, bese uthola isikhathi esengeziwe ekhaya",
         "details": {
           "howItWorks": "Izisebenzi zindizela ezindaweni ezikude, zisebenze izinsuku ezilandelanayo (indawo yomsebenzi), bese zindizela ekhaya ukuze ziphumule isikhathi eside (indawo yokuphumula)",
@@ -391,9 +391,9 @@
   },
   "phaseSelector": {
     "hints": {
-      "next": "← Okulandelayo",
-      "select": "Khetha →",
-      "info": "↑ Ulwazi"
+      "next": "Okulandelayo",
+      "select": "Khetha",
+      "info": "Ulwazi"
     },
     "modal": {
       "phaseLengthValue_one": "{{count}} usuku",

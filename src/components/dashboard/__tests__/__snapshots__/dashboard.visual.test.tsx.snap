@@ -381,7 +381,14 @@ exports[`dashboard visual snapshots CurrentShiftStatusCard FIFO snapshot 1`] = `
                 }
               }
             >
-              Add shift times →
+              Add shift times
+            </Text>
+            <Text
+              color="#b45309"
+              name="chevron-forward"
+              size={16}
+            >
+              chevron-forward
             </Text>
           </View>
           <View
@@ -841,7 +848,14 @@ exports[`dashboard visual snapshots CurrentShiftStatusCard scheduled shift with 
                 }
               }
             >
-              Add shift times →
+              Add shift times
+            </Text>
+            <Text
+              color="#b45309"
+              name="chevron-forward"
+              size={16}
+            >
+              chevron-forward
             </Text>
           </View>
         </View>

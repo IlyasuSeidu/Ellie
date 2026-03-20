@@ -30,6 +30,7 @@ import { theme } from '@/utils/theme';
 import { Analytics } from '@/utils/analytics';
 import { PremiumButton } from '@/components/onboarding/premium';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
+import { SwipeHintLabel } from '@/components/onboarding/premium/SwipeHintLabel';
 import { useOnboarding, type OnboardingData } from '@/contexts/OnboardingContext';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
@@ -230,10 +231,18 @@ const PainCard: React.FC<PainCardProps> = ({ option, isSelected, onSelect, onNex
           >
             <Animated.View style={[styles.cardHintsRow, animatedHintsStyle]}>
               <View style={styles.cardHintChip}>
-                <Text style={styles.cardHintText}>{t('common.hints.nextOption')}</Text>
+                <SwipeHintLabel
+                  direction="left"
+                  text={t('common.hints.nextOption')}
+                  textStyle={styles.cardHintText}
+                />
               </View>
               <View style={styles.cardHintChip}>
-                <Text style={styles.cardHintText}>{t('common.hints.selectThis')}</Text>
+                <SwipeHintLabel
+                  direction="right"
+                  text={t('common.hints.selectThis')}
+                  textStyle={styles.cardHintText}
+                />
               </View>
             </Animated.View>
 

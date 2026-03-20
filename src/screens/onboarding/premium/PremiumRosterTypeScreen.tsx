@@ -41,6 +41,7 @@ import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
+import { SwipeHintLabel } from '@/components/onboarding/premium/SwipeHintLabel';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { RosterType } from '@/types';
@@ -91,7 +92,7 @@ const ROSTER_TYPES: RosterTypeCardData[] = [
     icon: '🔄',
     iconImage: require('../../../../assets/onboarding/icons/consolidated/roster-type-rotating.png'),
     title: 'Rotating Roster',
-    subtitle: 'Days → Nights → Off pattern',
+    subtitle: 'Days • Nights • Off pattern',
     description: 'You rotate through different shift times in a repeating cycle',
     detailedInfo: {
       howItWorks:
@@ -122,7 +123,7 @@ const ROSTER_TYPES: RosterTypeCardData[] = [
     icon: '✈️',
     iconImage: require('../../../../assets/onboarding/icons/consolidated/roster-type-fifo.png'),
     title: 'FIFO / Swing Roster',
-    subtitle: 'Work blocks → Home blocks',
+    subtitle: 'Work blocks • Home blocks',
     description: 'You work consecutive days on-site, then get extended time at home',
     detailedInfo: {
       howItWorks:
@@ -534,13 +535,25 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
         {index === 0 && isActive && (
           <>
             <Animated.View style={[styles.swipeHint, styles.swipeHintRight, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>{t('common.hints.selectThis')}</Text>
+              <SwipeHintLabel
+                direction="right"
+                text={t('common.hints.selectThis')}
+                textStyle={styles.swipeHintText}
+              />
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintLeft, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>{t('common.hints.nextOption')}</Text>
+              <SwipeHintLabel
+                direction="left"
+                text={t('common.hints.nextOption')}
+                textStyle={styles.swipeHintText}
+              />
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintUp, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>{t('common.hints.learnMore')}</Text>
+              <SwipeHintLabel
+                direction="up"
+                text={t('common.hints.learnMore')}
+                textStyle={styles.swipeHintText}
+              />
             </Animated.View>
           </>
         )}

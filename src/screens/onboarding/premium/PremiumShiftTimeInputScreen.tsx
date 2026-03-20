@@ -1395,7 +1395,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                         {t('shiftTime.preview.yourShift', { defaultValue: 'Your shift:' })}
                       </Text>
                       <Text style={styles.livePreviewTime}>
-                        {formatLocalizedTime(getStartTime24h())} →{' '}
+                        {formatLocalizedTime(getStartTime24h())} -{' '}
                         {formatLocalizedTime(getEndTime24h())}
                       </Text>
                       <Text style={styles.livePreviewDuration}>

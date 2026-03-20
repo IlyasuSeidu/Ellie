@@ -467,17 +467,38 @@ This option means straight days only.
           ]
         }
       >
-        <Text
+        <View
           style={
-            {
-              "color": "#a8a29e",
-              "fontSize": 14,
-              "fontWeight": "600",
-            }
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 6,
+                "justifyContent": "center",
+              },
+              undefined,
+            ]
           }
         >
-          ← Next
-        </Text>
+          <Text
+            color="#e7e5e4"
+            name="arrow-back"
+            size={14}
+          >
+            arrow-back
+          </Text>
+          <Text
+            style={
+              {
+                "color": "#a8a29e",
+                "fontSize": 14,
+                "fontWeight": "600",
+              }
+            }
+          >
+            Next
+          </Text>
+        </View>
       </View>
       <View
         style={
@@ -497,17 +518,38 @@ This option means straight days only.
           ]
         }
       >
-        <Text
+        <View
           style={
-            {
-              "color": "#a8a29e",
-              "fontSize": 14,
-              "fontWeight": "600",
-            }
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 6,
+                "justifyContent": "center",
+              },
+              undefined,
+            ]
           }
         >
-          Select →
-        </Text>
+          <Text
+            style={
+              {
+                "color": "#a8a29e",
+                "fontSize": 14,
+                "fontWeight": "600",
+              }
+            }
+          >
+            Select
+          </Text>
+          <Text
+            color="#e7e5e4"
+            name="arrow-forward"
+            size={14}
+          >
+            arrow-forward
+          </Text>
+        </View>
       </View>
       <View
         style={
@@ -527,17 +569,38 @@ This option means straight days only.
           ]
         }
       >
-        <Text
+        <View
           style={
-            {
-              "color": "#a8a29e",
-              "fontSize": 14,
-              "fontWeight": "600",
-            }
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 6,
+                "justifyContent": "center",
+              },
+              undefined,
+            ]
           }
         >
-          ↑ Info
-        </Text>
+          <Text
+            color="#e7e5e4"
+            name="arrow-up"
+            size={14}
+          >
+            arrow-up
+          </Text>
+          <Text
+            style={
+              {
+                "color": "#a8a29e",
+                "fontSize": 14,
+                "fontWeight": "600",
+              }
+            }
+          >
+            Info
+          </Text>
+        </View>
       </View>
     </View>
   </View>

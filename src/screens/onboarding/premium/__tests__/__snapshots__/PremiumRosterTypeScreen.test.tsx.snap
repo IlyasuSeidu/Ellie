@@ -152,7 +152,7 @@ Swipe right to choose, left to see more, up for details
             }
           }
         >
-          Days → Nights → Off pattern
+          Days • Nights • Off pattern
         </Text>
       </View>
       <Text
@@ -186,17 +186,52 @@ Swipe right to choose, left to see more, up for details
           ]
         }
       >
-        <Text
+        <View
           style={
-            {
-              "color": "#a8a29e",
-              "fontSize": 14,
-              "fontWeight": "600",
-            }
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 6,
+                "justifyContent": "center",
+              },
+              undefined,
+            ]
           }
         >
-          This one →
-        </Text>
+          <Text
+            style={
+              {
+                "color": "#a8a29e",
+                "fontSize": 14,
+                "fontWeight": "600",
+              }
+            }
+          >
+            This one
+          </Text>
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#e7e5e4",
+                  "fontSize": 14,
+                },
+                undefined,
+                {
+                  "fontFamily": "ionicons",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
       </View>
       <View
         style={
@@ -216,17 +251,52 @@ Swipe right to choose, left to see more, up for details
           ]
         }
       >
-        <Text
+        <View
           style={
-            {
-              "color": "#a8a29e",
-              "fontSize": 14,
-              "fontWeight": "600",
-            }
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 6,
+                "justifyContent": "center",
+              },
+              undefined,
+            ]
           }
         >
-          ← Next option
-        </Text>
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#e7e5e4",
+                  "fontSize": 14,
+                },
+                undefined,
+                {
+                  "fontFamily": "ionicons",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            style={
+              {
+                "color": "#a8a29e",
+                "fontSize": 14,
+                "fontWeight": "600",
+              }
+            }
+          >
+            Next option
+          </Text>
+        </View>
       </View>
       <View
         style={
@@ -246,17 +316,52 @@ Swipe right to choose, left to see more, up for details
           ]
         }
       >
-        <Text
+        <View
           style={
-            {
-              "color": "#a8a29e",
-              "fontSize": 14,
-              "fontWeight": "600",
-            }
+            [
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "gap": 6,
+                "justifyContent": "center",
+              },
+              undefined,
+            ]
           }
         >
-          ↑ Learn more
-        </Text>
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#e7e5e4",
+                  "fontSize": 14,
+                },
+                undefined,
+                {
+                  "fontFamily": "ionicons",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            style={
+              {
+                "color": "#a8a29e",
+                "fontSize": 14,
+                "fontWeight": "600",
+              }
+            }
+          >
+            Learn more
+          </Text>
+        </View>
       </View>
     </View>
     <View
@@ -351,7 +456,7 @@ Swipe right to choose, left to see more, up for details
             }
           }
         >
-          Work blocks → Home blocks
+          Work blocks • Home blocks
         </Text>
       </View>
       <Text

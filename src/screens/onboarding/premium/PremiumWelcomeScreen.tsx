@@ -7,6 +7,7 @@
 import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, Platform, Image, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Ionicons } from '@expo/vector-icons';
 import Animated, {
   FadeIn,
   useAnimatedStyle,
@@ -197,6 +198,8 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
             onPress={handleContinue}
             variant="primary"
             size="large"
+            icon={<Ionicons name="arrow-forward" size={20} color={theme.colors.deepVoid} />}
+            iconPosition="right"
             titleNumberOfLines={1}
             testID={`${testID}-button`}
           />

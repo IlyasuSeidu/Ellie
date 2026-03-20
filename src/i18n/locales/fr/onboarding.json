@@ -18,9 +18,9 @@
     "backToSettings": "Retour aux paramètres",
     "saveAndReturn": "Enregistrer et retourner",
     "hints": {
-      "nextOption": "← Option suivante",
-      "selectThis": "Celui-ci →",
-      "learnMore": "↑ En savoir plus"
+      "nextOption": "Option suivante",
+      "selectThis": "Celui-ci",
+      "learnMore": "En savoir plus"
     },
     "learnMore": {
       "howItWorks": "Comment ça marche",
@@ -234,7 +234,7 @@
     "cards": {
       "rotating": {
         "title": "Liste tournante",
-        "subtitle": "Jours → Nuits → Modèle d'arrêt",
+        "subtitle": "Jours • Nuits • Modèle d'arrêt",
         "description": "Vous alternez entre différents horaires de travail dans un cycle répétitif",
         "details": {
           "howItWorks": "Les travailleurs alternent entre différents horaires de travail (équipes de jour, équipes de nuit, jours de congé) dans un cycle continu",
@@ -266,7 +266,7 @@
       },
       "fifo": {
         "title": "Liste FIFO / Swing",
-        "subtitle": "Blocs de travail → Blocs d'accueil",
+        "subtitle": "Blocs de travail • Blocs d'accueil",
         "description": "Vous travaillez des jours consécutifs sur place, puis bénéficiez de périodes prolongées à la maison",
         "details": {
           "howItWorks": "Les travailleurs se rendent par avion vers des sites distants, travaillent des jours consécutifs (bloc de travail), puis rentrent chez eux pour un repos prolongé (bloc de repos)",
@@ -395,9 +395,9 @@
   },
   "phaseSelector": {
     "hints": {
-      "next": "← Suivant",
-      "select": "Sélectionnez →",
-      "info": "↑ Informations"
+      "next": "Suivant",
+      "select": "Sélectionnez",
+      "info": "Informations"
     },
     "modal": {
       "phaseLengthValue_one": "{{count}} jour",

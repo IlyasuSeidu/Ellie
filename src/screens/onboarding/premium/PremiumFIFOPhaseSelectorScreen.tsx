@@ -52,6 +52,7 @@ import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { PatternBuilderSlider } from '@/components/onboarding/premium/PatternBuilderSlider';
 import { SettingsEntryActionButtons } from '@/components/onboarding/premium/SettingsEntryActionButtons';
+import { SwipeHintLabel } from '@/components/onboarding/premium/SwipeHintLabel';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
@@ -746,19 +747,25 @@ const SwipeableFIFOCard: React.FC<SwipeableFIFOCardProps> = ({
         {(isBlockCard || (index === 0 && isActive)) && (
           <>
             <Animated.View style={[styles.swipeHint, styles.swipeHintLeft, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>
-                {t('phaseSelector.hints.next', { defaultValue: '← Next' })}
-              </Text>
+              <SwipeHintLabel
+                direction="left"
+                text={t('phaseSelector.hints.next', { defaultValue: 'Next' })}
+                textStyle={styles.swipeHintText}
+              />
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintRight, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>
-                {t('phaseSelector.hints.select', { defaultValue: 'Select →' })}
-              </Text>
+              <SwipeHintLabel
+                direction="right"
+                text={t('phaseSelector.hints.select', { defaultValue: 'Select' })}
+                textStyle={styles.swipeHintText}
+              />
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintUp, hintAnimatedStyle]}>
-              <Text style={styles.swipeHintText}>
-                {t('phaseSelector.hints.info', { defaultValue: '↑ Info' })}
-              </Text>
+              <SwipeHintLabel
+                direction="up"
+                text={t('phaseSelector.hints.info', { defaultValue: 'Info' })}
+                textStyle={styles.swipeHintText}
+              />
             </Animated.View>
           </>
         )}

@@ -578,7 +578,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
 
   // Get FIFO cycle description
   const getFIFOCycleSummary = (): string => {
-    return getFIFOCycleDescription(data.fifoConfig).replace(', ', ' → ');
+    return getFIFOCycleDescription(data.fifoConfig).replace(', ', ' • ');
   };
 
   // Get current cycle position (FIFO block day or rotating phase day)
@@ -1078,6 +1078,8 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
               variant="primary"
               size="large"
               disabled={!isSaved}
+              icon={<Ionicons name="arrow-forward" size={20} color={theme.colors.deepVoid} />}
+              iconPosition="right"
               accessibilityLabel={t('completion.getStartedA11yLabel', {
                 defaultValue: 'Get started with Ellie',
               })}

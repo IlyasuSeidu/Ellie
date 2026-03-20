@@ -7,6 +7,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ViewStyle, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { Ionicons } from '@expo/vector-icons';
 import Animated, {
   useAnimatedStyle,
   withSpring,
@@ -87,7 +88,7 @@ export const ProgressHeader: React.FC<ProgressHeaderProps> = ({
               })}
               testID={`${testID}-back`}
             >
-              <Text style={styles.backButtonText}>←</Text>
+              <Ionicons name="arrow-back" size={24} color={theme.colors.dust} />
             </TouchableOpacity>
           ) : (
             <View style={styles.placeholder} />
@@ -205,11 +206,6 @@ const styles = StyleSheet.create({
   placeholder: {
     width: 24,
     height: 24,
-  },
-  backButtonText: {
-    fontSize: 24,
-    color: theme.colors.dust,
-    fontWeight: '600',
   },
   dotsContainer: {
     flexDirection: 'row',

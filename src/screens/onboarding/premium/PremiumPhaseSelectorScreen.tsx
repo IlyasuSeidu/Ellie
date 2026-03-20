@@ -44,6 +44,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { SettingsEntryActionButtons } from '@/components/onboarding/premium/SettingsEntryActionButtons';
+import { SwipeHintLabel } from '@/components/onboarding/premium/SwipeHintLabel';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ShiftSystem, Phase, ShiftPattern } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
@@ -677,11 +678,15 @@ const SwipeablePhaseCard: React.FC<SwipeablePhaseCardProps> = ({
                   end={{ x: 1, y: 1 }}
                   style={styles.swipeHintGradient}
                 >
-                  <Text
-                    style={[styles.swipeHintText, phaseAccent && { color: phaseAccent.hintText }]}
-                  >
-                    {t('phaseSelector.hints.next', { defaultValue: '← Next' })}
-                  </Text>
+                  <SwipeHintLabel
+                    direction="left"
+                    text={t('phaseSelector.hints.next', { defaultValue: 'Next' })}
+                    textStyle={[
+                      styles.swipeHintText,
+                      phaseAccent && { color: phaseAccent.hintText },
+                    ]}
+                    iconColor={phaseAccent?.hintText ?? theme.colors.paper}
+                  />
                 </LinearGradient>
               </View>
             </Animated.View>
@@ -698,11 +703,15 @@ const SwipeablePhaseCard: React.FC<SwipeablePhaseCardProps> = ({
                   end={{ x: 1, y: 1 }}
                   style={styles.swipeHintGradient}
                 >
-                  <Text
-                    style={[styles.swipeHintText, phaseAccent && { color: phaseAccent.hintText }]}
-                  >
-                    {t('phaseSelector.hints.select', { defaultValue: 'Select →' })}
-                  </Text>
+                  <SwipeHintLabel
+                    direction="right"
+                    text={t('phaseSelector.hints.select', { defaultValue: 'Select' })}
+                    textStyle={[
+                      styles.swipeHintText,
+                      phaseAccent && { color: phaseAccent.hintText },
+                    ]}
+                    iconColor={phaseAccent?.hintText ?? theme.colors.paper}
+                  />
                 </LinearGradient>
               </View>
             </Animated.View>
@@ -719,11 +728,15 @@ const SwipeablePhaseCard: React.FC<SwipeablePhaseCardProps> = ({
                   end={{ x: 1, y: 1 }}
                   style={styles.swipeHintGradient}
                 >
-                  <Text
-                    style={[styles.swipeHintText, phaseAccent && { color: phaseAccent.hintText }]}
-                  >
-                    {t('phaseSelector.hints.info', { defaultValue: '↑ Info' })}
-                  </Text>
+                  <SwipeHintLabel
+                    direction="up"
+                    text={t('phaseSelector.hints.info', { defaultValue: 'Info' })}
+                    textStyle={[
+                      styles.swipeHintText,
+                      phaseAccent && { color: phaseAccent.hintText },
+                    ]}
+                    iconColor={phaseAccent?.hintText ?? theme.colors.paper}
+                  />
                 </LinearGradient>
               </View>
             </Animated.View>

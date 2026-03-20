@@ -1,7 +1,7 @@
 {
   "welcome": {
     "tagline": "Know your next shift\nbefore you even think to check.",
-    "getStarted": "Set Up My Roster →",
+    "getStarted": "Set Up My Roster",
     "socialProof": "Built for shift workers like you",
     "trust": {
       "freeTrial": "Free 7-day trial",
@@ -37,9 +37,9 @@
     "backToSettings": "Back to Settings",
     "saveAndReturn": "Save & Return",
     "hints": {
-      "nextOption": "← Next option",
-      "selectThis": "This one →",
-      "learnMore": "↑ Learn more"
+      "nextOption": "Next option",
+      "selectThis": "This one",
+      "learnMore": "Learn more"
     },
     "learnMore": {
       "howItWorks": "How it works",
@@ -303,7 +303,7 @@
     "cards": {
       "rotating": {
         "title": "Rotating Roster",
-        "subtitle": "Days → Nights → Off pattern",
+        "subtitle": "Days • Nights • Off pattern",
         "description": "You rotate through different shift times in a repeating cycle",
         "details": {
           "howItWorks": "Workers rotate through different shift times (day shifts, night shifts, days off) in a continuous cycle",
@@ -329,7 +329,7 @@
       },
       "fifo": {
         "title": "FIFO / Swing Roster",
-        "subtitle": "Work blocks → Home blocks",
+        "subtitle": "Work blocks • Home blocks",
         "description": "You work consecutive days on-site, then get extended time at home",
         "details": {
           "howItWorks": "Workers fly in to remote sites, work consecutive days (work block), then fly home for extended rest (rest block)",
@@ -450,9 +450,9 @@
       "off": "Off Days"
     },
     "hints": {
-      "next": "← Next",
-      "select": "Select →",
-      "info": "↑ Info"
+      "next": "Next",
+      "select": "Select",
+      "info": "Info"
     },
     "modal": {
       "phaseLengthValue_one": "{{count}} day",

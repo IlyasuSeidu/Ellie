@@ -661,7 +661,12 @@ const LivePreviewCard: React.FC<LivePreviewCardProps> = ({
                   {t('customPattern.preview.daysOn', { defaultValue: 'days on' })}
                 </Text>
               </View>
-              <Text style={styles.ratioSeparator}>→</Text>
+              <Ionicons
+                name="arrow-forward"
+                size={18}
+                color={theme.colors.dust}
+                style={styles.ratioSeparator}
+              />
               <View style={styles.ratioItem}>
                 <Text style={styles.ratioNumber}>{daysOff}</Text>
                 <Text style={styles.ratioUnit}>

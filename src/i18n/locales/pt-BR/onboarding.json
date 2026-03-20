@@ -18,9 +18,9 @@
     "backToSettings": "Voltar para configuracoes",
     "saveAndReturn": "Salvar e voltar",
     "hints": {
-      "nextOption": "← Próxima opção",
-      "selectThis": "Este →",
-      "learnMore": "↑ Saiba mais"
+      "nextOption": "Próxima opção",
+      "selectThis": "Este",
+      "learnMore": "Saiba mais"
     },
     "learnMore": {
       "howItWorks": "Como funciona",
@@ -317,7 +317,7 @@
     "cards": {
       "rotating": {
         "title": "Lista Rotativa",
-        "subtitle": "Dias → Noites → Padrão desligado",
+        "subtitle": "Dias • Noites • Padrão desligado",
         "description": "Você alterna entre diferentes horários de turno em um ciclo repetitivo",
         "details": {
           "howItWorks": "Os trabalhadores alternam entre diferentes horários de turnos (turnos diurnos, noturnos, dias de folga) em um ciclo contínuo",
@@ -343,7 +343,7 @@
       },
       "fifo": {
         "title": "Lista FIFO / Swing",
-        "subtitle": "Blocos de trabalho → Blocos iniciais",
+        "subtitle": "Blocos de trabalho • Blocos iniciais",
         "description": "Você trabalha dias consecutivos no local e depois passa mais tempo em casa",
         "details": {
           "howItWorks": "Os trabalhadores voam para locais remotos, trabalham dias consecutivos (bloco de trabalho) e depois voam para casa para descanso prolongado (bloco de descanso)",
@@ -381,9 +381,9 @@
   },
   "phaseSelector": {
     "hints": {
-      "next": "← Próximo",
-      "select": "Selecionar →",
-      "info": "↑ Informações"
+      "next": "Próximo",
+      "select": "Selecionar",
+      "info": "Informações"
     },
     "modal": {
       "phaseLengthValue_one": "{{count}} dia",

@@ -213,9 +213,9 @@ describe('PremiumRosterTypeScreen', () => {
 
     it('renders swipe hints on the active card', () => {
       const { getByText } = renderWithContext();
-      expect(getByText('This one →')).toBeTruthy();
-      expect(getByText('← Next option')).toBeTruthy();
-      expect(getByText('↑ Learn more')).toBeTruthy();
+      expect(getByText('This one')).toBeTruthy();
+      expect(getByText('Next option')).toBeTruthy();
+      expect(getByText('Learn more')).toBeTruthy();
     });
 
     it('renders progress dots', () => {
@@ -228,7 +228,7 @@ describe('PremiumRosterTypeScreen', () => {
       expect(
         getByText('You rotate through different shift times in a repeating cycle')
       ).toBeTruthy();
-      expect(getByText('Days → Nights → Off pattern')).toBeTruthy();
+      expect(getByText('Days • Nights • Off pattern')).toBeTruthy();
       expect(queryByText('Common patterns:')).toBeNull();
       expect(queryByText('Popular in:')).toBeNull();
     });

@@ -140,9 +140,9 @@ describe('PremiumShiftSystemScreen', () => {
     it('should show swipe hints on active card', () => {
       const { getByText } = renderWithProviders(<PremiumShiftSystemScreen />);
 
-      expect(getByText('← Next option')).toBeTruthy();
-      expect(getByText('This one →')).toBeTruthy();
-      expect(getByText('↑ Learn more')).toBeTruthy();
+      expect(getByText('Next option')).toBeTruthy();
+      expect(getByText('This one')).toBeTruthy();
+      expect(getByText('Learn more')).toBeTruthy();
     });
 
     it('should render card icon', () => {

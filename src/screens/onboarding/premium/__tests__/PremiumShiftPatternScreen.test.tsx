@@ -154,9 +154,9 @@ describe('PremiumShiftPatternScreen', () => {
 
     it('should show swipe hints on first card', () => {
       const { getByText } = renderWithContext(<PremiumShiftPatternScreen />);
-      expect(getByText('← Next option')).toBeTruthy();
-      expect(getByText('This one →')).toBeTruthy();
-      expect(getByText('↑ Learn more')).toBeTruthy();
+      expect(getByText('Next option')).toBeTruthy();
+      expect(getByText('This one')).toBeTruthy();
+      expect(getByText('Learn more')).toBeTruthy();
     });
   });
 

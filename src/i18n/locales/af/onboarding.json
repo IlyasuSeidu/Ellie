@@ -18,9 +18,9 @@
     "backToSettings": "Terug na Instellings",
     "saveAndReturn": "Stoor en gee terug",
     "hints": {
-      "nextOption": "← Volgende opsie",
-      "selectThis": "Hierdie een →",
-      "learnMore": "↑ Kom meer te wete"
+      "nextOption": "Volgende opsie",
+      "selectThis": "Hierdie een",
+      "learnMore": "Kom meer te wete"
     },
     "learnMore": {
       "howItWorks": "Hoe dit werk",
@@ -221,7 +221,7 @@
     "cards": {
       "rotating": {
         "title": "Roterende rooster",
-        "subtitle": "Dae → Nagte → Af patroon",
+        "subtitle": "Dae • Nagte • Af patroon",
         "description": "Jy roteer deur verskillende skoftye in 'n herhalende siklus",
         "details": {
           "howItWorks": "Werkers roteer deur verskillende skoftye (dagskofte, nagskofte, afdae) in 'n aaneenlopende siklus",
@@ -247,7 +247,7 @@
       },
       "fifo": {
         "title": "EIEU / Swing Roster",
-        "subtitle": "Werkblokke → Tuisblokke",
+        "subtitle": "Werkblokke • Tuisblokke",
         "description": "Jy werk opeenvolgende dae ter plaatse en kry dan lang tyd by die huis",
         "details": {
           "howItWorks": "Werkers vlieg na afgeleë terreine, werk opeenvolgende dae (werkblok), vlieg dan huis toe vir lang rus (rusblok)",
@@ -372,9 +372,9 @@
   },
   "phaseSelector": {
     "hints": {
-      "next": "← Volgende",
-      "select": "Kies →",
-      "info": "↑ Inligting"
+      "next": "Volgende",
+      "select": "Kies",
+      "info": "Inligting"
     },
     "modal": {
       "phaseLengthValue_one": "{{count}} dag",

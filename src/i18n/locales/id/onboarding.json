@@ -18,9 +18,9 @@
     "backToSettings": "Kembali ke Pengaturan",
     "saveAndReturn": "Simpan & Kembali",
     "hints": {
-      "nextOption": "← Opsi selanjutnya",
-      "selectThis": "Yang ini →",
-      "learnMore": "↑ Pelajari lebih lanjut"
+      "nextOption": "Opsi selanjutnya",
+      "selectThis": "Yang ini",
+      "learnMore": "Pelajari lebih lanjut"
     },
     "learnMore": {
       "howItWorks": "Bagaimana cara kerjanya",
@@ -229,7 +229,7 @@
     "cards": {
       "rotating": {
         "title": "Rotasi Daftar",
-        "subtitle": "Hari → Malam → Pola mati",
+        "subtitle": "Hari • Malam • Pola mati",
         "description": "Anda memutar waktu shift yang berbeda dalam siklus berulang",
         "details": {
           "howItWorks": "Pekerja melakukan rotasi melalui waktu shift yang berbeda (shift siang, shift malam, hari libur) dalam siklus yang berkesinambungan",
@@ -261,7 +261,7 @@
       },
       "fifo": {
         "title": "FIFO / Daftar Ayunan",
-        "subtitle": "Blok kerja → Blok rumah",
+        "subtitle": "Blok kerja • Blok rumah",
         "description": "Anda bekerja beberapa hari berturut-turut di tempat, lalu mendapat perpanjangan waktu di rumah",
         "details": {
           "howItWorks": "Pekerja terbang ke lokasi terpencil, bekerja selama beberapa hari berturut-turut (blok kerja), kemudian terbang pulang untuk istirahat lebih lama (blok istirahat)",
@@ -386,8 +386,8 @@
   },
   "phaseSelector": {
     "hints": {
-      "next": "← Selanjutnya",
-      "select": "Pilih →",
+      "next": "Selanjutnya",
+      "select": "Pilih",
       "info": "^ Informasi"
     },
     "modal": {

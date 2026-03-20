@@ -18,9 +18,9 @@
     "backToSettings": "返回设置",
     "saveAndReturn": "保存并返回",
     "hints": {
-      "nextOption": "← 下一个选项",
-      "selectThis": "这个→",
-      "learnMore": "↑ 了解更多"
+      "nextOption": "下一个选项",
+      "selectThis": "这个",
+      "learnMore": "了解更多"
     },
     "learnMore": {
       "howItWorks": "它是如何运作的",
@@ -208,7 +208,7 @@
     "cards": {
       "rotating": {
         "title": "轮换名单",
-        "subtitle": "白天 → 夜晚 → 关闭模式",
+        "subtitle": "白天 • 夜晚 • 关闭模式",
         "description": "您在重复循环中轮换不同的轮班时间",
         "details": {
           "howItWorks": "工人连续循环地轮换不同的轮班时间（白班、夜班、休息日）",
@@ -220,7 +220,7 @@
       },
       "fifo": {
         "title": "先进先出/摇摆名册",
-        "subtitle": "工作块 → 家庭块",
+        "subtitle": "工作块 • 家庭块",
         "description": "您在现场连续工作几天，然后延长在家工作的时间",
         "details": {
           "howItWorks": "工人飞往偏远地点，连续工作几天（工作区），然后飞回家延长休息时间（休息区）",
@@ -335,9 +335,9 @@
   },
   "phaseSelector": {
     "hints": {
-      "next": "← 下一页",
-      "select": "选择→",
-      "info": "↑ 信息"
+      "next": "下一页",
+      "select": "选择",
+      "info": "信息"
     },
     "modal": {
       "phaseLengthValue_one": "{{count}} 天",

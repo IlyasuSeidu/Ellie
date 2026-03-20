@@ -7,6 +7,7 @@
 import React, { useState, useMemo } from 'react';
 import { View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { Ionicons } from '@expo/vector-icons';
 import Animated from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
@@ -195,7 +196,7 @@ export const PremiumCalendar: React.FC<PremiumCalendarProps> = ({
           })}
           testID={`${testID}-prev-month`}
         >
-          <Animated.Text style={styles.navText}>‹</Animated.Text>
+          <Ionicons name="chevron-back" size={22} color={theme.colors.sacredGold} />
         </TouchableOpacity>
 
         <Animated.Text style={styles.monthText}>{monthLabel}</Animated.Text>
@@ -209,7 +210,7 @@ export const PremiumCalendar: React.FC<PremiumCalendarProps> = ({
           })}
           testID={`${testID}-next-month`}
         >
-          <Animated.Text style={styles.navText}>›</Animated.Text>
+          <Ionicons name="chevron-forward" size={22} color={theme.colors.sacredGold} />
         </TouchableOpacity>
       </View>
 

@@ -514,8 +514,9 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                 >
                   <Ionicons name="time-outline" size={16} color={theme.colors.sacredGold} />
                   <Animated.Text style={styles.addTimesText}>
-                    {t('shiftStatus.addShiftTimes', { defaultValue: 'Add shift times →' })}
+                    {t('shiftStatus.addShiftTimes', { defaultValue: 'Add shift times' })}
                   </Animated.Text>
+                  <Ionicons name="chevron-forward" size={16} color={theme.colors.sacredGold} />
                 </TouchableOpacity>
               )}
 
