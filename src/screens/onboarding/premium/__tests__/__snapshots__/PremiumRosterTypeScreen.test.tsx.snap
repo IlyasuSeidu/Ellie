@@ -216,7 +216,7 @@ Swipe right to choose, left to see more, up for details
             style={
               [
                 {
-                  "color": "#e7e5e4",
+                  "color": "#a8a29e",
                   "fontSize": 14,
                 },
                 undefined,
@@ -270,7 +270,7 @@ Swipe right to choose, left to see more, up for details
             style={
               [
                 {
-                  "color": "#e7e5e4",
+                  "color": "#a8a29e",
                   "fontSize": 14,
                 },
                 undefined,
@@ -335,7 +335,7 @@ Swipe right to choose, left to see more, up for details
             style={
               [
                 {
-                  "color": "#e7e5e4",
+                  "color": "#a8a29e",
                   "fontSize": 14,
                 },
                 undefined,

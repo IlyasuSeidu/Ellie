@@ -219,7 +219,8 @@
       "trialBadge": "ESSAI GRATUIT 7 JOURS · AUCUN FRAIS AUJOURD’HUI",
       "title_named": "{{name}}, votre roulement est prêt.",
       "subtitle_fifo": "Votre cycle FIFO est cartographié. Voyez chaque swing et chaque jour de repos sur vos 3 prochains mois.",
-      "subtitle_rotating": "Votre roulement rotatif est cartographié. Voyez chaque poste sur vos 3 prochains mois."
+      "subtitle_rotating": "Votre roulement rotatif est cartographié. Voyez chaque poste sur vos 3 prochains mois.",
+      "billingDisclosure": "Votre essai gratuit de 7 jours se termine le {{date}}. Annulez à tout moment dans Réglages avant cette date pour éviter les frais. Les abonnements se renouvellent automatiquement."
     },
     "profile": {
       "rowActiveA11y": "Ellie Abonnement Pro actif",

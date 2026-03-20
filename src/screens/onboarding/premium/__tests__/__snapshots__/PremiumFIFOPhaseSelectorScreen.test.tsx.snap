@@ -481,7 +481,7 @@ This option means straight days only.
           }
         >
           <Text
-            color="#e7e5e4"
+            color="#a8a29e"
             name="arrow-back"
             size={14}
           >
@@ -543,7 +543,7 @@ This option means straight days only.
             Select
           </Text>
           <Text
-            color="#e7e5e4"
+            color="#a8a29e"
             name="arrow-forward"
             size={14}
           >
@@ -583,7 +583,7 @@ This option means straight days only.
           }
         >
           <Text
-            color="#e7e5e4"
+            color="#a8a29e"
             name="arrow-up"
             size={14}
           >

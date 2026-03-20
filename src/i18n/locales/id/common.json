@@ -219,7 +219,8 @@
       "trialBadge": "UJI COBA GRATIS 7 HARI · TANPA BIAYA HARI INI",
       "title_named": "{{name}}, roster Anda sudah siap.",
       "subtitle_fifo": "Siklus FIFO Anda sudah dipetakan. Lihat setiap swing dan setiap hari libur untuk 3 bulan ke depan.",
-      "subtitle_rotating": "Roster bergilir Anda sudah dipetakan. Lihat setiap shift untuk 3 bulan ke depan."
+      "subtitle_rotating": "Roster bergilir Anda sudah dipetakan. Lihat setiap shift untuk 3 bulan ke depan.",
+      "billingDisclosure": "Uji coba gratis 7 hari Anda berakhir pada {{date}}. Batalkan kapan saja di Pengaturan sebelum itu agar tidak dikenai biaya. Langganan diperpanjang otomatis."
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro langganan aktif",

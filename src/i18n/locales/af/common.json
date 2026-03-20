@@ -219,7 +219,8 @@
       "trialBadge": "GRATIS 7-DAE PROEF · GEEN HEFFING VANDAG",
       "title_named": "{{name}}, jou rooster is gereed.",
       "subtitle_fifo": "Jou FIFO-siklus is uitgewerk. Sien elke swing en elke afdag vir jou volgende 3 maande.",
-      "subtitle_rotating": "Jou roterende rooster is uitgewerk. Sien elke skof vir jou volgende 3 maande."
+      "subtitle_rotating": "Jou roterende rooster is uitgewerk. Sien elke skof vir jou volgende 3 maande.",
+      "billingDisclosure": "Jou gratis proeflopie van 7 dae eindig op {{date}}. Kanselleer enige tyd in Instellings voor dan om heffings te vermy. Intekeninge hernu outomaties."
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro aktiewe intekening",

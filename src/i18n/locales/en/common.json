@@ -217,7 +217,8 @@
       "trialBadge": "FREE 7-DAY TRIAL · NO CHARGE TODAY",
       "title_named": "{{name}}, your roster is ready.",
       "subtitle_fifo": "Your FIFO cycle is mapped. See every swing, every day off, for your next 3 months.",
-      "subtitle_rotating": "Your rotating roster is mapped. See every shift for your next 3 months."
+      "subtitle_rotating": "Your rotating roster is mapped. See every shift for your next 3 months.",
+      "billingDisclosure": "Your 7-day free trial ends {{date}}. Cancel anytime in Settings before then to avoid charges. Subscriptions renew automatically."
     },
     "profile": {
       "rowActiveA11y": "Ellie Pro active subscription",

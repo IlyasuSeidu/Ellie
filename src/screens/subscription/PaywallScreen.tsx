@@ -28,6 +28,7 @@ import { theme } from '@/utils/theme';
 import { Analytics } from '@/utils/analytics';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
 import { MiniYearCalendar } from '@/components/paywall/MiniYearCalendar';
+import { formatLocalizedDate } from '@/utils/i18nFormat';
 
 interface PaywallScreenProps {
   onDismiss: () => void;
@@ -51,7 +52,7 @@ const CARD_WIDTH = Dimensions.get('window').width - 48;
 
 export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboardingData }) => {
   const insets = useSafeAreaInsets();
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
   const tLoose = t as unknown as (key: string, options?: Record<string, unknown>) => string;
   const { restorePurchases } = useSubscription();
   const [annualPackage, setAnnualPackage] = useState<PurchasesPackage | null>(null);
@@ -195,6 +196,19 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
             defaultValue: 'Your rotating roster is mapped. See every shift for your next 3 months.',
           })
         : t('subscription.paywall.subtitle');
+  const trialEndDate = useMemo(
+    () =>
+      formatLocalizedDate(
+        new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        {
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric',
+        },
+        i18n.language
+      ),
+    [i18n.language]
+  );
 
   const handleDismiss = () => {
     Analytics.paywallDismissed({
@@ -422,6 +436,14 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
             </Text>
           </View>
         </View>
+
+        <Text style={styles.billingDisclosure}>
+          {t('subscription.paywall.billingDisclosure', {
+            date: trialEndDate,
+            defaultValue:
+              'Your 7-day free trial ends {{date}}. Cancel anytime in Settings before then to avoid charges. Subscriptions renew automatically.',
+          })}
+        </Text>
 
         {/* Value frame */}
         <Text style={styles.valueFrame}>
@@ -922,6 +944,15 @@ const styles = StyleSheet.create({
     fontSize: 11,
     textAlign: 'center',
     flexShrink: 1,
+  },
+  billingDisclosure: {
+    color: theme.colors.dust,
+    fontSize: 12,
+    lineHeight: 18,
+    textAlign: 'center',
+    marginTop: -2,
+    marginBottom: 12,
+    paddingHorizontal: 8,
   },
 
   // ── Value frame + security ──

@@ -219,7 +219,8 @@
       "trialBadge": "PRUEBA GRATIS DE 7 DÍAS · SIN COBRO HOY",
       "title_named": "{{name}}, tu roster está listo.",
       "subtitle_fifo": "Tu ciclo FIFO ya está trazado. Ve cada swing y cada día libre durante tus próximos 3 meses.",
-      "subtitle_rotating": "Tu roster rotativo ya está trazado. Ve cada turno durante tus próximos 3 meses."
+      "subtitle_rotating": "Tu roster rotativo ya está trazado. Ve cada turno durante tus próximos 3 meses.",
+      "billingDisclosure": "Tu prueba gratuita de 7 días termina el {{date}}. Cancela en cualquier momento en Ajustes antes de esa fecha para evitar cargos. Las suscripciones se renuevan automáticamente."
     },
     "profile": {
       "rowActiveA11y": "Ellie Suscripción activa profesional",

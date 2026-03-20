@@ -44,6 +44,7 @@ describe('PaywallScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
+    jest.setSystemTime(new Date('2026-03-20T00:00:00Z'));
   });
 
   afterEach(() => {
@@ -72,6 +73,11 @@ describe('PaywallScreen', () => {
       )
     ).toBeTruthy();
     expect(getByText('See your next 3 months — every work block, every R&R')).toBeTruthy();
+    expect(
+      getByText(
+        'Your 7-day free trial ends March 27, 2026. Cancel anytime in Settings before then to avoid charges. Subscriptions renew automatically.'
+      )
+    ).toBeTruthy();
     expect(queryByText(/Introductory offer ends in/i)).toBeNull();
   });
 

@@ -219,7 +219,8 @@
       "trialBadge": "TESTE GRÁTIS DE 7 DIAS · SEM COBRANÇA HOJE",
       "title_named": "{{name}}, seu roster está pronto.",
       "subtitle_fifo": "Seu ciclo FIFO está mapeado. Veja cada swing e cada folga nos seus próximos 3 meses.",
-      "subtitle_rotating": "Seu rodízio rotativo está mapeado. Veja cada turno nos seus próximos 3 meses."
+      "subtitle_rotating": "Seu rodízio rotativo está mapeado. Veja cada turno nos seus próximos 3 meses.",
+      "billingDisclosure": "Sua avaliação gratuita de 7 dias termina em {{date}}. Cancele a qualquer momento em Ajustes antes dessa data para evitar cobranças. As assinaturas são renovadas automaticamente."
     },
     "profile": {
       "rowActiveA11y": "Ellie Assinatura Pro ativa",
