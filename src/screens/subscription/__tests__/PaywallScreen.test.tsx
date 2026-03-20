@@ -71,6 +71,36 @@ describe('PaywallScreen', () => {
     expect(queryByText(/Introductory offer ends in/i)).toBeNull();
   });
 
+  it('renders plans and CTA before the supporting feature and testimonial content', () => {
+    const { toJSON } = render(
+      <PaywallScreen
+        onDismiss={mockOnDismiss}
+        onboardingData={{
+          name: 'Ilyasu',
+          country: 'Ghana',
+          rosterType: 'fifo',
+          painPoint: 'cycle_lost',
+          patternType: ShiftPattern.FIFO_8_6,
+        }}
+      />
+    );
+
+    const renderedTree = JSON.stringify(toJSON());
+    const annualIndex = renderedTree.indexOf('Annual');
+    const ctaIndex = renderedTree.indexOf('Start Free 7-Day Trial');
+    const featureIndex = renderedTree.indexOf(
+      'See your next 3 months — every work block, every R&R'
+    );
+    const testimonialIndex = renderedTree.indexOf(
+      'Sarah K., Underground miner — 12h rotating shifts'
+    );
+
+    expect(annualIndex).toBeGreaterThan(-1);
+    expect(ctaIndex).toBeGreaterThan(annualIndex);
+    expect(featureIndex).toBeGreaterThan(ctaIndex);
+    expect(testimonialIndex).toBeGreaterThan(featureIndex);
+  });
+
   it('tracks restore tap and dismiss metadata', async () => {
     const { getByText, getByLabelText } = render(
       <PaywallScreen

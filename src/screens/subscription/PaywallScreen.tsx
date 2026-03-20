@@ -280,60 +280,6 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
           <Text style={styles.subtitle}>{t('subscription.paywall.subtitle')}</Text>
         </View>
 
-        {/* ── Testimonials ── */}
-        <View style={styles.testimonialsSection}>
-          <ScrollView
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            snapToInterval={CARD_WIDTH + 12}
-            decelerationRate="fast"
-            onMomentumScrollEnd={(event) => {
-              const nextIndex = Math.round(event.nativeEvent.contentOffset.x / (CARD_WIDTH + 12));
-              setActiveTestimonial(nextIndex);
-            }}
-          >
-            {testimonials.map((testimonial, index) => (
-              <View
-                key={`${testimonial.author}-${index}`}
-                style={[styles.testimonialCard, { width: CARD_WIDTH }]}
-              >
-                {/* Gold top accent */}
-                <View style={styles.cardTopAccent} />
-                <View style={styles.testimonialInner}>
-                  <Text style={styles.testimonialStars}>{'★'.repeat(testimonial.stars)}</Text>
-                  <Text style={styles.testimonialQuote}>{`"${testimonial.quote}"`}</Text>
-                  <Text style={styles.testimonialAuthor}>— {testimonial.author}</Text>
-                </View>
-              </View>
-            ))}
-          </ScrollView>
-          <View style={styles.pageDots}>
-            {testimonials.map((_, index) => (
-              <View
-                key={index}
-                style={[styles.dot, activeTestimonial === index && styles.dotActive]}
-              />
-            ))}
-          </View>
-        </View>
-
-        {/* ── Features card ── */}
-        <View style={styles.featuresCard}>
-          <View style={styles.cardTopAccent} />
-          {featureRows.map((feature, index) => (
-            <View
-              key={feature.text}
-              style={[styles.featureRow, index < featureRows.length - 1 && styles.featureRowBorder]}
-            >
-              <View style={styles.featureIconBadge}>
-                <Ionicons name={feature.icon} size={15} color={theme.colors.sacredGold} />
-              </View>
-              <Text style={styles.featureText}>{feature.text}</Text>
-            </View>
-          ))}
-        </View>
-
         {/* ── Plan selector ── */}
         {loading ? (
           <ActivityIndicator color={theme.colors.paleGold} style={styles.loader} />
@@ -410,16 +356,6 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
           </View>
         )}
 
-        {/* ── Loss aversion — placed directly above CTA for max impact ── */}
-        <View style={styles.lossAversion}>
-          <Ionicons name="lock-closed-outline" size={15} color={theme.colors.sacredGold} />
-          <Text style={styles.lossAversionText}>
-            {t('subscription.paywall.lossAversion', {
-              defaultValue: "Without Pro, you're back to counting shifts on your hands.",
-            })}
-          </Text>
-        </View>
-
         {/* ── CTA button ── */}
         <Animated.View style={ctaAnimatedStyle}>
           <TouchableOpacity
@@ -482,6 +418,69 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ onDismiss, onboard
             defaultValue: 'Less than a coffee per week to know your next 3 months.',
           })}
         </Text>
+
+        {/* ── Loss aversion ── */}
+        <View style={styles.lossAversion}>
+          <Ionicons name="lock-closed-outline" size={15} color={theme.colors.sacredGold} />
+          <Text style={styles.lossAversionText}>
+            {t('subscription.paywall.lossAversion', {
+              defaultValue: "Without Pro, you're back to counting shifts on your hands.",
+            })}
+          </Text>
+        </View>
+
+        {/* ── Features card ── */}
+        <View style={styles.featuresCard}>
+          <View style={styles.cardTopAccent} />
+          {featureRows.map((feature, index) => (
+            <View
+              key={feature.text}
+              style={[styles.featureRow, index < featureRows.length - 1 && styles.featureRowBorder]}
+            >
+              <View style={styles.featureIconBadge}>
+                <Ionicons name={feature.icon} size={15} color={theme.colors.sacredGold} />
+              </View>
+              <Text style={styles.featureText}>{feature.text}</Text>
+            </View>
+          ))}
+        </View>
+
+        {/* ── Testimonials ── */}
+        <View style={styles.testimonialsSection}>
+          <ScrollView
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            snapToInterval={CARD_WIDTH + 12}
+            decelerationRate="fast"
+            onMomentumScrollEnd={(event) => {
+              const nextIndex = Math.round(event.nativeEvent.contentOffset.x / (CARD_WIDTH + 12));
+              setActiveTestimonial(nextIndex);
+            }}
+          >
+            {testimonials.map((testimonial, index) => (
+              <View
+                key={`${testimonial.author}-${index}`}
+                style={[styles.testimonialCard, { width: CARD_WIDTH }]}
+              >
+                <View style={styles.cardTopAccent} />
+                <View style={styles.testimonialInner}>
+                  <Text style={styles.testimonialStars}>{'★'.repeat(testimonial.stars)}</Text>
+                  <Text style={styles.testimonialQuote}>{`"${testimonial.quote}"`}</Text>
+                  <Text style={styles.testimonialAuthor}>— {testimonial.author}</Text>
+                </View>
+              </View>
+            ))}
+          </ScrollView>
+          <View style={styles.pageDots}>
+            {testimonials.map((_, index) => (
+              <View
+                key={index}
+                style={[styles.dot, activeTestimonial === index && styles.dotActive]}
+              />
+            ))}
+          </View>
+        </View>
 
         {/* Security */}
         <View style={styles.securityRow}>
