@@ -1044,7 +1044,7 @@
     "subheadline": "Ini pratinjau 3 bulan berikutnya untuk Anda. Tidak perlu menebak-nebak lagi di kepala.",
     "heyEllieTitle": "Tanya Ellie tentang roster Anda",
     "ctaPrimary": "Buka Akses Penuh — Uji Coba Gratis 7 Hari",
-    "ctaSecondary": "atau lanjutkan dengan akses terbatas",
+    "ctaSecondary": "atau lewati — hanya minggu ini, tanpa setahun penuh",
     "stats": {
       "workDays": "Hari kerja",
       "nightShifts": "Shift malam",
@@ -1071,7 +1071,7 @@
     },
     "buttonLabel": "Hai Ellie",
     "headline_named": "Shift {{name}}, sudah dipetakan.",
-    "ctaSecondaryA11y": "Lanjutkan dengan akses terbatas, tanpa uji coba gratis",
+    "ctaSecondaryA11y": "Lewati uji coba — terbatas hanya minggu ini, tanpa tampilan setahun penuh",
     "painCallback": {
       "cycle_lost": "Tidak lagi kehilangan posisi. Siklus Anda sudah terkunci.",
       "wrong_alarm": "Tidak lagi pasang alarm yang salah. Shift Anda dipetakan dengan tepat.",

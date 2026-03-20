@@ -183,15 +183,19 @@
         "annualSuffix": "/an",
         "monthlySuffix": "/mois",
         "save": "ÉCONOMISEZ 40 %",
-        "bestValue": "MEILLEURE VALEUR",
+        "bestValue": "LE PLUS POPULAIRE",
         "perMonth": "/mois",
-        "savePercent": "ÉCONOMISEZ {{percent}}%"
+        "savePercent": "ÉCONOMISEZ {{percent}}%",
+        "monthlyNoSavings": "Aucune économie annuelle",
+        "weekly": "Hebdomadaire",
+        "weeklySuffix": "/sem",
+        "weeklyBilled": "Facturé chaque semaine"
       },
       "cta": "Commencez l'essai gratuit de 7 jours",
       "noCard": "Aucune carte de crédit requise · Annulez à tout moment",
       "restorePurchases": "Restaurer les achats",
       "privacyPolicy": "politique de confidentialité",
-      "socialProof": "4.8 · Trusted by 50,000+ shift workers",
+      "socialProof": "Adopté par les mineurs souterrains, les opérateurs FIFO et les travailleurs en rotation.",
       "testimonials": [
         {
           "quote": "J’ai réservé mes vols autour de mon swing des mois à l’avance sans appeler les RH.",
@@ -220,7 +224,12 @@
       "title_named": "{{name}}, votre roulement est prêt.",
       "subtitle_fifo": "Votre cycle FIFO est cartographié. Voyez chaque swing et chaque jour de repos sur toute votre année.",
       "subtitle_rotating": "Votre roulement rotatif est cartographié. Voyez chaque poste sur toute votre année.",
-      "billingDisclosure": "Votre essai gratuit de 7 jours se termine le {{date}}. Annulez à tout moment dans Réglages avant cette date pour éviter les frais. Les abonnements se renouvellent automatiquement."
+      "billingDisclosure": "Votre essai gratuit de 7 jours se termine le {{date}}. Annulez à tout moment dans Réglages avant cette date pour éviter les frais. Les abonnements se renouvellent automatiquement.",
+      "lossAversion_fifo": "Sans Pro, vos dates de rotation FIFO redeviennent un mystère. Prochain R&R : inconnu. Réservez la mauvaise semaine, perdez les vols.",
+      "lossAversion_rotating": "Sans Pro, votre roster redevient opaque. Aucun préavis, aucune planification en avance. Retour aux suppositions devant le panneau.",
+      "lossAversion_family": "Sans Pro, votre famille ne sait plus quand vous êtes à la maison.",
+      "testimonialAnchor": "4.8 · plus de 2 400 avis",
+      "purchaseSuccess": "Votre essai de 7 jours a commencé"
     },
     "profile": {
       "rowActiveA11y": "Ellie Abonnement Pro actif",

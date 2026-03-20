@@ -1030,7 +1030,7 @@
     "subheadline": "Hier is 'n voorskou van jou volgende 3 maande. Geen tweede raaiskote meer in jou kop nie.",
     "heyEllieTitle": "Vra vir Ellie oor jou rooster",
     "ctaPrimary": "Ontsluit volle toegang — 7 dae gratis proeflopie",
-    "ctaSecondary": "of gaan voort met beperkte toegang",
+    "ctaSecondary": "of slaan oor — net huidige week, geen volle jaar nie",
     "stats": {
       "workDays": "Werksdae",
       "nightShifts": "Nagskofte",
@@ -1057,7 +1057,7 @@
     },
     "buttonLabel": "Hallo Ellie",
     "headline_named": "{{name}} se skofte, uitgekaart.",
-    "ctaSecondaryA11y": "Gaan voort met beperkte toegang, sonder gratis proeflopie",
+    "ctaSecondaryA11y": "Slaan proef oor — beperk tot huidige week, geen volledige jaar-aansig nie",
     "painCallback": {
       "cycle_lost": "Moenie weer jou plek verloor nie. Jou siklus is vasgelê.",
       "wrong_alarm": "Moenie weer die verkeerde alarm stel nie. Jou skofte is presies uitgewerk.",

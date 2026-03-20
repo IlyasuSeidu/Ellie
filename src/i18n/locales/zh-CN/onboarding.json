@@ -993,7 +993,7 @@
     "subheadline": "这就是你接下来3个月的预览。再也不用在脑子里反复猜了。",
     "heyEllieTitle": "向 Ellie 询问你的班表",
     "ctaPrimary": "解锁完整访问权限 — 7天免费试用",
-    "ctaSecondary": "或继续使用受限访问",
+    "ctaSecondary": "或跳过——仅限当前这一周，没有全年视图",
     "stats": {
       "workDays": "工作日",
       "nightShifts": "夜班",
@@ -1020,7 +1020,7 @@
     },
     "buttonLabel": "你好 Ellie",
     "headline_named": "{{name}}的班表，已经排好。",
-    "ctaSecondaryA11y": "继续使用受限访问，无免费试用",
+    "ctaSecondaryA11y": "跳过试用——仅限当前这一周，没有全年视图",
     "painCallback": {
       "cycle_lost": "不用再弄丢自己的位置了。你的周期已经锁定。",
       "wrong_alarm": "不用再设错闹钟了。你的班次已经精确排好。",

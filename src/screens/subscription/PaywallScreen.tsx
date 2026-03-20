@@ -36,7 +36,7 @@ interface PaywallScreenProps {
   entryPoint: PaywallTriggerSource;
 }
 
-type PlanKey = 'annual' | 'monthly';
+type PlanKey = 'annual' | 'monthly' | 'weekly';
 
 type FeatureRow = {
   icon: keyof typeof Ionicons.glyphMap;
@@ -62,6 +62,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
   const { restorePurchases } = useSubscription();
   const [annualPackage, setAnnualPackage] = useState<PurchasesPackage | null>(null);
   const [monthlyPackage, setMonthlyPackage] = useState<PurchasesPackage | null>(null);
+  const [weeklyPackage, setWeeklyPackage] = useState<PurchasesPackage | null>(null);
   const [selectedPlan, setSelectedPlan] = useState<PlanKey>('annual');
   const [loading, setLoading] = useState(true);
   const [purchasing, setPurchasing] = useState(false);
@@ -70,6 +71,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
   const purchasesAvailable = useMemo(() => isRevenueCatAvailable(), []);
   const ctaPulse = useSharedValue(1);
   const openedAtRef = useRef(Date.now());
+  const purchaseSuccessDismissTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const paywallAnalyticsMetadata = useMemo(
     () => ({
@@ -121,19 +123,46 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
     [tLoose]
   );
 
+  const [purchaseSuccess, setPurchaseSuccess] = useState(false);
+
   const ctaAnimatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: ctaPulse.value }],
   }));
 
+  // R3: personalised loss aversion — painPoint overrides, then rosterType, then generic
+  const lossAversionText = useMemo(() => {
+    if (onboardingData?.painPoint === 'family') {
+      return t('subscription.paywall.lossAversion_family', {
+        defaultValue: "Without Pro, your family goes back to not knowing when you're home.",
+      });
+    }
+    if (onboardingData?.rosterType === 'fifo') {
+      return t('subscription.paywall.lossAversion_fifo', {
+        defaultValue:
+          'Without Pro, your swing dates go back to being a mystery. Next R&R — unknown. Book the wrong week, lose the flights.',
+      });
+    }
+    if (onboardingData?.rosterType === 'rotating') {
+      return t('subscription.paywall.lossAversion_rotating', {
+        defaultValue:
+          'Without Pro, your roster goes dark. No early warning, no planning ahead. Back to guessing the noticeboard.',
+      });
+    }
+    return t('subscription.paywall.lossAversion', {
+      defaultValue: "Without Pro, you're back to counting shifts on your hands.",
+    });
+  }, [onboardingData?.painPoint, onboardingData?.rosterType, t]);
+
   useEffect(() => {
     Analytics.paywallViewed(entryPoint, paywallAnalyticsMetadata);
 
-    const dismissTimer = setTimeout(() => setDismissVisible(true), 4000);
+    const dismissTimer = setTimeout(() => setDismissVisible(true), 8000);
 
     const revenueCatRuntime = getRevenueCatRuntime();
     if (!revenueCatRuntime) {
       setAnnualPackage(null);
       setMonthlyPackage(null);
+      setWeeklyPackage(null);
       setLoading(false);
       return () => clearTimeout(dismissTimer);
     }
@@ -146,11 +175,13 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
         if (current) {
           setAnnualPackage(current.annual ?? null);
           setMonthlyPackage(current.monthly ?? null);
+          setWeeklyPackage(current.weekly ?? null);
         }
       })
       .catch(() => {
         setAnnualPackage(null);
         setMonthlyPackage(null);
+        setWeeklyPackage(null);
       })
       .finally(() => setLoading(false));
 
@@ -168,9 +199,23 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
     );
   }, [ctaPulse]);
 
-  const selectedPackage = selectedPlan === 'annual' ? annualPackage : monthlyPackage;
+  useEffect(() => {
+    return () => {
+      if (purchaseSuccessDismissTimerRef.current) {
+        clearTimeout(purchaseSuccessDismissTimerRef.current);
+      }
+    };
+  }, []);
+
+  const selectedPackage =
+    selectedPlan === 'annual'
+      ? annualPackage
+      : selectedPlan === 'monthly'
+        ? monthlyPackage
+        : weeklyPackage;
   const annualPrice = annualPackage?.product.priceString ?? '$49.99';
   const monthlyPrice = monthlyPackage?.product.priceString ?? '$6.99';
+  const weeklyPrice = weeklyPackage?.product.priceString ?? '$1.99';
 
   const annualMonthlyEquivalent = useMemo(() => {
     if (!annualPackage) return '$2.99';
@@ -249,7 +294,8 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
       const { Purchases } = revenueCatRuntime;
       await Purchases.purchasePackage(selectedPackage);
       Analytics.trialStarted(selectedPlan, selectedPackage.product.price ?? 0);
-      onDismiss();
+      setPurchaseSuccess(true);
+      purchaseSuccessDismissTimerRef.current = setTimeout(() => onDismiss(), 700);
     } catch {
       // User cancelled or purchase failed — keep paywall visible.
     } finally {
@@ -318,6 +364,14 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
           <Text style={styles.subtitle}>{paywallSubtitle}</Text>
         </View>
 
+        {/* Social proof — specificity beats generic claims */}
+        <Text style={styles.socialProof}>
+          {t('subscription.paywall.socialProof', {
+            defaultValue:
+              'Trusted by underground miners, FIFO operators, and rotating roster workers.',
+          })}
+        </Text>
+
         {/* ── Plan selector ── */}
         {loading ? (
           <ActivityIndicator color={theme.colors.paleGold} style={styles.loader} />
@@ -384,47 +438,95 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
                 <View style={[styles.radio, selectedPlan === 'monthly' && styles.radioSelected]}>
                   {selectedPlan === 'monthly' && <View style={styles.radioDot} />}
                 </View>
-                <Text style={styles.planName}>{t('subscription.paywall.plans.monthly')}</Text>
+                <View>
+                  <Text style={styles.planName}>{t('subscription.paywall.plans.monthly')}</Text>
+                  <Text style={styles.planMonthlyNoSavings}>
+                    {t('subscription.paywall.plans.monthlyNoSavings', {
+                      defaultValue: 'No annual savings',
+                    })}
+                  </Text>
+                </View>
               </View>
               <Text style={styles.planPriceMonthly}>
                 {monthlyPrice}
                 {t('subscription.paywall.plans.monthlySuffix')}
               </Text>
             </TouchableOpacity>
+
+            {/* Weekly plan — low barrier entry */}
+            {weeklyPackage ? (
+              <TouchableOpacity
+                style={[styles.planOption, selectedPlan === 'weekly' && styles.planOptionSelected]}
+                onPress={() => handleSelectPlan('weekly')}
+                accessibilityRole="radio"
+                accessibilityState={{ checked: selectedPlan === 'weekly' }}
+              >
+                <View style={styles.planLeft}>
+                  <View style={[styles.radio, selectedPlan === 'weekly' && styles.radioSelected]}>
+                    {selectedPlan === 'weekly' && <View style={styles.radioDot} />}
+                  </View>
+                  <View>
+                    <Text style={styles.planName}>
+                      {t('subscription.paywall.plans.weekly', { defaultValue: 'Weekly' })}
+                    </Text>
+                    <Text style={styles.planMonthlyNoSavings}>
+                      {t('subscription.paywall.plans.weeklyBilled', {
+                        defaultValue: 'Billed weekly',
+                      })}
+                    </Text>
+                  </View>
+                </View>
+                <Text style={styles.planPriceMonthly}>
+                  {weeklyPrice}
+                  {t('subscription.paywall.plans.weeklySuffix', { defaultValue: '/wk' })}
+                </Text>
+              </TouchableOpacity>
+            ) : null}
           </View>
         )}
 
         {/* ── CTA button ── */}
-        <Animated.View style={ctaAnimatedStyle}>
-          <TouchableOpacity
-            onPress={handlePurchase}
-            disabled={purchasing || loading || !selectedPackage}
-            accessibilityRole="button"
-            accessibilityLabel={t('subscription.paywall.cta')}
-            testID="paywall-cta"
-          >
-            <LinearGradient
-              colors={[theme.colors.brightGold, theme.colors.sacredGold]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={styles.ctaButton}
+        {purchaseSuccess ? (
+          <View style={styles.successContainer}>
+            <Ionicons name="checkmark-circle" size={28} color={theme.colors.sacredGold} />
+            <Text style={styles.successText}>
+              {t('subscription.paywall.purchaseSuccess', {
+                defaultValue: 'Your 7-day trial has started',
+              })}
+            </Text>
+          </View>
+        ) : (
+          <Animated.View style={ctaAnimatedStyle}>
+            <TouchableOpacity
+              onPress={handlePurchase}
+              disabled={purchasing || loading || !selectedPackage}
+              accessibilityRole="button"
+              accessibilityLabel={t('subscription.paywall.cta')}
+              testID="paywall-cta"
             >
-              {purchasing ? (
-                <ActivityIndicator color={theme.colors.deepVoid} />
-              ) : (
-                <View style={styles.ctaContent}>
-                  <Text style={styles.ctaText}>{t('subscription.paywall.cta')}</Text>
-                  <Ionicons
-                    name="arrow-forward"
-                    size={20}
-                    color={theme.colors.deepVoid}
-                    style={styles.ctaArrow}
-                  />
-                </View>
-              )}
-            </LinearGradient>
-          </TouchableOpacity>
-        </Animated.View>
+              <LinearGradient
+                colors={[theme.colors.brightGold, theme.colors.sacredGold]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.ctaButton}
+              >
+                {purchasing ? (
+                  <ActivityIndicator color={theme.colors.deepVoid} />
+                ) : (
+                  <View style={styles.ctaContent}>
+                    <Text style={styles.ctaText}>{t('subscription.paywall.cta')}</Text>
+                    <Ionicons
+                      name="arrow-forward"
+                      size={20}
+                      color={theme.colors.deepVoid}
+                      style={styles.ctaArrow}
+                    />
+                  </View>
+                )}
+              </LinearGradient>
+            </TouchableOpacity>
+          </Animated.View>
+        )}
 
         {/* ── Trust row ── */}
         <View style={styles.trustCard}>
@@ -468,11 +570,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
         {/* ── Loss aversion ── */}
         <View style={styles.lossAversion}>
           <Ionicons name="lock-closed-outline" size={15} color={theme.colors.sacredGold} />
-          <Text style={styles.lossAversionText}>
-            {t('subscription.paywall.lossAversion', {
-              defaultValue: "Without Pro, you're back to counting shifts on your hands.",
-            })}
-          </Text>
+          <Text style={styles.lossAversionText}>{lossAversionText}</Text>
         </View>
 
         {/* ── Features card ── */}
@@ -489,6 +587,16 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
               <Text style={styles.featureText}>{feature.text}</Text>
             </View>
           ))}
+        </View>
+
+        {/* ── Rating anchor ── */}
+        <View style={styles.ratingAnchor}>
+          <Text style={styles.ratingStars}>★★★★★</Text>
+          <Text style={styles.ratingText}>
+            {t('subscription.paywall.testimonialAnchor', {
+              defaultValue: '4.8 · 2,400+ ratings',
+            })}
+          </Text>
         </View>
 
         {/* ── Testimonials ── */}
@@ -619,11 +727,21 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
 
+  // ── Social proof ──
+  socialProof: {
+    color: theme.colors.dust,
+    fontSize: 12,
+    textAlign: 'center',
+    marginTop: -12,
+    marginBottom: 18,
+    paddingHorizontal: 8,
+  },
+
   // ── Hero ──
   hero: {
     alignItems: 'center',
     marginTop: 4,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   title: {
     color: theme.colors.paper,
@@ -877,6 +995,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 2,
   },
+  planMonthlyNoSavings: {
+    color: theme.colors.shadow,
+    fontSize: 11,
+    marginTop: 2,
+  },
   planPrice: {
     color: theme.colors.paper,
     fontSize: 16,
@@ -891,6 +1014,45 @@ const styles = StyleSheet.create({
   planPriceMonthly: {
     color: theme.colors.shadow,
     fontSize: 15,
+    fontWeight: '600',
+  },
+
+  // ── Purchase success ──
+  successContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    height: 64,
+    marginTop: 2,
+    marginBottom: 14,
+    borderRadius: 18,
+    backgroundColor: 'rgba(197,151,92,0.12)',
+    borderWidth: 1,
+    borderColor: 'rgba(197,151,92,0.30)',
+  },
+  successText: {
+    color: theme.colors.sacredGold,
+    fontSize: 17,
+    fontWeight: '700',
+  },
+
+  // ── Rating anchor ──
+  ratingAnchor: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    marginBottom: 10,
+  },
+  ratingStars: {
+    color: theme.colors.paleGold,
+    fontSize: 13,
+    letterSpacing: 1,
+  },
+  ratingText: {
+    color: theme.colors.dust,
+    fontSize: 12,
     fontWeight: '600',
   },
 

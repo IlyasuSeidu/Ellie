@@ -1049,7 +1049,7 @@
     "subheadline": "Nansi imibono yangaphambili yezinyanga zakho ezi-3 ezizayo. Akusekho ukuqagela ekhanda.",
     "heyEllieTitle": "Buza u-Ellie nge-roster yakho",
     "ctaPrimary": "Vula ukufinyelela okuphelele — isivivinyo samahhala sezinsuku ezi-7",
-    "ctaSecondary": "noma uqhubeke ngokufinyelela okulinganiselwe",
+    "ctaSecondary": "noma weqe — isonto lamanje kuphela, akukho unyaka ogcwele",
     "stats": {
       "workDays": "Izinsuku zomsebenzi",
       "nightShifts": "Amashifu asebusuku",
@@ -1076,7 +1076,7 @@
     },
     "buttonLabel": "Sawubona Ellie",
     "headline_named": "Amashifu ka-{{name}}, asehleliwe.",
-    "ctaSecondaryA11y": "Qhubeka ngokufinyelela okulinganiselwe, ngaphandle kwesivivinyo samahhala",
+    "ctaSecondaryA11y": "Yeqa isivivinyo — kugcinelwe isonto lamanje kuphela, akukho ukubukwa komnyaka ogcwele",
     "painCallback": {
       "cycle_lost": "Akusekho ukulahlekelwa indawo yakho. Umjikelezo wakho usubekiwe.",
       "wrong_alarm": "Akusekho ama-alamu angalungile. Amashifu akho ahlelwe ngokunembile.",

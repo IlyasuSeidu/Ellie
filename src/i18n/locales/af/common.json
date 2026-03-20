@@ -183,15 +183,19 @@
         "annualSuffix": "/jr",
         "monthlySuffix": "/ma",
         "save": "SPAAR 40%",
-        "bestValue": "BESTE WAARDE",
+        "bestValue": "GEWILDSTE",
         "perMonth": "/maand",
-        "savePercent": "BESPAAR {{percent}}%"
+        "savePercent": "BESPAAR {{percent}}%",
+        "monthlyNoSavings": "Geen jaarlikse besparing",
+        "weekly": "Weekliks",
+        "weeklySuffix": "/wk",
+        "weeklyBilled": "Weekliks gefaktureer"
       },
       "cta": "Begin 7-dae gratis proeflopie",
       "noCard": "Geen kredietkaart vereis nie · Kanselleer enige tyd",
       "restorePurchases": "Herstel aankope",
       "privacyPolicy": "Privaatheidsbeleid",
-      "socialProof": "4.8 · Trusted by 50,000+ shift workers",
+      "socialProof": "Vertrou deur ondergrondse mynwerkers, FIFO-operateurs en roterende roosterwerkers.",
       "testimonials": [
         {
           "quote": "Ek het vlugte om my swing maande vooruit bespreek sonder om HR te bel.",
@@ -220,7 +224,12 @@
       "title_named": "{{name}}, jou rooster is gereed.",
       "subtitle_fifo": "Jou FIFO-siklus is uitgewerk. Sien elke swing en elke afdag vir jou volle jaar.",
       "subtitle_rotating": "Jou roterende rooster is uitgewerk. Sien elke skof vir jou volle jaar.",
-      "billingDisclosure": "Jou gratis proeflopie van 7 dae eindig op {{date}}. Kanselleer enige tyd in Instellings voor dan om heffings te vermy. Intekeninge hernu outomaties."
+      "billingDisclosure": "Jou gratis proeflopie van 7 dae eindig op {{date}}. Kanselleer enige tyd in Instellings voor dan om heffings te vermy. Intekeninge hernu outomaties.",
+      "lossAversion_fifo": "Sonder Pro raak jou swing-datums weer 'n raaisel. Volgende R&R — onbekend. Boek die verkeerde week, verloor die vlugte.",
+      "lossAversion_rotating": "Sonder Pro raak jou rooster donker. Geen vroeë waarskuwing, geen beplanning vooruit nie. Terug na raai by die kennisgewingbord.",
+      "lossAversion_family": "Sonder Pro weet jou familie weer nie wanneer jy by die huis is nie.",
+      "testimonialAnchor": "4.8 · 2 400+ graderings",
+      "purchaseSuccess": "Jou 7-dae-proef het begin"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro aktiewe intekening",

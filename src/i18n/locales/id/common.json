@@ -183,15 +183,19 @@
         "annualSuffix": "/ tahun",
         "monthlySuffix": "/bln",
         "save": "HEMAT 40%",
-        "bestValue": "NILAI TERBAIK",
+        "bestValue": "PALING POPULER",
         "perMonth": "/bulan",
-        "savePercent": "HEMAT {{percent}}%"
+        "savePercent": "HEMAT {{percent}}%",
+        "monthlyNoSavings": "Tidak ada penghematan tahunan",
+        "weekly": "Mingguan",
+        "weeklySuffix": "/mg",
+        "weeklyBilled": "Ditagih mingguan"
       },
       "cta": "Mulai Uji Coba Gratis 7 Hari",
       "noCard": "Tidak diperlukan kartu kredit · Batalkan kapan saja",
       "restorePurchases": "Pulihkan Pembelian",
       "privacyPolicy": "Kebijakan Privasi",
-      "socialProof": "4.8 · Trusted by 50,000+ shift workers",
+      "socialProof": "Dipercaya oleh penambang bawah tanah, operator FIFO, dan pekerja roster bergilir.",
       "testimonials": [
         {
           "quote": "Saya memesan tiket sesuai swing saya berbulan-bulan sebelumnya tanpa menelepon HR sama sekali.",
@@ -220,7 +224,12 @@
       "title_named": "{{name}}, roster Anda sudah siap.",
       "subtitle_fifo": "Siklus FIFO Anda sudah dipetakan. Lihat setiap swing dan setiap hari libur sepanjang setahun penuh Anda.",
       "subtitle_rotating": "Roster bergilir Anda sudah dipetakan. Lihat setiap shift sepanjang setahun penuh Anda.",
-      "billingDisclosure": "Uji coba gratis 7 hari Anda berakhir pada {{date}}. Batalkan kapan saja di Pengaturan sebelum itu agar tidak dikenai biaya. Langganan diperpanjang otomatis."
+      "billingDisclosure": "Uji coba gratis 7 hari Anda berakhir pada {{date}}. Batalkan kapan saja di Pengaturan sebelum itu agar tidak dikenai biaya. Langganan diperpanjang otomatis.",
+      "lossAversion_fifo": "Tanpa Pro, tanggal swing Anda kembali jadi misteri. R&R berikutnya tidak diketahui. Pesan minggu yang salah, penerbangan hilang.",
+      "lossAversion_rotating": "Tanpa Pro, roster Anda kembali gelap. Tidak ada peringatan dini, tidak ada perencanaan ke depan. Kembali menebak dari papan pengumuman.",
+      "lossAversion_family": "Tanpa Pro, keluarga Anda kembali tidak tahu kapan Anda ada di rumah.",
+      "testimonialAnchor": "4.8 · 2.400+ penilaian",
+      "purchaseSuccess": "Masa uji coba 7 hari Anda telah dimulai"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro langganan aktif",

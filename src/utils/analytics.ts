@@ -197,7 +197,7 @@ export const Analytics = {
       { source: triggerSource, trigger_source: triggerSource, ...metadata }
     ),
 
-  paywallPlanSelected: (plan: 'annual' | 'monthly', metadata?: AnalyticsPayload) =>
+  paywallPlanSelected: (plan: 'annual' | 'monthly' | 'weekly', metadata?: AnalyticsPayload) =>
     void safeCall(
       (client) =>
         client.logEvent('paywall_plan_selected', {
@@ -208,7 +208,7 @@ export const Analytics = {
       { plan, ...metadata }
     ),
 
-  paywallSubscribeTapped: (plan: 'annual' | 'monthly', metadata?: AnalyticsPayload) =>
+  paywallSubscribeTapped: (plan: 'annual' | 'monthly' | 'weekly', metadata?: AnalyticsPayload) =>
     void safeCall(
       (client) =>
         client.logEvent('paywall_subscribe_tapped', {
@@ -219,7 +219,7 @@ export const Analytics = {
       { plan, ...metadata }
     ),
 
-  trialStarted: (plan: 'annual' | 'monthly', price: number) =>
+  trialStarted: (plan: 'annual' | 'monthly' | 'weekly', price: number) =>
     void safeCall(
       (client) =>
         client.logEvent('trial_started', {
@@ -230,7 +230,7 @@ export const Analytics = {
       { plan, price }
     ),
 
-  purchaseCompleted: (plan: 'annual' | 'monthly', price: number) =>
+  purchaseCompleted: (plan: 'annual' | 'monthly' | 'weekly', price: number) =>
     void safeCall(
       (client) =>
         client.logEvent('purchase_completed', {

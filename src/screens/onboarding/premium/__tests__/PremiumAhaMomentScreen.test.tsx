@@ -128,7 +128,7 @@ describe('PremiumAhaMomentScreen', () => {
   it('navigates to Completion when limited-access CTA is pressed', () => {
     const { getByText } = render(<PremiumAhaMomentScreen />);
 
-    fireEvent.press(getByText('or continue with limited access'));
+    fireEvent.press(getByText('or skip — current week only, no full year'));
 
     expect(mockNavigate).toHaveBeenCalledWith('Completion');
   });

@@ -183,15 +183,19 @@
         "annualSuffix": "/ano",
         "monthlySuffix": "/ mês",
         "save": "ECONOMIZE 40%",
-        "bestValue": "MELHOR CUSTO-BENEFÍCIO",
+        "bestValue": "MAIS POPULAR",
         "perMonth": "/mês",
-        "savePercent": "ECONOMIZE {{percent}}%"
+        "savePercent": "ECONOMIZE {{percent}}%",
+        "monthlyNoSavings": "Sem economia anual",
+        "weekly": "Semanal",
+        "weeklySuffix": "/sem",
+        "weeklyBilled": "Cobrado semanalmente"
       },
       "cta": "Comece o teste gratuito de 7 dias",
       "noCard": "Não é necessário cartão de crédito · Cancele a qualquer momento",
       "restorePurchases": "Restaurar compras",
       "privacyPolicy": "política de Privacidade",
-      "socialProof": "4.8 · Trusted by 50,000+ shift workers",
+      "socialProof": "Confiado por mineradores subterrâneos, operadores FIFO e trabalhadores de escala rotativa.",
       "testimonials": [
         {
           "quote": "Reservei voos no meu swing com meses de antecedência sem ligar para o RH.",
@@ -220,7 +224,12 @@
       "title_named": "{{name}}, seu roster está pronto.",
       "subtitle_fifo": "Seu ciclo FIFO está mapeado. Veja cada swing e cada folga ao longo do seu ano inteiro.",
       "subtitle_rotating": "Seu rodízio rotativo está mapeado. Veja cada turno ao longo do seu ano inteiro.",
-      "billingDisclosure": "Sua avaliação gratuita de 7 dias termina em {{date}}. Cancele a qualquer momento em Ajustes antes dessa data para evitar cobranças. As assinaturas são renovadas automaticamente."
+      "billingDisclosure": "Sua avaliação gratuita de 7 dias termina em {{date}}. Cancele a qualquer momento em Ajustes antes dessa data para evitar cobranças. As assinaturas são renovadas automaticamente.",
+      "lossAversion_fifo": "Sem Pro, as datas do seu swing voltam a ser um mistério. Próximo R&R: desconhecido. Reserve a semana errada e perca os voos.",
+      "lossAversion_rotating": "Sem Pro, sua escala fica no escuro de novo. Sem aviso antecipado, sem planejamento à frente. Volta a adivinhar no quadro de avisos.",
+      "lossAversion_family": "Sem Pro, sua família volta a não saber quando você estará em casa.",
+      "testimonialAnchor": "4,8 · mais de 2.400 avaliações",
+      "purchaseSuccess": "Seu teste de 7 dias começou"
     },
     "profile": {
       "rowActiveA11y": "Ellie Assinatura Pro ativa",

@@ -183,15 +183,19 @@
         "annualSuffix": "/unyaka",
         "monthlySuffix": "/inyanga",
         "save": "Londoloza u-40%",
-        "bestValue": "INANI ELINGCONO KAKHULU",
+        "bestValue": "OKUTHANDWA KAKHULU",
         "perMonth": "/inyanga",
-        "savePercent": "YONGA {{percent}}%"
+        "savePercent": "YONGA {{percent}}%",
+        "monthlyNoSavings": "Akukho ukonga ngonyaka",
+        "weekly": "Ngeviki",
+        "weeklySuffix": "/iviki",
+        "weeklyBilled": "Ikhokhiswa masonto onke"
       },
       "cta": "Qala Isivivinyo Samahhala Sezinsuku Eziyisi-7",
       "noCard": "Alikho ikhadi lesikweletu elidingekayo · Khansela noma nini",
       "restorePurchases": "Buyisela Okuthengiwe",
       "privacyPolicy": "Inqubomgomo yobumfihlo",
-      "socialProof": "4.8 · Trusted by 50,000+ shift workers",
+      "socialProof": "Kuthenjwa ngabavukuzi abangaphansi komhlaba, ama-opharetha e-FIFO, nabasebenzi berosta ejikelezayo.",
       "testimonials": [
         {
           "quote": "Ngibhukhe izindiza zami ngokwe-swing yami izinyanga ngaphambi kwesikhathi ngaphandle kokushayela i-HR.",
@@ -220,7 +224,12 @@
       "title_named": "{{name}}, irosta yakho isilungile.",
       "subtitle_fifo": "Umjikelezo wakho we-FIFO usumakiwe. Bona wonke ama-swing nawo wonke amalanga okuphumula unyaka wonke.",
       "subtitle_rotating": "Uhlelo lwakho olujikelezayo selumakiwe. Bona wonke amashifu unyaka wonke.",
-      "billingDisclosure": "Isivivinyo sakho samahhala sezinsuku ezi-7 siphela ngo-{{date}}. Khansela noma nini ku-Settings ngaphambi kwalokho ukuze ugweme izindleko. Izibhaliso zivuselelwa ngokuzenzakalela."
+      "billingDisclosure": "Isivivinyo sakho samahhala sezinsuku ezi-7 siphela ngo-{{date}}. Khansela noma nini ku-Settings ngaphambi kwalokho ukuze ugweme izindleko. Izibhaliso zivuselelwa ngokuzenzakalela.",
+      "lossAversion_fifo": "Ngaphandle kwe-Pro, izinsuku zakho ze-swing ziphinde zibe yimfihlakalo. I-R&R elandelayo ayaziwa. Bhuka isonto elingalungile, ulahlekelwe izindiza.",
+      "lossAversion_rotating": "Ngaphandle kwe-Pro, irosta yakho iphinde ibe mnyama. Asikho isexwayiso sangaphambi kwesikhathi, akukho ukuhlela kusenesikhathi. Buyela ekuqageleni ebhodini lezaziso.",
+      "lossAversion_family": "Ngaphandle kwe-Pro, umndeni wakho ubuye ungazi ukuthi usekhaya nini.",
+      "testimonialAnchor": "4.8 · izilinganiso ezingaphezu kuka-2,400",
+      "purchaseSuccess": "Isivivinyo sakho sezinsuku eziyi-7 siqalile"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Ukubhalisa okusebenzayo kwe-Pro",

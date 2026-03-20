@@ -1049,7 +1049,7 @@
     "subheadline": "Aquí tienes una vista previa de tus próximos 3 meses. Sin volver a hacer cuentas mentalmente.",
     "heyEllieTitle": "Pregúntale a Ellie sobre tu roster",
     "ctaPrimary": "Desbloquea el acceso completo — prueba gratis de 7 días",
-    "ctaSecondary": "o continúa con acceso limitado",
+    "ctaSecondary": "o sáltalo: solo semana actual, sin año completo",
     "stats": {
       "workDays": "Días de trabajo",
       "nightShifts": "Turnos nocturnos",
@@ -1076,7 +1076,7 @@
     },
     "buttonLabel": "Hola Ellie",
     "headline_named": "Los turnos de {{name}}, organizados.",
-    "ctaSecondaryA11y": "Continúa con acceso limitado, sin prueba gratuita",
+    "ctaSecondaryA11y": "Omitir prueba: limitado solo a la semana actual, sin vista del año completo",
     "painCallback": {
       "cycle_lost": "Se acabó perder tu lugar. Tu ciclo ya está fijado.",
       "wrong_alarm": "Se acabaron las alarmas equivocadas. Tus turnos están mapeados con precisión.",

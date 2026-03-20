@@ -154,7 +154,7 @@ describe('PaywallScreen', () => {
     );
 
     act(() => {
-      jest.advanceTimersByTime(4000);
+      jest.advanceTimersByTime(8000);
     });
 
     fireEvent.press(getByLabelText('Close paywall'));

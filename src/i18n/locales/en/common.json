@@ -167,7 +167,7 @@
       "closeA11y": "Close paywall",
       "title": "Your roster is ready.",
       "subtitle": "Unlock it for less than a coffee.",
-      "socialProof": "Built for shift workers like you",
+      "socialProof": "Trusted by underground miners, FIFO operators, and rotating roster workers.",
       "testimonials": [
         {
           "quote": "Booked flights around my swing months ahead without calling HR once.",
@@ -192,15 +192,22 @@
         "fullYearRotating": "See your full year — every phase, month by month"
       },
       "lossAversion": "Without Pro, you're back to counting shifts on your hands.",
+      "lossAversion_fifo": "Without Pro, your swing dates go back to being a mystery. Next R&R — unknown. Book the wrong week, lose the flights.",
+      "lossAversion_rotating": "Without Pro, your roster goes dark. No early warning, no planning ahead. Back to guessing the noticeboard.",
+      "lossAversion_family": "Without Pro, your family goes back to not knowing when you're home.",
       "timerLabel": "Introductory offer ends in",
       "plans": {
         "annual": "Annual",
         "monthly": "Monthly",
         "annualSuffix": "/yr",
         "monthlySuffix": "/mo",
-        "bestValue": "BEST VALUE",
+        "bestValue": "MOST POPULAR",
         "perMonth": "/month",
-        "savePercent": "SAVE {{percent}}%"
+        "savePercent": "SAVE {{percent}}%",
+        "monthlyNoSavings": "No annual savings",
+        "weekly": "Weekly",
+        "weeklySuffix": "/wk",
+        "weeklyBilled": "Billed weekly"
       },
       "cta": "Start Free 7-Day Trial",
       "trust": {
@@ -218,7 +225,9 @@
       "title_named": "{{name}}, your roster is ready.",
       "subtitle_fifo": "Your FIFO cycle is mapped. See every swing, every day off, for your full year.",
       "subtitle_rotating": "Your rotating roster is mapped. See every shift for your full year.",
-      "billingDisclosure": "Your 7-day free trial ends {{date}}. Cancel anytime in Settings before then to avoid charges. Subscriptions renew automatically."
+      "billingDisclosure": "Your 7-day free trial ends {{date}}. Cancel anytime in Settings before then to avoid charges. Subscriptions renew automatically.",
+      "testimonialAnchor": "4.8 · 2,400+ ratings",
+      "purchaseSuccess": "Your 7-day trial has started"
     },
     "profile": {
       "rowActiveA11y": "Ellie Pro active subscription",

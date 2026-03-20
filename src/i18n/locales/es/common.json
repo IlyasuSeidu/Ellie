@@ -183,15 +183,19 @@
         "annualSuffix": "/año",
         "monthlySuffix": "/mes",
         "save": "AHORRE 40%",
-        "bestValue": "MEJOR VALOR",
+        "bestValue": "EL MÁS POPULAR",
         "perMonth": "/mes",
-        "savePercent": "AHORRA {{percent}}%"
+        "savePercent": "AHORRA {{percent}}%",
+        "monthlyNoSavings": "Sin ahorro anual",
+        "weekly": "Semanal",
+        "weeklySuffix": "/sem",
+        "weeklyBilled": "Se cobra semanalmente"
       },
       "cta": "Comience la prueba gratuita de 7 días",
       "noCard": "No se requiere tarjeta de crédito · Cancelar en cualquier momento",
       "restorePurchases": "Restaurar compras",
       "privacyPolicy": "política de privacidad",
-      "socialProof": "4.8 · Trusted by 50,000+ shift workers",
+      "socialProof": "Con la confianza de mineros subterráneos, operadores FIFO y trabajadores con roster rotativo.",
       "testimonials": [
         {
           "quote": "Reservé vuelos alrededor de mi swing con meses de anticipación sin llamar a RR. HH.",
@@ -220,7 +224,12 @@
       "title_named": "{{name}}, tu roster está listo.",
       "subtitle_fifo": "Tu ciclo FIFO ya está trazado. Ve cada swing y cada día libre durante todo tu año.",
       "subtitle_rotating": "Tu roster rotativo ya está trazado. Ve cada turno durante todo tu año.",
-      "billingDisclosure": "Tu prueba gratuita de 7 días termina el {{date}}. Cancela en cualquier momento en Ajustes antes de esa fecha para evitar cargos. Las suscripciones se renuevan automáticamente."
+      "billingDisclosure": "Tu prueba gratuita de 7 días termina el {{date}}. Cancela en cualquier momento en Ajustes antes de esa fecha para evitar cargos. Las suscripciones se renuevan automáticamente.",
+      "lossAversion_fifo": "Sin Pro, tus fechas de swing vuelven a ser un misterio. El próximo R&R: desconocido. Reserva la semana equivocada y pierdes los vuelos.",
+      "lossAversion_rotating": "Sin Pro, tu roster se apaga. Sin aviso temprano, sin planificación anticipada. Vuelves a adivinar frente al tablón.",
+      "lossAversion_family": "Sin Pro, tu familia vuelve a no saber cuándo estás en casa.",
+      "testimonialAnchor": "4.8 · más de 2,400 valoraciones",
+      "purchaseSuccess": "Tu prueba de 7 días ha comenzado"
     },
     "profile": {
       "rowActiveA11y": "Ellie Suscripción activa profesional",

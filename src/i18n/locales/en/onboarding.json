@@ -66,7 +66,7 @@
     "subheadline": "Here's a preview of your next 3 months. No second-guessing with your heads.",
     "heyEllieTitle": "Ask Ellie about your roster",
     "ctaPrimary": "Unlock Full Access — 7-Day Free Trial",
-    "ctaSecondary": "or continue with limited access",
+    "ctaSecondary": "or skip — current week only, no full year",
     "stats": {
       "workDays": "Work days",
       "nightShifts": "Night shifts",
@@ -93,7 +93,7 @@
     },
     "buttonLabel": "Hey Ellie",
     "headline_named": "{{name}}'s shifts, mapped.",
-    "ctaSecondaryA11y": "Continue with limited access, no free trial",
+    "ctaSecondaryA11y": "Skip trial — limited to current week only, no full year view",
     "painCallback": {
       "cycle_lost": "No more losing your place. Your cycle is locked in.",
       "wrong_alarm": "No more wrong alarms. Your shifts are mapped, exactly.",
