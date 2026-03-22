@@ -435,10 +435,12 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
                 </View>
               </View>
               <View style={styles.planRight}>
-                <Text style={styles.planPriceStrikethrough}>
-                  {monthlyPrice}
-                  {t('subscription.paywall.plans.monthlySuffix')}
-                </Text>
+                {monthlyPackage ? (
+                  <Text style={styles.planPriceStrikethrough}>
+                    {monthlyPrice}
+                    {t('subscription.paywall.plans.monthlySuffix')}
+                  </Text>
+                ) : null}
                 <Text style={styles.planPrice}>
                   {annualPrice}
                   {t('subscription.paywall.plans.annualSuffix')}
@@ -546,6 +548,15 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
             </TouchableOpacity>
           </Animated.View>
         )}
+
+        {/* No credit card required */}
+        {!purchaseSuccess ? (
+          <Text style={styles.noCard}>
+            {t('subscription.paywall.noCard', {
+              defaultValue: 'No credit card required · Cancel anytime',
+            })}
+          </Text>
+        ) : null}
 
         {/* ── Purchase error ── */}
         {purchaseError ? <Text style={styles.purchaseErrorText}>{purchaseError}</Text> : null}
@@ -1037,6 +1048,15 @@ const styles = StyleSheet.create({
     color: theme.colors.shadow,
     fontSize: 15,
     fontWeight: '600',
+  },
+
+  // ── No card / cancel reassurance ──
+  noCard: {
+    color: theme.colors.dust,
+    fontSize: 12,
+    textAlign: 'center',
+    marginTop: -8,
+    marginBottom: 14,
   },
 
   // ── Purchase error ──
