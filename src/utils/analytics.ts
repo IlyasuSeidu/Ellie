@@ -248,6 +248,13 @@ export const Analytics = {
       metadata
     ),
 
+  paywallDeclined: (metadata?: AnalyticsPayload) =>
+    void safeCall(
+      (client) => client.logEvent('paywall_declined', metadata),
+      'paywall_declined',
+      metadata
+    ),
+
   paywallRestoreTapped: (metadata?: AnalyticsPayload) =>
     void safeCall(
       (client) => client.logEvent('paywall_restore_tapped', metadata),

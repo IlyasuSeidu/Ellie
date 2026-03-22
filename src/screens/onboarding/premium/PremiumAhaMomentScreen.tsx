@@ -244,6 +244,11 @@ export const PremiumAhaMomentScreen: React.FC = () => {
       pain_point: data.painPoint ?? null,
       platform: Platform.OS,
     });
+    Analytics.paywallDeclined({
+      trigger_source: 'aha_moment',
+      roster_type: data.rosterType ?? null,
+      pain_point: data.painPoint ?? null,
+    });
     navigation.navigate('Completion');
   };
 

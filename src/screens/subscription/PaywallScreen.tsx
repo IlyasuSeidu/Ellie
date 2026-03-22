@@ -26,7 +26,7 @@ import { useSubscription } from '@/hooks/useSubscription';
 import { getRevenueCatRuntime, isRevenueCatAvailable } from '@/services/RevenueCatRuntime';
 import { theme } from '@/utils/theme';
 import { Analytics, type PaywallTriggerSource } from '@/utils/analytics';
-import type { OnboardingData } from '@/contexts/OnboardingContext';
+import { useOnboardingOptional, type OnboardingData } from '@/contexts/OnboardingContext';
 import { MiniYearCalendar } from '@/components/paywall/MiniYearCalendar';
 import { formatLocalizedDate } from '@/utils/i18nFormat';
 
@@ -60,6 +60,9 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
   const { t, i18n } = useTranslation('common');
   const tLoose = t as unknown as (key: string, options?: Record<string, unknown>) => string;
   const { restorePurchases } = useSubscription();
+  const contextOnboarding = useOnboardingOptional();
+  // Prop takes precedence; context is fallback for Settings/feature-gate entry points
+  const resolvedOnboardingData = onboardingData ?? contextOnboarding?.data;
   const [annualPackage, setAnnualPackage] = useState<PurchasesPackage | null>(null);
   const [monthlyPackage, setMonthlyPackage] = useState<PurchasesPackage | null>(null);
   const [weeklyPackage, setWeeklyPackage] = useState<PurchasesPackage | null>(null);
@@ -77,11 +80,15 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
   const paywallAnalyticsMetadata = useMemo(
     () => ({
       platform: Platform.OS,
-      country: onboardingData?.country ?? null,
-      roster_type: onboardingData?.rosterType ?? null,
-      pain_point: onboardingData?.painPoint ?? null,
+      country: resolvedOnboardingData?.country ?? null,
+      roster_type: resolvedOnboardingData?.rosterType ?? null,
+      pain_point: resolvedOnboardingData?.painPoint ?? null,
     }),
-    [onboardingData?.country, onboardingData?.painPoint, onboardingData?.rosterType]
+    [
+      resolvedOnboardingData?.country,
+      resolvedOnboardingData?.painPoint,
+      resolvedOnboardingData?.rosterType,
+    ]
   );
 
   const featureRows: FeatureRow[] = useMemo(
@@ -89,9 +96,9 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
       {
         icon: 'calendar-outline',
         text:
-          onboardingData?.rosterType === 'fifo'
+          resolvedOnboardingData?.rosterType === 'fifo'
             ? t('subscription.paywall.features.fullYearFIFO')
-            : onboardingData?.rosterType === 'rotating'
+            : resolvedOnboardingData?.rosterType === 'rotating'
               ? t('subscription.paywall.features.fullYearRotating')
               : t('subscription.paywall.features.fullYear'),
       },
@@ -100,7 +107,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
       { icon: 'airplane-outline', text: t('subscription.paywall.features.leavePlanning') },
       { icon: 'sparkles-outline', text: t('subscription.paywall.features.aiPowered') },
     ],
-    [onboardingData?.rosterType, t]
+    [resolvedOnboardingData?.rosterType, t]
   );
 
   const testimonials: Testimonial[] = useMemo(
@@ -132,18 +139,18 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
 
   // R3: personalised loss aversion — painPoint overrides, then rosterType, then generic
   const lossAversionText = useMemo(() => {
-    if (onboardingData?.painPoint === 'family') {
+    if (resolvedOnboardingData?.painPoint === 'family') {
       return t('subscription.paywall.lossAversion_family', {
         defaultValue: "Without Pro, your family goes back to not knowing when you're home.",
       });
     }
-    if (onboardingData?.rosterType === 'fifo') {
+    if (resolvedOnboardingData?.rosterType === 'fifo') {
       return t('subscription.paywall.lossAversion_fifo', {
         defaultValue:
           'Without Pro, your swing dates go back to being a mystery. Next R&R — unknown. Book the wrong week, lose the flights.',
       });
     }
-    if (onboardingData?.rosterType === 'rotating') {
+    if (resolvedOnboardingData?.rosterType === 'rotating') {
       return t('subscription.paywall.lossAversion_rotating', {
         defaultValue:
           'Without Pro, your roster goes dark. No early warning, no planning ahead. Back to guessing the noticeboard.',
@@ -152,7 +159,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
     return t('subscription.paywall.lossAversion', {
       defaultValue: "Without Pro, you're back to counting shifts on your hands.",
     });
-  }, [onboardingData?.painPoint, onboardingData?.rosterType, t]);
+  }, [resolvedOnboardingData?.painPoint, resolvedOnboardingData?.rosterType, t]);
 
   useEffect(() => {
     Analytics.paywallViewed(entryPoint, paywallAnalyticsMetadata);
@@ -233,16 +240,16 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
     return Math.round((1 - annualAsMonthly / monthly) * 100);
   }, [annualPackage, monthlyPackage]);
 
-  const paywallTitle = onboardingData?.name
-    ? t('subscription.paywall.title_named', { name: onboardingData.name })
+  const paywallTitle = resolvedOnboardingData?.name
+    ? t('subscription.paywall.title_named', { name: resolvedOnboardingData.name })
     : t('subscription.paywall.title');
   const paywallSubtitle =
-    onboardingData?.rosterType === 'fifo'
+    resolvedOnboardingData?.rosterType === 'fifo'
       ? t('subscription.paywall.subtitle_fifo', {
           defaultValue:
             'Your FIFO cycle is mapped. See every swing, every day off, for your full year.',
         })
-      : onboardingData?.rosterType === 'rotating'
+      : resolvedOnboardingData?.rosterType === 'rotating'
         ? t('subscription.paywall.subtitle_rotating', {
             defaultValue: 'Your rotating roster is mapped. See every shift for your full year.',
           })
@@ -336,7 +343,9 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
     <View style={[styles.container, { paddingTop: insets.top }]}>
       {/* Blurred calendar background */}
       <View style={styles.calendarBackground} pointerEvents="none">
-        {onboardingData ? <MiniYearCalendar data={onboardingData} blurred compact /> : null}
+        {resolvedOnboardingData ? (
+          <MiniYearCalendar data={resolvedOnboardingData} blurred compact />
+        ) : null}
         <LinearGradient
           colors={['transparent', theme.colors.deepVoid]}
           start={{ x: 0.5, y: 0.2 }}
@@ -904,30 +913,6 @@ const styles = StyleSheet.create({
     color: theme.colors.paper,
     lineHeight: 18,
     textAlign: 'center',
-  },
-
-  // ── Timer ──
-  timerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-    backgroundColor: 'rgba(180,83,9,0.07)',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: 'rgba(180,83,9,0.15)',
-    marginBottom: 14,
-  },
-  timerText: {
-    fontSize: 13,
-    color: theme.colors.dust,
-    fontWeight: '500',
-  },
-  timerValue: {
-    color: theme.colors.sacredGold,
-    fontWeight: '700',
   },
 
   loader: {

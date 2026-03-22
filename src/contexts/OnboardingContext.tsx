@@ -463,3 +463,7 @@ export const useOnboarding = (): OnboardingContextValue => {
   }
   return context;
 };
+
+/** Returns the onboarding context data when available, or undefined when called outside OnboardingProvider (e.g. from Settings). */
+export const useOnboardingOptional = (): OnboardingContextValue | undefined =>
+  useContext(OnboardingContext);

@@ -178,7 +178,7 @@
           "author": "Dave L., Drill operator — FIFO roster"
         },
         {
-          "quote": "Booked flights around my swing months ahead without calling HR once.",
+          "quote": "No more texting the supervisor to figure out if I'm on days or nights next week.",
           "author": "Jason M., Haul truck operator — 7/7 FIFO"
         }
       ],
@@ -195,7 +195,6 @@
       "lossAversion_fifo": "Without Pro, your swing dates go back to being a mystery. Next R&R — unknown. Book the wrong week, lose the flights.",
       "lossAversion_rotating": "Without Pro, your roster goes dark. No early warning, no planning ahead. Back to guessing the noticeboard.",
       "lossAversion_family": "Without Pro, your family goes back to not knowing when you're home.",
-      "timerLabel": "Introductory offer ends in",
       "plans": {
         "annual": "Annual",
         "monthly": "Monthly",
