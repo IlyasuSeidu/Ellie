@@ -35,6 +35,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { useNavigation, useRoute, type RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
@@ -2334,7 +2335,14 @@ const ContinueButton: React.FC<{
           style={styles.continueGradient}
         >
           <Ionicons name="checkmark-circle" size={28} color={theme.colors.paper} />
-          <Text style={styles.continueButtonText}>{resolvedLabel}</Text>
+          <Text
+            style={styles.continueButtonText}
+            numberOfLines={1}
+            adjustsFontSizeToFit
+            minimumFontScale={0.82}
+          >
+            {resolvedLabel}
+          </Text>
           <Ionicons name="arrow-forward" size={24} color={theme.colors.paper} />
         </LinearGradient>
       </Pressable>
@@ -2431,6 +2439,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   const { t, i18n } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProp<OnboardingStackParamList, 'StartDate'>>();
+  const insets = useSafeAreaInsets();
   const { data, updateData } = useOnboarding();
   const mountTime = useRef(Date.now());
 
@@ -2443,6 +2452,9 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   const isSettingsEntry = route.params?.entryPoint === 'settings';
   const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
   const isSettingsMode = isSettingsEntry && returnToMainOnSelect;
+  const bottomNavOffset = Math.max(insets.bottom + 8, Platform.OS === 'ios' ? 18 : 16);
+  const bottomNavShellHeight = 88;
+  const bottomNavClearance = bottomNavOffset + bottomNavShellHeight + 36;
   const shiftSystem: ShiftSystem = (data.shiftSystem as ShiftSystem) || ShiftSystem.TWO_SHIFT;
   const allowSettingsExitRef = useRef(false);
   const existingStartDate = useMemo(() => {
@@ -2673,7 +2685,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
       <Animated.View style={[{ flex: 1 }, screenAnimatedStyle]}>
         <ScrollView
           style={styles.scrollView}
-          contentContainerStyle={styles.scrollContent}
+          contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomNavClearance }]}
           showsVerticalScrollIndicator={false}
         >
           {/* Header with entrance animation */}
@@ -2747,7 +2759,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
       </Animated.View>
 
       {/* Bottom Navigation */}
-      <View style={styles.bottomNav}>
+      <View style={[styles.bottomNav, { paddingBottom: bottomNavOffset }]}>
         {isSettingsMode ? (
           <SettingsEntryActionButtons
             backLabel={String(
@@ -2818,7 +2830,6 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: theme.spacing.lg,
-    paddingBottom: 140,
   },
   title: {
     fontSize: 28,
@@ -3112,7 +3123,6 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     paddingHorizontal: theme.spacing.lg,
-    paddingBottom: Platform.OS === 'ios' ? theme.spacing.xxl : theme.spacing.lg,
     paddingTop: theme.spacing.lg,
     backgroundColor: 'transparent',
   },
@@ -3160,6 +3170,7 @@ const styles = StyleSheet.create({
   },
   continueButtonContainer: {
     flex: 1,
+    minWidth: 0,
   },
   continueButton: {
     height: 60,
@@ -3196,11 +3207,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: theme.spacing.sm,
+    paddingHorizontal: theme.spacing.md,
   },
   continueButtonText: {
     fontSize: 18,
     fontWeight: 'bold',
     color: theme.colors.paper,
+    flex: 1,
+    textAlign: 'center',
   },
   // Calendar - Enhanced
   shiftIcon: {

@@ -67,6 +67,10 @@ jest.mock('@/services/AsyncStorageService', () => ({
 
 jest.mock('expo-haptics');
 
+jest.mock('react-native-safe-area-context', () => ({
+  useSafeAreaInsets: () => ({ top: 0, bottom: 34, left: 0, right: 0 }),
+}));
+
 // Mock @expo/vector-icons
 jest.mock('@expo/vector-icons', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
