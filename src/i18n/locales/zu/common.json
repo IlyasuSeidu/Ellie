@@ -215,7 +215,9 @@
       "trust": {
         "freeTrial": "izinsuku ezi-7 mahhala",
         "cancel": "Khansela noma nini",
-        "noCharge": "Akukho mali namuhla"
+        "noCharge": "Akukho mali namuhla",
+        "startsToday": "Kuqala namuhla",
+        "chargedToday": "Ukukhokhiswa namuhla"
       },
       "valueFrame": "Kungaphansi kwekhofi ngesonto ukuze wazi unyaka wakho wonke.",
       "security": "Inkokhelo ephephile nge-{{platform}} · Icutshungulwa yi-{{platform}}, hhayi i-Ellie",
@@ -230,7 +232,16 @@
       "lossAversion_family": "Ngaphandle kwe-Pro, umndeni wakho ubuye ungazi ukuthi usekhaya nini.",
       "testimonialAnchor": "4.8 · izilinganiso ezingaphezu kuka-2,400",
       "purchaseSuccess": "Isivivinyo sakho sezinsuku eziyi-7 siqalile",
-      "purchaseError": "Ukuthenga kuhlulekile. Sicela uzame futhi."
+      "purchaseError": "Ukuthenga kuhlulekile. Sicela uzame futhi.",
+      "valueFrameMonthly": "Izindleko zekhofi elilodwa ngenyanga ukuze wazi irosta yakho yonke.",
+      "valueFrameWeekly": "Zama konke okuphelele ngo-{{price}}. Khansela noma nini.",
+      "billingDisclosureWeekly": "Ukukhokhiswa ngo-{{price}}/iviki, njalo ngeviki. Khansela noma nini ku-Izilungiselelo.",
+      "billingDisclosureAnnualDirect": "Uzokhokhiswa u-{{price}} namuhla. Kuvuselelwa minyaka yonke. Khansela noma nini ku-Izilungiselelo.",
+      "billingDisclosureMonthlyDirect": "Uzokhokhiswa u-{{price}} namuhla. Kuvuselelwa nyanga zonke. Khansela noma nini ku-Izilungiselelo.",
+      "purchaseSuccessContinue": "Qhubeka uye ku-Ellie",
+      "restorePurchasesSuccess": "Ukuthenga kubuyiselwe — wamukelekile ku-Pro!",
+      "restorePurchasesNotFound": "Akukho ukuthenga kwangaphambilini okutholakele kule akhawunti.",
+      "restorePurchasesError": "Ukubuyisela kwehlulekile. Sicela uzame futhi."
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Ukubhalisa okusebenzayo kwe-Pro",
@@ -242,6 +253,17 @@
     },
     "padlock": {
       "a11yLabel": "Thuthukela ku-__TK1__ Pro ukuze ubone ikhalenda eligcwele"
+    },
+    "recoveryNudge": {
+      "title": "Usekufinyeleleni okulinganiselwe",
+      "body": "Vula unyaka wakho wonke — wonke amashifu, wonke ama-swing, kuhlelwe kusenesikhathi.",
+      "cta": "Qala isivivinyo samahhala",
+      "dismiss": "Hhayi manje"
+    },
+    "featureGate": {
+      "title": "I-Pro ivula unyaka wakho wonke",
+      "body": "Bona inyanga ngayinye kusenesikhathi — akukho zimanga, akukho ukuqagela i-R&R yakho elandelayo.",
+      "cta": "Qala isivivinyo samahhala sezinsuku eziyi-7"
     }
   },
   "time": {

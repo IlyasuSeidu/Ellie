@@ -215,7 +215,9 @@
       "trust": {
         "freeTrial": "7 أيام مجانًا",
         "cancel": "يمكن الإلغاء في أي وقت",
-        "noCharge": "لا يوجد خصم اليوم"
+        "noCharge": "لا يوجد خصم اليوم",
+        "startsToday": "يبدأ اليوم",
+        "chargedToday": "يتم الخصم اليوم"
       },
       "valueFrame": "أقل من ثمن قهوة أسبوعيًا لمعرفة عامك بالكامل.",
       "security": "دفع آمن عبر {{platform}} · تتم المعالجة بواسطة {{platform}} وليس Ellie",
@@ -230,7 +232,16 @@
       "lossAversion_family": "من دون Pro ستعود عائلتك إلى عدم معرفة متى تكون في البيت.",
       "testimonialAnchor": "4.8 · أكثر من 2,400 تقييم",
       "purchaseSuccess": "بدأت تجربتك المجانية لمدة 7 أيام",
-      "purchaseError": "فشلت عملية الشراء. يرجى المحاولة مرة أخرى."
+      "purchaseError": "فشلت عملية الشراء. يرجى المحاولة مرة أخرى.",
+      "valueFrameMonthly": "تكلفة فنجان قهوة واحد شهريًا لمعرفة جدولك الكامل.",
+      "valueFrameWeekly": "جرّب التجربة الكاملة مقابل {{price}}. يمكنك الإلغاء في أي وقت.",
+      "billingDisclosureWeekly": "يتم تحصيل {{price}}/أسبوع، كل أسبوع. يمكنك الإلغاء في أي وقت من الإعدادات.",
+      "billingDisclosureAnnualDirect": "سيتم تحصيل {{price}} اليوم. يتجدد سنويًا. يمكنك الإلغاء في أي وقت من الإعدادات.",
+      "billingDisclosureMonthlyDirect": "سيتم تحصيل {{price}} اليوم. يتجدد شهريًا. يمكنك الإلغاء في أي وقت من الإعدادات.",
+      "purchaseSuccessContinue": "المتابعة إلى Ellie",
+      "restorePurchasesSuccess": "تمت استعادة الشراء — مرحبًا بك في Pro!",
+      "restorePurchasesNotFound": "لم يتم العثور على مشتريات سابقة لهذا الحساب.",
+      "restorePurchasesError": "فشلت الاستعادة. يرجى المحاولة مرة أخرى."
     },
     "profile": {
       "rowActiveA11y": "Ellie اشتراك احترافي نشط",
@@ -242,6 +253,17 @@
     },
     "padlock": {
       "a11yLabel": "قم بالترقية إلى Ellie Pro لرؤية التقويم الكامل"
+    },
+    "recoveryNudge": {
+      "title": "أنت على وصول محدود",
+      "body": "افتح عامك الكامل — كل وردية، كل تناوب، مخططًا مسبقًا.",
+      "cta": "ابدأ التجربة المجانية",
+      "dismiss": "ليس الآن"
+    },
+    "featureGate": {
+      "title": "Pro يفتح عامك الكامل",
+      "body": "شاهد كل شهر مقدمًا — بلا مفاجآت ولا تخمين لموعد R&R القادم.",
+      "cta": "ابدأ تجربة مجانية لمدة 7 أيام"
     }
   },
   "time": {

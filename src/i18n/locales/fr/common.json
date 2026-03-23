@@ -215,7 +215,9 @@
       "trust": {
         "freeTrial": "7 jours gratuits",
         "cancel": "Annulez à tout moment",
-        "noCharge": "Aucun frais aujourd'hui"
+        "noCharge": "Aucun frais aujourd'hui",
+        "startsToday": "Commence aujourd'hui",
+        "chargedToday": "Facturé aujourd'hui"
       },
       "valueFrame": "Moins qu’un café par semaine pour connaître toute votre année.",
       "security": "Paiement sécurisé via {{platform}} · Traité par {{platform}}, pas par Ellie",
@@ -230,7 +232,16 @@
       "lossAversion_family": "Sans Pro, votre famille ne sait plus quand vous êtes à la maison.",
       "testimonialAnchor": "4.8 · plus de 2 400 avis",
       "purchaseSuccess": "Votre essai de 7 jours a commencé",
-      "purchaseError": "L'achat a échoué. Veuillez réessayer."
+      "purchaseError": "L'achat a échoué. Veuillez réessayer.",
+      "valueFrameMonthly": "Le prix dun café par mois pour connaître tout votre planning.",
+      "valueFrameWeekly": "Essayez l'expérience complète pour {{price}}. Annulez à tout moment.",
+      "billingDisclosureWeekly": "Facturé {{price}}/semaine, chaque semaine. Annulez à tout moment dans Réglages.",
+      "billingDisclosureAnnualDirect": "Vous serez facturé {{price}} aujourd'hui. Renouvellement annuel. Annulez à tout moment dans Réglages.",
+      "billingDisclosureMonthlyDirect": "Vous serez facturé {{price}} aujourd'hui. Renouvellement mensuel. Annulez à tout moment dans Réglages.",
+      "purchaseSuccessContinue": "Continuer vers Ellie",
+      "restorePurchasesSuccess": "Achat restauré — bienvenue sur Pro !",
+      "restorePurchasesNotFound": "Aucun achat précédent trouvé pour ce compte.",
+      "restorePurchasesError": "La restauration a échoué. Veuillez réessayer."
     },
     "profile": {
       "rowActiveA11y": "Ellie Abonnement Pro actif",
@@ -242,6 +253,17 @@
     },
     "padlock": {
       "a11yLabel": "Passez à Ellie Pro pour voir le calendrier complet"
+    },
+    "recoveryNudge": {
+      "title": "Vous êtes en accès limité",
+      "body": "Débloquez votre année complète — chaque poste, chaque rotation, planifiés à l’avance.",
+      "cta": "Commencer l’essai gratuit",
+      "dismiss": "Pas maintenant"
+    },
+    "featureGate": {
+      "title": "Pro débloque votre année complète",
+      "body": "Voyez chaque mois à l’avance — sans surprise ni doute sur votre prochain R&R.",
+      "cta": "Commencer l’essai gratuit de 7 jours"
     }
   },
   "time": {

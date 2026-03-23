@@ -215,7 +215,9 @@
       "trust": {
         "freeTrial": "7天免费",
         "cancel": "可随时取消",
-        "noCharge": "今天不收费"
+        "noCharge": "今天不收费",
+        "startsToday": "今天开始",
+        "chargedToday": "今天收费"
       },
       "valueFrame": "每周不到一杯咖啡的钱，就能掌握你一整年的安排。",
       "security": "通过 {{platform}} 安全支付 · 由 {{platform}} 处理，而非 Ellie",
@@ -230,7 +232,16 @@
       "lossAversion_family": "没有 Pro，你的家人又不知道你什么时候在家。",
       "testimonialAnchor": "4.8 · 2,400+ 条评分",
       "purchaseSuccess": "你的 7 天试用已开始",
-      "purchaseError": "购买失败。请重试。"
+      "purchaseError": "购买失败。请重试。",
+      "valueFrameMonthly": "每月一杯咖啡的价格，就能掌握你的完整排班。",
+      "valueFrameWeekly": "只需 {{price}} 即可体验完整功能。随时可取消。",
+      "billingDisclosureWeekly": "按周收费 {{price}}，每周扣费。可随时在设置中取消。",
+      "billingDisclosureAnnualDirect": "今天将向你收取 {{price}}。按年续订。可随时在设置中取消。",
+      "billingDisclosureMonthlyDirect": "今天将向你收取 {{price}}。按月续订。可随时在设置中取消。",
+      "purchaseSuccessContinue": "继续前往 Ellie",
+      "restorePurchasesSuccess": "购买已恢复，欢迎使用 Pro！",
+      "restorePurchasesNotFound": "此账户未找到过往购买记录。",
+      "restorePurchasesError": "恢复失败。请重试。"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro 主动订阅",
@@ -242,6 +253,17 @@
     },
     "padlock": {
       "a11yLabel": "升级到 __TK1__ Pro 以查看完整日历"
+    },
+    "recoveryNudge": {
+      "title": "你当前处于有限访问模式",
+      "body": "解锁你的完整年度安排：每个班次、每个轮换，都提前规划好。",
+      "cta": "开始免费试用",
+      "dismiss": "暂不"
+    },
+    "featureGate": {
+      "title": "Pro 可解锁你的完整年度安排",
+      "body": "提前查看每个月，不再有意外，也不用猜下一次 R&R。",
+      "cta": "开始 7 天免费试用"
     }
   },
   "time": {

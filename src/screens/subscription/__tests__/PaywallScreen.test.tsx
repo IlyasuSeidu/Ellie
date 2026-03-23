@@ -7,16 +7,12 @@ import { Analytics } from '@/utils/analytics';
 import { getRevenueCatRuntime, isRevenueCatAvailable } from '@/services/RevenueCatRuntime';
 
 const mockOnDismiss = jest.fn();
-const mockRestorePurchases = jest.fn().mockResolvedValue(undefined);
+const mockRestorePurchases = jest.fn().mockResolvedValue({
+  entitlements: { active: { pro: {} } },
+});
 
 jest.mock('react-native-safe-area-context', () => ({
   useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
-}));
-
-jest.mock('@/hooks/useSubscription', () => ({
-  useSubscription: () => ({
-    restorePurchases: mockRestorePurchases,
-  }),
 }));
 
 jest.mock('@/services/RevenueCatRuntime', () => ({
@@ -39,6 +35,7 @@ jest.mock('@/utils/analytics', () => ({
     paywallDismissed: jest.fn(),
     paywallSubscribeTapped: jest.fn(),
     paywallRestoreTapped: jest.fn(),
+    paywallCTAClicked: jest.fn(),
     trialStarted: jest.fn(),
     purchaseCompleted: jest.fn(),
   },
@@ -120,6 +117,19 @@ describe('PaywallScreen', () => {
   });
 
   it('tracks restore tap and dismiss metadata', async () => {
+    mockedGetRevenueCatRuntime.mockReturnValue({
+      Purchases: {
+        getOfferings: jest.fn().mockResolvedValue({
+          current: {
+            annual: null,
+            monthly: null,
+            weekly: null,
+          },
+        }),
+        restorePurchases: mockRestorePurchases,
+      },
+    } as never);
+
     const { getByText, getByLabelText } = render(
       <PaywallScreen
         onDismiss={mockOnDismiss}
@@ -155,11 +165,16 @@ describe('PaywallScreen', () => {
     );
 
     act(() => {
+      jest.advanceTimersByTime(2000);
+    });
+
+    expect(mockOnDismiss).toHaveBeenCalled();
+
+    act(() => {
       jest.advanceTimersByTime(8000);
     });
 
     fireEvent.press(getByLabelText('Close paywall'));
-    expect(mockOnDismiss).toHaveBeenCalled();
     expect(mockedAnalytics.paywallDismissed).toHaveBeenCalledWith(
       expect.objectContaining({
         platform: Platform.OS,

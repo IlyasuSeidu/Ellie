@@ -215,7 +215,9 @@
       "trust": {
         "freeTrial": "Gratis 7 hari",
         "cancel": "Batalkan kapan saja",
-        "noCharge": "Tidak ada biaya hari ini"
+        "noCharge": "Tidak ada biaya hari ini",
+        "startsToday": "Mulai hari ini",
+        "chargedToday": "Ditagih hari ini"
       },
       "valueFrame": "Kurang dari harga kopi per minggu untuk mengetahui setahun penuh Anda.",
       "security": "Pembayaran aman via {{platform}} · Diproses oleh {{platform}}, bukan Ellie",
@@ -230,7 +232,16 @@
       "lossAversion_family": "Tanpa Pro, keluarga Anda kembali tidak tahu kapan Anda ada di rumah.",
       "testimonialAnchor": "4.8 · 2.400+ penilaian",
       "purchaseSuccess": "Masa uji coba 7 hari Anda telah dimulai",
-      "purchaseError": "Pembelian gagal. Silakan coba lagi."
+      "purchaseError": "Pembelian gagal. Silakan coba lagi.",
+      "valueFrameMonthly": "Biaya satu kopi per bulan untuk mengetahui roster lengkap Anda.",
+      "valueFrameWeekly": "Coba pengalaman penuh seharga {{price}}. Batalkan kapan saja.",
+      "billingDisclosureWeekly": "Ditagih {{price}}/minggu, setiap minggu. Batalkan kapan saja di Pengaturan.",
+      "billingDisclosureAnnualDirect": "Anda akan ditagih {{price}} hari ini. Diperpanjang tahunan. Batalkan kapan saja di Pengaturan.",
+      "billingDisclosureMonthlyDirect": "Anda akan ditagih {{price}} hari ini. Diperpanjang bulanan. Batalkan kapan saja di Pengaturan.",
+      "purchaseSuccessContinue": "Lanjut ke Ellie",
+      "restorePurchasesSuccess": "Pembelian dipulihkan — selamat datang di Pro!",
+      "restorePurchasesNotFound": "Tidak ada pembelian sebelumnya yang ditemukan di akun ini.",
+      "restorePurchasesError": "Pemulihan gagal. Silakan coba lagi."
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro langganan aktif",
@@ -242,6 +253,17 @@
     },
     "padlock": {
       "a11yLabel": "Tingkatkan ke __TK1__ Pro untuk melihat kalender lengkap"
+    },
+    "recoveryNudge": {
+      "title": "Anda menggunakan akses terbatas",
+      "body": "Buka kunci satu tahun penuh Anda — setiap shift, setiap swing, direncanakan jauh hari.",
+      "cta": "Mulai uji coba gratis",
+      "dismiss": "Nanti saja"
+    },
+    "featureGate": {
+      "title": "Pro membuka satu tahun penuh Anda",
+      "body": "Lihat setiap bulan ke depan — tanpa kejutan, tanpa menebak R&R berikutnya.",
+      "cta": "Mulai uji coba gratis 7 hari"
     }
   },
   "time": {

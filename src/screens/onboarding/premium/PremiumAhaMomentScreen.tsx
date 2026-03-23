@@ -215,6 +215,15 @@ export const PremiumAhaMomentScreen: React.FC = () => {
       pattern_type: data.patternType ?? null,
       pain_point: data.painPoint ?? null,
     });
+    // AhaMoment is the paywall priming step — the real-data calendar and stats
+    // build the belief state that makes the paywall feel like the natural next step.
+    Analytics.paywallPrimingViewed({
+      priming_screen: 'aha_moment',
+      roster_type: data.rosterType ?? null,
+      pattern_type: data.patternType ?? null,
+      pain_point: data.painPoint ?? null,
+      platform: Platform.OS,
+    });
     void AsyncStorage.getItem('app:install_time').then((value) => {
       if (!value) return;
       const ts = Number(value);
@@ -249,6 +258,8 @@ export const PremiumAhaMomentScreen: React.FC = () => {
       roster_type: data.rosterType ?? null,
       pain_point: data.painPoint ?? null,
     });
+    // Persist decline timestamp so the dashboard can surface a recovery nudge later.
+    void AsyncStorage.setItem('paywall:declined_at', Date.now().toString());
     navigation.navigate('Completion');
   };
 

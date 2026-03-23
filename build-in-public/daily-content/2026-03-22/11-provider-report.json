@@ -1,0 +1,58 @@
+{
+  "provider": "anthropic",
+  "model": "claude-sonnet-4-6",
+  "refinedFiles": [],
+  "failedFiles": [
+    {
+      "path": "03-hero-short.md",
+      "error": "fetch failed"
+    },
+    {
+      "path": "04-instagram-carousel.md",
+      "error": "fetch failed"
+    },
+    {
+      "path": "05-linkedin-post.md",
+      "error": "fetch failed"
+    },
+    {
+      "path": "06-x-thread.md",
+      "error": "fetch failed"
+    },
+    {
+      "path": "ready-to-post/instagram-reels/post.md",
+      "error": "fetch failed"
+    },
+    {
+      "path": "ready-to-post/tiktok/post.md",
+      "error": "fetch failed"
+    },
+    {
+      "path": "ready-to-post/youtube-shorts/post.md",
+      "error": "fetch failed"
+    },
+    {
+      "path": "ready-to-post/instagram-carousel/post.md",
+      "error": "fetch failed"
+    },
+    {
+      "path": "ready-to-post/linkedin/post.md",
+      "error": "fetch failed"
+    },
+    {
+      "path": "ready-to-post/x/post.md",
+      "error": "fetch failed"
+    },
+    {
+      "path": "ready-to-post/threads/post.md",
+      "error": "fetch failed"
+    }
+  ],
+  "requestCount": 0,
+  "usage": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0
+  }
+}

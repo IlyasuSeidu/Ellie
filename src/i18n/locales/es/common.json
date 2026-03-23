@@ -215,7 +215,9 @@
       "trust": {
         "freeTrial": "7 días gratis",
         "cancel": "Cancela cuando quieras",
-        "noCharge": "Sin cobro hoy"
+        "noCharge": "Sin cobro hoy",
+        "startsToday": "Empieza hoy",
+        "chargedToday": "Se cobra hoy"
       },
       "valueFrame": "Menos que un café por semana para conocer todo tu año.",
       "security": "Pago seguro con {{platform}} · Procesado por {{platform}}, no por Ellie",
@@ -230,7 +232,16 @@
       "lossAversion_family": "Sin Pro, tu familia vuelve a no saber cuándo estás en casa.",
       "testimonialAnchor": "4.8 · más de 2,400 valoraciones",
       "purchaseSuccess": "Tu prueba de 7 días ha comenzado",
-      "purchaseError": "La compra falló. Inténtalo de nuevo."
+      "purchaseError": "La compra falló. Inténtalo de nuevo.",
+      "valueFrameMonthly": "El costo de un café al mes para conocer todo tu roster.",
+      "valueFrameWeekly": "Prueba la experiencia completa por {{price}}. Cancela cuando quieras.",
+      "billingDisclosureWeekly": "Se cobra {{price}}/semana, cada semana. Cancela cuando quieras en Ajustes.",
+      "billingDisclosureAnnualDirect": "Se te cobrará {{price}} hoy. Se renueva anualmente. Cancela cuando quieras en Ajustes.",
+      "billingDisclosureMonthlyDirect": "Se te cobrará {{price}} hoy. Se renueva mensualmente. Cancela cuando quieras en Ajustes.",
+      "purchaseSuccessContinue": "Continuar a Ellie",
+      "restorePurchasesSuccess": "Compra restaurada — bienvenida a Pro.",
+      "restorePurchasesNotFound": "No se encontraron compras anteriores en esta cuenta.",
+      "restorePurchasesError": "La restauración falló. Inténtalo de nuevo."
     },
     "profile": {
       "rowActiveA11y": "Ellie Suscripción activa profesional",
@@ -242,6 +253,17 @@
     },
     "padlock": {
       "a11yLabel": "Actualice a Ellie Pro para ver el calendario completo"
+    },
+    "recoveryNudge": {
+      "title": "Estás con acceso limitado",
+      "body": "Desbloquea tu año completo: cada turno, cada swing, planificado con antelación.",
+      "cta": "Iniciar prueba gratis",
+      "dismiss": "Ahora no"
+    },
+    "featureGate": {
+      "title": "Pro desbloquea tu año completo",
+      "body": "Ve cada mes por adelantado: sin sorpresas ni dudas sobre tu próximo R&R.",
+      "cta": "Inicia la prueba gratis de 7 días"
     }
   },
   "time": {

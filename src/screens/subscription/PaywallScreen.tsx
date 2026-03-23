@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Dimensions,
+  Linking,
   Platform,
   ScrollView,
   StyleSheet,
@@ -22,13 +23,30 @@ import Animated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import type { PurchasesPackage } from 'react-native-purchases';
-import { useSubscription } from '@/hooks/useSubscription';
 import { getRevenueCatRuntime, isRevenueCatAvailable } from '@/services/RevenueCatRuntime';
 import { theme } from '@/utils/theme';
 import { Analytics, type PaywallTriggerSource } from '@/utils/analytics';
 import { useOnboardingOptional, type OnboardingData } from '@/contexts/OnboardingContext';
 import { MiniYearCalendar } from '@/components/paywall/MiniYearCalendar';
 import { formatLocalizedDate } from '@/utils/i18nFormat';
+
+// Legal URLs — update these to point to the live hosted documents
+const PRIVACY_POLICY_URL = 'https://ellieapp.com.au/privacy';
+const TERMS_OF_SERVICE_URL = 'https://ellieapp.com.au/terms';
+
+/**
+ * Returns true if the given RevenueCat package includes a free introductory trial
+ * (i.e. introductoryPrice exists and its price is $0).
+ *
+ * Falls back to `true` when the package is null (RC offline / dev build) so that
+ * the trial-first copy is shown whenever we cannot confirm otherwise — matching the
+ * trial badge and CTA copy that are always visible.
+ */
+function packageHasTrial(pkg: import('react-native-purchases').PurchasesPackage | null): boolean {
+  if (!pkg) return true;
+  const introPrice = pkg.product.introPrice;
+  return introPrice !== null && introPrice !== undefined && introPrice.price === 0;
+}
 
 interface PaywallScreenProps {
   onDismiss: () => void;
@@ -59,7 +77,6 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
   const insets = useSafeAreaInsets();
   const { t, i18n } = useTranslation('common');
   const tLoose = t as unknown as (key: string, options?: Record<string, unknown>) => string;
-  const { restorePurchases } = useSubscription();
   const contextOnboarding = useOnboardingOptional();
   // Prop takes precedence; context is fallback for Settings/feature-gate entry points
   const resolvedOnboardingData = onboardingData ?? contextOnboarding?.data;
@@ -70,12 +87,16 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
   const [loading, setLoading] = useState(true);
   const [purchasing, setPurchasing] = useState(false);
   const [purchaseError, setPurchaseError] = useState<string | null>(null);
+  const [restoring, setRestoring] = useState(false);
+  const [restoreResult, setRestoreResult] = useState<'success' | 'not_found' | 'error' | null>(
+    null
+  );
   const [dismissVisible, setDismissVisible] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const purchasesAvailable = useMemo(() => isRevenueCatAvailable(), []);
   const ctaPulse = useSharedValue(1);
   const openedAtRef = useRef(Date.now());
-  const purchaseSuccessDismissTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const restoreSuccessDismissTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const paywallAnalyticsMetadata = useMemo(
     () => ({
@@ -197,6 +218,14 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
   }, [entryPoint, paywallAnalyticsMetadata]);
 
   useEffect(() => {
+    return () => {
+      if (restoreSuccessDismissTimerRef.current) {
+        clearTimeout(restoreSuccessDismissTimerRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
     ctaPulse.value = withRepeat(
       withSequence(
         withTiming(1.02, { duration: 800, easing: Easing.inOut(Easing.ease) }),
@@ -206,14 +235,6 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
       false
     );
   }, [ctaPulse]);
-
-  useEffect(() => {
-    return () => {
-      if (purchaseSuccessDismissTimerRef.current) {
-        clearTimeout(purchaseSuccessDismissTimerRef.current);
-      }
-    };
-  }, []);
 
   const selectedPackage =
     selectedPlan === 'annual'
@@ -268,6 +289,57 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
     [i18n.language]
   );
 
+  // Whether the currently selected package carries a free trial.
+  // Drives both the billing disclosure text and the trust row items.
+  const hasTrialForSelected = useMemo(() => packageHasTrial(selectedPackage), [selectedPackage]);
+
+  // G9: Billing disclosure adapts to the selected plan and whether a trial is available.
+  const billingDisclosureText = useMemo(() => {
+    if (selectedPlan === 'weekly') {
+      return t('subscription.paywall.billingDisclosureWeekly', {
+        price: weeklyPrice,
+        defaultValue: `Billed ${weeklyPrice}/week, every week. Cancel anytime in Settings.`,
+      });
+    }
+    if (!hasTrialForSelected) {
+      if (selectedPlan === 'annual') {
+        return t('subscription.paywall.billingDisclosureAnnualDirect', {
+          price: annualPrice,
+          defaultValue: `You will be charged ${annualPrice} today. Renews annually. Cancel anytime in Settings.`,
+        });
+      }
+      return t('subscription.paywall.billingDisclosureMonthlyDirect', {
+        price: monthlyPrice,
+        defaultValue: `You will be charged ${monthlyPrice} today. Renews monthly. Cancel anytime in Settings.`,
+      });
+    }
+    // Annual or monthly with 7-day free trial (the default)
+    return t('subscription.paywall.billingDisclosure', {
+      date: trialEndDate,
+      defaultValue:
+        'Your 7-day free trial ends {{date}}. Cancel anytime in Settings before then to avoid charges. Subscriptions renew automatically.',
+    });
+  }, [selectedPlan, hasTrialForSelected, weeklyPrice, annualPrice, monthlyPrice, trialEndDate, t]);
+
+  // G10: Value frame copy matches the selected plan's actual pricing proposition.
+  const valueFrameText = useMemo(() => {
+    switch (selectedPlan) {
+      case 'monthly':
+        return t('subscription.paywall.valueFrameMonthly', {
+          defaultValue: 'The cost of one coffee a month to know your full roster.',
+        });
+      case 'weekly':
+        return t('subscription.paywall.valueFrameWeekly', {
+          price: weeklyPrice,
+          defaultValue: 'Try the full experience for {{price}}. Cancel any time.',
+        });
+      default:
+        return t('subscription.paywall.valueFrame', {
+          defaultValue: 'Less than a coffee per week to know your full year.',
+        });
+    }
+  }, [selectedPlan, weeklyPrice, t]);
+
   const handleDismiss = () => {
     Analytics.paywallDismissed({
       time_on_paywall_seconds: Math.max(0, Math.round((Date.now() - openedAtRef.current) / 1000)),
@@ -289,6 +361,13 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
   };
 
   const handlePurchase = async () => {
+    // Fire immediately on tap — before guards — so we can measure CTA→SDK drop-off.
+    Analytics.paywallCTAClicked(selectedPlan, {
+      platform: Platform.OS,
+      source: entryPoint,
+      trigger_source: entryPoint,
+    });
+
     if (!selectedPackage) return;
     const revenueCatRuntime = getRevenueCatRuntime();
     if (!revenueCatRuntime) return;
@@ -310,7 +389,6 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
         Analytics.purchaseCompleted(selectedPlan, price);
       }
       setPurchaseSuccess(true);
-      purchaseSuccessDismissTimerRef.current = setTimeout(() => onDismiss(), 700);
     } catch (error) {
       const isCancelled =
         error !== null &&
@@ -330,13 +408,46 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
   };
 
   const handleRestore = async () => {
+    const revenueCatRuntime = getRevenueCatRuntime();
+    setRestoring(true);
+    setRestoreResult(null);
     Analytics.paywallRestoreTapped({
       platform: Platform.OS,
       source: entryPoint,
       trigger_source: entryPoint,
     });
-    await restorePurchases();
-    onDismiss();
+
+    if (!revenueCatRuntime) {
+      setRestoreResult('error');
+      setRestoring(false);
+      return;
+    }
+
+    try {
+      const { Purchases } = revenueCatRuntime;
+      const info = await Purchases.restorePurchases();
+      const hasPro = info.entitlements.active['pro'] !== undefined;
+      setRestoreResult(hasPro ? 'success' : 'not_found');
+      if (hasPro) {
+        // Brief pause so the success message is readable before the paywall closes
+        if (restoreSuccessDismissTimerRef.current) {
+          clearTimeout(restoreSuccessDismissTimerRef.current);
+        }
+        restoreSuccessDismissTimerRef.current = setTimeout(() => onDismiss(), 2000);
+      }
+    } catch {
+      setRestoreResult('error');
+    } finally {
+      setRestoring(false);
+    }
+  };
+
+  const handleOpenPrivacyPolicy = () => {
+    void Linking.openURL(PRIVACY_POLICY_URL);
+  };
+
+  const handleOpenTerms = () => {
+    void Linking.openURL(TERMS_OF_SERVICE_URL);
   };
 
   return (
@@ -483,7 +594,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
               </Text>
             </TouchableOpacity>
 
-            {/* Weekly plan — low barrier entry */}
+            {/* Weekly plan — only render when the product actually exists */}
             {weeklyPackage ? (
               <TouchableOpacity
                 style={[styles.planOption, selectedPlan === 'weekly' && styles.planOptionSelected]}
@@ -517,13 +628,37 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
 
         {/* ── CTA button ── */}
         {purchaseSuccess ? (
-          <View style={styles.successContainer}>
-            <Ionicons name="checkmark-circle" size={28} color={theme.colors.sacredGold} />
-            <Text style={styles.successText}>
-              {t('subscription.paywall.purchaseSuccess', {
-                defaultValue: 'Your 7-day trial has started',
+          <View style={styles.successWrapper}>
+            <View style={styles.successContainer}>
+              <Ionicons name="checkmark-circle" size={28} color={theme.colors.sacredGold} />
+              <Text style={styles.successText}>
+                {t('subscription.paywall.purchaseSuccess', {
+                  defaultValue: 'Your 7-day trial has started',
+                })}
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={onDismiss}
+              style={styles.successCta}
+              accessibilityRole="button"
+              accessibilityLabel={t('subscription.paywall.purchaseSuccessContinue', {
+                defaultValue: 'Continue to Ellie',
               })}
-            </Text>
+            >
+              <View style={styles.successCtaContent}>
+                <Text style={styles.successCtaText}>
+                  {t('subscription.paywall.purchaseSuccessContinue', {
+                    defaultValue: 'Continue to Ellie',
+                  })}
+                </Text>
+                <Ionicons
+                  name="arrow-forward"
+                  size={18}
+                  color={theme.colors.deepVoid}
+                  style={styles.successCtaIcon}
+                />
+              </View>
+            </TouchableOpacity>
           </View>
         ) : (
           <Animated.View style={ctaAnimatedStyle}>
@@ -575,7 +710,9 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
           <View style={styles.trustItem}>
             <Ionicons name="calendar-outline" size={15} color={theme.colors.sacredGold} />
             <Text style={styles.trustText}>
-              {t('subscription.paywall.trust.freeTrial', { defaultValue: '7 days free' })}
+              {hasTrialForSelected
+                ? t('subscription.paywall.trust.freeTrial', { defaultValue: '7 days free' })
+                : t('subscription.paywall.trust.startsToday', { defaultValue: 'Starts today' })}
             </Text>
           </View>
           <View style={styles.trustDivider} />
@@ -589,25 +726,17 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
           <View style={styles.trustItem}>
             <Ionicons name="card-outline" size={15} color={theme.colors.sacredGold} />
             <Text style={styles.trustText}>
-              {t('subscription.paywall.trust.noCharge', { defaultValue: 'No charge today' })}
+              {hasTrialForSelected
+                ? t('subscription.paywall.trust.noCharge', { defaultValue: 'No charge today' })
+                : t('subscription.paywall.trust.chargedToday', { defaultValue: 'Charged today' })}
             </Text>
           </View>
         </View>
 
-        <Text style={styles.billingDisclosure}>
-          {t('subscription.paywall.billingDisclosure', {
-            date: trialEndDate,
-            defaultValue:
-              'Your 7-day free trial ends {{date}}. Cancel anytime in Settings before then to avoid charges. Subscriptions renew automatically.',
-          })}
-        </Text>
+        <Text style={styles.billingDisclosure}>{billingDisclosureText}</Text>
 
-        {/* Value frame */}
-        <Text style={styles.valueFrame}>
-          {t('subscription.paywall.valueFrame', {
-            defaultValue: 'Less than a coffee per week to know your full year.',
-          })}
-        </Text>
+        {/* Value frame — copy adapts to selected plan */}
+        <Text style={styles.valueFrame}>{valueFrameText}</Text>
 
         {/* ── Loss aversion ── */}
         <View style={styles.lossAversion}>
@@ -700,17 +829,54 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
           </Text>
         ) : null}
 
+        {/* Restore result feedback */}
+        {restoreResult ? (
+          <Text
+            style={[
+              styles.restoreResultText,
+              restoreResult === 'success' && styles.restoreResultSuccess,
+            ]}
+          >
+            {restoreResult === 'success'
+              ? t('subscription.paywall.restorePurchasesSuccess', {
+                  defaultValue: 'Purchase restored — welcome to Pro!',
+                })
+              : restoreResult === 'not_found'
+                ? t('subscription.paywall.restorePurchasesNotFound', {
+                    defaultValue: 'No previous purchases found on this account.',
+                  })
+                : t('subscription.paywall.restorePurchasesError', {
+                    defaultValue: 'Restore failed. Please try again.',
+                  })}
+          </Text>
+        ) : null}
+
         {/* Footer links */}
         <View style={styles.footer}>
-          <TouchableOpacity onPress={handleRestore} accessibilityRole="button">
-            <Text style={styles.footerLink}>{t('subscription.paywall.restorePurchases')}</Text>
+          <TouchableOpacity
+            onPress={handleRestore}
+            disabled={restoring || restoreResult === 'success'}
+            accessibilityRole="button"
+          >
+            {restoring ? (
+              <ActivityIndicator size="small" color={theme.colors.dust} />
+            ) : (
+              <Text
+                style={[
+                  styles.footerLink,
+                  (restoring || restoreResult === 'success') && styles.footerLinkDimmed,
+                ]}
+              >
+                {t('subscription.paywall.restorePurchases')}
+              </Text>
+            )}
           </TouchableOpacity>
           <Text style={styles.footerDot}>·</Text>
-          <TouchableOpacity accessibilityRole="link">
+          <TouchableOpacity onPress={handleOpenPrivacyPolicy} accessibilityRole="link">
             <Text style={styles.footerLink}>{t('subscription.paywall.privacyPolicy')}</Text>
           </TouchableOpacity>
           <Text style={styles.footerDot}>·</Text>
-          <TouchableOpacity accessibilityRole="link">
+          <TouchableOpacity onPress={handleOpenTerms} accessibilityRole="link">
             <Text style={styles.footerLink}>
               {t('subscription.paywall.termsOfService', { defaultValue: 'Terms' })}
             </Text>
@@ -1034,7 +1200,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '600',
   },
-
   // ── No card / cancel reassurance ──
   noCard: {
     color: theme.colors.dust,
@@ -1053,14 +1218,17 @@ const styles = StyleSheet.create({
   },
 
   // ── Purchase success ──
+  successWrapper: {
+    marginTop: 2,
+    marginBottom: 14,
+    gap: 10,
+  },
   successContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 10,
     height: 64,
-    marginTop: 2,
-    marginBottom: 14,
     borderRadius: 18,
     backgroundColor: 'rgba(197,151,92,0.12)',
     borderWidth: 1,
@@ -1070,6 +1238,36 @@ const styles = StyleSheet.create({
     color: theme.colors.sacredGold,
     fontSize: 17,
     fontWeight: '700',
+  },
+  successCta: {
+    height: 52,
+    borderRadius: 14,
+    backgroundColor: theme.colors.sacredGold,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...Platform.select({
+      ios: {
+        shadowColor: theme.colors.sacredGold,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.35,
+        shadowRadius: 10,
+      },
+      android: { elevation: 6 },
+    }),
+  },
+  successCtaText: {
+    color: theme.colors.deepVoid,
+    fontSize: 16,
+    fontWeight: '800',
+    letterSpacing: 0.2,
+  },
+  successCtaContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  successCtaIcon: {
+    marginLeft: 8,
   },
 
   // ── Rating anchor ──
@@ -1191,6 +1389,21 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 10,
     paddingHorizontal: 8,
+  },
+
+  // ── Restore result ──
+  restoreResultText: {
+    color: '#F87171',
+    fontSize: 12,
+    textAlign: 'center',
+    marginBottom: 8,
+    paddingHorizontal: 8,
+  },
+  restoreResultSuccess: {
+    color: theme.colors.sacredGold,
+  },
+  footerLinkDimmed: {
+    opacity: 0.4,
   },
 
   // ── Footer ──

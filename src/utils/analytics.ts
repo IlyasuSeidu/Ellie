@@ -184,6 +184,15 @@ export const Analytics = {
       { query: queryText, query_text: queryText, ...metadata }
     ),
 
+  // Fired when the user sees any screen that primes them before the paywall.
+  // Currently: PremiumAhaMomentScreen acts as the priming step.
+  paywallPrimingViewed: (metadata?: AnalyticsPayload) =>
+    void safeCall(
+      (client) => client.logEvent('paywall_priming_viewed', metadata),
+      'paywall_priming_viewed',
+      metadata
+    ),
+
   // Paywall funnel
   paywallViewed: (triggerSource: PaywallTriggerSource, metadata?: AnalyticsPayload) =>
     void safeCall(
@@ -205,6 +214,19 @@ export const Analytics = {
           ...metadata,
         }),
       'paywall_plan_selected',
+      { plan, ...metadata }
+    ),
+
+  // Fires the instant the CTA button is tapped — before any guards or async work.
+  // Use this to measure "tapped but SDK sheet never appeared" drop-off vs paywallSubscribeTapped.
+  paywallCTAClicked: (plan: 'annual' | 'monthly' | 'weekly', metadata?: AnalyticsPayload) =>
+    void safeCall(
+      (client) =>
+        client.logEvent('paywall_cta_clicked', {
+          plan,
+          ...metadata,
+        }),
+      'paywall_cta_clicked',
       { plan, ...metadata }
     ),
 

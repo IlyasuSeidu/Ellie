@@ -49,6 +49,7 @@ jest.mock('@/utils/analytics', () => ({
     onboardingStepViewed: jest.fn(),
     ahaMomentReached: jest.fn(),
     ahaMomentVoiceTried: jest.fn(),
+    paywallPrimingViewed: jest.fn(),
     paywallDeclined: jest.fn(),
   },
 }));

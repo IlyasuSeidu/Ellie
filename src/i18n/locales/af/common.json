@@ -215,7 +215,9 @@
       "trust": {
         "freeTrial": "7 dae gratis",
         "cancel": "Kanselleer enige tyd",
-        "noCharge": "Geen heffing vandag"
+        "noCharge": "Geen heffing vandag",
+        "startsToday": "Begin vandag",
+        "chargedToday": "Vandag gehef"
       },
       "valueFrame": "Minder as ’n koffie per week om jou volle jaar te ken.",
       "security": "Veilige betaling via {{platform}} · Verwerk deur {{platform}}, nie Ellie nie",
@@ -230,7 +232,16 @@
       "lossAversion_family": "Sonder Pro weet jou familie weer nie wanneer jy by die huis is nie.",
       "testimonialAnchor": "4.8 · 2 400+ graderings",
       "purchaseSuccess": "Jou 7-dae-proef het begin",
-      "purchaseError": "Aankoop het misluk. Probeer asseblief weer."
+      "purchaseError": "Aankoop het misluk. Probeer asseblief weer.",
+      "valueFrameMonthly": "Die koste van een koffie per maand om jou volle rooster te ken.",
+      "valueFrameWeekly": "Probeer die volle ervaring vir {{price}}. Kanselleer enige tyd.",
+      "billingDisclosureWeekly": "Gefaktureer teen {{price}}/week, elke week. Kanselleer enige tyd in Instellings.",
+      "billingDisclosureAnnualDirect": "Jy sal vandag {{price}} betaal. Hernu jaarliks. Kanselleer enige tyd in Instellings.",
+      "billingDisclosureMonthlyDirect": "Jy sal vandag {{price}} betaal. Hernu maandeliks. Kanselleer enige tyd in Instellings.",
+      "purchaseSuccessContinue": "Gaan voort na Ellie",
+      "restorePurchasesSuccess": "Aankoop herstel — welkom by Pro!",
+      "restorePurchasesNotFound": "Geen vorige aankope is op hierdie rekening gevind nie.",
+      "restorePurchasesError": "Herstel het misluk. Probeer asseblief weer."
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro aktiewe intekening",
@@ -242,6 +253,17 @@
     },
     "padlock": {
       "a11yLabel": "Gradeer op na __TK1__ Pro om volledige kalender te sien"
+    },
+    "recoveryNudge": {
+      "title": "Jy is op beperkte toegang",
+      "body": "Ontsluit jou volle jaar — elke skof, elke swaai, vooruit beplan.",
+      "cta": "Begin gratis proeflopie",
+      "dismiss": "Nie nou nie"
+    },
+    "featureGate": {
+      "title": "Pro ontsluit jou volle jaar",
+      "body": "Sien elke maand vooruit — geen verrassings, geen raaiwerk oor jou volgende R&R nie.",
+      "cta": "Begin gratis 7-dae proeflopie"
     }
   },
   "time": {

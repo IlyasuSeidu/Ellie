@@ -215,7 +215,9 @@
       "trust": {
         "freeTrial": "7 dias grátis",
         "cancel": "Cancele quando quiser",
-        "noCharge": "Sem cobrança hoje"
+        "noCharge": "Sem cobrança hoje",
+        "startsToday": "Começa hoje",
+        "chargedToday": "Cobrado hoje"
       },
       "valueFrame": "Menos que um café por semana para saber seu ano inteiro.",
       "security": "Pagamento seguro via {{platform}} · Processado por {{platform}}, não pela Ellie",
@@ -230,7 +232,16 @@
       "lossAversion_family": "Sem Pro, sua família volta a não saber quando você estará em casa.",
       "testimonialAnchor": "4,8 · mais de 2.400 avaliações",
       "purchaseSuccess": "Seu teste de 7 dias começou",
-      "purchaseError": "A compra falhou. Tente novamente."
+      "purchaseError": "A compra falhou. Tente novamente.",
+      "valueFrameMonthly": "O custo de um café por mês para conhecer toda a sua escala.",
+      "valueFrameWeekly": "Experimente a experiência completa por {{price}}. Cancele a qualquer momento.",
+      "billingDisclosureWeekly": "Cobrado {{price}}/semana, toda semana. Cancele a qualquer momento em Ajustes.",
+      "billingDisclosureAnnualDirect": "Você será cobrado em {{price}} hoje. Renovação anual. Cancele a qualquer momento em Ajustes.",
+      "billingDisclosureMonthlyDirect": "Você será cobrado em {{price}} hoje. Renovação mensal. Cancele a qualquer momento em Ajustes.",
+      "purchaseSuccessContinue": "Continuar para Ellie",
+      "restorePurchasesSuccess": "Compra restaurada — bem-vindo ao Pro!",
+      "restorePurchasesNotFound": "Nenhuma compra anterior foi encontrada nesta conta.",
+      "restorePurchasesError": "A restauração falhou. Tente novamente."
     },
     "profile": {
       "rowActiveA11y": "Ellie Assinatura Pro ativa",
@@ -242,6 +253,17 @@
     },
     "padlock": {
       "a11yLabel": "Atualize para Ellie Pro para ver o calendário completo"
+    },
+    "recoveryNudge": {
+      "title": "Você está no acesso limitado",
+      "body": "Desbloqueie o seu ano completo — cada turno, cada swing, planejados com antecedência.",
+      "cta": "Iniciar teste grátis",
+      "dismiss": "Agora não"
+    },
+    "featureGate": {
+      "title": "O Pro desbloqueia o seu ano completo",
+      "body": "Veja cada mês à frente — sem surpresas, sem adivinhar seu próximo R&R.",
+      "cta": "Iniciar teste grátis de 7 dias"
     }
   },
   "time": {

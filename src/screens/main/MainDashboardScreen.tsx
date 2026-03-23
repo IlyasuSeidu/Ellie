@@ -15,6 +15,7 @@ import {
   StyleSheet,
   RefreshControl,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import Animated, {
   FadeIn,
@@ -31,6 +32,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
+import { useSubscription } from '@/hooks/useSubscription';
+import { usePaywallRecovery } from '@/hooks/usePaywallRecovery';
+import { PaywallScreen } from '@/screens/subscription/PaywallScreen';
+import { Analytics } from '@/utils/analytics';
 import * as Haptics from 'expo-haptics';
 import { useIsFocused } from '@react-navigation/native';
 import { theme } from '@/utils/theme';
@@ -84,8 +89,12 @@ const SHIFT_GLOW_COLORS: Record<string, string> = {
   afternoon: '#67E8F9',
 };
 
+// Free users may navigate up to this many months ahead before hitting the Pro gate.
+const FREE_MONTH_AHEAD_LIMIT = 1;
+
 export const MainDashboardScreen: React.FC = () => {
   const { t } = useTranslation('dashboard');
+  const { t: tCommon } = useTranslation('common');
   const isFocused = useIsFocused();
   const insets = useSafeAreaInsets();
   const { data: onboardingContextData } = useOnboarding();
@@ -97,6 +106,12 @@ export const MainDashboardScreen: React.FC = () => {
     return { year: now.getFullYear(), month: now.getMonth() };
   });
   const [selectedDay, setSelectedDay] = useState<number | undefined>(undefined);
+  const [showRecoveryPaywall, setShowRecoveryPaywall] = useState(false);
+  const [showFeatureGatePaywall, setShowFeatureGatePaywall] = useState(false);
+
+  // G5: Non-converter recovery — isPro needed for gate + recovery hook
+  const { isPro } = useSubscription();
+  const { shouldNudge, dismissNudge } = usePaywallRecovery(isPro);
 
   // Refresh animation state
   const [refreshKey, setRefreshKey] = useState(0);
@@ -343,6 +358,26 @@ export const MainDashboardScreen: React.FC = () => {
     setSelectedDay((prev) => (prev === day ? undefined : day));
   }, []);
 
+  // G6: How many months ahead of today the calendar is currently showing.
+  const monthsAhead = useMemo(() => {
+    const now = new Date();
+    return (currentMonth.year - now.getFullYear()) * 12 + (currentMonth.month - now.getMonth());
+  }, [currentMonth]);
+
+  // G6: Gate forward navigation — free users may go 1 month ahead; beyond that requires Pro.
+  const handleNextMonthGated = useCallback(() => {
+    if (!isPro && monthsAhead >= FREE_MONTH_AHEAD_LIMIT) {
+      Analytics.track('feature_gate_triggered', {
+        feature: 'calendar_full_year',
+        source: 'dashboard',
+        months_ahead: monthsAhead,
+      });
+      setShowFeatureGatePaywall(true);
+      return;
+    }
+    handleNextMonth();
+  }, [isPro, monthsAhead, handleNextMonth]);
+
   // Avatar change handler — persists new URI to AsyncStorage
   const handleAvatarChange = useCallback(
     async (newUri: string | null) => {
@@ -441,6 +476,43 @@ export const MainDashboardScreen: React.FC = () => {
           testID="dashboard-header"
         />
 
+        {/* G5: Recovery nudge — shown to users who declined the paywall during onboarding */}
+        {shouldNudge && !showRecoveryPaywall && (
+          <Animated.View entering={FadeIn.delay(1200).duration(400)} style={styles.recoveryNudge}>
+            <View style={styles.recoveryNudgeInner}>
+              <Ionicons name="lock-open-outline" size={18} color={theme.colors.sacredGold} />
+              <View style={styles.recoveryNudgeContent}>
+                <Text style={styles.recoveryNudgeTitle}>
+                  {tCommon('subscription.recoveryNudge.title')}
+                </Text>
+                <Text style={styles.recoveryNudgeBody}>
+                  {tCommon('subscription.recoveryNudge.body')}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.recoveryNudgeActions}>
+              <TouchableOpacity
+                style={styles.recoveryNudgeCta}
+                onPress={() => setShowRecoveryPaywall(true)}
+                accessibilityRole="button"
+              >
+                <Text style={styles.recoveryNudgeCtaText}>
+                  {tCommon('subscription.recoveryNudge.cta')}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => void dismissNudge()}
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                accessibilityRole="button"
+              >
+                <Text style={styles.recoveryNudgeDismiss}>
+                  {tCommon('subscription.recoveryNudge.dismiss')}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </Animated.View>
+        )}
+
         {/* Current Shift Status Card (HERO) */}
         <CurrentShiftStatusCard
           key={`status-${refreshKey}`}
@@ -468,7 +540,7 @@ export const MainDashboardScreen: React.FC = () => {
           shiftDays={monthShifts}
           selectedDay={selectedDay}
           onPreviousMonth={handlePreviousMonth}
-          onNextMonth={handleNextMonth}
+          onNextMonth={handleNextMonthGated}
           onDayPress={handleDayPress}
           shiftSystem={shiftCycle?.shiftSystem}
           rosterType={shiftCycle?.rosterType}
@@ -490,6 +562,26 @@ export const MainDashboardScreen: React.FC = () => {
           testID="dashboard-stats"
         />
       </ScrollView>
+
+      {/* G5: Recovery paywall — surfaces after user declined during onboarding */}
+      {showRecoveryPaywall && (
+        <PaywallScreen
+          onDismiss={() => {
+            setShowRecoveryPaywall(false);
+            // If they just converted, the isPro flip clears the nudge automatically via the hook.
+            // If they dismissed without converting, keep the nudge visible for another chance.
+          }}
+          entryPoint="post_aha"
+        />
+      )}
+
+      {/* G6: Feature gate paywall — surfaces when free user tries to navigate beyond free limit */}
+      {showFeatureGatePaywall && (
+        <PaywallScreen
+          onDismiss={() => setShowFeatureGatePaywall(false)}
+          entryPoint="feature_gate"
+        />
+      )}
     </View>
   );
 };
@@ -546,6 +638,59 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: theme.colors.success,
   },
+  // Recovery nudge banner (G5)
+  recoveryNudge: {
+    marginHorizontal: theme.spacing.lg,
+    marginBottom: theme.spacing.md,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(197,151,92,0.25)',
+    backgroundColor: 'rgba(197,151,92,0.07)',
+    overflow: 'hidden',
+    padding: 14,
+  },
+  recoveryNudgeInner: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 10,
+    marginBottom: 12,
+  },
+  recoveryNudgeContent: {
+    flex: 1,
+  },
+  recoveryNudgeTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: theme.colors.sacredGold,
+    marginBottom: 3,
+  },
+  recoveryNudgeBody: {
+    fontSize: 12,
+    color: theme.colors.dust,
+    lineHeight: 17,
+  },
+  recoveryNudgeActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+  },
+  recoveryNudgeCta: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 10,
+    backgroundColor: theme.colors.sacredGold,
+  },
+  recoveryNudgeCtaText: {
+    fontSize: 12,
+    fontWeight: '800',
+    color: theme.colors.deepVoid,
+    letterSpacing: 0.2,
+  },
+  recoveryNudgeDismiss: {
+    fontSize: 12,
+    color: theme.colors.shadow,
+  },
+
   // Last Updated Indicator
   lastUpdatedContainer: {
     flexDirection: 'row',

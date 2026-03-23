@@ -211,10 +211,14 @@
       "cta": "Start Free 7-Day Trial",
       "trust": {
         "freeTrial": "7 days free",
+        "startsToday": "Starts today",
         "cancel": "Cancel anytime",
-        "noCharge": "No charge today"
+        "noCharge": "No charge today",
+        "chargedToday": "Charged today"
       },
       "valueFrame": "Less than a coffee per week to know your full year.",
+      "valueFrameMonthly": "The cost of one coffee a month to know your full roster.",
+      "valueFrameWeekly": "Try the full experience for {{price}}. Cancel any time.",
       "security": "Secure payment via {{platform}} · Processed by {{platform}}, not Ellie",
       "noCard": "No credit card required · Cancel anytime",
       "restorePurchases": "Restore",
@@ -225,9 +229,16 @@
       "subtitle_fifo": "Your FIFO cycle is mapped. See every swing, every day off, for your full year.",
       "subtitle_rotating": "Your rotating roster is mapped. See every shift for your full year.",
       "billingDisclosure": "Your 7-day free trial ends {{date}}. Cancel anytime in Settings before then to avoid charges. Subscriptions renew automatically.",
+      "billingDisclosureWeekly": "Billed {{price}}/week, every week. Cancel anytime in Settings.",
+      "billingDisclosureAnnualDirect": "You will be charged {{price}} today. Renews annually. Cancel anytime in Settings.",
+      "billingDisclosureMonthlyDirect": "You will be charged {{price}} today. Renews monthly. Cancel anytime in Settings.",
       "testimonialAnchor": "4.8 · 2,400+ ratings",
       "purchaseSuccess": "Your 7-day trial has started",
-      "purchaseError": "Purchase failed. Please try again."
+      "purchaseSuccessContinue": "Continue to Ellie",
+      "purchaseError": "Purchase failed. Please try again.",
+      "restorePurchasesSuccess": "Purchase restored — welcome to Pro!",
+      "restorePurchasesNotFound": "No previous purchases found on this account.",
+      "restorePurchasesError": "Restore failed. Please try again."
     },
     "profile": {
       "rowActiveA11y": "Ellie Pro active subscription",
@@ -239,6 +250,17 @@
     },
     "padlock": {
       "a11yLabel": "Upgrade to Ellie Pro to see full calendar"
+    },
+    "recoveryNudge": {
+      "title": "You're on limited access",
+      "body": "Unlock your full year — every shift, every swing, planned ahead.",
+      "cta": "Start Free Trial",
+      "dismiss": "Not now"
+    },
+    "featureGate": {
+      "title": "Pro unlocks your full year",
+      "body": "See every month ahead — no surprises, no guessing your next R&R.",
+      "cta": "Start Free 7-Day Trial"
     }
   },
   "time": {
