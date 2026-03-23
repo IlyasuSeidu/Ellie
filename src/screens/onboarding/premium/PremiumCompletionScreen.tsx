@@ -1077,6 +1077,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
               onPress={handleGetStarted}
               variant="primary"
               size="large"
+              titleNumberOfLines={1}
               disabled={!isSaved}
               icon={<Ionicons name="arrow-forward" size={20} color={theme.colors.deepVoid} />}
               iconPosition="right"
