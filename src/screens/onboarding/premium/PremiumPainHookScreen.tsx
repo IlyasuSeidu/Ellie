@@ -45,6 +45,7 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CARD_WIDTH = Math.min(SCREEN_WIDTH - 40, 380);
 const SWIPE_THRESHOLD = 82;
 const VELOCITY_THRESHOLD = 700;
+const FIXED_CTA_CLEARANCE = 188;
 
 type PainOption = {
   id: PainOptionId;
@@ -427,7 +428,7 @@ const styles = StyleSheet.create({
   content: {
     paddingHorizontal: theme.spacing.xl,
     paddingTop: theme.spacing.md,
-    paddingBottom: 132,
+    paddingBottom: FIXED_CTA_CLEARANCE,
   },
   header: {
     marginTop: theme.spacing.sm,
@@ -472,7 +473,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: 470,
-    marginBottom: theme.spacing.md,
+    marginBottom: theme.spacing.lg,
   },
   previewCard: {
     position: 'absolute',
@@ -587,7 +588,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.2,
   },
   buttonSpacer: {
-    height: 8,
+    height: 24,
   },
   buttonContainer: {
     position: 'absolute',
