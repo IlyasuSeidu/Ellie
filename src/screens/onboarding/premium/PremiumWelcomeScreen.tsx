@@ -184,11 +184,18 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
 
         {/* Trust signals */}
         <Animated.View style={styles.trustRow} entering={FadeIn.delay(1400).duration(400)}>
-          <Text style={styles.trustItem}>✓ {t('welcome.trust.freeTrial')}</Text>
-          <Text style={styles.trustSeparator}>·</Text>
-          <Text style={styles.trustItem}>✓ {t('welcome.trust.noCard')}</Text>
-          <Text style={styles.trustSeparator}>·</Text>
-          <Text style={styles.trustItem}>✓ {t('welcome.trust.cancelAnytime')}</Text>
+          <View style={styles.trustChip}>
+            <Ionicons name="checkmark" size={14} color={theme.colors.paper} />
+            <Text style={styles.trustItem}>{t('welcome.trust.freeTrial')}</Text>
+          </View>
+          <View style={styles.trustChip}>
+            <Ionicons name="checkmark" size={14} color={theme.colors.paper} />
+            <Text style={styles.trustItem}>{t('welcome.trust.noCard')}</Text>
+          </View>
+          <View style={styles.trustChip}>
+            <Ionicons name="checkmark" size={14} color={theme.colors.paper} />
+            <Text style={styles.trustItem}>{t('welcome.trust.cancelAnytime')}</Text>
+          </View>
         </Animated.View>
 
         {/* Get Started button */}
@@ -317,17 +324,37 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 7,
     marginBottom: theme.spacing.md,
+    maxWidth: '100%',
   },
   socialProofText: {
     color: theme.colors.sacredGold,
     fontSize: 13,
     fontWeight: '600',
     letterSpacing: 0.4,
+    textAlign: 'center',
+    flexShrink: 1,
   },
   trustRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    width: '100%',
     marginBottom: theme.spacing.xl,
+    gap: 8,
+  },
+  trustChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 1,
+    maxWidth: '100%',
+    borderRadius: 999,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    backgroundColor: 'rgba(255,255,255,0.04)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
     gap: 6,
   },
   trustItem: {
@@ -335,11 +362,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '500',
     letterSpacing: 0.2,
-  },
-  trustSeparator: {
-    color: theme.colors.dust,
-    opacity: 0.4,
-    fontSize: 12,
+    textAlign: 'center',
+    flexShrink: 1,
   },
   buttonContainer: {
     width: '100%',
