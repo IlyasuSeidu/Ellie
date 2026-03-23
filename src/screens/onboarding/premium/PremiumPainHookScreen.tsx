@@ -24,6 +24,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
@@ -45,7 +46,8 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CARD_WIDTH = Math.min(SCREEN_WIDTH - 40, 380);
 const SWIPE_THRESHOLD = 82;
 const VELOCITY_THRESHOLD = 700;
-const FIXED_CTA_CLEARANCE = 188;
+const CTA_HEIGHT_ESTIMATE = 64;
+const CTA_GAP = 18;
 
 type PainOption = {
   id: PainOptionId;
@@ -275,6 +277,7 @@ const PainCard: React.FC<PainCardProps> = ({ option, isSelected, onSelect, onNex
 export const PremiumPainHookScreen: React.FC = () => {
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
+  const insets = useSafeAreaInsets();
   const { data, updateData } = useOnboarding();
   const mountTime = useRef(Date.now());
   const [currentIndex, setCurrentIndex] = useState(() => {
@@ -339,6 +342,10 @@ export const PremiumPainHookScreen: React.FC = () => {
     transform: [{ translateY: buttonTranslate.value }],
   }));
 
+  const baseButtonBottomOffset = Platform.OS === 'ios' ? 18 : 16;
+  const buttonBottomOffset = Math.max(insets.bottom + 8, baseButtonBottomOffset);
+  const contentBottomPadding = buttonBottomOffset + CTA_HEIGHT_ESTIMATE + CTA_GAP + 56;
+
   return (
     <View style={styles.container} testID="pain-hook-screen">
       <ProgressHeader
@@ -350,7 +357,7 @@ export const PremiumPainHookScreen: React.FC = () => {
 
       <ScrollView
         style={styles.scroll}
-        contentContainerStyle={styles.content}
+        contentContainerStyle={[styles.content, { paddingBottom: contentBottomPadding }]}
         showsVerticalScrollIndicator={false}
         bounces={false}
       >
@@ -401,7 +408,7 @@ export const PremiumPainHookScreen: React.FC = () => {
       </ScrollView>
 
       <Animated.View
-        style={[styles.buttonContainer, buttonAnimatedStyle]}
+        style={[styles.buttonContainer, { bottom: buttonBottomOffset }, buttonAnimatedStyle]}
         pointerEvents={selected ? 'auto' : 'none'}
       >
         <PremiumButton
@@ -428,7 +435,6 @@ const styles = StyleSheet.create({
   content: {
     paddingHorizontal: theme.spacing.xl,
     paddingTop: theme.spacing.md,
-    paddingBottom: FIXED_CTA_CLEARANCE,
   },
   header: {
     marginTop: theme.spacing.sm,
@@ -594,6 +600,5 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: theme.spacing.xl,
     right: theme.spacing.xl,
-    bottom: Platform.select({ ios: 36, android: 28 }),
   },
 });
