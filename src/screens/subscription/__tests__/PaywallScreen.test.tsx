@@ -104,7 +104,7 @@ describe('PaywallScreen', () => {
 
     const renderedTree = JSON.stringify(toJSON());
     const annualIndex = renderedTree.indexOf('Annual');
-    const ctaIndex = renderedTree.indexOf('Start Free 7-Day Trial');
+    const ctaIndex = renderedTree.indexOf('Start Free Trial');
     const featureIndex = renderedTree.indexOf('See your full year — every work block, every R&R');
     const testimonialIndex = renderedTree.indexOf(
       'Sarah K., Underground miner — 12h rotating shifts'
@@ -114,6 +114,28 @@ describe('PaywallScreen', () => {
     expect(ctaIndex).toBeGreaterThan(annualIndex);
     expect(featureIndex).toBeGreaterThan(ctaIndex);
     expect(testimonialIndex).toBeGreaterThan(featureIndex);
+  });
+
+  it('keeps the primary CTA label on one line with font fitting enabled', () => {
+    const { getByText } = render(
+      <PaywallScreen
+        onDismiss={mockOnDismiss}
+        entryPoint="aha_moment"
+        onboardingData={{
+          name: 'Ilyasu',
+          country: 'Ghana',
+          rosterType: 'fifo',
+          painPoint: 'cycle_lost',
+          patternType: ShiftPattern.FIFO_8_6,
+        }}
+      />
+    );
+
+    const ctaLabel = getByText('Start Free Trial');
+
+    expect(ctaLabel.props.numberOfLines).toBe(1);
+    expect(ctaLabel.props.adjustsFontSizeToFit).toBe(true);
+    expect(ctaLabel.props.minimumFontScale).toBe(0.84);
   });
 
   it('tracks restore tap and dismiss metadata', async () => {
@@ -238,7 +260,7 @@ describe('PaywallScreen', () => {
       })
     );
 
-    fireEvent.press(getByText('Start Free 7-Day Trial'));
+    fireEvent.press(getByText('Start Free Trial'));
     await waitFor(() => {
       expect(mockedAnalytics.paywallSubscribeTapped).toHaveBeenCalledWith(
         'monthly',

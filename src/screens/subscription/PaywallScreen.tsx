@@ -679,13 +679,23 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
                   <ActivityIndicator color={theme.colors.deepVoid} />
                 ) : (
                   <View style={styles.ctaContent}>
-                    <Text style={styles.ctaText}>{t('subscription.paywall.cta')}</Text>
-                    <Ionicons
-                      name="arrow-forward"
-                      size={20}
-                      color={theme.colors.deepVoid}
-                      style={styles.ctaArrow}
-                    />
+                    <View style={styles.ctaArrowSlot} />
+                    <Text
+                      style={styles.ctaText}
+                      numberOfLines={1}
+                      adjustsFontSizeToFit
+                      minimumFontScale={0.84}
+                    >
+                      {t('subscription.paywall.cta')}
+                    </Text>
+                    <View style={styles.ctaArrowSlot}>
+                      <Ionicons
+                        name="arrow-forward"
+                        size={20}
+                        color={theme.colors.deepVoid}
+                        style={styles.ctaArrow}
+                      />
+                    </View>
                   </View>
                 )}
               </LinearGradient>
@@ -1311,15 +1321,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
+    paddingHorizontal: 20,
   },
   ctaText: {
     color: theme.colors.deepVoid,
     fontSize: 18,
     fontWeight: '800',
     letterSpacing: 0.2,
+    flex: 1,
+    textAlign: 'center',
+    flexShrink: 1,
+  },
+  ctaArrowSlot: {
+    width: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   ctaArrow: {
-    marginLeft: 8,
+    textAlign: 'center',
   },
 
   // ── Trust row ──
