@@ -120,7 +120,7 @@ describe('PremiumAhaMomentScreen', () => {
     const { getByText, queryByText } = render(<PremiumAhaMomentScreen />);
 
     expect(queryByText('PaywallScreen')).toBeNull();
-    fireEvent.press(getByText('Unlock Full Access — 7-Day Free Trial'));
+    fireEvent.press(getByText('Start 7-Day Trial'));
     expect(getByText('PaywallScreen')).toBeTruthy();
 
     fireEvent.press(getByText('DismissPaywall'));

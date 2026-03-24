@@ -438,7 +438,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
         >
           <PremiumButton
             title={t('ahaMoment.ctaPrimary', {
-              defaultValue: 'Unlock Full Access — 7-Day Free Trial',
+              defaultValue: 'Start 7-Day Trial',
             })}
             onPress={handlePrimaryTap}
             variant="primary"
