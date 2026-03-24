@@ -52,4 +52,16 @@ describe('SwipeHintLabel', () => {
 
     expect(extractColor(getByTestId('icon-arrow-up').props.style)).toBe(theme.colors.paper);
   });
+
+  it('keeps long hint copy on one fitted line', () => {
+    const { getByText } = render(
+      <SwipeHintLabel direction="left" text="Очень длинная подсказка для следующего варианта" />
+    );
+
+    const label = getByText('Очень длинная подсказка для следующего варианта');
+
+    expect(label.props.numberOfLines).toBe(1);
+    expect(label.props.adjustsFontSizeToFit).toBe(true);
+    expect(label.props.minimumFontScale).toBe(0.78);
+  });
 });

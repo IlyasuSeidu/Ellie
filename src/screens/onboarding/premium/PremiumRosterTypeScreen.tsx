@@ -1113,6 +1113,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.spacing.md,
     paddingVertical: theme.spacing.xs,
     borderRadius: 12,
+    maxWidth: '44%',
+    overflow: 'hidden',
   },
   swipeHintRight: {
     right: theme.spacing.lg,
@@ -1125,11 +1127,13 @@ const styles = StyleSheet.create({
   swipeHintUp: {
     top: theme.spacing.lg,
     alignSelf: 'center',
+    maxWidth: '58%',
   },
   swipeHintText: {
     fontSize: 14,
     color: theme.colors.dust,
     fontWeight: '600',
+    flexShrink: 1,
   },
   progressDots: {
     flexDirection: 'row',

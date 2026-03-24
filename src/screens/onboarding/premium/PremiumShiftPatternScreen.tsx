@@ -1560,22 +1560,26 @@ const styles = StyleSheet.create({
     paddingVertical: theme.spacing.xs,
     backgroundColor: theme.colors.opacity.gold30,
     borderRadius: 12,
+    maxWidth: '44%',
+    overflow: 'hidden',
   },
   swipeHintLeft: {
-    left: -theme.spacing.md,
+    left: theme.spacing.sm,
   },
   swipeHintRight: {
-    right: -theme.spacing.md,
+    right: theme.spacing.sm,
   },
   swipeHintUp: {
     top: 'auto',
     bottom: 8,
     alignSelf: 'center',
+    maxWidth: '58%',
   },
   swipeHintText: {
     fontSize: 14,
     color: theme.colors.paper,
     fontWeight: '600',
+    flexShrink: 1,
   },
   progressDots: {
     flexDirection: 'row',

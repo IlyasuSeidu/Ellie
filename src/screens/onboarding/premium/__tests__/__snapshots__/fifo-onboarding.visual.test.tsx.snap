@@ -4815,6 +4815,7 @@ This option means straight days only.
                 "flexDirection": "row",
                 "gap": 6,
                 "justifyContent": "center",
+                "maxWidth": "100%",
               },
               undefined,
             ]
@@ -4828,12 +4829,21 @@ This option means straight days only.
             arrow-back
           </Text>
           <Text
+            adjustsFontSizeToFit={true}
+            minimumFontScale={0.78}
+            numberOfLines={1}
             style={
-              {
-                "color": "#a8a29e",
-                "fontSize": 14,
-                "fontWeight": "600",
-              }
+              [
+                {
+                  "flexShrink": 1,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#a8a29e",
+                  "fontSize": 14,
+                  "fontWeight": "600",
+                },
+              ]
             }
           >
             Next
@@ -4866,18 +4876,28 @@ This option means straight days only.
                 "flexDirection": "row",
                 "gap": 6,
                 "justifyContent": "center",
+                "maxWidth": "100%",
               },
               undefined,
             ]
           }
         >
           <Text
+            adjustsFontSizeToFit={true}
+            minimumFontScale={0.78}
+            numberOfLines={1}
             style={
-              {
-                "color": "#a8a29e",
-                "fontSize": 14,
-                "fontWeight": "600",
-              }
+              [
+                {
+                  "flexShrink": 1,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#a8a29e",
+                  "fontSize": 14,
+                  "fontWeight": "600",
+                },
+              ]
             }
           >
             Select
@@ -4917,6 +4937,7 @@ This option means straight days only.
                 "flexDirection": "row",
                 "gap": 6,
                 "justifyContent": "center",
+                "maxWidth": "100%",
               },
               undefined,
             ]
@@ -4930,12 +4951,21 @@ This option means straight days only.
             arrow-up
           </Text>
           <Text
+            adjustsFontSizeToFit={true}
+            minimumFontScale={0.78}
+            numberOfLines={1}
             style={
-              {
-                "color": "#a8a29e",
-                "fontSize": 14,
-                "fontWeight": "600",
-              }
+              [
+                {
+                  "flexShrink": 1,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#a8a29e",
+                  "fontSize": 14,
+                  "fontWeight": "600",
+                },
+              ]
             }
           >
             Info
@@ -5121,6 +5151,8 @@ Swipe right to choose, left to see more, up for details
             {
               "backgroundColor": "rgba(180, 83, 9, 0.3)",
               "borderRadius": 12,
+              "maxWidth": "44%",
+              "overflow": "hidden",
               "paddingHorizontal": 16,
               "paddingVertical": 4,
               "position": "absolute",
@@ -5141,18 +5173,29 @@ Swipe right to choose, left to see more, up for details
                 "flexDirection": "row",
                 "gap": 6,
                 "justifyContent": "center",
+                "maxWidth": "100%",
               },
               undefined,
             ]
           }
         >
           <Text
+            adjustsFontSizeToFit={true}
+            minimumFontScale={0.78}
+            numberOfLines={1}
             style={
-              {
-                "color": "#a8a29e",
-                "fontSize": 14,
-                "fontWeight": "600",
-              }
+              [
+                {
+                  "flexShrink": 1,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#a8a29e",
+                  "flexShrink": 1,
+                  "fontSize": 14,
+                  "fontWeight": "600",
+                },
+              ]
             }
           >
             This one
@@ -5172,6 +5215,8 @@ Swipe right to choose, left to see more, up for details
             {
               "backgroundColor": "rgba(180, 83, 9, 0.3)",
               "borderRadius": 12,
+              "maxWidth": "44%",
+              "overflow": "hidden",
               "paddingHorizontal": 16,
               "paddingVertical": 4,
               "position": "absolute",
@@ -5192,6 +5237,7 @@ Swipe right to choose, left to see more, up for details
                 "flexDirection": "row",
                 "gap": 6,
                 "justifyContent": "center",
+                "maxWidth": "100%",
               },
               undefined,
             ]
@@ -5205,12 +5251,22 @@ Swipe right to choose, left to see more, up for details
             arrow-back
           </Text>
           <Text
+            adjustsFontSizeToFit={true}
+            minimumFontScale={0.78}
+            numberOfLines={1}
             style={
-              {
-                "color": "#a8a29e",
-                "fontSize": 14,
-                "fontWeight": "600",
-              }
+              [
+                {
+                  "flexShrink": 1,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#a8a29e",
+                  "flexShrink": 1,
+                  "fontSize": 14,
+                  "fontWeight": "600",
+                },
+              ]
             }
           >
             Next option
@@ -5223,12 +5279,15 @@ Swipe right to choose, left to see more, up for details
             {
               "backgroundColor": "rgba(180, 83, 9, 0.3)",
               "borderRadius": 12,
+              "maxWidth": "44%",
+              "overflow": "hidden",
               "paddingHorizontal": 16,
               "paddingVertical": 4,
               "position": "absolute",
             },
             {
               "alignSelf": "center",
+              "maxWidth": "58%",
               "top": 24,
             },
             {},
@@ -5243,6 +5302,7 @@ Swipe right to choose, left to see more, up for details
                 "flexDirection": "row",
                 "gap": 6,
                 "justifyContent": "center",
+                "maxWidth": "100%",
               },
               undefined,
             ]
@@ -5256,12 +5316,22 @@ Swipe right to choose, left to see more, up for details
             arrow-up
           </Text>
           <Text
+            adjustsFontSizeToFit={true}
+            minimumFontScale={0.78}
+            numberOfLines={1}
             style={
-              {
-                "color": "#a8a29e",
-                "fontSize": 14,
-                "fontWeight": "600",
-              }
+              [
+                {
+                  "flexShrink": 1,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#a8a29e",
+                  "flexShrink": 1,
+                  "fontSize": 14,
+                  "fontWeight": "600",
+                },
+              ]
             }
           >
             Learn more

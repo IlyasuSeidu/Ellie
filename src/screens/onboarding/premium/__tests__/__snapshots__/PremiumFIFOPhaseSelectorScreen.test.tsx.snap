@@ -475,6 +475,7 @@ This option means straight days only.
                 "flexDirection": "row",
                 "gap": 6,
                 "justifyContent": "center",
+                "maxWidth": "100%",
               },
               undefined,
             ]
@@ -488,12 +489,21 @@ This option means straight days only.
             arrow-back
           </Text>
           <Text
+            adjustsFontSizeToFit={true}
+            minimumFontScale={0.78}
+            numberOfLines={1}
             style={
-              {
-                "color": "#a8a29e",
-                "fontSize": 14,
-                "fontWeight": "600",
-              }
+              [
+                {
+                  "flexShrink": 1,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#a8a29e",
+                  "fontSize": 14,
+                  "fontWeight": "600",
+                },
+              ]
             }
           >
             Next
@@ -526,18 +536,28 @@ This option means straight days only.
                 "flexDirection": "row",
                 "gap": 6,
                 "justifyContent": "center",
+                "maxWidth": "100%",
               },
               undefined,
             ]
           }
         >
           <Text
+            adjustsFontSizeToFit={true}
+            minimumFontScale={0.78}
+            numberOfLines={1}
             style={
-              {
-                "color": "#a8a29e",
-                "fontSize": 14,
-                "fontWeight": "600",
-              }
+              [
+                {
+                  "flexShrink": 1,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#a8a29e",
+                  "fontSize": 14,
+                  "fontWeight": "600",
+                },
+              ]
             }
           >
             Select
@@ -577,6 +597,7 @@ This option means straight days only.
                 "flexDirection": "row",
                 "gap": 6,
                 "justifyContent": "center",
+                "maxWidth": "100%",
               },
               undefined,
             ]
@@ -590,12 +611,21 @@ This option means straight days only.
             arrow-up
           </Text>
           <Text
+            adjustsFontSizeToFit={true}
+            minimumFontScale={0.78}
+            numberOfLines={1}
             style={
-              {
-                "color": "#a8a29e",
-                "fontSize": 14,
-                "fontWeight": "600",
-              }
+              [
+                {
+                  "flexShrink": 1,
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#a8a29e",
+                  "fontSize": 14,
+                  "fontWeight": "600",
+                },
+              ]
             }
           >
             Info

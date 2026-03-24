@@ -40,7 +40,14 @@ export const SwipeHintLabel: React.FC<SwipeHintLabelProps> = ({
   return (
     <View style={[styles.container, style]}>
       {iconFirst ? icon : null}
-      <Text style={textStyle}>{text}</Text>
+      <Text
+        style={[styles.text, textStyle]}
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        minimumFontScale={0.78}
+      >
+        {text}
+      </Text>
       {iconFirst ? null : icon}
     </View>
   );
@@ -51,6 +58,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    maxWidth: '100%',
     gap: 6,
+  },
+  text: {
+    flexShrink: 1,
+    textAlign: 'center',
   },
 });
