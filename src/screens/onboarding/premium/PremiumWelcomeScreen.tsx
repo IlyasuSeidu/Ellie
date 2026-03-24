@@ -5,7 +5,7 @@
  */
 
 import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, Platform, Image, Text } from 'react-native';
+import { View, StyleSheet, Platform, Image, Text, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, {
@@ -20,6 +20,7 @@ import Animated, {
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { PremiumButton } from '@/components/onboarding/premium';
@@ -48,6 +49,7 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
 }) => {
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
+  const insets = useSafeAreaInsets();
   const mountTime = useRef(Date.now());
 
   // Animation values
@@ -152,7 +154,18 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
       />
 
       {/* Content */}
-      <View style={styles.content}>
+      <ScrollView
+        contentContainerStyle={[
+          styles.content,
+          {
+            paddingTop: Math.max(insets.top + theme.spacing.lg, theme.spacing.xl),
+            paddingBottom: Math.max(insets.bottom + theme.spacing.xl, theme.spacing.xxl),
+          },
+        ]}
+        showsVerticalScrollIndicator={false}
+        bounces={false}
+        contentInsetAdjustmentBehavior="never"
+      >
         {/* Logo with animation */}
         <Animated.View style={[styles.logoContainer, logoAnimatedStyle]}>
           <View style={styles.logoPlaceholder}>
@@ -211,7 +224,7 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
             testID={`${testID}-button`}
           />
         </Animated.View>
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -230,7 +243,7 @@ const styles = StyleSheet.create({
     height: '50%',
   },
   content: {
-    flex: 1,
+    flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: theme.spacing.xl,
