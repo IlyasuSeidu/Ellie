@@ -22,6 +22,10 @@ jest.mock('@/services/AsyncStorageService', () => ({
 
 jest.mock('expo-haptics');
 
+jest.mock('react-native-safe-area-context', () => ({
+  useSafeAreaInsets: () => ({ top: 0, bottom: 34, left: 0, right: 0 }),
+}));
+
 jest.mock('@/utils/analytics', () => ({
   Analytics: {
     onboardingStepViewed: jest.fn(),

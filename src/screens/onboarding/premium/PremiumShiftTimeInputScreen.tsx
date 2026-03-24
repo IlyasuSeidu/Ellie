@@ -43,6 +43,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { useNavigation, useRoute, type RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
 import { theme } from '@/utils/theme';
@@ -384,10 +385,14 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProp<OnboardingStackParamList, 'ShiftTimeInput'>>();
+  const insets = useSafeAreaInsets();
   const { data, updateData } = useOnboarding();
   const mountTime = useRef(Date.now());
   const isSettingsEntry = route.params?.entryPoint === 'settings';
   const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
+  const bottomNavOffset = Math.max(insets.bottom + 8, Platform.OS === 'ios' ? 18 : 16);
+  const bottomNavShellHeight = 88;
+  const bottomNavClearance = bottomNavOffset + bottomNavShellHeight + 36;
   const shiftSystem: '2-shift' | '3-shift' = data.shiftSystem || ShiftSystem.TWO_SHIFT;
   const rosterType = data.rosterType || 'rotating';
 
@@ -1199,7 +1204,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
         <ScrollView
           ref={scrollViewRef}
           style={styles.scrollView}
-          contentContainerStyle={styles.scrollContent}
+          contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomNavClearance }]}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
@@ -1465,7 +1470,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
         <Animated.View
           entering={reducedMotion ? undefined : FadeInUp.duration(400).springify().delay(1200)}
         >
-          <View style={styles.bottomNav}>
+          <View style={[styles.bottomNav, { paddingBottom: bottomNavOffset }]}>
             {isSettingsMode ? (
               <SettingsEntryActionButtons
                 backLabel={String(
@@ -1559,7 +1564,12 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                       style={styles.continueGradient}
                     >
                       <Ionicons name="checkmark-circle" size={24} color={theme.colors.paper} />
-                      <Text style={styles.continueButtonText}>
+                      <Text
+                        style={styles.continueButtonText}
+                        numberOfLines={1}
+                        adjustsFontSizeToFit
+                        minimumFontScale={0.82}
+                      >
                         {totalStages === 1
                           ? t('shiftTime.actions.saveAndContinue', {
                               defaultValue: 'Save & Continue',
@@ -2626,7 +2636,6 @@ const styles = StyleSheet.create({
     right: 0,
     paddingHorizontal: theme.spacing.lg,
     paddingTop: theme.spacing.lg,
-    paddingBottom: Platform.OS === 'ios' ? theme.spacing.xxl : theme.spacing.lg,
     backgroundColor: 'transparent',
   },
   bottomNavShell: {
@@ -2684,6 +2693,7 @@ const styles = StyleSheet.create({
   },
   continueButtonContainer: {
     flex: 1,
+    minWidth: 0,
   },
   continueButton: {
     width: '100%',
@@ -2708,6 +2718,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: theme.spacing.sm,
+    paddingHorizontal: theme.spacing.md,
     ...Platform.select({
       ios: {
         shadowColor: theme.colors.sacredGold,
@@ -2724,6 +2735,8 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: 'bold',
     color: theme.colors.paper,
+    flex: 1,
+    textAlign: 'center',
   },
   // Guidance Card
   guidanceCard: {
