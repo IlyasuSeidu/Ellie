@@ -443,6 +443,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
             onPress={handlePrimaryTap}
             variant="primary"
             size="large"
+            titleNumberOfLines={1}
           />
         </Animated.View>
 
