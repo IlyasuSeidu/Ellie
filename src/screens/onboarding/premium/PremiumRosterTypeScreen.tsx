@@ -42,6 +42,7 @@ import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
 import { SwipeHintLabel } from '@/components/onboarding/premium/SwipeHintLabel';
+import { E2ESwipeControls } from '@/components/onboarding/premium/E2ESwipeControls';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { RosterType } from '@/types';
@@ -535,25 +536,49 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
         {index === 0 && isActive && (
           <>
             <Animated.View style={[styles.swipeHint, styles.swipeHintRight, hintAnimatedStyle]}>
-              <SwipeHintLabel
-                direction="right"
-                text={t('common.hints.selectThis')}
-                textStyle={styles.swipeHintText}
-              />
+              <Pressable
+                onPress={onSwipeRight}
+                style={styles.swipeHintPressable}
+                accessibilityRole="button"
+                accessibilityLabel={t('common.hints.selectThis')}
+                testID="roster-type-select-button"
+              >
+                <SwipeHintLabel
+                  direction="right"
+                  text={t('common.hints.selectThis')}
+                  textStyle={styles.swipeHintText}
+                />
+              </Pressable>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintLeft, hintAnimatedStyle]}>
-              <SwipeHintLabel
-                direction="left"
-                text={t('common.hints.nextOption')}
-                textStyle={styles.swipeHintText}
-              />
+              <Pressable
+                onPress={onSwipeLeft}
+                style={styles.swipeHintPressable}
+                accessibilityRole="button"
+                accessibilityLabel={t('common.hints.nextOption')}
+                testID="roster-type-next-option-button"
+              >
+                <SwipeHintLabel
+                  direction="left"
+                  text={t('common.hints.nextOption')}
+                  textStyle={styles.swipeHintText}
+                />
+              </Pressable>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintUp, hintAnimatedStyle]}>
-              <SwipeHintLabel
-                direction="up"
-                text={t('common.hints.learnMore')}
-                textStyle={styles.swipeHintText}
-              />
+              <Pressable
+                onPress={onSwipeUp}
+                style={styles.swipeHintPressable}
+                accessibilityRole="button"
+                accessibilityLabel={t('common.hints.learnMore')}
+                testID="roster-type-info-button"
+              >
+                <SwipeHintLabel
+                  direction="up"
+                  text={t('common.hints.learnMore')}
+                  textStyle={styles.swipeHintText}
+                />
+              </Pressable>
             </Animated.View>
           </>
         )}
@@ -957,6 +982,20 @@ export const PremiumRosterTypeScreen: React.FC = () => {
       {/* Subtitle */}
       <Animated.Text style={[styles.subtitle, subtitleStyle]}>{instructionText}</Animated.Text>
 
+      {/* Progress Dots */}
+      <ProgressDots
+        total={orderedRosterTypes.length}
+        current={currentIndex}
+        testID="roster-type-progress-dots"
+      />
+
+      <E2ESwipeControls
+        prefix="roster-type"
+        onSelect={handleSwipeRight}
+        onNext={handleSwipeLeft}
+        onInfo={handleSwipeUp}
+      />
+
       {/* Card Stack Container */}
       <View style={styles.cardStackContainer}>
         {visibleCards.map((rt, index) => {
@@ -985,13 +1024,6 @@ export const PremiumRosterTypeScreen: React.FC = () => {
           );
         })}
       </View>
-
-      {/* Progress Dots */}
-      <ProgressDots
-        total={orderedRosterTypes.length}
-        current={currentIndex}
-        testID="roster-type-progress-dots"
-      />
 
       {isTransitioning ? (
         <View pointerEvents="none" style={styles.transitionOverlay}>
@@ -1134,6 +1166,10 @@ const styles = StyleSheet.create({
     color: theme.colors.dust,
     fontWeight: '600',
     flexShrink: 1,
+  },
+  swipeHintPressable: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   progressDots: {
     flexDirection: 'row',

@@ -2298,7 +2298,8 @@ const ContinueButton: React.FC<{
   reducedMotion: boolean;
   label?: string;
   accessibilityLabel?: string;
-}> = ({ enabled, onPress, reducedMotion, label, accessibilityLabel }) => {
+  testID?: string;
+}> = ({ enabled, onPress, reducedMotion, label, accessibilityLabel, testID }) => {
   const { t } = useTranslation('onboarding');
   const resolvedLabel =
     label ??
@@ -2318,6 +2319,7 @@ const ContinueButton: React.FC<{
         disabled={!enabled}
         accessibilityRole="button"
         accessibilityLabel={accessibilityLabel ?? resolvedLabel}
+        testID={testID}
         style={({ pressed }) => [
           styles.continueButton,
           pressed && enabled && styles.continueButtonPressed,
@@ -2792,6 +2794,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
               style={({ pressed }) => [styles.backButton, pressed && styles.backButtonPressed]}
               accessibilityLabel={t('startDate.actions.goBack', { defaultValue: 'Go back' })}
               accessibilityRole="button"
+              testID="start-date-back-button"
             >
               <LinearGradient
                 colors={['rgba(255,255,255,0.18)', 'rgba(255,255,255,0.06)']}
@@ -2811,6 +2814,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
               accessibilityLabel={t('startDate.actions.setShiftTimesA11y', {
                 defaultValue: 'Set shift times',
               })}
+              testID="start-date-continue-button"
             />
           </LinearGradient>
         )}

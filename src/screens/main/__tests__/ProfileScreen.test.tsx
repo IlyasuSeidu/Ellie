@@ -117,6 +117,18 @@ jest.mock('@/components/profile/LanguageSelectorSheet', () => ({
   LanguageSelectorSheet: () => null,
 }));
 
+jest.mock('@/components/profile/SmartRemindersPanel', () => ({
+  SmartRemindersPanel: () => {
+    const React = require('react');
+    const RN = require('react-native');
+    return React.createElement(
+      RN.Text,
+      { testID: 'profile-smart-reminders' },
+      'Smart Reminders Panel'
+    );
+  },
+}));
+
 describe('ProfileScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -163,6 +175,7 @@ describe('ProfileScreen', () => {
     expect(getByTestId('profile-edit-form')).toBeTruthy();
     expect(getByTestId('profile-shift-settings')).toBeTruthy();
     expect(getByTestId('profile-work-stats')).toBeTruthy();
+    expect(getByText('Smart Reminders')).toBeTruthy();
     expect(getByTestId('run-onboarding-again-button')).toBeTruthy();
   });
 

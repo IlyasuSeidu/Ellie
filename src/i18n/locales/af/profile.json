@@ -2,7 +2,8 @@
   "sections": {
     "personalInfo": "Persoonlike inligting",
     "workOverview": "Werk Oorsig",
-    "shiftSettings": "Shift instellings"
+    "shiftSettings": "Shift instellings",
+    "smartReminders": "Slim herinneringe"
   },
   "fields": {
     "name": "Naam",
@@ -109,7 +110,7 @@
       "customSequence": "GEPASTE VOLGORDE",
       "siteDetails": "WERFBESONDERHEDE",
       "travelDays": "REISDAE (OPSIONEEL)",
-      "scheduleAnchor": "BYLAE ANKER",
+      "scheduleAnchor": "ROOSTER BEGIN & POSISIE",
       "customPattern": "GEPASTE PATROON"
     },
     "chips": {
@@ -257,6 +258,89 @@
       "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} Pasgemaakte rotasie",
       "dayAbbrev": "DG",
       "nightAbbrev": "NG"
+    }
+  },
+  "smartReminders": {
+    "sections": {
+      "timing": "TYDSBEREKENING",
+      "doNotDisturb": "MOENIE STEUR NIE",
+      "adaptive": "AANPASBAAR",
+      "fifo": "FIFO"
+    },
+    "units": {
+      "hoursShort": "{{value}} u",
+      "minutesShort": "{{value}} min",
+      "none": "Geen"
+    },
+    "rows": {
+      "early": {
+        "label": "Vroeë herinnering",
+        "sublabel": "Waarskuwing voor jou skof begin"
+      },
+      "prep": {
+        "label": "Voorbereidingstyd",
+        "sublabel": "Tyd om gereed te maak voor jy vertrek"
+      },
+      "commute": {
+        "label": "Reistyd",
+        "sublabel": "Hoe lank dit neem om by die terrein uit te kom"
+      },
+      "imminent": {
+        "label": "15-min waarskuwing",
+        "sublabel": "Waarsku wanneer jou skof 15 minute weg is"
+      },
+      "briefing": {
+        "label": "Voor-skof inligting",
+        "sublabel": "Vir rolle wat veiligheidinligting voor elke skof vereis"
+      },
+      "quietHours": {
+        "label": "Stil ure",
+        "sublabel": "Demp nie-kritieke waarskuwings terwyl jy slaap"
+      },
+      "backToBack": {
+        "label": "Waarskuwing vir nagte agtermekaar",
+        "sublabel": "Waarsku wanneer 3 of meer nagskofte agtermekaar kom"
+      },
+      "shortTurnaround": {
+        "label": "Kort omdraai-waarskuwing",
+        "sublabel": "Waarsku wanneer daar minder as 10 uur tussen skofte is"
+      },
+      "postShift": {
+        "label": "Na-skof inskrywing",
+        "sublabel": "Vra jou om jou energievlak een uur na elke skof te noteer"
+      },
+      "travelDay": {
+        "label": "Reisdag-herinneringe",
+        "sublabel": "Aandwaarskuwing voor fly-in en oggendwaarskuwing op fly-out dag"
+      }
+    },
+    "quietHours": {
+      "startA11y": "Stil ure begin: {{time}}",
+      "endA11y": "Stil ure eindig: {{time}}",
+      "overnight": "Oornag · {{hours}} u",
+      "minimumAdjusted": "Stil ure is aangepas na ’n minimum venster van 30 minute."
+    },
+    "actions": {
+      "permissionNotice": "Instellings is gestoor, maar kennisgewings is af, so herinneringe is nie herskeduleer nie. Skakel kennisgewings in Instellings aan om dit toe te pas.",
+      "test": {
+        "a11y": "Stuur ’n toetsherinnering oor 5 sekondes",
+        "idle": "Stuur toets",
+        "sent": "Toets gestuur — kyk oor 5 sekondes",
+        "error": "Toetsherinnering is nou nie beskikbaar nie",
+        "permission": "Skakel kennisgewings aan om ’n toets te stuur"
+      },
+      "reschedule": {
+        "a11y": "Herskeduleer alle herinneringe nou",
+        "idle": "Herskeduleer herinneringe",
+        "inProgress": "Word herskeduleer…",
+        "success": "Herinneringe opgedateer",
+        "error": "Kon herinneringe nie opdateer nie",
+        "permission": "Skakel kennisgewings aan om herinneringe te herskeduleer"
+      }
+    },
+    "test": {
+      "title": "Slim herinneringe is aan",
+      "body": "As dit aankom, werk jou slim herinneringe."
     }
   }
 }

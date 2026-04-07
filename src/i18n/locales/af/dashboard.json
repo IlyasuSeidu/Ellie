@@ -192,6 +192,63 @@
       "today": "Vandag is {{holidayName}}!",
       "tomorrow": "Môre is {{holidayName}}",
       "inDays": "{{holidayName}} is oor {{daysBefore}} dae ({{holidayDate}})"
+    },
+    "smartReminders": {
+      "shiftType": {
+        "day": "dag skof",
+        "night": "nag skof",
+        "morning": "oggend skof",
+        "afternoon": "middag skof",
+        "off": "afdag"
+      },
+      "early": {
+        "title": "Komende {{shiftType}}",
+        "body": "Jou {{shiftType}} begin om {{startTime}} op {{shiftDate}}."
+      },
+      "prep": {
+        "fatigueCritical": " Moegheidsrisiko is kritiek. Gee jouself ekstra tyd.",
+        "fatigueHigh": " Rus en berei versigtig voor.",
+        "title": "Tyd om gereed te maak, {{name}}",
+        "body": "Jou {{shiftType}} begin om {{startTime}}.{{fatigueSuffix}}"
+      },
+      "commute": {
+        "title": "Vertrek nou",
+        "body": "Vertrek nou om betyds by jou {{shiftType}} uit te kom. Dit begin om {{startTime}}."
+      },
+      "imminent": {
+        "title": "Begin oor 15 minute",
+        "body": "Jou {{shiftType}} begin om {{startTime}}."
+      },
+      "briefing": {
+        "title": "Inligtingsessie binnekort",
+        "body": "Die inligtingsessie begin oor 15 minute voor jou {{shiftType}} om {{startTime}}."
+      },
+      "postShift": {
+        "title": "Hoe het dit gegaan?",
+        "body": "Hoe was jou {{shiftType}}? Teken jou energievlak in Ellie aan."
+      },
+      "fatigue": {
+        "title": "Kritieke moegheidswaarskuwing",
+        "body": "Jou {{shiftType}} begin om {{startTime}}, maar jou slaapdata wys kritieke moegheid. Rus nou as jy kan."
+      },
+      "backToBack": {
+        "title": "{{count}} nagskofte kom op",
+        "body": "Jy het {{count}} opeenvolgende nagskofte wat op {{shiftDate}} begin. Gee rus prioriteit."
+      },
+      "shortTurnaround": {
+        "title": "Kort omdraai vorentoe",
+        "body": "Daar is net {{gapHours}} h tussen jou {{previousShiftType}} en volgende {{nextShiftType}} op {{shiftDate}}. Beplan jou rus."
+      },
+      "fifo": {
+        "flyOut": {
+          "title": "Terugreisdag",
+          "body": "Vandag gaan jy huis toe. Voltooi jou oorhandiging, pak jou toerusting en reis veilig."
+        },
+        "travelTomorrow": {
+          "title": "Reisdag môre",
+          "body": "Jy vlieg môre in vir jou {{shiftType}}. Pak jou toerusting en kyk vanaand jou dokumente na."
+        }
+      }
     }
   },
   "countdown": {

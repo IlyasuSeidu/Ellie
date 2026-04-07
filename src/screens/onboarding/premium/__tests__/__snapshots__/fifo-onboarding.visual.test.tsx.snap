@@ -4808,46 +4808,87 @@ This option means straight days only.
         }
       >
         <View
-          style={
-            [
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "gap": 6,
-                "justifyContent": "center",
-                "maxWidth": "100%",
-              },
-              undefined,
-            ]
+          accessibilityLabel="Next"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
           }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+            }
+          }
+          testID="fifo-phase-selector-next-button"
         >
-          <Text
-            color="#a8a29e"
-            name="arrow-back"
-            size={14}
-          >
-            arrow-back
-          </Text>
-          <Text
-            adjustsFontSizeToFit={true}
-            minimumFontScale={0.78}
-            numberOfLines={1}
+          <View
             style={
               [
                 {
-                  "flexShrink": 1,
-                  "textAlign": "center",
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 6,
+                  "justifyContent": "center",
+                  "maxWidth": "100%",
                 },
-                {
-                  "color": "#a8a29e",
-                  "fontSize": 14,
-                  "fontWeight": "600",
-                },
+                undefined,
               ]
             }
           >
-            Next
-          </Text>
+            <Text
+              color="#a8a29e"
+              name="arrow-back"
+              size={14}
+            >
+              arrow-back
+            </Text>
+            <Text
+              adjustsFontSizeToFit={true}
+              minimumFontScale={0.78}
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#a8a29e",
+                    "fontSize": 14,
+                    "fontWeight": "600",
+                  },
+                ]
+              }
+            >
+              Next
+            </Text>
+          </View>
         </View>
       </View>
       <View
@@ -4869,46 +4910,87 @@ This option means straight days only.
         }
       >
         <View
-          style={
-            [
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "gap": 6,
-                "justifyContent": "center",
-                "maxWidth": "100%",
-              },
-              undefined,
-            ]
+          accessibilityLabel="Select"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
           }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+            }
+          }
+          testID="fifo-phase-selector-select-button"
         >
-          <Text
-            adjustsFontSizeToFit={true}
-            minimumFontScale={0.78}
-            numberOfLines={1}
+          <View
             style={
               [
                 {
-                  "flexShrink": 1,
-                  "textAlign": "center",
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 6,
+                  "justifyContent": "center",
+                  "maxWidth": "100%",
                 },
-                {
-                  "color": "#a8a29e",
-                  "fontSize": 14,
-                  "fontWeight": "600",
-                },
+                undefined,
               ]
             }
           >
-            Select
-          </Text>
-          <Text
-            color="#a8a29e"
-            name="arrow-forward"
-            size={14}
-          >
-            arrow-forward
-          </Text>
+            <Text
+              adjustsFontSizeToFit={true}
+              minimumFontScale={0.78}
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#a8a29e",
+                    "fontSize": 14,
+                    "fontWeight": "600",
+                  },
+                ]
+              }
+            >
+              Select
+            </Text>
+            <Text
+              color="#a8a29e"
+              name="arrow-forward"
+              size={14}
+            >
+              arrow-forward
+            </Text>
+          </View>
         </View>
       </View>
       <View
@@ -4930,46 +5012,87 @@ This option means straight days only.
         }
       >
         <View
-          style={
-            [
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "gap": 6,
-                "justifyContent": "center",
-                "maxWidth": "100%",
-              },
-              undefined,
-            ]
+          accessibilityLabel="Info"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
           }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+            }
+          }
+          testID="fifo-phase-selector-info-button"
         >
-          <Text
-            color="#a8a29e"
-            name="arrow-up"
-            size={14}
-          >
-            arrow-up
-          </Text>
-          <Text
-            adjustsFontSizeToFit={true}
-            minimumFontScale={0.78}
-            numberOfLines={1}
+          <View
             style={
               [
                 {
-                  "flexShrink": 1,
-                  "textAlign": "center",
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 6,
+                  "justifyContent": "center",
+                  "maxWidth": "100%",
                 },
-                {
-                  "color": "#a8a29e",
-                  "fontSize": 14,
-                  "fontWeight": "600",
-                },
+                undefined,
               ]
             }
           >
-            Info
-          </Text>
+            <Text
+              color="#a8a29e"
+              name="arrow-up"
+              size={14}
+            >
+              arrow-up
+            </Text>
+            <Text
+              adjustsFontSizeToFit={true}
+              minimumFontScale={0.78}
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#a8a29e",
+                    "fontSize": 14,
+                    "fontWeight": "600",
+                  },
+                ]
+              }
+            >
+              Info
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -5027,6 +5150,53 @@ exports[`fifo onboarding visual snapshots PremiumRosterTypeScreen snapshot 1`] =
     Choose the roster style your mine site uses — this shapes your entire schedule
 Swipe right to choose, left to see more, up for details
   </Text>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "gap": 4,
+        "justifyContent": "center",
+        "marginBottom": 24,
+      }
+    }
+    testID="roster-type-progress-dots"
+  >
+    <View
+      style={
+        [
+          {
+            "backgroundColor": "#a8a29e",
+            "borderRadius": 4,
+            "height": 8,
+            "opacity": 0.3,
+            "width": 8,
+          },
+          {
+            "backgroundColor": "#b45309",
+            "borderRadius": 6,
+            "height": 12,
+            "opacity": 1,
+            "width": 12,
+          },
+        ]
+      }
+    />
+    <View
+      style={
+        [
+          {
+            "backgroundColor": "#a8a29e",
+            "borderRadius": 4,
+            "height": 8,
+            "opacity": 0.3,
+            "width": 8,
+          },
+          false,
+        ]
+      }
+    />
+  </View>
   <View
     style={
       {
@@ -5166,47 +5336,88 @@ Swipe right to choose, left to see more, up for details
         }
       >
         <View
-          style={
-            [
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "gap": 6,
-                "justifyContent": "center",
-                "maxWidth": "100%",
-              },
-              undefined,
-            ]
+          accessibilityLabel="This one"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
           }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+            }
+          }
+          testID="roster-type-select-button"
         >
-          <Text
-            adjustsFontSizeToFit={true}
-            minimumFontScale={0.78}
-            numberOfLines={1}
+          <View
             style={
               [
                 {
-                  "flexShrink": 1,
-                  "textAlign": "center",
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 6,
+                  "justifyContent": "center",
+                  "maxWidth": "100%",
                 },
-                {
-                  "color": "#a8a29e",
-                  "flexShrink": 1,
-                  "fontSize": 14,
-                  "fontWeight": "600",
-                },
+                undefined,
               ]
             }
           >
-            This one
-          </Text>
-          <Text
-            color="#a8a29e"
-            name="arrow-forward"
-            size={14}
-          >
-            arrow-forward
-          </Text>
+            <Text
+              adjustsFontSizeToFit={true}
+              minimumFontScale={0.78}
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#a8a29e",
+                    "flexShrink": 1,
+                    "fontSize": 14,
+                    "fontWeight": "600",
+                  },
+                ]
+              }
+            >
+              This one
+            </Text>
+            <Text
+              color="#a8a29e"
+              name="arrow-forward"
+              size={14}
+            >
+              arrow-forward
+            </Text>
+          </View>
         </View>
       </View>
       <View
@@ -5230,47 +5441,88 @@ Swipe right to choose, left to see more, up for details
         }
       >
         <View
-          style={
-            [
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "gap": 6,
-                "justifyContent": "center",
-                "maxWidth": "100%",
-              },
-              undefined,
-            ]
+          accessibilityLabel="Next option"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
           }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+            }
+          }
+          testID="roster-type-next-option-button"
         >
-          <Text
-            color="#a8a29e"
-            name="arrow-back"
-            size={14}
-          >
-            arrow-back
-          </Text>
-          <Text
-            adjustsFontSizeToFit={true}
-            minimumFontScale={0.78}
-            numberOfLines={1}
+          <View
             style={
               [
                 {
-                  "flexShrink": 1,
-                  "textAlign": "center",
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 6,
+                  "justifyContent": "center",
+                  "maxWidth": "100%",
                 },
-                {
-                  "color": "#a8a29e",
-                  "flexShrink": 1,
-                  "fontSize": 14,
-                  "fontWeight": "600",
-                },
+                undefined,
               ]
             }
           >
-            Next option
-          </Text>
+            <Text
+              color="#a8a29e"
+              name="arrow-back"
+              size={14}
+            >
+              arrow-back
+            </Text>
+            <Text
+              adjustsFontSizeToFit={true}
+              minimumFontScale={0.78}
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#a8a29e",
+                    "flexShrink": 1,
+                    "fontSize": 14,
+                    "fontWeight": "600",
+                  },
+                ]
+              }
+            >
+              Next option
+            </Text>
+          </View>
         </View>
       </View>
       <View
@@ -5295,47 +5547,88 @@ Swipe right to choose, left to see more, up for details
         }
       >
         <View
-          style={
-            [
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "gap": 6,
-                "justifyContent": "center",
-                "maxWidth": "100%",
-              },
-              undefined,
-            ]
+          accessibilityLabel="Learn more"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
           }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+            }
+          }
+          testID="roster-type-info-button"
         >
-          <Text
-            color="#a8a29e"
-            name="arrow-up"
-            size={14}
-          >
-            arrow-up
-          </Text>
-          <Text
-            adjustsFontSizeToFit={true}
-            minimumFontScale={0.78}
-            numberOfLines={1}
+          <View
             style={
               [
                 {
-                  "flexShrink": 1,
-                  "textAlign": "center",
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 6,
+                  "justifyContent": "center",
+                  "maxWidth": "100%",
                 },
-                {
-                  "color": "#a8a29e",
-                  "flexShrink": 1,
-                  "fontSize": 14,
-                  "fontWeight": "600",
-                },
+                undefined,
               ]
             }
           >
-            Learn more
-          </Text>
+            <Text
+              color="#a8a29e"
+              name="arrow-up"
+              size={14}
+            >
+              arrow-up
+            </Text>
+            <Text
+              adjustsFontSizeToFit={true}
+              minimumFontScale={0.78}
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#a8a29e",
+                    "flexShrink": 1,
+                    "fontSize": 14,
+                    "fontWeight": "600",
+                  },
+                ]
+              }
+            >
+              Learn more
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -5448,53 +5741,6 @@ Swipe right to choose, left to see more, up for details
         You work consecutive days on-site, then get extended time at home
       </Text>
     </View>
-  </View>
-  <View
-    style={
-      {
-        "alignItems": "center",
-        "flexDirection": "row",
-        "gap": 4,
-        "justifyContent": "center",
-        "marginBottom": 24,
-      }
-    }
-    testID="roster-type-progress-dots"
-  >
-    <View
-      style={
-        [
-          {
-            "backgroundColor": "#a8a29e",
-            "borderRadius": 4,
-            "height": 8,
-            "opacity": 0.3,
-            "width": 8,
-          },
-          {
-            "backgroundColor": "#b45309",
-            "borderRadius": 6,
-            "height": 12,
-            "opacity": 1,
-            "width": 12,
-          },
-        ]
-      }
-    />
-    <View
-      style={
-        [
-          {
-            "backgroundColor": "#a8a29e",
-            "borderRadius": 4,
-            "height": 8,
-            "opacity": 0.3,
-            "width": 8,
-          },
-          false,
-        ]
-      }
-    />
   </View>
 </View>
 `;

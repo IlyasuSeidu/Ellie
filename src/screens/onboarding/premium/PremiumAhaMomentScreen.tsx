@@ -444,6 +444,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
             variant="primary"
             size="large"
             titleNumberOfLines={1}
+            testID="aha-moment-primary-cta"
           />
         </Animated.View>
 
@@ -532,6 +533,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
           <TouchableOpacity
             onPress={handleSecondaryTap}
             style={styles.secondaryLinkMinimal}
+            testID="aha-moment-secondary-cta"
             accessibilityLabel={t('ahaMoment.ctaSecondaryA11y', {
               defaultValue: 'Continue with limited access, no free trial',
             })}

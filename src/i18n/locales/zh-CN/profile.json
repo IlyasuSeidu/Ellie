@@ -2,7 +2,8 @@
   "sections": {
     "personalInfo": "个人信息",
     "workOverview": "工作概况",
-    "shiftSettings": "班次设置"
+    "shiftSettings": "班次设置",
+    "smartReminders": "智能提醒"
   },
   "fields": {
     "name": "姓名",
@@ -109,7 +110,7 @@
       "customSequence": "自定义序列",
       "siteDetails": "站点详情",
       "travelDays": "旅行天数（可选）",
-      "scheduleAnchor": "时间表锚点",
+      "scheduleAnchor": "排班起点与当前位置",
       "customPattern": "定制图案"
     },
     "chips": {
@@ -257,6 +258,89 @@
       "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} 自定义旋转",
       "dayAbbrev": "日",
       "nightAbbrev": "氮"
+    }
+  },
+  "smartReminders": {
+    "sections": {
+      "timing": "时间",
+      "doNotDisturb": "免打扰",
+      "adaptive": "自适应",
+      "fifo": "FIFO"
+    },
+    "units": {
+      "hoursShort": "{{value}}小时",
+      "minutesShort": "{{value}}分钟",
+      "none": "无"
+    },
+    "rows": {
+      "early": {
+        "label": "提前提醒",
+        "sublabel": "在班次开始前提醒你"
+      },
+      "prep": {
+        "label": "准备时间",
+        "sublabel": "出门前需要的准备时间"
+      },
+      "commute": {
+        "label": "通勤时间",
+        "sublabel": "到矿区需要多久"
+      },
+      "imminent": {
+        "label": "15分钟提醒",
+        "sublabel": "班次开始前15分钟提醒你"
+      },
+      "briefing": {
+        "label": "班前简报提醒",
+        "sublabel": "适用于每班前需要安全简报的岗位"
+      },
+      "quietHours": {
+        "label": "静音时段",
+        "sublabel": "睡觉时静音非关键提醒"
+      },
+      "backToBack": {
+        "label": "连续夜班提醒",
+        "sublabel": "当前方有连续3个或以上夜班时提醒你"
+      },
+      "shortTurnaround": {
+        "label": "短休提醒",
+        "sublabel": "当两班之间少于10小时时提醒你"
+      },
+      "postShift": {
+        "label": "班后记录",
+        "sublabel": "每班后一小时提醒你记录精力状态"
+      },
+      "travelDay": {
+        "label": "出行日提醒",
+        "sublabel": "飞入前一晚提醒，飞出当天早上提醒"
+      }
+    },
+    "quietHours": {
+      "startA11y": "静音开始时间：{{time}}",
+      "endA11y": "静音结束时间：{{time}}",
+      "overnight": "整夜 · {{hours}}小时",
+      "minimumAdjusted": "静音时段已调整为最短30分钟。"
+    },
+    "actions": {
+      "permissionNotice": "设置已保存，但通知处于关闭状态，因此提醒未重新排程。请在“设置”中开启通知后再应用。",
+      "test": {
+        "a11y": "在5秒后发送测试提醒",
+        "idle": "发送测试提醒",
+        "sent": "测试提醒已发送，请在5秒后查看",
+        "error": "当前无法发送测试提醒",
+        "permission": "请先开启通知，再发送测试提醒"
+      },
+      "reschedule": {
+        "a11y": "立即重新排程所有提醒",
+        "idle": "重新排程所有提醒",
+        "inProgress": "正在重新排程…",
+        "success": "提醒已更新",
+        "error": "提醒更新失败",
+        "permission": "请先开启通知，再重新排程提醒"
+      }
+    },
+    "test": {
+      "title": "智能提醒已开启",
+      "body": "如果你收到了这条提醒，说明智能提醒正在正常工作。"
     }
   }
 }

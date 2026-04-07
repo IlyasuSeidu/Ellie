@@ -2,7 +2,8 @@
   "sections": {
     "personalInfo": "Informacion personal",
     "workOverview": "Resumen laboral",
-    "shiftSettings": "Configuracion de turnos"
+    "shiftSettings": "Configuracion de turnos",
+    "smartReminders": "Recordatorios inteligentes"
   },
   "fields": {
     "name": "Nombre",
@@ -109,7 +110,7 @@
       "customSequence": "SECUENCIA PERSONALIZADA",
       "siteDetails": "DETALLES DEL SITIO",
       "travelDays": "DIAS DE VIAJE (OPCIONAL)",
-      "scheduleAnchor": "ANCLA DE CALENDARIO",
+      "scheduleAnchor": "INICIO Y POSICIÓN DEL ROSTER",
       "customPattern": "PATRON PERSONALIZADO"
     },
     "chips": {
@@ -257,6 +258,89 @@
       "customRotationThreeShift": "Rotación personalizada {{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}}",
       "dayAbbrev": "Di",
       "nightAbbrev": "norte"
+    }
+  },
+  "smartReminders": {
+    "sections": {
+      "timing": "HORARIOS",
+      "doNotDisturb": "NO MOLESTAR",
+      "adaptive": "ADAPTIVOS",
+      "fifo": "FIFO"
+    },
+    "units": {
+      "hoursShort": "{{value}} h",
+      "minutesShort": "{{value}} min",
+      "none": "Ninguno"
+    },
+    "rows": {
+      "early": {
+        "label": "Aviso anticipado",
+        "sublabel": "Aviso antes de que empiece tu turno"
+      },
+      "prep": {
+        "label": "Tiempo de preparación",
+        "sublabel": "Tiempo para prepararte antes de salir"
+      },
+      "commute": {
+        "label": "Tiempo de traslado",
+        "sublabel": "Cuánto tardas en llegar al sitio"
+      },
+      "imminent": {
+        "label": "Alerta 15 min antes",
+        "sublabel": "Aviso cuando tu turno esté a 15 minutos"
+      },
+      "briefing": {
+        "label": "Alerta de charla previa",
+        "sublabel": "Para roles con charla de seguridad antes de cada turno"
+      },
+      "quietHours": {
+        "label": "Horas de silencio",
+        "sublabel": "Silencia avisos no críticos mientras duermes"
+      },
+      "backToBack": {
+        "label": "Aviso por noches seguidas",
+        "sublabel": "Avisa cuando vienen 3 o más turnos nocturnos seguidos"
+      },
+      "shortTurnaround": {
+        "label": "Aviso de descanso corto",
+        "sublabel": "Alerta cuando tengas menos de 10 horas entre turnos"
+      },
+      "postShift": {
+        "label": "Registro post turno",
+        "sublabel": "Pide registrar tu energía una hora después de cada turno"
+      },
+      "travelDay": {
+        "label": "Recordatorios de viaje",
+        "sublabel": "Aviso la tarde antes del fly-in y la mañana del fly-out"
+      }
+    },
+    "quietHours": {
+      "startA11y": "Inicio de horas de silencio: {{time}}",
+      "endA11y": "Fin de horas de silencio: {{time}}",
+      "overnight": "Noche completa · {{hours}} h",
+      "minimumAdjusted": "Las horas de silencio se ajustaron a una ventana mínima de 30 minutos."
+    },
+    "actions": {
+      "permissionNotice": "La configuración se guardó, pero las notificaciones están desactivadas, así que los recordatorios no se reprogramaron. Actívalas en Ajustes para aplicarlas.",
+      "test": {
+        "a11y": "Enviar un recordatorio de prueba en 5 segundos",
+        "idle": "Enviar prueba",
+        "sent": "Prueba enviada: revisa en 5 segundos",
+        "error": "La prueba no está disponible ahora",
+        "permission": "Activa las notificaciones para enviar una prueba"
+      },
+      "reschedule": {
+        "a11y": "Reprogramar todos los recordatorios ahora",
+        "idle": "Reprogramar recordatorios",
+        "inProgress": "Reprogramando…",
+        "success": "Recordatorios actualizados",
+        "error": "No se pudieron actualizar los recordatorios",
+        "permission": "Activa las notificaciones para reprogramar recordatorios"
+      }
+    },
+    "test": {
+      "title": "Los recordatorios inteligentes están activos",
+      "body": "Si esto llega, tus recordatorios inteligentes están funcionando."
     }
   }
 }

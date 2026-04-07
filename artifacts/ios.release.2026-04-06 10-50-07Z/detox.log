@@ -1,0 +1,1936 @@
+10:50:07.266 detox[28996] B node_modules/.bin/detox test e2e/onboarding.test.ts --configuration ios.release --cleanup --record-logs all --take-screenshots failing
+  data: {
+    "id": "ff0a78b7-8ae5-2d1e-3f84-e05e69e28c54",
+    "detoxConfig": {
+      "configurationName": "ios.release",
+      "apps": {
+        "default": {
+          "type": "ios.app",
+          "build": "E2E_TEST_MODE=1 xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -sdk iphonesimulator -destination \"platform=iOS Simulator,name=iPhone 16 Pro\" -derivedDataPath ios/build build && APP=\"ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app\" && find \"$APP/Frameworks\" -type f | while read -r f; do if file \"$f\" | grep -q \"Mach-O\"; then codesign --force --sign - --timestamp=none \"$f\"; fi; done && find \"$APP/Frameworks\" -type d -name \"*.framework\" -exec codesign --force --sign - --timestamp=none {} \\; && codesign --force --sign - --deep --timestamp=none \"$APP\"",
+          "binaryPath": "./ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app"
+        }
+      },
+      "artifacts": {
+        "rootDir": "artifacts/ios.release.2026-04-06 10-50-07Z",
+        "plugins": {
+          "log": {
+            "enabled": true,
+            "keepOnlyFailedTestsArtifacts": false
+          },
+          "screenshot": {
+            "enabled": true,
+            "shouldTakeAutomaticSnapshots": true,
+            "keepOnlyFailedTestsArtifacts": true
+          },
+          "video": {
+            "enabled": false,
+            "keepOnlyFailedTestsArtifacts": false
+          },
+          "instruments": {
+            "enabled": false,
+            "keepOnlyFailedTestsArtifacts": false
+          },
+          "uiHierarchy": {
+            "enabled": false,
+            "keepOnlyFailedTestsArtifacts": false
+          }
+        }
+      },
+      "behavior": {
+        "init": {
+          "keepLockFile": false,
+          "reinstallApp": true,
+          "exposeGlobals": true
+        },
+        "cleanup": {
+          "shutdownDevice": true
+        },
+        "launchApp": "auto"
+      },
+      "cli": {
+        "recordLogs": "all",
+        "takeScreenshots": "failing",
+        "cleanup": true,
+        "configuration": "ios.release",
+        "start": true
+      },
+      "commands": [
+        {
+          "appName": "default",
+          "build": "E2E_TEST_MODE=1 xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -sdk iphonesimulator -destination \"platform=iOS Simulator,name=iPhone 16 Pro\" -derivedDataPath ios/build build && APP=\"ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app\" && find \"$APP/Frameworks\" -type f | while read -r f; do if file \"$f\" | grep -q \"Mach-O\"; then codesign --force --sign - --timestamp=none \"$f\"; fi; done && find \"$APP/Frameworks\" -type d -name \"*.framework\" -exec codesign --force --sign - --timestamp=none {} \\; && codesign --force --sign - --deep --timestamp=none \"$APP\""
+        }
+      ],
+      "device": {
+        "type": "ios.simulator",
+        "device": {
+          "type": "iPhone 16 Pro"
+        }
+      },
+      "logger": {
+        "level": "info",
+        "overrideConsole": true,
+        "options": {
+          "showLoggerName": true,
+          "showPid": true,
+          "showLevel": false,
+          "showMetadata": false,
+          "basepath": "/Users/Shared/Ellie/node_modules/detox/src",
+          "prefixers": {},
+          "stringifiers": {}
+        }
+      },
+      "testRunner": {
+        "retries": 0,
+        "forwardEnv": false,
+        "detached": false,
+        "bail": false,
+        "noRetryArgs": [
+          "shard"
+        ],
+        "jest": {
+          "setupTimeout": 120000,
+          "teardownTimeout": 30000,
+          "retryAfterCircusRetries": false,
+          "reportWorkerAssign": true
+        },
+        "args": {
+          "$0": "jest",
+          "_": [
+            "e2e/onboarding.test.ts"
+          ],
+          "config": "e2e/jest.config.js",
+          "--": []
+        }
+      },
+      "session": {
+        "autoStart": true,
+        "debugSynchronization": 10000
+      }
+    },
+    "detoxIPCServer": "primary-28996",
+    "testResults": [],
+    "testSessionIndex": 0,
+    "workersCount": 0
+  }
+10:50:07.271 detox[28996] i Server path not specified, so defaulting to ipc.config.socketRoot + ipc.config.appspace + ipc.config.id /tmp/detox.primary-28996
+10:50:07.272 detox[28996] i starting server on  /tmp/detox.primary-28996 
+10:50:07.272 detox[28996] i starting TLS server false
+10:50:07.272 detox[28996] i starting server as Unix || Windows Socket
+10:50:07.273 detox[28996] i Detox server listening on localhost:49459...
+10:50:07.274 detox[28996] i Serialized the session state at: /private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/ff0a78b7-8ae5-2d1e-3f84-e05e69e28c54.detox.json
+10:50:07.275 detox[28996] B jest --config e2e/jest.config.js e2e/onboarding.test.ts
+10:50:09.780 detox[28997] i Service path not specified, so defaulting to ipc.config.socketRoot + ipc.config.appspace + id 
+10:50:09.783 detox[28997] i requested connection to  primary-28996 /tmp/detox.primary-28996
+10:50:09.783 detox[28997] i Connecting client on Unix Socket : /tmp/detox.primary-28996
+10:50:09.784 detox[28996] i ## socket connection to server detected ##
+10:50:09.784 detox[28997] i retrying reset
+10:50:09.784 detox[28997] i dispatching event to  primary-28996 /tmp/detox.primary-28996  :  registerContext , { id: 'secondary-28997' }
+10:50:09.785 detox[28996] i received event of :  registerContext { id: 'secondary-28997' }
+10:50:09.785 detox[28996] i dispatching event to socket  :  registerContextDone {
+  testResults: [],
+  testSessionIndex: 0,
+  unsafe_earlyTeardown: undefined
+}
+10:50:09.785 detox[28997] i ## received events ##
+10:50:09.785 detox[28997] i detected event registerContextDone { testResults: [], testSessionIndex: 0 }
+10:50:09.853 detox[28997] B e2e/onboarding.test.ts
+10:50:09.860 detox[28997] B set up environment
+10:50:09.861 detox[28996] i received event of :  registerWorker { workerId: 'w1' }
+10:50:09.861 detox[28996] i dispatching event to socket  :  registerWorkerDone { workersCount: 1 }
+10:50:09.861 detox[28996] i broadcasting event to all known sockets listening to  /tmp/detox.primary-28996  :   sessionStateUpdate { workersCount: 1 }
+10:50:09.861 detox[28997] i dispatching event to  primary-28996 /tmp/detox.primary-28996  :  registerWorker , { workerId: 'w1' }
+10:50:09.861 detox[28997] i ## received events ##
+10:50:09.861 detox[28997] i detected event registerWorkerDone { workersCount: 1 }
+10:50:10.008 detox[28997] i ## received events ##
+10:50:10.008 detox[28997] i detected event sessionStateUpdate { workersCount: 1 }
+10:50:10.011 detox[28996] B connection :49459<->:49465
+10:50:10.012 detox[28997] i opened web socket to: ws://localhost:49459
+10:50:10.013 detox[28996] i get
+  data: {"type":"login","params":{"sessionId":"5051db7b-1c7f-c110-c6c7-1a285ec99a78","role":"tester"},"messageId":0}
+10:50:10.013 detox[28996] i created session 5051db7b-1c7f-c110-c6c7-1a285ec99a78
+10:50:10.013 detox[28996] i send
+  data: {
+    "type": "loginSuccess",
+    "params": {
+      "testerConnected": true,
+      "appConnected": false
+    },
+    "messageId": 0
+  }
+10:50:10.013 detox[28997] i send message
+  data: {"type":"login","params":{"sessionId":"5051db7b-1c7f-c110-c6c7-1a285ec99a78","role":"tester"},"messageId":0}
+10:50:10.014 detox[28996] i tester joined session 5051db7b-1c7f-c110-c6c7-1a285ec99a78
+10:50:10.014 detox[28997] i get message
+  data: {"type":"loginSuccess","params":{"testerConnected":true,"appConnected":false},"messageId":0}
+   
+10:50:10.243 detox[28996] i received event of :  allocateDevice {
+  deviceConfig: { type: 'ios.simulator', device: { type: 'iPhone 16 Pro' } }
+}
+10:50:10.243 detox[28997] i dispatching event to  primary-28996 /tmp/detox.primary-28996  :  allocateDevice , {
+  deviceConfig: { type: 'ios.simulator', device: { type: 'iPhone 16 Pro' } }
+}
+10:50:10.246 detox[28996] B init
+  args: ()
+10:50:10.247 detox[28996] E init
+10:50:10.247 detox[28996] B allocate
+  data: {
+    "type": "ios.simulator",
+    "device": {
+      "type": "iPhone 16 Pro"
+    }
+  }
+10:50:10.267 detox[28996] i applesimutils --list --byType "iPhone 16 Pro" --fields udid,name,deviceType,os,identifier
+10:50:10.267 detox[28996] i Searching for device by type = "iPhone 16 Pro" ...
+10:50:10.420 detox[28996] i [
+  {
+    "os" : {
+      "name" : "iOS 18.5",
+      "identifier" : "com.apple.CoreSimulator.SimRuntime.iOS-18-5"
+    },
+    "name" : "iPhone 16 Pro",
+    "udid" : "85DD3162-206C-44DB-A723-F4B933896B6E",
+    "deviceType" : {
+      "name" : "iPhone 16 Pro",
+      "identifier" : "com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro"
+    }
+  }
+]
+
+10:50:10.421 detox[28996] i settled on 85DD3162-206C-44DB-A723-F4B933896B6E
+  data: {
+    "id": "85DD3162-206C-44DB-A723-F4B933896B6E",
+    "udid": "85DD3162-206C-44DB-A723-F4B933896B6E"
+  }
+10:50:10.421 detox[28996] E allocate
+10:50:10.421 detox[28996] B post-allocate: 85DD3162-206C-44DB-A723-F4B933896B6E
+  data: {
+    "id": "85DD3162-206C-44DB-A723-F4B933896B6E",
+    "udid": "85DD3162-206C-44DB-A723-F4B933896B6E"
+  }
+10:50:10.421 detox[28996] i applesimutils --list --byId 85DD3162-206C-44DB-A723-F4B933896B6E --maxResults 1 --fields udid,os,version,state
+10:50:10.505 detox[28996] i [
+  {
+    "state" : "Shutdown",
+    "os" : {
+      "version" : "18.5"
+    },
+    "udid" : "85DD3162-206C-44DB-A723-F4B933896B6E"
+  }
+]
+
+10:50:10.505 detox[28996] i /usr/bin/xcrun simctl boot 85DD3162-206C-44DB-A723-F4B933896B6E 
+10:50:10.505 detox[28996] i Booting device 85DD3162-206C-44DB-A723-F4B933896B6E...
+10:50:11.173 detox[28996] i 
+10:50:11.173 detox[28996] i /usr/bin/xcrun simctl bootstatus 85DD3162-206C-44DB-A723-F4B933896B6E
+10:50:15.512 detox[28996] i Monitoring boot status for iPhone 16 Pro (85DD3162-206C-44DB-A723-F4B933896B6E).
+[2026-04-06 10:50:12 +0000] Status=2, isTerminal=NO, Elapsed=00:02.
+	Waiting on Data Migration
+		Reason:(null)
+		Migration Elapsed:00:00 seconds
+
+[2026-04-06 10:50:14 +0000] Status=4, isTerminal=NO, Elapsed=00:03.
+	Waiting on System App
+
+[2026-04-06 10:50:14 +0000] Status=4, isTerminal=NO, Elapsed=00:03.
+	Waiting on System App
+
+[2026-04-06 10:50:15 +0000] Status=4, isTerminal=NO, Elapsed=00:04.
+	Waiting on System App
+
+[2026-04-06 10:50:15 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:04.
+	Finished
+
+
+10:50:15.512 detox[28996] i open -a Simulator --args -CurrentDeviceUDID 85DD3162-206C-44DB-A723-F4B933896B6E
+10:50:15.604 detox[28996] i 
+10:50:15.605 detox[28996] E post-allocate: 85DD3162-206C-44DB-A723-F4B933896B6E
+10:50:15.605 detox[28996] i dispatching event to socket  :  allocateDeviceDone {
+  deviceCookie: {
+    id: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    udid: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    type: 'ios.simulator',
+    bootArgs: undefined,
+    headless: undefined
+  }
+}
+10:50:15.605 detox[28997] i ## received events ##
+10:50:15.606 detox[28997] i detected event allocateDeviceDone {
+  deviceCookie: {
+    id: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    udid: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    type: 'ios.simulator'
+  }
+}
+10:50:15.625 detox[28997] B onBootDevice
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E"})
+10:50:15.625 detox[28997] E onBootDevice
+10:50:15.626 detox[28997] B installUtilBinaries
+  args: ()
+10:50:15.626 detox[28997] E installUtilBinaries
+10:50:15.627 detox[28997] B selectApp
+  args: ("default")
+10:50:15.640 detox[28997] E selectApp
+10:50:15.640 detox[28997] B uninstallApp
+  args: ()
+10:50:15.640 detox[28997] B onBeforeUninstallApp
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant"})
+10:50:15.640 detox[28997] E onBeforeUninstallApp
+10:50:15.640 detox[28997] i /usr/bin/xcrun simctl uninstall 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+10:50:15.640 detox[28997] i Uninstalling com.ellie.minershiftassistant...
+10:50:17.494 detox[28997] i com.ellie.minershiftassistant uninstalled
+10:50:17.495 detox[28997] E uninstallApp
+10:50:17.495 detox[28997] B selectApp
+  args: ("default")
+10:50:17.496 detox[28997] B terminateApp
+  args: ()
+10:50:17.496 detox[28997] B onBeforeTerminateApp
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant"})
+10:50:17.496 detox[28997] E onBeforeTerminateApp
+10:50:17.496 detox[28997] i /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+10:50:17.496 detox[28997] i Terminating com.ellie.minershiftassistant...
+10:50:18.696 detox[28997] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+
+10:50:18.696 detox[28997] i Terminating com.ellie.minershiftassistant...
+10:50:18.808 detox[28997] i "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+ (code=3), stdout and stderr:
+
+10:50:18.808 detox[28997] i 
+10:50:18.808 detox[28997] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+
+10:50:18.808 detox[28997] B onTerminateApp
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant"})
+10:50:18.808 detox[28997] E onTerminateApp
+10:50:18.808 detox[28997] E terminateApp
+10:50:18.808 detox[28997] E selectApp
+10:50:18.809 detox[28997] B installApp
+  args: ()
+10:50:18.809 detox[28997] i /usr/bin/xcrun simctl install 85DD3162-206C-44DB-A723-F4B933896B6E "/Users/Shared/Ellie/ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app"
+10:50:18.809 detox[28997] i Installing /Users/Shared/Ellie/ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app...
+10:50:20.983 detox[28997] i /Users/Shared/Ellie/ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app installed
+10:50:20.984 detox[28997] E installApp
+10:50:20.984 detox[28997] B selectApp
+  args: ("default")
+10:50:20.984 detox[28997] B terminateApp
+  args: ()
+10:50:20.984 detox[28997] B onBeforeTerminateApp
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant"})
+10:50:20.984 detox[28997] E onBeforeTerminateApp
+10:50:20.984 detox[28997] i /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+10:50:20.984 detox[28997] i Terminating com.ellie.minershiftassistant...
+10:50:22.093 detox[28997] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+
+10:50:22.093 detox[28997] i Terminating com.ellie.minershiftassistant...
+10:50:22.186 detox[28997] i "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+ (code=3), stdout and stderr:
+
+10:50:22.186 detox[28997] i 
+10:50:22.186 detox[28997] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+
+10:50:22.186 detox[28997] B onTerminateApp
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant"})
+10:50:22.186 detox[28997] E onTerminateApp
+10:50:22.186 detox[28997] E terminateApp
+10:50:22.186 detox[28997] E selectApp
+10:50:22.186 detox[28997] E set up environment
+10:50:22.648 detox[28997] i onboarding.test.ts is assigned to 85DD3162-206C-44DB-A723-F4B933896B6E (iPhone 16 Pro)
+10:50:22.649 detox[28997] B run the tests
+10:50:22.649 detox[28997] B onRunDescribeStart
+  args: ({"name":"ROOT_DESCRIBE_BLOCK"})
+10:50:22.649 detox[28997] E onRunDescribeStart
+10:50:22.649 detox[28997] B Onboarding Flow — rotating roster happy path
+10:50:22.649 detox[28997] B onRunDescribeStart
+  args: ({"name":"Onboarding Flow — rotating roster happy path"})
+10:50:22.650 detox[28997] E onRunDescribeStart
+10:50:22.650 detox[28997] B beforeAll
+10:50:22.759 detox[28997] B launchApp
+  args: ({"newInstance":true})
+10:50:22.760 detox[28997] B terminateApp
+  args: ("com.ellie.minershiftassistant")
+10:50:22.760 detox[28997] B onBeforeTerminateApp
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant"})
+10:50:22.760 detox[28997] E onBeforeTerminateApp
+10:50:22.760 detox[28997] i /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+10:50:22.760 detox[28997] i Terminating com.ellie.minershiftassistant...
+10:50:23.846 detox[28997] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+
+10:50:23.846 detox[28997] i Terminating com.ellie.minershiftassistant...
+10:50:23.959 detox[28997] i "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+ (code=3), stdout and stderr:
+
+10:50:23.959 detox[28997] i 
+10:50:23.959 detox[28997] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+
+10:50:23.959 detox[28997] B onTerminateApp
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant"})
+10:50:23.959 detox[28997] E onTerminateApp
+10:50:23.959 detox[28997] E terminateApp
+10:50:23.960 detox[28997] B onBeforeLaunchApp
+  args: ({"bundleId":"com.ellie.minershiftassistant","deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","launchArgs":{"detoxServer":"ws://localhost:49459","detoxSessionId":"5051db7b-1c7f-c110-c6c7-1a285ec99a78"}})
+10:50:23.960 detox[28997] i starting SimulatorLogRecording {
+  udid: '85DD3162-206C-44DB-A723-F4B933896B6E',
+  bundleId: 'com.ellie.minershiftassistant'
+}
+10:50:23.961 detox[28997] i /usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+10:50:24.057 detox[28997] i /Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/09A4801C-9C88-4D8E-889F-A6612813DE51/EllieMinerShiftAssistant.app
+
+10:50:24.058 detox[28997] i /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate "processImagePath beginsWith \"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/09A4801C-9C88-4D8E-889F-A6612813DE51/EllieMinerShiftAssistant.app\""
+10:50:24.110 detox[28997] E onBeforeLaunchApp
+10:50:24.111 detox[28997] i SIMCTL_CHILD_GULGeneratedClassDisposeDisabled=YES SIMCTL_CHILD_DYLD_INSERT_LIBRARIES="/Users/user/Library/Detox/ios/framework/7a593ed1f90c0350964e0c75f65f6f0a8382c0f9/Detox.framework/Detox" /usr/bin/xcrun simctl launch 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant --args -detoxServer ws://localhost:49459 -detoxSessionId 5051db7b-1c7f-c110-c6c7-1a285ec99a78 -detoxDebugVisibility YES -detoxDisableHierarchyDump YES
+10:50:24.111 detox[28997] i Launching com.ellie.minershiftassistant...
+10:50:24.288 detox[28997] i com.ellie.minershiftassistant: 29546
+
+10:50:24.288 detox[28997] i /usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+10:50:24.401 detox[28997] i /Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/09A4801C-9C88-4D8E-889F-A6612813DE51/EllieMinerShiftAssistant.app
+
+10:50:24.408 detox[28997] i com.ellie.minershiftassistant launched. To watch simulator logs, run:
+        /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate 'process == "EllieMinerShiftAssistant"'
+10:50:24.408 detox[28997] B onLaunchApp
+  args: ({"bundleId":"com.ellie.minershiftassistant","deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","launchArgs":{"detoxServer":"ws://localhost:49459","detoxSessionId":"5051db7b-1c7f-c110-c6c7-1a285ec99a78","detoxDebugVisibility":"YES","detoxDisableHierarchyDump":"YES"},"pid":29546})
+10:50:24.408 detox[28997] E onLaunchApp
+10:50:24.926 detox[28996] B connection :49459<->:49624
+10:50:25.116 detox[28996] i get
+  data: {"type":"login","messageId":0,"params":{"sessionId":"5051db7b-1c7f-c110-c6c7-1a285ec99a78","role":"app"}}
+10:50:25.117 detox[28996] i send
+  data: {
+    "type": "loginSuccess",
+    "messageId": 0,
+    "params": {
+      "testerConnected": true,
+      "appConnected": true
+    }
+  }
+10:50:25.117 detox[28996] i app joined session 5051db7b-1c7f-c110-c6c7-1a285ec99a78
+10:50:25.117 detox[28996] i send
+  data: {
+    "type": "appConnected"
+  }
+10:50:25.117 detox[28997] i get message
+  data: {"type":"appConnected"}
+   
+10:50:25.118 detox[28997] i send message
+  data: {"type":"isReady","params":{},"messageId":-1000}
+10:50:25.119 detox[28996] i get
+  data: {"type":"isReady","params":{},"messageId":-1000}
+10:50:25.119 detox[28996] i send
+  data: {
+    "type": "isReady",
+    "params": {},
+    "messageId": -1000
+  }
+10:50:27.854 detox[28996] i get
+  data: {"type":"ready","messageId":-1000,"params":{}}
+10:50:27.854 detox[28996] i send
+  data: {
+    "type": "ready",
+    "messageId": -1000,
+    "params": {}
+  }
+10:50:27.854 detox[28997] i get message
+  data: {"type":"ready","messageId":-1000,"params":{}}
+   
+10:50:27.855 detox[28996] i get
+  data: {"type":"ready","messageId":-1000,"params":{}}
+10:50:27.855 detox[28996] i send
+  data: {
+    "type": "ready",
+    "messageId": -1000,
+    "params": {}
+  }
+10:50:27.855 detox[28996] i get
+  data: {"type":"ready","messageId":-1000,"params":{}}
+10:50:27.855 detox[28996] i send
+  data: {
+    "type": "ready",
+    "messageId": -1000,
+    "params": {}
+  }
+10:50:27.856 detox[28996] i get
+  data: {"type":"waitForActive","params":{},"messageId":1}
+10:50:27.856 detox[28996] i send
+  data: {
+    "type": "waitForActive",
+    "params": {},
+    "messageId": 1
+  }
+10:50:27.856 detox[28997] i send message
+  data: {"type":"waitForActive","params":{},"messageId":1}
+10:50:27.856 detox[28997] i get message
+  data: {"type":"ready","messageId":-1000,"params":{}}
+   
+10:50:27.856 detox[28997] i get message
+  data: {"type":"ready","messageId":-1000,"params":{}}
+   
+10:50:27.857 detox[28996] i get
+  data: {"type":"waitForActiveDone","messageId":1,"params":{}}
+10:50:27.857 detox[28996] i send
+  data: {
+    "type": "waitForActiveDone",
+    "messageId": 1,
+    "params": {}
+  }
+10:50:27.857 detox[28997] i get message
+  data: {"type":"waitForActiveDone","messageId":1,"params":{}}
+   
+10:50:27.858 detox[28997] B onAppReady
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant","pid":29546})
+10:50:27.858 detox[28997] E onAppReady
+10:50:27.858 detox[28997] E launchApp
+10:50:27.858 detox[28997] B disableSynchronization
+  args: ()
+10:50:27.859 detox[28996] i get
+  data: {"type":"setSyncSettings","params":{"enabled":false},"messageId":2}
+10:50:27.859 detox[28997] i send message
+  data: {"type":"setSyncSettings","params":{"enabled":false},"messageId":2}
+10:50:27.860 detox[28996] i send
+  data: {
+    "type": "setSyncSettings",
+    "params": {
+      "enabled": false
+    },
+    "messageId": 2
+  }
+10:50:27.860 detox[28996] i get
+  data: {"messageId":2,"type":"setSyncSettingsDone","params":{}}
+10:50:27.860 detox[28996] i send
+  data: {
+    "messageId": 2,
+    "type": "setSyncSettingsDone",
+    "params": {}
+  }
+10:50:27.861 detox[28997] i get message
+  data: {"messageId":2,"type":"setSyncSettingsDone","params":{}}
+   
+10:50:27.861 detox[28997] E disableSynchronization
+10:50:27.861 detox[28997] E beforeAll
+10:50:27.862 detox[28997] B walks from Welcome to Completion on the simulator
+10:50:27.863 detox[28997] i Onboarding Flow — rotating roster happy path: walks from Welcome to Completion on the simulator
+10:50:27.865 detox[28997] B onTestStart
+  args: ({"title":"walks from Welcome to Completion on the simulator","fullName":"Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator","status":"running","invocations":1})
+10:50:27.865 detox[28997] i stopping SimulatorLogRecording
+10:50:27.917 detox[28997] i sending SIGINT to: /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate processImagePath beginsWith "/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/09A4801C-9C88-4D8E-889F-A6612813DE51/EllieMinerShiftAssistant.app"
+10:50:27.921 detox[28997] i /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate "processImagePath beginsWith \"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/09A4801C-9C88-4D8E-889F-A6612813DE51/EllieMinerShiftAssistant.app\"" exited with code #0
+10:50:27.922 detox[28997] i starting SimulatorLogRecording
+10:50:27.922 detox[28997] i /usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+10:50:28.024 detox[28997] i /Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/09A4801C-9C88-4D8E-889F-A6612813DE51/EllieMinerShiftAssistant.app
+
+10:50:28.025 detox[28997] i /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate "processImagePath beginsWith \"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/09A4801C-9C88-4D8E-889F-A6612813DE51/EllieMinerShiftAssistant.app\""
+10:50:28.077 detox[28997] i starting SimulatorScreenshot
+10:50:28.077 detox[28997] i /usr/bin/xcrun simctl io 85DD3162-206C-44DB-A723-F4B933896B6E screenshot "/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-28997-vO8aW0.detox.png"
+10:50:28.241 detox[28997] i Detected file type 'PNG' from extension
+Wrote screenshot to: /private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-28997-vO8aW0.detox.png
+
+10:50:28.241 detox[28997] i stopping SimulatorScreenshot
+10:50:28.241 detox[28997] E onTestStart
+10:50:28.241 detox[28997] B beforeEach
+10:50:28.241 detox[28997] E beforeEach
+10:50:28.241 detox[28997] B test_fn
+10:50:28.242 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"premium-welcome-screen-button","isRegex":false},"expectation":"toBeVisible","timeout":20000},"messageId":3}
+10:50:28.242 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "expectation",
+      "predicate": {
+        "type": "id",
+        "value": "premium-welcome-screen-button",
+        "isRegex": false
+      },
+      "expectation": "toBeVisible",
+      "timeout": 20000
+    },
+    "messageId": 3
+  }
+10:50:28.242 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"premium-welcome-screen-button","isRegex":false},"expectation":"toBeVisible","timeout":20000},"messageId":3}
+10:50:28.242 detox[28997] B wait until timeout (20000 ms) with timeout (20000 ms)
+  data: {
+    "type": "expectation",
+    "predicate": {
+      "type": "id",
+      "value": "premium-welcome-screen-button",
+      "isRegex": false
+    },
+    "expectation": "toBeVisible",
+    "timeout": 20000
+  }
+10:50:28.507 detox[28996] i get
+  data: {"messageId":3,"params":{},"type":"invokeResult"}
+10:50:28.507 detox[28996] i send
+  data: {
+    "messageId": 3,
+    "params": {},
+    "type": "invokeResult"
+  }
+10:50:28.508 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"action","action":"tap","predicate":{"type":"id","value":"premium-welcome-screen-button","isRegex":false}},"messageId":4}
+10:50:28.508 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "action",
+      "action": "tap",
+      "predicate": {
+        "type": "id",
+        "value": "premium-welcome-screen-button",
+        "isRegex": false
+      }
+    },
+    "messageId": 4
+  }
+10:50:28.508 detox[28997] i get message
+  data: {"messageId":3,"params":{},"type":"invokeResult"}
+   
+10:50:28.508 detox[28997] E wait until timeout (20000 ms) with timeout (20000 ms)
+10:50:28.508 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"action","action":"tap","predicate":{"type":"id","value":"premium-welcome-screen-button","isRegex":false}},"messageId":4}
+10:50:28.508 detox[28997] B tap
+  data: {
+    "type": "action",
+    "action": "tap",
+    "predicate": {
+      "type": "id",
+      "value": "premium-welcome-screen-button",
+      "isRegex": false
+    }
+  }
+10:50:28.634 detox[28996] i get
+  data: {"params":{},"messageId":4,"type":"invokeResult"}
+10:50:28.634 detox[28996] i send
+  data: {
+    "params": {},
+    "messageId": 4,
+    "type": "invokeResult"
+  }
+10:50:28.634 detox[28997] i get message
+  data: {"params":{},"messageId":4,"type":"invokeResult"}
+   
+10:50:28.635 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"pain-hook-card-cycle_lost","isRegex":false},"expectation":"toBeVisible","timeout":20000},"messageId":5}
+10:50:28.635 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "expectation",
+      "predicate": {
+        "type": "id",
+        "value": "pain-hook-card-cycle_lost",
+        "isRegex": false
+      },
+      "expectation": "toBeVisible",
+      "timeout": 20000
+    },
+    "messageId": 5
+  }
+10:50:28.635 detox[28997] E tap
+10:50:28.635 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"pain-hook-card-cycle_lost","isRegex":false},"expectation":"toBeVisible","timeout":20000},"messageId":5}
+10:50:28.635 detox[28997] B wait until timeout (20000 ms) with timeout (20000 ms)
+  data: {
+    "type": "expectation",
+    "predicate": {
+      "type": "id",
+      "value": "pain-hook-card-cycle_lost",
+      "isRegex": false
+    },
+    "expectation": "toBeVisible",
+    "timeout": 20000
+  }
+10:50:28.724 detox[28996] i get
+  data: {"messageId":5,"type":"invokeResult","params":{}}
+10:50:28.724 detox[28996] i send
+  data: {
+    "messageId": 5,
+    "type": "invokeResult",
+    "params": {}
+  }
+10:50:28.724 detox[28997] i get message
+  data: {"messageId":5,"type":"invokeResult","params":{}}
+   
+10:50:28.724 detox[28997] E wait until timeout (20000 ms) with timeout (20000 ms)
+10:50:29.628 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"pain-hook-card-cycle_lost","isRegex":false},"expectation":"toBeVisible","timeout":20000},"messageId":6}
+10:50:29.629 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"pain-hook-card-cycle_lost","isRegex":false},"expectation":"toBeVisible","timeout":20000},"messageId":6}
+10:50:29.629 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "expectation",
+      "predicate": {
+        "type": "id",
+        "value": "pain-hook-card-cycle_lost",
+        "isRegex": false
+      },
+      "expectation": "toBeVisible",
+      "timeout": 20000
+    },
+    "messageId": 6
+  }
+10:50:29.629 detox[28997] B wait until timeout (20000 ms) with timeout (20000 ms)
+  data: {
+    "type": "expectation",
+    "predicate": {
+      "type": "id",
+      "value": "pain-hook-card-cycle_lost",
+      "isRegex": false
+    },
+    "expectation": "toBeVisible",
+    "timeout": 20000
+  }
+10:50:29.751 detox[28996] i get
+  data: {"params":{},"messageId":6,"type":"invokeResult"}
+10:50:29.751 detox[28996] i send
+  data: {
+    "params": {},
+    "messageId": 6,
+    "type": "invokeResult"
+  }
+10:50:29.752 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"action","action":"swipe","params":["right","fast",0.8,null,null],"predicate":{"type":"id","value":"pain-hook-card-cycle_lost","isRegex":false}},"messageId":7}
+10:50:29.752 detox[28997] i get message
+  data: {"params":{},"messageId":6,"type":"invokeResult"}
+   
+10:50:29.752 detox[28997] E wait until timeout (20000 ms) with timeout (20000 ms)
+10:50:29.752 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"action","action":"swipe","params":["right","fast",0.8,null,null],"predicate":{"type":"id","value":"pain-hook-card-cycle_lost","isRegex":false}},"messageId":7}
+10:50:29.753 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "action",
+      "action": "swipe",
+      "params": [
+        "right",
+        "fast",
+        0.8,
+        null,
+        null
+      ],
+      "predicate": {
+        "type": "id",
+        "value": "pain-hook-card-cycle_lost",
+        "isRegex": false
+      }
+    },
+    "messageId": 7
+  }
+10:50:29.753 detox[28997] B swipe right fast with offset 0.8
+      
+  data: {
+    "type": "action",
+    "action": "swipe",
+    "params": [
+      "right",
+      "fast",
+      0.8,
+      null,
+      null
+    ],
+    "predicate": {
+      "type": "id",
+      "value": "pain-hook-card-cycle_lost",
+      "isRegex": false
+    }
+  }
+10:50:30.271 detox[28996] i get
+  data: {"messageId":7,"type":"invokeResult","params":{}}
+10:50:30.272 detox[28996] i send
+  data: {
+    "messageId": 7,
+    "type": "invokeResult",
+    "params": {}
+  }
+10:50:30.272 detox[28997] i get message
+  data: {"messageId":7,"type":"invokeResult","params":{}}
+   
+10:50:30.272 detox[28997] E swipe right fast with offset 0.8
+      
+10:50:30.273 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"pain-hook-continue-button","isRegex":false},"expectation":"toBeVisible","timeout":20000},"messageId":8}
+10:50:30.273 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "expectation",
+      "predicate": {
+        "type": "id",
+        "value": "pain-hook-continue-button",
+        "isRegex": false
+      },
+      "expectation": "toBeVisible",
+      "timeout": 20000
+    },
+    "messageId": 8
+  }
+10:50:30.273 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"pain-hook-continue-button","isRegex":false},"expectation":"toBeVisible","timeout":20000},"messageId":8}
+10:50:30.273 detox[28997] B wait until timeout (20000 ms) with timeout (20000 ms)
+  data: {
+    "type": "expectation",
+    "predicate": {
+      "type": "id",
+      "value": "pain-hook-continue-button",
+      "isRegex": false
+    },
+    "expectation": "toBeVisible",
+    "timeout": 20000
+  }
+10:50:30.304 detox[28996] i get
+  data: {"messageId":8,"params":{},"type":"invokeResult"}
+10:50:30.304 detox[28996] i send
+  data: {
+    "messageId": 8,
+    "params": {},
+    "type": "invokeResult"
+  }
+10:50:30.304 detox[28997] i get message
+  data: {"messageId":8,"params":{},"type":"invokeResult"}
+   
+10:50:30.305 detox[28997] E wait until timeout (20000 ms) with timeout (20000 ms)
+10:50:31.205 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"action","action":"tap","predicate":{"type":"id","value":"pain-hook-continue-button","isRegex":false}},"messageId":9}
+10:50:31.206 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"action","action":"tap","predicate":{"type":"id","value":"pain-hook-continue-button","isRegex":false}},"messageId":9}
+10:50:31.206 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "action",
+      "action": "tap",
+      "predicate": {
+        "type": "id",
+        "value": "pain-hook-continue-button",
+        "isRegex": false
+      }
+    },
+    "messageId": 9
+  }
+10:50:31.206 detox[28997] B tap
+  data: {
+    "type": "action",
+    "action": "tap",
+    "predicate": {
+      "type": "id",
+      "value": "pain-hook-continue-button",
+      "isRegex": false
+    }
+  }
+10:50:31.289 detox[28996] i get
+  data: {"params":{},"type":"invokeResult","messageId":9}
+10:50:31.289 detox[28996] i send
+  data: {
+    "params": {},
+    "type": "invokeResult",
+    "messageId": 9
+  }
+10:50:31.289 detox[28997] i get message
+  data: {"params":{},"type":"invokeResult","messageId":9}
+   
+10:50:31.289 detox[28997] E tap
+10:50:31.290 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"premium-introduction-screen","isRegex":false},"expectation":"toBeVisible","timeout":20000},"messageId":10}
+10:50:31.290 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "expectation",
+      "predicate": {
+        "type": "id",
+        "value": "premium-introduction-screen",
+        "isRegex": false
+      },
+      "expectation": "toBeVisible",
+      "timeout": 20000
+    },
+    "messageId": 10
+  }
+10:50:31.290 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"premium-introduction-screen","isRegex":false},"expectation":"toBeVisible","timeout":20000},"messageId":10}
+10:50:31.290 detox[28997] B wait until timeout (20000 ms) with timeout (20000 ms)
+  data: {
+    "type": "expectation",
+    "predicate": {
+      "type": "id",
+      "value": "premium-introduction-screen",
+      "isRegex": false
+    },
+    "expectation": "toBeVisible",
+    "timeout": 20000
+  }
+10:50:31.441 detox[28996] i get
+  data: {"type":"invokeResult","params":{},"messageId":10}
+10:50:31.442 detox[28996] i send
+  data: {
+    "type": "invokeResult",
+    "params": {},
+    "messageId": 10
+  }
+10:50:31.442 detox[28997] i get message
+  data: {"type":"invokeResult","params":{},"messageId":10}
+   
+10:50:31.442 detox[28997] E wait until timeout (20000 ms) with timeout (20000 ms)
+10:50:32.347 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"premium-introduction-screen","isRegex":false},"expectation":"toBeVisible","timeout":20000},"messageId":11}
+10:50:32.348 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"premium-introduction-screen","isRegex":false},"expectation":"toBeVisible","timeout":20000},"messageId":11}
+10:50:32.348 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "expectation",
+      "predicate": {
+        "type": "id",
+        "value": "premium-introduction-screen",
+        "isRegex": false
+      },
+      "expectation": "toBeVisible",
+      "timeout": 20000
+    },
+    "messageId": 11
+  }
+10:50:32.348 detox[28997] B wait until timeout (20000 ms) with timeout (20000 ms)
+  data: {
+    "type": "expectation",
+    "predicate": {
+      "type": "id",
+      "value": "premium-introduction-screen",
+      "isRegex": false
+    },
+    "expectation": "toBeVisible",
+    "timeout": 20000
+  }
+10:50:32.401 detox[28996] i get
+  data: {"messageId":11,"params":{},"type":"invokeResult"}
+10:50:32.401 detox[28996] i send
+  data: {
+    "messageId": 11,
+    "params": {},
+    "type": "invokeResult"
+  }
+10:50:32.401 detox[28997] i get message
+  data: {"messageId":11,"params":{},"type":"invokeResult"}
+   
+10:50:32.402 detox[28997] E wait until timeout (20000 ms) with timeout (20000 ms)
+10:50:32.403 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"premium-introduction-screen-chat-input-input","isRegex":false},"expectation":"toBeVisible","timeout":30000},"messageId":12}
+10:50:32.403 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "expectation",
+      "predicate": {
+        "type": "id",
+        "value": "premium-introduction-screen-chat-input-input",
+        "isRegex": false
+      },
+      "expectation": "toBeVisible",
+      "timeout": 30000
+    },
+    "messageId": 12
+  }
+10:50:32.403 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"premium-introduction-screen-chat-input-input","isRegex":false},"expectation":"toBeVisible","timeout":30000},"messageId":12}
+10:50:32.403 detox[28997] B wait until timeout (30000 ms) with timeout (30000 ms)
+  data: {
+    "type": "expectation",
+    "predicate": {
+      "type": "id",
+      "value": "premium-introduction-screen-chat-input-input",
+      "isRegex": false
+    },
+    "expectation": "toBeVisible",
+    "timeout": 30000
+  }
+10:50:35.410 detox[28996] i get
+  data: {"params":{},"type":"invokeResult","messageId":12}
+10:50:35.410 detox[28996] i send
+  data: {
+    "params": {},
+    "type": "invokeResult",
+    "messageId": 12
+  }
+10:50:35.410 detox[28997] i get message
+  data: {"params":{},"type":"invokeResult","messageId":12}
+   
+10:50:35.411 detox[28997] E wait until timeout (30000 ms) with timeout (30000 ms)
+10:50:35.411 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"action","action":"replaceText","params":["Ilyasu"],"predicate":{"type":"id","value":"premium-introduction-screen-chat-input-input","isRegex":false}},"messageId":13}
+10:50:35.412 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"action","action":"replaceText","params":["Ilyasu"],"predicate":{"type":"id","value":"premium-introduction-screen-chat-input-input","isRegex":false}},"messageId":13}
+10:50:35.412 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "action",
+      "action": "replaceText",
+      "params": [
+        "Ilyasu"
+      ],
+      "predicate": {
+        "type": "id",
+        "value": "premium-introduction-screen-chat-input-input",
+        "isRegex": false
+      }
+    },
+    "messageId": 13
+  }
+10:50:35.412 detox[28997] B replace input text: "Ilyasu"
+  data: {
+    "type": "action",
+    "action": "replaceText",
+    "params": [
+      "Ilyasu"
+    ],
+    "predicate": {
+      "type": "id",
+      "value": "premium-introduction-screen-chat-input-input",
+      "isRegex": false
+    }
+  }
+10:50:35.450 detox[28996] i get
+  data: {"type":"invokeResult","params":{},"messageId":13}
+10:50:35.450 detox[28996] i send
+  data: {
+    "type": "invokeResult",
+    "params": {},
+    "messageId": 13
+  }
+10:50:35.450 detox[28997] i get message
+  data: {"type":"invokeResult","params":{},"messageId":13}
+   
+10:50:35.450 detox[28997] E replace input text: "Ilyasu"
+10:50:35.451 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"action","action":"tap","predicate":{"type":"id","value":"premium-introduction-screen-chat-input-submit","isRegex":false}},"messageId":14}
+10:50:35.451 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"action","action":"tap","predicate":{"type":"id","value":"premium-introduction-screen-chat-input-submit","isRegex":false}},"messageId":14}
+10:50:35.452 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "action",
+      "action": "tap",
+      "predicate": {
+        "type": "id",
+        "value": "premium-introduction-screen-chat-input-submit",
+        "isRegex": false
+      }
+    },
+    "messageId": 14
+  }
+10:50:35.452 detox[28997] B tap
+  data: {
+    "type": "action",
+    "action": "tap",
+    "predicate": {
+      "type": "id",
+      "value": "premium-introduction-screen-chat-input-submit",
+      "isRegex": false
+    }
+  }
+10:50:35.791 detox[28996] i get
+  data: {"messageId":14,"type":"invokeResult","params":{}}
+10:50:35.791 detox[28996] i send
+  data: {
+    "messageId": 14,
+    "type": "invokeResult",
+    "params": {}
+  }
+10:50:35.791 detox[28997] i get message
+  data: {"messageId":14,"type":"invokeResult","params":{}}
+   
+10:50:35.792 detox[28997] E tap
+10:50:35.793 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"premium-introduction-screen-chat-input-input","isRegex":false},"expectation":"toBeVisible","timeout":30000},"messageId":15}
+10:50:35.794 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"premium-introduction-screen-chat-input-input","isRegex":false},"expectation":"toBeVisible","timeout":30000},"messageId":15}
+10:50:35.794 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "expectation",
+      "predicate": {
+        "type": "id",
+        "value": "premium-introduction-screen-chat-input-input",
+        "isRegex": false
+      },
+      "expectation": "toBeVisible",
+      "timeout": 30000
+    },
+    "messageId": 15
+  }
+10:50:35.794 detox[28997] B wait until timeout (30000 ms) with timeout (30000 ms)
+  data: {
+    "type": "expectation",
+    "predicate": {
+      "type": "id",
+      "value": "premium-introduction-screen-chat-input-input",
+      "isRegex": false
+    },
+    "expectation": "toBeVisible",
+    "timeout": 30000
+  }
+10:50:37.353 detox[28996] i get
+  data: {"type":"invokeResult","params":{},"messageId":15}
+10:50:37.353 detox[28996] i send
+  data: {
+    "type": "invokeResult",
+    "params": {},
+    "messageId": 15
+  }
+10:50:37.353 detox[28997] i get message
+  data: {"type":"invokeResult","params":{},"messageId":15}
+   
+10:50:37.353 detox[28997] E wait until timeout (30000 ms) with timeout (30000 ms)
+10:50:37.354 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"action","action":"replaceText","params":["Miner"],"predicate":{"type":"id","value":"premium-introduction-screen-chat-input-input","isRegex":false}},"messageId":16}
+10:50:37.354 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "action",
+      "action": "replaceText",
+      "params": [
+        "Miner"
+      ],
+      "predicate": {
+        "type": "id",
+        "value": "premium-introduction-screen-chat-input-input",
+        "isRegex": false
+      }
+    },
+    "messageId": 16
+  }
+10:50:37.354 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"action","action":"replaceText","params":["Miner"],"predicate":{"type":"id","value":"premium-introduction-screen-chat-input-input","isRegex":false}},"messageId":16}
+10:50:37.354 detox[28997] B replace input text: "Miner"
+  data: {
+    "type": "action",
+    "action": "replaceText",
+    "params": [
+      "Miner"
+    ],
+    "predicate": {
+      "type": "id",
+      "value": "premium-introduction-screen-chat-input-input",
+      "isRegex": false
+    }
+  }
+10:50:37.358 detox[28996] i get
+  data: {"messageId":16,"type":"invokeResult","params":{}}
+10:50:37.358 detox[28996] i send
+  data: {
+    "messageId": 16,
+    "type": "invokeResult",
+    "params": {}
+  }
+10:50:37.358 detox[28997] i get message
+  data: {"messageId":16,"type":"invokeResult","params":{}}
+   
+10:50:37.358 detox[28997] E replace input text: "Miner"
+10:50:37.359 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"action","action":"tap","predicate":{"type":"id","value":"premium-introduction-screen-chat-input-submit","isRegex":false}},"messageId":17}
+10:50:37.359 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "action",
+      "action": "tap",
+      "predicate": {
+        "type": "id",
+        "value": "premium-introduction-screen-chat-input-submit",
+        "isRegex": false
+      }
+    },
+    "messageId": 17
+  }
+10:50:37.359 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"action","action":"tap","predicate":{"type":"id","value":"premium-introduction-screen-chat-input-submit","isRegex":false}},"messageId":17}
+10:50:37.359 detox[28997] B tap
+  data: {
+    "type": "action",
+    "action": "tap",
+    "predicate": {
+      "type": "id",
+      "value": "premium-introduction-screen-chat-input-submit",
+      "isRegex": false
+    }
+  }
+10:50:37.590 detox[28996] i get
+  data: {"params":{},"messageId":17,"type":"invokeResult"}
+10:50:37.590 detox[28996] i send
+  data: {
+    "params": {},
+    "messageId": 17,
+    "type": "invokeResult"
+  }
+10:50:37.590 detox[28997] i get message
+  data: {"params":{},"messageId":17,"type":"invokeResult"}
+   
+10:50:37.590 detox[28997] E tap
+10:50:37.591 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"premium-introduction-screen-chat-input-quick-reply-skip","isRegex":false},"expectation":"toBeVisible","timeout":30000},"messageId":18}
+10:50:37.591 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"premium-introduction-screen-chat-input-quick-reply-skip","isRegex":false},"expectation":"toBeVisible","timeout":30000},"messageId":18}
+10:50:37.592 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "expectation",
+      "predicate": {
+        "type": "id",
+        "value": "premium-introduction-screen-chat-input-quick-reply-skip",
+        "isRegex": false
+      },
+      "expectation": "toBeVisible",
+      "timeout": 30000
+    },
+    "messageId": 18
+  }
+10:50:37.592 detox[28997] B wait until timeout (30000 ms) with timeout (30000 ms)
+  data: {
+    "type": "expectation",
+    "predicate": {
+      "type": "id",
+      "value": "premium-introduction-screen-chat-input-quick-reply-skip",
+      "isRegex": false
+    },
+    "expectation": "toBeVisible",
+    "timeout": 30000
+  }
+10:50:39.293 detox[28996] i get
+  data: {"params":{},"messageId":18,"type":"invokeResult"}
+10:50:39.293 detox[28996] i send
+  data: {
+    "params": {},
+    "messageId": 18,
+    "type": "invokeResult"
+  }
+10:50:39.294 detox[28997] i get message
+  data: {"params":{},"messageId":18,"type":"invokeResult"}
+   
+10:50:39.294 detox[28997] E wait until timeout (30000 ms) with timeout (30000 ms)
+10:50:39.294 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"action","action":"tap","predicate":{"type":"id","value":"premium-introduction-screen-chat-input-quick-reply-skip","isRegex":false}},"messageId":19}
+10:50:39.295 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"action","action":"tap","predicate":{"type":"id","value":"premium-introduction-screen-chat-input-quick-reply-skip","isRegex":false}},"messageId":19}
+10:50:39.295 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "action",
+      "action": "tap",
+      "predicate": {
+        "type": "id",
+        "value": "premium-introduction-screen-chat-input-quick-reply-skip",
+        "isRegex": false
+      }
+    },
+    "messageId": 19
+  }
+10:50:39.295 detox[28997] B tap
+  data: {
+    "type": "action",
+    "action": "tap",
+    "predicate": {
+      "type": "id",
+      "value": "premium-introduction-screen-chat-input-quick-reply-skip",
+      "isRegex": false
+    }
+  }
+10:50:39.608 detox[28996] i get
+  data: {"params":{},"messageId":19,"type":"invokeResult"}
+10:50:39.608 detox[28996] i send
+  data: {
+    "params": {},
+    "messageId": 19,
+    "type": "invokeResult"
+  }
+10:50:39.608 detox[28997] i get message
+  data: {"params":{},"messageId":19,"type":"invokeResult"}
+   
+10:50:39.608 detox[28997] E tap
+10:50:39.609 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"premium-introduction-screen-chat-input-input","isRegex":false},"expectation":"toBeVisible","timeout":30000},"messageId":20}
+10:50:39.610 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"premium-introduction-screen-chat-input-input","isRegex":false},"expectation":"toBeVisible","timeout":30000},"messageId":20}
+10:50:39.610 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "expectation",
+      "predicate": {
+        "type": "id",
+        "value": "premium-introduction-screen-chat-input-input",
+        "isRegex": false
+      },
+      "expectation": "toBeVisible",
+      "timeout": 30000
+    },
+    "messageId": 20
+  }
+10:50:39.610 detox[28997] B wait until timeout (30000 ms) with timeout (30000 ms)
+  data: {
+    "type": "expectation",
+    "predicate": {
+      "type": "id",
+      "value": "premium-introduction-screen-chat-input-input",
+      "isRegex": false
+    },
+    "expectation": "toBeVisible",
+    "timeout": 30000
+  }
+10:50:41.147 detox[28996] i get
+  data: {"messageId":20,"type":"invokeResult","params":{}}
+10:50:41.148 detox[28996] i send
+  data: {
+    "messageId": 20,
+    "type": "invokeResult",
+    "params": {}
+  }
+10:50:41.148 detox[28997] i get message
+  data: {"messageId":20,"type":"invokeResult","params":{}}
+   
+10:50:41.148 detox[28997] E wait until timeout (30000 ms) with timeout (30000 ms)
+10:50:41.149 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"action","action":"replaceText","params":["Australia"],"predicate":{"type":"id","value":"premium-introduction-screen-chat-input-input","isRegex":false}},"messageId":21}
+10:50:41.149 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "action",
+      "action": "replaceText",
+      "params": [
+        "Australia"
+      ],
+      "predicate": {
+        "type": "id",
+        "value": "premium-introduction-screen-chat-input-input",
+        "isRegex": false
+      }
+    },
+    "messageId": 21
+  }
+10:50:41.149 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"action","action":"replaceText","params":["Australia"],"predicate":{"type":"id","value":"premium-introduction-screen-chat-input-input","isRegex":false}},"messageId":21}
+10:50:41.149 detox[28997] B replace input text: "Australia"
+  data: {
+    "type": "action",
+    "action": "replaceText",
+    "params": [
+      "Australia"
+    ],
+    "predicate": {
+      "type": "id",
+      "value": "premium-introduction-screen-chat-input-input",
+      "isRegex": false
+    }
+  }
+10:50:41.154 detox[28996] i get
+  data: {"type":"invokeResult","messageId":21,"params":{}}
+10:50:41.154 detox[28996] i send
+  data: {
+    "type": "invokeResult",
+    "messageId": 21,
+    "params": {}
+  }
+10:50:41.154 detox[28997] i get message
+  data: {"type":"invokeResult","messageId":21,"params":{}}
+   
+10:50:41.154 detox[28997] E replace input text: "Australia"
+10:50:41.155 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"action","action":"tap","predicate":{"type":"id","value":"premium-introduction-screen-chat-input-submit","isRegex":false}},"messageId":22}
+10:50:41.155 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"action","action":"tap","predicate":{"type":"id","value":"premium-introduction-screen-chat-input-submit","isRegex":false}},"messageId":22}
+10:50:41.156 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "action",
+      "action": "tap",
+      "predicate": {
+        "type": "id",
+        "value": "premium-introduction-screen-chat-input-submit",
+        "isRegex": false
+      }
+    },
+    "messageId": 22
+  }
+10:50:41.156 detox[28997] B tap
+  data: {
+    "type": "action",
+    "action": "tap",
+    "predicate": {
+      "type": "id",
+      "value": "premium-introduction-screen-chat-input-submit",
+      "isRegex": false
+    }
+  }
+10:50:41.407 detox[28996] i get
+  data: {"type":"invokeResult","params":{},"messageId":22}
+10:50:41.407 detox[28996] i send
+  data: {
+    "type": "invokeResult",
+    "params": {},
+    "messageId": 22
+  }
+10:50:41.407 detox[28997] i get message
+  data: {"type":"invokeResult","params":{},"messageId":22}
+   
+10:50:41.407 detox[28997] E tap
+10:50:41.408 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"shift-system-card-2-shift","isRegex":false},"expectation":"toBeVisible","timeout":30000},"messageId":23}
+10:50:41.408 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "expectation",
+      "predicate": {
+        "type": "id",
+        "value": "shift-system-card-2-shift",
+        "isRegex": false
+      },
+      "expectation": "toBeVisible",
+      "timeout": 30000
+    },
+    "messageId": 23
+  }
+10:50:41.408 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"shift-system-card-2-shift","isRegex":false},"expectation":"toBeVisible","timeout":30000},"messageId":23}
+10:50:41.408 detox[28997] B wait until timeout (30000 ms) with timeout (30000 ms)
+  data: {
+    "type": "expectation",
+    "predicate": {
+      "type": "id",
+      "value": "shift-system-card-2-shift",
+      "isRegex": false
+    },
+    "expectation": "toBeVisible",
+    "timeout": 30000
+  }
+10:50:45.492 detox[28996] i get
+  data: {"messageId":23,"type":"invokeResult","params":{}}
+10:50:45.492 detox[28996] i send
+  data: {
+    "messageId": 23,
+    "type": "invokeResult",
+    "params": {}
+  }
+10:50:45.492 detox[28997] i get message
+  data: {"messageId":23,"type":"invokeResult","params":{}}
+   
+10:50:45.492 detox[28997] E wait until timeout (30000 ms) with timeout (30000 ms)
+10:50:45.493 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"progress-header","isRegex":false},"expectation":"toExist","timeout":6000},"messageId":24}
+10:50:45.494 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"progress-header","isRegex":false},"expectation":"toExist","timeout":6000},"messageId":24}
+10:50:45.494 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "expectation",
+      "predicate": {
+        "type": "id",
+        "value": "progress-header",
+        "isRegex": false
+      },
+      "expectation": "toExist",
+      "timeout": 6000
+    },
+    "messageId": 24
+  }
+10:50:45.494 detox[28997] B wait until timeout (6000 ms) with timeout (6000 ms)
+  data: {
+    "type": "expectation",
+    "predicate": {
+      "type": "id",
+      "value": "progress-header",
+      "isRegex": false
+    },
+    "expectation": "toExist",
+    "timeout": 6000
+  }
+10:50:45.496 detox[28996] i get
+  data: {"messageId":24,"type":"invokeResult","params":{}}
+10:50:45.496 detox[28996] i send
+  data: {
+    "messageId": 24,
+    "type": "invokeResult",
+    "params": {}
+  }
+10:50:45.496 detox[28997] i get message
+  data: {"messageId":24,"type":"invokeResult","params":{}}
+   
+10:50:45.496 detox[28997] E wait until timeout (6000 ms) with timeout (6000 ms)
+10:50:45.497 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"shift-system-select-button","isRegex":false},"expectation":"toBeVisible","timeout":6000},"messageId":25}
+10:50:45.497 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "expectation",
+      "predicate": {
+        "type": "id",
+        "value": "shift-system-select-button",
+        "isRegex": false
+      },
+      "expectation": "toBeVisible",
+      "timeout": 6000
+    },
+    "messageId": 25
+  }
+10:50:45.497 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"shift-system-select-button","isRegex":false},"expectation":"toBeVisible","timeout":6000},"messageId":25}
+10:50:45.498 detox[28997] B wait until timeout (6000 ms) with timeout (6000 ms)
+  data: {
+    "type": "expectation",
+    "predicate": {
+      "type": "id",
+      "value": "shift-system-select-button",
+      "isRegex": false
+    },
+    "expectation": "toBeVisible",
+    "timeout": 6000
+  }
+10:50:45.530 detox[28996] i get
+  data: {"type":"invokeResult","params":{},"messageId":25}
+10:50:45.530 detox[28996] i send
+  data: {
+    "type": "invokeResult",
+    "params": {},
+    "messageId": 25
+  }
+10:50:45.530 detox[28997] i get message
+  data: {"type":"invokeResult","params":{},"messageId":25}
+   
+10:50:45.531 detox[28997] E wait until timeout (6000 ms) with timeout (6000 ms)
+10:50:45.531 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"action","action":"tap","predicate":{"type":"id","value":"shift-system-select-button","isRegex":false}},"messageId":26}
+10:50:45.532 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"action","action":"tap","predicate":{"type":"id","value":"shift-system-select-button","isRegex":false}},"messageId":26}
+10:50:45.532 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "action",
+      "action": "tap",
+      "predicate": {
+        "type": "id",
+        "value": "shift-system-select-button",
+        "isRegex": false
+      }
+    },
+    "messageId": 26
+  }
+10:50:45.532 detox[28997] B tap
+  data: {
+    "type": "action",
+    "action": "tap",
+    "predicate": {
+      "type": "id",
+      "value": "shift-system-select-button",
+      "isRegex": false
+    }
+  }
+10:50:45.687 detox[28996] i get
+  data: {"messageId":26,"params":{},"type":"invokeResult"}
+10:50:45.687 detox[28996] i send
+  data: {
+    "messageId": 26,
+    "params": {},
+    "type": "invokeResult"
+  }
+10:50:45.687 detox[28997] i get message
+  data: {"messageId":26,"params":{},"type":"invokeResult"}
+   
+10:50:45.687 detox[28997] E tap
+10:50:45.688 detox[28997] i send message
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"roster-type-card-rotating","isRegex":false},"expectation":"toBeVisible","timeout":20000},"messageId":27}
+10:50:45.689 detox[28996] i get
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"roster-type-card-rotating","isRegex":false},"expectation":"toBeVisible","timeout":20000},"messageId":27}
+10:50:45.689 detox[28996] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "expectation",
+      "predicate": {
+        "type": "id",
+        "value": "roster-type-card-rotating",
+        "isRegex": false
+      },
+      "expectation": "toBeVisible",
+      "timeout": 20000
+    },
+    "messageId": 27
+  }
+10:50:45.691 detox[28997] B wait until timeout (20000 ms) with timeout (20000 ms)
+  data: {
+    "type": "expectation",
+    "predicate": {
+      "type": "id",
+      "value": "roster-type-card-rotating",
+      "isRegex": false
+    },
+    "expectation": "toBeVisible",
+    "timeout": 20000
+  }
+10:50:55.689 detox[28996] i get
+  data: {"type":"currentStatus","params":{},"messageId":28}
+10:50:55.689 detox[28996] i send
+  data: {
+    "type": "currentStatus",
+    "params": {},
+    "messageId": 28
+  }
+10:50:55.689 detox[28997] i send message
+  data: {"type":"currentStatus","params":{},"messageId":28}
+10:50:55.690 detox[28996] i get
+  data: {"params":{"messageId":28,"status":{"busy_resources":[{"name":"dispatch_queue","description":{"queue":"Main Queue (<OS_dispatch_queue_main: com.apple.main-thread>)","works_count":2}},{"name":"run_loop","description":{"name":"Main Run Loop"}}],"app_status":"busy"}},"type":"currentStatusResult","messageId":28}
+10:50:55.691 detox[28996] i send
+  data: {
+    "params": {
+      "messageId": 28,
+      "status": {
+        "busy_resources": [
+          {
+            "name": "dispatch_queue",
+            "description": {
+              "queue": "Main Queue (<OS_dispatch_queue_main: com.apple.main-thread>)",
+              "works_count": 2
+            }
+          },
+          {
+            "name": "run_loop",
+            "description": {
+              "name": "Main Run Loop"
+            }
+          }
+        ],
+        "app_status": "busy"
+      }
+    },
+    "type": "currentStatusResult",
+    "messageId": 28
+  }
+10:50:55.691 detox[28997] i get message
+  data: {"params":{"messageId":28,"status":{"busy_resources":[{"name":"dispatch_queue","description":{"queue":"Main Queue (<OS_dispatch_queue_main: com.apple.main-thread>)","works_count":2}},{"name":"run_loop","description":{"name":"Main Run Loop"}}],"app_status":"busy"}},"type":"currentStatusResult","messageId":28}
+   
+10:50:55.695 detox[28997] i The app is busy with the following tasks:
+• There are 2 work items pending on the dispatch queue: "Main Queue (<OS_dispatch_queue_main: com.apple.main-thread>)".
+• Run loop "Main Run Loop" is awake.
+10:51:05.698 detox[28997] i send message
+  data: {"type":"currentStatus","params":{},"messageId":29}
+10:51:05.699 detox[28996] i get
+  data: {"type":"currentStatus","params":{},"messageId":29}
+10:51:05.699 detox[28996] i send
+  data: {
+    "type": "currentStatus",
+    "params": {},
+    "messageId": 29
+  }
+10:51:05.701 detox[28996] i get
+  data: {"params":{"status":{"busy_resources":[{"name":"dispatch_queue","description":{"queue":"Main Queue (<OS_dispatch_queue_main: com.apple.main-thread>)","works_count":2}},{"name":"run_loop","description":{"name":"Main Run Loop"}}],"app_status":"busy"},"messageId":29},"messageId":29,"type":"currentStatusResult"}
+10:51:05.701 detox[28996] i send
+  data: {
+    "params": {
+      "status": {
+        "busy_resources": [
+          {
+            "name": "dispatch_queue",
+            "description": {
+              "queue": "Main Queue (<OS_dispatch_queue_main: com.apple.main-thread>)",
+              "works_count": 2
+            }
+          },
+          {
+            "name": "run_loop",
+            "description": {
+              "name": "Main Run Loop"
+            }
+          }
+        ],
+        "app_status": "busy"
+      },
+      "messageId": 29
+    },
+    "messageId": 29,
+    "type": "currentStatusResult"
+  }
+10:51:05.702 detox[28997] i get message
+  data: {"params":{"status":{"busy_resources":[{"name":"dispatch_queue","description":{"queue":"Main Queue (<OS_dispatch_queue_main: com.apple.main-thread>)","works_count":2}},{"name":"run_loop","description":{"name":"Main Run Loop"}}],"app_status":"busy"},"messageId":29},"messageId":29,"type":"currentStatusResult"}
+   
+10:51:05.702 detox[28997] i The app is busy with the following tasks:
+• There are 2 work items pending on the dispatch queue: "Main Queue (<OS_dispatch_queue_main: com.apple.main-thread>)".
+• Run loop "Main Run Loop" is awake.
+10:51:05.764 detox[28996] i get
+  data: {"type":"testFailed","params":{"NSLocalizedDescription":"Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(id == “roster-type-card-rotating”) TIMEOUT(20s)","visibilityFailingScreenshotsURL":"\/Users\/user\/Library\/Developer\/CoreSimulator\/Devices\/85DD3162-206C-44DB-A723-F4B933896B6E\/data\/Containers\/Data\/Application\/E8A8EC50-E070-403D-A331-34C4987CA5B8\/tmp\/visibilityFailingScreenshots","windows":["<UIWindow: 0x111805660; frame = (0 0; 402 874);>","<UITextEffectsWindow: 0x1108baa00; frame = (0 0; 402 874);>","<DTXTouchVisualizerWindow: 0x11180fbe0; frame = (0 0; 402 874);>"],"visibilityFailingRectsURL":"\/Users\/user\/Library\/Developer\/CoreSimulator\/Devices\/85DD3162-206C-44DB-A723-F4B933896B6E\/data\/Containers\/Data\/Application\/E8A8EC50-E070-403D-A331-34C4987CA5B8\/tmp\/visibilityFailingRects","details":"Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(id == “roster-type-card-rotating”) TIMEOUT(20s)","DetoxFailureInformation":{"lineNumber":154,"file":"\/Users\/builder\/uibuilder\/work\/detox\/ios\/Detox\/Invocation\/Expectation.swift","functionName":"evaluate_after(startDate:completionHandler:)"},"viewHierarchy":"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<ViewHierarchy>\n    <UIWindow alpha=\"1.0\" class=\"UIWindow\" focused=\"false\" height=\"874\" ptr=\"0x111805660\" visibility=\"visible\" width=\"402\">\n        <UITransitionView alpha=\"1.0\" class=\"UITransitionView\" focused=\"false\" height=\"874\" ptr=\"0x107d0fb10\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n            <UIDropShadowView alpha=\"1.0\" class=\"UIDropShadowView\" focused=\"false\" height=\"874\" ptr=\"0x107e20660\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                <RCTSurfaceHostingProxyRootView alpha=\"1.0\" class=\"RCTSurfaceHostingProxyRootView\" focused=\"false\" height=\"874\" ptr=\"0x107d0d660\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                    <RCTSurfaceView alpha=\"1.0\" class=\"RCTSurfaceView\" focused=\"false\" height=\"874\" ptr=\"0x111a4a750\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                        <RCTRootComponentView alpha=\"1.0\" class=\"RCTRootComponentView\" focused=\"false\" height=\"874\" ptr=\"0x107e58950\" tag=\"11\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                            <RNCSafeAreaProviderComponentView alpha=\"1.0\" class=\"RNCSafeAreaProviderComponentView\" focused=\"false\" height=\"874\" ptr=\"0x107e5b060\" tag=\"2\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                <RNSScreenStackView alpha=\"1.0\" class=\"RNSScreenStackView\" focused=\"false\" height=\"874\" ptr=\"0x107e794d0\" tag=\"112\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                    <UILayoutContainerView alpha=\"1.0\" class=\"UILayoutContainerView\" focused=\"false\" height=\"874\" ptr=\"0x11199bf90\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                        <UINavigationTransitionView alpha=\"1.0\" class=\"UINavigationTransitionView\" focused=\"false\" height=\"874\" ptr=\"0x1119a1de0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                            <UIViewControllerWrapperView alpha=\"1.0\" class=\"UIViewControllerWrapperView\" focused=\"false\" height=\"874\" ptr=\"0x107d16010\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                <RNSScreenView alpha=\"1.0\" class=\"RNSScreenView\" focused=\"false\" height=\"874\" ptr=\"0x1108a9400\" tag=\"110\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                    <RNSScreenContentWrapper alpha=\"1.0\" class=\"RNSScreenContentWrapper\" focused=\"false\" height=\"874\" ptr=\"0x107e7b5e0\" tag=\"106\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                        <RNSScreenStackView alpha=\"1.0\" class=\"RNSScreenStackView\" focused=\"false\" height=\"874\" ptr=\"0x107e7d3e0\" tag=\"102\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                            <UILayoutContainerView alpha=\"1.0\" class=\"UILayoutContainerView\" focused=\"false\" height=\"874\" ptr=\"0x107d3b900\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                <UINavigationTransitionView alpha=\"1.0\" class=\"UINavigationTransitionView\" focused=\"false\" height=\"874\" ptr=\"0x107d4b130\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                    <UIViewControllerWrapperView alpha=\"1.0\" class=\"UIViewControllerWrapperView\" focused=\"false\" height=\"874\" ptr=\"0x107d0e5a0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                        <RNSScreenView alpha=\"1.0\" class=\"RNSScreenView\" focused=\"false\" height=\"874\" ptr=\"0x1108e8e00\" tag=\"750\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                            <RNSScreenContentWrapper alpha=\"1.0\" class=\"RNSScreenContentWrapper\" focused=\"false\" height=\"874\" ptr=\"0x14f81eb70\" tag=\"746\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"874\" id=\"premium-shift-system-screen\" ptr=\"0x1118bd3f0\" tag=\"744\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" \/>\n                                                                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"56\" id=\"progress-header\" ptr=\"0x1118bd6d0\" tag=\"640\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" \/>\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-1\" ptr=\"0x14f81f240\" tag=\"612\" visibility=\"visible\" width=\"8\" x=\"125\" y=\"24\" \/>\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-2\" ptr=\"0x14f81f520\" tag=\"614\" visibility=\"visible\" width=\"8\" x=\"141\" y=\"24\" \/>\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-3\" ptr=\"0x14f81f800\" tag=\"616\" visibility=\"visible\" width=\"8\" x=\"157\" y=\"24\" \/>\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"9\" id=\"progress-header-dot-4\" ptr=\"0x14f81fae0\" tag=\"618\" visibility=\"visible\" width=\"9\" x=\"172\" y=\"23\" \/>\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-5\" ptr=\"0x14f81fdc0\" tag=\"620\" visibility=\"visible\" width=\"8\" x=\"189\" y=\"24\" \/>\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-6\" ptr=\"0x14f8200a0\" tag=\"622\" visibility=\"visible\" width=\"8\" x=\"205\" y=\"24\" \/>\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-7\" ptr=\"0x14f820380\" tag=\"624\" visibility=\"visible\" width=\"8\" x=\"221\" y=\"24\" \/>\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-8\" ptr=\"0x14f820660\" tag=\"626\" visibility=\"visible\" width=\"8\" x=\"237\" y=\"24\" \/>\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-9\" ptr=\"0x14f820940\" tag=\"628\" visibility=\"visible\" width=\"8\" x=\"253\" y=\"24\" \/>\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-10\" ptr=\"0x14f820c20\" tag=\"630\" visibility=\"visible\" width=\"8\" x=\"269\" y=\"24\" \/>\n                                                                                <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"100\" label=\"Hey Ilyasu, How Many Shifts Does Your Site Run?\" ptr=\"0x14f820f00\" tag=\"644\" text=\"Hey Ilyasu, How Many Shifts Does Your Site Run?\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"80\">\n                                                                                    <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"100\" ptr=\"0x14f821240\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" \/>\n                                                                                <\/RCTParagraphComponentView>\n                                                                                <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"76\" label=\"Select how your site operates—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info\" ptr=\"0x14f8214b0\" tag=\"648\" text=\"Select how your site operates—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"188\">\n                                                                                    <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"76\" ptr=\"0x14f8217f0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" \/>\n                                                                                <\/RCTParagraphComponentView>\n                                                                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-dots\" ptr=\"0x14f814270\" tag=\"654\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"297\" \/>\n                                                                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"2-shift-dot-0\" ptr=\"0x14f814550\" tag=\"650\" visibility=\"visible\" width=\"24\" x=\"181\" y=\"297\" \/>\n                                                                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"3-shift-dot-1\" ptr=\"0x14f814830\" tag=\"652\" visibility=\"visible\" width=\"8\" x=\"213\" y=\"297\" \/>\n                                                                                <RCTViewComponentView alpha=\"0.9\" class=\"RCTViewComponentView\" focused=\"false\" height=\"456\" id=\"shift-system-card-3-shift\" ptr=\"0x14f814b10\" tag=\"772\" visibility=\"visible\" width=\"307\" x=\"47\" y=\"365\">\n                                                                                    <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"179\" ptr=\"0x14f8150d0\" tag=\"756\" visibility=\"visible\" width=\"180\" x=\"81\" y=\"66\">\n                                                                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"111\" id=\"shift-system-icon-3-shift\" label=\"\" ptr=\"0x14f816590\" tag=\"754\" text=\"\" visibility=\"visible\" width=\"108\" x=\"36\" y=\"34\">\n                                                                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"111\" ptr=\"0x14f8168d0\" visibility=\"visible\" width=\"108\" x=\"0\" y=\"0\" \/>\n                                                                                        <\/RCTParagraphComponentView>\n                                                                                    <\/RCTViewComponentView>\n                                                                                    <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"28\" label=\"3 Shifts (8 hours)\" ptr=\"0x14f8153b0\" tag=\"760\" text=\"3 Shifts (8 hours)\" visibility=\"visible\" width=\"195\" x=\"73\" y=\"270\">\n                                                                                        <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"28\" ptr=\"0x14f8156f0\" visibility=\"visible\" width=\"195\" x=\"0\" y=\"0\" \/>\n                                                                                    <\/RCTParagraphComponentView>\n                                                                                    <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"29\" ptr=\"0x14f815a90\" tag=\"766\" visibility=\"visible\" width=\"258\" x=\"42\" y=\"315\" \/>\n                                                                                    <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"21\" label=\"Morning, afternoon &amp; night\" ptr=\"0x14f833910\" tag=\"764\" text=\"Morning, afternoon &amp; night\" visibility=\"visible\" width=\"226\" x=\"58\" y=\"319\">\n                                                                                        <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"21\" ptr=\"0x14f815d70\" visibility=\"visible\" width=\"226\" x=\"0\" y=\"0\" \/>\n                                                                                    <\/RCTParagraphComponentView>\n                                                                                    <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"72\" label=\"Your processing plant runs three 8-hour shifts—morning, afternoon, and night\" ptr=\"0x14f833d80\" tag=\"770\" text=\"Your processing plant runs three 8-hour shifts—morning, afternoon, and night\" visibility=\"visible\" width=\"276\" x=\"33\" y=\"368\">\n                                                                                        <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"72\" ptr=\"0x14f8340c0\" visibility=\"visible\" width=\"276\" x=\"0\" y=\"0\" \/>\n                                                                                    <\/RCTParagraphComponentView>\n                                                                                <\/RCTViewComponentView>\n                                                                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"515\" id=\"shift-system-card-2-shift\" ptr=\"0x14f814df0\" tag=\"836\" visibility=\"visible\" width=\"347\" x=\"27\" y=\"328\">\n                                                                                    <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"180\" ptr=\"0x14f816c70\" tag=\"778\" visibility=\"visible\" width=\"180\" x=\"80\" y=\"77\">\n                                                                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"111\" id=\"shift-system-icon-2-shift\" label=\"\" ptr=\"0x14f818f70\" tag=\"776\" text=\"\" visibility=\"visible\" width=\"108\" x=\"36\" y=\"34\">\n                                                                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"111\" ptr=\"0x14f8192b0\" visibility=\"visible\" width=\"108\" x=\"0\" y=\"0\" \/>\n                                                                                        <\/RCTParagraphComponentView>\n                                                                                    <\/RCTViewComponentView>\n                                                                                    <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"28\" label=\"2 Shifts (12 hours)\" ptr=\"0x14f816f50\" tag=\"782\" text=\"2 Shifts (12 hours)\" visibility=\"visible\" width=\"205\" x=\"68\" y=\"282\">\n                                                                                        <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"28\" ptr=\"0x14f817290\" visibility=\"visible\" width=\"205\" x=\"0\" y=\"0\" \/>\n                                                                                    <\/RCTParagraphComponentView>\n                                                                                    <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"29\" ptr=\"0x14f817630\" tag=\"788\" visibility=\"visible\" width=\"128\" x=\"106\" y=\"327\" \/>\n                                                                                    <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"21\" label=\"Day &amp; night\" ptr=\"0x14f817910\" tag=\"786\" text=\"Day &amp; night\" visibility=\"visible\" width=\"96\" x=\"122\" y=\"331\">\n                                                                                        <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"21\" ptr=\"0x14f817c50\" visibility=\"visible\" width=\"96\" x=\"0\" y=\"0\" \/>\n                                                                                    <\/RCTParagraphComponentView>\n                                                                                    <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"48\" label=\"Your mine runs two 12-hour shifts—one during the day, one at night\" ptr=\"0x14f817ff0\" tag=\"792\" text=\"Your mine runs two 12-hour shifts—one during the day, one at night\" visibility=\"visible\" width=\"276\" x=\"33\" y=\"380\">\n                                                                                        <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"48\" ptr=\"0x14f818330\" visibility=\"visible\" width=\"276\" x=\"0\" y=\"0\" \/>\n                                                                                    <\/RCTParagraphComponentView>\n                                                                                    <RCTViewComponentView alpha=\"0.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"28\" ptr=\"0x14f8186d0\" tag=\"806\" visibility=\"visible\" width=\"127\" x=\"18\" y=\"219\">\n                                                                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"17\" id=\"shift-system-next-option-button\" label=\"Next option\" ptr=\"0x14f819650\" tag=\"804\" visibility=\"visible\" width=\"98\" x=\"8\" y=\"4\">\n                                                                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"14\" label=\"\" ptr=\"0x14f819930\" tag=\"796\" text=\"\" visibility=\"visible\" width=\"14\" x=\"0\" y=\"1\">\n                                                                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"14\" ptr=\"0x14f819c70\" visibility=\"visible\" width=\"14\" x=\"0\" y=\"0\" \/>\n                                                                                            <\/RCTParagraphComponentView>\n                                                                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"17\" label=\"Next option\" ptr=\"0x14f84fb90\" tag=\"800\" text=\"Next option\" visibility=\"visible\" width=\"78\" x=\"20\" y=\"0\">\n                                                                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"17\" ptr=\"0x14f84fed0\" visibility=\"visible\" width=\"78\" x=\"0\" y=\"0\" \/>\n                                                                                            <\/RCTParagraphComponentView>\n                                                                                        <\/RCTViewComponentView>\n                                                                                    <\/RCTViewComponentView>\n                                                                                    <RCTViewComponentView alpha=\"0.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"28\" ptr=\"0x14f8189b0\" tag=\"820\" visibility=\"visible\" width=\"104\" x=\"217\" y=\"219\">\n                                                                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"17\" id=\"shift-system-select-button\" label=\"This one\" ptr=\"0x14f8503f0\" tag=\"818\" visibility=\"visible\" width=\"77\" x=\"8\" y=\"4\">\n                                                                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"17\" label=\"This one\" ptr=\"0x14f8506d0\" tag=\"810\" text=\"This one\" visibility=\"visible\" width=\"57\" x=\"0\" y=\"0\">\n                                                                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"17\" ptr=\"0x14f850a10\" visibility=\"visible\" width=\"57\" x=\"0\" y=\"0\" \/>\n                                                                                            <\/RCTParagraphComponentView>\n                                                                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"14\" label=\"\" ptr=\"0x14f850db0\" tag=\"814\" text=\"\" visibility=\"visible\" width=\"14\" x=\"63\" y=\"1\">\n                                                                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"14\" ptr=\"0x14f8510f0\" visibility=\"visible\" width=\"14\" x=\"0\" y=\"0\" \/>\n                                                                                            <\/RCTParagraphComponentView>\n                                                                                        <\/RCTViewComponentView>\n                                                                                    <\/RCTViewComponentView>\n                                                                                    <RCTViewComponentView alpha=\"0.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"28\" ptr=\"0x14f818c90\" tag=\"834\" visibility=\"visible\" width=\"126\" x=\"107\" y=\"23\">\n                                                                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"17\" id=\"shift-system-info-button\" label=\"Learn more\" ptr=\"0x14f851610\" tag=\"832\" visibility=\"visible\" width=\"96\" x=\"8\" y=\"4\">\n                                                                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"14\" label=\"\" ptr=\"0x14f8518f0\" tag=\"824\" text=\"\" visibility=\"visible\" width=\"14\" x=\"0\" y=\"1\">\n                                                                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"14\" ptr=\"0x14f851c30\" visibility=\"visible\" width=\"14\" x=\"0\" y=\"0\" \/>\n                                                                                            <\/RCTParagraphComponentView>\n                                                                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"17\" label=\"Learn more\" ptr=\"0x14f851fd0\" tag=\"828\" text=\"Learn more\" visibility=\"visible\" width=\"76\" x=\"20\" y=\"0\">\n                                                                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"17\" ptr=\"0x14f852310\" visibility=\"visible\" width=\"76\" x=\"0\" y=\"0\" \/>\n                                                                                            <\/RCTParagraphComponentView>\n                                                                                        <\/RCTViewComponentView>\n                                                                                    <\/RCTViewComponentView>\n                                                                                <\/RCTViewComponentView>\n                                                                            <\/RNSScreenContentWrapper>\n                                                                            <RNSScreenStackHeaderConfig alpha=\"1.0\" class=\"RNSScreenStackHeaderConfig\" focused=\"false\" height=\"0\" ptr=\"0x14f81ee60\" tag=\"748\" visibility=\"invisible\" width=\"402\" x=\"0\" y=\"0\" \/>\n                                                                        <\/RNSScreenView>\n                                                                    <\/UIViewControllerWrapperView>\n                                                                <\/UINavigationTransitionView>\n                                                                <UIToolbar alpha=\"1.0\" class=\"UIToolbar\" focused=\"false\" height=\"49\" id=\"Toolbar\" label=\"Toolbar\" ptr=\"0x107e96270\" visibility=\"invisible\" width=\"402\" x=\"0\" y=\"874\">\n                                                                    <_UIBarBackground alpha=\"1.0\" class=\"_UIBarBackground\" focused=\"false\" height=\"83\" ptr=\"0x111861b20\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                        <UIVisualEffectView alpha=\"1.0\" class=\"UIVisualEffectView\" focused=\"false\" height=\"83\" ptr=\"0x111805ed0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                            <_UIVisualEffectBackdropView alpha=\"1.0\" class=\"_UIVisualEffectBackdropView\" focused=\"false\" height=\"83\" ptr=\"0x11180e8f0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" \/>\n                                                                        <\/UIVisualEffectView>\n                                                                        <_UIBarBackgroundShadowView alpha=\"1.0\" class=\"_UIBarBackgroundShadowView\" focused=\"false\" height=\"0\" ptr=\"0x111865800\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                            <_UIBarBackgroundShadowContentImageView alpha=\"1.0\" class=\"_UIBarBackgroundShadowContentImageView\" focused=\"false\" height=\"0\" ptr=\"0x11180ac60\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" \/>\n                                                                        <\/_UIBarBackgroundShadowView>\n                                                                    <\/_UIBarBackground>\n                                                                <\/UIToolbar>\n                                                            <\/UILayoutContainerView>\n                                                        <\/RNSScreenStackView>\n                                                    <\/RNSScreenContentWrapper>\n                                                    <RNSScreenStackHeaderConfig alpha=\"1.0\" class=\"RNSScreenStackHeaderConfig\" focused=\"false\" height=\"0\" ptr=\"0x107e7bad0\" tag=\"108\" visibility=\"invisible\" width=\"402\" x=\"0\" y=\"0\" \/>\n                                                <\/RNSScreenView>\n                                            <\/UIViewControllerWrapperView>\n                                        <\/UINavigationTransitionView>\n                                        <UIToolbar alpha=\"1.0\" class=\"UIToolbar\" focused=\"false\" height=\"49\" id=\"Toolbar\" label=\"Toolbar\" ptr=\"0x107e96e80\" visibility=\"invisible\" width=\"402\" x=\"0\" y=\"874\">\n                                            <_UIBarBackground alpha=\"1.0\" class=\"_UIBarBackground\" focused=\"false\" height=\"83\" ptr=\"0x107e9f050\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                <UIVisualEffectView alpha=\"1.0\" class=\"UIVisualEffectView\" focused=\"false\" height=\"83\" ptr=\"0x107e9f440\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                    <_UIVisualEffectBackdropView alpha=\"1.0\" class=\"_UIVisualEffectBackdropView\" focused=\"false\" height=\"83\" ptr=\"0x107e8e4d0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" \/>\n                                                <\/UIVisualEffectView>\n                                                <_UIBarBackgroundShadowView alpha=\"1.0\" class=\"_UIBarBackgroundShadowView\" focused=\"false\" height=\"0\" ptr=\"0x107e9f840\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                    <_UIBarBackgroundShadowContentImageView alpha=\"1.0\" class=\"_UIBarBackgroundShadowContentImageView\" focused=\"false\" height=\"0\" ptr=\"0x107ea0240\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" \/>\n                                                <\/_UIBarBackgroundShadowView>\n                                            <\/_UIBarBackground>\n                                        <\/UIToolbar>\n                                    <\/UILayoutContainerView>\n                                <\/RNSScreenStackView>\n                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"62\" ptr=\"0x107d29b60\" tag=\"8\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" \/>\n                            <\/RNCSafeAreaProviderComponentView>\n                        <\/RCTRootComponentView>\n                    <\/RCTSurfaceView>\n                <\/RCTSurfaceHostingProxyRootView>\n            <\/UIDropShadowView>\n        <\/UITransitionView>\n    <\/UIWindow>\n    <UITextEffectsWindow alpha=\"1.0\" class=\"UITextEffectsWindow\" focused=\"false\" height=\"874\" ptr=\"0x1108baa00\" visibility=\"visible\" width=\"402\">\n        <UIInputSetContainerView alpha=\"1.0\" class=\"UIInputSetContainerView\" focused=\"false\" height=\"874\" ptr=\"0x1118ea4a0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n            <UIInputSetHostView alpha=\"1.0\" class=\"UIInputSetHostView\" focused=\"false\" height=\"0\" ptr=\"0x1118a1ce0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"874\">\n                <UIKeyboardDockView alpha=\"1.0\" class=\"UIKeyboardDockView\" focused=\"false\" height=\"75\" ptr=\"0x107ea9010\" visibility=\"invisible\" width=\"150\" x=\"0\" y=\"0\">\n                    <UIKeyboardDockItemButton alpha=\"1.0\" class=\"UIKeyboardDockItemButton\" focused=\"false\" height=\"68\" label=\"Next keyboard\" ptr=\"0x107eacb70\" value=\"English (US)\" visibility=\"visible\" width=\"68\" x=\"8\" y=\"6\">\n                        <UIImageView alpha=\"1.0\" class=\"UIImageView\" focused=\"false\" height=\"31\" id=\"globe\" label=\"Globe\" ptr=\"0x107ea0440\" visibility=\"visible\" width=\"31\" x=\"18\" y=\"12\" \/>\n                        <UIButtonLabel alpha=\"1.0\" class=\"UIButtonLabel\" focused=\"false\" height=\"0\" ptr=\"0x107eadb80\" visibility=\"invisible\" width=\"0\" x=\"0\" y=\"0\" \/>\n                    <\/UIKeyboardDockItemButton>\n                    <UIKeyboardDockItemButton alpha=\"1.0\" class=\"UIKeyboardDockItemButton\" focused=\"false\" height=\"68\" id=\"dictation\" label=\"Dictate\" ptr=\"0x107eae240\" visibility=\"invisible\" width=\"68\" x=\"73\" y=\"6\">\n                        <UIImageView alpha=\"1.0\" class=\"UIImageView\" focused=\"false\" height=\"33\" id=\"mic\" label=\"microphone\" ptr=\"0x107ee71f0\" visibility=\"visible\" width=\"26\" x=\"20\" y=\"10\" \/>\n                        <UIButtonLabel alpha=\"1.0\" class=\"UIButtonLabel\" focused=\"false\" height=\"0\" ptr=\"0x107ee73d0\" visibility=\"invisible\" width=\"0\" x=\"0\" y=\"0\" \/>\n                    <\/UIKeyboardDockItemButton>\n                <\/UIKeyboardDockView>\n            <\/UIInputSetHostView>\n            <UIEditingOverlayGestureView alpha=\"1.0\" class=\"UIEditingOverlayGestureView\" focused=\"false\" height=\"874\" ptr=\"0x1118de810\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" \/>\n        <\/UIInputSetContainerView>\n    <\/UITextEffectsWindow>\n<\/ViewHierarchy>"},"messageId":27}
+10:51:05.766 detox[28996] i send
+  data: {
+    "type": "testFailed",
+    "params": {
+      "NSLocalizedDescription": "Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(id == “roster-type-card-rotating”) TIMEOUT(20s)",
+      "visibilityFailingScreenshotsURL": "/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Data/Application/E8A8EC50-E070-403D-A331-34C4987CA5B8/tmp/visibilityFailingScreenshots",
+      "windows": [
+        "<UIWindow: 0x111805660; frame = (0 0; 402 874);>",
+        "<UITextEffectsWindow: 0x1108baa00; frame = (0 0; 402 874);>",
+        "<DTXTouchVisualizerWindow: 0x11180fbe0; frame = (0 0; 402 874);>"
+      ],
+      "visibilityFailingRectsURL": "/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Data/Application/E8A8EC50-E070-403D-A331-34C4987CA5B8/tmp/visibilityFailingRects",
+      "details": "Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(id == “roster-type-card-rotating”) TIMEOUT(20s)",
+      "DetoxFailureInformation": {
+        "lineNumber": 154,
+        "file": "/Users/builder/uibuilder/work/detox/ios/Detox/Invocation/Expectation.swift",
+        "functionName": "evaluate_after(startDate:completionHandler:)"
+      },
+      "viewHierarchy": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<ViewHierarchy>\n    <UIWindow alpha=\"1.0\" class=\"UIWindow\" focused=\"false\" height=\"874\" ptr=\"0x111805660\" visibility=\"visible\" width=\"402\">\n        <UITransitionView alpha=\"1.0\" class=\"UITransitionView\" focused=\"false\" height=\"874\" ptr=\"0x107d0fb10\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n            <UIDropShadowView alpha=\"1.0\" class=\"UIDropShadowView\" focused=\"false\" height=\"874\" ptr=\"0x107e20660\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                <RCTSurfaceHostingProxyRootView alpha=\"1.0\" class=\"RCTSurfaceHostingProxyRootView\" focused=\"false\" height=\"874\" ptr=\"0x107d0d660\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                    <RCTSurfaceView alpha=\"1.0\" class=\"RCTSurfaceView\" focused=\"false\" height=\"874\" ptr=\"0x111a4a750\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                        <RCTRootComponentView alpha=\"1.0\" class=\"RCTRootComponentView\" focused=\"false\" height=\"874\" ptr=\"0x107e58950\" tag=\"11\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                            <RNCSafeAreaProviderComponentView alpha=\"1.0\" class=\"RNCSafeAreaProviderComponentView\" focused=\"false\" height=\"874\" ptr=\"0x107e5b060\" tag=\"2\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                <RNSScreenStackView alpha=\"1.0\" class=\"RNSScreenStackView\" focused=\"false\" height=\"874\" ptr=\"0x107e794d0\" tag=\"112\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                    <UILayoutContainerView alpha=\"1.0\" class=\"UILayoutContainerView\" focused=\"false\" height=\"874\" ptr=\"0x11199bf90\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                        <UINavigationTransitionView alpha=\"1.0\" class=\"UINavigationTransitionView\" focused=\"false\" height=\"874\" ptr=\"0x1119a1de0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                            <UIViewControllerWrapperView alpha=\"1.0\" class=\"UIViewControllerWrapperView\" focused=\"false\" height=\"874\" ptr=\"0x107d16010\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                <RNSScreenView alpha=\"1.0\" class=\"RNSScreenView\" focused=\"false\" height=\"874\" ptr=\"0x1108a9400\" tag=\"110\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                    <RNSScreenContentWrapper alpha=\"1.0\" class=\"RNSScreenContentWrapper\" focused=\"false\" height=\"874\" ptr=\"0x107e7b5e0\" tag=\"106\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                        <RNSScreenStackView alpha=\"1.0\" class=\"RNSScreenStackView\" focused=\"false\" height=\"874\" ptr=\"0x107e7d3e0\" tag=\"102\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                            <UILayoutContainerView alpha=\"1.0\" class=\"UILayoutContainerView\" focused=\"false\" height=\"874\" ptr=\"0x107d3b900\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                <UINavigationTransitionView alpha=\"1.0\" class=\"UINavigationTransitionView\" focused=\"false\" height=\"874\" ptr=\"0x107d4b130\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                    <UIViewControllerWrapperView alpha=\"1.0\" class=\"UIViewControllerWrapperView\" focused=\"false\" height=\"874\" ptr=\"0x107d0e5a0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                        <RNSScreenView alpha=\"1.0\" class=\"RNSScreenView\" focused=\"false\" height=\"874\" ptr=\"0x1108e8e00\" tag=\"750\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                            <RNSScreenContentWrapper alpha=\"1.0\" class=\"RNSScreenContentWrapper\" focused=\"false\" height=\"874\" ptr=\"0x14f81eb70\" tag=\"746\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"874\" id=\"premium-shift-system-screen\" ptr=\"0x1118bd3f0\" tag=\"744\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n                                                                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"56\" id=\"progress-header\" ptr=\"0x1118bd6d0\" tag=\"640\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-1\" ptr=\"0x14f81f240\" tag=\"612\" visibility=\"visible\" width=\"8\" x=\"125\" y=\"24\" />\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-2\" ptr=\"0x14f81f520\" tag=\"614\" visibility=\"visible\" width=\"8\" x=\"141\" y=\"24\" />\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-3\" ptr=\"0x14f81f800\" tag=\"616\" visibility=\"visible\" width=\"8\" x=\"157\" y=\"24\" />\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"9\" id=\"progress-header-dot-4\" ptr=\"0x14f81fae0\" tag=\"618\" visibility=\"visible\" width=\"9\" x=\"172\" y=\"23\" />\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-5\" ptr=\"0x14f81fdc0\" tag=\"620\" visibility=\"visible\" width=\"8\" x=\"189\" y=\"24\" />\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-6\" ptr=\"0x14f8200a0\" tag=\"622\" visibility=\"visible\" width=\"8\" x=\"205\" y=\"24\" />\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-7\" ptr=\"0x14f820380\" tag=\"624\" visibility=\"visible\" width=\"8\" x=\"221\" y=\"24\" />\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-8\" ptr=\"0x14f820660\" tag=\"626\" visibility=\"visible\" width=\"8\" x=\"237\" y=\"24\" />\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-9\" ptr=\"0x14f820940\" tag=\"628\" visibility=\"visible\" width=\"8\" x=\"253\" y=\"24\" />\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-10\" ptr=\"0x14f820c20\" tag=\"630\" visibility=\"visible\" width=\"8\" x=\"269\" y=\"24\" />\n                                                                                <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"100\" label=\"Hey Ilyasu, How Many Shifts Does Your Site Run?\" ptr=\"0x14f820f00\" tag=\"644\" text=\"Hey Ilyasu, How Many Shifts Does Your Site Run?\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"80\">\n                                                                                    <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"100\" ptr=\"0x14f821240\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n                                                                                </RCTParagraphComponentView>\n                                                                                <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"76\" label=\"Select how your site operates—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info\" ptr=\"0x14f8214b0\" tag=\"648\" text=\"Select how your site operates—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"188\">\n                                                                                    <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"76\" ptr=\"0x14f8217f0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n                                                                                </RCTParagraphComponentView>\n                                                                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-dots\" ptr=\"0x14f814270\" tag=\"654\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"297\" />\n                                                                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"2-shift-dot-0\" ptr=\"0x14f814550\" tag=\"650\" visibility=\"visible\" width=\"24\" x=\"181\" y=\"297\" />\n                                                                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"3-shift-dot-1\" ptr=\"0x14f814830\" tag=\"652\" visibility=\"visible\" width=\"8\" x=\"213\" y=\"297\" />\n                                                                                <RCTViewComponentView alpha=\"0.9\" class=\"RCTViewComponentView\" focused=\"false\" height=\"456\" id=\"shift-system-card-3-shift\" ptr=\"0x14f814b10\" tag=\"772\" visibility=\"visible\" width=\"307\" x=\"47\" y=\"365\">\n                                                                                    <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"179\" ptr=\"0x14f8150d0\" tag=\"756\" visibility=\"visible\" width=\"180\" x=\"81\" y=\"66\">\n                                                                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"111\" id=\"shift-system-icon-3-shift\" label=\"\" ptr=\"0x14f816590\" tag=\"754\" text=\"\" visibility=\"visible\" width=\"108\" x=\"36\" y=\"34\">\n                                                                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"111\" ptr=\"0x14f8168d0\" visibility=\"visible\" width=\"108\" x=\"0\" y=\"0\" />\n                                                                                        </RCTParagraphComponentView>\n                                                                                    </RCTViewComponentView>\n                                                                                    <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"28\" label=\"3 Shifts (8 hours)\" ptr=\"0x14f8153b0\" tag=\"760\" text=\"3 Shifts (8 hours)\" visibility=\"visible\" width=\"195\" x=\"73\" y=\"270\">\n                                                                                        <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"28\" ptr=\"0x14f8156f0\" visibility=\"visible\" width=\"195\" x=\"0\" y=\"0\" />\n                                                                                    </RCTParagraphComponentView>\n                                                                                    <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"29\" ptr=\"0x14f815a90\" tag=\"766\" visibility=\"visible\" width=\"258\" x=\"42\" y=\"315\" />\n                                                                                    <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"21\" label=\"Morning, afternoon &amp; night\" ptr=\"0x14f833910\" tag=\"764\" text=\"Morning, afternoon &amp; night\" visibility=\"visible\" width=\"226\" x=\"58\" y=\"319\">\n                                                                                        <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"21\" ptr=\"0x14f815d70\" visibility=\"visible\" width=\"226\" x=\"0\" y=\"0\" />\n                                                                                    </RCTParagraphComponentView>\n                                                                                    <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"72\" label=\"Your processing plant runs three 8-hour shifts—morning, afternoon, and night\" ptr=\"0x14f833d80\" tag=\"770\" text=\"Your processing plant runs three 8-hour shifts—morning, afternoon, and night\" visibility=\"visible\" width=\"276\" x=\"33\" y=\"368\">\n                                                                                        <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"72\" ptr=\"0x14f8340c0\" visibility=\"visible\" width=\"276\" x=\"0\" y=\"0\" />\n                                                                                    </RCTParagraphComponentView>\n                                                                                </RCTViewComponentView>\n                                                                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"515\" id=\"shift-system-card-2-shift\" ptr=\"0x14f814df0\" tag=\"836\" visibility=\"visible\" width=\"347\" x=\"27\" y=\"328\">\n                                                                                    <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"180\" ptr=\"0x14f816c70\" tag=\"778\" visibility=\"visible\" width=\"180\" x=\"80\" y=\"77\">\n                                                                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"111\" id=\"shift-system-icon-2-shift\" label=\"\" ptr=\"0x14f818f70\" tag=\"776\" text=\"\" visibility=\"visible\" width=\"108\" x=\"36\" y=\"34\">\n                                                                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"111\" ptr=\"0x14f8192b0\" visibility=\"visible\" width=\"108\" x=\"0\" y=\"0\" />\n                                                                                        </RCTParagraphComponentView>\n                                                                                    </RCTViewComponentView>\n                                                                                    <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"28\" label=\"2 Shifts (12 hours)\" ptr=\"0x14f816f50\" tag=\"782\" text=\"2 Shifts (12 hours)\" visibility=\"visible\" width=\"205\" x=\"68\" y=\"282\">\n                                                                                        <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"28\" ptr=\"0x14f817290\" visibility=\"visible\" width=\"205\" x=\"0\" y=\"0\" />\n                                                                                    </RCTParagraphComponentView>\n                                                                                    <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"29\" ptr=\"0x14f817630\" tag=\"788\" visibility=\"visible\" width=\"128\" x=\"106\" y=\"327\" />\n                                                                                    <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"21\" label=\"Day &amp; night\" ptr=\"0x14f817910\" tag=\"786\" text=\"Day &amp; night\" visibility=\"visible\" width=\"96\" x=\"122\" y=\"331\">\n                                                                                        <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"21\" ptr=\"0x14f817c50\" visibility=\"visible\" width=\"96\" x=\"0\" y=\"0\" />\n                                                                                    </RCTParagraphComponentView>\n                                                                                    <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"48\" label=\"Your mine runs two 12-hour shifts—one during the day, one at night\" ptr=\"0x14f817ff0\" tag=\"792\" text=\"Your mine runs two 12-hour shifts—one during the day, one at night\" visibility=\"visible\" width=\"276\" x=\"33\" y=\"380\">\n                                                                                        <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"48\" ptr=\"0x14f818330\" visibility=\"visible\" width=\"276\" x=\"0\" y=\"0\" />\n                                                                                    </RCTParagraphComponentView>\n                                                                                    <RCTViewComponentView alpha=\"0.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"28\" ptr=\"0x14f8186d0\" tag=\"806\" visibility=\"visible\" width=\"127\" x=\"18\" y=\"219\">\n                                                                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"17\" id=\"shift-system-next-option-button\" label=\"Next option\" ptr=\"0x14f819650\" tag=\"804\" visibility=\"visible\" width=\"98\" x=\"8\" y=\"4\">\n                                                                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"14\" label=\"\" ptr=\"0x14f819930\" tag=\"796\" text=\"\" visibility=\"visible\" width=\"14\" x=\"0\" y=\"1\">\n                                                                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"14\" ptr=\"0x14f819c70\" visibility=\"visible\" width=\"14\" x=\"0\" y=\"0\" />\n                                                                                            </RCTParagraphComponentView>\n                                                                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"17\" label=\"Next option\" ptr=\"0x14f84fb90\" tag=\"800\" text=\"Next option\" visibility=\"visible\" width=\"78\" x=\"20\" y=\"0\">\n                                                                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"17\" ptr=\"0x14f84fed0\" visibility=\"visible\" width=\"78\" x=\"0\" y=\"0\" />\n                                                                                            </RCTParagraphComponentView>\n                                                                                        </RCTViewComponentView>\n                                                                                    </RCTViewComponentView>\n                                                                                    <RCTViewComponentView alpha=\"0.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"28\" ptr=\"0x14f8189b0\" tag=\"820\" visibility=\"visible\" width=\"104\" x=\"217\" y=\"219\">\n                                                                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"17\" id=\"shift-system-select-button\" label=\"This one\" ptr=\"0x14f8503f0\" tag=\"818\" visibility=\"visible\" width=\"77\" x=\"8\" y=\"4\">\n                                                                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"17\" label=\"This one\" ptr=\"0x14f8506d0\" tag=\"810\" text=\"This one\" visibility=\"visible\" width=\"57\" x=\"0\" y=\"0\">\n                                                                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"17\" ptr=\"0x14f850a10\" visibility=\"visible\" width=\"57\" x=\"0\" y=\"0\" />\n                                                                                            </RCTParagraphComponentView>\n                                                                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"14\" label=\"\" ptr=\"0x14f850db0\" tag=\"814\" text=\"\" visibility=\"visible\" width=\"14\" x=\"63\" y=\"1\">\n                                                                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"14\" ptr=\"0x14f8510f0\" visibility=\"visible\" width=\"14\" x=\"0\" y=\"0\" />\n                                                                                            </RCTParagraphComponentView>\n                                                                                        </RCTViewComponentView>\n                                                                                    </RCTViewComponentView>\n                                                                                    <RCTViewComponentView alpha=\"0.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"28\" ptr=\"0x14f818c90\" tag=\"834\" visibility=\"visible\" width=\"126\" x=\"107\" y=\"23\">\n                                                                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"17\" id=\"shift-system-info-button\" label=\"Learn more\" ptr=\"0x14f851610\" tag=\"832\" visibility=\"visible\" width=\"96\" x=\"8\" y=\"4\">\n                                                                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"14\" label=\"\" ptr=\"0x14f8518f0\" tag=\"824\" text=\"\" visibility=\"visible\" width=\"14\" x=\"0\" y=\"1\">\n                                                                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"14\" ptr=\"0x14f851c30\" visibility=\"visible\" width=\"14\" x=\"0\" y=\"0\" />\n                                                                                            </RCTParagraphComponentView>\n                                                                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"17\" label=\"Learn more\" ptr=\"0x14f851fd0\" tag=\"828\" text=\"Learn more\" visibility=\"visible\" width=\"76\" x=\"20\" y=\"0\">\n                                                                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"17\" ptr=\"0x14f852310\" visibility=\"visible\" width=\"76\" x=\"0\" y=\"0\" />\n                                                                                            </RCTParagraphComponentView>\n                                                                                        </RCTViewComponentView>\n                                                                                    </RCTViewComponentView>\n                                                                                </RCTViewComponentView>\n                                                                            </RNSScreenContentWrapper>\n                                                                            <RNSScreenStackHeaderConfig alpha=\"1.0\" class=\"RNSScreenStackHeaderConfig\" focused=\"false\" height=\"0\" ptr=\"0x14f81ee60\" tag=\"748\" visibility=\"invisible\" width=\"402\" x=\"0\" y=\"0\" />\n                                                                        </RNSScreenView>\n                                                                    </UIViewControllerWrapperView>\n                                                                </UINavigationTransitionView>\n                                                                <UIToolbar alpha=\"1.0\" class=\"UIToolbar\" focused=\"false\" height=\"49\" id=\"Toolbar\" label=\"Toolbar\" ptr=\"0x107e96270\" visibility=\"invisible\" width=\"402\" x=\"0\" y=\"874\">\n                                                                    <_UIBarBackground alpha=\"1.0\" class=\"_UIBarBackground\" focused=\"false\" height=\"83\" ptr=\"0x111861b20\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                        <UIVisualEffectView alpha=\"1.0\" class=\"UIVisualEffectView\" focused=\"false\" height=\"83\" ptr=\"0x111805ed0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                            <_UIVisualEffectBackdropView alpha=\"1.0\" class=\"_UIVisualEffectBackdropView\" focused=\"false\" height=\"83\" ptr=\"0x11180e8f0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n                                                                        </UIVisualEffectView>\n                                                                        <_UIBarBackgroundShadowView alpha=\"1.0\" class=\"_UIBarBackgroundShadowView\" focused=\"false\" height=\"0\" ptr=\"0x111865800\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                            <_UIBarBackgroundShadowContentImageView alpha=\"1.0\" class=\"_UIBarBackgroundShadowContentImageView\" focused=\"false\" height=\"0\" ptr=\"0x11180ac60\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n                                                                        </_UIBarBackgroundShadowView>\n                                                                    </_UIBarBackground>\n                                                                </UIToolbar>\n                                                            </UILayoutContainerView>\n                                                        </RNSScreenStackView>\n                                                    </RNSScreenContentWrapper>\n                                                    <RNSScreenStackHeaderConfig alpha=\"1.0\" class=\"RNSScreenStackHeaderConfig\" focused=\"false\" height=\"0\" ptr=\"0x107e7bad0\" tag=\"108\" visibility=\"invisible\" width=\"402\" x=\"0\" y=\"0\" />\n                                                </RNSScreenView>\n                                            </UIViewControllerWrapperView>\n                                        </UINavigationTransitionView>\n                                        <UIToolbar alpha=\"1.0\" class=\"UIToolbar\" focused=\"false\" height=\"49\" id=\"Toolbar\" label=\"Toolbar\" ptr=\"0x107e96e80\" visibility=\"invisible\" width=\"402\" x=\"0\" y=\"874\">\n                                            <_UIBarBackground alpha=\"1.0\" class=\"_UIBarBackground\" focused=\"false\" height=\"83\" ptr=\"0x107e9f050\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                <UIVisualEffectView alpha=\"1.0\" class=\"UIVisualEffectView\" focused=\"false\" height=\"83\" ptr=\"0x107e9f440\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                    <_UIVisualEffectBackdropView alpha=\"1.0\" class=\"_UIVisualEffectBackdropView\" focused=\"false\" height=\"83\" ptr=\"0x107e8e4d0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n                                                </UIVisualEffectView>\n                                                <_UIBarBackgroundShadowView alpha=\"1.0\" class=\"_UIBarBackgroundShadowView\" focused=\"false\" height=\"0\" ptr=\"0x107e9f840\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                    <_UIBarBackgroundShadowContentImageView alpha=\"1.0\" class=\"_UIBarBackgroundShadowContentImageView\" focused=\"false\" height=\"0\" ptr=\"0x107ea0240\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n                                                </_UIBarBackgroundShadowView>\n                                            </_UIBarBackground>\n                                        </UIToolbar>\n                                    </UILayoutContainerView>\n                                </RNSScreenStackView>\n                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"62\" ptr=\"0x107d29b60\" tag=\"8\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n                            </RNCSafeAreaProviderComponentView>\n                        </RCTRootComponentView>\n                    </RCTSurfaceView>\n                </RCTSurfaceHostingProxyRootView>\n            </UIDropShadowView>\n        </UITransitionView>\n    </UIWindow>\n    <UITextEffectsWindow alpha=\"1.0\" class=\"UITextEffectsWindow\" focused=\"false\" height=\"874\" ptr=\"0x1108baa00\" visibility=\"visible\" width=\"402\">\n        <UIInputSetContainerView alpha=\"1.0\" class=\"UIInputSetContainerView\" focused=\"false\" height=\"874\" ptr=\"0x1118ea4a0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n            <UIInputSetHostView alpha=\"1.0\" class=\"UIInputSetHostView\" focused=\"false\" height=\"0\" ptr=\"0x1118a1ce0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"874\">\n                <UIKeyboardDockView alpha=\"1.0\" class=\"UIKeyboardDockView\" focused=\"false\" height=\"75\" ptr=\"0x107ea9010\" visibility=\"invisible\" width=\"150\" x=\"0\" y=\"0\">\n                    <UIKeyboardDockItemButton alpha=\"1.0\" class=\"UIKeyboardDockItemButton\" focused=\"false\" height=\"68\" label=\"Next keyboard\" ptr=\"0x107eacb70\" value=\"English (US)\" visibility=\"visible\" width=\"68\" x=\"8\" y=\"6\">\n                        <UIImageView alpha=\"1.0\" class=\"UIImageView\" focused=\"false\" height=\"31\" id=\"globe\" label=\"Globe\" ptr=\"0x107ea0440\" visibility=\"visible\" width=\"31\" x=\"18\" y=\"12\" />\n                        <UIButtonLabel alpha=\"1.0\" class=\"UIButtonLabel\" focused=\"false\" height=\"0\" ptr=\"0x107eadb80\" visibility=\"invisible\" width=\"0\" x=\"0\" y=\"0\" />\n                    </UIKeyboardDockItemButton>\n                    <UIKeyboardDockItemButton alpha=\"1.0\" class=\"UIKeyboardDockItemButton\" focused=\"false\" height=\"68\" id=\"dictation\" label=\"Dictate\" ptr=\"0x107eae240\" visibility=\"invisible\" width=\"68\" x=\"73\" y=\"6\">\n                        <UIImageView alpha=\"1.0\" class=\"UIImageView\" focused=\"false\" height=\"33\" id=\"mic\" label=\"microphone\" ptr=\"0x107ee71f0\" visibility=\"visible\" width=\"26\" x=\"20\" y=\"10\" />\n                        <UIButtonLabel alpha=\"1.0\" class=\"UIButtonLabel\" focused=\"false\" height=\"0\" ptr=\"0x107ee73d0\" visibility=\"invisible\" width=\"0\" x=\"0\" y=\"0\" />\n                    </UIKeyboardDockItemButton>\n                </UIKeyboardDockView>\n            </UIInputSetHostView>\n            <UIEditingOverlayGestureView alpha=\"1.0\" class=\"UIEditingOverlayGestureView\" focused=\"false\" height=\"874\" ptr=\"0x1118de810\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n        </UIInputSetContainerView>\n    </UITextEffectsWindow>\n</ViewHierarchy>"
+    },
+    "messageId": 27
+  }
+10:51:05.773 detox[28997] i get message
+  data: {"type":"testFailed","params":{"NSLocalizedDescription":"Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(id == “roster-type-card-rotating”) TIMEOUT(20s)","visibilityFailingScreenshotsURL":"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Data/Application/E8A8EC50-E070-403D-A331-34C4987CA5B8/tmp/visibilityFailingScreenshots","windows":["<UIWindow: 0x111805660; frame = (0 0; 402 874);>","<UITextEffectsWindow: 0x1108baa00; frame = (0 0; 402 874);>","<DTXTouchVisualizerWindow: 0x11180fbe0; frame = (0 0; 402 874);>"],"visibilityFailingRectsURL":"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Data/Application/E8A8EC50-E070-403D-A331-34C4987CA5B8/tmp/visibilityFailingRects","details":"Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(id == “roster-type-card-rotating”) TIMEOUT(20s)","DetoxFailureInformation":{"lineNumber":154,"file":"/Users/builder/uibuilder/work/detox/ios/Detox/Invocation/Expectation.swift","functionName":"evaluate_after(startDate:completionHandler:)"},"viewHierarchy":"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<ViewHierarchy>\n    <UIWindow alpha=\"1.0\" class=\"UIWindow\" focused=\"false\" height=\"874\" ptr=\"0x111805660\" visibility=\"visible\" width=\"402\">\n        <UITransitionView alpha=\"1.0\" class=\"UITransitionView\" focused=\"false\" height=\"874\" ptr=\"0x107d0fb10\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n            <UIDropShadowView alpha=\"1.0\" class=\"UIDropShadowView\" focused=\"false\" height=\"874\" ptr=\"0x107e20660\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                <RCTSurfaceHostingProxyRootView alpha=\"1.0\" class=\"RCTSurfaceHostingProxyRootView\" focused=\"false\" height=\"874\" ptr=\"0x107d0d660\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                    <RCTSurfaceView alpha=\"1.0\" class=\"RCTSurfaceView\" focused=\"false\" height=\"874\" ptr=\"0x111a4a750\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                        <RCTRootComponentView alpha=\"1.0\" class=\"RCTRootComponentView\" focused=\"false\" height=\"874\" ptr=\"0x107e58950\" tag=\"11\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                            <RNCSafeAreaProviderComponentView alpha=\"1.0\" class=\"RNCSafeAreaProviderComponentView\" focused=\"false\" height=\"874\" ptr=\"0x107e5b060\" tag=\"2\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                <RNSScreenStackView alpha=\"1.0\" class=\"RNSScreenStackView\" focused=\"false\" height=\"874\" ptr=\"0x107e794d0\" tag=\"112\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                    <UILayoutContainerView alpha=\"1.0\" class=\"UILayoutContainerView\" focused=\"false\" height=\"874\" ptr=\"0x11199bf90\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                        <UINavigationTransitionView alpha=\"1.0\" class=\"UINavigationTransitionView\" focused=\"false\" height=\"874\" ptr=\"0x1119a1de0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                            <UIViewControllerWrapperView alpha=\"1.0\" class=\"UIViewControllerWrapperView\" focused=\"false\" height=\"874\" ptr=\"0x107d16010\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                <RNSScreenView alpha=\"1.0\" class=\"RNSScreenView\" focused=\"false\" height=\"874\" ptr=\"0x1108a9400\" tag=\"110\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                    <RNSScreenContentWrapper alpha=\"1.0\" class=\"RNSScreenContentWrapper\" focused=\"false\" height=\"874\" ptr=\"0x107e7b5e0\" tag=\"106\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                        <RNSScreenStackView alpha=\"1.0\" class=\"RNSScreenStackView\" focused=\"false\" height=\"874\" ptr=\"0x107e7d3e0\" tag=\"102\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                            <UILayoutContainerView alpha=\"1.0\" class=\"UILayoutContainerView\" focused=\"false\" height=\"874\" ptr=\"0x107d3b900\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                <UINavigationTransitionView alpha=\"1.0\" class=\"UINavigationTransitionView\" focused=\"false\" height=\"874\" ptr=\"0x107d4b130\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                    <UIViewControllerWrapperView alpha=\"1.0\" class=\"UIViewControllerWrapperView\" focused=\"false\" height=\"874\" ptr=\"0x107d0e5a0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                        <RNSScreenView alpha=\"1.0\" class=\"RNSScreenView\" focused=\"false\" height=\"874\" ptr=\"0x1108e8e00\" tag=\"750\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                            <RNSScreenContentWrapper alpha=\"1.0\" class=\"RNSScreenContentWrapper\" focused=\"false\" height=\"874\" ptr=\"0x14f81eb70\" tag=\"746\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"874\" id=\"premium-shift-system-screen\" ptr=\"0x1118bd3f0\" tag=\"744\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n                                                                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"56\" id=\"progress-header\" ptr=\"0x1118bd6d0\" tag=\"640\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-1\" ptr=\"0x14f81f240\" tag=\"612\" visibility=\"visible\" width=\"8\" x=\"125\" y=\"24\" />\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-2\" ptr=\"0x14f81f520\" tag=\"614\" visibility=\"visible\" width=\"8\" x=\"141\" y=\"24\" />\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-3\" ptr=\"0x14f81f800\" tag=\"616\" visibility=\"visible\" width=\"8\" x=\"157\" y=\"24\" />\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"9\" id=\"progress-header-dot-4\" ptr=\"0x14f81fae0\" tag=\"618\" visibility=\"visible\" width=\"9\" x=\"172\" y=\"23\" />\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-5\" ptr=\"0x14f81fdc0\" tag=\"620\" visibility=\"visible\" width=\"8\" x=\"189\" y=\"24\" />\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-6\" ptr=\"0x14f8200a0\" tag=\"622\" visibility=\"visible\" width=\"8\" x=\"205\" y=\"24\" />\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-7\" ptr=\"0x14f820380\" tag=\"624\" visibility=\"visible\" width=\"8\" x=\"221\" y=\"24\" />\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-8\" ptr=\"0x14f820660\" tag=\"626\" visibility=\"visible\" width=\"8\" x=\"237\" y=\"24\" />\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-9\" ptr=\"0x14f820940\" tag=\"628\" visibility=\"visible\" width=\"8\" x=\"253\" y=\"24\" />\n                                                                                <RCTViewComponentView alpha=\"nan\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-header-dot-10\" ptr=\"0x14f820c20\" tag=\"630\" visibility=\"visible\" width=\"8\" x=\"269\" y=\"24\" />\n                                                                                <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"100\" label=\"Hey Ilyasu, How Many Shifts Does Your Site Run?\" ptr=\"0x14f820f00\" tag=\"644\" text=\"Hey Ilyasu, How Many Shifts Does Your Site Run?\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"80\">\n                                                                                    <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"100\" ptr=\"0x14f821240\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n                                                                                </RCTParagraphComponentView>\n                                                                                <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"76\" label=\"Select how your site operates—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info\" ptr=\"0x14f8214b0\" tag=\"648\" text=\"Select how your site operates—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"188\">\n                                                                                    <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"76\" ptr=\"0x14f8217f0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n                                                                                </RCTParagraphComponentView>\n                                                                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"progress-dots\" ptr=\"0x14f814270\" tag=\"654\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"297\" />\n                                                                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"2-shift-dot-0\" ptr=\"0x14f814550\" tag=\"650\" visibility=\"visible\" width=\"24\" x=\"181\" y=\"297\" />\n                                                                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"8\" id=\"3-shift-dot-1\" ptr=\"0x14f814830\" tag=\"652\" visibility=\"visible\" width=\"8\" x=\"213\" y=\"297\" />\n                                                                                <RCTViewComponentView alpha=\"0.9\" class=\"RCTViewComponentView\" focused=\"false\" height=\"456\" id=\"shift-system-card-3-shift\" ptr=\"0x14f814b10\" tag=\"772\" visibility=\"visible\" width=\"307\" x=\"47\" y=\"365\">\n                                                                                    <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"179\" ptr=\"0x14f8150d0\" tag=\"756\" visibility=\"visible\" width=\"180\" x=\"81\" y=\"66\">\n                                                                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"111\" id=\"shift-system-icon-3-shift\" label=\"\" ptr=\"0x14f816590\" tag=\"754\" text=\"\" visibility=\"visible\" width=\"108\" x=\"36\" y=\"34\">\n                                                                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"111\" ptr=\"0x14f8168d0\" visibility=\"visible\" width=\"108\" x=\"0\" y=\"0\" />\n                                                                                        </RCTParagraphComponentView>\n                                                                                    </RCTViewComponentView>\n                                                                                    <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"28\" label=\"3 Shifts (8 hours)\" ptr=\"0x14f8153b0\" tag=\"760\" text=\"3 Shifts (8 hours)\" visibility=\"visible\" width=\"195\" x=\"73\" y=\"270\">\n                                                                                        <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"28\" ptr=\"0x14f8156f0\" visibility=\"visible\" width=\"195\" x=\"0\" y=\"0\" />\n                                                                                    </RCTParagraphComponentView>\n                                                                                    <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"29\" ptr=\"0x14f815a90\" tag=\"766\" visibility=\"visible\" width=\"258\" x=\"42\" y=\"315\" />\n                                                                                    <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"21\" label=\"Morning, afternoon &amp; night\" ptr=\"0x14f833910\" tag=\"764\" text=\"Morning, afternoon &amp; night\" visibility=\"visible\" width=\"226\" x=\"58\" y=\"319\">\n                                                                                        <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"21\" ptr=\"0x14f815d70\" visibility=\"visible\" width=\"226\" x=\"0\" y=\"0\" />\n                                                                                    </RCTParagraphComponentView>\n                                                                                    <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"72\" label=\"Your processing plant runs three 8-hour shifts—morning, afternoon, and night\" ptr=\"0x14f833d80\" tag=\"770\" text=\"Your processing plant runs three 8-hour shifts—morning, afternoon, and night\" visibility=\"visible\" width=\"276\" x=\"33\" y=\"368\">\n                                                                                        <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"72\" ptr=\"0x14f8340c0\" visibility=\"visible\" width=\"276\" x=\"0\" y=\"0\" />\n                                                                                    </RCTParagraphComponentView>\n                                                                                </RCTViewComponentView>\n                                                                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"515\" id=\"shift-system-card-2-shift\" ptr=\"0x14f814df0\" tag=\"836\" visibility=\"visible\" width=\"347\" x=\"27\" y=\"328\">\n                                                                                    <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"180\" ptr=\"0x14f816c70\" tag=\"778\" visibility=\"visible\" width=\"180\" x=\"80\" y=\"77\">\n                                                                                        <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"111\" id=\"shift-system-icon-2-shift\" label=\"\" ptr=\"0x14f818f70\" tag=\"776\" text=\"\" visibility=\"visible\" width=\"108\" x=\"36\" y=\"34\">\n                                                                                            <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"111\" ptr=\"0x14f8192b0\" visibility=\"visible\" width=\"108\" x=\"0\" y=\"0\" />\n                                                                                        </RCTParagraphComponentView>\n                                                                                    </RCTViewComponentView>\n                                                                                    <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"28\" label=\"2 Shifts (12 hours)\" ptr=\"0x14f816f50\" tag=\"782\" text=\"2 Shifts (12 hours)\" visibility=\"visible\" width=\"205\" x=\"68\" y=\"282\">\n                                                                                        <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"28\" ptr=\"0x14f817290\" visibility=\"visible\" width=\"205\" x=\"0\" y=\"0\" />\n                                                                                    </RCTParagraphComponentView>\n                                                                                    <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"29\" ptr=\"0x14f817630\" tag=\"788\" visibility=\"visible\" width=\"128\" x=\"106\" y=\"327\" />\n                                                                                    <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"21\" label=\"Day &amp; night\" ptr=\"0x14f817910\" tag=\"786\" text=\"Day &amp; night\" visibility=\"visible\" width=\"96\" x=\"122\" y=\"331\">\n                                                                                        <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"21\" ptr=\"0x14f817c50\" visibility=\"visible\" width=\"96\" x=\"0\" y=\"0\" />\n                                                                                    </RCTParagraphComponentView>\n                                                                                    <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"48\" label=\"Your mine runs two 12-hour shifts—one during the day, one at night\" ptr=\"0x14f817ff0\" tag=\"792\" text=\"Your mine runs two 12-hour shifts—one during the day, one at night\" visibility=\"visible\" width=\"276\" x=\"33\" y=\"380\">\n                                                                                        <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"48\" ptr=\"0x14f818330\" visibility=\"visible\" width=\"276\" x=\"0\" y=\"0\" />\n                                                                                    </RCTParagraphComponentView>\n                                                                                    <RCTViewComponentView alpha=\"0.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"28\" ptr=\"0x14f8186d0\" tag=\"806\" visibility=\"visible\" width=\"127\" x=\"18\" y=\"219\">\n                                                                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"17\" id=\"shift-system-next-option-button\" label=\"Next option\" ptr=\"0x14f819650\" tag=\"804\" visibility=\"visible\" width=\"98\" x=\"8\" y=\"4\">\n                                                                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"14\" label=\"\" ptr=\"0x14f819930\" tag=\"796\" text=\"\" visibility=\"visible\" width=\"14\" x=\"0\" y=\"1\">\n                                                                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"14\" ptr=\"0x14f819c70\" visibility=\"visible\" width=\"14\" x=\"0\" y=\"0\" />\n                                                                                            </RCTParagraphComponentView>\n                                                                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"17\" label=\"Next option\" ptr=\"0x14f84fb90\" tag=\"800\" text=\"Next option\" visibility=\"visible\" width=\"78\" x=\"20\" y=\"0\">\n                                                                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"17\" ptr=\"0x14f84fed0\" visibility=\"visible\" width=\"78\" x=\"0\" y=\"0\" />\n                                                                                            </RCTParagraphComponentView>\n                                                                                        </RCTViewComponentView>\n                                                                                    </RCTViewComponentView>\n                                                                                    <RCTViewComponentView alpha=\"0.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"28\" ptr=\"0x14f8189b0\" tag=\"820\" visibility=\"visible\" width=\"104\" x=\"217\" y=\"219\">\n                                                                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"17\" id=\"shift-system-select-button\" label=\"This one\" ptr=\"0x14f8503f0\" tag=\"818\" visibility=\"visible\" width=\"77\" x=\"8\" y=\"4\">\n                                                                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"17\" label=\"This one\" ptr=\"0x14f8506d0\" tag=\"810\" text=\"This one\" visibility=\"visible\" width=\"57\" x=\"0\" y=\"0\">\n                                                                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"17\" ptr=\"0x14f850a10\" visibility=\"visible\" width=\"57\" x=\"0\" y=\"0\" />\n                                                                                            </RCTParagraphComponentView>\n                                                                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"14\" label=\"\" ptr=\"0x14f850db0\" tag=\"814\" text=\"\" visibility=\"visible\" width=\"14\" x=\"63\" y=\"1\">\n                                                                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"14\" ptr=\"0x14f8510f0\" visibility=\"visible\" width=\"14\" x=\"0\" y=\"0\" />\n                                                                                            </RCTParagraphComponentView>\n                                                                                        </RCTViewComponentView>\n                                                                                    </RCTViewComponentView>\n                                                                                    <RCTViewComponentView alpha=\"0.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"28\" ptr=\"0x14f818c90\" tag=\"834\" visibility=\"visible\" width=\"126\" x=\"107\" y=\"23\">\n                                                                                        <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"17\" id=\"shift-system-info-button\" label=\"Learn more\" ptr=\"0x14f851610\" tag=\"832\" visibility=\"visible\" width=\"96\" x=\"8\" y=\"4\">\n                                                                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"14\" label=\"\" ptr=\"0x14f8518f0\" tag=\"824\" text=\"\" visibility=\"visible\" width=\"14\" x=\"0\" y=\"1\">\n                                                                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"14\" ptr=\"0x14f851c30\" visibility=\"visible\" width=\"14\" x=\"0\" y=\"0\" />\n                                                                                            </RCTParagraphComponentView>\n                                                                                            <RCTParagraphComponentView alpha=\"1.0\" class=\"RCTParagraphComponentView\" focused=\"false\" height=\"17\" label=\"Learn more\" ptr=\"0x14f851fd0\" tag=\"828\" text=\"Learn more\" visibility=\"visible\" width=\"76\" x=\"20\" y=\"0\">\n                                                                                                <RCTParagraphTextView alpha=\"1.0\" class=\"RCTParagraphTextView\" focused=\"false\" height=\"17\" ptr=\"0x14f852310\" visibility=\"visible\" width=\"76\" x=\"0\" y=\"0\" />\n                                                                                            </RCTParagraphComponentView>\n                                                                                        </RCTViewComponentView>\n                                                                                    </RCTViewComponentView>\n                                                                                </RCTViewComponentView>\n                                                                            </RNSScreenContentWrapper>\n                                                                            <RNSScreenStackHeaderConfig alpha=\"1.0\" class=\"RNSScreenStackHeaderConfig\" focused=\"false\" height=\"0\" ptr=\"0x14f81ee60\" tag=\"748\" visibility=\"invisible\" width=\"402\" x=\"0\" y=\"0\" />\n                                                                        </RNSScreenView>\n                                                                    </UIViewControllerWrapperView>\n                                                                </UINavigationTransitionView>\n                                                                <UIToolbar alpha=\"1.0\" class=\"UIToolbar\" focused=\"false\" height=\"49\" id=\"Toolbar\" label=\"Toolbar\" ptr=\"0x107e96270\" visibility=\"invisible\" width=\"402\" x=\"0\" y=\"874\">\n                                                                    <_UIBarBackground alpha=\"1.0\" class=\"_UIBarBackground\" focused=\"false\" height=\"83\" ptr=\"0x111861b20\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                        <UIVisualEffectView alpha=\"1.0\" class=\"UIVisualEffectView\" focused=\"false\" height=\"83\" ptr=\"0x111805ed0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                            <_UIVisualEffectBackdropView alpha=\"1.0\" class=\"_UIVisualEffectBackdropView\" focused=\"false\" height=\"83\" ptr=\"0x11180e8f0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n                                                                        </UIVisualEffectView>\n                                                                        <_UIBarBackgroundShadowView alpha=\"1.0\" class=\"_UIBarBackgroundShadowView\" focused=\"false\" height=\"0\" ptr=\"0x111865800\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                                            <_UIBarBackgroundShadowContentImageView alpha=\"1.0\" class=\"_UIBarBackgroundShadowContentImageView\" focused=\"false\" height=\"0\" ptr=\"0x11180ac60\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n                                                                        </_UIBarBackgroundShadowView>\n                                                                    </_UIBarBackground>\n                                                                </UIToolbar>\n                                                            </UILayoutContainerView>\n                                                        </RNSScreenStackView>\n                                                    </RNSScreenContentWrapper>\n                                                    <RNSScreenStackHeaderConfig alpha=\"1.0\" class=\"RNSScreenStackHeaderConfig\" focused=\"false\" height=\"0\" ptr=\"0x107e7bad0\" tag=\"108\" visibility=\"invisible\" width=\"402\" x=\"0\" y=\"0\" />\n                                                </RNSScreenView>\n                                            </UIViewControllerWrapperView>\n                                        </UINavigationTransitionView>\n                                        <UIToolbar alpha=\"1.0\" class=\"UIToolbar\" focused=\"false\" height=\"49\" id=\"Toolbar\" label=\"Toolbar\" ptr=\"0x107e96e80\" visibility=\"invisible\" width=\"402\" x=\"0\" y=\"874\">\n                                            <_UIBarBackground alpha=\"1.0\" class=\"_UIBarBackground\" focused=\"false\" height=\"83\" ptr=\"0x107e9f050\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                <UIVisualEffectView alpha=\"1.0\" class=\"UIVisualEffectView\" focused=\"false\" height=\"83\" ptr=\"0x107e9f440\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                    <_UIVisualEffectBackdropView alpha=\"1.0\" class=\"_UIVisualEffectBackdropView\" focused=\"false\" height=\"83\" ptr=\"0x107e8e4d0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n                                                </UIVisualEffectView>\n                                                <_UIBarBackgroundShadowView alpha=\"1.0\" class=\"_UIBarBackgroundShadowView\" focused=\"false\" height=\"0\" ptr=\"0x107e9f840\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n                                                    <_UIBarBackgroundShadowContentImageView alpha=\"1.0\" class=\"_UIBarBackgroundShadowContentImageView\" focused=\"false\" height=\"0\" ptr=\"0x107ea0240\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n                                                </_UIBarBackgroundShadowView>\n                                            </_UIBarBackground>\n                                        </UIToolbar>\n                                    </UILayoutContainerView>\n                                </RNSScreenStackView>\n                                <RCTViewComponentView alpha=\"1.0\" class=\"RCTViewComponentView\" focused=\"false\" height=\"62\" ptr=\"0x107d29b60\" tag=\"8\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n                            </RNCSafeAreaProviderComponentView>\n                        </RCTRootComponentView>\n                    </RCTSurfaceView>\n                </RCTSurfaceHostingProxyRootView>\n            </UIDropShadowView>\n        </UITransitionView>\n    </UIWindow>\n    <UITextEffectsWindow alpha=\"1.0\" class=\"UITextEffectsWindow\" focused=\"false\" height=\"874\" ptr=\"0x1108baa00\" visibility=\"visible\" width=\"402\">\n        <UIInputSetContainerView alpha=\"1.0\" class=\"UIInputSetContainerView\" focused=\"false\" height=\"874\" ptr=\"0x1118ea4a0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\">\n            <UIInputSetHostView alpha=\"1.0\" class=\"UIInputSetHostView\" focused=\"false\" height=\"0\" ptr=\"0x1118a1ce0\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"874\">\n                <UIKeyboardDockView alpha=\"1.0\" class=\"UIKeyboardDockView\" focused=\"false\" height=\"75\" ptr=\"0x107ea9010\" visibility=\"invisible\" width=\"150\" x=\"0\" y=\"0\">\n                    <UIKeyboardDockItemButton alpha=\"1.0\" class=\"UIKeyboardDockItemButton\" focused=\"false\" height=\"68\" label=\"Next keyboard\" ptr=\"0x107eacb70\" value=\"English (US)\" visibility=\"visible\" width=\"68\" x=\"8\" y=\"6\">\n                        <UIImageView alpha=\"1.0\" class=\"UIImageView\" focused=\"false\" height=\"31\" id=\"globe\" label=\"Globe\" ptr=\"0x107ea0440\" visibility=\"visible\" width=\"31\" x=\"18\" y=\"12\" />\n                        <UIButtonLabel alpha=\"1.0\" class=\"UIButtonLabel\" focused=\"false\" height=\"0\" ptr=\"0x107eadb80\" visibility=\"invisible\" width=\"0\" x=\"0\" y=\"0\" />\n                    </UIKeyboardDockItemButton>\n                    <UIKeyboardDockItemButton alpha=\"1.0\" class=\"UIKeyboardDockItemButton\" focused=\"false\" height=\"68\" id=\"dictation\" label=\"Dictate\" ptr=\"0x107eae240\" visibility=\"invisible\" width=\"68\" x=\"73\" y=\"6\">\n                        <UIImageView alpha=\"1.0\" class=\"UIImageView\" focused=\"false\" height=\"33\" id=\"mic\" label=\"microphone\" ptr=\"0x107ee71f0\" visibility=\"visible\" width=\"26\" x=\"20\" y=\"10\" />\n                        <UIButtonLabel alpha=\"1.0\" class=\"UIButtonLabel\" focused=\"false\" height=\"0\" ptr=\"0x107ee73d0\" visibility=\"invisible\" width=\"0\" x=\"0\" y=\"0\" />\n                    </UIKeyboardDockItemButton>\n                </UIKeyboardDockView>\n            </UIInputSetHostView>\n            <UIEditingOverlayGestureView alpha=\"1.0\" class=\"UIEditingOverlayGestureView\" focused=\"false\" height=\"874\" ptr=\"0x1118de810\" visibility=\"visible\" width=\"402\" x=\"0\" y=\"0\" />\n        </UIInputSetContainerView>\n    </UITextEffectsWindow>\n</ViewHierarchy>"},"messageId":27}
+   
+10:51:05.775 detox[28997] E wait until timeout (20000 ms) with timeout (20000 ms)
+  error: Test Failed: Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(id == “roster-type-card-rotating”) TIMEOUT(20s)
+  
+  HINT: To print view hierarchy on failed actions/matches, use log-level verbose or higher.
+10:51:05.776 detox[28997] B onTestFnFailure
+  args: ({"error":{"name":"DetoxRuntimeError"}})
+10:51:05.777 detox[28997] i starting SimulatorScreenshot
+10:51:05.778 detox[28997] i /usr/bin/xcrun simctl io 85DD3162-206C-44DB-A723-F4B933896B6E screenshot "/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-28997-xNRaFM.detox.png"
+10:51:06.023 detox[28997] i Detected file type 'PNG' from extension
+Wrote screenshot to: /private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-28997-xNRaFM.detox.png
+
+10:51:06.024 detox[28997] i stopping SimulatorScreenshot
+10:51:06.024 detox[28997] E onTestFnFailure
+10:51:06.024 detox[28997] E test_fn
+  error: Test Failed: Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(id == “roster-type-card-rotating”) TIMEOUT(20s)
+  
+  HINT: To print view hierarchy on failed actions/matches, use log-level verbose or higher.
+10:51:06.024 detox[28997] B onTestDone
+  args: ({"title":"walks from Welcome to Completion on the simulator","fullName":"Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator","status":"failed","invocations":1,"timedOut":false})
+10:51:06.025 detox[28997] i starting SimulatorScreenshot
+10:51:06.025 detox[28997] i /usr/bin/xcrun simctl io 85DD3162-206C-44DB-A723-F4B933896B6E screenshot "/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-28997-lAblyc.detox.png"
+10:51:06.183 detox[28997] i Detected file type 'PNG' from extension
+Wrote screenshot to: /private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-28997-lAblyc.detox.png
+
+10:51:06.184 detox[28997] i stopping SimulatorScreenshot
+10:51:06.184 detox[28997] i stopping SimulatorLogRecording
+10:51:06.184 detox[28997] i saving SimulatorScreenshot to: artifacts/ios.release.2026-04-06 10-50-07Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/testStart.png
+10:51:06.184 detox[28997] i moving "/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-28997-vO8aW0.detox.png" to artifacts/ios.release.2026-04-06 10-50-07Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/testStart.png
+10:51:06.185 detox[28997] i saving SimulatorScreenshot to: artifacts/ios.release.2026-04-06 10-50-07Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/testFnFailure.png
+10:51:06.185 detox[28997] i moving "/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-28997-xNRaFM.detox.png" to artifacts/ios.release.2026-04-06 10-50-07Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/testFnFailure.png
+10:51:06.186 detox[28997] i saving SimulatorScreenshot to: artifacts/ios.release.2026-04-06 10-50-07Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/testDone.png
+10:51:06.186 detox[28997] i moving "/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-28997-lAblyc.detox.png" to artifacts/ios.release.2026-04-06 10-50-07Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/testDone.png
+10:51:06.238 detox[28997] i sending SIGINT to: /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate processImagePath beginsWith "/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/09A4801C-9C88-4D8E-889F-A6612813DE51/EllieMinerShiftAssistant.app"
+10:51:06.247 detox[28997] i /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate "processImagePath beginsWith \"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/09A4801C-9C88-4D8E-889F-A6612813DE51/EllieMinerShiftAssistant.app\"" exited with code #0
+10:51:06.247 detox[28997] E onTestDone
+10:51:06.247 detox[28997] E walks from Welcome to Completion on the simulator
+10:51:06.248 detox[28997] i Onboarding Flow — rotating roster happy path: walks from Welcome to Completion on the simulator [FAIL]
+10:51:06.248 detox[28997] B afterAll
+10:51:06.248 detox[28997] B enableSynchronization
+  args: ()
+10:51:06.249 detox[28996] i get
+  data: {"type":"setSyncSettings","params":{"enabled":true},"messageId":30}
+10:51:06.249 detox[28996] i send
+  data: {
+    "type": "setSyncSettings",
+    "params": {
+      "enabled": true
+    },
+    "messageId": 30
+  }
+10:51:06.249 detox[28997] i send message
+  data: {"type":"setSyncSettings","params":{"enabled":true},"messageId":30}
+10:51:06.249 detox[28997] i saving SimulatorLogRecording to: artifacts/ios.release.2026-04-06 10-50-07Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/device.log
+10:51:06.249 detox[28997] i moving "/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-28997-SIlKuD.detox.log" to artifacts/ios.release.2026-04-06 10-50-07Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/device.log
+10:51:06.250 detox[28997] i saving SimulatorLogRecording to: artifacts/ios.release.2026-04-06 10-50-07Z/85DD3162-206C-44DB-A723-F4B933896B6E 2026-04-06 10-51-06Z.startup.log
+10:51:06.250 detox[28997] i moving "/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-28997-Syv1eN.detox.log" to artifacts/ios.release.2026-04-06 10-50-07Z/85DD3162-206C-44DB-A723-F4B933896B6E 2026-04-06 10-51-06Z.startup.log
+10:51:06.251 detox[28996] i get
+  data: {"params":{},"messageId":30,"type":"setSyncSettingsDone"}
+10:51:06.251 detox[28996] i send
+  data: {
+    "params": {},
+    "messageId": 30,
+    "type": "setSyncSettingsDone"
+  }
+10:51:06.251 detox[28997] i get message
+  data: {"params":{},"messageId":30,"type":"setSyncSettingsDone"}
+   
+10:51:06.251 detox[28997] E enableSynchronization
+10:51:06.350 detox[28997] E afterAll
+10:51:06.350 detox[28997] B onRunDescribeFinish
+  args: ({"name":"Onboarding Flow — rotating roster happy path"})
+10:51:06.350 detox[28997] E onRunDescribeFinish
+10:51:06.350 detox[28997] E Onboarding Flow — rotating roster happy path
+10:51:06.350 detox[28997] B onRunDescribeFinish
+  args: ({"name":"ROOT_DESCRIBE_BLOCK"})
+10:51:06.351 detox[28997] E onRunDescribeFinish
+10:51:06.351 detox[28997] E run the tests
+10:51:06.358 detox[28997] B tear down environment
+10:51:06.359 detox[28997] B onBeforeCleanup
+  args: ()
+10:51:06.359 detox[28997] i saving FileArtifact to: artifacts/ios.release.2026-04-06 10-50-07Z/detox_pid_28997.json.log { append: true }
+10:51:06.359 detox[28997] i saving FileArtifact to: artifacts/ios.release.2026-04-06 10-50-07Z/detox_pid_28997.log { append: true }
+10:51:06.359 detox[28997] E onBeforeCleanup
+10:51:06.360 detox[28996] i get
+  data: {"type":"cleanup","params":{"stopRunner":false},"messageId":-49642}
+10:51:06.360 detox[28996] i send
+  data: {
+    "type": "cleanup",
+    "params": {
+      "stopRunner": false
+    },
+    "messageId": -49642
+  }
+10:51:06.360 detox[28997] i send message
+  data: {"type":"cleanup","params":{"stopRunner":false},"messageId":-49642}
+10:51:06.361 detox[28996] i get
+  data: {"messageId":-49642,"params":{},"type":"cleanupDone"}
+10:51:06.361 detox[28996] i send
+  data: {
+    "messageId": -49642,
+    "params": {},
+    "type": "cleanupDone"
+  }
+10:51:06.361 detox[28997] i get message
+  data: {"messageId":-49642,"params":{},"type":"cleanupDone"}
+   
+10:51:06.362 detox[28996] i tester exited session 5051db7b-1c7f-c110-c6c7-1a285ec99a78
+10:51:06.362 detox[28996] i send
+  data: {
+    "type": "testerDisconnected",
+    "messageId": -1
+  }
+10:51:06.362 detox[28996] E connection :49459<->:49465
+10:51:06.362 detox[28996] i received event of :  deallocateDevice {
+  deviceCookie: {
+    id: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    udid: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    type: 'ios.simulator'
+  }
+}
+10:51:06.362 detox[28996] B free: 85DD3162-206C-44DB-A723-F4B933896B6E
+  data: {}
+10:51:06.362 detox[28997] i dispatching event to  primary-28996 /tmp/detox.primary-28996  :  deallocateDevice , {
+  deviceCookie: {
+    id: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    udid: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    type: 'ios.simulator'
+  }
+}
+10:51:06.363 detox[28996] E free: 85DD3162-206C-44DB-A723-F4B933896B6E
+10:51:06.363 detox[28996] i dispatching event to socket  :  deallocateDeviceDone {}
+10:51:06.363 detox[28997] i ## received events ##
+10:51:06.363 detox[28997] i detected event deallocateDeviceDone {}
+10:51:06.363 detox[28997] E tear down environment
+10:51:06.363 detox[28997] E e2e/onboarding.test.ts
+10:51:06.366 detox[28996] i received event of :  reportTestResults {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/Shared/Ellie/e2e/onboarding.test.ts',
+      isPermanentFailure: false
+    }
+  ]
+}
+10:51:06.366 detox[28996] i dispatching event to socket  :  reportTestResultsDone {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/Shared/Ellie/e2e/onboarding.test.ts',
+      isPermanentFailure: false
+    }
+  ]
+}
+10:51:06.366 detox[28996] i broadcasting event to all known sockets listening to  /tmp/detox.primary-28996  :   sessionStateUpdate {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/Shared/Ellie/e2e/onboarding.test.ts',
+      isPermanentFailure: false
+    }
+  ]
+}
+10:51:06.366 detox[28997] i dispatching event to  primary-28996 /tmp/detox.primary-28996  :  reportTestResults , {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/Shared/Ellie/e2e/onboarding.test.ts',
+      testExecError: undefined,
+      isPermanentFailure: false
+    }
+  ]
+}
+10:51:06.366 detox[28997] i ## received events ##
+10:51:06.366 detox[28997] i detected event reportTestResultsDone {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/Shared/Ellie/e2e/onboarding.test.ts',
+      isPermanentFailure: false
+    }
+  ]
+}
+10:51:06.368 detox[28996] i socket disconnected secondary-28997
+10:51:06.368 detox[28997] i connection closed primary-28996 /tmp/detox.primary-28996 0 tries remaining of 0
+10:51:06.368 detox[28997] i secondary-28997 exceeded connection rety amount of  or stopRetrying flag set.
+10:51:06.474 detox[28996] E Command failed with exit code = 1:
+jest --config e2e/jest.config.js e2e/onboarding.test.ts
+10:51:06.474 detox[28996] B cleanup
+  args: ()
+10:51:06.476 detox[28996] i /usr/bin/xcrun simctl shutdown 85DD3162-206C-44DB-A723-F4B933896B6E
+10:51:06.476 detox[28996] i Shutting down 85DD3162-206C-44DB-A723-F4B933896B6E...
+10:51:06.670 detox[28996] i app exited session 5051db7b-1c7f-c110-c6c7-1a285ec99a78
+10:51:06.670 detox[28996] E connection :49459<->:49624
+10:51:06.715 detox[28996] i 85DD3162-206C-44DB-A723-F4B933896B6E shut down
+10:51:06.716 detox[28996] E cleanup
+10:51:06.716 detox[28996] i Detox server has been closed gracefully
+10:51:06.717 detox[28996] E node_modules/.bin/detox test e2e/onboarding.test.ts --configuration ios.release --cleanup --record-logs all --take-screenshots failing

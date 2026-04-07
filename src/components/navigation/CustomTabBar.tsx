@@ -87,6 +87,7 @@ interface TabButtonProps {
   iconName: keyof typeof Ionicons.glyphMap;
   iconColor: string;
   label: string;
+  testID?: string;
 }
 
 const TabButton: React.FC<TabButtonProps> = ({
@@ -95,6 +96,7 @@ const TabButton: React.FC<TabButtonProps> = ({
   iconName,
   iconColor,
   label,
+  testID,
 }) => {
   const scale = useSharedValue(1);
 
@@ -119,6 +121,7 @@ const TabButton: React.FC<TabButtonProps> = ({
       accessibilityLabel={label}
       accessibilityRole="tab"
       accessibilityState={{ selected: isFocused }}
+      testID={testID}
     >
       <Animated.View style={[styles.tabContent, animatedStyle]}>
         <Ionicons name={iconName} size={ICON_SIZE} color={iconColor} />
@@ -289,6 +292,7 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
                 iconName={iconName}
                 iconColor={iconColor}
                 label={tabLabels[route.name as keyof typeof tabLabels] ?? route.name}
+                testID={`tab-${route.name.toLowerCase()}`}
               />
             );
           })}

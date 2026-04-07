@@ -1,0 +1,1091 @@
+10:18:14.803 detox[14150] B node_modules/.bin/detox test e2e/onboarding.test.ts --configuration ios.release --cleanup --record-logs all --take-screenshots failing
+  data: {
+    "id": "c4930da3-01ca-d5ef-a070-c4210c272927",
+    "detoxConfig": {
+      "configurationName": "ios.release",
+      "apps": {
+        "default": {
+          "type": "ios.app",
+          "build": "E2E_TEST_MODE=1 xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -sdk iphonesimulator -destination \"platform=iOS Simulator,name=iPhone 16 Pro\" -derivedDataPath ios/build build && APP=\"ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app\" && find \"$APP/Frameworks\" -type f | while read -r f; do if file \"$f\" | grep -q \"Mach-O\"; then codesign --force --sign - --timestamp=none \"$f\"; fi; done && find \"$APP/Frameworks\" -type d -name \"*.framework\" -exec codesign --force --sign - --timestamp=none {} \\; && codesign --force --sign - --deep --timestamp=none \"$APP\"",
+          "binaryPath": "./ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app"
+        }
+      },
+      "artifacts": {
+        "rootDir": "artifacts/ios.release.2026-04-06 10-18-14Z",
+        "plugins": {
+          "log": {
+            "enabled": true,
+            "keepOnlyFailedTestsArtifacts": false
+          },
+          "screenshot": {
+            "enabled": true,
+            "shouldTakeAutomaticSnapshots": true,
+            "keepOnlyFailedTestsArtifacts": true
+          },
+          "video": {
+            "enabled": false,
+            "keepOnlyFailedTestsArtifacts": false
+          },
+          "instruments": {
+            "enabled": false,
+            "keepOnlyFailedTestsArtifacts": false
+          },
+          "uiHierarchy": {
+            "enabled": false,
+            "keepOnlyFailedTestsArtifacts": false
+          }
+        }
+      },
+      "behavior": {
+        "init": {
+          "keepLockFile": false,
+          "reinstallApp": true,
+          "exposeGlobals": true
+        },
+        "cleanup": {
+          "shutdownDevice": true
+        },
+        "launchApp": "auto"
+      },
+      "cli": {
+        "recordLogs": "all",
+        "takeScreenshots": "failing",
+        "cleanup": true,
+        "configuration": "ios.release",
+        "start": true
+      },
+      "commands": [
+        {
+          "appName": "default",
+          "build": "E2E_TEST_MODE=1 xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -sdk iphonesimulator -destination \"platform=iOS Simulator,name=iPhone 16 Pro\" -derivedDataPath ios/build build && APP=\"ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app\" && find \"$APP/Frameworks\" -type f | while read -r f; do if file \"$f\" | grep -q \"Mach-O\"; then codesign --force --sign - --timestamp=none \"$f\"; fi; done && find \"$APP/Frameworks\" -type d -name \"*.framework\" -exec codesign --force --sign - --timestamp=none {} \\; && codesign --force --sign - --deep --timestamp=none \"$APP\""
+        }
+      ],
+      "device": {
+        "type": "ios.simulator",
+        "device": {
+          "type": "iPhone 16 Pro"
+        }
+      },
+      "logger": {
+        "level": "info",
+        "overrideConsole": true,
+        "options": {
+          "showLoggerName": true,
+          "showPid": true,
+          "showLevel": false,
+          "showMetadata": false,
+          "basepath": "/Users/Shared/Ellie/node_modules/detox/src",
+          "prefixers": {},
+          "stringifiers": {}
+        }
+      },
+      "testRunner": {
+        "retries": 0,
+        "forwardEnv": false,
+        "detached": false,
+        "bail": false,
+        "noRetryArgs": [
+          "shard"
+        ],
+        "jest": {
+          "setupTimeout": 120000,
+          "teardownTimeout": 30000,
+          "retryAfterCircusRetries": false,
+          "reportWorkerAssign": true
+        },
+        "args": {
+          "$0": "jest",
+          "_": [
+            "e2e/onboarding.test.ts"
+          ],
+          "config": "e2e/jest.config.js",
+          "--": []
+        }
+      },
+      "session": {
+        "autoStart": true,
+        "debugSynchronization": 10000
+      }
+    },
+    "detoxIPCServer": "primary-14150",
+    "testResults": [],
+    "testSessionIndex": 0,
+    "workersCount": 0
+  }
+10:18:14.806 detox[14150] i Server path not specified, so defaulting to ipc.config.socketRoot + ipc.config.appspace + ipc.config.id /tmp/detox.primary-14150
+10:18:14.807 detox[14150] i starting server on  /tmp/detox.primary-14150 
+10:18:14.807 detox[14150] i starting TLS server false
+10:18:14.807 detox[14150] i starting server as Unix || Windows Socket
+10:18:14.808 detox[14150] i Detox server listening on localhost:55758...
+10:18:14.809 detox[14150] i Serialized the session state at: /private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/c4930da3-01ca-d5ef-a070-c4210c272927.detox.json
+10:18:14.810 detox[14150] B jest --config e2e/jest.config.js e2e/onboarding.test.ts
+10:18:17.725 detox[14151] i Service path not specified, so defaulting to ipc.config.socketRoot + ipc.config.appspace + id 
+10:18:17.726 detox[14151] i requested connection to  primary-14150 /tmp/detox.primary-14150
+10:18:17.726 detox[14151] i Connecting client on Unix Socket : /tmp/detox.primary-14150
+10:18:17.727 detox[14150] i ## socket connection to server detected ##
+10:18:17.727 detox[14151] i retrying reset
+10:18:17.727 detox[14151] i dispatching event to  primary-14150 /tmp/detox.primary-14150  :  registerContext , { id: 'secondary-14151' }
+10:18:17.728 detox[14150] i received event of :  registerContext { id: 'secondary-14151' }
+10:18:17.728 detox[14150] i dispatching event to socket  :  registerContextDone {
+  testResults: [],
+  testSessionIndex: 0,
+  unsafe_earlyTeardown: undefined
+}
+10:18:17.728 detox[14151] i ## received events ##
+10:18:17.728 detox[14151] i detected event registerContextDone { testResults: [], testSessionIndex: 0 }
+10:18:17.796 detox[14151] B e2e/onboarding.test.ts
+10:18:17.802 detox[14151] B set up environment
+10:18:17.803 detox[14150] i received event of :  registerWorker { workerId: 'w1' }
+10:18:17.803 detox[14150] i dispatching event to socket  :  registerWorkerDone { workersCount: 1 }
+10:18:17.803 detox[14150] i broadcasting event to all known sockets listening to  /tmp/detox.primary-14150  :   sessionStateUpdate { workersCount: 1 }
+10:18:17.803 detox[14151] i dispatching event to  primary-14150 /tmp/detox.primary-14150  :  registerWorker , { workerId: 'w1' }
+10:18:17.803 detox[14151] i ## received events ##
+10:18:17.803 detox[14151] i detected event registerWorkerDone { workersCount: 1 }
+10:18:17.950 detox[14151] i ## received events ##
+10:18:17.950 detox[14151] i detected event sessionStateUpdate { workersCount: 1 }
+10:18:17.954 detox[14150] B connection :55758<->:55759
+10:18:17.954 detox[14151] i opened web socket to: ws://localhost:55758
+10:18:17.955 detox[14151] i send message
+  data: {"type":"login","params":{"sessionId":"6e9728e5-ac50-0063-87a6-88b0c1ba4021","role":"tester"},"messageId":0}
+10:18:17.956 detox[14150] i get
+  data: {"type":"login","params":{"sessionId":"6e9728e5-ac50-0063-87a6-88b0c1ba4021","role":"tester"},"messageId":0}
+10:18:17.956 detox[14150] i created session 6e9728e5-ac50-0063-87a6-88b0c1ba4021
+10:18:17.956 detox[14150] i send
+  data: {
+    "type": "loginSuccess",
+    "params": {
+      "testerConnected": true,
+      "appConnected": false
+    },
+    "messageId": 0
+  }
+10:18:17.956 detox[14150] i tester joined session 6e9728e5-ac50-0063-87a6-88b0c1ba4021
+10:18:17.957 detox[14151] i get message
+  data: {"type":"loginSuccess","params":{"testerConnected":true,"appConnected":false},"messageId":0}
+   
+10:18:18.175 detox[14150] i received event of :  allocateDevice {
+  deviceConfig: { type: 'ios.simulator', device: { type: 'iPhone 16 Pro' } }
+}
+10:18:18.175 detox[14151] i dispatching event to  primary-14150 /tmp/detox.primary-14150  :  allocateDevice , {
+  deviceConfig: { type: 'ios.simulator', device: { type: 'iPhone 16 Pro' } }
+}
+10:18:18.178 detox[14150] B init
+  args: ()
+10:18:18.180 detox[14150] E init
+10:18:18.180 detox[14150] B allocate
+  data: {
+    "type": "ios.simulator",
+    "device": {
+      "type": "iPhone 16 Pro"
+    }
+  }
+10:18:18.200 detox[14150] i applesimutils --list --byType "iPhone 16 Pro" --fields udid,name,deviceType,os,identifier
+10:18:18.200 detox[14150] i Searching for device by type = "iPhone 16 Pro" ...
+10:18:18.364 detox[14150] i [
+  {
+    "os" : {
+      "name" : "iOS 18.5",
+      "identifier" : "com.apple.CoreSimulator.SimRuntime.iOS-18-5"
+    },
+    "name" : "iPhone 16 Pro",
+    "udid" : "85DD3162-206C-44DB-A723-F4B933896B6E",
+    "deviceType" : {
+      "name" : "iPhone 16 Pro",
+      "identifier" : "com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro"
+    }
+  }
+]
+
+10:18:18.365 detox[14150] i settled on 85DD3162-206C-44DB-A723-F4B933896B6E
+  data: {
+    "id": "85DD3162-206C-44DB-A723-F4B933896B6E",
+    "udid": "85DD3162-206C-44DB-A723-F4B933896B6E"
+  }
+10:18:18.365 detox[14150] E allocate
+10:18:18.365 detox[14150] B post-allocate: 85DD3162-206C-44DB-A723-F4B933896B6E
+  data: {
+    "id": "85DD3162-206C-44DB-A723-F4B933896B6E",
+    "udid": "85DD3162-206C-44DB-A723-F4B933896B6E"
+  }
+10:18:18.365 detox[14150] i applesimutils --list --byId 85DD3162-206C-44DB-A723-F4B933896B6E --maxResults 1 --fields udid,os,version,state
+10:18:18.449 detox[14150] i [
+  {
+    "state" : "Shutdown",
+    "os" : {
+      "version" : "18.5"
+    },
+    "udid" : "85DD3162-206C-44DB-A723-F4B933896B6E"
+  }
+]
+
+10:18:18.450 detox[14150] i /usr/bin/xcrun simctl boot 85DD3162-206C-44DB-A723-F4B933896B6E 
+10:18:18.450 detox[14150] i Booting device 85DD3162-206C-44DB-A723-F4B933896B6E...
+10:18:19.118 detox[14150] i 
+10:18:19.118 detox[14150] i /usr/bin/xcrun simctl bootstatus 85DD3162-206C-44DB-A723-F4B933896B6E
+10:18:23.656 detox[14150] i Monitoring boot status for iPhone 16 Pro (85DD3162-206C-44DB-A723-F4B933896B6E).
+[2026-04-06 10:18:20 +0000] Status=2, isTerminal=NO, Elapsed=00:01.
+	Waiting on Data Migration
+		Reason:(null)
+		Migration Elapsed:00:00 seconds
+
+[2026-04-06 10:18:21 +0000] Status=4, isTerminal=NO, Elapsed=00:02.
+	Waiting on System App
+
+[2026-04-06 10:18:21 +0000] Status=4, isTerminal=NO, Elapsed=00:03.
+	Waiting on System App
+
+[2026-04-06 10:18:22 +0000] Status=4, isTerminal=NO, Elapsed=00:03.
+	Waiting on System App
+
+[2026-04-06 10:18:23 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:04.
+	Finished
+
+
+10:18:23.656 detox[14150] i open -a Simulator --args -CurrentDeviceUDID 85DD3162-206C-44DB-A723-F4B933896B6E
+10:18:23.754 detox[14150] i 
+10:18:23.754 detox[14150] E post-allocate: 85DD3162-206C-44DB-A723-F4B933896B6E
+10:18:23.754 detox[14150] i dispatching event to socket  :  allocateDeviceDone {
+  deviceCookie: {
+    id: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    udid: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    type: 'ios.simulator',
+    bootArgs: undefined,
+    headless: undefined
+  }
+}
+10:18:23.754 detox[14151] i ## received events ##
+10:18:23.755 detox[14151] i detected event allocateDeviceDone {
+  deviceCookie: {
+    id: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    udid: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    type: 'ios.simulator'
+  }
+}
+10:18:23.772 detox[14151] B onBootDevice
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E"})
+10:18:23.772 detox[14151] E onBootDevice
+10:18:23.772 detox[14151] B installUtilBinaries
+  args: ()
+10:18:23.772 detox[14151] E installUtilBinaries
+10:18:23.773 detox[14151] B selectApp
+  args: ("default")
+10:18:23.785 detox[14151] E selectApp
+10:18:23.786 detox[14151] B uninstallApp
+  args: ()
+10:18:23.786 detox[14151] B onBeforeUninstallApp
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant"})
+10:18:23.786 detox[14151] E onBeforeUninstallApp
+10:18:23.786 detox[14151] i /usr/bin/xcrun simctl uninstall 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+10:18:23.786 detox[14151] i Uninstalling com.ellie.minershiftassistant...
+10:18:24.988 detox[14151] i com.ellie.minershiftassistant uninstalled
+10:18:24.988 detox[14151] E uninstallApp
+10:18:24.988 detox[14151] B selectApp
+  args: ("default")
+10:18:24.989 detox[14151] B terminateApp
+  args: ()
+10:18:24.989 detox[14151] B onBeforeTerminateApp
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant"})
+10:18:24.989 detox[14151] E onBeforeTerminateApp
+10:18:24.989 detox[14151] i /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+10:18:24.989 detox[14151] i Terminating com.ellie.minershiftassistant...
+10:18:26.158 detox[14151] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+
+10:18:26.158 detox[14151] i Terminating com.ellie.minershiftassistant...
+10:18:26.295 detox[14151] i "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+ (code=3), stdout and stderr:
+
+10:18:26.296 detox[14151] i 
+10:18:26.296 detox[14151] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+
+10:18:26.296 detox[14151] B onTerminateApp
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant"})
+10:18:26.296 detox[14151] E onTerminateApp
+10:18:26.296 detox[14151] E terminateApp
+10:18:26.296 detox[14151] E selectApp
+10:18:26.296 detox[14151] B installApp
+  args: ()
+10:18:26.296 detox[14151] i /usr/bin/xcrun simctl install 85DD3162-206C-44DB-A723-F4B933896B6E "/Users/Shared/Ellie/ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app"
+10:18:26.296 detox[14151] i Installing /Users/Shared/Ellie/ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app...
+10:18:28.439 detox[14151] i /Users/Shared/Ellie/ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app installed
+10:18:28.439 detox[14151] E installApp
+10:18:28.439 detox[14151] B selectApp
+  args: ("default")
+10:18:28.440 detox[14151] B terminateApp
+  args: ()
+10:18:28.440 detox[14151] B onBeforeTerminateApp
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant"})
+10:18:28.440 detox[14151] E onBeforeTerminateApp
+10:18:28.440 detox[14151] i /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+10:18:28.440 detox[14151] i Terminating com.ellie.minershiftassistant...
+10:18:29.528 detox[14151] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+
+10:18:29.528 detox[14151] i Terminating com.ellie.minershiftassistant...
+10:18:29.608 detox[14151] i "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+ (code=3), stdout and stderr:
+
+10:18:29.608 detox[14151] i 
+10:18:29.608 detox[14151] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+
+10:18:29.608 detox[14151] B onTerminateApp
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant"})
+10:18:29.608 detox[14151] E onTerminateApp
+10:18:29.608 detox[14151] E terminateApp
+10:18:29.608 detox[14151] E selectApp
+10:18:29.608 detox[14151] E set up environment
+10:18:30.061 detox[14151] i onboarding.test.ts is assigned to 85DD3162-206C-44DB-A723-F4B933896B6E (iPhone 16 Pro)
+10:18:30.062 detox[14151] B run the tests
+10:18:30.062 detox[14151] B onRunDescribeStart
+  args: ({"name":"ROOT_DESCRIBE_BLOCK"})
+10:18:30.062 detox[14151] E onRunDescribeStart
+10:18:30.062 detox[14151] B Onboarding Flow — rotating roster happy path
+10:18:30.062 detox[14151] B onRunDescribeStart
+  args: ({"name":"Onboarding Flow — rotating roster happy path"})
+10:18:30.062 detox[14151] E onRunDescribeStart
+10:18:30.062 detox[14151] B beforeAll
+10:18:30.165 detox[14151] B launchApp
+  args: ({"newInstance":true})
+10:18:30.165 detox[14151] B terminateApp
+  args: ("com.ellie.minershiftassistant")
+10:18:30.166 detox[14151] B onBeforeTerminateApp
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant"})
+10:18:30.166 detox[14151] E onBeforeTerminateApp
+10:18:30.166 detox[14151] i /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+10:18:30.166 detox[14151] i Terminating com.ellie.minershiftassistant...
+10:18:31.243 detox[14151] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+
+10:18:31.243 detox[14151] i Terminating com.ellie.minershiftassistant...
+10:18:31.341 detox[14151] i "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+ (code=3), stdout and stderr:
+
+10:18:31.341 detox[14151] i 
+10:18:31.341 detox[14151] i An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate com.ellie.minershiftassistant.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "com.ellie.minershiftassistant" failed. found nothing to terminate
+	found nothing to terminate
+
+10:18:31.341 detox[14151] B onTerminateApp
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant"})
+10:18:31.341 detox[14151] E onTerminateApp
+10:18:31.341 detox[14151] E terminateApp
+10:18:31.341 detox[14151] B onBeforeLaunchApp
+  args: ({"bundleId":"com.ellie.minershiftassistant","deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","launchArgs":{"detoxServer":"ws://localhost:55758","detoxSessionId":"6e9728e5-ac50-0063-87a6-88b0c1ba4021"}})
+10:18:31.342 detox[14151] i starting SimulatorLogRecording {
+  udid: '85DD3162-206C-44DB-A723-F4B933896B6E',
+  bundleId: 'com.ellie.minershiftassistant'
+}
+10:18:31.342 detox[14151] i /usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+10:18:31.433 detox[14151] i /Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/EC35ECFC-654C-48E8-B1FB-B0FC8389B4C9/EllieMinerShiftAssistant.app
+
+10:18:31.434 detox[14151] i /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate "processImagePath beginsWith \"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/EC35ECFC-654C-48E8-B1FB-B0FC8389B4C9/EllieMinerShiftAssistant.app\""
+10:18:31.486 detox[14151] E onBeforeLaunchApp
+10:18:31.487 detox[14151] i SIMCTL_CHILD_GULGeneratedClassDisposeDisabled=YES SIMCTL_CHILD_DYLD_INSERT_LIBRARIES="/Users/user/Library/Detox/ios/framework/7a593ed1f90c0350964e0c75f65f6f0a8382c0f9/Detox.framework/Detox" /usr/bin/xcrun simctl launch 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant --args -detoxServer ws://localhost:55758 -detoxSessionId 6e9728e5-ac50-0063-87a6-88b0c1ba4021 -detoxDebugVisibility YES -detoxDisableHierarchyDump YES
+10:18:31.487 detox[14151] i Launching com.ellie.minershiftassistant...
+10:18:31.685 detox[14151] i com.ellie.minershiftassistant: 14476
+
+10:18:31.686 detox[14151] i /usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+10:18:31.799 detox[14151] i /Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/EC35ECFC-654C-48E8-B1FB-B0FC8389B4C9/EllieMinerShiftAssistant.app
+
+10:18:31.804 detox[14151] i com.ellie.minershiftassistant launched. To watch simulator logs, run:
+        /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate 'process == "EllieMinerShiftAssistant"'
+10:18:31.805 detox[14151] B onLaunchApp
+  args: ({"bundleId":"com.ellie.minershiftassistant","deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","launchArgs":{"detoxServer":"ws://localhost:55758","detoxSessionId":"6e9728e5-ac50-0063-87a6-88b0c1ba4021","detoxDebugVisibility":"YES","detoxDisableHierarchyDump":"YES"},"pid":14476})
+10:18:31.805 detox[14151] E onLaunchApp
+10:18:32.332 detox[14150] B connection :55758<->:55896
+10:18:32.533 detox[14150] i get
+  data: {"type":"login","messageId":0,"params":{"role":"app","sessionId":"6e9728e5-ac50-0063-87a6-88b0c1ba4021"}}
+10:18:32.533 detox[14150] i send
+  data: {
+    "type": "loginSuccess",
+    "messageId": 0,
+    "params": {
+      "testerConnected": true,
+      "appConnected": true
+    }
+  }
+10:18:32.533 detox[14150] i app joined session 6e9728e5-ac50-0063-87a6-88b0c1ba4021
+10:18:32.534 detox[14150] i send
+  data: {
+    "type": "appConnected"
+  }
+10:18:32.534 detox[14151] i get message
+  data: {"type":"appConnected"}
+   
+10:18:32.535 detox[14150] i get
+  data: {"type":"isReady","params":{},"messageId":-1000}
+10:18:32.535 detox[14151] i send message
+  data: {"type":"isReady","params":{},"messageId":-1000}
+10:18:32.536 detox[14150] i send
+  data: {
+    "type": "isReady",
+    "params": {},
+    "messageId": -1000
+  }
+10:18:35.259 detox[14150] i get
+  data: {"type":"ready","params":{},"messageId":-1000}
+10:18:35.259 detox[14150] i send
+  data: {
+    "type": "ready",
+    "params": {},
+    "messageId": -1000
+  }
+10:18:35.260 detox[14150] i get
+  data: {"type":"ready","params":{},"messageId":-1000}
+10:18:35.260 detox[14150] i send
+  data: {
+    "type": "ready",
+    "params": {},
+    "messageId": -1000
+  }
+10:18:35.260 detox[14151] i get message
+  data: {"type":"ready","params":{},"messageId":-1000}
+   
+10:18:35.261 detox[14150] i get
+  data: {"type":"ready","params":{},"messageId":-1000}
+10:18:35.261 detox[14150] i send
+  data: {
+    "type": "ready",
+    "params": {},
+    "messageId": -1000
+  }
+10:18:35.261 detox[14150] i get
+  data: {"type":"waitForActive","params":{},"messageId":1}
+10:18:35.261 detox[14151] i send message
+  data: {"type":"waitForActive","params":{},"messageId":1}
+10:18:35.261 detox[14151] i get message
+  data: {"type":"ready","params":{},"messageId":-1000}
+   
+10:18:35.262 detox[14150] i send
+  data: {
+    "type": "waitForActive",
+    "params": {},
+    "messageId": 1
+  }
+10:18:35.262 detox[14151] i get message
+  data: {"type":"ready","params":{},"messageId":-1000}
+   
+10:18:35.263 detox[14150] i get
+  data: {"type":"waitForActiveDone","params":{},"messageId":1}
+10:18:35.263 detox[14150] i send
+  data: {
+    "type": "waitForActiveDone",
+    "params": {},
+    "messageId": 1
+  }
+10:18:35.263 detox[14151] i get message
+  data: {"type":"waitForActiveDone","params":{},"messageId":1}
+   
+10:18:35.263 detox[14151] B onAppReady
+  args: ({"deviceId":"85DD3162-206C-44DB-A723-F4B933896B6E","bundleId":"com.ellie.minershiftassistant","pid":14476})
+10:18:35.263 detox[14151] E onAppReady
+10:18:35.263 detox[14151] E launchApp
+10:18:35.264 detox[14150] i get
+  data: {"type":"setSyncSettings","params":{"enabled":false},"messageId":2}
+10:18:35.264 detox[14151] B disableSynchronization
+  args: ()
+10:18:35.264 detox[14151] i send message
+  data: {"type":"setSyncSettings","params":{"enabled":false},"messageId":2}
+10:18:35.265 detox[14150] i send
+  data: {
+    "type": "setSyncSettings",
+    "params": {
+      "enabled": false
+    },
+    "messageId": 2
+  }
+10:18:35.265 detox[14150] i get
+  data: {"type":"setSyncSettingsDone","params":{},"messageId":2}
+10:18:35.265 detox[14150] i send
+  data: {
+    "type": "setSyncSettingsDone",
+    "params": {},
+    "messageId": 2
+  }
+10:18:35.265 detox[14151] i get message
+  data: {"type":"setSyncSettingsDone","params":{},"messageId":2}
+   
+10:18:35.266 detox[14151] E disableSynchronization
+10:18:35.266 detox[14151] E beforeAll
+10:18:35.267 detox[14151] B walks from Welcome to Completion on the simulator
+10:18:35.267 detox[14151] i Onboarding Flow — rotating roster happy path: walks from Welcome to Completion on the simulator
+10:18:35.268 detox[14151] B onTestStart
+  args: ({"title":"walks from Welcome to Completion on the simulator","fullName":"Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator","status":"running","invocations":1})
+10:18:35.268 detox[14151] i stopping SimulatorLogRecording
+10:18:35.322 detox[14151] i sending SIGINT to: /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate processImagePath beginsWith "/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/EC35ECFC-654C-48E8-B1FB-B0FC8389B4C9/EllieMinerShiftAssistant.app"
+10:18:35.326 detox[14151] i /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate "processImagePath beginsWith \"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/EC35ECFC-654C-48E8-B1FB-B0FC8389B4C9/EllieMinerShiftAssistant.app\"" exited with code #0
+10:18:35.326 detox[14151] i starting SimulatorLogRecording
+10:18:35.327 detox[14151] i /usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant
+10:18:35.431 detox[14151] i /Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/EC35ECFC-654C-48E8-B1FB-B0FC8389B4C9/EllieMinerShiftAssistant.app
+
+10:18:35.431 detox[14151] i /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate "processImagePath beginsWith \"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/EC35ECFC-654C-48E8-B1FB-B0FC8389B4C9/EllieMinerShiftAssistant.app\""
+10:18:35.484 detox[14151] i starting SimulatorScreenshot
+10:18:35.484 detox[14151] i /usr/bin/xcrun simctl io 85DD3162-206C-44DB-A723-F4B933896B6E screenshot "/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-DFiFIF.detox.png"
+10:18:35.660 detox[14151] i Detected file type 'PNG' from extension
+Wrote screenshot to: /private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-DFiFIF.detox.png
+
+10:18:35.660 detox[14151] i stopping SimulatorScreenshot
+10:18:35.660 detox[14151] E onTestStart
+10:18:35.660 detox[14151] B beforeEach
+10:18:35.660 detox[14151] E beforeEach
+10:18:35.660 detox[14151] B test_fn
+10:18:35.661 detox[14150] i get
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"premium-welcome-screen-button","isRegex":false},"expectation":"toBeVisible","timeout":20000},"messageId":3}
+10:18:35.661 detox[14151] i send message
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"premium-welcome-screen-button","isRegex":false},"expectation":"toBeVisible","timeout":20000},"messageId":3}
+10:18:35.662 detox[14150] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "expectation",
+      "predicate": {
+        "type": "id",
+        "value": "premium-welcome-screen-button",
+        "isRegex": false
+      },
+      "expectation": "toBeVisible",
+      "timeout": 20000
+    },
+    "messageId": 3
+  }
+10:18:35.662 detox[14151] B wait until timeout (20000 ms) with timeout (20000 ms)
+  data: {
+    "type": "expectation",
+    "predicate": {
+      "type": "id",
+      "value": "premium-welcome-screen-button",
+      "isRegex": false
+    },
+    "expectation": "toBeVisible",
+    "timeout": 20000
+  }
+10:18:35.918 detox[14150] i get
+  data: {"messageId":3,"params":{},"type":"invokeResult"}
+10:18:35.918 detox[14150] i send
+  data: {
+    "messageId": 3,
+    "params": {},
+    "type": "invokeResult"
+  }
+10:18:35.919 detox[14151] i get message
+  data: {"messageId":3,"params":{},"type":"invokeResult"}
+   
+10:18:35.919 detox[14151] E wait until timeout (20000 ms) with timeout (20000 ms)
+10:18:35.920 detox[14151] i send message
+  data: {"type":"invoke","params":{"type":"action","action":"tap","predicate":{"type":"id","value":"premium-welcome-screen-button","isRegex":false}},"messageId":4}
+10:18:35.921 detox[14150] i get
+  data: {"type":"invoke","params":{"type":"action","action":"tap","predicate":{"type":"id","value":"premium-welcome-screen-button","isRegex":false}},"messageId":4}
+10:18:35.921 detox[14150] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "action",
+      "action": "tap",
+      "predicate": {
+        "type": "id",
+        "value": "premium-welcome-screen-button",
+        "isRegex": false
+      }
+    },
+    "messageId": 4
+  }
+10:18:35.921 detox[14151] B tap
+  data: {
+    "type": "action",
+    "action": "tap",
+    "predicate": {
+      "type": "id",
+      "value": "premium-welcome-screen-button",
+      "isRegex": false
+    }
+  }
+10:18:36.033 detox[14150] i get
+  data: {"params":{},"messageId":4,"type":"invokeResult"}
+10:18:36.033 detox[14150] i send
+  data: {
+    "params": {},
+    "messageId": 4,
+    "type": "invokeResult"
+  }
+10:18:36.034 detox[14151] i get message
+  data: {"params":{},"messageId":4,"type":"invokeResult"}
+   
+10:18:36.034 detox[14151] E tap
+10:18:36.035 detox[14150] i get
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"pain-hook-screen","isRegex":false},"expectation":"toExist","timeout":20000},"messageId":5}
+10:18:36.035 detox[14150] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "expectation",
+      "predicate": {
+        "type": "id",
+        "value": "pain-hook-screen",
+        "isRegex": false
+      },
+      "expectation": "toExist",
+      "timeout": 20000
+    },
+    "messageId": 5
+  }
+10:18:36.035 detox[14151] i send message
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"pain-hook-screen","isRegex":false},"expectation":"toExist","timeout":20000},"messageId":5}
+10:18:36.035 detox[14151] B wait until timeout (20000 ms) with timeout (20000 ms)
+  data: {
+    "type": "expectation",
+    "predicate": {
+      "type": "id",
+      "value": "pain-hook-screen",
+      "isRegex": false
+    },
+    "expectation": "toExist",
+    "timeout": 20000
+  }
+10:18:36.154 detox[14150] i get
+  data: {"params":{},"type":"invokeResult","messageId":5}
+10:18:36.154 detox[14150] i send
+  data: {
+    "params": {},
+    "type": "invokeResult",
+    "messageId": 5
+  }
+10:18:36.154 detox[14151] i get message
+  data: {"params":{},"type":"invokeResult","messageId":5}
+   
+10:18:36.154 detox[14151] E wait until timeout (20000 ms) with timeout (20000 ms)
+10:18:36.155 detox[14150] i get
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"pain-hook-card-cycle_lost","isRegex":false},"expectation":"toBeVisible","timeout":20000},"messageId":6}
+10:18:36.155 detox[14150] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "expectation",
+      "predicate": {
+        "type": "id",
+        "value": "pain-hook-card-cycle_lost",
+        "isRegex": false
+      },
+      "expectation": "toBeVisible",
+      "timeout": 20000
+    },
+    "messageId": 6
+  }
+10:18:36.155 detox[14151] i send message
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"pain-hook-card-cycle_lost","isRegex":false},"expectation":"toBeVisible","timeout":20000},"messageId":6}
+10:18:36.155 detox[14151] B wait until timeout (20000 ms) with timeout (20000 ms)
+  data: {
+    "type": "expectation",
+    "predicate": {
+      "type": "id",
+      "value": "pain-hook-card-cycle_lost",
+      "isRegex": false
+    },
+    "expectation": "toBeVisible",
+    "timeout": 20000
+  }
+10:18:36.251 detox[14150] i get
+  data: {"type":"invokeResult","messageId":6,"params":{}}
+10:18:36.251 detox[14150] i send
+  data: {
+    "type": "invokeResult",
+    "messageId": 6,
+    "params": {}
+  }
+10:18:36.252 detox[14150] i get
+  data: {"type":"invoke","params":{"type":"action","action":"swipe","params":["right","fast",0.8,null,null],"predicate":{"type":"id","value":"pain-hook-card-cycle_lost","isRegex":false}},"messageId":7}
+10:18:36.252 detox[14151] i get message
+  data: {"type":"invokeResult","messageId":6,"params":{}}
+   
+10:18:36.252 detox[14151] E wait until timeout (20000 ms) with timeout (20000 ms)
+10:18:36.252 detox[14151] i send message
+  data: {"type":"invoke","params":{"type":"action","action":"swipe","params":["right","fast",0.8,null,null],"predicate":{"type":"id","value":"pain-hook-card-cycle_lost","isRegex":false}},"messageId":7}
+10:18:36.252 detox[14151] B swipe right fast with offset 0.8
+      
+  data: {
+    "type": "action",
+    "action": "swipe",
+    "params": [
+      "right",
+      "fast",
+      0.8,
+      null,
+      null
+    ],
+    "predicate": {
+      "type": "id",
+      "value": "pain-hook-card-cycle_lost",
+      "isRegex": false
+    }
+  }
+10:18:36.253 detox[14150] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "action",
+      "action": "swipe",
+      "params": [
+        "right",
+        "fast",
+        0.8,
+        null,
+        null
+      ],
+      "predicate": {
+        "type": "id",
+        "value": "pain-hook-card-cycle_lost",
+        "isRegex": false
+      }
+    },
+    "messageId": 7
+  }
+10:18:36.777 detox[14150] i get
+  data: {"params":{},"messageId":7,"type":"invokeResult"}
+10:18:36.777 detox[14150] i send
+  data: {
+    "params": {},
+    "messageId": 7,
+    "type": "invokeResult"
+  }
+10:18:36.778 detox[14151] i get message
+  data: {"params":{},"messageId":7,"type":"invokeResult"}
+   
+10:18:36.778 detox[14151] E swipe right fast with offset 0.8
+      
+10:18:36.779 detox[14150] i get
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"pain-hook-continue-button","isRegex":false},"expectation":"toBeVisible","timeout":20000},"messageId":8}
+10:18:36.779 detox[14150] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "expectation",
+      "predicate": {
+        "type": "id",
+        "value": "pain-hook-continue-button",
+        "isRegex": false
+      },
+      "expectation": "toBeVisible",
+      "timeout": 20000
+    },
+    "messageId": 8
+  }
+10:18:36.779 detox[14151] i send message
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"id","value":"pain-hook-continue-button","isRegex":false},"expectation":"toBeVisible","timeout":20000},"messageId":8}
+10:18:36.779 detox[14151] B wait until timeout (20000 ms) with timeout (20000 ms)
+  data: {
+    "type": "expectation",
+    "predicate": {
+      "type": "id",
+      "value": "pain-hook-continue-button",
+      "isRegex": false
+    },
+    "expectation": "toBeVisible",
+    "timeout": 20000
+  }
+10:18:36.803 detox[14150] i get
+  data: {"type":"invokeResult","messageId":8,"params":{}}
+10:18:36.803 detox[14150] i send
+  data: {
+    "type": "invokeResult",
+    "messageId": 8,
+    "params": {}
+  }
+10:18:36.803 detox[14151] i get message
+  data: {"type":"invokeResult","messageId":8,"params":{}}
+   
+10:18:36.804 detox[14151] E wait until timeout (20000 ms) with timeout (20000 ms)
+10:18:36.804 detox[14151] i send message
+  data: {"type":"invoke","params":{"type":"action","action":"tap","predicate":{"type":"id","value":"pain-hook-continue-button","isRegex":false}},"messageId":9}
+10:18:36.805 detox[14150] i get
+  data: {"type":"invoke","params":{"type":"action","action":"tap","predicate":{"type":"id","value":"pain-hook-continue-button","isRegex":false}},"messageId":9}
+10:18:36.805 detox[14150] i send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "action",
+      "action": "tap",
+      "predicate": {
+        "type": "id",
+        "value": "pain-hook-continue-button",
+        "isRegex": false
+      }
+    },
+    "messageId": 9
+  }
+10:18:36.805 detox[14151] B tap
+  data: {
+    "type": "action",
+    "action": "tap",
+    "predicate": {
+      "type": "id",
+      "value": "pain-hook-continue-button",
+      "isRegex": false
+    }
+  }
+10:18:36.809 detox[14150] i get
+  data: {"messageId":9,"type":"testFailed","params":{"DetoxFailureInformation":{"object":"<RCTViewComponentView: 0x159c0faf0; frame = (0 0; 338 68); tag = 268; layer = <CALayer: 0x60000046fa40>>","selector":"dtx_assertHittableAtPoint:","lineNumber":546,"file":"UIView+DetoxUtils.m"},"visibilityFailingRectsURL":"\/Users\/user\/Library\/Developer\/CoreSimulator\/Devices\/85DD3162-206C-44DB-A723-F4B933896B6E\/data\/Containers\/Data\/Application\/3840CE9E-3970-45B8-9E3C-681C2CEA8576\/tmp\/visibilityFailingRects","NSLocalizedDescription":"View is not hittable at its visible point. Error: View is not visible around point.\n- view point: {169, 34}\n- visible bounds: {{inf, inf}, {0, 0}}\n- view bounds: {{0, 0}, {338, 68}}\n---\nError: Error Domain=DetoxErrorDomain Code=0 \"View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)\" UserInfo={NSLocalizedDescription=View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)}","visibilityFailingScreenshotsURL":"\/Users\/user\/Library\/Developer\/CoreSimulator\/Devices\/85DD3162-206C-44DB-A723-F4B933896B6E\/data\/Containers\/Data\/Application\/3840CE9E-3970-45B8-9E3C-681C2CEA8576\/tmp\/visibilityFailingScreenshots","details":"View is not hittable at its visible point. Error: View is not visible around point.\n- view point: {169, 34}\n- visible bounds: {{inf, inf}, {0, 0}}\n- view bounds: {{0, 0}, {338, 68}}\n---\nError: Error Domain=DetoxErrorDomain Code=0 \"View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)\" UserInfo={NSLocalizedDescription=View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)}"}}
+10:18:36.809 detox[14150] i send
+  data: {
+    "messageId": 9,
+    "type": "testFailed",
+    "params": {
+      "DetoxFailureInformation": {
+        "object": "<RCTViewComponentView: 0x159c0faf0; frame = (0 0; 338 68); tag = 268; layer = <CALayer: 0x60000046fa40>>",
+        "selector": "dtx_assertHittableAtPoint:",
+        "lineNumber": 546,
+        "file": "UIView+DetoxUtils.m"
+      },
+      "visibilityFailingRectsURL": "/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Data/Application/3840CE9E-3970-45B8-9E3C-681C2CEA8576/tmp/visibilityFailingRects",
+      "NSLocalizedDescription": "View is not hittable at its visible point. Error: View is not visible around point.\n- view point: {169, 34}\n- visible bounds: {{inf, inf}, {0, 0}}\n- view bounds: {{0, 0}, {338, 68}}\n---\nError: Error Domain=DetoxErrorDomain Code=0 \"View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)\" UserInfo={NSLocalizedDescription=View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)}",
+      "visibilityFailingScreenshotsURL": "/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Data/Application/3840CE9E-3970-45B8-9E3C-681C2CEA8576/tmp/visibilityFailingScreenshots",
+      "details": "View is not hittable at its visible point. Error: View is not visible around point.\n- view point: {169, 34}\n- visible bounds: {{inf, inf}, {0, 0}}\n- view bounds: {{0, 0}, {338, 68}}\n---\nError: Error Domain=DetoxErrorDomain Code=0 \"View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)\" UserInfo={NSLocalizedDescription=View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)}"
+    }
+  }
+10:18:36.812 detox[14151] i get message
+  data: {"messageId":9,"type":"testFailed","params":{"DetoxFailureInformation":{"object":"<RCTViewComponentView: 0x159c0faf0; frame = (0 0; 338 68); tag = 268; layer = <CALayer: 0x60000046fa40>>","selector":"dtx_assertHittableAtPoint:","lineNumber":546,"file":"UIView+DetoxUtils.m"},"visibilityFailingRectsURL":"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Data/Application/3840CE9E-3970-45B8-9E3C-681C2CEA8576/tmp/visibilityFailingRects","NSLocalizedDescription":"View is not hittable at its visible point. Error: View is not visible around point.\n- view point: {169, 34}\n- visible bounds: {{inf, inf}, {0, 0}}\n- view bounds: {{0, 0}, {338, 68}}\n---\nError: Error Domain=DetoxErrorDomain Code=0 \"View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)\" UserInfo={NSLocalizedDescription=View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)}","visibilityFailingScreenshotsURL":"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Data/Application/3840CE9E-3970-45B8-9E3C-681C2CEA8576/tmp/visibilityFailingScreenshots","details":"View is not hittable at its visible point. Error: View is not visible around point.\n- view point: {169, 34}\n- visible bounds: {{inf, inf}, {0, 0}}\n- view bounds: {{0, 0}, {338, 68}}\n---\nError: Error Domain=DetoxErrorDomain Code=0 \"View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)\" UserInfo={NSLocalizedDescription=View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)}"}}
+   
+10:18:36.813 detox[14151] E tap
+  error: Test Failed: View is not hittable at its visible point. Error: View is not visible around point.
+  - view point: {169, 34}
+  - visible bounds: {{inf, inf}, {0, 0}}
+  - view bounds: {{0, 0}, {338, 68}}
+  ---
+  Error: Error Domain=DetoxErrorDomain Code=0 "View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)" UserInfo={NSLocalizedDescription=View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)}
+10:18:36.813 detox[14151] B onTestFnFailure
+  args: ({"error":{"name":"DetoxRuntimeError"}})
+10:18:36.814 detox[14151] i starting SimulatorScreenshot
+10:18:36.814 detox[14151] i /usr/bin/xcrun simctl io 85DD3162-206C-44DB-A723-F4B933896B6E screenshot "/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-Mp8kqg.detox.png"
+10:18:36.998 detox[14151] i Detected file type 'PNG' from extension
+Wrote screenshot to: /private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-Mp8kqg.detox.png
+
+10:18:36.998 detox[14151] i stopping SimulatorScreenshot
+10:18:36.998 detox[14151] E onTestFnFailure
+10:18:36.998 detox[14151] E test_fn
+  error: Test Failed: View is not hittable at its visible point. Error: View is not visible around point.
+  - view point: {169, 34}
+  - visible bounds: {{inf, inf}, {0, 0}}
+  - view bounds: {{0, 0}, {338, 68}}
+  ---
+  Error: Error Domain=DetoxErrorDomain Code=0 "View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)" UserInfo={NSLocalizedDescription=View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)}
+10:18:36.999 detox[14151] B onTestDone
+  args: ({"title":"walks from Welcome to Completion on the simulator","fullName":"Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator","status":"failed","invocations":1,"timedOut":false})
+10:18:36.999 detox[14151] i starting SimulatorScreenshot
+10:18:36.999 detox[14151] i /usr/bin/xcrun simctl io 85DD3162-206C-44DB-A723-F4B933896B6E screenshot "/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-V25Imv.detox.png"
+10:18:37.161 detox[14151] i Detected file type 'PNG' from extension
+Wrote screenshot to: /private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-V25Imv.detox.png
+
+10:18:37.161 detox[14151] i stopping SimulatorScreenshot
+10:18:37.162 detox[14151] i stopping SimulatorLogRecording
+10:18:37.162 detox[14151] i saving SimulatorScreenshot to: artifacts/ios.release.2026-04-06 10-18-14Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/testStart.png
+10:18:37.162 detox[14151] i moving "/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-DFiFIF.detox.png" to artifacts/ios.release.2026-04-06 10-18-14Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/testStart.png
+10:18:37.163 detox[14151] i saving SimulatorScreenshot to: artifacts/ios.release.2026-04-06 10-18-14Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/testFnFailure.png
+10:18:37.163 detox[14151] i moving "/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-Mp8kqg.detox.png" to artifacts/ios.release.2026-04-06 10-18-14Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/testFnFailure.png
+10:18:37.163 detox[14151] i saving SimulatorScreenshot to: artifacts/ios.release.2026-04-06 10-18-14Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/testDone.png
+10:18:37.163 detox[14151] i moving "/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-V25Imv.detox.png" to artifacts/ios.release.2026-04-06 10-18-14Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/testDone.png
+10:18:37.215 detox[14151] i sending SIGINT to: /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate processImagePath beginsWith "/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/EC35ECFC-654C-48E8-B1FB-B0FC8389B4C9/EllieMinerShiftAssistant.app"
+10:18:37.219 detox[14151] i /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate "processImagePath beginsWith \"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/EC35ECFC-654C-48E8-B1FB-B0FC8389B4C9/EllieMinerShiftAssistant.app\"" exited with code #0
+10:18:37.220 detox[14151] E onTestDone
+10:18:37.220 detox[14151] E walks from Welcome to Completion on the simulator
+10:18:37.220 detox[14151] i Onboarding Flow — rotating roster happy path: walks from Welcome to Completion on the simulator [FAIL]
+10:18:37.220 detox[14151] B afterAll
+10:18:37.220 detox[14151] B enableSynchronization
+  args: ()
+10:18:37.221 detox[14150] i get
+  data: {"type":"setSyncSettings","params":{"enabled":true},"messageId":10}
+10:18:37.221 detox[14150] i send
+  data: {
+    "type": "setSyncSettings",
+    "params": {
+      "enabled": true
+    },
+    "messageId": 10
+  }
+10:18:37.221 detox[14151] i send message
+  data: {"type":"setSyncSettings","params":{"enabled":true},"messageId":10}
+10:18:37.221 detox[14151] i saving SimulatorLogRecording to: artifacts/ios.release.2026-04-06 10-18-14Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/device.log
+10:18:37.221 detox[14151] i moving "/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-n9LMEl.detox.log" to artifacts/ios.release.2026-04-06 10-18-14Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/device.log
+10:18:37.221 detox[14151] i saving SimulatorLogRecording to: artifacts/ios.release.2026-04-06 10-18-14Z/85DD3162-206C-44DB-A723-F4B933896B6E 2026-04-06 10-18-37Z.startup.log
+10:18:37.221 detox[14151] i moving "/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-nC1Naw.detox.log" to artifacts/ios.release.2026-04-06 10-18-14Z/85DD3162-206C-44DB-A723-F4B933896B6E 2026-04-06 10-18-37Z.startup.log
+10:18:37.339 detox[14150] i get
+  data: {"messageId":10,"params":{},"type":"setSyncSettingsDone"}
+10:18:37.339 detox[14150] i send
+  data: {
+    "messageId": 10,
+    "params": {},
+    "type": "setSyncSettingsDone"
+  }
+10:18:37.340 detox[14151] i get message
+  data: {"messageId":10,"params":{},"type":"setSyncSettingsDone"}
+   
+10:18:37.340 detox[14151] E enableSynchronization
+10:18:37.442 detox[14151] E afterAll
+10:18:37.442 detox[14151] B onRunDescribeFinish
+  args: ({"name":"Onboarding Flow — rotating roster happy path"})
+10:18:37.442 detox[14151] E onRunDescribeFinish
+10:18:37.442 detox[14151] E Onboarding Flow — rotating roster happy path
+10:18:37.443 detox[14151] B onRunDescribeFinish
+  args: ({"name":"ROOT_DESCRIBE_BLOCK"})
+10:18:37.443 detox[14151] E onRunDescribeFinish
+10:18:37.443 detox[14151] E run the tests
+10:18:37.450 detox[14151] B tear down environment
+10:18:37.451 detox[14151] B onBeforeCleanup
+  args: ()
+10:18:37.451 detox[14151] i saving FileArtifact to: artifacts/ios.release.2026-04-06 10-18-14Z/detox_pid_14151.json.log { append: true }
+10:18:37.451 detox[14151] i saving FileArtifact to: artifacts/ios.release.2026-04-06 10-18-14Z/detox_pid_14151.log { append: true }
+10:18:37.451 detox[14151] E onBeforeCleanup
+10:18:37.452 detox[14150] i get
+  data: {"type":"cleanup","params":{"stopRunner":false},"messageId":-49642}
+10:18:37.452 detox[14150] i send
+  data: {
+    "type": "cleanup",
+    "params": {
+      "stopRunner": false
+    },
+    "messageId": -49642
+  }
+10:18:37.452 detox[14151] i send message
+  data: {"type":"cleanup","params":{"stopRunner":false},"messageId":-49642}
+10:18:37.453 detox[14150] i get
+  data: {"type":"cleanupDone","params":{},"messageId":-49642}
+10:18:37.453 detox[14150] i send
+  data: {
+    "type": "cleanupDone",
+    "params": {},
+    "messageId": -49642
+  }
+10:18:37.453 detox[14151] i get message
+  data: {"type":"cleanupDone","params":{},"messageId":-49642}
+   
+10:18:37.454 detox[14150] i tester exited session 6e9728e5-ac50-0063-87a6-88b0c1ba4021
+10:18:37.454 detox[14150] i send
+  data: {
+    "type": "testerDisconnected",
+    "messageId": -1
+  }
+10:18:37.454 detox[14150] E connection :55758<->:55759
+10:18:37.454 detox[14150] i received event of :  deallocateDevice {
+  deviceCookie: {
+    id: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    udid: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    type: 'ios.simulator'
+  }
+}
+10:18:37.454 detox[14150] B free: 85DD3162-206C-44DB-A723-F4B933896B6E
+  data: {}
+10:18:37.454 detox[14151] i dispatching event to  primary-14150 /tmp/detox.primary-14150  :  deallocateDevice , {
+  deviceCookie: {
+    id: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    udid: '85DD3162-206C-44DB-A723-F4B933896B6E',
+    type: 'ios.simulator'
+  }
+}
+10:18:37.455 detox[14150] E free: 85DD3162-206C-44DB-A723-F4B933896B6E
+10:18:37.455 detox[14150] i dispatching event to socket  :  deallocateDeviceDone {}
+10:18:37.455 detox[14151] i ## received events ##
+10:18:37.455 detox[14151] i detected event deallocateDeviceDone {}
+10:18:37.455 detox[14151] E tear down environment
+10:18:37.455 detox[14151] E e2e/onboarding.test.ts
+10:18:37.458 detox[14150] i received event of :  reportTestResults {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/Shared/Ellie/e2e/onboarding.test.ts',
+      isPermanentFailure: false
+    }
+  ]
+}
+10:18:37.458 detox[14150] i dispatching event to socket  :  reportTestResultsDone {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/Shared/Ellie/e2e/onboarding.test.ts',
+      isPermanentFailure: false
+    }
+  ]
+}
+10:18:37.458 detox[14150] i broadcasting event to all known sockets listening to  /tmp/detox.primary-14150  :   sessionStateUpdate {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/Shared/Ellie/e2e/onboarding.test.ts',
+      isPermanentFailure: false
+    }
+  ]
+}
+10:18:37.458 detox[14151] i dispatching event to  primary-14150 /tmp/detox.primary-14150  :  reportTestResults , {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/Shared/Ellie/e2e/onboarding.test.ts',
+      testExecError: undefined,
+      isPermanentFailure: false
+    }
+  ]
+}
+10:18:37.458 detox[14151] i ## received events ##
+10:18:37.458 detox[14151] i detected event reportTestResultsDone {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/Shared/Ellie/e2e/onboarding.test.ts',
+      isPermanentFailure: false
+    }
+  ]
+}
+10:18:37.459 detox[14150] i socket disconnected secondary-14151
+10:18:37.459 detox[14151] i connection closed primary-14150 /tmp/detox.primary-14150 0 tries remaining of 0
+10:18:37.459 detox[14151] i secondary-14151 exceeded connection rety amount of  or stopRetrying flag set.
+10:18:37.570 detox[14150] E Command failed with exit code = 1:
+jest --config e2e/jest.config.js e2e/onboarding.test.ts
+10:18:37.570 detox[14150] B cleanup
+  args: ()
+10:18:37.571 detox[14150] i /usr/bin/xcrun simctl shutdown 85DD3162-206C-44DB-A723-F4B933896B6E
+10:18:37.571 detox[14150] i Shutting down 85DD3162-206C-44DB-A723-F4B933896B6E...
+10:18:37.758 detox[14150] i app exited session 6e9728e5-ac50-0063-87a6-88b0c1ba4021
+10:18:37.758 detox[14150] E connection :55758<->:55896
+10:18:40.707 detox[14150] i 85DD3162-206C-44DB-A723-F4B933896B6E shut down
+10:18:40.709 detox[14150] E cleanup
+10:18:40.710 detox[14150] i Detox server has been closed gracefully
+10:18:40.712 detox[14150] E node_modules/.bin/detox test e2e/onboarding.test.ts --configuration ios.release --cleanup --record-logs all --take-screenshots failing

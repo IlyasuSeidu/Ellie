@@ -1,0 +1,827 @@
+{
+  "date": "2026-03-24",
+  "humanDate": "March 24, 2026",
+  "repository": "Ellie",
+  "branch": "main",
+  "remote": "https://github.com/IlyasuSeidu/Ellie.git",
+  "window": {
+    "mode": "rollover-time",
+    "rolloverTime": "20:30",
+    "since": "2026-03-23 20:30:00",
+    "until": "2026-03-24 20:29:59"
+  },
+  "selectedAngles": [
+    "unexpected-challenge",
+    "emotional-moment",
+    "design-tradeoff",
+    "before-after",
+    "audience-choice"
+  ],
+  "platformAngles": {
+    "reels": ["micro-drama", "before-after"],
+    "tiktok": ["stakes-consequence", "build-confession"],
+    "shorts": ["stakes-consequence", "wrong-assumption"],
+    "carousel": ["wrong-assumption", "before-after"],
+    "linkedin": ["founder-opinion", "mini-case-study"],
+    "x": ["founder-opinion", "stakes-consequence"],
+    "threads": ["user-empathy", "audience-choice"]
+  },
+  "codebaseContext": {
+    "storyMode": "onboarding-momentum",
+    "storyHighlights": [
+      "PaywallScreen.tsx is part of the current codebase around this feature area.",
+      "Aha moment that turns setup effort into a visible long-range schedule payoff.",
+      "Roster-type split that distinguishes rotating patterns from FIFO reality before setup gets deeper.",
+      "guided onboarding path",
+      "swipeable shift-pattern cards",
+      "calendar-based shift setup"
+    ],
+    "touchedFiles": [
+      {
+        "path": "src/screens/subscription/PaywallScreen.tsx",
+        "role": "touched",
+        "summary": "PaywallScreen.tsx is part of the current codebase around this feature area.",
+        "signals": [
+          "country-selection",
+          "physics-motion",
+          "onboarding-state",
+          "localized-copy",
+          "shift-math",
+          "calendar-setup"
+        ],
+        "relatedFiles": [
+          "src/services/RevenueCatRuntime.ts",
+          "src/utils/theme.ts",
+          "src/utils/analytics.ts"
+        ]
+      },
+      {
+        "path": "src/screens/onboarding/premium/PremiumAhaMomentScreen.tsx",
+        "role": "touched",
+        "summary": "Aha moment that turns setup effort into a visible long-range schedule payoff.",
+        "signals": [
+          "guided-onboarding-path",
+          "country-selection",
+          "physics-motion",
+          "onboarding-state",
+          "localized-copy",
+          "shift-math",
+          "service-layer",
+          "calendar-setup",
+          "proof-through-tests"
+        ],
+        "relatedFiles": [
+          "src/contexts/OnboardingContext.tsx",
+          "src/contexts/VoiceAssistantContext.tsx",
+          "src/utils/shiftUtils.ts"
+        ]
+      },
+      {
+        "path": "src/screens/onboarding/premium/PremiumRosterTypeScreen.tsx",
+        "role": "touched",
+        "summary": "Roster-type split that distinguishes rotating patterns from FIFO reality before setup gets deeper.",
+        "signals": [
+          "guided-onboarding-path",
+          "country-selection",
+          "swipeable-pattern-cards",
+          "physics-motion",
+          "onboarding-state",
+          "localized-copy",
+          "shift-math",
+          "calendar-setup",
+          "proof-through-tests"
+        ],
+        "relatedFiles": [
+          "src/utils/theme.ts",
+          "src/components/onboarding/premium/ProgressHeader.tsx",
+          "src/components/onboarding/premium/PremiumButton.tsx"
+        ]
+      },
+      {
+        "path": "src/screens/onboarding/premium/PremiumShiftPatternScreen.tsx",
+        "role": "touched",
+        "summary": "Roster-pattern choice rebuilt into swipeable cards so people can recognize their schedule faster.",
+        "signals": [
+          "guided-onboarding-path",
+          "swipeable-pattern-cards",
+          "physics-motion",
+          "onboarding-state",
+          "localized-copy",
+          "shift-math",
+          "calendar-setup",
+          "proof-through-tests"
+        ],
+        "relatedFiles": [
+          "src/utils/theme.ts",
+          "src/components/onboarding/premium/ProgressHeader.tsx",
+          "src/components/onboarding/premium/PremiumButton.tsx"
+        ]
+      },
+      {
+        "path": "src/screens/onboarding/premium/PremiumShiftSystemScreen.tsx",
+        "role": "touched",
+        "summary": "Shift-system choice that separates two-shift and three-shift realities early.",
+        "signals": [
+          "guided-onboarding-path",
+          "swipeable-pattern-cards",
+          "physics-motion",
+          "onboarding-state",
+          "localized-copy",
+          "shift-math",
+          "calendar-setup",
+          "proof-through-tests"
+        ],
+        "relatedFiles": [
+          "src/utils/theme.ts",
+          "src/components/onboarding/premium/ProgressHeader.tsx",
+          "src/components/onboarding/premium/PremiumButton.tsx"
+        ]
+      },
+      {
+        "path": "src/screens/onboarding/premium/PremiumWelcomeScreen.tsx",
+        "role": "touched",
+        "summary": "First screen that frames Ellie as a premium shift companion from the opening moment.",
+        "signals": [
+          "physics-motion",
+          "localized-copy",
+          "shift-math",
+          "service-layer",
+          "premium-first-impression"
+        ],
+        "relatedFiles": [
+          "src/utils/theme.ts",
+          "src/components/onboarding/premium/index.ts",
+          "src/navigation/OnboardingNavigator.tsx"
+        ]
+      }
+    ],
+    "relatedFiles": [
+      {
+        "path": "src/services/RevenueCatRuntime.ts",
+        "role": "related",
+        "summary": "RevenueCatRuntime.ts is part of the current codebase around this feature area.",
+        "signals": ["service-layer"],
+        "relatedFiles": []
+      },
+      {
+        "path": "src/utils/theme.ts",
+        "role": "related",
+        "summary": "Theme Configuration Comprehensive theme system with colors, typography, spacing, and design tokens.",
+        "signals": ["calendar-setup"],
+        "relatedFiles": []
+      },
+      {
+        "path": "src/utils/analytics.ts",
+        "role": "related",
+        "summary": "analytics.ts is part of the current codebase around this feature area.",
+        "signals": ["validated-input", "calendar-setup"],
+        "relatedFiles": ["src/utils/logger.ts"]
+      },
+      {
+        "path": "src/contexts/OnboardingContext.tsx",
+        "role": "related",
+        "summary": "OnboardingContext Manages state across all premium onboarding flow screens.",
+        "signals": [
+          "country-selection",
+          "onboarding-state",
+          "localized-copy",
+          "shift-math",
+          "service-layer",
+          "calendar-setup"
+        ],
+        "relatedFiles": [
+          "src/contexts/OnboardingContext.tsx",
+          "src/types/index.ts",
+          "src/services/AsyncStorageService.ts"
+        ]
+      }
+    ]
+  },
+  "generation": {
+    "provider": "anthropic",
+    "usedAnthropic": true,
+    "model": "claude-sonnet-4-6",
+    "refinedFiles": [],
+    "failedFiles": [
+      {
+        "path": "03-hero-short.md",
+        "error": "fetch failed"
+      },
+      {
+        "path": "04-instagram-carousel.md",
+        "error": "fetch failed"
+      },
+      {
+        "path": "05-linkedin-post.md",
+        "error": "fetch failed"
+      },
+      {
+        "path": "06-x-thread.md",
+        "error": "fetch failed"
+      },
+      {
+        "path": "ready-to-post/instagram-reels/post.md",
+        "error": "fetch failed"
+      },
+      {
+        "path": "ready-to-post/tiktok/post.md",
+        "error": "fetch failed"
+      },
+      {
+        "path": "ready-to-post/youtube-shorts/post.md",
+        "error": "fetch failed"
+      },
+      {
+        "path": "ready-to-post/instagram-carousel/post.md",
+        "error": "fetch failed"
+      },
+      {
+        "path": "ready-to-post/linkedin/post.md",
+        "error": "fetch failed"
+      },
+      {
+        "path": "ready-to-post/x/post.md",
+        "error": "fetch failed"
+      },
+      {
+        "path": "ready-to-post/threads/post.md",
+        "error": "fetch failed"
+      }
+    ],
+    "requestCount": 0,
+    "usage": {
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0
+    }
+  },
+  "metaFocus": {
+    "id": "clarity",
+    "label": "product clarity",
+    "explanation": "how the product earns understanding, trust, and attention quickly"
+  },
+  "metaArc": {
+    "series": "The First Minute",
+    "title": "making the first minute easier to trust",
+    "promise": "show how tiny product choices change whether people understand the app fast enough to stay",
+    "character": "someone deciding in the first minute whether this product deserves their attention"
+  },
+  "dominantAction": "update",
+  "totals": {
+    "commits": 11,
+    "filesChanged": 47,
+    "additions": 438,
+    "deletions": 128,
+    "testsTouched": 11,
+    "localeCount": 11
+  },
+  "topThemes": [
+    {
+      "id": "design",
+      "label": "Design Polish",
+      "publicLabel": "visual trust",
+      "score": 67
+    },
+    {
+      "id": "onboarding",
+      "label": "Onboarding",
+      "publicLabel": "first-use clarity",
+      "score": 59
+    },
+    {
+      "id": "testing",
+      "label": "Testing",
+      "publicLabel": "delivery confidence",
+      "score": 58
+    },
+    {
+      "id": "localization",
+      "label": "Localization",
+      "publicLabel": "language trust",
+      "score": 30
+    }
+  ],
+  "topCategories": [
+    {
+      "id": "i18n",
+      "label": "locales",
+      "count": 22
+    },
+    {
+      "id": "screens",
+      "label": "screens",
+      "count": 13
+    },
+    {
+      "id": "tests",
+      "label": "tests",
+      "count": 11
+    },
+    {
+      "id": "components",
+      "label": "components",
+      "count": 1
+    }
+  ],
+  "allLocales": ["af", "ar", "en", "es", "fr", "hi", "id", "pt-BR", "ru", "zh-CN", "zu"],
+  "commits": [
+    {
+      "hash": "365388679e9779e73b3f168c3b1923c8f0b93c98",
+      "shortHash": "3653886",
+      "authoredAt": "2026-03-24T05:39:07+00:00",
+      "subject": "Harden paywall CTA for long locales",
+      "action": "update",
+      "score": 22,
+      "added": 63,
+      "deleted": 21,
+      "filesChanged": 13,
+      "testsTouched": 1,
+      "localesTouched": ["af", "ar", "en", "es", "fr", "hi", "id", "pt-BR", "ru", "zh-CN", "zu"],
+      "files": [
+        {
+          "path": "src/i18n/locales/af/common.json",
+          "added": 1,
+          "deleted": 1,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/ar/common.json",
+          "added": 1,
+          "deleted": 1,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/en/common.json",
+          "added": 1,
+          "deleted": 1,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/es/common.json",
+          "added": 1,
+          "deleted": 1,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/fr/common.json",
+          "added": 1,
+          "deleted": 1,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/hi/common.json",
+          "added": 1,
+          "deleted": 1,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/id/common.json",
+          "added": 1,
+          "deleted": 1,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/pt-BR/common.json",
+          "added": 1,
+          "deleted": 1,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/ru/common.json",
+          "added": 1,
+          "deleted": 1,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/zh-CN/common.json",
+          "added": 1,
+          "deleted": 1,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/zu/common.json",
+          "added": 1,
+          "deleted": 1,
+          "category": "i18n"
+        },
+        {
+          "path": "src/screens/subscription/PaywallScreen.tsx",
+          "added": 28,
+          "deleted": 8,
+          "category": "screens"
+        },
+        {
+          "path": "src/screens/subscription/__tests__/PaywallScreen.test.tsx",
+          "added": 24,
+          "deleted": 2,
+          "category": "tests"
+        }
+      ]
+    },
+    {
+      "hash": "d17cceaf89a410977f0f0457a4de011af33b8c27",
+      "shortHash": "d17ccea",
+      "authoredAt": "2026-03-24T00:29:24+00:00",
+      "subject": "Shorten aha moment trial CTA copy",
+      "action": "update",
+      "score": 18,
+      "added": 13,
+      "deleted": 13,
+      "filesChanged": 13,
+      "testsTouched": 1,
+      "localesTouched": ["af", "ar", "en", "es", "fr", "hi", "id", "pt-BR", "ru", "zh-CN", "zu"],
+      "files": [
+        {
+          "path": "src/i18n/locales/af/onboarding.json",
+          "added": 1,
+          "deleted": 1,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/ar/onboarding.json",
+          "added": 1,
+          "deleted": 1,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/en/onboarding.json",
+          "added": 1,
+          "deleted": 1,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/es/onboarding.json",
+          "added": 1,
+          "deleted": 1,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/fr/onboarding.json",
+          "added": 1,
+          "deleted": 1,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/hi/onboarding.json",
+          "added": 1,
+          "deleted": 1,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/id/onboarding.json",
+          "added": 1,
+          "deleted": 1,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/pt-BR/onboarding.json",
+          "added": 1,
+          "deleted": 1,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/ru/onboarding.json",
+          "added": 1,
+          "deleted": 1,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/zh-CN/onboarding.json",
+          "added": 1,
+          "deleted": 1,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/zu/onboarding.json",
+          "added": 1,
+          "deleted": 1,
+          "category": "i18n"
+        },
+        {
+          "path": "src/screens/onboarding/premium/PremiumAhaMomentScreen.tsx",
+          "added": 1,
+          "deleted": 1,
+          "category": "screens"
+        },
+        {
+          "path": "src/screens/onboarding/premium/__tests__/PremiumAhaMomentScreen.test.tsx",
+          "added": 1,
+          "deleted": 1,
+          "category": "tests"
+        }
+      ]
+    },
+    {
+      "hash": "3f06dcc993f05b4a04f98c4d237acef16c89b707",
+      "shortHash": "3f06dcc",
+      "authoredAt": "2026-03-24T06:38:53+00:00",
+      "subject": "Contain onboarding card hints in long locales",
+      "action": "update",
+      "score": 18,
+      "added": 239,
+      "deleted": 63,
+      "filesChanged": 8,
+      "testsTouched": 4,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "src/components/onboarding/premium/SwipeHintLabel.tsx",
+          "added": 13,
+          "deleted": 1,
+          "category": "components"
+        },
+        {
+          "path": "src/components/onboarding/premium/__tests__/SwipeHintLabel.test.tsx",
+          "added": 12,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/screens/onboarding/premium/PremiumRosterTypeScreen.tsx",
+          "added": 4,
+          "deleted": 0,
+          "category": "screens"
+        },
+        {
+          "path": "src/screens/onboarding/premium/PremiumShiftPatternScreen.tsx",
+          "added": 6,
+          "deleted": 2,
+          "category": "screens"
+        },
+        {
+          "path": "src/screens/onboarding/premium/PremiumShiftSystemScreen.tsx",
+          "added": 4,
+          "deleted": 0,
+          "category": "screens"
+        },
+        {
+          "path": "src/screens/onboarding/premium/__tests__/__snapshots__/PremiumFIFOPhaseSelectorScreen.test.tsx.snap",
+          "added": 45,
+          "deleted": 15,
+          "category": "tests"
+        },
+        {
+          "path": "src/screens/onboarding/premium/__tests__/__snapshots__/PremiumRosterTypeScreen.test.tsx.snap",
+          "added": 55,
+          "deleted": 15,
+          "category": "tests"
+        },
+        {
+          "path": "src/screens/onboarding/premium/__tests__/__snapshots__/fifo-onboarding.visual.test.tsx.snap",
+          "added": 100,
+          "deleted": 30,
+          "category": "tests"
+        }
+      ]
+    },
+    {
+      "hash": "17a8c5bca010f558c6e78b72e7da73fc035feefe",
+      "shortHash": "17a8c5b",
+      "authoredAt": "2026-03-24T06:05:20+00:00",
+      "subject": "Make welcome layout resilient to tall locales",
+      "action": "update",
+      "score": 11,
+      "added": 21,
+      "deleted": 4,
+      "filesChanged": 2,
+      "testsTouched": 1,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "src/screens/onboarding/premium/PremiumWelcomeScreen.tsx",
+          "added": 17,
+          "deleted": 4,
+          "category": "screens"
+        },
+        {
+          "path": "src/screens/onboarding/premium/__tests__/PremiumWelcomeScreen.test.tsx",
+          "added": 4,
+          "deleted": 0,
+          "category": "tests"
+        }
+      ]
+    },
+    {
+      "hash": "151027e93d95f2296f8e3979eaa3ab893d1c1d89",
+      "shortHash": "151027e",
+      "authoredAt": "2026-03-23T23:27:12+00:00",
+      "subject": "Wrap welcome trust copy for long locales",
+      "action": "update",
+      "score": 9,
+      "added": 34,
+      "deleted": 10,
+      "filesChanged": 1,
+      "testsTouched": 0,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "src/screens/onboarding/premium/PremiumWelcomeScreen.tsx",
+          "added": 34,
+          "deleted": 10,
+          "category": "screens"
+        }
+      ]
+    },
+    {
+      "hash": "c6baf43022cbb174f4a4eecdff7623f4d4a05393",
+      "shortHash": "c6baf43",
+      "authoredAt": "2026-03-24T00:10:13+00:00",
+      "subject": "Make shift time CTA resilient to long locales",
+      "action": "update",
+      "score": 9,
+      "added": 25,
+      "deleted": 4,
+      "filesChanged": 3,
+      "testsTouched": 2,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "src/screens/onboarding/premium/PremiumShiftTimeInputScreen.tsx",
+          "added": 17,
+          "deleted": 4,
+          "category": "screens"
+        },
+        {
+          "path": "src/screens/onboarding/premium/__tests__/PremiumShiftTimeInputScreen.standardPatternStages.test.tsx",
+          "added": 4,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/screens/onboarding/premium/__tests__/PremiumShiftTimeInputScreen.test.tsx",
+          "added": 4,
+          "deleted": 0,
+          "category": "tests"
+        }
+      ]
+    },
+    {
+      "hash": "cd6786de4ef4fc40603ccbd34720a47698552b4e",
+      "shortHash": "cd6786d",
+      "authoredAt": "2026-03-23T23:44:36+00:00",
+      "subject": "Use safe area spacing for pain hook CTA",
+      "action": "update",
+      "score": 8,
+      "added": 14,
+      "deleted": 5,
+      "filesChanged": 2,
+      "testsTouched": 1,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "src/screens/onboarding/premium/PremiumPainHookScreen.tsx",
+          "added": 10,
+          "deleted": 5,
+          "category": "screens"
+        },
+        {
+          "path": "src/screens/onboarding/premium/__tests__/PremiumPainHookScreen.test.tsx",
+          "added": 4,
+          "deleted": 0,
+          "category": "tests"
+        }
+      ]
+    },
+    {
+      "hash": "f10932730037528245cc29ebad5df213b8af3fad",
+      "shortHash": "f109327",
+      "authoredAt": "2026-03-23T23:58:57+00:00",
+      "subject": "Make start date CTA resilient to long locales",
+      "action": "update",
+      "score": 8,
+      "added": 23,
+      "deleted": 5,
+      "filesChanged": 2,
+      "testsTouched": 1,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "src/screens/onboarding/premium/PremiumStartDateScreen.tsx",
+          "added": 19,
+          "deleted": 5,
+          "category": "screens"
+        },
+        {
+          "path": "src/screens/onboarding/premium/__tests__/PremiumStartDateScreen.test.tsx",
+          "added": 4,
+          "deleted": 0,
+          "category": "tests"
+        }
+      ]
+    },
+    {
+      "hash": "f6f19b404ac70c7beb3d17c0edb6fb26b52140ae",
+      "shortHash": "f6f19b4",
+      "authoredAt": "2026-03-23T22:10:20+00:00",
+      "subject": "Keep completion CTA on one line",
+      "action": "update",
+      "score": 5,
+      "added": 1,
+      "deleted": 0,
+      "filesChanged": 1,
+      "testsTouched": 0,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "src/screens/onboarding/premium/PremiumCompletionScreen.tsx",
+          "added": 1,
+          "deleted": 0,
+          "category": "screens"
+        }
+      ]
+    },
+    {
+      "hash": "acf2d93e878bd22d4f0f64c02e9a1c2f68f47d0b",
+      "shortHash": "acf2d93",
+      "authoredAt": "2026-03-23T23:34:22+00:00",
+      "subject": "Increase pain hook CTA clearance",
+      "action": "update",
+      "score": 5,
+      "added": 4,
+      "deleted": 3,
+      "filesChanged": 1,
+      "testsTouched": 0,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "src/screens/onboarding/premium/PremiumPainHookScreen.tsx",
+          "added": 4,
+          "deleted": 3,
+          "category": "screens"
+        }
+      ]
+    },
+    {
+      "hash": "28541fd176842e2e41f50a460aeed0803448b7ec",
+      "shortHash": "28541fd",
+      "authoredAt": "2026-03-24T00:19:11+00:00",
+      "subject": "Keep aha moment CTA on one line",
+      "action": "update",
+      "score": 5,
+      "added": 1,
+      "deleted": 0,
+      "filesChanged": 1,
+      "testsTouched": 0,
+      "localesTouched": [],
+      "files": [
+        {
+          "path": "src/screens/onboarding/premium/PremiumAhaMomentScreen.tsx",
+          "added": 1,
+          "deleted": 0,
+          "category": "screens"
+        }
+      ]
+    }
+  ],
+  "topMoments": [
+    {
+      "rank": 1,
+      "hash": "3653886",
+      "subject": "Harden paywall CTA for long locales",
+      "slug": "01-harden-paywall-cta-for-long-locales",
+      "publicLabel": "the pricing moment",
+      "focusText": "language trust and delivery confidence",
+      "categoryText": "locales and screens",
+      "tension": "The pricing moment looks small until you notice where people hesitate.",
+      "lesson": "Treat the visible screen and the underlying state as one system.",
+      "evidence": "11 languages tightened",
+      "proof": "11 languages tightened",
+      "testsTouched": 1,
+      "localesTouched": ["af", "ar", "en", "es", "fr", "hi", "id", "pt-BR", "ru", "zh-CN", "zu"],
+      "score": 22
+    },
+    {
+      "rank": 2,
+      "hash": "3f06dcc",
+      "subject": "Contain onboarding card hints in long locales",
+      "slug": "02-contain-onboarding-card-hints-in-long-locales",
+      "publicLabel": "the language experience",
+      "focusText": "first-use clarity and delivery confidence",
+      "categoryText": "tests and screens",
+      "tension": "The language experience looks small until you notice where people hesitate.",
+      "lesson": "Treat the visible screen and the underlying state as one system.",
+      "evidence": "the language experience was reworked to feel clearer in motion",
+      "proof": "the language experience was reworked to feel clearer in motion",
+      "testsTouched": 4,
+      "localesTouched": [],
+      "score": 18
+    },
+    {
+      "rank": 3,
+      "hash": "17a8c5b",
+      "subject": "Make welcome layout resilient to tall locales",
+      "slug": "03-make-welcome-layout-resilient-to-tall-locales",
+      "publicLabel": "the welcome moment",
+      "focusText": "delivery confidence and first-use clarity",
+      "categoryText": "screens and tests",
+      "tension": "The welcome moment looks small until you notice where people hesitate.",
+      "lesson": "Treat the visible screen and the underlying state as one system.",
+      "evidence": "the welcome moment was reworked to feel clearer in motion",
+      "proof": "the welcome moment was reworked to feel clearer in motion",
+      "testsTouched": 1,
+      "localesTouched": [],
+      "score": 11
+    }
+  ]
+}

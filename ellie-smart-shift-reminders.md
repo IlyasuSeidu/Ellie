@@ -1757,3 +1757,329 @@ scheduleSmartReminder: jest.fn().mockResolvedValue('mock-notif-id'),
 9. **Reschedule on shift change** — User modifies shift pattern in onboarding → `useSmartReminders` detects fingerprint change → orchestrator cancels old + schedules new set.
 
 10. **No duplicate scheduling** — Call orchestrator twice in quick succession → only one set of notifications exists in Firestore (cancel-all + reschedule is idempotent).
+
+---
+
+## Deferred Implementation: What's Scaffolded vs Complete
+
+Two pieces of the system are intentionally left incomplete in this plan. Both are called out here in full so nothing falls through the cracks during implementation.
+
+---
+
+### A. Quiet Hours — Time Selection UI (TODO)
+
+**Status: computation complete, picker UI not wired.**
+
+The quiet-hours logic is fully implemented end-to-end on the computation side:
+
+- `isInQuietHours()` correctly handles same-day and overnight windows (e.g. 22:00–06:00)
+- `_applyQuietHours()` postpones any non-critical event that falls inside the window to `quietHoursEnd`
+- The `quietHoursEnabled` toggle renders in `SmartRemindersPanel` and expands to show two time chips
+- The chips display the current `quietHoursStart` / `quietHoursEnd` values with moon/sun icons
+
+**What is missing:** Both chip `onPress` handlers are empty stubs:
+
+```tsx
+// "From" chip — currently does nothing:
+onPress={() => {
+  /* TODO: open TimePickerModal with value=quietHoursStart,
+     onChange=(t) => applyUpdate({ quietHoursStart: t }) */
+}}
+
+// "Until" chip — currently does nothing:
+onPress={() => {
+  /* TODO: open TimePickerModal with value=quietHoursEnd,
+     onChange=(t) => applyUpdate({ quietHoursEnd: t }) */
+}}
+```
+
+Without the picker, users are stuck at the default window (22:00–06:00) and cannot change it.
+
+---
+
+#### Full implementation spec
+
+**Component to reuse:** `TimePickerModal` at `src/components/onboarding/premium/TimePickerModal.tsx` — the same one used by `ShiftSettingsPanel`. It wraps `@react-native-community/datetimepicker` with the app's dark theme and already handles `HH:MM` strings as input/output.
+
+**Step 1 — Add local state to `SmartRemindersPanel`:**
+
+```typescript
+const [quietPickerTarget, setQuietPickerTarget] = useState<'start' | 'end' | null>(null);
+```
+
+**Step 2 — Wire the chip `onPress` handlers:**
+
+```tsx
+// "From" chip:
+onPress={() => {
+  Haptics.selectionAsync();
+  setQuietPickerTarget('start');
+}}
+
+// "Until" chip:
+onPress={() => {
+  Haptics.selectionAsync();
+  setQuietPickerTarget('end');
+}}
+```
+
+**Step 3 — Render the modal (inside `Animated.View`, after the quiet time row):**
+
+```tsx
+<TimePickerModal
+  visible={quietPickerTarget !== null}
+  value={quietPickerTarget === 'start' ? settings.quietHoursStart : settings.quietHoursEnd}
+  onConfirm={(hhmm: string) => {
+    if (quietPickerTarget === 'start') {
+      applyUpdate({ quietHoursStart: hhmm });
+    } else {
+      applyUpdate({ quietHoursEnd: hhmm });
+    }
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    setQuietPickerTarget(null);
+  }}
+  onDismiss={() => setQuietPickerTarget(null)}
+/>
+```
+
+**Step 4 — Show an "overnight window" label below the chips:**
+
+When `quietHoursStart > quietHoursEnd` the window wraps midnight. Show a confirming label so the user knows the span includes overnight sleep:
+
+```tsx
+{
+  settings.quietHoursEnabled &&
+    (() => {
+      const startMin = parseHHMM(settings.quietHoursStart); // re-use helper or inline
+      const endMin = parseHHMM(settings.quietHoursEnd);
+      const isOvernight = startMin > endMin;
+      const spanMin = isOvernight ? 24 * 60 - startMin + endMin : endMin - startMin;
+      const spanH = Math.round(spanMin / 60);
+
+      return isOvernight ? (
+        <Text style={panelStyles.quietWindowLabel}>Overnight window · {spanH} h</Text>
+      ) : null;
+    })();
+}
+```
+
+Add the style:
+
+```typescript
+quietWindowLabel: {
+  paddingHorizontal: theme.spacing.lg,
+  paddingBottom: theme.spacing.xs,
+  fontSize: 11,
+  color: theme.colors.dust,
+  fontStyle: 'italic',
+},
+```
+
+---
+
+#### UX decisions (backed by research)
+
+| Decision                                                        | Rationale                                                                                                                                                                                 |
+| --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Native time picker (wheel on iOS, clock face on Android)        | Familiar, locale-aware, thumb-friendly — preferred over custom drum-roll                                                                                                                  |
+| Modal, not inline                                               | Time entry is a focused action; a modal prevents accidental edits while scrolling                                                                                                         |
+| Chips showing current values                                    | Users see the window at a glance without opening settings; tapping is obvious                                                                                                             |
+| `moon-outline` / `sunny-outline` icons on chips                 | Communicates "night in / morning out" without text labels                                                                                                                                 |
+| Overnight label below chips                                     | Confirms the wrap-midnight behaviour — prevents confusion when start > end                                                                                                                |
+| Haptic `selectionAsync` on open, `notificationAsync` on confirm | iOS-native feel; matches system behaviour for time pickers                                                                                                                                |
+| Minimum window of 30 min                                        | If `start === end`, silently set `end = start + 30 min`. Prevents a zero-width window that would suppress all notifications. Add a brief inline info label if this auto-correction fires. |
+| 12h / 24h format                                                | `@react-native-community/datetimepicker` respects the device locale automatically — no extra code needed                                                                                  |
+
+---
+
+#### Why this is deferred and not blocked
+
+The quiet-hours feature works correctly with the default 22:00–06:00 window even without the picker. Users who install the app get sensible defaults. The only gap is customisation — the window is fixed until the picker is wired. The deferred work is isolated entirely to `SmartRemindersPanel.tsx`: two `onPress` callbacks, one `useState`, one `<TimePickerModal />` render, and the overnight label.
+
+---
+
+### B. Sleep-Aware Reminders — Scaffolded, Not Fully Wired
+
+**Status: computation complete, data source not connected.**
+
+The fatigue-aware computation is fully implemented:
+
+- `fatigueAwareReminders` toggle in `SmartReminderSettings` (and shown in Profile UI)
+- `buildSchedule()` accepts `fatigueRisk?: SleepInsights['fatigueRisk']`
+- When `fatigueRisk === 'high' | 'critical'` → prep reminder fires 30 min earlier
+- When `fatigueRisk === 'critical'` + night shift → `FATIGUE_ALERT` fires 2 h before start, marked `isCritical: true`
+
+**What is hardcoded to `null` right now — two places:**
+
+```typescript
+// src/hooks/useSmartReminders.ts:917
+sleepInsights: null, // TODO: pass sleepInsights from SleepContext after sleep feature lands
+
+// src/components/profile/SmartRemindersPanel.tsx:1326
+sleepInsights: null, // TODO: connect to SleepContext
+```
+
+The `fatigueAwareReminders` toggle is visible and persisted, but toggling it has no observable effect until real sleep data flows in. All reminders behave as if `fatigueRisk === undefined` (i.e. no fatigue adjustment).
+
+---
+
+#### Full wiring spec
+
+**1. `SleepInsightsService`** — new file `src/services/SleepInsightsService.ts`
+
+Reads raw sleep samples from the device health store and returns a `SleepInsights` value.
+
+- **iOS**: HealthKit via `react-native-health`. Query `HKCategoryTypeIdentifierSleepAnalysis` samples for the window `yesterday 12:00 → now`. Sum duration of samples where value is `HKCategoryValueSleepAnalysis.asleepCore | asleepREM | asleepDeep`. Exclude `inBed` and `awake`.
+- **Android**: Health Connect via `react-native-health-connect`. Read `SleepSessionRecord` for the same window. Sum total sleep duration across sessions.
+- Fatigue classification from total sleep minutes (evidence-based, mirrors shift-work fatigue research):
+
+```typescript
+function classifyFatigue(totalSleepMinutes: number): FatigueRiskLevel {
+  if (totalSleepMinutes < 240) return 'critical'; // < 4 h
+  if (totalSleepMinutes < 360) return 'high'; // 4–6 h
+  if (totalSleepMinutes < 420) return 'moderate'; // 6–7 h
+  return 'low'; // ≥ 7 h
+}
+```
+
+- Requires `NSHealthShareUsageDescription` in `ios/Ellie/Info.plist` and a HealthKit authorization request before the first query. On Android requires `android.permission.health.READ_SLEEP` (Health Connect).
+- If the user denies permission or the platform has no sleep data, return `null` — the orchestrator treats `null` as no-adjustment and does not throw.
+
+**2. `SleepContext`** — new file `src/contexts/SleepContext.tsx`
+
+```typescript
+interface SleepContextValue {
+  insights: SleepInsights | null;
+  loading: boolean;
+  refresh: () => Promise<void>;
+}
+```
+
+- On mount and on app foreground (`AppState === 'active'`): call `SleepInsightsService.getInsights()` → store in state
+- Exposes `useSleep()` hook
+- Mount it in `App.tsx` wrapping `AppContent` (alongside existing providers)
+
+**3. Connect `useSmartReminders`** — two changes:
+
+Replace the `null`:
+
+```typescript
+// BEFORE:
+sleepInsights: null,
+
+// AFTER:
+const { insights: sleepInsights } = useSleep();
+// ...
+sleepInsights,
+```
+
+Add `fatigueRisk` to the orchestrator fingerprint so a sleep-data change triggers a reschedule:
+
+```typescript
+const fingerprint = JSON.stringify({
+  patternType: onboardingData.patternType,
+  startDate:
+    onboardingData.startDate instanceof Date
+      ? onboardingData.startDate.toISOString()
+      : onboardingData.startDate,
+  phaseOffset: onboardingData.phaseOffset,
+  fatigueRisk: sleepInsights?.fatigueRisk ?? 'none', // ADD — ensures reschedule on fatigue change
+});
+```
+
+**4. Connect `SmartRemindersPanel`** — same replacement as above:
+
+```typescript
+const { insights: sleepInsights } = useSleep();
+// ...
+sleepInsights,
+```
+
+**5. iOS interruption level for critical alerts** — update `NotificationService.scheduleSmartReminder`:
+
+iOS 15+ introduced four interruption levels. When Sleep Focus is active on the user's device (which is likely during the night before a shift), only `timeSensitive` and `critical` notifications break through. `FATIGUE_ALERT` is the one notification that genuinely must wake the user — it already has `isCritical: true`. Set the interruption level accordingly:
+
+```typescript
+import { Platform } from 'react-native';
+
+const content: NotificationContent = {
+  title: event.title,
+  body: event.body,
+  data: event.data,
+  sound: 'default',
+  badge: 1,
+  // Break through iOS Sleep Focus for critical safety alerts
+  ...(event.isCritical && Platform.OS === 'ios' ? { interruptionLevel: 'timeSensitive' } : {}),
+};
+```
+
+`timeSensitive` (not `critical`) is the right choice — `critical` requires a paid Apple entitlement and is reserved for medical/safety emergencies. `timeSensitive` is sufficient to bypass Sleep Focus and is available to all apps. This field is supported in `expo-notifications` ≥ 0.20 via the `NotificationContentInput` type.
+
+For non-critical events (all other reminder types), omit the field — they will be held and delivered after Sleep Focus ends, which is the correct behaviour and respects the user's DND intent.
+
+---
+
+#### Why this is deferred and not blocked
+
+The computation layer is complete and correct. When `sleepInsights` is `null`, `buildSchedule` silently skips fatigue adjustments — no errors, no regressions. The `fatigueAwareReminders` toggle is shown in the UI so users can opt in before sleep tracking is built; the setting will activate automatically once `SleepContext` is connected. The deferred work requires a new native dependency (`react-native-health` or `react-native-health-connect`), a new permission prompt flow, and a new context — scoped entirely to the sleep tracking feature, with no changes needed in `SmartReminderService` itself.
+
+---
+
+### C. Auth / Stable User Identity for Reminder Scheduling (RESOLVED)
+
+**Status: implemented in backend runtime.**
+
+The reminder backend now uses:
+
+- `useAuth().user?.uid` when the user is signed in
+- a persisted anonymous reminder ID in AsyncStorage when no auth user exists yet
+
+That means reminder scheduling no longer depends on `onboardingData.name`, and a user changing their display name no longer changes the reminder partition key in Firestore.
+
+**Implemented behavior:**
+
+- `useSmartReminders` resolves `userId = user?.uid ?? <persistent anonymous reminder id>`
+- anonymous installs keep a stable reminder identity across launches
+- authenticated users schedule under their Firebase UID
+- the hook fingerprint includes reminder settings, so a settings change reschedules cleanly
+- `user?.uid` is already part of the hook dependencies, so auth-state changes rerun scheduling
+
+This backend gap is no longer deferred.
+
+---
+
+### D. UI Still To Build (Excluded From This Backend-Only Pass)
+
+**Status: intentionally not implemented in this pass.**
+
+The following UI work is still required to expose the smart-reminder backend to users:
+
+1. **`src/components/profile/SmartRemindersPanel.tsx`**
+   - full Smart Reminders settings panel
+   - loads/saves `SmartReminderSettings`
+   - shows toggles, segmented controls, quiet-hours section
+   - includes:
+     - `Send test notification`
+     - `Reschedule all reminders`
+
+2. **`src/screens/main/ProfileScreen.tsx`**
+   - insert the Smart Reminders section after `WorkStatsSummary`
+   - render the `SmartRemindersPanel`
+
+3. **Quiet-hours picker wiring inside `SmartRemindersPanel.tsx`**
+   - two tappable time chips
+   - reuse `TimePickerModal`
+   - overnight-window helper label
+
+4. **Profile-facing reminder copy and UX polish**
+   - section header
+   - row labels / sublabels
+   - FIFO-only toggle visibility
+   - loading / save / reschedule feedback states
+
+5. **Manual notification-management affordances**
+   - a visible “send test notification” action
+   - a visible “reschedule all reminders” action
+   - permission-denied guidance in Profile when notifications are disabled
+
+No UI code for the above was implemented in this backend-only phase.

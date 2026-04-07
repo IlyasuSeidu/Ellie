@@ -1,0 +1,4 @@
+Filtering the log data using "processImagePath BEGINSWITH "/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/3A0DD086-B3B4-47DF-A736-0EF4114C1D84/EllieMinerShiftAssistant.app""
+Timestamp               Ty Process[PID:TID]
+2026-04-06 10:10:38.686 I  EllieMinerShiftAssistant[12537:2e46f3] [com.wix.Detox:WebSocket] Action received: invoke
+

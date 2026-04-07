@@ -9,6 +9,7 @@ import {
   ScheduledNotification,
   NotificationType,
 } from '../NotificationService';
+import { isSmartReminderType, type ReminderEvent } from '@/types/reminders';
 
 /**
  * Mock Notification Scheduler
@@ -165,6 +166,33 @@ export class MockNotificationService {
     return id;
   }
 
+  async scheduleSmartReminder(userId: string, event: ReminderEvent): Promise<string> {
+    const content = {
+      title: event.title,
+      body: event.body,
+      data: event.data,
+      sound: 'default',
+      badge: 1,
+      interruptionLevel: event.isCritical ? 'timeSensitive' : 'active',
+    } satisfies NotificationContent;
+
+    const id = await this.scheduler.scheduleNotification(content, event.triggerAt);
+
+    const notification: ScheduledNotification = {
+      id,
+      userId,
+      type: event.type,
+      scheduledFor: event.triggerAt.toISOString(),
+      content,
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+    };
+
+    this.notifications.set(id, notification);
+
+    return id;
+  }
+
   async cancelNotification(_userId: string, notificationId: string): Promise<void> {
     await this.scheduler.cancelNotification(notificationId);
     const notification = this.notifications.get(notificationId);
@@ -174,12 +202,32 @@ export class MockNotificationService {
   }
 
   async cancelAllNotifications(userId: string): Promise<void> {
-    await this.scheduler.cancelAllNotifications();
-    this.notifications.forEach((n) => {
-      if (n.userId === userId && n.status === 'pending') {
-        n.status = 'cancelled';
-      }
-    });
+    const userPending = Array.from(this.notifications.values()).filter(
+      (notification) => notification.userId === userId && notification.status === 'pending'
+    );
+
+    await Promise.all(
+      userPending.map(async (notification) => {
+        await this.scheduler.cancelNotification(notification.id);
+        notification.status = 'cancelled';
+      })
+    );
+  }
+
+  async cancelSmartReminders(userId: string): Promise<void> {
+    const userPendingSmartReminders = Array.from(this.notifications.values()).filter(
+      (notification) =>
+        notification.userId === userId &&
+        notification.status === 'pending' &&
+        isSmartReminderType(notification.type)
+    );
+
+    await Promise.all(
+      userPendingSmartReminders.map(async (notification) => {
+        await this.scheduler.cancelNotification(notification.id);
+        notification.status = 'cancelled';
+      })
+    );
   }
 
   async requestPermissions(): Promise<boolean> {

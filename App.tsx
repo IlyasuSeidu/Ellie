@@ -11,13 +11,19 @@ import { LanguageProvider } from './src/contexts/LanguageContext';
 import { VoiceAssistantProvider } from './src/contexts/VoiceAssistantContext';
 // Temporarily disabled for physical-device regression testing.
 // import { SubscriptionProvider } from './src/contexts/SubscriptionContext';
+import { useSmartReminders } from './src/hooks/useSmartReminders';
+import { expoNotificationScheduler } from './src/services/ExpoNotificationScheduler';
+import { notificationService } from './src/services/NotificationService';
 import { useShiftAccent } from './src/hooks/useShiftAccent';
 // Temporarily disabled for physical-device regression testing.
 // import { PaywallScreen } from './src/screens/subscription/PaywallScreen';
 
+notificationService.setScheduler(expoNotificationScheduler);
+
 function AppContent() {
   const insets = useSafeAreaInsets();
   const { statusAreaColor } = useShiftAccent();
+  useSmartReminders();
 
   return (
     <View style={styles.container}>

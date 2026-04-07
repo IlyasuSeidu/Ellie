@@ -165,19 +165,47 @@ export const OnboardingNavigator: React.FC = () => {
       <Stack.Screen name="Welcome" component={PremiumWelcomeScreen} />
 
       {/* Step 2: Pain Hook - User identifies their biggest roster problem */}
-      <Stack.Screen name="PainHook" component={PremiumPainHookScreen} />
+      <Stack.Screen
+        name="PainHook"
+        component={PremiumPainHookScreen}
+        options={{
+          gestureEnabled: false,
+          fullScreenGestureEnabled: false,
+        }}
+      />
 
       {/* Step 3: Introduction - Collect user profile */}
       <Stack.Screen name="Introduction" component={PremiumIntroductionScreen} />
 
       {/* Step 4: Shift System - Select 2-shift or 3-shift */}
-      <Stack.Screen name="ShiftSystem" component={PremiumShiftSystemScreen} />
+      <Stack.Screen
+        name="ShiftSystem"
+        component={PremiumShiftSystemScreen}
+        options={{
+          gestureEnabled: false,
+          fullScreenGestureEnabled: false,
+        }}
+      />
 
       {/* Step 5: Roster Type - Select rotating or FIFO */}
-      <Stack.Screen name="RosterType" component={PremiumRosterTypeScreen} />
+      <Stack.Screen
+        name="RosterType"
+        component={PremiumRosterTypeScreen}
+        options={{
+          gestureEnabled: false,
+          fullScreenGestureEnabled: false,
+        }}
+      />
 
       {/* Step 6: Shift Pattern - Select pattern type (filtered by roster type) */}
-      <Stack.Screen name="ShiftPattern" component={PremiumShiftPatternScreen} />
+      <Stack.Screen
+        name="ShiftPattern"
+        component={PremiumShiftPatternScreen}
+        options={{
+          gestureEnabled: false,
+          fullScreenGestureEnabled: false,
+        }}
+      />
 
       {/* Step 6b-R: Custom Pattern - Configure custom rotating pattern (conditional) */}
       <Stack.Screen name="CustomPattern" component={PremiumCustomPatternScreen} />
@@ -186,10 +214,24 @@ export const OnboardingNavigator: React.FC = () => {
       <Stack.Screen name="FIFOCustomPattern" component={PremiumFIFOCustomPatternScreen} />
 
       {/* Step 7-R: Phase Selector - Select current phase (rotating rosters) */}
-      <Stack.Screen name="PhaseSelector" component={PremiumPhaseSelectorScreen} />
+      <Stack.Screen
+        name="PhaseSelector"
+        component={PremiumPhaseSelectorScreen}
+        options={{
+          gestureEnabled: false,
+          fullScreenGestureEnabled: false,
+        }}
+      />
 
       {/* Step 7-F: FIFO Phase Selector - Select work/rest block (FIFO rosters) */}
-      <Stack.Screen name="FIFOPhaseSelector" component={PremiumFIFOPhaseSelectorScreen} />
+      <Stack.Screen
+        name="FIFOPhaseSelector"
+        component={PremiumFIFOPhaseSelectorScreen}
+        options={{
+          gestureEnabled: false,
+          fullScreenGestureEnabled: false,
+        }}
+      />
 
       {/* Step 8: Start Date - Select calendar start date */}
       <Stack.Screen name="StartDate" component={PremiumStartDateScreen} />

@@ -31,6 +31,7 @@ import {
   safeParseHoliday,
 } from '@/types/validation';
 import { ShiftPattern, EnergyLevel, ReportType } from '@/types';
+import { DEFAULT_SMART_REMINDER_SETTINGS } from '@/types/reminders';
 
 describe('Date and Time Validation', () => {
   describe('validateDateString', () => {
@@ -318,6 +319,7 @@ describe('Notification Settings Schema', () => {
     patternChangeAlerts: true,
     soundEnabled: false,
     vibrationEnabled: true,
+    smartReminders: DEFAULT_SMART_REMINDER_SETTINGS,
   };
 
   it('should validate valid notification settings', () => {
@@ -332,6 +334,18 @@ describe('Notification Settings Schema', () => {
   it('should reject missing fields', () => {
     const { soundEnabled: _soundEnabled, ...incomplete } = validSettings;
     expect(() => notificationSettingsSchema.parse(incomplete)).toThrow();
+  });
+
+  it('should validate nested smart reminder settings', () => {
+    expect(() =>
+      notificationSettingsSchema.parse({
+        ...validSettings,
+        smartReminders: {
+          ...DEFAULT_SMART_REMINDER_SETTINGS,
+          earlyReminderHours: 12,
+        },
+      })
+    ).not.toThrow();
   });
 });
 

@@ -2,7 +2,8 @@
   "sections": {
     "personalInfo": "Personal Information",
     "workOverview": "Work Overview",
-    "shiftSettings": "Shift Settings"
+    "shiftSettings": "Shift Settings",
+    "smartReminders": "Smart Reminders"
   },
   "fields": {
     "name": "Name",
@@ -109,7 +110,7 @@
       "customSequence": "CUSTOM SEQUENCE",
       "siteDetails": "SITE DETAILS",
       "travelDays": "TRAVEL DAYS (OPTIONAL)",
-      "scheduleAnchor": "SCHEDULE ANCHOR",
+      "scheduleAnchor": "ROSTER START & POSITION",
       "customPattern": "CUSTOM PATTERN"
     },
     "chips": {
@@ -257,6 +258,89 @@
       "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} Custom Rotation",
       "dayAbbrev": "D",
       "nightAbbrev": "N"
+    }
+  },
+  "smartReminders": {
+    "sections": {
+      "timing": "TIMING",
+      "doNotDisturb": "DO NOT DISTURB",
+      "adaptive": "ADAPTIVE",
+      "fifo": "FIFO"
+    },
+    "units": {
+      "hoursShort": "{{value}} h",
+      "minutesShort": "{{value}} m",
+      "none": "None"
+    },
+    "rows": {
+      "early": {
+        "label": "Early reminder",
+        "sublabel": "Heads-up before your shift starts"
+      },
+      "prep": {
+        "label": "Prep time",
+        "sublabel": "Time to get ready before leaving home"
+      },
+      "commute": {
+        "label": "Commute time",
+        "sublabel": "How long to get to site"
+      },
+      "imminent": {
+        "label": "15-min imminent alert",
+        "sublabel": "Alert when your shift is 15 minutes away"
+      },
+      "briefing": {
+        "label": "Pre-shift briefing alert",
+        "sublabel": "For roles requiring a safety briefing before every shift"
+      },
+      "quietHours": {
+        "label": "Quiet hours",
+        "sublabel": "Silence non-critical alerts while you sleep"
+      },
+      "backToBack": {
+        "label": "Back-to-back night shift warning",
+        "sublabel": "Warn when 3 or more consecutive night shifts are coming up"
+      },
+      "shortTurnaround": {
+        "label": "Short turnaround warning",
+        "sublabel": "Alert when you have less than 10 hours between shifts"
+      },
+      "postShift": {
+        "label": "Post-shift check-in",
+        "sublabel": "Prompt to log your energy level an hour after each shift"
+      },
+      "travelDay": {
+        "label": "Travel day reminders",
+        "sublabel": "Evening alert before fly-in; morning alert on fly-out day"
+      }
+    },
+    "quietHours": {
+      "startA11y": "Quiet hours start: {{time}}",
+      "endA11y": "Quiet hours end: {{time}}",
+      "overnight": "Overnight · {{hours}} h",
+      "minimumAdjusted": "Quiet hours adjusted to a 30-minute minimum window."
+    },
+    "actions": {
+      "permissionNotice": "Settings were saved, but notifications are off so reminders were not rescheduled. Enable notifications in Settings to apply them.",
+      "test": {
+        "a11y": "Send a test reminder in 5 seconds",
+        "idle": "Send test reminder",
+        "sent": "Test reminder sent — check in 5 seconds",
+        "error": "Test reminder unavailable right now",
+        "permission": "Enable notifications to send a test reminder"
+      },
+      "reschedule": {
+        "a11y": "Reschedule all reminders now",
+        "idle": "Reschedule all reminders",
+        "inProgress": "Rescheduling…",
+        "success": "Reminders updated",
+        "error": "Reminder update failed",
+        "permission": "Enable notifications to reschedule reminders"
+      }
+    },
+    "test": {
+      "title": "Smart reminders are on",
+      "body": "If this arrives, your smart reminders are working."
     }
   }
 }

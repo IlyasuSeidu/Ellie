@@ -6,6 +6,7 @@
  */
 
 import { ShiftDay, Holiday } from '@/types';
+import { isSmartReminderType, type ReminderEvent, type SmartReminderType } from '@/types/reminders';
 import { logger } from '@/utils/logger';
 import { FirebaseService } from './firebase/FirebaseService';
 import i18n from '@/i18n';
@@ -19,6 +20,17 @@ export enum NotificationType {
   HOLIDAY_ALERT = 'HOLIDAY_ALERT',
   PATTERN_CHANGE = 'PATTERN_CHANGE',
   ACHIEVEMENT = 'ACHIEVEMENT',
+  SHIFT_REMINDER_CUSTOM_EARLY = 'SHIFT_REMINDER_CUSTOM_EARLY',
+  SHIFT_PREP_REMINDER = 'SHIFT_PREP_REMINDER',
+  COMMUTE_REMINDER = 'COMMUTE_REMINDER',
+  SHIFT_START_IMMINENT = 'SHIFT_START_IMMINENT',
+  PRE_BRIEFING_REMINDER = 'PRE_BRIEFING_REMINDER',
+  BACK_TO_BACK_WARNING = 'BACK_TO_BACK_WARNING',
+  SHORT_TURNAROUND_WARNING = 'SHORT_TURNAROUND_WARNING',
+  FATIGUE_ALERT = 'FATIGUE_ALERT',
+  FIFO_TRAVEL_DAY_TOMORROW = 'FIFO_TRAVEL_DAY_TOMORROW',
+  FIFO_FLY_OUT_TODAY = 'FIFO_FLY_OUT_TODAY',
+  POST_SHIFT_CHECKIN = 'POST_SHIFT_CHECKIN',
 }
 
 /**
@@ -30,6 +42,7 @@ export interface NotificationContent {
   data?: Record<string, unknown>;
   sound?: string;
   badge?: number;
+  interruptionLevel?: 'active' | 'passive' | 'timeSensitive' | 'critical';
 }
 
 /**
@@ -43,7 +56,7 @@ export type PermissionStatus = 'granted' | 'denied' | 'undetermined';
 export interface ScheduledNotification {
   id: string;
   userId: string;
-  type: NotificationType;
+  type: NotificationType | SmartReminderType;
   scheduledFor: string; // ISO date string
   content: NotificationContent;
   status: 'pending' | 'delivered' | 'cancelled';
@@ -191,6 +204,94 @@ export class NotificationService extends FirebaseService {
   }
 
   /**
+   * Schedule a computed smart reminder event.
+   */
+  async scheduleSmartReminder(userId: string, event: ReminderEvent): Promise<string> {
+    logger.debug('Scheduling smart reminder', {
+      userId,
+      type: event.type,
+      shiftDate: event.shiftDate,
+      triggerAt: event.triggerAt.toISOString(),
+    });
+
+    if (!this.scheduler) {
+      throw new Error('Notification scheduler not configured');
+    }
+
+    const content: NotificationContent = {
+      title: event.title,
+      body: event.body,
+      data: {
+        ...(event.data ?? {}),
+        reminderType: event.type,
+      },
+      sound: 'default',
+      badge: 1,
+      interruptionLevel: event.isCritical ? 'timeSensitive' : 'active',
+    };
+
+    const notificationId = await this.scheduler.scheduleNotification(content, event.triggerAt);
+
+    const notification: ScheduledNotification = {
+      id: notificationId,
+      userId,
+      type: event.type,
+      scheduledFor: event.triggerAt.toISOString(),
+      content,
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+    };
+
+    await this.saveNotification(userId, notification);
+
+    logger.info('Smart reminder scheduled', {
+      userId,
+      notificationId,
+      type: event.type,
+      shiftDate: event.shiftDate,
+      triggerAt: event.triggerAt.toISOString(),
+    });
+
+    return notificationId;
+  }
+
+  /**
+   * Cancel only smart reminders for a specific user without touching other notification types.
+   */
+  async cancelSmartReminders(userId: string): Promise<void> {
+    logger.debug('Cancelling smart reminders', { userId });
+
+    if (!this.scheduler) {
+      throw new Error('Notification scheduler not configured');
+    }
+
+    const pendingSmartReminders = (await this.getNotificationHistory(userId, 500)).filter(
+      (notification) => notification.status === 'pending' && isSmartReminderType(notification.type)
+    );
+
+    await Promise.all(
+      pendingSmartReminders.map(async (notification) => {
+        try {
+          await this.scheduler?.cancelNotification(notification.id);
+          await this.update(this.NOTIFICATIONS_COLLECTION, notification.id, {
+            status: 'cancelled',
+          });
+        } catch (error) {
+          logger.error('Failed to cancel smart reminder notification', error as Error, {
+            userId,
+            notificationId: notification.id,
+          });
+        }
+      })
+    );
+
+    logger.info('Smart reminders cancelled', {
+      userId,
+      count: pendingSmartReminders.length,
+    });
+  }
+
+  /**
    * Cancel a notification
    */
   async cancelNotification(userId: string, notificationId: string): Promise<void> {
@@ -221,20 +322,18 @@ export class NotificationService extends FirebaseService {
       throw new Error('Notification scheduler not configured');
     }
 
-    // Cancel all scheduled notifications
-    await this.scheduler.cancelAllNotifications();
+    const pendingNotifications = await this.getNotificationHistory(userId, 500);
 
-    // Update all pending notifications to cancelled
-    const pendingNotifications = await this.getNotificationHistory(userId, 100);
-    const cancelPromises = pendingNotifications
-      .filter((n) => n.status === 'pending')
-      .map((n) =>
-        this.update(this.NOTIFICATIONS_COLLECTION, n.id, {
-          status: 'cancelled',
+    await Promise.all(
+      pendingNotifications
+        .filter((notification) => notification.status === 'pending')
+        .map(async (notification) => {
+          await this.scheduler?.cancelNotification(notification.id);
+          await this.update(this.NOTIFICATIONS_COLLECTION, notification.id, {
+            status: 'cancelled',
+          });
         })
-      );
-
-    await Promise.all(cancelPromises);
+    );
 
     logger.info('All notifications cancelled', { userId });
   }

@@ -192,6 +192,63 @@
       "today": "今天是{{holidayName}}！",
       "tomorrow": "明天是{{holidayName}}",
       "inDays": "{{holidayName}}还有{{daysBefore}}天（{{holidayDate}}）"
+    },
+    "smartReminders": {
+      "shiftType": {
+        "day": "白班",
+        "night": "夜班",
+        "morning": "早班",
+        "afternoon": "中班",
+        "off": "休息日"
+      },
+      "early": {
+        "title": "{{shiftType}}即将开始",
+        "body": "你的{{shiftType}}将在{{shiftDate}}{{startTime}}开始。"
+      },
+      "prep": {
+        "fatigueCritical": " 疲劳风险处于严重级别，请给自己留出更多时间。",
+        "fatigueHigh": " 请先休息并从容准备。",
+        "title": "该准备了，{{name}}",
+        "body": "你的{{shiftType}}将在{{startTime}}开始。{{fatigueSuffix}}"
+      },
+      "commute": {
+        "title": "该出发了",
+        "body": "现在出发才能准时赶上你的{{shiftType}}，它将在{{startTime}}开始。"
+      },
+      "imminent": {
+        "title": "15分钟后开始",
+        "body": "你的{{shiftType}}将在{{startTime}}开始。"
+      },
+      "briefing": {
+        "title": "班前会即将开始",
+        "body": "你的{{shiftType}}在{{startTime}}开始，班前会将在15分钟后进行。"
+      },
+      "postShift": {
+        "title": "这班怎么样？",
+        "body": "你的{{shiftType}}怎么样？到 Ellie 里记录一下你的精力水平。"
+      },
+      "fatigue": {
+        "title": "严重疲劳提醒",
+        "body": "你的{{shiftType}}将在{{startTime}}开始，但睡眠数据显示你处于严重疲劳状态。可以的话请现在休息。"
+      },
+      "backToBack": {
+        "title": "接下来有{{count}}个夜班",
+        "body": "从{{shiftDate}}开始你将连续上{{count}}个夜班。请优先安排休息。"
+      },
+      "shortTurnaround": {
+        "title": "即将出现短间隔轮换",
+        "body": "你的{{previousShiftType}}和下一次{{nextShiftType}}之间只有{{gapHours}}小时，日期是{{shiftDate}}。请提前安排休息。"
+      },
+      "fifo": {
+        "flyOut": {
+          "title": "返程日",
+          "body": "今天你将返家。完成交接、收拾装备，并注意安全出行。"
+        },
+        "travelTomorrow": {
+          "title": "明天是出发日",
+          "body": "你明天将飞往现场参加{{shiftType}}。今晚请整理好装备并检查证件。"
+        }
+      }
     }
   },
   "countdown": {

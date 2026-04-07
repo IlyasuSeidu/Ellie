@@ -1,11 +1,16 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { User } from 'firebase/auth';
+import Constants from 'expo-constants';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { AuthService } from '@/services/AuthService';
 import { getFirebaseAuth } from '@/config/firebase';
+import { asyncStorageService } from '@/services/AsyncStorageService';
 import { googleConfig } from '@/config/env';
 import { logger } from '@/utils/logger';
 import { getAuthErrorMessage } from '@/utils/authErrorMessage';
+
+const IS_E2E_TEST_MODE =
+  (Constants.expoConfig?.extra as Record<string, unknown> | undefined)?.E2E_TEST_MODE === '1';
 
 interface AuthContextValue {
   user: User | null;
@@ -39,6 +44,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const service = getAuthService();
 
   useEffect(() => {
+    if (IS_E2E_TEST_MODE) {
+      asyncStorageService
+        .get<Record<string, unknown>>('e2e:mock_user')
+        .then((mockData) => {
+          setUser(mockData ? (mockData as unknown as User) : null);
+          setIsLoading(false);
+        })
+        .catch(() => {
+          setUser(null);
+          setIsLoading(false);
+        });
+      return undefined;
+    }
+
     const unsubscribe = service.onAuthStateChanged((firebaseUser) => {
       setUser(firebaseUser);
       setIsLoading(false);

@@ -99,7 +99,11 @@
       "af": "Afrikanas (Afrikanas)",
       "zu": "Zulu (isiZulu)",
       "id": "Indonesia (Bahasa Indonesia)"
-    }
+    },
+    "selectorSubtitle": "Pilih bahasa Anda",
+    "search": "Cari bahasa…",
+    "noResults": "Tidak ada bahasa yang ditemukan",
+    "rtlBadge": "RTL"
   },
   "accessibility": {
     "toggle": "Sakelar"

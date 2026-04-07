@@ -2,7 +2,8 @@
   "sections": {
     "personalInfo": "Informasi Pribadi",
     "workOverview": "Ikhtisar Pekerjaan",
-    "shiftSettings": "Pengaturan Pergeseran"
+    "shiftSettings": "Pengaturan Pergeseran",
+    "smartReminders": "Pengingat cerdas"
   },
   "fields": {
     "name": "Nama",
@@ -109,7 +110,7 @@
       "customSequence": "URUTAN KUSTOM",
       "siteDetails": "DETAIL SITUS",
       "travelDays": "HARI PERJALANAN (OPSIONAL)",
-      "scheduleAnchor": "JADWAL JANGKAR",
+      "scheduleAnchor": "AWAL & POSISI ROSTER",
       "customPattern": "POLA KUSTOM"
     },
     "chips": {
@@ -257,6 +258,89 @@
       "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} Rotasi Kustom",
       "dayAbbrev": "Si",
       "nightAbbrev": "Ma"
+    }
+  },
+  "smartReminders": {
+    "sections": {
+      "timing": "WAKTU",
+      "doNotDisturb": "JANGAN GANGGU",
+      "adaptive": "ADAPTIF",
+      "fifo": "FIFO"
+    },
+    "units": {
+      "hoursShort": "{{value}} j",
+      "minutesShort": "{{value}} mnt",
+      "none": "Tidak ada"
+    },
+    "rows": {
+      "early": {
+        "label": "Pengingat awal",
+        "sublabel": "Peringatan sebelum shift Anda dimulai"
+      },
+      "prep": {
+        "label": "Waktu persiapan",
+        "sublabel": "Waktu untuk bersiap sebelum berangkat"
+      },
+      "commute": {
+        "label": "Waktu perjalanan",
+        "sublabel": "Berapa lama perjalanan ke site"
+      },
+      "imminent": {
+        "label": "Peringatan 15 menit",
+        "sublabel": "Beri tahu saat shift Anda tinggal 15 menit lagi"
+      },
+      "briefing": {
+        "label": "Peringatan briefing",
+        "sublabel": "Untuk peran yang memerlukan briefing keselamatan sebelum setiap shift"
+      },
+      "quietHours": {
+        "label": "Jam tenang",
+        "sublabel": "Membisukan peringatan non-kritis saat Anda tidur"
+      },
+      "backToBack": {
+        "label": "Peringatan night shift beruntun",
+        "sublabel": "Peringatkan saat ada 3 atau lebih night shift berturut-turut"
+      },
+      "shortTurnaround": {
+        "label": "Peringatan jeda pendek",
+        "sublabel": "Beri tahu saat jeda antar shift kurang dari 10 jam"
+      },
+      "postShift": {
+        "label": "Check-in setelah shift",
+        "sublabel": "Minta Anda mencatat energi satu jam setelah setiap shift"
+      },
+      "travelDay": {
+        "label": "Pengingat hari perjalanan",
+        "sublabel": "Peringatan malam sebelum fly-in dan pagi hari fly-out"
+      }
+    },
+    "quietHours": {
+      "startA11y": "Jam tenang mulai: {{time}}",
+      "endA11y": "Jam tenang selesai: {{time}}",
+      "overnight": "Semalaman · {{hours}} j",
+      "minimumAdjusted": "Jam tenang disesuaikan ke jendela minimum 30 menit."
+    },
+    "actions": {
+      "permissionNotice": "Pengaturan disimpan, tetapi notifikasi dimatikan sehingga pengingat belum dijadwalkan ulang. Aktifkan notifikasi di Pengaturan untuk menerapkannya.",
+      "test": {
+        "a11y": "Kirim pengingat uji dalam 5 detik",
+        "idle": "Kirim uji",
+        "sent": "Uji terkirim — cek dalam 5 detik",
+        "error": "Pengingat uji tidak tersedia sekarang",
+        "permission": "Aktifkan notifikasi untuk mengirim uji"
+      },
+      "reschedule": {
+        "a11y": "Jadwalkan ulang semua pengingat sekarang",
+        "idle": "Jadwalkan ulang pengingat",
+        "inProgress": "Menjadwalkan ulang…",
+        "success": "Pengingat diperbarui",
+        "error": "Gagal memperbarui pengingat",
+        "permission": "Aktifkan notifikasi untuk menjadwalkan ulang pengingat"
+      }
+    },
+    "test": {
+      "title": "Pengingat cerdas aktif",
+      "body": "Jika ini masuk, pengingat cerdas Anda sedang bekerja."
     }
   }
 }

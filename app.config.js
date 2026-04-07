@@ -66,6 +66,7 @@ module.exports = ({ config = {} }) => {
         process.env.ELLIE_BRAIN_URL ||
         'https://ellie-brain-REGION-PROJECT.cloudfunctions.net/ellieBrain',
       ELLIE_BRAIN_TIMEOUT: process.env.ELLIE_BRAIN_TIMEOUT || '30000',
+      E2E_TEST_MODE: process.env.E2E_TEST_MODE || '',
       PICOVOICE_ACCESS_KEY: process.env.PICOVOICE_ACCESS_KEY || '',
       WAKE_WORD_PROVIDER: process.env.WAKE_WORD_PROVIDER || '',
       WAKE_WORD_ENABLED: process.env.WAKE_WORD_ENABLED || '',

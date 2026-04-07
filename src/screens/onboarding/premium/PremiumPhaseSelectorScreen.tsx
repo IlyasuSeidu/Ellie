@@ -45,6 +45,7 @@ import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { SettingsEntryActionButtons } from '@/components/onboarding/premium/SettingsEntryActionButtons';
 import { SwipeHintLabel } from '@/components/onboarding/premium/SwipeHintLabel';
+import { E2ESwipeControls } from '@/components/onboarding/premium/E2ESwipeControls';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ShiftSystem, Phase, ShiftPattern } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
@@ -666,79 +667,103 @@ const SwipeablePhaseCard: React.FC<SwipeablePhaseCardProps> = ({
         {index === 0 && isActive && (
           <>
             <Animated.View style={[styles.swipeHint, styles.swipeHintLeft, hintAnimatedStyle]}>
-              <View style={styles.swipeHintBubble}>
-                <LinearGradient
-                  colors={
-                    phaseAccent?.hintGradient ?? [
-                      'rgba(255,255,255,0.16)',
-                      'rgba(255,255,255,0.08)',
-                    ]
-                  }
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.swipeHintGradient}
-                >
-                  <SwipeHintLabel
-                    direction="left"
-                    text={t('phaseSelector.hints.next', { defaultValue: 'Next' })}
-                    textStyle={[
-                      styles.swipeHintText,
-                      phaseAccent && { color: phaseAccent.hintText },
-                    ]}
-                    iconColor={phaseAccent?.hintText ?? theme.colors.paper}
-                  />
-                </LinearGradient>
-              </View>
+              <Pressable
+                onPress={onSwipeLeft}
+                accessibilityRole="button"
+                accessibilityLabel={t('phaseSelector.hints.next', { defaultValue: 'Next' })}
+                style={styles.swipeHintPressable}
+                testID="phase-selector-next-button"
+              >
+                <View style={styles.swipeHintBubble}>
+                  <LinearGradient
+                    colors={
+                      phaseAccent?.hintGradient ?? [
+                        'rgba(255,255,255,0.16)',
+                        'rgba(255,255,255,0.08)',
+                      ]
+                    }
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.swipeHintGradient}
+                  >
+                    <SwipeHintLabel
+                      direction="left"
+                      text={t('phaseSelector.hints.next', { defaultValue: 'Next' })}
+                      textStyle={[
+                        styles.swipeHintText,
+                        phaseAccent && { color: phaseAccent.hintText },
+                      ]}
+                      iconColor={phaseAccent?.hintText ?? theme.colors.paper}
+                    />
+                  </LinearGradient>
+                </View>
+              </Pressable>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintRight, hintAnimatedStyle]}>
-              <View style={styles.swipeHintBubble}>
-                <LinearGradient
-                  colors={
-                    phaseAccent?.hintGradient ?? [
-                      'rgba(255,255,255,0.16)',
-                      'rgba(255,255,255,0.08)',
-                    ]
-                  }
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.swipeHintGradient}
-                >
-                  <SwipeHintLabel
-                    direction="right"
-                    text={t('phaseSelector.hints.select', { defaultValue: 'Select' })}
-                    textStyle={[
-                      styles.swipeHintText,
-                      phaseAccent && { color: phaseAccent.hintText },
-                    ]}
-                    iconColor={phaseAccent?.hintText ?? theme.colors.paper}
-                  />
-                </LinearGradient>
-              </View>
+              <Pressable
+                onPress={onSwipeRight}
+                accessibilityRole="button"
+                accessibilityLabel={t('phaseSelector.hints.select', { defaultValue: 'Select' })}
+                style={styles.swipeHintPressable}
+                testID="phase-selector-select-button"
+              >
+                <View style={styles.swipeHintBubble}>
+                  <LinearGradient
+                    colors={
+                      phaseAccent?.hintGradient ?? [
+                        'rgba(255,255,255,0.16)',
+                        'rgba(255,255,255,0.08)',
+                      ]
+                    }
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.swipeHintGradient}
+                  >
+                    <SwipeHintLabel
+                      direction="right"
+                      text={t('phaseSelector.hints.select', { defaultValue: 'Select' })}
+                      textStyle={[
+                        styles.swipeHintText,
+                        phaseAccent && { color: phaseAccent.hintText },
+                      ]}
+                      iconColor={phaseAccent?.hintText ?? theme.colors.paper}
+                    />
+                  </LinearGradient>
+                </View>
+              </Pressable>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintUp, hintAnimatedStyle]}>
-              <View style={styles.swipeHintBubble}>
-                <LinearGradient
-                  colors={
-                    phaseAccent?.hintGradient ?? [
-                      'rgba(255,255,255,0.16)',
-                      'rgba(255,255,255,0.08)',
-                    ]
-                  }
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.swipeHintGradient}
-                >
-                  <SwipeHintLabel
-                    direction="up"
-                    text={t('phaseSelector.hints.info', { defaultValue: 'Info' })}
-                    textStyle={[
-                      styles.swipeHintText,
-                      phaseAccent && { color: phaseAccent.hintText },
-                    ]}
-                    iconColor={phaseAccent?.hintText ?? theme.colors.paper}
-                  />
-                </LinearGradient>
-              </View>
+              <Pressable
+                onPress={onSwipeUp}
+                accessibilityRole="button"
+                accessibilityLabel={t('phaseSelector.hints.info', { defaultValue: 'Info' })}
+                style={styles.swipeHintPressable}
+                testID="phase-selector-info-button"
+              >
+                <View style={styles.swipeHintBubble}>
+                  <LinearGradient
+                    colors={
+                      phaseAccent?.hintGradient ?? [
+                        'rgba(255,255,255,0.16)',
+                        'rgba(255,255,255,0.08)',
+                      ]
+                    }
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.swipeHintGradient}
+                  >
+                    <SwipeHintLabel
+                      direction="up"
+                      text={t('phaseSelector.hints.info', { defaultValue: 'Info' })}
+                      textStyle={[
+                        styles.swipeHintText,
+                        phaseAccent && { color: phaseAccent.hintText },
+                      ]}
+                      iconColor={phaseAccent?.hintText ?? theme.colors.paper}
+                    />
+                  </LinearGradient>
+                </View>
+              </Pressable>
             </Animated.View>
           </>
         )}
@@ -1453,7 +1478,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
   }, [currentCards, currentCardIndex]);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="phase-selector-screen">
       <ProgressHeader
         currentStep={ONBOARDING_STEPS.PHASE_SELECTOR}
         totalSteps={TOTAL_ONBOARDING_STEPS}
@@ -1503,8 +1528,15 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
       {/* Progress Dots */}
       <ProgressDots total={currentCards.length} current={currentCardIndex} />
 
+      <E2ESwipeControls
+        prefix="phase-selector"
+        onSelect={handleSwipeRight}
+        onNext={handleSwipeLeft}
+        onInfo={handleSwipeUp}
+      />
+
       {/* Card Stack */}
-      <View style={styles.cardStack}>
+      <View style={styles.cardStack} testID="phase-selector-card-stack">
         {[...visibleCards].reverse().map((card, index) => (
           <SwipeablePhaseCard
             key={`${card.id}-${cardRemountKey}`}
@@ -1760,6 +1792,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: theme.colors.dust,
     fontWeight: '600',
+  },
+  swipeHintPressable: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   progressDots: {
     flexDirection: 'row',

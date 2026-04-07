@@ -192,6 +192,63 @@
       "today": "اليوم هو {{holidayName}}!",
       "tomorrow": "غدًا هو {{holidayName}}",
       "inDays": "{{holidayName}} بعد {{daysBefore}} أيام ({{holidayDate}})"
+    },
+    "smartReminders": {
+      "shiftType": {
+        "day": "وردية نهارية",
+        "night": "وردية ليلية",
+        "morning": "وردية صباحية",
+        "afternoon": "وردية بعد الظهر",
+        "off": "يوم راحة"
+      },
+      "early": {
+        "title": "{{shiftType}} قادمة",
+        "body": "تبدأ {{shiftType}} الخاصة بك عند {{startTime}} في {{shiftDate}}."
+      },
+      "prep": {
+        "fatigueCritical": " خطر الإرهاق حرج. امنح نفسك وقتًا إضافيًا.",
+        "fatigueHigh": " خذ قسطًا من الراحة واستعد بعناية.",
+        "title": "حان وقت الاستعداد يا {{name}}",
+        "body": "تبدأ {{shiftType}} الخاصة بك عند {{startTime}}.{{fatigueSuffix}}"
+      },
+      "commute": {
+        "title": "انطلق الآن",
+        "body": "انطلق الآن لتصل إلى {{shiftType}} الخاصة بك في الوقت المناسب. تبدأ عند {{startTime}}."
+      },
+      "imminent": {
+        "title": "تبدأ خلال 15 دقيقة",
+        "body": "تبدأ {{shiftType}} الخاصة بك عند {{startTime}}."
+      },
+      "briefing": {
+        "title": "الإحاطة قريبًا",
+        "body": "تبدأ الإحاطة خلال 15 دقيقة قبل {{shiftType}} الخاصة بك عند {{startTime}}."
+      },
+      "postShift": {
+        "title": "كيف سار الأمر؟",
+        "body": "كيف كانت {{shiftType}} الخاصة بك؟ سجّل مستوى طاقتك في Ellie."
+      },
+      "fatigue": {
+        "title": "تنبيه إرهاق حرج",
+        "body": "تبدأ {{shiftType}} الخاصة بك عند {{startTime}}، لكن بيانات النوم تظهر إرهاقًا حرجًا. استرح الآن إن أمكن."
+      },
+      "backToBack": {
+        "title": "{{count}} ورديات ليلية قادمة",
+        "body": "لديك {{count}} ورديات ليلية متتالية تبدأ في {{shiftDate}}. أعطِ الراحة الأولوية."
+      },
+      "shortTurnaround": {
+        "title": "فاصل راحة قصير قادم",
+        "body": "هناك فقط {{gapHours}} ساعة بين {{previousShiftType}} الخاصة بك و{{nextShiftType}} التالية في {{shiftDate}}. خطط لراحتك."
+      },
+      "fifo": {
+        "flyOut": {
+          "title": "يوم العودة",
+          "body": "اليوم تعود إلى المنزل. أكمل التسليم، وجهّز معداتك، وسافر بأمان."
+        },
+        "travelTomorrow": {
+          "title": "يوم السفر غدًا",
+          "body": "ستسافر غدًا من أجل {{shiftType}} الخاصة بك. جهّز معداتك وتحقق من مستنداتك الليلة."
+        }
+      }
     }
   },
   "countdown": {

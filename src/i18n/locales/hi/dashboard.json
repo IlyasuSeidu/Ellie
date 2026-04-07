@@ -192,6 +192,63 @@
       "today": "आज {{holidayName}} है!",
       "tomorrow": "कल {{holidayName}} है",
       "inDays": "{{holidayName}} {{daysBefore}} दिनों में है ({{holidayDate}})"
+    },
+    "smartReminders": {
+      "shiftType": {
+        "day": "दिन की शिफ्ट",
+        "night": "रात की शिफ्ट",
+        "morning": "सुबह की शिफ्ट",
+        "afternoon": "दोपहर की शिफ्ट",
+        "off": "छुट्टी का दिन"
+      },
+      "early": {
+        "title": "{{shiftType}} आने वाली है",
+        "body": "आपकी {{shiftType}} {{shiftDate}} को {{startTime}} पर शुरू होती है।"
+      },
+      "prep": {
+        "fatigueCritical": " थकान का जोखिम गंभीर है। अपने लिए अतिरिक्त समय रखें।",
+        "fatigueHigh": " आराम करें और सावधानी से तैयारी करें।",
+        "title": "तैयार होने का समय है, {{name}}",
+        "body": "आपकी {{shiftType}} {{startTime}} पर शुरू होती है।{{fatigueSuffix}}"
+      },
+      "commute": {
+        "title": "अब निकलें",
+        "body": "समय पर पहुँचने के लिए अभी निकलें। आपकी {{shiftType}} {{startTime}} पर शुरू होती है।"
+      },
+      "imminent": {
+        "title": "15 मिनट में शुरू",
+        "body": "आपकी {{shiftType}} {{startTime}} पर शुरू होती है।"
+      },
+      "briefing": {
+        "title": "ब्रिफिंग जल्द शुरू होगी",
+        "body": "आपकी {{shiftType}} {{startTime}} पर है और ब्रिफिंग 15 मिनट में शुरू होगी।"
+      },
+      "postShift": {
+        "title": "कैसा रहा?",
+        "body": "आपकी {{shiftType}} कैसी रही? Ellie में अपनी ऊर्जा दर्ज करें।"
+      },
+      "fatigue": {
+        "title": "गंभीर थकान चेतावनी",
+        "body": "आपकी {{shiftType}} {{startTime}} पर शुरू होती है, लेकिन आपकी नींद का डेटा गंभीर थकान दिखाता है। हो सके तो अभी आराम करें।"
+      },
+      "backToBack": {
+        "title": "{{count}} लगातार रात की शिफ्टें आ रही हैं",
+        "body": "{{shiftDate}} से आपकी {{count}} लगातार रात की शिफ्टें हैं। आराम को प्राथमिकता दें।"
+      },
+      "shortTurnaround": {
+        "title": "कम आराम वाला बदलाव आगे है",
+        "body": "आपकी {{previousShiftType}} और अगली {{nextShiftType}} के बीच {{shiftDate}} को केवल {{gapHours}} घंटे हैं। अपने आराम की योजना बनाएं।"
+      },
+      "fifo": {
+        "flyOut": {
+          "title": "घर वापसी का दिन",
+          "body": "आज आप घर जा रहे हैं। हैंडओवर पूरा करें, अपना सामान तैयार करें और सुरक्षित यात्रा करें।"
+        },
+        "travelTomorrow": {
+          "title": "कल यात्रा का दिन है",
+          "body": "आप कल अपनी {{shiftType}} के लिए साइट पर उड़ान भरेंगे। आज रात अपना सामान तैयार करें और दस्तावेज़ जाँच लें।"
+        }
+      }
     }
   },
   "countdown": {

@@ -54,6 +54,53 @@ Swipe right to choose, left to see more, up for details
     style={
       {
         "alignItems": "center",
+        "flexDirection": "row",
+        "gap": 4,
+        "justifyContent": "center",
+        "marginBottom": 24,
+      }
+    }
+    testID="roster-type-progress-dots"
+  >
+    <View
+      style={
+        [
+          {
+            "backgroundColor": "#a8a29e",
+            "borderRadius": 4,
+            "height": 8,
+            "opacity": 0.3,
+            "width": 8,
+          },
+          {
+            "backgroundColor": "#b45309",
+            "borderRadius": 6,
+            "height": 12,
+            "opacity": 1,
+            "width": 12,
+          },
+        ]
+      }
+    />
+    <View
+      style={
+        [
+          {
+            "backgroundColor": "#a8a29e",
+            "borderRadius": 4,
+            "height": 8,
+            "opacity": 0.3,
+            "width": 8,
+          },
+          false,
+        ]
+      }
+    />
+  </View>
+  <View
+    style={
+      {
+        "alignItems": "center",
         "flex": 1,
         "justifyContent": "center",
         "marginBottom": 32,
@@ -189,61 +236,102 @@ Swipe right to choose, left to see more, up for details
         }
       >
         <View
-          style={
-            [
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "gap": 6,
-                "justifyContent": "center",
-                "maxWidth": "100%",
-              },
-              undefined,
-            ]
-          }
-        >
-          <Text
-            adjustsFontSizeToFit={true}
-            minimumFontScale={0.78}
-            numberOfLines={1}
-            style={
-              [
-                {
-                  "flexShrink": 1,
-                  "textAlign": "center",
-                },
-                {
-                  "color": "#a8a29e",
-                  "flexShrink": 1,
-                  "fontSize": 14,
-                  "fontWeight": "600",
-                },
-              ]
+          accessibilityLabel="This one"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
             }
-          >
-            This one
-          </Text>
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+            }
+          }
+          testID="roster-type-select-button"
+        >
+          <View
             style={
               [
                 {
-                  "color": "#a8a29e",
-                  "fontSize": 14,
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 6,
+                  "justifyContent": "center",
+                  "maxWidth": "100%",
                 },
                 undefined,
-                {
-                  "fontFamily": "ionicons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
               ]
             }
           >
-            
-          </Text>
+            <Text
+              adjustsFontSizeToFit={true}
+              minimumFontScale={0.78}
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#a8a29e",
+                    "flexShrink": 1,
+                    "fontSize": 14,
+                    "fontWeight": "600",
+                  },
+                ]
+              }
+            >
+              This one
+            </Text>
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#a8a29e",
+                    "fontSize": 14,
+                  },
+                  undefined,
+                  {
+                    "fontFamily": "ionicons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
         </View>
       </View>
       <View
@@ -267,61 +355,102 @@ Swipe right to choose, left to see more, up for details
         }
       >
         <View
-          style={
-            [
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "gap": 6,
-                "justifyContent": "center",
-                "maxWidth": "100%",
-              },
-              undefined,
-            ]
+          accessibilityLabel="Next option"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
           }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+            }
+          }
+          testID="roster-type-next-option-button"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
             style={
               [
                 {
-                  "color": "#a8a29e",
-                  "fontSize": 14,
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 6,
+                  "justifyContent": "center",
+                  "maxWidth": "100%",
                 },
                 undefined,
-                {
-                  "fontFamily": "ionicons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
               ]
             }
           >
-            
-          </Text>
-          <Text
-            adjustsFontSizeToFit={true}
-            minimumFontScale={0.78}
-            numberOfLines={1}
-            style={
-              [
-                {
-                  "flexShrink": 1,
-                  "textAlign": "center",
-                },
-                {
-                  "color": "#a8a29e",
-                  "flexShrink": 1,
-                  "fontSize": 14,
-                  "fontWeight": "600",
-                },
-              ]
-            }
-          >
-            Next option
-          </Text>
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#a8a29e",
+                    "fontSize": 14,
+                  },
+                  undefined,
+                  {
+                    "fontFamily": "ionicons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              adjustsFontSizeToFit={true}
+              minimumFontScale={0.78}
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#a8a29e",
+                    "flexShrink": 1,
+                    "fontSize": 14,
+                    "fontWeight": "600",
+                  },
+                ]
+              }
+            >
+              Next option
+            </Text>
+          </View>
         </View>
       </View>
       <View
@@ -346,61 +475,102 @@ Swipe right to choose, left to see more, up for details
         }
       >
         <View
-          style={
-            [
-              {
-                "alignItems": "center",
-                "flexDirection": "row",
-                "gap": 6,
-                "justifyContent": "center",
-                "maxWidth": "100%",
-              },
-              undefined,
-            ]
+          accessibilityLabel="Learn more"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
           }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+            }
+          }
+          testID="roster-type-info-button"
         >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
+          <View
             style={
               [
                 {
-                  "color": "#a8a29e",
-                  "fontSize": 14,
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 6,
+                  "justifyContent": "center",
+                  "maxWidth": "100%",
                 },
                 undefined,
-                {
-                  "fontFamily": "ionicons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
               ]
             }
           >
-            
-          </Text>
-          <Text
-            adjustsFontSizeToFit={true}
-            minimumFontScale={0.78}
-            numberOfLines={1}
-            style={
-              [
-                {
-                  "flexShrink": 1,
-                  "textAlign": "center",
-                },
-                {
-                  "color": "#a8a29e",
-                  "flexShrink": 1,
-                  "fontSize": 14,
-                  "fontWeight": "600",
-                },
-              ]
-            }
-          >
-            Learn more
-          </Text>
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#a8a29e",
+                    "fontSize": 14,
+                  },
+                  undefined,
+                  {
+                    "fontFamily": "ionicons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              adjustsFontSizeToFit={true}
+              minimumFontScale={0.78}
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "textAlign": "center",
+                  },
+                  {
+                    "color": "#a8a29e",
+                    "flexShrink": 1,
+                    "fontSize": 14,
+                    "fontWeight": "600",
+                  },
+                ]
+              }
+            >
+              Learn more
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -513,53 +683,6 @@ Swipe right to choose, left to see more, up for details
         You work consecutive days on-site, then get extended time at home
       </Text>
     </View>
-  </View>
-  <View
-    style={
-      {
-        "alignItems": "center",
-        "flexDirection": "row",
-        "gap": 4,
-        "justifyContent": "center",
-        "marginBottom": 24,
-      }
-    }
-    testID="roster-type-progress-dots"
-  >
-    <View
-      style={
-        [
-          {
-            "backgroundColor": "#a8a29e",
-            "borderRadius": 4,
-            "height": 8,
-            "opacity": 0.3,
-            "width": 8,
-          },
-          {
-            "backgroundColor": "#b45309",
-            "borderRadius": 6,
-            "height": 12,
-            "opacity": 1,
-            "width": 12,
-          },
-        ]
-      }
-    />
-    <View
-      style={
-        [
-          {
-            "backgroundColor": "#a8a29e",
-            "borderRadius": 4,
-            "height": 8,
-            "opacity": 0.3,
-            "width": 8,
-          },
-          false,
-        ]
-      }
-    />
   </View>
 </View>
 `;

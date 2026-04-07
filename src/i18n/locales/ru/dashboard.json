@@ -192,6 +192,63 @@
       "today": "Сегодня {{holidayName}}!",
       "tomorrow": "Завтра {{holidayName}}",
       "inDays": "{{holidayName}} через {{daysBefore}} дн. ({{holidayDate}})"
+    },
+    "smartReminders": {
+      "shiftType": {
+        "day": "дневная смена",
+        "night": "ночная смена",
+        "morning": "утренняя смена",
+        "afternoon": "дневная смена после обеда",
+        "off": "выходной"
+      },
+      "early": {
+        "title": "Скоро {{shiftType}}",
+        "body": "Ваша {{shiftType}} начинается в {{startTime}} {{shiftDate}}."
+      },
+      "prep": {
+        "fatigueCritical": " Риск усталости критический. Заложите больше времени.",
+        "fatigueHigh": " Отдохните и подготовьтесь заранее.",
+        "title": "Пора готовиться, {{name}}",
+        "body": "Ваша {{shiftType}} начинается в {{startTime}}.{{fatigueSuffix}}"
+      },
+      "commute": {
+        "title": "Пора выезжать",
+        "body": "Выезжайте сейчас, чтобы успеть к своей {{shiftType}}. Она начинается в {{startTime}}."
+      },
+      "imminent": {
+        "title": "Начало через 15 минут",
+        "body": "Ваша {{shiftType}} начинается в {{startTime}}."
+      },
+      "briefing": {
+        "title": "Скоро инструктаж",
+        "body": "Инструктаж начнется через 15 минут перед вашей {{shiftType}} в {{startTime}}."
+      },
+      "postShift": {
+        "title": "Как все прошло?",
+        "body": "Как прошла ваша {{shiftType}}? Отметьте уровень энергии в Ellie."
+      },
+      "fatigue": {
+        "title": "Критическое предупреждение об усталости",
+        "body": "Ваша {{shiftType}} начинается в {{startTime}}, но данные сна показывают критическую усталость. По возможности отдохните сейчас."
+      },
+      "backToBack": {
+        "title": "Впереди {{count}} ночные смены",
+        "body": "У вас {{count}} ночные смены подряд начиная с {{shiftDate}}. Сделайте отдых приоритетом."
+      },
+      "shortTurnaround": {
+        "title": "Впереди короткий отдых",
+        "body": "Между вашей {{previousShiftType}} и следующей {{nextShiftType}} {{shiftDate}} всего {{gapHours}} ч. Спланируйте отдых."
+      },
+      "fifo": {
+        "flyOut": {
+          "title": "День вылета домой",
+          "body": "Сегодня вы отправляетесь домой. Завершите передачу смены, соберите снаряжение и добирайтесь безопасно."
+        },
+        "travelTomorrow": {
+          "title": "Завтра день вылета",
+          "body": "Завтра вы летите на объект на свою {{shiftType}}. Подготовьте снаряжение и проверьте документы сегодня вечером."
+        }
+      }
     }
   },
   "countdown": {

@@ -192,6 +192,63 @@
       "today": "Namuhla yi-{{holidayName}}!",
       "tomorrow": "Kusasa yi-{{holidayName}}",
       "inDays": "{{holidayName}} isezinsukwini ezi-{{daysBefore}} ({{holidayDate}})"
+    },
+    "smartReminders": {
+      "shiftType": {
+        "day": "ishifu lasemini",
+        "night": "ishifu lasebusuku",
+        "morning": "ishifu lasekuseni",
+        "afternoon": "ishifu lantambama",
+        "off": "usuku lokuphumula"
+      },
+      "early": {
+        "title": "{{shiftType}} esizayo",
+        "body": "{{shiftType}} yakho iqala ngo-{{startTime}} ngo-{{shiftDate}}."
+      },
+      "prep": {
+        "fatigueCritical": " Ingozi yokukhathala ibucayi. Zinike isikhathi esengeziwe.",
+        "fatigueHigh": " Phumula futhi uzilungiselele kahle.",
+        "title": "Isikhathi sokulungela, {{name}}",
+        "body": "{{shiftType}} yakho iqala ngo-{{startTime}}.{{fatigueSuffix}}"
+      },
+      "commute": {
+        "title": "Hamba manje",
+        "body": "Hamba manje ukuze ufike ngesikhathi ku-{{shiftType}} yakho. Iqala ngo-{{startTime}}."
+      },
+      "imminent": {
+        "title": "Iqala emizuzwini engu-15",
+        "body": "{{shiftType}} yakho iqala ngo-{{startTime}}."
+      },
+      "briefing": {
+        "title": "Umbiko ususondele",
+        "body": "Umbiko uqala emizuzwini engu-15 ngaphambi kwe-{{shiftType}} yakho ngo-{{startTime}}."
+      },
+      "postShift": {
+        "title": "Kuhambe kanjani?",
+        "body": "Ihambe kanjani i-{{shiftType}} yakho? Bhala izinga lamandla akho ku-Ellie."
+      },
+      "fatigue": {
+        "title": "Isexwayiso sokukhathala esibucayi",
+        "body": "{{shiftType}} yakho iqala ngo-{{startTime}}, kodwa idatha yakho yokulala ikhombisa ukukhathala okubucayi. Phumula manje uma ukwazi."
+      },
+      "backToBack": {
+        "title": "Kuzayo amashifu asebusuku angu-{{count}}",
+        "body": "Unamashifu asebusuku angu-{{count}} alandelanayo aqala ngo-{{shiftDate}}. Beka ukuphumula kuqala."
+      },
+      "shortTurnaround": {
+        "title": "Kuzayo ukuphumula okufushane",
+        "body": "Kunehora elingu-{{gapHours}} kuphela phakathi kwe-{{previousShiftType}} yakho ne-{{nextShiftType}} elandelayo ngo-{{shiftDate}}. Hlela ukuphumula kwakho."
+      },
+      "fifo": {
+        "flyOut": {
+          "title": "Usuku lokubuyela ekhaya",
+          "body": "Namuhla ubuyela ekhaya. Qedela ukudlulisa umsebenzi, pakisha izinto zakho, uhambe ngokuphepha."
+        },
+        "travelTomorrow": {
+          "title": "Usuku lokuhamba kusasa",
+          "body": "Kusasa uya esizeni nge-{{shiftType}} yakho. Pakisha izinto zakho futhi uhlole amadokhumenti akho namhlanje kusihlwa."
+        }
+      }
     }
   },
   "countdown": {

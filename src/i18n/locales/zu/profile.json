@@ -2,7 +2,8 @@
   "sections": {
     "personalInfo": "Ulwazi lomuntu siqu",
     "workOverview": "Ukubuka konke komsebenzi",
-    "shiftSettings": "Shift Izilungiselelo"
+    "shiftSettings": "Shift Izilungiselelo",
+    "smartReminders": "Izikhumbuzi ezihlakaniphile"
   },
   "fields": {
     "name": "Igama",
@@ -109,7 +110,7 @@
       "customSequence": "UKULANDELANA NGESIKHATHI",
       "siteDetails": "IMINININGWANE YESIZA",
       "travelDays": "IZINSUKU ZOKUHAMBA (NGOKUZITHANDELA)",
-      "scheduleAnchor": "UHLELO ANCHOR",
+      "scheduleAnchor": "UKUQALA NENDAWO YEROSTER",
       "customPattern": "IPHETHINSI YESIKO"
     },
     "chips": {
@@ -257,6 +258,89 @@
       "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} Ukuzungezisa Ngokwezifiso",
       "dayAbbrev": "EM",
       "nightAbbrev": "EB"
+    }
+  },
+  "smartReminders": {
+    "sections": {
+      "timing": "ISIKHATHI",
+      "doNotDisturb": "UNGAPHAMBIKISI",
+      "adaptive": "EZIVUMELANAYO",
+      "fifo": "FIFO"
+    },
+    "units": {
+      "hoursShort": "{{value}} h",
+      "minutesShort": "{{value}} imiz",
+      "none": "Akukho"
+    },
+    "rows": {
+      "early": {
+        "label": "Isikhumbuzi sangaphambi kwesikhathi",
+        "sublabel": "Isaziso ngaphambi kokuthi ishifu lakho liqale"
+      },
+      "prep": {
+        "label": "Isikhathi sokulungiselela",
+        "sublabel": "Isikhathi osidingayo ukuze ulungiselele ngaphambi kokuhamba"
+      },
+      "commute": {
+        "label": "Isikhathi sohambo",
+        "sublabel": "Kuthatha isikhathi esingakanani ukufika esizeni"
+      },
+      "imminent": {
+        "label": "Isaziso semizuzu engu-15",
+        "sublabel": "Kukwazisa uma ishifu lakho lisasele ngemizuzu engu-15"
+      },
+      "briefing": {
+        "label": "Isaziso se-briefing",
+        "sublabel": "Sezindima ezidinga i-briefing yokuphepha ngaphambi kweshifu ngalinye"
+      },
+      "quietHours": {
+        "label": "Amahora okuthula",
+        "sublabel": "Athulisa izexwayiso ezingabalulekile lapho ulele"
+      },
+      "backToBack": {
+        "label": "Isexwayiso samashifu asebusuku alandelanayo",
+        "sublabel": "Isexwayisa uma kuza amashifu asebusuku angu-3 noma ngaphezulu alandelanayo"
+      },
+      "shortTurnaround": {
+        "label": "Isexwayiso sesikhathi esifushane sokuphumula",
+        "sublabel": "Isexwayisa uma kunamahora angaphansi kuka-10 phakathi kwamashifu"
+      },
+      "postShift": {
+        "label": "Ukubika ngemva kweshifu",
+        "sublabel": "Kukukhumbuza ukubhala amandla akho ihora elilodwa ngemva kweshifu ngalinye"
+      },
+      "travelDay": {
+        "label": "Izikhumbuzi zosuku lokuhamba",
+        "sublabel": "Isexwayiso kusihlwa ngaphambi kwe-fly-in nasekuseni ngosuku lwe-fly-out"
+      }
+    },
+    "quietHours": {
+      "startA11y": "Amahora okuthula aqala ngo: {{time}}",
+      "endA11y": "Amahora okuthula aphela ngo: {{time}}",
+      "overnight": "Ubuso bonke bobusuku · {{hours}} h",
+      "minimumAdjusted": "Amahora okuthula alungiswe ukuze abe ubuncane bemizuzu engu-30."
+    },
+    "actions": {
+      "permissionNotice": "Izilungiselelo zigciniwe, kodwa izaziso zivaliwe ngakho izikhumbuzi azihlelwanga kabusha. Vula izaziso ku-Izilungiselelo ukuze zisebenze.",
+      "test": {
+        "a11y": "Thumela isikhumbuzi sokuhlola ngemizuzwana emi-5",
+        "idle": "Thumela ukuhlola",
+        "sent": "Ukuhlola kuthunyelwe — bheka ngemizuzwana emi-5",
+        "error": "Isikhumbuzi sokuhlola asitholakali manje",
+        "permission": "Vula izaziso ukuze uthumele ukuhlola"
+      },
+      "reschedule": {
+        "a11y": "Hlela kabusha zonke izikhumbuzi manje",
+        "idle": "Hlela kabusha izikhumbuzi",
+        "inProgress": "Kuhlelwa kabusha…",
+        "success": "Izikhumbuzi zibuyekeziwe",
+        "error": "Kwehlulekile ukubuyekeza izikhumbuzi",
+        "permission": "Vula izaziso ukuze uhlele kabusha izikhumbuzi"
+      }
+    },
+    "test": {
+      "title": "Izikhumbuzi ezihlakaniphile zivuliwe",
+      "body": "Uma lokhu kufika, izikhumbuzi zakho ezihlakaniphile ziyasebenza."
     }
   }
 }

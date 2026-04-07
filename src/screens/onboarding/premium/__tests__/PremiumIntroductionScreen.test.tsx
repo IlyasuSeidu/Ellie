@@ -201,6 +201,53 @@ describe('PremiumIntroductionScreen', () => {
 
       expect(await findByPlaceholderText('Enter your country', { timeout: 3000 })).toBeTruthy();
     });
+
+    it('navigates to ShiftSystem after skipping company and submitting country', async () => {
+      const { findByPlaceholderText, findByTestId } = renderWithProviders(
+        <PremiumIntroductionScreen />
+      );
+
+      await act(async () => {
+        jest.advanceTimersByTime(6000);
+      });
+
+      const nameInput = await findByPlaceholderText('Enter your name', { timeout: 3000 });
+      fireEvent.changeText(nameInput, 'Ilyasu');
+      fireEvent.press(await findByTestId('premium-introduction-screen-chat-input-submit'));
+
+      await act(async () => {
+        jest.advanceTimersByTime(2500);
+      });
+
+      const occupationInput = await findByPlaceholderText(
+        'e.g. Haul truck operator, Boilermaker, Electrician',
+        { timeout: 3000 }
+      );
+      fireEvent.changeText(occupationInput, 'Miner');
+      fireEvent.press(await findByTestId('premium-introduction-screen-chat-input-submit'));
+
+      await act(async () => {
+        jest.advanceTimersByTime(2500);
+      });
+
+      fireEvent.press(
+        await findByTestId('premium-introduction-screen-chat-input-quick-reply-skip')
+      );
+
+      await act(async () => {
+        jest.advanceTimersByTime(3000);
+      });
+
+      const countryInput = await findByPlaceholderText('Enter your country', { timeout: 3000 });
+      fireEvent.changeText(countryInput, 'Australia');
+      fireEvent.press(await findByTestId('premium-introduction-screen-chat-input-submit'));
+
+      await act(async () => {
+        jest.advanceTimersByTime(6000);
+      });
+
+      expect(mockNavigate).toHaveBeenCalledWith('ShiftSystem');
+    });
   });
 
   describe('Chat Interface', () => {

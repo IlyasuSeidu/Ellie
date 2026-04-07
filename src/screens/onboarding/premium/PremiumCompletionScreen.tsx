@@ -1079,6 +1079,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
               size="large"
               titleNumberOfLines={1}
               disabled={!isSaved}
+              testID="completion-get-started-button"
               icon={<Ionicons name="arrow-forward" size={20} color={theme.colors.deepVoid} />}
               iconPosition="right"
               accessibilityLabel={t('completion.getStartedA11yLabel', {

@@ -99,7 +99,11 @@
       "af": "IsiBhunu (IsiBhunu)",
       "zu": "Zulu (isiZulu)",
       "id": "Isi-Indonesian (I-Bahasa Indonesia)"
-    }
+    },
+    "selectorSubtitle": "Khetha ulimi lwakho",
+    "search": "Sesha izilimi…",
+    "noResults": "Awekho izilimi ezitholakele",
+    "rtlBadge": "RTL"
   },
   "accessibility": {
     "toggle": "Shintsha"

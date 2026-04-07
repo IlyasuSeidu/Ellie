@@ -99,7 +99,11 @@
       "af": "Afrikaans (Afrikaans)",
       "zu": "Zoeloe (isiZulu)",
       "id": "Indonesies (Bahasa Indonesië)"
-    }
+    },
+    "selectorSubtitle": "Kies jou taal",
+    "search": "Soek tale…",
+    "noResults": "Geen tale gevind nie",
+    "rtlBadge": "RTL"
   },
   "accessibility": {
     "toggle": "Wissel"

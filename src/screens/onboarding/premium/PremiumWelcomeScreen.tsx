@@ -45,7 +45,7 @@ const ANIMATION_TIMINGS = {
 
 export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
   onContinue,
-  testID,
+  testID = 'premium-welcome-screen',
 }) => {
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();

@@ -1509,6 +1509,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                   onPress={handleBack}
                   accessibilityLabel={t('shiftTime.actions.goBack', { defaultValue: 'Go back' })}
                   accessibilityRole="button"
+                  testID="shift-time-back-button"
                 >
                   <LinearGradient
                     colors={['rgba(255,255,255,0.18)', 'rgba(255,255,255,0.08)']}
@@ -1527,6 +1528,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
                   ]}
                   onPress={handleContinue}
                   disabled={!canContinue}
+                  testID="shift-time-continue-button"
                   accessibilityLabel={
                     totalStages === 1
                       ? t('shiftTime.actions.continueToNextStep', {

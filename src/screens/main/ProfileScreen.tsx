@@ -26,6 +26,7 @@ import { ProfileEditForm } from '@/components/profile/ProfileEditForm';
 import { ShiftSettingsPanel } from '@/components/profile/ShiftSettingsPanel';
 import { WorkStatsSummary } from '@/components/profile/WorkStatsSummary';
 import { LANGUAGE_NAMES, LanguageSelectorSheet } from '@/components/profile/LanguageSelectorSheet';
+import { SmartRemindersPanel } from '@/components/profile/SmartRemindersPanel';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
@@ -317,11 +318,19 @@ export const ProfileScreen: React.FC = () => {
         />
         <WorkStatsSummary data={profile.data} animationDelay={1200} />
 
+        <ProfileSectionHeader
+          title={t('sections.smartReminders', { defaultValue: 'Smart Reminders' })}
+          icon="notifications-outline"
+          animationDelay={1300}
+        />
+        <SmartRemindersPanel animationDelay={1400} />
+
         <TouchableOpacity
           style={styles.languageRow}
           onPress={() => setLanguageSheetVisible(true)}
           accessibilityRole="button"
           accessibilityLabel={t('language.label')}
+          testID="language-selector-button"
         >
           <Ionicons name="language-outline" size={18} color={theme.colors.sacredGold} />
           <Text style={styles.languageLabel}>{t('language.label')}</Text>

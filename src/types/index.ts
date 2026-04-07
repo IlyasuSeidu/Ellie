@@ -1,3 +1,5 @@
+import type { SmartReminderSettings } from './reminders';
+
 /**
  * Core Type Definitions for Shift Tracking Application
  *
@@ -263,6 +265,8 @@ export interface NotificationSettings {
   soundEnabled: boolean;
   /** Notification vibration enabled */
   vibrationEnabled: boolean;
+  /** Optional advanced smart-reminder settings */
+  smartReminders?: SmartReminderSettings;
 }
 
 /**

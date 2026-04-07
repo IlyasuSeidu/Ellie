@@ -1,0 +1,4746 @@
+[
+  {
+    "ph": "M",
+    "args": { "name": "primary" },
+    "ts": 1775470694803000,
+    "tid": 0,
+    "pid": 14150,
+    "name": "process_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 0 },
+    "ts": 1775470694803000,
+    "tid": 0,
+    "pid": 14150,
+    "name": "process_sort_index"
+  },
+  {
+    "ph": "M",
+    "args": { "name": "lifecycle" },
+    "ts": 1775470694803000,
+    "tid": 0,
+    "pid": 14150,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 0 },
+    "ts": 1775470694803000,
+    "tid": 0,
+    "pid": 14150,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "B",
+    "name": "node_modules/.bin/detox test e2e/onboarding.test.ts --configuration ios.release --cleanup --record-logs all --take-screenshots failing",
+    "pid": 14150,
+    "tid": 0,
+    "cat": "lifecycle",
+    "ts": 1775470694803000,
+    "args": {
+      "level": 10,
+      "cwd": "/Users/Shared/Ellie",
+      "data": {
+        "id": "c4930da3-01ca-d5ef-a070-c4210c272927",
+        "detoxConfig": {
+          "configurationName": "ios.release",
+          "apps": {
+            "default": {
+              "type": "ios.app",
+              "build": "E2E_TEST_MODE=1 xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -sdk iphonesimulator -destination \"platform=iOS Simulator,name=iPhone 16 Pro\" -derivedDataPath ios/build build && APP=\"ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app\" && find \"$APP/Frameworks\" -type f | while read -r f; do if file \"$f\" | grep -q \"Mach-O\"; then codesign --force --sign - --timestamp=none \"$f\"; fi; done && find \"$APP/Frameworks\" -type d -name \"*.framework\" -exec codesign --force --sign - --timestamp=none {} \\; && codesign --force --sign - --deep --timestamp=none \"$APP\"",
+              "binaryPath": "./ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app"
+            }
+          },
+          "artifacts": {
+            "rootDir": "artifacts/ios.release.2026-04-06 10-18-14Z",
+            "plugins": {
+              "log": { "enabled": true, "keepOnlyFailedTestsArtifacts": false },
+              "screenshot": {
+                "enabled": true,
+                "shouldTakeAutomaticSnapshots": true,
+                "keepOnlyFailedTestsArtifacts": true
+              },
+              "video": { "enabled": false, "keepOnlyFailedTestsArtifacts": false },
+              "instruments": { "enabled": false, "keepOnlyFailedTestsArtifacts": false },
+              "uiHierarchy": { "enabled": false, "keepOnlyFailedTestsArtifacts": false }
+            }
+          },
+          "behavior": {
+            "init": { "keepLockFile": false, "reinstallApp": true, "exposeGlobals": true },
+            "cleanup": { "shutdownDevice": true },
+            "launchApp": "auto"
+          },
+          "cli": {
+            "recordLogs": "all",
+            "takeScreenshots": "failing",
+            "cleanup": true,
+            "configuration": "ios.release",
+            "start": true
+          },
+          "commands": [
+            {
+              "appName": "default",
+              "build": "E2E_TEST_MODE=1 xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -sdk iphonesimulator -destination \"platform=iOS Simulator,name=iPhone 16 Pro\" -derivedDataPath ios/build build && APP=\"ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app\" && find \"$APP/Frameworks\" -type f | while read -r f; do if file \"$f\" | grep -q \"Mach-O\"; then codesign --force --sign - --timestamp=none \"$f\"; fi; done && find \"$APP/Frameworks\" -type d -name \"*.framework\" -exec codesign --force --sign - --timestamp=none {} \\; && codesign --force --sign - --deep --timestamp=none \"$APP\""
+            }
+          ],
+          "device": { "type": "ios.simulator", "device": { "type": "iPhone 16 Pro" } },
+          "logger": {
+            "level": "info",
+            "overrideConsole": true,
+            "options": {
+              "showLoggerName": true,
+              "showPid": true,
+              "showLevel": false,
+              "showMetadata": false,
+              "basepath": "/Users/Shared/Ellie/node_modules/detox/src",
+              "prefixers": {},
+              "stringifiers": {}
+            }
+          },
+          "testRunner": {
+            "retries": 0,
+            "forwardEnv": false,
+            "detached": false,
+            "bail": false,
+            "noRetryArgs": ["shard"],
+            "jest": {
+              "setupTimeout": 120000,
+              "teardownTimeout": 30000,
+              "retryAfterCircusRetries": false,
+              "reportWorkerAssign": true
+            },
+            "args": {
+              "$0": "jest",
+              "_": ["e2e/onboarding.test.ts"],
+              "config": "e2e/jest.config.js",
+              "--": []
+            }
+          },
+          "session": { "autoStart": true, "debugSynchronization": 10000 }
+        },
+        "detoxIPCServer": "primary-14150",
+        "testResults": [],
+        "testSessionIndex": 0,
+        "workersCount": 0
+      },
+      "v": 0
+    }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "ipc" },
+    "ts": 1775470694806000,
+    "tid": 1,
+    "pid": 14150,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 1 },
+    "ts": 1775470694806000,
+    "tid": 1,
+    "pid": 14150,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "i",
+    "name": "Server path not specified, so defaulting to ipc.config.socketRoot + ipc.config.appspace + ipc.config.id /tmp/detox.primary-14150",
+    "pid": 14150,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1775470694806000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "starting server on  /tmp/detox.primary-14150 ",
+    "pid": 14150,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1775470694807000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "starting TLS server false",
+    "pid": 14150,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1775470694807000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "starting server as Unix || Windows Socket",
+    "pid": 14150,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1775470694807000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "ws-server" },
+    "ts": 1775470694808000,
+    "tid": 2,
+    "pid": 14150,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 2 },
+    "ts": 1775470694808000,
+    "tid": 2,
+    "pid": 14150,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "i",
+    "name": "Detox server listening on localhost:55758...",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470694808000,
+    "args": { "level": 20, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "Serialized the session state at: /private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/c4930da3-01ca-d5ef-a070-c4210c272927.detox.json",
+    "pid": 14150,
+    "tid": 0,
+    "cat": "lifecycle",
+    "ts": 1775470694809000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "jest --config e2e/jest.config.js e2e/onboarding.test.ts",
+    "pid": 14150,
+    "tid": 0,
+    "cat": "lifecycle,cli",
+    "ts": 1775470694810000,
+    "args": { "level": 30, "env": {}, "v": 0 }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "secondary" },
+    "ts": 1775470697725000,
+    "tid": 0,
+    "pid": 14151,
+    "name": "process_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 1 },
+    "ts": 1775470697725000,
+    "tid": 0,
+    "pid": 14151,
+    "name": "process_sort_index"
+  },
+  {
+    "ph": "M",
+    "args": { "name": "ipc" },
+    "ts": 1775470697725000,
+    "tid": 7,
+    "pid": 14151,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 7 },
+    "ts": 1775470697725000,
+    "tid": 7,
+    "pid": 14151,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "i",
+    "name": "Service path not specified, so defaulting to ipc.config.socketRoot + ipc.config.appspace + id ",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470697725000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "requested connection to  primary-14150 /tmp/detox.primary-14150",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470697726000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "Connecting client on Unix Socket : /tmp/detox.primary-14150",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470697726000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "## socket connection to server detected ##",
+    "pid": 14150,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1775470697727000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "retrying reset",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470697727000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "dispatching event to  primary-14150 /tmp/detox.primary-14150  :  registerContext , { id: 'secondary-14151' }",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470697727000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "received event of :  registerContext { id: 'secondary-14151' }",
+    "pid": 14150,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1775470697728000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "dispatching event to socket  :  registerContextDone {\n  testResults: [],\n  testSessionIndex: 0,\n  unsafe_earlyTeardown: undefined\n}",
+    "pid": 14150,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1775470697728000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "## received events ##",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470697728000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "detected event registerContextDone { testResults: [], testSessionIndex: 0 }",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470697728000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "lifecycle" },
+    "ts": 1775470697796000,
+    "tid": 8,
+    "pid": 14151,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 8 },
+    "ts": 1775470697796000,
+    "tid": 8,
+    "pid": 14151,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "B",
+    "name": "e2e/onboarding.test.ts",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1775470697796000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "set up environment",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1775470697802000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "received event of :  registerWorker { workerId: 'w1' }",
+    "pid": 14150,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1775470697803000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "dispatching event to socket  :  registerWorkerDone { workersCount: 1 }",
+    "pid": 14150,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1775470697803000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "broadcasting event to all known sockets listening to  /tmp/detox.primary-14150  :   sessionStateUpdate { workersCount: 1 }",
+    "pid": 14150,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1775470697803000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "dispatching event to  primary-14150 /tmp/detox.primary-14150  :  registerWorker , { workerId: 'w1' }",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470697803000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "## received events ##",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470697803000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "detected event registerWorkerDone { workersCount: 1 }",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470697803000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "## received events ##",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470697950000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "detected event sessionStateUpdate { workersCount: 1 }",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470697950000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "connection :55758<->:55759",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470697954000,
+    "args": { "level": 20, "id": 55759, "v": 0 }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "ws-client" },
+    "ts": 1775470697954000,
+    "tid": 9,
+    "pid": 14151,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 9 },
+    "ts": 1775470697954000,
+    "tid": 9,
+    "pid": 14151,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "i",
+    "name": "opened web socket to: ws://localhost:55758",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470697954000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "send message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470697955000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"login\",\"params\":{\"sessionId\":\"6e9728e5-ac50-0063-87a6-88b0c1ba4021\",\"role\":\"tester\"},\"messageId\":0}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470697956000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "data": "{\"type\":\"login\",\"params\":{\"sessionId\":\"6e9728e5-ac50-0063-87a6-88b0c1ba4021\",\"role\":\"tester\"},\"messageId\":0}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "ws-server" },
+    "ts": 1775470697956000,
+    "tid": 3,
+    "pid": 14150,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 3 },
+    "ts": 1775470697956000,
+    "tid": 3,
+    "pid": 14150,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "i",
+    "name": "created session 6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws-session",
+    "ts": 1775470697956000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470697956000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": {
+        "type": "loginSuccess",
+        "params": { "testerConnected": true, "appConnected": false },
+        "messageId": 0
+      },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "tester joined session 6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws-session",
+    "ts": 1775470697956000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "get message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470697957000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"loginSuccess\",\"params\":{\"testerConnected\":true,\"appConnected\":false},\"messageId\":0}\n ",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "received event of :  allocateDevice {\n  deviceConfig: { type: 'ios.simulator', device: { type: 'iPhone 16 Pro' } }\n}",
+    "pid": 14150,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1775470698175000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "dispatching event to  primary-14150 /tmp/detox.primary-14150  :  allocateDevice , {\n  deviceConfig: { type: 'ios.simulator', device: { type: 'iPhone 16 Pro' } }\n}",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470698175000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "device" },
+    "ts": 1775470698178000,
+    "tid": 5,
+    "pid": 14150,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 5 },
+    "ts": 1775470698178000,
+    "tid": 5,
+    "pid": 14150,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "B",
+    "name": "init",
+    "pid": 14150,
+    "tid": 5,
+    "cat": "device,device-allocation",
+    "ts": 1775470698178000,
+    "args": { "level": 10, "args": [], "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14150,
+    "tid": 5,
+    "cat": "device,device-allocation",
+    "ts": 1775470698180000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "allocate",
+    "pid": 14150,
+    "tid": 5,
+    "cat": "device,device-allocation",
+    "ts": 1775470698180000,
+    "args": {
+      "level": 10,
+      "data": { "type": "ios.simulator", "device": { "type": "iPhone 16 Pro" } },
+      "id": 0,
+      "v": 0
+    }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "child-process" },
+    "ts": 1775470698200000,
+    "tid": 6,
+    "pid": 14150,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 6 },
+    "ts": 1775470698200000,
+    "tid": 6,
+    "pid": 14150,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "i",
+    "name": "applesimutils --list --byType \"iPhone 16 Pro\" --fields udid,name,deviceType,os,identifier",
+    "pid": 14150,
+    "tid": 6,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470698200000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "applesimutils --list --byType \"iPhone 16 Pro\" --fields udid,name,deviceType,os,identifier",
+      "trackingId": 0,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Searching for device by type = \"iPhone 16 Pro\" ...",
+    "pid": 14150,
+    "tid": 6,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470698200000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "applesimutils --list --byType \"iPhone 16 Pro\" --fields udid,name,deviceType,os,identifier",
+      "trackingId": 0,
+      "event": "EXEC_TRY",
+      "retryNumber": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "[\n  {\n    \"os\" : {\n      \"name\" : \"iOS 18.5\",\n      \"identifier\" : \"com.apple.CoreSimulator.SimRuntime.iOS-18-5\"\n    },\n    \"name\" : \"iPhone 16 Pro\",\n    \"udid\" : \"85DD3162-206C-44DB-A723-F4B933896B6E\",\n    \"deviceType\" : {\n      \"name\" : \"iPhone 16 Pro\",\n      \"identifier\" : \"com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro\"\n    }\n  }\n]\n",
+    "pid": 14150,
+    "tid": 6,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470698364000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "applesimutils --list --byType \"iPhone 16 Pro\" --fields udid,name,deviceType,os,identifier",
+      "trackingId": 0,
+      "event": "EXEC_SUCCESS",
+      "stdout": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "settled on 85DD3162-206C-44DB-A723-F4B933896B6E",
+    "pid": 14150,
+    "tid": 5,
+    "cat": "device,device-allocation",
+    "ts": 1775470698365000,
+    "args": {
+      "level": 20,
+      "data": {
+        "id": "85DD3162-206C-44DB-A723-F4B933896B6E",
+        "udid": "85DD3162-206C-44DB-A723-F4B933896B6E"
+      },
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14150,
+    "tid": 5,
+    "cat": "device,device-allocation",
+    "ts": 1775470698365000,
+    "args": { "level": 10, "id": 0, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "post-allocate: 85DD3162-206C-44DB-A723-F4B933896B6E",
+    "pid": 14150,
+    "tid": 5,
+    "cat": "device,device-allocation",
+    "ts": 1775470698365000,
+    "args": {
+      "level": 10,
+      "data": {
+        "id": "85DD3162-206C-44DB-A723-F4B933896B6E",
+        "udid": "85DD3162-206C-44DB-A723-F4B933896B6E"
+      },
+      "id": 0,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "applesimutils --list --byId 85DD3162-206C-44DB-A723-F4B933896B6E --maxResults 1 --fields udid,os,version,state",
+    "pid": 14150,
+    "tid": 6,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470698365000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "applesimutils --list --byId 85DD3162-206C-44DB-A723-F4B933896B6E --maxResults 1 --fields udid,os,version,state",
+      "trackingId": 1,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "[\n  {\n    \"state\" : \"Shutdown\",\n    \"os\" : {\n      \"version\" : \"18.5\"\n    },\n    \"udid\" : \"85DD3162-206C-44DB-A723-F4B933896B6E\"\n  }\n]\n",
+    "pid": 14150,
+    "tid": 6,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470698449000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "applesimutils --list --byId 85DD3162-206C-44DB-A723-F4B933896B6E --maxResults 1 --fields udid,os,version,state",
+      "trackingId": 1,
+      "event": "EXEC_SUCCESS",
+      "stdout": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl boot 85DD3162-206C-44DB-A723-F4B933896B6E ",
+    "pid": 14150,
+    "tid": 6,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470698450000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl boot 85DD3162-206C-44DB-A723-F4B933896B6E ",
+      "trackingId": 2,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Booting device 85DD3162-206C-44DB-A723-F4B933896B6E...",
+    "pid": 14150,
+    "tid": 6,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470698450000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl boot 85DD3162-206C-44DB-A723-F4B933896B6E ",
+      "trackingId": 2,
+      "event": "EXEC_TRY",
+      "retryNumber": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "",
+    "pid": 14150,
+    "tid": 6,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470699118000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl boot 85DD3162-206C-44DB-A723-F4B933896B6E ",
+      "trackingId": 2,
+      "event": "EXEC_SUCCESS",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl bootstatus 85DD3162-206C-44DB-A723-F4B933896B6E",
+    "pid": 14150,
+    "tid": 6,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470699118000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl bootstatus 85DD3162-206C-44DB-A723-F4B933896B6E",
+      "trackingId": 3,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Monitoring boot status for iPhone 16 Pro (85DD3162-206C-44DB-A723-F4B933896B6E).\n[2026-04-06 10:18:20 +0000] Status=2, isTerminal=NO, Elapsed=00:01.\n\tWaiting on Data Migration\n\t\tReason:(null)\n\t\tMigration Elapsed:00:00 seconds\n\n[2026-04-06 10:18:21 +0000] Status=4, isTerminal=NO, Elapsed=00:02.\n\tWaiting on System App\n\n[2026-04-06 10:18:21 +0000] Status=4, isTerminal=NO, Elapsed=00:03.\n\tWaiting on System App\n\n[2026-04-06 10:18:22 +0000] Status=4, isTerminal=NO, Elapsed=00:03.\n\tWaiting on System App\n\n[2026-04-06 10:18:23 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:04.\n\tFinished\n\n",
+    "pid": 14150,
+    "tid": 6,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470703656000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl bootstatus 85DD3162-206C-44DB-A723-F4B933896B6E",
+      "trackingId": 3,
+      "event": "EXEC_SUCCESS",
+      "stdout": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "open -a Simulator --args -CurrentDeviceUDID 85DD3162-206C-44DB-A723-F4B933896B6E",
+    "pid": 14150,
+    "tid": 6,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470703656000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "open -a Simulator --args -CurrentDeviceUDID 85DD3162-206C-44DB-A723-F4B933896B6E",
+      "trackingId": 4,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "",
+    "pid": 14150,
+    "tid": 6,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470703754000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "open -a Simulator --args -CurrentDeviceUDID 85DD3162-206C-44DB-A723-F4B933896B6E",
+      "trackingId": 4,
+      "event": "EXEC_SUCCESS",
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14150,
+    "tid": 5,
+    "cat": "device,device-allocation",
+    "ts": 1775470703754000,
+    "args": { "level": 10, "id": 0, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "dispatching event to socket  :  allocateDeviceDone {\n  deviceCookie: {\n    id: '85DD3162-206C-44DB-A723-F4B933896B6E',\n    udid: '85DD3162-206C-44DB-A723-F4B933896B6E',\n    type: 'ios.simulator',\n    bootArgs: undefined,\n    headless: undefined\n  }\n}",
+    "pid": 14150,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1775470703754000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "## received events ##",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470703754000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "detected event allocateDeviceDone {\n  deviceCookie: {\n    id: '85DD3162-206C-44DB-A723-F4B933896B6E',\n    udid: '85DD3162-206C-44DB-A723-F4B933896B6E',\n    type: 'ios.simulator'\n  }\n}",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470703755000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "artifacts-manager" },
+    "ts": 1775470703772000,
+    "tid": 10,
+    "pid": 14151,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 10 },
+    "ts": 1775470703772000,
+    "tid": 10,
+    "pid": 14151,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "B",
+    "name": "onBootDevice",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470703772000,
+    "args": {
+      "level": 10,
+      "args": [{ "deviceId": "85DD3162-206C-44DB-A723-F4B933896B6E" }],
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470703772000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "device" },
+    "ts": 1775470703772000,
+    "tid": 11,
+    "pid": 14151,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 11 },
+    "ts": 1775470703772000,
+    "tid": 11,
+    "pid": 14151,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "B",
+    "name": "installUtilBinaries",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470703772000,
+    "args": { "level": 10, "args": [], "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470703772000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "selectApp",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470703773000,
+    "args": { "level": 10, "args": ["default"], "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470703785000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "uninstallApp",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470703786000,
+    "args": { "level": 10, "args": [], "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onBeforeUninstallApp",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470703786000,
+    "args": {
+      "level": 10,
+      "args": [
+        {
+          "deviceId": "85DD3162-206C-44DB-A723-F4B933896B6E",
+          "bundleId": "com.ellie.minershiftassistant"
+        }
+      ],
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470703786000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "child-process" },
+    "ts": 1775470703786000,
+    "tid": 12,
+    "pid": 14151,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 12 },
+    "ts": 1775470703786000,
+    "tid": 12,
+    "pid": 14151,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl uninstall 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470703786000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl uninstall 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 0,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Uninstalling com.ellie.minershiftassistant...",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470703786000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl uninstall 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 0,
+      "event": "EXEC_TRY",
+      "retryNumber": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "com.ellie.minershiftassistant uninstalled",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470704988000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl uninstall 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 0,
+      "event": "EXEC_SUCCESS",
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470704988000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "selectApp",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470704988000,
+    "args": { "level": 10, "args": ["default"], "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "terminateApp",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470704989000,
+    "args": { "level": 10, "args": [], "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onBeforeTerminateApp",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470704989000,
+    "args": {
+      "level": 10,
+      "args": [
+        {
+          "deviceId": "85DD3162-206C-44DB-A723-F4B933896B6E",
+          "bundleId": "com.ellie.minershiftassistant"
+        }
+      ],
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470704989000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470704989000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 1,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Terminating com.ellie.minershiftassistant...",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470704989000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 1,
+      "event": "EXEC_TRY",
+      "retryNumber": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):\nSimulator device failed to terminate com.ellie.minershiftassistant.\nfound nothing to terminate\nUnderlying error (domain=NSPOSIXErrorDomain, code=3):\n\tThe request to terminate \"com.ellie.minershiftassistant\" failed. found nothing to terminate\n\tfound nothing to terminate\n",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470706158000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 1,
+      "event": "EXEC_TRY_FAIL",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Terminating com.ellie.minershiftassistant...",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470706158000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 1,
+      "event": "EXEC_TRY",
+      "retryNumber": 2,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "\"/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant\" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant\nAn error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):\nSimulator device failed to terminate com.ellie.minershiftassistant.\nfound nothing to terminate\nUnderlying error (domain=NSPOSIXErrorDomain, code=3):\n\tThe request to terminate \"com.ellie.minershiftassistant\" failed. found nothing to terminate\n\tfound nothing to terminate\n (code=3), stdout and stderr:\n",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470706295000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 1,
+      "event": "EXEC_FAIL",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470706296000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 1,
+      "event": "EXEC_FAIL",
+      "stdout": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):\nSimulator device failed to terminate com.ellie.minershiftassistant.\nfound nothing to terminate\nUnderlying error (domain=NSPOSIXErrorDomain, code=3):\n\tThe request to terminate \"com.ellie.minershiftassistant\" failed. found nothing to terminate\n\tfound nothing to terminate\n",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470706296000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 1,
+      "event": "EXEC_FAIL",
+      "stderr": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "B",
+    "name": "onTerminateApp",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470706296000,
+    "args": {
+      "level": 10,
+      "args": [
+        {
+          "deviceId": "85DD3162-206C-44DB-A723-F4B933896B6E",
+          "bundleId": "com.ellie.minershiftassistant"
+        }
+      ],
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470706296000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470706296000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470706296000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "installApp",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470706296000,
+    "args": { "level": 10, "args": [], "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl install 85DD3162-206C-44DB-A723-F4B933896B6E \"/Users/Shared/Ellie/ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app\"",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470706296000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl install 85DD3162-206C-44DB-A723-F4B933896B6E \"/Users/Shared/Ellie/ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app\"",
+      "trackingId": 2,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Installing /Users/Shared/Ellie/ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app...",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470706296000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl install 85DD3162-206C-44DB-A723-F4B933896B6E \"/Users/Shared/Ellie/ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app\"",
+      "trackingId": 2,
+      "event": "EXEC_TRY",
+      "retryNumber": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "/Users/Shared/Ellie/ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app installed",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470708439000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl install 85DD3162-206C-44DB-A723-F4B933896B6E \"/Users/Shared/Ellie/ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app\"",
+      "trackingId": 2,
+      "event": "EXEC_SUCCESS",
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470708439000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "selectApp",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470708439000,
+    "args": { "level": 10, "args": ["default"], "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "terminateApp",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470708440000,
+    "args": { "level": 10, "args": [], "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onBeforeTerminateApp",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470708440000,
+    "args": {
+      "level": 10,
+      "args": [
+        {
+          "deviceId": "85DD3162-206C-44DB-A723-F4B933896B6E",
+          "bundleId": "com.ellie.minershiftassistant"
+        }
+      ],
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470708440000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470708440000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 3,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Terminating com.ellie.minershiftassistant...",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470708440000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 3,
+      "event": "EXEC_TRY",
+      "retryNumber": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):\nSimulator device failed to terminate com.ellie.minershiftassistant.\nfound nothing to terminate\nUnderlying error (domain=NSPOSIXErrorDomain, code=3):\n\tThe request to terminate \"com.ellie.minershiftassistant\" failed. found nothing to terminate\n\tfound nothing to terminate\n",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470709528000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 3,
+      "event": "EXEC_TRY_FAIL",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Terminating com.ellie.minershiftassistant...",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470709528000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 3,
+      "event": "EXEC_TRY",
+      "retryNumber": 2,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "\"/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant\" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant\nAn error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):\nSimulator device failed to terminate com.ellie.minershiftassistant.\nfound nothing to terminate\nUnderlying error (domain=NSPOSIXErrorDomain, code=3):\n\tThe request to terminate \"com.ellie.minershiftassistant\" failed. found nothing to terminate\n\tfound nothing to terminate\n (code=3), stdout and stderr:\n",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470709608000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 3,
+      "event": "EXEC_FAIL",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470709608000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 3,
+      "event": "EXEC_FAIL",
+      "stdout": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):\nSimulator device failed to terminate com.ellie.minershiftassistant.\nfound nothing to terminate\nUnderlying error (domain=NSPOSIXErrorDomain, code=3):\n\tThe request to terminate \"com.ellie.minershiftassistant\" failed. found nothing to terminate\n\tfound nothing to terminate\n",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470709608000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 3,
+      "event": "EXEC_FAIL",
+      "stderr": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "B",
+    "name": "onTerminateApp",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470709608000,
+    "args": {
+      "level": 10,
+      "args": [
+        {
+          "deviceId": "85DD3162-206C-44DB-A723-F4B933896B6E",
+          "bundleId": "com.ellie.minershiftassistant"
+        }
+      ],
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470709608000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470709608000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470709608000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1775470709608000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "onboarding.test.ts is assigned to 85DD3162-206C-44DB-A723-F4B933896B6E (iPhone 16 Pro)",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle",
+    "ts": 1775470710061000,
+    "args": { "level": 30, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "run the tests",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1775470710062000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onRunDescribeStart",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470710062000,
+    "args": { "level": 10, "args": [{ "name": "ROOT_DESCRIBE_BLOCK" }], "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470710062000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "Onboarding Flow — rotating roster happy path",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1775470710062000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onRunDescribeStart",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470710062000,
+    "args": {
+      "level": 10,
+      "args": [{ "name": "Onboarding Flow — rotating roster happy path" }],
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470710062000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "beforeAll",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1775470710062000,
+    "args": {
+      "level": 10,
+      "functionCode": "function () {\n    var t = this,\n      e = arguments;\n    return new Promise(function (r, o) {\n      var a = n.apply(t, e);\n      function _next(n) {\n        asyncGeneratorStep(a, r, o, _next, _throw, \"next\", n);\n      }\n      function _throw(n) {\n        asyncGeneratorStep(a, r, o, _next, _throw, \"throw\", n);\n      }\n      _next(void 0);\n    });\n  }",
+      "v": 0
+    }
+  },
+  {
+    "ph": "B",
+    "name": "launchApp",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470710165000,
+    "args": { "level": 10, "args": [{ "newInstance": true }], "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "terminateApp",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470710165000,
+    "args": { "level": 10, "args": ["com.ellie.minershiftassistant"], "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onBeforeTerminateApp",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470710166000,
+    "args": {
+      "level": 10,
+      "args": [
+        {
+          "deviceId": "85DD3162-206C-44DB-A723-F4B933896B6E",
+          "bundleId": "com.ellie.minershiftassistant"
+        }
+      ],
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470710166000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470710166000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 4,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Terminating com.ellie.minershiftassistant...",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470710166000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 4,
+      "event": "EXEC_TRY",
+      "retryNumber": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):\nSimulator device failed to terminate com.ellie.minershiftassistant.\nfound nothing to terminate\nUnderlying error (domain=NSPOSIXErrorDomain, code=3):\n\tThe request to terminate \"com.ellie.minershiftassistant\" failed. found nothing to terminate\n\tfound nothing to terminate\n",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470711243000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 4,
+      "event": "EXEC_TRY_FAIL",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Terminating com.ellie.minershiftassistant...",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470711243000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 4,
+      "event": "EXEC_TRY",
+      "retryNumber": 2,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "\"/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant\" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant\nAn error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):\nSimulator device failed to terminate com.ellie.minershiftassistant.\nfound nothing to terminate\nUnderlying error (domain=NSPOSIXErrorDomain, code=3):\n\tThe request to terminate \"com.ellie.minershiftassistant\" failed. found nothing to terminate\n\tfound nothing to terminate\n (code=3), stdout and stderr:\n",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470711341000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 4,
+      "event": "EXEC_FAIL",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470711341000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 4,
+      "event": "EXEC_FAIL",
+      "stdout": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):\nSimulator device failed to terminate com.ellie.minershiftassistant.\nfound nothing to terminate\nUnderlying error (domain=NSPOSIXErrorDomain, code=3):\n\tThe request to terminate \"com.ellie.minershiftassistant\" failed. found nothing to terminate\n\tfound nothing to terminate\n",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470711341000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl terminate 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 4,
+      "event": "EXEC_FAIL",
+      "stderr": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "B",
+    "name": "onTerminateApp",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470711341000,
+    "args": {
+      "level": 10,
+      "args": [
+        {
+          "deviceId": "85DD3162-206C-44DB-A723-F4B933896B6E",
+          "bundleId": "com.ellie.minershiftassistant"
+        }
+      ],
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470711341000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470711341000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onBeforeLaunchApp",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470711341000,
+    "args": {
+      "level": 10,
+      "args": [
+        {
+          "bundleId": "com.ellie.minershiftassistant",
+          "deviceId": "85DD3162-206C-44DB-A723-F4B933896B6E",
+          "launchArgs": {
+            "detoxServer": "ws://localhost:55758",
+            "detoxSessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021"
+          }
+        }
+      ],
+      "v": 0
+    }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "artifact" },
+    "ts": 1775470711342000,
+    "tid": 13,
+    "pid": 14151,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 13 },
+    "ts": 1775470711342000,
+    "tid": 13,
+    "pid": 14151,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "i",
+    "name": "starting SimulatorLogRecording {\n  udid: '85DD3162-206C-44DB-A723-F4B933896B6E',\n  bundleId: 'com.ellie.minershiftassistant'\n}",
+    "pid": 14151,
+    "tid": 13,
+    "cat": "artifact",
+    "ts": 1775470711342000,
+    "args": { "level": 10, "class": "SimulatorLogRecording", "event": "ARTIFACT_START", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470711342000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 5,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/EC35ECFC-654C-48E8-B1FB-B0FC8389B4C9/EllieMinerShiftAssistant.app\n",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470711433000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 5,
+      "event": "EXEC_SUCCESS",
+      "stdout": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate \"processImagePath beginsWith \\\"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/EC35ECFC-654C-48E8-B1FB-B0FC8389B4C9/EllieMinerShiftAssistant.app\\\"\"",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-spawn",
+    "ts": 1775470711434000,
+    "args": {
+      "level": 20,
+      "fn": "spawnAndLog",
+      "command": "/usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate \"processImagePath beginsWith \\\"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/EC35ECFC-654C-48E8-B1FB-B0FC8389B4C9/EllieMinerShiftAssistant.app\\\"\"",
+      "trackingId": 6,
+      "cpid": 14469,
+      "event": "SPAWN_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470711486000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "SIMCTL_CHILD_GULGeneratedClassDisposeDisabled=YES SIMCTL_CHILD_DYLD_INSERT_LIBRARIES=\"/Users/user/Library/Detox/ios/framework/7a593ed1f90c0350964e0c75f65f6f0a8382c0f9/Detox.framework/Detox\" /usr/bin/xcrun simctl launch 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant --args -detoxServer ws://localhost:55758 -detoxSessionId 6e9728e5-ac50-0063-87a6-88b0c1ba4021 -detoxDebugVisibility YES -detoxDisableHierarchyDump YES",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470711487000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "SIMCTL_CHILD_GULGeneratedClassDisposeDisabled=YES SIMCTL_CHILD_DYLD_INSERT_LIBRARIES=\"/Users/user/Library/Detox/ios/framework/7a593ed1f90c0350964e0c75f65f6f0a8382c0f9/Detox.framework/Detox\" /usr/bin/xcrun simctl launch 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant --args -detoxServer ws://localhost:55758 -detoxSessionId 6e9728e5-ac50-0063-87a6-88b0c1ba4021 -detoxDebugVisibility YES -detoxDisableHierarchyDump YES",
+      "trackingId": 7,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Launching com.ellie.minershiftassistant...",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470711487000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "SIMCTL_CHILD_GULGeneratedClassDisposeDisabled=YES SIMCTL_CHILD_DYLD_INSERT_LIBRARIES=\"/Users/user/Library/Detox/ios/framework/7a593ed1f90c0350964e0c75f65f6f0a8382c0f9/Detox.framework/Detox\" /usr/bin/xcrun simctl launch 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant --args -detoxServer ws://localhost:55758 -detoxSessionId 6e9728e5-ac50-0063-87a6-88b0c1ba4021 -detoxDebugVisibility YES -detoxDisableHierarchyDump YES",
+      "trackingId": 7,
+      "event": "EXEC_TRY",
+      "retryNumber": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "com.ellie.minershiftassistant: 14476\n",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470711685000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "SIMCTL_CHILD_GULGeneratedClassDisposeDisabled=YES SIMCTL_CHILD_DYLD_INSERT_LIBRARIES=\"/Users/user/Library/Detox/ios/framework/7a593ed1f90c0350964e0c75f65f6f0a8382c0f9/Detox.framework/Detox\" /usr/bin/xcrun simctl launch 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant --args -detoxServer ws://localhost:55758 -detoxSessionId 6e9728e5-ac50-0063-87a6-88b0c1ba4021 -detoxDebugVisibility YES -detoxDisableHierarchyDump YES",
+      "trackingId": 7,
+      "event": "EXEC_SUCCESS",
+      "stdout": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470711686000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 8,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/EC35ECFC-654C-48E8-B1FB-B0FC8389B4C9/EllieMinerShiftAssistant.app\n",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470711799000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 8,
+      "event": "EXEC_SUCCESS",
+      "stdout": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "com.ellie.minershiftassistant launched. To watch simulator logs, run:\n        /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate 'process == \"EllieMinerShiftAssistant\"'",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470711804000,
+    "args": { "level": 30, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onLaunchApp",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470711805000,
+    "args": {
+      "level": 10,
+      "args": [
+        {
+          "bundleId": "com.ellie.minershiftassistant",
+          "deviceId": "85DD3162-206C-44DB-A723-F4B933896B6E",
+          "launchArgs": {
+            "detoxServer": "ws://localhost:55758",
+            "detoxSessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+            "detoxDebugVisibility": "YES",
+            "detoxDisableHierarchyDump": "YES"
+          },
+          "pid": 14476
+        }
+      ],
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470711805000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "connection :55758<->:55896",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470712332000,
+    "args": { "level": 20, "id": 55896, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470712533000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "data": "{\"type\":\"login\",\"messageId\":0,\"params\":{\"role\":\"app\",\"sessionId\":\"6e9728e5-ac50-0063-87a6-88b0c1ba4021\"}}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470712533000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": {
+        "type": "loginSuccess",
+        "messageId": 0,
+        "params": { "testerConnected": true, "appConnected": true }
+      },
+      "v": 0
+    }
+  },
+  {
+    "ph": "M",
+    "args": { "name": "ws-server" },
+    "ts": 1775470712533000,
+    "tid": 4,
+    "pid": 14150,
+    "name": "thread_name"
+  },
+  {
+    "ph": "M",
+    "args": { "sort_index": 4 },
+    "ts": 1775470712533000,
+    "tid": 4,
+    "pid": 14150,
+    "name": "thread_sort_index"
+  },
+  {
+    "ph": "i",
+    "name": "app joined session 6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+    "pid": 14150,
+    "tid": 4,
+    "cat": "ws-server,ws-session",
+    "ts": 1775470712533000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470712534000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": { "type": "appConnected" },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470712534000,
+    "args": { "level": 10, "data": "{\"type\":\"appConnected\"}\n ", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470712535000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": "{\"type\":\"isReady\",\"params\":{},\"messageId\":-1000}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470712535000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"isReady\",\"params\":{},\"messageId\":-1000}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470712536000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": { "type": "isReady", "params": {}, "messageId": -1000 },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470715259000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": "{\"type\":\"ready\",\"params\":{},\"messageId\":-1000}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470715259000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": { "type": "ready", "params": {}, "messageId": -1000 },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470715260000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": "{\"type\":\"ready\",\"params\":{},\"messageId\":-1000}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470715260000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": { "type": "ready", "params": {}, "messageId": -1000 },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470715260000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"ready\",\"params\":{},\"messageId\":-1000}\n ",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470715261000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": "{\"type\":\"ready\",\"params\":{},\"messageId\":-1000}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470715261000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": { "type": "ready", "params": {}, "messageId": -1000 },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470715261000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": "{\"type\":\"waitForActive\",\"params\":{},\"messageId\":1}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470715261000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"waitForActive\",\"params\":{},\"messageId\":1}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470715261000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"ready\",\"params\":{},\"messageId\":-1000}\n ",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470715262000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": { "type": "waitForActive", "params": {}, "messageId": 1 },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470715262000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"ready\",\"params\":{},\"messageId\":-1000}\n ",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470715263000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": "{\"type\":\"waitForActiveDone\",\"params\":{},\"messageId\":1}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470715263000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": { "type": "waitForActiveDone", "params": {}, "messageId": 1 },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470715263000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"waitForActiveDone\",\"params\":{},\"messageId\":1}\n ",
+      "v": 0
+    }
+  },
+  {
+    "ph": "B",
+    "name": "onAppReady",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470715263000,
+    "args": {
+      "level": 10,
+      "args": [
+        {
+          "deviceId": "85DD3162-206C-44DB-A723-F4B933896B6E",
+          "bundleId": "com.ellie.minershiftassistant",
+          "pid": 14476
+        }
+      ],
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470715263000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470715263000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470715264000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": "{\"type\":\"setSyncSettings\",\"params\":{\"enabled\":false},\"messageId\":2}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "B",
+    "name": "disableSynchronization",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470715264000,
+    "args": { "level": 10, "args": [], "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "send message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470715264000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"setSyncSettings\",\"params\":{\"enabled\":false},\"messageId\":2}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470715265000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": { "type": "setSyncSettings", "params": { "enabled": false }, "messageId": 2 },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470715265000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": "{\"type\":\"setSyncSettingsDone\",\"params\":{},\"messageId\":2}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470715265000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": { "type": "setSyncSettingsDone", "params": {}, "messageId": 2 },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470715265000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"setSyncSettingsDone\",\"params\":{},\"messageId\":2}\n ",
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470715266000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1775470715266000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "walks from Welcome to Completion on the simulator",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1775470715267000,
+    "args": {
+      "level": 10,
+      "context": "test",
+      "status": "running",
+      "fullName": "Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator",
+      "invocations": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Onboarding Flow — rotating roster happy path: walks from Welcome to Completion on the simulator",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle",
+    "ts": 1775470715267000,
+    "args": { "level": 30, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onTestStart",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470715268000,
+    "args": {
+      "level": 10,
+      "args": [
+        {
+          "title": "walks from Welcome to Completion on the simulator",
+          "fullName": "Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator",
+          "status": "running",
+          "invocations": 1
+        }
+      ],
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "stopping SimulatorLogRecording",
+    "pid": 14151,
+    "tid": 13,
+    "cat": "artifact",
+    "ts": 1775470715268000,
+    "args": { "level": 10, "class": "SimulatorLogRecording", "event": "ARTIFACT_STOP", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "sending SIGINT to: /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate processImagePath beginsWith \"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/EC35ECFC-654C-48E8-B1FB-B0FC8389B4C9/EllieMinerShiftAssistant.app\"",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-spawn",
+    "ts": 1775470715322000,
+    "args": { "level": 10, "event": "SPAWN_KILL", "cpid": 14469, "signal": "SIGINT", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate \"processImagePath beginsWith \\\"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/EC35ECFC-654C-48E8-B1FB-B0FC8389B4C9/EllieMinerShiftAssistant.app\\\"\" exited with code #0",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-spawn",
+    "ts": 1775470715326000,
+    "args": {
+      "level": 20,
+      "fn": "spawnAndLog",
+      "command": "/usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate \"processImagePath beginsWith \\\"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/EC35ECFC-654C-48E8-B1FB-B0FC8389B4C9/EllieMinerShiftAssistant.app\\\"\"",
+      "trackingId": 6,
+      "cpid": 14469,
+      "event": "SPAWN_END",
+      "signal": "",
+      "code": 0,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "starting SimulatorLogRecording",
+    "pid": 14151,
+    "tid": 13,
+    "cat": "artifact",
+    "ts": 1775470715326000,
+    "args": { "level": 10, "class": "SimulatorLogRecording", "event": "ARTIFACT_START", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470715327000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 9,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/EC35ECFC-654C-48E8-B1FB-B0FC8389B4C9/EllieMinerShiftAssistant.app\n",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470715431000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl get_app_container 85DD3162-206C-44DB-A723-F4B933896B6E com.ellie.minershiftassistant",
+      "trackingId": 9,
+      "event": "EXEC_SUCCESS",
+      "stdout": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate \"processImagePath beginsWith \\\"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/EC35ECFC-654C-48E8-B1FB-B0FC8389B4C9/EllieMinerShiftAssistant.app\\\"\"",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-spawn",
+    "ts": 1775470715431000,
+    "args": {
+      "level": 20,
+      "fn": "spawnAndLog",
+      "command": "/usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate \"processImagePath beginsWith \\\"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/EC35ECFC-654C-48E8-B1FB-B0FC8389B4C9/EllieMinerShiftAssistant.app\\\"\"",
+      "trackingId": 10,
+      "cpid": 14511,
+      "event": "SPAWN_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "starting SimulatorScreenshot",
+    "pid": 14151,
+    "tid": 13,
+    "cat": "artifact",
+    "ts": 1775470715484000,
+    "args": { "level": 10, "class": "SimulatorScreenshot", "event": "ARTIFACT_START", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl io 85DD3162-206C-44DB-A723-F4B933896B6E screenshot \"/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-DFiFIF.detox.png\"",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470715484000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl io 85DD3162-206C-44DB-A723-F4B933896B6E screenshot \"/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-DFiFIF.detox.png\"",
+      "trackingId": 11,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Detected file type 'PNG' from extension\nWrote screenshot to: /private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-DFiFIF.detox.png\n",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470715660000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl io 85DD3162-206C-44DB-A723-F4B933896B6E screenshot \"/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-DFiFIF.detox.png\"",
+      "trackingId": 11,
+      "event": "EXEC_SUCCESS",
+      "stderr": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "stopping SimulatorScreenshot",
+    "pid": 14151,
+    "tid": 13,
+    "cat": "artifact",
+    "ts": 1775470715660000,
+    "args": { "level": 10, "class": "SimulatorScreenshot", "event": "ARTIFACT_STOP", "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470715660000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "beforeEach",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1775470715660000,
+    "args": {
+      "level": 10,
+      "functionCode": "() => {\n    if (config.resetModules) {\n      runtime.resetModules();\n    }\n    if (config.clearMocks) {\n      runtime.clearAllMocks();\n    }\n    if (config.resetMocks) {\n      runtime.resetAllMocks();\n      if (\n        config.fakeTimers.enableGlobally &&\n        config.fakeTimers.legacyFakeTimers\n      ) {\n        // during setup, this cannot be null (and it's fine to explode if it is)\n        environment.fakeTimers.useFakeTimers();\n      }\n    }\n    if (config.restoreMocks) {\n      runtime.restoreAllMocks();\n    }\n  }",
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1775470715660000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "test_fn",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1775470715660000,
+    "args": {
+      "level": 10,
+      "functionCode": "function () {\n    var t = this,\n      e = arguments;\n    return new Promise(function (r, o) {\n      var a = n.apply(t, e);\n      function _next(n) {\n        asyncGeneratorStep(a, r, o, _next, _throw, \"next\", n);\n      }\n      function _throw(n) {\n        asyncGeneratorStep(a, r, o, _next, _throw, \"throw\", n);\n      }\n      _next(void 0);\n    });\n  }",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470715661000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": "{\"type\":\"invoke\",\"params\":{\"type\":\"expectation\",\"predicate\":{\"type\":\"id\",\"value\":\"premium-welcome-screen-button\",\"isRegex\":false},\"expectation\":\"toBeVisible\",\"timeout\":20000},\"messageId\":3}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470715661000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"invoke\",\"params\":{\"type\":\"expectation\",\"predicate\":{\"type\":\"id\",\"value\":\"premium-welcome-screen-button\",\"isRegex\":false},\"expectation\":\"toBeVisible\",\"timeout\":20000},\"messageId\":3}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470715662000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": {
+        "type": "invoke",
+        "params": {
+          "type": "expectation",
+          "predicate": { "type": "id", "value": "premium-welcome-screen-button", "isRegex": false },
+          "expectation": "toBeVisible",
+          "timeout": 20000
+        },
+        "messageId": 3
+      },
+      "v": 0
+    }
+  },
+  {
+    "ph": "B",
+    "name": "wait until timeout (20000 ms) with timeout (20000 ms)",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client, ws,ws-client-invocation",
+    "ts": 1775470715662000,
+    "args": {
+      "level": 10,
+      "data": {
+        "type": "expectation",
+        "predicate": { "type": "id", "value": "premium-welcome-screen-button", "isRegex": false },
+        "expectation": "toBeVisible",
+        "timeout": 20000
+      },
+      "stack": "withTimeout (/e2e/onboarding.test.ts:38:55)\nGenerator.next (<anonymous>)\nasyncGeneratorStep (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)\n_next (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)\n/node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7\nnew Promise (<anonymous>)\n/node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12\napply (/e2e/onboarding.test.ts:39:2)\napply (/e2e/onboarding.test.ts:37:30)\nObject.waitForVisible (/e2e/onboarding.test.ts:71:11)\nGenerator.next (<anonymous>)\nasyncGeneratorStep (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)\n_next (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)\n/node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7\nnew Promise (<anonymous>)\nObject.<anonymous> (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)\nPromise.then.completed (/node_modules/jest-config/node_modules/jest-circus/build/utils.js:298:28)\nnew Promise (<anonymous>)\ncallAsyncCircusFn (/node_modules/jest-config/node_modules/jest-circus/build/utils.js:231:10)\n_callCircusTest (/node_modules/jest-config/node_modules/jest-circus/build/run.js:316:40)\nprocessTicksAndRejections (node:internal/process/task_queues:103:5)\n_runTest (/node_modules/jest-config/node_modules/jest-circus/build/run.js:252:3)\n_runTestsForDescribeBlock (/node_modules/jest-config/node_modules/jest-circus/build/run.js:126:9)\n_runTestsForDescribeBlock (/node_modules/jest-config/node_modules/jest-circus/build/run.js:121:9)\nrun (/node_modules/jest-config/node_modules/jest-circus/build/run.js:71:3)\nrunAndTransformResultsToJestFormat (/node_modules/jest-config/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js:122:21)\njestAdapter (/node_modules/jest-config/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:79:19)\nrunTestInternal (/node_modules/jest-runner/build/runTest.js:367:16)\nrunTest (/node_modules/jest-runner/build/runTest.js:444:34)",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470715918000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": "{\"messageId\":3,\"params\":{},\"type\":\"invokeResult\"}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470715918000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": { "messageId": 3, "params": {}, "type": "invokeResult" },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470715919000,
+    "args": {
+      "level": 10,
+      "data": "{\"messageId\":3,\"params\":{},\"type\":\"invokeResult\"}\n ",
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client, ws,ws-client-invocation",
+    "ts": 1775470715919000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "send message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470715920000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"invoke\",\"params\":{\"type\":\"action\",\"action\":\"tap\",\"predicate\":{\"type\":\"id\",\"value\":\"premium-welcome-screen-button\",\"isRegex\":false}},\"messageId\":4}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470715921000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": "{\"type\":\"invoke\",\"params\":{\"type\":\"action\",\"action\":\"tap\",\"predicate\":{\"type\":\"id\",\"value\":\"premium-welcome-screen-button\",\"isRegex\":false}},\"messageId\":4}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470715921000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": {
+        "type": "invoke",
+        "params": {
+          "type": "action",
+          "action": "tap",
+          "predicate": { "type": "id", "value": "premium-welcome-screen-button", "isRegex": false }
+        },
+        "messageId": 4
+      },
+      "v": 0
+    }
+  },
+  {
+    "ph": "B",
+    "name": "tap",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client, ws,ws-client-invocation",
+    "ts": 1775470715921000,
+    "args": {
+      "level": 10,
+      "data": {
+        "type": "action",
+        "action": "tap",
+        "predicate": { "type": "id", "value": "premium-welcome-screen-button", "isRegex": false }
+      },
+      "stack": "tap (/e2e/onboarding.test.ts:42:31)\nGenerator.next (<anonymous>)\nasyncGeneratorStep (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)\n_next (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)\n/node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7\nnew Promise (<anonymous>)\n/node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12\napply (/e2e/onboarding.test.ts:44:2)\napply (/e2e/onboarding.test.ts:41:26)\nObject.tapAndWait (/e2e/onboarding.test.ts:72:11)\nGenerator.next (<anonymous>)\nasyncGeneratorStep (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)\n_next (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)\nprocessTicksAndRejections (node:internal/process/task_queues:103:5)",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470716033000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": "{\"params\":{},\"messageId\":4,\"type\":\"invokeResult\"}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470716033000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": { "params": {}, "messageId": 4, "type": "invokeResult" },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470716034000,
+    "args": {
+      "level": 10,
+      "data": "{\"params\":{},\"messageId\":4,\"type\":\"invokeResult\"}\n ",
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client, ws,ws-client-invocation",
+    "ts": 1775470716034000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470716035000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": "{\"type\":\"invoke\",\"params\":{\"type\":\"expectation\",\"predicate\":{\"type\":\"id\",\"value\":\"pain-hook-screen\",\"isRegex\":false},\"expectation\":\"toExist\",\"timeout\":20000},\"messageId\":5}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470716035000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": {
+        "type": "invoke",
+        "params": {
+          "type": "expectation",
+          "predicate": { "type": "id", "value": "pain-hook-screen", "isRegex": false },
+          "expectation": "toExist",
+          "timeout": 20000
+        },
+        "messageId": 5
+      },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470716035000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"invoke\",\"params\":{\"type\":\"expectation\",\"predicate\":{\"type\":\"id\",\"value\":\"pain-hook-screen\",\"isRegex\":false},\"expectation\":\"toExist\",\"timeout\":20000},\"messageId\":5}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "B",
+    "name": "wait until timeout (20000 ms) with timeout (20000 ms)",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client, ws,ws-client-invocation",
+    "ts": 1775470716035000,
+    "args": {
+      "level": 10,
+      "data": {
+        "type": "expectation",
+        "predicate": { "type": "id", "value": "pain-hook-screen", "isRegex": false },
+        "expectation": "toExist",
+        "timeout": 20000
+      },
+      "stack": "withTimeout (/e2e/onboarding.test.ts:34:51)\nGenerator.next (<anonymous>)\nasyncGeneratorStep (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)\n_next (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)\n/node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7\nnew Promise (<anonymous>)\n/node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12\napply (/e2e/onboarding.test.ts:35:2)\napply (/e2e/onboarding.test.ts:33:28)\nwaitForExist (/e2e/onboarding.test.ts:43:9)\nGenerator.next (<anonymous>)\nasyncGeneratorStep (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)\n_next (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)\nprocessTicksAndRejections (node:internal/process/task_queues:103:5)",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470716154000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": "{\"params\":{},\"type\":\"invokeResult\",\"messageId\":5}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470716154000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": { "params": {}, "type": "invokeResult", "messageId": 5 },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470716154000,
+    "args": {
+      "level": 10,
+      "data": "{\"params\":{},\"type\":\"invokeResult\",\"messageId\":5}\n ",
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client, ws,ws-client-invocation",
+    "ts": 1775470716154000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470716155000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": "{\"type\":\"invoke\",\"params\":{\"type\":\"expectation\",\"predicate\":{\"type\":\"id\",\"value\":\"pain-hook-card-cycle_lost\",\"isRegex\":false},\"expectation\":\"toBeVisible\",\"timeout\":20000},\"messageId\":6}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470716155000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": {
+        "type": "invoke",
+        "params": {
+          "type": "expectation",
+          "predicate": { "type": "id", "value": "pain-hook-card-cycle_lost", "isRegex": false },
+          "expectation": "toBeVisible",
+          "timeout": 20000
+        },
+        "messageId": 6
+      },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470716155000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"invoke\",\"params\":{\"type\":\"expectation\",\"predicate\":{\"type\":\"id\",\"value\":\"pain-hook-card-cycle_lost\",\"isRegex\":false},\"expectation\":\"toBeVisible\",\"timeout\":20000},\"messageId\":6}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "B",
+    "name": "wait until timeout (20000 ms) with timeout (20000 ms)",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client, ws,ws-client-invocation",
+    "ts": 1775470716155000,
+    "args": {
+      "level": 10,
+      "data": {
+        "type": "expectation",
+        "predicate": { "type": "id", "value": "pain-hook-card-cycle_lost", "isRegex": false },
+        "expectation": "toBeVisible",
+        "timeout": 20000
+      },
+      "stack": "withTimeout (/e2e/onboarding.test.ts:38:55)\nGenerator.next (<anonymous>)\nasyncGeneratorStep (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)\n_next (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)\n/node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7\nnew Promise (<anonymous>)\n/node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12\napply (/e2e/onboarding.test.ts:37:30)\nObject.waitForVisible (/e2e/onboarding.test.ts:75:11)\nGenerator.next (<anonymous>)\nasyncGeneratorStep (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)\n_next (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)\nprocessTicksAndRejections (node:internal/process/task_queues:103:5)",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470716251000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": "{\"type\":\"invokeResult\",\"messageId\":6,\"params\":{}}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470716251000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": { "type": "invokeResult", "messageId": 6, "params": {} },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470716252000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": "{\"type\":\"invoke\",\"params\":{\"type\":\"action\",\"action\":\"swipe\",\"params\":[\"right\",\"fast\",0.8,null,null],\"predicate\":{\"type\":\"id\",\"value\":\"pain-hook-card-cycle_lost\",\"isRegex\":false}},\"messageId\":7}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470716252000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"invokeResult\",\"messageId\":6,\"params\":{}}\n ",
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client, ws,ws-client-invocation",
+    "ts": 1775470716252000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "send message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470716252000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"invoke\",\"params\":{\"type\":\"action\",\"action\":\"swipe\",\"params\":[\"right\",\"fast\",0.8,null,null],\"predicate\":{\"type\":\"id\",\"value\":\"pain-hook-card-cycle_lost\",\"isRegex\":false}},\"messageId\":7}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "B",
+    "name": "swipe right fast with offset 0.8\n      ",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client, ws,ws-client-invocation",
+    "ts": 1775470716252000,
+    "args": {
+      "level": 10,
+      "data": {
+        "type": "action",
+        "action": "swipe",
+        "params": ["right", "fast", 0.8, null, null],
+        "predicate": { "type": "id", "value": "pain-hook-card-cycle_lost", "isRegex": false }
+      },
+      "stack": "Object.swipe (/e2e/onboarding.test.ts:76:55)\nGenerator.next (<anonymous>)\nasyncGeneratorStep (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)\n_next (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)\nprocessTicksAndRejections (node:internal/process/task_queues:103:5)",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470716253000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": {
+        "type": "invoke",
+        "params": {
+          "type": "action",
+          "action": "swipe",
+          "params": ["right", "fast", 0.8, null, null],
+          "predicate": { "type": "id", "value": "pain-hook-card-cycle_lost", "isRegex": false }
+        },
+        "messageId": 7
+      },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470716777000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": "{\"params\":{},\"messageId\":7,\"type\":\"invokeResult\"}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470716777000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": { "params": {}, "messageId": 7, "type": "invokeResult" },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470716778000,
+    "args": {
+      "level": 10,
+      "data": "{\"params\":{},\"messageId\":7,\"type\":\"invokeResult\"}\n ",
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client, ws,ws-client-invocation",
+    "ts": 1775470716778000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470716779000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": "{\"type\":\"invoke\",\"params\":{\"type\":\"expectation\",\"predicate\":{\"type\":\"id\",\"value\":\"pain-hook-continue-button\",\"isRegex\":false},\"expectation\":\"toBeVisible\",\"timeout\":20000},\"messageId\":8}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470716779000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": {
+        "type": "invoke",
+        "params": {
+          "type": "expectation",
+          "predicate": { "type": "id", "value": "pain-hook-continue-button", "isRegex": false },
+          "expectation": "toBeVisible",
+          "timeout": 20000
+        },
+        "messageId": 8
+      },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470716779000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"invoke\",\"params\":{\"type\":\"expectation\",\"predicate\":{\"type\":\"id\",\"value\":\"pain-hook-continue-button\",\"isRegex\":false},\"expectation\":\"toBeVisible\",\"timeout\":20000},\"messageId\":8}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "B",
+    "name": "wait until timeout (20000 ms) with timeout (20000 ms)",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client, ws,ws-client-invocation",
+    "ts": 1775470716779000,
+    "args": {
+      "level": 10,
+      "data": {
+        "type": "expectation",
+        "predicate": { "type": "id", "value": "pain-hook-continue-button", "isRegex": false },
+        "expectation": "toBeVisible",
+        "timeout": 20000
+      },
+      "stack": "withTimeout (/e2e/onboarding.test.ts:38:55)\nGenerator.next (<anonymous>)\nasyncGeneratorStep (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)\n_next (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)\n/node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7\nnew Promise (<anonymous>)\n/node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12\napply (/e2e/onboarding.test.ts:37:30)\nObject.waitForVisible (/e2e/onboarding.test.ts:77:11)\nGenerator.next (<anonymous>)\nasyncGeneratorStep (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)\n_next (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)\nprocessTicksAndRejections (node:internal/process/task_queues:103:5)",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470716803000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": "{\"type\":\"invokeResult\",\"messageId\":8,\"params\":{}}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470716803000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": { "type": "invokeResult", "messageId": 8, "params": {} },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470716803000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"invokeResult\",\"messageId\":8,\"params\":{}}\n ",
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client, ws,ws-client-invocation",
+    "ts": 1775470716804000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "send message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470716804000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"invoke\",\"params\":{\"type\":\"action\",\"action\":\"tap\",\"predicate\":{\"type\":\"id\",\"value\":\"pain-hook-continue-button\",\"isRegex\":false}},\"messageId\":9}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470716805000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": "{\"type\":\"invoke\",\"params\":{\"type\":\"action\",\"action\":\"tap\",\"predicate\":{\"type\":\"id\",\"value\":\"pain-hook-continue-button\",\"isRegex\":false}},\"messageId\":9}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470716805000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": {
+        "type": "invoke",
+        "params": {
+          "type": "action",
+          "action": "tap",
+          "predicate": { "type": "id", "value": "pain-hook-continue-button", "isRegex": false }
+        },
+        "messageId": 9
+      },
+      "v": 0
+    }
+  },
+  {
+    "ph": "B",
+    "name": "tap",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client, ws,ws-client-invocation",
+    "ts": 1775470716805000,
+    "args": {
+      "level": 10,
+      "data": {
+        "type": "action",
+        "action": "tap",
+        "predicate": { "type": "id", "value": "pain-hook-continue-button", "isRegex": false }
+      },
+      "stack": "tap (/e2e/onboarding.test.ts:42:31)\nGenerator.next (<anonymous>)\nasyncGeneratorStep (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)\n_next (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)\n/node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7\nnew Promise (<anonymous>)\n/node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12\napply (/e2e/onboarding.test.ts:41:26)\nObject.tapAndWait (/e2e/onboarding.test.ts:78:11)\nGenerator.next (<anonymous>)\nasyncGeneratorStep (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)\n_next (/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)\nprocessTicksAndRejections (node:internal/process/task_queues:103:5)",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470716809000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": "{\"messageId\":9,\"type\":\"testFailed\",\"params\":{\"DetoxFailureInformation\":{\"object\":\"<RCTViewComponentView: 0x159c0faf0; frame = (0 0; 338 68); tag = 268; layer = <CALayer: 0x60000046fa40>>\",\"selector\":\"dtx_assertHittableAtPoint:\",\"lineNumber\":546,\"file\":\"UIView+DetoxUtils.m\"},\"visibilityFailingRectsURL\":\"\\/Users\\/user\\/Library\\/Developer\\/CoreSimulator\\/Devices\\/85DD3162-206C-44DB-A723-F4B933896B6E\\/data\\/Containers\\/Data\\/Application\\/3840CE9E-3970-45B8-9E3C-681C2CEA8576\\/tmp\\/visibilityFailingRects\",\"NSLocalizedDescription\":\"View is not hittable at its visible point. Error: View is not visible around point.\\n- view point: {169, 34}\\n- visible bounds: {{inf, inf}, {0, 0}}\\n- view bounds: {{0, 0}, {338, 68}}\\n---\\nError: Error Domain=DetoxErrorDomain Code=0 \\\"View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)\\\" UserInfo={NSLocalizedDescription=View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)}\",\"visibilityFailingScreenshotsURL\":\"\\/Users\\/user\\/Library\\/Developer\\/CoreSimulator\\/Devices\\/85DD3162-206C-44DB-A723-F4B933896B6E\\/data\\/Containers\\/Data\\/Application\\/3840CE9E-3970-45B8-9E3C-681C2CEA8576\\/tmp\\/visibilityFailingScreenshots\",\"details\":\"View is not hittable at its visible point. Error: View is not visible around point.\\n- view point: {169, 34}\\n- visible bounds: {{inf, inf}, {0, 0}}\\n- view bounds: {{0, 0}, {338, 68}}\\n---\\nError: Error Domain=DetoxErrorDomain Code=0 \\\"View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)\\\" UserInfo={NSLocalizedDescription=View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)}\"}}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470716809000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": {
+        "messageId": 9,
+        "type": "testFailed",
+        "params": {
+          "DetoxFailureInformation": {
+            "object": "<RCTViewComponentView: 0x159c0faf0; frame = (0 0; 338 68); tag = 268; layer = <CALayer: 0x60000046fa40>>",
+            "selector": "dtx_assertHittableAtPoint:",
+            "lineNumber": 546,
+            "file": "UIView+DetoxUtils.m"
+          },
+          "visibilityFailingRectsURL": "/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Data/Application/3840CE9E-3970-45B8-9E3C-681C2CEA8576/tmp/visibilityFailingRects",
+          "NSLocalizedDescription": "View is not hittable at its visible point. Error: View is not visible around point.\n- view point: {169, 34}\n- visible bounds: {{inf, inf}, {0, 0}}\n- view bounds: {{0, 0}, {338, 68}}\n---\nError: Error Domain=DetoxErrorDomain Code=0 \"View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)\" UserInfo={NSLocalizedDescription=View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)}",
+          "visibilityFailingScreenshotsURL": "/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Data/Application/3840CE9E-3970-45B8-9E3C-681C2CEA8576/tmp/visibilityFailingScreenshots",
+          "details": "View is not hittable at its visible point. Error: View is not visible around point.\n- view point: {169, 34}\n- visible bounds: {{inf, inf}, {0, 0}}\n- view bounds: {{0, 0}, {338, 68}}\n---\nError: Error Domain=DetoxErrorDomain Code=0 \"View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)\" UserInfo={NSLocalizedDescription=View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)}"
+        }
+      },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470716812000,
+    "args": {
+      "level": 10,
+      "data": "{\"messageId\":9,\"type\":\"testFailed\",\"params\":{\"DetoxFailureInformation\":{\"object\":\"<RCTViewComponentView: 0x159c0faf0; frame = (0 0; 338 68); tag = 268; layer = <CALayer: 0x60000046fa40>>\",\"selector\":\"dtx_assertHittableAtPoint:\",\"lineNumber\":546,\"file\":\"UIView+DetoxUtils.m\"},\"visibilityFailingRectsURL\":\"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Data/Application/3840CE9E-3970-45B8-9E3C-681C2CEA8576/tmp/visibilityFailingRects\",\"NSLocalizedDescription\":\"View is not hittable at its visible point. Error: View is not visible around point.\\n- view point: {169, 34}\\n- visible bounds: {{inf, inf}, {0, 0}}\\n- view bounds: {{0, 0}, {338, 68}}\\n---\\nError: Error Domain=DetoxErrorDomain Code=0 \\\"View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)\\\" UserInfo={NSLocalizedDescription=View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)}\",\"visibilityFailingScreenshotsURL\":\"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Data/Application/3840CE9E-3970-45B8-9E3C-681C2CEA8576/tmp/visibilityFailingScreenshots\",\"details\":\"View is not hittable at its visible point. Error: View is not visible around point.\\n- view point: {169, 34}\\n- visible bounds: {{inf, inf}, {0, 0}}\\n- view bounds: {{0, 0}, {338, 68}}\\n---\\nError: Error Domain=DetoxErrorDomain Code=0 \\\"View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)\\\" UserInfo={NSLocalizedDescription=View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)}\"}}\n ",
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client, ws,ws-client-invocation",
+    "ts": 1775470716813000,
+    "args": {
+      "level": 10,
+      "success": false,
+      "error": "Test Failed: View is not hittable at its visible point. Error: View is not visible around point.\n- view point: {169, 34}\n- visible bounds: {{inf, inf}, {0, 0}}\n- view bounds: {{0, 0}, {338, 68}}\n---\nError: Error Domain=DetoxErrorDomain Code=0 \"View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)\" UserInfo={NSLocalizedDescription=View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "B",
+    "name": "onTestFnFailure",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470716813000,
+    "args": { "level": 10, "args": [{ "error": { "name": "DetoxRuntimeError" } }], "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "starting SimulatorScreenshot",
+    "pid": 14151,
+    "tid": 13,
+    "cat": "artifact",
+    "ts": 1775470716814000,
+    "args": { "level": 10, "class": "SimulatorScreenshot", "event": "ARTIFACT_START", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl io 85DD3162-206C-44DB-A723-F4B933896B6E screenshot \"/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-Mp8kqg.detox.png\"",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470716814000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl io 85DD3162-206C-44DB-A723-F4B933896B6E screenshot \"/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-Mp8kqg.detox.png\"",
+      "trackingId": 12,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Detected file type 'PNG' from extension\nWrote screenshot to: /private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-Mp8kqg.detox.png\n",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470716998000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl io 85DD3162-206C-44DB-A723-F4B933896B6E screenshot \"/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-Mp8kqg.detox.png\"",
+      "trackingId": 12,
+      "event": "EXEC_SUCCESS",
+      "stderr": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "stopping SimulatorScreenshot",
+    "pid": 14151,
+    "tid": 13,
+    "cat": "artifact",
+    "ts": 1775470716998000,
+    "args": { "level": 10, "class": "SimulatorScreenshot", "event": "ARTIFACT_STOP", "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470716998000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1775470716998000,
+    "args": {
+      "level": 10,
+      "success": false,
+      "error": "Test Failed: View is not hittable at its visible point. Error: View is not visible around point.\n- view point: {169, 34}\n- visible bounds: {{inf, inf}, {0, 0}}\n- view bounds: {{0, 0}, {338, 68}}\n---\nError: Error Domain=DetoxErrorDomain Code=0 \"View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)\" UserInfo={NSLocalizedDescription=View “<RCTViewComponentView: 0x159c0faf0>” is not visible: View is clipped by one or more of its superviews' bounds and does not pass visibility percent threshold (100)}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "B",
+    "name": "onTestDone",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470716999000,
+    "args": {
+      "level": 10,
+      "args": [
+        {
+          "title": "walks from Welcome to Completion on the simulator",
+          "fullName": "Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator",
+          "status": "failed",
+          "invocations": 1,
+          "timedOut": false
+        }
+      ],
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "starting SimulatorScreenshot",
+    "pid": 14151,
+    "tid": 13,
+    "cat": "artifact",
+    "ts": 1775470716999000,
+    "args": { "level": 10, "class": "SimulatorScreenshot", "event": "ARTIFACT_START", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl io 85DD3162-206C-44DB-A723-F4B933896B6E screenshot \"/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-V25Imv.detox.png\"",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470716999000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl io 85DD3162-206C-44DB-A723-F4B933896B6E screenshot \"/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-V25Imv.detox.png\"",
+      "trackingId": 13,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Detected file type 'PNG' from extension\nWrote screenshot to: /private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-V25Imv.detox.png\n",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470717161000,
+    "args": {
+      "level": 10,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl io 85DD3162-206C-44DB-A723-F4B933896B6E screenshot \"/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-V25Imv.detox.png\"",
+      "trackingId": 13,
+      "event": "EXEC_SUCCESS",
+      "stderr": true,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "stopping SimulatorScreenshot",
+    "pid": 14151,
+    "tid": 13,
+    "cat": "artifact",
+    "ts": 1775470717161000,
+    "args": { "level": 10, "class": "SimulatorScreenshot", "event": "ARTIFACT_STOP", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "stopping SimulatorLogRecording",
+    "pid": 14151,
+    "tid": 13,
+    "cat": "artifact",
+    "ts": 1775470717162000,
+    "args": { "level": 10, "class": "SimulatorLogRecording", "event": "ARTIFACT_STOP", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "saving SimulatorScreenshot to: artifacts/ios.release.2026-04-06 10-18-14Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/testStart.png",
+    "pid": 14151,
+    "tid": 13,
+    "cat": "artifact",
+    "ts": 1775470717162000,
+    "args": { "level": 10, "class": "SimulatorScreenshot", "event": "ARTIFACT_SAVE", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "moving \"/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-DFiFIF.detox.png\" to artifacts/ios.release.2026-04-06 10-18-14Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/testStart.png",
+    "pid": 14151,
+    "tid": 13,
+    "cat": "artifact",
+    "ts": 1775470717162000,
+    "args": { "level": 20, "class": "SimulatorScreenshot", "event": "MOVE_FILE", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "saving SimulatorScreenshot to: artifacts/ios.release.2026-04-06 10-18-14Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/testFnFailure.png",
+    "pid": 14151,
+    "tid": 13,
+    "cat": "artifact",
+    "ts": 1775470717163000,
+    "args": { "level": 10, "class": "SimulatorScreenshot", "event": "ARTIFACT_SAVE", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "moving \"/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-Mp8kqg.detox.png\" to artifacts/ios.release.2026-04-06 10-18-14Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/testFnFailure.png",
+    "pid": 14151,
+    "tid": 13,
+    "cat": "artifact",
+    "ts": 1775470717163000,
+    "args": { "level": 20, "class": "SimulatorScreenshot", "event": "MOVE_FILE", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "saving SimulatorScreenshot to: artifacts/ios.release.2026-04-06 10-18-14Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/testDone.png",
+    "pid": 14151,
+    "tid": 13,
+    "cat": "artifact",
+    "ts": 1775470717163000,
+    "args": { "level": 10, "class": "SimulatorScreenshot", "event": "ARTIFACT_SAVE", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "moving \"/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-V25Imv.detox.png\" to artifacts/ios.release.2026-04-06 10-18-14Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/testDone.png",
+    "pid": 14151,
+    "tid": 13,
+    "cat": "artifact",
+    "ts": 1775470717163000,
+    "args": { "level": 20, "class": "SimulatorScreenshot", "event": "MOVE_FILE", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "sending SIGINT to: /usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate processImagePath beginsWith \"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/EC35ECFC-654C-48E8-B1FB-B0FC8389B4C9/EllieMinerShiftAssistant.app\"",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-spawn",
+    "ts": 1775470717215000,
+    "args": { "level": 10, "event": "SPAWN_KILL", "cpid": 14511, "signal": "SIGINT", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate \"processImagePath beginsWith \\\"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/EC35ECFC-654C-48E8-B1FB-B0FC8389B4C9/EllieMinerShiftAssistant.app\\\"\" exited with code #0",
+    "pid": 14151,
+    "tid": 12,
+    "cat": "child-process,child-process-spawn",
+    "ts": 1775470717219000,
+    "args": {
+      "level": 20,
+      "fn": "spawnAndLog",
+      "command": "/usr/bin/xcrun simctl spawn 85DD3162-206C-44DB-A723-F4B933896B6E log stream --level debug --style compact --predicate \"processImagePath beginsWith \\\"/Users/user/Library/Developer/CoreSimulator/Devices/85DD3162-206C-44DB-A723-F4B933896B6E/data/Containers/Bundle/Application/EC35ECFC-654C-48E8-B1FB-B0FC8389B4C9/EllieMinerShiftAssistant.app\\\"\"",
+      "trackingId": 10,
+      "cpid": 14511,
+      "event": "SPAWN_END",
+      "signal": "",
+      "code": 0,
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470717220000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1775470717220000,
+    "args": { "level": 10, "status": "failed", "timedOut": false, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "Onboarding Flow — rotating roster happy path: walks from Welcome to Completion on the simulator [FAIL]",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle",
+    "ts": 1775470717220000,
+    "args": { "level": 30, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "afterAll",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1775470717220000,
+    "args": {
+      "level": 10,
+      "functionCode": "function () {\n    var t = this,\n      e = arguments;\n    return new Promise(function (r, o) {\n      var a = n.apply(t, e);\n      function _next(n) {\n        asyncGeneratorStep(a, r, o, _next, _throw, \"next\", n);\n      }\n      function _throw(n) {\n        asyncGeneratorStep(a, r, o, _next, _throw, \"throw\", n);\n      }\n      _next(void 0);\n    });\n  }",
+      "v": 0
+    }
+  },
+  {
+    "ph": "B",
+    "name": "enableSynchronization",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470717220000,
+    "args": { "level": 10, "args": [], "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470717221000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": "{\"type\":\"setSyncSettings\",\"params\":{\"enabled\":true},\"messageId\":10}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470717221000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": { "type": "setSyncSettings", "params": { "enabled": true }, "messageId": 10 },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470717221000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"setSyncSettings\",\"params\":{\"enabled\":true},\"messageId\":10}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "saving SimulatorLogRecording to: artifacts/ios.release.2026-04-06 10-18-14Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/device.log",
+    "pid": 14151,
+    "tid": 13,
+    "cat": "artifact",
+    "ts": 1775470717221000,
+    "args": { "level": 10, "class": "SimulatorLogRecording", "event": "ARTIFACT_SAVE", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "moving \"/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-n9LMEl.detox.log\" to artifacts/ios.release.2026-04-06 10-18-14Z/✗ Onboarding Flow — rotating roster happy path walks from Welcome to Completion on the simulator/device.log",
+    "pid": 14151,
+    "tid": 13,
+    "cat": "artifact",
+    "ts": 1775470717221000,
+    "args": { "level": 20, "event": "MOVE_FILE", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "saving SimulatorLogRecording to: artifacts/ios.release.2026-04-06 10-18-14Z/85DD3162-206C-44DB-A723-F4B933896B6E 2026-04-06 10-18-37Z.startup.log",
+    "pid": 14151,
+    "tid": 13,
+    "cat": "artifact",
+    "ts": 1775470717221000,
+    "args": { "level": 10, "class": "SimulatorLogRecording", "event": "ARTIFACT_SAVE", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "moving \"/private/var/folders/sy/g59p7q0s4ysgjngpjvdqj2yw0000gn/T/detox-14151-nC1Naw.detox.log\" to artifacts/ios.release.2026-04-06 10-18-14Z/85DD3162-206C-44DB-A723-F4B933896B6E 2026-04-06 10-18-37Z.startup.log",
+    "pid": 14151,
+    "tid": 13,
+    "cat": "artifact",
+    "ts": 1775470717221000,
+    "args": { "level": 20, "event": "MOVE_FILE", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470717339000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": "{\"messageId\":10,\"params\":{},\"type\":\"setSyncSettingsDone\"}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470717339000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": { "messageId": 10, "params": {}, "type": "setSyncSettingsDone" },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470717340000,
+    "args": {
+      "level": 10,
+      "data": "{\"messageId\":10,\"params\":{},\"type\":\"setSyncSettingsDone\"}\n ",
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 11,
+    "cat": "device",
+    "ts": 1775470717340000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1775470717442000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onRunDescribeFinish",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470717442000,
+    "args": {
+      "level": 10,
+      "args": [{ "name": "Onboarding Flow — rotating roster happy path" }],
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470717442000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1775470717442000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onRunDescribeFinish",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470717443000,
+    "args": { "level": 10, "args": [{ "name": "ROOT_DESCRIBE_BLOCK" }], "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470717443000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1775470717443000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "tear down environment",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1775470717450000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "onBeforeCleanup",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470717451000,
+    "args": { "level": 10, "args": [], "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "saving FileArtifact to: artifacts/ios.release.2026-04-06 10-18-14Z/detox_pid_14151.json.log { append: true }",
+    "pid": 14151,
+    "tid": 13,
+    "cat": "artifact",
+    "ts": 1775470717451000,
+    "args": { "level": 10, "class": "FileArtifact", "event": "ARTIFACT_SAVE", "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "saving FileArtifact to: artifacts/ios.release.2026-04-06 10-18-14Z/detox_pid_14151.log { append: true }",
+    "pid": 14151,
+    "tid": 13,
+    "cat": "artifact",
+    "ts": 1775470717451000,
+    "args": { "level": 10, "class": "FileArtifact", "event": "ARTIFACT_SAVE", "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 10,
+    "cat": "artifacts-manager,artifact",
+    "ts": 1775470717451000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470717452000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": "{\"type\":\"cleanup\",\"params\":{\"stopRunner\":false},\"messageId\":-49642}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470717452000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": { "type": "cleanup", "params": { "stopRunner": false }, "messageId": -49642 },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470717452000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"cleanup\",\"params\":{\"stopRunner\":false},\"messageId\":-49642}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470717453000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": "{\"type\":\"cleanupDone\",\"params\":{},\"messageId\":-49642}",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470717453000,
+    "args": {
+      "level": 10,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "data": { "type": "cleanupDone", "params": {}, "messageId": -49642 },
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "get message",
+    "pid": 14151,
+    "tid": 9,
+    "cat": "ws-client,ws",
+    "ts": 1775470717453000,
+    "args": {
+      "level": 10,
+      "data": "{\"type\":\"cleanupDone\",\"params\":{},\"messageId\":-49642}\n ",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "tester exited session 6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+    "pid": 14150,
+    "tid": 4,
+    "cat": "ws-server,ws-session",
+    "ts": 1775470717454000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "send",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470717454000,
+    "args": {
+      "level": 10,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "data": { "type": "testerDisconnected", "messageId": -1 },
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470717454000,
+    "args": {
+      "level": 20,
+      "id": 55759,
+      "trackingId": "tester",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "tester",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "received event of :  deallocateDevice {\n  deviceCookie: {\n    id: '85DD3162-206C-44DB-A723-F4B933896B6E',\n    udid: '85DD3162-206C-44DB-A723-F4B933896B6E',\n    type: 'ios.simulator'\n  }\n}",
+    "pid": 14150,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1775470717454000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "free: 85DD3162-206C-44DB-A723-F4B933896B6E",
+    "pid": 14150,
+    "tid": 5,
+    "cat": "device,device-allocation",
+    "ts": 1775470717454000,
+    "args": { "level": 10, "data": {}, "id": 0, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "dispatching event to  primary-14150 /tmp/detox.primary-14150  :  deallocateDevice , {\n  deviceCookie: {\n    id: '85DD3162-206C-44DB-A723-F4B933896B6E',\n    udid: '85DD3162-206C-44DB-A723-F4B933896B6E',\n    type: 'ios.simulator'\n  }\n}",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470717454000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14150,
+    "tid": 5,
+    "cat": "device,device-allocation",
+    "ts": 1775470717455000,
+    "args": { "level": 10, "id": 0, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "dispatching event to socket  :  deallocateDeviceDone {}",
+    "pid": 14150,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1775470717455000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "## received events ##",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470717455000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "detected event deallocateDeviceDone {}",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470717455000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1775470717455000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14151,
+    "tid": 8,
+    "cat": "lifecycle,jest-environment",
+    "ts": 1775470717455000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "received event of :  reportTestResults {\n  testResults: [\n    {\n      success: false,\n      testFilePath: '/Users/Shared/Ellie/e2e/onboarding.test.ts',\n      isPermanentFailure: false\n    }\n  ]\n}",
+    "pid": 14150,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1775470717458000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "dispatching event to socket  :  reportTestResultsDone {\n  testResults: [\n    {\n      success: false,\n      testFilePath: '/Users/Shared/Ellie/e2e/onboarding.test.ts',\n      isPermanentFailure: false\n    }\n  ]\n}",
+    "pid": 14150,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1775470717458000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "broadcasting event to all known sockets listening to  /tmp/detox.primary-14150  :   sessionStateUpdate {\n  testResults: [\n    {\n      success: false,\n      testFilePath: '/Users/Shared/Ellie/e2e/onboarding.test.ts',\n      isPermanentFailure: false\n    }\n  ]\n}",
+    "pid": 14150,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1775470717458000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "dispatching event to  primary-14150 /tmp/detox.primary-14150  :  reportTestResults , {\n  testResults: [\n    {\n      success: false,\n      testFilePath: '/Users/Shared/Ellie/e2e/onboarding.test.ts',\n      testExecError: undefined,\n      isPermanentFailure: false\n    }\n  ]\n}",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470717458000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "## received events ##",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470717458000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "detected event reportTestResultsDone {\n  testResults: [\n    {\n      success: false,\n      testFilePath: '/Users/Shared/Ellie/e2e/onboarding.test.ts',\n      isPermanentFailure: false\n    }\n  ]\n}",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470717458000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "socket disconnected secondary-14151",
+    "pid": 14150,
+    "tid": 1,
+    "cat": "ipc,ipc-server",
+    "ts": 1775470717459000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "connection closed primary-14150 /tmp/detox.primary-14150 0 tries remaining of 0",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470717459000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "secondary-14151 exceeded connection rety amount of  or stopRetrying flag set.",
+    "pid": 14151,
+    "tid": 7,
+    "cat": "ipc",
+    "ts": 1775470717459000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14150,
+    "tid": 0,
+    "cat": "lifecycle,cli",
+    "ts": 1775470717570000,
+    "args": { "level": 50, "success": false, "code": 1, "signal": null, "v": 0 }
+  },
+  {
+    "ph": "B",
+    "name": "cleanup",
+    "pid": 14150,
+    "tid": 5,
+    "cat": "device,device-allocation",
+    "ts": 1775470717570000,
+    "args": { "level": 10, "args": [], "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "/usr/bin/xcrun simctl shutdown 85DD3162-206C-44DB-A723-F4B933896B6E",
+    "pid": 14150,
+    "tid": 6,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470717571000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl shutdown 85DD3162-206C-44DB-A723-F4B933896B6E",
+      "trackingId": 5,
+      "event": "EXEC_CMD",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "Shutting down 85DD3162-206C-44DB-A723-F4B933896B6E...",
+    "pid": 14150,
+    "tid": 6,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470717571000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl shutdown 85DD3162-206C-44DB-A723-F4B933896B6E",
+      "trackingId": 5,
+      "event": "EXEC_TRY",
+      "retryNumber": 1,
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "app exited session 6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws-session",
+    "ts": 1775470717758000,
+    "args": { "level": 10, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14150,
+    "tid": 3,
+    "cat": "ws-server,ws",
+    "ts": 1775470717758000,
+    "args": {
+      "level": 20,
+      "id": 55896,
+      "trackingId": "app",
+      "sessionId": "6e9728e5-ac50-0063-87a6-88b0c1ba4021",
+      "role": "app",
+      "v": 0
+    }
+  },
+  {
+    "ph": "i",
+    "name": "85DD3162-206C-44DB-A723-F4B933896B6E shut down",
+    "pid": 14150,
+    "tid": 6,
+    "cat": "child-process,child-process-exec",
+    "ts": 1775470720707000,
+    "args": {
+      "level": 20,
+      "fn": "execWithRetriesAndLogs",
+      "cmd": "/usr/bin/xcrun simctl shutdown 85DD3162-206C-44DB-A723-F4B933896B6E",
+      "trackingId": 5,
+      "event": "EXEC_SUCCESS",
+      "v": 0
+    }
+  },
+  {
+    "ph": "E",
+    "pid": 14150,
+    "tid": 5,
+    "cat": "device,device-allocation",
+    "ts": 1775470720709000,
+    "args": { "level": 10, "success": true, "v": 0 }
+  },
+  {
+    "ph": "i",
+    "name": "Detox server has been closed gracefully",
+    "pid": 14150,
+    "tid": 2,
+    "cat": "ws-server,ws",
+    "ts": 1775470720710000,
+    "args": { "level": 20, "v": 0 }
+  },
+  {
+    "ph": "E",
+    "pid": 14150,
+    "tid": 0,
+    "cat": "lifecycle",
+    "ts": 1775470720712000,
+    "args": { "level": 10, "v": 0 }
+  }
+]

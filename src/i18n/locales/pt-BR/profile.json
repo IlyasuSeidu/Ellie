@@ -2,7 +2,8 @@
   "sections": {
     "personalInfo": "Informacoes pessoais",
     "workOverview": "Resumo de trabalho",
-    "shiftSettings": "Configuracoes de turno"
+    "shiftSettings": "Configuracoes de turno",
+    "smartReminders": "Lembretes inteligentes"
   },
   "fields": {
     "name": "Nome",
@@ -109,7 +110,7 @@
       "customSequence": "SEQUENCIA PERSONALIZADA",
       "siteDetails": "DETALHES DO SITE",
       "travelDays": "DIAS DE VIAGEM (OPCIONAL)",
-      "scheduleAnchor": "ANCORA DO CALENDARIO",
+      "scheduleAnchor": "INÍCIO E POSIÇÃO DA ESCALA",
       "customPattern": "PADRAO PERSONALIZADO"
     },
     "chips": {
@@ -257,6 +258,89 @@
       "customRotationThreeShift": "Rotação personalizada {{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}}",
       "dayAbbrev": "Di",
       "nightAbbrev": "No"
+    }
+  },
+  "smartReminders": {
+    "sections": {
+      "timing": "HORARIOS",
+      "doNotDisturb": "NAO PERTURBE",
+      "adaptive": "ADAPTATIVOS",
+      "fifo": "FIFO"
+    },
+    "units": {
+      "hoursShort": "{{value}} h",
+      "minutesShort": "{{value}} min",
+      "none": "Nenhum"
+    },
+    "rows": {
+      "early": {
+        "label": "Lembrete antecipado",
+        "sublabel": "Aviso antes do início do seu turno"
+      },
+      "prep": {
+        "label": "Tempo de preparo",
+        "sublabel": "Tempo para se arrumar antes de sair"
+      },
+      "commute": {
+        "label": "Tempo de deslocamento",
+        "sublabel": "Quanto tempo leva para chegar ao site"
+      },
+      "imminent": {
+        "label": "Alerta de 15 min",
+        "sublabel": "Avisa quando seu turno está a 15 minutos"
+      },
+      "briefing": {
+        "label": "Alerta de briefing",
+        "sublabel": "Para funções com briefing de segurança antes de cada turno"
+      },
+      "quietHours": {
+        "label": "Horas de silêncio",
+        "sublabel": "Silencia alertas não críticos enquanto você dorme"
+      },
+      "backToBack": {
+        "label": "Aviso de noites seguidas",
+        "sublabel": "Avisa quando vêm 3 ou mais turnos noturnos seguidos"
+      },
+      "shortTurnaround": {
+        "label": "Aviso de descanso curto",
+        "sublabel": "Alerta quando há menos de 10 h entre turnos"
+      },
+      "postShift": {
+        "label": "Check-in pós-turno",
+        "sublabel": "Pede para registrar sua energia uma hora após cada turno"
+      },
+      "travelDay": {
+        "label": "Lembretes de viagem",
+        "sublabel": "Alerta na noite antes do fly-in e na manhã do fly-out"
+      }
+    },
+    "quietHours": {
+      "startA11y": "Início das horas de silêncio: {{time}}",
+      "endA11y": "Fim das horas de silêncio: {{time}}",
+      "overnight": "Noite inteira · {{hours}} h",
+      "minimumAdjusted": "As horas de silêncio foram ajustadas para uma janela mínima de 30 minutos."
+    },
+    "actions": {
+      "permissionNotice": "As configurações foram salvas, mas as notificações estão desativadas, então os lembretes não foram reprogramados. Ative-as em Ajustes para aplicar.",
+      "test": {
+        "a11y": "Enviar um lembrete de teste em 5 segundos",
+        "idle": "Enviar teste",
+        "sent": "Teste enviado — confira em 5 segundos",
+        "error": "O teste está indisponível agora",
+        "permission": "Ative as notificações para enviar um teste"
+      },
+      "reschedule": {
+        "a11y": "Reprogramar todos os lembretes agora",
+        "idle": "Reprogramar lembretes",
+        "inProgress": "Reprogramando…",
+        "success": "Lembretes atualizados",
+        "error": "Falha ao atualizar lembretes",
+        "permission": "Ative as notificações para reprogramar lembretes"
+      }
+    },
+    "test": {
+      "title": "Os lembretes inteligentes estão ativos",
+      "body": "Se isto chegar, seus lembretes inteligentes estão funcionando."
     }
   }
 }

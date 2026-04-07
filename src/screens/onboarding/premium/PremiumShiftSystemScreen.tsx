@@ -41,6 +41,7 @@ import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
 import { SwipeHintLabel } from '@/components/onboarding/premium/SwipeHintLabel';
+import { E2ESwipeControls } from '@/components/onboarding/premium/E2ESwipeControls';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { ShiftSystem } from '@/types';
@@ -48,6 +49,7 @@ import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator'
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 import { Analytics } from '@/utils/analytics';
+import { IS_E2E_TEST_MODE } from '@/utils/e2e';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -447,25 +449,49 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
         {index === 0 && isActive && (
           <>
             <Animated.View style={[styles.swipeHint, styles.swipeHintLeft, hintAnimatedStyle]}>
-              <SwipeHintLabel
-                direction="left"
-                text={t('common.hints.nextOption')}
-                textStyle={styles.swipeHintText}
-              />
+              <Pressable
+                onPress={onSwipeLeft}
+                style={styles.swipeHintPressable}
+                accessibilityRole="button"
+                accessibilityLabel={t('common.hints.nextOption')}
+                testID="shift-system-next-option-button"
+              >
+                <SwipeHintLabel
+                  direction="left"
+                  text={t('common.hints.nextOption')}
+                  textStyle={styles.swipeHintText}
+                />
+              </Pressable>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintRight, hintAnimatedStyle]}>
-              <SwipeHintLabel
-                direction="right"
-                text={t('common.hints.selectThis')}
-                textStyle={styles.swipeHintText}
-              />
+              <Pressable
+                onPress={onSwipeRight}
+                style={styles.swipeHintPressable}
+                accessibilityRole="button"
+                accessibilityLabel={t('common.hints.selectThis')}
+                testID="shift-system-select-button"
+              >
+                <SwipeHintLabel
+                  direction="right"
+                  text={t('common.hints.selectThis')}
+                  textStyle={styles.swipeHintText}
+                />
+              </Pressable>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintUp, hintAnimatedStyle]}>
-              <SwipeHintLabel
-                direction="up"
-                text={t('common.hints.learnMore')}
-                textStyle={styles.swipeHintText}
-              />
+              <Pressable
+                onPress={onSwipeUp}
+                style={styles.swipeHintPressable}
+                accessibilityRole="button"
+                accessibilityLabel={t('common.hints.learnMore')}
+                testID="shift-system-info-button"
+              >
+                <SwipeHintLabel
+                  direction="up"
+                  text={t('common.hints.learnMore')}
+                  textStyle={styles.swipeHintText}
+                />
+              </Pressable>
             </Animated.View>
           </>
         )}
@@ -698,6 +724,7 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
   const [cardRemountKey, setCardRemountKey] = useState(0);
   const [selectedSystem, setSelectedSystem] = useState<ShiftSystem | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [e2eStatus, setE2eStatus] = useState('idle');
   const isTransitioningRef = useRef(false);
   const mountTime = useRef(Date.now());
   const swipeLeftTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -794,6 +821,9 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
     if (isTransitioningRef.current) return;
     const system = SHIFT_SYSTEMS[currentIndex];
     if (!system) return;
+    if (IS_E2E_TEST_MODE) {
+      setE2eStatus(`selected:${system.id}`);
+    }
     setSelectedSystem(system.system);
 
     // Save selection — auto-set rosterType for 3-shift (FIFO not supported)
@@ -813,6 +843,9 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
     interactionHandleRef.current = InteractionManager.runAfterInteractions(() => {
       navigationTimeoutRef.current = setTimeout(() => {
         navigationTimeoutRef.current = null;
+        if (IS_E2E_TEST_MODE) {
+          setE2eStatus(`navigating:${system.id}`);
+        }
         void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
           source: 'PremiumShiftSystemScreen.handleSwipeRight.navigate',
         });
@@ -921,6 +954,19 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
       {/* Progress Dots */}
       <ProgressDots total={SHIFT_SYSTEMS.length} current={currentIndex} />
 
+      {IS_E2E_TEST_MODE ? (
+        <Text style={styles.e2eStatus} testID="shift-system-e2e-status">
+          {e2eStatus}
+        </Text>
+      ) : null}
+
+      <E2ESwipeControls
+        prefix="shift-system"
+        onSelect={handleSwipeRight}
+        onNext={handleSwipeLeft}
+        onInfo={handleSwipeUp}
+      />
+
       {/* Card Stack */}
       <View style={styles.cardStack}>
         {[...visibleCards].reverse().map((system, index) => (
@@ -1004,6 +1050,13 @@ const styles = StyleSheet.create({
         fontFamily: 'sans-serif-medium',
       },
     }),
+  },
+  e2eStatus: {
+    fontSize: 12,
+    color: theme.colors.paleGold,
+    textAlign: 'center',
+    marginBottom: theme.spacing.sm,
+    letterSpacing: 0.5,
   },
   cardStack: {
     flex: 1,
@@ -1097,6 +1150,10 @@ const styles = StyleSheet.create({
     color: theme.colors.dust,
     fontWeight: '600',
     flexShrink: 1,
+  },
+  swipeHintPressable: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   progressDots: {
     flexDirection: 'row',

@@ -99,7 +99,11 @@
       "af": "南非荷兰语 (南非荷兰语)",
       "zu": "祖鲁语 (伊西祖鲁语)",
       "id": "印度尼西亚 (印度尼西亚语)"
-    }
+    },
+    "selectorSubtitle": "选择您的语言",
+    "search": "搜索语言…",
+    "noResults": "未找到语言",
+    "rtlBadge": "RTL"
   },
   "accessibility": {
     "toggle": "切换开关"

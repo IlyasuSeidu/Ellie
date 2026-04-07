@@ -2,7 +2,8 @@
   "sections": {
     "personalInfo": "Informations personnelles",
     "workOverview": "Aperçu du travail",
-    "shiftSettings": "Paramètres de quart de travail"
+    "shiftSettings": "Paramètres de quart de travail",
+    "smartReminders": "Rappels intelligents"
   },
   "fields": {
     "name": "Nom",
@@ -109,7 +110,7 @@
       "customSequence": "SÉQUENCE PERSONNALISÉE",
       "siteDetails": "DÉTAILS DU SITE",
       "travelDays": "JOURS DE VOYAGE (OPTIONNEL)",
-      "scheduleAnchor": "ANCRAGE DU HORAIRE",
+      "scheduleAnchor": "DÉBUT ET POSITION DU ROSTER",
       "customPattern": "MOTIF PERSONNALISÉ"
     },
     "chips": {
@@ -257,6 +258,89 @@
       "customRotationThreeShift": "Rotation personnalisée {{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}}",
       "dayAbbrev": "J",
       "nightAbbrev": "Nu"
+    }
+  },
+  "smartReminders": {
+    "sections": {
+      "timing": "HORAIRES",
+      "doNotDisturb": "NE PAS DERANGER",
+      "adaptive": "ADAPTATIFS",
+      "fifo": "FIFO"
+    },
+    "units": {
+      "hoursShort": "{{value}} h",
+      "minutesShort": "{{value}} min",
+      "none": "Aucun"
+    },
+    "rows": {
+      "early": {
+        "label": "Rappel anticipé",
+        "sublabel": "Alerte avant le début de votre quart"
+      },
+      "prep": {
+        "label": "Temps de préparation",
+        "sublabel": "Temps pour vous préparer avant de partir"
+      },
+      "commute": {
+        "label": "Temps de trajet",
+        "sublabel": "Temps nécessaire pour arriver sur site"
+      },
+      "imminent": {
+        "label": "Alerte à 15 min",
+        "sublabel": "Alerte lorsque votre quart commence dans 15 minutes"
+      },
+      "briefing": {
+        "label": "Alerte briefing",
+        "sublabel": "Pour les postes avec briefing sécurité avant chaque quart"
+      },
+      "quietHours": {
+        "label": "Heures calmes",
+        "sublabel": "Coupe les alertes non critiques pendant votre sommeil"
+      },
+      "backToBack": {
+        "label": "Alerte nuits consecutives",
+        "sublabel": "Avertit quand 3 quarts de nuit consecutifs ou plus arrivent"
+      },
+      "shortTurnaround": {
+        "label": "Alerte repos court",
+        "sublabel": "Alerte quand moins de 10 h séparent deux quarts"
+      },
+      "postShift": {
+        "label": "Suivi après quart",
+        "sublabel": "Invite à noter votre énergie une heure après chaque quart"
+      },
+      "travelDay": {
+        "label": "Rappels de trajet",
+        "sublabel": "Alerte le soir avant le fly-in et le matin du fly-out"
+      }
+    },
+    "quietHours": {
+      "startA11y": "Début des heures calmes : {{time}}",
+      "endA11y": "Fin des heures calmes : {{time}}",
+      "overnight": "Nuit complète · {{hours}} h",
+      "minimumAdjusted": "Les heures calmes ont été ajustées à une fenêtre minimale de 30 minutes."
+    },
+    "actions": {
+      "permissionNotice": "Les réglages ont été enregistrés, mais les notifications sont désactivées, donc les rappels n’ont pas été reprogrammés. Activez-les dans Réglages pour les appliquer.",
+      "test": {
+        "a11y": "Envoyer un rappel test dans 5 secondes",
+        "idle": "Envoyer un test",
+        "sent": "Test envoyé — vérifiez dans 5 secondes",
+        "error": "Le test est indisponible pour le moment",
+        "permission": "Activez les notifications pour envoyer un test"
+      },
+      "reschedule": {
+        "a11y": "Reprogrammer tous les rappels maintenant",
+        "idle": "Reprogrammer les rappels",
+        "inProgress": "Reprogrammation…",
+        "success": "Rappels mis à jour",
+        "error": "Échec de la mise à jour des rappels",
+        "permission": "Activez les notifications pour reprogrammer les rappels"
+      }
+    },
+    "test": {
+      "title": "Les rappels intelligents sont activés",
+      "body": "Si ceci arrive, vos rappels intelligents fonctionnent."
     }
   }
 }

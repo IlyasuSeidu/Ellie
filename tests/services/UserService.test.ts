@@ -6,6 +6,7 @@
 
 import { UserService, UserProfile, UserPreferences } from '@/services/UserService';
 import { ShiftCycle, NotificationSettings, ShiftPattern } from '@/types';
+import { DEFAULT_SMART_REMINDER_SETTINGS } from '@/types/reminders';
 import { ValidationError } from '@/utils/errorUtils';
 import { logger } from '@/utils/logger';
 
@@ -53,6 +54,7 @@ describe('UserService', () => {
     patternChangeAlerts: true,
     soundEnabled: true,
     vibrationEnabled: true,
+    smartReminders: DEFAULT_SMART_REMINDER_SETTINGS,
   };
 
   beforeEach(() => {
@@ -391,6 +393,7 @@ describe('UserService', () => {
           notifications: expect.objectContaining({
             shift24HoursBefore: true,
             shift4HoursBefore: true,
+            smartReminders: DEFAULT_SMART_REMINDER_SETTINGS,
           }),
           language: 'en',
           timezone: expect.any(String),
@@ -410,6 +413,33 @@ describe('UserService', () => {
 
         expect(result.theme).toBe('auto');
         expect(result.notifications.shift24HoursBefore).toBe(true);
+        expect(result.notifications.smartReminders).toEqual(DEFAULT_SMART_REMINDER_SETTINGS);
+      });
+
+      it('merges smart reminder defaults into legacy notification settings', async () => {
+        const userWithLegacyPrefs = {
+          ...mockUserProfile,
+          preferences: {
+            theme: 'dark' as const,
+            notifications: {
+              shift24HoursBefore: true,
+              shift4HoursBefore: true,
+              holidayAlerts: false,
+              patternChangeAlerts: true,
+              soundEnabled: true,
+              vibrationEnabled: false,
+            },
+            language: 'en',
+            timezone: 'UTC',
+          },
+        };
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        jest.spyOn(service as any, 'read').mockResolvedValue(userWithLegacyPrefs);
+
+        const result = await service.getPreferences(mockUserId);
+
+        expect(result.notifications.smartReminders).toEqual(DEFAULT_SMART_REMINDER_SETTINGS);
       });
     });
 
@@ -447,6 +477,42 @@ describe('UserService', () => {
           'Notification settings updated',
           expect.objectContaining({ userId: mockUserId })
         );
+      });
+
+      it('should accept nested smart reminder settings', async () => {
+        const userWithPrefs = {
+          ...mockUserProfile,
+          preferences: {
+            theme: 'dark' as const,
+            notifications: mockNotificationSettings,
+            language: 'en',
+            timezone: 'UTC',
+          },
+        };
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        jest.spyOn(service as any, 'read').mockResolvedValue(userWithPrefs);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        jest.spyOn(service as any, 'update').mockResolvedValue(undefined);
+
+        await service.updateNotificationSettings(mockUserId, {
+          ...mockNotificationSettings,
+          smartReminders: {
+            ...DEFAULT_SMART_REMINDER_SETTINGS,
+            earlyReminderHours: 12,
+          },
+        });
+
+        expect(service['update']).toHaveBeenCalledWith('users', mockUserId, {
+          preferences: expect.objectContaining({
+            notifications: expect.objectContaining({
+              smartReminders: expect.objectContaining({
+                earlyReminderHours: 12,
+                quietHoursStart: DEFAULT_SMART_REMINDER_SETTINGS.quietHoursStart,
+              }),
+            }),
+          }),
+        });
       });
 
       it('should throw ValidationError for invalid settings', async () => {

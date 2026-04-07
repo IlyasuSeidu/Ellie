@@ -53,6 +53,7 @@ import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { PatternBuilderSlider } from '@/components/onboarding/premium/PatternBuilderSlider';
 import { SettingsEntryActionButtons } from '@/components/onboarding/premium/SettingsEntryActionButtons';
 import { SwipeHintLabel } from '@/components/onboarding/premium/SwipeHintLabel';
+import { E2ESwipeControls } from '@/components/onboarding/premium/E2ESwipeControls';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
@@ -747,25 +748,49 @@ const SwipeableFIFOCard: React.FC<SwipeableFIFOCardProps> = ({
         {(isBlockCard || (index === 0 && isActive)) && (
           <>
             <Animated.View style={[styles.swipeHint, styles.swipeHintLeft, hintAnimatedStyle]}>
-              <SwipeHintLabel
-                direction="left"
-                text={t('phaseSelector.hints.next', { defaultValue: 'Next' })}
-                textStyle={styles.swipeHintText}
-              />
+              <Pressable
+                onPress={onSwipeLeft}
+                style={styles.swipeHintPressable}
+                accessibilityRole="button"
+                accessibilityLabel={t('phaseSelector.hints.next', { defaultValue: 'Next' })}
+                testID="fifo-phase-selector-next-button"
+              >
+                <SwipeHintLabel
+                  direction="left"
+                  text={t('phaseSelector.hints.next', { defaultValue: 'Next' })}
+                  textStyle={styles.swipeHintText}
+                />
+              </Pressable>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintRight, hintAnimatedStyle]}>
-              <SwipeHintLabel
-                direction="right"
-                text={t('phaseSelector.hints.select', { defaultValue: 'Select' })}
-                textStyle={styles.swipeHintText}
-              />
+              <Pressable
+                onPress={onSwipeRight}
+                style={styles.swipeHintPressable}
+                accessibilityRole="button"
+                accessibilityLabel={t('phaseSelector.hints.select', { defaultValue: 'Select' })}
+                testID="fifo-phase-selector-select-button"
+              >
+                <SwipeHintLabel
+                  direction="right"
+                  text={t('phaseSelector.hints.select', { defaultValue: 'Select' })}
+                  textStyle={styles.swipeHintText}
+                />
+              </Pressable>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintUp, hintAnimatedStyle]}>
-              <SwipeHintLabel
-                direction="up"
-                text={t('phaseSelector.hints.info', { defaultValue: 'Info' })}
-                textStyle={styles.swipeHintText}
-              />
+              <Pressable
+                onPress={onSwipeUp}
+                style={styles.swipeHintPressable}
+                accessibilityRole="button"
+                accessibilityLabel={t('phaseSelector.hints.info', { defaultValue: 'Info' })}
+                testID="fifo-phase-selector-info-button"
+              >
+                <SwipeHintLabel
+                  direction="up"
+                  text={t('phaseSelector.hints.info', { defaultValue: 'Info' })}
+                  textStyle={styles.swipeHintText}
+                />
+              </Pressable>
             </Animated.View>
           </>
         )}
@@ -1891,23 +1916,31 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
             </View>
           </View>
         ) : (
-          <View style={styles.cardStack}>
-            {stackedCards.map((card, index) => (
-              <SwipeableFIFOCard
-                key={`${card.id}-${cardRemountKey}`}
-                card={card}
-                index={stackedCards.length - 1 - index}
-                totalCards={stackedCards.length}
-                isActive={index === stackedCards.length - 1}
-                interactionLocked={isTransitioning}
-                onSwipeRight={handleSwipeRight}
-                onSwipeLeft={handleSwipeLeft}
-                onSwipeUp={handleSwipeUp}
-                mountProgress={cardAnimations[index]}
-                reducedMotion={reducedMotion}
-              />
-            ))}
-          </View>
+          <>
+            <E2ESwipeControls
+              prefix="fifo-phase-selector"
+              onSelect={handleSwipeRight}
+              onNext={handleSwipeLeft}
+              onInfo={handleSwipeUp}
+            />
+            <View style={styles.cardStack}>
+              {stackedCards.map((card, index) => (
+                <SwipeableFIFOCard
+                  key={`${card.id}-${cardRemountKey}`}
+                  card={card}
+                  index={stackedCards.length - 1 - index}
+                  totalCards={stackedCards.length}
+                  isActive={index === stackedCards.length - 1}
+                  interactionLocked={isTransitioning}
+                  onSwipeRight={handleSwipeRight}
+                  onSwipeLeft={handleSwipeLeft}
+                  onSwipeUp={handleSwipeUp}
+                  mountProgress={cardAnimations[index]}
+                  reducedMotion={reducedMotion}
+                />
+              ))}
+            </View>
+          </>
         )}
       </>
 
@@ -2152,6 +2185,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: theme.colors.dust,
     fontWeight: '600',
+  },
+  swipeHintPressable: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   progressDots: {
     flexDirection: 'row',

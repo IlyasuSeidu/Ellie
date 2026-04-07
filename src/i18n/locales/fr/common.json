@@ -99,7 +99,11 @@
       "af": "afrikaans (afrikaans)",
       "zu": "zoulou (isiZulu)",
       "id": "indonésien (Bahasa Indonésie)"
-    }
+    },
+    "selectorSubtitle": "Choisissez votre langue",
+    "search": "Rechercher des langues…",
+    "noResults": "Aucune langue trouvée",
+    "rtlBadge": "RTL"
   },
   "accessibility": {
     "toggle": "Commutateur"

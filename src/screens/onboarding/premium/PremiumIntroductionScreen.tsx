@@ -87,6 +87,8 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
   const { data, updateData } = useOnboarding();
   const flatListRef = useRef<FlatList>(null);
   const mountTime = useRef(Date.now());
+  const pendingBotQuestionsRef = useRef<Set<string>>(new Set());
+  const pendingTimeoutsRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
 
   // Conversation state
   const [currentStep, setCurrentStep] = useState<ConversationStep>(ConversationStep.WELCOME);
@@ -121,6 +123,31 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
     [messages]
   );
 
+  const isBotQuestionPending = useCallback(
+    (questionKey: string): boolean => pendingBotQuestionsRef.current.has(questionKey),
+    []
+  );
+
+  const scheduleTimeout = useCallback((callback: () => void, delay: number) => {
+    const timeoutId = setTimeout(() => {
+      pendingTimeoutsRef.current.delete(timeoutId);
+      callback();
+    }, delay);
+    pendingTimeoutsRef.current.add(timeoutId);
+    return timeoutId;
+  }, []);
+
+  useEffect(() => {
+    const pendingTimeouts = pendingTimeoutsRef.current;
+    const pendingBotQuestions = pendingBotQuestionsRef.current;
+
+    return () => {
+      pendingTimeouts.forEach((timeoutId) => clearTimeout(timeoutId));
+      pendingTimeouts.clear();
+      pendingBotQuestions.clear();
+    };
+  }, []);
+
   // Check for reduced motion preference
   useEffect(() => {
     const checkReducedMotion = async () => {
@@ -137,6 +164,9 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
   // Add bot message with typing indicator
   const addBotMessage = useCallback(
     (content: string, typingDuration: number, questionKey?: string) => {
+      if (questionKey) {
+        pendingBotQuestionsRef.current.add(questionKey);
+      }
       setIsTyping(true);
 
       // Light haptic feedback
@@ -146,7 +176,7 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
         });
       }
 
-      setTimeout(() => {
+      scheduleTimeout(() => {
         setIsTyping(false);
 
         const newMessage: Message = {
@@ -158,14 +188,17 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
         };
 
         setMessages((prev) => [...prev, newMessage]);
+        if (questionKey) {
+          pendingBotQuestionsRef.current.delete(questionKey);
+        }
 
         // Auto-scroll to bottom
-        setTimeout(() => {
+        scheduleTimeout(() => {
           flatListRef.current?.scrollToEnd({ animated: !reducedMotion });
         }, 100);
       }, typingDuration);
     },
-    [reducedMotion]
+    [reducedMotion, scheduleTimeout]
   );
 
   // Add user message
@@ -267,17 +300,21 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
     switch (currentStep) {
       case ConversationStep.WELCOME:
         addBotMessage(t('intro.welcome'), 1000, 'welcome');
-        setTimeout(() => {
+        scheduleTimeout(() => {
           setCurrentStep(ConversationStep.ASK_NAME);
         }, 2500);
         break;
 
       case ConversationStep.ASK_NAME: {
         const nameQuestionExists = hasBotQuestion('askName');
+        const nameQuestionPending = isBotQuestionPending('askName');
 
         if (!nameQuestionExists) {
+          if (nameQuestionPending) {
+            break;
+          }
           addBotMessage(t('intro.askName'), 800, 'askName');
-          setTimeout(() => {
+          scheduleTimeout(() => {
             setCurrentStep(ConversationStep.WAIT_NAME);
           }, 1300);
         } else {
@@ -293,10 +330,14 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
 
       case ConversationStep.ASK_OCCUPATION: {
         const occupationQuestionExists = hasBotQuestion('askOccupation');
+        const occupationQuestionPending = isBotQuestionPending('askOccupation');
 
         if (!occupationQuestionExists) {
+          if (occupationQuestionPending) {
+            break;
+          }
           addBotMessage(t('intro.askOccupation', { name: formData.name }), 900, 'askOccupation');
-          setTimeout(() => {
+          scheduleTimeout(() => {
             setCurrentStep(ConversationStep.WAIT_OCCUPATION);
           }, 1400);
         } else {
@@ -312,10 +353,14 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
 
       case ConversationStep.ASK_COMPANY: {
         const companyQuestionExists = hasBotQuestion('askCompany');
+        const companyQuestionPending = isBotQuestionPending('askCompany');
 
         if (!companyQuestionExists) {
+          if (companyQuestionPending) {
+            break;
+          }
           addBotMessage(t('intro.askCompany'), 1000, 'askCompany');
-          setTimeout(() => {
+          scheduleTimeout(() => {
             setCurrentStep(ConversationStep.WAIT_COMPANY);
           }, 1500);
         } else {
@@ -331,10 +376,14 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
 
       case ConversationStep.ASK_COUNTRY: {
         const countryQuestionExists = hasBotQuestion('askCountry');
+        const countryQuestionPending = isBotQuestionPending('askCountry');
 
         if (!countryQuestionExists) {
+          if (countryQuestionPending) {
+            break;
+          }
           addBotMessage(t('intro.askCountry'), 900, 'askCountry');
-          setTimeout(() => {
+          scheduleTimeout(() => {
             setCurrentStep(ConversationStep.WAIT_COUNTRY);
           }, 1400);
         } else {
@@ -350,12 +399,16 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
 
       case ConversationStep.COMPLETE: {
         const completionMessageExists = hasBotQuestion('complete');
+        const completionMessagePending = isBotQuestionPending('complete');
 
         if (!completionMessageExists) {
+          if (completionMessagePending) {
+            break;
+          }
           addBotMessage(t('intro.allSet', { name: formData.name }), 1000, 'complete');
 
           // Save to context and navigate after delay (allow time to read final message)
-          setTimeout(() => {
+          scheduleTimeout(() => {
             updateData({
               name: formData.name,
               occupation: formData.occupation,
@@ -401,11 +454,13 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
     formData,
     hasBotQuestion,
     addBotMessage,
+    isBotQuestionPending,
     updateData,
     reducedMotion,
     onContinue,
     isSettingsEntry,
     navigation,
+    scheduleTimeout,
     t,
   ]);
 
@@ -420,7 +475,7 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
       advanceConversation();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentStep, advanceConversation]);
+  }, [currentStep]);
 
   // Auto-scroll when input field appears
   useEffect(() => {

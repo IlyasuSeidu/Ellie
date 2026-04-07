@@ -192,6 +192,63 @@
       "today": "Today is {{holidayName}}!",
       "tomorrow": "Tomorrow is {{holidayName}}",
       "inDays": "{{holidayName}} is in {{daysBefore}} days ({{holidayDate}})"
+    },
+    "smartReminders": {
+      "shiftType": {
+        "day": "day shift",
+        "night": "night shift",
+        "morning": "morning shift",
+        "afternoon": "afternoon shift",
+        "off": "day off"
+      },
+      "early": {
+        "title": "Upcoming {{shiftType}}",
+        "body": "Your {{shiftType}} starts at {{startTime}} on {{shiftDate}}."
+      },
+      "prep": {
+        "fatigueCritical": " Fatigue risk is critical. Give yourself extra time.",
+        "fatigueHigh": " Rest and prepare carefully.",
+        "title": "Time to prepare, {{name}}",
+        "body": "Your {{shiftType}} starts at {{startTime}}.{{fatigueSuffix}}"
+      },
+      "commute": {
+        "title": "Leave now",
+        "body": "Head out now to reach your {{shiftType}} on time. It starts at {{startTime}}."
+      },
+      "imminent": {
+        "title": "Starting in 15 minutes",
+        "body": "Your {{shiftType}} begins at {{startTime}}."
+      },
+      "briefing": {
+        "title": "Briefing soon",
+        "body": "Shift briefing is in 15 minutes before your {{shiftType}} at {{startTime}}."
+      },
+      "postShift": {
+        "title": "How did that go?",
+        "body": "How was your {{shiftType}}? Log your energy level in Ellie."
+      },
+      "fatigue": {
+        "title": "Critical fatigue alert",
+        "body": "Your {{shiftType}} starts at {{startTime}}, but your sleep data shows critical fatigue. Rest now if you can."
+      },
+      "backToBack": {
+        "title": "{{count}} night shifts coming up",
+        "body": "You have {{count}} consecutive night shifts starting {{shiftDate}}. Prioritize rest."
+      },
+      "shortTurnaround": {
+        "title": "Short turnaround ahead",
+        "body": "Only {{gapHours}}h between your {{previousShiftType}} and next {{nextShiftType}} on {{shiftDate}}. Plan your rest."
+      },
+      "fifo": {
+        "flyOut": {
+          "title": "Fly-out day",
+          "body": "Today you head home. Complete your handover, pack your gear, and travel safely."
+        },
+        "travelTomorrow": {
+          "title": "Travel day tomorrow",
+          "body": "You fly in tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
+        }
+      }
     }
   },
   "countdown": {

@@ -40,7 +40,13 @@ import {
   getRosterTypeDisplayName,
   formatShiftTime,
 } from '@/utils/profileUtils';
-import { getDefaultFIFOConfig, getShiftPattern } from '@/utils/shiftUtils';
+import {
+  buildShiftCycle,
+  getDefaultFIFOConfig,
+  getFIFOBlockInfo,
+  getPhaseInfo,
+  getShiftPattern,
+} from '@/utils/shiftUtils';
 import { TimePickerModal } from '@/components/onboarding/premium/TimePickerModal';
 import { PatternBuilderSlider } from '@/components/onboarding/premium/PatternBuilderSlider';
 import { PremiumTextInput } from '@/components/onboarding/premium/PremiumTextInput';
@@ -122,9 +128,24 @@ function getRotatingPhaseLengths(
   data: OnboardingData,
   t?: TFunction<'profile', undefined>
 ): Array<{ label: string; days: number }> {
-  const translate = (key: string): string => {
-    if (!t) return key;
-    return String((t as unknown as (path: string) => unknown)(key));
+  const translate = (key: string, options?: Record<string, unknown>): string => {
+    if (!t) return options?.defaultValue ? String(options.defaultValue) : key;
+    return String(
+      (t as unknown as (path: string, params?: Record<string, unknown>) => unknown)(key, options)
+    );
+  };
+  const resolveLabel = (primaryKey: string, fallbackKey: string, defaultValue: string): string => {
+    const primary = translate(primaryKey, { defaultValue });
+    if (primary && primary !== primaryKey) {
+      return primary;
+    }
+
+    const fallback = translate(fallbackKey, { defaultValue });
+    if (fallback && fallback !== fallbackKey) {
+      return fallback;
+    }
+
+    return defaultValue;
   };
   const is3 = data.shiftSystem === '3-shift';
 
@@ -138,15 +159,52 @@ function getRotatingPhaseLengths(
 
     return is3
       ? [
-          { label: translate('shift.morning'), days: morning },
-          { label: translate('shift.afternoon'), days: afternoon },
-          { label: translate('shift.night'), days: night3 },
-          { label: translate('shift.off'), days: off },
+          {
+            label: resolveLabel(
+              'shift.resync.phaseLabels.morning',
+              'shift.morningShifts',
+              'Morning Shift'
+            ),
+            days: morning,
+          },
+          {
+            label: resolveLabel(
+              'shift.resync.phaseLabels.afternoon',
+              'shift.afternoonShifts',
+              'Afternoon Shift'
+            ),
+            days: afternoon,
+          },
+          {
+            label: resolveLabel(
+              'shift.resync.phaseLabels.night',
+              'shift.nightShift',
+              'Night Shift'
+            ),
+            days: night3,
+          },
+          {
+            label: resolveLabel('shift.resync.phaseLabels.off', 'shift.daysOff', 'Days Off'),
+            days: off,
+          },
         ]
       : [
-          { label: translate('shift.dayShift'), days: day },
-          { label: translate('shift.nightShift'), days: night },
-          { label: translate('shift.off'), days: off },
+          {
+            label: resolveLabel('shift.resync.phaseLabels.day', 'shift.dayShift', 'Day Shift'),
+            days: day,
+          },
+          {
+            label: resolveLabel(
+              'shift.resync.phaseLabels.night',
+              'shift.nightShift',
+              'Night Shift'
+            ),
+            days: night,
+          },
+          {
+            label: resolveLabel('shift.resync.phaseLabels.off', 'shift.daysOff', 'Days Off'),
+            days: off,
+          },
         ];
   }
 
@@ -163,32 +221,70 @@ function getRotatingPhaseLengths(
     const night = hasExplicitThreeShift ? (config.nightOn ?? 0) : (config.nightsOn ?? 0);
 
     return [
-      { label: translate('shift.morning'), days: morning },
-      { label: translate('shift.afternoon'), days: afternoon },
-      { label: translate('shift.night'), days: night },
-      { label: translate('shift.off'), days: config.daysOff ?? 0 },
+      {
+        label: resolveLabel(
+          'shift.resync.phaseLabels.morning',
+          'shift.morningShifts',
+          'Morning Shift'
+        ),
+        days: morning,
+      },
+      {
+        label: resolveLabel(
+          'shift.resync.phaseLabels.afternoon',
+          'shift.afternoonShifts',
+          'Afternoon Shift'
+        ),
+        days: afternoon,
+      },
+      {
+        label: resolveLabel('shift.resync.phaseLabels.night', 'shift.nightShift', 'Night Shift'),
+        days: night,
+      },
+      {
+        label: resolveLabel('shift.resync.phaseLabels.off', 'shift.daysOff', 'Days Off'),
+        days: config.daysOff ?? 0,
+      },
     ];
   }
 
   return [
-    { label: translate('shift.dayShifts'), days: config.daysOn ?? 0 },
-    { label: translate('shift.nightShifts'), days: config.nightsOn ?? 0 },
-    { label: translate('shift.off'), days: config.daysOff ?? 0 },
+    {
+      label: resolveLabel('shift.resync.phaseLabels.day', 'shift.dayShift', 'Day Shift'),
+      days: config.daysOn ?? 0,
+    },
+    {
+      label: resolveLabel('shift.resync.phaseLabels.night', 'shift.nightShift', 'Night Shift'),
+      days: config.nightsOn ?? 0,
+    },
+    {
+      label: resolveLabel('shift.resync.phaseLabels.off', 'shift.daysOff', 'Days Off'),
+      days: config.daysOff ?? 0,
+    },
   ];
 }
 
-function getCyclePositionLabel(
+export function getCyclePositionLabel(
   data: OnboardingData,
-  t?: TFunction<'profile', undefined>
+  t?: TFunction<'profile', undefined>,
+  referenceDate: Date = new Date()
 ): string | null {
   const translate = (key: string, options?: Record<string, unknown>): string => {
-    if (!t) return key;
+    if (!t) return options?.defaultValue ? String(options.defaultValue) : key;
     return String(
       (t as unknown as (path: string, params?: Record<string, unknown>) => unknown)(key, options)
     );
   };
   const { phaseOffset, patternType, rosterType, shiftSystem, fifoConfig } = data;
   if (phaseOffset === null || phaseOffset === undefined || !patternType) return null;
+
+  const shiftCycle = buildShiftCycle(data);
+  const phasePosition =
+    shiftCycle && data.startDate ? getPhaseInfo(referenceDate, shiftCycle).position : null;
+  const fifoBlockInfo =
+    shiftCycle && data.startDate && shiftCycle.rosterType === 'fifo'
+      ? getFIFOBlockInfo(referenceDate, shiftCycle)
+      : null;
 
   if (rosterType === 'fifo' || isFIFOPattern(patternType)) {
     const defaultConfig = getDefaultFIFOConfig(patternType);
@@ -197,22 +293,40 @@ function getCyclePositionLabel(
     const cycleLength = workBlockDays + restBlockDays;
 
     if (cycleLength <= 0) {
-      return translate('shift.cycleDay', { day: phaseOffset + 1 });
+      return translate('shift.cycleDay', {
+        day: phaseOffset + 1,
+        defaultValue: `Day ${phaseOffset + 1} of cycle`,
+      });
     }
 
-    const normalizedOffset = ((phaseOffset % cycleLength) + cycleLength) % cycleLength;
+    const normalizedOffset =
+      fifoBlockInfo?.positionInCycle ?? ((phaseOffset % cycleLength) + cycleLength) % cycleLength;
     if (normalizedOffset < workBlockDays) {
-      return translate('shift.cycleWorkBlock', { day: normalizedOffset + 1, total: workBlockDays });
+      return translate('shift.cycleWorkBlock', {
+        day: fifoBlockInfo?.dayInBlock ?? normalizedOffset + 1,
+        total: workBlockDays,
+        defaultValue: `Work Block - Day ${fifoBlockInfo?.dayInBlock ?? normalizedOffset + 1} of ${workBlockDays}`,
+      });
     }
-    const restDay = normalizedOffset - workBlockDays + 1;
-    return translate('shift.cycleRestBlock', { day: restDay, total: restBlockDays });
+    const restDay = fifoBlockInfo?.dayInBlock ?? normalizedOffset - workBlockDays + 1;
+    return translate('shift.cycleRestBlock', {
+      day: restDay,
+      total: restBlockDays,
+      defaultValue: `Rest Block - Day ${restDay} of ${restBlockDays}`,
+    });
   }
 
   const phases = getRotatingPhaseLengths({ ...data, shiftSystem }, t);
   const validPhases = phases.filter((phase) => phase.days > 0);
   const cycleLength = validPhases.reduce((acc, phase) => acc + phase.days, 0);
-  if (cycleLength <= 0) return translate('shift.cycleDay', { day: phaseOffset + 1 });
-  const normalizedOffset = ((phaseOffset % cycleLength) + cycleLength) % cycleLength;
+  if (cycleLength <= 0) {
+    return translate('shift.cycleDay', {
+      day: phaseOffset + 1,
+      defaultValue: `Day ${phaseOffset + 1} of cycle`,
+    });
+  }
+  const normalizedOffset =
+    phasePosition ?? ((phaseOffset % cycleLength) + cycleLength) % cycleLength;
 
   let cumulative = 0;
   for (const phase of validPhases) {
@@ -222,12 +336,16 @@ function getCyclePositionLabel(
         phase: phase.label,
         day: dayInPhase,
         total: phase.days,
+        defaultValue: `${phase.label} - Day ${dayInPhase} of ${phase.days}`,
       });
     }
     cumulative += phase.days;
   }
 
-  return translate('shift.cycleDay', { day: normalizedOffset + 1 });
+  return translate('shift.cycleDay', {
+    day: normalizedOffset + 1,
+    defaultValue: `Day ${normalizedOffset + 1} of cycle`,
+  });
 }
 
 function getFIFOWorkPatternLabel(

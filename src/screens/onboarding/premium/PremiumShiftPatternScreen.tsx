@@ -43,6 +43,7 @@ import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
 import { SettingsEntryActionButtons } from '@/components/onboarding/premium/SettingsEntryActionButtons';
 import { SwipeHintLabel } from '@/components/onboarding/premium/SwipeHintLabel';
+import { E2ESwipeControls } from '@/components/onboarding/premium/E2ESwipeControls';
 import { useOnboarding, type OnboardingData } from '@/contexts/OnboardingContext';
 import { ShiftPattern, ShiftSystem } from '@/types';
 import type {
@@ -741,25 +742,49 @@ const SwipeableCard: React.FC<SwipeableCardProps> = ({
         {index === 0 && isActive && (
           <>
             <Animated.View style={[styles.swipeHint, styles.swipeHintLeft, hintAnimatedStyle]}>
-              <SwipeHintLabel
-                direction="left"
-                text={t('common.hints.nextOption')}
-                textStyle={styles.swipeHintText}
-              />
+              <Pressable
+                onPress={onSwipeLeft}
+                style={styles.swipeHintPressable}
+                accessibilityRole="button"
+                accessibilityLabel={t('common.hints.nextOption')}
+                testID="shift-pattern-next-option-button"
+              >
+                <SwipeHintLabel
+                  direction="left"
+                  text={t('common.hints.nextOption')}
+                  textStyle={styles.swipeHintText}
+                />
+              </Pressable>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintRight, hintAnimatedStyle]}>
-              <SwipeHintLabel
-                direction="right"
-                text={t('common.hints.selectThis')}
-                textStyle={styles.swipeHintText}
-              />
+              <Pressable
+                onPress={onSwipeRight}
+                style={styles.swipeHintPressable}
+                accessibilityRole="button"
+                accessibilityLabel={t('common.hints.selectThis')}
+                testID="shift-pattern-select-button"
+              >
+                <SwipeHintLabel
+                  direction="right"
+                  text={t('common.hints.selectThis')}
+                  textStyle={styles.swipeHintText}
+                />
+              </Pressable>
             </Animated.View>
             <Animated.View style={[styles.swipeHint, styles.swipeHintUp, hintAnimatedStyle]}>
-              <SwipeHintLabel
-                direction="up"
-                text={t('common.hints.learnMore')}
-                textStyle={styles.swipeHintText}
-              />
+              <Pressable
+                onPress={onSwipeUp}
+                style={styles.swipeHintPressable}
+                accessibilityRole="button"
+                accessibilityLabel={t('common.hints.learnMore')}
+                testID="shift-pattern-info-button"
+              >
+                <SwipeHintLabel
+                  direction="up"
+                  text={t('common.hints.learnMore')}
+                  textStyle={styles.swipeHintText}
+                />
+              </Pressable>
             </Animated.View>
           </>
         )}
@@ -1342,6 +1367,13 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
         })}
       </Animated.Text>
 
+      <E2ESwipeControls
+        prefix="shift-pattern"
+        onSelect={handleSwipeRight}
+        onNext={handleSwipeLeft}
+        onInfo={handleSwipeUp}
+      />
+
       {/* Card Stack */}
       <View style={styles.cardStack}>
         {[...visibleCards].reverse().map((pattern, index) => (
@@ -1580,6 +1612,10 @@ const styles = StyleSheet.create({
     color: theme.colors.paper,
     fontWeight: '600',
     flexShrink: 1,
+  },
+  swipeHintPressable: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   progressDots: {
     flexDirection: 'row',

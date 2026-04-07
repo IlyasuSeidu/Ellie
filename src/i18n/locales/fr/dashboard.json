@@ -192,6 +192,63 @@
       "today": "Aujourd’hui, c’est {{holidayName}} !",
       "tomorrow": "Demain, c’est {{holidayName}}",
       "inDays": "{{holidayName}} est dans {{daysBefore}} jours ({{holidayDate}})"
+    },
+    "smartReminders": {
+      "shiftType": {
+        "day": "quart de jour",
+        "night": "quart de nuit",
+        "morning": "quart du matin",
+        "afternoon": "quart de l’après-midi",
+        "off": "jour de repos"
+      },
+      "early": {
+        "title": "{{shiftType}} à venir",
+        "body": "Votre {{shiftType}} commence à {{startTime}} le {{shiftDate}}."
+      },
+      "prep": {
+        "fatigueCritical": " Le risque de fatigue est critique. Prévoyez plus de temps.",
+        "fatigueHigh": " Reposez-vous et préparez-vous avec soin.",
+        "title": "Il est temps de vous préparer, {{name}}",
+        "body": "Votre {{shiftType}} commence à {{startTime}}.{{fatigueSuffix}}"
+      },
+      "commute": {
+        "title": "Partez maintenant",
+        "body": "Partez maintenant pour arriver à l’heure à votre {{shiftType}}. Il commence à {{startTime}}."
+      },
+      "imminent": {
+        "title": "Début dans 15 minutes",
+        "body": "Votre {{shiftType}} commence à {{startTime}}."
+      },
+      "briefing": {
+        "title": "Briefing imminent",
+        "body": "Le briefing commence dans 15 minutes avant votre {{shiftType}} de {{startTime}}."
+      },
+      "postShift": {
+        "title": "Comment cela s’est-il passé ?",
+        "body": "Comment s’est passé votre {{shiftType}} ? Notez votre niveau d’énergie dans Ellie."
+      },
+      "fatigue": {
+        "title": "Alerte fatigue critique",
+        "body": "Votre {{shiftType}} commence à {{startTime}}, mais vos données de sommeil montrent une fatigue critique. Reposez-vous maintenant si possible."
+      },
+      "backToBack": {
+        "title": "{{count}} quarts de nuit à venir",
+        "body": "Vous avez {{count}} quarts de nuit consécutifs à partir du {{shiftDate}}. Priorisez le repos."
+      },
+      "shortTurnaround": {
+        "title": "Reprise rapide à venir",
+        "body": "Il n’y a que {{gapHours}} h entre votre {{previousShiftType}} et votre prochain {{nextShiftType}} le {{shiftDate}}. Planifiez votre repos."
+      },
+      "fifo": {
+        "flyOut": {
+          "title": "Jour de retour",
+          "body": "Aujourd’hui, vous rentrez chez vous. Terminez la relève, préparez votre équipement et voyagez prudemment."
+        },
+        "travelTomorrow": {
+          "title": "Déplacement demain",
+          "body": "Vous partez demain pour votre {{shiftType}}. Préparez votre équipement et vérifiez vos documents ce soir."
+        }
+      }
     }
   },
   "countdown": {

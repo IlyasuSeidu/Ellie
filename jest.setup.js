@@ -27,6 +27,32 @@ jest.mock('expo-localization', () => ({
   ]),
 }));
 
+jest.mock('expo-notifications', () => ({
+  scheduleNotificationAsync: jest.fn(async () => 'scheduled-notification-id'),
+  cancelScheduledNotificationAsync: jest.fn(async () => {}),
+  cancelAllScheduledNotificationsAsync: jest.fn(async () => {}),
+  requestPermissionsAsync: jest.fn(async () => ({ status: 'granted' })),
+  getPermissionsAsync: jest.fn(async () => ({ status: 'granted' })),
+  setNotificationHandler: jest.fn(),
+  setNotificationChannelAsync: jest.fn(async () => {}),
+  AndroidImportance: {
+    MAX: 5,
+    DEFAULT: 3,
+  },
+  AndroidNotificationVisibility: {
+    PUBLIC: 1,
+  },
+  SchedulableTriggerInputTypes: {
+    DATE: 'date',
+    TIME_INTERVAL: 'timeInterval',
+    CALENDAR: 'calendar',
+    DAILY: 'daily',
+    WEEKLY: 'weekly',
+    MONTHLY: 'monthly',
+    YEARLY: 'yearly',
+  },
+}));
+
 // Mock expo-constants
 jest.mock('expo-constants', () => ({
   default: {

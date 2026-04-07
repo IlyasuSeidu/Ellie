@@ -117,6 +117,30 @@ export const holidaySchema = z.object({
 /**
  * Notification Settings Schema
  */
+export const smartReminderSettingsSchema = z.object({
+  earlyReminderHours: z.number().int().min(0).max(24),
+  prepTimeMinutes: z
+    .number()
+    .int()
+    .min(0)
+    .max(24 * 60),
+  commuteTimeMinutes: z
+    .number()
+    .int()
+    .min(0)
+    .max(24 * 60),
+  imminentReminderEnabled: z.boolean(),
+  preBriefingEnabled: z.boolean(),
+  quietHoursEnabled: z.boolean(),
+  quietHoursStart: timeStringSchema,
+  quietHoursEnd: timeStringSchema,
+  fatigueAwareReminders: z.boolean(),
+  backToBackWarnings: z.boolean(),
+  shortTurnaroundWarnings: z.boolean(),
+  postShiftCheckin: z.boolean(),
+  fifoTravelReminders: z.boolean(),
+});
+
 export const notificationSettingsSchema = z.object({
   shift24HoursBefore: z.boolean(),
   shift4HoursBefore: z.boolean(),
@@ -124,6 +148,7 @@ export const notificationSettingsSchema = z.object({
   patternChangeAlerts: z.boolean(),
   soundEnabled: z.boolean(),
   vibrationEnabled: z.boolean(),
+  smartReminders: smartReminderSettingsSchema.optional(),
 });
 
 /**

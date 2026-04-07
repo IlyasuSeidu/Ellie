@@ -192,6 +192,63 @@
       "today": "Hoje é {{holidayName}}!",
       "tomorrow": "Amanhã é {{holidayName}}",
       "inDays": "{{holidayName}} é em {{daysBefore}} dias ({{holidayDate}})"
+    },
+    "smartReminders": {
+      "shiftType": {
+        "day": "turno diurno",
+        "night": "turno noturno",
+        "morning": "turno da manhã",
+        "afternoon": "turno da tarde",
+        "off": "folga"
+      },
+      "early": {
+        "title": "Próximo {{shiftType}}",
+        "body": "Seu {{shiftType}} começa às {{startTime}} em {{shiftDate}}."
+      },
+      "prep": {
+        "fatigueCritical": " O risco de fadiga está crítico. Separe mais tempo.",
+        "fatigueHigh": " Descanse e se prepare com calma.",
+        "title": "Hora de se preparar, {{name}}",
+        "body": "Seu {{shiftType}} começa às {{startTime}}.{{fatigueSuffix}}"
+      },
+      "commute": {
+        "title": "Saia agora",
+        "body": "Saia agora para chegar ao seu {{shiftType}} no horário. Ele começa às {{startTime}}."
+      },
+      "imminent": {
+        "title": "Começa em 15 minutos",
+        "body": "Seu {{shiftType}} começa às {{startTime}}."
+      },
+      "briefing": {
+        "title": "Briefing em breve",
+        "body": "O briefing começa em 15 minutos antes do seu {{shiftType}} das {{startTime}}."
+      },
+      "postShift": {
+        "title": "Como foi?",
+        "body": "Como foi seu {{shiftType}}? Registre seu nível de energia no Ellie."
+      },
+      "fatigue": {
+        "title": "Alerta crítico de fadiga",
+        "body": "Seu {{shiftType}} começa às {{startTime}}, mas seus dados de sono mostram fadiga crítica. Descanse agora se puder."
+      },
+      "backToBack": {
+        "title": "{{count}} turnos noturnos chegando",
+        "body": "Você tem {{count}} turnos noturnos consecutivos a partir de {{shiftDate}}. Priorize o descanso."
+      },
+      "shortTurnaround": {
+        "title": "Pausa curta pela frente",
+        "body": "Há apenas {{gapHours}} h entre seu {{previousShiftType}} e o próximo {{nextShiftType}} em {{shiftDate}}. Planeje seu descanso."
+      },
+      "fifo": {
+        "flyOut": {
+          "title": "Dia de retorno",
+          "body": "Hoje você volta para casa. Conclua a passagem, arrume seu equipamento e viaje com segurança."
+        },
+        "travelTomorrow": {
+          "title": "Dia de viagem amanhã",
+          "body": "Você voa amanhã para seu {{shiftType}}. Arrume o equipamento e confira seus documentos hoje à noite."
+        }
+      }
     }
   },
   "countdown": {

@@ -192,6 +192,63 @@
       "today": "Hari ini adalah {{holidayName}}!",
       "tomorrow": "Besok adalah {{holidayName}}",
       "inDays": "{{holidayName}} dalam {{daysBefore}} hari ({{holidayDate}})"
+    },
+    "smartReminders": {
+      "shiftType": {
+        "day": "shift siang",
+        "night": "shift malam",
+        "morning": "shift pagi",
+        "afternoon": "shift sore",
+        "off": "hari libur"
+      },
+      "early": {
+        "title": "{{shiftType}} akan datang",
+        "body": "{{shiftType}} Anda dimulai pukul {{startTime}} pada {{shiftDate}}."
+      },
+      "prep": {
+        "fatigueCritical": " Risiko kelelahan sedang kritis. Siapkan waktu tambahan.",
+        "fatigueHigh": " Istirahat dan bersiaplah dengan baik.",
+        "title": "Saatnya bersiap, {{name}}",
+        "body": "{{shiftType}} Anda dimulai pukul {{startTime}}.{{fatigueSuffix}}"
+      },
+      "commute": {
+        "title": "Berangkat sekarang",
+        "body": "Berangkat sekarang agar tiba tepat waktu untuk {{shiftType}} Anda. Mulai pukul {{startTime}}."
+      },
+      "imminent": {
+        "title": "Mulai dalam 15 menit",
+        "body": "{{shiftType}} Anda dimulai pukul {{startTime}}."
+      },
+      "briefing": {
+        "title": "Briefing segera dimulai",
+        "body": "Briefing dimulai 15 menit lagi sebelum {{shiftType}} Anda pada {{startTime}}."
+      },
+      "postShift": {
+        "title": "Bagaimana tadi?",
+        "body": "Bagaimana {{shiftType}} Anda? Catat tingkat energi Anda di Ellie."
+      },
+      "fatigue": {
+        "title": "Peringatan kelelahan kritis",
+        "body": "{{shiftType}} Anda dimulai pukul {{startTime}}, tetapi data tidur Anda menunjukkan kelelahan kritis. Istirahatlah sekarang jika bisa."
+      },
+      "backToBack": {
+        "title": "{{count}} shift malam akan datang",
+        "body": "Anda memiliki {{count}} shift malam berturut-turut mulai {{shiftDate}}. Prioritaskan istirahat."
+      },
+      "shortTurnaround": {
+        "title": "Jeda singkat akan datang",
+        "body": "Hanya ada {{gapHours}} jam antara {{previousShiftType}} Anda dan {{nextShiftType}} berikutnya pada {{shiftDate}}. Rencanakan istirahat Anda."
+      },
+      "fifo": {
+        "flyOut": {
+          "title": "Hari pulang",
+          "body": "Hari ini Anda pulang. Selesaikan serah terima, kemasi perlengkapan, dan bepergian dengan aman."
+        },
+        "travelTomorrow": {
+          "title": "Besok hari perjalanan",
+          "body": "Besok Anda terbang masuk untuk {{shiftType}} Anda. Siapkan perlengkapan dan periksa dokumen malam ini."
+        }
+      }
     }
   },
   "countdown": {

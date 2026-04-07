@@ -85,6 +85,10 @@
   "language": {
     "label": "Language",
     "selector": "Select Language",
+    "selectorSubtitle": "Choose your language",
+    "search": "Search languages…",
+    "noResults": "No languages found",
+    "rtlBadge": "RTL",
     "restartRequiredTitle": "Restart Required",
     "restartRequiredMessage": "Please restart Ellie to apply language direction changes.",
     "names": {

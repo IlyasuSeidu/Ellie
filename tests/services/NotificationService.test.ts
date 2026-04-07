@@ -2,9 +2,10 @@
  * Notification Service Tests
  */
 
-import { NotificationService } from '@/services/NotificationService';
+import { NotificationService, NotificationType } from '@/services/NotificationService';
 import { MockNotificationScheduler } from '@/services/__mocks__/NotificationService';
 import { ShiftDay } from '@/types';
+import type { ReminderEvent } from '@/types/reminders';
 
 // Mock expo-notifications
 jest.mock('expo-notifications', () => ({
@@ -158,6 +159,28 @@ describe('NotificationService', () => {
       });
     });
 
+    describe('scheduleSmartReminder', () => {
+      it('should schedule a computed smart reminder with time-sensitive priority when critical', async () => {
+        const reminderEvent: ReminderEvent = {
+          type: 'FATIGUE_ALERT',
+          triggerAt: new Date('2026-04-03T17:00:00.000Z'),
+          shiftDate: '2026-04-03',
+          shiftType: 'night',
+          isCritical: true,
+          title: 'Critical fatigue alert',
+          body: 'Rest now if you can.',
+          data: { shiftDate: '2026-04-03' },
+        };
+
+        const notificationId = await service.scheduleSmartReminder(mockUserId, reminderEvent);
+
+        const scheduled = mockScheduler.getScheduledNotification(notificationId);
+        expect(scheduled?.content.title).toBe('Critical fatigue alert');
+        expect(scheduled?.content.interruptionLevel).toBe('timeSensitive');
+        expect(scheduled?.triggerDate.toISOString()).toBe('2026-04-03T17:00:00.000Z');
+      });
+    });
+
     describe('cancelNotification', () => {
       it('should cancel a scheduled notification', async () => {
         const notificationId = await service.scheduleShiftReminder(mockUserId, mockShift, 24);
@@ -178,15 +201,99 @@ describe('NotificationService', () => {
 
     describe('cancelAllNotifications', () => {
       it('should cancel all notifications for a user', async () => {
-        await service.scheduleShiftReminder(mockUserId, mockShift, 24);
-        await service.scheduleShiftReminder(mockUserId, mockShift, 4);
-        await service.scheduleHolidayAlert(mockUserId, mockHoliday, 7);
+        const shift24hId = await service.scheduleShiftReminder(mockUserId, mockShift, 24);
+        const shift4hId = await service.scheduleShiftReminder(mockUserId, mockShift, 4);
+        const holidayId = await service.scheduleHolidayAlert(mockUserId, mockHoliday, 7);
+        await service.scheduleShiftReminder('other-user', mockShift, 24);
 
-        expect(mockScheduler.getScheduledCount()).toBe(3);
+        jest.spyOn(service, 'getNotificationHistory').mockResolvedValue([
+          {
+            id: shift24hId,
+            userId: mockUserId,
+            type: NotificationType.SHIFT_REMINDER_24H,
+            scheduledFor: new Date('2025-01-31T00:00:00.000Z').toISOString(),
+            content: { title: '24h', body: '24h' },
+            status: 'pending',
+            createdAt: new Date('2025-01-30T00:00:00.000Z').toISOString(),
+          },
+          {
+            id: shift4hId,
+            userId: mockUserId,
+            type: NotificationType.SHIFT_REMINDER_4H,
+            scheduledFor: new Date('2025-02-01T20:00:00.000Z').toISOString(),
+            content: { title: '4h', body: '4h' },
+            status: 'pending',
+            createdAt: new Date('2025-01-30T00:00:00.000Z').toISOString(),
+          },
+          {
+            id: holidayId,
+            userId: mockUserId,
+            type: NotificationType.HOLIDAY_ALERT,
+            scheduledFor: new Date('2025-06-27T00:00:00.000Z').toISOString(),
+            content: { title: 'holiday', body: 'holiday' },
+            status: 'pending',
+            createdAt: new Date('2025-01-30T00:00:00.000Z').toISOString(),
+          },
+        ]);
+
+        expect(mockScheduler.getScheduledCount()).toBe(4);
 
         await service.cancelAllNotifications(mockUserId);
 
-        expect(mockScheduler.getScheduledCount()).toBe(0);
+        expect(mockScheduler.getScheduledCount()).toBe(1);
+      });
+    });
+
+    describe('cancelSmartReminders', () => {
+      it('should cancel only smart reminders for the current user', async () => {
+        const smartReminderId = await service.scheduleSmartReminder(mockUserId, {
+          type: 'SHIFT_PREP_REMINDER',
+          triggerAt: new Date('2026-04-03T05:30:00.000Z'),
+          shiftDate: '2026-04-03',
+          shiftType: 'day',
+          isCritical: false,
+          title: 'Prep',
+          body: 'Prep body',
+          data: { shiftDate: '2026-04-03' },
+        });
+        const shiftReminderId = await service.scheduleShiftReminder(mockUserId, mockShift, 24);
+        await service.scheduleSmartReminder('other-user', {
+          type: 'SHIFT_START_IMMINENT',
+          triggerAt: new Date('2026-04-03T06:45:00.000Z'),
+          shiftDate: '2026-04-03',
+          shiftType: 'day',
+          isCritical: false,
+          title: 'Soon',
+          body: 'Soon body',
+          data: { shiftDate: '2026-04-03' },
+        });
+
+        jest.spyOn(service, 'getNotificationHistory').mockResolvedValue([
+          {
+            id: smartReminderId,
+            userId: mockUserId,
+            type: 'SHIFT_PREP_REMINDER',
+            scheduledFor: new Date('2026-04-03T05:30:00.000Z').toISOString(),
+            content: { title: 'Prep', body: 'Prep body' },
+            status: 'pending',
+            createdAt: new Date('2026-04-01T00:00:00.000Z').toISOString(),
+          },
+          {
+            id: shiftReminderId,
+            userId: mockUserId,
+            type: NotificationType.SHIFT_REMINDER_24H,
+            scheduledFor: new Date('2026-04-02T19:00:00.000Z').toISOString(),
+            content: { title: '24h', body: '24h' },
+            status: 'pending',
+            createdAt: new Date('2026-04-01T00:00:00.000Z').toISOString(),
+          },
+        ]);
+
+        expect(mockScheduler.getScheduledCount()).toBe(3);
+
+        await service.cancelSmartReminders(mockUserId);
+
+        expect(mockScheduler.getScheduledCount()).toBe(2);
       });
     });
   });

@@ -13,6 +13,7 @@ import {
   shiftCycleSchema,
   notificationSettingsSchema,
 } from '@/types/validation';
+import { DEFAULT_SMART_REMINDER_SETTINGS } from '@/types/reminders';
 import { ValidationError } from '@/utils/errorUtils';
 import { logger } from '@/utils/logger';
 import { getShiftStatistics, buildShiftCycle } from '@/utils/shiftUtils';
@@ -199,8 +200,10 @@ export class UserService extends FirebaseService {
    * Save user preferences
    */
   async savePreferences(userId: string, prefs: UserPreferences): Promise<void> {
+    const normalizedPrefs = this.normalizePreferences(prefs);
+
     // Validate notification settings
-    const validationResult = notificationSettingsSchema.safeParse(prefs.notifications);
+    const validationResult = notificationSettingsSchema.safeParse(normalizedPrefs.notifications);
     if (!validationResult.success) {
       throw new ValidationError(
         `Invalid preferences: ${validationResult.error.message}`,
@@ -209,7 +212,7 @@ export class UserService extends FirebaseService {
     }
 
     try {
-      await this.update(this.USERS_COLLECTION, userId, { preferences: prefs });
+      await this.update(this.USERS_COLLECTION, userId, { preferences: normalizedPrefs });
       logger.info('Preferences saved', { userId });
     } catch (error) {
       logger.error('Failed to save preferences', error as Error, { userId });
@@ -230,7 +233,7 @@ export class UserService extends FirebaseService {
         return this.getDefaultPreferences();
       }
 
-      return user.preferences as UserPreferences;
+      return this.normalizePreferences(user.preferences as UserPreferences);
     } catch (error) {
       logger.error('Failed to get preferences', error as Error, { userId });
       throw error;
@@ -241,8 +244,10 @@ export class UserService extends FirebaseService {
    * Update notification settings
    */
   async updateNotificationSettings(userId: string, settings: NotificationSettings): Promise<void> {
+    const normalizedSettings = this.normalizeNotificationSettings(settings);
+
     // Validate notification settings
-    const validationResult = notificationSettingsSchema.safeParse(settings);
+    const validationResult = notificationSettingsSchema.safeParse(normalizedSettings);
     if (!validationResult.success) {
       throw new ValidationError(
         `Invalid notification settings: ${validationResult.error.message}`,
@@ -257,7 +262,7 @@ export class UserService extends FirebaseService {
       // Update notifications
       const updatedPrefs: UserPreferences = {
         ...currentPrefs,
-        notifications: settings,
+        notifications: normalizedSettings,
       };
 
       await this.update(this.USERS_COLLECTION, userId, {
@@ -401,16 +406,39 @@ export class UserService extends FirebaseService {
   private getDefaultPreferences(): UserPreferences {
     return {
       theme: 'auto',
-      notifications: {
-        shift24HoursBefore: true,
-        shift4HoursBefore: true,
-        holidayAlerts: true,
-        patternChangeAlerts: true,
-        soundEnabled: true,
-        vibrationEnabled: true,
-      },
+      notifications: this.getDefaultNotificationSettings(),
       language: 'en',
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    };
+  }
+
+  private getDefaultNotificationSettings(): NotificationSettings {
+    return {
+      shift24HoursBefore: true,
+      shift4HoursBefore: true,
+      holidayAlerts: true,
+      patternChangeAlerts: true,
+      soundEnabled: true,
+      vibrationEnabled: true,
+      smartReminders: DEFAULT_SMART_REMINDER_SETTINGS,
+    };
+  }
+
+  private normalizeNotificationSettings(settings: NotificationSettings): NotificationSettings {
+    return {
+      ...this.getDefaultNotificationSettings(),
+      ...settings,
+      smartReminders: {
+        ...DEFAULT_SMART_REMINDER_SETTINGS,
+        ...(settings.smartReminders ?? {}),
+      },
+    };
+  }
+
+  private normalizePreferences(prefs: UserPreferences): UserPreferences {
+    return {
+      ...prefs,
+      notifications: this.normalizeNotificationSettings(prefs.notifications),
     };
   }
 
