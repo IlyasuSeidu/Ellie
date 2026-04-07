@@ -209,7 +209,8 @@
         "fatigueCritical": " Moegheidsrisiko is kritiek. Gee jouself ekstra tyd.",
         "fatigueHigh": " Rus en berei versigtig voor.",
         "title": "Tyd om gereed te maak, {{name}}",
-        "body": "Jou {{shiftType}} begin om {{startTime}}.{{fatigueSuffix}}"
+        "body": "Jou {{shiftType}} begin om {{startTime}}.{{fatigueSuffix}}",
+        "titleGeneric": "Tyd om gereed te maak"
       },
       "commute": {
         "title": "Vertrek nou",

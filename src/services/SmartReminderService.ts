@@ -95,14 +95,14 @@ function buildShiftEnd(date: string, startTime: string, endTime: string): dayjs.
   return end;
 }
 
-function firstNameOrFallback(userName: string): string {
+function firstNameOrNull(userName: string): string | null {
   const trimmed = userName.trim();
   if (!trimmed) {
-    return 'there';
+    return null;
   }
 
   const [firstName] = trimmed.split(/\s+/);
-  return firstName || 'there';
+  return firstName || null;
 }
 
 function translate(
@@ -169,7 +169,7 @@ export class SmartReminderService {
   ): ReminderEvent[] {
     const now = dayjs();
     const events: ReminderEvent[] = [];
-    const firstName = firstNameOrFallback(userName);
+    const firstName = firstNameOrNull(userName);
     const upcomingWorkDays = workDays.filter((day) => day.isWorkDay);
 
     for (const shift of upcomingWorkDays) {
@@ -251,9 +251,11 @@ export class SmartReminderService {
               shift,
               isCritical: fatigueRisk === 'critical',
               title: translate(
-                'notifications.smartReminders.prep.title',
-                { name: firstName },
-                'Time to prepare, {{name}}',
+                firstName
+                  ? 'notifications.smartReminders.prep.title'
+                  : 'notifications.smartReminders.prep.titleGeneric',
+                firstName ? { name: firstName } : undefined,
+                firstName ? 'Time to prepare, {{name}}' : 'Time to prepare',
                 language
               ),
               body: translate(

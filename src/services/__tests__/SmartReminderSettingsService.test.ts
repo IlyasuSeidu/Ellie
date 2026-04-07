@@ -1,12 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DEFAULT_SMART_REMINDER_SETTINGS } from '@/types/reminders';
 const mockGetPreferences = jest.fn();
+const mockGetStoredSmartReminderSettings = jest.fn();
 const mockUpdateNotificationSettings = jest.fn();
 
 jest.mock('@/services/UserService', () => ({
   UserService: class {
     getPreferences(...args: unknown[]) {
       return mockGetPreferences(...args);
+    }
+
+    getStoredSmartReminderSettings(...args: unknown[]) {
+      return mockGetStoredSmartReminderSettings(...args);
     }
 
     updateNotificationSettings(...args: unknown[]) {
@@ -24,11 +29,13 @@ describe('SmartReminderSettingsService', () => {
   beforeEach(async () => {
     jest.clearAllMocks();
     await AsyncStorage.clear();
+    mockGetStoredSmartReminderSettings.mockResolvedValue(null);
   });
 
   function createService() {
     return new SmartReminderSettingsService({
       getPreferences: mockGetPreferences,
+      getStoredSmartReminderSettings: mockGetStoredSmartReminderSettings,
       updateNotificationSettings: mockUpdateNotificationSettings,
     } as never);
   }
@@ -50,22 +57,9 @@ describe('SmartReminderSettingsService', () => {
   });
 
   it('prefers remote settings and syncs them locally for authenticated users', async () => {
-    mockGetPreferences.mockResolvedValue({
-      theme: 'auto',
-      notifications: {
-        shift24HoursBefore: true,
-        shift4HoursBefore: true,
-        holidayAlerts: true,
-        patternChangeAlerts: true,
-        soundEnabled: true,
-        vibrationEnabled: true,
-        smartReminders: {
-          ...DEFAULT_SMART_REMINDER_SETTINGS,
-          prepTimeMinutes: 90,
-        },
-      },
-      language: 'en',
-      timezone: 'UTC',
+    mockGetStoredSmartReminderSettings.mockResolvedValue({
+      ...DEFAULT_SMART_REMINDER_SETTINGS,
+      prepTimeMinutes: 90,
     });
 
     const service = createService();
@@ -83,6 +77,7 @@ describe('SmartReminderSettingsService', () => {
       commuteTimeMinutes: 45,
     };
     await AsyncStorage.setItem('reminders:settings', JSON.stringify(localSettings));
+    mockGetStoredSmartReminderSettings.mockResolvedValue(null);
     mockGetPreferences.mockResolvedValue({
       theme: 'auto',
       notifications: {
@@ -168,5 +163,41 @@ describe('SmartReminderSettingsService', () => {
     jest.spyOn(AsyncStorage, 'getItem').mockRejectedValueOnce(new Error('storage-failed'));
 
     await expect(resolveReminderUserId()).resolves.toMatch(/^reminder-user-/);
+  });
+
+  it('backfills local settings even when normalized remote defaults would otherwise exist', async () => {
+    const localSettings = {
+      ...DEFAULT_SMART_REMINDER_SETTINGS,
+      earlyReminderHours: 24,
+    };
+    await AsyncStorage.setItem('reminders:settings', JSON.stringify(localSettings));
+    mockGetStoredSmartReminderSettings.mockResolvedValue(null);
+    mockGetPreferences.mockResolvedValue({
+      theme: 'auto',
+      notifications: {
+        shift24HoursBefore: true,
+        shift4HoursBefore: true,
+        holidayAlerts: true,
+        patternChangeAlerts: true,
+        soundEnabled: true,
+        vibrationEnabled: true,
+        smartReminders: DEFAULT_SMART_REMINDER_SETTINGS,
+      },
+      language: 'en',
+      timezone: 'UTC',
+    });
+
+    const service = createService();
+    const result = await service.load('firebase-user-5');
+
+    expect(result.earlyReminderHours).toBe(24);
+    expect(mockUpdateNotificationSettings).toHaveBeenCalledWith(
+      'firebase-user-5',
+      expect.objectContaining({
+        smartReminders: expect.objectContaining({
+          earlyReminderHours: 24,
+        }),
+      })
+    );
   });
 });

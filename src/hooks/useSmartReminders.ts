@@ -22,10 +22,12 @@ function buildReminderFingerprint(
   onboardingData: ReturnType<typeof useOnboarding>['data'],
   language: string,
   settings: SmartReminderSettings,
-  userId: string
+  userId: string,
+  timeZone: string
 ): string {
   return JSON.stringify({
     userId,
+    timeZone,
     language,
     settings,
     name: onboardingData.name ?? null,
@@ -53,6 +55,7 @@ export function useSmartReminders(): void {
 
   const run = useCallback(async () => {
     const currentUserId = await resolveReminderUserId(user?.uid);
+    const currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
 
     if (lastScheduledUserIdRef.current && lastScheduledUserIdRef.current !== currentUserId) {
       await notificationService.cancelSmartReminders(lastScheduledUserIdRef.current);
@@ -82,11 +85,22 @@ export function useSmartReminders(): void {
     const hasPermission = await notificationService.checkPermissions();
     if (!hasPermission) {
       logger.debug('useSmartReminders: notification permission not granted; skipping schedule');
+      if (lastScheduledUserIdRef.current === currentUserId) {
+        await notificationService.cancelSmartReminders(currentUserId);
+      }
+      lastSuccessfulFingerprintRef.current = null;
+      lastScheduledUserIdRef.current = null;
       return;
     }
 
     const settings = await smartReminderSettingsService.load(user?.uid);
-    const fingerprint = buildReminderFingerprint(onboardingData, language, settings, currentUserId);
+    const fingerprint = buildReminderFingerprint(
+      onboardingData,
+      language,
+      settings,
+      currentUserId,
+      currentTimeZone
+    );
     if (fingerprint === lastSuccessfulFingerprintRef.current || isRunningRef.current) {
       return;
     }

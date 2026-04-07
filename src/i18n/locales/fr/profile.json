@@ -336,7 +336,8 @@
         "success": "Rappels mis à jour",
         "error": "Échec de la mise à jour des rappels",
         "permission": "Activez les notifications pour reprogrammer les rappels"
-      }
+      },
+      "saveError": "Les réglages des rappels n’ont pas pu être enregistrés pour le moment. Vos réglages précédents ont été rétablis."
     },
     "test": {
       "title": "Les rappels intelligents sont activés",

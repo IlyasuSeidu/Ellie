@@ -209,7 +209,8 @@
         "fatigueCritical": " خطر الإرهاق حرج. امنح نفسك وقتًا إضافيًا.",
         "fatigueHigh": " خذ قسطًا من الراحة واستعد بعناية.",
         "title": "حان وقت الاستعداد يا {{name}}",
-        "body": "تبدأ {{shiftType}} الخاصة بك عند {{startTime}}.{{fatigueSuffix}}"
+        "body": "تبدأ {{shiftType}} الخاصة بك عند {{startTime}}.{{fatigueSuffix}}",
+        "titleGeneric": "حان وقت الاستعداد"
       },
       "commute": {
         "title": "انطلق الآن",

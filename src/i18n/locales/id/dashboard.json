@@ -209,7 +209,8 @@
         "fatigueCritical": " Risiko kelelahan sedang kritis. Siapkan waktu tambahan.",
         "fatigueHigh": " Istirahat dan bersiaplah dengan baik.",
         "title": "Saatnya bersiap, {{name}}",
-        "body": "{{shiftType}} Anda dimulai pukul {{startTime}}.{{fatigueSuffix}}"
+        "body": "{{shiftType}} Anda dimulai pukul {{startTime}}.{{fatigueSuffix}}",
+        "titleGeneric": "Saatnya bersiap"
       },
       "commute": {
         "title": "Berangkat sekarang",

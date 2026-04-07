@@ -5,6 +5,8 @@
  * with support for expiration and type-safe operations.
  */
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 import { logger } from '@/utils/logger';
 
 /**
@@ -28,13 +30,83 @@ export interface IStorageService {
   has(key: string): Promise<boolean>;
 }
 
+interface StorageBackend {
+  setItem(key: string, value: string): Promise<void>;
+  getItem(key: string): Promise<string | null>;
+  removeItem(key: string): Promise<void>;
+  clear(): Promise<void>;
+  getKeys(): Promise<string[]>;
+}
+
+class WebStorageBackend implements StorageBackend {
+  constructor(private readonly storage: Storage) {}
+
+  setItem(key: string, value: string): Promise<void> {
+    this.storage.setItem(key, value);
+    return Promise.resolve();
+  }
+
+  getItem(key: string): Promise<string | null> {
+    return Promise.resolve(this.storage.getItem(key));
+  }
+
+  removeItem(key: string): Promise<void> {
+    this.storage.removeItem(key);
+    return Promise.resolve();
+  }
+
+  clear(): Promise<void> {
+    this.storage.clear();
+    return Promise.resolve();
+  }
+
+  getKeys(): Promise<string[]> {
+    return Promise.resolve(Object.keys(this.storage));
+  }
+}
+
+class AsyncStorageBackend implements StorageBackend {
+  async setItem(key: string, value: string): Promise<void> {
+    await AsyncStorage.setItem(key, value);
+  }
+
+  getItem(key: string): Promise<string | null> {
+    return AsyncStorage.getItem(key);
+  }
+
+  async removeItem(key: string): Promise<void> {
+    await AsyncStorage.removeItem(key);
+  }
+
+  async clear(): Promise<void> {
+    await AsyncStorage.clear();
+  }
+
+  getKeys(): Promise<string[]> {
+    return AsyncStorage.getAllKeys();
+  }
+}
+
+function resolveDefaultBackend(): StorageBackend {
+  if (
+    Platform.OS === 'web' &&
+    typeof globalThis !== 'undefined' &&
+    'localStorage' in globalThis &&
+    globalThis.localStorage
+  ) {
+    return new WebStorageBackend(globalThis.localStorage);
+  }
+
+  return new AsyncStorageBackend();
+}
+
 /**
  * Storage Service class
  */
 export class StorageService implements IStorageService {
-  private storage: Storage;
+  private storage: StorageBackend;
 
-  constructor(storage: Storage = localStorage) {
+  constructor(storage: StorageBackend = resolveDefaultBackend()) {
     this.storage = storage;
   }
 
@@ -63,7 +135,7 @@ export class StorageService implements IStorageService {
    */
   async get<T>(key: string): Promise<T | null> {
     try {
-      const itemStr = this.storage.getItem(key);
+      const itemStr = await this.storage.getItem(key);
       if (!itemStr) {
         logger.debug('Storage: Item not found', { key });
         return null;
@@ -103,9 +175,7 @@ export class StorageService implements IStorageService {
    */
   async clearPrefix(prefix: string): Promise<void> {
     try {
-      const keys = Object.keys(this.storage).filter((key) =>
-        key.startsWith(prefix)
-      );
+      const keys = (await this.storage.getKeys()).filter((key) => key.startsWith(prefix));
 
       for (const key of keys) {
         await this.storage.removeItem(key);

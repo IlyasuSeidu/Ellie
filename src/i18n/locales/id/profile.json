@@ -336,7 +336,8 @@
         "success": "Pengingat diperbarui",
         "error": "Gagal memperbarui pengingat",
         "permission": "Aktifkan notifikasi untuk menjadwalkan ulang pengingat"
-      }
+      },
+      "saveError": "Pengaturan pengingat belum bisa disimpan sekarang. Pengaturan sebelumnya telah dipulihkan."
     },
     "test": {
       "title": "Pengingat cerdas aktif",

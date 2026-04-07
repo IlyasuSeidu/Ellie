@@ -336,7 +336,8 @@
         "success": "Lembretes atualizados",
         "error": "Falha ao atualizar lembretes",
         "permission": "Ative as notificações para reprogramar lembretes"
-      }
+      },
+      "saveError": "Não foi possível salvar as configurações dos lembretes agora. Suas configurações anteriores foram restauradas."
     },
     "test": {
       "title": "Os lembretes inteligentes estão ativos",

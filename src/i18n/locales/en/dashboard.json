@@ -209,7 +209,8 @@
         "fatigueCritical": " Fatigue risk is critical. Give yourself extra time.",
         "fatigueHigh": " Rest and prepare carefully.",
         "title": "Time to prepare, {{name}}",
-        "body": "Your {{shiftType}} starts at {{startTime}}.{{fatigueSuffix}}"
+        "body": "Your {{shiftType}} starts at {{startTime}}.{{fatigueSuffix}}",
+        "titleGeneric": "Time to prepare"
       },
       "commute": {
         "title": "Leave now",

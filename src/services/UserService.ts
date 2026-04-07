@@ -13,7 +13,7 @@ import {
   shiftCycleSchema,
   notificationSettingsSchema,
 } from '@/types/validation';
-import { DEFAULT_SMART_REMINDER_SETTINGS } from '@/types/reminders';
+import { DEFAULT_SMART_REMINDER_SETTINGS, type SmartReminderSettings } from '@/types/reminders';
 import { ValidationError } from '@/utils/errorUtils';
 import { logger } from '@/utils/logger';
 import { getShiftStatistics, buildShiftCycle } from '@/utils/shiftUtils';
@@ -236,6 +236,33 @@ export class UserService extends FirebaseService {
       return this.normalizePreferences(user.preferences as UserPreferences);
     } catch (error) {
       logger.error('Failed to get preferences', error as Error, { userId });
+      throw error;
+    }
+  }
+
+  /**
+   * Read only the stored smart-reminder settings from the user document.
+   *
+   * Unlike getPreferences(), this does not normalize defaults, which lets
+   * callers distinguish "not configured remotely yet" from "configured".
+   */
+  async getStoredSmartReminderSettings(userId: string): Promise<SmartReminderSettings | null> {
+    try {
+      const user = await this.read<UserProfile>(this.USERS_COLLECTION, userId);
+      const storedSettings =
+        user?.preferences?.notifications?.smartReminders ??
+        user?.notificationSettings?.smartReminders;
+
+      if (!storedSettings) {
+        return null;
+      }
+
+      return {
+        ...DEFAULT_SMART_REMINDER_SETTINGS,
+        ...storedSettings,
+      };
+    } catch (error) {
+      logger.error('Failed to get stored smart reminder settings', error as Error, { userId });
       throw error;
     }
   }

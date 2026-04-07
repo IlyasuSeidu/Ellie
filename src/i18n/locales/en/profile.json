@@ -336,7 +336,8 @@
         "success": "Reminders updated",
         "error": "Reminder update failed",
         "permission": "Enable notifications to reschedule reminders"
-      }
+      },
+      "saveError": "Reminder settings could not be saved right now. Your previous settings were restored."
     },
     "test": {
       "title": "Smart reminders are on",

@@ -209,7 +209,8 @@
         "fatigueCritical": " Риск усталости критический. Заложите больше времени.",
         "fatigueHigh": " Отдохните и подготовьтесь заранее.",
         "title": "Пора готовиться, {{name}}",
-        "body": "Ваша {{shiftType}} начинается в {{startTime}}.{{fatigueSuffix}}"
+        "body": "Ваша {{shiftType}} начинается в {{startTime}}.{{fatigueSuffix}}",
+        "titleGeneric": "Пора подготовиться"
       },
       "commute": {
         "title": "Пора выезжать",

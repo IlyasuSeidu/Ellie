@@ -336,7 +336,8 @@
         "success": "Izikhumbuzi zibuyekeziwe",
         "error": "Kwehlulekile ukubuyekeza izikhumbuzi",
         "permission": "Vula izaziso ukuze uhlele kabusha izikhumbuzi"
-      }
+      },
+      "saveError": "Izilungiselelo zezikhumbuzi azikwazanga ukulondolozwa manje. Izilungiselelo zakho zangaphambilini zibuyiselwe."
     },
     "test": {
       "title": "Izikhumbuzi ezihlakaniphile zivuliwe",

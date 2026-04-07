@@ -209,7 +209,8 @@
         "fatigueCritical": " थकान का जोखिम गंभीर है। अपने लिए अतिरिक्त समय रखें।",
         "fatigueHigh": " आराम करें और सावधानी से तैयारी करें।",
         "title": "तैयार होने का समय है, {{name}}",
-        "body": "आपकी {{shiftType}} {{startTime}} पर शुरू होती है।{{fatigueSuffix}}"
+        "body": "आपकी {{shiftType}} {{startTime}} पर शुरू होती है।{{fatigueSuffix}}",
+        "titleGeneric": "तैयार होने का समय"
       },
       "commute": {
         "title": "अब निकलें",

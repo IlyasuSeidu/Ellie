@@ -209,7 +209,8 @@
         "fatigueCritical": " El riesgo de fatiga es crítico. Date más tiempo.",
         "fatigueHigh": " Descansa y prepárate con calma.",
         "title": "Hora de prepararte, {{name}}",
-        "body": "Tu {{shiftType}} empieza a las {{startTime}}.{{fatigueSuffix}}"
+        "body": "Tu {{shiftType}} empieza a las {{startTime}}.{{fatigueSuffix}}",
+        "titleGeneric": "Hora de prepararte"
       },
       "commute": {
         "title": "Sal ya",

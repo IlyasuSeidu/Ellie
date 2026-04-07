@@ -172,6 +172,7 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
     'idle' | 'success' | 'error' | 'permission'
   >('idle');
   const [testStatus, setTestStatus] = useState<'idle' | 'sent' | 'error' | 'permission'>('idle');
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'error'>('idle');
   const [quietHoursAdjusted, setQuietHoursAdjusted] = useState(false);
 
   // Load persisted settings once on mount
@@ -225,10 +226,19 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
   /** Merge a partial patch, persist, and reschedule */
   const applyUpdate = useCallback(
     async (patch: Partial<SmartReminderSettings>) => {
+      const previous = settings;
       const updated: SmartReminderSettings = { ...settings, ...patch };
       setSettings(updated);
-      await smartReminderSettingsService.save(updated, user?.uid);
-      await reschedule(updated);
+      setSaveStatus('idle');
+
+      try {
+        await smartReminderSettingsService.save(updated, user?.uid);
+        await reschedule(updated);
+      } catch {
+        setSettings(previous);
+        setSaveStatus('error');
+        setTimeout(() => setSaveStatus('idle'), 4000);
+      }
     },
     [reschedule, settings, user?.uid]
   );
@@ -564,6 +574,15 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
             {t('smartReminders.actions.permissionNotice', {
               defaultValue:
                 'Settings were saved, but notifications are off so reminders were not rescheduled. Enable notifications in Settings to apply them.',
+            })}
+          </Text>
+        ) : null}
+
+        {saveStatus === 'error' ? (
+          <Text style={s.inlineNotice}>
+            {t('smartReminders.actions.saveError', {
+              defaultValue:
+                'Reminder settings could not be saved right now. Your previous settings were restored.',
             })}
           </Text>
         ) : null}

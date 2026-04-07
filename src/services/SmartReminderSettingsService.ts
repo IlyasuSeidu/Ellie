@@ -78,8 +78,7 @@ export class SmartReminderSettingsService {
     }
 
     try {
-      const prefs = await this.userService.getPreferences(firebaseUid);
-      const remoteSettings = prefs.notifications.smartReminders;
+      const remoteSettings = await this.userService.getStoredSmartReminderSettings(firebaseUid);
 
       if (remoteSettings) {
         const normalized = mergeSettings(remoteSettings);

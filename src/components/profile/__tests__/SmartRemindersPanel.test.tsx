@@ -299,4 +299,23 @@ describe('SmartRemindersPanel', () => {
 
     expect(await findByText('Quiet hours adjusted to a 30-minute minimum window.')).toBeTruthy();
   });
+
+  it('restores the previous settings if saving fails', async () => {
+    mockSaveSettings.mockRejectedValueOnce(new Error('save failed'));
+
+    const { getByText, findByText } = render(<SmartRemindersPanel />);
+
+    await waitFor(() => {
+      expect(mockLoadSettings).toHaveBeenCalled();
+    });
+
+    fireEvent.press(getByText('12 h'));
+
+    expect(
+      await findByText(
+        'Reminder settings could not be saved right now. Your previous settings were restored.'
+      )
+    ).toBeTruthy();
+    expect(mockReschedule).not.toHaveBeenCalled();
+  });
 });

@@ -336,7 +336,8 @@
         "success": "Herinneringe opgedateer",
         "error": "Kon herinneringe nie opdateer nie",
         "permission": "Skakel kennisgewings aan om herinneringe te herskeduleer"
-      }
+      },
+      "saveError": "Kon nie nou die herinnering-instellings stoor nie. Jou vorige instellings is herstel."
     },
     "test": {
       "title": "Slim herinneringe is aan",

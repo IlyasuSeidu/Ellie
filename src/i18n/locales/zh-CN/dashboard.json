@@ -209,7 +209,8 @@
         "fatigueCritical": " 疲劳风险处于严重级别，请给自己留出更多时间。",
         "fatigueHigh": " 请先休息并从容准备。",
         "title": "该准备了，{{name}}",
-        "body": "你的{{shiftType}}将在{{startTime}}开始。{{fatigueSuffix}}"
+        "body": "你的{{shiftType}}将在{{startTime}}开始。{{fatigueSuffix}}",
+        "titleGeneric": "该准备了"
       },
       "commute": {
         "title": "该出发了",

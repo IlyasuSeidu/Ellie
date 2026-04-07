@@ -209,7 +209,8 @@
         "fatigueCritical": " Ingozi yokukhathala ibucayi. Zinike isikhathi esengeziwe.",
         "fatigueHigh": " Phumula futhi uzilungiselele kahle.",
         "title": "Isikhathi sokulungela, {{name}}",
-        "body": "{{shiftType}} yakho iqala ngo-{{startTime}}.{{fatigueSuffix}}"
+        "body": "{{shiftType}} yakho iqala ngo-{{startTime}}.{{fatigueSuffix}}",
+        "titleGeneric": "Isikhathi sokuzilungiselela"
       },
       "commute": {
         "title": "Hamba manje",

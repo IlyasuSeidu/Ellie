@@ -246,4 +246,34 @@ describe('SmartReminderService', () => {
     expect(events.filter((event) => event.type === 'SHIFT_REMINDER_CUSTOM_EARLY')).toHaveLength(1);
     expect(events.filter((event) => event.type === 'SHIFT_PREP_REMINDER')).toHaveLength(1);
   });
+
+  it('uses a generic localized prep title when the user has no name', () => {
+    const workDays: ShiftDay[] = [
+      {
+        date: '2026-04-03',
+        isWorkDay: true,
+        isNightShift: false,
+        shiftType: 'day',
+      },
+    ];
+
+    const events = smartReminderService.buildSchedule(
+      '',
+      workDays,
+      baseShiftTimes,
+      {
+        ...DEFAULT_SMART_REMINDER_SETTINGS,
+        earlyReminderHours: 0,
+        prepTimeMinutes: 60,
+        commuteTimeMinutes: 0,
+        imminentReminderEnabled: false,
+        preBriefingEnabled: false,
+      },
+      undefined,
+      'en'
+    );
+
+    const prepReminder = events.find((event) => event.type === 'SHIFT_PREP_REMINDER');
+    expect(prepReminder?.title).toBe('Time to prepare');
+  });
 });

@@ -65,6 +65,8 @@ describe('useSmartReminders', () => {
   };
 
   let appStateCallback: ((state: string) => void) | undefined;
+  let mockTimeZone = 'UTC';
+  const originalDateTimeFormat = Intl.DateTimeFormat;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -81,6 +83,18 @@ describe('useSmartReminders', () => {
       appStateCallback = callback as (state: string) => void;
       return { remove: jest.fn() } as never;
     });
+
+    jest.spyOn(Intl, 'DateTimeFormat').mockImplementation(((
+      ...args: ConstructorParameters<typeof Intl.DateTimeFormat>
+    ) => {
+      if (args.length > 0) {
+        return new originalDateTimeFormat(...args);
+      }
+
+      return {
+        resolvedOptions: () => ({ timeZone: mockTimeZone }),
+      } as Intl.DateTimeFormat;
+    }) as typeof Intl.DateTimeFormat);
   });
 
   afterEach(() => {
@@ -135,6 +149,21 @@ describe('useSmartReminders', () => {
     expect(mockReschedule).not.toHaveBeenCalled();
   });
 
+  it('cancels existing reminders when notification permission is later revoked', async () => {
+    renderHook(() => useSmartReminders());
+
+    await waitFor(() => {
+      expect(mockReschedule).toHaveBeenCalledTimes(1);
+    });
+
+    mockCheckPermissions.mockResolvedValue(false);
+    appStateCallback?.('active');
+
+    await waitFor(() => {
+      expect(mockCancelSmartReminders).toHaveBeenCalledWith('auth-user-1');
+    });
+  });
+
   it('retries scheduling when the app returns to foreground after permissions change', async () => {
     mockCheckPermissions.mockResolvedValueOnce(false).mockResolvedValueOnce(true);
 
@@ -180,6 +209,21 @@ describe('useSmartReminders', () => {
       expect(mockReschedule).toHaveBeenCalledTimes(1);
     });
 
+    appStateCallback?.('active');
+
+    await waitFor(() => {
+      expect(mockReschedule).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  it('reschedules again when the device timezone changes', async () => {
+    renderHook(() => useSmartReminders());
+
+    await waitFor(() => {
+      expect(mockReschedule).toHaveBeenCalledTimes(1);
+    });
+
+    mockTimeZone = 'Africa/Accra';
     appStateCallback?.('active');
 
     await waitFor(() => {
