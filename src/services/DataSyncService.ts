@@ -1,12 +1,21 @@
 /**
  * Data Sync Service
  *
- * Bidirectional synchronization between local storage and Firestore
- * with offline queue, conflict resolution, and network-aware syncing.
+ * Legacy compatibility service retained for tests and non-runtime experiments.
+ *
+ * The production app no longer relies on this class as the primary offline
+ * synchronization model. Runtime offline behavior is handled by:
+ * - local-first storage/context state
+ * - FirebaseService document cache fallback
+ * - feature-specific persistence paths (subscription cache, onboarding, reminders)
+ *
+ * This service should not be expanded into the main Firestore offline path again
+ * without a clear non-Firestore queueing requirement.
  */
 
 import { asyncStorageService } from './AsyncStorageService';
 import { UserService, UserPreferences } from './UserService';
+import { networkService } from '@/services/NetworkService';
 import { logger } from '@/utils/logger';
 import { UserProfile, ShiftCycle } from '@/types';
 
@@ -26,6 +35,14 @@ export interface SyncOperation {
   data?: unknown;
   timestamp: Date;
   retries: number;
+}
+
+export type SyncFailureReason = 'network' | 'auth' | 'validation' | 'unknown';
+
+export interface FailedSyncOperation extends SyncOperation {
+  failedAt: Date;
+  lastError: string;
+  reason: SyncFailureReason;
 }
 
 /**
@@ -55,6 +72,7 @@ const STORAGE_KEYS = {
   SYNC_QUEUE: 'sync:queue',
   LAST_SYNC_TIME: 'sync:lastSyncTime:',
   FAILED_OPS: 'sync:failedOps',
+  DEAD_LETTER: 'sync:deadLetter',
 };
 
 /**
@@ -75,6 +93,8 @@ export class DataSyncService {
   private isOnlineState = true;
   private networkCallbacks: NetworkStateCallback[] = [];
   private autoSyncInterval: NodeJS.Timeout | null = null;
+  private syncStartedAt: number | null = null;
+  private unsubscribeNetwork: (() => void) | null = null;
 
   constructor(userService: UserService) {
     this.userService = userService;
@@ -97,7 +117,7 @@ export class DataSyncService {
 
       // Process queue if online
       if (this.isOnline()) {
-        this.processQueue();
+        await this.processQueue();
       }
     } catch (error) {
       logger.error('Failed to add operation to queue', error as Error, {
@@ -112,8 +132,14 @@ export class DataSyncService {
    */
   async processQueue(): Promise<void> {
     if (this.isSyncing) {
-      logger.debug('Sync already in progress, skipping');
-      return;
+      const syncAgeMs = this.syncStartedAt ? Date.now() - this.syncStartedAt : 0;
+      if (syncAgeMs < 60000) {
+        logger.debug('Sync already in progress, skipping');
+        return;
+      }
+
+      logger.warn('DataSyncService: sync watchdog triggered — resetting stuck sync');
+      this.isSyncing = false;
     }
 
     if (!this.isOnline()) {
@@ -122,6 +148,7 @@ export class DataSyncService {
     }
 
     this.isSyncing = true;
+    this.syncStartedAt = Date.now();
 
     try {
       const queue = await this.getQueue();
@@ -134,55 +161,37 @@ export class DataSyncService {
 
       logger.info('Processing sync queue', { operations: queue.length });
 
-      const failedOps: SyncOperation[] = [];
+      const deadLetter = await this.getFailedOperations();
+      let succeededCount = 0;
 
       for (const operation of queue) {
-        try {
-          await this.processOperation(operation);
+        const result = await this.processOperationWithRetries(operation);
+
+        if (result.status === 'success') {
+          succeededCount += 1;
           logger.debug('Operation processed successfully', {
             operationId: operation.id,
           });
-        } catch (error) {
-          logger.error('Operation failed', error as Error, {
-            operationId: operation.id,
-            retries: operation.retries,
-          });
-
-          // Retry with exponential backoff
-          if (operation.retries < RETRY_CONFIG.MAX_RETRIES) {
-            operation.retries++;
-            const delay = Math.min(
-              RETRY_CONFIG.INITIAL_DELAY_MS * Math.pow(2, operation.retries),
-              RETRY_CONFIG.MAX_DELAY_MS
-            );
-            await new Promise((resolve) => setTimeout(resolve, delay));
-
-            // Retry
-            try {
-              await this.processOperation(operation);
-            } catch (retryError) {
-              failedOps.push(operation);
-            }
-          } else {
-            failedOps.push(operation);
-          }
+        } else {
+          deadLetter.push(result.operation);
         }
       }
 
-      // Update queue with failed operations
-      await asyncStorageService.set(STORAGE_KEYS.SYNC_QUEUE, failedOps);
+      await asyncStorageService.set(STORAGE_KEYS.SYNC_QUEUE, []);
+      await asyncStorageService.set(STORAGE_KEYS.DEAD_LETTER, deadLetter);
 
-      // Store failed operations count
-      await asyncStorageService.set(STORAGE_KEYS.FAILED_OPS, failedOps.length);
+      await asyncStorageService.set(STORAGE_KEYS.FAILED_OPS, deadLetter.length);
 
       logger.info('Sync queue processed', {
-        succeeded: queue.length - failedOps.length,
-        failed: failedOps.length,
+        succeeded: succeededCount,
+        retrying: 0,
+        failed: deadLetter.length,
       });
     } catch (error) {
       logger.error('Failed to process sync queue', error as Error);
     } finally {
       this.isSyncing = false;
+      this.syncStartedAt = null;
     }
   }
 
@@ -193,6 +202,7 @@ export class DataSyncService {
     try {
       await asyncStorageService.remove(STORAGE_KEYS.SYNC_QUEUE);
       await asyncStorageService.remove(STORAGE_KEYS.FAILED_OPS);
+      await asyncStorageService.remove(STORAGE_KEYS.DEAD_LETTER);
 
       logger.info('Sync queue cleared');
     } catch (error) {
@@ -311,8 +321,7 @@ export class DataSyncService {
     try {
       const lastSyncTime = await this.getLastSyncTime(userId);
       const pendingOperations = await this.getQueueSize();
-      const failedOperations =
-        (await asyncStorageService.get<number>(STORAGE_KEYS.FAILED_OPS)) || 0;
+      const failedOperations = (await this.getFailedOperations()).length;
 
       return {
         isSyncing: this.isSyncing,
@@ -324,6 +333,43 @@ export class DataSyncService {
       logger.error('Failed to get sync status', error as Error, { userId });
       throw error;
     }
+  }
+
+  async getFailedOperations(): Promise<FailedSyncOperation[]> {
+    try {
+      const failedOps = await asyncStorageService.get<FailedSyncOperation[]>(
+        STORAGE_KEYS.DEAD_LETTER
+      );
+      return failedOps ?? [];
+    } catch (error) {
+      logger.error('Failed to get dead-letter operations', error as Error);
+      return [];
+    }
+  }
+
+  async retryFailedOperations(): Promise<number> {
+    const failedOperations = await this.getFailedOperations();
+    if (failedOperations.length === 0) {
+      return 0;
+    }
+
+    const queue = await this.getQueue();
+    const retriableOperations = failedOperations.map<SyncOperation>(
+      ({ failedAt: _failedAt, lastError: _lastError, reason: _reason, ...operation }) => ({
+        ...operation,
+        retries: 0,
+      })
+    );
+
+    await asyncStorageService.set(STORAGE_KEYS.SYNC_QUEUE, [...queue, ...retriableOperations]);
+    await asyncStorageService.remove(STORAGE_KEYS.DEAD_LETTER);
+    await asyncStorageService.set(STORAGE_KEYS.FAILED_OPS, 0);
+
+    if (this.isOnline()) {
+      await this.processQueue();
+    }
+
+    return retriableOperations.length;
   }
 
   /**
@@ -380,7 +426,7 @@ export class DataSyncService {
   /**
    * Set online state (for testing)
    */
-  setOnlineState(isOnline: boolean): void {
+  async setOnlineState(isOnline: boolean): Promise<void> {
     const wasOnline = this.isOnlineState;
     this.isOnlineState = isOnline;
 
@@ -390,7 +436,7 @@ export class DataSyncService {
     // Auto-sync when coming online
     if (!wasOnline && isOnline) {
       logger.info('Device came online, processing sync queue');
-      this.processQueue();
+      await this.processQueue();
     }
   }
 
@@ -404,7 +450,7 @@ export class DataSyncService {
 
     this.autoSyncInterval = setInterval(() => {
       if (this.isOnline()) {
-        this.processQueue();
+        void this.processQueue();
       }
     }, intervalMs);
 
@@ -440,12 +486,20 @@ export class DataSyncService {
       case 'CREATE':
         if (collection === 'users' && data) {
           await this.userService.createUser(documentId, data as UserProfile);
+        } else if ((collection === 'preferences' || collection === 'userPreferences') && data) {
+          await this.userService.savePreferences(documentId, data as UserPreferences);
+        } else if ((collection === 'shiftCycles' || collection === 'shiftCycle') && data) {
+          await this.userService.updateShiftCycle(documentId, data as ShiftCycle);
         }
         break;
 
       case 'UPDATE':
         if (collection === 'users' && data) {
           await this.userService.updateUser(documentId, data as Partial<UserProfile>);
+        } else if ((collection === 'preferences' || collection === 'userPreferences') && data) {
+          await this.userService.savePreferences(documentId, data as UserPreferences);
+        } else if ((collection === 'shiftCycles' || collection === 'shiftCycle') && data) {
+          await this.userService.updateShiftCycle(documentId, data as ShiftCycle);
         }
         break;
 
@@ -498,9 +552,11 @@ export class DataSyncService {
    * Initialize network listener
    */
   private initializeNetworkListener(): void {
-    // In a real app, this would use NetInfo
-    // For now, we assume online by default
-    this.isOnlineState = true;
+    this.unsubscribeNetwork?.();
+    this.unsubscribeNetwork = networkService.subscribe((snapshot) => {
+      const nextIsOnline = snapshot.status === 'online';
+      void this.setOnlineState(nextIsOnline);
+    });
   }
 
   /**
@@ -508,6 +564,71 @@ export class DataSyncService {
    */
   cleanup(): void {
     this.stopAutoSync();
+    this.unsubscribeNetwork?.();
+    this.unsubscribeNetwork = null;
     this.networkCallbacks = [];
+  }
+
+  private async processOperationWithRetries(
+    operation: SyncOperation
+  ): Promise<{ status: 'success' } | { status: 'failed'; operation: FailedSyncOperation }> {
+    let attemptOperation: SyncOperation = { ...operation };
+    let lastError: Error | null = null;
+
+    while (attemptOperation.retries < RETRY_CONFIG.MAX_RETRIES) {
+      try {
+        await this.processOperation(attemptOperation);
+        return { status: 'success' };
+      } catch (error) {
+        lastError = error as Error;
+        logger.error('Operation failed', lastError, {
+          operationId: attemptOperation.id,
+          retries: attemptOperation.retries,
+        });
+
+        attemptOperation = {
+          ...attemptOperation,
+          retries: attemptOperation.retries + 1,
+        };
+
+        if (attemptOperation.retries >= RETRY_CONFIG.MAX_RETRIES) {
+          break;
+        }
+
+        const delay = Math.min(
+          RETRY_CONFIG.INITIAL_DELAY_MS * Math.pow(2, Math.max(0, attemptOperation.retries - 1)),
+          RETRY_CONFIG.MAX_DELAY_MS
+        );
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      }
+    }
+
+    return {
+      status: 'failed',
+      operation: {
+        ...attemptOperation,
+        failedAt: new Date(),
+        lastError: lastError?.message ?? 'Unknown sync failure',
+        reason: this.classifyFailureReason(lastError),
+      },
+    };
+  }
+
+  private classifyFailureReason(error: Error | null): SyncFailureReason {
+    const message = error?.message?.toLowerCase() ?? '';
+    if (message.includes('network') || message.includes('offline') || message.includes('timeout')) {
+      return 'network';
+    }
+    if (message.includes('auth') || message.includes('permission') || message.includes('token')) {
+      return 'auth';
+    }
+    if (
+      message.includes('validation') ||
+      message.includes('invalid') ||
+      message.includes('required')
+    ) {
+      return 'validation';
+    }
+    return 'unknown';
   }
 }

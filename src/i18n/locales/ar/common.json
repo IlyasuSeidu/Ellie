@@ -245,7 +245,8 @@
       "purchaseSuccessContinue": "المتابعة إلى Ellie",
       "restorePurchasesSuccess": "تمت استعادة الشراء — مرحبًا بك في Pro!",
       "restorePurchasesNotFound": "لم يتم العثور على مشتريات سابقة لهذا الحساب.",
-      "restorePurchasesError": "فشلت الاستعادة. يرجى المحاولة مرة أخرى."
+      "restorePurchasesError": "فشلت الاستعادة. يرجى المحاولة مرة أخرى.",
+      "ctaOffline": "اتصل للاشتراك"
     },
     "profile": {
       "rowActiveA11y": "Ellie اشتراك احترافي نشط",
@@ -275,5 +276,8 @@
       "am": "ص",
       "pm": "م"
     }
+  },
+  "offlineBanner": {
+    "message": "أنت غير متصل. بيانات وردياتك ما تزال متاحة."
   }
 }

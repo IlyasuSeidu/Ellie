@@ -2,10 +2,18 @@
  * Notification Service Tests
  */
 
-import { NotificationService, NotificationType } from '@/services/NotificationService';
+import {
+  NotificationService,
+  NotificationType,
+  type ScheduledNotification,
+} from '@/services/NotificationService';
 import { MockNotificationScheduler } from '@/services/__mocks__/NotificationService';
 import { ShiftDay } from '@/types';
 import type { ReminderEvent } from '@/types/reminders';
+import { asyncStorageService } from '@/services/AsyncStorageService';
+import { networkService } from '@/services/NetworkService';
+import { STORAGE_KEYS } from '@/constants/storageKeys';
+import * as Notifications from 'expo-notifications';
 
 // Mock expo-notifications
 jest.mock('expo-notifications', () => ({
@@ -14,6 +22,39 @@ jest.mock('expo-notifications', () => ({
   cancelAllScheduledNotificationsAsync: jest.fn(),
   requestPermissionsAsync: jest.fn(),
   getPermissionsAsync: jest.fn(),
+  getExpoPushTokenAsync: jest.fn(),
+  addPushTokenListener: jest.fn(),
+}));
+
+jest.mock('expo-constants', () => ({
+  __esModule: true,
+  default: {
+    easConfig: {
+      projectId: 'test-project-id',
+    },
+    expoConfig: {
+      extra: {
+        eas: {
+          projectId: 'test-project-id',
+        },
+      },
+    },
+  },
+}));
+
+jest.mock('@/services/AsyncStorageService', () => ({
+  asyncStorageService: {
+    get: jest.fn(),
+    set: jest.fn(),
+  },
+}));
+
+jest.mock('@/services/NetworkService', () => ({
+  networkService: {
+    refresh: jest.fn(),
+    subscribe: jest.fn(() => jest.fn()),
+    isOnline: jest.fn(() => true),
+  },
 }));
 
 // Mock FirebaseService
@@ -42,9 +83,13 @@ describe('NotificationService', () => {
   const mockUserId = 'user-123';
 
   beforeEach(() => {
+    jest.clearAllMocks();
     service = new NotificationService();
     mockScheduler = new MockNotificationScheduler();
     service.setScheduler(mockScheduler);
+    (asyncStorageService.get as jest.Mock).mockResolvedValue(null);
+    (asyncStorageService.set as jest.Mock).mockResolvedValue(undefined);
+    (networkService.refresh as jest.Mock).mockResolvedValue({ status: 'online' });
   });
 
   afterEach(() => {
@@ -536,6 +581,55 @@ describe('NotificationService', () => {
         // Should not throw and should return array
         expect(Array.isArray(history)).toBe(true);
       });
+
+      it('returns cached history when the Firestore query fails', async () => {
+        const cachedHistory = [
+          {
+            id: 'cached-1',
+            userId: mockUserId,
+            type: NotificationType.SHIFT_REMINDER_24H,
+            scheduledFor: new Date('2025-02-02T00:00:00.000Z').toISOString(),
+            content: { title: 'Cached', body: 'Cached body' },
+            status: 'pending' as const,
+            createdAt: new Date('2025-02-01T00:00:00.000Z').toISOString(),
+          },
+        ];
+
+        jest
+          .spyOn(service as unknown as { query: () => Promise<ScheduledNotification[]> }, 'query')
+          .mockRejectedValue(new Error('offline'));
+        (asyncStorageService.get as jest.Mock).mockImplementation((key: string) => {
+          if (key === `${STORAGE_KEYS.notifications.historyPrefix}${mockUserId}`) {
+            return Promise.resolve(cachedHistory);
+          }
+          return Promise.resolve(null);
+        });
+
+        const history = await service.getNotificationHistory(mockUserId);
+
+        expect(history).toEqual(cachedHistory);
+      });
+
+      it('caches scheduled notifications even when remote history persistence fails', async () => {
+        const createSpy = jest
+          .spyOn(service as unknown as { create: () => Promise<string> }, 'create')
+          .mockRejectedValue(new Error('offline'));
+
+        const notificationId = await service.scheduleShiftReminder(mockUserId, mockShift, 24);
+
+        expect(notificationId).toBeDefined();
+        expect(asyncStorageService.set).toHaveBeenCalledWith(
+          `${STORAGE_KEYS.notifications.historyPrefix}${mockUserId}`,
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: notificationId,
+              userId: mockUserId,
+            }),
+          ])
+        );
+
+        createSpy.mockRestore();
+      });
     });
 
     describe('markAsDelivered', () => {
@@ -605,6 +699,51 @@ describe('NotificationService', () => {
 
         await expect(service.scheduleHolidayAlert(mockUserId, invalidHoliday, 7)).rejects.toThrow();
       });
+    });
+  });
+
+  describe('Push token caching', () => {
+    it('returns the cached Expo push token without refetching', async () => {
+      (asyncStorageService.get as jest.Mock).mockResolvedValue('ExponentPushToken[cached]');
+
+      const token = await service.getOrFetchPushToken();
+
+      expect(token).toBe('ExponentPushToken[cached]');
+      expect(Notifications.getExpoPushTokenAsync).not.toHaveBeenCalled();
+    });
+
+    it('returns null offline when there is no cached push token', async () => {
+      (networkService.refresh as jest.Mock).mockResolvedValue({ status: 'offline' });
+
+      const token = await service.getOrFetchPushToken();
+
+      expect(token).toBeNull();
+      expect(Notifications.getExpoPushTokenAsync).not.toHaveBeenCalled();
+    });
+
+    it('fetches and stores the Expo push token when online', async () => {
+      (Notifications.getExpoPushTokenAsync as jest.Mock).mockResolvedValue({
+        data: 'ExponentPushToken[fetched]',
+      });
+
+      const token = await service.getOrFetchPushToken();
+
+      expect(token).toBe('ExponentPushToken[fetched]');
+      expect(Notifications.getExpoPushTokenAsync).toHaveBeenCalledWith({
+        projectId: 'test-project-id',
+      });
+      expect(asyncStorageService.set).toHaveBeenCalledWith(
+        STORAGE_KEYS.notifications.expoPushToken,
+        'ExponentPushToken[fetched]'
+      );
+    });
+
+    it('prefetches the Expo push token after permission grant', async () => {
+      const pushTokenSpy = jest.spyOn(service, 'getOrFetchPushToken').mockResolvedValue(null);
+
+      await service.requestPermissions();
+
+      expect(pushTokenSpy).toHaveBeenCalled();
     });
   });
 });

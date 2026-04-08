@@ -16,7 +16,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as Haptics from 'expo-haptics';
 import { useTranslation } from 'react-i18next';
 import { getFirebaseAuth } from '@/config/firebase';
-import { asyncStorageService } from '@/services/AsyncStorageService';
+import { readPersistedOnboardingCompletionStatus } from '@/utils/onboardingPersistence';
 import { theme } from '@/utils/theme';
 import { useAuth } from '@/contexts/AuthContext';
 import type { AuthStackParamList } from '@/navigation/AuthNavigator';
@@ -57,7 +57,7 @@ export const EmailVerificationScreen: React.FC = () => {
 
     if (parentNavigation && typeof parentNavigation.reset === 'function') {
       try {
-        const onboardingComplete = await asyncStorageService.get<boolean>('onboarding:complete');
+        const onboardingComplete = await readPersistedOnboardingCompletionStatus();
         const nextRoute: 'Main' | 'Onboarding' =
           onboardingComplete === true ? 'Main' : 'Onboarding';
         parentNavigation.reset({

@@ -5,6 +5,7 @@
  */
 
 import { FirebaseService } from '@/services/firebase/FirebaseService';
+import { asyncStorageService } from '@/services/AsyncStorageService';
 import { NetworkError, FirebaseError } from '@/utils/errorUtils';
 import { logger } from '@/utils/logger';
 
@@ -12,6 +13,13 @@ import { logger } from '@/utils/logger';
 jest.mock('firebase/firestore');
 jest.mock('firebase/auth');
 jest.mock('@/utils/logger');
+jest.mock('@/services/AsyncStorageService', () => ({
+  asyncStorageService: {
+    get: jest.fn(),
+    set: jest.fn(),
+    remove: jest.fn(),
+  },
+}));
 
 // Mock retry to avoid long test timeouts
 jest.mock('@/utils/reliableRetry', () => ({
@@ -49,6 +57,9 @@ describe('FirebaseService', () => {
     // Setup Firebase mocks
     (getFirestore as jest.Mock).mockReturnValue({});
     (getAuth as jest.Mock).mockReturnValue({});
+    jest.mocked(asyncStorageService.get).mockResolvedValue(null);
+    jest.mocked(asyncStorageService.set).mockResolvedValue(undefined);
+    jest.mocked(asyncStorageService.remove).mockResolvedValue(undefined);
 
     service = new FirebaseService();
   });
@@ -102,12 +113,25 @@ describe('FirebaseService', () => {
       expect(setDocCall.createdAt).toMatch(/^\d{4}-\d{2}-\d{2}T/);
     });
 
-    it('should throw NetworkError when network is unavailable', async () => {
-      await Promise.resolve(); service.setNetworkState(false);
+    it('caches the created document for offline reads', async () => {
+      await service['create'](mockCollection, mockData, mockDocId);
 
-      await expect(service['create'](mockCollection, mockData)).rejects.toThrow(
-        NetworkError
+      expect(asyncStorageService.set).toHaveBeenCalledWith(
+        `firestore:cache:doc:${mockCollection}:${mockDocId}`,
+        expect.objectContaining({
+          id: mockDocId,
+          ...mockData,
+        })
       );
+    });
+
+    it('should still attempt create when network state is offline', async () => {
+      await Promise.resolve();
+      service.setNetworkState(false);
+
+      await service['create'](mockCollection, mockData);
+
+      expect(setDoc).toHaveBeenCalled();
     });
 
     it('should handle Firestore errors', async () => {
@@ -116,9 +140,7 @@ describe('FirebaseService', () => {
         message: 'Permission denied',
       });
 
-      await expect(service['create'](mockCollection, mockData)).rejects.toThrow(
-        FirebaseError
-      );
+      await expect(service['create'](mockCollection, mockData)).rejects.toThrow(FirebaseError);
     });
   });
 
@@ -165,12 +187,16 @@ describe('FirebaseService', () => {
       );
     });
 
-    it('should throw NetworkError when network is unavailable', async () => {
-      await Promise.resolve(); service.setNetworkState(false);
+    it('should still attempt read when network state is offline', async () => {
+      await Promise.resolve();
+      service.setNetworkState(false);
+      (getDoc as jest.Mock).mockResolvedValue({
+        exists: () => false,
+      });
 
-      await expect(service['read'](mockCollection, mockDocId)).rejects.toThrow(
-        NetworkError
-      );
+      await service['read'](mockCollection, mockDocId);
+
+      expect(getDoc).toHaveBeenCalled();
     });
 
     it('should handle Firestore errors', async () => {
@@ -179,9 +205,36 @@ describe('FirebaseService', () => {
         message: 'Service unavailable',
       });
 
-      await expect(service['read'](mockCollection, mockDocId)).rejects.toThrow(
-        NetworkError
-      );
+      await expect(service['read'](mockCollection, mockDocId)).rejects.toThrow(NetworkError);
+    });
+
+    it('returns the cached document when offline', async () => {
+      await Promise.resolve();
+      service.setNetworkState(false);
+      jest.mocked(asyncStorageService.get).mockResolvedValue({
+        id: mockDocId,
+        ...mockData,
+      });
+
+      const result = await service['read'](mockCollection, mockDocId);
+
+      expect(getDoc).not.toHaveBeenCalled();
+      expect(result).toEqual({ id: mockDocId, ...mockData });
+    });
+
+    it('falls back to the cached document after a network read failure', async () => {
+      (getDoc as jest.Mock).mockRejectedValue({
+        code: 'unavailable',
+        message: 'Service unavailable',
+      });
+      jest.mocked(asyncStorageService.get).mockResolvedValue({
+        id: mockDocId,
+        ...mockData,
+      });
+
+      const result = await service['read'](mockCollection, mockDocId);
+
+      expect(result).toEqual({ id: mockDocId, ...mockData });
     });
   });
 
@@ -219,12 +272,31 @@ describe('FirebaseService', () => {
       expect(updateCall.updatedAt).toMatch(/^\d{4}-\d{2}-\d{2}T/);
     });
 
-    it('should throw NetworkError when network is unavailable', async () => {
-      await Promise.resolve(); service.setNetworkState(false);
+    it('updates the cached document after a successful update', async () => {
+      jest.mocked(asyncStorageService.get).mockResolvedValue({
+        id: mockDocId,
+        ...mockData,
+      });
 
-      await expect(
-        service['update'](mockCollection, mockDocId, { value: 100 })
-      ).rejects.toThrow(NetworkError);
+      await service['update'](mockCollection, mockDocId, { value: 100 });
+
+      expect(asyncStorageService.set).toHaveBeenCalledWith(
+        `firestore:cache:doc:${mockCollection}:${mockDocId}`,
+        expect.objectContaining({
+          id: mockDocId,
+          name: 'Test',
+          value: 100,
+        })
+      );
+    });
+
+    it('should still attempt update when network state is offline', async () => {
+      await Promise.resolve();
+      service.setNetworkState(false);
+
+      await service['update'](mockCollection, mockDocId, { value: 100 });
+
+      expect(updateDoc).toHaveBeenCalled();
     });
 
     it('should handle not-found errors', async () => {
@@ -233,9 +305,9 @@ describe('FirebaseService', () => {
         message: 'Document not found',
       });
 
-      await expect(
-        service['update'](mockCollection, mockDocId, { value: 100 })
-      ).rejects.toThrow(FirebaseError);
+      await expect(service['update'](mockCollection, mockDocId, { value: 100 })).rejects.toThrow(
+        FirebaseError
+      );
     });
   });
 
@@ -259,12 +331,13 @@ describe('FirebaseService', () => {
       );
     });
 
-    it('should throw NetworkError when network is unavailable', async () => {
-      await Promise.resolve(); service.setNetworkState(false);
+    it('should still attempt delete when network state is offline', async () => {
+      await Promise.resolve();
+      service.setNetworkState(false);
 
-      await expect(service['delete'](mockCollection, mockDocId)).rejects.toThrow(
-        NetworkError
-      );
+      await service['delete'](mockCollection, mockDocId);
+
+      expect(deleteDoc).toHaveBeenCalled();
     });
 
     it('should handle Firestore errors', async () => {
@@ -273,8 +346,14 @@ describe('FirebaseService', () => {
         message: 'Permission denied',
       });
 
-      await expect(service['delete'](mockCollection, mockDocId)).rejects.toThrow(
-        FirebaseError
+      await expect(service['delete'](mockCollection, mockDocId)).rejects.toThrow(FirebaseError);
+    });
+
+    it('removes the cached document after delete', async () => {
+      await service['delete'](mockCollection, mockDocId);
+
+      expect(asyncStorageService.remove).toHaveBeenCalledWith(
+        `firestore:cache:doc:${mockCollection}:${mockDocId}`
       );
     });
   });
@@ -312,7 +391,7 @@ describe('FirebaseService', () => {
     });
 
     it('should query documents with constraints', async () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const mockConstraints: any[] = ['constraint1', 'constraint2'];
 
       (getDocs as jest.Mock).mockResolvedValue({
@@ -334,10 +413,16 @@ describe('FirebaseService', () => {
       expect(results).toEqual([]);
     });
 
-    it('should throw NetworkError when network is unavailable', async () => {
-      await Promise.resolve(); service.setNetworkState(false);
+    it('should still attempt query when network state is offline', async () => {
+      await Promise.resolve();
+      service.setNetworkState(false);
+      (getDocs as jest.Mock).mockResolvedValue({
+        forEach: () => {},
+      });
 
-      await expect(service['query'](mockCollection)).rejects.toThrow(NetworkError);
+      await service['query'](mockCollection);
+
+      expect(getDocs).toHaveBeenCalled();
     });
   });
 
@@ -395,14 +480,14 @@ describe('FirebaseService', () => {
       expect(callback).toHaveBeenCalledWith(null);
     });
 
-    it('should handle subscription errors', () => {
+    it('should handle subscription errors', async () => {
       const callback = jest.fn();
       service['subscribe'](mockCollection, mockDocId, callback);
 
       // Simulate error
       const errorCallback = (onSnapshot as jest.Mock).mock.calls[0][2];
       const error = new Error('Subscription error');
-      errorCallback(error);
+      await errorCallback(error);
 
       expect(logger.error).toHaveBeenCalledWith(
         'Subscription error',
@@ -413,6 +498,20 @@ describe('FirebaseService', () => {
         })
       );
       expect(callback).toHaveBeenCalledWith(null);
+    });
+
+    it('returns cached document on subscription error when available', async () => {
+      const callback = jest.fn();
+      jest.mocked(asyncStorageService.get).mockResolvedValue({
+        id: mockDocId,
+        ...mockData,
+      });
+      service['subscribe'](mockCollection, mockDocId, callback);
+
+      const errorCallback = (onSnapshot as jest.Mock).mock.calls[0][2];
+      await errorCallback(new Error('Subscription error'));
+
+      expect(callback).toHaveBeenCalledWith({ id: mockDocId, ...mockData });
     });
 
     it('should return unsubscribe function', () => {
@@ -438,11 +537,7 @@ describe('FirebaseService', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const constraints: any[] = ['constraint1'];
 
-      const unsubscribe = service['subscribeToQuery'](
-        mockCollection,
-        constraints,
-        callback
-      );
+      const unsubscribe = service['subscribeToQuery'](mockCollection, constraints, callback);
 
       expect(collection).toHaveBeenCalledWith(expect.anything(), mockCollection);
       expect(query).toHaveBeenCalledWith('mock-collection-ref', ...constraints);
@@ -503,39 +598,47 @@ describe('FirebaseService', () => {
       expect(state.isConnected).toBe(false);
     });
 
-    it('should throw error when offline for create', async () => {
-      await Promise.resolve(); service.setNetworkState(false);
-      await expect(service['create'](mockCollection, mockData)).rejects.toThrow(
-        'No network connection available'
-      );
+    it('tracks network state without blocking create operations', async () => {
+      await Promise.resolve();
+      service.setNetworkState(false);
+      await service['create'](mockCollection, mockData);
+      expect(setDoc).toHaveBeenCalled();
     });
 
-    it('should throw error when offline for read', async () => {
-      await Promise.resolve(); service.setNetworkState(false);
-      await expect(service['read'](mockCollection, mockDocId)).rejects.toThrow(
-        'No network connection available'
-      );
+    it('tracks network state without blocking read operations', async () => {
+      await Promise.resolve();
+      service.setNetworkState(false);
+      (getDoc as jest.Mock).mockResolvedValue({ exists: () => false });
+      await service['read'](mockCollection, mockDocId);
+      expect(getDoc).toHaveBeenCalled();
     });
 
-    it('should throw error when offline for update', async () => {
-      await Promise.resolve(); service.setNetworkState(false);
-      await expect(
-        service['update'](mockCollection, mockDocId, { value: 100 })
-      ).rejects.toThrow('No network connection available');
+    it('tracks network state without blocking update operations', async () => {
+      await Promise.resolve();
+      service.setNetworkState(false);
+      (doc as jest.Mock).mockReturnValue('mock-doc-ref');
+      (updateDoc as jest.Mock).mockResolvedValue(undefined);
+      await service['update'](mockCollection, mockDocId, { value: 100 });
+      expect(updateDoc).toHaveBeenCalled();
     });
 
-    it('should throw error when offline for delete', async () => {
-      await Promise.resolve(); service.setNetworkState(false);
-      await expect(service['delete'](mockCollection, mockDocId)).rejects.toThrow(
-        'No network connection available'
-      );
+    it('tracks network state without blocking delete operations', async () => {
+      await Promise.resolve();
+      service.setNetworkState(false);
+      (doc as jest.Mock).mockReturnValue('mock-doc-ref');
+      (deleteDoc as jest.Mock).mockResolvedValue(undefined);
+      await service['delete'](mockCollection, mockDocId);
+      expect(deleteDoc).toHaveBeenCalled();
     });
 
-    it('should throw error when offline for query', async () => {
-      await Promise.resolve(); service.setNetworkState(false);
-      await expect(service['query'](mockCollection)).rejects.toThrow(
-        'No network connection available'
-      );
+    it('tracks network state without blocking query operations', async () => {
+      await Promise.resolve();
+      service.setNetworkState(false);
+      (collection as jest.Mock).mockReturnValue('mock-collection-ref');
+      (query as jest.Mock).mockReturnValue('mock-query');
+      (getDocs as jest.Mock).mockResolvedValue({ forEach: () => {} });
+      await service['query'](mockCollection);
+      expect(getDocs).toHaveBeenCalled();
     });
   });
 });

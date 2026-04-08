@@ -29,6 +29,7 @@ import { Analytics, type PaywallTriggerSource } from '@/utils/analytics';
 import { useOnboardingOptional, type OnboardingData } from '@/contexts/OnboardingContext';
 import { MiniYearCalendar } from '@/components/paywall/MiniYearCalendar';
 import { formatLocalizedDate } from '@/utils/i18nFormat';
+import { useNetworkStatus } from '@/hooks/useNetworkStatus';
 
 // Legal URLs — update these to point to the live hosted documents
 const PRIVACY_POLICY_URL = 'https://ellieapp.com.au/privacy';
@@ -93,7 +94,10 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
   );
   const [dismissVisible, setDismissVisible] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const [offeringsLoadError, setOfferingsLoadError] = useState<'offline' | 'error' | null>(null);
   const purchasesAvailable = useMemo(() => isRevenueCatAvailable(), []);
+  const networkSnapshot = useNetworkStatus();
+  const isOffline = networkSnapshot.status === 'offline';
   const ctaPulse = useSharedValue(1);
   const openedAtRef = useRef(Date.now());
   const restoreSuccessDismissTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -196,11 +200,19 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
       return () => clearTimeout(dismissTimer);
     }
 
+    if (isOffline) {
+      setOfferingsLoadError('offline');
+      setLoading(false);
+      return () => clearTimeout(dismissTimer);
+    }
+
+    setLoading(true);
     const { Purchases } = revenueCatRuntime;
 
     void Purchases.getOfferings()
       .then((offerings) => {
         const current = offerings.current;
+        setOfferingsLoadError(null);
         if (current) {
           setAnnualPackage(current.annual ?? null);
           setMonthlyPackage(current.monthly ?? null);
@@ -211,11 +223,12 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
         setAnnualPackage(null);
         setMonthlyPackage(null);
         setWeeklyPackage(null);
+        setOfferingsLoadError(isOffline ? 'offline' : 'error');
       })
       .finally(() => setLoading(false));
 
     return () => clearTimeout(dismissTimer);
-  }, [entryPoint, paywallAnalyticsMetadata]);
+  }, [entryPoint, isOffline, paywallAnalyticsMetadata]);
 
   useEffect(() => {
     return () => {
@@ -242,12 +255,13 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
       : selectedPlan === 'monthly'
         ? monthlyPackage
         : weeklyPackage;
-  const annualPrice = annualPackage?.product.priceString ?? '$49.99';
-  const monthlyPrice = monthlyPackage?.product.priceString ?? '$6.99';
-  const weeklyPrice = weeklyPackage?.product.priceString ?? '$1.99';
+  const hasPlanMetadata = Boolean(annualPackage || monthlyPackage || weeklyPackage);
+  const annualPrice = annualPackage?.product.priceString ?? '';
+  const monthlyPrice = monthlyPackage?.product.priceString ?? '';
+  const weeklyPrice = weeklyPackage?.product.priceString ?? '';
 
   const annualMonthlyEquivalent = useMemo(() => {
-    if (!annualPackage) return '$2.99';
+    if (!annualPackage) return '';
     const monthlyEquivalent = annualPackage.product.price / 12;
     const currencySymbol = annualPackage.product.priceString.replace(/[0-9.,\s]/g, '') || '$';
     return `${currencySymbol}${monthlyEquivalent.toFixed(2)}`;
@@ -368,6 +382,11 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
       trigger_source: entryPoint,
     });
 
+    if (isOffline) {
+      setPurchaseError(t('errors.runtime.network'));
+      return;
+    }
+
     if (!selectedPackage) return;
     const revenueCatRuntime = getRevenueCatRuntime();
     if (!revenueCatRuntime) return;
@@ -419,6 +438,13 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
 
     if (!revenueCatRuntime) {
       setRestoreResult('error');
+      setRestoring(false);
+      return;
+    }
+
+    if (isOffline) {
+      setRestoreResult('error');
+      setPurchaseError(t('errors.runtime.network'));
       setRestoring(false);
       return;
     }
@@ -514,6 +540,26 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
         {/* ── Plan selector ── */}
         {loading ? (
           <ActivityIndicator color={theme.colors.paleGold} style={styles.loader} />
+        ) : !hasPlanMetadata ? (
+          <View style={styles.plansFallbackCard} testID="paywall-plans-fallback">
+            <Ionicons
+              name={
+                offeringsLoadError === 'offline'
+                  ? 'cloud-offline-outline'
+                  : 'information-circle-outline'
+              }
+              size={20}
+              color={theme.colors.sacredGold}
+            />
+            <Text style={styles.plansFallbackText}>
+              {offeringsLoadError === 'offline'
+                ? t('errors.runtime.network')
+                : t('subscription.paywall.unavailable', {
+                    defaultValue:
+                      'Subscriptions are unavailable in this app build. Install the latest EAS development/production build.',
+                  })}
+            </Text>
+          </View>
         ) : (
           <View style={styles.plans}>
             {/* Annual plan */}
@@ -549,22 +595,25 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
                     </View>
                   </View>
                   <Text style={styles.planMonthlyEquivalent}>
-                    {annualMonthlyEquivalent}
-                    {t('subscription.paywall.plans.perMonth', { defaultValue: '/month' })}
+                    {annualMonthlyEquivalent
+                      ? `${annualMonthlyEquivalent}${t('subscription.paywall.plans.perMonth', { defaultValue: '/month' })}`
+                      : ''}
                   </Text>
                 </View>
               </View>
               <View style={styles.planRight}>
-                {monthlyPackage ? (
+                {monthlyPackage && monthlyPrice ? (
                   <Text style={styles.planPriceStrikethrough}>
                     {monthlyPrice}
                     {t('subscription.paywall.plans.monthlySuffix')}
                   </Text>
                 ) : null}
-                <Text style={styles.planPrice}>
-                  {annualPrice}
-                  {t('subscription.paywall.plans.annualSuffix')}
-                </Text>
+                {annualPrice ? (
+                  <Text style={styles.planPrice}>
+                    {annualPrice}
+                    {t('subscription.paywall.plans.annualSuffix')}
+                  </Text>
+                ) : null}
               </View>
             </TouchableOpacity>
 
@@ -588,10 +637,12 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
                   </Text>
                 </View>
               </View>
-              <Text style={styles.planPriceMonthly}>
-                {monthlyPrice}
-                {t('subscription.paywall.plans.monthlySuffix')}
-              </Text>
+              {monthlyPrice ? (
+                <Text style={styles.planPriceMonthly}>
+                  {monthlyPrice}
+                  {t('subscription.paywall.plans.monthlySuffix')}
+                </Text>
+              ) : null}
             </TouchableOpacity>
 
             {/* Weekly plan — only render when the product actually exists */}
@@ -617,10 +668,12 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
                     </Text>
                   </View>
                 </View>
-                <Text style={styles.planPriceMonthly}>
-                  {weeklyPrice}
-                  {t('subscription.paywall.plans.weeklySuffix', { defaultValue: '/wk' })}
-                </Text>
+                {weeklyPrice ? (
+                  <Text style={styles.planPriceMonthly}>
+                    {weeklyPrice}
+                    {t('subscription.paywall.plans.weeklySuffix', { defaultValue: '/wk' })}
+                  </Text>
+                ) : null}
               </TouchableOpacity>
             ) : null}
           </View>
@@ -660,17 +713,27 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
               </View>
             </TouchableOpacity>
           </View>
-        ) : (
+        ) : selectedPackage || isOffline ? (
           <Animated.View style={ctaAnimatedStyle}>
             <TouchableOpacity
               onPress={handlePurchase}
-              disabled={purchasing || loading || !selectedPackage}
+              disabled={purchasing || loading || isOffline || !selectedPackage}
               accessibilityRole="button"
-              accessibilityLabel={t('subscription.paywall.cta')}
+              accessibilityLabel={
+                isOffline
+                  ? t('subscription.paywall.ctaOffline', {
+                      defaultValue: 'Connect to subscribe',
+                    })
+                  : t('subscription.paywall.cta')
+              }
               testID="paywall-cta"
             >
               <LinearGradient
-                colors={[theme.colors.brightGold, theme.colors.sacredGold]}
+                colors={
+                  isOffline
+                    ? ['rgba(120, 113, 108, 0.92)', 'rgba(87, 83, 78, 0.92)']
+                    : [theme.colors.brightGold, theme.colors.sacredGold]
+                }
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={styles.ctaButton}
@@ -681,18 +744,22 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
                   <View style={styles.ctaContent}>
                     <View style={styles.ctaArrowSlot} />
                     <Text
-                      style={styles.ctaText}
+                      style={[styles.ctaText, isOffline && styles.ctaTextDisabled]}
                       numberOfLines={1}
                       adjustsFontSizeToFit
                       minimumFontScale={0.84}
                     >
-                      {t('subscription.paywall.cta')}
+                      {isOffline
+                        ? t('subscription.paywall.ctaOffline', {
+                            defaultValue: 'Connect to subscribe',
+                          })
+                        : t('subscription.paywall.cta')}
                     </Text>
                     <View style={styles.ctaArrowSlot}>
                       <Ionicons
-                        name="arrow-forward"
+                        name={isOffline ? 'cloud-offline-outline' : 'arrow-forward'}
                         size={20}
-                        color={theme.colors.deepVoid}
+                        color={isOffline ? theme.colors.paper : theme.colors.deepVoid}
                         style={styles.ctaArrow}
                       />
                     </View>
@@ -701,10 +768,10 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
               </LinearGradient>
             </TouchableOpacity>
           </Animated.View>
-        )}
+        ) : null}
 
         {/* No credit card required */}
-        {!purchaseSuccess ? (
+        {!purchaseSuccess && hasPlanMetadata ? (
           <Text style={styles.noCard}>
             {t('subscription.paywall.noCard', {
               defaultValue: 'No credit card required · Cancel anytime',
@@ -715,38 +782,46 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
         {/* ── Purchase error ── */}
         {purchaseError ? <Text style={styles.purchaseErrorText}>{purchaseError}</Text> : null}
 
-        {/* ── Trust row ── */}
-        <View style={styles.trustCard}>
-          <View style={styles.trustItem}>
-            <Ionicons name="calendar-outline" size={15} color={theme.colors.sacredGold} />
-            <Text style={styles.trustText}>
-              {hasTrialForSelected
-                ? t('subscription.paywall.trust.freeTrial', { defaultValue: '7 days free' })
-                : t('subscription.paywall.trust.startsToday', { defaultValue: 'Starts today' })}
-            </Text>
-          </View>
-          <View style={styles.trustDivider} />
-          <View style={styles.trustItem}>
-            <Ionicons name="close-circle-outline" size={15} color={theme.colors.sacredGold} />
-            <Text style={styles.trustText}>
-              {t('subscription.paywall.trust.cancel', { defaultValue: 'Cancel anytime' })}
-            </Text>
-          </View>
-          <View style={styles.trustDivider} />
-          <View style={styles.trustItem}>
-            <Ionicons name="card-outline" size={15} color={theme.colors.sacredGold} />
-            <Text style={styles.trustText}>
-              {hasTrialForSelected
-                ? t('subscription.paywall.trust.noCharge', { defaultValue: 'No charge today' })
-                : t('subscription.paywall.trust.chargedToday', { defaultValue: 'Charged today' })}
-            </Text>
-          </View>
-        </View>
+        {!purchaseError && offeringsLoadError === 'offline' ? (
+          <Text style={styles.purchaseErrorText}>{t('errors.runtime.network')}</Text>
+        ) : null}
 
-        <Text style={styles.billingDisclosure}>{billingDisclosureText}</Text>
+        {/* ── Trust row ── */}
+        {hasPlanMetadata ? (
+          <View style={styles.trustCard}>
+            <View style={styles.trustItem}>
+              <Ionicons name="calendar-outline" size={15} color={theme.colors.sacredGold} />
+              <Text style={styles.trustText}>
+                {hasTrialForSelected
+                  ? t('subscription.paywall.trust.freeTrial', { defaultValue: '7 days free' })
+                  : t('subscription.paywall.trust.startsToday', { defaultValue: 'Starts today' })}
+              </Text>
+            </View>
+            <View style={styles.trustDivider} />
+            <View style={styles.trustItem}>
+              <Ionicons name="close-circle-outline" size={15} color={theme.colors.sacredGold} />
+              <Text style={styles.trustText}>
+                {t('subscription.paywall.trust.cancel', { defaultValue: 'Cancel anytime' })}
+              </Text>
+            </View>
+            <View style={styles.trustDivider} />
+            <View style={styles.trustItem}>
+              <Ionicons name="card-outline" size={15} color={theme.colors.sacredGold} />
+              <Text style={styles.trustText}>
+                {hasTrialForSelected
+                  ? t('subscription.paywall.trust.noCharge', { defaultValue: 'No charge today' })
+                  : t('subscription.paywall.trust.chargedToday', { defaultValue: 'Charged today' })}
+              </Text>
+            </View>
+          </View>
+        ) : null}
+
+        {hasPlanMetadata ? (
+          <Text style={styles.billingDisclosure}>{billingDisclosureText}</Text>
+        ) : null}
 
         {/* Value frame — copy adapts to selected plan */}
-        <Text style={styles.valueFrame}>{valueFrameText}</Text>
+        {hasPlanMetadata ? <Text style={styles.valueFrame}>{valueFrameText}</Text> : null}
 
         {/* ── Loss aversion ── */}
         <View style={styles.lossAversion}>
@@ -1100,6 +1175,23 @@ const styles = StyleSheet.create({
     marginBottom: 14,
     gap: 10,
   },
+  plansFallbackCard: {
+    marginBottom: 14,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
+    backgroundColor: theme.colors.darkStone,
+    paddingHorizontal: 16,
+    paddingVertical: 18,
+    alignItems: 'center',
+    gap: 10,
+  },
+  plansFallbackText: {
+    color: theme.colors.dust,
+    fontSize: 14,
+    lineHeight: 20,
+    textAlign: 'center',
+  },
   planOption: {
     backgroundColor: theme.colors.darkStone,
     borderRadius: 16,
@@ -1332,6 +1424,9 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'center',
     flexShrink: 1,
+  },
+  ctaTextDisabled: {
+    color: theme.colors.paper,
   },
   ctaArrowSlot: {
     width: 28,

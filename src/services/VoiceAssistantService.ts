@@ -15,6 +15,7 @@ import { logger } from '@/utils/logger';
 import { tryOfflineFallback } from '@/utils/offlineFallback';
 import i18n from '@/i18n';
 import { normalizeLanguage } from '@/i18n/languageDetector';
+import { networkService } from '@/services/NetworkService';
 import type {
   VoiceAssistantState,
   VoiceAssistantUserContext,
@@ -140,8 +141,20 @@ class VoiceAssistantService {
           },
           onError: (error) => {
             this.clearListeningWatchdogTimers();
+            const errorCode = (error as Error & { code?: string }).code;
             if (error.message === 'Speech recognition permission denied') {
               this.handleError('permission_denied', error.message);
+            } else if (errorCode === 'offline_unavailable') {
+              this.emitNotice(
+                'warning',
+                this.translateDashboard(
+                  'voiceAssistant.notices.offlineRecognitionUnavailable',
+                  "Offline voice input isn't available on this device right now."
+                ),
+                'offline_recognition_unavailable'
+              );
+              this.resetEphemeralState();
+              this.setState('idle');
             } else if (this.isNoSpeechError(error)) {
               // "no-speech" is a common, expected timeout path when wake-word triggers
               // and the user does not continue speaking quickly enough.
@@ -209,7 +222,14 @@ class VoiceAssistantService {
 
   private handleNoSpeechTimeout(): void {
     logger.info('Speech recognition ended with no speech; returning to idle');
-    this.emitNotice('warning', "I didn't catch that. Please try again.", 'no_speech');
+    this.emitNotice(
+      'warning',
+      this.translateDashboard(
+        'voiceAssistant.errors.recognition',
+        "I didn't catch that. Please try again."
+      ),
+      'no_speech'
+    );
     this.clearListeningWatchdogTimers();
     this.resetEphemeralState();
     this.setState('idle');
@@ -409,6 +429,27 @@ class VoiceAssistantService {
       return;
     }
 
+    if (networkService.getSnapshot().status !== 'online') {
+      const offlineOnlyText = this.translateDashboard(
+        'voiceAssistant.errors.network',
+        'Check your connection and retry.'
+      );
+
+      const assistantMessage: VoiceMessage = {
+        id: generateMessageId(),
+        role: 'assistant',
+        text: offlineOnlyText,
+        timestamp: Date.now(),
+      };
+
+      this.conversationHistory.push(assistantMessage);
+      this.trimHistory();
+      this.callbacks?.onAssistantMessage(assistantMessage);
+
+      await this.speakResponse(offlineOnlyText, requestToken);
+      return;
+    }
+
     // Fall through to backend for complex queries
     try {
       const response = await ellieBrainService.query(
@@ -475,6 +516,14 @@ class VoiceAssistantService {
       return;
     }
 
+    const audioRepliesAvailable = await textToSpeechService.isAvailable();
+    if (!audioRepliesAvailable) {
+      this.emitAudioUnavailableNotice();
+      this.resetEphemeralState();
+      this.setState('idle');
+      return;
+    }
+
     this.currentSpeechToken = requestToken;
     this.setState('speaking');
 
@@ -508,9 +557,25 @@ class VoiceAssistantService {
           return;
         }
         this.currentSpeechToken = null;
-        this.handleError('tts_error', error.message);
+        logger.warn('Voice assistant could not play audio response', {
+          error: error.message,
+        });
+        this.emitAudioUnavailableNotice();
+        this.resetEphemeralState();
+        this.setState('idle');
       },
     });
+  }
+
+  private emitAudioUnavailableNotice(): void {
+    this.emitNotice(
+      'info',
+      this.translateDashboard(
+        'voiceAssistant.notices.audioUnavailable',
+        "Audio replies aren't available right now. You can still read Ellie's answer."
+      ),
+      'audio_unavailable'
+    );
   }
 
   private resolveVoiceLocale(): string {

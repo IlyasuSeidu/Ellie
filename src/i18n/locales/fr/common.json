@@ -245,7 +245,8 @@
       "purchaseSuccessContinue": "Continuer vers Ellie",
       "restorePurchasesSuccess": "Achat restauré — bienvenue sur Pro !",
       "restorePurchasesNotFound": "Aucun achat précédent trouvé pour ce compte.",
-      "restorePurchasesError": "La restauration a échoué. Veuillez réessayer."
+      "restorePurchasesError": "La restauration a échoué. Veuillez réessayer.",
+      "ctaOffline": "Connectez-vous pour vous abonner"
     },
     "profile": {
       "rowActiveA11y": "Ellie Abonnement Pro actif",
@@ -275,5 +276,8 @@
       "am": "AM",
       "pm": "PM"
     }
+  },
+  "offlineBanner": {
+    "message": "Hors ligne. Vos données de quarts restent disponibles."
   }
 }

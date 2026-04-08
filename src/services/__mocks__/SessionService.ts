@@ -2,17 +2,13 @@
  * Mock Session Service for Testing
  */
 
-import {
-  Session,
-  SessionEvent,
-  SessionMetadata,
-  SessionTimeoutCallback,
-} from '../SessionService';
+import { Session, SessionEvent, SessionMetadata, SessionTimeoutCallback } from '../SessionService';
 
 /**
  * Mock Session Service
  */
 export class MockSessionService {
+  private static readonly MAX_SESSION_EVENTS = 500;
   private sessions: Map<string, Session> = new Map();
   private currentSession: Session | null = null;
   private timeoutCallbacks: SessionTimeoutCallback[] = [];
@@ -101,7 +97,7 @@ export class MockSessionService {
       return;
     }
 
-    session.events.push(event);
+    session.events = [...session.events, event].slice(-MockSessionService.MAX_SESSION_EVENTS);
     session.lastActivityTime = new Date();
     this.sessions.set(sessionId, session);
 

@@ -4,6 +4,7 @@ import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { AuthProvider, useAuth } from '@/contexts/AuthContext';
 import { AuthService } from '@/services/AuthService';
+import { networkService } from '@/services/NetworkService';
 import { getAuthErrorMessage } from '@/utils/authErrorMessage';
 
 type MockService = {
@@ -65,9 +66,16 @@ jest.mock('@/services/AuthService', () => ({
   }),
 }));
 
+jest.mock('@/services/NetworkService', () => ({
+  networkService: {
+    refresh: jest.fn(async () => ({ status: 'online' })),
+  },
+}));
+
 describe('AuthContext', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.mocked(networkService.refresh).mockResolvedValue({ status: 'online' } as never);
   });
 
   it('throws when useAuth is used outside AuthProvider', () => {
@@ -197,5 +205,41 @@ describe('AuthContext', () => {
     await waitFor(() => {
       expect(getByTestId('error').props.children).toBe('Incorrect password.');
     });
+  });
+
+  it('blocks network-required auth actions while offline', async () => {
+    jest.mocked(networkService.refresh).mockResolvedValue({ status: 'offline' } as never);
+
+    const ErrorProbe: React.FC = () => {
+      const { error, signIn } = useAuth();
+      return (
+        <>
+          <Text testID="error">{error ?? 'none'}</Text>
+          <Pressable
+            testID="sign-in"
+            onPress={() => {
+              void signIn('user@example.com', 'password').catch(() => {});
+            }}
+          >
+            <Text>Sign In</Text>
+          </Pressable>
+        </>
+      );
+    };
+
+    const { getByTestId } = render(
+      <AuthProvider>
+        <ErrorProbe />
+      </AuthProvider>
+    );
+
+    fireEvent.press(getByTestId('sign-in'));
+
+    await waitFor(() => {
+      expect(getByTestId('error').props.children).toBe(
+        'Network error. Please check your connection.'
+      );
+    });
+    expect(mockLatestService?.signInWithEmail).not.toHaveBeenCalled();
   });
 });

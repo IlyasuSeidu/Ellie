@@ -15,7 +15,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import { useOnboarding, type OnboardingData } from '@/contexts/OnboardingContext';
 import { useVoiceAssistant } from '@/contexts/VoiceAssistantContext';
@@ -36,6 +35,7 @@ import { RosterType, ShiftSystem } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { getShiftTimesFromData } from '@/utils/shiftTimeUtils';
+import { appStateStorageService } from '@/services/AppStateStorageService';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -224,9 +224,8 @@ export const PremiumAhaMomentScreen: React.FC = () => {
       pain_point: data.painPoint ?? null,
       platform: Platform.OS,
     });
-    void AsyncStorage.getItem('app:install_time').then((value) => {
-      if (!value) return;
-      const ts = Number(value);
+    void appStateStorageService.getInstallStartedAt().then((ts) => {
+      if (!ts) return;
       if (!Number.isFinite(ts) || ts <= 0) return;
       Analytics.ahaMomentReached(Math.floor((Date.now() - ts) / 1000), analyticsMetadata);
     });
@@ -259,7 +258,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
       pain_point: data.painPoint ?? null,
     });
     // Persist decline timestamp so the dashboard can surface a recovery nudge later.
-    void AsyncStorage.setItem('paywall:declined_at', Date.now().toString());
+    void appStateStorageService.setPaywallDeclinedAt(Date.now());
     navigation.navigate('Completion');
   };
 

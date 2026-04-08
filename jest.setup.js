@@ -8,6 +8,47 @@ jest.mock('@react-native-async-storage/async-storage', () =>
   require('@react-native-async-storage/async-storage/jest/async-storage-mock')
 );
 
+jest.mock('@react-native-community/netinfo', () => {
+  let state = {
+    type: 'wifi',
+    isConnected: true,
+    isInternetReachable: true,
+    details: null,
+  };
+  const listeners = new Set();
+
+  const emit = () => {
+    listeners.forEach((listener) => listener({ ...state }));
+  };
+
+  const api = {
+    addEventListener: jest.fn((listener) => {
+      listeners.add(listener);
+      listener({ ...state });
+      return () => listeners.delete(listener);
+    }),
+    fetch: jest.fn(async () => ({ ...state })),
+    __setState(nextState) {
+      state = { ...state, ...nextState };
+      emit();
+    },
+    __reset() {
+      state = {
+        type: 'wifi',
+        isConnected: true,
+        isInternetReachable: true,
+        details: null,
+      };
+      listeners.clear();
+    },
+  };
+
+  return {
+    __esModule: true,
+    default: api,
+  };
+});
+
 jest.mock('expo-localization', () => ({
   getLocales: jest.fn(() => [
     {
@@ -342,6 +383,7 @@ jest.mock('expo-speech-recognition', () => ({
     start: jest.fn(),
     stop: jest.fn(),
     abort: jest.fn(),
+    supportsOnDeviceRecognition: jest.fn(() => true),
   },
   useSpeechRecognitionEvent: jest.fn(),
 }));

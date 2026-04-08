@@ -171,7 +171,20 @@
       "shiftTomorrowWork": "Tomorrow ({{date}}) you have a {{shiftType}} shift.",
       "shiftTomorrowOff": "Tomorrow ({{date}}) is your day off!",
       "nextDayOff": "Your next day off is {{date}}.",
-      "nextNightShift": "Your next night shift is {{date}}."
+      "nextNightShift": "Your next night shift is {{date}}.",
+      "shiftsThisWeek": "This week: {{dayCount}} day shifts, {{nightCount}} night shifts, and {{offCount}} days off.",
+      "shiftsThisWeekThreeShift": "This week: {{morningCount}} morning shifts, {{afternoonCount}} afternoon shifts, {{nightCount}} night shifts, and {{offCount}} days off.",
+      "daysOffThisMonth": "You have {{count}} days off this month.",
+      "nightShiftsThisMonth": "You have {{count}} night shifts this month.",
+      "nextFlyOut": "Your next fly-out day is {{date}}.",
+      "startBack": "You start back on {{date}}.",
+      "patternSummaryRotating": "Your pattern is {{dayCount}} day shifts, {{nightCount}} night shifts, then {{offCount}} days off.",
+      "patternSummaryThreeShift": "Your pattern is {{morningCount}} morning shifts, {{afternoonCount}} afternoon shifts, {{nightCount}} night shifts, then {{offCount}} days off.",
+      "patternSummaryFifo": "Your pattern is {{workDays}} days on site, then {{restDays}} days off."
+    },
+    "notices": {
+      "offlineRecognitionUnavailable": "Offline voice input isn't available on this device right now.",
+      "audioUnavailable": "Audio replies aren't available right now. You can still read Ellie's answer."
     }
   },
   "notifications": {

@@ -39,7 +39,6 @@ import { Analytics } from '@/utils/analytics';
 import * as Haptics from 'expo-haptics';
 import { useIsFocused } from '@react-navigation/native';
 import { theme } from '@/utils/theme';
-import { asyncStorageService } from '@/services/AsyncStorageService';
 import {
   getShiftDaysInRange,
   getShiftStatistics,
@@ -97,7 +96,7 @@ export const MainDashboardScreen: React.FC = () => {
   const { t: tCommon } = useTranslation('common');
   const isFocused = useIsFocused();
   const insets = useSafeAreaInsets();
-  const { data: onboardingContextData } = useOnboarding();
+  const { data: onboardingContextData, updateData, hydrated: onboardingHydrated } = useOnboarding();
   const [userData, setUserData] = useState<OnboardingData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -119,8 +118,6 @@ export const MainDashboardScreen: React.FC = () => {
   const [showRefreshSuccess, setShowRefreshSuccess] = useState(false);
   const refreshSuccessTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hasOnboardingContextData = Object.keys(onboardingContextData).length > 0;
-  const hasOnboardingContextDataRef = useRef(hasOnboardingContextData);
-  const onboardingContextDataRef = useRef(onboardingContextData);
 
   // Refresh success animation values
   const successBannerOpacity = useSharedValue(0);
@@ -135,41 +132,6 @@ export const MainDashboardScreen: React.FC = () => {
   const successIconStyle = useAnimatedStyle(() => ({
     transform: [{ scale: successIconScale.value }],
   }));
-
-  /**
-   * Load onboarding data from AsyncStorage
-   */
-  const loadData = useCallback(async (isRefresh = false) => {
-    try {
-      // asyncStorageService.get() auto-deserializes JSON, returns object directly
-      const savedData = await asyncStorageService.get<OnboardingData>('onboarding:data');
-      if (savedData && typeof savedData === 'object') {
-        // Avoid overriding fresher in-memory settings updates with potentially stale storage reads.
-        if (isRefresh || !hasOnboardingContextDataRef.current) {
-          setUserData(savedData);
-        }
-      }
-
-      if (isRefresh) {
-        // Update timestamp
-        setLastUpdated(new Date());
-
-        // Trigger re-entrance animations by incrementing key
-        setRefreshKey((prev) => prev + 1);
-
-        // Show success feedback
-        triggerRefreshSuccess();
-
-        // Success haptic
-        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      }
-    } catch (error) {
-      console.warn('Failed to load dashboard data:', error);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   /**
    * Trigger the refresh success animation sequence
@@ -201,6 +163,27 @@ export const MainDashboardScreen: React.FC = () => {
     }, 2000);
   }, [successBannerOpacity, successBannerTranslateY, successIconScale]);
 
+  const syncDashboardData = useCallback(
+    async (isRefresh = false) => {
+      try {
+        setUserData(hasOnboardingContextData ? onboardingContextData : null);
+
+        if (isRefresh) {
+          setLastUpdated(new Date());
+          setRefreshKey((prev) => prev + 1);
+          triggerRefreshSuccess();
+          await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        }
+      } catch (error) {
+        console.warn('Failed to load dashboard data:', error);
+      } finally {
+        setLoading(false);
+        setRefreshing(false);
+      }
+    },
+    [hasOnboardingContextData, onboardingContextData, triggerRefreshSuccess]
+  );
+
   // Clean up timeout on unmount
   useEffect(() => {
     return () => {
@@ -210,46 +193,25 @@ export const MainDashboardScreen: React.FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    hasOnboardingContextDataRef.current = hasOnboardingContextData;
-  }, [hasOnboardingContextData]);
-
-  useEffect(() => {
-    onboardingContextDataRef.current = onboardingContextData;
-  }, [onboardingContextData]);
-
   // Ensure Home reflects latest profile/settings saves whenever the tab regains focus.
   useEffect(() => {
-    if (!isFocused) return;
-    if (hasOnboardingContextData) {
-      setUserData(onboardingContextDataRef.current as OnboardingData);
-      setLoading(false);
-      setRefreshing(false);
-      return;
-    }
-    loadData(false);
-  }, [isFocused, hasOnboardingContextData, loadData]);
+    if (!isFocused || !onboardingHydrated) return;
+    void syncDashboardData(false);
+  }, [isFocused, onboardingHydrated, syncDashboardData]);
 
   // Subscribe to OnboardingContext so Profile → ShiftSettingsPanel saves are
   // reflected immediately on the Dashboard without requiring a pull-to-refresh.
   useEffect(() => {
-    if (hasOnboardingContextData) {
-      setUserData((prev) => {
-        const next = onboardingContextData as OnboardingData;
-        if (prev && JSON.stringify(prev) === JSON.stringify(next)) {
-          return prev;
-        }
-        return next;
-      });
-      setLoading(false);
-    }
-  }, [hasOnboardingContextData, onboardingContextData]);
+    if (!onboardingHydrated) return;
+    setUserData(hasOnboardingContextData ? (onboardingContextData as OnboardingData) : null);
+    setLoading(false);
+  }, [hasOnboardingContextData, onboardingContextData, onboardingHydrated]);
 
   const handleRefresh = useCallback(() => {
     setRefreshing(true);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    loadData(true);
-  }, [loadData]);
+    void syncDashboardData(true);
+  }, [syncDashboardData]);
 
   // Build shift cycle from user data
   const shiftCycle = useMemo(() => (userData ? buildShiftCycle(userData) : null), [userData]);
@@ -380,17 +342,13 @@ export const MainDashboardScreen: React.FC = () => {
 
   // Avatar change handler — persists new URI to AsyncStorage
   const handleAvatarChange = useCallback(
-    async (newUri: string | null) => {
+    (newUri: string | null) => {
       if (!userData) return;
       const updatedData = { ...userData, avatarUri: newUri ?? undefined };
       setUserData(updatedData);
-      try {
-        await asyncStorageService.set('onboarding:data', updatedData);
-      } catch (error) {
-        console.warn('Failed to save avatar URI:', error);
-      }
+      updateData({ avatarUri: newUri ?? undefined });
     },
-    [userData]
+    [updateData, userData]
   );
 
   // Loading state

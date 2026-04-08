@@ -39,6 +39,21 @@ describe('languageDetector', () => {
     expect(AsyncStorage.getItem).toHaveBeenCalledWith(LANGUAGE_KEY);
   });
 
+  it('migrates the legacy saved language key when present', async () => {
+    (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce(null).mockResolvedValueOnce('es-MX');
+
+    const detected = await new Promise<string>((resolve) => {
+      languageDetector.detect((language) => {
+        const value = Array.isArray(language) ? language[0] : language;
+        resolve(value ?? 'en');
+      });
+    });
+
+    expect(detected).toBe('es');
+    expect(AsyncStorage.setItem).toHaveBeenCalledWith(LANGUAGE_KEY, 'es');
+    expect(AsyncStorage.removeItem).toHaveBeenCalledWith('@ellie_language');
+  });
+
   it('falls back to device locale when no saved value exists', async () => {
     (AsyncStorage.getItem as jest.Mock).mockResolvedValue(null);
     (Localization.getLocales as jest.Mock).mockReturnValue([
@@ -62,5 +77,6 @@ describe('languageDetector', () => {
     await languageDetector.cacheUserLanguage?.('fr-CA');
 
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(LANGUAGE_KEY, 'fr');
+    expect(AsyncStorage.removeItem).toHaveBeenCalledWith('@ellie_language');
   });
 });

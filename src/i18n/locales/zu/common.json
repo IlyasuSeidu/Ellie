@@ -245,7 +245,8 @@
       "purchaseSuccessContinue": "Qhubeka uye ku-Ellie",
       "restorePurchasesSuccess": "Ukuthenga kubuyiselwe — wamukelekile ku-Pro!",
       "restorePurchasesNotFound": "Akukho ukuthenga kwangaphambilini okutholakele kule akhawunti.",
-      "restorePurchasesError": "Ukubuyisela kwehlulekile. Sicela uzame futhi."
+      "restorePurchasesError": "Ukubuyisela kwehlulekile. Sicela uzame futhi.",
+      "ctaOffline": "Xhuma ukuze ubhalise"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Ukubhalisa okusebenzayo kwe-Pro",
@@ -275,5 +276,8 @@
       "am": "AM",
       "pm": "PM"
     }
+  },
+  "offlineBanner": {
+    "message": "Awuxhunyiwe. Idatha yamashifu akho isatholakala."
   }
 }

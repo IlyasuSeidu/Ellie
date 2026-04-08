@@ -16,7 +16,6 @@ import {
   Pressable,
   Platform,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Animated, {
   FadeIn,
   FadeInDown,
@@ -44,7 +43,10 @@ import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { asyncStorageService } from '@/services/AsyncStorageService';
+import {
+  persistOnboardingData,
+  setPersistedOnboardingComplete,
+} from '@/utils/onboardingPersistence';
 import { userService } from '@/services/UserService';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { getShiftTimesFromData } from '@/utils/shiftTimeUtils';
@@ -64,6 +66,7 @@ import { getOnboardingSaveErrorMessage } from '@/utils/onboardingErrorMessage';
 import { Analytics } from '@/utils/analytics';
 import { NotificationPrimingModal } from '@/components/onboarding/NotificationPrimingModal';
 import { useSubscription } from '@/hooks/useSubscription';
+import { appStateStorageService } from '@/services/AppStateStorageService';
 
 const isJestRuntime = (): boolean =>
   typeof process !== 'undefined' && typeof process.env?.JEST_WORKER_ID === 'string';
@@ -367,8 +370,8 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
     }
 
     try {
-      await asyncStorageService.set('onboarding:complete', true);
-      await asyncStorageService.set('onboarding:data', data);
+      await setPersistedOnboardingComplete(true);
+      await persistOnboardingData(data);
 
       // Sync onboarding data to Firestore if user is authenticated.
       if (user) {
@@ -388,8 +391,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
 
       if (!completionTrackedRef.current) {
         completionTrackedRef.current = true;
-        const installTimeValue = await asyncStorageService.get<string>('app:install_time');
-        const installTime = Number(installTimeValue);
+        const installTime = (await appStateStorageService.getInstallStartedAt()) ?? 0;
         const timeToCompleteSeconds =
           Number.isFinite(installTime) && installTime > 0
             ? Math.max(0, Math.round((Date.now() - installTime) / 1000))
@@ -407,10 +409,32 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
         });
       }
 
-      notificationPromptTimerRef.current = setTimeout(() => {
-        Analytics.notificationPermissionSoftShown();
-        setShowNotificationModal(true);
-      }, 1500);
+      const shouldShowNotificationPrompt = async (): Promise<boolean> => {
+        if (await appStateStorageService.getNotificationSoftDeclined()) {
+          return false;
+        }
+
+        if (!isJestRuntime()) {
+          try {
+            const { notificationService } = await import('@/services/NotificationService');
+            const permissionStatus = await notificationService.getPermissionStatus();
+            if (permissionStatus === 'granted' || permissionStatus === 'denied') {
+              return false;
+            }
+          } catch {
+            // Fall back to the soft prompt when the permission status cannot be read.
+          }
+        }
+
+        return true;
+      };
+
+      if (await shouldShowNotificationPrompt()) {
+        notificationPromptTimerRef.current = setTimeout(() => {
+          Analytics.notificationPermissionSoftShown();
+          setShowNotificationModal(true);
+        }, 1500);
+      }
 
       const firstName = data.name?.trim().split(' ')[0] ?? 'there';
       if (!isJestRuntime()) {
@@ -1107,6 +1131,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
             }
           }
           if (granted) {
+            void appStateStorageService.setNotificationSoftDeclined(false);
             Analytics.notificationPermissionGranted();
             Analytics.track('notification_permission_requested', { result: 'granted' });
           } else {
@@ -1116,7 +1141,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
         }}
         onDecline={() => {
           setShowNotificationModal(false);
-          void AsyncStorage.setItem('notifications:soft_declined', 'true');
+          void appStateStorageService.setNotificationSoftDeclined(true);
           Analytics.notificationPermissionDeclined();
           Analytics.track('notification_permission_requested', { result: 'skipped' });
         }}

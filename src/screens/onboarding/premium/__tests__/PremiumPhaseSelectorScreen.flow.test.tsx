@@ -4,7 +4,9 @@ import { InteractionManager } from 'react-native';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
 import { PremiumPhaseSelectorScreen } from '../PremiumPhaseSelectorScreen';
 import { asyncStorageService } from '@/services/AsyncStorageService';
+import { loadPersistedOnboardingData, persistOnboardingData } from '@/utils/onboardingPersistence';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
+import { ShiftPattern } from '@/types';
 
 jest.mock('@/services/AsyncStorageService', () => ({
   asyncStorageService: {
@@ -12,6 +14,13 @@ jest.mock('@/services/AsyncStorageService', () => ({
     set: jest.fn().mockResolvedValue(undefined),
     remove: jest.fn().mockResolvedValue(undefined),
   },
+}));
+
+jest.mock('@/utils/onboardingPersistence', () => ({
+  loadPersistedOnboardingData: jest.fn(async () => null),
+  persistOnboardingData: jest.fn(async () => undefined),
+  clearPersistedOnboardingData: jest.fn(async () => undefined),
+  readPersistedOnboardingCompletionStatus: jest.fn(async () => false),
 }));
 
 jest.mock('expo-haptics');
@@ -195,15 +204,17 @@ describe('PremiumPhaseSelectorScreen flow accuracy', () => {
     jest.clearAllMocks();
     mockRouteParams = undefined;
     (asyncStorageService.get as jest.Mock).mockResolvedValue(null);
+    jest.mocked(loadPersistedOnboardingData).mockResolvedValue(null);
+    jest.mocked(persistOnboardingData).mockResolvedValue(undefined);
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     require('react-native-gesture-handler').__resetGestures();
   });
 
   it('keeps onboarding night day-2 selection deterministic under rapid left-right swipes', async () => {
-    (asyncStorageService.get as jest.Mock).mockResolvedValue({
+    jest.mocked(loadPersistedOnboardingData).mockResolvedValue({
       shiftSystem: '2-shift',
       rosterType: 'rotating',
-      patternType: 'STANDARD_4_4_4',
+      patternType: ShiftPattern.STANDARD_4_4_4,
     });
 
     const interactionSpy = jest
@@ -243,11 +254,8 @@ describe('PremiumPhaseSelectorScreen flow accuracy', () => {
       });
 
       await waitFor(() => {
-        const writes = (asyncStorageService.set as jest.Mock).mock.calls.filter(
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          ([key]: any[]) => key === 'onboarding:data'
-        );
-        const latestPayload = writes[writes.length - 1]?.[1];
+        const writes = jest.mocked(persistOnboardingData).mock.calls;
+        const latestPayload = writes[writes.length - 1]?.[0];
         expect(latestPayload).toEqual(expect.objectContaining({ phaseOffset: 5 }));
       });
 
@@ -259,10 +267,10 @@ describe('PremiumPhaseSelectorScreen flow accuracy', () => {
   });
 
   it('normalizes legacy lowercase pattern ids so phase/day mapping remains accurate', async () => {
-    (asyncStorageService.get as jest.Mock).mockResolvedValue({
+    jest.mocked(loadPersistedOnboardingData).mockResolvedValue({
       shiftSystem: '2-shift',
       rosterType: 'rotating',
-      patternType: 'standard_4_4_4',
+      patternType: 'standard_4_4_4' as unknown as ShiftPattern,
     });
 
     const interactionSpy = jest
@@ -298,11 +306,8 @@ describe('PremiumPhaseSelectorScreen flow accuracy', () => {
       });
 
       await waitFor(() => {
-        const writes = (asyncStorageService.set as jest.Mock).mock.calls.filter(
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          ([key]: any[]) => key === 'onboarding:data'
-        );
-        const latestPayload = writes[writes.length - 1]?.[1];
+        const writes = jest.mocked(persistOnboardingData).mock.calls;
+        const latestPayload = writes[writes.length - 1]?.[0];
         expect(latestPayload).toEqual(expect.objectContaining({ phaseOffset: 5 }));
       });
     } finally {

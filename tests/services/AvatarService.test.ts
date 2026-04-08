@@ -172,4 +172,22 @@ describe('AvatarService', () => {
       await expect(avatarService.deleteAvatar()).resolves.not.toThrow();
     });
   });
+
+  describe('resolveAvatarUri', () => {
+    it('returns the uri when the local avatar file exists', async () => {
+      mockGetInfo.mockResolvedValue({ exists: true });
+
+      await expect(
+        avatarService.resolveAvatarUri('file:///docs/avatars/profile-avatar.jpg')
+      ).resolves.toBe('file:///docs/avatars/profile-avatar.jpg');
+    });
+
+    it('returns null when the local avatar file is missing', async () => {
+      mockGetInfo.mockResolvedValue({ exists: false });
+
+      await expect(
+        avatarService.resolveAvatarUri('file:///docs/avatars/profile-avatar.jpg')
+      ).resolves.toBeNull();
+    });
+  });
 });

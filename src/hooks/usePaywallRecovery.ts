@@ -12,9 +12,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-export const PAYWALL_DECLINED_KEY = 'paywall:declined_at';
+import { appStateStorageService } from '@/services/AppStateStorageService';
 
 // Show nudge no sooner than 5 minutes after decline (avoids instant re-prompt)
 const MIN_DELAY_MS = 5 * 60 * 1000;
@@ -38,9 +36,8 @@ export function usePaywallRecovery(isPro: boolean): PaywallRecoveryState {
       return;
     }
 
-    void AsyncStorage.getItem(PAYWALL_DECLINED_KEY).then((value) => {
-      if (!value) return;
-      const declinedAt = Number(value);
+    void appStateStorageService.getPaywallDeclinedAt().then((declinedAt) => {
+      if (!declinedAt) return;
       if (!Number.isFinite(declinedAt) || declinedAt <= 0) return;
 
       const elapsed = Date.now() - declinedAt;
@@ -48,7 +45,7 @@ export function usePaywallRecovery(isPro: boolean): PaywallRecoveryState {
         setShouldNudge(true);
       } else if (elapsed > RECOVERY_WINDOW_MS) {
         // Expired — clean up so we don't check again
-        void AsyncStorage.removeItem(PAYWALL_DECLINED_KEY);
+        void appStateStorageService.clearPaywallDeclinedAt();
       }
     });
   }, [isPro]);
@@ -56,13 +53,13 @@ export function usePaywallRecovery(isPro: boolean): PaywallRecoveryState {
   // When a Pro user converts (isPro flips true), clear the nudge
   useEffect(() => {
     if (isPro) {
-      void AsyncStorage.removeItem(PAYWALL_DECLINED_KEY);
+      void appStateStorageService.clearPaywallDeclinedAt();
     }
   }, [isPro]);
 
   const dismissNudge = useCallback(async () => {
     setShouldNudge(false);
-    await AsyncStorage.removeItem(PAYWALL_DECLINED_KEY);
+    await appStateStorageService.clearPaywallDeclinedAt();
   }, []);
 
   return { shouldNudge, dismissNudge };

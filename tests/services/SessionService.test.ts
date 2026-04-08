@@ -229,6 +229,23 @@ describe('SessionService', () => {
         const currentSession = service.getCurrentSession();
         expect(currentSession?.events).toHaveLength(3);
       });
+
+      it('caps session events at 500 to avoid unbounded growth', async () => {
+        const session = await service.startSession(mockUserId);
+
+        for (let index = 0; index < 550; index += 1) {
+          await service.trackEvent(session.id, {
+            type: 'ACTION',
+            name: `event-${index}`,
+            timestamp: new Date(index),
+          });
+        }
+
+        const currentSession = service.getCurrentSession();
+        expect(currentSession?.events).toHaveLength(500);
+        expect(currentSession?.events[0].name).toBe('event-50');
+        expect(currentSession?.events[499].name).toBe('event-549');
+      });
     });
 
     describe('trackScreenView', () => {

@@ -7,6 +7,7 @@
 
 import { speechRecognitionService } from '../SpeechRecognitionService';
 import { ExpoSpeechRecognitionModule } from '../speechRecognitionNative';
+import { networkService } from '../NetworkService';
 
 // Mock the native adapter so the SpeechRecognitionService uses our fakes
 jest.mock('../speechRecognitionNative', () => ({
@@ -14,12 +15,25 @@ jest.mock('../speechRecognitionNative', () => ({
     requestPermissionsAsync: jest.fn(() => Promise.resolve({ granted: true })),
     getPermissionsAsync: jest.fn(() => Promise.resolve({ granted: true })),
     getSupportedLocales: jest.fn(() => Promise.resolve({ locales: [], installedLocales: [] })),
+    supportsOnDeviceRecognition: jest.fn(() => true),
     start: jest.fn(),
     stop: jest.fn(),
     abort: jest.fn(),
   },
   useSpeechRecognitionEvent: jest.fn(),
   isSpeechRecognitionNativeAvailable: true,
+}));
+
+jest.mock('../NetworkService', () => ({
+  networkService: {
+    getSnapshot: jest.fn(() => ({
+      status: 'online',
+      isConnected: true,
+      isInternetReachable: true,
+      type: 'wifi',
+      updatedAt: Date.now(),
+    })),
+  },
 }));
 
 // ── Helpers ────────────────────────────────────────────────────────
@@ -36,6 +50,7 @@ function resetPermissionMocks() {
     locales: [],
     installedLocales: [],
   });
+  (ExpoSpeechRecognitionModule.supportsOnDeviceRecognition as jest.Mock).mockReturnValue(true);
 }
 
 function createCallbacks() {
@@ -53,6 +68,13 @@ describe('SpeechRecognitionService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     resetPermissionMocks();
+    jest.mocked(networkService.getSnapshot).mockReturnValue({
+      status: 'online',
+      isConnected: true,
+      isInternetReachable: true,
+      type: 'wifi',
+      updatedAt: Date.now(),
+    } as never);
     speechRecognitionService.destroy();
   });
 
@@ -113,6 +135,7 @@ describe('SpeechRecognitionService', () => {
         interimResults: true,
         continuous: true,
         addsPunctuation: true,
+        requiresOnDeviceRecognition: false,
       });
     });
 
@@ -158,6 +181,44 @@ describe('SpeechRecognitionService', () => {
 
       expect(ExpoSpeechRecognitionModule.start).toHaveBeenCalledWith(
         expect.objectContaining({ lang: 'de-DE' })
+      );
+    });
+
+    it('should require on-device recognition while offline', async () => {
+      jest.mocked(networkService.getSnapshot).mockReturnValue({
+        status: 'offline',
+        isConnected: false,
+        isInternetReachable: false,
+        type: 'none',
+        updatedAt: Date.now(),
+      } as never);
+
+      const cbs = createCallbacks();
+      await speechRecognitionService.startListening(cbs, 'en-US');
+
+      expect(ExpoSpeechRecognitionModule.start).toHaveBeenCalledWith(
+        expect.objectContaining({ requiresOnDeviceRecognition: true })
+      );
+    });
+
+    it('should fail softly when offline recognition is unavailable on device', async () => {
+      jest.mocked(networkService.getSnapshot).mockReturnValue({
+        status: 'offline',
+        isConnected: false,
+        isInternetReachable: false,
+        type: 'none',
+        updatedAt: Date.now(),
+      } as never);
+      (ExpoSpeechRecognitionModule.supportsOnDeviceRecognition as jest.Mock).mockReturnValue(false);
+
+      const cbs = createCallbacks();
+      await speechRecognitionService.startListening(cbs, 'en-US');
+
+      expect(ExpoSpeechRecognitionModule.start).not.toHaveBeenCalled();
+      expect(cbs.onError).toHaveBeenCalledWith(
+        expect.objectContaining({
+          code: 'offline_unavailable',
+        })
       );
     });
 

@@ -2,6 +2,9 @@ import React, { createContext, useCallback, useContext, useEffect, useState } fr
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 import { getRevenueCatRuntime, type RevenueCatCustomerInfo } from '@/services/RevenueCatRuntime';
+import { networkService } from '@/services/NetworkService';
+import { subscriptionEntitlementCacheService } from '@/services/SubscriptionEntitlementCacheService';
+import { logger } from '@/utils/logger';
 
 const ENTITLEMENT_ID = 'pro';
 
@@ -49,8 +52,13 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({
     const apiKey = getRevenueCatApiKey();
     const revenueCatRuntime = getRevenueCatRuntime();
 
+    void subscriptionEntitlementCacheService.getCachedIsPro().then((cachedValue) => {
+      if (isMounted && typeof cachedValue === 'boolean') {
+        setIsPro(cachedValue);
+      }
+    });
+
     if (!apiKey || !revenueCatRuntime) {
-      setIsPro(false);
       setIsLoading(false);
       return undefined;
     }
@@ -60,22 +68,26 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({
     try {
       Purchases.setLogLevel(LOG_LEVEL.ERROR);
       Purchases.configure({ apiKey });
-    } catch {
-      setIsPro(false);
+    } catch (error) {
+      logger.warn('SubscriptionProvider: using cached entitlement after configure failure', {
+        error: error instanceof Error ? error.message : String(error),
+      });
       setIsLoading(false);
       return undefined;
     }
 
     void Purchases.getCustomerInfo()
       .then((info: RevenueCatCustomerInfo) => {
+        const hasPro = hasProEntitlement(info);
         if (isMounted) {
-          setIsPro(hasProEntitlement(info));
+          setIsPro(hasPro);
         }
+        return subscriptionEntitlementCacheService.setCachedIsPro(hasPro);
       })
-      .catch(() => {
-        if (isMounted) {
-          setIsPro(false);
-        }
+      .catch((error) => {
+        logger.warn('SubscriptionProvider: using cached entitlement after customer info failure', {
+          error: error instanceof Error ? error.message : String(error),
+        });
       })
       .finally(() => {
         if (isMounted) {
@@ -84,9 +96,11 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({
       });
 
     const customerInfoListener = (info: RevenueCatCustomerInfo) => {
+      const hasPro = hasProEntitlement(info);
       if (isMounted) {
-        setIsPro(hasProEntitlement(info));
+        setIsPro(hasPro);
       }
+      void subscriptionEntitlementCacheService.setCachedIsPro(hasPro);
     };
 
     try {
@@ -109,10 +123,18 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({
     const revenueCatRuntime = getRevenueCatRuntime();
     if (!revenueCatRuntime) return;
 
+    const snapshot = await networkService.refresh();
+    if (snapshot.status !== 'online') {
+      logger.warn('SubscriptionProvider: restore skipped while offline');
+      return;
+    }
+
     const { Purchases } = revenueCatRuntime;
     try {
       const info = await Purchases.restorePurchases();
-      setIsPro(hasProEntitlement(info));
+      const hasPro = hasProEntitlement(info);
+      setIsPro(hasPro);
+      await subscriptionEntitlementCacheService.setCachedIsPro(hasPro);
     } catch {
       // Silent no-op when there are no purchases to restore or user cancels.
     }

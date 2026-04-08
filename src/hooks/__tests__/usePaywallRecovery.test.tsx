@@ -1,8 +1,15 @@
 import React from 'react';
 import { act, render, waitFor } from '@testing-library/react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text } from 'react-native';
-import { PAYWALL_DECLINED_KEY, usePaywallRecovery } from '../usePaywallRecovery';
+import { usePaywallRecovery } from '../usePaywallRecovery';
+import { appStateStorageService } from '@/services/AppStateStorageService';
+
+jest.mock('@/services/AppStateStorageService', () => ({
+  appStateStorageService: {
+    getPaywallDeclinedAt: jest.fn(),
+    clearPaywallDeclinedAt: jest.fn(),
+  },
+}));
 
 const dismissNudgeRef: { current: (() => Promise<void>) | null } = { current: null };
 
@@ -18,6 +25,8 @@ describe('usePaywallRecovery', () => {
     jest.useFakeTimers();
     jest.setSystemTime(new Date('2026-03-23T00:00:00Z'));
     dismissNudgeRef.current = null;
+    jest.mocked(appStateStorageService.getPaywallDeclinedAt).mockResolvedValue(null);
+    jest.mocked(appStateStorageService.clearPaywallDeclinedAt).mockResolvedValue(undefined);
   });
 
   afterEach(() => {
@@ -25,7 +34,9 @@ describe('usePaywallRecovery', () => {
   });
 
   it('shows the nudge for non-pro users inside the recovery window', async () => {
-    jest.spyOn(AsyncStorage, 'getItem').mockResolvedValue(String(Date.now() - 10 * 60 * 1000));
+    jest
+      .mocked(appStateStorageService.getPaywallDeclinedAt)
+      .mockResolvedValue(Date.now() - 10 * 60 * 1000);
 
     const { getByText } = render(<HookHarness isPro={false} />);
 
@@ -35,7 +46,9 @@ describe('usePaywallRecovery', () => {
   });
 
   it('does not show the nudge before the minimum delay', async () => {
-    jest.spyOn(AsyncStorage, 'getItem').mockResolvedValue(String(Date.now() - 2 * 60 * 1000));
+    jest
+      .mocked(appStateStorageService.getPaywallDeclinedAt)
+      .mockResolvedValue(Date.now() - 2 * 60 * 1000);
 
     const { getByText } = render(<HookHarness isPro={false} />);
 
@@ -45,21 +58,21 @@ describe('usePaywallRecovery', () => {
   });
 
   it('removes expired decline timestamps', async () => {
-    const removeItemSpy = jest.spyOn(AsyncStorage, 'removeItem').mockResolvedValue();
     jest
-      .spyOn(AsyncStorage, 'getItem')
-      .mockResolvedValue(String(Date.now() - 8 * 24 * 60 * 60 * 1000));
+      .mocked(appStateStorageService.getPaywallDeclinedAt)
+      .mockResolvedValue(Date.now() - 8 * 24 * 60 * 60 * 1000);
 
     render(<HookHarness isPro={false} />);
 
     await waitFor(() => {
-      expect(removeItemSpy).toHaveBeenCalledWith(PAYWALL_DECLINED_KEY);
+      expect(appStateStorageService.clearPaywallDeclinedAt).toHaveBeenCalled();
     });
   });
 
   it('clears storage and hides the nudge when dismissed', async () => {
-    const removeItemSpy = jest.spyOn(AsyncStorage, 'removeItem').mockResolvedValue();
-    jest.spyOn(AsyncStorage, 'getItem').mockResolvedValue(String(Date.now() - 10 * 60 * 1000));
+    jest
+      .mocked(appStateStorageService.getPaywallDeclinedAt)
+      .mockResolvedValue(Date.now() - 10 * 60 * 1000);
 
     const { getByText } = render(<HookHarness isPro={false} />);
 
@@ -71,21 +84,18 @@ describe('usePaywallRecovery', () => {
       await dismissNudgeRef.current?.();
     });
 
-    expect(removeItemSpy).toHaveBeenCalledWith(PAYWALL_DECLINED_KEY);
+    expect(appStateStorageService.clearPaywallDeclinedAt).toHaveBeenCalled();
     expect(getByText('hidden')).toBeTruthy();
   });
 
   it('never shows the nudge for pro users and clears stale storage', async () => {
-    const removeItemSpy = jest.spyOn(AsyncStorage, 'removeItem').mockResolvedValue();
-    const getItemSpy = jest.spyOn(AsyncStorage, 'getItem').mockResolvedValue(String(Date.now()));
-
     const { getByText } = render(<HookHarness isPro />);
 
     await waitFor(() => {
       expect(getByText('hidden')).toBeTruthy();
     });
 
-    expect(getItemSpy).not.toHaveBeenCalled();
-    expect(removeItemSpy).toHaveBeenCalledWith(PAYWALL_DECLINED_KEY);
+    expect(appStateStorageService.getPaywallDeclinedAt).not.toHaveBeenCalled();
+    expect(appStateStorageService.clearPaywallDeclinedAt).toHaveBeenCalled();
   });
 });

@@ -52,6 +52,7 @@ interface SpeechRecognitionModuleShape {
   start: (options: StartOptions) => void;
   stop: () => void;
   abort: () => void;
+  supportsOnDeviceRecognition?: () => boolean;
   getSupportedLocales?: (options?: {
     androidRecognitionServicePackage?: string;
   }) => Promise<SupportedLocalesResult>;
@@ -80,6 +81,9 @@ const unavailableModule: SpeechRecognitionModuleShape = {
   },
   abort() {
     throw new Error(unavailableMessage);
+  },
+  supportsOnDeviceRecognition() {
+    return false;
   },
 };
 

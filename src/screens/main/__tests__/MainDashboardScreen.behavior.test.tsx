@@ -2,7 +2,6 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 import { render, fireEvent, waitFor, act } from '@testing-library/react-native';
 import { MainDashboardScreen } from '../MainDashboardScreen';
-import { asyncStorageService } from '@/services/AsyncStorageService';
 
 type HeaderMockProps = {
   testID?: string;
@@ -24,13 +23,19 @@ type CalendarCardMockProps = {
   onDayPress: (day: number) => void;
 };
 
-type QuickActionsMockProps = {
-  testID?: string;
-  onActionPress?: (action: string) => void;
-};
+const mockUpdateData = jest.fn();
+const mockUseOnboarding = jest.fn();
 
 jest.mock('@/contexts/OnboardingContext', () => ({
-  useOnboarding: jest.fn(() => ({ data: {}, updateData: jest.fn() })),
+  useOnboarding: () => mockUseOnboarding(),
+}));
+
+jest.mock('@/hooks/useSubscription', () => ({
+  useSubscription: jest.fn(() => ({ isPro: false, isLoading: false, openPaywall: jest.fn() })),
+}));
+
+jest.mock('@/hooks/usePaywallRecovery', () => ({
+  usePaywallRecovery: jest.fn(() => ({ shouldNudge: false, dismissNudge: jest.fn() })),
 }));
 
 jest.mock('@react-navigation/native', () => ({
@@ -41,18 +46,11 @@ jest.mock('@react-navigation/native', () => ({
   }),
 }));
 
-jest.mock('@/services/AsyncStorageService', () => ({
-  asyncStorageService: {
-    get: jest.fn(),
-    set: jest.fn(),
-    remove: jest.fn(),
-  },
-}));
-
 jest.mock('@/hooks/useActiveShift', () => ({
   useActiveShift: jest.fn(() => ({
     shiftType: 'day',
     accentShiftType: 'day',
+    scheduledShiftType: 'day',
     isOnShift: true,
     timeDisplay: '07:00 - 19:00',
     countdown: '2h left',
@@ -175,24 +173,9 @@ jest.mock('@/components/dashboard/MonthlyCalendarCard', () => {
 jest.mock('@/components/dashboard/StatisticsCard', () => {
   const React = require('react');
   const RN = require('react-native');
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return { StatisticsRow: (props: any) => React.createElement(RN.View, { testID: props.testID }) };
-});
-
-jest.mock('@/components/dashboard/QuickActionsBar', () => {
-  const React = require('react');
-  const RN = require('react-native');
   return {
-    QuickActionsBar: (props: QuickActionsMockProps) =>
-      React.createElement(
-        RN.View,
-        { testID: props.testID },
-        React.createElement(
-          RN.Pressable,
-          { testID: 'quick-action', onPress: () => props.onActionPress?.('sample') },
-          React.createElement(RN.Text, null, 'quick-action')
-        )
-      ),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    StatisticsRow: (props: any) => React.createElement(RN.View, { testID: props.testID }),
   };
 });
 
@@ -214,26 +197,28 @@ describe('MainDashboardScreen behavior coverage', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    (asyncStorageService.get as jest.Mock).mockResolvedValue(baseData);
-    (asyncStorageService.set as jest.Mock).mockResolvedValue(undefined);
+    mockUseOnboarding.mockReturnValue({
+      data: baseData,
+      updateData: mockUpdateData,
+      hydrated: true,
+    });
   });
 
-  it('logs and renders error state when data load throws', async () => {
-    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => undefined);
-    (asyncStorageService.get as jest.Mock).mockRejectedValueOnce(new Error('load fail'));
+  it('renders error state when onboarding has no usable data', async () => {
+    mockUseOnboarding.mockReturnValue({
+      data: {},
+      updateData: mockUpdateData,
+      hydrated: true,
+    });
 
     const { getByText } = render(<MainDashboardScreen />);
 
     await waitFor(() => {
       expect(getByText('Unable to load shift data')).toBeTruthy();
     });
-
-    expect(warnSpy).toHaveBeenCalledWith('Failed to load dashboard data:', expect.any(Error));
-    warnSpy.mockRestore();
   });
 
-  it('persists avatar updates and logs persistence failure', async () => {
-    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+  it('updates onboarding context when avatar changes', async () => {
     const { getByTestId } = render(<MainDashboardScreen />);
 
     await waitFor(() => {
@@ -241,20 +226,10 @@ describe('MainDashboardScreen behavior coverage', () => {
     });
 
     fireEvent.press(getByTestId('avatar-change'));
-    await waitFor(() => {
-      expect(asyncStorageService.set).toHaveBeenCalledWith(
-        'onboarding:data',
-        expect.objectContaining({ avatarUri: 'file://avatar.png' })
-      );
-    });
+    expect(mockUpdateData).toHaveBeenCalledWith({ avatarUri: 'file://avatar.png' });
 
-    (asyncStorageService.set as jest.Mock).mockRejectedValueOnce(new Error('save fail'));
     fireEvent.press(getByTestId('avatar-clear'));
-    await waitFor(() => {
-      expect(warnSpy).toHaveBeenCalledWith('Failed to save avatar URI:', expect.any(Error));
-    });
-
-    warnSpy.mockRestore();
+    expect(mockUpdateData).toHaveBeenCalledWith({ avatarUri: undefined });
   });
 
   it('wraps previous month from January to previous December', async () => {
@@ -316,7 +291,7 @@ describe('MainDashboardScreen behavior coverage', () => {
 
     await act(async () => {
       onRefresh();
-      onRefresh(); // second refresh should clear previous timeout
+      onRefresh();
     });
 
     await waitFor(() => {

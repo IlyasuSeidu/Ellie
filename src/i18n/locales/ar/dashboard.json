@@ -157,7 +157,20 @@
       "shiftTomorrowWork": "غدًا ({{date}}) لديك {{shiftType}}.",
       "shiftTomorrowOff": "غدًا ({{date}}) هو يوم إجازتك!",
       "nextDayOff": "يوم إجازتك القادم هو {{date}}.",
-      "nextNightShift": "ورديتك الليلية القادمة هي {{date}}."
+      "nextNightShift": "ورديتك الليلية القادمة هي {{date}}.",
+      "shiftsThisWeek": "هذا الأسبوع: {{dayCount}} ورديات نهارية و{{nightCount}} ورديات ليلية و{{offCount}} أيام راحة.",
+      "shiftsThisWeekThreeShift": "هذا الأسبوع: {{morningCount}} ورديات صباحية و{{afternoonCount}} ورديات مسائية و{{nightCount}} ورديات ليلية و{{offCount}} أيام راحة.",
+      "daysOffThisMonth": "لديك {{count}} أيام راحة هذا الشهر.",
+      "nightShiftsThisMonth": "لديك {{count}} ورديات ليلية هذا الشهر.",
+      "nextFlyOut": "يوم العودة القادم هو {{date}}.",
+      "startBack": "تعود إلى العمل في {{date}}.",
+      "patternSummaryRotating": "نمطك هو {{dayCount}} ورديات نهارية و{{nightCount}} ورديات ليلية ثم {{offCount}} أيام راحة.",
+      "patternSummaryThreeShift": "نمطك هو {{morningCount}} ورديات صباحية و{{afternoonCount}} ورديات مسائية و{{nightCount}} ورديات ليلية ثم {{offCount}} أيام راحة.",
+      "patternSummaryFifo": "نمطك هو {{workDays}} أيام في الموقع ثم {{restDays}} أيام راحة."
+    },
+    "notices": {
+      "offlineRecognitionUnavailable": "الإدخال الصوتي بدون اتصال غير متاح على هذا الجهاز الآن.",
+      "audioUnavailable": "الردود الصوتية غير متاحة الآن. لا يزال بإمكانك قراءة رد Ellie."
     }
   },
   "tabs": {

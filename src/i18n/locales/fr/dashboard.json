@@ -157,7 +157,20 @@
       "shiftTomorrowWork": "Demain ({{date}}), vous avez un poste {{shiftType}}.",
       "shiftTomorrowOff": "Demain ({{date}}) est votre jour de repos !",
       "nextDayOff": "Votre prochain jour de repos est le {{date}}.",
-      "nextNightShift": "Votre prochain quart de nuit est le {{date}}."
+      "nextNightShift": "Votre prochain quart de nuit est le {{date}}.",
+      "shiftsThisWeek": "Cette semaine : {{dayCount}} quarts de jour, {{nightCount}} quarts de nuit et {{offCount}} jours de repos.",
+      "shiftsThisWeekThreeShift": "Cette semaine : {{morningCount}} quarts du matin, {{afternoonCount}} quarts de l’après-midi, {{nightCount}} quarts de nuit et {{offCount}} jours de repos.",
+      "daysOffThisMonth": "Vous avez {{count}} jours de repos ce mois-ci.",
+      "nightShiftsThisMonth": "Vous avez {{count}} quarts de nuit ce mois-ci.",
+      "nextFlyOut": "Votre prochain jour de vol retour est {{date}}.",
+      "startBack": "Vous reprenez le {{date}}.",
+      "patternSummaryRotating": "Votre rythme est de {{dayCount}} quarts de jour, {{nightCount}} quarts de nuit, puis {{offCount}} jours de repos.",
+      "patternSummaryThreeShift": "Votre rythme est de {{morningCount}} quarts du matin, {{afternoonCount}} quarts de l’après-midi, {{nightCount}} quarts de nuit, puis {{offCount}} jours de repos.",
+      "patternSummaryFifo": "Votre rythme est de {{workDays}} jours sur site, puis {{restDays}} jours de repos."
+    },
+    "notices": {
+      "offlineRecognitionUnavailable": "La saisie vocale hors ligne n’est pas disponible sur cet appareil pour le moment.",
+      "audioUnavailable": "Les réponses audio ne sont pas disponibles pour le moment. Vous pouvez quand même lire la réponse d’Ellie."
     }
   },
   "tabs": {

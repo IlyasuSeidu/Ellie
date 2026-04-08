@@ -7,7 +7,7 @@
  * icon colors for a polished, engaging experience.
  */
 
-import React, { useMemo, useEffect, useCallback } from 'react';
+import React, { useMemo, useEffect, useCallback, useState } from 'react';
 import { View, Image, Alert, Pressable, StyleSheet, Platform } from 'react-native';
 import Animated, {
   useAnimatedStyle,
@@ -96,6 +96,7 @@ export const PersonalizedHeader: React.FC<PersonalizedHeaderProps> = ({
   const { t } = useTranslation('dashboard');
   const greeting = useMemo(() => getGreeting(t as GreetingTranslationFn), [liveTick, t]); // eslint-disable-line react-hooks/exhaustive-deps
   const initials = useMemo(() => getInitials(name), [name]);
+  const [resolvedAvatarUri, setResolvedAvatarUri] = useState<string | null>(avatarUri ?? null);
 
   // ── Staggered Entrance Shared Values ──────────────────────────
   const avatarEntranceScale = useSharedValue(0.3);
@@ -154,6 +155,25 @@ export const PersonalizedHeader: React.FC<PersonalizedHeaderProps> = ({
     );
   }, [ringScale]);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    void avatarService.resolveAvatarUri(avatarUri).then((uri) => {
+      if (cancelled) {
+        return;
+      }
+
+      setResolvedAvatarUri(uri);
+      if (!uri && avatarUri) {
+        onAvatarChange?.(null);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [avatarUri, onAvatarChange]);
+
   // ── Interactive Avatar Gestures ──────────────────────────────
   const avatarTapScale = useSharedValue(1);
 
@@ -185,12 +205,12 @@ export const PersonalizedHeader: React.FC<PersonalizedHeaderProps> = ({
       },
     ];
 
-    if (avatarUri) {
+    if (resolvedAvatarUri) {
       buttons.push({
         text: t('avatar.removePhoto', { ns: 'common' }),
         style: 'destructive',
         onPress: async () => {
-          await avatarService.deleteAvatar(avatarUri);
+          await avatarService.deleteAvatar(resolvedAvatarUri);
           onAvatarChange?.(null);
         },
       });
@@ -203,7 +223,7 @@ export const PersonalizedHeader: React.FC<PersonalizedHeaderProps> = ({
       t('avatar.message', { ns: 'common' }),
       buttons
     );
-  }, [avatarUri, onAvatarChange, t]);
+  }, [onAvatarChange, resolvedAvatarUri, t]);
 
   // Short tap: haptic bounce (unchanged)
   const tapGesture = Gesture.Tap()
@@ -292,9 +312,9 @@ export const PersonalizedHeader: React.FC<PersonalizedHeaderProps> = ({
 
             {/* Main avatar circle (interactive) */}
             <Animated.View style={[styles.avatar, avatarInteractionStyle]}>
-              {avatarUri ? (
+              {resolvedAvatarUri ? (
                 <Image
-                  source={{ uri: avatarUri }}
+                  source={{ uri: resolvedAvatarUri }}
                   style={styles.avatarImage}
                   resizeMode="cover"
                   onError={() => onAvatarChange?.(null)}

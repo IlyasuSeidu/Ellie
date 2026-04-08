@@ -6,7 +6,7 @@
  */
 
 import { tryOfflineFallback } from '@/utils/offlineFallback';
-import { ShiftPattern, ShiftSystem, ShiftCycle } from '@/types';
+import { ShiftPattern, ShiftSystem, ShiftCycle, RosterType } from '@/types';
 
 // ---------------------------------------------------------------------------
 // Fixtures
@@ -36,6 +36,22 @@ const shiftCycle: ShiftCycle = {
 };
 
 const userName = 'Alex';
+
+const fifoCycle: ShiftCycle = {
+  patternType: ShiftPattern.FIFO_8_6,
+  rosterType: RosterType.FIFO,
+  shiftSystem: ShiftSystem.TWO_SHIFT,
+  daysOn: 8,
+  nightsOn: 0,
+  daysOff: 6,
+  startDate: '2024-01-01',
+  phaseOffset: 0,
+  fifoConfig: {
+    workBlockDays: 8,
+    restBlockDays: 6,
+    workBlockPattern: 'straight-days',
+  },
+};
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -134,11 +150,7 @@ describe('tryOfflineFallback', () => {
       // Today = Jan 4 2024 -> tomorrow Jan 5 -> position 4 -> night shift
       setFakeDate('2024-01-04');
 
-      const result = tryOfflineFallback(
-        'What shift do I have tomorrow?',
-        shiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('What shift do I have tomorrow?', shiftCycle, userName);
 
       expect(result.handled).toBe(true);
       expect(result.text).toContain('Tomorrow');
@@ -151,11 +163,7 @@ describe('tryOfflineFallback', () => {
       // Today = Jan 8 2024 -> tomorrow Jan 9 -> position 8 -> off
       setFakeDate('2024-01-08');
 
-      const result = tryOfflineFallback(
-        'What shift do I have tomorrow?',
-        shiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('What shift do I have tomorrow?', shiftCycle, userName);
 
       expect(result.handled).toBe(true);
       expect(result.text).toContain('Tomorrow');
@@ -177,11 +185,7 @@ describe('tryOfflineFallback', () => {
       // Today = Jan 12 -> tomorrow Jan 13 (Saturday) -> position 0 in 2nd cycle -> day shift
       setFakeDate('2024-01-12');
 
-      const result = tryOfflineFallback(
-        'What shift do I have tomorrow?',
-        shiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('What shift do I have tomorrow?', shiftCycle, userName);
 
       expect(result.handled).toBe(true);
       // dayjs formats as "Saturday, January 13"
@@ -249,11 +253,7 @@ describe('tryOfflineFallback', () => {
       // Next off day searching from Jan 2: Jan 9 (position 8 -> off)
       setFakeDate('2024-01-02');
 
-      const result = tryOfflineFallback(
-        'When is my next day off?',
-        shiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('When is my next day off?', shiftCycle, userName);
 
       expect(result.handled).toBe(true);
       expect(result.text).toBeDefined();
@@ -285,11 +285,7 @@ describe('tryOfflineFallback', () => {
       // Jan 7 -> next off = Jan 9 (Tuesday)
       setFakeDate('2024-01-07');
 
-      const result = tryOfflineFallback(
-        'When is my next day off?',
-        shiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('When is my next day off?', shiftCycle, userName);
 
       expect(result.handled).toBe(true);
       // dayjs formats: "Tuesday, January 9"
@@ -302,11 +298,7 @@ describe('tryOfflineFallback', () => {
       // so it should find Jan 10 (also off).
       setFakeDate('2024-01-09');
 
-      const result = tryOfflineFallback(
-        'When is my next day off?',
-        shiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('When is my next day off?', shiftCycle, userName);
 
       expect(result.handled).toBe(true);
       expect(result.text).toBeDefined();
@@ -322,11 +314,7 @@ describe('tryOfflineFallback', () => {
       // Next night searching from Jan 3: Jan 5 (position 4 -> night)
       setFakeDate('2024-01-03');
 
-      const result = tryOfflineFallback(
-        'When is my next night shift?',
-        shiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('When is my next night shift?', shiftCycle, userName);
 
       expect(result.handled).toBe(true);
       expect(result.text).toContain('next night shift');
@@ -368,38 +356,77 @@ describe('tryOfflineFallback', () => {
     });
   });
 
-  // ── 6. Unhandled queries ────────────────────────────────────────────────
+  // ── 6. Extended offline queries ─────────────────────────────────────────
+
+  describe('extended offline queries', () => {
+    it('should handle "What shifts next week?" with a local summary', () => {
+      setFakeDate('2024-01-05');
+
+      const result = tryOfflineFallback('What shifts next week?', shiftCycle, userName);
+
+      expect(result.handled).toBe(true);
+      expect(result.text).toContain('This week');
+      expect(result.toolName).toBe('get_shift_range_summary');
+    });
+
+    it('should handle "How many days off this month?" locally', () => {
+      setFakeDate('2024-01-05');
+
+      const result = tryOfflineFallback('How many days off this month?', shiftCycle, userName);
+
+      expect(result.handled).toBe(true);
+      expect(result.text).toContain('this month');
+      expect(result.toolName).toBe('get_monthly_shift_stats');
+    });
+
+    it('should handle "How many night shifts this month?" locally', () => {
+      setFakeDate('2024-01-05');
+
+      const result = tryOfflineFallback('How many night shifts this month?', shiftCycle, userName);
+
+      expect(result.handled).toBe(true);
+      expect(result.text).toContain('night shifts');
+      expect(result.toolName).toBe('get_monthly_shift_stats');
+    });
+
+    it('should describe the current pattern locally', () => {
+      const result = tryOfflineFallback("What's my pattern?", shiftCycle, userName);
+
+      expect(result.handled).toBe(true);
+      expect(result.text).toContain('4 day shifts');
+      expect(result.toolName).toBe('describe_shift_pattern');
+    });
+
+    it('should answer the next fly-out date for FIFO cycles', () => {
+      setFakeDate('2024-01-05');
+
+      const result = tryOfflineFallback('When do I next fly out?', fifoCycle, userName);
+
+      expect(result.handled).toBe(true);
+      expect(result.text).toContain('January 8');
+      expect(result.toolName).toBe('get_next_fifo_transition');
+    });
+
+    it('should answer when the user starts back for FIFO cycles', () => {
+      setFakeDate('2024-01-05');
+
+      const result = tryOfflineFallback('When do I start back?', fifoCycle, userName);
+
+      expect(result.handled).toBe(true);
+      expect(result.text).toContain('January 15');
+      expect(result.toolName).toBe('get_next_fifo_transition');
+    });
+  });
+
+  // ── 7. Unhandled queries ────────────────────────────────────────────────
 
   describe('unhandled queries', () => {
     beforeEach(() => {
       setFakeDate('2024-01-05');
     });
 
-    it('should not handle "What shifts next week?"', () => {
-      const result = tryOfflineFallback('What shifts next week?', shiftCycle, userName);
-
-      expect(result.handled).toBe(false);
-      expect(result.text).toBeUndefined();
-      expect(result.toolName).toBeUndefined();
-    });
-
-    it('should not handle "How many night shifts this month?"', () => {
-      const result = tryOfflineFallback(
-        'How many night shifts this month?',
-        shiftCycle,
-        userName
-      );
-
-      expect(result.handled).toBe(false);
-      expect(result.text).toBeUndefined();
-    });
-
     it('should not handle random text', () => {
-      const result = tryOfflineFallback(
-        'Tell me a joke about shift workers',
-        shiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('Tell me a joke about shift workers', shiftCycle, userName);
 
       expect(result.handled).toBe(false);
       expect(result.text).toBeUndefined();
@@ -419,17 +446,13 @@ describe('tryOfflineFallback', () => {
 
     it('should not match today queries that also mention "next" or "week"', () => {
       // matchesToday explicitly excludes "next" and "week"
-      const result = tryOfflineFallback(
-        'What shift today and next week?',
-        shiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('What shift today and next week?', shiftCycle, userName);
 
       expect(result.handled).toBe(false);
     });
   });
 
-  // ── 7. Edge cases ──────────────────────────────────────────────────────
+  // ── 8. Edge cases ──────────────────────────────────────────────────────
 
   describe('edge cases', () => {
     beforeEach(() => {
@@ -444,33 +467,21 @@ describe('tryOfflineFallback', () => {
     });
 
     it('should handle queries with mixed case', () => {
-      const result = tryOfflineFallback(
-        'WHAT SHIFT DO I HAVE TODAY?',
-        shiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('WHAT SHIFT DO I HAVE TODAY?', shiftCycle, userName);
 
       expect(result.handled).toBe(true);
       expect(result.text).toBeDefined();
     });
 
     it('should handle queries with extra leading/trailing spaces', () => {
-      const result = tryOfflineFallback(
-        '   What shift do I have today?   ',
-        shiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('   What shift do I have today?   ', shiftCycle, userName);
 
       expect(result.handled).toBe(true);
       expect(result.text).toBeDefined();
     });
 
     it('should handle queries with mixed case and extra spaces', () => {
-      const result = tryOfflineFallback(
-        '  AM I WORKING TODAY?  ',
-        shiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('  AM I WORKING TODAY?  ', shiftCycle, userName);
 
       expect(result.handled).toBe(true);
       expect(result.text).toBeDefined();
@@ -486,11 +497,7 @@ describe('tryOfflineFallback', () => {
     });
 
     it('should handle "When Is My Next Day Off?" with title case', () => {
-      const result = tryOfflineFallback(
-        'When Is My Next Day Off?',
-        shiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('When Is My Next Day Off?', shiftCycle, userName);
 
       expect(result.handled).toBe(true);
       expect(result.text).toContain('next day off');
@@ -504,18 +511,14 @@ describe('tryOfflineFallback', () => {
     });
 
     it('should handle "Tomorrow Work Schedule" with various casing', () => {
-      const result = tryOfflineFallback(
-        'Tomorrow Work Schedule',
-        shiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('Tomorrow Work Schedule', shiftCycle, userName);
 
       expect(result.handled).toBe(true);
       expect(result.text).toContain('Tomorrow');
     });
   });
 
-  // ── 8. Return shape validation ──────────────────────────────────────────
+  // ── 9. Return shape validation ──────────────────────────────────────────
 
   describe('return value shape', () => {
     beforeEach(() => {
@@ -529,11 +532,7 @@ describe('tryOfflineFallback', () => {
     });
 
     it('should include handled, text, and toolName for handled queries', () => {
-      const result = tryOfflineFallback(
-        'What shift do I have today?',
-        shiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('What shift do I have today?', shiftCycle, userName);
 
       expect(result).toHaveProperty('handled', true);
       expect(result).toHaveProperty('text');
@@ -543,7 +542,7 @@ describe('tryOfflineFallback', () => {
     });
   });
 
-  // ── 9. Different shift cycle configurations ─────────────────────────────
+  // ── 10. Different shift cycle configurations ─────────────────────────────
 
   describe('with a 3-shift system cycle', () => {
     const threeShiftCycle: ShiftCycle = {
@@ -564,11 +563,7 @@ describe('tryOfflineFallback', () => {
     it('should report morning shift for today query', () => {
       setFakeDate('2024-01-01');
 
-      const result = tryOfflineFallback(
-        'What shift do I have today?',
-        threeShiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('What shift do I have today?', threeShiftCycle, userName);
 
       expect(result.handled).toBe(true);
       expect(result.text).toContain('morning');
@@ -578,11 +573,7 @@ describe('tryOfflineFallback', () => {
     it('should report afternoon shift for today query', () => {
       setFakeDate('2024-01-03');
 
-      const result = tryOfflineFallback(
-        'What shift do I have today?',
-        threeShiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('What shift do I have today?', threeShiftCycle, userName);
 
       expect(result.handled).toBe(true);
       expect(result.text).toContain('afternoon');
@@ -591,11 +582,7 @@ describe('tryOfflineFallback', () => {
     it('should report night shift for today query', () => {
       setFakeDate('2024-01-05');
 
-      const result = tryOfflineFallback(
-        'What shift do I have today?',
-        threeShiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('What shift do I have today?', threeShiftCycle, userName);
 
       expect(result.handled).toBe(true);
       expect(result.text).toContain('night');
@@ -604,11 +591,7 @@ describe('tryOfflineFallback', () => {
     it('should report day off for today query', () => {
       setFakeDate('2024-01-08');
 
-      const result = tryOfflineFallback(
-        'What shift do I have today?',
-        threeShiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('What shift do I have today?', threeShiftCycle, userName);
 
       expect(result.handled).toBe(true);
       expect(result.text).toContain('day off');
@@ -618,11 +601,7 @@ describe('tryOfflineFallback', () => {
       // Jan 1 (morning) -> next night = Jan 5
       setFakeDate('2024-01-01');
 
-      const result = tryOfflineFallback(
-        'When is my next night shift?',
-        threeShiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('When is my next night shift?', threeShiftCycle, userName);
 
       expect(result.handled).toBe(true);
       expect(result.text).toContain('next night shift');
@@ -634,11 +613,7 @@ describe('tryOfflineFallback', () => {
       // Jan 5 (night) -> next off = Jan 7 (Sunday)
       setFakeDate('2024-01-05');
 
-      const result = tryOfflineFallback(
-        'When is my next day off?',
-        threeShiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('When is my next day off?', threeShiftCycle, userName);
 
       expect(result.handled).toBe(true);
       expect(result.text).toContain('Sunday');
@@ -656,7 +631,7 @@ describe('tryOfflineFallback', () => {
     });
   });
 
-  // ── 10. Priority / exclusion rules ──────────────────────────────────────
+  // ── 11. Priority / exclusion rules ──────────────────────────────────────
 
   describe('pattern matching priority and exclusion', () => {
     it('should match today query before "am I working" check for compound queries', () => {
@@ -673,11 +648,7 @@ describe('tryOfflineFallback', () => {
       // matchesToday excludes queries containing "tomorrow"
       setFakeDate('2024-01-02');
 
-      const result = tryOfflineFallback(
-        'What shift today or tomorrow?',
-        shiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('What shift today or tomorrow?', shiftCycle, userName);
 
       // "today" is excluded because "tomorrow" is present, but this should
       // still match matchesTomorrow since it has "tomorrow" + "shift"
@@ -688,11 +659,7 @@ describe('tryOfflineFallback', () => {
     it('should NOT match today when "month" is in the query', () => {
       setFakeDate('2024-01-02');
 
-      const result = tryOfflineFallback(
-        'What is my shift today this month?',
-        shiftCycle,
-        userName
-      );
+      const result = tryOfflineFallback('What is my shift today this month?', shiftCycle, userName);
 
       expect(result.handled).toBe(false);
     });

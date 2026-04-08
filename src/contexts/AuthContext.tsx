@@ -5,6 +5,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { AuthService } from '@/services/AuthService';
 import { getFirebaseAuth } from '@/config/firebase';
 import { asyncStorageService } from '@/services/AsyncStorageService';
+import { networkService } from '@/services/NetworkService';
 import { googleConfig } from '@/config/env';
 import { logger } from '@/utils/logger';
 import { getAuthErrorMessage } from '@/utils/authErrorMessage';
@@ -97,10 +98,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setError(null);
   }, []);
 
+  const ensureOnlineForAuthAction = useCallback(async () => {
+    const snapshot = await networkService.refresh();
+    if (snapshot.status === 'online') {
+      return;
+    }
+
+    const offlineError = new Error('Network error. Please check your connection.');
+    (offlineError as Error & { code: string }).code = 'auth/network-request-failed';
+    throw offlineError;
+  }, []);
+
   const signIn = useCallback(
     async (email: string, password: string) => {
       try {
         setError(null);
+        await ensureOnlineForAuthAction();
         await service.signInWithEmail(email, password);
       } catch (err) {
         const message = getAuthErrorMessage(err, 'signIn');
@@ -108,13 +121,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw err;
       }
     },
-    [service]
+    [ensureOnlineForAuthAction, service]
   );
 
   const signUp = useCallback(
     async (email: string, password: string) => {
       try {
         setError(null);
+        await ensureOnlineForAuthAction();
         await service.signUpWithEmail(email, password);
       } catch (err) {
         const message = getAuthErrorMessage(err, 'signUp');
@@ -122,30 +136,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw err;
       }
     },
-    [service]
+    [ensureOnlineForAuthAction, service]
   );
 
   const signInWithGoogle = useCallback(async () => {
     try {
       setError(null);
+      await ensureOnlineForAuthAction();
       await service.signInWithGoogle();
     } catch (err) {
       const message = getAuthErrorMessage(err, 'googleSignIn');
       setError(message);
       throw err;
     }
-  }, [service]);
+  }, [ensureOnlineForAuthAction, service]);
 
   const signInWithApple = useCallback(async () => {
     try {
       setError(null);
+      await ensureOnlineForAuthAction();
       await service.signInWithApple();
     } catch (err) {
       const message = getAuthErrorMessage(err, 'appleSignIn');
       setError(message);
       throw err;
     }
-  }, [service]);
+  }, [ensureOnlineForAuthAction, service]);
 
   const signOut = useCallback(async () => {
     try {
@@ -167,6 +183,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     async (email: string) => {
       try {
         setError(null);
+        await ensureOnlineForAuthAction();
         await service.sendPasswordResetEmail(email);
       } catch (err) {
         const message = getAuthErrorMessage(err, 'passwordReset');
@@ -174,19 +191,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw err;
       }
     },
-    [service]
+    [ensureOnlineForAuthAction, service]
   );
 
   const sendEmailVerification = useCallback(async () => {
     try {
       setError(null);
+      await ensureOnlineForAuthAction();
       await service.sendEmailVerification();
     } catch (err) {
       const message = getAuthErrorMessage(err, 'emailVerification');
       setError(message);
       throw err;
     }
-  }, [service]);
+  }, [ensureOnlineForAuthAction, service]);
 
   const value = useMemo<AuthContextValue>(
     () => ({

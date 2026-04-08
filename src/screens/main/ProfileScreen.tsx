@@ -27,12 +27,12 @@ import { ShiftSettingsPanel } from '@/components/profile/ShiftSettingsPanel';
 import { WorkStatsSummary } from '@/components/profile/WorkStatsSummary';
 import { LANGUAGE_NAMES, LanguageSelectorSheet } from '@/components/profile/LanguageSelectorSheet';
 import { SmartRemindersPanel } from '@/components/profile/SmartRemindersPanel';
-import { asyncStorageService } from '@/services/AsyncStorageService';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 // Temporarily disabled for physical-device regression testing.
 // import { useSubscription } from '@/hooks/useSubscription';
 import { getSettingsErrorMessage } from '@/utils/settingsErrorMessage';
+import { setPersistedOnboardingComplete } from '@/utils/onboardingPersistence';
 
 export const ProfileScreen: React.FC = () => {
   const { t } = useTranslation('profile');
@@ -69,7 +69,7 @@ export const ProfileScreen: React.FC = () => {
 
   const handleRunOnboardingAgain = useCallback(async () => {
     try {
-      await asyncStorageService.set('onboarding:complete', false);
+      await setPersistedOnboardingComplete(false);
 
       const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
       if (rootNavigation && typeof rootNavigation.reset === 'function') {

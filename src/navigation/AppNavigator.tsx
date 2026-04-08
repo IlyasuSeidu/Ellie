@@ -16,11 +16,11 @@ import {
   type NavigatorScreenParams,
 } from '@react-navigation/native';
 import { theme } from '@/utils/theme';
-import { asyncStorageService } from '@/services/AsyncStorageService';
 import { useAuth } from '@/contexts/AuthContext';
 import { AuthNavigator, type AuthStackParamList } from './AuthNavigator';
 import { OnboardingNavigator, type OnboardingStackParamList } from './OnboardingNavigator';
 import { MainTabNavigator } from './MainTabNavigator';
+import { readPersistedOnboardingCompletionStatus } from '@/utils/onboardingPersistence';
 
 function requiresEmailVerification(
   user: {
@@ -49,27 +49,8 @@ export type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export async function readOnboardingCompletionStatus(): Promise<boolean> {
-  const completionFlag = await asyncStorageService.get<boolean>('onboarding:complete');
-  if (completionFlag === true) {
-    return true;
-  }
-
-  if (completionFlag === false) {
-    return false;
-  }
-
-  const savedData = await asyncStorageService.get<Record<string, unknown>>('onboarding:data');
-  if (savedData && typeof savedData === 'object') {
-    return !!(
-      savedData.name &&
-      savedData.startDate &&
-      savedData.patternType &&
-      savedData.shiftSystem
-    );
-  }
-
-  return false;
+export function readOnboardingCompletionStatus(): Promise<boolean> {
+  return readPersistedOnboardingCompletionStatus();
 }
 
 export const MainRouteGate: React.FC = () => {

@@ -245,7 +245,8 @@
       "purchaseSuccessContinue": "继续前往 Ellie",
       "restorePurchasesSuccess": "购买已恢复，欢迎使用 Pro！",
       "restorePurchasesNotFound": "此账户未找到过往购买记录。",
-      "restorePurchasesError": "恢复失败。请重试。"
+      "restorePurchasesError": "恢复失败。请重试。",
+      "ctaOffline": "联网后订阅"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro 主动订阅",
@@ -275,5 +276,8 @@
       "am": "上午",
       "pm": "下午"
     }
+  },
+  "offlineBanner": {
+    "message": "当前离线。你的班次数据仍可用。"
   }
 }

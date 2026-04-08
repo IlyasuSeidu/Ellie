@@ -66,6 +66,22 @@ jest.mock('@expo/vector-icons', () => {
 
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import { useAuth } from '@/contexts/AuthContext';
+import { ShiftPattern } from '@/types';
+
+const completeOnboardingData = {
+  name: 'John',
+  startDate: '2026-01-01',
+  patternType: ShiftPattern.STANDARD_3_3_3,
+  shiftSystem: '2-shift' as const,
+  phaseOffset: 0,
+  shiftTimes: {
+    dayShift: {
+      startTime: '07:00',
+      endTime: '19:00',
+      duration: 12 as const,
+    },
+  },
+};
 
 describe('AppNavigator', () => {
   beforeEach(() => {
@@ -102,6 +118,7 @@ describe('AppNavigator', () => {
     });
     (asyncStorageService.get as jest.Mock).mockImplementation(async (key: string) => {
       if (key === 'onboarding:complete') return true;
+      if (key === 'onboarding:data') return completeOnboardingData;
       return null;
     });
 
@@ -168,7 +185,7 @@ describe('AppNavigator', () => {
     });
   });
 
-  it('should show onboarding when completion flag is false even with complete data', async () => {
+  it('should self-heal to dashboard when completion flag is false but data is complete', async () => {
     (useAuth as jest.Mock).mockReturnValue({
       user: {
         uid: 'user-1',
@@ -177,16 +194,9 @@ describe('AppNavigator', () => {
       },
       isLoading: false,
     });
-    const completeData = {
-      name: 'John',
-      startDate: '2026-01-01',
-      patternType: 'STANDARD_3_3_3',
-      shiftSystem: '2-shift',
-    };
-
     (asyncStorageService.get as jest.Mock).mockImplementation(async (key: string) => {
       if (key === 'onboarding:complete') return false;
-      if (key === 'onboarding:data') return completeData;
+      if (key === 'onboarding:data') return completeOnboardingData;
       return null;
     });
 
@@ -197,8 +207,10 @@ describe('AppNavigator', () => {
     );
 
     await waitFor(() => {
-      expect(getByTestId('onboarding-navigator')).toBeTruthy();
+      expect(getByTestId('main-dashboard')).toBeTruthy();
     });
+
+    expect(asyncStorageService.set).toHaveBeenCalledWith('onboarding:complete', true);
   });
 
   it('should gate unverified password users in auth and skip onboarding checks', async () => {
@@ -228,6 +240,7 @@ describe('AppNavigator', () => {
   it('readOnboardingCompletionStatus returns true when completion flag is true', async () => {
     (asyncStorageService.get as jest.Mock).mockImplementation(async (key: string) => {
       if (key === 'onboarding:complete') return true;
+      if (key === 'onboarding:data') return completeOnboardingData;
       return null;
     });
 
@@ -267,6 +280,7 @@ describe('AppNavigator', () => {
   it('MainRouteGate allows Main when onboarding is complete', async () => {
     (asyncStorageService.get as jest.Mock).mockImplementation(async (key: string) => {
       if (key === 'onboarding:complete') return true;
+      if (key === 'onboarding:data') return completeOnboardingData;
       return null;
     });
 

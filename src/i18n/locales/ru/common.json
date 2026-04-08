@@ -245,7 +245,8 @@
       "purchaseSuccessContinue": "Перейти в Ellie",
       "restorePurchasesSuccess": "Покупка восстановлена — добро пожаловать в Pro!",
       "restorePurchasesNotFound": "Для этой учетной записи не найдено предыдущих покупок.",
-      "restorePurchasesError": "Восстановление не удалось. Попробуйте еще раз."
+      "restorePurchasesError": "Восстановление не удалось. Попробуйте еще раз.",
+      "ctaOffline": "Подключитесь, чтобы оформить подписку"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Активная подписка Pro",
@@ -275,5 +276,8 @@
       "am": "ДП",
       "pm": "ПП"
     }
+  },
+  "offlineBanner": {
+    "message": "Вы не в сети. Данные о сменах по-прежнему доступны."
   }
 }

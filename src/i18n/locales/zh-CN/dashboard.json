@@ -157,7 +157,20 @@
       "shiftTomorrowWork": "明天（{{date}}）你是{{shiftType}}。",
       "shiftTomorrowOff": "明天（{{date}}）你休息！",
       "nextDayOff": "你下一个休息日是{{date}}。",
-      "nextNightShift": "你下一次夜班是{{date}}。"
+      "nextNightShift": "你下一次夜班是{{date}}。",
+      "shiftsThisWeek": "本周：{{dayCount}}个白班，{{nightCount}}个夜班，{{offCount}}天休息。",
+      "shiftsThisWeekThreeShift": "本周：{{morningCount}}个早班，{{afternoonCount}}个下午班，{{nightCount}}个夜班，{{offCount}}天休息。",
+      "daysOffThisMonth": "你这个月有{{count}}天休息。",
+      "nightShiftsThisMonth": "你这个月有{{count}}个夜班。",
+      "nextFlyOut": "你下一个返程日是{{date}}。",
+      "startBack": "你将在{{date}}返回上班。",
+      "patternSummaryRotating": "你的轮班模式是{{dayCount}}个白班、{{nightCount}}个夜班，然后{{offCount}}天休息。",
+      "patternSummaryThreeShift": "你的轮班模式是{{morningCount}}个早班、{{afternoonCount}}个下午班、{{nightCount}}个夜班，然后{{offCount}}天休息。",
+      "patternSummaryFifo": "你的模式是现场工作{{workDays}}天，然后休息{{restDays}}天。"
+    },
+    "notices": {
+      "offlineRecognitionUnavailable": "此设备当前不支持离线语音输入。",
+      "audioUnavailable": "当前无法播放语音回复。你仍然可以阅读 Ellie 的回复。"
     }
   },
   "tabs": {

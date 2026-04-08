@@ -3,6 +3,7 @@
  */
 
 import {
+  FailedSyncOperation,
   SyncOperation,
   SyncStatus,
   NetworkStateCallback,
@@ -19,6 +20,7 @@ export class MockDataSyncService {
   private networkCallbacks: NetworkStateCallback[] = [];
   private lastSyncTimes: Map<string, Date> = new Map();
   private failedOpsCount = 0;
+  private deadLetter: FailedSyncOperation[] = [];
 
   async addToQueue(operation: SyncOperation): Promise<void> {
     this.queue.push(operation);
@@ -53,6 +55,12 @@ export class MockDataSyncService {
           failedOps.push(operation);
         } else {
           this.failedOpsCount++;
+          this.deadLetter.push({
+            ...operation,
+            failedAt: new Date(),
+            lastError: 'Simulated processing error',
+            reason: 'unknown',
+          });
         }
       }
     }
@@ -65,6 +73,7 @@ export class MockDataSyncService {
     await Promise.resolve();
     this.queue = [];
     this.failedOpsCount = 0;
+    this.deadLetter = [];
   }
 
   async getQueueSize(): Promise<number> {
@@ -92,8 +101,30 @@ export class MockDataSyncService {
       isSyncing: this.isSyncing,
       lastSyncTime: await this.getLastSyncTime(userId),
       pendingOperations: this.queue.length,
-      failedOperations: this.failedOpsCount,
+      failedOperations: this.deadLetter.length,
     };
+  }
+
+  async getFailedOperations(): Promise<FailedSyncOperation[]> {
+    await Promise.resolve();
+    return [...this.deadLetter];
+  }
+
+  async retryFailedOperations(): Promise<number> {
+    await Promise.resolve();
+    const pending = this.deadLetter.map(
+      ({ failedAt: _failedAt, lastError: _lastError, reason: _reason, ...operation }) => ({
+        ...operation,
+        retries: 0,
+      })
+    );
+    this.deadLetter = [];
+    this.failedOpsCount = 0;
+    this.queue.push(...pending);
+    if (this.isOnline()) {
+      await this.processQueue();
+    }
+    return pending.length;
   }
 
   async getLastSyncTime(userId: string): Promise<Date | null> {
@@ -153,6 +184,7 @@ export class MockDataSyncService {
     this.networkCallbacks = [];
     this.lastSyncTimes.clear();
     this.failedOpsCount = 0;
+    this.deadLetter = [];
   }
 
   getFailedOpsCount(): number {

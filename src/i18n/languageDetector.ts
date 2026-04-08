@@ -1,8 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Localization from 'expo-localization';
 import type { LanguageDetectorAsyncModule } from 'i18next';
+import { STORAGE_KEYS } from '@/constants/storageKeys';
 
-export const LANGUAGE_KEY = '@ellie_language';
+export const LANGUAGE_KEY = STORAGE_KEYS.i18n.language;
+const LEGACY_LANGUAGE_KEY = STORAGE_KEYS.i18n.legacyLanguage;
 export const SUPPORTED_LANGUAGES = [
   'en',
   'es',
@@ -87,9 +89,18 @@ export const languageDetector: LanguageDetectorAsyncModule = {
   },
   detect: (callback) => {
     AsyncStorage.getItem(LANGUAGE_KEY)
-      .then((savedLanguage) => {
+      .then(async (savedLanguage) => {
         if (savedLanguage) {
           callback(normalizeLanguage(savedLanguage));
+          return;
+        }
+
+        const legacyLanguage = await AsyncStorage.getItem(LEGACY_LANGUAGE_KEY);
+        if (legacyLanguage) {
+          const normalized = normalizeLanguage(legacyLanguage);
+          await AsyncStorage.setItem(LANGUAGE_KEY, normalized);
+          await AsyncStorage.removeItem(LEGACY_LANGUAGE_KEY);
+          callback(normalized);
           return;
         }
 
@@ -102,6 +113,7 @@ export const languageDetector: LanguageDetectorAsyncModule = {
   cacheUserLanguage: async (language) => {
     try {
       await AsyncStorage.setItem(LANGUAGE_KEY, normalizeLanguage(language));
+      await AsyncStorage.removeItem(LEGACY_LANGUAGE_KEY);
     } catch {
       // Ignore persistence errors to avoid blocking language switch.
     }

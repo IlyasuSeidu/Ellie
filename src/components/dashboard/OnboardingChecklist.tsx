@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
@@ -15,8 +14,6 @@ interface OnboardingChecklistProps {
   onAskEllie: () => void;
 }
 
-const ASK_ELLIE_STORAGE_KEY = 'checklist:ask_ellie_done';
-
 export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({
   userData,
   onDismiss,
@@ -25,18 +22,7 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({
   onAskEllie,
 }) => {
   const { t } = useTranslation('dashboard');
-  // Only ask_ellie needs AsyncStorage — its completion has no data-derived equivalent.
   const [askEllieDone, setAskEllieDone] = useState(false);
-
-  useEffect(() => {
-    let isMounted = true;
-    void AsyncStorage.getItem(ASK_ELLIE_STORAGE_KEY).then((value) => {
-      if (isMounted && value === 'true') setAskEllieDone(true);
-    });
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
   // Derive completion from actual data so a focus-return auto-ticks items.
   const shiftTimesDone =
@@ -46,7 +32,6 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({
   const profileDone = Boolean(userData?.name);
 
   const handleAskEllie = useCallback(() => {
-    void AsyncStorage.setItem(ASK_ELLIE_STORAGE_KEY, 'true');
     setAskEllieDone(true);
     onAskEllie();
   }, [onAskEllie]);

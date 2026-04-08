@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -15,6 +15,9 @@ import { useSmartReminders } from './src/hooks/useSmartReminders';
 import { expoNotificationScheduler } from './src/services/ExpoNotificationScheduler';
 import { notificationService } from './src/services/NotificationService';
 import { useShiftAccent } from './src/hooks/useShiftAccent';
+import { appStateStorageService } from './src/services/AppStateStorageService';
+import { OfflineBanner } from './src/components/system/OfflineBanner';
+import { storageMaintenanceService } from './src/services/StorageMaintenanceService';
 // Temporarily disabled for physical-device regression testing.
 // import { PaywallScreen } from './src/screens/subscription/PaywallScreen';
 
@@ -24,6 +27,15 @@ function AppContent() {
   const insets = useSafeAreaInsets();
   const { statusAreaColor } = useShiftAccent();
   useSmartReminders();
+
+  useEffect(() => {
+    void appStateStorageService.cleanupObsoleteKeys();
+    storageMaintenanceService.initialize();
+
+    return () => {
+      storageMaintenanceService.destroy();
+    };
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -38,6 +50,7 @@ function AppContent() {
         ]}
       />
       <StatusBar style="light" backgroundColor={statusAreaColor} translucent={false} />
+      <OfflineBanner />
       <NavigationContainer>
         <AppNavigator />
       </NavigationContainer>

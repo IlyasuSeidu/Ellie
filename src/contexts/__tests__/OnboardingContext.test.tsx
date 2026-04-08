@@ -6,15 +6,16 @@ import React from 'react';
 import { renderHook, act, waitFor } from '@testing-library/react-native';
 import { OnboardingProvider, useOnboarding, OnboardingData } from '../OnboardingContext';
 import { ShiftPattern } from '@/types';
-import { asyncStorageService } from '@/services/AsyncStorageService';
+import {
+  clearPersistedOnboardingData,
+  loadPersistedOnboardingData,
+  persistOnboardingData,
+} from '@/utils/onboardingPersistence';
 
-// Mock AsyncStorageService
-jest.mock('@/services/AsyncStorageService', () => ({
-  asyncStorageService: {
-    get: jest.fn(),
-    set: jest.fn(),
-    remove: jest.fn(),
-  },
+jest.mock('@/utils/onboardingPersistence', () => ({
+  loadPersistedOnboardingData: jest.fn(),
+  persistOnboardingData: jest.fn(),
+  clearPersistedOnboardingData: jest.fn(),
 }));
 
 describe('OnboardingContext', () => {
@@ -24,9 +25,9 @@ describe('OnboardingContext', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    // Mock successful AsyncStorage operations by default
-    (asyncStorageService.get as jest.Mock).mockResolvedValue(null);
-    (asyncStorageService.set as jest.Mock).mockResolvedValue(undefined);
+    (loadPersistedOnboardingData as jest.Mock).mockResolvedValue(null);
+    (persistOnboardingData as jest.Mock).mockResolvedValue(undefined);
+    (clearPersistedOnboardingData as jest.Mock).mockResolvedValue(undefined);
   });
 
   describe('Provider', () => {
@@ -34,6 +35,7 @@ describe('OnboardingContext', () => {
       const { result } = renderHook(() => useOnboarding(), { wrapper });
 
       expect(result.current.data).toEqual({});
+      expect(result.current.hasPendingPersistenceError).toBe(false);
     });
 
     it('should throw error when used outside provider', () => {
@@ -130,6 +132,26 @@ describe('OnboardingContext', () => {
         company: 'ABC Mining',
       });
     });
+
+    it('tracks persistence failures so the UI can surface unsaved state', async () => {
+      (persistOnboardingData as jest.Mock).mockRejectedValueOnce(new Error('disk full'));
+
+      const { result } = renderHook(() => useOnboarding(), { wrapper });
+
+      act(() => {
+        result.current.updateData({ name: 'Unsaved User' });
+      });
+
+      await waitFor(() => {
+        expect(result.current.hasPendingPersistenceError).toBe(true);
+      });
+
+      act(() => {
+        result.current.clearPersistenceError();
+      });
+
+      expect(result.current.hasPendingPersistenceError).toBe(false);
+    });
   });
 
   describe('resetData', () => {
@@ -173,6 +195,20 @@ describe('OnboardingContext', () => {
       });
 
       expect(result.current.data).toEqual({ name: 'Jane Smith' });
+    });
+
+    it('flags persistence errors when clearing local onboarding data fails', async () => {
+      (clearPersistedOnboardingData as jest.Mock).mockRejectedValueOnce(new Error('cannot clear'));
+
+      const { result } = renderHook(() => useOnboarding(), { wrapper });
+
+      act(() => {
+        result.current.resetData();
+      });
+
+      await waitFor(() => {
+        expect(result.current.hasPendingPersistenceError).toBe(true);
+      });
     });
   });
 
@@ -299,7 +335,7 @@ describe('OnboardingContext', () => {
 
       expect(result.current.data).toEqual(snapshot);
       await waitFor(() => {
-        expect(asyncStorageService.set).toHaveBeenCalledWith('onboarding:data', snapshot);
+        expect(persistOnboardingData).toHaveBeenCalledWith(snapshot);
       });
     });
 
@@ -439,8 +475,7 @@ describe('OnboardingContext', () => {
 
       // Wait for async auto-save to complete (object passed directly, not JSON string)
       await waitFor(() => {
-        expect(asyncStorageService.set).toHaveBeenCalledWith(
-          'onboarding:data',
+        expect(persistOnboardingData).toHaveBeenCalledWith(
           expect.objectContaining({ name: 'John Doe' })
         );
       });
@@ -462,16 +497,12 @@ describe('OnboardingContext', () => {
       });
 
       await waitFor(() => {
-        // updateData passes object directly to asyncStorageService.set
-        expect(asyncStorageService.set).toHaveBeenCalledWith(
-          'onboarding:data',
-          expect.objectContaining(testData)
-        );
+        expect(persistOnboardingData).toHaveBeenCalledWith(expect.objectContaining(testData));
       });
     });
 
     it('should not throw error if auto-save fails', () => {
-      (asyncStorageService.set as jest.Mock).mockRejectedValue(new Error('Storage full'));
+      (persistOnboardingData as jest.Mock).mockRejectedValue(new Error('Storage full'));
 
       const { result } = renderHook(() => useOnboarding(), { wrapper });
 
@@ -496,7 +527,7 @@ describe('OnboardingContext', () => {
 
       // Should be called twice
       await waitFor(() => {
-        expect(asyncStorageService.set).toHaveBeenCalledTimes(2);
+        expect(persistOnboardingData).toHaveBeenCalledTimes(2);
       });
     });
   });
@@ -511,21 +542,17 @@ describe('OnboardingContext', () => {
         patternType: ShiftPattern.STANDARD_4_4_4,
       };
 
-      // asyncStorageService.get() auto-deserializes, returns object directly
-      (asyncStorageService.get as jest.Mock).mockResolvedValue(savedData);
+      (loadPersistedOnboardingData as jest.Mock).mockResolvedValue(savedData);
 
       const { result } = renderHook(() => useOnboarding(), { wrapper });
 
       await waitFor(() => {
-        expect(result.current.data).toEqual({
-          ...savedData,
-          rosterType: 'rotating',
-        });
+        expect(result.current.data).toEqual(savedData);
       });
     });
 
     it('should start with empty data if no saved data exists', async () => {
-      (asyncStorageService.get as jest.Mock).mockResolvedValue(null);
+      (loadPersistedOnboardingData as jest.Mock).mockResolvedValue(null);
 
       const { result } = renderHook(() => useOnboarding(), { wrapper });
 
@@ -535,7 +562,7 @@ describe('OnboardingContext', () => {
     });
 
     it('should handle restore errors gracefully', async () => {
-      (asyncStorageService.get as jest.Mock).mockRejectedValue(new Error('Storage error'));
+      (loadPersistedOnboardingData as jest.Mock).mockRejectedValue(new Error('Storage error'));
 
       const { result } = renderHook(() => useOnboarding(), { wrapper });
 
@@ -545,8 +572,7 @@ describe('OnboardingContext', () => {
     });
 
     it('should handle non-object saved data gracefully', async () => {
-      // If get() returns a non-object (e.g., string), restoreData ignores it
-      (asyncStorageService.get as jest.Mock).mockResolvedValue('not-an-object');
+      (loadPersistedOnboardingData as jest.Mock).mockResolvedValue('not-an-object');
 
       const { result } = renderHook(() => useOnboarding(), { wrapper });
 
@@ -578,8 +604,7 @@ describe('OnboardingContext', () => {
         startDate: new Date('2024-01-15').toISOString(), // Stored as string
       };
 
-      // asyncStorageService.get() auto-deserializes, returns object directly
-      (asyncStorageService.get as jest.Mock).mockResolvedValue(savedData);
+      (loadPersistedOnboardingData as jest.Mock).mockResolvedValue(savedData);
 
       const { result } = renderHook(() => useOnboarding(), { wrapper });
 
@@ -592,10 +617,10 @@ describe('OnboardingContext', () => {
     it('should normalize date-only startDate strings to a valid Date', async () => {
       const savedData = {
         name: 'John Doe',
-        startDate: '2026-03-16',
+        startDate: new Date('2026-03-16T00:00:00'),
       };
 
-      (asyncStorageService.get as jest.Mock).mockResolvedValue(savedData);
+      (loadPersistedOnboardingData as jest.Mock).mockResolvedValue(savedData);
 
       const { result } = renderHook(() => useOnboarding(), { wrapper });
 

@@ -6,7 +6,7 @@
  * photo picker, and camera badge for discoverability.
  */
 
-import React, { useEffect, useCallback, useMemo } from 'react';
+import React, { useEffect, useCallback, useMemo, useState } from 'react';
 import { View, Image, Alert, Pressable, StyleSheet, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Animated, {
@@ -61,6 +61,7 @@ export const ProfileHeroSection: React.FC<ProfileHeroSectionProps> = ({
 }) => {
   const { t } = useTranslation(['common', 'profile']);
   const initials = useMemo(() => getInitials(name), [name]);
+  const [resolvedAvatarUri, setResolvedAvatarUri] = useState<string | null>(avatarUri ?? null);
 
   // ── Entrance animation ─────────────────────────────────────────
   const avatarScale = useSharedValue(0.3);
@@ -102,6 +103,25 @@ export const ProfileHeroSection: React.FC<ProfileHeroSectionProps> = ({
     );
   }, [ringScale]);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    void avatarService.resolveAvatarUri(avatarUri).then((uri) => {
+      if (cancelled) {
+        return;
+      }
+
+      setResolvedAvatarUri(uri);
+      if (!uri && avatarUri) {
+        onAvatarChange(null);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [avatarUri, onAvatarChange]);
+
   // ── Interactive gestures ───────────────────────────────────────
   const avatarTapScale = useSharedValue(1);
 
@@ -133,12 +153,12 @@ export const ProfileHeroSection: React.FC<ProfileHeroSectionProps> = ({
       },
     ];
 
-    if (avatarUri) {
+    if (resolvedAvatarUri) {
       buttons.push({
         text: t('avatar.removePhoto', { defaultValue: 'Remove Photo' }),
         style: 'destructive',
         onPress: async () => {
-          await avatarService.deleteAvatar(avatarUri);
+          await avatarService.deleteAvatar(resolvedAvatarUri);
           onAvatarChange(null);
         },
       });
@@ -150,7 +170,7 @@ export const ProfileHeroSection: React.FC<ProfileHeroSectionProps> = ({
       t('avatar.message', { defaultValue: 'Choose your avatar' }),
       buttons
     );
-  }, [avatarUri, onAvatarChange, t]);
+  }, [onAvatarChange, resolvedAvatarUri, t]);
 
   const tapGesture = Gesture.Tap()
     .onBegin(() => {
@@ -244,9 +264,9 @@ export const ProfileHeroSection: React.FC<ProfileHeroSectionProps> = ({
           <Animated.View style={[styles.avatarOuterRing, ringPulseStyle]} />
 
           <Animated.View style={[styles.avatar, avatarInteractionStyle]}>
-            {avatarUri ? (
+            {resolvedAvatarUri ? (
               <Image
-                source={{ uri: avatarUri }}
+                source={{ uri: resolvedAvatarUri }}
                 style={styles.avatarImage}
                 resizeMode="cover"
                 onError={() => onAvatarChange(null)}

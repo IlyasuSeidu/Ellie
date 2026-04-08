@@ -157,7 +157,20 @@
       "shiftTomorrowWork": "Besok ({{date}}) Anda mendapat {{shiftType}}.",
       "shiftTomorrowOff": "Besok ({{date}}) Anda libur!",
       "nextDayOff": "Hari libur Anda berikutnya adalah {{date}}.",
-      "nextNightShift": "Shift malam Anda berikutnya adalah {{date}}."
+      "nextNightShift": "Shift malam Anda berikutnya adalah {{date}}.",
+      "shiftsThisWeek": "Minggu ini: {{dayCount}} shift siang, {{nightCount}} shift malam, dan {{offCount}} hari libur.",
+      "shiftsThisWeekThreeShift": "Minggu ini: {{morningCount}} shift pagi, {{afternoonCount}} shift sore, {{nightCount}} shift malam, dan {{offCount}} hari libur.",
+      "daysOffThisMonth": "Kamu punya {{count}} hari libur bulan ini.",
+      "nightShiftsThisMonth": "Kamu punya {{count}} shift malam bulan ini.",
+      "nextFlyOut": "Hari fly-out kamu berikutnya adalah {{date}}.",
+      "startBack": "Kamu mulai kerja lagi pada {{date}}.",
+      "patternSummaryRotating": "Polamu adalah {{dayCount}} shift siang, {{nightCount}} shift malam, lalu {{offCount}} hari libur.",
+      "patternSummaryThreeShift": "Polamu adalah {{morningCount}} shift pagi, {{afternoonCount}} shift sore, {{nightCount}} shift malam, lalu {{offCount}} hari libur.",
+      "patternSummaryFifo": "Polamu adalah {{workDays}} hari di site, lalu {{restDays}} hari libur."
+    },
+    "notices": {
+      "offlineRecognitionUnavailable": "Input suara offline tidak tersedia di perangkat ini saat ini.",
+      "audioUnavailable": "Balasan audio sedang tidak tersedia. Anda masih bisa membaca jawaban Ellie."
     }
   },
   "tabs": {

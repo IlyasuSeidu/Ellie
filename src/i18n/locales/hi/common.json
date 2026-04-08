@@ -245,7 +245,8 @@
       "purchaseSuccessContinue": "Ellie पर जारी रखें",
       "restorePurchasesSuccess": "खरीद बहाल हो गई — Pro में स्वागत है!",
       "restorePurchasesNotFound": "इस खाते पर कोई पिछली खरीद नहीं मिली।",
-      "restorePurchasesError": "रिस्टोर विफल रहा। कृपया फिर से कोशिश करें।"
+      "restorePurchasesError": "रिस्टोर विफल रहा। कृपया फिर से कोशिश करें।",
+      "ctaOffline": "सदस्यता लेने के लिए कनेक्ट करें"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ प्रो सक्रिय सदस्यता",
@@ -275,5 +276,8 @@
       "am": "पूर्वाह्न",
       "pm": "अपराह्न"
     }
+  },
+  "offlineBanner": {
+    "message": "ऑफ़लाइन हैं। आपका शिफ्ट डेटा अभी भी उपलब्ध है।"
   }
 }

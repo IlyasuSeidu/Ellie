@@ -157,7 +157,20 @@
       "shiftTomorrowWork": "Amanhã ({{date}}) você tem um turno {{shiftType}}.",
       "shiftTomorrowOff": "Amanhã ({{date}}) é seu dia de folga!",
       "nextDayOff": "Sua próxima folga é em {{date}}.",
-      "nextNightShift": "Seu próximo turno da noite é em {{date}}."
+      "nextNightShift": "Seu próximo turno da noite é em {{date}}.",
+      "shiftsThisWeek": "Esta semana: {{dayCount}} turnos diurnos, {{nightCount}} turnos noturnos e {{offCount}} dias de folga.",
+      "shiftsThisWeekThreeShift": "Esta semana: {{morningCount}} turnos da manhã, {{afternoonCount}} turnos da tarde, {{nightCount}} turnos noturnos e {{offCount}} dias de folga.",
+      "daysOffThisMonth": "Você tem {{count}} dias de folga neste mês.",
+      "nightShiftsThisMonth": "Você tem {{count}} turnos noturnos neste mês.",
+      "nextFlyOut": "Seu próximo dia de fly-out é {{date}}.",
+      "startBack": "Você volta ao trabalho em {{date}}.",
+      "patternSummaryRotating": "Seu padrão é {{dayCount}} turnos diurnos, {{nightCount}} noturnos e depois {{offCount}} dias de folga.",
+      "patternSummaryThreeShift": "Seu padrão é {{morningCount}} turnos da manhã, {{afternoonCount}} da tarde, {{nightCount}} noturnos e depois {{offCount}} dias de folga.",
+      "patternSummaryFifo": "Seu padrão é {{workDays}} dias no site e depois {{restDays}} dias de folga."
+    },
+    "notices": {
+      "offlineRecognitionUnavailable": "A entrada por voz offline não está disponível neste dispositivo agora.",
+      "audioUnavailable": "As respostas em áudio não estão disponíveis agora. Você ainda pode ler a resposta da Ellie."
     }
   },
   "tabs": {

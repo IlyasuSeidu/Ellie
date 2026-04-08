@@ -5,10 +5,12 @@
  * including offline fallback, history trimming, and state transitions.
  */
 
+import { waitFor } from '@testing-library/react-native';
 import { voiceAssistantService } from '../VoiceAssistantService';
 import { speechRecognitionService } from '../SpeechRecognitionService';
 import { textToSpeechService } from '../TextToSpeechService';
 import { ellieBrainService, EllieBrainServiceError } from '../EllieBrainService';
+import { networkService } from '../NetworkService';
 import i18n from '@/i18n';
 import type {
   VoiceAssistantState,
@@ -35,6 +37,7 @@ jest.mock('../SpeechRecognitionService', () => ({
 
 jest.mock('../TextToSpeechService', () => ({
   textToSpeechService: {
+    isAvailable: jest.fn(() => Promise.resolve(true)),
     speak: jest.fn(),
     stop: jest.fn(),
     destroy: jest.fn(),
@@ -76,6 +79,12 @@ jest.mock('@/utils/offlineFallback', () => ({
   tryOfflineFallback: jest.fn(() => ({ handled: false })),
 }));
 
+jest.mock('../NetworkService', () => ({
+  networkService: {
+    getSnapshot: jest.fn(() => ({ status: 'online' })),
+  },
+}));
+
 // ── Fixtures ───────────────────────────────────────────────────────
 
 const mockUserContext: VoiceAssistantUserContext = {
@@ -109,13 +118,44 @@ function createCallbacks() {
 
 describe('VoiceAssistantService', () => {
   let callbacks: ReturnType<typeof createCallbacks>;
+  const mockedNetworkService = jest.mocked(networkService);
 
   beforeEach(async () => {
     jest.clearAllMocks();
+    mockedNetworkService.getSnapshot.mockReturnValue({ status: 'online' } as never);
+    jest.mocked(textToSpeechService.isAvailable).mockResolvedValue(true as never);
     await i18n.changeLanguage('en');
     callbacks = createCallbacks();
     voiceAssistantService.destroy();
     voiceAssistantService.initialize(callbacks, mockUserContext);
+  });
+
+  describe('offline backend fallback', () => {
+    it('does not call Ellie Brain when offline and the query is not locally handled', async () => {
+      mockedNetworkService.getSnapshot.mockReturnValue({ status: 'offline' } as never);
+      (tryOfflineFallback as jest.Mock).mockReturnValueOnce({ handled: false });
+
+      await voiceAssistantService.startListening();
+
+      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
+        .calls[0][0];
+
+      registeredCallbacks.onFinalResult({ transcript: 'How many swings do I have next month?' });
+
+      expect(ellieBrainService.query).not.toHaveBeenCalled();
+      await waitFor(() => {
+        expect(callbacks.onAssistantMessage).toHaveBeenCalledWith(
+          expect.objectContaining({
+            role: 'assistant',
+            text: 'Check your connection and retry.',
+          })
+        );
+      });
+      expect(textToSpeechService.speak).toHaveBeenCalledWith(
+        'Check your connection and retry.',
+        expect.any(Object)
+      );
+    });
   });
 
   afterEach(() => {
@@ -191,6 +231,26 @@ describe('VoiceAssistantService', () => {
       expect(speechRecognitionService.startListening).toHaveBeenCalled();
       expect(callbacks.onStateChange).toHaveBeenCalledWith('idle');
       expect(callbacks.onStateChange).toHaveBeenCalledWith('listening');
+    });
+
+    it('should degrade to a notice when offline voice input is unavailable', async () => {
+      (speechRecognitionService.startListening as jest.Mock).mockImplementationOnce(async (cbs) => {
+        cbs.onError(
+          Object.assign(new Error('On-device speech recognition is unavailable while offline'), {
+            code: 'offline_unavailable',
+          })
+        );
+      });
+
+      await voiceAssistantService.startListening();
+
+      expect(callbacks.onError).not.toHaveBeenCalled();
+      expect(callbacks.onNotice).toHaveBeenCalledWith(
+        expect.objectContaining({
+          code: 'offline_recognition_unavailable',
+        })
+      );
+      expect(callbacks.onStateChange).toHaveBeenCalledWith('idle');
     });
   });
 
@@ -342,6 +402,71 @@ describe('VoiceAssistantService', () => {
         'You have a day shift today, Alex.',
         expect.any(Object)
       );
+    });
+
+    it('should keep the text response visible when audio replies are unavailable', async () => {
+      (tryOfflineFallback as jest.Mock).mockReturnValue({
+        handled: true,
+        text: 'You have a day shift today, Alex.',
+        toolName: 'get_current_status',
+      });
+      jest.mocked(textToSpeechService.isAvailable).mockResolvedValue(false as never);
+
+      await voiceAssistantService.startListening();
+      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
+        .calls[0][0];
+
+      registeredCallbacks.onFinalResult({
+        transcript: 'What shift today?',
+        isFinal: true,
+        confidence: 0.9,
+      });
+
+      await waitFor(() => {
+        expect(callbacks.onAssistantMessage).toHaveBeenCalledWith(
+          expect.objectContaining({
+            text: 'You have a day shift today, Alex.',
+          })
+        );
+      });
+      expect(textToSpeechService.speak).not.toHaveBeenCalled();
+      expect(callbacks.onError).not.toHaveBeenCalled();
+      expect(callbacks.onNotice).toHaveBeenCalledWith(
+        expect.objectContaining({
+          code: 'audio_unavailable',
+        })
+      );
+    });
+
+    it('should degrade TTS playback errors to a notice instead of an error state', async () => {
+      (tryOfflineFallback as jest.Mock).mockReturnValue({
+        handled: true,
+        text: 'You have a day shift today, Alex.',
+        toolName: 'get_current_status',
+      });
+      (textToSpeechService.speak as jest.Mock).mockImplementation((_text, opts) => {
+        opts?.onError?.(new Error('tts runtime unavailable'));
+        return Promise.resolve();
+      });
+
+      await voiceAssistantService.startListening();
+      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
+        .calls[0][0];
+
+      registeredCallbacks.onFinalResult({
+        transcript: 'What shift today?',
+        isFinal: true,
+        confidence: 0.9,
+      });
+
+      await waitFor(() => {
+        expect(callbacks.onNotice).toHaveBeenCalledWith(
+          expect.objectContaining({
+            code: 'audio_unavailable',
+          })
+        );
+      });
+      expect(callbacks.onError).not.toHaveBeenCalled();
     });
 
     it('should fall through to brain when offline fallback cannot handle', async () => {

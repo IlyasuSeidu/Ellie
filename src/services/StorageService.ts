@@ -7,6 +7,7 @@
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
+import { asyncStorageService } from '@/services/AsyncStorageService';
 import { logger } from '@/utils/logger';
 
 /**
@@ -67,23 +68,36 @@ class WebStorageBackend implements StorageBackend {
 
 class AsyncStorageBackend implements StorageBackend {
   async setItem(key: string, value: string): Promise<void> {
-    await AsyncStorage.setItem(key, value);
+    await asyncStorageService.set(key, value);
   }
 
-  getItem(key: string): Promise<string | null> {
-    return AsyncStorage.getItem(key);
+  async getItem(key: string): Promise<string | null> {
+    const value = await asyncStorageService.get<string>(key);
+    if (value !== null) {
+      return value;
+    }
+
+    const legacyValue = await AsyncStorage.getItem(key);
+    if (legacyValue !== null) {
+      await asyncStorageService.set(key, legacyValue);
+      await AsyncStorage.removeItem(key);
+      return legacyValue;
+    }
+
+    return null;
   }
 
   async removeItem(key: string): Promise<void> {
+    await asyncStorageService.remove(key);
     await AsyncStorage.removeItem(key);
   }
 
   async clear(): Promise<void> {
-    await AsyncStorage.clear();
+    await asyncStorageService.clear();
   }
 
   getKeys(): Promise<string[]> {
-    return AsyncStorage.getAllKeys();
+    return asyncStorageService.getAllKeys();
   }
 }
 

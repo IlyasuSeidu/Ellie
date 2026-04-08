@@ -27,9 +27,11 @@ import {
   FirestoreError,
 } from 'firebase/firestore';
 import { getAuth, Auth } from 'firebase/auth';
+import { asyncStorageService } from '@/services/AsyncStorageService';
 import { logger } from '@/utils/logger';
 import { FirebaseError, NetworkError } from '@/utils/errorUtils';
 import { retry, criticalRetryOptions } from '@/utils/reliableRetry';
+import { networkService } from '@/services/NetworkService';
 
 /**
  * Network state type
@@ -43,9 +45,11 @@ export interface NetworkState {
  * All Firebase services should extend this class
  */
 export class FirebaseService {
+  private static readonly DOC_CACHE_PREFIX = 'firestore:cache:doc:';
   protected db: Firestore;
   protected auth: Auth;
   private networkState: NetworkState = { isConnected: true };
+  private unsubscribeNetwork: (() => void) | null = null;
 
   constructor() {
     this.db = getFirestore();
@@ -58,9 +62,10 @@ export class FirebaseService {
    * In a real app, this would listen to network state changes
    */
   private initializeNetworkListener(): void {
-    // For now, assume always connected
-    // In production, integrate with NetInfo or similar
-    this.networkState.isConnected = true;
+    this.unsubscribeNetwork?.();
+    this.unsubscribeNetwork = networkService.subscribe((snapshot) => {
+      this.networkState.isConnected = snapshot.status === 'online';
+    });
   }
 
   /**
@@ -85,8 +90,6 @@ export class FirebaseService {
     data: T,
     docId?: string
   ): Promise<string> {
-    this.checkNetworkState();
-
     return retry(
       async () => {
         try {
@@ -99,6 +102,14 @@ export class FirebaseService {
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
           });
+
+          const cachedDocument = {
+            id: documentId,
+            ...data,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          } as unknown as T;
+          await this.cacheDocument(collectionName, documentId, cachedDocument);
 
           logger.info('Document created', {
             collection: collectionName,
@@ -131,7 +142,16 @@ export class FirebaseService {
     collectionName: string,
     docId: string
   ): Promise<T | null> {
-    this.checkNetworkState();
+    if (!this.networkState.isConnected) {
+      const cached = await this.getCachedDocument<T>(collectionName, docId);
+      if (cached !== null) {
+        logger.debug('Document served from local cache', {
+          collection: collectionName,
+          docId,
+        });
+        return cached;
+      }
+    }
 
     return retry(
       async () => {
@@ -140,6 +160,7 @@ export class FirebaseService {
           const docSnap = await getDoc(docRef);
 
           if (!docSnap.exists()) {
+            await this.removeCachedDocument(collectionName, docId);
             logger.debug('Document not found', {
               collection: collectionName,
               docId,
@@ -152,9 +173,23 @@ export class FirebaseService {
             docId,
           });
 
-          return { id: docSnap.id, ...docSnap.data() } as unknown as T;
+          const result = { id: docSnap.id, ...docSnap.data() } as unknown as T;
+          await this.cacheDocument(collectionName, docId, result);
+          return result;
         } catch (error) {
-          throw this.handleFirestoreError(error as FirestoreError, 'read');
+          const handledError = this.handleFirestoreError(error as FirestoreError, 'read');
+          if (handledError instanceof NetworkError) {
+            const cached = await this.getCachedDocument<T>(collectionName, docId);
+            if (cached !== null) {
+              logger.warn('Falling back to cached document after Firestore read failure', {
+                collection: collectionName,
+                docId,
+              });
+              return cached;
+            }
+          }
+
+          throw handledError;
         }
       },
       {
@@ -179,14 +214,17 @@ export class FirebaseService {
     docId: string,
     data: Partial<T>
   ): Promise<void> {
-    this.checkNetworkState();
-
     return retry(
       async () => {
         try {
           const docRef = doc(this.db, collectionName, docId);
 
           await updateDoc(docRef, {
+            ...data,
+            updatedAt: new Date().toISOString(),
+          });
+
+          await this.mergeCachedDocument(collectionName, docId, {
             ...data,
             updatedAt: new Date().toISOString(),
           });
@@ -216,13 +254,12 @@ export class FirebaseService {
    */
   // eslint-disable-next-line require-await
   protected async delete(collectionName: string, docId: string): Promise<void> {
-    this.checkNetworkState();
-
     return retry(
       async () => {
         try {
           const docRef = doc(this.db, collectionName, docId);
           await deleteDoc(docRef);
+          await this.removeCachedDocument(collectionName, docId);
 
           logger.info('Document deleted', {
             collection: collectionName,
@@ -253,8 +290,6 @@ export class FirebaseService {
     collectionName: string,
     constraints: QueryConstraint[] = []
   ): Promise<T[]> {
-    this.checkNetworkState();
-
     return retry(
       async () => {
         try {
@@ -302,22 +337,34 @@ export class FirebaseService {
     try {
       const docRef = doc(this.db, collectionName, docId);
 
+      if (!this.networkState.isConnected) {
+        void this.getCachedDocument<T>(collectionName, docId).then((cached) => {
+          if (cached !== null) {
+            callback(cached);
+          }
+        });
+      }
+
       const unsubscribe = onSnapshot(
         docRef,
         (docSnap) => {
           if (!docSnap.exists()) {
+            void this.removeCachedDocument(collectionName, docId);
             callback(null);
             return;
           }
 
-          callback({ id: docSnap.id, ...docSnap.data() } as unknown as T);
+          const result = { id: docSnap.id, ...docSnap.data() } as unknown as T;
+          void this.cacheDocument(collectionName, docId, result);
+          callback(result);
         },
-        (error) => {
+        async (error) => {
           logger.error('Subscription error', error, {
             collection: collectionName,
             docId,
           });
-          callback(null);
+          const cached = await this.getCachedDocument<T>(collectionName, docId);
+          callback(cached);
         }
       );
 
@@ -425,5 +472,65 @@ export class FirebaseService {
    */
   public getNetworkState(): NetworkState {
     return { ...this.networkState };
+  }
+
+  private getDocumentCacheKey(collectionName: string, docId: string): string {
+    return `${FirebaseService.DOC_CACHE_PREFIX}${collectionName}:${docId}`;
+  }
+
+  private async getCachedDocument<T extends DocumentData>(
+    collectionName: string,
+    docId: string
+  ): Promise<T | null> {
+    try {
+      return await asyncStorageService.get<T>(this.getDocumentCacheKey(collectionName, docId));
+    } catch (error) {
+      logger.warn('Failed to read cached Firestore document', {
+        collection: collectionName,
+        docId,
+        error: error instanceof Error ? error.message : String(error),
+      });
+      return null;
+    }
+  }
+
+  private async cacheDocument<T extends DocumentData>(
+    collectionName: string,
+    docId: string,
+    data: T
+  ): Promise<void> {
+    try {
+      await asyncStorageService.set(this.getDocumentCacheKey(collectionName, docId), data);
+    } catch (error) {
+      logger.warn('Failed to cache Firestore document', {
+        collection: collectionName,
+        docId,
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+
+  private async mergeCachedDocument<T extends DocumentData>(
+    collectionName: string,
+    docId: string,
+    partial: Partial<T> & { updatedAt?: string }
+  ): Promise<void> {
+    const cached = await this.getCachedDocument<T>(collectionName, docId);
+    const merged = cached
+      ? ({ ...cached, ...partial } as T)
+      : ({ id: docId, ...partial } as unknown as T);
+    await this.cacheDocument(collectionName, docId, merged);
+  }
+
+  private async removeCachedDocument(collectionName: string, docId: string): Promise<void> {
+    try {
+      await asyncStorageService.remove(this.getDocumentCacheKey(collectionName, docId));
+    } catch (error) {
+      logger.warn('Failed to remove cached Firestore document', {
+        collection: collectionName,
+        docId,
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   }
 }

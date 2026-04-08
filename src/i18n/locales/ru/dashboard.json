@@ -157,7 +157,20 @@
       "shiftTomorrowWork": "Завтра ({{date}}) у вас {{shiftType}}.",
       "shiftTomorrowOff": "Завтра ({{date}}) у вас выходной!",
       "nextDayOff": "Ваш следующий выходной — {{date}}.",
-      "nextNightShift": "Ваша следующая ночная смена — {{date}}."
+      "nextNightShift": "Ваша следующая ночная смена — {{date}}.",
+      "shiftsThisWeek": "На этой неделе: {{dayCount}} дневных смен, {{nightCount}} ночных смен и {{offCount}} выходных дней.",
+      "shiftsThisWeekThreeShift": "На этой неделе: {{morningCount}} утренних смен, {{afternoonCount}} дневных смен, {{nightCount}} ночных смен и {{offCount}} выходных дней.",
+      "daysOffThisMonth": "В этом месяце у вас {{count}} выходных дней.",
+      "nightShiftsThisMonth": "В этом месяце у вас {{count}} ночных смен.",
+      "nextFlyOut": "Ваш следующий день вылета домой — {{date}}.",
+      "startBack": "Вы снова выходите на работу {{date}}.",
+      "patternSummaryRotating": "Ваш график: {{dayCount}} дневных смен, {{nightCount}} ночных смен, затем {{offCount}} выходных дней.",
+      "patternSummaryThreeShift": "Ваш график: {{morningCount}} утренних смен, {{afternoonCount}} дневных смен, {{nightCount}} ночных смен, затем {{offCount}} выходных дней.",
+      "patternSummaryFifo": "Ваш график: {{workDays}} дней на объекте, затем {{restDays}} выходных дней."
+    },
+    "notices": {
+      "offlineRecognitionUnavailable": "Офлайн-голосовой ввод сейчас недоступен на этом устройстве.",
+      "audioUnavailable": "Аудиоответы сейчас недоступны. Вы все равно можете прочитать ответ Ellie."
     }
   },
   "tabs": {

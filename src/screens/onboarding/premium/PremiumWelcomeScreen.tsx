@@ -6,7 +6,6 @@
 
 import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, Platform, Image, Text, ScrollView } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, {
   FadeIn,
@@ -26,6 +25,7 @@ import { theme } from '@/utils/theme';
 import { PremiumButton } from '@/components/onboarding/premium';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { Analytics } from '@/utils/analytics';
+import { appStateStorageService } from '@/services/AppStateStorageService';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList, 'Welcome'>;
 
@@ -63,14 +63,10 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
 
   useEffect(() => {
     Analytics.onboardingStepViewed('welcome', 1);
-    void AsyncStorage.getItem('app:install_time')
-      .then((existingInstallTime) => {
-        const installTime = existingInstallTime ?? Date.now().toString();
-        if (!existingInstallTime) {
-          Analytics.onboardingStarted({ install_time_epoch: Number(installTime) });
-          return AsyncStorage.setItem('app:install_time', installTime);
-        }
-        return null;
+    void appStateStorageService
+      .ensureInstallStartedAt()
+      .then((installTime) => {
+        Analytics.onboardingStarted({ install_time_epoch: installTime });
       })
       .catch(() => {
         // Non-blocking analytics bootstrap.

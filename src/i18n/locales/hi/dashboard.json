@@ -157,7 +157,20 @@
       "shiftTomorrowWork": "कल ({{date}}) आपकी {{shiftType}} है।",
       "shiftTomorrowOff": "कल ({{date}}) आपकी छुट्टी है!",
       "nextDayOff": "आपका अगला अवकाश {{date}} को है।",
-      "nextNightShift": "आपकी अगली रात की शिफ्ट {{date}} को है।"
+      "nextNightShift": "आपकी अगली रात की शिफ्ट {{date}} को है।",
+      "shiftsThisWeek": "इस हफ्ते: {{dayCount}} डे शिफ्ट, {{nightCount}} नाइट शिफ्ट और {{offCount}} छुट्टी के दिन।",
+      "shiftsThisWeekThreeShift": "इस हफ्ते: {{morningCount}} सुबह की शिफ्ट, {{afternoonCount}} दोपहर की शिफ्ट, {{nightCount}} नाइट शिफ्ट और {{offCount}} छुट्टी के दिन।",
+      "daysOffThisMonth": "इस महीने आपके {{count}} छुट्टी के दिन हैं।",
+      "nightShiftsThisMonth": "इस महीने आपकी {{count}} नाइट शिफ्ट हैं।",
+      "nextFlyOut": "आपका अगला फ्लाई-आउट दिन {{date}} है।",
+      "startBack": "आप {{date}} को फिर से काम शुरू करते हैं।",
+      "patternSummaryRotating": "आपका पैटर्न {{dayCount}} डे शिफ्ट, {{nightCount}} नाइट शिफ्ट और फिर {{offCount}} छुट्टी के दिन है।",
+      "patternSummaryThreeShift": "आपका पैटर्न {{morningCount}} सुबह की शिफ्ट, {{afternoonCount}} दोपहर की शिफ्ट, {{nightCount}} नाइट शिफ्ट और फिर {{offCount}} छुट्टी के दिन है।",
+      "patternSummaryFifo": "आपका पैटर्न साइट पर {{workDays}} दिन और फिर {{restDays}} छुट्टी के दिन है।"
+    },
+    "notices": {
+      "offlineRecognitionUnavailable": "इस डिवाइस पर अभी ऑफलाइन वॉइस इनपुट उपलब्ध नहीं है।",
+      "audioUnavailable": "अभी ऑडियो जवाब उपलब्ध नहीं हैं। आप Ellie का जवाब फिर भी पढ़ सकते हैं।"
     }
   },
   "tabs": {

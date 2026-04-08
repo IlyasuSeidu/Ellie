@@ -14,8 +14,12 @@
 import { ExpoSpeechRecognitionModule } from './speechRecognitionNative';
 import { logger } from '@/utils/logger';
 import type { SpeechRecognitionResult } from '@/types/voiceAssistant';
+import { networkService } from '@/services/NetworkService';
 
 type SpeechRecognitionServiceError = Error & { code: string };
+type RecognitionStartOptions = Parameters<typeof ExpoSpeechRecognitionModule.start>[0] & {
+  requiresOnDeviceRecognition?: boolean;
+};
 
 export interface SpeechRecognitionCallbacks {
   onPartialResult: (transcript: string) => void;
@@ -102,20 +106,37 @@ class SpeechRecognitionService {
       }
     }
 
+    const requiresOnDeviceRecognition = networkService.getSnapshot().status !== 'online';
+    if (
+      requiresOnDeviceRecognition &&
+      ExpoSpeechRecognitionModule.supportsOnDeviceRecognition?.() === false
+    ) {
+      callbacks.onError(
+        this.createRecognitionError(
+          'offline_unavailable',
+          'On-device speech recognition is unavailable while offline'
+        )
+      );
+      return;
+    }
+
     this.callbacks = callbacks;
     this.isListening = true;
 
     try {
       const resolvedLocale = await this.resolveRecognizerLocale(locale);
-      ExpoSpeechRecognitionModule.start({
+      const startOptions: RecognitionStartOptions = {
         lang: resolvedLocale,
         interimResults: true,
         continuous: true,
         addsPunctuation: true,
-      });
+        requiresOnDeviceRecognition,
+      };
+      ExpoSpeechRecognitionModule.start(startOptions);
       logger.info('Speech recognition started', {
         locale: resolvedLocale,
         requestedLocale: locale,
+        requiresOnDeviceRecognition,
       });
     } catch (error) {
       this.isListening = false;

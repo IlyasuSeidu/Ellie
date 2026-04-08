@@ -91,10 +91,12 @@ import React, {
   ReactNode,
 } from 'react';
 import { ShiftPattern, FIFOConfig } from '@/types';
-import { asyncStorageService } from '@/services/AsyncStorageService';
-import { migrateOnboardingDataToV2 } from '@/utils/migrationUtils';
-import { parseCalendarDate } from '@/utils/dateUtils';
 import i18n from '@/i18n';
+import {
+  clearPersistedOnboardingData,
+  loadPersistedOnboardingData,
+  persistOnboardingData,
+} from '@/utils/onboardingPersistence';
 
 export interface OnboardingData {
   // Step 2: Pain Hook (PremiumPainHookScreen)
@@ -214,6 +216,10 @@ export interface ValidationResult {
 interface OnboardingContextValue {
   /** Current onboarding data */
   data: OnboardingData;
+  /** True once initial local restore has completed */
+  hydrated: boolean;
+  /** True when the latest local persistence attempt failed and the UI may be showing unsaved in-memory state */
+  hasPendingPersistenceError: boolean;
 
   /** Update specific fields in onboarding data */
   updateData: (updates: Partial<OnboardingData>) => void;
@@ -235,6 +241,9 @@ interface OnboardingContextValue {
 
   /** Get list of missing required fields */
   getMissingFields: () => string[];
+
+  /** Clear the observable persistence error flag after it has been surfaced to the user */
+  clearPersistenceError: () => void;
 }
 
 const OnboardingContext = createContext<OnboardingContextValue | undefined>(undefined);
@@ -243,22 +252,10 @@ export interface OnboardingProviderProps {
   children: ReactNode;
 }
 
-function normalizeStartDate(data: OnboardingData): OnboardingData {
-  const rawStartDate = data.startDate as Date | string | undefined;
-  if (!rawStartDate) {
-    return data;
-  }
-
-  const parsed = typeof rawStartDate === 'string' ? parseCalendarDate(rawStartDate) : rawStartDate;
-  if (!parsed || Number.isNaN(parsed.getTime())) {
-    return { ...data, startDate: undefined };
-  }
-
-  return { ...data, startDate: parsed };
-}
-
 export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children }) => {
   const [data, setData] = useState<OnboardingData>({});
+  const [hydrated, setHydrated] = useState(false);
+  const [hasPendingPersistenceError, setHasPendingPersistenceError] = useState(false);
 
   /**
    * Restore onboarding data from AsyncStorage on mount
@@ -266,15 +263,16 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
   useEffect(() => {
     const restoreData = async () => {
       try {
-        // asyncStorageService.get() auto-deserializes JSON, so no JSON.parse needed
-        const savedData = await asyncStorageService.get<OnboardingData>('onboarding:data');
-        if (savedData && typeof savedData === 'object') {
-          const migrated = migrateOnboardingDataToV2(savedData);
-          setData(normalizeStartDate(migrated));
+        const savedData = await loadPersistedOnboardingData();
+        if (savedData) {
+          setData(savedData as OnboardingData);
         }
       } catch (error) {
         console.warn('Failed to restore onboarding data:', error);
+        setHasPendingPersistenceError(true);
         // Don't block - just start with empty data
+      } finally {
+        setHydrated(true);
       }
     };
 
@@ -287,14 +285,18 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
    */
   const updateData = useCallback((updates: Partial<OnboardingData>) => {
     setData((prevData) => {
-      const newData = normalizeStartDate({ ...prevData, ...updates });
+      const newData = { ...prevData, ...updates };
 
       // Auto-save to AsyncStorage (non-blocking, don't await)
-      // Pass object directly - asyncStorageService handles serialization
-      asyncStorageService.set('onboarding:data', newData).catch((error) => {
-        console.warn('Failed to auto-save onboarding data:', error);
-        // Don't throw - auto-save failure shouldn't block UX
-      });
+      void persistOnboardingData(newData)
+        .then(() => {
+          setHasPendingPersistenceError(false);
+        })
+        .catch((error) => {
+          console.warn('Failed to auto-save onboarding data:', error);
+          setHasPendingPersistenceError(true);
+          // Don't throw - auto-save failure shouldn't block UX
+        });
 
       return newData;
     });
@@ -305,13 +307,17 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
    * Also saves to AsyncStorage
    */
   const setAllData = useCallback((newData: OnboardingData) => {
-    const normalizedData = normalizeStartDate(newData);
-    setData(normalizedData);
+    setData(newData);
 
     // Auto-save to AsyncStorage (non-blocking)
-    asyncStorageService.set('onboarding:data', normalizedData).catch((error) => {
-      console.warn('Failed to save onboarding data:', error);
-    });
+    void persistOnboardingData(newData)
+      .then(() => {
+        setHasPendingPersistenceError(false);
+      })
+      .catch((error) => {
+        console.warn('Failed to save onboarding data:', error);
+        setHasPendingPersistenceError(true);
+      });
   }, []);
 
   /**
@@ -333,9 +339,18 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
     setData({});
 
     // Clear AsyncStorage (non-blocking)
-    asyncStorageService.set('onboarding:data', {}).catch((error) => {
-      console.warn('Failed to clear onboarding data:', error);
-    });
+    void clearPersistedOnboardingData()
+      .then(() => {
+        setHasPendingPersistenceError(false);
+      })
+      .catch((error) => {
+        console.warn('Failed to clear onboarding data:', error);
+        setHasPendingPersistenceError(true);
+      });
+  }, []);
+
+  const clearPersistenceError = useCallback(() => {
+    setHasPendingPersistenceError(false);
   }, []);
 
   /**
@@ -442,6 +457,8 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
     <OnboardingContext.Provider
       value={{
         data,
+        hydrated,
+        hasPendingPersistenceError,
         updateData,
         setAllData,
         clearField,
@@ -449,6 +466,7 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
         validateData,
         isComplete,
         getMissingFields,
+        clearPersistenceError,
       }}
     >
       {children}

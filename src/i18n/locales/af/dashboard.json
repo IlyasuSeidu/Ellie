@@ -157,7 +157,20 @@
       "shiftTomorrowWork": "Môre ({{date}}) het jy ’n {{shiftType}}.",
       "shiftTomorrowOff": "Môre ({{date}}) is jou afdag!",
       "nextDayOff": "Jou volgende afdag is {{date}}.",
-      "nextNightShift": "Jou volgende nagskof is {{date}}."
+      "nextNightShift": "Jou volgende nagskof is {{date}}.",
+      "shiftsThisWeek": "Hierdie week: {{dayCount}} dagskofte, {{nightCount}} nagskofte en {{offCount}} afdae.",
+      "shiftsThisWeekThreeShift": "Hierdie week: {{morningCount}} oggendskofte, {{afternoonCount}} middagskofte, {{nightCount}} nagskofte en {{offCount}} afdae.",
+      "daysOffThisMonth": "Jy het {{count}} afdae hierdie maand.",
+      "nightShiftsThisMonth": "Jy het {{count}} nagskofte hierdie maand.",
+      "nextFlyOut": "Jou volgende vlieg-uit-dag is {{date}}.",
+      "startBack": "Jy begin weer werk op {{date}}.",
+      "patternSummaryRotating": "Jou patroon is {{dayCount}} dagskofte, {{nightCount}} nagskofte en dan {{offCount}} afdae.",
+      "patternSummaryThreeShift": "Jou patroon is {{morningCount}} oggendskofte, {{afternoonCount}} middagskofte, {{nightCount}} nagskofte en dan {{offCount}} afdae.",
+      "patternSummaryFifo": "Jou patroon is {{workDays}} dae op die terrein en dan {{restDays}} afdae."
+    },
+    "notices": {
+      "offlineRecognitionUnavailable": "Vanlyn steminvoer is tans nie op hierdie toestel beskikbaar nie.",
+      "audioUnavailable": "Klankantwoorde is tans nie beskikbaar nie. Jy kan steeds Ellie se antwoord lees."
     }
   },
   "tabs": {

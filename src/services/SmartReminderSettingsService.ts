@@ -7,6 +7,7 @@ import {
   type SmartReminderSettings,
 } from '@/types/reminders';
 import { logger } from '@/utils/logger';
+import { asyncStorageService } from './AsyncStorageService';
 import { UserService } from './UserService';
 
 function mergeSettings(
@@ -23,6 +24,16 @@ async function readLocalSettingsRecord(): Promise<{
   settings: SmartReminderSettings;
 }> {
   try {
+    const stored = await asyncStorageService.get<SmartReminderSettings>(
+      SMART_REMINDER_SETTINGS_KEY
+    );
+    if (stored) {
+      return {
+        hasStoredValue: true,
+        settings: mergeSettings(stored),
+      };
+    }
+
     const raw = await AsyncStorage.getItem(SMART_REMINDER_SETTINGS_KEY);
     if (!raw) {
       return {
@@ -31,9 +42,13 @@ async function readLocalSettingsRecord(): Promise<{
       };
     }
 
+    const migrated = mergeSettings(JSON.parse(raw) as Partial<SmartReminderSettings>);
+    await asyncStorageService.set(SMART_REMINDER_SETTINGS_KEY, migrated);
+    await AsyncStorage.removeItem(SMART_REMINDER_SETTINGS_KEY);
+
     return {
       hasStoredValue: true,
-      settings: mergeSettings(JSON.parse(raw) as Partial<SmartReminderSettings>),
+      settings: migrated,
     };
   } catch (error) {
     logger.error('SmartReminderSettingsService: failed to read local settings', error as Error);
@@ -52,12 +67,19 @@ export async function resolveReminderUserId(firebaseUid?: string | null): Promis
   const generated = `reminder-user-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
 
   try {
-    const existing = await AsyncStorage.getItem(SMART_REMINDER_LOCAL_USER_ID_KEY);
+    const existing = await asyncStorageService.get<string>(SMART_REMINDER_LOCAL_USER_ID_KEY);
     if (existing) {
       return existing;
     }
 
-    await AsyncStorage.setItem(SMART_REMINDER_LOCAL_USER_ID_KEY, generated);
+    const legacyExisting = await AsyncStorage.getItem(SMART_REMINDER_LOCAL_USER_ID_KEY);
+    if (legacyExisting) {
+      await asyncStorageService.set(SMART_REMINDER_LOCAL_USER_ID_KEY, legacyExisting);
+      await AsyncStorage.removeItem(SMART_REMINDER_LOCAL_USER_ID_KEY);
+      return legacyExisting;
+    }
+
+    await asyncStorageService.set(SMART_REMINDER_LOCAL_USER_ID_KEY, generated);
   } catch (error) {
     logger.error(
       'SmartReminderSettingsService: failed to resolve local reminder user id',
@@ -82,7 +104,7 @@ export class SmartReminderSettingsService {
 
       if (remoteSettings) {
         const normalized = mergeSettings(remoteSettings);
-        await AsyncStorage.setItem(SMART_REMINDER_SETTINGS_KEY, JSON.stringify(normalized));
+        await asyncStorageService.set(SMART_REMINDER_SETTINGS_KEY, normalized);
         return normalized;
       }
 
@@ -104,7 +126,7 @@ export class SmartReminderSettingsService {
   ): Promise<SmartReminderSettings> {
     const normalized = mergeSettings(settings);
 
-    await AsyncStorage.setItem(SMART_REMINDER_SETTINGS_KEY, JSON.stringify(normalized));
+    await asyncStorageService.set(SMART_REMINDER_SETTINGS_KEY, normalized);
 
     if (firebaseUid) {
       await this.persistRemote(firebaseUid, normalized);

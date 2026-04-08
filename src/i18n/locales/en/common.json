@@ -242,7 +242,8 @@
       "purchaseError": "Purchase failed. Please try again.",
       "restorePurchasesSuccess": "Purchase restored — welcome to Pro!",
       "restorePurchasesNotFound": "No previous purchases found on this account.",
-      "restorePurchasesError": "Restore failed. Please try again."
+      "restorePurchasesError": "Restore failed. Please try again.",
+      "ctaOffline": "Connect to subscribe"
     },
     "profile": {
       "rowActiveA11y": "Ellie Pro active subscription",
@@ -272,5 +273,8 @@
       "am": "AM",
       "pm": "PM"
     }
+  },
+  "offlineBanner": {
+    "message": "Offline. Your shift data is still available."
   }
 }

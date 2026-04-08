@@ -157,7 +157,20 @@
       "shiftTomorrowWork": "Mañana ({{date}}) tienes un turno de {{shiftType}}.",
       "shiftTomorrowOff": "Mañana ({{date}}) es tu día libre.",
       "nextDayOff": "Tu próximo día libre es el {{date}}.",
-      "nextNightShift": "Tu próximo turno de noche es el {{date}}."
+      "nextNightShift": "Tu próximo turno de noche es el {{date}}.",
+      "shiftsThisWeek": "Esta semana: {{dayCount}} turnos de día, {{nightCount}} turnos de noche y {{offCount}} días libres.",
+      "shiftsThisWeekThreeShift": "Esta semana: {{morningCount}} turnos de mañana, {{afternoonCount}} turnos de tarde, {{nightCount}} turnos de noche y {{offCount}} días libres.",
+      "daysOffThisMonth": "Tienes {{count}} días libres este mes.",
+      "nightShiftsThisMonth": "Tienes {{count}} turnos de noche este mes.",
+      "nextFlyOut": "Tu próximo día de fly-out es {{date}}.",
+      "startBack": "Vuelves al trabajo el {{date}}.",
+      "patternSummaryRotating": "Tu patrón es {{dayCount}} turnos de día, {{nightCount}} de noche y luego {{offCount}} días libres.",
+      "patternSummaryThreeShift": "Tu patrón es {{morningCount}} turnos de mañana, {{afternoonCount}} de tarde, {{nightCount}} de noche y luego {{offCount}} días libres.",
+      "patternSummaryFifo": "Tu patrón es {{workDays}} días en sitio y luego {{restDays}} días libres."
+    },
+    "notices": {
+      "offlineRecognitionUnavailable": "La entrada de voz sin conexión no está disponible en este dispositivo en este momento.",
+      "audioUnavailable": "Las respuestas de audio no están disponibles ahora mismo. Aún puedes leer la respuesta de Ellie."
     }
   },
   "tabs": {

@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import { act, render, fireEvent, waitFor } from '@testing-library/react-native';
 import { AccessibilityInfo } from 'react-native';
 import { PremiumCompletionScreen } from '../PremiumCompletionScreen';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
@@ -11,6 +11,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 import * as hapticsDiagnostics from '@/utils/hapticsDiagnostics';
 import { asyncStorageService } from '@/services/AsyncStorageService';
+import { appStateStorageService } from '@/services/AppStateStorageService';
 
 // Mock react-native-reanimated
 jest.mock('react-native-reanimated', () => {
@@ -98,6 +99,14 @@ jest.mock('@/services/AsyncStorageService', () => ({
   asyncStorageService: {
     set: jest.fn(),
     get: jest.fn(),
+  },
+}));
+
+jest.mock('@/services/AppStateStorageService', () => ({
+  appStateStorageService: {
+    getInstallStartedAt: jest.fn().mockResolvedValue(Date.now() - 1000),
+    getNotificationSoftDeclined: jest.fn().mockResolvedValue(false),
+    setNotificationSoftDeclined: jest.fn().mockResolvedValue(undefined),
   },
 }));
 
@@ -217,6 +226,9 @@ describe('PremiumCompletionScreen', () => {
     jest.clearAllMocks();
     // Mock successful service calls by default
     (asyncStorageService.set as jest.Mock).mockResolvedValue(undefined);
+    (appStateStorageService.getInstallStartedAt as jest.Mock).mockResolvedValue(Date.now() - 1000);
+    (appStateStorageService.getNotificationSoftDeclined as jest.Mock).mockResolvedValue(false);
+    (appStateStorageService.setNotificationSoftDeclined as jest.Mock).mockResolvedValue(undefined);
     // Mock AccessibilityInfo
     jest.spyOn(AccessibilityInfo, 'isReduceMotionEnabled').mockResolvedValue(false);
   });
@@ -256,6 +268,24 @@ describe('PremiumCompletionScreen', () => {
       expect(getByText(/Smart shift reminders/i)).toBeTruthy();
       expect(getByText(/Sleep tracking & insights/i)).toBeTruthy();
       expect(getByText(/Fatigue monitoring/i)).toBeTruthy();
+    });
+
+    it('does not show the notification prompt when the user already soft-declined it', async () => {
+      jest.useFakeTimers();
+      (appStateStorageService.getNotificationSoftDeclined as jest.Mock).mockResolvedValue(true);
+
+      const { queryByText } = renderWithProviders(<PremiumCompletionScreen />);
+
+      await waitFor(() => {
+        expect(appStateStorageService.getNotificationSoftDeclined).toHaveBeenCalled();
+      });
+
+      act(() => {
+        jest.advanceTimersByTime(2000);
+      });
+
+      expect(queryByText(/Turn On Reminders/i)).toBeNull();
+      jest.useRealTimers();
     });
   });
 

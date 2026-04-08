@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DEFAULT_SMART_REMINDER_SETTINGS } from '@/types/reminders';
+import { asyncStorageService } from '@/services/AsyncStorageService';
 const mockGetPreferences = jest.fn();
 const mockGetStoredSmartReminderSettings = jest.fn();
 const mockUpdateNotificationSettings = jest.fn();
@@ -41,13 +42,10 @@ describe('SmartReminderSettingsService', () => {
   }
 
   it('loads local settings when there is no authenticated user', async () => {
-    await AsyncStorage.setItem(
-      'reminders:settings',
-      JSON.stringify({
-        ...DEFAULT_SMART_REMINDER_SETTINGS,
-        earlyReminderHours: 12,
-      })
-    );
+    await asyncStorageService.set('reminders:settings', {
+      ...DEFAULT_SMART_REMINDER_SETTINGS,
+      earlyReminderHours: 12,
+    });
 
     const service = createService();
     const result = await service.load();
@@ -66,7 +64,7 @@ describe('SmartReminderSettingsService', () => {
     const result = await service.load('firebase-user-1');
 
     expect(result.prepTimeMinutes).toBe(90);
-    expect(JSON.parse((await AsyncStorage.getItem('reminders:settings')) ?? '{}')).toMatchObject({
+    expect(await asyncStorageService.get('reminders:settings')).toMatchObject({
       prepTimeMinutes: 90,
     });
   });
@@ -76,7 +74,7 @@ describe('SmartReminderSettingsService', () => {
       ...DEFAULT_SMART_REMINDER_SETTINGS,
       commuteTimeMinutes: 45,
     };
-    await AsyncStorage.setItem('reminders:settings', JSON.stringify(localSettings));
+    await asyncStorageService.set('reminders:settings', localSettings);
     mockGetStoredSmartReminderSettings.mockResolvedValue(null);
     mockGetPreferences.mockResolvedValue({
       theme: 'auto',
@@ -132,7 +130,7 @@ describe('SmartReminderSettingsService', () => {
       'firebase-user-3'
     );
 
-    expect(JSON.parse((await AsyncStorage.getItem('reminders:settings')) ?? '{}')).toMatchObject({
+    expect(await asyncStorageService.get('reminders:settings')).toMatchObject({
       quietHoursEnabled: true,
       quietHoursStart: '21:00',
     });
@@ -170,7 +168,7 @@ describe('SmartReminderSettingsService', () => {
       ...DEFAULT_SMART_REMINDER_SETTINGS,
       earlyReminderHours: 24,
     };
-    await AsyncStorage.setItem('reminders:settings', JSON.stringify(localSettings));
+    await asyncStorageService.set('reminders:settings', localSettings);
     mockGetStoredSmartReminderSettings.mockResolvedValue(null);
     mockGetPreferences.mockResolvedValue({
       theme: 'auto',
@@ -199,5 +197,34 @@ describe('SmartReminderSettingsService', () => {
         }),
       })
     );
+  });
+
+  it('migrates legacy raw AsyncStorage settings into the unified storage wrapper', async () => {
+    await AsyncStorage.setItem(
+      'reminders:settings',
+      JSON.stringify({
+        ...DEFAULT_SMART_REMINDER_SETTINGS,
+        prepTimeMinutes: 75,
+      })
+    );
+
+    const service = createService();
+    const result = await service.load();
+
+    expect(result.prepTimeMinutes).toBe(75);
+    expect(await AsyncStorage.getItem('reminders:settings')).toBeNull();
+    expect(await asyncStorageService.get('reminders:settings')).toMatchObject({
+      prepTimeMinutes: 75,
+    });
+  });
+
+  it('migrates the legacy anonymous reminder user id into the unified storage wrapper', async () => {
+    await AsyncStorage.setItem('reminders:local-user-id', 'legacy-user-id');
+
+    const resolved = await resolveReminderUserId();
+
+    expect(resolved).toBe('legacy-user-id');
+    expect(await AsyncStorage.getItem('reminders:local-user-id')).toBeNull();
+    expect(await asyncStorageService.get('reminders:local-user-id')).toBe('legacy-user-id');
   });
 });

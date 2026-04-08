@@ -28,6 +28,7 @@ jest.mock('@/services/AvatarService', () => ({
     pickFromLibrary: jest.fn(),
     pickFromCamera: jest.fn(),
     deleteAvatar: jest.fn(),
+    resolveAvatarUri: jest.fn(async (uri?: string | null) => uri ?? null),
   },
 }));
 

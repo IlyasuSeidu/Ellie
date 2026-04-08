@@ -157,7 +157,20 @@
       "shiftTomorrowWork": "Kusasa ({{date}}) une-{{shiftType}}.",
       "shiftTomorrowOff": "Kusasa ({{date}}) usuku lwakho lokuphumula!",
       "nextDayOff": "Usuku lwakho olulandelayo lokuphumula ngu-{{date}}.",
-      "nextNightShift": "Ishifu yakho yasebusuku elandelayo ngu-{{date}}."
+      "nextNightShift": "Ishifu yakho yasebusuku elandelayo ngu-{{date}}.",
+      "shiftsThisWeek": "Kuleli sonto: amashifu emini angu-{{dayCount}}, amashifu ebusuku angu-{{nightCount}} nezinsuku zokuphumula ezingu-{{offCount}}.",
+      "shiftsThisWeekThreeShift": "Kuleli sonto: amashifu asekuseni angu-{{morningCount}}, amashifu antambama angu-{{afternoonCount}}, amashifu ebusuku angu-{{nightCount}} nezinsuku zokuphumula ezingu-{{offCount}}.",
+      "daysOffThisMonth": "Unezinsuku zokuphumula ezingu-{{count}} kule nyanga.",
+      "nightShiftsThisMonth": "Unamashifu ebusuku angu-{{count}} kule nyanga.",
+      "nextFlyOut": "Usuku lwakho olulandelayo lwe-fly-out ngu-{{date}}.",
+      "startBack": "Uqala umsebenzi futhi ngo-{{date}}.",
+      "patternSummaryRotating": "Iphethini yakho ingamashifu emini angu-{{dayCount}}, amashifu ebusuku angu-{{nightCount}}, bese kuba nezinsuku zokuphumula ezingu-{{offCount}}.",
+      "patternSummaryThreeShift": "Iphethini yakho ingamashifu asekuseni angu-{{morningCount}}, amashifu antambama angu-{{afternoonCount}}, amashifu ebusuku angu-{{nightCount}}, bese kuba nezinsuku zokuphumula ezingu-{{offCount}}.",
+      "patternSummaryFifo": "Iphethini yakho ingu-{{workDays}} izinsuku esizeni bese kuba ngu-{{restDays}} izinsuku zokuphumula."
+    },
+    "notices": {
+      "offlineRecognitionUnavailable": "Ukufaka ngezwi ungaxhunyiwe ku-inthanethi akutholakali kule divayisi manje.",
+      "audioUnavailable": "Izimpendulo zomsindo azitholakali manje. Usengafunda impendulo ka-Ellie."
     }
   },
   "tabs": {

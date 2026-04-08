@@ -7,10 +7,19 @@ import React from 'react';
 import { render, waitFor, act } from '@testing-library/react-native';
 import { MainDashboardScreen } from '../MainDashboardScreen';
 
-// Mock OnboardingContext — Dashboard subscribes to this for reactive updates.
-// Tests still control data via asyncStorageService.get, which the dashboard reads directly.
+const mockUpdateData = jest.fn();
+const mockUseOnboarding = jest.fn();
+
 jest.mock('@/contexts/OnboardingContext', () => ({
-  useOnboarding: jest.fn(() => ({ data: {}, updateData: jest.fn() })),
+  useOnboarding: () => mockUseOnboarding(),
+}));
+
+jest.mock('@/hooks/useSubscription', () => ({
+  useSubscription: jest.fn(() => ({ isPro: false, isLoading: false, openPaywall: jest.fn() })),
+}));
+
+jest.mock('@/hooks/usePaywallRecovery', () => ({
+  usePaywallRecovery: jest.fn(() => ({ shouldNudge: false, dismissNudge: jest.fn() })),
 }));
 
 jest.mock('@react-navigation/native', () => ({
@@ -21,16 +30,6 @@ jest.mock('@react-navigation/native', () => ({
   }),
 }));
 
-// Mock AsyncStorageService
-jest.mock('@/services/AsyncStorageService', () => ({
-  asyncStorageService: {
-    get: jest.fn().mockResolvedValue(null),
-    set: jest.fn().mockResolvedValue(undefined),
-    remove: jest.fn().mockResolvedValue(undefined),
-  },
-}));
-
-// Mock Ionicons
 jest.mock('@expo/vector-icons', () => {
   const React = require('react');
   const RN = require('react-native');
@@ -39,7 +38,6 @@ jest.mock('@expo/vector-icons', () => {
   return { Ionicons: MockIcon };
 });
 
-// Mock expo-linear-gradient
 jest.mock('expo-linear-gradient', () => {
   const React = require('react');
   const RN = require('react-native');
@@ -49,7 +47,6 @@ jest.mock('expo-linear-gradient', () => {
   };
 });
 
-// Mock expo-haptics
 jest.mock('expo-haptics', () => ({
   impactAsync: jest.fn(),
   notificationAsync: jest.fn(),
@@ -57,16 +54,15 @@ jest.mock('expo-haptics', () => ({
   NotificationFeedbackType: { Success: 'success', Error: 'error' },
 }));
 
-// Mock AvatarService
 jest.mock('@/services/AvatarService', () => ({
   avatarService: {
     pickFromLibrary: jest.fn(),
     pickFromCamera: jest.fn(),
     deleteAvatar: jest.fn(),
+    resolveAvatarUri: jest.fn(async (uri?: string | null) => uri ?? null),
   },
 }));
 
-// Mock react-native-gesture-handler (used by PersonalizedHeader + MonthlyCalendarCard)
 jest.mock('react-native-gesture-handler', () => {
   const React = require('react');
   const RN = require('react-native');
@@ -75,32 +71,32 @@ jest.mock('react-native-gesture-handler', () => {
     GestureDetector: ({ children }: any) => React.createElement(RN.View, null, children),
     Gesture: {
       Tap: () => ({
-        onBegin: function () {
+        onBegin() {
           return this;
         },
-        onEnd: function () {
+        onEnd() {
           return this;
         },
-        onFinalize: function () {
+        onFinalize() {
           return this;
         },
       }),
       LongPress: () => ({
-        minDuration: function () {
+        minDuration() {
           return this;
         },
-        onEnd: function () {
+        onEnd() {
           return this;
         },
       }),
       Pan: () => ({
-        activeOffsetX: function () {
+        activeOffsetX() {
           return this;
         },
-        failOffsetY: function () {
+        failOffsetY() {
           return this;
         },
-        onEnd: function () {
+        onEnd() {
           return this;
         },
       }),
@@ -109,19 +105,16 @@ jest.mock('react-native-gesture-handler', () => {
   };
 });
 
-// Mock voice assistant components (requires native modules)
 jest.mock('@/components/voice', () => ({
   EllieButton: () => null,
   VoiceAssistantModal: () => null,
 }));
 
-// Mock safe-area-context
 jest.mock('react-native-safe-area-context', () => ({
   useSafeAreaInsets: () => ({ top: 44, bottom: 34, left: 0, right: 0 }),
   SafeAreaProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
-// Mock reanimated
 jest.mock('react-native-reanimated', () => {
   const RN = require('react-native');
   return {
@@ -158,10 +151,6 @@ jest.mock('react-native-reanimated', () => {
   };
 });
 
-// Import the mocked service for test manipulation
-import { asyncStorageService } from '@/services/AsyncStorageService';
-
-// asyncStorageService.get() auto-deserializes, so mock returns parsed object
 const mockOnboardingData = {
   name: 'John Doe',
   occupation: 'Nurse',
@@ -180,20 +169,32 @@ const mockOnboardingData = {
 describe('MainDashboardScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockUseOnboarding.mockReturnValue({
+      data: mockOnboardingData,
+      updateData: mockUpdateData,
+      hydrated: true,
+    });
   });
 
   describe('Loading State', () => {
     it('should show loading indicator initially', () => {
-      (asyncStorageService.get as jest.Mock).mockReturnValue(new Promise(() => {})); // Never resolves
+      mockUseOnboarding.mockReturnValue({
+        data: {},
+        updateData: mockUpdateData,
+        hydrated: false,
+      });
       const result = render(<MainDashboardScreen />);
-      // ActivityIndicator renders in loading state
       expect(result.toJSON()).toBeTruthy();
     });
   });
 
   describe('Error State', () => {
     it('should show error when no data available', async () => {
-      (asyncStorageService.get as jest.Mock).mockResolvedValue(null);
+      mockUseOnboarding.mockReturnValue({
+        data: {},
+        updateData: mockUpdateData,
+        hydrated: true,
+      });
       const { getByText } = render(<MainDashboardScreen />);
 
       await waitFor(() => {
@@ -204,61 +205,42 @@ describe('MainDashboardScreen', () => {
 
   describe('Loaded State', () => {
     it('should render dashboard with user data', async () => {
-      (asyncStorageService.get as jest.Mock).mockResolvedValue(mockOnboardingData);
-
       const { getByTestId } = render(<MainDashboardScreen />);
-
       await waitFor(() => {
         expect(getByTestId('dashboard-header')).toBeTruthy();
       });
     });
 
     it('should render shift status card', async () => {
-      (asyncStorageService.get as jest.Mock).mockResolvedValue(mockOnboardingData);
-
       const { getByTestId } = render(<MainDashboardScreen />);
-
       await waitFor(() => {
         expect(getByTestId('dashboard-shift-status')).toBeTruthy();
       });
     });
 
     it('should render calendar card', async () => {
-      (asyncStorageService.get as jest.Mock).mockResolvedValue(mockOnboardingData);
-
       const { getByTestId } = render(<MainDashboardScreen />);
-
       await waitFor(() => {
         expect(getByTestId('dashboard-calendar')).toBeTruthy();
       });
     });
 
     it('should render statistics row', async () => {
-      (asyncStorageService.get as jest.Mock).mockResolvedValue(mockOnboardingData);
-
       const { getByTestId } = render(<MainDashboardScreen />);
-
       await waitFor(() => {
         expect(getByTestId('dashboard-stats')).toBeTruthy();
       });
     });
 
     it('should display user name', async () => {
-      (asyncStorageService.get as jest.Mock).mockResolvedValue(mockOnboardingData);
-
       const { queryByText } = render(<MainDashboardScreen />);
-
       await waitFor(() => {
-        // Name is inline with greeting: "Good morning, John Doe!"
         expect(queryByText(/John Doe!/)).toBeTruthy();
       });
     });
 
     it('should display user occupation', async () => {
-      (asyncStorageService.get as jest.Mock).mockResolvedValue(mockOnboardingData);
-
       const { getByText } = render(<MainDashboardScreen />);
-
       await waitFor(() => {
         expect(getByText('Nurse')).toBeTruthy();
       });
@@ -267,10 +249,7 @@ describe('MainDashboardScreen', () => {
 
   describe('Pull to Refresh', () => {
     it('should have RefreshControl configured', async () => {
-      (asyncStorageService.get as jest.Mock).mockResolvedValue(mockOnboardingData);
-
       const { UNSAFE_getByType } = render(<MainDashboardScreen />);
-
       await waitFor(() => {
         const scrollView = UNSAFE_getByType(require('react-native').ScrollView);
         expect(scrollView.props.refreshControl).toBeTruthy();
@@ -278,17 +257,14 @@ describe('MainDashboardScreen', () => {
       });
     });
 
-    it('should trigger refresh and reload data', async () => {
-      (asyncStorageService.get as jest.Mock).mockResolvedValue(mockOnboardingData);
-
+    it('should trigger refresh and keep the dashboard interactive', async () => {
       const Haptics = require('expo-haptics');
-      const { UNSAFE_getByType } = render(<MainDashboardScreen />);
+      const { UNSAFE_getByType, getByTestId } = render(<MainDashboardScreen />);
 
       await waitFor(() => {
         expect(UNSAFE_getByType(require('react-native').ScrollView)).toBeTruthy();
       });
 
-      // Get RefreshControl's onRefresh from ScrollView
       const scrollView = UNSAFE_getByType(require('react-native').ScrollView);
       const onRefresh = scrollView.props.refreshControl.props.onRefresh;
 
@@ -296,12 +272,9 @@ describe('MainDashboardScreen', () => {
         onRefresh();
       });
 
-      // Data should have been reloaded (initial load + refresh)
       await waitFor(() => {
-        expect(asyncStorageService.get).toHaveBeenCalledTimes(2);
+        expect(getByTestId('dashboard-header')).toBeTruthy();
       });
-
-      // Should trigger medium haptic on pull
       expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Medium);
     });
   });

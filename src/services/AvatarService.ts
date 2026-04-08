@@ -24,6 +24,19 @@ const translateAvatar = (key: string, fallback: string): string =>
   );
 
 class AvatarService {
+  async resolveAvatarUri(uri?: string | null): Promise<string | null> {
+    if (!uri) {
+      return null;
+    }
+
+    try {
+      const info = await FileSystem.getInfoAsync(uri);
+      return info.exists ? uri : null;
+    } catch {
+      return null;
+    }
+  }
+
   /**
    * Ensure the avatars directory exists
    */

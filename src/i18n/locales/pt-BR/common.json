@@ -245,7 +245,8 @@
       "purchaseSuccessContinue": "Continuar para Ellie",
       "restorePurchasesSuccess": "Compra restaurada — bem-vindo ao Pro!",
       "restorePurchasesNotFound": "Nenhuma compra anterior foi encontrada nesta conta.",
-      "restorePurchasesError": "A restauração falhou. Tente novamente."
+      "restorePurchasesError": "A restauração falhou. Tente novamente.",
+      "ctaOffline": "Conecte-se para assinar"
     },
     "profile": {
       "rowActiveA11y": "Ellie Assinatura Pro ativa",
@@ -275,5 +276,8 @@
       "am": "AM",
       "pm": "PM"
     }
+  },
+  "offlineBanner": {
+    "message": "Offline. Seus dados de turnos ainda estão disponíveis."
   }
 }

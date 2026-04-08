@@ -245,7 +245,8 @@
       "purchaseSuccessContinue": "Gaan voort na Ellie",
       "restorePurchasesSuccess": "Aankoop herstel — welkom by Pro!",
       "restorePurchasesNotFound": "Geen vorige aankope is op hierdie rekening gevind nie.",
-      "restorePurchasesError": "Herstel het misluk. Probeer asseblief weer."
+      "restorePurchasesError": "Herstel het misluk. Probeer asseblief weer.",
+      "ctaOffline": "Koppel om in te teken"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro aktiewe intekening",
@@ -275,5 +276,8 @@
       "am": "VM",
       "pm": "NM"
     }
+  },
+  "offlineBanner": {
+    "message": "Vanlyn. Jou skofdata is steeds beskikbaar."
   }
 }

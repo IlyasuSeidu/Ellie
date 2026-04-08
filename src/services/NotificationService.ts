@@ -10,6 +10,11 @@ import { isSmartReminderType, type ReminderEvent, type SmartReminderType } from 
 import { logger } from '@/utils/logger';
 import { FirebaseService } from './firebase/FirebaseService';
 import i18n from '@/i18n';
+import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
+import { asyncStorageService } from '@/services/AsyncStorageService';
+import { networkService } from '@/services/NetworkService';
+import { STORAGE_KEYS } from '@/constants/storageKeys';
 
 /**
  * Notification types
@@ -82,6 +87,7 @@ export interface INotificationScheduler {
 export class NotificationService extends FirebaseService {
   private readonly NOTIFICATIONS_COLLECTION = 'notifications';
   private scheduler: INotificationScheduler | null = null;
+  private pushTokenListenerInitialized = false;
 
   private translate(key: string, options: Record<string, unknown>, fallback: string): string {
     return String(
@@ -98,6 +104,7 @@ export class NotificationService extends FirebaseService {
    */
   setScheduler(scheduler: INotificationScheduler): void {
     this.scheduler = scheduler;
+    this.ensurePushTokenListener();
   }
 
   /**
@@ -273,6 +280,9 @@ export class NotificationService extends FirebaseService {
       pendingSmartReminders.map(async (notification) => {
         try {
           await this.scheduler?.cancelNotification(notification.id);
+          await this.cacheNotificationStatus(userId, notification.id, {
+            status: 'cancelled',
+          });
           await this.update(this.NOTIFICATIONS_COLLECTION, notification.id, {
             status: 'cancelled',
           });
@@ -303,11 +313,22 @@ export class NotificationService extends FirebaseService {
 
     // Cancel the scheduled notification
     await this.scheduler.cancelNotification(notificationId);
-
-    // Update status in history
-    await this.update(this.NOTIFICATIONS_COLLECTION, notificationId, {
+    await this.cacheNotificationStatus(userId, notificationId, {
       status: 'cancelled',
     });
+
+    try {
+      // Update status in history
+      await this.update(this.NOTIFICATIONS_COLLECTION, notificationId, {
+        status: 'cancelled',
+      });
+    } catch (error) {
+      logger.warn('NotificationService: failed to sync cancelled notification status remotely', {
+        userId,
+        notificationId,
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
 
     logger.info('Notification cancelled', { userId, notificationId });
   }
@@ -328,10 +349,20 @@ export class NotificationService extends FirebaseService {
       pendingNotifications
         .filter((notification) => notification.status === 'pending')
         .map(async (notification) => {
-          await this.scheduler?.cancelNotification(notification.id);
-          await this.update(this.NOTIFICATIONS_COLLECTION, notification.id, {
-            status: 'cancelled',
-          });
+          try {
+            await this.scheduler?.cancelNotification(notification.id);
+            await this.cacheNotificationStatus(userId, notification.id, {
+              status: 'cancelled',
+            });
+            await this.update(this.NOTIFICATIONS_COLLECTION, notification.id, {
+              status: 'cancelled',
+            });
+          } catch (error) {
+            logger.error('Failed to cancel notification', error as Error, {
+              userId,
+              notificationId: notification.id,
+            });
+          }
         })
     );
 
@@ -351,6 +382,10 @@ export class NotificationService extends FirebaseService {
     const granted = await this.scheduler.requestPermissions();
 
     logger.info('Notification permissions requested', { granted });
+
+    if (granted) {
+      void this.getOrFetchPushToken();
+    }
 
     return granted;
   }
@@ -377,6 +412,48 @@ export class NotificationService extends FirebaseService {
     }
 
     return this.scheduler.getPermissionStatus();
+  }
+
+  async getCachedPushToken(): Promise<string | null> {
+    const cached = await asyncStorageService.get<string>(STORAGE_KEYS.notifications.expoPushToken);
+    return typeof cached === 'string' && cached.trim().length > 0 ? cached.trim() : null;
+  }
+
+  async getOrFetchPushToken(): Promise<string | null> {
+    this.ensurePushTokenListener();
+
+    const cached = await this.getCachedPushToken();
+    if (cached) {
+      return cached;
+    }
+
+    const snapshot = await networkService.refresh();
+    if (snapshot.status !== 'online') {
+      logger.debug('NotificationService: push token fetch skipped while offline');
+      return null;
+    }
+
+    const projectId = this.getExpoProjectId();
+    if (!projectId) {
+      logger.warn('NotificationService: push token fetch skipped because projectId is missing');
+      return null;
+    }
+
+    try {
+      const token = await Notifications.getExpoPushTokenAsync({ projectId });
+      const normalized = token.data?.trim();
+      if (!normalized) {
+        return null;
+      }
+
+      await asyncStorageService.set(STORAGE_KEYS.notifications.expoPushToken, normalized);
+      return normalized;
+    } catch (error) {
+      logger.warn('NotificationService: failed to fetch Expo push token', {
+        error: error instanceof Error ? error.message : String(error),
+      });
+      return null;
+    }
   }
 
   /**
@@ -536,6 +613,7 @@ export class NotificationService extends FirebaseService {
    */
   async saveNotification(userId: string, notification: ScheduledNotification): Promise<void> {
     try {
+      await this.cacheNotification(userId, notification);
       await this.create(
         this.NOTIFICATIONS_COLLECTION,
         {
@@ -567,12 +645,17 @@ export class NotificationService extends FirebaseService {
   ): Promise<ScheduledNotification[]> {
     try {
       const notifications = await this.query<ScheduledNotification>(this.NOTIFICATIONS_COLLECTION);
+      const remoteNotifications = notifications.filter(
+        (notification) => notification.userId === userId
+      );
+      const cachedNotifications = await this.getCachedNotificationHistory(userId);
 
-      // Filter by userId and sort by scheduledFor (most recent first)
-      const userNotifications = notifications
-        .filter((n) => n.userId === userId)
-        .sort((a, b) => new Date(b.scheduledFor).getTime() - new Date(a.scheduledFor).getTime())
-        .slice(0, limit);
+      const userNotifications = this.mergeNotificationHistory(
+        remoteNotifications,
+        cachedNotifications
+      ).slice(0, limit);
+
+      await this.replaceCachedNotificationHistory(userId, userNotifications);
 
       logger.debug('Notification history retrieved', {
         userId,
@@ -581,10 +664,11 @@ export class NotificationService extends FirebaseService {
 
       return userNotifications;
     } catch (error) {
+      const cachedNotifications = await this.getCachedNotificationHistory(userId);
       logger.error('Failed to get notification history', error as Error, {
         userId,
       });
-      return [];
+      return cachedNotifications.slice(0, limit);
     }
   }
 
@@ -593,6 +677,10 @@ export class NotificationService extends FirebaseService {
    */
   async markAsDelivered(notificationId: string): Promise<void> {
     try {
+      await this.cacheNotificationStatus(undefined, notificationId, {
+        status: 'delivered',
+        deliveredAt: new Date().toISOString(),
+      });
       await this.update(this.NOTIFICATIONS_COLLECTION, notificationId, {
         status: 'delivered',
         deliveredAt: new Date().toISOString(),
@@ -605,6 +693,132 @@ export class NotificationService extends FirebaseService {
       });
       // Don't throw - delivery tracking failure shouldn't break the app
     }
+  }
+
+  private getExpoProjectId(): string | null {
+    const easProjectId = Constants.easConfig?.projectId;
+    if (typeof easProjectId === 'string' && easProjectId.trim().length > 0) {
+      return easProjectId.trim();
+    }
+
+    const extra = (Constants.expoConfig?.extra ?? {}) as Record<string, unknown>;
+    const extraProjectId = extra.eas && typeof extra.eas === 'object' ? extra.eas : null;
+    const nestedProjectId =
+      extraProjectId && 'projectId' in extraProjectId ? extraProjectId.projectId : undefined;
+    if (typeof nestedProjectId === 'string' && nestedProjectId.trim().length > 0) {
+      return nestedProjectId.trim();
+    }
+
+    const directProjectId = extra.projectId;
+    if (typeof directProjectId === 'string' && directProjectId.trim().length > 0) {
+      return directProjectId.trim();
+    }
+
+    return null;
+  }
+
+  private ensurePushTokenListener(): void {
+    if (this.pushTokenListenerInitialized) {
+      return;
+    }
+
+    this.pushTokenListenerInitialized = true;
+
+    if (typeof Notifications.addPushTokenListener !== 'function') {
+      return;
+    }
+
+    Notifications.addPushTokenListener((token) => {
+      const normalized = token.data?.trim();
+      if (!normalized) {
+        return;
+      }
+
+      void asyncStorageService
+        .set(STORAGE_KEYS.notifications.expoPushToken, normalized)
+        .catch((error) => {
+          logger.warn('NotificationService: failed to cache refreshed push token', {
+            error: error instanceof Error ? error.message : String(error),
+          });
+        });
+    });
+  }
+
+  private getHistoryCacheKey(userId: string): string {
+    return `${STORAGE_KEYS.notifications.historyPrefix}${userId}`;
+  }
+
+  private getHistoryLookupKey(notificationId: string): string {
+    return `${STORAGE_KEYS.notifications.lookupPrefix}${notificationId}`;
+  }
+
+  private async getCachedNotificationHistory(userId: string): Promise<ScheduledNotification[]> {
+    const cached = await asyncStorageService.get<ScheduledNotification[]>(
+      this.getHistoryCacheKey(userId)
+    );
+    return Array.isArray(cached)
+      ? cached.sort(
+          (a, b) => new Date(b.scheduledFor).getTime() - new Date(a.scheduledFor).getTime()
+        )
+      : [];
+  }
+
+  private mergeNotificationHistory(
+    primary: ScheduledNotification[],
+    secondary: ScheduledNotification[]
+  ): ScheduledNotification[] {
+    const byId = new Map<string, ScheduledNotification>();
+
+    [...secondary, ...primary].forEach((notification) => {
+      byId.set(notification.id, notification);
+    });
+
+    return Array.from(byId.values()).sort(
+      (a, b) => new Date(b.scheduledFor).getTime() - new Date(a.scheduledFor).getTime()
+    );
+  }
+
+  private async replaceCachedNotificationHistory(
+    userId: string,
+    notifications: ScheduledNotification[]
+  ): Promise<void> {
+    await asyncStorageService.set(this.getHistoryCacheKey(userId), notifications);
+    await Promise.all(
+      notifications.map((notification) =>
+        asyncStorageService.set(this.getHistoryLookupKey(notification.id), userId)
+      )
+    );
+  }
+
+  private async cacheNotification(
+    userId: string,
+    notification: ScheduledNotification
+  ): Promise<void> {
+    const cached = await this.getCachedNotificationHistory(userId);
+    const merged = this.mergeNotificationHistory([notification], cached);
+    await this.replaceCachedNotificationHistory(userId, merged);
+  }
+
+  private async cacheNotificationStatus(
+    userId: string | undefined,
+    notificationId: string,
+    patch: Partial<ScheduledNotification>
+  ): Promise<void> {
+    const resolvedUserId =
+      userId ??
+      (await asyncStorageService.get<string>(this.getHistoryLookupKey(notificationId))) ??
+      null;
+
+    if (!resolvedUserId) {
+      return;
+    }
+
+    const cached = await this.getCachedNotificationHistory(resolvedUserId);
+    const updated = cached.map((notification) =>
+      notification.id === notificationId ? { ...notification, ...patch } : notification
+    );
+
+    await this.replaceCachedNotificationHistory(resolvedUserId, updated);
   }
 }
 

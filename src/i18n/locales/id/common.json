@@ -245,7 +245,8 @@
       "purchaseSuccessContinue": "Lanjut ke Ellie",
       "restorePurchasesSuccess": "Pembelian dipulihkan — selamat datang di Pro!",
       "restorePurchasesNotFound": "Tidak ada pembelian sebelumnya yang ditemukan di akun ini.",
-      "restorePurchasesError": "Pemulihan gagal. Silakan coba lagi."
+      "restorePurchasesError": "Pemulihan gagal. Silakan coba lagi.",
+      "ctaOffline": "Hubungkan untuk berlangganan"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro langganan aktif",
@@ -275,5 +276,8 @@
       "am": "AM",
       "pm": "PM"
     }
+  },
+  "offlineBanner": {
+    "message": "Offline. Data shift Anda masih tersedia."
   }
 }

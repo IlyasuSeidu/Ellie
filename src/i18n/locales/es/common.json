@@ -245,7 +245,8 @@
       "purchaseSuccessContinue": "Continuar a Ellie",
       "restorePurchasesSuccess": "Compra restaurada — bienvenida a Pro.",
       "restorePurchasesNotFound": "No se encontraron compras anteriores en esta cuenta.",
-      "restorePurchasesError": "La restauración falló. Inténtalo de nuevo."
+      "restorePurchasesError": "La restauración falló. Inténtalo de nuevo.",
+      "ctaOffline": "Conéctate para suscribirte"
     },
     "profile": {
       "rowActiveA11y": "Ellie Suscripción activa profesional",
@@ -275,5 +276,8 @@
       "am": "a. m.",
       "pm": "p. m."
     }
+  },
+  "offlineBanner": {
+    "message": "Sin conexión. Tus datos de turnos siguen disponibles."
   }
 }

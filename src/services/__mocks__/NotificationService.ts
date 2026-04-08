@@ -81,6 +81,7 @@ export class MockNotificationScheduler implements INotificationScheduler {
 export class MockNotificationService {
   private notifications: Map<string, ScheduledNotification> = new Map();
   private scheduler: MockNotificationScheduler;
+  private pushToken: string | null = null;
 
   constructor() {
     this.scheduler = new MockNotificationScheduler();
@@ -245,6 +246,21 @@ export class MockNotificationService {
     return this.scheduler.getPermissionStatus();
   }
 
+  async getCachedPushToken(): Promise<string | null> {
+    await Promise.resolve();
+    return this.pushToken;
+  }
+
+  async getOrFetchPushToken(): Promise<string | null> {
+    await Promise.resolve();
+    if (this.pushToken) {
+      return this.pushToken;
+    }
+
+    this.pushToken = 'ExponentPushToken[mock-token]';
+    return this.pushToken;
+  }
+
   async scheduleDaily(hour: number, title: string, body: string): Promise<void> {
     const triggerDate = new Date();
     triggerDate.setHours(hour, 0, 0, 0);
@@ -324,6 +340,7 @@ export class MockNotificationService {
   reset(): void {
     this.notifications.clear();
     this.scheduler.reset();
+    this.pushToken = null;
   }
 
   getNotificationCount(): number {
