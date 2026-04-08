@@ -46,6 +46,8 @@ export interface NetworkState {
  */
 export class FirebaseService {
   private static readonly DOC_CACHE_PREFIX = 'firestore:cache:doc:';
+  private static readonly QUERY_CACHE_PREFIX = 'firestore:cache:query:';
+  private static readonly QUERY_CACHE_INDEX_PREFIX = 'firestore:cache:query-index:';
   protected db: Firestore;
   protected auth: Auth;
   private networkState: NetworkState = { isConnected: true };
@@ -110,6 +112,7 @@ export class FirebaseService {
             updatedAt: new Date().toISOString(),
           } as unknown as T;
           await this.cacheDocument(collectionName, documentId, cachedDocument);
+          await this.invalidateCollectionQueryCaches(collectionName);
 
           logger.info('Document created', {
             collection: collectionName,
@@ -228,6 +231,7 @@ export class FirebaseService {
             ...data,
             updatedAt: new Date().toISOString(),
           });
+          await this.invalidateCollectionQueryCaches(collectionName);
 
           logger.info('Document updated', {
             collection: collectionName,
@@ -260,6 +264,7 @@ export class FirebaseService {
           const docRef = doc(this.db, collectionName, docId);
           await deleteDoc(docRef);
           await this.removeCachedDocument(collectionName, docId);
+          await this.invalidateCollectionQueryCaches(collectionName);
 
           logger.info('Document deleted', {
             collection: collectionName,
@@ -290,6 +295,17 @@ export class FirebaseService {
     collectionName: string,
     constraints: QueryConstraint[] = []
   ): Promise<T[]> {
+    if (!this.networkState.isConnected) {
+      const cached = await this.getCachedQueryResults<T>(collectionName, constraints);
+      if (cached !== null) {
+        logger.debug('Query served from local cache', {
+          collection: collectionName,
+          resultCount: cached.length,
+        });
+        return cached;
+      }
+    }
+
     return retry(
       async () => {
         try {
@@ -302,6 +318,8 @@ export class FirebaseService {
             results.push({ id: doc.id, ...doc.data() } as unknown as T);
           });
 
+          await this.cacheQueryResults(collectionName, constraints, results);
+
           logger.debug('Query executed', {
             collection: collectionName,
             resultCount: results.length,
@@ -309,7 +327,19 @@ export class FirebaseService {
 
           return results;
         } catch (error) {
-          throw this.handleFirestoreError(error as FirestoreError, 'query');
+          const handledError = this.handleFirestoreError(error as FirestoreError, 'query');
+          if (handledError instanceof NetworkError) {
+            const cached = await this.getCachedQueryResults<T>(collectionName, constraints);
+            if (cached !== null) {
+              logger.warn('Falling back to cached query after Firestore query failure', {
+                collection: collectionName,
+                resultCount: cached.length,
+              });
+              return cached;
+            }
+          }
+
+          throw handledError;
         }
       },
       {
@@ -395,6 +425,14 @@ export class FirebaseService {
       const collectionRef = collection(this.db, collectionName);
       const q = query(collectionRef, ...constraints);
 
+      if (!this.networkState.isConnected) {
+        void this.getCachedQueryResults<T>(collectionName, constraints).then((cached) => {
+          if (cached !== null) {
+            callback(cached);
+          }
+        });
+      }
+
       const unsubscribe = onSnapshot(
         q,
         (querySnapshot) => {
@@ -402,13 +440,15 @@ export class FirebaseService {
           querySnapshot.forEach((doc) => {
             results.push({ id: doc.id, ...doc.data() } as unknown as T);
           });
+          void this.cacheQueryResults(collectionName, constraints, results);
           callback(results);
         },
-        (error) => {
+        async (error) => {
           logger.error('Query subscription error', error, {
             collection: collectionName,
           });
-          callback([]);
+          const cached = await this.getCachedQueryResults<T>(collectionName, constraints);
+          callback(cached ?? []);
         }
       );
 
@@ -478,6 +518,17 @@ export class FirebaseService {
     return `${FirebaseService.DOC_CACHE_PREFIX}${collectionName}:${docId}`;
   }
 
+  private getQueryCacheKey(collectionName: string, constraints: QueryConstraint[]): string {
+    const fingerprint = this.hashCacheKeyPayload(
+      this.normalizeCacheKeyValue({ collectionName, constraints })
+    );
+    return `${FirebaseService.QUERY_CACHE_PREFIX}${collectionName}:${fingerprint}`;
+  }
+
+  private getQueryCacheIndexKey(collectionName: string): string {
+    return `${FirebaseService.QUERY_CACHE_INDEX_PREFIX}${collectionName}`;
+  }
+
   private async getCachedDocument<T extends DocumentData>(
     collectionName: string,
     docId: string
@@ -532,5 +583,111 @@ export class FirebaseService {
         error: error instanceof Error ? error.message : String(error),
       });
     }
+  }
+
+  private async getCachedQueryResults<T extends DocumentData>(
+    collectionName: string,
+    constraints: QueryConstraint[]
+  ): Promise<T[] | null> {
+    try {
+      return await asyncStorageService.get<T[]>(this.getQueryCacheKey(collectionName, constraints));
+    } catch (error) {
+      logger.warn('Failed to read cached Firestore query', {
+        collection: collectionName,
+        error: error instanceof Error ? error.message : String(error),
+      });
+      return null;
+    }
+  }
+
+  private async cacheQueryResults<T extends DocumentData>(
+    collectionName: string,
+    constraints: QueryConstraint[],
+    results: T[]
+  ): Promise<void> {
+    const cacheKey = this.getQueryCacheKey(collectionName, constraints);
+    const indexKey = this.getQueryCacheIndexKey(collectionName);
+
+    try {
+      await asyncStorageService.set(cacheKey, results);
+
+      const existingIndex = (await asyncStorageService.get<string[]>(indexKey)) ?? [];
+      if (!existingIndex.includes(cacheKey)) {
+        await asyncStorageService.set(indexKey, [...existingIndex, cacheKey]);
+      }
+    } catch (error) {
+      logger.warn('Failed to cache Firestore query', {
+        collection: collectionName,
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+
+  private async invalidateCollectionQueryCaches(collectionName: string): Promise<void> {
+    const indexKey = this.getQueryCacheIndexKey(collectionName);
+
+    try {
+      const cachedKeys = (await asyncStorageService.get<string[]>(indexKey)) ?? [];
+      await Promise.all(cachedKeys.map((cacheKey) => asyncStorageService.remove(cacheKey)));
+      await asyncStorageService.remove(indexKey);
+    } catch (error) {
+      logger.warn('Failed to invalidate Firestore query cache', {
+        collection: collectionName,
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+
+  private normalizeCacheKeyValue(value: unknown, seen = new WeakSet<object>()): unknown {
+    if (value === null || value === undefined) {
+      return value;
+    }
+
+    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+      return value;
+    }
+
+    if (value instanceof Date) {
+      return value.toISOString();
+    }
+
+    if (Array.isArray(value)) {
+      return value.map((entry) => this.normalizeCacheKeyValue(entry, seen));
+    }
+
+    if (typeof value === 'object') {
+      if (seen.has(value as object)) {
+        return '[Circular]';
+      }
+
+      seen.add(value as object);
+
+      const record = value as Record<string, unknown>;
+      const keys = Object.keys(record).sort();
+      if (keys.length === 0) {
+        const tag = Object.prototype.toString.call(value);
+        return tag === '[object Object]' ? {} : String(value);
+      }
+
+      const normalizedEntries = keys
+        .filter((key) => typeof record[key] !== 'function' && typeof record[key] !== 'undefined')
+        .map((key) => [key, this.normalizeCacheKeyValue(record[key], seen)]);
+
+      seen.delete(value as object);
+      return Object.fromEntries(normalizedEntries);
+    }
+
+    return String(value);
+  }
+
+  private hashCacheKeyPayload(value: unknown): string {
+    const source = JSON.stringify(value);
+    let hash = 5381;
+
+    for (let index = 0; index < source.length; index += 1) {
+      hash = (hash * 33) ^ source.charCodeAt(index);
+    }
+
+    return (hash >>> 0).toString(36);
   }
 }

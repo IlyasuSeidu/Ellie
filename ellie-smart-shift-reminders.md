@@ -2083,3 +2083,296 @@ The following UI work is still required to expose the smart-reminder backend to 
    - permission-denied guidance in Profile when notifications are disabled
 
 No UI code for the above was implemented in this backend-only phase.
+
+---
+
+## Second Pass — UI, Settings Persistence & i18n (implemented)
+
+All items from Sections A, D, and the auth gap (Section C) are now complete. This section documents what was built, what changed from the original plan, and the new files that weren't in the original spec.
+
+---
+
+### Status summary
+
+| Deferred item                            | Status               |
+| ---------------------------------------- | -------------------- |
+| A — Quiet hours time picker              | ✅ Fully implemented |
+| B — Sleep-aware reminders (SleepContext) | ⏳ Still deferred    |
+| C — Stable auth / user identity          | ✅ Fully implemented |
+| D1 — SmartRemindersPanel.tsx             | ✅ Fully implemented |
+| D2 — ProfileScreen integration           | ✅ Fully implemented |
+| D3 — Quiet hours picker wiring           | ✅ Fully implemented |
+| D4 — Profile copy and UX polish          | ✅ Fully implemented |
+| D5 — Test + reschedule actions           | ✅ Fully implemented |
+
+---
+
+### New file: `src/services/SmartReminderSettingsService.ts`
+
+Not in the original plan. This service was extracted to centralise all settings load/save logic and give both `useSmartReminders` and `SmartRemindersPanel` a shared, consistent path to settings.
+
+**What it does:**
+
+- `SmartReminderSettingsService.load(firebaseUid?)` — reads from AsyncStorage first; if a Firebase UID is present, fetches remote settings from `UserService.getStoredSmartReminderSettings()`. Remote wins if present; otherwise local is promoted to remote via `persistRemote()`.
+- `SmartReminderSettingsService.save(settings, firebaseUid?)` — writes to AsyncStorage always; also writes to `UserService.updateNotificationSettings()` under `preferences.notifications.smartReminders` when UID is present.
+- `resolveReminderUserId(firebaseUid?)` — exported standalone function. Returns the Firebase UID when signed in; otherwise reads a persisted anonymous UUID from AsyncStorage key `SMART_REMINDER_LOCAL_USER_ID_KEY`, generating and storing one on first call.
+
+**Key constants exported from `src/types/reminders.ts`:**
+
+```typescript
+export const SMART_REMINDER_SETTINGS_KEY = 'reminders:settings';
+export const SMART_REMINDER_LOCAL_USER_ID_KEY = 'reminders:localUserId';
+```
+
+**Singleton export:**
+
+```typescript
+export const smartReminderSettingsService = new SmartReminderSettingsService();
+```
+
+---
+
+### Changes to `src/services/UserService.ts`
+
+Two new methods:
+
+```typescript
+// Read smart reminder settings from Firestore user doc
+async getStoredSmartReminderSettings(userId: string): Promise<SmartReminderSettings | null>
+// Reads from user?.preferences?.notifications?.smartReminders ?? user?.notificationSettings?.smartReminders
+
+// Write notification settings (including smartReminders) back to Firestore
+async updateNotificationSettings(userId: string, settings: NotificationSettings): Promise<void>
+// Persists to preferences.notifications with deep merge of smartReminders
+```
+
+The `NotificationSettings` type now has a `smartReminders?: SmartReminderSettings` field (stored under `preferences.notifications.smartReminders` in the Firestore user doc).
+
+---
+
+### Changes to `src/hooks/useSmartReminders.ts`
+
+The implementation diverged significantly from the original plan:
+
+**Uses `SmartReminderSettingsService` instead of raw AsyncStorage:**
+
+```typescript
+const settings = await smartReminderSettingsService.load(user?.uid);
+```
+
+**Expanded fingerprint** — includes everything that could change scheduling:
+
+```typescript
+function buildReminderFingerprint(onboardingData, language, settings, userId, timeZone): string {
+  return JSON.stringify({
+    userId,
+    timeZone,
+    language,
+    settings,
+    name,
+    shiftSystem,
+    rosterType,
+    patternType,
+    startDate,
+    phaseOffset,
+    customPattern,
+    fifoConfig,
+    shiftTimes,
+  });
+}
+```
+
+**AppState foreground re-run** — reschedules when the app returns to foreground (catches date rollovers and permission state changes):
+
+```typescript
+AppState.addEventListener('change', (nextState) => {
+  if (nextState === 'active') void run();
+});
+```
+
+**Mutex guard** — `isRunningRef` prevents concurrent runs:
+
+```typescript
+if (fingerprint === lastSuccessfulFingerprintRef.current || isRunningRef.current) return;
+isRunningRef.current = true;
+try { ... } finally { isRunningRef.current = false; }
+```
+
+**User identity change handling** — when the resolved `userId` changes (e.g. anonymous → signed in), old reminders are cancelled before new ones are scheduled:
+
+```typescript
+if (lastScheduledUserIdRef.current && lastScheduledUserIdRef.current !== currentUserId) {
+  await notificationService.cancelSmartReminders(lastScheduledUserIdRef.current);
+  // reset refs
+}
+```
+
+**Passes `language` to orchestrator** — so all notification content is localised to the user's active language:
+
+```typescript
+await orchestrator.reschedule({ ..., language });
+```
+
+---
+
+### Changes to `src/services/SmartReminderService.ts`
+
+**Fully localised notification content** — the service now accepts a `language` parameter and uses `i18n.t()` to build all notification titles and bodies. Notification strings live in `src/i18n/locales/*/dashboard.json` under `notifications.smartReminders.*`.
+
+Key helpers added:
+
+- `shiftLabel(shiftType, language)` — localised shift type name
+- `formatReminderDate(date, language)` — locale-aware date string for warnings
+- `formatGapHours(gapHours, language)` — locale-aware gap duration for short-turnaround body
+
+**`ReminderFatigueRiskLevel` type** — The service no longer imports from `src/types/sleep`. Fatigue risk is typed inline as `ReminderFatigueRiskLevel` exported from `src/types/reminders.ts`:
+
+```typescript
+export type ReminderFatigueRiskLevel = 'low' | 'moderate' | 'high' | 'critical';
+```
+
+**Night-shift start time fallback** — `getShiftStartTime` for `'night'` now tries `nightShift3` if `nightShift` is absent (3-shift system support):
+
+```typescript
+case 'night':
+  return shiftTimes.nightShift?.startTime ?? shiftTimes.nightShift3?.startTime ?? null;
+```
+
+---
+
+### Changes to `src/services/SmartReminderOrchestrator.ts`
+
+`reschedule()` params now include `language?: string`, which is passed through to `smartReminderService.buildSchedule()` so all scheduled notification content is in the user's locale.
+
+---
+
+### `src/components/profile/SmartRemindersPanel.tsx` — what was built vs. the plan
+
+The panel was implemented with several additions beyond the original spec:
+
+**Auth integration** — uses `useAuth()` to get the Firebase UID and passes it to `smartReminderSettingsService`:
+
+```typescript
+const { user } = useAuth();
+// on load:
+smartReminderSettingsService.load(user?.uid);
+// on save:
+smartReminderSettingsService.save(updated, user?.uid);
+```
+
+**Error recovery / rollback** — `applyUpdate` rolls settings back to the previous state if save or reschedule throws:
+
+```typescript
+const previous = settings;
+try {
+  await smartReminderSettingsService.save(updated, user?.uid);
+  await reschedule(updated);
+} catch {
+  setSettings(previous);
+  setSaveStatus('error');
+}
+```
+
+**Status feedback states:**
+
+- `rescheduleStatus: 'idle' | 'success' | 'error' | 'permission'` — shown after manual reschedule
+- `testStatus: 'idle' | 'sent' | 'error' | 'permission'` — shown after test notification
+- `saveStatus: 'idle' | 'error'` — shown on persistence failure
+- `showPermissionNotice` — inline text shown when notifications are disabled in OS settings
+
+**Quiet hours picker — fully wired:**
+
+```typescript
+const [quietPickerTarget, setQuietPickerTarget] = useState<'start' | 'end' | null>(null);
+
+// Chips open the picker:
+onPress={() => { void Haptics.selectionAsync(); setQuietPickerTarget('start'); }}
+onPress={() => { void Haptics.selectionAsync(); setQuietPickerTarget('end'); }}
+
+// TimePickerModal rendered inside the Animated.View:
+<TimePickerModal
+  visible={quietPickerTarget !== null}
+  value={quietPickerTarget === 'start' ? settings.quietHoursStart : settings.quietHoursEnd}
+  onConfirm={(hhmm) => { void updateQuietHours(quietPickerTarget!, hhmm); ... }}
+  onDismiss={() => setQuietPickerTarget(null)}
+/>
+```
+
+**30-minute minimum window enforcement** — `updateQuietHours()` detects `start === end` and auto-advances `end` by 30 minutes, showing a brief inline notice:
+
+```typescript
+if (nextStart === nextEnd) {
+  nextEnd = addMinutesToHHMM(nextStart, 30);
+  adjusted = true;
+}
+setQuietHoursAdjusted(adjusted);
+```
+
+**Overnight window label** — shown when `quietHoursStart > quietHoursEnd`:
+
+```typescript
+{isOvernightWindow && (
+  <Text style={s.overnightLabel}>
+    {t('smartReminders.quietHours.overnight', {
+      hours: formatLocalizedNumber(windowSpanH, undefined, language),
+      defaultValue: 'Overnight · {{hours}} h',
+    })}
+  </Text>
+)}
+```
+
+**Locale-aware time chip display** — `fmtChipTime(hhmm, language)` uses `formatLocalizedTime` so the chips respect the user's 12h/24h device setting.
+
+**Full i18n** — every visible string uses `useTranslation('profile')` with `smartReminders.*` keys and in-code `defaultValue` fallbacks. All 11 locales updated in `src/i18n/locales/*/profile.json`.
+
+---
+
+### i18n changes
+
+**`src/i18n/locales/*/dashboard.json`** — all 11 locales (`en`, `af`, `ar`, `es`, `fr`, `hi`, `id`, `pt-BR`, `ru`, `zh-CN`, `zu`) updated with:
+
+```
+notifications.smartReminders.shiftType.{day,night,morning,afternoon,off}
+notifications.smartReminders.early.{title,body}
+notifications.smartReminders.prep.{title,body,titleGeneric,fatigueCritical,fatigueHigh}
+notifications.smartReminders.commute.{title,body}
+notifications.smartReminders.imminent.{title,body}
+notifications.smartReminders.briefing.{title,body}
+notifications.smartReminders.postShift.{title,body}
+notifications.smartReminders.fatigue.{title,body}
+notifications.smartReminders.backToBack.{title,body}
+notifications.smartReminders.shortTurnaround.{title,body}
+notifications.smartReminders.fifo.flyOut.{title,body}
+notifications.smartReminders.fifo.travelTomorrow.{title,body}
+```
+
+**`src/i18n/locales/*/profile.json`** — all 11 locales updated with:
+
+```
+sections.smartReminders
+smartReminders.sections.{timing,doNotDisturb,adaptive,fifo}
+smartReminders.rows.{early,prep,commute,imminent,briefing,quietHours,backToBack,shortTurnaround,postShift,travelDay}.{label,sublabel}
+smartReminders.units.{hoursShort,minutesShort,none}
+smartReminders.quietHours.{startA11y,endA11y,overnight,minimumAdjusted}
+smartReminders.actions.{test,reschedule,rescheduling,permissionNotice}
+smartReminders.status.{success,error,sent,testError}
+smartReminders.test.{title,body}
+```
+
+---
+
+### New test files
+
+Three test files were added (not in the original plan):
+
+- `src/components/profile/__tests__/SmartRemindersPanel.test.tsx`
+- `src/hooks/__tests__/useSmartReminders.test.ts`
+- `src/services/__tests__/SmartReminderSettingsService.test.ts`
+
+The `src/services/__tests__/SmartReminderService.test.ts` stubs from the original plan were also filled in with full test implementations.
+
+---
+
+### Still deferred: Section B (Sleep-aware reminders)
+
+`sleepInsights` is still hardcoded to `null` in both `useSmartReminders` and `SmartRemindersPanel`. The `fatigueAwareReminders` toggle is visible and persisted but has no observable effect until `SleepContext` is connected. See Section B above for the full wiring spec.

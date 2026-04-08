@@ -86,6 +86,9 @@ const RETRY_CONFIG = {
 
 /**
  * Data Sync Service
+ *
+ * @deprecated Legacy compatibility/test service. Do not use for production
+ * offline or Firestore synchronization paths.
  */
 export class DataSyncService {
   private userService: UserService;
@@ -99,6 +102,12 @@ export class DataSyncService {
   constructor(userService: UserService) {
     this.userService = userService;
     this.initializeNetworkListener();
+
+    if (process.env.NODE_ENV !== 'test') {
+      logger.warn(
+        'DataSyncService is deprecated and should not be used as the production offline sync path.'
+      );
+    }
   }
 
   /**

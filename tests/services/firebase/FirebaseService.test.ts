@@ -424,6 +424,37 @@ describe('FirebaseService', () => {
 
       expect(getDocs).toHaveBeenCalled();
     });
+
+    it('returns cached query results when offline', async () => {
+      await Promise.resolve();
+      service.setNetworkState(false);
+      jest.mocked(asyncStorageService.get).mockResolvedValueOnce([
+        { id: 'doc1', name: 'Cached Test 1' },
+        { id: 'doc2', name: 'Cached Test 2' },
+      ]);
+
+      const results = await service['query'](mockCollection);
+
+      expect(getDocs).not.toHaveBeenCalled();
+      expect(results).toEqual([
+        { id: 'doc1', name: 'Cached Test 1' },
+        { id: 'doc2', name: 'Cached Test 2' },
+      ]);
+    });
+
+    it('falls back to cached query results after a network query failure', async () => {
+      (getDocs as jest.Mock).mockRejectedValue({
+        code: 'unavailable',
+        message: 'Service unavailable',
+      });
+      jest
+        .mocked(asyncStorageService.get)
+        .mockResolvedValueOnce([{ id: 'doc1', name: 'Cached Test 1' }]);
+
+      const results = await service['query'](mockCollection);
+
+      expect(results).toEqual([{ id: 'doc1', name: 'Cached Test 1' }]);
+    });
   });
 
   describe('subscribe', () => {
@@ -583,6 +614,33 @@ describe('FirebaseService', () => {
         })
       );
       expect(callback).toHaveBeenCalledWith([]);
+    });
+
+    it('returns cached query results on subscription error when available', async () => {
+      const callback = jest.fn();
+      jest
+        .mocked(asyncStorageService.get)
+        .mockResolvedValueOnce([{ id: 'doc1', name: 'Cached Test 1' }]);
+      service['subscribeToQuery'](mockCollection, [], callback);
+
+      const errorCallback = (onSnapshot as jest.Mock).mock.calls[0][2];
+      await errorCallback(new Error('Query subscription error'));
+
+      expect(callback).toHaveBeenCalledWith([{ id: 'doc1', name: 'Cached Test 1' }]);
+    });
+
+    it('hydrates query subscribers from cache while offline', async () => {
+      const callback = jest.fn();
+      await Promise.resolve();
+      service.setNetworkState(false);
+      jest
+        .mocked(asyncStorageService.get)
+        .mockResolvedValueOnce([{ id: 'doc1', name: 'Cached Test 1' }]);
+
+      service['subscribeToQuery'](mockCollection, [], callback);
+      await Promise.resolve();
+
+      expect(callback).toHaveBeenCalledWith([{ id: 'doc1', name: 'Cached Test 1' }]);
     });
   });
 
