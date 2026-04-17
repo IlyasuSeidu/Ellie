@@ -145,6 +145,44 @@ describe('SmartReminderSettingsService', () => {
     );
   });
 
+  it('does not overwrite local settings when authenticated remote persistence fails', async () => {
+    await asyncStorageService.set('reminders:settings', {
+      ...DEFAULT_SMART_REMINDER_SETTINGS,
+      quietHoursEnabled: false,
+    });
+    mockGetPreferences.mockResolvedValue({
+      theme: 'auto',
+      notifications: {
+        shift24HoursBefore: true,
+        shift4HoursBefore: true,
+        holidayAlerts: true,
+        patternChangeAlerts: true,
+        soundEnabled: true,
+        vibrationEnabled: true,
+        smartReminders: DEFAULT_SMART_REMINDER_SETTINGS,
+      },
+      language: 'en',
+      timezone: 'UTC',
+    });
+    mockUpdateNotificationSettings.mockRejectedValueOnce(new Error('remote failed'));
+
+    const service = createService();
+
+    await expect(
+      service.save(
+        {
+          ...DEFAULT_SMART_REMINDER_SETTINGS,
+          quietHoursEnabled: true,
+        },
+        'firebase-user-6'
+      )
+    ).rejects.toThrow('remote failed');
+
+    expect(await asyncStorageService.get('reminders:settings')).toMatchObject({
+      quietHoursEnabled: false,
+    });
+  });
+
   it('uses a stable stored anonymous reminder id when no auth user exists', async () => {
     const first = await resolveReminderUserId();
     const second = await resolveReminderUserId();

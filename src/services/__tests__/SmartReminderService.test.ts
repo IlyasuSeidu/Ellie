@@ -217,8 +217,13 @@ describe('SmartReminderService', () => {
       'en'
     );
 
-    expect(events.some((event) => event.type === 'FIFO_FLY_OUT_TODAY')).toBe(true);
-    expect(events.some((event) => event.type === 'FIFO_TRAVEL_DAY_TOMORROW')).toBe(true);
+    const flyOut = events.find((event) => event.type === 'FIFO_FLY_OUT_TODAY');
+    const travelTomorrow = events.find((event) => event.type === 'FIFO_TRAVEL_DAY_TOMORROW');
+
+    expect(flyOut).toBeDefined();
+    expect(travelTomorrow).toBeDefined();
+    expect(flyOut?.triggerAt.toISOString()).toBe('2026-04-02T18:00:00.000Z');
+    expect(travelTomorrow?.triggerAt.toISOString()).toBe('2026-04-04T19:00:00.000Z');
   });
 
   it('deduplicates duplicate events of the same type within five minutes', () => {

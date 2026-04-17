@@ -24,15 +24,21 @@ import React, {
   useState,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   ReactNode,
 } from 'react';
 import { AppState, Platform } from 'react-native';
 import { useSpeechRecognitionEvent } from '@/services/speechRecognitionNative';
 import { voiceAssistantService } from '@/services/VoiceAssistantService';
-import { voiceAssistantPersistenceService } from '@/services/VoiceAssistantPersistenceService';
+import {
+  resolveVoiceAssistantPersistenceScope,
+  type VoiceAssistantWakeWordSessionState,
+  voiceAssistantPersistenceService,
+} from '@/services/VoiceAssistantPersistenceService';
 import { speechRecognitionService } from '@/services/SpeechRecognitionService';
 import { WakeWordError, wakeWordService } from '@/services/WakeWordService';
+import { useAuth } from '@/contexts/AuthContext';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { buildShiftCycle } from '@/utils/shiftUtils';
 import { toDateString } from '@/utils/dateUtils';
@@ -83,6 +89,8 @@ interface VoiceAssistantContextValue {
   openModal: () => void;
   /** Open modal and immediately process a text query */
   openModalWithQuery: (query: string) => void;
+  /** Submit a typed query directly from the modal */
+  submitTextQuery: (query: string) => Promise<void>;
   /** Close the assistant modal */
   closeModal: () => void;
   /** Clear conversation history */
@@ -101,6 +109,8 @@ const DEFAULT_WAKE_WORD_LABEL = 'wake word';
 const DEFAULT_VOICE_PERSIST_TTL_SECONDS = 12 * 60 * 60;
 const NOTICE_AUTO_DISMISS_MS = 4_000;
 const PERSISTENCE_DEBOUNCE_MS = 2_000;
+const WAKE_WORD_RETRY_BASE_MS = 5_000;
+const WAKE_WORD_RETRY_MAX_MS = 60_000;
 
 const getWakeWordUnavailableWarning = (): string =>
   i18n.t('voiceAssistant.warnings.wakeWordUnavailableTapToTalk', {
@@ -218,6 +228,7 @@ export function getConfiguredWakeWordLabel(): string {
 
 export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ children }) => {
   const { data: onboardingData } = useOnboarding();
+  const { user } = useAuth();
   const configuredOpenWakeWordModelPath = getConfiguredOpenWakeWordModelPathForPlatform();
   const configuredOpenWakeWordMelspectrogramModelPath =
     getConfiguredOpenWakeWordMelspectrogramModelPathForPlatform();
@@ -246,10 +257,11 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
   const [wakeWordWarning, setWakeWordWarning] = useState<string | null>(null);
   const [wakeWordPhrase, setWakeWordPhrase] = useState(getConfiguredWakeWordLabel());
   const [isAppActive, setIsAppActive] = useState(true);
+  const [persistenceScope, setPersistenceScope] = useState<string | null>(null);
+  const [wakeWordRetryNonce, setWakeWordRetryNonce] = useState(0);
 
   const initializedRef = useRef(false);
   const hydrationCompleteRef = useRef(false);
-  const wakeWordUnavailableHydratedRef = useRef(false);
   const stateRef = useRef<VoiceAssistantState>('idle');
   const isModalVisibleRef = useRef(false);
   const hasPermissionRef = useRef(false);
@@ -258,6 +270,30 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
   const startListeningFromWakeWordRef = useRef<() => Promise<void>>(async () => {});
   const noticeDismissTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const modalQueryTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const wakeWordRetryTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const wakeWordRetryAttemptRef = useRef(0);
+  const wakeWordRetryPendingRef = useRef(false);
+
+  const wakeWordConfigFingerprint = useMemo(
+    () =>
+      JSON.stringify({
+        provider: voiceAssistantConfig.wakeWord.provider,
+        platform: Platform.OS,
+        keywordPaths: getConfiguredKeywordPathsForPlatform(),
+        builtInKeywords: voiceAssistantConfig.wakeWord.builtInKeywords,
+        modelPath: configuredOpenWakeWordModelPath ?? null,
+        melspectrogramModelPath: configuredOpenWakeWordMelspectrogramModelPath ?? null,
+        embeddingModelPath: configuredOpenWakeWordEmbeddingModelPath ?? null,
+        phrase: configuredWakeWordPhrase || null,
+        sensitivity: voiceAssistantConfig.wakeWord.sensitivity,
+      }),
+    [
+      configuredOpenWakeWordEmbeddingModelPath,
+      configuredOpenWakeWordMelspectrogramModelPath,
+      configuredOpenWakeWordModelPath,
+      configuredWakeWordPhrase,
+    ]
+  );
 
   // ─── Native Speech Recognition Event Bridge ───────────────────────
   // These hooks listen for native events from expo-speech-recognition
@@ -298,6 +334,39 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
   useEffect(() => {
     isAppActiveRef.current = isAppActive;
   }, [isAppActive]);
+
+  useEffect(() => {
+    if (isAppActive && wakeWordRetryPendingRef.current) {
+      wakeWordRetryPendingRef.current = false;
+      setWakeWordRetryNonce((previous) => previous + 1);
+    }
+  }, [isAppActive]);
+
+  useEffect(() => {
+    let isCancelled = false;
+
+    const resolvePersistenceScope = async () => {
+      try {
+        const nextScope = await resolveVoiceAssistantPersistenceScope(user?.uid ?? null);
+        if (!isCancelled) {
+          setPersistenceScope(nextScope);
+        }
+      } catch (scopeError) {
+        logger.warn('Failed to resolve voice assistant persistence scope', {
+          error: scopeError instanceof Error ? scopeError.message : String(scopeError),
+        });
+        if (!isCancelled) {
+          setPersistenceScope(user?.uid ? `auth:${user.uid}` : 'local:ephemeral');
+        }
+      }
+    };
+
+    void resolvePersistenceScope();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [user?.uid]);
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (nextState) => {
@@ -397,7 +466,7 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
   );
 
   const persistWakeWordSession = useCallback(
-    (session: { unavailable: boolean; reason?: string; updatedAt: number } | null) => {
+    (session: VoiceAssistantWakeWordSessionState | null) => {
       void voiceAssistantPersistenceService
         .persistWakeWordSession(session, getPersistenceOptions())
         .catch((persistenceError) => {
@@ -412,11 +481,61 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
     [getPersistenceOptions]
   );
 
+  const clearWakeWordRetryTimer = useCallback(() => {
+    if (wakeWordRetryTimerRef.current) {
+      clearTimeout(wakeWordRetryTimerRef.current);
+      wakeWordRetryTimerRef.current = null;
+    }
+  }, []);
+
+  const resetWakeWordRetryState = useCallback(() => {
+    clearWakeWordRetryTimer();
+    wakeWordRetryAttemptRef.current = 0;
+    wakeWordRetryPendingRef.current = false;
+  }, [clearWakeWordRetryTimer]);
+
+  const scheduleWakeWordRetry = useCallback(
+    (reason: string) => {
+      if (!isWakeWordEnabled) {
+        return;
+      }
+
+      if (wakeWordRetryTimerRef.current || wakeWordRetryPendingRef.current) {
+        return;
+      }
+
+      wakeWordRetryAttemptRef.current += 1;
+      const delay = Math.min(
+        WAKE_WORD_RETRY_BASE_MS * 2 ** (wakeWordRetryAttemptRef.current - 1),
+        WAKE_WORD_RETRY_MAX_MS
+      );
+
+      appendDiagnostic('wake_word', 'wake_word_retry_scheduled', reason, true, {
+        attempt: wakeWordRetryAttemptRef.current,
+        retryInMs: delay,
+      });
+
+      wakeWordRetryTimerRef.current = setTimeout(() => {
+        wakeWordRetryTimerRef.current = null;
+
+        if (isAppActiveRef.current) {
+          setWakeWordRetryNonce((previous) => previous + 1);
+          return;
+        }
+
+        wakeWordRetryPendingRef.current = true;
+      }, delay);
+    },
+    [appendDiagnostic, isWakeWordEnabled]
+  );
+
+  useEffect(() => clearWakeWordRetryTimer, [clearWakeWordRetryTimer]);
+
   // ─── Initialize Service ───────────────────────────────────────────
 
   useEffect(() => {
     const userContext = buildUserContext();
-    if (!userContext) return undefined;
+    if (!userContext || !persistenceScope) return undefined;
 
     if (initializedRef.current) {
       voiceAssistantService.updateUserContext(userContext);
@@ -424,6 +543,8 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
     }
 
     let isCancelled = false;
+
+    voiceAssistantPersistenceService.setScope(persistenceScope);
 
     voiceAssistantService.initialize(
       {
@@ -520,37 +641,38 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
       const isInvalidModelSessionFlag = persistedWakeWordReason
         .toLowerCase()
         .includes('invalid or incompatible');
-      const shouldForceWakeWordReinitialize =
-        voiceAssistantConfig.wakeWord.provider === 'openwakeword' &&
-        Boolean(configuredOpenWakeWordModelPath);
+      const matchesCurrentWakeWordConfig =
+        !persistedState.wakeWordSession?.configFingerprint ||
+        persistedState.wakeWordSession.configFingerprint === wakeWordConfigFingerprint;
 
       if (
         persistedState.wakeWordSession?.unavailable &&
         isWakeWordEnabled &&
         !isInvalidModelSessionFlag &&
-        !shouldForceWakeWordReinitialize
+        matchesCurrentWakeWordConfig
       ) {
-        wakeWordUnavailableHydratedRef.current = true;
         setIsWakeWordReady(false);
         setIsWakeWordListening(false);
         setIsWakeWordAvailable(false);
         setWakeWordWarning(
           persistedState.wakeWordSession.reason ?? getWakeWordUnavailableWarning()
         );
-      } else {
-        wakeWordUnavailableHydratedRef.current = false;
-        if (isInvalidModelSessionFlag || shouldForceWakeWordReinitialize) {
-          void voiceAssistantPersistenceService
-            .persistWakeWordSession(null, getPersistenceOptions())
-            .catch((persistenceError) => {
-              logger.warn('Failed to clear stale wake-word unavailable session state', {
-                error:
-                  persistenceError instanceof Error
-                    ? persistenceError.message
-                    : String(persistenceError),
-              });
+      }
+
+      if (
+        persistedState.wakeWordSession?.unavailable &&
+        (isInvalidModelSessionFlag || !matchesCurrentWakeWordConfig)
+      ) {
+        void voiceAssistantPersistenceService
+          .persistWakeWordSession(null, getPersistenceOptions())
+          .catch((persistenceError) => {
+            logger.warn('Failed to clear stale wake-word unavailable session state', {
+              error:
+                persistenceError instanceof Error
+                  ? persistenceError.message
+                  : String(persistenceError),
             });
-        }
+          });
       }
 
       hydrationCompleteRef.current = true;
@@ -589,17 +711,17 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
       clearNoticeDismissTimeout();
       initializedRef.current = false;
       hydrationCompleteRef.current = false;
-      wakeWordUnavailableHydratedRef.current = false;
     };
   }, [
     appendDiagnostic,
     buildUserContext,
     clearNotice,
     clearNoticeDismissTimeout,
-    configuredOpenWakeWordModelPath,
     getPersistenceOptions,
     isWakeWordEnabled,
+    persistenceScope,
     showNotice,
+    wakeWordConfigFingerprint,
   ]);
 
   useEffect(() => {
@@ -759,19 +881,40 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
     setIsModalVisible(true);
   }, []);
 
-  const openModalWithQuery = useCallback((query: string) => {
-    setIsModalVisible(true);
+  const submitTextQuery = useCallback(
+    async (query: string): Promise<void> => {
+      const trimmedQuery = query.trim();
+      if (!trimmedQuery) {
+        return;
+      }
 
-    if (modalQueryTimeoutRef.current) {
-      clearTimeout(modalQueryTimeoutRef.current);
-      modalQueryTimeoutRef.current = null;
-    }
+      const userContext = buildUserContext();
+      if (userContext) {
+        voiceAssistantService.updateUserContext(userContext);
+      }
 
-    // Allow the modal transition to finish before rendering chat activity.
-    modalQueryTimeoutRef.current = setTimeout(() => {
-      void voiceAssistantService.processTextQuery(query);
-    }, 350);
-  }, []);
+      clearNotice();
+      await voiceAssistantService.processTextQuery(trimmedQuery);
+    },
+    [buildUserContext, clearNotice]
+  );
+
+  const openModalWithQuery = useCallback(
+    (query: string) => {
+      setIsModalVisible(true);
+
+      if (modalQueryTimeoutRef.current) {
+        clearTimeout(modalQueryTimeoutRef.current);
+        modalQueryTimeoutRef.current = null;
+      }
+
+      // Allow the modal transition to finish before rendering chat activity.
+      modalQueryTimeoutRef.current = setTimeout(() => {
+        void submitTextQuery(query);
+      }, 350);
+    },
+    [submitTextQuery]
+  );
 
   const closeModal = useCallback(async () => {
     if (modalQueryTimeoutRef.current) {
@@ -806,16 +949,7 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
         }
         return;
       }
-
-      if (wakeWordUnavailableHydratedRef.current) {
-        if (!isCancelled) {
-          setIsWakeWordListening(false);
-          setIsWakeWordReady(false);
-          setIsWakeWordAvailable(false);
-          setWakeWordWarning((previous) => previous ?? getWakeWordUnavailableWarning());
-        }
-        return;
-      }
+      wakeWordService.resetSessionAvailability();
 
       let wakeWordInitErrorMessage: string | undefined;
       let wakeWordInitError: Error | undefined;
@@ -914,7 +1048,7 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
       );
 
       if (!isCancelled && initialized) {
-        wakeWordUnavailableHydratedRef.current = false;
+        resetWakeWordRetryState();
         setIsWakeWordReady(true);
         setIsWakeWordAvailable(true);
         setWakeWordWarning(null);
@@ -940,11 +1074,11 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
           (wakeWordInitError instanceof WakeWordError && wakeWordInitError.fatal) ||
           wakeWordService.isUnavailableForSession();
         if (isFatalWakeWordFailure) {
-          wakeWordUnavailableHydratedRef.current = true;
           persistWakeWordSession({
             unavailable: true,
             reason: unavailableReason,
             updatedAt: Date.now(),
+            configFingerprint: wakeWordConfigFingerprint,
           });
         }
 
@@ -953,6 +1087,10 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
         appendDiagnostic('wake_word', 'wake_word_initialize_failed', unavailableReason, retryable, {
           fatal: isFatalWakeWordFailure,
         });
+
+        if (retryable) {
+          scheduleWakeWordRetry(unavailableReason);
+        }
       }
     };
 
@@ -970,6 +1108,10 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
     configuredWakeWordPhrase,
     isWakeWordEnabled,
     persistWakeWordSession,
+    resetWakeWordRetryState,
+    scheduleWakeWordRetry,
+    wakeWordConfigFingerprint,
+    wakeWordRetryNonce,
   ]);
 
   useEffect(() => {
@@ -990,6 +1132,7 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
         if (shouldListen) {
           await wakeWordService.start();
           if (!isCancelled) {
+            resetWakeWordRetryState();
             setIsWakeWordListening(true);
           }
         } else {
@@ -1016,25 +1159,38 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
               : getWakeWordUnavailableWarning();
           const isFatalWakeWordFailure =
             wakeWordError instanceof WakeWordError ? wakeWordError.fatal : false;
+          const retryable =
+            wakeWordError instanceof WakeWordError ? wakeWordError.retryable : undefined;
 
+          try {
+            await wakeWordService.destroy();
+          } catch (destroyError) {
+            logger.warn('Failed to reset wake-word service after sync error', {
+              error: destroyError instanceof Error ? destroyError.message : String(destroyError),
+            });
+          }
+
+          setIsWakeWordReady(false);
           setIsWakeWordListening(false);
           setIsWakeWordAvailable(false);
           setWakeWordWarning(message);
 
           if (isFatalWakeWordFailure) {
-            wakeWordUnavailableHydratedRef.current = true;
             persistWakeWordSession({
               unavailable: true,
               reason: message,
               updatedAt: Date.now(),
+              configFingerprint: wakeWordConfigFingerprint,
             });
           }
 
-          const retryable =
-            wakeWordError instanceof WakeWordError ? wakeWordError.retryable : undefined;
           appendDiagnostic('wake_word', 'wake_word_sync_failed', message, retryable, {
             fatal: isFatalWakeWordFailure,
           });
+
+          if (retryable) {
+            scheduleWakeWordRetry(message);
+          }
         }
       }
     };
@@ -1053,7 +1209,10 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
     isWakeWordEnabled,
     isWakeWordReady,
     persistWakeWordSession,
+    resetWakeWordRetryState,
+    scheduleWakeWordRetry,
     state,
+    wakeWordConfigFingerprint,
   ]);
 
   useEffect(() => {
@@ -1084,6 +1243,7 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
         cancel,
         openModal,
         openModalWithQuery,
+        submitTextQuery,
         closeModal,
         clearHistory,
         requestPermissions,

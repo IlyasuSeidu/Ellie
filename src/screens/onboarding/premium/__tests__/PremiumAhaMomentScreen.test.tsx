@@ -7,6 +7,10 @@ import { ShiftPattern } from '@/types';
 const mockNavigate = jest.fn();
 const mockOpenModal = jest.fn();
 const mockOpenModalWithQuery = jest.fn();
+const mockSubscription = {
+  isPro: false,
+  isLoading: false,
+};
 const mockOnboardingData = {
   name: 'Ilyasu',
   patternType: ShiftPattern.STANDARD_4_4_4,
@@ -41,6 +45,10 @@ jest.mock('@/contexts/VoiceAssistantContext', () => ({
     openModal: mockOpenModal,
     openModalWithQuery: mockOpenModalWithQuery,
   }),
+}));
+
+jest.mock('@/contexts/SubscriptionContext', () => ({
+  useSubscription: () => mockSubscription,
 }));
 
 jest.mock('@/utils/analytics', () => ({
@@ -93,6 +101,8 @@ describe('PremiumAhaMomentScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.spyOn(AsyncStorage, 'getItem').mockResolvedValue(null);
+    mockSubscription.isPro = false;
+    mockSubscription.isLoading = false;
   });
 
   afterEach(() => {
@@ -108,19 +118,20 @@ describe('PremiumAhaMomentScreen', () => {
     expect(getByText('VoiceAssistantModal')).toBeTruthy();
   });
 
-  it('opens suggested query through voice modal', () => {
-    const { getByText } = render(<PremiumAhaMomentScreen />);
+  it('routes suggested query through paywall for non-Pro users', () => {
+    const { getByText, getByText: getByTextAfterTap } = render(<PremiumAhaMomentScreen />);
 
     fireEvent.press(getByText('Am I working Christmas?'));
 
-    expect(mockOpenModalWithQuery).toHaveBeenCalledWith('Am I working Christmas?');
+    expect(mockOpenModalWithQuery).not.toHaveBeenCalled();
+    expect(getByTextAfterTap('PaywallScreen')).toBeTruthy();
   });
 
   it('opens paywall and returns to Completion on dismiss', () => {
     const { getByText, queryByText } = render(<PremiumAhaMomentScreen />);
 
     expect(queryByText('PaywallScreen')).toBeNull();
-    fireEvent.press(getByText('Start 7-Day Trial'));
+    fireEvent.press(getByText('Start Free Trial'));
     expect(getByText('PaywallScreen')).toBeTruthy();
 
     fireEvent.press(getByText('DismissPaywall'));
@@ -135,11 +146,32 @@ describe('PremiumAhaMomentScreen', () => {
     expect(mockNavigate).toHaveBeenCalledWith('Completion');
   });
 
-  it('opens manual mic when Hey Ellie button is pressed', () => {
+  it('routes manual mic through paywall for non-Pro users', () => {
+    const { getByText, getByText: getByTextAfterTap } = render(<PremiumAhaMomentScreen />);
+
+    fireEvent.press(getByText('Hey Ellie'));
+
+    expect(mockOpenModal).not.toHaveBeenCalled();
+    expect(getByTextAfterTap('PaywallScreen')).toBeTruthy();
+  });
+
+  it('still opens the assistant directly for Pro users', () => {
+    mockSubscription.isPro = true;
     const { getByText } = render(<PremiumAhaMomentScreen />);
 
     fireEvent.press(getByText('Hey Ellie'));
 
     expect(mockOpenModal).toHaveBeenCalled();
+  });
+
+  it('does not open the assistant or paywall while subscription state is loading', () => {
+    mockSubscription.isLoading = true;
+
+    const { getByText, queryByText } = render(<PremiumAhaMomentScreen />);
+
+    fireEvent.press(getByText('Hey Ellie'));
+
+    expect(mockOpenModal).not.toHaveBeenCalled();
+    expect(queryByText('PaywallScreen')).toBeNull();
   });
 });

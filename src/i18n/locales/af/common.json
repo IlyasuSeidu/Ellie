@@ -196,6 +196,8 @@
         "weeklyBilled": "Weekliks gefaktureer"
       },
       "cta": "Begin gratis proef",
+      "ctaPaid": "Teken nou in",
+      "ctaUnavailable": "Planne is tans nie beskikbaar nie",
       "noCard": "Geen kredietkaart vereis nie · Kanselleer enige tyd",
       "restorePurchases": "Herstel aankope",
       "privacyPolicy": "Privaatheidsbeleid",
@@ -217,7 +219,7 @@
       "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
       "timerLabel": "Inleidende aanbod eindig oor",
       "trust": {
-        "freeTrial": "7 dae gratis",
+        "freeTrial": "Gratis proef",
         "cancel": "Kanselleer enige tyd",
         "noCharge": "Geen heffing vandag",
         "startsToday": "Begin vandag",
@@ -226,16 +228,17 @@
       "valueFrame": "Minder as ’n koffie per week om jou volle jaar te ken.",
       "security": "Veilige betaling via {{platform}} · Verwerk deur {{platform}}, nie Ellie nie",
       "termsOfService": "Voorwaardes",
-      "trialBadge": "GRATIS 7-DAE PROEF · GEEN HEFFING VANDAG",
+      "trialBadge": "GRATIS PROEF · GEEN HEFFING VANDAG",
+      "trialBadgePaid": "TEKEN VANDAG IN · KANSEL ENIGE TYD",
       "title_named": "{{name}}, jou rooster is gereed.",
       "subtitle_fifo": "Jou FIFO-siklus is uitgewerk. Sien elke swing en elke afdag vir jou volle jaar.",
       "subtitle_rotating": "Jou roterende rooster is uitgewerk. Sien elke skof vir jou volle jaar.",
-      "billingDisclosure": "Jou gratis proeflopie van 7 dae eindig op {{date}}. Kanselleer enige tyd in Instellings voor dan om heffings te vermy. Intekeninge hernu outomaties.",
+      "billingDisclosure": "Jou gratis proeflopie eindig op {{date}}. Kanselleer enige tyd in Instellings voor dan om heffings te vermy. Intekeninge hernu outomaties.",
       "lossAversion_fifo": "Sonder Pro raak jou swing-datums weer 'n raaisel. Volgende R&R — onbekend. Boek die verkeerde week, verloor die vlugte.",
       "lossAversion_rotating": "Sonder Pro raak jou rooster donker. Geen vroeë waarskuwing, geen beplanning vooruit nie. Terug na raai by die kennisgewingbord.",
       "lossAversion_family": "Sonder Pro weet jou familie weer nie wanneer jy by die huis is nie.",
       "testimonialAnchor": "4.8 · 2 400+ graderings",
-      "purchaseSuccess": "Jou 7-dae-proef het begin",
+      "purchaseSuccess": "Jou gratis proeflopie het begin",
       "purchaseError": "Aankoop het misluk. Probeer asseblief weer.",
       "valueFrameMonthly": "Die koste van een koffie per maand om jou volle rooster te ken.",
       "valueFrameWeekly": "Probeer die volle ervaring vir {{price}}. Kanselleer enige tyd.",
@@ -246,7 +249,9 @@
       "restorePurchasesSuccess": "Aankoop herstel — welkom by Pro!",
       "restorePurchasesNotFound": "Geen vorige aankope is op hierdie rekening gevind nie.",
       "restorePurchasesError": "Herstel het misluk. Probeer asseblief weer.",
-      "ctaOffline": "Koppel om in te teken"
+      "ctaOffline": "Koppel om in te teken",
+      "purchaseSuccessPaid": "Jou intekening is aktief",
+      "billingDisclosureTrialGeneric": "Jou gratis proeflopie begin vandag. Kanselleer enige tyd in Instellings voordat fakturering begin. Intekeninge hernu outomaties."
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro aktiewe intekening",
@@ -254,7 +259,7 @@
       "activeLabel": "__TK1__ Pro — Aktief ✓",
       "upgradeLabel": "Gradeer op na __TK1__ Pro",
       "activeHint": "Volledige kalender · Hey __TK1__ stemassistent",
-      "upgradeHint": "Gratis proeftydperk van 7 dae · $6,99/maand of $49,99/jr"
+      "upgradeHint": "Planne vanaf $6,99/maand of $49,99/jaar"
     },
     "padlock": {
       "a11yLabel": "Gradeer op na __TK1__ Pro om volledige kalender te sien"
@@ -262,13 +267,13 @@
     "recoveryNudge": {
       "title": "Jy is op beperkte toegang",
       "body": "Ontsluit jou volle jaar — elke skof, elke swaai, vooruit beplan.",
-      "cta": "Begin gratis proeflopie",
+      "cta": "Bekyk Pro-planne",
       "dismiss": "Nie nou nie"
     },
     "featureGate": {
       "title": "Pro ontsluit jou volle jaar",
       "body": "Sien elke maand vooruit — geen verrassings, geen raaiwerk oor jou volgende R&R nie.",
-      "cta": "Begin gratis 7-dae proeflopie"
+      "cta": "Bekyk Pro-planne"
     }
   },
   "time": {

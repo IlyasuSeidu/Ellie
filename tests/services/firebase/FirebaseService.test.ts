@@ -113,6 +113,18 @@ describe('FirebaseService', () => {
       expect(setDocCall.createdAt).toMatch(/^\d{4}-\d{2}-\d{2}T/);
     });
 
+    it('strips undefined fields before create', async () => {
+      await service['create'](mockCollection, {
+        ...mockData,
+        notes: undefined,
+        nested: { ok: true, missing: undefined },
+      });
+
+      const setDocCall = (setDoc as jest.Mock).mock.calls[0][1];
+      expect(setDocCall).not.toHaveProperty('notes');
+      expect(setDocCall.nested).toEqual({ ok: true });
+    });
+
     it('caches the created document for offline reads', async () => {
       await service['create'](mockCollection, mockData, mockDocId);
 
@@ -270,6 +282,18 @@ describe('FirebaseService', () => {
 
       const updateCall = (updateDoc as jest.Mock).mock.calls[0][1];
       expect(updateCall.updatedAt).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+    });
+
+    it('strips undefined fields before update', async () => {
+      await service['update'](mockCollection, mockDocId, {
+        value: 100,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        notes: undefined as any,
+      });
+
+      const updateCall = (updateDoc as jest.Mock).mock.calls[0][1];
+      expect(updateCall).not.toHaveProperty('notes');
+      expect(updateCall.value).toBe(100);
     });
 
     it('updates the cached document after a successful update', async () => {

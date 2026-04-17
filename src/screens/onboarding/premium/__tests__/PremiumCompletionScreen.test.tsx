@@ -12,6 +12,13 @@ import * as Haptics from 'expo-haptics';
 import * as hapticsDiagnostics from '@/utils/hapticsDiagnostics';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import { appStateStorageService } from '@/services/AppStateStorageService';
+import { Analytics } from '@/utils/analytics';
+import { subscriptionEntitlementCacheService } from '@/services/SubscriptionEntitlementCacheService';
+
+const mockUseSubscription = jest.fn(() => ({
+  isPro: false,
+  isLoading: false,
+}));
 
 // Mock react-native-reanimated
 jest.mock('react-native-reanimated', () => {
@@ -107,6 +114,25 @@ jest.mock('@/services/AppStateStorageService', () => ({
     getInstallStartedAt: jest.fn().mockResolvedValue(Date.now() - 1000),
     getNotificationSoftDeclined: jest.fn().mockResolvedValue(false),
     setNotificationSoftDeclined: jest.fn().mockResolvedValue(undefined),
+  },
+}));
+
+jest.mock('@/hooks/useSubscription', () => ({
+  useSubscription: () => mockUseSubscription(),
+}));
+
+jest.mock('@/services/SubscriptionEntitlementCacheService', () => ({
+  subscriptionEntitlementCacheService: {
+    getCachedIsPro: jest.fn().mockResolvedValue(null),
+  },
+}));
+
+jest.mock('@/utils/analytics', () => ({
+  Analytics: {
+    onboardingStepViewed: jest.fn(),
+    onboardingCompleted: jest.fn(),
+    notificationPermissionSoftShown: jest.fn(),
+    notificationPermissionRequested: jest.fn(),
   },
 }));
 
@@ -224,6 +250,11 @@ const renderWithProviders = (component: React.ReactElement) => {
 describe('PremiumCompletionScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockUseSubscription.mockReturnValue({
+      isPro: false,
+      isLoading: false,
+    });
+    jest.mocked(subscriptionEntitlementCacheService.getCachedIsPro).mockResolvedValue(null);
     // Mock successful service calls by default
     (asyncStorageService.set as jest.Mock).mockResolvedValue(undefined);
     (appStateStorageService.getInstallStartedAt as jest.Mock).mockResolvedValue(Date.now() - 1000);
@@ -391,6 +422,24 @@ describe('PremiumCompletionScreen', () => {
 
       await waitFor(() => {
         expect(getByText('Set Up My Roster')).toBeTruthy();
+      });
+    });
+
+    it('uses cached Pro entitlement for completion analytics while subscription state is still loading', async () => {
+      mockUseSubscription.mockReturnValue({
+        isPro: false,
+        isLoading: true,
+      });
+      jest.mocked(subscriptionEntitlementCacheService.getCachedIsPro).mockResolvedValue(true);
+
+      renderWithProviders(<PremiumCompletionScreen />);
+
+      await waitFor(() => {
+        expect(Analytics.onboardingCompleted).toHaveBeenCalledWith(
+          expect.objectContaining({
+            is_pro: true,
+          })
+        );
       });
     });
 

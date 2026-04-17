@@ -18,6 +18,7 @@ jest.mock('@/services/VoiceAssistantService', () => ({
     destroy: jest.fn(),
     startListening: jest.fn(),
     stopListening: jest.fn(),
+    processTextQuery: jest.fn(),
     cancel: jest.fn(),
     clearHistory: jest.fn(),
     restoreHistory: jest.fn(),
@@ -28,7 +29,9 @@ jest.mock('@/services/VoiceAssistantService', () => ({
 }));
 
 jest.mock('@/services/VoiceAssistantPersistenceService', () => ({
+  resolveVoiceAssistantPersistenceScope: jest.fn(() => Promise.resolve('local:test-voice-user')),
   voiceAssistantPersistenceService: {
+    setScope: jest.fn(),
     hydrate: jest.fn(() =>
       Promise.resolve({ history: [], lastError: null, wakeWordSession: null, diagnostics: [] })
     ),
@@ -63,6 +66,7 @@ jest.mock('@/services/WakeWordService', () => ({
     start: jest.fn(() => Promise.resolve()),
     stop: jest.fn(() => Promise.resolve()),
     destroy: jest.fn(() => Promise.resolve()),
+    resetSessionAvailability: jest.fn(),
     getPrimaryKeywordLabel: jest.fn(() => 'ellie'),
     getUnavailableReason: jest.fn(() => undefined),
     isUnavailableForSession: jest.fn(() => false),
@@ -99,6 +103,12 @@ jest.mock('@/contexts/OnboardingContext', () => ({
     data: mockOnboardingSnapshot,
     setData: jest.fn(),
     isComplete: true,
+  }),
+}));
+
+jest.mock('@/contexts/AuthContext', () => ({
+  useAuth: () => ({
+    user: null,
   }),
 }));
 
@@ -1701,6 +1711,48 @@ describe('VoiceAssistantContext', () => {
       ).toBe(false);
     });
 
+    it('retries wake-word initialization after a retryable sync failure', async () => {
+      jest.useFakeTimers();
+      voiceAssistantConfig.wakeWord.enabled = true;
+      voiceAssistantConfig.wakeWord.provider = 'openwakeword';
+      voiceAssistantConfig.wakeWord.openWakeWordModelPath = 'openwakeword/hey_ellie_v0.1.onnx';
+      voiceAssistantConfig.wakeWord.autoStart = true;
+      (speechRecognitionService.hasPermissions as jest.Mock).mockResolvedValue(true);
+      (wakeWordService.initialize as jest.Mock).mockResolvedValue(true);
+
+      const retryableError = Object.assign(
+        new (WakeWordError as unknown as new (...args: unknown[]) => Error)(
+          'temporary wake-word failure'
+        ),
+        {
+          fatal: false,
+          retryable: true,
+          code: 'runtime_error',
+        }
+      ) as unknown as Error;
+      (wakeWordService.start as jest.Mock)
+        .mockRejectedValueOnce(retryableError)
+        .mockResolvedValue(undefined);
+
+      renderWithProvider();
+
+      await act(async () => {
+        await Promise.resolve();
+        await Promise.resolve();
+      });
+
+      expect(wakeWordService.initialize).toHaveBeenCalledTimes(1);
+
+      await act(async () => {
+        jest.advanceTimersByTime(5_000);
+        await Promise.resolve();
+        await Promise.resolve();
+      });
+
+      expect(wakeWordService.initialize).toHaveBeenCalledTimes(2);
+      jest.useRealTimers();
+    });
+
     it('captures wake-word engine onError callback and uses that message when init fails', async () => {
       voiceAssistantConfig.wakeWord.enabled = true;
       voiceAssistantConfig.wakeWord.provider = 'openwakeword';
@@ -2067,6 +2119,7 @@ describe('VoiceAssistantContext', () => {
         wakeWordSession: {
           unavailable: true,
           reason: 'old failure',
+          configFingerprint: 'stale-fingerprint',
           updatedAt: Date.now(),
         },
         diagnostics: [],
@@ -2331,6 +2384,7 @@ describe('VoiceAssistantContext', () => {
 
       const renderer = renderWithProvider();
       await act(async () => {
+        await Promise.resolve();
         renderer.unmount();
       });
 
@@ -2345,10 +2399,10 @@ describe('VoiceAssistantContext', () => {
         await Promise.resolve();
       });
 
-      expect(voiceAssistantService.destroy).toHaveBeenCalled();
+      expect(voiceAssistantService.restoreHistory).not.toHaveBeenCalled();
     });
 
-    it('respects persisted wake-word unavailable hydration guard on re-initialize', async () => {
+    it('retries wake-word initialization on re-render even when a persisted unavailable session exists', async () => {
       voiceAssistantConfig.wakeWord.enabled = true;
       voiceAssistantConfig.wakeWord.provider = 'porcupine';
       voiceAssistantConfig.wakeWord.accessKey = 'test-key';
@@ -2374,17 +2428,18 @@ describe('VoiceAssistantContext', () => {
       (wakeWordService.initialize as jest.Mock).mockClear();
       voiceAssistantConfig.wakeWord.phrase = 'Ellie Wake';
 
-      act(() => {
+      await act(async () => {
         renderer.update(
           <VoiceAssistantProvider>
             <TestConsumer />
           </VoiceAssistantProvider>
         );
+        await Promise.resolve();
       });
 
       expect(capturedValue.isWakeWordAvailable).toBe(false);
       expect(capturedValue.wakeWordWarning).toBe('Wake-word unavailable, tap mic to talk.');
-      expect(wakeWordService.initialize).not.toHaveBeenCalled();
+      expect(wakeWordService.initialize).toHaveBeenCalled();
     });
 
     it('logs appendDiagnostic persistence failures from service callbacks', async () => {
@@ -2415,15 +2470,25 @@ describe('VoiceAssistantContext', () => {
       );
     });
 
-    it('logs wake-word session persistence helper failures', async () => {
+    it('logs wake-word session persistence helper failures after successful wake-word init', async () => {
       voiceAssistantConfig.wakeWord.enabled = true;
       voiceAssistantConfig.wakeWord.provider = 'porcupine';
       voiceAssistantConfig.wakeWord.accessKey = 'test-key';
       voiceAssistantConfig.wakeWord.autoStart = true;
       (speechRecognitionService.hasPermissions as jest.Mock).mockResolvedValue(true);
       (wakeWordService.initialize as jest.Mock).mockResolvedValue(true);
+      (voiceAssistantPersistenceService.hydrate as jest.Mock).mockResolvedValue({
+        history: [],
+        lastError: null,
+        wakeWordSession: {
+          unavailable: true,
+          reason: 'stale failure',
+          configFingerprint: 'different-config',
+          updatedAt: Date.now(),
+        },
+        diagnostics: [],
+      });
       (voiceAssistantPersistenceService.persistWakeWordSession as jest.Mock)
-        .mockResolvedValueOnce(undefined)
         .mockRejectedValueOnce(new Error('session persist failed'))
         .mockResolvedValue(undefined);
 

@@ -44,6 +44,20 @@ export interface ReminderEvent {
   data: Record<string, unknown>;
 }
 
+export interface SmartReminderIdentity {
+  type: SmartReminderType;
+  shiftDate: string;
+  shiftType: ShiftType;
+  triggerAt: Date | string;
+}
+
+export function buildSmartReminderKey(identity: SmartReminderIdentity): string {
+  const triggerAtIso =
+    identity.triggerAt instanceof Date ? identity.triggerAt.toISOString() : identity.triggerAt;
+
+  return [identity.type, identity.shiftDate, identity.shiftType, triggerAtIso].join('|');
+}
+
 export interface SmartReminderSettings {
   earlyReminderHours: number;
   prepTimeMinutes: number;

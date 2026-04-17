@@ -196,6 +196,8 @@
         "weeklyBilled": "Facturé chaque semaine"
       },
       "cta": "Commencez l'essai gratuit",
+      "ctaPaid": "S’abonner maintenant",
+      "ctaUnavailable": "Offres indisponibles pour l’instant",
       "noCard": "Aucune carte de crédit requise · Annulez à tout moment",
       "restorePurchases": "Restaurer les achats",
       "privacyPolicy": "politique de confidentialité",
@@ -217,7 +219,7 @@
       "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
       "timerLabel": "L'offre de lancement se termine dans",
       "trust": {
-        "freeTrial": "7 jours gratuits",
+        "freeTrial": "Essai gratuit",
         "cancel": "Annulez à tout moment",
         "noCharge": "Aucun frais aujourd'hui",
         "startsToday": "Commence aujourd'hui",
@@ -226,16 +228,17 @@
       "valueFrame": "Moins qu’un café par semaine pour connaître toute votre année.",
       "security": "Paiement sécurisé via {{platform}} · Traité par {{platform}}, pas par Ellie",
       "termsOfService": "Conditions",
-      "trialBadge": "ESSAI GRATUIT 7 JOURS · AUCUN FRAIS AUJOURD’HUI",
+      "trialBadge": "ESSAI GRATUIT · AUCUN FRAIS AUJOURD’HUI",
+      "trialBadgePaid": "ABONNEZ-VOUS AUJOURD’HUI · RÉSILIEZ À TOUT MOMENT",
       "title_named": "{{name}}, votre roulement est prêt.",
       "subtitle_fifo": "Votre cycle FIFO est cartographié. Voyez chaque swing et chaque jour de repos sur toute votre année.",
       "subtitle_rotating": "Votre roulement rotatif est cartographié. Voyez chaque poste sur toute votre année.",
-      "billingDisclosure": "Votre essai gratuit de 7 jours se termine le {{date}}. Annulez à tout moment dans Réglages avant cette date pour éviter les frais. Les abonnements se renouvellent automatiquement.",
+      "billingDisclosure": "Votre essai gratuit se termine le {{date}}. Annulez à tout moment dans Réglages avant cette date pour éviter les frais. Les abonnements se renouvellent automatiquement.",
       "lossAversion_fifo": "Sans Pro, vos dates de rotation FIFO redeviennent un mystère. Prochain R&R : inconnu. Réservez la mauvaise semaine, perdez les vols.",
       "lossAversion_rotating": "Sans Pro, votre roster redevient opaque. Aucun préavis, aucune planification en avance. Retour aux suppositions devant le panneau.",
       "lossAversion_family": "Sans Pro, votre famille ne sait plus quand vous êtes à la maison.",
       "testimonialAnchor": "4.8 · plus de 2 400 avis",
-      "purchaseSuccess": "Votre essai de 7 jours a commencé",
+      "purchaseSuccess": "Votre essai gratuit a commencé",
       "purchaseError": "L'achat a échoué. Veuillez réessayer.",
       "valueFrameMonthly": "Le prix dun café par mois pour connaître tout votre planning.",
       "valueFrameWeekly": "Essayez l'expérience complète pour {{price}}. Annulez à tout moment.",
@@ -246,7 +249,9 @@
       "restorePurchasesSuccess": "Achat restauré — bienvenue sur Pro !",
       "restorePurchasesNotFound": "Aucun achat précédent trouvé pour ce compte.",
       "restorePurchasesError": "La restauration a échoué. Veuillez réessayer.",
-      "ctaOffline": "Connectez-vous pour vous abonner"
+      "ctaOffline": "Connectez-vous pour vous abonner",
+      "purchaseSuccessPaid": "Votre abonnement est actif",
+      "billingDisclosureTrialGeneric": "Votre essai gratuit commence aujourd’hui. Annulez à tout moment dans Réglages avant le début de la facturation. Les abonnements se renouvellent automatiquement."
     },
     "profile": {
       "rowActiveA11y": "Ellie Abonnement Pro actif",
@@ -254,7 +259,7 @@
       "activeLabel": "Ellie Pro — Actif ✓",
       "upgradeLabel": "Mise à niveau vers Ellie Pro",
       "activeHint": "Calendrier complet  · Hé, assistant vocal Ellie",
-      "upgradeHint": "Essai gratuit de 7 jours · 6,99 $/mois ou 49,99 $/an"
+      "upgradeHint": "Abonnements à partir de 6,99 $/mois ou 49,99 $/an"
     },
     "padlock": {
       "a11yLabel": "Passez à Ellie Pro pour voir le calendrier complet"
@@ -262,13 +267,13 @@
     "recoveryNudge": {
       "title": "Vous êtes en accès limité",
       "body": "Débloquez votre année complète — chaque poste, chaque rotation, planifiés à l’avance.",
-      "cta": "Commencer l’essai gratuit",
+      "cta": "Voir les offres Pro",
       "dismiss": "Pas maintenant"
     },
     "featureGate": {
       "title": "Pro débloque votre année complète",
       "body": "Voyez chaque mois à l’avance — sans surprise ni doute sur votre prochain R&R.",
-      "cta": "Commencer l’essai gratuit de 7 jours"
+      "cta": "Voir les offres Pro"
     }
   },
   "time": {

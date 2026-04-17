@@ -101,7 +101,9 @@
       "trySaying": "尝试说：",
       "example1": "明天我有什么轮班？",
       "example2": "我第二天什么时候休息？",
-      "example3": "这个月有多少夜班？"
+      "example3": "这个月有多少夜班？",
+      "tryAsking": "试着这样问：",
+      "suggestionA11y": "问 Ellie：{{query}}"
     },
     "permission": {
       "notice": "艾莉需要使用麦克风才能听到您的问题。",
@@ -116,7 +118,8 @@
       "wakeWordUnavailable": "唤醒词不可用，点击麦克风进行对话。",
       "sayWakeWordOrTap": "说“{{wakeWordPhrase}}”或轻按麦克风",
       "askAnother": "轻按麦克风询问另一个问题",
-      "askEllie": "轻按麦克风询问艾莉"
+      "askEllie": "轻按麦克风询问艾莉",
+      "typeOrGrantMic": "在下面输入，或授予麦克风权限来讲话"
     },
     "errors": {
       "default": "出了点问题",
@@ -166,11 +169,19 @@
       "startBack": "你将在{{date}}返回上班。",
       "patternSummaryRotating": "你的轮班模式是{{dayCount}}个白班、{{nightCount}}个夜班，然后{{offCount}}天休息。",
       "patternSummaryThreeShift": "你的轮班模式是{{morningCount}}个早班、{{afternoonCount}}个下午班、{{nightCount}}个夜班，然后{{offCount}}天休息。",
-      "patternSummaryFifo": "你的模式是现场工作{{workDays}}天，然后休息{{restDays}}天。"
+      "patternSummaryFifo": "你的模式是现场工作{{workDays}}天，然后休息{{restDays}}天。",
+      "unsupportedWithNextShift": "我暂时还不能在离线状态下完整回答这个问题，但我仍然知道你保存的班表。你的下一次工作班次是 {{date}} 的 {{shiftType}}。你可以问我明天的班次、下一个休息日、本月夜班数量或你的轮班模式。",
+      "unsupportedGeneric": "我暂时还不能在离线状态下完整回答这个问题，但我仍然可以根据你保存的班表提供帮助。你可以问我明天的班次、下一个休息日、本月夜班数量或你的轮班模式。"
     },
     "notices": {
       "offlineRecognitionUnavailable": "此设备当前不支持离线语音输入。",
       "audioUnavailable": "当前无法播放语音回复。你仍然可以阅读 Ellie 的回复。"
+    },
+    "offlineHint": "离线时，只能回答保存在此设备上的简单排班问题。",
+    "composer": {
+      "placeholder": "输入要问 Ellie 的问题",
+      "a11y": "输入要问 Ellie 的问题",
+      "sendA11y": "发送文字问题"
     }
   },
   "tabs": {
@@ -283,5 +294,23 @@
       "hoursOnly": "{{hours}}小时",
       "hoursMinutes": "{{hours}}小时{{minutes}}分"
     }
+  },
+  "shiftCheckIn": {
+    "title": "记录这次班次后的精力状态",
+    "subtitle": "{{shiftDate}} 的{{shiftType}} · {{startTime}} - {{endTime}}",
+    "energyPrompt": "这次班次你的精力如何？",
+    "energy": {
+      "high": "高",
+      "medium": "中",
+      "low": "低"
+    },
+    "notesLabel": "备注（可选）",
+    "notesPlaceholder": "这次班次有什么值得记录的吗？",
+    "saved": "已保存记录。",
+    "savedOffline": "记录已保存在本地。恢复联网后会自动同步。",
+    "error": "当前无法保存这条记录。请重试。",
+    "dismiss": "暂不",
+    "update": "更新记录",
+    "submit": "保存记录"
   }
 }

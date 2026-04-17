@@ -5,13 +5,19 @@
  * Handles shift reminders, holiday alerts, and notification history.
  */
 
-import { ShiftDay, Holiday } from '@/types';
-import { isSmartReminderType, type ReminderEvent, type SmartReminderType } from '@/types/reminders';
+import { ShiftDay, Holiday, type ShiftType } from '@/types';
+import {
+  buildSmartReminderKey,
+  isSmartReminderType,
+  type ReminderEvent,
+  type SmartReminderType,
+} from '@/types/reminders';
 import { logger } from '@/utils/logger';
 import { FirebaseService } from './firebase/FirebaseService';
 import i18n from '@/i18n';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
+import { where } from 'firebase/firestore';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import { networkService } from '@/services/NetworkService';
 import { STORAGE_KEYS } from '@/constants/storageKeys';
@@ -69,6 +75,12 @@ export interface ScheduledNotification {
   deliveredAt?: string; // ISO date string
 }
 
+export interface ScheduledNotificationSnapshot {
+  id: string;
+  content: NotificationContent;
+  triggerDate: Date | null;
+}
+
 /**
  * Notification scheduler interface
  */
@@ -79,6 +91,7 @@ export interface INotificationScheduler {
   requestPermissions(): Promise<boolean>;
   checkPermissions(): Promise<boolean>;
   getPermissionStatus(): Promise<PermissionStatus>;
+  getScheduledNotifications?(): Promise<ScheduledNotificationSnapshot[]>;
 }
 
 /**
@@ -135,7 +148,6 @@ export class NotificationService extends FirebaseService {
     // Schedule notification
     const notificationId = await this.scheduler.scheduleNotification(content, triggerDate);
 
-    // Save to history
     const notification: ScheduledNotification = {
       id: notificationId,
       userId,
@@ -149,7 +161,12 @@ export class NotificationService extends FirebaseService {
       createdAt: new Date().toISOString(),
     };
 
-    await this.saveNotification(userId, notification);
+    try {
+      await this.persistNotificationHistory(userId, notification);
+    } catch (error) {
+      await this.rollbackScheduledNotification(notificationId);
+      throw error;
+    }
 
     logger.info('Shift reminder scheduled', {
       userId,
@@ -188,7 +205,6 @@ export class NotificationService extends FirebaseService {
     // Schedule notification
     const notificationId = await this.scheduler.scheduleNotification(content, triggerDate);
 
-    // Save to history
     const notification: ScheduledNotification = {
       id: notificationId,
       userId,
@@ -199,7 +215,12 @@ export class NotificationService extends FirebaseService {
       createdAt: new Date().toISOString(),
     };
 
-    await this.saveNotification(userId, notification);
+    try {
+      await this.persistNotificationHistory(userId, notification);
+    } catch (error) {
+      await this.rollbackScheduledNotification(notificationId);
+      throw error;
+    }
 
     logger.info('Holiday alert scheduled', {
       userId,
@@ -214,11 +235,13 @@ export class NotificationService extends FirebaseService {
    * Schedule a computed smart reminder event.
    */
   async scheduleSmartReminder(userId: string, event: ReminderEvent): Promise<string> {
+    const smartReminderKey = buildSmartReminderKey(event);
     logger.debug('Scheduling smart reminder', {
       userId,
       type: event.type,
       shiftDate: event.shiftDate,
       triggerAt: event.triggerAt.toISOString(),
+      smartReminderKey,
     });
 
     if (!this.scheduler) {
@@ -231,6 +254,10 @@ export class NotificationService extends FirebaseService {
       data: {
         ...(event.data ?? {}),
         reminderType: event.type,
+        shiftDate: event.shiftDate,
+        shiftType: event.shiftType,
+        smartReminderKey,
+        userId,
       },
       sound: 'default',
       badge: 1,
@@ -249,7 +276,12 @@ export class NotificationService extends FirebaseService {
       createdAt: new Date().toISOString(),
     };
 
-    await this.saveNotification(userId, notification);
+    try {
+      await this.persistNotificationHistory(userId, notification);
+    } catch (error) {
+      await this.rollbackScheduledNotification(notificationId);
+      throw error;
+    }
 
     logger.info('Smart reminder scheduled', {
       userId,
@@ -272,9 +304,9 @@ export class NotificationService extends FirebaseService {
       throw new Error('Notification scheduler not configured');
     }
 
-    const pendingSmartReminders = (await this.getNotificationHistory(userId, 500)).filter(
-      (notification) => notification.status === 'pending' && isSmartReminderType(notification.type)
-    );
+    const pendingSmartReminders = await this.getPendingSmartReminders(userId);
+
+    const canSyncRemotely = this.canSyncNotificationsRemotely(userId);
 
     await Promise.all(
       pendingSmartReminders.map(async (notification) => {
@@ -283,13 +315,16 @@ export class NotificationService extends FirebaseService {
           await this.cacheNotificationStatus(userId, notification.id, {
             status: 'cancelled',
           });
-          await this.update(this.NOTIFICATIONS_COLLECTION, notification.id, {
-            status: 'cancelled',
-          });
+          if (canSyncRemotely) {
+            await this.update(this.NOTIFICATIONS_COLLECTION, notification.id, {
+              status: 'cancelled',
+            });
+          }
         } catch (error) {
-          logger.error('Failed to cancel smart reminder notification', error as Error, {
+          logger.warn('NotificationService: failed to sync cancelled smart reminder remotely', {
             userId,
             notificationId: notification.id,
+            error: error instanceof Error ? error.message : String(error),
           });
         }
       })
@@ -299,6 +334,23 @@ export class NotificationService extends FirebaseService {
       userId,
       count: pendingSmartReminders.length,
     });
+  }
+
+  async getPendingSmartReminders(userId: string): Promise<ScheduledNotification[]> {
+    const history = await this.getNotificationHistory(userId, 500);
+    const historyPending = history.filter(
+      (notification) => notification.status === 'pending' && isSmartReminderType(notification.type)
+    );
+    const schedulerPending = await this.getScheduledSmartRemindersFromScheduler(userId);
+
+    if (schedulerPending.length > 0) {
+      const mergedCache = this.mergeNotificationHistory(schedulerPending, history);
+      await this.replaceCachedNotificationHistory(userId, mergedCache);
+    }
+
+    return this.mergeNotificationHistory(schedulerPending, historyPending).filter(
+      (notification) => notification.status === 'pending' && isSmartReminderType(notification.type)
+    );
   }
 
   /**
@@ -317,17 +369,19 @@ export class NotificationService extends FirebaseService {
       status: 'cancelled',
     });
 
-    try {
+    if (this.canSyncNotificationsRemotely(userId)) {
       // Update status in history
-      await this.update(this.NOTIFICATIONS_COLLECTION, notificationId, {
-        status: 'cancelled',
-      });
-    } catch (error) {
-      logger.warn('NotificationService: failed to sync cancelled notification status remotely', {
-        userId,
-        notificationId,
-        error: error instanceof Error ? error.message : String(error),
-      });
+      try {
+        await this.update(this.NOTIFICATIONS_COLLECTION, notificationId, {
+          status: 'cancelled',
+        });
+      } catch (error) {
+        logger.warn('NotificationService: failed to sync cancelled notification status remotely', {
+          userId,
+          notificationId,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
     }
 
     logger.info('Notification cancelled', { userId, notificationId });
@@ -345,6 +399,8 @@ export class NotificationService extends FirebaseService {
 
     const pendingNotifications = await this.getNotificationHistory(userId, 500);
 
+    const canSyncRemotely = this.canSyncNotificationsRemotely(userId);
+
     await Promise.all(
       pendingNotifications
         .filter((notification) => notification.status === 'pending')
@@ -354,13 +410,16 @@ export class NotificationService extends FirebaseService {
             await this.cacheNotificationStatus(userId, notification.id, {
               status: 'cancelled',
             });
-            await this.update(this.NOTIFICATIONS_COLLECTION, notification.id, {
-              status: 'cancelled',
-            });
+            if (canSyncRemotely) {
+              await this.update(this.NOTIFICATIONS_COLLECTION, notification.id, {
+                status: 'cancelled',
+              });
+            }
           } catch (error) {
-            logger.error('Failed to cancel notification', error as Error, {
+            logger.warn('NotificationService: failed to sync cancelled notification remotely', {
               userId,
               notificationId: notification.id,
+              error: error instanceof Error ? error.message : String(error),
             });
           }
         })
@@ -609,46 +668,27 @@ export class NotificationService extends FirebaseService {
   }
 
   /**
-   * Save notification to history
-   */
-  async saveNotification(userId: string, notification: ScheduledNotification): Promise<void> {
-    try {
-      await this.cacheNotification(userId, notification);
-      await this.create(
-        this.NOTIFICATIONS_COLLECTION,
-        {
-          ...notification,
-          userId,
-        },
-        notification.id
-      );
-
-      logger.debug('Notification saved to history', {
-        userId,
-        notificationId: notification.id,
-      });
-    } catch (error) {
-      logger.error('Failed to save notification', error as Error, {
-        userId,
-        notificationId: notification.id,
-      });
-      // Don't throw - history failure shouldn't break notification scheduling
-    }
-  }
-
-  /**
    * Get notification history
    */
   async getNotificationHistory(
     userId: string,
     limit: number = 50
   ): Promise<ScheduledNotification[]> {
+    const cachedNotifications = await this.getCachedNotificationHistory(userId);
+
+    if (!this.canSyncNotificationsRemotely(userId)) {
+      logger.debug('NotificationService: serving notification history from local cache', {
+        userId,
+        count: cachedNotifications.length,
+      });
+      return cachedNotifications.slice(0, limit);
+    }
+
     try {
-      const notifications = await this.query<ScheduledNotification>(this.NOTIFICATIONS_COLLECTION);
-      const remoteNotifications = notifications.filter(
-        (notification) => notification.userId === userId
+      const remoteNotifications = await this.query<ScheduledNotification>(
+        this.NOTIFICATIONS_COLLECTION,
+        [where('userId', '==', userId)]
       );
-      const cachedNotifications = await this.getCachedNotificationHistory(userId);
 
       const userNotifications = this.mergeNotificationHistory(
         remoteNotifications,
@@ -664,9 +704,9 @@ export class NotificationService extends FirebaseService {
 
       return userNotifications;
     } catch (error) {
-      const cachedNotifications = await this.getCachedNotificationHistory(userId);
-      logger.error('Failed to get notification history', error as Error, {
+      logger.warn('NotificationService: failed to load remote notification history, using cache', {
         userId,
+        error: error instanceof Error ? error.message : String(error),
       });
       return cachedNotifications.slice(0, limit);
     }
@@ -681,6 +721,15 @@ export class NotificationService extends FirebaseService {
         status: 'delivered',
         deliveredAt: new Date().toISOString(),
       });
+
+      const userId = await asyncStorageService.get<string>(
+        this.getHistoryLookupKey(notificationId)
+      );
+      if (!this.canSyncNotificationsRemotely(userId)) {
+        logger.debug('NotificationService: skipping remote delivered sync', { notificationId });
+        return;
+      }
+
       await this.update(this.NOTIFICATIONS_COLLECTION, notificationId, {
         status: 'delivered',
         deliveredAt: new Date().toISOString(),
@@ -688,8 +737,9 @@ export class NotificationService extends FirebaseService {
 
       logger.debug('Notification marked as delivered', { notificationId });
     } catch (error) {
-      logger.error('Failed to mark notification as delivered', error as Error, {
+      logger.warn('NotificationService: failed to sync delivered notification status remotely', {
         notificationId,
+        error: error instanceof Error ? error.message : String(error),
       });
       // Don't throw - delivery tracking failure shouldn't break the app
     }
@@ -778,6 +828,55 @@ export class NotificationService extends FirebaseService {
     );
   }
 
+  private async persistNotificationHistory(
+    userId: string,
+    notification: ScheduledNotification
+  ): Promise<void> {
+    await this.cacheNotification(userId, notification);
+
+    if (!this.canSyncNotificationsRemotely(userId)) {
+      logger.debug('NotificationService: skipping remote notification history save', {
+        userId,
+        notificationId: notification.id,
+      });
+      return;
+    }
+
+    try {
+      await this.create(
+        this.NOTIFICATIONS_COLLECTION,
+        {
+          ...notification,
+          userId,
+        },
+        notification.id
+      );
+
+      logger.debug('Notification saved to history', {
+        userId,
+        notificationId: notification.id,
+      });
+    } catch (error) {
+      logger.warn('NotificationService: failed to sync notification history remotely', {
+        userId,
+        notificationId: notification.id,
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+
+  private async rollbackScheduledNotification(notificationId: string): Promise<void> {
+    try {
+      await this.scheduler?.cancelNotification(notificationId);
+    } catch (rollbackError) {
+      logger.error(
+        'NotificationService: failed to roll back scheduled notification after history persistence error',
+        rollbackError as Error,
+        { notificationId }
+      );
+    }
+  }
+
   private async replaceCachedNotificationHistory(
     userId: string,
     notifications: ScheduledNotification[]
@@ -819,6 +918,89 @@ export class NotificationService extends FirebaseService {
     );
 
     await this.replaceCachedNotificationHistory(resolvedUserId, updated);
+  }
+
+  private async getScheduledSmartRemindersFromScheduler(
+    userId: string
+  ): Promise<ScheduledNotification[]> {
+    if (!this.scheduler?.getScheduledNotifications) {
+      return [];
+    }
+
+    try {
+      const scheduled = await this.scheduler.getScheduledNotifications();
+
+      return scheduled
+        .map((notification) => this.toScheduledSmartReminder(userId, notification))
+        .filter((notification): notification is ScheduledNotification => notification !== null);
+    } catch (error) {
+      logger.warn('NotificationService: failed to read scheduled smart reminders from scheduler', {
+        userId,
+        error: error instanceof Error ? error.message : String(error),
+      });
+      return [];
+    }
+  }
+
+  private toScheduledSmartReminder(
+    userId: string,
+    notification: ScheduledNotificationSnapshot
+  ): ScheduledNotification | null {
+    const data = notification.content.data ?? {};
+    const reminderType = data.reminderType;
+    const notificationUserId = data.userId;
+    const shiftDate = data.shiftDate;
+    const shiftType = data.shiftType;
+
+    if (
+      !isSmartReminderType(reminderType) ||
+      notificationUserId !== userId ||
+      typeof shiftDate !== 'string' ||
+      typeof shiftType !== 'string' ||
+      !notification.triggerDate
+    ) {
+      return null;
+    }
+
+    return {
+      id: notification.id,
+      userId,
+      type: reminderType,
+      scheduledFor: notification.triggerDate.toISOString(),
+      content: notification.content,
+      status: 'pending',
+      createdAt: notification.triggerDate.toISOString(),
+    };
+  }
+
+  getSmartReminderKey(notification: ScheduledNotification): string | null {
+    if (!isSmartReminderType(notification.type)) {
+      return null;
+    }
+
+    const data = notification.content.data ?? {};
+    const smartReminderKey = data.smartReminderKey;
+    if (typeof smartReminderKey === 'string' && smartReminderKey.length > 0) {
+      return smartReminderKey;
+    }
+
+    const shiftDate = data.shiftDate;
+    const shiftType = data.shiftType;
+    if (typeof shiftDate !== 'string' || typeof shiftType !== 'string') {
+      return null;
+    }
+
+    return buildSmartReminderKey({
+      type: notification.type,
+      shiftDate,
+      shiftType: shiftType as ShiftType,
+      triggerAt: notification.scheduledFor,
+    });
+  }
+
+  private canSyncNotificationsRemotely(userId: string | null | undefined): userId is string {
+    const authenticatedUserId = this.auth.currentUser?.uid ?? null;
+    return Boolean(userId && authenticatedUserId && authenticatedUserId === userId);
   }
 }
 

@@ -101,7 +101,9 @@
       "trySaying": "Probeer sê:",
       "example1": "Watter skof het ek môre?",
       "example2": "Wanneer is my volgende dag af?",
-      "example3": "Hoeveel nagskofte hierdie maand?"
+      "example3": "Hoeveel nagskofte hierdie maand?",
+      "tryAsking": "Probeer vra:",
+      "suggestionA11y": "Vra vir Ellie: {{query}}"
     },
     "permission": {
       "notice": "Ellie het mikrofoontoegang nodig om jou vrae te hoor.",
@@ -116,7 +118,8 @@
       "wakeWordUnavailable": "Wekwoord is nie beskikbaar nie, tik die mikrofoon om te praat",
       "sayWakeWordOrTap": "Sê \"{{wakeWordPhrase}}\" of tik op die mikrofoon",
       "askAnother": "Tik die mikrofoon om nog 'n vraag te vra",
-      "askEllie": "Tik die mikrofoon om Ellie te vra"
+      "askEllie": "Tik die mikrofoon om Ellie te vra",
+      "typeOrGrantMic": "Tik hieronder of gee mikrofoontoegang om te praat"
     },
     "errors": {
       "default": "Iets het verkeerd geloop",
@@ -166,11 +169,19 @@
       "startBack": "Jy begin weer werk op {{date}}.",
       "patternSummaryRotating": "Jou patroon is {{dayCount}} dagskofte, {{nightCount}} nagskofte en dan {{offCount}} afdae.",
       "patternSummaryThreeShift": "Jou patroon is {{morningCount}} oggendskofte, {{afternoonCount}} middagskofte, {{nightCount}} nagskofte en dan {{offCount}} afdae.",
-      "patternSummaryFifo": "Jou patroon is {{workDays}} dae op die terrein en dan {{restDays}} afdae."
+      "patternSummaryFifo": "Jou patroon is {{workDays}} dae op die terrein en dan {{restDays}} afdae.",
+      "unsupportedWithNextShift": "Ek kan dit nog nie heeltemal vanlyn beantwoord nie, maar ek ken steeds jou gestoorde rooster. Jou volgende werkskof is {{shiftType}} op {{date}}. Probeer vra oor môre, jou volgende afdag, nagskofte hierdie maand, of jou patroon.",
+      "unsupportedGeneric": "Ek kan dit nog nie heeltemal vanlyn beantwoord nie, maar ek kan steeds help met jou gestoorde rooster. Probeer vra oor môre, jou volgende afdag, nagskofte hierdie maand, of jou patroon."
     },
     "notices": {
       "offlineRecognitionUnavailable": "Vanlyn steminvoer is tans nie op hierdie toestel beskikbaar nie.",
       "audioUnavailable": "Klankantwoorde is tans nie beskikbaar nie. Jy kan steeds Ellie se antwoord lees."
+    },
+    "offlineHint": "Vanlyn antwoorde is beperk tot eenvoudige rooster-vrae wat op hierdie toestel gestoor is.",
+    "composer": {
+      "placeholder": "Tik ’n vraag vir Ellie",
+      "a11y": "Tik ’n vraag vir Ellie",
+      "sendA11y": "Stuur getikte vraag"
     }
   },
   "tabs": {
@@ -283,5 +294,23 @@
       "hoursOnly": "{{hours}}u",
       "hoursMinutes": "{{hours}}u {{minutes}}m"
     }
+  },
+  "shiftCheckIn": {
+    "title": "Teken jou energievlak ná hierdie skof aan",
+    "subtitle": "{{shiftType}} op {{shiftDate}} · {{startTime}} - {{endTime}}",
+    "energyPrompt": "Hoe was jou energie op hierdie skof?",
+    "energy": {
+      "high": "Hoog",
+      "medium": "Medium",
+      "low": "Laag"
+    },
+    "notesLabel": "Notas (opsioneel)",
+    "notesPlaceholder": "Enigiets wat die moeite werd is om oor hierdie skof te onthou?",
+    "saved": "Inklok is gestoor.",
+    "savedOffline": "Inklok is plaaslik gestoor. Dit sal sinkroniseer wanneer jy weer aanlyn is.",
+    "error": "Hierdie inklok kon nie nou gestoor word nie. Probeer weer.",
+    "dismiss": "Nie nou nie",
+    "update": "Werk inklok by",
+    "submit": "Stoor inklok"
   }
 }

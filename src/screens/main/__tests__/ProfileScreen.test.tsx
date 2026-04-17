@@ -8,6 +8,7 @@ const mockUseIsFocused = jest.fn();
 const mockReset = jest.fn();
 const mockGetParent = jest.fn();
 const mockSet = jest.fn();
+const mockUseSubscription = jest.fn();
 const mockAlert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
 
 jest.mock('react-native-reanimated', () => {
@@ -56,6 +57,10 @@ jest.mock('@/services/AsyncStorageService', () => ({
   asyncStorageService: {
     set: (...args: unknown[]) => mockSet(...args),
   },
+}));
+
+jest.mock('@/hooks/useSubscription', () => ({
+  useSubscription: () => mockUseSubscription(),
 }));
 
 jest.mock('react-native-safe-area-context', () => ({
@@ -135,6 +140,17 @@ describe('ProfileScreen', () => {
     mockGetParent.mockReturnValue({ reset: mockReset });
     mockSet.mockResolvedValue(undefined);
     mockUseIsFocused.mockReturnValue(true);
+    mockUseSubscription.mockReturnValue({
+      isPro: false,
+      isLoading: false,
+      openPaywall: jest.fn(),
+      canPresentNativePaywall: false,
+      canOpenCustomerCenter: false,
+      restorePurchases: jest.fn(),
+      presentNativePaywall: jest.fn(),
+      openCustomerCenter: jest.fn(),
+      syncCustomerInfo: jest.fn(),
+    });
     mockUseProfileData.mockReturnValue({
       data: {
         name: 'Jane Doe',
@@ -176,6 +192,7 @@ describe('ProfileScreen', () => {
     expect(getByTestId('profile-shift-settings')).toBeTruthy();
     expect(getByTestId('profile-work-stats')).toBeTruthy();
     expect(getByText('Smart Reminders')).toBeTruthy();
+    expect(getByTestId('subscription-management-row')).toBeTruthy();
     expect(getByTestId('run-onboarding-again-button')).toBeTruthy();
   });
 
@@ -233,6 +250,50 @@ describe('ProfileScreen', () => {
         'Network error. Please check your connection and try again.'
       );
       expect(mockReset).not.toHaveBeenCalled();
+    });
+  });
+
+  it('routes free users from the subscription row to the paywall', () => {
+    const openPaywall = jest.fn();
+    mockUseSubscription.mockReturnValue({
+      isPro: false,
+      isLoading: false,
+      openPaywall,
+      canPresentNativePaywall: false,
+      canOpenCustomerCenter: false,
+      restorePurchases: jest.fn(),
+      presentNativePaywall: jest.fn(),
+      openCustomerCenter: jest.fn(),
+      syncCustomerInfo: jest.fn(),
+    });
+
+    const { getByTestId } = render(<ProfileScreen />);
+
+    fireEvent.press(getByTestId('subscription-management-row'));
+
+    expect(openPaywall).toHaveBeenCalled();
+  });
+
+  it('opens customer center for Pro users', async () => {
+    const openCustomerCenter = jest.fn().mockResolvedValue('presented');
+    mockUseSubscription.mockReturnValue({
+      isPro: true,
+      isLoading: false,
+      openPaywall: jest.fn(),
+      canPresentNativePaywall: true,
+      canOpenCustomerCenter: true,
+      restorePurchases: jest.fn(),
+      presentNativePaywall: jest.fn(),
+      openCustomerCenter,
+      syncCustomerInfo: jest.fn(),
+    });
+
+    const { getByTestId } = render(<ProfileScreen />);
+
+    fireEvent.press(getByTestId('subscription-management-row'));
+
+    await waitFor(() => {
+      expect(openCustomerCenter).toHaveBeenCalled();
     });
   });
 });

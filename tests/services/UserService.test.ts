@@ -7,12 +7,66 @@
 import { UserService, UserProfile, UserPreferences } from '@/services/UserService';
 import { ShiftCycle, NotificationSettings, ShiftPattern } from '@/types';
 import { DEFAULT_SMART_REMINDER_SETTINGS } from '@/types/reminders';
-import { ValidationError } from '@/utils/errorUtils';
+import { NetworkError, ValidationError } from '@/utils/errorUtils';
 import { logger } from '@/utils/logger';
 
 // Mock dependencies
 jest.mock('@/services/firebase/FirebaseService');
 jest.mock('@/utils/logger');
+jest.mock('@/services/AsyncStorageService', () => ({
+  __mockStorage: new Map<string, unknown>(),
+  asyncStorageService: {
+    get: jest.fn(async (key: string) => {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
+      const { __mockStorage } = require('@/services/AsyncStorageService');
+      return __mockStorage.has(key) ? __mockStorage.get(key) : null;
+    }),
+    set: jest.fn(async (key: string, value: unknown) => {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
+      const { __mockStorage } = require('@/services/AsyncStorageService');
+      __mockStorage.set(key, value);
+    }),
+    remove: jest.fn(async (key: string) => {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
+      const { __mockStorage } = require('@/services/AsyncStorageService');
+      __mockStorage.delete(key);
+    }),
+    getAllKeys: jest.fn(async () => {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
+      const { __mockStorage } = require('@/services/AsyncStorageService');
+      return Array.from(__mockStorage.keys());
+    }),
+  },
+}));
+jest.mock('@/services/NetworkService', () => ({
+  __mockNetworkListeners: new Set(),
+  __mockNetworkSnapshot: {
+    status: 'online',
+    isConnected: true,
+    isInternetReachable: true,
+    type: 'wifi',
+    updatedAt: Date.now(),
+  },
+  networkService: {
+    subscribe: jest.fn((listener: (snapshot: unknown) => void) => {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
+      const {
+        __mockNetworkListeners,
+        __mockNetworkSnapshot,
+      } = require('@/services/NetworkService');
+      __mockNetworkListeners.add(listener);
+      listener(__mockNetworkSnapshot);
+      return () => {
+        __mockNetworkListeners.delete(listener);
+      };
+    }),
+    getSnapshot: jest.fn(() => {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
+      const { __mockNetworkSnapshot } = require('@/services/NetworkService');
+      return __mockNetworkSnapshot;
+    }),
+  },
+}));
 jest.mock('@/utils/shiftUtils', () => ({
   getShiftStatistics: jest.fn(() => ({
     dayShifts: 10,
@@ -20,6 +74,7 @@ jest.mock('@/utils/shiftUtils', () => ({
     daysOff: 9,
     totalDays: 29,
   })),
+  buildShiftCycle: jest.fn(() => null),
 }));
 
 describe('UserService', () => {
@@ -59,7 +114,22 @@ describe('UserService', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
+    const { __mockStorage } = require('@/services/AsyncStorageService');
+    // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
+    const { __mockNetworkListeners, __mockNetworkSnapshot } = require('@/services/NetworkService');
+    __mockStorage.clear();
+    __mockNetworkListeners.clear();
+    __mockNetworkSnapshot.status = 'online';
+    __mockNetworkSnapshot.isConnected = true;
+    __mockNetworkSnapshot.isInternetReachable = true;
+    __mockNetworkSnapshot.type = 'wifi';
+    __mockNetworkSnapshot.updatedAt = Date.now();
     service = new UserService();
+  });
+
+  afterEach(() => {
+    service.cleanup();
   });
 
   describe('User Profile Operations', () => {
@@ -605,23 +675,29 @@ describe('UserService', () => {
 
       const result = service.subscribeToUserChanges(mockUserId, callback);
 
-      expect(service['subscribe']).toHaveBeenCalledWith('users', mockUserId, callback);
+      expect(service['subscribe']).toHaveBeenCalledWith('users', mockUserId, expect.any(Function));
       expect(logger.info).toHaveBeenCalledWith(
         'Subscribing to user changes',
         expect.objectContaining({ userId: mockUserId })
       );
-      expect(result).toBe(unsubscribe);
+      expect(result).toEqual(expect.any(Function));
+
+      result();
+      expect(unsubscribe).toHaveBeenCalled();
     });
   });
 
   describe('Error Scenarios', () => {
     it('should handle network errors gracefully', async () => {
-      const networkError = new Error('Network unavailable');
+      const networkError = new NetworkError('Network unavailable');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       jest.spyOn(service as any, 'read').mockRejectedValue(networkError);
 
-      await expect(service.getUser(mockUserId)).rejects.toThrow('Network unavailable');
-      expect(logger.error).toHaveBeenCalled();
+      await expect(service.getUser(mockUserId)).resolves.toBeNull();
+      expect(logger.warn).toHaveBeenCalledWith(
+        'UserService: remote user unavailable, treating profile as missing',
+        expect.objectContaining({ userId: mockUserId })
+      );
     });
 
     it('should handle permission denied errors', async () => {
@@ -639,6 +715,107 @@ describe('UserService', () => {
       const invalidData: any = { name: '', createdAt: 'invalid', updatedAt: 'invalid' };
 
       await expect(service.createUser(mockUserId, invalidData)).rejects.toThrow(ValidationError);
+    });
+  });
+
+  describe('Offline-first writes', () => {
+    it('queues onboarding profile sync when remote read and create are unavailable', async () => {
+      const offlineError = new NetworkError('Network unavailable');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      jest.spyOn(service as any, 'read').mockRejectedValue(offlineError);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      jest.spyOn(service as any, 'create').mockRejectedValue(offlineError);
+
+      await service.createOrSyncUserProfile(mockUserId, {
+        name: 'Test User',
+        occupation: 'Engineer',
+        company: 'Mine Co',
+        country: 'us',
+      } as never);
+
+      // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
+      const { __mockStorage } = require('@/services/AsyncStorageService');
+      expect(__mockStorage.get(`users:profile:${mockUserId}`)).toEqual(
+        expect.objectContaining({
+          id: mockUserId,
+          name: 'Test User',
+          occupation: 'Engineer',
+          company: 'Mine Co',
+          country: 'US',
+        })
+      );
+      expect(__mockStorage.get(`users:pending:${mockUserId}`)).toEqual(
+        expect.objectContaining({
+          userId: mockUserId,
+          type: 'upsert',
+        })
+      );
+    });
+
+    it('queues preference saves for a fresh user when remote update is unavailable', async () => {
+      const offlineError = new NetworkError('Network unavailable');
+      const prefs: UserPreferences = {
+        theme: 'dark',
+        notifications: mockNotificationSettings,
+        language: 'en',
+        timezone: 'UTC',
+      };
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      jest.spyOn(service as any, 'read').mockRejectedValue(offlineError);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      jest.spyOn(service as any, 'update').mockRejectedValue(offlineError);
+
+      await service.savePreferences(mockUserId, prefs);
+
+      // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
+      const { __mockStorage } = require('@/services/AsyncStorageService');
+      expect(__mockStorage.get(`users:profile:${mockUserId}`)).toEqual(
+        expect.objectContaining({
+          id: mockUserId,
+          preferences: prefs,
+        })
+      );
+      expect(__mockStorage.get(`users:pending:${mockUserId}`)).toEqual(
+        expect.objectContaining({
+          userId: mockUserId,
+          type: 'upsert',
+        })
+      );
+    });
+
+    it('replays queued mutations once connectivity is restored', async () => {
+      const offlineError = new NetworkError('Network unavailable');
+      const prefs: UserPreferences = {
+        theme: 'dark',
+        notifications: mockNotificationSettings,
+        language: 'en',
+        timezone: 'UTC',
+      };
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      jest.spyOn(service as any, 'read').mockRejectedValue(offlineError);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      jest.spyOn(service as any, 'update').mockRejectedValue(offlineError);
+
+      await service.savePreferences(mockUserId, prefs);
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (service as any).update.mockRestore();
+      await service.syncPendingUsers(mockUserId);
+
+      // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
+      const { __mockStorage } = require('@/services/AsyncStorageService');
+      expect(__mockStorage.get(`users:pending:${mockUserId}`)).toBeUndefined();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      expect((service as any).getMockCollection('users')).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: mockUserId,
+            preferences: prefs,
+          }),
+        ])
+      );
     });
   });
 });

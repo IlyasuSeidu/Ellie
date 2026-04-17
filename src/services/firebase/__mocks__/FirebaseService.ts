@@ -146,6 +146,33 @@ export class MockFirebaseService {
   }
 
   /**
+   * Mock upsert operation
+   */
+  // eslint-disable-next-line require-await
+  protected async upsert<T extends DocumentData>(
+    collectionName: string,
+    docId: string,
+    data: T,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _options: { merge?: boolean } = {}
+  ): Promise<void> {
+    this.checkForSimulatedFailure();
+
+    const collection = this.mockData.get(collectionName);
+    const existing = collection?.get(docId);
+
+    this.setMockData(collectionName, docId, {
+      ...(existing ?? {}),
+      ...data,
+      createdAt:
+        typeof (data as { createdAt?: unknown }).createdAt === 'string'
+          ? (data as unknown as { createdAt: string }).createdAt
+          : (existing?.createdAt ?? new Date().toISOString()),
+      updatedAt: new Date().toISOString(),
+    });
+  }
+
+  /**
    * Mock delete operation
    */
   // eslint-disable-next-line require-await

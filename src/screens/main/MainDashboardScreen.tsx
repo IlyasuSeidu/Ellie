@@ -109,7 +109,7 @@ export const MainDashboardScreen: React.FC = () => {
   const [showFeatureGatePaywall, setShowFeatureGatePaywall] = useState(false);
 
   // G5: Non-converter recovery — isPro needed for gate + recovery hook
-  const { isPro } = useSubscription();
+  const { isPro, isLoading: subscriptionLoading } = useSubscription();
   const { shouldNudge, dismissNudge } = usePaywallRecovery(isPro);
 
   // Refresh animation state
@@ -328,6 +328,9 @@ export const MainDashboardScreen: React.FC = () => {
 
   // G6: Gate forward navigation — free users may go 1 month ahead; beyond that requires Pro.
   const handleNextMonthGated = useCallback(() => {
+    if (subscriptionLoading) {
+      return;
+    }
     if (!isPro && monthsAhead >= FREE_MONTH_AHEAD_LIMIT) {
       Analytics.track('feature_gate_triggered', {
         feature: 'calendar_full_year',
@@ -338,7 +341,7 @@ export const MainDashboardScreen: React.FC = () => {
       return;
     }
     handleNextMonth();
-  }, [isPro, monthsAhead, handleNextMonth]);
+  }, [handleNextMonth, isPro, monthsAhead, subscriptionLoading]);
 
   // Avatar change handler — persists new URI to AsyncStorage
   const handleAvatarChange = useCallback(

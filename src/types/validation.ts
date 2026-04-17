@@ -151,6 +151,13 @@ export const notificationSettingsSchema = z.object({
   smartReminders: smartReminderSettingsSchema.optional(),
 });
 
+export const userPreferencesSchema = z.object({
+  theme: z.enum(['light', 'dark', 'auto']),
+  notifications: notificationSettingsSchema,
+  language: z.string().min(2),
+  timezone: z.string().min(1),
+});
+
 /**
  * User Profile Schema
  */
@@ -166,6 +173,7 @@ export const userProfileSchema = z.object({
   updatedAt: z.string().datetime(),
   shiftCycle: shiftCycleSchema.optional(),
   notificationSettings: notificationSettingsSchema.optional(),
+  preferences: userPreferencesSchema.optional(),
 });
 
 /**

@@ -4,7 +4,7 @@
     "getStarted": "开始使用",
     "socialProof": "专为像你这样的轮班工作者打造",
     "trust": {
-      "freeTrial": "7天免费试用",
+      "freeTrial": "免费试用",
       "noCard": "无需信用卡",
       "cancelAnytime": "可随时取消"
     }
@@ -992,7 +992,7 @@
     "headline": "你接下来的3个月，已经排好。",
     "subheadline": "这就是你接下来3个月的预览。再也不用在脑子里反复猜了。",
     "heyEllieTitle": "向 Ellie 询问你的班表",
-    "ctaPrimary": "开始7天试用",
+    "ctaPrimary": "开始免费试用",
     "ctaSecondary": "或跳过——仅限当前这一周，没有全年视图",
     "stats": {
       "workDays": "工作日",

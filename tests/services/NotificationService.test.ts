@@ -20,6 +20,7 @@ jest.mock('expo-notifications', () => ({
   scheduleNotificationAsync: jest.fn(),
   cancelScheduledNotificationAsync: jest.fn(),
   cancelAllScheduledNotificationsAsync: jest.fn(),
+  getAllScheduledNotificationsAsync: jest.fn(),
   requestPermissionsAsync: jest.fn(),
   getPermissionsAsync: jest.fn(),
   getExpoPushTokenAsync: jest.fn(),
@@ -42,6 +43,15 @@ jest.mock('expo-constants', () => ({
   },
 }));
 
+jest.mock('firebase/firestore', () => ({
+  where: jest.fn((field: string, operator: string, value: string) => ({
+    type: 'where',
+    field,
+    operator,
+    value,
+  })),
+}));
+
 jest.mock('@/services/AsyncStorageService', () => ({
   asyncStorageService: {
     get: jest.fn(),
@@ -60,6 +70,7 @@ jest.mock('@/services/NetworkService', () => ({
 // Mock FirebaseService
 jest.mock('@/services/firebase/FirebaseService', () => ({
   FirebaseService: class {
+    protected auth = { currentUser: { uid: 'user-123' } };
     protected async create() {
       await Promise.resolve();
       return Promise.resolve('mock-doc-id');
@@ -340,6 +351,27 @@ describe('NotificationService', () => {
 
         expect(mockScheduler.getScheduledCount()).toBe(2);
       });
+
+      it('should cancel scheduler-backed smart reminders even when history is incomplete', async () => {
+        await service.scheduleSmartReminder(mockUserId, {
+          type: 'SHIFT_PREP_REMINDER',
+          triggerAt: new Date('2026-04-03T05:30:00.000Z'),
+          shiftDate: '2026-04-03',
+          shiftType: 'day',
+          isCritical: false,
+          title: 'Prep',
+          body: 'Prep body',
+          data: { shiftDate: '2026-04-03', shiftType: 'day' },
+        });
+
+        jest.spyOn(service, 'getNotificationHistory').mockResolvedValue([]);
+
+        expect(mockScheduler.getScheduledCount()).toBe(1);
+
+        await service.cancelSmartReminders(mockUserId);
+
+        expect(mockScheduler.getScheduledCount()).toBe(0);
+      });
     });
   });
 
@@ -564,6 +596,26 @@ describe('NotificationService', () => {
         expect(history.length).toBeGreaterThanOrEqual(0);
       });
 
+      it('queries Firestore history with a user-scoped constraint', async () => {
+        const querySpy = jest.spyOn(
+          service as unknown as {
+            query: (collection: string, constraints: unknown[]) => Promise<[]>;
+          },
+          'query'
+        );
+
+        await service.getNotificationHistory(mockUserId);
+
+        expect(querySpy).toHaveBeenCalledWith('notifications', [
+          expect.objectContaining({
+            type: 'where',
+            field: 'userId',
+            operator: '==',
+            value: mockUserId,
+          }),
+        ]);
+      });
+
       it('should limit history results', async () => {
         // Schedule multiple notifications
         for (let i = 0; i < 60; i++) {
@@ -610,6 +662,43 @@ describe('NotificationService', () => {
         expect(history).toEqual(cachedHistory);
       });
 
+      it('returns cached history without querying Firestore when auth user does not match', async () => {
+        const cachedHistory = [
+          {
+            id: 'cached-1',
+            userId: mockUserId,
+            type: NotificationType.SHIFT_REMINDER_24H,
+            scheduledFor: new Date('2025-02-02T00:00:00.000Z').toISOString(),
+            content: { title: 'Cached', body: 'Cached body' },
+            status: 'pending' as const,
+            createdAt: new Date('2025-02-01T00:00:00.000Z').toISOString(),
+          },
+        ];
+
+        (service as unknown as { auth: { currentUser: { uid: string } | null } }).auth = {
+          currentUser: null,
+        };
+
+        const querySpy = jest.spyOn(
+          service as unknown as {
+            query: (collection: string, constraints?: unknown[]) => Promise<[]>;
+          },
+          'query'
+        );
+
+        (asyncStorageService.get as jest.Mock).mockImplementation((key: string) => {
+          if (key === `${STORAGE_KEYS.notifications.historyPrefix}${mockUserId}`) {
+            return Promise.resolve(cachedHistory);
+          }
+          return Promise.resolve(null);
+        });
+
+        const history = await service.getNotificationHistory(mockUserId);
+
+        expect(querySpy).not.toHaveBeenCalled();
+        expect(history).toEqual(cachedHistory);
+      });
+
       it('caches scheduled notifications even when remote history persistence fails', async () => {
         const createSpy = jest
           .spyOn(service as unknown as { create: () => Promise<string> }, 'create')
@@ -629,6 +718,52 @@ describe('NotificationService', () => {
         );
 
         createSpy.mockRestore();
+      });
+
+      it('keeps scheduling local notifications without remote history writes when auth user does not match', async () => {
+        (service as unknown as { auth: { currentUser: { uid: string } | null } }).auth = {
+          currentUser: null,
+        };
+
+        const createSpy = jest.spyOn(
+          service as unknown as { create: () => Promise<string> },
+          'create'
+        );
+
+        const notificationId = await service.scheduleShiftReminder(mockUserId, mockShift, 24);
+
+        expect(notificationId).toBeDefined();
+        expect(createSpy).not.toHaveBeenCalled();
+        expect(asyncStorageService.set).toHaveBeenCalledWith(
+          `${STORAGE_KEYS.notifications.historyPrefix}${mockUserId}`,
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: notificationId,
+              userId: mockUserId,
+            }),
+          ])
+        );
+      });
+
+      it('rolls back a scheduled smart reminder if local history persistence fails', async () => {
+        (asyncStorageService.set as jest.Mock).mockRejectedValueOnce(
+          new Error('cache write failed')
+        );
+
+        await expect(
+          service.scheduleSmartReminder(mockUserId, {
+            type: 'SHIFT_PREP_REMINDER',
+            triggerAt: new Date('2026-04-03T05:30:00.000Z'),
+            shiftDate: '2026-04-03',
+            shiftType: 'day',
+            isCritical: false,
+            title: 'Prep',
+            body: 'Prep body',
+            data: { shiftDate: '2026-04-03', shiftType: 'day' },
+          })
+        ).rejects.toThrow('cache write failed');
+
+        expect(mockScheduler.getScheduledCount()).toBe(0);
       });
     });
 

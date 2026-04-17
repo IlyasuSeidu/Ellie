@@ -17,6 +17,7 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { useOnboarding, type OnboardingData } from '@/contexts/OnboardingContext';
+import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useVoiceAssistant } from '@/contexts/VoiceAssistantContext';
 import { buildShiftCycle, getShiftDaysInRange, getShiftStatistics } from '@/utils/shiftUtils';
 import { Analytics } from '@/utils/analytics';
@@ -59,6 +60,7 @@ const AHA_PAIN_CALLBACKS: Record<NonNullable<OnboardingData['painPoint']>, strin
 export const PremiumAhaMomentScreen: React.FC = () => {
   const { t } = useTranslation('onboarding');
   const { data } = useOnboarding();
+  const { isPro, isLoading: subscriptionLoading } = useSubscription();
   const { openModalWithQuery, openModal } = useVoiceAssistant();
   const navigation = useNavigation<NavigationProp>();
   const [showPaywall, setShowPaywall] = React.useState(false);
@@ -244,6 +246,24 @@ export const PremiumAhaMomentScreen: React.FC = () => {
       pain_point: data.painPoint ?? null,
     });
     setShowPaywall(true);
+  };
+
+  const handleHeyEllieTap = (query?: string) => {
+    if (subscriptionLoading) {
+      return;
+    }
+
+    if (!isPro) {
+      handlePrimaryTap();
+      return;
+    }
+
+    if (query) {
+      openModalWithQuery(query);
+      return;
+    }
+
+    openModal();
   };
 
   const handleSecondaryTap = () => {
@@ -437,7 +457,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
         >
           <PremiumButton
             title={t('ahaMoment.ctaPrimary', {
-              defaultValue: 'Start 7-Day Trial',
+              defaultValue: 'Start Free Trial',
             })}
             onPress={handlePrimaryTap}
             variant="primary"
@@ -483,7 +503,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
                       pattern_type: data.patternType ?? null,
                       pain_point: data.painPoint ?? null,
                     });
-                    openModalWithQuery(query);
+                    handleHeyEllieTap(query);
                   }}
                 >
                   <Ionicons
@@ -508,7 +528,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
                     pattern_type: data.patternType ?? null,
                     pain_point: data.painPoint ?? null,
                   });
-                  openModal();
+                  handleHeyEllieTap();
                 }}
               >
                 <LinearGradient

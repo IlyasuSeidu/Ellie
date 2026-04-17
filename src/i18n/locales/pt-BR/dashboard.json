@@ -101,7 +101,9 @@
       "trySaying": "Tente dizer:",
       "example1": "Que turno eu tenho amanhã?",
       "example2": "Quando é meu próximo dia de folga?",
-      "example3": "Quantos turnos noturnos este mês?"
+      "example3": "Quantos turnos noturnos este mês?",
+      "tryAsking": "Tente perguntar:",
+      "suggestionA11y": "Perguntar à Ellie: {{query}}"
     },
     "permission": {
       "notice": "Ellie precisa de acesso ao microfone para ouvir suas perguntas.",
@@ -116,7 +118,8 @@
       "wakeWordUnavailable": "Palavra de ativação indisponível; toque no microfone para falar",
       "sayWakeWordOrTap": "Diga \"{{wakeWordPhrase}}\" ou toque no microfone",
       "askAnother": "Toque no microfone para fazer outra pergunta",
-      "askEllie": "Toque no microfone para perguntar a Ellie"
+      "askEllie": "Toque no microfone para perguntar a Ellie",
+      "typeOrGrantMic": "Digite abaixo ou conceda acesso ao microfone para falar"
     },
     "errors": {
       "default": "Algo deu errado",
@@ -166,11 +169,19 @@
       "startBack": "Você volta ao trabalho em {{date}}.",
       "patternSummaryRotating": "Seu padrão é {{dayCount}} turnos diurnos, {{nightCount}} noturnos e depois {{offCount}} dias de folga.",
       "patternSummaryThreeShift": "Seu padrão é {{morningCount}} turnos da manhã, {{afternoonCount}} da tarde, {{nightCount}} noturnos e depois {{offCount}} dias de folga.",
-      "patternSummaryFifo": "Seu padrão é {{workDays}} dias no site e depois {{restDays}} dias de folga."
+      "patternSummaryFifo": "Seu padrão é {{workDays}} dias no site e depois {{restDays}} dias de folga.",
+      "unsupportedWithNextShift": "Ainda não consigo responder isso totalmente offline, mas continuo conhecendo sua escala salva. Seu próximo turno de trabalho é {{shiftType}} em {{date}}. Tente perguntar sobre amanhã, sua próxima folga, os turnos noturnos deste mês ou seu padrão.",
+      "unsupportedGeneric": "Ainda não consigo responder isso totalmente offline, mas ainda posso ajudar com sua escala salva. Tente perguntar sobre amanhã, sua próxima folga, os turnos noturnos deste mês ou seu padrão."
     },
     "notices": {
       "offlineRecognitionUnavailable": "A entrada por voz offline não está disponível neste dispositivo agora.",
       "audioUnavailable": "As respostas em áudio não estão disponíveis agora. Você ainda pode ler a resposta da Ellie."
+    },
+    "offlineHint": "As respostas offline são limitadas a perguntas simples sobre a escala salva neste dispositivo.",
+    "composer": {
+      "placeholder": "Digite uma pergunta para Ellie",
+      "a11y": "Digite uma pergunta para Ellie",
+      "sendA11y": "Enviar pergunta digitada"
     }
   },
   "tabs": {
@@ -283,5 +294,23 @@
       "hoursOnly": "{{hours}} h",
       "hoursMinutes": "{{hours}} h {{minutes}} min"
     }
+  },
+  "shiftCheckIn": {
+    "title": "Registre sua energia após este turno",
+    "subtitle": "{{shiftType}} em {{shiftDate}} · {{startTime}} - {{endTime}}",
+    "energyPrompt": "Como estava sua energia neste turno?",
+    "energy": {
+      "high": "Alta",
+      "medium": "Média",
+      "low": "Baixa"
+    },
+    "notesLabel": "Notas (opcional)",
+    "notesPlaceholder": "Algo importante para lembrar sobre este turno?",
+    "saved": "Check-in salvo.",
+    "savedOffline": "Check-in salvo localmente. Ele será sincronizado quando você voltar a ficar online.",
+    "error": "Não foi possível salvar este check-in agora. Tente novamente.",
+    "dismiss": "Agora não",
+    "update": "Atualizar check-in",
+    "submit": "Salvar check-in"
   }
 }

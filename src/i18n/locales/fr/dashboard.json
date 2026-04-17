@@ -101,7 +101,9 @@
       "trySaying": "Essayez de dire :",
       "example1": "Quel service ai-je demain ?",
       "example2": "Quand est mon prochain jour de congé ?",
-      "example3": "Combien de quarts de nuit ce mois-ci ?"
+      "example3": "Combien de quarts de nuit ce mois-ci ?",
+      "tryAsking": "Essayez de demander :",
+      "suggestionA11y": "Demander à Ellie : {{query}}"
     },
     "permission": {
       "notice": "Ellie a besoin d'un accès au microphone pour entendre vos questions.",
@@ -116,7 +118,8 @@
       "wakeWordUnavailable": "Mot d’activation indisponible, touchez le micro pour parler",
       "sayWakeWordOrTap": "Dites \"{{wakeWordPhrase}}\" ou appuyez sur le micro",
       "askAnother": "Appuyez sur le micro pour poser une autre question",
-      "askEllie": "Appuyez sur le micro pour demander à Ellie"
+      "askEllie": "Appuyez sur le micro pour demander à Ellie",
+      "typeOrGrantMic": "Saisissez votre question ci-dessous ou accordez l’accès au micro pour parler"
     },
     "errors": {
       "default": "Quelque chose s'est mal passé",
@@ -166,11 +169,19 @@
       "startBack": "Vous reprenez le {{date}}.",
       "patternSummaryRotating": "Votre rythme est de {{dayCount}} quarts de jour, {{nightCount}} quarts de nuit, puis {{offCount}} jours de repos.",
       "patternSummaryThreeShift": "Votre rythme est de {{morningCount}} quarts du matin, {{afternoonCount}} quarts de l’après-midi, {{nightCount}} quarts de nuit, puis {{offCount}} jours de repos.",
-      "patternSummaryFifo": "Votre rythme est de {{workDays}} jours sur site, puis {{restDays}} jours de repos."
+      "patternSummaryFifo": "Votre rythme est de {{workDays}} jours sur site, puis {{restDays}} jours de repos.",
+      "unsupportedWithNextShift": "Je ne peux pas encore répondre complètement à cela hors ligne, mais je connais toujours votre planning enregistré. Votre prochaine prise de poste est {{shiftType}} le {{date}}. Essayez de demander pour demain, votre prochain jour de repos, les postes de nuit de ce mois ou votre rotation.",
+      "unsupportedGeneric": "Je ne peux pas encore répondre complètement à cela hors ligne, mais je peux toujours vous aider avec votre planning enregistré. Essayez de demander pour demain, votre prochain jour de repos, les postes de nuit de ce mois ou votre rotation."
     },
     "notices": {
       "offlineRecognitionUnavailable": "La saisie vocale hors ligne n’est pas disponible sur cet appareil pour le moment.",
       "audioUnavailable": "Les réponses audio ne sont pas disponibles pour le moment. Vous pouvez quand même lire la réponse d’Ellie."
+    },
+    "offlineHint": "Hors ligne, les réponses sont limitées aux questions simples sur le planning enregistré sur cet appareil.",
+    "composer": {
+      "placeholder": "Tapez une question pour Ellie",
+      "a11y": "Tapez une question pour Ellie",
+      "sendA11y": "Envoyer la question écrite"
     }
   },
   "tabs": {
@@ -283,5 +294,23 @@
       "hoursOnly": "{{hours}} h",
       "hoursMinutes": "{{hours}} h {{minutes}} min"
     }
+  },
+  "shiftCheckIn": {
+    "title": "Enregistrez votre niveau d’énergie après ce poste",
+    "subtitle": "{{shiftType}} le {{shiftDate}} · {{startTime}} - {{endTime}}",
+    "energyPrompt": "Comment était votre énergie pendant ce poste ?",
+    "energy": {
+      "high": "Élevée",
+      "medium": "Moyenne",
+      "low": "Faible"
+    },
+    "notesLabel": "Notes (facultatif)",
+    "notesPlaceholder": "Y a-t-il quelque chose à retenir de ce poste ?",
+    "saved": "Suivi enregistré.",
+    "savedOffline": "Suivi enregistré localement. Il sera synchronisé quand vous serez de nouveau en ligne.",
+    "error": "Impossible d’enregistrer ce suivi pour le moment. Réessayez.",
+    "dismiss": "Plus tard",
+    "update": "Mettre à jour le suivi",
+    "submit": "Enregistrer le suivi"
   }
 }

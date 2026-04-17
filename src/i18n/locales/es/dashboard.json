@@ -101,7 +101,9 @@
       "trySaying": "Intenta decir:",
       "example1": "¿Qué turno tengo mañana?",
       "example2": "¿Cuándo es mi próximo día libre?",
-      "example3": "¿Cuántos turnos de noche este mes?"
+      "example3": "¿Cuántos turnos de noche este mes?",
+      "tryAsking": "Prueba preguntando:",
+      "suggestionA11y": "Pregúntale a Ellie: {{query}}"
     },
     "permission": {
       "notice": "Ellie necesita acceso al micrófono para escuchar tus preguntas.",
@@ -116,7 +118,8 @@
       "wakeWordUnavailable": "La palabra de activación no está disponible; toca el micrófono para hablar",
       "sayWakeWordOrTap": "Di \"{{wakeWordPhrase}}\" o toca el micrófono",
       "askAnother": "Toca el micrófono para hacer otra pregunta.",
-      "askEllie": "Toca el micrófono para preguntarle a Ellie"
+      "askEllie": "Toca el micrófono para preguntarle a Ellie",
+      "typeOrGrantMic": "Escribe abajo o concede acceso al micrófono para hablar"
     },
     "errors": {
       "default": "algo salió mal",
@@ -166,11 +169,19 @@
       "startBack": "Vuelves al trabajo el {{date}}.",
       "patternSummaryRotating": "Tu patrón es {{dayCount}} turnos de día, {{nightCount}} de noche y luego {{offCount}} días libres.",
       "patternSummaryThreeShift": "Tu patrón es {{morningCount}} turnos de mañana, {{afternoonCount}} de tarde, {{nightCount}} de noche y luego {{offCount}} días libres.",
-      "patternSummaryFifo": "Tu patrón es {{workDays}} días en sitio y luego {{restDays}} días libres."
+      "patternSummaryFifo": "Tu patrón es {{workDays}} días en sitio y luego {{restDays}} días libres.",
+      "unsupportedWithNextShift": "Todavía no puedo responder eso completamente sin conexión, pero sí conozco tu roster guardado. Tu próximo turno de trabajo es {{shiftType}} el {{date}}. Prueba preguntar por mañana, tu próximo día libre, los turnos nocturnos de este mes o tu patrón.",
+      "unsupportedGeneric": "Todavía no puedo responder eso completamente sin conexión, pero sí puedo ayudarte con tu roster guardado. Prueba preguntar por mañana, tu próximo día libre, los turnos nocturnos de este mes o tu patrón."
     },
     "notices": {
       "offlineRecognitionUnavailable": "La entrada de voz sin conexión no está disponible en este dispositivo en este momento.",
       "audioUnavailable": "Las respuestas de audio no están disponibles ahora mismo. Aún puedes leer la respuesta de Ellie."
+    },
+    "offlineHint": "Sin conexión, las respuestas se limitan a preguntas simples del roster guardadas en este dispositivo.",
+    "composer": {
+      "placeholder": "Escribe una pregunta para Ellie",
+      "a11y": "Escribe una pregunta para Ellie",
+      "sendA11y": "Enviar pregunta escrita"
     }
   },
   "tabs": {
@@ -283,5 +294,23 @@
       "hoursOnly": "{{hours}} h",
       "hoursMinutes": "{{hours}} h {{minutes}} min"
     }
+  },
+  "shiftCheckIn": {
+    "title": "Registra tu energía después de este turno",
+    "subtitle": "{{shiftType}} el {{shiftDate}} · {{startTime}} - {{endTime}}",
+    "energyPrompt": "¿Cómo estuvo tu energía en este turno?",
+    "energy": {
+      "high": "Alta",
+      "medium": "Media",
+      "low": "Baja"
+    },
+    "notesLabel": "Notas (opcional)",
+    "notesPlaceholder": "¿Algo que valga la pena recordar sobre este turno?",
+    "saved": "Registro guardado.",
+    "savedOffline": "Registro guardado localmente. Se sincronizará cuando vuelvas a estar en línea.",
+    "error": "No se pudo guardar este registro ahora mismo. Inténtalo de nuevo.",
+    "dismiss": "Ahora no",
+    "update": "Actualizar registro",
+    "submit": "Guardar registro"
   }
 }

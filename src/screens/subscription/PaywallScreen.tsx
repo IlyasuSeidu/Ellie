@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Dimensions,
@@ -23,31 +23,111 @@ import Animated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import type { PurchasesPackage } from 'react-native-purchases';
-import { getRevenueCatRuntime, isRevenueCatAvailable } from '@/services/RevenueCatRuntime';
+import { getRevenueCatAvailability, getRevenueCatRuntime } from '@/services/RevenueCatRuntime';
+import { getActiveProEntitlement } from '@/services/RevenueCatEntitlements';
+import {
+  revenueCatOfferingsCacheService,
+  type CachedOfferingsSnapshot,
+  type CachedPaywallPlan,
+} from '@/services/RevenueCatOfferingsCacheService';
 import { theme } from '@/utils/theme';
 import { Analytics, type PaywallTriggerSource } from '@/utils/analytics';
 import { useOnboardingOptional, type OnboardingData } from '@/contexts/OnboardingContext';
 import { MiniYearCalendar } from '@/components/paywall/MiniYearCalendar';
 import { formatLocalizedDate } from '@/utils/i18nFormat';
 import { useNetworkStatus } from '@/hooks/useNetworkStatus';
+import { useSubscription } from '@/hooks/useSubscription';
 
 // Legal URLs — update these to point to the live hosted documents
 const PRIVACY_POLICY_URL = 'https://ellieapp.com.au/privacy';
 const TERMS_OF_SERVICE_URL = 'https://ellieapp.com.au/terms';
 
-/**
- * Returns true if the given RevenueCat package includes a free introductory trial
- * (i.e. introductoryPrice exists and its price is $0).
- *
- * Falls back to `true` when the package is null (RC offline / dev build) so that
- * the trial-first copy is shown whenever we cannot confirm otherwise — matching the
- * trial badge and CTA copy that are always visible.
- */
 function packageHasTrial(pkg: import('react-native-purchases').PurchasesPackage | null): boolean {
-  if (!pkg) return true;
+  if (!pkg) return false;
   const introPrice = pkg.product.introPrice;
   return introPrice !== null && introPrice !== undefined && introPrice.price === 0;
 }
+
+type TrialMetadata = {
+  cycles: number;
+  periodUnit: string;
+  periodNumberOfUnits: number;
+};
+
+const getTrialMetadataFromPackage = (pkg: PurchasesPackage | null): TrialMetadata | null => {
+  const introPrice = pkg?.product.introPrice;
+  if (!introPrice || introPrice.price !== 0) {
+    return null;
+  }
+
+  if (
+    typeof introPrice.cycles !== 'number' ||
+    typeof introPrice.periodUnit !== 'string' ||
+    typeof introPrice.periodNumberOfUnits !== 'number'
+  ) {
+    return null;
+  }
+
+  return {
+    cycles: introPrice.cycles,
+    periodUnit: introPrice.periodUnit,
+    periodNumberOfUnits: introPrice.periodNumberOfUnits,
+  };
+};
+
+const getTrialMetadataFromDisplayPlan = (plan: DisplayPlan | null): TrialMetadata | null => {
+  if (!plan || !plan.hasTrial) {
+    return null;
+  }
+
+  const liveMetadata = getTrialMetadataFromPackage(plan.package);
+  if (liveMetadata) {
+    return liveMetadata;
+  }
+
+  if (
+    typeof plan.trialCycles !== 'number' ||
+    typeof plan.trialPeriodUnit !== 'string' ||
+    typeof plan.trialPeriodNumberOfUnits !== 'number'
+  ) {
+    return null;
+  }
+
+  return {
+    cycles: plan.trialCycles,
+    periodUnit: plan.trialPeriodUnit,
+    periodNumberOfUnits: plan.trialPeriodNumberOfUnits,
+  };
+};
+
+const addTrialDurationToDate = (startAt: Date, metadata: TrialMetadata | null): Date | null => {
+  if (!metadata) {
+    return null;
+  }
+
+  const totalUnits = metadata.cycles * metadata.periodNumberOfUnits;
+  if (!Number.isFinite(totalUnits) || totalUnits <= 0) {
+    return null;
+  }
+
+  const nextDate = new Date(startAt);
+  switch (metadata.periodUnit.toUpperCase()) {
+    case 'DAY':
+      nextDate.setDate(nextDate.getDate() + totalUnits);
+      return nextDate;
+    case 'WEEK':
+      nextDate.setDate(nextDate.getDate() + totalUnits * 7);
+      return nextDate;
+    case 'MONTH':
+      nextDate.setMonth(nextDate.getMonth() + totalUnits);
+      return nextDate;
+    case 'YEAR':
+      nextDate.setFullYear(nextDate.getFullYear() + totalUnits);
+      return nextDate;
+    default:
+      return null;
+  }
+};
 
 interface PaywallScreenProps {
   onDismiss: () => void;
@@ -70,6 +150,10 @@ type Testimonial = {
 
 const CARD_WIDTH = Dimensions.get('window').width - 48;
 
+type DisplayPlan = CachedPaywallPlan & {
+  package: PurchasesPackage | null;
+};
+
 export const PaywallScreen: React.FC<PaywallScreenProps> = ({
   onDismiss,
   onboardingData,
@@ -79,11 +163,14 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
   const { t, i18n } = useTranslation('common');
   const tLoose = t as unknown as (key: string, options?: Record<string, unknown>) => string;
   const contextOnboarding = useOnboardingOptional();
+  const { syncCustomerInfo, restorePurchases, presentNativePaywall, canPresentNativePaywall } =
+    useSubscription();
   // Prop takes precedence; context is fallback for Settings/feature-gate entry points
   const resolvedOnboardingData = onboardingData ?? contextOnboarding?.data;
   const [annualPackage, setAnnualPackage] = useState<PurchasesPackage | null>(null);
   const [monthlyPackage, setMonthlyPackage] = useState<PurchasesPackage | null>(null);
   const [weeklyPackage, setWeeklyPackage] = useState<PurchasesPackage | null>(null);
+  const [cachedOfferings, setCachedOfferings] = useState<CachedOfferingsSnapshot | null>(null);
   const [selectedPlan, setSelectedPlan] = useState<PlanKey>('annual');
   const [loading, setLoading] = useState(true);
   const [purchasing, setPurchasing] = useState(false);
@@ -94,8 +181,11 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
   );
   const [dismissVisible, setDismissVisible] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
-  const [offeringsLoadError, setOfferingsLoadError] = useState<'offline' | 'error' | null>(null);
-  const purchasesAvailable = useMemo(() => isRevenueCatAvailable(), []);
+  const [offeringsLoadError, setOfferingsLoadError] = useState<
+    'offline' | 'error' | 'unconfigured' | null
+  >(null);
+  const revenueCatAvailability = useMemo(() => getRevenueCatAvailability(), []);
+  const purchasesAvailable = revenueCatAvailability.reason === null;
   const networkSnapshot = useNetworkStatus();
   const isOffline = networkSnapshot.status === 'offline';
   const ctaPulse = useSharedValue(1);
@@ -157,6 +247,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
   );
 
   const [purchaseSuccess, setPurchaseSuccess] = useState(false);
+  const [purchaseOutcome, setPurchaseOutcome] = useState<'trial' | 'paid'>('trial');
 
   const ctaAnimatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: ctaPulse.value }],
@@ -186,24 +277,97 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
     });
   }, [resolvedOnboardingData?.painPoint, resolvedOnboardingData?.rosterType, t]);
 
+  const applyCurrentOfferings = useCallback(
+    async (
+      current: {
+        annual?: PurchasesPackage | null;
+        monthly?: PurchasesPackage | null;
+        weekly?: PurchasesPackage | null;
+      } | null
+    ) => {
+      setAnnualPackage(current?.annual ?? null);
+      setMonthlyPackage(current?.monthly ?? null);
+      setWeeklyPackage(current?.weekly ?? null);
+
+      if (!current) {
+        return null;
+      }
+
+      const snapshot = await revenueCatOfferingsCacheService.cacheCurrentOfferings(current);
+      setCachedOfferings(snapshot);
+      return current;
+    },
+    []
+  );
+
+  const getPackageForPlan = useCallback(
+    (
+      planKey: PlanKey,
+      current: {
+        annual?: PurchasesPackage | null;
+        monthly?: PurchasesPackage | null;
+        weekly?: PurchasesPackage | null;
+      } | null
+    ): PurchasesPackage | null => {
+      if (!current) {
+        return null;
+      }
+
+      if (planKey === 'annual') {
+        return current.annual ?? null;
+      }
+
+      if (planKey === 'monthly') {
+        return current.monthly ?? null;
+      }
+
+      return current.weekly ?? null;
+    },
+    []
+  );
+
   useEffect(() => {
+    let isMounted = true;
     Analytics.paywallViewed(entryPoint, paywallAnalyticsMetadata);
 
     const dismissTimer = setTimeout(() => setDismissVisible(true), 8000);
+    void revenueCatOfferingsCacheService.getCachedSnapshot().then((snapshot) => {
+      if (!isMounted) return;
+      setCachedOfferings(snapshot);
+    });
 
-    const revenueCatRuntime = getRevenueCatRuntime();
-    if (!revenueCatRuntime) {
+    if (revenueCatAvailability.reason === 'missing_api_key') {
+      setOfferingsLoadError('unconfigured');
       setAnnualPackage(null);
       setMonthlyPackage(null);
       setWeeklyPackage(null);
       setLoading(false);
-      return () => clearTimeout(dismissTimer);
+      return () => {
+        isMounted = false;
+        clearTimeout(dismissTimer);
+      };
+    }
+
+    const revenueCatRuntime = getRevenueCatRuntime();
+    if (!revenueCatRuntime) {
+      setOfferingsLoadError('error');
+      setAnnualPackage(null);
+      setMonthlyPackage(null);
+      setWeeklyPackage(null);
+      setLoading(false);
+      return () => {
+        isMounted = false;
+        clearTimeout(dismissTimer);
+      };
     }
 
     if (isOffline) {
       setOfferingsLoadError('offline');
       setLoading(false);
-      return () => clearTimeout(dismissTimer);
+      return () => {
+        isMounted = false;
+        clearTimeout(dismissTimer);
+      };
     }
 
     setLoading(true);
@@ -214,9 +378,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
         const current = offerings.current;
         setOfferingsLoadError(null);
         if (current) {
-          setAnnualPackage(current.annual ?? null);
-          setMonthlyPackage(current.monthly ?? null);
-          setWeeklyPackage(current.weekly ?? null);
+          void applyCurrentOfferings(current);
         }
       })
       .catch(() => {
@@ -227,8 +389,17 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
       })
       .finally(() => setLoading(false));
 
-    return () => clearTimeout(dismissTimer);
-  }, [entryPoint, isOffline, paywallAnalyticsMetadata]);
+    return () => {
+      isMounted = false;
+      clearTimeout(dismissTimer);
+    };
+  }, [
+    applyCurrentOfferings,
+    entryPoint,
+    isOffline,
+    paywallAnalyticsMetadata,
+    revenueCatAvailability.reason,
+  ]);
 
   useEffect(() => {
     return () => {
@@ -249,31 +420,120 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
     );
   }, [ctaPulse]);
 
-  const selectedPackage =
-    selectedPlan === 'annual'
-      ? annualPackage
-      : selectedPlan === 'monthly'
-        ? monthlyPackage
-        : weeklyPackage;
-  const hasPlanMetadata = Boolean(annualPackage || monthlyPackage || weeklyPackage);
-  const annualPrice = annualPackage?.product.priceString ?? '';
-  const monthlyPrice = monthlyPackage?.product.priceString ?? '';
-  const weeklyPrice = weeklyPackage?.product.priceString ?? '';
+  const annualPlan = useMemo<DisplayPlan | null>(() => {
+    const cachedDisplayOfferings = revenueCatAvailability.reason === null ? cachedOfferings : null;
+    if (annualPackage) {
+      return {
+        identifier: annualPackage.identifier,
+        package: annualPackage,
+        price: annualPackage.product.price ?? 0,
+        priceString: annualPackage.product.priceString ?? '',
+        hasTrial: packageHasTrial(annualPackage),
+        trialCycles: annualPackage.product.introPrice?.cycles ?? null,
+        trialPeriodUnit: annualPackage.product.introPrice?.periodUnit ?? null,
+        trialPeriodNumberOfUnits: annualPackage.product.introPrice?.periodNumberOfUnits ?? null,
+      };
+    }
+
+    if (cachedDisplayOfferings?.annual) {
+      return {
+        package: null,
+        ...cachedDisplayOfferings.annual,
+      };
+    }
+
+    return null;
+  }, [annualPackage, cachedOfferings, revenueCatAvailability.reason]);
+
+  const monthlyPlan = useMemo<DisplayPlan | null>(() => {
+    const cachedDisplayOfferings = revenueCatAvailability.reason === null ? cachedOfferings : null;
+    if (monthlyPackage) {
+      return {
+        identifier: monthlyPackage.identifier,
+        package: monthlyPackage,
+        price: monthlyPackage.product.price ?? 0,
+        priceString: monthlyPackage.product.priceString ?? '',
+        hasTrial: packageHasTrial(monthlyPackage),
+        trialCycles: monthlyPackage.product.introPrice?.cycles ?? null,
+        trialPeriodUnit: monthlyPackage.product.introPrice?.periodUnit ?? null,
+        trialPeriodNumberOfUnits: monthlyPackage.product.introPrice?.periodNumberOfUnits ?? null,
+      };
+    }
+
+    if (cachedDisplayOfferings?.monthly) {
+      return {
+        package: null,
+        ...cachedDisplayOfferings.monthly,
+      };
+    }
+
+    return null;
+  }, [cachedOfferings, monthlyPackage, revenueCatAvailability.reason]);
+
+  const weeklyPlan = useMemo<DisplayPlan | null>(() => {
+    const cachedDisplayOfferings = revenueCatAvailability.reason === null ? cachedOfferings : null;
+    if (weeklyPackage) {
+      return {
+        identifier: weeklyPackage.identifier,
+        package: weeklyPackage,
+        price: weeklyPackage.product.price ?? 0,
+        priceString: weeklyPackage.product.priceString ?? '',
+        hasTrial: packageHasTrial(weeklyPackage),
+        trialCycles: weeklyPackage.product.introPrice?.cycles ?? null,
+        trialPeriodUnit: weeklyPackage.product.introPrice?.periodUnit ?? null,
+        trialPeriodNumberOfUnits: weeklyPackage.product.introPrice?.periodNumberOfUnits ?? null,
+      };
+    }
+
+    if (cachedDisplayOfferings?.weekly) {
+      return {
+        package: null,
+        ...cachedDisplayOfferings.weekly,
+      };
+    }
+
+    return null;
+  }, [cachedOfferings, revenueCatAvailability.reason, weeklyPackage]);
+
+  const selectedPlanData =
+    selectedPlan === 'annual' ? annualPlan : selectedPlan === 'monthly' ? monthlyPlan : weeklyPlan;
+  const selectedPackage = selectedPlanData?.package ?? null;
+  const availablePlans = useMemo<PlanKey[]>(() => {
+    const plans: PlanKey[] = [];
+    if (annualPlan) plans.push('annual');
+    if (monthlyPlan) plans.push('monthly');
+    if (weeklyPlan) plans.push('weekly');
+    return plans;
+  }, [annualPlan, monthlyPlan, weeklyPlan]);
+  const hasPlanMetadata = Boolean(annualPlan || monthlyPlan || weeklyPlan);
+  const annualPrice = annualPlan?.priceString ?? '';
+  const monthlyPrice = monthlyPlan?.priceString ?? '';
+  const weeklyPrice = weeklyPlan?.priceString ?? '';
+
+  useEffect(() => {
+    if (availablePlans.length === 0) {
+      return;
+    }
+
+    if (!availablePlans.includes(selectedPlan)) {
+      setSelectedPlan(availablePlans[0]);
+    }
+  }, [availablePlans, selectedPlan]);
 
   const annualMonthlyEquivalent = useMemo(() => {
-    if (!annualPackage) return '';
-    const monthlyEquivalent = annualPackage.product.price / 12;
-    const currencySymbol = annualPackage.product.priceString.replace(/[0-9.,\s]/g, '') || '$';
+    if (!annualPlan) return '';
+    const monthlyEquivalent = annualPlan.price / 12;
+    const currencySymbol = annualPlan.priceString.replace(/[0-9.,\s]/g, '') || '$';
     return `${currencySymbol}${monthlyEquivalent.toFixed(2)}`;
-  }, [annualPackage]);
+  }, [annualPlan]);
 
   const savingsPercent = useMemo(() => {
-    if (!annualPackage || !monthlyPackage) return 57;
-    const annualAsMonthly = annualPackage.product.price / 12;
-    const monthly = monthlyPackage.product.price;
+    if (!annualPlan || !monthlyPlan) return 57;
+    const annualAsMonthly = annualPlan.price / 12;
+    const monthly = monthlyPlan.price;
     if (monthly <= 0) return 57;
     return Math.round((1 - annualAsMonthly / monthly) * 100);
-  }, [annualPackage, monthlyPackage]);
+  }, [annualPlan, monthlyPlan]);
 
   const paywallTitle = resolvedOnboardingData?.name
     ? t('subscription.paywall.title_named', { name: resolvedOnboardingData.name })
@@ -289,51 +549,91 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
             defaultValue: 'Your rotating roster is mapped. See every shift for your full year.',
           })
         : t('subscription.paywall.subtitle');
-  const trialEndDate = useMemo(
-    () =>
-      formatLocalizedDate(
-        new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-        {
-          month: 'long',
-          day: 'numeric',
-          year: 'numeric',
-        },
-        i18n.language
-      ),
-    [i18n.language]
+  const selectedTrialMetadata = useMemo(
+    () => getTrialMetadataFromDisplayPlan(selectedPlanData ?? null),
+    [selectedPlanData]
+  );
+  const trialEndDate = useMemo(() => {
+    const calculatedTrialEndDate = addTrialDurationToDate(new Date(), selectedTrialMetadata);
+    if (!calculatedTrialEndDate) {
+      return null;
+    }
+
+    return formatLocalizedDate(
+      calculatedTrialEndDate,
+      {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      },
+      i18n.language
+    );
+  }, [i18n.language, selectedTrialMetadata]);
+
+  const hasTrialForSelected = useMemo(
+    () => selectedPlanData?.hasTrial ?? false,
+    [selectedPlanData]
   );
 
-  // Whether the currently selected package carries a free trial.
-  // Drives both the billing disclosure text and the trust row items.
-  const hasTrialForSelected = useMemo(() => packageHasTrial(selectedPackage), [selectedPackage]);
+  const trialBadgeText = hasTrialForSelected
+    ? t('subscription.paywall.trialBadge', {
+        defaultValue: 'FREE TRIAL · NO CHARGE TODAY',
+      })
+    : t('subscription.paywall.trialBadgePaid', {
+        defaultValue: 'SUBSCRIBE TODAY · CANCEL ANYTIME',
+      });
+
+  const primaryCtaLabel = isOffline
+    ? t('subscription.paywall.ctaOffline', {
+        defaultValue: 'Connect to subscribe',
+      })
+    : !selectedPackage && !hasPlanMetadata
+      ? t('subscription.paywall.ctaUnavailable', {
+          defaultValue: 'Plans unavailable right now',
+        })
+      : hasTrialForSelected
+        ? t('subscription.paywall.cta')
+        : t('subscription.paywall.ctaPaid', {
+            defaultValue: 'Subscribe Now',
+          });
+  const isPrimaryCtaDisabled = purchasing || loading || isOffline || !hasPlanMetadata;
 
   // G9: Billing disclosure adapts to the selected plan and whether a trial is available.
   const billingDisclosureText = useMemo(() => {
+    if (hasTrialForSelected) {
+      if (!trialEndDate) {
+        return t('subscription.paywall.billingDisclosureTrialGeneric', {
+          defaultValue:
+            'Your free trial starts today. Cancel anytime in Settings before billing begins. Subscriptions renew automatically.',
+        });
+      }
+
+      return t('subscription.paywall.billingDisclosure', {
+        date: trialEndDate,
+        defaultValue:
+          'Your free trial ends {{date}}. Cancel anytime in Settings before then to avoid charges. Subscriptions renew automatically.',
+      });
+    }
+
     if (selectedPlan === 'weekly') {
       return t('subscription.paywall.billingDisclosureWeekly', {
         price: weeklyPrice,
         defaultValue: `Billed ${weeklyPrice}/week, every week. Cancel anytime in Settings.`,
       });
     }
-    if (!hasTrialForSelected) {
-      if (selectedPlan === 'annual') {
-        return t('subscription.paywall.billingDisclosureAnnualDirect', {
-          price: annualPrice,
-          defaultValue: `You will be charged ${annualPrice} today. Renews annually. Cancel anytime in Settings.`,
-        });
-      }
-      return t('subscription.paywall.billingDisclosureMonthlyDirect', {
-        price: monthlyPrice,
-        defaultValue: `You will be charged ${monthlyPrice} today. Renews monthly. Cancel anytime in Settings.`,
+
+    if (selectedPlan === 'annual') {
+      return t('subscription.paywall.billingDisclosureAnnualDirect', {
+        price: annualPrice,
+        defaultValue: `You will be charged ${annualPrice} today. Renews annually. Cancel anytime in Settings.`,
       });
     }
-    // Annual or monthly with 7-day free trial (the default)
-    return t('subscription.paywall.billingDisclosure', {
-      date: trialEndDate,
-      defaultValue:
-        'Your 7-day free trial ends {{date}}. Cancel anytime in Settings before then to avoid charges. Subscriptions renew automatically.',
+
+    return t('subscription.paywall.billingDisclosureMonthlyDirect', {
+      price: monthlyPrice,
+      defaultValue: `You will be charged ${monthlyPrice} today. Renews monthly. Cancel anytime in Settings.`,
     });
-  }, [selectedPlan, hasTrialForSelected, weeklyPrice, annualPrice, monthlyPrice, trialEndDate, t]);
+  }, [annualPrice, hasTrialForSelected, monthlyPrice, selectedPlan, t, trialEndDate, weeklyPrice]);
 
   // G10: Value frame copy matches the selected plan's actual pricing proposition.
   const valueFrameText = useMemo(() => {
@@ -387,7 +687,6 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
       return;
     }
 
-    if (!selectedPackage) return;
     const revenueCatRuntime = getRevenueCatRuntime();
     if (!revenueCatRuntime) return;
 
@@ -400,12 +699,55 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
         trigger_source: entryPoint,
       });
       const { Purchases } = revenueCatRuntime;
-      const { customerInfo } = await Purchases.purchasePackage(selectedPackage);
-      const price = selectedPackage.product.price ?? 0;
-      if (customerInfo.entitlements.active['pro']?.periodType === 'TRIAL') {
+      let packageToPurchase = selectedPackage;
+
+      if (!packageToPurchase) {
+        const offerings = await Purchases.getOfferings();
+        const current = offerings.current;
+        if (current) {
+          await applyCurrentOfferings(current);
+          packageToPurchase = getPackageForPlan(selectedPlan, current);
+          setOfferingsLoadError(null);
+        }
+      }
+
+      if (!packageToPurchase) {
+        if (canPresentNativePaywall) {
+          const nativePaywallResult = await presentNativePaywall();
+          if (nativePaywallResult === 'purchased' || nativePaywallResult === 'restored') {
+            const fallbackCustomerInfo = await Purchases.getCustomerInfo();
+            setPurchaseOutcome(
+              getActiveProEntitlement(fallbackCustomerInfo)?.periodType === 'TRIAL'
+                ? 'trial'
+                : 'paid'
+            );
+            setPurchaseSuccess(true);
+            return;
+          }
+
+          if (nativePaywallResult === 'cancelled' || nativePaywallResult === 'not_presented') {
+            return;
+          }
+        }
+
+        setPurchaseError(
+          t('subscription.paywall.unavailable', {
+            defaultValue:
+              'Subscriptions are unavailable in this app build. Install the latest EAS development/production build.',
+          })
+        );
+        return;
+      }
+
+      const { customerInfo } = await Purchases.purchasePackage(packageToPurchase);
+      await syncCustomerInfo(customerInfo);
+      const price = packageToPurchase.product.price ?? 0;
+      if (getActiveProEntitlement(customerInfo)?.periodType === 'TRIAL') {
         Analytics.trialStarted(selectedPlan, price);
+        setPurchaseOutcome('trial');
       } else {
         Analytics.purchaseCompleted(selectedPlan, price);
+        setPurchaseOutcome('paid');
       }
       setPurchaseSuccess(true);
     } catch (error) {
@@ -427,34 +769,30 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
   };
 
   const handleRestore = async () => {
-    const revenueCatRuntime = getRevenueCatRuntime();
     setRestoring(true);
     setRestoreResult(null);
+    setPurchaseError(null);
     Analytics.paywallRestoreTapped({
       platform: Platform.OS,
       source: entryPoint,
       trigger_source: entryPoint,
     });
 
-    if (!revenueCatRuntime) {
-      setRestoreResult('error');
-      setRestoring(false);
-      return;
-    }
-
-    if (isOffline) {
-      setRestoreResult('error');
-      setPurchaseError(t('errors.runtime.network'));
-      setRestoring(false);
-      return;
-    }
-
     try {
-      const { Purchases } = revenueCatRuntime;
-      const info = await Purchases.restorePurchases();
-      const hasPro = info.entitlements.active['pro'] !== undefined;
-      setRestoreResult(hasPro ? 'success' : 'not_found');
-      if (hasPro) {
+      const result = await restorePurchases();
+      if (result === 'offline') {
+        setRestoreResult('error');
+        setPurchaseError(t('errors.runtime.network'));
+        return;
+      }
+
+      if (result === 'unavailable') {
+        setRestoreResult('error');
+        return;
+      }
+
+      setRestoreResult(result);
+      if (result === 'success') {
         // Brief pause so the success message is readable before the paywall closes
         if (restoreSuccessDismissTimerRef.current) {
           clearTimeout(restoreSuccessDismissTimerRef.current);
@@ -465,6 +803,38 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
       setRestoreResult('error');
     } finally {
       setRestoring(false);
+    }
+  };
+
+  const handleOpenNativePaywall = async () => {
+    if (isOffline || !canPresentNativePaywall || purchasing) {
+      return;
+    }
+
+    try {
+      setPurchasing(true);
+      setPurchaseError(null);
+      const revenueCatRuntime = getRevenueCatRuntime();
+      const nativePaywallResult = await presentNativePaywall();
+      if (
+        revenueCatRuntime &&
+        (nativePaywallResult === 'purchased' || nativePaywallResult === 'restored')
+      ) {
+        const customerInfo = await revenueCatRuntime.Purchases.getCustomerInfo();
+        setPurchaseOutcome(
+          getActiveProEntitlement(customerInfo)?.periodType === 'TRIAL' ? 'trial' : 'paid'
+        );
+        setPurchaseSuccess(true);
+      } else if (nativePaywallResult === 'error') {
+        setPurchaseError(
+          t('subscription.paywall.unavailable', {
+            defaultValue:
+              'Subscriptions are unavailable in this app build. Install the latest EAS development/production build.',
+          })
+        );
+      }
+    } finally {
+      setPurchasing(false);
     }
   };
 
@@ -513,15 +883,12 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
           <View style={styles.dismissSpacer} />
         )}
 
-        {/* FREE TRIAL badge — the #1 conversion signal */}
-        <View style={styles.trialBadge}>
-          <Ionicons name="gift-outline" size={14} color={theme.colors.sacredGold} />
-          <Text style={styles.trialBadgeText}>
-            {t('subscription.paywall.trialBadge', {
-              defaultValue: 'FREE 7-DAY TRIAL · NO CHARGE TODAY',
-            })}
-          </Text>
-        </View>
+        {hasPlanMetadata ? (
+          <View style={styles.trialBadge}>
+            <Ionicons name="gift-outline" size={14} color={theme.colors.sacredGold} />
+            <Text style={styles.trialBadgeText}>{trialBadgeText}</Text>
+          </View>
+        ) : null}
 
         {/* Hero */}
         <View style={styles.hero}>
@@ -554,99 +921,130 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
             <Text style={styles.plansFallbackText}>
               {offeringsLoadError === 'offline'
                 ? t('errors.runtime.network')
-                : t('subscription.paywall.unavailable', {
-                    defaultValue:
-                      'Subscriptions are unavailable in this app build. Install the latest EAS development/production build.',
-                  })}
+                : offeringsLoadError === 'unconfigured'
+                  ? t('subscription.paywall.unconfigured', {
+                      defaultValue:
+                        'Subscriptions are not configured in this build. Add the RevenueCat SDK key to the build environment and rebuild.',
+                    })
+                  : t('subscription.paywall.unavailable', {
+                      defaultValue:
+                        'Subscriptions are unavailable in this app build. Install the latest EAS development/production build.',
+                    })}
             </Text>
+            {!isOffline && purchasesAvailable && canPresentNativePaywall ? (
+              <TouchableOpacity
+                style={styles.plansFallbackAction}
+                onPress={handleOpenNativePaywall}
+                accessibilityRole="button"
+                accessibilityLabel={t('subscription.paywall.ctaPaid', {
+                  defaultValue: 'Subscribe Now',
+                })}
+                testID="paywall-native-fallback"
+              >
+                {purchasing ? (
+                  <ActivityIndicator size="small" color={theme.colors.deepVoid} />
+                ) : (
+                  <>
+                    <Text style={styles.plansFallbackActionText}>
+                      {t('subscription.paywall.ctaPaid', {
+                        defaultValue: 'Subscribe Now',
+                      })}
+                    </Text>
+                    <Ionicons name="arrow-forward" size={16} color={theme.colors.deepVoid} />
+                  </>
+                )}
+              </TouchableOpacity>
+            ) : null}
           </View>
         ) : (
           <View style={styles.plans}>
-            {/* Annual plan */}
-            <TouchableOpacity
-              style={[
-                styles.planOption,
-                styles.planOptionAnnual,
-                selectedPlan === 'annual' && styles.planOptionSelected,
-              ]}
-              onPress={() => handleSelectPlan('annual')}
-              accessibilityRole="radio"
-              accessibilityState={{ checked: selectedPlan === 'annual' }}
-            >
-              <View style={styles.bestValueBadge}>
-                <Text style={styles.bestValueText}>
-                  {t('subscription.paywall.plans.bestValue', { defaultValue: 'BEST VALUE' })}
-                </Text>
-              </View>
-              <View style={styles.planLeft}>
-                <View style={[styles.radio, selectedPlan === 'annual' && styles.radioSelected]}>
-                  {selectedPlan === 'annual' && <View style={styles.radioDot} />}
-                </View>
-                <View>
-                  <View style={styles.planNameRow}>
-                    <Text style={styles.planName}>{t('subscription.paywall.plans.annual')}</Text>
-                    <View style={styles.savingsBadge}>
-                      <Text style={styles.savingsText}>
-                        {t('subscription.paywall.plans.savePercent', {
-                          percent: savingsPercent,
-                          defaultValue: 'SAVE {{percent}}%',
-                        })}
-                      </Text>
-                    </View>
-                  </View>
-                  <Text style={styles.planMonthlyEquivalent}>
-                    {annualMonthlyEquivalent
-                      ? `${annualMonthlyEquivalent}${t('subscription.paywall.plans.perMonth', { defaultValue: '/month' })}`
-                      : ''}
+            {annualPlan ? (
+              <TouchableOpacity
+                style={[
+                  styles.planOption,
+                  styles.planOptionAnnual,
+                  selectedPlan === 'annual' && styles.planOptionSelected,
+                ]}
+                onPress={() => handleSelectPlan('annual')}
+                accessibilityRole="radio"
+                accessibilityState={{ checked: selectedPlan === 'annual' }}
+              >
+                <View style={styles.bestValueBadge}>
+                  <Text style={styles.bestValueText}>
+                    {t('subscription.paywall.plans.bestValue', { defaultValue: 'BEST VALUE' })}
                   </Text>
                 </View>
-              </View>
-              <View style={styles.planRight}>
-                {monthlyPackage && monthlyPrice ? (
-                  <Text style={styles.planPriceStrikethrough}>
+                <View style={styles.planLeft}>
+                  <View style={[styles.radio, selectedPlan === 'annual' && styles.radioSelected]}>
+                    {selectedPlan === 'annual' && <View style={styles.radioDot} />}
+                  </View>
+                  <View>
+                    <View style={styles.planNameRow}>
+                      <Text style={styles.planName}>{t('subscription.paywall.plans.annual')}</Text>
+                      <View style={styles.savingsBadge}>
+                        <Text style={styles.savingsText}>
+                          {t('subscription.paywall.plans.savePercent', {
+                            percent: savingsPercent,
+                            defaultValue: 'SAVE {{percent}}%',
+                          })}
+                        </Text>
+                      </View>
+                    </View>
+                    <Text style={styles.planMonthlyEquivalent}>
+                      {annualMonthlyEquivalent
+                        ? `${annualMonthlyEquivalent}${t('subscription.paywall.plans.perMonth', { defaultValue: '/month' })}`
+                        : ''}
+                    </Text>
+                  </View>
+                </View>
+                <View style={styles.planRight}>
+                  {monthlyPlan && monthlyPrice ? (
+                    <Text style={styles.planPriceStrikethrough}>
+                      {monthlyPrice}
+                      {t('subscription.paywall.plans.monthlySuffix')}
+                    </Text>
+                  ) : null}
+                  {annualPrice ? (
+                    <Text style={styles.planPrice}>
+                      {annualPrice}
+                      {t('subscription.paywall.plans.annualSuffix')}
+                    </Text>
+                  ) : null}
+                </View>
+              </TouchableOpacity>
+            ) : null}
+
+            {monthlyPlan ? (
+              <TouchableOpacity
+                style={[styles.planOption, selectedPlan === 'monthly' && styles.planOptionSelected]}
+                onPress={() => handleSelectPlan('monthly')}
+                accessibilityRole="radio"
+                accessibilityState={{ checked: selectedPlan === 'monthly' }}
+              >
+                <View style={styles.planLeft}>
+                  <View style={[styles.radio, selectedPlan === 'monthly' && styles.radioSelected]}>
+                    {selectedPlan === 'monthly' && <View style={styles.radioDot} />}
+                  </View>
+                  <View>
+                    <Text style={styles.planName}>{t('subscription.paywall.plans.monthly')}</Text>
+                    <Text style={styles.planMonthlyNoSavings}>
+                      {t('subscription.paywall.plans.monthlyNoSavings', {
+                        defaultValue: 'No annual savings',
+                      })}
+                    </Text>
+                  </View>
+                </View>
+                {monthlyPrice ? (
+                  <Text style={styles.planPriceMonthly}>
                     {monthlyPrice}
                     {t('subscription.paywall.plans.monthlySuffix')}
                   </Text>
                 ) : null}
-                {annualPrice ? (
-                  <Text style={styles.planPrice}>
-                    {annualPrice}
-                    {t('subscription.paywall.plans.annualSuffix')}
-                  </Text>
-                ) : null}
-              </View>
-            </TouchableOpacity>
-
-            {/* Monthly plan */}
-            <TouchableOpacity
-              style={[styles.planOption, selectedPlan === 'monthly' && styles.planOptionSelected]}
-              onPress={() => handleSelectPlan('monthly')}
-              accessibilityRole="radio"
-              accessibilityState={{ checked: selectedPlan === 'monthly' }}
-            >
-              <View style={styles.planLeft}>
-                <View style={[styles.radio, selectedPlan === 'monthly' && styles.radioSelected]}>
-                  {selectedPlan === 'monthly' && <View style={styles.radioDot} />}
-                </View>
-                <View>
-                  <Text style={styles.planName}>{t('subscription.paywall.plans.monthly')}</Text>
-                  <Text style={styles.planMonthlyNoSavings}>
-                    {t('subscription.paywall.plans.monthlyNoSavings', {
-                      defaultValue: 'No annual savings',
-                    })}
-                  </Text>
-                </View>
-              </View>
-              {monthlyPrice ? (
-                <Text style={styles.planPriceMonthly}>
-                  {monthlyPrice}
-                  {t('subscription.paywall.plans.monthlySuffix')}
-                </Text>
-              ) : null}
-            </TouchableOpacity>
+              </TouchableOpacity>
+            ) : null}
 
             {/* Weekly plan — only render when the product actually exists */}
-            {weeklyPackage ? (
+            {weeklyPlan ? (
               <TouchableOpacity
                 style={[styles.planOption, selectedPlan === 'weekly' && styles.planOptionSelected]}
                 onPress={() => handleSelectPlan('weekly')}
@@ -685,9 +1083,13 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
             <View style={styles.successContainer}>
               <Ionicons name="checkmark-circle" size={28} color={theme.colors.sacredGold} />
               <Text style={styles.successText}>
-                {t('subscription.paywall.purchaseSuccess', {
-                  defaultValue: 'Your 7-day trial has started',
-                })}
+                {purchaseOutcome === 'trial'
+                  ? t('subscription.paywall.purchaseSuccess', {
+                      defaultValue: 'Your free trial has started',
+                    })
+                  : t('subscription.paywall.purchaseSuccessPaid', {
+                      defaultValue: 'Your subscription is active',
+                    })}
               </Text>
             </View>
             <TouchableOpacity
@@ -713,24 +1115,18 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
               </View>
             </TouchableOpacity>
           </View>
-        ) : selectedPackage || isOffline ? (
+        ) : hasPlanMetadata || isOffline ? (
           <Animated.View style={ctaAnimatedStyle}>
             <TouchableOpacity
               onPress={handlePurchase}
-              disabled={purchasing || loading || isOffline || !selectedPackage}
+              disabled={isPrimaryCtaDisabled}
               accessibilityRole="button"
-              accessibilityLabel={
-                isOffline
-                  ? t('subscription.paywall.ctaOffline', {
-                      defaultValue: 'Connect to subscribe',
-                    })
-                  : t('subscription.paywall.cta')
-              }
+              accessibilityLabel={primaryCtaLabel}
               testID="paywall-cta"
             >
               <LinearGradient
                 colors={
-                  isOffline
+                  isPrimaryCtaDisabled
                     ? ['rgba(120, 113, 108, 0.92)', 'rgba(87, 83, 78, 0.92)']
                     : [theme.colors.brightGold, theme.colors.sacredGold]
                 }
@@ -744,22 +1140,18 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
                   <View style={styles.ctaContent}>
                     <View style={styles.ctaArrowSlot} />
                     <Text
-                      style={[styles.ctaText, isOffline && styles.ctaTextDisabled]}
+                      style={[styles.ctaText, isPrimaryCtaDisabled && styles.ctaTextDisabled]}
                       numberOfLines={1}
                       adjustsFontSizeToFit
                       minimumFontScale={0.84}
                     >
-                      {isOffline
-                        ? t('subscription.paywall.ctaOffline', {
-                            defaultValue: 'Connect to subscribe',
-                          })
-                        : t('subscription.paywall.cta')}
+                      {primaryCtaLabel}
                     </Text>
                     <View style={styles.ctaArrowSlot}>
                       <Ionicons
-                        name={isOffline ? 'cloud-offline-outline' : 'arrow-forward'}
+                        name={isPrimaryCtaDisabled ? 'cloud-offline-outline' : 'arrow-forward'}
                         size={20}
-                        color={isOffline ? theme.colors.paper : theme.colors.deepVoid}
+                        color={isPrimaryCtaDisabled ? theme.colors.paper : theme.colors.deepVoid}
                         style={styles.ctaArrow}
                       />
                     </View>
@@ -793,7 +1185,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
               <Ionicons name="calendar-outline" size={15} color={theme.colors.sacredGold} />
               <Text style={styles.trustText}>
                 {hasTrialForSelected
-                  ? t('subscription.paywall.trust.freeTrial', { defaultValue: '7 days free' })
+                  ? t('subscription.paywall.trust.freeTrial', { defaultValue: 'Free trial' })
                   : t('subscription.paywall.trust.startsToday', { defaultValue: 'Starts today' })}
               </Text>
             </View>
@@ -907,10 +1299,15 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
 
         {!purchasesAvailable ? (
           <Text style={styles.unavailableNotice}>
-            {t('subscription.paywall.unavailable', {
-              defaultValue:
-                'Subscriptions are unavailable in this app build. Install the latest EAS development/production build.',
-            })}
+            {revenueCatAvailability.reason === 'missing_api_key'
+              ? t('subscription.paywall.unconfigured', {
+                  defaultValue:
+                    'Subscriptions are not configured in this build. Add the RevenueCat SDK key to the build environment and rebuild.',
+                })
+              : t('subscription.paywall.unavailable', {
+                  defaultValue:
+                    'Subscriptions are unavailable in this app build. Install the latest EAS development/production build.',
+                })}
           </Text>
         ) : null}
 
@@ -1191,6 +1588,23 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     textAlign: 'center',
+  },
+  plansFallbackAction: {
+    minHeight: 44,
+    minWidth: 180,
+    borderRadius: 999,
+    backgroundColor: theme.colors.paleGold,
+    paddingHorizontal: 18,
+    paddingVertical: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+  },
+  plansFallbackActionText: {
+    color: theme.colors.deepVoid,
+    fontSize: 14,
+    fontWeight: '800',
   },
   planOption: {
     backgroundColor: theme.colors.darkStone,

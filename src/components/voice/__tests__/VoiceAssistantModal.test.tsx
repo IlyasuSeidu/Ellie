@@ -30,6 +30,10 @@ jest.mock('react-native-safe-area-context', () => ({
   useSafeAreaInsets: () => ({ top: 44, bottom: 34, left: 0, right: 0 }),
 }));
 
+jest.mock('@/hooks/useNetworkStatus', () => ({
+  useNetworkStatus: () => ({ isConnected: true, isInternetReachable: true, status: 'online' }),
+}));
+
 // Mock child components to simplify tree (but still render something testable)
 jest.mock('../ListeningIndicator', () => {
   const React = require('react');
@@ -77,6 +81,7 @@ const mockVoiceAssistant = {
   closeModal: jest.fn(),
   clearHistory: jest.fn(),
   requestPermissions: jest.fn(),
+  submitTextQuery: jest.fn(),
 };
 
 jest.mock('@/contexts/VoiceAssistantContext', () => ({
@@ -163,6 +168,13 @@ describe('VoiceAssistantModal', () => {
       expect(getByText('Try saying:')).toBeTruthy();
     });
 
+    it('switches to "Try asking:" when microphone permission is missing', () => {
+      mockVoiceAssistant.hasPermission = false;
+      const { getByText, queryByText } = render(<VoiceAssistantModal />);
+      expect(getByText('Try asking:')).toBeTruthy();
+      expect(queryByText('Try saying:')).toBeNull();
+    });
+
     it('should show suggestion examples', () => {
       const { getByText } = render(<VoiceAssistantModal />);
       // HTML entities &quot; become " in rendered text
@@ -200,6 +212,27 @@ describe('VoiceAssistantModal', () => {
       mockVoiceAssistant.messages = [];
       const { queryByLabelText } = render(<VoiceAssistantModal />);
       expect(queryByLabelText('Clear conversation history')).toBeNull();
+    });
+  });
+
+  describe('typed fallback', () => {
+    it('submits a typed question from the composer', () => {
+      const { getByLabelText } = render(<VoiceAssistantModal />);
+
+      fireEvent.changeText(getByLabelText('Type a question for Ellie'), 'When is my next day off?');
+      fireEvent.press(getByLabelText('Send typed question'));
+
+      expect(mockVoiceAssistant.submitTextQuery).toHaveBeenCalledWith('When is my next day off?');
+    });
+
+    it('submits an example suggestion as a typed question', () => {
+      const { getByLabelText } = render(<VoiceAssistantModal />);
+
+      fireEvent.press(getByLabelText('Ask Ellie: What shift do I have tomorrow?'));
+
+      expect(mockVoiceAssistant.submitTextQuery).toHaveBeenCalledWith(
+        'What shift do I have tomorrow?'
+      );
     });
   });
 

@@ -213,8 +213,10 @@
         "weeklyBilled": "Billed weekly"
       },
       "cta": "Start Free Trial",
+      "ctaPaid": "Subscribe Now",
+      "ctaUnavailable": "Plans unavailable right now",
       "trust": {
-        "freeTrial": "7 days free",
+        "freeTrial": "Free trial",
         "startsToday": "Starts today",
         "cancel": "Cancel anytime",
         "noCharge": "No charge today",
@@ -228,22 +230,25 @@
       "restorePurchases": "Restore",
       "privacyPolicy": "Privacy",
       "termsOfService": "Terms",
-      "trialBadge": "FREE 7-DAY TRIAL · NO CHARGE TODAY",
+      "trialBadge": "FREE TRIAL · NO CHARGE TODAY",
+      "trialBadgePaid": "SUBSCRIBE TODAY · CANCEL ANYTIME",
       "title_named": "{{name}}, your roster is ready.",
       "subtitle_fifo": "Your FIFO cycle is mapped. See every swing, every day off, for your full year.",
       "subtitle_rotating": "Your rotating roster is mapped. See every shift for your full year.",
-      "billingDisclosure": "Your 7-day free trial ends {{date}}. Cancel anytime in Settings before then to avoid charges. Subscriptions renew automatically.",
+      "billingDisclosure": "Your free trial ends {{date}}. Cancel anytime in Settings before then to avoid charges. Subscriptions renew automatically.",
       "billingDisclosureWeekly": "Billed {{price}}/week, every week. Cancel anytime in Settings.",
       "billingDisclosureAnnualDirect": "You will be charged {{price}} today. Renews annually. Cancel anytime in Settings.",
       "billingDisclosureMonthlyDirect": "You will be charged {{price}} today. Renews monthly. Cancel anytime in Settings.",
       "testimonialAnchor": "4.8 · 2,400+ ratings",
-      "purchaseSuccess": "Your 7-day trial has started",
+      "purchaseSuccess": "Your free trial has started",
       "purchaseSuccessContinue": "Continue to Ellie",
       "purchaseError": "Purchase failed. Please try again.",
       "restorePurchasesSuccess": "Purchase restored — welcome to Pro!",
       "restorePurchasesNotFound": "No previous purchases found on this account.",
       "restorePurchasesError": "Restore failed. Please try again.",
-      "ctaOffline": "Connect to subscribe"
+      "ctaOffline": "Connect to subscribe",
+      "purchaseSuccessPaid": "Your subscription is active",
+      "billingDisclosureTrialGeneric": "Your free trial starts today. Cancel anytime in Settings before billing begins. Subscriptions renew automatically."
     },
     "profile": {
       "rowActiveA11y": "Ellie Pro active subscription",
@@ -251,7 +256,7 @@
       "activeLabel": "Ellie Pro — Active ✓",
       "upgradeLabel": "Upgrade to Ellie Pro",
       "activeHint": "Full calendar · Hey Ellie voice assistant",
-      "upgradeHint": "7-day free trial · $6.99/mo or $49.99/yr"
+      "upgradeHint": "Plans from $6.99/mo or $49.99/yr"
     },
     "padlock": {
       "a11yLabel": "Upgrade to Ellie Pro to see full calendar"
@@ -259,13 +264,13 @@
     "recoveryNudge": {
       "title": "You're on limited access",
       "body": "Unlock your full year — every shift, every swing, planned ahead.",
-      "cta": "Start Free Trial",
+      "cta": "View Pro Plans",
       "dismiss": "Not now"
     },
     "featureGate": {
       "title": "Pro unlocks your full year",
       "body": "See every month ahead — no surprises, no guessing your next R&R.",
-      "cta": "Start Free 7-Day Trial"
+      "cta": "View Pro Plans"
     }
   },
   "time": {

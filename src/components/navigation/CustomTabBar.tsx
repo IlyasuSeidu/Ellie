@@ -29,8 +29,7 @@ import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
 import { useVoiceAssistant } from '@/contexts/VoiceAssistantContext';
 import { useShiftAccent } from '@/hooks/useShiftAccent';
-// Temporarily disabled for physical-device regression testing.
-// import { useSubscription } from '@/hooks/useSubscription';
+import { useSubscription } from '@/hooks/useSubscription';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -138,6 +137,7 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
   const { t } = useTranslation('dashboard');
   const insets = useSafeAreaInsets();
   const { state: voiceState, openModal } = useVoiceAssistant();
+  const { isPro, isLoading, openPaywall } = useSubscription();
   const { tabAccentColor, tabGlowColor } = useShiftAccent();
   const centerButtonGradient = useMemo(
     () =>
@@ -221,9 +221,15 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
   const handleTabPress = (route: (typeof state.routes)[number], index: number) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
-    // Subscription gating is temporarily disabled for physical-device regression testing.
     if (route.name === 'Ellie') {
-      openModal();
+      if (isLoading) {
+        return;
+      }
+      if (isPro) {
+        openModal();
+      } else {
+        openPaywall();
+      }
       return;
     }
 

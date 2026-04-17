@@ -2,23 +2,43 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function ownsShiftLogId(logId) {
+      return isSignedIn() && logId.matches('^' + request.auth.uid + ':.*$');
+    }
+
     // Users: only the authenticated owner can access their document.
     match /users/{userId} {
-      allow read, update, delete: if request.auth != null && request.auth.uid == userId;
-      allow create: if request.auth != null && request.auth.uid == userId;
+      allow read, update, delete: if isOwner(userId);
+      allow create: if isOwner(userId);
     }
 
     // Notifications: must belong to the authenticated user via userId field.
     match /notifications/{notifId} {
-      allow read, update, delete: if request.auth != null
+      allow read, update, delete: if isSignedIn()
         && resource.data.userId == request.auth.uid;
-      allow create: if request.auth != null
+      allow create: if isSignedIn()
+        && request.resource.data.userId == request.auth.uid;
+    }
+
+    // Shift logs: allow first-time owner reads by owned document id as well as by stored userId.
+    match /shiftLogs/{logId} {
+      allow read, update, delete: if ownsShiftLogId(logId)
+        || (isSignedIn() && resource != null && resource.data.userId == request.auth.uid);
+      allow create: if ownsShiftLogId(logId)
         && request.resource.data.userId == request.auth.uid;
     }
 
     // Sleep logs: nested under user scope.
     match /sleepLogs/{userId}/entries/{entryId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read, write: if isOwner(userId);
     }
 
     // Default deny.

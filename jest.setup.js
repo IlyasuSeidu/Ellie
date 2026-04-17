@@ -74,6 +74,10 @@ jest.mock('expo-notifications', () => ({
   cancelAllScheduledNotificationsAsync: jest.fn(async () => {}),
   requestPermissionsAsync: jest.fn(async () => ({ status: 'granted' })),
   getPermissionsAsync: jest.fn(async () => ({ status: 'granted' })),
+  getLastNotificationResponseAsync: jest.fn(async () => null),
+  clearLastNotificationResponseAsync: jest.fn(async () => {}),
+  addNotificationResponseReceivedListener: jest.fn(() => ({ remove: jest.fn() })),
+  getAllScheduledNotificationsAsync: jest.fn(async () => []),
   setNotificationHandler: jest.fn(),
   setNotificationChannelAsync: jest.fn(async () => {}),
   AndroidImportance: {
@@ -153,6 +157,22 @@ jest.mock('react-native-purchases', () => {
     },
   };
 });
+
+jest.mock('react-native-purchases-ui', () => ({
+  __esModule: true,
+  PAYWALL_RESULT: {
+    NOT_PRESENTED: 'NOT_PRESENTED',
+    ERROR: 'ERROR',
+    CANCELLED: 'CANCELLED',
+    PURCHASED: 'PURCHASED',
+    RESTORED: 'RESTORED',
+  },
+  default: {
+    presentPaywall: jest.fn(async () => 'PURCHASED'),
+    presentPaywallIfNeeded: jest.fn(async () => 'PURCHASED'),
+    presentCustomerCenter: jest.fn(async () => undefined),
+  },
+}));
 
 // Mock react-native-reanimated before anything else
 jest.mock('react-native-reanimated', () => {
@@ -341,6 +361,10 @@ jest.mock('expo-notifications', () => ({
   setNotificationHandler: jest.fn(),
   scheduleNotificationAsync: jest.fn(),
   cancelScheduledNotificationAsync: jest.fn(),
+  cancelAllScheduledNotificationsAsync: jest.fn(),
+  getLastNotificationResponseAsync: jest.fn(() => Promise.resolve(null)),
+  clearLastNotificationResponseAsync: jest.fn(() => Promise.resolve()),
+  addNotificationResponseReceivedListener: jest.fn(() => ({ remove: jest.fn() })),
   getAllScheduledNotificationsAsync: jest.fn(() => Promise.resolve([])),
 }));
 

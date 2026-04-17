@@ -196,6 +196,8 @@
         "weeklyBilled": "Ikhokhiswa masonto onke"
       },
       "cta": "Qala isivivinyo samahhala",
+      "ctaPaid": "Bhalisa manje",
+      "ctaUnavailable": "Amapulani awatholakali okwamanje",
       "noCard": "Alikho ikhadi lesikweletu elidingekayo · Khansela noma nini",
       "restorePurchases": "Buyisela Okuthengiwe",
       "privacyPolicy": "Inqubomgomo yobumfihlo",
@@ -217,7 +219,7 @@
       "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
       "timerLabel": "Isipho sokuqala siphela ngo",
       "trust": {
-        "freeTrial": "izinsuku ezi-7 mahhala",
+        "freeTrial": "Isilingo samahhala",
         "cancel": "Khansela noma nini",
         "noCharge": "Akukho mali namuhla",
         "startsToday": "Kuqala namuhla",
@@ -226,16 +228,17 @@
       "valueFrame": "Kungaphansi kwekhofi ngesonto ukuze wazi unyaka wakho wonke.",
       "security": "Inkokhelo ephephile nge-{{platform}} · Icutshungulwa yi-{{platform}}, hhayi i-Ellie",
       "termsOfService": "Imigomo",
-      "trialBadge": "ISILINGO SAMAHHALA SEZINSUKU EZI-7 · AKUKHO MALI NAMUHLA",
+      "trialBadge": "ISILINGO SAMAHHALA · AKUKHO MALI NAMUHLA",
+      "trialBadgePaid": "BHALISA NAMUHLA · KHANSELA NOMA NINI",
       "title_named": "{{name}}, irosta yakho isilungile.",
       "subtitle_fifo": "Umjikelezo wakho we-FIFO usumakiwe. Bona wonke ama-swing nawo wonke amalanga okuphumula unyaka wonke.",
       "subtitle_rotating": "Uhlelo lwakho olujikelezayo selumakiwe. Bona wonke amashifu unyaka wonke.",
-      "billingDisclosure": "Isivivinyo sakho samahhala sezinsuku ezi-7 siphela ngo-{{date}}. Khansela noma nini ku-Settings ngaphambi kwalokho ukuze ugweme izindleko. Izibhaliso zivuselelwa ngokuzenzakalela.",
+      "billingDisclosure": "Isilingo sakho samahhala siphela ngo-{{date}}. Khansela noma nini ku-Settings ngaphambi kwalokho ukuze ugweme izindleko. Izibhaliso zivuselelwa ngokuzenzakalela.",
       "lossAversion_fifo": "Ngaphandle kwe-Pro, izinsuku zakho ze-swing ziphinde zibe yimfihlakalo. I-R&R elandelayo ayaziwa. Bhuka isonto elingalungile, ulahlekelwe izindiza.",
       "lossAversion_rotating": "Ngaphandle kwe-Pro, irosta yakho iphinde ibe mnyama. Asikho isexwayiso sangaphambi kwesikhathi, akukho ukuhlela kusenesikhathi. Buyela ekuqageleni ebhodini lezaziso.",
       "lossAversion_family": "Ngaphandle kwe-Pro, umndeni wakho ubuye ungazi ukuthi usekhaya nini.",
       "testimonialAnchor": "4.8 · izilinganiso ezingaphezu kuka-2,400",
-      "purchaseSuccess": "Isivivinyo sakho sezinsuku eziyi-7 siqalile",
+      "purchaseSuccess": "Isilingo sakho samahhala siqalile",
       "purchaseError": "Ukuthenga kuhlulekile. Sicela uzame futhi.",
       "valueFrameMonthly": "Izindleko zekhofi elilodwa ngenyanga ukuze wazi irosta yakho yonke.",
       "valueFrameWeekly": "Zama konke okuphelele ngo-{{price}}. Khansela noma nini.",
@@ -246,7 +249,9 @@
       "restorePurchasesSuccess": "Ukuthenga kubuyiselwe — wamukelekile ku-Pro!",
       "restorePurchasesNotFound": "Akukho ukuthenga kwangaphambilini okutholakele kule akhawunti.",
       "restorePurchasesError": "Ukubuyisela kwehlulekile. Sicela uzame futhi.",
-      "ctaOffline": "Xhuma ukuze ubhalise"
+      "ctaOffline": "Xhuma ukuze ubhalise",
+      "purchaseSuccessPaid": "Ukubhalisa kwakho kuyasebenza",
+      "billingDisclosureTrialGeneric": "Isilingo sakho samahhala siqala namuhla. Khansela noma nini ku-Settings ngaphambi kokuthi ukuqoqwa kwemali kuqale. Izibhaliso zivuselelwa ngokuzenzakalela."
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Ukubhalisa okusebenzayo kwe-Pro",
@@ -254,7 +259,7 @@
       "activeLabel": "__TK1__ Pro — Iyasebenza ✓",
       "upgradeLabel": "Thuthukela ku-__TK1__ Pro",
       "activeHint": "Ikhalenda eligcwele · Sawubona __TK1__ umsizi wezwi",
-      "upgradeHint": "Isivivinyo samahhala sezinsuku ezingu-7 · $6.99/mo noma $49.99 ngonyaka"
+      "upgradeHint": "Amaphakeji aqala ku-$6.99/ngenyanga noma ku-$49.99/ngonyaka"
     },
     "padlock": {
       "a11yLabel": "Thuthukela ku-__TK1__ Pro ukuze ubone ikhalenda eligcwele"
@@ -262,13 +267,13 @@
     "recoveryNudge": {
       "title": "Usekufinyeleleni okulinganiselwe",
       "body": "Vula unyaka wakho wonke — wonke amashifu, wonke ama-swing, kuhlelwe kusenesikhathi.",
-      "cta": "Qala isivivinyo samahhala",
+      "cta": "Buka amapulani e-Pro",
       "dismiss": "Hhayi manje"
     },
     "featureGate": {
       "title": "I-Pro ivula unyaka wakho wonke",
       "body": "Bona inyanga ngayinye kusenesikhathi — akukho zimanga, akukho ukuqagela i-R&R yakho elandelayo.",
-      "cta": "Qala isivivinyo samahhala sezinsuku eziyi-7"
+      "cta": "Buka amapulani e-Pro"
     }
   },
   "time": {

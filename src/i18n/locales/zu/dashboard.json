@@ -101,7 +101,9 @@
       "trySaying": "Zama ukuthi:",
       "example1": "Iluphi ushintsho enginalo kusasa?",
       "example2": "Lunini usuku lwami olulandelayo lokuphumula?",
-      "example3": "Mangaki amashifu ebusuku kule nyanga?"
+      "example3": "Mangaki amashifu ebusuku kule nyanga?",
+      "tryAsking": "Zama ukubuza lokhu:",
+      "suggestionA11y": "Buza u-Ellie: {{query}}"
     },
     "permission": {
       "notice": "U-Ellie udinga ukufinyelela kwemakrofoni ukuze ezwe imibuzo yakho.",
@@ -116,7 +118,8 @@
       "wakeWordUnavailable": "Igama lokuvusa alitholakali, thepha imakrofoni ukuze ukhulume",
       "sayWakeWordOrTap": "Ithi \"{{wakeWordPhrase}}\" noma thepha imakrofoni",
       "askAnother": "Thepha imakrofoni ukuze ubuze omunye umbuzo",
-      "askEllie": "Thepha imakrofoni ukuze ubuze u-Ellie"
+      "askEllie": "Thepha imakrofoni ukuze ubuze u-Ellie",
+      "typeOrGrantMic": "Thayipha ngezansi noma unike imvume yemakrofoni ukuze ukhulume"
     },
     "errors": {
       "default": "Kukhona into engahambanga kahle",
@@ -166,11 +169,19 @@
       "startBack": "Uqala umsebenzi futhi ngo-{{date}}.",
       "patternSummaryRotating": "Iphethini yakho ingamashifu emini angu-{{dayCount}}, amashifu ebusuku angu-{{nightCount}}, bese kuba nezinsuku zokuphumula ezingu-{{offCount}}.",
       "patternSummaryThreeShift": "Iphethini yakho ingamashifu asekuseni angu-{{morningCount}}, amashifu antambama angu-{{afternoonCount}}, amashifu ebusuku angu-{{nightCount}}, bese kuba nezinsuku zokuphumula ezingu-{{offCount}}.",
-      "patternSummaryFifo": "Iphethini yakho ingu-{{workDays}} izinsuku esizeni bese kuba ngu-{{restDays}} izinsuku zokuphumula."
+      "patternSummaryFifo": "Iphethini yakho ingu-{{workDays}} izinsuku esizeni bese kuba ngu-{{restDays}} izinsuku zokuphumula.",
+      "unsupportedWithNextShift": "Angikakwazi ukuphendula lokho ngokuphelele ngaphandle kwe-inthanethi okwamanje, kodwa ngisazi irosta yakho egciniwe. Ishifu yakho elandelayo yomsebenzi yi-{{shiftType}} ngo-{{date}}. Zama ukubuza ngomuso, usuku lwakho olulandelayo lokuphumula, amashifu asebusuku ale nyanga, noma iphethini yakho.",
+      "unsupportedGeneric": "Angikakwazi ukuphendula lokho ngokuphelele ngaphandle kwe-inthanethi okwamanje, kodwa ngisengakusiza ngerosta yakho egciniwe. Zama ukubuza ngomuso, usuku lwakho olulandelayo lokuphumula, amashifu asebusuku ale nyanga, noma iphethini yakho."
     },
     "notices": {
       "offlineRecognitionUnavailable": "Ukufaka ngezwi ungaxhunyiwe ku-inthanethi akutholakali kule divayisi manje.",
       "audioUnavailable": "Izimpendulo zomsindo azitholakali manje. Usengafunda impendulo ka-Ellie."
+    },
+    "offlineHint": "Izimpendulo ezingena ngaphandle kwe-inthanethi zilinganiselwe emibuzweni elula yerosta egcinwe kule divayisi.",
+    "composer": {
+      "placeholder": "Thayipha umbuzo ka-Ellie",
+      "a11y": "Thayipha umbuzo ka-Ellie",
+      "sendA11y": "Thumela umbuzo obhaliwe"
     }
   },
   "tabs": {
@@ -283,5 +294,23 @@
       "hoursOnly": "{{hours}} ih",
       "hoursMinutes": "{{hours}} ih {{minutes}} umz"
     }
+  },
+  "shiftCheckIn": {
+    "title": "Qopha amandla akho ngemva kwaleli shifu",
+    "subtitle": "{{shiftType}} ngo-{{shiftDate}} · {{startTime}} - {{endTime}}",
+    "energyPrompt": "Amandla akho abenjani kuleli shifu?",
+    "energy": {
+      "high": "Phezulu",
+      "medium": "Maphakathi",
+      "low": "Phansi"
+    },
+    "notesLabel": "Amanothi (uyazikhethela)",
+    "notesPlaceholder": "Kukhona yini okufanele kukhunjulwe ngaleli shifu?",
+    "saved": "Ukungena kulondoloziwe.",
+    "savedOffline": "Ukungena kugcinwe kudivayisi. Kuzovumelaniswa uma usubuyile ku-inthanethi.",
+    "error": "Lokhu kungena akukwazanga ukulondolozwa manje. Zama futhi.",
+    "dismiss": "Hhayi manje",
+    "update": "Buyekeza ukungena",
+    "submit": "Londoloza ukungena"
   }
 }

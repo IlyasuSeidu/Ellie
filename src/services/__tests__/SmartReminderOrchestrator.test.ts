@@ -6,8 +6,10 @@ import { DEFAULT_SMART_REMINDER_SETTINGS } from '@/types/reminders';
 
 jest.mock('@/services/NotificationService', () => ({
   notificationService: {
-    cancelSmartReminders: jest.fn(),
+    getPendingSmartReminders: jest.fn(),
     scheduleSmartReminder: jest.fn(),
+    cancelNotification: jest.fn(),
+    getSmartReminderKey: jest.fn(),
   },
 }));
 
@@ -71,14 +73,20 @@ describe('SmartReminderOrchestrator', () => {
     jest.setSystemTime(new Date('2026-04-01T09:30:00.000Z'));
     shiftDataService.getShiftDaysInRange.mockResolvedValue(mockShiftDays);
     (smartReminderService.buildSchedule as jest.Mock).mockReturnValue(mockEvents);
+    (notificationService.getPendingSmartReminders as jest.Mock).mockResolvedValue([]);
     (notificationService.scheduleSmartReminder as jest.Mock).mockResolvedValue(undefined);
+    (notificationService.cancelNotification as jest.Mock).mockResolvedValue(undefined);
+    (notificationService.getSmartReminderKey as jest.Mock).mockImplementation(
+      (notification: { content?: { data?: { smartReminderKey?: string } } }) =>
+        notification.content?.data?.smartReminderKey ?? null
+    );
   });
 
   afterEach(() => {
     jest.useRealTimers();
   });
 
-  it('cancels existing reminders, rebuilds the 14-day window, and schedules each event', async () => {
+  it('reconciles the 14-day window and schedules each missing event', async () => {
     const orchestrator = new SmartReminderOrchestrator(shiftDataService as never);
 
     await orchestrator.reschedule({
@@ -92,7 +100,6 @@ describe('SmartReminderOrchestrator', () => {
       language: 'en',
     });
 
-    expect(notificationService.cancelSmartReminders).toHaveBeenCalledWith('user-1');
     expect(shiftDataService.getShiftDaysInRange).toHaveBeenCalledWith(
       new Date('2026-04-01T00:00:00.000Z'),
       new Date('2026-04-14T23:59:59.999Z'),
@@ -110,10 +117,10 @@ describe('SmartReminderOrchestrator', () => {
     expect(notificationService.scheduleSmartReminder).toHaveBeenCalledTimes(2);
   });
 
-  it('continues scheduling when one reminder fails', async () => {
+  it('rolls back newly scheduled reminders when scheduling a missing event fails', async () => {
     (notificationService.scheduleSmartReminder as jest.Mock)
-      .mockRejectedValueOnce(new Error('boom'))
-      .mockResolvedValueOnce(undefined);
+      .mockResolvedValueOnce('notification-1')
+      .mockRejectedValueOnce(new Error('boom'));
 
     const orchestrator = new SmartReminderOrchestrator(shiftDataService as never);
 
@@ -128,8 +135,88 @@ describe('SmartReminderOrchestrator', () => {
         settings: DEFAULT_SMART_REMINDER_SETTINGS,
         language: 'en',
       })
-    ).resolves.not.toThrow();
+    ).rejects.toThrow('boom');
 
     expect(notificationService.scheduleSmartReminder).toHaveBeenCalledTimes(2);
+    expect(notificationService.cancelNotification).toHaveBeenCalledWith('user-1', 'notification-1');
+  });
+
+  it('does not cancel the existing reminder set when shift lookup fails before reconciliation', async () => {
+    shiftDataService.getShiftDaysInRange.mockRejectedValueOnce(new Error('shift lookup failed'));
+
+    const orchestrator = new SmartReminderOrchestrator(shiftDataService as never);
+
+    await expect(
+      orchestrator.reschedule({
+        userId: 'user-1',
+        userName: 'Ilyasu',
+        shiftCycle: mockShiftCycle,
+        shiftTimes: {
+          dayShift: { startTime: '07:00', endTime: '19:00', duration: 12 },
+        },
+        settings: DEFAULT_SMART_REMINDER_SETTINGS,
+        language: 'en',
+      })
+    ).rejects.toThrow('shift lookup failed');
+
+    expect(notificationService.scheduleSmartReminder).not.toHaveBeenCalled();
+    expect(notificationService.cancelNotification).not.toHaveBeenCalled();
+  });
+
+  it('serializes concurrent reschedules for the same user', async () => {
+    let releaseFirstLookup!: () => void;
+    const firstLookupGate = new Promise<void>((resolve) => {
+      releaseFirstLookup = resolve;
+    });
+    const callOrder: string[] = [];
+
+    shiftDataService.getShiftDaysInRange
+      .mockImplementationOnce(async () => {
+        callOrder.push('lookup-1-start');
+        await firstLookupGate;
+        callOrder.push('lookup-1-end');
+        return mockShiftDays;
+      })
+      .mockImplementationOnce(async () => {
+        callOrder.push('lookup-2-start');
+        return mockShiftDays;
+      });
+
+    (notificationService.scheduleSmartReminder as jest.Mock).mockImplementation(async () => {
+      callOrder.push('schedule');
+      return 'notification-id';
+    });
+
+    const orchestrator = new SmartReminderOrchestrator(shiftDataService as never);
+
+    const firstRun = orchestrator.reschedule({
+      userId: 'user-1',
+      userName: 'Ilyasu',
+      shiftCycle: mockShiftCycle,
+      shiftTimes: {
+        dayShift: { startTime: '07:00', endTime: '19:00', duration: 12 },
+      },
+      settings: DEFAULT_SMART_REMINDER_SETTINGS,
+      language: 'en',
+    });
+    const secondRun = orchestrator.reschedule({
+      userId: 'user-1',
+      userName: 'Ilyasu',
+      shiftCycle: mockShiftCycle,
+      shiftTimes: {
+        dayShift: { startTime: '07:00', endTime: '19:00', duration: 12 },
+      },
+      settings: DEFAULT_SMART_REMINDER_SETTINGS,
+      language: 'en',
+    });
+
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(callOrder).toEqual(['lookup-1-start']);
+
+    releaseFirstLookup();
+    await Promise.all([firstRun, secondRun]);
+
+    expect(callOrder.indexOf('lookup-2-start')).toBeGreaterThan(callOrder.indexOf('lookup-1-end'));
   });
 });

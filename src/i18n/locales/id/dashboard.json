@@ -101,7 +101,9 @@
       "trySaying": "Coba ucapkan:",
       "example1": "Pergeseran apa yang saya miliki besok?",
       "example2": "Kapan hari libur saya berikutnya?",
-      "example3": "Berapa banyak shift malam bulan ini?"
+      "example3": "Berapa banyak shift malam bulan ini?",
+      "tryAsking": "Coba tanyakan:",
+      "suggestionA11y": "Tanya Ellie: {{query}}"
     },
     "permission": {
       "notice": "Ellie memerlukan akses mikrofon untuk mendengarkan pertanyaan Anda.",
@@ -116,7 +118,8 @@
       "wakeWordUnavailable": "Kata pemicu tidak tersedia, ketuk mikrofon untuk berbicara",
       "sayWakeWordOrTap": "Ucapkan \"{{wakeWordPhrase}}\" atau ketuk mikrofon",
       "askAnother": "Ketuk mikrofon untuk mengajukan pertanyaan lain",
-      "askEllie": "Ketuk mikrofon untuk bertanya pada Ellie"
+      "askEllie": "Ketuk mikrofon untuk bertanya pada Ellie",
+      "typeOrGrantMic": "Ketik di bawah atau beri akses mikrofon untuk berbicara"
     },
     "errors": {
       "default": "Ada yang tidak beres",
@@ -166,11 +169,19 @@
       "startBack": "Kamu mulai kerja lagi pada {{date}}.",
       "patternSummaryRotating": "Polamu adalah {{dayCount}} shift siang, {{nightCount}} shift malam, lalu {{offCount}} hari libur.",
       "patternSummaryThreeShift": "Polamu adalah {{morningCount}} shift pagi, {{afternoonCount}} shift sore, {{nightCount}} shift malam, lalu {{offCount}} hari libur.",
-      "patternSummaryFifo": "Polamu adalah {{workDays}} hari di site, lalu {{restDays}} hari libur."
+      "patternSummaryFifo": "Polamu adalah {{workDays}} hari di site, lalu {{restDays}} hari libur.",
+      "unsupportedWithNextShift": "Saya belum bisa menjawab itu sepenuhnya secara offline, tetapi saya masih mengetahui roster tersimpan Anda. Shift kerja Anda berikutnya adalah {{shiftType}} pada {{date}}. Coba tanyakan tentang besok, hari libur berikutnya, shift malam bulan ini, atau pola Anda.",
+      "unsupportedGeneric": "Saya belum bisa menjawab itu sepenuhnya secara offline, tetapi saya masih bisa membantu dengan roster tersimpan Anda. Coba tanyakan tentang besok, hari libur berikutnya, shift malam bulan ini, atau pola Anda."
     },
     "notices": {
       "offlineRecognitionUnavailable": "Input suara offline tidak tersedia di perangkat ini saat ini.",
       "audioUnavailable": "Balasan audio sedang tidak tersedia. Anda masih bisa membaca jawaban Ellie."
+    },
+    "offlineHint": "Jawaban offline terbatas pada pertanyaan roster sederhana yang tersimpan di perangkat ini.",
+    "composer": {
+      "placeholder": "Ketik pertanyaan untuk Ellie",
+      "a11y": "Ketik pertanyaan untuk Ellie",
+      "sendA11y": "Kirim pertanyaan tertulis"
     }
   },
   "tabs": {
@@ -283,5 +294,23 @@
       "hoursOnly": "{{hours}}j",
       "hoursMinutes": "{{hours}}j {{minutes}}m"
     }
+  },
+  "shiftCheckIn": {
+    "title": "Catat energi Anda setelah shift ini",
+    "subtitle": "{{shiftType}} pada {{shiftDate}} · {{startTime}} - {{endTime}}",
+    "energyPrompt": "Bagaimana energi Anda pada shift ini?",
+    "energy": {
+      "high": "Tinggi",
+      "medium": "Sedang",
+      "low": "Rendah"
+    },
+    "notesLabel": "Catatan (opsional)",
+    "notesPlaceholder": "Ada hal penting yang perlu diingat tentang shift ini?",
+    "saved": "Check-in disimpan.",
+    "savedOffline": "Check-in disimpan secara lokal. Akan disinkronkan saat Anda kembali online.",
+    "error": "Check-in ini belum bisa disimpan sekarang. Coba lagi.",
+    "dismiss": "Nanti saja",
+    "update": "Perbarui check-in",
+    "submit": "Simpan check-in"
   }
 }

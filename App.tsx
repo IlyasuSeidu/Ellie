@@ -1,27 +1,33 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
+import { LogBox, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { AuthProvider } from './src/contexts/AuthContext';
-import { OnboardingProvider } from './src/contexts/OnboardingContext';
+import { OnboardingProvider, useOnboardingOptional } from './src/contexts/OnboardingContext';
 import { LanguageProvider } from './src/contexts/LanguageContext';
 import { VoiceAssistantProvider } from './src/contexts/VoiceAssistantContext';
-// Temporarily disabled for physical-device regression testing.
-// import { SubscriptionProvider } from './src/contexts/SubscriptionContext';
+import { SubscriptionProvider } from './src/contexts/SubscriptionContext';
 import { useSmartReminders } from './src/hooks/useSmartReminders';
 import { expoNotificationScheduler } from './src/services/ExpoNotificationScheduler';
 import { notificationService } from './src/services/NotificationService';
 import { useShiftAccent } from './src/hooks/useShiftAccent';
 import { appStateStorageService } from './src/services/AppStateStorageService';
 import { OfflineBanner } from './src/components/system/OfflineBanner';
+import { PostShiftCheckInController } from './src/components/checkin/PostShiftCheckInController';
 import { storageMaintenanceService } from './src/services/StorageMaintenanceService';
-// Temporarily disabled for physical-device regression testing.
-// import { PaywallScreen } from './src/screens/subscription/PaywallScreen';
+import { PaywallScreen } from './src/screens/subscription/PaywallScreen';
 
 notificationService.setScheduler(expoNotificationScheduler);
+
+if (__DEV__) {
+  // React Native 0.81 / iOS can emit this from native animated internals during
+  // navigator and gesture-driven transitions even when app listeners are healthy.
+  // Keep the console usable without suppressing unrelated warnings.
+  LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered.']);
+}
 
 function AppContent() {
   const insets = useSafeAreaInsets();
@@ -58,6 +64,27 @@ function AppContent() {
   );
 }
 
+function AppShell() {
+  const [showGlobalPaywall, setShowGlobalPaywall] = useState(false);
+  const onboarding = useOnboardingOptional();
+
+  return (
+    <SubscriptionProvider onOpenPaywall={() => setShowGlobalPaywall(true)}>
+      <VoiceAssistantProvider>
+        <AppContent />
+        <PostShiftCheckInController />
+        {showGlobalPaywall ? (
+          <PaywallScreen
+            onDismiss={() => setShowGlobalPaywall(false)}
+            onboardingData={onboarding?.data}
+            entryPoint="feature_gate"
+          />
+        ) : null}
+      </VoiceAssistantProvider>
+    </SubscriptionProvider>
+  );
+}
+
 export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -65,9 +92,7 @@ export default function App() {
         <AuthProvider>
           <OnboardingProvider>
             <LanguageProvider>
-              <VoiceAssistantProvider>
-                <AppContent />
-              </VoiceAssistantProvider>
+              <AppShell />
             </LanguageProvider>
           </OnboardingProvider>
         </AuthProvider>

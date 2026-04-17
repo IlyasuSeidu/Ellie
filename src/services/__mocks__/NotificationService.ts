@@ -6,6 +6,7 @@ import {
   NotificationContent,
   INotificationScheduler,
   PermissionStatus,
+  ScheduledNotificationSnapshot,
   ScheduledNotification,
   NotificationType,
 } from '../NotificationService';
@@ -53,6 +54,15 @@ export class MockNotificationScheduler implements INotificationScheduler {
   async getPermissionStatus(): Promise<PermissionStatus> {
     await Promise.resolve();
     return this.permissionStatus;
+  }
+
+  async getScheduledNotifications(): Promise<ScheduledNotificationSnapshot[]> {
+    await Promise.resolve();
+    return Array.from(this.scheduledNotifications.entries()).map(([id, notification]) => ({
+      id,
+      content: notification.content,
+      triggerDate: notification.triggerDate,
+    }));
   }
 
   // Test helpers

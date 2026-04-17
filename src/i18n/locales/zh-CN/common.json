@@ -196,6 +196,8 @@
         "weeklyBilled": "按周计费"
       },
       "cta": "开始免费试用",
+      "ctaPaid": "立即订阅",
+      "ctaUnavailable": "套餐暂时不可用",
       "noCard": "无需信用卡 · 随时取消",
       "restorePurchases": "恢复购买",
       "privacyPolicy": "隐私政策",
@@ -217,7 +219,7 @@
       "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
       "timerLabel": "首发优惠结束倒计时",
       "trust": {
-        "freeTrial": "7天免费",
+        "freeTrial": "免费试用",
         "cancel": "可随时取消",
         "noCharge": "今天不收费",
         "startsToday": "今天开始",
@@ -226,16 +228,17 @@
       "valueFrame": "每周不到一杯咖啡的钱，就能掌握你一整年的安排。",
       "security": "通过 {{platform}} 安全支付 · 由 {{platform}} 处理，而非 Ellie",
       "termsOfService": "条款",
-      "trialBadge": "免费试用7天 · 今天不收费",
+      "trialBadge": "免费试用 · 今天不收费",
+      "trialBadgePaid": "今日订阅 · 随时取消",
       "title_named": "{{name}}，你的班表已经准备好了。",
       "subtitle_fifo": "您的 FIFO 周期已生成。整整一年里的每个轮班段和每一天休息都一目了然。",
       "subtitle_rotating": "您的轮换排班已生成。整整一年里的每个班次都一目了然。",
-      "billingDisclosure": "您的 7 天免费试用将于 {{date}} 结束。请在此之前随时前往设置取消，以避免扣费。订阅会自动续订。",
+      "billingDisclosure": "您的免费试用将于 {{date}} 结束。请在此之前随时前往设置取消，以避免扣费。订阅会自动续订。",
       "lossAversion_fifo": "没有 Pro，你的轮换日期又会变成谜。下一次 R&R 未知。订错那一周，就会错过航班。",
       "lossAversion_rotating": "没有 Pro，你的轮班安排又会陷入黑箱。没有提前提醒，也无法提前规划，只能回到公告板前猜。",
       "lossAversion_family": "没有 Pro，你的家人又不知道你什么时候在家。",
       "testimonialAnchor": "4.8 · 2,400+ 条评分",
-      "purchaseSuccess": "你的 7 天试用已开始",
+      "purchaseSuccess": "你的免费试用已开始",
       "purchaseError": "购买失败。请重试。",
       "valueFrameMonthly": "每月一杯咖啡的价格，就能掌握你的完整排班。",
       "valueFrameWeekly": "只需 {{price}} 即可体验完整功能。随时可取消。",
@@ -246,7 +249,9 @@
       "restorePurchasesSuccess": "购买已恢复，欢迎使用 Pro！",
       "restorePurchasesNotFound": "此账户未找到过往购买记录。",
       "restorePurchasesError": "恢复失败。请重试。",
-      "ctaOffline": "联网后订阅"
+      "ctaOffline": "联网后订阅",
+      "purchaseSuccessPaid": "你的订阅已生效",
+      "billingDisclosureTrialGeneric": "您的免费试用今天开始。请在开始扣费前随时前往设置取消。订阅会自动续订。"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro 主动订阅",
@@ -254,7 +259,7 @@
       "activeLabel": "__TK1__ Pro — 主动 ✓",
       "upgradeLabel": "升级到 __TK1__ 专业版",
       "activeHint": "全日历·嘿__TK1__语音助手",
-      "upgradeHint": "7 天免费试用 · 每月 6.99 美元或每年 49.99 美元"
+      "upgradeHint": "套餐低至每月 6.99 美元或每年 49.99 美元"
     },
     "padlock": {
       "a11yLabel": "升级到 __TK1__ Pro 以查看完整日历"
@@ -262,13 +267,13 @@
     "recoveryNudge": {
       "title": "你当前处于有限访问模式",
       "body": "解锁你的完整年度安排：每个班次、每个轮换，都提前规划好。",
-      "cta": "开始免费试用",
+      "cta": "查看 Pro 方案",
       "dismiss": "暂不"
     },
     "featureGate": {
       "title": "Pro 可解锁你的完整年度安排",
       "body": "提前查看每个月，不再有意外，也不用猜下一次 R&R。",
-      "cta": "开始 7 天免费试用"
+      "cta": "查看 Pro 方案"
     }
   },
   "time": {

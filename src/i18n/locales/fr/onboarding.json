@@ -4,7 +4,7 @@
     "getStarted": "Commencer",
     "socialProof": "Conçu pour les travailleurs postés comme vous",
     "trust": {
-      "freeTrial": "Essai gratuit 7 jours",
+      "freeTrial": "Essai gratuit",
       "noCard": "Aucune carte bancaire",
       "cancelAnytime": "Annulez à tout moment"
     }
@@ -1052,7 +1052,7 @@
     "headline": "Vos 3 prochains mois, cartographiés.",
     "subheadline": "Voici un aperçu de vos 3 prochains mois. Fini les hésitations dans votre tête.",
     "heyEllieTitle": "Demandez à Ellie votre planning",
-    "ctaPrimary": "Commencer l’essai de 7 jours",
+    "ctaPrimary": "Commencer l’essai gratuit",
     "ctaSecondary": "ou passer — semaine en cours seulement, pas d’année complète",
     "stats": {
       "workDays": "Jours travaillés",

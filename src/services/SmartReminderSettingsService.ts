@@ -59,6 +59,10 @@ async function readLocalSettingsRecord(): Promise<{
   }
 }
 
+async function persistLocalSettings(settings: SmartReminderSettings): Promise<void> {
+  await asyncStorageService.set(SMART_REMINDER_SETTINGS_KEY, settings);
+}
+
 export async function resolveReminderUserId(firebaseUid?: string | null): Promise<string> {
   if (firebaseUid) {
     return firebaseUid;
@@ -126,10 +130,25 @@ export class SmartReminderSettingsService {
   ): Promise<SmartReminderSettings> {
     const normalized = mergeSettings(settings);
 
-    await asyncStorageService.set(SMART_REMINDER_SETTINGS_KEY, normalized);
-
     if (firebaseUid) {
       await this.persistRemote(firebaseUid, normalized);
+    }
+
+    try {
+      await persistLocalSettings(normalized);
+    } catch (error) {
+      if (firebaseUid) {
+        logger.warn(
+          'SmartReminderSettingsService: remote settings saved but local cache update failed',
+          {
+            userId: firebaseUid,
+            error: error instanceof Error ? error.message : String(error),
+          }
+        );
+        return normalized;
+      }
+
+      throw error;
     }
 
     return normalized;

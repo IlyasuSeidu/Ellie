@@ -25,13 +25,14 @@ type CalendarCardMockProps = {
 
 const mockUpdateData = jest.fn();
 const mockUseOnboarding = jest.fn();
+const mockUseSubscription = jest.fn();
 
 jest.mock('@/contexts/OnboardingContext', () => ({
   useOnboarding: () => mockUseOnboarding(),
 }));
 
 jest.mock('@/hooks/useSubscription', () => ({
-  useSubscription: jest.fn(() => ({ isPro: false, isLoading: false, openPaywall: jest.fn() })),
+  useSubscription: () => mockUseSubscription(),
 }));
 
 jest.mock('@/hooks/usePaywallRecovery', () => ({
@@ -197,6 +198,11 @@ describe('MainDashboardScreen behavior coverage', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockUseSubscription.mockReturnValue({
+      isPro: false,
+      isLoading: false,
+      openPaywall: jest.fn(),
+    });
     mockUseOnboarding.mockReturnValue({
       data: baseData,
       updateData: mockUpdateData,
@@ -260,6 +266,28 @@ describe('MainDashboardScreen behavior coverage', () => {
     expect(getByTestId('month-label').props.children).toBe('2026-11');
     fireEvent.press(getByTestId('next-month'));
     expect(getByTestId('month-label').props.children).toBe('2027-0');
+
+    jest.useRealTimers();
+  });
+
+  it('does not trigger the feature gate while subscription state is still loading', async () => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date('2026-02-15T12:00:00.000Z'));
+    mockUseSubscription.mockReturnValue({
+      isPro: false,
+      isLoading: true,
+      openPaywall: jest.fn(),
+    });
+
+    const { getByTestId, queryByText } = render(<MainDashboardScreen />);
+    await waitFor(() => {
+      expect(getByTestId('month-label')).toBeTruthy();
+    });
+
+    fireEvent.press(getByTestId('next-month'));
+
+    expect(queryByText('Ilyasu, your roster is ready.')).toBeNull();
+    expect(getByTestId('month-label').props.children).toBe('2026-1');
 
     jest.useRealTimers();
   });

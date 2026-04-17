@@ -21,6 +21,14 @@ export const STORAGE_KEYS = {
     historyPrefix: 'notifications:history:',
     lookupPrefix: 'notifications:lookup:',
   },
+  users: {
+    profilePrefix: 'users:profile:',
+    pendingMutationPrefix: 'users:pending:',
+  },
+  shiftLogs: {
+    entryPrefix: 'shift-logs:entry:',
+    pendingPrefix: 'shift-logs:pending:',
+  },
   sessions: {
     current: 'session:current',
     deviceId: 'session:deviceId',

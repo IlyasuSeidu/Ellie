@@ -444,7 +444,7 @@ export class SmartReminderService {
     }
 
     if (settings.fifoTravelReminders) {
-      events.push(...this.buildFifoTravelReminders(workDays, settings, now, language));
+      events.push(...this.buildFifoTravelReminders(workDays, shiftTimes, settings, now, language));
     }
 
     return this.deduplicateEvents(events).sort(
@@ -580,6 +580,7 @@ export class SmartReminderService {
 
   private buildFifoTravelReminders(
     workDays: ShiftDay[],
+    shiftTimes: OnboardingData['shiftTimes'],
     settings: SmartReminderSettings,
     now: dayjs.Dayjs,
     language: string
@@ -591,7 +592,13 @@ export class SmartReminderService {
       const nextDay = workDays[index + 1];
 
       if (currentDay.isWorkDay && !nextDay.isWorkDay) {
-        const flyOutAt = applyTime(currentDay.date, '07:00');
+        const currentStart = getShiftStartTime(currentDay.shiftType, shiftTimes);
+        const currentEnd = getShiftEndTime(currentDay.shiftType, shiftTimes);
+        const flyOutAt =
+          currentStart && currentEnd
+            ? buildShiftEnd(currentDay.date, currentStart, currentEnd).subtract(1, 'hour')
+            : applyTime(currentDay.date, '07:00');
+
         if (flyOutAt.isAfter(now)) {
           events.push(
             this.buildEvent(
@@ -620,7 +627,20 @@ export class SmartReminderService {
       }
 
       if (!currentDay.isWorkDay && nextDay.isWorkDay) {
-        const travelWarningAt = applyTime(currentDay.date, '18:00');
+        const nextStart = getShiftStartTime(nextDay.shiftType, shiftTimes);
+        const derivedTravelWarning = nextStart
+          ? applyTime(nextDay.date, nextStart).subtract(12, 'hour')
+          : null;
+        const earliestWindow = applyTime(currentDay.date, '16:00');
+        const latestWindow = applyTime(currentDay.date, '20:00');
+        const travelWarningAt = !derivedTravelWarning
+          ? applyTime(currentDay.date, '18:00')
+          : derivedTravelWarning.isBefore(earliestWindow)
+            ? earliestWindow
+            : derivedTravelWarning.isAfter(latestWindow)
+              ? latestWindow
+              : derivedTravelWarning;
+
         if (travelWarningAt.isAfter(now)) {
           events.push(
             this.buildEvent(

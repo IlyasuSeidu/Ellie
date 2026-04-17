@@ -8,7 +8,7 @@
  * Phase 3: Processing indicator, speaking state, permission flow
  */
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useMemo, useState } from 'react';
 import {
   View,
   Text,
@@ -19,6 +19,7 @@ import {
   Dimensions,
   ActivityIndicator,
   Platform,
+  TextInput,
 } from 'react-native';
 import Animated, {
   FadeIn,
@@ -37,6 +38,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
 import { useVoiceAssistant } from '@/contexts/VoiceAssistantContext';
+import { useNetworkStatus } from '@/hooks/useNetworkStatus';
 import { ListeningIndicator } from './ListeningIndicator';
 import { ResponseBubble } from './ResponseBubble';
 
@@ -113,10 +115,32 @@ export const VoiceAssistantModal: React.FC = () => {
     closeModal,
     clearHistory,
     requestPermissions,
+    submitTextQuery,
   } = useVoiceAssistant();
 
   const insets = useSafeAreaInsets();
+  const networkSnapshot = useNetworkStatus();
   const scrollViewRef = useRef<ScrollView>(null);
+  const [typedQuery, setTypedQuery] = useState('');
+  const isOffline = networkSnapshot.status !== 'online';
+  const prefersTypedFallback =
+    !hasPermission || (isWakeWordEnabled && !isWakeWordAvailable) || isOffline;
+  const isComposerDisabled =
+    state === 'listening' || state === 'processing' || state === 'speaking';
+  const suggestions = useMemo(
+    () => [
+      t('voiceAssistant.empty.example1', {
+        defaultValue: 'What shift do I have tomorrow?',
+      }),
+      t('voiceAssistant.empty.example2', {
+        defaultValue: 'When is my next day off?',
+      }),
+      t('voiceAssistant.empty.example3', {
+        defaultValue: 'How many night shifts this month?',
+      }),
+    ],
+    [t]
+  );
 
   // Auto-scroll to bottom when new messages arrive or partial transcript updates
   useEffect(() => {
@@ -149,6 +173,17 @@ export const VoiceAssistantModal: React.FC = () => {
     await requestPermissions();
   };
 
+  const handleTypedSubmit = async (queryOverride?: string) => {
+    const nextQuery = (queryOverride ?? typedQuery).trim();
+    if (!nextQuery || isComposerDisabled) {
+      return;
+    }
+
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setTypedQuery('');
+    await submitTextQuery(nextQuery);
+  };
+
   const normalizeSentence = (text: string): string => text.trim().replace(/[.!?]+$/g, '');
 
   const getStatusText = (): string => {
@@ -165,9 +200,14 @@ export const VoiceAssistantModal: React.FC = () => {
         if (notice) {
           return notice.message;
         }
+        if (messages.length === 0 && !hasPermission) {
+          return t('voiceAssistant.status.typeOrGrantMic', {
+            defaultValue: 'Type your question below or grant microphone access.',
+          });
+        }
         if (messages.length === 0 && isWakeWordEnabled && !isWakeWordAvailable) {
           return t('voiceAssistant.status.wakeWordUnavailable', {
-            defaultValue: 'Wake-word unavailable, tap the mic to talk',
+            defaultValue: 'Wake-word unavailable. Type below or tap the mic to talk.',
           });
         }
         if (messages.length === 0 && isWakeWordEnabled && isWakeWordListening) {
@@ -360,29 +400,24 @@ export const VoiceAssistantModal: React.FC = () => {
                 </Text>
                 <View style={styles.suggestions}>
                   <Text style={styles.suggestionLabel}>
-                    {t('voiceAssistant.empty.trySaying', { defaultValue: 'Try saying:' })}
+                    {prefersTypedFallback
+                      ? t('voiceAssistant.empty.tryAsking', { defaultValue: 'Try asking:' })
+                      : t('voiceAssistant.empty.trySaying', { defaultValue: 'Try saying:' })}
                   </Text>
-                  <Text style={styles.suggestionText}>
-                    &quot;
-                    {t('voiceAssistant.empty.example1', {
-                      defaultValue: 'What shift do I have tomorrow?',
-                    })}
-                    &quot;
-                  </Text>
-                  <Text style={styles.suggestionText}>
-                    &quot;
-                    {t('voiceAssistant.empty.example2', {
-                      defaultValue: 'When is my next day off?',
-                    })}
-                    &quot;
-                  </Text>
-                  <Text style={styles.suggestionText}>
-                    &quot;
-                    {t('voiceAssistant.empty.example3', {
-                      defaultValue: 'How many night shifts this month?',
-                    })}
-                    &quot;
-                  </Text>
+                  {suggestions.map((suggestion) => (
+                    <TouchableOpacity
+                      key={suggestion}
+                      style={styles.suggestionChip}
+                      onPress={() => void handleTypedSubmit(suggestion)}
+                      accessibilityRole="button"
+                      accessibilityLabel={t('voiceAssistant.empty.suggestionA11y', {
+                        query: suggestion,
+                        defaultValue: 'Ask Ellie: {{query}}',
+                      })}
+                    >
+                      <Text style={styles.suggestionText}>&quot;{suggestion}&quot;</Text>
+                    </TouchableOpacity>
+                  ))}
                 </View>
               </View>
             )}
@@ -393,7 +428,8 @@ export const VoiceAssistantModal: React.FC = () => {
                 <Ionicons name="mic-off-outline" size={32} color={theme.colors.warning} />
                 <Text style={styles.permissionText}>
                   {t('voiceAssistant.permission.notice', {
-                    defaultValue: 'Ellie needs microphone access to hear your questions.',
+                    defaultValue:
+                      'Ellie needs microphone access to hear you, or you can type your question below.',
                   })}
                 </Text>
                 <TouchableOpacity
@@ -499,11 +535,53 @@ export const VoiceAssistantModal: React.FC = () => {
               {getStatusText()}
             </Text>
 
+            {isOffline && (
+              <Text style={styles.offlineHintText} accessibilityRole="text">
+                {t('voiceAssistant.offlineHint', {
+                  defaultValue:
+                    'Offline answers are limited to simple roster questions saved on this device.',
+                })}
+              </Text>
+            )}
+
             {state === 'idle' && isWakeWordEnabled && !isWakeWordAvailable && wakeWordWarning && (
               <Text style={styles.wakeWordWarningText} accessibilityRole="text">
                 {wakeWordWarning}
               </Text>
             )}
+
+            <View style={styles.composerContainer}>
+              <TextInput
+                value={typedQuery}
+                onChangeText={setTypedQuery}
+                placeholder={t('voiceAssistant.composer.placeholder', {
+                  defaultValue: 'Type a question for Ellie',
+                })}
+                placeholderTextColor={theme.colors.shadow}
+                style={styles.composerInput}
+                editable={!isComposerDisabled}
+                returnKeyType="send"
+                onSubmitEditing={() => void handleTypedSubmit()}
+                accessibilityLabel={t('voiceAssistant.composer.a11y', {
+                  defaultValue: 'Type a question for Ellie',
+                })}
+              />
+              <TouchableOpacity
+                style={[
+                  styles.composerSendButton,
+                  (typedQuery.trim().length === 0 || isComposerDisabled) &&
+                    styles.composerSendButtonDisabled,
+                ]}
+                onPress={() => void handleTypedSubmit()}
+                disabled={typedQuery.trim().length === 0 || isComposerDisabled}
+                accessibilityRole="button"
+                accessibilityLabel={t('voiceAssistant.composer.sendA11y', {
+                  defaultValue: 'Send typed question',
+                })}
+              >
+                <Ionicons name="send" size={18} color={theme.colors.text.inverse} />
+              </TouchableOpacity>
+            </View>
 
             {/* Mic button */}
             <TouchableOpacity
@@ -644,17 +722,23 @@ const styles = StyleSheet.create({
   suggestions: {
     marginTop: 24,
     alignItems: 'center',
+    gap: 8,
   },
   suggestionLabel: {
     fontSize: theme.typography.fontSizes.sm,
     color: theme.colors.shadow,
     marginBottom: 8,
   },
+  suggestionChip: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 16,
+    backgroundColor: theme.colors.softStone,
+  },
   suggestionText: {
     fontSize: theme.typography.fontSizes.sm,
     color: theme.colors.dust,
     fontStyle: 'italic',
-    marginBottom: 6,
     textAlign: 'center',
   },
   permissionNotice: {
@@ -739,7 +823,14 @@ const styles = StyleSheet.create({
   statusText: {
     fontSize: theme.typography.fontSizes.sm,
     color: theme.colors.dust,
-    marginBottom: 12,
+    marginBottom: 8,
+    textAlign: 'center',
+    paddingHorizontal: 24,
+  },
+  offlineHintText: {
+    fontSize: theme.typography.fontSizes.xs,
+    color: theme.colors.shadow,
+    marginBottom: 8,
     textAlign: 'center',
     paddingHorizontal: 24,
   },
@@ -758,6 +849,36 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'center',
     paddingHorizontal: 24,
+  },
+  composerContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingHorizontal: 20,
+    marginBottom: 14,
+  },
+  composerInput: {
+    flex: 1,
+    minHeight: 46,
+    borderRadius: 23,
+    borderWidth: 1,
+    borderColor: theme.colors.softStone,
+    backgroundColor: theme.colors.darkStone,
+    color: theme.colors.paper,
+    paddingHorizontal: 16,
+    fontSize: theme.typography.fontSizes.md,
+  },
+  composerSendButton: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.sacredGold,
+  },
+  composerSendButtonDisabled: {
+    opacity: 0.4,
   },
   micButton: {
     width: 72,

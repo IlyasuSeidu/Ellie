@@ -7,7 +7,15 @@
  */
 
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { View, StyleSheet, Text, Pressable, TouchableOpacity, Alert } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Pressable,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -29,8 +37,7 @@ import { LANGUAGE_NAMES, LanguageSelectorSheet } from '@/components/profile/Lang
 import { SmartRemindersPanel } from '@/components/profile/SmartRemindersPanel';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
-// Temporarily disabled for physical-device regression testing.
-// import { useSubscription } from '@/hooks/useSubscription';
+import { useSubscription } from '@/hooks/useSubscription';
 import { getSettingsErrorMessage } from '@/utils/settingsErrorMessage';
 import { setPersistedOnboardingComplete } from '@/utils/onboardingPersistence';
 
@@ -43,6 +50,13 @@ export const ProfileScreen: React.FC = () => {
   const profile = useProfileData();
   const { language, setLanguage } = useLanguage();
   const { shiftType: liveShiftType, tabAccentColor } = useShiftAccent();
+  const {
+    isPro,
+    isLoading: subscriptionLoading,
+    openPaywall,
+    openCustomerCenter,
+    canOpenCustomerCenter,
+  } = useSubscription();
   const { isEditing, cancelEditing } = profile;
   const [languageSheetVisible, setLanguageSheetVisible] = React.useState(false);
   const personalInfoHeaderGradient = useMemo<readonly [string, string]>(() => {
@@ -85,6 +99,38 @@ export const ProfileScreen: React.FC = () => {
       );
     }
   }, [navigation, tCommon]);
+
+  const handleSubscriptionRowPress = useCallback(async () => {
+    if (subscriptionLoading) {
+      return;
+    }
+
+    if (!isPro) {
+      openPaywall();
+      return;
+    }
+
+    if (!canOpenCustomerCenter) {
+      Alert.alert(
+        tCommon('errors.titles.error', { defaultValue: 'Error' }),
+        tCommon('subscription.paywall.unavailable', {
+          defaultValue:
+            'Subscriptions are unavailable in this app build. Install the latest EAS development/production build.',
+        })
+      );
+      return;
+    }
+
+    const result = await openCustomerCenter();
+    if (result !== 'presented') {
+      Alert.alert(
+        tCommon('errors.titles.error', { defaultValue: 'Error' }),
+        tCommon('subscription.paywall.restorePurchasesError', {
+          defaultValue: 'Restore failed. Please try again.',
+        })
+      );
+    }
+  }, [canOpenCustomerCenter, isPro, openCustomerCenter, openPaywall, subscriptionLoading, tCommon]);
 
   const handleOpenPatternOnboarding = useCallback(
     (seed: Partial<OnboardingData>) => {
@@ -326,6 +372,44 @@ export const ProfileScreen: React.FC = () => {
         <SmartRemindersPanel animationDelay={1400} />
 
         <TouchableOpacity
+          style={[styles.languageRow, styles.subscriptionRow]}
+          onPress={() => {
+            void handleSubscriptionRowPress();
+          }}
+          disabled={subscriptionLoading}
+          accessibilityRole="button"
+          accessibilityLabel={
+            isPro
+              ? tCommon('subscription.profile.rowActiveA11y')
+              : tCommon('subscription.profile.rowUpgradeA11y')
+          }
+          testID="subscription-management-row"
+        >
+          <Ionicons
+            name={isPro ? 'sparkles-outline' : 'card-outline'}
+            size={18}
+            color={theme.colors.sacredGold}
+          />
+          <View style={styles.subscriptionCopy}>
+            <Text style={styles.subscriptionTitle}>
+              {isPro
+                ? tCommon('subscription.profile.activeLabel')
+                : tCommon('subscription.profile.upgradeLabel')}
+            </Text>
+            <Text style={styles.subscriptionHint}>
+              {isPro
+                ? tCommon('subscription.profile.activeHint')
+                : tCommon('subscription.profile.upgradeHint')}
+            </Text>
+          </View>
+          {subscriptionLoading ? (
+            <ActivityIndicator size="small" color={theme.colors.dust} />
+          ) : (
+            <Ionicons name="chevron-forward" size={16} color={theme.colors.dust} />
+          )}
+        </TouchableOpacity>
+
+        <TouchableOpacity
           style={styles.languageRow}
           onPress={() => setLanguageSheetVisible(true)}
           accessibilityRole="button"
@@ -416,6 +500,23 @@ const styles = StyleSheet.create({
     color: theme.colors.dust,
     fontSize: 13,
     marginTop: 4,
+  },
+  subscriptionRow: {
+    marginTop: theme.spacing.lg,
+  },
+  subscriptionCopy: {
+    flex: 1,
+    gap: 4,
+  },
+  subscriptionTitle: {
+    color: theme.colors.paper,
+    fontSize: theme.typography.fontSizes.sm,
+    fontWeight: '700',
+  },
+  subscriptionHint: {
+    color: theme.colors.dust,
+    fontSize: 12,
+    lineHeight: 16,
   },
   subscriptionRowContent: {
     flexDirection: 'row',

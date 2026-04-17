@@ -196,6 +196,8 @@
         "weeklyBilled": "Ditagih mingguan"
       },
       "cta": "Mulai Uji Coba Gratis",
+      "ctaPaid": "Berlangganan sekarang",
+      "ctaUnavailable": "Paket tidak tersedia saat ini",
       "noCard": "Tidak diperlukan kartu kredit · Batalkan kapan saja",
       "restorePurchases": "Pulihkan Pembelian",
       "privacyPolicy": "Kebijakan Privasi",
@@ -217,7 +219,7 @@
       "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
       "timerLabel": "Penawaran awal berakhir dalam",
       "trust": {
-        "freeTrial": "Gratis 7 hari",
+        "freeTrial": "Uji coba gratis",
         "cancel": "Batalkan kapan saja",
         "noCharge": "Tidak ada biaya hari ini",
         "startsToday": "Mulai hari ini",
@@ -226,16 +228,17 @@
       "valueFrame": "Kurang dari harga kopi per minggu untuk mengetahui setahun penuh Anda.",
       "security": "Pembayaran aman via {{platform}} · Diproses oleh {{platform}}, bukan Ellie",
       "termsOfService": "Syarat",
-      "trialBadge": "UJI COBA GRATIS 7 HARI · TANPA BIAYA HARI INI",
+      "trialBadge": "UJI COBA GRATIS · TANPA BIAYA HARI INI",
+      "trialBadgePaid": "BERLANGGANAN HARI INI · BATAL KAPAN SAJA",
       "title_named": "{{name}}, roster Anda sudah siap.",
       "subtitle_fifo": "Siklus FIFO Anda sudah dipetakan. Lihat setiap swing dan setiap hari libur sepanjang setahun penuh Anda.",
       "subtitle_rotating": "Roster bergilir Anda sudah dipetakan. Lihat setiap shift sepanjang setahun penuh Anda.",
-      "billingDisclosure": "Uji coba gratis 7 hari Anda berakhir pada {{date}}. Batalkan kapan saja di Pengaturan sebelum itu agar tidak dikenai biaya. Langganan diperpanjang otomatis.",
+      "billingDisclosure": "Uji coba gratis Anda berakhir pada {{date}}. Batalkan kapan saja di Pengaturan sebelum itu agar tidak dikenai biaya. Langganan diperpanjang otomatis.",
       "lossAversion_fifo": "Tanpa Pro, tanggal swing Anda kembali jadi misteri. R&R berikutnya tidak diketahui. Pesan minggu yang salah, penerbangan hilang.",
       "lossAversion_rotating": "Tanpa Pro, roster Anda kembali gelap. Tidak ada peringatan dini, tidak ada perencanaan ke depan. Kembali menebak dari papan pengumuman.",
       "lossAversion_family": "Tanpa Pro, keluarga Anda kembali tidak tahu kapan Anda ada di rumah.",
       "testimonialAnchor": "4.8 · 2.400+ penilaian",
-      "purchaseSuccess": "Masa uji coba 7 hari Anda telah dimulai",
+      "purchaseSuccess": "Masa uji coba gratis Anda telah dimulai",
       "purchaseError": "Pembelian gagal. Silakan coba lagi.",
       "valueFrameMonthly": "Biaya satu kopi per bulan untuk mengetahui roster lengkap Anda.",
       "valueFrameWeekly": "Coba pengalaman penuh seharga {{price}}. Batalkan kapan saja.",
@@ -246,7 +249,9 @@
       "restorePurchasesSuccess": "Pembelian dipulihkan — selamat datang di Pro!",
       "restorePurchasesNotFound": "Tidak ada pembelian sebelumnya yang ditemukan di akun ini.",
       "restorePurchasesError": "Pemulihan gagal. Silakan coba lagi.",
-      "ctaOffline": "Hubungkan untuk berlangganan"
+      "ctaOffline": "Hubungkan untuk berlangganan",
+      "purchaseSuccessPaid": "Langganan Anda aktif",
+      "billingDisclosureTrialGeneric": "Uji coba gratis Anda dimulai hari ini. Batalkan kapan saja di Pengaturan sebelum penagihan dimulai. Langganan diperpanjang otomatis."
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro langganan aktif",
@@ -254,7 +259,7 @@
       "activeLabel": "__TK1__ Pro — Aktif ✓",
       "upgradeLabel": "Tingkatkan ke __TK1__ Pro",
       "activeHint": "Kalender lengkap · Hai __TK1__ asisten suara",
-      "upgradeHint": "Uji coba gratis 7 hari · $6,99/bln atau $49,99/tahun"
+      "upgradeHint": "Paket mulai dari $6,99/bln atau $49,99/tahun"
     },
     "padlock": {
       "a11yLabel": "Tingkatkan ke __TK1__ Pro untuk melihat kalender lengkap"
@@ -262,13 +267,13 @@
     "recoveryNudge": {
       "title": "Anda menggunakan akses terbatas",
       "body": "Buka kunci satu tahun penuh Anda — setiap shift, setiap swing, direncanakan jauh hari.",
-      "cta": "Mulai uji coba gratis",
+      "cta": "Lihat paket Pro",
       "dismiss": "Nanti saja"
     },
     "featureGate": {
       "title": "Pro membuka satu tahun penuh Anda",
       "body": "Lihat setiap bulan ke depan — tanpa kejutan, tanpa menebak R&R berikutnya.",
-      "cta": "Mulai uji coba gratis 7 hari"
+      "cta": "Lihat paket Pro"
     }
   },
   "time": {

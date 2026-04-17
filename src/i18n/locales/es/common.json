@@ -196,6 +196,8 @@
         "weeklyBilled": "Se cobra semanalmente"
       },
       "cta": "Inicia la prueba gratis",
+      "ctaPaid": "Suscríbete ahora",
+      "ctaUnavailable": "Planes no disponibles ahora",
       "noCard": "No se requiere tarjeta de crédito · Cancelar en cualquier momento",
       "restorePurchases": "Restaurar compras",
       "privacyPolicy": "política de privacidad",
@@ -217,7 +219,7 @@
       "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
       "timerLabel": "La oferta de lanzamiento termina en",
       "trust": {
-        "freeTrial": "7 días gratis",
+        "freeTrial": "Prueba gratis",
         "cancel": "Cancela cuando quieras",
         "noCharge": "Sin cobro hoy",
         "startsToday": "Empieza hoy",
@@ -226,16 +228,17 @@
       "valueFrame": "Menos que un café por semana para conocer todo tu año.",
       "security": "Pago seguro con {{platform}} · Procesado por {{platform}}, no por Ellie",
       "termsOfService": "Términos",
-      "trialBadge": "PRUEBA GRATIS DE 7 DÍAS · SIN COBRO HOY",
+      "trialBadge": "PRUEBA GRATIS · SIN COBRO HOY",
+      "trialBadgePaid": "SUSCRÍBETE HOY · CANCELA CUANDO QUIERAS",
       "title_named": "{{name}}, tu roster está listo.",
       "subtitle_fifo": "Tu ciclo FIFO ya está trazado. Ve cada swing y cada día libre durante todo tu año.",
       "subtitle_rotating": "Tu roster rotativo ya está trazado. Ve cada turno durante todo tu año.",
-      "billingDisclosure": "Tu prueba gratuita de 7 días termina el {{date}}. Cancela en cualquier momento en Ajustes antes de esa fecha para evitar cargos. Las suscripciones se renuevan automáticamente.",
+      "billingDisclosure": "Tu prueba gratuita termina el {{date}}. Cancela en cualquier momento en Ajustes antes de esa fecha para evitar cargos. Las suscripciones se renuevan automáticamente.",
       "lossAversion_fifo": "Sin Pro, tus fechas de swing vuelven a ser un misterio. El próximo R&R: desconocido. Reserva la semana equivocada y pierdes los vuelos.",
       "lossAversion_rotating": "Sin Pro, tu roster se apaga. Sin aviso temprano, sin planificación anticipada. Vuelves a adivinar frente al tablón.",
       "lossAversion_family": "Sin Pro, tu familia vuelve a no saber cuándo estás en casa.",
       "testimonialAnchor": "4.8 · más de 2,400 valoraciones",
-      "purchaseSuccess": "Tu prueba de 7 días ha comenzado",
+      "purchaseSuccess": "Tu prueba gratuita ha comenzado",
       "purchaseError": "La compra falló. Inténtalo de nuevo.",
       "valueFrameMonthly": "El costo de un café al mes para conocer todo tu roster.",
       "valueFrameWeekly": "Prueba la experiencia completa por {{price}}. Cancela cuando quieras.",
@@ -246,7 +249,9 @@
       "restorePurchasesSuccess": "Compra restaurada — bienvenida a Pro.",
       "restorePurchasesNotFound": "No se encontraron compras anteriores en esta cuenta.",
       "restorePurchasesError": "La restauración falló. Inténtalo de nuevo.",
-      "ctaOffline": "Conéctate para suscribirte"
+      "ctaOffline": "Conéctate para suscribirte",
+      "purchaseSuccessPaid": "Tu suscripción está activa",
+      "billingDisclosureTrialGeneric": "Tu prueba gratuita comienza hoy. Cancela en cualquier momento en Ajustes antes de que empiece la facturación. Las suscripciones se renuevan automáticamente."
     },
     "profile": {
       "rowActiveA11y": "Ellie Suscripción activa profesional",
@@ -254,7 +259,7 @@
       "activeLabel": "Ellie Pro — Activo ✓",
       "upgradeLabel": "Actualizar a Ellie Pro",
       "activeHint": "Calendario completo · Hola Ellie asistente de voz",
-      "upgradeHint": "Prueba gratuita de 7 días · $6,99/mes o $49,99/año"
+      "upgradeHint": "Planes desde $6,99/mes o $49,99/año"
     },
     "padlock": {
       "a11yLabel": "Actualice a Ellie Pro para ver el calendario completo"
@@ -262,13 +267,13 @@
     "recoveryNudge": {
       "title": "Estás con acceso limitado",
       "body": "Desbloquea tu año completo: cada turno, cada swing, planificado con antelación.",
-      "cta": "Iniciar prueba gratis",
+      "cta": "Ver planes Pro",
       "dismiss": "Ahora no"
     },
     "featureGate": {
       "title": "Pro desbloquea tu año completo",
       "body": "Ve cada mes por adelantado: sin sorpresas ni dudas sobre tu próximo R&R.",
-      "cta": "Inicia la prueba gratis de 7 días"
+      "cta": "Ver planes Pro"
     }
   },
   "time": {

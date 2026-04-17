@@ -1,4 +1,7 @@
-import { voiceAssistantPersistenceService } from '../VoiceAssistantPersistenceService';
+import {
+  resolveVoiceAssistantPersistenceScope,
+  voiceAssistantPersistenceService,
+} from '../VoiceAssistantPersistenceService';
 import { asyncStorageService } from '../AsyncStorageService';
 import type {
   VoiceAssistantDiagnosticEvent,
@@ -19,6 +22,7 @@ jest.mock('../AsyncStorageService', () => ({
 describe('VoiceAssistantPersistenceService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    voiceAssistantPersistenceService.setScope(null);
   });
 
   it('hydrates valid persisted history, last error, wake-word session, and diagnostics', async () => {
@@ -184,5 +188,46 @@ describe('VoiceAssistantPersistenceService', () => {
       'voice-assistant:wake-word-session:v1',
       'voice-assistant:diagnostics:v1',
     ]);
+  });
+
+  it('uses scoped keys after a scope is set', async () => {
+    voiceAssistantPersistenceService.setScope('auth:user-123');
+
+    await voiceAssistantPersistenceService.persistHistory([
+      { id: '1', role: 'user', text: 'hello', timestamp: 1 },
+    ]);
+
+    expect(asyncStorageService.set).toHaveBeenCalledWith(
+      'voice-assistant:history:v1:auth:user-123',
+      [{ id: '1', role: 'user', text: 'hello', timestamp: 1 }]
+    );
+  });
+
+  it('migrates legacy global history into the active scoped key on hydrate', async () => {
+    voiceAssistantPersistenceService.setScope('auth:user-123');
+    (asyncStorageService.get as jest.Mock).mockImplementation(async (key: string) => {
+      if (key === 'voice-assistant:history:v1:auth:user-123') {
+        return null;
+      }
+      if (key === 'voice-assistant:history:v1') {
+        return [{ id: '1', role: 'user', text: 'legacy hello', timestamp: 1 }];
+      }
+      return null;
+    });
+
+    const result = await voiceAssistantPersistenceService.hydrate();
+
+    expect(result.history).toEqual([{ id: '1', role: 'user', text: 'legacy hello', timestamp: 1 }]);
+    expect(asyncStorageService.set).toHaveBeenCalledWith(
+      'voice-assistant:history:v1:auth:user-123',
+      [{ id: '1', role: 'user', text: 'legacy hello', timestamp: 1 }]
+    );
+    expect(asyncStorageService.remove).toHaveBeenCalledWith('voice-assistant:history:v1');
+  });
+
+  it('resolves an auth-scoped persistence key when a firebase uid exists', async () => {
+    await expect(resolveVoiceAssistantPersistenceScope('firebase-uid')).resolves.toBe(
+      'auth:firebase-uid'
+    );
   });
 });

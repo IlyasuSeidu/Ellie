@@ -12,10 +12,15 @@ import { textToSpeechService } from './TextToSpeechService';
 import { ellieBrainService, EllieBrainServiceError } from './EllieBrainService';
 import { voiceAssistantConfig } from '@/config/env';
 import { logger } from '@/utils/logger';
-import { tryOfflineFallback } from '@/utils/offlineFallback';
+import {
+  buildOfflineUnsupportedResponse,
+  classifyOfflineIntent,
+  tryOfflineFallback,
+} from '@/utils/offlineFallback';
 import i18n from '@/i18n';
 import { normalizeLanguage } from '@/i18n/languageDetector';
 import { networkService } from '@/services/NetworkService';
+import { Analytics } from '@/utils/analytics';
 import type {
   VoiceAssistantState,
   VoiceAssistantUserContext,
@@ -84,6 +89,17 @@ class VoiceAssistantService {
         defaultValue: fallback,
       })
     );
+  }
+
+  private buildOfflineAnalyticsContext(query: string) {
+    const offlineIntent = classifyOfflineIntent(query);
+    return {
+      intent_guess: offlineIntent.intent,
+      locale: offlineIntent.language,
+      roster_type: this.userContext?.rosterType ?? this.userContext?.shiftCycle.rosterType ?? null,
+      shift_system: this.userContext?.shiftSystem ?? null,
+      query_length: query.trim().length,
+    };
   }
 
   /**
@@ -396,6 +412,7 @@ class VoiceAssistantService {
     }
 
     this.setState('processing');
+    const offlineAnalyticsContext = this.buildOfflineAnalyticsContext(query);
 
     // Phase 3: Try offline fallback for simple queries first
     const offlineResult = tryOfflineFallback(
@@ -406,6 +423,10 @@ class VoiceAssistantService {
 
     if (offlineResult.handled && offlineResult.text) {
       logger.info('Query handled offline', { toolName: offlineResult.toolName });
+      Analytics.track('voice_assistant_offline_handled', {
+        ...offlineAnalyticsContext,
+        tool_name: offlineResult.toolName ?? 'unknown',
+      });
 
       if (this.currentProcessingToken !== requestToken) {
         return;
@@ -430,9 +451,13 @@ class VoiceAssistantService {
     }
 
     if (networkService.getSnapshot().status !== 'online') {
-      const offlineOnlyText = this.translateDashboard(
-        'voiceAssistant.errors.network',
-        'Check your connection and retry.'
+      Analytics.track('voice_assistant_offline_unhandled', {
+        ...offlineAnalyticsContext,
+        needs_connection: true,
+      });
+      const offlineOnlyText = buildOfflineUnsupportedResponse(
+        this.userContext.shiftCycle,
+        this.userContext.name ?? ''
       );
 
       const assistantMessage: VoiceMessage = {

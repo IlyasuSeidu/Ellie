@@ -4,7 +4,7 @@
     "getStarted": "Set Up My Roster",
     "socialProof": "Built for shift workers like you",
     "trust": {
-      "freeTrial": "Free 7-day trial",
+      "freeTrial": "Free trial",
       "noCard": "No credit card",
       "cancelAnytime": "Cancel anytime"
     }
@@ -65,7 +65,7 @@
     "headline": "Your shifts, mapped.",
     "subheadline": "Here's a preview of your next 3 months. No second-guessing with your heads.",
     "heyEllieTitle": "Ask Ellie about your roster",
-    "ctaPrimary": "Start 7-Day Trial",
+    "ctaPrimary": "Start Free Trial",
     "ctaSecondary": "or skip — current week only, no full year",
     "stats": {
       "workDays": "Work days",

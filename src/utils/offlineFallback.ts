@@ -8,6 +8,13 @@
 
 import type { ShiftCycle, ShiftDay } from '@/types';
 import { calculateShiftDay, getNextOccurrence, getShiftStatistics } from './shiftUtils';
+import {
+  executeGetCurrentBlockInfo,
+  executeGetDaysUntilRest,
+  executeGetDaysUntilWork,
+  executeGetNextRestBlock,
+  executeGetNextWorkBlock,
+} from './shiftQueryTools';
 import dayjs from 'dayjs';
 import i18n from '@/i18n';
 import { normalizeLanguage, type SupportedLanguage } from '@/i18n/languageDetector';
@@ -20,6 +27,31 @@ export interface OfflineFallbackResult {
   text?: string;
   /** Tool name that was simulated */
   toolName?: string;
+}
+
+export type OfflineIntentGuess =
+  | 'current_status'
+  | 'tomorrow_shift'
+  | 'next_day_off'
+  | 'next_night_shift'
+  | 'week_summary'
+  | 'month_days_off'
+  | 'month_night_shifts'
+  | 'pattern_summary'
+  | 'next_fly_out'
+  | 'start_back'
+  | 'current_block'
+  | 'next_work_block'
+  | 'next_rest_block'
+  | 'days_until_work'
+  | 'days_until_rest'
+  | 'holiday_date'
+  | 'calendar_date'
+  | 'unknown';
+
+export interface OfflineIntentClassification {
+  language: SupportedLanguage;
+  intent: OfflineIntentGuess;
 }
 
 type QueryLexicon = {
@@ -258,6 +290,127 @@ const getDateLocaleTag = (language: SupportedLanguage): string => {
 
 const escapeRegex = (value: string): string => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
+const GENERIC_BLOCK_TERMS = [
+  'block',
+  'swing',
+  'bloque',
+  'bloco',
+  'bloc',
+  'блок',
+  'كتلة',
+  '区块',
+  '块',
+  'ब्लॉक',
+  'blok',
+];
+
+const GENERIC_CURRENT_TERMS = [
+  'current',
+  'currently',
+  'right now',
+  'actual',
+  'maintenant',
+  'actuel',
+  'сейчас',
+  'текущ',
+  'الآن',
+  'الحالي',
+  '现在',
+  '当前',
+  'अभी',
+  'वर्तमान',
+  'nou',
+  'manje',
+  'sekarang',
+];
+
+const GENERIC_REST_TERMS = [
+  'rest',
+  'home',
+  'off-site',
+  'off site',
+  'rest block',
+  'home block',
+  'descanso',
+  'casa',
+  'repos',
+  'maison',
+  'отдых',
+  'домой',
+  'راحة',
+  'منزل',
+  '休息',
+  '回家',
+  'आराम',
+  'घर',
+  'ikhaya',
+  'rumah',
+];
+
+const GENERIC_UNTIL_TERMS = [
+  'until',
+  'til',
+  'how many days',
+  'cuántos días',
+  'cuantos dias',
+  'combien de jours',
+  'сколько дней',
+  'كم يوم',
+  '多少天',
+  '几天',
+  'कितने दिन',
+  'hoeveel dae',
+  'mangaki amalanga',
+  'berapa hari',
+];
+
+const HOLIDAY_TERMS = [
+  'holiday',
+  'public holiday',
+  'christmas',
+  'xmas',
+  'new year',
+  'navidad',
+  'año nuevo',
+  'ano nuevo',
+  'feriado',
+  'natal',
+  'ano-novo',
+  'ano novo',
+  'noël',
+  'noel',
+  'jour férié',
+  'jour ferie',
+  'рождество',
+  'новый год',
+  'праздник',
+  'عيد',
+  'عطلة',
+  'عيد الميلاد',
+  'رأس السنة',
+  '圣诞',
+  '圣诞节',
+  '新年',
+  '节日',
+  'क्रिसमस',
+  'नया साल',
+  'त्योहार',
+  'kersfees',
+  'nuwe jaar',
+  'vakansiedag',
+  'ukhisimusi',
+  'unyaka omusha',
+  'iholideyi',
+  'hari libur',
+  'natal',
+  'tahun baru',
+];
+
+const EXPLICIT_DATE_PATTERNS = [
+  /\b\d{4}-\d{1,2}-\d{1,2}\b/u,
+  /\b\d{1,2}[/-]\d{1,2}(?:[/-]\d{2,4})?\b/u,
+];
+
 const isLatinLikeTerm = (value: string): boolean => /^[a-z0-9' -]+$/i.test(value);
 
 const containsTerm = (query: string, term: string): boolean => {
@@ -292,6 +445,140 @@ const translateOffline = (
       ...options,
     })
   );
+
+const translateDashboard = (
+  key: string,
+  language: SupportedLanguage,
+  options: Record<string, unknown>,
+  fallback: string
+): string =>
+  String(
+    i18n.t(key, {
+      lng: language,
+      ns: 'dashboard',
+      defaultValue: fallback,
+      ...options,
+    })
+  );
+
+function getLocalizedShiftTypeLabel(shiftType: ShiftDay['shiftType'], language: SupportedLanguage) {
+  return translateDashboard(
+    `notifications.smartReminders.shiftType.${shiftType}`,
+    language,
+    {},
+    shiftType
+  );
+}
+
+export function buildOfflineUnsupportedResponse(shiftCycle: ShiftCycle, userName: string): string {
+  const language = normalizeLanguage(i18n.resolvedLanguage ?? i18n.language ?? 'en');
+  let nextWorkShift: ShiftDay | null = null;
+
+  for (let offset = 1; offset <= 60; offset += 1) {
+    const candidate = calculateShiftDay(addDays(new Date(), offset), shiftCycle);
+    if (candidate.isWorkDay) {
+      nextWorkShift = candidate;
+      break;
+    }
+  }
+
+  if (nextWorkShift) {
+    const localizedShiftType = getLocalizedShiftTypeLabel(nextWorkShift.shiftType, language);
+    return translateOffline(
+      'voiceAssistant.offlineFallback.unsupportedWithNextShift',
+      language,
+      {
+        shiftType: localizedShiftType,
+        date: formatDateForLanguage(nextWorkShift.date, language),
+        userName,
+      },
+      "I can't answer that fully offline yet, but I still know your saved roster. Your next work shift is {{shiftType}} on {{date}}. Try asking about tomorrow, your next day off, night shifts this month, or your pattern."
+    );
+  }
+
+  return translateOffline(
+    'voiceAssistant.offlineFallback.unsupportedGeneric',
+    language,
+    { userName },
+    "I can't answer that fully offline yet, but I can still help with your saved roster. Try asking about tomorrow, your next day off, night shifts this month, or your pattern."
+  );
+}
+
+export function classifyOfflineIntent(query: string): OfflineIntentClassification {
+  const normalized = query.toLowerCase().trim();
+  const language = normalizeLanguage(i18n.resolvedLanguage ?? i18n.language ?? 'en');
+  const lexicon = QUERY_LEXICON[language] ?? QUERY_LEXICON.en;
+
+  if (matchesAmIWorking(normalized, lexicon) || matchesToday(normalized, lexicon)) {
+    return { language, intent: 'current_status' };
+  }
+
+  if (matchesTomorrow(normalized, lexicon)) {
+    return { language, intent: 'tomorrow_shift' };
+  }
+
+  if (matchesNextDayOff(normalized, lexicon)) {
+    return { language, intent: 'next_day_off' };
+  }
+
+  if (matchesNextNightShift(normalized, lexicon)) {
+    return { language, intent: 'next_night_shift' };
+  }
+
+  if (matchesShiftThisWeek(normalized, lexicon)) {
+    return { language, intent: 'week_summary' };
+  }
+
+  if (matchesDaysOffThisMonth(normalized, lexicon)) {
+    return { language, intent: 'month_days_off' };
+  }
+
+  if (matchesNightShiftsThisMonth(normalized, lexicon)) {
+    return { language, intent: 'month_night_shifts' };
+  }
+
+  if (matchesPatternSummary(normalized, lexicon)) {
+    return { language, intent: 'pattern_summary' };
+  }
+
+  if (matchesNextFlyOut(normalized, lexicon)) {
+    return { language, intent: 'next_fly_out' };
+  }
+
+  if (matchesStartBack(normalized, lexicon)) {
+    return { language, intent: 'start_back' };
+  }
+
+  if (matchesCurrentBlockInfo(normalized, lexicon)) {
+    return { language, intent: 'current_block' };
+  }
+
+  if (matchesNextWorkBlock(normalized, lexicon)) {
+    return { language, intent: 'next_work_block' };
+  }
+
+  if (matchesNextRestBlock(normalized, lexicon)) {
+    return { language, intent: 'next_rest_block' };
+  }
+
+  if (matchesDaysUntilWork(normalized, lexicon)) {
+    return { language, intent: 'days_until_work' };
+  }
+
+  if (matchesDaysUntilRest(normalized, lexicon)) {
+    return { language, intent: 'days_until_rest' };
+  }
+
+  if (containsAny(normalized, HOLIDAY_TERMS)) {
+    return { language, intent: 'holiday_date' };
+  }
+
+  if (EXPLICIT_DATE_PATTERNS.some((pattern) => pattern.test(normalized))) {
+    return { language, intent: 'calendar_date' };
+  }
+
+  return { language, intent: 'unknown' };
+}
 
 /**
  * Attempt to answer a query locally without the backend.
@@ -531,6 +818,125 @@ export function tryOfflineFallback(
     }
   }
 
+  if (matchesCurrentBlockInfo(normalized, lexicon)) {
+    const blockInfo = executeGetCurrentBlockInfo({}, shiftCycle);
+    const targetKey =
+      blockInfo.blockType === 'work'
+        ? 'voiceAssistant.offlineFallback.currentWorkBlock'
+        : 'voiceAssistant.offlineFallback.currentRestBlock';
+    const fallback =
+      blockInfo.blockType === 'work'
+        ? "You're in a work block right now: day {{dayInBlock}} of {{blockLengthDays}}, with {{daysUntilBlockChange}} days until rest."
+        : "You're in a rest block right now: day {{dayInBlock}} of {{blockLengthDays}}, with {{daysUntilBlockChange}} days until work.";
+
+    return {
+      handled: true,
+      text: translateOffline(
+        targetKey,
+        language,
+        {
+          dayInBlock: blockInfo.dayInBlock,
+          blockLengthDays: blockInfo.blockLengthDays,
+          daysUntilBlockChange: blockInfo.daysUntilBlockChange,
+        },
+        fallback
+      ),
+      toolName: 'current_block_info',
+    };
+  }
+
+  if (matchesNextWorkBlock(normalized, lexicon)) {
+    const result = executeGetNextWorkBlock({}, shiftCycle);
+    if (result.found && result.startDate && result.daysUntilStart !== undefined) {
+      return {
+        handled: true,
+        text: translateOffline(
+          'voiceAssistant.offlineFallback.nextWorkBlock',
+          language,
+          {
+            date: formatDateForLanguage(result.startDate, language),
+            daysUntilStart: result.daysUntilStart,
+            blockLengthDays: result.blockLengthDays ?? 0,
+          },
+          'Your next work block starts on {{date}}, in {{daysUntilStart}} days, and lasts {{blockLengthDays}} days.'
+        ),
+        toolName: 'get_next_work_block',
+      };
+    }
+  }
+
+  if (matchesNextRestBlock(normalized, lexicon)) {
+    const result = executeGetNextRestBlock({}, shiftCycle);
+    if (result.found && result.startDate && result.daysUntilStart !== undefined) {
+      return {
+        handled: true,
+        text: translateOffline(
+          'voiceAssistant.offlineFallback.nextRestBlock',
+          language,
+          {
+            date: formatDateForLanguage(result.startDate, language),
+            daysUntilStart: result.daysUntilStart,
+            blockLengthDays: result.blockLengthDays ?? 0,
+          },
+          'Your next rest block starts on {{date}}, in {{daysUntilStart}} days, and lasts {{blockLengthDays}} days.'
+        ),
+        toolName: 'get_next_rest_block',
+      };
+    }
+  }
+
+  if (matchesDaysUntilWork(normalized, lexicon)) {
+    const result = executeGetDaysUntilWork({}, shiftCycle);
+    if (result.found) {
+      return {
+        handled: true,
+        text: result.alreadyInTargetBlock
+          ? translateOffline(
+              'voiceAssistant.offlineFallback.daysUntilWorkAlready',
+              language,
+              {},
+              "You're already in a work block today."
+            )
+          : translateOffline(
+              'voiceAssistant.offlineFallback.daysUntilWork',
+              language,
+              {
+                daysUntil: result.daysUntil ?? 0,
+                date: result.targetDate ? formatDateForLanguage(result.targetDate, language) : '',
+              },
+              'You go back to work in {{daysUntil}} days, on {{date}}.'
+            ),
+        toolName: 'days_until_work',
+      };
+    }
+  }
+
+  if (matchesDaysUntilRest(normalized, lexicon)) {
+    const result = executeGetDaysUntilRest({}, shiftCycle);
+    if (result.found) {
+      return {
+        handled: true,
+        text: result.alreadyInTargetBlock
+          ? translateOffline(
+              'voiceAssistant.offlineFallback.daysUntilRestAlready',
+              language,
+              {},
+              "You're already in a rest block today."
+            )
+          : translateOffline(
+              'voiceAssistant.offlineFallback.daysUntilRest',
+              language,
+              {
+                daysUntil: result.daysUntil ?? 0,
+                date: result.targetDate ? formatDateForLanguage(result.targetDate, language) : '',
+              },
+              'Your next rest block starts in {{daysUntil}} days, on {{date}}.'
+            ),
+        toolName: 'days_until_rest',
+      };
+    }
+  }
+
   // Not handled — needs backend
   return { handled: false };
 }
@@ -686,4 +1092,51 @@ function matchesNextFlyOut(q: string, lexicon: QueryLexicon): boolean {
 
 function matchesStartBack(q: string, lexicon: QueryLexicon): boolean {
   return containsAny(q, lexicon.startBack);
+}
+
+function matchesCurrentBlockInfo(q: string, lexicon: QueryLexicon): boolean {
+  return (
+    containsAny(q, GENERIC_BLOCK_TERMS) &&
+    (containsAny(q, GENERIC_CURRENT_TERMS) || containsAny(q, lexicon.pattern))
+  );
+}
+
+function matchesNextWorkBlock(q: string, lexicon: QueryLexicon): boolean {
+  return (
+    containsAny(q, lexicon.startBack) ||
+    (containsAny(q, lexicon.next) &&
+      containsAny(q, lexicon.work) &&
+      containsAny(q, GENERIC_BLOCK_TERMS))
+  );
+}
+
+function matchesNextRestBlock(q: string, lexicon: QueryLexicon): boolean {
+  return (
+    (containsAny(q, lexicon.next) &&
+      containsAny(q, GENERIC_BLOCK_TERMS) &&
+      (containsAny(q, lexicon.dayOff) || containsAny(q, GENERIC_REST_TERMS))) ||
+    (containsAny(q, lexicon.next) && containsAny(q, lexicon.flyOut))
+  );
+}
+
+function matchesDaysUntilWork(q: string, lexicon: QueryLexicon): boolean {
+  return (
+    (containsAny(q, GENERIC_UNTIL_TERMS) || containsAny(q, lexicon.count)) &&
+    containsAny(q, lexicon.work) &&
+    !containsAny(q, lexicon.today) &&
+    !containsAny(q, lexicon.tomorrow) &&
+    !containsAny(q, lexicon.week) &&
+    !containsAny(q, lexicon.month)
+  );
+}
+
+function matchesDaysUntilRest(q: string, lexicon: QueryLexicon): boolean {
+  return (
+    (containsAny(q, GENERIC_UNTIL_TERMS) || containsAny(q, lexicon.count)) &&
+    (containsAny(q, lexicon.dayOff) || containsAny(q, GENERIC_REST_TERMS)) &&
+    !containsAny(q, lexicon.today) &&
+    !containsAny(q, lexicon.tomorrow) &&
+    !containsAny(q, lexicon.week) &&
+    !containsAny(q, lexicon.month)
+  );
 }

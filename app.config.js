@@ -58,8 +58,42 @@ module.exports = ({ config = {} }) => {
         process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || process.env.GOOGLE_IOS_CLIENT_ID || '',
       GOOGLE_IOS_CLIENT_ID:
         process.env.GOOGLE_IOS_CLIENT_ID || process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || '',
-      REVENUECAT_IOS_KEY: process.env.REVENUECAT_IOS_KEY || '',
-      REVENUECAT_ANDROID_KEY: process.env.REVENUECAT_ANDROID_KEY || '',
+      REVENUECAT_API_KEY:
+        process.env.REVENUECAT_API_KEY || process.env.EXPO_PUBLIC_REVENUECAT_API_KEY || '',
+      EXPO_PUBLIC_REVENUECAT_API_KEY:
+        process.env.EXPO_PUBLIC_REVENUECAT_API_KEY || process.env.REVENUECAT_API_KEY || '',
+      REVENUECAT_ENTITLEMENT_ID:
+        process.env.REVENUECAT_ENTITLEMENT_ID ||
+        process.env.EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID ||
+        'pro',
+      EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID:
+        process.env.EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID ||
+        process.env.REVENUECAT_ENTITLEMENT_ID ||
+        'pro',
+      REVENUECAT_IOS_KEY:
+        process.env.REVENUECAT_IOS_KEY ||
+        process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY ||
+        process.env.REVENUECAT_API_KEY ||
+        process.env.EXPO_PUBLIC_REVENUECAT_API_KEY ||
+        '',
+      REVENUECAT_ANDROID_KEY:
+        process.env.REVENUECAT_ANDROID_KEY ||
+        process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY ||
+        process.env.REVENUECAT_API_KEY ||
+        process.env.EXPO_PUBLIC_REVENUECAT_API_KEY ||
+        '',
+      EXPO_PUBLIC_REVENUECAT_IOS_KEY:
+        process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY ||
+        process.env.REVENUECAT_IOS_KEY ||
+        process.env.EXPO_PUBLIC_REVENUECAT_API_KEY ||
+        process.env.REVENUECAT_API_KEY ||
+        '',
+      EXPO_PUBLIC_REVENUECAT_ANDROID_KEY:
+        process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY ||
+        process.env.REVENUECAT_ANDROID_KEY ||
+        process.env.EXPO_PUBLIC_REVENUECAT_API_KEY ||
+        process.env.REVENUECAT_API_KEY ||
+        '',
       API_BASE_URL: process.env.API_BASE_URL || 'https://api.shiftsync.app',
       API_TIMEOUT: process.env.API_TIMEOUT || '30000',
       ELLIE_BRAIN_URL:

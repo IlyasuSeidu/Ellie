@@ -4,6 +4,7 @@ import type {
   INotificationScheduler,
   NotificationContent,
   PermissionStatus,
+  ScheduledNotificationSnapshot,
 } from '@/services/NotificationService';
 
 const DEFAULT_CHANNEL_ID = 'ellie-smart-reminders';
@@ -66,6 +67,39 @@ export class ExpoNotificationScheduler implements INotificationScheduler {
   async getPermissionStatus(): Promise<PermissionStatus> {
     const permissions = await Notifications.getPermissionsAsync();
     return normalizePermissionStatus(permissions.status);
+  }
+
+  async getScheduledNotifications(): Promise<ScheduledNotificationSnapshot[]> {
+    const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+
+    return scheduled.map((notification) => ({
+      // Expo returns platform-specific notification content types; normalize only the fields
+      // the app actually needs for reconciliation.
+      id: notification.identifier,
+      content: {
+        title: notification.content.title ?? '',
+        body: notification.content.body ?? '',
+        data: (notification.content.data ?? {}) as Record<string, unknown>,
+        sound:
+          typeof notification.content.sound === 'string' ? notification.content.sound : undefined,
+        badge:
+          typeof notification.content.badge === 'number' ? notification.content.badge : undefined,
+        interruptionLevel: (() => {
+          const interruptionLevel = (notification.content as { interruptionLevel?: unknown })
+            .interruptionLevel;
+          return interruptionLevel === 'active' ||
+            interruptionLevel === 'passive' ||
+            interruptionLevel === 'timeSensitive' ||
+            interruptionLevel === 'critical'
+            ? interruptionLevel
+            : undefined;
+        })(),
+      },
+      triggerDate:
+        notification.trigger && 'date' in notification.trigger && notification.trigger.date
+          ? new Date(notification.trigger.date)
+          : null,
+    }));
   }
 
   private ensureNotificationHandler(): void {

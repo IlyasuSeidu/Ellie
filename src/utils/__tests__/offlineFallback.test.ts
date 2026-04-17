@@ -5,7 +5,11 @@
  * queries and returns the appropriate offline responses.
  */
 
-import { tryOfflineFallback } from '@/utils/offlineFallback';
+import {
+  buildOfflineUnsupportedResponse,
+  classifyOfflineIntent,
+  tryOfflineFallback,
+} from '@/utils/offlineFallback';
 import { ShiftPattern, ShiftSystem, ShiftCycle, RosterType } from '@/types';
 
 // ---------------------------------------------------------------------------
@@ -82,6 +86,29 @@ afterEach(() => {
 // ── 1. Today's shift queries ──────────────────────────────────────────────
 
 describe('tryOfflineFallback', () => {
+  describe('classifyOfflineIntent', () => {
+    it('classifies holiday questions separately from supported offline intents', () => {
+      const result = classifyOfflineIntent('Am I working Christmas?');
+
+      expect(result.language).toBe('en');
+      expect(result.intent).toBe('holiday_date');
+    });
+
+    it('classifies explicit calendar date questions', () => {
+      const result = classifyOfflineIntent('Am I working on 2026-12-25?');
+
+      expect(result.language).toBe('en');
+      expect(result.intent).toBe('calendar_date');
+    });
+
+    it('classifies supported tomorrow questions for handled/offline analytics', () => {
+      const result = classifyOfflineIntent('What shift do I have tomorrow?');
+
+      expect(result.language).toBe('en');
+      expect(result.intent).toBe('tomorrow_shift');
+    });
+  });
+
   describe("today's shift queries", () => {
     it('should handle "What shift do I have today?" on a day-shift day', () => {
       // Jan 2 2024 -> position 1 -> day shift
@@ -303,6 +330,61 @@ describe('tryOfflineFallback', () => {
       expect(result.handled).toBe(true);
       expect(result.text).toBeDefined();
       expect(result.toolName).toBe('get_next_occurrence');
+    });
+  });
+
+  describe('unsupported offline queries', () => {
+    it('builds a helpful saved-roster fallback for unsupported questions', () => {
+      setFakeDate('2024-01-02');
+
+      const result = buildOfflineUnsupportedResponse(shiftCycle, userName);
+
+      expect(result).toContain('saved roster');
+      expect(result).toContain('next work shift');
+    });
+  });
+
+  describe('block-based offline queries', () => {
+    it('answers current block questions locally for FIFO users', () => {
+      setFakeDate('2024-01-10');
+
+      const result = tryOfflineFallback('What block am I in right now?', fifoCycle, userName);
+
+      expect(result.handled).toBe(true);
+      expect(result.text).toContain('rest block');
+      expect(result.text).toContain('day 2 of 6');
+      expect(result.toolName).toBe('current_block_info');
+    });
+
+    it('answers next work block questions locally', () => {
+      setFakeDate('2024-01-10');
+
+      const result = tryOfflineFallback('When does my next work block start?', fifoCycle, userName);
+
+      expect(result.handled).toBe(true);
+      expect(result.text).toContain('next work block');
+      expect(result.text).toContain('January 15');
+      expect(result.toolName).toBe('get_next_work_block');
+    });
+
+    it('answers days-until-work questions locally', () => {
+      setFakeDate('2024-01-11');
+
+      const result = tryOfflineFallback('How many days until I work again?', fifoCycle, userName);
+
+      expect(result.handled).toBe(true);
+      expect(result.text).toContain('4 days');
+      expect(result.toolName).toBe('days_until_work');
+    });
+
+    it('answers days-until-rest questions locally', () => {
+      setFakeDate('2024-01-03');
+
+      const result = tryOfflineFallback('How many days until rest?', fifoCycle, userName);
+
+      expect(result.handled).toBe(true);
+      expect(result.text).toContain('6 days');
+      expect(result.toolName).toBe('days_until_rest');
     });
   });
 

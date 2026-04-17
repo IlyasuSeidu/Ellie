@@ -67,6 +67,7 @@ import { Analytics } from '@/utils/analytics';
 import { NotificationPrimingModal } from '@/components/onboarding/NotificationPrimingModal';
 import { useSubscription } from '@/hooks/useSubscription';
 import { appStateStorageService } from '@/services/AppStateStorageService';
+import { subscriptionEntitlementCacheService } from '@/services/SubscriptionEntitlementCacheService';
 
 const isJestRuntime = (): boolean =>
   typeof process !== 'undefined' && typeof process.env?.JEST_WORKER_ID === 'string';
@@ -263,7 +264,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
   const { t, i18n } = useTranslation('onboarding');
   const { data, validateData } = useOnboarding();
   const { user } = useAuth();
-  const { isPro } = useSubscription();
+  const { isPro, isLoading: subscriptionLoading } = useSubscription();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const currentPlatform = Platform.OS;
 
@@ -397,6 +398,11 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
             ? Math.max(0, Math.round((Date.now() - installTime) / 1000))
             : 0;
 
+        const cachedIsPro = subscriptionLoading
+          ? await subscriptionEntitlementCacheService.getCachedIsPro(user?.uid ?? null)
+          : null;
+        const resolvedIsPro = isPro || cachedIsPro === true;
+
         Analytics.onboardingCompleted({
           roster_type: data.rosterType ?? null,
           pattern_type: data.patternType ?? null,
@@ -404,7 +410,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
           country: data.country ?? null,
           pain_point: data.painPoint ?? null,
           time_to_complete_seconds: timeToCompleteSeconds,
-          is_pro: isPro,
+          is_pro: resolvedIsPro,
           platform: currentPlatform,
         });
       }

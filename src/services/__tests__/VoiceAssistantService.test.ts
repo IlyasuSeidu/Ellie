@@ -20,7 +20,12 @@ import type {
   VoiceAssistantNotice,
 } from '@/types/voiceAssistant';
 import { ShiftPattern, ShiftSystem } from '@/types';
-import { tryOfflineFallback } from '@/utils/offlineFallback';
+import {
+  buildOfflineUnsupportedResponse,
+  classifyOfflineIntent,
+  tryOfflineFallback,
+} from '@/utils/offlineFallback';
+import { Analytics } from '@/utils/analytics';
 
 // ── Mocks ──────────────────────────────────────────────────────────
 
@@ -77,11 +82,19 @@ jest.mock('../EllieBrainService', () => ({
 
 jest.mock('@/utils/offlineFallback', () => ({
   tryOfflineFallback: jest.fn(() => ({ handled: false })),
+  buildOfflineUnsupportedResponse: jest.fn(() => 'Offline roster fallback'),
+  classifyOfflineIntent: jest.fn(() => ({ language: 'en', intent: 'unknown' })),
 }));
 
 jest.mock('../NetworkService', () => ({
   networkService: {
     getSnapshot: jest.fn(() => ({ status: 'online' })),
+  },
+}));
+
+jest.mock('@/utils/analytics', () => ({
+  Analytics: {
+    track: jest.fn(),
   },
 }));
 
@@ -131,9 +144,44 @@ describe('VoiceAssistantService', () => {
   });
 
   describe('offline backend fallback', () => {
+    it('tracks handled offline queries with the detected intent', async () => {
+      mockedNetworkService.getSnapshot.mockReturnValue({ status: 'offline' } as never);
+      (tryOfflineFallback as jest.Mock).mockReturnValueOnce({
+        handled: true,
+        text: 'Tomorrow you have a day shift.',
+        toolName: 'get_shift_for_date',
+      });
+      (classifyOfflineIntent as jest.Mock).mockReturnValueOnce({
+        language: 'en',
+        intent: 'tomorrow_shift',
+      });
+
+      await voiceAssistantService.startListening();
+
+      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
+        .calls[0][0];
+
+      registeredCallbacks.onFinalResult({ transcript: 'What shift do I have tomorrow?' });
+
+      await waitFor(() => {
+        expect(Analytics.track).toHaveBeenCalledWith('voice_assistant_offline_handled', {
+          intent_guess: 'tomorrow_shift',
+          locale: 'en',
+          roster_type: null,
+          shift_system: '2-shift',
+          query_length: 'What shift do I have tomorrow?'.length,
+          tool_name: 'get_shift_for_date',
+        });
+      });
+    });
+
     it('does not call Ellie Brain when offline and the query is not locally handled', async () => {
       mockedNetworkService.getSnapshot.mockReturnValue({ status: 'offline' } as never);
       (tryOfflineFallback as jest.Mock).mockReturnValueOnce({ handled: false });
+      (classifyOfflineIntent as jest.Mock).mockReturnValueOnce({
+        language: 'en',
+        intent: 'holiday_date',
+      });
 
       await voiceAssistantService.startListening();
 
@@ -147,14 +195,26 @@ describe('VoiceAssistantService', () => {
         expect(callbacks.onAssistantMessage).toHaveBeenCalledWith(
           expect.objectContaining({
             role: 'assistant',
-            text: 'Check your connection and retry.',
+            text: 'Offline roster fallback',
           })
         );
       });
       expect(textToSpeechService.speak).toHaveBeenCalledWith(
-        'Check your connection and retry.',
+        'Offline roster fallback',
         expect.any(Object)
       );
+      expect(buildOfflineUnsupportedResponse).toHaveBeenCalledWith(
+        mockUserContext.shiftCycle,
+        mockUserContext.name
+      );
+      expect(Analytics.track).toHaveBeenCalledWith('voice_assistant_offline_unhandled', {
+        intent_guess: 'holiday_date',
+        locale: 'en',
+        roster_type: null,
+        shift_system: '2-shift',
+        query_length: 'How many swings do I have next month?'.length,
+        needs_connection: true,
+      });
     });
   });
 

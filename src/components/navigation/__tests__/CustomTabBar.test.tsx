@@ -5,8 +5,10 @@ import { theme } from '@/utils/theme';
 import { shiftColors } from '@/constants/shiftStyles';
 
 const mockOpenModal = jest.fn();
+const mockOpenPaywall = jest.fn();
 const mockUseVoiceAssistant = jest.fn();
 const mockUseShiftAccent = jest.fn();
+const mockUseSubscription = jest.fn();
 
 function extractTextColor(
   style: { color?: string } | Array<{ color?: string } | null> | undefined
@@ -27,6 +29,10 @@ jest.mock('@/contexts/VoiceAssistantContext', () => ({
 
 jest.mock('@/hooks/useShiftAccent', () => ({
   useShiftAccent: () => mockUseShiftAccent(),
+}));
+
+jest.mock('@/hooks/useSubscription', () => ({
+  useSubscription: () => mockUseSubscription(),
 }));
 
 jest.mock('react-native-safe-area-context', () => ({
@@ -90,6 +96,11 @@ describe('CustomTabBar', () => {
       state: 'idle',
       openModal: mockOpenModal,
     });
+    mockUseSubscription.mockReturnValue({
+      isPro: true,
+      isLoading: false,
+      openPaywall: mockOpenPaywall,
+    });
     mockUseShiftAccent.mockReturnValue({
       shiftType: null,
       statusAreaColor: '#0c0a09',
@@ -135,7 +146,40 @@ describe('CustomTabBar', () => {
     fireEvent.press(getByLabelText('Open Ellie voice assistant'));
 
     expect(mockOpenModal).toHaveBeenCalled();
+    expect(mockOpenPaywall).not.toHaveBeenCalled();
     expect(props.navigation.navigate).not.toHaveBeenCalled();
+  });
+
+  it('opens the paywall instead of the assistant when user is not pro', () => {
+    mockUseSubscription.mockReturnValue({
+      isPro: false,
+      isLoading: false,
+      openPaywall: mockOpenPaywall,
+    });
+
+    const props = buildProps(1);
+    const { getByLabelText } = render(<CustomTabBar {...props} />);
+
+    fireEvent.press(getByLabelText('Open Ellie voice assistant'));
+
+    expect(mockOpenPaywall).toHaveBeenCalled();
+    expect(mockOpenModal).not.toHaveBeenCalled();
+  });
+
+  it('does not gate while subscription state is still loading', () => {
+    mockUseSubscription.mockReturnValue({
+      isPro: false,
+      isLoading: true,
+      openPaywall: mockOpenPaywall,
+    });
+
+    const props = buildProps(1);
+    const { getByLabelText } = render(<CustomTabBar {...props} />);
+
+    fireEvent.press(getByLabelText('Open Ellie voice assistant'));
+
+    expect(mockOpenPaywall).not.toHaveBeenCalled();
+    expect(mockOpenModal).not.toHaveBeenCalled();
   });
 
   it('renders in active voice mode and center tab state', () => {

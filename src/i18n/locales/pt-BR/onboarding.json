@@ -4,7 +4,7 @@
     "getStarted": "Comecar",
     "socialProof": "Feito para trabalhadores em turno como você",
     "trust": {
-      "freeTrial": "Teste grátis de 7 dias",
+      "freeTrial": "Teste grátis",
       "noCard": "Sem cartão de crédito",
       "cancelAnytime": "Cancele quando quiser"
     }
@@ -1038,7 +1038,7 @@
     "headline": "Seus próximos 3 meses, mapeados.",
     "subheadline": "Aqui está uma prévia dos seus próximos 3 meses. Chega de adivinhar isso na cabeça.",
     "heyEllieTitle": "Pergunte à Ellie sobre seu roster",
-    "ctaPrimary": "Iniciar teste de 7 dias",
+    "ctaPrimary": "Iniciar teste grátis",
     "ctaSecondary": "ou pular — só a semana atual, sem o ano completo",
     "stats": {
       "workDays": "Dias de trabalho",

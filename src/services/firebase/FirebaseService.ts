@@ -98,18 +98,20 @@ export class FirebaseService {
           const collectionRef = collection(this.db, collectionName);
           const documentId = docId || doc(collectionRef).id;
           const docRef = doc(collectionRef, documentId);
+          const sanitizedData = this.stripUndefinedValues(data) as T;
+          const now = new Date().toISOString();
 
           await setDoc(docRef, {
-            ...data,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
+            ...sanitizedData,
+            createdAt: now,
+            updatedAt: now,
           });
 
           const cachedDocument = {
             id: documentId,
-            ...data,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
+            ...sanitizedData,
+            createdAt: now,
+            updatedAt: now,
           } as unknown as T;
           await this.cacheDocument(collectionName, documentId, cachedDocument);
           await this.invalidateCollectionQueryCaches(collectionName);
@@ -221,15 +223,17 @@ export class FirebaseService {
       async () => {
         try {
           const docRef = doc(this.db, collectionName, docId);
+          const sanitizedData = this.stripUndefinedValues(data) as Partial<T>;
+          const now = new Date().toISOString();
 
           await updateDoc(docRef, {
-            ...data,
-            updatedAt: new Date().toISOString(),
+            ...sanitizedData,
+            updatedAt: now,
           });
 
           await this.mergeCachedDocument(collectionName, docId, {
-            ...data,
-            updatedAt: new Date().toISOString(),
+            ...sanitizedData,
+            updatedAt: now,
           });
           await this.invalidateCollectionQueryCaches(collectionName);
 
@@ -239,6 +243,57 @@ export class FirebaseService {
           });
         } catch (error) {
           throw this.handleFirestoreError(error as FirestoreError, 'update');
+        }
+      },
+      {
+        ...criticalRetryOptions,
+        shouldRetry: (error) =>
+          error instanceof NetworkError ||
+          error.message.includes('network') ||
+          error.message.includes('unavailable'),
+      }
+    );
+  }
+
+  /**
+   * Upsert a document in Firestore while preserving a caller-provided createdAt.
+   * Uses setDoc so callers can safely replay a full locally-owned document snapshot.
+   */
+  // eslint-disable-next-line require-await
+  protected async upsert<T extends DocumentData>(
+    collectionName: string,
+    docId: string,
+    data: T,
+    options: { merge?: boolean } = {}
+  ): Promise<void> {
+    return retry(
+      async () => {
+        try {
+          const docRef = doc(this.db, collectionName, docId);
+          const sanitizedData = this.stripUndefinedValues(data) as T;
+          const payload = {
+            ...sanitizedData,
+            createdAt:
+              typeof (sanitizedData as { createdAt?: unknown }).createdAt === 'string'
+                ? (sanitizedData as unknown as { createdAt: string }).createdAt
+                : new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          };
+
+          await setDoc(docRef, payload, { merge: options.merge ?? true });
+
+          await this.cacheDocument(collectionName, docId, {
+            id: docId,
+            ...payload,
+          } as unknown as T);
+          await this.invalidateCollectionQueryCaches(collectionName);
+
+          logger.info('Document upserted', {
+            collection: collectionName,
+            docId,
+          });
+        } catch (error) {
+          throw this.handleFirestoreError(error as FirestoreError, 'upsert');
         }
       },
       {
@@ -689,5 +744,35 @@ export class FirebaseService {
     }
 
     return (hash >>> 0).toString(36);
+  }
+
+  private stripUndefinedValues(value: unknown): unknown {
+    if (value === undefined) {
+      return undefined;
+    }
+
+    if (value === null || typeof value !== 'object') {
+      return value;
+    }
+
+    if (value instanceof Date) {
+      return value;
+    }
+
+    if (Array.isArray(value)) {
+      return value
+        .map((entry) => this.stripUndefinedValues(entry))
+        .filter((entry) => entry !== undefined);
+    }
+
+    const result: Record<string, unknown> = {};
+    Object.entries(value as Record<string, unknown>).forEach(([key, entry]) => {
+      const sanitizedEntry = this.stripUndefinedValues(entry);
+      if (sanitizedEntry !== undefined) {
+        result[key] = sanitizedEntry;
+      }
+    });
+
+    return result;
   }
 }
