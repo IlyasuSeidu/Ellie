@@ -1,0 +1,1022 @@
+{
+  "date": "2026-04-17",
+  "humanDate": "April 17, 2026",
+  "repository": "Ellie",
+  "branch": "codex/native-firestore-offline",
+  "remote": "https://github.com/IlyasuSeidu/Ellie.git",
+  "window": {
+    "mode": "rollover-time",
+    "rolloverTime": "20:30",
+    "since": "2026-04-16 20:30:00",
+    "until": "2026-04-17 20:29:59"
+  },
+  "selectedAngles": [
+    "stakes-consequence",
+    "user-empathy",
+    "technical-discovery",
+    "proof-demo",
+    "community-debate"
+  ],
+  "platformAngles": {
+    "reels": ["stakes-consequence", "before-after"],
+    "tiktok": ["stakes-consequence", "build-confession"],
+    "shorts": ["stakes-consequence", "wrong-assumption"],
+    "carousel": ["wrong-assumption", "before-after"],
+    "linkedin": ["founder-opinion", "mini-case-study"],
+    "x": ["founder-opinion", "stakes-consequence"],
+    "threads": ["user-empathy", "community-debate"]
+  },
+  "codebaseContext": {
+    "storyMode": "foundation-launch",
+    "storyHighlights": [
+      "calendar-based shift setup",
+      "setup state carried across screens",
+      "shift and date math underneath the answer",
+      "MainDashboardScreen Main screen orchestrator for the dashboard.",
+      "Aha moment that turns setup effort into a visible long-range schedule payoff."
+    ],
+    "touchedFiles": [
+      {
+        "path": "src/screens/main/MainDashboardScreen.tsx",
+        "role": "touched",
+        "summary": "MainDashboardScreen Main screen orchestrator for the dashboard.",
+        "signals": [
+          "physics-motion",
+          "onboarding-state",
+          "localized-copy",
+          "shift-math",
+          "service-layer",
+          "calendar-setup"
+        ],
+        "relatedFiles": [
+          "src/hooks/useSubscription.ts",
+          "src/hooks/usePaywallRecovery.ts",
+          "src/screens/subscription/PaywallScreen.tsx"
+        ]
+      },
+      {
+        "path": "src/screens/onboarding/premium/PremiumAhaMomentScreen.tsx",
+        "role": "touched",
+        "summary": "Aha moment that turns setup effort into a visible long-range schedule payoff.",
+        "signals": [
+          "guided-onboarding-path",
+          "country-selection",
+          "physics-motion",
+          "onboarding-state",
+          "localized-copy",
+          "shift-math",
+          "calendar-setup",
+          "proof-through-tests"
+        ],
+        "relatedFiles": [
+          "src/contexts/OnboardingContext.tsx",
+          "src/contexts/SubscriptionContext.tsx",
+          "src/contexts/VoiceAssistantContext.tsx"
+        ]
+      },
+      {
+        "path": "src/screens/onboarding/premium/PremiumCompletionScreen.tsx",
+        "role": "touched",
+        "summary": "Premium Completion Screen Celebration and completion screen for onboarding flow.",
+        "signals": [
+          "guided-onboarding-path",
+          "country-selection",
+          "physics-motion",
+          "onboarding-state",
+          "localized-copy",
+          "shift-math",
+          "premium-first-impression",
+          "calendar-setup",
+          "proof-through-tests"
+        ],
+        "relatedFiles": [
+          "src/utils/theme.ts",
+          "src/components/onboarding/premium/ProgressHeader.tsx",
+          "src/components/onboarding/premium/PremiumButton.tsx"
+        ]
+      },
+      {
+        "path": "src/screens/subscription/PaywallScreen.tsx",
+        "role": "touched",
+        "summary": "PaywallScreen.tsx is part of the current codebase around this feature area.",
+        "signals": [
+          "country-selection",
+          "physics-motion",
+          "onboarding-state",
+          "localized-copy",
+          "shift-math",
+          "calendar-setup"
+        ],
+        "relatedFiles": [
+          "src/services/RevenueCatRuntime.ts",
+          "src/services/RevenueCatEntitlements.ts",
+          "src/services/RevenueCatOfferingsCacheService.ts"
+        ]
+      },
+      {
+        "path": "src/components/voice/VoiceAssistantModal.tsx",
+        "role": "touched",
+        "summary": "VoiceAssistantModal Full-screen modal for the Ellie voice assistant.",
+        "signals": ["physics-motion", "localized-copy", "calendar-setup", "proof-through-tests"],
+        "relatedFiles": [
+          "src/utils/theme.ts",
+          "src/contexts/VoiceAssistantContext.tsx",
+          "src/hooks/useNetworkStatus.ts"
+        ]
+      },
+      {
+        "path": "src/contexts/__tests__/VoiceAssistantContext.test.tsx",
+        "role": "touched",
+        "summary": "VoiceAssistantContext Tests Comprehensive tests for the VoiceAssistantProvider and useVoiceAssistant hook.",
+        "signals": ["onboarding-state", "shift-math", "calendar-setup", "proof-through-tests"],
+        "relatedFiles": [
+          "src/contexts/VoiceAssistantContext.tsx",
+          "src/services/VoiceAssistantService.ts",
+          "src/services/VoiceAssistantPersistenceService.ts"
+        ]
+      }
+    ],
+    "relatedFiles": [
+      {
+        "path": "src/hooks/useSubscription.ts",
+        "role": "related",
+        "summary": "useSubscription.ts is part of the current codebase around this feature area.",
+        "signals": [],
+        "relatedFiles": ["src/contexts/SubscriptionContext.tsx"]
+      },
+      {
+        "path": "src/hooks/usePaywallRecovery.ts",
+        "role": "related",
+        "summary": "usePaywallRecovery Surfaces a soft recovery nudge for users who declined the paywall during",
+        "signals": ["shift-math"],
+        "relatedFiles": ["src/services/AppStateStorageService.ts"]
+      },
+      {
+        "path": "src/contexts/OnboardingContext.tsx",
+        "role": "related",
+        "summary": "OnboardingContext Manages state across all premium onboarding flow screens.",
+        "signals": [
+          "country-selection",
+          "onboarding-state",
+          "localized-copy",
+          "shift-math",
+          "service-layer",
+          "calendar-setup"
+        ],
+        "relatedFiles": [
+          "src/contexts/OnboardingContext.tsx",
+          "src/types/index.ts",
+          "src/i18n/index.ts"
+        ]
+      },
+      {
+        "path": "src/utils/theme.ts",
+        "role": "related",
+        "summary": "Theme Configuration Comprehensive theme system with colors, typography, spacing, and design tokens.",
+        "signals": ["calendar-setup"],
+        "relatedFiles": []
+      }
+    ]
+  },
+  "generation": {
+    "provider": "anthropic",
+    "usedAnthropic": true,
+    "model": "claude-sonnet-4-6",
+    "refinedFiles": [],
+    "failedFiles": [
+      {
+        "path": "03-hero-short.md",
+        "error": "fetch failed"
+      },
+      {
+        "path": "04-instagram-carousel.md",
+        "error": "fetch failed"
+      },
+      {
+        "path": "05-linkedin-post.md",
+        "error": "fetch failed"
+      },
+      {
+        "path": "06-x-thread.md",
+        "error": "fetch failed"
+      },
+      {
+        "path": "ready-to-post/instagram-reels/post.md",
+        "error": "fetch failed"
+      },
+      {
+        "path": "ready-to-post/tiktok/post.md",
+        "error": "fetch failed"
+      },
+      {
+        "path": "ready-to-post/youtube-shorts/post.md",
+        "error": "fetch failed"
+      },
+      {
+        "path": "ready-to-post/instagram-carousel/post.md",
+        "error": "fetch failed"
+      },
+      {
+        "path": "ready-to-post/linkedin/post.md",
+        "error": "fetch failed"
+      },
+      {
+        "path": "ready-to-post/x/post.md",
+        "error": "fetch failed"
+      },
+      {
+        "path": "ready-to-post/threads/post.md",
+        "error": "fetch failed"
+      }
+    ],
+    "requestCount": 0,
+    "usage": {
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0
+    }
+  },
+  "metaFocus": {
+    "id": "trust",
+    "label": "product trust",
+    "explanation": "how the product feels dependable under real-world use"
+  },
+  "metaArc": {
+    "series": "Trust Leaks",
+    "title": "closing a trust leak before it spreads",
+    "promise": "show how small mismatches quietly break trust before users can explain why",
+    "character": "someone looking for an answer they cannot afford to doubt"
+  },
+  "dominantAction": "fix",
+  "totals": {
+    "commits": 1,
+    "filesChanged": 113,
+    "additions": 8103,
+    "deletions": 757,
+    "testsTouched": 27,
+    "localeCount": 11
+  },
+  "topThemes": [
+    {
+      "id": "testing",
+      "label": "Testing",
+      "publicLabel": "delivery confidence",
+      "score": 13
+    },
+    {
+      "id": "foundation",
+      "label": "Foundation",
+      "publicLabel": "invisible trust",
+      "score": 11
+    },
+    {
+      "id": "localization",
+      "label": "Localization",
+      "publicLabel": "language trust",
+      "score": 10
+    },
+    {
+      "id": "paywall",
+      "label": "Paywall",
+      "publicLabel": "conversion clarity",
+      "score": 10
+    }
+  ],
+  "topCategories": [
+    {
+      "id": "i18n",
+      "label": "locales",
+      "count": 33
+    },
+    {
+      "id": "tests",
+      "label": "tests",
+      "count": 27
+    },
+    {
+      "id": "other",
+      "label": "other code",
+      "count": 18
+    },
+    {
+      "id": "services",
+      "label": "services",
+      "count": 17
+    }
+  ],
+  "allLocales": ["af", "ar", "en", "es", "fr", "hi", "id", "pt-BR", "ru", "zh-CN", "zu"],
+  "commits": [
+    {
+      "hash": "51ede7a8ff4db2cd281cc26d3129a1d67137ca06",
+      "shortHash": "51ede7a",
+      "authoredAt": "2026-04-17T07:58:31+00:00",
+      "subject": "Stabilize subscriptions, reminders, and voice flows",
+      "action": "fix",
+      "score": 31,
+      "added": 8103,
+      "deleted": 757,
+      "filesChanged": 113,
+      "testsTouched": 27,
+      "localesTouched": ["af", "ar", "en", "es", "fr", "hi", "id", "pt-BR", "ru", "zh-CN", "zu"],
+      "files": [
+        {
+          "path": "App.tsx",
+          "added": 35,
+          "deleted": 10,
+          "category": "other"
+        },
+        {
+          "path": "app.config.js",
+          "added": 36,
+          "deleted": 2,
+          "category": "config"
+        },
+        {
+          "path": "build-in-public/daily-content/2026-04-09/00-brief.json",
+          "added": 33,
+          "deleted": 0,
+          "category": "config"
+        },
+        {
+          "path": "build-in-public/daily-content/2026-04-09/01-daily-brief.md",
+          "added": 9,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "build-in-public/daily-content/2026-04-09/10-codebase-context.md",
+          "added": 3,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "build-in-public/daily-content/2026-04-11/00-brief.json",
+          "added": 33,
+          "deleted": 0,
+          "category": "config"
+        },
+        {
+          "path": "build-in-public/daily-content/2026-04-11/01-daily-brief.md",
+          "added": 9,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "build-in-public/daily-content/2026-04-11/10-codebase-context.md",
+          "added": 3,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "build-in-public/daily-content/2026-04-14/00-brief.json",
+          "added": 33,
+          "deleted": 0,
+          "category": "config"
+        },
+        {
+          "path": "build-in-public/daily-content/2026-04-14/01-daily-brief.md",
+          "added": 9,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "build-in-public/daily-content/2026-04-14/10-codebase-context.md",
+          "added": 3,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "build-in-public/daily-content/2026-04-15/00-brief.json",
+          "added": 33,
+          "deleted": 0,
+          "category": "config"
+        },
+        {
+          "path": "build-in-public/daily-content/2026-04-15/01-daily-brief.md",
+          "added": 9,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "build-in-public/daily-content/2026-04-15/10-codebase-context.md",
+          "added": 3,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "build-in-public/daily-content/2026-04-16/00-brief.json",
+          "added": 33,
+          "deleted": 0,
+          "category": "config"
+        },
+        {
+          "path": "build-in-public/daily-content/2026-04-16/01-daily-brief.md",
+          "added": 9,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "build-in-public/daily-content/2026-04-16/10-codebase-context.md",
+          "added": 3,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "firestore.rules",
+          "added": 25,
+          "deleted": 5,
+          "category": "other"
+        },
+        {
+          "path": "jest.setup.js",
+          "added": 24,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "package-lock.json",
+          "added": 21,
+          "deleted": 0,
+          "category": "config"
+        },
+        {
+          "path": "package.json",
+          "added": 1,
+          "deleted": 0,
+          "category": "config"
+        },
+        {
+          "path": "src/components/checkin/PostShiftCheckInController.tsx",
+          "added": 137,
+          "deleted": 0,
+          "category": "components"
+        },
+        {
+          "path": "src/components/checkin/ShiftCheckInModal.tsx",
+          "added": 513,
+          "deleted": 0,
+          "category": "components"
+        },
+        {
+          "path": "src/components/checkin/__tests__/PostShiftCheckInController.test.tsx",
+          "added": 129,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/components/checkin/__tests__/ShiftCheckInModal.test.tsx",
+          "added": 128,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/components/navigation/CustomTabBar.tsx",
+          "added": 10,
+          "deleted": 4,
+          "category": "components"
+        },
+        {
+          "path": "src/components/navigation/__tests__/CustomTabBar.test.tsx",
+          "added": 44,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/components/voice/VoiceAssistantModal.tsx",
+          "added": 148,
+          "deleted": 27,
+          "category": "components"
+        },
+        {
+          "path": "src/components/voice/__tests__/VoiceAssistantModal.test.tsx",
+          "added": 33,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/constants/storageKeys.ts",
+          "added": 8,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "src/contexts/SubscriptionContext.tsx",
+          "added": 279,
+          "deleted": 57,
+          "category": "other"
+        },
+        {
+          "path": "src/contexts/VoiceAssistantContext.tsx",
+          "added": 210,
+          "deleted": 50,
+          "category": "other"
+        },
+        {
+          "path": "src/contexts/__tests__/SubscriptionContext.test.tsx",
+          "added": 218,
+          "deleted": 4,
+          "category": "tests"
+        },
+        {
+          "path": "src/contexts/__tests__/VoiceAssistantContext.test.tsx",
+          "added": 71,
+          "deleted": 6,
+          "category": "tests"
+        },
+        {
+          "path": "src/i18n/locales/af/common.json",
+          "added": 13,
+          "deleted": 8,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/af/dashboard.json",
+          "added": 32,
+          "deleted": 3,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/af/onboarding.json",
+          "added": 2,
+          "deleted": 2,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/ar/common.json",
+          "added": 13,
+          "deleted": 8,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/ar/dashboard.json",
+          "added": 32,
+          "deleted": 3,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/ar/onboarding.json",
+          "added": 2,
+          "deleted": 2,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/en/common.json",
+          "added": 13,
+          "deleted": 8,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/en/dashboard.json",
+          "added": 32,
+          "deleted": 3,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/en/onboarding.json",
+          "added": 2,
+          "deleted": 2,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/es/common.json",
+          "added": 13,
+          "deleted": 8,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/es/dashboard.json",
+          "added": 32,
+          "deleted": 3,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/es/onboarding.json",
+          "added": 2,
+          "deleted": 2,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/fr/common.json",
+          "added": 13,
+          "deleted": 8,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/fr/dashboard.json",
+          "added": 32,
+          "deleted": 3,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/fr/onboarding.json",
+          "added": 2,
+          "deleted": 2,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/hi/common.json",
+          "added": 13,
+          "deleted": 8,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/hi/dashboard.json",
+          "added": 32,
+          "deleted": 3,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/hi/onboarding.json",
+          "added": 2,
+          "deleted": 2,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/id/common.json",
+          "added": 13,
+          "deleted": 8,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/id/dashboard.json",
+          "added": 32,
+          "deleted": 3,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/id/onboarding.json",
+          "added": 2,
+          "deleted": 2,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/pt-BR/common.json",
+          "added": 13,
+          "deleted": 8,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/pt-BR/dashboard.json",
+          "added": 32,
+          "deleted": 3,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/pt-BR/onboarding.json",
+          "added": 2,
+          "deleted": 2,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/ru/common.json",
+          "added": 13,
+          "deleted": 8,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/ru/dashboard.json",
+          "added": 32,
+          "deleted": 3,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/ru/onboarding.json",
+          "added": 2,
+          "deleted": 2,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/zh-CN/common.json",
+          "added": 13,
+          "deleted": 8,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/zh-CN/dashboard.json",
+          "added": 32,
+          "deleted": 3,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/zh-CN/onboarding.json",
+          "added": 2,
+          "deleted": 2,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/zu/common.json",
+          "added": 13,
+          "deleted": 8,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/zu/dashboard.json",
+          "added": 32,
+          "deleted": 3,
+          "category": "i18n"
+        },
+        {
+          "path": "src/i18n/locales/zu/onboarding.json",
+          "added": 2,
+          "deleted": 2,
+          "category": "i18n"
+        },
+        {
+          "path": "src/screens/main/MainDashboardScreen.tsx",
+          "added": 5,
+          "deleted": 2,
+          "category": "screens"
+        },
+        {
+          "path": "src/screens/main/ProfileScreen.tsx",
+          "added": 104,
+          "deleted": 3,
+          "category": "screens"
+        },
+        {
+          "path": "src/screens/main/__tests__/MainDashboardScreen.behavior.test.tsx",
+          "added": 29,
+          "deleted": 1,
+          "category": "tests"
+        },
+        {
+          "path": "src/screens/main/__tests__/ProfileScreen.test.tsx",
+          "added": 61,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/screens/onboarding/premium/PremiumAhaMomentScreen.tsx",
+          "added": 23,
+          "deleted": 3,
+          "category": "screens"
+        },
+        {
+          "path": "src/screens/onboarding/premium/PremiumCompletionScreen.tsx",
+          "added": 8,
+          "deleted": 2,
+          "category": "screens"
+        },
+        {
+          "path": "src/screens/onboarding/premium/__tests__/PremiumAhaMomentScreen.test.tsx",
+          "added": 37,
+          "deleted": 5,
+          "category": "tests"
+        },
+        {
+          "path": "src/screens/onboarding/premium/__tests__/PremiumCompletionScreen.test.tsx",
+          "added": 49,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/screens/subscription/PaywallScreen.tsx",
+          "added": 619,
+          "deleted": 205,
+          "category": "screens"
+        },
+        {
+          "path": "src/screens/subscription/__tests__/PaywallScreen.test.tsx",
+          "added": 553,
+          "deleted": 26,
+          "category": "tests"
+        },
+        {
+          "path": "src/services/ExpoNotificationScheduler.ts",
+          "added": 34,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/NotificationService.ts",
+          "added": 245,
+          "deleted": 63,
+          "category": "services"
+        },
+        {
+          "path": "src/services/RevenueCatEntitlements.ts",
+          "added": 76,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/RevenueCatOfferingsCacheService.ts",
+          "added": 125,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/RevenueCatRuntime.ts",
+          "added": 125,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/RevenueCatUIRuntime.ts",
+          "added": 81,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/ShiftLogService.ts",
+          "added": 190,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/SmartReminderOrchestrator.ts",
+          "added": 113,
+          "deleted": 35,
+          "category": "services"
+        },
+        {
+          "path": "src/services/SmartReminderService.ts",
+          "added": 23,
+          "deleted": 3,
+          "category": "services"
+        },
+        {
+          "path": "src/services/SmartReminderSettingsService.ts",
+          "added": 21,
+          "deleted": 2,
+          "category": "services"
+        },
+        {
+          "path": "src/services/SubscriptionEntitlementCacheService.ts",
+          "added": 189,
+          "deleted": 19,
+          "category": "services"
+        },
+        {
+          "path": "src/services/UserService.ts",
+          "added": 420,
+          "deleted": 12,
+          "category": "services"
+        },
+        {
+          "path": "src/services/VoiceAssistantPersistenceService.ts",
+          "added": 113,
+          "deleted": 23,
+          "category": "services"
+        },
+        {
+          "path": "src/services/VoiceAssistantService.ts",
+          "added": 29,
+          "deleted": 4,
+          "category": "services"
+        },
+        {
+          "path": "src/services/__mocks__/NotificationService.ts",
+          "added": 10,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/services/__tests__/FirebaseService.sanitize.test.ts",
+          "added": 96,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/services/__tests__/RevenueCatEntitlements.test.ts",
+          "added": 63,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/services/__tests__/RevenueCatOfferingsCacheService.test.ts",
+          "added": 125,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/services/__tests__/RevenueCatRuntime.test.ts",
+          "added": 200,
+          "deleted": 4,
+          "category": "tests"
+        },
+        {
+          "path": "src/services/__tests__/RevenueCatUIRuntime.test.ts",
+          "added": 48,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/services/__tests__/ShiftLogService.test.ts",
+          "added": 147,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/services/__tests__/SmartReminderOrchestrator.test.ts",
+          "added": 94,
+          "deleted": 7,
+          "category": "tests"
+        },
+        {
+          "path": "src/services/__tests__/SmartReminderService.test.ts",
+          "added": 7,
+          "deleted": 2,
+          "category": "tests"
+        },
+        {
+          "path": "src/services/__tests__/SmartReminderSettingsService.test.ts",
+          "added": 38,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "src/services/__tests__/SubscriptionEntitlementCacheService.test.ts",
+          "added": 60,
+          "deleted": 7,
+          "category": "tests"
+        },
+        {
+          "path": "src/services/__tests__/VoiceAssistantPersistenceService.test.ts",
+          "added": 46,
+          "deleted": 1,
+          "category": "tests"
+        },
+        {
+          "path": "src/services/__tests__/VoiceAssistantService.test.ts",
+          "added": 63,
+          "deleted": 3,
+          "category": "tests"
+        },
+        {
+          "path": "src/services/firebase/FirebaseService.ts",
+          "added": 95,
+          "deleted": 10,
+          "category": "services"
+        },
+        {
+          "path": "src/services/firebase/__mocks__/FirebaseService.ts",
+          "added": 27,
+          "deleted": 0,
+          "category": "services"
+        },
+        {
+          "path": "src/types/reminders.ts",
+          "added": 14,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "src/types/validation.ts",
+          "added": 8,
+          "deleted": 0,
+          "category": "other"
+        },
+        {
+          "path": "src/utils/__tests__/offlineFallback.test.ts",
+          "added": 83,
+          "deleted": 1,
+          "category": "tests"
+        },
+        {
+          "path": "src/utils/offlineFallback.ts",
+          "added": 453,
+          "deleted": 0,
+          "category": "utils"
+        },
+        {
+          "path": "tests/services/NotificationService.test.ts",
+          "added": 135,
+          "deleted": 0,
+          "category": "tests"
+        },
+        {
+          "path": "tests/services/UserService.test.ts",
+          "added": 183,
+          "deleted": 6,
+          "category": "tests"
+        },
+        {
+          "path": "tests/services/firebase/FirebaseService.test.ts",
+          "added": 24,
+          "deleted": 0,
+          "category": "tests"
+        }
+      ]
+    }
+  ],
+  "topMoments": [
+    {
+      "rank": 1,
+      "hash": "51ede7a",
+      "subject": "Stabilize subscriptions, reminders, and voice flows",
+      "slug": "01-stabilize-subscriptions-reminders-and-voice-flow",
+      "publicLabel": "the reliability layer",
+      "focusText": "delivery confidence and invisible trust",
+      "categoryText": "locales and tests",
+      "tension": "If the reliability layer feels wrong once, people start doubting the whole product.",
+      "lesson": "Bug fixes become content when you explain the wrong assumption, not just the patch.",
+      "evidence": "11 languages tightened and the hesitation point inside the reliability layer resolves more cleanly now",
+      "proof": "11 languages tightened and the hesitation point inside the reliability layer resolves more cleanly now",
+      "testsTouched": 27,
+      "localesTouched": ["af", "ar", "en", "es", "fr", "hi", "id", "pt-BR", "ru", "zh-CN", "zu"],
+      "score": 31
+    }
+  ]
+}

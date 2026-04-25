@@ -6,9 +6,9 @@
  */
 
 import {
-  Auth,
-  User,
-  UserCredential,
+  type Auth,
+  type User,
+  type UserCredential,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
@@ -23,7 +23,7 @@ import {
   GoogleAuthProvider,
   signInWithCredential,
   OAuthProvider,
-} from 'firebase/auth';
+} from '@/services/firebase/authSdk';
 import {
   AppState,
   type AppStateStatus,

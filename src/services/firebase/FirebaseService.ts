@@ -11,23 +11,26 @@
 
 import {
   getFirestore,
-  Firestore,
   collection,
   doc,
   getDoc,
+  getDocFromCache,
   setDoc,
   updateDoc,
   deleteDoc,
   query,
   getDocs,
+  getDocsFromCache,
   onSnapshot,
-  QueryConstraint,
-  DocumentData,
-  Unsubscribe,
-  FirestoreError,
-} from 'firebase/firestore';
-import { getAuth, Auth } from 'firebase/auth';
+  type Firestore,
+  type QueryConstraint,
+  type DocumentData,
+  type Unsubscribe,
+  type FirestoreError,
+} from '@/services/firebase/firestoreSdk';
+import { getAuth, type Auth } from '@/services/firebase/authSdk';
 import { asyncStorageService } from '@/services/AsyncStorageService';
+import { shouldUseNativeFirebaseFullStack } from '@/services/firebase/nativeAvailability';
 import { logger } from '@/utils/logger';
 import { FirebaseError, NetworkError } from '@/utils/errorUtils';
 import { retry, criticalRetryOptions } from '@/utils/reliableRetry';
@@ -38,6 +41,12 @@ import { networkService } from '@/services/NetworkService';
  */
 export interface NetworkState {
   isConnected: boolean;
+}
+
+type FirestoreLogLevel = 'error' | 'warn' | 'debug' | 'none';
+
+export interface FirestoreOperationOptions {
+  logLevel?: FirestoreLogLevel;
 }
 
 /**
@@ -57,6 +66,10 @@ export class FirebaseService {
     this.db = getFirestore();
     this.auth = getAuth();
     this.initializeNetworkListener();
+  }
+
+  private get useSdkOfflinePersistence(): boolean {
+    return shouldUseNativeFirebaseFullStack();
   }
 
   /**
@@ -90,7 +103,8 @@ export class FirebaseService {
   protected async create<T extends DocumentData>(
     collectionName: string,
     data: T,
-    docId?: string
+    docId?: string,
+    options: FirestoreOperationOptions = {}
   ): Promise<string> {
     return retry(
       async () => {
@@ -113,8 +127,10 @@ export class FirebaseService {
             createdAt: now,
             updatedAt: now,
           } as unknown as T;
-          await this.cacheDocument(collectionName, documentId, cachedDocument);
-          await this.invalidateCollectionQueryCaches(collectionName);
+          if (!this.useSdkOfflinePersistence) {
+            await this.cacheDocument(collectionName, documentId, cachedDocument);
+            await this.invalidateCollectionQueryCaches(collectionName);
+          }
 
           logger.info('Document created', {
             collection: collectionName,
@@ -123,7 +139,7 @@ export class FirebaseService {
 
           return documentId;
         } catch (error) {
-          throw this.handleFirestoreError(error as FirestoreError, 'create');
+          throw this.handleFirestoreError(error as FirestoreError, 'create', options);
         }
       },
       {
@@ -145,9 +161,10 @@ export class FirebaseService {
   // eslint-disable-next-line require-await
   protected async read<T extends DocumentData>(
     collectionName: string,
-    docId: string
+    docId: string,
+    options: FirestoreOperationOptions = {}
   ): Promise<T | null> {
-    if (!this.networkState.isConnected) {
+    if (!this.useSdkOfflinePersistence && !this.networkState.isConnected) {
       const cached = await this.getCachedDocument<T>(collectionName, docId);
       if (cached !== null) {
         logger.debug('Document served from local cache', {
@@ -178,12 +195,36 @@ export class FirebaseService {
             docId,
           });
 
-          const result = { id: docSnap.id, ...docSnap.data() } as unknown as T;
-          await this.cacheDocument(collectionName, docId, result);
+          const result = {
+            id: docSnap.id,
+            ...(docSnap.data() as Record<string, unknown>),
+          } as unknown as T;
+          if (!this.useSdkOfflinePersistence) {
+            await this.cacheDocument(collectionName, docId, result);
+          }
           return result;
         } catch (error) {
-          const handledError = this.handleFirestoreError(error as FirestoreError, 'read');
-          if (handledError instanceof NetworkError) {
+          const handledError = this.handleFirestoreError(error as FirestoreError, 'read', options);
+          if (this.useSdkOfflinePersistence && handledError instanceof NetworkError) {
+            try {
+              const docRef = doc(this.db, collectionName, docId);
+              const cachedDoc = await getDocFromCache(docRef);
+              if (cachedDoc.exists()) {
+                const result = {
+                  id: cachedDoc.id,
+                  ...(cachedDoc.data() as Record<string, unknown>),
+                } as unknown as T;
+                logger.warn('Serving Firestore native cached document after read failure', {
+                  collection: collectionName,
+                  docId,
+                });
+                return result;
+              }
+              return null;
+            } catch {
+              // Let the original error surface when native cache has nothing usable.
+            }
+          } else if (handledError instanceof NetworkError) {
             const cached = await this.getCachedDocument<T>(collectionName, docId);
             if (cached !== null) {
               logger.warn('Falling back to cached document after Firestore read failure', {
@@ -217,7 +258,8 @@ export class FirebaseService {
   protected async update<T extends DocumentData>(
     collectionName: string,
     docId: string,
-    data: Partial<T>
+    data: Partial<T>,
+    options: FirestoreOperationOptions = {}
   ): Promise<void> {
     return retry(
       async () => {
@@ -231,18 +273,20 @@ export class FirebaseService {
             updatedAt: now,
           });
 
-          await this.mergeCachedDocument(collectionName, docId, {
-            ...sanitizedData,
-            updatedAt: now,
-          });
-          await this.invalidateCollectionQueryCaches(collectionName);
+          if (!this.useSdkOfflinePersistence) {
+            await this.mergeCachedDocument(collectionName, docId, {
+              ...sanitizedData,
+              updatedAt: now,
+            });
+            await this.invalidateCollectionQueryCaches(collectionName);
+          }
 
           logger.info('Document updated', {
             collection: collectionName,
             docId,
           });
         } catch (error) {
-          throw this.handleFirestoreError(error as FirestoreError, 'update');
+          throw this.handleFirestoreError(error as FirestoreError, 'update', options);
         }
       },
       {
@@ -264,7 +308,7 @@ export class FirebaseService {
     collectionName: string,
     docId: string,
     data: T,
-    options: { merge?: boolean } = {}
+    options: { merge?: boolean; logLevel?: FirestoreLogLevel } = {}
   ): Promise<void> {
     return retry(
       async () => {
@@ -282,18 +326,22 @@ export class FirebaseService {
 
           await setDoc(docRef, payload, { merge: options.merge ?? true });
 
-          await this.cacheDocument(collectionName, docId, {
-            id: docId,
-            ...payload,
-          } as unknown as T);
-          await this.invalidateCollectionQueryCaches(collectionName);
+          if (!this.useSdkOfflinePersistence) {
+            await this.cacheDocument(collectionName, docId, {
+              id: docId,
+              ...payload,
+            } as unknown as T);
+            await this.invalidateCollectionQueryCaches(collectionName);
+          }
 
           logger.info('Document upserted', {
             collection: collectionName,
             docId,
           });
         } catch (error) {
-          throw this.handleFirestoreError(error as FirestoreError, 'upsert');
+          throw this.handleFirestoreError(error as FirestoreError, 'upsert', {
+            logLevel: options.logLevel,
+          });
         }
       },
       {
@@ -318,8 +366,10 @@ export class FirebaseService {
         try {
           const docRef = doc(this.db, collectionName, docId);
           await deleteDoc(docRef);
-          await this.removeCachedDocument(collectionName, docId);
-          await this.invalidateCollectionQueryCaches(collectionName);
+          if (!this.useSdkOfflinePersistence) {
+            await this.removeCachedDocument(collectionName, docId);
+            await this.invalidateCollectionQueryCaches(collectionName);
+          }
 
           logger.info('Document deleted', {
             collection: collectionName,
@@ -348,9 +398,10 @@ export class FirebaseService {
   // eslint-disable-next-line require-await
   protected async query<T extends DocumentData>(
     collectionName: string,
-    constraints: QueryConstraint[] = []
+    constraints: QueryConstraint[] = [],
+    options: FirestoreOperationOptions = {}
   ): Promise<T[]> {
-    if (!this.networkState.isConnected) {
+    if (!this.useSdkOfflinePersistence && !this.networkState.isConnected) {
       const cached = await this.getCachedQueryResults<T>(collectionName, constraints);
       if (cached !== null) {
         logger.debug('Query served from local cache', {
@@ -367,13 +418,11 @@ export class FirebaseService {
           const collectionRef = collection(this.db, collectionName);
           const q = query(collectionRef, ...constraints);
           const querySnapshot = await getDocs(q);
+          const results = this.mapQuerySnapshot<T>(querySnapshot);
 
-          const results: T[] = [];
-          querySnapshot.forEach((doc) => {
-            results.push({ id: doc.id, ...doc.data() } as unknown as T);
-          });
-
-          await this.cacheQueryResults(collectionName, constraints, results);
+          if (!this.useSdkOfflinePersistence) {
+            await this.cacheQueryResults(collectionName, constraints, results);
+          }
 
           logger.debug('Query executed', {
             collection: collectionName,
@@ -382,8 +431,22 @@ export class FirebaseService {
 
           return results;
         } catch (error) {
-          const handledError = this.handleFirestoreError(error as FirestoreError, 'query');
-          if (handledError instanceof NetworkError) {
+          const handledError = this.handleFirestoreError(error as FirestoreError, 'query', options);
+          if (this.useSdkOfflinePersistence && handledError instanceof NetworkError) {
+            try {
+              const collectionRef = collection(this.db, collectionName);
+              const q = query(collectionRef, ...constraints);
+              const cachedSnapshot = await getDocsFromCache(q);
+              const results = this.mapQuerySnapshot<T>(cachedSnapshot);
+              logger.warn('Serving Firestore native cached query after read failure', {
+                collection: collectionName,
+                resultCount: results.length,
+              });
+              return results;
+            } catch {
+              // Let the original error surface when native cache has no query data.
+            }
+          } else if (handledError instanceof NetworkError) {
             const cached = await this.getCachedQueryResults<T>(collectionName, constraints);
             if (cached !== null) {
               logger.warn('Falling back to cached query after Firestore query failure', {
@@ -422,7 +485,7 @@ export class FirebaseService {
     try {
       const docRef = doc(this.db, collectionName, docId);
 
-      if (!this.networkState.isConnected) {
+      if (!this.useSdkOfflinePersistence && !this.networkState.isConnected) {
         void this.getCachedDocument<T>(collectionName, docId).then((cached) => {
           if (cached !== null) {
             callback(cached);
@@ -440,7 +503,9 @@ export class FirebaseService {
           }
 
           const result = { id: docSnap.id, ...docSnap.data() } as unknown as T;
-          void this.cacheDocument(collectionName, docId, result);
+          if (!this.useSdkOfflinePersistence) {
+            void this.cacheDocument(collectionName, docId, result);
+          }
           callback(result);
         },
         async (error) => {
@@ -448,6 +513,10 @@ export class FirebaseService {
             collection: collectionName,
             docId,
           });
+          if (this.useSdkOfflinePersistence) {
+            callback(null);
+            return;
+          }
           const cached = await this.getCachedDocument<T>(collectionName, docId);
           callback(cached);
         }
@@ -480,7 +549,7 @@ export class FirebaseService {
       const collectionRef = collection(this.db, collectionName);
       const q = query(collectionRef, ...constraints);
 
-      if (!this.networkState.isConnected) {
+      if (!this.useSdkOfflinePersistence && !this.networkState.isConnected) {
         void this.getCachedQueryResults<T>(collectionName, constraints).then((cached) => {
           if (cached !== null) {
             callback(cached);
@@ -491,17 +560,20 @@ export class FirebaseService {
       const unsubscribe = onSnapshot(
         q,
         (querySnapshot) => {
-          const results: T[] = [];
-          querySnapshot.forEach((doc) => {
-            results.push({ id: doc.id, ...doc.data() } as unknown as T);
-          });
-          void this.cacheQueryResults(collectionName, constraints, results);
+          const results = this.mapQuerySnapshot<T>(querySnapshot);
+          if (!this.useSdkOfflinePersistence) {
+            void this.cacheQueryResults(collectionName, constraints, results);
+          }
           callback(results);
         },
         async (error) => {
           logger.error('Query subscription error', error, {
             collection: collectionName,
           });
+          if (this.useSdkOfflinePersistence) {
+            callback([]);
+            return;
+          }
           const cached = await this.getCachedQueryResults<T>(collectionName, constraints);
           callback(cached ?? []);
         }
@@ -520,14 +592,46 @@ export class FirebaseService {
   /**
    * Handle Firestore errors and convert to appropriate error types
    */
-  private handleFirestoreError(error: FirestoreError, operation: string): Error {
+  private handleFirestoreError(
+    error: FirestoreError,
+    operation: string,
+    options: FirestoreOperationOptions = {}
+  ): Error {
     const errorCode = error.code;
     const errorMessage = error.message;
-
-    logger.error(`Firestore ${operation} error`, error, {
+    const logPayload = {
       code: errorCode,
       operation,
-    });
+    };
+
+    switch (options.logLevel ?? 'error') {
+      case 'warn':
+        logger.warn(`Firestore ${operation} error`, {
+          ...logPayload,
+          error: {
+            name: error.name,
+            message: error.message,
+            stack: error.stack,
+          },
+        });
+        break;
+      case 'debug':
+        logger.debug(`Firestore ${operation} error`, {
+          ...logPayload,
+          error: {
+            name: error.name,
+            message: error.message,
+            stack: error.stack,
+          },
+        });
+        break;
+      case 'none':
+        break;
+      case 'error':
+      default:
+        logger.error(`Firestore ${operation} error`, error, logPayload);
+        break;
+    }
 
     // Map Firestore error codes to custom errors
     switch (errorCode) {
@@ -774,5 +878,33 @@ export class FirebaseService {
     });
 
     return result;
+  }
+
+  private mapQuerySnapshot<T extends DocumentData>(querySnapshot: {
+    forEach?: (callback: (doc: { id: string; data: () => unknown }) => void) => void;
+    docs?: Array<{ id: string; data: () => unknown }>;
+  }): T[] {
+    const results: T[] = [];
+
+    if (typeof querySnapshot.forEach === 'function') {
+      querySnapshot.forEach((snapshotDoc) => {
+        results.push({
+          id: snapshotDoc.id,
+          ...(snapshotDoc.data() as Record<string, unknown>),
+        } as unknown as T);
+      });
+      return results;
+    }
+
+    if (Array.isArray(querySnapshot.docs)) {
+      querySnapshot.docs.forEach((snapshotDoc) => {
+        results.push({
+          id: snapshotDoc.id,
+          ...(snapshotDoc.data() as Record<string, unknown>),
+        } as unknown as T);
+      });
+    }
+
+    return results;
   }
 }

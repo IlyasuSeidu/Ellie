@@ -5,7 +5,7 @@
  * for unit testing without actual Firebase connections.
  */
 
-import { DocumentData, QueryConstraint, Unsubscribe } from 'firebase/firestore';
+import type { DocumentData, QueryConstraint, Unsubscribe } from '@/services/firebase/firestoreSdk';
 
 /**
  * Mock data store

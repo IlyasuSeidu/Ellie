@@ -17,7 +17,7 @@ import { FirebaseService } from './firebase/FirebaseService';
 import i18n from '@/i18n';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
-import { where } from 'firebase/firestore';
+import { where } from '@/services/firebase/firestoreSdk';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import { networkService } from '@/services/NetworkService';
 import { STORAGE_KEYS } from '@/constants/storageKeys';
@@ -316,9 +316,14 @@ export class NotificationService extends FirebaseService {
             status: 'cancelled',
           });
           if (canSyncRemotely) {
-            await this.update(this.NOTIFICATIONS_COLLECTION, notification.id, {
-              status: 'cancelled',
-            });
+            await this.update(
+              this.NOTIFICATIONS_COLLECTION,
+              notification.id,
+              {
+                status: 'cancelled',
+              },
+              { logLevel: 'warn' }
+            );
           }
         } catch (error) {
           logger.warn('NotificationService: failed to sync cancelled smart reminder remotely', {
@@ -372,9 +377,14 @@ export class NotificationService extends FirebaseService {
     if (this.canSyncNotificationsRemotely(userId)) {
       // Update status in history
       try {
-        await this.update(this.NOTIFICATIONS_COLLECTION, notificationId, {
-          status: 'cancelled',
-        });
+        await this.update(
+          this.NOTIFICATIONS_COLLECTION,
+          notificationId,
+          {
+            status: 'cancelled',
+          },
+          { logLevel: 'warn' }
+        );
       } catch (error) {
         logger.warn('NotificationService: failed to sync cancelled notification status remotely', {
           userId,
@@ -411,9 +421,14 @@ export class NotificationService extends FirebaseService {
               status: 'cancelled',
             });
             if (canSyncRemotely) {
-              await this.update(this.NOTIFICATIONS_COLLECTION, notification.id, {
-                status: 'cancelled',
-              });
+              await this.update(
+                this.NOTIFICATIONS_COLLECTION,
+                notification.id,
+                {
+                  status: 'cancelled',
+                },
+                { logLevel: 'warn' }
+              );
             }
           } catch (error) {
             logger.warn('NotificationService: failed to sync cancelled notification remotely', {
@@ -687,7 +702,8 @@ export class NotificationService extends FirebaseService {
     try {
       const remoteNotifications = await this.query<ScheduledNotification>(
         this.NOTIFICATIONS_COLLECTION,
-        [where('userId', '==', userId)]
+        [where('userId', '==', userId)],
+        { logLevel: 'warn' }
       );
 
       const userNotifications = this.mergeNotificationHistory(
@@ -730,10 +746,15 @@ export class NotificationService extends FirebaseService {
         return;
       }
 
-      await this.update(this.NOTIFICATIONS_COLLECTION, notificationId, {
-        status: 'delivered',
-        deliveredAt: new Date().toISOString(),
-      });
+      await this.update(
+        this.NOTIFICATIONS_COLLECTION,
+        notificationId,
+        {
+          status: 'delivered',
+          deliveredAt: new Date().toISOString(),
+        },
+        { logLevel: 'warn' }
+      );
 
       logger.debug('Notification marked as delivered', { notificationId });
     } catch (error) {
@@ -849,7 +870,8 @@ export class NotificationService extends FirebaseService {
           ...notification,
           userId,
         },
-        notification.id
+        notification.id,
+        { logLevel: 'warn' }
       );
 
       logger.debug('Notification saved to history', {

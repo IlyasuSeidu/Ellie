@@ -16,6 +16,7 @@
     "ios": {
       "supportsTablet": true,
       "buildNumber": "1",
+      "googleServicesFile": "./ios/Ellie/GoogleService-Info.plist",
       "usesAppleSignIn": true,
       "infoPlist": {
         "NSSpeechRecognitionUsageDescription": "Ellie needs speech recognition to understand your questions.",
@@ -25,6 +26,7 @@
       "bundleIdentifier": "com.ellie.minershiftassistant"
     },
     "android": {
+      "googleServicesFile": "./android/app/google-services.json",
       "package": "com.ellie.minershiftassistant",
       "versionCode": 1,
       "adaptiveIcon": {
@@ -42,11 +44,14 @@
       "expo-localization",
       "expo-font",
       "expo-asset",
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth",
       [
         "expo-build-properties",
         {
           "ios": {
-            "deploymentTarget": "16.0"
+            "deploymentTarget": "16.0",
+            "useFrameworks": "static"
           }
         }
       ],

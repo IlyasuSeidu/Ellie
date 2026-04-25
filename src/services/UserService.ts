@@ -5,7 +5,7 @@
  * Extends FirebaseService for type-safe Firestore operations.
  */
 
-import { Unsubscribe } from 'firebase/firestore';
+import type { Unsubscribe } from '@/services/firebase/firestoreSdk';
 import { FirebaseService } from './firebase/FirebaseService';
 import { asyncStorageService } from './AsyncStorageService';
 import { networkService } from '@/services/NetworkService';

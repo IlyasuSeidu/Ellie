@@ -154,6 +154,32 @@ describe('FirebaseService', () => {
 
       await expect(service['create'](mockCollection, mockData)).rejects.toThrow(FirebaseError);
     });
+
+    it('logs create failures as warnings when requested', async () => {
+      (setDoc as jest.Mock).mockRejectedValue({
+        code: 'permission-denied',
+        message: 'Permission denied',
+        name: 'FirebaseError',
+        stack: 'stack',
+      });
+
+      await expect(
+        service['create'](mockCollection, mockData, undefined, { logLevel: 'warn' })
+      ).rejects.toThrow(FirebaseError);
+
+      expect(logger.warn).toHaveBeenCalledWith(
+        'Firestore create error',
+        expect.objectContaining({
+          code: 'permission-denied',
+          operation: 'create',
+        })
+      );
+      expect(logger.error).not.toHaveBeenCalledWith(
+        'Firestore create error',
+        expect.anything(),
+        expect.anything()
+      );
+    });
   });
 
   describe('read', () => {
@@ -333,6 +359,32 @@ describe('FirebaseService', () => {
         FirebaseError
       );
     });
+
+    it('logs update failures as warnings when requested', async () => {
+      (updateDoc as jest.Mock).mockRejectedValue({
+        code: 'permission-denied',
+        message: 'Permission denied',
+        name: 'FirebaseError',
+        stack: 'stack',
+      });
+
+      await expect(
+        service['update'](mockCollection, mockDocId, { value: 100 }, { logLevel: 'warn' })
+      ).rejects.toThrow(FirebaseError);
+
+      expect(logger.warn).toHaveBeenCalledWith(
+        'Firestore update error',
+        expect.objectContaining({
+          code: 'permission-denied',
+          operation: 'update',
+        })
+      );
+      expect(logger.error).not.toHaveBeenCalledWith(
+        'Firestore update error',
+        expect.anything(),
+        expect.anything()
+      );
+    });
   });
 
   describe('delete', () => {
@@ -447,6 +499,32 @@ describe('FirebaseService', () => {
       await service['query'](mockCollection);
 
       expect(getDocs).toHaveBeenCalled();
+    });
+
+    it('logs query failures as warnings when requested', async () => {
+      (getDocs as jest.Mock).mockRejectedValue({
+        code: 'permission-denied',
+        message: 'Permission denied',
+        name: 'FirebaseError',
+        stack: 'stack',
+      });
+
+      await expect(service['query'](mockCollection, [], { logLevel: 'warn' })).rejects.toThrow(
+        FirebaseError
+      );
+
+      expect(logger.warn).toHaveBeenCalledWith(
+        'Firestore query error',
+        expect.objectContaining({
+          code: 'permission-denied',
+          operation: 'query',
+        })
+      );
+      expect(logger.error).not.toHaveBeenCalledWith(
+        'Firestore query error',
+        expect.anything(),
+        expect.anything()
+      );
     });
 
     it('returns cached query results when offline', async () => {

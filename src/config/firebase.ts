@@ -1,75 +1,140 @@
 /**
  * Firebase Configuration and Initialization
  *
- * Initializes Firebase services and exports instances for use throughout the app.
- * Handles offline/online state and provides proper error handling.
+ * Native iOS/Android builds use React Native Firebase for Auth + Firestore so
+ * Firestore gets the native SDK's built-in offline persistence and write queue.
+ *
+ * Web and test environments continue to use the Firebase JS SDK.
  */
 
 /* eslint-disable no-console */
 
-import { initializeApp, FirebaseApp, FirebaseOptions } from 'firebase/app';
-import { initializeAuth, Auth, type Dependencies } from 'firebase/auth';
-import * as FirebaseAuthPackage from '@firebase/auth';
+import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getFirestore, Firestore } from 'firebase/firestore';
-import { getStorage, FirebaseStorage } from 'firebase/storage';
-import { getFunctions, Functions } from 'firebase/functions';
+import * as FirebaseAuthPackage from '@firebase/auth';
+import { getStorage as getWebStorage, type FirebaseStorage } from 'firebase/storage';
+import { getFunctions as getWebFunctions, type Functions } from 'firebase/functions';
 import { firebaseConfig, isTest } from './env';
+import {
+  initializeApp,
+  getApp,
+  getApps,
+  type FirebaseApp,
+  type FirebaseOptions,
+} from '@/services/firebase/appSdk';
+import { getAuth, initializeAuth, type Auth, type Dependencies } from '@/services/firebase/authSdk';
+import {
+  getFirestore,
+  getPersistentCacheIndexManager,
+  type Firestore,
+} from '@/services/firebase/firestoreSdk';
+import {
+  markNativeFirebaseUnavailable,
+  shouldUseNativeFirebaseFullStack,
+} from '@/services/firebase/nativeAvailability';
 
-/**
- * Firebase instances
- */
 let app: FirebaseApp | undefined;
 let auth: Auth | undefined;
 let firestore: Firestore | undefined;
 let storage: FirebaseStorage | undefined;
 let functions: Functions | undefined;
 
-/**
- * Initialize Firebase App
- *
- * @returns Initialized Firebase app instance
- */
+function canUseNativeFirebase(): boolean {
+  return (
+    Platform.OS !== 'web' &&
+    !isTest &&
+    process.env.JEST_WORKER_ID === undefined &&
+    shouldUseNativeFirebaseFullStack()
+  );
+}
+
+function resetFirebaseInstances(): void {
+  app = undefined;
+  auth = undefined;
+  firestore = undefined;
+  storage = undefined;
+  functions = undefined;
+}
+
+function isMissingNativeFirebaseModuleError(error: unknown): boolean {
+  if (!(error instanceof Error)) {
+    return false;
+  }
+
+  const message = error.message ?? '';
+  return (
+    message.includes('RNFBAppModule not found') ||
+    message.includes('RNFBAuthModule not found') ||
+    message.includes('RNFBFirestoreModule not found') ||
+    (message.includes("firebase.app('[DEFAULT]')") &&
+      message.includes('module could not be found')) ||
+    message.includes('@react-native-firebase/auth') ||
+    message.includes('@react-native-firebase/firestore')
+  );
+}
+
+function buildFirebaseOptions(): FirebaseOptions {
+  return {
+    apiKey: firebaseConfig.apiKey,
+    authDomain: firebaseConfig.authDomain,
+    projectId: firebaseConfig.projectId,
+    storageBucket: firebaseConfig.storageBucket,
+    messagingSenderId: firebaseConfig.messagingSenderId,
+    appId: firebaseConfig.appId,
+    measurementId: firebaseConfig.measurementId,
+  };
+}
+
 function initializeFirebaseApp(): FirebaseApp {
   if (app) {
     return app;
   }
 
   try {
-    const config: FirebaseOptions = {
-      apiKey: firebaseConfig.apiKey,
-      authDomain: firebaseConfig.authDomain,
-      projectId: firebaseConfig.projectId,
-      storageBucket: firebaseConfig.storageBucket,
-      messagingSenderId: firebaseConfig.messagingSenderId,
-      appId: firebaseConfig.appId,
-      measurementId: firebaseConfig.measurementId,
-    };
+    if (canUseNativeFirebase()) {
+      app = getApp();
+      console.log('Firebase app initialized successfully');
+      return app;
+    }
 
-    app = initializeApp(config);
+    if (getApps().length > 0) {
+      app = getApp();
+    } else {
+      app = initializeApp(buildFirebaseOptions());
+    }
 
+    if (Platform.OS !== 'web' && !isTest) {
+      console.warn(
+        'React Native Firebase native modules are unavailable in this build; falling back to the Firebase JS SDK. Rebuild the native app to enable native Firestore persistence.'
+      );
+    }
     console.log('Firebase app initialized successfully');
     return app;
   } catch (error) {
+    if (isMissingNativeFirebaseModuleError(error)) {
+      throw error;
+    }
     console.error('Failed to initialize Firebase app:', error);
     throw new Error('Firebase initialization failed');
   }
 }
 
-/**
- * Initialize Firebase Auth
- *
- * @param firebaseApp - Firebase app instance
- * @returns Initialized Auth instance
- */
 function initializeFirebaseAuth(firebaseApp: FirebaseApp): Auth {
   if (auth) {
     return auth;
   }
 
   try {
-    // firebase/auth typings in this SDK don't expose getReactNativePersistence,
-    // but the RN runtime export is available via @firebase/auth.
+    if (canUseNativeFirebase() || Platform.OS === 'web') {
+      auth = getAuth(firebaseApp);
+      console.log(
+        canUseNativeFirebase()
+          ? 'Firebase Auth initialized successfully (native persistence)'
+          : 'Firebase Auth initialized successfully'
+      );
+      return auth;
+    }
+
     const reactNativeAuth = FirebaseAuthPackage as unknown as {
       getReactNativePersistence?: (
         storage: typeof AsyncStorage
@@ -80,55 +145,66 @@ function initializeFirebaseAuth(firebaseApp: FirebaseApp): Auth {
       throw new Error('React Native auth persistence is unavailable');
     }
 
-    // initializeAuth + ReactNativePersistence ensures sessions survive app restarts.
-    auth = initializeAuth(firebaseApp, {
-      persistence,
-    });
-
+    auth = initializeAuth(firebaseApp, { persistence });
     console.log('Firebase Auth initialized successfully (AsyncStorage persistence)');
     return auth;
   } catch (error) {
+    if (isMissingNativeFirebaseModuleError(error)) {
+      throw error;
+    }
     console.error('Failed to initialize Firebase Auth:', error);
     throw new Error('Firebase Auth initialization failed');
   }
 }
 
-/**
- * Initialize Firestore
- *
- * @param firebaseApp - Firebase app instance
- * @returns Initialized Firestore instance
- */
 function initializeFirebaseFirestore(firebaseApp: FirebaseApp): Firestore {
   if (firestore) {
     return firestore;
   }
 
   try {
-    // Get Firestore instance for the app
     firestore = getFirestore(firebaseApp);
 
-    console.log('Firestore initialized successfully');
+    if (canUseNativeFirebase()) {
+      const indexManager = getPersistentCacheIndexManager?.(firestore) as
+        | { enableIndexAutoCreation?: () => Promise<void> }
+        | null
+        | undefined;
+      if (indexManager?.enableIndexAutoCreation) {
+        void indexManager.enableIndexAutoCreation().catch((error: unknown) => {
+          console.warn('Failed to enable Firestore offline index auto-creation:', error);
+        });
+      }
+    }
+
+    console.log(
+      canUseNativeFirebase()
+        ? 'Firestore initialized successfully (native persistent cache)'
+        : 'Firestore initialized successfully'
+    );
     return firestore;
   } catch (error) {
+    if (isMissingNativeFirebaseModuleError(error)) {
+      throw error;
+    }
     console.error('Failed to initialize Firestore:', error);
     throw new Error('Firestore initialization failed');
   }
 }
 
-/**
- * Initialize Firebase Storage
- *
- * @param firebaseApp - Firebase app instance
- * @returns Initialized Storage instance
- */
 function initializeFirebaseStorage(firebaseApp: FirebaseApp): FirebaseStorage {
   if (storage) {
     return storage;
   }
 
   try {
-    storage = getStorage(firebaseApp);
+    if (canUseNativeFirebase()) {
+      storage = { app: firebaseApp } as FirebaseStorage;
+      console.log('Firebase Storage initialized successfully (stub)');
+      return storage;
+    }
+
+    storage = getWebStorage(firebaseApp);
     console.log('Firebase Storage initialized successfully');
     return storage;
   } catch (error) {
@@ -137,19 +213,19 @@ function initializeFirebaseStorage(firebaseApp: FirebaseApp): FirebaseStorage {
   }
 }
 
-/**
- * Initialize Cloud Functions
- *
- * @param firebaseApp - Firebase app instance
- * @returns Initialized Functions instance
- */
 function initializeCloudFunctions(firebaseApp: FirebaseApp): Functions {
   if (functions) {
     return functions;
   }
 
   try {
-    functions = getFunctions(firebaseApp);
+    if (canUseNativeFirebase()) {
+      functions = { app: firebaseApp } as Functions;
+      console.log('Cloud Functions initialized successfully (stub)');
+      return functions;
+    }
+
+    functions = getWebFunctions(firebaseApp);
     console.log('Cloud Functions initialized successfully');
     return functions;
   } catch (error) {
@@ -158,11 +234,6 @@ function initializeCloudFunctions(firebaseApp: FirebaseApp): Functions {
   }
 }
 
-/**
- * Initialize all Firebase services
- *
- * @returns Object containing all initialized Firebase services
- */
 export function initializeFirebase(): {
   app: FirebaseApp;
   auth: Auth;
@@ -170,7 +241,6 @@ export function initializeFirebase(): {
   storage: FirebaseStorage;
   functions: Functions;
 } {
-  // Skip initialization in test environment
   if (isTest) {
     console.log('Skipping Firebase initialization in test environment');
     return {
@@ -197,14 +267,19 @@ export function initializeFirebase(): {
       functions: cloudFunctions,
     };
   } catch (error) {
+    if (canUseNativeFirebase() && isMissingNativeFirebaseModuleError(error)) {
+      console.warn(
+        'React Native Firebase native modules were detected but are not functional in this build; falling back to the Firebase JS SDK for this runtime. Rebuild and reinstall the native app to enable native Firestore persistence.'
+      );
+      markNativeFirebaseUnavailable();
+      resetFirebaseInstances();
+      return initializeFirebase();
+    }
     console.error('Failed to initialize Firebase services:', error);
     throw error;
   }
 }
 
-/**
- * Get Firebase instances (lazy initialization)
- */
 export function getFirebaseInstances(): {
   app: FirebaseApp;
   auth: Auth;
@@ -225,25 +300,18 @@ export function getFirebaseInstances(): {
   };
 }
 
-/**
- * Initialize Firebase on module load (eager initialization)
- */
 if (!isTest) {
   try {
     initializeFirebase();
   } catch (error) {
-    console.error('Failed to eagerly initialize Firebase:', error);
+    if (!isMissingNativeFirebaseModuleError(error)) {
+      console.error('Failed to eagerly initialize Firebase:', error);
+    }
   }
 }
 
-/**
- * Export Firebase instances for direct import
- */
 export { app, auth, firestore, storage, functions };
 
-/**
- * Export getters for safe access
- */
 export const getFirebaseApp = (): FirebaseApp => {
   if (!app && !isTest) {
     throw new Error('Firebase app not initialized');
@@ -279,16 +347,8 @@ export const getCloudFunctions = (): Functions => {
   return functions as Functions;
 };
 
-/**
- * Check if Firebase is initialized
- */
-export const isFirebaseInitialized = (): boolean => {
-  return !!app && !!auth && !!firestore;
-};
+export const isFirebaseInitialized = (): boolean => !!app && !!auth && !!firestore;
 
-/**
- * Default export for convenience
- */
 export default {
   app,
   auth,

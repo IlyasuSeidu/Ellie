@@ -606,14 +606,18 @@ describe('NotificationService', () => {
 
         await service.getNotificationHistory(mockUserId);
 
-        expect(querySpy).toHaveBeenCalledWith('notifications', [
-          expect.objectContaining({
-            type: 'where',
-            field: 'userId',
-            operator: '==',
-            value: mockUserId,
-          }),
-        ]);
+        expect(querySpy).toHaveBeenCalledWith(
+          'notifications',
+          [
+            expect.objectContaining({
+              type: 'where',
+              field: 'userId',
+              operator: '==',
+              value: mockUserId,
+            }),
+          ],
+          { logLevel: 'warn' }
+        );
       });
 
       it('should limit history results', async () => {

@@ -2,7 +2,7 @@
  * Mock UserService for Testing
  */
 
-import { Unsubscribe } from 'firebase/firestore';
+import type { Unsubscribe } from '@/services/firebase/firestoreSdk';
 import { ShiftCycle, NotificationSettings } from '@/types';
 import { UserProfile, UserPreferences } from '../UserService';
 
@@ -100,10 +100,7 @@ export class MockUserService {
     return user?.shiftCycle || null;
   }
 
-  async updateShiftCycle(
-    userId: string,
-    updates: Partial<ShiftCycle>
-  ): Promise<void> {
+  async updateShiftCycle(userId: string, updates: Partial<ShiftCycle>): Promise<void> {
     await Promise.resolve();
     this.checkForFailure();
     const user = this.users.get(userId);
@@ -148,10 +145,7 @@ export class MockUserService {
     );
   }
 
-  async updateNotificationSettings(
-    userId: string,
-    settings: NotificationSettings
-  ): Promise<void> {
+  async updateNotificationSettings(userId: string, settings: NotificationSettings): Promise<void> {
     this.checkForFailure();
     await Promise.resolve();
     const user = this.users.get(userId);

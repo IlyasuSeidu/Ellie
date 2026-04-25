@@ -4,19 +4,9 @@
  * Tracks user sessions, events, and analytics
  */
 
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  setDoc,
-  query,
-  where,
-  Timestamp,
-  deleteDoc,
-} from 'firebase/firestore';
 import { Platform } from 'react-native';
-import { firestore } from '@/config/firebase';
+import { FirebaseService } from '@/services/firebase/FirebaseService';
+import { where, Timestamp, type DocumentData } from '@/services/firebase/firestoreSdk';
 import { logger } from '@/utils/logger';
 import { AsyncStorageService } from './AsyncStorageService';
 import { STORAGE_KEYS } from '@/constants/storageKeys';
@@ -80,6 +70,10 @@ interface StoredSession extends Omit<
   events: StoredSessionEvent[];
 }
 
+interface TimestampLike {
+  toDate: () => Date;
+}
+
 /**
  * Constants
  */
@@ -90,17 +84,19 @@ const MAX_SESSION_EVENTS = 500;
 /**
  * Session Management Service
  */
-export class SessionService {
+export class SessionService extends FirebaseService {
   private currentSession: Session | null = null;
   private timeoutTimer: NodeJS.Timeout | null = null;
   private timeoutCallbacks: SessionTimeoutCallback[] = [];
   private asyncStorage: AsyncStorageService;
   private metadata: SessionMetadata;
+  private readonly SESSIONS_COLLECTION = 'sessions';
 
   constructor(
     asyncStorage: AsyncStorageService = new AsyncStorageService(),
     metadata?: SessionMetadata
   ) {
+    super();
     this.asyncStorage = asyncStorage;
     this.metadata =
       metadata ||
@@ -323,20 +319,15 @@ export class SessionService {
   async getTotalSessions(userId: string): Promise<number> {
     const localSessions = await this.getLocalSessionsForUser(userId);
     try {
-      if (!firestore) {
-        return localSessions.length;
-      }
-
-      const sessionsRef = collection(firestore, 'sessions');
-      const q = query(sessionsRef, where('userId', '==', userId));
-
-      const snapshot = await getDocs(q);
+      const sessions = await this.query<Record<string, unknown>>(this.SESSIONS_COLLECTION, [
+        where('userId', '==', userId),
+      ]);
       void this.syncRemoteSessionsToLocal(
-        snapshot.docs.map((sessionDoc) =>
-          this.deserializeFirestoreSession(sessionDoc.id, sessionDoc.data())
+        sessions.map((sessionDoc) =>
+          this.deserializeFirestoreSession(String(sessionDoc.id), sessionDoc)
         )
       );
-      return snapshot.size;
+      return sessions.length;
     } catch (error) {
       logger.error('Failed to get total sessions', error as Error);
       return localSessions.length;
@@ -349,25 +340,21 @@ export class SessionService {
   async getAverageSessionDuration(userId: string): Promise<number> {
     const localSessions = await this.getLocalSessionsForUser(userId);
     try {
-      if (!firestore) {
-        return this.calculateAverageDuration(localSessions);
-      }
+      const sessions = await this.query<Record<string, unknown>>(this.SESSIONS_COLLECTION, [
+        where('userId', '==', userId),
+        where('endTime', '!=', null),
+      ]);
 
-      const sessionsRef = collection(firestore, 'sessions');
-      const q = query(sessionsRef, where('userId', '==', userId), where('endTime', '!=', null));
-
-      const snapshot = await getDocs(q);
-
-      if (snapshot.empty) {
+      if (sessions.length === 0) {
         return 0;
       }
 
-      const sessions = snapshot.docs.map((sessionDoc) =>
-        this.deserializeFirestoreSession(sessionDoc.id, sessionDoc.data())
+      const hydratedSessions = sessions.map((sessionDoc) =>
+        this.deserializeFirestoreSession(String(sessionDoc.id), sessionDoc)
       );
-      void this.syncRemoteSessionsToLocal(sessions);
+      void this.syncRemoteSessionsToLocal(hydratedSessions);
 
-      return this.calculateAverageDuration(sessions);
+      return this.calculateAverageDuration(hydratedSessions);
     } catch (error) {
       logger.error('Failed to get average session duration', error as Error);
       return this.calculateAverageDuration(localSessions);
@@ -415,14 +402,6 @@ export class SessionService {
    */
   private async saveSessionToFirestore(session: Session): Promise<void> {
     try {
-      if (!firestore) {
-        logger.warn('Firestore not initialized, skipping session save');
-        return;
-      }
-
-      const sessionRef = doc(firestore, 'sessions', session.id);
-
-      // Convert dates to Firestore timestamps
       const sessionData = {
         ...session,
         startTime: Timestamp.fromDate(session.startTime),
@@ -434,7 +413,7 @@ export class SessionService {
         })),
       };
 
-      await setDoc(sessionRef, sessionData);
+      await this.upsert<DocumentData>(this.SESSIONS_COLLECTION, session.id, sessionData);
     } catch (error) {
       logger.error('Failed to save session to Firestore', error as Error);
       // Don't throw - local session still valid
@@ -447,18 +426,16 @@ export class SessionService {
   async loadSession(sessionId: string): Promise<Session | null> {
     const localSession = await this.getLocalSession(sessionId);
     try {
-      if (!firestore) {
+      const sessionDoc = await this.read<Record<string, unknown>>(
+        this.SESSIONS_COLLECTION,
+        sessionId
+      );
+
+      if (!sessionDoc) {
         return localSession;
       }
 
-      const sessionRef = doc(firestore, 'sessions', sessionId);
-      const sessionDoc = await getDoc(sessionRef);
-
-      if (!sessionDoc.exists()) {
-        return localSession;
-      }
-
-      const session = this.deserializeFirestoreSession(sessionDoc.id, sessionDoc.data());
+      const session = this.deserializeFirestoreSession(String(sessionDoc.id), sessionDoc);
       await this.persistSessionLocally(session);
       return session;
     } catch (error) {
@@ -484,28 +461,17 @@ export class SessionService {
     }
 
     try {
-      if (!firestore) {
-        logger.info('Old sessions cleaned up locally', {
-          userId,
-          count: expiredLocalSessions.length,
-        });
-        return;
-      }
-
-      const sessionsRef = collection(firestore, 'sessions');
-      const q = query(
-        sessionsRef,
-        where('userId', '==', userId),
-        where('startTime', '<', Timestamp.fromDate(cutoffDate))
+      const expiredRemoteSessions = await this.query<Record<string, unknown>>(
+        this.SESSIONS_COLLECTION,
+        [where('userId', '==', userId), where('startTime', '<', Timestamp.fromDate(cutoffDate))]
       );
-
-      const snapshot = await getDocs(q);
-
-      const deletePromises = snapshot.docs.map((doc) => deleteDoc(doc.ref));
+      const deletePromises = expiredRemoteSessions.map((session) =>
+        this.delete(this.SESSIONS_COLLECTION, String(session.id))
+      );
 
       await Promise.all(deletePromises);
 
-      logger.info('Old sessions cleaned up', { userId, count: snapshot.size });
+      logger.info('Old sessions cleaned up', { userId, count: expiredRemoteSessions.length });
     } catch (error) {
       logger.warn('Failed to cleanup old sessions remotely; local cleanup already applied', {
         userId,
@@ -566,12 +532,12 @@ export class SessionService {
     return {
       ...(data as Omit<Session, 'id' | 'startTime' | 'endTime' | 'lastActivityTime' | 'events'>),
       id: sessionId,
-      startTime: (data.startTime as Timestamp).toDate(),
-      endTime: data.endTime ? (data.endTime as Timestamp).toDate() : undefined,
-      lastActivityTime: (data.lastActivityTime as Timestamp).toDate(),
+      startTime: (data.startTime as TimestampLike).toDate(),
+      endTime: data.endTime ? (data.endTime as TimestampLike).toDate() : undefined,
+      lastActivityTime: (data.lastActivityTime as TimestampLike).toDate(),
       events: eventList.map((event) => ({
         ...(event as Omit<SessionEvent, 'timestamp'>),
-        timestamp: (event as { timestamp: Timestamp }).timestamp.toDate(),
+        timestamp: (event as { timestamp: TimestampLike }).timestamp.toDate(),
       })),
     };
   }

@@ -71,7 +71,8 @@ describe('FirebaseService payload sanitization', () => {
       expect.objectContaining({
         userId: 'user-1',
         nested: { ok: true },
-      })
+      }),
+      undefined
     );
 
     const payload = (setDoc as jest.Mock).mock.calls[0][1];

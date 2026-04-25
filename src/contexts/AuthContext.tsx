@@ -1,8 +1,8 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import type { User } from 'firebase/auth';
 import Constants from 'expo-constants';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { AuthService } from '@/services/AuthService';
+import type { User } from '@/services/firebase/authSdk';
 import { getFirebaseAuth } from '@/config/firebase';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import { networkService } from '@/services/NetworkService';

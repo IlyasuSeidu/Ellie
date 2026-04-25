@@ -1,0 +1,33 @@
+{
+  "date": "2026-04-20",
+  "status": "no_work",
+  "selectedAngles": [],
+  "platformAngles": {},
+  "codebaseContext": {
+    "storyMode": "no_work",
+    "storyHighlights": []
+  },
+  "window": {
+    "mode": "rollover-time",
+    "rolloverTime": "20:30",
+    "since": "2026-04-19 20:30:00",
+    "until": "2026-04-20 20:29:59"
+  },
+  "generation": {
+    "provider": "anthropic",
+    "usedAnthropic": true,
+    "model": "claude-sonnet-4-6",
+    "refinedFiles": [],
+    "failedFiles": [],
+    "requestCount": 0,
+    "usage": null
+  },
+  "totals": {
+    "commits": 0,
+    "filesChanged": 0,
+    "additions": 0,
+    "deletions": 0,
+    "testsTouched": 0,
+    "localeCount": 0
+  }
+}

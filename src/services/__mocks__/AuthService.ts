@@ -2,7 +2,7 @@
  * Mock Authentication Service for Testing
  */
 
-import { User } from 'firebase/auth';
+import type { User } from '@/services/firebase/authSdk';
 import { AuthStateCallback, Unsubscribe } from '../AuthService';
 
 /**
@@ -61,7 +61,9 @@ export class MockAuthService {
 
     // Validate password
     if (!this.isValidPassword(password)) {
-      throw new Error('Weak password: at least 8 characters, at least one uppercase letter, at least one lowercase letter, at least one number');
+      throw new Error(
+        'Weak password: at least 8 characters, at least one uppercase letter, at least one lowercase letter, at least one number'
+      );
     }
 
     // Check if user exists
@@ -291,10 +293,7 @@ export class MockAuthService {
   /**
    * Update password
    */
-  async updatePassword(
-    _currentPassword: string,
-    newPassword: string
-  ): Promise<void> {
+  async updatePassword(_currentPassword: string, newPassword: string): Promise<void> {
     await Promise.resolve();
     if (!this.currentUser) {
       throw new Error('auth/user-not-found');
@@ -306,7 +305,9 @@ export class MockAuthService {
     }
 
     if (!this.isValidPassword(newPassword)) {
-      throw new Error('Weak password: at least 8 characters, at least one uppercase letter, at least one lowercase letter, at least one number');
+      throw new Error(
+        'Weak password: at least 8 characters, at least one uppercase letter, at least one lowercase letter, at least one number'
+      );
     }
 
     this.currentUser.password = newPassword;
@@ -468,16 +469,22 @@ export class MockAuthService {
       refreshToken: '',
       tenantId: null,
       delete: async () => {},
-      getIdToken: async () => { await Promise.resolve(); return 'mock-token'; },
-      getIdTokenResult: async () => { await Promise.resolve(); return {
-        token: 'mock-token',
-        claims: {},
-        authTime: '',
-        issuedAtTime: '',
-        expirationTime: '',
-        signInProvider: null,
-        signInSecondFactor: null,
-      }; },
+      getIdToken: async () => {
+        await Promise.resolve();
+        return 'mock-token';
+      },
+      getIdTokenResult: async () => {
+        await Promise.resolve();
+        return {
+          token: 'mock-token',
+          claims: {},
+          authTime: '',
+          issuedAtTime: '',
+          expirationTime: '',
+          signInProvider: null,
+          signInSecondFactor: null,
+        };
+      },
       reload: async () => {},
       toJSON: () => ({}),
     } as unknown as User;
