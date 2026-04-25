@@ -14,6 +14,7 @@ import Animated, { FadeInUp } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import type { VoiceMessage } from '@/types/voiceAssistant';
+import { formatLocalizedDateTime } from '@/utils/i18nFormat';
 
 /** Characters revealed per tick for typewriter effect */
 const CHARS_PER_TICK = 3;
@@ -32,7 +33,7 @@ export const ResponseBubble: React.FC<ResponseBubbleProps> = ({
   index,
   isNew = false,
 }) => {
-  const { t } = useTranslation('dashboard');
+  const { t, i18n } = useTranslation('dashboard');
   const isUser = message.role === 'user';
   const shouldAnimate = isNew && !isUser;
 
@@ -89,15 +90,22 @@ export const ResponseBubble: React.FC<ResponseBubbleProps> = ({
         </Text>
       </View>
       <Text style={[styles.timestamp, isUser && styles.timestampRight]}>
-        {formatTime(message.timestamp)}
+        {formatTime(message.timestamp, i18n.resolvedLanguage ?? i18n.language)}
       </Text>
     </Animated.View>
   );
 };
 
-function formatTime(timestamp: number): string {
+function formatTime(timestamp: number, language: string): string {
   const date = new Date(timestamp);
-  return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+  return formatLocalizedDateTime(
+    date,
+    {
+      hour: 'numeric',
+      minute: '2-digit',
+    },
+    language
+  );
 }
 
 const styles = StyleSheet.create({

@@ -47,7 +47,8 @@
       "actionPasswordResetFailed": "Ayikwazi ukuthumela isixhumanisi sokusetha kabusha okwamanje. Sicela uzame futhi.",
       "actionEmailVerificationFailed": "Ayikwazi ukuthumela i-imeyili yokuqinisekisa njengamanje. Sicela uzame futhi.",
       "actionSignOutFailed": "Ayikwazi ukuphuma ngemvume njengamanje.",
-      "actionSessionRestoreFailed": "Ayikwazi ukubuyisela iseshini yakho. Sicela ungene ngemvume futhi."
+      "actionSessionRestoreFailed": "Ayikwazi ukubuyisela iseshini yakho. Sicela ungene ngemvume futhi.",
+      "tooManyRequestsUntil": "Sekube nezikhathi eziningi zokungena ezingaphumelelanga. Zama futhi ngemva kuka-{{time}}."
     },
     "titles": {
       "error": "Iphutha",
@@ -103,7 +104,8 @@
     "selectorSubtitle": "Khetha ulimi lwakho",
     "search": "Sesha izilimi…",
     "noResults": "Awekho izilimi ezitholakele",
-    "rtlBadge": "RTL"
+    "rtlBadge": "RTL",
+    "currentLabel": "OKWAMANJE"
   },
   "accessibility": {
     "toggle": "Shintsha"
@@ -251,7 +253,9 @@
       "restorePurchasesError": "Ukubuyisela kwehlulekile. Sicela uzame futhi.",
       "ctaOffline": "Xhuma ukuze ubhalise",
       "purchaseSuccessPaid": "Ukubhalisa kwakho kuyasebenza",
-      "billingDisclosureTrialGeneric": "Isilingo sakho samahhala siqala namuhla. Khansela noma nini ku-Settings ngaphambi kokuthi ukuqoqwa kwemali kuqale. Izibhaliso zivuselelwa ngokuzenzakalela."
+      "billingDisclosureTrialGeneric": "Isilingo sakho samahhala siqala namuhla. Khansela noma nini ku-Settings ngaphambi kokuthi ukuqoqwa kwemali kuqale. Izibhaliso zivuselelwa ngokuzenzakalela.",
+      "unavailable": "Okubhaliselwe akutholakali kule build yohlelo lokusebenza. Faka i-build yakamuva ye-EAS yokuthuthukisa noma yokukhiqiza.",
+      "unconfigured": "Okubhaliselwe akukalungiselelwa kule build. Engeza ukhiye we-RevenueCat SDK endaweni yokwakha bese wakhe kabusha."
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Ukubhalisa okusebenzayo kwe-Pro",
@@ -259,7 +263,8 @@
       "activeLabel": "__TK1__ Pro — Iyasebenza ✓",
       "upgradeLabel": "Thuthukela ku-__TK1__ Pro",
       "activeHint": "Ikhalenda eligcwele · Sawubona __TK1__ umsizi wezwi",
-      "upgradeHint": "Amaphakeji aqala ku-$6.99/ngenyanga noma ku-$49.99/ngonyaka"
+      "upgradeHint": "Amaphakeji aqala ku-$6.99/ngenyanga noma ku-$49.99/ngonyaka",
+      "customerCenterError": "Ukuphathwa kokubhalisela akutholakali manje. Sicela uzame futhi."
     },
     "padlock": {
       "a11yLabel": "Thuthukela ku-__TK1__ Pro ukuze ubone ikhalenda eligcwele"

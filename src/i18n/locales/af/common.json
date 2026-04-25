@@ -47,7 +47,8 @@
       "actionPasswordResetFailed": "Kan nie nou 'n terugstelskakel stuur nie. Probeer asseblief weer.",
       "actionEmailVerificationFailed": "Kan nie nou verifikasie-e-pos stuur nie. Probeer asseblief weer.",
       "actionSignOutFailed": "Kan nie nou afmeld nie.",
-      "actionSessionRestoreFailed": "Kan nie jou sessie herstel nie. Meld asseblief weer aan."
+      "actionSessionRestoreFailed": "Kan nie jou sessie herstel nie. Meld asseblief weer aan.",
+      "tooManyRequestsUntil": "Te veel mislukte aanmeldpogings. Probeer weer ná {{time}}."
     },
     "titles": {
       "error": "Fout",
@@ -103,7 +104,8 @@
     "selectorSubtitle": "Kies jou taal",
     "search": "Soek tale…",
     "noResults": "Geen tale gevind nie",
-    "rtlBadge": "RTL"
+    "rtlBadge": "RTL",
+    "currentLabel": "HUIDIG"
   },
   "accessibility": {
     "toggle": "Wissel"
@@ -251,7 +253,9 @@
       "restorePurchasesError": "Herstel het misluk. Probeer asseblief weer.",
       "ctaOffline": "Koppel om in te teken",
       "purchaseSuccessPaid": "Jou intekening is aktief",
-      "billingDisclosureTrialGeneric": "Jou gratis proeflopie begin vandag. Kanselleer enige tyd in Instellings voordat fakturering begin. Intekeninge hernu outomaties."
+      "billingDisclosureTrialGeneric": "Jou gratis proeflopie begin vandag. Kanselleer enige tyd in Instellings voordat fakturering begin. Intekeninge hernu outomaties.",
+      "unavailable": "Intekeninge is nie in hierdie toepassingbou beskikbaar nie. Installeer die nuutste EAS-ontwikkelings- of produksiebou.",
+      "unconfigured": "Intekeninge is nie in hierdie bou opgestel nie. Voeg die RevenueCat SDK-sleutel by die bou-omgewing en bou weer."
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro aktiewe intekening",
@@ -259,7 +263,8 @@
       "activeLabel": "__TK1__ Pro — Aktief ✓",
       "upgradeLabel": "Gradeer op na __TK1__ Pro",
       "activeHint": "Volledige kalender · Hey __TK1__ stemassistent",
-      "upgradeHint": "Planne vanaf $6,99/maand of $49,99/jaar"
+      "upgradeHint": "Planne vanaf $6,99/maand of $49,99/jaar",
+      "customerCenterError": "Intekeningbestuur is tans nie beskikbaar nie. Probeer asseblief weer."
     },
     "padlock": {
       "a11yLabel": "Gradeer op na __TK1__ Pro om volledige kalender te sien"

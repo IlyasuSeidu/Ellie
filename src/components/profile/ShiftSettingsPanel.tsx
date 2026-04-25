@@ -52,6 +52,8 @@ import { PatternBuilderSlider } from '@/components/onboarding/premium/PatternBui
 import { PremiumTextInput } from '@/components/onboarding/premium/PremiumTextInput';
 import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
 import { useShiftAccent } from '@/hooks/useShiftAccent';
+import i18n from '@/i18n';
+import { formatLocalizedDate } from '@/utils/i18nFormat';
 import { PatternSelectorSheet } from './PatternSelectorSheet';
 import { StartDatePickerSheet } from './StartDatePickerSheet';
 import { CycleResyncSheet } from './CycleResyncSheet';
@@ -117,7 +119,11 @@ function formatStartDate(
 ): string {
   const d = parseStartDateValue(date);
   if (!d) return t ? t('fields.notSet') : 'Not set';
-  return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
+  return formatLocalizedDate(
+    d,
+    { day: 'numeric', month: 'short', year: 'numeric' },
+    i18n.resolvedLanguage ?? i18n.language
+  );
 }
 
 function getSelectableStartDate(date: Date | string | undefined): Date {
@@ -1476,13 +1482,13 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                       style={styles.patternRow}
                       onPress={handleOpenFIFOCustomPatternBuilder}
                       activeOpacity={0.7}
-                      accessibilityLabel={t('shift.openFIFOBuilderA11y', {
-                        defaultValue: 'Open FIFO builder',
+                      accessibilityLabel={t('shift.openFIFOBuilderTitle', {
+                        defaultValue: 'Open FIFO Pattern Builder',
                       })}
                       accessibilityRole="button"
-                      accessibilityHint={t('shift.openFIFOBuilderHint', {
+                      accessibilityHint={t('shift.openFIFOBuilderSubtitle', {
                         defaultValue:
-                          'Use the FIFO onboarding builder to configure work and rest blocks, work pattern, and swing split.',
+                          'Configure work/rest days, day-night mix, and custom sequence in onboarding flow',
                       })}
                     >
                       <View style={styles.patternRowLeft}>
@@ -1517,13 +1523,15 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                       style={styles.patternRow}
                       onPress={handleOpenFIFOCustomPatternBuilder}
                       activeOpacity={0.7}
-                      accessibilityLabel={t('shift.fifoSummaryA11y', {
-                        defaultValue: 'FIFO configuration summary',
-                      })}
+                      accessibilityLabel={getFIFOWorkPatternLabel(
+                        t,
+                        currentFifoConfig.workBlockPattern as FIFOWorkPattern
+                      )}
                       accessibilityRole="button"
-                      accessibilityHint={t('shift.fifoSummaryHint', {
-                        defaultValue:
-                          'Shows current FIFO pattern and block lengths. Tap to edit in FIFO onboarding builder.',
+                      accessibilityHint={t('shift.fifoSummarySubtitle', {
+                        workDays: currentFifoConfig.workBlockDays,
+                        restDays: currentFifoConfig.restBlockDays,
+                        defaultValue: '{{workDays}} work days · {{restDays}} rest days',
                       })}
                     >
                       <View style={styles.patternRowLeft}>
@@ -1710,13 +1718,13 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                     style={styles.patternRow}
                     onPress={handleOpenCustomPatternBuilder}
                     activeOpacity={0.7}
-                    accessibilityLabel={t('shift.openCustomBuilderA11y', {
-                      defaultValue: 'Open custom rotation builder',
+                    accessibilityLabel={t('shift.openCustomBuilderTitle', {
+                      defaultValue: 'Open Custom Rotation Builder',
                     })}
                     accessibilityRole="button"
-                    accessibilityHint={t('shift.openCustomBuilderHint', {
+                    accessibilityHint={t('shift.openCustomBuilderSubtitle', {
                       defaultValue:
-                        'Open onboarding custom pattern builder to edit days, nights, and off days.',
+                        'Configure day, night, and off blocks in onboarding custom pattern flow',
                     })}
                   >
                     <View style={styles.patternRowLeft}>

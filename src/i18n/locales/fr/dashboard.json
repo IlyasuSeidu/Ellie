@@ -312,5 +312,18 @@
     "dismiss": "Plus tard",
     "update": "Mettre à jour le suivi",
     "submit": "Enregistrer le suivi"
+  },
+  "onboardingChecklist": {
+    "title": "Profitez au maximum d’Ellie",
+    "items": {
+      "roster": "Configurez votre rotation",
+      "shiftTimes": "Ajoutez vos horaires de poste",
+      "profile": "Complétez votre profil",
+      "askEllie": "Posez une question à Ellie"
+    },
+    "actions": {
+      "doIt": "Faire",
+      "dismiss": "Ignorer"
+    }
   }
 }

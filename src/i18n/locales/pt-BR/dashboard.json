@@ -312,5 +312,18 @@
     "dismiss": "Agora não",
     "update": "Atualizar check-in",
     "submit": "Salvar check-in"
+  },
+  "onboardingChecklist": {
+    "title": "Aproveite ao máximo o Ellie",
+    "items": {
+      "roster": "Configure sua escala",
+      "shiftTimes": "Adicione seus horários de turno",
+      "profile": "Complete seu perfil",
+      "askEllie": "Faça uma pergunta para a Ellie"
+    },
+    "actions": {
+      "doIt": "Fazer agora",
+      "dismiss": "Dispensar"
+    }
   }
 }

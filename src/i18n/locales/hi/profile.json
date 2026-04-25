@@ -258,7 +258,12 @@
       "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} कस्टम रोटेशन",
       "dayAbbrev": "डी",
       "nightAbbrev": "एन"
-    }
+    },
+    "openFIFOBuilderTitle": "FIFO पैटर्न बिल्डर खोलें",
+    "openFIFOBuilderSubtitle": "ऑनबोर्डिंग प्रवाह में कार्य/विश्राम दिन, दिन-रात मिश्रण और कस्टम क्रम कॉन्फ़िगर करें",
+    "fifoSummarySubtitle": "{{workDays}} कार्य दिवस · {{restDays}} विश्राम दिवस",
+    "openCustomBuilderTitle": "कस्टम रोटेशन बिल्डर खोलें",
+    "openCustomBuilderSubtitle": "कस्टम पैटर्न ऑनबोर्डिंग प्रवाह में दिन, रात और अवकाश ब्लॉक कॉन्फ़िगर करें"
   },
   "smartReminders": {
     "sections": {

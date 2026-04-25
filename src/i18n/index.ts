@@ -175,6 +175,79 @@ const LOCALE_TAG_BY_LANGUAGE: Record<string, string> = {
   id: 'id-ID',
 };
 
+dayjs.locale(
+  {
+    name: 'zu',
+    weekdays: [
+      'iSonto',
+      'uMsombuluko',
+      'uLwesibili',
+      'uLwesithathu',
+      'uLwesine',
+      'uLwesihlanu',
+      'uMgqibelo',
+    ],
+    weekdaysShort: ['Son', 'Mso', 'Bil', 'Tha', 'Sin', 'Hla', 'Mgq'],
+    weekdaysMin: ['So', 'Ms', 'Bi', 'Th', 'Si', 'Hl', 'Mg'],
+    months: [
+      'Januwari',
+      'Febhuwari',
+      'Mashi',
+      'Ephreli',
+      'Meyi',
+      'Juni',
+      'Julayi',
+      'Agasti',
+      'Septhemba',
+      'Okthoba',
+      'Novemba',
+      'Disemba',
+    ],
+    monthsShort: [
+      'Jan',
+      'Feb',
+      'Mas',
+      'Eph',
+      'Mey',
+      'Jun',
+      'Jul',
+      'Aga',
+      'Sep',
+      'Okt',
+      'Nov',
+      'Dis',
+    ],
+    weekStart: 1,
+    formats: {
+      LT: 'HH:mm',
+      LTS: 'HH:mm:ss',
+      L: 'DD/MM/YYYY',
+      LL: 'D MMMM YYYY',
+      LLL: 'D MMMM YYYY HH:mm',
+      LLLL: 'dddd, D MMMM YYYY HH:mm',
+    },
+    relativeTime: {
+      future: 'ngo-%s',
+      past: '%s edlule',
+      s: 'imizuzwana embalwa',
+      m: 'umzuzu',
+      mm: 'imizuzu engu-%d',
+      h: 'ihora',
+      hh: 'amahora angu-%d',
+      d: 'usuku',
+      dd: 'izinsuku ezingu-%d',
+      M: 'inyanga',
+      MM: 'izinyanga ezingu-%d',
+      y: 'unyaka',
+      yy: 'iminyaka engu-%d',
+    },
+    ordinal: (n: number) => String(n),
+    meridiem: (hour: number) => (hour < 12 ? 'AM' : 'PM'),
+  } as never,
+  undefined,
+  true
+);
+
 function resolveLocaleTag(language?: string): string {
   const normalized = normalizeLanguage(language);
   return LOCALE_TAG_BY_LANGUAGE[normalized] ?? 'en-US';
@@ -249,6 +322,11 @@ function syncDayjsLocale(language: string): void {
 
   if (normalized === 'af') {
     dayjs.locale('af');
+    return;
+  }
+
+  if (normalized === 'zu') {
+    dayjs.locale('zu');
     return;
   }
 

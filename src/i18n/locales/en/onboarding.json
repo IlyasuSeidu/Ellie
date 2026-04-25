@@ -381,7 +381,7 @@
     "getStartedA11yHint": "Tap to start using the app",
     "getStartedA11yLabel": "Get started with Ellie",
     "loading": "Building your roster calendar...",
-    "nextShiftCountdown": "Next shift in {{days}} day(s) ({{date}})",
+    "nextShiftCountdown": "Next shift {{relative}} ({{date}})",
     "checkInTitle": "When do you check your schedule?",
     "checkInNotificationTitle": "Your schedule today",
     "checkInNotificationBody": "Tap to see your upcoming shifts.",

@@ -258,7 +258,12 @@
       "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} Rotasi Kustom",
       "dayAbbrev": "Si",
       "nightAbbrev": "Ma"
-    }
+    },
+    "openFIFOBuilderTitle": "Buka pembuat pola FIFO",
+    "openFIFOBuilderSubtitle": "Atur hari kerja/istirahat, campuran shift siang-malam, dan urutan khusus dalam alur onboarding",
+    "fifoSummarySubtitle": "{{workDays}} hari kerja · {{restDays}} hari istirahat",
+    "openCustomBuilderTitle": "Buka pembuat rotasi khusus",
+    "openCustomBuilderSubtitle": "Atur blok siang, malam, dan libur dalam alur pola khusus saat onboarding"
   },
   "smartReminders": {
     "sections": {

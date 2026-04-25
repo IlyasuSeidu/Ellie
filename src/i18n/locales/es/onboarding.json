@@ -289,7 +289,7 @@
         "shiftTimes": "Horarios de turnos"
       }
     },
-    "nextShiftCountdown": "Próximo turno en {{days}} día(s) ({{date}})",
+    "nextShiftCountdown": "Próximo turno {{relative}} ({{date}})",
     "checkInTitle": "¿Cuándo revisas tu horario?",
     "checkInNotificationTitle": "Tu horario de hoy",
     "checkInNotificationBody": "Toca para ver tus próximos turnos.",

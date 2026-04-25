@@ -47,7 +47,8 @@
       "actionPasswordResetFailed": "Tidak dapat mengirim tautan setel ulang saat ini. Silakan coba lagi.",
       "actionEmailVerificationFailed": "Tidak dapat mengirim email verifikasi saat ini. Silakan coba lagi.",
       "actionSignOutFailed": "Tidak dapat keluar sekarang.",
-      "actionSessionRestoreFailed": "Tidak dapat memulihkan sesi Anda. Silakan masuk lagi."
+      "actionSessionRestoreFailed": "Tidak dapat memulihkan sesi Anda. Silakan masuk lagi.",
+      "tooManyRequestsUntil": "Terlalu banyak percobaan masuk yang gagal. Coba lagi setelah {{time}}."
     },
     "titles": {
       "error": "Kesalahan",
@@ -103,7 +104,8 @@
     "selectorSubtitle": "Pilih bahasa Anda",
     "search": "Cari bahasa…",
     "noResults": "Tidak ada bahasa yang ditemukan",
-    "rtlBadge": "RTL"
+    "rtlBadge": "RTL",
+    "currentLabel": "SAAT INI"
   },
   "accessibility": {
     "toggle": "Sakelar"
@@ -251,7 +253,9 @@
       "restorePurchasesError": "Pemulihan gagal. Silakan coba lagi.",
       "ctaOffline": "Hubungkan untuk berlangganan",
       "purchaseSuccessPaid": "Langganan Anda aktif",
-      "billingDisclosureTrialGeneric": "Uji coba gratis Anda dimulai hari ini. Batalkan kapan saja di Pengaturan sebelum penagihan dimulai. Langganan diperpanjang otomatis."
+      "billingDisclosureTrialGeneric": "Uji coba gratis Anda dimulai hari ini. Batalkan kapan saja di Pengaturan sebelum penagihan dimulai. Langganan diperpanjang otomatis.",
+      "unavailable": "Langganan tidak tersedia pada build aplikasi ini. Instal build EAS development atau production terbaru.",
+      "unconfigured": "Langganan belum dikonfigurasi pada build ini. Tambahkan kunci RevenueCat SDK ke lingkungan build lalu build ulang."
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro langganan aktif",
@@ -259,7 +263,8 @@
       "activeLabel": "__TK1__ Pro — Aktif ✓",
       "upgradeLabel": "Tingkatkan ke __TK1__ Pro",
       "activeHint": "Kalender lengkap · Hai __TK1__ asisten suara",
-      "upgradeHint": "Paket mulai dari $6,99/bln atau $49,99/tahun"
+      "upgradeHint": "Paket mulai dari $6,99/bln atau $49,99/tahun",
+      "customerCenterError": "Pengelolaan langganan tidak tersedia saat ini. Silakan coba lagi."
     },
     "padlock": {
       "a11yLabel": "Tingkatkan ke __TK1__ Pro untuk melihat kalender lengkap"

@@ -258,7 +258,12 @@
       "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} Ukuzungezisa Ngokwezifiso",
       "dayAbbrev": "EM",
       "nightAbbrev": "EB"
-    }
+    },
+    "openFIFOBuilderTitle": "Vula umakhi wephethini ye-FIFO",
+    "openFIFOBuilderSubtitle": "Lungisa izinsuku zomsebenzi nezokuphumula, ukuhlanganiswa kosuku nobusuku, nokulandelana okwenziwe ngokwezifiso ku-onboarding",
+    "fifoSummarySubtitle": "{{workDays}} izinsuku zomsebenzi · {{restDays}} izinsuku zokuphumula",
+    "openCustomBuilderTitle": "Vula umakhi wokushintshana okwenziwe ngokwezifiso",
+    "openCustomBuilderSubtitle": "Lungisa amabhlokhi osuku, ebusuku nawokuphumula ku-onboarding yephethini eyenziwe ngokwezifiso"
   },
   "smartReminders": {
     "sections": {

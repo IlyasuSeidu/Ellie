@@ -57,10 +57,8 @@ import {
   getShiftSystemDisplayName,
   getRosterTypeDisplayName,
   getFIFOWorkPatternName,
-  getFIFOCycleDescription,
 } from '@/utils/profileUtils';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
-import { normalizeLanguage } from '@/i18n/languageDetector';
 import { logger } from '@/utils/logger';
 import { getOnboardingSaveErrorMessage } from '@/utils/onboardingErrorMessage';
 import { Analytics } from '@/utils/analytics';
@@ -68,6 +66,7 @@ import { NotificationPrimingModal } from '@/components/onboarding/NotificationPr
 import { useSubscription } from '@/hooks/useSubscription';
 import { appStateStorageService } from '@/services/AppStateStorageService';
 import { subscriptionEntitlementCacheService } from '@/services/SubscriptionEntitlementCacheService';
+import { formatLocalizedDate, getLocaleTag } from '@/utils/i18nFormat';
 
 const isJestRuntime = (): boolean =>
   typeof process !== 'undefined' && typeof process.env?.JEST_WORKER_ID === 'string';
@@ -608,7 +607,22 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
 
   // Get FIFO cycle description
   const getFIFOCycleSummary = (): string => {
-    return getFIFOCycleDescription(data.fifoConfig).replace(', ', ' • ');
+    if (!data.fifoConfig) {
+      return String(t('completion.summary.notSet', { defaultValue: 'Not set' }));
+    }
+
+    const workText = t('shift.configCard.workDaysOnSite', {
+      ns: 'profile',
+      count: data.fifoConfig.workBlockDays,
+      defaultValue: '{{count}} days on-site',
+    });
+    const restText = t('shift.configCard.restDaysAtHome', {
+      ns: 'profile',
+      count: data.fifoConfig.restBlockDays,
+      defaultValue: '{{count}} days at home',
+    });
+
+    return `${workText} • ${restText}`;
   };
 
   // Get current cycle position (FIFO block day or rotating phase day)
@@ -624,7 +638,8 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
       const normalizedOffset = ((phaseOffset % cycleLength) + cycleLength) % cycleLength;
       if (normalizedOffset < workBlockDays) {
         return String(
-          t('completion.summary.currentPositionWork', {
+          t('shift.cycleWorkBlock', {
+            ns: 'profile',
             day: normalizedOffset + 1,
             total: workBlockDays,
             defaultValue: `Day ${normalizedOffset + 1} of ${workBlockDays} (Work Block)`,
@@ -633,7 +648,8 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
       }
       const restDay = normalizedOffset - workBlockDays + 1;
       return String(
-        t('completion.summary.currentPositionRest', {
+        t('shift.cycleRestBlock', {
+          ns: 'profile',
           day: restDay,
           total: restBlockDays,
           defaultValue: `Day ${restDay} of ${restBlockDays} (Rest Block)`,
@@ -647,41 +663,41 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
   // Format date
   const formatDate = (date?: Date): string => {
     if (!date) return String(t('completion.summary.notSet', { defaultValue: 'Not set' }));
-    const language = normalizeLanguage(i18n.resolvedLanguage ?? i18n.language ?? 'en');
-    const locale =
-      language === 'pt-BR'
-        ? 'pt-BR'
-        : language === 'es'
-          ? 'es-ES'
-          : language === 'fr'
-            ? 'fr-FR'
-            : language === 'ar'
-              ? 'ar'
-              : language === 'zh-CN'
-                ? 'zh-CN'
-                : language === 'ru'
-                  ? 'ru-RU'
-                  : language === 'hi'
-                    ? 'hi-IN'
-                    : language === 'af'
-                      ? 'af-ZA'
-                      : language === 'zu'
-                        ? 'zu-ZA'
-                        : language === 'id'
-                          ? 'id-ID'
-                          : 'en-US';
-    return date.toLocaleDateString(locale, {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
-    });
+    return formatLocalizedDate(
+      date,
+      {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      },
+      i18n.resolvedLanguage ?? i18n.language
+    );
   };
+
+  const getShiftLabel = useCallback(
+    (shiftType: 'day' | 'night' | 'morning' | 'afternoon'): string => {
+      const keyMap = {
+        day: 'shiftLabels.day',
+        night: 'shiftLabels.night',
+        morning: 'shiftLabels.morning',
+        afternoon: 'shiftLabels.afternoon',
+      } as const;
+
+      return String(
+        t(keyMap[shiftType], {
+          ns: 'dashboard',
+          defaultValue: `${shiftType.charAt(0).toUpperCase() + shiftType.slice(1)} Shift`,
+        })
+      );
+    },
+    [t]
+  );
 
   // Format shift times - returns array of shift time entries
   const getShiftTimeEntries = (): Array<{ label: string; value: string }> => {
     const shiftTimes = getShiftTimesFromData(data);
     const entries = shiftTimes.map((st) => ({
-      label: `${st.type.charAt(0).toUpperCase() + st.type.slice(1)} Shift`,
+      label: getShiftLabel(st.type),
       value: `${st.startTime} - ${st.endTime}`,
     }));
 
@@ -714,6 +730,19 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
 
     return { date: shiftDate, daysAway };
   }, [data]);
+
+  const nextShiftRelativeText = useMemo(() => {
+    if (!nextShiftCountdown) {
+      return null;
+    }
+
+    const formatter = new Intl.RelativeTimeFormat(
+      getLocaleTag(i18n.resolvedLanguage ?? i18n.language),
+      { numeric: 'always' }
+    );
+
+    return formatter.format(nextShiftCountdown.daysAway, 'day');
+  }, [i18n.language, i18n.resolvedLanguage, nextShiftCountdown]);
 
   return (
     <View style={styles.container} testID={testID}>
@@ -886,8 +915,9 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
                         ? {
                             icon: 'locate-outline',
                             label: String(
-                              t('completion.summary.currentPosition', {
-                                defaultValue: 'Current Position',
+                              t('shift.currentPositionInCycle', {
+                                ns: 'profile',
+                                defaultValue: 'Current position in cycle',
                               })
                             ),
                             value: getCurrentPosition() as string,
@@ -945,9 +975,9 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
                 <Ionicons name="time-outline" size={20} color={theme.colors.sacredGold} />
                 <Text style={styles.countdownText}>
                   {t('completion.nextShiftCountdown', {
-                    days: nextShiftCountdown.daysAway,
-                    date: nextShiftCountdown.date.toLocaleDateString(),
-                    defaultValue: `Next shift in ${nextShiftCountdown.daysAway} day${nextShiftCountdown.daysAway !== 1 ? 's' : ''} (${nextShiftCountdown.date.toLocaleDateString()})`,
+                    relative: nextShiftRelativeText,
+                    date: formatDate(nextShiftCountdown.date),
+                    defaultValue: `Next shift ${nextShiftRelativeText} (${formatDate(nextShiftCountdown.date)})`,
                   })}
                 </Text>
               </View>

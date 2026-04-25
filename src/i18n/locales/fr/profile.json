@@ -258,7 +258,12 @@
       "customRotationThreeShift": "Rotation personnalisée {{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}}",
       "dayAbbrev": "J",
       "nightAbbrev": "Nu"
-    }
+    },
+    "openFIFOBuilderTitle": "Ouvrir le créateur de schéma FIFO",
+    "openFIFOBuilderSubtitle": "Configurez les jours de travail et de repos, l’alternance jour-nuit et la séquence personnalisée dans le parcours d’onboarding",
+    "fifoSummarySubtitle": "{{workDays}} jours de travail · {{restDays}} jours de repos",
+    "openCustomBuilderTitle": "Ouvrir le créateur de rotation personnalisée",
+    "openCustomBuilderSubtitle": "Configurez les blocs de jour, de nuit et de repos dans le parcours de rotation personnalisée"
   },
   "smartReminders": {
     "sections": {

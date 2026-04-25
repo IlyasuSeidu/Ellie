@@ -370,7 +370,7 @@
         "shiftTimes": "Izikhathi zamashifu"
       }
     },
-    "nextShiftCountdown": "Ishifu elilandelayo ngezinsuku ezi-{{days}} ({{date}})",
+    "nextShiftCountdown": "Ishifu elandelayo {{relative}} ({{date}})",
     "checkInTitle": "Ubheka nini ishejuli yakho?",
     "checkInNotificationTitle": "Ishejuli yakho yanamuhla",
     "checkInNotificationBody": "Thepha ukuze ubone amashifu akho azayo.",

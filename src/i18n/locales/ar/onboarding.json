@@ -348,7 +348,7 @@
         "shiftTimes": "أوقات الورديات"
       }
     },
-    "nextShiftCountdown": "النوبة القادمة خلال {{days}} يوم ({{date}})",
+    "nextShiftCountdown": "الوردية التالية {{relative}} ({{date}})",
     "checkInTitle": "متى تراجع جدولك؟",
     "checkInNotificationTitle": "جدولك اليوم",
     "checkInNotificationBody": "اضغط لرؤية نوباتك القادمة.",

@@ -46,6 +46,7 @@ import {
   getFIFOBlockInfo,
 } from '@/utils/shiftUtils';
 import { parseCalendarDate, toDateString, getDaysInMonth } from '@/utils/dateUtils';
+import { formatLocalizedDateTime } from '@/utils/i18nFormat';
 import { useOnboarding, type OnboardingData } from '@/contexts/OnboardingContext';
 import { RosterType, type ShiftCycle } from '@/types';
 import { useActiveShift } from '@/hooks/useActiveShift';
@@ -92,7 +93,7 @@ const SHIFT_GLOW_COLORS: Record<string, string> = {
 const FREE_MONTH_AHEAD_LIMIT = 1;
 
 export const MainDashboardScreen: React.FC = () => {
-  const { t } = useTranslation('dashboard');
+  const { t, i18n } = useTranslation('dashboard');
   const { t: tCommon } = useTranslation('common');
   const isFocused = useIsFocused();
   const insets = useSafeAreaInsets();
@@ -261,8 +262,12 @@ export const MainDashboardScreen: React.FC = () => {
     if (diffSec < 60) return t('lastUpdated.secondsAgo', { count: diffSec });
     const diffMin = Math.floor(diffSec / 60);
     if (diffMin < 60) return t('lastUpdated.minutesAgo', { count: diffMin });
-    return lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  }, [lastUpdated, clockTick, t]);
+    return formatLocalizedDateTime(
+      lastUpdated,
+      { hour: 'numeric', minute: '2-digit' },
+      i18n.resolvedLanguage ?? i18n.language
+    );
+  }, [i18n.language, i18n.resolvedLanguage, lastUpdated, clockTick, t]);
 
   // Active shift: time-aware status with overnight carry-over support
   const activeShift = useActiveShift(shiftCycle, userData, liveTick, currentDateStr);

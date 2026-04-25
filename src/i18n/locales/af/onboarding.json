@@ -351,7 +351,7 @@
         "shiftTimes": "Skofure"
       }
     },
-    "nextShiftCountdown": "Volgende skof oor {{days}} dag(e) ({{date}})",
+    "nextShiftCountdown": "Volgende skof {{relative}} ({{date}})",
     "checkInTitle": "Wanneer kyk jy na jou skedule?",
     "checkInNotificationTitle": "Jou skedule vandag",
     "checkInNotificationBody": "Tik om jou komende skofte te sien.",

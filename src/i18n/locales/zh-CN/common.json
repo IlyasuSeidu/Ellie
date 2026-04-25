@@ -47,7 +47,8 @@
       "actionPasswordResetFailed": "目前无法发送重置链接。请再试一次。",
       "actionEmailVerificationFailed": "目前无法发送验证电子邮件。请再试一次。",
       "actionSignOutFailed": "现在无法退出。",
-      "actionSessionRestoreFailed": "无法恢复您的会话。请重新登录。"
+      "actionSessionRestoreFailed": "无法恢复您的会话。请重新登录。",
+      "tooManyRequestsUntil": "登录失败次数过多。请在 {{time}} 后重试。"
     },
     "titles": {
       "error": "错误",
@@ -103,7 +104,8 @@
     "selectorSubtitle": "选择您的语言",
     "search": "搜索语言…",
     "noResults": "未找到语言",
-    "rtlBadge": "RTL"
+    "rtlBadge": "RTL",
+    "currentLabel": "当前"
   },
   "accessibility": {
     "toggle": "切换开关"
@@ -251,7 +253,9 @@
       "restorePurchasesError": "恢复失败。请重试。",
       "ctaOffline": "联网后订阅",
       "purchaseSuccessPaid": "你的订阅已生效",
-      "billingDisclosureTrialGeneric": "您的免费试用今天开始。请在开始扣费前随时前往设置取消。订阅会自动续订。"
+      "billingDisclosureTrialGeneric": "您的免费试用今天开始。请在开始扣费前随时前往设置取消。订阅会自动续订。",
+      "unavailable": "此应用构建版本不支持订阅。请安装最新的 EAS 开发版或生产版构建。",
+      "unconfigured": "此构建尚未配置订阅。请将 RevenueCat SDK 密钥加入构建环境后重新构建。"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro 主动订阅",
@@ -259,7 +263,8 @@
       "activeLabel": "__TK1__ Pro — 主动 ✓",
       "upgradeLabel": "升级到 __TK1__ 专业版",
       "activeHint": "全日历·嘿__TK1__语音助手",
-      "upgradeHint": "套餐低至每月 6.99 美元或每年 49.99 美元"
+      "upgradeHint": "套餐低至每月 6.99 美元或每年 49.99 美元",
+      "customerCenterError": "目前无法打开订阅管理。请稍后再试。"
     },
     "padlock": {
       "a11yLabel": "升级到 __TK1__ Pro 以查看完整日历"

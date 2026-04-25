@@ -312,5 +312,18 @@
     "dismiss": "Nie nou nie",
     "update": "Werk inklok by",
     "submit": "Stoor inklok"
+  },
+  "onboardingChecklist": {
+    "title": "Kry die meeste uit Ellie",
+    "items": {
+      "roster": "Stel jou rooster op",
+      "shiftTimes": "Voeg jou skoftye by",
+      "profile": "Voltooi jou profiel",
+      "askEllie": "Vra vir Ellie ’n vraag"
+    },
+    "actions": {
+      "doIt": "Doen dit",
+      "dismiss": "Maak toe"
+    }
   }
 }

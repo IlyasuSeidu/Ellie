@@ -312,5 +312,18 @@
     "dismiss": "अभी नहीं",
     "update": "चेक-इन अपडेट करें",
     "submit": "चेक-इन सेव करें"
+  },
+  "onboardingChecklist": {
+    "title": "Ellie का पूरा लाभ उठाएँ",
+    "items": {
+      "roster": "अपना रोस्टर सेट करें",
+      "shiftTimes": "अपनी शिफ्ट के समय जोड़ें",
+      "profile": "अपनी प्रोफ़ाइल पूरी करें",
+      "askEllie": "Ellie से एक प्रश्न पूछें"
+    },
+    "actions": {
+      "doIt": "करें",
+      "dismiss": "हटाएँ"
+    }
   }
 }

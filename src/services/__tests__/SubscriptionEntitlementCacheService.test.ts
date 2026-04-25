@@ -1,6 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
 import { subscriptionEntitlementCacheService } from '@/services/SubscriptionEntitlementCacheService';
 import { asyncStorageService } from '@/services/AsyncStorageService';
+import { logger } from '@/utils/logger';
 
 jest.mock('@/services/AsyncStorageService', () => ({
   asyncStorageService: {
@@ -70,13 +71,13 @@ describe('SubscriptionEntitlementCacheService', () => {
   });
 
   it('migrates a legacy global secure snapshot into an authenticated scope', async () => {
-    jest
-      .mocked(SecureStore.getItemAsync)
-      .mockImplementation(async (key: string) =>
-        key === 'subscription:entitlementSnapshot'
-          ? JSON.stringify({ isPro: true, updatedAt: 456 })
-          : null
-      );
+    jest.mocked(asyncStorageService.get).mockImplementation(async (key: string) => {
+      if (key === 'subscription:isPro') {
+        return true as never;
+      }
+
+      return null as never;
+    });
 
     const result = await subscriptionEntitlementCacheService.getCachedIsPro('user-456');
 
@@ -85,9 +86,17 @@ describe('SubscriptionEntitlementCacheService', () => {
       expect.stringMatching(/^subscription\.entitlementSnapshot\./),
       expect.stringContaining('"isPro":true')
     );
+    expect(asyncStorageService.remove).toHaveBeenCalledWith('subscription:isPro');
   });
 
   it('does not reuse legacy global entitlement cache for anonymous scope', async () => {
+    jest.mocked(asyncStorageService.get).mockImplementation(async (key: string) => {
+      if (key === 'subscription:isPro') {
+        return true as never;
+      }
+
+      return null as never;
+    });
     jest
       .mocked(SecureStore.getItemAsync)
       .mockImplementation(async (key: string) =>
@@ -99,6 +108,18 @@ describe('SubscriptionEntitlementCacheService', () => {
     const result = await subscriptionEntitlementCacheService.getCachedIsPro(null);
 
     expect(result).toBeNull();
+  });
+
+  it('skips the invalid legacy secure-store key without warning', async () => {
+    await subscriptionEntitlementCacheService.setCachedIsPro(true, 'user-123');
+
+    expect(SecureStore.deleteItemAsync).not.toHaveBeenCalledWith(
+      'subscription:entitlementSnapshot'
+    );
+    expect(logger.warn).not.toHaveBeenCalledWith(
+      'SubscriptionEntitlementCache: failed to clear legacy secure snapshot',
+      expect.anything()
+    );
   });
 
   it('resolves anonymous cache reads through the active anonymous scope', async () => {

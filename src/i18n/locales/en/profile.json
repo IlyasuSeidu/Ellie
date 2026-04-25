@@ -258,7 +258,12 @@
       "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} Custom Rotation",
       "dayAbbrev": "D",
       "nightAbbrev": "N"
-    }
+    },
+    "openFIFOBuilderTitle": "Open FIFO Pattern Builder",
+    "openFIFOBuilderSubtitle": "Configure work/rest days, day-night mix, and custom sequence in onboarding flow",
+    "fifoSummarySubtitle": "{{workDays}} work days · {{restDays}} rest days",
+    "openCustomBuilderTitle": "Open Custom Rotation Builder",
+    "openCustomBuilderSubtitle": "Configure day, night, and off blocks in onboarding custom pattern flow"
   },
   "smartReminders": {
     "sections": {

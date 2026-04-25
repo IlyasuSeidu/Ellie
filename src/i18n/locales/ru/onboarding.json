@@ -360,7 +360,7 @@
         "shiftTimes": "Время смен"
       }
     },
-    "nextShiftCountdown": "Следующая смена через {{days}} дн. ({{date}})",
+    "nextShiftCountdown": "Следующая смена {{relative}} ({{date}})",
     "checkInTitle": "Когда вы проверяете свой график?",
     "checkInNotificationTitle": "Ваш график на сегодня",
     "checkInNotificationBody": "Нажмите, чтобы увидеть предстоящие смены.",

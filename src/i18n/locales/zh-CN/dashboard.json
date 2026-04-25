@@ -312,5 +312,18 @@
     "dismiss": "暂不",
     "update": "更新记录",
     "submit": "保存记录"
+  },
+  "onboardingChecklist": {
+    "title": "充分发挥 Ellie 的作用",
+    "items": {
+      "roster": "设置你的轮班表",
+      "shiftTimes": "添加你的班次时间",
+      "profile": "完善你的个人资料",
+      "askEllie": "向 Ellie 提一个问题"
+    },
+    "actions": {
+      "doIt": "去完成",
+      "dismiss": "关闭"
+    }
   }
 }

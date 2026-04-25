@@ -258,7 +258,12 @@
       "customRotationThreeShift": "{{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}} Pasgemaakte rotasie",
       "dayAbbrev": "DG",
       "nightAbbrev": "NG"
-    }
+    },
+    "openFIFOBuilderTitle": "Maak FIFO-patroonbouer oop",
+    "openFIFOBuilderSubtitle": "Stel werk-/rusdae, dag-nag-mengsel en ’n pasgemaakte volgorde in die aanboordvloei op",
+    "fifoSummarySubtitle": "{{workDays}} werksdae · {{restDays}} rusdae",
+    "openCustomBuilderTitle": "Maak pasgemaakte rotasiebouer oop",
+    "openCustomBuilderSubtitle": "Stel dag-, nag- en af-blokke in die pasgemaakte patroon-aanboordvloei op"
   },
   "smartReminders": {
     "sections": {

@@ -312,5 +312,18 @@
     "dismiss": "Не сейчас",
     "update": "Обновить отметку",
     "submit": "Сохранить отметку"
+  },
+  "onboardingChecklist": {
+    "title": "Получите максимум от Ellie",
+    "items": {
+      "roster": "Настройте свой график",
+      "shiftTimes": "Добавьте время своих смен",
+      "profile": "Заполните профиль",
+      "askEllie": "Задайте вопрос Ellie"
+    },
+    "actions": {
+      "doIt": "Сделать",
+      "dismiss": "Скрыть"
+    }
   }
 }

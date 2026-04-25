@@ -47,7 +47,8 @@
       "actionPasswordResetFailed": "Unable to send a reset link right now. Please try again.",
       "actionEmailVerificationFailed": "Unable to send verification email right now. Please try again.",
       "actionSignOutFailed": "Unable to sign out right now.",
-      "actionSessionRestoreFailed": "Unable to restore your session. Please sign in again."
+      "actionSessionRestoreFailed": "Unable to restore your session. Please sign in again.",
+      "tooManyRequestsUntil": "Too many failed login attempts. Try again after {{time}}."
     },
     "titles": {
       "error": "Error",
@@ -103,7 +104,8 @@
       "af": "Afrikaans",
       "zu": "isiZulu",
       "id": "Bahasa Indonesia"
-    }
+    },
+    "currentLabel": "CURRENT"
   },
   "accessibility": {
     "toggle": "Toggle"
@@ -248,7 +250,9 @@
       "restorePurchasesError": "Restore failed. Please try again.",
       "ctaOffline": "Connect to subscribe",
       "purchaseSuccessPaid": "Your subscription is active",
-      "billingDisclosureTrialGeneric": "Your free trial starts today. Cancel anytime in Settings before billing begins. Subscriptions renew automatically."
+      "billingDisclosureTrialGeneric": "Your free trial starts today. Cancel anytime in Settings before billing begins. Subscriptions renew automatically.",
+      "unavailable": "Subscriptions are unavailable in this app build. Install the latest EAS development/production build.",
+      "unconfigured": "Subscriptions are not configured in this build. Add the RevenueCat SDK key to the build environment and rebuild."
     },
     "profile": {
       "rowActiveA11y": "Ellie Pro active subscription",
@@ -256,7 +260,8 @@
       "activeLabel": "Ellie Pro — Active ✓",
       "upgradeLabel": "Upgrade to Ellie Pro",
       "activeHint": "Full calendar · Hey Ellie voice assistant",
-      "upgradeHint": "Plans from $6.99/mo or $49.99/yr"
+      "upgradeHint": "Plans from $6.99/mo or $49.99/yr",
+      "customerCenterError": "Subscription management is unavailable right now. Please try again."
     },
     "padlock": {
       "a11yLabel": "Upgrade to Ellie Pro to see full calendar"

@@ -374,7 +374,7 @@
         "shiftTimes": "Horaires des quarts"
       }
     },
-    "nextShiftCountdown": "Prochain poste dans {{days}} jour(s) ({{date}})",
+    "nextShiftCountdown": "Prochain poste {{relative}} ({{date}})",
     "checkInTitle": "Quand consultez-vous votre planning ?",
     "checkInNotificationTitle": "Votre planning du jour",
     "checkInNotificationBody": "Touchez pour voir vos prochains postes.",

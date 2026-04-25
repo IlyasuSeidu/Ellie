@@ -314,7 +314,7 @@
         "shiftTimes": "班次时间"
       }
     },
-    "nextShiftCountdown": "下一班将在 {{days}} 天后（{{date}}）",
+    "nextShiftCountdown": "下一次轮班{{relative}}（{{date}}）",
     "checkInTitle": "你通常什么时候查看班表？",
     "checkInNotificationTitle": "你今天的班表",
     "checkInNotificationBody": "点击查看你即将到来的班次。",

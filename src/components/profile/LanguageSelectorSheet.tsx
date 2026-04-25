@@ -235,10 +235,17 @@ export const LanguageSelectorSheet: React.FC<LanguageSelectorSheetProps> = ({
   const filteredLanguages = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return orderedLanguages;
-    return orderedLanguages.filter(
-      (lang) => lang.nativeName.toLowerCase().includes(q) || lang.code.toLowerCase().includes(q)
-    );
-  }, [query, orderedLanguages]);
+    return orderedLanguages.filter((lang) => {
+      const localizedName = String(
+        t(`language.names.${lang.code}`, { defaultValue: lang.nativeName })
+      );
+      return (
+        localizedName.toLowerCase().includes(q) ||
+        lang.nativeName.toLowerCase().includes(q) ||
+        lang.code.toLowerCase().includes(q)
+      );
+    });
+  }, [orderedLanguages, query, t]);
 
   useEffect(() => {
     if (!visible) {

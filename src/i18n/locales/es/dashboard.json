@@ -312,5 +312,18 @@
     "dismiss": "Ahora no",
     "update": "Actualizar registro",
     "submit": "Guardar registro"
+  },
+  "onboardingChecklist": {
+    "title": "Aprovecha al máximo Ellie",
+    "items": {
+      "roster": "Configura tu roster",
+      "shiftTimes": "Añade tus horarios de turno",
+      "profile": "Completa tu perfil",
+      "askEllie": "Hazle una pregunta a Ellie"
+    },
+    "actions": {
+      "doIt": "Hazlo",
+      "dismiss": "Descartar"
+    }
   }
 }

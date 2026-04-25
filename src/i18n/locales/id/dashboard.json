@@ -312,5 +312,18 @@
     "dismiss": "Nanti saja",
     "update": "Perbarui check-in",
     "submit": "Simpan check-in"
+  },
+  "onboardingChecklist": {
+    "title": "Dapatkan manfaat maksimal dari Ellie",
+    "items": {
+      "roster": "Atur roster Anda",
+      "shiftTimes": "Tambahkan jam shift Anda",
+      "profile": "Lengkapi profil Anda",
+      "askEllie": "Ajukan pertanyaan ke Ellie"
+    },
+    "actions": {
+      "doIt": "Lakukan",
+      "dismiss": "Tutup"
+    }
   }
 }

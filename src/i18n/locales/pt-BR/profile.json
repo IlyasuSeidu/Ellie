@@ -258,7 +258,12 @@
       "customRotationThreeShift": "Rotação personalizada {{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}}",
       "dayAbbrev": "Di",
       "nightAbbrev": "No"
-    }
+    },
+    "openFIFOBuilderTitle": "Abrir o construtor de padrão FIFO",
+    "openFIFOBuilderSubtitle": "Configure dias de trabalho e descanso, mistura de turnos diurnos e noturnos e sequência personalizada no fluxo de onboarding",
+    "fifoSummarySubtitle": "{{workDays}} dias de trabalho · {{restDays}} dias de descanso",
+    "openCustomBuilderTitle": "Abrir o construtor de rotação personalizada",
+    "openCustomBuilderSubtitle": "Configure blocos de dia, noite e folga no fluxo de padrão personalizado do onboarding"
   },
   "smartReminders": {
     "sections": {

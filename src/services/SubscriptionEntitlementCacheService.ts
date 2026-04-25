@@ -6,6 +6,7 @@ const ENTITLEMENT_CACHE_KEY = 'subscription:entitlementSnapshot';
 const SUBSCRIPTION_STATUS_KEY = 'subscription:isPro';
 const ACTIVE_ANONYMOUS_SCOPE_KEY = 'subscription:activeAnonymousScope';
 const ENTITLEMENT_SECURE_KEY_PREFIX = 'subscription.entitlementSnapshot';
+const SECURE_STORE_KEY_PATTERN = /^[A-Za-z0-9._-]+$/;
 
 const hashScope = (scope: string): string => {
   let hash = 0x811c9dc5;
@@ -26,6 +27,8 @@ const sanitizeSecureStoreFragment = (value: string): string => {
   return sanitized.length > 0 ? sanitized : 'scope';
 };
 
+const isValidSecureStoreKey = (value: string): boolean => SECURE_STORE_KEY_PATTERN.test(value);
+
 interface EntitlementSnapshot {
   isPro: boolean;
   updatedAt: number;
@@ -33,6 +36,7 @@ interface EntitlementSnapshot {
 
 class SubscriptionEntitlementCacheService {
   async getCachedIsPro(scope?: string | null): Promise<boolean | null> {
+    const requestedScope = this.normalizeScope(scope);
     const normalizedScope = await this.resolveReadScope(scope);
     if (!normalizedScope) {
       return null;
@@ -51,10 +55,18 @@ class SubscriptionEntitlementCacheService {
       return mirroredValue;
     }
 
-    const legacySnapshot = await this.readLegacySnapshot();
-    if (legacySnapshot) {
-      await this.setCachedIsPro(legacySnapshot.isPro, normalizedScope);
-      return legacySnapshot.isPro;
+    if (requestedScope) {
+      const legacyMirrorValue = await this.readLegacyMirror();
+      if (typeof legacyMirrorValue === 'boolean') {
+        await this.setCachedIsPro(legacyMirrorValue, normalizedScope);
+        return legacyMirrorValue;
+      }
+
+      const legacySnapshot = await this.readLegacySnapshot();
+      if (legacySnapshot) {
+        await this.setCachedIsPro(legacySnapshot.isPro, normalizedScope);
+        return legacySnapshot.isPro;
+      }
     }
 
     return null;
@@ -208,6 +220,10 @@ class SubscriptionEntitlementCacheService {
   }
 
   private async readLegacySnapshot(): Promise<EntitlementSnapshot | null> {
+    if (!isValidSecureStoreKey(ENTITLEMENT_CACHE_KEY)) {
+      return null;
+    }
+
     try {
       const rawValue = await SecureStore.getItemAsync(ENTITLEMENT_CACHE_KEY);
       if (!rawValue) {
@@ -231,7 +247,23 @@ class SubscriptionEntitlementCacheService {
     }
   }
 
+  private async readLegacyMirror(): Promise<boolean | null> {
+    try {
+      const legacyValue = await asyncStorageService.get<boolean>(SUBSCRIPTION_STATUS_KEY);
+      return typeof legacyValue === 'boolean' ? legacyValue : null;
+    } catch (error) {
+      logger.warn('SubscriptionEntitlementCache: failed to read legacy async mirror', {
+        error: error instanceof Error ? error.message : String(error),
+      });
+      return null;
+    }
+  }
+
   private async clearLegacySecureSnapshot(): Promise<void> {
+    if (!isValidSecureStoreKey(ENTITLEMENT_CACHE_KEY)) {
+      return;
+    }
+
     try {
       await SecureStore.deleteItemAsync(ENTITLEMENT_CACHE_KEY);
     } catch (error) {

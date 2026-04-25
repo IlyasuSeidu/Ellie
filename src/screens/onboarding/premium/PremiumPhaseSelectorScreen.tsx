@@ -1567,12 +1567,12 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
         <View style={styles.settingsActions}>
           <SettingsEntryActionButtons
             backLabel={String(
-              t('phaseSelector.actions.backToSettings', {
+              t('common.backToSettings', {
                 defaultValue: 'Back to Settings',
               })
             )}
             saveLabel={String(
-              t('phaseSelector.actions.saveAndReturn', {
+              t('common.saveAndReturn', {
                 defaultValue: 'Save & Return',
               })
             )}
@@ -1580,12 +1580,12 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
             onSave={handleSaveSettingsSelection}
             saveDisabled={pendingSettingsPhaseOffset === null}
             backAccessibilityLabel={String(
-              t('phaseSelector.actions.backToSettingsA11y', {
+              t('common.backToSettings', {
                 defaultValue: 'Back to settings',
               })
             )}
             saveAccessibilityLabel={String(
-              t('phaseSelector.actions.saveAndReturnA11y', {
+              t('common.saveAndReturn', {
                 defaultValue: 'Save selection and return to settings',
               })
             )}

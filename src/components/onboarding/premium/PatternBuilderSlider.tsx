@@ -319,7 +319,7 @@ export const PatternBuilderSlider: React.FC<PatternBuilderSliderProps> = ({
               accessible={true}
               accessibilityRole="adjustable"
               accessibilityLabel={label}
-              accessibilityValue={{ min, max, now: value, text: `${value} ${label.toLowerCase()}` }}
+              accessibilityValue={{ min, max, now: value, text: `${value} ${label}` }}
               accessibilityHint={String(
                 t('patternBuilderSlider.a11y.adjustHint', {
                   defaultValue: 'Swipe left or right to adjust value',

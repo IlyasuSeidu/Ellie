@@ -11,6 +11,7 @@ import React from 'react';
 import { render, act } from '@testing-library/react-native';
 import { ResponseBubble } from '../ResponseBubble';
 import type { VoiceMessage } from '@/types/voiceAssistant';
+import { formatLocalizedDateTime } from '@/utils/i18nFormat';
 
 // Mock Ionicons
 jest.mock('@expo/vector-icons', () => {
@@ -94,13 +95,21 @@ describe('ResponseBubble', () => {
   // ---------- formatTime ----------
 
   describe('formatTime', () => {
+    const expectFormattedTime = (timestamp: number, getByText: (text: string) => unknown) => {
+      const expected = formatLocalizedDateTime(new Date(timestamp), {
+        hour: 'numeric',
+        minute: '2-digit',
+      });
+
+      expect(getByText(expected)).toBeTruthy();
+    };
+
     it('should format timestamp as HH:MM with zero-padded hours', () => {
-      // 09:05
       const message = makeUserMessage({
         timestamp: new Date(2026, 0, 1, 9, 5).getTime(),
       });
       const { getByText } = render(<ResponseBubble message={message} index={0} />);
-      expect(getByText('09:05')).toBeTruthy();
+      expectFormattedTime(message.timestamp, getByText);
     });
 
     it('should format midnight correctly as 00:00', () => {
@@ -108,7 +117,7 @@ describe('ResponseBubble', () => {
         timestamp: new Date(2026, 0, 1, 0, 0).getTime(),
       });
       const { getByText } = render(<ResponseBubble message={message} index={0} />);
-      expect(getByText('00:00')).toBeTruthy();
+      expectFormattedTime(message.timestamp, getByText);
     });
 
     it('should format afternoon time (no zero-padding needed)', () => {
@@ -116,7 +125,7 @@ describe('ResponseBubble', () => {
         timestamp: new Date(2026, 0, 1, 14, 30).getTime(),
       });
       const { getByText } = render(<ResponseBubble message={message} index={0} />);
-      expect(getByText('14:30')).toBeTruthy();
+      expectFormattedTime(message.timestamp, getByText);
     });
 
     it('should format 23:59', () => {
@@ -124,7 +133,7 @@ describe('ResponseBubble', () => {
         timestamp: new Date(2026, 0, 1, 23, 59).getTime(),
       });
       const { getByText } = render(<ResponseBubble message={message} index={0} />);
-      expect(getByText('23:59')).toBeTruthy();
+      expectFormattedTime(message.timestamp, getByText);
     });
   });
 

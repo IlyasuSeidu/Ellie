@@ -32,8 +32,10 @@ import {
 } from 'react-native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import * as AppleAuthentication from 'expo-apple-authentication';
+import i18n from '@/i18n';
 import { logger } from '@/utils/logger';
 import { ValidationError, AuthenticationError } from '@/utils/errorUtils';
+import { formatLocalizedDateTime } from '@/utils/i18nFormat';
 
 /**
  * Unsubscribe function type
@@ -148,10 +150,16 @@ export class AuthService {
     // Check rate limiting
     if (this.isRateLimited(email)) {
       const lockoutEnd = this.getLockoutEndTime(email);
+      const language = i18n.resolvedLanguage ?? i18n.language ?? 'en';
       throw new AuthenticationError(
-        `Too many failed login attempts. Try again after ${new Date(
-          lockoutEnd
-        ).toLocaleTimeString()}`,
+        i18n.t('errors.auth.tooManyRequestsUntil', {
+          time: formatLocalizedDateTime(
+            new Date(lockoutEnd),
+            { hour: 'numeric', minute: '2-digit' },
+            language
+          ),
+          defaultValue: 'Too many failed login attempts. Try again after {{time}}.',
+        }),
         'auth/too-many-requests'
       );
     }

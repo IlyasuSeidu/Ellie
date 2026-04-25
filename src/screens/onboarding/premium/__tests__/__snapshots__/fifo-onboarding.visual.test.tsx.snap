@@ -1177,7 +1177,7 @@ exports[`fifo onboarding visual snapshots PremiumFIFOCustomPatternScreen snapsho
                       "max": 60,
                       "min": 1,
                       "now": 14,
-                      "text": "14 days at site (work block)",
+                      "text": "14 Days at Site (Work Block)",
                     }
                   }
                   accessible={true}
@@ -2332,7 +2332,7 @@ exports[`fifo onboarding visual snapshots PremiumFIFOCustomPatternScreen snapsho
                       "max": 60,
                       "min": 1,
                       "now": 14,
-                      "text": "14 days at home (rest block)",
+                      "text": "14 Days at Home (Rest Block)",
                     }
                   }
                   accessible={true}
@@ -4383,7 +4383,7 @@ exports[`fifo onboarding visual snapshots PremiumFIFOPhaseSelectorScreen snapsho
     }
   >
     Swipe right to choose your work-block pattern, left for next option, or up for info
-This option means straight days only.
+Your work block runs day shifts only.
   </Text>
   <View
     style={

@@ -22,6 +22,7 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({
   onAskEllie,
 }) => {
   const { t } = useTranslation('dashboard');
+  const { t: tCommon } = useTranslation('common');
   const [askEllieDone, setAskEllieDone] = useState(false);
 
   // Derive completion from actual data so a focus-return auto-ticks items.
@@ -101,7 +102,7 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({
             <Text style={[styles.label, item.done && styles.labelDone]}>{item.label}</Text>
             {item.done || item.key === 'roster' ? (
               <Text style={styles.doneText}>
-                {t('onboardingChecklist.actions.done', { defaultValue: 'Done' })}
+                {tCommon('buttons.done', { defaultValue: 'Done' })}
               </Text>
             ) : (
               <TouchableOpacity style={styles.doItButton} onPress={item.onDoIt}>

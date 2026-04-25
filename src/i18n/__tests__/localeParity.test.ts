@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 const LOCALES_ROOT = path.resolve(__dirname, '..', 'locales');
+const PROJECT_ROOT = path.resolve(__dirname, '../../..');
 const NAMESPACES = ['common', 'onboarding', 'dashboard', 'profile', 'schedule'] as const;
 
 function flattenKeys(value: unknown, prefix = '', output = new Set<string>()): Set<string> {
@@ -56,6 +57,50 @@ function extractInterpolationTokens(value: string): string[] {
   }
 
   return Array.from(tokens).sort();
+}
+
+function collectSourceFiles(dir: string, output: string[] = []): string[] {
+  fs.readdirSync(dir, { withFileTypes: true }).forEach((entry) => {
+    if (entry.name === '__tests__') {
+      return;
+    }
+
+    const nextPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      collectSourceFiles(nextPath, output);
+      return;
+    }
+
+    if (/\.(ts|tsx|js|jsx)$/.test(entry.name) && !/\.test\./.test(entry.name)) {
+      output.push(nextPath);
+    }
+  });
+
+  return output;
+}
+
+function collectCodeTranslationKeys(): string[] {
+  const codeFiles = [
+    ...collectSourceFiles(path.join(PROJECT_ROOT, 'src')),
+    path.join(PROJECT_ROOT, 'App.tsx'),
+  ];
+  const keyPattern =
+    /(?:\bt\(|\bi18n\.t\(|\btCommon\(|\btOnboarding\(|\btDashboard\(|\btProfile\(|\btSchedule\()\s*['"]([^'"]+)['"]/g;
+  const keys = new Set<string>();
+
+  codeFiles.forEach((filePath) => {
+    const source = fs.readFileSync(filePath, 'utf8');
+    let match: RegExpExecArray | null;
+
+    while ((match = keyPattern.exec(source)) !== null) {
+      const key = match[1];
+      if (!key.includes('${')) {
+        keys.add(key);
+      }
+    }
+  });
+
+  return Array.from(keys).sort();
 }
 
 describe('locale parity', () => {
@@ -118,5 +163,20 @@ describe('locale parity', () => {
         });
       });
     });
+  });
+
+  it('all static translation keys referenced in code exist in the English source locale', () => {
+    const baselineKeys = new Set<string>();
+
+    NAMESPACES.forEach((namespace) => {
+      const baselinePath = path.join(LOCALES_ROOT, 'en', `${namespace}.json`);
+      const baseline = JSON.parse(fs.readFileSync(baselinePath, 'utf8')) as Record<string, unknown>;
+
+      flattenKeys(baseline).forEach((key) => baselineKeys.add(key));
+    });
+
+    const missingKeys = collectCodeTranslationKeys().filter((key) => !baselineKeys.has(key));
+
+    expect(missingKeys).toEqual([]);
   });
 });

@@ -622,12 +622,12 @@ export class NotificationService extends FirebaseService {
       hoursBefore === 24
         ? this.translate(
             'notifications.shiftBody.tomorrow',
-            { shiftType: shiftType.toLowerCase(), date: shift.date },
+            { shiftType, date: shift.date },
             'Your {{shiftType}} starts tomorrow ({{date}})'
           )
         : this.translate(
             'notifications.shiftBody.inHours',
-            { shiftType: shiftType.toLowerCase(), hoursBefore },
+            { shiftType, hoursBefore },
             'Your {{shiftType}} starts in {{hoursBefore}} hours'
           );
 

@@ -181,7 +181,7 @@ export class SmartReminderService {
       }
 
       const shiftStart = applyTime(shift.date, startTimeStr);
-      const localizedShiftType = shiftLabel(shift.shiftType, language).toLowerCase();
+      const localizedShiftType = shiftLabel(shift.shiftType, language);
       const localizedStartTime = formatLocalizedTime(startTimeStr, undefined, language);
       const localizedShiftDate = formatReminderDate(shift.date, language);
 
@@ -562,8 +562,8 @@ export class SmartReminderService {
               'notifications.smartReminders.shortTurnaround.body',
               {
                 gapHours: formatGapHours(gapHours, language),
-                previousShiftType: shiftLabel(currentShift.shiftType, language).toLowerCase(),
-                nextShiftType: shiftLabel(nextShift.shiftType, language).toLowerCase(),
+                previousShiftType: shiftLabel(currentShift.shiftType, language),
+                nextShiftType: shiftLabel(nextShift.shiftType, language),
                 shiftDate: formatReminderDate(nextShift.date, language),
               },
               'Only {{gapHours}}h between your {{previousShiftType}} and next {{nextShiftType}} on {{shiftDate}}. Plan your rest.',
@@ -658,7 +658,7 @@ export class SmartReminderService {
                 body: translate(
                   'notifications.smartReminders.fifo.travelTomorrow.body',
                   {
-                    shiftType: shiftLabel(nextDay.shiftType, language).toLowerCase(),
+                    shiftType: shiftLabel(nextDay.shiftType, language),
                   },
                   'You fly in tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight.',
                   language

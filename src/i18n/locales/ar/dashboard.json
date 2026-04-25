@@ -312,5 +312,18 @@
     "dismiss": "ليس الآن",
     "update": "تحديث التسجيل",
     "submit": "حفظ التسجيل"
+  },
+  "onboardingChecklist": {
+    "title": "احصل على أقصى استفادة من Ellie",
+    "items": {
+      "roster": "أكمل إعداد جدولك",
+      "shiftTimes": "أضف أوقات نوباتك",
+      "profile": "أكمل ملفك الشخصي",
+      "askEllie": "اسأل Ellie سؤالاً"
+    },
+    "actions": {
+      "doIt": "افعل ذلك",
+      "dismiss": "تجاهل"
+    }
   }
 }

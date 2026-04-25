@@ -346,7 +346,7 @@
         "shiftTimes": "शिफ्ट समय"
       }
     },
-    "nextShiftCountdown": "अगली शिफ्ट {{days}} दिन में ({{date}})",
+    "nextShiftCountdown": "अगली शिफ्ट {{relative}} ({{date}})",
     "checkInTitle": "आप अपना शेड्यूल कब देखते हैं?",
     "checkInNotificationTitle": "आज का आपका शेड्यूल",
     "checkInNotificationBody": "अपनी आने वाली शिफ्ट देखने के लिए टैप करें।",

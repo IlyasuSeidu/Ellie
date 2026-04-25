@@ -365,7 +365,7 @@
         "shiftTimes": "Waktu Shift"
       }
     },
-    "nextShiftCountdown": "Shift berikutnya dalam {{days}} hari ({{date}})",
+    "nextShiftCountdown": "Shift berikutnya {{relative}} ({{date}})",
     "checkInTitle": "Kapan Anda mengecek jadwal?",
     "checkInNotificationTitle": "Jadwal Anda hari ini",
     "checkInNotificationBody": "Ketuk untuk melihat shift Anda berikutnya.",

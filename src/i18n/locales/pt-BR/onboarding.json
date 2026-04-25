@@ -285,7 +285,7 @@
         "shiftTimes": "Horários de turno"
       }
     },
-    "nextShiftCountdown": "Próximo turno em {{days}} dia(s) ({{date}})",
+    "nextShiftCountdown": "Próximo turno {{relative}} ({{date}})",
     "checkInTitle": "Quando você confere sua escala?",
     "checkInNotificationTitle": "Sua escala de hoje",
     "checkInNotificationBody": "Toque para ver seus próximos turnos.",

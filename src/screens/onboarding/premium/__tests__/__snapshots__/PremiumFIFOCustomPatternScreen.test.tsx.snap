@@ -1177,7 +1177,7 @@ exports[`PremiumFIFOCustomPatternScreen matches snapshot 1`] = `
                       "max": 60,
                       "min": 1,
                       "now": 14,
-                      "text": "14 days at site (work block)",
+                      "text": "14 Days at Site (Work Block)",
                     }
                   }
                   accessible={true}
@@ -2332,7 +2332,7 @@ exports[`PremiumFIFOCustomPatternScreen matches snapshot 1`] = `
                       "max": 60,
                       "min": 1,
                       "now": 14,
-                      "text": "14 days at home (rest block)",
+                      "text": "14 Days at Home (Rest Block)",
                     }
                   }
                   accessible={true}

@@ -47,7 +47,8 @@
       "actionPasswordResetFailed": "Impossible d'envoyer un lien de réinitialisation pour le moment. Veuillez réessayer.",
       "actionEmailVerificationFailed": "Impossible d'envoyer un e-mail de vérification pour le moment. Veuillez réessayer.",
       "actionSignOutFailed": "Impossible de se déconnecter pour le moment.",
-      "actionSessionRestoreFailed": "Impossible de restaurer votre session. Veuillez vous reconnecter."
+      "actionSessionRestoreFailed": "Impossible de restaurer votre session. Veuillez vous reconnecter.",
+      "tooManyRequestsUntil": "Trop de tentatives de connexion échouées. Réessayez après {{time}}."
     },
     "titles": {
       "error": "Erreur",
@@ -103,7 +104,8 @@
     "selectorSubtitle": "Choisissez votre langue",
     "search": "Rechercher des langues…",
     "noResults": "Aucune langue trouvée",
-    "rtlBadge": "RTL"
+    "rtlBadge": "RTL",
+    "currentLabel": "ACTUEL"
   },
   "accessibility": {
     "toggle": "Commutateur"
@@ -251,7 +253,9 @@
       "restorePurchasesError": "La restauration a échoué. Veuillez réessayer.",
       "ctaOffline": "Connectez-vous pour vous abonner",
       "purchaseSuccessPaid": "Votre abonnement est actif",
-      "billingDisclosureTrialGeneric": "Votre essai gratuit commence aujourd’hui. Annulez à tout moment dans Réglages avant le début de la facturation. Les abonnements se renouvellent automatiquement."
+      "billingDisclosureTrialGeneric": "Votre essai gratuit commence aujourd’hui. Annulez à tout moment dans Réglages avant le début de la facturation. Les abonnements se renouvellent automatiquement.",
+      "unavailable": "Les abonnements ne sont pas disponibles dans cette version de l’application. Installez la dernière build EAS de développement ou de production.",
+      "unconfigured": "Les abonnements ne sont pas configurés dans cette build. Ajoutez la clé SDK RevenueCat à l’environnement de build puis reconstruisez l’application."
     },
     "profile": {
       "rowActiveA11y": "Ellie Abonnement Pro actif",
@@ -259,7 +263,8 @@
       "activeLabel": "Ellie Pro — Actif ✓",
       "upgradeLabel": "Mise à niveau vers Ellie Pro",
       "activeHint": "Calendrier complet  · Hé, assistant vocal Ellie",
-      "upgradeHint": "Abonnements à partir de 6,99 $/mois ou 49,99 $/an"
+      "upgradeHint": "Abonnements à partir de 6,99 $/mois ou 49,99 $/an",
+      "customerCenterError": "La gestion de l’abonnement est indisponible pour le moment. Veuillez réessayer."
     },
     "padlock": {
       "a11yLabel": "Passez à Ellie Pro pour voir le calendrier complet"

@@ -312,5 +312,18 @@
     "dismiss": "Not now",
     "update": "Update check-in",
     "submit": "Save check-in"
+  },
+  "onboardingChecklist": {
+    "title": "Get the most out of Ellie",
+    "items": {
+      "roster": "Set up your roster",
+      "shiftTimes": "Add your shift times",
+      "profile": "Complete your profile",
+      "askEllie": "Ask Ellie a question"
+    },
+    "actions": {
+      "doIt": "Do it",
+      "dismiss": "Dismiss"
+    }
   }
 }

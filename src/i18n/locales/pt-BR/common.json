@@ -47,7 +47,8 @@
       "actionPasswordResetFailed": "Não é possível enviar um link de redefinição no momento. Por favor, tente novamente.",
       "actionEmailVerificationFailed": "Não é possível enviar e-mail de verificação no momento. Por favor, tente novamente.",
       "actionSignOutFailed": "Não é possível sair agora.",
-      "actionSessionRestoreFailed": "Não foi possível restaurar sua sessão. Faça login novamente."
+      "actionSessionRestoreFailed": "Não foi possível restaurar sua sessão. Faça login novamente.",
+      "tooManyRequestsUntil": "Muitas tentativas de login sem sucesso. Tente novamente após {{time}}."
     },
     "titles": {
       "error": "Erro",
@@ -103,7 +104,8 @@
     "selectorSubtitle": "Escolha seu idioma",
     "search": "Pesquisar idiomas…",
     "noResults": "Nenhum idioma encontrado",
-    "rtlBadge": "RTL"
+    "rtlBadge": "RTL",
+    "currentLabel": "ATUAL"
   },
   "accessibility": {
     "toggle": "Alternar"
@@ -251,7 +253,9 @@
       "restorePurchasesError": "A restauração falhou. Tente novamente.",
       "ctaOffline": "Conecte-se para assinar",
       "purchaseSuccessPaid": "Sua assinatura está ativa",
-      "billingDisclosureTrialGeneric": "Sua avaliação gratuita começa hoje. Cancele a qualquer momento em Ajustes antes do início da cobrança. As assinaturas são renovadas automaticamente."
+      "billingDisclosureTrialGeneric": "Sua avaliação gratuita começa hoje. Cancele a qualquer momento em Ajustes antes do início da cobrança. As assinaturas são renovadas automaticamente.",
+      "unavailable": "As assinaturas não estão disponíveis nesta compilação do app. Instale a build EAS mais recente de desenvolvimento ou produção.",
+      "unconfigured": "As assinaturas não estão configuradas nesta compilação. Adicione a chave do SDK da RevenueCat ao ambiente de build e gere uma nova compilação."
     },
     "profile": {
       "rowActiveA11y": "Ellie Assinatura Pro ativa",
@@ -259,7 +263,8 @@
       "activeLabel": "Ellie Pró — Ativo ✓",
       "upgradeLabel": "Atualize para Ellie Pro",
       "activeHint": "Calendário completo · Olá, assistente de voz Ellie",
-      "upgradeHint": "Planos a partir de US$ 6,99/mês ou US$ 49,99/ano"
+      "upgradeHint": "Planos a partir de US$ 6,99/mês ou US$ 49,99/ano",
+      "customerCenterError": "O gerenciamento da assinatura não está disponível agora. Tente novamente."
     },
     "padlock": {
       "a11yLabel": "Atualize para Ellie Pro para ver o calendário completo"

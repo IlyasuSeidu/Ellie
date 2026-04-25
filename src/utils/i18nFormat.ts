@@ -33,7 +33,15 @@ export function formatLocalizedDate(
   options?: Intl.DateTimeFormatOptions,
   language: string = i18n.language
 ): string {
-  return date.toLocaleDateString(getLocaleTag(language), options);
+  return new Intl.DateTimeFormat(getLocaleTag(language), options).format(date);
+}
+
+export function formatLocalizedDateTime(
+  date: Date,
+  options?: Intl.DateTimeFormatOptions,
+  language: string = i18n.language
+): string {
+  return new Intl.DateTimeFormat(getLocaleTag(language), options).format(date);
 }
 
 export function formatLocalizedTime(
@@ -52,7 +60,6 @@ export function formatLocalizedTime(
   return date.toLocaleTimeString(getLocaleTag(language), {
     hour: 'numeric',
     minute: '2-digit',
-    hour12: true,
     timeZone: 'UTC',
     ...options,
   });

@@ -258,7 +258,12 @@
       "customRotationThreeShift": "تناوب مخصص {{morningOn}}-{{afternoonOn}}-{{nightOn}}-{{daysOff}}",
       "dayAbbrev": "ن",
       "nightAbbrev": "ل"
-    }
+    },
+    "openFIFOBuilderTitle": "افتح أداة إنشاء نمط FIFO",
+    "openFIFOBuilderSubtitle": "قم بإعداد أيام العمل والراحة، ومزيج نوبات النهار والليل، والتسلسل المخصص ضمن تدفق الإعداد",
+    "fifoSummarySubtitle": "{{workDays}} أيام عمل · {{restDays}} أيام راحة",
+    "openCustomBuilderTitle": "افتح أداة إنشاء التناوب المخصص",
+    "openCustomBuilderSubtitle": "قم بإعداد كتل النهار والليل وأيام الراحة ضمن تدفق النمط المخصص"
   },
   "smartReminders": {
     "sections": {

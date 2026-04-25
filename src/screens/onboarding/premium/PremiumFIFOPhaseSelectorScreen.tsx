@@ -1660,26 +1660,14 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     }
 
     if (activeCard.id === 'straight-days') {
-      return String(
-        t('fifoPhaseSelector.subtitle.workPatternMode.straightDays', {
-          defaultValue: 'This option means straight days only.',
-        })
-      );
+      return String(t('fifoPhaseSelector.patterns.straightDays.description'));
     }
 
     if (activeCard.id === 'straight-nights') {
-      return String(
-        t('fifoPhaseSelector.subtitle.workPatternMode.straightNights', {
-          defaultValue: 'This option means straight nights only.',
-        })
-      );
+      return String(t('fifoPhaseSelector.patterns.straightNights.description'));
     }
 
-    return String(
-      t('fifoPhaseSelector.subtitle.workPatternMode.swing', {
-        defaultValue: 'This option mixes day and night shifts.',
-      })
-    );
+    return String(t('fifoPhaseSelector.patterns.swing.description'));
   }, [currentCardIndex, currentCards, stage, t]);
 
   const activeStageContextSubtitle = useMemo(() => {
@@ -1960,12 +1948,12 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
         <View style={styles.settingsActions}>
           <SettingsEntryActionButtons
             backLabel={String(
-              t('fifoPhaseSelector.actions.backToSettings', {
+              t('common.backToSettings', {
                 defaultValue: 'Back to Settings',
               })
             )}
             saveLabel={String(
-              t('fifoPhaseSelector.actions.saveAndReturn', {
+              t('common.saveAndReturn', {
                 defaultValue: 'Save & Return',
               })
             )}
@@ -1973,12 +1961,12 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
             onSave={handleSaveSettingsSelection}
             saveDisabled={!pendingSettingsSelection}
             backAccessibilityLabel={String(
-              t('fifoPhaseSelector.actions.backToSettingsA11y', {
+              t('common.backToSettings', {
                 defaultValue: 'Back to settings',
               })
             )}
             saveAccessibilityLabel={String(
-              t('fifoPhaseSelector.actions.saveAndReturnA11y', {
+              t('common.saveAndReturn', {
                 defaultValue: 'Save selection and return to settings',
               })
             )}

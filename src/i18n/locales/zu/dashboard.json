@@ -312,5 +312,18 @@
     "dismiss": "Hhayi manje",
     "update": "Buyekeza ukungena",
     "submit": "Londoloza ukungena"
+  },
+  "onboardingChecklist": {
+    "title": "Thola okuningi ku-Ellie",
+    "items": {
+      "roster": "Lungisa irosta yakho",
+      "shiftTimes": "Engeza izikhathi zakho zeshifu",
+      "profile": "Qedela iphrofayela yakho",
+      "askEllie": "Buza u-Ellie umbuzo"
+    },
+    "actions": {
+      "doIt": "Yenza",
+      "dismiss": "Vala"
+    }
   }
 }
