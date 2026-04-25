@@ -87,9 +87,9 @@
     },
     "tryAsking": "Try asking…",
     "suggestions": {
-      "workingChristmas": "Am I working Christmas?",
       "nextDayOff": "When's my next day off?",
-      "nightShiftsThisMonth": "How many night shifts this month?"
+      "nightShiftsThisMonth": "How many night shifts this month?",
+      "startBack": "When do I start back?"
     },
     "buttonLabel": "Hey Ellie",
     "headline_named": "{{name}}'s shifts, mapped.",
@@ -101,7 +101,8 @@
       "family": "Tap any date. Know instantly if you're working.",
       "mental_math": "No more counting on your fingers."
     },
-    "previewLabel": "PREVIEW OF YOUR NEXT 3 MONTHS"
+    "previewLabel": "PREVIEW OF YOUR NEXT 3 MONTHS",
+    "checkingAccess": "Checking access…"
   },
   "intro": {
     "welcome": "Welcome to Ellie! I'm here to help you set up your shift calendar. Let's start by getting to know you a bit better.",

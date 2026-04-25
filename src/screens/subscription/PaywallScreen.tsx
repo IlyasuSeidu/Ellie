@@ -33,6 +33,7 @@ import {
 import { theme } from '@/utils/theme';
 import { Analytics, type PaywallTriggerSource } from '@/utils/analytics';
 import { useOnboardingOptional, type OnboardingData } from '@/contexts/OnboardingContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { MiniYearCalendar } from '@/components/paywall/MiniYearCalendar';
 import { formatLocalizedDate } from '@/utils/i18nFormat';
 import { useNetworkStatus } from '@/hooks/useNetworkStatus';
@@ -163,6 +164,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
   const { t, i18n } = useTranslation('common');
   const tLoose = t as unknown as (key: string, options?: Record<string, unknown>) => string;
   const contextOnboarding = useOnboardingOptional();
+  const { user } = useAuth();
   const { syncCustomerInfo, restorePurchases, presentNativePaywall, canPresentNativePaywall } =
     useSubscription();
   // Prop takes precedence; context is fallback for Settings/feature-gate entry points
@@ -283,7 +285,8 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
         annual?: PurchasesPackage | null;
         monthly?: PurchasesPackage | null;
         weekly?: PurchasesPackage | null;
-      } | null
+      } | null,
+      scope?: string | null
     ) => {
       setAnnualPackage(current?.annual ?? null);
       setMonthlyPackage(current?.monthly ?? null);
@@ -293,7 +296,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
         return null;
       }
 
-      const snapshot = await revenueCatOfferingsCacheService.cacheCurrentOfferings(current);
+      const snapshot = await revenueCatOfferingsCacheService.cacheCurrentOfferings(current, scope);
       setCachedOfferings(snapshot);
       return current;
     },
@@ -329,9 +332,10 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
   useEffect(() => {
     let isMounted = true;
     Analytics.paywallViewed(entryPoint, paywallAnalyticsMetadata);
+    const cacheScope = user?.uid ?? null;
 
     const dismissTimer = setTimeout(() => setDismissVisible(true), 8000);
-    void revenueCatOfferingsCacheService.getCachedSnapshot().then((snapshot) => {
+    void revenueCatOfferingsCacheService.getCachedSnapshot(cacheScope).then((snapshot) => {
       if (!isMounted) return;
       setCachedOfferings(snapshot);
     });
@@ -378,7 +382,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
         const current = offerings.current;
         setOfferingsLoadError(null);
         if (current) {
-          void applyCurrentOfferings(current);
+          void applyCurrentOfferings(current, cacheScope);
         }
       })
       .catch(() => {
@@ -399,6 +403,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
     isOffline,
     paywallAnalyticsMetadata,
     revenueCatAvailability.reason,
+    user?.uid,
   ]);
 
   useEffect(() => {
@@ -705,7 +710,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
         const offerings = await Purchases.getOfferings();
         const current = offerings.current;
         if (current) {
-          await applyCurrentOfferings(current);
+          await applyCurrentOfferings(current, user?.uid ?? null);
           packageToPurchase = getPackageForPlan(selectedPlan, current);
           setOfferingsLoadError(null);
         }

@@ -1065,9 +1065,9 @@
     },
     "tryAsking": "Coba tanyakan…",
     "suggestions": {
-      "workingChristmas": "Apakah saya bekerja saat Natal?",
       "nextDayOff": "Kapan hari libur saya berikutnya?",
-      "nightShiftsThisMonth": "Berapa shift malam saya bulan ini?"
+      "nightShiftsThisMonth": "Berapa shift malam saya bulan ini?",
+      "startBack": "Kapan saya mulai kerja lagi?"
     },
     "buttonLabel": "Hai Ellie",
     "headline_named": "Shift {{name}}, sudah dipetakan.",
@@ -1079,7 +1079,8 @@
       "family": "Ketuk tanggal apa pun. Langsung tahu apakah Anda bekerja.",
       "mental_math": "Tidak perlu lagi menghitung dengan jari."
     },
-    "previewLabel": "PRATINJAU 3 BULAN BERIKUTNYA"
+    "previewLabel": "PRATINJAU 3 BULAN BERIKUTNYA",
+    "checkingAccess": "Memeriksa akses…"
   },
   "painHook": {
     "title": "Apa bagian tersulit dari roster Anda saat ini?",

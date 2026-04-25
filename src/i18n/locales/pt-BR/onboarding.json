@@ -1060,9 +1060,9 @@
     },
     "tryAsking": "Experimente perguntar…",
     "suggestions": {
-      "workingChristmas": "Vou trabalhar no Natal?",
       "nextDayOff": "Quando é minha próxima folga?",
-      "nightShiftsThisMonth": "Quantos turnos noturnos tenho este mês?"
+      "nightShiftsThisMonth": "Quantos turnos noturnos tenho este mês?",
+      "startBack": "Quando eu volto ao trabalho?"
     },
     "buttonLabel": "Oi Ellie",
     "headline_named": "Os turnos de {{name}}, mapeados.",
@@ -1074,7 +1074,8 @@
       "family": "Toque em qualquer data. Saiba na hora se você trabalha.",
       "mental_math": "Chega de contar nos dedos."
     },
-    "previewLabel": "PRÉVIA DOS SEUS PRÓXIMOS 3 MESES"
+    "previewLabel": "PRÉVIA DOS SEUS PRÓXIMOS 3 MESES",
+    "checkingAccess": "Verificando acesso…"
   },
   "painHook": {
     "title": "Qual é a parte mais difícil da sua escala agora?",

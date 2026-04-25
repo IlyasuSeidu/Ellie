@@ -122,11 +122,22 @@ export const ProfileScreen: React.FC = () => {
     }
 
     const result = await openCustomerCenter();
+    if (result === 'unavailable') {
+      Alert.alert(
+        tCommon('errors.titles.error', { defaultValue: 'Error' }),
+        tCommon('subscription.paywall.unavailable', {
+          defaultValue:
+            'Subscriptions are unavailable in this app build. Install the latest EAS development/production build.',
+        })
+      );
+      return;
+    }
+
     if (result !== 'presented') {
       Alert.alert(
         tCommon('errors.titles.error', { defaultValue: 'Error' }),
-        tCommon('subscription.paywall.restorePurchasesError', {
-          defaultValue: 'Restore failed. Please try again.',
+        tCommon('subscription.profile.customerCenterError', {
+          defaultValue: 'Subscription management is unavailable right now. Please try again.',
         })
       );
     }

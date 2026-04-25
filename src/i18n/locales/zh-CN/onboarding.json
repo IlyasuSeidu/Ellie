@@ -1014,9 +1014,9 @@
     },
     "tryAsking": "你可以这样问…",
     "suggestions": {
-      "workingChristmas": "圣诞节我上班吗？",
       "nextDayOff": "我下一个休息日是什么时候？",
-      "nightShiftsThisMonth": "我这个月有多少个夜班？"
+      "nightShiftsThisMonth": "我这个月有多少个夜班？",
+      "startBack": "我什么时候回去上班？"
     },
     "buttonLabel": "你好 Ellie",
     "headline_named": "{{name}}的班表，已经排好。",
@@ -1028,7 +1028,8 @@
       "family": "点任意日期，立刻知道你那天上不上班。",
       "mental_math": "不用再掰着手指数了。"
     },
-    "previewLabel": "接下来3个月的预览"
+    "previewLabel": "接下来3个月的预览",
+    "checkingAccess": "正在检查访问权限…"
   },
   "painHook": {
     "title": "你现在觉得排班里最难的是什么？",

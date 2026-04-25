@@ -34,7 +34,7 @@ describe('RevenueCatEntitlements', () => {
     expect(getActiveProEntitlement(info)?.identifier).toBe('premium');
   });
 
-  it('falls back to the single active entitlement when only one exists', () => {
+  it('does not guess a pro entitlement from a single unrelated active entitlement', () => {
     const info = {
       entitlements: {
         active: {
@@ -43,8 +43,8 @@ describe('RevenueCatEntitlements', () => {
       },
     } as never;
 
-    expect(hasActiveProEntitlement(info)).toBe(true);
-    expect(getActiveProEntitlement(info)?.identifier).toBe('anything_custom');
+    expect(hasActiveProEntitlement(info)).toBe(false);
+    expect(getActiveProEntitlement(info)).toBeNull();
   });
 
   it('does not guess when multiple unrelated entitlements are active', () => {

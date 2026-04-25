@@ -21,6 +21,7 @@ import Animated, {
 import * as Haptics from 'expo-haptics';
 import { theme } from '@/utils/theme';
 import { useVoiceAssistant } from '@/contexts/VoiceAssistantContext';
+import { useSubscription } from '@/hooks/useSubscription';
 
 const BUTTON_SIZE = 60;
 
@@ -29,6 +30,7 @@ const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 export const EllieButton: React.FC = () => {
   const { t } = useTranslation('dashboard');
   const { state, openModal } = useVoiceAssistant();
+  const { isPro, isLoading, openPaywall } = useSubscription();
   const isActive = state !== 'idle';
 
   const pulseScale = useSharedValue(1);
@@ -54,8 +56,15 @@ export const EllieButton: React.FC = () => {
   }));
 
   const handlePress = () => {
+    if (isLoading) {
+      return;
+    }
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    openModal();
+    if (isPro) {
+      openModal();
+    } else {
+      openPaywall();
+    }
   };
 
   return (
@@ -67,10 +76,12 @@ export const EllieButton: React.FC = () => {
         style={styles.button}
         onPress={handlePress}
         activeOpacity={0.8}
+        disabled={isLoading}
         accessibilityLabel={t('tabs.openVoiceAssistantA11y', {
           defaultValue: 'Open Ellie voice assistant',
         })}
         accessibilityRole="button"
+        accessibilityState={{ disabled: isLoading }}
       >
         <Ionicons name="mic" size={26} color={theme.colors.sacredGold} />
       </AnimatedTouchable>

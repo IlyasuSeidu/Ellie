@@ -13,6 +13,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { appStateStorageService } from '@/services/AppStateStorageService';
+import { subscriptionEntitlementCacheService } from '@/services/SubscriptionEntitlementCacheService';
+import { useAuth } from '@/contexts/AuthContext';
 
 // Show nudge no sooner than 5 minutes after decline (avoids instant re-prompt)
 const MIN_DELAY_MS = 5 * 60 * 1000;
@@ -28,6 +30,26 @@ export interface PaywallRecoveryState {
 
 export function usePaywallRecovery(isPro: boolean): PaywallRecoveryState {
   const [shouldNudge, setShouldNudge] = useState(false);
+  const { user } = useAuth();
+  const [anonymousScope, setAnonymousScope] = useState<string | null>(null);
+  const recoveryScope = user?.uid ?? anonymousScope;
+
+  useEffect(() => {
+    if (user?.uid) {
+      setAnonymousScope(null);
+      return undefined;
+    }
+
+    let isMounted = true;
+    void subscriptionEntitlementCacheService.getActiveAnonymousScope().then((scope) => {
+      if (!isMounted) return;
+      setAnonymousScope(scope);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [user?.uid]);
 
   useEffect(() => {
     // Pro users never see the recovery nudge.
@@ -36,7 +58,8 @@ export function usePaywallRecovery(isPro: boolean): PaywallRecoveryState {
       return;
     }
 
-    void appStateStorageService.getPaywallDeclinedAt().then((declinedAt) => {
+    setShouldNudge(false);
+    void appStateStorageService.getPaywallDeclinedAt(recoveryScope).then((declinedAt) => {
       if (!declinedAt) return;
       if (!Number.isFinite(declinedAt) || declinedAt <= 0) return;
 
@@ -45,22 +68,22 @@ export function usePaywallRecovery(isPro: boolean): PaywallRecoveryState {
         setShouldNudge(true);
       } else if (elapsed > RECOVERY_WINDOW_MS) {
         // Expired — clean up so we don't check again
-        void appStateStorageService.clearPaywallDeclinedAt();
+        void appStateStorageService.clearPaywallDeclinedAt(recoveryScope);
       }
     });
-  }, [isPro]);
+  }, [isPro, recoveryScope]);
 
   // When a Pro user converts (isPro flips true), clear the nudge
   useEffect(() => {
     if (isPro) {
-      void appStateStorageService.clearPaywallDeclinedAt();
+      void appStateStorageService.clearPaywallDeclinedAt(recoveryScope);
     }
-  }, [isPro]);
+  }, [isPro, recoveryScope]);
 
   const dismissNudge = useCallback(async () => {
     setShouldNudge(false);
-    await appStateStorageService.clearPaywallDeclinedAt();
-  }, []);
+    await appStateStorageService.clearPaywallDeclinedAt(recoveryScope);
+  }, [recoveryScope]);
 
   return { shouldNudge, dismissNudge };
 }

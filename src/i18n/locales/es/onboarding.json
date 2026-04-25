@@ -1070,9 +1070,9 @@
     },
     "tryAsking": "Prueba preguntando…",
     "suggestions": {
-      "workingChristmas": "¿Trabajo en Navidad?",
       "nextDayOff": "¿Cuándo es mi próximo día libre?",
-      "nightShiftsThisMonth": "¿Cuántos turnos nocturnos tengo este mes?"
+      "nightShiftsThisMonth": "¿Cuántos turnos nocturnos tengo este mes?",
+      "startBack": "¿Cuándo vuelvo al trabajo?"
     },
     "buttonLabel": "Hola Ellie",
     "headline_named": "Los turnos de {{name}}, organizados.",
@@ -1084,7 +1084,8 @@
       "family": "Toca cualquier fecha. Sabrás al instante si trabajas.",
       "mental_math": "Se acabó contar con los dedos."
     },
-    "previewLabel": "VISTA PREVIA DE TUS PRÓXIMOS 3 MESES"
+    "previewLabel": "VISTA PREVIA DE TUS PRÓXIMOS 3 MESES",
+    "checkingAccess": "Verificando acceso…"
   },
   "painHook": {
     "title": "¿Qué es lo más difícil de tu roster en este momento?",

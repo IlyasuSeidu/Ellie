@@ -11,6 +11,7 @@ import {
   tryOfflineFallback,
 } from '@/utils/offlineFallback';
 import { ShiftPattern, ShiftSystem, ShiftCycle, RosterType } from '@/types';
+import i18n from '@/i18n';
 
 // ---------------------------------------------------------------------------
 // Fixtures
@@ -106,6 +107,15 @@ describe('tryOfflineFallback', () => {
 
       expect(result.language).toBe('en');
       expect(result.intent).toBe('tomorrow_shift');
+    });
+
+    it('matches supported queries in another language even when the app language differs', async () => {
+      await i18n.changeLanguage('en');
+
+      const result = classifyOfflineIntent('¿Cuándo es mi próximo día libre?');
+
+      expect(result.language).toBe('es');
+      expect(result.intent).toBe('next_day_off');
     });
   });
 

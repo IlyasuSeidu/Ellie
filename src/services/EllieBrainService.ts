@@ -6,7 +6,7 @@
  * receives natural language responses with optional shift data.
  */
 
-import { ellieBrainConfig, voiceAssistantConfig } from '@/config/env';
+import { ellieBrainConfig, isConfiguredEllieBrainUrl, voiceAssistantConfig } from '@/config/env';
 import { logger } from '@/utils/logger';
 import type {
   EllieBrainErrorPayload,
@@ -199,6 +199,15 @@ class EllieBrainService {
     userContext: VoiceAssistantUserContext,
     conversationHistory: VoiceMessage[] = []
   ): Promise<EllieBrainResponse> {
+    if (!isConfiguredEllieBrainUrl(ellieBrainConfig.url)) {
+      throw new EllieBrainServiceError({
+        type: 'backend_error',
+        message: 'Ellie Brain service is not configured in this build.',
+        retryable: false,
+        code: 'backend_not_configured',
+      });
+    }
+
     // Sanitize and truncate query
     const sanitizedQuery = query
       .replace(/<[^>]*>/g, '')

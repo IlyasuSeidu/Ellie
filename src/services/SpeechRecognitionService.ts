@@ -106,7 +106,7 @@ class SpeechRecognitionService {
       }
     }
 
-    const requiresOnDeviceRecognition = networkService.getSnapshot().status !== 'online';
+    const requiresOnDeviceRecognition = networkService.getSnapshot().status === 'offline';
     if (
       requiresOnDeviceRecognition &&
       ExpoSpeechRecognitionModule.supportsOnDeviceRecognition?.() === false

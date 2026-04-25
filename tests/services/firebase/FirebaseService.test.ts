@@ -613,7 +613,7 @@ describe('FirebaseService', () => {
       expect(callback).toHaveBeenCalledWith(null);
     });
 
-    it('should handle subscription errors', async () => {
+    it('preserves the last known document state on subscription errors without emitting null', async () => {
       const callback = jest.fn();
       service['subscribe'](mockCollection, mockDocId, callback);
 
@@ -622,15 +622,15 @@ describe('FirebaseService', () => {
       const error = new Error('Subscription error');
       await errorCallback(error);
 
-      expect(logger.error).toHaveBeenCalledWith(
+      expect(logger.warn).toHaveBeenCalledWith(
         'Subscription error',
-        error,
         expect.objectContaining({
           collection: mockCollection,
           docId: mockDocId,
+          error: 'Subscription error',
         })
       );
-      expect(callback).toHaveBeenCalledWith(null);
+      expect(callback).not.toHaveBeenCalled();
     });
 
     it('returns cached document on subscription error when available', async () => {
@@ -699,7 +699,7 @@ describe('FirebaseService', () => {
       ]);
     });
 
-    it('should handle query subscription errors', () => {
+    it('preserves the last known query state on subscription errors without emitting an empty array', () => {
       const callback = jest.fn();
       service['subscribeToQuery'](mockCollection, [], callback);
 
@@ -708,14 +708,14 @@ describe('FirebaseService', () => {
       const error = new Error('Query subscription error');
       errorCallback(error);
 
-      expect(logger.error).toHaveBeenCalledWith(
+      expect(logger.warn).toHaveBeenCalledWith(
         'Query subscription error',
-        error,
         expect.objectContaining({
           collection: mockCollection,
+          error: 'Query subscription error',
         })
       );
-      expect(callback).toHaveBeenCalledWith([]);
+      expect(callback).not.toHaveBeenCalled();
     });
 
     it('returns cached query results on subscription error when available', async () => {

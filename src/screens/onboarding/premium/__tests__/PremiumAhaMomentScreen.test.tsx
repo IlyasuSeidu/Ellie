@@ -40,6 +40,12 @@ jest.mock('@/contexts/OnboardingContext', () => ({
   }),
 }));
 
+jest.mock('@/contexts/AuthContext', () => ({
+  useAuth: () => ({
+    user: null,
+  }),
+}));
+
 jest.mock('@/contexts/VoiceAssistantContext', () => ({
   useVoiceAssistant: () => ({
     openModal: mockOpenModal,
@@ -121,7 +127,7 @@ describe('PremiumAhaMomentScreen', () => {
   it('routes suggested query through paywall for non-Pro users', () => {
     const { getByText, getByText: getByTextAfterTap } = render(<PremiumAhaMomentScreen />);
 
-    fireEvent.press(getByText('Am I working Christmas?'));
+    fireEvent.press(getByText('When do I start back?'));
 
     expect(mockOpenModalWithQuery).not.toHaveBeenCalled();
     expect(getByTextAfterTap('PaywallScreen')).toBeTruthy();
@@ -173,5 +179,13 @@ describe('PremiumAhaMomentScreen', () => {
 
     expect(mockOpenModal).not.toHaveBeenCalled();
     expect(queryByText('PaywallScreen')).toBeNull();
+  });
+
+  it('shows a loading access message while subscription state is resolving', () => {
+    mockSubscription.isLoading = true;
+
+    const { getByText } = render(<PremiumAhaMomentScreen />);
+
+    expect(getByText('Checking access…')).toBeTruthy();
   });
 });

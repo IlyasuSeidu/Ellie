@@ -24,16 +24,19 @@ export const STORAGE_KEYS = {
   users: {
     profilePrefix: 'users:profile:',
     pendingMutationPrefix: 'users:pending:',
+    failedMutationPrefix: 'users:failed:',
   },
   shiftLogs: {
     entryPrefix: 'shift-logs:entry:',
     pendingPrefix: 'shift-logs:pending:',
+    failedPrefix: 'shift-logs:failed:',
   },
   sessions: {
     current: 'session:current',
     deviceId: 'session:deviceId',
     recordPrefix: 'sessions:record:',
     userIndexPrefix: 'sessions:index:',
+    pendingPrefix: 'sessions:pending:',
   },
   maintenance: {
     lastStorageCleanupAt: 'maintenance:lastStorageCleanupAt',

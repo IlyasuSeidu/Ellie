@@ -1051,9 +1051,9 @@
     },
     "tryAsking": "Probeer vra…",
     "suggestions": {
-      "workingChristmas": "Werk ek oor Kersfees?",
       "nextDayOff": "Wanneer is my volgende afdag?",
-      "nightShiftsThisMonth": "Hoeveel nagskofte het ek hierdie maand?"
+      "nightShiftsThisMonth": "Hoeveel nagskofte het ek hierdie maand?",
+      "startBack": "Wanneer begin ek weer?"
     },
     "buttonLabel": "Hallo Ellie",
     "headline_named": "{{name}} se skofte, uitgekaart.",
@@ -1065,7 +1065,8 @@
       "family": "Tik op enige datum. Weet onmiddellik of jy werk.",
       "mental_math": "Geen tel op jou vingers meer nie."
     },
-    "previewLabel": "VOORSKOU VAN JOU VOLGENDE 3 MAANDE"
+    "previewLabel": "VOORSKOU VAN JOU VOLGENDE 3 MAANDE",
+    "checkingAccess": "Kontroleer toegang…"
   },
   "painHook": {
     "title": "Wat is nou die moeilikste deel van jou rooster?",

@@ -1074,9 +1074,9 @@
     },
     "tryAsking": "Essayez de demander…",
     "suggestions": {
-      "workingChristmas": "Est-ce que je travaille à Noël ?",
       "nextDayOff": "Quand est mon prochain jour off ?",
-      "nightShiftsThisMonth": "Combien de postes de nuit ce mois-ci ?"
+      "nightShiftsThisMonth": "Combien de postes de nuit ce mois-ci ?",
+      "startBack": "Quand est-ce que je reprends ?"
     },
     "buttonLabel": "Salut Ellie",
     "headline_named": "Les shifts de {{name}}, cartographiés.",
@@ -1088,7 +1088,8 @@
       "family": "Touchez une date. Sachez instantanément si vous travaillez.",
       "mental_math": "Fini de compter sur vos doigts."
     },
-    "previewLabel": "APERÇU DE VOS 3 PROCHAINS MOIS"
+    "previewLabel": "APERÇU DE VOS 3 PROCHAINS MOIS",
+    "checkingAccess": "Vérification de l’accès…"
   },
   "painHook": {
     "title": "Quelle est la partie la plus difficile de votre roulement en ce moment ?",

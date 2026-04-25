@@ -1070,9 +1070,9 @@
     },
     "tryAsking": "Zama ukubuza…",
     "suggestions": {
-      "workingChristmas": "Ngiyasebenza ngoKhisimusi?",
       "nextDayOff": "Usuku lwami olulandelayo lokuphumula lunjani?",
-      "nightShiftsThisMonth": "Mangaki amashifu ebusuku enginawo kule nyanga?"
+      "nightShiftsThisMonth": "Mangaki amashifu ebusuku enginawo kule nyanga?",
+      "startBack": "Ngiqala nini futhi?"
     },
     "buttonLabel": "Sawubona Ellie",
     "headline_named": "Amashifu ka-{{name}}, asehleliwe.",
@@ -1084,7 +1084,8 @@
       "family": "Thepha noma yiluphi usuku. Yazi masinyane ukuthi uyasebenza yini.",
       "mental_math": "Akusekho ukubala ngeminwe."
     },
-    "previewLabel": "UKUBUKA KWEZINYANGA EZINGU-3 EZIZAYO"
+    "previewLabel": "UKUBUKA KWEZINYANGA EZINGU-3 EZIZAYO",
+    "checkingAccess": "Kuhlolwa ukufinyelela…"
   },
   "painHook": {
     "title": "Yini enzima kakhulu ngohlelo lwakho manje?",

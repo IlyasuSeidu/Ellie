@@ -144,4 +144,33 @@ describe('ShiftLogService', () => {
     expect(mockCreate).toHaveBeenCalledTimes(2);
     expect(mockStorage.has('app:shift-logs:pending:user-1:2026-04-14:day')).toBe(false);
   });
+
+  it('quarantines a shift log after a terminal sync failure', async () => {
+    mockCreate.mockRejectedValueOnce(new Error('offline'));
+
+    await shiftLogService.saveShiftLog(
+      {
+        id: 'user-1:2026-04-14:day',
+        userId: 'user-1',
+        date: '2026-04-14',
+        shiftType: 'day',
+        startTime: '07:00',
+        endTime: '19:00',
+        hoursWorked: 12,
+        energyLevel: EnergyLevel.MEDIUM,
+        loggedAt: '2026-04-14T20:00:00.000Z',
+      },
+      'user-1'
+    );
+
+    mockCreate.mockRejectedValueOnce(new Error('Permission denied for create'));
+
+    await shiftLogService.syncPendingLogs('user-1');
+
+    expect(mockStorage.has('app:shift-logs:pending:user-1:2026-04-14:day')).toBe(false);
+    expect(mockStorage.get('app:shift-logs:failed:user-1:2026-04-14:day')).toMatchObject({
+      entryId: 'user-1:2026-04-14:day',
+      lastError: 'Permission denied for create',
+    });
+  });
 });

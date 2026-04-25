@@ -5,6 +5,7 @@ import type { NotificationResponse } from 'expo-notifications';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useOnboardingOptional } from '@/contexts/OnboardingContext';
+import { networkService } from '@/services/NetworkService';
 import { shiftLogService } from '@/services/ShiftLogService';
 import { logger } from '@/utils/logger';
 import { ShiftCheckInModal } from './ShiftCheckInModal';
@@ -103,16 +104,26 @@ export const PostShiftCheckInController: React.FC = () => {
       return undefined;
     }
 
-    void shiftLogService.syncPendingLogs(user.uid);
+    const syncPendingLogs = () => {
+      void shiftLogService.syncPendingLogs(user.uid);
+    };
+
+    syncPendingLogs();
 
     const subscription = AppState.addEventListener('change', (nextState) => {
       if (nextState === 'active') {
-        void shiftLogService.syncPendingLogs(user.uid);
+        syncPendingLogs();
+      }
+    });
+    const unsubscribeNetwork = networkService.subscribe((snapshot) => {
+      if (snapshot.status === 'online') {
+        syncPendingLogs();
       }
     });
 
     return () => {
       subscription.remove();
+      unsubscribeNetwork();
     };
   }, [user?.uid]);
 

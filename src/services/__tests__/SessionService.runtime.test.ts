@@ -56,6 +56,10 @@ class MemoryStorage {
   async remove(key: string): Promise<void> {
     this.store.delete(key);
   }
+
+  async getAllKeys(): Promise<string[]> {
+    return Array.from(this.store.keys());
+  }
 }
 
 describe('SessionService runtime offline fallback', () => {
@@ -186,5 +190,19 @@ describe('SessionService runtime offline fallback', () => {
         userId: 'user-123',
       })
     );
+  });
+
+  it('replays pending sessions once remote persistence succeeds again', async () => {
+    (setDoc as jest.Mock).mockRejectedValueOnce(new Error('offline'));
+
+    const session = await service.startSession('user-123');
+
+    expect(await storage.get(`sessions:pending:${session.id}`)).toBe(true);
+
+    (setDoc as jest.Mock).mockResolvedValue(undefined);
+
+    await service.syncPendingSessions();
+
+    expect(await storage.get(`sessions:pending:${session.id}`)).toBeNull();
   });
 });

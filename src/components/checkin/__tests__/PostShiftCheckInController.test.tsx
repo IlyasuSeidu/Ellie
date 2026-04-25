@@ -6,6 +6,7 @@ const mockUseAuth = jest.fn();
 const mockUseLanguage = jest.fn();
 const mockUseOnboardingOptional = jest.fn();
 const mockSyncPendingLogs = jest.fn();
+const mockNetworkListeners = new Set<(snapshot: { status: string }) => void>();
 
 jest.mock('@/contexts/AuthContext', () => ({
   useAuth: () => mockUseAuth(),
@@ -22,6 +23,18 @@ jest.mock('@/contexts/OnboardingContext', () => ({
 jest.mock('@/services/ShiftLogService', () => ({
   shiftLogService: {
     syncPendingLogs: (...args: unknown[]) => mockSyncPendingLogs(...args),
+  },
+}));
+
+jest.mock('@/services/NetworkService', () => ({
+  networkService: {
+    subscribe: (listener: (snapshot: { status: string }) => void) => {
+      mockNetworkListeners.add(listener);
+      listener({ status: 'offline' });
+      return () => {
+        mockNetworkListeners.delete(listener);
+      };
+    },
   },
 }));
 
@@ -49,6 +62,7 @@ import {
 describe('PostShiftCheckInController', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockNetworkListeners.clear();
     mockUseAuth.mockReturnValue({ user: { uid: 'user-1' } });
     mockUseLanguage.mockReturnValue({ language: 'en' });
     mockUseOnboardingOptional.mockReturnValue({ data: {} });
@@ -125,5 +139,17 @@ describe('PostShiftCheckInController', () => {
 
     expect(mockSyncPendingLogs).toHaveBeenCalledWith('user-1');
     expect(Notifications.clearLastNotificationResponseAsync).toHaveBeenCalled();
+  });
+
+  it('retries pending shift-log sync when connectivity returns', async () => {
+    render(<PostShiftCheckInController />);
+
+    expect(mockSyncPendingLogs).toHaveBeenCalledTimes(1);
+
+    mockNetworkListeners.forEach((listener) => listener({ status: 'online' }));
+
+    await waitFor(() => {
+      expect(mockSyncPendingLogs).toHaveBeenCalledTimes(2);
+    });
   });
 });

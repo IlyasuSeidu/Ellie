@@ -58,6 +58,11 @@ interface PendingUserMutation {
   queuedAt: string;
 }
 
+interface FailedUserMutation extends PendingUserMutation {
+  failedAt: string;
+  lastError: string;
+}
+
 /**
  * UserService class
  */
@@ -113,9 +118,9 @@ export class UserService extends FirebaseService {
   async getUser(userId: string): Promise<UserProfile | null> {
     try {
       const localUser = await this.getCachedUser(userId);
-      const hasPendingMutation = await this.hasPendingMutation(userId);
+      const pendingMutation = await this.getPendingMutation(userId);
 
-      if (hasPendingMutation) {
+      if (pendingMutation) {
         if (networkService.getSnapshot().status === 'online') {
           void this.syncPendingUsers(userId);
         }
@@ -123,6 +128,16 @@ export class UserService extends FirebaseService {
           userId,
           found: localUser !== null,
           source: 'local-pending',
+        });
+        return localUser;
+      }
+
+      const failedMutation = await this.getFailedMutation(userId);
+      if (failedMutation) {
+        logger.warn('UserService: serving quarantined local user state after sync failure', {
+          userId,
+          failedAt: failedMutation.failedAt,
+          lastError: failedMutation.lastError,
         });
         return localUser;
       }
@@ -512,7 +527,8 @@ export class UserService extends FirebaseService {
     const unsubscribe = this.subscribe<UserProfile>(this.USERS_COLLECTION, userId, (user) => {
       void (async () => {
         const hasPendingMutation = await this.hasPendingMutation(userId);
-        if (hasPendingMutation) {
+        const hasFailedMutation = await this.hasFailedMutation(userId);
+        if (hasPendingMutation || hasFailedMutation) {
           return;
         }
 
@@ -667,6 +683,7 @@ export class UserService extends FirebaseService {
           }
 
           await this.clearPendingMutation(pendingUserId);
+          await this.clearFailedMutation(pendingUserId);
         } catch (error) {
           if (this.isRetryableSyncError(error)) {
             logger.warn('UserService: pending user sync still deferred', {
@@ -677,6 +694,7 @@ export class UserService extends FirebaseService {
             continue;
           }
 
+          await this.quarantinePendingMutation(pendingUserId, mutation, error);
           logger.error('UserService: failed to replay pending user mutation', error as Error, {
             userId: pendingUserId,
             type: mutation.type,
@@ -698,6 +716,7 @@ export class UserService extends FirebaseService {
     try {
       await remoteSync();
       await this.clearPendingMutation(userId);
+      await this.clearFailedMutation(userId);
     } catch (error) {
       if (this.isRetryableSyncError(error)) {
         await this.setPendingMutation({
@@ -706,6 +725,7 @@ export class UserService extends FirebaseService {
           profile: nextProfile,
           queuedAt: new Date().toISOString(),
         });
+        await this.clearFailedMutation(userId);
         logger.warn('UserService: queued user mutation for later sync', {
           userId,
           mutation: mutationName,
@@ -729,6 +749,7 @@ export class UserService extends FirebaseService {
     try {
       await remoteDelete();
       await this.clearPendingMutation(userId);
+      await this.clearFailedMutation(userId);
     } catch (error) {
       if (this.isRetryableSyncError(error)) {
         await this.setPendingMutation({
@@ -736,6 +757,7 @@ export class UserService extends FirebaseService {
           type: 'delete',
           queuedAt: new Date().toISOString(),
         });
+        await this.clearFailedMutation(userId);
         logger.warn('UserService: queued user deletion for later sync', {
           userId,
           error: error instanceof Error ? error.message : String(error),
@@ -807,6 +829,10 @@ export class UserService extends FirebaseService {
     return `${STORAGE_KEYS.users.pendingMutationPrefix}${userId}`;
   }
 
+  private getFailedMutationKey(userId: string): string {
+    return `${STORAGE_KEYS.users.failedMutationPrefix}${userId}`;
+  }
+
   private getCachedUser(userId: string): Promise<UserProfile | null> {
     return asyncStorageService.get<UserProfile>(this.getUserCacheKey(userId));
   }
@@ -843,8 +869,24 @@ export class UserService extends FirebaseService {
     await asyncStorageService.remove(this.getPendingMutationKey(userId));
   }
 
+  private getFailedMutation(userId: string): Promise<FailedUserMutation | null> {
+    return asyncStorageService.get<FailedUserMutation>(this.getFailedMutationKey(userId));
+  }
+
+  private async setFailedMutation(mutation: FailedUserMutation): Promise<void> {
+    await asyncStorageService.set(this.getFailedMutationKey(mutation.userId), mutation);
+  }
+
+  private async clearFailedMutation(userId: string): Promise<void> {
+    await asyncStorageService.remove(this.getFailedMutationKey(userId));
+  }
+
   private async hasPendingMutation(userId: string): Promise<boolean> {
     return (await this.getPendingMutation(userId)) !== null;
+  }
+
+  private async hasFailedMutation(userId: string): Promise<boolean> {
+    return (await this.getFailedMutation(userId)) !== null;
   }
 
   private async getPendingUserIds(): Promise<string[]> {
@@ -858,6 +900,19 @@ export class UserService extends FirebaseService {
     const run = this.syncChain.then(task);
     this.syncChain = run.catch(() => {});
     return run;
+  }
+
+  private async quarantinePendingMutation(
+    userId: string,
+    mutation: PendingUserMutation,
+    error: unknown
+  ): Promise<void> {
+    await this.setFailedMutation({
+      ...mutation,
+      failedAt: new Date().toISOString(),
+      lastError: error instanceof Error ? error.message : String(error),
+    });
+    await this.clearPendingMutation(userId);
   }
 
   private isRetryableSyncError(error: unknown): boolean {

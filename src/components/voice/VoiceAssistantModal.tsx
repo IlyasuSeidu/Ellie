@@ -122,11 +122,10 @@ export const VoiceAssistantModal: React.FC = () => {
   const networkSnapshot = useNetworkStatus();
   const scrollViewRef = useRef<ScrollView>(null);
   const [typedQuery, setTypedQuery] = useState('');
-  const isOffline = networkSnapshot.status !== 'online';
+  const isOffline = networkSnapshot.status === 'offline';
   const prefersTypedFallback =
     !hasPermission || (isWakeWordEnabled && !isWakeWordAvailable) || isOffline;
-  const isComposerDisabled =
-    state === 'listening' || state === 'processing' || state === 'speaking';
+  const isComposerDisabled = state === 'listening';
   const suggestions = useMemo(
     () => [
       t('voiceAssistant.empty.example1', {

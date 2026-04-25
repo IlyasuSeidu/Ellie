@@ -43,7 +43,7 @@ exports[`EllieButton Snapshot should match snapshot in active state 1`] = `
       {
         "busy": undefined,
         "checked": undefined,
-        "disabled": undefined,
+        "disabled": false,
         "expanded": undefined,
         "selected": undefined,
       }
@@ -143,7 +143,7 @@ exports[`EllieButton Snapshot should match snapshot in idle state 1`] = `
       {
         "busy": undefined,
         "checked": undefined,
-        "disabled": undefined,
+        "disabled": false,
         "expanded": undefined,
         "selected": undefined,
       }

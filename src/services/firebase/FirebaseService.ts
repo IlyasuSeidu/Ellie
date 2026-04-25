@@ -509,16 +509,36 @@ export class FirebaseService {
           callback(result);
         },
         async (error) => {
-          logger.error('Subscription error', error, {
+          logger.warn('Subscription error', {
+            collection: collectionName,
+            docId,
+            error: error instanceof Error ? error.message : String(error),
+          });
+          if (this.useSdkOfflinePersistence) {
+            try {
+              const cachedDoc = await getDocFromCache(docRef);
+              if (cachedDoc.exists()) {
+                callback({
+                  id: cachedDoc.id,
+                  ...(cachedDoc.data() as Record<string, unknown>),
+                } as unknown as T);
+                return;
+              }
+            } catch {
+              // Preserve the last known value when native Firestore has no cached snapshot.
+            }
+          } else {
+            const cached = await this.getCachedDocument<T>(collectionName, docId);
+            if (cached !== null) {
+              callback(cached);
+              return;
+            }
+          }
+
+          logger.warn('Subscription error with no cached fallback; preserving last known state', {
             collection: collectionName,
             docId,
           });
-          if (this.useSdkOfflinePersistence) {
-            callback(null);
-            return;
-          }
-          const cached = await this.getCachedDocument<T>(collectionName, docId);
-          callback(cached);
         }
       );
 
@@ -567,15 +587,32 @@ export class FirebaseService {
           callback(results);
         },
         async (error) => {
-          logger.error('Query subscription error', error, {
+          logger.warn('Query subscription error', {
             collection: collectionName,
+            error: error instanceof Error ? error.message : String(error),
           });
           if (this.useSdkOfflinePersistence) {
-            callback([]);
-            return;
+            try {
+              const cachedSnapshot = await getDocsFromCache(q);
+              callback(this.mapQuerySnapshot<T>(cachedSnapshot));
+              return;
+            } catch {
+              // Preserve the last known value when native Firestore has no cached query.
+            }
+          } else {
+            const cached = await this.getCachedQueryResults<T>(collectionName, constraints);
+            if (cached !== null) {
+              callback(cached);
+              return;
+            }
           }
-          const cached = await this.getCachedQueryResults<T>(collectionName, constraints);
-          callback(cached ?? []);
+
+          logger.warn(
+            'Query subscription error with no cached fallback; preserving last known state',
+            {
+              collection: collectionName,
+            }
+          );
         }
       );
 

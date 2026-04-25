@@ -2,7 +2,7 @@ import { asyncStorageService } from '@/services/AsyncStorageService';
 import { FirebaseService } from '@/services/firebase/FirebaseService';
 import { STORAGE_KEYS } from '@/constants/storageKeys';
 import { logger } from '@/utils/logger';
-import { ValidationError } from '@/utils/errorUtils';
+import { NetworkError, ValidationError } from '@/utils/errorUtils';
 import type { ShiftLogEntry, ShiftType } from '@/types';
 import { validateShiftLogEntry } from '@/types/validation';
 
@@ -10,6 +10,12 @@ export type ShiftLogSaveResult = {
   entry: ShiftLogEntry;
   syncStatus: 'synced' | 'pending';
 };
+
+interface FailedShiftLogSync {
+  entryId: string;
+  failedAt: string;
+  lastError: string;
+}
 
 function buildShiftLogId(userId: string, date: string, shiftType: ShiftType): string {
   return `${userId}:${date}:${shiftType}`;
@@ -34,6 +40,10 @@ export class ShiftLogService extends FirebaseService {
 
   private getPendingKey(id: string): string {
     return `${STORAGE_KEYS.shiftLogs.pendingPrefix}${id}`;
+  }
+
+  private getFailedKey(id: string): string {
+    return `${STORAGE_KEYS.shiftLogs.failedPrefix}${id}`;
   }
 
   buildId(userId: string, date: string, shiftType: ShiftType): string {
@@ -92,6 +102,7 @@ export class ShiftLogService extends FirebaseService {
     try {
       await this.syncEntry(validated);
       await this.clearPending(validated.id);
+      await this.clearFailed(validated.id);
       return {
         entry: validated,
         syncStatus: 'synced',
@@ -105,7 +116,13 @@ export class ShiftLogService extends FirebaseService {
           error: error instanceof Error ? error.message : String(error),
         }
       );
-      await this.markPending(validated.id);
+      if (this.isRetryableSyncError(error)) {
+        await this.markPending(validated.id);
+        await this.clearFailed(validated.id);
+      } else {
+        await this.markFailed(validated.id, error);
+        await this.clearPending(validated.id);
+      }
       return {
         entry: validated,
         syncStatus: 'pending',
@@ -137,12 +154,27 @@ export class ShiftLogService extends FirebaseService {
       try {
         await this.syncEntry(entry);
         await this.clearPending(id);
+        await this.clearFailed(id);
       } catch (error) {
-        logger.warn('ShiftLogService: failed to sync pending shift log', {
-          userId: entry.userId,
-          entryId: id,
-          error: error instanceof Error ? error.message : String(error),
-        });
+        if (this.isRetryableSyncError(error)) {
+          logger.warn('ShiftLogService: failed to sync pending shift log', {
+            userId: entry.userId,
+            entryId: id,
+            error: error instanceof Error ? error.message : String(error),
+          });
+          continue;
+        }
+
+        await this.markFailed(id, error);
+        await this.clearPending(id);
+        logger.error(
+          'ShiftLogService: quarantined shift log after terminal sync failure',
+          error as Error,
+          {
+            userId: entry.userId,
+            entryId: id,
+          }
+        );
       }
     }
   }
@@ -161,6 +193,19 @@ export class ShiftLogService extends FirebaseService {
 
   private async clearPending(id: string): Promise<void> {
     await asyncStorageService.remove(this.getPendingKey(id));
+  }
+
+  private async markFailed(id: string, error: unknown): Promise<void> {
+    const failedSync: FailedShiftLogSync = {
+      entryId: id,
+      failedAt: new Date().toISOString(),
+      lastError: error instanceof Error ? error.message : String(error),
+    };
+    await asyncStorageService.set(this.getFailedKey(id), failedSync);
+  }
+
+  private async clearFailed(id: string): Promise<void> {
+    await asyncStorageService.remove(this.getFailedKey(id));
   }
 
   private normalizeEntry(entry: ShiftLogEntry): ShiftLogEntry {
@@ -184,6 +229,24 @@ export class ShiftLogService extends FirebaseService {
 
   private canSyncRemotely(userId: string, firebaseUid?: string | null): boolean {
     return Boolean(firebaseUid && userId === firebaseUid);
+  }
+
+  private isRetryableSyncError(error: unknown): boolean {
+    if (error instanceof NetworkError) {
+      return true;
+    }
+
+    if (!(error instanceof Error)) {
+      return false;
+    }
+
+    const message = error.message.toLowerCase();
+    return (
+      message.includes('network') ||
+      message.includes('offline') ||
+      message.includes('unavailable') ||
+      message.includes('deadline-exceeded')
+    );
   }
 }
 

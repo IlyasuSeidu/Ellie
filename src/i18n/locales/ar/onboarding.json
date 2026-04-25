@@ -1048,9 +1048,9 @@
     },
     "tryAsking": "جرّب أن تسأل…",
     "suggestions": {
-      "workingChristmas": "هل أعمل في عيد الميلاد؟",
       "nextDayOff": "متى يوم إجازتي القادم؟",
-      "nightShiftsThisMonth": "كم نوبة ليلية لدي هذا الشهر؟"
+      "nightShiftsThisMonth": "كم نوبة ليلية لدي هذا الشهر؟",
+      "startBack": "متى أعود إلى العمل؟"
     },
     "buttonLabel": "مرحبًا Ellie",
     "headline_named": "نوبات {{name}}، مرسومة بالكامل.",
@@ -1062,7 +1062,8 @@
       "family": "اضغط على أي تاريخ. واعرف فورًا إن كنت تعمل.",
       "mental_math": "لا مزيد من العد على أصابعك."
     },
-    "previewLabel": "معاينة الأشهر الثلاثة القادمة"
+    "previewLabel": "معاينة الأشهر الثلاثة القادمة",
+    "checkingAccess": "جارٍ التحقق من الوصول…"
   },
   "painHook": {
     "title": "ما أصعب جزء في جدول نوباتك الآن؟",

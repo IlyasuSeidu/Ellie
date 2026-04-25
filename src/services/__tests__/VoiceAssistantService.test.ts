@@ -216,6 +216,34 @@ describe('VoiceAssistantService', () => {
         needs_connection: true,
       });
     });
+
+    it('does not treat unknown connectivity as offline', async () => {
+      mockedNetworkService.getSnapshot.mockReturnValue({ status: 'unknown' } as never);
+      (tryOfflineFallback as jest.Mock).mockReturnValueOnce({ handled: false });
+      (ellieBrainService.query as jest.Mock).mockResolvedValueOnce({
+        text: 'Backend answer',
+      });
+      jest.mocked(textToSpeechService.isAvailable).mockResolvedValue(false as never);
+
+      await voiceAssistantService.startListening();
+
+      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
+        .calls[0][0];
+
+      registeredCallbacks.onFinalResult({ transcript: 'Tell me something', isFinal: true });
+
+      await waitFor(() => {
+        expect(ellieBrainService.query).toHaveBeenCalledWith(
+          'Tell me something',
+          mockUserContext,
+          expect.any(Array)
+        );
+      });
+      expect(Analytics.track).not.toHaveBeenCalledWith(
+        'voice_assistant_offline_unhandled',
+        expect.anything()
+      );
+    });
   });
 
   afterEach(() => {
@@ -561,6 +589,54 @@ describe('VoiceAssistantService', () => {
         })
       );
     });
+
+    it('queues typed follow-up queries while the assistant is busy and drains them on idle', async () => {
+      jest.useFakeTimers();
+      let resolveFirstResponse: ((value: { text: string }) => void) | undefined;
+      (tryOfflineFallback as jest.Mock).mockReturnValue({ handled: false });
+      (ellieBrainService.query as jest.Mock)
+        .mockImplementationOnce(
+          () =>
+            new Promise<{ text: string }>((resolve) => {
+              resolveFirstResponse = resolve;
+            })
+        )
+        .mockResolvedValueOnce({
+          text: 'Queued answer',
+        });
+      jest.mocked(textToSpeechService.isAvailable).mockResolvedValue(false as never);
+
+      const firstQueryPromise = voiceAssistantService.processTextQuery('First question');
+      await waitFor(() => {
+        expect(callbacks.onStateChange).toHaveBeenCalledWith('processing');
+      });
+
+      await voiceAssistantService.processTextQuery('Second question');
+
+      expect(callbacks.onNotice).toHaveBeenCalledWith(
+        expect.objectContaining({
+          code: 'queued_query',
+        })
+      );
+      expect(ellieBrainService.query).toHaveBeenCalledTimes(1);
+
+      expect(resolveFirstResponse).toBeDefined();
+      resolveFirstResponse?.({ text: 'First answer' });
+      await firstQueryPromise;
+
+      await waitFor(() => {
+        jest.runOnlyPendingTimers();
+        expect(ellieBrainService.query).toHaveBeenCalledTimes(2);
+      });
+
+      expect(ellieBrainService.query).toHaveBeenNthCalledWith(
+        2,
+        'Second question',
+        mockUserContext,
+        expect.any(Array)
+      );
+      jest.useRealTimers();
+    });
   });
 
   describe('error handling', () => {
@@ -708,6 +784,38 @@ describe('VoiceAssistantService', () => {
       await new Promise((r) => setTimeout(r, 20));
 
       expect(callbacks.onError).not.toHaveBeenCalled();
+    });
+
+    it('surfaces backend_not_configured with the explicit configuration message', async () => {
+      (tryOfflineFallback as jest.Mock).mockReturnValue({ handled: false });
+      (ellieBrainService.query as jest.Mock).mockRejectedValue(
+        new EllieBrainServiceError({
+          type: 'backend_error',
+          message: 'Ellie Brain service is not configured in this build.',
+          retryable: false,
+          code: 'backend_not_configured',
+        })
+      );
+
+      await voiceAssistantService.startListening();
+      const registeredCallbacks = (speechRecognitionService.startListening as jest.Mock).mock
+        .calls[0][0];
+      registeredCallbacks.onFinalResult({
+        transcript: 'Complex question',
+        isFinal: true,
+        confidence: 0.9,
+      });
+
+      await waitFor(() => {
+        expect(callbacks.onError).toHaveBeenCalledWith(
+          expect.objectContaining({
+            type: 'backend_error',
+            retryable: false,
+            code: 'backend_not_configured',
+            message: 'Ellie Brain service is not configured in this build.',
+          })
+        );
+      });
     });
   });
 

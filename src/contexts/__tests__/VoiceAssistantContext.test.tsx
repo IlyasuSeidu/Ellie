@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { Text, AppState } from 'react-native';
+import { Text, AppState, InteractionManager } from 'react-native';
 import { create, act, ReactTestRenderer } from 'react-test-renderer';
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
@@ -97,6 +97,7 @@ const mockOnboardingData: Record<string, unknown> = {
   phaseOffset: 0,
 };
 let mockOnboardingSnapshot: Record<string, unknown> = mockOnboardingData;
+let mockAuthUser: { uid: string } | null = null;
 
 jest.mock('@/contexts/OnboardingContext', () => ({
   useOnboarding: () => ({
@@ -108,7 +109,7 @@ jest.mock('@/contexts/OnboardingContext', () => ({
 
 jest.mock('@/contexts/AuthContext', () => ({
   useAuth: () => ({
-    user: null,
+    user: mockAuthUser,
   }),
 }));
 
@@ -224,6 +225,7 @@ describe('VoiceAssistantContext', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     Object.assign(voiceAssistantConfig.wakeWord, JSON.parse(JSON.stringify(defaultWakeWordConfig)));
+    mockAuthUser = null;
 
     // Reset mutable mock onboarding data to valid defaults
     mockOnboardingData.name = 'Alex';
@@ -570,6 +572,73 @@ describe('VoiceAssistantContext', () => {
       );
 
       jest.useRealTimers();
+    });
+
+    it('reinitializes with the new persistence scope when auth user changes', async () => {
+      const firstHistory = [
+        {
+          id: 'persisted-local',
+          role: 'assistant',
+          text: 'Local history',
+          timestamp: 1,
+        },
+      ];
+      const secondHistory = [
+        {
+          id: 'persisted-auth',
+          role: 'assistant',
+          text: 'Auth history',
+          timestamp: 2,
+        },
+      ];
+
+      const resolveScopeMock = jest.mocked(
+        jest.requireMock('@/services/VoiceAssistantPersistenceService')
+          .resolveVoiceAssistantPersistenceScope
+      );
+      resolveScopeMock
+        .mockResolvedValueOnce('local:test-voice-user')
+        .mockResolvedValueOnce('auth:user-2');
+
+      (voiceAssistantPersistenceService.hydrate as jest.Mock)
+        .mockResolvedValueOnce({
+          history: firstHistory,
+          lastError: null,
+          wakeWordSession: null,
+          diagnostics: [],
+        })
+        .mockResolvedValueOnce({
+          history: secondHistory,
+          lastError: null,
+          wakeWordSession: null,
+          diagnostics: [],
+        });
+
+      const renderer = renderWithProvider();
+
+      await act(async () => {
+        await Promise.resolve();
+        await Promise.resolve();
+      });
+
+      expect(capturedValue.messages).toEqual(firstHistory);
+
+      mockAuthUser = { uid: 'user-2' };
+
+      await act(async () => {
+        renderer.update(
+          <VoiceAssistantProvider>
+            <TestConsumer />
+          </VoiceAssistantProvider>
+        );
+        await Promise.resolve();
+        await Promise.resolve();
+      });
+
+      expect(voiceAssistantPersistenceService.setScope).toHaveBeenCalledWith('auth:user-2');
+      expect(voiceAssistantService.destroy).toHaveBeenCalled();
+      expect(voiceAssistantService.initialize).toHaveBeenCalledTimes(2);
+      expect(capturedValue.messages).toEqual(secondHistory);
     });
   });
 
@@ -1117,6 +1186,75 @@ describe('VoiceAssistantContext', () => {
 
       expect(voiceAssistantService.cancel).not.toHaveBeenCalled();
     });
+
+    it('queues modal opening until the assistant is ready', async () => {
+      let resolveScope: (value: string) => void;
+      const pendingScope = new Promise<string>((resolve) => {
+        resolveScope = resolve;
+      });
+      const resolveScopeMock = jest.mocked(
+        jest.requireMock('@/services/VoiceAssistantPersistenceService')
+          .resolveVoiceAssistantPersistenceScope
+      );
+      resolveScopeMock.mockReturnValueOnce(pendingScope);
+
+      renderWithProvider();
+
+      act(() => {
+        capturedValue.openModal();
+      });
+
+      expect(capturedValue.isModalVisible).toBe(false);
+
+      await act(async () => {
+        resolveScope!('local:test-voice-user');
+        await Promise.resolve();
+        await Promise.resolve();
+      });
+
+      expect(capturedValue.isModalVisible).toBe(true);
+    });
+
+    it('queues typed modal queries until the assistant is ready', async () => {
+      let resolveScope: (value: string) => void;
+      const pendingScope = new Promise<string>((resolve) => {
+        resolveScope = resolve;
+      });
+      const resolveScopeMock = jest.mocked(
+        jest.requireMock('@/services/VoiceAssistantPersistenceService')
+          .resolveVoiceAssistantPersistenceScope
+      );
+      resolveScopeMock.mockReturnValueOnce(pendingScope);
+      jest.spyOn(InteractionManager, 'runAfterInteractions').mockImplementation((task) => {
+        if (typeof task === 'function') {
+          task();
+        }
+        return {
+          cancel: jest.fn(),
+          done: jest.fn(),
+          then: jest.fn(() => Promise.resolve()),
+        } as ReturnType<typeof InteractionManager.runAfterInteractions>;
+      });
+
+      renderWithProvider();
+
+      act(() => {
+        capturedValue.openModalWithQuery('When is my next day off?');
+      });
+
+      expect(voiceAssistantService.processTextQuery).not.toHaveBeenCalled();
+
+      await act(async () => {
+        resolveScope!('local:test-voice-user');
+        await Promise.resolve();
+        await Promise.resolve();
+      });
+
+      expect(capturedValue.isModalVisible).toBe(true);
+      expect(voiceAssistantService.processTextQuery).toHaveBeenCalledWith(
+        'When is my next day off?'
+      );
+    });
   });
 
   describe('clearHistory', () => {
@@ -1183,6 +1321,25 @@ describe('VoiceAssistantContext', () => {
 
       expect(result).toBe(false);
       expect(capturedValue.hasPermission).toBe(false);
+    });
+
+    it('does not auto-request microphone permission just because wake-word auto-start is enabled', async () => {
+      voiceAssistantConfig.wakeWord.enabled = true;
+      voiceAssistantConfig.wakeWord.autoStart = true;
+      voiceAssistantConfig.wakeWord.provider = 'porcupine';
+      voiceAssistantConfig.wakeWord.accessKey = 'test-access-key';
+      (speechRecognitionService.hasPermissions as jest.Mock).mockResolvedValue(false);
+
+      renderWithProvider();
+
+      await act(async () => {
+        await Promise.resolve();
+        await Promise.resolve();
+      });
+
+      expect(speechRecognitionService.requestPermissions).not.toHaveBeenCalled();
+      expect(capturedValue.hasPermission).toBe(false);
+      expect(capturedValue.wakeWordWarning).toBeTruthy();
     });
   });
 
@@ -1534,13 +1691,12 @@ describe('VoiceAssistantContext', () => {
       expect(capturedValue.isWakeWordListening).toBe(false);
     });
 
-    it('requests permission automatically when wake-word is enabled without permission', async () => {
+    it('shows a wake-word warning without auto-requesting permission when mic access is missing', async () => {
       voiceAssistantConfig.wakeWord.enabled = true;
       voiceAssistantConfig.wakeWord.provider = 'openwakeword';
       voiceAssistantConfig.wakeWord.openWakeWordModelPath = 'openwakeword/hey_ellie_v0.1.onnx';
       voiceAssistantConfig.wakeWord.autoStart = true;
       (speechRecognitionService.hasPermissions as jest.Mock).mockResolvedValue(false);
-      (speechRecognitionService.requestPermissions as jest.Mock).mockResolvedValue(false);
 
       renderWithProvider();
 
@@ -1549,7 +1705,7 @@ describe('VoiceAssistantContext', () => {
         await Promise.resolve();
       });
 
-      expect(speechRecognitionService.requestPermissions).toHaveBeenCalled();
+      expect(speechRecognitionService.requestPermissions).not.toHaveBeenCalled();
       expect(capturedValue.wakeWordWarning).toBeTruthy();
     });
 
@@ -2084,15 +2240,12 @@ describe('VoiceAssistantContext', () => {
       expect(capturedValue.hasPermission).toBe(false);
     });
 
-    it('logs wake-word permission request failure during auto-start', async () => {
+    it('does not auto-request permission during wake-word auto-start', async () => {
       voiceAssistantConfig.wakeWord.enabled = true;
       voiceAssistantConfig.wakeWord.provider = 'openwakeword';
       voiceAssistantConfig.wakeWord.openWakeWordModelPath = 'openwakeword/hey_ellie_v0.1.onnx';
       voiceAssistantConfig.wakeWord.autoStart = true;
       (speechRecognitionService.hasPermissions as jest.Mock).mockResolvedValue(false);
-      (speechRecognitionService.requestPermissions as jest.Mock).mockRejectedValue(
-        new Error('request failed')
-      );
 
       renderWithProvider();
       await act(async () => {
@@ -2100,10 +2253,7 @@ describe('VoiceAssistantContext', () => {
         await Promise.resolve();
       });
 
-      expect(logger.warn).toHaveBeenCalledWith(
-        'Failed to request speech recognition permissions for wake-word',
-        expect.any(Object)
-      );
+      expect(speechRecognitionService.requestPermissions).not.toHaveBeenCalled();
       expect(capturedValue.wakeWordWarning).toBeTruthy();
     });
 

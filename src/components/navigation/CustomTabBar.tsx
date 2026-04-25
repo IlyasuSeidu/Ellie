@@ -9,7 +9,14 @@
  */
 
 import React, { useEffect, useMemo } from 'react';
-import { View, TouchableOpacity, StyleSheet, Dimensions, Platform } from 'react-native';
+import {
+  ActivityIndicator,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+  Platform,
+} from 'react-native';
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -310,23 +317,36 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
         <TouchableOpacity
           onPress={() => handleTabPress(state.routes[1], 1)}
           activeOpacity={0.8}
+          disabled={isLoading}
           accessibilityLabel={t('tabs.openVoiceAssistantA11y', {
             defaultValue: 'Open Ellie voice assistant',
           })}
           accessibilityRole="button"
+          accessibilityState={{ disabled: isLoading }}
         >
           <LinearGradient
             testID="center-mic-gradient"
             colors={centerButtonGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
-            style={[styles.centerButton, centerButtonAccentStyle]}
+            style={[
+              styles.centerButton,
+              centerButtonAccentStyle,
+              isLoading ? styles.centerButtonDisabled : null,
+            ]}
           >
-            <Ionicons
-              name={isVoiceActive ? 'mic' : 'mic-outline'}
-              size={28}
-              color={tabAccentColor === theme.colors.paleGold ? theme.colors.deepVoid : '#fff'}
-            />
+            {isLoading ? (
+              <ActivityIndicator
+                size="small"
+                color={tabAccentColor === theme.colors.paleGold ? theme.colors.deepVoid : '#fff'}
+              />
+            ) : (
+              <Ionicons
+                name={isVoiceActive ? 'mic' : 'mic-outline'}
+                size={28}
+                color={tabAccentColor === theme.colors.paleGold ? theme.colors.deepVoid : '#fff'}
+              />
+            )}
           </LinearGradient>
         </TouchableOpacity>
       </Animated.View>
@@ -455,5 +475,8 @@ const styles = StyleSheet.create({
         elevation: 16,
       },
     }),
+  },
+  centerButtonDisabled: {
+    opacity: 0.5,
   },
 });

@@ -275,6 +275,62 @@ describe('UserService', () => {
     });
   });
 
+  describe('Offline replay state', () => {
+    it('quarantines a non-retryable pending mutation instead of leaving it pending forever', async () => {
+      const offlineError = new NetworkError('offline', 'NETWORK_UNAVAILABLE');
+      const terminalError = new Error('Permission denied for update');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      jest.spyOn(service as any, 'update').mockRejectedValueOnce(offlineError);
+
+      await service.updateUser(mockUserId, { name: 'Queued User' });
+
+      // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
+      const { __mockStorage } = require('@/services/AsyncStorageService');
+      expect(__mockStorage.get(`users:pending:${mockUserId}`)).toBeTruthy();
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      jest.spyOn(service as any, 'upsert').mockRejectedValueOnce(terminalError);
+
+      await service.syncPendingUsers(mockUserId);
+
+      expect(__mockStorage.get(`users:pending:${mockUserId}`)).toBeUndefined();
+      expect(__mockStorage.get(`users:failed:${mockUserId}`)).toMatchObject({
+        userId: mockUserId,
+        type: 'upsert',
+        lastError: 'Permission denied for update',
+      });
+    });
+
+    it('serves quarantined local user state without re-reading remote data', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
+      const { __mockStorage } = require('@/services/AsyncStorageService');
+      __mockStorage.set(`users:profile:${mockUserId}`, mockUserProfile);
+      __mockStorage.set(`users:failed:${mockUserId}`, {
+        userId: mockUserId,
+        type: 'upsert',
+        profile: mockUserProfile,
+        queuedAt: '2026-04-25T00:00:00.000Z',
+        failedAt: '2026-04-25T00:05:00.000Z',
+        lastError: 'Permission denied for update',
+      });
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const readSpy = jest.spyOn(service as any, 'read');
+
+      const result = await service.getUser(mockUserId);
+
+      expect(result).toEqual(mockUserProfile);
+      expect(readSpy).not.toHaveBeenCalled();
+      expect(logger.warn).toHaveBeenCalledWith(
+        'UserService: serving quarantined local user state after sync failure',
+        expect.objectContaining({
+          userId: mockUserId,
+          lastError: 'Permission denied for update',
+        })
+      );
+    });
+  });
+
   describe('Shift Cycle Operations', () => {
     describe('saveShiftCycle', () => {
       it('should save valid shift cycle', async () => {

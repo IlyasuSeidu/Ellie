@@ -2,7 +2,11 @@ import React from 'react';
 import { Pressable, Text } from 'react-native';
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import { SubscriptionProvider, useSubscription } from '@/contexts/SubscriptionContext';
-import { getRevenueCatApiKey, getRevenueCatRuntime } from '@/services/RevenueCatRuntime';
+import {
+  getRevenueCatApiKey,
+  getRevenueCatAvailability,
+  getRevenueCatRuntime,
+} from '@/services/RevenueCatRuntime';
 import { getRevenueCatUIRuntime } from '@/services/RevenueCatUIRuntime';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import { networkService } from '@/services/NetworkService';
@@ -24,6 +28,11 @@ jest.mock('expo-constants', () => ({
 
 jest.mock('@/services/RevenueCatRuntime', () => ({
   getRevenueCatApiKey: jest.fn(() => 'ios-key'),
+  getRevenueCatAvailability: jest.fn(() => ({
+    reason: null,
+    runtimeAvailable: true,
+    apiKeyAvailable: true,
+  })),
   getRevenueCatRuntime: jest.fn(),
 }));
 
@@ -114,6 +123,11 @@ describe('SubscriptionContext', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.mocked(getRevenueCatApiKey).mockReturnValue('ios-key');
+    jest.mocked(getRevenueCatAvailability).mockReturnValue({
+      reason: null,
+      runtimeAvailable: true,
+      apiKeyAvailable: true,
+    } as never);
     jest.mocked(getRevenueCatUIRuntime).mockReturnValue(null);
     mockUseAuth.mockReturnValue({ user: null });
     jest.mocked(SecureStore.getItemAsync).mockResolvedValue(null);
@@ -361,6 +375,41 @@ describe('SubscriptionContext', () => {
     await waitFor(() => {
       expect(presentCustomerCenter).toHaveBeenCalled();
       expect(getCustomerInfo).toHaveBeenCalled();
+    });
+  });
+
+  it('does not advertise native RevenueCat UI actions when the API key is missing', async () => {
+    jest.mocked(getRevenueCatApiKey).mockReturnValue('');
+    jest.mocked(getRevenueCatAvailability).mockReturnValue({
+      reason: 'missing_api_key',
+      runtimeAvailable: true,
+      apiKeyAvailable: false,
+    } as never);
+    jest.mocked(getRevenueCatRuntime).mockReturnValue({
+      LOG_LEVEL: { ERROR: 'ERROR' },
+      Purchases: {
+        setLogLevel: jest.fn(),
+        configure: jest.fn(),
+      },
+    } as never);
+    jest.mocked(getRevenueCatUIRuntime).mockReturnValue({
+      PAYWALL_RESULT: {
+        PURCHASED: 'PURCHASED',
+        RESTORED: 'RESTORED',
+        CANCELLED: 'CANCELLED',
+        NOT_PRESENTED: 'NOT_PRESENTED',
+      },
+      RevenueCatUI: {
+        presentPaywallIfNeeded: jest.fn(),
+        presentCustomerCenter: jest.fn(),
+      },
+    } as never);
+
+    const { getByTestId } = renderWithProvider();
+
+    await waitFor(() => {
+      expect(getByTestId('can-present-native-paywall').props.children).toBe('false');
+      expect(getByTestId('can-open-customer-center').props.children).toBe('false');
     });
   });
 });

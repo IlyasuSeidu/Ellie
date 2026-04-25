@@ -11,9 +11,9 @@
 
 import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as FirebaseAuthPackage from '@firebase/auth';
-import { getStorage as getWebStorage, type FirebaseStorage } from 'firebase/storage';
-import { getFunctions as getWebFunctions, type Functions } from 'firebase/functions';
+import type { FirebaseApp as FirebaseJsApp } from 'firebase/app';
+import type { FirebaseStorage } from 'firebase/storage';
+import type { Functions } from 'firebase/functions';
 import { firebaseConfig, isTest } from './env';
 import {
   initializeApp,
@@ -38,6 +38,13 @@ let auth: Auth | undefined;
 let firestore: Firestore | undefined;
 let storage: FirebaseStorage | undefined;
 let functions: Functions | undefined;
+let jsSdkServiceApp: FirebaseJsApp | undefined;
+
+type FirebaseAuthPackageRuntime = {
+  getReactNativePersistence?: (
+    storage: typeof AsyncStorage
+  ) => NonNullable<Dependencies['persistence']>;
+};
 
 function canUseNativeFirebase(): boolean {
   return (
@@ -54,6 +61,7 @@ function resetFirebaseInstances(): void {
   firestore = undefined;
   storage = undefined;
   functions = undefined;
+  jsSdkServiceApp = undefined;
 }
 
 function isMissingNativeFirebaseModuleError(error: unknown): boolean {
@@ -83,6 +91,48 @@ function buildFirebaseOptions(): FirebaseOptions {
     appId: firebaseConfig.appId,
     measurementId: firebaseConfig.measurementId,
   };
+}
+
+function getFirebaseJsSdkAppModule(): typeof import('firebase/app') {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
+  return require('firebase/app') as typeof import('firebase/app');
+}
+
+function getFirebaseAuthPackage(): FirebaseAuthPackageRuntime {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
+  return require('@firebase/auth') as FirebaseAuthPackageRuntime;
+}
+
+function getFirebaseStorageModule(): typeof import('firebase/storage') {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
+  return require('firebase/storage') as typeof import('firebase/storage');
+}
+
+function getFirebaseFunctionsModule(): typeof import('firebase/functions') {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
+  return require('firebase/functions') as typeof import('firebase/functions');
+}
+
+function getFirebaseJsServiceApp(firebaseApp: FirebaseApp): FirebaseJsApp {
+  if (!canUseNativeFirebase()) {
+    return firebaseApp as unknown as FirebaseJsApp;
+  }
+
+  if (jsSdkServiceApp) {
+    return jsSdkServiceApp;
+  }
+
+  const firebaseAppModule = getFirebaseJsSdkAppModule();
+  const sidecarAppName = '__ELLIE_JS_SERVICES__';
+  const existingSidecar = firebaseAppModule
+    .getApps()
+    .find((registeredApp) => registeredApp.name === sidecarAppName);
+
+  jsSdkServiceApp =
+    existingSidecar ?? firebaseAppModule.initializeApp(buildFirebaseOptions(), sidecarAppName);
+
+  console.log('Firebase JS service sidecar initialized for Storage/Functions');
+  return jsSdkServiceApp;
 }
 
 function initializeFirebaseApp(): FirebaseApp {
@@ -135,12 +185,7 @@ function initializeFirebaseAuth(firebaseApp: FirebaseApp): Auth {
       return auth;
     }
 
-    const reactNativeAuth = FirebaseAuthPackage as unknown as {
-      getReactNativePersistence?: (
-        storage: typeof AsyncStorage
-      ) => NonNullable<Dependencies['persistence']>;
-    };
-    const persistence = reactNativeAuth.getReactNativePersistence?.(AsyncStorage);
+    const persistence = getFirebaseAuthPackage().getReactNativePersistence?.(AsyncStorage);
     if (!persistence) {
       throw new Error('React Native auth persistence is unavailable');
     }
@@ -198,14 +243,13 @@ function initializeFirebaseStorage(firebaseApp: FirebaseApp): FirebaseStorage {
   }
 
   try {
-    if (canUseNativeFirebase()) {
-      storage = { app: firebaseApp } as FirebaseStorage;
-      console.log('Firebase Storage initialized successfully (stub)');
-      return storage;
-    }
-
-    storage = getWebStorage(firebaseApp);
-    console.log('Firebase Storage initialized successfully');
+    const serviceApp = getFirebaseJsServiceApp(firebaseApp);
+    storage = getFirebaseStorageModule().getStorage(serviceApp);
+    console.log(
+      canUseNativeFirebase()
+        ? 'Firebase Storage initialized successfully (JS SDK sidecar)'
+        : 'Firebase Storage initialized successfully'
+    );
     return storage;
   } catch (error) {
     console.error('Failed to initialize Firebase Storage:', error);
@@ -219,14 +263,13 @@ function initializeCloudFunctions(firebaseApp: FirebaseApp): Functions {
   }
 
   try {
-    if (canUseNativeFirebase()) {
-      functions = { app: firebaseApp } as Functions;
-      console.log('Cloud Functions initialized successfully (stub)');
-      return functions;
-    }
-
-    functions = getWebFunctions(firebaseApp);
-    console.log('Cloud Functions initialized successfully');
+    const serviceApp = getFirebaseJsServiceApp(firebaseApp);
+    functions = getFirebaseFunctionsModule().getFunctions(serviceApp);
+    console.log(
+      canUseNativeFirebase()
+        ? 'Cloud Functions initialized successfully (JS SDK sidecar)'
+        : 'Cloud Functions initialized successfully'
+    );
     return functions;
   } catch (error) {
     console.error('Failed to initialize Cloud Functions:', error);

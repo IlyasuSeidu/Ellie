@@ -77,6 +77,10 @@ jest.mock('@/hooks/useSubscription', () => ({
   })),
 }));
 
+jest.mock('@/contexts/AuthContext', () => ({
+  useAuth: jest.fn(() => ({ user: null })),
+}));
+
 const mockedAnalytics = jest.mocked(Analytics);
 const mockedGetRevenueCatAvailability = jest.mocked(getRevenueCatAvailability);
 const mockedGetRevenueCatRuntime = jest.mocked(getRevenueCatRuntime);

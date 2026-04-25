@@ -1,5 +1,13 @@
 import React, { useEffect, useMemo } from 'react';
-import { Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Animated, {
   Easing,
   FadeIn,
@@ -17,6 +25,7 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { useOnboarding, type OnboardingData } from '@/contexts/OnboardingContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useVoiceAssistant } from '@/contexts/VoiceAssistantContext';
 import { buildShiftCycle, getShiftDaysInRange, getShiftStatistics } from '@/utils/shiftUtils';
@@ -60,6 +69,7 @@ const AHA_PAIN_CALLBACKS: Record<NonNullable<OnboardingData['painPoint']>, strin
 export const PremiumAhaMomentScreen: React.FC = () => {
   const { t } = useTranslation('onboarding');
   const { data } = useOnboarding();
+  const { user } = useAuth();
   const { isPro, isLoading: subscriptionLoading } = useSubscription();
   const { openModalWithQuery, openModal } = useVoiceAssistant();
   const navigation = useNavigation<NavigationProp>();
@@ -154,7 +164,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
 
   const suggestionQueries = useMemo(
     () => [
-      t('ahaMoment.suggestions.workingChristmas', { defaultValue: 'Am I working Christmas?' }),
+      t('ahaMoment.suggestions.startBack', { defaultValue: 'When do I start back?' }),
       t('ahaMoment.suggestions.nextDayOff', { defaultValue: "When's my next day off?" }),
       t('ahaMoment.suggestions.nightShiftsThisMonth', {
         defaultValue: 'How many night shifts this month?',
@@ -278,9 +288,11 @@ export const PremiumAhaMomentScreen: React.FC = () => {
       pain_point: data.painPoint ?? null,
     });
     // Persist decline timestamp so the dashboard can surface a recovery nudge later.
-    void appStateStorageService.setPaywallDeclinedAt(Date.now());
+    void appStateStorageService.setPaywallDeclinedAt(Date.now(), user?.uid ?? null);
     navigation.navigate('Completion');
   };
+
+  const isHeyEllieUnavailable = subscriptionLoading;
 
   // ── Render ───────────────────────────────────────────────────────────────────
   return (
@@ -482,7 +494,9 @@ export const PremiumAhaMomentScreen: React.FC = () => {
                   {t('ahaMoment.heyEllieTitle', { defaultValue: 'Ask Ellie' })}
                 </Text>
                 <Text style={styles.ellieSubtitle}>
-                  {t('ahaMoment.tryAsking', { defaultValue: 'Try asking…' })}
+                  {isHeyEllieUnavailable
+                    ? t('ahaMoment.checkingAccess', { defaultValue: 'Checking access…' })
+                    : t('ahaMoment.tryAsking', { defaultValue: 'Try asking…' })}
                 </Text>
               </View>
             </View>
@@ -496,7 +510,10 @@ export const PremiumAhaMomentScreen: React.FC = () => {
                   style={[
                     styles.ellieChip,
                     index < suggestionQueries.length - 1 && styles.ellieChipBorder,
+                    isHeyEllieUnavailable && styles.ellieChipDisabled,
                   ]}
+                  disabled={isHeyEllieUnavailable}
+                  accessibilityState={{ disabled: isHeyEllieUnavailable }}
                   onPress={() => {
                     Analytics.ahaMomentVoiceTried(query, {
                       roster_type: data.rosterType ?? null,
@@ -522,6 +539,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
             <Animated.View style={[styles.ellieButtonWrapper, pulseStyle]}>
               <TouchableOpacity
                 activeOpacity={0.88}
+                disabled={isHeyEllieUnavailable}
                 onPress={() => {
                   Analytics.ahaMomentVoiceTried('manual_mic', {
                     roster_type: data.rosterType ?? null,
@@ -535,9 +553,16 @@ export const PremiumAhaMomentScreen: React.FC = () => {
                   colors={['rgba(180,83,9,0.22)', 'rgba(180,83,9,0.07)']}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
-                  style={styles.ellieButtonGradient}
+                  style={[
+                    styles.ellieButtonGradient,
+                    isHeyEllieUnavailable && styles.ellieButtonGradientDisabled,
+                  ]}
                 >
-                  <Ionicons name="mic" size={22} color={theme.colors.sacredGold} />
+                  {isHeyEllieUnavailable ? (
+                    <ActivityIndicator size="small" color={theme.colors.sacredGold} />
+                  ) : (
+                    <Ionicons name="mic" size={22} color={theme.colors.sacredGold} />
+                  )}
                   <Text style={styles.ellieButtonLabel}>
                     {t('ahaMoment.buttonLabel', { defaultValue: 'Hey Ellie' })}
                   </Text>
@@ -848,6 +873,9 @@ const styles = StyleSheet.create({
     paddingVertical: 13,
     paddingHorizontal: 14,
   },
+  ellieChipDisabled: {
+    opacity: 0.45,
+  },
   ellieChipBorder: {
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(180,83,9,0.10)',
@@ -874,6 +902,9 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderWidth: 1.5,
     borderColor: theme.colors.sacredGold + '80',
+  },
+  ellieButtonGradientDisabled: {
+    opacity: 0.5,
   },
   ellieButtonLabel: {
     fontSize: 17,

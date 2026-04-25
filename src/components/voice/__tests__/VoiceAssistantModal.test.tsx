@@ -549,6 +549,14 @@ describe('VoiceAssistantModal', () => {
       });
     });
 
+    it('keeps the typed composer available while processing', () => {
+      mockVoiceAssistant.state = 'processing';
+      const { getByLabelText } = render(<VoiceAssistantModal />);
+
+      const composer = getByLabelText('Type a question for Ellie');
+      expect(composer.props.editable).toBe(true);
+    });
+
     it('should not call startListening or stopListening when processing and pressed', () => {
       mockVoiceAssistant.state = 'processing';
       const { getByLabelText } = render(<VoiceAssistantModal />);

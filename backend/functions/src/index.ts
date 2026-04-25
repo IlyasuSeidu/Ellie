@@ -7,6 +7,12 @@
 
 import { onRequest } from 'firebase-functions/v2/https';
 import { defineSecret } from 'firebase-functions/params';
+import { buildDailyAudienceRun, ellieAudienceAdapter } from './audience-os';
+import {
+  createAudienceOpsError,
+  type AudienceOpsSuccessEnvelope,
+  validateAudienceRunInput,
+} from './audience-os/http';
 import { EllieBrainProcessingError, processQuery } from './ellie-brain';
 import { EllieBrainSuccessEnvelope } from './types';
 import { createErrorEnvelope, createRequestId, validateRequestBody } from './http-utils';
@@ -141,3 +147,46 @@ export const ellieBrain = onRequest(
     }
   }
 );
+
+export const signalLoopPreview = onRequest(
+  {
+    cors: true,
+    maxInstances: 10,
+    timeoutSeconds: 60,
+    memory: '256MiB',
+  },
+  (req, res) => {
+    const requestId = createRequestId(req.get('x-request-id'));
+
+    if (req.method !== 'POST') {
+      res
+        .status(405)
+        .json(createAudienceOpsError(requestId, 'invalid_request', 'Method not allowed.'));
+      return;
+    }
+
+    try {
+      const input = validateAudienceRunInput(req.body);
+      const result = buildDailyAudienceRun(input, ellieAudienceAdapter);
+
+      const response: AudienceOpsSuccessEnvelope = {
+        ok: true,
+        requestId,
+        data: result as unknown as Record<string, unknown>,
+      };
+
+      res.status(200).json(response);
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Invalid SignalLoop preview request.';
+      const code =
+        message.includes('adapter') || message.includes('implemented')
+          ? 'unsupported_adapter'
+          : 'invalid_request';
+
+      res.status(400).json(createAudienceOpsError(requestId, code, message));
+    }
+  }
+);
+
+export const audienceOpsPreview = signalLoopPreview;

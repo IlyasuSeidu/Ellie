@@ -145,6 +145,20 @@ export interface AppConfig {
   };
 }
 
+export function isConfiguredEllieBrainUrl(url: string | undefined | null): boolean {
+  const normalized = typeof url === 'string' ? url.trim() : '';
+  if (!normalized || normalized.includes('REGION-PROJECT')) {
+    return false;
+  }
+
+  try {
+    const parsed = new URL(normalized);
+    return parsed.protocol === 'https:' || parsed.protocol === 'http:';
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Get environment variable with validation
  *
@@ -386,6 +400,16 @@ function validateConfig(config: AppConfig): void {
   // Validate API config
   if (config.api.timeout < 1000 || config.api.timeout > 60000) {
     throw new Error('API timeout must be between 1000 and 60000 milliseconds');
+  }
+
+  if (!isConfiguredEllieBrainUrl(config.ellieBrain.url)) {
+    const message =
+      'ELLIE_BRAIN_URL must be configured with a valid deployed endpoint. ' +
+      'Placeholder Cloud Function URLs are not supported.';
+    if (config.env === 'production') {
+      throw new Error(message);
+    }
+    console.warn(message);
   }
 
   // Validate wake-word config

@@ -274,6 +274,8 @@ const QUERY_LEXICON: Record<SupportedLanguage, QueryLexicon> = {
   },
 };
 
+const SUPPORTED_QUERY_LANGUAGES = Object.keys(QUERY_LEXICON) as SupportedLanguage[];
+
 const getDateLocaleTag = (language: SupportedLanguage): string => {
   if (language === 'es') return 'es-ES';
   if (language === 'pt-BR') return 'pt-BR';
@@ -504,80 +506,101 @@ export function buildOfflineUnsupportedResponse(shiftCycle: ShiftCycle, userName
   );
 }
 
+function classifyOfflineIntentWithLexicon(
+  normalizedQuery: string,
+  lexicon: QueryLexicon
+): OfflineIntentGuess {
+  if (matchesAmIWorking(normalizedQuery, lexicon) || matchesToday(normalizedQuery, lexicon)) {
+    return 'current_status';
+  }
+
+  if (matchesTomorrow(normalizedQuery, lexicon)) {
+    return 'tomorrow_shift';
+  }
+
+  if (matchesNextDayOff(normalizedQuery, lexicon)) {
+    return 'next_day_off';
+  }
+
+  if (matchesNextNightShift(normalizedQuery, lexicon)) {
+    return 'next_night_shift';
+  }
+
+  if (matchesShiftThisWeek(normalizedQuery, lexicon)) {
+    return 'week_summary';
+  }
+
+  if (matchesDaysOffThisMonth(normalizedQuery, lexicon)) {
+    return 'month_days_off';
+  }
+
+  if (matchesNightShiftsThisMonth(normalizedQuery, lexicon)) {
+    return 'month_night_shifts';
+  }
+
+  if (matchesPatternSummary(normalizedQuery, lexicon)) {
+    return 'pattern_summary';
+  }
+
+  if (matchesNextFlyOut(normalizedQuery, lexicon)) {
+    return 'next_fly_out';
+  }
+
+  if (matchesStartBack(normalizedQuery, lexicon)) {
+    return 'start_back';
+  }
+
+  if (matchesCurrentBlockInfo(normalizedQuery, lexicon)) {
+    return 'current_block';
+  }
+
+  if (matchesNextWorkBlock(normalizedQuery, lexicon)) {
+    return 'next_work_block';
+  }
+
+  if (matchesNextRestBlock(normalizedQuery, lexicon)) {
+    return 'next_rest_block';
+  }
+
+  if (matchesDaysUntilWork(normalizedQuery, lexicon)) {
+    return 'days_until_work';
+  }
+
+  if (matchesDaysUntilRest(normalizedQuery, lexicon)) {
+    return 'days_until_rest';
+  }
+
+  return 'unknown';
+}
+
+function getCandidateQueryLanguages(preferredLanguage: SupportedLanguage): SupportedLanguage[] {
+  return [
+    preferredLanguage,
+    ...SUPPORTED_QUERY_LANGUAGES.filter((language) => language !== preferredLanguage),
+  ];
+}
+
 export function classifyOfflineIntent(query: string): OfflineIntentClassification {
   const normalized = query.toLowerCase().trim();
-  const language = normalizeLanguage(i18n.resolvedLanguage ?? i18n.language ?? 'en');
-  const lexicon = QUERY_LEXICON[language] ?? QUERY_LEXICON.en;
+  const preferredLanguage = normalizeLanguage(i18n.resolvedLanguage ?? i18n.language ?? 'en');
 
-  if (matchesAmIWorking(normalized, lexicon) || matchesToday(normalized, lexicon)) {
-    return { language, intent: 'current_status' };
-  }
-
-  if (matchesTomorrow(normalized, lexicon)) {
-    return { language, intent: 'tomorrow_shift' };
-  }
-
-  if (matchesNextDayOff(normalized, lexicon)) {
-    return { language, intent: 'next_day_off' };
-  }
-
-  if (matchesNextNightShift(normalized, lexicon)) {
-    return { language, intent: 'next_night_shift' };
-  }
-
-  if (matchesShiftThisWeek(normalized, lexicon)) {
-    return { language, intent: 'week_summary' };
-  }
-
-  if (matchesDaysOffThisMonth(normalized, lexicon)) {
-    return { language, intent: 'month_days_off' };
-  }
-
-  if (matchesNightShiftsThisMonth(normalized, lexicon)) {
-    return { language, intent: 'month_night_shifts' };
-  }
-
-  if (matchesPatternSummary(normalized, lexicon)) {
-    return { language, intent: 'pattern_summary' };
-  }
-
-  if (matchesNextFlyOut(normalized, lexicon)) {
-    return { language, intent: 'next_fly_out' };
-  }
-
-  if (matchesStartBack(normalized, lexicon)) {
-    return { language, intent: 'start_back' };
-  }
-
-  if (matchesCurrentBlockInfo(normalized, lexicon)) {
-    return { language, intent: 'current_block' };
-  }
-
-  if (matchesNextWorkBlock(normalized, lexicon)) {
-    return { language, intent: 'next_work_block' };
-  }
-
-  if (matchesNextRestBlock(normalized, lexicon)) {
-    return { language, intent: 'next_rest_block' };
-  }
-
-  if (matchesDaysUntilWork(normalized, lexicon)) {
-    return { language, intent: 'days_until_work' };
-  }
-
-  if (matchesDaysUntilRest(normalized, lexicon)) {
-    return { language, intent: 'days_until_rest' };
+  for (const language of getCandidateQueryLanguages(preferredLanguage)) {
+    const lexicon = QUERY_LEXICON[language] ?? QUERY_LEXICON.en;
+    const intent = classifyOfflineIntentWithLexicon(normalized, lexicon);
+    if (intent !== 'unknown') {
+      return { language, intent };
+    }
   }
 
   if (containsAny(normalized, HOLIDAY_TERMS)) {
-    return { language, intent: 'holiday_date' };
+    return { language: preferredLanguage, intent: 'holiday_date' };
   }
 
   if (EXPLICIT_DATE_PATTERNS.some((pattern) => pattern.test(normalized))) {
-    return { language, intent: 'calendar_date' };
+    return { language: preferredLanguage, intent: 'calendar_date' };
   }
 
-  return { language, intent: 'unknown' };
+  return { language: preferredLanguage, intent: 'unknown' };
 }
 
 /**
@@ -601,7 +624,8 @@ export function tryOfflineFallback(
 ): OfflineFallbackResult {
   const normalized = query.toLowerCase().trim();
   const language = normalizeLanguage(i18n.resolvedLanguage ?? i18n.language ?? 'en');
-  const lexicon = QUERY_LEXICON[language] ?? QUERY_LEXICON.en;
+  const classification = classifyOfflineIntent(query);
+  const lexicon = QUERY_LEXICON[classification.language] ?? QUERY_LEXICON.en;
 
   // Am I working today? (check BEFORE generic today, since it's more specific)
   if (matchesAmIWorking(normalized, lexicon)) {

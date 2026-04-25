@@ -7,9 +7,11 @@
 import { Platform } from 'react-native';
 import { FirebaseService } from '@/services/firebase/FirebaseService';
 import { where, Timestamp, type DocumentData } from '@/services/firebase/firestoreSdk';
+import { networkService } from '@/services/NetworkService';
 import { logger } from '@/utils/logger';
 import { AsyncStorageService } from './AsyncStorageService';
 import { STORAGE_KEYS } from '@/constants/storageKeys';
+import { NetworkError } from '@/utils/errorUtils';
 
 /**
  * Session event types
@@ -91,6 +93,7 @@ export class SessionService extends FirebaseService {
   private asyncStorage: AsyncStorageService;
   private metadata: SessionMetadata;
   private readonly SESSIONS_COLLECTION = 'sessions';
+  private unsubscribePendingSync: (() => void) | null = null;
 
   constructor(
     asyncStorage: AsyncStorageService = new AsyncStorageService(),
@@ -105,6 +108,11 @@ export class SessionService extends FirebaseService {
         platform: Platform.OS,
         deviceId: 'device-pending',
       } as SessionMetadata);
+    this.unsubscribePendingSync = networkService.subscribe((snapshot) => {
+      if (snapshot.status === 'online') {
+        void this.syncPendingSessions();
+      }
+    });
   }
 
   /**
@@ -414,9 +422,59 @@ export class SessionService extends FirebaseService {
       };
 
       await this.upsert<DocumentData>(this.SESSIONS_COLLECTION, session.id, sessionData);
+      await this.clearPendingSession(session.id);
     } catch (error) {
+      await this.markPendingSession(session.id);
+      if (this.isRetryableSyncError(error)) {
+        logger.warn('Failed to save session to Firestore; queued local session for replay', {
+          sessionId: session.id,
+          error: error instanceof Error ? error.message : String(error),
+        });
+        return;
+      }
+
       logger.error('Failed to save session to Firestore', error as Error);
       // Don't throw - local session still valid
+    }
+  }
+
+  async syncPendingSessions(): Promise<void> {
+    const pendingSessionIds = await this.getPendingSessionIds();
+
+    for (const sessionId of pendingSessionIds) {
+      const session = await this.getLocalSession(sessionId);
+      if (!session) {
+        await this.clearPendingSession(sessionId);
+        continue;
+      }
+
+      try {
+        const sessionData = {
+          ...session,
+          startTime: Timestamp.fromDate(session.startTime),
+          endTime: session.endTime ? Timestamp.fromDate(session.endTime) : null,
+          lastActivityTime: Timestamp.fromDate(session.lastActivityTime),
+          events: session.events.map((event) => ({
+            ...event,
+            timestamp: Timestamp.fromDate(event.timestamp),
+          })),
+        };
+
+        await this.upsert<DocumentData>(this.SESSIONS_COLLECTION, session.id, sessionData);
+        await this.clearPendingSession(session.id);
+      } catch (error) {
+        if (this.isRetryableSyncError(error)) {
+          logger.warn('Failed to replay pending session to Firestore', {
+            sessionId: session.id,
+            error: error instanceof Error ? error.message : String(error),
+          });
+          continue;
+        }
+
+        logger.error('Failed to replay pending session to Firestore', error as Error, {
+          sessionId: session.id,
+        });
+      }
     }
   }
 
@@ -489,6 +547,8 @@ export class SessionService extends FirebaseService {
       this.timeoutTimer = null;
     }
 
+    this.unsubscribePendingSync?.();
+    this.unsubscribePendingSync = null;
     this.timeoutCallbacks = [];
   }
 
@@ -498,6 +558,10 @@ export class SessionService extends FirebaseService {
 
   private getUserSessionIndexKey(userId: string): string {
     return `${STORAGE_KEYS.sessions.userIndexPrefix}${userId}`;
+  }
+
+  private getPendingSessionKey(sessionId: string): string {
+    return `${STORAGE_KEYS.sessions.pendingPrefix}${sessionId}`;
   }
 
   private serializeSession(session: Session): StoredSession {
@@ -579,6 +643,29 @@ export class SessionService extends FirebaseService {
     await this.asyncStorage.set(indexKey, remainingIndex);
   }
 
+  private async markPendingSession(sessionId: string): Promise<void> {
+    await this.asyncStorage.set(this.getPendingSessionKey(sessionId), true);
+  }
+
+  private async clearPendingSession(sessionId: string): Promise<void> {
+    await this.asyncStorage.remove(this.getPendingSessionKey(sessionId));
+  }
+
+  private async getPendingSessionIds(): Promise<string[]> {
+    const storage = this.asyncStorage as AsyncStorageService & {
+      getAllKeys?: () => Promise<string[]>;
+    };
+
+    if (typeof storage.getAllKeys !== 'function') {
+      return [];
+    }
+
+    const keys = await storage.getAllKeys();
+    return keys
+      .filter((key) => key.startsWith(STORAGE_KEYS.sessions.pendingPrefix))
+      .map((key) => key.slice(STORAGE_KEYS.sessions.pendingPrefix.length));
+  }
+
   private calculateAverageDuration(sessions: Session[]): number {
     const endedSessions = sessions.filter((session) => session.endTime);
     if (endedSessions.length === 0) {
@@ -595,6 +682,24 @@ export class SessionService extends FirebaseService {
 
   private async syncRemoteSessionsToLocal(sessions: Session[]): Promise<void> {
     await Promise.all(sessions.map((session) => this.persistSessionLocally(session)));
+  }
+
+  private isRetryableSyncError(error: unknown): boolean {
+    if (error instanceof NetworkError) {
+      return true;
+    }
+
+    if (!(error instanceof Error)) {
+      return false;
+    }
+
+    const message = error.message.toLowerCase();
+    return (
+      message.includes('network') ||
+      message.includes('offline') ||
+      message.includes('unavailable') ||
+      message.includes('deadline-exceeded')
+    );
   }
 }
 

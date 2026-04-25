@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import {
+  getRevenueCatAvailability,
   getRevenueCatApiKey,
   getRevenueCatRuntime,
   type RevenueCatCustomerInfo,
@@ -75,6 +76,7 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({
   const [isPro, setIsPro] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const configuredRef = useRef(false);
+  const hasBootstrappedRef = useRef(false);
   const revenueCatUserIdRef = useRef<string | null>(null);
   const authScopeRef = useRef<string | null>(null);
   const entitlementCacheScopeRef = useRef<string | null>(null);
@@ -145,6 +147,7 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({
     const apiKey = getRevenueCatApiKey();
     const revenueCatRuntime = getRevenueCatRuntime();
     const authScope = user?.uid ?? null;
+    const authScopeChanged = hasBootstrappedRef.current && authScopeRef.current !== authScope;
 
     if (authScopeRef.current !== authScope) {
       setIsPro(false);
@@ -152,13 +155,17 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({
     authScopeRef.current = authScope;
     setIsLoading(true);
 
-    void subscriptionEntitlementCacheService.getCachedIsPro(authScope).then((cachedValue) => {
-      if (!isMounted) return;
-      if (liveEntitlementResolved) return;
-      if (typeof cachedValue === 'boolean') {
-        setIsPro(cachedValue);
-      }
-    });
+    if (!authScopeChanged) {
+      void subscriptionEntitlementCacheService.getCachedIsPro(authScope).then((cachedValue) => {
+        if (!isMounted) return;
+        if (liveEntitlementResolved) return;
+        if (typeof cachedValue === 'boolean') {
+          setIsPro(cachedValue);
+        }
+      });
+    }
+
+    hasBootstrappedRef.current = true;
 
     if (!apiKey || !revenueCatRuntime) {
       setIsLoading(false);
@@ -216,11 +223,44 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({
               await syncCustomerInfo(extractCustomerInfo(logoutResult));
             }
           } else {
+            let currentAppUserId: string | null = null;
+            if (typeof Purchases.getAppUserID === 'function') {
+              try {
+                currentAppUserId = await Purchases.getAppUserID();
+              } catch {
+                currentAppUserId = null;
+              }
+            }
+
+            const normalizedCurrentUserId =
+              typeof currentAppUserId === 'string' && currentAppUserId.trim().length > 0
+                ? currentAppUserId.trim()
+                : null;
+            const currentIdentityMatches =
+              authScope !== null
+                ? normalizedCurrentUserId === authScope
+                : normalizedCurrentUserId !== null &&
+                  normalizedCurrentUserId.startsWith('$RCAnonymousID');
+
+            if (!currentIdentityMatches && authScope) {
+              await subscriptionEntitlementCacheService.clear(authScope);
+            }
+
             logger.warn('SubscriptionProvider: RevenueCat identity switch unavailable', {
               fromUserId: revenueCatUserIdRef.current,
               toUserId: authScope,
+              currentAppUserId: normalizedCurrentUserId,
+              currentIdentityMatches,
             });
-            return;
+
+            if (!currentIdentityMatches) {
+              if (isMounted) {
+                setIsPro(false);
+              }
+              return;
+            }
+
+            revenueCatUserIdRef.current = authScope;
           }
         }
 
@@ -264,13 +304,14 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({
   }, [refreshCustomerInfo, resolveEntitlementCacheScope, syncCustomerInfo, user?.uid]);
 
   const restorePurchases = useCallback(async (): Promise<RestorePurchasesResult> => {
+    const availability = getRevenueCatAvailability();
     const revenueCatRuntime = getRevenueCatRuntime();
-    if (!revenueCatRuntime) {
+    if (!revenueCatRuntime || availability.reason !== null) {
       return 'unavailable';
     }
 
     const snapshot = await networkService.refresh();
-    if (snapshot.status !== 'online') {
+    if (snapshot.status === 'offline') {
       logger.warn('SubscriptionProvider: restore skipped while offline');
       return 'offline';
     }
@@ -290,9 +331,10 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({
 
   const presentNativePaywall = useCallback(
     async (offering?: unknown): Promise<NativePaywallResult> => {
+      const availability = getRevenueCatAvailability();
       const revenueCatRuntime = getRevenueCatRuntime();
       const revenueCatUIRuntime = getRevenueCatUIRuntime();
-      if (!revenueCatRuntime || !revenueCatUIRuntime) {
+      if (!revenueCatRuntime || !revenueCatUIRuntime || availability.reason !== null) {
         return 'unavailable';
       }
 
@@ -333,9 +375,10 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({
   );
 
   const openCustomerCenter = useCallback(async (): Promise<CustomerCenterResult> => {
+    const availability = getRevenueCatAvailability();
     const revenueCatRuntime = getRevenueCatRuntime();
     const revenueCatUIRuntime = getRevenueCatUIRuntime();
-    if (!revenueCatRuntime || !revenueCatUIRuntime) {
+    if (!revenueCatRuntime || !revenueCatUIRuntime || availability.reason !== null) {
       return 'unavailable';
     }
 
@@ -352,14 +395,19 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({
     }
   }, [refreshCustomerInfo]);
 
+  const revenueCatAvailability = getRevenueCatAvailability();
+  const revenueCatUIRuntime = getRevenueCatUIRuntime();
+  const canPresentNativeRevenueCatUI =
+    revenueCatAvailability.reason === null && revenueCatUIRuntime !== null;
+
   return (
     <SubscriptionContext.Provider
       value={{
         isPro,
         isLoading,
         openPaywall: onOpenPaywall,
-        canPresentNativePaywall: getRevenueCatUIRuntime() !== null,
-        canOpenCustomerCenter: getRevenueCatUIRuntime() !== null,
+        canPresentNativePaywall: canPresentNativeRevenueCatUI,
+        canOpenCustomerCenter: canPresentNativeRevenueCatUI,
         restorePurchases,
         presentNativePaywall,
         openCustomerCenter,

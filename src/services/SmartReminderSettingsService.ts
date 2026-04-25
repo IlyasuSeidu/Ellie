@@ -8,7 +8,7 @@ import {
 } from '@/types/reminders';
 import { logger } from '@/utils/logger';
 import { asyncStorageService } from './AsyncStorageService';
-import { UserService } from './UserService';
+import { UserService, userService as sharedUserService } from './UserService';
 
 function mergeSettings(
   settings: Partial<SmartReminderSettings> | SmartReminderSettings | null | undefined
@@ -95,7 +95,7 @@ export async function resolveReminderUserId(firebaseUid?: string | null): Promis
 }
 
 export class SmartReminderSettingsService {
-  constructor(private readonly userService: UserService = new UserService()) {}
+  constructor(private readonly userService: UserService = sharedUserService) {}
 
   async load(firebaseUid?: string | null): Promise<SmartReminderSettings> {
     const localRecord = await readLocalSettingsRecord();

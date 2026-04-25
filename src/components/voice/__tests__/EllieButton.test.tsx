@@ -24,19 +24,31 @@ jest.mock('@expo/vector-icons', () => {
 
 // Mock useVoiceAssistant
 const mockOpenModal = jest.fn();
+const mockOpenPaywall = jest.fn();
 const mockVoiceAssistant = {
   state: 'idle' as string,
   openModal: mockOpenModal,
+};
+const mockSubscription = {
+  isPro: true,
+  isLoading: false,
+  openPaywall: mockOpenPaywall,
 };
 
 jest.mock('@/contexts/VoiceAssistantContext', () => ({
   useVoiceAssistant: () => mockVoiceAssistant,
 }));
 
+jest.mock('@/hooks/useSubscription', () => ({
+  useSubscription: () => mockSubscription,
+}));
+
 describe('EllieButton', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockVoiceAssistant.state = 'idle';
+    mockSubscription.isPro = true;
+    mockSubscription.isLoading = false;
   });
 
   // ---------- Rendering ----------
@@ -111,6 +123,7 @@ describe('EllieButton', () => {
       const { getByLabelText } = render(<EllieButton />);
       fireEvent.press(getByLabelText('Open Ellie voice assistant'));
       expect(mockOpenModal).toHaveBeenCalledTimes(1);
+      expect(mockOpenPaywall).not.toHaveBeenCalled();
     });
 
     it('should call both haptics and openModal on each press', () => {
@@ -122,6 +135,26 @@ describe('EllieButton', () => {
 
       expect(Haptics.impactAsync).toHaveBeenCalledTimes(2);
       expect(mockOpenModal).toHaveBeenCalledTimes(2);
+    });
+
+    it('should open the paywall instead of the assistant for non-Pro users', () => {
+      mockSubscription.isPro = false;
+
+      const { getByLabelText } = render(<EllieButton />);
+      fireEvent.press(getByLabelText('Open Ellie voice assistant'));
+
+      expect(mockOpenModal).not.toHaveBeenCalled();
+      expect(mockOpenPaywall).toHaveBeenCalledTimes(1);
+    });
+
+    it('should do nothing while subscription state is loading', () => {
+      mockSubscription.isLoading = true;
+
+      const { getByLabelText } = render(<EllieButton />);
+      fireEvent.press(getByLabelText('Open Ellie voice assistant'));
+
+      expect(mockOpenModal).not.toHaveBeenCalled();
+      expect(mockOpenPaywall).not.toHaveBeenCalled();
     });
   });
 

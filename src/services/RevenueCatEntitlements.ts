@@ -64,11 +64,6 @@ export const getActiveProEntitlement = (info: CustomerInfo): PurchasesEntitlemen
     }
   }
 
-  const activeValues = Object.values(activeEntitlements);
-  if (activeValues.length === 1) {
-    return activeValues[0] ?? null;
-  }
-
   return null;
 };
 

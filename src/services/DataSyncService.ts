@@ -100,14 +100,19 @@ export class DataSyncService {
   private unsubscribeNetwork: (() => void) | null = null;
 
   constructor(userService: UserService) {
+    if (
+      process.env.NODE_ENV !== 'test' &&
+      process.env.EXPO_PUBLIC_ENABLE_LEGACY_DATA_SYNC !== 'true'
+    ) {
+      const error = new Error(
+        'DataSyncService is legacy-only and must not be used as the production offline sync path.'
+      );
+      logger.error('DataSyncService construction blocked', error);
+      throw error;
+    }
+
     this.userService = userService;
     this.initializeNetworkListener();
-
-    if (process.env.NODE_ENV !== 'test') {
-      logger.warn(
-        'DataSyncService is deprecated and should not be used as the production offline sync path.'
-      );
-    }
   }
 
   /**

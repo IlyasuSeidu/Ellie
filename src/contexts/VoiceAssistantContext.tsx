@@ -28,7 +28,7 @@ import React, {
   useRef,
   ReactNode,
 } from 'react';
-import { AppState, Platform } from 'react-native';
+import { AppState, InteractionManager, Platform } from 'react-native';
 import { useSpeechRecognitionEvent } from '@/services/speechRecognitionNative';
 import { voiceAssistantService } from '@/services/VoiceAssistantService';
 import {
@@ -259,20 +259,24 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
   const [isAppActive, setIsAppActive] = useState(true);
   const [persistenceScope, setPersistenceScope] = useState<string | null>(null);
   const [wakeWordRetryNonce, setWakeWordRetryNonce] = useState(0);
+  const [isAssistantReady, setIsAssistantReady] = useState(false);
 
   const initializedRef = useRef(false);
   const hydrationCompleteRef = useRef(false);
   const stateRef = useRef<VoiceAssistantState>('idle');
   const isModalVisibleRef = useRef(false);
   const hasPermissionRef = useRef(false);
+  const isAssistantReadyRef = useRef(false);
   const wakeWordPermissionRequestAttemptedRef = useRef(false);
   const isAppActiveRef = useRef(true);
   const startListeningFromWakeWordRef = useRef<() => Promise<void>>(async () => {});
   const noticeDismissTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const modalQueryTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wakeWordRetryTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wakeWordRetryAttemptRef = useRef(0);
   const wakeWordRetryPendingRef = useRef(false);
+  const pendingModalOpenRef = useRef(false);
+  const pendingModalQueryRef = useRef<string | null>(null);
+  const pendingModalQueryTaskRef = useRef<{ cancel?: () => void } | null>(null);
 
   const wakeWordConfigFingerprint = useMemo(
     () =>
@@ -330,6 +334,10 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
   useEffect(() => {
     hasPermissionRef.current = hasPermission;
   }, [hasPermission]);
+
+  useEffect(() => {
+    isAssistantReadyRef.current = isAssistantReady;
+  }, [isAssistantReady]);
 
   useEffect(() => {
     isAppActiveRef.current = isAppActive;
@@ -419,6 +427,16 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
     clearNoticeDismissTimeout();
     setNotice(null);
   }, [clearNoticeDismissTimeout]);
+
+  const resetAssistantUiState = useCallback(() => {
+    clearNotice();
+    setState('idle');
+    setMessages([]);
+    setPartialTranscript('');
+    setError(null);
+    setLastError(null);
+    setIsModalVisible(false);
+  }, [clearNotice]);
 
   const showNotice = useCallback(
     (nextNotice: VoiceAssistantNotice) => {
@@ -545,6 +563,8 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
     let isCancelled = false;
 
     voiceAssistantPersistenceService.setScope(persistenceScope);
+    setIsAssistantReady(false);
+    resetAssistantUiState();
 
     voiceAssistantService.initialize(
       {
@@ -627,15 +647,10 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
         return;
       }
 
-      if (persistedState.history.length > 0) {
-        voiceAssistantService.restoreHistory(persistedState.history);
-        setMessages(persistedState.history);
-      }
-
-      if (persistedState.lastError) {
-        setLastError(persistedState.lastError);
-        setError(persistedState.lastError);
-      }
+      voiceAssistantService.restoreHistory(persistedState.history);
+      setMessages(persistedState.history);
+      setLastError(persistedState.lastError);
+      setError(persistedState.lastError);
 
       const persistedWakeWordReason = persistedState.wakeWordSession?.reason ?? '';
       const isInvalidModelSessionFlag = persistedWakeWordReason
@@ -676,6 +691,7 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
       }
 
       hydrationCompleteRef.current = true;
+      setIsAssistantReady(true);
 
       // Ensure we have current snapshots persisted with current TTL strategy.
       await Promise.all([
@@ -709,6 +725,7 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
       isCancelled = true;
       voiceAssistantService.destroy();
       clearNoticeDismissTimeout();
+      setIsAssistantReady(false);
       initializedRef.current = false;
       hydrationCompleteRef.current = false;
     };
@@ -720,6 +737,7 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
     getPersistenceOptions,
     isWakeWordEnabled,
     persistenceScope,
+    resetAssistantUiState,
     showNotice,
     wakeWordConfigFingerprint,
   ]);
@@ -811,61 +829,33 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
 
   useEffect(() => {
     if (!isWakeWordEnabled || !voiceAssistantConfig.wakeWord.autoStart || !hasPermissionChecked) {
-      return undefined;
+      return;
     }
 
-    if (hasPermission || wakeWordPermissionRequestAttemptedRef.current) {
-      return undefined;
+    if (hasPermission) {
+      wakeWordPermissionRequestAttemptedRef.current = false;
+      return;
     }
 
-    let isCancelled = false;
+    if (wakeWordPermissionRequestAttemptedRef.current) {
+      return;
+    }
+
     wakeWordPermissionRequestAttemptedRef.current = true;
-
-    const ensureWakeWordPermission = async () => {
-      try {
-        const granted = await requestPermissions();
-        if (!isCancelled && !granted) {
-          setWakeWordWarning((previous) => previous ?? getWakeWordPermissionRequiredWarning());
-          appendDiagnostic(
-            'speech_recognition',
-            'wake_word_permission_denied',
-            'Microphone permission denied for wake-word listening.',
-            true
-          );
-        }
-      } catch (permissionError) {
-        if (!isCancelled) {
-          logger.warn('Failed to request speech recognition permissions for wake-word', {
-            error:
-              permissionError instanceof Error ? permissionError.message : String(permissionError),
-          });
-          setWakeWordWarning((previous) => previous ?? getWakeWordPermissionRequiredWarning());
-          appendDiagnostic(
-            'speech_recognition',
-            'wake_word_permission_request_failed',
-            permissionError instanceof Error
-              ? permissionError.message
-              : 'Failed to request microphone permission for wake-word listening.',
-            true
-          );
-        }
-      }
-    };
-
-    void ensureWakeWordPermission();
-
-    return () => {
-      isCancelled = true;
-    };
-  }, [
-    appendDiagnostic,
-    hasPermission,
-    hasPermissionChecked,
-    isWakeWordEnabled,
-    requestPermissions,
-  ]);
+    setWakeWordWarning((previous) => previous ?? getWakeWordPermissionRequiredWarning());
+    appendDiagnostic(
+      'speech_recognition',
+      'wake_word_permission_required',
+      'Microphone permission is required before wake-word listening can start.',
+      true
+    );
+  }, [appendDiagnostic, hasPermission, hasPermissionChecked, isWakeWordEnabled]);
 
   const startListening = useCallback(async (): Promise<void> => {
+    if (!isAssistantReadyRef.current) {
+      pendingModalOpenRef.current = true;
+      return;
+    }
     await startListeningFromWakeWord();
   }, [startListeningFromWakeWord]);
 
@@ -878,6 +868,10 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
   }, []);
 
   const openModal = useCallback(() => {
+    pendingModalOpenRef.current = true;
+    if (!isAssistantReadyRef.current) {
+      return;
+    }
     setIsModalVisible(true);
   }, []);
 
@@ -885,6 +879,12 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
     async (query: string): Promise<void> => {
       const trimmedQuery = query.trim();
       if (!trimmedQuery) {
+        return;
+      }
+
+      if (!isAssistantReadyRef.current) {
+        pendingModalOpenRef.current = true;
+        pendingModalQueryRef.current = trimmedQuery;
         return;
       }
 
@@ -899,28 +899,20 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
     [buildUserContext, clearNotice]
   );
 
-  const openModalWithQuery = useCallback(
-    (query: string) => {
-      setIsModalVisible(true);
-
-      if (modalQueryTimeoutRef.current) {
-        clearTimeout(modalQueryTimeoutRef.current);
-        modalQueryTimeoutRef.current = null;
-      }
-
-      // Allow the modal transition to finish before rendering chat activity.
-      modalQueryTimeoutRef.current = setTimeout(() => {
-        void submitTextQuery(query);
-      }, 350);
-    },
-    [submitTextQuery]
-  );
+  const openModalWithQuery = useCallback((query: string) => {
+    pendingModalOpenRef.current = true;
+    pendingModalQueryRef.current = query.trim() || null;
+    if (!isAssistantReadyRef.current) {
+      return;
+    }
+    setIsModalVisible(true);
+  }, []);
 
   const closeModal = useCallback(async () => {
-    if (modalQueryTimeoutRef.current) {
-      clearTimeout(modalQueryTimeoutRef.current);
-      modalQueryTimeoutRef.current = null;
-    }
+    pendingModalOpenRef.current = false;
+    pendingModalQueryRef.current = null;
+    pendingModalQueryTaskRef.current?.cancel?.();
+    pendingModalQueryTaskRef.current = null;
     if (state !== 'idle') {
       await voiceAssistantService.cancel();
     }
@@ -1216,10 +1208,39 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
   ]);
 
   useEffect(() => {
-    return () => {
-      if (modalQueryTimeoutRef.current) {
-        clearTimeout(modalQueryTimeoutRef.current);
+    if (isAssistantReady && pendingModalOpenRef.current && !isModalVisible) {
+      setIsModalVisible(true);
+    }
+  }, [isAssistantReady, isModalVisible]);
+
+  useEffect(() => {
+    if (!isAssistantReady || !isModalVisible || !pendingModalQueryRef.current) {
+      return undefined;
+    }
+
+    pendingModalQueryTaskRef.current?.cancel?.();
+    pendingModalQueryTaskRef.current = InteractionManager.runAfterInteractions(() => {
+      const queuedQuery = pendingModalQueryRef.current?.trim();
+      pendingModalQueryRef.current = null;
+      pendingModalQueryTaskRef.current = null;
+
+      if (!queuedQuery || !isAssistantReadyRef.current || !isModalVisibleRef.current) {
+        return;
       }
+
+      void submitTextQuery(queuedQuery);
+    });
+
+    return () => {
+      pendingModalQueryTaskRef.current?.cancel?.();
+      pendingModalQueryTaskRef.current = null;
+    };
+  }, [isAssistantReady, isModalVisible, submitTextQuery]);
+
+  useEffect(() => {
+    return () => {
+      pendingModalQueryTaskRef.current?.cancel?.();
+      pendingModalQueryTaskRef.current = null;
     };
   }, []);
 

@@ -76,6 +76,8 @@ class VoiceAssistantService {
   private activeRequestToken = 0;
   private currentProcessingToken: number | null = null;
   private currentSpeechToken: number | null = null;
+  private queuedTextQuery: string | null = null;
+  private queuedTextQueryDrainTimeout: ReturnType<typeof setTimeout> | null = null;
   private listeningMaxTimeout: ReturnType<typeof setTimeout> | null = null;
   private listeningSilenceTimeout: ReturnType<typeof setTimeout> | null = null;
   private listeningStopFallbackTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -205,11 +207,26 @@ class VoiceAssistantService {
    * Used by onboarding suggestion chips and non-voice entry points.
    */
   async processTextQuery(query: string): Promise<void> {
-    if (this.currentState === 'processing' || this.currentState === 'speaking') {
+    const trimmedQuery = query.trim();
+    if (!trimmedQuery) {
       return;
     }
 
-    await this.processTranscript(query, false);
+    if (
+      this.currentState === 'listening' ||
+      this.currentState === 'processing' ||
+      this.currentState === 'speaking'
+    ) {
+      this.queuedTextQuery = trimmedQuery;
+      this.emitNotice(
+        'info',
+        this.translateDashboard('voiceAssistant.notices.queuedQuery', "I'll answer that next."),
+        'queued_query'
+      );
+      return;
+    }
+
+    await this.processTranscript(trimmedQuery, false);
   }
 
   private isNoSpeechError(error: Error): boolean {
@@ -339,6 +356,11 @@ class VoiceAssistantService {
    */
   async cancel(): Promise<void> {
     this.activeRequestToken += 1;
+    this.queuedTextQuery = null;
+    if (this.queuedTextQueryDrainTimeout) {
+      clearTimeout(this.queuedTextQueryDrainTimeout);
+      this.queuedTextQueryDrainTimeout = null;
+    }
     this.resetEphemeralState();
 
     switch (this.currentState) {
@@ -450,7 +472,7 @@ class VoiceAssistantService {
       return;
     }
 
-    if (networkService.getSnapshot().status !== 'online') {
+    if (networkService.getSnapshot().status === 'offline') {
       Analytics.track('voice_assistant_offline_unhandled', {
         ...offlineAnalyticsContext,
         needs_connection: true,
@@ -616,8 +638,6 @@ class VoiceAssistantService {
     message: string,
     overrides: Partial<VoiceAssistantError> = {}
   ): void {
-    logger.error('Voice assistant error', new Error(message), { type });
-
     const retryableDefaults: Record<VoiceAssistantErrorType, boolean> = {
       permission_denied: false,
       speech_recognition_failed: true,
@@ -632,19 +652,36 @@ class VoiceAssistantService {
 
     const error: VoiceAssistantError = {
       type,
-      message: this.toUserFacingErrorMessage(type, message),
+      message: this.toUserFacingErrorMessage(type, message, overrides.code),
       retryable: overrides.retryable ?? retryableDefaults[type],
       code: overrides.code,
       requestId: overrides.requestId,
       statusCode: overrides.statusCode,
     };
 
+    if (error.retryable || type === 'permission_denied') {
+      logger.warn('Voice assistant error', {
+        type,
+        retryable: error.retryable,
+        code: error.code,
+        requestId: error.requestId,
+        statusCode: error.statusCode,
+        message: error.message,
+      });
+    } else {
+      logger.error('Voice assistant error', new Error(message), { type });
+    }
+
     this.resetEphemeralState();
     this.setState('error');
     this.callbacks?.onError(error);
   }
 
-  private toUserFacingErrorMessage(type: VoiceAssistantErrorType, rawMessage: string): string {
+  private toUserFacingErrorMessage(
+    type: VoiceAssistantErrorType,
+    rawMessage: string,
+    code?: string
+  ): string {
     switch (type) {
       case 'permission_denied':
         return this.translateDashboard(
@@ -662,6 +699,9 @@ class VoiceAssistantService {
           'Check your connection and retry.'
         );
       case 'backend_error':
+        if (code === 'backend_not_configured') {
+          return rawMessage;
+        }
         return this.translateDashboard(
           'voiceAssistant.errors.backend',
           'Service temporarily unavailable. Please try again.'
@@ -709,12 +749,35 @@ class VoiceAssistantService {
 
     this.currentState = state;
     this.callbacks?.onStateChange(state);
+
+    if (!force && state === 'idle') {
+      this.scheduleQueuedTextQueryDrain();
+    }
   }
 
   private resetEphemeralState(): void {
     this.currentProcessingToken = null;
     this.currentSpeechToken = null;
     this.clearListeningWatchdogTimers();
+  }
+
+  private scheduleQueuedTextQueryDrain(): void {
+    if (!this.queuedTextQuery || this.currentState !== 'idle' || this.queuedTextQueryDrainTimeout) {
+      return;
+    }
+
+    this.queuedTextQueryDrainTimeout = setTimeout(() => {
+      this.queuedTextQueryDrainTimeout = null;
+
+      const queuedQuery = this.queuedTextQuery;
+      this.queuedTextQuery = null;
+
+      if (!queuedQuery || this.currentState !== 'idle' || !this.userContext) {
+        return;
+      }
+
+      void this.processTextQuery(queuedQuery);
+    }, 0);
   }
 
   /**
@@ -766,6 +829,11 @@ class VoiceAssistantService {
     this.conversationHistory = [];
     this.isStartingListening = false;
     this.activeRequestToken = 0;
+    this.queuedTextQuery = null;
+    if (this.queuedTextQueryDrainTimeout) {
+      clearTimeout(this.queuedTextQueryDrainTimeout);
+      this.queuedTextQueryDrainTimeout = null;
+    }
     this.resetEphemeralState();
     this.currentState = 'idle';
   }

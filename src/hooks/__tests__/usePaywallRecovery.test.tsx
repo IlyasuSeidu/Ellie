@@ -3,12 +3,23 @@ import { act, render, waitFor } from '@testing-library/react-native';
 import { Text } from 'react-native';
 import { usePaywallRecovery } from '../usePaywallRecovery';
 import { appStateStorageService } from '@/services/AppStateStorageService';
+import { subscriptionEntitlementCacheService } from '@/services/SubscriptionEntitlementCacheService';
 
 jest.mock('@/services/AppStateStorageService', () => ({
   appStateStorageService: {
     getPaywallDeclinedAt: jest.fn(),
     clearPaywallDeclinedAt: jest.fn(),
   },
+}));
+
+jest.mock('@/services/SubscriptionEntitlementCacheService', () => ({
+  subscriptionEntitlementCacheService: {
+    getActiveAnonymousScope: jest.fn(async () => 'rc_anon:test'),
+  },
+}));
+
+jest.mock('@/contexts/AuthContext', () => ({
+  useAuth: jest.fn(() => ({ user: null })),
 }));
 
 const dismissNudgeRef: { current: (() => Promise<void>) | null } = { current: null };
@@ -27,6 +38,9 @@ describe('usePaywallRecovery', () => {
     dismissNudgeRef.current = null;
     jest.mocked(appStateStorageService.getPaywallDeclinedAt).mockResolvedValue(null);
     jest.mocked(appStateStorageService.clearPaywallDeclinedAt).mockResolvedValue(undefined);
+    jest
+      .mocked(subscriptionEntitlementCacheService.getActiveAnonymousScope)
+      .mockResolvedValue('rc_anon:test');
   });
 
   afterEach(() => {
@@ -43,6 +57,8 @@ describe('usePaywallRecovery', () => {
     await waitFor(() => {
       expect(getByText('visible')).toBeTruthy();
     });
+
+    expect(appStateStorageService.getPaywallDeclinedAt).toHaveBeenCalledWith('rc_anon:test');
   });
 
   it('does not show the nudge before the minimum delay', async () => {
