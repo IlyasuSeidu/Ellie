@@ -25,6 +25,7 @@ import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '@/utils/theme';
 import { avatarService } from '@/services/AvatarService';
+import { formatStoredCountryLabel } from '@/components/onboarding/premium/PremiumCountrySelector';
 
 interface ProfileHeroSectionProps {
   name: string;
@@ -33,8 +34,9 @@ interface ProfileHeroSectionProps {
   country?: string;
   avatarUri?: string;
   isEditing: boolean;
-  onAvatarChange: (uri: string | null) => void;
-  onEditPress: () => void;
+  isSaving?: boolean;
+  onAvatarChange: (uri: string | null) => void | Promise<void>;
+  onEditPress: () => void | Promise<void>;
   animationDelay?: number;
 }
 
@@ -55,6 +57,7 @@ export const ProfileHeroSection: React.FC<ProfileHeroSectionProps> = ({
   country,
   avatarUri,
   isEditing,
+  isSaving = false,
   onAvatarChange,
   onEditPress,
   animationDelay = 0,
@@ -62,6 +65,7 @@ export const ProfileHeroSection: React.FC<ProfileHeroSectionProps> = ({
   const { t } = useTranslation(['common', 'profile']);
   const initials = useMemo(() => getInitials(name), [name]);
   const [resolvedAvatarUri, setResolvedAvatarUri] = useState<string | null>(avatarUri ?? null);
+  const displayCountry = useMemo(() => formatStoredCountryLabel(country), [country]);
 
   // ── Entrance animation ─────────────────────────────────────────
   const avatarScale = useSharedValue(0.3);
@@ -112,15 +116,12 @@ export const ProfileHeroSection: React.FC<ProfileHeroSectionProps> = ({
       }
 
       setResolvedAvatarUri(uri);
-      if (!uri && avatarUri) {
-        onAvatarChange(null);
-      }
     });
 
     return () => {
       cancelled = true;
     };
-  }, [avatarUri, onAvatarChange]);
+  }, [avatarUri]);
 
   // ── Interactive gestures ───────────────────────────────────────
   const avatarTapScale = useSharedValue(1);
@@ -221,13 +222,16 @@ export const ProfileHeroSection: React.FC<ProfileHeroSectionProps> = ({
   const editScale = useSharedValue(1);
 
   const handleEditPress = useCallback(() => {
+    if (isSaving) {
+      return;
+    }
     editScale.value = withSequence(
       withSpring(0.9, { damping: 15, stiffness: 400 }),
       withSpring(1.0, { damping: 12, stiffness: 300 })
     );
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    onEditPress();
-  }, [onEditPress, editScale]);
+    void onEditPress();
+  }, [editScale, isSaving, onEditPress]);
 
   const editButtonStyle = useAnimatedStyle(() => ({
     transform: [{ scale: editScale.value }],
@@ -246,6 +250,7 @@ export const ProfileHeroSection: React.FC<ProfileHeroSectionProps> = ({
           <Pressable
             onPress={handleEditPress}
             style={[styles.editButton, isEditing && styles.editButtonActive]}
+            disabled={isSaving}
             hitSlop={8}
           >
             <Ionicons
@@ -269,7 +274,7 @@ export const ProfileHeroSection: React.FC<ProfileHeroSectionProps> = ({
                 source={{ uri: resolvedAvatarUri }}
                 style={styles.avatarImage}
                 resizeMode="cover"
-                onError={() => onAvatarChange(null)}
+                onError={() => setResolvedAvatarUri(null)}
               />
             ) : (
               <Animated.Text style={styles.avatarText}>{initials}</Animated.Text>
@@ -301,7 +306,7 @@ export const ProfileHeroSection: React.FC<ProfileHeroSectionProps> = ({
         </Animated.Text>
       ) : null}
 
-      {company || country ? (
+      {company || displayCountry ? (
         <Animated.View entering={FadeInUp.delay(D + 450).duration(400)} style={styles.metaRow}>
           {company ? (
             <View style={styles.metaItem}>
@@ -311,12 +316,14 @@ export const ProfileHeroSection: React.FC<ProfileHeroSectionProps> = ({
               </Animated.Text>
             </View>
           ) : null}
-          {company && country ? <Animated.Text style={styles.metaDot}> · </Animated.Text> : null}
-          {country ? (
+          {company && displayCountry ? (
+            <Animated.Text style={styles.metaDot}> · </Animated.Text>
+          ) : null}
+          {displayCountry ? (
             <View style={styles.metaItem}>
               <Ionicons name="location-outline" size={13} color={theme.colors.shadow} />
               <Animated.Text style={styles.metaText} numberOfLines={1}>
-                {country}
+                {displayCountry}
               </Animated.Text>
             </View>
           ) : null}

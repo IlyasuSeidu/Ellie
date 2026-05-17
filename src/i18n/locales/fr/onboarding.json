@@ -27,7 +27,8 @@
       "whereUsed": "Où tu verras ça",
       "pros": "Les bons morceaux",
       "cons": "Que savoir"
-    }
+    },
+    "cancel": "Annuler"
   },
   "intro": {
     "welcome": "Bienvenue à Ellie ! Je suis là pour vous aider à établir votre calendrier de travail. Commençons par mieux vous connaître.",
@@ -357,7 +358,8 @@
       "permissionDenied": "Nous ne sommes pas autorisés à enregistrer votre configuration. Veuillez vous reconnecter et réessayer.",
       "storageUnavailable": "Le stockage de votre appareil est plein. Libérez de l'espace et réessayez.",
       "timeout": "L'enregistrement a pris trop de temps. Veuillez réessayer.",
-      "genericSaveFailed": "Nous n'avons pas pu enregistrer votre configuration pour le moment. Veuillez réessayer."
+      "genericSaveFailed": "Nous n'avons pas pu enregistrer votre configuration pour le moment. Veuillez réessayer.",
+      "title": "Impossible d’enregistrer la configuration"
     },
     "validation": {
       "fields": {
@@ -464,7 +466,7 @@
       "workPattern": "Faites glisser votre doigt vers la droite pour choisir votre modèle de bloc de travail, vers la gauche pour l'option suivante ou vers le haut pour plus d'informations.",
       "swingConfig": "Définissez le nombre de jours de jour et de nuit pendant lesquels vous travaillez avant de choisir votre bloc actuel",
       "block": "Faites glisser votre doigt vers la droite pour sélectionner, vers la gauche pour voir ensuite ou vers le haut pour plus d'informations.",
-      "dayWithinBlock": "Faites glisser votre doigt vers la droite pour sélectionner, vers la gauche pour voir ensuite ou vers le haut pour plus d'informations. Est-ce le {{ordinalList}} ?"
+      "dayWithinBlock": "Balayez vers la droite pour sélectionner votre jour actuel, vers la gauche pour voir le suivant, ou vers le haut pour plus d’informations."
     },
     "modal": {
       "blockLength": "Longueur du bloc",
@@ -541,12 +543,28 @@
         "firstNightShiftInBlock": "Premier quart de nuit dans ce bloc tournant",
         "finalNightShiftBeforeHome": "Dernier quart de nuit avant de rentrer chez moi",
         "nightShiftDayDescription": "Jour de nuit {{dayNumber}} de votre bloc de travail"
+      },
+      "custom": {
+        "shiftLabels": {
+          "day": "Jour",
+          "night": "Nuit",
+          "morning": "Matin",
+          "afternoon": "Après-midi",
+          "off": "Repos"
+        },
+        "title": "{{shiftType}} {{dayNumber}}",
+        "description": "Poste {{shiftType}} {{dayNumber}} de votre séquence personnalisée"
       }
     },
     "transition": {
       "preparingCalendar": "Préparez votre calendrier..."
     },
-    "anticipation": "Presque fini. Encore un appui et votre roulement FIFO sera prêt."
+    "anticipation": "Presque fini. Encore un appui et votre roulement FIFO sera prêt.",
+    "settingsDiscard": {
+      "title": "Ignorer la sélection FIFO non enregistrée ?",
+      "message": "Vous avez sélectionné un nouveau jour FIFO sans l’enregistrer. Quitter sans enregistrer ?",
+      "confirm": "Ignorer la sélection"
+    }
   },
   "startDate": {
     "header": {
@@ -903,7 +921,11 @@
       "legend": {
         "daySwing": "Balançoire de jour",
         "homeBlock": "Bloc d'accueil",
-        "nightSwing": "Balançoire de nuit"
+        "nightSwing": "Balançoire de nuit",
+        "dayWorkBlock": "Bloc de travail de jour",
+        "nightWorkBlock": "Bloc de travail de nuit",
+        "swingWorkBlock": "Bloc de travail alterné",
+        "customWorkBlock": "Bloc de travail personnalisé"
       },
       "ratioLabel": "Du site au rythme de la maison",
       "restLabel": "Repos : {{restBlockDays}} jours",
@@ -911,7 +933,20 @@
       "subtitle": "{{workBlockDays}} jours sur site, puis {{restBlockDays}} jours à domicile",
       "swingSplit": "Répartition du swing : {{daysOnDayShift}} jours de jour + {{daysOnNightShift}} jours de nuit",
       "title": "Votre aperçu de la rotation FIFO",
-      "workLabel": "Travail : {{workBlockDays}} jours"
+      "workLabel": "Travail : {{workBlockDays}} jours",
+      "patternDetails": {
+        "straightDays": "Rythme de travail : jours uniquement",
+        "straightNights": "Rythme de travail : nuits uniquement",
+        "swing": "Rythme de travail : alternance ({{daysOnDayShift}} jour + {{daysOnNightShift}} nuit)",
+        "custom": "Rythme de travail : séquence personnalisée"
+      },
+      "blockLabels": {
+        "dayWork": "Travail de jour",
+        "nightWork": "Travail de nuit",
+        "swingWork": "Travail alterné",
+        "customWork": "Travail personnalisé",
+        "rest": "Repos"
+      }
     },
     "previewGuide": "Voir votre modèle FIFO ci-dessous",
     "saveA11y": "Enregistrez le modèle FIFO et continuez",
@@ -952,6 +987,10 @@
       "swing": {
         "title": "Rotation alternée",
         "description": "Alternez entre équipes de jour et de nuit pendant le bloc de travail."
+      },
+      "custom": {
+        "title": "Séquence personnalisée",
+        "description": "Conservez votre séquence personnalisée actuelle jour/nuit."
       }
     }
   },

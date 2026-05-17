@@ -263,7 +263,10 @@
     "openFIFOBuilderSubtitle": "Configure dias de trabalho e descanso, mistura de turnos diurnos e noturnos e sequência personalizada no fluxo de onboarding",
     "fifoSummarySubtitle": "{{workDays}} dias de trabalho · {{restDays}} dias de descanso",
     "openCustomBuilderTitle": "Abrir o construtor de rotação personalizada",
-    "openCustomBuilderSubtitle": "Configure blocos de dia, noite e folga no fluxo de padrão personalizado do onboarding"
+    "openCustomBuilderSubtitle": "Configure blocos de dia, noite e folga no fluxo de padrão personalizado do onboarding",
+    "discardChangesTitle": "Descartar alterações não salvas?",
+    "discardChangesMessage": "Abrir outro editor descartará as alterações que você ainda não salvou.",
+    "discardChangesConfirm": "Descartar alterações"
   },
   "smartReminders": {
     "sections": {

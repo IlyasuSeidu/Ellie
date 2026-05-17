@@ -6,7 +6,7 @@
  * Edit mode transitions to PremiumTextInput fields with save/cancel buttons.
  */
 
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { View, TouchableOpacity, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 import Animated, {
   FadeInUp,
@@ -21,7 +21,11 @@ import { theme } from '@/utils/theme';
 import { PremiumTextInput } from '@/components/onboarding/premium/PremiumTextInput';
 import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
 import { PremiumCountrySelectorModal } from '@/components/onboarding/premium/PremiumCountrySelectorModal';
-import type { Country } from '@/components/onboarding/premium/PremiumCountrySelector';
+import {
+  formatStoredCountryLabel,
+  resolveStoredCountryOption,
+  type Country,
+} from '@/components/onboarding/premium/PremiumCountrySelector';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
 
 interface ProfileEditFormProps {
@@ -31,8 +35,9 @@ interface ProfileEditFormProps {
   country: string;
   iconColor?: string;
   isEditing: boolean;
+  isSaving?: boolean;
   onFieldChange: (field: keyof OnboardingData, value: string) => void;
-  onSave: () => void;
+  onSave: () => void | Promise<void>;
   onCancel: () => void;
   animationDelay?: number;
 }
@@ -51,6 +56,7 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   country,
   iconColor = theme.colors.shadow,
   isEditing,
+  isSaving = false,
   onFieldChange,
   onSave,
   onCancel,
@@ -58,7 +64,6 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
 }) => {
   const { t } = useTranslation('profile');
   const [countryModalVisible, setCountryModalVisible] = useState(false);
-  const saveDelayTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const editOpacity = useSharedValue(isEditing ? 1 : 0);
   const editTranslateY = useSharedValue(isEditing ? 0 : 12);
   const readOpacity = useSharedValue(isEditing ? 0 : 1);
@@ -79,14 +84,6 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
     readOpacity.value = withTiming(1, { duration: 300 });
     readTranslateY.value = withTiming(0, { duration: 300 });
   }, [isEditing, editOpacity, editTranslateY, readOpacity, readTranslateY]);
-
-  useEffect(() => {
-    return () => {
-      if (saveDelayTimeoutRef.current) {
-        clearTimeout(saveDelayTimeoutRef.current);
-      }
-    };
-  }, []);
 
   const editModeAnimStyle = useAnimatedStyle(() => ({
     opacity: editOpacity.value,
@@ -111,12 +108,17 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
       value: occupation,
     },
     { key: 'company', label: t('fields.company'), icon: 'business-outline', value: company },
-    { key: 'country', label: t('fields.country'), icon: 'flag-outline', value: country },
+    {
+      key: 'country',
+      label: t('fields.country'),
+      icon: 'flag-outline',
+      value: formatStoredCountryLabel(country),
+    },
   ];
 
   const handleCountrySelect = useCallback(
     (selected: Country) => {
-      onFieldChange('country', selected.name);
+      onFieldChange('country', selected.code);
     },
     [onFieldChange]
   );
@@ -126,18 +128,12 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
       withTiming(1, { duration: 300 }),
       withTiming(0, { duration: 300 })
     );
-
-    if (saveDelayTimeoutRef.current) {
-      clearTimeout(saveDelayTimeoutRef.current);
-    }
-
-    saveDelayTimeoutRef.current = setTimeout(() => {
-      onSave();
-    }, 320);
+    void onSave();
   }, [onSave, saveFlashProgress]);
 
   // Find matching country for the modal
-  const selectedCountryObj: Country | null = country ? { code: '', name: country, flag: '' } : null;
+  const selectedCountryObj: Country | null = resolveStoredCountryOption(country);
+  const displayedCountryName = formatStoredCountryLabel(country);
 
   if (isEditing) {
     return (
@@ -180,7 +176,7 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
                 <View style={styles.countryTextContainer}>
                   <Animated.Text style={styles.countryLabel}>{t('fields.country')}</Animated.Text>
                   <Animated.Text style={styles.countryValue}>
-                    {country || t('fields.selectCountry')}
+                    {displayedCountryName || t('fields.selectCountry')}
                   </Animated.Text>
                 </View>
                 <Ionicons name="chevron-forward" size={16} color={iconColor} />
@@ -195,6 +191,7 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
                 variant="outline"
                 size="small"
                 style={styles.buttonHalf}
+                disabled={isSaving}
               />
               <PremiumButton
                 title={t('fields.saveChanges')}
@@ -202,6 +199,8 @@ export const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
                 variant="primary"
                 size="small"
                 style={styles.buttonHalf}
+                disabled={isSaving}
+                loading={isSaving}
               />
             </View>
 

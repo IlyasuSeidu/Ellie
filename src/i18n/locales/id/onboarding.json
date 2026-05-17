@@ -27,7 +27,8 @@
       "whereUsed": "Di mana Anda akan melihat ini",
       "pros": "Bagian yang bagus",
       "cons": "Apa yang perlu diketahui"
-    }
+    },
+    "cancel": "Batal"
   },
   "intro": {
     "welcome": "Selamat datang di Ellie! Saya di sini untuk membantu Anda mengatur kalender shift Anda. Mari kita mulai dengan mengenal Anda lebih baik.",
@@ -348,7 +349,8 @@
       "permissionDenied": "Kami tidak memiliki izin untuk menyimpan pengaturan Anda. Silakan masuk lagi dan coba lagi.",
       "storageUnavailable": "Penyimpanan perangkat Anda penuh. Kosongkan ruang dan coba lagi.",
       "timeout": "Penghematan memakan waktu terlalu lama. Silakan coba lagi.",
-      "genericSaveFailed": "Kami tidak dapat menyimpan penyiapan Anda saat ini. Silakan coba lagi."
+      "genericSaveFailed": "Kami tidak dapat menyimpan penyiapan Anda saat ini. Silakan coba lagi.",
+      "title": "Tidak dapat menyimpan pengaturan"
     },
     "validation": {
       "fields": {
@@ -455,7 +457,7 @@
       "workPattern": "Gesek ke kanan untuk memilih pola blok kerja Anda, ke kiri untuk opsi berikutnya, atau ke atas untuk info",
       "swingConfig": "Tetapkan berapa hari shift siang dan shift malam Anda bekerja sebelum memilih blok Anda saat ini",
       "block": "Gesek ke kanan untuk memilih, ke kiri untuk melihat berikutnya, atau ke atas untuk info lebih lanjut",
-      "dayWithinBlock": "Gesek ke kanan untuk memilih, ke kiri untuk melihat berikutnya, atau ke atas untuk info lebih lanjut. Apakah itu {{ordinalList}}?"
+      "dayWithinBlock": "Geser ke kanan untuk memilih hari Anda saat ini, ke kiri untuk melihat berikutnya, atau ke atas untuk info lebih lanjut."
     },
     "modal": {
       "blockLength": "Panjang Blok",
@@ -532,12 +534,28 @@
         "firstNightShiftInBlock": "Shift malam pertama di blok ayunan ini",
         "finalNightShiftBeforeHome": "Shift malam terakhir sebelum terbang pulang",
         "nightShiftDayDescription": "Shift malam hari {{dayNumber}} blok kerja Anda"
+      },
+      "custom": {
+        "shiftLabels": {
+          "day": "Siang",
+          "night": "Malam",
+          "morning": "Pagi",
+          "afternoon": "Sore",
+          "off": "Libur"
+        },
+        "title": "{{shiftType}} {{dayNumber}}",
+        "description": "Shift {{shiftType}} {{dayNumber}} dari urutan khusus Anda"
       }
     },
     "transition": {
       "preparingCalendar": "Mempersiapkan kalender Anda..."
     },
-    "anticipation": "Hampir selesai. Satu ketukan lagi dan roster FIFO Anda siap."
+    "anticipation": "Hampir selesai. Satu ketukan lagi dan roster FIFO Anda siap.",
+    "settingsDiscard": {
+      "title": "Buang pilihan FIFO yang belum disimpan?",
+      "message": "Anda memilih hari FIFO baru tetapi belum menyimpannya. Keluar tanpa menyimpan?",
+      "confirm": "Buang pilihan"
+    }
   },
   "startDate": {
     "header": {
@@ -894,7 +912,11 @@
       "legend": {
         "daySwing": "Ayunan Siang",
         "homeBlock": "Blok Rumah",
-        "nightSwing": "Ayunan Malam"
+        "nightSwing": "Ayunan Malam",
+        "dayWorkBlock": "Blok kerja siang",
+        "nightWorkBlock": "Blok kerja malam",
+        "swingWorkBlock": "Blok kerja swing",
+        "customWorkBlock": "Blok kerja khusus"
       },
       "ratioLabel": "Irama situs ke rumah",
       "restLabel": "Istirahat: {{restBlockDays}} hari",
@@ -902,7 +924,20 @@
       "subtitle": "{{workBlockDays}} hari di lokasi, lalu {{restBlockDays}} hari di rumah",
       "swingSplit": "Perpecahan ayunan: {{daysOnDayShift}} hari shift siang + {{daysOnNightShift}} hari shift malam",
       "title": "Pratinjau Rotasi FIFO Anda",
-      "workLabel": "Pekerjaan: {{workBlockDays}} hari"
+      "workLabel": "Pekerjaan: {{workBlockDays}} hari",
+      "patternDetails": {
+        "straightDays": "Pola kerja: Siang terus",
+        "straightNights": "Pola kerja: Malam terus",
+        "swing": "Pola kerja: Swing ({{daysOnDayShift}} siang + {{daysOnNightShift}} malam)",
+        "custom": "Pola kerja: urutan khusus"
+      },
+      "blockLabels": {
+        "dayWork": "Kerja siang",
+        "nightWork": "Kerja malam",
+        "swingWork": "Kerja swing",
+        "customWork": "Kerja khusus",
+        "rest": "Istirahat"
+      }
     },
     "previewGuide": "Lihat pola FIFO Anda di bawah",
     "saveA11y": "Simpan pola FIFO dan lanjutkan",
@@ -943,6 +978,10 @@
       "swing": {
         "title": "Daftar Ayunan",
         "description": "Bergantian antara shift siang dan shift malam selama blok kerja"
+      },
+      "custom": {
+        "title": "Urutan khusus",
+        "description": "Pertahankan urutan kerja siang/malam khusus yang sudah ada."
       }
     }
   },

@@ -263,7 +263,10 @@
     "openFIFOBuilderSubtitle": "Stel werk-/rusdae, dag-nag-mengsel en ’n pasgemaakte volgorde in die aanboordvloei op",
     "fifoSummarySubtitle": "{{workDays}} werksdae · {{restDays}} rusdae",
     "openCustomBuilderTitle": "Maak pasgemaakte rotasiebouer oop",
-    "openCustomBuilderSubtitle": "Stel dag-, nag- en af-blokke in die pasgemaakte patroon-aanboordvloei op"
+    "openCustomBuilderSubtitle": "Stel dag-, nag- en af-blokke in die pasgemaakte patroon-aanboordvloei op",
+    "discardChangesTitle": "Verwyder ongestoorde veranderinge?",
+    "discardChangesMessage": "As jy nog ’n redigeerder oopmaak, gaan veranderinge wat nog nie gestoor is nie verlore.",
+    "discardChangesConfirm": "Verwyder veranderinge"
   },
   "smartReminders": {
     "sections": {

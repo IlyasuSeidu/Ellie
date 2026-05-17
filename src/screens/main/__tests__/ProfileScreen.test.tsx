@@ -162,6 +162,7 @@ describe('ProfileScreen', () => {
       },
       shiftCycle: null,
       isEditing: false,
+      isSaving: false,
       editedFields: {},
       startEditing: jest.fn(),
       cancelEditing: jest.fn(),
@@ -169,6 +170,7 @@ describe('ProfileScreen', () => {
       saveChanges: jest.fn(),
       handleAvatarChange: jest.fn(),
       updateData: jest.fn(),
+      updateDataAsync: jest.fn(),
       patternDisplayName: '14/7 FIFO Roster',
       shiftSystemName: '2-Shift (12h)',
       rosterTypeName: 'FIFO',
@@ -196,7 +198,7 @@ describe('ProfileScreen', () => {
     expect(getByTestId('run-onboarding-again-button')).toBeTruthy();
   });
 
-  it('cancels edit mode when screen loses focus', () => {
+  it('does not cancel edit mode when the screen loses focus', () => {
     const cancelEditing = jest.fn();
     mockUseIsFocused.mockReturnValue(false);
     mockUseProfileData.mockReturnValue({
@@ -205,6 +207,7 @@ describe('ProfileScreen', () => {
       },
       shiftCycle: null,
       isEditing: true,
+      isSaving: false,
       editedFields: { name: 'Jane' },
       startEditing: jest.fn(),
       cancelEditing,
@@ -212,6 +215,7 @@ describe('ProfileScreen', () => {
       saveChanges: jest.fn(),
       handleAvatarChange: jest.fn(),
       updateData: jest.fn(),
+      updateDataAsync: jest.fn(),
       patternDisplayName: 'Custom Rotation',
       shiftSystemName: '2-Shift (12h)',
       rosterTypeName: 'Rotating',
@@ -221,7 +225,7 @@ describe('ProfileScreen', () => {
     });
 
     render(<ProfileScreen />);
-    expect(cancelEditing).toHaveBeenCalledTimes(1);
+    expect(cancelEditing).not.toHaveBeenCalled();
   });
 
   it('reopens onboarding flow from profile action', async () => {

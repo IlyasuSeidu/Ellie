@@ -6,7 +6,7 @@
  * Uses the Sacred design system with Reanimated animations and haptic feedback.
  */
 
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
   View,
   StyleSheet,
@@ -17,7 +17,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated from 'react-native-reanimated';
@@ -45,7 +45,6 @@ export const ProfileScreen: React.FC = () => {
   const { t } = useTranslation('profile');
   const { t: tCommon } = useTranslation('common');
   const insets = useSafeAreaInsets();
-  const isFocused = useIsFocused();
   const navigation = useNavigation();
   const profile = useProfileData();
   const { language, setLanguage } = useLanguage();
@@ -57,7 +56,6 @@ export const ProfileScreen: React.FC = () => {
     openCustomerCenter,
     canOpenCustomerCenter,
   } = useSubscription();
-  const { isEditing, cancelEditing } = profile;
   const [languageSheetVisible, setLanguageSheetVisible] = React.useState(false);
   const personalInfoHeaderGradient = useMemo<readonly [string, string]>(() => {
     switch (liveShiftType) {
@@ -74,12 +72,6 @@ export const ProfileScreen: React.FC = () => {
         return ['#57534e', '#44403c'] as const;
     }
   }, [liveShiftType]);
-
-  useEffect(() => {
-    if (!isFocused && isEditing) {
-      cancelEditing();
-    }
-  }, [isFocused, isEditing, cancelEditing]);
 
   const handleRunOnboardingAgain = useCallback(async () => {
     try {
@@ -314,6 +306,7 @@ export const ProfileScreen: React.FC = () => {
           }
           avatarUri={profile.data.avatarUri}
           isEditing={profile.isEditing}
+          isSaving={profile.isSaving}
           onAvatarChange={profile.handleAvatarChange}
           onEditPress={profile.isEditing ? profile.saveChanges : profile.startEditing}
           animationDelay={0}
@@ -349,6 +342,7 @@ export const ProfileScreen: React.FC = () => {
           }
           iconColor={tabAccentColor}
           isEditing={profile.isEditing}
+          isSaving={profile.isSaving}
           onFieldChange={profile.updateField}
           onSave={profile.saveChanges}
           onCancel={profile.cancelEditing}
@@ -357,7 +351,7 @@ export const ProfileScreen: React.FC = () => {
 
         <ShiftSettingsPanel
           data={profile.data}
-          onUpdate={profile.updateData}
+          onUpdate={profile.updateDataAsync}
           onOpenPatternOnboarding={handleOpenPatternOnboarding}
           onOpenStartDateOnboarding={handleOpenStartDateOnboarding}
           onOpenShiftTimeOnboarding={handleOpenShiftTimeOnboarding}

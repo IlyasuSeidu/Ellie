@@ -263,7 +263,10 @@
     "openFIFOBuilderSubtitle": "قم بإعداد أيام العمل والراحة، ومزيج نوبات النهار والليل، والتسلسل المخصص ضمن تدفق الإعداد",
     "fifoSummarySubtitle": "{{workDays}} أيام عمل · {{restDays}} أيام راحة",
     "openCustomBuilderTitle": "افتح أداة إنشاء التناوب المخصص",
-    "openCustomBuilderSubtitle": "قم بإعداد كتل النهار والليل وأيام الراحة ضمن تدفق النمط المخصص"
+    "openCustomBuilderSubtitle": "قم بإعداد كتل النهار والليل وأيام الراحة ضمن تدفق النمط المخصص",
+    "discardChangesTitle": "هل تريد تجاهل التغييرات غير المحفوظة؟",
+    "discardChangesMessage": "سيؤدي فتح محرر آخر إلى تجاهل التغييرات التي لم تحفظها بعد.",
+    "discardChangesConfirm": "تجاهل التغييرات"
   },
   "smartReminders": {
     "sections": {

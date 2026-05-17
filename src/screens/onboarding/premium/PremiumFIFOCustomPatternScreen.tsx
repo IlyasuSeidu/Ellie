@@ -9,6 +9,7 @@
 
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import {
+  Alert,
   View,
   StyleSheet,
   Text,
@@ -35,6 +36,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute, type RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
+import type { TFunction } from 'i18next';
 import { theme } from '@/utils/theme';
 import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { SettingsEntryActionButtons } from '@/components/onboarding/premium/SettingsEntryActionButtons';
@@ -44,9 +46,10 @@ import type { RootStackParamList } from '@/navigation/AppNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { Analytics } from '@/utils/analytics';
-import { ShiftPattern, type FIFOConfig } from '@/types';
+import { ShiftPattern, type FIFOConfig, type ShiftType } from '@/types';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 import { PatternBuilderSlider } from '@/components/onboarding/premium/PatternBuilderSlider';
+import { getOnboardingSaveErrorMessage } from '@/utils/onboardingErrorMessage';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -57,7 +60,7 @@ const SPRING_CONFIGS = {
 } as const;
 
 interface WorkPatternOption {
-  id: 'straight-days' | 'straight-nights' | 'swing';
+  id: FIFOPreviewCardProps['workPattern'];
   title: string;
   icon: ImageSourcePropType;
   description: string;
@@ -90,6 +93,15 @@ const WORK_PATTERNS: WorkPatternOption[] = [
     color: theme.colors.sacredGold,
   },
 ];
+
+const CUSTOM_WORK_PATTERN: WorkPatternOption = {
+  id: 'custom',
+  title: 'Custom Sequence',
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  icon: require('../../../../assets/onboarding/icons/consolidated/roster-type-fifo.png'),
+  description: 'Keep your existing day/night custom work sequence.',
+  color: theme.colors.sacredGold,
+};
 
 interface WorkPatternCardProps {
   pattern: WorkPatternOption;
@@ -178,6 +190,7 @@ interface FIFOPreviewCardProps {
   workPattern: 'straight-days' | 'straight-nights' | 'swing' | 'custom';
   daysOnDayShift: number;
   daysOnNightShift: number;
+  customWorkSequence?: FIFOConfig['customWorkSequence'];
   reducedMotion: boolean;
 }
 
@@ -192,61 +205,121 @@ interface PreviewBlock {
 const getPreviewPatternMeta = (
   workPattern: FIFOPreviewCardProps['workPattern'],
   daysOnDayShift: number,
-  daysOnNightShift: number
+  daysOnNightShift: number,
+  t: TFunction<'onboarding'>
 ) => {
   const selectedPattern = WORK_PATTERNS.find((pattern) => pattern.id === workPattern);
 
   if (workPattern === 'straight-nights') {
     return {
-      title: selectedPattern?.title ?? 'Straight Nights',
-      detail: 'Work pattern: Straight Nights',
-      blockLabel: 'Night Work',
+      title: String(
+        t('fifoCustom.workPatterns.straight-nights.title', {
+          defaultValue: selectedPattern?.title ?? 'Straight Nights',
+        })
+      ),
+      detail: String(
+        t('fifoCustom.preview.patternDetails.straightNights', {
+          defaultValue: 'Work pattern: Straight Nights',
+        })
+      ),
+      blockLabel: String(
+        t('fifoCustom.preview.blockLabels.nightWork', { defaultValue: 'Night Work' })
+      ),
       icon:
         selectedPattern?.icon ??
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png'),
       blockColor: theme.colors.shiftVisualization.nightShift,
-      legendLabel: 'Night Work Block',
+      legendLabel: String(
+        t('fifoCustom.preview.legend.nightWorkBlock', { defaultValue: 'Night Work Block' })
+      ),
     };
   }
 
   if (workPattern === 'swing') {
     return {
-      title: selectedPattern?.title ?? 'Swing Roster',
-      detail: `Work pattern: Swing (${daysOnDayShift} day + ${daysOnNightShift} night)`,
-      blockLabel: 'Swing Work',
+      title: String(
+        t('fifoCustom.workPatterns.swing.title', {
+          defaultValue: selectedPattern?.title ?? 'Swing Roster',
+        })
+      ),
+      detail: String(
+        t('fifoCustom.preview.patternDetails.swing', {
+          daysOnDayShift,
+          daysOnNightShift,
+          defaultValue: `Work pattern: Swing (${daysOnDayShift} day + ${daysOnNightShift} night)`,
+        })
+      ),
+      blockLabel: String(
+        t('fifoCustom.preview.blockLabels.swingWork', { defaultValue: 'Swing Work' })
+      ),
       icon:
         selectedPattern?.icon ??
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         require('../../../../assets/onboarding/icons/consolidated/roster-type-rotating.png'),
       blockColor: theme.colors.sacredGold,
-      legendLabel: 'Swing Work Block',
+      legendLabel: String(
+        t('fifoCustom.preview.legend.swingWorkBlock', { defaultValue: 'Swing Work Block' })
+      ),
     };
   }
 
   if (workPattern === 'custom') {
     return {
-      title: 'Custom Work Pattern',
-      detail: 'Work pattern: Custom sequence',
-      blockLabel: 'Custom Work',
+      title: String(t('fifoCustom.workPatterns.custom.title', { defaultValue: 'Custom Sequence' })),
+      detail: String(
+        t('fifoCustom.preview.patternDetails.custom', {
+          defaultValue: 'Work pattern: Custom sequence',
+        })
+      ),
+      blockLabel: String(
+        t('fifoCustom.preview.blockLabels.customWork', { defaultValue: 'Custom Work' })
+      ),
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       icon: require('../../../../assets/onboarding/icons/consolidated/roster-type-fifo.png'),
       blockColor: theme.colors.sacredGold,
-      legendLabel: 'Custom Work Block',
+      legendLabel: String(
+        t('fifoCustom.preview.legend.customWorkBlock', { defaultValue: 'Custom Work Block' })
+      ),
     };
   }
 
   return {
-    title: selectedPattern?.title ?? 'Straight Days',
-    detail: 'Work pattern: Straight Days',
-    blockLabel: 'Day Work',
+    title: String(
+      t('fifoCustom.workPatterns.straight-days.title', {
+        defaultValue: selectedPattern?.title ?? 'Straight Days',
+      })
+    ),
+    detail: String(
+      t('fifoCustom.preview.patternDetails.straightDays', {
+        defaultValue: 'Work pattern: Straight Days',
+      })
+    ),
+    blockLabel: String(t('fifoCustom.preview.blockLabels.dayWork', { defaultValue: 'Day Work' })),
     icon:
       selectedPattern?.icon ??
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png'),
     blockColor: theme.colors.shiftVisualization.dayShift,
-    legendLabel: 'Day Work Block',
+    legendLabel: String(
+      t('fifoCustom.preview.legend.dayWorkBlock', { defaultValue: 'Day Work Block' })
+    ),
   };
+};
+
+const getCustomSequenceShiftColor = (shiftType: ShiftType | undefined): string => {
+  switch (shiftType) {
+    case 'night':
+      return theme.colors.shiftVisualization.nightShift;
+    case 'morning':
+    case 'afternoon':
+    case 'day':
+      return theme.colors.shiftVisualization.dayShift;
+    case 'off':
+      return theme.colors.shiftVisualization.daysOff;
+    default:
+      return theme.colors.sacredGold;
+  }
 };
 
 const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
@@ -255,6 +328,7 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
   workPattern,
   daysOnDayShift,
   daysOnNightShift,
+  customWorkSequence,
   reducedMotion,
 }) => {
   const { t } = useTranslation('onboarding');
@@ -267,14 +341,14 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
   const restPercentage = Math.round((restBlockDays / Math.max(1, totalCycleDays)) * 100);
   const previewDays = Math.min(totalCycleDays, 42);
   const patternMeta = useMemo(
-    () => getPreviewPatternMeta(workPattern, daysOnDayShift, daysOnNightShift),
-    [daysOnDayShift, daysOnNightShift, workPattern]
+    () => getPreviewPatternMeta(workPattern, daysOnDayShift, daysOnNightShift, t),
+    [daysOnDayShift, daysOnNightShift, t, workPattern]
   );
   const previewBlocks = useMemo<PreviewBlock[]>(() => {
     const restBlock: PreviewBlock = {
       id: 'rest',
       days: restBlockDays,
-      label: 'Rest',
+      label: String(t('fifoCustom.preview.blockLabels.rest', { defaultValue: 'Rest' })),
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       icon: require('../../../../assets/onboarding/icons/consolidated/slider-days-off-rest.png'),
       color: theme.colors.shiftVisualization.daysOff,
@@ -285,7 +359,7 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
         {
           id: 'day-work',
           days: daysOnDayShift,
-          label: 'Day Work',
+          label: String(t('fifoCustom.preview.blockLabels.dayWork', { defaultValue: 'Day Work' })),
           // eslint-disable-next-line @typescript-eslint/no-var-requires
           icon: require('../../../../assets/onboarding/icons/consolidated/slider-day-shift-sun.png'),
           color: theme.colors.shiftVisualization.dayShift,
@@ -293,7 +367,9 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
         {
           id: 'night-work',
           days: daysOnNightShift,
-          label: 'Night Work',
+          label: String(
+            t('fifoCustom.preview.blockLabels.nightWork', { defaultValue: 'Night Work' })
+          ),
           // eslint-disable-next-line @typescript-eslint/no-var-requires
           icon: require('../../../../assets/onboarding/icons/consolidated/slider-night-shift-moon.png'),
           color: theme.colors.shiftVisualization.nightShift,
@@ -319,6 +395,7 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
     patternMeta.blockLabel,
     patternMeta.icon,
     restBlockDays,
+    t,
     workBlockDays,
     workPattern,
   ]);
@@ -469,6 +546,10 @@ const FIFOPreviewCard: React.FC<FIFOPreviewCardProps> = ({
                     index < daysOnDayShift
                       ? theme.colors.shiftVisualization.dayShift
                       : theme.colors.shiftVisualization.nightShift;
+                } else if (workPattern === 'custom' && customWorkSequence?.length) {
+                  backgroundColor = getCustomSequenceShiftColor(
+                    customWorkSequence[index % customWorkSequence.length]
+                  );
                 } else {
                   backgroundColor = theme.colors.shiftVisualization.dayShift;
                 }
@@ -582,12 +663,17 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProp<OnboardingStackParamList, 'FIFOCustomPattern'>>();
-  const { data, updateData } = useOnboarding();
+  const { data, updateData, updateDataAsync } = useOnboarding();
   const mountTime = useRef(Date.now());
   const isSettingsEntry = route.params?.entryPoint === 'settings';
   const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
   const isSettingsMode = isSettingsEntry && returnToMainOnSelect;
   const settingsBaseline = route.params?.settingsBaseline;
+  const initialFIFOConfig = settingsBaseline?.fifoConfig ?? data.fifoConfig;
+  const existingCustomWorkSequence =
+    initialFIFOConfig?.workBlockPattern === 'custom' && initialFIFOConfig.customWorkSequence?.length
+      ? initialFIFOConfig.customWorkSequence
+      : undefined;
 
   const closeSettingsEditor = useCallback(() => {
     const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
@@ -603,16 +689,16 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
     }
   }, [navigation]);
 
-  const [workBlockDays, setWorkBlockDays] = useState(data.fifoConfig?.workBlockDays || 14);
-  const [restBlockDays, setRestBlockDays] = useState(data.fifoConfig?.restBlockDays || 14);
+  const [workBlockDays, setWorkBlockDays] = useState(initialFIFOConfig?.workBlockDays || 14);
+  const [restBlockDays, setRestBlockDays] = useState(initialFIFOConfig?.restBlockDays || 14);
   const [workPattern, setWorkPattern] = useState<
     'straight-days' | 'straight-nights' | 'swing' | 'custom'
-  >(data.fifoConfig?.workBlockPattern || 'straight-days');
+  >(initialFIFOConfig?.workBlockPattern || 'straight-days');
   const [daysOnDayShift, setDaysOnDayShift] = useState(
-    data.fifoConfig?.swingPattern?.daysOnDayShift || 7
+    initialFIFOConfig?.swingPattern?.daysOnDayShift || 7
   );
   const [daysOnNightShift, setDaysOnNightShift] = useState(
-    data.fifoConfig?.swingPattern?.daysOnNightShift || 7
+    initialFIFOConfig?.swingPattern?.daysOnNightShift || 7
   );
   const [reducedMotion, setReducedMotion] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -623,6 +709,13 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
   const continueButtonScale = useSharedValue(1);
   const tipOpacity = useSharedValue(0);
   const tipTranslateY = useSharedValue(12);
+  const visibleWorkPatterns = useMemo(
+    () =>
+      existingCustomWorkSequence || workPattern === 'custom'
+        ? [...WORK_PATTERNS, CUSTOM_WORK_PATTERN]
+        : WORK_PATTERNS,
+    [existingCustomWorkSequence, workPattern]
+  );
 
   const clearPendingTransition = useCallback((resetUi: boolean) => {
     if (navigationTimeoutRef.current) {
@@ -682,6 +775,13 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
       return;
     }
 
+    if (workBlockDays < 2) {
+      setWorkBlockDays(2);
+      setDaysOnDayShift(1);
+      setDaysOnNightShift(1);
+      return;
+    }
+
     const swingTotal = daysOnDayShift + daysOnNightShift;
     if (swingTotal > workBlockDays) {
       const ratio = daysOnDayShift / Math.max(1, swingTotal);
@@ -702,6 +802,44 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
   const swingMismatch = workPattern === 'swing' && swingTotal !== workBlockDays;
   const hasHardError = workBlockDays < 1 || restBlockDays < 1 || swingMismatch;
   const hasWarning = !hasHardError && (workPercentage > 75 || totalCycleDays > 42);
+
+  const buildFIFOConfig = useCallback((): FIFOConfig => {
+    const preservedFields = {
+      ...(initialFIFOConfig?.flyInDay !== undefined
+        ? { flyInDay: initialFIFOConfig.flyInDay }
+        : {}),
+      ...(initialFIFOConfig?.flyOutDay !== undefined
+        ? { flyOutDay: initialFIFOConfig.flyOutDay }
+        : {}),
+      ...(initialFIFOConfig?.siteName ? { siteName: initialFIFOConfig.siteName } : {}),
+    };
+
+    return {
+      workBlockDays,
+      restBlockDays,
+      workBlockPattern: workPattern,
+      ...preservedFields,
+      ...(workPattern === 'swing' && {
+        swingPattern: {
+          daysOnDayShift,
+          daysOnNightShift,
+        },
+      }),
+      ...(workPattern === 'custom' && existingCustomWorkSequence?.length
+        ? { customWorkSequence: existingCustomWorkSequence }
+        : {}),
+    };
+  }, [
+    daysOnDayShift,
+    daysOnNightShift,
+    existingCustomWorkSequence,
+    initialFIFOConfig?.flyInDay,
+    initialFIFOConfig?.flyOutDay,
+    initialFIFOConfig?.siteName,
+    restBlockDays,
+    workBlockDays,
+    workPattern,
+  ]);
 
   useEffect(() => {
     if (!hasHardError && !reducedMotion && !isTransitioning) {
@@ -756,7 +894,31 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
     navigation.goBack();
   }, [closeSettingsEditor, isSettingsMode, navigation, settingsBaseline, updateData]);
 
-  const handleContinue = useCallback(() => {
+  const handleWorkBlockDaysChange = useCallback(
+    (nextValue: number) => {
+      const safeValue = workPattern === 'swing' ? Math.max(2, nextValue) : nextValue;
+      setWorkBlockDays(safeValue);
+      if (workPattern === 'swing') {
+        setDaysOnDayShift((current) => Math.max(1, Math.min(safeValue - 1, current)));
+        setDaysOnNightShift((current) => Math.max(1, Math.min(safeValue - 1, current)));
+      }
+    },
+    [workPattern]
+  );
+
+  const handleWorkPatternSelect = useCallback(
+    (nextPattern: FIFOPreviewCardProps['workPattern']) => {
+      if (nextPattern === 'swing' && workBlockDays < 2) {
+        setWorkBlockDays(2);
+        setDaysOnDayShift(1);
+        setDaysOnNightShift(1);
+      }
+      setWorkPattern(nextPattern);
+    },
+    [workBlockDays]
+  );
+
+  const handleContinue = useCallback(async () => {
     if (hasHardError || isTransitioningRef.current) {
       void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
         source: 'PremiumFIFOCustomPatternScreen.handleContinue.invalid',
@@ -767,31 +929,34 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
     isTransitioningRef.current = true;
     setIsTransitioning(true);
 
-    const fifoConfig: FIFOConfig = {
-      workBlockDays,
-      restBlockDays,
-      workBlockPattern: workPattern,
-      ...(workPattern === 'swing' && {
-        swingPattern: {
-          daysOnDayShift,
-          daysOnNightShift,
-        },
-      }),
-    };
+    const fifoConfig = buildFIFOConfig();
 
-    updateData(
-      isSettingsMode
-        ? {
-            patternType: ShiftPattern.FIFO_CUSTOM,
-            rosterType: 'fifo',
-            fifoConfig,
-          }
-        : {
-            patternType: ShiftPattern.FIFO_CUSTOM,
-            rosterType: 'fifo',
-            fifoConfig,
-          }
-    );
+    try {
+      if (isSettingsMode) {
+        await updateDataAsync({
+          patternType: ShiftPattern.FIFO_CUSTOM,
+          rosterType: 'fifo',
+          fifoConfig,
+        });
+      } else {
+        updateData({
+          patternType: ShiftPattern.FIFO_CUSTOM,
+          rosterType: 'fifo',
+          fifoConfig,
+        });
+      }
+    } catch (error) {
+      clearPendingTransition(true);
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+        source: 'PremiumFIFOCustomPatternScreen.handleContinue.saveFailed',
+      });
+      Alert.alert(
+        String(t('completion.errors.title', { defaultValue: 'Could not save setup' })),
+        getOnboardingSaveErrorMessage(error)
+      );
+      return;
+    }
+
     if (!isSettingsMode) {
       Analytics.onboardingQuestionAnswered({
         question: 'work_block_days',
@@ -807,32 +972,36 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
     void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
       source: 'PremiumFIFOCustomPatternScreen.handleContinue.success',
     });
+
+    if (isSettingsMode) {
+      clearPendingTransition(true);
+      closeSettingsEditor();
+      return;
+    }
+
     interactionHandleRef.current = InteractionManager.runAfterInteractions(() => {
       navigationTimeoutRef.current = setTimeout(() => {
         clearPendingTransition(true);
-        if (isSettingsMode) {
-          closeSettingsEditor();
-          return;
-        }
         goToNextScreen(navigation, 'FIFOCustomPattern', {
           ...data,
           rosterType: 'fifo',
-          patternType: data.patternType,
+          patternType: ShiftPattern.FIFO_CUSTOM,
           fifoConfig,
         });
       }, 300);
     });
   }, [
+    buildFIFOConfig,
     clearPendingTransition,
+    closeSettingsEditor,
     data,
-    daysOnDayShift,
-    daysOnNightShift,
     hasHardError,
     isSettingsMode,
-    closeSettingsEditor,
     navigation,
     restBlockDays,
+    t,
     updateData,
+    updateDataAsync,
     workBlockDays,
     workPattern,
   ]);
@@ -880,11 +1049,11 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
               })}
               icon="🏗️"
               value={workBlockDays}
-              min={1}
+              min={workPattern === 'swing' ? 2 : 1}
               max={60}
               color={theme.colors.shiftVisualization.dayShift}
               trackColor="#60A5FA"
-              onChange={setWorkBlockDays}
+              onChange={handleWorkBlockDaysChange}
               hapticSourcePrefix="PremiumFIFOCustomPatternScreen"
               delayIndex={0}
               reducedMotion={reducedMotion}
@@ -927,12 +1096,12 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
             </Text>
 
             <View style={styles.patternCardsContainer}>
-              {WORK_PATTERNS.map((pattern, index) => (
+              {visibleWorkPatterns.map((pattern, index) => (
                 <WorkPatternCard
                   key={pattern.id}
                   pattern={pattern}
                   isSelected={workPattern === pattern.id}
-                  onSelect={() => setWorkPattern(pattern.id)}
+                  onSelect={() => handleWorkPatternSelect(pattern.id)}
                   index={index}
                 />
               ))}
@@ -1019,6 +1188,7 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
           workPattern={workPattern}
           daysOnDayShift={daysOnDayShift}
           daysOnNightShift={daysOnNightShift}
+          customWorkSequence={existingCustomWorkSequence}
           reducedMotion={reducedMotion}
         />
 

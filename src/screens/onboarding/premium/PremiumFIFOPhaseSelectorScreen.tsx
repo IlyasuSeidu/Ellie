@@ -14,6 +14,7 @@
 
 import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import {
+  Alert,
   View,
   StyleSheet,
   Text,
@@ -58,11 +59,12 @@ import { useOnboarding } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
-import { ShiftPattern, type FIFOConfig } from '@/types';
+import { ShiftPattern, type FIFOConfig, type ShiftType } from '@/types';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 import { alignPhaseOffsetToReferenceDate, getDefaultFIFOConfig } from '@/utils/shiftUtils';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
 import { Analytics } from '@/utils/analytics';
+import { getOnboardingSaveErrorMessage } from '@/utils/onboardingErrorMessage';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 type FIFOPhaseRouteProp = RouteProp<OnboardingStackParamList, 'FIFOPhaseSelector'>;
@@ -343,14 +345,63 @@ const generateDayDescription = (
   );
 };
 
+const getCustomSequenceShiftLabel = (
+  shiftType: ShiftType | undefined,
+  t: TFunction<'onboarding'>
+): string => {
+  switch (shiftType) {
+    case 'night':
+      return String(
+        t('fifoPhaseSelector.days.custom.shiftLabels.night', { defaultValue: 'Night' })
+      );
+    case 'morning':
+      return String(
+        t('fifoPhaseSelector.days.custom.shiftLabels.morning', { defaultValue: 'Morning' })
+      );
+    case 'afternoon':
+      return String(
+        t('fifoPhaseSelector.days.custom.shiftLabels.afternoon', { defaultValue: 'Afternoon' })
+      );
+    case 'off':
+      return String(t('fifoPhaseSelector.days.custom.shiftLabels.off', { defaultValue: 'Off' }));
+    case 'day':
+    default:
+      return String(t('fifoPhaseSelector.days.custom.shiftLabels.day', { defaultValue: 'Day' }));
+  }
+};
+
 const getDayCardContent = (
   blockType: 'work' | 'rest',
   dayNumber: number,
   totalDays: number,
   workBlockPattern: FIFOWorkBlockPattern,
   t: TFunction<'onboarding'>,
-  swingPattern?: SwingPatternConfig
+  swingPattern?: SwingPatternConfig,
+  customWorkSequence?: FIFOConfig['customWorkSequence']
 ): Pick<DayCardData, 'title' | 'description'> => {
+  if (blockType === 'work' && workBlockPattern === 'custom' && customWorkSequence?.length) {
+    const shiftType = customWorkSequence[(dayNumber - 1) % customWorkSequence.length];
+    const shiftLabel = getCustomSequenceShiftLabel(shiftType, t);
+
+    return {
+      title: String(
+        t('fifoPhaseSelector.days.custom.title', {
+          dayNumber,
+          shiftType: shiftLabel,
+          defaultValue: `${shiftLabel} Day ${dayNumber}`,
+        })
+      ),
+      description: String(
+        t('fifoPhaseSelector.days.custom.description', {
+          dayNumber,
+          totalDays,
+          shiftType: shiftLabel,
+          defaultValue: `${shiftLabel} shift ${dayNumber} of your custom work sequence`,
+        })
+      ),
+    };
+  }
+
   if (
     blockType === 'work' &&
     workBlockPattern === 'swing' &&
@@ -912,20 +963,6 @@ const getShadowStyle = (cardIndex: number, isActiveCard: boolean) => {
   });
 };
 
-const generateOrdinalList = (count: number): string => {
-  if (count === 0) return '';
-  const getOrdinal = (n: number) => {
-    const suffixes = ['th', 'st', 'nd', 'rd'];
-    const v = n % 100;
-    return n + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0]);
-  };
-  const ordinals = Array.from({ length: count }, (_, i) => getOrdinal(i + 1));
-  if (count === 1) return ordinals[0];
-  if (count === 2) return `${ordinals[0]} or ${ordinals[1]}`;
-  const last = ordinals.pop();
-  return `${ordinals.join(', ')}, or ${last}`;
-};
-
 const normalizePositiveInt = (value: unknown, fallback: number): number => {
   if (typeof value === 'number' && Number.isFinite(value)) {
     return Math.max(1, Math.floor(value));
@@ -943,7 +980,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<FIFOPhaseRouteProp>();
-  const { data, updateData } = useOnboarding();
+  const { data, updateData, updateDataAsync } = useOnboarding();
   const mountTime = useRef(Date.now());
   const isSettingsEntry = route.params?.entryPoint === 'settings';
   const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
@@ -962,7 +999,6 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     isCustomFIFOPattern ? SelectionStage.BLOCK : SelectionStage.WORK_PATTERN
   );
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
-  const [selectedBlockType, setSelectedBlockType] = useState<'work' | 'rest' | null>(null);
   const [selectedBlockTitle, setSelectedBlockTitle] = useState('');
   const [dayCards, setDayCards] = useState<DayCardData[]>([]);
   const [showInfoModal, setShowInfoModal] = useState(false);
@@ -1001,6 +1037,51 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     allowSettingsExitRef.current = true;
     closeSettingsEditor();
   }, [closeSettingsEditor]);
+
+  const clearPendingSettingsSelection = useCallback(() => {
+    if (isSettingsMode) {
+      setPendingSettingsSelection(null);
+    }
+  }, [isSettingsMode]);
+
+  const confirmDiscardPendingSettingsSelection = useCallback(
+    (onConfirm: () => void) => {
+      if (!pendingSettingsSelection) {
+        onConfirm();
+        return;
+      }
+
+      Alert.alert(
+        String(
+          t('fifoPhaseSelector.settingsDiscard.title', {
+            defaultValue: 'Discard unsaved FIFO selection?',
+          })
+        ),
+        String(
+          t('fifoPhaseSelector.settingsDiscard.message', {
+            defaultValue:
+              'You selected a new FIFO day but have not saved it yet. Leave without saving?',
+          })
+        ),
+        [
+          {
+            text: String(t('common.cancel', { defaultValue: 'Cancel' })),
+            style: 'cancel',
+          },
+          {
+            text: String(
+              t('fifoPhaseSelector.settingsDiscard.confirm', {
+                defaultValue: 'Discard Selection',
+              })
+            ),
+            style: 'destructive',
+            onPress: onConfirm,
+          },
+        ]
+      );
+    },
+    [pendingSettingsSelection, t]
+  );
 
   const cardAnimations = [
     useSharedValue(0),
@@ -1290,9 +1371,9 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       setSelectedWorkPattern(standardWorkPatternRef.current);
       setDaysOnDayShift(defaultSwingSplitRef.current.daysOnDayShift);
       setDaysOnNightShift(defaultSwingSplitRef.current.daysOnNightShift);
-      setSelectedBlockType(null);
       setSelectedBlockTitle('');
       setDayCards([]);
+      setPendingSettingsSelection(null);
       setShowInfoModal(false);
       setInfoModalContent(null);
       setCardRemountKey((prev) => prev + 1);
@@ -1327,11 +1408,11 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
         return;
       }
       event.preventDefault();
-      returnToSettings();
+      confirmDiscardPendingSettingsSelection(returnToSettings);
     });
 
     return unsubscribe;
-  }, [isSettingsMode, navigation, returnToSettings]);
+  }, [confirmDiscardPendingSettingsSelection, isSettingsMode, navigation, returnToSettings]);
 
   const currentCards = useMemo<FIFOSelectableCardData[]>(() => {
     if (stage === SelectionStage.WORK_PATTERN) {
@@ -1351,7 +1432,6 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
   }, [currentCards, currentCardIndex]);
   const stackedCards = useMemo(() => [...visibleCards].reverse(), [visibleCards]);
 
-  const stageDayCount = selectedBlockType === 'work' ? workBlockDays : restBlockDays;
   const swingSplitTotal = daysOnDayShift + daysOnNightShift;
   const swingSplitSummary = `${daysOnDayShift} + ${daysOnNightShift} = ${swingSplitTotal}`;
   const canConfigureSwingSplit = workBlockDays > 1;
@@ -1478,20 +1558,36 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     ]
   );
 
-  const handleSaveSettingsSelection = useCallback(() => {
-    if (!isSettingsMode || !pendingSettingsSelection) {
+  const handleSaveSettingsSelection = useCallback(async () => {
+    if (!isSettingsMode || !pendingSettingsSelection || isTransitioningRef.current) {
       return;
     }
 
-    updateData({
-      phaseOffset: pendingSettingsSelection.phaseOffset,
-      fifoConfig: pendingSettingsSelection.fifoConfig,
-    });
-    void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
-      source: 'PremiumFIFOPhaseSelectorScreen.handleSaveSettingsSelection',
-    });
-    returnToSettings();
-  }, [isSettingsMode, pendingSettingsSelection, returnToSettings, updateData]);
+    isTransitioningRef.current = true;
+    setIsTransitioning(true);
+
+    try {
+      await updateDataAsync({
+        phaseOffset: pendingSettingsSelection.phaseOffset,
+        fifoConfig: pendingSettingsSelection.fifoConfig,
+      });
+      setPendingSettingsSelection(null);
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
+        source: 'PremiumFIFOPhaseSelectorScreen.handleSaveSettingsSelection',
+      });
+      returnToSettings();
+    } catch (error) {
+      isTransitioningRef.current = false;
+      setIsTransitioning(false);
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+        source: 'PremiumFIFOPhaseSelectorScreen.handleSaveSettingsSelection.saveFailed',
+      });
+      Alert.alert(
+        String(t('completion.errors.title', { defaultValue: 'Could not save setup' })),
+        getOnboardingSaveErrorMessage(error)
+      );
+    }
+  }, [isSettingsMode, pendingSettingsSelection, returnToSettings, t, updateDataAsync]);
 
   const handleContinueFromSwingConfig = useCallback(() => {
     if (!isSwingSplitValid) {
@@ -1503,10 +1599,11 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
       source: 'PremiumFIFOPhaseSelectorScreen.handleSwingConfigContinue',
     });
+    clearPendingSettingsSelection();
     setCurrentCardIndex(0);
     setStage(SelectionStage.BLOCK);
     setCardRemountKey((prev) => prev + 1);
-  }, [isSwingSplitValid]);
+  }, [clearPendingSettingsSelection, isSwingSplitValid]);
 
   const handleChangePattern = useCallback(() => {
     void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
@@ -1514,9 +1611,10 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     });
     setCurrentCardIndex(0);
     hasUserAdjustedSwingSplitRef.current = false;
+    clearPendingSettingsSelection();
     setStage(SelectionStage.WORK_PATTERN);
     setCardRemountKey((prev) => prev + 1);
-  }, []);
+  }, [clearPendingSettingsSelection]);
 
   const handleSwipeRight = useCallback(() => {
     if (isTransitioningRef.current) {
@@ -1542,6 +1640,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
         source: 'PremiumFIFOPhaseSelectorScreen.handleWorkPatternSelect',
       });
       hasUserSelectedWorkPatternRef.current = true;
+      clearPendingSettingsSelection();
       setSelectedWorkPattern(active.id);
       setCurrentCardIndex(0);
       if (active.id === 'swing' && !isCustomFIFOPattern) {
@@ -1561,7 +1660,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Medium, {
         source: 'PremiumFIFOPhaseSelectorScreen.handleBlockSelect',
       });
-      setSelectedBlockType(active.id);
+      clearPendingSettingsSelection();
       setSelectedBlockTitle(active.title);
 
       if (!isSettingsMode) {
@@ -1588,7 +1687,8 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
           totalDays,
           activeWorkBlockPattern,
           t,
-          swingPatternForDayCards
+          swingPatternForDayCards,
+          activeWorkBlockPattern === 'custom' ? resolvedFIFOConfig.customWorkSequence : undefined
         ) as Pick<DayCardData, 'title' | 'description'>),
         type: 'day',
         id: `${active.id}-day-${idx + 1}`,
@@ -1608,6 +1708,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     }
   }, [
     calculateAndNavigate,
+    clearPendingSettingsSelection,
     handleContinueFromSwingConfig,
     currentCardIndex,
     currentCards,
@@ -1617,6 +1718,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     stage,
     activeWorkBlockPattern,
     isCustomFIFOPattern,
+    resolvedFIFOConfig.customWorkSequence,
     resolvedFIFOConfig.swingPattern,
     daysOnDayShift,
     daysOnNightShift,
@@ -1630,6 +1732,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     }
     const totalCards = currentCards.length;
     if (totalCards === 0) return;
+    clearPendingSettingsSelection();
 
     setCurrentCardIndex((prev) => {
       if (prev < totalCards - 1) {
@@ -1639,7 +1742,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       setCardRemountKey((key) => key + 1);
       return 0;
     });
-  }, [currentCards.length]);
+  }, [clearPendingSettingsSelection, currentCards.length]);
 
   const handleSwipeUp = useCallback(() => {
     if (isTransitioningRef.current) {
@@ -1762,10 +1865,8 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
                 }`
               : `${String(
                   t('fifoPhaseSelector.subtitle.dayWithinBlock', {
-                    ordinalList: generateOrdinalList(stageDayCount),
-                    defaultValue: `Swipe right to select, left to see next, or up for more info. Is it the ${generateOrdinalList(
-                      stageDayCount
-                    )}?`,
+                    defaultValue:
+                      'Swipe right to select your current day, left to see next, or up for more info.',
                   })
                 )}\n${activeStageContextSubtitle}`}
       </Text>
@@ -1957,9 +2058,9 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
                 defaultValue: 'Save & Return',
               })
             )}
-            onBack={returnToSettings}
+            onBack={() => confirmDiscardPendingSettingsSelection(returnToSettings)}
             onSave={handleSaveSettingsSelection}
-            saveDisabled={!pendingSettingsSelection}
+            saveDisabled={!pendingSettingsSelection || isTransitioning}
             backAccessibilityLabel={String(
               t('common.backToSettings', {
                 defaultValue: 'Back to settings',

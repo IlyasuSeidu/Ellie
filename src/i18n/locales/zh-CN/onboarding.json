@@ -27,7 +27,8 @@
       "whereUsed": "你会在哪里看到这个",
       "pros": "好的方面",
       "cons": "要知道什么"
-    }
+    },
+    "cancel": "取消"
   },
   "intro": {
     "welcome": "欢迎来到艾莉！我来这里是为了帮助您设置轮班日历。让我们从更好地了解您开始。",
@@ -297,7 +298,8 @@
       "permissionDenied": "我们无权保存您的设置。请重新登录并重试。",
       "storageUnavailable": "您的设备存储空间已满。释放空间并重试。",
       "timeout": "保存时间太长了。请再试一次。",
-      "genericSaveFailed": "我们现在无法保存您的设置。请再试一次。"
+      "genericSaveFailed": "我们现在无法保存您的设置。请再试一次。",
+      "title": "无法保存设置"
     },
     "validation": {
       "fields": {
@@ -404,7 +406,7 @@
       "workPattern": "向右滑动以选择您的工作块模式，向左滑动以选择下一个选项，或向上滑动以获取信息",
       "swingConfig": "在选择当前区块之前，设置您的白班和夜班工作天数",
       "block": "向右滑动进行选择，向左滑动查看下一个，向上滑动查看更多信息",
-      "dayWithinBlock": "向右滑动进行选择，向左滑动查看下一个，或向上滑动了解更多信息。是 {{ordinalList}} 吗？"
+      "dayWithinBlock": "向右滑动选择当前日期，向左查看下一项，或向上查看更多信息。"
     },
     "modal": {
       "blockLength": "块长度",
@@ -481,12 +483,28 @@
         "firstNightShiftInBlock": "这个摇摆区的第一个夜班",
         "finalNightShiftBeforeHome": "飞回家前的最后一个夜班",
         "nightShiftDayDescription": "您工作区的夜班日 {{dayNumber}}"
+      },
+      "custom": {
+        "shiftLabels": {
+          "day": "日班",
+          "night": "夜班",
+          "morning": "早班",
+          "afternoon": "午班",
+          "off": "休息"
+        },
+        "title": "{{shiftType}} {{dayNumber}}",
+        "description": "自定义工作序列中的{{shiftType}}第 {{dayNumber}} 班"
       }
     },
     "transition": {
       "preparingCalendar": "正在准备您的日历..."
     },
-    "anticipation": "快完成了。再点一下，你的 FIFO 排班就准备好了。"
+    "anticipation": "快完成了。再点一下，你的 FIFO 排班就准备好了。",
+    "settingsDiscard": {
+      "title": "放弃未保存的 FIFO 选择？",
+      "message": "你选择了新的 FIFO 日期，但尚未保存。要不保存并离开吗？",
+      "confirm": "放弃选择"
+    }
   },
   "startDate": {
     "header": {
@@ -843,7 +861,11 @@
       "legend": {
         "daySwing": "日间秋千",
         "homeBlock": "家庭街区",
-        "nightSwing": "夜间秋千"
+        "nightSwing": "夜间秋千",
+        "dayWorkBlock": "日班工作区段",
+        "nightWorkBlock": "夜班工作区段",
+        "swingWorkBlock": "混合工作区段",
+        "customWorkBlock": "自定义工作区段"
       },
       "ratioLabel": "从现场到家的节奏",
       "restLabel": "休息：{{restBlockDays}} 天",
@@ -851,7 +873,20 @@
       "subtitle": "在现场 {{workBlockDays}} 天，然后在家里 {{restBlockDays}} 天",
       "swingSplit": "轮班分班：{{daysOnDayShift}} 白班天数 + {{daysOnNightShift}} 夜班天数",
       "title": "您的 FIFO 循环预览",
-      "workLabel": "工作时间：{{workBlockDays}} 天"
+      "workLabel": "工作时间：{{workBlockDays}} 天",
+      "patternDetails": {
+        "straightDays": "工作模式：全日班",
+        "straightNights": "工作模式：全夜班",
+        "swing": "工作模式：混合（{{daysOnDayShift}} 天日班 + {{daysOnNightShift}} 天夜班）",
+        "custom": "工作模式：自定义序列"
+      },
+      "blockLabels": {
+        "dayWork": "日班工作",
+        "nightWork": "夜班工作",
+        "swingWork": "混合工作",
+        "customWork": "自定义工作",
+        "rest": "休息"
+      }
     },
     "previewGuide": "请参阅下面的 FIFO 模式",
     "saveA11y": "保存 FIFO 模式并继续",
@@ -892,6 +927,10 @@
       "swing": {
         "title": "摇摆花名册",
         "description": "在工作时段轮换白班和夜班"
+      },
+      "custom": {
+        "title": "自定义序列",
+        "description": "保留现有的日班/夜班自定义工作序列。"
       }
     }
   },

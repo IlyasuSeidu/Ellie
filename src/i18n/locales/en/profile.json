@@ -263,7 +263,10 @@
     "openFIFOBuilderSubtitle": "Configure work/rest days, day-night mix, and custom sequence in onboarding flow",
     "fifoSummarySubtitle": "{{workDays}} work days · {{restDays}} rest days",
     "openCustomBuilderTitle": "Open Custom Rotation Builder",
-    "openCustomBuilderSubtitle": "Configure day, night, and off blocks in onboarding custom pattern flow"
+    "openCustomBuilderSubtitle": "Configure day, night, and off blocks in onboarding custom pattern flow",
+    "discardChangesTitle": "Discard unsaved changes?",
+    "discardChangesMessage": "Opening another editor will discard the changes you have not saved yet.",
+    "discardChangesConfirm": "Discard Changes"
   },
   "smartReminders": {
     "sections": {

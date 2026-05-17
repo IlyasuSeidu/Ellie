@@ -36,7 +36,7 @@ export interface PremiumCountrySelectorProps {
   testID?: string;
 }
 
-const DEFAULT_COUNTRIES: Country[] = [
+export const DEFAULT_COUNTRIES: Country[] = [
   // Top global mining countries
   { code: 'CN', name: 'China', flag: '🇨🇳' },
   { code: 'AU', name: 'Australia', flag: '🇦🇺' },
@@ -96,7 +96,7 @@ const DEFAULT_COUNTRIES: Country[] = [
 
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
-const getCountryDisplayLocale = (): string => {
+export const getCountryDisplayLocale = (): string => {
   const normalized = normalizeLanguage(i18n.resolvedLanguage ?? i18n.language ?? 'en');
   if (normalized === 'es') return 'es-ES';
   if (normalized === 'pt-BR') return 'pt-BR';
@@ -111,7 +111,7 @@ const getCountryDisplayLocale = (): string => {
   return 'en-US';
 };
 
-const resolveLocalizedCountryName = (countryCode: string, fallbackName: string): string => {
+export const resolveLocalizedCountryName = (countryCode: string, fallbackName: string): string => {
   try {
     if (typeof Intl === 'undefined' || typeof Intl.DisplayNames === 'undefined') {
       return fallbackName;
@@ -121,6 +121,52 @@ const resolveLocalizedCountryName = (countryCode: string, fallbackName: string):
   } catch {
     return fallbackName;
   }
+};
+
+export const resolveStoredCountryOption = (
+  storedCountry?: string | null,
+  countries: Country[] = DEFAULT_COUNTRIES
+): Country | null => {
+  const normalized = storedCountry?.trim();
+  if (!normalized) {
+    return null;
+  }
+
+  const normalizedCode = normalized.toUpperCase();
+  const exactCodeMatch = countries.find((country) => country.code === normalizedCode);
+  if (exactCodeMatch) {
+    return {
+      ...exactCodeMatch,
+      name: resolveLocalizedCountryName(exactCodeMatch.code, exactCodeMatch.name),
+    };
+  }
+
+  const lowerValue = normalized.toLowerCase();
+  const nameMatch = countries.find((country) => {
+    const localizedName = resolveLocalizedCountryName(country.code, country.name).toLowerCase();
+    return country.name.toLowerCase() === lowerValue || localizedName === lowerValue;
+  });
+
+  if (!nameMatch) {
+    return null;
+  }
+
+  return {
+    ...nameMatch,
+    name: resolveLocalizedCountryName(nameMatch.code, nameMatch.name),
+  };
+};
+
+export const formatStoredCountryLabel = (
+  storedCountry?: string | null,
+  countries: Country[] = DEFAULT_COUNTRIES
+): string => {
+  const match = resolveStoredCountryOption(storedCountry, countries);
+  if (match) {
+    return match.name;
+  }
+
+  return storedCountry?.trim() ?? '';
 };
 
 export const PremiumCountrySelector: React.FC<PremiumCountrySelectorProps> = ({

@@ -46,7 +46,8 @@
       "whereUsed": "Where you'll see this",
       "pros": "The good bits",
       "cons": "What to know"
-    }
+    },
+    "cancel": "Cancel"
   },
   "chatInput": {
     "submitA11y": "Submit response"
@@ -424,7 +425,8 @@
       "permissionDenied": "We don't have permission to save your setup. Please sign in again and retry.",
       "storageUnavailable": "Your device storage is full. Free up space and try again.",
       "timeout": "Saving took too long. Please try again.",
-      "genericSaveFailed": "We could not save your setup right now. Please try again."
+      "genericSaveFailed": "We could not save your setup right now. Please try again.",
+      "title": "Could not save setup"
     },
     "validation": {
       "fields": {
@@ -517,7 +519,7 @@
       "workPattern": "Swipe right to choose your work-block pattern, left for next option, or up for info",
       "swingConfig": "Set how many day-shift and night-shift days you work before choosing your current block",
       "block": "Swipe right to select, left to see next, or up for more info",
-      "dayWithinBlock": "Swipe right to select, left to see next, or up for more info. Is it the {{ordinalList}}?"
+      "dayWithinBlock": "Swipe right to select your current day, left to see next, or up for more info."
     },
     "modal": {
       "blockLength": "Block Length",
@@ -594,10 +596,26 @@
         "firstNightShiftInBlock": "First night shift in this swing block",
         "finalNightShiftBeforeHome": "Final night shift before flying home",
         "nightShiftDayDescription": "Night shift day {{dayNumber}} of your work block"
+      },
+      "custom": {
+        "shiftLabels": {
+          "day": "Day",
+          "night": "Night",
+          "morning": "Morning",
+          "afternoon": "Afternoon",
+          "off": "Off"
+        },
+        "title": "{{shiftType}} {{dayNumber}}",
+        "description": "{{shiftType}} shift {{dayNumber}} of your custom work sequence"
       }
     },
     "transition": {
       "preparingCalendar": "Preparing your calendar..."
+    },
+    "settingsDiscard": {
+      "title": "Discard unsaved FIFO selection?",
+      "message": "You selected a new FIFO day but have not saved it yet. Leave without saving?",
+      "confirm": "Discard Selection"
     }
   },
   "startDate": {
@@ -955,7 +973,11 @@
       "legend": {
         "daySwing": "Day Swing",
         "homeBlock": "Home Block",
-        "nightSwing": "Night Swing"
+        "nightSwing": "Night Swing",
+        "dayWorkBlock": "Day Work Block",
+        "nightWorkBlock": "Night Work Block",
+        "swingWorkBlock": "Swing Work Block",
+        "customWorkBlock": "Custom Work Block"
       },
       "ratioLabel": "Site to home rhythm",
       "restLabel": "Rest: {{restBlockDays}} days",
@@ -963,7 +985,20 @@
       "subtitle": "{{workBlockDays}} days at site, then {{restBlockDays}} days at home",
       "swingSplit": "Swing split: {{daysOnDayShift}} day-shift days + {{daysOnNightShift}} night-shift days",
       "title": "Your FIFO Rotation Preview",
-      "workLabel": "Work: {{workBlockDays}} days"
+      "workLabel": "Work: {{workBlockDays}} days",
+      "patternDetails": {
+        "straightDays": "Work pattern: Straight Days",
+        "straightNights": "Work pattern: Straight Nights",
+        "swing": "Work pattern: Swing ({{daysOnDayShift}} day + {{daysOnNightShift}} night)",
+        "custom": "Work pattern: Custom sequence"
+      },
+      "blockLabels": {
+        "dayWork": "Day Work",
+        "nightWork": "Night Work",
+        "swingWork": "Swing Work",
+        "customWork": "Custom Work",
+        "rest": "Rest"
+      }
     },
     "previewGuide": "Step 3: Review your FIFO preview before saving",
     "saveA11y": "Save FIFO pattern and continue",
@@ -1004,6 +1039,10 @@
       "swing": {
         "title": "Swing (Days + Nights)",
         "description": "Site block includes both day shifts and night shifts."
+      },
+      "custom": {
+        "title": "Custom Sequence",
+        "description": "Keep your existing day/night custom work sequence."
       }
     }
   },

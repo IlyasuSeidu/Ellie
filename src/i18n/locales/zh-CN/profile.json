@@ -263,7 +263,10 @@
     "openFIFOBuilderSubtitle": "在引导流程中配置工作日、休息日、白夜班组合以及自定义序列",
     "fifoSummarySubtitle": "{{workDays}} 个工作日 · {{restDays}} 个休息日",
     "openCustomBuilderTitle": "打开自定义轮换构建器",
-    "openCustomBuilderSubtitle": "在自定义模式引导流程中配置白班、夜班和休息区块"
+    "openCustomBuilderSubtitle": "在自定义模式引导流程中配置白班、夜班和休息区块",
+    "discardChangesTitle": "放弃未保存的更改？",
+    "discardChangesMessage": "打开另一个编辑器会丢弃你尚未保存的更改。",
+    "discardChangesConfirm": "放弃更改"
   },
   "smartReminders": {
     "sections": {

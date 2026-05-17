@@ -152,6 +152,40 @@ describe('OnboardingContext', () => {
 
       expect(result.current.hasPendingPersistenceError).toBe(false);
     });
+
+    it('updateDataAsync waits for persistence before resolving', async () => {
+      const { result } = renderHook(() => useOnboarding(), { wrapper });
+
+      await act(async () => {
+        await result.current.updateDataAsync({ name: 'Taylor' });
+      });
+
+      expect(result.current.data.name).toBe('Taylor');
+      expect(persistOnboardingData).toHaveBeenCalledWith(
+        expect.objectContaining({ name: 'Taylor' })
+      );
+    });
+
+    it('updateDataAsync rejects when persistence fails', async () => {
+      (persistOnboardingData as jest.Mock).mockRejectedValueOnce(new Error('disk full'));
+
+      const { result } = renderHook(() => useOnboarding(), { wrapper });
+
+      let caughtError: unknown = null;
+
+      await act(async () => {
+        try {
+          await result.current.updateDataAsync({ name: 'Unsaved User' });
+        } catch (error) {
+          caughtError = error as Error;
+        }
+      });
+
+      expect(caughtError).toBeInstanceOf(Error);
+      expect((caughtError as Error).message).toBe('disk full');
+      expect(result.current.data.name).toBe('Unsaved User');
+      expect(result.current.hasPendingPersistenceError).toBe(true);
+    });
   });
 
   describe('resetData', () => {

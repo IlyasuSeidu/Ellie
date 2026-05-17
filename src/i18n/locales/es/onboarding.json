@@ -27,7 +27,8 @@
       "whereUsed": "¿Dónde verás esto?",
       "pros": "las cosas buenas",
       "cons": "que saber"
-    }
+    },
+    "cancel": "Cancelar"
   },
   "intro": {
     "welcome": "Bienvenido a Ellie! Estoy aqui para ayudarte a configurar tu calendario de turnos. Empecemos con tus datos.",
@@ -272,7 +273,8 @@
       "permissionDenied": "No tenemos permiso para guardar su configuración. Inicie sesión nuevamente y vuelva a intentarlo.",
       "storageUnavailable": "El almacenamiento de su dispositivo está lleno. Libera espacio y vuelve a intentarlo.",
       "timeout": "Guardar tomó demasiado tiempo. Por favor inténtalo de nuevo.",
-      "genericSaveFailed": "No pudimos guardar su configuración en este momento. Por favor inténtalo de nuevo."
+      "genericSaveFailed": "No pudimos guardar su configuración en este momento. Por favor inténtalo de nuevo.",
+      "title": "No se pudo guardar la configuración"
     },
     "validation": {
       "fields": {
@@ -460,7 +462,7 @@
       "workPattern": "Desliza a la derecha para elegir el patrón de trabajo, a la izquierda para la siguiente opción, o hacia arriba para más información",
       "swingConfig": "Define cuántos días haces turno de día y cuántos de noche antes de elegir tu bloque actual",
       "block": "Desliza a la derecha para seleccionar, a la izquierda para ver el siguiente, o hacia arriba para más información",
-      "dayWithinBlock": "Desliza a la derecha para seleccionar, a la izquierda para ver el siguiente, o hacia arriba para más información. ¿Es el {{ordinalList}}?"
+      "dayWithinBlock": "Desliza a la derecha para seleccionar tu día actual, a la izquierda para ver el siguiente, o hacia arriba para más información."
     },
     "modal": {
       "blockLength": "Duración del bloque",
@@ -537,12 +539,28 @@
         "firstNightShiftInBlock": "Primer turno de noche en este bloque swing",
         "finalNightShiftBeforeHome": "Último turno de noche antes de volver a casa",
         "nightShiftDayDescription": "Turno de noche {{dayNumber}} de tu bloque de trabajo"
+      },
+      "custom": {
+        "shiftLabels": {
+          "day": "Día",
+          "night": "Noche",
+          "morning": "Mañana",
+          "afternoon": "Tarde",
+          "off": "Libre"
+        },
+        "title": "{{shiftType}} {{dayNumber}}",
+        "description": "Turno {{shiftType}} {{dayNumber}} de tu secuencia personalizada"
       }
     },
     "transition": {
       "preparingCalendar": "Preparando tu calendario..."
     },
-    "anticipation": "Ya casi. Un toque más y tu roster FIFO estará listo."
+    "anticipation": "Ya casi. Un toque más y tu roster FIFO estará listo.",
+    "settingsDiscard": {
+      "title": "¿Descartar la selección FIFO sin guardar?",
+      "message": "Seleccionaste un nuevo día FIFO pero aún no lo guardaste. ¿Salir sin guardar?",
+      "confirm": "Descartar selección"
+    }
   },
   "startDate": {
     "header": {
@@ -899,7 +917,11 @@
       "legend": {
         "daySwing": "Columpio diurno",
         "homeBlock": "Bloque de inicio",
-        "nightSwing": "Columpio nocturno"
+        "nightSwing": "Columpio nocturno",
+        "dayWorkBlock": "Bloque de trabajo diurno",
+        "nightWorkBlock": "Bloque de trabajo nocturno",
+        "swingWorkBlock": "Bloque de trabajo mixto",
+        "customWorkBlock": "Bloque de trabajo personalizado"
       },
       "ratioLabel": "Ritmo del sitio al hogar",
       "restLabel": "Descanso: {{restBlockDays}} días",
@@ -907,7 +929,20 @@
       "subtitle": "{{workBlockDays}} días en el sitio, luego {{restBlockDays}} días en casa",
       "swingSplit": "División de turnos: {{daysOnDayShift}} días de turno diurno + {{daysOnNightShift}} días de turno nocturno",
       "title": "Su vista previa de rotación FIFO",
-      "workLabel": "Trabajo: {{workBlockDays}} días"
+      "workLabel": "Trabajo: {{workBlockDays}} días",
+      "patternDetails": {
+        "straightDays": "Patrón de trabajo: solo días",
+        "straightNights": "Patrón de trabajo: solo noches",
+        "swing": "Patrón de trabajo: mixto ({{daysOnDayShift}} día + {{daysOnNightShift}} noche)",
+        "custom": "Patrón de trabajo: secuencia personalizada"
+      },
+      "blockLabels": {
+        "dayWork": "Trabajo diurno",
+        "nightWork": "Trabajo nocturno",
+        "swingWork": "Trabajo mixto",
+        "customWork": "Trabajo personalizado",
+        "rest": "Descanso"
+      }
     },
     "previewGuide": "Vea su patrón FIFO a continuación",
     "saveA11y": "Guarde el patrón FIFO y continúe",
@@ -948,6 +983,10 @@
       "swing": {
         "title": "Régimen mixto",
         "description": "Alternas entre turnos de día y de noche durante el bloque de trabajo."
+      },
+      "custom": {
+        "title": "Secuencia personalizada",
+        "description": "Conserva tu secuencia personalizada actual de turnos diurnos/nocturnos."
       }
     }
   },

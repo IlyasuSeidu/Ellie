@@ -263,7 +263,10 @@
     "openFIFOBuilderSubtitle": "Lungisa izinsuku zomsebenzi nezokuphumula, ukuhlanganiswa kosuku nobusuku, nokulandelana okwenziwe ngokwezifiso ku-onboarding",
     "fifoSummarySubtitle": "{{workDays}} izinsuku zomsebenzi · {{restDays}} izinsuku zokuphumula",
     "openCustomBuilderTitle": "Vula umakhi wokushintshana okwenziwe ngokwezifiso",
-    "openCustomBuilderSubtitle": "Lungisa amabhlokhi osuku, ebusuku nawokuphumula ku-onboarding yephethini eyenziwe ngokwezifiso"
+    "openCustomBuilderSubtitle": "Lungisa amabhlokhi osuku, ebusuku nawokuphumula ku-onboarding yephethini eyenziwe ngokwezifiso",
+    "discardChangesTitle": "Lahla izinguquko ezingakalondolozwa?",
+    "discardChangesMessage": "Ukuvula omunye umhleli kuzolahla izinguquko ongakazilondolozi.",
+    "discardChangesConfirm": "Lahla izinguquko"
   },
   "smartReminders": {
     "sections": {

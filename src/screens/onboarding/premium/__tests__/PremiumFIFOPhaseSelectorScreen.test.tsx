@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, act, waitFor, fireEvent } from '@testing-library/react-native';
-import { InteractionManager } from 'react-native';
+import { Alert, InteractionManager } from 'react-native';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
 import { PremiumFIFOPhaseSelectorScreen } from '../PremiumFIFOPhaseSelectorScreen';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
@@ -484,6 +484,68 @@ describe('PremiumFIFOPhaseSelectorScreen', () => {
     });
   });
 
+  it('clears staged settings selection when the user keeps browsing day cards', async () => {
+    mockRouteParams = { entryPoint: 'settings', returnToMainOnSelect: true };
+
+    const { getByTestId } = renderWithContext();
+    swipeRight(); // select straight-days pattern
+    swipeRight(); // select work block
+    swipeRight(); // stage day 1
+
+    await waitFor(() => {
+      expect(
+        (
+          getByTestId('fifo-phase-selector-save-settings-button').props.accessibilityState as {
+            disabled?: boolean;
+          }
+        ).disabled
+      ).toBe(false);
+    });
+
+    swipeLeft(); // browsing means the staged day is no longer the visible choice
+
+    await waitFor(() => {
+      expect(
+        (
+          getByTestId('fifo-phase-selector-save-settings-button').props.accessibilityState as {
+            disabled?: boolean;
+          }
+        ).disabled
+      ).toBe(true);
+    });
+
+    fireEvent.press(getByTestId('fifo-phase-selector-save-settings-button'));
+    expect(mockRootGoBack).not.toHaveBeenCalled();
+  });
+
+  it('confirms before leaving settings mode with an unsaved FIFO day selection', async () => {
+    mockRouteParams = { entryPoint: 'settings', returnToMainOnSelect: true };
+    const alertSpy = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
+
+    const { getByTestId } = renderWithContext();
+    swipeRight(); // select straight-days pattern
+    swipeRight(); // select work block
+    swipeRight(); // stage day 1
+
+    fireEvent.press(getByTestId('fifo-phase-selector-back-settings-button'));
+
+    await waitFor(() => {
+      expect(alertSpy).toHaveBeenCalledWith(
+        'Discard unsaved FIFO selection?',
+        'You selected a new FIFO day but have not saved it yet. Leave without saving?',
+        expect.any(Array)
+      );
+    });
+    expect(mockRootGoBack).not.toHaveBeenCalled();
+
+    const buttons = alertSpy.mock.calls[0]?.[2] as Array<{ onPress?: () => void }> | undefined;
+    act(() => {
+      buttons?.[1]?.onPress?.();
+    });
+
+    expect(mockRootGoBack).toHaveBeenCalledTimes(1);
+  });
+
   it('anchors settings-entry phaseOffset to existing startDate for current-day selections', async () => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -630,6 +692,37 @@ describe('PremiumFIFOPhaseSelectorScreen', () => {
       expect(
         queryByText('You are currently at the mine site on your night-shift work block')
       ).toBeNull();
+    });
+  });
+
+  it('renders custom FIFO work-sequence day labels instead of neutral day labels', async () => {
+    (asyncStorageService.get as jest.Mock).mockResolvedValueOnce({
+      rosterType: 'fifo',
+      patternType: 'FIFO_CUSTOM',
+      fifoConfig: {
+        workBlockDays: 3,
+        restBlockDays: 2,
+        workBlockPattern: 'custom',
+        customWorkSequence: ['day', 'night', 'night'],
+      },
+    });
+
+    const { getByText } = renderWithContext();
+
+    await waitFor(() => {
+      expect(getByText('3 days')).toBeTruthy();
+    });
+
+    swipeRight(); // select work block
+
+    await waitFor(() => {
+      expect(getByText('Day 1')).toBeTruthy();
+    });
+
+    swipeLeft();
+
+    await waitFor(() => {
+      expect(getByText('Night 2')).toBeTruthy();
     });
   });
 

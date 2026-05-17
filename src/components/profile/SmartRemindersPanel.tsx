@@ -12,7 +12,7 @@
  *     (Firebase UID when signed in, persisted local UUID otherwise).
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, Switch, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
@@ -174,15 +174,59 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
   const [testStatus, setTestStatus] = useState<'idle' | 'sent' | 'error' | 'permission'>('idle');
   const [saveStatus, setSaveStatus] = useState<'idle' | 'error'>('idle');
   const [quietHoursAdjusted, setQuietHoursAdjusted] = useState(false);
+  const mountedRef = useRef(true);
+  const settingsRef = useRef<SmartReminderSettings>(DEFAULT_SMART_REMINDER_SETTINGS);
+  const loadRequestIdRef = useRef(0);
+  const mutationIdRef = useRef(0);
+  const timeoutRefs = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
+
+  const scheduleStateReset = useCallback((reset: () => void, delayMs: number) => {
+    const timeoutId = setTimeout(() => {
+      timeoutRefs.current.delete(timeoutId);
+      if (mountedRef.current) {
+        reset();
+      }
+    }, delayMs);
+    timeoutRefs.current.add(timeoutId);
+  }, []);
+
+  useEffect(() => {
+    settingsRef.current = settings;
+  }, [settings]);
+
+  useEffect(() => {
+    const activeTimeouts = timeoutRefs.current;
+
+    return () => {
+      mountedRef.current = false;
+      activeTimeouts.forEach((timeoutId) => clearTimeout(timeoutId));
+      activeTimeouts.clear();
+    };
+  }, []);
 
   // Load persisted settings once on mount
   useEffect(() => {
+    const requestId = loadRequestIdRef.current + 1;
+    loadRequestIdRef.current = requestId;
+    setLoaded(false);
+
     smartReminderSettingsService
       .load(user?.uid)
       .then((loadedSettings) => {
+        if (!mountedRef.current || loadRequestIdRef.current !== requestId) {
+          return;
+        }
+
+        settingsRef.current = loadedSettings;
         setSettings(loadedSettings);
       })
-      .finally(() => setLoaded(true));
+      .finally(() => {
+        if (!mountedRef.current || loadRequestIdRef.current !== requestId) {
+          return;
+        }
+
+        setLoaded(true);
+      });
   }, [user?.uid]);
 
   const reschedule = useCallback(
@@ -194,7 +238,7 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
       const hasPermission = await notificationService.checkPermissions();
       if (!hasPermission) {
         setRescheduleStatus('permission');
-        setTimeout(() => setRescheduleStatus('idle'), 4000);
+        scheduleStateReset(() => setRescheduleStatus('idle'), 4000);
         return;
       }
 
@@ -212,22 +256,25 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
           language,
         });
         setRescheduleStatus('success');
-        setTimeout(() => setRescheduleStatus('idle'), 2500);
+        scheduleStateReset(() => setRescheduleStatus('idle'), 2500);
       } catch {
         setRescheduleStatus('error');
-        setTimeout(() => setRescheduleStatus('idle'), 3000);
+        scheduleStateReset(() => setRescheduleStatus('idle'), 3000);
       } finally {
         setIsRescheduling(false);
       }
     },
-    [language, onboardingData, user?.uid]
+    [language, onboardingData, scheduleStateReset, user?.uid]
   );
 
   /** Merge a partial patch, persist, and reschedule */
   const applyUpdate = useCallback(
     async (patch: Partial<SmartReminderSettings>) => {
-      const previous = settings;
-      const updated: SmartReminderSettings = { ...settings, ...patch };
+      const previous = settingsRef.current;
+      const updated: SmartReminderSettings = { ...settingsRef.current, ...patch };
+      const mutationId = mutationIdRef.current + 1;
+      mutationIdRef.current = mutationId;
+      settingsRef.current = updated;
       setSettings(updated);
       setSaveStatus('idle');
 
@@ -235,12 +282,17 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
         await smartReminderSettingsService.save(updated, user?.uid);
         await reschedule(updated);
       } catch {
+        if (!mountedRef.current || mutationIdRef.current !== mutationId) {
+          return;
+        }
+
+        settingsRef.current = previous;
         setSettings(previous);
         setSaveStatus('error');
-        setTimeout(() => setSaveStatus('idle'), 4000);
+        scheduleStateReset(() => setSaveStatus('idle'), 4000);
       }
     },
-    [reschedule, settings, user?.uid]
+    [reschedule, scheduleStateReset, user?.uid]
   );
 
   const handleTestNotification = useCallback(async () => {
@@ -250,7 +302,7 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
       const hasPermission = await notificationService.checkPermissions();
       if (!hasPermission) {
         setTestStatus('permission');
-        setTimeout(() => setTestStatus('idle'), 4000);
+        scheduleStateReset(() => setTestStatus('idle'), 4000);
         return;
       }
 
@@ -271,17 +323,17 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
         data: { test: true },
       });
       setTestStatus('sent');
-      setTimeout(() => setTestStatus('idle'), 3000);
+      scheduleStateReset(() => setTestStatus('idle'), 3000);
     } catch {
       setTestStatus('error');
-      setTimeout(() => setTestStatus('idle'), 3000);
+      scheduleStateReset(() => setTestStatus('idle'), 3000);
     }
-  }, [t, user?.uid]);
+  }, [scheduleStateReset, t, user?.uid]);
 
   const handleManualReschedule = useCallback(async () => {
     void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    await reschedule(settings);
-  }, [reschedule, settings]);
+    await reschedule(settingsRef.current);
+  }, [reschedule]);
 
   // Quiet hours overnight window metadata
   const startMin = parseHHMM(settings.quietHoursStart);
@@ -307,7 +359,7 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
 
       setQuietHoursAdjusted(adjusted);
       if (adjusted) {
-        setTimeout(() => setQuietHoursAdjusted(false), 4000);
+        scheduleStateReset(() => setQuietHoursAdjusted(false), 4000);
       }
 
       await applyUpdate({
@@ -315,7 +367,7 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
         quietHoursEnd: nextEnd,
       });
     },
-    [applyUpdate, settings.quietHoursEnd, settings.quietHoursStart]
+    [applyUpdate, scheduleStateReset, settings.quietHoursEnd, settings.quietHoursStart]
   );
 
   const hoursLabel = useCallback(

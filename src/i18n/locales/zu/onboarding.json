@@ -27,7 +27,8 @@
       "whereUsed": "Lapho uzobona khona lokhu",
       "pros": "Izingubo ezinhle",
       "cons": "Okufanele ukwazi"
-    }
+    },
+    "cancel": "Khansela"
   },
   "intro": {
     "welcome": "Siyakwamukela ku-Ellie! Ngilapha ukuze ngikusize uhlele ikhalenda lakho leshifu. Ake siqale ngokukwazi kangcono.",
@@ -353,7 +354,8 @@
       "permissionDenied": "Asinayo imvume yokulondoloza ukusetha kwakho. Sicela ungene ngemvume futhi bese uzama futhi.",
       "storageUnavailable": "Isitoreji sedivayisi yakho sigcwele. Khulula isikhala bese uzama futhi.",
       "timeout": "Ukulondoloza kuthathe isikhathi eside kakhulu. Sicela uzame futhi.",
-      "genericSaveFailed": "Asikwazanga ukulondoloza ukusethwa kwakho njengamanje. Sicela uzame futhi."
+      "genericSaveFailed": "Asikwazanga ukulondoloza ukusethwa kwakho njengamanje. Sicela uzame futhi.",
+      "title": "Ayikwazanga ukulondoloza ukusetha"
     },
     "validation": {
       "fields": {
@@ -460,7 +462,7 @@
       "workPattern": "Swayiphela kwesokudla ukuze ukhethe iphethini yakho yesivimbeli somsebenzi, kwesokunxele ukuze uthole inketho elandelayo, noma phezulu ukuze uthole ulwazi",
       "swingConfig": "Setha ukuthi zingaki izinsuku zeshifu nosuku-shift osebenza ngazo ngaphambi kokukhetha ibhulokhi yakho yamanje",
       "block": "Swayiphela kwesokudla ukuze ukhethe, kwesokunxele ukuze ubone okulandelayo, noma phezulu ukuze uthole ulwazi olwengeziwe",
-      "dayWithinBlock": "Swayiphela kwesokudla ukuze ukhethe, kwesokunxele ukuze ubone okulandelayo, noma phezulu ukuze uthole ulwazi olwengeziwe. Ingabe i-{{ordinalList}}?"
+      "dayWithinBlock": "Swayiphela kwesokudla ukuze ukhethe usuku lwakho lwamanje, kwesokunxele ukuze ubone olulandelayo, noma phezulu ukuze uthole ulwazi olwengeziwe."
     },
     "modal": {
       "blockLength": "Vimba Ubude",
@@ -537,12 +539,28 @@
         "firstNightShiftInBlock": "Ishifu yokuqala yasebusuku kule block swing",
         "finalNightShiftBeforeHome": "Ishifu lokugcina lasebusuku ngaphambi kokundizela ekhaya",
         "nightShiftDayDescription": "Usuku lweshifu yasebusuku engu-{{dayNumber}} yendawo yakho yomsebenzi"
+      },
+      "custom": {
+        "shiftLabels": {
+          "day": "Usuku",
+          "night": "Ubusuku",
+          "morning": "Ekuseni",
+          "afternoon": "Ntambama",
+          "off": "Vala"
+        },
+        "title": "{{shiftType}} {{dayNumber}}",
+        "description": "Ishifthi {{shiftType}} {{dayNumber}} yokulandelana kwakho okwenziwe ngokwezifiso"
       }
     },
     "transition": {
       "preparingCalendar": "Ilungiselela ikhalenda yakho..."
     },
-    "anticipation": "Sekuseduze. Ukuthepha okukodwa futhi irosta yakho ye-FIFO isilungile."
+    "anticipation": "Sekuseduze. Ukuthepha okukodwa futhi irosta yakho ye-FIFO isilungile.",
+    "settingsDiscard": {
+      "title": "Lahla ukukhetha kwe-FIFO okungakalondolozwa?",
+      "message": "Ukhethe usuku olusha lwe-FIFO kodwa awukalugcini. Phuma ngaphandle kokulondoloza?",
+      "confirm": "Lahla ukukhetha"
+    }
   },
   "startDate": {
     "header": {
@@ -899,7 +917,11 @@
       "legend": {
         "daySwing": "I-Day Swing",
         "homeBlock": "I-block yasekhaya",
-        "nightSwing": "I-Night Swing"
+        "nightSwing": "I-Night Swing",
+        "dayWorkBlock": "Ibhulokhi yomsebenzi wasemini",
+        "nightWorkBlock": "Ibhulokhi yomsebenzi wasebusuku",
+        "swingWorkBlock": "Ibhulokhi yomsebenzi we-swing",
+        "customWorkBlock": "Ibhulokhi yomsebenzi owenziwe ngokwezifiso"
       },
       "ratioLabel": "Indawo eya ekhaya isigqi",
       "restLabel": "Ukuphumula: {{restBlockDays}} izinsuku",
@@ -907,7 +929,20 @@
       "subtitle": "{{workBlockDays}} izinsuku endaweni, bese {{restBlockDays}} izinsuku ekhaya",
       "swingSplit": "Ukuhlukaniswa kwe-Swing: {{daysOnDayShift}} izinsuku zokushintsha kosuku + {{daysOnNightShift}} izinsuku zokushintsha ebusuku",
       "title": "Ukubuka kuqala kwakho kwe-FIFO Rotation",
-      "workLabel": "Umsebenzi: {{workBlockDays}} izinsuku"
+      "workLabel": "Umsebenzi: {{workBlockDays}} izinsuku",
+      "patternDetails": {
+        "straightDays": "Iphethini yomsebenzi: Izinsuku kuphela",
+        "straightNights": "Iphethini yomsebenzi: Ubusuku kuphela",
+        "swing": "Iphethini yomsebenzi: Swing ({{daysOnDayShift}} usuku + {{daysOnNightShift}} ubusuku)",
+        "custom": "Iphethini yomsebenzi: ukulandelana okwenziwe ngokwezifiso"
+      },
+      "blockLabels": {
+        "dayWork": "Umsebenzi wasemini",
+        "nightWork": "Umsebenzi wasebusuku",
+        "swingWork": "Umsebenzi we-swing",
+        "customWork": "Umsebenzi owenziwe ngokwezifiso",
+        "rest": "Ukuphumula"
+      }
     },
     "previewGuide": "Bona iphethini yakho ye-FIFO ngezansi",
     "saveA11y": "Londoloza iphethini ye-FIFO bese uqhubeke",
@@ -948,6 +983,10 @@
       "swing": {
         "title": "I-Swing Roster",
         "description": "Shintshanisa amashifu emini kanye namashifu ebusuku ngesikhathi sokuvimba umsebenzi"
+      },
+      "custom": {
+        "title": "Ukulandelana okwenziwe ngokwezifiso",
+        "description": "Gcina ukulandelana kwakho okukhona komsebenzi wasemini/wasebusuku."
       }
     }
   },

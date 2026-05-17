@@ -12,8 +12,15 @@
  *   • All changes buffered locally until Save is tapped
  */
 
-import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
-import { View, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import {
+  Alert,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import Animated, {
   FadeInUp,
   FadeOutUp,
@@ -54,6 +61,7 @@ import { PremiumButton } from '@/components/onboarding/premium/PremiumButton';
 import { useShiftAccent } from '@/hooks/useShiftAccent';
 import i18n from '@/i18n';
 import { formatLocalizedDate } from '@/utils/i18nFormat';
+import { getSettingsErrorMessage } from '@/utils/settingsErrorMessage';
 import { PatternSelectorSheet } from './PatternSelectorSheet';
 import { StartDatePickerSheet } from './StartDatePickerSheet';
 import { CycleResyncSheet } from './CycleResyncSheet';
@@ -368,7 +376,7 @@ function getFIFOWorkPatternLabel(
 
 export interface ShiftSettingsPanelProps {
   data: OnboardingData;
-  onUpdate: (updates: Partial<OnboardingData>) => void;
+  onUpdate: (updates: Partial<OnboardingData>) => void | Promise<void>;
   onOpenPatternOnboarding?: (seed: Partial<OnboardingData>) => void;
   onOpenStartDateOnboarding?: (seed: Partial<OnboardingData>) => void;
   onOpenPhaseOnboarding?: (seed: Partial<OnboardingData>) => void;
@@ -397,6 +405,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
   animationDelay = 0,
 }) => {
   const { t } = useTranslation('profile');
+  const { t: tCommon } = useTranslation('common');
   const { shiftType: activeAccentShiftType } = useShiftAccent();
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -428,7 +437,6 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
 
   // ── Save-button pulse when there are pending changes ───────────────────────
   const saveButtonGlow = useSharedValue(0);
-  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const hasChanges =
     isEditing &&
@@ -473,23 +481,68 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
 
   // ── Cancel ─────────────────────────────────────────────────────────────────
   const handleCancel = useCallback(() => {
+    if (isSaving) {
+      return;
+    }
     setLocalData({});
     setIsEditing(false);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-  }, []);
+  }, [isSaving]);
 
   // ── Save ───────────────────────────────────────────────────────────────────
-  const handleSave = useCallback(() => {
-    if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+  const handleSave = useCallback(async () => {
+    if (isSaving || !hasChanges) {
+      return;
+    }
+
     setIsSaving(true);
-    saveTimeoutRef.current = setTimeout(() => {
-      onUpdate(localData);
+    try {
+      await Promise.resolve(onUpdate(localData));
       setLocalData({});
       setIsEditing(false);
-      setIsSaving(false);
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    }, 600);
-  }, [localData, onUpdate]);
+    } catch (error) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      Alert.alert(
+        tCommon('errors.titles.error', { defaultValue: 'Error' }),
+        getSettingsErrorMessage(error, 'profileSave')
+      );
+    } finally {
+      setIsSaving(false);
+    }
+  }, [hasChanges, isSaving, localData, onUpdate, tCommon]);
+
+  const confirmDiscardPendingChanges = useCallback(
+    (onConfirm: () => void) => {
+      if (isSaving) {
+        return;
+      }
+
+      if (!hasChanges) {
+        onConfirm();
+        return;
+      }
+
+      Alert.alert(
+        t('shift.discardChangesTitle', { defaultValue: 'Discard unsaved changes?' }),
+        t('shift.discardChangesMessage', {
+          defaultValue: 'Opening another editor will discard the changes you have not saved yet.',
+        }),
+        [
+          {
+            text: tCommon('buttons.cancel', { defaultValue: 'Cancel' }),
+            style: 'cancel',
+          },
+          {
+            text: t('shift.discardChangesConfirm', { defaultValue: 'Discard Changes' }),
+            style: 'destructive',
+            onPress: onConfirm,
+          },
+        ]
+      );
+    },
+    [hasChanges, isSaving, t, tCommon]
+  );
 
   // ── System toggle ──────────────────────────────────────────────────────────
   const handleSystemChange = useCallback(
@@ -549,6 +602,10 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
   }, []);
 
   const handleOpenPatternPicker = useCallback(() => {
+    if (isSaving) {
+      return;
+    }
+
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
     if (!onOpenPatternOnboarding) {
@@ -564,25 +621,33 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
       fifoConfig: editFIFOConfig,
     };
 
-    setPatternSheetVisible(false);
-    setTimePickerTarget(null);
-    setStartDatePickerVisible(false);
-    setResyncSheetVisible(false);
-    setAutoResetNotice(null);
-    setLocalData({});
-    setIsEditing(false);
-    onOpenPatternOnboarding(seed);
+    confirmDiscardPendingChanges(() => {
+      setPatternSheetVisible(false);
+      setTimePickerTarget(null);
+      setStartDatePickerVisible(false);
+      setResyncSheetVisible(false);
+      setAutoResetNotice(null);
+      setLocalData({});
+      setIsEditing(false);
+      onOpenPatternOnboarding(seed);
+    });
   }, [
+    confirmDiscardPendingChanges,
     editCustomPattern,
     editFIFOConfig,
     editPatternType,
     editRosterType,
     editShiftSystem,
+    isSaving,
     onOpenPatternOnboarding,
   ]);
 
   const handleOpenShiftTimePicker = useCallback(
     (target: TimeTarget) => {
+      if (isSaving) {
+        return;
+      }
+
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
       if (!onOpenShiftTimeOnboarding) {
@@ -615,16 +680,19 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
                 ? 'afternoon'
                 : undefined;
 
-      setPatternSheetVisible(false);
-      setTimePickerTarget(null);
-      setStartDatePickerVisible(false);
-      setResyncSheetVisible(false);
-      setAutoResetNotice(null);
-      setLocalData({});
-      setIsEditing(false);
-      onOpenShiftTimeOnboarding(seed, initialShiftType);
+      confirmDiscardPendingChanges(() => {
+        setPatternSheetVisible(false);
+        setTimePickerTarget(null);
+        setStartDatePickerVisible(false);
+        setResyncSheetVisible(false);
+        setAutoResetNotice(null);
+        setLocalData({});
+        setIsEditing(false);
+        onOpenShiftTimeOnboarding(seed, initialShiftType);
+      });
     },
     [
+      confirmDiscardPendingChanges,
       editCustomPattern,
       editFIFOConfig,
       editIsCustomShiftTime,
@@ -636,11 +704,16 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
       editShiftSystem,
       editShiftTimes,
       editShiftType,
+      isSaving,
       onOpenShiftTimeOnboarding,
     ]
   );
 
   const handleOpenStartDatePicker = useCallback(() => {
+    if (isSaving) {
+      return;
+    }
+
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
     if (!onOpenStartDateOnboarding) {
@@ -658,15 +731,18 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
       phaseOffset: editPhaseOffset,
     };
 
-    setPatternSheetVisible(false);
-    setTimePickerTarget(null);
-    setStartDatePickerVisible(false);
-    setResyncSheetVisible(false);
-    setAutoResetNotice(null);
-    setLocalData({});
-    setIsEditing(false);
-    onOpenStartDateOnboarding(seed);
+    confirmDiscardPendingChanges(() => {
+      setPatternSheetVisible(false);
+      setTimePickerTarget(null);
+      setStartDatePickerVisible(false);
+      setResyncSheetVisible(false);
+      setAutoResetNotice(null);
+      setLocalData({});
+      setIsEditing(false);
+      onOpenStartDateOnboarding(seed);
+    });
   }, [
+    confirmDiscardPendingChanges,
     editCustomPattern,
     editFIFOConfig,
     editPatternType,
@@ -674,10 +750,15 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
     editRosterType,
     editShiftSystem,
     editStartDate,
+    isSaving,
     onOpenStartDateOnboarding,
   ]);
 
   const handleOpenCyclePhasePicker = useCallback(() => {
+    if (isSaving) {
+      return;
+    }
+
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
     const isFIFORoute = (editRosterType ?? 'rotating') === 'fifo';
@@ -700,19 +781,22 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
       phaseOffset: editPhaseOffset,
     };
 
-    setPatternSheetVisible(false);
-    setTimePickerTarget(null);
-    setStartDatePickerVisible(false);
-    setResyncSheetVisible(false);
-    setAutoResetNotice(null);
-    setLocalData({});
-    setIsEditing(false);
-    if (isFIFORoute) {
-      onOpenFIFOPhaseOnboarding?.(seed);
-      return;
-    }
-    onOpenPhaseOnboarding?.(seed);
+    confirmDiscardPendingChanges(() => {
+      setPatternSheetVisible(false);
+      setTimePickerTarget(null);
+      setStartDatePickerVisible(false);
+      setResyncSheetVisible(false);
+      setAutoResetNotice(null);
+      setLocalData({});
+      setIsEditing(false);
+      if (isFIFORoute) {
+        onOpenFIFOPhaseOnboarding?.(seed);
+        return;
+      }
+      onOpenPhaseOnboarding?.(seed);
+    });
   }, [
+    confirmDiscardPendingChanges,
     editCustomPattern,
     editFIFOConfig,
     editPatternType,
@@ -720,11 +804,16 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
     editRosterType,
     editShiftSystem,
     editStartDate,
+    isSaving,
     onOpenPhaseOnboarding,
     onOpenFIFOPhaseOnboarding,
   ]);
 
   const handleOpenFIFOCustomPatternBuilder = useCallback(() => {
+    if (isSaving) {
+      return;
+    }
+
     if (!onOpenFIFOCustomPatternOnboarding) {
       return;
     }
@@ -738,23 +827,31 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
       fifoConfig: editFIFOConfig,
     };
 
-    setPatternSheetVisible(false);
-    setTimePickerTarget(null);
-    setStartDatePickerVisible(false);
-    setResyncSheetVisible(false);
-    setAutoResetNotice(null);
-    setLocalData({});
-    setIsEditing(false);
-    onOpenFIFOCustomPatternOnboarding(seed);
+    confirmDiscardPendingChanges(() => {
+      setPatternSheetVisible(false);
+      setTimePickerTarget(null);
+      setStartDatePickerVisible(false);
+      setResyncSheetVisible(false);
+      setAutoResetNotice(null);
+      setLocalData({});
+      setIsEditing(false);
+      onOpenFIFOCustomPatternOnboarding(seed);
+    });
   }, [
+    confirmDiscardPendingChanges,
     editCustomPattern,
     editFIFOConfig,
     editPatternType,
     editShiftSystem,
+    isSaving,
     onOpenFIFOCustomPatternOnboarding,
   ]);
 
   const handleOpenCustomPatternBuilder = useCallback(() => {
+    if (isSaving) {
+      return;
+    }
+
     if (!onOpenCustomPatternOnboarding) {
       return;
     }
@@ -768,19 +865,23 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
       fifoConfig: editFIFOConfig,
     };
 
-    setPatternSheetVisible(false);
-    setTimePickerTarget(null);
-    setStartDatePickerVisible(false);
-    setResyncSheetVisible(false);
-    setAutoResetNotice(null);
-    setLocalData({});
-    setIsEditing(false);
-    onOpenCustomPatternOnboarding(seed);
+    confirmDiscardPendingChanges(() => {
+      setPatternSheetVisible(false);
+      setTimePickerTarget(null);
+      setStartDatePickerVisible(false);
+      setResyncSheetVisible(false);
+      setAutoResetNotice(null);
+      setLocalData({});
+      setIsEditing(false);
+      onOpenCustomPatternOnboarding(seed);
+    });
   }, [
+    confirmDiscardPendingChanges,
     editCustomPattern,
     editFIFOConfig,
     editPatternType,
     editShiftSystem,
+    isSaving,
     onOpenCustomPatternOnboarding,
   ]);
 
@@ -917,12 +1018,6 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
     [liveAccentColor]
   );
 
-  useEffect(() => {
-    return () => {
-      if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
-    };
-  }, []);
-
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
     <View style={styles.wrapper}>
@@ -954,6 +1049,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
             <TouchableOpacity
               onPress={handleCancel}
               style={[styles.headerActionBtn, headerIconBadgeStyle]}
+              disabled={isSaving}
               hitSlop={8}
               accessibilityLabel={t('shift.cancelEditA11y')}
               accessibilityRole="button"

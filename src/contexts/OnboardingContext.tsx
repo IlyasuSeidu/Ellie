@@ -88,6 +88,7 @@ import React, {
   useState,
   useEffect,
   useCallback,
+  useRef,
   ReactNode,
 } from 'react';
 import { ShiftPattern, FIFOConfig } from '@/types';
@@ -224,6 +225,9 @@ interface OnboardingContextValue {
   /** Update specific fields in onboarding data */
   updateData: (updates: Partial<OnboardingData>) => void;
 
+  /** Update specific fields and wait for persistence to complete */
+  updateDataAsync: (updates: Partial<OnboardingData>) => Promise<void>;
+
   /** Replace all onboarding data at once */
   setAllData: (newData: OnboardingData) => void;
 
@@ -256,6 +260,21 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
   const [data, setData] = useState<OnboardingData>({});
   const [hydrated, setHydrated] = useState(false);
   const [hasPendingPersistenceError, setHasPendingPersistenceError] = useState(false);
+  const dataRef = useRef<OnboardingData>({});
+
+  useEffect(() => {
+    dataRef.current = data;
+  }, [data]);
+
+  const persistDataSnapshot = useCallback(async (newData: OnboardingData): Promise<void> => {
+    try {
+      await persistOnboardingData(newData);
+      setHasPendingPersistenceError(false);
+    } catch (error) {
+      setHasPendingPersistenceError(true);
+      throw error;
+    }
+  }, []);
 
   /**
    * Restore onboarding data from AsyncStorage on mount
@@ -265,6 +284,7 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
       try {
         const savedData = await loadPersistedOnboardingData();
         if (savedData) {
+          dataRef.current = savedData as OnboardingData;
           setData(savedData as OnboardingData);
         }
       } catch (error) {
@@ -283,52 +303,56 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
    * Update specific fields in onboarding data (merges with existing)
    * Also auto-saves to AsyncStorage to prevent data loss
    */
-  const updateData = useCallback((updates: Partial<OnboardingData>) => {
-    setData((prevData) => {
-      const newData = { ...prevData, ...updates };
+  const updateData = useCallback(
+    (updates: Partial<OnboardingData>) => {
+      const newData = { ...dataRef.current, ...updates };
+      dataRef.current = newData;
+      setData(newData);
 
       // Auto-save to AsyncStorage (non-blocking, don't await)
-      void persistOnboardingData(newData)
-        .then(() => {
-          setHasPendingPersistenceError(false);
-        })
-        .catch((error) => {
-          console.warn('Failed to auto-save onboarding data:', error);
-          setHasPendingPersistenceError(true);
-          // Don't throw - auto-save failure shouldn't block UX
-        });
+      void persistDataSnapshot(newData).catch((error) => {
+        console.warn('Failed to auto-save onboarding data:', error);
+        // Don't throw - auto-save failure shouldn't block UX
+      });
+    },
+    [persistDataSnapshot]
+  );
 
-      return newData;
-    });
-  }, []);
+  const updateDataAsync = useCallback(
+    async (updates: Partial<OnboardingData>) => {
+      const newData = { ...dataRef.current, ...updates };
+      dataRef.current = newData;
+      setData(newData);
+      await persistDataSnapshot(newData);
+    },
+    [persistDataSnapshot]
+  );
 
   /**
    * Replace all onboarding data at once
    * Also saves to AsyncStorage
    */
-  const setAllData = useCallback((newData: OnboardingData) => {
-    setData(newData);
+  const setAllData = useCallback(
+    (newData: OnboardingData) => {
+      dataRef.current = newData;
+      setData(newData);
 
-    // Auto-save to AsyncStorage (non-blocking)
-    void persistOnboardingData(newData)
-      .then(() => {
-        setHasPendingPersistenceError(false);
-      })
-      .catch((error) => {
+      // Auto-save to AsyncStorage (non-blocking)
+      void persistDataSnapshot(newData).catch((error) => {
         console.warn('Failed to save onboarding data:', error);
-        setHasPendingPersistenceError(true);
       });
-  }, []);
+    },
+    [persistDataSnapshot]
+  );
 
   /**
    * Clear a specific field from onboarding data
    */
   const clearField = (field: keyof OnboardingData) => {
-    setData((prev) => {
-      const updated = { ...prev };
-      delete updated[field];
-      return updated;
-    });
+    const updated = { ...dataRef.current };
+    delete updated[field];
+    dataRef.current = updated;
+    setData(updated);
   };
 
   /**
@@ -336,6 +360,7 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
    * Also clears AsyncStorage
    */
   const resetData = useCallback(() => {
+    dataRef.current = {};
     setData({});
 
     // Clear AsyncStorage (non-blocking)
@@ -460,6 +485,7 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
         hydrated,
         hasPendingPersistenceError,
         updateData,
+        updateDataAsync,
         setAllData,
         clearField,
         resetData,

@@ -27,7 +27,8 @@
       "whereUsed": "Waar jy dit sal sien",
       "pros": "Die goeie stukkies",
       "cons": "Wat om te weet"
-    }
+    },
+    "cancel": "Kanselleer"
   },
   "intro": {
     "welcome": "Welkom aan Ellie! Ek is hier om jou te help om jou skofkalender op te stel. Kom ons begin deur jou 'n bietjie beter te leer ken.",
@@ -334,7 +335,8 @@
       "permissionDenied": "Ons het nie toestemming om jou opstelling te stoor nie. Meld asseblief weer aan en probeer weer.",
       "storageUnavailable": "Jou toestelberging is vol. Maak spasie vry en probeer weer.",
       "timeout": "Spaar het te lank geneem. Probeer asseblief weer.",
-      "genericSaveFailed": "Ons kon nie nou jou opstelling stoor nie. Probeer asseblief weer."
+      "genericSaveFailed": "Ons kon nie nou jou opstelling stoor nie. Probeer asseblief weer.",
+      "title": "Kon opstelling nie stoor nie"
     },
     "validation": {
       "fields": {
@@ -441,7 +443,7 @@
       "workPattern": "Swiep regs om jou werkblokpatroon te kies, links vir volgende opsie, of op vir inligting",
       "swingConfig": "Stel hoeveel dagskof- en nagskofdae jy werk voordat jy jou huidige blok kies",
       "block": "Swiep regs om te kies, links om volgende te sien, of op vir meer inligting",
-      "dayWithinBlock": "Swiep regs om te kies, links om volgende te sien, of op vir meer inligting. Is dit die {{ordinalList}}?"
+      "dayWithinBlock": "Swiep regs om jou huidige dag te kies, links om die volgende te sien, of op vir meer inligting."
     },
     "modal": {
       "blockLength": "Bloklengte",
@@ -518,12 +520,28 @@
         "firstNightShiftInBlock": "Eerste nagskof in hierdie swaaiblok",
         "finalNightShiftBeforeHome": "Laaste nagskof voor jy huis toe vlieg",
         "nightShiftDayDescription": "Nagskof dag {{dayNumber}} van jou werkblok"
+      },
+      "custom": {
+        "shiftLabels": {
+          "day": "Dag",
+          "night": "Nag",
+          "morning": "Oggend",
+          "afternoon": "Middag",
+          "off": "Af"
+        },
+        "title": "{{shiftType}} {{dayNumber}}",
+        "description": "{{shiftType}} skof {{dayNumber}} van jou pasgemaakte volgorde"
       }
     },
     "transition": {
       "preparingCalendar": "Berei tans jou kalender voor..."
     },
-    "anticipation": "Byna daar. Nog een tik en jou FIFO-rooster is gereed."
+    "anticipation": "Byna daar. Nog een tik en jou FIFO-rooster is gereed.",
+    "settingsDiscard": {
+      "title": "Gooi ongestoorde FIFO-keuse weg?",
+      "message": "Jy het ’n nuwe FIFO-dag gekies maar dit nog nie gestoor nie. Verlaat sonder om te stoor?",
+      "confirm": "Gooi keuse weg"
+    }
   },
   "startDate": {
     "header": {
@@ -880,7 +898,11 @@
       "legend": {
         "daySwing": "Dag Swing",
         "homeBlock": "Huis Blok",
-        "nightSwing": "Nagswaai"
+        "nightSwing": "Nagswaai",
+        "dayWorkBlock": "Dagwerkblok",
+        "nightWorkBlock": "Nagwerkblok",
+        "swingWorkBlock": "Swaaiwerkblok",
+        "customWorkBlock": "Pasgemaakte werkblok"
       },
       "ratioLabel": "Site to home ritme",
       "restLabel": "Rus: {{restBlockDays}} dae",
@@ -888,7 +910,20 @@
       "subtitle": "{{workBlockDays}} dae by die werf, dan {{restBlockDays}} dae by die huis",
       "swingSplit": "Swaaiverdeling: {{daysOnDayShift}} dagskof dae + {{daysOnNightShift}} nagskof dae",
       "title": "Jou EIEU-rotasievoorskou",
-      "workLabel": "Werk: {{workBlockDays}} dae"
+      "workLabel": "Werk: {{workBlockDays}} dae",
+      "patternDetails": {
+        "straightDays": "Werkpatroon: Reguit dae",
+        "straightNights": "Werkpatroon: Reguit nagte",
+        "swing": "Werkpatroon: Swaai ({{daysOnDayShift}} dag + {{daysOnNightShift}} nag)",
+        "custom": "Werkpatroon: pasgemaakte volgorde"
+      },
+      "blockLabels": {
+        "dayWork": "Dagwerk",
+        "nightWork": "Nagwerk",
+        "swingWork": "Swaaiwerk",
+        "customWork": "Pasgemaakte werk",
+        "rest": "Rus"
+      }
     },
     "previewGuide": "Sien jou EIEU-patroon hieronder",
     "saveA11y": "Stoor EIEU-patroon en gaan voort",
@@ -929,6 +964,10 @@
       "swing": {
         "title": "Swaairooster",
         "description": "Wissel af tussen dagskof en nagskofte tydens werkblok"
+      },
+      "custom": {
+        "title": "Pasgemaakte volgorde",
+        "description": "Behou jou bestaande pasgemaakte dag-/nagwerkvolgorde."
       }
     }
   },
