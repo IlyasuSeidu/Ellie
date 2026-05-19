@@ -438,7 +438,12 @@
       "off": "Dias de folga"
     },
     "title_named": "Em que parte do seu ciclo você está agora, {{name}}?",
-    "anticipation": "Quase pronto. Só mais um passo e mostraremos uma prévia dos seus próximos 3 meses."
+    "anticipation": "Quase pronto. Só mais um passo e mostraremos uma prévia dos seus próximos 3 meses.",
+    "settingsDiscard": {
+      "title": "Descartar seleção de rotação não salva?",
+      "message": "Você selecionou um novo dia de rotação, mas ainda não salvou. Sair sem salvar?",
+      "confirm": "Descartar seleção"
+    }
   },
   "fifoPhaseSelector": {
     "title": {
@@ -497,7 +502,10 @@
       "splitTotal": "Total da divisão: {{swingSplitTotal}}/{{workBlockDays}} dias",
       "validation": "A divisão swing deve totalizar {{workBlockDays}} dias, com pelo menos 1 dia em cada turno.",
       "changePattern": "Alterar padrão",
-      "continue": "Continuar"
+      "continue": "Continuar",
+      "changePatternHint": "Volte e escolha outro padrão de bloco de trabalho FIFO",
+      "continueHintValid": "Use esta divisão swing e escolha seu bloco FIFO atual",
+      "continueHintInvalid": "Corrija a divisão swing antes de continuar"
     },
     "days": {
       "shared": {
@@ -978,7 +986,8 @@
         "title": "Sequência personalizada",
         "description": "Mantenha sua sequência personalizada atual de turnos diurnos/noturnos."
       }
-    }
+    },
+    "workPatternSelectHint": "Selecione este estilo de turno do bloco de trabalho"
   },
   "progressHeader": {
     "goBackA11y": "Volte",

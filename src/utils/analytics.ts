@@ -1,6 +1,17 @@
+import {
+  analyticsBackendService,
+  type AnalyticsBackendPayload,
+} from '@/services/AnalyticsBackendService';
 import { logger } from '@/utils/logger';
 
-type AnalyticsPayload = Record<string, string | number | boolean | null | undefined>;
+type AnalyticsPayloadValue =
+  | string
+  | number
+  | boolean
+  | null
+  | readonly (string | number | boolean | null)[]
+  | undefined;
+type AnalyticsPayload = Record<string, AnalyticsPayloadValue>;
 export type PaywallTriggerSource =
   | 'aha_moment'
   | 'post_aha'
@@ -29,11 +40,30 @@ function getAnalyticsClient(): AnalyticsClient | null {
   }
 }
 
+function mirrorToBackend(name: string, payload?: AnalyticsPayload): void {
+  if (process.env.NODE_ENV === 'test') {
+    return;
+  }
+
+  void analyticsBackendService
+    .trackEvent(name, payload as AnalyticsBackendPayload | undefined)
+    .catch((error: unknown) => {
+      if (__DEV__) {
+        logger.warn('[AnalyticsBackend:error]', {
+          event: name,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+    });
+}
+
 async function safeCall(
   call: (client: AnalyticsClient) => Promise<void>,
   fallbackName: string,
   fallbackPayload?: AnalyticsPayload
 ): Promise<void> {
+  mirrorToBackend(fallbackName, fallbackPayload);
+
   const client = getAnalyticsClient();
   if (!client) {
     if (__DEV__) {

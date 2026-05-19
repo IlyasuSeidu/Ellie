@@ -19,6 +19,7 @@ import {
   AccessibilityInfo,
   Image,
   InteractionManager,
+  Alert,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, {
@@ -55,6 +56,7 @@ import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 import { Analytics } from '@/utils/analytics';
 import { alignPhaseOffsetToReferenceDate } from '@/utils/shiftUtils';
+import { getOnboardingSaveErrorMessage } from '@/utils/onboardingErrorMessage';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 type PhaseRouteProp = RouteProp<OnboardingStackParamList, 'PhaseSelector'>;
@@ -858,7 +860,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<PhaseRouteProp>();
-  const { data, updateData } = useOnboarding();
+  const { data, updateDataAsync } = useOnboarding();
   const mountTime = useRef(Date.now());
   const isSettingsEntry = route.params?.entryPoint === 'settings';
   const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
@@ -912,6 +914,45 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
     allowSettingsExitRef.current = true;
     closeSettingsEditor();
   }, [closeSettingsEditor]);
+
+  const confirmDiscardPendingSettingsSelection = useCallback(
+    (onConfirm: () => void) => {
+      if (pendingSettingsPhaseOffset === null) {
+        onConfirm();
+        return;
+      }
+
+      Alert.alert(
+        String(
+          t('phaseSelector.settingsDiscard.title', {
+            defaultValue: 'Discard unsaved rotation selection?',
+          })
+        ),
+        String(
+          t('phaseSelector.settingsDiscard.message', {
+            defaultValue:
+              'You selected a new rotation day but have not saved it yet. Leave without saving?',
+          })
+        ),
+        [
+          {
+            text: String(t('common.cancel', { defaultValue: 'Cancel' })),
+            style: 'cancel',
+          },
+          {
+            text: String(
+              t('phaseSelector.settingsDiscard.confirm', {
+                defaultValue: 'Discard Selection',
+              })
+            ),
+            style: 'destructive',
+            onPress: onConfirm,
+          },
+        ]
+      );
+    },
+    [pendingSettingsPhaseOffset, t]
+  );
 
   // Title animations
   const titleOpacity = useSharedValue(0);
@@ -1030,11 +1071,11 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
         return;
       }
       event.preventDefault();
-      returnToSettings();
+      confirmDiscardPendingSettingsSelection(returnToSettings);
     });
 
     return unsubscribe;
-  }, [isSettingsMode, navigation, returnToSettings]);
+  }, [confirmDiscardPendingSettingsSelection, isSettingsMode, navigation, returnToSettings]);
 
   const titleAnimatedStyle = useAnimatedStyle(() => ({
     opacity: titleOpacity.value,
@@ -1263,7 +1304,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
 
   // Calculate and navigate helper
   const calculateAndNavigate = useCallback(
-    (phase: Phase, dayWithinPhase: number) => {
+    async (phase: Phase, dayWithinPhase: number) => {
       if (isTransitioningRef.current) {
         return;
       }
@@ -1304,7 +1345,19 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
       isTransitioningRef.current = true;
       setIsTransitioning(true);
 
-      updateData({ phaseOffset });
+      try {
+        await updateDataAsync({ phaseOffset });
+      } catch (error) {
+        clearPendingTransition();
+        void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+          source: 'PremiumPhaseSelectorScreen.calculateAndNavigate.saveFailed',
+        });
+        Alert.alert(
+          String(t('completion.errors.title', { defaultValue: 'Could not save setup' })),
+          getOnboardingSaveErrorMessage(error)
+        );
+        return;
+      }
 
       if (!isSettingsMode) {
         Analytics.onboardingQuestionAnswered({
@@ -1332,25 +1385,43 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
     [
       data.shiftSystem,
       data.startDate,
+      clearPendingTransition,
       isSettingsMode,
       navigation,
       pattern,
       returnToSettings,
-      updateData,
+      t,
+      updateDataAsync,
     ]
   );
 
-  const handleSaveSettingsSelection = useCallback(() => {
-    if (!isSettingsMode || pendingSettingsPhaseOffset === null) {
+  const handleSaveSettingsSelection = useCallback(async () => {
+    if (!isSettingsMode || pendingSettingsPhaseOffset === null || isTransitioningRef.current) {
       return;
     }
 
-    updateData({ phaseOffset: pendingSettingsPhaseOffset });
-    void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
-      source: 'PremiumPhaseSelectorScreen.handleSaveSettingsSelection',
-    });
-    returnToSettings();
-  }, [isSettingsMode, pendingSettingsPhaseOffset, returnToSettings, updateData]);
+    isTransitioningRef.current = true;
+    setIsTransitioning(true);
+
+    try {
+      await updateDataAsync({ phaseOffset: pendingSettingsPhaseOffset });
+      setPendingSettingsPhaseOffset(null);
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
+        source: 'PremiumPhaseSelectorScreen.handleSaveSettingsSelection',
+      });
+      returnToSettings();
+    } catch (error) {
+      isTransitioningRef.current = false;
+      setIsTransitioning(false);
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+        source: 'PremiumPhaseSelectorScreen.handleSaveSettingsSelection.saveFailed',
+      });
+      Alert.alert(
+        String(t('completion.errors.title', { defaultValue: 'Could not save setup' })),
+        getOnboardingSaveErrorMessage(error)
+      );
+    }
+  }, [isSettingsMode, pendingSettingsPhaseOffset, returnToSettings, t, updateDataAsync]);
 
   // Handle swipe right (select)
   const handleSwipeRight = useCallback(() => {
@@ -1397,7 +1468,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
       } else {
         // Single-day phase: Skip to calculation
         setSelectedDay(1);
-        calculateAndNavigate(selectedCard.phase, 1);
+        void calculateAndNavigate(selectedCard.phase, 1);
       }
     } else if (stage === SelectionStage.DAY_WITHIN_PHASE) {
       // Day-within-phase selection
@@ -1405,7 +1476,7 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
       if (!selectedCard || !selectedPhase) return;
 
       setSelectedDay(selectedCard.dayNumber);
-      calculateAndNavigate(selectedPhase, selectedCard.dayNumber);
+      void calculateAndNavigate(selectedPhase, selectedCard.dayNumber);
     }
   }, [
     stage,
@@ -1576,9 +1647,9 @@ export const PremiumPhaseSelectorScreen: React.FC = () => {
                 defaultValue: 'Save & Return',
               })
             )}
-            onBack={returnToSettings}
+            onBack={() => confirmDiscardPendingSettingsSelection(returnToSettings)}
             onSave={handleSaveSettingsSelection}
-            saveDisabled={pendingSettingsPhaseOffset === null}
+            saveDisabled={pendingSettingsPhaseOffset === null || isTransitioning}
             backAccessibilityLabel={String(
               t('common.backToSettings', {
                 defaultValue: 'Back to settings',

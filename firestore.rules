@@ -41,6 +41,28 @@ service cloud.firestore {
       allow read, write: if isOwner(userId);
     }
 
+    // Analytics and AI intelligence are written by Cloud Functions only.
+    // Admin SDK bypasses rules; direct client access stays denied by design.
+    match /analyticsEvents/{eventId} {
+      allow read, write: if false;
+    }
+
+    match /analyticsRealtimeDaily/{dayId} {
+      allow read, write: if false;
+    }
+
+    match /analyticsDailySummaries/{summaryId} {
+      allow read, write: if false;
+    }
+
+    match /aiDecisionQueue/{decisionId} {
+      allow read, write: if false;
+    }
+
+    match /aiDailyAnalyses/{analysisId} {
+      allow read, write: if false;
+    }
+
     // Default deny.
     match /{document=**} {
       allow read, write: if false;

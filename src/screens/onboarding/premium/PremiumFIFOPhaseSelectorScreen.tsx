@@ -156,8 +156,9 @@ const getDefaultSwingSplit = (
   workBlockDays: number,
   swingPattern?: FIFOConfig['swingPattern']
 ): SwingPatternConfig => {
-  const fallbackDays = Math.ceil(workBlockDays / 2);
-  const fallbackNights = Math.max(0, workBlockDays - fallbackDays);
+  const safeWorkBlockDays = Math.max(2, normalizePositiveInt(workBlockDays, 2));
+  const fallbackDays = Math.ceil(safeWorkBlockDays / 2);
+  const fallbackNights = Math.max(1, safeWorkBlockDays - fallbackDays);
 
   if (!swingPattern) {
     return {
@@ -169,7 +170,7 @@ const getDefaultSwingSplit = (
   const daysOnDayShift = normalizePositiveInt(swingPattern.daysOnDayShift, fallbackDays);
   const daysOnNightShift = normalizePositiveInt(swingPattern.daysOnNightShift, fallbackNights);
 
-  if (daysOnDayShift + daysOnNightShift !== workBlockDays) {
+  if (daysOnDayShift + daysOnNightShift !== safeWorkBlockDays) {
     return {
       daysOnDayShift: fallbackDays,
       daysOnNightShift: fallbackNights,
@@ -196,13 +197,21 @@ const resolveFIFOConfig = (
     fallbackWorkDays: number,
     fallbackRestDays: number,
     fallbackPattern: FIFOWorkBlockPattern
-  ): ResolvedFIFOConfig => ({
-    workBlockDays: normalizePositiveInt(source?.workBlockDays, fallbackWorkDays),
-    restBlockDays: normalizePositiveInt(source?.restBlockDays, fallbackRestDays),
-    workBlockPattern: source?.workBlockPattern ?? fallbackPattern,
-    ...(source?.swingPattern ? { swingPattern: source.swingPattern } : {}),
-    ...(source?.customWorkSequence ? { customWorkSequence: source.customWorkSequence } : {}),
-  });
+  ): ResolvedFIFOConfig => {
+    const workBlockPattern = source?.workBlockPattern ?? fallbackPattern;
+    const normalizedWorkBlockDays = normalizePositiveInt(source?.workBlockDays, fallbackWorkDays);
+
+    return {
+      workBlockDays:
+        workBlockPattern === 'swing'
+          ? Math.max(2, normalizedWorkBlockDays)
+          : normalizedWorkBlockDays,
+      restBlockDays: normalizePositiveInt(source?.restBlockDays, fallbackRestDays),
+      workBlockPattern,
+      ...(source?.swingPattern ? { swingPattern: source.swingPattern } : {}),
+      ...(source?.customWorkSequence ? { customWorkSequence: source.customWorkSequence } : {}),
+    };
+  };
 
   if (isCustomFIFOPattern && fifoConfig) {
     return toResolved(
@@ -763,7 +772,10 @@ const SwipeableFIFOCard: React.FC<SwipeableFIFOCardProps> = ({
 
   return (
     <GestureDetector gesture={composed}>
-      <Animated.View style={[styles.card, animatedStyle, getShadowStyle(index, isActive)]}>
+      <Animated.View
+        style={[styles.card, animatedStyle, getShadowStyle(index, isActive)]}
+        testID={`fifo-phase-selector-card-${card.id}`}
+      >
         {isVisualCard && (
           <LinearGradient
             colors={card.gradientColors}
@@ -980,7 +992,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<FIFOPhaseRouteProp>();
-  const { data, updateData, updateDataAsync } = useOnboarding();
+  const { data, updateDataAsync } = useOnboarding();
   const mountTime = useRef(Date.now());
   const isSettingsEntry = route.params?.entryPoint === 'settings';
   const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
@@ -1448,7 +1460,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
   }, [currentCardIndex, currentCards.length]);
 
   const calculateAndNavigate = useCallback(
-    (blockType: 'work' | 'rest', dayWithinBlock: number) => {
+    async (blockType: 'work' | 'rest', dayWithinBlock: number) => {
       if (isTransitioningRef.current) {
         return;
       }
@@ -1516,7 +1528,20 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       }
       isTransitioningRef.current = true;
       setIsTransitioning(true);
-      updateData({ phaseOffset, fifoConfig });
+
+      try {
+        await updateDataAsync({ phaseOffset, fifoConfig });
+      } catch (error) {
+        clearPendingTransition();
+        void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+          source: 'PremiumFIFOPhaseSelectorScreen.handleDaySelect.saveFailed',
+        });
+        Alert.alert(
+          String(t('completion.errors.title', { defaultValue: 'Could not save setup' })),
+          getOnboardingSaveErrorMessage(error)
+        );
+        return;
+      }
 
       if (!isSettingsMode) {
         Analytics.onboardingQuestionAnswered({
@@ -1542,6 +1567,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     },
     [
       data.startDate,
+      clearPendingTransition,
       isSettingsMode,
       isCustomFIFOPattern,
       navigation,
@@ -1552,7 +1578,8 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
       daysOnDayShift,
       daysOnNightShift,
       selectedWorkPattern,
-      updateData,
+      t,
+      updateDataAsync,
       workBlockDays,
       workBlockPattern,
     ]
@@ -1704,7 +1731,7 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
     }
 
     if (stage === SelectionStage.DAY_WITHIN_BLOCK && active.type === 'day') {
-      calculateAndNavigate(active.blockType, active.dayNumber);
+      void calculateAndNavigate(active.blockType, active.dayNumber);
     }
   }, [
     calculateAndNavigate,
@@ -1968,6 +1995,17 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
                 <Pressable
                   onPress={handleChangePattern}
                   style={styles.changePatternButton}
+                  accessibilityRole="button"
+                  accessibilityLabel={String(
+                    t('fifoPhaseSelector.swingConfig.changePattern', {
+                      defaultValue: 'Change Pattern',
+                    })
+                  )}
+                  accessibilityHint={String(
+                    t('fifoPhaseSelector.swingConfig.changePatternHint', {
+                      defaultValue: 'Go back and choose a different FIFO work-block pattern',
+                    })
+                  )}
                   testID="swing-config-change-pattern-button"
                 >
                   <Text
@@ -1991,6 +2029,26 @@ export const PremiumFIFOPhaseSelectorScreen: React.FC = () => {
                     !isSwingSplitValid && styles.swingContinueButtonDisabled,
                   ]}
                   disabled={!isSwingSplitValid}
+                  accessibilityRole="button"
+                  accessibilityLabel={String(
+                    t('fifoPhaseSelector.swingConfig.continue', {
+                      defaultValue: 'Continue',
+                    })
+                  )}
+                  accessibilityHint={
+                    isSwingSplitValid
+                      ? String(
+                          t('fifoPhaseSelector.swingConfig.continueHintValid', {
+                            defaultValue: 'Use this swing split and choose your current FIFO block',
+                          })
+                        )
+                      : String(
+                          t('fifoPhaseSelector.swingConfig.continueHintInvalid', {
+                            defaultValue: 'Fix the swing split before continuing',
+                          })
+                        )
+                  }
+                  accessibilityState={{ disabled: !isSwingSplitValid }}
                   testID="swing-config-continue-button"
                 >
                   <Text style={styles.swingContinueButtonText}>

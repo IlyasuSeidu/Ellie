@@ -136,6 +136,7 @@ Your work block runs day shifts only.
           },
         ]
       }
+      testID="fifo-phase-selector-card-swing"
     >
       <View
         colors={
@@ -250,6 +251,7 @@ Your work block runs day shifts only.
           },
         ]
       }
+      testID="fifo-phase-selector-card-straight-nights"
     >
       <View
         colors={
@@ -364,6 +366,7 @@ Your work block runs day shifts only.
           },
         ]
       }
+      testID="fifo-phase-selector-card-straight-days"
     >
       <View
         colors={

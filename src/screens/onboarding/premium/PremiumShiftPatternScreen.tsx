@@ -18,6 +18,7 @@ import {
   Image,
   ImageSourcePropType,
   InteractionManager,
+  Alert,
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -55,6 +56,7 @@ import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboarding
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 import { Analytics } from '@/utils/analytics';
+import { getOnboardingSaveErrorMessage } from '@/utils/onboardingErrorMessage';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -1048,7 +1050,7 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProp<OnboardingStackParamList, 'ShiftPattern'>>();
-  const { data, updateData } = useOnboarding();
+  const { data, updateDataAsync } = useOnboarding();
 
   // Personalization
   const firstName = data.name?.split(' ')[0] ?? '';
@@ -1207,7 +1209,7 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
     opacity: subtitleOpacity.value,
   }));
 
-  const handleSwipeRight = useCallback(() => {
+  const handleSwipeRight = useCallback(async () => {
     if (isTransitioningRef.current) return;
     const pattern = filteredPatterns[currentIndex];
     if (!pattern) return;
@@ -1232,16 +1234,30 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
       return;
     }
 
-    Analytics.onboardingQuestionAnswered({ question: 'pattern_type', answer_value: pattern.type });
-    Analytics.onboardingStepCompleted('shift_pattern', Date.now() - mountTime.current);
     isTransitioningRef.current = true;
     setIsTransitioning(true);
+
+    try {
+      await updateDataAsync({ patternType: pattern.type });
+    } catch (error) {
+      clearPendingTransitions();
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+        source: 'PremiumShiftPatternScreen.handleSwipeRight.saveFailed',
+      });
+      Alert.alert(
+        String(t('completion.errors.title', { defaultValue: 'Could not save setup' })),
+        getOnboardingSaveErrorMessage(error)
+      );
+      return;
+    }
+
+    Analytics.onboardingQuestionAnswered({ question: 'pattern_type', answer_value: pattern.type });
+    Analytics.onboardingStepCompleted('shift_pattern', Date.now() - mountTime.current);
 
     // Navigate to next screen based on pattern type
     interactionHandleRef.current = InteractionManager.runAfterInteractions(() => {
       navigationTimeoutRef.current = setTimeout(() => {
         navigationTimeoutRef.current = null;
-        updateData({ patternType: pattern.type });
         if (onContinue) {
           onContinue(pattern.type);
           return;
@@ -1252,25 +1268,44 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
     });
   }, [
     currentIndex,
+    clearPendingTransitions,
     data,
     filteredPatterns,
     getSettingsCustomRouteParams,
     isSettingsMode,
     navigation,
     onContinue,
-    updateData,
+    t,
+    updateDataAsync,
   ]);
 
-  const handleSaveSettingsPattern = useCallback(() => {
-    if (!isSettingsMode || pendingSettingsPatternType === null) {
+  const handleSaveSettingsPattern = useCallback(async () => {
+    if (!isSettingsMode || pendingSettingsPatternType === null || isTransitioningRef.current) {
       return;
     }
-    updateData({ patternType: pendingSettingsPatternType });
-    void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
-      source: 'PremiumShiftPatternScreen.handleSaveSettingsPattern',
-    });
-    closeSettingsEditor();
-  }, [closeSettingsEditor, isSettingsMode, pendingSettingsPatternType, updateData]);
+
+    isTransitioningRef.current = true;
+    setIsTransitioning(true);
+
+    try {
+      await updateDataAsync({ patternType: pendingSettingsPatternType });
+      setPendingSettingsPatternType(null);
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
+        source: 'PremiumShiftPatternScreen.handleSaveSettingsPattern',
+      });
+      closeSettingsEditor();
+    } catch (error) {
+      isTransitioningRef.current = false;
+      setIsTransitioning(false);
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+        source: 'PremiumShiftPatternScreen.handleSaveSettingsPattern.saveFailed',
+      });
+      Alert.alert(
+        String(t('completion.errors.title', { defaultValue: 'Could not save setup' })),
+        getOnboardingSaveErrorMessage(error)
+      );
+    }
+  }, [closeSettingsEditor, isSettingsMode, pendingSettingsPatternType, t, updateDataAsync]);
 
   const handleSwipeUp = useCallback(() => {
     if (isTransitioningRef.current) return;
@@ -1294,15 +1329,29 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
     setCurrentIndex(0);
   }, []);
 
-  const handleContinueCustom = useCallback(() => {
+  const handleContinueCustom = useCallback(async () => {
     if (isTransitioningRef.current) return;
     const customPatternType =
       rosterType === 'fifo' ? ShiftPattern.FIFO_CUSTOM : ShiftPattern.CUSTOM;
-    if (!isSettingsMode) {
-      updateData({ patternType: customPatternType });
-    }
     isTransitioningRef.current = true;
     setIsTransitioning(true);
+
+    if (!isSettingsMode) {
+      try {
+        await updateDataAsync({ patternType: customPatternType });
+      } catch (error) {
+        clearPendingTransitions();
+        void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+          source: 'PremiumShiftPatternScreen.handleContinueCustom.saveFailed',
+        });
+        Alert.alert(
+          String(t('completion.errors.title', { defaultValue: 'Could not save setup' })),
+          getOnboardingSaveErrorMessage(error)
+        );
+        return;
+      }
+    }
+
     interactionHandleRef.current = InteractionManager.runAfterInteractions(() => {
       navigationTimeoutRef.current = setTimeout(() => {
         navigationTimeoutRef.current = null;
@@ -1316,7 +1365,16 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
         goToNextScreen(navigation, 'ShiftPattern', { ...data, patternType: customPatternType });
       }, 300);
     });
-  }, [data, getSettingsCustomRouteParams, isSettingsMode, navigation, rosterType, updateData]);
+  }, [
+    clearPendingTransitions,
+    data,
+    getSettingsCustomRouteParams,
+    isSettingsMode,
+    navigation,
+    rosterType,
+    t,
+    updateDataAsync,
+  ]);
 
   const visibleCards = useMemo(
     () => filteredPatterns.slice(currentIndex, currentIndex + 4),
@@ -1337,7 +1395,7 @@ export const PremiumShiftPatternScreen: React.FC<PremiumShiftPatternScreenProps>
             saveLabel={String(t('common.saveAndReturn', { defaultValue: 'Save & Return' }))}
             onBack={closeSettingsEditor}
             onSave={handleSaveSettingsPattern}
-            saveDisabled={pendingSettingsPatternType === null}
+            saveDisabled={pendingSettingsPatternType === null || isTransitioning}
             backAccessibilityLabel={String(
               t('common.backToSettings', { defaultValue: 'Back to Settings' })
             )}

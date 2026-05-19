@@ -2518,13 +2518,16 @@ exports[`PremiumFIFOCustomPatternScreen matches snapshot 1`] = `
             }
           >
             <View
+              accessibilityHint="Select this work-block shift style"
+              accessibilityLabel="Straight Days. All site days are day shift."
+              accessibilityRole="button"
               accessibilityState={
                 {
                   "busy": undefined,
                   "checked": undefined,
                   "disabled": undefined,
                   "expanded": undefined,
-                  "selected": undefined,
+                  "selected": true,
                 }
               }
               accessibilityValue={
@@ -2677,13 +2680,16 @@ exports[`PremiumFIFOCustomPatternScreen matches snapshot 1`] = `
               </View>
             </View>
             <View
+              accessibilityHint="Select this work-block shift style"
+              accessibilityLabel="Straight Nights. All site days are night shift."
+              accessibilityRole="button"
               accessibilityState={
                 {
                   "busy": undefined,
                   "checked": undefined,
                   "disabled": undefined,
                   "expanded": undefined,
-                  "selected": undefined,
+                  "selected": false,
                 }
               }
               accessibilityValue={
@@ -2801,13 +2807,16 @@ exports[`PremiumFIFOCustomPatternScreen matches snapshot 1`] = `
               </View>
             </View>
             <View
+              accessibilityHint="Select this work-block shift style"
+              accessibilityLabel="Swing (Days + Nights). Site block includes both day shifts and night shifts."
+              accessibilityRole="button"
               accessibilityState={
                 {
                   "busy": undefined,
                   "checked": undefined,
                   "disabled": undefined,
                   "expanded": undefined,
-                  "selected": undefined,
+                  "selected": false,
                 }
               }
               accessibilityValue={

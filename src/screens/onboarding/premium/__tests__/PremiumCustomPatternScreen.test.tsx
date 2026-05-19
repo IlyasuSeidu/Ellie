@@ -446,6 +446,7 @@ describe('PremiumCustomPatternScreen', () => {
       };
 
       const updateDataMock = jest.fn();
+      const updateDataAsyncMock = jest.fn().mockResolvedValue(undefined);
       const onboardingSpy = jest.spyOn(OnboardingContext, 'useOnboarding').mockReturnValue({
         data: {
           shiftSystem: '2-shift',
@@ -454,6 +455,7 @@ describe('PremiumCustomPatternScreen', () => {
           customPattern: { daysOn: 8, nightsOn: 8, daysOff: 2 },
         },
         updateData: updateDataMock,
+        updateDataAsync: updateDataAsyncMock,
       } as unknown as ReturnType<typeof OnboardingContext.useOnboarding>);
 
       const { getByLabelText } = render(<PremiumCustomPatternScreen />);
@@ -485,6 +487,7 @@ describe('PremiumCustomPatternScreen', () => {
       };
 
       const updateDataMock = jest.fn();
+      const updateDataAsyncMock = jest.fn().mockResolvedValue(undefined);
       const onboardingSpy = jest.spyOn(OnboardingContext, 'useOnboarding').mockReturnValue({
         data: {
           shiftSystem: '2-shift',
@@ -492,6 +495,7 @@ describe('PremiumCustomPatternScreen', () => {
           patternType: ShiftPattern.CUSTOM,
         },
         updateData: updateDataMock,
+        updateDataAsync: updateDataAsyncMock,
       } as unknown as ReturnType<typeof OnboardingContext.useOnboarding>);
 
       const runAfterInteractionsSpy = jest
@@ -506,7 +510,7 @@ describe('PremiumCustomPatternScreen', () => {
       fireEvent.press(getByLabelText('Save your rotation and continue'));
 
       await waitFor(() => {
-        expect(updateDataMock).toHaveBeenCalledWith(
+        expect(updateDataAsyncMock).toHaveBeenCalledWith(
           expect.objectContaining({
             patternType: ShiftPattern.CUSTOM,
             customPattern: expect.objectContaining({ daysOn: 4, nightsOn: 4, daysOff: 4 }),

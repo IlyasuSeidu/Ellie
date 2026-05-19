@@ -8,7 +8,7 @@
 
 import React from 'react';
 import { render, fireEvent, waitFor, act } from '@testing-library/react-native';
-import { InteractionManager } from 'react-native';
+import { Alert, InteractionManager } from 'react-native';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
 import { PremiumRosterTypeScreen } from '../PremiumRosterTypeScreen';
 import { asyncStorageService } from '@/services/AsyncStorageService';
@@ -156,6 +156,16 @@ function simulateSwipe(event: {
   }
 }
 
+async function finishRosterSelection() {
+  await waitFor(() => {
+    expect(asyncStorageService.set).toHaveBeenCalled();
+  });
+
+  act(() => {
+    jest.advanceTimersByTime(350);
+  });
+}
+
 // ── Tests ──────────────────────────────────────────────────────────
 
 describe('PremiumRosterTypeScreen', () => {
@@ -244,9 +254,7 @@ describe('PremiumRosterTypeScreen', () => {
         simulateSwipe({ translationX: 180, translationY: 0 });
       });
 
-      act(() => {
-        jest.advanceTimersByTime(350);
-      });
+      await finishRosterSelection();
 
       await waitFor(() => {
         expect(goToNextScreen).toHaveBeenCalledWith(
@@ -266,9 +274,7 @@ describe('PremiumRosterTypeScreen', () => {
         simulateSwipe({ translationX: 180, translationY: 0 });
       });
 
-      act(() => {
-        jest.advanceTimersByTime(350);
-      });
+      await finishRosterSelection();
 
       await waitFor(() => {
         expect(goToNextScreen).toHaveBeenCalledWith(
@@ -288,9 +294,7 @@ describe('PremiumRosterTypeScreen', () => {
         simulateSwipe({ translationX: 50, translationY: 0, velocityX: 600 });
       });
 
-      act(() => {
-        jest.advanceTimersByTime(350);
-      });
+      await finishRosterSelection();
 
       await waitFor(() => {
         expect(goToNextScreen).toHaveBeenCalledWith(
@@ -299,6 +303,25 @@ describe('PremiumRosterTypeScreen', () => {
           expect.objectContaining({ rosterType: 'rotating' })
         );
       });
+    });
+
+    it('does not advance if roster type persistence fails', async () => {
+      const alertSpy = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
+      (asyncStorageService.set as jest.Mock).mockRejectedValueOnce(new Error('storage full'));
+
+      renderWithContext();
+
+      act(() => {
+        simulateSwipe({ translationX: 180, translationY: 0 });
+      });
+
+      await waitFor(() => {
+        expect(alertSpy).toHaveBeenCalledWith(
+          'Could not save setup',
+          'Your device storage is full. Free up space and try again.'
+        );
+      });
+      expect(goToNextScreen).not.toHaveBeenCalled();
     });
   });
 

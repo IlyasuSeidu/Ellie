@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import { Alert } from 'react-native';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
 import { PremiumFIFOCustomPatternScreen } from '../PremiumFIFOCustomPatternScreen';
 import { goToNextScreen } from '@/utils/onboardingNavigation';
@@ -192,7 +193,7 @@ describe('PremiumFIFOCustomPatternScreen', () => {
     fireEvent.press(getByLabelText('Increase Days at Site (Work Block)'));
 
     await waitFor(() => {
-      expect(getByText('Split total: 14/15 days')).toBeTruthy();
+      expect(getByText('Split total: 15/15 days')).toBeTruthy();
     });
 
     fireEvent.press(getByLabelText('Increase Days on Day Shift'));
@@ -251,6 +252,23 @@ describe('PremiumFIFOCustomPatternScreen', () => {
         })
       );
     });
+  });
+
+  it('does not leave FIFO custom setup when persistence fails', async () => {
+    const alertSpy = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
+    (asyncStorageService.set as jest.Mock).mockRejectedValueOnce(new Error('storage full'));
+
+    const { getByTestId } = renderWithContext();
+
+    fireEvent.press(getByTestId('fifo-custom-save-button'));
+
+    await waitFor(() => {
+      expect(alertSpy).toHaveBeenCalledWith(
+        'Could not save setup',
+        'Your device storage is full. Free up space and try again.'
+      );
+    });
+    expect(goToNextScreen).not.toHaveBeenCalled();
   });
 
   it('preserves existing custom FIFO sequence and travel metadata in settings mode', async () => {

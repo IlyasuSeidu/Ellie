@@ -10,6 +10,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 import { Analytics } from '@/utils/analytics';
 
+const mockUpdateDataAsync = jest.fn();
+
 // Mock haptics
 // Mock AsyncStorage
 jest.mock('@/services/AsyncStorageService', () => ({
@@ -93,6 +95,7 @@ jest.mock('@/contexts/OnboardingContext', () => {
     useOnboarding: () => ({
       data: mockData,
       updateData: jest.fn(),
+      updateDataAsync: mockUpdateDataAsync,
       resetData: jest.fn(),
     }),
   };
@@ -109,6 +112,7 @@ const renderWithProviders = (component: React.ReactElement) => {
 describe('PremiumShiftTimeInputScreen', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockUpdateDataAsync.mockResolvedValue(undefined);
   });
 
   describe('Initial Rendering', () => {

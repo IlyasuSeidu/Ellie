@@ -603,6 +603,24 @@ describe('PremiumFIFOPhaseSelectorScreen', () => {
     });
   });
 
+  it('does not continue from FIFO day selection when persistence fails', async () => {
+    const alertSpy = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
+    (asyncStorageService.set as jest.Mock).mockRejectedValueOnce(new Error('storage full'));
+
+    renderWithContext();
+    swipeRight(); // stage 1: select straight-days pattern
+    swipeRight(); // stage 2: select work block
+    swipeRight(); // day 1 select
+
+    await waitFor(() => {
+      expect(alertSpy).toHaveBeenCalledWith(
+        'Could not save setup',
+        'Your device storage is full. Free up space and try again.'
+      );
+    });
+    expect(goToNextScreen).not.toHaveBeenCalled();
+  });
+
   it('uses standard FIFO preset config instead of stale custom fifoConfig', async () => {
     (asyncStorageService.get as jest.Mock).mockResolvedValueOnce({
       rosterType: 'fifo',

@@ -25,6 +25,7 @@ import {
   Image,
   ImageSourcePropType,
   BackHandler,
+  Alert,
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -65,6 +66,7 @@ import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsD
 import { getDefaultFIFOConfig } from '@/utils/shiftUtils';
 import { Analytics } from '@/utils/analytics';
 import { formatLocalizedNumber, formatLocalizedTime } from '@/utils/i18nFormat';
+import { getOnboardingSaveErrorMessage } from '@/utils/onboardingErrorMessage';
 
 // Helper to get pattern display info
 const getPatternInfo = (
@@ -386,7 +388,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProp<OnboardingStackParamList, 'ShiftTimeInput'>>();
   const insets = useSafeAreaInsets();
-  const { data, updateData } = useOnboarding();
+  const { data, updateDataAsync } = useOnboarding();
   const mountTime = useRef(Date.now());
   const isSettingsEntry = route.params?.entryPoint === 'settings';
   const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
@@ -571,6 +573,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   const [showCustomInput, setShowCustomInput] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [timeError, setTimeError] = useState<string | null>(null);
+  const [isSavingShiftTime, setIsSavingShiftTime] = useState(false);
 
   const resetStageInput = useCallback((shiftType: StageShiftType) => {
     setSelectedPreset(null);
@@ -696,7 +699,8 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
   const hasExistingCurrentStageTime = Boolean(
     existingCurrentStageTime?.startTime && existingCurrentStageTime?.endTime
   );
-  const canContinue = isValid() || (isSettingsMode && hasExistingCurrentStageTime);
+  const canContinue =
+    !isSavingShiftTime && (isValid() || (isSettingsMode && hasExistingCurrentStageTime));
 
   // Handlers
   const handlePresetSelect = (presetId: string) => {
@@ -787,7 +791,11 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     []
   );
 
-  const handleContinue = useCallback(() => {
+  const handleContinue = useCallback(async () => {
+    if (isSavingShiftTime) {
+      return;
+    }
+
     const hasValidSelection = isValid();
     if (!hasValidSelection && !(isSettingsMode && hasExistingCurrentStageTime)) {
       void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
@@ -822,10 +830,6 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     };
     setCollectedShiftTimes(updatedShiftTimes);
 
-    void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
-      source: 'PremiumShiftTimeInputScreen.handleContinue.success',
-    });
-
     // Build the new shiftTimes structure
     const shiftTimes: OnboardingData['shiftTimes'] = {};
     if (shiftSystem === ShiftSystem.TWO_SHIFT) {
@@ -851,8 +855,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     const primaryLegacyShift = updatedShiftTimes[requiredShiftTypes[0]] ?? stageShiftTime;
     const analyticsQuestions = getAnalyticsQuestionKeys(currentShiftType);
 
-    // Save to context with new structure
-    updateData({
+    const updates: Partial<OnboardingData> = {
       shiftTimes,
       // Also save to legacy fields for backwards compatibility (first shift type)
       shiftStartTime: primaryLegacyShift?.startTime,
@@ -860,6 +863,26 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
       shiftDuration: duration,
       shiftType: hasValidSelection ? getShiftType() : (data.shiftType ?? currentShiftType),
       isCustomShiftTime: hasValidSelection ? selectedPreset === 'custom' : data.isCustomShiftTime,
+    };
+
+    setIsSavingShiftTime(true);
+
+    try {
+      await updateDataAsync(updates);
+    } catch (error) {
+      setIsSavingShiftTime(false);
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+        source: 'PremiumShiftTimeInputScreen.handleContinue.saveFailed',
+      });
+      Alert.alert(
+        String(t('completion.errors.title', { defaultValue: 'Could not save setup' })),
+        getOnboardingSaveErrorMessage(error)
+      );
+      return;
+    }
+
+    void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
+      source: 'PremiumShiftTimeInputScreen.handleContinue.success',
     });
 
     if (!isSettingsMode) {
@@ -874,10 +897,13 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     }
 
     if (onContinue) {
+      setIsSavingShiftTime(false);
       onContinue();
+      return;
     }
 
     if (isSettingsMode) {
+      setIsSavingShiftTime(false);
       returnToSettings();
       return;
     }
@@ -896,6 +922,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
       const nextShiftType = requiredShiftTypes[nextStageIndex];
       setCurrentStageIndex(nextStageIndex);
       resetStageInput(nextShiftType);
+      setIsSavingShiftTime(false);
     }
   }, [
     isValid,
@@ -911,7 +938,8 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     currentStageIndex,
     requiredShiftTypes,
     shiftSystem,
-    updateData,
+    isSavingShiftTime,
+    updateDataAsync,
     onContinue,
     isSettingsMode,
     hasExistingCurrentStageTime,
@@ -923,6 +951,7 @@ export const PremiumShiftTimeInputScreen: React.FC<PremiumShiftTimeInputScreenPr
     resetStageInput,
     returnToSettings,
     navigation,
+    t,
   ]);
 
   const handleBack = useCallback(() => {

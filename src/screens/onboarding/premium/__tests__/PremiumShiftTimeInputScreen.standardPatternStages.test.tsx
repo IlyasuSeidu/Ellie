@@ -99,12 +99,14 @@ let mockOnboardingData: Record<string, unknown> = {
   },
 };
 const mockUpdateData = jest.fn();
+const mockUpdateDataAsync = jest.fn();
 
 jest.mock('@/contexts/OnboardingContext', () => ({
   ...jest.requireActual('@/contexts/OnboardingContext'),
   useOnboarding: () => ({
     data: mockOnboardingData,
     updateData: mockUpdateData,
+    updateDataAsync: mockUpdateDataAsync,
     resetData: jest.fn(),
   }),
 }));
@@ -119,6 +121,7 @@ const renderScreen = () =>
 describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockUpdateDataAsync.mockResolvedValue(undefined);
     mockRouteParams = undefined;
     mockUpdateData.mockReset();
     mockGetParent.mockReturnValue({
@@ -224,7 +227,7 @@ describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
     expect(getByText('Step 2 of 2')).toBeTruthy();
   });
 
-  it('saves and returns directly from a later stage when entered from settings', () => {
+  it('saves and returns directly from a later stage when entered from settings', async () => {
     mockRouteParams = {
       entryPoint: 'settings',
       returnToMainOnSelect: true,
@@ -243,8 +246,10 @@ describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
     const { getByLabelText, queryByText } = renderScreen();
     fireEvent.press(getByLabelText('Save shift time and return to settings'));
 
-    expect(mockRootGoBack).toHaveBeenCalledTimes(1);
-    expect(mockUpdateData).toHaveBeenCalledWith(
+    await waitFor(() => {
+      expect(mockRootGoBack).toHaveBeenCalledTimes(1);
+    });
+    expect(mockUpdateDataAsync).toHaveBeenCalledWith(
       expect.objectContaining({
         shiftTimes: expect.objectContaining({
           dayShift: expect.any(Object),
@@ -255,7 +260,7 @@ describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
     expect(queryByText('Next Shift Type')).toBeNull();
   });
 
-  it('saves and returns directly from first stage when entered from settings', () => {
+  it('saves and returns directly from first stage when entered from settings', async () => {
     mockRouteParams = {
       entryPoint: 'settings',
       returnToMainOnSelect: true,
@@ -273,8 +278,10 @@ describe('PremiumShiftTimeInputScreen - Standard Pattern Stages', () => {
     const { getByLabelText } = renderScreen();
     fireEvent.press(getByLabelText('Save shift time and return to settings'));
 
-    expect(mockRootGoBack).toHaveBeenCalledTimes(1);
-    expect(mockUpdateData).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(mockRootGoBack).toHaveBeenCalledTimes(1);
+    });
+    expect(mockUpdateDataAsync).toHaveBeenCalledTimes(1);
   });
 
   it('keeps primary action enabled in settings-entry mode when current stage already has saved time', () => {

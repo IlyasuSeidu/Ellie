@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { render, fireEvent, act } from '@testing-library/react-native';
+import { render, fireEvent, act, waitFor } from '@testing-library/react-native';
 import { AccessibilityInfo } from 'react-native';
 import {
   PremiumStartDateScreen,
@@ -313,7 +313,7 @@ describe('PremiumStartDateScreen', () => {
     });
 
     it('continues to next screen when phaseOffset is available', async () => {
-      const updateDataMock = jest.fn();
+      const updateDataAsyncMock = jest.fn().mockResolvedValue(undefined);
       const onboardingSpy = jest.spyOn(OnboardingContext, 'useOnboarding').mockReturnValue({
         data: {
           name: 'Alex',
@@ -324,7 +324,8 @@ describe('PremiumStartDateScreen', () => {
           patternType: 'standard_4_4_4',
           phaseOffset: 2,
         },
-        updateData: updateDataMock,
+        updateData: jest.fn(),
+        updateDataAsync: updateDataAsyncMock,
       } as unknown as ReturnType<typeof OnboardingContext.useOnboarding>);
 
       const runAfterInteractionsSpy = jest
@@ -338,8 +339,10 @@ describe('PremiumStartDateScreen', () => {
       const { getByText } = render(<PremiumStartDateScreen />);
       fireEvent.press(getByText('Set Shift Times'));
 
-      expect(goToNextScreen).toHaveBeenCalledWith(expect.anything(), 'StartDate');
-      expect(updateDataMock).toHaveBeenCalledWith(
+      await waitFor(() => {
+        expect(goToNextScreen).toHaveBeenCalledWith(expect.anything(), 'StartDate');
+      });
+      expect(updateDataAsyncMock).toHaveBeenCalledWith(
         expect.objectContaining({
           startDate: expect.any(Date),
         })
@@ -350,12 +353,12 @@ describe('PremiumStartDateScreen', () => {
     });
 
     it('re-anchors onboarding phaseOffset to the selected cycle reference date', async () => {
-      const updateDataMock = jest.fn();
+      const updateDataAsyncMock = jest.fn().mockResolvedValue(undefined);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       const selectedStartDate = new Date(today);
       selectedStartDate.setDate(selectedStartDate.getDate() - 6);
-      const selectedPhasePosition = 5; // Night day 2 in 4-4-4
+      const selectedPhasePosition = 5;
       const cycleLength = 12;
       const expectedAnchoredPhaseOffset =
         (((selectedPhasePosition - (6 % cycleLength)) % cycleLength) + cycleLength) % cycleLength;
@@ -371,7 +374,8 @@ describe('PremiumStartDateScreen', () => {
           phaseOffset: selectedPhasePosition,
           startDate: selectedStartDate,
         },
-        updateData: updateDataMock,
+        updateData: jest.fn(),
+        updateDataAsync: updateDataAsyncMock,
       } as unknown as ReturnType<typeof OnboardingContext.useOnboarding>);
 
       const runAfterInteractionsSpy = jest
@@ -385,19 +389,21 @@ describe('PremiumStartDateScreen', () => {
       const { getByText } = render(<PremiumStartDateScreen />);
       fireEvent.press(getByText('Set Shift Times'));
 
-      expect(updateDataMock).toHaveBeenCalledWith(
-        expect.objectContaining({
-          startDate: expect.any(Date),
-          phaseOffset: expectedAnchoredPhaseOffset,
-        })
-      );
+      await waitFor(() => {
+        expect(updateDataAsyncMock).toHaveBeenCalledWith(
+          expect.objectContaining({
+            startDate: expect.any(Date),
+            phaseOffset: expectedAnchoredPhaseOffset,
+          })
+        );
+      });
 
       onboardingSpy.mockRestore();
       runAfterInteractionsSpy.mockRestore();
     });
 
     it('uses onContinue callback when provided', async () => {
-      const updateDataMock = jest.fn();
+      const updateDataAsyncMock = jest.fn().mockResolvedValue(undefined);
       const onboardingSpy = jest.spyOn(OnboardingContext, 'useOnboarding').mockReturnValue({
         data: {
           name: 'Alex',
@@ -408,7 +414,8 @@ describe('PremiumStartDateScreen', () => {
           patternType: 'standard_4_4_4',
           phaseOffset: 1,
         },
-        updateData: updateDataMock,
+        updateData: jest.fn(),
+        updateDataAsync: updateDataAsyncMock,
       } as unknown as ReturnType<typeof OnboardingContext.useOnboarding>);
 
       const runAfterInteractionsSpy = jest
@@ -422,11 +429,45 @@ describe('PremiumStartDateScreen', () => {
       const { getByText } = render(<PremiumStartDateScreen onContinue={mockOnContinue} />);
       fireEvent.press(getByText('Set Shift Times'));
 
-      expect(mockOnContinue).toHaveBeenCalled();
-      expect(updateDataMock).toHaveBeenCalled();
+      await waitFor(() => {
+        expect(mockOnContinue).toHaveBeenCalled();
+      });
+      expect(updateDataAsyncMock).toHaveBeenCalled();
       expect(goToNextScreen).not.toHaveBeenCalled();
       onboardingSpy.mockRestore();
       runAfterInteractionsSpy.mockRestore();
+    });
+
+    it('does not advance when saving the start date fails', async () => {
+      const updateDataAsyncMock = jest.fn().mockRejectedValue(new Error('storage unavailable'));
+      const alertSpy = jest
+        .spyOn(require('react-native').Alert, 'alert')
+        .mockImplementation(jest.fn());
+      const onboardingSpy = jest.spyOn(OnboardingContext, 'useOnboarding').mockReturnValue({
+        data: {
+          name: 'Alex',
+          occupation: 'Engineer',
+          company: 'Site',
+          country: 'US',
+          shiftSystem: '2-shift',
+          patternType: 'standard_4_4_4',
+          phaseOffset: 1,
+        },
+        updateData: jest.fn(),
+        updateDataAsync: updateDataAsyncMock,
+      } as unknown as ReturnType<typeof OnboardingContext.useOnboarding>);
+
+      const { getByText } = render(<PremiumStartDateScreen />);
+      fireEvent.press(getByText('Set Shift Times'));
+
+      await waitFor(() => {
+        expect(alertSpy).toHaveBeenCalled();
+      });
+      expect(goToNextScreen).not.toHaveBeenCalled();
+      expect(mockOnContinue).not.toHaveBeenCalled();
+
+      onboardingSpy.mockRestore();
+      alertSpy.mockRestore();
     });
 
     it('handles back via callback and navigation fallback', () => {
@@ -465,13 +506,13 @@ describe('PremiumStartDateScreen', () => {
       expect(mockGoBack).not.toHaveBeenCalled();
     });
 
-    it('forward saves current start date and exits to settings without onboarding progression', () => {
+    it('forward saves current start date and exits to settings without onboarding progression', async () => {
       mockRouteParams = {
         entryPoint: 'settings',
         returnToMainOnSelect: true,
       };
 
-      const updateDataMock = jest.fn();
+      const updateDataAsyncMock = jest.fn().mockResolvedValue(undefined);
       const onboardingSpy = jest.spyOn(OnboardingContext, 'useOnboarding').mockReturnValue({
         data: {
           name: 'Alex',
@@ -482,7 +523,8 @@ describe('PremiumStartDateScreen', () => {
           patternType: 'standard_4_4_4',
           startDate: '2026-03-06T00:00:00.000Z',
         },
-        updateData: updateDataMock,
+        updateData: jest.fn(),
+        updateDataAsync: updateDataAsyncMock,
       } as unknown as ReturnType<typeof OnboardingContext.useOnboarding>);
 
       const runAfterInteractionsSpy = jest
@@ -496,12 +538,14 @@ describe('PremiumStartDateScreen', () => {
       const { getByText } = render(<PremiumStartDateScreen />);
       fireEvent.press(getByText('Save & Return'));
 
-      expect(updateDataMock).toHaveBeenCalledWith(
-        expect.objectContaining({
-          startDate: expect.any(Date),
-          phaseOffset: 0,
-        })
-      );
+      await waitFor(() => {
+        expect(updateDataAsyncMock).toHaveBeenCalledWith(
+          expect.objectContaining({
+            startDate: expect.any(Date),
+            phaseOffset: 0,
+          })
+        );
+      });
       expect(mockRootGoBack).toHaveBeenCalled();
       expect(goToNextScreen).not.toHaveBeenCalled();
 

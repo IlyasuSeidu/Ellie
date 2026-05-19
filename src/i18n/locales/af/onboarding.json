@@ -429,7 +429,12 @@
       "off": "Af dae"
     },
     "title_named": "Waar is jy nou in jou siklus, {{name}}?",
-    "anticipation": "Byna gereed. Nog een stap en ons wys vir jou 'n voorskou van jou volgende 3 maande."
+    "anticipation": "Byna gereed. Nog een stap en ons wys vir jou 'n voorskou van jou volgende 3 maande.",
+    "settingsDiscard": {
+      "title": "Gooi ongestoorde rotasie-keuse weg?",
+      "message": "Jy het ’n nuwe rotasiedag gekies maar dit nog nie gestoor nie. Verlaat sonder om te stoor?",
+      "confirm": "Gooi keuse weg"
+    }
   },
   "fifoPhaseSelector": {
     "title": {
@@ -488,7 +493,10 @@
       "splitTotal": "Gedeelde totaal: {{swingSplitTotal}}/{{workBlockDays}} dae",
       "validation": "Swaaiverdeling moet gelyk wees aan {{workBlockDays}} dae met ten minste 1 dag op elke skof.",
       "changePattern": "Verander patroon",
-      "continue": "Gaan voort"
+      "continue": "Gaan voort",
+      "changePatternHint": "Gaan terug en kies ’n ander FIFO-werkblokpatroon",
+      "continueHintValid": "Gebruik hierdie swing-verdeling en kies jou huidige FIFO-blok",
+      "continueHintInvalid": "Maak die swing-verdeling reg voordat jy voortgaan"
     },
     "days": {
       "shared": {
@@ -969,7 +977,8 @@
         "title": "Pasgemaakte volgorde",
         "description": "Behou jou bestaande pasgemaakte dag-/nagwerkvolgorde."
       }
-    }
+    },
+    "workPatternSelectHint": "Kies hierdie skofstyl vir die werkblok"
   },
   "progressHeader": {
     "goBackA11y": "Gaan terug",

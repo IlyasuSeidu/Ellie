@@ -1,6 +1,6 @@
 import React from 'react';
 import { act, render, waitFor } from '@testing-library/react-native';
-import { InteractionManager } from 'react-native';
+import { Alert, InteractionManager } from 'react-native';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
 import { PremiumPhaseSelectorScreen } from '../PremiumPhaseSelectorScreen';
 import { asyncStorageService } from '@/services/AsyncStorageService';
@@ -259,7 +259,13 @@ describe('PremiumPhaseSelectorScreen flow accuracy', () => {
         expect(latestPayload).toEqual(expect.objectContaining({ phaseOffset: 5 }));
       });
 
-      expect(mockNavigate).toHaveBeenCalledWith('StartDate');
+      act(() => {
+        jest.runOnlyPendingTimers();
+      });
+
+      await waitFor(() => {
+        expect(mockNavigate).toHaveBeenCalledWith('StartDate');
+      });
     } finally {
       jest.useRealTimers();
       interactionSpy.mockRestore();
@@ -310,9 +316,44 @@ describe('PremiumPhaseSelectorScreen flow accuracy', () => {
         const latestPayload = writes[writes.length - 1]?.[0];
         expect(latestPayload).toEqual(expect.objectContaining({ phaseOffset: 5 }));
       });
+
+      act(() => {
+        jest.runOnlyPendingTimers();
+      });
     } finally {
       jest.useRealTimers();
       interactionSpy.mockRestore();
     }
+  });
+
+  it('keeps the user on phase selection when saving phaseOffset fails', async () => {
+    jest.mocked(loadPersistedOnboardingData).mockResolvedValue({
+      shiftSystem: '2-shift',
+      rosterType: 'rotating',
+      patternType: ShiftPattern.STANDARD_4_4_4,
+    });
+    jest.mocked(persistOnboardingData).mockRejectedValueOnce(new Error('storage unavailable'));
+    const alertSpy = jest.spyOn(Alert, 'alert').mockImplementation(jest.fn());
+
+    const { getByText } = renderWithContext();
+
+    await waitFor(() => {
+      expect(getByText('Day Shift')).toBeTruthy();
+    });
+
+    swipeRight();
+
+    await waitFor(() => {
+      expect(getByText('Which day of Day Shift are you on?')).toBeTruthy();
+    });
+
+    swipeRight();
+
+    await waitFor(() => {
+      expect(alertSpy).toHaveBeenCalled();
+    });
+
+    expect(mockNavigate).not.toHaveBeenCalled();
+    alertSpy.mockRestore();
   });
 });

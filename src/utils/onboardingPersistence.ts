@@ -6,6 +6,7 @@ import { migrateOnboardingDataToV2 } from '@/utils/migrationUtils';
 import { parseCalendarDate } from '@/utils/dateUtils';
 
 const durationSchema = z.union([z.literal(8), z.literal(12)]);
+const shiftTypeSchema = z.enum(['day', 'night', 'morning', 'afternoon', 'off']);
 
 const shiftTimeSchema = z
   .object({
@@ -38,7 +39,7 @@ const fifoConfigSchema = z
       })
       .strict()
       .optional(),
-    customWorkSequence: z.array(z.string()).optional(),
+    customWorkSequence: z.array(shiftTypeSchema).optional(),
     flyInDay: z.number().int().positive().optional(),
     flyOutDay: z.number().int().positive().optional(),
     siteName: z.string().optional(),

@@ -452,7 +452,12 @@
       "off": "Jours fériés"
     },
     "title_named": "Où en es-tu dans ton cycle en ce moment, {{name}} ?",
-    "anticipation": "On y est presque. Encore une étape et nous vous montrerons un aperçu de vos 3 prochains mois."
+    "anticipation": "On y est presque. Encore une étape et nous vous montrerons un aperçu de vos 3 prochains mois.",
+    "settingsDiscard": {
+      "title": "Ignorer la sélection de rotation non enregistrée ?",
+      "message": "Vous avez choisi un nouveau jour de rotation, mais vous ne l’avez pas encore enregistré. Quitter sans enregistrer ?",
+      "confirm": "Ignorer la sélection"
+    }
   },
   "fifoPhaseSelector": {
     "title": {
@@ -511,7 +516,10 @@
       "splitTotal": "Total fractionné : {{swingSplitTotal}}/{{workBlockDays}} jours",
       "validation": "Le fractionnement du swing doit être égal à {{workBlockDays}} jours avec au moins 1 jour sur chaque quart de travail.",
       "changePattern": "Changer de modèle",
-      "continue": "Continuer"
+      "continue": "Continuer",
+      "changePatternHint": "Revenez en arrière et choisissez un autre modèle FIFO",
+      "continueHintValid": "Utilisez cette répartition swing et choisissez votre bloc FIFO actuel",
+      "continueHintInvalid": "Corrigez la répartition swing avant de continuer"
     },
     "days": {
       "shared": {
@@ -992,7 +1000,8 @@
         "title": "Séquence personnalisée",
         "description": "Conservez votre séquence personnalisée actuelle jour/nuit."
       }
-    }
+    },
+    "workPatternSelectHint": "Sélectionnez ce style de quart pour le bloc de travail"
   },
   "progressHeader": {
     "goBackA11y": "Retourner",

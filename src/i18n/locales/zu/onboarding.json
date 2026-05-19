@@ -448,7 +448,12 @@
       "off": "Izinsuku Zokungasebenzi"
     },
     "title_named": "Ukuphi manje emjikelezweni wakho, {{name}}?",
-    "anticipation": "Sekuseduze. Isinyathelo esisodwa futhi sizokukhombisa ukubuka kuqala kwezinyanga zakho ezi-3 ezizayo."
+    "anticipation": "Sekuseduze. Isinyathelo esisodwa futhi sizokukhombisa ukubuka kuqala kwezinyanga zakho ezi-3 ezizayo.",
+    "settingsDiscard": {
+      "title": "Lahla ukukhetha kwe-rotation okungakalondolozwa?",
+      "message": "Ukhethe usuku olusha lwe-rotation kodwa awukalulondolozi. Phuma ngaphandle kokulondoloza?",
+      "confirm": "Lahla ukukhetha"
+    }
   },
   "fifoPhaseSelector": {
     "title": {
@@ -507,7 +512,10 @@
       "splitTotal": "Isamba sokuhlukaniswa: {{swingSplitTotal}}/{{workBlockDays}} izinsuku",
       "validation": "Ukuhlukaniswa kwe-Swing kufanele kulingane nezinsuku ezingu-{{workBlockDays}} okungenani nosuku olungu-1 kushifti ngayinye.",
       "changePattern": "Shintsha Iphethini",
-      "continue": "Qhubeka"
+      "continue": "Qhubeka",
+      "changePatternHint": "Buyela emuva ukhethe iphethini ehlukile yebhulokhi yomsebenzi ye-FIFO",
+      "continueHintValid": "Sebenzisa lokhu kwehlukanisa kwe-swing bese ukhetha ibhulokhi yakho ye-FIFO yamanje",
+      "continueHintInvalid": "Lungisa ukuhlukanisa kwe-swing ngaphambi kokuqhubeka"
     },
     "days": {
       "shared": {
@@ -988,7 +996,8 @@
         "title": "Ukulandelana okwenziwe ngokwezifiso",
         "description": "Gcina ukulandelana kwakho okukhona komsebenzi wasemini/wasebusuku."
       }
-    }
+    },
+    "workPatternSelectHint": "Khetha lesi sitayela seshifu sebhulokhi yomsebenzi"
   },
   "progressHeader": {
     "goBackA11y": "Buyela emuva",

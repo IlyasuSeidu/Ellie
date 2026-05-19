@@ -443,7 +443,12 @@
       "off": "Hari Libur"
     },
     "title_named": "Anda sedang berada di bagian mana dari siklus Anda, {{name}}?",
-    "anticipation": "Hampir siap. Satu langkah lagi dan kami akan menunjukkan pratinjau 3 bulan berikutnya untuk Anda."
+    "anticipation": "Hampir siap. Satu langkah lagi dan kami akan menunjukkan pratinjau 3 bulan berikutnya untuk Anda.",
+    "settingsDiscard": {
+      "title": "Buang pilihan rotasi yang belum disimpan?",
+      "message": "Anda memilih hari rotasi baru tetapi belum menyimpannya. Keluar tanpa menyimpan?",
+      "confirm": "Buang pilihan"
+    }
   },
   "fifoPhaseSelector": {
     "title": {
@@ -502,7 +507,10 @@
       "splitTotal": "Total pembagian: {{swingSplitTotal}}/{{workBlockDays}} hari",
       "validation": "Pembagian ayunan harus sama dengan {{workBlockDays}} hari dengan minimal 1 hari pada setiap shift.",
       "changePattern": "Ubah Pola",
-      "continue": "Melanjutkan"
+      "continue": "Melanjutkan",
+      "changePatternHint": "Kembali dan pilih pola blok kerja FIFO yang berbeda",
+      "continueHintValid": "Gunakan pembagian swing ini dan pilih blok FIFO Anda saat ini",
+      "continueHintInvalid": "Perbaiki pembagian swing sebelum melanjutkan"
     },
     "days": {
       "shared": {
@@ -983,7 +991,8 @@
         "title": "Urutan khusus",
         "description": "Pertahankan urutan kerja siang/malam khusus yang sudah ada."
       }
-    }
+    },
+    "workPatternSelectHint": "Pilih gaya shift untuk blok kerja ini"
   },
   "progressHeader": {
     "goBackA11y": "Kembali",

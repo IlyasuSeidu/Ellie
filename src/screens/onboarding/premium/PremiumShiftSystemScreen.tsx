@@ -16,6 +16,7 @@ import {
   Pressable,
   ScrollView,
   InteractionManager,
+  Alert,
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -50,6 +51,7 @@ import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 import { Analytics } from '@/utils/analytics';
 import { IS_E2E_TEST_MODE } from '@/utils/e2e';
+import { getOnboardingSaveErrorMessage } from '@/utils/onboardingErrorMessage';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -716,7 +718,7 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
 
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
-  const { data, updateData } = useOnboarding();
+  const { data, updateDataAsync } = useOnboarding();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showLearnMore, setShowLearnMore] = useState(false);
   const [learnMoreSystem, setLearnMoreSystem] = useState<SystemCardData | null>(null);
@@ -817,7 +819,7 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
     opacity: subtitleOpacity.value,
   }));
 
-  const handleSwipeRight = useCallback(() => {
+  const handleSwipeRight = useCallback(async () => {
     if (isTransitioningRef.current) return;
     const system = SHIFT_SYSTEMS[currentIndex];
     if (!system) return;
@@ -833,11 +835,28 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
     if (system.system === ShiftSystem.THREE_SHIFT) {
       updates.rosterType = 'rotating';
     }
-    Analytics.onboardingQuestionAnswered({ question: 'shift_system', answer_value: system.system });
-    Analytics.onboardingStepCompleted('shift_system', Date.now() - mountTime.current);
-    updateData(updates);
     isTransitioningRef.current = true;
     setIsTransitioning(true);
+
+    try {
+      await updateDataAsync(updates);
+    } catch (error) {
+      clearPendingTransitions();
+      if (IS_E2E_TEST_MODE) {
+        setE2eStatus(`save_failed:${system.id}`);
+      }
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+        source: 'PremiumShiftSystemScreen.handleSwipeRight.saveFailed',
+      });
+      Alert.alert(
+        String(t('completion.errors.title', { defaultValue: 'Could not save setup' })),
+        getOnboardingSaveErrorMessage(error)
+      );
+      return;
+    }
+
+    Analytics.onboardingQuestionAnswered({ question: 'shift_system', answer_value: system.system });
+    Analytics.onboardingStepCompleted('shift_system', Date.now() - mountTime.current);
 
     // Navigate after animation completes
     interactionHandleRef.current = InteractionManager.runAfterInteractions(() => {
@@ -854,7 +873,7 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
         goToNextScreen(navigation, 'ShiftSystem', { ...data, ...updates });
       }, 300);
     });
-  }, [currentIndex, updateData, navigation, data]);
+  }, [clearPendingTransitions, currentIndex, data, navigation, t, updateDataAsync]);
 
   const handleSwipeLeft = useCallback(() => {
     if (isTransitioningRef.current) return;
@@ -897,7 +916,7 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
     setCardRemountKey((prev) => prev + 1);
   }, []);
 
-  const handleContinue = useCallback(() => {
+  const handleContinue = useCallback(async () => {
     // Only continue if user made a selection
     if (!selectedSystem || isTransitioningRef.current) return;
 
@@ -908,9 +927,22 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
     if (selectedSystem === ShiftSystem.THREE_SHIFT) {
       updates.rosterType = 'rotating';
     }
-    updateData(updates);
     isTransitioningRef.current = true;
     setIsTransitioning(true);
+
+    try {
+      await updateDataAsync(updates);
+    } catch (error) {
+      clearPendingTransitions();
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+        source: 'PremiumShiftSystemScreen.handleContinue.saveFailed',
+      });
+      Alert.alert(
+        String(t('completion.errors.title', { defaultValue: 'Could not save setup' })),
+        getOnboardingSaveErrorMessage(error)
+      );
+      return;
+    }
 
     void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Success, {
       source: 'PremiumShiftSystemScreen.handleContinue',
@@ -923,7 +955,7 @@ export const PremiumShiftSystemScreen: React.FC<PremiumShiftSystemScreenProps> =
         goToNextScreen(navigation, 'ShiftSystem', { ...data, ...updates });
       }, 300);
     });
-  }, [selectedSystem, updateData, navigation, data]);
+  }, [clearPendingTransitions, data, navigation, selectedSystem, t, updateDataAsync]);
 
   // Slice visible cards to show only 4 at a time (matches pattern screen approach)
   const visibleCards = useMemo(

@@ -504,6 +504,11 @@
       "firstDay": "First day of this phase",
       "lastDay": "Last day of this phase",
       "dayOfTotal": "Day {{day}} of {{total}}"
+    },
+    "settingsDiscard": {
+      "title": "Discard unsaved rotation selection?",
+      "message": "You selected a new rotation day but have not saved it yet. Leave without saving?",
+      "confirm": "Discard Selection"
     }
   },
   "fifoPhaseSelector": {
@@ -564,7 +569,10 @@
       "splitTotal": "Split total: {{swingSplitTotal}}/{{workBlockDays}} days",
       "validation": "Swing split must equal {{workBlockDays}} days with at least 1 day on each shift.",
       "changePattern": "Change Pattern",
-      "continue": "Continue"
+      "continue": "Continue",
+      "changePatternHint": "Go back and choose a different FIFO work-block pattern",
+      "continueHintValid": "Use this swing split and choose your current FIFO block",
+      "continueHintInvalid": "Fix the swing split before continuing"
     },
     "days": {
       "shared": {
@@ -1044,7 +1052,8 @@
         "title": "Custom Sequence",
         "description": "Keep your existing day/night custom work sequence."
       }
-    }
+    },
+    "workPatternSelectHint": "Select this work-block shift style"
   },
   "progressHeader": {
     "goBackA11y": "Go back",

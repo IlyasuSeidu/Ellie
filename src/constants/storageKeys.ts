@@ -16,6 +16,10 @@ export const STORAGE_KEYS = {
     legacyNotificationSoftDeclined: 'notifications:soft_declined',
     legacyAskEllieDone: 'checklist:ask_ellie_done',
   },
+  analytics: {
+    installId: 'analytics:installId',
+    pendingEvents: 'analytics:pendingEvents',
+  },
   notifications: {
     expoPushToken: 'notifications:expoPushToken',
     historyPrefix: 'notifications:history:',

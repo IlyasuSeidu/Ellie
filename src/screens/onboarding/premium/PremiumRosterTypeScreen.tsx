@@ -8,6 +8,7 @@
 
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import {
+  Alert,
   View,
   StyleSheet,
   Text,
@@ -50,6 +51,7 @@ import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator'
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 import { Analytics } from '@/utils/analytics';
+import { getOnboardingSaveErrorMessage } from '@/utils/onboardingErrorMessage';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -759,7 +761,7 @@ export const PremiumRosterTypeScreen: React.FC = () => {
 
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
-  const { data, updateData } = useOnboarding();
+  const { data, updateDataAsync } = useOnboarding();
 
   // Personalization derived from prior onboarding steps
   const firstName = data.name?.split(' ')[0] ?? '';
@@ -875,18 +877,33 @@ export const PremiumRosterTypeScreen: React.FC = () => {
 
   // Handle roster type selection
   const handleSelectRosterType = useCallback(
-    (rosterType: RosterType) => {
+    async (rosterType: RosterType) => {
       if (isTransitioningRef.current) return;
       clearPendingTimeouts();
       const rosterTypeValue = rosterType === RosterType.ROTATING ? 'rotating' : 'fifo';
+
+      isTransitioningRef.current = true;
+      setIsTransitioning(true);
+
+      try {
+        await updateDataAsync({ rosterType: rosterTypeValue });
+      } catch (error) {
+        clearPendingTimeouts();
+        void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+          source: 'PremiumRosterTypeScreen.handleSelectRosterType.saveFailed',
+        });
+        Alert.alert(
+          String(t('completion.errors.title', { defaultValue: 'Could not save setup' })),
+          getOnboardingSaveErrorMessage(error)
+        );
+        return;
+      }
+
       Analytics.onboardingQuestionAnswered({
         question: 'roster_type',
         answer_value: rosterTypeValue,
       });
       Analytics.onboardingStepCompleted('roster_type', Date.now() - mountTime.current);
-      updateData({ rosterType: rosterTypeValue });
-      isTransitioningRef.current = true;
-      setIsTransitioning(true);
 
       interactionHandleRef.current = InteractionManager.runAfterInteractions(() => {
         navigationTimeoutRef.current = setTimeout(() => {
@@ -895,13 +912,13 @@ export const PremiumRosterTypeScreen: React.FC = () => {
         }, 300);
       });
     },
-    [clearPendingTimeouts, navigation, data, updateData]
+    [clearPendingTimeouts, navigation, data, t, updateDataAsync]
   );
 
   const handleSwipeRight = useCallback(() => {
     if (currentIndex >= orderedRosterTypes.length) return;
     const selectedCard = orderedRosterTypes[currentIndex];
-    handleSelectRosterType(selectedCard.type);
+    void handleSelectRosterType(selectedCard.type);
   }, [currentIndex, handleSelectRosterType, orderedRosterTypes]);
 
   const handleSwipeLeft = useCallback(() => {

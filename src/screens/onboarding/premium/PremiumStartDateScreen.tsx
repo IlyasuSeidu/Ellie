@@ -18,6 +18,7 @@ import {
   Image,
   ImageSourcePropType,
   InteractionManager,
+  Alert,
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -67,6 +68,7 @@ import {
   toDateString,
   diffInDays,
 } from '@/utils/dateUtils';
+import { getOnboardingSaveErrorMessage } from '@/utils/onboardingErrorMessage';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -2442,7 +2444,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProp<OnboardingStackParamList, 'StartDate'>>();
   const insets = useSafeAreaInsets();
-  const { data, updateData } = useOnboarding();
+  const { data, updateDataAsync } = useOnboarding();
   const mountTime = useRef(Date.now());
 
   useEffect(() => {
@@ -2475,6 +2477,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   // Smart default: today
   const [selectedDate, setSelectedDate] = useState<string | null>(existingStartDate);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [isSavingStartDate, setIsSavingStartDate] = useState(false);
   const screenOpacity = useSharedValue(1);
   const screenSlideX = useSharedValue(0);
 
@@ -2541,7 +2544,10 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
   // Check if user can continue:
   // - onboarding mode requires phaseOffset from Phase Selector
   // - settings mode allows date update independently and resets phase to day 1
-  const canContinue = selectedDate !== null && (isSettingsMode || data.phaseOffset !== undefined);
+  const canContinue =
+    selectedDate !== null &&
+    !isSavingStartDate &&
+    (isSettingsMode || data.phaseOffset !== undefined);
   const selectedDateGuidanceLabel = useMemo(() => {
     if (!selectedDate) {
       return null;
@@ -2581,7 +2587,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
     ]
   );
 
-  const handleContinue = useCallback(() => {
+  const handleContinue = useCallback(async () => {
     if (!canContinue || !selectedDate) return;
     if (!isSettingsMode && data.phaseOffset === undefined) return;
     const parsedStartDate = parseCalendarDate(selectedDate);
@@ -2601,17 +2607,31 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
       new Date()
     );
 
-    updateData(
-      isSettingsMode
-        ? {
-            startDate: parsedStartDate,
-            phaseOffset: 0,
-          }
-        : {
-            startDate: parsedStartDate,
-            phaseOffset: anchoredPhaseOffset,
-          }
-    );
+    setIsSavingStartDate(true);
+
+    try {
+      await updateDataAsync(
+        isSettingsMode
+          ? {
+              startDate: parsedStartDate,
+              phaseOffset: 0,
+            }
+          : {
+              startDate: parsedStartDate,
+              phaseOffset: anchoredPhaseOffset,
+            }
+      );
+    } catch (error) {
+      setIsSavingStartDate(false);
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+        source: 'PremiumStartDateScreen.handleContinue.saveFailed',
+      });
+      Alert.alert(
+        String(t('completion.errors.title', { defaultValue: 'Could not save setup' })),
+        getOnboardingSaveErrorMessage(error)
+      );
+      return;
+    }
 
     // Track answer and step completion
     Analytics.onboardingQuestionAnswered({
@@ -2625,6 +2645,7 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
 
     // Defer navigation to allow animations to settle and prevent crashes
     InteractionManager.runAfterInteractions(() => {
+      setIsSavingStartDate(false);
       if (onContinue) {
         onContinue();
       } else if (isSettingsMode) {
@@ -2643,7 +2664,8 @@ export const PremiumStartDateScreen: React.FC<PremiumStartDateScreenProps> = ({
     data.phaseOffset,
     data.fifoConfig,
     data.rosterType,
-    updateData,
+    t,
+    updateDataAsync,
     onContinue,
     returnToSettings,
     navigation,

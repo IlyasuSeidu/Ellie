@@ -16,6 +16,7 @@ import {
   AccessibilityInfo,
   Image,
   InteractionManager,
+  Alert,
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -44,6 +45,7 @@ import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { Analytics } from '@/utils/analytics';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 import { PatternBuilderSlider } from '@/components/onboarding/premium/PatternBuilderSlider';
+import { getOnboardingSaveErrorMessage } from '@/utils/onboardingErrorMessage';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList>;
 
@@ -707,7 +709,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
   const { t } = useTranslation('onboarding');
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProp<OnboardingStackParamList, 'CustomPattern'>>();
-  const { data, updateData } = useOnboarding();
+  const { data, updateData, updateDataAsync } = useOnboarding();
   const mountTime = useRef(Date.now());
   const isSettingsEntry = route.params?.entryPoint === 'settings';
   const returnToMainOnSelect = route.params?.returnToMainOnSelect === true;
@@ -871,7 +873,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
     transform: [{ scale: continueButtonScale.value }],
   }));
 
-  const handleSave = useCallback(() => {
+  const handleSave = useCallback(async () => {
     if (!isValid || isTransitioningRef.current) {
       void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
         source: 'PremiumCustomPatternScreen.handleSave.invalid',
@@ -902,8 +904,8 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
             daysOff,
           };
 
-    if (shiftSystem === ShiftSystem.TWO_SHIFT) {
-      updateData(
+    try {
+      await updateDataAsync(
         isSettingsMode
           ? {
               patternType: ShiftPattern.CUSTOM,
@@ -913,18 +915,16 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
               customPattern: customPatternPayload,
             }
       );
-    } else {
-      // 3-Shift System
-      updateData(
-        isSettingsMode
-          ? {
-              patternType: ShiftPattern.CUSTOM,
-              customPattern: customPatternPayload,
-            }
-          : {
-              customPattern: customPatternPayload,
-            }
+    } catch (error) {
+      clearPendingTransition(true);
+      void triggerNotificationHaptic(Haptics.NotificationFeedbackType.Error, {
+        source: 'PremiumCustomPatternScreen.handleSave.saveFailed',
+      });
+      Alert.alert(
+        String(t('completion.errors.title', { defaultValue: 'Could not save setup' })),
+        getOnboardingSaveErrorMessage(error)
       );
+      return;
     }
 
     if (!isSettingsMode) {
@@ -976,6 +976,7 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
         const normalizedRosterType = data.rosterType ?? 'rotating';
         goToNextScreen(navigation, 'CustomPattern', {
           ...data,
+          customPattern: customPatternPayload,
           rosterType: normalizedRosterType,
           patternType:
             normalizedRosterType === 'fifo'
@@ -993,13 +994,14 @@ export const PremiumCustomPatternScreen: React.FC<PremiumCustomPatternScreenProp
     afternoonOn,
     nightOn,
     daysOff,
-    updateData,
+    updateDataAsync,
     onContinue,
     isSettingsMode,
     closeSettingsEditor,
     navigation,
     data,
     clearPendingTransition,
+    t,
   ]);
 
   const handleBack = useCallback(() => {

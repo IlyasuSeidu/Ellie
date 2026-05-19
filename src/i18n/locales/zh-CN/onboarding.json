@@ -392,7 +392,12 @@
       "off": "休息日"
     },
     "title_named": "{{name}}，你现在处于轮班周期的哪一步？",
-    "anticipation": "快好了。再一步，我们就会向你展示接下来3个月的预览。"
+    "anticipation": "快好了。再一步，我们就会向你展示接下来3个月的预览。",
+    "settingsDiscard": {
+      "title": "放弃未保存的轮班选择？",
+      "message": "你选择了新的轮班日期，但尚未保存。要不保存就离开吗？",
+      "confirm": "放弃选择"
+    }
   },
   "fifoPhaseSelector": {
     "title": {
@@ -451,7 +456,10 @@
       "splitTotal": "分期总计：{{swingSplitTotal}}/{{workBlockDays}} 天",
       "validation": "轮换间隔必须等于 {{workBlockDays}} 天，且每个轮班至少 1 天。",
       "changePattern": "改变模式",
-      "continue": "继续"
+      "continue": "继续",
+      "changePatternHint": "返回并选择其他 FIFO 工作周期模式",
+      "continueHintValid": "使用此轮班拆分，并选择你当前的 FIFO 周期",
+      "continueHintInvalid": "继续前请先修正轮班拆分"
     },
     "days": {
       "shared": {
@@ -932,7 +940,8 @@
         "title": "自定义序列",
         "description": "保留现有的日班/夜班自定义工作序列。"
       }
-    }
+    },
+    "workPatternSelectHint": "选择此工作周期的班次样式"
   },
   "progressHeader": {
     "goBackA11y": "回去",

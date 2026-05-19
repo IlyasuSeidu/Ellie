@@ -103,6 +103,37 @@ const CUSTOM_WORK_PATTERN: WorkPatternOption = {
   color: theme.colors.sacredGold,
 };
 
+const getBalancedSwingSplit = (
+  workBlockDays: number,
+  currentDayShiftDays?: number,
+  currentNightShiftDays?: number
+): NonNullable<FIFOConfig['swingPattern']> => {
+  const safeWorkBlockDays = Math.max(2, Math.floor(workBlockDays));
+  const maxShiftDays = safeWorkBlockDays - 1;
+  const fallbackDayShiftDays = Math.ceil(safeWorkBlockDays / 2);
+  const preferredDayShiftDays =
+    typeof currentDayShiftDays === 'number' && Number.isFinite(currentDayShiftDays)
+      ? Math.floor(currentDayShiftDays)
+      : fallbackDayShiftDays;
+  const dayShiftDays = Math.max(1, Math.min(maxShiftDays, preferredDayShiftDays));
+
+  if (
+    typeof currentNightShiftDays === 'number' &&
+    Number.isFinite(currentNightShiftDays) &&
+    dayShiftDays + Math.floor(currentNightShiftDays) === safeWorkBlockDays
+  ) {
+    return {
+      daysOnDayShift: dayShiftDays,
+      daysOnNightShift: Math.max(1, Math.min(maxShiftDays, Math.floor(currentNightShiftDays))),
+    };
+  }
+
+  return {
+    daysOnDayShift: dayShiftDays,
+    daysOnNightShift: safeWorkBlockDays - dayShiftDays,
+  };
+};
+
 interface WorkPatternCardProps {
   pattern: WorkPatternOption;
   isSelected: boolean;
@@ -154,7 +185,19 @@ const WorkPatternCard: React.FC<WorkPatternCardProps> = ({
   );
 
   return (
-    <Pressable onPress={handlePress} testID={`work-pattern-${pattern.id}`}>
+    <Pressable
+      onPress={handlePress}
+      accessible={true}
+      accessibilityRole="button"
+      accessibilityLabel={`${titleText}. ${descriptionText}`}
+      accessibilityHint={String(
+        t('fifoCustom.workPatternSelectHint', {
+          defaultValue: 'Select this work-block shift style',
+        })
+      )}
+      accessibilityState={{ selected: isSelected }}
+      testID={`work-pattern-${pattern.id}`}
+    >
       <Animated.View
         style={[styles.patternCardShell, isSelected && styles.patternCardSelected, cardStyle]}
       >
@@ -782,11 +825,13 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
       return;
     }
 
-    const swingTotal = daysOnDayShift + daysOnNightShift;
-    if (swingTotal > workBlockDays) {
-      const ratio = daysOnDayShift / Math.max(1, swingTotal);
-      setDaysOnDayShift(Math.max(1, Math.floor(workBlockDays * ratio)));
-      setDaysOnNightShift(Math.max(1, Math.ceil(workBlockDays * (1 - ratio))));
+    const normalizedSplit = getBalancedSwingSplit(workBlockDays, daysOnDayShift, daysOnNightShift);
+    if (
+      normalizedSplit.daysOnDayShift !== daysOnDayShift ||
+      normalizedSplit.daysOnNightShift !== daysOnNightShift
+    ) {
+      setDaysOnDayShift(normalizedSplit.daysOnDayShift);
+      setDaysOnNightShift(normalizedSplit.daysOnNightShift);
     }
   }, [daysOnDayShift, daysOnNightShift, workBlockDays, workPattern]);
 
@@ -899,23 +944,30 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
       const safeValue = workPattern === 'swing' ? Math.max(2, nextValue) : nextValue;
       setWorkBlockDays(safeValue);
       if (workPattern === 'swing') {
-        setDaysOnDayShift((current) => Math.max(1, Math.min(safeValue - 1, current)));
-        setDaysOnNightShift((current) => Math.max(1, Math.min(safeValue - 1, current)));
+        const normalizedSplit = getBalancedSwingSplit(safeValue, daysOnDayShift, daysOnNightShift);
+        setDaysOnDayShift(normalizedSplit.daysOnDayShift);
+        setDaysOnNightShift(normalizedSplit.daysOnNightShift);
       }
     },
-    [workPattern]
+    [daysOnDayShift, daysOnNightShift, workPattern]
   );
 
   const handleWorkPatternSelect = useCallback(
     (nextPattern: FIFOPreviewCardProps['workPattern']) => {
-      if (nextPattern === 'swing' && workBlockDays < 2) {
-        setWorkBlockDays(2);
-        setDaysOnDayShift(1);
-        setDaysOnNightShift(1);
+      if (nextPattern === 'swing') {
+        const safeWorkBlockDays = Math.max(2, workBlockDays);
+        const normalizedSplit = getBalancedSwingSplit(
+          safeWorkBlockDays,
+          daysOnDayShift,
+          daysOnNightShift
+        );
+        setWorkBlockDays(safeWorkBlockDays);
+        setDaysOnDayShift(normalizedSplit.daysOnDayShift);
+        setDaysOnNightShift(normalizedSplit.daysOnNightShift);
       }
       setWorkPattern(nextPattern);
     },
-    [workBlockDays]
+    [daysOnDayShift, daysOnNightShift, workBlockDays]
   );
 
   const handleContinue = useCallback(async () => {
@@ -939,7 +991,7 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
           fifoConfig,
         });
       } else {
-        updateData({
+        await updateDataAsync({
           patternType: ShiftPattern.FIFO_CUSTOM,
           rosterType: 'fifo',
           fifoConfig,
@@ -1000,7 +1052,6 @@ export const PremiumFIFOCustomPatternScreen: React.FC = () => {
     navigation,
     restBlockDays,
     t,
-    updateData,
     updateDataAsync,
     workBlockDays,
     workPattern,

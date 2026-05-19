@@ -57,6 +57,25 @@ describe('onboardingPersistence', () => {
     await expect(loadPersistedOnboardingData()).resolves.toBeNull();
   });
 
+  it('rejects FIFO custom sequences with unsupported shift types', () => {
+    const result = sanitizePersistedOnboardingData({
+      rosterType: 'fifo',
+      patternType: ShiftPattern.FIFO_CUSTOM,
+      phaseOffset: 0,
+      startDate: '2026-02-03',
+      shiftSystem: '2-shift',
+      shiftTimes: completePersistedData.shiftTimes,
+      fifoConfig: {
+        workBlockDays: 3,
+        restBlockDays: 2,
+        workBlockPattern: 'custom',
+        customWorkSequence: ['day', 'bogus', 'night'],
+      },
+    });
+
+    expect(result).toBeNull();
+  });
+
   it('self-heals the completion flag when stored data is complete', async () => {
     jest
       .mocked(asyncStorageService.get)
