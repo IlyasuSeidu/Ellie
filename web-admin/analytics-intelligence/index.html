@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Intelligence - Ellie Admin</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header id="identity-bar">
+      <span id="identity-label" class="hidden">
+        Signed in as <strong id="identity-email"></strong>
+        <span aria-hidden="true"> · </span>
+        <span id="identity-uid" class="text-dust"></span>
+      </span>
+      <span id="identity-guest" class="hidden">Not signed in</span>
+      <span class="spacer"></span>
+      <button id="btn-signin" class="btn-signin hidden" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+            fill="#4285F4"
+          />
+          <path
+            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+            fill="#34A853"
+          />
+          <path
+            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"
+            fill="#FBBC05"
+          />
+          <path
+            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+            fill="#EA4335"
+          />
+        </svg>
+        Sign in with Google
+      </button>
+      <button id="btn-signout" class="btn-text hidden" type="button">Sign out</button>
+    </header>
+
+    <main class="app-shell">
+      <section class="page-header" id="page-header">
+        <div class="header-meta">
+          <p class="eyebrow">Ellie Founder Console</p>
+          <h1>AI Intelligence</h1>
+          <div class="subtitle" id="header-subtitle">Founder/admin access only</div>
+        </div>
+        <button
+          class="btn-icon"
+          id="btn-refresh"
+          title="Refresh"
+          type="button"
+          disabled
+          aria-label="Refresh analytics"
+        >
+          &#8635;
+        </button>
+      </section>
+
+      <section id="state-loading" class="state-page">
+        <div class="spinner" aria-hidden="true"></div>
+        <p>Loading analytics...</p>
+      </section>
+
+      <section id="state-signin" class="state-page hidden">
+        <div class="state-kicker">Admin auth</div>
+        <h2>Sign in to continue</h2>
+        <p>Use the Google account whose Firebase UID has been granted analytics admin access.</p>
+      </section>
+
+      <section id="state-restricted" class="state-page hidden">
+        <div class="state-kicker danger">Restricted</div>
+        <h2>Analytics access restricted</h2>
+        <p>
+          Your Firebase account is not configured as an analytics admin. Ask the project owner to
+          add your UID to <code>ANALYTICS_ADMIN_UIDS</code>.
+        </p>
+      </section>
+
+      <section id="state-offline" class="state-page hidden">
+        <div class="state-kicker">Network</div>
+        <h2>No network connection</h2>
+        <p>Analytics requires a network connection. Existing app features still work offline.</p>
+        <button class="btn-admin primary" id="btn-retry-offline" type="button">Retry</button>
+      </section>
+
+      <section id="state-error" class="state-page hidden">
+        <div class="state-kicker danger">Error</div>
+        <h2>Something went wrong</h2>
+        <p id="state-error-message" class="prewrap"></p>
+        <button class="btn-admin primary" id="btn-retry-error" type="button">Retry</button>
+      </section>
+
+      <section id="dashboard" class="hidden">
+        <div class="section-heading">Executive Summary</div>
+        <section class="card summary-card" id="summary-card">
+          <div class="card-row-head">
+            <span class="card-title">Latest Analysis</span>
+            <span id="summary-status-chip" class="chip"></span>
+          </div>
+          <p id="summary-text" class="summary-text"></p>
+          <p id="summary-fallback-msg" class="fallback-message hidden"></p>
+        </section>
+
+        <div class="section-heading">Mission Control</div>
+        <section class="mission-alert card compact-card">
+          <span class="card-title">Claude Top Alert</span>
+          <p id="metric-top-alert">No open AI decisions.</p>
+        </section>
+        <section class="metric-grid" aria-label="Mission control metrics">
+          <article class="metric-tile">
+            <div class="metric-label">DAU</div>
+            <div class="metric-value" id="metric-dau">-</div>
+          </article>
+          <article class="metric-tile">
+            <div class="metric-label">Events</div>
+            <div class="metric-value" id="metric-events">-</div>
+          </article>
+          <article class="metric-tile">
+            <div class="metric-label">Onboarding conv.</div>
+            <div class="metric-value" id="metric-onboarding">-</div>
+          </article>
+          <article class="metric-tile">
+            <div class="metric-label">Voice success</div>
+            <div class="metric-value" id="metric-voice">-</div>
+          </article>
+          <article class="metric-tile">
+            <div class="metric-label">Offline gaps</div>
+            <div class="metric-value" id="metric-offline">-</div>
+          </article>
+          <article class="metric-tile">
+            <div class="metric-label">API error rate</div>
+            <div class="metric-value" id="metric-api-error">-</div>
+          </article>
+          <article class="metric-tile">
+            <div class="metric-label">Avg cold start</div>
+            <div class="metric-value" id="metric-cold-start">-</div>
+          </article>
+          <article class="metric-tile">
+            <div class="metric-label">Paywall CTA to purchase</div>
+            <div class="metric-value" id="metric-paywall">-</div>
+          </article>
+        </section>
+
+        <div class="section-heading">AI Decision Feed</div>
+        <section id="decision-queue-empty" class="card compact-card hidden">
+          <p class="muted-copy">No open decisions. All caught up.</p>
+        </section>
+        <section id="decision-queue" aria-label="AI decision feed"></section>
+
+        <div class="section-heading">Detail Views</div>
+        <section class="detail-grid">
+          <article class="card">
+            <div class="card-title">Onboarding Intelligence</div>
+            <ul class="detail-list" id="detail-onboarding">
+              <li><span>Started</span><span class="val" id="d-ob-started">-</span></li>
+              <li><span>Completed</span><span class="val" id="d-ob-completed">-</span></li>
+              <li><span>Conversion</span><span class="val" id="d-ob-conv">-</span></li>
+              <li><span>Worst drop-off</span><span class="val" id="d-ob-dropoff">-</span></li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <div class="card-title">Voice Assistant Performance</div>
+            <ul class="detail-list">
+              <li><span>Sessions</span><span class="val" id="d-v-sessions">-</span></li>
+              <li><span>Succeeded</span><span class="val" id="d-v-succeeded">-</span></li>
+              <li><span>Failed</span><span class="val warn" id="d-v-failed">-</span></li>
+              <li><span>Error rate</span><span class="val warn" id="d-v-error-rate">-</span></li>
+              <li><span>Avg latency</span><span class="val" id="d-v-latency">-</span></li>
+              <li><span>Top intent</span><span class="val" id="d-v-intent">-</span></li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <div class="card-title">Revenue</div>
+            <ul class="detail-list">
+              <li><span>Paywall views</span><span class="val" id="d-r-views">-</span></li>
+              <li><span>CTA clicks</span><span class="val" id="d-r-clicks">-</span></li>
+              <li><span>Subscribe taps</span><span class="val" id="d-r-taps">-</span></li>
+              <li><span>Purchases</span><span class="val" id="d-r-purchases">-</span></li>
+              <li><span>Trials</span><span class="val" id="d-r-trials">-</span></li>
+              <li><span>CTA to purchase</span><span class="val" id="d-r-conv">-</span></li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <div class="card-title">Offline Coverage</div>
+            <ul class="detail-list">
+              <li><span>Handled</span><span class="val" id="d-o-handled">-</span></li>
+              <li><span>Unsupported</span><span class="val warn" id="d-o-unsupported">-</span></li>
+              <li><span>Top unsupported</span><span class="val" id="d-o-top">-</span></li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <div class="card-title">Quality & Reliability</div>
+            <ul class="detail-list">
+              <li><span>Error events</span><span class="val warn" id="d-q-errors">-</span></li>
+              <li><span>API error rate</span><span class="val warn" id="d-q-api-rate">-</span></li>
+              <li><span>Avg cold start</span><span class="val" id="d-q-cold-start">-</span></li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <div class="card-title">Realtime Daily Rows</div>
+            <ul class="detail-list" id="realtime-list">
+              <li><span>No realtime rows returned</span><span class="val">-</span></li>
+            </ul>
+          </article>
+        </section>
+
+        <div class="section-heading">Admin Actions</div>
+        <section class="card">
+          <div class="admin-row">
+            <label class="input-label" for="input-day-key">Day key</label>
+            <input
+              type="text"
+              class="input-day-key"
+              id="input-day-key"
+              placeholder="YYYY-MM-DD"
+              pattern="\d{4}-\d{2}-\d{2}"
+              maxlength="10"
+              inputmode="numeric"
+            />
+            <button class="btn-admin primary" id="btn-rebuild" type="button">
+              Rebuild analytics day
+            </button>
+            <button class="btn-admin" id="btn-generate" type="button">
+              Regenerate Claude analysis
+            </button>
+            <button class="btn-admin" id="btn-rebuild-yesterday" type="button">
+              Rebuild yesterday
+            </button>
+          </div>
+          <div id="admin-banner" class="admin-banner hidden"></div>
+        </section>
+      </section>
+
+      <section id="state-empty" class="hidden">
+        <div class="state-page">
+          <div class="state-kicker">No data</div>
+          <h2>No analytics yet</h2>
+          <p>
+            Analytics data has not been generated for this project yet. Rebuild yesterday to
+            populate the dashboard.
+          </p>
+          <input id="input-empty-day-key" class="hidden" aria-hidden="true" />
+          <button class="btn-admin primary" id="btn-empty-rebuild-yesterday" type="button">
+            Rebuild yesterday
+          </button>
+          <div id="empty-admin-banner" class="admin-banner hidden"></div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

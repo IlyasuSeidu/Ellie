@@ -27,7 +27,9 @@
     "release:check": "npm run type-check && npm test -- --runInBand --silent && npm run backend:build",
     "firebase:projects": "firebase projects:list",
     "firebase:emulators:functions": "firebase emulators:start --config firebase.json --only functions",
-    "firebase:deploy:functions": "firebase deploy --config firebase.json --only functions"
+    "firebase:deploy:functions": "firebase deploy --config firebase.json --only functions",
+    "admin:web": "npx serve web-admin/analytics-intelligence",
+    "firebase:deploy:hosting": "firebase deploy --config firebase.json --only hosting"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
