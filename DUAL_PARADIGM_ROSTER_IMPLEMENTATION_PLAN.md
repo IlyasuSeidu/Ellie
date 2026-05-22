@@ -2,15 +2,18 @@
 
 **Project:** Ellie Mining Shift Tracker
 **Feature:** Support for Both Rotating and FIFO Roster Systems
-**Status:** Planning Phase
+**Status:** Implemented in the current working tree
 **Estimated Duration:** 6 weeks (~216 hours)
 **Created:** February 26, 2026
+**Last reviewed:** May 21, 2026
+
+Implementation note: the active codebase now contains rotating and FIFO roster support across types, onboarding, dashboard calendar/status cards, profile shift settings, smart reminders, backend shift tools, Ellie brain context, and tests. The detailed checklist later in this document is retained as historical implementation planning.
 
 ---
 
 ## Executive Summary
 
-Your app currently supports **rotating shift rosters** (African/European style) but needs to also support **FIFO/block rosters** (Australian/Canadian style). These are fundamentally different roster paradigms that require architectural changes while maintaining backward compatibility.
+Your app now supports both **rotating shift rosters** (African/European style) and **FIFO/block rosters** (Australian/Canadian style). These are fundamentally different roster paradigms, and the implementation preserves backward compatibility with existing rotating roster data.
 
 ---
 
@@ -59,9 +62,9 @@ Days 9-14: At home, completely off
 [Cycle repeats]
 ```
 
-**Current Support:** ❌ **Not Supported**
+**Current Support:** ✅ **Supported**
 
-- Your current system CAN'T represent this
+- The current system represents FIFO work/rest blocks, straight day/night work blocks, swing patterns, and custom FIFO patterns
 - Used in: Australia, Canada, remote global mining
 
 ---

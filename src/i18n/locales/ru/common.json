@@ -174,7 +174,7 @@
       "title": "Ваш график готов.",
       "subtitle": "Откройте его дешевле чашки кофе.",
       "features": {
-        "askRoster": "Спросите «Эй, __TK1__» о своем составе.",
+        "askSchedule": "Спросите «Эй, __TK1__» о своем составе.",
         "fullYear": "Посмотрите весь свой год — каждая смена, месяц за месяцем",
         "offline": "Работает под землей, сигнал не нужен",
         "instantAnswers": "Мгновенные ответы об отпусках и схемах",
@@ -218,7 +218,7 @@
           "author": "Jason M., водитель карьерного самосвала — FIFO 7/7"
         }
       ],
-      "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
+      "lossAversion": "Without Pro, you can only see 2 weeks of your schedule.",
       "timerLabel": "Стартовое предложение закончится через",
       "trust": {
         "freeTrial": "Бесплатный пробный период",

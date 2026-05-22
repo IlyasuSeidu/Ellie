@@ -2,7 +2,7 @@
  * Shift Time Utilities
  *
  * Helper functions for converting, calculating, and validating shift times
- * used in the Premium Shift Time Input screen.
+ * used by the universal shift builder and reminder flows.
  */
 
 import type { OnboardingData } from '@/contexts/OnboardingContext';
@@ -67,41 +67,6 @@ export function calculateEndTime(startTime24h: string, duration: number): string
 }
 
 /**
- * Detect shift type based on start time and shift system
- *
- * 2-Shift System:
- * - Day shift: 6:00 AM to 5:59 PM
- * - Night shift: 6:00 PM to 5:59 AM
- *
- * 3-Shift System:
- * - Morning shift: 6:00 AM to 1:59 PM
- * - Afternoon shift: 2:00 PM to 9:59 PM
- * - Night shift: 10:00 PM to 5:59 AM
- *
- * @param startTime24h - Start time in HH:MM format (24-hour)
- * @param shiftSystem - The shift system being used ('2-shift' or '3-shift')
- * @returns Shift type: 'day' | 'night' | 'morning' | 'afternoon'
- */
-export function detectShiftType(
-  startTime24h: string,
-  shiftSystem: '2-shift' | '3-shift' = '2-shift'
-): 'day' | 'night' | 'morning' | 'afternoon' {
-  const [hours] = startTime24h.split(':').map(Number);
-
-  if (shiftSystem === '2-shift') {
-    // 2-shift system: Day (6 AM - 6 PM) or Night (6 PM - 6 AM)
-    return hours >= 6 && hours < 18 ? 'day' : 'night';
-  }
-  // 3-shift system: Morning, Afternoon, or Night
-  if (hours >= 6 && hours < 14) {
-    return 'morning'; // 6 AM - 2 PM
-  } else if (hours >= 14 && hours < 22) {
-    return 'afternoon'; // 2 PM - 10 PM
-  }
-  return 'night'; // 10 PM - 6 AM
-}
-
-/**
  * Validate time format (HH:MM)
  * @param time - Time string to validate
  * @returns true if valid format, false otherwise
@@ -152,80 +117,7 @@ export function parseTimeInput(input: string): { hours: string; minutes: string 
 }
 
 /**
- * Determine which shift types are required based on the shift pattern and system
- *
- * For 2-shift systems (12-hour):
- * - Checks if pattern includes day shifts (daysOn > 0)
- * - Checks if pattern includes night shifts (nightsOn > 0)
- *
- * For 3-shift systems (8-hour):
- * - Checks if pattern includes morning shifts (morningOn > 0)
- * - Checks if pattern includes afternoon shifts (afternoonOn > 0)
- * - Checks if pattern includes night shifts (nightOn > 0)
- *
- * @param shiftSystem - The shift system ('2-shift' or '3-shift')
- * @param customPattern - Custom pattern configuration if applicable
- * @returns Array of required shift types
- */
-export function getRequiredShiftTypes(
-  shiftSystem: '2-shift' | '3-shift',
-  customPattern?: {
-    daysOn: number;
-    nightsOn: number;
-    morningOn?: number;
-    afternoonOn?: number;
-    nightOn?: number;
-    daysOff: number;
-  }
-): Array<'day' | 'night' | 'morning' | 'afternoon'> {
-  if (!customPattern) {
-    // Standard patterns: require all shift types for the system
-    // Standard 2-shift patterns (4-4-4, 7-7-7, etc.) have both day and night shifts
-    // Standard 3-shift patterns have morning, afternoon, and night shifts
-    return shiftSystem === '2-shift' ? ['day', 'night'] : ['morning', 'afternoon', 'night'];
-  }
-
-  if (shiftSystem === '2-shift') {
-    const required: Array<'day' | 'night'> = [];
-
-    if (customPattern.daysOn > 0) {
-      required.push('day');
-    }
-    if (customPattern.nightsOn > 0) {
-      required.push('night');
-    }
-
-    // If pattern has no working shifts (edge case), require at least day shift
-    if (required.length === 0) {
-      required.push('day');
-    }
-
-    return required;
-  }
-
-  // 3-shift system
-  const required: Array<'morning' | 'afternoon' | 'night'> = [];
-
-  if ((customPattern.morningOn ?? 0) > 0) {
-    required.push('morning');
-  }
-  if ((customPattern.afternoonOn ?? 0) > 0) {
-    required.push('afternoon');
-  }
-  if ((customPattern.nightOn ?? 0) > 0) {
-    required.push('night');
-  }
-
-  // If pattern has no working shifts (edge case), require at least morning shift
-  if (required.length === 0) {
-    required.push('morning');
-  }
-
-  return required;
-}
-
-/**
- * Get shift times from onboarding data, preferring new structure
+ * Get timed work definitions from onboarding data.
  *
  * @param data - OnboardingData
  * @returns Array of shift time entries
@@ -243,30 +135,26 @@ export function getShiftTimesFromData(data: OnboardingData): Array<{
     duration: 8 | 12;
   }> = [];
 
-  // Prefer new structure
-  if (data.shiftTimes) {
-    if (data.shiftTimes.dayShift) {
-      result.push({ type: 'day', ...data.shiftTimes.dayShift });
+  for (const definition of data.universalSchedule?.shiftDefinitions ?? []) {
+    if (!definition.countsAsWork || !definition.startTime || !definition.endTime) {
+      continue;
     }
-    if (data.shiftTimes.nightShift) {
-      result.push({ type: 'night', ...data.shiftTimes.nightShift });
-    }
-    if (data.shiftTimes.morningShift) {
-      result.push({ type: 'morning', ...data.shiftTimes.morningShift });
-    }
-    if (data.shiftTimes.afternoonShift) {
-      result.push({ type: 'afternoon', ...data.shiftTimes.afternoonShift });
-    }
-    if (data.shiftTimes.nightShift3) {
-      result.push({ type: 'night', ...data.shiftTimes.nightShift3 });
-    }
-  } else if (data.shiftStartTime && data.shiftEndTime && data.shiftDuration && data.shiftType) {
-    // Fallback to legacy structure
+
+    const type =
+      definition.countsAsNight || definition.crossesMidnight
+        ? 'night'
+        : Number(definition.startTime.slice(0, 2)) < 12
+          ? 'morning'
+          : Number(definition.startTime.slice(0, 2)) < 17
+            ? 'afternoon'
+            : 'day';
+    const duration = Math.round((definition.durationMinutes ?? 720) / 60) <= 8 ? 8 : 12;
+
     result.push({
-      type: data.shiftType,
-      startTime: data.shiftStartTime,
-      endTime: data.shiftEndTime,
-      duration: data.shiftDuration,
+      type,
+      startTime: definition.startTime,
+      endTime: definition.endTime,
+      duration,
     });
   }
 

@@ -9,9 +9,7 @@ import {
   canGoNext,
   getNextScreenName,
 } from '../onboardingNavigation';
-import type { OnboardingData } from '@/contexts/OnboardingContext';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
-import { ShiftPattern } from '@/types';
 
 describe('onboardingNavigation', () => {
   const mockNavigation = {
@@ -37,75 +35,19 @@ describe('onboardingNavigation', () => {
       expect(nextScreen).toBe('Introduction');
     });
 
-    it('navigates ShiftSystem to RosterType', () => {
-      const nextScreen = goToNextScreen(mockNavigation, 'ShiftSystem');
-      expect(mockNavigation.navigate).toHaveBeenCalledWith('RosterType');
-      expect(nextScreen).toBe('RosterType');
+    it('navigates Introduction to UniversalShiftBuilder', () => {
+      const nextScreen = goToNextScreen(mockNavigation, 'Introduction');
+      expect(mockNavigation.navigate).toHaveBeenCalledWith('UniversalShiftBuilder');
+      expect(nextScreen).toBe('UniversalShiftBuilder');
     });
 
-    it('routes rotating custom pattern to CustomPattern', () => {
-      const data: Partial<OnboardingData> = {
-        patternType: ShiftPattern.CUSTOM,
-        rosterType: 'rotating',
-      };
-
-      const nextScreen = goToNextScreen(mockNavigation, 'ShiftPattern', data as OnboardingData);
-      expect(mockNavigation.navigate).toHaveBeenCalledWith('CustomPattern');
-      expect(nextScreen).toBe('CustomPattern');
-    });
-
-    it('routes fifo custom pattern to FIFOCustomPattern', () => {
-      const data: Partial<OnboardingData> = {
-        patternType: ShiftPattern.FIFO_CUSTOM,
-        rosterType: 'fifo',
-      };
-
-      const nextScreen = goToNextScreen(mockNavigation, 'ShiftPattern', data as OnboardingData);
-      expect(mockNavigation.navigate).toHaveBeenCalledWith('FIFOCustomPattern');
-      expect(nextScreen).toBe('FIFOCustomPattern');
-    });
-
-    it('routes fifo standard pattern to FIFOPhaseSelector', () => {
-      const data: Partial<OnboardingData> = {
-        patternType: ShiftPattern.FIFO_8_6,
-        rosterType: 'fifo',
-      };
-
-      const nextScreen = goToNextScreen(mockNavigation, 'ShiftPattern', data as OnboardingData);
-      expect(mockNavigation.navigate).toHaveBeenCalledWith('FIFOPhaseSelector');
-      expect(nextScreen).toBe('FIFOPhaseSelector');
-    });
-
-    it('routes rotating standard pattern to PhaseSelector', () => {
-      const data: Partial<OnboardingData> = {
-        patternType: ShiftPattern.STANDARD_4_4_4,
-        rosterType: 'rotating',
-      };
-
-      const nextScreen = goToNextScreen(mockNavigation, 'ShiftPattern', data as OnboardingData);
-      expect(mockNavigation.navigate).toHaveBeenCalledWith('PhaseSelector');
-      expect(nextScreen).toBe('PhaseSelector');
-    });
-
-    it('navigates from FIFOPhaseSelector to StartDate', () => {
-      const nextScreen = goToNextScreen(mockNavigation, 'FIFOPhaseSelector');
-      expect(mockNavigation.navigate).toHaveBeenCalledWith('StartDate');
-      expect(nextScreen).toBe('StartDate');
-    });
-
-    it('navigates from StartDate to ShiftTimeInput', () => {
-      const nextScreen = goToNextScreen(mockNavigation, 'StartDate');
-      expect(mockNavigation.navigate).toHaveBeenCalledWith('ShiftTimeInput');
-      expect(nextScreen).toBe('ShiftTimeInput');
-    });
-
-    it('navigates from ShiftTimeInput to AhaMoment', () => {
-      const nextScreen = goToNextScreen(mockNavigation, 'ShiftTimeInput');
+    it('navigates UniversalShiftBuilder to AhaMoment', () => {
+      const nextScreen = goToNextScreen(mockNavigation, 'UniversalShiftBuilder');
       expect(mockNavigation.navigate).toHaveBeenCalledWith('AhaMoment');
       expect(nextScreen).toBe('AhaMoment');
     });
 
-    it('navigates from AhaMoment to Completion', () => {
+    it('navigates AhaMoment to Completion', () => {
       const nextScreen = goToNextScreen(mockNavigation, 'AhaMoment');
       expect(mockNavigation.navigate).toHaveBeenCalledWith('Completion');
       expect(nextScreen).toBe('Completion');
@@ -120,11 +62,10 @@ describe('onboardingNavigation', () => {
   });
 
   describe('canGoNext', () => {
-    it('returns true for new FIFO routes', () => {
+    it('returns true before Completion', () => {
       expect(canGoNext('PainHook')).toBe(true);
-      expect(canGoNext('RosterType')).toBe(true);
-      expect(canGoNext('FIFOCustomPattern')).toBe(true);
-      expect(canGoNext('FIFOPhaseSelector')).toBe(true);
+      expect(canGoNext('Introduction')).toBe(true);
+      expect(canGoNext('UniversalShiftBuilder')).toBe(true);
     });
 
     it('returns false for Completion', () => {
@@ -133,27 +74,9 @@ describe('onboardingNavigation', () => {
   });
 
   describe('getNextScreenName', () => {
-    it('returns conditional path based on roster and pattern type', () => {
-      expect(
-        getNextScreenName('ShiftPattern', {
-          patternType: ShiftPattern.CUSTOM,
-          rosterType: 'rotating',
-        } as OnboardingData)
-      ).toBe('CustomPattern');
-
-      expect(
-        getNextScreenName('ShiftPattern', {
-          patternType: ShiftPattern.FIFO_CUSTOM,
-          rosterType: 'fifo',
-        } as OnboardingData)
-      ).toBe('FIFOCustomPattern');
-
-      expect(
-        getNextScreenName('ShiftPattern', {
-          patternType: ShiftPattern.FIFO_7_7,
-          rosterType: 'fifo',
-        } as OnboardingData)
-      ).toBe('FIFOPhaseSelector');
+    it('returns the universal schedule setup path', () => {
+      expect(getNextScreenName('Introduction')).toBe('UniversalShiftBuilder');
+      expect(getNextScreenName('UniversalShiftBuilder')).toBe('AhaMoment');
     });
   });
 });

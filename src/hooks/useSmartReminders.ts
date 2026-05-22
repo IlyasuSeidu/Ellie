@@ -12,6 +12,7 @@ import {
 import { getStorageService } from '@/services/StorageService';
 import { notificationService } from '@/services/NotificationService';
 import { buildShiftCycle } from '@/utils/shiftUtils';
+import { getShiftScheduleFingerprint } from '@/utils/universalShiftScheduleUtils';
 import { logger } from '@/utils/logger';
 import { type SmartReminderSettings } from '@/types/reminders';
 
@@ -31,17 +32,9 @@ function buildReminderFingerprint(
     language,
     settings,
     name: onboardingData.name ?? null,
-    shiftSystem: onboardingData.shiftSystem ?? null,
-    rosterType: onboardingData.rosterType ?? null,
-    patternType: onboardingData.patternType ?? null,
-    startDate:
-      onboardingData.startDate instanceof Date
-        ? onboardingData.startDate.toISOString()
-        : (onboardingData.startDate ?? null),
-    phaseOffset: onboardingData.phaseOffset ?? null,
-    customPattern: onboardingData.customPattern ?? null,
-    fifoConfig: onboardingData.fifoConfig ?? null,
-    shiftTimes: onboardingData.shiftTimes ?? null,
+    universalSchedule: onboardingData.universalSchedule
+      ? getShiftScheduleFingerprint({ universalSchedule: onboardingData.universalSchedule })
+      : null,
   });
 }
 
@@ -63,7 +56,11 @@ export function useSmartReminders(): void {
       lastScheduledUserIdRef.current = null;
     }
 
-    if (!onboardingData?.startDate || !onboardingData?.patternType) {
+    const hasUniversalSchedule = Boolean(
+      onboardingData?.universalSchedule?.shiftDefinitions.length &&
+      onboardingData?.universalSchedule?.sequence.length
+    );
+    if (!hasUniversalSchedule) {
       if (lastScheduledUserIdRef.current === currentUserId) {
         await notificationService.cancelSmartReminders(currentUserId);
       }
@@ -112,7 +109,6 @@ export function useSmartReminders(): void {
         userId: currentUserId,
         userName: onboardingData.name ?? '',
         shiftCycle,
-        shiftTimes: onboardingData.shiftTimes,
         settings,
         language,
       });

@@ -1,10 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useOnboarding, type OnboardingData } from '@/contexts/OnboardingContext';
+import { useOnboarding } from '@/contexts/OnboardingContext';
 import { useActiveShift } from '@/hooks/useActiveShift';
-import { shiftColors } from '@/constants/shiftStyles';
 import { buildShiftCycle, calculateShiftDay } from '@/utils/shiftUtils';
 import { addDays, toDateString } from '@/utils/dateUtils';
-import { getShiftTimesFromData } from '@/utils/shiftTimeUtils';
 import { hexToRGBA } from '@/utils/styleUtils';
 import { theme } from '@/utils/theme';
 import type { ShiftCycle, ShiftType } from '@/types';
@@ -18,7 +16,7 @@ interface ShiftAccentResult {
 
 function parseTimeToMinutes(time24h: string): number {
   const [hours, minutes] = time24h.split(':').map(Number);
-  return hours * 60 + minutes;
+  return (hours ?? 0) * 60 + (minutes ?? 0);
 }
 
 function dateAtMinutes(baseDate: Date, totalMinutes: number): Date {
@@ -27,34 +25,11 @@ function dateAtMinutes(baseDate: Date, totalMinutes: number): Date {
   return next;
 }
 
-function findShiftTime(
-  shiftTimes: Array<{ type: string; startTime: string; endTime: string; duration: number }>,
-  shiftType: ShiftType,
-  data: OnboardingData | null
-) {
-  const matches = shiftTimes.filter((shift) => shift.type === shiftType);
-  if (matches.length <= 1) return matches[0] ?? null;
-
-  const is3Shift = data?.shiftSystem === '3-shift';
-  return (
-    matches.find((shift) => (is3Shift ? shift.duration === 8 : shift.duration === 12)) ?? matches[0]
-  );
-}
-
-export function getNextShiftAccentRefreshAt(
-  now: Date,
-  shiftCycle: ShiftCycle | null,
-  data: OnboardingData | null
-): Date {
+export function getNextShiftAccentRefreshAt(now: Date, shiftCycle: ShiftCycle | null): Date {
   const nextMidnight = new Date(now);
   nextMidnight.setHours(24, 0, 0, 0);
 
-  if (!shiftCycle || !data) {
-    return nextMidnight;
-  }
-
-  const shiftTimes = getShiftTimesFromData(data);
-  if (shiftTimes.length === 0) {
+  if (!shiftCycle) {
     return nextMidnight;
   }
 
@@ -65,27 +40,19 @@ export function getNextShiftAccentRefreshAt(
   for (let offset = -1; offset <= 1; offset += 1) {
     const shiftDate = addDays(today, offset);
     const shiftDay = calculateShiftDay(shiftDate, shiftCycle);
-    if (shiftDay.shiftType === 'off') {
+    const universal = shiftDay.universal;
+    if (!universal?.startTime || !universal.endTime) {
       continue;
     }
 
-    const shiftTime = findShiftTime(shiftTimes, shiftDay.shiftType, data);
-    if (!shiftTime) {
-      continue;
-    }
-
-    const startMinutes = parseTimeToMinutes(shiftTime.startTime);
-    const endMinutes = parseTimeToMinutes(shiftTime.endTime);
+    const startMinutes = parseTimeToMinutes(universal.startTime);
+    const endMinutes = parseTimeToMinutes(universal.endTime);
     const startAt = dateAtMinutes(shiftDate, startMinutes);
     const endBaseDate = endMinutes > startMinutes ? shiftDate : addDays(shiftDate, 1);
     const endAt = dateAtMinutes(endBaseDate, endMinutes);
 
-    if (startAt > now) {
-      candidates.push(startAt);
-    }
-    if (endAt > now) {
-      candidates.push(endAt);
-    }
+    if (startAt > now) candidates.push(startAt);
+    if (endAt > now) candidates.push(endAt);
   }
 
   return candidates.reduce((closest, candidate) =>
@@ -93,18 +60,16 @@ export function getNextShiftAccentRefreshAt(
   );
 }
 
-/**
- * Calendar-driven shift accent colors shared by status area + tab UI.
- * Uses the scheduled roster shift for the current day.
- */
 export function useShiftAccent(): ShiftAccentResult {
   const { data } = useOnboarding();
   const [liveTick, setLiveTick] = useState(0);
   const [currentDateStr, setCurrentDateStr] = useState(() => toDateString(new Date()));
 
+  const shiftCycle = useMemo(() => buildShiftCycle(data), [data]);
+
   useEffect(() => {
     const now = new Date();
-    const nextRefreshAt = getNextShiftAccentRefreshAt(now, buildShiftCycle(data), data);
+    const nextRefreshAt = getNextShiftAccentRefreshAt(now, shiftCycle);
     const delayMs = Math.max(250, nextRefreshAt.getTime() - now.getTime() + 250);
 
     const timer = setTimeout(() => {
@@ -113,34 +78,17 @@ export function useShiftAccent(): ShiftAccentResult {
     }, delayMs);
 
     return () => clearTimeout(timer);
-  }, [data, liveTick]);
-
-  const shiftCycle = useMemo(() => {
-    try {
-      return buildShiftCycle(data);
-    } catch {
-      return null;
-    }
-  }, [data]);
+  }, [shiftCycle, liveTick]);
 
   const activeShift = useActiveShift(shiftCycle, data, liveTick, currentDateStr);
+  const activeShiftType = activeShift?.scheduledShiftType ?? null;
+  const resolvedAccentColor = activeShift?.scheduledUniversalDisplay?.color ?? null;
 
-  const activeShiftType = useMemo<ShiftType | null>(() => {
-    if (!shiftCycle || !activeShift) {
-      return null;
-    }
-    return activeShift.scheduledShiftType;
-  }, [activeShift, shiftCycle]);
-
-  const isWorkShift = activeShiftType !== null && activeShiftType !== 'off';
-
-  const tabAccentColor = isWorkShift ? shiftColors[activeShiftType].primary : theme.colors.paleGold;
-  const tabGlowColor = isWorkShift
-    ? hexToRGBA(shiftColors[activeShiftType].primary, 0.2)
+  const tabAccentColor = resolvedAccentColor ?? theme.colors.paleGold;
+  const tabGlowColor = resolvedAccentColor
+    ? hexToRGBA(resolvedAccentColor, 0.2)
     : theme.colors.opacity.gold20;
-  const statusAreaColor = isWorkShift
-    ? shiftColors[activeShiftType].primary
-    : theme.colors.deepVoid;
+  const statusAreaColor = resolvedAccentColor ?? theme.colors.deepVoid;
 
   return {
     shiftType: activeShiftType,

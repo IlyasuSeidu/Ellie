@@ -174,7 +174,7 @@
       "title": "Votre roulement est prêt.",
       "subtitle": "Débloquez-le pour moins qu’un café.",
       "features": {
-        "askRoster": "Demandez \"Hey Ellie\" n'importe quoi à propos de votre liste",
+        "askSchedule": "Demandez \"Hey Ellie\" n'importe quoi à propos de votre schedulee",
         "fullYear": "Voyez toute votre année — chaque shift, mois par mois",
         "offline": "Fonctionne sous terre, aucun signal nécessaire",
         "instantAnswers": "Réponses instantanées sur les congés et les modèles",
@@ -211,14 +211,14 @@
         },
         {
           "quote": "J’ai montré à ma femme tout mon planning de site en moins d’une minute.",
-          "author": "Dave L., opérateur de forage — roster FIFO"
+          "author": "Dave L., opérateur de forage — schedule FIFO"
         },
         {
           "quote": "J’ai réservé mes vols autour de mon swing des mois à l’avance sans appeler les RH.",
           "author": "Jason M., conducteur de camion minier — FIFO 7/7"
         }
       ],
-      "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
+      "lossAversion": "Without Pro, you can only see 2 weeks of your schedule.",
       "timerLabel": "L'offre de lancement se termine dans",
       "trust": {
         "freeTrial": "Essai gratuit",
@@ -237,7 +237,7 @@
       "subtitle_rotating": "Votre roulement rotatif est cartographié. Voyez chaque poste sur toute votre année.",
       "billingDisclosure": "Votre essai gratuit se termine le {{date}}. Annulez à tout moment dans Réglages avant cette date pour éviter les frais. Les abonnements se renouvellent automatiquement.",
       "lossAversion_fifo": "Sans Pro, vos dates de rotation FIFO redeviennent un mystère. Prochain R&R : inconnu. Réservez la mauvaise semaine, perdez les vols.",
-      "lossAversion_rotating": "Sans Pro, votre roster redevient opaque. Aucun préavis, aucune planification en avance. Retour aux suppositions devant le panneau.",
+      "lossAversion_rotating": "Sans Pro, votre schedule redevient opaque. Aucun préavis, aucune planification en avance. Retour aux suppositions devant le panneau.",
       "lossAversion_family": "Sans Pro, votre famille ne sait plus quand vous êtes à la maison.",
       "testimonialAnchor": "4.8 · plus de 2 400 avis",
       "purchaseSuccess": "Votre essai gratuit a commencé",

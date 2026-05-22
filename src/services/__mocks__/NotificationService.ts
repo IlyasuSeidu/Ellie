@@ -291,7 +291,7 @@ export class MockNotificationService {
       triggerDate.setHours(daysToAdd === 0 ? 18 : 9, 0, 0, 0);
       await this.scheduler.scheduleNotification(
         {
-          title: daysToAdd === 1 ? `Morning, ${firstName}! 👋` : 'Roster reminder',
+          title: daysToAdd === 1 ? `Morning, ${firstName}! 👋` : 'Schedule reminder',
           body: 'Check your upcoming shifts in Ellie.',
         },
         triggerDate

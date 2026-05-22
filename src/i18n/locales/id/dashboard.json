@@ -89,7 +89,8 @@
     }
   },
   "badges": {
-    "active": "AKTIF"
+    "active": "AKTIF",
+    "upNext": "Up next"
   },
   "voiceAssistant": {
     "subtitle": "Asisten Suara",
@@ -190,7 +191,9 @@
     "stats": "Statistik",
     "profile": "Profil",
     "ellie": "Ellie",
-    "openVoiceAssistantA11y": "Buka asisten suara Ellie"
+    "openVoiceAssistantA11y": "Buka asisten suara Ellie",
+    "openProPlansA11y": "View Pro plans",
+    "voiceAssistantLoadingA11y": "Checking voice assistant access"
   },
   "quickActions": {
     "settings": "Pengaturan",
@@ -264,21 +267,23 @@
         "title": "Jeda singkat akan datang",
         "body": "Hanya ada {{gapHours}} jam antara {{previousShiftType}} Anda dan {{nextShiftType}} berikutnya pada {{shiftDate}}. Rencanakan istirahat Anda."
       },
-      "fifo": {
-        "flyOut": {
-          "title": "Hari pulang",
+      "travel": {
+        "outToday": {
+          "title": "Travel-out day",
           "body": "Hari ini Anda pulang. Selesaikan serah terima, kemasi perlengkapan, dan bepergian dengan aman."
         },
-        "travelTomorrow": {
+        "tomorrow": {
           "title": "Besok hari perjalanan",
-          "body": "Besok Anda terbang masuk untuk {{shiftType}} Anda. Siapkan perlengkapan dan periksa dokumen malam ini."
+          "body": "You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
         }
       }
     }
   },
   "countdown": {
     "leftIn": "{{time}} tersisa di {{shiftName}}",
+    "leftInShift": "{{time}} left in this shift",
     "untilStarts": "{{time}} hingga {{shiftName}} dimulai",
+    "untilShift": "{{time}} until this shift starts",
     "until": "{{time}} hingga {{shiftName}}",
     "tomorrow": "{{shiftName}} besok",
     "daysUntil": "{{days}} hari hingga {{shiftName}}",
@@ -316,7 +321,7 @@
   "onboardingChecklist": {
     "title": "Dapatkan manfaat maksimal dari Ellie",
     "items": {
-      "roster": "Atur roster Anda",
+      "schedule": "Set up your schedule",
       "shiftTimes": "Tambahkan jam shift Anda",
       "profile": "Lengkapi profil Anda",
       "askEllie": "Ajukan pertanyaan ke Ellie"

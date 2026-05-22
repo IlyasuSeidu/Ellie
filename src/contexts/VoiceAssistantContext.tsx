@@ -389,7 +389,10 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
   // ─── Build User Context ───────────────────────────────────────────
 
   const buildUserContext = useCallback((): VoiceAssistantUserContext | null => {
-    if (!onboardingData.patternType || !onboardingData.startDate) {
+    if (
+      !onboardingData.universalSchedule?.shiftDefinitions.length ||
+      !onboardingData.universalSchedule?.sequence.length
+    ) {
       return null;
     }
 
@@ -402,12 +405,9 @@ export const VoiceAssistantProvider: React.FC<VoiceAssistantProviderProps> = ({ 
       name: onboardingData.name,
       occupation: onboardingData.occupation,
       shiftCycle,
-      rosterType: shiftCycle.rosterType,
-      fifoConfig: shiftCycle.fifoConfig,
       currentDate: toDateString(now),
       currentTime: `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`,
-      shiftSystem: onboardingData.shiftSystem ?? '2-shift',
-      shiftTimes: onboardingData.shiftTimes,
+      scheduleName: shiftCycle.name,
     };
   }, [onboardingData]);
 

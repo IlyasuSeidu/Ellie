@@ -322,7 +322,13 @@
       "shiftTimes": "أوقات التحول",
       "startDate": "تاريخ البدء",
       "title": "ملفك الشخصي",
-      "workPattern": "نمط العمل"
+      "workPattern": "نمط العمل",
+      "allDay": "All day",
+      "notTimed": "Not timed",
+      "rosterTypeUniversal": "Universal schedule",
+      "universalShiftSystem": "Universal custom shifts",
+      "scheduleEngine": "Schedule engine",
+      "scheduleType": "Schedule type"
     },
     "title": "أنت جاهز.",
     "tryAgain": "حاول ثانية",
@@ -1131,5 +1137,186 @@
       "mental_math": "أعد الأيام لأعرف متى سأعمل"
     },
     "cta": "متابعة"
+  },
+  "shiftBuilder": {
+    "title": "منشئ الورديات",
+    "navButtonCreate": "إنشاء جدول مخصص",
+    "navButtonEdit": "تعديل الجدول الشامل",
+    "unsavedChanges": "تغييرات غير محفوظة",
+    "save": {
+      "success": "تم حفظ الجدول",
+      "failed": "فشل الحفظ — تم الاحتفاظ بالمسودة",
+      "retry": "إعادة المحاولة",
+      "warningConfirm": {
+        "title": "حفظ مع التحذيرات؟",
+        "confirm": "حفظ على أي حال",
+        "cancel": "مراجعة"
+      }
+    },
+    "saving": "جارٍ الحفظ...",
+    "saved": "تم الحفظ",
+    "discard": "تجاهل",
+    "cancel": "إلغاء",
+    "back": "رجوع",
+    "confirmDiscard": {
+      "title": "تجاهل التغييرات؟",
+      "message": "لديك تغييرات غير محفوظة. هل تريد تجاهلها؟",
+      "discard": "تجاهل",
+      "keepEditing": "الاستمرار في التعديل"
+    },
+    "scheduleName": {
+      "label": "اسم الجدول",
+      "placeholder": "جدولي"
+    },
+    "anchorDate": {
+      "label": "تاريخ الارتساء",
+      "hint": "تتكرر الدورة انطلاقاً من هذا التاريخ"
+    },
+    "phaseOffset": {
+      "label": "اليوم الحالي في الدورة",
+      "hint": "0 = بداية الدورة"
+    },
+    "ai": {
+      "sectionTitle": "المساعد الذكي",
+      "promptPlaceholder": "صِف جدول نوباتك...",
+      "buildButton": "إنشاء بالذكاء الاصطناعي",
+      "loading": "جارٍ تحليل جدولك...",
+      "notConfigured": "تحليل الذكاء الاصطناعي غير متاح — أنشئه يدوياً أدناه",
+      "retry": "المحاولة مرة أخرى",
+      "error": {
+        "notConfigured": "المساعد الذكي غير مهيأ.",
+        "promptEmpty": "يرجى وصف جدولك قبل المتابعة.",
+        "promptTooLong": "الوصف طويل جداً. اختصره وحاول مرة أخرى.",
+        "timeout": "استغرق التحليل وقتاً طويلاً. حاول مرة أخرى.",
+        "rateLimited": "طلبات كثيرة جداً. انتظر لحظة وحاول مرة أخرى.",
+        "networkError": "خطأ في الشبكة. تحقق من اتصالك وحاول مرة أخرى.",
+        "serverError": "خطأ في الخادم. حاول مرة أخرى لاحقاً.",
+        "generic": "حدث خطأ ما. حاول مرة أخرى."
+      },
+      "chips": {
+        "4on4off": "4 عمل 4 راحة",
+        "4days4nights4off": "4 نهار 4 ليل 4 راحة",
+        "monFri95": "الإثنين–الجمعة 9–5",
+        "7on7off": "7 عمل 7 راحة",
+        "rotatingSwing": "تناوب متأرجح 12 ساعة",
+        "fifo14": "14 عمل 14 راحة FIFO"
+      }
+    },
+    "review": {
+      "title": "إليك ما فهمته",
+      "confidence": {
+        "high": "ثقة عالية",
+        "medium": "ثقة متوسطة",
+        "low": "ثقة منخفضة"
+      },
+      "assumptions": "افتراضات",
+      "questions": "أسئلة",
+      "warnings": "تحذيرات",
+      "useDraft": "استخدام هذه المسودة",
+      "editManually": "التعديل يدوياً",
+      "discardDraft": "تجاهل المسودة",
+      "followUp": "متابعة...",
+      "send": "إرسال",
+      "invalid": "استجابة الذكاء الاصطناعي غير صالحة. حاول مرة أخرى."
+    },
+    "palette": {
+      "title": "أنواع الورديات",
+      "addNew": "إضافة نوع وردية",
+      "usageCount_one": "{{count}} استخدام",
+      "usageCount_other": "{{count}} استخدامات",
+      "deleteBlocked": "قيد الاستخدام",
+      "deleteBlockedMessage": "نوع الوردية هذا مستخدم {{count}} مرة(مرات) في التسلسل. أزل تلك الإدخالات أولاً أو استبدلها."
+    },
+    "canvas": {
+      "title": "التسلسل",
+      "empty": "أضف ورديات لبناء تسلسلك.",
+      "cycleStats": "دورة {{days}} يوماً · متوسط {{avg}} أيام عمل/أسبوع",
+      "addShift": "إضافة وردية",
+      "addBlock": "إضافة كتلة",
+      "repeatCount": "تكرار {{count}}×",
+      "moveUp": "تحريك لأعلى",
+      "moveDown": "تحريك لأسفل",
+      "duplicate": "تكرار",
+      "insertBefore": "إدراج قبل",
+      "insertAfter": "إدراج بعد",
+      "delete": "حذف"
+    },
+    "inspector": {
+      "titleCreate": "نوع وردية جديد",
+      "titleEdit": "تعديل نوع الوردية",
+      "name": "الاسم",
+      "namePlaceholder": "مثل: وردية نهارية",
+      "kind": {
+        "label": "النوع",
+        "work": "عمل",
+        "off": "راحة",
+        "travel": "سفر",
+        "on_call": "مناوبة",
+        "training": "تدريب",
+        "leave": "إجازة",
+        "custom": "مخصص"
+      },
+      "timePolicy": {
+        "label": "الوقت",
+        "timed": "أوقات محددة",
+        "all_day": "طوال اليوم",
+        "none": "بدون وقت"
+      },
+      "startTime": "وقت البدء",
+      "endTime": "وقت الانتهاء",
+      "overnight": "ليلي",
+      "overnightHint": "تنتهي الوردية في اليوم التالي",
+      "countsAsWork": "يُحسب يوم عمل",
+      "countsAsNight": "يُحسب وردية ليلية",
+      "color": "اللون",
+      "icon": "الأيقونة",
+      "location": "الموقع",
+      "save": "حفظ",
+      "delete": "حذف النوع",
+      "deleteConfirm": {
+        "title": "حذف نوع الوردية؟",
+        "message": "لا يمكن التراجع عن هذا الإجراء.",
+        "confirm": "حذف",
+        "cancel": "إلغاء"
+      }
+    },
+    "preview": {
+      "title": "معاينة",
+      "range30": "30 يوماً",
+      "range60": "60 يوماً",
+      "range90": "90 يوماً",
+      "today": "اليوم",
+      "anchor": "الارتساء",
+      "empty": "لا توجد بيانات معاينة متاحة.",
+      "errors": "لا يمكن عرض المعاينة بسبب أخطاء."
+    },
+    "validation": {
+      "errorTitle_one": "{{count}} خطأ",
+      "errorTitle_other": "{{count}} أخطاء",
+      "warningTitle_one": "{{count}} تحذير",
+      "warningTitle_other": "{{count}} تحذيرات",
+      "fix": "إصلاح",
+      "review": "مراجعة",
+      "dismiss": "تجاهل"
+    },
+    "saveResult": {
+      "success": "تم حفظ الجدول",
+      "failed": "فشل الحفظ — المسودة محفوظة",
+      "retry": "إعادة المحاولة",
+      "warningConfirm": {
+        "title": "الحفظ مع التحذيرات؟",
+        "confirm": "الحفظ على أي حال",
+        "cancel": "مراجعة"
+      }
+    },
+    "kinds": {
+      "work": "عمل",
+      "off": "راحة / إجازة",
+      "travel": "سفر",
+      "on_call": "مناوبة",
+      "training": "تدريب",
+      "leave": "إجازة",
+      "custom": "مخصص"
+    }
   }
 }

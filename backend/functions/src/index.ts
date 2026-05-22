@@ -43,6 +43,10 @@ import {
 import { EllieBrainProcessingError, processQuery } from './ellie-brain';
 import { EllieBrainSuccessEnvelope } from './types';
 import { createErrorEnvelope, createRequestId, validateRequestBody } from './http-utils';
+import {
+  ShiftScheduleParserError,
+  parseShiftScheduleDescription as parseShiftScheduleDescriptionRequest,
+} from './shift-schedule-parser';
 
 const openaiApiKey = defineSecret('OPENAI_API_KEY');
 const anthropicApiKey = defineSecret('ANTHROPIC_API_KEY');
@@ -53,6 +57,9 @@ const claudeIntelligenceModel = defineString('CLAUDE_INTELLIGENCE_MODEL', {
 const PROVIDER_TIMEOUT_MS = 25000;
 const MAX_DAILY_ANALYTICS_EVENTS = 50000;
 const DEFAULT_DASHBOARD_SUMMARY_LIMIT = 14;
+const SHIFT_PARSER_RATE_LIMIT_WINDOW_MS = 60_000;
+const SHIFT_PARSER_RATE_LIMIT_MAX_REQUESTS = 12;
+const shiftParserRateLimitBuckets = new Map<string, { count: number; resetAt: number }>();
 
 function logStructured(level: 'info' | 'error', message: string, details: Record<string, unknown>) {
   const payload = JSON.stringify({ message, ...details });
@@ -81,6 +88,32 @@ function getAnalyticsAdminUids(): Set<string> {
       .map((uid) => uid.trim())
       .filter(Boolean)
   );
+}
+
+function getShiftParserRateLimitKey(req: {
+  get(name: string): string | undefined;
+  ip?: string;
+}): string {
+  const forwardedFor = req.get('x-forwarded-for')?.split(',')[0]?.trim();
+  return forwardedFor || req.ip || 'unknown';
+}
+
+function isShiftParserRateLimited(key: string, now = Date.now()): boolean {
+  const existing = shiftParserRateLimitBuckets.get(key);
+  if (!existing || existing.resetAt <= now) {
+    shiftParserRateLimitBuckets.set(key, {
+      count: 1,
+      resetAt: now + SHIFT_PARSER_RATE_LIMIT_WINDOW_MS,
+    });
+    return false;
+  }
+
+  if (existing.count >= SHIFT_PARSER_RATE_LIMIT_MAX_REQUESTS) {
+    return true;
+  }
+
+  existing.count += 1;
+  return false;
 }
 
 function assertAnalyticsAdmin(uid: string | undefined): string {
@@ -617,6 +650,111 @@ export const ellieBrain = onRequest(
             mappedError.retryable
           )
         );
+    }
+  }
+);
+
+/**
+ * AI-assisted universal shift schedule parser.
+ *
+ * POST /parseShiftScheduleDescription
+ * Body: ShiftScheduleParserRequest
+ * Response: draft-only parser envelope
+ */
+export const parseShiftScheduleDescription = onRequest(
+  {
+    secrets: [openaiApiKey],
+    cors: true,
+    maxInstances: 20,
+    timeoutSeconds: 60,
+    memory: '256MiB',
+  },
+  async (req, res) => {
+    const startedAt = Date.now();
+    const requestId = createRequestId(req.get('x-request-id'));
+
+    if (req.method !== 'POST') {
+      res.status(405).json({
+        ok: false,
+        requestId,
+        error: { code: 'invalid_request', message: 'Method not allowed.', retryable: false },
+      });
+      return;
+    }
+
+    const rateLimitKey = getShiftParserRateLimitKey(req);
+    if (isShiftParserRateLimited(rateLimitKey)) {
+      res.status(429).json({
+        ok: false,
+        requestId,
+        error: {
+          code: 'rate_limited',
+          message: 'Too many shift builder requests. Please wait a moment and try again.',
+          retryable: true,
+        },
+      });
+      return;
+    }
+
+    try {
+      const apiKey = openaiApiKey.value();
+      if (!apiKey) {
+        res.status(500).json({
+          ok: false,
+          requestId,
+          error: {
+            code: 'internal_error',
+            message: 'Service configuration error.',
+            retryable: false,
+          },
+        });
+        return;
+      }
+
+      const result = await parseShiftScheduleDescriptionRequest(req.body, apiKey);
+
+      logStructured('info', 'Shift schedule parser request completed', {
+        requestId,
+        latencyMs: Date.now() - startedAt,
+        status: result.status,
+      });
+
+      res.status(200).json({
+        ok: true,
+        requestId,
+        data: {
+          ...result,
+          requestId,
+        },
+      });
+    } catch (error) {
+      const mappedError =
+        error instanceof ShiftScheduleParserError
+          ? error
+          : new ShiftScheduleParserError(
+              'internal_error',
+              'Something went wrong. Please try again.',
+              true,
+              500
+            );
+
+      logStructured('error', 'Shift schedule parser request failed', {
+        requestId,
+        errorCode: mappedError.code,
+        retryable: mappedError.retryable,
+        latencyMs: Date.now() - startedAt,
+        message: mappedError.message,
+      });
+
+      res.status(mappedError.statusCode).json({
+        ok: false,
+        requestId,
+        error: {
+          code: mappedError.code,
+          message: mappedError.message,
+          retryable: mappedError.retryable,
+        },
+      });
     }
   }
 );

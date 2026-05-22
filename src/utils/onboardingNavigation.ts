@@ -6,7 +6,6 @@
  */
 
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
-import { ShiftPattern } from '@/types';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
 
 // Navigation type that accepts any navigation object with navigate method
@@ -19,7 +18,8 @@ type AnyNavigation = {
 /**
  * Navigation flow map
  * Defines the next screen for each onboarding step
- * Updated to support both Rotating and FIFO roster paradigms
+ * Universal onboarding uses one schedule-builder step instead of separate
+ * category, pattern, phase, date, and time screens.
  */
 const NAVIGATION_FLOW: Record<
   keyof OnboardingStackParamList,
@@ -27,42 +27,8 @@ const NAVIGATION_FLOW: Record<
 > = {
   Welcome: () => 'PainHook',
   PainHook: () => 'Introduction',
-  Introduction: () => 'ShiftSystem',
-  ShiftSystem: (data) => {
-    // 3-shift systems only support rotating rosters — skip RosterType selection
-    if (data?.shiftSystem === '3-shift') {
-      return 'ShiftPattern';
-    }
-    return 'RosterType';
-  },
-  RosterType: () => 'ShiftPattern', // NEW: Roster type screen
-  ShiftPattern: (data) => {
-    // Complex conditional routing based on pattern type AND roster type
-
-    // Custom rotating pattern
-    if (data?.patternType === ShiftPattern.CUSTOM && data?.rosterType === 'rotating') {
-      return 'CustomPattern';
-    }
-
-    // Custom FIFO pattern
-    if (data?.patternType === ShiftPattern.FIFO_CUSTOM && data?.rosterType === 'fifo') {
-      return 'FIFOCustomPattern';
-    }
-
-    // FIFO patterns (non-custom)
-    if (data?.rosterType === 'fifo') {
-      return 'FIFOPhaseSelector';
-    }
-
-    // Rotating patterns (non-custom) - default behavior
-    return 'PhaseSelector';
-  },
-  CustomPattern: () => 'PhaseSelector', // Rotating custom → rotating phase
-  FIFOCustomPattern: () => 'FIFOPhaseSelector', // NEW: FIFO custom → FIFO phase
-  PhaseSelector: () => 'StartDate', // Rotating phase → start date
-  FIFOPhaseSelector: () => 'StartDate', // NEW: FIFO phase → start date
-  StartDate: () => 'ShiftTimeInput',
-  ShiftTimeInput: () => 'AhaMoment',
+  Introduction: () => 'UniversalShiftBuilder',
+  UniversalShiftBuilder: () => 'AhaMoment',
   AhaMoment: () => 'Completion',
   Completion: () => null, // Final screen
 };
@@ -70,7 +36,7 @@ const NAVIGATION_FLOW: Record<
 /**
  * Navigate to the next screen in the onboarding flow
  *
- * Handles conditional routing (e.g., CustomPattern only if CUSTOM selected)
+ * Handles the compressed Universal Builder onboarding path.
  *
  * @param navigation - React Navigation navigation prop
  * @param currentScreen - Current screen name
@@ -84,8 +50,8 @@ const NAVIGATION_FLOW: Record<
  * // Simple navigation
  * goToNextScreen(navigation, 'Welcome');
  *
- * // Conditional navigation (ShiftPattern → CustomPattern or PhaseSelector)
- * goToNextScreen(navigation, 'ShiftPattern', data);
+ * // Schedule setup navigation
+ * goToNextScreen(navigation, 'Introduction', data);
  * ```
  */
 export function goToNextScreen(
@@ -157,7 +123,7 @@ export function canGoNext(currentScreen: keyof OnboardingStackParamList): boolea
  * ```typescript
  * import { getNextScreenName } from '@/utils/onboardingNavigation';
  *
- * const nextScreen = getNextScreenName('ShiftPattern', data);
+ * const nextScreen = getNextScreenName('Introduction', data);
  * console.log(`Next screen will be: ${nextScreen}`);
  * ```
  */

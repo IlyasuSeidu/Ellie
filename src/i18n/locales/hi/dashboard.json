@@ -89,7 +89,8 @@
     }
   },
   "badges": {
-    "active": "सक्रिय"
+    "active": "सक्रिय",
+    "upNext": "Up next"
   },
   "voiceAssistant": {
     "subtitle": "आवाज सहायक",
@@ -190,7 +191,9 @@
     "stats": "आँकड़े",
     "profile": "प्रोफ़ाइल",
     "ellie": "Ellie",
-    "openVoiceAssistantA11y": "ऐली वॉयस असिस्टेंट खोलें"
+    "openVoiceAssistantA11y": "ऐली वॉयस असिस्टेंट खोलें",
+    "openProPlansA11y": "View Pro plans",
+    "voiceAssistantLoadingA11y": "Checking voice assistant access"
   },
   "quickActions": {
     "settings": "सेटिंग्स",
@@ -264,21 +267,23 @@
         "title": "कम आराम वाला बदलाव आगे है",
         "body": "आपकी {{previousShiftType}} और अगली {{nextShiftType}} के बीच {{shiftDate}} को केवल {{gapHours}} घंटे हैं। अपने आराम की योजना बनाएं।"
       },
-      "fifo": {
-        "flyOut": {
-          "title": "घर वापसी का दिन",
+      "travel": {
+        "outToday": {
+          "title": "Travel-out day",
           "body": "आज आप घर जा रहे हैं। हैंडओवर पूरा करें, अपना सामान तैयार करें और सुरक्षित यात्रा करें।"
         },
-        "travelTomorrow": {
+        "tomorrow": {
           "title": "कल यात्रा का दिन है",
-          "body": "आप कल अपनी {{shiftType}} के लिए साइट पर उड़ान भरेंगे। आज रात अपना सामान तैयार करें और दस्तावेज़ जाँच लें।"
+          "body": "You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
         }
       }
     }
   },
   "countdown": {
     "leftIn": "{{shiftName}} में {{time}} बाकी",
+    "leftInShift": "{{time}} left in this shift",
     "untilStarts": "{{shiftName}} शुरू होने में {{time}}",
+    "untilShift": "{{time}} until this shift starts",
     "until": "{{shiftName}} तक {{time}}",
     "tomorrow": "{{shiftName}} कल",
     "daysUntil": "{{shiftName}} तक {{days}} दिन",
@@ -316,7 +321,7 @@
   "onboardingChecklist": {
     "title": "Ellie का पूरा लाभ उठाएँ",
     "items": {
-      "roster": "अपना रोस्टर सेट करें",
+      "schedule": "Set up your schedule",
       "shiftTimes": "अपनी शिफ्ट के समय जोड़ें",
       "profile": "अपनी प्रोफ़ाइल पूरी करें",
       "askEllie": "Ellie से एक प्रश्न पूछें"

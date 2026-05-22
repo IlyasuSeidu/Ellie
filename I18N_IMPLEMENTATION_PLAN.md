@@ -1,8 +1,12 @@
 # i18n_plan — Multi-Language Implementation for Ellie Mining Shift Companion
 
+Implementation status: **Implemented for the core runtime app** as of May 21, 2026.
+
+The current codebase includes i18next/react-i18next/expo-localization setup, language persistence, `LanguageContext`, a profile language selector, locale files for all supported runtime languages, RTL handling for Arabic, key parity across core namespaces, and runtime translation-polish passes. New future feature surfaces still need their own i18n keys as they are added.
+
 ## Context
 
-Ellie is used by shift workers in the global mining industry. The top mining nations — Australia, Chile, Peru, Brazil, China, Russia, South Africa, India, Indonesia, Canada — each have workers who speak different languages. Currently the app has 140+ hardcoded English strings across 43+ files with zero i18n infrastructure. This plan adds world-class multilingual support using the most battle-tested React Native i18n stack, prioritised by mining workforce density.
+Ellie is used by shift workers in the global mining industry. The top mining nations — Australia, Chile, Peru, Brazil, China, Russia, South Africa, India, Indonesia, Canada — each have workers who speak different languages. This plan originally added multilingual support to an English-only app using the React Native i18n stack, prioritised by mining workforce density. The core runtime implementation has now landed.
 
 ---
 

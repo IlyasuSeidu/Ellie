@@ -171,10 +171,10 @@
   "subscription": {
     "paywall": {
       "closeA11y": "Cerrar muro de pago",
-      "title": "Tu roster está listo.",
+      "title": "Tu schedule está scheduleo.",
       "subtitle": "Desbloquéalo por menos que un café.",
       "features": {
-        "askRoster": "Pregúntale a \"Hola Ellie\" cualquier cosa sobre tu plantilla.",
+        "askSchedule": "Pregúntale a \"Hola Ellie\" cualquier cosa sobre tu plantilla.",
         "fullYear": "Mira todo tu año: cada turno, mes a mes",
         "offline": "Funciona bajo tierra, no necesita señal.",
         "instantAnswers": "Respuestas instantáneas sobre permisos y patrones.",
@@ -203,22 +203,22 @@
       "noCard": "No se requiere tarjeta de crédito · Cancelar en cualquier momento",
       "restorePurchases": "Restaurar compras",
       "privacyPolicy": "política de privacidad",
-      "socialProof": "Con la confianza de mineros subterráneos, operadores FIFO y trabajadores con roster rotativo.",
+      "socialProof": "Con la confianza de mineros subterráneos, operadores FIFO y trabajadores con schedule rotativo.",
       "testimonials": [
         {
           "quote": "Reservé vuelos alrededor de mi swing con meses de anticipación sin llamar a RR. HH.",
           "author": "Sarah K., minera subterránea — turnos rotativos de 12 h"
         },
         {
-          "quote": "Le mostré a mi esposa todo mi roster del sitio en menos de un minuto.",
-          "author": "Dave L., operador de perforación — roster FIFO"
+          "quote": "Le mostré a mi esposa todo mi schedule del sitio en menos de un minuto.",
+          "author": "Dave L., operador de perforación — schedule FIFO"
         },
         {
           "quote": "Reservé vuelos alrededor de mi swing con meses de anticipación sin llamar a RR. HH.",
           "author": "Jason M., operador de camión minero — FIFO 7/7"
         }
       ],
-      "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
+      "lossAversion": "Without Pro, you can only see 2 weeks of your schedule.",
       "timerLabel": "La oferta de lanzamiento termina en",
       "trust": {
         "freeTrial": "Prueba gratis",
@@ -232,17 +232,17 @@
       "termsOfService": "Términos",
       "trialBadge": "PRUEBA GRATIS · SIN COBRO HOY",
       "trialBadgePaid": "SUSCRÍBETE HOY · CANCELA CUANDO QUIERAS",
-      "title_named": "{{name}}, tu roster está listo.",
+      "title_named": "{{name}}, tu schedule está scheduleo.",
       "subtitle_fifo": "Tu ciclo FIFO ya está trazado. Ve cada swing y cada día libre durante todo tu año.",
-      "subtitle_rotating": "Tu roster rotativo ya está trazado. Ve cada turno durante todo tu año.",
+      "subtitle_rotating": "Tu schedule rotativo ya está trazado. Ve cada turno durante todo tu año.",
       "billingDisclosure": "Tu prueba gratuita termina el {{date}}. Cancela en cualquier momento en Ajustes antes de esa fecha para evitar cargos. Las suscripciones se renuevan automáticamente.",
       "lossAversion_fifo": "Sin Pro, tus fechas de swing vuelven a ser un misterio. El próximo R&R: desconocido. Reserva la semana equivocada y pierdes los vuelos.",
-      "lossAversion_rotating": "Sin Pro, tu roster se apaga. Sin aviso temprano, sin planificación anticipada. Vuelves a adivinar frente al tablón.",
+      "lossAversion_rotating": "Sin Pro, tu schedule se apaga. Sin aviso temprano, sin planificación anticipada. Vuelves a adivinar frente al tablón.",
       "lossAversion_family": "Sin Pro, tu familia vuelve a no saber cuándo estás en casa.",
       "testimonialAnchor": "4.8 · más de 2,400 valoraciones",
       "purchaseSuccess": "Tu prueba gratuita ha comenzado",
       "purchaseError": "La compra falló. Inténtalo de nuevo.",
-      "valueFrameMonthly": "El costo de un café al mes para conocer todo tu roster.",
+      "valueFrameMonthly": "El costo de un café al mes para conocer todo tu schedule.",
       "valueFrameWeekly": "Prueba la experiencia completa por {{price}}. Cancela cuando quieras.",
       "billingDisclosureWeekly": "Se cobra {{price}}/semana, cada semana. Cancela cuando quieras en Ajustes.",
       "billingDisclosureAnnualDirect": "Se te cobrará {{price}} hoy. Se renueva anualmente. Cancela cuando quieras en Ajustes.",

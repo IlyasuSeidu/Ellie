@@ -1,5 +1,9 @@
 # MAIN DASHBOARD SCREEN - SHIFT CALENDAR VIEW
 
+Implementation status: **Implemented in the current working tree** as of May 21, 2026.
+
+The active dashboard includes personalized header, current shift status, monthly calendar, upcoming shifts, stats/work summary surfaces, offline-aware data fallback, FIFO-aware calendar/status behavior, and dashboard tests. This document is retained as the original implementation plan.
+
 ## Implementation Plan
 
 ---

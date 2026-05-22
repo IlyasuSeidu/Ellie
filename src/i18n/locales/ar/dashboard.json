@@ -89,7 +89,8 @@
     }
   },
   "badges": {
-    "active": "نشيط"
+    "active": "نشيط",
+    "upNext": "Up next"
   },
   "voiceAssistant": {
     "subtitle": "مساعد صوت",
@@ -190,7 +191,9 @@
     "stats": "احصائيات",
     "profile": "حساب تعريفي",
     "ellie": "Ellie",
-    "openVoiceAssistantA11y": "افتح المساعد الصوتي Ellie"
+    "openVoiceAssistantA11y": "افتح المساعد الصوتي Ellie",
+    "openProPlansA11y": "View Pro plans",
+    "voiceAssistantLoadingA11y": "Checking voice assistant access"
   },
   "quickActions": {
     "settings": "إعدادات",
@@ -264,21 +267,23 @@
         "title": "فاصل راحة قصير قادم",
         "body": "هناك فقط {{gapHours}} ساعة بين {{previousShiftType}} الخاصة بك و{{nextShiftType}} التالية في {{shiftDate}}. خطط لراحتك."
       },
-      "fifo": {
-        "flyOut": {
-          "title": "يوم العودة",
+      "travel": {
+        "outToday": {
+          "title": "Travel-out day",
           "body": "اليوم تعود إلى المنزل. أكمل التسليم، وجهّز معداتك، وسافر بأمان."
         },
-        "travelTomorrow": {
+        "tomorrow": {
           "title": "يوم السفر غدًا",
-          "body": "ستسافر غدًا من أجل {{shiftType}} الخاصة بك. جهّز معداتك وتحقق من مستنداتك الليلة."
+          "body": "You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
         }
       }
     }
   },
   "countdown": {
     "leftIn": "متبقي {{time}} في {{shiftName}}",
+    "leftInShift": "{{time}} left in this shift",
     "untilStarts": "{{time}} حتى تبدأ {{shiftName}}",
+    "untilShift": "{{time}} until this shift starts",
     "until": "{{time}} حتى {{shiftName}}",
     "tomorrow": "{{shiftName}} غدًا",
     "daysUntil": "{{days}} أيام حتى {{shiftName}}",
@@ -316,7 +321,7 @@
   "onboardingChecklist": {
     "title": "احصل على أقصى استفادة من Ellie",
     "items": {
-      "roster": "أكمل إعداد جدولك",
+      "schedule": "Set up your schedule",
       "shiftTimes": "أضف أوقات نوباتك",
       "profile": "أكمل ملفك الشخصي",
       "askEllie": "اسأل Ellie سؤالاً"

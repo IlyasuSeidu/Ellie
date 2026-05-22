@@ -41,7 +41,6 @@ import { ProgressHeader } from '@/components/onboarding/premium/ProgressHeader';
 import { PaywallScreen } from '@/screens/subscription/PaywallScreen';
 import { MonthlyCalendarCard } from '@/components/dashboard/MonthlyCalendarCard';
 import { VoiceAssistantModal } from '@/components/voice';
-import { RosterType, ShiftSystem } from '@/types';
 import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { ONBOARDING_STEPS, TOTAL_ONBOARDING_STEPS } from '@/constants/onboardingProgress';
 import { getShiftTimesFromData } from '@/utils/shiftTimeUtils';
@@ -101,7 +100,11 @@ export const PremiumAhaMomentScreen: React.FC = () => {
   }, []);
 
   const yearStart = useMemo(() => new Date(today.getFullYear(), 0, 1), [today]);
-  const yearEnd = useMemo(() => new Date(today.getFullYear() + 1, 11, 31), [today]);
+  const yearEnd = useMemo(() => {
+    const end = new Date(today);
+    end.setDate(end.getDate() + 364);
+    return end;
+  }, [today]);
 
   const shiftDays = useMemo(() => {
     if (!shiftCycle) return [];
@@ -152,14 +155,10 @@ export const PremiumAhaMomentScreen: React.FC = () => {
     return Math.ceil((nextDayOffDate.getTime() - today.getTime()) / 86_400_000);
   }, [nextDayOffDate, today]);
 
-  const totalWorkDays =
-    (stats?.dayShifts ?? 0) +
-    (stats?.nightShifts ?? 0) +
-    (stats?.morningShifts ?? 0) +
-    (stats?.afternoonShifts ?? 0);
+  const totalWorkDays = shiftDays.filter((day) => day.isWorkDay).length;
 
   const shiftDotColor = nextShift
-    ? (SHIFT_DOT_COLOR[nextShift.shiftType] ?? SHIFT_DOT_COLOR.day)
+    ? (nextShift.universal?.color ?? SHIFT_DOT_COLOR[nextShift.shiftType] ?? SHIFT_DOT_COLOR.day)
     : SHIFT_DOT_COLOR.day;
 
   const suggestionQueries = useMemo(
@@ -191,6 +190,12 @@ export const PremiumAhaMomentScreen: React.FC = () => {
 
   const nextShiftTimes = useMemo(() => {
     if (!nextShift || nextShift.shiftType === 'off') return null;
+    if (nextShift.universal?.startTime && nextShift.universal?.endTime) {
+      return {
+        startTime: nextShift.universal.startTime,
+        endTime: nextShift.universal.endTime,
+      };
+    }
     return (
       getShiftTimesFromData(data).find((shiftTime) => shiftTime.type === nextShift.shiftType) ??
       null
@@ -210,29 +215,25 @@ export const PremiumAhaMomentScreen: React.FC = () => {
 
   const analyticsMetadata = useMemo(
     () => ({
-      roster_type: data.rosterType ?? null,
-      pattern_type: data.patternType ?? null,
+      schedule_name: data.universalSchedule?.name ?? null,
       pain_point: data.painPoint ?? null,
-      shift_system: data.shiftSystem ?? null,
       country: data.country ?? null,
       platform: Platform.OS,
     }),
-    [data.country, data.painPoint, data.patternType, data.rosterType, data.shiftSystem]
+    [data.country, data.painPoint, data.universalSchedule?.name]
   );
 
   // ── Analytics ────────────────────────────────────────────────────────────────
   useEffect(() => {
     Analytics.onboardingStepViewed('aha_moment', AHA_MOMENT_ANALYTICS_STEP, {
-      roster_type: data.rosterType ?? null,
-      pattern_type: data.patternType ?? null,
+      schedule_name: data.universalSchedule?.name ?? null,
       pain_point: data.painPoint ?? null,
     });
     // AhaMoment is the paywall priming step — the real-data calendar and stats
     // build the belief state that makes the paywall feel like the natural next step.
     Analytics.paywallPrimingViewed({
       priming_screen: 'aha_moment',
-      roster_type: data.rosterType ?? null,
-      pattern_type: data.patternType ?? null,
+      schedule_name: data.universalSchedule?.name ?? null,
       pain_point: data.painPoint ?? null,
       platform: Platform.OS,
     });
@@ -241,7 +242,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
       if (!Number.isFinite(ts) || ts <= 0) return;
       Analytics.ahaMomentReached(Math.floor((Date.now() - ts) / 1000), analyticsMetadata);
     });
-  }, [analyticsMetadata, data.painPoint, data.patternType, data.rosterType]);
+  }, [analyticsMetadata, data.painPoint, data.universalSchedule?.name]);
 
   const handleDismissPaywall = () => {
     setShowPaywall(false);
@@ -251,8 +252,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
   const handlePrimaryTap = () => {
     Analytics.track('paywall_transition_started', {
       trigger_screen: 'aha_moment',
-      roster_type: data.rosterType ?? null,
-      pattern_type: data.patternType ?? null,
+      schedule_name: data.universalSchedule?.name ?? null,
       pain_point: data.painPoint ?? null,
     });
     setShowPaywall(true);
@@ -278,13 +278,13 @@ export const PremiumAhaMomentScreen: React.FC = () => {
 
   const handleSecondaryTap = () => {
     Analytics.track('aha_moment_secondary_tapped', {
-      roster_type: data.rosterType ?? null,
+      schedule_name: data.universalSchedule?.name ?? null,
       pain_point: data.painPoint ?? null,
       platform: Platform.OS,
     });
     Analytics.paywallDeclined({
       trigger_source: 'aha_moment',
-      roster_type: data.rosterType ?? null,
+      schedule_name: data.universalSchedule?.name ?? null,
       pain_point: data.painPoint ?? null,
     });
     // Persist decline timestamp so the dashboard can surface a recovery nudge later.
@@ -316,7 +316,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
           <Text style={styles.subheadline}>
             {t('ahaMoment.subheadline', {
               defaultValue:
-                "Here's a preview of your next 3 months. No second-guessing with your heads.",
+                "Here's a preview of your next 3 months. No second-guessing, just a clear schedule.",
             })}
           </Text>
           {painCallback ? <Text style={styles.painCallback}>{painCallback}</Text> : null}
@@ -349,12 +349,14 @@ export const PremiumAhaMomentScreen: React.FC = () => {
                       {String(
                         t('ahaMoment.shiftBadge', {
                           defaultValue: '{{shiftName}} shift',
-                          shiftName: t(`shiftTime.shiftLabels.${nextShift.shiftType}Title`, {
-                            defaultValue: (
-                              nextShift.shiftType.charAt(0).toUpperCase() +
-                              nextShift.shiftType.slice(1)
-                            ).replace('_', ' '),
-                          }),
+                          shiftName:
+                            nextShift.universal?.definitionName ??
+                            t(`shiftTime.shiftLabels.${nextShift.shiftType}Title`, {
+                              defaultValue: (
+                                nextShift.shiftType.charAt(0).toUpperCase() +
+                                nextShift.shiftType.slice(1)
+                              ).replace('_', ' '),
+                            }),
                         })
                       )}
                     </Text>
@@ -399,8 +401,6 @@ export const PremiumAhaMomentScreen: React.FC = () => {
             shiftDays={displayShiftDays}
             onPreviousMonth={() => setMonthOffset((o) => Math.max(0, o - 1))}
             onNextMonth={() => setMonthOffset((o) => Math.min(MAX_PREVIEW_MONTHS - 1, o + 1))}
-            shiftSystem={data.shiftSystem as ShiftSystem | undefined}
-            rosterType={(data.rosterType as RosterType | undefined) ?? RosterType.ROTATING}
             shiftCycle={shiftCycle ?? undefined}
             animationDelay={250}
           />
@@ -516,8 +516,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
                   accessibilityState={{ disabled: isHeyEllieUnavailable }}
                   onPress={() => {
                     Analytics.ahaMomentVoiceTried(query, {
-                      roster_type: data.rosterType ?? null,
-                      pattern_type: data.patternType ?? null,
+                      schedule_name: data.universalSchedule?.name ?? null,
                       pain_point: data.painPoint ?? null,
                     });
                     handleHeyEllieTap(query);
@@ -542,8 +541,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
                 disabled={isHeyEllieUnavailable}
                 onPress={() => {
                   Analytics.ahaMomentVoiceTried('manual_mic', {
-                    roster_type: data.rosterType ?? null,
-                    pattern_type: data.patternType ?? null,
+                    schedule_name: data.universalSchedule?.name ?? null,
                     pain_point: data.painPoint ?? null,
                   });
                   handleHeyEllieTap();

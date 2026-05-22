@@ -171,17 +171,17 @@
   "subscription": {
     "paywall": {
       "closeA11y": "Close paywall",
-      "title": "Your roster is ready.",
+      "title": "Your schedule is ready.",
       "subtitle": "Unlock it for less than a coffee.",
-      "socialProof": "Trusted by underground miners, FIFO operators, and rotating roster workers.",
+      "socialProof": "Trusted by underground miners, FIFO operators, and rotating schedule workers.",
       "testimonials": [
         {
           "quote": "Booked flights around my swing months ahead without calling HR once.",
           "author": "Sarah K., Underground miner — 12h rotating shifts"
         },
         {
-          "quote": "Showed my wife my whole site roster in under a minute.",
-          "author": "Dave L., Drill operator — FIFO roster"
+          "quote": "Showed my wife my whole site schedule in under a minute.",
+          "author": "Dave L., Drill operator — FIFO schedule"
         },
         {
           "quote": "No more texting the supervisor to figure out if I'm on days or nights next week.",
@@ -190,7 +190,7 @@
       ],
       "features": {
         "fullYear": "See your full year — every shift, month by month",
-        "askRoster": "Ask Ellie anything — \"When's my next day off?\"",
+        "askSchedule": "Ask Ellie anything — \"When's my next day off?\"",
         "offline": "Works underground with zero signal",
         "leavePlanning": "Plan holidays without calling HR",
         "aiPowered": "AI that knows YOUR exact pattern, not a generic one",
@@ -199,7 +199,7 @@
       },
       "lossAversion": "Without Pro, you're back to counting shifts on your hands.",
       "lossAversion_fifo": "Without Pro, your swing dates go back to being a mystery. Next R&R — unknown. Book the wrong week, lose the flights.",
-      "lossAversion_rotating": "Without Pro, your roster goes dark. No early warning, no planning ahead. Back to guessing the noticeboard.",
+      "lossAversion_rotating": "Without Pro, your schedule goes dark. No early warning, no planning ahead. Back to guessing the noticeboard.",
       "lossAversion_family": "Without Pro, your family goes back to not knowing when you're home.",
       "plans": {
         "annual": "Annual",
@@ -225,7 +225,7 @@
         "chargedToday": "Charged today"
       },
       "valueFrame": "Less than a coffee per week to know your full year.",
-      "valueFrameMonthly": "The cost of one coffee a month to know your full roster.",
+      "valueFrameMonthly": "The cost of one coffee a month to know your full schedule.",
       "valueFrameWeekly": "Try the full experience for {{price}}. Cancel any time.",
       "security": "Secure payment via {{platform}} · Processed by {{platform}}, not Ellie",
       "noCard": "No credit card required · Cancel anytime",
@@ -234,9 +234,9 @@
       "termsOfService": "Terms",
       "trialBadge": "FREE TRIAL · NO CHARGE TODAY",
       "trialBadgePaid": "SUBSCRIBE TODAY · CANCEL ANYTIME",
-      "title_named": "{{name}}, your roster is ready.",
+      "title_named": "{{name}}, your schedule is ready.",
       "subtitle_fifo": "Your FIFO cycle is mapped. See every swing, every day off, for your full year.",
-      "subtitle_rotating": "Your rotating roster is mapped. See every shift for your full year.",
+      "subtitle_rotating": "Your rotating schedule is mapped. See every shift for your full year.",
       "billingDisclosure": "Your free trial ends {{date}}. Cancel anytime in Settings before then to avoid charges. Subscriptions renew automatically.",
       "billingDisclosureWeekly": "Billed {{price}}/week, every week. Cancel anytime in Settings.",
       "billingDisclosureAnnualDirect": "You will be charged {{price}} today. Renews annually. Cancel anytime in Settings.",

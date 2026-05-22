@@ -38,6 +38,12 @@ export interface UpcomingShift {
   displayDate: string;
   /** Shift time display (e.g., "7:00 AM - 7:00 PM") */
   timeDisplay?: string;
+  /** Universal schedule display metadata, when the shift came from Universal Builder */
+  universalDisplay?: {
+    title: string;
+    color: string;
+    icon: string;
+  };
 }
 
 /**

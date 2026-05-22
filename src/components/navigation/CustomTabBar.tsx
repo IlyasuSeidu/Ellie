@@ -318,9 +318,19 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
           onPress={() => handleTabPress(state.routes[1], 1)}
           activeOpacity={0.8}
           disabled={isLoading}
-          accessibilityLabel={t('tabs.openVoiceAssistantA11y', {
-            defaultValue: 'Open Ellie voice assistant',
-          })}
+          accessibilityLabel={
+            isLoading
+              ? t('tabs.voiceAssistantLoadingA11y', {
+                  defaultValue: 'Checking voice assistant access',
+                })
+              : isPro
+                ? t('tabs.openVoiceAssistantA11y', {
+                    defaultValue: 'Open Ellie voice assistant',
+                  })
+                : t('tabs.openProPlansA11y', {
+                    defaultValue: 'View Pro plans',
+                  })
+          }
           accessibilityRole="button"
           accessibilityState={{ disabled: isLoading }}
         >

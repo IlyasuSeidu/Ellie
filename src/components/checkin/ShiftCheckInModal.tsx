@@ -12,7 +12,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
-import { EnergyLevel, type ShiftType } from '@/types';
+import { EnergyLevel, type ShiftType, type UniversalShiftDefinition } from '@/types';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
 import { formatLocalizedDate, formatLocalizedTime } from '@/utils/i18nFormat';
 import { shiftLogService } from '@/services/ShiftLogService';
@@ -43,20 +43,51 @@ const DEFAULT_SHIFT_TIMES: Record<
 
 function resolveShiftTiming(
   shiftType: ShiftType,
-  shiftTimes: OnboardingData['shiftTimes']
+  onboardingData?: OnboardingData
 ): { startTime: string; endTime: string; duration: number } {
+  const definitions = onboardingData?.universalSchedule?.shiftDefinitions ?? [];
+  const matchingDefinition = definitions.find((definition) => {
+    if (shiftType === 'off') {
+      return definition.kind === 'off';
+    }
+    return definition.countsAsWork && mapDefinitionToShiftType(definition) === shiftType;
+  });
+
+  if (matchingDefinition?.startTime && matchingDefinition?.endTime) {
+    return {
+      startTime: matchingDefinition.startTime,
+      endTime: matchingDefinition.endTime,
+      duration: Math.round((matchingDefinition.durationMinutes ?? 0) / 60),
+    };
+  }
+
   switch (shiftType) {
     case 'day':
-      return shiftTimes?.dayShift ?? DEFAULT_SHIFT_TIMES.day;
+      return DEFAULT_SHIFT_TIMES.day;
     case 'night':
-      return shiftTimes?.nightShift ?? shiftTimes?.nightShift3 ?? DEFAULT_SHIFT_TIMES.night;
+      return DEFAULT_SHIFT_TIMES.night;
     case 'morning':
-      return shiftTimes?.morningShift ?? DEFAULT_SHIFT_TIMES.morning;
+      return DEFAULT_SHIFT_TIMES.morning;
     case 'afternoon':
-      return shiftTimes?.afternoonShift ?? DEFAULT_SHIFT_TIMES.afternoon;
+      return DEFAULT_SHIFT_TIMES.afternoon;
     default:
       return DEFAULT_SHIFT_TIMES.day;
   }
+}
+
+function mapDefinitionToShiftType(definition: UniversalShiftDefinition): ShiftType {
+  if (!definition.countsAsWork || definition.kind === 'off') {
+    return 'off';
+  }
+
+  if (definition.countsAsNight || definition.crossesMidnight) {
+    return 'night';
+  }
+
+  const hour = Number((definition.startTime ?? '07:00').split(':')[0]);
+  if (hour < 11) return 'morning';
+  if (hour < 17) return 'afternoon';
+  return 'day';
 }
 
 const ENERGY_OPTIONS: Array<{
@@ -89,8 +120,8 @@ export const ShiftCheckInModal: React.FC<ShiftCheckInModalProps> = ({
   const dismissTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const shiftTiming = useMemo(
-    () => resolveShiftTiming(shiftType, onboardingData?.shiftTimes),
-    [onboardingData?.shiftTimes, shiftType]
+    () => resolveShiftTiming(shiftType, onboardingData),
+    [onboardingData, shiftType]
   );
   const localizedShiftType = t(`notifications.smartReminders.shiftType.${shiftType}`, {
     ns: 'dashboard',

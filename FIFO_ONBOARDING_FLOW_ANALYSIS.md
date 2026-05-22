@@ -3,7 +3,10 @@
 **Project:** Ellie Mining Shift Tracker
 **Document:** Complete FIFO Roster Onboarding Flow
 **Created:** February 26, 2026
-**Status:** Implementation Planning
+**Status:** Implemented in the current working tree
+**Last reviewed:** May 21, 2026
+
+Implementation note: FIFO onboarding now exists in the active app flow, including roster-type selection, FIFO pattern cards, custom FIFO configuration, FIFO phase/block selection, persisted `fifoConfig`, dashboard rendering, profile editing, and tests. This document remains useful as the historical design analysis for that flow.
 
 ---
 

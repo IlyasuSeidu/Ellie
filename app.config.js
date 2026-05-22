@@ -100,6 +100,12 @@ module.exports = ({ config = {} }) => {
         process.env.ELLIE_BRAIN_URL ||
         'https://ellie-brain-REGION-PROJECT.cloudfunctions.net/ellieBrain',
       ELLIE_BRAIN_TIMEOUT: process.env.ELLIE_BRAIN_TIMEOUT || '30000',
+      SHIFT_SCHEDULE_PARSER_URL: process.env.SHIFT_SCHEDULE_PARSER_URL || '',
+      SHIFT_SCHEDULE_PARSER_TIMEOUT_MS: process.env.SHIFT_SCHEDULE_PARSER_TIMEOUT_MS || '45000',
+      SHIFT_SCHEDULE_PARSER_MAX_PROMPT_LENGTH:
+        process.env.SHIFT_SCHEDULE_PARSER_MAX_PROMPT_LENGTH || '2000',
+      UNIVERSAL_SHIFT_BUILDER_ENABLED: process.env.UNIVERSAL_SHIFT_BUILDER_ENABLED || '',
+      AI_SHIFT_BUILDER_ENABLED: process.env.AI_SHIFT_BUILDER_ENABLED || '',
       E2E_TEST_MODE: process.env.E2E_TEST_MODE || '',
       PICOVOICE_ACCESS_KEY: process.env.PICOVOICE_ACCESS_KEY || '',
       WAKE_WORD_PROVIDER: process.env.WAKE_WORD_PROVIDER || '',

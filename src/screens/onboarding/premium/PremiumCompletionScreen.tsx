@@ -2,7 +2,7 @@
  * Premium Completion Screen
  *
  * Celebration and completion screen for onboarding flow.
- * Shows summary of the user's configured roster and saves onboarding state.
+ * Shows summary of the user's configured schedule and saves onboarding state.
  */
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -54,9 +54,10 @@ import { buildShiftCycle, getShiftDaysInRange } from '@/utils/shiftUtils';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
 import {
   getPatternDisplayName,
-  getShiftSystemDisplayName,
-  getRosterTypeDisplayName,
-  getFIFOWorkPatternName,
+  getCycleLengthDays,
+  getShiftDurationSummary,
+  getWorkRestRatio,
+  formatShiftTime,
 } from '@/utils/profileUtils';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 import { logger } from '@/utils/logger';
@@ -71,6 +72,18 @@ import { formatLocalizedDate, getLocaleTag } from '@/utils/i18nFormat';
 const isJestRuntime = (): boolean =>
   typeof process !== 'undefined' && typeof process.env?.JEST_WORKER_ID === 'string';
 const COMPLETION_ANALYTICS_STEP = 12;
+
+function formatRelativeDays(daysAway: number, locale: string): string {
+  const RelativeTimeFormat = Intl.RelativeTimeFormat;
+  if (typeof RelativeTimeFormat === 'function') {
+    return new RelativeTimeFormat(locale, { numeric: 'always' }).format(daysAway, 'day');
+  }
+
+  if (daysAway === 0) return 'today';
+  if (daysAway === 1) return 'in 1 day';
+  if (daysAway === -1) return '1 day ago';
+  return daysAway > 0 ? `in ${daysAway} days` : `${Math.abs(daysAway)} days ago`;
+}
 
 // Animated SVG components
 const AnimatedPath = Animated.createAnimatedComponent(Path);
@@ -403,9 +416,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
         const resolvedIsPro = isPro || cachedIsPro === true;
 
         Analytics.onboardingCompleted({
-          roster_type: data.rosterType ?? null,
-          pattern_type: data.patternType ?? null,
-          shift_system: data.shiftSystem ?? null,
+          schedule_name: data.universalSchedule?.name ?? null,
           country: data.country ?? null,
           pain_point: data.painPoint ?? null,
           time_to_complete_seconds: timeToCompleteSeconds,
@@ -566,98 +577,35 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
     return trimmedName.split(/\s+/)[0] ?? trimmedName;
   }, [data.name]);
 
-  // Format pattern name for display
-  const getPatternName = (): string => getPatternDisplayName(data);
+  // Format schedule name for display
+  const isUniversalSchedule = !!data.universalSchedule;
+
+  const getPatternName = (): string =>
+    isUniversalSchedule && data.universalSchedule
+      ? data.universalSchedule.name
+      : getPatternDisplayName(data);
 
   const getSetupLabel = (): string => getPatternName();
 
-  // Format shift system
-  const getShiftSystemName = (): string => {
-    const displayName = getShiftSystemDisplayName(data.shiftSystem);
-    return displayName === '3-Shift (8h)'
-      ? String(
-          t('completion.summary.shiftSystemThree', {
-            defaultValue: '3-Shift System',
-          })
-        )
-      : String(
-          t('completion.summary.shiftSystemTwo', {
-            defaultValue: '2-Shift System',
-          })
-        );
-  };
+  const getScheduleEngineName = (): string =>
+    String(
+      t('completion.summary.scheduleEngine', {
+        defaultValue: 'Universal custom shifts',
+      })
+    );
 
-  // Get roster type display name
-  const getRosterTypeName = (): string => {
-    return getRosterTypeDisplayName(data.rosterType) === 'FIFO'
-      ? String(
-          t('completion.summary.rosterTypeFIFO', {
-            defaultValue: 'FIFO (Fly-In Fly-Out)',
-          })
-        )
-      : String(
-          t('completion.summary.rosterTypeRotating', {
-            defaultValue: 'Rotating Roster',
-          })
-        );
-  };
+  const getScheduleTypeName = (): string =>
+    String(
+      t('completion.summary.scheduleType', {
+        defaultValue: 'Universal schedule',
+      })
+    );
 
-  // Get FIFO work pattern description
-  const getFIFOShiftPatternName = (): string => getFIFOWorkPatternName(data.fifoConfig);
-
-  // Get FIFO cycle description
-  const getFIFOCycleSummary = (): string => {
-    if (!data.fifoConfig) {
-      return String(t('completion.summary.notSet', { defaultValue: 'Not set' }));
-    }
-
-    const workText = t('shift.configCard.workDaysOnSite', {
-      ns: 'profile',
-      count: data.fifoConfig.workBlockDays,
-      defaultValue: '{{count}} days on-site',
-    });
-    const restText = t('shift.configCard.restDaysAtHome', {
-      ns: 'profile',
-      count: data.fifoConfig.restBlockDays,
-      defaultValue: '{{count}} days at home',
-    });
-
-    return `${workText} • ${restText}`;
-  };
-
-  // Get current cycle position (FIFO block day or rotating phase day)
-  const getCurrentPosition = (): string | null => {
-    const { phaseOffset, fifoConfig, rosterType } = data;
-    if (phaseOffset === undefined || phaseOffset === null) return null;
-
-    if (rosterType === 'fifo' && fifoConfig) {
-      const workBlockDays = fifoConfig.workBlockDays;
-      const restBlockDays = fifoConfig.restBlockDays;
-      const cycleLength = workBlockDays + restBlockDays;
-      if (cycleLength <= 0) return null;
-      const normalizedOffset = ((phaseOffset % cycleLength) + cycleLength) % cycleLength;
-      if (normalizedOffset < workBlockDays) {
-        return String(
-          t('shift.cycleWorkBlock', {
-            ns: 'profile',
-            day: normalizedOffset + 1,
-            total: workBlockDays,
-            defaultValue: `Day ${normalizedOffset + 1} of ${workBlockDays} (Work Block)`,
-          })
-        );
-      }
-      const restDay = normalizedOffset - workBlockDays + 1;
-      return String(
-        t('shift.cycleRestBlock', {
-          ns: 'profile',
-          day: restDay,
-          total: restBlockDays,
-          defaultValue: `Day ${restDay} of ${restBlockDays} (Rest Block)`,
-        })
-      );
-    }
-
-    return null;
+  const getUniversalCycleSummary = (): string => {
+    const cycleDays = getCycleLengthDays(data);
+    const ratio = getWorkRestRatio(data);
+    const duration = getShiftDurationSummary(data);
+    return `${cycleDays ?? '-'} days • ${ratio} work/rest • ${duration} per shift`;
   };
 
   // Format date
@@ -672,6 +620,11 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
       },
       i18n.resolvedLanguage ?? i18n.language
     );
+  };
+
+  const formatDateValue = (date?: Date | string): string => {
+    if (!date) return String(t('completion.summary.notSet', { defaultValue: 'Not set' }));
+    return formatDate(typeof date === 'string' ? new Date(`${date}T00:00:00`) : date);
   };
 
   const getShiftLabel = useCallback(
@@ -695,6 +648,30 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
 
   // Format shift times - returns array of shift time entries
   const getShiftTimeEntries = (): Array<{ label: string; value: string }> => {
+    if (isUniversalSchedule && data.universalSchedule) {
+      return data.universalSchedule.shiftDefinitions.map((definition) => {
+        let value = String(
+          t('completion.summary.notTimed', {
+            defaultValue: 'Not timed',
+          })
+        );
+        if (definition.timePolicy === 'all_day') {
+          value = String(
+            t('completion.summary.allDay', {
+              defaultValue: 'All day',
+            })
+          );
+        } else if (definition.startTime && definition.endTime) {
+          value = `${formatShiftTime(definition.startTime)} - ${formatShiftTime(definition.endTime)}`;
+        }
+
+        return {
+          label: definition.name,
+          value,
+        };
+      });
+    }
+
     const shiftTimes = getShiftTimesFromData(data);
     const entries = shiftTimes.map((st) => ({
       label: getShiftLabel(st.type),
@@ -736,12 +713,10 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
       return null;
     }
 
-    const formatter = new Intl.RelativeTimeFormat(
-      getLocaleTag(i18n.resolvedLanguage ?? i18n.language),
-      { numeric: 'always' }
+    return formatRelativeDays(
+      nextShiftCountdown.daysAway,
+      getLocaleTag(i18n.resolvedLanguage ?? i18n.language)
     );
-
-    return formatter.format(nextShiftCountdown.daysAway, 'day');
   }, [i18n.language, i18n.resolvedLanguage, nextShiftCountdown]);
 
   return (
@@ -836,7 +811,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
         >
           {t('completion.setupReady', {
             setup: getSetupLabel(),
-            defaultValue: 'Your {{setup}} roster is ready.',
+            defaultValue: 'Your {{setup}} schedule is ready.',
           })}
         </Animated.Text>
         <Animated.Text
@@ -880,55 +855,31 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
                 {
                   icon: 'swap-horizontal-outline',
                   label: String(
-                    t('completion.summary.rosterType', { defaultValue: 'Roster Type' })
+                    t('completion.summary.scheduleType', { defaultValue: 'Schedule Type' })
                   ),
-                  value: getRosterTypeName(),
+                  value: getScheduleTypeName(),
                 },
                 {
                   icon: 'layers-outline',
                   label: String(
-                    t('completion.summary.shiftSystem', { defaultValue: 'Shift System' })
+                    t('completion.summary.scheduleEngine', { defaultValue: 'Schedule Engine' })
                   ),
-                  value: getShiftSystemName(),
+                  value: getScheduleEngineName(),
                 },
                 {
                   icon: 'refresh-outline',
                   label: String(t('completion.summary.pattern', { defaultValue: 'Pattern' })),
                   value: getPatternName(),
                 },
-                // FIFO-specific fields
-                ...(data.rosterType === 'fifo'
-                  ? ([
-                      {
-                        icon: 'sync-outline',
-                        label: String(t('completion.summary.cycle', { defaultValue: 'Cycle' })),
-                        value: getFIFOCycleSummary(),
-                      },
-                      {
-                        icon: 'partly-sunny-outline',
-                        label: String(
-                          t('completion.summary.workPattern', { defaultValue: 'Work Pattern' })
-                        ),
-                        value: getFIFOShiftPatternName(),
-                      },
-                      getCurrentPosition()
-                        ? {
-                            icon: 'locate-outline',
-                            label: String(
-                              t('shift.currentPositionInCycle', {
-                                ns: 'profile',
-                                defaultValue: 'Current position in cycle',
-                              })
-                            ),
-                            value: getCurrentPosition() as string,
-                          }
-                        : undefined,
-                    ] as Array<{ icon: string; label: string; value: string } | undefined>)
-                  : []),
+                {
+                  icon: 'sync-outline',
+                  label: String(t('completion.summary.cycle', { defaultValue: 'Cycle' })),
+                  value: getUniversalCycleSummary(),
+                },
                 {
                   icon: 'calendar-outline',
                   label: String(t('completion.summary.startDate', { defaultValue: 'Start Date' })),
-                  value: formatDate(data.startDate),
+                  value: formatDateValue(data.universalSchedule?.anchorDate),
                 },
                 // Spread all shift time entries (supports multiple shifts)
                 ...getShiftTimeEntries().map((entry) => ({

@@ -33,6 +33,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { TimePickerModal } from '@/components/onboarding/premium/TimePickerModal';
 import { formatLocalizedNumber, formatLocalizedTime } from '@/utils/i18nFormat';
+import { hexToRGBA } from '@/utils/styleUtils';
+import { useShiftAccent } from '@/hooks/useShiftAccent';
 import { DEFAULT_SMART_REMINDER_SETTINGS, type SmartReminderSettings } from '@/types/reminders';
 
 // ── Module-level singletons (same pattern as useSmartReminders) ────────────
@@ -80,12 +82,14 @@ function SegmentedRow<T extends number>({
   options,
   value,
   onChange,
+  accentColor,
 }: {
   label: string;
   sublabel?: string;
   options: SegmentOption<T>[];
   value: T;
   onChange: (v: T) => void;
+  accentColor: string;
 }) {
   return (
     <View style={s.row}>
@@ -95,14 +99,30 @@ function SegmentedRow<T extends number>({
         {options.map((opt) => (
           <TouchableOpacity
             key={opt.value}
-            style={[s.chip, value === opt.value && s.chipActive]}
+            style={[
+              s.chip,
+              value === opt.value && {
+                borderColor: accentColor,
+                backgroundColor: hexToRGBA(accentColor, 0.15),
+              },
+            ]}
             onPress={() => {
               void Haptics.selectionAsync();
               onChange(opt.value);
             }}
             activeOpacity={0.7}
           >
-            <Text style={[s.chipText, value === opt.value && s.chipTextActive]}>{opt.label}</Text>
+            <Text
+              style={[
+                s.chipText,
+                value === opt.value && {
+                  color: accentColor,
+                  fontWeight: '700',
+                },
+              ]}
+            >
+              {opt.label}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -116,12 +136,14 @@ function ToggleRow({
   value,
   onChange,
   disabled = false,
+  accentColor,
 }: {
   label: string;
   sublabel?: string;
   value: boolean;
   onChange: (v: boolean) => void;
   disabled?: boolean;
+  accentColor: string;
 }) {
   return (
     <View style={[s.row, s.rowH, disabled && s.rowDisabled]}>
@@ -136,7 +158,7 @@ function ToggleRow({
           void Haptics.selectionAsync();
           onChange(v);
         }}
-        trackColor={{ false: theme.colors.softStone, true: theme.colors.sacredGold }}
+        trackColor={{ false: theme.colors.softStone, true: accentColor }}
         thumbColor={theme.colors.paper}
         ios_backgroundColor={theme.colors.softStone}
       />
@@ -144,10 +166,10 @@ function ToggleRow({
   );
 }
 
-function SectionLabel({ title }: { title: string }) {
+function SectionLabel({ title, accentColor }: { title: string; accentColor: string }) {
   return (
     <View style={s.sectionLabel}>
-      <Text style={s.sectionLabelText}>{title}</Text>
+      <Text style={[s.sectionLabelText, { color: accentColor }]}>{title}</Text>
     </View>
   );
 }
@@ -163,6 +185,8 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
   const { data: onboardingData } = useOnboarding();
   const { user } = useAuth();
   const { language } = useLanguage();
+  const { tabAccentColor } = useShiftAccent();
+  const accentColor = tabAccentColor;
 
   const [settings, setSettings] = useState<SmartReminderSettings>(DEFAULT_SMART_REMINDER_SETTINGS);
   const [loaded, setLoaded] = useState(false);
@@ -231,7 +255,11 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
 
   const reschedule = useCallback(
     async (updated: SmartReminderSettings) => {
-      if (!onboardingData?.startDate || !onboardingData?.patternType) return;
+      const hasUniversalSchedule = Boolean(
+        onboardingData?.universalSchedule?.shiftDefinitions.length &&
+        onboardingData?.universalSchedule?.sequence.length
+      );
+      if (!hasUniversalSchedule) return;
       const shiftCycle = buildShiftCycle(onboardingData);
       if (!shiftCycle) return;
 
@@ -251,7 +279,6 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
           userId,
           userName: onboardingData.name ?? '',
           shiftCycle,
-          shiftTimes: onboardingData.shiftTimes,
           settings: updated,
           language,
         });
@@ -343,7 +370,11 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
     (isOvernightWindow ? 24 * 60 - startMin + endMin : endMin - startMin) / 60
   );
 
-  const isFifoUser = onboardingData?.rosterType === 'fifo';
+  const hasTravelShift = Boolean(
+    onboardingData?.universalSchedule?.shiftDefinitions.some(
+      (definition) => definition.kind === 'travel'
+    )
+  );
   const showPermissionNotice = rescheduleStatus === 'permission' || testStatus === 'permission';
 
   const updateQuietHours = useCallback(
@@ -403,6 +434,7 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
         title={t('smartReminders.sections.timing', {
           defaultValue: 'TIMING',
         })}
+        accentColor={accentColor}
       />
 
       <SegmentedRow
@@ -420,6 +452,7 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
         ]}
         value={settings.earlyReminderHours}
         onChange={(v) => void applyUpdate({ earlyReminderHours: v })}
+        accentColor={accentColor}
       />
 
       <SegmentedRow
@@ -437,6 +470,7 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
         ]}
         value={settings.prepTimeMinutes}
         onChange={(v) => void applyUpdate({ prepTimeMinutes: v })}
+        accentColor={accentColor}
       />
 
       <SegmentedRow
@@ -459,6 +493,7 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
         ]}
         value={settings.commuteTimeMinutes}
         onChange={(v) => void applyUpdate({ commuteTimeMinutes: v })}
+        accentColor={accentColor}
       />
 
       <ToggleRow
@@ -470,6 +505,7 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
         })}
         value={settings.imminentReminderEnabled}
         onChange={(v) => void applyUpdate({ imminentReminderEnabled: v })}
+        accentColor={accentColor}
       />
 
       <ToggleRow
@@ -481,6 +517,7 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
         })}
         value={settings.preBriefingEnabled}
         onChange={(v) => void applyUpdate({ preBriefingEnabled: v })}
+        accentColor={accentColor}
       />
 
       {/* ── DO NOT DISTURB ───────────────────────────────────── */}
@@ -488,6 +525,7 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
         title={t('smartReminders.sections.doNotDisturb', {
           defaultValue: 'DO NOT DISTURB',
         })}
+        accentColor={accentColor}
       />
 
       <ToggleRow
@@ -499,12 +537,12 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
         })}
         value={settings.quietHoursEnabled}
         onChange={(v) => void applyUpdate({ quietHoursEnabled: v })}
+        accentColor={accentColor}
       />
 
       {settings.quietHoursEnabled && (
         <View style={s.timeChipRow}>
           <TouchableOpacity
-            style={s.timeChip}
             onPress={() => {
               void Haptics.selectionAsync();
               setQuietPickerTarget('start');
@@ -515,15 +553,21 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
               defaultValue: 'Quiet hours start: {{time}}',
             })}
             accessibilityRole="button"
+            style={[
+              s.timeChip,
+              {
+                borderColor: hexToRGBA(accentColor, 0.32),
+                backgroundColor: hexToRGBA(accentColor, 0.08),
+              },
+            ]}
           >
-            <Ionicons name="moon-outline" size={14} color={theme.colors.dust} />
+            <Ionicons name="moon-outline" size={14} color={accentColor} />
             <Text style={s.timeChipText}>{fmtChipTime(settings.quietHoursStart, language)}</Text>
           </TouchableOpacity>
 
           <Text style={s.timeChipArrow}>→</Text>
 
           <TouchableOpacity
-            style={s.timeChip}
             onPress={() => {
               void Haptics.selectionAsync();
               setQuietPickerTarget('end');
@@ -534,8 +578,15 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
               defaultValue: 'Quiet hours end: {{time}}',
             })}
             accessibilityRole="button"
+            style={[
+              s.timeChip,
+              {
+                borderColor: hexToRGBA(accentColor, 0.32),
+                backgroundColor: hexToRGBA(accentColor, 0.08),
+              },
+            ]}
           >
-            <Ionicons name="sunny-outline" size={14} color={theme.colors.dust} />
+            <Ionicons name="sunny-outline" size={14} color={accentColor} />
             <Text style={s.timeChipText}>{fmtChipTime(settings.quietHoursEnd, language)}</Text>
           </TouchableOpacity>
 
@@ -563,6 +614,7 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
         title={t('smartReminders.sections.adaptive', {
           defaultValue: 'ADAPTIVE',
         })}
+        accentColor={accentColor}
       />
 
       <ToggleRow
@@ -574,6 +626,7 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
         })}
         value={settings.backToBackWarnings}
         onChange={(v) => void applyUpdate({ backToBackWarnings: v })}
+        accentColor={accentColor}
       />
 
       <ToggleRow
@@ -585,6 +638,7 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
         })}
         value={settings.shortTurnaroundWarnings}
         onChange={(v) => void applyUpdate({ shortTurnaroundWarnings: v })}
+        accentColor={accentColor}
       />
 
       <ToggleRow
@@ -596,15 +650,17 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
         })}
         value={settings.postShiftCheckin}
         onChange={(v) => void applyUpdate({ postShiftCheckin: v })}
+        accentColor={accentColor}
       />
 
-      {/* ── FIFO (fly-in / fly-out users only) ───────────────── */}
-      {isFifoUser && (
+      {/* ── Travel shifts ───────────────── */}
+      {hasTravelShift && (
         <>
           <SectionLabel
-            title={t('smartReminders.sections.fifo', {
-              defaultValue: 'FIFO',
+            title={t('smartReminders.sections.travel', {
+              defaultValue: 'Travel',
             })}
+            accentColor={accentColor}
           />
           <ToggleRow
             label={t('smartReminders.rows.travelDay.label', {
@@ -613,8 +669,9 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
             sublabel={t('smartReminders.rows.travelDay.sublabel', {
               defaultValue: 'Evening alert before fly-in; morning alert on fly-out day',
             })}
-            value={settings.fifoTravelReminders}
-            onChange={(v) => void applyUpdate({ fifoTravelReminders: v })}
+            value={settings.travelReminders}
+            onChange={(v) => void applyUpdate({ travelReminders: v })}
+            accentColor={accentColor}
           />
         </>
       )}
@@ -640,7 +697,13 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
         ) : null}
 
         <TouchableOpacity
-          style={s.actionBtn}
+          style={[
+            s.actionBtn,
+            {
+              borderColor: hexToRGBA(accentColor, 0.3),
+              backgroundColor: hexToRGBA(accentColor, 0.08),
+            },
+          ]}
           onPress={() => void handleTestNotification()}
           activeOpacity={0.7}
           accessibilityRole="button"
@@ -662,7 +725,7 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
                 ? theme.colors.success
                 : testStatus === 'error' || testStatus === 'permission'
                   ? theme.colors.error
-                  : theme.colors.sacredGold
+                  : accentColor
             }
           />
           <Text
@@ -670,6 +733,7 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
               s.actionBtnText,
               testStatus === 'sent' && s.actionBtnTextSuccess,
               (testStatus === 'error' || testStatus === 'permission') && s.actionBtnTextError,
+              testStatus === 'idle' && { color: accentColor },
             ]}
           >
             {testStatus === 'sent'
@@ -691,7 +755,13 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={s.actionBtn}
+          style={[
+            s.actionBtn,
+            {
+              borderColor: hexToRGBA(accentColor, 0.3),
+              backgroundColor: hexToRGBA(accentColor, 0.08),
+            },
+          ]}
           onPress={() => void handleManualReschedule()}
           activeOpacity={0.7}
           disabled={isRescheduling}
@@ -701,7 +771,7 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
           })}
         >
           {isRescheduling ? (
-            <ActivityIndicator size="small" color={theme.colors.sacredGold} />
+            <ActivityIndicator size="small" color={accentColor} />
           ) : (
             <Ionicons
               name={
@@ -717,7 +787,7 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
                   ? theme.colors.success
                   : rescheduleStatus === 'error' || rescheduleStatus === 'permission'
                     ? theme.colors.error
-                    : theme.colors.sacredGold
+                    : accentColor
               }
             />
           )}
@@ -727,6 +797,7 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
               rescheduleStatus === 'success' && s.actionBtnTextSuccess,
               (rescheduleStatus === 'error' || rescheduleStatus === 'permission') &&
                 s.actionBtnTextError,
+              rescheduleStatus === 'idle' && !isRescheduling && { color: accentColor },
             ]}
           >
             {isRescheduling

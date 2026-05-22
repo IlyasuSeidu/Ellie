@@ -160,7 +160,7 @@ describe('CustomTabBar', () => {
     const props = buildProps(1);
     const { getByLabelText } = render(<CustomTabBar {...props} />);
 
-    fireEvent.press(getByLabelText('Open Ellie voice assistant'));
+    fireEvent.press(getByLabelText('View Pro plans'));
 
     expect(mockOpenPaywall).toHaveBeenCalled();
     expect(mockOpenModal).not.toHaveBeenCalled();
@@ -176,7 +176,7 @@ describe('CustomTabBar', () => {
     const props = buildProps(1);
     const { getByLabelText } = render(<CustomTabBar {...props} />);
 
-    fireEvent.press(getByLabelText('Open Ellie voice assistant'));
+    fireEvent.press(getByLabelText('Checking voice assistant access'));
 
     expect(mockOpenPaywall).not.toHaveBeenCalled();
     expect(mockOpenModal).not.toHaveBeenCalled();

@@ -348,7 +348,13 @@
       "shiftTimes": "Horaires des quarts de travail",
       "startDate": "Date de début",
       "title": "Votre profil",
-      "workPattern": "Modèle de travail"
+      "workPattern": "Modèle de travail",
+      "allDay": "All day",
+      "notTimed": "Not timed",
+      "rosterTypeUniversal": "Universal schedule",
+      "universalShiftSystem": "Universal custom shifts",
+      "scheduleEngine": "Schedule engine",
+      "scheduleType": "Schedule type"
     },
     "title": "Tout est prêt.",
     "tryAgain": "Essayer à nouveau",
@@ -1157,5 +1163,186 @@
       "mental_math": "Je compte les jours pour savoir quand je travaille"
     },
     "cta": "Continuer"
+  },
+  "shiftBuilder": {
+    "title": "Créateur de planning",
+    "navButtonCreate": "Créer un planning personnalisé",
+    "navButtonEdit": "Modifier le planning universel",
+    "unsavedChanges": "Modifications non enregistrées",
+    "save": {
+      "success": "Planning enregistré",
+      "failed": "Échec de la sauvegarde — votre brouillon est conservé",
+      "retry": "Réessayer",
+      "warningConfirm": {
+        "title": "Enregistrer malgré les avertissements ?",
+        "confirm": "Enregistrer quand même",
+        "cancel": "Réviser"
+      }
+    },
+    "saving": "Enregistrement...",
+    "saved": "Enregistré",
+    "discard": "Ignorer",
+    "cancel": "Annuler",
+    "back": "Retour",
+    "confirmDiscard": {
+      "title": "Ignorer les modifications ?",
+      "message": "Vous avez des modifications non enregistrées. Les ignorer ?",
+      "discard": "Ignorer",
+      "keepEditing": "Continuer à modifier"
+    },
+    "scheduleName": {
+      "label": "Nom du planning",
+      "placeholder": "Mon planning"
+    },
+    "anchorDate": {
+      "label": "Date d'ancrage",
+      "hint": "La séquence se répète à partir de cette date"
+    },
+    "phaseOffset": {
+      "label": "Jour actuel dans le cycle",
+      "hint": "0 = début du cycle"
+    },
+    "ai": {
+      "sectionTitle": "Assistant IA",
+      "promptPlaceholder": "Décrivez votre roulement...",
+      "buildButton": "Créer avec l'IA",
+      "loading": "Analyse de votre roulement...",
+      "notConfigured": "Analyse IA non disponible — créez-le manuellement ci-dessous",
+      "retry": "Réessayer",
+      "error": {
+        "notConfigured": "L'assistant IA n'est pas configuré.",
+        "promptEmpty": "Veuillez décrire votre roulement avant de continuer.",
+        "promptTooLong": "La description est trop longue. Raccourcissez-la et réessayez.",
+        "timeout": "L'analyse a pris trop de temps. Réessayez.",
+        "rateLimited": "Trop de requêtes. Patientez un moment et réessayez.",
+        "networkError": "Erreur réseau. Vérifiez votre connexion et réessayez.",
+        "serverError": "Erreur serveur. Réessayez plus tard.",
+        "generic": "Quelque chose s'est mal passé. Réessayez."
+      },
+      "chips": {
+        "4on4off": "4 travail 4 repos",
+        "4days4nights4off": "4 jours 4 nuits 4 repos",
+        "monFri95": "Lun–Ven 9–17",
+        "7on7off": "7 travail 7 repos",
+        "rotatingSwing": "Rotation 12h",
+        "fifo14": "14 travail 14 repos FIFO"
+      }
+    },
+    "review": {
+      "title": "Voici ce que j'ai compris",
+      "confidence": {
+        "high": "Confiance élevée",
+        "medium": "Confiance moyenne",
+        "low": "Faible confiance"
+      },
+      "assumptions": "Hypothèses",
+      "questions": "Questions",
+      "warnings": "Avertissements",
+      "useDraft": "Utiliser ce brouillon",
+      "editManually": "Modifier manuellement",
+      "discardDraft": "Ignorer le brouillon",
+      "followUp": "Faire un suivi...",
+      "send": "Envoyer",
+      "invalid": "La réponse de l'IA est invalide. Réessayez."
+    },
+    "palette": {
+      "title": "Types d'équipe",
+      "addNew": "Ajouter un type d'équipe",
+      "usageCount_one": "{{count}} utilisation",
+      "usageCount_other": "{{count}} utilisations",
+      "deleteBlocked": "En cours d'utilisation",
+      "deleteBlockedMessage": "Ce type d'équipe est utilisé {{count}} fois dans la séquence. Supprimez ces entrées ou remplacez-les."
+    },
+    "canvas": {
+      "title": "Séquence",
+      "empty": "Ajoutez des équipes pour construire votre séquence.",
+      "cycleStats": "Cycle de {{days}} jours · moyenne de {{avg}} jours ouvrés/semaine",
+      "addShift": "Ajouter une équipe",
+      "addBlock": "Ajouter un bloc",
+      "repeatCount": "Répéter {{count}}×",
+      "moveUp": "Monter",
+      "moveDown": "Descendre",
+      "duplicate": "Dupliquer",
+      "insertBefore": "Insérer avant",
+      "insertAfter": "Insérer après",
+      "delete": "Supprimer"
+    },
+    "inspector": {
+      "titleCreate": "Nouveau type d'équipe",
+      "titleEdit": "Modifier le type d'équipe",
+      "name": "Nom",
+      "namePlaceholder": "ex. Équipe de jour",
+      "kind": {
+        "label": "Type",
+        "work": "Travail",
+        "off": "Repos",
+        "travel": "Voyage",
+        "on_call": "Astreinte",
+        "training": "Formation",
+        "leave": "Congé",
+        "custom": "Personnalisé"
+      },
+      "timePolicy": {
+        "label": "Heure",
+        "timed": "Heures définies",
+        "all_day": "Toute la journée",
+        "none": "Aucune heure"
+      },
+      "startTime": "Heure de début",
+      "endTime": "Heure de fin",
+      "overnight": "Nuit",
+      "overnightHint": "L'équipe se termine le lendemain",
+      "countsAsWork": "Compte comme jour ouvré",
+      "countsAsNight": "Compte comme équipe de nuit",
+      "color": "Couleur",
+      "icon": "Icône",
+      "location": "Lieu",
+      "save": "Enregistrer",
+      "delete": "Supprimer le type",
+      "deleteConfirm": {
+        "title": "Supprimer le type d'équipe ?",
+        "message": "Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Annuler"
+      }
+    },
+    "preview": {
+      "title": "Aperçu",
+      "range30": "30 jours",
+      "range60": "60 jours",
+      "range90": "90 jours",
+      "today": "Aujourd'hui",
+      "anchor": "Ancrage",
+      "empty": "Aucune donnée d'aperçu disponible.",
+      "errors": "L'aperçu ne peut pas être affiché en raison d'erreurs."
+    },
+    "validation": {
+      "errorTitle_one": "{{count}} erreur",
+      "errorTitle_other": "{{count}} erreurs",
+      "warningTitle_one": "{{count}} avertissement",
+      "warningTitle_other": "{{count}} avertissements",
+      "fix": "Corriger",
+      "review": "Vérifier",
+      "dismiss": "Ignorer"
+    },
+    "saveResult": {
+      "success": "Planning enregistré",
+      "failed": "Échec de l'enregistrement — le brouillon est conservé",
+      "retry": "Réessayer",
+      "warningConfirm": {
+        "title": "Enregistrer avec des avertissements ?",
+        "confirm": "Enregistrer quand même",
+        "cancel": "Vérifier"
+      }
+    },
+    "kinds": {
+      "work": "Travail",
+      "off": "Repos",
+      "travel": "Voyage",
+      "on_call": "Astreinte",
+      "training": "Formation",
+      "leave": "Congé",
+      "custom": "Personnalisé"
+    }
   }
 }

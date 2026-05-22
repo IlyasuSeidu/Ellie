@@ -12,6 +12,7 @@ import {
 import { STORAGE_KEYS } from '@/constants/storageKeys';
 import { SessionService, type SessionMetadata } from '../SessionService';
 import type { AsyncStorageService } from '../AsyncStorageService';
+import { networkService } from '../NetworkService';
 
 jest.mock('firebase/firestore', () => ({
   collection: jest.fn(),
@@ -87,6 +88,11 @@ describe('SessionService runtime offline fallback', () => {
     (where as jest.Mock).mockReturnValue('where-ref');
     (setDoc as jest.Mock).mockResolvedValue(undefined);
     (deleteDoc as jest.Mock).mockResolvedValue(undefined);
+  });
+
+  afterEach(() => {
+    service.cleanup();
+    networkService.stop();
   });
 
   it('loads a locally mirrored session when Firestore read fails', async () => {

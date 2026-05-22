@@ -538,7 +538,7 @@ export const VoiceAssistantModal: React.FC = () => {
               <Text style={styles.offlineHintText} accessibilityRole="text">
                 {t('voiceAssistant.offlineHint', {
                   defaultValue:
-                    'Offline answers are limited to simple roster questions saved on this device.',
+                    'Offline answers are limited to simple schedule questions saved on this device.',
                 })}
               </Text>
             )}

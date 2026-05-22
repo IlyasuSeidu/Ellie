@@ -6,7 +6,7 @@
  */
 
 import { z } from 'zod';
-import { ShiftPattern, ShiftSystem, EnergyLevel, ReportType } from './index';
+import { EnergyLevel, ReportType } from './index';
 
 /**
  * Date String Validation
@@ -59,11 +59,6 @@ const countryCodeSchema = z.string().length(2).toUpperCase();
 const currencyCodeSchema = z.string().length(3).toUpperCase();
 
 /**
- * Shift Pattern Schema
- */
-export const shiftPatternSchema = z.nativeEnum(ShiftPattern);
-
-/**
  * Shift Type Schema
  */
 export const shiftTypeSchema = z.enum(['day', 'night', 'morning', 'afternoon', 'off']);
@@ -76,6 +71,7 @@ export const shiftDaySchema = z.object({
   isWorkDay: z.boolean(),
   isNightShift: z.boolean(),
   shiftType: shiftTypeSchema,
+  universal: z.unknown().optional(),
   notes: z.string().optional(),
 });
 
@@ -83,17 +79,16 @@ export const shiftDaySchema = z.object({
  * Shift Cycle Schema
  */
 export const shiftCycleSchema = z.object({
-  patternType: shiftPatternSchema,
-  shiftSystem: z.nativeEnum(ShiftSystem).optional(),
-  daysOn: z.number().int().min(0).max(365),
-  nightsOn: z.number().int().min(0).max(365),
-  morningOn: z.number().int().min(0).max(365).optional(),
-  afternoonOn: z.number().int().min(0).max(365).optional(),
-  nightOn: z.number().int().min(0).max(365).optional(),
-  daysOff: z.number().int().min(0).max(365),
-  startDate: dateStringSchema,
+  version: z.literal(3),
+  name: z.string().min(1).max(120),
+  timezone: z.string().min(1),
+  anchorDate: dateStringSchema,
   phaseOffset: z.number().int().min(0),
-  customPattern: z.array(shiftDaySchema).optional(),
+  shiftDefinitions: z.array(z.unknown()).min(1),
+  sequence: z.array(z.unknown()).min(1),
+  source: z.enum(['manual', 'ai', 'template', 'migration']),
+  updatedAt: z.string().optional(),
+  aiDraftMeta: z.unknown().optional(),
 });
 
 /**
@@ -118,7 +113,7 @@ export const holidaySchema = z.object({
  * Notification Settings Schema
  */
 export const smartReminderSettingsSchema = z.object({
-  earlyReminderHours: z.number().int().min(0).max(24),
+  earlyReminderHours: z.number().int().min(0).max(72),
   prepTimeMinutes: z
     .number()
     .int()
@@ -138,7 +133,7 @@ export const smartReminderSettingsSchema = z.object({
   backToBackWarnings: z.boolean(),
   shortTurnaroundWarnings: z.boolean(),
   postShiftCheckin: z.boolean(),
-  fifoTravelReminders: z.boolean(),
+  travelReminders: z.boolean(),
 });
 
 export const notificationSettingsSchema = z.object({
@@ -288,6 +283,170 @@ export const paginationParamsSchema = z.object({
   sortBy: z.string().optional(),
   sortOrder: z.enum(['asc', 'desc']).optional(),
 });
+
+// ── Universal Shift Schemas ───────────────────────────────────────────────────
+
+export const timeStringSchemaExported = z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, {
+  message: 'Time must be in HH:mm format (24-hour)',
+});
+
+export const universalShiftKindSchema = z.enum([
+  'work',
+  'off',
+  'travel',
+  'on_call',
+  'training',
+  'leave',
+  'custom',
+]);
+
+export const universalShiftTimePolicySchema = z.enum(['timed', 'all_day', 'none']);
+
+export const universalShiftActivePolicySchema = z.enum([
+  'timed_window',
+  'all_day_active',
+  'not_active',
+]);
+
+export const universalShiftDefinitionSchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1).max(80),
+  kind: universalShiftKindSchema,
+  timePolicy: universalShiftTimePolicySchema,
+  activePolicy: universalShiftActivePolicySchema,
+  startTime: z
+    .string()
+    .regex(/^([01]\d|2[0-3]):([0-5]\d)$/)
+    .optional(),
+  endTime: z
+    .string()
+    .regex(/^([01]\d|2[0-3]):([0-5]\d)$/)
+    .optional(),
+  durationMinutes: z.number().int().min(1).max(1440).optional(),
+  crossesMidnight: z.boolean().optional(),
+  countsAsWork: z.boolean(),
+  countsAsNight: z.boolean(),
+  countsForStats: z.boolean(),
+  color: z.string().regex(/^#[0-9A-Fa-f]{6}$/),
+  icon: z.string().min(1),
+  locationName: z.string().max(200).optional(),
+  reminderProfileId: z.string().optional(),
+  reminderProfile: smartReminderSettingsSchema.partial().optional(),
+});
+
+export const universalShiftSequenceItemSchema = z.object({
+  id: z.string().min(1),
+  shiftDefinitionId: z.string().min(1),
+  labelOverride: z.string().max(80).optional(),
+});
+
+export const universalHolidayExceptionActionSchema = z.enum(['mark_off', 'use_shift_definition']);
+
+export const universalHolidayExceptionSchema = z.object({
+  id: z.string().min(1),
+  date: dateStringSchema,
+  holidayName: z.string().min(1).max(200),
+  country: countryCodeSchema,
+  action: universalHolidayExceptionActionSchema,
+  shiftDefinitionId: z.string().min(1).optional(),
+  paidOverride: z.boolean().optional(),
+  appliesToWorkShiftsOnly: z.boolean().optional(),
+});
+
+export const universalOneOffExceptionActionSchema = z.enum(['mark_off', 'use_shift_definition']);
+
+export const universalOneOffExceptionSchema = z.object({
+  id: z.string().min(1),
+  date: dateStringSchema,
+  action: universalOneOffExceptionActionSchema,
+  shiftDefinitionId: z.string().min(1).optional(),
+  label: z.string().max(120).optional(),
+  reason: z.string().max(500).optional(),
+  paidOverride: z.boolean().optional(),
+});
+
+const universalShiftScheduleBaseSchema = z.object({
+  version: z.literal(3),
+  name: z.string().min(1).max(120),
+  timezone: z.string().min(1),
+  anchorDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  phaseOffset: z.number().int().min(0),
+  shiftDefinitions: z.array(universalShiftDefinitionSchema).min(1),
+  sequence: z.array(universalShiftSequenceItemSchema).min(1),
+  holidayExceptions: z.array(universalHolidayExceptionSchema).optional(),
+  oneOffExceptions: z.array(universalOneOffExceptionSchema).optional(),
+  source: z.enum(['manual', 'ai', 'template', 'migration']),
+  updatedAt: z.string().optional(),
+  aiDraftMeta: z
+    .object({
+      originalPrompt: z.string(),
+      confidence: z.number().min(0).max(1),
+      assumptions: z.array(z.string()),
+      unresolvedQuestions: z.array(z.string()),
+    })
+    .optional(),
+});
+
+function validateHolidayReplacementReferences(
+  schedule: z.infer<typeof universalShiftScheduleBaseSchema>,
+  ctx: z.RefinementCtx
+): void {
+  const definitionIds = new Set(schedule.shiftDefinitions.map((definition) => definition.id));
+  schedule.holidayExceptions?.forEach((exception, index) => {
+    if (exception.action !== 'use_shift_definition') return;
+    if (!exception.shiftDefinitionId) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Holiday replacement needs a shiftDefinitionId',
+        path: ['holidayExceptions', index, 'shiftDefinitionId'],
+      });
+      return;
+    }
+    if (!definitionIds.has(exception.shiftDefinitionId)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Holiday replacement references an unknown shift definition',
+        path: ['holidayExceptions', index, 'shiftDefinitionId'],
+      });
+    }
+  });
+  schedule.oneOffExceptions?.forEach((exception, index) => {
+    if (exception.action !== 'use_shift_definition') return;
+    if (!exception.shiftDefinitionId) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'One-off replacement needs a shiftDefinitionId',
+        path: ['oneOffExceptions', index, 'shiftDefinitionId'],
+      });
+      return;
+    }
+    if (!definitionIds.has(exception.shiftDefinitionId)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'One-off replacement references an unknown shift definition',
+        path: ['oneOffExceptions', index, 'shiftDefinitionId'],
+      });
+    }
+  });
+}
+
+export const universalShiftScheduleSchema = universalShiftScheduleBaseSchema.superRefine(
+  validateHolidayReplacementReferences
+);
+
+/** Looser draft schema — used before the user saves */
+export const universalShiftScheduleDraftSchema = universalShiftScheduleBaseSchema
+  .extend({
+    name: z.string().max(120),
+    sequence: z.array(universalShiftSequenceItemSchema),
+    shiftDefinitions: z.array(universalShiftDefinitionSchema),
+  })
+  .superRefine(validateHolidayReplacementReferences);
+
+export type UniversalShiftDefinitionData = z.infer<typeof universalShiftDefinitionSchema>;
+export type UniversalShiftScheduleData = z.infer<typeof universalShiftScheduleSchema>;
+
+// ── Type Guards ───────────────────────────────────────────────────────────────
 
 /**
  * Type Guards

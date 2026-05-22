@@ -6,7 +6,7 @@ import { theme } from '@/utils/theme';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
 
 interface OnboardingChecklistProps {
-  /** Live onboarding data — used to derive shift-times and profile completion. */
+  /** Live onboarding data — used to derive schedule and profile completion. */
   userData: OnboardingData | null;
   onDismiss: () => void;
   onAddShiftTimes: () => void;
@@ -26,10 +26,10 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({
   const [askEllieDone, setAskEllieDone] = useState(false);
 
   // Derive completion from actual data so a focus-return auto-ticks items.
-  const shiftTimesDone =
-    userData?.shiftTimes !== null &&
-    userData?.shiftTimes !== undefined &&
-    Object.keys(userData.shiftTimes).length > 0;
+  const shiftScheduleDone = Boolean(
+    userData?.universalSchedule?.shiftDefinitions.length &&
+    userData?.universalSchedule?.sequence.length
+  );
   const profileDone = Boolean(userData?.name);
 
   const handleAskEllie = useCallback(() => {
@@ -40,15 +40,17 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({
   const items = useMemo(
     () => [
       {
-        key: 'roster',
-        label: t('onboardingChecklist.items.roster', { defaultValue: 'Set up your roster' }),
+        key: 'schedule',
+        label: t('onboardingChecklist.items.schedule', { defaultValue: 'Set up your schedule' }),
         done: true,
         onDoIt: undefined,
       },
       {
         key: 'shift_times',
-        label: t('onboardingChecklist.items.shiftTimes', { defaultValue: 'Add your shift times' }),
-        done: shiftTimesDone,
+        label: t('onboardingChecklist.items.shiftTimes', {
+          defaultValue: 'Build your shift schedule',
+        }),
+        done: shiftScheduleDone,
         onDoIt: onAddShiftTimes,
       },
       {
@@ -70,7 +72,7 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({
       onAddShiftTimes,
       onCompleteProfile,
       profileDone,
-      shiftTimesDone,
+      shiftScheduleDone,
       t,
     ]
   );
@@ -100,7 +102,7 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({
               color={item.done ? theme.colors.sacredGold : theme.colors.softStone}
             />
             <Text style={[styles.label, item.done && styles.labelDone]}>{item.label}</Text>
-            {item.done || item.key === 'roster' ? (
+            {item.done || item.key === 'schedule' ? (
               <Text style={styles.doneText}>
                 {tCommon('buttons.done', { defaultValue: 'Done' })}
               </Text>

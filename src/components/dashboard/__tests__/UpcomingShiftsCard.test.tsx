@@ -80,6 +80,26 @@ describe('UpcomingShiftsCard', () => {
       expect(getByText('Day Off')).toBeTruthy();
     });
 
+    it('should render universal shift labels and icons when provided', () => {
+      const { getByText } = render(
+        <UpcomingShiftsCard
+          shifts={[
+            {
+              ...sampleShifts[0],
+              universalDisplay: {
+                title: 'Clinic Cover',
+                color: '#E91E63',
+                icon: 'medkit',
+              },
+            },
+          ]}
+        />
+      );
+
+      expect(getByText('Clinic Cover')).toBeTruthy();
+      expect(getByText('medkit')).toBeTruthy();
+    });
+
     it('should render time display for work days', () => {
       const { getByText } = render(<UpcomingShiftsCard shifts={sampleShifts} />);
       expect(getByText('7:00 AM - 7:00 PM')).toBeTruthy();

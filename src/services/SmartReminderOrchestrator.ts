@@ -4,7 +4,6 @@ import { smartReminderService } from './SmartReminderService';
 import { ShiftDataService } from './ShiftDataService';
 import { logger } from '@/utils/logger';
 import type { ShiftCycle } from '@/types';
-import type { OnboardingData } from '@/contexts/OnboardingContext';
 import {
   buildSmartReminderKey,
   type ReminderFatigueRiskLevel,
@@ -15,7 +14,6 @@ interface RescheduleParams {
   userId: string;
   userName: string;
   shiftCycle: ShiftCycle;
-  shiftTimes: OnboardingData['shiftTimes'];
   settings: SmartReminderSettings;
   fatigueRisk?: ReminderFatigueRiskLevel;
   language?: string;
@@ -49,12 +47,12 @@ export class SmartReminderOrchestrator {
   constructor(private readonly shiftDataService: ShiftDataService) {}
 
   async reschedule(params: RescheduleParams): Promise<void> {
-    const { userId, userName, shiftCycle, shiftTimes, settings, fatigueRisk, language } = params;
+    const { userId, userName, shiftCycle, settings, fatigueRisk, language } = params;
 
     await runExclusiveForUser(userId, async () => {
       logger.info('SmartReminderOrchestrator: rescheduling reminders', {
         userId,
-        patternType: shiftCycle.patternType,
+        scheduleName: shiftCycle.name,
       });
 
       const start = dayjs().startOf('day').toDate();
@@ -69,7 +67,6 @@ export class SmartReminderOrchestrator {
       const events = smartReminderService.buildSchedule(
         userName,
         shiftDays,
-        shiftTimes,
         settings,
         fatigueRisk,
         language

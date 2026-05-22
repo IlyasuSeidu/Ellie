@@ -202,7 +202,7 @@ describe('PremiumIntroductionScreen', () => {
       expect(await findByPlaceholderText('Enter your country', { timeout: 3000 })).toBeTruthy();
     });
 
-    it('navigates to ShiftSystem after skipping company and submitting country', async () => {
+    it('navigates to UniversalShiftBuilder after skipping company and submitting country', async () => {
       const { findByPlaceholderText, findByTestId } = renderWithProviders(
         <PremiumIntroductionScreen />
       );
@@ -246,7 +246,7 @@ describe('PremiumIntroductionScreen', () => {
         jest.advanceTimersByTime(6000);
       });
 
-      expect(mockNavigate).toHaveBeenCalledWith('ShiftSystem');
+      expect(mockNavigate).toHaveBeenCalledWith('UniversalShiftBuilder');
     });
   });
 

@@ -1,5 +1,9 @@
 # I18N Gap Closure Execution Plan
 
+Implementation status: **Implemented in the current working tree** as of May 21, 2026.
+
+The gap-closure execution has been completed for the audited runtime app surfaces: expanded language matrix, locale key parity, onboarding key coverage, targeted hardcoded-string removal, ES/PT polish, documentation alignment, and validation. Future feature work still needs normal i18n coverage as new screens/components land.
+
 Source of truth for this execution:
 
 - /Users/Shared/Ellie/I18N_IMPLEMENTATION_PLAN.md

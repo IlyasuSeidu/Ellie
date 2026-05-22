@@ -273,7 +273,7 @@
       "timing": "التوقيت",
       "doNotDisturb": "عدم الإزعاج",
       "adaptive": "التنبيهات التكيفية",
-      "fifo": "FIFO"
+      "travel": "Travel blocks"
     },
     "units": {
       "hoursShort": "{{value}} س",

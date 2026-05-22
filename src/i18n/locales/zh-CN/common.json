@@ -174,7 +174,7 @@
       "title": "你的班表已经准备好了。",
       "subtitle": "花不到一杯咖啡的钱就能解锁。",
       "features": {
-        "askRoster": "询问“嘿__TK1__”有关您的名单的任何信息",
+        "askSchedule": "询问“嘿__TK1__”有关您的名单的任何信息",
         "fullYear": "查看你整整一年的安排——每一次班次，逐月清晰可见",
         "offline": "地下工作，无需信号",
         "instantAnswers": "有关休假和模式的即时答案",
@@ -218,7 +218,7 @@
           "author": "Jason M.，矿卡司机 — FIFO 7/7"
         }
       ],
-      "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
+      "lossAversion": "Without Pro, you can only see 2 weeks of your schedule.",
       "timerLabel": "首发优惠结束倒计时",
       "trust": {
         "freeTrial": "免费试用",

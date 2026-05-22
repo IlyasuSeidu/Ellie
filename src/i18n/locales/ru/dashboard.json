@@ -89,7 +89,8 @@
     }
   },
   "badges": {
-    "active": "АКТИВНЫЙ"
+    "active": "АКТИВНЫЙ",
+    "upNext": "Up next"
   },
   "voiceAssistant": {
     "subtitle": "Голосовой помощник",
@@ -190,7 +191,9 @@
     "stats": "Статистика",
     "profile": "Профиль",
     "ellie": "Ellie",
-    "openVoiceAssistantA11y": "Открыть голосовой помощник Элли"
+    "openVoiceAssistantA11y": "Открыть голосовой помощник Элли",
+    "openProPlansA11y": "View Pro plans",
+    "voiceAssistantLoadingA11y": "Checking voice assistant access"
   },
   "quickActions": {
     "settings": "Настройки",
@@ -264,21 +267,23 @@
         "title": "Впереди короткий отдых",
         "body": "Между вашей {{previousShiftType}} и следующей {{nextShiftType}} {{shiftDate}} всего {{gapHours}} ч. Спланируйте отдых."
       },
-      "fifo": {
-        "flyOut": {
-          "title": "День вылета домой",
+      "travel": {
+        "outToday": {
+          "title": "Travel-out day",
           "body": "Сегодня вы отправляетесь домой. Завершите передачу смены, соберите снаряжение и добирайтесь безопасно."
         },
-        "travelTomorrow": {
+        "tomorrow": {
           "title": "Завтра день вылета",
-          "body": "Завтра вы летите на объект на свою {{shiftType}}. Подготовьте снаряжение и проверьте документы сегодня вечером."
+          "body": "You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
         }
       }
     }
   },
   "countdown": {
     "leftIn": "Осталось {{time}} в {{shiftName}}",
+    "leftInShift": "{{time}} left in this shift",
     "untilStarts": "{{time}} до начала {{shiftName}}",
+    "untilShift": "{{time}} until this shift starts",
     "until": "{{time}} до {{shiftName}}",
     "tomorrow": "{{shiftName}} завтра",
     "daysUntil": "{{days}} дн. до {{shiftName}}",
@@ -316,7 +321,7 @@
   "onboardingChecklist": {
     "title": "Получите максимум от Ellie",
     "items": {
-      "roster": "Настройте свой график",
+      "schedule": "Set up your schedule",
       "shiftTimes": "Добавьте время своих смен",
       "profile": "Заполните профиль",
       "askEllie": "Задайте вопрос Ellie"

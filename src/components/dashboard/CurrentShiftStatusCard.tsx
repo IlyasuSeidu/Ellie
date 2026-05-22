@@ -27,26 +27,26 @@ import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
-import { RosterType, type ShiftType } from '@/types';
+import { type ShiftType } from '@/types';
 
 export interface CurrentShiftStatusCardProps {
   /** Current shift type */
   shiftType: ShiftType;
   /** Optional live accent shift type for color-only transitions */
   accentShiftType?: ShiftType;
-  /** Roster paradigm (rotating vs FIFO) */
-  rosterType?: RosterType;
-  /** Optional FIFO block status details */
-  fifoBlockInfo?: {
-    inWorkBlock: boolean;
-    dayInBlock: number;
-    blockLength: number;
-    daysUntilBlockChange: number;
-  } | null;
   /** Countdown text (e.g., "6h 32m until next shift") */
   countdown?: string;
   /** Whether the user is currently on shift */
   isOnShift?: boolean;
+  /** Universal shift display metadata for label/icon when using the universal builder */
+  universalDisplay?: {
+    title: string;
+    subtitle: string;
+    color: string;
+    icon: string;
+  };
+  /** Optional universal accent color. Defaults to universalDisplay.color when omitted. */
+  universalAccentColor?: string;
   /** Animation delay in ms */
   animationDelay?: number;
   /** Test ID */
@@ -88,13 +88,34 @@ const SHIFT_STYLES: Record<
 
 const ICON_SIZE = 44;
 
+function clampColorByte(value: number): number {
+  return Math.max(0, Math.min(255, Math.round(value)));
+}
+
+function darkenHex(hex: string, factor = 0.68): string {
+  const normalized = /^#[0-9A-F]{6}$/i.test(hex) ? hex.slice(1) : null;
+  if (!normalized) return '#44403c';
+
+  const r = parseInt(normalized.slice(0, 2), 16);
+  const g = parseInt(normalized.slice(2, 4), 16);
+  const b = parseInt(normalized.slice(4, 6), 16);
+
+  return `#${clampColorByte(r * factor)
+    .toString(16)
+    .padStart(2, '0')}${clampColorByte(g * factor)
+    .toString(16)
+    .padStart(2, '0')}${clampColorByte(b * factor)
+    .toString(16)
+    .padStart(2, '0')}`;
+}
+
 export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
   shiftType,
   accentShiftType,
-  rosterType = RosterType.ROTATING,
-  fifoBlockInfo,
   countdown,
   isOnShift = false,
+  universalDisplay,
+  universalAccentColor,
   animationDelay = 100,
   testID,
 }) => {
@@ -103,62 +124,32 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
   const liveAccentShiftType = accentShiftType ?? shiftType;
 
   const accentStyle = useMemo(() => {
+    const universalColor = universalAccentColor ?? universalDisplay?.color;
+    if (universalColor) {
+      return {
+        gradient: [universalColor, darkenHex(universalColor)] as [string, string],
+      };
+    }
     return SHIFT_STYLES[liveAccentShiftType];
-  }, [liveAccentShiftType]);
+  }, [liveAccentShiftType, universalAccentColor, universalDisplay?.color]);
 
   const shiftLabel = useMemo(() => {
-    if (rosterType === RosterType.FIFO) {
-      const blockLabel = fifoBlockInfo?.inWorkBlock
-        ? String(t('fifo.workBlock'))
-        : String(t('fifo.restBlock'));
-      return `${blockLabel.toUpperCase()} BLOCK`;
-    }
-
+    if (universalDisplay) return universalDisplay.title.toUpperCase();
     if (shiftType === 'day') return String(t('shiftLabels.day')).toUpperCase();
     if (shiftType === 'night') return String(t('shiftLabels.night')).toUpperCase();
     if (shiftType === 'morning') return String(t('shiftLabels.morning')).toUpperCase();
     if (shiftType === 'afternoon') return String(t('shiftLabels.afternoon')).toUpperCase();
     return String(t('shiftLabels.off')).toUpperCase();
-  }, [rosterType, fifoBlockInfo?.inWorkBlock, shiftType, t]);
+  }, [shiftType, t, universalDisplay]);
 
   const shiftSubtitle = useMemo(() => {
-    if (rosterType !== RosterType.FIFO || !fifoBlockInfo) {
-      if (shiftType === 'day') return String(t('shiftSubtitles.day'));
-      if (shiftType === 'night') return String(t('shiftSubtitles.night'));
-      if (shiftType === 'morning') return String(t('shiftSubtitles.morning'));
-      if (shiftType === 'afternoon') return String(t('shiftSubtitles.afternoon'));
-      return String(t('shiftSubtitles.off'));
-    }
-
-    const blockName = fifoBlockInfo.inWorkBlock
-      ? String(t('fifo.workBlock'))
-      : String(t('fifo.restBlock'));
-    return String(
-      t('fifo.blockDayOf', {
-        blockName,
-        day: fifoBlockInfo.dayInBlock,
-        total: fifoBlockInfo.blockLength,
-      })
-    );
-  }, [fifoBlockInfo, rosterType, shiftType, t]);
-
-  // FIFO block progress (0 to 1)
-  const fifoProgress = useMemo(() => {
-    if (!fifoBlockInfo) return 0;
-    return fifoBlockInfo.dayInBlock / fifoBlockInfo.blockLength;
-  }, [fifoBlockInfo]);
-
-  const fifoProgressPercent = useMemo(() => {
-    return Math.round(fifoProgress * 100);
-  }, [fifoProgress]);
-
-  // Block transition text
-  const blockTransitionText = useMemo(() => {
-    if (!fifoBlockInfo) return null;
-    if (fifoBlockInfo.daysUntilBlockChange === 0) return String(t('fifo.blockChangeToday'));
-    if (fifoBlockInfo.daysUntilBlockChange === 1) return String(t('fifo.blockChangeTomorrow'));
-    return null;
-  }, [fifoBlockInfo, t]);
+    if (universalDisplay) return universalDisplay.subtitle;
+    if (shiftType === 'day') return String(t('shiftSubtitles.day'));
+    if (shiftType === 'night') return String(t('shiftSubtitles.night'));
+    if (shiftType === 'morning') return String(t('shiftSubtitles.morning'));
+    if (shiftType === 'afternoon') return String(t('shiftSubtitles.afternoon'));
+    return String(t('shiftSubtitles.off'));
+  }, [shiftType, t, universalDisplay]);
 
   // ── Staggered Entrance ────────────────────────────────────────
   const iconEntranceScale = useSharedValue(0.3);
@@ -184,24 +175,6 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
     infoEntranceOpacity.value = withDelay(D + 350, withTiming(1, { duration: 350 }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [animationDelay]);
-
-  // ── FIFO Progress Bar Animation ──────────────────────────────
-  const progressWidth = useSharedValue(0);
-
-  useEffect(() => {
-    if (rosterType === RosterType.FIFO && fifoBlockInfo) {
-      progressWidth.value = 0;
-      progressWidth.value = withDelay(
-        animationDelay + 400,
-        withTiming(fifoProgress, { duration: 800, easing: Easing.out(Easing.cubic) })
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fifoProgress, animationDelay]);
-
-  const progressFillStyle = useAnimatedStyle(() => ({
-    width: `${progressWidth.value * 100}%`,
-  }));
 
   // ── Continuous Animations ─────────────────────────────────────
   const floatY = useSharedValue(0);
@@ -269,8 +242,8 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
   // ── On-Shift Animations ───────────────────────────────────────
   const glowOpacity = useSharedValue(0);
   const liveDotOpacity = useSharedValue(1);
-  const showActivePulse = rosterType === RosterType.ROTATING && shiftType !== 'off';
-  const showRotatingActiveBadge = rosterType === RosterType.ROTATING && shiftType !== 'off';
+  const showActivePulse = isOnShift;
+  const showStatusBadge = isOnShift || shiftType !== 'off' || Boolean(universalDisplay);
 
   useEffect(() => {
     if (isOnShift) {
@@ -281,7 +254,7 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
       );
     }
 
-    if (isOnShift || showActivePulse) {
+    if (showActivePulse) {
       liveDotOpacity.value = withRepeat(
         withSequence(withTiming(0.3, { duration: 800 }), withTiming(1, { duration: 800 })),
         -1,
@@ -407,13 +380,29 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                 <View
                   style={[
                     styles.iconContainer,
-                    liveAccentShiftType === 'day' && styles.lightBlueIconContainer,
-                    liveAccentShiftType === 'night' && styles.whiteIconContainer,
-                    liveAccentShiftType === 'morning' && styles.amberIconContainer,
-                    liveAccentShiftType === 'afternoon' && styles.cyanIconContainer,
+                    ...(universalDisplay ? [styles.universalIconContainer] : []),
+                    !universalDisplay &&
+                      liveAccentShiftType === 'day' &&
+                      styles.lightBlueIconContainer,
+                    !universalDisplay &&
+                      liveAccentShiftType === 'night' &&
+                      styles.whiteIconContainer,
+                    !universalDisplay &&
+                      liveAccentShiftType === 'morning' &&
+                      styles.amberIconContainer,
+                    !universalDisplay &&
+                      liveAccentShiftType === 'afternoon' &&
+                      styles.cyanIconContainer,
                   ]}
                 >
-                  {shiftType === 'day' ? (
+                  {universalDisplay ? (
+                    <Ionicons
+                      testID="shift-status-universal-icon"
+                      name={universalDisplay.icon as keyof typeof Ionicons.glyphMap}
+                      size={26}
+                      color={universalDisplay.color}
+                    />
+                  ) : shiftType === 'day' ? (
                     <Image source={DAY_SHIFT_ICON} style={styles.shiftImage} />
                   ) : shiftType === 'night' ? (
                     <Image source={NIGHT_SHIFT_ICON} style={styles.shiftImage} />
@@ -428,16 +417,14 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
               </Animated.View>
 
               {/* LIVE / OFF / HOME / ON-SITE badge */}
-              {(showRotatingActiveBadge || !isOnShift) && (
+              {showStatusBadge && (
                 <View
                   style={
-                    showRotatingActiveBadge
+                    isOnShift
                       ? styles.activeBadge
-                      : rosterType === RosterType.FIFO && fifoBlockInfo?.inWorkBlock
-                        ? styles.onSiteBadge
-                        : rosterType === RosterType.FIFO || shiftType === 'off'
-                          ? styles.offBadge
-                          : styles.activeBadge
+                      : shiftType === 'off'
+                        ? styles.offBadge
+                        : styles.activeBadge
                   }
                   testID="shift-status-badge"
                 >
@@ -450,42 +437,30 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                   <Ionicons
                     testID="shift-status-badge-icon"
                     name={
-                      rosterType === RosterType.FIFO
-                        ? fifoBlockInfo?.inWorkBlock
-                          ? 'construct-outline'
-                          : 'home-outline'
+                      universalDisplay
+                        ? (universalDisplay.icon as keyof typeof Ionicons.glyphMap)
                         : shiftType === 'off'
                           ? 'moon-outline'
                           : 'calendar'
                     }
                     size={12}
-                    color={
-                      rosterType === RosterType.FIFO && fifoBlockInfo?.inWorkBlock
-                        ? 'rgba(255,200,100,0.8)'
-                        : shiftType === 'off' || rosterType === RosterType.FIFO
-                          ? 'rgba(255,255,255,0.5)'
-                          : 'rgba(255,255,255,0.96)'
-                    }
+                    color={shiftType === 'off' ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.96)'}
                     style={{ marginRight: 5 }}
                   />
                   <Animated.Text
                     style={
-                      showRotatingActiveBadge
+                      isOnShift
                         ? [styles.scheduledText, styles.activeText]
-                        : rosterType === RosterType.FIFO && fifoBlockInfo?.inWorkBlock
-                          ? styles.onSiteText
-                          : shiftType === 'off' || rosterType === RosterType.FIFO
-                            ? styles.offText
-                            : [styles.scheduledText, showRotatingActiveBadge && styles.activeText]
+                        : shiftType === 'off'
+                          ? styles.offText
+                          : styles.scheduledText
                     }
                   >
-                    {rosterType === RosterType.FIFO
-                      ? fifoBlockInfo?.inWorkBlock
-                        ? String(t('fifo.workBlock')).toUpperCase()
-                        : String(t('fifo.restBlock')).toUpperCase()
-                      : shiftType === 'off'
-                        ? String(t('shiftLabels.off')).toUpperCase()
-                        : String(t('badges.active'))}
+                    {shiftType === 'off'
+                      ? String(t('shiftLabels.off')).toUpperCase()
+                      : isOnShift
+                        ? String(t('badges.active'))
+                        : String(t('badges.upNext', { defaultValue: 'UP NEXT' }))}
                   </Animated.Text>
                 </View>
               )}
@@ -497,43 +472,6 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
               <View style={[styles.subtitleTimeRow, !isOnShift && styles.subtitleTimeRowCentered]}>
                 <Animated.Text style={styles.shiftSubtitle}>{shiftSubtitle}</Animated.Text>
               </View>
-
-              {/* FIFO Block Progress Bar */}
-              {rosterType === RosterType.FIFO && fifoBlockInfo && (
-                <View style={styles.progressBarContainer}>
-                  <View style={styles.progressBarTrack}>
-                    <Animated.View
-                      style={[
-                        styles.progressBarFill,
-                        {
-                          backgroundColor: fifoBlockInfo.inWorkBlock ? '#64B5F6' : '#a8a29e',
-                        },
-                        progressFillStyle,
-                      ]}
-                    />
-                  </View>
-                  <Animated.Text style={styles.progressPercent}>
-                    {fifoProgressPercent}%
-                  </Animated.Text>
-                </View>
-              )}
-
-              {/* FIFO Block Transition Indicator with gold shimmer */}
-              {blockTransitionText && (
-                <View style={styles.blockTransitionContainer}>
-                  <Animated.View style={[styles.blockTransitionShimmer, shimmerStyle]}>
-                    <LinearGradient
-                      colors={['transparent', 'rgba(217, 119, 6, 0.2)', 'transparent']}
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 0 }}
-                      style={styles.blockTransitionShimmerGradient}
-                    />
-                  </Animated.View>
-                  <Animated.Text style={styles.blockTransitionText}>
-                    {blockTransitionText}
-                  </Animated.Text>
-                </View>
-              )}
             </Animated.View>
           </LinearGradient>
         </Animated.View>
@@ -643,6 +581,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     zIndex: 2,
   },
+  universalIconContainer: {
+    backgroundColor: '#fff',
+  },
 
   // ── LIVE Badge ──────────────────────────────────────────────
   liveBadge: {
@@ -682,22 +623,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: theme.typography.fontWeights.bold,
     color: 'rgba(255,255,255,0.5)',
-    letterSpacing: 1,
-  },
-  onSiteBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(217,119,6,0.15)',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: theme.borderRadius.full,
-    borderWidth: 1,
-    borderColor: 'rgba(217,119,6,0.25)',
-  },
-  onSiteText: {
-    fontSize: 12,
-    fontWeight: theme.typography.fontWeights.bold,
-    color: 'rgba(255,200,100,0.8)',
     letterSpacing: 1,
   },
   scheduledBadge: {
@@ -805,58 +730,5 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     resizeMode: 'contain',
-  },
-  // FIFO Progress Bar
-  progressBarContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 8,
-    gap: 8,
-  },
-  progressBarTrack: {
-    flex: 1,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    overflow: 'hidden',
-  },
-  progressBarFill: {
-    height: 4,
-    borderRadius: 2,
-  },
-  progressPercent: {
-    fontSize: 11,
-    fontWeight: theme.typography.fontWeights.semibold,
-    color: 'rgba(255,255,255,0.6)',
-    minWidth: 30,
-    textAlign: 'right',
-  },
-  // Block Transition
-  blockTransitionContainer: {
-    position: 'relative',
-    marginTop: 6,
-    overflow: 'hidden',
-    borderRadius: 4,
-    paddingVertical: 4,
-  },
-  blockTransitionShimmer: {
-    position: 'absolute',
-    top: 0,
-    left: -100,
-    right: -100,
-    bottom: 0,
-    zIndex: 0,
-  },
-  blockTransitionShimmerGradient: {
-    flex: 1,
-    width: 120,
-  },
-  blockTransitionText: {
-    fontSize: 12,
-    fontWeight: theme.typography.fontWeights.bold,
-    color: '#d97706',
-    textAlign: 'center',
-    letterSpacing: 0.5,
-    zIndex: 1,
   },
 });

@@ -90,6 +90,8 @@ export const UpcomingShiftsCard: React.FC<UpcomingShiftsCardProps> = ({
       {/* Shift List */}
       {shifts.map((shift, index) => {
         const config = SHIFT_CONFIG[shift.shiftType];
+        const displayColor = shift.universalDisplay?.color ?? config.color;
+        const displayLabel = shift.universalDisplay?.title ?? t(SHIFT_LABEL_KEYS[shift.shiftType]);
         const isLast = index === shifts.length - 1;
 
         return (
@@ -99,11 +101,17 @@ export const UpcomingShiftsCard: React.FC<UpcomingShiftsCardProps> = ({
             style={[styles.shiftRow, !isLast && styles.shiftRowBorder]}
           >
             {/* Color indicator */}
-            <View style={[styles.colorBar, { backgroundColor: config.color }]} />
+            <View style={[styles.colorBar, { backgroundColor: displayColor }]} />
 
             {/* Shift icon */}
-            <View style={[styles.shiftIconContainer, { backgroundColor: `${config.color}20` }]}>
-              {shift.shiftType === 'day' ? (
+            <View style={[styles.shiftIconContainer, { backgroundColor: `${displayColor}20` }]}>
+              {shift.universalDisplay ? (
+                <Ionicons
+                  name={shift.universalDisplay.icon as keyof typeof Ionicons.glyphMap}
+                  size={19}
+                  color={displayColor}
+                />
+              ) : shift.shiftType === 'day' ? (
                 <Image source={DAY_SHIFT_ICON} style={styles.shiftImage} />
               ) : shift.shiftType === 'night' ? (
                 <Image source={NIGHT_SHIFT_ICON} style={styles.shiftImage} />
@@ -119,8 +127,8 @@ export const UpcomingShiftsCard: React.FC<UpcomingShiftsCardProps> = ({
             {/* Shift info */}
             <View style={styles.shiftInfo}>
               <Animated.Text style={styles.shiftDate}>{shift.displayDate}</Animated.Text>
-              <Animated.Text style={[styles.shiftType, { color: config.color }]}>
-                {t(SHIFT_LABEL_KEYS[shift.shiftType])}
+              <Animated.Text style={[styles.shiftType, { color: displayColor }]}>
+                {displayLabel}
               </Animated.Text>
             </View>
 

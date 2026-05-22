@@ -89,7 +89,8 @@
     }
   },
   "badges": {
-    "active": "ACTIVO"
+    "active": "ACTIVO",
+    "upNext": "Up next"
   },
   "voiceAssistant": {
     "subtitle": "Asistente de voz",
@@ -190,7 +191,9 @@
     "stats": "Estadísticas",
     "profile": "Perfil",
     "ellie": "Ellie",
-    "openVoiceAssistantA11y": "Abra el asistente de voz de Ellie"
+    "openVoiceAssistantA11y": "Abra el asistente de voz de Ellie",
+    "openProPlansA11y": "View Pro plans",
+    "voiceAssistantLoadingA11y": "Checking voice assistant access"
   },
   "quickActions": {
     "settings": "Ajustes",
@@ -264,21 +267,23 @@
         "title": "Se viene un descanso corto",
         "body": "Solo hay {{gapHours}} h entre tu {{previousShiftType}} y tu próximo {{nextShiftType}} el {{shiftDate}}. Planifica tu descanso."
       },
-      "fifo": {
-        "flyOut": {
-          "title": "Día de regreso",
+      "travel": {
+        "outToday": {
+          "title": "Travel-out day",
           "body": "Hoy vuelves a casa. Completa el relevo, prepara tu equipo y viaja con cuidado."
         },
-        "travelTomorrow": {
+        "tomorrow": {
           "title": "Mañana es día de viaje",
-          "body": "Mañana vuelas al sitio para tu {{shiftType}}. Prepara tu equipo y tus documentos esta noche."
+          "body": "You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
         }
       }
     }
   },
   "countdown": {
     "leftIn": "Quedan {{time}} de {{shiftName}}",
+    "leftInShift": "{{time}} left in this shift",
     "untilStarts": "{{time}} hasta que empiece {{shiftName}}",
+    "untilShift": "{{time}} until this shift starts",
     "until": "{{time}} hasta {{shiftName}}",
     "tomorrow": "{{shiftName}} mañana",
     "daysUntil": "{{days}} días hasta {{shiftName}}",
@@ -316,7 +321,7 @@
   "onboardingChecklist": {
     "title": "Aprovecha al máximo Ellie",
     "items": {
-      "roster": "Configura tu roster",
+      "schedule": "Set up your schedule",
       "shiftTimes": "Añade tus horarios de turno",
       "profile": "Completa tu perfil",
       "askEllie": "Hazle una pregunta a Ellie"

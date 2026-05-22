@@ -13,13 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useOnboarding, type OnboardingData } from '@/contexts/OnboardingContext';
 import { buildShiftCycle } from '@/utils/shiftUtils';
 import type { ShiftCycle } from '@/types';
-import {
-  getPatternDisplayName,
-  getShiftSystemDisplayName,
-  getRosterTypeDisplayName,
-  getCycleLengthDays,
-  getWorkRestRatio,
-} from '@/utils/profileUtils';
+import { getPatternDisplayName, getCycleLengthDays, getWorkRestRatio } from '@/utils/profileUtils';
 import { getSettingsErrorMessage } from '@/utils/settingsErrorMessage';
 
 export interface UseProfileDataReturn {
@@ -52,10 +46,6 @@ export interface UseProfileDataReturn {
 
   /** Human-readable pattern name */
   patternDisplayName: string;
-  /** Human-readable shift system name */
-  shiftSystemName: string;
-  /** Human-readable roster type name */
-  rosterTypeName: string;
   /** Cycle length text (e.g., "21") or null */
   cycleLengthDays: number | null;
   /** Cycle length text for display (e.g., "21") */
@@ -77,14 +67,6 @@ export function useProfileData(): UseProfileDataReturn {
 
   // Computed display values
   const patternDisplayName = useMemo(() => getPatternDisplayName(data), [data]);
-  const shiftSystemName = useMemo(
-    () => getShiftSystemDisplayName(data.shiftSystem),
-    [data.shiftSystem]
-  );
-  const rosterTypeName = useMemo(
-    () => getRosterTypeDisplayName(data.rosterType),
-    [data.rosterType]
-  );
   const cycleLengthDays = useMemo(() => getCycleLengthDays(data), [data]);
   const cycleLengthText = useMemo(
     () => (cycleLengthDays !== null ? String(cycleLengthDays) : '-'),
@@ -165,8 +147,6 @@ export function useProfileData(): UseProfileDataReturn {
     updateData,
     updateDataAsync,
     patternDisplayName,
-    shiftSystemName,
-    rosterTypeName,
     cycleLengthDays,
     cycleLengthText,
     workRestRatio,

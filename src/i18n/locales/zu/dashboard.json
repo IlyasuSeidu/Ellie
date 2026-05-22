@@ -89,7 +89,8 @@
     }
   },
   "badges": {
-    "active": "OKUSEBENZA"
+    "active": "OKUSEBENZA",
+    "upNext": "Up next"
   },
   "voiceAssistant": {
     "subtitle": "Umsizi Wezwi",
@@ -190,7 +191,9 @@
     "stats": "Izibalo",
     "profile": "Iphrofayela",
     "ellie": "Ellie",
-    "openVoiceAssistantA11y": "Vula umsizi wezwi u-Ellie"
+    "openVoiceAssistantA11y": "Vula umsizi wezwi u-Ellie",
+    "openProPlansA11y": "View Pro plans",
+    "voiceAssistantLoadingA11y": "Checking voice assistant access"
   },
   "quickActions": {
     "settings": "Izilungiselelo",
@@ -264,21 +267,23 @@
         "title": "Kuzayo ukuphumula okufushane",
         "body": "Kunehora elingu-{{gapHours}} kuphela phakathi kwe-{{previousShiftType}} yakho ne-{{nextShiftType}} elandelayo ngo-{{shiftDate}}. Hlela ukuphumula kwakho."
       },
-      "fifo": {
-        "flyOut": {
-          "title": "Usuku lokubuyela ekhaya",
+      "travel": {
+        "outToday": {
+          "title": "Travel-out day",
           "body": "Namuhla ubuyela ekhaya. Qedela ukudlulisa umsebenzi, pakisha izinto zakho, uhambe ngokuphepha."
         },
-        "travelTomorrow": {
+        "tomorrow": {
           "title": "Usuku lokuhamba kusasa",
-          "body": "Kusasa uya esizeni nge-{{shiftType}} yakho. Pakisha izinto zakho futhi uhlole amadokhumenti akho namhlanje kusihlwa."
+          "body": "You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
         }
       }
     }
   },
   "countdown": {
     "leftIn": "{{time}} esele ku-{{shiftName}}",
+    "leftInShift": "{{time}} left in this shift",
     "untilStarts": "{{time}} kuze kuqale {{shiftName}}",
+    "untilShift": "{{time}} until this shift starts",
     "until": "{{time}} kuze kube {{shiftName}}",
     "tomorrow": "{{shiftName}} kusasa",
     "daysUntil": "{{days}} izinsuku kuze kube {{shiftName}}",
@@ -316,7 +321,7 @@
   "onboardingChecklist": {
     "title": "Thola okuningi ku-Ellie",
     "items": {
-      "roster": "Lungisa irosta yakho",
+      "schedule": "Set up your schedule",
       "shiftTimes": "Engeza izikhathi zakho zeshifu",
       "profile": "Qedela iphrofayela yakho",
       "askEllie": "Buza u-Ellie umbuzo"

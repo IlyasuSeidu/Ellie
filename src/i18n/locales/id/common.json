@@ -171,10 +171,10 @@
   "subscription": {
     "paywall": {
       "closeA11y": "Tutup penghalang pembayaran",
-      "title": "Roster Anda sudah siap.",
+      "title": "Schedule Anda sudah siap.",
       "subtitle": "Buka dengan biaya kurang dari secangkir kopi.",
       "features": {
-        "askRoster": "Tanyakan \"Hai __TK1__\" apa pun tentang daftar pemain Anda",
+        "askSchedule": "Tanyakan \"Hai __TK1__\" apa pun tentang daftar pemain Anda",
         "fullYear": "Lihat setahun penuh Anda — setiap shift, bulan demi bulan",
         "offline": "Bekerja di bawah tanah, tidak diperlukan sinyal",
         "instantAnswers": "Jawaban instan tentang cuti dan pola",
@@ -203,22 +203,22 @@
       "noCard": "Tidak diperlukan kartu kredit · Batalkan kapan saja",
       "restorePurchases": "Pulihkan Pembelian",
       "privacyPolicy": "Kebijakan Privasi",
-      "socialProof": "Dipercaya oleh penambang bawah tanah, operator FIFO, dan pekerja roster bergilir.",
+      "socialProof": "Dipercaya oleh penambang bawah tanah, operator FIFO, dan pekerja schedule bergilir.",
       "testimonials": [
         {
           "quote": "Saya memesan tiket sesuai swing saya berbulan-bulan sebelumnya tanpa menelepon HR sama sekali.",
           "author": "Sarah K., penambang bawah tanah — shift rotasi 12 jam"
         },
         {
-          "quote": "Saya menunjukkan seluruh roster site ke istri saya dalam kurang dari semenit.",
-          "author": "Dave L., operator bor — roster FIFO"
+          "quote": "Saya menunjukkan seluruh schedule site ke istri saya dalam kurang dari semenit.",
+          "author": "Dave L., operator bor — schedule FIFO"
         },
         {
           "quote": "Saya memesan tiket sesuai swing saya berbulan-bulan sebelumnya tanpa menelepon HR sama sekali.",
           "author": "Jason M., operator haul truck — FIFO 7/7"
         }
       ],
-      "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
+      "lossAversion": "Without Pro, you can only see 2 weeks of your schedule.",
       "timerLabel": "Penawaran awal berakhir dalam",
       "trust": {
         "freeTrial": "Uji coba gratis",
@@ -232,17 +232,17 @@
       "termsOfService": "Syarat",
       "trialBadge": "UJI COBA GRATIS · TANPA BIAYA HARI INI",
       "trialBadgePaid": "BERLANGGANAN HARI INI · BATAL KAPAN SAJA",
-      "title_named": "{{name}}, roster Anda sudah siap.",
+      "title_named": "{{name}}, schedule Anda sudah siap.",
       "subtitle_fifo": "Siklus FIFO Anda sudah dipetakan. Lihat setiap swing dan setiap hari libur sepanjang setahun penuh Anda.",
-      "subtitle_rotating": "Roster bergilir Anda sudah dipetakan. Lihat setiap shift sepanjang setahun penuh Anda.",
+      "subtitle_rotating": "Schedule bergilir Anda sudah dipetakan. Lihat setiap shift sepanjang setahun penuh Anda.",
       "billingDisclosure": "Uji coba gratis Anda berakhir pada {{date}}. Batalkan kapan saja di Pengaturan sebelum itu agar tidak dikenai biaya. Langganan diperpanjang otomatis.",
       "lossAversion_fifo": "Tanpa Pro, tanggal swing Anda kembali jadi misteri. R&R berikutnya tidak diketahui. Pesan minggu yang salah, penerbangan hilang.",
-      "lossAversion_rotating": "Tanpa Pro, roster Anda kembali gelap. Tidak ada peringatan dini, tidak ada perencanaan ke depan. Kembali menebak dari papan pengumuman.",
+      "lossAversion_rotating": "Tanpa Pro, schedule Anda kembali gelap. Tidak ada peringatan dini, tidak ada perencanaan ke depan. Kembali menebak dari papan pengumuman.",
       "lossAversion_family": "Tanpa Pro, keluarga Anda kembali tidak tahu kapan Anda ada di rumah.",
       "testimonialAnchor": "4.8 · 2.400+ penilaian",
       "purchaseSuccess": "Masa uji coba gratis Anda telah dimulai",
       "purchaseError": "Pembelian gagal. Silakan coba lagi.",
-      "valueFrameMonthly": "Biaya satu kopi per bulan untuk mengetahui roster lengkap Anda.",
+      "valueFrameMonthly": "Biaya satu kopi per bulan untuk mengetahui schedule lengkap Anda.",
       "valueFrameWeekly": "Coba pengalaman penuh seharga {{price}}. Batalkan kapan saja.",
       "billingDisclosureWeekly": "Ditagih {{price}}/minggu, setiap minggu. Batalkan kapan saja di Pengaturan.",
       "billingDisclosureAnnualDirect": "Anda akan ditagih {{price}} hari ini. Diperpanjang tahunan. Batalkan kapan saja di Pengaturan.",

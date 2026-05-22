@@ -1,161 +1,183 @@
 import type { SmartReminderSettings } from './reminders';
 
-/**
- * Core Type Definitions for Shift Tracking Application
- *
- * This file contains all core TypeScript type definitions used throughout
- * the application for shift scheduling, tracking, and management.
- */
+// ── Universal Shift Schedule ──────────────────────────────────────────────────
 
 /**
- * Roster Type
- *
- * Defines the fundamental paradigm of the shift roster.
+ * Semantic kind for a universal shift definition.
  */
-export enum RosterType {
-  /** Rotating roster: Workers rotate through shift times (days → nights → off) */
-  ROTATING = 'rotating',
-  /** FIFO/Block roster: Workers work consecutive days on-site, then rest at home */
-  FIFO = 'fifo',
+export type UniversalShiftKind =
+  | 'work'
+  | 'off'
+  | 'travel'
+  | 'on_call'
+  | 'training'
+  | 'leave'
+  | 'custom';
+
+/**
+ * How shift time is specified in a universal definition.
+ */
+export type UniversalShiftTimePolicy = 'timed' | 'all_day' | 'none';
+
+/**
+ * How the shift is considered "active" for reminders / active-shift tracking.
+ */
+export type UniversalShiftActivePolicy = 'timed_window' | 'all_day_active' | 'not_active';
+
+/**
+ * A reusable shift type definition used in a universal schedule.
+ */
+export interface UniversalShiftDefinition {
+  id: string;
+  name: string;
+  kind: UniversalShiftKind;
+  timePolicy: UniversalShiftTimePolicy;
+  activePolicy: UniversalShiftActivePolicy;
+  /** HH:mm */
+  startTime?: string;
+  /** HH:mm */
+  endTime?: string;
+  durationMinutes?: number;
+  crossesMidnight?: boolean;
+  countsAsWork: boolean;
+  countsAsNight: boolean;
+  countsForStats: boolean;
+  /** Hex color string, e.g. "#2196F3" */
+  color: string;
+  /** Ionicons icon name */
+  icon: string;
+  locationName?: string;
+  reminderProfileId?: string;
+  reminderProfile?: Partial<SmartReminderSettings>;
 }
 
 /**
- * Shift Pattern Types
- *
- * Predefined shift patterns commonly used in industries with rotating schedules.
- * Each pattern defines a specific work rotation cycle.
+ * One slot in the repeating sequence.
  */
-export enum ShiftPattern {
-  // Rotating Patterns (African/European style)
-  /** 3 days on, 3 nights on, 3 days off */
-  STANDARD_3_3_3 = 'STANDARD_3_3_3',
-  /** 5 days on, 5 nights on, 5 days off */
-  STANDARD_5_5_5 = 'STANDARD_5_5_5',
-  /** 10 days on, 10 nights on, 10 days off */
-  STANDARD_10_10_10 = 'STANDARD_10_10_10',
-  /** 2 days on, 2 nights on, 3 days off */
-  STANDARD_2_2_3 = 'STANDARD_2_2_3',
-  /** 4 days on, 4 nights on, 4 days off */
-  STANDARD_4_4_4 = 'STANDARD_4_4_4',
-  /** 7 days on, 7 nights on, 7 days off */
-  STANDARD_7_7_7 = 'STANDARD_7_7_7',
-  /** Continental shift pattern (8-hour shifts, 3 teams) */
-  CONTINENTAL = 'CONTINENTAL',
-  /** Pitman shift pattern (12-hour shifts, 4 teams) */
-  PITMAN = 'PITMAN',
-  /** Custom user-defined pattern */
-  CUSTOM = 'CUSTOM',
+export interface UniversalShiftSequenceItem {
+  id: string;
+  shiftDefinitionId: string;
+  labelOverride?: string;
+}
 
-  // FIFO Patterns (Australian/Canadian style)
-  /** 7 days work, 7 days home (even-time) */
-  FIFO_7_7 = 'FIFO_7_7',
-  /** 8 days work, 6 days home (popular WA) */
-  FIFO_8_6 = 'FIFO_8_6',
-  /** 14 days work, 14 days home (even-time) */
-  FIFO_14_14 = 'FIFO_14_14',
-  /** 14 days work, 7 days home (2:1 ratio) */
-  FIFO_14_7 = 'FIFO_14_7',
-  /** 21 days work, 7 days home (3:1 ratio) */
-  FIFO_21_7 = 'FIFO_21_7',
-  /** 28 days work, 14 days home (2:1 ratio) */
-  FIFO_28_14 = 'FIFO_28_14',
-  /** Custom FIFO pattern */
-  FIFO_CUSTOM = 'FIFO_CUSTOM',
+export type UniversalHolidayExceptionAction = 'mark_off' | 'use_shift_definition';
+
+/**
+ * A materialized public-holiday override for one calendar date.
+ *
+ * These can be generated from HolidayService when the user chooses a country
+ * and year range, while keeping schedule calculation deterministic.
+ */
+export interface UniversalHolidayException {
+  id: string;
+  /** YYYY-MM-DD */
+  date: string;
+  holidayName: string;
+  country: string;
+  action: UniversalHolidayExceptionAction;
+  /** Required when action is "use_shift_definition". */
+  shiftDefinitionId?: string;
+  /** Optional payroll hint for downstream pay/earnings logic. */
+  paidOverride?: boolean;
+  /** Defaults to true: rest/off days stay untouched unless explicitly disabled. */
+  appliesToWorkShiftsOnly?: boolean;
+}
+
+export interface UniversalHolidayExceptionApplied {
+  id: string;
+  holidayName: string;
+  country: string;
+  action: UniversalHolidayExceptionAction;
+  paidOverride?: boolean;
+  originalDefinitionId: string;
+  originalDefinitionName: string;
+  originalKind: UniversalShiftKind;
+}
+
+export type UniversalOneOffExceptionAction = 'mark_off' | 'use_shift_definition';
+
+/**
+ * A user-created override for one specific date.
+ */
+export interface UniversalOneOffException {
+  id: string;
+  /** YYYY-MM-DD */
+  date: string;
+  action: UniversalOneOffExceptionAction;
+  /** Required when action is "use_shift_definition". */
+  shiftDefinitionId?: string;
+  label?: string;
+  reason?: string;
+  paidOverride?: boolean;
+}
+
+export interface UniversalOneOffExceptionApplied {
+  id: string;
+  action: UniversalOneOffExceptionAction;
+  label?: string;
+  reason?: string;
+  paidOverride?: boolean;
+  originalDefinitionId: string;
+  originalDefinitionName: string;
+  originalKind: UniversalShiftKind;
 }
 
 /**
- * Shift System
- *
- * Defines whether workers operate on a 2-shift (12-hour) or 3-shift (8-hour) system.
+ * A complete v3 universal shift schedule.
  */
-export enum ShiftSystem {
-  /** 2 shifts per day (typically 12 hours each): Day and Night */
-  TWO_SHIFT = '2-shift',
-  /** 3 shifts per day (typically 8 hours each): Morning, Afternoon, and Night */
-  THREE_SHIFT = '3-shift',
-}
-
-/**
- * Phase Types for 2-Shift System
- *
- * Phases available in a 2-shift (12-hour) system.
- */
-export type Phase2Shift = 'day' | 'night' | 'off';
-
-/**
- * Phase Types for 3-Shift System
- *
- * Phases available in a 3-shift (8-hour) system.
- */
-export type Phase3Shift = 'morning' | 'afternoon' | 'night' | 'off';
-
-/**
- * Phase
- *
- * Union type representing all possible phases across both shift systems.
- */
-export type Phase = Phase2Shift | Phase3Shift;
-
-/**
- * FIFO Configuration
- *
- * Configuration for FIFO (Fly-In Fly-Out) / Block roster systems.
- */
-export interface FIFOConfig {
-  /** Number of consecutive days working on-site */
-  workBlockDays: number;
-  /** Number of consecutive days at home (rest) */
-  restBlockDays: number;
-  /** How shifts are organized during the work block */
-  workBlockPattern: 'straight-days' | 'straight-nights' | 'swing' | 'custom';
-  /** Swing pattern configuration (if workBlockPattern === 'swing') */
-  swingPattern?: {
-    /** Days working day shifts */
-    daysOnDayShift: number;
-    /** Days working night shifts */
-    daysOnNightShift: number;
+export interface UniversalShiftSchedule {
+  version: 3;
+  name: string;
+  timezone: string;
+  /** YYYY-MM-DD */
+  anchorDate: string;
+  phaseOffset: number;
+  shiftDefinitions: UniversalShiftDefinition[];
+  sequence: UniversalShiftSequenceItem[];
+  holidayExceptions?: UniversalHolidayException[];
+  oneOffExceptions?: UniversalOneOffException[];
+  source: 'manual' | 'ai' | 'template' | 'migration';
+  /** ISO timestamp */
+  updatedAt?: string;
+  aiDraftMeta?: {
+    originalPrompt: string;
+    confidence: number;
+    assumptions: string[];
+    unresolvedQuestions: string[];
   };
-  /** Custom work sequence (if workBlockPattern === 'custom') */
-  customWorkSequence?: ShiftType[];
-  /** Optional: Day of cycle for travel to site (fly-in day) */
-  flyInDay?: number;
-  /** Optional: Day of cycle for travel home (fly-out day) */
-  flyOutDay?: number;
-  /** Optional: Mine site name */
-  siteName?: string;
 }
 
 /**
- * Shift Pattern Configuration
- *
- * Flexible configuration that supports both 2-shift and 3-shift systems.
+ * Extended shift day metadata when running a universal schedule.
  */
-export interface ShiftPatternConfig {
-  /** Which roster paradigm this pattern belongs to */
-  rosterType?: RosterType;
-  /** Number of consecutive day shifts (2-shift system) */
-  daysOn?: number;
-  /** Number of consecutive night shifts (2-shift system) */
-  nightsOn?: number;
-
-  /** Number of consecutive morning shifts (3-shift system) */
-  morningOn?: number;
-  /** Number of consecutive afternoon shifts (3-shift system) */
-  afternoonOn?: number;
-  /** Number of consecutive night shifts (3-shift system) */
-  nightOn?: number;
-
-  /** Number of consecutive days off (common to both systems) */
-  daysOff: number;
-  /** Total days in the rotation cycle */
-  totalCycleDays: number;
+export interface UniversalShiftDayMeta {
+  definitionId: string;
+  definitionName: string;
+  kind: UniversalShiftKind;
+  color: string;
+  icon: string;
+  timePolicy: UniversalShiftTimePolicy;
+  activePolicy: UniversalShiftActivePolicy;
+  startTime?: string;
+  endTime?: string;
+  crossesMidnight?: boolean;
+  countsAsWork: boolean;
+  countsAsNight: boolean;
+  locationName?: string;
+  reminderProfileId?: string;
+  reminderProfile?: Partial<SmartReminderSettings>;
+  sequenceIndex: number;
+  cycleLength: number;
+  oneOffException?: UniversalOneOffExceptionApplied;
+  holidayException?: UniversalHolidayExceptionApplied;
 }
 
 /**
  * Shift Type
  *
- * Indicates the type of shift for a given day.
- * Supports both 2-shift (day/night) and 3-shift (morning/afternoon/night) systems.
+ * Canonical display bucket for a shift day. Universal schedules may carry any
+ * custom name/kind/icon/color in `ShiftDay.universal`; this field remains a
+ * compact compatibility bucket for existing dashboard visuals.
  */
 export type ShiftType = 'day' | 'night' | 'morning' | 'afternoon' | 'off';
 
@@ -175,48 +197,11 @@ export interface ShiftDay {
   shiftType: ShiftType;
   /** Optional notes for this shift day */
   notes?: string;
+  /** Present when calculated from a universal schedule */
+  universal?: UniversalShiftDayMeta;
 }
 
-/**
- * Shift Cycle Configuration
- *
- * Defines the parameters for a shift rotation cycle.
- * Supports both rotating rosters (2-shift and 3-shift) and FIFO rosters.
- */
-export interface ShiftCycle {
-  /** The pattern type being used */
-  patternType: ShiftPattern;
-
-  /** The shift system (2-shift or 3-shift) */
-  shiftSystem?: ShiftSystem;
-
-  /** The roster paradigm type (rotating or FIFO) */
-  rosterType?: RosterType;
-
-  /** Number of consecutive day shifts (2-shift system - rotating) */
-  daysOn: number;
-  /** Number of consecutive night shifts (2-shift system - rotating) */
-  nightsOn: number;
-
-  /** Number of consecutive morning shifts (3-shift system - rotating) */
-  morningOn?: number;
-  /** Number of consecutive afternoon shifts (3-shift system - rotating) */
-  afternoonOn?: number;
-  /** Number of consecutive night shifts (3-shift system - rotating) */
-  nightOn?: number;
-
-  /** Number of consecutive days off (common to both systems) */
-  daysOff: number;
-  /** Start date of the cycle in YYYY-MM-DD format */
-  startDate: string;
-  /** Phase offset in days (for team rotation or FIFO block position) */
-  phaseOffset: number;
-  /** Optional custom pattern definition (rotating rosters) */
-  customPattern?: ShiftDay[];
-
-  /** FIFO-specific configuration (only for FIFO rosters) */
-  fifoConfig?: FIFOConfig;
-}
+export type ShiftCycle = UniversalShiftSchedule;
 
 /**
  * Holiday Type

@@ -1,37 +1,53 @@
 /**
- * Shift Query Tools
- *
- * Tool execution functions for the Ellie voice assistant.
- * These are the functions called when Claude invokes tools,
- * both client-side (for testing) and mirrored on the backend.
+ * Universal shift query tools for Ellie voice assistant.
  */
 
-import { RosterType, type ShiftCycle, type ShiftDay } from '@/types';
-import {
-  getFIFOBlockInfo,
-  calculateShiftDay,
-  getShiftDaysInRange,
-  getShiftStatistics,
-  getNextOccurrence,
-} from './shiftUtils';
+import { type ShiftCycle, type ShiftDay } from '@/types';
+import { calculateShiftDay, getShiftDaysInRange, getShiftStatistics } from './shiftUtils';
 import { addDays, toDateString } from './dateUtils';
-import { formatTimeForDisplay, getShiftTimesFromData } from './shiftTimeUtils';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
 import type {
   GetCurrentBlockInfoInput,
   GetDaysUntilInput,
   GetNextBlockInput,
+  GetNextOccurrenceInput,
   GetShiftForDateInput,
   GetShiftsInRangeInput,
   GetStatisticsInput,
-  GetNextOccurrenceInput,
   ShiftStatisticsResult,
 } from '@/types/voiceAssistant';
 
 const MAX_SEARCH_DAYS = 730;
 
+export interface BlockTransitionResult {
+  found: boolean;
+  date?: string;
+  daysUntil?: number;
+  blockLengthDays?: number;
+}
+
+export interface DaysUntilResult {
+  found: boolean;
+  date?: string;
+  daysUntil?: number;
+  alreadyInTargetBlock: boolean;
+}
+
+export interface CurrentBlockInfoResult {
+  date: string;
+  isWorkBlock: boolean;
+  blockType: 'work' | 'rest';
+  dayInBlock: number;
+  blockLengthDays: number;
+  shift: ShiftDay;
+}
+
 function parseInputDate(rawDate?: string): Date {
-  return rawDate ? new Date(rawDate) : new Date();
+  return rawDate ? new Date(`${rawDate}T00:00:00`) : new Date();
+}
+
+function sameWorkState(day: ShiftDay, targetIsWorkDay: boolean): boolean {
+  return day.isWorkDay === targetIsWorkDay;
 }
 
 function getBlockLengthFromStart(
@@ -44,9 +60,7 @@ function getBlockLengthFromStart(
 
   for (let i = 0; i < MAX_SEARCH_DAYS; i += 1) {
     const day = calculateShiftDay(cursor, shiftCycle);
-    if (day.isWorkDay !== targetIsWorkDay) {
-      break;
-    }
+    if (!sameWorkState(day, targetIsWorkDay)) break;
     length += 1;
     cursor = addDays(cursor, 1);
   }
@@ -58,24 +72,20 @@ function findNextBlockStart(
   fromDate: Date,
   shiftCycle: ShiftCycle,
   targetIsWorkDay: boolean
-): { found: boolean; date?: Date; daysUntil?: number; blockLengthDays?: number } {
+): BlockTransitionResult {
   let previousDay = calculateShiftDay(fromDate, shiftCycle);
   let cursor = addDays(fromDate, 1);
 
   for (let i = 1; i <= MAX_SEARCH_DAYS; i += 1) {
     const day = calculateShiftDay(cursor, shiftCycle);
-    const isBlockTransition =
-      day.isWorkDay === targetIsWorkDay && previousDay.isWorkDay !== targetIsWorkDay;
-
-    if (isBlockTransition) {
+    if (day.isWorkDay === targetIsWorkDay && previousDay.isWorkDay !== targetIsWorkDay) {
       return {
         found: true,
-        date: cursor,
+        date: toDateString(cursor),
         daysUntil: i,
         blockLengthDays: getBlockLengthFromStart(cursor, shiftCycle, targetIsWorkDay),
       };
     }
-
     previousDay = day;
     cursor = addDays(cursor, 1);
   }
@@ -87,12 +97,12 @@ function findNextByWorkState(
   fromDate: Date,
   shiftCycle: ShiftCycle,
   targetIsWorkDay: boolean
-): { found: boolean; date?: Date; daysUntil?: number; alreadyInTargetBlock: boolean } {
+): DaysUntilResult {
   const currentDay = calculateShiftDay(fromDate, shiftCycle);
   if (currentDay.isWorkDay === targetIsWorkDay) {
     return {
       found: true,
-      date: fromDate,
+      date: toDateString(fromDate),
       daysUntil: 0,
       alreadyInTargetBlock: true,
     };
@@ -104,7 +114,7 @@ function findNextByWorkState(
     if (day.isWorkDay === targetIsWorkDay) {
       return {
         found: true,
-        date: cursor,
+        date: toDateString(cursor),
         daysUntil: i,
         alreadyInTargetBlock: false,
       };
@@ -115,308 +125,159 @@ function findNextByWorkState(
   return { found: false, alreadyInTargetBlock: false };
 }
 
-export interface BlockTransitionResult {
-  found: boolean;
-  blockType: 'work' | 'rest';
-  startDate?: string;
-  daysUntilStart?: number;
-  blockLengthDays?: number;
+function findMatchingShiftDefinition(shiftCycle: ShiftCycle, requested: string): Set<string> {
+  const normalized = requested.trim().toLowerCase();
+  const matches = shiftCycle.shiftDefinitions
+    .filter(
+      (definition) =>
+        definition.id.toLowerCase() === normalized ||
+        definition.name.toLowerCase() === normalized ||
+        definition.kind.toLowerCase() === normalized ||
+        (normalized === 'night' && definition.countsAsNight)
+    )
+    .map((definition) => definition.id);
+
+  return new Set(matches);
 }
 
-export interface DaysUntilResult {
-  found: boolean;
-  daysUntil: number | null;
-  targetDate?: string;
-  alreadyInTargetBlock: boolean;
-}
-
-export interface CurrentBlockInfoResult {
-  date: string;
-  rosterType: 'rotating' | 'fifo';
-  blockType: 'work' | 'rest';
-  shiftType: ShiftDay['shiftType'];
-  dayInBlock: number;
-  blockLengthDays: number;
-  daysUntilBlockChange: number;
-  cycleLength?: number;
-}
-
-function buildCurrentBlockInfo(date: Date, shiftCycle: ShiftCycle): CurrentBlockInfoResult {
-  const shiftDay = calculateShiftDay(date, shiftCycle);
-  const isWorkDay = shiftDay.isWorkDay;
-
-  if (shiftCycle.rosterType === RosterType.FIFO && shiftCycle.fifoConfig) {
-    const fifoBlockInfo = getFIFOBlockInfo(date, shiftCycle);
-    if (fifoBlockInfo) {
-      return {
-        date: toDateString(date),
-        rosterType: 'fifo',
-        blockType: fifoBlockInfo.inWorkBlock ? 'work' : 'rest',
-        shiftType: shiftDay.shiftType,
-        dayInBlock: fifoBlockInfo.dayInBlock,
-        blockLengthDays: fifoBlockInfo.blockLength,
-        daysUntilBlockChange: fifoBlockInfo.daysUntilBlockChange,
-        cycleLength: fifoBlockInfo.cycleLength,
-      };
-    }
-  }
-
-  let dayInBlock = 1;
-  let backCursor = addDays(date, -1);
-  for (let i = 0; i < MAX_SEARCH_DAYS; i += 1) {
-    const day = calculateShiftDay(backCursor, shiftCycle);
-    if (day.isWorkDay !== isWorkDay) {
-      break;
-    }
-    dayInBlock += 1;
-    backCursor = addDays(backCursor, -1);
-  }
-
-  let daysUntilBlockChange = 0;
-  let forwardCursor = addDays(date, 1);
-  for (let i = 0; i < MAX_SEARCH_DAYS; i += 1) {
-    const day = calculateShiftDay(forwardCursor, shiftCycle);
-    if (day.isWorkDay !== isWorkDay) {
-      break;
-    }
-    daysUntilBlockChange += 1;
-    forwardCursor = addDays(forwardCursor, 1);
-  }
-
-  return {
-    date: toDateString(date),
-    rosterType: 'rotating',
-    blockType: isWorkDay ? 'work' : 'rest',
-    shiftType: shiftDay.shiftType,
-    dayInBlock,
-    blockLengthDays: dayInBlock + daysUntilBlockChange,
-    daysUntilBlockChange,
-  };
-}
-
-/**
- * Get the shift for a specific date.
- * Tool: get_shift_for_date
- */
 export function executeGetShiftForDate(
   input: GetShiftForDateInput,
   shiftCycle: ShiftCycle
 ): ShiftDay {
-  const date = new Date(input.date);
-  return calculateShiftDay(date, shiftCycle);
+  return calculateShiftDay(parseInputDate(input.date), shiftCycle);
 }
 
-/**
- * Get shifts in a date range.
- * Tool: get_shifts_in_range
- */
 export function executeGetShiftsInRange(
   input: GetShiftsInRangeInput,
   shiftCycle: ShiftCycle
 ): ShiftDay[] {
-  const startDate = new Date(input.startDate);
-  const endDate = new Date(input.endDate);
-  return getShiftDaysInRange(startDate, endDate, shiftCycle);
+  return getShiftDaysInRange(
+    parseInputDate(input.startDate),
+    parseInputDate(input.endDate),
+    shiftCycle
+  );
 }
 
-/**
- * Get the current shift status.
- * Tool: get_current_status
- *
- * Returns today's shift info plus active shift times if available.
- */
 export function executeGetCurrentStatus(
   shiftCycle: ShiftCycle,
-  userData?: OnboardingData
-): {
-  todayShift: ShiftDay;
-  shiftTimes?: string;
-  currentBlockInfo: CurrentBlockInfoResult;
-} {
-  const today = new Date();
-  const todayShift = calculateShiftDay(today, shiftCycle);
-  const currentBlockInfo = buildCurrentBlockInfo(today, shiftCycle);
-
-  let shiftTimes: string | undefined;
-  if (userData && todayShift.isWorkDay) {
-    const times = getShiftTimesFromData(userData);
-    const matchingTime = times.find((t) => t.type === todayShift.shiftType);
-    if (matchingTime) {
-      shiftTimes = `${formatTimeForDisplay(matchingTime.startTime)} to ${formatTimeForDisplay(matchingTime.endTime)}`;
-    }
-  }
-
-  return { todayShift, shiftTimes, currentBlockInfo };
+  _userData?: OnboardingData
+): ShiftDay {
+  return calculateShiftDay(new Date(), shiftCycle);
 }
 
-/**
- * Get shift statistics for a period.
- * Tool: get_statistics
- */
 export function executeGetStatistics(
   input: GetStatisticsInput,
   shiftCycle: ShiftCycle
 ): ShiftStatisticsResult {
-  const startDate = new Date(input.startDate);
-  const endDate = new Date(input.endDate);
-  const stats = getShiftStatistics(startDate, endDate, shiftCycle);
-  const rangeDays = getShiftDaysInRange(startDate, endDate, shiftCycle);
-  const workBlockDays = rangeDays.filter((day) => day.isWorkDay).length;
-  const restBlockDays = rangeDays.length - workBlockDays;
+  const stats = getShiftStatistics(
+    parseInputDate(input.startDate),
+    parseInputDate(input.endDate),
+    shiftCycle
+  );
+  const definitionCounts: Record<string, number> = {};
+  for (const day of getShiftDaysInRange(
+    parseInputDate(input.startDate),
+    parseInputDate(input.endDate),
+    shiftCycle
+  )) {
+    if (day.universal?.definitionName) {
+      definitionCounts[day.universal.definitionName] =
+        (definitionCounts[day.universal.definitionName] ?? 0) + 1;
+    }
+  }
 
   return {
-    totalShifts: stats.dayShifts + stats.nightShifts + stats.morningShifts + stats.afternoonShifts,
+    totalShifts: stats.workDays,
     dayShifts: stats.dayShifts,
     nightShifts: stats.nightShifts,
     morningShifts: stats.morningShifts,
     afternoonShifts: stats.afternoonShifts,
     daysOff: stats.daysOff,
-    totalDays:
-      stats.dayShifts +
-      stats.nightShifts +
-      stats.morningShifts +
-      stats.afternoonShifts +
-      stats.daysOff,
-    workBlockDays,
-    restBlockDays,
+    totalDays: stats.totalDays,
+    definitionCounts,
   };
 }
 
-/**
- * Find the next occurrence of a specific shift type.
- * Tool: get_next_occurrence
- */
 export function executeGetNextOccurrence(
   input: GetNextOccurrenceInput,
   shiftCycle: ShiftCycle
-): { found: boolean; shiftDay?: ShiftDay } {
-  const fromDate = input.fromDate ? new Date(input.fromDate) : new Date();
-  const result = getNextOccurrence(fromDate, input.shiftType, shiftCycle);
+): { found: boolean; date?: string; daysUntil?: number; shift?: ShiftDay } {
+  const fromDate = parseInputDate(input.fromDate);
+  const definitionIds = findMatchingShiftDefinition(shiftCycle, String(input.shiftType));
+  const requestedType = String(input.shiftType).toLowerCase();
 
-  if (result) {
-    return { found: true, shiftDay: result };
+  for (let offset = 0; offset <= MAX_SEARCH_DAYS; offset += 1) {
+    const candidate = addDays(fromDate, offset);
+    const day = calculateShiftDay(candidate, shiftCycle);
+    if (
+      definitionIds.has(day.universal?.definitionId ?? '') ||
+      day.shiftType === requestedType ||
+      (requestedType === 'work' && day.isWorkDay) ||
+      (requestedType === 'off' && !day.isWorkDay)
+    ) {
+      return { found: true, date: toDateString(candidate), daysUntil: offset, shift: day };
+    }
   }
+
   return { found: false };
 }
 
-/**
- * Get the next work block start.
- * Tool: get_next_work_block
- */
 export function executeGetNextWorkBlock(
   input: GetNextBlockInput,
   shiftCycle: ShiftCycle
 ): BlockTransitionResult {
-  const fromDate = parseInputDate(input.fromDate);
-  const result = findNextBlockStart(fromDate, shiftCycle, true);
-
-  if (!result.found || !result.date || result.daysUntil === undefined) {
-    return { found: false, blockType: 'work' };
-  }
-
-  return {
-    found: true,
-    blockType: 'work',
-    startDate: toDateString(result.date),
-    daysUntilStart: result.daysUntil,
-    blockLengthDays: result.blockLengthDays,
-  };
+  return findNextBlockStart(parseInputDate(input.fromDate), shiftCycle, true);
 }
 
-/**
- * Get the next rest block start.
- * Tool: get_next_rest_block
- */
 export function executeGetNextRestBlock(
   input: GetNextBlockInput,
   shiftCycle: ShiftCycle
 ): BlockTransitionResult {
-  const fromDate = parseInputDate(input.fromDate);
-  const result = findNextBlockStart(fromDate, shiftCycle, false);
-
-  if (!result.found || !result.date || result.daysUntil === undefined) {
-    return { found: false, blockType: 'rest' };
-  }
-
-  return {
-    found: true,
-    blockType: 'rest',
-    startDate: toDateString(result.date),
-    daysUntilStart: result.daysUntil,
-    blockLengthDays: result.blockLengthDays,
-  };
+  return findNextBlockStart(parseInputDate(input.fromDate), shiftCycle, false);
 }
 
-/**
- * Get days until work resumes.
- * Tool: days_until_work
- */
 export function executeGetDaysUntilWork(
   input: GetDaysUntilInput,
   shiftCycle: ShiftCycle
 ): DaysUntilResult {
-  const fromDate = parseInputDate(input.fromDate);
-  const result = findNextByWorkState(fromDate, shiftCycle, true);
-
-  if (!result.found || !result.date || result.daysUntil === undefined) {
-    return {
-      found: false,
-      daysUntil: null,
-      alreadyInTargetBlock: false,
-    };
-  }
-
-  return {
-    found: true,
-    daysUntil: result.daysUntil,
-    targetDate: toDateString(result.date),
-    alreadyInTargetBlock: result.alreadyInTargetBlock,
-  };
+  return findNextByWorkState(parseInputDate(input.fromDate), shiftCycle, true);
 }
 
-/**
- * Get days until rest/off block starts.
- * Tool: days_until_rest
- */
 export function executeGetDaysUntilRest(
   input: GetDaysUntilInput,
   shiftCycle: ShiftCycle
 ): DaysUntilResult {
-  const fromDate = parseInputDate(input.fromDate);
-  const result = findNextByWorkState(fromDate, shiftCycle, false);
-
-  if (!result.found || !result.date || result.daysUntil === undefined) {
-    return {
-      found: false,
-      daysUntil: null,
-      alreadyInTargetBlock: false,
-    };
-  }
-
-  return {
-    found: true,
-    daysUntil: result.daysUntil,
-    targetDate: toDateString(result.date),
-    alreadyInTargetBlock: result.alreadyInTargetBlock,
-  };
+  return findNextByWorkState(parseInputDate(input.fromDate), shiftCycle, false);
 }
 
-/**
- * Get current work/rest block metadata.
- * Tool: current_block_info
- */
 export function executeGetCurrentBlockInfo(
   input: GetCurrentBlockInfoInput,
   shiftCycle: ShiftCycle
 ): CurrentBlockInfoResult {
   const date = parseInputDate(input.date);
-  return buildCurrentBlockInfo(date, shiftCycle);
+  const shift = calculateShiftDay(date, shiftCycle);
+  const targetIsWorkDay = shift.isWorkDay;
+  let dayInBlock = 1;
+  let cursor = addDays(date, -1);
+
+  for (let i = 0; i < MAX_SEARCH_DAYS; i += 1) {
+    const previous = calculateShiftDay(cursor, shiftCycle);
+    if (previous.isWorkDay !== targetIsWorkDay) break;
+    dayInBlock += 1;
+    cursor = addDays(cursor, -1);
+  }
+
+  const blockStart = addDays(date, -(dayInBlock - 1));
+  return {
+    date: toDateString(date),
+    isWorkBlock: targetIsWorkDay,
+    blockType: targetIsWorkDay ? 'work' : 'rest',
+    dayInBlock,
+    blockLengthDays: getBlockLengthFromStart(blockStart, shiftCycle, targetIsWorkDay),
+    shift,
+  };
 }
 
-/**
- * Execute a tool by name with the given input.
- * Used by the backend to dispatch Claude's tool_use calls.
- */
 export function executeTool(
   toolName: string,
   input: unknown,
@@ -445,6 +306,6 @@ export function executeTool(
     case 'current_block_info':
       return executeGetCurrentBlockInfo(input as GetCurrentBlockInfoInput, shiftCycle);
     default:
-      return { error: `Unknown tool: ${toolName}` };
+      throw new Error(`Unknown shift query tool: ${toolName}`);
   }
 }

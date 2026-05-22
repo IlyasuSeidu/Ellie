@@ -98,8 +98,7 @@ class VoiceAssistantService {
     return {
       intent_guess: offlineIntent.intent,
       locale: offlineIntent.language,
-      roster_type: this.userContext?.rosterType ?? this.userContext?.shiftCycle.rosterType ?? null,
-      shift_system: this.userContext?.shiftSystem ?? null,
+      schedule_name: this.userContext?.scheduleName ?? this.userContext?.shiftCycle.name ?? null,
       query_length: query.trim().length,
     };
   }

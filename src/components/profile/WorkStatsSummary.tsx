@@ -16,12 +16,18 @@ import Animated, {
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
+import { hexToRGBA } from '@/utils/styleUtils';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
-import { getCycleLengthDays, getWorkRestRatio } from '@/utils/profileUtils';
+import {
+  getCycleLengthDays,
+  getShiftDurationSummary,
+  getWorkRestRatio,
+} from '@/utils/profileUtils';
 
 interface WorkStatsSummaryProps {
   data: OnboardingData;
   animationDelay?: number;
+  accentColor?: string;
 }
 
 interface StatItem {
@@ -33,7 +39,8 @@ interface StatItem {
 const MiniStatCard: React.FC<{
   stat: StatItem;
   delay: number;
-}> = ({ stat, delay }) => {
+  accentColor: string;
+}> = ({ stat, delay, accentColor }) => {
   const scale = useSharedValue(0.8);
   const opacity = useSharedValue(0);
 
@@ -48,20 +55,35 @@ const MiniStatCard: React.FC<{
   }));
 
   return (
-    <Animated.View style={[styles.statCard, animStyle]}>
-      <Ionicons name={stat.icon} size={16} color={theme.colors.shadow} />
-      <Animated.Text style={styles.statValue}>{stat.value}</Animated.Text>
+    <Animated.View
+      style={[
+        styles.statCard,
+        {
+          borderColor: hexToRGBA(accentColor, 0.26),
+          backgroundColor: hexToRGBA(accentColor, 0.08),
+        },
+        animStyle,
+      ]}
+    >
+      <View style={[styles.statIcon, { backgroundColor: hexToRGBA(accentColor, 0.14) }]}>
+        <Ionicons name={stat.icon} size={16} color={accentColor} />
+      </View>
+      <Animated.Text style={[styles.statValue, { color: accentColor }]}>{stat.value}</Animated.Text>
       <Animated.Text style={styles.statLabel}>{stat.label}</Animated.Text>
     </Animated.View>
   );
 };
 
-export const WorkStatsSummary: React.FC<WorkStatsSummaryProps> = ({ data, animationDelay = 0 }) => {
+export const WorkStatsSummary: React.FC<WorkStatsSummaryProps> = ({
+  data,
+  animationDelay = 0,
+  accentColor = theme.colors.sacredGold,
+}) => {
   const { t } = useTranslation('profile');
   const stats = useMemo((): StatItem[] => {
     const cycleDays = getCycleLengthDays(data);
     const ratio = getWorkRestRatio(data);
-    const duration = data.shiftSystem === '3-shift' ? '8h' : '12h';
+    const duration = getShiftDurationSummary(data);
 
     return [
       {
@@ -85,7 +107,12 @@ export const WorkStatsSummary: React.FC<WorkStatsSummaryProps> = ({ data, animat
   return (
     <View style={styles.container}>
       {stats.map((stat, index) => (
-        <MiniStatCard key={stat.label} stat={stat} delay={animationDelay + index * 100} />
+        <MiniStatCard
+          key={stat.label}
+          stat={stat}
+          delay={animationDelay + index * 100}
+          accentColor={accentColor}
+        />
       ))}
     </View>
   );
@@ -108,10 +135,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.spacing.sm,
     gap: 4,
   },
+  statIcon: {
+    width: 28,
+    height: 28,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   statValue: {
     fontSize: theme.typography.fontSizes.xl,
     fontWeight: theme.typography.fontWeights.bold,
-    color: theme.colors.sacredGold,
   },
   statLabel: {
     fontSize: theme.typography.fontSizes.xs,

@@ -57,7 +57,7 @@ describe('PremiumPainHookScreen', () => {
     const { getByTestId, getByText } = renderWithProviders();
 
     expect(getByTestId('pain-hook-screen')).toBeTruthy();
-    expect(getByText("What's the hardest part of your roster right now?")).toBeTruthy();
+    expect(getByText("What's the hardest part of your schedule right now?")).toBeTruthy();
     expect(getByTestId('pain-hook-card-cycle_lost')).toBeTruthy();
   });
 

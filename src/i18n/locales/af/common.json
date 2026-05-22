@@ -171,10 +171,10 @@
   "subscription": {
     "paywall": {
       "closeA11y": "Maak betaalmuur toe",
-      "title": "Jou rooster is gereed.",
+      "title": "Jou schedule is gereed.",
       "subtitle": "Ontsluit dit vir minder as 'n koppie koffie.",
       "features": {
-        "askRoster": "Vra \"Hey __TK1__\" enigiets oor jou rooster",
+        "askSchedule": "Vra \"Hey __TK1__\" enigiets oor jou schedule",
         "fullYear": "Sien jou volle jaar — elke skof, maand vir maand",
         "offline": "Werk ondergronds, geen sein nodig nie",
         "instantAnswers": "Kitsantwoorde oor verlof en patrone",
@@ -203,22 +203,22 @@
       "noCard": "Geen kredietkaart vereis nie · Kanselleer enige tyd",
       "restorePurchases": "Herstel aankope",
       "privacyPolicy": "Privaatheidsbeleid",
-      "socialProof": "Vertrou deur ondergrondse mynwerkers, FIFO-operateurs en roterende roosterwerkers.",
+      "socialProof": "Vertrou deur ondergrondse mynwerkers, FIFO-operateurs en roterende schedulewerkers.",
       "testimonials": [
         {
           "quote": "Ek het vlugte om my swing maande vooruit bespreek sonder om HR te bel.",
           "author": "Sarah K., ondergrondse mynwerker — 12h roterende skofte"
         },
         {
-          "quote": "Ek het my hele terreinrooster binne ’n minuut vir my vrou gewys.",
-          "author": "Dave L., booroperateur — FIFO-rooster"
+          "quote": "Ek het my hele terreinschedule binne ’n minuut vir my vrou gewys.",
+          "author": "Dave L., booroperateur — FIFO-schedule"
         },
         {
           "quote": "Ek het vlugte om my swing maande vooruit bespreek sonder om HR te bel.",
           "author": "Jason M., vragmotoroperateur — 7/7 FIFO"
         }
       ],
-      "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
+      "lossAversion": "Without Pro, you can only see 2 weeks of your schedule.",
       "timerLabel": "Inleidende aanbod eindig oor",
       "trust": {
         "freeTrial": "Gratis proef",
@@ -232,17 +232,17 @@
       "termsOfService": "Voorwaardes",
       "trialBadge": "GRATIS PROEF · GEEN HEFFING VANDAG",
       "trialBadgePaid": "TEKEN VANDAG IN · KANSEL ENIGE TYD",
-      "title_named": "{{name}}, jou rooster is gereed.",
+      "title_named": "{{name}}, jou schedule is gereed.",
       "subtitle_fifo": "Jou FIFO-siklus is uitgewerk. Sien elke swing en elke afdag vir jou volle jaar.",
-      "subtitle_rotating": "Jou roterende rooster is uitgewerk. Sien elke skof vir jou volle jaar.",
+      "subtitle_rotating": "Jou roterende schedule is uitgewerk. Sien elke skof vir jou volle jaar.",
       "billingDisclosure": "Jou gratis proeflopie eindig op {{date}}. Kanselleer enige tyd in Instellings voor dan om heffings te vermy. Intekeninge hernu outomaties.",
       "lossAversion_fifo": "Sonder Pro raak jou swing-datums weer 'n raaisel. Volgende R&R — onbekend. Boek die verkeerde week, verloor die vlugte.",
-      "lossAversion_rotating": "Sonder Pro raak jou rooster donker. Geen vroeë waarskuwing, geen beplanning vooruit nie. Terug na raai by die kennisgewingbord.",
+      "lossAversion_rotating": "Sonder Pro raak jou schedule donker. Geen vroeë waarskuwing, geen beplanning vooruit nie. Terug na raai by die kennisgewingbord.",
       "lossAversion_family": "Sonder Pro weet jou familie weer nie wanneer jy by die huis is nie.",
       "testimonialAnchor": "4.8 · 2 400+ graderings",
       "purchaseSuccess": "Jou gratis proeflopie het begin",
       "purchaseError": "Aankoop het misluk. Probeer asseblief weer.",
-      "valueFrameMonthly": "Die koste van een koffie per maand om jou volle rooster te ken.",
+      "valueFrameMonthly": "Die koste van een koffie per maand om jou volle schedule te ken.",
       "valueFrameWeekly": "Probeer die volle ervaring vir {{price}}. Kanselleer enige tyd.",
       "billingDisclosureWeekly": "Gefaktureer teen {{price}}/week, elke week. Kanselleer enige tyd in Instellings.",
       "billingDisclosureAnnualDirect": "Jy sal vandag {{price}} betaal. Hernu jaarliks. Kanselleer enige tyd in Instellings.",

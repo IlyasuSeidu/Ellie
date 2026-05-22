@@ -6,7 +6,6 @@
  */
 
 import type { ShiftCycle, ShiftType } from './index';
-import type { OnboardingData } from '@/contexts/OnboardingContext';
 
 /**
  * Voice assistant operational states
@@ -63,14 +62,8 @@ export interface VoiceAssistantUserContext {
   currentDate: string;
   /** Current time in HH:MM */
   currentTime: string;
-  /** Shift system type */
-  shiftSystem: '2-shift' | '3-shift';
-  /** Shift times configuration */
-  shiftTimes?: OnboardingData['shiftTimes'];
-  /** Roster paradigm hint for backend prompt/tool behavior */
-  rosterType?: ShiftCycle['rosterType'];
-  /** FIFO block configuration when rosterType is fifo */
-  fifoConfig?: ShiftCycle['fifoConfig'];
+  /** Human-readable schedule name */
+  scheduleName: string;
 }
 
 /**
@@ -242,7 +235,7 @@ export interface GetStatisticsInput {
 }
 
 export interface GetNextOccurrenceInput {
-  shiftType: ShiftType;
+  shiftType: ShiftType | string;
   fromDate?: string; // YYYY-MM-DD, defaults to today
 }
 
@@ -271,4 +264,5 @@ export interface ShiftStatisticsResult {
   totalDays: number;
   workBlockDays?: number;
   restBlockDays?: number;
+  definitionCounts?: Record<string, number>;
 }

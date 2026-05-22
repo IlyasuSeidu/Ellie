@@ -91,3 +91,133 @@ test('keeps existing tools working', () => {
   assert.equal(result.shiftDay?.date, '2024-01-09');
   assert.equal(result.shiftDay?.shiftType, 'off');
 });
+
+test('applies universal holiday exceptions in backend shift tools', () => {
+  const universalCycle: ShiftCycle = {
+    scheduleMode: 'universal',
+    patternType: 'UNIVERSAL',
+    rosterType: 'rotating',
+    shiftSystem: '2-shift',
+    daysOn: 1,
+    nightsOn: 0,
+    daysOff: 1,
+    startDate: '2026-01-01',
+    phaseOffset: 0,
+    universalSchedule: {
+      version: 3,
+      name: 'Holiday test',
+      timezone: 'UTC',
+      anchorDate: '2026-01-01',
+      phaseOffset: 0,
+      source: 'manual',
+      shiftDefinitions: [
+        {
+          id: 'day',
+          name: 'Day',
+          kind: 'work',
+          timePolicy: 'timed',
+          activePolicy: 'timed_window',
+          startTime: '07:00',
+          endTime: '19:00',
+          countsAsWork: true,
+          countsAsNight: false,
+          countsForStats: true,
+          color: '#2563EB',
+          icon: 'sunny',
+        },
+      ],
+      sequence: [{ id: 's1', shiftDefinitionId: 'day' }],
+      holidayExceptions: [
+        {
+          id: 'christmas',
+          date: '2026-01-01',
+          holidayName: 'Christmas Day',
+          country: 'GB',
+          action: 'mark_off',
+          paidOverride: true,
+        },
+      ],
+    },
+  };
+
+  const result = calculateShiftDay(new Date('2026-01-01T12:00:00Z'), universalCycle);
+
+  assert.equal(result.isWorkDay, false);
+  assert.equal(result.shiftType, 'off');
+  assert.equal(result.universal?.definitionName, 'Christmas Day');
+  assert.equal(result.universal?.holidayException?.originalDefinitionName, 'Day');
+  assert.equal(result.universal?.holidayException?.paidOverride, true);
+});
+
+test('applies universal one-off exceptions ahead of the repeating sequence', () => {
+  const universalCycle: ShiftCycle = {
+    scheduleMode: 'universal',
+    patternType: 'UNIVERSAL',
+    rosterType: 'rotating',
+    shiftSystem: '2-shift',
+    daysOn: 1,
+    nightsOn: 1,
+    daysOff: 0,
+    startDate: '2026-01-01',
+    phaseOffset: 0,
+    universalSchedule: {
+      version: 3,
+      name: 'One-off test',
+      timezone: 'UTC',
+      anchorDate: '2026-01-01',
+      phaseOffset: 0,
+      source: 'manual',
+      shiftDefinitions: [
+        {
+          id: 'day',
+          name: 'Day',
+          kind: 'work',
+          timePolicy: 'timed',
+          activePolicy: 'timed_window',
+          startTime: '07:00',
+          endTime: '19:00',
+          countsAsWork: true,
+          countsAsNight: false,
+          countsForStats: true,
+          color: '#2563EB',
+          icon: 'sunny',
+        },
+        {
+          id: 'night',
+          name: 'Night',
+          kind: 'work',
+          timePolicy: 'timed',
+          activePolicy: 'timed_window',
+          startTime: '19:00',
+          endTime: '07:00',
+          crossesMidnight: true,
+          countsAsWork: true,
+          countsAsNight: true,
+          countsForStats: true,
+          color: '#4C1D95',
+          icon: 'moon',
+        },
+      ],
+      sequence: [
+        { id: 's1', shiftDefinitionId: 'day' },
+        { id: 's2', shiftDefinitionId: 'night' },
+      ],
+      oneOffExceptions: [
+        {
+          id: 'swap',
+          date: '2026-01-02',
+          action: 'use_shift_definition',
+          shiftDefinitionId: 'day',
+          reason: 'Swapped with Sam',
+        },
+      ],
+    },
+  };
+
+  const result = calculateShiftDay(new Date('2026-01-02T12:00:00Z'), universalCycle);
+
+  assert.equal(result.universal?.definitionId, 'day');
+  assert.equal(result.isNightShift, false);
+  assert.equal(result.universal?.oneOffException?.originalDefinitionName, 'Night');
+  assert.equal(result.universal?.oneOffException?.reason, 'Swapped with Sam');
+});

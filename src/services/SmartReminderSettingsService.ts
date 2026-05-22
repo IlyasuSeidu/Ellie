@@ -6,6 +6,7 @@ import {
   SMART_REMINDER_SETTINGS_KEY,
   type SmartReminderSettings,
 } from '@/types/reminders';
+import { IS_E2E_TEST_MODE } from '@/utils/e2e';
 import { logger } from '@/utils/logger';
 import { asyncStorageService } from './AsyncStorageService';
 import { UserService, userService as sharedUserService } from './UserService';
@@ -99,7 +100,7 @@ export class SmartReminderSettingsService {
 
   async load(firebaseUid?: string | null): Promise<SmartReminderSettings> {
     const localRecord = await readLocalSettingsRecord();
-    if (!firebaseUid) {
+    if (!firebaseUid || IS_E2E_TEST_MODE) {
       return localRecord.settings;
     }
 
@@ -130,7 +131,7 @@ export class SmartReminderSettingsService {
   ): Promise<SmartReminderSettings> {
     const normalized = mergeSettings(settings);
 
-    if (firebaseUid) {
+    if (firebaseUid && !IS_E2E_TEST_MODE) {
       await this.persistRemote(firebaseUid, normalized);
     }
 

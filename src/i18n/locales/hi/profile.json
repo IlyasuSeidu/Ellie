@@ -273,7 +273,7 @@
       "timing": "समय",
       "doNotDisturb": "परेशान न करें",
       "adaptive": "अनुकूलित",
-      "fifo": "FIFO"
+      "travel": "Travel blocks"
     },
     "units": {
       "hoursShort": "{{value}} घं",

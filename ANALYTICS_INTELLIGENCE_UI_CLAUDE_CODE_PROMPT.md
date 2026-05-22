@@ -1,5 +1,9 @@
 # Claude Code Prompt: Move Analytics Intelligence to a Web Admin App
 
+Implementation status: **Implemented in the current working tree** as of May 21, 2026.
+
+The analytics intelligence UI now lives under `web-admin/analytics-intelligence/` as a static Firebase-hosting-friendly admin surface. The native app no longer exposes the AI Intelligence admin screen to normal app users. Backend callable functions remain the source of truth for admin access.
+
 You are working in `/Users/Shared/Ellie`.
 
 The previous implementation incorrectly put the analytics / AI intelligence admin dashboard inside the React Native miner app. That is wrong. This must be an admin-only web page/app, not a screen inside the iOS/Android app.

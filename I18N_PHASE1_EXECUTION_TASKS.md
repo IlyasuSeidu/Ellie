@@ -1,5 +1,9 @@
 # I18N Phase 1 Execution Tasks
 
+Implementation status: **Implemented in the current working tree** as of May 21, 2026.
+
+Phase 1 and the later runtime language extension are complete in the active codebase. Locale files, language detection, provider wiring, profile language selector, Arabic RTL behavior, and post-phase runtime translation polish are present. This file remains the historical task-order record.
+
 Source of truth:
 
 - `I18N_IMPLEMENTATION_PLAN.md`

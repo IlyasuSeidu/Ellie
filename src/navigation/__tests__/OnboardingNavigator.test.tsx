@@ -21,35 +21,11 @@ jest.mock('@/screens/onboarding/premium/PremiumPainHookScreen', () => ({
 jest.mock('@/screens/onboarding/premium/PremiumIntroductionScreen', () => ({
   PremiumIntroductionScreen: () => null,
 }));
-jest.mock('@/screens/onboarding/premium/PremiumShiftSystemScreen', () => ({
-  PremiumShiftSystemScreen: () => null,
-}));
-jest.mock('@/screens/onboarding/premium/PremiumRosterTypeScreen', () => ({
-  PremiumRosterTypeScreen: () => null,
-}));
-jest.mock('@/screens/onboarding/premium/PremiumShiftPatternScreen', () => ({
-  PremiumShiftPatternScreen: () => null,
-}));
-jest.mock('@/screens/onboarding/premium/PremiumCustomPatternScreen', () => ({
-  PremiumCustomPatternScreen: () => null,
-}));
-jest.mock('@/screens/onboarding/premium/PremiumFIFOCustomPatternScreen', () => ({
-  PremiumFIFOCustomPatternScreen: () => null,
-}));
-jest.mock('@/screens/onboarding/premium/PremiumPhaseSelectorScreen', () => ({
-  PremiumPhaseSelectorScreen: () => null,
-}));
-jest.mock('@/screens/onboarding/premium/PremiumFIFOPhaseSelectorScreen', () => ({
-  PremiumFIFOPhaseSelectorScreen: () => null,
-}));
-jest.mock('@/screens/onboarding/premium/PremiumStartDateScreen', () => ({
-  PremiumStartDateScreen: () => null,
+jest.mock('@/screens/main/UniversalShiftBuilderScreen', () => ({
+  UniversalShiftBuilderScreen: () => null,
 }));
 jest.mock('@/screens/onboarding/premium/PremiumAhaMomentScreen', () => ({
   PremiumAhaMomentScreen: () => null,
-}));
-jest.mock('@/screens/onboarding/premium/PremiumShiftTimeInputScreen', () => ({
-  PremiumShiftTimeInputScreen: () => null,
 }));
 jest.mock('@/screens/onboarding/premium/PremiumCompletionScreen', () => ({
   PremiumCompletionScreen: () => null,
@@ -83,27 +59,19 @@ describe('OnboardingNavigator', () => {
   });
 
   describe('TypeScript Types', () => {
-    it('should have correct ParamList with 14 routes', () => {
+    it('should have correct ParamList with Universal Builder routes', () => {
       type ExpectedRoutes = keyof OnboardingStackParamList;
       const routes: ExpectedRoutes[] = [
         'Welcome',
         'PainHook',
         'Introduction',
-        'ShiftSystem',
-        'RosterType',
-        'ShiftPattern',
-        'CustomPattern',
-        'FIFOCustomPattern',
-        'PhaseSelector',
-        'FIFOPhaseSelector',
-        'StartDate',
+        'UniversalShiftBuilder',
         'AhaMoment',
-        'ShiftTimeInput',
         'Completion',
       ];
 
       // Verify all routes exist
-      expect(routes.length).toBe(14);
+      expect(routes.length).toBe(6);
 
       // Verify each route is valid (TypeScript will catch type errors at compile time)
       routes.forEach((route) => {
@@ -116,86 +84,26 @@ describe('OnboardingNavigator', () => {
       type WelcomeParams = OnboardingStackParamList['Welcome'];
       type PainHookParams = OnboardingStackParamList['PainHook'];
       type IntroParams = OnboardingStackParamList['Introduction'];
-      type ShiftSystemParams = OnboardingStackParamList['ShiftSystem'];
-      type RosterTypeParams = OnboardingStackParamList['RosterType'];
-      type ShiftPatternParams = OnboardingStackParamList['ShiftPattern'];
-      type CustomPatternParams = OnboardingStackParamList['CustomPattern'];
-      type FIFOCustomPatternParams = OnboardingStackParamList['FIFOCustomPattern'];
-      type PhaseSelectorParams = OnboardingStackParamList['PhaseSelector'];
-      type FIFOPhaseSelectorParams = OnboardingStackParamList['FIFOPhaseSelector'];
-      type StartDateParams = OnboardingStackParamList['StartDate'];
+      type UniversalShiftBuilderParams = OnboardingStackParamList['UniversalShiftBuilder'];
       type AhaMomentParams = OnboardingStackParamList['AhaMoment'];
-      type ShiftTimeInputParams = OnboardingStackParamList['ShiftTimeInput'];
       type CompletionParams = OnboardingStackParamList['Completion'];
 
       const welcomeParams: WelcomeParams = undefined;
       const painHookParams: PainHookParams = undefined;
       const introParams: IntroParams = undefined;
-      const shiftSystemParams: ShiftSystemParams = undefined;
-      const rosterTypeParams: RosterTypeParams = undefined;
-      const shiftPatternParams: ShiftPatternParams = undefined;
-      const shiftPatternSettingsParams: ShiftPatternParams = {
-        entryPoint: 'settings',
-        returnToMainOnSelect: true,
-      };
-      const customPatternParams: CustomPatternParams = undefined;
-      const customPatternSettingsParams: CustomPatternParams = {
-        entryPoint: 'settings',
-        returnToMainOnSelect: true,
-        settingsBaseline: {
-          patternType: undefined,
-          customPattern: undefined,
-          fifoConfig: undefined,
-          rosterType: 'rotating',
-          shiftSystem: '2-shift',
-        },
-      };
-      const fifoCustomPatternParams: FIFOCustomPatternParams = undefined;
-      const fifoCustomPatternSettingsParams: FIFOCustomPatternParams = {
-        entryPoint: 'settings',
-        returnToMainOnSelect: true,
-        settingsBaseline: {
-          patternType: undefined,
-          customPattern: undefined,
-          fifoConfig: undefined,
-          rosterType: 'fifo',
-          shiftSystem: '2-shift',
-        },
-      };
-      const phaseSelectorParams: PhaseSelectorParams = undefined;
-      const fifoPhaseSelectorParams: FIFOPhaseSelectorParams = undefined;
-      const startDateParams: StartDateParams = undefined;
-      const startDateSettingsParams: StartDateParams = {
-        entryPoint: 'settings',
-        returnToMainOnSelect: true,
+      const universalBuilderParams: UniversalShiftBuilderParams = {
+        mode: 'create',
+        entryPoint: 'onboarding',
+        onSaveNextScreen: 'AhaMoment',
       };
       const ahaMomentParams: AhaMomentParams = undefined;
-      const shiftTimeInputParams: ShiftTimeInputParams = undefined;
-      const shiftTimeInputSettingsParams: ShiftTimeInputParams = {
-        entryPoint: 'settings',
-        returnToMainOnSelect: true,
-        initialShiftType: 'night',
-      };
       const completionParams: CompletionParams = undefined;
 
       expect(welcomeParams).toBeUndefined();
       expect(painHookParams).toBeUndefined();
       expect(introParams).toBeUndefined();
-      expect(shiftSystemParams).toBeUndefined();
-      expect(rosterTypeParams).toBeUndefined();
-      expect(shiftPatternParams).toBeUndefined();
-      expect(shiftPatternSettingsParams).toBeTruthy();
-      expect(customPatternParams).toBeUndefined();
-      expect(customPatternSettingsParams).toBeTruthy();
-      expect(fifoCustomPatternParams).toBeUndefined();
-      expect(fifoCustomPatternSettingsParams).toBeTruthy();
-      expect(phaseSelectorParams).toBeUndefined();
-      expect(fifoPhaseSelectorParams).toBeUndefined();
-      expect(startDateParams).toBeUndefined();
-      expect(startDateSettingsParams).toBeTruthy();
+      expect(universalBuilderParams).toBeTruthy();
       expect(ahaMomentParams).toBeUndefined();
-      expect(shiftTimeInputParams).toBeUndefined();
-      expect(shiftTimeInputSettingsParams).toBeTruthy();
       expect(completionParams).toBeUndefined();
     });
   });

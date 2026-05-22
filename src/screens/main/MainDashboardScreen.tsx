@@ -39,16 +39,11 @@ import { Analytics } from '@/utils/analytics';
 import * as Haptics from 'expo-haptics';
 import { useIsFocused } from '@react-navigation/native';
 import { theme } from '@/utils/theme';
-import {
-  getShiftDaysInRange,
-  getShiftStatistics,
-  buildShiftCycle,
-  getFIFOBlockInfo,
-} from '@/utils/shiftUtils';
-import { parseCalendarDate, toDateString, getDaysInMonth } from '@/utils/dateUtils';
+import { getShiftDaysInRange, getShiftStatistics, buildShiftCycle } from '@/utils/shiftUtils';
+import { toDateString, getDaysInMonth } from '@/utils/dateUtils';
 import { formatLocalizedDateTime } from '@/utils/i18nFormat';
 import { useOnboarding, type OnboardingData } from '@/contexts/OnboardingContext';
-import { RosterType, type ShiftCycle } from '@/types';
+import { type ShiftCycle } from '@/types';
 import { useActiveShift } from '@/hooks/useActiveShift';
 import { getNextShiftAccentRefreshAt } from '@/hooks/useShiftAccent';
 import type { MonthStatistics } from '@/types/dashboard';
@@ -231,7 +226,7 @@ export const MainDashboardScreen: React.FC = () => {
 
   useEffect(() => {
     const now = new Date();
-    const nextRefreshAt = getNextShiftAccentRefreshAt(now, shiftCycle, userData);
+    const nextRefreshAt = getNextShiftAccentRefreshAt(now, shiftCycle);
     const delayMs = Math.max(250, nextRefreshAt.getTime() - now.getTime() + 250);
 
     const timer = setTimeout(() => {
@@ -271,14 +266,6 @@ export const MainDashboardScreen: React.FC = () => {
 
   // Active shift: time-aware status with overnight carry-over support
   const activeShift = useActiveShift(shiftCycle, userData, liveTick, currentDateStr);
-
-  const fifoBlockInfo = useMemo(() => {
-    if (!shiftCycle || shiftCycle.rosterType !== RosterType.FIFO) {
-      return null;
-    }
-    const currentDate = parseCalendarDate(currentDateStr) ?? new Date(currentDateStr);
-    return getFIFOBlockInfo(currentDate, shiftCycle);
-  }, [shiftCycle, currentDateStr]);
 
   // Current month shift days (recalculates on day change for today highlight)
   const monthShifts = useMemo(() => {
@@ -484,15 +471,11 @@ export const MainDashboardScreen: React.FC = () => {
           key={`status-${refreshKey}`}
           shiftType={activeShift.shiftType}
           accentShiftType={activeShift.scheduledShiftType}
-          rosterType={shiftCycle.rosterType}
-          fifoBlockInfo={fifoBlockInfo}
-          countdown={
-            shiftCycle.rosterType === RosterType.FIFO && fifoBlockInfo
-              ? t(fifoBlockInfo.inWorkBlock ? 'fifo.untilRest' : 'fifo.untilWork', {
-                  count: fifoBlockInfo.daysUntilBlockChange,
-                })
-              : (activeShift.countdown ?? undefined)
+          universalDisplay={activeShift.universalDisplay}
+          universalAccentColor={
+            activeShift.scheduledUniversalDisplay?.color ?? activeShift.universalDisplay?.color
           }
+          countdown={activeShift.countdown ?? undefined}
           isOnShift={activeShift.isOnShift}
           animationDelay={100}
           testID="dashboard-shift-status"
@@ -508,8 +491,6 @@ export const MainDashboardScreen: React.FC = () => {
           onPreviousMonth={handlePreviousMonth}
           onNextMonth={handleNextMonthGated}
           onDayPress={handleDayPress}
-          shiftSystem={shiftCycle?.shiftSystem}
-          rosterType={shiftCycle?.rosterType}
           shiftCycle={shiftCycle ?? undefined}
           activeGlowColor={
             activeShift?.isOvernightCarryOver ? SHIFT_GLOW_COLORS[activeShift.shiftType] : undefined

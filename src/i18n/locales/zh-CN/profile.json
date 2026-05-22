@@ -273,7 +273,7 @@
       "timing": "时间",
       "doNotDisturb": "免打扰",
       "adaptive": "自适应",
-      "fifo": "FIFO"
+      "travel": "Travel blocks"
     },
     "units": {
       "hoursShort": "{{value}}小时",

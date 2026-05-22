@@ -216,8 +216,21 @@ const TOOLS: ChatCompletionTool[] = [
         properties: {
           shiftType: {
             type: 'string',
-            enum: ['day', 'night', 'morning', 'afternoon', 'off'],
-            description: 'The shift type to find',
+            enum: [
+              'day',
+              'night',
+              'morning',
+              'afternoon',
+              'off',
+              'work',
+              'travel',
+              'on_call',
+              'training',
+              'leave',
+              'custom',
+            ],
+            description:
+              'The shift type or universal shift kind to find. For universal schedules, use travel, on_call, training, leave, custom, work, night, or off when relevant.',
           },
           fromDate: {
             type: 'string',
@@ -334,6 +347,13 @@ function buildSystemPrompt(request: EllieBrainRequest): string {
       ? '2-shift system (12-hour shifts: day and night)'
       : '3-shift system (8-hour shifts: morning, afternoon, and night)';
   const rosterTypeDesc = ctx.rosterType === 'fifo' ? 'FIFO / block roster' : 'rotating roster';
+  const universalSchedule =
+    ctx.shiftCycle.scheduleMode === 'universal' ? ctx.shiftCycle.universalSchedule : undefined;
+  const universalShiftTypes = universalSchedule
+    ? universalSchedule.shiftDefinitions
+        .map((definition) => `${definition.name} (${definition.kind})`)
+        .join(', ')
+    : '';
 
   return `You are Ellie, a friendly and helpful voice assistant for shift workers. You help ${ctx.name} understand their work schedule.
 
@@ -350,6 +370,9 @@ CONTEXT:
 - Current time: ${ctx.currentTime}
 - User's shift system: ${shiftSystemDesc}
 - User's roster type: ${rosterTypeDesc}
+- Schedule mode: ${universalSchedule ? 'universal custom schedule' : 'legacy shift pattern'}${
+    universalSchedule ? `\n- Universal shift types: ${universalShiftTypes}` : ''
+  }
 - User's name: ${ctx.name}${ctx.occupation ? `\n- User's occupation: ${ctx.occupation}` : ''}
 
 RULES:
@@ -358,7 +381,7 @@ RULES:
 - If they ask about a range (week, month), use get_shifts_in_range.
 - If they ask "am I working now/today", use get_current_status.
 - If they ask about counts or statistics, use get_statistics.
-- For "next day off" or "next night shift", use get_next_occurrence.
+- For "next day off", "next night shift", or a named universal shift such as on-call, training, travel, leave, or custom work, use get_next_occurrence.
 - For block-based questions ("next swing", "next work block", "next rest/home block"), use get_next_work_block or get_next_rest_block.
 - For "how many days until work/home", use days_until_work or days_until_rest.
 - For "what block am I in", use current_block_info.

@@ -39,8 +39,8 @@ export enum NotificationType {
   BACK_TO_BACK_WARNING = 'BACK_TO_BACK_WARNING',
   SHORT_TURNAROUND_WARNING = 'SHORT_TURNAROUND_WARNING',
   FATIGUE_ALERT = 'FATIGUE_ALERT',
-  FIFO_TRAVEL_DAY_TOMORROW = 'FIFO_TRAVEL_DAY_TOMORROW',
-  FIFO_FLY_OUT_TODAY = 'FIFO_FLY_OUT_TODAY',
+  TRAVEL_DAY_TOMORROW = 'TRAVEL_DAY_TOMORROW',
+  TRAVEL_OUT_TODAY = 'TRAVEL_OUT_TODAY',
   POST_SHIFT_CHECKIN = 'POST_SHIFT_CHECKIN',
 }
 
@@ -568,7 +568,7 @@ export class NotificationService extends FirebaseService {
     const notifications = [
       {
         trigger: dayOneAtSixPm,
-        title: 'Your roster is live',
+        title: 'Your schedule is live',
         body: 'See what shifts are coming up this week. Tap to open your calendar.',
       },
       {
@@ -589,7 +589,7 @@ export class NotificationService extends FirebaseService {
       {
         trigger: this.addDays(now, 13, 9),
         title: 'Pattern cycle update',
-        body: 'Your roster cycle changes soon. Ellie has already updated your calendar.',
+        body: 'Your schedule cycle changes soon. Ellie has already updated your calendar.',
       },
       {
         trigger: this.addDays(now, 29, 9),
@@ -612,12 +612,20 @@ export class NotificationService extends FirebaseService {
    * Build shift reminder content
    */
   buildShiftReminderContent(shift: ShiftDay, hoursBefore: number): NotificationContent {
-    const shiftType = shift.isNightShift
-      ? this.translate('notifications.shiftType.night', {}, 'Night Shift')
-      : this.translate('notifications.shiftType.day', {}, 'Day Shift');
-    const title = shift.isNightShift
-      ? this.translate('notifications.shiftCalloutTitle.night', {}, 'Night Shift Callout')
-      : this.translate('notifications.shiftCalloutTitle.day', {}, 'Day Shift Callout');
+    const shiftType =
+      shift.universal?.definitionName ??
+      (shift.isNightShift
+        ? this.translate('notifications.shiftType.night', {}, 'Night Shift')
+        : this.translate('notifications.shiftType.day', {}, 'Day Shift'));
+    const title = shift.universal
+      ? this.translate(
+          'notifications.shiftCalloutTitle.universal',
+          { shiftType },
+          '{{shiftType}} Callout'
+        )
+      : shift.isNightShift
+        ? this.translate('notifications.shiftCalloutTitle.night', {}, 'Night Shift Callout')
+        : this.translate('notifications.shiftCalloutTitle.day', {}, 'Day Shift Callout');
     const body =
       hoursBefore === 24
         ? this.translate(

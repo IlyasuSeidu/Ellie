@@ -325,7 +325,13 @@
       "shiftTimes": "Skoftye",
       "startDate": "Begindatum",
       "title": "Jou profiel",
-      "workPattern": "Werkpatroon"
+      "workPattern": "Werkpatroon",
+      "allDay": "All day",
+      "notTimed": "Not timed",
+      "rosterTypeUniversal": "Universal schedule",
+      "universalShiftSystem": "Universal custom shifts",
+      "scheduleEngine": "Schedule engine",
+      "scheduleType": "Schedule type"
     },
     "title": "Jy is reg.",
     "tryAgain": "Probeer weer",
@@ -1134,5 +1140,186 @@
       "mental_math": "Tel vorentoe om uit te werk watter dag jy werk"
     },
     "cta": "Gaan voort"
+  },
+  "shiftBuilder": {
+    "title": "Skofbouer",
+    "navButtonCreate": "Skep persoonlike skedule",
+    "navButtonEdit": "Wysig universele skedule",
+    "unsavedChanges": "Ongestoorde wysigings",
+    "save": {
+      "success": "Skedule gestoor",
+      "failed": "Stoor misluk — u konsep is behou",
+      "retry": "Probeer weer",
+      "warningConfirm": {
+        "title": "Stoor met waarskuwings?",
+        "confirm": "Stoor tog",
+        "cancel": "Hersien"
+      }
+    },
+    "saving": "Stoor...",
+    "saved": "Gestoor",
+    "discard": "Gooi weg",
+    "cancel": "Kanselleer",
+    "back": "Terug",
+    "confirmDiscard": {
+      "title": "Wysigings weggooi?",
+      "message": "Jy het ongestoorde wysigings. Gooi hulle weg?",
+      "discard": "Gooi weg",
+      "keepEditing": "Hou aan wysig"
+    },
+    "scheduleName": {
+      "label": "Skedulenaam",
+      "placeholder": "My Skedule"
+    },
+    "anchorDate": {
+      "label": "Ankerdatum",
+      "hint": "Die reeks herhaal vanaf hierdie datum"
+    },
+    "phaseOffset": {
+      "label": "Huidige dag in siklus",
+      "hint": "0 = begin van siklus"
+    },
+    "ai": {
+      "sectionTitle": "KI-assistent",
+      "promptPlaceholder": "Beskryf jou rooster...",
+      "buildButton": "Bou met KI",
+      "loading": "Jou rooster word ontleed...",
+      "notConfigured": "KI-ontleding nie beskikbaar nie — bou handmatig hieronder",
+      "retry": "Probeer weer",
+      "error": {
+        "notConfigured": "Die KI-assistent is nie gekonfigureer nie.",
+        "promptEmpty": "Beskryf asseblief jou rooster voor jy voortgaan.",
+        "promptTooLong": "Die beskrywing is te lank. Verkort dit en probeer weer.",
+        "timeout": "Die ontleding het te lank geneem. Probeer weer.",
+        "rateLimited": "Te veel versoeke. Wag 'n oomblik en probeer weer.",
+        "networkError": "Netwerkfout. Gaan jou verbinding na en probeer weer.",
+        "serverError": "Bedienerfout. Probeer later weer.",
+        "generic": "Iets het verkeerd gegaan. Probeer weer."
+      },
+      "chips": {
+        "4on4off": "4 werk 4 af",
+        "4days4nights4off": "4 dae 4 nagte 4 af",
+        "monFri95": "Ma–Vr 9–5",
+        "7on7off": "7 werk 7 af",
+        "rotatingSwing": "12-uur roterende skofte",
+        "fifo14": "14 werk 14 af FIFO"
+      }
+    },
+    "review": {
+      "title": "Dit is wat ek verstaan het",
+      "confidence": {
+        "high": "Hoë vertroue",
+        "medium": "Gemiddelde vertroue",
+        "low": "Lae vertroue"
+      },
+      "assumptions": "Aannames",
+      "questions": "Vrae",
+      "warnings": "Waarskuwings",
+      "useDraft": "Gebruik hierdie konsep",
+      "editManually": "Wysig handmatig",
+      "discardDraft": "Gooi konsep weg",
+      "followUp": "Opvolg...",
+      "send": "Stuur",
+      "invalid": "KI-reaksie is ongeldig. Probeer weer."
+    },
+    "palette": {
+      "title": "Skoftipes",
+      "addNew": "Voeg skoftipe by",
+      "usageCount_one": "{{count}} gebruik",
+      "usageCount_other": "{{count}} gebruike",
+      "deleteBlocked": "In gebruik",
+      "deleteBlockedMessage": "Hierdie skoftipe word {{count}} keer in die volgorde gebruik. Verwyder daardie inskrywings eers of vervang hulle."
+    },
+    "canvas": {
+      "title": "Reeks",
+      "empty": "Voeg skofte by om jou reeks te bou.",
+      "cycleStats": "{{days}}-dag siklus · gemiddeld {{avg}} werksdae/week",
+      "addShift": "Voeg skof by",
+      "addBlock": "Voeg blok by",
+      "repeatCount": "Herhaal {{count}}×",
+      "moveUp": "Skuif op",
+      "moveDown": "Skuif af",
+      "duplicate": "Dupliseer",
+      "insertBefore": "Voeg voor in",
+      "insertAfter": "Voeg na in",
+      "delete": "Verwyder"
+    },
+    "inspector": {
+      "titleCreate": "Nuwe skoftipe",
+      "titleEdit": "Wysig skoftipe",
+      "name": "Naam",
+      "namePlaceholder": "bv. Dagskof",
+      "kind": {
+        "label": "Tipe",
+        "work": "Werk",
+        "off": "Af",
+        "travel": "Reis",
+        "on_call": "Oproepwag",
+        "training": "Opleiding",
+        "leave": "Verlof",
+        "custom": "Aangepas"
+      },
+      "timePolicy": {
+        "label": "Tyd",
+        "timed": "Vasgestelde tye",
+        "all_day": "Hele dag",
+        "none": "Geen tyd"
+      },
+      "startTime": "Begintyd",
+      "endTime": "Eindtyd",
+      "overnight": "Oornag",
+      "overnightHint": "Die skof eindig die volgende dag",
+      "countsAsWork": "Tel as werksdag",
+      "countsAsNight": "Tel as nagskof",
+      "color": "Kleur",
+      "icon": "Ikoon",
+      "location": "Ligging",
+      "save": "Stoor",
+      "delete": "Verwyder tipe",
+      "deleteConfirm": {
+        "title": "Skoftipe verwyder?",
+        "message": "Hierdie aksie kan nie ongedaan gemaak word nie.",
+        "confirm": "Verwyder",
+        "cancel": "Kanselleer"
+      }
+    },
+    "preview": {
+      "title": "Voorskou",
+      "range30": "30 dae",
+      "range60": "60 dae",
+      "range90": "90 dae",
+      "today": "Vandag",
+      "anchor": "Anker",
+      "empty": "Geen voorskoudata beskikbaar nie.",
+      "errors": "Voorskou kan nie vertoon word as gevolg van foute nie."
+    },
+    "validation": {
+      "errorTitle_one": "{{count}} fout",
+      "errorTitle_other": "{{count}} foute",
+      "warningTitle_one": "{{count}} waarskuwing",
+      "warningTitle_other": "{{count}} waarskuwings",
+      "fix": "Regmaak",
+      "review": "Hersien",
+      "dismiss": "Verwerp"
+    },
+    "saveResult": {
+      "success": "Skedule gestoor",
+      "failed": "Stoor het misluk — jou konsep is behou",
+      "retry": "Probeer weer",
+      "warningConfirm": {
+        "title": "Stoor met waarskuwings?",
+        "confirm": "Stoor tog",
+        "cancel": "Hersien"
+      }
+    },
+    "kinds": {
+      "work": "Werk",
+      "off": "Af / Rus",
+      "travel": "Reis",
+      "on_call": "Oproepwag",
+      "training": "Opleiding",
+      "leave": "Verlof",
+      "custom": "Aangepas"
+    }
   }
 }

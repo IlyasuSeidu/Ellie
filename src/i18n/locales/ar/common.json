@@ -174,7 +174,7 @@
       "title": "جدولك جاهز.",
       "subtitle": "افتحه بأقل من سعر فنجان قهوة.",
       "features": {
-        "askRoster": "اسأل \"مرحبًا Ellie\" أي شيء يتعلق بقائمتك",
+        "askSchedule": "اسأل \"مرحبًا Ellie\" أي شيء يتعلق بقائمتك",
         "fullYear": "شاهد عامك بالكامل — كل وردية، شهرًا بعد شهر",
         "offline": "يعمل تحت الأرض، لا حاجة للإشارة",
         "instantAnswers": "إجابات فورية حول الإجازة والأنماط",
@@ -218,7 +218,7 @@
           "author": "Jason M.، مشغّل شاحنة نقل — FIFO 7/7"
         }
       ],
-      "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
+      "lossAversion": "Without Pro, you can only see 2 weeks of your schedule.",
       "timerLabel": "ينتهي العرض التمهيدي خلال",
       "trust": {
         "freeTrial": "تجربة مجانية",

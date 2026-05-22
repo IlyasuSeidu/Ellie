@@ -344,7 +344,13 @@
       "shiftTimes": "Izikhathi zamashifthi",
       "startDate": "Usuku okuqalwa ngalo",
       "title": "Iphrofayela yakho",
-      "workPattern": "Iphethini Yomsebenzi"
+      "workPattern": "Iphethini Yomsebenzi",
+      "allDay": "All day",
+      "notTimed": "Not timed",
+      "rosterTypeUniversal": "Universal schedule",
+      "universalShiftSystem": "Universal custom shifts",
+      "scheduleEngine": "Schedule engine",
+      "scheduleType": "Schedule type"
     },
     "title": "Konke sekumi ngomumo.",
     "tryAgain": "Zama futhi",
@@ -1153,5 +1159,186 @@
       "mental_math": "Ngibala izinsuku ezizayo ukuze ngazi ukuthi ngisebenza nini"
     },
     "cta": "Qhubeka"
+  },
+  "shiftBuilder": {
+    "title": "Isakhiwo Seshifu",
+    "navButtonCreate": "Yakha Uhlelo Olukhethekile",
+    "navButtonEdit": "Hlela Uhlelo Jikelele",
+    "unsavedChanges": "Izinguquko ezingalondolozwanga",
+    "save": {
+      "success": "Uhlelo lulondoloziwe",
+      "failed": "Ukugcina kwehlulekile — idrafti yakho igcinwe",
+      "retry": "Zama futhi",
+      "warningConfirm": {
+        "title": "Londoloza nezexwayiso?",
+        "confirm": "Londoloza ngandlela thize",
+        "cancel": "Bheka"
+      }
+    },
+    "saving": "Iyalondoloza...",
+    "saved": "Kulondolozwe",
+    "discard": "Lahla",
+    "cancel": "Khansela",
+    "back": "Emuva",
+    "confirmDiscard": {
+      "title": "Lahla izinguquko?",
+      "message": "Uneizinguquko ezingalondolozwanga. Ziyalahla?",
+      "discard": "Lahla",
+      "keepEditing": "Qhubeka ukuhlela"
+    },
+    "scheduleName": {
+      "label": "Igama lohlelo",
+      "placeholder": "Uhlelo Lwami"
+    },
+    "anchorDate": {
+      "label": "Usuku lwankolo",
+      "hint": "Ulandelwano luyaphinda kusukela kulolu suku"
+    },
+    "phaseOffset": {
+      "label": "Usuku lwamanje emjikelezo",
+      "hint": "0 = ukuqala komjikelezo"
+    },
+    "ai": {
+      "sectionTitle": "Umsizi we-AI",
+      "promptPlaceholder": "Chaza uhlelo lwakho...",
+      "buildButton": "Yakha nge-AI",
+      "loading": "Iyahlaziya uhlelo lwakho...",
+      "notConfigured": "Ukuhlaziywa kwe-AI akutholakali — yakha ngokwakho ngezansi",
+      "retry": "Zama futhi",
+      "error": {
+        "notConfigured": "Umsizi we-AI awusetelwanga.",
+        "promptEmpty": "Sicela uchaze uhlelo lwakho ngaphambi kokuqhubeka.",
+        "promptTooLong": "Incazelo inde kakhulu. Yifuphe bese uzama futhi.",
+        "timeout": "Ukuhlaziywa kwathatha isikhathi eside. Zama futhi.",
+        "rateLimited": "Izicelo eziningi kakhulu. Linda umzuzwana bese uzama futhi.",
+        "networkError": "Iphutha lenethiwekhi. Hlola ukuxhumana kwakho bese uzama futhi.",
+        "serverError": "Iphutha leseva. Zama futhi emuva kwesikhashana.",
+        "generic": "Kukhona okungahambanga kahle. Zama futhi."
+      },
+      "chips": {
+        "4on4off": "4 yasebenza 4 ephumula",
+        "4days4nights4off": "4 emini 4 ebusuku 4 ephumula",
+        "monFri95": "Mso–Lng 9–5",
+        "7on7off": "7 yasebenza 7 ephumula",
+        "rotatingSwing": "Isikhathi esingama-12 esijikelezayo",
+        "fifo14": "14 yasebenza 14 ephumula FIFO"
+      }
+    },
+    "review": {
+      "title": "Nanka engakuqondayo",
+      "confidence": {
+        "high": "Ukwethemba okuphezulu",
+        "medium": "Ukwethemba okumaphakathi",
+        "low": "Ukwethemba okuphansi"
+      },
+      "assumptions": "Izinkolelelo",
+      "questions": "Imibuzo",
+      "warnings": "Izexwayiso",
+      "useDraft": "Sebenzisa lo mswenko",
+      "editManually": "Hlela ngokwakho",
+      "discardDraft": "Lahla umswenko",
+      "followUp": "Landela...",
+      "send": "Thumela",
+      "invalid": "Impendulo ye-AI ayisebenzi. Zama futhi."
+    },
+    "palette": {
+      "title": "Izikhathi Zeshifu",
+      "addNew": "Engeza uhlobo loshifu",
+      "usageCount_one": "{{count}} ukusetshenziswa",
+      "usageCount_other": "{{count}} ukusetshenziswa",
+      "deleteBlocked": "Iyasetshenziswa",
+      "deleteBlockedMessage": "Lolu hlobo loshifu lusetshenziswa {{count}} izikhathi ohlelweni. Susa lezo zingeniso kuqala noma zishintshe."
+    },
+    "canvas": {
+      "title": "Ulandelwano",
+      "empty": "Engeza amaShifu ukwakha ulandelwano lwakho.",
+      "cycleStats": "Umjikelezo wezinsuku eziyi-{{days}} · phakathi naphakathi {{avg}} izinsuku zomsebenzi/iviki",
+      "addShift": "Engeza ishifu",
+      "addBlock": "Engeza ibulokhi",
+      "repeatCount": "Phinda {{count}}×",
+      "moveUp": "Susa phezulu",
+      "moveDown": "Susa phansi",
+      "duplicate": "Phindaphinda",
+      "insertBefore": "Faka ngaphambi",
+      "insertAfter": "Faka ngemuva",
+      "delete": "Susa"
+    },
+    "inspector": {
+      "titleCreate": "Uhlobo loshifu olusha",
+      "titleEdit": "Hlela uhlobo loshifu",
+      "name": "Igama",
+      "namePlaceholder": "nj. IShifu Lasemini",
+      "kind": {
+        "label": "Uhlobo",
+        "work": "Umsebenzi",
+        "off": "Ukuphumula",
+        "travel": "Uhambo",
+        "on_call": "Ukulinda",
+        "training": "Ukuqeqeshwa",
+        "leave": "Ikhefu",
+        "custom": "Okukhethekile"
+      },
+      "timePolicy": {
+        "label": "Isikhathi",
+        "timed": "Izikhathi ezimiswayo",
+        "all_day": "Usuku lonke",
+        "none": "Akukho sikhathi"
+      },
+      "startTime": "Isikhathi sokuqala",
+      "endTime": "Isikhathi sokuphela",
+      "overnight": "Obusuku bonke",
+      "overnightHint": "IShifu liphela ngosuku olulandelayo",
+      "countsAsWork": "Ibala njengosuku lomsebenzi",
+      "countsAsNight": "Ibala njengoshifu wasebusuku",
+      "color": "Umbala",
+      "icon": "Isithonjana",
+      "location": "Indawo",
+      "save": "Londoloza",
+      "delete": "Susa uhlobo",
+      "deleteConfirm": {
+        "title": "Susa uhlobo loshifu?",
+        "message": "Lesi senzo asinakubuyiselwa.",
+        "confirm": "Susa",
+        "cancel": "Khansela"
+      }
+    },
+    "preview": {
+      "title": "Ukubuka Kuqala",
+      "range30": "Izinsuku eziyi-30",
+      "range60": "Izinsuku eziyi-60",
+      "range90": "Izinsuku eziyi-90",
+      "today": "Namuhla",
+      "anchor": "Ankolo",
+      "empty": "Awekho amanani okubuka kuqala.",
+      "errors": "Ukubuka kuqala akungaboniswa ngenxa yamaphutha."
+    },
+    "validation": {
+      "errorTitle_one": "{{count}} iphutha",
+      "errorTitle_other": "{{count}} amaphutha",
+      "warningTitle_one": "{{count}} isexwayiso",
+      "warningTitle_other": "{{count}} izexwayiso",
+      "fix": "Lungisa",
+      "review": "Hlola",
+      "dismiss": "Yekela"
+    },
+    "saveResult": {
+      "success": "Uhlelo luye walondolozwa",
+      "failed": "Ukulondoloza kwehlulekile — umswenko wakho ugcinwe",
+      "retry": "Zama futhi",
+      "warningConfirm": {
+        "title": "Londoloza nezexwayiso?",
+        "confirm": "Londoloza noma kunjalo",
+        "cancel": "Hlola"
+      }
+    },
+    "kinds": {
+      "work": "Umsebenzi",
+      "off": "Ukuphumula / Ukuphola",
+      "travel": "Uhambo",
+      "on_call": "Ukulinda",
+      "training": "Ukuqeqeshwa",
+      "leave": "Ikhefu",
+      "custom": "Okukhethekile"
+    }
   }
 }

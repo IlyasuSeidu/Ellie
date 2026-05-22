@@ -1,8 +1,12 @@
 # Auth, Storage & Firestore Integration — Ellie App
 
+Implementation status: **Implemented in the current working tree** as of May 21, 2026.
+
+The app now includes native Firebase Auth wiring, `AuthContext`, auth navigation/screens, email verification gating, native Google/Apple sign-in paths, React Native auth persistence, user profile sync, and Firestore-backed authenticated app routing. This document is retained as the original implementation plan.
+
 ## Context
 
-Ellie currently has no authentication — all data is stored locally in AsyncStorage under the device. A fully implemented `AuthService.ts` (628 lines), `UserService.ts` (Firestore CRUD), and Firebase initialization (`firebase.ts`) already exist but are **never called**. The `signInWithGoogle` and `signInWithApple` methods use `signInWithPopup` (a web browser API) — both must be replaced with the React Native SDK equivalents. Firebase Auth is initialized with `getAuth()` which does not persist sessions on React Native — this must be changed to `initializeAuth()` with `getReactNativePersistence(AsyncStorage)`.
+Ellie originally had no authentication — data was stored locally under the device. This plan described wiring Firebase Auth, native sign-in, strict auth navigation, and Firestore user sync into the app. That implementation has now landed.
 
 This plan wires everything together:
 

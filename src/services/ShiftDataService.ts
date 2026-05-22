@@ -9,10 +9,10 @@ import { ShiftCycle, ShiftDay } from '@/types';
 import {
   calculateShiftDay,
   getShiftDaysInRange as utilGetShiftDaysInRange,
-  getNextShift,
   countWorkDays,
-  getShiftStatistics,
+  getNextShift,
 } from '@/utils/shiftUtils';
+import { getShiftScheduleFingerprint } from '@/utils/universalShiftScheduleUtils';
 import { logger } from '@/utils/logger';
 import { IStorageService } from './StorageService';
 
@@ -23,6 +23,28 @@ const CACHE_CONFIG = {
   PREFIX: 'shifts',
   MAX_AGE_MS: 30 * 24 * 60 * 60 * 1000, // 30 days
 };
+
+function getUniversalShiftHours(shift: ShiftDay): number | null {
+  const universal = shift.universal;
+  if (!universal || !universal.countsAsWork) {
+    return null;
+  }
+
+  if (typeof universal.startTime !== 'string' || typeof universal.endTime !== 'string') {
+    return null;
+  }
+
+  const [startHours, startMinutes] = universal.startTime.split(':').map(Number);
+  const [endHours, endMinutes] = universal.endTime.split(':').map(Number);
+  const startTotal = (startHours ?? 0) * 60 + (startMinutes ?? 0);
+  let endTotal = (endHours ?? 0) * 60 + (endMinutes ?? 0);
+
+  if (endTotal <= startTotal) {
+    endTotal += 24 * 60;
+  }
+
+  return Math.max(0, endTotal - startTotal) / 60;
+}
 
 /**
  * Shift Data Service class
@@ -36,7 +58,7 @@ export class ShiftDataService {
   calculateShiftForDate(date: Date, cycle: ShiftCycle): ShiftDay {
     logger.debug('Calculating shift for date', {
       date: date.toISOString(),
-      pattern: cycle.patternType,
+      scheduleName: cycle.name,
     });
 
     return calculateShiftDay(date, cycle);
@@ -81,7 +103,7 @@ export class ShiftDataService {
   getNextWorkDay(fromDate: Date, cycle: ShiftCycle): Date {
     logger.debug('Finding next work day', {
       fromDate: fromDate.toISOString(),
-      pattern: cycle.patternType,
+      scheduleName: cycle.name,
     });
 
     const nextShift = getNextShift(fromDate, cycle);
@@ -197,9 +219,15 @@ export class ShiftDataService {
       hoursPerShift,
     });
 
-    const stats = getShiftStatistics(start, end, cycle);
-    const totalShifts = stats.dayShifts + stats.nightShifts;
-    const totalHours = totalShifts * hoursPerShift;
+    const shifts = utilGetShiftDaysInRange(start, end, cycle);
+    const totalHours = shifts.reduce((sum, shift) => {
+      const universalHours = getUniversalShiftHours(shift);
+      if (universalHours !== null) {
+        return sum + universalHours;
+      }
+      return shift.isWorkDay ? sum + hoursPerShift : sum;
+    }, 0);
+    const totalShifts = shifts.filter((shift) => shift.isWorkDay).length;
 
     logger.debug('Working hours calculated', { totalHours, totalShifts });
     return totalHours;
@@ -324,12 +352,8 @@ export class ShiftDataService {
    */
   private isSameCycle(cycle1: ShiftCycle, cycle2: ShiftCycle): boolean {
     return (
-      cycle1.patternType === cycle2.patternType &&
-      cycle1.daysOn === cycle2.daysOn &&
-      cycle1.nightsOn === cycle2.nightsOn &&
-      cycle1.daysOff === cycle2.daysOff &&
-      cycle1.startDate === cycle2.startDate &&
-      cycle1.phaseOffset === cycle2.phaseOffset
+      getShiftScheduleFingerprint({ shiftCycle: cycle1 }) ===
+      getShiftScheduleFingerprint({ shiftCycle: cycle2 })
     );
   }
 }

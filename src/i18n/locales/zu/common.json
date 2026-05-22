@@ -174,7 +174,7 @@
       "title": "Irosta yakho isilungile.",
       "subtitle": "Yivule ngemali encane kunekhofi.",
       "features": {
-        "askRoster": "Buza okuthi \"Hey __TK1__\" noma yini ngohlelo lwakho",
+        "askSchedule": "Buza okuthi \"Hey __TK1__\" noma yini ngohlelo lwakho",
         "fullYear": "Bona unyaka wakho wonke — ishifu ngayinye, inyanga nenyanga",
         "offline": "Isebenza ngaphansi komhlaba, asikho isignali edingekayo",
         "instantAnswers": "Izimpendulo ezisheshayo mayelana nekhefu namaphethini",
@@ -218,7 +218,7 @@
           "author": "Jason M., umshayeli weloli lomgodi — i-FIFO 7/7"
         }
       ],
-      "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
+      "lossAversion": "Without Pro, you can only see 2 weeks of your schedule.",
       "timerLabel": "Isipho sokuqala siphela ngo",
       "trust": {
         "freeTrial": "Isilingo samahhala",

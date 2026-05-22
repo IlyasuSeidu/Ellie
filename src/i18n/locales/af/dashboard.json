@@ -89,7 +89,8 @@
     }
   },
   "badges": {
-    "active": "AKTIEF"
+    "active": "AKTIEF",
+    "upNext": "Up next"
   },
   "voiceAssistant": {
     "subtitle": "Stemassistent",
@@ -190,7 +191,9 @@
     "stats": "Statistieke",
     "profile": "Profiel",
     "ellie": "Ellie",
-    "openVoiceAssistantA11y": "Maak Ellie-stemassistent oop"
+    "openVoiceAssistantA11y": "Maak Ellie-stemassistent oop",
+    "openProPlansA11y": "View Pro plans",
+    "voiceAssistantLoadingA11y": "Checking voice assistant access"
   },
   "quickActions": {
     "settings": "Instellings",
@@ -264,21 +267,23 @@
         "title": "Kort omdraai vorentoe",
         "body": "Daar is net {{gapHours}} h tussen jou {{previousShiftType}} en volgende {{nextShiftType}} op {{shiftDate}}. Beplan jou rus."
       },
-      "fifo": {
-        "flyOut": {
-          "title": "Terugreisdag",
+      "travel": {
+        "outToday": {
+          "title": "Travel-out day",
           "body": "Vandag gaan jy huis toe. Voltooi jou oorhandiging, pak jou toerusting en reis veilig."
         },
-        "travelTomorrow": {
+        "tomorrow": {
           "title": "Reisdag môre",
-          "body": "Jy vlieg môre in vir jou {{shiftType}}. Pak jou toerusting en kyk vanaand jou dokumente na."
+          "body": "You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
         }
       }
     }
   },
   "countdown": {
     "leftIn": "{{time}} oor in {{shiftName}}",
+    "leftInShift": "{{time}} left in this shift",
     "untilStarts": "{{time}} totdat {{shiftName}} begin",
+    "untilShift": "{{time}} until this shift starts",
     "until": "{{time}} tot {{shiftName}}",
     "tomorrow": "{{shiftName}} môre",
     "daysUntil": "{{days}} dae tot {{shiftName}}",
@@ -316,7 +321,7 @@
   "onboardingChecklist": {
     "title": "Kry die meeste uit Ellie",
     "items": {
-      "roster": "Stel jou rooster op",
+      "schedule": "Set up your schedule",
       "shiftTimes": "Voeg jou skoftye by",
       "profile": "Voltooi jou profiel",
       "askEllie": "Vra vir Ellie ’n vraag"

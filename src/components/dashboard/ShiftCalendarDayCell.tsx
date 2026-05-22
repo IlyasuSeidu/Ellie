@@ -2,11 +2,9 @@
  * ShiftCalendarDayCell Component
  *
  * Premium calendar day cell with shift type visualization.
- * Color-coded backgrounds, shift type badges (icons or FIFO indicators),
+ * Color-coded backgrounds, shift type badges,
  * 3-layer today indicator with pulsing glow ring,
  * premium bounce press animation, and selected day glow.
- * FIFO mode: transparent bg (ribbon shows through), shift-specific icons,
- * fly-in/fly-out airplane indicators, swing transition bars, enhanced today glow.
  */
 
 import React, { useMemo } from 'react';
@@ -19,24 +17,17 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
-import { RosterType, type ShiftType } from '@/types';
-import { fifoBlockColors } from '@/constants/shiftStyles';
-import type { FIFODayPosition } from '@/utils/fifoCalendarUtils';
+import { type ShiftType } from '@/types';
 
 export interface ShiftCalendarDayCellProps {
   /** Day number (1-31) */
   day: number;
   /** Shift type for this day */
   shiftType?: ShiftType;
-  /** Roster paradigm for visual treatment */
-  rosterType?: RosterType;
-  /** FIFO block position metadata (only for FIFO rosters) */
-  fifoPosition?: FIFODayPosition;
   /** Whether this day is today */
   isToday?: boolean;
   /** Whether this day is selected */
@@ -45,12 +36,16 @@ export interface ShiftCalendarDayCellProps {
   isOtherMonth?: boolean;
   /** Press handler */
   onPress?: (day: number) => void;
-  /** Long-press handler (for FIFO tooltip) */
-  onLongPress?: (day: number) => void;
   /** Stagger delay for entrance animation (reserved for parent control) */
   animationDelay?: number;
   /** Override glow color for today's cell (e.g. during overnight carry-over) */
   activeGlowColor?: string;
+  /** Universal shift display metadata. When present, this overrides legacy badge styling. */
+  universalDisplay?: {
+    title: string;
+    color: string;
+    icon: string;
+  };
   /** Test ID */
   testID?: string;
 }
@@ -96,48 +91,35 @@ const SHIFT_COLORS: Record<
   },
 };
 
-const FIFO_BLOCK_COLORS = {
-  work: {
-    bg: fifoBlockColors.work.background,
-    badge: '#BBDEFB',
-    text: fifoBlockColors.work.text,
-  },
-  home: {
-    bg: fifoBlockColors.rest.background,
-    badge: fifoBlockColors.rest.primary,
-    text: fifoBlockColors.rest.text,
-  },
-} as const;
-
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
 export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
   day,
   shiftType,
-  rosterType = RosterType.ROTATING,
-  fifoPosition,
   isToday = false,
   selected = false,
   isOtherMonth = false,
   activeGlowColor,
+  universalDisplay,
   onPress,
-  onLongPress,
   testID,
 }) => {
   const { t } = useTranslation('dashboard');
-  const fifoBlockType = useMemo(() => {
-    if (rosterType !== RosterType.FIFO || !shiftType) {
-      return null;
-    }
-    return shiftType === 'off' ? 'home' : 'work';
-  }, [rosterType, shiftType]);
+  const universalColor = useMemo(() => {
+    if (!universalDisplay) return null;
+    return {
+      bg: `${universalDisplay.color}20`,
+      badge: selected ? 'rgba(255,255,255,0.3)' : universalDisplay.color,
+      text: universalDisplay.color,
+    };
+  }, [selected, universalDisplay]);
 
   const shiftColor = useMemo(() => {
-    if (fifoBlockType) {
-      return FIFO_BLOCK_COLORS[fifoBlockType];
+    if (universalColor) {
+      return universalColor;
     }
     return shiftType ? SHIFT_COLORS[shiftType] : null;
-  }, [fifoBlockType, shiftType]);
+  }, [shiftType, universalColor]);
 
   // ── Press scale animation (premium bounce) ──
   const scale = useSharedValue(1);
@@ -164,13 +146,6 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
     }
   };
 
-  const handleLongPress = () => {
-    if (!isOtherMonth && onLongPress) {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-      onLongPress(day);
-    }
-  };
-
   const pressStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
   }));
@@ -181,9 +156,8 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
 
   React.useEffect(() => {
     if (isToday) {
-      // Enhanced glow range for FIFO
-      const minOpacity = fifoPosition ? 0.2 : 0.15;
-      const maxOpacity = fifoPosition ? 0.5 : 0.35;
+      const minOpacity = 0.15;
+      const maxOpacity = 0.35;
 
       // Layer 1: glow opacity pulse
       todayGlowOpacity.value = withRepeat(
@@ -201,7 +175,7 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
         true
       );
     }
-  }, [isToday, pulseScale, todayGlowOpacity, fifoPosition]);
+  }, [isToday, pulseScale, todayGlowOpacity]);
 
   const todayGlowStyle = useAnimatedStyle(() => ({
     opacity: todayGlowOpacity.value,
@@ -211,29 +185,20 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
     transform: [{ scale: pulseScale.value }],
   }));
 
-  // Resolve glow color: FIFO block-colored, carry-over color, or default gold
+  // Resolve glow color: carry-over color, universal shift color, or default gold.
   const glowColor = useMemo(() => {
     if (activeGlowColor) return activeGlowColor;
-    if (fifoPosition) {
-      return fifoPosition.blockType === 'work' ? '#2196F3' : '#a8a29e';
-    }
+    if (universalDisplay?.color) return universalDisplay.color;
     return theme.colors.sacredGold;
-  }, [activeGlowColor, fifoPosition]);
+  }, [activeGlowColor, universalDisplay?.color]);
 
   const glowColor30 = useMemo(() => {
     if (activeGlowColor) return `${activeGlowColor}4D`;
-    if (fifoPosition) {
-      return fifoPosition.blockType === 'work' ? 'rgba(33,150,243,0.3)' : 'rgba(168,162,158,0.3)';
-    }
+    if (universalDisplay?.color) return `${universalDisplay.color}4D`;
     return theme.colors.opacity.gold30;
-  }, [activeGlowColor, fifoPosition]);
+  }, [activeGlowColor, universalDisplay?.color]);
 
-  // In FIFO mode with ribbons, make cell background transparent so ribbon shows through
-  const containerBg = selected
-    ? theme.colors.sacredGold
-    : fifoPosition
-      ? 'transparent'
-      : (shiftColor?.bg ?? 'transparent');
+  const containerBg = selected ? theme.colors.sacredGold : (shiftColor?.bg ?? 'transparent');
 
   const dayTextColor = isOtherMonth
     ? theme.colors.shadow
@@ -243,34 +208,22 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
         ? glowColor
         : theme.colors.paper;
 
-  // Determine badge content for FIFO mode
-  const fifoBadgeIcon = useMemo(() => {
-    if (!fifoPosition) return null;
-    if (fifoPosition.blockType === 'rest') return 'rest';
-    // Work block: show shift-specific icon
-    if (fifoPosition.shiftType === 'night') return 'night';
-    return 'day'; // default for day/morning/afternoon in work block
-  }, [fifoPosition]);
-
   const todayText = isToday
     ? t('calendar.accessibility.todaySuffix', { defaultValue: ', Today' })
     : '';
-  const shiftText = shiftType
-    ? fifoBlockType
-      ? t('calendar.accessibility.blockSuffix', {
-          blockName:
-            fifoBlockType === 'work'
-              ? t('calendar.accessibility.workBlockName', { defaultValue: 'work' })
-              : t('calendar.accessibility.homeBlockName', { defaultValue: 'home' }),
-          defaultValue: ', {{blockName}} block',
-        })
-      : t('calendar.accessibility.shiftSuffix', {
+  const shiftText = universalDisplay
+    ? t('calendar.accessibility.shiftSuffix', {
+        shiftName: universalDisplay.title,
+        defaultValue: ', {{shiftName}}',
+      })
+    : shiftType
+      ? t('calendar.accessibility.shiftSuffix', {
           shiftName: t(`calendar.accessibility.shiftNames.${shiftType}`, {
             defaultValue: `${shiftType} shift`,
           }),
           defaultValue: ', {{shiftName}}',
         })
-    : '';
+      : '';
   const accessibilityLabel = t('calendar.accessibility.dayLabel', {
     day,
     todayText,
@@ -283,8 +236,6 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
       onPress={handlePress}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
-      onLongPress={onLongPress ? handleLongPress : undefined}
-      delayLongPress={400}
       activeOpacity={1}
       disabled={isOtherMonth}
       style={[styles.container, pressStyle]}
@@ -325,23 +276,6 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
           {day}
         </Animated.Text>
 
-        {/* Fly-in/fly-out airplane indicator (FIFO only) */}
-        {fifoPosition?.isFlyInDay && !isOtherMonth && (
-          <View style={styles.flyIndicator} testID={`fifo-fly-in-${day}`}>
-            <Ionicons name="airplane" size={10} color="#64B5F6" />
-          </View>
-        )}
-        {fifoPosition?.isFlyOutDay && !fifoPosition?.isFlyInDay && !isOtherMonth && (
-          <View style={styles.flyIndicator} testID={`fifo-fly-out-${day}`}>
-            <Ionicons
-              name="airplane"
-              size={10}
-              color="#64B5F6"
-              style={{ transform: [{ rotate: '180deg' }] }}
-            />
-          </View>
-        )}
-
         {/* Shift type badge */}
         {shiftColor && !isOtherMonth && (
           <View
@@ -353,12 +287,13 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
               },
             ]}
           >
-            {fifoBadgeIcon === 'day' ? (
-              <Image source={DAY_SHIFT_ICON} style={styles.badgeImageLarge} />
-            ) : fifoBadgeIcon === 'night' ? (
-              <Image source={NIGHT_SHIFT_ICON} style={styles.badgeImageLarge} />
-            ) : fifoBadgeIcon === 'rest' ? (
-              <Image source={OFF_SHIFT_ICON} style={styles.badgeImageLarge} />
+            {universalDisplay ? (
+              <Ionicons
+                testID={`${testID ?? `calendar-day-${day}`}-universal-icon`}
+                name={universalDisplay.icon as keyof typeof Ionicons.glyphMap}
+                size={16}
+                color={selected ? '#fff' : '#fff'}
+              />
             ) : shiftType === 'day' ? (
               <Image source={DAY_SHIFT_ICON} style={styles.badgeImageLarge} />
             ) : shiftType === 'night' ? (
@@ -371,17 +306,6 @@ export const ShiftCalendarDayCell: React.FC<ShiftCalendarDayCellProps> = ({
               <Image source={OFF_SHIFT_ICON} style={styles.badgeImageLarge} />
             ) : null}
           </View>
-        )}
-
-        {/* Swing transition gradient bar (FIFO only) */}
-        {fifoPosition?.isSwingTransitionDay && !isOtherMonth && (
-          <LinearGradient
-            colors={['#2196F3', '#651FFF']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.swingTransitionBar}
-            testID={`fifo-swing-transition-${day}`}
-          />
         )}
       </View>
     </AnimatedTouchable>
@@ -503,30 +427,5 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     resizeMode: 'contain',
-  },
-  fifoBadgeText: {
-    color: theme.colors.deepVoid,
-    fontSize: 10,
-    fontWeight: theme.typography.fontWeights.bold,
-  },
-  flyIndicator: {
-    position: 'absolute',
-    top: 2,
-    right: 2,
-    width: 14,
-    height: 14,
-    borderRadius: 7,
-    backgroundColor: 'rgba(33, 150, 243, 0.2)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 3,
-  },
-  swingTransitionBar: {
-    position: 'absolute',
-    bottom: 0,
-    left: 4,
-    right: 4,
-    height: 2,
-    borderRadius: 1,
   },
 });

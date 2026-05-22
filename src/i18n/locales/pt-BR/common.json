@@ -171,10 +171,10 @@
   "subscription": {
     "paywall": {
       "closeA11y": "Fechar acesso pago",
-      "title": "Seu roster está pronto.",
+      "title": "Seu schedule está pronto.",
       "subtitle": "Desbloqueie por menos que um café.",
       "features": {
-        "askRoster": "Pergunte \"Ei, Ellie\" qualquer coisa sobre sua lista",
+        "askSchedule": "Pergunte \"Ei, Ellie\" qualquer coisa sobre sua schedule",
         "fullYear": "Veja seu ano inteiro — cada turno, mês a mês",
         "offline": "Funciona no subsolo, sem necessidade de sinal",
         "instantAnswers": "Respostas instantâneas sobre licenças e padrões",
@@ -210,15 +210,15 @@
           "author": "Sarah K., mineira subterrânea — turnos rotativos de 12h"
         },
         {
-          "quote": "Mostrei para minha esposa todo o roster do site em menos de um minuto.",
-          "author": "Dave L., operador de perfuratriz — roster FIFO"
+          "quote": "Mostrei para minha esposa todo o schedule do site em menos de um minuto.",
+          "author": "Dave L., operador de perfuratriz — schedule FIFO"
         },
         {
           "quote": "Reservei voos no meu swing com meses de antecedência sem ligar para o RH.",
           "author": "Jason M., operador de caminhão fora de estrada — FIFO 7/7"
         }
       ],
-      "lossAversion": "Without Pro, you can only see 2 weeks of your roster.",
+      "lossAversion": "Without Pro, you can only see 2 weeks of your schedule.",
       "timerLabel": "A oferta de lançamento termina em",
       "trust": {
         "freeTrial": "Teste grátis",
@@ -232,7 +232,7 @@
       "termsOfService": "Termos",
       "trialBadge": "TESTE GRÁTIS · SEM COBRANÇA HOJE",
       "trialBadgePaid": "ASSINE HOJE · CANCELE QUANDO QUISER",
-      "title_named": "{{name}}, seu roster está pronto.",
+      "title_named": "{{name}}, seu schedule está pronto.",
       "subtitle_fifo": "Seu ciclo FIFO está mapeado. Veja cada swing e cada folga ao longo do seu ano inteiro.",
       "subtitle_rotating": "Seu rodízio rotativo está mapeado. Veja cada turno ao longo do seu ano inteiro.",
       "billingDisclosure": "Sua avaliação gratuita termina em {{date}}. Cancele a qualquer momento em Ajustes antes dessa data para evitar cobranças. As assinaturas são renovadas automaticamente.",

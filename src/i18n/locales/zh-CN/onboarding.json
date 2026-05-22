@@ -288,7 +288,13 @@
       "shiftTimes": "轮班时间",
       "startDate": "开始日期",
       "title": "您的个人资料",
-      "workPattern": "工作模式"
+      "workPattern": "工作模式",
+      "allDay": "All day",
+      "notTimed": "Not timed",
+      "rosterTypeUniversal": "Universal schedule",
+      "universalShiftSystem": "Universal custom shifts",
+      "scheduleEngine": "Schedule engine",
+      "scheduleType": "Schedule type"
     },
     "title": "一切就绪。",
     "tryAgain": "再试一次",
@@ -1097,5 +1103,186 @@
       "mental_math": "一直往后数天数，想知道哪天要上班"
     },
     "cta": "继续"
+  },
+  "shiftBuilder": {
+    "title": "排班构建器",
+    "navButtonCreate": "创建自定义排班",
+    "navButtonEdit": "编辑通用排班",
+    "unsavedChanges": "未保存的更改",
+    "save": {
+      "success": "排班已保存",
+      "failed": "保存失败 — 草稿已保留",
+      "retry": "重试",
+      "warningConfirm": {
+        "title": "有警告，仍然保存？",
+        "confirm": "仍然保存",
+        "cancel": "检查"
+      }
+    },
+    "saving": "保存中...",
+    "saved": "已保存",
+    "discard": "放弃",
+    "cancel": "取消",
+    "back": "返回",
+    "confirmDiscard": {
+      "title": "放弃更改？",
+      "message": "您有未保存的更改，确定放弃？",
+      "discard": "放弃",
+      "keepEditing": "继续编辑"
+    },
+    "scheduleName": {
+      "label": "排班名称",
+      "placeholder": "我的排班"
+    },
+    "anchorDate": {
+      "label": "锚定日期",
+      "hint": "序列从此日期开始重复"
+    },
+    "phaseOffset": {
+      "label": "当前周期日",
+      "hint": "0 = 周期开始"
+    },
+    "ai": {
+      "sectionTitle": "AI 助手",
+      "promptPlaceholder": "描述您的班次安排...",
+      "buildButton": "用 AI 生成",
+      "loading": "正在分析您的班次...",
+      "notConfigured": "AI 分析不可用 — 请在下方手动创建",
+      "retry": "重试",
+      "error": {
+        "notConfigured": "AI 助手未配置。",
+        "promptEmpty": "请在继续之前描述您的排班。",
+        "promptTooLong": "描述过长，请缩短后再试。",
+        "timeout": "分析耗时过长，请重试。",
+        "rateLimited": "请求次数过多，请稍后再试。",
+        "networkError": "网络错误，请检查连接后重试。",
+        "serverError": "服务器错误，请稍后再试。",
+        "generic": "出现错误，请重试。"
+      },
+      "chips": {
+        "4on4off": "4天工作4天休息",
+        "4days4nights4off": "4天4夜4天休息",
+        "monFri95": "周一至周五 9–5",
+        "7on7off": "7天工作7天休息",
+        "rotatingSwing": "12小时轮班",
+        "fifo14": "FIFO 14天工作14天休息"
+      }
+    },
+    "review": {
+      "title": "以下是我的理解",
+      "confidence": {
+        "high": "高置信度",
+        "medium": "中置信度",
+        "low": "低置信度"
+      },
+      "assumptions": "假设",
+      "questions": "问题",
+      "warnings": "警告",
+      "useDraft": "使用此草稿",
+      "editManually": "手动编辑",
+      "discardDraft": "放弃草稿",
+      "followUp": "跟进...",
+      "send": "发送",
+      "invalid": "AI 返回结果无效，请重试。"
+    },
+    "palette": {
+      "title": "班次类型",
+      "addNew": "添加班次类型",
+      "usageCount_one": "{{count}} 次使用",
+      "usageCount_other": "{{count}} 次使用",
+      "deleteBlocked": "使用中",
+      "deleteBlockedMessage": "此班次类型在序列中使用了 {{count}} 次。请先删除或替换这些条目。"
+    },
+    "canvas": {
+      "title": "序列",
+      "empty": "添加班次以构建您的序列。",
+      "cycleStats": "{{days}} 天周期 · 平均每周 {{avg}} 个工作日",
+      "addShift": "添加班次",
+      "addBlock": "添加区块",
+      "repeatCount": "重复 {{count}} 次",
+      "moveUp": "上移",
+      "moveDown": "下移",
+      "duplicate": "复制",
+      "insertBefore": "在前插入",
+      "insertAfter": "在后插入",
+      "delete": "删除"
+    },
+    "inspector": {
+      "titleCreate": "新建班次类型",
+      "titleEdit": "编辑班次类型",
+      "name": "名称",
+      "namePlaceholder": "如：白班",
+      "kind": {
+        "label": "类型",
+        "work": "工作",
+        "off": "休息",
+        "travel": "出行",
+        "on_call": "待命",
+        "training": "培训",
+        "leave": "休假",
+        "custom": "自定义"
+      },
+      "timePolicy": {
+        "label": "时间",
+        "timed": "指定时间",
+        "all_day": "全天",
+        "none": "不设时间"
+      },
+      "startTime": "开始时间",
+      "endTime": "结束时间",
+      "overnight": "跨夜",
+      "overnightHint": "班次在次日结束",
+      "countsAsWork": "计为工作日",
+      "countsAsNight": "计为夜班",
+      "color": "颜色",
+      "icon": "图标",
+      "location": "地点",
+      "save": "保存",
+      "delete": "删除类型",
+      "deleteConfirm": {
+        "title": "删除班次类型？",
+        "message": "此操作无法撤销。",
+        "confirm": "删除",
+        "cancel": "取消"
+      }
+    },
+    "preview": {
+      "title": "预览",
+      "range30": "30 天",
+      "range60": "60 天",
+      "range90": "90 天",
+      "today": "今天",
+      "anchor": "锚定",
+      "empty": "暂无预览数据。",
+      "errors": "由于存在错误，无法显示预览。"
+    },
+    "validation": {
+      "errorTitle_one": "{{count}} 个错误",
+      "errorTitle_other": "{{count}} 个错误",
+      "warningTitle_one": "{{count}} 个警告",
+      "warningTitle_other": "{{count}} 个警告",
+      "fix": "修复",
+      "review": "审查",
+      "dismiss": "忽略"
+    },
+    "saveResult": {
+      "success": "排班已保存",
+      "failed": "保存失败 — 草稿已保留",
+      "retry": "重试",
+      "warningConfirm": {
+        "title": "带警告保存？",
+        "confirm": "仍然保存",
+        "cancel": "审查"
+      }
+    },
+    "kinds": {
+      "work": "工作",
+      "off": "休息 / 假期",
+      "travel": "出行",
+      "on_call": "待命",
+      "training": "培训",
+      "leave": "休假",
+      "custom": "自定义"
+    }
   }
 }

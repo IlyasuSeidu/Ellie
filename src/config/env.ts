@@ -131,6 +131,20 @@ export interface AppConfig {
     /** Max characters for user query */
     maxQueryLength: number;
   };
+  shiftScheduleParser: {
+    /** Cloud Function URL for parseShiftScheduleDescription */
+    url: string;
+    /** Request timeout in milliseconds */
+    timeoutMs: number;
+    /** Max characters for AI prompt */
+    maxPromptLength: number;
+  };
+  features: {
+    /** Whether the Universal Shift Builder UI is enabled */
+    universalShiftBuilderEnabled: boolean;
+    /** Whether AI-assisted shift schedule drafting is enabled */
+    aiShiftBuilderEnabled: boolean;
+  };
   voiceAssistant: {
     /** Default speech recognition locale */
     locale: string;
@@ -258,6 +272,7 @@ function buildFirebaseConfig(): FirebaseConfig {
  */
 function buildAppConfig(): AppConfig {
   const env = getEnvironment();
+  const firebase = buildFirebaseConfig();
   const wakeWordProviderRaw = getEnvVar('WAKE_WORD_PROVIDER', false)?.trim().toLowerCase();
   const wakeWordProvider = wakeWordProviderRaw === 'porcupine' ? 'porcupine' : 'openwakeword';
   const wakeWordAccessKey = getEnvVar('PICOVOICE_ACCESS_KEY', false);
@@ -317,10 +332,13 @@ function buildAppConfig(): AppConfig {
   );
   const defaultWakeWordEnabled =
     wakeWordProvider === 'openwakeword' ? hasOpenWakeWordModelPath : Boolean(wakeWordAccessKey);
+  const defaultShiftScheduleParserUrl = firebase.projectId
+    ? `https://us-central1-${firebase.projectId}.cloudfunctions.net/parseShiftScheduleDescription`
+    : '';
 
   return {
     env,
-    firebase: buildFirebaseConfig(),
+    firebase,
     google: {
       webClientId: getEnvVar('GOOGLE_WEB_CLIENT_ID') as string,
       iosClientId: getEnvVar('GOOGLE_IOS_CLIENT_ID', false),
@@ -340,6 +358,18 @@ function buildAppConfig(): AppConfig {
         'https://ellie-brain-REGION-PROJECT.cloudfunctions.net/ellieBrain',
       timeout: parseInt(getEnvVar('ELLIE_BRAIN_TIMEOUT', false) || '30000', 10),
       maxQueryLength: 500,
+    },
+    shiftScheduleParser: {
+      url: getEnvVar('SHIFT_SCHEDULE_PARSER_URL', false) || defaultShiftScheduleParserUrl,
+      timeoutMs: parseInt(getEnvVar('SHIFT_SCHEDULE_PARSER_TIMEOUT_MS', false) || '45000', 10),
+      maxPromptLength: parseInt(
+        getEnvVar('SHIFT_SCHEDULE_PARSER_MAX_PROMPT_LENGTH', false) || '2000',
+        10
+      ),
+    },
+    features: {
+      universalShiftBuilderEnabled: parseBooleanEnv('UNIVERSAL_SHIFT_BUILDER_ENABLED', false),
+      aiShiftBuilderEnabled: parseBooleanEnv('AI_SHIFT_BUILDER_ENABLED', false),
     },
     voiceAssistant: {
       locale: 'en-US',
@@ -528,6 +558,15 @@ try {
         url: 'https://ellie-brain-test.cloudfunctions.net/ellieBrain',
         timeout: 30000,
         maxQueryLength: 500,
+      },
+      shiftScheduleParser: {
+        url: 'https://test.cloudfunctions.net/parseShiftScheduleDescription',
+        timeoutMs: 45000,
+        maxPromptLength: 2000,
+      },
+      features: {
+        universalShiftBuilderEnabled: true,
+        aiShiftBuilderEnabled: true,
       },
       voiceAssistant: {
         locale: 'en-US',

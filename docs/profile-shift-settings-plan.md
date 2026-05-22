@@ -1,8 +1,12 @@
 # Interactive Premium Shift Settings — Profile Tab
 
+Implementation status: **Implemented in the current working tree** as of May 21, 2026.
+
+`ShiftSettingsPanel` and related profile sheets/components now provide read/edit modes for shift system, roster type, patterns, shift times, FIFO details, custom patterns, start-date resync, validation, persistence, and tests. This document is retained as the original design/build plan.
+
 ## Context
 
-The Profile tab's Shift Configuration section is currently a **read-only display card** (`ShiftConfigCard`) with a footer note: _"Shift settings can be updated in Settings"_ — but no Settings screen exists. Users have no way to change their shift system, pattern, times, or FIFO config after onboarding without re-running the entire flow.
+The Profile tab's Shift Configuration section was originally a **read-only display card** (`ShiftConfigCard`) with no real editing path. That gap has now been closed with the interactive Shift Settings Panel.
 
 **Goal:** Replace the static card with a fully interactive, premium **Shift Settings Panel** that lets users view and edit all their shift configuration directly from the Profile tab — with beautiful animations, Ionicons, pill toggles, modal pattern selection, and inline time/FIFO editing.
 

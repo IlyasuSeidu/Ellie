@@ -1,5 +1,9 @@
 # Ellie Auth Implementation Tasks (1 to 13)
 
+Implementation status: **Implemented in the current working tree** as of May 21, 2026.
+
+All code tasks in this file are complete in the active app: native Firebase Auth initialization, AuthService native providers, user profile sync, AuthContext, auth navigation, auth screens, email verification gate, app provider wiring, route gating, onboarding-to-Firestore sync, tests, and validation.
+
 Source of truth: `/Users/Shared/Ellie/ellie-auth.md`
 
 Scope in this file:

@@ -19,7 +19,7 @@ import {
 import { DEFAULT_SMART_REMINDER_SETTINGS, type SmartReminderSettings } from '@/types/reminders';
 import { NetworkError, ValidationError } from '@/utils/errorUtils';
 import { logger } from '@/utils/logger';
-import { getShiftStatistics, buildShiftCycle } from '@/utils/shiftUtils';
+import { buildShiftCycle, getShiftDaysInRange } from '@/utils/shiftUtils';
 import type { OnboardingData } from '@/contexts/OnboardingContext';
 
 /**
@@ -42,6 +42,26 @@ export interface UserStats {
   totalDaysOff: number;
   totalWorkingHours: number;
   lastUpdated: string;
+}
+
+function getShiftWorkedHours(shift: ReturnType<typeof getShiftDaysInRange>[number]): number {
+  const universal = shift.universal;
+  if (
+    universal?.countsAsWork &&
+    typeof universal.startTime === 'string' &&
+    typeof universal.endTime === 'string'
+  ) {
+    const [startHours, startMinutes] = universal.startTime.split(':').map(Number);
+    const [endHours, endMinutes] = universal.endTime.split(':').map(Number);
+    const startTotal = (startHours ?? 0) * 60 + (startMinutes ?? 0);
+    let endTotal = (endHours ?? 0) * 60 + (endMinutes ?? 0);
+    if (endTotal <= startTotal) {
+      endTotal += 24 * 60;
+    }
+    return Math.max(0, endTotal - startTotal) / 60;
+  }
+
+  return shift.isWorkDay ? 12 : 0;
 }
 
 /**
@@ -244,7 +264,7 @@ export class UserService extends FirebaseService {
         () => this.syncPatchOrCreate(userId, nextProfile, { shiftCycle: cycle }),
         'save_shift_cycle'
       );
-      logger.info('Shift cycle saved', { userId, pattern: cycle.patternType });
+      logger.info('Shift cycle saved', { userId, scheduleName: cycle.name });
     } catch (error) {
       logger.error('Failed to save shift cycle', error as Error, { userId });
       throw error;
@@ -461,8 +481,8 @@ export class UserService extends FirebaseService {
         return 0;
       }
 
-      const stats = getShiftStatistics(startDate, endDate, shiftCycle);
-      const totalShifts = stats.dayShifts + stats.nightShifts;
+      const shifts = getShiftDaysInRange(startDate, endDate, shiftCycle);
+      const totalShifts = shifts.filter((shift) => shift.isWorkDay).length;
 
       logger.debug('Total shifts calculated', {
         userId,
@@ -489,9 +509,8 @@ export class UserService extends FirebaseService {
         return 0;
       }
 
-      const stats = getShiftStatistics(startDate, endDate, shiftCycle);
-      // Calculate hours: assuming 12 hours per shift (day or night)
-      const totalHours = (stats.dayShifts + stats.nightShifts) * 12;
+      const shifts = getShiftDaysInRange(startDate, endDate, shiftCycle);
+      const totalHours = shifts.reduce((sum, shift) => sum + getShiftWorkedHours(shift), 0);
 
       logger.debug('Working hours calculated', {
         userId,

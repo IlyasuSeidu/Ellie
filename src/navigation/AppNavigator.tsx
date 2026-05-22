@@ -19,7 +19,7 @@ import { theme } from '@/utils/theme';
 import { useAuth } from '@/contexts/AuthContext';
 import { AuthNavigator, type AuthStackParamList } from './AuthNavigator';
 import { OnboardingNavigator, type OnboardingStackParamList } from './OnboardingNavigator';
-import { MainTabNavigator } from './MainTabNavigator';
+import { MainStackNavigator } from './MainStackNavigator';
 import { readPersistedOnboardingCompletionStatus } from '@/utils/onboardingPersistence';
 
 function requiresEmailVerification(
@@ -91,7 +91,7 @@ export const MainRouteGate: React.FC = () => {
     );
   }
 
-  return <MainTabNavigator />;
+  return <MainStackNavigator />;
 };
 
 export const AppNavigator: React.FC = () => {

@@ -93,16 +93,9 @@ export type OnboardingStep =
   | 'welcome'
   | 'pain_hook'
   | 'introduction'
-  | 'shift_system'
-  | 'roster_type'
-  | 'shift_pattern'
-  | 'custom_pattern'
-  | 'fifo_custom_pattern'
-  | 'phase_selector'
-  | 'fifo_phase_selector'
-  | 'start_date'
+  | 'universal_shift_builder'
+  | 'schedule_preview'
   | 'aha_moment'
-  | 'shift_time_input'
   | 'completion';
 
 export const Analytics = {

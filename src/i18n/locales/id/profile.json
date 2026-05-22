@@ -273,7 +273,7 @@
       "timing": "WAKTU",
       "doNotDisturb": "JANGAN GANGGU",
       "adaptive": "ADAPTIF",
-      "fifo": "FIFO"
+      "travel": "Travel blocks"
     },
     "units": {
       "hoursShort": "{{value}} j",

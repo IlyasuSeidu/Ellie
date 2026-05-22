@@ -1,8 +1,12 @@
 # Ellie — FIFO Calendar Visualization Enhancement
 
+Implementation status: **Implemented in the current working tree** as of May 21, 2026.
+
+The active dashboard includes FIFO block-position metadata, connected work/rest ribbon rendering, FIFO day tooltips, FIFO-specific legend labels, work/rest/fly-in/fly-out indicators, current-block progress, and dashboard tests/snapshots for FIFO calendar/status behavior.
+
 ## Context
 
-The FIFO (Fly-In Fly-Out) roster system has been implemented through Phases 1-9 (onboarding, types, calculation logic). However, the calendar currently renders FIFO days identically to rotating rosters — individual cells with "W"/"H" badges and no visual connection between days in the same block. FIFO workers think in **blocks** (e.g., "14 days on, 7 days off"), so the calendar should visually group consecutive work/rest days as connected ribbons, show block progress, and provide richer FIFO-specific information.
+The FIFO (Fly-In Fly-Out) roster system has been implemented through onboarding, types, calculation logic, dashboard cards, calendar visualization, profile editing, reminders, and backend shift tools. The original gap described here was that FIFO days rendered like rotating roster days. That gap has been closed with block-aware connected ribbons and FIFO-specific day metadata.
 
 **Goal:** Transform the FIFO calendar into a block-aware, connected visualization with progress tracking, enhanced badges, interactive tooltips, and polished animations — all within the existing Sacred design system and Reanimated animation patterns.
 

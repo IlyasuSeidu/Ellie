@@ -24,9 +24,9 @@ import Animated from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
+import { hexToRGBA } from '@/utils/styleUtils';
 import { useProfileData } from '@/hooks/useProfileData';
 import { useShiftAccent } from '@/hooks/useShiftAccent';
-import type { OnboardingData } from '@/contexts/OnboardingContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { ProfileHeroSection } from '@/components/profile/ProfileHeroSection';
 import { ProfileSectionHeader } from '@/components/profile/ProfileSectionHeader';
@@ -36,7 +36,6 @@ import { WorkStatsSummary } from '@/components/profile/WorkStatsSummary';
 import { LANGUAGE_NAMES, LanguageSelectorSheet } from '@/components/profile/LanguageSelectorSheet';
 import { SmartRemindersPanel } from '@/components/profile/SmartRemindersPanel';
 import type { RootStackParamList } from '@/navigation/AppNavigator';
-import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator';
 import { useSubscription } from '@/hooks/useSubscription';
 import { getSettingsErrorMessage } from '@/utils/settingsErrorMessage';
 import { setPersistedOnboardingComplete } from '@/utils/onboardingPersistence';
@@ -57,7 +56,19 @@ export const ProfileScreen: React.FC = () => {
     canOpenCustomerCenter,
   } = useSubscription();
   const [languageSheetVisible, setLanguageSheetVisible] = React.useState(false);
+  const profileAccentGradient = useMemo<readonly [string, string]>(() => {
+    if (tabAccentColor && tabAccentColor !== theme.colors.paleGold) {
+      return [tabAccentColor, hexToRGBA(tabAccentColor, 0.62)] as const;
+    }
+
+    return ['#57534e', '#44403c'] as const;
+  }, [tabAccentColor]);
+
   const personalInfoHeaderGradient = useMemo<readonly [string, string]>(() => {
+    if (profile.data.universalSchedule) {
+      return profileAccentGradient;
+    }
+
     switch (liveShiftType) {
       case 'day':
         return ['#2196F3', '#1565C0'] as const;
@@ -71,7 +82,7 @@ export const ProfileScreen: React.FC = () => {
       default:
         return ['#57534e', '#44403c'] as const;
     }
-  }, [liveShiftType]);
+  }, [liveShiftType, profile.data.universalSchedule, profileAccentGradient]);
 
   const handleRunOnboardingAgain = useCallback(async () => {
     try {
@@ -134,143 +145,6 @@ export const ProfileScreen: React.FC = () => {
       );
     }
   }, [canOpenCustomerCenter, isPro, openCustomerCenter, openPaywall, subscriptionLoading, tCommon]);
-
-  const handleOpenPatternOnboarding = useCallback(
-    (seed: Partial<OnboardingData>) => {
-      const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
-      if (!rootNavigation) return;
-
-      rootNavigation.navigate('Onboarding', {
-        screen: 'ShiftPattern',
-        params: {
-          entryPoint: 'settings',
-          returnToMainOnSelect: true,
-          settingsSeed: {
-            shiftSystem: seed.shiftSystem,
-            rosterType: seed.rosterType,
-            patternType: seed.patternType,
-            customPattern: seed.customPattern,
-            fifoConfig: seed.fifoConfig,
-          },
-        } satisfies OnboardingStackParamList['ShiftPattern'],
-      });
-    },
-    [navigation]
-  );
-
-  const handleOpenShiftTimeOnboarding = useCallback(
-    (
-      _seed: Partial<OnboardingData>,
-      initialShiftType?: 'day' | 'night' | 'morning' | 'afternoon'
-    ) => {
-      const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
-      if (!rootNavigation) return;
-
-      rootNavigation.navigate('Onboarding', {
-        screen: 'ShiftTimeInput',
-        params: {
-          entryPoint: 'settings',
-          returnToMainOnSelect: true,
-          initialShiftType,
-        } satisfies OnboardingStackParamList['ShiftTimeInput'],
-      });
-    },
-    [navigation]
-  );
-
-  const handleOpenStartDateOnboarding = useCallback(
-    (_seed: Partial<OnboardingData>) => {
-      const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
-      if (!rootNavigation) return;
-
-      rootNavigation.navigate('Onboarding', {
-        screen: 'StartDate',
-        params: {
-          entryPoint: 'settings',
-          returnToMainOnSelect: true,
-        } satisfies OnboardingStackParamList['StartDate'],
-      });
-    },
-    [navigation]
-  );
-
-  const handleOpenPhaseOnboarding = useCallback(
-    (_seed: Partial<OnboardingData>) => {
-      const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
-      if (!rootNavigation) return;
-
-      rootNavigation.navigate('Onboarding', {
-        screen: 'PhaseSelector',
-        params: {
-          entryPoint: 'settings',
-          returnToMainOnSelect: true,
-        } satisfies OnboardingStackParamList['PhaseSelector'],
-      });
-    },
-    [navigation]
-  );
-
-  const handleOpenCustomPatternOnboarding = useCallback(
-    (seed: Partial<OnboardingData>) => {
-      const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
-      if (!rootNavigation) return;
-
-      rootNavigation.navigate('Onboarding', {
-        screen: 'CustomPattern',
-        params: {
-          entryPoint: 'settings',
-          returnToMainOnSelect: true,
-          settingsBaseline: {
-            patternType: seed.patternType,
-            customPattern: seed.customPattern,
-            fifoConfig: seed.fifoConfig,
-            rosterType: seed.rosterType,
-            shiftSystem: seed.shiftSystem,
-          },
-        } satisfies OnboardingStackParamList['CustomPattern'],
-      });
-    },
-    [navigation]
-  );
-
-  const handleOpenFIFOPhaseOnboarding = useCallback(
-    (_seed: Partial<OnboardingData>) => {
-      const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
-      if (!rootNavigation) return;
-
-      rootNavigation.navigate('Onboarding', {
-        screen: 'FIFOPhaseSelector',
-        params: {
-          entryPoint: 'settings',
-          returnToMainOnSelect: true,
-        } satisfies OnboardingStackParamList['FIFOPhaseSelector'],
-      });
-    },
-    [navigation]
-  );
-
-  const handleOpenFIFOCustomPatternOnboarding = useCallback(
-    (seed: Partial<OnboardingData>) => {
-      const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
-      if (!rootNavigation) return;
-
-      rootNavigation.navigate('Onboarding', {
-        screen: 'FIFOCustomPattern',
-        params: {
-          entryPoint: 'settings',
-          returnToMainOnSelect: true,
-          settingsBaseline: {
-            patternType: seed.patternType,
-            customPattern: seed.customPattern,
-            fifoConfig: seed.fifoConfig,
-            rosterType: seed.rosterType,
-            shiftSystem: seed.shiftSystem,
-          },
-        } satisfies OnboardingStackParamList['FIFOCustomPattern'],
-      });
-    },
-    [navigation]
-  );
 
   return (
     <View style={styles.screen}>
@@ -352,26 +226,23 @@ export const ProfileScreen: React.FC = () => {
         <ShiftSettingsPanel
           data={profile.data}
           onUpdate={profile.updateDataAsync}
-          onOpenPatternOnboarding={handleOpenPatternOnboarding}
-          onOpenStartDateOnboarding={handleOpenStartDateOnboarding}
-          onOpenShiftTimeOnboarding={handleOpenShiftTimeOnboarding}
-          onOpenPhaseOnboarding={handleOpenPhaseOnboarding}
-          onOpenCustomPatternOnboarding={handleOpenCustomPatternOnboarding}
-          onOpenFIFOPhaseOnboarding={handleOpenFIFOPhaseOnboarding}
-          onOpenFIFOCustomPatternOnboarding={handleOpenFIFOCustomPatternOnboarding}
           animationDelay={800}
         />
 
         <ProfileSectionHeader
           title={t('sections.workOverview')}
           icon="stats-chart-outline"
+          iconColor={tabAccentColor}
+          backgroundGradientColors={profileAccentGradient}
           animationDelay={1100}
         />
-        <WorkStatsSummary data={profile.data} animationDelay={1200} />
+        <WorkStatsSummary data={profile.data} animationDelay={1200} accentColor={tabAccentColor} />
 
         <ProfileSectionHeader
           title={t('sections.smartReminders', { defaultValue: 'Smart Reminders' })}
           icon="notifications-outline"
+          iconColor={tabAccentColor}
+          backgroundGradientColors={profileAccentGradient}
           animationDelay={1300}
         />
         <SmartRemindersPanel animationDelay={1400} />

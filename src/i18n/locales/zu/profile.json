@@ -273,7 +273,7 @@
       "timing": "ISIKHATHI",
       "doNotDisturb": "UNGAPHAMBIKISI",
       "adaptive": "EZIVUMELANAYO",
-      "fifo": "FIFO"
+      "travel": "Travel blocks"
     },
     "units": {
       "hoursShort": "{{value}} h",

@@ -1,8 +1,14 @@
 # Ellie — Paywall & Subscription Plan Tasks
 
 Source of truth: `ELLIE_APP_MINIMUM_VIABLE_DEPLOYMENT_PLAN.md` (PART 3 — Subscription: Ellie Pro)
-Last updated: March 11, 2026
-Status: **NOT STARTED** — zero subscription/paywall code exists in the codebase
+Last updated: May 21, 2026
+Implementation status: **CODE IMPLEMENTED** in the current working tree.
+
+The app now includes the RevenueCat SDK integration, runtime native-module guards, subscription context, entitlement cache, customer-info refresh, offering cache, paywall screen, RevenueCat UI availability checks, restore purchases, profile subscription status, paywall recovery, and Pro feature gates.
+
+Manual external setup still lives outside this repository: RevenueCat dashboard products/offerings, App Store Connect subscription products, Google Play subscription products, and sandbox/store smoke tests must be verified in their respective consoles.
+
+> Historical note: the task statuses below were written before the implementation landed. Treat this file as the original implementation plan plus the completion note above, not as the current source of truth for code presence.
 
 > **Critical note from Apple policy:** Subscription code MUST be present in the first binary
 > you submit. Apple does not allow you to retroactively paywall a feature that shipped free.

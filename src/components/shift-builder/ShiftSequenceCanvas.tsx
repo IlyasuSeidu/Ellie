@@ -1,0 +1,599 @@
+/**
+ * ShiftSequenceCanvas
+ *
+ * Vertical scrollable sequence editor. Shows all sequence items as ShiftBlockCards
+ * with move-up/move-down controls (accessible alternative to drag).
+ * Includes cycle stats, add-shift, and add-repeated-block capabilities.
+ */
+
+import React, { useCallback, useState } from 'react';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  TextInput,
+  Modal,
+} from 'react-native';
+import Animated, {
+  FadeInUp,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import * as Haptics from 'expo-haptics';
+import { Ionicons } from '@expo/vector-icons';
+import { theme } from '@/utils/theme';
+import type { UniversalShiftSequenceItem, UniversalShiftDefinition } from '@/types';
+import { ShiftBlockCard } from './ShiftBlockCard';
+
+export interface ShiftSequenceCanvasProps {
+  sequence: UniversalShiftSequenceItem[];
+  definitions: UniversalShiftDefinition[];
+  onReorder: (newSequence: UniversalShiftSequenceItem[]) => void;
+  onMoveItem: (fromIndex: number, toIndex: number) => void;
+  onDuplicate: (index: number) => void;
+  onInsertBefore: (index: number, definitionId: string) => void;
+  onInsertAfter: (index: number, definitionId: string) => void;
+  onDelete: (index: number) => void;
+  onItemPress: (index: number) => void;
+  onAddShift: (definitionId: string) => void;
+  onAddRepeatedBlock: (definitionId: string, count: number) => void;
+}
+
+type AddMode = 'single' | 'repeated' | null;
+const ESTIMATED_ROW_HEIGHT = 64;
+
+interface PendingInsert {
+  mode: 'before' | 'after';
+  index: number;
+}
+
+interface DraggableSequenceItemProps {
+  item: UniversalShiftSequenceItem;
+  definition: UniversalShiftDefinition;
+  index: number;
+  total: number;
+  isDragging: boolean;
+  onMoveItem: (fromIndex: number, toIndex: number) => void;
+  onDuplicate: (index: number) => void;
+  onInsertBefore: (index: number) => void;
+  onInsertAfter: (index: number) => void;
+  onDelete: (index: number) => void;
+  onItemPress: (index: number) => void;
+  onDragStart: (index: number) => void;
+  onDragEnd: () => void;
+}
+
+const DraggableSequenceItem: React.FC<DraggableSequenceItemProps> = ({
+  item,
+  definition,
+  index,
+  total,
+  isDragging,
+  onMoveItem,
+  onDuplicate,
+  onInsertBefore,
+  onInsertAfter,
+  onDelete,
+  onItemPress,
+  onDragStart,
+  onDragEnd,
+}) => {
+  const translateY = useSharedValue(0);
+  const lift = useSharedValue(1);
+
+  const dragStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: translateY.value }, { scale: lift.value }],
+    zIndex: isDragging ? 10 : 0,
+  }));
+
+  const panGesture = Gesture.Pan()
+    .activateAfterLongPress(180)
+    .runOnJS(true)
+    .onBegin(() => {
+      onDragStart(index);
+      lift.value = withSpring(1.025);
+      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    })
+    .onUpdate((event) => {
+      translateY.value = event.translationY;
+    })
+    .onEnd((event) => {
+      const rowOffset = Math.round(event.translationY / ESTIMATED_ROW_HEIGHT);
+      const targetIndex = Math.max(0, Math.min(total - 1, index + rowOffset));
+      translateY.value = withSpring(0);
+      lift.value = withSpring(1);
+      onDragEnd();
+      if (targetIndex !== index) {
+        onMoveItem(index, targetIndex);
+        void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      }
+    })
+    .onFinalize(() => {
+      translateY.value = withSpring(0);
+      lift.value = withSpring(1);
+      onDragEnd();
+    });
+
+  return (
+    <GestureDetector gesture={panGesture}>
+      <Animated.View style={dragStyle}>
+        <ShiftBlockCard
+          item={item}
+          definition={definition}
+          index={index}
+          total={total}
+          isFirst={index === 0}
+          isLast={index === total - 1}
+          isDragging={isDragging}
+          onMoveUp={(fromIndex) => onMoveItem(fromIndex, fromIndex - 1)}
+          onMoveDown={(fromIndex) => onMoveItem(fromIndex, fromIndex + 1)}
+          onDuplicate={onDuplicate}
+          onInsertBefore={onInsertBefore}
+          onInsertAfter={onInsertAfter}
+          onDelete={onDelete}
+          onPress={onItemPress}
+          onDragStart={onDragStart}
+        />
+      </Animated.View>
+    </GestureDetector>
+  );
+};
+
+export const ShiftSequenceCanvas: React.FC<ShiftSequenceCanvasProps> = ({
+  sequence,
+  definitions,
+  onReorder: _onReorder,
+  onMoveItem,
+  onDuplicate,
+  onInsertBefore,
+  onInsertAfter,
+  onDelete,
+  onItemPress,
+  onAddShift,
+  onAddRepeatedBlock,
+}) => {
+  const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
+  const [addMode, setAddMode] = useState<AddMode>(null);
+  const [repeatCount, setRepeatCount] = useState('4');
+  const [pendingInsert, setPendingInsert] = useState<PendingInsert | null>(null);
+
+  const defMap = new Map(definitions.map((d) => [d.id, d]));
+
+  // Cycle stats for badge
+  const cycleStats =
+    sequence.length > 0 && definitions.length > 0
+      ? (() => {
+          const totalDays = sequence.length;
+          let workDays = 0;
+          for (const item of sequence) {
+            const def = defMap.get(item.shiftDefinitionId);
+            if (def?.countsAsWork) workDays++;
+          }
+          const avgPerWeek = totalDays > 0 ? ((workDays / totalDays) * 7).toFixed(1) : '0';
+          return { totalDays, workDays, avgPerWeek };
+        })()
+      : null;
+
+  const handleDragStart = useCallback((index: number) => {
+    setDraggingIndex(index);
+  }, []);
+
+  const handleDragEnd = useCallback(() => {
+    setDraggingIndex(null);
+  }, []);
+
+  const handleInsertBefore = useCallback(
+    (index: number) => {
+      if (definitions.length === 0) return;
+      if (definitions.length === 1) {
+        onInsertBefore(index, definitions[0].id);
+        return;
+      }
+      setPendingInsert({ mode: 'before', index });
+      setAddMode('single');
+    },
+    [definitions, onInsertBefore]
+  );
+
+  const handleInsertAfter = useCallback(
+    (index: number) => {
+      if (definitions.length === 0) return;
+      if (definitions.length === 1) {
+        onInsertAfter(index, definitions[0].id);
+        return;
+      }
+      setPendingInsert({ mode: 'after', index });
+      setAddMode('single');
+    },
+    [definitions, onInsertAfter]
+  );
+
+  const handleDefinitionPick = useCallback(
+    (definitionId: string) => {
+      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      if (addMode === 'repeated') {
+        const count = Math.max(1, Math.min(90, parseInt(repeatCount, 10) || 1));
+        onAddRepeatedBlock(definitionId, count);
+        setAddMode(null);
+        setRepeatCount('4');
+      } else if (addMode === 'single' && pendingInsert) {
+        if (pendingInsert.mode === 'before') {
+          onInsertBefore(pendingInsert.index, definitionId);
+        } else {
+          onInsertAfter(pendingInsert.index, definitionId);
+        }
+        setAddMode(null);
+        setPendingInsert(null);
+      } else {
+        onAddShift(definitionId);
+        setAddMode(null);
+      }
+    },
+    [
+      addMode,
+      repeatCount,
+      pendingInsert,
+      onAddRepeatedBlock,
+      onInsertBefore,
+      onInsertAfter,
+      onAddShift,
+    ]
+  );
+
+  const handleAddSingle = useCallback(() => {
+    void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    if (definitions.length === 0) {
+      Alert.alert('No shift types', 'Create a shift type first using the palette below.');
+      return;
+    }
+    if (definitions.length === 1) {
+      onAddShift(definitions[0].id);
+      return;
+    }
+    setPendingInsert(null);
+    setAddMode('single');
+  }, [definitions, onAddShift]);
+
+  const handleAddRepeated = useCallback(() => {
+    void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    if (definitions.length === 0) {
+      Alert.alert('No shift types', 'Create a shift type first using the palette below.');
+      return;
+    }
+    setPendingInsert(null);
+    setAddMode('repeated');
+  }, [definitions]);
+
+  const handleCloseModal = useCallback(() => {
+    setAddMode(null);
+    setPendingInsert(null);
+  }, []);
+
+  const renderEmpty = () => (
+    <Animated.View entering={FadeInUp} style={styles.emptyState}>
+      <Ionicons name="calendar-outline" size={40} color={theme.colors.shadow} />
+      <Text style={styles.emptyTitle}>No shifts in sequence</Text>
+      <Text style={styles.emptySubtitle}>
+        Add shift types below then tap Add shift to build your cycle.
+      </Text>
+    </Animated.View>
+  );
+
+  return (
+    <View style={styles.container}>
+      {/* Header with stats */}
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Sequence</Text>
+        {cycleStats && (
+          <View style={styles.statsBadge}>
+            <Text style={styles.statsBadgeText}>
+              {cycleStats.totalDays}-day cycle · {cycleStats.avgPerWeek} work days/week avg
+            </Text>
+          </View>
+        )}
+      </View>
+
+      {/* Sequence list */}
+      {sequence.length === 0 ? (
+        renderEmpty()
+      ) : (
+        <View>
+          {sequence.map((item, index) => {
+            const def = defMap.get(item.shiftDefinitionId);
+            if (!def) return null;
+            return (
+              <DraggableSequenceItem
+                key={item.id}
+                item={item}
+                definition={def}
+                index={index}
+                total={sequence.length}
+                isDragging={draggingIndex === index}
+                onMoveItem={onMoveItem}
+                onDuplicate={onDuplicate}
+                onInsertBefore={handleInsertBefore}
+                onInsertAfter={handleInsertAfter}
+                onDelete={onDelete}
+                onItemPress={onItemPress}
+                onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
+              />
+            );
+          })}
+        </View>
+      )}
+
+      {/* Add controls */}
+      <View style={styles.addRow}>
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={handleAddSingle}
+          accessibilityLabel="Add shift to sequence"
+          accessibilityRole="button"
+        >
+          <Ionicons name="add-circle-outline" size={18} color={theme.colors.sacredGold} />
+          <Text style={styles.addButtonText}>Add shift</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={handleAddRepeated}
+          accessibilityLabel="Add repeated block to sequence"
+          accessibilityRole="button"
+        >
+          <Ionicons name="layers-outline" size={18} color={theme.colors.sacredGold} />
+          <Text style={styles.addButtonText}>Add block</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Definition picker modal */}
+      <Modal
+        visible={addMode !== null}
+        transparent
+        animationType="slide"
+        onRequestClose={handleCloseModal}
+      >
+        <View style={styles.modalBackdrop}>
+          <View style={styles.modalSheet}>
+            <View style={styles.modalHandle} />
+
+            <Text style={styles.modalTitle}>
+              {addMode === 'repeated'
+                ? 'Add Repeated Block'
+                : pendingInsert
+                  ? `Insert ${pendingInsert.mode === 'before' ? 'Before' : 'After'} Day ${pendingInsert.index + 1}`
+                  : 'Choose Shift Type'}
+            </Text>
+
+            {addMode === 'repeated' && (
+              <View style={styles.repeatRow}>
+                <Text style={styles.repeatLabel}>Repeat count:</Text>
+                <TextInput
+                  style={styles.repeatInput}
+                  value={repeatCount}
+                  onChangeText={setRepeatCount}
+                  keyboardType="number-pad"
+                  maxLength={2}
+                  selectTextOnFocus
+                  accessibilityLabel="Number of repetitions"
+                />
+                <Text style={styles.repeatLabel}>times</Text>
+              </View>
+            )}
+
+            <ScrollView style={styles.defList}>
+              {definitions.map((def) => {
+                const usageCount = sequence.filter((s) => s.shiftDefinitionId === def.id).length;
+                return (
+                  <TouchableOpacity
+                    key={def.id}
+                    style={styles.defPickerRow}
+                    onPress={() => handleDefinitionPick(def.id)}
+                    accessibilityLabel={`${def.name}${usageCount > 0 ? ', used ' + usageCount + ' times' : ''}`}
+                    accessibilityRole="button"
+                  >
+                    <View style={[styles.defColorChip, { backgroundColor: def.color }]} />
+                    <Ionicons
+                      name={def.icon as keyof typeof Ionicons.glyphMap}
+                      size={18}
+                      color={def.color}
+                      style={styles.defIcon}
+                    />
+                    <Text style={styles.defName}>{def.name}</Text>
+                    {usageCount > 0 && (
+                      <View style={styles.usageBadge}>
+                        <Text style={styles.usageBadgeText}>×{usageCount}</Text>
+                      </View>
+                    )}
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={handleCloseModal}
+              accessibilityLabel="Cancel"
+              accessibilityRole="button"
+            >
+              <Text style={styles.cancelButtonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: theme.spacing.sm,
+    flexWrap: 'wrap',
+    gap: theme.spacing.xs,
+  },
+  headerTitle: {
+    color: theme.colors.paper,
+    fontSize: theme.typography.fontSizes.md,
+    fontWeight: theme.typography.fontWeights.semibold,
+  },
+  statsBadge: {
+    backgroundColor: theme.colors.softStone,
+    borderRadius: theme.borderRadius.full,
+    paddingHorizontal: theme.spacing.sm,
+    paddingVertical: 4,
+  },
+  statsBadgeText: {
+    color: theme.colors.dust,
+    fontSize: theme.typography.fontSizes.xs,
+    fontWeight: theme.typography.fontWeights.medium,
+  },
+  emptyState: {
+    alignItems: 'center',
+    paddingVertical: theme.spacing.xxl,
+    gap: theme.spacing.sm,
+  },
+  emptyTitle: {
+    color: theme.colors.dust,
+    fontSize: theme.typography.fontSizes.md,
+    fontWeight: theme.typography.fontWeights.medium,
+  },
+  emptySubtitle: {
+    color: theme.colors.shadow,
+    fontSize: theme.typography.fontSizes.sm,
+    textAlign: 'center',
+    paddingHorizontal: theme.spacing.lg,
+    lineHeight: 20,
+  },
+  addRow: {
+    flexDirection: 'row',
+    gap: theme.spacing.sm,
+    marginTop: theme.spacing.sm,
+  },
+  addButton: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    paddingVertical: theme.spacing.sm,
+    backgroundColor: theme.colors.darkStone,
+    borderRadius: theme.borderRadius.md,
+    borderWidth: 1,
+    borderColor: theme.colors.softStone,
+    borderStyle: 'dashed',
+  },
+  addButtonText: {
+    color: theme.colors.sacredGold,
+    fontSize: theme.typography.fontSizes.sm,
+    fontWeight: theme.typography.fontWeights.medium,
+  },
+  // Modal styles
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: theme.colors.opacity.black60,
+    justifyContent: 'flex-end',
+  },
+  modalSheet: {
+    backgroundColor: theme.colors.darkStone,
+    borderTopLeftRadius: theme.borderRadius.xl,
+    borderTopRightRadius: theme.borderRadius.xl,
+    paddingTop: theme.spacing.sm,
+    paddingBottom: theme.spacing.xl,
+    paddingHorizontal: theme.spacing.md,
+    maxHeight: '70%',
+  },
+  modalHandle: {
+    width: 36,
+    height: 4,
+    backgroundColor: theme.colors.softStone,
+    borderRadius: 2,
+    alignSelf: 'center',
+    marginBottom: theme.spacing.md,
+  },
+  modalTitle: {
+    color: theme.colors.paper,
+    fontSize: theme.typography.fontSizes.lg,
+    fontWeight: theme.typography.fontWeights.semibold,
+    marginBottom: theme.spacing.md,
+  },
+  repeatRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.spacing.sm,
+    marginBottom: theme.spacing.md,
+    backgroundColor: theme.colors.softStone,
+    borderRadius: theme.borderRadius.md,
+    padding: theme.spacing.sm,
+  },
+  repeatLabel: {
+    color: theme.colors.dust,
+    fontSize: theme.typography.fontSizes.sm,
+  },
+  repeatInput: {
+    color: theme.colors.paper,
+    fontSize: theme.typography.fontSizes.md,
+    fontWeight: theme.typography.fontWeights.bold,
+    backgroundColor: theme.colors.deepVoid,
+    borderRadius: theme.borderRadius.sm,
+    paddingHorizontal: theme.spacing.sm,
+    paddingVertical: 6,
+    minWidth: 44,
+    textAlign: 'center',
+  },
+  defList: {
+    flexGrow: 0,
+  },
+  defPickerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: theme.spacing.sm,
+    paddingHorizontal: theme.spacing.sm,
+    borderRadius: theme.borderRadius.md,
+    marginBottom: 4,
+  },
+  defColorChip: {
+    width: 10,
+    height: 28,
+    borderRadius: 3,
+    marginRight: theme.spacing.sm,
+  },
+  defIcon: {
+    marginRight: theme.spacing.sm,
+  },
+  defName: {
+    color: theme.colors.paper,
+    fontSize: theme.typography.fontSizes.md,
+    flex: 1,
+  },
+  usageBadge: {
+    backgroundColor: theme.colors.softStone,
+    borderRadius: theme.borderRadius.full,
+    paddingHorizontal: theme.spacing.sm,
+    paddingVertical: 2,
+  },
+  usageBadgeText: {
+    color: theme.colors.dust,
+    fontSize: theme.typography.fontSizes.xs,
+    fontWeight: theme.typography.fontWeights.medium,
+  },
+  cancelButton: {
+    alignItems: 'center',
+    paddingVertical: theme.spacing.md,
+    marginTop: theme.spacing.sm,
+  },
+  cancelButtonText: {
+    color: theme.colors.dust,
+    fontSize: theme.typography.fontSizes.md,
+  },
+});

@@ -273,7 +273,7 @@
       "timing": "TYDSBEREKENING",
       "doNotDisturb": "MOENIE STEUR NIE",
       "adaptive": "AANPASBAAR",
-      "fifo": "FIFO"
+      "travel": "Travel blocks"
     },
     "units": {
       "hoursShort": "{{value}} u",

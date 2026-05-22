@@ -263,7 +263,13 @@
       "shiftTimes": "Horarios de turnos",
       "startDate": "Fecha de inicio",
       "title": "Tu perfil",
-      "workPattern": "Patrón de trabajo"
+      "workPattern": "Patrón de trabajo",
+      "allDay": "All day",
+      "notTimed": "Not timed",
+      "rosterTypeUniversal": "Universal schedule",
+      "universalShiftSystem": "Universal custom shifts",
+      "scheduleEngine": "Schedule engine",
+      "scheduleType": "Schedule type"
     },
     "title": "Ya está todo listo.",
     "tryAgain": "Intentar otra vez",
@@ -307,7 +313,7 @@
       "decline": "Ahora no"
     },
     "title_named": "{{name}}, ya está todo listo.",
-    "setupReady": "Tu roster {{setup}} ya está listo.",
+    "setupReady": "Your {{setup}} schedule is ready.",
     "reminderPromise": "Ellie te recordará antes de cada turno."
   },
   "rosterType": {
@@ -1153,5 +1159,186 @@
       "mental_math": "Contando días hacia adelante para saber cuándo trabajo"
     },
     "cta": "Continuar"
+  },
+  "shiftBuilder": {
+    "title": "Constructor de turnos",
+    "navButtonCreate": "Crear horario personalizado",
+    "navButtonEdit": "Editar horario universal",
+    "unsavedChanges": "Cambios sin guardar",
+    "save": {
+      "success": "Horario guardado",
+      "failed": "Error al guardar — el borrador se conserva",
+      "retry": "Reintentar",
+      "warningConfirm": {
+        "title": "¿Guardar con advertencias?",
+        "confirm": "Guardar de todas formas",
+        "cancel": "Revisar"
+      }
+    },
+    "saving": "Guardando...",
+    "saved": "Guardado",
+    "discard": "Descartar",
+    "cancel": "Cancelar",
+    "back": "Volver",
+    "confirmDiscard": {
+      "title": "¿Descartar cambios?",
+      "message": "Tienes cambios sin guardar. ¿Descartarlos?",
+      "discard": "Descartar",
+      "keepEditing": "Seguir editando"
+    },
+    "scheduleName": {
+      "label": "Nombre del horario",
+      "placeholder": "Mi horario"
+    },
+    "anchorDate": {
+      "label": "Fecha de anclaje",
+      "hint": "La secuencia se repite desde esta fecha"
+    },
+    "phaseOffset": {
+      "label": "Día actual en el ciclo",
+      "hint": "0 = inicio del ciclo"
+    },
+    "ai": {
+      "sectionTitle": "Asistente IA",
+      "promptPlaceholder": "Describe tu roster...",
+      "buildButton": "Crear con IA",
+      "loading": "Analizando tu roster...",
+      "notConfigured": "Análisis IA no disponible — créalo manualmente abajo",
+      "retry": "Intentar de nuevo",
+      "error": {
+        "notConfigured": "El asistente IA no está configurado.",
+        "promptEmpty": "Por favor describe tu roster antes de continuar.",
+        "promptTooLong": "La descripción es demasiado larga. Acórtala e inténtalo de nuevo.",
+        "timeout": "El análisis tardó demasiado. Inténtalo de nuevo.",
+        "rateLimited": "Demasiadas solicitudes. Espera un momento e inténtalo de nuevo.",
+        "networkError": "Error de red. Comprueba tu conexión e inténtalo de nuevo.",
+        "serverError": "Error del servidor. Inténtalo de nuevo más tarde.",
+        "generic": "Algo salió mal. Inténtalo de nuevo."
+      },
+      "chips": {
+        "4on4off": "4 trabaja 4 descansa",
+        "4days4nights4off": "4 días 4 noches 4 libres",
+        "monFri95": "Lun–Vie 9–5",
+        "7on7off": "7 trabaja 7 descansa",
+        "rotatingSwing": "Rotativo de 12h",
+        "fifo14": "14 trabaja 14 descansa FIFO"
+      }
+    },
+    "review": {
+      "title": "Esto es lo que entendí",
+      "confidence": {
+        "high": "Alta confianza",
+        "medium": "Confianza media",
+        "low": "Baja confianza"
+      },
+      "assumptions": "Suposiciones",
+      "questions": "Preguntas",
+      "warnings": "Advertencias",
+      "useDraft": "Usar este borrador",
+      "editManually": "Editar manualmente",
+      "discardDraft": "Descartar borrador",
+      "followUp": "Hacer un seguimiento...",
+      "send": "Enviar",
+      "invalid": "La respuesta de la IA no es válida. Inténtalo de nuevo."
+    },
+    "palette": {
+      "title": "Tipos de turno",
+      "addNew": "Agregar tipo de turno",
+      "usageCount_one": "{{count}} uso",
+      "usageCount_other": "{{count}} usos",
+      "deleteBlocked": "En uso",
+      "deleteBlockedMessage": "Este tipo de turno se usa {{count}} vez/veces en la secuencia. Elimina esas entradas primero o reemplázalas."
+    },
+    "canvas": {
+      "title": "Secuencia",
+      "empty": "Agrega turnos para construir tu secuencia.",
+      "cycleStats": "Ciclo de {{days}} días · promedio de {{avg}} días laborales/semana",
+      "addShift": "Agregar turno",
+      "addBlock": "Agregar bloque",
+      "repeatCount": "Repetir {{count}}×",
+      "moveUp": "Mover arriba",
+      "moveDown": "Mover abajo",
+      "duplicate": "Duplicar",
+      "insertBefore": "Insertar antes",
+      "insertAfter": "Insertar después",
+      "delete": "Eliminar"
+    },
+    "inspector": {
+      "titleCreate": "Nuevo tipo de turno",
+      "titleEdit": "Editar tipo de turno",
+      "name": "Nombre",
+      "namePlaceholder": "p. ej. Turno de día",
+      "kind": {
+        "label": "Tipo",
+        "work": "Trabajo",
+        "off": "Libre",
+        "travel": "Viaje",
+        "on_call": "Guardia",
+        "training": "Capacitación",
+        "leave": "Licencia",
+        "custom": "Personalizado"
+      },
+      "timePolicy": {
+        "label": "Hora",
+        "timed": "Horas definidas",
+        "all_day": "Todo el día",
+        "none": "Sin hora"
+      },
+      "startTime": "Hora de inicio",
+      "endTime": "Hora de fin",
+      "overnight": "Durante la noche",
+      "overnightHint": "El turno termina al día siguiente",
+      "countsAsWork": "Cuenta como día laboral",
+      "countsAsNight": "Cuenta como turno nocturno",
+      "color": "Color",
+      "icon": "Ícono",
+      "location": "Ubicación",
+      "save": "Guardar",
+      "delete": "Eliminar tipo",
+      "deleteConfirm": {
+        "title": "¿Eliminar tipo de turno?",
+        "message": "Esta acción no se puede deshacer.",
+        "confirm": "Eliminar",
+        "cancel": "Cancelar"
+      }
+    },
+    "preview": {
+      "title": "Vista previa",
+      "range30": "30 días",
+      "range60": "60 días",
+      "range90": "90 días",
+      "today": "Hoy",
+      "anchor": "Anclaje",
+      "empty": "No hay datos de vista previa disponibles.",
+      "errors": "La vista previa no se puede mostrar debido a errores."
+    },
+    "validation": {
+      "errorTitle_one": "{{count}} error",
+      "errorTitle_other": "{{count}} errores",
+      "warningTitle_one": "{{count}} advertencia",
+      "warningTitle_other": "{{count}} advertencias",
+      "fix": "Corregir",
+      "review": "Revisar",
+      "dismiss": "Ignorar"
+    },
+    "saveResult": {
+      "success": "Horario guardado",
+      "failed": "Error al guardar — el borrador se conserva",
+      "retry": "Reintentar",
+      "warningConfirm": {
+        "title": "¿Guardar con advertencias?",
+        "confirm": "Guardar de todos modos",
+        "cancel": "Revisar"
+      }
+    },
+    "kinds": {
+      "work": "Trabajo",
+      "off": "Libre / Descanso",
+      "travel": "Viaje",
+      "on_call": "Guardia",
+      "training": "Capacitación",
+      "leave": "Licencia",
+      "custom": "Personalizado"
+    }
   }
 }

@@ -1,7 +1,7 @@
 {
   "welcome": {
     "tagline": "Know your next shift\nbefore you even think to check.",
-    "getStarted": "Set Up My Roster",
+    "getStarted": "Set Up My Schedule",
     "socialProof": "Built for shift workers like you",
     "trust": {
       "freeTrial": "Free trial",
@@ -10,7 +10,7 @@
     }
   },
   "painHook": {
-    "title": "What's the hardest part of your roster right now?",
+    "title": "What's the hardest part of your schedule right now?",
     "subtitle": "We'll personalise Ellie around what matters most to you.",
     "options": {
       "cycle_lost": "I lose track of where I am in my cycle",
@@ -20,7 +20,7 @@
       "mental_math": "I'm always doing mental math"
     },
     "subs": {
-      "cycle_lost": "Never sure which day of your roster you're on",
+      "cycle_lost": "Never sure which day of your schedule you're on",
       "wrong_alarm": "Day shift tomorrow or night shift tonight?",
       "days_off": "Hard to book things when you don't know your roster",
       "family": "Birthdays, school events, appointments",
@@ -64,8 +64,8 @@
   },
   "ahaMoment": {
     "headline": "Your shifts, mapped.",
-    "subheadline": "Here's a preview of your next 3 months. No second-guessing with your heads.",
-    "heyEllieTitle": "Ask Ellie about your roster",
+    "subheadline": "Here's a preview of your next 3 months. No second-guessing, just a clear schedule.",
+    "heyEllieTitle": "Ask Ellie about your schedule",
     "ctaPrimary": "Start Free Trial",
     "ctaSecondary": "or skip — current week only, no full year",
     "stats": {
@@ -403,15 +403,21 @@
     "summary": {
       "company": "Company",
       "cycle": "Cycle",
+      "allDay": "All day",
       "name": "Name",
       "notSet": "Not set",
+      "notTimed": "Not timed",
       "pattern": "Pattern",
       "rosterType": "Roster Type",
       "rosterTypeFIFO": "FIFO (Fly-In Fly-Out)",
       "rosterTypeRotating": "Rotating Roster",
+      "rosterTypeUniversal": "Universal schedule",
       "shiftSystem": "Shift System",
       "shiftSystemThree": "3-Shift System",
       "shiftSystemTwo": "2-Shift System",
+      "universalShiftSystem": "Universal custom shifts",
+      "scheduleEngine": "Schedule engine",
+      "scheduleType": "Schedule type",
       "shiftTimes": "Shift Times",
       "startDate": "Start Date",
       "title": "Your profile",
@@ -444,7 +450,7 @@
       }
     },
     "title_named": "{{name}}, you're all set.",
-    "setupReady": "Your {{setup}} roster is ready.",
+    "setupReady": "Your {{setup}} schedule is ready.",
     "reminderPromise": "Ellie will remind you before every shift."
   },
   "phaseSelector": {
@@ -1133,6 +1139,177 @@
       "checked": "checked",
       "unchecked": "unchecked",
       "label": "{{title}}, {{status}}"
+    }
+  },
+  "shiftBuilder": {
+    "title": "Shift Builder",
+    "navButtonCreate": "Build Custom Schedule",
+    "navButtonEdit": "Edit Universal Schedule",
+    "unsavedChanges": "Unsaved changes",
+    "save": {
+      "success": "Schedule saved",
+      "failed": "Save failed — your draft is kept",
+      "retry": "Retry",
+      "warningConfirm": {
+        "title": "Save with warnings?",
+        "confirm": "Save anyway",
+        "cancel": "Review"
+      }
+    },
+    "saving": "Saving...",
+    "saved": "Saved",
+    "discard": "Discard",
+    "cancel": "Cancel",
+    "back": "Back",
+    "confirmDiscard": {
+      "title": "Discard changes?",
+      "message": "You have unsaved changes. Discard them?",
+      "discard": "Discard",
+      "keepEditing": "Keep editing"
+    },
+    "scheduleName": {
+      "label": "Schedule name",
+      "placeholder": "My Schedule"
+    },
+    "anchorDate": {
+      "label": "Anchor date",
+      "hint": "The sequence repeats from this date"
+    },
+    "phaseOffset": {
+      "label": "Current day in cycle",
+      "hint": "0 = start of cycle"
+    },
+    "ai": {
+      "sectionTitle": "AI Assistant",
+      "promptPlaceholder": "Describe your roster...",
+      "buildButton": "Build with AI",
+      "loading": "Analysing your roster...",
+      "notConfigured": "AI parsing not available — build manually below",
+      "retry": "Try again",
+      "error": {
+        "notConfigured": "AI parsing is not set up. Build manually below.",
+        "promptEmpty": "Please describe your schedule first.",
+        "promptTooLong": "Description is too long.",
+        "timeout": "Request timed out. Try again.",
+        "rateLimited": "Too many requests. Wait a moment.",
+        "networkError": "No connection. Build manually.",
+        "serverError": "Server error. Try again.",
+        "generic": "Something went wrong. Try again."
+      },
+      "chips": {
+        "4on4off": "4 on 4 off",
+        "4days4nights4off": "4 days 4 nights 4 off",
+        "monFri95": "Mon–Fri 9–5",
+        "7on7off": "7 on 7 off",
+        "rotatingSwing": "12h rotating swing",
+        "fifo14": "14 on 14 off FIFO"
+      }
+    },
+    "review": {
+      "title": "Here's what I understood",
+      "confidence": {
+        "high": "High confidence",
+        "medium": "Medium confidence",
+        "low": "Low confidence"
+      },
+      "assumptions": "Assumptions",
+      "questions": "Needs clarification",
+      "warnings": "Warnings",
+      "useDraft": "Use this draft",
+      "editManually": "Edit manually",
+      "discardDraft": "Discard",
+      "followUp": "Ask a follow-up...",
+      "send": "Send",
+      "invalid": "I couldn't build a schedule from that description. Try rephrasing."
+    },
+    "palette": {
+      "title": "Shift Types",
+      "addNew": "Add shift type",
+      "usageCount_one": "{{count}} use",
+      "usageCount_other": "{{count}} uses",
+      "deleteBlocked": "In use",
+      "deleteBlockedMessage": "This shift type is used {{count}} time(s) in the sequence. Remove those entries first or replace them."
+    },
+    "canvas": {
+      "title": "Sequence",
+      "empty": "No shifts yet — add a shift type above",
+      "cycleStats": "{{days}}-day cycle · {{avg}} work days/week avg",
+      "addShift": "Add shift",
+      "addBlock": "Add repeated block",
+      "repeatCount": "Repeat {{count}}×",
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "duplicate": "Duplicate",
+      "insertBefore": "Insert before",
+      "insertAfter": "Insert after",
+      "delete": "Delete"
+    },
+    "inspector": {
+      "titleCreate": "New Shift Type",
+      "titleEdit": "Edit Shift Type",
+      "name": "Name",
+      "namePlaceholder": "e.g. Day Shift",
+      "kind": {
+        "label": "Type",
+        "work": "Work",
+        "off": "Off",
+        "travel": "Travel",
+        "on_call": "On Call",
+        "training": "Training",
+        "leave": "Leave",
+        "custom": "Custom"
+      },
+      "timePolicy": {
+        "label": "Time",
+        "timed": "Set times",
+        "all_day": "All day",
+        "none": "No time"
+      },
+      "startTime": "Start time",
+      "endTime": "End time",
+      "overnight": "Crosses midnight",
+      "overnightHint": "Shift ends the next calendar day",
+      "countsAsWork": "Counts as work",
+      "countsAsNight": "Counts as night shift",
+      "color": "Colour",
+      "icon": "Icon",
+      "location": "Site / Location (optional)",
+      "save": "Save",
+      "delete": "Delete shift type",
+      "deleteConfirm": {
+        "title": "Delete shift type?",
+        "message": "This will remove it from your palette. Existing uses in the sequence will be removed.",
+        "confirm": "Delete",
+        "cancel": "Cancel"
+      }
+    },
+    "preview": {
+      "title": "Preview",
+      "range30": "30 days",
+      "range60": "60 days",
+      "range90": "90 days",
+      "today": "Today",
+      "anchor": "Anchor",
+      "empty": "Add shifts to see a preview",
+      "errors": "Fix errors to see preview"
+    },
+    "validation": {
+      "errorTitle_one": "{{count}} error",
+      "errorTitle_other": "{{count}} errors",
+      "warningTitle_one": "{{count}} warning",
+      "warningTitle_other": "{{count}} warnings",
+      "fix": "Fix issues before saving",
+      "review": "Review before saving",
+      "dismiss": "Dismiss"
+    },
+    "kinds": {
+      "work": "Work",
+      "off": "Off / Rest",
+      "travel": "Travel",
+      "on_call": "On Call",
+      "training": "Training",
+      "leave": "Leave",
+      "custom": "Custom"
     }
   }
 }

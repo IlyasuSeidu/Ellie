@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import i18n from '@/i18n';
-import type { OnboardingData } from '@/contexts/OnboardingContext';
 import type { ShiftDay, ShiftType } from '@/types';
 import {
   formatLocalizedDate,
@@ -40,48 +39,27 @@ function isInQuietHours(time: dayjs.Dayjs, start: string, end: string): boolean 
   return currentMinutes >= startMinutes || currentMinutes < endMinutes;
 }
 
-function getShiftStartTime(
-  shiftType: ShiftType,
-  shiftTimes: OnboardingData['shiftTimes']
-): string | null {
-  if (!shiftTimes) {
-    return null;
-  }
-
-  switch (shiftType) {
-    case 'day':
-      return shiftTimes.dayShift?.startTime ?? null;
-    case 'night':
-      return shiftTimes.nightShift?.startTime ?? shiftTimes.nightShift3?.startTime ?? null;
-    case 'morning':
-      return shiftTimes.morningShift?.startTime ?? null;
-    case 'afternoon':
-      return shiftTimes.afternoonShift?.startTime ?? null;
-    default:
-      return null;
-  }
+function getShiftStartTimeForDay(shift: ShiftDay): string | null {
+  return shift.universal?.startTime ?? null;
 }
 
-function getShiftEndTime(
-  shiftType: ShiftType,
-  shiftTimes: OnboardingData['shiftTimes']
-): string | null {
-  if (!shiftTimes) {
-    return null;
+function getShiftEndTimeForDay(shift: ShiftDay): string | null {
+  return shift.universal?.endTime ?? null;
+}
+
+function getReminderSettingsForShift(
+  baseSettings: SmartReminderSettings,
+  shift: ShiftDay
+): SmartReminderSettings {
+  const profile = shift.universal?.reminderProfile;
+  if (!profile) {
+    return baseSettings;
   }
 
-  switch (shiftType) {
-    case 'day':
-      return shiftTimes.dayShift?.endTime ?? null;
-    case 'night':
-      return shiftTimes.nightShift?.endTime ?? shiftTimes.nightShift3?.endTime ?? null;
-    case 'morning':
-      return shiftTimes.morningShift?.endTime ?? null;
-    case 'afternoon':
-      return shiftTimes.afternoonShift?.endTime ?? null;
-    default:
-      return null;
-  }
+  return {
+    ...baseSettings,
+    ...profile,
+  };
 }
 
 function buildShiftEnd(date: string, startTime: string, endTime: string): dayjs.Dayjs {
@@ -133,6 +111,10 @@ function shiftLabel(shiftType: ShiftType, language: string): string {
   );
 }
 
+function shiftDayLabel(shift: ShiftDay, language: string): string {
+  return shift.universal?.definitionName ?? shiftLabel(shift.shiftType, language);
+}
+
 function formatReminderDate(date: string, language: string): string {
   return formatLocalizedDate(
     new Date(`${date}T12:00:00.000Z`),
@@ -162,7 +144,6 @@ export class SmartReminderService {
   buildSchedule(
     userName: string,
     workDays: ShiftDay[],
-    shiftTimes: OnboardingData['shiftTimes'],
     settings: SmartReminderSettings,
     fatigueRisk?: ReminderFatigueRiskLevel,
     language: string = i18n.resolvedLanguage ?? i18n.language ?? 'en'
@@ -173,19 +154,20 @@ export class SmartReminderService {
     const upcomingWorkDays = workDays.filter((day) => day.isWorkDay);
 
     for (const shift of upcomingWorkDays) {
-      const startTimeStr = getShiftStartTime(shift.shiftType, shiftTimes);
-      const endTimeStr = getShiftEndTime(shift.shiftType, shiftTimes);
+      const shiftSettings = getReminderSettingsForShift(settings, shift);
+      const startTimeStr = getShiftStartTimeForDay(shift);
+      const endTimeStr = getShiftEndTimeForDay(shift);
 
       if (!startTimeStr) {
         continue;
       }
 
       const shiftStart = applyTime(shift.date, startTimeStr);
-      const localizedShiftType = shiftLabel(shift.shiftType, language);
+      const localizedShiftType = shiftDayLabel(shift, language);
       const localizedStartTime = formatLocalizedTime(startTimeStr, undefined, language);
       const localizedShiftDate = formatReminderDate(shift.date, language);
 
-      const earlyTrigger = shiftStart.subtract(settings.earlyReminderHours, 'hour');
+      const earlyTrigger = shiftStart.subtract(shiftSettings.earlyReminderHours, 'hour');
       if (earlyTrigger.isAfter(now)) {
         events.push(
           this.buildEvent(
@@ -211,15 +193,15 @@ export class SmartReminderService {
                 language
               ),
             },
-            settings
+            shiftSettings
           )
         );
       }
 
-      const totalLeadMinutes = settings.prepTimeMinutes + settings.commuteTimeMinutes;
+      const totalLeadMinutes = shiftSettings.prepTimeMinutes + shiftSettings.commuteTimeMinutes;
       let prepTrigger = shiftStart.subtract(totalLeadMinutes, 'minute');
       if (
-        settings.fatigueAwareReminders &&
+        shiftSettings.fatigueAwareReminders &&
         (fatigueRisk === 'high' || fatigueRisk === 'critical')
       ) {
         prepTrigger = prepTrigger.subtract(30, 'minute');
@@ -269,13 +251,13 @@ export class SmartReminderService {
                 language
               ),
             },
-            settings
+            shiftSettings
           )
         );
       }
 
-      if (settings.commuteTimeMinutes > 0) {
-        const commuteTrigger = shiftStart.subtract(settings.commuteTimeMinutes, 'minute');
+      if (shiftSettings.commuteTimeMinutes > 0) {
+        const commuteTrigger = shiftStart.subtract(shiftSettings.commuteTimeMinutes, 'minute');
         if (commuteTrigger.isAfter(now) && commuteTrigger.isAfter(prepTrigger)) {
           events.push(
             this.buildEvent(
@@ -300,13 +282,13 @@ export class SmartReminderService {
                   language
                 ),
               },
-              settings
+              shiftSettings
             )
           );
         }
       }
 
-      if (settings.imminentReminderEnabled) {
+      if (shiftSettings.imminentReminderEnabled) {
         const imminentTrigger = shiftStart.subtract(15, 'minute');
         if (imminentTrigger.isAfter(now)) {
           events.push(
@@ -332,13 +314,13 @@ export class SmartReminderService {
                   language
                 ),
               },
-              settings
+              shiftSettings
             )
           );
         }
       }
 
-      if (settings.preBriefingEnabled) {
+      if (shiftSettings.preBriefingEnabled) {
         const briefingTrigger = shiftStart.subtract(15, 'minute');
         if (briefingTrigger.isAfter(now)) {
           events.push(
@@ -364,13 +346,13 @@ export class SmartReminderService {
                   language
                 ),
               },
-              settings
+              shiftSettings
             )
           );
         }
       }
 
-      if (settings.postShiftCheckin && endTimeStr) {
+      if (shiftSettings.postShiftCheckin && endTimeStr) {
         const shiftEnd = buildShiftEnd(shift.date, startTimeStr, endTimeStr);
         const checkinTrigger = shiftEnd.add(1, 'hour');
         if (checkinTrigger.isAfter(now)) {
@@ -394,13 +376,13 @@ export class SmartReminderService {
                   language
                 ),
               },
-              settings
+              shiftSettings
             )
           );
         }
       }
 
-      if (settings.fatigueAwareReminders && fatigueRisk === 'critical' && shift.isNightShift) {
+      if (shiftSettings.fatigueAwareReminders && fatigueRisk === 'critical' && shift.isNightShift) {
         const fatigueTrigger = shiftStart.subtract(2, 'hour');
         if (fatigueTrigger.isAfter(now)) {
           events.push(
@@ -426,7 +408,7 @@ export class SmartReminderService {
                   language
                 ),
               },
-              settings
+              shiftSettings
             )
           );
         }
@@ -438,13 +420,11 @@ export class SmartReminderService {
     }
 
     if (settings.shortTurnaroundWarnings) {
-      events.push(
-        ...this.buildShortTurnaroundWarnings(workDays, shiftTimes, settings, now, language)
-      );
+      events.push(...this.buildShortTurnaroundWarnings(workDays, settings, now, language));
     }
 
-    if (settings.fifoTravelReminders) {
-      events.push(...this.buildFifoTravelReminders(workDays, shiftTimes, settings, now, language));
+    if (settings.travelReminders) {
+      events.push(...this.buildTravelReminders(workDays, settings, now, language));
     }
 
     return this.deduplicateEvents(events).sort(
@@ -513,7 +493,6 @@ export class SmartReminderService {
 
   private buildShortTurnaroundWarnings(
     workDays: ShiftDay[],
-    shiftTimes: OnboardingData['shiftTimes'],
     settings: SmartReminderSettings,
     now: dayjs.Dayjs,
     language: string
@@ -524,9 +503,9 @@ export class SmartReminderService {
     for (let index = 0; index < upcomingWorkDays.length - 1; index += 1) {
       const currentShift = upcomingWorkDays[index];
       const nextShift = upcomingWorkDays[index + 1];
-      const currentStart = getShiftStartTime(currentShift.shiftType, shiftTimes);
-      const currentEnd = getShiftEndTime(currentShift.shiftType, shiftTimes);
-      const nextStart = getShiftStartTime(nextShift.shiftType, shiftTimes);
+      const currentStart = getShiftStartTimeForDay(currentShift);
+      const currentEnd = getShiftEndTimeForDay(currentShift);
+      const nextStart = getShiftStartTimeForDay(nextShift);
 
       if (!currentStart || !currentEnd || !nextStart) {
         continue;
@@ -562,8 +541,8 @@ export class SmartReminderService {
               'notifications.smartReminders.shortTurnaround.body',
               {
                 gapHours: formatGapHours(gapHours, language),
-                previousShiftType: shiftLabel(currentShift.shiftType, language),
-                nextShiftType: shiftLabel(nextShift.shiftType, language),
+                previousShiftType: shiftDayLabel(currentShift, language),
+                nextShiftType: shiftDayLabel(nextShift, language),
                 shiftDate: formatReminderDate(nextShift.date, language),
               },
               'Only {{gapHours}}h between your {{previousShiftType}} and next {{nextShiftType}} on {{shiftDate}}. Plan your rest.',
@@ -578,9 +557,8 @@ export class SmartReminderService {
     return events;
   }
 
-  private buildFifoTravelReminders(
+  private buildTravelReminders(
     workDays: ShiftDay[],
-    shiftTimes: OnboardingData['shiftTimes'],
     settings: SmartReminderSettings,
     now: dayjs.Dayjs,
     language: string
@@ -592,29 +570,29 @@ export class SmartReminderService {
       const nextDay = workDays[index + 1];
 
       if (currentDay.isWorkDay && !nextDay.isWorkDay) {
-        const currentStart = getShiftStartTime(currentDay.shiftType, shiftTimes);
-        const currentEnd = getShiftEndTime(currentDay.shiftType, shiftTimes);
-        const flyOutAt =
+        const currentStart = getShiftStartTimeForDay(currentDay);
+        const currentEnd = getShiftEndTimeForDay(currentDay);
+        const travelOutAt =
           currentStart && currentEnd
             ? buildShiftEnd(currentDay.date, currentStart, currentEnd).subtract(1, 'hour')
             : applyTime(currentDay.date, '07:00');
 
-        if (flyOutAt.isAfter(now)) {
+        if (travelOutAt.isAfter(now)) {
           events.push(
             this.buildEvent(
               {
-                type: 'FIFO_FLY_OUT_TODAY',
-                triggerAt: flyOutAt.toDate(),
+                type: 'TRAVEL_OUT_TODAY',
+                triggerAt: travelOutAt.toDate(),
                 shift: currentDay,
                 isCritical: false,
                 title: translate(
-                  'notifications.smartReminders.fifo.flyOut.title',
+                  'notifications.smartReminders.travel.outToday.title',
                   undefined,
-                  'Fly-out day',
+                  'Travel-out day',
                   language
                 ),
                 body: translate(
-                  'notifications.smartReminders.fifo.flyOut.body',
+                  'notifications.smartReminders.travel.outToday.body',
                   undefined,
                   'Today you head home. Complete your handover, pack your gear, and travel safely.',
                   language
@@ -627,7 +605,7 @@ export class SmartReminderService {
       }
 
       if (!currentDay.isWorkDay && nextDay.isWorkDay) {
-        const nextStart = getShiftStartTime(nextDay.shiftType, shiftTimes);
+        const nextStart = getShiftStartTimeForDay(nextDay);
         const derivedTravelWarning = nextStart
           ? applyTime(nextDay.date, nextStart).subtract(12, 'hour')
           : null;
@@ -645,22 +623,22 @@ export class SmartReminderService {
           events.push(
             this.buildEvent(
               {
-                type: 'FIFO_TRAVEL_DAY_TOMORROW',
+                type: 'TRAVEL_DAY_TOMORROW',
                 triggerAt: travelWarningAt.toDate(),
                 shift: nextDay,
                 isCritical: false,
                 title: translate(
-                  'notifications.smartReminders.fifo.travelTomorrow.title',
+                  'notifications.smartReminders.travel.tomorrow.title',
                   undefined,
                   'Travel day tomorrow',
                   language
                 ),
                 body: translate(
-                  'notifications.smartReminders.fifo.travelTomorrow.body',
+                  'notifications.smartReminders.travel.tomorrow.body',
                   {
-                    shiftType: shiftLabel(nextDay.shiftType, language),
+                    shiftType: shiftDayLabel(nextDay, language),
                   },
-                  'You fly in tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight.',
+                  'You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight.',
                   language
                 ),
               },
@@ -690,6 +668,8 @@ export class SmartReminderService {
       triggerAt: params.triggerAt,
       shiftDate: params.shift.date,
       shiftType: params.shift.shiftType,
+      universalDefinitionId: params.shift.universal?.definitionId,
+      reminderProfileId: params.shift.universal?.reminderProfileId,
       isCritical: params.isCritical,
       title: params.title,
       body: params.body,
@@ -697,6 +677,9 @@ export class SmartReminderService {
         type: params.type,
         shiftDate: params.shift.date,
         shiftType: params.shift.shiftType,
+        universalDefinitionId: params.shift.universal?.definitionId,
+        universalDefinitionName: params.shift.universal?.definitionName,
+        reminderProfileId: params.shift.universal?.reminderProfileId,
       },
     };
 

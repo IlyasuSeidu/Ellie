@@ -6,6 +6,7 @@
  */
 
 import { FIFOConfig, ShiftCycle, ShiftDay, ShiftType } from './types';
+import type { UniversalShiftDefinition, UniversalShiftSchedule } from './universal-shift-types';
 
 const MAX_SEARCH_DAYS = 730;
 
@@ -54,6 +55,10 @@ function getFIFOConfig(shiftCycle: ShiftCycle): FIFOConfig | undefined {
 }
 
 function getCycleLength(shiftCycle: ShiftCycle): number {
+  if (shiftCycle.scheduleMode === 'universal' && shiftCycle.universalSchedule) {
+    return shiftCycle.universalSchedule.sequence.length;
+  }
+
   const fifoConfig = getFIFOConfig(shiftCycle);
   if (fifoConfig) {
     return fifoConfig.workBlockDays + fifoConfig.restBlockDays;
@@ -69,6 +74,206 @@ function getCycleLength(shiftCycle: ShiftCycle): number {
   }
 
   return shiftCycle.daysOn + shiftCycle.nightsOn + shiftCycle.daysOff;
+}
+
+function trueModulo(value: number, length: number): number {
+  return ((value % length) + length) % length;
+}
+
+function closestLegacyShiftType(definition: UniversalShiftDefinition): ShiftType {
+  if (!definition.countsAsWork) return 'off';
+  if (definition.countsAsNight || definition.crossesMidnight) return 'night';
+  if (definition.startTime && definition.startTime < '12:00') return 'morning';
+  if (definition.startTime && definition.startTime < '18:00') return 'afternoon';
+  return 'day';
+}
+
+function calculateUniversalShiftDay(date: Date, schedule: UniversalShiftSchedule): ShiftDay {
+  const cycleLength = schedule.sequence.length;
+  if (cycleLength === 0) {
+    return { date: toDateString(date), isWorkDay: false, isNightShift: false, shiftType: 'off' };
+  }
+
+  const startDate = new Date(`${schedule.anchorDate}T00:00:00`);
+  const position = trueModulo(diffInDays(date, startDate) + schedule.phaseOffset, cycleLength);
+  const item = schedule.sequence[position];
+  const definition = schedule.shiftDefinitions.find(
+    (candidate) => candidate.id === item?.shiftDefinitionId
+  );
+  if (!definition) {
+    return { date: toDateString(date), isWorkDay: false, isNightShift: false, shiftType: 'off' };
+  }
+
+  const dateStr = toDateString(date);
+  const baseDay = createUniversalShiftDay(dateStr, definition, position, cycleLength);
+  const oneOff = schedule.oneOffExceptions?.find((candidate) => candidate.date === dateStr);
+  if (oneOff) {
+    const oneOffException = {
+      id: oneOff.id,
+      action: oneOff.action,
+      label: oneOff.label,
+      reason: oneOff.reason,
+      paidOverride: oneOff.paidOverride,
+      originalDefinitionId: definition.id,
+      originalDefinitionName: definition.name,
+      originalKind: definition.kind,
+    };
+
+    if (oneOff.action === 'use_shift_definition' && oneOff.shiftDefinitionId) {
+      const replacement = schedule.shiftDefinitions.find(
+        (candidate) => candidate.id === oneOff.shiftDefinitionId
+      );
+      if (replacement) {
+        return createUniversalShiftDay(
+          dateStr,
+          replacement,
+          position,
+          cycleLength,
+          undefined,
+          oneOffException
+        );
+      }
+    }
+
+    return createUniversalShiftDay(
+      dateStr,
+      {
+        id: `one-off:${oneOff.id}`,
+        name: oneOff.label || 'One-off off day',
+        kind: 'off',
+        timePolicy: 'all_day',
+        activePolicy: 'not_active',
+        countsAsWork: false,
+        countsAsNight: false,
+        countsForStats: true,
+        color: '#0ea5e9',
+        icon: 'swap-horizontal',
+      },
+      position,
+      cycleLength,
+      undefined,
+      oneOffException
+    );
+  }
+
+  const exception = schedule.holidayExceptions?.find((candidate) => candidate.date === dateStr);
+  if (!exception || ((exception.appliesToWorkShiftsOnly ?? true) && !baseDay.isWorkDay)) {
+    return baseDay;
+  }
+
+  const holidayException = {
+    id: exception.id,
+    holidayName: exception.holidayName,
+    country: exception.country,
+    action: exception.action,
+    paidOverride: exception.paidOverride,
+    originalDefinitionId: definition.id,
+    originalDefinitionName: definition.name,
+    originalKind: definition.kind,
+  };
+
+  if (exception.action === 'use_shift_definition' && exception.shiftDefinitionId) {
+    const replacement = schedule.shiftDefinitions.find(
+      (candidate) => candidate.id === exception.shiftDefinitionId
+    );
+    if (replacement) {
+      return createUniversalShiftDay(dateStr, replacement, position, cycleLength, holidayException);
+    }
+  }
+
+  return createUniversalShiftDay(
+    dateStr,
+    {
+      id: `holiday:${exception.id}`,
+      name: exception.holidayName,
+      kind: 'off',
+      timePolicy: 'all_day',
+      activePolicy: 'not_active',
+      countsAsWork: false,
+      countsAsNight: false,
+      countsForStats: true,
+      color: '#ea580c',
+      icon: 'calendar',
+    },
+    position,
+    cycleLength,
+    holidayException
+  );
+}
+
+function createUniversalShiftDay(
+  dateStr: string,
+  definition: UniversalShiftDefinition,
+  position: number,
+  cycleLength: number,
+  holidayException?: NonNullable<ShiftDay['universal']>['holidayException'],
+  oneOffException?: NonNullable<ShiftDay['universal']>['oneOffException']
+): ShiftDay {
+  return {
+    date: dateStr,
+    isWorkDay: definition.countsAsWork,
+    isNightShift: definition.countsAsNight || definition.crossesMidnight === true,
+    shiftType: closestLegacyShiftType(definition),
+    universal: {
+      definitionId: definition.id,
+      definitionName: definition.name,
+      kind: definition.kind,
+      color: definition.color,
+      icon: definition.icon,
+      timePolicy: definition.timePolicy,
+      activePolicy: definition.activePolicy,
+      startTime: definition.startTime,
+      endTime: definition.endTime,
+      crossesMidnight: definition.crossesMidnight,
+      countsAsWork: definition.countsAsWork,
+      countsAsNight: definition.countsAsNight,
+      locationName: definition.locationName,
+      reminderProfileId: definition.reminderProfileId,
+      reminderProfile: definition.reminderProfile,
+      sequenceIndex: position,
+      cycleLength,
+      oneOffException,
+      holidayException,
+    },
+  };
+}
+
+function getNextUniversalOccurrence(
+  fromDate: Date,
+  requestedType: string,
+  shiftCycle: ShiftCycle,
+  maxDaysAhead = MAX_SEARCH_DAYS
+): ShiftDay | null {
+  const normalized = requestedType.toLowerCase().replace(/\s+/g, '_');
+  let checkDate = addDays(fromDate, 1);
+
+  for (let index = 0; index < maxDaysAhead; index += 1) {
+    const day = calculateShiftDay(checkDate, shiftCycle);
+    const universal = day.universal;
+
+    if (universal) {
+      const name = universal.definitionName.toLowerCase();
+      const kind = universal.kind;
+      const matches =
+        (normalized === 'off' || normalized === 'rest') && !universal.countsAsWork
+          ? true
+          : normalized === 'night' && universal.countsAsNight
+            ? true
+            : normalized === 'work' && universal.countsAsWork
+              ? true
+              : normalized === kind
+                ? true
+                : name.includes(normalized.replace(/_/g, ' '));
+
+      if (matches) {
+        return day;
+      }
+    }
+
+    checkDate = addDays(checkDate, 1);
+  }
+
+  return null;
 }
 
 function calculateFIFOShiftDay(
@@ -202,6 +407,10 @@ function calculateRotatingShiftDay(
  * Calculate shift for a specific date.
  */
 export function calculateShiftDay(date: Date, shiftCycle: ShiftCycle): ShiftDay {
+  if (shiftCycle.scheduleMode === 'universal' && shiftCycle.universalSchedule) {
+    return calculateUniversalShiftDay(date, shiftCycle.universalSchedule);
+  }
+
   const startDate = new Date(shiftCycle.startDate);
   const daysSinceStart = diffInDays(date, startDate) + shiftCycle.phaseOffset;
   const fifoConfig = getFIFOConfig(shiftCycle);
@@ -457,7 +666,10 @@ export function executeTool(
     }
     case 'get_next_occurrence': {
       const fromDate = input.fromDate ? new Date(input.fromDate as string) : new Date();
-      const result = getNextOccurrence(fromDate, input.shiftType as ShiftType, shiftCycle);
+      const result =
+        shiftCycle.scheduleMode === 'universal' && shiftCycle.universalSchedule
+          ? getNextUniversalOccurrence(fromDate, String(input.shiftType ?? ''), shiftCycle)
+          : getNextOccurrence(fromDate, input.shiftType as ShiftType, shiftCycle);
       return result ? { found: true, shiftDay: result } : { found: false };
     }
     case 'get_next_work_block': {

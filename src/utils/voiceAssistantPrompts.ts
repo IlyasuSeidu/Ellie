@@ -12,11 +12,12 @@ import type { VoiceAssistantUserContext } from '@/types/voiceAssistant';
  * Build the system prompt for Claude based on user context.
  */
 export function buildSystemPrompt(context: VoiceAssistantUserContext): string {
-  const shiftSystemDesc =
-    context.shiftSystem === '2-shift'
-      ? '2-shift system (12-hour shifts: day and night)'
-      : '3-shift system (8-hour shifts: morning, afternoon, and night)';
-  const rosterTypeDesc = context.rosterType === 'fifo' ? 'FIFO / block roster' : 'rotating roster';
+  const universalSchedule = context.shiftCycle;
+  const scheduleEngineDesc = 'universal custom schedule';
+  const scheduleStructureDesc = 'user-defined sequence';
+  const universalShiftTypes = universalSchedule.shiftDefinitions
+    .map((definition) => `${definition.name} (${definition.kind})`)
+    .join(', ');
 
   return `You are Ellie, a friendly and helpful voice assistant for shift workers. You help ${context.name} understand their work schedule.
 
@@ -25,14 +26,17 @@ PERSONALITY:
 - Use second person ("you have a night shift") not third person
 - Keep responses under 2-3 sentences for voice readability
 - When mentioning dates, use natural language ("this Saturday, December 5th")
-- For shift types, use friendly names: "day shift", "night shift", "morning shift", "afternoon shift", "day off"
+- For shift types, use the user's configured shift names, colors, icons, and schedule metadata when available.
 - Be conversational and supportive
 
 CONTEXT:
 - Current date: ${context.currentDate}
 - Current time: ${context.currentTime}
-- User's shift system: ${shiftSystemDesc}
-- User's roster type: ${rosterTypeDesc}
+- Schedule engine: ${scheduleEngineDesc}
+- Schedule structure: ${scheduleStructureDesc}
+- Schedule mode: universal custom schedule
+- Schedule name: ${context.scheduleName}
+- Universal shift types: ${universalShiftTypes}
 - User's name: ${context.name}${context.occupation ? `\n- User's occupation: ${context.occupation}` : ''}
 
 RULES:
@@ -41,7 +45,7 @@ RULES:
 - If they ask about a range (week, month), use get_shifts_in_range.
 - If they ask "am I working now/today", use get_current_status.
 - If they ask about counts or statistics, use get_statistics.
-- For "next day off" or "next night shift", use get_next_occurrence.
+- For "next day off", "next night shift", or a named universal shift such as on-call, training, travel, leave, or custom work, use get_next_occurrence.
 - For block-based questions ("next swing", "next work block", "next rest/home block"), use get_next_work_block or get_next_rest_block.
 - For "how many days until work/home", use days_until_work or days_until_rest.
 - For "what block am I in", use current_block_info.
@@ -126,8 +130,21 @@ export const CLAUDE_TOOL_DEFINITIONS = [
       properties: {
         shiftType: {
           type: 'string' as const,
-          enum: ['day', 'night', 'morning', 'afternoon', 'off'],
-          description: 'The shift type to find the next occurrence of',
+          enum: [
+            'day',
+            'night',
+            'morning',
+            'afternoon',
+            'off',
+            'work',
+            'travel',
+            'on_call',
+            'training',
+            'leave',
+            'custom',
+          ],
+          description:
+            'The shift type or universal shift kind to find. For universal schedules, use travel, on_call, training, leave, custom, work, night, or off when relevant.',
         },
         fromDate: {
           type: 'string' as const,
@@ -141,7 +158,7 @@ export const CLAUDE_TOOL_DEFINITIONS = [
   {
     name: 'get_next_work_block',
     description:
-      'Find the next date when a work block starts. Useful for FIFO and rotating questions like "when do I swing back in?"',
+      'Find the next date when a work block starts. Useful for block, travel, and rotating questions like "when do I swing back in?"',
     input_schema: {
       type: 'object' as const,
       properties: {

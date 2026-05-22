@@ -1,8 +1,12 @@
 # Ellie — Profile Screen Implementation
 
+Implementation status: **Implemented in the current working tree** as of May 21, 2026.
+
+The Profile tab now includes the animated profile hero, editable profile fields, shift configuration display/editing, work stats, language selection, smart reminders, subscription status, and supporting profile utilities/tests. This document is retained as the original build plan.
+
 ## Context
 
-The Ellie app has 5 bottom tabs: Home, Schedule, Ellie (voice), Stats, and Profile. The Profile tab is currently a placeholder showing "Coming Soon". The user wants to implement the Profile tab in stages — starting with just the **Profile** portion (personal info + shift config display). Settings and Preferences will follow as separate phases.
+The Ellie app originally had a Profile tab placeholder. This plan described replacing it with a premium profile surface for personal info, shift config, stats, and settings-style controls. That implementation has now landed.
 
 **Goal:** Build a premium, modern Profile screen with an animated hero avatar section, editable personal information, read-only shift configuration summary, and work overview stats — all within the Sacred design system with rich Reanimated animations and haptic feedback.
 

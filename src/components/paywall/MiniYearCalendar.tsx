@@ -25,7 +25,7 @@ const MONTH_LABELS = [
   'Dec',
 ];
 
-// Shift type -> dot color
+// Shift type -> dot color. Universal schedules override this with each definition color.
 const SHIFT_COLORS: Record<string, string> = {
   day: '#2196F3',
   night: '#651FFF',
@@ -76,7 +76,8 @@ export const MiniYearCalendar: React.FC<MiniYearCalendarProps> = ({ data, blurre
                     height: dotSize,
                     borderRadius: dotSize / 2,
                     margin: dotGap / 2,
-                    backgroundColor: SHIFT_COLORS[day.shiftType] ?? theme.colors.softStone,
+                    backgroundColor:
+                      day.universal?.color ?? SHIFT_COLORS[day.shiftType] ?? theme.colors.softStone,
                   },
                 ]}
               />

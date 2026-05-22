@@ -3,7 +3,6 @@ describe('component barrel exports', () => {
     const premium = require('@/components/onboarding/premium');
     expect(premium.PremiumButton).toBeDefined();
     expect(premium.ProgressHeader).toBeDefined();
-    expect(premium.PremiumCalendar).toBeDefined();
     expect(premium.TimePickerModal).toBeDefined();
     expect(premium.PremiumCountrySelectorModal).toBeDefined();
   });

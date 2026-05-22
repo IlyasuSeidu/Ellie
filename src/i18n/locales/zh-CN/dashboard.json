@@ -89,7 +89,8 @@
     }
   },
   "badges": {
-    "active": "积极的"
+    "active": "积极的",
+    "upNext": "Up next"
   },
   "voiceAssistant": {
     "subtitle": "语音助手",
@@ -190,7 +191,9 @@
     "stats": "统计数据",
     "profile": "轮廓",
     "ellie": "Ellie",
-    "openVoiceAssistantA11y": "打开艾莉语音助手"
+    "openVoiceAssistantA11y": "打开艾莉语音助手",
+    "openProPlansA11y": "View Pro plans",
+    "voiceAssistantLoadingA11y": "Checking voice assistant access"
   },
   "quickActions": {
     "settings": "设置",
@@ -264,21 +267,23 @@
         "title": "即将出现短间隔轮换",
         "body": "你的{{previousShiftType}}和下一次{{nextShiftType}}之间只有{{gapHours}}小时，日期是{{shiftDate}}。请提前安排休息。"
       },
-      "fifo": {
-        "flyOut": {
-          "title": "返程日",
+      "travel": {
+        "outToday": {
+          "title": "Travel-out day",
           "body": "今天你将返家。完成交接、收拾装备，并注意安全出行。"
         },
-        "travelTomorrow": {
+        "tomorrow": {
           "title": "明天是出发日",
-          "body": "你明天将飞往现场参加{{shiftType}}。今晚请整理好装备并检查证件。"
+          "body": "You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
         }
       }
     }
   },
   "countdown": {
     "leftIn": "{{shiftName}}还剩{{time}}",
+    "leftInShift": "{{time}} left in this shift",
     "untilStarts": "{{time}}后{{shiftName}}开始",
+    "untilShift": "{{time}} until this shift starts",
     "until": "{{time}}后到{{shiftName}}",
     "tomorrow": "明天{{shiftName}}",
     "daysUntil": "{{days}}天后到{{shiftName}}",
@@ -316,7 +321,7 @@
   "onboardingChecklist": {
     "title": "充分发挥 Ellie 的作用",
     "items": {
-      "roster": "设置你的轮班表",
+      "schedule": "Set up your schedule",
       "shiftTimes": "添加你的班次时间",
       "profile": "完善你的个人资料",
       "askEllie": "向 Ellie 提一个问题"

@@ -10,58 +10,21 @@
  *    - No data collected
  *
  * 2. **Pain Hook** (PremiumPainHookScreen)
- *    - User identifies the biggest current roster pain point
+ *    - User identifies the biggest current schedule pain point
  *    - Collects: painPoint
  *
  * 3. **Introduction** (PremiumIntroductionScreen)
  *    - Chat-based user profile collection
  *    - Collects: name, occupation, company, country
  *
- * 4. **Shift System** (PremiumShiftSystemScreen)
- *    - Select 2-shift (12h) or 3-shift (8h) system
- *    - Collects: shiftSystem
+ * 4. **Universal Shift Builder** (UniversalShiftBuilderScreen)
+ *    - AI-assisted or manual schedule creation
+ *    - Collects: universalSchedule
  *
- * 5. **Roster Type** (PremiumRosterTypeScreen)
- *    - Select Rotating Roster or FIFO Roster
- *    - Collects: rosterType
- *
- * 6. **Shift Pattern** (PremiumShiftPatternScreen)
- *    - Select from standard patterns (filtered by roster type) or create custom
- *    - Collects: patternType
- *    - Routes based on pattern type and roster type
- *
- * 6b-R. **Custom Pattern** (PremiumCustomPatternScreen - CONDITIONAL for Rotating)
- *       - Only shown if patternType === ShiftPattern.CUSTOM and rosterType === 'rotating'
- *       - Configure days on/off for each shift type
- *       - Collects: customPattern (daysOn, nightsOn, morningOn, afternoonOn, nightOn, daysOff)
- *
- * 6b-F. **FIFO Custom Pattern** (PremiumFIFOCustomPatternScreen - CONDITIONAL for FIFO)
- *       - Only shown if patternType === ShiftPattern.FIFO_CUSTOM and rosterType === 'fifo'
- *       - Configure work/rest blocks and work pattern
- *       - Collects: fifoConfig
- *
- * 7-R. **Phase Selector** (PremiumPhaseSelectorScreen - for Rotating)
- *      - Two-stage: Select current phase, then day within phase (if multi-day)
- *      - Collects: phaseOffset
- *
- * 7-F. **FIFO Phase Selector** (PremiumFIFOPhaseSelectorScreen - for FIFO)
- *      - Two-stage: Select work/rest block, then day within block
- *      - Collects: phaseOffset
- *
- * 8. **Start Date** (PremiumStartDateScreen)
- *    - Calendar-based date selection
- *    - Collects: startDate
- *
- * 9. **Shift Time Input** (PremiumShiftTimeInputScreen)
- *    - Multi-stage: Collect start/end times for each shift type
- *    - 2-shift: day shift + night shift times
- *    - 3-shift: morning + afternoon + night shift times
- *    - Collects: shiftTimes (new structure) + legacy fields for compatibility
- *
- * 10. **Aha Moment** (PremiumAhaMomentScreen)
+ * 5. **Aha Moment** (PremiumAhaMomentScreen)
  *    - Shows calendar payoff and value framing
  *
- * 11. **Completion** (PremiumCompletionScreen)
+ * 6. **Completion** (PremiumCompletionScreen)
  *    - Validates all collected data
  *    - Displays summary
  *    - Saves to AsyncStorage
@@ -75,7 +38,7 @@
  *   const { data, updateData, resetData } = useOnboarding();
  *
  *   const handleContinue = () => {
- *     updateData({ shiftSystem: '2-shift' });
+ *     updateData({ name: 'Sam' });
  *     navigation.navigate('NextScreen');
  *   };
  * };
@@ -91,7 +54,7 @@ import React, {
   useRef,
   ReactNode,
 } from 'react';
-import { ShiftPattern, FIFOConfig } from '@/types';
+import type { UniversalShiftSchedule } from '@/types';
 import i18n from '@/i18n';
 import {
   clearPersistedOnboardingData,
@@ -120,83 +83,8 @@ export interface OnboardingData {
   /** URI of the user's profile avatar image (file:// URI in document directory) */
   avatarUri?: string;
 
-  // Step 4: Shift System Selection (PremiumShiftSystemScreen)
-  shiftSystem?: '2-shift' | '3-shift'; // Determines 2-shift (12h) vs 3-shift (8h)
-
-  // Step 5: Roster Type Selection (PremiumRosterTypeScreen)
-  rosterType?: 'rotating' | 'fifo'; // Determines rotating roster vs FIFO roster
-
-  // Step 6: Shift Pattern Selection (PremiumShiftPatternScreen)
-  patternType?: ShiftPattern;
-
-  // Step 6b-R: Custom Pattern Configuration (PremiumCustomPatternScreen - only if patternType === CUSTOM and rosterType === 'rotating')
-  customPattern?: {
-    // For 2-shift system
-    daysOn: number; // Day shifts
-    nightsOn: number; // Night shifts
-
-    // For 3-shift system (optional)
-    morningOn?: number; // Morning shifts (6 AM - 2 PM)
-    afternoonOn?: number; // Afternoon shifts (2 PM - 10 PM)
-    nightOn?: number; // Night shifts (10 PM - 6 AM)
-
-    // Common
-    daysOff: number; // Days off (both systems)
-  };
-
-  // Step 6b-F: FIFO Custom Pattern Configuration (PremiumFIFOCustomPatternScreen - only if patternType === FIFO_CUSTOM and rosterType === 'fifo')
-  fifoConfig?: FIFOConfig;
-
-  // Step 5: Current Phase Selection (PremiumPhaseSelectorScreen or PremiumFIFOPhaseSelectorScreen)
-  phaseOffset?: number; // Calculated from selected phase and day within phase (rotating) or block position (FIFO)
-
-  // Step 6: Start Date Selection (PremiumStartDateScreen)
-  startDate?: Date;
-
-  // Step 7: Shift Time Configuration (PremiumShiftTimeInputScreen - NEW: supports multiple shift types per cycle)
-  shiftTimes?: {
-    // For 2-shift systems (12-hour)
-    dayShift?: {
-      startTime: string; // HH:MM (24-hour)
-      endTime: string; // HH:MM (24-hour)
-      duration: 8 | 12;
-    };
-    nightShift?: {
-      startTime: string; // HH:MM (24-hour)
-      endTime: string; // HH:MM (24-hour)
-      duration: 8 | 12;
-    };
-
-    // For 3-shift systems (8-hour)
-    morningShift?: {
-      startTime: string; // HH:MM (24-hour)
-      endTime: string; // HH:MM (24-hour)
-      duration: 8 | 12;
-    };
-    afternoonShift?: {
-      startTime: string; // HH:MM (24-hour)
-      endTime: string; // HH:MM (24-hour)
-      duration: 8 | 12;
-    };
-    nightShift3?: {
-      // Separate from 2-shift night
-      startTime: string; // HH:MM (24-hour)
-      endTime: string; // HH:MM (24-hour)
-      duration: 8 | 12;
-    };
-  };
-
-  // Legacy fields (DEPRECATED - kept for backwards compatibility only)
-  /** @deprecated Use shiftTimes.dayShift or shiftTimes.nightShift instead */
-  shiftStartTime?: string; // HH:MM format (24-hour)
-  /** @deprecated Use shiftTimes.dayShift.endTime or shiftTimes.nightShift.endTime instead */
-  shiftEndTime?: string; // HH:MM format (24-hour)
-  /** @deprecated Use shiftTimes.dayShift.duration or shiftTimes.nightShift.duration instead */
-  shiftDuration?: 8 | 12; // Hours (locked based on shift system)
-  /** @deprecated Use shiftTimes keys instead */
-  shiftType?: 'day' | 'night' | 'morning' | 'afternoon'; // Auto-detected from start time
-  /** @deprecated Use shiftTimes instead */
-  isCustomShiftTime?: boolean; // True if user selected custom time
+  /** Full universal shift schedule created by the Universal Builder */
+  universalSchedule?: UniversalShiftSchedule;
 }
 
 /**
@@ -396,62 +284,13 @@ export const OnboardingProvider: React.FC<OnboardingProviderProps> = ({ children
     // Profile fields are optional in the compressed onboarding flow.
     // Users can complete them later from Profile/Introduction.
 
-    // Step 3: Shift system (required)
-    if (!data.shiftSystem) {
-      missingFields.push(localizedField('shiftSystem', 'Shift System'));
-    }
-
-    // Step 3.5: Roster type (optional - defaults to rotating if not set)
-    // No validation needed - backward compatible
-
-    // Step 4: Pattern type (required)
-    if (!data.patternType) {
-      missingFields.push(localizedField('shiftPattern', 'Shift Pattern'));
-    }
-
-    // Step 4b: Custom pattern validation (depends on roster type)
-    if (data.rosterType === 'fifo') {
-      // All FIFO patterns require a fifoConfig with at minimum workBlockDays and restBlockDays.
-      // Preset patterns (FIFO_8_6 etc.) have these written by FIFOPhaseSelector; custom patterns
-      // have them written by FIFOCustomPatternScreen.
-      if (!data.fifoConfig) {
-        missingFields.push(localizedField('fifoConfiguration', 'FIFO Configuration'));
-      } else {
-        if (!data.fifoConfig.workBlockDays) {
-          missingFields.push(localizedField('fifoWorkBlockDays', 'Work Block Days'));
-        }
-        if (!data.fifoConfig.restBlockDays) {
-          missingFields.push(localizedField('fifoRestBlockDays', 'Rest Block Days'));
-        }
-        if (!data.fifoConfig.workBlockPattern) {
-          missingFields.push(localizedField('fifoWorkPattern', 'Work Pattern'));
-        }
-      }
-    } else {
-      // Rotating custom pattern (default behavior)
-      if (data.patternType === ShiftPattern.CUSTOM && !data.customPattern) {
-        missingFields.push(
-          localizedField('customPatternConfiguration', 'Custom Pattern Configuration')
-        );
-      }
-    }
-
-    // Step 5: Phase offset (required)
-    if (data.phaseOffset === undefined) {
-      missingFields.push(localizedField('phaseOffset', 'Phase Offset'));
-    }
-
-    // Step 6: Start date (required)
-    if (!data.startDate) {
-      missingFields.push(localizedField('startDate', 'Start Date'));
-    }
-
-    // Step 7: Shift times (required - either new or legacy structure)
-    const hasNewStructure = data.shiftTimes && Object.keys(data.shiftTimes).length > 0;
-    const hasLegacyStructure = data.shiftStartTime && data.shiftEndTime;
-
-    if (!hasNewStructure && !hasLegacyStructure) {
-      missingFields.push(localizedField('shiftTimes', 'Shift Times'));
+    if (
+      !data.universalSchedule?.name ||
+      !data.universalSchedule.anchorDate ||
+      !data.universalSchedule.sequence?.length ||
+      !data.universalSchedule.shiftDefinitions?.length
+    ) {
+      missingFields.push(localizedField('universalSchedule', 'Shift Schedule'));
     }
 
     return {

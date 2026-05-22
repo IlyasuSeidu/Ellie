@@ -198,13 +198,13 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
     () => ({
       platform: Platform.OS,
       country: resolvedOnboardingData?.country ?? null,
-      roster_type: resolvedOnboardingData?.rosterType ?? null,
+      schedule_name: resolvedOnboardingData?.universalSchedule?.name ?? null,
       pain_point: resolvedOnboardingData?.painPoint ?? null,
     }),
     [
       resolvedOnboardingData?.country,
       resolvedOnboardingData?.painPoint,
-      resolvedOnboardingData?.rosterType,
+      resolvedOnboardingData?.universalSchedule?.name,
     ]
   );
 
@@ -212,19 +212,14 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
     () => [
       {
         icon: 'calendar-outline',
-        text:
-          resolvedOnboardingData?.rosterType === 'fifo'
-            ? t('subscription.paywall.features.fullYearFIFO')
-            : resolvedOnboardingData?.rosterType === 'rotating'
-              ? t('subscription.paywall.features.fullYearRotating')
-              : t('subscription.paywall.features.fullYear'),
+        text: t('subscription.paywall.features.fullYear'),
       },
-      { icon: 'mic-outline', text: t('subscription.paywall.features.askRoster') },
+      { icon: 'mic-outline', text: t('subscription.paywall.features.askSchedule') },
       { icon: 'cloud-offline-outline', text: t('subscription.paywall.features.offline') },
       { icon: 'airplane-outline', text: t('subscription.paywall.features.leavePlanning') },
       { icon: 'sparkles-outline', text: t('subscription.paywall.features.aiPowered') },
     ],
-    [resolvedOnboardingData?.rosterType, t]
+    [t]
   );
 
   const testimonials: Testimonial[] = useMemo(
@@ -255,29 +250,17 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
     transform: [{ scale: ctaPulse.value }],
   }));
 
-  // R3: personalised loss aversion — painPoint overrides, then rosterType, then generic
+  // R3: personalised loss aversion — painPoint overrides, then generic
   const lossAversionText = useMemo(() => {
     if (resolvedOnboardingData?.painPoint === 'family') {
       return t('subscription.paywall.lossAversion_family', {
         defaultValue: "Without Pro, your family goes back to not knowing when you're home.",
       });
     }
-    if (resolvedOnboardingData?.rosterType === 'fifo') {
-      return t('subscription.paywall.lossAversion_fifo', {
-        defaultValue:
-          'Without Pro, your swing dates go back to being a mystery. Next R&R — unknown. Book the wrong week, lose the flights.',
-      });
-    }
-    if (resolvedOnboardingData?.rosterType === 'rotating') {
-      return t('subscription.paywall.lossAversion_rotating', {
-        defaultValue:
-          'Without Pro, your roster goes dark. No early warning, no planning ahead. Back to guessing the noticeboard.',
-      });
-    }
     return t('subscription.paywall.lossAversion', {
       defaultValue: "Without Pro, you're back to counting shifts on your hands.",
     });
-  }, [resolvedOnboardingData?.painPoint, resolvedOnboardingData?.rosterType, t]);
+  }, [resolvedOnboardingData?.painPoint, t]);
 
   const applyCurrentOfferings = useCallback(
     async (
@@ -543,17 +526,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
   const paywallTitle = resolvedOnboardingData?.name
     ? t('subscription.paywall.title_named', { name: resolvedOnboardingData.name })
     : t('subscription.paywall.title');
-  const paywallSubtitle =
-    resolvedOnboardingData?.rosterType === 'fifo'
-      ? t('subscription.paywall.subtitle_fifo', {
-          defaultValue:
-            'Your FIFO cycle is mapped. See every swing, every day off, for your full year.',
-        })
-      : resolvedOnboardingData?.rosterType === 'rotating'
-        ? t('subscription.paywall.subtitle_rotating', {
-            defaultValue: 'Your rotating roster is mapped. See every shift for your full year.',
-          })
-        : t('subscription.paywall.subtitle');
+  const paywallSubtitle = t('subscription.paywall.subtitle');
   const selectedTrialMetadata = useMemo(
     () => getTrialMetadataFromDisplayPlan(selectedPlanData ?? null),
     [selectedPlanData]
@@ -645,7 +618,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
     switch (selectedPlan) {
       case 'monthly':
         return t('subscription.paywall.valueFrameMonthly', {
-          defaultValue: 'The cost of one coffee a month to know your full roster.',
+          defaultValue: 'The cost of one coffee a month to know your full schedule.',
         });
       case 'weekly':
         return t('subscription.paywall.valueFrameWeekly', {
@@ -904,8 +877,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
         {/* Social proof — specificity beats generic claims */}
         <Text style={styles.socialProof}>
           {t('subscription.paywall.socialProof', {
-            defaultValue:
-              'Trusted by underground miners, FIFO operators, and rotating roster workers.',
+            defaultValue: 'Trusted by shift workers, remote crews, and rotating teams.',
           })}
         </Text>
 

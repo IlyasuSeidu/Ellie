@@ -320,7 +320,13 @@
       "shiftTimes": "शिफ्ट टाइम्स",
       "startDate": "आरंभ करने की तिथि",
       "title": "आपकी प्रोफ़ाइल",
-      "workPattern": "कार्य पैटर्न"
+      "workPattern": "कार्य पैटर्न",
+      "allDay": "All day",
+      "notTimed": "Not timed",
+      "rosterTypeUniversal": "Universal schedule",
+      "universalShiftSystem": "Universal custom shifts",
+      "scheduleEngine": "Schedule engine",
+      "scheduleType": "Schedule type"
     },
     "title": "सब तैयार है।",
     "tryAgain": "पुनः प्रयास करें",
@@ -1129,5 +1135,186 @@
       "mental_math": "आगे के दिन गिनकर पता लगाना कि कब काम है"
     },
     "cta": "जारी रखें"
+  },
+  "shiftBuilder": {
+    "title": "शिफ्ट बिल्डर",
+    "navButtonCreate": "कस्टम शेड्यूल बनाएं",
+    "navButtonEdit": "यूनिवर्सल शेड्यूल संपादित करें",
+    "unsavedChanges": "असहेजे गए बदलाव",
+    "save": {
+      "success": "शेड्यूल सहेजा गया",
+      "failed": "सहेजना विफल — आपका ड्राफ़्ट सुरक्षित है",
+      "retry": "पुनः प्रयास करें",
+      "warningConfirm": {
+        "title": "चेतावनियों के साथ सहेजें?",
+        "confirm": "फिर भी सहेजें",
+        "cancel": "समीक्षा करें"
+      }
+    },
+    "saving": "सहेजा जा रहा है...",
+    "saved": "सहेजा गया",
+    "discard": "हटाएं",
+    "cancel": "रद्द करें",
+    "back": "वापस",
+    "confirmDiscard": {
+      "title": "बदलाव हटाएं?",
+      "message": "आपके पास असहेजे गए बदलाव हैं। क्या उन्हें हटाएं?",
+      "discard": "हटाएं",
+      "keepEditing": "संपादन जारी रखें"
+    },
+    "scheduleName": {
+      "label": "शेड्यूल का नाम",
+      "placeholder": "मेरा शेड्यूल"
+    },
+    "anchorDate": {
+      "label": "आधार तिथि",
+      "hint": "अनुक्रम इस तिथि से दोहराया जाता है"
+    },
+    "phaseOffset": {
+      "label": "चक्र में वर्तमान दिन",
+      "hint": "0 = चक्र की शुरुआत"
+    },
+    "ai": {
+      "sectionTitle": "AI सहायक",
+      "promptPlaceholder": "अपना रोस्टर बताएं...",
+      "buildButton": "AI से बनाएं",
+      "loading": "आपका रोस्टर विश्लेषण हो रहा है...",
+      "notConfigured": "AI विश्लेषण उपलब्ध नहीं — नीचे मैन्युअली बनाएं",
+      "retry": "फिर से प्रयास करें",
+      "error": {
+        "notConfigured": "AI सहायक कॉन्फ़िगर नहीं है।",
+        "promptEmpty": "जारी रखने से पहले कृपया अपना रोस्टर बताएं।",
+        "promptTooLong": "विवरण बहुत लंबा है। इसे छोटा करें और फिर से प्रयास करें।",
+        "timeout": "विश्लेषण में बहुत अधिक समय लगा। फिर से प्रयास करें।",
+        "rateLimited": "बहुत अधिक अनुरोध। थोड़ा इंतज़ार करें और फिर से प्रयास करें।",
+        "networkError": "नेटवर्क त्रुटि। अपना कनेक्शन जाँचें और फिर से प्रयास करें।",
+        "serverError": "सर्वर त्रुटि। बाद में फिर से प्रयास करें।",
+        "generic": "कुछ गलत हुआ। फिर से प्रयास करें।"
+      },
+      "chips": {
+        "4on4off": "4 काम 4 आराम",
+        "4days4nights4off": "4 दिन 4 रात 4 आराम",
+        "monFri95": "सोम–शुक्र 9–5",
+        "7on7off": "7 काम 7 आराम",
+        "rotatingSwing": "12 घंटे रोटेटिंग स्विंग",
+        "fifo14": "14 काम 14 आराम FIFO"
+      }
+    },
+    "review": {
+      "title": "मैंने यह समझा",
+      "confidence": {
+        "high": "उच्च विश्वास",
+        "medium": "मध्यम विश्वास",
+        "low": "कम विश्वास"
+      },
+      "assumptions": "मान्यताएं",
+      "questions": "प्रश्न",
+      "warnings": "चेतावनियां",
+      "useDraft": "यह ड्राफ्ट उपयोग करें",
+      "editManually": "मैन्युअली संपादित करें",
+      "discardDraft": "ड्राफ्ट हटाएं",
+      "followUp": "अनुसरण करें...",
+      "send": "भेजें",
+      "invalid": "AI की प्रतिक्रिया अमान्य है। फिर से प्रयास करें।"
+    },
+    "palette": {
+      "title": "शिफ्ट प्रकार",
+      "addNew": "शिफ्ट प्रकार जोड़ें",
+      "usageCount_one": "{{count}} उपयोग",
+      "usageCount_other": "{{count}} उपयोग",
+      "deleteBlocked": "उपयोग में है",
+      "deleteBlockedMessage": "यह शिफ्ट प्रकार {{count}} बार अनुक्रम में उपयोग हो रहा है। पहले उन प्रविष्टियों को हटाएं या बदलें।"
+    },
+    "canvas": {
+      "title": "अनुक्रम",
+      "empty": "अपना अनुक्रम बनाने के लिए शिफ्ट जोड़ें।",
+      "cycleStats": "{{days}}-दिन का चक्र · औसत {{avg}} कार्य दिवस/सप्ताह",
+      "addShift": "शिफ्ट जोड़ें",
+      "addBlock": "ब्लॉक जोड़ें",
+      "repeatCount": "{{count}}× दोहराएं",
+      "moveUp": "ऊपर ले जाएं",
+      "moveDown": "नीचे ले जाएं",
+      "duplicate": "डुप्लिकेट करें",
+      "insertBefore": "पहले डालें",
+      "insertAfter": "बाद में डालें",
+      "delete": "हटाएं"
+    },
+    "inspector": {
+      "titleCreate": "नया शिफ्ट प्रकार",
+      "titleEdit": "शिफ्ट प्रकार संपादित करें",
+      "name": "नाम",
+      "namePlaceholder": "जैसे दिन की शिफ्ट",
+      "kind": {
+        "label": "प्रकार",
+        "work": "काम",
+        "off": "छुट्टी",
+        "travel": "यात्रा",
+        "on_call": "ऑन-कॉल",
+        "training": "प्रशिक्षण",
+        "leave": "अवकाश",
+        "custom": "कस्टम"
+      },
+      "timePolicy": {
+        "label": "समय",
+        "timed": "निर्धारित समय",
+        "all_day": "पूरा दिन",
+        "none": "कोई समय नहीं"
+      },
+      "startTime": "शुरुआत का समय",
+      "endTime": "समाप्ति का समय",
+      "overnight": "रात भर",
+      "overnightHint": "शिफ्ट अगले दिन समाप्त होती है",
+      "countsAsWork": "कार्य दिवस के रूप में गिना जाए",
+      "countsAsNight": "रात्रि शिफ्ट के रूप में गिना जाए",
+      "color": "रंग",
+      "icon": "आइकन",
+      "location": "स्थान",
+      "save": "सहेजें",
+      "delete": "प्रकार हटाएं",
+      "deleteConfirm": {
+        "title": "शिफ्ट प्रकार हटाएं?",
+        "message": "यह क्रिया पूर्ववत नहीं की जा सकती।",
+        "confirm": "हटाएं",
+        "cancel": "रद्द करें"
+      }
+    },
+    "preview": {
+      "title": "पूर्वावलोकन",
+      "range30": "30 दिन",
+      "range60": "60 दिन",
+      "range90": "90 दिन",
+      "today": "आज",
+      "anchor": "आधार",
+      "empty": "कोई पूर्वावलोकन डेटा उपलब्ध नहीं।",
+      "errors": "त्रुटियों के कारण पूर्वावलोकन नहीं दिखाया जा सकता।"
+    },
+    "validation": {
+      "errorTitle_one": "{{count}} त्रुटि",
+      "errorTitle_other": "{{count}} त्रुटियां",
+      "warningTitle_one": "{{count}} चेतावनी",
+      "warningTitle_other": "{{count}} चेतावनियां",
+      "fix": "ठीक करें",
+      "review": "समीक्षा करें",
+      "dismiss": "खारिज करें"
+    },
+    "saveResult": {
+      "success": "शेड्यूल सहेजा गया",
+      "failed": "सहेजना विफल — आपका ड्राफ्ट सुरक्षित है",
+      "retry": "पुनः प्रयास करें",
+      "warningConfirm": {
+        "title": "चेतावनियों के साथ सहेजें?",
+        "confirm": "फिर भी सहेजें",
+        "cancel": "समीक्षा करें"
+      }
+    },
+    "kinds": {
+      "work": "काम",
+      "off": "छुट्टी / आराम",
+      "travel": "यात्रा",
+      "on_call": "ऑन-कॉल",
+      "training": "प्रशिक्षण",
+      "leave": "अवकाश",
+      "custom": "कस्टम"
+    }
   }
 }

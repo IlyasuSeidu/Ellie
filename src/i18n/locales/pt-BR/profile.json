@@ -273,7 +273,7 @@
       "timing": "HORARIOS",
       "doNotDisturb": "NAO PERTURBE",
       "adaptive": "ADAPTATIVOS",
-      "fifo": "FIFO"
+      "travel": "Travel blocks"
     },
     "units": {
       "hoursShort": "{{value}} h",

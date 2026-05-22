@@ -11,8 +11,8 @@ export type SmartReminderType =
   | 'BACK_TO_BACK_WARNING'
   | 'SHORT_TURNAROUND_WARNING'
   | 'FATIGUE_ALERT'
-  | 'FIFO_TRAVEL_DAY_TOMORROW'
-  | 'FIFO_FLY_OUT_TODAY'
+  | 'TRAVEL_DAY_TOMORROW'
+  | 'TRAVEL_OUT_TODAY'
   | 'POST_SHIFT_CHECKIN';
 
 export const SMART_REMINDER_TYPES: readonly SmartReminderType[] = [
@@ -24,8 +24,8 @@ export const SMART_REMINDER_TYPES: readonly SmartReminderType[] = [
   'BACK_TO_BACK_WARNING',
   'SHORT_TURNAROUND_WARNING',
   'FATIGUE_ALERT',
-  'FIFO_TRAVEL_DAY_TOMORROW',
-  'FIFO_FLY_OUT_TODAY',
+  'TRAVEL_DAY_TOMORROW',
+  'TRAVEL_OUT_TODAY',
   'POST_SHIFT_CHECKIN',
 ] as const;
 
@@ -38,6 +38,8 @@ export interface ReminderEvent {
   triggerAt: Date;
   shiftDate: string;
   shiftType: ShiftType;
+  universalDefinitionId?: string;
+  reminderProfileId?: string;
   isCritical: boolean;
   title: string;
   body: string;
@@ -48,6 +50,8 @@ export interface SmartReminderIdentity {
   type: SmartReminderType;
   shiftDate: string;
   shiftType: ShiftType;
+  universalDefinitionId?: string;
+  reminderProfileId?: string;
   triggerAt: Date | string;
 }
 
@@ -55,7 +59,14 @@ export function buildSmartReminderKey(identity: SmartReminderIdentity): string {
   const triggerAtIso =
     identity.triggerAt instanceof Date ? identity.triggerAt.toISOString() : identity.triggerAt;
 
-  return [identity.type, identity.shiftDate, identity.shiftType, triggerAtIso].join('|');
+  return [
+    identity.type,
+    identity.shiftDate,
+    identity.shiftType,
+    identity.universalDefinitionId ?? 'legacy',
+    identity.reminderProfileId ?? 'default',
+    triggerAtIso,
+  ].join('|');
 }
 
 export interface SmartReminderSettings {
@@ -71,7 +82,7 @@ export interface SmartReminderSettings {
   backToBackWarnings: boolean;
   shortTurnaroundWarnings: boolean;
   postShiftCheckin: boolean;
-  fifoTravelReminders: boolean;
+  travelReminders: boolean;
 }
 
 export const SMART_REMINDER_SETTINGS_KEY = 'reminders:settings';
@@ -90,5 +101,5 @@ export const DEFAULT_SMART_REMINDER_SETTINGS: SmartReminderSettings = {
   backToBackWarnings: true,
   shortTurnaroundWarnings: true,
   postShiftCheckin: false,
-  fifoTravelReminders: true,
+  travelReminders: true,
 };

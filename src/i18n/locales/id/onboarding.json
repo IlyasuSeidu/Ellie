@@ -339,7 +339,13 @@
       "shiftTimes": "Pergeseran Waktu",
       "startDate": "Tanggal Mulai",
       "title": "Profil Anda",
-      "workPattern": "Pola Kerja"
+      "workPattern": "Pola Kerja",
+      "allDay": "All day",
+      "notTimed": "Not timed",
+      "rosterTypeUniversal": "Universal schedule",
+      "universalShiftSystem": "Universal custom shifts",
+      "scheduleEngine": "Schedule engine",
+      "scheduleType": "Schedule type"
     },
     "title": "Semua sudah siap.",
     "tryAgain": "Coba Lagi",
@@ -1148,5 +1154,186 @@
       "mental_math": "Menghitung maju untuk tahu hari kerja saya"
     },
     "cta": "Lanjutkan"
+  },
+  "shiftBuilder": {
+    "title": "Pembuat Shift",
+    "navButtonCreate": "Buat Jadwal Kustom",
+    "navButtonEdit": "Edit Jadwal Universal",
+    "unsavedChanges": "Perubahan belum tersimpan",
+    "save": {
+      "success": "Jadwal tersimpan",
+      "failed": "Gagal menyimpan — draf Anda tetap ada",
+      "retry": "Coba lagi",
+      "warningConfirm": {
+        "title": "Simpan dengan peringatan?",
+        "confirm": "Simpan tetap saja",
+        "cancel": "Tinjau"
+      }
+    },
+    "saving": "Menyimpan...",
+    "saved": "Tersimpan",
+    "discard": "Buang",
+    "cancel": "Batal",
+    "back": "Kembali",
+    "confirmDiscard": {
+      "title": "Buang perubahan?",
+      "message": "Anda memiliki perubahan yang belum tersimpan. Buang semuanya?",
+      "discard": "Buang",
+      "keepEditing": "Lanjutkan mengedit"
+    },
+    "scheduleName": {
+      "label": "Nama jadwal",
+      "placeholder": "Jadwal Saya"
+    },
+    "anchorDate": {
+      "label": "Tanggal jangkar",
+      "hint": "Urutan diulang dari tanggal ini"
+    },
+    "phaseOffset": {
+      "label": "Hari saat ini dalam siklus",
+      "hint": "0 = awal siklus"
+    },
+    "ai": {
+      "sectionTitle": "Asisten AI",
+      "promptPlaceholder": "Jelaskan roster Anda...",
+      "buildButton": "Buat dengan AI",
+      "loading": "Menganalisis roster Anda...",
+      "notConfigured": "Analisis AI tidak tersedia — buat secara manual di bawah",
+      "retry": "Coba lagi",
+      "error": {
+        "notConfigured": "Asisten AI belum dikonfigurasi.",
+        "promptEmpty": "Harap jelaskan roster Anda sebelum melanjutkan.",
+        "promptTooLong": "Deskripsi terlalu panjang. Persingkat dan coba lagi.",
+        "timeout": "Analisis memakan terlalu banyak waktu. Coba lagi.",
+        "rateLimited": "Terlalu banyak permintaan. Tunggu sebentar dan coba lagi.",
+        "networkError": "Kesalahan jaringan. Periksa koneksi Anda dan coba lagi.",
+        "serverError": "Kesalahan server. Coba lagi nanti.",
+        "generic": "Terjadi kesalahan. Coba lagi."
+      },
+      "chips": {
+        "4on4off": "4 kerja 4 libur",
+        "4days4nights4off": "4 siang 4 malam 4 libur",
+        "monFri95": "Sen–Jum 9–5",
+        "7on7off": "7 kerja 7 libur",
+        "rotatingSwing": "Rotasi 12 jam",
+        "fifo14": "14 kerja 14 libur FIFO"
+      }
+    },
+    "review": {
+      "title": "Ini yang saya pahami",
+      "confidence": {
+        "high": "Kepercayaan tinggi",
+        "medium": "Kepercayaan sedang",
+        "low": "Kepercayaan rendah"
+      },
+      "assumptions": "Asumsi",
+      "questions": "Pertanyaan",
+      "warnings": "Peringatan",
+      "useDraft": "Gunakan draf ini",
+      "editManually": "Edit secara manual",
+      "discardDraft": "Buang draf",
+      "followUp": "Tindak lanjut...",
+      "send": "Kirim",
+      "invalid": "Respons AI tidak valid. Coba lagi."
+    },
+    "palette": {
+      "title": "Tipe Shift",
+      "addNew": "Tambah tipe shift",
+      "usageCount_one": "{{count}} penggunaan",
+      "usageCount_other": "{{count}} penggunaan",
+      "deleteBlocked": "Sedang digunakan",
+      "deleteBlockedMessage": "Tipe shift ini digunakan {{count}} kali dalam urutan. Hapus entri tersebut terlebih dahulu atau gantikan."
+    },
+    "canvas": {
+      "title": "Urutan",
+      "empty": "Tambahkan shift untuk membangun urutan Anda.",
+      "cycleStats": "Siklus {{days}} hari · rata-rata {{avg}} hari kerja/minggu",
+      "addShift": "Tambah shift",
+      "addBlock": "Tambah blok",
+      "repeatCount": "Ulangi {{count}}×",
+      "moveUp": "Pindah ke atas",
+      "moveDown": "Pindah ke bawah",
+      "duplicate": "Duplikat",
+      "insertBefore": "Sisipkan sebelum",
+      "insertAfter": "Sisipkan setelah",
+      "delete": "Hapus"
+    },
+    "inspector": {
+      "titleCreate": "Tipe shift baru",
+      "titleEdit": "Edit tipe shift",
+      "name": "Nama",
+      "namePlaceholder": "mis. Shift siang",
+      "kind": {
+        "label": "Tipe",
+        "work": "Kerja",
+        "off": "Libur",
+        "travel": "Perjalanan",
+        "on_call": "Siaga",
+        "training": "Pelatihan",
+        "leave": "Cuti",
+        "custom": "Kustom"
+      },
+      "timePolicy": {
+        "label": "Waktu",
+        "timed": "Waktu ditentukan",
+        "all_day": "Sepanjang hari",
+        "none": "Tanpa waktu"
+      },
+      "startTime": "Waktu mulai",
+      "endTime": "Waktu selesai",
+      "overnight": "Semalam",
+      "overnightHint": "Shift berakhir keesokan harinya",
+      "countsAsWork": "Dihitung sebagai hari kerja",
+      "countsAsNight": "Dihitung sebagai shift malam",
+      "color": "Warna",
+      "icon": "Ikon",
+      "location": "Lokasi",
+      "save": "Simpan",
+      "delete": "Hapus tipe",
+      "deleteConfirm": {
+        "title": "Hapus tipe shift?",
+        "message": "Tindakan ini tidak dapat dibatalkan.",
+        "confirm": "Hapus",
+        "cancel": "Batal"
+      }
+    },
+    "preview": {
+      "title": "Pratinjau",
+      "range30": "30 hari",
+      "range60": "60 hari",
+      "range90": "90 hari",
+      "today": "Hari ini",
+      "anchor": "Jangkar",
+      "empty": "Tidak ada data pratinjau yang tersedia.",
+      "errors": "Pratinjau tidak dapat ditampilkan karena terdapat kesalahan."
+    },
+    "validation": {
+      "errorTitle_one": "{{count}} kesalahan",
+      "errorTitle_other": "{{count}} kesalahan",
+      "warningTitle_one": "{{count}} peringatan",
+      "warningTitle_other": "{{count}} peringatan",
+      "fix": "Perbaiki",
+      "review": "Tinjau",
+      "dismiss": "Abaikan"
+    },
+    "saveResult": {
+      "success": "Jadwal tersimpan",
+      "failed": "Gagal menyimpan — draf Anda tetap ada",
+      "retry": "Coba lagi",
+      "warningConfirm": {
+        "title": "Simpan dengan peringatan?",
+        "confirm": "Simpan tetap",
+        "cancel": "Tinjau"
+      }
+    },
+    "kinds": {
+      "work": "Kerja",
+      "off": "Libur / Istirahat",
+      "travel": "Perjalanan",
+      "on_call": "Siaga",
+      "training": "Pelatihan",
+      "leave": "Cuti",
+      "custom": "Kustom"
+    }
   }
 }

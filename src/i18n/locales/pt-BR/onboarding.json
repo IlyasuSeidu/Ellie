@@ -259,7 +259,13 @@
       "shiftTimes": "Horários de turno",
       "startDate": "Data de início",
       "title": "Seu perfil",
-      "workPattern": "Padrão de Trabalho"
+      "workPattern": "Padrão de Trabalho",
+      "allDay": "All day",
+      "notTimed": "Not timed",
+      "rosterTypeUniversal": "Universal schedule",
+      "universalShiftSystem": "Universal custom shifts",
+      "scheduleEngine": "Schedule engine",
+      "scheduleType": "Schedule type"
     },
     "title": "Tudo pronto.",
     "tryAgain": "Tente novamente",
@@ -303,7 +309,7 @@
       "decline": "Agora não"
     },
     "title_named": "{{name}}, tudo pronto.",
-    "setupReady": "Seu roster {{setup}} está pronto.",
+    "setupReady": "Your {{setup}} schedule is ready.",
     "reminderPromise": "Ellie vai te lembrar antes de cada turno."
   },
   "rosterType": {
@@ -1143,5 +1149,186 @@
       "mental_math": "Contando os dias para descobrir quando vou trabalhar"
     },
     "cta": "Continuar"
+  },
+  "shiftBuilder": {
+    "title": "Criador de Turnos",
+    "navButtonCreate": "Criar Escala Personalizada",
+    "navButtonEdit": "Editar Escala Universal",
+    "unsavedChanges": "Alterações não salvas",
+    "save": {
+      "success": "Escala salva",
+      "failed": "Falha ao salvar — seu rascunho foi mantido",
+      "retry": "Tentar novamente",
+      "warningConfirm": {
+        "title": "Salvar com avisos?",
+        "confirm": "Salvar mesmo assim",
+        "cancel": "Revisar"
+      }
+    },
+    "saving": "Salvando...",
+    "saved": "Salvo",
+    "discard": "Descartar",
+    "cancel": "Cancelar",
+    "back": "Voltar",
+    "confirmDiscard": {
+      "title": "Descartar alterações?",
+      "message": "Você tem alterações não salvas. Descartá-las?",
+      "discard": "Descartar",
+      "keepEditing": "Continuar editando"
+    },
+    "scheduleName": {
+      "label": "Nome da escala",
+      "placeholder": "Minha Escala"
+    },
+    "anchorDate": {
+      "label": "Data âncora",
+      "hint": "A sequência se repete a partir desta data"
+    },
+    "phaseOffset": {
+      "label": "Dia atual no ciclo",
+      "hint": "0 = início do ciclo"
+    },
+    "ai": {
+      "sectionTitle": "Assistente de IA",
+      "promptPlaceholder": "Descreva sua escala...",
+      "buildButton": "Criar com IA",
+      "loading": "Analisando sua escala...",
+      "notConfigured": "Análise de IA indisponível — crie manualmente abaixo",
+      "retry": "Tentar novamente",
+      "error": {
+        "notConfigured": "O assistente de IA não está configurado.",
+        "promptEmpty": "Por favor, descreva sua escala antes de continuar.",
+        "promptTooLong": "A descrição é muito longa. Reduza-a e tente novamente.",
+        "timeout": "A análise demorou muito. Tente novamente.",
+        "rateLimited": "Muitas requisições. Aguarde um momento e tente novamente.",
+        "networkError": "Erro de rede. Verifique sua conexão e tente novamente.",
+        "serverError": "Erro no servidor. Tente novamente mais tarde.",
+        "generic": "Algo deu errado. Tente novamente."
+      },
+      "chips": {
+        "4on4off": "4 trabalha 4 folga",
+        "4days4nights4off": "4 dias 4 noites 4 folga",
+        "monFri95": "Seg–Sex 9–17",
+        "7on7off": "7 trabalha 7 folga",
+        "rotatingSwing": "Rotativo de 12h",
+        "fifo14": "14 trabalha 14 folga FIFO"
+      }
+    },
+    "review": {
+      "title": "Veja o que eu entendi",
+      "confidence": {
+        "high": "Alta confiança",
+        "medium": "Confiança média",
+        "low": "Baixa confiança"
+      },
+      "assumptions": "Suposições",
+      "questions": "Perguntas",
+      "warnings": "Avisos",
+      "useDraft": "Usar este rascunho",
+      "editManually": "Editar manualmente",
+      "discardDraft": "Descartar rascunho",
+      "followUp": "Fazer um acompanhamento...",
+      "send": "Enviar",
+      "invalid": "A resposta da IA é inválida. Tente novamente."
+    },
+    "palette": {
+      "title": "Tipos de turno",
+      "addNew": "Adicionar tipo de turno",
+      "usageCount_one": "{{count}} uso",
+      "usageCount_other": "{{count}} usos",
+      "deleteBlocked": "Em uso",
+      "deleteBlockedMessage": "Este tipo de turno é usado {{count}} vez(es) na sequência. Remova essas entradas primeiro ou substitua-as."
+    },
+    "canvas": {
+      "title": "Sequência",
+      "empty": "Adicione turnos para montar sua sequência.",
+      "cycleStats": "Ciclo de {{days}} dias · média de {{avg}} dias úteis/semana",
+      "addShift": "Adicionar turno",
+      "addBlock": "Adicionar bloco",
+      "repeatCount": "Repetir {{count}}×",
+      "moveUp": "Mover para cima",
+      "moveDown": "Mover para baixo",
+      "duplicate": "Duplicar",
+      "insertBefore": "Inserir antes",
+      "insertAfter": "Inserir depois",
+      "delete": "Excluir"
+    },
+    "inspector": {
+      "titleCreate": "Novo tipo de turno",
+      "titleEdit": "Editar tipo de turno",
+      "name": "Nome",
+      "namePlaceholder": "ex. Turno diurno",
+      "kind": {
+        "label": "Tipo",
+        "work": "Trabalho",
+        "off": "Folga",
+        "travel": "Viagem",
+        "on_call": "Plantão",
+        "training": "Treinamento",
+        "leave": "Licença",
+        "custom": "Personalizado"
+      },
+      "timePolicy": {
+        "label": "Horário",
+        "timed": "Horários definidos",
+        "all_day": "Dia inteiro",
+        "none": "Sem horário"
+      },
+      "startTime": "Horário de início",
+      "endTime": "Horário de término",
+      "overnight": "Vira a noite",
+      "overnightHint": "O turno termina no dia seguinte",
+      "countsAsWork": "Conta como dia útil",
+      "countsAsNight": "Conta como turno noturno",
+      "color": "Cor",
+      "icon": "Ícone",
+      "location": "Local",
+      "save": "Salvar",
+      "delete": "Excluir tipo",
+      "deleteConfirm": {
+        "title": "Excluir tipo de turno?",
+        "message": "Esta ação não pode ser desfeita.",
+        "confirm": "Excluir",
+        "cancel": "Cancelar"
+      }
+    },
+    "preview": {
+      "title": "Visualização",
+      "range30": "30 dias",
+      "range60": "60 dias",
+      "range90": "90 dias",
+      "today": "Hoje",
+      "anchor": "Âncora",
+      "empty": "Nenhum dado de visualização disponível.",
+      "errors": "A visualização não pode ser exibida por causa de erros."
+    },
+    "validation": {
+      "errorTitle_one": "{{count}} erro",
+      "errorTitle_other": "{{count}} erros",
+      "warningTitle_one": "{{count}} aviso",
+      "warningTitle_other": "{{count}} avisos",
+      "fix": "Corrigir",
+      "review": "Revisar",
+      "dismiss": "Ignorar"
+    },
+    "saveResult": {
+      "success": "Escala salva",
+      "failed": "Falha ao salvar — seu rascunho foi mantido",
+      "retry": "Tentar novamente",
+      "warningConfirm": {
+        "title": "Salvar com avisos?",
+        "confirm": "Salvar mesmo assim",
+        "cancel": "Revisar"
+      }
+    },
+    "kinds": {
+      "work": "Trabalho",
+      "off": "Folga / Descanso",
+      "travel": "Viagem",
+      "on_call": "Plantão",
+      "training": "Treinamento",
+      "leave": "Licença",
+      "custom": "Personalizado"
+    }
   }
 }

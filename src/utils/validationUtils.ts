@@ -36,7 +36,7 @@ export function validateEmail(email: string): boolean {
  *
  * @example
  * ```typescript
- * const data = { patternType: 'STANDARD_3_3_3', ... };
+ * const data = { universalSchedule: schedule, ... };
  * if (validateShiftCycle(data)) {
  *   // data is ShiftCycle type
  * }

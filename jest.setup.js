@@ -98,6 +98,36 @@ jest.mock('expo-notifications', () => ({
   },
 }));
 
+jest.mock('expo-document-picker', () => ({
+  getDocumentAsync: jest.fn(async () => ({ canceled: true, assets: [] })),
+}));
+
+jest.mock('expo-sharing', () => ({
+  isAvailableAsync: jest.fn(async () => true),
+  shareAsync: jest.fn(async () => {}),
+}));
+
+jest.mock('expo-file-system/legacy', () => {
+  const files = new Map();
+  return {
+    cacheDirectory: 'file:///tmp/',
+    documentDirectory: 'file:///tmp/documents/',
+    EncodingType: { UTF8: 'utf8', Base64: 'base64' },
+    getInfoAsync: jest.fn(async (uri) => ({ exists: files.has(uri) || uri.endsWith('/'), uri })),
+    makeDirectoryAsync: jest.fn(async () => {}),
+    writeAsStringAsync: jest.fn(async (uri, contents) => {
+      files.set(uri, contents);
+    }),
+    readAsStringAsync: jest.fn(async (uri) => files.get(uri) ?? ''),
+    copyAsync: jest.fn(async ({ from, to }) => {
+      files.set(to, files.get(from) ?? '');
+    }),
+    deleteAsync: jest.fn(async (uri) => {
+      files.delete(uri);
+    }),
+  };
+});
+
 // Mock expo-constants
 jest.mock('expo-constants', () => ({
   default: {
@@ -307,9 +337,13 @@ jest.mock('react-native-gesture-handler', () => {
     Gesture: {
       Pan: () => ({
         enabled: jest.fn().mockReturnThis(),
+        activateAfterLongPress: jest.fn().mockReturnThis(),
+        runOnJS: jest.fn().mockReturnThis(),
+        onBegin: jest.fn().mockReturnThis(),
         onStart: jest.fn().mockReturnThis(),
         onUpdate: jest.fn().mockReturnThis(),
         onEnd: jest.fn().mockReturnThis(),
+        onFinalize: jest.fn().mockReturnThis(),
       }),
       Tap: () => ({
         enabled: jest.fn().mockReturnThis(),
