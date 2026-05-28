@@ -14,9 +14,9 @@ import type {
 } from 'openai/resources/chat/completions';
 import { executeTool } from './shift-tools';
 import {
-  EllieBrainErrorCode,
-  EllieBrainRequest,
-  EllieBrainResponse,
+  RyvroBrainErrorCode,
+  RyvroBrainRequest,
+  RyvroBrainResponse,
   QueryProcessingOptions,
 } from './types';
 
@@ -31,21 +31,21 @@ interface OpenAIErrorShape {
   message?: string;
 }
 
-export class EllieBrainProcessingError extends Error {
-  readonly code: EllieBrainErrorCode;
+export class RyvroBrainProcessingError extends Error {
+  readonly code: RyvroBrainErrorCode;
   readonly retryable: boolean;
   readonly statusCode: number;
   readonly providerStatus?: number;
 
   constructor(
-    code: EllieBrainErrorCode,
+    code: RyvroBrainErrorCode,
     message: string,
     retryable: boolean,
     statusCode: number,
     providerStatus?: number
   ) {
     super(message);
-    this.name = 'EllieBrainProcessingError';
+    this.name = 'RyvroBrainProcessingError';
     this.code = code;
     this.retryable = retryable;
     this.statusCode = statusCode;
@@ -53,8 +53,8 @@ export class EllieBrainProcessingError extends Error {
   }
 }
 
-function mapProviderError(error: unknown): EllieBrainProcessingError {
-  if (error instanceof EllieBrainProcessingError) {
+function mapProviderError(error: unknown): RyvroBrainProcessingError {
+  if (error instanceof RyvroBrainProcessingError) {
     return error;
   }
 
@@ -65,7 +65,7 @@ function mapProviderError(error: unknown): EllieBrainProcessingError {
   const message = providerError.message || 'Provider request failed';
 
   if (status === 429) {
-    return new EllieBrainProcessingError(
+    return new RyvroBrainProcessingError(
       'rate_limited',
       'Too many requests. Please retry shortly.',
       true,
@@ -81,7 +81,7 @@ function mapProviderError(error: unknown): EllieBrainProcessingError {
     type.includes('timeout') ||
     message.toLowerCase().includes('timeout')
   ) {
-    return new EllieBrainProcessingError(
+    return new RyvroBrainProcessingError(
       'provider_timeout',
       'Provider request timed out.',
       true,
@@ -91,7 +91,7 @@ function mapProviderError(error: unknown): EllieBrainProcessingError {
   }
 
   if (status && status >= 500) {
-    return new EllieBrainProcessingError(
+    return new RyvroBrainProcessingError(
       'provider_error',
       'Provider temporarily unavailable.',
       true,
@@ -101,7 +101,7 @@ function mapProviderError(error: unknown): EllieBrainProcessingError {
   }
 
   if (status && status >= 400) {
-    return new EllieBrainProcessingError(
+    return new RyvroBrainProcessingError(
       'provider_error',
       'Provider rejected the request.',
       false,
@@ -110,7 +110,7 @@ function mapProviderError(error: unknown): EllieBrainProcessingError {
     );
   }
 
-  return new EllieBrainProcessingError('internal_error', message, true, 500);
+  return new RyvroBrainProcessingError('internal_error', message, true, 500);
 }
 
 async function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
@@ -119,7 +119,7 @@ async function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T
     const timeoutPromise = new Promise<T>((_, reject) => {
       timeoutId = setTimeout(() => {
         reject(
-          new EllieBrainProcessingError(
+          new RyvroBrainProcessingError(
             'provider_timeout',
             'Provider request timed out.',
             true,
@@ -340,7 +340,7 @@ const TOOLS: ChatCompletionTool[] = [
 /**
  * Build the system prompt for the model.
  */
-function buildSystemPrompt(request: EllieBrainRequest): string {
+function buildSystemPrompt(request: RyvroBrainRequest): string {
   const ctx = request.userContext;
   const shiftSystemDesc =
     ctx.shiftSystem === '2-shift'
@@ -406,10 +406,10 @@ function parseToolArgs(args: string): Record<string, unknown> {
  * Process a query through OpenAI with tool use loop.
  */
 export async function processQuery(
-  request: EllieBrainRequest,
+  request: RyvroBrainRequest,
   openaiApiKey: string,
   options: QueryProcessingOptions
-): Promise<EllieBrainResponse> {
+): Promise<RyvroBrainResponse> {
   const client = new OpenAI({ apiKey: openaiApiKey });
   const providerTimeoutMs = options.timeoutMs || DEFAULT_PROVIDER_TIMEOUT_MS;
 

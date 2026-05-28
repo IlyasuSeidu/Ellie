@@ -6,13 +6,13 @@
  * receives natural language responses with optional shift data.
  */
 
-import { ryvroBrainConfig, isConfiguredEllieBrainUrl, voiceAssistantConfig } from '@/config/env';
+import { ryvroBrainConfig, isConfiguredRyvroBrainUrl, voiceAssistantConfig } from '@/config/env';
 import { logger } from '@/utils/logger';
 import type {
-  EllieBrainErrorPayload,
-  EllieBrainRequest,
-  EllieBrainResponse,
-  EllieBrainResponseEnvelope,
+  RyvroBrainErrorPayload,
+  RyvroBrainRequest,
+  RyvroBrainResponse,
+  RyvroBrainResponseEnvelope,
   VoiceAssistantErrorType,
   VoiceAssistantUserContext,
   VoiceMessage,
@@ -20,7 +20,7 @@ import type {
 
 type AbortReason = 'none' | 'timeout' | 'user' | 'superseded';
 
-interface EllieBrainServiceErrorOptions {
+interface RyvroBrainServiceErrorOptions {
   type: VoiceAssistantErrorType;
   message: string;
   retryable: boolean;
@@ -29,16 +29,16 @@ interface EllieBrainServiceErrorOptions {
   statusCode?: number;
 }
 
-export class EllieBrainServiceError extends Error {
+export class RyvroBrainServiceError extends Error {
   readonly type: VoiceAssistantErrorType;
   readonly retryable: boolean;
   readonly code?: string;
   readonly requestId?: string;
   readonly statusCode?: number;
 
-  constructor(options: EllieBrainServiceErrorOptions) {
+  constructor(options: RyvroBrainServiceErrorOptions) {
     super(options.message);
-    this.name = 'EllieBrainServiceError';
+    this.name = 'RyvroBrainServiceError';
     this.type = options.type;
     this.retryable = options.retryable;
     this.code = options.code;
@@ -61,18 +61,18 @@ function normalizeBackendError(
   rawBody: string,
   parsedBody: unknown,
   fallbackMessage: string
-): EllieBrainServiceError {
-  const envelope = parsedBody as EllieBrainResponseEnvelope | undefined;
+): RyvroBrainServiceError {
+  const envelope = parsedBody as RyvroBrainResponseEnvelope | undefined;
   const structuredError =
     envelope && typeof envelope === 'object' && envelope.error && typeof envelope.error === 'object'
-      ? (envelope.error as EllieBrainErrorPayload)
+      ? (envelope.error as RyvroBrainErrorPayload)
       : undefined;
   const requestId =
     structuredError?.requestId ??
     (envelope && typeof envelope === 'object' ? envelope.requestId : undefined);
 
   if (structuredError?.message) {
-    return new EllieBrainServiceError({
+    return new RyvroBrainServiceError({
       type:
         structuredError.code === 'rate_limited'
           ? 'rate_limited'
@@ -88,7 +88,7 @@ function normalizeBackendError(
   }
 
   if (statusCode === 429) {
-    return new EllieBrainServiceError({
+    return new RyvroBrainServiceError({
       type: 'rate_limited',
       message: 'Too many requests. Please wait briefly and retry.',
       retryable: true,
@@ -99,7 +99,7 @@ function normalizeBackendError(
   }
 
   if (statusCode === 408 || statusCode === 504) {
-    return new EllieBrainServiceError({
+    return new RyvroBrainServiceError({
       type: 'timeout',
       message: 'The request timed out. Please try again.',
       retryable: true,
@@ -110,7 +110,7 @@ function normalizeBackendError(
   }
 
   if (statusCode >= 500) {
-    return new EllieBrainServiceError({
+    return new RyvroBrainServiceError({
       type: 'backend_error',
       message: 'The service is temporarily unavailable. Please try again.',
       retryable: true,
@@ -121,7 +121,7 @@ function normalizeBackendError(
   }
 
   const plainTextMessage = rawBody.trim() || fallbackMessage;
-  return new EllieBrainServiceError({
+  return new RyvroBrainServiceError({
     type: 'backend_error',
     message: plainTextMessage,
     retryable: false,
@@ -131,14 +131,14 @@ function normalizeBackendError(
   });
 }
 
-function normalizeSuccessResponse(parsedBody: unknown): EllieBrainResponse {
-  const envelope = parsedBody as EllieBrainResponseEnvelope | undefined;
+function normalizeSuccessResponse(parsedBody: unknown): RyvroBrainResponse {
+  const envelope = parsedBody as RyvroBrainResponseEnvelope | undefined;
   const envelopeError =
     envelope && typeof envelope === 'object' && envelope.error && typeof envelope.error === 'object'
-      ? (envelope.error as EllieBrainErrorPayload)
+      ? (envelope.error as RyvroBrainErrorPayload)
       : undefined;
   if (envelopeError) {
-    throw new EllieBrainServiceError({
+    throw new RyvroBrainServiceError({
       type:
         envelopeError.code === 'rate_limited'
           ? 'rate_limited'
@@ -159,7 +159,7 @@ function normalizeSuccessResponse(parsedBody: unknown): EllieBrainResponse {
     typeof envelope.data === 'object' &&
     typeof envelope.data.text === 'string'
       ? {
-          ...(envelope.data as EllieBrainResponse),
+          ...(envelope.data as RyvroBrainResponse),
           requestId: envelope.data.requestId ?? envelope.requestId,
         }
       : null;
@@ -169,12 +169,12 @@ function normalizeSuccessResponse(parsedBody: unknown): EllieBrainResponse {
   }
 
   const directPayload =
-    parsedBody && typeof parsedBody === 'object' ? (parsedBody as EllieBrainResponse) : null;
+    parsedBody && typeof parsedBody === 'object' ? (parsedBody as RyvroBrainResponse) : null;
   if (directPayload?.text) {
     return directPayload;
   }
 
-  throw new EllieBrainServiceError({
+  throw new RyvroBrainServiceError({
     type: 'backend_error',
     message: 'Received malformed response from Ryvro voice service.',
     retryable: true,
@@ -182,7 +182,7 @@ function normalizeSuccessResponse(parsedBody: unknown): EllieBrainResponse {
   });
 }
 
-class EllieBrainService {
+class RyvroBrainService {
   private abortController: AbortController | null = null;
   private abortReason: AbortReason = 'none';
 
@@ -198,9 +198,9 @@ class EllieBrainService {
     query: string,
     userContext: VoiceAssistantUserContext,
     conversationHistory: VoiceMessage[] = []
-  ): Promise<EllieBrainResponse> {
-    if (!isConfiguredEllieBrainUrl(ryvroBrainConfig.url)) {
-      throw new EllieBrainServiceError({
+  ): Promise<RyvroBrainResponse> {
+    if (!isConfiguredRyvroBrainUrl(ryvroBrainConfig.url)) {
+      throw new RyvroBrainServiceError({
         type: 'backend_error',
         message: 'Ryvro voice service is not configured in this build.',
         retryable: false,
@@ -226,7 +226,7 @@ class EllieBrainService {
         text: msg.text,
       }));
 
-    const requestBody: EllieBrainRequest = {
+    const requestBody: RyvroBrainRequest = {
       query: sanitizedQuery,
       userContext,
       conversationHistory: history,
@@ -268,7 +268,7 @@ class EllieBrainService {
       const parsedBody = parseJsonSafe(rawBody);
 
       if (!parsedBody) {
-        throw new EllieBrainServiceError({
+        throw new RyvroBrainServiceError({
           type: 'backend_error',
           message: 'Backend response is not valid JSON.',
           retryable: true,
@@ -286,14 +286,14 @@ class EllieBrainService {
 
       return data;
     } catch (error) {
-      if (error instanceof EllieBrainServiceError) {
+      if (error instanceof RyvroBrainServiceError) {
         throw error;
       }
 
       if ((error as Error).name === 'AbortError') {
         const abortReason = this.abortReason as AbortReason;
         if (abortReason === 'user' || abortReason === 'superseded') {
-          throw new EllieBrainServiceError({
+          throw new RyvroBrainServiceError({
             type: 'unknown',
             message: 'Request cancelled',
             retryable: false,
@@ -301,7 +301,7 @@ class EllieBrainService {
           });
         }
 
-        throw new EllieBrainServiceError({
+        throw new RyvroBrainServiceError({
           type: 'timeout',
           message: 'The request timed out. Please try again.',
           retryable: true,
@@ -314,7 +314,7 @@ class EllieBrainService {
           .toLowerCase()
           .includes('network request failed')
       ) {
-        throw new EllieBrainServiceError({
+        throw new RyvroBrainServiceError({
           type: 'network_error',
           message:
             `Cannot reach Ryvro voice service at ${ryvroBrainConfig.url}. ` +
@@ -324,7 +324,7 @@ class EllieBrainService {
         });
       }
       logger.error('Ryvro voice query failed', error as Error);
-      throw new EllieBrainServiceError({
+      throw new RyvroBrainServiceError({
         type: 'backend_error',
         message: (error as Error).message || 'Unknown Ryvro voice service error',
         retryable: true,
@@ -356,4 +356,4 @@ class EllieBrainService {
   }
 }
 
-export const ellieBrainService = new EllieBrainService();
+export const ryvroBrainService = new RyvroBrainService();

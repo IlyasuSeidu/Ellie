@@ -27,6 +27,7 @@ Completed in the current working tree:
 - Added RevenueCat entitlement regression tests that pin Ryvro launch aliases while making the old Ellie/miner aliases explicit migration compatibility only.
 - Added `RYVRO_BRAIN_URL` / `RYVRO_BRAIN_TIMEOUT` as the preferred voice-backend environment names while preserving the old `ELLIE_BRAIN_*` keys as migration fallbacks.
 - Renamed the Firebase functions deploy codebase from `ellie-brain` to `ryvro-brain` in repo config and added `ryvroBrain` as the primary HTTPS function export. The old `ellieBrain` export remains as a compatibility endpoint until production clients and external dashboards have migrated.
+- Renamed active Ryvro voice client/source symbols from the old Ellie brain naming to `RyvroBrain*` while preserving only the `ellieBrain` HTTP export as the legacy migration endpoint.
 - Updated CI and e2e dummy brain endpoint environment values so both preferred and legacy compatibility variables point at the Ryvro test endpoint.
 - Added repo-side App Store / Google Play listing copy in `docs/RYVRO_STORE_LISTING.md`.
 - Added repo-side privacy policy, terms, support, account deletion, support email, and Firebase Auth email templates in `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`.
@@ -47,7 +48,7 @@ Still pending outside this repo or intentionally kept for compatibility:
 - RevenueCat dashboard product/entitlement renames if the production dashboard still uses old Ellie/miner names.
 - Push notification, analytics, Sentry, support-email, privacy-policy, terms, website, and store-listing updates outside the repo. Repo-side source copy and setup handoff now exist in `docs/RYVRO_STORE_LISTING.md`, `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`, and `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md`.
 - Production backend deploy and cutover from `ellieBrain` to `ryvroBrain`. Repo code now exposes both endpoints, but the actual Firebase project still needs a deploy, smoke test, and eventual legacy endpoint retirement plan.
-- Optional internal code-symbol cleanup for old technical names such as `EllieBrainService`, `EllieButton`, internal `Ellie` tab route, `@ellie_language`, and wake-word model filenames. These are not user-facing in the current UI and were left stable to avoid breaking stored data, tests, native modules, and backend contracts.
+- Optional internal code-symbol cleanup for old technical names such as `EllieButton`, internal `Ellie` tab route, `@ellie_language`, and wake-word model filenames. These are not user-facing in the current UI and were left stable to avoid breaking stored data, tests, native modules, and backend contracts.
 
 ## External Clearance Evidence: 2026-05-28
 

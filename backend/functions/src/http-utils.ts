@@ -1,15 +1,15 @@
 import { randomUUID } from 'crypto';
-import { EllieBrainErrorCode, EllieBrainErrorEnvelope, EllieBrainRequest } from './types';
+import { RyvroBrainErrorCode, RyvroBrainErrorEnvelope, RyvroBrainRequest } from './types';
 
 export interface ValidationResult {
   ok: true;
-  request: EllieBrainRequest;
+  request: RyvroBrainRequest;
 }
 
 export interface ValidationFailure {
   ok: false;
   statusCode: number;
-  code: EllieBrainErrorCode;
+  code: RyvroBrainErrorCode;
   message: string;
 }
 
@@ -25,10 +25,10 @@ export function createRequestId(rawRequestId: unknown): string {
 
 export function createErrorEnvelope(
   requestId: string,
-  code: EllieBrainErrorCode,
+  code: RyvroBrainErrorCode,
   message: string,
   retryable: boolean
-): EllieBrainErrorEnvelope {
+): RyvroBrainErrorEnvelope {
   return {
     ok: false,
     requestId,
@@ -46,7 +46,7 @@ function isValidShiftCycle(shiftCycle: unknown): boolean {
     return false;
   }
 
-  const typedShiftCycle = shiftCycle as EllieBrainRequest['userContext']['shiftCycle'];
+  const typedShiftCycle = shiftCycle as RyvroBrainRequest['userContext']['shiftCycle'];
   return (
     typeof typedShiftCycle.startDate === 'string' &&
     typedShiftCycle.startDate.length > 0 &&
@@ -64,7 +64,7 @@ export function validateRequestBody(body: unknown): ValidationResult | Validatio
     };
   }
 
-  const request = body as Partial<EllieBrainRequest>;
+  const request = body as Partial<RyvroBrainRequest>;
   if (!request.query || typeof request.query !== 'string' || request.query.trim().length === 0) {
     return {
       ok: false,
@@ -96,10 +96,10 @@ export function validateRequestBody(body: unknown): ValidationResult | Validatio
     };
   }
 
-  const sanitizedRequest: EllieBrainRequest = {
+  const sanitizedRequest: RyvroBrainRequest = {
     ...request,
     query: request.query.trim().slice(0, 500),
-  } as EllieBrainRequest;
+  } as RyvroBrainRequest;
 
   return { ok: true, request: sanitizedRequest };
 }

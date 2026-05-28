@@ -9,7 +9,7 @@
 
 import { speechRecognitionService } from './SpeechRecognitionService';
 import { textToSpeechService } from './TextToSpeechService';
-import { ellieBrainService, EllieBrainServiceError } from './EllieBrainService';
+import { ryvroBrainService, RyvroBrainServiceError } from './RyvroBrainService';
 import { voiceAssistantConfig } from '@/config/env';
 import { logger } from '@/utils/logger';
 import {
@@ -367,7 +367,7 @@ class VoiceAssistantService {
         await speechRecognitionService.abort();
         break;
       case 'processing':
-        ellieBrainService.abort('user');
+        ryvroBrainService.abort('user');
         break;
       case 'speaking':
         await textToSpeechService.stop();
@@ -498,7 +498,7 @@ class VoiceAssistantService {
 
     // Fall through to backend for complex queries
     try {
-      const response = await ellieBrainService.query(
+      const response = await ryvroBrainService.query(
         query,
         this.userContext,
         this.conversationHistory
@@ -527,7 +527,7 @@ class VoiceAssistantService {
         return;
       }
 
-      if (error instanceof EllieBrainServiceError) {
+      if (error instanceof RyvroBrainServiceError) {
         if (error.code === 'request_cancelled') {
           return;
         }
@@ -822,7 +822,7 @@ class VoiceAssistantService {
   destroy(): void {
     speechRecognitionService.destroy();
     textToSpeechService.destroy();
-    ellieBrainService.destroy();
+    ryvroBrainService.destroy();
     this.callbacks = null;
     this.userContext = null;
     this.conversationHistory = [];

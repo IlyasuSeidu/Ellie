@@ -1,6 +1,20 @@
 import fs from 'fs';
 import path from 'path';
 
+const walkFiles = (dir: string): string[] => {
+  if (!fs.existsSync(dir)) {
+    return [];
+  }
+
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      return walkFiles(fullPath);
+    }
+    return entry.isFile() ? [fullPath] : [];
+  });
+};
+
 describe('Ryvro environment template', () => {
   const envExample = fs.readFileSync(path.join(process.cwd(), '.env.example'), 'utf8');
   const appJson = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'app.json'), 'utf8')) as {
@@ -102,5 +116,20 @@ describe('Ryvro environment template', () => {
     expect(e2eWorkflow).not.toContain('ellie-brain-test.cloudfunctions.net/ellieBrain');
     expect(ciWorkflow).toContain('ryvro-brain-test.cloudfunctions.net/ryvroBrain');
     expect(e2eWorkflow).toContain('ryvro-brain-test.cloudfunctions.net/ryvroBrain');
+  });
+
+  it('keeps active voice backend source on Ryvro naming', () => {
+    const files = [
+      ...walkFiles(path.join(process.cwd(), 'src')),
+      ...walkFiles(path.join(process.cwd(), 'backend/functions/src')),
+    ].filter((file) => /\.(ts|tsx|js|jsx)$/.test(file));
+    const activeSource = files.map((file) => fs.readFileSync(file, 'utf8')).join('\n');
+
+    expect(activeSource).toContain('RyvroBrainService');
+    expect(activeSource).toContain('ryvroBrainService');
+    expect(activeSource).toContain('isConfiguredRyvroBrainUrl');
+    expect(activeSource).not.toContain('EllieBrainService');
+    expect(activeSource).not.toContain('ellieBrainService');
+    expect(activeSource).not.toContain('isConfiguredEllieBrainUrl');
   });
 });

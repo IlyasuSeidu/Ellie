@@ -159,7 +159,7 @@ export interface AppConfig {
   };
 }
 
-export function isConfiguredEllieBrainUrl(url: string | undefined | null): boolean {
+export function isConfiguredRyvroBrainUrl(url: string | undefined | null): boolean {
   const normalized = typeof url === 'string' ? url.trim() : '';
   if (!normalized || normalized.includes('REGION-PROJECT')) {
     return false;
@@ -438,7 +438,7 @@ function validateConfig(config: AppConfig): void {
     throw new Error('API timeout must be between 1000 and 60000 milliseconds');
   }
 
-  if (!isConfiguredEllieBrainUrl(config.ryvroBrain.url)) {
+  if (!isConfiguredRyvroBrainUrl(config.ryvroBrain.url)) {
     const message =
       'RYVRO_BRAIN_URL must be configured with a valid deployed endpoint. ' +
       'Placeholder Cloud Function URLs are not supported.';

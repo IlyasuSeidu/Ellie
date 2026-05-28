@@ -41,8 +41,8 @@ import {
   type AudienceOpsSuccessEnvelope,
   validateAudienceRunInput,
 } from './audience-os/http';
-import { EllieBrainProcessingError, processQuery } from './ellie-brain';
-import { EllieBrainSuccessEnvelope } from './types';
+import { RyvroBrainProcessingError, processQuery } from './ryvro-brain';
+import { RyvroBrainSuccessEnvelope } from './types';
 import { createErrorEnvelope, createRequestId, validateRequestBody } from './http-utils';
 import {
   ShiftScheduleParserError,
@@ -590,7 +590,7 @@ async function handleRyvroVoiceRequest(req: Request, res: Response) {
     });
 
     if (!response.text || response.text.trim().length === 0) {
-      throw new EllieBrainProcessingError(
+      throw new RyvroBrainProcessingError(
         'provider_error',
         'Provider returned an empty response.',
         true,
@@ -598,7 +598,7 @@ async function handleRyvroVoiceRequest(req: Request, res: Response) {
       );
     }
 
-    const successEnvelope: EllieBrainSuccessEnvelope = {
+    const successEnvelope: RyvroBrainSuccessEnvelope = {
       ok: true,
       requestId,
       data: {
@@ -616,9 +616,9 @@ async function handleRyvroVoiceRequest(req: Request, res: Response) {
     res.status(200).json(successEnvelope);
   } catch (error) {
     const mappedError =
-      error instanceof EllieBrainProcessingError
+      error instanceof RyvroBrainProcessingError
         ? error
-        : new EllieBrainProcessingError(
+        : new RyvroBrainProcessingError(
             'internal_error',
             'Something went wrong. Please try again.',
             true,
@@ -646,8 +646,8 @@ async function handleRyvroVoiceRequest(req: Request, res: Response) {
  * Primary HTTPS endpoint for the Ryvro voice backend.
  *
  * POST /ryvroBrain
- * Body: EllieBrainRequest
- * Response: EllieBrainResponse
+ * Body: RyvroBrainRequest
+ * Response: RyvroBrainResponse
  */
 export const ryvroBrain = onRequest(ryvroVoiceEndpointOptions, handleRyvroVoiceRequest);
 
@@ -655,8 +655,8 @@ export const ryvroBrain = onRequest(ryvroVoiceEndpointOptions, handleRyvroVoiceR
  * Legacy HTTPS endpoint retained for migration compatibility.
  *
  * POST /ellieBrain
- * Body: EllieBrainRequest
- * Response: EllieBrainResponse
+ * Body: RyvroBrainRequest
+ * Response: RyvroBrainResponse
  */
 export const ellieBrain = onRequest(ryvroVoiceEndpointOptions, handleRyvroVoiceRequest);
 
