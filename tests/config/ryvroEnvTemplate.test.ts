@@ -102,6 +102,19 @@ describe('Ryvro environment template', () => {
     expect(fs.existsSync(scriptPath)).toBe(true);
   });
 
+  it('keeps the store listing pack submission-ready without placeholder review contacts', () => {
+    const storeListing = fs.readFileSync(
+      path.join(process.cwd(), 'docs/RYVRO_STORE_LISTING.md'),
+      'utf8'
+    );
+
+    expect(storeListing).toContain('reviewer@getryvro.com');
+    expect(storeListing).toContain('support@getryvro.com');
+    expect(storeListing).toContain('App Store Connect / Google Play review notes');
+    expect(storeListing).not.toContain('to be created');
+    expect(storeListing).not.toContain('TBD');
+  });
+
   it('does not keep retired Ellie brain endpoints in CI workflows', () => {
     const ciWorkflow = fs.readFileSync(
       path.join(process.cwd(), '.github/workflows/ci.yml'),

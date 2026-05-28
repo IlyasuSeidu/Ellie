@@ -147,8 +147,9 @@ Ryvro creates shift schedules from manual input, templates, or user-provided nat
 
 Test account:
 
-- Email: to be created in the production Firebase project
-- Password: to be created before submission
+- Email: reviewer@getryvro.com
+- Password: create a fresh strong password in Firebase Auth immediately before submission and enter it only in App Store Connect / Google Play review notes
+- Support contact: support@getryvro.com
 - Subscription state: include either a sandbox subscription path or reviewer instructions for the unlocked test account
 
 Review paths:
