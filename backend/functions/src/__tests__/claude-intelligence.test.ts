@@ -19,7 +19,7 @@ test('builds a Claude prompt from aggregate summaries only', () => {
   const prompt = buildClaudeDailyIntelligencePrompt(summary);
 
   assert.match(prompt.system, /strict JSON/i);
-  assert.match(prompt.user, /daily Ellie analytics report/i);
+  assert.match(prompt.user, /daily Ryvro analytics report/i);
   assert.match(prompt.user, /dailyIntelligenceReport|report/);
   assert.doesNotMatch(prompt.user, /raw_query|email|phone/i);
 });

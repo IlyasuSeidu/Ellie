@@ -146,7 +146,7 @@ export function scoreResearchLead(lead: ResearchLead): LeadScoreBreakdown {
     !lead.signals.wantsPlannedFeaturesOnly;
 
   if (introEligible) {
-    reasons.push('Lead is eligible for Ellie introduction.');
+    reasons.push('Lead is eligible for Ryvro introduction.');
   }
 
   return {

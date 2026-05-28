@@ -285,14 +285,14 @@ export function buildClaudeDailyIntelligencePrompt(
   summary: DailyAnalyticsSummary
 ): ClaudeIntelligencePrompt {
   const system = [
-    'You are the AI intelligence engine for Ellie, a shift schedule app for mining workers.',
+    'You are the AI intelligence engine for Ryvro, a shift planner for miners and FIFO workers at launch that is built on a universal shift-worker schedule engine.',
     'Analyze aggregated analytics only. Never ask for raw PII. Never invent metrics that are not in the report.',
-    'Mining workers use rotating and FIFO rosters; FIFO rest-block inactivity is not automatically churn.',
+    'FIFO rest-block inactivity is not automatically churn; other shift-worker industries may also have long off blocks.',
     'Return strict JSON only. No markdown. No commentary outside JSON.',
   ].join(' ');
 
   const user = JSON.stringify({
-    task: 'Analyze this daily Ellie analytics report and produce founder/actionable intelligence.',
+    task: 'Analyze this daily Ryvro analytics report and produce founder/actionable intelligence.',
     requiredJsonShape: {
       emergencies: [
         {
@@ -362,7 +362,8 @@ export function buildFallbackDailyIntelligenceAnalysis(
       observation: `${summary.offline.unsupportedQuestions} offline questions were unsupported.`,
       recommendation:
         'Review top unsupported offline intents and prioritize local handlers for high-frequency safety/schedule questions.',
-      estimatedImpact: 'Improves underground usability and reduces failed Hey Ellie sessions.',
+      estimatedImpact:
+        'Improves low-connectivity usability and reduces failed Ryvro assistant sessions.',
     });
   }
 
@@ -408,12 +409,13 @@ export function buildFallbackDailyIntelligenceAnalysis(
       ? {
           hypothesis: `Reducing friction on ${summary.onboarding.dropOffs[0].step} will improve onboarding completion.`,
           control: 'Current onboarding step copy and layout.',
-          treatment: 'One clearer, mining-specific explanation plus a lower-effort action path.',
+          treatment:
+            'One clearer miner/FIFO-first explanation plus a lower-effort action path that still works for other shift workers.',
           primaryMetric: 'onboarding_step_completed',
         }
       : null,
     executiveSummary:
-      'Claude analysis was unavailable, so Ellie produced a deterministic fallback from the daily analytics summary.',
+      'Claude analysis was unavailable, so Ryvro produced a deterministic fallback from the daily analytics summary.',
     errorMessage,
     schemaVersion: 1,
   };

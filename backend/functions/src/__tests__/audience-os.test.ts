@@ -12,12 +12,12 @@ import {
   type RawLeadInput,
 } from '../audience-os';
 
-const ellieManifest: ProductManifest = {
-  productId: 'ellie',
-  name: 'Ellie',
+const ryvroManifest: ProductManifest = {
+  productId: 'ryvro',
+  name: 'Ryvro',
   category: 'miner shift certainty app',
   oneSentencePositioning:
-    'Ellie gives mining shift workers fast confidence about their next shift, next block, and future roster dates without mental math.',
+    'Ryvro gives miners and shift workers fast confidence about their next shift, next block, and future roster dates without mental math.',
   targetAudience: [
     {
       personaId: 'underground-production-operator',
@@ -44,7 +44,7 @@ const ellieManifest: ProductManifest = {
     day4: 'When do you need the answer fastest?',
     day5: 'How far ahead do you need confidence?',
     day6: 'What would a good tool need to answer instantly?',
-    day7Qualified: 'We are building Ellie around exactly this pain. Want early access?',
+    day7Qualified: 'We are building Ryvro around exactly this pain. Want early access?',
   },
   activationGoals: ['Get the user to confirm their next shift correctly.'],
   conversionOffers: ['Early access upgrade'],
@@ -58,7 +58,7 @@ const ellieManifest: ProductManifest = {
     primaryAudienceOutcome: 'Know the next shift and next block instantly without mental math.',
     primaryConversionEvent: 'User upgrades to premium after using shift lookup and reminders.',
     activationMoment: 'User confirms their next shift correctly and enables reminders.',
-    retentionMoment: 'User uses Ellie repeatedly before each swing or planning event.',
+    retentionMoment: 'User uses Ryvro repeatedly before each swing or planning event.',
     geographyFocus: ['Australia', 'Ghana'],
     languageSupport: ['English'],
     supportChannels: ['Email support', 'WhatsApp help'],
@@ -124,7 +124,7 @@ test('daily audience run ingests leads, routes tasks, and builds sheet tabs', ()
   const existingLeads: AudienceLead[] = [
     {
       leadId: 'activated-user',
-      productId: 'ellie',
+      productId: 'ryvro',
       stage: 'intro_sent',
       sequenceDay: 7,
       profile: {
@@ -174,7 +174,7 @@ test('daily audience run ingests leads, routes tasks, and builds sheet tabs', ()
     },
     {
       leadId: 'paid-user',
-      productId: 'ellie',
+      productId: 'ryvro',
       stage: 'activated',
       sequenceDay: 7,
       profile: {
@@ -226,7 +226,7 @@ test('daily audience run ingests leads, routes tasks, and builds sheet tabs', ()
 
   const result = buildDailyAudienceRun(
     {
-      manifest: ellieManifest,
+      manifest: ryvroManifest,
       rawLeads,
       leads: existingLeads,
       now: '2026-04-25T08:00:00.000Z',
@@ -234,7 +234,7 @@ test('daily audience run ingests leads, routes tasks, and builds sheet tabs', ()
     ellieAudienceAdapter
   );
 
-  assert.equal(result.manifest.productId, 'ellie');
+  assert.equal(result.manifest.productId, 'ryvro');
   assert.equal(result.ingestedLeads.length, 1);
   assert.equal(result.leadSnapshots.length, 3);
   assert.ok(result.tasks.some((task) => task.agentId === 'conversation-operator'));
@@ -270,8 +270,8 @@ test('agent catalog includes trust governor and lead generation ownership', () =
 
 test('product onboarding questionnaire and manifest completeness helpers are available', () => {
   assert.ok(PRODUCT_ONBOARDING_QUESTIONS.length > 10);
-  assert.deepEqual(getMissingProductOnboardingFields(ellieManifest), []);
-  assert.deepEqual(getMissingProductOnboardingFields({ ...ellieManifest, onboarding: undefined }), [
+  assert.deepEqual(getMissingProductOnboardingFields(ryvroManifest), []);
+  assert.deepEqual(getMissingProductOnboardingFields({ ...ryvroManifest, onboarding: undefined }), [
     'onboarding',
   ]);
 });

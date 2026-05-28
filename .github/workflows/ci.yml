@@ -25,7 +25,9 @@ jobs:
       FIREBASE_MESSAGING_SENDER_ID: '123456789'
       FIREBASE_APP_ID: 1:123456789:web:abcdef
       GOOGLE_WEB_CLIENT_ID: 123456789-abcdef.apps.googleusercontent.com
+      RYVRO_BRAIN_URL: https://ryvro-brain-test.cloudfunctions.net/ellieBrain
       ELLIE_BRAIN_URL: https://ellie-brain-test.cloudfunctions.net/ellieBrain
+      RYVRO_BRAIN_TIMEOUT: '30000'
       ELLIE_BRAIN_TIMEOUT: '30000'
 
     steps:
@@ -69,7 +71,9 @@ jobs:
       FIREBASE_MESSAGING_SENDER_ID: '123456789'
       FIREBASE_APP_ID: 1:123456789:web:abcdef
       GOOGLE_WEB_CLIENT_ID: 123456789-abcdef.apps.googleusercontent.com
+      RYVRO_BRAIN_URL: https://ryvro-brain-test.cloudfunctions.net/ellieBrain
       ELLIE_BRAIN_URL: https://ellie-brain-test.cloudfunctions.net/ellieBrain
+      RYVRO_BRAIN_TIMEOUT: '30000'
       ELLIE_BRAIN_TIMEOUT: '30000'
       NODE_ENV: test
 
@@ -144,7 +148,9 @@ jobs:
       FIREBASE_MESSAGING_SENDER_ID: '123456789'
       FIREBASE_APP_ID: 1:123456789:web:abcdef
       GOOGLE_WEB_CLIENT_ID: 123456789-abcdef.apps.googleusercontent.com
+      RYVRO_BRAIN_URL: https://ryvro-brain-test.cloudfunctions.net/ellieBrain
       ELLIE_BRAIN_URL: https://ellie-brain-test.cloudfunctions.net/ellieBrain
+      RYVRO_BRAIN_TIMEOUT: '30000'
       ELLIE_BRAIN_TIMEOUT: '30000'
 
     steps:

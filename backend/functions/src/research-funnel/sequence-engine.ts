@@ -40,7 +40,7 @@ const DAY_PROMPTS: Record<number, DayPrompt> = {
   },
   7: {
     default:
-      'We’re building Ellie around exactly this problem. Want early access when the next version is ready?',
+      'We’re building Ryvro around exactly this problem. Want early access when the next version is ready?',
   },
 };
 
@@ -62,10 +62,10 @@ function choosePrompt(day: number, personaId: MinerPersonaId): string {
   return prompt.variants?.[personaId] ?? prompt.default;
 }
 
-function buildEllieIntroMessage(lead: ResearchLead): string {
+function buildRyvroIntroMessage(lead: ResearchLead): string {
   const painSummary = lead.lastPainSummary?.trim();
   if (painSummary) {
-    return `We’re building Ellie around exactly this problem: ${painSummary}. Want early access when the next version is ready?`;
+    return `We’re building Ryvro around exactly this problem: ${painSummary}. Want early access when the next version is ready?`;
   }
 
   return DAY_PROMPTS[7].default;
@@ -95,7 +95,7 @@ export function planNextResearchMessage(lead: ResearchLead): SequencePlan {
       nextSequenceDay: normalizeSequenceDay(lead.sequenceDay),
       nextStage: 'not_fit',
       message: null,
-      reason: 'Lead is disqualified because the problem does not fit Ellie’s current wedge.',
+      reason: 'Lead is disqualified because the problem does not fit Ryvro’s current wedge.',
     };
   }
 
@@ -132,8 +132,8 @@ export function planNextResearchMessage(lead: ResearchLead): SequencePlan {
       messageDay: 7,
       nextSequenceDay: 7,
       nextStage: 'ellie_intro_ready',
-      message: buildEllieIntroMessage(lead),
-      reason: 'Lead is qualified for Ellie introduction.',
+      message: buildRyvroIntroMessage(lead),
+      reason: 'Lead is qualified for Ryvro introduction.',
     };
   }
 
