@@ -4,7 +4,7 @@ import {
   AUDIENCE_AGENT_CATALOG,
   buildDailyAudienceRun,
   buildOpenClawAudienceConfig,
-  ellieAudienceAdapter,
+  ryvroAudienceAdapter,
   getMissingProductOnboardingFields,
   PRODUCT_ONBOARDING_QUESTIONS,
   type AudienceLead,
@@ -231,7 +231,7 @@ test('daily audience run ingests leads, routes tasks, and builds sheet tabs', ()
       leads: existingLeads,
       now: '2026-04-25T08:00:00.000Z',
     },
-    ellieAudienceAdapter
+    ryvroAudienceAdapter
   );
 
   assert.equal(result.manifest.productId, 'ryvro');

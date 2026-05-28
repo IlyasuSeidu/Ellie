@@ -42,8 +42,8 @@ export function validateAudienceRunInput(body: unknown): AudienceRunInput {
   }
 
   const candidate = body as Partial<AudienceRunInput> & { adapterId?: string };
-  if (candidate.adapterId && candidate.adapterId !== 'ellie') {
-    throw new Error('Only the "ellie" adapter is implemented in this repo right now.');
+  if (candidate.adapterId && candidate.adapterId !== 'ryvro') {
+    throw new Error('Only the "ryvro" adapter is implemented in this repo right now.');
   }
 
   if (!candidate.manifest || typeof candidate.manifest !== 'object') {

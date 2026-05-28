@@ -15,8 +15,8 @@ export type ResearchStage =
   | 'awaiting_reply'
   | 'paused_no_reply'
   | 'fit_review'
-  | 'ellie_intro_ready'
-  | 'ellie_intro_sent'
+  | 'ryvro_intro_ready'
+  | 'ryvro_intro_sent'
   | 'research_only'
   | 'not_fit'
   | 'closed';
@@ -89,7 +89,7 @@ export interface LeadScoreBreakdown {
 export type SequencePlanAction =
   | 'hold'
   | 'send_question'
-  | 'send_ellie_intro'
+  | 'send_ryvro_intro'
   | 'pause_no_reply'
   | 'close_not_fit';
 

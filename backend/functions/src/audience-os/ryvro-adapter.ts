@@ -99,8 +99,8 @@ function toResearchLead(lead: AudienceLead): ResearchLead {
   };
 }
 
-export const ellieAudienceAdapter: AudienceProductAdapter = {
-  adapterId: 'ellie',
+export const ryvroAudienceAdapter: AudienceProductAdapter = {
+  adapterId: 'ryvro',
   assessLead(_manifest: ProductManifest, lead: AudienceLead): LeadAssessment {
     const researchLead = toResearchLead(lead);
     const classification = classifyMinerPersona(researchLead);
@@ -137,7 +137,7 @@ export const ellieAudienceAdapter: AudienceProductAdapter = {
           reason: plan.reason,
           subagentId: 'discovery-interviewer',
         };
-      case 'send_ellie_intro':
+      case 'send_ryvro_intro':
         return {
           action: 'send_intro',
           nextStage: 'intro_ready',

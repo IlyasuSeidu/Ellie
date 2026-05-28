@@ -35,7 +35,7 @@ import {
   requestClaudeDailyIntelligenceAnalysis,
   type ClaudeDailyIntelligenceAnalysis,
 } from './claude-intelligence';
-import { buildDailyAudienceRun, ellieAudienceAdapter } from './audience-os';
+import { buildDailyAudienceRun, ryvroAudienceAdapter } from './audience-os';
 import {
   createAudienceOpsError,
   type AudienceOpsSuccessEnvelope,
@@ -784,7 +784,7 @@ export const signalLoopPreview = onRequest(
 
     try {
       const input = validateAudienceRunInput(req.body);
-      const result = buildDailyAudienceRun(input, ellieAudienceAdapter);
+      const result = buildDailyAudienceRun(input, ryvroAudienceAdapter);
 
       const response: AudienceOpsSuccessEnvelope = {
         ok: true,

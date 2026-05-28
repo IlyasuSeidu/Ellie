@@ -127,11 +127,11 @@ export function planNextResearchMessage(lead: ResearchLead): SequencePlan {
 
   if (scoring.introEligible && day >= 7) {
     return {
-      action: 'send_ellie_intro',
+      action: 'send_ryvro_intro',
       personaId,
       messageDay: 7,
       nextSequenceDay: 7,
-      nextStage: 'ellie_intro_ready',
+      nextStage: 'ryvro_intro_ready',
       message: buildRyvroIntroMessage(lead),
       reason: 'Lead is qualified for Ryvro introduction.',
     };
