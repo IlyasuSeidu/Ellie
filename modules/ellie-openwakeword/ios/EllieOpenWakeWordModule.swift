@@ -16,7 +16,7 @@ public final class EllieOpenWakeWordModule: Module {
 
   private var initialized = false
   private var listening = false
-  private var keywordLabel = "Hey Ellie"
+  private var keywordLabel = "Ryvro"
   private var threshold = 0.1
   private var triggerCooldownMs = 2000.0
   private var minRmsForDetection = defaultMinRmsForDetection
@@ -139,7 +139,7 @@ public final class EllieOpenWakeWordModule: Module {
              !providedKeywordLabel.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             self.keywordLabel = providedKeywordLabel
           } else {
-            self.keywordLabel = "Hey Ellie"
+            self.keywordLabel = "Ryvro"
           }
 
           if let providedThreshold = options["threshold"] as? Double {
