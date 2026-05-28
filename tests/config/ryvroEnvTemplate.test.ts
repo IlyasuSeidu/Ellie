@@ -3,6 +3,29 @@ import path from 'path';
 
 describe('Ryvro environment template', () => {
   const envExample = fs.readFileSync(path.join(process.cwd(), '.env.example'), 'utf8');
+  const appJson = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'app.json'), 'utf8')) as {
+    expo?: {
+      name?: string;
+      slug?: string;
+      scheme?: string;
+      icon?: string;
+      splash?: {
+        image?: string;
+      };
+      ios?: {
+        bundleIdentifier?: string;
+      };
+      android?: {
+        package?: string;
+        adaptiveIcon?: {
+          foregroundImage?: string;
+        };
+      };
+      web?: {
+        favicon?: string;
+      };
+    };
+  };
   const packageJson = JSON.parse(
     fs.readFileSync(path.join(process.cwd(), 'package.json'), 'utf8')
   ) as {
@@ -18,6 +41,21 @@ describe('Ryvro environment template', () => {
     expect(envExample).toContain('WAKE_WORD_KEYWORD_PATHS_ANDROID=ryvro_android.ppn');
     expect(envExample).toContain('WAKE_WORD_KEYWORD_PATHS_IOS=ryvro_ios.ppn');
     expect(envExample).toContain('OPENWAKEWORD_MODEL_PATH=');
+  });
+
+  it('pins tracked Expo identity to Ryvro launch values', () => {
+    expect(appJson.expo?.name).toBe('Ryvro Shift Planner');
+    expect(appJson.expo?.slug).toBe('ryvro');
+    expect(appJson.expo?.scheme).toBe('ryvro');
+    expect(appJson.expo?.ios?.bundleIdentifier).toBe('com.ryvro.shiftplanner');
+    expect(appJson.expo?.android?.package).toBe('com.ryvro.shiftplanner');
+  });
+
+  it('pins tracked Expo assets to Ryvro launch assets', () => {
+    expect(appJson.expo?.icon).toBe('./assets/icon.png');
+    expect(appJson.expo?.splash?.image).toBe('./assets/splash-icon.png');
+    expect(appJson.expo?.android?.adaptiveIcon?.foregroundImage).toBe('./assets/adaptive-icon.png');
+    expect(appJson.expo?.web?.favicon).toBe('./assets/favicon.png');
   });
 
   it('does not advertise retired Ellie or ShiftSync values in new environments', () => {
