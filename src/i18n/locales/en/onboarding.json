@@ -367,7 +367,7 @@
       "sleep": "Sleep tracking & insights",
       "sleepDesc": "Optimize your rest between shifts with personalized sleep analytics",
       "fatigue": "Fatigue monitoring",
-      "fatigueDesc": "Monitor fatigue risk on long shifts — critical for underground safety",
+      "fatigueDesc": "Monitor fatigue risk on long shifts across site, ward, depot, and field work",
       "team": "Team coordination",
       "teamDesc": "See your crew schedule and coordinate handovers seamlessly",
       "balance": "Work-life balance",
@@ -375,7 +375,7 @@
       "earnings": "Earnings calculator",
       "earningsDesc": "Calculate site allowances, FIFO loadings, and overtime automatically",
       "meals": "Meal & hydration",
-      "mealsDesc": "Stay hydrated and fuelled through 12-hour underground shifts"
+      "mealsDesc": "Stay hydrated and fuelled through long day, night, travel, and callout shifts"
     },
     "featureHint": "Tap a feature chip to see more details.",
     "featuresTitle": "What you can do with Ryvro",

@@ -34,7 +34,7 @@ Ryvro is a **miner-first shift planner** built on a universal schedule engine. I
 - **Instant shift visibility**: "Tomorrow: Night Shift 🌙 6pm-6am"
 - **Long-term planning**: See your schedule months in advance
 - **Smart notifications**: Reminders before shift starts
-- **Offline-first**: Works underground with no cell signal
+- **Offline-first**: Works on-site, underground, in transit, or anywhere signal is unreliable
 - **Universal schedule flexibility**: Supports repeating rotations, FIFO/block rosters, irregular one-off swaps, holidays, travel, training, on-call work, leave, and custom cycles
 - **AI + manual setup**: Describe a roster in plain English, start from an industry template, or build it manually
 - **Voice assistant tooling**: Date/range queries, next block, days-until-work/rest, current block info, and schedule questions
@@ -334,23 +334,23 @@ Ryvro/
 
 ## 🎨 Design System - Sacred Theme
 
-Ryvro uses a custom design system called **"Sacred"** - built specifically for shift workers who check their schedules at 4am before heading underground.
+Ryvro uses a custom design system called **"Sacred"** - built for shift workers who check their schedules at 4am before heading to site, ward, depot, airport, plant, or control room.
 
 ### Color Palette
 
-Colors inspired by the mining environment itself:
+Colors are grounded in the miner-first launch wedge but broad enough for every shift-work setting:
 
-| Name           | Hex       | Usage                                   |
-| -------------- | --------- | --------------------------------------- |
-| **deepVoid**   | `#0C0A09` | Backgrounds (the darkness underground)  |
-| **sacredGold** | `#C5975C` | Primary accents (the mineral extracted) |
-| **paleGold**   | `#F5F1E8` | Body text (4.8:1 contrast, WCAG AA)     |
-| **ashStone**   | `#1C1917` | Card backgrounds (the rock face)        |
-| **warmStone**  | `#A8A29E` | Secondary text                          |
-| **lightStone** | `#78716C` | Labels and hints                        |
-| **dayShift**   | `#2196F3` | Day shift indicators                    |
-| **nightShift** | `#651FFF` | Night shift indicators                  |
-| **daysOff**    | `#FF9800` | Days off indicators                     |
+| Name           | Hex       | Usage                                  |
+| -------------- | --------- | -------------------------------------- |
+| **deepVoid**   | `#0C0A09` | Backgrounds and night-shift contrast   |
+| **sacredGold** | `#C5975C` | Primary accents and high-value actions |
+| **paleGold**   | `#F5F1E8` | Body text (4.8:1 contrast, WCAG AA)    |
+| **ashStone**   | `#1C1917` | Card backgrounds (the rock face)       |
+| **warmStone**  | `#A8A29E` | Secondary text                         |
+| **lightStone** | `#78716C` | Labels and hints                       |
+| **dayShift**   | `#2196F3` | Day shift indicators                   |
+| **nightShift** | `#651FFF` | Night shift indicators                 |
+| **daysOff**    | `#FF9800` | Days off indicators                    |
 
 [Read the design story →](build-in-public/design-tradeoff/02-sacred-theme-system.md)
 
@@ -371,10 +371,10 @@ Colors inspired by the mining environment itself:
 
 - [x] Welcome screen with orchestrated animations
 - [x] Introduction screen (name, occupation, company, country)
-- [x] Tinder-style shift pattern selection
-- [x] Custom pattern builder with visual sliders
-- [x] Start date & phase selection with calendar
-- [x] Shift time input with presets and custom options
+- [x] Universal Shift Builder in onboarding and Settings
+- [x] AI-assisted schedule drafting
+- [x] Manual shift types, colors, icons, reminders, and sequence editing
+- [x] Exceptions, holiday overrides, import/export, and calendar preview
 - [x] Onboarding navigation flow
 
 ### 🚧 Phase 3: Core App Features (In Progress)

@@ -8,8 +8,8 @@ Place your original high-resolution PNG icons here with transparent backgrounds.
 
 Use descriptive names for your icons:
 
-- `pickaxe.png` - Mining pickaxe icon
-- `helmet.png` - Safety helmet icon
+- `shift-calendar.png` - Shift schedule icon
+- `site-badge.png` - Work site or team icon
 - `shift.png` - Shift schedule icon
 - etc.
 

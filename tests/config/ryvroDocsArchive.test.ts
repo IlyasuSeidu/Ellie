@@ -5,6 +5,20 @@ const root = process.cwd();
 const exists = (relativePath: string): boolean => fs.existsSync(path.join(root, relativePath));
 const read = (relativePath: string): string =>
   fs.readFileSync(path.join(root, relativePath), 'utf8');
+const walkFiles = (relativeDir: string): string[] => {
+  const absoluteDir = path.join(root, relativeDir);
+  if (!fs.existsSync(absoluteDir)) {
+    return [];
+  }
+
+  return fs.readdirSync(absoluteDir, { withFileTypes: true }).flatMap((entry) => {
+    const relativePath = path.join(relativeDir, entry.name);
+    if (entry.isDirectory()) {
+      return walkFiles(relativePath);
+    }
+    return [relativePath];
+  });
+};
 
 describe('Ryvro documentation archive', () => {
   const retiredRootDocs = [
@@ -43,6 +57,11 @@ describe('Ryvro documentation archive', () => {
     'profile-shift-settings-plan.md',
   ];
 
+  const retiredDesignPrototypes = [
+    'design-prototypes/homescreen/index.html',
+    'design-prototypes/homescreen-redesign/index.html',
+  ];
+
   it('keeps retired Ellie launch docs out of the repository root', () => {
     for (const doc of retiredRootDocs) {
       expect(exists(doc)).toBe(false);
@@ -54,6 +73,15 @@ describe('Ryvro documentation archive', () => {
     for (const doc of retiredDocs) {
       expect(exists(path.join('docs', doc))).toBe(false);
       expect(exists(path.join('docs/archive/legacy-ellie', doc))).toBe(true);
+    }
+  });
+
+  it('keeps retired Ellie design prototypes out of active design folders', () => {
+    for (const prototype of retiredDesignPrototypes) {
+      expect(
+        exists(path.join('design/prototypes', prototype.replace('design-prototypes/', '')))
+      ).toBe(false);
+      expect(exists(path.join('docs/archive/legacy-ellie', prototype))).toBe(true);
     }
   });
 
@@ -76,5 +104,23 @@ describe('Ryvro documentation archive', () => {
     expect(readme).not.toContain('Phase Selector');
     expect(readme).not.toContain('Onboarding Screens');
     expect(readme).not.toContain('Pattern Selection');
+  });
+
+  it('keeps retired mining-specific default examples out of active launch surfaces', () => {
+    const activeFiles = [
+      'README.md',
+      'assets/onboarding/icons/source/README.md',
+      'e2e/helpers/testData.ts',
+      ...walkFiles('src/i18n/locales'),
+    ];
+
+    for (const file of activeFiles) {
+      const content = read(file);
+      expect(content).not.toContain('Test Mine Co.');
+      expect(content).not.toContain('mining-helmet-sacred-flame');
+      expect(content).not.toContain('helmet.png');
+      expect(content).not.toContain('haul truck');
+      expect(content).not.toContain('Hey Ellie');
+    }
   });
 });

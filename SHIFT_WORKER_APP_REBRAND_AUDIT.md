@@ -30,6 +30,9 @@ Completed in the current working tree:
 - Added repo-side privacy policy, terms, support, account deletion, support email, and Firebase Auth email templates in `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`.
 - Added account-side Firebase, Google OAuth, Apple Sign-In, RevenueCat, store, domain, social, analytics, and release verification handoff in `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md`.
 - Verified the current working tree with full Jest and project validation after the rebrand cleanup.
+- Archived old Ellie homescreen HTML prototypes and fixed-roster implementation plans so active docs point to the Universal Shift Builder path.
+- Replaced the default e2e seed profile with a neutral shift-worker fixture while keeping a separate mining/FIFO launch-wedge fixture.
+- Cleaned remaining launch-critical broad-market copy in README, English onboarding feature descriptions, selected translated placeholders/social proof, and onboarding icon source guidance.
 
 Still pending outside this repo or intentionally kept for compatibility:
 
@@ -1612,32 +1615,32 @@ Phase gate:
 
 Fill this table after each old-term scan.
 
-| Term/Path                                                                | Classification                       | Reason                                       | Action                              |
-| ------------------------------------------------------------------------ | ------------------------------------ | -------------------------------------------- | ----------------------------------- |
-| `app.json` app name                                                      | must-change                          | Public app identity says miner               | Rename in Phase 1                   |
-| `ios/Ellie/Info.plist` display name                                      | must-change                          | Public iOS label says miner                  | Rename in Phase 1                   |
-| `android/settings.gradle` root name                                      | must-change                          | Native project identity says miner           | Rename in Phase 1                   |
-| `e2e/helpers/testData.ts` Miner/Test Mine Co.                            | must-change                          | Default demo user is mining-specific         | Replace in Phase 5                  |
-| `assets/.../mining-helmet-sacred-flame.png`                              | must-change                          | Default assistant avatar is mining-specific  | Replace in Phase 2                  |
-| `docs/USER_GUIDE_FIFO.md`                                                | allowed-archived-doc or must-rewrite | FIFO-specific historical guide               | Archive or fold into universal docs |
-| `docs/FIFO_QA_CHECKLIST.md`                                              | allowed-archived-doc or must-rewrite | FIFO-specific QA                             | Archive or fold into universal QA   |
-| `docs/RELEASE_NOTES_FIFO_DUAL_ROSTER.md`                                 | allowed-archived-doc                 | Historical release note                      | Mark archived                       |
-| `src/i18n/locales/*/onboarding.json` FIFO copy                           | must-change unless template-specific | Can reappear when language changes           | Rebrand in Phase 4                  |
-| `src/i18n/locales/*/common.json` paywall miner social proof              | must-change                          | User-facing monetization copy                | Rebrand in Phase 3/4                |
-| `src/components/shift-builder/ShiftInspectorSheet.tsx` `Mine Site Alpha` | must-change                          | Builder location placeholder is mining-first | Replace with universal examples     |
+| Term/Path                                                                | Classification            | Reason                                              | Action                              |
+| ------------------------------------------------------------------------ | ------------------------- | --------------------------------------------------- | ----------------------------------- |
+| `app.json` app name                                                      | done                      | Public app identity is Ryvro Shift Planner          | Keep verified                       |
+| `ios/Ellie/Info.plist` display name                                      | done-generated-native     | Local generated native output now displays Ryvro    | Regenerate with EAS/native workflow |
+| `android/settings.gradle` root name                                      | done-generated-native     | Local generated native output now uses Ryvro        | Regenerate with EAS/native workflow |
+| `e2e/helpers/testData.ts` default fixture                                | done                      | Default demo user is neutral; mining is separate    | Keep both fixture classes           |
+| `assets/.../mining-helmet-sacred-flame.png`                              | done                      | Retired helmet family removed from active assets    | Keep only archived references       |
+| `docs/USER_GUIDE_FIFO.md`                                                | rewritten                 | Current guide routes FIFO through builder           | Keep as template-specific guide     |
+| `docs/FIFO_QA_CHECKLIST.md`                                              | archived                  | Historical fixed-roster QA                          | Keep in legacy archive              |
+| `docs/RELEASE_NOTES_FIFO_DUAL_ROSTER.md`                                 | archived                  | Historical release note                             | Keep in legacy archive              |
+| `src/i18n/locales/*/onboarding.json` FIFO copy                           | allowed-template-specific | FIFO keys remain for migration/template labels      | Do not use as default flow          |
+| `src/i18n/locales/*/common.json` paywall miner social proof              | cleaned                   | Broad social proof now used where launch-critical   | Keep miner examples only by intent  |
+| `src/components/shift-builder/ShiftInspectorSheet.tsx` location examples | done                      | Builder placeholder uses broader site/location copy | Keep broad examples                 |
 
 ## Working Tracker: Concrete Replacement Decisions
 
 Use these defaults unless the product owner chooses different names.
 
-- App display name: `<Cleared Brand> Shift Planner`.
-- Short app label: `<Cleared Brand>`.
-- Bundle ID: `com.<clearedbrand>.shiftplanner`.
-- Android package: `com.<clearedbrand>.shiftplanner`.
-- Default e2e user name: `Amina`.
-- Default launch e2e occupation: `Miner` or `FIFO Worker`.
+- App display name: `Ryvro Shift Planner`.
+- Short app label: `Ryvro`.
+- Bundle ID: `com.ryvro.shiftplanner`.
+- Android package: `com.ryvro.shiftplanner`.
+- Default e2e user name: `E2E Tester`.
+- Default launch e2e occupation: `Shift Operator`.
 - Required proof fixture occupation: `Nurse`, `Security Officer`, or `Factory Operator`.
-- Default launch e2e employer: `Test Mine Co.` can remain only if a non-mining proof fixture is also present.
+- Default launch e2e employer: `Universal Shift Co.`.
 - Required non-mining fixture employer: `City Hospital`, `Metro Depot`, or `North Plant`.
 - Default location example: `Site, hospital, depot, terminal, plant, store, station, venue`.
 - Default AI prompt example: `2 earlies, 2 lates, 2 nights, then 4 off`.

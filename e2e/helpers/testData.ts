@@ -14,15 +14,32 @@ export const MOCK_USER = {
   displayName: 'E2E Tester',
 };
 
-/** Completed onboarding data for the miner/FIFO launch wedge. */
+/** Completed onboarding data for the default universal shift-worker path. */
 export const MOCK_ONBOARDING_DATA = {
   name: 'E2E Tester',
-  occupation: 'Miner',
-  company: 'Test Mine Co.',
+  occupation: 'Shift Operator',
+  company: 'Universal Shift Co.',
   country: 'Australia',
   shiftSystem: '2-shift',
   rosterType: 'rotating',
   patternType: 'STANDARD_4_4_4',
+  phaseOffset: 0,
+  startDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+  shiftTimes: {
+    dayShift: { hour: 6, minute: 0 },
+    nightShift: { hour: 18, minute: 0 },
+  },
+};
+
+/** Miner/FIFO launch-wedge fixture kept as one industry example, not the default seed. */
+export const MINING_FIFO_ONBOARDING_DATA = {
+  name: 'Tariq',
+  occupation: 'FIFO Site Operator',
+  company: 'Pilbara Operations',
+  country: 'Australia',
+  shiftSystem: '2-shift',
+  rosterType: 'fifo',
+  patternType: 'FIFO_14_14',
   phaseOffset: 0,
   startDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
   shiftTimes: {
@@ -154,7 +171,7 @@ export const UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES = {
       nightShift: { hour: 21, minute: 0 },
     },
   },
-  miningFifo: MOCK_ONBOARDING_DATA,
+  miningFifo: MINING_FIFO_ONBOARDING_DATA,
 };
 
 /**
@@ -178,7 +195,7 @@ export const MAIN_APP_SEED: Record<string, unknown> = {
 export const MINING_FIFO_MAIN_APP_SEED: Record<string, unknown> = {
   'e2e:mock_user': MOCK_USER,
   'onboarding:complete': true,
-  'onboarding:data': MOCK_ONBOARDING_DATA,
+  'onboarding:data': MINING_FIFO_ONBOARDING_DATA,
 };
 
 export const NON_MINING_PROOF_MAIN_APP_SEED: Record<string, unknown> = {

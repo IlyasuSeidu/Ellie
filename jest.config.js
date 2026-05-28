@@ -65,7 +65,7 @@ module.exports = {
     '!src/utils/shiftTimeUtils.ts',
     '!src/utils/shiftUtils.ts',
     '!src/utils/validationUtils.ts',
-    // Exclude complex Tinder-style swipe UI screens
+    // Exclude retired complex swipe UI screens
     // These require extensive mocking of gestures, animations (Reanimated),
     // and navigation flows which doesn't accurately test user behavior
     '!src/screens/onboarding/premium/PremiumPhaseSelectorScreen.tsx',
