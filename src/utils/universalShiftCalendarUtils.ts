@@ -173,9 +173,9 @@ export function buildUniversalScheduleIcs(
     lines.push(`SUMMARY:${escapeIcsText(universal.definitionName)}`);
     lines.push(`DESCRIPTION:${buildEventDescription(schedule, day.date)}`);
     lines.push(`CATEGORIES:${escapeIcsText(universal.kind)}`);
-    lines.push(`X-ELLIE-SHIFT-ID:${escapeIcsText(universal.definitionId)}`);
-    lines.push(`X-ELLIE-SHIFT-COLOR:${escapeIcsText(universal.color)}`);
-    lines.push(`X-ELLIE-SHIFT-ICON:${escapeIcsText(universal.icon)}`);
+    lines.push(`X-RYVRO-SHIFT-ID:${escapeIcsText(universal.definitionId)}`);
+    lines.push(`X-RYVRO-SHIFT-COLOR:${escapeIcsText(universal.color)}`);
+    lines.push(`X-RYVRO-SHIFT-ICON:${escapeIcsText(universal.icon)}`);
 
     const parsedDayDate = parseDate(day.date);
     if (!parsedDayDate) continue;

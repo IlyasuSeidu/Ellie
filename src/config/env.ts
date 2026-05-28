@@ -60,7 +60,7 @@ export interface WakeWordConfig {
   enabled: boolean;
   /** Picovoice AccessKey */
   accessKey?: string;
-  /** Human-readable wake-word phrase label (e.g. "Hey Ellie") */
+  /** Human-readable wake-word phrase label (e.g. "Ryvro") */
   phrase?: string;
   /** Optional custom keyword model paths (.ppn) */
   keywordPaths: string[];

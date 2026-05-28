@@ -74,6 +74,10 @@ describe('universalShiftCalendarUtils', () => {
 
     expect((ics.match(/BEGIN:VEVENT/g) ?? []).length).toBe(3);
     expect(ics).toContain('SUMMARY:Day Shift');
+    expect(ics).toContain('X-RYVRO-SHIFT-ID:day');
+    expect(ics).toContain('X-RYVRO-SHIFT-COLOR:#2196F3');
+    expect(ics).toContain('X-RYVRO-SHIFT-ICON:sunny');
+    expect(ics).not.toContain('X-ELLIE-SHIFT-ID');
     expect(ics).toContain('DTSTART;TZID=UTC:20260101T060000');
     expect(ics).toContain('DTEND;TZID=UTC:20260101T180000');
     expect(ics).toContain('SUMMARY:Night Shift');

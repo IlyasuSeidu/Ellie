@@ -2,7 +2,7 @@
 
 ## Status
 
-Implementation specification for the current universal-only Ellie shift system.
+Implementation specification for the current universal-only Ryvro shift system.
 
 The app is not live, so the legacy rotating/FIFO configuration system has been removed from the product flow. The Universal Shift Builder is now the single shift setup surface for onboarding and settings. Any remaining legacy names in helper files are temporary compatibility shims and should not be expanded into new product behavior.
 
@@ -154,7 +154,7 @@ Required behavior:
 
 ## Calendar Import/Export
 
-Calendar import/export connects Ellie schedules with outside calendar products without creating a second schedule model.
+Calendar import/export connects Ryvro schedules with outside calendar products without creating a second schedule model.
 
 Required export behavior:
 
@@ -165,7 +165,8 @@ Required export behavior:
 - Overnight shifts must export an end date on the following calendar day.
 - All-day/off/leave shifts must export date-only events.
 - Event `SUMMARY` must use the universal shift definition name.
-- Event metadata must preserve Ellie shift id, color, icon, kind, and schedule name where possible through standard text fields and `X-ELLIE-*` fields.
+- Event metadata must preserve Ryvro shift id, color, icon, kind, and schedule name where possible through standard text fields and `X-RYVRO-*` fields.
+- Import should still read legacy `X-ELLIE-*` fields as a compatibility fallback, but every new export must write `X-RYVRO-*`.
 - Export must block invalid schedules instead of producing a misleading calendar.
 - The app must share the generated `.ics` file through the native share sheet so users can send it to Google Calendar, Apple Calendar, Outlook, email, files, or any calendar-compatible destination.
 

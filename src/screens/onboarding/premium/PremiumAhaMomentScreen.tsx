@@ -479,7 +479,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
           />
         </Animated.View>
 
-        {/* ── Hey Ellie card ── */}
+        {/* ── Ryvro voice card ── */}
         <Animated.View entering={FadeInDown.delay(540).duration(380)} style={styles.padded}>
           <View style={styles.ellieCard}>
             <View style={styles.ellieTopAccent} />
@@ -534,7 +534,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
               ))}
             </View>
 
-            {/* Hey Ellie mic button */}
+            {/* Ryvro mic button */}
             <Animated.View style={[styles.ellieButtonWrapper, pulseStyle]}>
               <TouchableOpacity
                 activeOpacity={0.88}
@@ -597,7 +597,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
         />
       )}
 
-      {/* Hey Ellie modal — only mounted on this screen during onboarding */}
+      {/* Ryvro voice modal — only mounted on this screen during onboarding */}
       <VoiceAssistantModal />
     </View>
   );
@@ -812,7 +812,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
 
-  // ── Hey Ellie card ──
+  // ── Ryvro voice card ──
   ellieCard: {
     backgroundColor: theme.colors.darkStone,
     borderRadius: 20,
