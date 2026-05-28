@@ -17,6 +17,8 @@ describe('Ryvro documentation archive', () => {
     'ELLIE_SHIFT_CERTAINTY_MASTERPLAN.md',
     'ELLIE_SHIFT_CERTAINTY_MASTERPLAN_Tasks.md',
     'ELLIE_TESTING_STRATEGY_RECOVERED.md',
+    'DUAL_PARADIGM_ROSTER_IMPLEMENTATION_PLAN.md',
+    'FIFO_ONBOARDING_FLOW_ANALYSIS.md',
     'ellie-auth.md',
     'ellie-sleep-tracking.md',
     'ellie-smart-shift-reminders.md',
@@ -35,6 +37,7 @@ describe('Ryvro documentation archive', () => {
 
     expect(archiveReadme).toContain('Historical Ellie Documentation Archive');
     expect(archiveReadme).toContain('Do not use these files as current launch guidance');
+    expect(archiveReadme).toContain('pre-Universal-Shift-Builder FIFO');
     expect(archiveReadme).toContain('docs/UNIVERSAL_SHIFT_BUILDER_SPEC.md');
     expect(archiveReadme).toContain('docs/RYVRO_EXTERNAL_SERVICE_SETUP.md');
   });
