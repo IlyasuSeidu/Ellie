@@ -24,6 +24,7 @@ Completed in the current working tree:
 - Added universal industry onboarding/e2e fixtures while preserving a miner/FIFO fixture as the launch wedge.
 - Added a starter universal template catalog for healthcare, security, emergency services, manufacturing, transport, hospitality, aviation/rail, and mining FIFO examples.
 - Added broad RevenueCat entitlement aliases while preserving old Ellie/miner aliases for backward compatibility.
+- Added RevenueCat entitlement regression tests that pin Ryvro launch aliases while making the old Ellie/miner aliases explicit migration compatibility only.
 - Added `RYVRO_BRAIN_URL` / `RYVRO_BRAIN_TIMEOUT` as the preferred voice-backend environment names while preserving the old `ELLIE_BRAIN_*` keys as migration fallbacks.
 - Renamed the Firebase functions deploy codebase from `ellie-brain` to `ryvro-brain` in repo config and added `ryvroBrain` as the primary HTTPS function export. The old `ellieBrain` export remains as a compatibility endpoint until production clients and external dashboards have migrated.
 - Updated CI and e2e dummy brain endpoint environment values so both preferred and legacy compatibility variables point at the Ryvro test endpoint.
