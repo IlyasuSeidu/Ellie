@@ -356,7 +356,7 @@ Analytics.paywallDismissed();
 - Let analytics run for 7 days with real users
 - Open Firebase Analytics → Funnel Analysis
 - Identify the single step with the highest drop-off rate
-- Record the result: **biggest drop-off step: ******\_\_\_********
+- Record the result: **biggest drop-off step: \*\*\*\***\_\_\_**\*\*\*\***
 - This data informs which sprint items are most urgent
 
 **Verify:** Drop-off step identified and documented.

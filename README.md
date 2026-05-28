@@ -35,27 +35,22 @@ Ryvro is a **miner-first shift planner** built on a universal schedule engine. I
 - **Long-term planning**: See your schedule months in advance
 - **Smart notifications**: Reminders before shift starts
 - **Offline-first**: Works underground with no cell signal
-- **Pattern flexibility**: Supports all standard patterns + custom cycles
-- **Dual roster paradigms**: Rotating rosters and FIFO/block rosters
-- **Voice assistant tooling**: Date/range queries, next block, days-until-work/rest, and current block info
+- **Universal schedule flexibility**: Supports repeating rotations, FIFO/block rosters, irregular one-off swaps, holidays, travel, training, on-call work, leave, and custom cycles
+- **AI + manual setup**: Describe a roster in plain English, start from an industry template, or build it manually
+- **Voice assistant tooling**: Date/range queries, next block, days-until-work/rest, current block info, and schedule questions
 
 ---
 
 ## 🚀 Current Features
 
-### FIFO + Rotating Support (Phase 1-7)
+### Universal Shift Builder
 
-- **Dual-paradigm scheduling**: `RosterType` split between `rotating` and `fifo`
-- **FIFO onboarding path**: Roster selection, FIFO patterns, custom FIFO config, FIFO phase selector
-- **FIFO dashboard UX**: Work/Rest block labels, block countdowns, FIFO legends and badges
-- **Voice assistant FIFO tools**:
-  - `get_next_work_block`
-  - `get_next_rest_block`
-  - `days_until_work`
-  - `days_until_rest`
-  - `current_block_info`
-- **Backend parity**: Cloud Function tool execution supports rotating + FIFO behaviors
-- **Persistence + migration**: Backward-compatible onboarding migration to `rosterType`
+- **Universal schedule model**: `UniversalShiftSchedule` is the single source of truth for onboarding, settings, dashboard, reminders, import/export, and voice answers.
+- **AI-assisted schedule drafting**: Natural-language schedule descriptions become editable drafts.
+- **Manual drag-and-drop builder**: Users can define shift types, colors, icons, times, locations, reminder profiles, and sequence order.
+- **Industry launch templates**: Mining/FIFO plus healthcare, security, emergency services, manufacturing, transport, hospitality, aviation, and rail examples.
+- **Exceptions**: Public holiday overrides and one-off irregular swaps without mutating the repeating sequence.
+- **Calendar import/export**: `.ics` export and roster import for Apple Calendar, Google Calendar, Outlook, files, and email.
 
 ### Premium Onboarding Flow (Completed)
 
@@ -71,7 +66,7 @@ Ryvro now uses the Universal Shift Builder as its onboarding schedule setup, rep
 #### 2. **Introduction Screen** - Conversational Onboarding
 
 - Progressive disclosure chatbot experience (one question at a time)
-- Animated mining helmet avatar with breathing animation
+- Ryvro assistant avatar with breathing animation
 - Typing indicators for natural conversation feel
 - Smart editing (long-press any response to rewind conversation)
 - Name personalization ("Great to meet you, John!")
@@ -79,52 +74,47 @@ Ryvro now uses the Universal Shift Builder as its onboarding schedule setup, rep
 - 60fps spring animations for all transitions
 - [Read the story →](build-in-public/emotional-moment/10-conversational-introduction.md)
 
-#### 3. **Shift Pattern Selection** - Tinder-Style Cards
+#### 3. **Universal Shift Builder Entry** - AI, Templates, Or Manual
 
-- Swipeable cards for 9 standard patterns (4-4-4, 7-7-7, 2-2-3, etc.)
-- Physics-based gestures with rotation and depth effects
-- Learn More modals for pattern details
-- Custom pattern option
-- [Read the story →](build-in-public/unexpected-challenge/04-tinder-style-pattern-selection.md)
+- Describe shifts in natural language
+- Start from industry templates
+- Build shift definitions and sequences manually
+- Preview schedule before saving
 
-#### 4. **Custom Pattern Builder** - Every Mine is Different
+#### 4. **Manual Shift Builder** - Every Site Is Different
 
-- Visual sliders with 3D icon thumbs (sun, moon, rest)
-- Real-time pattern preview with color-coded blocks
+- Drag-and-drop sequence canvas with non-drag reorder controls
+- Per-shift color, icon, name, time, location/site, and reminder settings
+- Real-time calendar preview with color-coded blocks
 - Smart validation with helpful warnings
 - Live cycle visualization
 - [Read the story →](build-in-public/user-empathy/05-custom-pattern-builder.md)
 
-#### 5. **Phase Selector** - Tinder-Style Phase Selection
+#### 5. **Current Position Selection** - Plain-Language Alignment
 
-- Dedicated screen for phase selection (separated from Start Date)
-- Swipeable cards for phases (Day/Night/Off for 2-shift, +Morning/Afternoon for 3-shift)
-- Two-stage selection flow: Phase cards → Day-within-phase cards
-- **Day-within-phase selector** - capture exact cycle position (e.g., day 3 of 7 nights)
-- Physics-based gestures with spring animations
-- Stack depth effects (scale, opacity, rotation)
-- Progressive disclosure (day cards only shown if phase length > 1)
-- Calculates phaseOffset and saves to context
+- Users choose what shift they are currently on without seeing technical terms like `phaseOffset`.
+- Supports positions such as "second night" in a 4 days / 4 nights / 4 off style sequence.
+- Saves internal cycle alignment while keeping the UI understandable.
 - [Read the story →](build-in-public/system-thinking/11-phase-selector-separation.md)
 
 #### 6. **Start Date Selection** - Calendar Intelligence
 
 - Interactive calendar with swipe gestures for month navigation
-- Live shift preview icons on calendar days (☀️🌙🏠)
+- Live shift preview icons and colors on calendar days
 - 7-day timeline showing upcoming shifts
 - Smart defaults (tomorrow as start date)
 - Calendar legend for shift types
-- Uses phaseOffset from Phase Selector for accurate positioning
+- Uses Universal Shift Builder alignment for accurate positioning
 - [Read the calendar story →](build-in-public/technical-discovery/06-start-date-calendar-system.md)
 - [Day positioning story →](build-in-public/user-empathy/09-day-within-phase-positioning.md)
 
 #### 7. **Shift Time Input** - Smart Time Configuration
 
-- 6 preset shift times (Early Day, Standard Day, Late Day, Evening, Night)
+- Preset and custom shift times
 - Custom time input with 12/24-hour format conversion
-- Auto-detection of day/night shifts based on start time
+- Auto-detection of day/night/evening/morning buckets based on start time
 - Overnight shift handling (crossing midnight)
-- Duration selector (8 or 12 hours)
+- Duration support for standard and custom shift lengths
 - Live preview of shift start/end times
 - Pattern summary card with floating animations
 - [Read the story →](build-in-public/unexpected-challenge/07-shift-time-animation-crashes.md)
@@ -288,7 +278,7 @@ npm test -- --testPathPattern="ShiftDataService"
 ## 📁 Project Structure
 
 ```
-Ellie/
+Ryvro/
 ├── .github/                      # GitHub configuration & CI/CD workflows
 ├── .husky/                       # Git hooks (pre-commit)
 ├── assets/                       # Static assets
@@ -433,14 +423,14 @@ I'm building Ryvro in public, documenting every decision, challenge, and lesson 
 | **Day 1: Foundation**   | System Thinking      | [Read →](build-in-public/system-thinking/01-day-one-foundations.md)                 |
 | **Sacred Theme**        | Design Tradeoff      | [Read →](build-in-public/design-tradeoff/02-sacred-theme-system.md)                 |
 | **Welcome Screen**      | Emotional Moment     | [Read →](build-in-public/emotional-moment/03-welcome-screen-first-impression.md)    |
-| **Pattern Selection**   | Unexpected Challenge | [Read →](build-in-public/unexpected-challenge/04-tinder-style-pattern-selection.md) |
-| **Custom Builder**      | User Empathy         | [Read →](build-in-public/user-empathy/05-custom-pattern-builder.md)                 |
+| **Template Discovery**  | Unexpected Challenge | [Read →](build-in-public/unexpected-challenge/04-tinder-style-pattern-selection.md) |
+| **Manual Builder**      | User Empathy         | [Read →](build-in-public/user-empathy/05-custom-pattern-builder.md)                 |
 | **Start Date Screen**   | Technical Discovery  | [Read →](build-in-public/technical-discovery/06-start-date-calendar-system.md)      |
 | **Shift Time Input**    | Unexpected Challenge | [Read →](build-in-public/unexpected-challenge/07-shift-time-animation-crashes.md)   |
 | **Shift System**        | System Thinking      | [Read →](build-in-public/system-thinking/08-shift-system-architecture.md)           |
 | **Day Within Phase**    | User Empathy         | [Read →](build-in-public/user-empathy/09-day-within-phase-positioning.md)           |
 | **Introduction Screen** | Emotional Moment     | [Read →](build-in-public/emotional-moment/10-conversational-introduction.md)        |
-| **Phase Selector**      | System Thinking      | [Read →](build-in-public/system-thinking/11-phase-selector-separation.md)           |
+| **Current Position**    | System Thinking      | [Read →](build-in-public/system-thinking/11-phase-selector-separation.md)           |
 
 Each story includes:
 
@@ -587,7 +577,7 @@ npm run format
   - Statements: 74.27% (≥70% ✅)
 - **TypeScript Errors**: 0
 - **ESLint Errors**: 0
-- **Onboarding Screens**: 7 completed (Welcome, Introduction, Shift System, Pattern Selection, Custom Builder, Phase Selector, Start Date, Shift Time Input)
+- **Onboarding Flow**: Universal Shift Builder setup completed (Welcome, Introduction, builder entry, AI/template/manual builder, current-position alignment, preview, completion)
 - **Lines of Code**: ~18,000+
 - **Commits**: 79+
 - **Build Time**: ✅ Passing
@@ -604,7 +594,7 @@ This project is private and proprietary.
 ## 📞 Contact
 
 **GitHub**: [@IlyasuSeidu](https://github.com/IlyasuSeidu)
-**Repository**: [Ellie](https://github.com/IlyasuSeidu/Ellie)
+**Repository**: [Ryvro app repository](https://github.com/IlyasuSeidu/Ellie)
 
 ---
 
