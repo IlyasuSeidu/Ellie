@@ -1,7 +1,7 @@
-# Ellie — Release Task List
+# Ryvro — Release Task List
 
-Source: `ELLIE_APP_MINIMUM_VIABLE_DEPLOYMENT_PLAN.md`
-Last updated: March 10, 2026 (subscription plan added — Ellie Pro)
+Source: `SHIFT_WORKER_APP_REBRAND_AUDIT.md`
+Last updated: May 28, 2026 (Ryvro rebrand and universal builder rollout)
 
 Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you do this)
 
@@ -19,21 +19,21 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 
 ---
 
-## Phase 2 — Config + Identifiers (Needs your bundle ID decision first)
+## Phase 2 — Config + Identifiers
 
-| #   | Task                                                                                        | Status                                    |
-| --- | ------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| 6   | Decide your bundle identifier (permanent — cannot change after Google Play submission)      | ✅ Done (`com.ellie.minershiftassistant`) |
-| 7   | Update bundle ID in `app.json` (iOS + Android), add `buildNumber: "1"` and `versionCode: 1` | ✅ Done                                   |
-| 8   | Update bundle ID in `android/app/build.gradle` (namespace + applicationId, lines 90+92)     | ✅ Done                                   |
-| 9   | Update bundle ID in `ios/Ellie.xcodeproj/project.pbxproj` (both occurrences)                | ✅ Done                                   |
-| 10  | Create `eas.json` with development / preview / production build profiles                    | ✅ Done                                   |
+| #   | Task                                                                                        | Status                             |
+| --- | ------------------------------------------------------------------------------------------- | ---------------------------------- |
+| 6   | Decide your bundle identifier (permanent — cannot change after Google Play submission)      | ✅ Done (`com.ryvro.shiftplanner`) |
+| 7   | Update bundle ID in `app.json` (iOS + Android), add `buildNumber: "1"` and `versionCode: 1` | ✅ Done                            |
+| 8   | Update bundle ID in `android/app/build.gradle` (namespace + applicationId, lines 90+92)     | ✅ Done                            |
+| 9   | Update bundle ID in `ios/Ellie.xcodeproj/project.pbxproj` (both occurrences)                | ✅ Done                            |
+| 10  | Create `eas.json` with development / preview / production build profiles                    | ✅ Done                            |
 
 ---
 
-## Phase 3 — Subscription: Ellie Pro (Code — must be done before any store setup)
+## Phase 3 — Subscription: Ryvro Pro (Code — must be done before any store setup)
 
-> Source: `ELLIE_APP_MINIMUM_VIABLE_DEPLOYMENT_PLAN.md` — PART 3, Steps A–D
+> Source: current Ryvro subscription implementation and release-blocker audit.
 > **Must be complete before Phase 4.** Apple does not allow retroactively paywalling a feature that shipped free. The subscription binary must be in the first submitted version.
 
 | #   | Task                                                                                                                                                                                 | Status  |
@@ -46,7 +46,7 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 | 36  | Edit `App.tsx` — wrap app with `<SubscriptionProvider>`, render `<PaywallScreen>` as full-screen overlay when `paywallVisible` is true                                               | 🔧 Todo |
 | 37  | Edit `CustomTabBar.tsx` — gate center mic button: `isPro` → `openModal()`, not Pro → `openPaywall()`                                                                                 | 🔧 Todo |
 | 38  | Edit `MonthlyCalendarCard.tsx` — current week renders free; all other weeks get `<PadlockOverlay>` at 35% opacity when not Pro                                                       | 🔧 Todo |
-| 39  | Edit `ProfileScreen.tsx` — add "Ellie Pro — Active ✓" / "Upgrade to Ellie Pro" row after Work Stats section                                                                          | 🔧 Todo |
+| 39  | Edit `ProfileScreen.tsx` — add "Ryvro Pro — Active ✓" / "Upgrade to Ryvro Pro" row after Work Stats section                                                                          | 🔧 Todo |
 | 40  | Add `REVENUECAT_IOS_KEY` and `REVENUECAT_ANDROID_KEY` placeholders to `.env` (fill values after Task 42)                                                                             | 🔧 Todo |
 | 41  | Re-run full quality gate after subscription code is added: `lint` + `type-check` + `test` + `release:check` — all must pass                                                          | 🔧 Todo |
 
@@ -54,16 +54,16 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 
 ## Phase 4 — Subscription: RevenueCat + Store Products (Manual — you do these)
 
-> Source: `ELLIE_APP_MINIMUM_VIABLE_DEPLOYMENT_PLAN.md` — PART 3, Step D
+> Source: current Ryvro subscription implementation and release-blocker audit.
 > Do these in parallel with Phase 5 (Apple Developer enrollment). RevenueCat is free to set up now; product IDs must exist before building the production binary.
 
 | #   | Task                                                                                                                                                                                                              | Status  |
 | --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| 42  | 👤 Create RevenueCat account at revenuecat.com → add iOS app (bundle ID: `com.ellie.minershiftassistant`) → copy iOS SDK key → paste into `.env` as `REVENUECAT_IOS_KEY`                                          | 👤 Todo |
+| 42  | 👤 Create RevenueCat account at revenuecat.com → add iOS app (bundle ID: `com.ryvro.shiftplanner`) → copy iOS SDK key → paste into `.env` as `REVENUECAT_IOS_KEY`                                                 | 👤 Todo |
 | 43  | 👤 Add Android app to RevenueCat → copy Android SDK key → paste into `.env` as `REVENUECAT_ANDROID_KEY`                                                                                                           | 👤 Todo |
-| 44  | 👤 RevenueCat → Entitlements → Add entitlement: ID = `pro`, Display name = `Ellie Pro`                                                                                                                            | 👤 Todo |
-| 45  | 👤 App Store Connect → your app → Subscriptions → create subscription group "Ellie Pro" → add two products: `ellie_pro_monthly` ($6.99/mo, 7-day free trial) and `ellie_pro_annual` ($49.99/yr, 7-day free trial) | 👤 Todo |
-| 46  | 👤 Google Play Console → Monetize → Subscriptions → create `ellie_pro_monthly` and `ellie_pro_annual` with matching pricing and 7-day free trial base plans                                                       | 👤 Todo |
+| 44  | 👤 RevenueCat → Entitlements → Add entitlement: ID = `pro`, Display name = `Ryvro Pro`                                                                                                                            | 👤 Todo |
+| 45  | 👤 App Store Connect → your app → Subscriptions → create subscription group "Ryvro Pro" → add two products: `ryvro_pro_monthly` ($6.99/mo, 7-day free trial) and `ryvro_pro_annual` ($49.99/yr, 7-day free trial) | 👤 Todo |
+| 46  | 👤 Google Play Console → Monetize → Subscriptions → create `ryvro_pro_monthly` and `ryvro_pro_annual` with matching pricing and 7-day free trial base plans                                                       | 👤 Todo |
 | 47  | 👤 RevenueCat → Products → add both product IDs → attach both to the `pro` entitlement                                                                                                                            | 👤 Todo |
 | 48  | 👤 RevenueCat → Offerings → create offering named `default` → add Annual package + Monthly package                                                                                                                | 👤 Todo |
 | 49  | 👤 Test full subscription flow in RevenueCat sandbox: start trial → `isPro` = true → mic works + calendar unlocks → cancel → locks re-appear → Restore Purchases works                                            | 👤 Todo |
@@ -75,8 +75,8 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 | #   | Task                                                                                                                                                                                        | Status  |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
 | 11  | 👤 Enroll Apple Developer account at developer.apple.com ($99/year) — takes 24-48h to approve — **start immediately, runs in parallel with Phase 3**                                        | 👤 Todo |
-| 12  | 👤 Register App ID on Apple Developer Portal with bundle ID `com.ellie.minershiftassistant` + Push Notifications capability                                                                 | 👤 Todo |
-| 13  | 👤 Create app in App Store Connect (name: `Ellie: Miner Shift Assistant`, language: English AU, SKU: `ellie-shift-001`)                                                                     | 👤 Todo |
+| 12  | 👤 Register App ID on Apple Developer Portal with bundle ID `com.ryvro.shiftplanner` + Push Notifications capability                                                                        | 👤 Todo |
+| 13  | 👤 Create app in App Store Connect (name: `Ryvro Shift Planner`, language: English AU, SKU: `ryvro-shift-001`)                                                                              | 👤 Todo |
 | 14  | 👤 Create app in Google Play Console ($25 one-time fee) with matching name                                                                                                                  | 👤 Todo |
 | 15  | 👤 Run `eas login` then `eas init` in `/Users/Shared/Ellie` — copy the EAS Project ID UUID                                                                                                  | 👤 Todo |
 | 16  | 👤 Update `.env`: set `APP_ENV=production`, paste `EAS_PROJECT_ID`, paste `GOOGLE_WEB_CLIENT_ID` from Firebase Console, fill `REVENUECAT_IOS_KEY` and `REVENUECAT_ANDROID_KEY` from Phase 4 | 👤 Todo |
@@ -88,7 +88,7 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 
 | #   | Task                                                                                                                                                                            | Status  |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| 18  | Verify Firebase Cloud Function is deployed: `curl` the ellieBrain endpoint (returns 200/400 = live)                                                                             | ✅ Done |
+| 18  | Verify Firebase Cloud Function is deployed: `curl` the configured `RYVRO_BRAIN_URL` endpoint (200/400 = live)                                                                   | 👤 Todo |
 | 19  | 👤 Create and publish Privacy Policy — must mention microphone, Firebase, OpenAI, RevenueCat, and subscription terms (Notion page or GitHub Pages) — required before submission | 👤 Todo |
 
 ---
@@ -130,7 +130,7 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 6. Schedule and Stats tabs are not visible anywhere in the nav
 7. No dead/broken tap targets in any visible screen
 
-**Subscription (Ellie Pro):** 8. Tap center mic (not subscribed) → PaywallScreen appears; annual plan pre-selected; "Start 7-Day Free Trial" button visible 9. Tap any locked calendar week (not subscribed) → PaywallScreen appears 10. Start 7-day free trial (RevenueCat sandbox) → `isPro` = true → mic opens voice assistant; full year calendar unlocks 11. Profile screen shows "Ellie Pro — Active ✓" when subscribed; shows "Upgrade to Ellie Pro" row with price when not subscribed 12. Tap "Restore Purchases" on paywall → purchases restore correctly 13. Voice assistant opens (subscribed), handles microphone permission flow, and responds
+**Subscription (Ryvro Pro):** 8. Tap center mic (not subscribed) → PaywallScreen appears; annual plan pre-selected; "Start 7-Day Free Trial" button visible 9. Tap any locked calendar week (not subscribed) → PaywallScreen appears 10. Start 7-day free trial (RevenueCat sandbox) → `isPro` = true → mic opens voice assistant; full year calendar unlocks 11. Profile screen shows "Ryvro Pro — Active ✓" when subscribed; shows "Upgrade to Ryvro Pro" row with price when not subscribed 12. Tap "Restore Purchases" on paywall → purchases restore correctly 13. Voice assistant opens (subscribed), handles microphone permission flow, and responds
 
 ---
 
@@ -181,7 +181,7 @@ cd android && ./gradlew bundleRelease
 - [ ] `react-native-purchases` installed and all subscription files created (Tasks 31–40)
 - [ ] Quality gate re-run passes after subscription code is added (Task 41)
 - [ ] RevenueCat entitlement `pro` configured with both product IDs (Tasks 42–48)
-- [ ] App Store Connect subscription products `ellie_pro_monthly` + `ellie_pro_annual` created (Task 45)
+- [ ] App Store Connect subscription products `ryvro_pro_monthly` + `ryvro_pro_annual` created (Task 45)
 - [ ] Google Play subscription products created with matching IDs (Task 46)
 - [ ] Full subscription sandbox smoke test passes on device (Task 49 + smoke test items 8–13)
 

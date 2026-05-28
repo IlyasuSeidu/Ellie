@@ -2,26 +2,27 @@
 
 ## Overview
 
-This guide covers building and deploying the Ellie application to iOS and Android platforms using Expo Application Services (EAS).
+This guide covers building and deploying the Ryvro application to iOS and Android platforms using Expo Application Services (EAS).
 
-## Release Checklist (Dual Roster + Voice)
+## Release Checklist (Ryvro Universal Builder + Voice)
 
 Before cutting a release, run this gate in order:
 
 1. `npm run type-check`
 2. `npm test -- --runInBand`
 3. `npm run backend:build`
-4. Confirm voice env values are set (`EXPO_PUBLIC_ELLIE_BRAIN_URL`, wake-word env keys)
+4. Confirm voice env values are set (`RYVRO_BRAIN_URL`, `RYVRO_BRAIN_TIMEOUT`, and wake-word env keys; legacy `ELLIE_BRAIN_*` values are migration fallbacks only)
 5. Build dev clients for smoke:
    - `npx expo run:ios`
    - `npx expo run:android`
 6. Smoke pass:
-   - Rotating onboarding path
-   - FIFO onboarding path
-   - Dashboard block labels for FIFO
+   - Universal Builder onboarding path: AI description, manual builder, and template start
+   - Settings Universal Builder entry: AI rewrite and manual edit
+   - Dashboard colors/icons for current, next, holiday exception, one-off exception, imported day, and overnight shift
+   - Calendar import/export, reminder profiles, and exception editing
    - Voice assistant: no-speech/offline/backend failure/wake-word-unavailable paths
 7. Update release notes:
-   - `docs/RELEASE_NOTES_FIFO_DUAL_ROSTER.md`
+   - `SHIFT_WORKER_APP_REBRAND_AUDIT.md` and the release notes for the current PR/release branch
 
 Recommended branch naming:
 
@@ -154,8 +155,8 @@ Edit `eas.json`:
 ```json
 {
   "expo": {
-    "name": "Ellie",
-    "slug": "ellie",
+    "name": "Ryvro Shift Planner",
+    "slug": "ryvro",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -166,16 +167,16 @@ Edit `eas.json`:
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "bundleIdentifier": "com.ilyasuseidu.ellie",
+      "bundleIdentifier": "com.ryvro.shiftplanner",
       "buildNumber": "1",
       "supportsTablet": true,
       "infoPlist": {
-        "NSCameraUsageDescription": "Allow Ellie to access your camera",
-        "NSPhotoLibraryUsageDescription": "Allow Ellie to access your photos"
+        "NSCameraUsageDescription": "Allow Ryvro to access your camera",
+        "NSPhotoLibraryUsageDescription": "Allow Ryvro to access your photos"
       }
     },
     "android": {
-      "package": "com.ilyasuseidu.ellie",
+      "package": "com.ryvro.shiftplanner",
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
@@ -391,10 +392,10 @@ Edit `eas.json` for Android-specific settings:
    - Fill in app information
 
 2. **App Information**:
-   - Name: Ellie
+   - Name: Ryvro Shift Planner
    - Primary Language: English
-   - Bundle ID: com.ilyasuseidu.ellie
-   - SKU: ellie-ios
+   - Bundle ID: com.ryvro.shiftplanner
+   - SKU: ryvro-shift-ios
 
 3. **Pricing and Availability**:
    - Set price tier
@@ -402,7 +403,7 @@ Edit `eas.json` for Android-specific settings:
 
 ### 2. Prepare App Metadata
 
-- **App Description**: Compelling description of Ellie
+- **App Description**: Compelling description of Ryvro
 - **Keywords**: Search optimization keywords
 - **Screenshots**: Required sizes for all devices
   - iPhone 6.7": 1290 x 2796
@@ -449,9 +450,9 @@ eas submit --platform ios --profile production
    - Fill in app details
 
 2. **App Information**:
-   - Name: Ellie
+   - Name: Ryvro Shift Planner
    - Default Language: English
-   - Package name: com.ilyasuseidu.ellie
+   - Package name: com.ryvro.shiftplanner
 
 3. **Store Listing**:
    - Short description (80 chars)

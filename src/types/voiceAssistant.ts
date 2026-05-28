@@ -1,7 +1,7 @@
 /**
  * Voice Assistant Type Definitions
  *
- * Types for the Ellie voice assistant feature including
+ * Types for the Ryvro voice assistant feature including
  * conversation state, messages, tool calls, and service interfaces.
  */
 

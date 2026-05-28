@@ -1,16 +1,16 @@
-# Ellie - Shift Schedule Manager for Mining Workers
+# Ryvro Shift Planner
 
 ![CI Pipeline](https://github.com/IlyasuSeidu/Ellie/workflows/CI%20Pipeline/badge.svg)
 ![E2E Tests](https://github.com/IlyasuSeidu/Ellie/workflows/E2E%20Tests/badge.svg)
 [![codecov](https://codecov.io/gh/IlyasuSeidu/Ellie/branch/main/graph/badge.svg)](https://codecov.io/gh/IlyasuSeidu/Ellie)
 
-**Ellie** helps mining shift workers manage complex rotating shift schedules during multi-week work cycles. Never lose track of whether you're on day shifts, night shifts, or off days again.
+**Ryvro** helps miners, FIFO crews, and shift workers build reliable schedules from AI, templates, or the Universal Shift Builder. It keeps rotating rosters, block schedules, reminders, exceptions, colors, and calendar exports in one practical shift-work app.
 
 > **"Did I set my alarm for the right time? Am I on days or nights tomorrow?"**
 > **"When's my next fly-out day?"**
 > **"Am I working on my kid's birthday in March?"**
 
-Ellie answers these questions with a glance—no mental math, no counting forward from your start date, no missed shifts.
+Ryvro answers these questions with a glance—no mental math, no counting forward from your start date, no missed shifts.
 
 ---
 
@@ -29,7 +29,7 @@ Mining shift workers operate on repeating cycles (7-7-7, 4-4-4, 2-2-3, custom pa
 
 ## ✨ The Solution
 
-Ellie is a **premium shift schedule app** built specifically for mining workers. It provides:
+Ryvro is a **miner-first shift planner** built on a universal schedule engine. It provides:
 
 - **Instant shift visibility**: "Tomorrow: Night Shift 🌙 6pm-6am"
 - **Long-term planning**: See your schedule months in advance
@@ -59,7 +59,7 @@ Ellie is a **premium shift schedule app** built specifically for mining workers.
 
 ### Premium Onboarding Flow (Completed)
 
-Ellie features a polished, Tinder-inspired onboarding experience built with React Native Reanimated 4:
+Ryvro now uses the Universal Shift Builder as its onboarding schedule setup, replacing the old fixed-pattern onboarding screens. The original onboarding work included a polished, Tinder-inspired experience built with React Native Reanimated 4:
 
 #### 1. **Welcome Screen** - First Impressions Matter
 
@@ -354,7 +354,7 @@ Ellie/
 
 ## 🎨 Design System - Sacred Theme
 
-Ellie uses a custom design system called **"Sacred"** - built specifically for shift workers who check their schedules at 4am before heading underground.
+Ryvro uses a custom design system called **"Sacred"** - built specifically for shift workers who check their schedules at 4am before heading underground.
 
 ### Color Palette
 
@@ -426,7 +426,7 @@ Colors inspired by the mining environment itself:
 
 ## 📖 Build-in-Public Journey
 
-I'm building Ellie in public, documenting every decision, challenge, and lesson learned. Each major feature has a dedicated story:
+I'm building Ryvro in public, documenting every decision, challenge, and lesson learned. Each major feature has a dedicated story:
 
 | Feature                 | Story Angle          | Link                                                                                |
 | ----------------------- | -------------------- | ----------------------------------------------------------------------------------- |
@@ -455,7 +455,7 @@ Each story includes:
 
 ## 🧪 Testing Strategy
 
-Ellie has comprehensive test coverage across all layers:
+Ryvro has comprehensive test coverage across all layers:
 
 ### Unit Tests (1,500+ tests)
 
@@ -610,11 +610,11 @@ This project is private and proprietary.
 
 ## 💡 The Vision
 
-**Ellie exists because shift work is hard enough without the mental overhead of tracking complex rotating schedules.**
+**Ryvro exists because shift work is hard enough without the mental overhead of tracking complex rotating schedules.**
 
 Every feature is designed with one question in mind: _"Will this help a miner know what shift they're on at 4am?"_
 
-If you're a shift worker tired of counting through your pattern, Ellie is for you.
+If you're a shift worker tired of counting through your pattern, Ryvro is for you.
 
 ---
 

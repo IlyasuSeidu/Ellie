@@ -33,13 +33,18 @@ EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=your-google-ios-client-id.apps.googleuserconten
 
 # API Configuration
 
-API_BASE_URL=https://api.shiftsync.app
+API_BASE_URL=https://api.getryvro.com
 API_TIMEOUT=30000
 
-# Ellie Brain (Firebase Cloud Function)
+# Ryvro Brain (Firebase Cloud Function)
 
-ELLIE_BRAIN_URL=https://us-central1-your-project-id.cloudfunctions.net/ellieBrain
-ELLIE_BRAIN_TIMEOUT=30000
+RYVRO_BRAIN_URL=https://us-central1-your-project-id.cloudfunctions.net/ellieBrain
+RYVRO_BRAIN_TIMEOUT=30000
+
+# Legacy fallback accepted during migration:
+
+ELLIE_BRAIN_URL=
+ELLIE_BRAIN_TIMEOUT=
 
 # Wake Word Provider
 
@@ -50,21 +55,21 @@ PICOVOICE_ACCESS_KEY=
 WAKE_WORD_ENABLED=false
 WAKE_WORD_AUTO_START=true
 WAKE_WORD_SENSITIVITY=0.65
-WAKE_WORD_PHRASE=Hey Ellie
+WAKE_WORD_PHRASE=Ryvro
 
 # Optional fallback paths (used if platform-specific variables are empty)
 
 WAKE_WORD_KEYWORD_PATHS=
 
-# Recommended for custom "Ellie" wake word:
+# Recommended for custom Ryvro wake word:
 
-# Android: place ellie_android.ppn in android/app/src/main/assets/
+# Android: place ryvro_android.ppn in android/app/src/main/assets/
 
-WAKE_WORD_KEYWORD_PATHS_ANDROID=ellie_android.ppn
+WAKE_WORD_KEYWORD_PATHS_ANDROID=ryvro_android.ppn
 
-# iOS: add ellie_ios.ppn to Xcode app target resources (under ios/Ellie or similar)
+# iOS: add ryvro_ios.ppn to Xcode app target resources (under the current iOS native project folder, currently ios/Ellie)
 
-WAKE_WORD_KEYWORD_PATHS_IOS=ellie_ios.ppn
+WAKE_WORD_KEYWORD_PATHS_IOS=ryvro_ios.ppn
 
 # Optional: built-in keywords (used when custom paths are empty)
 
@@ -80,9 +85,9 @@ WAKE_WORD_BUILT_IN_KEYWORDS=
 
 # Example classifier bundled by this repo:
 
-OPENWAKEWORD_MODEL_PATH=openwakeword/hey_ellie_v0.1.onnx
-OPENWAKEWORD_MODEL_PATH_ANDROID=openwakeword/hey_ellie_v0.1.onnx
-OPENWAKEWORD_MODEL_PATH_IOS=openwakeword/hey_ellie_v0.1.onnx
+OPENWAKEWORD_MODEL_PATH=openwakeword/ryvro_v0.1.onnx
+OPENWAKEWORD_MODEL_PATH_ANDROID=openwakeword/ryvro_v0.1.onnx
+OPENWAKEWORD_MODEL_PATH_IOS=openwakeword/ryvro_v0.1.onnx
 
 # Optional advanced feature-model overrides (defaults are bundled in native module):
 
