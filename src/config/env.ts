@@ -123,7 +123,7 @@ export interface AppConfig {
     version: string;
     buildNumber: string;
   };
-  ellieBrain: {
+  ryvroBrain: {
     /** Cloud Function URL for the Ryvro voice assistant backend */
     url: string;
     /** Request timeout in milliseconds */
@@ -352,11 +352,11 @@ function buildAppConfig(): AppConfig {
       version: Constants.expoConfig?.version || '1.0.0',
       buildNumber: Constants.expoConfig?.ios?.buildNumber || '1',
     },
-    ellieBrain: {
+    ryvroBrain: {
       url:
         getEnvVar('RYVRO_BRAIN_URL', false) ||
         getEnvVar('ELLIE_BRAIN_URL', false) ||
-        'https://ryvro-brain-REGION-PROJECT.cloudfunctions.net/ellieBrain',
+        'https://ryvro-brain-REGION-PROJECT.cloudfunctions.net/ryvroBrain',
       timeout: parseInt(
         getEnvVar('RYVRO_BRAIN_TIMEOUT', false) ||
           getEnvVar('ELLIE_BRAIN_TIMEOUT', false) ||
@@ -438,7 +438,7 @@ function validateConfig(config: AppConfig): void {
     throw new Error('API timeout must be between 1000 and 60000 milliseconds');
   }
 
-  if (!isConfiguredEllieBrainUrl(config.ellieBrain.url)) {
+  if (!isConfiguredEllieBrainUrl(config.ryvroBrain.url)) {
     const message =
       'RYVRO_BRAIN_URL must be configured with a valid deployed endpoint. ' +
       'Placeholder Cloud Function URLs are not supported.';
@@ -560,8 +560,8 @@ try {
         version: '1.0.0',
         buildNumber: '1',
       },
-      ellieBrain: {
-        url: 'https://ryvro-brain-test.cloudfunctions.net/ellieBrain',
+      ryvroBrain: {
+        url: 'https://ryvro-brain-test.cloudfunctions.net/ryvroBrain',
         timeout: 30000,
         maxQueryLength: 500,
       },
@@ -641,5 +641,5 @@ export const firebaseConfig = config.firebase;
 export const googleConfig = config.google;
 export const apiConfig = config.api;
 export const appConfig = config.app;
-export const ellieBrainConfig = config.ellieBrain;
+export const ryvroBrainConfig = config.ryvroBrain;
 export const voiceAssistantConfig = config.voiceAssistant;

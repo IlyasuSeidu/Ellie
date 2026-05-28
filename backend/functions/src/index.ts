@@ -7,9 +7,10 @@
 
 import { getApps, initializeApp } from 'firebase-admin/app';
 import { FieldValue, getFirestore } from 'firebase-admin/firestore';
-import { HttpsError, onCall, onRequest } from 'firebase-functions/v2/https';
+import { HttpsError, onCall, onRequest, type Request } from 'firebase-functions/v2/https';
 import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { defineSecret, defineString } from 'firebase-functions/params';
+import type { Response } from 'express';
 import {
   AI_DECISION_QUEUE_COLLECTION,
   ANALYTICS_DAILY_SUMMARIES_COLLECTION,
@@ -537,122 +538,127 @@ export const markAiDecisionReviewed = onCall(
   }
 );
 
+const ryvroVoiceEndpointOptions = {
+  secrets: [openaiApiKey],
+  cors: true,
+  maxInstances: 20,
+  timeoutSeconds: 60,
+  memory: '256MiB' as const,
+};
+
+async function handleRyvroVoiceRequest(req: Request, res: Response) {
+  const startedAt = Date.now();
+  const requestId = createRequestId(req.get('x-request-id'));
+
+  // Only allow POST
+  if (req.method !== 'POST') {
+    res
+      .status(405)
+      .json(createErrorEnvelope(requestId, 'invalid_request', 'Method not allowed.', false));
+    return;
+  }
+
+  try {
+    const validation = validateRequestBody(req.body);
+    if (!validation.ok) {
+      const shouldRetry =
+        validation.code === 'rate_limited' || validation.code === 'provider_timeout';
+      res
+        .status(validation.statusCode)
+        .json(createErrorEnvelope(requestId, validation.code, validation.message, shouldRetry));
+      return;
+    }
+
+    const apiKey = openaiApiKey.value();
+    if (!apiKey) {
+      logStructured('error', 'OPENAI_API_KEY secret is not configured', {
+        requestId,
+        errorCode: 'internal_error',
+        latencyMs: Date.now() - startedAt,
+      });
+      res
+        .status(500)
+        .json(
+          createErrorEnvelope(requestId, 'internal_error', 'Service configuration error.', false)
+        );
+      return;
+    }
+
+    const response = await processQuery(validation.request, apiKey, {
+      requestId,
+      timeoutMs: PROVIDER_TIMEOUT_MS,
+    });
+
+    if (!response.text || response.text.trim().length === 0) {
+      throw new EllieBrainProcessingError(
+        'provider_error',
+        'Provider returned an empty response.',
+        true,
+        502
+      );
+    }
+
+    const successEnvelope: EllieBrainSuccessEnvelope = {
+      ok: true,
+      requestId,
+      data: {
+        ...response,
+        requestId,
+      },
+    };
+
+    logStructured('info', 'Ryvro voice request completed', {
+      requestId,
+      latencyMs: Date.now() - startedAt,
+      providerStatus: 'ok',
+    });
+
+    res.status(200).json(successEnvelope);
+  } catch (error) {
+    const mappedError =
+      error instanceof EllieBrainProcessingError
+        ? error
+        : new EllieBrainProcessingError(
+            'internal_error',
+            'Something went wrong. Please try again.',
+            true,
+            500
+          );
+
+    logStructured('error', 'Ryvro voice request failed', {
+      requestId,
+      errorCode: mappedError.code,
+      retryable: mappedError.retryable,
+      providerStatus: mappedError.providerStatus ?? 'unknown',
+      latencyMs: Date.now() - startedAt,
+      message: mappedError.message,
+    });
+
+    res
+      .status(mappedError.statusCode)
+      .json(
+        createErrorEnvelope(requestId, mappedError.code, mappedError.message, mappedError.retryable)
+      );
+  }
+}
+
 /**
- * Main HTTPS endpoint for the Ryvro voice backend.
+ * Primary HTTPS endpoint for the Ryvro voice backend.
+ *
+ * POST /ryvroBrain
+ * Body: EllieBrainRequest
+ * Response: EllieBrainResponse
+ */
+export const ryvroBrain = onRequest(ryvroVoiceEndpointOptions, handleRyvroVoiceRequest);
+
+/**
+ * Legacy HTTPS endpoint retained for migration compatibility.
  *
  * POST /ellieBrain
  * Body: EllieBrainRequest
  * Response: EllieBrainResponse
  */
-export const ellieBrain = onRequest(
-  {
-    secrets: [openaiApiKey],
-    cors: true,
-    maxInstances: 20,
-    timeoutSeconds: 60,
-    memory: '256MiB',
-  },
-  async (req, res) => {
-    const startedAt = Date.now();
-    const requestId = createRequestId(req.get('x-request-id'));
-
-    // Only allow POST
-    if (req.method !== 'POST') {
-      res
-        .status(405)
-        .json(createErrorEnvelope(requestId, 'invalid_request', 'Method not allowed.', false));
-      return;
-    }
-
-    try {
-      const validation = validateRequestBody(req.body);
-      if (!validation.ok) {
-        const shouldRetry =
-          validation.code === 'rate_limited' || validation.code === 'provider_timeout';
-        res
-          .status(validation.statusCode)
-          .json(createErrorEnvelope(requestId, validation.code, validation.message, shouldRetry));
-        return;
-      }
-
-      const apiKey = openaiApiKey.value();
-      if (!apiKey) {
-        logStructured('error', 'OPENAI_API_KEY secret is not configured', {
-          requestId,
-          errorCode: 'internal_error',
-          latencyMs: Date.now() - startedAt,
-        });
-        res
-          .status(500)
-          .json(
-            createErrorEnvelope(requestId, 'internal_error', 'Service configuration error.', false)
-          );
-        return;
-      }
-
-      const response = await processQuery(validation.request, apiKey, {
-        requestId,
-        timeoutMs: PROVIDER_TIMEOUT_MS,
-      });
-
-      if (!response.text || response.text.trim().length === 0) {
-        throw new EllieBrainProcessingError(
-          'provider_error',
-          'Provider returned an empty response.',
-          true,
-          502
-        );
-      }
-
-      const successEnvelope: EllieBrainSuccessEnvelope = {
-        ok: true,
-        requestId,
-        data: {
-          ...response,
-          requestId,
-        },
-      };
-
-      logStructured('info', 'Ryvro voice request completed', {
-        requestId,
-        latencyMs: Date.now() - startedAt,
-        providerStatus: 'ok',
-      });
-
-      res.status(200).json(successEnvelope);
-    } catch (error) {
-      const mappedError =
-        error instanceof EllieBrainProcessingError
-          ? error
-          : new EllieBrainProcessingError(
-              'internal_error',
-              'Something went wrong. Please try again.',
-              true,
-              500
-            );
-
-      logStructured('error', 'Ryvro voice request failed', {
-        requestId,
-        errorCode: mappedError.code,
-        retryable: mappedError.retryable,
-        providerStatus: mappedError.providerStatus ?? 'unknown',
-        latencyMs: Date.now() - startedAt,
-        message: mappedError.message,
-      });
-
-      res
-        .status(mappedError.statusCode)
-        .json(
-          createErrorEnvelope(
-            requestId,
-            mappedError.code,
-            mappedError.message,
-            mappedError.retryable
-          )
-        );
-    }
-  }
-);
+export const ellieBrain = onRequest(ryvroVoiceEndpointOptions, handleRyvroVoiceRequest);
 
 /**
  * AI-assisted universal shift schedule parser.

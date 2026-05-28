@@ -2,23 +2,23 @@
 
 ## Overview
 
-This document provides comprehensive information about the APIs, services, and integrations used in the Ellie application.
+This document provides comprehensive information about the APIs, services, and integrations used in the Ryvro application.
 
 ## Table of Contents
 
 - [Environment Variables](#environment-variables)
-- [Ellie Brain Voice API](#ellie-brain-voice-api)
+- [Ryvro Brain Voice API](#ryvro-brain-voice-api)
 - [Firebase Configuration](#firebase-configuration)
 - [Service APIs](#service-apis)
 - [Error Handling](#error-handling)
 - [Rate Limiting](#rate-limiting)
 - [Authentication](#authentication)
 
-## Ellie Brain Voice API
+## Ryvro Brain Voice API
 
 ### Endpoint
 
-- `POST /ellieBrain` (Firebase HTTPS function, CORS enabled)
+- `POST /ryvroBrain` (Firebase HTTPS function, CORS enabled)
 
 ### Request Shape
 

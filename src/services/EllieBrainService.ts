@@ -6,7 +6,7 @@
  * receives natural language responses with optional shift data.
  */
 
-import { ellieBrainConfig, isConfiguredEllieBrainUrl, voiceAssistantConfig } from '@/config/env';
+import { ryvroBrainConfig, isConfiguredEllieBrainUrl, voiceAssistantConfig } from '@/config/env';
 import { logger } from '@/utils/logger';
 import type {
   EllieBrainErrorPayload,
@@ -199,7 +199,7 @@ class EllieBrainService {
     userContext: VoiceAssistantUserContext,
     conversationHistory: VoiceMessage[] = []
   ): Promise<EllieBrainResponse> {
-    if (!isConfiguredEllieBrainUrl(ellieBrainConfig.url)) {
+    if (!isConfiguredEllieBrainUrl(ryvroBrainConfig.url)) {
       throw new EllieBrainServiceError({
         type: 'backend_error',
         message: 'Ryvro voice service is not configured in this build.',
@@ -212,7 +212,7 @@ class EllieBrainService {
     const sanitizedQuery = query
       .replace(/<[^>]*>/g, '')
       .trim()
-      .slice(0, ellieBrainConfig.maxQueryLength);
+      .slice(0, ryvroBrainConfig.maxQueryLength);
 
     if (!sanitizedQuery) {
       throw new Error('Empty query');
@@ -241,7 +241,7 @@ class EllieBrainService {
     const timeoutId = setTimeout(() => {
       this.abortReason = 'timeout';
       this.abortController?.abort();
-    }, ellieBrainConfig.timeout);
+    }, ryvroBrainConfig.timeout);
 
     try {
       logger.info('Sending query to Ryvro voice service', {
@@ -249,7 +249,7 @@ class EllieBrainService {
         historyCount: history.length,
       });
 
-      const response = await fetch(ellieBrainConfig.url, {
+      const response = await fetch(ryvroBrainConfig.url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -317,7 +317,7 @@ class EllieBrainService {
         throw new EllieBrainServiceError({
           type: 'network_error',
           message:
-            `Cannot reach Ryvro voice service at ${ellieBrainConfig.url}. ` +
+            `Cannot reach Ryvro voice service at ${ryvroBrainConfig.url}. ` +
             'Check your internet connection and retry.',
           retryable: true,
           code: 'network_unreachable',

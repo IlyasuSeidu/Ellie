@@ -38,7 +38,7 @@ API_TIMEOUT=30000
 
 # Ryvro Brain (Firebase Cloud Function)
 
-RYVRO_BRAIN_URL=https://us-central1-your-project-id.cloudfunctions.net/ellieBrain
+RYVRO_BRAIN_URL=https://us-central1-your-project-id.cloudfunctions.net/ryvroBrain
 RYVRO_BRAIN_TIMEOUT=30000
 
 # Legacy fallback accepted during migration:

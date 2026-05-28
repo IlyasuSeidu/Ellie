@@ -99,13 +99,13 @@ module.exports = ({ config = {} }) => {
       RYVRO_BRAIN_URL:
         process.env.RYVRO_BRAIN_URL ||
         process.env.ELLIE_BRAIN_URL ||
-        'https://ryvro-brain-REGION-PROJECT.cloudfunctions.net/ellieBrain',
+        'https://ryvro-brain-REGION-PROJECT.cloudfunctions.net/ryvroBrain',
       RYVRO_BRAIN_TIMEOUT:
         process.env.RYVRO_BRAIN_TIMEOUT || process.env.ELLIE_BRAIN_TIMEOUT || '30000',
       ELLIE_BRAIN_URL:
         process.env.RYVRO_BRAIN_URL ||
         process.env.ELLIE_BRAIN_URL ||
-        'https://ryvro-brain-REGION-PROJECT.cloudfunctions.net/ellieBrain',
+        'https://ryvro-brain-REGION-PROJECT.cloudfunctions.net/ryvroBrain',
       ELLIE_BRAIN_TIMEOUT:
         process.env.RYVRO_BRAIN_TIMEOUT || process.env.ELLIE_BRAIN_TIMEOUT || '30000',
       SHIFT_SCHEDULE_PARSER_URL: process.env.SHIFT_SCHEDULE_PARSER_URL || '',

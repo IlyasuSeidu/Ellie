@@ -25,7 +25,7 @@ Completed in the current working tree:
 - Added a starter universal template catalog for healthcare, security, emergency services, manufacturing, transport, hospitality, aviation/rail, and mining FIFO examples.
 - Added broad RevenueCat entitlement aliases while preserving old Ellie/miner aliases for backward compatibility.
 - Added `RYVRO_BRAIN_URL` / `RYVRO_BRAIN_TIMEOUT` as the preferred voice-backend environment names while preserving the old `ELLIE_BRAIN_*` keys as migration fallbacks.
-- Renamed the Firebase functions deploy codebase from `ellie-brain` to `ryvro-brain` in repo config. The HTTPS function export remains `ellieBrain` for now to avoid changing the deployed endpoint path without a Firebase console migration.
+- Renamed the Firebase functions deploy codebase from `ellie-brain` to `ryvro-brain` in repo config and added `ryvroBrain` as the primary HTTPS function export. The old `ellieBrain` export remains as a compatibility endpoint until production clients and external dashboards have migrated.
 - Verified the current working tree with full Jest and project validation after the rebrand cleanup.
 
 Still pending outside this repo or intentionally kept for compatibility:
@@ -36,7 +36,7 @@ Still pending outside this repo or intentionally kept for compatibility:
 - New Firebase project/OAuth clients and fresh `GoogleService-Info.plist` / `google-services.json` generated from Firebase Console for `com.ryvro.shiftplanner`.
 - RevenueCat dashboard product/entitlement renames if the production dashboard still uses old Ellie/miner names.
 - Push notification, analytics, Sentry, support-email, privacy-policy, terms, website, and store-listing updates outside the repo.
-- Deployed backend function name/path migration from `ellieBrain` to a Ryvro endpoint if the production Firebase project should stop exposing the legacy endpoint path. This needs Firebase deploy planning because clients and environment variables currently depend on the endpoint URL.
+- Production backend deploy and cutover from `ellieBrain` to `ryvroBrain`. Repo code now exposes both endpoints, but the actual Firebase project still needs a deploy, smoke test, and eventual legacy endpoint retirement plan.
 - Optional internal code-symbol cleanup for old technical names such as `EllieBrainService`, `EllieButton`, internal `Ellie` tab route, `@ellie_language`, and wake-word model filenames. These are not user-facing in the current UI and were left stable to avoid breaking stored data, tests, native modules, and backend contracts.
 
 ## External Clearance Evidence: 2026-05-28
