@@ -24,6 +24,13 @@ describe('Ryvro environment template', () => {
     expect(envExample).not.toContain('hey_ellie');
   });
 
+  it('does not keep retired ShiftSync config in the Jest Expo Constants mock', () => {
+    const jestSetup = fs.readFileSync(path.join(process.cwd(), 'jest.setup.js'), 'utf8');
+
+    expect(jestSetup).toContain("name: 'Ryvro Shift Planner'");
+    expect(jestSetup).not.toContain("name: 'ShiftSync'");
+  });
+
   it('keeps old brain keys only as empty migration fallbacks', () => {
     expect(envExample).toContain('ELLIE_BRAIN_URL=');
     expect(envExample).toContain('ELLIE_BRAIN_TIMEOUT=');

@@ -132,7 +132,7 @@ jest.mock('expo-file-system/legacy', () => {
 jest.mock('expo-constants', () => ({
   default: {
     expoConfig: {
-      name: 'ShiftSync',
+      name: 'Ryvro Shift Planner',
       version: '1.0.0',
       ios: {
         buildNumber: '1',
