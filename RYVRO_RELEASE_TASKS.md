@@ -28,6 +28,7 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 | 8   | Update bundle ID in `android/app/build.gradle` (namespace + applicationId, lines 90+92)     | ✅ Done                            |
 | 9   | Update bundle ID in `ios/Ellie.xcodeproj/project.pbxproj` (both occurrences)                | ✅ Done                            |
 | 10  | Create `eas.json` with development / preview / production build profiles                    | ✅ Done                            |
+| 10a | Add store listing copy, privacy/support templates, and external service handoff docs        | ✅ Done                            |
 
 ---
 
@@ -56,6 +57,7 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 
 > Source: current Ryvro subscription implementation and release-blocker audit.
 > Do these in parallel with Phase 5 (Apple Developer enrollment). RevenueCat is free to set up now; product IDs must exist before building the production binary.
+> Console setup source of truth: `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md`.
 
 | #   | Task                                                                                                                                                                                                              | Status  |
 | --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
@@ -81,6 +83,8 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 | 15  | 👤 Run `eas login` then `eas init` in `/Users/Shared/Ellie` — copy the EAS Project ID UUID                                                                                                  | 👤 Todo |
 | 16  | 👤 Update `.env`: set `APP_ENV=production`, paste `EAS_PROJECT_ID`, paste `GOOGLE_WEB_CLIENT_ID` from Firebase Console, fill `REVENUECAT_IOS_KEY` and `REVENUECAT_ANDROID_KEY` from Phase 4 | 👤 Todo |
 | 17  | 👤 Set up iOS signing: run `eas credentials --platform ios` → add distribution cert + provisioning profile                                                                                  | 👤 Todo |
+| 17a | Use `docs/RYVRO_STORE_LISTING.md` for App Store and Google Play copy                                                                                                                        | ✅ Done |
+| 17b | Use `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md` for privacy, terms, support, account deletion, and Firebase Auth email templates                                                              | ✅ Done |
 
 ---
 
@@ -90,6 +94,7 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
 | 18  | Verify Firebase Cloud Function is deployed: `curl` the configured `RYVRO_BRAIN_URL` endpoint (200/400 = live)                                                                   | 👤 Todo |
 | 19  | 👤 Create and publish Privacy Policy — must mention microphone, Firebase, OpenAI, RevenueCat, and subscription terms (Notion page or GitHub Pages) — required before submission | 👤 Todo |
+| 19a | Repo-side Ryvro privacy, terms, support, and email template drafts are ready in `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`                                                       | ✅ Done |
 
 ---
 

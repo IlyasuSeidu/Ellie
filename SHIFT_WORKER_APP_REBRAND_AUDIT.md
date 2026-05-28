@@ -26,6 +26,9 @@ Completed in the current working tree:
 - Added broad RevenueCat entitlement aliases while preserving old Ellie/miner aliases for backward compatibility.
 - Added `RYVRO_BRAIN_URL` / `RYVRO_BRAIN_TIMEOUT` as the preferred voice-backend environment names while preserving the old `ELLIE_BRAIN_*` keys as migration fallbacks.
 - Renamed the Firebase functions deploy codebase from `ellie-brain` to `ryvro-brain` in repo config and added `ryvroBrain` as the primary HTTPS function export. The old `ellieBrain` export remains as a compatibility endpoint until production clients and external dashboards have migrated.
+- Added repo-side App Store / Google Play listing copy in `docs/RYVRO_STORE_LISTING.md`.
+- Added repo-side privacy policy, terms, support, account deletion, support email, and Firebase Auth email templates in `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`.
+- Added account-side Firebase, Google OAuth, Apple Sign-In, RevenueCat, store, domain, social, analytics, and release verification handoff in `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md`.
 - Verified the current working tree with full Jest and project validation after the rebrand cleanup.
 
 Still pending outside this repo or intentionally kept for compatibility:
@@ -35,7 +38,7 @@ Still pending outside this repo or intentionally kept for compatibility:
 - Domain and social handle purchase/reservation, especially `getryvro.com` or `ryvro.app`.
 - New Firebase project/OAuth clients and fresh `GoogleService-Info.plist` / `google-services.json` generated from Firebase Console for `com.ryvro.shiftplanner`.
 - RevenueCat dashboard product/entitlement renames if the production dashboard still uses old Ellie/miner names.
-- Push notification, analytics, Sentry, support-email, privacy-policy, terms, website, and store-listing updates outside the repo.
+- Push notification, analytics, Sentry, support-email, privacy-policy, terms, website, and store-listing updates outside the repo. Repo-side source copy and setup handoff now exist in `docs/RYVRO_STORE_LISTING.md`, `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`, and `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md`.
 - Production backend deploy and cutover from `ellieBrain` to `ryvroBrain`. Repo code now exposes both endpoints, but the actual Firebase project still needs a deploy, smoke test, and eventual legacy endpoint retirement plan.
 - Optional internal code-symbol cleanup for old technical names such as `EllieBrainService`, `EllieButton`, internal `Ellie` tab route, `@ellie_language`, and wake-word model filenames. These are not user-facing in the current UI and were left stable to avoid breaking stored data, tests, native modules, and backend contracts.
 

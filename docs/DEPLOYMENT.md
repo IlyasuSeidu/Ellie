@@ -403,7 +403,7 @@ Edit `eas.json` for Android-specific settings:
 
 ### 2. Prepare App Metadata
 
-- **App Description**: Compelling description of Ryvro
+- **App Description**: Use `docs/RYVRO_STORE_LISTING.md`
 - **Keywords**: Search optimization keywords
 - **Screenshots**: Required sizes for all devices
   - iPhone 6.7": 1290 x 2796
@@ -411,8 +411,8 @@ Edit `eas.json` for Android-specific settings:
   - iPhone 5.5": 1242 x 2208
   - iPad Pro 12.9": 2048 x 2732
 - **App Icon**: 1024 x 1024 (no transparency)
-- **Privacy Policy URL**: Required
-- **Support URL**: Required
+- **Privacy Policy URL**: Publish from `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`
+- **Support URL**: Publish from `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`
 
 ### 3. Submit to App Store
 
