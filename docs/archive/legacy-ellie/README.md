@@ -2,7 +2,7 @@
 
 These documents are historical pre-Ryvro planning artifacts. They are kept for traceability only and are not the current launch source of truth.
 
-This archive also includes pre-Universal-Shift-Builder FIFO and dual-roster implementation plans. They can help explain earlier design decisions, but the active app no longer uses those fixed onboarding screens as launch guidance.
+This archive also includes pre-Universal-Shift-Builder FIFO, dual-roster, i18n, offline-first, profile, dashboard, and physical-device runbook plans. They can help explain earlier design decisions, but the active app no longer uses those fixed onboarding screens as launch guidance.
 
 Current Ryvro launch references:
 

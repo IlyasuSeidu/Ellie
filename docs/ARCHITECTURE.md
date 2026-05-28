@@ -2,22 +2,19 @@
 
 ## Overview
 
-Ellie is built using a modern React Native architecture with Expo, following best practices for scalability, maintainability, and testability. The application uses a layered architecture with clear separation of concerns.
+Ryvro is built using a modern React Native architecture with Expo, following best practices for scalability, maintainability, and testability. The application uses a layered architecture with clear separation of concerns.
 
-## Dual Roster Architecture (Rotating + FIFO)
+## Universal Shift Builder Architecture
 
-Ellie supports two scheduling paradigms:
-
-- **Rotating roster**: day/night/off or morning/afternoon/night/off patterns.
-- **FIFO roster**: work block/rest block cycles with optional work-block patterns (straight day, straight night, swing, custom).
+Ryvro uses the Universal Shift Builder as the single schedule setup and editing path. It supports fixed rosters, FIFO blocks, swing rosters, count-based rotations, weekly recurring shifts, one-off exceptions, holiday overrides, reminders, colors, icons, and AI-assisted schedule parsing without routing users through legacy fixed-category onboarding screens.
 
 Core architecture points:
 
-- `ShiftCycle` now carries `rosterType` and optional `fifoConfig`.
-- `calculateShiftDay` branches by `rosterType` so both paradigms share one query surface.
-- Onboarding routes split early by roster type (`RosterType`, `FIFOCustomPattern`, `FIFOPhaseSelector`).
-- Dashboard components render either shift-centric UI (rotating) or block-centric UI (FIFO).
-- Voice assistant context serializes `rosterType` and `fifoConfig`, and backend tools return block-aware responses.
+- The builder stores schedules as universal shift definitions, recurrence rules, sequence blocks, exceptions, reminder profiles, colors, and icons.
+- Onboarding and Settings both enter the same builder flow instead of separate roster-type screens.
+- Dashboard, calendar, reminders, import/export, and voice assistant surfaces consume the same normalized schedule data.
+- Legacy rotating/FIFO terminology remains only where it helps users recognize a familiar template, not as a separate architecture.
+- Voice assistant context serializes the normalized schedule so backend tools answer block-aware and shift-aware questions through one query surface.
 
 ## Architecture Layers
 

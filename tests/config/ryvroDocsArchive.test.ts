@@ -19,15 +19,40 @@ describe('Ryvro documentation archive', () => {
     'ELLIE_TESTING_STRATEGY_RECOVERED.md',
     'DUAL_PARADIGM_ROSTER_IMPLEMENTATION_PLAN.md',
     'FIFO_ONBOARDING_FLOW_ANALYSIS.md',
+    'ANALYTICS_INTELLIGENCE_UI_CLAUDE_CODE_PROMPT.md',
+    'FIFO_CALENDAR_VISUALIZATION_PLAN.md',
+    'I18N_GAP_CLOSURE_EXECUTION_PLAN.md',
+    'I18N_IMPLEMENTATION_PLAN.md',
+    'I18N_PHASE1_EXECUTION_TASKS.md',
+    'I18N_RUNTIME_LANGUAGE_POLISH_EXECUTION_PLAN.md',
+    'OFFLINE_FIRST_SYSTEM.md',
+    'ONBOARDING_PHYSICAL_DEVICE_TEST_RUNBOOK.md',
+    'PROFILE_SCREEN_PLAN.md',
     'ellie-auth.md',
     'ellie-sleep-tracking.md',
     'ellie-smart-shift-reminders.md',
     'ellie_Paywall_&_Subscription_Plan Tasks.md',
   ];
 
+  const retiredDocs = [
+    'ADDING_SHIFT_PATTERNS.md',
+    'FIFO_QA_CHECKLIST.md',
+    'RELEASE_NOTES_FIFO_DUAL_ROSTER.md',
+    'dashboard-implementation-plan.md',
+    'personalized-header-redesign-plan.md',
+    'profile-shift-settings-plan.md',
+  ];
+
   it('keeps retired Ellie launch docs out of the repository root', () => {
     for (const doc of retiredRootDocs) {
       expect(exists(doc)).toBe(false);
+      expect(exists(path.join('docs/archive/legacy-ellie', doc))).toBe(true);
+    }
+  });
+
+  it('keeps retired fixed-roster docs out of active docs', () => {
+    for (const doc of retiredDocs) {
+      expect(exists(path.join('docs', doc))).toBe(false);
       expect(exists(path.join('docs/archive/legacy-ellie', doc))).toBe(true);
     }
   });
@@ -38,6 +63,7 @@ describe('Ryvro documentation archive', () => {
     expect(archiveReadme).toContain('Historical Ellie Documentation Archive');
     expect(archiveReadme).toContain('Do not use these files as current launch guidance');
     expect(archiveReadme).toContain('pre-Universal-Shift-Builder FIFO');
+    expect(archiveReadme).toContain('physical-device runbook plans');
     expect(archiveReadme).toContain('docs/UNIVERSAL_SHIFT_BUILDER_SPEC.md');
     expect(archiveReadme).toContain('docs/RYVRO_EXTERNAL_SERVICE_SETUP.md');
   });

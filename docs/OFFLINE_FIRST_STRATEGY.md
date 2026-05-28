@@ -1,8 +1,8 @@
-# Ellie Offline-First Strategy
+# Ryvro Offline-First Strategy
 
 ## Why This Matters
 
-Ellie is built for mining workers who regularly operate underground or in remote areas with **zero cellular signal**. The app promises shift visibility without a connection — tomorrow's start time, remaining days off, block schedule — without any network call whatsoever. Offline-first isn't a nice-to-have; it's a core promise.
+Ryvro is built miner-first and universal-ready for shift workers who may operate underground, on remote sites, in hospitals, in transport depots, or anywhere with unreliable signal. The app promises shift visibility without a connection: tomorrow's start time, remaining days off, block schedule, exceptions, reminders, and calendar state without a network call. Offline-first is a core promise.
 
 ---
 
@@ -890,7 +890,7 @@ const styles = StyleSheet.create({
 
 **Strategy: Last-write-wins with `updatedAt` timestamps.**
 
-Already implemented in `DataSyncService.resolveUserConflict()`. This is the correct strategy for Ellie because:
+Already implemented in `DataSyncService.resolveUserConflict()`. This is the correct strategy for Ryvro because:
 
 - Workers set their shift pattern once and rarely change it
 - Profile edits are infrequent and single-device in practice

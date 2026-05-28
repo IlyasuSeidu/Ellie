@@ -1,6 +1,6 @@
-# Contributing to Ellie
+# Contributing to Ryvro
 
-Thank you for your interest in contributing to Ellie! This document provides guidelines and instructions for contributing to the project.
+Thank you for your interest in contributing to Ryvro! This document provides guidelines and instructions for contributing to the project.
 
 ## Table of Contents
 
@@ -696,4 +696,4 @@ Feel free to reach out:
 - Tag maintainers in PR comments
 - Check existing documentation
 
-Thank you for contributing to Ellie!
+Thank you for contributing to Ryvro!

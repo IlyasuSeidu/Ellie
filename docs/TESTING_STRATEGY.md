@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document outlines our comprehensive testing strategy for the Ellie application. We follow a testing pyramid approach with multiple layers of testing to ensure code quality, reliability, and maintainability.
+This document outlines our comprehensive testing strategy for the Ryvro application. We follow a testing pyramid approach with multiple layers of testing to ensure code quality, reliability, and maintainability.
 
 ## Testing Pyramid
 
@@ -22,13 +22,13 @@ This document outlines our comprehensive testing strategy for the Ellie applicat
 
 ## Testing Layers
 
-## FIFO + Voice Reliability Coverage
+## Universal Shift Builder + Voice Reliability Coverage
 
-The dual-roster rollout adds explicit coverage for:
+The Universal Shift Builder rollout adds explicit coverage for:
 
-- FIFO calculation and migration tests
-- FIFO onboarding navigation path tests
-- FIFO dashboard rendering tests (legend/badges/status text)
+- universal schedule calculation and migration tests
+- builder onboarding/settings navigation path tests
+- dashboard rendering tests for colors, icons, exceptions, reminders, and imported/exported calendars
 - Voice tool tests for:
   - `get_next_work_block`
   - `get_next_rest_block`

@@ -263,10 +263,10 @@ npm run test:e2e:build   # Build app for E2E testing
 #### Specific Test Suites
 
 ```bash
-# Test individual screens
+# Test current setup and schedule surfaces
 npm test -- --testPathPattern="PremiumWelcomeScreen"
-npm test -- --testPathPattern="PremiumShiftPatternScreen"
-npm test -- --testPathPattern="PremiumStartDateScreen"
+npm test -- --testPathPattern="UniversalShiftBuilder"
+npm test -- --testPathPattern="CalendarImportExport"
 
 # Test utils and services
 npm test -- --testPathPattern="shiftUtils"
@@ -284,22 +284,12 @@ Ryvro/
 ├── assets/                       # Static assets
 │   └── onboarding/
 │       └── icons/
-│           ├── consolidated/     # 3D pattern icons
-│           ├── phase-selector/   # Day/night/off icons
-│           └── ui-elements/      # Buttons, hints, etc.
-├── build-in-public/              # 📝 Build-in-public content
-│   ├── system-thinking/          # Foundation & architecture stories
-│   ├── design-tradeoff/          # Sacred theme & design decisions
-│   ├── emotional-moment/         # Welcome screen & first impressions
-│   ├── unexpected-challenge/     # Tinder-style pattern selection
-│   ├── user-empathy/             # Custom pattern builder
-│   └── technical-discovery/      # Start date calendar system
+│           ├── 1x/               # Ryvro onboarding and builder visuals
+│           └── source/           # Source notes for generated assets
 ├── src/
 │   ├── components/               # Reusable UI components
 │   │   └── onboarding/
 │   │       └── premium/          # Premium onboarding components
-│   │           ├── PatternCard.tsx
-│   │           ├── PhaseSelector.tsx
 │   │           ├── PremiumButton.tsx
 │   │           ├── PremiumCalendar.tsx
 │   │           ├── PremiumSlider.tsx
@@ -310,15 +300,14 @@ Ryvro/
 │   ├── navigation/               # Navigation configuration
 │   │   └── OnboardingNavigator.tsx
 │   ├── screens/                  # Screen components
-│   │   └── onboarding/
-│   │       └── premium/
-│   │           ├── PremiumWelcomeScreen.tsx
-│   │           ├── PremiumIntroductionScreen.tsx
-│   │           ├── PremiumShiftPatternScreen.tsx     # Tinder-style cards
-│   │           ├── PremiumCustomPatternScreen.tsx    # Custom builder
-│   │           ├── PremiumStartDateScreen.tsx        # Calendar & phase
-│   │           ├── PremiumShiftTimeInputScreen.tsx   # Shift time configuration
-│   │           └── __tests__/
+│   │   ├── onboarding/
+│   │   │   └── premium/
+│   │   │       ├── PremiumWelcomeScreen.tsx
+│   │   │       ├── PremiumIntroductionScreen.tsx
+│   │   │       └── __tests__/
+│   │   └── main/
+│   │       ├── UniversalShiftBuilderScreen.tsx       # AI/template/manual builder
+│   │       └── __tests__/
 │   ├── services/                 # Backend services
 │   │   ├── AsyncStorageService.ts
 │   │   ├── AuthService.ts
@@ -326,9 +315,10 @@ Ryvro/
 │   │   ├── ShiftDataService.ts
 │   │   └── __tests__/
 │   ├── types/                    # TypeScript type definitions
-│   │   └── index.ts              # ShiftPattern, ShiftCycle, etc.
+│   │   └── index.ts              # Universal schedule and shift types
 │   ├── utils/                    # Utility functions
-│   │   ├── shiftUtils.ts         # Shift calculation logic
+│   │   ├── universalShiftUtils.ts         # Universal shift calculations
+│   │   ├── universalShiftScheduleUtils.ts # Schedule projection helpers
 │   │   ├── dateUtils.ts          # Date manipulation
 │   │   ├── theme.ts              # Sacred theme system
 │   │   └── __tests__/
