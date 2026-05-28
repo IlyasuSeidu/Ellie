@@ -1105,7 +1105,6 @@
   "ahaMoment": {
     "headline": "Vos 3 prochains mois, cartographiés.",
     "subheadline": "Voici un aperçu de vos 3 prochains mois. Fini les hésitations dans votre tête.",
-    "heyEllieTitle": "Demandez à Ryvro votre planning",
     "ctaPrimary": "Commencer l’essai gratuit",
     "ctaSecondary": "ou passer — semaine en cours seulement, pas d’année complète",
     "stats": {
@@ -1143,7 +1142,8 @@
       "mental_math": "Fini de compter sur vos doigts."
     },
     "previewLabel": "APERÇU DE VOS 3 PROCHAINS MOIS",
-    "checkingAccess": "Vérification de l’accès…"
+    "checkingAccess": "Vérification de l’accès…",
+    "ryvroTitle": "Demandez à Ryvro votre planning"
   },
   "painHook": {
     "title": "Quelle est la partie la plus difficile de votre roulement en ce moment?",

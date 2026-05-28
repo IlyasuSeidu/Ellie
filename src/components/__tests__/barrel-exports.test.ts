@@ -9,7 +9,9 @@ describe('component barrel exports', () => {
 
   it('exports voice components from barrel', () => {
     jest.resetModules();
-    jest.doMock('@/components/voice/EllieButton', () => ({ EllieButton: 'EllieButton' }));
+    jest.doMock('@/components/voice/RyvroVoiceButton', () => ({
+      RyvroVoiceButton: 'RyvroVoiceButton',
+    }));
     jest.doMock('@/components/voice/VoiceAssistantModal', () => ({
       VoiceAssistantModal: 'VoiceAssistantModal',
     }));
@@ -21,7 +23,7 @@ describe('component barrel exports', () => {
     }));
 
     const voice = require('@/components/voice');
-    expect(voice.EllieButton).toBeDefined();
+    expect(voice.RyvroVoiceButton).toBeDefined();
     expect(voice.VoiceAssistantModal).toBeDefined();
     expect(voice.ListeningIndicator).toBeDefined();
     expect(voice.ResponseBubble).toBeDefined();

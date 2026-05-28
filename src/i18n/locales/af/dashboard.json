@@ -119,8 +119,8 @@
       "wakeWordUnavailable": "Wekwoord is nie beskikbaar nie, tik die mikrofoon om te praat",
       "sayWakeWordOrTap": "Sê \"{{wakeWordPhrase}}\" of tik op die mikrofoon",
       "askAnother": "Tik die mikrofoon om nog 'n vraag te vra",
-      "askEllie": "Tik die mikrofoon om Ryvro te vra",
-      "typeOrGrantMic": "Tik hieronder of gee mikrofoontoegang om te praat"
+      "typeOrGrantMic": "Tik hieronder of gee mikrofoontoegang om te praat",
+      "askRyvro": "Tik die mikrofoon om Ryvro te vra"
     },
     "errors": {
       "default": "Iets het verkeerd geloop",
@@ -190,10 +190,10 @@
     "schedule": "Skedule",
     "stats": "Statistieke",
     "profile": "Profiel",
-    "ellie": "Ryvro",
     "openVoiceAssistantA11y": "Maak Ryvro-stemassistent oop",
-    "openProPlansA11y": "View Pro plans",
-    "voiceAssistantLoadingA11y": "Checking voice assistant access"
+    "openProPlansA11y": "Bekyk Pro-planne",
+    "voiceAssistantLoadingA11y": "Kontroleer toegang tot stemassistent",
+    "assistant": "Ryvro"
   },
   "quickActions": {
     "settings": "Instellings",
@@ -324,7 +324,7 @@
       "schedule": "Set up your schedule",
       "shiftTimes": "Voeg jou skoftye by",
       "profile": "Voltooi jou profiel",
-      "askEllie": "Vra vir Ryvro ’n vraag"
+      "askRyvro": "Vra vir Ryvro ’n vraag"
     },
     "actions": {
       "doIt": "Doen dit",

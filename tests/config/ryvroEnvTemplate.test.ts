@@ -145,4 +145,44 @@ describe('Ryvro environment template', () => {
     expect(activeSource).not.toContain('ellieBrainService');
     expect(activeSource).not.toContain('isConfiguredEllieBrainUrl');
   });
+
+  it('keeps active voice UI and admin surfaces on Ryvro naming', () => {
+    const activeUiFiles = [
+      'src/navigation/MainTabNavigator.tsx',
+      'src/components/navigation/CustomTabBar.tsx',
+      'src/components/voice/index.ts',
+      'src/components/voice/RyvroVoiceButton.tsx',
+      'web-admin/analytics-intelligence/index.html',
+      'web-admin/analytics-intelligence/app.js',
+      'web-admin/analytics-intelligence/README.md',
+      'web-admin/analytics-intelligence/styles.css',
+    ].map((relativePath) => fs.readFileSync(path.join(process.cwd(), relativePath), 'utf8'));
+    const activeUi = activeUiFiles.join('\n');
+
+    expect(activeUi).toContain('RyvroVoiceButton');
+    expect(activeUi).toContain('Ryvro Founder Console');
+    expect(activeUi).toContain('Assistant');
+    expect(activeUi).not.toContain('EllieButton');
+    expect(activeUi).not.toContain('Ellie Founder Console');
+    expect(activeUi).not.toContain('name="Ellie"');
+    expect(activeUi).not.toContain("route.name === 'Ellie'");
+    expect(activeUi).not.toContain('tabs.ellie');
+
+    const localeDirs = fs.readdirSync(path.join(process.cwd(), 'src/i18n/locales'));
+    for (const locale of localeDirs) {
+      const dashboardPath = path.join(process.cwd(), 'src/i18n/locales', locale, 'dashboard.json');
+      if (!fs.existsSync(dashboardPath)) continue;
+      const dashboard = JSON.parse(fs.readFileSync(dashboardPath, 'utf8')) as {
+        tabs?: Record<string, string>;
+      };
+      expect(dashboard.tabs?.assistant).toBe('Ryvro');
+      expect(dashboard.tabs).not.toHaveProperty('ellie');
+      if (locale !== 'en') {
+        expect(dashboard.tabs?.openProPlansA11y).not.toBe('View Pro plans');
+        expect(dashboard.tabs?.voiceAssistantLoadingA11y).not.toBe(
+          'Checking voice assistant access'
+        );
+      }
+    }
+  });
 });

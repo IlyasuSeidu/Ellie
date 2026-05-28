@@ -62,7 +62,7 @@ type TestProps = React.ComponentProps<typeof CustomTabBar>;
 
 const routes = [
   { key: 'home', name: 'Home' },
-  { key: 'ellie', name: 'Ellie' },
+  { key: 'assistant', name: 'Assistant' },
   { key: 'profile', name: 'Profile' },
 ];
 

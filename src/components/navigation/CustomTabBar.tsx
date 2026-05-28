@@ -62,7 +62,7 @@ const TAB_ICONS: Record<
 > = {
   Home: { outline: 'home-outline', filled: 'home' },
   Schedule: { outline: 'calendar-outline', filled: 'calendar' },
-  Ellie: { outline: 'mic-outline', filled: 'mic' },
+  Assistant: { outline: 'mic-outline', filled: 'mic' },
   Stats: { outline: 'bar-chart-outline', filled: 'bar-chart' },
   Profile: { outline: 'person-outline', filled: 'person' },
 };
@@ -70,7 +70,7 @@ const TAB_ICONS: Record<
 /**
  * Calculate the horizontal center X for a given tab index.
  * Tabs 0,1 are flex tabs before the center placeholder.
- * Tab 2 is the center placeholder (Ryvro) — no indicator.
+ * Tab 2 is the center placeholder (Ryvro assistant) — no indicator.
  * Tabs 3,4 are flex tabs after the center placeholder.
  */
 function getTabCenterX(index: number): number {
@@ -228,7 +228,7 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
   const handleTabPress = (route: (typeof state.routes)[number], index: number) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
-    if (route.name === 'Ellie') {
+    if (route.name === 'Assistant') {
       if (isLoading) {
         return;
       }
@@ -259,7 +259,7 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
       Schedule: t('tabs.schedule', { defaultValue: 'Schedule' }),
       Stats: t('tabs.stats', { defaultValue: 'Stats' }),
       Profile: t('tabs.profile', { defaultValue: 'Profile' }),
-      Ellie: t('tabs.ellie', { defaultValue: 'Ryvro' }),
+      Assistant: t('tabs.assistant', { defaultValue: 'Ryvro' }),
     }),
     [t]
   );
@@ -286,7 +286,7 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
         <View style={styles.tabRow}>
           {state.routes.map((route, index) => {
             const isFocused = state.index === index;
-            const isCenter = route.name === 'Ellie';
+            const isCenter = route.name === 'Assistant';
 
             // Reserve space for the center button
             if (isCenter) {

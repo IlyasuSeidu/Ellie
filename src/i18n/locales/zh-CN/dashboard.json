@@ -119,8 +119,8 @@
       "wakeWordUnavailable": "唤醒词不可用，点击麦克风进行对话。",
       "sayWakeWordOrTap": "说“{{wakeWordPhrase}}”或轻按麦克风",
       "askAnother": "轻按麦克风询问另一个问题",
-      "askEllie": "轻按麦克风询问 Ryvro",
-      "typeOrGrantMic": "在下面输入，或授予麦克风权限来讲话"
+      "typeOrGrantMic": "在下面输入，或授予麦克风权限来讲话",
+      "askRyvro": "轻按麦克风询问 Ryvro"
     },
     "errors": {
       "default": "出了点问题",
@@ -190,10 +190,10 @@
     "schedule": "日程",
     "stats": "统计数据",
     "profile": "轮廓",
-    "ellie": "Ryvro",
     "openVoiceAssistantA11y": "打开 Ryvro 语音助手",
-    "openProPlansA11y": "View Pro plans",
-    "voiceAssistantLoadingA11y": "Checking voice assistant access"
+    "openProPlansA11y": "查看 Pro 方案",
+    "voiceAssistantLoadingA11y": "正在检查语音助手访问权限",
+    "assistant": "Ryvro"
   },
   "quickActions": {
     "settings": "设置",
@@ -324,7 +324,7 @@
       "schedule": "Set up your schedule",
       "shiftTimes": "添加你的班次时间",
       "profile": "完善你的个人资料",
-      "askEllie": "向 Ryvro 提一个问题"
+      "askRyvro": "向 Ryvro 提一个问题"
     },
     "actions": {
       "doIt": "去完成",

@@ -97,10 +97,10 @@
     "schedule": "Schedule",
     "stats": "Stats",
     "profile": "Profile",
-    "ellie": "Ryvro",
     "openVoiceAssistantA11y": "Open Ryvro voice assistant",
     "openProPlansA11y": "View Pro plans",
-    "voiceAssistantLoadingA11y": "Checking voice assistant access"
+    "voiceAssistantLoadingA11y": "Checking voice assistant access",
+    "assistant": "Ryvro"
   },
   "quickActions": {
     "settings": "Settings",
@@ -135,8 +135,8 @@
       "wakeWordUnavailable": "Wake-word unavailable, tap the mic to talk",
       "sayWakeWordOrTap": "Say \"{{wakeWordPhrase}}\" or tap the mic",
       "askAnother": "Tap the mic to ask another question",
-      "askEllie": "Tap the mic to ask Ryvro",
-      "typeOrGrantMic": "Type below or grant microphone access to talk"
+      "typeOrGrantMic": "Type below or grant microphone access to talk",
+      "askRyvro": "Tap the mic to ask Ryvro"
     },
     "errors": {
       "default": "Something went wrong",
@@ -324,7 +324,7 @@
       "schedule": "Set up your schedule",
       "shiftTimes": "Add your shift times",
       "profile": "Complete your profile",
-      "askEllie": "Ask Ryvro a question"
+      "askRyvro": "Ask Ryvro a question"
     },
     "actions": {
       "doIt": "Do it",

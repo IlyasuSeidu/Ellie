@@ -119,8 +119,8 @@
       "wakeWordUnavailable": "Igama lokuvusa alitholakali, thepha imakrofoni ukuze ukhulume",
       "sayWakeWordOrTap": "Ithi \"{{wakeWordPhrase}}\" noma thepha imakrofoni",
       "askAnother": "Thepha imakrofoni ukuze ubuze omunye umbuzo",
-      "askEllie": "Thepha imakrofoni ukuze ubuze u- Ryvro",
-      "typeOrGrantMic": "Thayipha ngezansi noma unike imvume yemakrofoni ukuze ukhulume"
+      "typeOrGrantMic": "Thayipha ngezansi noma unike imvume yemakrofoni ukuze ukhulume",
+      "askRyvro": "Thepha imakrofoni ukuze ubuze u- Ryvro"
     },
     "errors": {
       "default": "Kukhona into engahambanga kahle",
@@ -190,10 +190,10 @@
     "schedule": "Isheduli",
     "stats": "Izibalo",
     "profile": "Iphrofayela",
-    "ellie": "Ryvro",
     "openVoiceAssistantA11y": "Vula umsizi wezwi u- Ryvro",
-    "openProPlansA11y": "View Pro plans",
-    "voiceAssistantLoadingA11y": "Checking voice assistant access"
+    "openProPlansA11y": "Buka amapulani e-Pro",
+    "voiceAssistantLoadingA11y": "Ihlola ukufinyelela kumsizi wezwi",
+    "assistant": "Ryvro"
   },
   "quickActions": {
     "settings": "Izilungiselelo",
@@ -324,7 +324,7 @@
       "schedule": "Set up your schedule",
       "shiftTimes": "Engeza izikhathi zakho zeshifu",
       "profile": "Qedela iphrofayela yakho",
-      "askEllie": "Buza u- Ryvro umbuzo"
+      "askRyvro": "Buza u- Ryvro umbuzo"
     },
     "actions": {
       "doIt": "Yenza",

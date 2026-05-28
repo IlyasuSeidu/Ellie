@@ -119,8 +119,8 @@
       "wakeWordUnavailable": "Ключевая фраза недоступна, нажмите на микрофон, чтобы говорить",
       "sayWakeWordOrTap": "Скажите «{{wakeWordPhrase}}» или коснитесь микрофона.",
       "askAnother": "Коснитесь микрофона, чтобы задать еще один вопрос.",
-      "askEllie": "Коснитесь микрофона, чтобы задать вопрос Ryvro.",
-      "typeOrGrantMic": "Введите вопрос ниже или дайте доступ к микрофону, чтобы говорить"
+      "typeOrGrantMic": "Введите вопрос ниже или дайте доступ к микрофону, чтобы говорить",
+      "askRyvro": "Коснитесь микрофона, чтобы задать вопрос Ryvro."
     },
     "errors": {
       "default": "Что-то пошло не так",
@@ -190,10 +190,10 @@
     "schedule": "Расписание",
     "stats": "Статистика",
     "profile": "Профиль",
-    "ellie": "Ryvro",
     "openVoiceAssistantA11y": "Открыть голосовой помощник Ryvro",
-    "openProPlansA11y": "View Pro plans",
-    "voiceAssistantLoadingA11y": "Checking voice assistant access"
+    "openProPlansA11y": "Посмотреть планы Pro",
+    "voiceAssistantLoadingA11y": "Проверка доступа к голосовому помощнику",
+    "assistant": "Ryvro"
   },
   "quickActions": {
     "settings": "Настройки",
@@ -324,7 +324,7 @@
       "schedule": "Set up your schedule",
       "shiftTimes": "Добавьте время своих смен",
       "profile": "Заполните профиль",
-      "askEllie": "Задайте вопрос Ryvro"
+      "askRyvro": "Задайте вопрос Ryvro"
     },
     "actions": {
       "doIt": "Сделать",

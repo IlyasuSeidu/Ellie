@@ -1096,7 +1096,6 @@
   "ahaMoment": {
     "headline": "3 bulan Anda berikutnya, sudah dipetakan.",
     "subheadline": "Ini pratinjau 3 bulan berikutnya untuk Anda. Tidak perlu menebak-nebak lagi di kepala.",
-    "heyEllieTitle": "Tanya Ryvro tentang roster Anda",
     "ctaPrimary": "Mulai uji coba gratis",
     "ctaSecondary": "atau lewati — hanya minggu ini, tanpa setahun penuh",
     "stats": {
@@ -1134,7 +1133,8 @@
       "mental_math": "Tidak perlu lagi menghitung dengan jari."
     },
     "previewLabel": "PRATINJAU 3 BULAN BERIKUTNYA",
-    "checkingAccess": "Memeriksa akses…"
+    "checkingAccess": "Memeriksa akses…",
+    "ryvroTitle": "Tanya Ryvro tentang roster Anda"
   },
   "painHook": {
     "title": "Apa bagian tersulit dari roster Anda saat ini?",

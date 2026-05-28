@@ -1,5 +1,5 @@
 /**
- * EllieButton
+ * RyvroVoiceButton
  *
  * Floating action button that opens the Ryvro voice assistant.
  * Shows a pulsing gold glow when the assistant is active.
@@ -27,7 +27,7 @@ const BUTTON_SIZE = 60;
 
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
-export const EllieButton: React.FC = () => {
+export const RyvroVoiceButton: React.FC = () => {
   const { t } = useTranslation('dashboard');
   const { state, openModal } = useVoiceAssistant();
   const { isPro, isLoading, openPaywall } = useSubscription();

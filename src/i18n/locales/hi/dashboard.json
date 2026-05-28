@@ -119,8 +119,8 @@
       "wakeWordUnavailable": "वेक-वर्ड उपलब्ध नहीं है, बात करने के लिए माइक्रोफ़ोन टैप करें।",
       "sayWakeWordOrTap": "\"{{wakeWordPhrase}}\" कहें या माइक टैप करें",
       "askAnother": "दूसरा प्रश्न पूछने के लिए माइक टैप करें",
-      "askEllie": "Ryvro से पूछने के लिए माइक टैप करें",
-      "typeOrGrantMic": "नीचे टाइप करें या बोलने के लिए माइक्रोफ़ोन की अनुमति दें"
+      "typeOrGrantMic": "नीचे टाइप करें या बोलने के लिए माइक्रोफ़ोन की अनुमति दें",
+      "askRyvro": "Ryvro से पूछने के लिए माइक टैप करें"
     },
     "errors": {
       "default": "कुछ गलत हो गया",
@@ -190,10 +190,10 @@
     "schedule": "अनुसूची",
     "stats": "आँकड़े",
     "profile": "प्रोफ़ाइल",
-    "ellie": "Ryvro",
     "openVoiceAssistantA11y": "Ryvro वॉयस असिस्टेंट खोलें",
-    "openProPlansA11y": "View Pro plans",
-    "voiceAssistantLoadingA11y": "Checking voice assistant access"
+    "openProPlansA11y": "Pro प्लान देखें",
+    "voiceAssistantLoadingA11y": "वॉयस असिस्टेंट एक्सेस जांचा जा रहा है",
+    "assistant": "Ryvro"
   },
   "quickActions": {
     "settings": "सेटिंग्स",
@@ -324,7 +324,7 @@
       "schedule": "Set up your schedule",
       "shiftTimes": "अपनी शिफ्ट के समय जोड़ें",
       "profile": "अपनी प्रोफ़ाइल पूरी करें",
-      "askEllie": "Ryvro से एक प्रश्न पूछें"
+      "askRyvro": "Ryvro से एक प्रश्न पूछें"
     },
     "actions": {
       "doIt": "करें",

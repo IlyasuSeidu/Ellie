@@ -1,9 +1,9 @@
-# AI Intelligence - Ellie Web Admin
+# AI Intelligence - Ryvro Web Admin
 
-Static web dashboard for the Ellie analytics intelligence backend.
+Static web dashboard for the Ryvro analytics intelligence backend.
 It is intentionally separate from the iOS/Android miner app.
 
-The dashboard follows `ELLIE_ANALYTICS_AI_INTELLIGENCE_STRATEGY.md` by focusing on:
+The dashboard follows the archived analytics intelligence strategy by focusing on:
 
 - Mission Control daily health metrics
 - AI Decision Feed for human-reviewed recommendations

@@ -65,7 +65,6 @@
   "ahaMoment": {
     "headline": "Your shifts, mapped.",
     "subheadline": "Here's a preview of your next 3 months. No second-guessing, just a clear schedule.",
-    "heyEllieTitle": "Ask Ryvro about your schedule",
     "ctaPrimary": "Start Free Trial",
     "ctaSecondary": "or skip — current week only, no full year",
     "stats": {
@@ -103,7 +102,8 @@
       "mental_math": "No more counting on your fingers."
     },
     "previewLabel": "PREVIEW OF YOUR NEXT 3 MONTHS",
-    "checkingAccess": "Checking access…"
+    "checkingAccess": "Checking access…",
+    "ryvroTitle": "Ask Ryvro about your schedule"
   },
   "intro": {
     "welcome": "Welcome to Ryvro! I'm here to help you set up your shift calendar. Let's start by getting to know you a bit better.",

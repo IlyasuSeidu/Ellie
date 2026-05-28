@@ -2,11 +2,11 @@
  * MainTabNavigator
  *
  * Bottom tab navigator for the main app with 3 tabs:
- *   Home | Ellie (center) | Profile
+ *   Home | Assistant (center) | Profile
  *
  * Schedule and Stats are intentionally omitted for v1.0.
  * Uses a custom floating glassmorphic tab bar (CustomTabBar).
- * The center "Ellie" tab opens the VoiceAssistantModal.
+ * The center assistant tab opens the VoiceAssistantModal.
  */
 
 import React from 'react';
@@ -19,14 +19,14 @@ import { VoiceAssistantModal } from '@/components/voice';
 
 export type MainTabParamList = {
   Home: undefined;
-  Ellie: undefined;
+  Assistant: undefined;
   Profile: undefined;
 };
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
-/** Empty component — the Ellie tab never renders; its button opens the modal */
-const ElliePlaceholder = () => <View />;
+/** Empty component: the assistant tab opens the modal instead of rendering a screen. */
+const AssistantPlaceholder = () => <View />;
 
 export const MainTabNavigator: React.FC = () => {
   return (
@@ -38,7 +38,7 @@ export const MainTabNavigator: React.FC = () => {
         }}
       >
         <Tab.Screen name="Home" component={MainDashboardScreen} />
-        <Tab.Screen name="Ellie" component={ElliePlaceholder} />
+        <Tab.Screen name="Assistant" component={AssistantPlaceholder} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
 

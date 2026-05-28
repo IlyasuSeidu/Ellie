@@ -1082,7 +1082,6 @@
   "ahaMoment": {
     "headline": "Jou volgende 3 maande, uitgekaart.",
     "subheadline": "Hier is 'n voorskou van jou volgende 3 maande. Geen tweede raaiskote meer in jou kop nie.",
-    "heyEllieTitle": "Vra vir Ryvro oor jou rooster",
     "ctaPrimary": "Begin gratis proef",
     "ctaSecondary": "of slaan oor — net huidige week, geen volle jaar nie",
     "stats": {
@@ -1120,7 +1119,8 @@
       "mental_math": "Geen tel op jou vingers meer nie."
     },
     "previewLabel": "VOORSKOU VAN JOU VOLGENDE 3 MAANDE",
-    "checkingAccess": "Kontroleer toegang…"
+    "checkingAccess": "Kontroleer toegang…",
+    "ryvroTitle": "Vra vir Ryvro oor jou rooster"
   },
   "painHook": {
     "title": "Wat is nou die moeilikste deel van jou rooster?",

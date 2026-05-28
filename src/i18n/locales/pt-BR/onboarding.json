@@ -1091,7 +1091,6 @@
   "ahaMoment": {
     "headline": "Seus próximos 3 meses, mapeados.",
     "subheadline": "Aqui está uma prévia dos seus próximos 3 meses. Chega de adivinhar isso na cabeça.",
-    "heyEllieTitle": "Pergunte à Ryvro sobre seu roster",
     "ctaPrimary": "Iniciar teste grátis",
     "ctaSecondary": "ou pular — só a semana atual, sem o ano completo",
     "stats": {
@@ -1129,7 +1128,8 @@
       "mental_math": "Chega de contar nos dedos."
     },
     "previewLabel": "PRÉVIA DOS SEUS PRÓXIMOS 3 MESES",
-    "checkingAccess": "Verificando acesso…"
+    "checkingAccess": "Verificando acesso…",
+    "ryvroTitle": "Pergunte à Ryvro sobre seu roster"
   },
   "painHook": {
     "title": "Qual é a parte mais difícil da sua escala agora?",

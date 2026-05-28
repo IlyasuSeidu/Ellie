@@ -219,7 +219,7 @@ export const VoiceAssistantModal: React.FC = () => {
           ? t('voiceAssistant.status.askAnother', {
               defaultValue: 'Tap the mic to ask another question',
             })
-          : t('voiceAssistant.status.askEllie', { defaultValue: 'Tap the mic to ask Ryvro' });
+          : t('voiceAssistant.status.askRyvro', { defaultValue: 'Tap the mic to ask Ryvro' });
     }
   };
 

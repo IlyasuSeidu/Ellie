@@ -258,7 +258,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
     setShowPaywall(true);
   };
 
-  const handleHeyEllieTap = (query?: string) => {
+  const handleRyvroTap = (query?: string) => {
     if (subscriptionLoading) {
       return;
     }
@@ -292,7 +292,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
     navigation.navigate('Completion');
   };
 
-  const isHeyEllieUnavailable = subscriptionLoading;
+  const isRyvroUnavailable = subscriptionLoading;
 
   // ── Render ───────────────────────────────────────────────────────────────────
   return (
@@ -481,20 +481,20 @@ export const PremiumAhaMomentScreen: React.FC = () => {
 
         {/* ── Ryvro voice card ── */}
         <Animated.View entering={FadeInDown.delay(540).duration(380)} style={styles.padded}>
-          <View style={styles.ellieCard}>
-            <View style={styles.ellieTopAccent} />
+          <View style={styles.ryvroCard}>
+            <View style={styles.ryvroTopAccent} />
 
             {/* Header */}
-            <View style={styles.ellieHeader}>
-              <View style={styles.ellieHeaderIcon}>
+            <View style={styles.ryvroHeader}>
+              <View style={styles.ryvroHeaderIcon}>
                 <Ionicons name="mic" size={18} color={theme.colors.sacredGold} />
               </View>
               <View>
-                <Text style={styles.ellieTitle}>
-                  {t('ahaMoment.heyEllieTitle', { defaultValue: 'Ask Ryvro' })}
+                <Text style={styles.ryvroTitle}>
+                  {t('ahaMoment.ryvroTitle', { defaultValue: 'Ask Ryvro' })}
                 </Text>
-                <Text style={styles.ellieSubtitle}>
-                  {isHeyEllieUnavailable
+                <Text style={styles.ryvroSubtitle}>
+                  {isRyvroUnavailable
                     ? t('ahaMoment.checkingAccess', { defaultValue: 'Checking access…' })
                     : t('ahaMoment.tryAsking', { defaultValue: 'Try asking…' })}
                 </Text>
@@ -502,49 +502,49 @@ export const PremiumAhaMomentScreen: React.FC = () => {
             </View>
 
             {/* Suggestion rows */}
-            <View style={styles.ellieChips}>
+            <View style={styles.ryvroChips}>
               {suggestionQueries.map((query, index) => (
                 <TouchableOpacity
                   key={query}
                   activeOpacity={0.7}
                   style={[
-                    styles.ellieChip,
-                    index < suggestionQueries.length - 1 && styles.ellieChipBorder,
-                    isHeyEllieUnavailable && styles.ellieChipDisabled,
+                    styles.ryvroChip,
+                    index < suggestionQueries.length - 1 && styles.ryvroChipBorder,
+                    isRyvroUnavailable && styles.ryvroChipDisabled,
                   ]}
-                  disabled={isHeyEllieUnavailable}
-                  accessibilityState={{ disabled: isHeyEllieUnavailable }}
+                  disabled={isRyvroUnavailable}
+                  accessibilityState={{ disabled: isRyvroUnavailable }}
                   onPress={() => {
                     Analytics.ahaMomentVoiceTried(query, {
                       schedule_name: data.universalSchedule?.name ?? null,
                       pain_point: data.painPoint ?? null,
                     });
-                    handleHeyEllieTap(query);
+                    handleRyvroTap(query);
                   }}
                 >
                   <Ionicons
                     name="mic-outline"
                     size={14}
                     color={theme.colors.sacredGold}
-                    style={styles.ellieChipMic}
+                    style={styles.ryvroChipMic}
                   />
-                  <Text style={styles.ellieChipText}>{query}</Text>
+                  <Text style={styles.ryvroChipText}>{query}</Text>
                   <Ionicons name="chevron-forward" size={15} color={theme.colors.shadow} />
                 </TouchableOpacity>
               ))}
             </View>
 
             {/* Ryvro mic button */}
-            <Animated.View style={[styles.ellieButtonWrapper, pulseStyle]}>
+            <Animated.View style={[styles.ryvroButtonWrapper, pulseStyle]}>
               <TouchableOpacity
                 activeOpacity={0.88}
-                disabled={isHeyEllieUnavailable}
+                disabled={isRyvroUnavailable}
                 onPress={() => {
                   Analytics.ahaMomentVoiceTried('manual_mic', {
                     schedule_name: data.universalSchedule?.name ?? null,
                     pain_point: data.painPoint ?? null,
                   });
-                  handleHeyEllieTap();
+                  handleRyvroTap();
                 }}
               >
                 <LinearGradient
@@ -552,16 +552,16 @@ export const PremiumAhaMomentScreen: React.FC = () => {
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
                   style={[
-                    styles.ellieButtonGradient,
-                    isHeyEllieUnavailable && styles.ellieButtonGradientDisabled,
+                    styles.ryvroButtonGradient,
+                    isRyvroUnavailable && styles.ryvroButtonGradientDisabled,
                   ]}
                 >
-                  {isHeyEllieUnavailable ? (
+                  {isRyvroUnavailable ? (
                     <ActivityIndicator size="small" color={theme.colors.sacredGold} />
                   ) : (
                     <Ionicons name="mic" size={22} color={theme.colors.sacredGold} />
                   )}
-                  <Text style={styles.ellieButtonLabel}>
+                  <Text style={styles.ryvroButtonLabel}>
                     {t('ahaMoment.buttonLabel', { defaultValue: 'Hey Ryvro' })}
                   </Text>
                 </LinearGradient>
@@ -813,7 +813,7 @@ const styles = StyleSheet.create({
   },
 
   // ── Ryvro voice card ──
-  ellieCard: {
+  ryvroCard: {
     backgroundColor: theme.colors.darkStone,
     borderRadius: 20,
     borderWidth: 1,
@@ -822,12 +822,12 @@ const styles = StyleSheet.create({
     marginTop: 12,
     marginBottom: 4,
   },
-  ellieTopAccent: {
+  ryvroTopAccent: {
     height: 2,
     backgroundColor: theme.colors.sacredGold,
     opacity: 0.2,
   },
-  ellieHeader: {
+  ryvroHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
@@ -835,7 +835,7 @@ const styles = StyleSheet.create({
     paddingTop: 18,
     paddingBottom: 14,
   },
-  ellieHeaderIcon: {
+  ryvroHeaderIcon: {
     width: 36,
     height: 36,
     borderRadius: 18,
@@ -845,18 +845,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(180,83,9,0.25)',
   },
-  ellieTitle: {
+  ryvroTitle: {
     fontSize: 17,
     fontWeight: '700',
     color: theme.colors.paper,
     lineHeight: 21,
   },
-  ellieSubtitle: {
+  ryvroSubtitle: {
     fontSize: 13,
     color: theme.colors.dust,
     marginTop: 1,
   },
-  ellieChips: {
+  ryvroChips: {
     marginHorizontal: 14,
     borderRadius: 14,
     backgroundColor: 'rgba(180,83,9,0.05)',
@@ -865,32 +865,32 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginBottom: 16,
   },
-  ellieChip: {
+  ryvroChip: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 13,
     paddingHorizontal: 14,
   },
-  ellieChipDisabled: {
+  ryvroChipDisabled: {
     opacity: 0.45,
   },
-  ellieChipBorder: {
+  ryvroChipBorder: {
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(180,83,9,0.10)',
   },
-  ellieChipMic: {
+  ryvroChipMic: {
     marginRight: 10,
   },
-  ellieChipText: {
+  ryvroChipText: {
     flex: 1,
     fontSize: 15,
     color: theme.colors.paper,
   },
-  ellieButtonWrapper: {
+  ryvroButtonWrapper: {
     paddingBottom: 18,
     paddingHorizontal: 14,
   },
-  ellieButtonGradient: {
+  ryvroButtonGradient: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -901,10 +901,10 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: theme.colors.sacredGold + '80',
   },
-  ellieButtonGradientDisabled: {
+  ryvroButtonGradientDisabled: {
     opacity: 0.5,
   },
-  ellieButtonLabel: {
+  ryvroButtonLabel: {
     fontSize: 17,
     fontWeight: '700',
     color: theme.colors.sacredGold,

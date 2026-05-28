@@ -119,8 +119,8 @@
       "wakeWordUnavailable": "Palavra de ativação indisponível; toque no microfone para falar",
       "sayWakeWordOrTap": "Diga \"{{wakeWordPhrase}}\" ou toque no microfone",
       "askAnother": "Toque no microfone para fazer outra pergunta",
-      "askEllie": "Toque no microfone para perguntar a Ryvro",
-      "typeOrGrantMic": "Digite abaixo ou conceda acesso ao microfone para falar"
+      "typeOrGrantMic": "Digite abaixo ou conceda acesso ao microfone para falar",
+      "askRyvro": "Toque no microfone para perguntar a Ryvro"
     },
     "errors": {
       "default": "Algo deu errado",
@@ -190,10 +190,10 @@
     "schedule": "Agendar",
     "stats": "Estatísticas",
     "profile": "Perfil",
-    "ellie": "Ryvro",
     "openVoiceAssistantA11y": "Abra o assistente de voz Ryvro",
-    "openProPlansA11y": "View Pro plans",
-    "voiceAssistantLoadingA11y": "Checking voice assistant access"
+    "openProPlansA11y": "Ver planos Pro",
+    "voiceAssistantLoadingA11y": "Verificando acesso ao assistente de voz",
+    "assistant": "Ryvro"
   },
   "quickActions": {
     "settings": "Configurações",
@@ -324,7 +324,7 @@
       "schedule": "Set up your schedule",
       "shiftTimes": "Adicione seus horários de turno",
       "profile": "Complete seu perfil",
-      "askEllie": "Faça uma pergunta para a Ryvro"
+      "askRyvro": "Faça uma pergunta para a Ryvro"
     },
     "actions": {
       "doIt": "Fazer agora",

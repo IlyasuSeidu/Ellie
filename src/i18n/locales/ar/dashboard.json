@@ -119,8 +119,8 @@
       "wakeWordUnavailable": "عبارة التنبيه غير متاحة، اضغط على الميكروفون للتحدث",
       "sayWakeWordOrTap": "قل \"{{wakeWordPhrase}}\" أو اضغط على الميكروفون",
       "askAnother": "اضغط على الميكروفون لطرح سؤال آخر",
-      "askEllie": "اضغط على الميكروفون لسؤال Ryvro",
-      "typeOrGrantMic": "اكتب سؤالك أدناه أو امنح إذن الميكروفون للتحدث"
+      "typeOrGrantMic": "اكتب سؤالك أدناه أو امنح إذن الميكروفون للتحدث",
+      "askRyvro": "اضغط على الميكروفون لسؤال Ryvro"
     },
     "errors": {
       "default": "حدث خطأ ما",
@@ -190,10 +190,10 @@
     "schedule": "جدول",
     "stats": "احصائيات",
     "profile": "حساب تعريفي",
-    "ellie": "Ryvro",
     "openVoiceAssistantA11y": "افتح المساعد الصوتي Ryvro",
-    "openProPlansA11y": "View Pro plans",
-    "voiceAssistantLoadingA11y": "Checking voice assistant access"
+    "openProPlansA11y": "عرض خطط Pro",
+    "voiceAssistantLoadingA11y": "جارٍ التحقق من الوصول إلى المساعد الصوتي",
+    "assistant": "Ryvro"
   },
   "quickActions": {
     "settings": "إعدادات",
@@ -324,7 +324,7 @@
       "schedule": "Set up your schedule",
       "shiftTimes": "أضف أوقات نوباتك",
       "profile": "أكمل ملفك الشخصي",
-      "askEllie": "اسأل Ryvro سؤالاً"
+      "askRyvro": "اسأل Ryvro سؤالاً"
     },
     "actions": {
       "doIt": "افعل ذلك",

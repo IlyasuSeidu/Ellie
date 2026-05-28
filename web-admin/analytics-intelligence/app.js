@@ -1,5 +1,5 @@
 /**
- * Ellie Admin - AI Intelligence Dashboard
+ * Ryvro Admin - AI Intelligence Dashboard
  *
  * Firebase callable functions consumed:
  *   getAnalyticsDashboardSnapshot({ summaryLimit? })

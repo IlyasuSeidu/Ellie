@@ -1101,7 +1101,6 @@
   "ahaMoment": {
     "headline": "Izinyanga zakho ezi-3 ezizayo, sezihleliwe.",
     "subheadline": "Nansi imibono yangaphambili yezinyanga zakho ezi-3 ezizayo. Akusekho ukuqagela ekhanda.",
-    "heyEllieTitle": "Buza u- Ryvro nge-roster yakho",
     "ctaPrimary": "Qala isivivinyo samahhala",
     "ctaSecondary": "noma weqe — isonto lamanje kuphela, akukho unyaka ogcwele",
     "stats": {
@@ -1139,7 +1138,8 @@
       "mental_math": "Akusekho ukubala ngeminwe."
     },
     "previewLabel": "UKUBUKA KWEZINYANGA EZINGU-3 EZIZAYO",
-    "checkingAccess": "Kuhlolwa ukufinyelela…"
+    "checkingAccess": "Kuhlolwa ukufinyelela…",
+    "ryvroTitle": "Buza u- Ryvro nge-roster yakho"
   },
   "painHook": {
     "title": "Yini enzima kakhulu ngohlelo lwakho manje?",

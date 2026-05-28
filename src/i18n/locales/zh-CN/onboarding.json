@@ -1045,7 +1045,6 @@
   "ahaMoment": {
     "headline": "你接下来的3个月，已经排好。",
     "subheadline": "这就是你接下来3个月的预览。再也不用在脑子里反复猜了。",
-    "heyEllieTitle": "向 Ryvro 询问你的班表",
     "ctaPrimary": "开始免费试用",
     "ctaSecondary": "或跳过——仅限当前这一周，没有全年视图",
     "stats": {
@@ -1083,7 +1082,8 @@
       "mental_math": "不用再掰着手指数了。"
     },
     "previewLabel": "接下来3个月的预览",
-    "checkingAccess": "正在检查访问权限…"
+    "checkingAccess": "正在检查访问权限…",
+    "ryvroTitle": "向 Ryvro 询问你的班表"
   },
   "painHook": {
     "title": "你现在觉得排班里最难的是什么？",

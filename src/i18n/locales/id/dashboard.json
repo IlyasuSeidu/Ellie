@@ -119,8 +119,8 @@
       "wakeWordUnavailable": "Kata pemicu tidak tersedia, ketuk mikrofon untuk berbicara",
       "sayWakeWordOrTap": "Ucapkan \"{{wakeWordPhrase}}\" atau ketuk mikrofon",
       "askAnother": "Ketuk mikrofon untuk mengajukan pertanyaan lain",
-      "askEllie": "Ketuk mikrofon untuk bertanya pada Ryvro",
-      "typeOrGrantMic": "Ketik di bawah atau beri akses mikrofon untuk berbicara"
+      "typeOrGrantMic": "Ketik di bawah atau beri akses mikrofon untuk berbicara",
+      "askRyvro": "Ketuk mikrofon untuk bertanya pada Ryvro"
     },
     "errors": {
       "default": "Ada yang tidak beres",
@@ -190,10 +190,10 @@
     "schedule": "Jadwal",
     "stats": "Statistik",
     "profile": "Profil",
-    "ellie": "Ryvro",
     "openVoiceAssistantA11y": "Buka asisten suara Ryvro",
-    "openProPlansA11y": "View Pro plans",
-    "voiceAssistantLoadingA11y": "Checking voice assistant access"
+    "openProPlansA11y": "Lihat paket Pro",
+    "voiceAssistantLoadingA11y": "Memeriksa akses asisten suara",
+    "assistant": "Ryvro"
   },
   "quickActions": {
     "settings": "Pengaturan",
@@ -324,7 +324,7 @@
       "schedule": "Set up your schedule",
       "shiftTimes": "Tambahkan jam shift Anda",
       "profile": "Lengkapi profil Anda",
-      "askEllie": "Ajukan pertanyaan ke Ryvro"
+      "askRyvro": "Ajukan pertanyaan ke Ryvro"
     },
     "actions": {
       "doIt": "Lakukan",

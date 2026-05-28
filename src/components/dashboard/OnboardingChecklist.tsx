@@ -11,7 +11,7 @@ interface OnboardingChecklistProps {
   onDismiss: () => void;
   onAddShiftTimes: () => void;
   onCompleteProfile: () => void;
-  onAskEllie: () => void;
+  onAskRyvro: () => void;
 }
 
 export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({
@@ -19,11 +19,11 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({
   onDismiss,
   onAddShiftTimes,
   onCompleteProfile,
-  onAskEllie,
+  onAskRyvro,
 }) => {
   const { t } = useTranslation('dashboard');
   const { t: tCommon } = useTranslation('common');
-  const [askEllieDone, setAskEllieDone] = useState(false);
+  const [askRyvroDone, setAskRyvroDone] = useState(false);
 
   // Derive completion from actual data so a focus-return auto-ticks items.
   const shiftScheduleDone = Boolean(
@@ -32,10 +32,10 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({
   );
   const profileDone = Boolean(userData?.name);
 
-  const handleAskEllie = useCallback(() => {
-    setAskEllieDone(true);
-    onAskEllie();
-  }, [onAskEllie]);
+  const handleAskRyvro = useCallback(() => {
+    setAskRyvroDone(true);
+    onAskRyvro();
+  }, [onAskRyvro]);
 
   const items = useMemo(
     () => [
@@ -60,15 +60,15 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({
         onDoIt: onCompleteProfile,
       },
       {
-        key: 'ask_ellie',
-        label: t('onboardingChecklist.items.askEllie', { defaultValue: 'Ask Ryvro a question' }),
-        done: askEllieDone,
-        onDoIt: handleAskEllie,
+        key: 'ask_ryvro',
+        label: t('onboardingChecklist.items.askRyvro', { defaultValue: 'Ask Ryvro a question' }),
+        done: askRyvroDone,
+        onDoIt: handleAskRyvro,
       },
     ],
     [
-      askEllieDone,
-      handleAskEllie,
+      askRyvroDone,
+      handleAskRyvro,
       onAddShiftTimes,
       onCompleteProfile,
       profileDone,
