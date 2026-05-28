@@ -57,7 +57,7 @@ describe('PremiumWelcomeScreen', () => {
 
     it('should render app name', () => {
       const { getByText } = render(<PremiumWelcomeScreen onContinue={mockOnContinue} />);
-      expect(getByText('Ellie')).toBeTruthy();
+      expect(getByText('Ryvro')).toBeTruthy();
     });
 
     it('should render tagline', () => {
@@ -174,7 +174,7 @@ describe('PremiumWelcomeScreen', () => {
       );
 
       expect(UNSAFE_root.findByType('Image')).toBeTruthy(); // Logo
-      expect(getByText('Ellie')).toBeTruthy(); // App name
+      expect(getByText('Ryvro')).toBeTruthy(); // App name
       expect(getByText('Know your next shift\nbefore you even think to check.')).toBeTruthy(); // Tagline
       expect(getByText('Set Up My Schedule')).toBeTruthy(); // Button
     });
@@ -235,7 +235,7 @@ describe('PremiumWelcomeScreen', () => {
     it('should render without crashing when all props are undefined', () => {
       const { getByText } = render(<PremiumWelcomeScreen />);
 
-      expect(getByText('Ellie')).toBeTruthy();
+      expect(getByText('Ryvro')).toBeTruthy();
     });
   });
 
@@ -247,7 +247,7 @@ describe('PremiumWelcomeScreen', () => {
 
       // All elements should be present
       expect(UNSAFE_root.findByType('Image')).toBeTruthy();
-      expect(getByText('Ellie')).toBeTruthy();
+      expect(getByText('Ryvro')).toBeTruthy();
       expect(getByText('Know your next shift\nbefore you even think to check.')).toBeTruthy();
       expect(getByText('Set Up My Schedule')).toBeTruthy();
     });

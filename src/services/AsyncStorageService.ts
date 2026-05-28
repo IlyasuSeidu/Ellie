@@ -142,7 +142,7 @@ function resolveStorageBackend(): StorageBackend {
     const createMMKV = module?.createMMKV;
 
     if (typeof createMMKV === 'function') {
-      const instance = createMMKV({ id: 'ellie-main' });
+      const instance = createMMKV({ id: 'ryvro-main' });
       return new MMKVBackend(instance);
     }
   } catch (error) {

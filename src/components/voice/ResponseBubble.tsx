@@ -79,12 +79,12 @@ export const ResponseBubble: React.FC<ResponseBubbleProps> = ({
             })
           : t('voiceAssistant.responseBubble.assistantSaidA11y', {
               text: message.text,
-              defaultValue: 'Ellie said: {{text}}',
+              defaultValue: ' Ryvro said: {{text}}',
             })
       }
     >
       <View style={[styles.bubble, isUser ? styles.userBubble : styles.assistantBubble]}>
-        {!isUser && <Text style={styles.assistantLabel}>Ellie</Text>}
+        {!isUser && <Text style={styles.assistantLabel}>Ryvro</Text>}
         <Text style={[styles.text, isUser ? styles.userText : styles.assistantText]}>
           {displayedText}
         </Text>

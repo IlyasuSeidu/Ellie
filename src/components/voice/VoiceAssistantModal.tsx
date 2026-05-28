@@ -1,7 +1,7 @@
 /**
  * VoiceAssistantModal
  *
- * Full-screen modal for the Ellie voice assistant.
+ * Full-screen modal for the Ryvro voice assistant.
  * Shows conversation history, listening indicator, and controls.
  *
  * Phase 2: Refined animations, error handling UX, accessibility
@@ -219,7 +219,7 @@ export const VoiceAssistantModal: React.FC = () => {
           ? t('voiceAssistant.status.askAnother', {
               defaultValue: 'Tap the mic to ask another question',
             })
-          : t('voiceAssistant.status.askEllie', { defaultValue: 'Tap the mic to ask Ellie' });
+          : t('voiceAssistant.status.askEllie', { defaultValue: 'Tap the mic to ask Ryvro' });
     }
   };
 
@@ -230,7 +230,7 @@ export const VoiceAssistantModal: React.FC = () => {
       case 'permission_denied':
         return Platform.OS === 'ios'
           ? t('voiceAssistant.errors.permissionDeniedIos', {
-              defaultValue: 'Microphone access denied. Enable in Settings > Ellie.',
+              defaultValue: 'Microphone access denied. Enable in Settings > Ryvro.',
             })
           : t('voiceAssistant.errors.permissionDenied', {
               defaultValue: 'Microphone access denied. Please grant permission.',
@@ -298,7 +298,7 @@ export const VoiceAssistantModal: React.FC = () => {
         });
       case 'speaking':
         return t('voiceAssistant.micA11y.speaking', {
-          defaultValue: 'Ellie is speaking. Double tap to stop.',
+          defaultValue: ' Ryvro is speaking. Double tap to stop.',
         });
       case 'error':
         return t('voiceAssistant.micA11y.error', {
@@ -307,7 +307,7 @@ export const VoiceAssistantModal: React.FC = () => {
         });
       default:
         return t('voiceAssistant.micA11y.idle', {
-          defaultValue: 'Ask Ellie a question. Double tap to start speaking.',
+          defaultValue: 'Ask Ryvro a question. Double tap to start speaking.',
         });
     }
   };
@@ -338,7 +338,7 @@ export const VoiceAssistantModal: React.FC = () => {
           <View style={styles.header} accessibilityRole="header">
             <View style={styles.headerLeft}>
               <Text style={styles.title} accessibilityRole="text">
-                Ellie
+                Ryvro
               </Text>
               <Text style={styles.subtitle}>
                 {t('voiceAssistant.subtitle', { defaultValue: 'Voice Assistant' })}
@@ -411,7 +411,7 @@ export const VoiceAssistantModal: React.FC = () => {
                       accessibilityRole="button"
                       accessibilityLabel={t('voiceAssistant.empty.suggestionA11y', {
                         query: suggestion,
-                        defaultValue: 'Ask Ellie: {{query}}',
+                        defaultValue: 'Ask Ryvro: {{query}}',
                       })}
                     >
                       <Text style={styles.suggestionText}>&quot;{suggestion}&quot;</Text>
@@ -428,7 +428,7 @@ export const VoiceAssistantModal: React.FC = () => {
                 <Text style={styles.permissionText}>
                   {t('voiceAssistant.permission.notice', {
                     defaultValue:
-                      'Ellie needs microphone access to hear you, or you can type your question below.',
+                      ' Ryvro needs microphone access to hear you, or you can type your question below.',
                   })}
                 </Text>
                 <TouchableOpacity
@@ -479,7 +479,7 @@ export const VoiceAssistantModal: React.FC = () => {
               <Animated.View entering={FadeIn.duration(200)} style={styles.processingBubble}>
                 <ActivityIndicator size="small" color={theme.colors.sacredGold} />
                 <Text style={styles.processingText}>
-                  {t('voiceAssistant.processingInline', { defaultValue: 'Ellie is thinking...' })}
+                  {t('voiceAssistant.processingInline', { defaultValue: ' Ryvro is thinking...' })}
                 </Text>
               </Animated.View>
             )}
@@ -554,7 +554,7 @@ export const VoiceAssistantModal: React.FC = () => {
                 value={typedQuery}
                 onChangeText={setTypedQuery}
                 placeholder={t('voiceAssistant.composer.placeholder', {
-                  defaultValue: 'Type a question for Ellie',
+                  defaultValue: 'Type a question for Ryvro',
                 })}
                 placeholderTextColor={theme.colors.shadow}
                 style={styles.composerInput}
@@ -562,7 +562,7 @@ export const VoiceAssistantModal: React.FC = () => {
                 returnKeyType="send"
                 onSubmitEditing={() => void handleTypedSubmit()}
                 accessibilityLabel={t('voiceAssistant.composer.a11y', {
-                  defaultValue: 'Type a question for Ellie',
+                  defaultValue: 'Type a question for Ryvro',
                 })}
               />
               <TouchableOpacity

@@ -72,7 +72,7 @@ describe('ChatAvatar', () => {
     it('should have correct accessibility label', () => {
       const { getByTestId } = render(<ChatAvatar reducedMotion={false} testID="chat-avatar" />);
       const avatar = getByTestId('chat-avatar');
-      expect(avatar.props.accessibilityLabel).toBe('Mining assistant avatar');
+      expect(avatar.props.accessibilityLabel).toBe('Ryvro shift assistant avatar');
     });
 
     it('should accept custom testID', () => {

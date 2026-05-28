@@ -1,7 +1,7 @@
 /**
  * Backend Type Definitions
  *
- * Shared types for the Ellie Brain Cloud Function.
+ * Shared types for the Ryvro voice Cloud Function.
  * Mirrors relevant client-side types.
  */
 

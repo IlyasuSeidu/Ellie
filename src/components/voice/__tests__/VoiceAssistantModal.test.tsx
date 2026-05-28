@@ -73,7 +73,7 @@ const mockVoiceAssistant = {
   isWakeWordAvailable: true,
   isWakeWordListening: false,
   wakeWordWarning: null as string | null,
-  wakeWordPhrase: 'Hey Ellie',
+  wakeWordPhrase: 'Hey Ryvro',
   startListening: jest.fn(),
   stopListening: jest.fn(),
   cancel: jest.fn(),
@@ -125,7 +125,7 @@ describe('VoiceAssistantModal', () => {
     mockVoiceAssistant.isWakeWordAvailable = true;
     mockVoiceAssistant.isWakeWordListening = false;
     mockVoiceAssistant.wakeWordWarning = null;
-    mockVoiceAssistant.wakeWordPhrase = 'Hey Ellie';
+    mockVoiceAssistant.wakeWordPhrase = 'Hey Ryvro';
   });
 
   afterEach(() => {
@@ -137,9 +137,9 @@ describe('VoiceAssistantModal', () => {
   // ===================================================================
 
   describe('Basic rendering', () => {
-    it('should render the modal with header title "Ellie"', () => {
+    it('should render the modal with header title "Ryvro"', () => {
       const { getByText } = render(<VoiceAssistantModal />);
-      expect(getByText('Ellie')).toBeTruthy();
+      expect(getByText('Ryvro')).toBeTruthy();
     });
 
     it('should render subtitle "Voice Assistant"', () => {
@@ -219,7 +219,7 @@ describe('VoiceAssistantModal', () => {
     it('submits a typed question from the composer', () => {
       const { getByLabelText } = render(<VoiceAssistantModal />);
 
-      fireEvent.changeText(getByLabelText('Type a question for Ellie'), 'When is my next day off?');
+      fireEvent.changeText(getByLabelText('Type a question for Ryvro'), 'When is my next day off?');
       fireEvent.press(getByLabelText('Send typed question'));
 
       expect(mockVoiceAssistant.submitTextQuery).toHaveBeenCalledWith('When is my next day off?');
@@ -228,7 +228,7 @@ describe('VoiceAssistantModal', () => {
     it('submits an example suggestion as a typed question', () => {
       const { getByLabelText } = render(<VoiceAssistantModal />);
 
-      fireEvent.press(getByLabelText('Ask Ellie: What shift do I have tomorrow?'));
+      fireEvent.press(getByLabelText('Ask Ryvro: What shift do I have tomorrow?'));
 
       expect(mockVoiceAssistant.submitTextQuery).toHaveBeenCalledWith(
         'What shift do I have tomorrow?'
@@ -259,11 +259,11 @@ describe('VoiceAssistantModal', () => {
       expect(getByText('Tap to stop speaking')).toBeTruthy();
     });
 
-    it('should show "Tap the mic to ask Ellie" when idle with no messages', () => {
+    it('should show "Tap the mic to ask Ryvro" when idle with no messages', () => {
       mockVoiceAssistant.state = 'idle';
       mockVoiceAssistant.messages = [];
       const { getByText } = render(<VoiceAssistantModal />);
-      expect(getByText('Tap the mic to ask Ellie')).toBeTruthy();
+      expect(getByText('Tap the mic to ask Ryvro')).toBeTruthy();
     });
 
     it('should show notice message when idle notice is present', () => {
@@ -289,9 +289,9 @@ describe('VoiceAssistantModal', () => {
       mockVoiceAssistant.messages = [];
       mockVoiceAssistant.isWakeWordEnabled = true;
       mockVoiceAssistant.isWakeWordListening = true;
-      mockVoiceAssistant.wakeWordPhrase = 'Hey Ellie';
+      mockVoiceAssistant.wakeWordPhrase = 'Hey Ryvro';
       const { getByText } = render(<VoiceAssistantModal />);
-      expect(getByText('Say "Hey Ellie" or tap the mic')).toBeTruthy();
+      expect(getByText('Say "Hey Ryvro" or tap the mic')).toBeTruthy();
     });
 
     it('should NOT show wake word prompt if wake word is not enabled', () => {
@@ -300,7 +300,7 @@ describe('VoiceAssistantModal', () => {
       mockVoiceAssistant.isWakeWordEnabled = false;
       mockVoiceAssistant.isWakeWordListening = false;
       const { queryByText } = render(<VoiceAssistantModal />);
-      expect(queryByText(/Say "Hey Ellie"/)).toBeNull();
+      expect(queryByText(/Say "Hey Ryvro"/)).toBeNull();
     });
 
     it('should NOT show wake word prompt if messages exist', () => {
@@ -309,7 +309,7 @@ describe('VoiceAssistantModal', () => {
       mockVoiceAssistant.isWakeWordEnabled = true;
       mockVoiceAssistant.isWakeWordListening = true;
       const { queryByText } = render(<VoiceAssistantModal />);
-      expect(queryByText(/Say "Hey Ellie"/)).toBeNull();
+      expect(queryByText(/Say "Hey Ryvro"/)).toBeNull();
     });
 
     it('should show wake-word unavailable idle message when wake word is unavailable', () => {
@@ -346,7 +346,7 @@ describe('VoiceAssistantModal', () => {
         retryable: false,
       };
       const { getByText } = render(<VoiceAssistantModal />);
-      expect(getByText('Microphone access denied. Enable in Settings > Ellie.')).toBeTruthy();
+      expect(getByText('Microphone access denied. Enable in Settings > Ryvro.')).toBeTruthy();
       Platform.OS = originalOS;
     });
 
@@ -508,7 +508,7 @@ describe('VoiceAssistantModal', () => {
       mockVoiceAssistant.state = 'idle';
       const { getByLabelText } = render(<VoiceAssistantModal />);
       act(() => {
-        fireEvent.press(getByLabelText('Ask Ellie a question. Double tap to start speaking.'));
+        fireEvent.press(getByLabelText('Ask Ryvro a question. Double tap to start speaking.'));
       });
       expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Medium);
       expect(mockVoiceAssistant.startListening).toHaveBeenCalledTimes(1);
@@ -534,7 +534,7 @@ describe('VoiceAssistantModal', () => {
       mockVoiceAssistant.state = 'speaking';
       const { getByLabelText } = render(<VoiceAssistantModal />);
       act(() => {
-        fireEvent.press(getByLabelText('Ellie is speaking. Double tap to stop.'));
+        fireEvent.press(getByLabelText(' Ryvro is speaking. Double tap to stop.'));
       });
       expect(mockVoiceAssistant.cancel).toHaveBeenCalledTimes(1);
     });
@@ -553,7 +553,7 @@ describe('VoiceAssistantModal', () => {
       mockVoiceAssistant.state = 'processing';
       const { getByLabelText } = render(<VoiceAssistantModal />);
 
-      const composer = getByLabelText('Type a question for Ellie');
+      const composer = getByLabelText('Type a question for Ryvro');
       expect(composer.props.editable).toBe(true);
     });
 
@@ -609,7 +609,7 @@ describe('VoiceAssistantModal', () => {
       mockVoiceAssistant.state = 'idle';
       mockVoiceAssistant.messages = [];
       const { getByText } = render(<VoiceAssistantModal />);
-      expect(getByText('Ellie needs microphone access to hear your questions.')).toBeTruthy();
+      expect(getByText(' Ryvro needs microphone access to hear your questions.')).toBeTruthy();
     });
 
     it('should show "Grant Permission" button in permission notice', () => {
@@ -635,14 +635,14 @@ describe('VoiceAssistantModal', () => {
     it('should NOT show permission notice when hasPermission=true', () => {
       mockVoiceAssistant.hasPermission = true;
       const { queryByText } = render(<VoiceAssistantModal />);
-      expect(queryByText('Ellie needs microphone access to hear your questions.')).toBeNull();
+      expect(queryByText(' Ryvro needs microphone access to hear your questions.')).toBeNull();
     });
 
     it('should NOT show permission notice when not idle', () => {
       mockVoiceAssistant.hasPermission = false;
       mockVoiceAssistant.state = 'listening';
       const { queryByText } = render(<VoiceAssistantModal />);
-      expect(queryByText('Ellie needs microphone access to hear your questions.')).toBeNull();
+      expect(queryByText(' Ryvro needs microphone access to hear your questions.')).toBeNull();
     });
 
     it('should NOT show permission notice when messages exist', () => {
@@ -650,7 +650,7 @@ describe('VoiceAssistantModal', () => {
       mockVoiceAssistant.state = 'idle';
       mockVoiceAssistant.messages = [makeUserMessage()];
       const { queryByText } = render(<VoiceAssistantModal />);
-      expect(queryByText('Ellie needs microphone access to hear your questions.')).toBeNull();
+      expect(queryByText(' Ryvro needs microphone access to hear your questions.')).toBeNull();
     });
   });
 
@@ -683,10 +683,10 @@ describe('VoiceAssistantModal', () => {
   // ===================================================================
 
   describe('Processing state', () => {
-    it('should show "Ellie is thinking..." text when processing', () => {
+    it('should show "Ryvro is thinking..." text when processing', () => {
       mockVoiceAssistant.state = 'processing';
       const { getByText } = render(<VoiceAssistantModal />);
-      expect(getByText('Ellie is thinking...')).toBeTruthy();
+      expect(getByText(' Ryvro is thinking...')).toBeTruthy();
     });
 
     it('should show sync icon for ProcessingIndicator', () => {
@@ -716,7 +716,7 @@ describe('VoiceAssistantModal', () => {
     it('should NOT show processing indicator when listening', () => {
       mockVoiceAssistant.state = 'listening';
       const { queryByText } = render(<VoiceAssistantModal />);
-      expect(queryByText('Ellie is thinking...')).toBeNull();
+      expect(queryByText(' Ryvro is thinking...')).toBeNull();
     });
   });
 
@@ -740,7 +740,7 @@ describe('VoiceAssistantModal', () => {
     it('should NOT show processing bubble when speaking', () => {
       mockVoiceAssistant.state = 'speaking';
       const { queryByText } = render(<VoiceAssistantModal />);
-      expect(queryByText('Ellie is thinking...')).toBeNull();
+      expect(queryByText(' Ryvro is thinking...')).toBeNull();
     });
   });
 
@@ -823,7 +823,7 @@ describe('VoiceAssistantModal', () => {
     it('should set correct a11y label for idle state', () => {
       mockVoiceAssistant.state = 'idle';
       const { getByLabelText } = render(<VoiceAssistantModal />);
-      expect(getByLabelText('Ask Ellie a question. Double tap to start speaking.')).toBeTruthy();
+      expect(getByLabelText('Ask Ryvro a question. Double tap to start speaking.')).toBeTruthy();
     });
 
     it('should set correct a11y label for listening state', () => {
@@ -841,7 +841,7 @@ describe('VoiceAssistantModal', () => {
     it('should set correct a11y label for speaking state', () => {
       mockVoiceAssistant.state = 'speaking';
       const { getByLabelText } = render(<VoiceAssistantModal />);
-      expect(getByLabelText('Ellie is speaking. Double tap to stop.')).toBeTruthy();
+      expect(getByLabelText(' Ryvro is speaking. Double tap to stop.')).toBeTruthy();
     });
 
     it('should set correct a11y label for error state', () => {
@@ -905,7 +905,7 @@ describe('VoiceAssistantModal', () => {
     it('should render modal when isModalVisible=true', () => {
       mockVoiceAssistant.isModalVisible = true;
       const { getByText } = render(<VoiceAssistantModal />);
-      expect(getByText('Ellie')).toBeTruthy();
+      expect(getByText('Ryvro')).toBeTruthy();
     });
 
     it('should still render with isModalVisible=false (Modal handles visibility)', () => {

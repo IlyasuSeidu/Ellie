@@ -103,7 +103,7 @@ describe('ProfileEditForm', () => {
       <ProfileEditForm
         name="Ilyasu"
         occupation="Miner"
-        company="Ellie"
+        company="Ryvro"
         country="Australia"
         isEditing
         onFieldChange={jest.fn()}
@@ -123,7 +123,7 @@ describe('ProfileEditForm', () => {
       <ProfileEditForm
         name="Ilyasu"
         occupation="Miner"
-        company="Ellie"
+        company="Ryvro"
         country="AU"
         isEditing
         onFieldChange={onFieldChange}
@@ -144,7 +144,7 @@ describe('ProfileEditForm', () => {
       <ProfileEditForm
         name="Ilyasu"
         occupation="Miner"
-        company="Ellie"
+        company="Ryvro"
         country="AU"
         isEditing
         onFieldChange={jest.fn()}
@@ -163,7 +163,7 @@ describe('ProfileEditForm', () => {
       <ProfileEditForm
         name="Ilyasu"
         occupation="Miner"
-        company="Ellie"
+        company="Ryvro"
         country="AU"
         isEditing={false}
         onFieldChange={jest.fn()}

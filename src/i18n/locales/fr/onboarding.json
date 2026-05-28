@@ -31,11 +31,11 @@
     "cancel": "Annuler"
   },
   "intro": {
-    "welcome": "Bienvenue à Ellie ! Je suis là pour vous aider à établir votre calendrier de travail. Commençons par mieux vous connaître.",
+    "welcome": "Bienvenue à Ryvro! Je suis là pour vous aider à établir votre calendrier de travail. Commençons par mieux vous connaître.",
     "askName": "Quel est ton nom?",
-    "askOccupation": "Ravi de vous rencontrer, {{name}} ! Quel est votre rôle sur site ?",
-    "askCompany": "D’accord. Pour quelle entreprise travaillez-vous ? (facultatif)",
-    "askCountry": "Presque terminé ! Dans quel pays êtes-vous basé ?",
+    "askOccupation": "Ravi de vous rencontrer, {{name}}! Quel est votre rôle sur site?",
+    "askCompany": "D’accord. Pour quelle entreprise travaillez-vous? (facultatif)",
+    "askCountry": "Presque terminé! Dans quel pays êtes-vous basé?",
     "allSet": "Parfait! Vous êtes prêt, {{name}}. Configureons votre calendrier de travail.",
     "placeholders": {
       "name": "Entrez votre nom",
@@ -61,23 +61,23 @@
     "skipCompany": "Passer"
   },
   "shiftSystem": {
-    "title": "Combien d’équipes votre site gère-t-il ?",
-    "title_named": "Salut {{name}}, combien d’équipes votre site gère-t-il ?",
+    "title": "Combien d’équipes votre site gère-t-il?",
+    "title_named": "Salut {{name}}, combien d’équipes votre site gère-t-il?",
     "reviewAgain": "Veuillez revoir les systèmes pour faire votre sélection",
     "reviewButton": "Systèmes d'examen",
     "continueButton": "Continuer",
     "closeButton": "Fermer",
-    "instruction": "Sélectionnez le mode de fonctionnement de votre site : nous créerons votre calendrier à partir de cela.\nFaites glisser votre doigt vers la droite pour choisir, vers la gauche pour en voir plus, vers le haut pour plus d'informations",
+    "instruction": "Sélectionnez le mode de fonctionnement de votre site: nous créerons votre calendrier à partir de cela.\nFaites glisser votre doigt vers la droite pour choisir, vers la gauche pour en voir plus, vers le haut pour plus d'informations",
     "endState": {
       "selectedTitle": "J'ai compris! Nous allons configurer votre calendrier pour cela.",
-      "reviewedTitle": "Vous avez consulté tous les systèmes de changement de vitesse {{count}} !",
+      "reviewedTitle": "Vous avez consulté tous les systèmes de changement de vitesse {{count}}!",
       "selectedSubtitle": "Ensuite, nous choisirons votre modèle de rotation spécifique"
     },
     "cards": {
       "2-shift": {
         "title": "2 équipes (12 heures)",
         "schedule": "Jour et nuit",
-        "description": "Votre mine comporte deux équipes de 12 heures : une de jour et une de nuit.",
+        "description": "Votre mine comporte deux équipes de 12 heures: une de jour et une de nuit.",
         "details": {
           "workRestRatio": "12 heures allumées, 12 heures éteintes",
           "useCases": [
@@ -101,7 +101,7 @@
       "3-shift": {
         "title": "3 équipes (8 heures)",
         "schedule": "Matin, après-midi et soir",
-        "description": "Votre usine de traitement fonctionne sur trois équipes de 8 heures : matin, après-midi et nuit.",
+        "description": "Votre usine de traitement fonctionne sur trois équipes de 8 heures: matin, après-midi et nuit.",
         "details": {
           "workRestRatio": "8 heures allumées, 16 heures éteintes",
           "useCases": [
@@ -132,16 +132,16 @@
     "endState": {
       "customButton": "Créer une rotation personnalisée",
       "reviewButton": "Regardez encore",
-      "reviewedSubtitle": "Vous n'avez pas vu le vôtre ? Vous pouvez en créer un personnalisé ou y jeter un autre coup d'œil.",
-      "reviewedTitle": "C'est tout ce que nous avons pour {{count}} rotations !"
+      "reviewedSubtitle": "Vous n'avez pas vu le vôtre? Vous pouvez en créer un personnalisé ou y jeter un autre coup d'œil.",
+      "reviewedTitle": "C'est tout ce que nous avons pour {{count}} rotations!"
     },
-    "instruction": "Choisissez la rotation utilisée par votre site minier : nous construirons votre calendrier à partir de cela\nFaites glisser votre doigt vers la droite pour choisir, vers la gauche pour en voir plus, vers le haut pour plus d'informations",
-    "title": "Quelle est la rotation de votre équipe ?",
+    "instruction": "Choisissez la rotation utilisée par votre site minier: nous construirons votre calendrier à partir de cela\nFaites glisser votre doigt vers la droite pour choisir, vers la gauche pour en voir plus, vers le haut pour plus d'informations",
+    "title": "Quelle est la rotation de votre équipe?",
     "cards": {
       "4-4-4": {
         "name": "Rotation 4-4-4",
         "schedule": "4 jours • 4 nuits • 4 repos",
-        "description": "4 jours, puis 4 nuits, puis 4 jours de repos ; courant en FIFO."
+        "description": "4 jours, puis 4 nuits, puis 4 jours de repos; courant en FIFO."
       },
       "7-7-7": {
         "name": "Rotation 7-7-7",
@@ -151,7 +151,7 @@
       "2-2-3": {
         "name": "Rotation 2-2-3",
         "schedule": "2 jours • 2 nuits • 3 repos",
-        "description": "Cycles courts avec pauses fréquentes : 2 jours, 2 nuits, 3 repos."
+        "description": "Cycles courts avec pauses fréquentes: 2 jours, 2 nuits, 3 repos."
       },
       "5-5-5": {
         "name": "Rotation 5-5-5",
@@ -161,7 +161,7 @@
       "3-3-3": {
         "name": "Rotation 3-3-3",
         "schedule": "3 jours • 3 nuits • 3 repos",
-        "description": "Rotation plus rapide : 3 jours, 3 nuits, 3 repos."
+        "description": "Rotation plus rapide: 3 jours, 3 nuits, 3 repos."
       },
       "10-10-10": {
         "name": "Rotation 10-10-10",
@@ -181,7 +181,7 @@
       "custom": {
         "name": "Rotation personnalisée",
         "schedule": "Vous choisissez",
-        "description": "Votre site a un autre schéma ? Construisez votre rotation."
+        "description": "Votre site a un autre schéma? Construisez votre rotation."
       },
       "fifo-8-6": {
         "name": "Rotation FIFO 8/6",
@@ -216,14 +216,14 @@
       "fifo-custom": {
         "name": "FIFO personnalisé",
         "schedule": "Créez le vôtre",
-        "description": "Votre site FIFO est unique ? Configurez vos blocs travail/repos."
+        "description": "Votre site FIFO est unique? Configurez vos blocs travail/repos."
       }
     },
-    "title_named": "Quel est votre modèle, {{name}} ?",
+    "title_named": "Quel est votre modèle, {{name}}?",
     "tagline": "Nous connaissons chaque roulement. Choisissez le vôtre."
   },
   "rosterType": {
-    "title": "Comment fonctionne votre liste ?",
+    "title": "Comment fonctionne votre liste?",
     "instruction": "Choisissez le style de liste utilisé par votre site minier – cela façonne l'ensemble de votre emploi du temps\nFaites glisser votre doigt vers la droite pour choisir, vers la gauche pour en voir plus, vers le haut pour plus de détails",
     "preparingNextStep": "Préparation de la prochaine étape...",
     "learnMore": {
@@ -297,13 +297,13 @@
         }
       }
     },
-    "title_named": "Comment fonctionne votre roulement, {{name}} ?",
+    "title_named": "Comment fonctionne votre roulement, {{name}}?",
     "instruction_pain": {
-      "cycle_lost": "Cela montre à Ellie exactement où vous en êtes dans votre cycle, sans plus devoir deviner",
-      "wrong_alarm": "Réglez cela correctement et Ellie placera chaque alarme sur le bon quart",
-      "days_off": "Cela montre à Ellie quand tombent vos jours de repos pour que vous puissiez planifier à l’avance",
-      "family": "Ellie vous alertera sur les événements que vous manqueriez autrement une fois qu’elle connaîtra votre roulement",
-      "mental_math": "Après cela, Ellie fera tous les calculs pour vous"
+      "cycle_lost": "Cela montre à Ryvro exactement où vous en êtes dans votre cycle, sans plus devoir deviner",
+      "wrong_alarm": "Réglez cela correctement et Ryvro placera chaque alarme sur le bon quart",
+      "days_off": "Cela montre à Ryvro quand tombent vos jours de repos pour que vous puissiez planifier à l’avance",
+      "family": "Ryvro vous alertera sur les événements que vous manqueriez autrement une fois qu’elle connaîtra votre roulement",
+      "mental_math": "Après cela,Ryvro fera tous les calculs pour vous"
     },
     "countryHint": "Courant en {{country}}"
   },
@@ -326,13 +326,13 @@
       "mealsDesc": "Restez hydraté et alimenté lors de quarts souterrains de 12 heures"
     },
     "featureHint": "Appuyez sur une puce de fonctionnalité pour voir plus de détails.",
-    "featuresTitle": "Ce que vous pouvez faire avec Ellie",
+    "featuresTitle": "Ce que vous pouvez faire avec Ryvro",
     "getStartedA11yHint": "Appuyez pour commencer à utiliser l'application",
-    "getStartedA11yLabel": "Commencez avec Ellie",
+    "getStartedA11yLabel": "Commencez avec Ryvro",
     "loading": "Construction de votre calendrier de roulement...",
     "retryA11yHint": "Appuyez pour réessayer de sauvegarder vos données",
     "retryA11yLabel": "Réessayez de sauvegarder vos données",
-    "subtitle": "Bienvenue à Ellie",
+    "subtitle": "Bienvenue à Ryvro",
     "summary": {
       "company": "Entreprise",
       "cycle": "Faire du vélo",
@@ -359,7 +359,7 @@
     "title": "Tout est prêt.",
     "tryAgain": "Essayer à nouveau",
     "errors": {
-      "missingRequiredInformation": "Informations requises manquantes : {{fields}}. Revenez en arrière et terminez toutes les étapes.",
+      "missingRequiredInformation": "Informations requises manquantes: {{fields}}. Revenez en arrière et terminez toutes les étapes.",
       "networkUnavailable": "Nous n'avons pas pu nous connecter pour enregistrer votre configuration. Vérifiez votre connexion et réessayez.",
       "permissionDenied": "Nous ne sommes pas autorisés à enregistrer votre configuration. Veuillez vous reconnecter et réessayer.",
       "storageUnavailable": "Le stockage de votre appareil est plein. Libérez de l'espace et réessayez.",
@@ -383,7 +383,7 @@
       }
     },
     "nextShiftCountdown": "Prochain poste {{relative}} ({{date}})",
-    "checkInTitle": "Quand consultez-vous votre planning ?",
+    "checkInTitle": "Quand consultez-vous votre planning?",
     "checkInNotificationTitle": "Votre planning du jour",
     "checkInNotificationBody": "Touchez pour voir vos prochains postes.",
     "checkIn": {
@@ -392,14 +392,14 @@
       "evening": "Soir"
     },
     "notificationPriming": {
-      "title": "Voulez-vous un rappel avant chaque shift ?",
+      "title": "Voulez-vous un rappel avant chaque shift?",
       "body": "Autorisez les notifications et nous nous en chargeons.",
       "allow": "Autoriser les notifications",
       "decline": "Pas maintenant"
     },
     "title_named": "{{name}}, tout est prêt.",
     "setupReady": "Votre roulement {{setup}} est prêt.",
-    "reminderPromise": "Ellie vous rappellera chaque shift avant qu’il commence."
+    "reminderPromise": "Ryvro vous rappellera chaque shift avant qu’il commence."
   },
   "phaseSelector": {
     "hints": {
@@ -437,10 +437,10 @@
       }
     },
     "dayCardTitle": "Jour {{day}}",
-    "daySubtitle": "Vous avez dit que vous étiez sur {{selectedPhaseTitle}}. Faites glisser votre doigt jusqu'à votre journée actuelle : est-ce le {{dayList}} ?",
-    "dayTitle": "Quel jour du {{selectedPhaseTitle}} êtes-vous ?",
+    "daySubtitle": "Vous avez dit que vous étiez sur {{selectedPhaseTitle}}. Faites glisser votre doigt jusqu'à votre journée actuelle: est-ce le {{dayList}}?",
+    "dayTitle": "Quel jour du {{selectedPhaseTitle}} êtes-vous?",
     "preparing": "Préparez votre calendrier...",
-    "title": "Dans quelle équipe es-tu en ce moment ?",
+    "title": "Dans quelle équipe es-tu en ce moment?",
     "dayOrdinal": "Jour {{day}}",
     "list": {
       "or": "ou"
@@ -457,21 +457,21 @@
       "night": "Quart de nuit",
       "off": "Jours fériés"
     },
-    "title_named": "Où en es-tu dans ton cycle en ce moment, {{name}} ?",
+    "title_named": "Où en es-tu dans ton cycle en ce moment, {{name}}?",
     "anticipation": "On y est presque. Encore une étape et nous vous montrerons un aperçu de vos 3 prochains mois.",
     "settingsDiscard": {
-      "title": "Ignorer la sélection de rotation non enregistrée ?",
-      "message": "Vous avez choisi un nouveau jour de rotation, mais vous ne l’avez pas encore enregistré. Quitter sans enregistrer ?",
+      "title": "Ignorer la sélection de rotation non enregistrée?",
+      "message": "Vous avez choisi un nouveau jour de rotation, mais vous ne l’avez pas encore enregistré. Quitter sans enregistrer?",
       "confirm": "Ignorer la sélection"
     }
   },
   "fifoPhaseSelector": {
     "title": {
-      "workPattern": "Comment se déroulent les équipes pendant votre bloc de travail FIFO ?",
+      "workPattern": "Comment se déroulent les équipes pendant votre bloc de travail FIFO?",
       "swingConfig": "Configurez votre swing split",
-      "block": "Où en es-tu dans ton cycle FIFO ?",
-      "dayWithinBlock": "Quel jour du {{blockTitle}} êtes-vous ?",
-      "block_named": "Es-tu sur site ou à la maison en ce moment, {{name}} ?"
+      "block": "Où en es-tu dans ton cycle FIFO?",
+      "dayWithinBlock": "Quel jour du {{blockTitle}} êtes-vous?",
+      "block_named": "Es-tu sur site ou à la maison en ce moment, {{name}}?"
     },
     "subtitle": {
       "workPattern": "Faites glisser votre doigt vers la droite pour choisir votre modèle de bloc de travail, vers la gauche pour l'option suivante ou vers le haut pour plus d'informations.",
@@ -519,7 +519,7 @@
     "swingConfig": {
       "daysOnDayShift": "Jours de travail de jour",
       "daysOnNightShift": "Jours de nuit",
-      "splitTotal": "Total fractionné : {{swingSplitTotal}}/{{workBlockDays}} jours",
+      "splitTotal": "Total fractionné: {{swingSplitTotal}}/{{workBlockDays}} jours",
       "validation": "Le fractionnement du swing doit être égal à {{workBlockDays}} jours avec au moins 1 jour sur chaque quart de travail.",
       "changePattern": "Changer de modèle",
       "continue": "Continuer",
@@ -575,8 +575,8 @@
     },
     "anticipation": "Presque fini. Encore un appui et votre roulement FIFO sera prêt.",
     "settingsDiscard": {
-      "title": "Ignorer la sélection FIFO non enregistrée ?",
-      "message": "Vous avez sélectionné un nouveau jour FIFO sans l’enregistrer. Quitter sans enregistrer ?",
+      "title": "Ignorer la sélection FIFO non enregistrée?",
+      "message": "Vous avez sélectionné un nouveau jour FIFO sans l’enregistrer. Quitter sans enregistrer?",
       "confirm": "Ignorer la sélection"
     }
   },
@@ -618,9 +618,9 @@
     "guidance": {
       "title": "Choisir votre date",
       "subtitle": "Conseils rapides pour une configuration plus rapide",
-      "body": "La plupart des gens choisissent aujourd’hui pour que leur aperçu sur 3 mois commence tout de suite. Mais vous pouvez choisir n’importe quelle date : nous calculerons votre rotation à partir de là.",
+      "body": "La plupart des gens choisissent aujourd’hui pour que leur aperçu sur 3 mois commence tout de suite. Mais vous pouvez choisir n’importe quelle date: nous calculerons votre rotation à partir de là.",
       "hint": "Choisissez la date la plus proche maintenant, vous pourrez ajuster les paramètres plus tard.",
-      "selectedDate": "Sélectionné : {{date}}"
+      "selectedDate": "Sélectionné: {{date}}"
     },
     "actions": {
       "goBack": "Retourner",
@@ -631,20 +631,20 @@
       "setShiftTimesA11y": "Définir les horaires de travail"
     },
     "selectedDate": {
-      "startsOn": "Votre cycle débutera le :"
+      "startsOn": "Votre cycle débutera le:"
     },
     "phaseSelector": {
       "title": "Choisissez à quelle partie de votre cycle vous participerez"
     },
     "dayWithinPhase": {
-      "title": "Quel jour de votre {{phaseLabel}} ?",
+      "title": "Quel jour de votre {{phaseLabel}}?",
       "dayA11yLabel": "Jour {{dayNumber}}",
       "dayA11yHint": "Sélectionnez le jour {{dayNumber}} de la phase"
     },
     "preview": {
       "notSelected": "Non sélectionné",
       "startingLabel": "Départ:",
-      "phaseLabel": "Phase :",
+      "phaseLabel": "Phase:",
       "confirmation": "Votre premier cycle commence ici"
     }
   },
@@ -686,13 +686,13 @@
     },
     "header": {
       "title": {
-        "single": "Quand commencent vos quarts de travail ?",
+        "single": "Quand commencent vos quarts de travail?",
         "day": "Horaires des quarts de jour",
         "night": "Horaires des quarts de nuit",
         "morning": "Horaires des quarts de travail du matin",
         "afternoon": "Horaires des quarts de travail de l'après-midi",
         "default": "Horaires des quarts de travail",
-        "question": "À quelle heure commence votre quart de {{shiftTypeLabel}} ?"
+        "question": "À quelle heure commence votre quart de {{shiftTypeLabel}}?"
       },
       "subtitle": {
         "single": "Choisissez l'heure à laquelle vous pointez chaque jour. Nous l'utiliserons pour suivre vos heures et définir des rappels.",
@@ -702,13 +702,13 @@
     },
     "guidance": {
       "aboutTitle": "À propos des horaires de travail",
-      "aboutBody": "Votre rotation {{patternName}} reste la même, mais nous avons besoin de vos heures de début de quart de travail pour qu'Ellie puisse suivre les heures et vous alerter avant chaque quart de travail.",
+      "aboutBody": "Votre rotation {{patternName}} reste la même, mais nous avons besoin de vos heures de début de quart de travail pour qu' Ryvro puisse suivre les heures et vous alerter avant chaque quart de travail.",
       "hint": "Utilisez maintenant l’heure de début la plus proche. Vous pourrez l'affiner plus tard dans les paramètres.",
       "definitions": {
-        "twoShiftTitle": "Jour contre nuit :",
+        "twoShiftTitle": "Jour contre nuit:",
         "twoShiftBody": "Les équipes de jour commencent de 6h00 à 18h00 - Les équipes de nuit commencent de 18h00 à 6h00",
-        "threeShiftTitle": "Types de quarts de travail :",
-        "threeShiftBody": "Matin : 6h-14h - Après-midi : 14h-22h - Nuit : 22h-6h"
+        "threeShiftTitle": "Types de quarts de travail:",
+        "threeShiftBody": "Matin: 6h-14h - Après-midi: 14h-22h - Nuit: 22h-6h"
       }
     },
     "presets": {
@@ -764,7 +764,7 @@
       "endsAt": "Se termine à {{time}}"
     },
     "customInput": {
-      "label": "À quelle heure pointez-vous habituellement ?",
+      "label": "À quelle heure pointez-vous habituellement?",
       "helper": "Utilisez le format 12 heures (par exemple, 6h00)",
       "period": {
         "am": "AM",
@@ -776,7 +776,7 @@
       "minutesRange": "Les minutes doivent être comprises entre 0 et 59"
     },
     "preview": {
-      "yourShift": "Votre quart de travail :",
+      "yourShift": "Votre quart de travail:",
       "durationHours": "{{duration}} heures"
     },
     "detection": {
@@ -784,20 +784,20 @@
       "autoDetected": "Détection automatique",
       "day": {
         "title": "Début de journée",
-        "window": "Fenêtre typique : 6h00 - 17h59"
+        "window": "Fenêtre typique: 6h00 - 17h59"
       },
       "morning": {
         "title": "Début du matin",
-        "window": "Fenêtre typique : 6h00 - 13h59"
+        "window": "Fenêtre typique: 6h00 - 13h59"
       },
       "afternoon": {
         "title": "Début de l'après-midi",
-        "window": "Fenêtre typique : 14h00 - 21h59"
+        "window": "Fenêtre typique: 14h00 - 21h59"
       },
       "night": {
         "title": "Début de nuit",
-        "windowTwoShift": "Fenêtre typique : 18h00 - 5h59",
-        "windowThreeShift": "Fenêtre typique : 22h00 - 5h59"
+        "windowTwoShift": "Fenêtre typique: 18h00 - 5h59",
+        "windowThreeShift": "Fenêtre typique: 22h00 - 5h59"
       }
     },
     "tips": {
@@ -888,10 +888,10 @@
         "nightShift": "Équipe de nuit"
       },
       "ratioLabel": "À chaque rotation où vous travaillez",
-      "restLabel": "Repos : {{count}} jours",
+      "restLabel": "Repos: {{count}} jours",
       "subtitle": "Voyez à quoi ressemble votre emploi du temps",
       "title": "Votre aperçu de rotation",
-      "workLabel": "Travail : {{count}} jours"
+      "workLabel": "Travail: {{count}} jours"
     },
     "previewGuide": "Voir votre rotation ci-dessous",
     "saveA11y": "Enregistrez votre rotation et continuez",
@@ -905,18 +905,18 @@
       "nightShifts": "Quarts de nuit"
     },
     "slidersTitle": "Configurez votre rotation",
-    "subtitle": "Définissez le nombre de postes que vous travaillez, puis le nombre de jours de congé dont vous bénéficiez : nous vous montrerons à quoi cela ressemble",
+    "subtitle": "Définissez le nombre de postes que vous travaillez, puis le nombre de jours de congé dont vous bénéficiez: nous vous montrerons à quoi cela ressemble",
     "subtitleSecondary": {
       "threeShift": "Matin, après-midi, soir et repos",
       "twoShift": "Jour, nuit et arrêt"
     },
-    "success": "Ça a l'air bien ! Vous travaillez {{workDays}} jours, puis bénéficiez de {{daysOff}} jours de congé. C'est une rotation solide.",
-    "tip": "Conseil : La plupart des travailleurs postés préfèrent les rotations avec au moins 3 jours de congé. Votre corps a besoin de temps pour récupérer entre les changements de swing.",
+    "success": "Ça a l'air bien! Vous travaillez {{workDays}} jours, puis bénéficiez de {{daysOff}} jours de congé. C'est une rotation solide.",
+    "tip": "Conseil: La plupart des travailleurs postés préfèrent les rotations avec au moins 3 jours de congé. Votre corps a besoin de temps pour récupérer entre les changements de swing.",
     "title": "Construisez votre rotation",
     "validation": {
-      "noOff": "Tout le monde a besoin de congés : ajoutez au moins un jour de congé à votre rotation",
-      "noWork": "Vous avez besoin d'au moins une équipe à suivre : ajoutez des équipes de jour ou de nuit.",
-      "tooLong": "Votre rotation dure {{totalDays}} jours ; nous ne pouvons gérer que 28 jours maximum. Essayez de le raccourcir."
+      "noOff": "Tout le monde a besoin de congés: ajoutez au moins un jour de congé à votre rotation",
+      "noWork": "Vous avez besoin d'au moins une équipe à suivre: ajoutez des équipes de jour ou de nuit.",
+      "tooLong": "Votre rotation dure {{totalDays}} jours; nous ne pouvons gérer que 28 jours maximum. Essayez de le raccourcir."
     },
     "warning": "Ce modèle demande beaucoup de travail ({{workPercentage}} % de travail). Pensez à ajouter des jours de congé supplémentaires si la fatigue vous préoccupe."
   },
@@ -942,17 +942,17 @@
         "customWorkBlock": "Bloc de travail personnalisé"
       },
       "ratioLabel": "Du site au rythme de la maison",
-      "restLabel": "Repos : {{restBlockDays}} jours",
+      "restLabel": "Repos: {{restBlockDays}} jours",
       "siteDays": "jours de chantier",
       "subtitle": "{{workBlockDays}} jours sur site, puis {{restBlockDays}} jours à domicile",
-      "swingSplit": "Répartition du swing : {{daysOnDayShift}} jours de jour + {{daysOnNightShift}} jours de nuit",
+      "swingSplit": "Répartition du swing: {{daysOnDayShift}} jours de jour + {{daysOnNightShift}} jours de nuit",
       "title": "Votre aperçu de la rotation FIFO",
-      "workLabel": "Travail : {{workBlockDays}} jours",
+      "workLabel": "Travail: {{workBlockDays}} jours",
       "patternDetails": {
-        "straightDays": "Rythme de travail : jours uniquement",
-        "straightNights": "Rythme de travail : nuits uniquement",
-        "swing": "Rythme de travail : alternance ({{daysOnDayShift}} jour + {{daysOnNightShift}} nuit)",
-        "custom": "Rythme de travail : séquence personnalisée"
+        "straightDays": "Rythme de travail: jours uniquement",
+        "straightNights": "Rythme de travail: nuits uniquement",
+        "swing": "Rythme de travail: alternance ({{daysOnDayShift}} jour + {{daysOnNightShift}} nuit)",
+        "custom": "Rythme de travail: séquence personnalisée"
       },
       "blockLabels": {
         "dayWork": "Travail de jour",
@@ -979,15 +979,15 @@
     "success": "Configuration FIFO solide. {{workBlockDays}} jours sur place, puis {{restBlockDays}} jours à la maison.",
     "swingSubtitle": "Répartissez votre bloc de travail entre les quarts de jour et de nuit.",
     "swingTitle": "Configuration de la balançoire",
-    "swingTotal": "Total fractionné : {{swingTotal}}/{{workBlockDays}} jours",
-    "tip": "Conseil : Adaptez votre bloc d'habitation aux exigences de récupération et de voyage. Les modèles FIFO fonctionnent mieux lorsque le bloc de repos est suffisamment long pour être réinitialisé avant la prochaine exécution de votre site.",
+    "swingTotal": "Total fractionné: {{swingTotal}}/{{workBlockDays}} jours",
+    "tip": "Conseil: Adaptez votre bloc d'habitation aux exigences de récupération et de voyage. Les modèles FIFO fonctionnent mieux lorsque le bloc de repos est suffisamment long pour être réinitialisé avant la prochaine exécution de votre site.",
     "title": "Construisez votre rotation FIFO",
     "validation": {
       "blocksMinimum": "Les blocs de travail et de repos doivent chacun durer au moins 1 jour.",
       "swingMismatch": "Le fractionnement du swing doit être égal à {{workBlockDays}} jours avant l'enregistrement."
     },
     "warning": "Cette liste est lourde ({{workPercentage}}% de travail). Pensez à équilibrer davantage de journées à la maison si la fatigue devient un problème.",
-    "workPatternSubtitle": "Comment sont organisés vos quarts de travail sur site ?",
+    "workPatternSubtitle": "Comment sont organisés vos quarts de travail sur site?",
     "workPatternTitle": "Modèle de travail pendant le bloc de travail",
     "workPatterns": {
       "straight-days": {
@@ -1031,7 +1031,7 @@
     }
   },
   "livePatternPreview": {
-    "summary": "Votre cycle de {{cycleLength}}-jours : {{daysOn}}D / {{nightsOn}}N / {{daysOff}}O",
+    "summary": "Votre cycle de {{cycleLength}}-jours: {{daysOn}}D / {{nightsOn}}N / {{daysOff}}O",
     "legend": {
       "offDays": "Jours fériés"
     }
@@ -1052,8 +1052,8 @@
   "chatMessage": {
     "skipped": "Ignoré",
     "a11y": {
-      "botMessage": "Message d'Ellie : {{content}}",
-      "userMessage": "Votre message : {{content}}",
+      "botMessage": "Message d' Ryvro: {{content}}",
+      "userMessage": "Votre message: {{content}}",
       "longPressToEdit": "Appuyez longuement pour modifier"
     }
   },
@@ -1105,7 +1105,7 @@
   "ahaMoment": {
     "headline": "Vos 3 prochains mois, cartographiés.",
     "subheadline": "Voici un aperçu de vos 3 prochains mois. Fini les hésitations dans votre tête.",
-    "heyEllieTitle": "Demandez à Ellie votre planning",
+    "heyEllieTitle": "Demandez à Ryvro votre planning",
     "ctaPrimary": "Commencer l’essai gratuit",
     "ctaSecondary": "ou passer — semaine en cours seulement, pas d’année complète",
     "stats": {
@@ -1128,11 +1128,11 @@
     },
     "tryAsking": "Essayez de demander…",
     "suggestions": {
-      "nextDayOff": "Quand est mon prochain jour off ?",
-      "nightShiftsThisMonth": "Combien de postes de nuit ce mois-ci ?",
-      "startBack": "Quand est-ce que je reprends ?"
+      "nextDayOff": "Quand est mon prochain jour off?",
+      "nightShiftsThisMonth": "Combien de postes de nuit ce mois-ci?",
+      "startBack": "Quand est-ce que je reprends?"
     },
-    "buttonLabel": "Salut Ellie",
+    "buttonLabel": "Salut Ryvro",
     "headline_named": "Les shifts de {{name}}, cartographiés.",
     "ctaSecondaryA11y": "Ignorer l’essai — limité à la semaine en cours, sans vue annuelle complète",
     "painCallback": {
@@ -1146,8 +1146,8 @@
     "checkingAccess": "Vérification de l’accès…"
   },
   "painHook": {
-    "title": "Quelle est la partie la plus difficile de votre roulement en ce moment ?",
-    "subtitle": "Nous personnaliserons Ellie selon ce qui compte le plus pour vous.",
+    "title": "Quelle est la partie la plus difficile de votre roulement en ce moment?",
+    "subtitle": "Nous personnaliserons Ryvro selon ce qui compte le plus pour vous.",
     "options": {
       "cycle_lost": "Je perds le fil de ma position dans mon cycle",
       "wrong_alarm": "J'ai réglé mon alarme pour la mauvaise équipe",
@@ -1157,7 +1157,7 @@
     },
     "subs": {
       "cycle_lost": "Je ne sais jamais vraiment à quel jour de mon roulement j'en suis",
-      "wrong_alarm": "Équipe du matin demain ou équipe de nuit ce soir ?",
+      "wrong_alarm": "Équipe du matin demain ou équipe de nuit ce soir?",
       "days_off": "Difficile de prévoir quoi que ce soit quand vous ne connaissez pas votre roulement",
       "family": "Anniversaires, événements scolaires, rendez-vous",
       "mental_math": "Je compte les jours pour savoir quand je travaille"
@@ -1174,7 +1174,7 @@
       "failed": "Échec de la sauvegarde — votre brouillon est conservé",
       "retry": "Réessayer",
       "warningConfirm": {
-        "title": "Enregistrer malgré les avertissements ?",
+        "title": "Enregistrer malgré les avertissements?",
         "confirm": "Enregistrer quand même",
         "cancel": "Réviser"
       }
@@ -1185,8 +1185,8 @@
     "cancel": "Annuler",
     "back": "Retour",
     "confirmDiscard": {
-      "title": "Ignorer les modifications ?",
-      "message": "Vous avez des modifications non enregistrées. Les ignorer ?",
+      "title": "Ignorer les modifications?",
+      "message": "Vous avez des modifications non enregistrées. Les ignorer?",
       "discard": "Ignorer",
       "keepEditing": "Continuer à modifier"
     },
@@ -1300,7 +1300,7 @@
       "save": "Enregistrer",
       "delete": "Supprimer le type",
       "deleteConfirm": {
-        "title": "Supprimer le type d'équipe ?",
+        "title": "Supprimer le type d'équipe?",
         "message": "Cette action est irréversible.",
         "confirm": "Supprimer",
         "cancel": "Annuler"
@@ -1330,7 +1330,7 @@
       "failed": "Échec de l'enregistrement — le brouillon est conservé",
       "retry": "Réessayer",
       "warningConfirm": {
-        "title": "Enregistrer avec des avertissements ?",
+        "title": "Enregistrer avec des avertissements?",
         "confirm": "Enregistrer quand même",
         "cancel": "Vérifier"
       }

@@ -103,7 +103,7 @@ describe('Main Dashboard', () => {
       await detoxExpect(element(by.id('tab-profile'))).toBeVisible();
     });
 
-    it('shows center Ellie mic button', async () => {
+    it('shows centerRyvro mic button', async () => {
       await detoxExpect(element(by.id('center-mic-gradient'))).toBeVisible();
     });
 

@@ -610,7 +610,7 @@ export class UserService extends FirebaseService {
         company: profileUpdates.company ?? 'Unknown',
         country: profileUpdates.country ?? 'US',
         // Replaced after auth-sync in PremiumCompletionScreen.
-        email: `pending+${userId}@ellie.local`,
+        email: `pending+${userId}@ryvro.local`,
         createdAt: now,
         updatedAt: now,
         shiftCycle: profileUpdates.shiftCycle,
@@ -822,7 +822,7 @@ export class UserService extends FirebaseService {
       occupation: 'Unknown',
       company: 'Unknown',
       country: 'US',
-      email: `pending+${userId}@ellie.local`,
+      email: `pending+${userId}@ryvro.local`,
       createdAt: now,
       updatedAt: now,
     };

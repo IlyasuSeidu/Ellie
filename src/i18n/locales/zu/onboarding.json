@@ -31,7 +31,7 @@
     "cancel": "Khansela"
   },
   "intro": {
-    "welcome": "Siyakwamukela ku-Ellie! Ngilapha ukuze ngikusize uhlele ikhalenda lakho leshifu. Ake siqale ngokukwazi kangcono.",
+    "welcome": "Siyakwamukela ku- Ryvro! Ngilapha ukuze ngikusize uhlele ikhalenda lakho leshifu. Ake siqale ngokukwazi kangcono.",
     "askName": "Ubani igama lakho?",
     "askOccupation": "Kuhle ukuhlangana nawe, {{name}}! Yini indima yakho eceleni?",
     "askCompany": "Ngikuzwile! Usebenzela yiphi inkampani? (akuphoqelekile)",
@@ -295,11 +295,11 @@
     },
     "title_named": "Lusebenza kanjani uhlelo lwakho, {{name}}?",
     "instruction_pain": {
-      "cycle_lost": "Lokhu kukhombisa u-Ellie ngqo ukuthi ukuphi kumjikelezo wakho - akukho ukuqagela futhi",
-      "wrong_alarm": "Uma usetha lokhu kahle u-Ellie uzobeka yonke i-alamu eshifini elifanele",
-      "days_off": "Lokhu kukhombisa u-Ellie ukuthi izinsuku zakho zokuphumula ziwela nini ukuze uhlele kusenesikhathi",
-      "family": "U-Ellie uzokwazisa ngezikhathi obungezaphuthelwa uma eselwazi uhlelo lwakho",
-      "mental_math": "Ngemva kwalokhu u-Ellie uzokubalela konke"
+      "cycle_lost": "Lokhu kukhombisa u- Ryvro ngqo ukuthi ukuphi kumjikelezo wakho - akukho ukuqagela futhi",
+      "wrong_alarm": "Uma usetha lokhu kahle u- Ryvro uzobeka yonke i-alamu eshifini elifanele",
+      "days_off": "Lokhu kukhombisa u- Ryvro ukuthi izinsuku zakho zokuphumula ziwela nini ukuze uhlele kusenesikhathi",
+      "family": "U- Ryvro uzokwazisa ngezikhathi obungezaphuthelwa uma eselwazi uhlelo lwakho",
+      "mental_math": "Ngemva kwalokhu u- Ryvro uzokubalela konke"
     },
     "countryHint": "Kuvamile e-{{country}}"
   },
@@ -322,13 +322,13 @@
       "mealsDesc": "Hlala ugcwele amanzi nonamandla ngamashifu amahora ayi-12 engaphansi komhlaba"
     },
     "featureHint": "Thepha i-chip yesici ukuze ubone imininingwane eyengeziwe.",
-    "featuresTitle": "Ongakwenza ngo-Ellie",
+    "featuresTitle": "Ongakwenza ngo- Ryvro",
     "getStartedA11yHint": "Thepha ukuze uqale ukusebenzisa uhlelo lokusebenza",
-    "getStartedA11yLabel": "Qala ngo-Ellie",
+    "getStartedA11yLabel": "Qala ngo- Ryvro",
     "loading": "Yakha ikhalenda lika-roster wakho...",
     "retryA11yHint": "Thepha ukuze uzame ukulondoloza idatha yakho futhi",
     "retryA11yLabel": "Zama futhi ukulondoloza idatha yakho",
-    "subtitle": "Siyakwamukela ku-Ellie",
+    "subtitle": "Siyakwamukela ku- Ryvro",
     "summary": {
       "company": "Inkampani",
       "cycle": "Umjikelezo",
@@ -395,7 +395,7 @@
     },
     "title_named": "{{name}}, konke sekumi ngomumo.",
     "setupReady": "Irosta yakho ye-{{setup}} isilungile.",
-    "reminderPromise": "Ellie izokukhumbuza ngaphambi kweshifu ngayinye."
+    "reminderPromise": "Ryvro izokukhumbuza ngaphambi kweshifu ngayinye."
   },
   "phaseSelector": {
     "hints": {
@@ -698,7 +698,7 @@
     },
     "guidance": {
       "aboutTitle": "Mayelana nezikhathi zamashifu",
-      "aboutBody": "Ukuzungezisa kwakho kwe-{{patternName}} kuhlala kunjalo, kodwa sidinga izikhathi zakho zokuqala zeshifu ukuze u-Ellie akwazi ukulandelela amahora futhi akwazise ngaphambi kokuhamba ngakunye.",
+      "aboutBody": "Ukuzungezisa kwakho kwe-{{patternName}} kuhlala kunjalo, kodwa sidinga izikhathi zakho zokuqala zeshifu ukuze u- Ryvro akwazi ukulandelela amahora futhi akwazise ngaphambi kokuhamba ngakunye.",
       "hint": "Sebenzisa isikhathi sokuqala esiseduzane manje. Ungayishuna kamuva kuzilungiselelo.",
       "definitions": {
         "twoShiftTitle": "Usuku vs Night:",
@@ -1064,7 +1064,7 @@
   "chatMessage": {
     "skipped": "Kweqiwe",
     "a11y": {
-      "botMessage": "Umlayezo ka-Ellie: {{content}}",
+      "botMessage": "Umlayezo ka- Ryvro: {{content}}",
       "userMessage": "Umlayezo wakho: {{content}}",
       "longPressToEdit": "Cindezela isikhathi eside ukuze uhlele"
     }
@@ -1101,7 +1101,7 @@
   "ahaMoment": {
     "headline": "Izinyanga zakho ezi-3 ezizayo, sezihleliwe.",
     "subheadline": "Nansi imibono yangaphambili yezinyanga zakho ezi-3 ezizayo. Akusekho ukuqagela ekhanda.",
-    "heyEllieTitle": "Buza u-Ellie nge-roster yakho",
+    "heyEllieTitle": "Buza u- Ryvro nge-roster yakho",
     "ctaPrimary": "Qala isivivinyo samahhala",
     "ctaSecondary": "noma weqe — isonto lamanje kuphela, akukho unyaka ogcwele",
     "stats": {
@@ -1128,7 +1128,7 @@
       "nightShiftsThisMonth": "Mangaki amashifu ebusuku enginawo kule nyanga?",
       "startBack": "Ngiqala nini futhi?"
     },
-    "buttonLabel": "Sawubona Ellie",
+    "buttonLabel": "Sawubona Ryvro",
     "headline_named": "Amashifu ka-{{name}}, asehleliwe.",
     "ctaSecondaryA11y": "Yeqa isivivinyo — kugcinelwe isonto lamanje kuphela, akukho ukubukwa komnyaka ogcwele",
     "painCallback": {
@@ -1143,7 +1143,7 @@
   },
   "painHook": {
     "title": "Yini enzima kakhulu ngohlelo lwakho manje?",
-    "subtitle": "Sizokwenza Ellie ihambisane nalokho okubaluleke kakhulu kuwe.",
+    "subtitle": "Sizokwenza Ryvro ihambisane nalokho okubaluleke kakhulu kuwe.",
     "options": {
       "cycle_lost": "Ngiyadideka ukuthi ngikuphi kumjikelezo wami",
       "wrong_alarm": "Sengike ngamisa i-alamu yeshifu engalungile",

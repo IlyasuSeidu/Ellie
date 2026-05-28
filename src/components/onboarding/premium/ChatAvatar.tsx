@@ -1,7 +1,7 @@
 /**
  * ChatAvatar Component
  *
- * Circular avatar with mining helmet icon and breathing animation
+ * Circular avatar with the Ryvro shift assistant mark and breathing animation
  * Used for bot messages in conversational onboarding
  */
 
@@ -73,11 +73,11 @@ export const ChatAvatar = React.memo<ChatAvatarProps>(
         testID={testID}
         accessibilityRole="image"
         accessibilityLabel={t('chatAvatar.a11y', {
-          defaultValue: 'Mining assistant avatar',
+          defaultValue: 'Ryvro shift assistant avatar',
         })}
       >
         <Image
-          source={require('../../../../assets/onboarding/icons/consolidated/mining-helmet-sacred-flame.png')}
+          source={require('../../../../assets/onboarding/icons/consolidated/ryvro-shift-assistant.png')}
           style={{
             width: size * 0.6,
             height: size * 0.6,

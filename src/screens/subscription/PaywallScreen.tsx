@@ -40,8 +40,8 @@ import { useNetworkStatus } from '@/hooks/useNetworkStatus';
 import { useSubscription } from '@/hooks/useSubscription';
 
 // Legal URLs — update these to point to the live hosted documents
-const PRIVACY_POLICY_URL = 'https://ellieapp.com.au/privacy';
-const TERMS_OF_SERVICE_URL = 'https://ellieapp.com.au/terms';
+const PRIVACY_POLICY_URL = 'https://getryvro.com/privacy';
+const TERMS_OF_SERVICE_URL = 'https://getryvro.com/terms';
 
 function packageHasTrial(pkg: import('react-native-purchases').PurchasesPackage | null): boolean {
   if (!pkg) return false;
@@ -1074,13 +1074,13 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
               style={styles.successCta}
               accessibilityRole="button"
               accessibilityLabel={t('subscription.paywall.purchaseSuccessContinue', {
-                defaultValue: 'Continue to Ellie',
+                defaultValue: 'Continue to Ryvro',
               })}
             >
               <View style={styles.successCtaContent}>
                 <Text style={styles.successCtaText}>
                   {t('subscription.paywall.purchaseSuccessContinue', {
-                    defaultValue: 'Continue to Ellie',
+                    defaultValue: 'Continue to Ryvro',
                   })}
                 </Text>
                 <Ionicons
@@ -1269,7 +1269,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
               platform: Platform.OS === 'ios' ? 'Apple' : 'Google',
               defaultValue: `Secure payment via ${Platform.OS === 'ios' ? 'Apple' : 'Google'} - Processed by ${
                 Platform.OS === 'ios' ? 'Apple' : 'Google'
-              }, not Ellie`,
+              }, not Ryvro`,
             })}
           </Text>
         </View>

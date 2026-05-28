@@ -31,19 +31,19 @@
     "off": "Jour de congé"
   },
   "shiftSubtitles": {
-    "day": "Restez énergique !",
-    "night": "Restez vigilant !",
-    "morning": "Lève-toi et brille !",
-    "afternoon": "Continuez comme ça !",
-    "off": "Reposez-vous et ressourcez-vous !"
+    "day": "Restez énergique!",
+    "night": "Restez vigilant!",
+    "morning": "Lève-toi et brille!",
+    "afternoon": "Continuez comme ça!",
+    "off": "Reposez-vous et ressourcez-vous!"
   },
   "fifo": {
     "onSite": "Bloc sur site actif",
     "homeBlock": "Bloc à domicile actif",
     "workBlock": "Travail",
     "restBlock": "Repos",
-    "blockChangeToday": "Changement de bloc aujourd'hui !",
-    "blockChangeTomorrow": "Changement de bloc demain !",
+    "blockChangeToday": "Changement de bloc aujourd'hui!",
+    "blockChangeTomorrow": "Changement de bloc demain!",
     "untilRest": "{{count}}d jusqu'au bloc de repos",
     "untilWork": "{{count}}d jusqu'au bloc de travail",
     "blockDayOf": "{{blockName}} Jour bloc {{day}} du {{total}}",
@@ -99,15 +99,15 @@
     "conversationHistoryA11y": "Historique des conversations",
     "empty": {
       "prompt": "Demandez-moi votre horaire de travail",
-      "trySaying": "Essayez de dire :",
-      "example1": "Quel service ai-je demain ?",
-      "example2": "Quand est mon prochain jour de congé ?",
-      "example3": "Combien de quarts de nuit ce mois-ci ?",
-      "tryAsking": "Essayez de demander :",
-      "suggestionA11y": "Demander à Ellie : {{query}}"
+      "trySaying": "Essayez de dire:",
+      "example1": "Quel service ai-je demain?",
+      "example2": "Quand est mon prochain jour de congé?",
+      "example3": "Combien de quarts de nuit ce mois-ci?",
+      "tryAsking": "Essayez de demander:",
+      "suggestionA11y": "Demander à Ryvro: {{query}}"
     },
     "permission": {
-      "notice": "Ellie a besoin d'un accès au microphone pour entendre vos questions.",
+      "notice": "Ryvro a besoin d'un accès au microphone pour entendre vos questions.",
       "grant": "Accorder l'autorisation",
       "grantA11y": "Accorder l'autorisation du microphone",
       "requestA11y": "Demander l'autorisation du microphone"
@@ -119,12 +119,12 @@
       "wakeWordUnavailable": "Mot d’activation indisponible, touchez le micro pour parler",
       "sayWakeWordOrTap": "Dites \"{{wakeWordPhrase}}\" ou appuyez sur le micro",
       "askAnother": "Appuyez sur le micro pour poser une autre question",
-      "askEllie": "Appuyez sur le micro pour demander à Ellie",
+      "askEllie": "Appuyez sur le micro pour demander à Ryvro",
       "typeOrGrantMic": "Saisissez votre question ci-dessous ou accordez l’accès au micro pour parler"
     },
     "errors": {
       "default": "Quelque chose s'est mal passé",
-      "permissionDeniedIos": "Accès au microphone refusé. Activez dans Paramètres > Ellie.",
+      "permissionDeniedIos": "Accès au microphone refusé. Activez dans Paramètres > Ryvro.",
       "permissionDenied": "Accès au microphone refusé. Veuillez accorder la permission.",
       "network": "Vérifiez votre connexion et réessayez.",
       "recognition": "Je n'ai pas compris ça. Veuillez réessayer.",
@@ -137,33 +137,33 @@
     "micA11y": {
       "listening": "Arrêtez d'écouter. Appuyez deux fois pour finir de parler.",
       "processing": "Traitement de votre question. S'il vous plaît, attendez.",
-      "speaking": "Ellie parle. Appuyez deux fois pour arrêter.",
-      "error": "Erreur : {{message}}. Appuyez deux fois pour réessayer.",
-      "idle": "Posez une question à Ellie. Appuyez deux fois pour commencer à parler."
+      "speaking": "Ryvro parle. Appuyez deux fois pour arrêter.",
+      "error": "Erreur: {{message}}. Appuyez deux fois pour réessayer.",
+      "idle": "Posez une question à Ryvro. Appuyez deux fois pour commencer à parler."
     },
-    "partialTranscriptA11y": "Vous dites : {{text}}",
-    "processingInline": "Ellie réfléchit...",
+    "partialTranscriptA11y": "Vous dites: {{text}}",
+    "processingInline": "Ryvro réfléchit...",
     "retryHint": "Appuyez sur le micro pour réessayer",
-    "requestRef": "Réf : {{requestId}}",
+    "requestRef": "Réf: {{requestId}}",
     "responseBubble": {
-      "userSaidA11y": "Vous avez dit : {{text}}",
-      "assistantSaidA11y": "Ellie a dit : {{text}}"
+      "userSaidA11y": "Vous avez dit: {{text}}",
+      "assistantSaidA11y": "Ryvro a dit: {{text}}"
     },
     "warnings": {
-      "microphonePermissionRequired": "L’autorisation du micro est requise pour « Hey Ellie ». Touchez le micro pour parler.",
+      "microphonePermissionRequired": "L’autorisation du micro est requise pour « Hey Ryvro ». Touchez le micro pour parler.",
       "wakeWordUnavailableTapToTalk": "Mot d’activation indisponible, touchez le micro pour parler."
     },
     "offlineFallback": {
       "workingTodayYes": "Oui, vous êtes en poste {{shiftType}} aujourd’hui.",
       "workingTodayNo": "Non, aujourd’hui est votre jour de repos.",
       "shiftTodayWork": "Vous avez un poste {{shiftType}} aujourd’hui, {{userName}}.",
-      "shiftTodayOff": "Vous êtes en repos aujourd’hui, {{userName}} ! Reposez-vous et rechargez.",
+      "shiftTodayOff": "Vous êtes en repos aujourd’hui, {{userName}}! Reposez-vous et rechargez.",
       "shiftTomorrowWork": "Demain ({{date}}), vous avez un poste {{shiftType}}.",
-      "shiftTomorrowOff": "Demain ({{date}}) est votre jour de repos !",
+      "shiftTomorrowOff": "Demain ({{date}}) est votre jour de repos!",
       "nextDayOff": "Votre prochain jour de repos est le {{date}}.",
       "nextNightShift": "Votre prochain quart de nuit est le {{date}}.",
-      "shiftsThisWeek": "Cette semaine : {{dayCount}} quarts de jour, {{nightCount}} quarts de nuit et {{offCount}} jours de repos.",
-      "shiftsThisWeekThreeShift": "Cette semaine : {{morningCount}} quarts du matin, {{afternoonCount}} quarts de l’après-midi, {{nightCount}} quarts de nuit et {{offCount}} jours de repos.",
+      "shiftsThisWeek": "Cette semaine: {{dayCount}} quarts de jour, {{nightCount}} quarts de nuit et {{offCount}} jours de repos.",
+      "shiftsThisWeekThreeShift": "Cette semaine: {{morningCount}} quarts du matin, {{afternoonCount}} quarts de l’après-midi, {{nightCount}} quarts de nuit et {{offCount}} jours de repos.",
       "daysOffThisMonth": "Vous avez {{count}} jours de repos ce mois-ci.",
       "nightShiftsThisMonth": "Vous avez {{count}} quarts de nuit ce mois-ci.",
       "nextFlyOut": "Votre prochain jour de vol retour est {{date}}.",
@@ -176,12 +176,12 @@
     },
     "notices": {
       "offlineRecognitionUnavailable": "La saisie vocale hors ligne n’est pas disponible sur cet appareil pour le moment.",
-      "audioUnavailable": "Les réponses audio ne sont pas disponibles pour le moment. Vous pouvez quand même lire la réponse d’Ellie."
+      "audioUnavailable": "Les réponses audio ne sont pas disponibles pour le moment. Vous pouvez quand même lire la réponse d’ Ryvro."
     },
     "offlineHint": "Hors ligne, les réponses sont limitées aux questions simples sur le planning enregistré sur cet appareil.",
     "composer": {
-      "placeholder": "Tapez une question pour Ellie",
-      "a11y": "Tapez une question pour Ellie",
+      "placeholder": "Tapez une question pour Ryvro",
+      "a11y": "Tapez une question pour Ryvro",
       "sendA11y": "Envoyer la question écrite"
     }
   },
@@ -190,8 +190,8 @@
     "schedule": "Calendrier",
     "stats": "Statistiques",
     "profile": "Profil",
-    "ellie": "Ellie",
-    "openVoiceAssistantA11y": "Ouvrir l'assistant vocal Ellie",
+    "ellie": "Ryvro",
+    "openVoiceAssistantA11y": "Ouvrir l'assistant vocal Ryvro",
     "openProPlansA11y": "View Pro plans",
     "voiceAssistantLoadingA11y": "Checking voice assistant access"
   },
@@ -216,7 +216,7 @@
     },
     "holiday": {
       "title": "Jour férié à venir",
-      "today": "Aujourd’hui, c’est {{holidayName}} !",
+      "today": "Aujourd’hui, c’est {{holidayName}}!",
       "tomorrow": "Demain, c’est {{holidayName}}",
       "inDays": "{{holidayName}} est dans {{daysBefore}} jours ({{holidayDate}})"
     },
@@ -252,8 +252,8 @@
         "body": "Le briefing commence dans 15 minutes avant votre {{shiftType}} de {{startTime}}."
       },
       "postShift": {
-        "title": "Comment cela s’est-il passé ?",
-        "body": "Comment s’est passé votre {{shiftType}} ? Notez votre niveau d’énergie dans Ellie."
+        "title": "Comment cela s’est-il passé?",
+        "body": "Comment s’est passé votre {{shiftType}}? Notez votre niveau d’énergie dans Ryvro."
       },
       "fatigue": {
         "title": "Alerte fatigue critique",
@@ -303,14 +303,14 @@
   "shiftCheckIn": {
     "title": "Enregistrez votre niveau d’énergie après ce poste",
     "subtitle": "{{shiftType}} le {{shiftDate}} · {{startTime}} - {{endTime}}",
-    "energyPrompt": "Comment était votre énergie pendant ce poste ?",
+    "energyPrompt": "Comment était votre énergie pendant ce poste?",
     "energy": {
       "high": "Élevée",
       "medium": "Moyenne",
       "low": "Faible"
     },
     "notesLabel": "Notes (facultatif)",
-    "notesPlaceholder": "Y a-t-il quelque chose à retenir de ce poste ?",
+    "notesPlaceholder": "Y a-t-il quelque chose à retenir de ce poste?",
     "saved": "Suivi enregistré.",
     "savedOffline": "Suivi enregistré localement. Il sera synchronisé quand vous serez de nouveau en ligne.",
     "error": "Impossible d’enregistrer ce suivi pour le moment. Réessayez.",
@@ -319,12 +319,12 @@
     "submit": "Enregistrer le suivi"
   },
   "onboardingChecklist": {
-    "title": "Profitez au maximum d’Ellie",
+    "title": "Profitez au maximum d’ Ryvro",
     "items": {
       "schedule": "Set up your schedule",
       "shiftTimes": "Ajoutez vos horaires de poste",
       "profile": "Complétez votre profil",
-      "askEllie": "Posez une question à Ellie"
+      "askEllie": "Posez une question à Ryvro"
     },
     "actions": {
       "doIt": "Faire",

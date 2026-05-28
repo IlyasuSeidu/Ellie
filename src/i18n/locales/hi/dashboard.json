@@ -104,10 +104,10 @@
       "example2": "मेरी अगली छुट्टी कब है?",
       "example3": "इस माह कितनी रात्रि पाली?",
       "tryAsking": "यह पूछकर देखें:",
-      "suggestionA11y": "Ellie से पूछें: {{query}}"
+      "suggestionA11y": "Ryvro से पूछें: {{query}}"
     },
     "permission": {
-      "notice": "आपके प्रश्नों को सुनने के लिए ऐली को माइक्रोफ़ोन एक्सेस की आवश्यकता है।",
+      "notice": "आपके प्रश्नों को सुनने के लिए Ryvro को माइक्रोफ़ोन एक्सेस की आवश्यकता है।",
       "grant": "अनुमति प्रदान करें",
       "grantA11y": "माइक्रोफ़ोन अनुमति प्रदान करें",
       "requestA11y": "माइक्रोफ़ोन अनुमति का अनुरोध करें"
@@ -119,12 +119,12 @@
       "wakeWordUnavailable": "वेक-वर्ड उपलब्ध नहीं है, बात करने के लिए माइक्रोफ़ोन टैप करें।",
       "sayWakeWordOrTap": "\"{{wakeWordPhrase}}\" कहें या माइक टैप करें",
       "askAnother": "दूसरा प्रश्न पूछने के लिए माइक टैप करें",
-      "askEllie": "ऐली से पूछने के लिए माइक टैप करें",
+      "askEllie": "Ryvro से पूछने के लिए माइक टैप करें",
       "typeOrGrantMic": "नीचे टाइप करें या बोलने के लिए माइक्रोफ़ोन की अनुमति दें"
     },
     "errors": {
       "default": "कुछ गलत हो गया",
-      "permissionDeniedIos": "माइक्रोफ़ोन पहुंच अस्वीकृत. सेटिंग्स > ऐली में सक्षम करें।",
+      "permissionDeniedIos": "माइक्रोफ़ोन पहुंच अस्वीकृत. सेटिंग्स > Ryvro में सक्षम करें।",
       "permissionDenied": "माइक्रोफ़ोन पहुंच अस्वीकृत. कृपया अनुमति प्रदान करें.",
       "network": "अपना कनेक्शन जांचें और पुनः प्रयास करें.",
       "recognition": "मैं उसे समझ नहीं पाया. कृपया पुन: प्रयास करें।",
@@ -137,20 +137,20 @@
     "micA11y": {
       "listening": "सुनना बंद करो. बोलना समाप्त करने के लिए दो बार टैप करें।",
       "processing": "आपके प्रश्न पर कार्रवाई हो रही है. कृपया प्रतीक्षा करें।",
-      "speaking": "ऐली बोल रही है. रोकने के लिए दो बार टैप करें.",
+      "speaking": "Ryvro बोल रही है. रोकने के लिए दो बार टैप करें.",
       "error": "त्रुटि: {{message}}. पुनः प्रयास करने के लिए दो बार टैप करें।",
-      "idle": "ऐली से एक प्रश्न पूछें. बोलना शुरू करने के लिए दो बार टैप करें।"
+      "idle": "Ryvro से एक प्रश्न पूछें. बोलना शुरू करने के लिए दो बार टैप करें।"
     },
     "partialTranscriptA11y": "आप कह रहे हैं: {{text}}",
-    "processingInline": "ऐली सोच रही है...",
+    "processingInline": "Ryvro सोच रही है...",
     "retryHint": "पुनः प्रयास करने के लिए माइक टैप करें",
     "requestRef": "संदर्भ: {{requestId}}",
     "responseBubble": {
       "userSaidA11y": "आपने कहा: {{text}}",
-      "assistantSaidA11y": "ऐली ने कहा: {{text}}"
+      "assistantSaidA11y": "Ryvro ने कहा: {{text}}"
     },
     "warnings": {
-      "microphonePermissionRequired": "Hey Ellie के लिए माइक्रोफ़ोन अनुमति आवश्यक है। बोलने के लिए माइक्रोफ़ोन टैप करें।",
+      "microphonePermissionRequired": "Hey Ryvro के लिए माइक्रोफ़ोन अनुमति आवश्यक है। बोलने के लिए माइक्रोफ़ोन टैप करें।",
       "wakeWordUnavailableTapToTalk": "वेक-वर्ड उपलब्ध नहीं है, बोलने के लिए माइक्रोफ़ोन टैप करें।"
     },
     "offlineFallback": {
@@ -176,12 +176,12 @@
     },
     "notices": {
       "offlineRecognitionUnavailable": "इस डिवाइस पर अभी ऑफलाइन वॉइस इनपुट उपलब्ध नहीं है।",
-      "audioUnavailable": "अभी ऑडियो जवाब उपलब्ध नहीं हैं। आप Ellie का जवाब फिर भी पढ़ सकते हैं।"
+      "audioUnavailable": "अभी ऑडियो जवाब उपलब्ध नहीं हैं। आप Ryvro का जवाब फिर भी पढ़ सकते हैं।"
     },
     "offlineHint": "ऑफलाइन जवाब इस डिवाइस में सेव किए गए रोस्टर के सरल सवालों तक सीमित हैं।",
     "composer": {
-      "placeholder": "Ellie के लिए एक सवाल टाइप करें",
-      "a11y": "Ellie के लिए एक सवाल टाइप करें",
+      "placeholder": "Ryvro के लिए एक सवाल टाइप करें",
+      "a11y": "Ryvro के लिए एक सवाल टाइप करें",
       "sendA11y": "टाइप किया हुआ सवाल भेजें"
     }
   },
@@ -190,8 +190,8 @@
     "schedule": "अनुसूची",
     "stats": "आँकड़े",
     "profile": "प्रोफ़ाइल",
-    "ellie": "Ellie",
-    "openVoiceAssistantA11y": "ऐली वॉयस असिस्टेंट खोलें",
+    "ellie": "Ryvro",
+    "openVoiceAssistantA11y": "Ryvro वॉयस असिस्टेंट खोलें",
     "openProPlansA11y": "View Pro plans",
     "voiceAssistantLoadingA11y": "Checking voice assistant access"
   },
@@ -253,7 +253,7 @@
       },
       "postShift": {
         "title": "कैसा रहा?",
-        "body": "आपकी {{shiftType}} कैसी रही? Ellie में अपनी ऊर्जा दर्ज करें।"
+        "body": "आपकी {{shiftType}} कैसी रही? Ryvro में अपनी ऊर्जा दर्ज करें।"
       },
       "fatigue": {
         "title": "गंभीर थकान चेतावनी",
@@ -319,12 +319,12 @@
     "submit": "चेक-इन सेव करें"
   },
   "onboardingChecklist": {
-    "title": "Ellie का पूरा लाभ उठाएँ",
+    "title": "Ryvro का पूरा लाभ उठाएँ",
     "items": {
       "schedule": "Set up your schedule",
       "shiftTimes": "अपनी शिफ्ट के समय जोड़ें",
       "profile": "अपनी प्रोफ़ाइल पूरी करें",
-      "askEllie": "Ellie से एक प्रश्न पूछें"
+      "askEllie": "Ryvro से एक प्रश्न पूछें"
     },
     "actions": {
       "doIt": "करें",

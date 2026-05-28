@@ -574,22 +574,22 @@ export class NotificationService extends FirebaseService {
       {
         trigger: this.addDays(now, 1, 8),
         title: `Morning, ${firstName}! 👋`,
-        body: 'Did you know you can ask Ellie "When am I next off?" — try it now.',
+        body: 'Did you know you can ask Ryvro "When am I next off?" — try it now.',
       },
       {
         trigger: this.addDays(now, 2, 18),
         title: 'Your month at a glance',
-        body: 'Check your shift balance for this month. Open Ellie to see.',
+        body: 'Check your shift balance for this month. Open Ryvro to see.',
       },
       {
         trigger: this.addDays(now, 6, 9),
-        title: 'One week with Ellie 🎉',
+        title: 'One week with Ryvro 🎉',
         body: "You've mapped your shifts for the entire year. Keep it up.",
       },
       {
         trigger: this.addDays(now, 13, 9),
         title: 'Pattern cycle update',
-        body: 'Your schedule cycle changes soon. Ellie has already updated your calendar.',
+        body: 'Your schedule cycle changes soon. Ryvro has already updated your calendar.',
       },
       {
         trigger: this.addDays(now, 29, 9),

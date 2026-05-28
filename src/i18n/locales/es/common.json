@@ -87,7 +87,7 @@
     "label": "Idioma",
     "selector": "Seleccionar idioma",
     "restartRequiredTitle": "Reinicio requerido",
-    "restartRequiredMessage": "Reinicia Ellie para aplicar los cambios de dirección del idioma.",
+    "restartRequiredMessage": "Reinicia Ryvro para aplicar los cambios de dirección del idioma.",
     "names": {
       "en": "Inglés (Inglés)",
       "es": "Español (Español)",
@@ -131,7 +131,7 @@
       "apple": "Continuar con Apple"
     },
     "signIn": {
-      "appName": "Ellie",
+      "appName": "Ryvro",
       "subtitle": "Inicia sesión en tu cuenta",
       "forgotPassword": "¿Olvidaste tu contraseña?",
       "primaryButton": "Iniciar sesión",
@@ -141,7 +141,7 @@
     },
     "signUp": {
       "title": "Crear cuenta",
-      "subtitle": "Comienza a registrar tus turnos con Ellie",
+      "subtitle": "Comienza a registrar tus turnos con Ryvro",
       "passwordHint": "Mín. 8 caracteres, mayúscula y número",
       "confirmPasswordLabel": "Confirmar contraseña",
       "confirmPasswordPlaceholder": "Repite la contraseña",
@@ -174,7 +174,7 @@
       "title": "Tu schedule está scheduleo.",
       "subtitle": "Desbloquéalo por menos que un café.",
       "features": {
-        "askSchedule": "Pregúntale a \"Hola Ellie\" cualquier cosa sobre tu plantilla.",
+        "askSchedule": "Pregúntale a \"Hola Ryvro\" cualquier cosa sobre tu plantilla.",
         "fullYear": "Mira todo tu año: cada turno, mes a mes",
         "offline": "Funciona bajo tierra, no necesita señal.",
         "instantAnswers": "Respuestas instantáneas sobre permisos y patrones.",
@@ -228,7 +228,7 @@
         "chargedToday": "Se cobra hoy"
       },
       "valueFrame": "Menos que un café por semana para conocer todo tu año.",
-      "security": "Pago seguro con {{platform}} · Procesado por {{platform}}, no por Ellie",
+      "security": "Pago seguro con {{platform}} · Procesado por {{platform}}, no por Ryvro",
       "termsOfService": "Términos",
       "trialBadge": "PRUEBA GRATIS · SIN COBRO HOY",
       "trialBadgePaid": "SUSCRÍBETE HOY · CANCELA CUANDO QUIERAS",
@@ -247,7 +247,7 @@
       "billingDisclosureWeekly": "Se cobra {{price}}/semana, cada semana. Cancela cuando quieras en Ajustes.",
       "billingDisclosureAnnualDirect": "Se te cobrará {{price}} hoy. Se renueva anualmente. Cancela cuando quieras en Ajustes.",
       "billingDisclosureMonthlyDirect": "Se te cobrará {{price}} hoy. Se renueva mensualmente. Cancela cuando quieras en Ajustes.",
-      "purchaseSuccessContinue": "Continuar a Ellie",
+      "purchaseSuccessContinue": "Continuar a Ryvro",
       "restorePurchasesSuccess": "Compra restaurada — bienvenida a Pro.",
       "restorePurchasesNotFound": "No se encontraron compras anteriores en esta cuenta.",
       "restorePurchasesError": "La restauración falló. Inténtalo de nuevo.",
@@ -258,16 +258,16 @@
       "unconfigured": "Las suscripciones no están configuradas en esta compilación. Añade la clave del SDK de RevenueCat al entorno de compilación y vuelve a compilar."
     },
     "profile": {
-      "rowActiveA11y": "Ellie Suscripción activa profesional",
-      "rowUpgradeA11y": "Actualizar a Ellie Pro",
-      "activeLabel": "Ellie Pro — Activo ✓",
-      "upgradeLabel": "Actualizar a Ellie Pro",
-      "activeHint": "Calendario completo · Hola Ellie asistente de voz",
+      "rowActiveA11y": "Ryvro Suscripción activa profesional",
+      "rowUpgradeA11y": "Actualizar a Ryvro Pro",
+      "activeLabel": "Ryvro Pro — Activo ✓",
+      "upgradeLabel": "Actualizar a Ryvro Pro",
+      "activeHint": "Calendario completo · Hola Ryvro asistente de voz",
       "upgradeHint": "Planes desde $6,99/mes o $49,99/año",
       "customerCenterError": "La gestión de la suscripción no está disponible ahora mismo. Inténtalo de nuevo."
     },
     "padlock": {
-      "a11yLabel": "Actualice a Ellie Pro para ver el calendario completo"
+      "a11yLabel": "Actualice a Ryvro Pro para ver el calendario completo"
     },
     "recoveryNudge": {
       "title": "Estás con acceso limitado",

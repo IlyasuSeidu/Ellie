@@ -75,7 +75,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
   const [showPaywall, setShowPaywall] = React.useState(false);
   const [monthOffset, setMonthOffset] = React.useState(0);
 
-  // ── Pulse animation for Hey Ellie button ────────────────────────────────────
+  // ── Pulse animation for the Ryvro voice button ──────────────────────────────
   const pulseScale = useSharedValue(1);
   const pulseStyle = useAnimatedStyle(() => ({ transform: [{ scale: pulseScale.value }] }));
 
@@ -491,7 +491,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
               </View>
               <View>
                 <Text style={styles.ellieTitle}>
-                  {t('ahaMoment.heyEllieTitle', { defaultValue: 'Ask Ellie' })}
+                  {t('ahaMoment.heyEllieTitle', { defaultValue: 'Ask Ryvro' })}
                 </Text>
                 <Text style={styles.ellieSubtitle}>
                   {isHeyEllieUnavailable
@@ -562,7 +562,7 @@ export const PremiumAhaMomentScreen: React.FC = () => {
                     <Ionicons name="mic" size={22} color={theme.colors.sacredGold} />
                   )}
                   <Text style={styles.ellieButtonLabel}>
-                    {t('ahaMoment.buttonLabel', { defaultValue: 'Hey Ellie' })}
+                    {t('ahaMoment.buttonLabel', { defaultValue: 'Hey Ryvro' })}
                   </Text>
                 </LinearGradient>
               </TouchableOpacity>

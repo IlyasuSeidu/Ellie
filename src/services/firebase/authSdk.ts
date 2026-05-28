@@ -75,7 +75,7 @@ function loadFirebaseJsAuthSdk(): typeof FirebaseAuthWeb {
 function loadNativeFirebaseAuthSdk(): typeof FirebaseAuthWeb {
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    return require('@react-native-firebase/auth/lib/modular') as typeof FirebaseAuthWeb;
+    return require('@react-native-firebase/auth') as typeof FirebaseAuthWeb;
   } catch {
     return loadFirebaseJsAuthSdk();
   }
@@ -233,6 +233,37 @@ export function signInWithCredential(auth: Auth, credential: unknown): Promise<U
   return sdk.signInWithCredential(auth, credential);
 }
 
-export const GoogleAuthProvider = loadFirebaseJsAuthSdk().GoogleAuthProvider;
-export const OAuthProvider = loadFirebaseJsAuthSdk().OAuthProvider;
-export const EmailAuthProvider = loadFirebaseJsAuthSdk().EmailAuthProvider;
+export const GoogleAuthProvider = {
+  credential(idToken?: string | null, accessToken?: string | null): unknown {
+    const sdk = resolveSdk() as unknown as {
+      GoogleAuthProvider: {
+        credential: (idTokenArg?: string | null, accessTokenArg?: string | null) => unknown;
+      };
+    };
+    return sdk.GoogleAuthProvider.credential(idToken, accessToken);
+  },
+};
+
+export class OAuthProvider {
+  constructor(providerId: string) {
+    const sdk = resolveSdk() as unknown as {
+      OAuthProvider: new (providerIdArg: string) => unknown;
+    };
+    return new sdk.OAuthProvider(providerId) as OAuthProvider;
+  }
+
+  credential(_options: { idToken?: string; accessToken?: string; rawNonce?: string }): unknown {
+    return undefined;
+  }
+}
+
+export const EmailAuthProvider = {
+  credential(email: string, password: string): unknown {
+    const sdk = resolveSdk() as unknown as {
+      EmailAuthProvider: {
+        credential: (emailArg: string, passwordArg: string) => unknown;
+      };
+    };
+    return sdk.EmailAuthProvider.credential(email, password);
+  },
+};

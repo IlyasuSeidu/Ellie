@@ -127,7 +127,7 @@ function minutes(time?: string): number | null {
 
 function buildEventDescription(schedule: UniversalShiftSchedule, dayDate: string): string {
   return escapeIcsText(
-    `Exported from Ellie Universal Shift Builder\nSchedule: ${schedule.name}\nDate: ${dayDate}`
+    `Exported from Ryvro Universal Shift Builder\nSchedule: ${schedule.name}\nDate: ${dayDate}`
   );
 }
 
@@ -153,7 +153,7 @@ export function buildUniversalScheduleIcs(
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    `PRODID:${options.productId ?? '-//Ellie//Universal Shift Builder//EN'}`,
+    `PRODID:${options.productId ?? '-//Ryvro//Universal Shift Builder//EN'}`,
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
     `X-WR-CALNAME:${escapeIcsText(schedule.name)}`,
@@ -164,7 +164,7 @@ export function buildUniversalScheduleIcs(
     const universal = day.universal;
     if (!universal) continue;
 
-    const uid = `ellie-${schedule.name}-${day.date}-${universal.definitionId}@ellie.app`
+    const uid = `ryvro-${schedule.name}-${day.date}-${universal.definitionId}@ryvro.app`
       .toLowerCase()
       .replace(/[^a-z0-9@.-]/g, '-');
     lines.push('BEGIN:VEVENT');

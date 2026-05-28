@@ -198,7 +198,7 @@ export const SignUpScreen: React.FC = () => {
           </Text>
           <Text style={styles.subtitle}>
             {t('auth.signUp.subtitle', {
-              defaultValue: 'Start tracking your shifts with Ellie',
+              defaultValue: 'Start tracking your shifts with Ryvro',
             })}
           </Text>
         </Animated.View>

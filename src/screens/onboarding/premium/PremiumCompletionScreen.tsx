@@ -819,7 +819,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
           style={styles.subtitleSecondary}
         >
           {t('completion.reminderPromise', {
-            defaultValue: 'Ellie will remind you before every shift.',
+            defaultValue: 'Ryvro will remind you before every shift.',
           })}
         </Animated.Text>
 
@@ -945,7 +945,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
           }}
         >
           <Text style={styles.featuresTitle}>
-            {t('completion.featuresTitle', { defaultValue: 'What you can do with Ellie' })}
+            {t('completion.featuresTitle', { defaultValue: 'What you can do with Ryvro' })}
           </Text>
 
           {selectedFeature ? (
@@ -1094,7 +1094,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
               icon={<Ionicons name="arrow-forward" size={20} color={theme.colors.deepVoid} />}
               iconPosition="right"
               accessibilityLabel={t('completion.getStartedA11yLabel', {
-                defaultValue: 'Get started with Ellie',
+                defaultValue: 'Get started with Ryvro',
               })}
               accessibilityHint={t('completion.getStartedA11yHint', {
                 defaultValue: 'Tap to start using the app',

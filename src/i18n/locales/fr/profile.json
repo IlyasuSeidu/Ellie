@@ -16,7 +16,7 @@
   },
   "stats": {
     "dayCycle": "Cycle de jour",
-    "workRest": "Travail : Repos",
+    "workRest": "Travail: Repos",
     "perShift": "Par quart de travail"
   },
   "language": {
@@ -87,11 +87,11 @@
     "saveDisabledHint": "Aucune modification à enregistrer",
     "cancelEditA11y": "Annuler la modification des paramètres d'équipe",
     "editA11y": "Modifier les paramètres d'équipe",
-    "shiftPatternA11y": "Modèle de quart de travail : {{pattern}}. Appuyez deux fois pour modifier.",
+    "shiftPatternA11y": "Modèle de quart de travail: {{pattern}}. Appuyez deux fois pour modifier.",
     "shiftPatternHint": "Ouvre le sélecteur de motif",
-    "startDateA11y": "Date de début : {{date}}. Appuyez deux fois pour modifier.",
+    "startDateA11y": "Date de début: {{date}}. Appuyez deux fois pour modifier.",
     "startDateHint": "Ouvre le sélecteur de date",
-    "cyclePositionA11y": "Position du cycle : {{position}}. Appuyez deux fois pour resynchroniser.",
+    "cyclePositionA11y": "Position du cycle: {{position}}. Appuyez deux fois pour resynchroniser.",
     "cyclePositionHint": "Ouvre le sélecteur de position de cycle",
     "decreaseA11y": "Diminuer {{label}}",
     "increaseA11y": "Augmenter {{label}}",
@@ -220,11 +220,11 @@
     "cycleResync": {
       "title": "Cycle de resynchronisation",
       "subtitleFifo": "Êtes-vous au travail ou à la maison?",
-      "subtitleRotating": "Dans quelle phase de changement êtes-vous ?",
+      "subtitleRotating": "Dans quelle phase de changement êtes-vous?",
       "closeA11y": "Fermer",
       "backdropCloseA11y": "Fermer",
       "backToPhaseA11y": "Retour à la sélection des phases",
-      "daySubtitle": "Quel jour es-tu ?",
+      "daySubtitle": "Quel jour es-tu?",
       "dayA11y": "Jour {{day}}",
       "confirmA11y": "Confirmer la position du cycle",
       "confirm": "Confirmer la position",
@@ -264,7 +264,7 @@
     "fifoSummarySubtitle": "{{workDays}} jours de travail · {{restDays}} jours de repos",
     "openCustomBuilderTitle": "Ouvrir le créateur de rotation personnalisée",
     "openCustomBuilderSubtitle": "Configurez les blocs de jour, de nuit et de repos dans le parcours de rotation personnalisée",
-    "discardChangesTitle": "Ignorer les modifications non enregistrées ?",
+    "discardChangesTitle": "Ignorer les modifications non enregistrées?",
     "discardChangesMessage": "Ouvrir un autre éditeur supprimera les modifications que vous n'avez pas encore enregistrées.",
     "discardChangesConfirm": "Ignorer les modifications"
   },
@@ -323,8 +323,8 @@
       }
     },
     "quietHours": {
-      "startA11y": "Début des heures calmes : {{time}}",
-      "endA11y": "Fin des heures calmes : {{time}}",
+      "startA11y": "Début des heures calmes: {{time}}",
+      "endA11y": "Fin des heures calmes: {{time}}",
       "overnight": "Nuit complète · {{hours}} h",
       "minimumAdjusted": "Les heures calmes ont été ajustées à une fenêtre minimale de 30 minutes."
     },

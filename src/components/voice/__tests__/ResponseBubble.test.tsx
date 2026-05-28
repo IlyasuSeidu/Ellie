@@ -59,10 +59,10 @@ describe('ResponseBubble', () => {
       expect(getByText('What shift do I have tomorrow?')).toBeTruthy();
     });
 
-    it('should NOT render "Ellie" label for user messages', () => {
+    it('should NOT render "Ryvro" label for user messages', () => {
       const message = makeUserMessage();
       const { queryByText } = render(<ResponseBubble message={message} index={0} />);
-      expect(queryByText('Ellie')).toBeNull();
+      expect(queryByText('Ryvro')).toBeNull();
     });
 
     it('should have user accessibility label', () => {
@@ -79,16 +79,16 @@ describe('ResponseBubble', () => {
       expect(getByText('You have a day shift tomorrow starting at 7:00 AM.')).toBeTruthy();
     });
 
-    it('should render "Ellie" label for assistant messages', () => {
+    it('should render "Ryvro" label for assistant messages', () => {
       const message = makeAssistantMessage();
       const { getByText } = render(<ResponseBubble message={message} index={0} />);
-      expect(getByText('Ellie')).toBeTruthy();
+      expect(getByText('Ryvro')).toBeTruthy();
     });
 
     it('should have assistant accessibility label', () => {
       const message = makeAssistantMessage({ text: 'Good morning!' });
       const { getByLabelText } = render(<ResponseBubble message={message} index={0} />);
-      expect(getByLabelText('Ellie said: Good morning!')).toBeTruthy();
+      expect(getByLabelText(' Ryvro said: Good morning!')).toBeTruthy();
     });
   });
 
@@ -141,10 +141,10 @@ describe('ResponseBubble', () => {
 
   describe('Typewriter animation (isNew prop)', () => {
     it('should display full text immediately for user messages even when isNew=true', () => {
-      const message = makeUserMessage({ text: 'Hello Ellie' });
+      const message = makeUserMessage({ text: 'HelloRyvro' });
       const { getByText } = render(<ResponseBubble message={message} index={0} isNew={true} />);
       // User messages never animate — text should be immediate
-      expect(getByText('Hello Ellie')).toBeTruthy();
+      expect(getByText('HelloRyvro')).toBeTruthy();
     });
 
     it('should start with empty text for new assistant messages', () => {
@@ -248,7 +248,7 @@ describe('ResponseBubble', () => {
     it('should render empty text for assistant message', () => {
       const message = makeAssistantMessage({ text: '' });
       const { getByLabelText } = render(<ResponseBubble message={message} index={0} />);
-      expect(getByLabelText('Ellie said: ')).toBeTruthy();
+      expect(getByLabelText(' Ryvro said: ')).toBeTruthy();
     });
 
     it('should render with index=0 (no delay offset issues)', () => {
@@ -298,7 +298,7 @@ describe('ResponseBubble', () => {
     it('should have correct accessibility label for assistant role', () => {
       const message = makeAssistantMessage({ text: 'Response text' });
       const { getByLabelText } = render(<ResponseBubble message={message} index={0} />);
-      expect(getByLabelText('Ellie said: Response text')).toBeTruthy();
+      expect(getByLabelText(' Ryvro said: Response text')).toBeTruthy();
     });
   });
 });

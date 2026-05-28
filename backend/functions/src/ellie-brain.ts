@@ -1,5 +1,5 @@
 /**
- * Ellie Brain — OpenAI API Handler
+ * Ryvro voice backend — OpenAI API Handler
  *
  * Processes user queries using OpenAI with function tools.
  * Implements a tool loop: model calls tools, we execute them,

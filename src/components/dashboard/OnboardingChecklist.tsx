@@ -61,7 +61,7 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({
       },
       {
         key: 'ask_ellie',
-        label: t('onboardingChecklist.items.askEllie', { defaultValue: 'Ask Ellie a question' }),
+        label: t('onboardingChecklist.items.askEllie', { defaultValue: 'Ask Ryvro a question' }),
         done: askEllieDone,
         onDoIt: handleAskEllie,
       },
@@ -89,7 +89,7 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-        {t('onboardingChecklist.title', { defaultValue: 'Get the most out of Ellie' })}
+        {t('onboardingChecklist.title', { defaultValue: 'Get the most out of Ryvro' })}
       </Text>
 
       {items.map((item, index) => {

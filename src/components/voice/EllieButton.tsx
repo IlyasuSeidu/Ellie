@@ -1,7 +1,7 @@
 /**
  * EllieButton
  *
- * Floating action button that opens the Ellie voice assistant.
+ * Floating action button that opens the Ryvro voice assistant.
  * Shows a pulsing gold glow when the assistant is active.
  * Positioned at the bottom-right of the dashboard.
  */
@@ -78,7 +78,7 @@ export const EllieButton: React.FC = () => {
         activeOpacity={0.8}
         disabled={isLoading}
         accessibilityLabel={t('tabs.openVoiceAssistantA11y', {
-          defaultValue: 'Open Ellie voice assistant',
+          defaultValue: 'Open Ryvro voice assistant',
         })}
         accessibilityRole="button"
         accessibilityState={{ disabled: isLoading }}

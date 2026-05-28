@@ -256,7 +256,7 @@ describe('parseShiftScheduleDescription - error conditions', () => {
       crossesMidnight: true,
     });
     expect(result.warnings).toContain(
-      'AI parser endpoint was unavailable, so Ellie used the built-in pattern parser.'
+      'AI parser endpoint was unavailable, so Ryvro used the built-in pattern parser.'
     );
   });
 
@@ -294,6 +294,50 @@ describe('parseShiftScheduleDescription - error conditions', () => {
     expect(result.assumptions).toContain(
       'Lined up the cycle so the requested current shift lands on the match-from date.'
     );
+  });
+
+  it('does not count days off as day shifts when parsing early late night patterns', async () => {
+    mockFetch.mockReturnValue(fetchError(404));
+
+    const result = await parseShiftScheduleDescription(
+      makeRequest(
+        'Airport worker: 2 early shifts 5am to 1pm, 2 late shifts 1pm to 9pm, 2 night shifts 9pm to 5am, then 4 days off. Start today on the first late shift.'
+      )
+    );
+
+    expect(result.status).toBe('draft');
+    expect(result.scheduleDraft?.sequence).toHaveLength(10);
+    expect(result.scheduleDraft?.phaseOffset).toBe(2);
+    expect(result.scheduleDraft?.shiftDefinitions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ name: 'Day Shift', startTime: '05:00', endTime: '13:00' }),
+        expect.objectContaining({ name: 'Evening Shift', startTime: '13:00', endTime: '21:00' }),
+        expect.objectContaining({
+          name: 'Night Shift',
+          startTime: '21:00',
+          endTime: '05:00',
+          crossesMidnight: true,
+        }),
+        expect.objectContaining({ name: 'Off' }),
+      ])
+    );
+
+    const countByName = new Map<string, number>();
+    const definitionsById = new Map(
+      (result.scheduleDraft?.shiftDefinitions ?? []).map((definition) => [
+        definition.id,
+        definition.name,
+      ])
+    );
+    for (const item of result.scheduleDraft?.sequence ?? []) {
+      const name = definitionsById.get(item.shiftDefinitionId) ?? 'Unknown';
+      countByName.set(name, (countByName.get(name) ?? 0) + 1);
+    }
+
+    expect(countByName.get('Day Shift')).toBe(2);
+    expect(countByName.get('Evening Shift')).toBe(2);
+    expect(countByName.get('Night Shift')).toBe(2);
+    expect(countByName.get('Off')).toBe(4);
   });
 
   it('throws MALFORMED_RESPONSE when response.json() throws', async () => {

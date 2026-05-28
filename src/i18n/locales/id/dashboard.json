@@ -104,10 +104,10 @@
       "example2": "Kapan hari libur saya berikutnya?",
       "example3": "Berapa banyak shift malam bulan ini?",
       "tryAsking": "Coba tanyakan:",
-      "suggestionA11y": "Tanya Ellie: {{query}}"
+      "suggestionA11y": "Tanya Ryvro: {{query}}"
     },
     "permission": {
-      "notice": "Ellie memerlukan akses mikrofon untuk mendengarkan pertanyaan Anda.",
+      "notice": "Ryvro memerlukan akses mikrofon untuk mendengarkan pertanyaan Anda.",
       "grant": "Berikan Izin",
       "grantA11y": "Berikan izin mikrofon",
       "requestA11y": "Minta izin mikrofon"
@@ -119,12 +119,12 @@
       "wakeWordUnavailable": "Kata pemicu tidak tersedia, ketuk mikrofon untuk berbicara",
       "sayWakeWordOrTap": "Ucapkan \"{{wakeWordPhrase}}\" atau ketuk mikrofon",
       "askAnother": "Ketuk mikrofon untuk mengajukan pertanyaan lain",
-      "askEllie": "Ketuk mikrofon untuk bertanya pada Ellie",
+      "askEllie": "Ketuk mikrofon untuk bertanya pada Ryvro",
       "typeOrGrantMic": "Ketik di bawah atau beri akses mikrofon untuk berbicara"
     },
     "errors": {
       "default": "Ada yang tidak beres",
-      "permissionDeniedIos": "Akses mikrofon ditolak. Aktifkan di Pengaturan > Ellie.",
+      "permissionDeniedIos": "Akses mikrofon ditolak. Aktifkan di Pengaturan > Ryvro.",
       "permissionDenied": "Akses mikrofon ditolak. Mohon izin.",
       "network": "Periksa koneksi Anda dan coba lagi.",
       "recognition": "Saya tidak menangkapnya. Silakan coba lagi.",
@@ -137,20 +137,20 @@
     "micA11y": {
       "listening": "Berhenti mendengarkan. Ketuk dua kali untuk menyelesaikan pembicaraan.",
       "processing": "Memproses pertanyaan Anda. Harap tunggu.",
-      "speaking": "Ellie sedang berbicara. Ketuk dua kali untuk berhenti.",
+      "speaking": "Ryvro sedang berbicara. Ketuk dua kali untuk berhenti.",
       "error": "Kesalahan: {{message}}. Ketuk dua kali untuk mencoba lagi.",
-      "idle": "Ajukan pertanyaan pada Ellie. Ketuk dua kali untuk mulai berbicara."
+      "idle": "Ajukan pertanyaan pada Ryvro. Ketuk dua kali untuk mulai berbicara."
     },
     "partialTranscriptA11y": "Anda mengatakan: {{text}}",
-    "processingInline": "Ellie sedang berpikir...",
+    "processingInline": "Ryvro sedang berpikir...",
     "retryHint": "Ketuk mikrofon untuk mencoba lagi",
     "requestRef": "Referensi: {{requestId}}",
     "responseBubble": {
       "userSaidA11y": "Anda berkata: {{text}}",
-      "assistantSaidA11y": "Ellie berkata: {{text}}"
+      "assistantSaidA11y": "Ryvro berkata: {{text}}"
     },
     "warnings": {
-      "microphonePermissionRequired": "Izin mikrofon diperlukan untuk Hey Ellie. Ketuk mikrofon untuk berbicara.",
+      "microphonePermissionRequired": "Izin mikrofon diperlukan untuk Hey Ryvro. Ketuk mikrofon untuk berbicara.",
       "wakeWordUnavailableTapToTalk": "Kata pemicu tidak tersedia, ketuk mikrofon untuk berbicara."
     },
     "offlineFallback": {
@@ -176,12 +176,12 @@
     },
     "notices": {
       "offlineRecognitionUnavailable": "Input suara offline tidak tersedia di perangkat ini saat ini.",
-      "audioUnavailable": "Balasan audio sedang tidak tersedia. Anda masih bisa membaca jawaban Ellie."
+      "audioUnavailable": "Balasan audio sedang tidak tersedia. Anda masih bisa membaca jawaban Ryvro."
     },
     "offlineHint": "Jawaban offline terbatas pada pertanyaan roster sederhana yang tersimpan di perangkat ini.",
     "composer": {
-      "placeholder": "Ketik pertanyaan untuk Ellie",
-      "a11y": "Ketik pertanyaan untuk Ellie",
+      "placeholder": "Ketik pertanyaan untuk Ryvro",
+      "a11y": "Ketik pertanyaan untuk Ryvro",
       "sendA11y": "Kirim pertanyaan tertulis"
     }
   },
@@ -190,8 +190,8 @@
     "schedule": "Jadwal",
     "stats": "Statistik",
     "profile": "Profil",
-    "ellie": "Ellie",
-    "openVoiceAssistantA11y": "Buka asisten suara Ellie",
+    "ellie": "Ryvro",
+    "openVoiceAssistantA11y": "Buka asisten suara Ryvro",
     "openProPlansA11y": "View Pro plans",
     "voiceAssistantLoadingA11y": "Checking voice assistant access"
   },
@@ -253,7 +253,7 @@
       },
       "postShift": {
         "title": "Bagaimana tadi?",
-        "body": "Bagaimana {{shiftType}} Anda? Catat tingkat energi Anda di Ellie."
+        "body": "Bagaimana {{shiftType}} Anda? Catat tingkat energi Anda di Ryvro."
       },
       "fatigue": {
         "title": "Peringatan kelelahan kritis",
@@ -319,12 +319,12 @@
     "submit": "Simpan check-in"
   },
   "onboardingChecklist": {
-    "title": "Dapatkan manfaat maksimal dari Ellie",
+    "title": "Dapatkan manfaat maksimal dari Ryvro",
     "items": {
       "schedule": "Set up your schedule",
       "shiftTimes": "Tambahkan jam shift Anda",
       "profile": "Lengkapi profil Anda",
-      "askEllie": "Ajukan pertanyaan ke Ellie"
+      "askEllie": "Ajukan pertanyaan ke Ryvro"
     },
     "actions": {
       "doIt": "Lakukan",

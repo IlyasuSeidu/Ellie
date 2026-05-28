@@ -1,7 +1,7 @@
 /**
  * EllieButton Component Tests
  *
- * Tests for the floating action button that opens the Ellie voice assistant.
+ * Tests for the floating action button that opens the Ryvro voice assistant.
  * Covers idle/active states, pulse animation, haptic feedback,
  * and accessibility attributes.
  */
@@ -115,20 +115,20 @@ describe('EllieButton', () => {
   describe('onPress', () => {
     it('should call Haptics.impactAsync with Medium when pressed', () => {
       const { getByLabelText } = render(<EllieButton />);
-      fireEvent.press(getByLabelText('Open Ellie voice assistant'));
+      fireEvent.press(getByLabelText('Open Ryvro voice assistant'));
       expect(Haptics.impactAsync).toHaveBeenCalledWith(Haptics.ImpactFeedbackStyle.Medium);
     });
 
     it('should call openModal when pressed', () => {
       const { getByLabelText } = render(<EllieButton />);
-      fireEvent.press(getByLabelText('Open Ellie voice assistant'));
+      fireEvent.press(getByLabelText('Open Ryvro voice assistant'));
       expect(mockOpenModal).toHaveBeenCalledTimes(1);
       expect(mockOpenPaywall).not.toHaveBeenCalled();
     });
 
     it('should call both haptics and openModal on each press', () => {
       const { getByLabelText } = render(<EllieButton />);
-      const button = getByLabelText('Open Ellie voice assistant');
+      const button = getByLabelText('Open Ryvro voice assistant');
 
       fireEvent.press(button);
       fireEvent.press(button);
@@ -141,7 +141,7 @@ describe('EllieButton', () => {
       mockSubscription.isPro = false;
 
       const { getByLabelText } = render(<EllieButton />);
-      fireEvent.press(getByLabelText('Open Ellie voice assistant'));
+      fireEvent.press(getByLabelText('Open Ryvro voice assistant'));
 
       expect(mockOpenModal).not.toHaveBeenCalled();
       expect(mockOpenPaywall).toHaveBeenCalledTimes(1);
@@ -151,7 +151,7 @@ describe('EllieButton', () => {
       mockSubscription.isLoading = true;
 
       const { getByLabelText } = render(<EllieButton />);
-      fireEvent.press(getByLabelText('Open Ellie voice assistant'));
+      fireEvent.press(getByLabelText('Open Ryvro voice assistant'));
 
       expect(mockOpenModal).not.toHaveBeenCalled();
       expect(mockOpenPaywall).not.toHaveBeenCalled();
@@ -161,9 +161,9 @@ describe('EllieButton', () => {
   // ---------- Accessibility ----------
 
   describe('Accessibility', () => {
-    it('should have accessibility label "Open Ellie voice assistant"', () => {
+    it('should have accessibility label "Open Ryvro voice assistant"', () => {
       const { getByLabelText } = render(<EllieButton />);
-      expect(getByLabelText('Open Ellie voice assistant')).toBeTruthy();
+      expect(getByLabelText('Open Ryvro voice assistant')).toBeTruthy();
     });
 
     it('should have accessibilityRole="button"', () => {

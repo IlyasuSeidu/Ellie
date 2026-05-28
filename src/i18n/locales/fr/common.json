@@ -87,7 +87,7 @@
     "label": "Langue",
     "selector": "Sélectionnez la langue",
     "restartRequiredTitle": "Redémarrage requis",
-    "restartRequiredMessage": "Veuillez redémarrer Ellie pour appliquer les changements de direction de la langue.",
+    "restartRequiredMessage": "Veuillez redémarrer Ryvro pour appliquer les changements de direction de la langue.",
     "names": {
       "en": "Anglais (Anglais)",
       "es": "Espagnol (espagnol)",
@@ -131,23 +131,23 @@
       "apple": "Continuer avec Apple"
     },
     "signIn": {
-      "appName": "Ellie",
+      "appName": "Ryvro",
       "subtitle": "Connectez-vous à votre compte",
-      "forgotPassword": "Mot de passe oublié ?",
+      "forgotPassword": "Mot de passe oublié?",
       "primaryButton": "Se connecter",
       "socialDivider": "ou continuer avec",
-      "noAccount": "Vous n'avez pas de compte ? ",
+      "noAccount": "Vous n'avez pas de compte? ",
       "createAccount": "Créer un compte"
     },
     "signUp": {
       "title": "Créer un compte",
-      "subtitle": "Commencez à suivre vos rotations avec Ellie",
+      "subtitle": "Commencez à suivre vos rotations avec Ryvro",
       "passwordHint": "Min. 8 caractères, majuscule et chiffre",
       "confirmPasswordLabel": "Confirmer le mot de passe",
       "confirmPasswordPlaceholder": "Répétez le mot de passe",
       "primaryButton": "Créer un compte",
       "socialDivider": "ou",
-      "haveAccount": "Vous avez déjà un compte ? ",
+      "haveAccount": "Vous avez déjà un compte? ",
       "signInLink": "Se connecter"
     },
     "forgotPassword": {
@@ -174,7 +174,7 @@
       "title": "Votre roulement est prêt.",
       "subtitle": "Débloquez-le pour moins qu’un café.",
       "features": {
-        "askSchedule": "Demandez \"Hey Ellie\" n'importe quoi à propos de votre schedulee",
+        "askSchedule": "Demandez \"Hey Ryvro\" n'importe quoi à propos de votre schedulee",
         "fullYear": "Voyez toute votre année — chaque shift, mois par mois",
         "offline": "Fonctionne sous terre, aucun signal nécessaire",
         "instantAnswers": "Réponses instantanées sur les congés et les modèles",
@@ -228,7 +228,7 @@
         "chargedToday": "Facturé aujourd'hui"
       },
       "valueFrame": "Moins qu’un café par semaine pour connaître toute votre année.",
-      "security": "Paiement sécurisé via {{platform}} · Traité par {{platform}}, pas par Ellie",
+      "security": "Paiement sécurisé via {{platform}} · Traité par {{platform}}, pas par Ryvro",
       "termsOfService": "Conditions",
       "trialBadge": "ESSAI GRATUIT · AUCUN FRAIS AUJOURD’HUI",
       "trialBadgePaid": "ABONNEZ-VOUS AUJOURD’HUI · RÉSILIEZ À TOUT MOMENT",
@@ -236,7 +236,7 @@
       "subtitle_fifo": "Votre cycle FIFO est cartographié. Voyez chaque swing et chaque jour de repos sur toute votre année.",
       "subtitle_rotating": "Votre roulement rotatif est cartographié. Voyez chaque poste sur toute votre année.",
       "billingDisclosure": "Votre essai gratuit se termine le {{date}}. Annulez à tout moment dans Réglages avant cette date pour éviter les frais. Les abonnements se renouvellent automatiquement.",
-      "lossAversion_fifo": "Sans Pro, vos dates de rotation FIFO redeviennent un mystère. Prochain R&R : inconnu. Réservez la mauvaise semaine, perdez les vols.",
+      "lossAversion_fifo": "Sans Pro, vos dates de rotation FIFO redeviennent un mystère. Prochain R&R: inconnu. Réservez la mauvaise semaine, perdez les vols.",
       "lossAversion_rotating": "Sans Pro, votre schedule redevient opaque. Aucun préavis, aucune planification en avance. Retour aux suppositions devant le panneau.",
       "lossAversion_family": "Sans Pro, votre famille ne sait plus quand vous êtes à la maison.",
       "testimonialAnchor": "4.8 · plus de 2 400 avis",
@@ -247,8 +247,8 @@
       "billingDisclosureWeekly": "Facturé {{price}}/semaine, chaque semaine. Annulez à tout moment dans Réglages.",
       "billingDisclosureAnnualDirect": "Vous serez facturé {{price}} aujourd'hui. Renouvellement annuel. Annulez à tout moment dans Réglages.",
       "billingDisclosureMonthlyDirect": "Vous serez facturé {{price}} aujourd'hui. Renouvellement mensuel. Annulez à tout moment dans Réglages.",
-      "purchaseSuccessContinue": "Continuer vers Ellie",
-      "restorePurchasesSuccess": "Achat restauré — bienvenue sur Pro !",
+      "purchaseSuccessContinue": "Continuer vers Ryvro",
+      "restorePurchasesSuccess": "Achat restauré — bienvenue sur Pro!",
       "restorePurchasesNotFound": "Aucun achat précédent trouvé pour ce compte.",
       "restorePurchasesError": "La restauration a échoué. Veuillez réessayer.",
       "ctaOffline": "Connectez-vous pour vous abonner",
@@ -258,16 +258,16 @@
       "unconfigured": "Les abonnements ne sont pas configurés dans cette build. Ajoutez la clé SDK RevenueCat à l’environnement de build puis reconstruisez l’application."
     },
     "profile": {
-      "rowActiveA11y": "Ellie Abonnement Pro actif",
-      "rowUpgradeA11y": "Mise à niveau vers Ellie Pro",
-      "activeLabel": "Ellie Pro — Actif ✓",
-      "upgradeLabel": "Mise à niveau vers Ellie Pro",
-      "activeHint": "Calendrier complet  · Hé, assistant vocal Ellie",
+      "rowActiveA11y": "Ryvro Abonnement Pro actif",
+      "rowUpgradeA11y": "Mise à niveau vers Ryvro Pro",
+      "activeLabel": "Ryvro Pro — Actif ✓",
+      "upgradeLabel": "Mise à niveau vers Ryvro Pro",
+      "activeHint": "Calendrier complet  · Hé, assistant vocal Ryvro",
       "upgradeHint": "Abonnements à partir de 6,99 $/mois ou 49,99 $/an",
       "customerCenterError": "La gestion de l’abonnement est indisponible pour le moment. Veuillez réessayer."
     },
     "padlock": {
-      "a11yLabel": "Passez à Ellie Pro pour voir le calendrier complet"
+      "a11yLabel": "Passez à Ryvro Pro pour voir le calendrier complet"
     },
     "recoveryNudge": {
       "title": "Vous êtes en accès limité",

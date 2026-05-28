@@ -91,7 +91,7 @@
     "noResults": "No languages found",
     "rtlBadge": "RTL",
     "restartRequiredTitle": "Restart Required",
-    "restartRequiredMessage": "Please restart Ellie to apply language direction changes.",
+    "restartRequiredMessage": "Please restart Ryvro to apply language direction changes.",
     "names": {
       "en": "English",
       "es": "Español",
@@ -131,7 +131,7 @@
       "apple": "Continue with Apple"
     },
     "signIn": {
-      "appName": "Ellie",
+      "appName": "Ryvro",
       "subtitle": "Sign in to your account",
       "forgotPassword": "Forgot password?",
       "primaryButton": "Sign In",
@@ -141,7 +141,7 @@
     },
     "signUp": {
       "title": "Create account",
-      "subtitle": "Start tracking your shifts with Ellie",
+      "subtitle": "Start tracking your shifts with Ryvro",
       "passwordHint": "Min. 8 chars, uppercase, number",
       "confirmPasswordLabel": "Confirm password",
       "confirmPasswordPlaceholder": "Repeat password",
@@ -173,33 +173,33 @@
       "closeA11y": "Close paywall",
       "title": "Your schedule is ready.",
       "subtitle": "Unlock it for less than a coffee.",
-      "socialProof": "Trusted by underground miners, FIFO operators, and rotating schedule workers.",
+      "socialProof": "Built for FIFO crews first, ready for every shift worker.",
       "testimonials": [
         {
-          "quote": "Booked flights around my swing months ahead without calling HR once.",
-          "author": "Sarah K., Underground miner — 12h rotating shifts"
+          "quote": "I can see every swing, flight week, and R&R block without counting from a photo roster.",
+          "author": "FIFO operator — 14/14 schedule"
         },
         {
-          "quote": "Showed my wife my whole site schedule in under a minute.",
-          "author": "Dave L., Drill operator — FIFO schedule"
+          "quote": "My family can plan around my nights and days without waiting for me to check a spreadsheet.",
+          "author": "Rotating shift worker — 4/4 pattern"
         },
         {
-          "quote": "No more texting the supervisor to figure out if I'm on days or nights next week.",
-          "author": "Jason M., Haul truck operator — 7/7 FIFO"
+          "quote": "The same builder handles our odd site roster and one-off swaps.",
+          "author": "Operations worker — custom rotation"
         }
       ],
       "features": {
         "fullYear": "See your full year — every shift, month by month",
-        "askSchedule": "Ask Ellie anything — \"When's my next day off?\"",
-        "offline": "Works underground with zero signal",
-        "leavePlanning": "Plan holidays without calling HR",
-        "aiPowered": "AI that knows YOUR exact pattern, not a generic one",
+        "askSchedule": "Ask Ryvro anything — \"When's my next day off?\"",
+        "offline": "Works in low-signal sites, camps, plants, and commute zones",
+        "leavePlanning": "Plan leave, public holidays, and swaps without breaking your rotation",
+        "aiPowered": "AI-assisted setup for your exact shift pattern",
         "fullYearFIFO": "See your full year — every work block, every R&R",
         "fullYearRotating": "See your full year — every phase, month by month"
       },
-      "lossAversion": "Without Pro, you're back to counting shifts on your hands.",
-      "lossAversion_fifo": "Without Pro, your swing dates go back to being a mystery. Next R&R — unknown. Book the wrong week, lose the flights.",
-      "lossAversion_rotating": "Without Pro, your schedule goes dark. No early warning, no planning ahead. Back to guessing the noticeboard.",
+      "lossAversion": "Without Pro, you are back to counting shifts manually.",
+      "lossAversion_fifo": "Without Pro, FIFO swing dates go back to guesswork. Next R&R, travel week, or handover day can slip again.",
+      "lossAversion_rotating": "Without Pro, your schedule goes dark. No early warning, no planning ahead. Back to guessing from a roster screenshot.",
       "lossAversion_family": "Without Pro, your family goes back to not knowing when you're home.",
       "plans": {
         "annual": "Annual",
@@ -224,10 +224,10 @@
         "noCharge": "No charge today",
         "chargedToday": "Charged today"
       },
-      "valueFrame": "Less than a coffee per week to know your full year.",
-      "valueFrameMonthly": "The cost of one coffee a month to know your full schedule.",
+      "valueFrame": "Less than a coffee per week to know your full shift year.",
+      "valueFrameMonthly": "The cost of one coffee a month to know your full shift schedule.",
       "valueFrameWeekly": "Try the full experience for {{price}}. Cancel any time.",
-      "security": "Secure payment via {{platform}} · Processed by {{platform}}, not Ellie",
+      "security": "Secure payment via {{platform}} · Processed by {{platform}}, not Ryvro",
       "noCard": "No credit card required · Cancel anytime",
       "restorePurchases": "Restore",
       "privacyPolicy": "Privacy",
@@ -243,7 +243,7 @@
       "billingDisclosureMonthlyDirect": "You will be charged {{price}} today. Renews monthly. Cancel anytime in Settings.",
       "testimonialAnchor": "4.8 · 2,400+ ratings",
       "purchaseSuccess": "Your free trial has started",
-      "purchaseSuccessContinue": "Continue to Ellie",
+      "purchaseSuccessContinue": "Continue to Ryvro",
       "purchaseError": "Purchase failed. Please try again.",
       "restorePurchasesSuccess": "Purchase restored — welcome to Pro!",
       "restorePurchasesNotFound": "No previous purchases found on this account.",
@@ -255,16 +255,16 @@
       "unconfigured": "Subscriptions are not configured in this build. Add the RevenueCat SDK key to the build environment and rebuild."
     },
     "profile": {
-      "rowActiveA11y": "Ellie Pro active subscription",
-      "rowUpgradeA11y": "Upgrade to Ellie Pro",
-      "activeLabel": "Ellie Pro — Active ✓",
-      "upgradeLabel": "Upgrade to Ellie Pro",
-      "activeHint": "Full calendar · Hey Ellie voice assistant",
+      "rowActiveA11y": "Ryvro Pro active subscription",
+      "rowUpgradeA11y": "Upgrade to Ryvro Pro",
+      "activeLabel": "Ryvro Pro — Active ✓",
+      "upgradeLabel": "Upgrade to Ryvro Pro",
+      "activeHint": "Full calendar · Hey Ryvro voice assistant",
       "upgradeHint": "Plans from $6.99/mo or $49.99/yr",
       "customerCenterError": "Subscription management is unavailable right now. Please try again."
     },
     "padlock": {
-      "a11yLabel": "Upgrade to Ellie Pro to see full calendar"
+      "a11yLabel": "Upgrade to Ryvro Pro to see full calendar"
     },
     "recoveryNudge": {
       "title": "You're on limited access",

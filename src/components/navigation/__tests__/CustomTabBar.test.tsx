@@ -143,7 +143,7 @@ describe('CustomTabBar', () => {
     const props = buildProps(1);
     const { getByLabelText } = render(<CustomTabBar {...props} />);
 
-    fireEvent.press(getByLabelText('Open Ellie voice assistant'));
+    fireEvent.press(getByLabelText('Open Ryvro voice assistant'));
 
     expect(mockOpenModal).toHaveBeenCalled();
     expect(mockOpenPaywall).not.toHaveBeenCalled();
@@ -191,7 +191,7 @@ describe('CustomTabBar', () => {
     const props = buildProps(2);
     const { getByLabelText } = render(<CustomTabBar {...props} />);
 
-    expect(getByLabelText('Open Ellie voice assistant')).toBeTruthy();
+    expect(getByLabelText('Open Ryvro voice assistant')).toBeTruthy();
   });
 
   it('uses the original focused tab color when no rotating shift accent is available', () => {

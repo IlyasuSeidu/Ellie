@@ -8,13 +8,13 @@
 /** Minimal mock user that satisfies the auth bypass check in AuthContext */
 export const MOCK_USER = {
   uid: 'e2e-test-uid-001',
-  email: 'e2e@test.ellie',
+  email: 'e2e@test.ryvro',
   emailVerified: true,
   providerData: [],
   displayName: 'E2E Tester',
 };
 
-/** Completed onboarding data for a rotating 4-4-4 roster */
+/** Completed onboarding data for the miner/FIFO launch wedge. */
 export const MOCK_ONBOARDING_DATA = {
   name: 'E2E Tester',
   occupation: 'Miner',
@@ -29,6 +29,132 @@ export const MOCK_ONBOARDING_DATA = {
     dayShift: { hour: 6, minute: 0 },
     nightShift: { hour: 18, minute: 0 },
   },
+};
+
+/** Non-mining proof fixture that keeps the universal foundation covered. */
+export const NON_MINING_PROOF_ONBOARDING_DATA = {
+  name: 'Amina',
+  occupation: 'Nurse',
+  company: 'City Hospital',
+  country: 'Ghana',
+  shiftSystem: '2-shift',
+  rosterType: 'rotating',
+  patternType: 'STANDARD_2_2_3',
+  phaseOffset: 0,
+  startDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+  shiftTimes: {
+    dayShift: { hour: 7, minute: 0 },
+    nightShift: { hour: 19, minute: 0 },
+  },
+};
+
+export const UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES = {
+  healthcare: {
+    name: 'Amina',
+    occupation: 'Nurse',
+    company: 'City Hospital',
+    country: 'Ghana',
+    shiftSystem: '2-shift',
+    rosterType: 'rotating',
+    patternType: 'STANDARD_2_2_3',
+    phaseOffset: 0,
+    startDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+    shiftTimes: {
+      dayShift: { hour: 7, minute: 0 },
+      nightShift: { hour: 19, minute: 0 },
+    },
+  },
+  security: {
+    name: 'Kwame',
+    occupation: 'Security Officer',
+    company: 'Metro Guard Services',
+    country: 'Ghana',
+    shiftSystem: '2-shift',
+    rosterType: 'rotating',
+    patternType: 'STANDARD_4_4_4',
+    phaseOffset: 1,
+    startDate: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+    shiftTimes: {
+      dayShift: { hour: 6, minute: 0 },
+      nightShift: { hour: 18, minute: 0 },
+    },
+  },
+  emergencyServices: {
+    name: 'Maya',
+    occupation: 'Paramedic',
+    company: 'City Ambulance',
+    country: 'United States',
+    shiftSystem: 'custom',
+    rosterType: 'rotating',
+    patternType: 'STANDARD_2_2_3',
+    phaseOffset: 2,
+    startDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    shiftTimes: {
+      dayShift: { hour: 8, minute: 0 },
+      nightShift: { hour: 20, minute: 0 },
+    },
+  },
+  manufacturing: {
+    name: 'Liam',
+    occupation: 'Plant Operator',
+    company: 'Northline Manufacturing',
+    country: 'Canada',
+    shiftSystem: '3-shift',
+    rosterType: 'rotating',
+    patternType: 'STANDARD_CONTINENTAL',
+    phaseOffset: 0,
+    startDate: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
+    shiftTimes: {
+      dayShift: { hour: 6, minute: 0 },
+      nightShift: { hour: 22, minute: 0 },
+    },
+  },
+  transport: {
+    name: 'Sofia',
+    occupation: 'Rail Controller',
+    company: 'Metro Rail',
+    country: 'United Kingdom',
+    shiftSystem: '3-shift',
+    rosterType: 'rotating',
+    patternType: 'STANDARD_4_4_4',
+    phaseOffset: 2,
+    startDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    shiftTimes: {
+      dayShift: { hour: 5, minute: 0 },
+      nightShift: { hour: 21, minute: 0 },
+    },
+  },
+  hospitality: {
+    name: 'Noah',
+    occupation: 'Hotel Duty Manager',
+    company: 'Harbour Hotel',
+    country: 'Australia',
+    shiftSystem: 'custom',
+    rosterType: 'rotating',
+    patternType: 'STANDARD_5_5_5',
+    phaseOffset: 0,
+    startDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+    shiftTimes: {
+      dayShift: { hour: 7, minute: 0 },
+      nightShift: { hour: 23, minute: 0 },
+    },
+  },
+  aviationRail: {
+    name: 'Priya',
+    occupation: 'Airport Operations Coordinator',
+    company: 'International Airport',
+    country: 'India',
+    shiftSystem: '3-shift',
+    rosterType: 'rotating',
+    patternType: 'STANDARD_4_4_4',
+    phaseOffset: 3,
+    startDate: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+    shiftTimes: {
+      dayShift: { hour: 5, minute: 0 },
+      nightShift: { hour: 21, minute: 0 },
+    },
+  },
+  miningFifo: MOCK_ONBOARDING_DATA,
 };
 
 /**
@@ -46,5 +172,21 @@ export const ONBOARDING_START_SEED: Record<string, unknown> = {
 export const MAIN_APP_SEED: Record<string, unknown> = {
   'e2e:mock_user': MOCK_USER,
   'onboarding:complete': true,
+  'onboarding:data': UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES.healthcare,
+};
+
+export const MINING_FIFO_MAIN_APP_SEED: Record<string, unknown> = {
+  'e2e:mock_user': MOCK_USER,
+  'onboarding:complete': true,
   'onboarding:data': MOCK_ONBOARDING_DATA,
+};
+
+export const NON_MINING_PROOF_MAIN_APP_SEED: Record<string, unknown> = {
+  'e2e:mock_user': {
+    ...MOCK_USER,
+    uid: 'e2e-nurse-uid-001',
+    displayName: 'Amina',
+  },
+  'onboarding:complete': true,
+  'onboarding:data': NON_MINING_PROOF_ONBOARDING_DATA,
 };

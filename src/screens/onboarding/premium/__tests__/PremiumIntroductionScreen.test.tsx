@@ -89,7 +89,7 @@ describe('PremiumIntroductionScreen', () => {
         jest.advanceTimersByTime(2000);
       });
 
-      const welcomeMessage = await findByText(/Welcome to Ellie!/);
+      const welcomeMessage = await findByText(/Welcome to Ryvro!/);
       expect(welcomeMessage).toBeTruthy();
     });
   });
@@ -180,7 +180,7 @@ describe('PremiumIntroductionScreen', () => {
       });
 
       const occupationInput = await findByPlaceholderText(
-        'e.g. Haul truck operator, Boilermaker, Electrician',
+        'e.g. Nurse, miner, security officer, plant operator',
         { timeout: 3000 }
       );
       fireEvent.changeText(occupationInput, 'Driller');
@@ -220,7 +220,7 @@ describe('PremiumIntroductionScreen', () => {
       });
 
       const occupationInput = await findByPlaceholderText(
-        'e.g. Haul truck operator, Boilermaker, Electrician',
+        'e.g. Nurse, miner, security officer, plant operator',
         { timeout: 3000 }
       );
       fireEvent.changeText(occupationInput, 'Miner');
@@ -258,7 +258,7 @@ describe('PremiumIntroductionScreen', () => {
         jest.advanceTimersByTime(2000);
       });
 
-      const botMessage = await findByText(/Welcome to Ellie!/);
+      const botMessage = await findByText(/Welcome to Ryvro!/);
       expect(botMessage).toBeTruthy();
     });
 
@@ -270,7 +270,7 @@ describe('PremiumIntroductionScreen', () => {
       });
 
       await waitFor(() => {
-        const welcomeMessages = getAllByText(/Welcome to Ellie!/);
+        const welcomeMessages = getAllByText(/Welcome to Ryvro!/);
         expect(welcomeMessages.length).toBeGreaterThan(0);
       });
 
@@ -355,7 +355,7 @@ describe('PremiumIntroductionScreen', () => {
 
       expect(getByTestId('premium-introduction-screen')).toBeTruthy();
 
-      const welcome = await findByText(/Welcome to Ellie!/);
+      const welcome = await findByText(/Welcome to Ryvro!/);
       expect(welcome).toBeTruthy();
     });
 

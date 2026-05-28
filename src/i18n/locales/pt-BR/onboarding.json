@@ -31,7 +31,7 @@
     "cancel": "Cancelar"
   },
   "intro": {
-    "welcome": "Bem-vindo ao Ellie! Estou aqui para ajudar a configurar seu calendario de turnos. Vamos comecar com seus dados.",
+    "welcome": "Bem-vindo ao Ryvro! Estou aqui para ajudar a configurar seu calendario de turnos. Vamos comecar com seus dados.",
     "askName": "Qual e o seu nome?",
     "askOccupation": "Prazer em conhecer voce, {{name}}! Qual e a sua funcao no site?",
     "askCompany": "Perfeito! Em qual empresa você trabalha? (opcional)",
@@ -237,13 +237,13 @@
       "mealsDesc": "Fique hidratado e com energia durante turnos subterrâneos de 12 horas"
     },
     "featureHint": "Toque em um ícone de recurso para ver mais detalhes.",
-    "featuresTitle": "O que você pode fazer com Ellie",
+    "featuresTitle": "O que você pode fazer com Ryvro",
     "getStartedA11yHint": "Toque para começar a usar o aplicativo",
-    "getStartedA11yLabel": "Comece com Ellie",
+    "getStartedA11yLabel": "Comece com Ryvro",
     "loading": "Construindo seu calendário de turnos...",
     "retryA11yHint": "Toque para tentar salvar seus dados novamente",
     "retryA11yLabel": "Tente salvar seus dados novamente",
-    "subtitle": "Bem vindo a Ellie",
+    "subtitle": "Bem vindo a Ryvro",
     "summary": {
       "company": "Empresa",
       "cycle": "Ciclo",
@@ -310,7 +310,7 @@
     },
     "title_named": "{{name}}, tudo pronto.",
     "setupReady": "Your {{setup}} schedule is ready.",
-    "reminderPromise": "Ellie vai te lembrar antes de cada turno."
+    "reminderPromise": "Ryvro vai te lembrar antes de cada turno."
   },
   "rosterType": {
     "title": "Como funciona sua lista?",
@@ -379,11 +379,11 @@
     },
     "title_named": "Como funciona sua escala, {{name}}?",
     "instruction_pain": {
-      "cycle_lost": "Isso mostra à Ellie exatamente em que ponto do seu ciclo você está - sem adivinhação",
-      "wrong_alarm": "Acertando isso, a Ellie configura cada alarme para o turno correto",
-      "days_off": "Isso mostra à Ellie quando caem suas folgas para você conseguir se planejar antes",
-      "family": "A Ellie vai te avisar sobre eventos que você perderia quando souber sua escala",
-      "mental_math": "Depois disso, a Ellie faz toda a contagem por você"
+      "cycle_lost": "Isso mostra à Ryvro exatamente em que ponto do seu ciclo você está - sem adivinhação",
+      "wrong_alarm": "Acertando isso, a Ryvro configura cada alarme para o turno correto",
+      "days_off": "Isso mostra à Ryvro quando caem suas folgas para você conseguir se planejar antes",
+      "family": "A Ryvro vai te avisar sobre eventos que você perderia quando souber sua escala",
+      "mental_math": "Depois disso, a Ryvro faz toda a contagem por você"
     },
     "countryHint": "Comum em {{country}}"
   },
@@ -688,7 +688,7 @@
     },
     "guidance": {
       "aboutTitle": "Sobre os horários de turno",
-      "aboutBody": "Sua rotação {{patternName}} continua a mesma, mas precisamos dos horários de início para a Ellie acompanhar horas e alertar antes de cada turno.",
+      "aboutBody": "Sua rotação {{patternName}} continua a mesma, mas precisamos dos horários de início para a Ryvro acompanhar horas e alertar antes de cada turno.",
       "hint": "Use agora o horário de início mais próximo. Você pode ajustar depois em configurações.",
       "definitions": {
         "twoShiftTitle": "Diurno vs Noturno:",
@@ -1029,7 +1029,7 @@
     "a11y": "O bot está digitando"
   },
   "chatAvatar": {
-    "a11y": "Avatar do assistente de mineração"
+    "a11y": "Avatar do assistente Ryvro"
   },
   "premiumCalendar": {
     "previousMonthA11y": "Mês anterior",
@@ -1038,7 +1038,7 @@
   "chatMessage": {
     "skipped": "Ignorado",
     "a11y": {
-      "botMessage": "Mensagem da Ellie: {{content}}",
+      "botMessage": "Mensagem da Ryvro: {{content}}",
       "userMessage": "Sua mensagem: {{content}}",
       "longPressToEdit": "Pressione e segure para editar"
     }
@@ -1091,7 +1091,7 @@
   "ahaMoment": {
     "headline": "Seus próximos 3 meses, mapeados.",
     "subheadline": "Aqui está uma prévia dos seus próximos 3 meses. Chega de adivinhar isso na cabeça.",
-    "heyEllieTitle": "Pergunte à Ellie sobre seu roster",
+    "heyEllieTitle": "Pergunte à Ryvro sobre seu roster",
     "ctaPrimary": "Iniciar teste grátis",
     "ctaSecondary": "ou pular — só a semana atual, sem o ano completo",
     "stats": {
@@ -1118,7 +1118,7 @@
       "nightShiftsThisMonth": "Quantos turnos noturnos tenho este mês?",
       "startBack": "Quando eu volto ao trabalho?"
     },
-    "buttonLabel": "Oi Ellie",
+    "buttonLabel": "Oi Ryvro",
     "headline_named": "Os turnos de {{name}}, mapeados.",
     "ctaSecondaryA11y": "Pular teste — limitado apenas à semana atual, sem visão do ano completo",
     "painCallback": {
@@ -1133,7 +1133,7 @@
   },
   "painHook": {
     "title": "Qual é a parte mais difícil da sua escala agora?",
-    "subtitle": "Vamos personalizar Ellie em torno do que mais importa para você.",
+    "subtitle": "Vamos personalizar Ryvro em torno do que mais importa para você.",
     "options": {
       "cycle_lost": "Perco a noção de onde estou no meu ciclo",
       "wrong_alarm": "Já coloquei o alarme para o turno errado",

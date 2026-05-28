@@ -87,7 +87,7 @@
     "label": "Ulimi",
     "selector": "Khetha Ulimi",
     "restartRequiredTitle": "Ukuqala kabusha Kudingeka",
-    "restartRequiredMessage": "Sicela uqale kabusha u-Ellie ukuze usebenzise izinguquko zesiqondisindlela solimi.",
+    "restartRequiredMessage": "Sicela uqale kabusha u- Ryvro ukuze usebenzise izinguquko zesiqondisindlela solimi.",
     "names": {
       "en": "IsiNgisi (IsiNgisi)",
       "es": "ISpanishi (Isi-Español)",
@@ -131,7 +131,7 @@
       "apple": "Qhubeka nge-Apple"
     },
     "signIn": {
-      "appName": "Ellie",
+      "appName": "Ryvro",
       "subtitle": "Ngena ku-akhawunti yakho",
       "forgotPassword": "Ukhohlwe iphasiwedi?",
       "primaryButton": "Ngena",
@@ -141,7 +141,7 @@
     },
     "signUp": {
       "title": "Dala i-akhawunti",
-      "subtitle": "Qala ukulandelela amashifu akho nge-Ellie",
+      "subtitle": "Qala ukulandelela amashifu akho nge- Ryvro",
       "passwordHint": "Okungenani izinhlamvu eziyi-8, uhlamvu olukhulu nenombolo",
       "confirmPasswordLabel": "Qinisekisa iphasiwedi",
       "confirmPasswordPlaceholder": "Phinda iphasiwedi",
@@ -228,7 +228,7 @@
         "chargedToday": "Ukukhokhiswa namuhla"
       },
       "valueFrame": "Kungaphansi kwekhofi ngesonto ukuze wazi unyaka wakho wonke.",
-      "security": "Inkokhelo ephephile nge-{{platform}} · Icutshungulwa yi-{{platform}}, hhayi i-Ellie",
+      "security": "Inkokhelo ephephile nge-{{platform}} · Icutshungulwa yi-{{platform}}, hhayi i- Ryvro",
       "termsOfService": "Imigomo",
       "trialBadge": "ISILINGO SAMAHHALA · AKUKHO MALI NAMUHLA",
       "trialBadgePaid": "BHALISA NAMUHLA · KHANSELA NOMA NINI",
@@ -247,7 +247,7 @@
       "billingDisclosureWeekly": "Ukukhokhiswa ngo-{{price}}/iviki, njalo ngeviki. Khansela noma nini ku-Izilungiselelo.",
       "billingDisclosureAnnualDirect": "Uzokhokhiswa u-{{price}} namuhla. Kuvuselelwa minyaka yonke. Khansela noma nini ku-Izilungiselelo.",
       "billingDisclosureMonthlyDirect": "Uzokhokhiswa u-{{price}} namuhla. Kuvuselelwa nyanga zonke. Khansela noma nini ku-Izilungiselelo.",
-      "purchaseSuccessContinue": "Qhubeka uye ku-Ellie",
+      "purchaseSuccessContinue": "Qhubeka uye ku- Ryvro",
       "restorePurchasesSuccess": "Ukuthenga kubuyiselwe — wamukelekile ku-Pro!",
       "restorePurchasesNotFound": "Akukho ukuthenga kwangaphambilini okutholakele kule akhawunti.",
       "restorePurchasesError": "Ukubuyisela kwehlulekile. Sicela uzame futhi.",

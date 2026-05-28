@@ -121,7 +121,7 @@ const getWakeWordUnavailableWarning = (): string =>
 const getWakeWordPermissionRequiredWarning = (): string =>
   i18n.t('voiceAssistant.warnings.microphonePermissionRequired', {
     ns: 'dashboard',
-    defaultValue: 'Microphone permission required for Hey Ellie. Tap mic to talk.',
+    defaultValue: 'Microphone permission required for Hey Ryvro. Tap mic to talk.',
   });
 
 export function getVoicePersistenceTTLSeconds(): number | undefined {

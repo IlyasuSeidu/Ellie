@@ -94,12 +94,20 @@ module.exports = ({ config = {} }) => {
         process.env.EXPO_PUBLIC_REVENUECAT_API_KEY ||
         process.env.REVENUECAT_API_KEY ||
         '',
-      API_BASE_URL: process.env.API_BASE_URL || 'https://api.shiftsync.app',
+      API_BASE_URL: process.env.API_BASE_URL || 'https://api.getryvro.com',
       API_TIMEOUT: process.env.API_TIMEOUT || '30000',
-      ELLIE_BRAIN_URL:
+      RYVRO_BRAIN_URL:
+        process.env.RYVRO_BRAIN_URL ||
         process.env.ELLIE_BRAIN_URL ||
-        'https://ellie-brain-REGION-PROJECT.cloudfunctions.net/ellieBrain',
-      ELLIE_BRAIN_TIMEOUT: process.env.ELLIE_BRAIN_TIMEOUT || '30000',
+        'https://ryvro-brain-REGION-PROJECT.cloudfunctions.net/ellieBrain',
+      RYVRO_BRAIN_TIMEOUT:
+        process.env.RYVRO_BRAIN_TIMEOUT || process.env.ELLIE_BRAIN_TIMEOUT || '30000',
+      ELLIE_BRAIN_URL:
+        process.env.RYVRO_BRAIN_URL ||
+        process.env.ELLIE_BRAIN_URL ||
+        'https://ryvro-brain-REGION-PROJECT.cloudfunctions.net/ellieBrain',
+      ELLIE_BRAIN_TIMEOUT:
+        process.env.RYVRO_BRAIN_TIMEOUT || process.env.ELLIE_BRAIN_TIMEOUT || '30000',
       SHIFT_SCHEDULE_PARSER_URL: process.env.SHIFT_SCHEDULE_PARSER_URL || '',
       SHIFT_SCHEDULE_PARSER_TIMEOUT_MS: process.env.SHIFT_SCHEDULE_PARSER_TIMEOUT_MS || '45000',
       SHIFT_SCHEDULE_PARSER_MAX_PROMPT_LENGTH:

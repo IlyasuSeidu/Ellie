@@ -31,7 +31,7 @@
     "cancel": "Kanselleer"
   },
   "intro": {
-    "welcome": "Welkom aan Ellie! Ek is hier om jou te help om jou skofkalender op te stel. Kom ons begin deur jou 'n bietjie beter te leer ken.",
+    "welcome": "Welkom aan Ryvro! Ek is hier om jou te help om jou skofkalender op te stel. Kom ons begin deur jou 'n bietjie beter te leer ken.",
     "askName": "Wat is jou naam?",
     "askOccupation": "Wonderlik om jou te ontmoet, {{name}}! Wat is jou rol op die terrein?",
     "askCompany": "Het dit! Vir watter maatskappy werk jy? (opsioneel)",
@@ -276,11 +276,11 @@
     },
     "title_named": "Hoe werk jou rooster, {{name}}?",
     "instruction_pain": {
-      "cycle_lost": "Dit wys Ellie presies waar jy in jou siklus is - geen raaiwerk meer nie",
-      "wrong_alarm": "Kry dit reg en Ellie stel elke alarm vir die korrekte skof",
-      "days_off": "Dit wys Ellie wanneer jou afdae val sodat jy vooruit kan beplan",
-      "family": "Ellie sal jou waarsku oor gebeure wat jy andersins sou mis sodra jou rooster bekend is",
-      "mental_math": "Hierna doen Ellie al die telwerk vir jou"
+      "cycle_lost": "Dit wys Ryvro presies waar jy in jou siklus is - geen raaiwerk meer nie",
+      "wrong_alarm": "Kry dit reg en Ryvro stel elke alarm vir die korrekte skof",
+      "days_off": "Dit wys Ryvro wanneer jou afdae val sodat jy vooruit kan beplan",
+      "family": "Ryvro sal jou waarsku oor gebeure wat jy andersins sou mis sodra jou rooster bekend is",
+      "mental_math": "Hierna doen Ryvro al die telwerk vir jou"
     },
     "countryHint": "Algemeen in {{country}}"
   },
@@ -303,13 +303,13 @@
       "mealsDesc": "Bly gehidreer en brandstof deur 12-uur ondergrondse skofte"
     },
     "featureHint": "Tik 'n kenmerkskyfie om meer besonderhede te sien.",
-    "featuresTitle": "Wat jy met Ellie kan doen",
+    "featuresTitle": "Wat jy met Ryvro kan doen",
     "getStartedA11yHint": "Tik om die toepassing te begin gebruik",
-    "getStartedA11yLabel": "Begin met Ellie",
+    "getStartedA11yLabel": "Begin met Ryvro",
     "loading": "Bou jou roosterskalender...",
     "retryA11yHint": "Tik om weer te probeer om jou data te stoor",
     "retryA11yLabel": "Probeer weer om jou data te stoor",
-    "subtitle": "Welkom aan Ellie",
+    "subtitle": "Welkom aan Ryvro",
     "summary": {
       "company": "Maatskappy",
       "cycle": "Siklus",
@@ -376,7 +376,7 @@
     },
     "title_named": "{{name}}, jy is reg.",
     "setupReady": "Jou {{setup}}-rooster is gereed.",
-    "reminderPromise": "Ellie sal jou voor elke skof herinner."
+    "reminderPromise": "Ryvro sal jou voor elke skof herinner."
   },
   "phaseSelector": {
     "hints": {
@@ -679,7 +679,7 @@
     },
     "guidance": {
       "aboutTitle": "Oor skoftye",
-      "aboutBody": "Jou {{patternName}}-rotasie bly dieselfde, maar ons het jou skofbegintye nodig sodat Ellie ure kan naspoor en jou voor elke skof waarsku.",
+      "aboutBody": "Jou {{patternName}}-rotasie bly dieselfde, maar ons het jou skofbegintye nodig sodat Ryvro ure kan naspoor en jou voor elke skof waarsku.",
       "hint": "Gebruik nou die naaste begintyd. Jy kan dit later in instellings verfyn.",
       "definitions": {
         "twoShiftTitle": "Dag vs Nag:",
@@ -1045,7 +1045,7 @@
   "chatMessage": {
     "skipped": "Oorgeslaan",
     "a11y": {
-      "botMessage": "Ellie-boodskap: {{content}}",
+      "botMessage": "Ryvro-boodskap: {{content}}",
       "userMessage": "Jou boodskap: {{content}}",
       "longPressToEdit": "Hou lank in om te wysig"
     }
@@ -1082,7 +1082,7 @@
   "ahaMoment": {
     "headline": "Jou volgende 3 maande, uitgekaart.",
     "subheadline": "Hier is 'n voorskou van jou volgende 3 maande. Geen tweede raaiskote meer in jou kop nie.",
-    "heyEllieTitle": "Vra vir Ellie oor jou rooster",
+    "heyEllieTitle": "Vra vir Ryvro oor jou rooster",
     "ctaPrimary": "Begin gratis proef",
     "ctaSecondary": "of slaan oor — net huidige week, geen volle jaar nie",
     "stats": {
@@ -1109,7 +1109,7 @@
       "nightShiftsThisMonth": "Hoeveel nagskofte het ek hierdie maand?",
       "startBack": "Wanneer begin ek weer?"
     },
-    "buttonLabel": "Hallo Ellie",
+    "buttonLabel": "Hallo Ryvro",
     "headline_named": "{{name}} se skofte, uitgekaart.",
     "ctaSecondaryA11y": "Slaan proef oor — beperk tot huidige week, geen volledige jaar-aansig nie",
     "painCallback": {
@@ -1124,7 +1124,7 @@
   },
   "painHook": {
     "title": "Wat is nou die moeilikste deel van jou rooster?",
-    "subtitle": "Ons sal Ellie aanpas rondom wat vir jou die meeste saak maak.",
+    "subtitle": "Ons sal Ryvro aanpas rondom wat vir jou die meeste saak maak.",
     "options": {
       "cycle_lost": "Ek verloor tred met waar ek in my siklus is",
       "wrong_alarm": "Ek het my alarm vir die verkeerde skof gestel",

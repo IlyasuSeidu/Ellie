@@ -292,7 +292,7 @@ export class MockNotificationService {
       await this.scheduler.scheduleNotification(
         {
           title: daysToAdd === 1 ? `Morning, ${firstName}! 👋` : 'Schedule reminder',
-          body: 'Check your upcoming shifts in Ellie.',
+          body: 'Check your upcoming shifts in Ryvro.',
         },
         triggerDate
       );

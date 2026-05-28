@@ -37,7 +37,7 @@ exports[`EllieButton Snapshot should match snapshot in active state 1`] = `
     }
   />
   <View
-    accessibilityLabel="Open Ellie voice assistant"
+    accessibilityLabel="Open Ryvro voice assistant"
     accessibilityRole="button"
     accessibilityState={
       {
@@ -137,7 +137,7 @@ exports[`EllieButton Snapshot should match snapshot in idle state 1`] = `
     }
   />
   <View
-    accessibilityLabel="Open Ellie voice assistant"
+    accessibilityLabel="Open Ryvro voice assistant"
     accessibilityRole="button"
     accessibilityState={
       {

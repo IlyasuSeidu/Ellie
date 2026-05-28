@@ -104,10 +104,10 @@
       "example2": "我第二天什么时候休息？",
       "example3": "这个月有多少夜班？",
       "tryAsking": "试着这样问：",
-      "suggestionA11y": "问 Ellie：{{query}}"
+      "suggestionA11y": "问 Ryvro：{{query}}"
     },
     "permission": {
-      "notice": "艾莉需要使用麦克风才能听到您的问题。",
+      "notice": "Ryvro 需要使用麦克风才能听到您的问题。",
       "grant": "授予许可",
       "grantA11y": "授予麦克风权限",
       "requestA11y": "请求麦克风权限"
@@ -119,12 +119,12 @@
       "wakeWordUnavailable": "唤醒词不可用，点击麦克风进行对话。",
       "sayWakeWordOrTap": "说“{{wakeWordPhrase}}”或轻按麦克风",
       "askAnother": "轻按麦克风询问另一个问题",
-      "askEllie": "轻按麦克风询问艾莉",
+      "askEllie": "轻按麦克风询问 Ryvro",
       "typeOrGrantMic": "在下面输入，或授予麦克风权限来讲话"
     },
     "errors": {
       "default": "出了点问题",
-      "permissionDeniedIos": "麦克风访问被拒绝。在“设置”>“艾莉”中启用。",
+      "permissionDeniedIos": "麦克风访问被拒绝。在“设置”>“Ryvro”中启用。",
       "permissionDenied": "麦克风访问被拒绝。请授予许可。",
       "network": "检查您的连接并重试。",
       "recognition": "我没听清。请再试一次。",
@@ -137,20 +137,20 @@
     "micA11y": {
       "listening": "别再听了。双击即可结束讲话。",
       "processing": "处理你的问题。请稍等。",
-      "speaking": "艾莉正在讲话。双击即可停止。",
+      "speaking": "Ryvro 正在讲话。双击即可停止。",
       "error": "错误：{{message}}。双击重试。",
-      "idle": "问艾莉一个问题。双击即可开始说话。"
+      "idle": "问 Ryvro 一个问题。双击即可开始说话。"
     },
     "partialTranscriptA11y": "你是说：{{text}}",
-    "processingInline": "艾莉在想……",
+    "processingInline": "Ryvro 在想……",
     "retryHint": "点击麦克风重试",
     "requestRef": "参考：{{requestId}}",
     "responseBubble": {
       "userSaidA11y": "你说：{{text}}",
-      "assistantSaidA11y": "艾莉说：{{text}}"
+      "assistantSaidA11y": "Ryvro 说：{{text}}"
     },
     "warnings": {
-      "microphonePermissionRequired": "Hey Ellie 需要麦克风权限。点击麦克风开始说话。",
+      "microphonePermissionRequired": "Hey Ryvro 需要麦克风权限。点击麦克风开始说话。",
       "wakeWordUnavailableTapToTalk": "唤醒词不可用，请点击麦克风说话。"
     },
     "offlineFallback": {
@@ -176,12 +176,12 @@
     },
     "notices": {
       "offlineRecognitionUnavailable": "此设备当前不支持离线语音输入。",
-      "audioUnavailable": "当前无法播放语音回复。你仍然可以阅读 Ellie 的回复。"
+      "audioUnavailable": "当前无法播放语音回复。你仍然可以阅读 Ryvro 的回复。"
     },
     "offlineHint": "离线时，只能回答保存在此设备上的简单排班问题。",
     "composer": {
-      "placeholder": "输入要问 Ellie 的问题",
-      "a11y": "输入要问 Ellie 的问题",
+      "placeholder": "输入要问 Ryvro 的问题",
+      "a11y": "输入要问 Ryvro 的问题",
       "sendA11y": "发送文字问题"
     }
   },
@@ -190,8 +190,8 @@
     "schedule": "日程",
     "stats": "统计数据",
     "profile": "轮廓",
-    "ellie": "Ellie",
-    "openVoiceAssistantA11y": "打开艾莉语音助手",
+    "ellie": "Ryvro",
+    "openVoiceAssistantA11y": "打开 Ryvro 语音助手",
     "openProPlansA11y": "View Pro plans",
     "voiceAssistantLoadingA11y": "Checking voice assistant access"
   },
@@ -253,7 +253,7 @@
       },
       "postShift": {
         "title": "这班怎么样？",
-        "body": "你的{{shiftType}}怎么样？到 Ellie 里记录一下你的精力水平。"
+        "body": "你的{{shiftType}}怎么样？到 Ryvro 里记录一下你的精力水平。"
       },
       "fatigue": {
         "title": "严重疲劳提醒",
@@ -319,12 +319,12 @@
     "submit": "保存记录"
   },
   "onboardingChecklist": {
-    "title": "充分发挥 Ellie 的作用",
+    "title": "充分发挥 Ryvro 的作用",
     "items": {
       "schedule": "Set up your schedule",
       "shiftTimes": "添加你的班次时间",
       "profile": "完善你的个人资料",
-      "askEllie": "向 Ellie 提一个问题"
+      "askEllie": "向 Ryvro 提一个问题"
     },
     "actions": {
       "doIt": "去完成",

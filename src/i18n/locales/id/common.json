@@ -87,7 +87,7 @@
     "label": "Bahasa",
     "selector": "Pilih Bahasa",
     "restartRequiredTitle": "Diperlukan Mulai Ulang",
-    "restartRequiredMessage": "Silakan mulai ulang Ellie untuk menerapkan perubahan arah bahasa.",
+    "restartRequiredMessage": "Silakan mulai ulang Ryvro untuk menerapkan perubahan arah bahasa.",
     "names": {
       "en": "Bahasa inggris (Bahasa inggris)",
       "es": "Spanyol (Spanyol)",
@@ -131,7 +131,7 @@
       "apple": "Lanjutkan dengan Apple"
     },
     "signIn": {
-      "appName": "Ellie",
+      "appName": "Ryvro",
       "subtitle": "Masuk ke akun Anda",
       "forgotPassword": "Lupa kata sandi?",
       "primaryButton": "Masuk",
@@ -141,7 +141,7 @@
     },
     "signUp": {
       "title": "Buat akun",
-      "subtitle": "Mulai lacak shift Anda dengan Ellie",
+      "subtitle": "Mulai lacak shift Anda dengan Ryvro",
       "passwordHint": "Min. 8 karakter, huruf kapital, dan angka",
       "confirmPasswordLabel": "Konfirmasi kata sandi",
       "confirmPasswordPlaceholder": "Ulangi kata sandi",
@@ -228,7 +228,7 @@
         "chargedToday": "Ditagih hari ini"
       },
       "valueFrame": "Kurang dari harga kopi per minggu untuk mengetahui setahun penuh Anda.",
-      "security": "Pembayaran aman via {{platform}} · Diproses oleh {{platform}}, bukan Ellie",
+      "security": "Pembayaran aman via {{platform}} · Diproses oleh {{platform}}, bukan Ryvro",
       "termsOfService": "Syarat",
       "trialBadge": "UJI COBA GRATIS · TANPA BIAYA HARI INI",
       "trialBadgePaid": "BERLANGGANAN HARI INI · BATAL KAPAN SAJA",
@@ -247,7 +247,7 @@
       "billingDisclosureWeekly": "Ditagih {{price}}/minggu, setiap minggu. Batalkan kapan saja di Pengaturan.",
       "billingDisclosureAnnualDirect": "Anda akan ditagih {{price}} hari ini. Diperpanjang tahunan. Batalkan kapan saja di Pengaturan.",
       "billingDisclosureMonthlyDirect": "Anda akan ditagih {{price}} hari ini. Diperpanjang bulanan. Batalkan kapan saja di Pengaturan.",
-      "purchaseSuccessContinue": "Lanjut ke Ellie",
+      "purchaseSuccessContinue": "Lanjut ke Ryvro",
       "restorePurchasesSuccess": "Pembelian dipulihkan — selamat datang di Pro!",
       "restorePurchasesNotFound": "Tidak ada pembelian sebelumnya yang ditemukan di akun ini.",
       "restorePurchasesError": "Pemulihan gagal. Silakan coba lagi.",

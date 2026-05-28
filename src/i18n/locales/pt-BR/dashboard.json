@@ -104,10 +104,10 @@
       "example2": "Quando é meu próximo dia de folga?",
       "example3": "Quantos turnos noturnos este mês?",
       "tryAsking": "Tente perguntar:",
-      "suggestionA11y": "Perguntar à Ellie: {{query}}"
+      "suggestionA11y": "Perguntar à Ryvro: {{query}}"
     },
     "permission": {
-      "notice": "Ellie precisa de acesso ao microfone para ouvir suas perguntas.",
+      "notice": "Ryvro precisa de acesso ao microfone para ouvir suas perguntas.",
       "grant": "Conceder permissão",
       "grantA11y": "Conceder permissão ao microfone",
       "requestA11y": "Solicitar permissão de microfone"
@@ -119,12 +119,12 @@
       "wakeWordUnavailable": "Palavra de ativação indisponível; toque no microfone para falar",
       "sayWakeWordOrTap": "Diga \"{{wakeWordPhrase}}\" ou toque no microfone",
       "askAnother": "Toque no microfone para fazer outra pergunta",
-      "askEllie": "Toque no microfone para perguntar a Ellie",
+      "askEllie": "Toque no microfone para perguntar a Ryvro",
       "typeOrGrantMic": "Digite abaixo ou conceda acesso ao microfone para falar"
     },
     "errors": {
       "default": "Algo deu errado",
-      "permissionDeniedIos": "Acesso ao microfone negado. Ative em Configurações > Ellie.",
+      "permissionDeniedIos": "Acesso ao microfone negado. Ative em Configurações > Ryvro.",
       "permissionDenied": "Acesso ao microfone negado. Por favor, conceda permissão.",
       "network": "Verifique sua conexão e tente novamente.",
       "recognition": "Eu não entendi isso. Por favor, tente novamente.",
@@ -137,20 +137,20 @@
     "micA11y": {
       "listening": "Pare de ouvir. Toque duas vezes para terminar de falar.",
       "processing": "Processando sua pergunta. Por favor, aguarde.",
-      "speaking": "Ellie está falando. Toque duas vezes para parar.",
+      "speaking": "Ryvro está falando. Toque duas vezes para parar.",
       "error": "Erro: {{message}}. Toque duas vezes para tentar novamente.",
-      "idle": "Faça uma pergunta a Ellie. Toque duas vezes para começar a falar."
+      "idle": "Faça uma pergunta a Ryvro. Toque duas vezes para começar a falar."
     },
     "partialTranscriptA11y": "Você está dizendo: {{text}}",
-    "processingInline": "Ellie está pensando...",
+    "processingInline": "Ryvro está pensando...",
     "retryHint": "Toque no microfone para tentar novamente",
     "requestRef": "Referência: {{requestId}}",
     "responseBubble": {
       "userSaidA11y": "Você disse: {{text}}",
-      "assistantSaidA11y": "Ellie disse: {{text}}"
+      "assistantSaidA11y": "Ryvro disse: {{text}}"
     },
     "warnings": {
-      "microphonePermissionRequired": "Permissão do microfone necessária para \"Hey Ellie\". Toque no microfone para falar.",
+      "microphonePermissionRequired": "Permissão do microfone necessária para \"Hey Ryvro\". Toque no microfone para falar.",
       "wakeWordUnavailableTapToTalk": "Palavra de ativação indisponível; toque no microfone para falar."
     },
     "offlineFallback": {
@@ -176,12 +176,12 @@
     },
     "notices": {
       "offlineRecognitionUnavailable": "A entrada por voz offline não está disponível neste dispositivo agora.",
-      "audioUnavailable": "As respostas em áudio não estão disponíveis agora. Você ainda pode ler a resposta da Ellie."
+      "audioUnavailable": "As respostas em áudio não estão disponíveis agora. Você ainda pode ler a resposta da Ryvro."
     },
     "offlineHint": "As respostas offline são limitadas a perguntas simples sobre a escala salva neste dispositivo.",
     "composer": {
-      "placeholder": "Digite uma pergunta para Ellie",
-      "a11y": "Digite uma pergunta para Ellie",
+      "placeholder": "Digite uma pergunta para Ryvro",
+      "a11y": "Digite uma pergunta para Ryvro",
       "sendA11y": "Enviar pergunta digitada"
     }
   },
@@ -190,8 +190,8 @@
     "schedule": "Agendar",
     "stats": "Estatísticas",
     "profile": "Perfil",
-    "ellie": "Ellie",
-    "openVoiceAssistantA11y": "Abra o assistente de voz Ellie",
+    "ellie": "Ryvro",
+    "openVoiceAssistantA11y": "Abra o assistente de voz Ryvro",
     "openProPlansA11y": "View Pro plans",
     "voiceAssistantLoadingA11y": "Checking voice assistant access"
   },
@@ -253,7 +253,7 @@
       },
       "postShift": {
         "title": "Como foi?",
-        "body": "Como foi seu {{shiftType}}? Registre seu nível de energia no Ellie."
+        "body": "Como foi seu {{shiftType}}? Registre seu nível de energia no Ryvro."
       },
       "fatigue": {
         "title": "Alerta crítico de fadiga",
@@ -319,12 +319,12 @@
     "submit": "Salvar check-in"
   },
   "onboardingChecklist": {
-    "title": "Aproveite ao máximo o Ellie",
+    "title": "Aproveite ao máximo o Ryvro",
     "items": {
       "schedule": "Set up your schedule",
       "shiftTimes": "Adicione seus horários de turno",
       "profile": "Complete seu perfil",
-      "askEllie": "Faça uma pergunta para a Ellie"
+      "askEllie": "Faça uma pergunta para a Ryvro"
     },
     "actions": {
       "doIt": "Fazer agora",

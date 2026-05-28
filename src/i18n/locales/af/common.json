@@ -87,7 +87,7 @@
     "label": "Taal",
     "selector": "Kies Taal",
     "restartRequiredTitle": "Herbegin vereis",
-    "restartRequiredMessage": "Herbegin asseblief Ellie om taalrigtingveranderinge toe te pas.",
+    "restartRequiredMessage": "Herbegin asseblief Ryvro om taalrigtingveranderinge toe te pas.",
     "names": {
       "en": "Engels (Engels)",
       "es": "Spaans (Español)",
@@ -131,7 +131,7 @@
       "apple": "Gaan voort met Apple"
     },
     "signIn": {
-      "appName": "Ellie",
+      "appName": "Ryvro",
       "subtitle": "Meld by jou rekening aan",
       "forgotPassword": "Wagwoord vergeet?",
       "primaryButton": "Meld aan",
@@ -141,7 +141,7 @@
     },
     "signUp": {
       "title": "Skep rekening",
-      "subtitle": "Begin jou skofte met Ellie naspoor",
+      "subtitle": "Begin jou skofte met Ryvro naspoor",
       "passwordHint": "Min. 8 karakters, hoofletter en syfer",
       "confirmPasswordLabel": "Bevestig wagwoord",
       "confirmPasswordPlaceholder": "Herhaal wagwoord",
@@ -228,7 +228,7 @@
         "chargedToday": "Vandag gehef"
       },
       "valueFrame": "Minder as ’n koffie per week om jou volle jaar te ken.",
-      "security": "Veilige betaling via {{platform}} · Verwerk deur {{platform}}, nie Ellie nie",
+      "security": "Veilige betaling via {{platform}} · Verwerk deur {{platform}}, nie Ryvro nie",
       "termsOfService": "Voorwaardes",
       "trialBadge": "GRATIS PROEF · GEEN HEFFING VANDAG",
       "trialBadgePaid": "TEKEN VANDAG IN · KANSEL ENIGE TYD",
@@ -247,7 +247,7 @@
       "billingDisclosureWeekly": "Gefaktureer teen {{price}}/week, elke week. Kanselleer enige tyd in Instellings.",
       "billingDisclosureAnnualDirect": "Jy sal vandag {{price}} betaal. Hernu jaarliks. Kanselleer enige tyd in Instellings.",
       "billingDisclosureMonthlyDirect": "Jy sal vandag {{price}} betaal. Hernu maandeliks. Kanselleer enige tyd in Instellings.",
-      "purchaseSuccessContinue": "Gaan voort na Ellie",
+      "purchaseSuccessContinue": "Gaan voort na Ryvro",
       "restorePurchasesSuccess": "Aankoop herstel — welkom by Pro!",
       "restorePurchasesNotFound": "Geen vorige aankope is op hierdie rekening gevind nie.",
       "restorePurchasesError": "Herstel het misluk. Probeer asseblief weer.",

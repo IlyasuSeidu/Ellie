@@ -14,8 +14,8 @@ try {
 
 module.exports = {
   expo: {
-    name: 'ShiftSync',
-    slug: 'shiftsync',
+    name: 'Ryvro Shift Planner',
+    slug: 'ryvro',
     version: '1.0.0',
     orientation: 'portrait',
     icon: './assets/icon.png',
@@ -31,7 +31,7 @@ module.exports = {
     // iOS Configuration
     ios: {
       supportsTablet: true,
-      bundleIdentifier: 'com.shiftsync.app',
+      bundleIdentifier: 'com.ryvro.shiftplanner',
       buildNumber: '1',
       infoPlist: {
         NSCameraUsageDescription:
@@ -40,7 +40,7 @@ module.exports = {
           'This app accesses your photos to select profile pictures and shift documentation.',
         NSPhotoLibraryAddUsageDescription: 'This app saves photos to your photo library.',
       },
-      associatedDomains: ['applinks:shiftsync.app'],
+      associatedDomains: ['applinks:getryvro.com'],
     },
 
     // Android Configuration
@@ -49,7 +49,7 @@ module.exports = {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#ffffff',
       },
-      package: 'com.shiftsync.app',
+      package: 'com.ryvro.shiftplanner',
       versionCode: 1,
       permissions: [
         'CAMERA',
@@ -106,7 +106,7 @@ module.exports = {
       GOOGLE_WEB_CLIENT_ID: process.env.GOOGLE_WEB_CLIENT_ID || '',
 
       // API configuration
-      API_BASE_URL: process.env.API_BASE_URL || 'https://api.shiftsync.app',
+      API_BASE_URL: process.env.API_BASE_URL || 'https://api.getryvro.com',
       API_TIMEOUT: process.env.API_TIMEOUT || '30000',
 
       // EAS configuration
@@ -125,7 +125,7 @@ module.exports = {
     },
 
     // Scheme for deep linking
-    scheme: 'shiftsync',
+    scheme: 'ryvro',
 
     // Privacy and permissions
     privacy: 'public',

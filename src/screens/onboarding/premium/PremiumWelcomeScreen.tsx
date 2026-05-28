@@ -166,7 +166,7 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
         <Animated.View style={[styles.logoContainer, logoAnimatedStyle]}>
           <View style={styles.logoPlaceholder}>
             <Image
-              source={require('../../../../assets/onboarding/icons/consolidated/mining-helmet-sacred-flame.png')}
+              source={require('../../../../assets/onboarding/icons/consolidated/ryvro-shift-assistant.png')}
               style={styles.logoIcon}
               resizeMode="contain"
             />
@@ -175,7 +175,7 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
 
         {/* App name with gold glow */}
         <Animated.View style={[styles.nameContainer, nameAnimatedStyle]}>
-          <Animated.Text style={styles.appName}>Ellie</Animated.Text>
+          <Animated.Text style={styles.appName}>Ryvro</Animated.Text>
           <View style={styles.nameGlow} />
         </Animated.View>
 

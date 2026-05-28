@@ -87,7 +87,7 @@
     "label": "语言",
     "selector": "选择语言",
     "restartRequiredTitle": "需要重新启动",
-    "restartRequiredMessage": "请重新启动 Ellie 以应用语言方向更改。",
+    "restartRequiredMessage": "请重新启动 Ryvro 以应用语言方向更改。",
     "names": {
       "en": "英语 (英语)",
       "es": "西班牙语 (西班牙语)",
@@ -131,7 +131,7 @@
       "apple": "使用 Apple 继续"
     },
     "signIn": {
-      "appName": "Ellie",
+      "appName": "Ryvro",
       "subtitle": "登录你的账户",
       "forgotPassword": "忘记密码？",
       "primaryButton": "登录",
@@ -141,7 +141,7 @@
     },
     "signUp": {
       "title": "创建账户",
-      "subtitle": "开始使用 Ellie 追踪你的班次",
+      "subtitle": "开始使用 Ryvro 追踪你的班次",
       "passwordHint": "至少 8 位，含大写字母和数字",
       "confirmPasswordLabel": "确认密码",
       "confirmPasswordPlaceholder": "再次输入密码",
@@ -228,7 +228,7 @@
         "chargedToday": "今天收费"
       },
       "valueFrame": "每周不到一杯咖啡的钱，就能掌握你一整年的安排。",
-      "security": "通过 {{platform}} 安全支付 · 由 {{platform}} 处理，而非 Ellie",
+      "security": "通过 {{platform}} 安全支付 · 由 {{platform}} 处理，而非 Ryvro",
       "termsOfService": "条款",
       "trialBadge": "免费试用 · 今天不收费",
       "trialBadgePaid": "今日订阅 · 随时取消",
@@ -247,7 +247,7 @@
       "billingDisclosureWeekly": "按周收费 {{price}}，每周扣费。可随时在设置中取消。",
       "billingDisclosureAnnualDirect": "今天将向你收取 {{price}}。按年续订。可随时在设置中取消。",
       "billingDisclosureMonthlyDirect": "今天将向你收取 {{price}}。按月续订。可随时在设置中取消。",
-      "purchaseSuccessContinue": "继续前往 Ellie",
+      "purchaseSuccessContinue": "继续前往 Ryvro",
       "restorePurchasesSuccess": "购买已恢复，欢迎使用 Pro！",
       "restorePurchasesNotFound": "此账户未找到过往购买记录。",
       "restorePurchasesError": "恢复失败。请重试。",

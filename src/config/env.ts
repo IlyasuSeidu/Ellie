@@ -124,7 +124,7 @@ export interface AppConfig {
     buildNumber: string;
   };
   ellieBrain: {
-    /** Cloud Function URL for the Ellie voice assistant brain */
+    /** Cloud Function URL for the Ryvro voice assistant backend */
     url: string;
     /** Request timeout in milliseconds */
     timeout: number;
@@ -344,19 +344,25 @@ function buildAppConfig(): AppConfig {
       iosClientId: getEnvVar('GOOGLE_IOS_CLIENT_ID', false),
     },
     api: {
-      baseUrl: getEnvVar('API_BASE_URL', false) || 'https://api.shiftsync.app',
+      baseUrl: getEnvVar('API_BASE_URL', false) || 'https://api.getryvro.com',
       timeout: parseInt(getEnvVar('API_TIMEOUT', false) || '30000', 10),
     },
     app: {
-      name: Constants.expoConfig?.name || 'ShiftSync',
+      name: Constants.expoConfig?.name || 'Ryvro Shift Planner',
       version: Constants.expoConfig?.version || '1.0.0',
       buildNumber: Constants.expoConfig?.ios?.buildNumber || '1',
     },
     ellieBrain: {
       url:
+        getEnvVar('RYVRO_BRAIN_URL', false) ||
         getEnvVar('ELLIE_BRAIN_URL', false) ||
-        'https://ellie-brain-REGION-PROJECT.cloudfunctions.net/ellieBrain',
-      timeout: parseInt(getEnvVar('ELLIE_BRAIN_TIMEOUT', false) || '30000', 10),
+        'https://ryvro-brain-REGION-PROJECT.cloudfunctions.net/ellieBrain',
+      timeout: parseInt(
+        getEnvVar('RYVRO_BRAIN_TIMEOUT', false) ||
+          getEnvVar('ELLIE_BRAIN_TIMEOUT', false) ||
+          '30000',
+        10
+      ),
       maxQueryLength: 500,
     },
     shiftScheduleParser: {
@@ -434,7 +440,7 @@ function validateConfig(config: AppConfig): void {
 
   if (!isConfiguredEllieBrainUrl(config.ellieBrain.url)) {
     const message =
-      'ELLIE_BRAIN_URL must be configured with a valid deployed endpoint. ' +
+      'RYVRO_BRAIN_URL must be configured with a valid deployed endpoint. ' +
       'Placeholder Cloud Function URLs are not supported.';
     if (config.env === 'production') {
       throw new Error(message);
@@ -550,12 +556,12 @@ try {
         timeout: 30000,
       },
       app: {
-        name: 'ShiftSync',
+        name: 'Ryvro Shift Planner',
         version: '1.0.0',
         buildNumber: '1',
       },
       ellieBrain: {
-        url: 'https://ellie-brain-test.cloudfunctions.net/ellieBrain',
+        url: 'https://ryvro-brain-test.cloudfunctions.net/ellieBrain',
         timeout: 30000,
         maxQueryLength: 500,
       },

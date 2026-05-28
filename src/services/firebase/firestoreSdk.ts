@@ -4,9 +4,8 @@ import type * as FirebaseFirestoreWeb from 'firebase/firestore';
 import { shouldUseFirebaseJsSdk, shouldUseNativeFirebaseFullStack } from './nativeAvailability';
 
 type FirestoreModule = typeof FirebaseFirestoreWeb & {
-  getPersistentCacheIndexManager?: (
-    firestore: FirebaseFirestoreWeb.Firestore
-  ) => { enableIndexAutoCreation: () => Promise<void> } | null;
+  getPersistentCacheIndexManager?: (firestore: FirebaseFirestoreWeb.Firestore) => unknown | null;
+  enablePersistentCacheIndexAutoCreation?: (indexManager: unknown) => Promise<void>;
 };
 
 function loadFirebaseJsFirestoreSdk(): typeof FirebaseFirestoreWeb {
@@ -67,7 +66,7 @@ function loadFirebaseJsFirestoreSdk(): typeof FirebaseFirestoreWeb {
 
 function loadNativeFirebaseFirestoreSdk(): FirestoreModule {
   try {
-    return require('@react-native-firebase/firestore/lib/modular') as FirestoreModule;
+    return require('@react-native-firebase/firestore') as FirestoreModule;
   } catch {
     return loadFirebaseJsFirestoreSdk() as FirestoreModule;
   }
@@ -229,15 +228,20 @@ export async function disableNetwork(firestore: Firestore): Promise<void> {
   return sdk.disableNetwork(firestore);
 }
 
-export function getPersistentCacheIndexManager(
-  firestore: Firestore
-): { enableIndexAutoCreation?: () => Promise<void> } | null | undefined {
+export function getPersistentCacheIndexManager(firestore: Firestore): unknown | null | undefined {
   const sdk = resolveSdk() as unknown as {
-    getPersistentCacheIndexManager?: (
-      firestoreArg: Firestore
-    ) => { enableIndexAutoCreation?: () => Promise<void> } | null;
+    getPersistentCacheIndexManager?: (firestoreArg: Firestore) => unknown | null;
   };
   return sdk.getPersistentCacheIndexManager?.(firestore);
+}
+
+export async function enablePersistentCacheIndexAutoCreation(indexManager: unknown): Promise<void> {
+  const sdk = resolveSdk() as unknown as {
+    enablePersistentCacheIndexAutoCreation?: (indexManagerArg: unknown) => Promise<void>;
+  };
+  if (sdk.enablePersistentCacheIndexAutoCreation) {
+    await sdk.enablePersistentCacheIndexAutoCreation(indexManager);
+  }
 }
 
 export const Timestamp = loadFirebaseJsFirestoreSdk().Timestamp;

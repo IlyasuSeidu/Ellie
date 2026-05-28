@@ -87,7 +87,7 @@
     "label": "भाषा",
     "selector": "भाषा चुने",
     "restartRequiredTitle": "पुनरारंभ करना आवश्यक है",
-    "restartRequiredMessage": "कृपया भाषा दिशा परिवर्तन लागू करने के लिए ऐली को पुनः आरंभ करें।",
+    "restartRequiredMessage": "कृपया भाषा दिशा परिवर्तन लागू करने के लिए Ryvro को पुनः आरंभ करें।",
     "names": {
       "en": "अंग्रेज़ी (अंग्रेज़ी)",
       "es": "स्पैनिश (Español)",
@@ -131,7 +131,7 @@
       "apple": "Apple के साथ जारी रखें"
     },
     "signIn": {
-      "appName": "Ellie",
+      "appName": "Ryvro",
       "subtitle": "अपने खाते में साइन इन करें",
       "forgotPassword": "पासवर्ड भूल गए?",
       "primaryButton": "साइन इन",
@@ -141,7 +141,7 @@
     },
     "signUp": {
       "title": "खाता बनाएं",
-      "subtitle": "Ellie के साथ अपनी शिफ्ट ट्रैकिंग शुरू करें",
+      "subtitle": "Ryvro के साथ अपनी शिफ्ट ट्रैकिंग शुरू करें",
       "passwordHint": "कम से कम 8 अक्षर, बड़ा अक्षर और संख्या",
       "confirmPasswordLabel": "पासवर्ड की पुष्टि करें",
       "confirmPasswordPlaceholder": "पासवर्ड दोबारा दर्ज करें",
@@ -228,7 +228,7 @@
         "chargedToday": "आज शुल्क लगेगा"
       },
       "valueFrame": "अपने पूरे साल को जानने के लिए हर हफ्ते एक कॉफी से भी कम।",
-      "security": "{{platform}} के माध्यम से सुरक्षित भुगतान · {{platform}} द्वारा प्रोसेस, Ellie द्वारा नहीं",
+      "security": "{{platform}} के माध्यम से सुरक्षित भुगतान · {{platform}} द्वारा प्रोसेस,Ryvro द्वारा नहीं",
       "termsOfService": "नियम",
       "trialBadge": "मुफ़्त ट्रायल · आज कोई शुल्क नहीं",
       "trialBadgePaid": "आज ही सदस्यता लें · कभी भी रद्द करें",
@@ -247,7 +247,7 @@
       "billingDisclosureWeekly": "{{price}}/सप्ताह, हर सप्ताह बिल किया जाएगा। सेटिंग्स में कभी भी रद्द करें।",
       "billingDisclosureAnnualDirect": "आज आपसे {{price}} लिया जाएगा। सालाना नवीनीकरण होगा। सेटिंग्स में कभी भी रद्द करें।",
       "billingDisclosureMonthlyDirect": "आज आपसे {{price}} लिया जाएगा। मासिक नवीनीकरण होगा। सेटिंग्स में कभी भी रद्द करें।",
-      "purchaseSuccessContinue": "Ellie पर जारी रखें",
+      "purchaseSuccessContinue": "Ryvro पर जारी रखें",
       "restorePurchasesSuccess": "खरीद बहाल हो गई — Pro में स्वागत है!",
       "restorePurchasesNotFound": "इस खाते पर कोई पिछली खरीद नहीं मिली।",
       "restorePurchasesError": "रिस्टोर विफल रहा। कृपया फिर से कोशिश करें।",

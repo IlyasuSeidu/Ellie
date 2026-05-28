@@ -246,7 +246,7 @@ describe('firebase native module fallback', () => {
       getApp: () => mockNativeApp,
       initializeApp: () => mockNativeApp,
     }));
-    jest.doMock('@react-native-firebase/auth/lib/modular', () => ({
+    jest.doMock('@react-native-firebase/auth', () => ({
       getAuth: nativeGetAuth,
     }));
     jest.doMock('@react-native-firebase/firestore', () => ({

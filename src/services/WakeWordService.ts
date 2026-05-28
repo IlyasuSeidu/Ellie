@@ -270,7 +270,7 @@ class WakeWordService {
           config.openWakeWordScoreSmoothingAlpha ?? DEFAULT_OPENWAKEWORD_SCORE_SMOOTHING_ALPHA
         )
       );
-      const keywordLabel = config.openWakeWordKeywordLabel?.trim() || 'Hey Ellie';
+      const keywordLabel = config.openWakeWordKeywordLabel?.trim() || 'Hey Ryvro';
 
       this.openWakeWordSubscriptions = [
         addOpenWakeWordDetectionListener((event) => {

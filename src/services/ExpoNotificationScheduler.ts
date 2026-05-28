@@ -7,7 +7,7 @@ import type {
   ScheduledNotificationSnapshot,
 } from '@/services/NotificationService';
 
-const DEFAULT_CHANNEL_ID = 'ellie-smart-reminders';
+const DEFAULT_CHANNEL_ID = 'ryvro-smart-reminders';
 
 let isNotificationHandlerConfigured = false;
 let isAndroidChannelConfigured = false;
@@ -126,7 +126,7 @@ export class ExpoNotificationScheduler implements INotificationScheduler {
     }
 
     await Notifications.setNotificationChannelAsync(DEFAULT_CHANNEL_ID, {
-      name: 'Ellie Reminders',
+      name: 'Ryvro Reminders',
       importance: Notifications.AndroidImportance.MAX,
       sound: 'default',
       vibrationPattern: [0, 250, 250, 250],

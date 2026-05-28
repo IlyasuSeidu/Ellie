@@ -33,7 +33,7 @@ export const NotificationPrimingModal: React.FC<NotificationPrimingModalProps> =
           <Text style={styles.body}>
             {t('completion.notificationPriming.body', {
               defaultValue:
-                'Ellie will remind you 24 hours and 4 hours before every shift.\nYou control what and when.',
+                'Ryvro will remind you 24 hours and 4 hours before every shift.\nYou control what and when.',
             })}
           </Text>
           <TouchableOpacity style={styles.allowButton} onPress={onAllow}>

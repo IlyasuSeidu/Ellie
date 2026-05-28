@@ -47,4 +47,5 @@ npm run firebase:deploy:functions
 
 After deploy, update app `.env`:
 
-- `ELLIE_BRAIN_URL=https://<region>-<project-id>.cloudfunctions.net/ellieBrain`
+- `RYVRO_BRAIN_URL=https://<region>-<project-id>.cloudfunctions.net/ellieBrain`
+- `ELLIE_BRAIN_URL` is still accepted as a legacy fallback while existing environments migrate.

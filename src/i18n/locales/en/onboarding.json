@@ -11,7 +11,7 @@
   },
   "painHook": {
     "title": "What's the hardest part of your schedule right now?",
-    "subtitle": "We'll personalise Ellie around what matters most to you.",
+    "subtitle": "We'll personalise Ryvro around what matters most to you.",
     "options": {
       "cycle_lost": "I lose track of where I am in my cycle",
       "wrong_alarm": "I've set my alarm for the wrong shift",
@@ -56,7 +56,7 @@
     "a11y": "Bot is typing"
   },
   "chatAvatar": {
-    "a11y": "Mining assistant avatar"
+    "a11y": "Ryvro shift assistant avatar"
   },
   "premiumCalendar": {
     "previousMonthA11y": "Previous month",
@@ -65,7 +65,7 @@
   "ahaMoment": {
     "headline": "Your shifts, mapped.",
     "subheadline": "Here's a preview of your next 3 months. No second-guessing, just a clear schedule.",
-    "heyEllieTitle": "Ask Ellie about your schedule",
+    "heyEllieTitle": "Ask Ryvro about your schedule",
     "ctaPrimary": "Start Free Trial",
     "ctaSecondary": "or skip — current week only, no full year",
     "stats": {
@@ -92,7 +92,7 @@
       "nightShiftsThisMonth": "How many night shifts this month?",
       "startBack": "When do I start back?"
     },
-    "buttonLabel": "Hey Ellie",
+    "buttonLabel": "Hey Ryvro",
     "headline_named": "{{name}}'s shifts, mapped.",
     "ctaSecondaryA11y": "Skip trial — limited to current week only, no full year view",
     "painCallback": {
@@ -106,16 +106,16 @@
     "checkingAccess": "Checking access…"
   },
   "intro": {
-    "welcome": "Welcome to Ellie! I'm here to help you set up your shift calendar. Let's start by getting to know you a bit better.",
+    "welcome": "Welcome to Ryvro! I'm here to help you set up your shift calendar. Let's start by getting to know you a bit better.",
     "askName": "What's your name?",
-    "askOccupation": "Great to meet you, {{name}}! What's your role on site?",
+    "askOccupation": "Great to meet you, {{name}}! What shift-work role do you do?",
     "askCompany": "Got it! Which company do you work for? (optional)",
     "skipCompany": "Skip",
     "askCountry": "Almost done! Which country are you based in?",
     "allSet": "Perfect! You're all set, {{name}}. Let's get your shift calendar configured.",
     "placeholders": {
       "name": "Enter your name",
-      "occupation": "e.g. Haul truck operator, Boilermaker, Electrician",
+      "occupation": "e.g. Nurse, miner, security officer, plant operator",
       "company": "Enter company name",
       "country": "Enter your country"
     },
@@ -289,11 +289,11 @@
     "title_named": "How Does Your Roster Work, {{name}}?",
     "instruction": "Choose the roster style your mine site uses — this shapes your entire schedule\nSwipe right to choose, left to see more, up for details",
     "instruction_pain": {
-      "cycle_lost": "This tells Ellie exactly where you are in your cycle — no more guessing",
-      "wrong_alarm": "Get this right and Ellie sets every alarm for the correct shift",
-      "days_off": "This shows Ellie when your days off fall so you can plan ahead",
-      "family": "Ellie will alert you to events you'd otherwise miss once it knows your roster",
-      "mental_math": "After this, Ellie does all the counting for you"
+      "cycle_lost": "This tells Ryvro exactly where you are in your cycle — no more guessing",
+      "wrong_alarm": "Get this right and Ryvro sets every alarm for the correct shift",
+      "days_off": "This shows Ryvro when your days off fall so you can plan ahead",
+      "family": "Ryvro will alert you to events you'd otherwise miss once it knows your roster",
+      "mental_math": "After this,Ryvro does all the counting for you"
     },
     "countryHint": "Common in {{country}}",
     "preparingNextStep": "Preparing next step...",
@@ -378,9 +378,9 @@
       "mealsDesc": "Stay hydrated and fuelled through 12-hour underground shifts"
     },
     "featureHint": "Tap a feature chip to see more details.",
-    "featuresTitle": "What you can do with Ellie",
+    "featuresTitle": "What you can do with Ryvro",
     "getStartedA11yHint": "Tap to start using the app",
-    "getStartedA11yLabel": "Get started with Ellie",
+    "getStartedA11yLabel": "Get started with Ryvro",
     "loading": "Building your roster calendar...",
     "nextShiftCountdown": "Next shift {{relative}} ({{date}})",
     "checkInTitle": "When do you check your schedule?",
@@ -399,7 +399,7 @@
     },
     "retryA11yHint": "Tap to try saving your data again",
     "retryA11yLabel": "Retry saving your data",
-    "subtitle": "Welcome to Ellie",
+    "subtitle": "Welcome to Ryvro",
     "summary": {
       "company": "Company",
       "cycle": "Cycle",
@@ -451,7 +451,7 @@
     },
     "title_named": "{{name}}, you're all set.",
     "setupReady": "Your {{setup}} schedule is ready.",
-    "reminderPromise": "Ellie will remind you before every shift."
+    "reminderPromise": "Ryvro will remind you before every shift."
   },
   "phaseSelector": {
     "options": {
@@ -754,7 +754,7 @@
     },
     "guidance": {
       "aboutTitle": "About shift times",
-      "aboutBody": "Your {{patternName}} rotation stays the same, but we need your shift start times so Ellie can track hours and alert you before each shift.",
+      "aboutBody": "Your {{patternName}} rotation stays the same, but we need your shift start times so Ryvro can track hours and alert you before each shift.",
       "hint": "Use the closest start time now. You can fine-tune it later in settings.",
       "definitions": {
         "twoShiftTitle": "Day vs Night:",

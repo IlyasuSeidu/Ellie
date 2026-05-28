@@ -208,7 +208,7 @@ describe('WakeWordService', () => {
         ...baseConfig,
         provider: 'openwakeword',
         openWakeWordModelPath: 'openwakeword/hey_ellie.onnx',
-        openWakeWordKeywordLabel: 'Hey Ellie',
+        openWakeWordKeywordLabel: 'Hey Ryvro',
       },
       { onDetection: jest.fn(), onError }
     );
@@ -217,7 +217,7 @@ describe('WakeWordService', () => {
     expect(initializeOpenWakeWord).toHaveBeenCalledWith(
       expect.objectContaining({
         modelPath: 'openwakeword/hey_ellie.onnx',
-        keywordLabel: 'Hey Ellie',
+        keywordLabel: 'Hey Ryvro',
       })
     );
     expect(addOpenWakeWordDetectionListener).toHaveBeenCalled();

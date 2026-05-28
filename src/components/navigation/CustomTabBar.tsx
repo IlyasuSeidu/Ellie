@@ -70,7 +70,7 @@ const TAB_ICONS: Record<
 /**
  * Calculate the horizontal center X for a given tab index.
  * Tabs 0,1 are flex tabs before the center placeholder.
- * Tab 2 is the center placeholder (Ellie) — no indicator.
+ * Tab 2 is the center placeholder (Ryvro) — no indicator.
  * Tabs 3,4 are flex tabs after the center placeholder.
  */
 function getTabCenterX(index: number): number {
@@ -178,7 +178,7 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
     const isCenter = state.index === 1;
 
     if (isCenter) {
-      // Hide indicator for center Ellie tab
+      // Hide indicator for center Ryvro tab
       indicatorOpacity.value = withTiming(0, { duration: 200 });
     } else {
       const targetX = getTabCenterX(state.index);
@@ -259,7 +259,7 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
       Schedule: t('tabs.schedule', { defaultValue: 'Schedule' }),
       Stats: t('tabs.stats', { defaultValue: 'Stats' }),
       Profile: t('tabs.profile', { defaultValue: 'Profile' }),
-      Ellie: t('tabs.ellie', { defaultValue: 'Ellie' }),
+      Ellie: t('tabs.ellie', { defaultValue: 'Ryvro' }),
     }),
     [t]
   );
@@ -312,7 +312,7 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
         </View>
       </View>
 
-      {/* Center Ellie button — absolute positioned above the pill */}
+      {/* Center Ryvro button — absolute positioned above the pill */}
       <Animated.View style={[styles.centerButtonOuter, centerAnimStyle]}>
         <TouchableOpacity
           onPress={() => handleTabPress(state.routes[1], 1)}
@@ -325,7 +325,7 @@ export const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, navigation })
                 })
               : isPro
                 ? t('tabs.openVoiceAssistantA11y', {
-                    defaultValue: 'Open Ellie voice assistant',
+                    defaultValue: 'Open Ryvro voice assistant',
                   })
                 : t('tabs.openProPlansA11y', {
                     defaultValue: 'View Pro plans',
@@ -454,7 +454,7 @@ const styles = StyleSheet.create({
     width: CENTER_PLACEHOLDER_WIDTH,
   },
 
-  /** The center Ellie button, floating above the pill */
+  /** The center Ryvro button, floating above the pill */
   centerButtonOuter: {
     position: 'absolute',
     bottom:

@@ -1,5 +1,5 @@
 /**
- * Universal offline fallback for common Ellie shift queries.
+ * Universal offline fallback for common Ryvro shift queries.
  */
 
 import type { ShiftCycle, ShiftDay } from '@/types';

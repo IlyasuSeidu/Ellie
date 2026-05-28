@@ -2,7 +2,7 @@
  * Voice Assistant Service (Orchestrator)
  *
  * Coordinates the full voice assistant pipeline:
- * Speech Recognition → Ellie Brain → Text-to-Speech
+ * Speech Recognition → Ryvro voice backend → Text-to-Speech
  *
  * Manages state transitions and error handling across all services.
  */
@@ -419,7 +419,7 @@ class VoiceAssistantService {
   }
 
   /**
-   * Send query to the Ellie Brain and handle response.
+   * Send query to the Ryvro voice backend and handle response.
    * Tries offline fallback first for simple queries.
    */
   private async processQuery(query: string, requestToken: number): Promise<void> {
@@ -618,7 +618,7 @@ class VoiceAssistantService {
       'info',
       this.translateDashboard(
         'voiceAssistant.notices.audioUnavailable',
-        "Audio replies aren't available right now. You can still read Ellie's answer."
+        "Audio replies aren't available right now. You can still read Ryvro's answer."
       ),
       'audio_unavailable'
     );

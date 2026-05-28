@@ -87,7 +87,7 @@
     "label": "Язык",
     "selector": "Выберите язык",
     "restartRequiredTitle": "Требуется перезагрузка",
-    "restartRequiredMessage": "Перезапустите Элли, чтобы применить изменения направления языка.",
+    "restartRequiredMessage": "Перезапустите Ryvro, чтобы применить изменения направления языка.",
     "names": {
       "en": "Английский (Английский)",
       "es": "испанский (испанский)",
@@ -131,7 +131,7 @@
       "apple": "Продолжить с Apple"
     },
     "signIn": {
-      "appName": "Ellie",
+      "appName": "Ryvro",
       "subtitle": "Войдите в свою учетную запись",
       "forgotPassword": "Забыли пароль?",
       "primaryButton": "Войти",
@@ -141,7 +141,7 @@
     },
     "signUp": {
       "title": "Создать аккаунт",
-      "subtitle": "Начните отслеживать смены с Ellie",
+      "subtitle": "Начните отслеживать смены с Ryvro",
       "passwordHint": "Мин. 8 символов, заглавная буква и цифра",
       "confirmPasswordLabel": "Подтвердите пароль",
       "confirmPasswordPlaceholder": "Повторите пароль",
@@ -228,7 +228,7 @@
         "chargedToday": "Списание сегодня"
       },
       "valueFrame": "Меньше стоимости кофе в неделю, чтобы знать свой год целиком.",
-      "security": "Безопасная оплата через {{platform}} · Обрабатывается {{platform}}, а не Ellie",
+      "security": "Безопасная оплата через {{platform}} · Обрабатывается {{platform}}, а не Ryvro",
       "termsOfService": "Условия",
       "trialBadge": "БЕСПЛАТНЫЙ ПРОБНЫЙ ПЕРИОД · СЕГОДНЯ БЕЗ СПИСАНИЯ",
       "trialBadgePaid": "ОФОРМИТЕ ПОДПИСКУ СЕГОДНЯ · ОТМЕНИТЕ В ЛЮБОЕ ВРЕМЯ",
@@ -247,7 +247,7 @@
       "billingDisclosureWeekly": "Списание {{price}}/неделю, каждую неделю. Отменить можно в любое время в настройках.",
       "billingDisclosureAnnualDirect": "Сегодня с вас будет списано {{price}}. Продление ежегодно. Отменить можно в любое время в настройках.",
       "billingDisclosureMonthlyDirect": "Сегодня с вас будет списано {{price}}. Продление ежемесячно. Отменить можно в любое время в настройках.",
-      "purchaseSuccessContinue": "Перейти в Ellie",
+      "purchaseSuccessContinue": "Перейти в Ryvro",
       "restorePurchasesSuccess": "Покупка восстановлена — добро пожаловать в Pro!",
       "restorePurchasesNotFound": "Для этой учетной записи не найдено предыдущих покупок.",
       "restorePurchasesError": "Восстановление не удалось. Попробуйте еще раз.",

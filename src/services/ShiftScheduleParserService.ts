@@ -245,10 +245,20 @@ const LOCAL_SHIFT_SPECS: LocalShiftSpec[] = [
 
 function findCountForAliases(prompt: string, aliases: string[]): number {
   for (const alias of aliases) {
+    const normalizedAlias = alias.toLowerCase();
     const escaped = alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\\ /g, '[\\s-]+');
-    const before = new RegExp(`(\\d+)\\s*(?:x\\s*)?(?:${escaped})\\b`, 'i').exec(prompt);
+    const suffixGuard =
+      normalizedAlias === 'day' || normalizedAlias === 'days'
+        ? '(?!\\s*(?:off|rest|leave|break)\\b)'
+        : '';
+    const before = new RegExp(`(\\d+)\\s*(?:x\\s*)?(?:${escaped})\\b${suffixGuard}`, 'i').exec(
+      prompt
+    );
     if (before) return Number(before[1]);
-    const after = new RegExp(`\\b(?:${escaped})\\s*(?:for\\s*)?(\\d+)\\b`, 'i').exec(prompt);
+    const after = new RegExp(
+      `\\b(?:${escaped})\\b${suffixGuard}\\s*(?:for\\s*)?(\\d+)\\b`,
+      'i'
+    ).exec(prompt);
     if (after) return Number(after[1]);
   }
   return 0;
@@ -461,7 +471,7 @@ function buildLocalParserFallback(
     summary: 'I created a draft from the repeating universal shift pattern.',
     assumptions: sanitized.aiDraftMeta?.assumptions ?? [],
     questions: [],
-    warnings: ['AI parser endpoint was unavailable, so Ellie used the built-in pattern parser.'],
+    warnings: ['AI parser endpoint was unavailable, so Ryvro used the built-in pattern parser.'],
     confidence: sanitized.aiDraftMeta?.confidence ?? 0.62,
   };
 }

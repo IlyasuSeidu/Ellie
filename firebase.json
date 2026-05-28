@@ -5,7 +5,7 @@
   "functions": [
     {
       "source": "backend/functions",
-      "codebase": "ellie-brain",
+      "codebase": "ryvro-brain",
       "ignore": ["node_modules", ".git", "firebase-debug.log", "firebase-debug.*.log", "*.local"],
       "predeploy": ["npm --prefix \"$RESOURCE_DIR\" run build"]
     }
@@ -26,7 +26,7 @@
         "headers": [
           {
             "key": "Content-Security-Policy",
-            "value": "default-src 'self'; script-src 'self' https://www.gstatic.com https://apis.google.com; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.cloudfunctions.net https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src https://*.firebaseapp.com https://accounts.google.com; style-src 'self'; img-src 'self' data: https://*.googleusercontent.com; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
+            "value": "default-src \u0027self\u0027; script-src \u0027self\u0027 https://www.gstatic.com https://apis.google.com; connect-src \u0027self\u0027 https://*.googleapis.com https://*.firebaseio.com https://*.cloudfunctions.net https://identitytoolkit.googleapis.com https://securetoken.googleapis.com; frame-src https://*.firebaseapp.com https://accounts.google.com; style-src \u0027self\u0027; img-src \u0027self\u0027 data: https://*.googleusercontent.com; object-src \u0027none\u0027; base-uri \u0027none\u0027; form-action \u0027self\u0027; frame-ancestors \u0027none\u0027"
           },
           {
             "key": "X-Content-Type-Options",

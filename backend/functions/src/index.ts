@@ -1,5 +1,5 @@
 /**
- * Ellie Brain — Firebase Cloud Function Entry Point
+ * Ryvro voice backend — Firebase Cloud Function Entry Point
  *
  * HTTPS callable function that processes voice assistant queries.
  * Validates requests, calls OpenAI API with tool use, returns responses.
@@ -538,7 +538,7 @@ export const markAiDecisionReviewed = onCall(
 );
 
 /**
- * Main HTTPS endpoint for the Ellie Brain.
+ * Main HTTPS endpoint for the Ryvro voice backend.
  *
  * POST /ellieBrain
  * Body: EllieBrainRequest
@@ -613,7 +613,7 @@ export const ellieBrain = onRequest(
         },
       };
 
-      logStructured('info', 'Ellie Brain request completed', {
+      logStructured('info', 'Ryvro voice request completed', {
         requestId,
         latencyMs: Date.now() - startedAt,
         providerStatus: 'ok',
@@ -631,7 +631,7 @@ export const ellieBrain = onRequest(
               500
             );
 
-      logStructured('error', 'Ellie Brain request failed', {
+      logStructured('error', 'Ryvro voice request failed', {
         requestId,
         errorCode: mappedError.code,
         retryable: mappedError.retryable,

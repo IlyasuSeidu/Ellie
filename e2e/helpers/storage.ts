@@ -13,9 +13,9 @@ import { execSync } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 
-const BUNDLE_ID = 'com.ellie.minershiftassistant';
+const BUNDLE_ID = 'com.ryvro.shiftplanner';
 const STORAGE_RELATIVE =
-  'Library/Application Support/com.ellie.minershiftassistant/RCTAsyncLocalStorage_V1';
+  'Library/Application Support/com.ryvro.shiftplanner/RCTAsyncLocalStorage_V1';
 const MANIFEST = 'manifest.json';
 const APP_PREFIX = 'app:';
 

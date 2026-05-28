@@ -24,6 +24,7 @@ import {
 } from '@/services/firebase/appSdk';
 import { getAuth, initializeAuth, type Auth, type Dependencies } from '@/services/firebase/authSdk';
 import {
+  enablePersistentCacheIndexAutoCreation,
   getFirestore,
   getPersistentCacheIndexManager,
   type Firestore,
@@ -211,12 +212,9 @@ function initializeFirebaseFirestore(firebaseApp: FirebaseApp): Firestore {
     firestore = getFirestore(firebaseApp);
 
     if (canUseNativeFirebase()) {
-      const indexManager = getPersistentCacheIndexManager?.(firestore) as
-        | { enableIndexAutoCreation?: () => Promise<void> }
-        | null
-        | undefined;
-      if (indexManager?.enableIndexAutoCreation) {
-        void indexManager.enableIndexAutoCreation().catch((error: unknown) => {
+      const indexManager = getPersistentCacheIndexManager?.(firestore);
+      if (indexManager) {
+        void enablePersistentCacheIndexAutoCreation(indexManager).catch((error: unknown) => {
           console.warn('Failed to enable Firestore offline index auto-creation:', error);
         });
       }

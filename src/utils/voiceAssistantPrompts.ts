@@ -1,7 +1,7 @@
 /**
  * Voice Assistant Prompts & Tool Definitions
  *
- * System prompt and Claude tool definitions for the Ellie voice assistant.
+ * System prompt and Claude tool definitions for the Ryvro voice assistant.
  * These are used by the backend Cloud Function when calling Claude API.
  * Kept in the frontend codebase for reference and testing.
  */
@@ -19,7 +19,7 @@ export function buildSystemPrompt(context: VoiceAssistantUserContext): string {
     .map((definition) => `${definition.name} (${definition.kind})`)
     .join(', ');
 
-  return `You are Ellie, a friendly and helpful voice assistant for shift workers. You help ${context.name} understand their work schedule.
+  return `You are Ryvro, a friendly and helpful voice assistant for shift workers. You help ${context.name} understand their work schedule.
 
 PERSONALITY:
 - Warm, concise, and empathetic to shift workers

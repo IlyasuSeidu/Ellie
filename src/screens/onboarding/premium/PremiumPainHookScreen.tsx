@@ -258,7 +258,7 @@ const PainCard: React.FC<PainCardProps> = ({ option, isSelected, onSelect, onNex
 
             <View style={styles.cardFooter}>
               <View style={styles.cardFooterChip}>
-                <Text style={styles.cardFooterText}>Ellie</Text>
+                <Text style={styles.cardFooterText}>Ryvro</Text>
               </View>
               {isSelected ? (
                 <View style={[styles.cardFooterChip, styles.cardFooterChipSelected]}>

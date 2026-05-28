@@ -1,7 +1,7 @@
 /**
- * Ellie Brain Service
+ * Ryvro voice backend service
  *
- * HTTP client for the Ellie Brain Cloud Function backend.
+ * HTTP client for the Ryvro voice Cloud Function backend.
  * Sends user queries with context and conversation history,
  * receives natural language responses with optional shift data.
  */
@@ -176,7 +176,7 @@ function normalizeSuccessResponse(parsedBody: unknown): EllieBrainResponse {
 
   throw new EllieBrainServiceError({
     type: 'backend_error',
-    message: 'Received malformed response from Ellie Brain.',
+    message: 'Received malformed response from Ryvro voice service.',
     retryable: true,
     code: 'malformed_response',
   });
@@ -187,7 +187,7 @@ class EllieBrainService {
   private abortReason: AbortReason = 'none';
 
   /**
-   * Send a query to the Ellie Brain backend.
+   * Send a query to the Ryvro voice backend.
    *
    * @param query - The user's transcribed speech
    * @param userContext - User context (name, shift cycle, current date, etc.)
@@ -202,7 +202,7 @@ class EllieBrainService {
     if (!isConfiguredEllieBrainUrl(ellieBrainConfig.url)) {
       throw new EllieBrainServiceError({
         type: 'backend_error',
-        message: 'Ellie Brain service is not configured in this build.',
+        message: 'Ryvro voice service is not configured in this build.',
         retryable: false,
         code: 'backend_not_configured',
       });
@@ -244,7 +244,7 @@ class EllieBrainService {
     }, ellieBrainConfig.timeout);
 
     try {
-      logger.info('Sending query to Ellie Brain', {
+      logger.info('Sending query to Ryvro voice service', {
         queryLength: sanitizedQuery.length,
         historyCount: history.length,
       });
@@ -278,7 +278,7 @@ class EllieBrainService {
 
       const data = normalizeSuccessResponse(parsedBody);
 
-      logger.info('Received response from Ellie Brain', {
+      logger.info('Received response from Ryvro voice service', {
         responseLength: data.text.length,
         hasShiftData: !!data.shiftData,
         requestId: data.requestId,
@@ -317,16 +317,16 @@ class EllieBrainService {
         throw new EllieBrainServiceError({
           type: 'network_error',
           message:
-            `Cannot reach Ellie Brain service at ${ellieBrainConfig.url}. ` +
+            `Cannot reach Ryvro voice service at ${ellieBrainConfig.url}. ` +
             'Check your internet connection and retry.',
           retryable: true,
           code: 'network_unreachable',
         });
       }
-      logger.error('Ellie Brain query failed', error as Error);
+      logger.error('Ryvro voice query failed', error as Error);
       throw new EllieBrainServiceError({
         type: 'backend_error',
-        message: (error as Error).message || 'Unknown Ellie Brain error',
+        message: (error as Error).message || 'Unknown Ryvro voice service error',
         retryable: true,
         code: 'internal_error',
       });

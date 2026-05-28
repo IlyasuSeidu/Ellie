@@ -31,7 +31,7 @@
     "cancel": "Batal"
   },
   "intro": {
-    "welcome": "Selamat datang di Ellie! Saya di sini untuk membantu Anda mengatur kalender shift Anda. Mari kita mulai dengan mengenal Anda lebih baik.",
+    "welcome": "Selamat datang di Ryvro! Saya di sini untuk membantu Anda mengatur kalender shift Anda. Mari kita mulai dengan mengenal Anda lebih baik.",
     "askName": "Siapa namamu?",
     "askOccupation": "Senang bertemu dengan Anda, {{name}}! Apa peran Anda di lokasi?",
     "askCompany": "Baik. Anda bekerja di perusahaan mana? (opsional)",
@@ -290,11 +290,11 @@
     },
     "title_named": "Bagaimana roster Anda bekerja, {{name}}?",
     "instruction_pain": {
-      "cycle_lost": "Ini memberi tahu Ellie tepat di posisi mana Anda berada dalam siklus - tidak perlu menebak lagi",
-      "wrong_alarm": "Atur ini dengan benar dan Ellie akan memasang setiap alarm untuk shift yang tepat",
-      "days_off": "Ini menunjukkan kepada Ellie kapan hari libur Anda jatuh agar Anda bisa merencanakan lebih awal",
-      "family": "Ellie akan memberi tahu Anda tentang acara yang biasanya terlewat begitu ia mengetahui roster Anda",
-      "mental_math": "Setelah ini, Ellie yang akan menghitung semuanya untuk Anda"
+      "cycle_lost": "Ini memberi tahu Ryvro tepat di posisi mana Anda berada dalam siklus - tidak perlu menebak lagi",
+      "wrong_alarm": "Atur ini dengan benar dan Ryvro akan memasang setiap alarm untuk shift yang tepat",
+      "days_off": "Ini menunjukkan kepada Ryvro kapan hari libur Anda jatuh agar Anda bisa merencanakan lebih awal",
+      "family": "Ryvro akan memberi tahu Anda tentang acara yang biasanya terlewat begitu ia mengetahui roster Anda",
+      "mental_math": "Setelah ini,Ryvro yang akan menghitung semuanya untuk Anda"
     },
     "countryHint": "Umum di {{country}}"
   },
@@ -317,13 +317,13 @@
       "mealsDesc": "Tetap terhidrasi dan berenergi selama shift bawah tanah 12 jam"
     },
     "featureHint": "Ketuk chip fitur untuk melihat detail selengkapnya.",
-    "featuresTitle": "Apa yang dapat kamu lakukan dengan Ellie",
+    "featuresTitle": "Apa yang dapat kamu lakukan dengan Ryvro",
     "getStartedA11yHint": "Ketuk untuk mulai menggunakan aplikasi",
-    "getStartedA11yLabel": "Mulailah dengan Ellie",
+    "getStartedA11yLabel": "Mulailah dengan Ryvro",
     "loading": "Membuat kalender roster Anda...",
     "retryA11yHint": "Ketuk untuk mencoba menyimpan data Anda lagi",
     "retryA11yLabel": "Coba lagi simpan data Anda",
-    "subtitle": "Selamat datang di Ellie",
+    "subtitle": "Selamat datang di Ryvro",
     "summary": {
       "company": "Perusahaan",
       "cycle": "Siklus",
@@ -390,7 +390,7 @@
     },
     "title_named": "{{name}}, semua sudah siap.",
     "setupReady": "Roster {{setup}} Anda sudah siap.",
-    "reminderPromise": "Ellie akan mengingatkan Anda sebelum setiap shift."
+    "reminderPromise": "Ryvro akan mengingatkan Anda sebelum setiap shift."
   },
   "phaseSelector": {
     "hints": {
@@ -693,7 +693,7 @@
     },
     "guidance": {
       "aboutTitle": "Tentang waktu shift",
-      "aboutBody": "Rotasi {{patternName}} Anda tetap sama, namun kami memerlukan waktu mulai shift Anda sehingga Ellie dapat melacak jam kerja dan memberi tahu Anda sebelum setiap shift.",
+      "aboutBody": "Rotasi {{patternName}} Anda tetap sama, namun kami memerlukan waktu mulai shift Anda sehingga Ryvro dapat melacak jam kerja dan memberi tahu Anda sebelum setiap shift.",
       "hint": "Gunakan waktu mulai terdekat sekarang. Anda dapat menyempurnakannya nanti di pengaturan.",
       "definitions": {
         "twoShiftTitle": "Siang vs Malam:",
@@ -1059,7 +1059,7 @@
   "chatMessage": {
     "skipped": "Dilewati",
     "a11y": {
-      "botMessage": "Pesan Ellie: {{content}}",
+      "botMessage": "Pesan Ryvro: {{content}}",
       "userMessage": "Pesan Anda: {{content}}",
       "longPressToEdit": "Tekan lama untuk mengedit"
     }
@@ -1096,7 +1096,7 @@
   "ahaMoment": {
     "headline": "3 bulan Anda berikutnya, sudah dipetakan.",
     "subheadline": "Ini pratinjau 3 bulan berikutnya untuk Anda. Tidak perlu menebak-nebak lagi di kepala.",
-    "heyEllieTitle": "Tanya Ellie tentang roster Anda",
+    "heyEllieTitle": "Tanya Ryvro tentang roster Anda",
     "ctaPrimary": "Mulai uji coba gratis",
     "ctaSecondary": "atau lewati — hanya minggu ini, tanpa setahun penuh",
     "stats": {
@@ -1123,7 +1123,7 @@
       "nightShiftsThisMonth": "Berapa shift malam saya bulan ini?",
       "startBack": "Kapan saya mulai kerja lagi?"
     },
-    "buttonLabel": "Hai Ellie",
+    "buttonLabel": "Hai Ryvro",
     "headline_named": "Shift {{name}}, sudah dipetakan.",
     "ctaSecondaryA11y": "Lewati uji coba — terbatas hanya minggu ini, tanpa tampilan setahun penuh",
     "painCallback": {
@@ -1138,7 +1138,7 @@
   },
   "painHook": {
     "title": "Apa bagian tersulit dari roster Anda saat ini?",
-    "subtitle": "Kami akan menyesuaikan Ellie dengan hal yang paling penting bagi Anda.",
+    "subtitle": "Kami akan menyesuaikan Ryvro dengan hal yang paling penting bagi Anda.",
     "options": {
       "cycle_lost": "Saya kehilangan jejak posisi saya dalam siklus",
       "wrong_alarm": "Saya pernah memasang alarm untuk shift yang salah",
