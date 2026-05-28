@@ -1,14 +1,14 @@
-# Ellie Angle Framework
+# Ryvro Angle Framework
 
-This is the canonical angle system for Ellie's stop-scroll content.
+This is the canonical angle system for Ryvro's stop-scroll content.
 
 Machine-readable source:
 
-- [ellie-angle-framework.js](/Users/Shared/Ellie/config/ellie-angle-framework.js)
+- [ryvro-angle-framework.js](<repo-root>/config/ryvro-angle-framework.js)
 
 Generator:
 
-- [generate-stop-scroll-content.js](/Users/Shared/Ellie/scripts/generate-stop-scroll-content.js)
+- [generate-stop-scroll-content.js](<repo-root>/scripts/generate-stop-scroll-content.js)
 
 ## Purpose
 
@@ -20,7 +20,7 @@ These are the 20 angles the generator can select from automatically.
 
 | Angle                   | Lane          | What it does                                                   |
 | ----------------------- | ------------- | -------------------------------------------------------------- |
-| Stakes / Consequence    | Hook          | Leads with what goes wrong for the user if Ellie fails.        |
+| Stakes / Consequence    | Hook          | Leads with what goes wrong for the user if Ryvro fails.        |
 | User Empathy            | Human         | Turns product work into a real mining-life moment.             |
 | Wrong Assumption        | Insight       | Reveals the mistaken belief behind the work.                   |
 | Unexpected Challenge    | Hook          | Opens on friction, breakage, or the hard edge.                 |
@@ -34,7 +34,7 @@ These are the 20 angles the generator can select from automatically.
 | Proof / Demo            | Proof         | Shows the thing working or the claim becoming visible.         |
 | Mini Case Study         | Proof         | Packages the work into problem, move, and result.              |
 | Myth-Bust               | Insight       | Knocks down the obvious but wrong explanation.                 |
-| Identity / Worldview    | Human         | Ties the work to what Ellie stands for.                        |
+| Identity / Worldview    | Human         | Ties the work to what Ryvro stands for.                        |
 | Search-Answer Explainer | Proof         | Answers the practical question people actually ask.            |
 | Micro-Drama             | Hook          | Compresses the story into a small conflict with payoff.        |
 | Audience Choice         | Participation | Lets people choose between directions or options.              |
@@ -226,9 +226,9 @@ Each platform has a ranked bank of 20 angles. The generator uses these banks plu
 4. A high-performing pack usually combines one hook angle, one substance angle, and one participation angle.
 5. If the repo evidence contradicts a dramatic line, the dramatic line loses.
 
-## Ellie-Specific Bias
+## Ryvro-Specific Bias
 
-When in doubt, Ellie should bias toward:
+When in doubt, Ryvro should bias toward:
 
 1. Stakes / Consequence
 2. User Empathy

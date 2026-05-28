@@ -1,14 +1,14 @@
-# Ellie Research Funnel Daily Automation Prompt
+# Ryvro Research Funnel Daily Automation Prompt
 
-Run the daily Ellie research-funnel operating system without violating channel rules or sending product pitches too early.
+Run the daily Ryvro research-funnel operating system without violating channel rules or sending product pitches too early.
 
 ## Sources To Read First
 
 Open these before making decisions:
 
-- `/Users/Shared/Ellie/docs/ELLIE_RESEARCH_FUNNEL_OS.md`
-- `/Users/Shared/Ellie/docs/ELLIE_PLATFORM_PLAYBOOK.md`
-- `/Users/Shared/Ellie/docs/ELLIE_ANGLE_FRAMEWORK.md`
+- `<repo-root>/docs/RYVRO_RESEARCH_FUNNEL_OS.md`
+- `<repo-root>/docs/RYVRO_PLATFORM_PLAYBOOK.md`
+- `<repo-root>/docs/RYVRO_ANGLE_FRAMEWORK.md`
 
 If present for the current day, also open the most recent files under:
 
@@ -26,7 +26,7 @@ Do not automate or imitate LinkedIn member activity. LinkedIn is discovery only.
 
 1. Read new approved lead inputs from the configured source of truth.
 2. Dedupe leads against existing records by LinkedIn URL, email, and WhatsApp number.
-3. Classify each lead into the closest Ellie miner persona.
+3. Classify each lead into the closest Ryvro miner persona.
 4. Update static fit scores.
 5. Read inbound replies from direct channels and extract:
    - role
@@ -46,7 +46,7 @@ Do not automate or imitate LinkedIn member activity. LinkedIn is discovery only.
    - the lead is paused or closed
    - the lead already received an outbound message in the last 24 hours
    - the lead is not due
-9. Identify which leads are ready for Ellie introduction.
+9. Identify which leads are ready for Ryvro introduction.
 10. Write the day's report.
 
 ## Message Rules
@@ -54,19 +54,19 @@ Do not automate or imitate LinkedIn member activity. LinkedIn is discovery only.
 - One question only.
 - Keep messages short and conversational.
 - Use the lead's own wording where possible.
-- Do not mention Ellie before Day 7 unless the lead explicitly asks what is being built.
-- Do not send links unless requested or unless the lead is in the Ellie-intro step.
+- Do not mention Ryvro before Day 7 unless the lead explicitly asks what is being built.
+- Do not send links unless requested or unless the lead is in the Ryvro-intro step.
 - If a lead ignores two outreach attempts in a row, pause them instead of pushing harder.
 
-## Ellie Intro Rules
+## Ryvro Intro Rules
 
-Only mark a lead as `ellie_intro_ready` when all are true:
+Only mark a lead as `ryvro_intro_ready` when all are true:
 
 - sequence day is 6 or later
 - total score is at least 65
 - static fit score is at least 40
 - at least 2 substantive replies exist
-- pain maps to Ellie's current product strengths
+- pain maps to Ryvro's current product strengths
 - contact and consent are valid
 
 If the lead is engaged but the problem maps to planned features only, mark them `research_only` instead of forcing a product intro.
@@ -86,7 +86,7 @@ Required files:
 - `02-new-leads.md`
 - `03-score-changes.md`
 - `04-due-messages.md`
-- `05-ellie-intro-candidates.md`
+- `05-ryvro-intro-candidates.md`
 - `06-experiment-notes.md`
 
 ## Daily Brief Requirements
@@ -96,7 +96,7 @@ The final brief should include:
 - how many new leads entered
 - how many leads advanced stages
 - how many were paused for no reply
-- how many became Ellie-intro candidates
+- how many became Ryvro-intro candidates
 - the top three pain patterns observed
 - the highest-risk failure in the current funnel
 - one recommended experiment for the next run

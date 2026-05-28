@@ -1,10 +1,10 @@
-# Ellie Platform Playbook
+# Ryvro Platform Playbook
 
-This file explains how the Ellie content system treats each platform.
+This file explains how the Ryvro content system treats each platform.
 
 The implementation lives in:
 
-- `config/ellie-platform-playbook.js`
+- `config/ryvro-platform-playbook.js`
 - `scripts/generate-stop-scroll-content.js`
 
 ## Working Rule
@@ -21,9 +21,9 @@ Each platform should get a native format:
 - X: sharp claim plus proof
 - Threads: lighter conversation with a real insight
 
-## Ellie Positioning Rule
+## Ryvro Positioning Rule
 
-Ellie stays product-first on every platform.
+Ryvro stays product-first on every platform.
 
 The miner-builder and vibe-coding overlays are secondary:
 

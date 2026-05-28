@@ -81,7 +81,7 @@ export async function parseShiftScheduleDescription(
         summary: 'I created a draft from the repeating universal shift pattern.',
         assumptions: normalized.aiDraftMeta?.assumptions ?? [],
         questions: [],
-        warnings: ['AI parsing was unavailable, so Ellie used a deterministic pattern parser.'],
+        warnings: ['AI parsing was unavailable, so Ryvro used a deterministic pattern parser.'],
         confidence: normalized.aiDraftMeta?.confidence ?? 0.6,
       };
     }
@@ -133,7 +133,7 @@ export async function parseShiftScheduleDescription(
         summary: 'I created a draft from the repeating universal shift pattern.',
         assumptions: normalized.aiDraftMeta?.assumptions ?? [],
         questions: [],
-        warnings: ['AI parsing was unavailable, so Ellie used a deterministic pattern parser.'],
+        warnings: ['AI parsing was unavailable, so Ryvro used a deterministic pattern parser.'],
         confidence: normalized.aiDraftMeta?.confidence ?? 0.6,
       };
     }

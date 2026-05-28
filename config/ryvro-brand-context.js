@@ -12,7 +12,7 @@ const BRAND_CONTEXT = {
     ],
   },
   product: {
-    name: 'Ellie',
+    name: 'Ryvro',
     currentNiche: 'mining shift workers',
     longTermVision: 'a general shift scheduler for all industries',
     positioning: [
@@ -36,19 +36,19 @@ const BRAND_CONTEXT = {
     primary: ['miners', 'shift workers'],
     secondary: ['builders', 'founders', 'future SaaS operators'],
     positioningRule:
-      'Keep Ellie product-first. The miner-builder identity should support the product story, not replace it.',
+      'Keep Ryvro product-first. The miner-builder identity should support the product story, not replace it.',
   },
   narrativeOverlays: {
     minerBuilder: {
       id: 'miner-builder',
       label: 'Miner Builder',
-      guidance: 'Reinforce that Ellie is built by someone who actually lives shift-work reality.',
+      guidance: 'Reinforce that Ryvro is built by someone who actually lives shift-work reality.',
     },
     vibeCoding: {
       id: 'vibe-coding',
       label: 'Vibe Coding',
       guidance:
-        'For builder-facing content, frame Ellie as an AI-native, vibe-coded product built from lived pain into working software without letting the tooling become the whole story.',
+        'For builder-facing content, frame Ryvro as an AI-native, vibe-coded product built from lived pain into working software without letting the tooling become the whole story.',
     },
     freedomArc: {
       id: 'freedom-arc',
@@ -60,7 +60,7 @@ const BRAND_CONTEXT = {
       id: 'builder-teaching-arc',
       label: 'Builder Teaching Arc',
       guidance:
-        'Use as a secondary layer on builder platforms: Ellie is part of a larger path toward teaching people how to build useful apps for others through AI-native workflows.',
+        'Use as a secondary layer on builder platforms: Ryvro is part of a larger path toward teaching people how to build useful apps for others through AI-native workflows.',
     },
   },
   voice: {

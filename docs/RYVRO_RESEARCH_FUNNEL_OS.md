@@ -1,6 +1,6 @@
-# Ellie Research Funnel Operating System
+# Ryvro Research Funnel Operating System
 
-Turn miner discovery into a consented, daily, conversation-first funnel that surfaces real pain, captures direct contact, and introduces Ellie only when the lead is clearly a fit for the product that exists now.
+Turn miner discovery into a consented, daily, conversation-first funnel that surfaces real pain, captures direct contact, and introduces Ryvro only when the lead is clearly a fit for the product that exists now.
 
 ## Goal
 
@@ -10,7 +10,7 @@ Build a repeatable outbound system that:
 - moves contacts into a consented channel such as email or WhatsApp
 - runs a 7-day research conversation that feels personal, not like a pitch
 - scores fit, urgency, and product readiness
-- introduces Ellie only after trust and relevance are established
+- introduces Ryvro only after trust and relevance are established
 - can be operated daily with Codex plus backend automation
 
 ## Non-Negotiables
@@ -18,13 +18,13 @@ Build a repeatable outbound system that:
 - No LinkedIn scraping, auto-connects, or auto-DMs.
 - LinkedIn is used for discovery, content, ads, forms, and manual or approved-source lead capture.
 - Automation starts after explicit contact opt-in.
-- Ellie is not pitched before fit is clear.
+- Ryvro is not pitched before fit is clear.
 - Identity stays truthful. The conversation is product-light, not deceptive.
-- Do not promise features Ellie does not have yet.
+- Do not promise features Ryvro does not have yet.
 
-## Why This Fits Ellie
+## Why This Fits Ryvro
 
-Ellie is strongest when the pain is about shift certainty, not generic mining software.
+Ryvro is strongest when the pain is about shift certainty, not generic mining software.
 
 Current product strengths:
 
@@ -35,7 +35,7 @@ Current product strengths:
 - voice assistant for roster questions
 - offline-first behavior for low-connectivity environments
 
-Current outbound hooks should stay anchored to pains Ellie already matches well:
+Current outbound hooks should stay anchored to pains Ryvro already matches well:
 
 - losing track of day/night/off position
 - setting the wrong alarm or forgetting the next shift
@@ -60,7 +60,7 @@ The operating system has six layers:
 1. Discovery
 2. Consent capture
 3. 7-day conversation sequence
-4. Lead scoring and Ellie-intro decisioning
+4. Lead scoring and Ryvro-intro decisioning
 5. CRM state management
 6. Daily automation and reporting
 
@@ -72,14 +72,14 @@ Recommended split:
 
 ## Exact Miner Personas
 
-Focus on the personas Ellie can help now, not the entire mining org chart.
+Focus on the personas Ryvro can help now, not the entire mining org chart.
 
 ### Primary Persona 1: Underground Production Operator
 
 - Typical titles: jumbo operator, bogger operator, loader operator, haul truck operator, driller, shotfirer
 - Typical roster: rotating 7/7/7, 4/4/4, 2/2/3, or site-specific custom swings
 - Core pain: losing place in the cycle and second-guessing tomorrow's shift
-- Best Ellie fit: shift visibility, future-date lookup, reminders, voice queries
+- Best Ryvro fit: shift visibility, future-date lookup, reminders, voice queries
 - Best hook question: `Do you ever have that moment where you need to double-check if tomorrow is days, nights, or off?`
 - High-fit signals:
   - says they count forward manually
@@ -91,7 +91,7 @@ Focus on the personas Ellie can help now, not the entire mining org chart.
 - Typical titles: FIFO operator, FIFO tradesperson, contractor, field service tech, shutdown worker
 - Typical roster: 8/6, 14/7, 14/14, 21/7, 28/14
 - Core pain: knowing when the next work block or rest block starts and planning life around swings
-- Best Ellie fit: FIFO block tracking, next work block, next rest block, future planning
+- Best Ryvro fit: FIFO block tracking, next work block, next rest block, future planning
 - Best hook question: `What is harder to stay on top of for you: next swing in, next swing home, or planning life around the block?`
 - High-fit signals:
   - mentions fly-in or fly-out timing
@@ -103,7 +103,7 @@ Focus on the personas Ellie can help now, not the entire mining org chart.
 - Typical titles: boilermaker, fitter, electrician, diesel mechanic, fixed plant maintainer
 - Typical roster: rotating or FIFO, often long shifts and short turnarounds
 - Core pain: fatigue, prep time, inconsistent start times, and work-life disruption
-- Best Ellie fit: reminders, calendar certainty, future-date checks, voice support
+- Best Ryvro fit: reminders, calendar certainty, future-date checks, voice support
 - Best hook question: `What catches you out more often: the roster itself, the start times, or the knock-on effect on your life outside site?`
 - High-fit signals:
   - mentions prep routines
@@ -115,7 +115,7 @@ Focus on the personas Ellie can help now, not the entire mining org chart.
 - Typical titles: process operator, control room operator, plant operator
 - Typical roster: structured rotating shifts with frequent day-night transitions
 - Core pain: staying confident on where they are in a repetitive but mentally draining cycle
-- Best Ellie fit: shift certainty, calendar visibility, next-shift confidence
+- Best Ryvro fit: shift certainty, calendar visibility, next-shift confidence
 - Best hook question: `How often do you still need to check the pattern even when you've been on the same roster for ages?`
 - High-fit signals:
   - says the roster is simple but still easy to lose mentally
@@ -202,12 +202,12 @@ Use a 100-point model split into static fit and dynamic engagement.
 
 ## Decision Thresholds
 
-- 80-100: high-priority Ellie candidate
-- 65-79: complete the sequence and introduce Ellie on Day 7
+- 80-100: high-priority Ryvro candidate
+- 65-79: complete the sequence and introduce Ryvro on Day 7
 - 50-64: keep in research mode and do not force the product intro
 - below 50: pause after the research sequence or mark not fit
 
-Introduce Ellie only when all are true:
+Introduce Ryvro only when all are true:
 
 - day 6 or later
 - total score at least 65
@@ -216,7 +216,7 @@ Introduce Ellie only when all are true:
 - direct contact and consent captured
 - pain maps to today's product
 
-Do not introduce Ellie yet when:
+Do not introduce Ryvro yet when:
 
 - the lead's problem is team scheduling rather than personal schedule certainty
 - the lead is engaged but pain maps to a planned feature only
@@ -286,14 +286,14 @@ Message rules:
 - Goal: get explicit product requirements in the lead's own words
 - Core question: `If one tool fixed this properly, what would it need to answer in under 10 seconds for you?`
 - Score signals:
-  - wording that maps to Ellie
+  - wording that maps to Ryvro
   - strongest JTBD
   - intro readiness
 
 ### Day 7: Soft Reveal and Invite
 
-- Goal: introduce Ellie only if the lead is qualified
-- Core question for qualified leads: `We’re building Ellie around exactly this problem: [their pain in their words]. Want early access when the next version is ready?`
+- Goal: introduce Ryvro only if the lead is qualified
+- Core question for qualified leads: `We’re building Ryvro around exactly this problem: [their pain in their words]. Want early access when the next version is ready?`
 - Core question for borderline leads: `You’ve described a real roster-planning problem. Would you want to see a very early prototype when it’s ready, or should I keep you in the research loop only?`
 - Do not send Day 7 intro when score is below threshold.
 
@@ -338,7 +338,7 @@ This should be built as a narrow multi-agent system with deterministic state tra
 - guardrails:
   - one question only
   - no generic sales phrases
-  - no premature Ellie reveal
+  - no premature Ryvro reveal
 
 ### Agent 5: Reply Interpreter
 
@@ -482,7 +482,7 @@ Suggested fields:
 - `messagesPlanned`
 - `messagesSent`
 - `repliesReceived`
-- `ellieIntrosSent`
+- `ryvroIntrosSent`
 - `earlyAccessInterested`
 - `pausedNoReply`
 - `notFitClosed`
@@ -501,8 +501,8 @@ Use explicit stages instead of vague labels.
 - `paused_no_reply`
 - `contact_captured`
 - `fit_review`
-- `ellie_intro_ready`
-- `ellie_intro_sent`
+- `ryvro_intro_ready`
+- `ryvro_intro_sent`
 - `early_access_interested`
 - `research_only`
 - `not_fit`
@@ -512,7 +512,7 @@ Stage notes:
 
 - `contact_captured` means a direct channel exists and consent is valid
 - `fit_review` is the checkpoint after Day 6
-- `research_only` is for interesting people whose needs do not map tightly to Ellie yet
+- `research_only` is for interesting people whose needs do not map tightly to Ryvro yet
 
 ## Daily Automation Workflow
 
@@ -572,7 +572,7 @@ Suggested files:
 - `02-new-leads.md`
 - `03-score-changes.md`
 - `04-due-messages.md`
-- `05-ellie-intro-candidates.md`
+- `05-ryvro-intro-candidates.md`
 - `06-experiment-notes.md`
 
 ## Success Metrics
@@ -581,7 +581,7 @@ Suggested files:
 - reply rate on Days 1 through 3
 - reply depth, not just reply count
 - percentage reaching `fit_review`
-- percentage reaching `ellie_intro_ready`
+- percentage reaching `ryvro_intro_ready`
 - early-access acceptance rate
 - share of leads marked `research_only` versus `not_fit`
 - top pain points by persona
@@ -606,7 +606,7 @@ Suggested files:
 
 - implement reply parsing
 - automate stage transitions
-- automate Ellie-intro eligibility
+- automate Ryvro-intro eligibility
 
 ### Phase 4
 
@@ -616,7 +616,7 @@ Suggested files:
 
 ## Recommended Positioning For This Funnel
 
-Do not market Ellie first as an app.
+Do not market Ryvro first as an app.
 
 Market it first as help with:
 
@@ -625,4 +625,4 @@ Market it first as help with:
 - roster confidence
 - knowing the next work or rest block without counting
 
-Then reveal Ellie as the product being built around the exact problems the miner described.
+Then reveal Ryvro as the product being built around the exact problems the miner described.

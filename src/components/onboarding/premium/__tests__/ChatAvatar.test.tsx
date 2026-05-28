@@ -27,7 +27,7 @@ describe('ChatAvatar', () => {
       expect(avatar).toBeTruthy();
     });
 
-    it('should render the mining helmet image', () => {
+    it('should render the Ryvro assistant image', () => {
       const { UNSAFE_root } = render(<ChatAvatar reducedMotion={false} />);
       const image = UNSAFE_root.findByType('Image');
       expect(image).toBeTruthy();

@@ -46,6 +46,8 @@ const ENTITLEMENT_ALIASES = [
   'ryvro-premium',
   'ryvro_shift_planner_pro',
   'Ryvro Shift Planner Pro',
+  // Migration aliases only. Keep these until any existing tester/customer
+  // receipts are safely moved to the Ryvro dashboard entitlement names.
   'ellie_pro',
   'ellie-premium',
   'ellie_shift_planner_pro',

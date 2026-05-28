@@ -155,7 +155,7 @@ export const SignInScreen: React.FC = () => {
         <Animated.View entering={FadeInDown.duration(500)} style={styles.header}>
           <Text style={styles.appName}>
             {t('auth.signIn.appName', {
-              defaultValue: 'ELLIE',
+              defaultValue: 'RYVRO',
             })}
           </Text>
           <Text style={styles.subtitle}>

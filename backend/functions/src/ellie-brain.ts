@@ -355,7 +355,7 @@ function buildSystemPrompt(request: EllieBrainRequest): string {
         .join(', ')
     : '';
 
-  return `You are Ellie, a friendly and helpful voice assistant for shift workers. You help ${ctx.name} understand their work schedule.
+  return `You are Ryvro, a friendly and helpful voice assistant for shift workers. You help ${ctx.name} understand their work schedule.
 
 PERSONALITY:
 - Warm, concise, and empathetic to shift workers

@@ -46,7 +46,7 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 | 36  | Edit `App.tsx` — wrap app with `<SubscriptionProvider>`, render `<PaywallScreen>` as full-screen overlay when `paywallVisible` is true                                               | 🔧 Todo |
 | 37  | Edit `CustomTabBar.tsx` — gate center mic button: `isPro` → `openModal()`, not Pro → `openPaywall()`                                                                                 | 🔧 Todo |
 | 38  | Edit `MonthlyCalendarCard.tsx` — current week renders free; all other weeks get `<PadlockOverlay>` at 35% opacity when not Pro                                                       | 🔧 Todo |
-| 39  | Edit `ProfileScreen.tsx` — add "Ryvro Pro — Active ✓" / "Upgrade to Ryvro Pro" row after Work Stats section                                                                          | 🔧 Todo |
+| 39  | Edit `ProfileScreen.tsx` — add "Ryvro Pro — Active ✓" / "Upgrade to Ryvro Pro" row after Work Stats section                                                                          | ✅ Done |
 | 40  | Add `REVENUECAT_IOS_KEY` and `REVENUECAT_ANDROID_KEY` placeholders to `.env` (fill values after Task 42)                                                                             | 🔧 Todo |
 | 41  | Re-run full quality gate after subscription code is added: `lint` + `type-check` + `test` + `release:check` — all must pass                                                          | 🔧 Todo |
 

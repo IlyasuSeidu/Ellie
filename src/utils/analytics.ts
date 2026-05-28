@@ -194,7 +194,7 @@ export const Analytics = {
       { seconds_since_install: secondsSinceInstall, ...metadata }
     ),
 
-  // Hey Ellie demo on AhaMoment screen — tracks which suggestion drives most taps
+  // Ryvro voice demo on AhaMoment screen — tracks which suggestion drives most taps
   ahaMomentVoiceTried: (queryText: string, metadata?: AnalyticsPayload) =>
     void safeCall(
       (client) =>

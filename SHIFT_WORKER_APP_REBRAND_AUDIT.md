@@ -45,14 +45,17 @@ Public checks performed from this workspace:
 
 - Apple public software search API for `Ryvro`: no exact `Ryvro` app result returned. Results were unrelated fuzzy matches such as `LOKO`, `rypil`, and other non-shift apps. This does not prove App Store Connect name availability.
 - Refreshed Apple public software search API for `Ryvro` on 2026-05-28 after the rebrand branch was pushed: still no exact `Ryvro` app result returned.
+- Second refreshed Apple public software search API check on 2026-05-28 after commit `91ed6e2`: 13 fuzzy results, no exact `Ryvro` app, no exact `Ryvro Shift Planner`, and no shift-planner competitor with that name. This still does not prove App Store Connect name availability.
 - Google Play logged-in Chrome search for `Ryvro`: no exact `Ryvro` app result visible. Results were fuzzy matches such as `RYO Software`, `Rydoo`, `Rydora`, `Ryver`, and other unrelated apps. This does not prove Play Console name availability.
 - DNS/WHOIS:
   - `getryvro.com`: no DNS A/CNAME record and Verisign WHOIS returned no match.
   - `ryvro.com`: registered through GoDaddy and parked with Afternic nameservers.
   - `ryvro.app`, `ryvro.io`, `ryvro.co`: no DNS A/CNAME record in the local check; registrar availability still needs confirmation before relying on any of them.
 - Refreshed DNS checks on 2026-05-28: `getryvro.com`, `ryvro.app`, `ryvro.io`, and `ryvro.co` still returned no local A/CNAME records; `ryvro.com` still resolved to parked Afternic-style IPs.
+- Second refreshed DNS checks on 2026-05-28: `getryvro.com`, `ryvro.app`, `ryvro.io`, `ryvro.co`, `ryvro.ai`, `ryvro.net`, and `ryvro.org` returned no local A/CNAME records; `ryvro.com` still resolved to parked Afternic-style IPs. Registrar purchase/availability must still be checked directly.
 - Public web trademark search for exact `Ryvro`: no exact software/workforce scheduling mark surfaced in search results. This is still only a public search pass, not legal clearance.
 - Public social-handle HTTP checks were inconclusive. X returned a bot/permission-style `403`; Instagram and TikTok returned generic `200` responses that do not reliably prove handle ownership or availability.
+- Second social-handle HTTP check on 2026-05-28: `x.com/ryvro`, `instagram.com/ryvro`, and `tiktok.com/@ryvro` returned `200`, `youtube.com/@ryvro` returned `404`, and LinkedIn returned a bot-protection style `999`. These responses are not reliable handle-reservation proof; reserve the handles directly while logged in.
 
 Required account-only checks:
 
@@ -199,7 +202,7 @@ Remaining account-side identity work:
 
 - App icon: create a universal mark based on calendar, moon/sun, clock, rotation, or shift blocks.
 - Splash screen: replace mining-only visuals with a clean universal scheduling identity.
-- Onboarding assistant avatar: replace `assets/onboarding/icons/consolidated/mining-helmet-sacred-flame.png` with a neutral Ellie assistant mark.
+- Onboarding assistant avatar: replace `assets/onboarding/icons/consolidated/mining-helmet-sacred-flame.png` with a neutral Ryvro assistant mark.
 - Paywall hero art: show cross-industry schedule clarity, not mine-site identity.
 - Empty states: use neutral schedule/calendar graphics.
 - Template thumbnails: add visual variants for hospital, station, terminal, plant, depot, hotel, factory, airport, rig, warehouse, store, and mine.
@@ -613,7 +616,7 @@ Add first-class examples and QA scenarios for:
 - `docs/ADDING_SHIFT_PATTERNS.md`: replace legacy pattern instructions with universal template instructions.
 - `docs/DEPLOYMENT.md`: replace FIFO onboarding checks with universal builder checks.
 - `docs/RELEASE_NOTES_FIFO_DUAL_ROSTER.md`: archive as historical.
-- `docs/ELLIE_BUILD_IN_PUBLIC_AGENT.md`, `docs/ELLIE_RESEARCH_FUNNEL_OS.md`, and related content docs: keep miner-first go-to-market, but avoid saying the product can only ever serve miners.
+- `docs/RYVRO_BUILD_IN_PUBLIC_AGENT.md`, `docs/RYVRO_RESEARCH_FUNNEL_OS.md`, and related content docs: keep miner-first go-to-market, but avoid saying the product can only ever serve miners.
 - `docs/OFFLINE_FIRST_STRATEGY.md`: keep mining/underground as the strongest launch case, while noting the same offline-first design can later serve hospitals, factories, ships, rigs, warehouses, rail, and remote sites.
 
 ### Marketing and store checklist
@@ -1008,11 +1011,11 @@ Archive or rename:
 
 Rewrite marketing/research docs:
 
-- `docs/ELLIE_BUILD_IN_PUBLIC_AGENT.md`
-- `docs/ELLIE_RESEARCH_FUNNEL_OS.md`
-- `docs/ELLIE_RESEARCH_FUNNEL_AUTOMATION_PROMPT.md`
-- `docs/ELLIE_ANGLE_FRAMEWORK.md`
-- `docs/ELLIE_PLATFORM_PLAYBOOK.md`
+- `docs/RYVRO_BUILD_IN_PUBLIC_AGENT.md`
+- `docs/RYVRO_RESEARCH_FUNNEL_OS.md`
+- `docs/RYVRO_RESEARCH_FUNNEL_AUTOMATION_PROMPT.md`
+- `docs/RYVRO_ANGLE_FRAMEWORK.md`
+- `docs/RYVRO_PLATFORM_PLAYBOOK.md`
 - `docs/STOP_SCROLL_AUTOMATION_PROMPT.md`
 - `docs/STOP_SCROLL_CONTENT_OS.md`
 

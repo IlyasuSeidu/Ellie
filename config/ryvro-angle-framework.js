@@ -129,7 +129,7 @@ const ANGLES = [
     id: 'identity-worldview',
     label: 'Identity / Worldview',
     lane: 'human',
-    purpose: 'Tie the work to what Ellie stands for and how it should feel in the world.',
+    purpose: 'Tie the work to what Ryvro stands for and how it should feel in the world.',
     metaFocus: ['trust', 'clarity', 'momentum'],
     actions: ['implement', 'update', 'complete'],
     themes: ['foundation', 'design', 'voice', 'dashboard', 'onboarding'],
