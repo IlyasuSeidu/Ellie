@@ -3,6 +3,11 @@ import path from 'path';
 
 describe('Ryvro environment template', () => {
   const envExample = fs.readFileSync(path.join(process.cwd(), '.env.example'), 'utf8');
+  const packageJson = JSON.parse(
+    fs.readFileSync(path.join(process.cwd(), 'package.json'), 'utf8')
+  ) as {
+    scripts?: Record<string, string>;
+  };
 
   it('uses Ryvro defaults for public launch configuration', () => {
     expect(envExample).toContain('API_BASE_URL=https://api.getryvro.com');
@@ -34,5 +39,14 @@ describe('Ryvro environment template', () => {
   it('keeps old brain keys only as empty migration fallbacks', () => {
     expect(envExample).toContain('ELLIE_BRAIN_URL=');
     expect(envExample).toContain('ELLIE_BRAIN_TIMEOUT=');
+  });
+
+  it('keeps the Ryvro public clearance preflight command available', () => {
+    const scriptPath = path.join(process.cwd(), 'scripts/verify-ryvro-clearance.js');
+
+    expect(packageJson.scripts?.['release:clearance']).toBe(
+      'node scripts/verify-ryvro-clearance.js'
+    );
+    expect(fs.existsSync(scriptPath)).toBe(true);
   });
 });

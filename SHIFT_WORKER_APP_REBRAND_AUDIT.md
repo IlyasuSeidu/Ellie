@@ -29,6 +29,7 @@ Completed in the current working tree:
 - Added repo-side App Store / Google Play listing copy in `docs/RYVRO_STORE_LISTING.md`.
 - Added repo-side privacy policy, terms, support, account deletion, support email, and Firebase Auth email templates in `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`.
 - Added account-side Firebase, Google OAuth, Apple Sign-In, RevenueCat, store, domain, social, analytics, and release verification handoff in `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md`.
+- Added `npm run release:clearance` as a repeatable public preflight for Apple public software search, Google Play public page text, DNS/WHOIS, social URL statuses, and USPTO Trademark Search reachability.
 - Verified the current working tree with full Jest and project validation after the rebrand cleanup.
 - Archived old Ellie homescreen HTML prototypes and fixed-roster implementation plans so active docs point to the Universal Shift Builder path.
 - Replaced the default e2e seed profile with a neutral shift-worker fixture while keeping a separate mining/FIFO launch-wedge fixture.

@@ -238,6 +238,14 @@ After domain purchase:
 - Add App Store and Play Store support/privacy URLs.
 - Add website and social links to store listings.
 
+Before purchase/reservation, run the public repo-side evidence check:
+
+```bash
+npm run release:clearance
+```
+
+This command checks public Apple software search results, public Google Play search text, DNS, Verisign WHOIS for `.com` candidates, social URL HTTP statuses, and USPTO Trademark Search reachability. It does not buy domains, reserve handles, prove App Store Connect or Play Console availability, or replace legal trademark clearance. Treat it as a repeatable preflight check before the account-owner completes the logged-in steps.
+
 ## Analytics And Support Naming
 
 Use Ryvro-visible names in dashboards:

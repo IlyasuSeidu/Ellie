@@ -25,6 +25,7 @@
     "process-icons": "node scripts/process-icons.js",
     "backend:build": "npm --prefix backend/functions run build",
     "release:check": "npm run type-check && npm test -- --runInBand --silent && npm run backend:build",
+    "release:clearance": "node scripts/verify-ryvro-clearance.js",
     "firebase:projects": "firebase projects:list",
     "firebase:emulators:functions": "firebase emulators:start --config firebase.json --only functions",
     "firebase:deploy:functions": "firebase deploy --config firebase.json --only functions",
