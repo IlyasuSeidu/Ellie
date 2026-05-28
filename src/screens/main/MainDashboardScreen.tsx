@@ -335,6 +335,18 @@ export const MainDashboardScreen: React.FC = () => {
     handleNextMonth();
   }, [handleNextMonth, isPro, monthsAhead, subscriptionLoading]);
 
+  const handleLockedCalendarWeekPress = useCallback(() => {
+    if (subscriptionLoading) {
+      return;
+    }
+    Analytics.track('feature_gate_triggered', {
+      feature: 'calendar_locked_week',
+      source: 'dashboard',
+      months_ahead: monthsAhead,
+    });
+    setShowFeatureGatePaywall(true);
+  }, [monthsAhead, subscriptionLoading]);
+
   // Avatar change handler — persists new URI to AsyncStorage
   const handleAvatarChange = useCallback(
     (newUri: string | null) => {
@@ -495,6 +507,8 @@ export const MainDashboardScreen: React.FC = () => {
           activeGlowColor={
             activeShift?.isOvernightCarryOver ? SHIFT_GLOW_COLORS[activeShift.shiftType] : undefined
           }
+          lockNonCurrentWeeks={!isPro && !subscriptionLoading}
+          onLockedWeekPress={handleLockedCalendarWeekPress}
           animationDelay={200}
           testID="dashboard-calendar"
         />

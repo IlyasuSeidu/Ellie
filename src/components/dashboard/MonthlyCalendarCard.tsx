@@ -23,6 +23,7 @@ import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import { getDaysInMonth, getFirstDayOfMonth, isToday as checkIsToday } from '@/utils/dateUtils';
 import { ShiftCalendarDayCell } from './ShiftCalendarDayCell';
+import { PadlockOverlay } from '@/components/subscription/PadlockOverlay';
 import { type ShiftDay, type ShiftCycle } from '@/types';
 import { normalizeLanguage } from '@/i18n/languageDetector';
 import { getShiftDisplayModel } from '@/utils/universalShiftScheduleUtils';
@@ -45,6 +46,8 @@ export interface MonthlyCalendarCardProps {
   onDayPress?: (day: number) => void;
   shiftCycle?: ShiftCycle;
   activeGlowColor?: string;
+  lockNonCurrentWeeks?: boolean;
+  onLockedWeekPress?: () => void;
   animationDelay?: number;
   testID?: string;
 }
@@ -106,6 +109,8 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
   onDayPress,
   shiftCycle,
   activeGlowColor,
+  lockNonCurrentWeeks = false,
+  onLockedWeekPress,
   animationDelay = 200,
   testID,
 }) => {
@@ -119,6 +124,7 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
     () => new Date(year, month, 1).toLocaleDateString(localeTag, { month: 'long' }),
     [localeTag, month, year]
   );
+  const currentDate = useMemo(() => new Date(), []);
 
   const shiftDayMap = useMemo(() => {
     const map: Record<number, ShiftDay> = {};
@@ -381,6 +387,19 @@ export const MonthlyCalendarCard: React.FC<MonthlyCalendarCardProps> = ({
                   );
                 })}
               </Animated.View>
+              {lockNonCurrentWeeks &&
+                !week.some(
+                  (day) =>
+                    day !== null &&
+                    currentDate.getFullYear() === year &&
+                    currentDate.getMonth() === month &&
+                    currentDate.getDate() === day
+                ) && (
+                  <PadlockOverlay
+                    onPress={onLockedWeekPress ?? onNextMonth}
+                    testID={`calendar-week-${weekIndex}-locked`}
+                  />
+                )}
             </View>
           ))}
         </View>
@@ -523,6 +542,9 @@ const styles = StyleSheet.create({
   },
   weekRowWrapper: {
     position: 'relative',
+    width: '100%',
+    borderRadius: 6,
+    overflow: 'hidden',
   },
   emptyCell: {
     width: CELL_WIDTH,
