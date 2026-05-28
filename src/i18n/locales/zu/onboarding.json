@@ -373,7 +373,7 @@
         "shiftPattern": "Iphethini yamashifu",
         "fifoConfiguration": "Ukucushwa kwe-FIFO",
         "customPatternConfiguration": "Ukucushwa kwephethini yangokwezifiso",
-        "phaseOffset": "Ukushintsha kwesigaba",
+        "phaseOffset": "Indawo yamanje",
         "startDate": "Usuku lokuqala",
         "shiftTimes": "Izikhathi zamashifu"
       }
@@ -1191,12 +1191,12 @@
       "placeholder": "Uhlelo Lwami"
     },
     "anchorDate": {
-      "label": "Usuku lwankolo",
-      "hint": "Ulandelwano luyaphinda kusukela kulolu suku"
+      "label": "Usuku lokuqondanisa isheduli",
+      "hint": "Khetha usuku lwangempela u-Ryvro okufanele aluqondanise nomjikelezo wakho"
     },
     "phaseOffset": {
-      "label": "Usuku lwamanje emjikelezo",
-      "hint": "0 = ukuqala komjikelezo"
+      "label": "Ukuphi emjikelezweni?",
+      "hint": "Sebenzisa 1 entweni yokuqala kulandelano, 2 kweyesibili, njalo njalo"
     },
     "ai": {
       "sectionTitle": "Umsizi we-AI",

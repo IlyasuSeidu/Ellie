@@ -317,7 +317,7 @@
         "shiftPattern": "班次模式",
         "fifoConfiguration": "FIFO 配置",
         "customPatternConfiguration": "自定义模式配置",
-        "phaseOffset": "阶段偏移",
+        "phaseOffset": "当前位置",
         "startDate": "开始日期",
         "shiftTimes": "班次时间"
       }
@@ -1135,12 +1135,12 @@
       "placeholder": "我的排班"
     },
     "anchorDate": {
-      "label": "锚定日期",
-      "hint": "序列从此日期开始重复"
+      "label": "排班匹配日期",
+      "hint": "选择 Ryvro 应与您的轮班周期对齐的真实日期"
     },
     "phaseOffset": {
-      "label": "当前周期日",
-      "hint": "0 = 周期开始"
+      "label": "你现在在轮班周期的哪一步？",
+      "hint": "序列中的第一项填 1，第二项填 2，依此类推"
     },
     "ai": {
       "sectionTitle": "AI 助手",

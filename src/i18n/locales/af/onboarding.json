@@ -354,7 +354,7 @@
         "shiftPattern": "Skofpatroon",
         "fifoConfiguration": "FIFO-opstelling",
         "customPatternConfiguration": "Pasgemaakte patroonopstelling",
-        "phaseOffset": "Faseverskuiwing",
+        "phaseOffset": "Huidige posisie",
         "startDate": "Begindatum",
         "shiftTimes": "Skofure"
       }
@@ -1172,12 +1172,12 @@
       "placeholder": "My Skedule"
     },
     "anchorDate": {
-      "label": "Ankerdatum",
-      "hint": "Die reeks herhaal vanaf hierdie datum"
+      "label": "Skedule-pasdatum",
+      "hint": "Kies die regte datum waarmee Ryvro jou rotasie moet laat ooreenstem"
     },
     "phaseOffset": {
-      "label": "Huidige dag in siklus",
-      "hint": "0 = begin van siklus"
+      "label": "Waar is jy in die rotasie?",
+      "hint": "Gebruik 1 vir die eerste item in die reeks, 2 vir die tweede, ensovoorts"
     },
     "ai": {
       "sectionTitle": "KI-assistent",

@@ -295,7 +295,7 @@ Support for deep links using Expo's linking configuration:
 
 ```typescript
 const linking = {
-  prefixes: ['ellie://', 'https://ellie.app'],
+  prefixes: ['ryvro://', 'https://getryvro.com'],
   config: {
     screens: {
       Home: 'home',

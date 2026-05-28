@@ -323,8 +323,8 @@ Edit `eas.json` for iOS-specific settings:
 Generate a new keystore for signing:
 
 ```bash
-keytool -genkeypair -v -storetype PKCS12 -keystore ellie.keystore \
-  -alias ellie-key-alias -keyalg RSA -keysize 2048 -validity 10000
+keytool -genkeypair -v -storetype PKCS12 -keystore ryvro.keystore \
+  -alias ryvro-key-alias -keyalg RSA -keysize 2048 -validity 10000
 ```
 
 **Important**: Store keystore and passwords securely!
@@ -650,7 +650,7 @@ jobs:
     "development": {
       "env": {
         "APP_ENV": "development",
-        "API_URL": "https://dev-api.ellie.app"
+        "API_URL": "https://dev-api.getryvro.com"
       }
     }
   }
@@ -665,7 +665,7 @@ jobs:
     "staging": {
       "env": {
         "APP_ENV": "staging",
-        "API_URL": "https://staging-api.ellie.app"
+        "API_URL": "https://staging-api.getryvro.com"
       }
     }
   }
@@ -680,7 +680,7 @@ jobs:
     "production": {
       "env": {
         "APP_ENV": "production",
-        "API_URL": "https://api.ellie.app"
+        "API_URL": "https://api.getryvro.com"
       }
     }
   }
@@ -719,7 +719,7 @@ cd ..
 
 ```bash
 # Verify keystore
-keytool -list -v -keystore ellie.keystore
+keytool -list -v -keystore ryvro.keystore
 ```
 
 ### EAS Build Issues

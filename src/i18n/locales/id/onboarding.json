@@ -368,7 +368,7 @@
         "shiftPattern": "Pola Shift",
         "fifoConfiguration": "Konfigurasi FIFO",
         "customPatternConfiguration": "Konfigurasi Pola Kustom",
-        "phaseOffset": "Offset Fase",
+        "phaseOffset": "Posisi saat ini",
         "startDate": "Tanggal Mulai",
         "shiftTimes": "Waktu Shift"
       }
@@ -1186,12 +1186,12 @@
       "placeholder": "Jadwal Saya"
     },
     "anchorDate": {
-      "label": "Tanggal jangkar",
-      "hint": "Urutan diulang dari tanggal ini"
+      "label": "Tanggal pencocokan jadwal",
+      "hint": "Pilih tanggal nyata yang harus Ryvro cocokkan dengan rotasi Anda"
     },
     "phaseOffset": {
-      "label": "Hari saat ini dalam siklus",
-      "hint": "0 = awal siklus"
+      "label": "Di mana posisi Anda dalam rotasi?",
+      "hint": "Gunakan 1 untuk item pertama dalam urutan, 2 untuk yang kedua, dan seterusnya"
     },
     "ai": {
       "sectionTitle": "Asisten AI",

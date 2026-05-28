@@ -49,16 +49,20 @@ Public checks performed from this workspace:
 - Apple public software search API for `Ryvro`: no exact `Ryvro` app result returned. Results were unrelated fuzzy matches such as `LOKO`, `rypil`, and other non-shift apps. This does not prove App Store Connect name availability.
 - Refreshed Apple public software search API for `Ryvro` on 2026-05-28 after the rebrand branch was pushed: still no exact `Ryvro` app result returned.
 - Second refreshed Apple public software search API check on 2026-05-28 after commit `91ed6e2`: 13 fuzzy results, no exact `Ryvro` app, no exact `Ryvro Shift Planner`, and no shift-planner competitor with that name. This still does not prove App Store Connect name availability.
+- Third refreshed Apple public software search API check on 2026-05-28 after commit `7e2365d`: 16 fuzzy results, no exact `Ryvro` app, no exact `Ryvro Shift Planner`, and no shift-planner competitor with that name. This still does not prove App Store Connect name availability.
 - Google Play logged-in Chrome search for `Ryvro`: no exact `Ryvro` app result visible. Results were fuzzy matches such as `RYO Software`, `Rydoo`, `Rydora`, `Ryver`, and other unrelated apps. This does not prove Play Console name availability.
+- Refreshed public Google Play web search for `Ryvro` on 2026-05-28 after commit `7e2365d`: no exact `Ryvro Shift Planner` result was found in the fetched page; visible fuzzy app-name spans included `Rydoo` and `Rydora`. This still does not prove Play Console name availability.
 - DNS/WHOIS:
   - `getryvro.com`: no DNS A/CNAME record and Verisign WHOIS returned no match.
   - `ryvro.com`: registered through GoDaddy and parked with Afternic nameservers.
   - `ryvro.app`, `ryvro.io`, `ryvro.co`: no DNS A/CNAME record in the local check; registrar availability still needs confirmation before relying on any of them.
 - Refreshed DNS checks on 2026-05-28: `getryvro.com`, `ryvro.app`, `ryvro.io`, and `ryvro.co` still returned no local A/CNAME records; `ryvro.com` still resolved to parked Afternic-style IPs.
 - Second refreshed DNS checks on 2026-05-28: `getryvro.com`, `ryvro.app`, `ryvro.io`, `ryvro.co`, `ryvro.ai`, `ryvro.net`, and `ryvro.org` returned no local A/CNAME records; `ryvro.com` still resolved to parked Afternic-style IPs. Registrar purchase/availability must still be checked directly.
+- Third refreshed DNS checks on 2026-05-28 after commit `7e2365d`: `ryvro.com` resolved to parked-style IPs `13.248.169.48` and `76.223.54.146`; `getryvro.com`, `ryvro.app`, `ryvro.io`, and `useryvro.com` returned no local A/CNAME records. Registrar purchase/availability must still be checked directly.
 - Public web trademark search for exact `Ryvro`: no exact software/workforce scheduling mark surfaced in search results. This is still only a public search pass, not legal clearance.
 - Public social-handle HTTP checks were inconclusive. X returned a bot/permission-style `403`; Instagram and TikTok returned generic `200` responses that do not reliably prove handle ownership or availability.
 - Second social-handle HTTP check on 2026-05-28: `x.com/ryvro`, `instagram.com/ryvro`, and `tiktok.com/@ryvro` returned `200`, `youtube.com/@ryvro` returned `404`, and LinkedIn returned a bot-protection style `999`. These responses are not reliable handle-reservation proof; reserve the handles directly while logged in.
+- Third social-handle HTTP check on 2026-05-28 after commit `7e2365d`: `x.com/ryvro`, `instagram.com/ryvro`, and `tiktok.com/@ryvro` returned `200`, `youtube.com/@ryvro` returned `404`, and LinkedIn returned bot-protection style `999`. These responses are not reliable handle-reservation proof; reserve the handles directly while logged in.
 
 Required account-only checks:
 

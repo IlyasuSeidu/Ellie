@@ -288,7 +288,7 @@
         "shiftPattern": "Padrão de turnos",
         "fifoConfiguration": "Configuração FIFO",
         "customPatternConfiguration": "Configuração de padrão personalizado",
-        "phaseOffset": "Deslocamento de fase",
+        "phaseOffset": "Posição atual",
         "startDate": "Data de início",
         "shiftTimes": "Horários de turno"
       }
@@ -1181,12 +1181,12 @@
       "placeholder": "Minha Escala"
     },
     "anchorDate": {
-      "label": "Data âncora",
-      "hint": "A sequência se repete a partir desta data"
+      "label": "Data para alinhar a escala",
+      "hint": "Escolha a data real que o Ryvro deve usar para alinhar sua rotação"
     },
     "phaseOffset": {
-      "label": "Dia atual no ciclo",
-      "hint": "0 = início do ciclo"
+      "label": "Onde você está na rotação?",
+      "hint": "Use 1 para o primeiro item da sequência, 2 para o segundo, e assim por diante"
     },
     "ai": {
       "sectionTitle": "Assistente de IA",

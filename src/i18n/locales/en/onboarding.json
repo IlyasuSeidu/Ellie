@@ -444,7 +444,7 @@
         "shiftPattern": "Shift Pattern",
         "fifoConfiguration": "FIFO Configuration",
         "customPatternConfiguration": "Custom Pattern Configuration",
-        "phaseOffset": "Phase Offset",
+        "phaseOffset": "Current position",
         "startDate": "Start Date",
         "shiftTimes": "Shift Times"
       }
@@ -1172,12 +1172,12 @@
       "placeholder": "My Schedule"
     },
     "anchorDate": {
-      "label": "Anchor date",
-      "hint": "The sequence repeats from this date"
+      "label": "Schedule match date",
+      "hint": "Pick the real date Ryvro should line up with your rotation"
     },
     "phaseOffset": {
-      "label": "Current day in cycle",
-      "hint": "0 = start of cycle"
+      "label": "Where are you in the rotation?",
+      "hint": "Use 1 for the first item in the sequence, 2 for the second, and so on"
     },
     "ai": {
       "sectionTitle": "AI Assistant",

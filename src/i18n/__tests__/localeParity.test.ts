@@ -179,4 +179,33 @@ describe('locale parity', () => {
 
     expect(missingKeys).toEqual([]);
   });
+
+  it('does not expose technical cycle-alignment terms in onboarding copy', () => {
+    const forbiddenPhrases = [
+      'phase offset',
+      'offset fase',
+      'deslocamento de fase',
+      'desfase de fase',
+      'décalage de phase',
+      'faseverskuiwing',
+      'смещение фазы',
+      'إزاحة المرحلة',
+      'फेज़ ऑफ़सेट',
+      '阶段偏移',
+      'anchor date',
+    ];
+
+    locales.forEach((locale) => {
+      const localePath = path.join(LOCALES_ROOT, locale, 'onboarding.json');
+      const localized = JSON.parse(fs.readFileSync(localePath, 'utf8')) as Record<string, unknown>;
+      const strings = Array.from(flattenStringValues(localized).entries());
+      const matches = strings
+        .filter(([, value]) =>
+          forbiddenPhrases.some((phrase) => value.toLowerCase().includes(phrase))
+        )
+        .map(([key, value]) => `${locale}:${key}=${value}`);
+
+      expect(matches).toEqual([]);
+    });
+  });
 });

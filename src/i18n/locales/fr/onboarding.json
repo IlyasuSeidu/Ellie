@@ -377,7 +377,7 @@
         "shiftPattern": "Schéma de quarts",
         "fifoConfiguration": "Configuration FIFO",
         "customPatternConfiguration": "Configuration du schéma personnalisé",
-        "phaseOffset": "Décalage de phase",
+        "phaseOffset": "Position actuelle",
         "startDate": "Date de début",
         "shiftTimes": "Horaires des quarts"
       }
@@ -1195,12 +1195,12 @@
       "placeholder": "Mon planning"
     },
     "anchorDate": {
-      "label": "Date d'ancrage",
-      "hint": "La séquence se répète à partir de cette date"
+      "label": "Date d'alignement du planning",
+      "hint": "Choisissez la date réelle avec laquelle Ryvro doit aligner votre rotation"
     },
     "phaseOffset": {
-      "label": "Jour actuel dans le cycle",
-      "hint": "0 = début du cycle"
+      "label": "Où en êtes-vous dans la rotation ?",
+      "hint": "Utilisez 1 pour le premier élément de la séquence, 2 pour le deuxième, et ainsi de suite"
     },
     "ai": {
       "sectionTitle": "Assistant IA",

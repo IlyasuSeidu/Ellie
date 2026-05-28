@@ -292,7 +292,7 @@
         "shiftPattern": "Patrón de turnos",
         "fifoConfiguration": "Configuración FIFO",
         "customPatternConfiguration": "Configuración de patrón personalizado",
-        "phaseOffset": "Desfase de fase",
+        "phaseOffset": "Posición actual",
         "startDate": "Fecha de inicio",
         "shiftTimes": "Horarios de turnos"
       }
@@ -1191,12 +1191,12 @@
       "placeholder": "Mi horario"
     },
     "anchorDate": {
-      "label": "Fecha de anclaje",
-      "hint": "La secuencia se repite desde esta fecha"
+      "label": "Fecha para alinear el horario",
+      "hint": "Elige la fecha real con la que Ryvro debe alinear tu rotación"
     },
     "phaseOffset": {
-      "label": "Día actual en el ciclo",
-      "hint": "0 = inicio del ciclo"
+      "label": "¿Dónde estás en la rotación?",
+      "hint": "Usa 1 para el primer elemento de la secuencia, 2 para el segundo, y así sucesivamente"
     },
     "ai": {
       "sectionTitle": "Asistente IA",
