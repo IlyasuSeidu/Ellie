@@ -12,6 +12,7 @@ describe('Ryvro environment template', () => {
     expect(envExample).toContain('WAKE_WORD_PHRASE=Ryvro');
     expect(envExample).toContain('WAKE_WORD_KEYWORD_PATHS_ANDROID=ryvro_android.ppn');
     expect(envExample).toContain('WAKE_WORD_KEYWORD_PATHS_IOS=ryvro_ios.ppn');
+    expect(envExample).toContain('OPENWAKEWORD_MODEL_PATH=');
   });
 
   it('does not advertise retired Ellie or ShiftSync values in new environments', () => {
