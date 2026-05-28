@@ -49,4 +49,20 @@ describe('Ryvro environment template', () => {
     );
     expect(fs.existsSync(scriptPath)).toBe(true);
   });
+
+  it('does not keep retired Ellie brain endpoints in CI workflows', () => {
+    const ciWorkflow = fs.readFileSync(
+      path.join(process.cwd(), '.github/workflows/ci.yml'),
+      'utf8'
+    );
+    const e2eWorkflow = fs.readFileSync(
+      path.join(process.cwd(), '.github/workflows/e2e.yml'),
+      'utf8'
+    );
+
+    expect(ciWorkflow).not.toContain('ellie-brain-test.cloudfunctions.net/ellieBrain');
+    expect(e2eWorkflow).not.toContain('ellie-brain-test.cloudfunctions.net/ellieBrain');
+    expect(ciWorkflow).toContain('ryvro-brain-test.cloudfunctions.net/ryvroBrain');
+    expect(e2eWorkflow).toContain('ryvro-brain-test.cloudfunctions.net/ryvroBrain');
+  });
 });
