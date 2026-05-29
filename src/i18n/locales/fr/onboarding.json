@@ -1296,7 +1296,7 @@
       "countsAsNight": "Compte comme équipe de nuit",
       "color": "Couleur",
       "icon": "Icône",
-      "location": "Lieu",
+      "location": "Lieu de travail (facultatif)",
       "save": "Enregistrer",
       "delete": "Supprimer le type",
       "deleteConfirm": {

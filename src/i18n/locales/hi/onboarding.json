@@ -1268,7 +1268,7 @@
       "countsAsNight": "रात्रि शिफ्ट के रूप में गिना जाए",
       "color": "रंग",
       "icon": "आइकन",
-      "location": "स्थान",
+      "location": "कार्य स्थान (वैकल्पिक)",
       "save": "सहेजें",
       "delete": "प्रकार हटाएं",
       "deleteConfirm": {

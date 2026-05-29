@@ -1236,7 +1236,7 @@
       "countsAsNight": "计为夜班",
       "color": "颜色",
       "icon": "图标",
-      "location": "地点",
+      "location": "工作地点（可选）",
       "save": "保存",
       "delete": "删除类型",
       "deleteConfirm": {

@@ -485,8 +485,109 @@ describe('Ryvro environment template', () => {
       ].join('\n');
 
       expect(launchProof).not.toMatch(/underground miner|subterr[aâ]ne|haul truck|drill/i);
-      expect(launchProof).not.toMatch(/site roster|low-signal sites/i);
+      expect(launchProof).not.toMatch(/site roster|roster site|low-signal sites/i);
       expect(launchProof).toMatch(/FIFO|shift|turno|santé|health|security|transport|equipes/i);
+    }
+  });
+
+  it('keeps translated work-location labels broad instead of site-specific', () => {
+    const expectedLabels: Record<
+      string,
+      {
+        location: string;
+        section: string;
+        site: string;
+      }
+    > = {
+      af: {
+        location: 'Werkplek (opsioneel)',
+        section: 'WERKPLEKBESONDERHEDE',
+        site: 'Werkplek',
+      },
+      ar: {
+        location: 'موقع العمل (اختياري)',
+        section: 'تفاصيل موقع العمل',
+        site: 'موقع العمل',
+      },
+      en: {
+        location: 'Work location (optional)',
+        section: 'WORK LOCATION',
+        site: 'Work location',
+      },
+      es: {
+        location: 'Lugar de trabajo (opcional)',
+        section: 'LUGAR DE TRABAJO',
+        site: 'Lugar de trabajo',
+      },
+      fr: {
+        location: 'Lieu de travail (facultatif)',
+        section: 'LIEU DE TRAVAIL',
+        site: 'Lieu de travail',
+      },
+      hi: {
+        location: 'कार्य स्थान (वैकल्पिक)',
+        section: 'कार्य स्थान विवरण',
+        site: 'कार्य स्थान',
+      },
+      id: {
+        location: 'Lokasi kerja (opsional)',
+        section: 'DETAIL LOKASI KERJA',
+        site: 'Lokasi kerja',
+      },
+      'pt-BR': {
+        location: 'Local de trabalho (opcional)',
+        section: 'DETALHES DO LOCAL DE TRABALHO',
+        site: 'Local de trabalho',
+      },
+      ru: {
+        location: 'Место работы (необязательно)',
+        section: 'МЕСТО РАБОТЫ',
+        site: 'Место работы',
+      },
+      'zh-CN': {
+        location: '工作地点（可选）',
+        section: '工作地点',
+        site: '工作地点',
+      },
+      zu: {
+        location: 'Indawo yokusebenza (ongakukhetha)',
+        section: 'IMINININGWANE YENDAWO YOKUSEBENZA',
+        site: 'Indawo yokusebenza',
+      },
+    };
+
+    for (const [locale, expected] of Object.entries(expectedLabels)) {
+      const profile = JSON.parse(
+        fs.readFileSync(
+          path.join(process.cwd(), 'src/i18n/locales', locale, 'profile.json'),
+          'utf8'
+        )
+      ) as {
+        shift?: {
+          sections?: {
+            siteDetails?: string;
+          };
+          site?: string;
+          siteName?: string;
+        };
+      };
+      const onboarding = JSON.parse(
+        fs.readFileSync(
+          path.join(process.cwd(), 'src/i18n/locales', locale, 'onboarding.json'),
+          'utf8'
+        )
+      ) as {
+        shiftBuilder?: {
+          inspector?: {
+            location?: string;
+          };
+        };
+      };
+
+      expect(profile.shift?.site).toBe(expected.site);
+      expect(profile.shift?.siteName).toBe(expected.location);
+      expect(profile.shift?.sections?.siteDetails).toBe(expected.section);
+      expect(onboarding.shiftBuilder?.inspector?.location).toBe(expected.location);
     }
   });
 

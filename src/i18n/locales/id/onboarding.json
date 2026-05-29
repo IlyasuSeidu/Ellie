@@ -1287,7 +1287,7 @@
       "countsAsNight": "Dihitung sebagai shift malam",
       "color": "Warna",
       "icon": "Ikon",
-      "location": "Lokasi",
+      "location": "Lokasi kerja (opsional)",
       "save": "Simpan",
       "delete": "Hapus tipe",
       "deleteConfirm": {

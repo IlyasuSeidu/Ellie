@@ -1272,7 +1272,7 @@
       "countsAsNight": "Conta como turno noturno",
       "color": "Cor",
       "icon": "Ícone",
-      "location": "Local",
+      "location": "Local de trabalho (opcional)",
       "save": "Salvar",
       "delete": "Excluir tipo",
       "deleteConfirm": {
