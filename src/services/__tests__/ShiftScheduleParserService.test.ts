@@ -340,6 +340,48 @@ describe('parseShiftScheduleDescription - error conditions', () => {
     expect(countByName.get('Off')).toBe(4);
   });
 
+  it('covers the built-in fallback parser across broad shift-worker industries', async () => {
+    mockShiftScheduleParser.url = '';
+    const industryPrompts = [
+      'Nurse schedule: 2 day shifts 7am to 7pm, 2 night shifts 7pm to 7am, then 3 off.',
+      'Security guard: 4 days, 4 nights, 4 off.',
+      'Paramedic rota: 1 day shift, 1 night shift, then 4 days off.',
+      'Factory operator: 2 mornings, 2 afternoons, 2 nights, then 4 off.',
+      'Rail controller: 3 early shifts, 3 late shifts, 3 nights, then 5 off.',
+      'Airport ground crew: 2 early shifts 5am to 1pm, 2 late shifts 1pm to 9pm, then 2 off.',
+      'Hotel front desk: 5 evenings, 2 off.',
+      'Retail supervisor: 5 day shifts, 2 rest days.',
+      'Warehouse picker: 4 nights, 3 off.',
+      'Logistics dispatcher: 2 days, 2 nights, 4 off.',
+      'Offshore technician: 14 days on, 14 days off.',
+      'Mining FIFO operator: 7 days, 7 nights, 14 off.',
+      'Power plant operator: 3 days, 3 nights, 6 off.',
+      'Data center technician: 4 day shifts, 4 night shifts, 4 off.',
+      'Cleaning team lead: 6 nights, 3 off.',
+      'Contact center team: 5 late shifts, 2 off.',
+      'Broadcast engineer: 2 days, 2 on call, 3 off.',
+      'Port worker: 2 travel days, 10 day shifts, 4 off.',
+      'Construction shutdown crew: 12 days on, 2 days off.',
+      'Training week: 3 training days, 1 on-call day, then 3 leave days.',
+    ];
+
+    const parsedResults = await Promise.all(
+      industryPrompts.map((prompt) => parseShiftScheduleDescription(makeRequest(prompt)))
+    );
+
+    expect(parsedResults).toHaveLength(20);
+    for (const result of parsedResults) {
+      expect(result.status).toBe('draft');
+      expect(result.scheduleDraft?.source).toBe('ai');
+      expect(result.scheduleDraft?.shiftDefinitions.length).toBeGreaterThan(0);
+      expect(result.scheduleDraft?.sequence.length).toBeGreaterThan(0);
+      expect(result.warnings).toContain(
+        'AI parser endpoint was unavailable, so Ryvro used the built-in pattern parser.'
+      );
+    }
+    expect(mockFetch).not.toHaveBeenCalled();
+  });
+
   it('throws MALFORMED_RESPONSE when response.json() throws', async () => {
     mockFetch.mockReturnValue(
       Promise.resolve({

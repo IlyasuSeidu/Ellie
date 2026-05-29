@@ -40,6 +40,7 @@ Completed in the current working tree:
 - Cleaned remaining launch-critical broad-market copy in README, English onboarding feature descriptions, selected translated placeholders/social proof, and onboarding icon source guidance.
 - Hardened tracked generated-content guidance and publishable build-in-public packs so they use Ryvro naming, broad shift-worker discovery tags, and FIFO/shift-worker audience language instead of stale Ellie or mining-only tags.
 - Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the latest cleanup. Latest pushed CI run for this branch passed on 2026-05-29.
+- Added built-in fallback parser regression coverage across 20 shift-worker industry prompts so the AI builder fallback is proven beyond mining/FIFO examples.
 
 Still pending outside this repo or intentionally kept for compatibility:
 
@@ -465,7 +466,7 @@ Add first-class examples and QA scenarios for:
 - AI must preserve user wording enough for follow-up edits.
 - AI must support follow-up refinement from the draft sheet.
 - AI must fall back to deterministic parser when the remote parser is unavailable.
-- The fallback parser must be tested against at least 20 industry examples before launch.
+- The fallback parser has regression coverage against at least 20 industry examples before launch.
 
 ### AI infrastructure backlog
 
@@ -1356,6 +1357,7 @@ Identity:
 
 Completed P0 tasks:
 Completed P1 tasks:
+- RB-023 parser tests for 20 industry phrases: covered by `ShiftScheduleParserService.test.ts`.
 Deferred P2 tasks:
 
 Remaining old-term hits:
