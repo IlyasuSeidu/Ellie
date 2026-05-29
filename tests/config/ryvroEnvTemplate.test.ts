@@ -246,6 +246,41 @@ describe('Ryvro environment template', () => {
     expect(externalSetup).not.toContain('Keep old entitlement aliases');
   });
 
+  it('keeps legal, privacy, and support launch templates broad enough for universal schedules', () => {
+    const privacySupport = fs.readFileSync(
+      path.join(process.cwd(), 'docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md'),
+      'utf8'
+    );
+
+    expect(privacySupport).toContain(
+      'Ryvro Shift Planner helps shift workers create, edit, and understand work schedules'
+    );
+    expect(privacySupport).toContain('AI builder prompts used to draft schedules');
+    expect(privacySupport).toContain('Calendar Import And Export');
+    expect(privacySupport).toContain('importing or exporting a calendar');
+    expect(privacySupport).toContain('holiday exceptions');
+    expect(privacySupport).toContain('reminders');
+    expect(privacySupport).toContain('account deletion');
+    expect(privacySupport).toContain('support@getryvro.com');
+    expect(privacySupport).not.toMatch(/mine site|haul truck|underground miner/i);
+  });
+
+  it('keeps external account setup instructions on Ryvro console names', () => {
+    const externalSetup = fs.readFileSync(
+      path.join(process.cwd(), 'docs/RYVRO_EXTERNAL_SERVICE_SETUP.md'),
+      'utf8'
+    );
+
+    expect(externalSetup).toContain('iOS app nickname: Ryvro iOS');
+    expect(externalSetup).toContain('Android app nickname: Ryvro Android');
+    expect(externalSetup).toContain('Display name: Ryvro Pro');
+    expect(externalSetup).toContain('Profile shows `Ryvro Pro - Active`');
+    expect(externalSetup).toContain('Do not configure retired Ellie entitlement IDs');
+    expect(externalSetup).not.toContain('Ellie iOS');
+    expect(externalSetup).not.toContain('Ellie Android');
+    expect(externalSetup).not.toContain('Ellie Pro');
+  });
+
   it('keeps active launch paywall proof broad enough for non-mining shift teams', () => {
     const localeRoot = path.join(process.cwd(), 'src/i18n/locales');
     const commonLocaleFiles = fs

@@ -106,6 +106,36 @@ describe('Ryvro documentation archive', () => {
     expect(readme).not.toContain('Pattern Selection');
   });
 
+  it('keeps architecture docs centered on the Universal Shift Builder source of truth', () => {
+    const architecture = read('docs/ARCHITECTURE.md');
+
+    expect(architecture).toContain(
+      'Ryvro uses the Universal Shift Builder as the single schedule setup and editing path'
+    );
+    expect(architecture).toContain(
+      'Dashboard, calendar, reminders, import/export, and voice assistant surfaces consume the same normalized schedule data'
+    );
+    expect(architecture).toContain(
+      'Legacy rotating/FIFO terminology remains only where it helps users recognize a familiar template'
+    );
+    expect(architecture).not.toContain(
+      'route users through legacy fixed-category onboarding screens'
+    );
+    expect(architecture).not.toContain('FIFO is the primary schedule architecture');
+  });
+
+  it('keeps active FIFO guidance template-specific instead of app-wide architecture', () => {
+    const fifoGuide = read('docs/USER_GUIDE_FIFO.md');
+
+    expect(fifoGuide).toContain('Open the Universal Shift Builder from onboarding or Settings');
+    expect(fifoGuide).toContain('Choose the mining/FIFO template');
+    expect(fifoGuide).toContain('site/location details in the builder preview');
+    expect(fifoGuide).not.toContain('Ryvro only supports FIFO');
+    expect(fifoGuide).not.toContain('All users must choose FIFO');
+    expect(fifoGuide).not.toContain('phase offset');
+    expect(fifoGuide).not.toContain('anchor date');
+  });
+
   it('keeps the active rebrand audit aligned with completed Ryvro asset replacement', () => {
     const audit = read('SHIFT_WORKER_APP_REBRAND_AUDIT.md');
 

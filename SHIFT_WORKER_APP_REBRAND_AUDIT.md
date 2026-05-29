@@ -45,6 +45,8 @@ Completed in the current working tree:
 - Tightened exception, calendar, and reminder launch copy so one-off rows say they changed just that day, calendar export promises shift times/locations/notes, and smart reminder commute copy defaults to work location instead of site.
 - Added calendar export metadata coverage for `LOCATION` and one-off exception notes in `.ics` files.
 - Hardened the Ryvro voice backend system prompt so it does not assume mining, FIFO, or site-based work unless the user context says so, and added backend prompt tests for non-mining universal schedules.
+- Added documentation regression tests that pin `docs/ARCHITECTURE.md` to the Universal Shift Builder source-of-truth architecture and keep the active FIFO guide template-specific.
+- Added legal, privacy, support, external-service, and RevenueCat handoff regression tests so repo-side launch docs stay broad, Ryvro-named, and free of retired Ellie product aliases.
 
 Still pending outside this repo or intentionally kept for compatibility:
 
@@ -52,7 +54,7 @@ Still pending outside this repo or intentionally kept for compatibility:
 - App Store Connect and Google Play Console name checks from the real developer accounts.
 - Domain and social handle purchase/reservation, especially `getryvro.com` or `ryvro.app`.
 - New Firebase project/OAuth clients and fresh `GoogleService-Info.plist` / `google-services.json` generated from Firebase Console for `com.ryvro.shiftplanner`.
-- RevenueCat dashboard product/entitlement renames if the production dashboard still uses old Ellie/miner names.
+- RevenueCat dashboard product/entitlement renames if the production dashboard still uses old Ellie/miner names. Repo-side setup values and user-facing Ryvro Pro copy are documented and guarded by tests.
 - Push notification, analytics, Sentry, support-email, privacy-policy, terms, website, and store-listing updates outside the repo. Repo-side source copy and setup handoff now exist in `docs/RYVRO_STORE_LISTING.md`, `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`, and `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md`.
 - Production backend deploy and cutover from `ellieBrain` to `ryvroBrain`. Repo code now exposes both endpoints, but the actual Firebase project still needs a deploy, smoke test, and eventual legacy endpoint retirement plan.
 - Optional internal code-symbol cleanup for old technical names such as `EllieButton`, internal `Ellie` tab route, `@ellie_language`, and wake-word model filenames. These are not user-facing in the current UI and were left stable to avoid breaking stored data, tests, native modules, and backend contracts.
@@ -1365,7 +1367,11 @@ Completed P1 tasks:
 - RB-024 AI fallback telemetry and copy: parser results now expose `parserSource` / `fallbackReason`, local fallback drafts persist that metadata, the review sheet shows plain-language fallback copy, and `UniversalShiftBuilderScreen` emits completion, fallback, clarification, acceptance, manual-edit, and save analytics.
 - RB-025/RB-026/RB-027/RB-029 launch copy and calendar metadata: guarded by `ryvroEnvTemplate.test.ts` and `universalShiftCalendarUtils.test.ts`.
 - RB-030 universal voice assistant prompt context: guarded by backend `ryvro-brain.test.ts`.
+- RB-031/RB-032 active docs architecture and FIFO guide posture: guarded by `ryvroDocsArchive.test.ts`.
+- RB-035 repo-side RevenueCat launch setup: guarded by `ryvroEnvTemplate.test.ts`; external dashboard changes remain account-owner work.
+- RB-036 privacy/terms coverage for AI prompts and calendar import/export: guarded by `ryvroEnvTemplate.test.ts`.
 Deferred P2 tasks:
+- RB-041 support macros and help copy: repo-side templates are guarded by `ryvroEnvTemplate.test.ts`; published support desk/macros remain account-owner work.
 
 Remaining old-term hits:
 - must-change: 0 expected
