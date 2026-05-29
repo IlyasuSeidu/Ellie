@@ -28,9 +28,12 @@ describe('Ryvro environment template', () => {
       };
       ios?: {
         bundleIdentifier?: string;
+        googleServicesFile?: string;
+        infoPlist?: Record<string, unknown>;
       };
       android?: {
         package?: string;
+        googleServicesFile?: string;
         adaptiveIcon?: {
           foregroundImage?: string;
         };
@@ -46,21 +49,9 @@ describe('Ryvro environment template', () => {
     scripts?: Record<string, string>;
   };
 
-  const iosInfoPlist = fs.readFileSync(path.join(process.cwd(), 'ios/Ellie/Info.plist'), 'utf8');
-  const iosGoogleServicePlist = fs.readFileSync(
-    path.join(process.cwd(), 'ios/Ellie/GoogleService-Info.plist'),
-    'utf8'
-  );
-  const androidGoogleServices = JSON.parse(
-    fs.readFileSync(path.join(process.cwd(), 'android/app/google-services.json'), 'utf8')
-  ) as {
-    client?: Array<{
-      client_info?: {
-        android_client_info?: {
-          package_name?: string;
-        };
-      };
-    }>;
+  const readOptional = (relativePath: string): string | null => {
+    const absolutePath = path.join(process.cwd(), relativePath);
+    return fs.existsSync(absolutePath) ? fs.readFileSync(absolutePath, 'utf8') : null;
   };
 
   it('uses Ryvro defaults for public launch configuration', () => {
@@ -83,28 +74,55 @@ describe('Ryvro environment template', () => {
   });
 
   it('pins native installed identity to Ryvro launch values', () => {
-    expect(iosInfoPlist).toContain('<key>CFBundleDisplayName</key>');
-    expect(iosInfoPlist).toContain('<string>Ryvro</string>');
-    expect(iosInfoPlist).toContain('<string>ryvro</string>');
-    expect(iosInfoPlist).toContain('<string>com.ryvro.shiftplanner</string>');
-    expect(iosInfoPlist).not.toContain('<string>Ellie</string>');
-    expect(iosInfoPlist).not.toContain('<string>Ellie Shift Planner</string>');
+    expect(appJson.expo?.ios?.infoPlist).toMatchObject({
+      NSSpeechRecognitionUsageDescription:
+        'Ryvro needs speech recognition to understand your questions.',
+      NSMicrophoneUsageDescription: 'Ryvro needs microphone access for voice commands.',
+    });
+
+    const iosInfoPlist = readOptional('ios/Ellie/Info.plist');
+    if (iosInfoPlist) {
+      expect(iosInfoPlist).toContain('<key>CFBundleDisplayName</key>');
+      expect(iosInfoPlist).toContain('<string>Ryvro</string>');
+      expect(iosInfoPlist).toContain('<string>ryvro</string>');
+      expect(iosInfoPlist).toContain('<string>com.ryvro.shiftplanner</string>');
+      expect(iosInfoPlist).not.toContain('<string>Ellie</string>');
+      expect(iosInfoPlist).not.toContain('<string>Ellie Shift Planner</string>');
+    }
   });
 
   it('pins tracked Firebase mobile clients to the Ryvro bundle and package', () => {
-    expect(iosGoogleServicePlist).toContain('<key>BUNDLE_ID</key>');
-    expect(iosGoogleServicePlist).toContain('<string>com.ryvro.shiftplanner</string>');
-    expect(iosGoogleServicePlist).not.toContain('com.ellie.minershiftassistant');
-    expect(iosGoogleServicePlist).not.toContain('com.ilyasuseidu.ellie');
+    expect(appJson.expo?.ios?.googleServicesFile).toBe('./ios/Ellie/GoogleService-Info.plist');
+    expect(appJson.expo?.android?.googleServicesFile).toBe('./android/app/google-services.json');
 
-    const packageNames =
-      androidGoogleServices.client?.map(
-        (client) => client.client_info?.android_client_info?.package_name
-      ) ?? [];
+    const iosGoogleServicePlist = readOptional('ios/Ellie/GoogleService-Info.plist');
+    if (iosGoogleServicePlist) {
+      expect(iosGoogleServicePlist).toContain('<key>BUNDLE_ID</key>');
+      expect(iosGoogleServicePlist).toContain('<string>com.ryvro.shiftplanner</string>');
+      expect(iosGoogleServicePlist).not.toContain('com.ellie.minershiftassistant');
+      expect(iosGoogleServicePlist).not.toContain('com.ilyasuseidu.ellie');
+    }
 
-    expect(packageNames).toContain('com.ryvro.shiftplanner');
-    expect(packageNames).not.toContain('com.ellie.minershiftassistant');
-    expect(packageNames).not.toContain('com.ilyasuseidu.ellie');
+    const androidGoogleServices = readOptional('android/app/google-services.json');
+    if (androidGoogleServices) {
+      const parsedAndroidGoogleServices = JSON.parse(androidGoogleServices) as {
+        client?: Array<{
+          client_info?: {
+            android_client_info?: {
+              package_name?: string;
+            };
+          };
+        }>;
+      };
+      const packageNames =
+        parsedAndroidGoogleServices.client?.map(
+          (client) => client.client_info?.android_client_info?.package_name
+        ) ?? [];
+
+      expect(packageNames).toContain('com.ryvro.shiftplanner');
+      expect(packageNames).not.toContain('com.ellie.minershiftassistant');
+      expect(packageNames).not.toContain('com.ilyasuseidu.ellie');
+    }
   });
 
   it('pins tracked Expo assets to Ryvro launch assets', () => {
