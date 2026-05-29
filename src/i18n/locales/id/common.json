@@ -203,19 +203,19 @@
       "noCard": "Tidak diperlukan kartu kredit · Batalkan kapan saja",
       "restorePurchases": "Pulihkan Pembelian",
       "privacyPolicy": "Kebijakan Privasi",
-      "socialProof": "Dipercaya oleh penambang bawah tanah, operator FIFO, dan pekerja schedule bergilir.",
+      "socialProof": "Dibuat untuk tim FIFO, layanan kesehatan, keamanan, transportasi, manufaktur, hospitality, dan semua tim shift.",
       "testimonials": [
         {
-          "quote": "Saya memesan tiket sesuai swing saya berbulan-bulan sebelumnya tanpa menelepon HR sama sekali.",
-          "author": "Sarah K., penambang bawah tanah — shift rotasi 12 jam"
+          "quote": "Saya bisa melihat setiap swing, minggu perjalanan, dan blok R&R tanpa menghitung dari foto roster.",
+          "author": "Operator FIFO — jadwal 14/14"
         },
         {
-          "quote": "Saya menunjukkan seluruh schedule site ke istri saya dalam kurang dari semenit.",
-          "author": "Dave L., operator bor — schedule FIFO"
+          "quote": "Keluarga saya bisa merencanakan hari dan malam saya tanpa menunggu saya mengecek spreadsheet.",
+          "author": "Pekerja shift rotasi — pola 4/4"
         },
         {
-          "quote": "Saya memesan tiket sesuai swing saya berbulan-bulan sebelumnya tanpa menelepon HR sama sekali.",
-          "author": "Jason M., koordinator operasi — FIFO 7/7"
+          "quote": "Builder yang sama menangani roster site kami yang unik dan pertukaran satu kali.",
+          "author": "Pekerja operasional — rotasi khusus"
         }
       ],
       "lossAversion": "Without Pro, you can only see 2 weeks of your schedule.",

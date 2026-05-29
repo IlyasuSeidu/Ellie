@@ -149,10 +149,10 @@ describe('Ryvro environment template', () => {
   });
 
   it('pins tracked Firebase mobile clients to the Ryvro bundle and package', () => {
-    expect(appJson.expo?.ios?.googleServicesFile).toBe('./ios/Ellie/GoogleService-Info.plist');
+    expect(appJson.expo?.ios?.googleServicesFile).toBe('./ios/Ryvro/GoogleService-Info.plist');
     expect(appJson.expo?.android?.googleServicesFile).toBe('./android/app/google-services.json');
 
-    const iosGoogleServicePlist = readOptional('ios/Ellie/GoogleService-Info.plist');
+    const iosGoogleServicePlist = readOptional('ios/Ryvro/GoogleService-Info.plist');
     if (iosGoogleServicePlist) {
       expect(iosGoogleServicePlist).toContain('<key>BUNDLE_ID</key>');
       expect(iosGoogleServicePlist).toContain('<string>com.ryvro.shiftplanner</string>');
@@ -244,6 +244,36 @@ describe('Ryvro environment template', () => {
     expect(externalSetup).not.toContain('ellie_pro');
     expect(externalSetup).not.toContain('Ellie Shift Planner Pro');
     expect(externalSetup).not.toContain('Keep old entitlement aliases');
+  });
+
+  it('keeps active launch paywall proof broad enough for non-mining shift teams', () => {
+    const localeRoot = path.join(process.cwd(), 'src/i18n/locales');
+    const commonLocaleFiles = fs
+      .readdirSync(localeRoot)
+      .map((locale) => path.join(localeRoot, locale, 'common.json'))
+      .filter((file) => fs.existsSync(file));
+
+    for (const file of commonLocaleFiles) {
+      const common = JSON.parse(fs.readFileSync(file, 'utf8')) as {
+        subscription?: {
+          paywall?: {
+            socialProof?: string;
+            testimonials?: Array<{ author?: string; quote?: string }>;
+          };
+        };
+      };
+      const paywall = common.subscription?.paywall;
+      const launchProof = [
+        paywall?.socialProof ?? '',
+        ...(paywall?.testimonials ?? []).flatMap((testimonial) => [
+          testimonial.author ?? '',
+          testimonial.quote ?? '',
+        ]),
+      ].join('\n');
+
+      expect(launchProof).not.toMatch(/underground miner|subterr[aâ]ne|haul truck|drill/i);
+      expect(launchProof).toMatch(/FIFO|shift|turno|santé|health|security|transport|equipes/i);
+    }
   });
 
   it('does not keep retired Ellie brain endpoints in CI workflows', () => {

@@ -16,7 +16,7 @@
     "ios": {
       "supportsTablet": true,
       "buildNumber": "1",
-      "googleServicesFile": "./ios/Ellie/GoogleService-Info.plist",
+      "googleServicesFile": "./ios/Ryvro/GoogleService-Info.plist",
       "usesAppleSignIn": true,
       "infoPlist": {
         "NSSpeechRecognitionUsageDescription": "Ryvro needs speech recognition to understand your questions.",

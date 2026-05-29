@@ -203,19 +203,19 @@
       "noCard": "无需信用卡 · 随时取消",
       "restorePurchases": "恢复购买",
       "privacyPolicy": "隐私政策",
-      "socialProof": "受到地下矿工、FIFO 操作员和轮换排班工人的信赖。",
+      "socialProof": "专为 FIFO 团队、医疗、安保、交通、制造、酒店服务以及所有轮班团队打造。",
       "testimonials": [
         {
-          "quote": "我按自己的轮班周期提前好几个月订好了航班，连人事都不用找。",
-          "author": "Sarah K.，地下矿工 — 12小时轮班"
+          "quote": "不用对着照片班表数，我就能看到每个轮班段、出行周和休息周期。",
+          "author": "FIFO 操作员 — 14/14 班表"
         },
         {
-          "quote": "我不到一分钟就把整个矿区班表展示给我妻子看。",
-          "author": "Dave L.，钻机操作员 — FIFO 班表"
+          "quote": "我的家人可以围绕我的白班和夜班安排计划，不用等我去查电子表格。",
+          "author": "轮班工作者 — 4/4 模式"
         },
         {
-          "quote": "我按自己的轮班周期提前好几个月订好了航班，连人事都不用找。",
-          "author": "Jason M.，矿卡司机 — FIFO 7/7"
+          "quote": "同一个构建器能处理我们不规则的现场班表和临时调班。",
+          "author": "运营人员 — 自定义轮换"
         }
       ],
       "lossAversion": "Without Pro, you can only see 2 weeks of your schedule.",

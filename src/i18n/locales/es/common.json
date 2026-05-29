@@ -203,19 +203,19 @@
       "noCard": "No se requiere tarjeta de crédito · Cancelar en cualquier momento",
       "restorePurchases": "Restaurar compras",
       "privacyPolicy": "política de privacidad",
-      "socialProof": "Con la confianza de mineros subterráneos, operadores FIFO y trabajadores con schedule rotativo.",
+      "socialProof": "Hecho para equipos FIFO, salud, seguridad, transporte, manufactura, hotelería y cualquier equipo por turnos.",
       "testimonials": [
         {
-          "quote": "Reservé vuelos alrededor de mi swing con meses de anticipación sin llamar a RR. HH.",
-          "author": "Sarah K., minera subterránea — turnos rotativos de 12 h"
+          "quote": "Veo cada ciclo, semana de viaje y bloque de descanso sin contar desde una foto del roster.",
+          "author": "Operador FIFO — horario 14/14"
         },
         {
-          "quote": "Le mostré a mi esposa todo mi schedule del sitio en menos de un minuto.",
-          "author": "Dave L., operador de perforación — schedule FIFO"
+          "quote": "Mi familia puede planificar mis noches y días sin esperar a que revise una hoja de cálculo.",
+          "author": "Trabajadora de turnos rotativos — patrón 4/4"
         },
         {
-          "quote": "Reservé vuelos alrededor de mi swing con meses de anticipación sin llamar a RR. HH.",
-          "author": "Jason M., operador de camión minero — FIFO 7/7"
+          "quote": "El mismo constructor maneja nuestro roster poco común y los cambios puntuales.",
+          "author": "Trabajador de operaciones — rotación personalizada"
         }
       ],
       "lossAversion": "Without Pro, you can only see 2 weeks of your schedule.",

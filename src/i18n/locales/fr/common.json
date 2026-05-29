@@ -203,19 +203,19 @@
       "noCard": "Aucune carte de crédit requise · Annulez à tout moment",
       "restorePurchases": "Restaurer les achats",
       "privacyPolicy": "politique de confidentialité",
-      "socialProof": "Adopté par les mineurs souterrains, les opérateurs FIFO et les travailleurs en rotation.",
+      "socialProof": "Conçu pour les équipes FIFO, la santé, la sécurité, le transport, l’industrie, l’hôtellerie et tous les travailleurs postés.",
       "testimonials": [
         {
-          "quote": "J’ai réservé mes vols autour de mon swing des mois à l’avance sans appeler les RH.",
-          "author": "Sarah K., mineuse souterraine — rotations de 12 h"
+          "quote": "Je vois chaque cycle, semaine de déplacement et période de repos sans compter depuis une photo de planning.",
+          "author": "Opérateur FIFO — planning 14/14"
         },
         {
-          "quote": "J’ai montré à ma femme tout mon planning de site en moins d’une minute.",
-          "author": "Dave L., opérateur de forage — schedule FIFO"
+          "quote": "Ma famille peut organiser mes nuits et mes journées sans attendre que je vérifie une feuille de calcul.",
+          "author": "Travailleuse postée — rythme 4/4"
         },
         {
-          "quote": "J’ai réservé mes vols autour de mon swing des mois à l’avance sans appeler les RH.",
-          "author": "Jason M., conducteur de camion minier — FIFO 7/7"
+          "quote": "Le même constructeur gère notre planning atypique et les changements ponctuels.",
+          "author": "Agent opérations — rotation personnalisée"
         }
       ],
       "lossAversion": "Without Pro, you can only see 2 weeks of your schedule.",

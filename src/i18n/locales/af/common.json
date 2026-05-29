@@ -203,19 +203,19 @@
       "noCard": "Geen kredietkaart vereis nie · Kanselleer enige tyd",
       "restorePurchases": "Herstel aankope",
       "privacyPolicy": "Privaatheidsbeleid",
-      "socialProof": "Vertrou deur ondergrondse mynwerkers, FIFO-operateurs en roterende schedulewerkers.",
+      "socialProof": "Vertrou deur FIFO-spanne, gesondheidsorgwerkers, sekuriteitspanne en roterende skofwerkers.",
       "testimonials": [
         {
-          "quote": "Ek het vlugte om my swing maande vooruit bespreek sonder om HR te bel.",
-          "author": "Sarah K., ondergrondse mynwerker — 12h roterende skofte"
+          "quote": "Ek kan elke swing, reisweek en R&R-blok sien sonder om vanaf ’n foto-rooster te tel.",
+          "author": "FIFO-operateur — 14/14-rooster"
         },
         {
-          "quote": "Ek het my hele terreinschedule binne ’n minuut vir my vrou gewys.",
-          "author": "Dave L., booroperateur — FIFO-schedule"
+          "quote": "My gesin kan rondom my nagte en dae beplan sonder om te wag dat ek ’n spreadsheet nagaan.",
+          "author": "Roterende skofwerker — 4/4-patroon"
         },
         {
-          "quote": "Ek het vlugte om my swing maande vooruit bespreek sonder om HR te bel.",
-          "author": "Jason M., vragmotoroperateur — 7/7 FIFO"
+          "quote": "Dieselfde bouer hanteer ons vreemde terreinrooster en eenmalige ruilskofte.",
+          "author": "Operasiewerker — pasgemaakte rotasie"
         }
       ],
       "lossAversion": "Without Pro, you can only see 2 weeks of your schedule.",

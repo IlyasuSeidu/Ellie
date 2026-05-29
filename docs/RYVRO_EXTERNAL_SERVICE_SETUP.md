@@ -38,7 +38,7 @@ Download fresh config files:
 
 Repo placement:
 
-- iOS current native path: `ios/Ellie/GoogleService-Info.plist`
+- iOS current native path: `ios/Ryvro/GoogleService-Info.plist`
 - Android current native path: `android/app/google-services.json`
 
 Important:

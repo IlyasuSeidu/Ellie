@@ -203,19 +203,19 @@
       "noCard": "Não é necessário cartão de crédito · Cancele a qualquer momento",
       "restorePurchases": "Restaurar compras",
       "privacyPolicy": "política de Privacidade",
-      "socialProof": "Confiado por mineradores subterrâneos, operadores FIFO e trabalhadores de escala rotativa.",
+      "socialProof": "Criado para equipes FIFO, saúde, segurança, transporte, manufatura, hotelaria e qualquer equipe em turnos.",
       "testimonials": [
         {
-          "quote": "Reservei voos no meu swing com meses de antecedência sem ligar para o RH.",
-          "author": "Sarah K., mineira subterrânea — turnos rotativos de 12h"
+          "quote": "Consigo ver cada ciclo, semana de viagem e bloco de descanso sem contar a partir de uma foto da escala.",
+          "author": "Operador FIFO — escala 14/14"
         },
         {
-          "quote": "Mostrei para minha esposa todo o schedule do site em menos de um minuto.",
-          "author": "Dave L., operador de perfuratriz — schedule FIFO"
+          "quote": "Minha família consegue planejar meus dias e noites sem esperar eu conferir uma planilha.",
+          "author": "Trabalhadora de turno rotativo — padrão 4/4"
         },
         {
-          "quote": "Reservei voos no meu swing com meses de antecedência sem ligar para o RH.",
-          "author": "Jason M., operador de caminhão fora de estrada — FIFO 7/7"
+          "quote": "O mesmo construtor lida com nossa escala incomum e trocas pontuais.",
+          "author": "Trabalhador de operações — rotação personalizada"
         }
       ],
       "lossAversion": "Without Pro, you can only see 2 weeks of your schedule.",

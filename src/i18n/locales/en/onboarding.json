@@ -199,13 +199,13 @@
       "reviewedSubtitle": "Didn't see yours? You can build a custom one, or take another look",
       "reviewedTitle": "That's all {{count}} rotations we've got!"
     },
-    "instruction": "Choose the rotation your mine site uses—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info",
+    "instruction": "Choose the rotation your workplace uses — we will build your calendar from it\nSwipe right to choose, left to see more, up for info",
     "title": "What's Your Roster Rotation?",
     "cards": {
       "4-4-4": {
         "name": "4-4-4 Rotation",
         "schedule": "4 days • 4 nights • 4 off",
-        "description": "Work 4 day shifts, then 4 night shifts, then get 4 days off-common for fly-in fly-out sites"
+        "description": "Work 4 day shifts, then 4 night shifts, then get 4 days off — common for 24/7 teams and FIFO sites"
       },
       "7-7-7": {
         "name": "7-7-7 Rotation",
@@ -250,7 +250,7 @@
       "fifo-8-6": {
         "name": "FIFO 8/6",
         "schedule": "8 days work • 6 days home",
-        "description": "Work 8 consecutive days on-site, then 6 days at home-popular in WA mining"
+        "description": "Work 8 consecutive days on-site, then 6 days at home — common for remote and FIFO teams"
       },
       "fifo-7-7": {
         "name": "FIFO 7/7 (Even-Time)",
@@ -287,7 +287,7 @@
   "rosterType": {
     "title": "How Does Your Roster Work?",
     "title_named": "How Does Your Roster Work, {{name}}?",
-    "instruction": "Choose the roster style your mine site uses — this shapes your entire schedule\nSwipe right to choose, left to see more, up for details",
+    "instruction": "Choose the roster style your workplace uses — this shapes your entire schedule\nSwipe right to choose, left to see more, up for details",
     "instruction_pain": {
       "cycle_lost": "This tells Ryvro exactly where you are in your cycle — no more guessing",
       "wrong_alarm": "Get this right and Ryvro sets every alarm for the correct shift",
@@ -316,7 +316,7 @@
             "7-7-7 (long cycle)",
             "2-2-3 (short cycle)"
           ],
-          "regions": ["South Africa", "Zambia", "DRC", "Europe", "Some US operations"],
+          "regions": ["Australia", "Canada", "Remote sites", "Hospitals", "Security operations"],
           "pros": [
             "Go home daily or frequently",
             "Regular routine at each phase",
@@ -556,9 +556,9 @@
     "blocks": {
       "work": {
         "title": "At Site (Working)",
-        "descriptionDay": "You are currently at the mine site on your day-shift work block",
-        "descriptionNight": "You are currently at the mine site on your night-shift work block",
-        "descriptionNeutral": "You are currently at the mine site on your work block",
+        "descriptionDay": "You are currently at work on your day-shift work block",
+        "descriptionNight": "You are currently at work on your night-shift work block",
+        "descriptionNeutral": "You are currently at work on your work block",
         "quickInfoDay": "This means your cycle starts counting from your day-shift work block.",
         "quickInfoNight": "This means your cycle starts counting from your night-shift work block.",
         "quickInfoNeutral": "This means your cycle starts counting from your current work block."

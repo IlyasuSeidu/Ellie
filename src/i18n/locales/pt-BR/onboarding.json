@@ -77,15 +77,10 @@
       "2-shift": {
         "title": "2 turnos (12 horas)",
         "schedule": "Dia e noite",
-        "description": "Sua mina funciona em dois turnos de 12 horas – um durante o dia e outro à noite",
+        "description": "Sua equipe funciona em dois turnos de 12 horas: um durante o dia e outro à noite.",
         "details": {
           "workRestRatio": "12 horas ligado, 12 horas desligado",
-          "useCases": [
-            "Locais de mineração",
-            "Petróleo e gás",
-            "Operações 24 horas por dia, 7 dias por semana",
-            "Trabalho remoto"
-          ],
+          "useCases": ["Locais remotos", "Petróleo e gás", "Operações 24/7", "Saúde e segurança"],
           "pros": [
             "Períodos de descanso prolongados",
             "Cronograma previsível",
@@ -104,12 +99,7 @@
         "description": "Sua planta de processamento funciona em três turnos de 8 horas – manhã, tarde e noite",
         "details": {
           "workRestRatio": "8 horas ligado, 16 horas desligado",
-          "useCases": [
-            "Minas subterrâneas",
-            "Plantas de processamento",
-            "Infraestrutura de mineração",
-            "Operações 24/7"
-          ],
+          "useCases": ["Plantas de processamento", "Hospitais", "Manufatura", "Operações 24/7"],
           "pros": ["Turnos mais curtos", "Mais tempo para a família", "Mais fácil de ficar alerta"],
           "cons": [
             "Mudanças de turno mais frequentes",
@@ -131,7 +121,7 @@
       "reviewedSubtitle": "Não viu o seu? Você pode construir um personalizado ou dar uma outra olhada",
       "reviewedTitle": "Essas são todas as rotações {{count}} que temos!"
     },
-    "instruction": "Escolha o rodízio que seu site de mineração usa. Criaremos seu calendário a partir dele\nDeslize para a direita para escolher, para a esquerda para ver mais, para cima para obter informações",
+    "instruction": "Escolha a rotação que seu local de trabalho usa. Criaremos seu calendário a partir dela\nDeslize para a direita para escolher, para a esquerda para ver mais, para cima para obter informações",
     "title": "Qual é a rotação da sua lista?",
     "cards": {
       "4-4-4": {
@@ -182,7 +172,7 @@
       "fifo-8-6": {
         "name": "Padrão FIFO 8/6",
         "schedule": "8 dias trabalho • 6 dias em casa",
-        "description": "8 dias consecutivos no site e 6 em casa, comum na mineração WA."
+        "description": "8 dias consecutivos no local e 6 em casa, comum em equipes remotas e FIFO."
       },
       "fifo-7-7": {
         "name": "FIFO 7/7 (tempo igual)",
@@ -314,7 +304,7 @@
   },
   "rosterType": {
     "title": "Como funciona sua lista?",
-    "instruction": "Escolha o estilo de lista que seu site de mineração usa – isso molda toda a sua programação\nDeslize para a direita para escolher, para a esquerda para ver mais, para cima para ver detalhes",
+    "instruction": "Escolha o estilo de escala que seu local de trabalho usa — isso molda toda a sua programação\nDeslize para a direita para escolher, para a esquerda para ver mais, para cima para ver detalhes",
     "preparingNextStep": "Preparando o próximo passo...",
     "learnMore": {
       "examples": "Exemplos",
@@ -489,9 +479,9 @@
     "blocks": {
       "work": {
         "title": "Na mina (Trabalhando)",
-        "descriptionDay": "Você está atualmente na mina no seu bloco de trabalho diurno",
-        "descriptionNight": "Você está atualmente na mina no seu bloco de trabalho noturno",
-        "descriptionNeutral": "Você está atualmente na mina no seu bloco de trabalho",
+        "descriptionDay": "Você está atualmente no trabalho no seu bloco de turno diurno",
+        "descriptionNight": "Você está atualmente no trabalho no seu bloco de turno noturno",
+        "descriptionNeutral": "Você está atualmente no trabalho no seu bloco de trabalho",
         "quickInfoDay": "Isso significa que seu ciclo começa a contar a partir do seu bloco de trabalho diurno.",
         "quickInfoNight": "Isso significa que seu ciclo começa a contar a partir do seu bloco de trabalho noturno.",
         "quickInfoNeutral": "Isso significa que seu ciclo começa a contar a partir do seu bloco de trabalho atual."
