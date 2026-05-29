@@ -236,4 +236,4 @@ When in doubt, Ryvro should bias toward:
 4. Proof / Demo
 5. Founder Opinion
 
-That bias matches the product: miners need a fast answer they can trust.
+That bias matches the product: shift workers need a fast answer they can trust, and the launch story starts from mining and FIFO roster pain.

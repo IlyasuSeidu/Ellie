@@ -295,6 +295,52 @@ describe('Ryvro environment template', () => {
     );
   });
 
+  it('keeps generated content brand context universal-ready instead of mining-only', () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const brandContext = require('../../config/ryvro-brand-context.js') as {
+      product?: {
+        currentNiche?: string;
+        longTermVision?: string;
+      };
+      audience?: {
+        primary?: string[];
+      };
+    };
+    const angleFramework = fs.readFileSync(
+      path.join(process.cwd(), 'docs/RYVRO_ANGLE_FRAMEWORK.md'),
+      'utf8'
+    );
+    const onboarding = JSON.parse(
+      fs.readFileSync(path.join(process.cwd(), 'src/i18n/locales/en/onboarding.json'), 'utf8')
+    ) as {
+      rosterType?: {
+        cards?: {
+          fifo?: {
+            details?: {
+              regions?: string[];
+            };
+          };
+        };
+      };
+    };
+
+    expect(brandContext.product?.currentNiche).toContain('FIFO crews and shift workers');
+    expect(brandContext.product?.longTermVision).toBe(
+      'a general shift scheduler for all industries'
+    );
+    expect(brandContext.audience?.primary).toEqual(
+      expect.arrayContaining(['healthcare workers', 'security teams', 'shift workers'])
+    );
+    expect(brandContext.product?.currentNiche).not.toBe('mining shift workers');
+    expect(angleFramework).toContain(
+      'shift workers need a fast answer they can trust, and the launch story starts from mining and FIFO roster pain'
+    );
+    expect(onboarding.rosterType?.cards?.fifo?.details?.regions).toContain('Remote global sites');
+    expect(onboarding.rosterType?.cards?.fifo?.details?.regions).not.toContain(
+      'Remote global mining'
+    );
+  });
+
   it('does not keep retired Ellie brain endpoints in CI workflows', () => {
     const ciWorkflow = fs.readFileSync(
       path.join(process.cwd(), '.github/workflows/ci.yml'),

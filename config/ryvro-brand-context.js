@@ -13,7 +13,7 @@ const BRAND_CONTEXT = {
   },
   product: {
     name: 'Ryvro',
-    currentNiche: 'mining shift workers',
+    currentNiche: 'FIFO crews and shift workers with complex rotating rosters',
     longTermVision: 'a general shift scheduler for all industries',
     positioning: [
       'practical',
@@ -33,7 +33,16 @@ const BRAND_CONTEXT = {
     ],
   },
   audience: {
-    primary: ['miners', 'shift workers'],
+    primary: [
+      'FIFO crews',
+      'miners',
+      'healthcare workers',
+      'security teams',
+      'transport and logistics workers',
+      'manufacturing workers',
+      'hospitality workers',
+      'shift workers',
+    ],
     secondary: ['builders', 'founders', 'future SaaS operators'],
     positioningRule:
       'Keep Ryvro product-first. The miner-builder identity should support the product story, not replace it.',
