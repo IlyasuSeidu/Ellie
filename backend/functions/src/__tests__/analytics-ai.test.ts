@@ -11,6 +11,10 @@ import {
 test('sanitizes sensitive analytics fields without storing raw text', () => {
   const params = sanitizeAnalyticsParams({
     query_text: 'When is my next day off?',
+    work_location: 'City Hospital Ward A',
+    work_location_name: 'Plant B Night Gate',
+    location_name: 'Terminal 3',
+    workplace: 'North Depot',
     mining_site: 'Northern Pit',
     site_name: 'City Hospital Ward A',
     screen_name: 'HomeScreen',
@@ -23,8 +27,16 @@ test('sanitizes sensitive analytics fields without storing raw text', () => {
   assert.equal(params.query_text_redacted, true);
   assert.equal(params.query_text_length, 24);
   assert.equal(typeof params.query_text_hash, 'string');
+  assert.equal(params.work_location_redacted, true);
+  assert.equal(params.work_location_name_redacted, true);
+  assert.equal(params.location_name_redacted, true);
+  assert.equal(params.workplace_redacted, true);
   assert.equal(params.mining_site_redacted, true);
   assert.equal(params.site_name_redacted, true);
+  assert.equal('work_location' in params, false);
+  assert.equal('work_location_name' in params, false);
+  assert.equal('location_name' in params, false);
+  assert.equal('workplace' in params, false);
   assert.equal('mining_site' in params, false);
   assert.equal('site_name' in params, false);
   assert.equal(params.screen_name, 'HomeScreen');

@@ -472,6 +472,9 @@ describe('Ryvro environment template', () => {
     expect(externalSetup).toContain(
       'Segment schedule setup dashboards by industry, template, and source'
     );
+    expect(externalSetup).toContain(
+      'Do not send raw ward, depot, plant, terminal, venue, rig, station, or site names into analytics dimensions'
+    );
     expect(externalSetup).toContain('Profile shows `Ryvro Pro - Active`');
     expect(externalSetup).toContain('Do not configure retired Ellie entitlement IDs');
     expect(externalSetup).not.toContain('Ellie iOS');

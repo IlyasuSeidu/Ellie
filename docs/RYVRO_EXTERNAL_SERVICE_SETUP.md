@@ -274,6 +274,7 @@ Use Ryvro-visible names in dashboards:
 - Analytics property/report labels: Ryvro
 - Segment schedule setup dashboards by industry, template, and source.
 - Use `industry`, `template_id`, and `schedule_source` / `source` dimensions from backend daily summaries instead of making mining/FIFO the default segment.
+- Do not send raw ward, depot, plant, terminal, venue, rig, station, or site names into analytics dimensions. The backend sanitizer redacts `work_location`, `work_location_name`, `location_name`, `workplace`, `site_name`, and legacy `mining_site` fields.
 - RevenueCat project/app labels: Ryvro iOS, Ryvro Android
 - Support mailbox name: Ryvro Support
 - Email sender: Ryvro Support

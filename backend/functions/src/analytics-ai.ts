@@ -23,6 +23,7 @@ const SENSITIVE_KEYS = new Set([
   'full_name',
   'id_token',
   'last_name',
+  'location_name',
   'message',
   'mining_site',
   'name',
@@ -39,6 +40,9 @@ const SENSITIVE_KEYS = new Set([
   'token',
   'transcript',
   'transcription',
+  'work_location',
+  'work_location_name',
+  'workplace',
 ]);
 
 export type AnalyticsCategory =
