@@ -36,6 +36,12 @@ module.exports = {
         type: 'iPhone 16',
       },
     },
+    'simulator.xsmax': {
+      type: 'ios.simulator',
+      device: {
+        id: '0D934C32-AFB6-497E-8A1E-39F2DB3C447F',
+      },
+    },
     emulator: {
       type: 'android.emulator',
       device: {
@@ -46,6 +52,10 @@ module.exports = {
   configurations: {
     'ios.release': {
       device: 'simulator',
+      app: 'ios.release',
+    },
+    'ios.release.xsmax': {
+      device: 'simulator.xsmax',
       app: 'ios.release',
     },
     'android.release': {

@@ -138,6 +138,7 @@ module.exports = ({ config = {} }) => {
         process.env.EXPO_PUBLIC_REVENUECAT_API_KEY ||
         process.env.REVENUECAT_API_KEY ||
         '',
+      E2E_TEST_MODE: process.env.E2E_TEST_MODE || '',
       API_BASE_URL: process.env.API_BASE_URL || 'https://api.getryvro.com',
       API_TIMEOUT: process.env.API_TIMEOUT || '30000',
       RYVRO_BRAIN_URL:

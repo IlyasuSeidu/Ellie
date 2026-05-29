@@ -1,6 +1,6 @@
 # Ryvro External Service Setup
 
-Last updated: 2026-05-28
+Last updated: 2026-05-29
 
 This is the account-side setup checklist for services that cannot be fully changed from the repo. It translates the repo identity into exact console values.
 
@@ -154,6 +154,11 @@ EXPO_PUBLIC_REVENUECAT_ANDROID_KEY=
 REVENUECAT_ENTITLEMENT_ID=pro
 EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID=pro
 ```
+
+Important:
+
+- Do not use RevenueCat `test_` API keys for release, store, or E2E simulator QA. The app treats `test_` keys as unavailable launch keys so RevenueCat's release-mode test-key protection cannot block QA with a native alert.
+- Use production/sandbox app API keys from the Ryvro RevenueCat apps, such as the normal iOS `appl_...` and Android `goog_...` key formats.
 
 Verification:
 

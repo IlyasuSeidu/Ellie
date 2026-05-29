@@ -13,6 +13,12 @@ type RevenueCatUnavailableReason = 'missing_native_module' | 'missing_api_key';
 
 let cachedRuntime: RevenueCatRuntime | null | undefined;
 
+const isE2ETestMode = (): boolean => {
+  const extras = getExpoExtraConfig();
+  const flag = extras.E2E_TEST_MODE ?? process.env.E2E_TEST_MODE;
+  return flag === true || flag === '1' || flag === 'true';
+};
+
 const getNativeMissingHint = (error: unknown): string | null => {
   const message = error instanceof Error ? error.message : String(error ?? '');
   const normalized = message.toLowerCase();
@@ -69,7 +75,11 @@ const isPlaceholderRevenueCatKey = (candidate: string): boolean => {
     return true;
   }
 
-  if (/^(appl|goog|test|amaz|stripe)_[xX]+$/.test(normalized)) {
+  if (/^test_/i.test(normalized)) {
+    return true;
+  }
+
+  if (/^(appl|goog|amaz|stripe)_[xX]+$/.test(normalized)) {
     return true;
   }
 
@@ -90,6 +100,10 @@ const getUsableRevenueCatKey = (...candidates: unknown[]): string => {
 };
 
 export const getRevenueCatRuntime = (): RevenueCatRuntime | null => {
+  if (isE2ETestMode()) {
+    return null;
+  }
+
   if (cachedRuntime !== undefined) {
     return cachedRuntime;
   }
@@ -126,6 +140,10 @@ export const getRevenueCatRuntime = (): RevenueCatRuntime | null => {
 export const isRevenueCatAvailable = (): boolean => getRevenueCatRuntime() !== null;
 
 export const getRevenueCatApiKey = (): string => {
+  if (isE2ETestMode()) {
+    return '';
+  }
+
   const extras = getExpoExtraConfig();
 
   if (Platform.OS === 'ios') {

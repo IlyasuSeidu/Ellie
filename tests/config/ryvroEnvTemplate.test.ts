@@ -154,6 +154,9 @@ describe('Ryvro environment template', () => {
     expect(detoxConfig).toContain('Release-iphonesimulator/Ryvro.app');
     expect(detoxConfig).toContain('name=iPhone 16');
     expect(detoxConfig).toContain("type: 'iPhone 16'");
+    expect(detoxConfig).toContain("'ios.release.xsmax'");
+    expect(detoxConfig).toContain("'simulator.xsmax'");
+    expect(detoxConfig).toContain("id: '0D934C32-AFB6-497E-8A1E-39F2DB3C447F'");
     expect(detoxConfig).not.toContain('EllieMinerShiftAssistant.app');
     expect(detoxConfig).not.toContain('name=iPhone 15 Pro');
   });
@@ -272,9 +275,14 @@ describe('Ryvro environment template', () => {
       'completed E2E onboarding seeds carry Universal Shift Builder schedules'
     );
     expect(readinessReport).toContain('15 dashboard smoke tests');
+    expect(readinessReport).toContain('iPhone XS Max simulator');
+    expect(readinessReport).toContain('Small-screen simulator QA passed on an iPhone XS Max');
+    expect(readinessReport).toContain('Android debug build passed on 2026-05-29');
+    expect(readinessReport).toContain('com.ryvro.shiftplanner');
+    expect(readinessReport).toContain('no Android device or emulator was attached');
     expect(readinessReport).toContain('Physical iPhone 13');
     expect(readinessReport).toContain('Physical iPhone XS Max');
-    expect(readinessReport).toContain('Android build/install');
+    expect(readinessReport).toContain('Android install and Android auth/Universal Builder QA');
     expect(readinessReport).toContain('not as fully launch-cleared production release evidence');
   });
 
@@ -299,6 +307,7 @@ describe('Ryvro environment template', () => {
 
     expect(externalSetup).toContain('ryvro_pro_monthly');
     expect(externalSetup).toContain('ryvro_pro_annual');
+    expect(externalSetup).toContain('Do not use RevenueCat `test_` API keys');
     expect(externalSetup).toContain('Do not configure retired Ellie entitlement IDs');
     expect(externalSetup).not.toContain('ellie_pro');
     expect(externalSetup).not.toContain('Ellie Shift Planner Pro');

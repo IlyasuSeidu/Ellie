@@ -41,21 +41,26 @@ Completed and guarded in the current branch:
   - `npm test` in `backend/functions`: TypeScript build plus 38 Node tests.
 - `npm test -- universalShiftTemplates ryvroEnvTemplate --runInBand`: passed on 2026-05-29, including a guard that completed E2E onboarding seeds carry Universal Shift Builder schedules.
 - `E2E_TEST_MODE=1 npx expo start --localhost` plus `npx detox test --configuration ios.release e2e/dashboard.test.ts --reuse`: passed on 2026-05-29 on the iPhone 16 simulator, 15 dashboard smoke tests.
+- `E2E_TEST_MODE=1 npx detox test --configuration ios.release.xsmax e2e/dashboard.test.ts`: passed on 2026-05-29 on the iPhone XS Max simulator, 15 dashboard smoke tests. The run uninstalled the previous app first, installed the rebuilt `Ryvro.app`, and verified the small-screen dashboard smoke without the RevenueCat release guard alert.
+- `npm test -- RevenueCatRuntime ryvroEnvTemplate --runInBand`: passed on 2026-05-29 after adding the E2E RevenueCat runtime guard and treating `test_` RevenueCat keys as unavailable launch keys.
 - `npm run validate`: passed on 2026-05-29 after the latest Phase 9 E2E seed and selector updates.
 - Latest completed pushed GitHub Actions baseline for the Phase 9 code change: CI run `26652464303` passed for commit `b2c475b`.
 - iOS release simulator build command `npm run test:e2e:build:ios`: previously passed on 2026-05-29T15:22:59Z with built plist values `CFBundleDisplayName = Ryvro`, `CFBundleName = Ryvro`, and `CFBundleIdentifier = com.ryvro.shiftplanner`.
+- Android debug build passed on 2026-05-29 with `cd android && ./gradlew assembleDebug`; the generated APK reported package `com.ryvro.shiftplanner`, versionCode `1`, and versionName `1.0.0`.
 
 ## Device QA Notes
 
 Completed:
 
 - Available simulator build/install identity was verified through the Detox iOS release build path and generated plist evidence.
+- Small-screen simulator QA passed on an iPhone XS Max simulator with 15 dashboard smoke tests.
+- Android build identity was verified from the debug APK package metadata.
 
 Still pending:
 
 - Physical iPhone 13 fresh install, auth, Universal Builder, dashboard color/icon, reminders, exceptions, and import/export QA.
-- Physical iPhone XS Max QA, or an explicitly approved equivalent small-screen simulator pass.
-- Android build/install and Android auth/Universal Builder QA.
+- Physical iPhone XS Max QA if physical-device coverage remains a release requirement; the iPhone XS Max simulator small-screen smoke has passed.
+- Android install and Android auth/Universal Builder QA. The build passed, but no Android device or emulator was attached (`adb devices` returned no devices, and `emulator` was not available on PATH).
 - Google Sign-In and Apple Sign-In smoke tests after fresh Firebase/OAuth/Apple console configuration is generated for `com.ryvro.shiftplanner`.
 
 ## Account-Only Work

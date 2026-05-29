@@ -96,14 +96,14 @@ describe('RevenueCatRuntime', () => {
     });
   });
 
-  it('accepts a generic public/test RevenueCat key when platform-specific keys are absent', () => {
+  it('accepts a generic production RevenueCat key when platform-specific keys are absent', () => {
     jest.isolateModules(() => {
       jest.doMock('expo-constants', () => ({
         __esModule: true,
         default: {
           expoConfig: {
             extra: {
-              REVENUECAT_API_KEY: 'test_public_key',
+              REVENUECAT_API_KEY: 'appl_production_key',
             },
           },
         },
@@ -118,7 +118,7 @@ describe('RevenueCatRuntime', () => {
 
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const { getRevenueCatApiKey, getRevenueCatAvailability } = require('../RevenueCatRuntime');
-      expect(getRevenueCatApiKey()).toBe('test_public_key');
+      expect(getRevenueCatApiKey()).toBe('appl_production_key');
       expect(getRevenueCatAvailability().reason).toBeNull();
     });
   });
@@ -131,6 +131,33 @@ describe('RevenueCatRuntime', () => {
           expoConfig: {
             extra: {
               REVENUECAT_IOS_KEY: 'appl_xxxxxxxxxxxxx',
+            },
+          },
+        },
+      }));
+      jest.doMock('react-native-purchases', () => ({
+        __esModule: true,
+        LOG_LEVEL: { ERROR: 'ERROR' },
+        default: {
+          configure: jest.fn(),
+        },
+      }));
+
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const { getRevenueCatApiKey, getRevenueCatAvailability } = require('../RevenueCatRuntime');
+      expect(getRevenueCatApiKey()).toBe('');
+      expect(getRevenueCatAvailability().reason).toBe('missing_api_key');
+    });
+  });
+
+  it('treats RevenueCat test keys as missing in app builds', () => {
+    jest.isolateModules(() => {
+      jest.doMock('expo-constants', () => ({
+        __esModule: true,
+        default: {
+          expoConfig: {
+            extra: {
+              REVENUECAT_IOS_KEY: 'test_BV1234567890vCgu',
             },
           },
         },
@@ -175,6 +202,40 @@ describe('RevenueCatRuntime', () => {
     });
   });
 
+  it('keeps E2E release builds from initializing RevenueCat with local test keys', () => {
+    jest.isolateModules(() => {
+      jest.doMock('expo-constants', () => ({
+        __esModule: true,
+        default: {
+          expoConfig: {
+            extra: {
+              E2E_TEST_MODE: '1',
+              REVENUECAT_IOS_KEY: 'test_BV1234567890vCgu',
+            },
+          },
+        },
+      }));
+      jest.doMock('react-native-purchases', () => ({
+        __esModule: true,
+        LOG_LEVEL: { ERROR: 'ERROR' },
+        default: {
+          configure: jest.fn(),
+        },
+      }));
+
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const {
+        getRevenueCatApiKey,
+        getRevenueCatAvailability,
+        getRevenueCatRuntime,
+      } = require('../RevenueCatRuntime');
+
+      expect(getRevenueCatRuntime()).toBeNull();
+      expect(getRevenueCatApiKey()).toBe('');
+      expect(getRevenueCatAvailability().reason).toBe('missing_native_module');
+    });
+  });
+
   it('reads RevenueCat keys from manifest2 expoClient extra in native builds', () => {
     jest.isolateModules(() => {
       jest.doMock('expo-constants', () => ({
@@ -185,7 +246,7 @@ describe('RevenueCatRuntime', () => {
             extra: {
               expoClient: {
                 extra: {
-                  REVENUECAT_IOS_KEY: 'test_manifest2_key',
+                  REVENUECAT_IOS_KEY: 'appl_manifest2_key',
                 },
               },
             },
@@ -202,7 +263,7 @@ describe('RevenueCatRuntime', () => {
 
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const { getRevenueCatApiKey, getRevenueCatAvailability } = require('../RevenueCatRuntime');
-      expect(getRevenueCatApiKey()).toBe('test_manifest2_key');
+      expect(getRevenueCatApiKey()).toBe('appl_manifest2_key');
       expect(getRevenueCatAvailability().reason).toBeNull();
     });
   });
@@ -215,7 +276,7 @@ describe('RevenueCatRuntime', () => {
           expoConfig: {},
           manifest: {
             extra: {
-              REVENUECAT_IOS_KEY: 'test_manifest_key',
+              REVENUECAT_IOS_KEY: 'appl_manifest_key',
             },
           },
         },
@@ -230,7 +291,7 @@ describe('RevenueCatRuntime', () => {
 
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const { getRevenueCatApiKey, getRevenueCatAvailability } = require('../RevenueCatRuntime');
-      expect(getRevenueCatApiKey()).toBe('test_manifest_key');
+      expect(getRevenueCatApiKey()).toBe('appl_manifest_key');
       expect(getRevenueCatAvailability().reason).toBeNull();
     });
   });

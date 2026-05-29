@@ -50,6 +50,9 @@ Completed in the current working tree:
 - Added legal, privacy, support, external-service, and RevenueCat handoff regression tests so repo-side launch docs stay broad, Ryvro-named, and free of retired Ellie product aliases.
 - Added backend analytics setup dimensions for industry, template, and schedule source so dashboards can segment universal schedule adoption without defaulting to mining/FIFO, and guarded legacy site/mining-site parameters as redacted sensitive fields.
 - Updated Detox iOS release QA config to build/install the generated `Ryvro.app` product on the available iPhone 16 simulator instead of the retired `EllieMinerShiftAssistant.app` path; `npm run test:e2e:build:ios` passed on 2026-05-29T15:22:59Z and the built plist reports `CFBundleDisplayName = Ryvro`, `CFBundleName = Ryvro`, and `CFBundleIdentifier = com.ryvro.shiftplanner`.
+- Added an iPhone XS Max simulator release QA target and passed the seeded dashboard smoke on a clean install: `E2E_TEST_MODE=1 npx detox test --configuration ios.release.xsmax e2e/dashboard.test.ts` passed 15/15 tests on 2026-05-29.
+- Added an E2E RevenueCat guard so release simulator QA does not load RevenueCat with `test_` API keys, which trigger RevenueCat's native release-mode test-key protection alert.
+- Built the Android debug APK on 2026-05-29 with package `com.ryvro.shiftplanner`; Android install and auth/Universal Builder QA remain pending because no Android device or emulator was attached.
 
 Still pending outside this repo or intentionally kept for compatibility:
 
@@ -1387,10 +1390,10 @@ Remaining old-term hits:
 - false-positive:
 
 Device QA:
-- iOS simulator:
+- iOS simulator: iPhone 16 dashboard smoke passed 15/15; iPhone XS Max simulator dashboard smoke passed 15/15 after clean install.
 - iPhone 13:
-- iPhone XS Max:
-- Android:
+- iPhone XS Max: simulator equivalent passed; physical device remains pending if required.
+- Android: debug APK build passed with package `com.ryvro.shiftplanner`; install pending due no attached device/emulator.
 
 Auth QA:
 - Email:
@@ -1625,7 +1628,7 @@ Phase gate:
 
 ### Phase 10: Device QA
 
-- [ ] Fresh install on iOS simulator.
+- [x] Fresh install on iOS simulator. Detox installed rebuilt `Ryvro.app` on a clean iPhone XS Max simulator before the seeded dashboard smoke.
 - [ ] Fresh onboarding on iOS simulator.
 - [ ] Settings edit on iOS simulator.
 - [ ] Dashboard color/icon check on iOS simulator.
@@ -1633,8 +1636,8 @@ Phase gate:
 - [ ] Auth check on iPhone 13.
 - [ ] Universal Builder check on iPhone 13.
 - [ ] Fresh install on iPhone XS Max when available.
-- [ ] Small-screen visual QA on iPhone XS Max or equivalent simulator.
-- [ ] Android build/install.
+- [x] Small-screen visual QA on iPhone XS Max or equivalent simulator.
+- [ ] Android build/install. Build passed; install remains pending because no Android device or emulator was attached.
 - [ ] Android auth check.
 - [ ] Android Universal Builder check.
 
