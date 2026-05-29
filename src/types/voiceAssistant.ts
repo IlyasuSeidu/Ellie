@@ -179,7 +179,7 @@ export interface VoiceAssistantNotice {
 export type VoiceAssistantDiagnosticCategory =
   | 'wake_word'
   | 'speech_recognition'
-  | 'ellie_brain'
+  | 'ryvro_brain'
   | 'tts'
   | 'pipeline'
   | 'persistence';

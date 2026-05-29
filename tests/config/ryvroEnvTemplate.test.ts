@@ -839,9 +839,11 @@ describe('Ryvro environment template', () => {
     expect(activeSource).toContain('RyvroBrainService');
     expect(activeSource).toContain('ryvroBrainService');
     expect(activeSource).toContain('isConfiguredRyvroBrainUrl');
+    expect(activeSource).toContain("'ryvro_brain'");
     expect(activeSource).not.toContain('EllieBrainService');
     expect(activeSource).not.toContain('ellieBrainService');
     expect(activeSource).not.toContain('isConfiguredEllieBrainUrl');
+    expect(activeSource).not.toContain("'ellie_brain'");
   });
 
   it('keeps active voice UI and admin surfaces on Ryvro naming', () => {
