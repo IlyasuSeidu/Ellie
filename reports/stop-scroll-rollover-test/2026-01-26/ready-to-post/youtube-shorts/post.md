@@ -35,6 +35,6 @@ By the end of the day, setup had a clearer path, a one-question-at-a-time introd
 
 You do not make a boring decision better by explaining it harder. You make it better by changing how it feels to move through.
 
-I am building Ellie as a miner with AI-native, mostly vibe-coded workflows, but the product problem stays first.
+I am building Ryvro as a miner with AI-native, mostly vibe-coded workflows, but the product problem stays first.
 
-#ellieapp #shiftwork #mining #buildinpublic #theminerbuildingtech
+#ryvro #shiftwork #shiftworkers #buildinpublic #theminerbuildingtech

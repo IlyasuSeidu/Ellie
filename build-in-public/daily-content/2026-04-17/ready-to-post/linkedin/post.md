@@ -10,7 +10,7 @@
 
 Product trust is usually lost in transitions, not in feature gaps.
 
-In Ellie, that showed up when users moved between onboarding, reminders, voice assistant, and subscription states. Each area was improving, but the handoffs still had room for doubt.
+In Ryvro, that showed up when users moved between onboarding, reminders, voice assistant, and subscription states. Each area was improving, but the handoffs still had room for doubt.
 
 Today’s decision was to prioritize behavioral consistency over presentation tweaks:
 
@@ -20,7 +20,7 @@ Today’s decision was to prioritize behavioral consistency over presentation tw
 
 Proof from this pass: 11 locale packs touched, 27 tests touched.
 
-I build Ellie as a miner for shift workers, so “good enough in demo” is not the bar. The bar is trust under fatigue, time pressure, and real rosters.
+I build Ryvro as a miner for shift workers, so “good enough in demo” is not the bar. The bar is trust under fatigue, time pressure, and real rosters.
 
 Which reliability metric best predicts long-term product trust?
 
@@ -28,7 +28,7 @@ Which reliability metric best predicts long-term product trust?
 
 If your product spans onboarding, payments, notifications, and assistant flows, your trust model is only as strong as the transitions between them.
 
-That was today’s Ellie lesson: fix behavioral seams first, then polish.
+That was today’s Ryvro lesson: fix behavioral seams first, then polish.
 
 11 locales and 27 tests moved with this reliability pass.
 

@@ -20,7 +20,7 @@ The easy version of this story is: more onboarding work shipped.
 
 The real version is better.
 
-Day 2 of Ellie was about removing the feeling of paperwork.
+Day 2 of Ryvro was about removing the feeling of paperwork.
 
 The morning built the guided path.
 The evening rebuilt the hardest decision inside that path.

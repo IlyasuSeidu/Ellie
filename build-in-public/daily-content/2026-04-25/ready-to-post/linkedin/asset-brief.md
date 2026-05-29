@@ -13,9 +13,9 @@
 
 ## Story Fit
 
-- Chapter: when Ellie reduced onboarding decision weight instead of adding explanation
+- Chapter: when Ryvro reduced onboarding decision weight instead of adding explanation
 - Hook: Onboarding quality is mostly decision design, not copy quality.
-- Proof line: Ellie moved to one-question-at-a-time setup, rebuilt the roster pattern interaction, and shipped with 11 locale updates plus 32 tests touched.
+- Proof line: Ryvro moved to one-question-at-a-time setup, rebuilt the roster pattern interaction, and shipped with 11 locale updates plus 32 tests touched.
 - Builder overlay: Built by a miner for shift workers.
 
 ## Asset Needs

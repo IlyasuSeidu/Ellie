@@ -11,7 +11,7 @@
 ### Slide Copy
 
 1. If "Tomorrow: Night Shift" is wrong, the animation does not matter.
-2. A shift worker checks Ellie before bed. One wrong answer and the whole product feels broken — not just that screen.
+2. A shift worker checks Ryvro before bed. One wrong answer and the whole product feels broken — not just that screen.
 3. The wrong assumption was that polish would carry trust. It cannot. The answer has to be right before the surface earns the right to look good.
 4. So the foundation came first. Shift math, state, and the decision moment — all tightened before a single animation was allowed to make a promise.
 5. Once the answer layer was solid, the onboarding surface finally had something truthful to stand on. The guided path, the inputs, the progress — all of it landed cleaner because the ground underneath held.
@@ -34,4 +34,4 @@ Built by a miner for shift workers.
 
 What do you secure first when the user cannot afford a wrong answer? Save this and drop your answer below.
 
-#ellieapp #shiftwork #mining #buildinpublic #theminerbuildingtech
+#ryvro #shiftwork #shiftworkers #buildinpublic #theminerbuildingtech

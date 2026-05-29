@@ -30,7 +30,7 @@ If choosing your roster pattern feels like filling out a form, people quit befor
 
 2. The setup path was collecting the right information. It was still making people work too hard to give it.
 
-3. I am a miner building Ellie with AI-native, mostly vibe-coded workflows. The useful part is not the tooling. It is that it lets me turn real shift-work friction into working product decisions fast.
+3. I am a miner building Ryvro with AI-native, mostly vibe-coded workflows. The useful part is not the tooling. It is that it lets me turn real shift-work friction into working product decisions fast.
 
 4. One question at a time. Swipeable cards instead of dropdowns. A welcome screen that sets the tone before anyone touches a setting. Small moves. Real difference.
 

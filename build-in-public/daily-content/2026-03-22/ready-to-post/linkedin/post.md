@@ -10,7 +10,7 @@
 
 Localization bugs are often product bugs in disguise.
 
-Today I reviewed Ellie’s onboarding copy across three connected moments:
+Today I reviewed Ryvro’s onboarding copy across three connected moments:
 
 - pattern setup
 - Aha preview
@@ -38,4 +38,4 @@ A practical pattern that helped today:
 2. Audit every adjacent screen that should reinforce it.
 3. Remove wording that sounds technically correct but behaviorally unclear.
 
-In Ellie, that meant aligning setup, Aha, and paywall language around one sentence users can act on immediately.
+In Ryvro, that meant aligning setup, Aha, and paywall language around one sentence users can act on immediately.

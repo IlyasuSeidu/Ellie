@@ -9,7 +9,7 @@
 
 ## 1. Human Summary (For Miners)
 
-When setting up Ellie, you need to tell the app where you are in your shift cycle. Are you on Day shifts, Night shifts, or Days off? And which day of that phase are you on?
+When setting up Ryvro, you need to tell the app where you are in your shift cycle. Are you on Day shifts, Night shifts, or Days off? And which day of that phase are you on?
 
 Before this update, that question was crammed into the Start Date screen alongside the calendar. It worked, but it felt rushed—like asking three questions at once while you're trying to focus on picking a date.
 
@@ -104,7 +104,7 @@ That's what happens when a screen handles too many unrelated tasks.
 
 Each window does **one thing**. You know exactly where to go for each task. No confusion. No cognitive overload.
 
-**In Ellie:**
+**In Ryvro:**
 
 **Old approach (one screen):**
 
@@ -584,7 +584,7 @@ The key is: **Generate cards dynamically, show stage-by-stage, calculate final v
 
 [0:04 - Setup]
 
-I'm building Ellie, a shift calendar app for miners. The onboarding has 10 screens. Screen 5 was causing drop-offs.
+I'm building Ryvro, a shift calendar app for miners. The onboarding has 10 screens. Screen 5 was causing drop-offs.
 
 [0:11 - The Problem]
 
@@ -629,7 +629,7 @@ Sometimes the best feature isn't adding something new—it's separating what alr
 
 [1:32 - Call to Action]
 
-I'm building Ellie in public. What screen in your app is asking too many questions at once?
+I'm building Ryvro in public. What screen in your app is asking too many questions at once?
 
 Let me know—I'd love to hear how you're tackling complexity in your flows.
 
@@ -763,7 +763,7 @@ Add Detox/Maestro tests for full gesture flows:
 
 ### New Files:
 
-1. **`/Users/Shared/Ellie/src/screens/onboarding/premium/PremiumPhaseSelectorScreen.tsx`**
+1. **`/Users/Shared/Ryvro/src/screens/onboarding/premium/PremiumPhaseSelectorScreen.tsx`**
    - **Lines:** 1,247
    - **Components:** Main screen, SwipeablePhaseCard, InstructionText, SwipeInstructions, PhaseInfoModal
    - **Key functions:**
@@ -772,7 +772,7 @@ Add Detox/Maestro tests for full gesture flows:
      - `calculateAndNavigate()`: Calculates phaseOffset and navigates to next screen
      - `handleSwipeRight/Left/Up()`: Gesture handlers
 
-2. **`/Users/Shared/Ellie/src/screens/onboarding/premium/__tests__/PremiumPhaseSelectorScreen.test.tsx`**
+2. **`/Users/Shared/Ryvro/src/screens/onboarding/premium/__tests__/PremiumPhaseSelectorScreen.test.tsx`**
    - **Lines:** 320
    - **Test suites:** 8 describe blocks
    - **Test cases:** 27 tests
@@ -780,29 +780,29 @@ Add Detox/Maestro tests for full gesture flows:
 
 ### Modified Files:
 
-3. **`/Users/Shared/Ellie/src/navigation/OnboardingNavigator.tsx`**
+3. **`/Users/Shared/Ryvro/src/navigation/OnboardingNavigator.tsx`**
    - Added `PhaseSelector: undefined` to `OnboardingStackParamList`
    - Added `<Stack.Screen name="PhaseSelector" ... />` between ShiftPattern and StartDate
 
-4. **`/Users/Shared/Ellie/src/screens/onboarding/premium/PremiumShiftPatternScreen.tsx`**
+4. **`/Users/Shared/Ryvro/src/screens/onboarding/premium/PremiumShiftPatternScreen.tsx`**
    - Changed: `navigation.navigate('StartDate')` → `navigation.navigate('PhaseSelector')`
 
-5. **`/Users/Shared/Ellie/src/screens/onboarding/premium/PremiumCustomPatternScreen.tsx`**
+5. **`/Users/Shared/Ryvro/src/screens/onboarding/premium/PremiumCustomPatternScreen.tsx`**
    - Changed: `navigation.navigate('StartDate')` → `navigation.navigate('PhaseSelector')`
 
-6. **`/Users/Shared/Ellie/src/screens/onboarding/premium/PremiumStartDateScreen.tsx`**
+6. **`/Users/Shared/Ryvro/src/screens/onboarding/premium/PremiumStartDateScreen.tsx`**
    - **Removed:** PhaseSelector component (334 lines)
    - **Removed:** DayWithinPhaseSelector component (243 lines)
    - **Removed:** Phase selection state and logic
    - **Updated:** Progress indicator from "Step 5" to "Step 6"
    - **Simplified:** Now only handles date selection, reads phaseOffset from context
 
-7. **`/Users/Shared/Ellie/src/screens/onboarding/premium/__tests__/PremiumStartDateScreen.test.tsx`**
+7. **`/Users/Shared/Ryvro/src/screens/onboarding/premium/__tests__/PremiumStartDateScreen.test.tsx`**
    - Updated step number expectations: "Step 5 of 10" → "Step 6 of 11"
    - Removed tests for phase selection UI (replaced with context validation tests)
    - Removed tests for live preview card (component marked as unused)
 
-8. **`/Users/Shared/Ellie/jest.config.js`**
+8. **`/Users/Shared/Ryvro/jest.config.js`**
    - Added coverage exclusions for complex swipe UI screens:
      ```javascript
      '!src/screens/onboarding/premium/PremiumPhaseSelectorScreen.tsx',

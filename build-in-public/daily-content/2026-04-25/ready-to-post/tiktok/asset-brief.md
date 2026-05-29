@@ -15,7 +15,7 @@
 
 - Chapter: when the roster decision stopped stalling onboarding
 - Hook: Most shift apps lose people at the roster picker, not at login.
-- Proof line: Today Ellie moved to one-question-at-a-time onboarding, rebuilt the pattern picker to be swipeable, and shipped coverage across 11 locales with 32 tests touched.
+- Proof line: Today Ryvro moved to one-question-at-a-time onboarding, rebuilt the pattern picker to be swipeable, and shipped coverage across 11 locales with 32 tests touched.
 - Builder overlay: Built by a miner for shift workers.
 
 ## Asset Needs

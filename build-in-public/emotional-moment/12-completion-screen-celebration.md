@@ -8,9 +8,9 @@
 
 ## 1. HUMAN SUMMARY
 
-**What was built**: The final screen of Ellie's onboarding flow - a celebration moment that validates everything a miner just configured. An animated SVG checkmark draws itself into existence, 30 confetti particles explode outward, 6 sparkles pulse around the circle, and a summary card reveals each configuration choice one by one. Seven feature pills scroll horizontally, each expandable with a tap. When the data saves successfully, the "Get Started" button pulses and the miner transitions to their personalized dashboard.
+**What was built**: The final screen of Ryvro's onboarding flow - a celebration moment that validates everything a miner just configured. An animated SVG checkmark draws itself into existence, 30 confetti particles explode outward, 6 sparkles pulse around the circle, and a summary card reveals each configuration choice one by one. Seven feature pills scroll horizontally, each expandable with a tap. When the data saves successfully, the "Get Started" button pulses and the miner transitions to their personalized dashboard.
 
-**Why it matters for miners**: After spending several minutes telling Ellie about their 4-4-4 rotation, their night shift start time, their phase position - this screen says "We heard you. Here's everything back, confirmed." For someone who's been counting shifts on their fingers for years, seeing their entire work schedule summarized in one clean card is the moment the app earns trust. The celebration isn't decoration. It's the app saying: your complicated life just got organized.
+**Why it matters for miners**: After spending several minutes telling Ryvro about their 4-4-4 rotation, their night shift start time, their phase position - this screen says "We heard you. Here's everything back, confirmed." For someone who's been counting shifts on their fingers for years, seeing their entire work schedule summarized in one clean card is the moment the app earns trust. The celebration isn't decoration. It's the app saying: your complicated life just got organized.
 
 ---
 
@@ -175,11 +175,11 @@ This isn't just adding `reducedMotion` checks. It's a fundamentally different re
 "Your user just spent 5 minutes configuring a complex shift schedule. How do you make them feel like that time was worth it?"
 
 **[WHAT I BUILT - 0:08-0:35]**
-"This is Ellie's completion screen. Watch what happens.
+"This is Ryvro's completion screen. Watch what happens.
 
 A checkmark draws itself in - not pops in, DRAWS - like someone signing off on your setup. Confetti explodes outward, 30 particles with real physics. Then your configuration appears, line by line: your name, your company, your 4-4-4 rotation, your shift times.
 
-Below that, seven feature pills you can tap to expand. Each one tells you what Ellie can do now that it knows your schedule."
+Below that, seven feature pills you can tap to expand. Each one tells you what Ryvro can do now that it knows your schedule."
 
 **[WHY IT MATTERS - 0:35-1:00]**
 "Here's the thing about onboarding completion screens. Most apps show a generic 'You're all set!' with a stock illustration. But this person just trusted you with their entire work schedule.
@@ -194,7 +194,7 @@ For a shift worker who's been manually counting days on a calendar, this is the 
 The design lesson: The most important animation isn't the flashiest one. It's the staggered summary reveal. Turn data confirmation into a narrative, and users actually read it."
 
 **[INVITATION - 1:20-1:30]**
-"Building Ellie in public. This was the last onboarding screen. Next up: the main dashboard - where all this configuration comes alive as a personalized shift calendar. Follow to see it happen."
+"Building Ryvro in public. This was the last onboarding screen. Next up: the main dashboard - where all this configuration comes alive as a personalized shift calendar. Follow to see it happen."
 
 ---
 

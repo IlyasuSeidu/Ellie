@@ -117,7 +117,7 @@ Card Opacity:      0.8     →  1.0  →  0.8
 Card Scale:        0.95    →  1.0  →  0.95
 ```
 
-**Real Code from Ellie**:
+**Real Code from Ryvro**:
 
 ```typescript
 const panGesture = Gesture.Pan()
@@ -393,7 +393,7 @@ Solution: Highest priority wins
 "I made shift pattern selection work like Tinder. Users love it. Here's why it works."
 
 **[WHAT I BUILT - 0:08-0:35]**
-"This is how you choose your shift pattern in Ellie. It's a stack of cards. Swipe right to select a pattern. Swipe left to skip it. Swipe up to learn more.
+"This is how you choose your shift pattern in Ryvro. It's a stack of cards. Swipe right to select a pattern. Swipe left to skip it. Swipe up to learn more.
 
 Watch the physics: The card rotates as you drag it. Scales up slightly. Background cards peek through. When you release, it either snaps back or flies off screen with spring physics.
 
@@ -412,7 +412,7 @@ Shift patterns ARE boring. They're just numbers. But the way you CHOOSE a shift 
 I spent two weeks on this because the first version—a dropdown menu—was so tedious that users didn't want to complete onboarding. This version? Retention went up. Because choosing your pattern stopped feeling like homework."
 
 **[INVITATION - 1:20-1:30]**
-"Building Ellie in public. Follow to see how small interaction details change the whole experience. Next: building custom patterns for the mines I didn't anticipate."
+"Building Ryvro in public. Follow to see how small interaction details change the whole experience. Next: building custom patterns for the mines I didn't anticipate."
 
 ---
 

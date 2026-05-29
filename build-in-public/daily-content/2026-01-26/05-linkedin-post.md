@@ -4,11 +4,11 @@ Most onboarding problems are not information problems.
 
 They are weight problems.
 
-I am building Ellie, a shift scheduling tool for mining workers. The onboarding has one job: get someone from zero to a working schedule before they lose confidence in the product.
+I am building Ryvro, a shift scheduling tool for mining workers. The onboarding has one job: get someone from zero to a working schedule before they lose confidence in the product.
 
 The shift pattern step was the bottleneck.
 
-The information was correct. A miner needed to pick their roster cycle so Ellie could build their schedule accurately. But the interaction asked them to study a dense selector and make a formal choice about something they have always known by feel.
+The information was correct. A miner needed to pick their roster cycle so Ryvro could build their schedule accurately. But the interaction asked them to study a dense selector and make a formal choice about something they have always known by feel.
 
 4 on, 4 off. Days into nights into off days. The rhythm of the week.
 

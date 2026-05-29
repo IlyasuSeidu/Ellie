@@ -22,7 +22,7 @@
 
 A trust leak can start with something tiny: one setup choice not carrying over.
 
-Today’s Ellie pass focused on reliability first, design second.
+Today’s Ryvro pass focused on reliability first, design second.
 
 We tightened setup continuity, shift/date behavior, and cross-flow consistency around reminders, voice, and subscription.
 
@@ -32,4 +32,4 @@ Built by a miner for shift workers.
 
 Which step in your shift flow still feels fragile?
 
-#ellieapp #shiftwork #instagramcarousel #productstrategy #buildinpublic #mining
+#ryvro #shiftwork #instagramcarousel #productstrategy #buildinpublic #shiftworkers

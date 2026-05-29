@@ -27,7 +27,7 @@ What screen makes you pause before you trust an app?
 
 I watched people stall at setup and knew this was on me.
 
-The core logic was fine. The experience still asked tired shift workers to think too hard before Ellie proved value.
+The core logic was fine. The experience still asked tired shift workers to think too hard before Ryvro proved value.
 
 So I tightened the flow: setup carries forward, roster timing matches real shift life, and the answer screen now reads with clearer date + shift logic. I also sharpened welcome, pricing, and language across 11 locales.
 
@@ -37,7 +37,7 @@ Built by a miner for shift workers.
 
 What screen makes you pause before you trust an app?
 
-#ellieapp #shiftwork #mining #buildinpublic #theminerbuildingtech
+#ryvro #shiftwork #shiftworkers #buildinpublic #theminerbuildingtech
 
 ## Optional Builder Turn
 

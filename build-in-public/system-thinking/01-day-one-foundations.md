@@ -1,4 +1,4 @@
-# Day 1: Building Ellie - The Infrastructure Nobody Sees
+# Day 1: Building Ryvro - The Infrastructure Nobody Sees
 
 **Date**: Initial Commit
 **Storytelling Angle**: System Thinking
@@ -8,7 +8,7 @@
 
 ## 1. HUMAN SUMMARY
 
-**What was built**: The complete foundation of Ellie - TypeScript types, utility functions, Firebase setup, testing infrastructure, and core services.
+**What was built**: The complete foundation of Ryvro - TypeScript types, utility functions, Firebase setup, testing infrastructure, and core services.
 
 **Why it matters for miners**: Before you can show someone "Tomorrow: Night Shift 🌙 6pm-6am", you need rock-solid code that can calculate which day of a 21-day cycle they're on, even across months and years. This foundation handles all that invisible math so the app never tells a miner the wrong shift.
 
@@ -18,7 +18,7 @@
 
 **The Infrastructure Nobody Sees**
 
-Day 1 of building Ellie, and I haven't written a single line of UI code yet.
+Day 1 of building Ryvro, and I haven't written a single line of UI code yet.
 
 Instead, I spent the entire day on infrastructure:
 
@@ -77,7 +77,7 @@ function addShifts(a: number, b: number): number {
 addShifts('7', 3); // TypeScript error: "7" is not a number
 ```
 
-**Why It Matters for Ellie**:
+**Why It Matters for Ryvro**:
 When calculating "What shift am I on in 45 days?", getting the wrong type means showing the wrong shift. That could make someone miss work.
 
 ---
@@ -185,7 +185,7 @@ The app has to be right. Every time. That means infrastructure first."
 I could've skipped the types. Skipped the tests. Shipped a UI in 2 hours. But the first date calculation bug would've destroyed trust. So I spent Day 1 on code nobody will ever see—but everybody will depend on."
 
 **[INVITATION - 1:20-1:30]**
-"Building Ellie in public. Follow along to see how invisible infrastructure becomes a tool miners actually use. Day 2: We build the UI."
+"Building Ryvro in public. Follow along to see how invisible infrastructure becomes a tool miners actually use. Day 2: We build the UI."
 
 ---
 

@@ -4,7 +4,7 @@
 **Angle**: Emotional Moment
 **Date**: February 11, 2026
 **Status**: ✅ Complete
-**Commit**: [cd7bfe1](https://github.com/IlyasuSeidu/Ellie/commit/cd7bfe1)
+**Commit**: [cd7bfe1](https://github.com/IlyasuSeidu/Ryvro/commit/cd7bfe1)
 
 ---
 
@@ -16,7 +16,7 @@ I transformed the introduction screen from a boring 4-field form into a conversa
 
 **Why It Matters for Mining Workers**
 
-Mining shift workers deal with complex rotating schedules and need to trust their tools. First impressions matter. When Ellie greets you like a helpful assistant instead of presenting a government form, it signals: "This app understands you're a person, not just data to collect."
+Mining shift workers deal with complex rotating schedules and need to trust their tools. First impressions matter. When Ryvro greets you like a helpful assistant instead of presenting a government form, it signals: "This app understands you're a person, not just data to collect."
 
 The chatbot:
 
@@ -33,7 +33,7 @@ For someone coming off a night shift, exhausted, just wanting to set up their ca
 
 **The Form That Became a Conversation**
 
-I spent 12 hours turning Ellie's introduction screen from a traditional form into a chatbot experience. Not because it looked bad before—it worked fine. But because I wanted mining workers to feel _something_ when they first meet Ellie.
+I spent 12 hours turning Ryvro's introduction screen from a traditional form into a chatbot experience. Not because it looked bad before—it worked fine. But because I wanted mining workers to feel _something_ when they first meet Ryvro.
 
 **The decision**: Progressive disclosure. ONE question at a time.
 
@@ -48,7 +48,7 @@ Your brain sees this and calculates: "Four fields to fill. Which order? Are they
 
 New version asks questions one by one:
 
-1. "Welcome to Ellie! Let's get to know you."
+1. "Welcome to Ryvro! Let's get to know you."
 2. "What's your name?"
 3. "Great to meet you, John! What's your occupation?"
 
@@ -175,7 +175,7 @@ enum ConversationStep {
 
 **The Tradeoff**: Scalability
 
-If Ellie needed 50 onboarding questions with complex branching ("if mining type === underground, ask about depth; if surface, skip to equipment"), the state machine would become unwieldy. I'd refactor to a graph-based system.
+If Ryvro needed 50 onboarding questions with complex branching ("if mining type === underground, ask about depth; if surface, skip to equipment"), the state machine would become unwieldy. I'd refactor to a graph-based system.
 
 But for 4 fields in linear order? The state machine is perfect. It's like using a hammer for a nail—simple, effective, obvious.
 
@@ -223,7 +223,7 @@ Then the screen component becomes a generic conversation renderer. But that's pr
 
 **[0:10-0:25] The Problem**
 
-"Ellie's introduction screen worked fine—four fields, fill them out, done. But I wanted mining workers to _feel_ something when they first meet the app. First impressions matter."
+"Ryvro's introduction screen worked fine—four fields, fill them out, done. But I wanted mining workers to _feel_ something when they first meet the app. First impressions matter."
 
 **[0:25-0:45] The Build**
 
@@ -247,7 +247,7 @@ Typing indicators delay 800 to 1000 milliseconds. Fast enough to not waste time,
 
 **[1:20-1:30] The Invitation**
 
-"I'm building Ellie for mining shift workers—people who need tools they can trust at 3am coming off a night shift.
+"I'm building Ryvro for mining shift workers—people who need tools they can trust at 3am coming off a night shift.
 
 What makes you trust an app? Let me know in the comments."
 
@@ -540,6 +540,6 @@ The introduction screen sets the tone. Now we move to the core: helping mining w
 
 **Built with care for mining shift workers who deserve better tools.**
 
-_Follow along as we build Ellie in public._
+_Follow along as we build Ryvro in public._
 
 Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>

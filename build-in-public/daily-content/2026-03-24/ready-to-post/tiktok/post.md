@@ -11,7 +11,7 @@
 
 ### Script
 
-One button was technically translated in Ellie, but still felt wrong.
+One button was technically translated in Ryvro, but still felt wrong.
 
 In long-language layouts, the paywall CTA wrapped and looked broken right when trust should increase.
 
@@ -25,7 +25,7 @@ If your onboarding had to work in 11 languages tonight, which step would break f
 
 I learned this the hard way: correct translation is not the same as clear product trust.
 
-Today in Ellie:
+Today in Ryvro:
 
 - tightened paywall CTA copy across 11 locales
 - fixed onboarding CTA and hint wrapping in long locales
@@ -35,7 +35,7 @@ Built by a miner for shift workers.
 
 Which onboarding button made you hesitate last?
 
-#ellieapp #shiftwork #buildinpublic #productdesign #localization #ux
+#ryvro #shiftwork #buildinpublic #productdesign #localization #ux
 
 ## Optional Builder Turn
 

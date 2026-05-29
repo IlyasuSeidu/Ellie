@@ -43,7 +43,7 @@ What onboarding step in most apps still feels like paperwork to you?
 
 ## Caption Draft
 
-Day 2 of Ellie was not really about adding another onboarding screen.
+Day 2 of Ryvro was not really about adding another onboarding screen.
 
 It was about removing the feeling of admin.
 

@@ -370,6 +370,20 @@ describe('Ryvro environment template', () => {
     expect(researchAutomationPrompt).not.toContain('closest Ryvro miner persona');
   });
 
+  it('keeps tracked publishable build-in-public content on Ryvro naming', () => {
+    const publishableContentFiles = ['build-in-public', 'reports/stop-scroll-rollover-test']
+      .flatMap((relativeDir) => walkFiles(path.join(process.cwd(), relativeDir)))
+      .filter((file) => /\.(json|md|txt)$/.test(file));
+
+    for (const file of publishableContentFiles) {
+      const content = fs.readFileSync(file, 'utf8');
+
+      expect(content).not.toMatch(/#ellieapp|#mining|Hey Ellie|\bEllie\b/);
+      expect(content).not.toContain('miners, shift workers, and broad discovery viewers');
+      expect(content).not.toContain('mining-helmet-sacred-flame');
+    }
+  });
+
   it('does not keep retired Ellie brain endpoints in CI workflows', () => {
     const ciWorkflow = fs.readFileSync(
       path.join(process.cwd(), '.github/workflows/ci.yml'),

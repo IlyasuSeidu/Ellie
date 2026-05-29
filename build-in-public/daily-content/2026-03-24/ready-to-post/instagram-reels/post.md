@@ -13,7 +13,7 @@
 
 Quick product truth: translated text can still feel broken.
 
-In Ellie, long-locale CTA lines were wrapping at the worst moment in onboarding and paywall flow.
+In Ryvro, long-locale CTA lines were wrapping at the worst moment in onboarding and paywall flow.
 
 We shortened key copy, adjusted layout behavior, and retested the critical screens.
 
@@ -32,7 +32,7 @@ What tiny UI detail breaks trust fastest for you?
 
 Readable text can still fail if the screen feels unstable.
 
-Today in Ellie we fixed long-locale CTA friction where people decide whether to continue.
+Today in Ryvro we fixed long-locale CTA friction where people decide whether to continue.
 
 Proof: 11 locale updates + onboarding/paywall UI cleanup + test coverage.
 
@@ -40,4 +40,4 @@ Built by a miner for shift workers.
 
 What tiny UI detail breaks trust fastest for you?
 
-#ellieapp #shiftwork #reels #productdesign #uxwriting #localization
+#ryvro #shiftwork #reels #productdesign #uxwriting #localization

@@ -1,6 +1,6 @@
 # Instagram Reels Asset Brief
 
-- Audience: miners, shift workers, and broad discovery viewers
+- Audience: FIFO crews, shift workers, and broad discovery viewers
 - Objective: earn a stop with a recognizable onboarding pain point
 - Native format: short vertical video with fast visual clarity
 - Target length: 12-25 seconds
@@ -15,7 +15,7 @@
 
 - Chapter: when onboarding stopped front-loading cognitive load
 - Hook: If your first key decision needs explaining, your onboarding is upside down.
-- Proof line: Ellie now introduces setup one question at a time, uses swipeable pattern selection, and shipped that pass with 11 locale updates plus 32 tests touched.
+- Proof line: Ryvro now introduces setup one question at a time, uses swipeable pattern selection, and shipped that pass with 11 locale updates plus 32 tests touched.
 - Builder overlay: Built by a miner for shift workers.
 
 ## Asset Needs

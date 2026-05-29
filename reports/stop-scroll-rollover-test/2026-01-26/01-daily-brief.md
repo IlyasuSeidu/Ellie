@@ -8,7 +8,7 @@
 
 ## Story Lens
 
-Day 2 was about one risk: asking mining workers to do admin before Ellie had earned enough trust to ask it.
+Day 2 was about one risk: asking mining workers to do admin before Ryvro had earned enough trust to ask it.
 
 The day started by turning separate onboarding pieces into a guided path: navigation, a stronger introduction screen, and a country selector that made setup feel coherent.
 
@@ -39,7 +39,7 @@ By the end of the day, the hardest choice in the flow, shift pattern selection, 
 ## Codebase Context
 
 - One-question-at-a-time introduction flow that makes profile setup feel conversational instead of administrative.
-- First screen that frames Ellie as a premium shift companion from the opening moment.
+- First screen that frames Ryvro as a premium shift companion from the opening moment.
 - Phase selection that helps people place themselves correctly inside a repeating roster cycle.
 - guided onboarding path
 - physics-based motion that needs to feel solid

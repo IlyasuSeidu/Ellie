@@ -20,7 +20,7 @@ What onboarding step still feels like paperwork in most apps?
 
 The setup flow was collecting the right information. It was still exhausting to move through.
 
-I am a miner building Ellie for shift workers like me. I use AI-native, mostly vibe-coded workflows, not because the tooling is interesting, but because it lets me turn real shift-work friction into working product decisions fast.
+I am a miner building Ryvro for shift workers like me. I use AI-native, mostly vibe-coded workflows, not because the tooling is interesting, but because it lets me turn real shift-work friction into working product decisions fast.
 
 One question at a time. Swipeable roster cards. A welcome screen that earns the word premium before the person has done anything.
 

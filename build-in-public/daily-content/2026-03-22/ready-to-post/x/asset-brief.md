@@ -16,7 +16,7 @@
 - Chapter: language pass across onboarding moments
 - Hook: Localization is a product surface, not a copy task.
 - Proof line: A single promise now carries across setup, Aha preview, and paywall.
-- Builder overlay: Ellie is built from real shift-work constraints, so wording is treated as core UX.
+- Builder overlay: Ryvro is built from real shift-work constraints, so wording is treated as core UX.
 
 ## Asset Needs
 

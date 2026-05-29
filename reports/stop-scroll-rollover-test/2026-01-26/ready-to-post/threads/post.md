@@ -22,7 +22,7 @@ What onboarding step still feels like paperwork in most apps?
 
 I rebuilt the pattern picker because the right information was still asking too much from tired people.
 
-I am building Ellie as a miner with AI-native, mostly vibe-coded workflows. The useful part is not the novelty of the tooling. It is that it lets me turn real shift-work friction into working product decisions fast.
+I am building Ryvro as a miner with AI-native, mostly vibe-coded workflows. The useful part is not the novelty of the tooling. It is that it lets me turn real shift-work friction into working product decisions fast.
 
 You do not make a boring decision better by explaining it harder. You make it better by changing how it feels to move through.
 

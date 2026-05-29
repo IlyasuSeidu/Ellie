@@ -107,7 +107,7 @@ const handleChange = (newValue: number) => {
 };
 ```
 
-**Real Example from Ellie**:
+**Real Example from Ryvro**:
 
 ```typescript
 const [daysOn, setDaysOn] = useState(7);
@@ -323,7 +323,7 @@ I built the standard pattern list with confidence. 'This will cover everyone!' W
 Good design means building escape hatches. When your assumptions fail, give users a way to define their reality anyway."
 
 **[INVITATION - 1:20-1:30]**
-"Building Ellie in public. Follow along to see how user feedback reveals what you missed. Next: the start date screen, where we tie it all together."
+"Building Ryvro in public. Follow along to see how user feedback reveals what you missed. Next: the start date screen, where we tie it all together."
 
 ---
 

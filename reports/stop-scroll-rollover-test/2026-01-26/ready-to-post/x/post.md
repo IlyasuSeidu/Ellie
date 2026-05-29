@@ -30,7 +30,7 @@ If choosing your roster feels like paperwork, people quit before the app earns t
 
 2. The setup path was collecting the right information but still making people work too hard.
 
-3. I am building Ellie as a miner with AI-native, mostly vibe-coded workflows. The useful part is not the novelty of the tooling. It is that it lets me turn real shift-work friction into working product decisions fast.
+3. I am building Ryvro as a miner with AI-native, mostly vibe-coded workflows. The useful part is not the novelty of the tooling. It is that it lets me turn real shift-work friction into working product decisions fast.
 
 4. You do not make a boring decision better by explaining it harder. You make it better by changing how it feels to move through.
 

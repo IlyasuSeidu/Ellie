@@ -15,8 +15,8 @@
 
 - Chapter: building the answer before the screen
 - Hook: If "Tomorrow: Night Shift" is wrong, the animation does not matter.
-- Proof line: By the end of the day, Ellie had the answer layer underneath it and the first onboarding surface finally had something truthful to stand on.
-- Builder overlay: I am a miner building Ellie with AI-native, mostly vibe-coded workflows. The point is not the tooling flex. The point is turning real shift-work pain into working product decisions.
+- Proof line: By the end of the day, Ryvro had the answer layer underneath it and the first onboarding surface finally had something truthful to stand on.
+- Builder overlay: I am a miner building Ryvro with AI-native, mostly vibe-coded workflows. The point is not the tooling flex. The point is turning real shift-work pain into working product decisions.
 
 ## Asset Needs
 

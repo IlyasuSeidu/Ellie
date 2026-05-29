@@ -12,7 +12,7 @@ Day 1 had two jobs: build the invisible foundation a miner will never see, then 
 ## Story Spine
 
 - **Character**: a miner checking tomorrow before dawn and deciding in half a second whether to trust the answer
-- **Friction**: The easy day-1 story is "ship something visible." For Ellie, the real risk was making promises on the surface before the answer layer deserved trust.
+- **Friction**: The easy day-1 story is "ship something visible." For Ryvro, the real risk was making promises on the surface before the answer layer deserved trust.
 - **Wrong Read**: It is tempting to tell a cleaner story and pretend day 1 was only invisible work. It was not. The real day had both: deep foundation work first, then the first visible onboarding layer on top of it.
 - **Shift**: Build shift math, services, and safeguards first. Then let the welcome flow and onboarding components start appearing on that base the same day.
 - **Proof**: Shift calculation and date handling landed early, so the answer layer existed before the visible flow started making promises. The invisible foundation was hardened before the visible layer became the story people could see. Later that same day, premium onboarding components and the first welcome screen appeared on top of that groundwork.

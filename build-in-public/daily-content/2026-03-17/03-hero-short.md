@@ -21,11 +21,11 @@
 
 Nothing was technically broken.
 
-But the first minute of Ellie was still making people pause.
+But the first minute of Ryvro was still making people pause.
 
 The welcome screen, the pricing moment, the language experience — on the surface those looked like three separate jobs. They were really one problem: the product was asking people to think too hard before they had a reason to stay.
 
-The clearest example was the language experience. Ellie supports 11 languages. But finishing that work only counts if it reads instantly in every one of them. So I went back through all 11 and removed the last edges that were still slowing comprehension.
+The clearest example was the language experience. Ryvro supports 11 languages. But finishing that work only counts if it reads instantly in every one of them. So I went back through all 11 and removed the last edges that were still slowing comprehension.
 
 Same logic applied to the pricing moment. Nothing was broken. But it was still making people hesitate. I tightened it until the meaning arrived faster.
 
@@ -48,7 +48,7 @@ What is one small moment in a product that makes you trust it less immediately?
 
 ## Caption Draft
 
-Nothing was technically broken. But the first minute of Ellie was still asking shift workers to think too hard.
+Nothing was technically broken. But the first minute of Ryvro was still asking shift workers to think too hard.
 
 Today I worked on three moments: the welcome screen, the pricing moment, and the language experience. All 11 languages tightened. The last confusing edges removed. The pricing moment now reads faster on first contact.
 

@@ -15,7 +15,7 @@
 
 - Chapter: when onboarding moved from explanation-heavy to decision-light
 - Hook: I assumed better copy would fix onboarding friction. It didn’t.
-- Proof line: Ellie shifted to one-question-at-a-time setup, rebuilt pattern picking into swipeable choices, and validated the pass with 11 locale updates and 32 tests touched.
+- Proof line: Ryvro shifted to one-question-at-a-time setup, rebuilt pattern picking into swipeable choices, and validated the pass with 11 locale updates and 32 tests touched.
 - Builder overlay: Built by a miner for shift workers.
 
 ## Asset Needs

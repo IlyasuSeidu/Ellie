@@ -21,13 +21,13 @@ So we tightened the behavior layer first.
 
 Today’s proof: stronger setup carryover, cleaner shift/date handling, 11 locale updates, and 27 tests covering the high-risk paths.
 
-That’s how Ellie earns trust for shift workers: the answer holds, not just the animation.
+That’s how Ryvro earns trust for shift workers: the answer holds, not just the animation.
 
 What reliability signal makes you trust a shift app fastest?
 
 ### Description
 
-This Short breaks down a product lesson from Ellie: trust leaks usually come from inconsistent behavior, not weak visuals.
+This Short breaks down a product lesson from Ryvro: trust leaks usually come from inconsistent behavior, not weak visuals.
 
 We focused on setup continuity, shift/date correctness, and reliability around reminders, voice flows, and subscription transitions.
 
@@ -35,4 +35,4 @@ Evidence from this pass: 11 locales touched, 27 tests touched.
 
 Built by a miner for shift workers.
 
-#ellieapp #youtubeshorts #shiftwork #productengineering #buildinpublic
+#ryvro #youtubeshorts #shiftwork #productengineering #buildinpublic

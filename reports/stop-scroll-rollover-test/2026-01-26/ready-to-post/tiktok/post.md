@@ -35,8 +35,8 @@ Built by a miner for shift workers.
 
 What onboarding step still feels like paperwork in most apps?
 
-#ellieapp #shiftwork #mining #buildinpublic #theminerbuildingtech #vibecoding
+#ryvro #shiftwork #shiftworkers #buildinpublic #theminerbuildingtech #vibecoding
 
 ## Optional Builder Turn
 
-I am building Ellie as a miner with AI-native, mostly vibe-coded workflows. The useful part is not the novelty of the tooling. It is that it lets me turn real shift-work friction into working product decisions fast.
+I am building Ryvro as a miner with AI-native, mostly vibe-coded workflows. The useful part is not the novelty of the tooling. It is that it lets me turn real shift-work friction into working product decisions fast.

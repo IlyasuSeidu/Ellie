@@ -44,4 +44,4 @@ Built by a miner for shift workers.
 
 Where does your onboarding still feel heavy?
 
-#ellieapp #shiftwork #mining #buildinpublic #theminerbuildingtech
+#ryvro #shiftwork #shiftworkers #buildinpublic #theminerbuildingtech

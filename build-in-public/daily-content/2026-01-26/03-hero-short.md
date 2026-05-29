@@ -51,7 +51,7 @@ What onboarding step in most apps still feels like paperwork to you?
 
 ## Caption Draft
 
-Ellie's onboarding did not need more screens.
+Ryvro's onboarding did not need more screens.
 
 It needed to stop feeling like admin.
 

@@ -10,13 +10,13 @@
 
 If "Tomorrow: Night Shift" is wrong, the animation does not matter.
 
-That is the central tension in building Ellie. A shift worker opens the app before a 12-hour underground rotation. The answer has to be right. Not polished. Right.
+That is the central tension in building Ryvro. A shift worker opens the app before a 12-hour underground rotation. The answer has to be right. Not polished. Right.
 
 So the onboarding surface could not make promises before the answer layer deserved trust. That meant building the shift logic, the scheduling services, and the safeguards first. Then letting the first visible screen land on top of a foundation that had actually earned it.
 
 The lesson is uncomfortable: trust is not a feature you add after the interface looks good. It is a structural decision you make before anyone sees the product.
 
-I am a miner building Ellie for the shift-work reality I actually live. The tooling I use is AI-native and fast. But the judgment call here is older than any tooling: if the answer underneath is shaky, nothing on the surface deserves confidence.
+I am a miner building Ryvro for the shift-work reality I actually live. The tooling I use is AI-native and fast. But the judgment call here is older than any tooling: if the answer underneath is shaky, nothing on the surface deserves confidence.
 
 What do you secure first when the user cannot afford a wrong answer?
 
@@ -24,7 +24,7 @@ What do you secure first when the user cannot afford a wrong answer?
 
 If "Tomorrow: Night Shift" is wrong, the animation does not matter.
 
-A shift worker checking Ellie before an underground rotation needs the schedule answer to be correct. Not smooth. Not beautiful. Correct.
+A shift worker checking Ryvro before an underground rotation needs the schedule answer to be correct. Not smooth. Not beautiful. Correct.
 
 That constraint shapes every build decision. The onboarding surface I am working on right now has haptic feedback, physics-based motion, and a stone-and-gold visual system I am genuinely proud of. None of it ships with confidence until the shift logic underneath it is solid.
 

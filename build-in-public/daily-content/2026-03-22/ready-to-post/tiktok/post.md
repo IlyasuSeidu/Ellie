@@ -13,7 +13,7 @@
 
 If someone has to decode your roster words, they usually leave quietly.
 
-Today I tightened Ellie’s onboarding language around roster setup, the Aha screen, and paywall handoff.
+Today I tightened Ryvro’s onboarding language around roster setup, the Aha screen, and paywall handoff.
 
 Same logic underneath. Better wording on top.
 
@@ -25,7 +25,7 @@ What onboarding phrase makes you bounce immediately?
 
 ### Caption
 
-I changed wording across roster setup, the Aha moment, and paywall transition in Ellie.
+I changed wording across roster setup, the Aha moment, and paywall transition in Ryvro.
 
 No feature change. Just clarity.
 
@@ -33,8 +33,8 @@ When shift workers can understand the promise in one pass, they keep moving.
 
 Built from real mining-shift routines.
 
-#ellieapp #shiftwork #productdesign #buildinpublic
+#ryvro #shiftwork #productdesign #buildinpublic
 
 ## Optional Builder Turn
 
-I build Ellie between mine shifts, so wording has to earn trust fast or people drop before value appears.
+I build Ryvro between mine shifts, so wording has to earn trust fast or people drop before value appears.

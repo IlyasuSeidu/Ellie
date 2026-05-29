@@ -4,7 +4,7 @@ Most builders get this backwards.
 
 They polish the surface first, then try to make the underneath trustworthy later.
 
-I am building Ellie, a shift scheduling tool for miners. The core job is simple: tell a shift worker what comes next. Night shift tomorrow. Rest day Friday. Rotate in six days.
+I am building Ryvro, a shift scheduling tool for miners. The core job is simple: tell a shift worker what comes next. Night shift tomorrow. Rest day Friday. Rotate in six days.
 
 That answer has to be right. Not mostly right. Not right until a timezone edge case breaks it. Right in the way that earns belief the first time someone checks it at 5am before a shift.
 
