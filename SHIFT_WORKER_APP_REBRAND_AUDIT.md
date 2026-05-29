@@ -42,6 +42,8 @@ Completed in the current working tree:
 - Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the latest cleanup. Latest pushed CI run for this branch passed on 2026-05-29.
 - Added built-in fallback parser regression coverage across 20 shift-worker industry prompts so the AI builder fallback is proven beyond mining/FIFO examples.
 - Added AI builder fallback metadata, friendlier fallback copy, and analytics events for parser completion, local fallback use, clarification, draft acceptance, manual edit after draft, and save context.
+- Tightened exception, calendar, and reminder launch copy so one-off rows say they changed just that day, calendar export promises shift times/locations/notes, and smart reminder commute copy defaults to work location instead of site.
+- Added calendar export metadata coverage for `LOCATION` and one-off exception notes in `.ics` files.
 
 Still pending outside this repo or intentionally kept for compatibility:
 
@@ -1360,6 +1362,7 @@ Completed P0 tasks:
 Completed P1 tasks:
 - RB-023 parser tests for 20 industry phrases: covered by `ShiftScheduleParserService.test.ts`.
 - RB-024 AI fallback telemetry and copy: parser results now expose `parserSource` / `fallbackReason`, local fallback drafts persist that metadata, the review sheet shows plain-language fallback copy, and `UniversalShiftBuilderScreen` emits completion, fallback, clarification, acceptance, manual-edit, and save analytics.
+- RB-025/RB-026/RB-027/RB-029 launch copy and calendar metadata: guarded by `ryvroEnvTemplate.test.ts` and `universalShiftCalendarUtils.test.ts`.
 Deferred P2 tasks:
 
 Remaining old-term hits:

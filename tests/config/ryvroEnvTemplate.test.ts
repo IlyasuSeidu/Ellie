@@ -454,4 +454,60 @@ describe('Ryvro environment template', () => {
       }
     }
   });
+
+  it('pins universal exception, calendar, and reminder copy for launch surfaces', () => {
+    const scheduleLocale = JSON.parse(
+      fs.readFileSync(path.join(process.cwd(), 'src/i18n/locales/en/schedule.json'), 'utf8')
+    ) as {
+      builder?: Record<string, string>;
+    };
+    const profileLocale = JSON.parse(
+      fs.readFileSync(path.join(process.cwd(), 'src/i18n/locales/en/profile.json'), 'utf8')
+    ) as {
+      smartReminders?: {
+        rows?: {
+          commute?: {
+            sublabel?: string;
+          };
+        };
+      };
+    };
+    const builderScreen = fs.readFileSync(
+      path.join(process.cwd(), 'src/screens/main/UniversalShiftBuilderScreen.tsx'),
+      'utf8'
+    );
+    const smartRemindersPanel = fs.readFileSync(
+      path.join(process.cwd(), 'src/components/profile/SmartRemindersPanel.tsx'),
+      'utf8'
+    );
+    const calendarUtils = fs.readFileSync(
+      path.join(process.cwd(), 'src/utils/universalShiftCalendarUtils.ts'),
+      'utf8'
+    );
+
+    expect(scheduleLocale.builder?.holidayHint).toContain('preserving the original shift');
+    expect(scheduleLocale.builder?.oneOffHint).toBe(
+      'Change one specific day without changing the repeating schedule.'
+    );
+    expect(scheduleLocale.builder?.oneOffListSubtitle).toContain('Changed just this day');
+    expect(scheduleLocale.builder?.calendarHint).toContain('shift times, locations, and notes');
+    expect(profileLocale.smartReminders?.rows?.commute?.sublabel).toBe(
+      'How long to reach your work location'
+    );
+
+    expect(builderScreen).toContain("t('builder.oneOffListSubtitle'");
+    expect(smartRemindersPanel).toContain('How long to reach your work location');
+    expect(calendarUtils).toContain('LOCATION:');
+    expect(calendarUtils).toContain('Changed just this day');
+
+    const guardedCopy = [
+      scheduleLocale.builder?.holidayHint,
+      scheduleLocale.builder?.oneOffHint,
+      scheduleLocale.builder?.oneOffListSubtitle,
+      scheduleLocale.builder?.calendarHint,
+      profileLocale.smartReminders?.rows?.commute?.sublabel,
+    ].join('\n');
+
+    expect(guardedCopy).not.toMatch(/mine site|haul truck|underground/i);
+  });
 });

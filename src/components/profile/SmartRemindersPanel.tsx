@@ -478,7 +478,7 @@ export const SmartRemindersPanel: React.FC<SmartRemindersPanelProps> = ({ animat
           defaultValue: 'Commute time',
         })}
         sublabel={t('smartReminders.rows.commute.sublabel', {
-          defaultValue: 'How long to get to site',
+          defaultValue: 'How long to reach your work location',
         })}
         options={[
           {

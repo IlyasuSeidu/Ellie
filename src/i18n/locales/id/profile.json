@@ -291,7 +291,7 @@
       },
       "commute": {
         "label": "Waktu perjalanan",
-        "sublabel": "Berapa lama perjalanan ke site"
+        "sublabel": "Berapa lama perjalanan ke lokasi kerja Anda"
       },
       "imminent": {
         "label": "Peringatan 15 menit",

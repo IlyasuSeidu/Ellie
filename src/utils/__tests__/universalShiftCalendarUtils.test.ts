@@ -18,6 +18,7 @@ const dayDef: UniversalShiftDefinition = {
   countsForStats: true,
   color: '#2196F3',
   icon: 'sunny',
+  locationName: 'Ward 7',
 };
 
 const nightDef: UniversalShiftDefinition = {
@@ -74,6 +75,8 @@ describe('universalShiftCalendarUtils', () => {
 
     expect((ics.match(/BEGIN:VEVENT/g) ?? []).length).toBe(3);
     expect(ics).toContain('SUMMARY:Day Shift');
+    expect(ics).toContain('LOCATION:Ward 7');
+    expect(ics).toContain('Location: Ward 7');
     expect(ics).toContain('X-RYVRO-SHIFT-ID:day');
     expect(ics).toContain('X-RYVRO-SHIFT-COLOR:#2196F3');
     expect(ics).toContain('X-RYVRO-SHIFT-ICON:sunny');
@@ -85,6 +88,34 @@ describe('universalShiftCalendarUtils', () => {
     expect(ics).toContain('DTEND;TZID=UTC:20260103T060000');
     expect(ics).toContain('SUMMARY:Rest Day');
     expect(ics).toContain('DTSTART;VALUE=DATE:20260103');
+  });
+
+  it('exports one-off exception notes without changing the repeating sequence', () => {
+    const swapSchedule: UniversalShiftSchedule = {
+      ...schedule,
+      oneOffExceptions: [
+        {
+          id: 'swap-1',
+          date: '2026-01-01',
+          action: 'use_shift_definition',
+          shiftDefinitionId: 'night',
+          reason: 'Swapped with Amina',
+        },
+      ],
+    };
+
+    const ics = buildUniversalScheduleIcs(swapSchedule, {
+      startDate: '2026-01-01',
+      endDate: '2026-01-01',
+      includeOffDays: true,
+    });
+    const unfoldedIcs = ics.replace(/\r\n /g, '');
+
+    expect(ics).toContain('SUMMARY:Night Shift');
+    expect(unfoldedIcs).toContain('Changed just this day');
+    expect(unfoldedIcs).toContain('original shift was Day Shift');
+    expect(unfoldedIcs).toContain('Reason: Swapped with Amina');
+    expect(ics).not.toContain('Mine Site');
   });
 
   it('can omit off days when exporting only work shifts', () => {

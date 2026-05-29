@@ -291,7 +291,7 @@
       },
       "commute": {
         "label": "Commute time",
-        "sublabel": "How long to get to site"
+        "sublabel": "How long to reach your work location"
       },
       "imminent": {
         "label": "15-min imminent alert",

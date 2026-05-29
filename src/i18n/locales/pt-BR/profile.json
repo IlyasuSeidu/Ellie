@@ -291,7 +291,7 @@
       },
       "commute": {
         "label": "Tempo de deslocamento",
-        "sublabel": "Quanto tempo leva para chegar ao site"
+        "sublabel": "Quanto tempo leva para chegar ao seu local de trabalho"
       },
       "imminent": {
         "label": "Alerta de 15 min",

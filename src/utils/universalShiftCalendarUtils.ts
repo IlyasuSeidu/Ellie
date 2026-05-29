@@ -1,4 +1,5 @@
 import type {
+  ShiftDay,
   UniversalShiftDefinition,
   UniversalShiftSchedule,
   UniversalShiftSequenceItem,
@@ -125,10 +126,31 @@ function minutes(time?: string): number | null {
   return (hours ?? 0) * 60 + (mins ?? 0);
 }
 
-function buildEventDescription(schedule: UniversalShiftSchedule, dayDate: string): string {
-  return escapeIcsText(
-    `Exported from Ryvro Universal Shift Builder\nSchedule: ${schedule.name}\nDate: ${dayDate}`
-  );
+function buildEventDescription(schedule: UniversalShiftSchedule, day: ShiftDay): string {
+  const universal = day.universal;
+  const lines = [
+    'Exported from Ryvro Universal Shift Builder',
+    `Schedule: ${schedule.name}`,
+    `Date: ${day.date}`,
+  ];
+
+  if (universal?.locationName) {
+    lines.push(`Location: ${universal.locationName}`);
+  }
+  if (universal?.holidayException) {
+    lines.push(
+      `Holiday exception: ${universal.holidayException.holidayName}; original shift was ${universal.holidayException.originalDefinitionName}.`
+    );
+  }
+  if (universal?.oneOffException) {
+    const oneOff = universal.oneOffException;
+    lines.push(`Changed just this day; original shift was ${oneOff.originalDefinitionName}.`);
+    if (oneOff.reason) {
+      lines.push(`Reason: ${oneOff.reason}`);
+    }
+  }
+
+  return escapeIcsText(lines.join('\n'));
 }
 
 export function buildUniversalScheduleIcs(
@@ -171,8 +193,11 @@ export function buildUniversalScheduleIcs(
     lines.push(`UID:${uid}`);
     lines.push(`DTSTAMP:${EXPORT_DTSTAMP}`);
     lines.push(`SUMMARY:${escapeIcsText(universal.definitionName)}`);
-    lines.push(`DESCRIPTION:${buildEventDescription(schedule, day.date)}`);
+    lines.push(`DESCRIPTION:${buildEventDescription(schedule, day)}`);
     lines.push(`CATEGORIES:${escapeIcsText(universal.kind)}`);
+    if (universal.locationName) {
+      lines.push(`LOCATION:${escapeIcsText(universal.locationName)}`);
+    }
     lines.push(`X-RYVRO-SHIFT-ID:${escapeIcsText(universal.definitionId)}`);
     lines.push(`X-RYVRO-SHIFT-COLOR:${escapeIcsText(universal.color)}`);
     lines.push(`X-RYVRO-SHIFT-ICON:${escapeIcsText(universal.icon)}`);

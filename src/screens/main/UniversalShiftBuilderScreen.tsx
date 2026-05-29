@@ -1697,8 +1697,10 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
                           : exception.label || t('builder.oneOffOffDayLabel')}
                       </Text>
                       <Text style={styles.holidayListSubtitle} numberOfLines={1}>
-                        {exception.date}
-                        {exception.reason ? ` • ${exception.reason}` : ''}
+                        {t('builder.oneOffListSubtitle', {
+                          date: exception.date,
+                          reason: exception.reason ? ` • ${exception.reason}` : '',
+                        })}
                       </Text>
                     </View>
                     <TouchableOpacity

@@ -291,7 +291,7 @@
       },
       "commute": {
         "label": "Temps de trajet",
-        "sublabel": "Temps nécessaire pour arriver sur site"
+        "sublabel": "Temps nécessaire pour rejoindre votre lieu de travail"
       },
       "imminent": {
         "label": "Alerte à 15 min",
