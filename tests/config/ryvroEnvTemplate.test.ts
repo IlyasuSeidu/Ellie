@@ -148,6 +148,16 @@ describe('Ryvro environment template', () => {
     }
   });
 
+  it('keeps Detox iOS release configuration on the Ryvro simulator app identity', () => {
+    const detoxConfig = fs.readFileSync(path.join(process.cwd(), '.detoxrc.js'), 'utf8');
+
+    expect(detoxConfig).toContain('Release-iphonesimulator/Ryvro.app');
+    expect(detoxConfig).toContain('name=iPhone 16');
+    expect(detoxConfig).toContain("type: 'iPhone 16'");
+    expect(detoxConfig).not.toContain('EllieMinerShiftAssistant.app');
+    expect(detoxConfig).not.toContain('name=iPhone 15 Pro');
+  });
+
   it('pins tracked Firebase mobile clients to the Ryvro bundle and package', () => {
     expect(appJson.expo?.ios?.googleServicesFile).toBe('./ios/Ryvro/GoogleService-Info.plist');
     expect(appJson.expo?.android?.googleServicesFile).toBe('./android/app/google-services.json');

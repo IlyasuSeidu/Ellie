@@ -13,13 +13,13 @@ module.exports = {
     'ios.release': {
       type: 'ios.app',
       build: [
-        'E2E_TEST_MODE=1 xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 15 Pro" -derivedDataPath ios/build build',
-        'APP="ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app"',
+        'E2E_TEST_MODE=1 xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 16" -derivedDataPath ios/build build',
+        'APP="ios/build/Build/Products/Release-iphonesimulator/Ryvro.app"',
         'find "$APP/Frameworks" -type f | while read -r f; do if file "$f" | grep -q "Mach-O"; then codesign --force --sign - --timestamp=none "$f"; fi; done',
         'find "$APP/Frameworks" -type d -name "*.framework" -exec codesign --force --sign - --timestamp=none {} \\;',
         'codesign --force --sign - --deep --timestamp=none "$APP"',
       ].join(' && '),
-      binaryPath: './ios/build/Build/Products/Release-iphonesimulator/EllieMinerShiftAssistant.app',
+      binaryPath: './ios/build/Build/Products/Release-iphonesimulator/Ryvro.app',
     },
     'android.release': {
       type: 'android.apk',
@@ -33,7 +33,7 @@ module.exports = {
     simulator: {
       type: 'ios.simulator',
       device: {
-        type: 'iPhone 15 Pro',
+        type: 'iPhone 16',
       },
     },
     emulator: {

@@ -48,6 +48,7 @@ Completed in the current working tree:
 - Added documentation regression tests that pin `docs/ARCHITECTURE.md` to the Universal Shift Builder source-of-truth architecture and keep the active FIFO guide template-specific.
 - Added legal, privacy, support, external-service, and RevenueCat handoff regression tests so repo-side launch docs stay broad, Ryvro-named, and free of retired Ellie product aliases.
 - Added backend analytics setup dimensions for industry, template, and schedule source so dashboards can segment universal schedule adoption without defaulting to mining/FIFO, and guarded legacy site/mining-site parameters as redacted sensitive fields.
+- Updated Detox iOS release QA config to build/install the generated `Ryvro.app` product on the available iPhone 16 simulator instead of the retired `EllieMinerShiftAssistant.app` path; `npm run test:e2e:build:ios` passed on 2026-05-29T15:22:59Z and the built plist reports `CFBundleDisplayName = Ryvro`, `CFBundleName = Ryvro`, and `CFBundleIdentifier = com.ryvro.shiftplanner`.
 
 Still pending outside this repo or intentionally kept for compatibility:
 
