@@ -11,7 +11,7 @@ The current strategy is not a full universal-market rebrand on day one. The reco
 
 In short: **market narrowly now, build broadly underneath.**
 
-## Implementation Status: 2026-05-28
+## Implementation Status: 2026-05-29
 
 Completed in the current working tree:
 
@@ -38,6 +38,8 @@ Completed in the current working tree:
 - Archived old Ellie homescreen HTML prototypes and fixed-roster implementation plans so active docs point to the Universal Shift Builder path.
 - Replaced the default e2e seed profile with a neutral shift-worker fixture while keeping a separate mining/FIFO launch-wedge fixture.
 - Cleaned remaining launch-critical broad-market copy in README, English onboarding feature descriptions, selected translated placeholders/social proof, and onboarding icon source guidance.
+- Hardened tracked generated-content guidance and publishable build-in-public packs so they use Ryvro naming, broad shift-worker discovery tags, and FIFO/shift-worker audience language instead of stale Ellie or mining-only tags.
+- Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the latest cleanup. Latest pushed CI run for this branch passed on 2026-05-29.
 
 Still pending outside this repo or intentionally kept for compatibility:
 
@@ -87,6 +89,28 @@ Required account-only checks:
 - Domain registrar: purchase the preferred domain, with `getryvro.com` currently the cleanest public evidence candidate.
 - Social platforms: reserve `@ryvro` or a consistent fallback such as `@getryvro`.
 - Trademark counsel/search: run formal clearance in launch markets before public launch.
+
+## External Clearance Evidence: 2026-05-29
+
+Latest repeatable public preflight command:
+
+```bash
+npm run release:clearance
+```
+
+Result captured at `2026-05-29T13:38:11.003Z`:
+
+- Apple public software search: no exact `Ryvro` or `Ryvro Shift Planner` app result returned. Public search still does not prove App Store Connect name availability.
+- Google Play public search: no exact `Ryvro` or `Ryvro Shift Planner` result text found. Public search still does not prove Play Console title/package availability.
+- USPTO public search app: reachable only through the automated preflight. This is not legal clearance.
+- `getryvro.com`: no public DNS record and Verisign `.com` returned no match.
+- `useryvro.com`, `tryryvro.com`, and `getryvroapp.com`: no public DNS record and Verisign `.com` returned no match.
+- `ryvro.com`: registered through GoDaddy/Afternic and should not be treated as available unless purchased from the current registrant.
+- `ryvro.app`, `ryvro.co`, `ryvro.io`, `ryvro.ai`, `ryvro.net`, and `ryvro.org`: no public DNS record in the preflight, but registrar availability still needs direct confirmation.
+- X, Instagram, and TikTok `@ryvro`: public URLs returned `200`; this is not reliable handle availability proof and requires logged-in reservation.
+- YouTube `@ryvro` and LinkedIn `company/ryvro`: public URLs returned `404`; still reserve directly while logged in.
+
+The account-only checks remain unchanged: App Store Connect, Google Play Console, registrar purchase, social reservation, and formal trademark/legal clearance must be completed by the account owner or counsel.
 
 ## Permanent Naming Decision: 2026-05-28
 
@@ -201,8 +225,8 @@ Remaining account-side identity work:
 
 ## Core Visual Assets
 
-- Replace the current app icon, adaptive icon, splash icon, and favicon if the mark visually implies mining only.
-- Replace the onboarding mining helmet hero asset with a universal shift-work identity. Current asset family includes `mining-helmet-sacred-flame`.
+- Current tracked app icon, adaptive icon, splash icon, favicon, and onboarding assistant avatar now use neutral Ryvro assets instead of mining-only imagery.
+- The retired onboarding mining helmet asset family has been removed from active assets. Keep any remaining helmet references archived or in tests that assert it is not active.
 - Keep the strong day/night/off calendar icon language, but expand it into a universal shift icon set:
   - Day shift
   - Night shift
@@ -223,11 +247,11 @@ Remaining account-side identity work:
 
 ### Asset replacement backlog
 
-- App icon: create a universal mark based on calendar, moon/sun, clock, rotation, or shift blocks.
-- Splash screen: replace mining-only visuals with a clean universal scheduling identity.
-- Onboarding assistant avatar: replace `assets/onboarding/icons/consolidated/mining-helmet-sacred-flame.png` with a neutral Ryvro assistant mark.
-- Paywall hero art: show cross-industry schedule clarity, not mine-site identity.
-- Empty states: use neutral schedule/calendar graphics.
+- App icon: done for the tracked Expo assets; continue visual QA on real devices before submission.
+- Splash screen: done for the tracked Expo splash asset; continue visual QA on real devices before submission.
+- Onboarding assistant avatar: done; the retired helmet family should stay out of active assets.
+- Paywall hero art: currently not mine-site specific in tracked launch surfaces; keep future screenshots cross-industry capable.
+- Empty states: use neutral schedule/calendar graphics for any new empty-state work.
 - Template thumbnails: add visual variants for hospital, station, terminal, plant, depot, hotel, factory, airport, rig, warehouse, store, and mine.
 - Notification icons: ensure small icons are readable and not industry-specific.
 - Store screenshots: show at least five worker contexts, not one mining context.
@@ -845,19 +869,13 @@ Acceptance checks:
 
 ### 2. Asset files to replace or review
 
-Universal replacement required:
+Universal replacement status:
 
-- `assets/icon.png`
-- `assets/adaptive-icon.png`
-- `assets/favicon.png`
-- Any splash asset referenced by Expo config.
-- `assets/onboarding/icons/source/mining-helmet-sacred-flame.png`
-- `assets/onboarding/icons/1x/mining-helmet-sacred-flame.png`
-- `assets/onboarding/icons/2x/mining-helmet-sacred-flame.png`
-- `assets/onboarding/icons/3x/mining-helmet-sacred-flame.png`
-- `assets/onboarding/icons/consolidated/mining-helmet-sacred-flame.png`
-- `assets/onboarding/icons/consolidated/mining-helmet-sacred-flame@2x.png`
-- `assets/onboarding/icons/consolidated/mining-helmet-sacred-flame@3x.png`
+- `assets/icon.png`: done; tracked Expo config points here.
+- `assets/adaptive-icon.png`: done; tracked Expo config points here.
+- `assets/favicon.png`: done; tracked Expo config points here.
+- Splash asset referenced by Expo config: done; tracked Expo config points to `assets/splash-icon.png`.
+- Retired mining helmet family: done; no active bundled image path should contain helmet, hardhat, mining-helmet, or Ellie naming.
 
 Review and probably rename/reposition:
 

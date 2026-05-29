@@ -106,6 +106,18 @@ describe('Ryvro documentation archive', () => {
     expect(readme).not.toContain('Pattern Selection');
   });
 
+  it('keeps the active rebrand audit aligned with completed Ryvro asset replacement', () => {
+    const audit = read('SHIFT_WORKER_APP_REBRAND_AUDIT.md');
+
+    expect(audit).toContain('Implementation Status: 2026-05-29');
+    expect(audit).toContain('Current tracked app icon, adaptive icon, splash icon, favicon');
+    expect(audit).toContain('The retired onboarding mining helmet asset family has been removed');
+    expect(audit).not.toContain('Current asset family includes `mining-helmet-sacred-flame`');
+    expect(audit).not.toContain(
+      'replace `assets/onboarding/icons/consolidated/mining-helmet-sacred-flame.png`'
+    );
+  });
+
   it('keeps retired mining-specific default examples out of active launch surfaces', () => {
     const activeFiles = [
       'README.md',
