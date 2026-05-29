@@ -46,6 +46,13 @@
     "notSet": "Not set",
     "unknownShift": "Unknown shift",
     "goBack": "Go back",
-    "saveAnywayQuestion": "Save anyway?"
+    "saveAnywayQuestion": "Save anyway?",
+    "templateTitle": "Commencer avec un modèle",
+    "templateHint": "Choisissez un vrai rythme de travail posté, puis ajustez les horaires, couleurs, rappels, exceptions et jours du cycle.",
+    "templateReplaceTitle": "Remplacer le brouillon actuel ?",
+    "templateReplaceMessage": "Utilisez {{template}} comme planning de départ. Votre brouillon non enregistré sera remplacé.",
+    "templateUseButton": "Utiliser le modèle",
+    "useTemplateA11y": "Utiliser le modèle {{template}}",
+    "templateCycleLength": "Cycle de {{count}} jours"
   }
 }

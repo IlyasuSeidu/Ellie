@@ -46,6 +46,13 @@
     "notSet": "Not set",
     "unknownShift": "Unknown shift",
     "goBack": "Go back",
-    "saveAnywayQuestion": "Save anyway?"
+    "saveAnywayQuestion": "Save anyway?",
+    "templateTitle": "Começar com um modelo",
+    "templateHint": "Escolha um padrão real de turnos e ajuste horários, cores, lembretes, exceções e dias do ciclo.",
+    "templateReplaceTitle": "Substituir o rascunho atual?",
+    "templateReplaceMessage": "Use {{template}} como sua escala inicial. O rascunho atual não salvo será substituído.",
+    "templateUseButton": "Usar modelo",
+    "useTemplateA11y": "Usar modelo {{template}}",
+    "templateCycleLength": "Ciclo de {{count}} dias"
   }
 }

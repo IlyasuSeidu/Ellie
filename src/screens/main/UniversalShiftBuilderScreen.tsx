@@ -913,11 +913,11 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
 
       if (isDirty || schedule.sequence.length > 0 || schedule.shiftDefinitions.length > 0) {
         Alert.alert(
-          'Replace current draft?',
-          `Use ${template.title} as your starting schedule. Your current unsaved builder draft will be replaced.`,
+          t('builder.templateReplaceTitle'),
+          t('builder.templateReplaceMessage', { template: template.title }),
           [
             { text: t('builder.cancel'), style: 'cancel' },
-            { text: 'Use template', onPress: applyTemplate },
+            { text: t('builder.templateUseButton'), onPress: applyTemplate },
           ]
         );
         return;
@@ -1192,11 +1192,8 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
     <View style={styles.section}>
       <View style={styles.templateHeaderRow}>
         <View style={styles.templateHeaderCopy}>
-          <Text style={styles.sectionLabel}>Start from a template</Text>
-          <Text style={styles.templateHint}>
-            Pick a real shift-worker pattern, then adjust times, colors, reminders, exceptions, and
-            sequence days.
-          </Text>
+          <Text style={styles.sectionLabel}>{t('builder.templateTitle')}</Text>
+          <Text style={styles.templateHint}>{t('builder.templateHint')}</Text>
         </View>
         <View style={styles.templateCountBadge}>
           <Ionicons name="albums-outline" size={13} color={theme.colors.deepVoid} />
@@ -1216,7 +1213,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
             style={styles.templateCard}
             onPress={() => handleApplyTemplate(template.id)}
             accessibilityRole="button"
-            accessibilityLabel={`Use ${template.title} template`}
+            accessibilityLabel={t('builder.useTemplateA11y', { template: template.title })}
           >
             <View style={styles.templateCardTopRow}>
               <View style={styles.templateIconStack}>
@@ -1237,7 +1234,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
                 ))}
               </View>
               <Text style={styles.templateCycleText}>
-                {template.schedule.sequence.length} day cycle
+                {t('builder.templateCycleLength', { count: template.schedule.sequence.length })}
               </Text>
             </View>
 

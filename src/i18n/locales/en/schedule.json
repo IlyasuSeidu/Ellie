@@ -46,6 +46,13 @@
     "notSet": "Not set",
     "unknownShift": "Unknown shift",
     "goBack": "Go back",
-    "saveAnywayQuestion": "Save anyway?"
+    "saveAnywayQuestion": "Save anyway?",
+    "templateTitle": "Start from a template",
+    "templateHint": "Pick a real shift-worker pattern, then adjust times, colors, reminders, exceptions, and sequence days.",
+    "templateReplaceTitle": "Replace current draft?",
+    "templateReplaceMessage": "Use {{template}} as your starting schedule. Your current unsaved builder draft will be replaced.",
+    "templateUseButton": "Use template",
+    "useTemplateA11y": "Use {{template}} template",
+    "templateCycleLength": "{{count}} day cycle"
   }
 }

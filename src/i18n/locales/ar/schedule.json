@@ -46,6 +46,13 @@
     "notSet": "Not set",
     "unknownShift": "Unknown shift",
     "goBack": "Go back",
-    "saveAnywayQuestion": "Save anyway?"
+    "saveAnywayQuestion": "Save anyway?",
+    "templateTitle": "ابدأ من قالب",
+    "templateHint": "اختر نمط ورديات حقيقيًا، ثم عدّل الأوقات والألوان والتذكيرات والاستثناءات وأيام الدورة.",
+    "templateReplaceTitle": "استبدال المسودة الحالية؟",
+    "templateReplaceMessage": "استخدم {{template}} كنقطة بداية لجدولك. سيتم استبدال مسودة المنشئ الحالية غير المحفوظة.",
+    "templateUseButton": "استخدم القالب",
+    "useTemplateA11y": "استخدم قالب {{template}}",
+    "templateCycleLength": "دورة {{count}} يوم"
   }
 }

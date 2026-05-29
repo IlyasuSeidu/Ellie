@@ -46,6 +46,13 @@
     "notSet": "Not set",
     "unknownShift": "Unknown shift",
     "goBack": "Go back",
-    "saveAnywayQuestion": "Save anyway?"
+    "saveAnywayQuestion": "Save anyway?",
+    "templateTitle": "टेम्पलेट से शुरू करें",
+    "templateHint": "एक वास्तविक शिफ्ट पैटर्न चुनें, फिर समय, रंग, रिमाइंडर, अपवाद और चक्र के दिन बदलें।",
+    "templateReplaceTitle": "मौजूदा ड्राफ्ट बदलें?",
+    "templateReplaceMessage": "{{template}} को शुरुआती शेड्यूल के रूप में उपयोग करें। आपका मौजूदा बिना सहेजा बिल्डर ड्राफ्ट बदल दिया जाएगा।",
+    "templateUseButton": "टेम्पलेट उपयोग करें",
+    "useTemplateA11y": "{{template}} टेम्पलेट उपयोग करें",
+    "templateCycleLength": "{{count}} दिन का चक्र"
   }
 }

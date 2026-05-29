@@ -61,7 +61,37 @@ describe('Universal shift templates', () => {
 
     expect(builderScreen).toContain("from '@/constants/universalShiftTemplates'");
     expect(builderScreen).toContain('renderTemplateSection');
-    expect(builderScreen).toContain('Start from a template');
+    expect(builderScreen).toContain("t('builder.templateTitle')");
+    expect(builderScreen).toContain("t('builder.templateHint')");
+    expect(builderScreen).toContain("t('builder.templateCycleLength'");
+    expect(builderScreen).not.toContain('Start from a template');
+    expect(builderScreen).not.toContain('Pick a real shift-worker pattern');
     expect(builderScreen).toContain('shift_builder_template_applied');
+  });
+
+  it('localizes the template library copy in every schedule locale', () => {
+    const localeRoot = path.join(process.cwd(), 'src/i18n/locales');
+    const requiredKeys = [
+      'templateTitle',
+      'templateHint',
+      'templateReplaceTitle',
+      'templateReplaceMessage',
+      'templateUseButton',
+      'useTemplateA11y',
+      'templateCycleLength',
+    ];
+
+    for (const locale of fs.readdirSync(localeRoot)) {
+      const schedulePath = path.join(localeRoot, locale, 'schedule.json');
+      if (!fs.existsSync(schedulePath)) continue;
+
+      const schedule = JSON.parse(fs.readFileSync(schedulePath, 'utf8')) as {
+        builder?: Record<string, string>;
+      };
+
+      for (const key of requiredKeys) {
+        expect(schedule.builder?.[key]?.trim()).toBeTruthy();
+      }
+    }
   });
 });

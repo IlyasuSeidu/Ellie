@@ -46,6 +46,13 @@
     "notSet": "Not set",
     "unknownShift": "Unknown shift",
     "goBack": "Go back",
-    "saveAnywayQuestion": "Save anyway?"
+    "saveAnywayQuestion": "Save anyway?",
+    "templateTitle": "Начать с шаблона",
+    "templateHint": "Выберите реальный сменный график, затем настройте время, цвета, напоминания, исключения и дни цикла.",
+    "templateReplaceTitle": "Заменить текущий черновик?",
+    "templateReplaceMessage": "Используйте {{template}} как начальный график. Текущий несохраненный черновик будет заменен.",
+    "templateUseButton": "Использовать шаблон",
+    "useTemplateA11y": "Использовать шаблон {{template}}",
+    "templateCycleLength": "Цикл {{count}} дн."
   }
 }

@@ -46,6 +46,13 @@
     "notSet": "Not set",
     "unknownShift": "Unknown shift",
     "goBack": "Go back",
-    "saveAnywayQuestion": "Save anyway?"
+    "saveAnywayQuestion": "Save anyway?",
+    "templateTitle": "Qala ngethempulethi",
+    "templateHint": "Khetha iphethini yangempela yomsebenzi wamashifu, bese ulungisa izikhathi, imibala, izikhumbuzo, okuhlukile nezinsuku zomjikelezo.",
+    "templateReplaceTitle": "Shintsha uhlaka lwamanje?",
+    "templateReplaceMessage": "Sebenzisa i-{{template}} njengohlelo lwakho lokuqala. Uhlaka lwamanje olungakalondolozwa luzoshintshwa.",
+    "templateUseButton": "Sebenzisa ithempulethi",
+    "useTemplateA11y": "Sebenzisa ithempulethi ye-{{template}}",
+    "templateCycleLength": "Umjikelezo wezinsuku ezingu-{{count}}"
   }
 }

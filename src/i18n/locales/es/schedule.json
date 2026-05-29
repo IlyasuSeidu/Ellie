@@ -46,6 +46,13 @@
     "notSet": "Not set",
     "unknownShift": "Unknown shift",
     "goBack": "Go back",
-    "saveAnywayQuestion": "Save anyway?"
+    "saveAnywayQuestion": "Save anyway?",
+    "templateTitle": "Empezar con una plantilla",
+    "templateHint": "Elige un patrón real de trabajo por turnos y ajusta horarios, colores, recordatorios, excepciones y días del ciclo.",
+    "templateReplaceTitle": "¿Reemplazar el borrador actual?",
+    "templateReplaceMessage": "Usa {{template}} como horario inicial. Se reemplazará tu borrador actual sin guardar.",
+    "templateUseButton": "Usar plantilla",
+    "useTemplateA11y": "Usar plantilla {{template}}",
+    "templateCycleLength": "Ciclo de {{count}} días"
   }
 }

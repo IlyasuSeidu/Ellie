@@ -46,6 +46,13 @@
     "notSet": "Not set",
     "unknownShift": "Unknown shift",
     "goBack": "Go back",
-    "saveAnywayQuestion": "Save anyway?"
+    "saveAnywayQuestion": "Save anyway?",
+    "templateTitle": "Begin met ’n sjabloon",
+    "templateHint": "Kies ’n regte skofwerkerpatroon en pas dan tye, kleure, herinneringe, uitsonderings en siklusdae aan.",
+    "templateReplaceTitle": "Vervang huidige konsep?",
+    "templateReplaceMessage": "Gebruik {{template}} as jou beginrooster. Jou huidige ongestoorde bouer-konsep sal vervang word.",
+    "templateUseButton": "Gebruik sjabloon",
+    "useTemplateA11y": "Gebruik {{template}}-sjabloon",
+    "templateCycleLength": "{{count}}-dag siklus"
   }
 }

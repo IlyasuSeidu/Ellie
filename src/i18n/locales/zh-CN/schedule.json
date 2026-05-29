@@ -46,6 +46,13 @@
     "notSet": "Not set",
     "unknownShift": "Unknown shift",
     "goBack": "Go back",
-    "saveAnywayQuestion": "Save anyway?"
+    "saveAnywayQuestion": "Save anyway?",
+    "templateTitle": "从模板开始",
+    "templateHint": "选择真实的轮班模式，然后调整时间、颜色、提醒、例外和周期天数。",
+    "templateReplaceTitle": "替换当前草稿？",
+    "templateReplaceMessage": "使用 {{template}} 作为起始排班。当前未保存的构建器草稿将被替换。",
+    "templateUseButton": "使用模板",
+    "useTemplateA11y": "使用 {{template}} 模板",
+    "templateCycleLength": "{{count}} 天周期"
   }
 }

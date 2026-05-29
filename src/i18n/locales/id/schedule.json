@@ -46,6 +46,13 @@
     "notSet": "Not set",
     "unknownShift": "Unknown shift",
     "goBack": "Go back",
-    "saveAnywayQuestion": "Save anyway?"
+    "saveAnywayQuestion": "Save anyway?",
+    "templateTitle": "Mulai dari template",
+    "templateHint": "Pilih pola kerja shift nyata, lalu sesuaikan waktu, warna, pengingat, pengecualian, dan hari siklus.",
+    "templateReplaceTitle": "Ganti draf saat ini?",
+    "templateReplaceMessage": "Gunakan {{template}} sebagai jadwal awal. Draf builder yang belum disimpan akan diganti.",
+    "templateUseButton": "Gunakan template",
+    "useTemplateA11y": "Gunakan template {{template}}",
+    "templateCycleLength": "Siklus {{count}} hari"
   }
 }
