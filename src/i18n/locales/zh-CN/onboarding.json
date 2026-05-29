@@ -33,7 +33,7 @@
   "intro": {
     "welcome": "欢迎来到 Ryvro！我来这里是为了帮助您设置轮班日历。让我们从更好地了解您开始。",
     "askName": "你叫什么名字？",
-    "askOccupation": "很高兴认识你，{{name}}！你在现场的职责是什么？",
+    "askOccupation": "很高兴认识你，{{name}}！你从事哪种轮班工作？",
     "askCompany": "知道了！你在哪家公司工作？（可选）",
     "askCountry": "快完成了！您位于哪个国家/地区？",
     "allSet": "完美的！一切就绪，{{name}}。让我们配置您的轮班日历。",
@@ -61,13 +61,13 @@
     "skipCompany": "跳过"
   },
   "shiftSystem": {
-    "title": "您的网站有多少班次？",
-    "title_named": "{{name}}，你好，您的站点有多少个班次？",
+    "title": "你的工作地点运行多少个班次？",
+    "title_named": "{{name}}，你好，你的工作地点运行多少个班次？",
     "reviewAgain": "请再次查看系统以做出选择",
     "reviewButton": "审查系统",
     "continueButton": "继续",
     "closeButton": "关闭",
-    "instruction": "选择您网站的运营方式——我们将据此构建您的日历\n向右滑动进行选择，向左滑动查看更多，向上滑动查看信息",
+    "instruction": "选择你的团队如何运行——我们将据此构建你的日历\n向右滑动进行选择，向左滑动查看更多，向上滑动查看信息",
     "endState": {
       "selectedTitle": "知道了！我们将为此设置您的日历。",
       "reviewedTitle": "您已查看所有 {{count}} 轮班系统！",
@@ -109,7 +109,7 @@
       "reviewedSubtitle": "没看到你的吗？您可以构建一个自定义的，或者再看看",
       "reviewedTitle": "这就是我们所有的 {{count}} 轮换！"
     },
-    "instruction": "选择您的矿山使用的轮换方式——我们将据此构建您的日历\n向右滑动进行选择，向左滑动查看更多，向上滑动查看信息",
+    "instruction": "选择你的工作地点使用的轮换方式——我们将据此构建你的日历\n向右滑动进行选择，向左滑动查看更多，向上滑动查看信息",
     "title": "你的轮换名单是怎样的？",
     "cards": {
       "4-4-4": {

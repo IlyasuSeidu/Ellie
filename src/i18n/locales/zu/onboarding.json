@@ -33,7 +33,7 @@
   "intro": {
     "welcome": "Siyakwamukela ku- Ryvro! Ngilapha ukuze ngikusize uhlele ikhalenda lakho leshifu. Ake siqale ngokukwazi kangcono.",
     "askName": "Ubani igama lakho?",
-    "askOccupation": "Kuhle ukuhlangana nawe, {{name}}! Yini indima yakho eceleni?",
+    "askOccupation": "Kuhle ukuhlangana nawe, {{name}}! Iyiphi indima yakho yomsebenzi wamashifu?",
     "askCompany": "Ngikuzwile! Usebenzela yiphi inkampani? (akuphoqelekile)",
     "askCountry": "Sengiyaqeda! Uzinze kuliphi izwe?",
     "allSet": "Iphelele! Usulungile, {{name}}. Masilungise ikhalenda lakho leshifu.",
@@ -61,13 +61,13 @@
     "skipCompany": "Yeqa"
   },
   "shiftSystem": {
-    "title": "Isayithi Lakho Lisebenza Kangakanani?",
-    "title_named": "Sawubona {{name}}, isayithi lakho lisebenza ngamashifu amangaki?",
+    "title": "Indawo yakho yokusebenza isebenza ngamashifu amangaki?",
+    "title_named": "Sawubona {{name}}, indawo yakho yokusebenza isebenza ngamashifu amangaki?",
     "reviewAgain": "Sicela ubuyekeze amasistimu futhi ukuze ukhethe",
     "reviewButton": "Buyekeza Amasistimu",
     "continueButton": "Qhubeka",
     "closeButton": "Vala",
-    "instruction": "Khetha ukuthi isayithi lakho lisebenza kanjani—sizokwakha ikhalenda lakho kulokhu\nSwayiphela kwesokudla ukuze ukhethe, kwesokunxele ukuze ubone okwengeziwe, ukuze uthole ulwazi",
+    "instruction": "Khetha ukuthi ithimba lakho lisebenza kanjani—sizokwakha ikhalenda lakho kulokhu\nSwayiphela kwesokudla ukuze ukhethe, kwesokunxele ukuze ubone okwengeziwe, phezulu ukuze uthole ulwazi",
     "endState": {
       "selectedTitle": "Ngiyitholile! Sizosethela lokhu ikhalenda lakho.",
       "reviewedTitle": "Ubuke wonke {{count}} amasistimu we-shift!",
@@ -135,7 +135,7 @@
       "reviewedSubtitle": "Awuzange uyibone eyakho? Ungakha engokwezifiso, noma ubheke okunye",
       "reviewedTitle": "Yilokho kuphela {{count}} ukuzungezisa esinakho!"
     },
-    "instruction": "Khetha ukuzungezisa okusetshenziswa esikhundleni sakho semigodi—sizokwakha ikhalenda lakho kulokhu\nSwayiphela kwesokudla ukuze ukhethe, kwesokunxele ukuze ubone okwengeziwe, ukuze uthole ulwazi",
+    "instruction": "Khetha ukuzungezisa okusetshenziswa indawo yakho yokusebenza—sizokwakha ikhalenda lakho kulokhu\nSwayiphela kwesokudla ukuze ukhethe, kwesokunxele ukuze ubone okwengeziwe, phezulu ukuze uthole ulwazi",
     "title": "Kuyini Ukuzungeziswa Kohlelo lwakho?",
     "cards": {
       "4-4-4": {

@@ -497,62 +497,74 @@ describe('Ryvro environment template', () => {
         location: string;
         section: string;
         site: string;
+        topFunnel: string[];
       }
     > = {
       af: {
         location: 'Werkplek (opsioneel)',
         section: 'WERKPLEKBESONDERHEDE',
         site: 'Werkplek',
+        topFunnel: ['skofwerkrol', 'werkplek', 'span'],
       },
       ar: {
         location: 'موقع العمل (اختياري)',
         section: 'تفاصيل موقع العمل',
         site: 'موقع العمل',
+        topFunnel: ['الورديات', 'مكان عملك', 'فريقك'],
       },
       en: {
         location: 'Work location (optional)',
         section: 'WORK LOCATION',
         site: 'Work location',
+        topFunnel: ['shift-work role', 'Workplace', 'team'],
       },
       es: {
         location: 'Lugar de trabajo (opcional)',
         section: 'LUGAR DE TRABAJO',
         site: 'Lugar de trabajo',
+        topFunnel: ['trabajo por turnos', 'lugar de trabajo', 'equipo'],
       },
       fr: {
         location: 'Lieu de travail (facultatif)',
         section: 'LIEU DE TRAVAIL',
         site: 'Lieu de travail',
+        topFunnel: ['travail posté', 'lieu de travail', 'équipe'],
       },
       hi: {
         location: 'कार्य स्थान (वैकल्पिक)',
         section: 'कार्य स्थान विवरण',
         site: 'कार्य स्थान',
+        topFunnel: ['शिफ्ट-वर्क', 'कार्यस्थल', 'टीम'],
       },
       id: {
         location: 'Lokasi kerja (opsional)',
         section: 'DETAIL LOKASI KERJA',
         site: 'Lokasi kerja',
+        topFunnel: ['kerja shift', 'tempat kerja', 'tim'],
       },
       'pt-BR': {
         location: 'Local de trabalho (opcional)',
         section: 'DETALHES DO LOCAL DE TRABALHO',
         site: 'Local de trabalho',
+        topFunnel: ['trabalho por turnos', 'local de trabalho', 'equipe'],
       },
       ru: {
         location: 'Место работы (необязательно)',
         section: 'МЕСТО РАБОТЫ',
         site: 'Место работы',
+        topFunnel: ['сменной работе', 'рабочем месте', 'команда'],
       },
       'zh-CN': {
         location: '工作地点（可选）',
         section: '工作地点',
         site: '工作地点',
+        topFunnel: ['轮班工作', '工作地点', '团队'],
       },
       zu: {
         location: 'Indawo yokusebenza (ongakukhetha)',
         section: 'IMINININGWANE YENDAWO YOKUSEBENZA',
         site: 'Indawo yokusebenza',
+        topFunnel: ['yomsebenzi wamashifu', 'indawo yakho yokusebenza', 'ithimba'],
       },
     };
 
@@ -577,10 +589,21 @@ describe('Ryvro environment template', () => {
           'utf8'
         )
       ) as {
+        intro?: {
+          askOccupation?: string;
+        };
         shiftBuilder?: {
           inspector?: {
             location?: string;
           };
+        };
+        shiftPattern?: {
+          instruction?: string;
+        };
+        shiftSystem?: {
+          instruction?: string;
+          title?: string;
+          title_named?: string;
         };
       };
 
@@ -588,6 +611,22 @@ describe('Ryvro environment template', () => {
       expect(profile.shift?.siteName).toBe(expected.location);
       expect(profile.shift?.sections?.siteDetails).toBe(expected.section);
       expect(onboarding.shiftBuilder?.inspector?.location).toBe(expected.location);
+
+      const topFunnelCopy = [
+        onboarding.intro?.askOccupation,
+        onboarding.shiftSystem?.title,
+        onboarding.shiftSystem?.title_named,
+        onboarding.shiftSystem?.instruction,
+        onboarding.shiftPattern?.instruction,
+      ].join('\n');
+
+      for (const phrase of expected.topFunnel) {
+        expect(topFunnelCopy).toContain(phrase);
+      }
+
+      expect(topFunnelCopy).not.toMatch(
+        /site minier|site minero|site de mina|site mine|site your|your site|your mine|mine site|mining site|sitio|situs|сайт|участок|站点|网站|साइट|موقعك|موقع منجمك|terrein|werf|webwerf|esizeni|indawo yakho yemigodi/i
+      );
     }
   });
 

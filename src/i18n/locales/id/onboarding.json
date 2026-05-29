@@ -33,7 +33,7 @@
   "intro": {
     "welcome": "Selamat datang di Ryvro! Saya di sini untuk membantu Anda mengatur kalender shift Anda. Mari kita mulai dengan mengenal Anda lebih baik.",
     "askName": "Siapa namamu?",
-    "askOccupation": "Senang bertemu dengan Anda, {{name}}! Apa peran Anda di lokasi?",
+    "askOccupation": "Senang bertemu dengan Anda, {{name}}! Apa peran kerja shift Anda?",
     "askCompany": "Baik. Anda bekerja di perusahaan mana? (opsional)",
     "askCountry": "Hampir selesai! Di negara mana Anda tinggal?",
     "allSet": "Sempurna! Anda sudah siap, {{name}}. Mari konfigurasikan kalender shift Anda.",
@@ -61,13 +61,13 @@
     "skipCompany": "Lewati"
   },
   "shiftSystem": {
-    "title": "Berapa Banyak Pergeseran yang Dijalankan Situs Anda?",
-    "title_named": "Hai {{name}}, berapa banyak shift yang dijalankan situs Anda?",
+    "title": "Berapa banyak shift yang dijalankan tempat kerja Anda?",
+    "title_named": "Hai {{name}}, berapa banyak shift yang dijalankan tempat kerja Anda?",
     "reviewAgain": "Harap tinjau kembali sistem untuk menentukan pilihan Anda",
     "reviewButton": "Sistem Tinjauan",
     "continueButton": "Melanjutkan",
     "closeButton": "Menutup",
-    "instruction": "Pilih cara situs Anda beroperasi—kami akan membuat kalender Anda dari sini\nGeser ke kanan untuk memilih, ke kiri untuk melihat lebih lanjut, ke atas untuk info",
+    "instruction": "Pilih cara tim Anda beroperasi—kami akan membuat kalender Anda dari sini\nGeser ke kanan untuk memilih, ke kiri untuk melihat lebih lanjut, ke atas untuk info",
     "endState": {
       "selectedTitle": "Mengerti! Kami akan menyiapkan kalender Anda untuk ini.",
       "reviewedTitle": "Anda telah melihat semua {{count}} sistem shift!",
@@ -130,7 +130,7 @@
       "reviewedSubtitle": "Tidak melihat milikmu? Anda dapat membuat yang khusus, atau melihat lagi",
       "reviewedTitle": "Itu saja {{count}} rotasi yang kami punya!"
     },
-    "instruction": "Pilih rotasi yang digunakan di lokasi tambang Anda—kami akan membuat kalender Anda dari ini\nGeser ke kanan untuk memilih, ke kiri untuk melihat lebih lanjut, ke atas untuk info",
+    "instruction": "Pilih rotasi yang digunakan tempat kerja Anda—kami akan membuat kalender Anda dari ini\nGeser ke kanan untuk memilih, ke kiri untuk melihat lebih lanjut, ke atas untuk info",
     "title": "Bagaimana Rotasi Rostermu?",
     "cards": {
       "4-4-4": {

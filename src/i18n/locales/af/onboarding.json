@@ -33,7 +33,7 @@
   "intro": {
     "welcome": "Welkom aan Ryvro! Ek is hier om jou te help om jou skofkalender op te stel. Kom ons begin deur jou 'n bietjie beter te leer ken.",
     "askName": "Wat is jou naam?",
-    "askOccupation": "Wonderlik om jou te ontmoet, {{name}}! Wat is jou rol op die terrein?",
+    "askOccupation": "Wonderlik om jou te ontmoet, {{name}}! Watter skofwerkrol doen jy?",
     "askCompany": "Het dit! Vir watter maatskappy werk jy? (opsioneel)",
     "askCountry": "Amper klaar! In watter land is jy gebaseer?",
     "allSet": "Perfek! Jy is gereed, {{name}}. Kom ons kry jou skofkalender opgestel.",
@@ -61,13 +61,13 @@
     "skipCompany": "Slaan oor"
   },
   "shiftSystem": {
-    "title": "Hoeveel skofte loop u webwerf?",
-    "title_named": "Hallo {{name}}, hoeveel skofte loop jou terrein?",
+    "title": "Hoeveel skofte loop jou werkplek?",
+    "title_named": "Hallo {{name}}, hoeveel skofte loop jou werkplek?",
     "reviewAgain": "Hersien asseblief stelsels weer om jou keuse te maak",
     "reviewButton": "Hersien stelsels",
     "continueButton": "Gaan voort",
     "closeButton": "Maak toe",
-    "instruction": "Kies hoe jou werf werk—ons sal jou kalender hieruit bou\nSwiep regs om te kies, links om meer te sien, op vir inligting",
+    "instruction": "Kies hoe jou span werk—ons sal jou kalender hieruit bou\nSwiep regs om te kies, links om meer te sien, op vir inligting",
     "endState": {
       "selectedTitle": "Het dit! Ons sal jou kalender hiervoor opstel.",
       "reviewedTitle": "Jy het al {{count}} skofstelsels bekyk!",
@@ -122,7 +122,7 @@
       "reviewedSubtitle": "Het jy nie joune gesien nie? Jy kan 'n pasgemaakte een bou, of weer kyk",
       "reviewedTitle": "Dit is al {{count}} rotasies wat ons het!"
     },
-    "instruction": "Kies die rotasie wat jou mynterrein gebruik—ons sal jou kalender hieruit bou\nSwiep regs om te kies, links om meer te sien, op vir inligting",
+    "instruction": "Kies die rotasie wat jou werkplek gebruik—ons sal jou kalender hieruit bou\nSwiep regs om te kies, links om meer te sien, op vir inligting",
     "title": "Wat is jou roosterrotasie?",
     "cards": {
       "4-4-4": {

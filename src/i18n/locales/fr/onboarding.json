@@ -33,7 +33,7 @@
   "intro": {
     "welcome": "Bienvenue à Ryvro! Je suis là pour vous aider à établir votre calendrier de travail. Commençons par mieux vous connaître.",
     "askName": "Quel est ton nom?",
-    "askOccupation": "Ravi de vous rencontrer, {{name}}! Quel est votre rôle sur site?",
+    "askOccupation": "Ravi de vous rencontrer, {{name}}! Quel rôle en travail posté faites-vous?",
     "askCompany": "D’accord. Pour quelle entreprise travaillez-vous? (facultatif)",
     "askCountry": "Presque terminé! Dans quel pays êtes-vous basé?",
     "allSet": "Parfait! Vous êtes prêt, {{name}}. Configureons votre calendrier de travail.",
@@ -61,13 +61,13 @@
     "skipCompany": "Passer"
   },
   "shiftSystem": {
-    "title": "Combien d’équipes votre site gère-t-il?",
-    "title_named": "Salut {{name}}, combien d’équipes votre site gère-t-il?",
+    "title": "Combien d’équipes votre lieu de travail utilise-t-il?",
+    "title_named": "Salut {{name}}, combien d’équipes votre lieu de travail utilise-t-il?",
     "reviewAgain": "Veuillez revoir les systèmes pour faire votre sélection",
     "reviewButton": "Systèmes d'examen",
     "continueButton": "Continuer",
     "closeButton": "Fermer",
-    "instruction": "Sélectionnez le mode de fonctionnement de votre site: nous créerons votre calendrier à partir de cela.\nFaites glisser votre doigt vers la droite pour choisir, vers la gauche pour en voir plus, vers le haut pour plus d'informations",
+    "instruction": "Sélectionnez le fonctionnement de votre équipe: nous créerons votre calendrier à partir de cela.\nFaites glisser votre doigt vers la droite pour choisir, vers la gauche pour en voir plus, vers le haut pour plus d’informations",
     "endState": {
       "selectedTitle": "J'ai compris! Nous allons configurer votre calendrier pour cela.",
       "reviewedTitle": "Vous avez consulté tous les systèmes de changement de vitesse {{count}}!",
@@ -135,7 +135,7 @@
       "reviewedSubtitle": "Vous n'avez pas vu le vôtre? Vous pouvez en créer un personnalisé ou y jeter un autre coup d'œil.",
       "reviewedTitle": "C'est tout ce que nous avons pour {{count}} rotations!"
     },
-    "instruction": "Choisissez la rotation utilisée par votre site minier: nous construirons votre calendrier à partir de cela\nFaites glisser votre doigt vers la droite pour choisir, vers la gauche pour en voir plus, vers le haut pour plus d'informations",
+    "instruction": "Choisissez la rotation utilisée par votre lieu de travail: nous construirons votre calendrier à partir de cela\nFaites glisser votre doigt vers la droite pour choisir, vers la gauche pour en voir plus, vers le haut pour plus d’informations",
     "title": "Quelle est la rotation de votre équipe?",
     "cards": {
       "4-4-4": {

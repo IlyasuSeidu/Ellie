@@ -33,7 +33,7 @@
   "intro": {
     "welcome": "Bienvenido a Ryvro! Estoy aqui para ayudarte a configurar tu calendario de turnos. Empecemos con tus datos.",
     "askName": "Como te llamas?",
-    "askOccupation": "Mucho gusto, {{name}}! ¿Cuál es tu función en el sitio?",
+    "askOccupation": "Mucho gusto, {{name}}! ¿Qué función de trabajo por turnos haces?",
     "askCompany": "Perfecto. ¿En qué empresa trabajas? (opcional)",
     "askCountry": "Casi listo! En que pais estas?",
     "allSet": "Perfecto! Todo listo, {{name}}. Vamos a configurar tu calendario de turnos.",
@@ -61,13 +61,13 @@
     "skipCompany": "Omitir"
   },
   "shiftSystem": {
-    "title_named": "Hola {{name}}, ¿cuántos turnos funciona tu sitio?",
+    "title_named": "Hola {{name}}, ¿cuántos turnos usa tu lugar de trabajo?",
     "reviewAgain": "Revisa los sistemas otra vez para seleccionar",
     "reviewButton": "Revisar sistemas",
     "continueButton": "Continuar",
     "closeButton": "Cerrar",
-    "instruction": "Selecciona como opera tu sitio-con esto armamos tu calendario\nDesliza a la derecha para seleccionar, izquierda para ver siguiente o arriba para mas informacion",
-    "title": "¿Cuántos turnos funciona su sitio?",
+    "instruction": "Selecciona cómo opera tu equipo; con eso armamos tu calendario\nDesliza a la derecha para seleccionar, izquierda para ver más o arriba para información",
+    "title": "¿Cuántos turnos usa tu lugar de trabajo?",
     "endState": {
       "selectedTitle": "¡Entiendo! Configuraremos su calendario para esto.",
       "reviewedTitle": "¡Has visto todos los sistemas de cambio {{count}}!",
@@ -125,7 +125,7 @@
       "reviewedSubtitle": "¿No viste el tuyo? Puedes crear uno personalizado o echarle otro vistazo.",
       "reviewedTitle": "¡Esas son todas las rotaciones {{count}} que tenemos!"
     },
-    "instruction": "Elija la rotación que utiliza su lugar de trabajo; crearemos su calendario a partir de esto\nDesliza hacia la derecha para elegir, hacia la izquierda para ver más, hacia arriba para obtener información",
+    "instruction": "Elige la rotación que usa tu lugar de trabajo; crearemos tu calendario a partir de ella\nDesliza hacia la derecha para elegir, hacia la izquierda para ver más, hacia arriba para obtener información",
     "title": "¿Cuál es su rotación de plantilla?",
     "cards": {
       "4-4-4": {
