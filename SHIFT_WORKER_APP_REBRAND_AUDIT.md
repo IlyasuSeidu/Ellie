@@ -106,10 +106,10 @@ Latest repeatable public preflight command:
 npm run release:clearance
 ```
 
-Result captured at `2026-05-29T13:38:11.003Z`:
+Result captured at `2026-05-29T14:36:21.446Z`:
 
-- Apple public software search: no exact `Ryvro` or `Ryvro Shift Planner` app result returned. Public search still does not prove App Store Connect name availability.
-- Google Play public search: no exact `Ryvro` or `Ryvro Shift Planner` result text found. Public search still does not prove Play Console title/package availability.
+- Apple public software search: no exact `Ryvro` or `Ryvro Shift Planner` app result returned across 12 fuzzy results. Public search still does not prove App Store Connect name availability.
+- Google Play public search: no exact `Ryvro` or `Ryvro Shift Planner` result text found. Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`. Public search still does not prove Play Console title/package availability.
 - USPTO public search app: reachable only through the automated preflight. This is not legal clearance.
 - `getryvro.com`: no public DNS record and Verisign `.com` returned no match.
 - `useryvro.com`, `tryryvro.com`, and `getryvroapp.com`: no public DNS record and Verisign `.com` returned no match.

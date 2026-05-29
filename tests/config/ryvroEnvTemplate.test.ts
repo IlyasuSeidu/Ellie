@@ -219,6 +219,29 @@ describe('Ryvro environment template', () => {
     expect(fs.existsSync(scriptPath)).toBe(true);
   });
 
+  it('keeps public clearance evidence current while preserving account-only caveats', () => {
+    const externalSetup = fs.readFileSync(
+      path.join(process.cwd(), 'docs/RYVRO_EXTERNAL_SERVICE_SETUP.md'),
+      'utf8'
+    );
+    const audit = fs.readFileSync(
+      path.join(process.cwd(), 'SHIFT_WORKER_APP_REBRAND_AUDIT.md'),
+      'utf8'
+    );
+    const clearanceEvidence = `${externalSetup}\n${audit}`;
+
+    expect(clearanceEvidence).toContain('2026-05-29 at 14:36:21Z');
+    expect(clearanceEvidence).toContain('2026-05-29T14:36:21.446Z');
+    expect(clearanceEvidence).toContain('no exact `Ryvro` or `Ryvro Shift Planner` app result');
+    expect(clearanceEvidence).toContain('Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`');
+    expect(clearanceEvidence).toContain('Formal trademark/legal clearance');
+    expect(clearanceEvidence).toContain('App Store Connect and Google Play Console name checks');
+    expect(clearanceEvidence).toContain('Play Console title/package availability');
+    expect(clearanceEvidence).toContain('reserve directly while logged in');
+    expect(clearanceEvidence).not.toContain('2026-05-29 at 13:38:11Z');
+    expect(clearanceEvidence).not.toContain('2026-05-29T13:38:11.003Z');
+  });
+
   it('keeps the store listing pack submission-ready without placeholder review contacts', () => {
     const storeListing = fs.readFileSync(
       path.join(process.cwd(), 'docs/RYVRO_STORE_LISTING.md'),
