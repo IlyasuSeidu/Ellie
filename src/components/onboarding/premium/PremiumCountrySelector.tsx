@@ -37,21 +37,33 @@ export interface PremiumCountrySelectorProps {
 }
 
 export const DEFAULT_COUNTRIES: Country[] = [
-  // Top global mining countries
+  // Core launch markets for healthcare, security, transport, manufacturing, hospitality, FIFO, and field teams.
   { code: 'CN', name: 'China', flag: '🇨🇳' },
   { code: 'AU', name: 'Australia', flag: '🇦🇺' },
   { code: 'RU', name: 'Russia', flag: '🇷🇺' },
   { code: 'US', name: 'United States', flag: '🇺🇸' },
+  { code: 'GB', name: 'United Kingdom', flag: '🇬🇧' },
+  { code: 'CA', name: 'Canada', flag: '🇨🇦' },
+  { code: 'FR', name: 'France', flag: '🇫🇷' },
+  { code: 'DE', name: 'Germany', flag: '🇩🇪' },
+  { code: 'JP', name: 'Japan', flag: '🇯🇵' },
+  { code: 'KR', name: 'South Korea', flag: '🇰🇷' },
+  { code: 'SG', name: 'Singapore', flag: '🇸🇬' },
+  { code: 'NL', name: 'Netherlands', flag: '🇳🇱' },
+  { code: 'ES', name: 'Spain', flag: '🇪🇸' },
+  { code: 'IT', name: 'Italy', flag: '🇮🇹' },
+  { code: 'IE', name: 'Ireland', flag: '🇮🇪' },
+  { code: 'NZ', name: 'New Zealand', flag: '🇳🇿' },
+  { code: 'QA', name: 'Qatar', flag: '🇶🇦' },
   { code: 'ID', name: 'Indonesia', flag: '🇮🇩' },
   { code: 'IN', name: 'India', flag: '🇮🇳' },
   { code: 'CL', name: 'Chile', flag: '🇨🇱' },
   { code: 'PE', name: 'Peru', flag: '🇵🇪' },
   { code: 'BR', name: 'Brazil', flag: '🇧🇷' },
   { code: 'ZA', name: 'South Africa', flag: '🇿🇦' },
-  { code: 'CA', name: 'Canada', flag: '🇨🇦' },
   { code: 'MX', name: 'Mexico', flag: '🇲🇽' },
 
-  // Major mining nations (alphabetically)
+  // Additional countries where rotating, remote, industrial, and service shift teams are common.
   { code: 'DZ', name: 'Algeria', flag: '🇩🇿' },
   { code: 'AR', name: 'Argentina', flag: '🇦🇷' },
   { code: 'BO', name: 'Bolivia', flag: '🇧🇴' },
@@ -62,7 +74,6 @@ export const DEFAULT_COUNTRIES: Country[] = [
   { code: 'EC', name: 'Ecuador', flag: '🇪🇨' },
   { code: 'EG', name: 'Egypt', flag: '🇪🇬' },
   { code: 'FI', name: 'Finland', flag: '🇫🇮' },
-  { code: 'DE', name: 'Germany', flag: '🇩🇪' },
   { code: 'GH', name: 'Ghana', flag: '🇬🇭' },
   { code: 'GN', name: 'Guinea', flag: '🇬🇳' },
   { code: 'GY', name: 'Guyana', flag: '🇬🇾' },
@@ -87,7 +98,6 @@ export const DEFAULT_COUNTRIES: Country[] = [
   { code: 'TR', name: 'Turkey', flag: '🇹🇷' },
   { code: 'UA', name: 'Ukraine', flag: '🇺🇦' },
   { code: 'AE', name: 'United Arab Emirates', flag: '🇦🇪' },
-  { code: 'GB', name: 'United Kingdom', flag: '🇬🇧' },
   { code: 'VE', name: 'Venezuela', flag: '🇻🇪' },
   { code: 'VN', name: 'Vietnam', flag: '🇻🇳' },
   { code: 'ZM', name: 'Zambia', flag: '🇿🇲' },

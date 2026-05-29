@@ -5,7 +5,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import * as Haptics from 'expo-haptics';
-import { PremiumCountrySelector, Country } from '../PremiumCountrySelector';
+import { PremiumCountrySelector, Country, DEFAULT_COUNTRIES } from '../PremiumCountrySelector';
 
 describe('PremiumCountrySelector', () => {
   const mockOnCountrySelect = jest.fn();
@@ -30,6 +30,15 @@ describe('PremiumCountrySelector', () => {
       expect(getByText('United States')).toBeTruthy();
       expect(getByText('United Kingdom')).toBeTruthy();
       expect(getByText('Canada')).toBeTruthy();
+    });
+
+    it('should keep default countries broad enough for non-mining shift teams', () => {
+      const defaultCountryCodes = DEFAULT_COUNTRIES.map((country) => country.code);
+
+      expect(defaultCountryCodes).toEqual(
+        expect.arrayContaining(['US', 'GB', 'FR', 'DE', 'JP', 'KR', 'SG', 'NL', 'ES', 'IT', 'IE'])
+      );
+      expect(defaultCountryCodes).toEqual(expect.arrayContaining(['AU', 'CA', 'GH', 'ZA']));
     });
 
     it('should render with custom countries', () => {
