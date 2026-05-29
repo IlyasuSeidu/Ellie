@@ -263,6 +263,14 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('Repo-Proven Status');
     expect(readinessReport).toContain('Device QA Notes');
     expect(readinessReport).toContain('Account-Only Work');
+    expect(readinessReport).toContain('Focused Phase 9 automated QA passed on 2026-05-29');
+    expect(readinessReport).toContain('8 suites, 162 tests');
+    expect(readinessReport).toContain('4 suites, 107 tests');
+    expect(readinessReport).toContain('TypeScript build plus 38 Node tests');
+    expect(readinessReport).toContain(
+      'completed E2E onboarding seeds carry Universal Shift Builder schedules'
+    );
+    expect(readinessReport).toContain('15 dashboard smoke tests');
     expect(readinessReport).toContain('Physical iPhone 13');
     expect(readinessReport).toContain('Physical iPhone XS Max');
     expect(readinessReport).toContain('Android build/install');

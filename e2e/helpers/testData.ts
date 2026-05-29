@@ -5,6 +5,18 @@
  * Values are keyed by logical AsyncStorageService keys (without "app:" prefix).
  */
 
+import { UNIVERSAL_SHIFT_TEMPLATES } from '../../src/constants/universalShiftTemplates';
+import type { UniversalShiftSchedule } from '../../src/types';
+
+function templateSchedule(templateId: string): UniversalShiftSchedule {
+  const template = UNIVERSAL_SHIFT_TEMPLATES.find((candidate) => candidate.id === templateId);
+  if (!template) {
+    throw new Error(`Missing E2E universal shift template: ${templateId}`);
+  }
+
+  return template.schedule;
+}
+
 /** Minimal mock user that satisfies the auth bypass check in AuthContext */
 export const MOCK_USER = {
   uid: 'e2e-test-uid-001',
@@ -29,6 +41,7 @@ export const MOCK_ONBOARDING_DATA = {
     dayShift: { hour: 6, minute: 0 },
     nightShift: { hour: 18, minute: 0 },
   },
+  universalSchedule: templateSchedule('security-4-4'),
 };
 
 /** Miner/FIFO launch-wedge fixture kept as one industry example, not the default seed. */
@@ -46,6 +59,7 @@ export const MINING_FIFO_ONBOARDING_DATA = {
     dayShift: { hour: 6, minute: 0 },
     nightShift: { hour: 18, minute: 0 },
   },
+  universalSchedule: templateSchedule('mining-fifo-14-14'),
 };
 
 /** Non-mining proof fixture that keeps the universal foundation covered. */
@@ -63,6 +77,7 @@ export const NON_MINING_PROOF_ONBOARDING_DATA = {
     dayShift: { hour: 7, minute: 0 },
     nightShift: { hour: 19, minute: 0 },
   },
+  universalSchedule: templateSchedule('healthcare-2-2-3'),
 };
 
 export const UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES = {
@@ -80,6 +95,7 @@ export const UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES = {
       dayShift: { hour: 7, minute: 0 },
       nightShift: { hour: 19, minute: 0 },
     },
+    universalSchedule: templateSchedule('healthcare-2-2-3'),
   },
   security: {
     name: 'Kwame',
@@ -95,6 +111,7 @@ export const UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES = {
       dayShift: { hour: 6, minute: 0 },
       nightShift: { hour: 18, minute: 0 },
     },
+    universalSchedule: templateSchedule('security-4-4'),
   },
   emergencyServices: {
     name: 'Maya',
@@ -110,6 +127,7 @@ export const UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES = {
       dayShift: { hour: 8, minute: 0 },
       nightShift: { hour: 20, minute: 0 },
     },
+    universalSchedule: templateSchedule('emergency-24-48'),
   },
   manufacturing: {
     name: 'Liam',
@@ -125,6 +143,7 @@ export const UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES = {
       dayShift: { hour: 6, minute: 0 },
       nightShift: { hour: 22, minute: 0 },
     },
+    universalSchedule: templateSchedule('manufacturing-continental'),
   },
   transport: {
     name: 'Sofia',
@@ -140,6 +159,7 @@ export const UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES = {
       dayShift: { hour: 5, minute: 0 },
       nightShift: { hour: 21, minute: 0 },
     },
+    universalSchedule: templateSchedule('transport-early-late-night'),
   },
   hospitality: {
     name: 'Noah',
@@ -155,6 +175,7 @@ export const UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES = {
       dayShift: { hour: 7, minute: 0 },
       nightShift: { hour: 23, minute: 0 },
     },
+    universalSchedule: templateSchedule('hospitality-5-2'),
   },
   aviationRail: {
     name: 'Priya',
@@ -170,6 +191,7 @@ export const UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES = {
       dayShift: { hour: 5, minute: 0 },
       nightShift: { hour: 21, minute: 0 },
     },
+    universalSchedule: templateSchedule('aviation-early-late-night'),
   },
   miningFifo: MINING_FIFO_ONBOARDING_DATA,
 };

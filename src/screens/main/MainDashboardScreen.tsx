@@ -399,6 +399,7 @@ export const MainDashboardScreen: React.FC = () => {
       )}
 
       <ScrollView
+        testID="dashboard-scroll-view"
         style={[styles.scrollView, { paddingTop: insets.top }]}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}

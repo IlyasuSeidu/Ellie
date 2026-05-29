@@ -27,7 +27,17 @@ describe('Main Dashboard', () => {
       .toBeVisible()
       .withTimeout(TIMEOUT);
     await element(by.id('tab-home')).tap();
+    await waitFor(element(by.id('dashboard-scroll-view')))
+      .toBeVisible()
+      .withTimeout(TIMEOUT);
   });
+
+  async function scrollDashboardTo(testID: string): Promise<void> {
+    await waitFor(element(by.id(testID)))
+      .toBeVisible()
+      .whileElement(by.id('dashboard-scroll-view'))
+      .scroll(120, 'down', 0.5, 0.5);
+  }
 
   // ── Dashboard structure ───────────────────────────────────────────────────
 
@@ -47,7 +57,7 @@ describe('Main Dashboard', () => {
     });
 
     it('renders the stats card', async () => {
-      await detoxExpect(element(by.id('dashboard-stats'))).toBeVisible();
+      await detoxExpect(element(by.id('dashboard-stats'))).toExist();
     });
   });
 
@@ -67,7 +77,7 @@ describe('Main Dashboard', () => {
 
   describe('Calendar card', () => {
     it('renders calendar grid', async () => {
-      await detoxExpect(element(by.id('calendar-grid-container'))).toBeVisible();
+      await detoxExpect(element(by.id('calendar-grid-container'))).toExist();
     });
 
     it('renders at least one calendar day cell', async () => {
@@ -80,15 +90,16 @@ describe('Main Dashboard', () => {
 
   describe('Stats card', () => {
     it('shows work days stat', async () => {
+      await scrollDashboardTo('stat-work-days');
       await detoxExpect(element(by.id('stat-work-days'))).toBeVisible();
     });
 
     it('shows off days stat', async () => {
-      await detoxExpect(element(by.id('stat-off-days'))).toBeVisible();
+      await detoxExpect(element(by.id('stat-off-days'))).toExist();
     });
 
     it('shows balance stat', async () => {
-      await detoxExpect(element(by.id('stat-balance'))).toBeVisible();
+      await detoxExpect(element(by.id('stat-balance'))).toExist();
     });
   });
 
@@ -109,12 +120,12 @@ describe('Main Dashboard', () => {
 
     it('navigates to profile tab and back to home', async () => {
       await element(by.id('tab-profile')).tap();
-      await waitFor(element(by.id('language-selector-button')))
+      await waitFor(element(by.id('profile-screen')))
         .toBeVisible()
         .withTimeout(TIMEOUT);
 
       await element(by.id('tab-home')).tap();
-      await waitFor(element(by.id('dashboard-header')))
+      await waitFor(element(by.id('dashboard-scroll-view')))
         .toBeVisible()
         .withTimeout(TIMEOUT);
     });

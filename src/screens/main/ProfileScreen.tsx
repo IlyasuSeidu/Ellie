@@ -154,6 +154,7 @@ export const ProfileScreen: React.FC = () => {
         style={StyleSheet.absoluteFill}
       />
       <Animated.ScrollView
+        testID="profile-screen"
         contentContainerStyle={[
           styles.scrollContent,
           { paddingTop: insets.top + 16, paddingBottom: 120 },

@@ -1605,23 +1605,23 @@ Phase gate:
 
 ### Phase 9: Automated QA
 
-- [ ] `npm run validate`.
-- [ ] Auth tests.
-- [ ] Parser tests.
-- [ ] Universal schedule edge-case tests.
-- [ ] Calendar import/export tests.
-- [ ] Dashboard tests.
-- [ ] Settings tests.
-- [ ] Onboarding tests.
-- [ ] Reminder tests.
-- [ ] E2E smoke test if available.
-- [ ] Old-term scan.
-- [ ] Bundle/package identity scan.
+- [x] `npm run validate`.
+- [x] Auth tests.
+- [x] Parser tests.
+- [x] Universal schedule edge-case tests.
+- [x] Calendar import/export tests.
+- [x] Dashboard tests.
+- [x] Settings tests.
+- [x] Onboarding tests.
+- [x] Reminder tests.
+- [x] E2E smoke test if available.
+- [x] Old-term scan.
+- [x] Bundle/package identity scan.
 
 Phase gate:
 
-- [ ] All P0/P1 automated checks pass.
-- [ ] Remaining old-term hits are classified and allowed.
+- [x] All P0/P1 automated checks pass.
+- [x] Remaining old-term hits are classified and allowed.
 
 ### Phase 10: Device QA
 

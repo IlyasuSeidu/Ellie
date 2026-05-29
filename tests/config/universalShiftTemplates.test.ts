@@ -5,6 +5,13 @@ import {
   type UniversalShiftTemplateIndustry,
 } from '@/constants/universalShiftTemplates';
 import { validateUniversalSchedule } from '@/utils/universalShiftUtils';
+import {
+  MAIN_APP_SEED,
+  MINING_FIFO_MAIN_APP_SEED,
+  NON_MINING_PROOF_MAIN_APP_SEED,
+  UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES,
+} from '../../e2e/helpers/testData';
+import type { UniversalShiftSchedule } from '@/types';
 
 const REQUIRED_INDUSTRIES: UniversalShiftTemplateIndustry[] = [
   'healthcare',
@@ -16,6 +23,13 @@ const REQUIRED_INDUSTRIES: UniversalShiftTemplateIndustry[] = [
   'aviation_rail',
   'mining_fifo',
 ];
+
+function expectCompleteUniversalSchedule(schedule: UniversalShiftSchedule): void {
+  expect(schedule.name.trim()).toBeTruthy();
+  expect(schedule.anchorDate).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+  expect(schedule.sequence.length).toBeGreaterThan(0);
+  expect(schedule.shiftDefinitions.length).toBeGreaterThan(0);
+}
 
 describe('Universal shift templates', () => {
   it('ships launch templates for mining plus broad non-mining shift-worker industries', () => {
@@ -41,6 +55,27 @@ describe('Universal shift templates', () => {
       expect(template.schedule.shiftDefinitions.length).toBeGreaterThan(0);
       expect(template.schedule.sequence.length).toBeGreaterThan(0);
       expect(template.aiPromptExample.trim().length).toBeGreaterThan(20);
+    }
+  });
+
+  it('keeps completed E2E onboarding seeds compatible with the main app gate', () => {
+    const completedSeeds = [
+      MAIN_APP_SEED,
+      MINING_FIFO_MAIN_APP_SEED,
+      NON_MINING_PROOF_MAIN_APP_SEED,
+    ];
+
+    for (const seed of completedSeeds) {
+      expect(seed['onboarding:complete']).toBe(true);
+      const onboardingData = seed['onboarding:data'] as {
+        universalSchedule?: UniversalShiftSchedule;
+      };
+      expect(onboardingData.universalSchedule).toBeDefined();
+      expectCompleteUniversalSchedule(onboardingData.universalSchedule as UniversalShiftSchedule);
+    }
+
+    for (const fixture of Object.values(UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES)) {
+      expectCompleteUniversalSchedule(fixture.universalSchedule);
     }
   });
 
