@@ -7,7 +7,7 @@
  * Deferred (not wired here):
  *   - Sleep-data / fatigue-aware integration — the backend scaffolding exists,
  *     but the user-facing toggle stays hidden until SleepContext lands.
- *     See ellie-smart-shift-reminders.md §B.
+ *     See the archived smart shift reminders plan.
  *   - Stable auth userId — uses the same resolveUserId pattern as useSmartReminders
  *     (Firebase UID when signed in, persisted local UUID otherwise).
  */

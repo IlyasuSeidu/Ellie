@@ -3595,11 +3595,11 @@ function buildBuilderOverlay(platformId, variant = 'primary') {
 
 function buildReadyPostHashtags(platformId) {
   if (platformId === 'carousel' || platformId === 'reels' || platformId === 'tiktok') {
-    return '#ryvro #shiftwork #mining #buildinpublic #theminerbuildingtech #vibecoding';
+    return '#ryvro #shiftwork #shiftworkers #rosterlife #buildinpublic #theminerbuildingtech #vibecoding';
   }
 
   if (platformId === 'shorts') {
-    return '#ryvro #shiftwork #mining #buildinpublic #theminerbuildingtech';
+    return '#ryvro #shiftwork #shiftworkers #rosterlife #buildinpublic #theminerbuildingtech';
   }
 
   return '';

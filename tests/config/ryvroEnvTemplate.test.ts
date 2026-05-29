@@ -341,6 +341,35 @@ describe('Ryvro environment template', () => {
     );
   });
 
+  it('keeps content generation outputs broad while preserving the miner-builder origin story', () => {
+    const contentGenerator = fs.readFileSync(
+      path.join(process.cwd(), 'scripts/generate-stop-scroll-content.js'),
+      'utf8'
+    );
+    const platformPlaybook = fs.readFileSync(
+      path.join(process.cwd(), 'config/ryvro-platform-playbook.js'),
+      'utf8'
+    );
+    const researchAutomationPrompt = fs.readFileSync(
+      path.join(process.cwd(), 'docs/RYVRO_RESEARCH_FUNNEL_AUTOMATION_PROMPT.md'),
+      'utf8'
+    );
+    const activeGenerationGuidance = [
+      contentGenerator,
+      platformPlaybook,
+      researchAutomationPrompt,
+    ].join('\n');
+
+    expect(activeGenerationGuidance).toContain('Built by a miner for shift workers');
+    expect(contentGenerator).toContain('#shiftworkers');
+    expect(contentGenerator).toContain('#rosterlife');
+    expect(contentGenerator).not.toContain('#mining #buildinpublic');
+    expect(platformPlaybook).toContain('FIFO crews, shift workers, and broad discovery viewers');
+    expect(platformPlaybook).not.toContain('miners, shift workers, and broad discovery viewers');
+    expect(researchAutomationPrompt).toContain('closest Ryvro launch persona');
+    expect(researchAutomationPrompt).not.toContain('closest Ryvro miner persona');
+  });
+
   it('does not keep retired Ellie brain endpoints in CI workflows', () => {
     const ciWorkflow = fs.readFileSync(
       path.join(process.cwd(), '.github/workflows/ci.yml'),

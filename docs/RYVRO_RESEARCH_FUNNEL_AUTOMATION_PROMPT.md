@@ -26,7 +26,7 @@ Do not automate or imitate LinkedIn member activity. LinkedIn is discovery only.
 
 1. Read new approved lead inputs from the configured source of truth.
 2. Dedupe leads against existing records by LinkedIn URL, email, and WhatsApp number.
-3. Classify each lead into the closest Ryvro miner persona.
+3. Classify each lead into the closest Ryvro launch persona from the research-funnel OS.
 4. Update static fit scores.
 5. Read inbound replies from direct channels and extract:
    - role

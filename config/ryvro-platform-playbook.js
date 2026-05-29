@@ -3,7 +3,7 @@ const PLATFORM_PLAYBOOK = {
     id: 'reels',
     label: 'Instagram Reels',
     folder: 'instagram-reels',
-    audience: 'miners, shift workers, and broad discovery viewers',
+    audience: 'FIFO crews, shift workers, and broad discovery viewers',
     objective: 'earn a stop, a rewatch, and a comment inside a short vertical story',
     nativeFormat: 'short vertical video with fast visual clarity',
     targetLength: '12-25 seconds',
