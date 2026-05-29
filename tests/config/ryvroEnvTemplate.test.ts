@@ -268,6 +268,7 @@ describe('Ryvro environment template', () => {
 
     expect(readinessReport).toContain('CI run `26659012373`');
     expect(readinessReport).toContain('commit `92a52ab`');
+    expect(readinessReport).toContain('Prior completed pushed GitHub Actions baseline');
     expect(readinessReport).toContain('Repo-Proven Status');
     expect(readinessReport).toContain('Device QA Notes');
     expect(readinessReport).toContain('Account-Only Work');
