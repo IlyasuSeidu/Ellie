@@ -70,6 +70,7 @@ import {
   pickAndImportUniversalScheduleCalendar,
   shareUniversalScheduleCalendarFile,
 } from '@/services/ShiftCalendarFileService';
+import { UNIVERSAL_SHIFT_TEMPLATES } from '@/constants/universalShiftTemplates';
 
 // ── Navigation types ──────────────────────────────────────────────────────────
 
@@ -125,6 +126,23 @@ function buildEmptySchedule(name = 'My Schedule'): UniversalShiftSchedule {
     shiftDefinitions: [],
     sequence: [],
     source: 'manual',
+  };
+}
+
+function cloneTemplateSchedule(templateSchedule: UniversalShiftSchedule): UniversalShiftSchedule {
+  return {
+    ...templateSchedule,
+    timezone: DEFAULT_TIMEZONE,
+    anchorDate: todayStr(),
+    source: 'template',
+    updatedAt: new Date().toISOString(),
+    shiftDefinitions: templateSchedule.shiftDefinitions.map((definition) => ({
+      ...definition,
+      reminderProfile: definition.reminderProfile ? { ...definition.reminderProfile } : undefined,
+    })),
+    sequence: templateSchedule.sequence.map((item) => ({ ...item })),
+    holidayExceptions: templateSchedule.holidayExceptions?.map((exception) => ({ ...exception })),
+    oneOffExceptions: templateSchedule.oneOffExceptions?.map((exception) => ({ ...exception })),
   };
 }
 
@@ -873,6 +891,43 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
     setAiResult(null);
   }, []);
 
+  const handleApplyTemplate = useCallback(
+    (templateId: string) => {
+      const template = UNIVERSAL_SHIFT_TEMPLATES.find((candidate) => candidate.id === templateId);
+      if (!template) return;
+
+      const applyTemplate = () => {
+        const nextSchedule = cloneTemplateSchedule(template.schedule);
+        setSchedule(nextSchedule);
+        setIsDirty(true);
+        setDismissedWarnings(false);
+        setAiPrompt(template.aiPromptExample);
+        Analytics.track('shift_builder_template_applied', {
+          template_id: template.id,
+          industry: template.industry,
+          sequence_length: nextSchedule.sequence.length,
+          definition_count: nextSchedule.shiftDefinitions.length,
+        });
+        void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      };
+
+      if (isDirty || schedule.sequence.length > 0 || schedule.shiftDefinitions.length > 0) {
+        Alert.alert(
+          'Replace current draft?',
+          `Use ${template.title} as your starting schedule. Your current unsaved builder draft will be replaced.`,
+          [
+            { text: t('builder.cancel'), style: 'cancel' },
+            { text: 'Use template', onPress: applyTemplate },
+          ]
+        );
+        return;
+      }
+
+      applyTemplate();
+    },
+    [isDirty, schedule.sequence.length, schedule.shiftDefinitions.length, t]
+  );
+
   // ── Back/close with dirty check ────────────────────────────────────────────
 
   const handleBack = useCallback(() => {
@@ -1132,6 +1187,78 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
       </View>
     );
   };
+
+  const renderTemplateSection = () => (
+    <View style={styles.section}>
+      <View style={styles.templateHeaderRow}>
+        <View style={styles.templateHeaderCopy}>
+          <Text style={styles.sectionLabel}>Start from a template</Text>
+          <Text style={styles.templateHint}>
+            Pick a real shift-worker pattern, then adjust times, colors, reminders, exceptions, and
+            sequence days.
+          </Text>
+        </View>
+        <View style={styles.templateCountBadge}>
+          <Ionicons name="albums-outline" size={13} color={theme.colors.deepVoid} />
+          <Text style={styles.templateCountText}>{UNIVERSAL_SHIFT_TEMPLATES.length}</Text>
+        </View>
+      </View>
+
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.templateScroll}
+        contentContainerStyle={styles.templateContent}
+      >
+        {UNIVERSAL_SHIFT_TEMPLATES.map((template) => (
+          <TouchableOpacity
+            key={template.id}
+            style={styles.templateCard}
+            onPress={() => handleApplyTemplate(template.id)}
+            accessibilityRole="button"
+            accessibilityLabel={`Use ${template.title} template`}
+          >
+            <View style={styles.templateCardTopRow}>
+              <View style={styles.templateIconStack}>
+                {template.schedule.shiftDefinitions.slice(0, 3).map((definition, index) => (
+                  <View
+                    key={`${template.id}-${definition.id}`}
+                    style={[
+                      styles.templateIconBubble,
+                      {
+                        backgroundColor: `${definition.color}24`,
+                        marginLeft: index === 0 ? 0 : -8,
+                        zIndex: 3 - index,
+                      },
+                    ]}
+                  >
+                    <Ionicons name={definition.icon as never} size={14} color={definition.color} />
+                  </View>
+                ))}
+              </View>
+              <Text style={styles.templateCycleText}>
+                {template.schedule.sequence.length} day cycle
+              </Text>
+            </View>
+
+            <Text style={styles.templateTitle} numberOfLines={2}>
+              {template.title}
+            </Text>
+            <Text style={styles.templateSubtitle} numberOfLines={3}>
+              {template.subtitle}
+            </Text>
+
+            <View style={styles.templateFooterRow}>
+              <Text style={styles.templateIndustryText} numberOfLines={1}>
+                {template.industry.replace(/_/g, ' ')}
+              </Text>
+              <Ionicons name="chevron-forward" size={15} color={theme.colors.sacredGold} />
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    </View>
+  );
 
   const renderAnchorSection = () => (
     <View style={styles.section}>
@@ -1815,6 +1942,9 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
           {/* AI section */}
           {renderAiSection()}
 
+          {/* Template library */}
+          {renderTemplateSection()}
+
           {/* Shift Types palette */}
           <View style={styles.section}>
             <ShiftDefinitionPalette
@@ -2132,6 +2262,108 @@ const styles = StyleSheet.create({
   aiUnavailableText: {
     color: theme.colors.shadow,
     fontSize: theme.typography.fontSizes.sm,
+  },
+  templateHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    gap: theme.spacing.sm,
+  },
+  templateHeaderCopy: {
+    flex: 1,
+    minWidth: 0,
+  },
+  templateHint: {
+    color: theme.colors.shadow,
+    fontSize: theme.typography.fontSizes.xs,
+    lineHeight: 17,
+    marginBottom: theme.spacing.sm,
+  },
+  templateCountBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: theme.colors.sacredGold,
+    borderRadius: theme.borderRadius.full,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    minWidth: 36,
+    justifyContent: 'center',
+  },
+  templateCountText: {
+    color: theme.colors.deepVoid,
+    fontSize: theme.typography.fontSizes.xs,
+    fontWeight: theme.typography.fontWeights.bold,
+  },
+  templateScroll: {
+    marginHorizontal: -theme.spacing.md,
+  },
+  templateContent: {
+    paddingHorizontal: theme.spacing.md,
+    gap: theme.spacing.sm,
+  },
+  templateCard: {
+    width: 222,
+    minHeight: 174,
+    backgroundColor: theme.colors.darkStone,
+    borderRadius: theme.borderRadius.md,
+    borderWidth: 1,
+    borderColor: theme.colors.softStone,
+    padding: theme.spacing.sm,
+    marginRight: theme.spacing.sm,
+  },
+  templateCardTopRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: theme.spacing.xs,
+    marginBottom: theme.spacing.sm,
+  },
+  templateIconStack: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    minWidth: 70,
+  },
+  templateIconBubble: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: theme.colors.darkStone,
+  },
+  templateCycleText: {
+    color: theme.colors.dust,
+    fontSize: 11,
+    fontWeight: theme.typography.fontWeights.semibold,
+  },
+  templateTitle: {
+    color: theme.colors.paper,
+    fontSize: theme.typography.fontSizes.sm,
+    fontWeight: theme.typography.fontWeights.bold,
+    lineHeight: 18,
+    marginBottom: 5,
+  },
+  templateSubtitle: {
+    color: theme.colors.dust,
+    fontSize: theme.typography.fontSizes.xs,
+    lineHeight: 16,
+    minHeight: 48,
+  },
+  templateFooterRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: theme.spacing.xs,
+    marginTop: theme.spacing.sm,
+  },
+  templateIndustryText: {
+    flex: 1,
+    color: theme.colors.sacredGold,
+    fontSize: 11,
+    fontWeight: theme.typography.fontWeights.semibold,
+    textTransform: 'capitalize',
   },
   holidayHeaderRow: {
     flexDirection: 'row',
