@@ -42,7 +42,7 @@ Completed and guarded in the current branch:
 - `npm test -- universalShiftTemplates ryvroEnvTemplate --runInBand`: passed on 2026-05-29, including a guard that completed E2E onboarding seeds carry Universal Shift Builder schedules.
 - `E2E_TEST_MODE=1 npx expo start --localhost` plus `npx detox test --configuration ios.release e2e/dashboard.test.ts --reuse`: passed on 2026-05-29 on the iPhone 16 simulator, 15 dashboard smoke tests.
 - `npm run validate`: passed on 2026-05-29 after the latest Phase 9 E2E seed and selector updates.
-- Last completed pushed GitHub Actions baseline before this report: CI run `26650765215` passed for commit `9570a6e`.
+- Latest completed pushed GitHub Actions baseline for the Phase 9 code change: CI run `26652464303` passed for commit `b2c475b`.
 - iOS release simulator build command `npm run test:e2e:build:ios`: previously passed on 2026-05-29T15:22:59Z with built plist values `CFBundleDisplayName = Ryvro`, `CFBundleName = Ryvro`, and `CFBundleIdentifier = com.ryvro.shiftplanner`.
 
 ## Device QA Notes

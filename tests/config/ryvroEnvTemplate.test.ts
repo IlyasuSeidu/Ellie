@@ -259,7 +259,8 @@ describe('Ryvro environment template', () => {
       'utf8'
     );
 
-    expect(readinessReport).toContain('commit `9570a6e`');
+    expect(readinessReport).toContain('CI run `26652464303`');
+    expect(readinessReport).toContain('commit `b2c475b`');
     expect(readinessReport).toContain('Repo-Proven Status');
     expect(readinessReport).toContain('Device QA Notes');
     expect(readinessReport).toContain('Account-Only Work');
