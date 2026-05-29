@@ -732,6 +732,7 @@ export const PremiumCompletionScreen: React.FC<PremiumCompletionScreenProps> = (
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
+        testID="completion-scroll-view"
       >
         {/* Animated Checkmark Circle */}
         <Animated.View

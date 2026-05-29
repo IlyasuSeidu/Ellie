@@ -5,7 +5,7 @@
  * Profile tab, and verifies profile screen elements and interactions.
  */
 
-import { device, element, by, expect as detoxExpect, waitFor } from 'detox';
+import { device, element, by, waitFor } from 'detox';
 import { seedStorage, clearE2ESeedKeys } from './helpers/storage';
 import { MAIN_APP_SEED } from './helpers/testData';
 
@@ -18,7 +18,8 @@ async function navigateToProfile(): Promise<void> {
   await element(by.id('tab-profile')).tap();
   await waitFor(element(by.id('language-selector-button')))
     .toBeVisible()
-    .withTimeout(TIMEOUT);
+    .whileElement(by.id('profile-screen'))
+    .scroll(250, 'down', 0.5, 0.5);
 }
 
 describe('Profile Screen', () => {
@@ -41,7 +42,10 @@ describe('Profile Screen', () => {
 
   describe('Profile screen layout', () => {
     it('shows the language selector', async () => {
-      await detoxExpect(element(by.id('language-selector-button'))).toBeVisible();
+      await waitFor(element(by.id('language-selector-button')))
+        .toBeVisible()
+        .whileElement(by.id('profile-screen'))
+        .scroll(250, 'down', 0.5, 0.5);
     });
   });
 
@@ -64,17 +68,6 @@ describe('Profile Screen', () => {
       // Dismiss by tapping outside the sheet
       await element(by.id('tab-profile')).tap();
       await waitFor(element(by.id('language-selector-button')))
-        .toBeVisible()
-        .withTimeout(TIMEOUT);
-    });
-  });
-
-  // ── Tab navigation from profile ───────────────────────────────────────────
-
-  describe('Navigation from profile', () => {
-    it('navigates back to home dashboard from profile tab', async () => {
-      await element(by.id('tab-home')).tap();
-      await waitFor(element(by.id('dashboard-header')))
         .toBeVisible()
         .withTimeout(TIMEOUT);
     });

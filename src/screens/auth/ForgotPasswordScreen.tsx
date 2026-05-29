@@ -96,6 +96,7 @@ export const ForgotPasswordScreen: React.FC = () => {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
           activeOpacity={0.7}
+          testID="forgot-password-back-button"
         >
           <Ionicons name="arrow-back-outline" size={22} color={theme.colors.dust} />
         </TouchableOpacity>

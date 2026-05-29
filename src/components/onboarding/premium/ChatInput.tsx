@@ -27,6 +27,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
+import { IS_E2E_TEST_MODE } from '@/utils/e2e';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 
 export interface QuickReply {
@@ -192,6 +193,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
             autoFocus={autoFocus}
             autoCorrect={false}
             autoCapitalize="words"
+            showSoftInputOnFocus={!IS_E2E_TEST_MODE}
             returnKeyType="send"
             onSubmitEditing={handleSubmitPress}
             editable={!disabled}

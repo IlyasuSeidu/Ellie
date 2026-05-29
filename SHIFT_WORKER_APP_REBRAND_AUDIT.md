@@ -52,7 +52,7 @@ Completed in the current working tree:
 - Updated Detox iOS release QA config to build/install the generated `Ryvro.app` product on the available iPhone 16 simulator instead of the retired `EllieMinerShiftAssistant.app` path; `npm run test:e2e:build:ios` passed on 2026-05-29T15:22:59Z and the built plist reports `CFBundleDisplayName = Ryvro`, `CFBundleName = Ryvro`, and `CFBundleIdentifier = com.ryvro.shiftplanner`.
 - Added an iPhone XS Max simulator release QA target and passed the seeded dashboard smoke on a clean install: `E2E_TEST_MODE=1 npx detox test --configuration ios.release.xsmax e2e/dashboard.test.ts` passed 15/15 tests on 2026-05-29.
 - Added an E2E RevenueCat guard so release simulator QA does not load RevenueCat with `test_` API keys, which trigger RevenueCat's native release-mode test-key protection alert.
-- Built the Android debug APK on 2026-05-29 with package `com.ryvro.shiftplanner`; Android release-style Detox build and seeded dashboard smoke now pass on `Medium_Phone_API_36.0` with 15/15 dashboard tests. Physical Android device QA plus Android auth and Universal Builder flows remain pending.
+- Built the Android debug APK on 2026-05-29 with package `com.ryvro.shiftplanner`; Android release-style Detox build, seeded dashboard smoke, auth form/navigation smoke, onboarding through Universal Shift Builder, and profile language-selector smoke now pass on `Medium_Phone_API_36.0`. Physical Android device QA and real provider auth remain pending.
 
 Still pending outside this repo or intentionally kept for compatibility:
 
@@ -1393,7 +1393,7 @@ Device QA:
 - iOS simulator: iPhone 16 dashboard smoke passed 15/15; iPhone XS Max simulator dashboard smoke passed 15/15 after clean install.
 - iPhone 13:
 - iPhone XS Max: simulator equivalent passed; physical device remains pending if required.
-- Android: debug APK identity passed with package `com.ryvro.shiftplanner`; release-style Detox build and seeded dashboard smoke passed 15/15 on `Medium_Phone_API_36.0`; physical device/auth/Universal Builder QA remains pending.
+- Android: debug APK identity passed with package `com.ryvro.shiftplanner`; release-style Detox build, seeded dashboard smoke, auth form/navigation smoke, onboarding through Universal Shift Builder, and profile language-selector smoke passed on `Medium_Phone_API_36.0`; physical device and real provider auth QA remain pending.
 
 Auth QA:
 - Email:
@@ -1638,9 +1638,11 @@ Phase gate:
 - [ ] Fresh install on iPhone XS Max when available.
 - [x] Small-screen visual QA on iPhone XS Max or equivalent simulator.
 - [x] Android release-style build/install dashboard smoke on emulator. `DETOX_ANDROID_AVD=Medium_Phone_API_36.0 DETOX_ANDROID_ARCHS=arm64-v8a npx detox test --configuration android.release e2e/dashboard.test.ts` passed 15/15 dashboard tests.
+- [x] Android release-style auth form/navigation smoke on emulator. `DETOX_ANDROID_AVD=Medium_Phone_API_36.0 DETOX_ANDROID_ARCHS=arm64-v8a npx detox test --configuration android.release e2e/auth.test.ts` passed 16/16 auth tests.
+- [x] Android release-style onboarding Universal Shift Builder happy path on emulator. `DETOX_ANDROID_AVD=Medium_Phone_API_36.0 DETOX_ANDROID_ARCHS=arm64-v8a npx detox test --configuration android.release e2e/onboarding.test.ts` passed Welcome through Completion.
 - [ ] Android physical device QA.
-- [ ] Android auth check.
-- [ ] Android Universal Builder check.
+- [ ] Android real Firebase/OAuth provider auth check.
+- [ ] Android physical-device Universal Builder check.
 
 Phase gate:
 

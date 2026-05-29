@@ -302,7 +302,11 @@ export const PremiumAhaMomentScreen: React.FC = () => {
         totalSteps={TOTAL_ONBOARDING_STEPS}
       />
 
-      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.scroll}
+        showsVerticalScrollIndicator={false}
+        testID="aha-moment-scroll-view"
+      >
         {/* ── Headline ── */}
         <Animated.View entering={FadeIn.duration(350)} style={styles.padded}>
           <Text style={styles.headline}>

@@ -37,6 +37,7 @@ import type { OnboardingStackParamList } from '@/navigation/OnboardingNavigator'
 import { goToNextScreen } from '@/utils/onboardingNavigation';
 import { triggerImpactHaptic, triggerNotificationHaptic } from '@/utils/hapticsDiagnostics';
 import { Analytics } from '@/utils/analytics';
+import { IS_E2E_TEST_MODE } from '@/utils/e2e';
 
 type NavigationProp = NativeStackNavigationProp<OnboardingStackParamList, 'Introduction'>;
 
@@ -89,6 +90,7 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
   const mountTime = useRef(Date.now());
   const pendingBotQuestionsRef = useRef<Set<string>>(new Set());
   const pendingTimeoutsRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
+  const completionHandledRef = useRef(false);
 
   // Conversation state
   const [currentStep, setCurrentStep] = useState<ConversationStep>(ConversationStep.WELCOME);
@@ -111,6 +113,7 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
   // Input state
   const [currentInput, setCurrentInput] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const pendingCompletionDataRef = useRef<typeof formData | null>(null);
 
   // Reduced motion preference
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -227,6 +230,54 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
       }, 100);
     },
     [reducedMotion]
+  );
+
+  const completeIntroduction = useCallback(
+    (completedFormData: typeof formData) => {
+      if (completionHandledRef.current) {
+        return;
+      }
+
+      completionHandledRef.current = true;
+      pendingCompletionDataRef.current = null;
+
+      updateData({
+        name: completedFormData.name,
+        occupation: completedFormData.occupation,
+        company: completedFormData.company,
+        country: completedFormData.country,
+      });
+
+      // Light success haptic
+      if (!reducedMotion) {
+        void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
+          source: 'PremiumIntroductionScreen.quickReply',
+        });
+      }
+
+      Analytics.onboardingStepCompleted('introduction', Date.now() - mountTime.current);
+
+      // Call optional callback or navigate
+      if (onContinue && completedFormData.country) {
+        onContinue({
+          name: completedFormData.name,
+          occupation: completedFormData.occupation,
+          company: completedFormData.company,
+          country: completedFormData.country,
+        });
+      } else if (isSettingsEntry) {
+        // Launched post-onboarding from settings — pop back to the caller instead of
+        // advancing into the onboarding flow.
+        const rootNavigation =
+          navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+        if (rootNavigation?.canGoBack()) {
+          rootNavigation.goBack();
+        }
+      } else {
+        goToNextScreen(navigation, 'Introduction');
+      }
+    },
+    [isSettingsEntry, navigation, onContinue, reducedMotion, updateData]
   );
 
   // Validate name
@@ -408,43 +459,13 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
           addBotMessage(t('intro.allSet', { name: formData.name }), 1000, 'complete');
 
           // Save to context and navigate after delay (allow time to read final message)
-          scheduleTimeout(() => {
-            updateData({
-              name: formData.name,
-              occupation: formData.occupation,
-              company: formData.company,
-              country: formData.country,
-            });
-
-            // Light success haptic
-            if (!reducedMotion) {
-              void triggerImpactHaptic(Haptics.ImpactFeedbackStyle.Light, {
-                source: 'PremiumIntroductionScreen.quickReply',
-              });
-            }
-
-            Analytics.onboardingStepCompleted('introduction', Date.now() - mountTime.current);
-
-            // Call optional callback or navigate
-            if (onContinue && formData.country) {
-              onContinue({
-                name: formData.name,
-                occupation: formData.occupation,
-                company: formData.company,
-                country: formData.country,
-              });
-            } else if (isSettingsEntry) {
-              // Launched post-onboarding from settings — pop back to the caller instead of
-              // advancing into the onboarding flow.
-              const rootNavigation =
-                navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
-              if (rootNavigation?.canGoBack()) {
-                rootNavigation.goBack();
-              }
-            } else {
-              goToNextScreen(navigation, 'Introduction');
-            }
-          }, 4000); // Increased from 2000ms to 4000ms to allow reading the final message
+          scheduleTimeout(
+            () => {
+              const completedFormData = pendingCompletionDataRef.current ?? formData;
+              completeIntroduction(completedFormData);
+            },
+            IS_E2E_TEST_MODE ? 300 : 4000
+          ); // Keep production readable; make E2E deterministic.
         }
         break;
       }
@@ -455,11 +476,7 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
     hasBotQuestion,
     addBotMessage,
     isBotQuestionPending,
-    updateData,
-    reducedMotion,
-    onContinue,
-    isSettingsEntry,
-    navigation,
+    completeIntroduction,
     scheduleTimeout,
     t,
   ]);
@@ -545,12 +562,18 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
         return;
       }
       // Process country
+      const country = currentInput.trim();
+      const nextFormData = { ...formData, country };
       addUserMessage(currentInput);
       Analytics.onboardingQuestionAnswered({ question: 'country', answer_value: 'answered' });
-      setFormData((prev) => ({ ...prev, country: currentInput.trim() }));
+      pendingCompletionDataRef.current = nextFormData;
+      setFormData(nextFormData);
       setCurrentInput('');
       setError(null);
       setCurrentStep(ConversationStep.COMPLETE);
+      if (IS_E2E_TEST_MODE) {
+        scheduleTimeout(() => completeIntroduction(nextFormData), 300);
+      }
     }
   }, [
     currentStep,
@@ -560,6 +583,9 @@ export const PremiumIntroductionScreen: React.FC<PremiumIntroductionScreenProps>
     validateCompany,
     validateCountry,
     addUserMessage,
+    formData,
+    completeIntroduction,
+    scheduleTimeout,
   ]);
 
   // Handle quick reply (Skip company)

@@ -44,11 +44,14 @@ Completed and guarded in the current branch:
 - `E2E_TEST_MODE=1 npx detox test --configuration ios.release.xsmax e2e/dashboard.test.ts`: passed on 2026-05-29 on the iPhone XS Max simulator, 15 dashboard smoke tests. The run uninstalled the previous app first, installed the rebuilt `Ryvro.app`, and verified the small-screen dashboard smoke without the RevenueCat release guard alert.
 - `npm test -- RevenueCatRuntime ryvroEnvTemplate --runInBand`: passed on 2026-05-29 after adding the E2E RevenueCat runtime guard and treating `test_` RevenueCat keys as unavailable launch keys.
 - `npm run validate`: passed on 2026-05-29 after the latest Phase 9 E2E seed and selector updates.
-- Latest completed pushed GitHub Actions baseline for the Phase 9 code change: CI run `26652464303` passed for commit `b2c475b`.
+- Latest completed pushed GitHub Actions baseline for the Android release E2E readiness change: CI run `26659012373` passed for commit `92a52ab`.
 - iOS release simulator build command `npm run test:e2e:build:ios`: previously passed on 2026-05-29T15:22:59Z with built plist values `CFBundleDisplayName = Ryvro`, `CFBundleName = Ryvro`, and `CFBundleIdentifier = com.ryvro.shiftplanner`.
 - Android debug build passed on 2026-05-29 with `cd android && ./gradlew assembleDebug`; the generated APK reported package `com.ryvro.shiftplanner`, versionCode `1`, and versionName `1.0.0`.
 - Android release-style Detox build passed on 2026-05-29 with `DETOX_ANDROID_AVD=Medium_Phone_API_36.0 DETOX_ANDROID_ARCHS=arm64-v8a npx detox build --configuration android.release`.
 - Android release-style Detox dashboard smoke passed on 2026-05-29 with `DETOX_ANDROID_AVD=Medium_Phone_API_36.0 DETOX_ANDROID_ARCHS=arm64-v8a npx detox test --configuration android.release e2e/dashboard.test.ts`: 15 dashboard smoke tests on `Medium_Phone_API_36.0`.
+- Android release-style Detox auth form/navigation smoke passed on 2026-05-29 with `DETOX_ANDROID_AVD=Medium_Phone_API_36.0 DETOX_ANDROID_ARCHS=arm64-v8a npx detox test --configuration android.release e2e/auth.test.ts`: 16 auth tests on `Medium_Phone_API_36.0`.
+- Android release-style Detox onboarding happy path passed on 2026-05-29 with `DETOX_ANDROID_AVD=Medium_Phone_API_36.0 DETOX_ANDROID_ARCHS=arm64-v8a npx detox test --configuration android.release e2e/onboarding.test.ts`: Welcome through Introduction, Universal Shift Builder template save, AhaMoment, and Completion.
+- Android release-style Detox profile language-selector smoke passed on 2026-05-29 with `DETOX_ANDROID_AVD=Medium_Phone_API_36.0 DETOX_ANDROID_ARCHS=arm64-v8a npx detox test --configuration android.release e2e/profile.test.ts`: 3 profile tests on `Medium_Phone_API_36.0`.
 
 ## Device QA Notes
 
@@ -58,12 +61,13 @@ Completed:
 - Small-screen simulator QA passed on an iPhone XS Max simulator with 15 dashboard smoke tests.
 - Android build identity was verified from the debug APK package metadata.
 - Android release-style emulator dashboard QA passed on `Medium_Phone_API_36.0` with 15 Detox dashboard smoke tests.
+- Android release-style emulator auth, onboarding through Universal Shift Builder, and profile language-selector QA passed on `Medium_Phone_API_36.0`.
 
 Still pending:
 
 - Physical iPhone 13 fresh install, auth, Universal Builder, dashboard color/icon, reminders, exceptions, and import/export QA.
 - Physical iPhone XS Max QA if physical-device coverage remains a release requirement; the iPhone XS Max simulator small-screen smoke has passed.
-- Physical Android device QA plus Android auth and Universal Builder flows. Android release-style build and dashboard smoke now pass on an emulator, but this is not complete production device coverage.
+- Physical Android device QA. Android release-style build, dashboard, auth form/navigation, onboarding through Universal Shift Builder, and profile language-selector smoke now pass on an emulator, but this is not complete production device coverage.
 - Google Sign-In and Apple Sign-In smoke tests after fresh Firebase/OAuth/Apple console configuration is generated for `com.ryvro.shiftplanner`.
 
 ## Account-Only Work

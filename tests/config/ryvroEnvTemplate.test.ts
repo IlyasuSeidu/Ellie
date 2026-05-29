@@ -266,8 +266,8 @@ describe('Ryvro environment template', () => {
       'utf8'
     );
 
-    expect(readinessReport).toContain('CI run `26652464303`');
-    expect(readinessReport).toContain('commit `b2c475b`');
+    expect(readinessReport).toContain('CI run `26659012373`');
+    expect(readinessReport).toContain('commit `92a52ab`');
     expect(readinessReport).toContain('Repo-Proven Status');
     expect(readinessReport).toContain('Device QA Notes');
     expect(readinessReport).toContain('Account-Only Work');
@@ -286,13 +286,24 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain(
       'Android release-style Detox dashboard smoke passed on 2026-05-29'
     );
+    expect(readinessReport).toContain(
+      'Android release-style Detox auth form/navigation smoke passed on 2026-05-29'
+    );
+    expect(readinessReport).toContain(
+      'Android release-style Detox onboarding happy path passed on 2026-05-29'
+    );
+    expect(readinessReport).toContain(
+      'Android release-style Detox profile language-selector smoke passed on 2026-05-29'
+    );
     expect(readinessReport).toContain('Medium_Phone_API_36.0');
     expect(readinessReport).toContain('com.ryvro.shiftplanner');
     expect(readinessReport).toContain('15 Detox dashboard smoke tests');
+    expect(readinessReport).toContain('16 auth tests');
+    expect(readinessReport).toContain('3 profile tests');
     expect(readinessReport).toContain('Physical iPhone 13');
     expect(readinessReport).toContain('Physical iPhone XS Max');
     expect(readinessReport).toContain(
-      'Physical Android device QA plus Android auth and Universal Builder flows'
+      'Physical Android device QA. Android release-style build, dashboard, auth form/navigation, onboarding through Universal Shift Builder'
     );
     expect(readinessReport).toContain('not as fully launch-cleared production release evidence');
     expect(readinessReport).not.toContain('no Android device or emulator was attached');

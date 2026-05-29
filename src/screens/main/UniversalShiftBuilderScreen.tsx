@@ -1159,7 +1159,11 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
           <Text style={styles.headerTitle} numberOfLines={1}>
             {schedule.name.trim() || t('builder.fallbackTitle')}
           </Text>
-          {isDirty && <Text style={styles.dirtyIndicator}>{t('builder.unsavedChanges')}</Text>}
+          {isDirty && (
+            <Text style={styles.dirtyIndicator} testID="universal-shift-builder-dirty-indicator">
+              {t('builder.unsavedChanges')}
+            </Text>
+          )}
         </View>
 
         <TouchableOpacity
@@ -1168,6 +1172,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
           disabled={!canSave || isSaving}
           accessibilityLabel={t('builder.save')}
           accessibilityRole="button"
+          testID="universal-shift-builder-header-save-button"
         >
           {isSaving ? (
             <ActivityIndicator size="small" color={theme.colors.deepVoid} />
@@ -1307,6 +1312,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
         showsHorizontalScrollIndicator={false}
         style={styles.templateScroll}
         contentContainerStyle={styles.templateContent}
+        testID="universal-shift-builder-template-scroll"
       >
         {UNIVERSAL_SHIFT_TEMPLATES.map((template) => (
           <TouchableOpacity
@@ -1315,6 +1321,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
             onPress={() => handleApplyTemplate(template.id)}
             accessibilityRole="button"
             accessibilityLabel={t('builder.useTemplateA11y', { template: template.title })}
+            testID={`universal-shift-builder-template-${template.id}`}
           >
             <View style={styles.templateCardTopRow}>
               <View style={styles.templateIconStack}>
@@ -2018,7 +2025,10 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
   };
 
   return (
-    <View style={[styles.screen, { paddingBottom: insets.bottom }]}>
+    <View
+      style={[styles.screen, { paddingBottom: insets.bottom }]}
+      testID="universal-shift-builder-screen"
+    >
       {renderHeader()}
 
       <KeyboardAvoidingView
@@ -2130,6 +2140,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
             disabled={!canSave}
             accessibilityLabel={t('builder.saveScheduleA11y')}
             accessibilityRole="button"
+            testID="universal-shift-builder-save-button"
           >
             {isSaving ? (
               <ActivityIndicator size="small" color={theme.colors.deepVoid} />
