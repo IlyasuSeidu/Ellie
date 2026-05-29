@@ -44,6 +44,7 @@ Completed in the current working tree:
 - Added AI builder fallback metadata, friendlier fallback copy, and analytics events for parser completion, local fallback use, clarification, draft acceptance, manual edit after draft, and save context.
 - Tightened exception, calendar, and reminder launch copy so one-off rows say they changed just that day, calendar export promises shift times/locations/notes, and smart reminder commute copy defaults to work location instead of site.
 - Added calendar export metadata coverage for `LOCATION` and one-off exception notes in `.ics` files.
+- Hardened the Ryvro voice backend system prompt so it does not assume mining, FIFO, or site-based work unless the user context says so, and added backend prompt tests for non-mining universal schedules.
 
 Still pending outside this repo or intentionally kept for compatibility:
 
@@ -1363,6 +1364,7 @@ Completed P1 tasks:
 - RB-023 parser tests for 20 industry phrases: covered by `ShiftScheduleParserService.test.ts`.
 - RB-024 AI fallback telemetry and copy: parser results now expose `parserSource` / `fallbackReason`, local fallback drafts persist that metadata, the review sheet shows plain-language fallback copy, and `UniversalShiftBuilderScreen` emits completion, fallback, clarification, acceptance, manual-edit, and save analytics.
 - RB-025/RB-026/RB-027/RB-029 launch copy and calendar metadata: guarded by `ryvroEnvTemplate.test.ts` and `universalShiftCalendarUtils.test.ts`.
+- RB-030 universal voice assistant prompt context: guarded by backend `ryvro-brain.test.ts`.
 Deferred P2 tasks:
 
 Remaining old-term hits:

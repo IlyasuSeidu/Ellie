@@ -340,7 +340,7 @@ const TOOLS: ChatCompletionTool[] = [
 /**
  * Build the system prompt for the model.
  */
-function buildSystemPrompt(request: RyvroBrainRequest): string {
+export function buildSystemPrompt(request: RyvroBrainRequest): string {
   const ctx = request.userContext;
   const shiftSystemDesc =
     ctx.shiftSystem === '2-shift'
@@ -364,6 +364,8 @@ PERSONALITY:
 - When mentioning dates, use natural language ("this Saturday, December 5th")
 - For shift types, use friendly names: "day shift", "night shift", "morning shift", "afternoon shift", "day off"
 - Be conversational and supportive
+- Treat mining, FIFO, offshore, hospital, security, factory, transport, hospitality, aviation, rail, and other industries as examples only. Do not assume the user works in mining, FIFO, or at a site unless their profile or schedule says so.
+- Use "work location" when speaking generally; use the user's exact location, site, ward, depot, terminal, plant, venue, rig, or station only when it is present in context.
 
 CONTEXT:
 - Current date: ${ctx.currentDate}
@@ -374,6 +376,7 @@ CONTEXT:
     universalSchedule ? `\n- Universal shift types: ${universalShiftTypes}` : ''
   }
 - User's name: ${ctx.name}${ctx.occupation ? `\n- User's occupation: ${ctx.occupation}` : ''}
+- Industry assumption: none unless occupation, roster type, or schedule location makes it explicit.
 
 RULES:
 - Always use the provided tools to look up shift data. Never guess or make up schedules.
