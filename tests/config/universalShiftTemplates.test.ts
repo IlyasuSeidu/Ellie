@@ -179,6 +179,28 @@ describe('Universal shift templates', () => {
 
   it('localizes launch-critical builder copy in every schedule locale', () => {
     const localeRoot = path.join(process.cwd(), 'src/i18n/locales');
+    const englishPlaceholders = {
+      aiUnavailable: 'AI builder not available - build manually below',
+      holidayTitle: 'Holiday exceptions',
+      noHolidaysMessage:
+        'No public holiday data is available for that country/year yet. You can add a holiday exception manually below.',
+      holidayImportFailedTitle: 'Holiday import failed',
+      holidayImportFailedMessage: 'Try again, or add the holiday manually.',
+      calendarExportBlockedTitle: 'Calendar export blocked',
+      calendarExportDatesTitle: 'Check export dates',
+      calendarExportDatesError: 'Use a valid YYYY-MM-DD start date and end date.',
+      calendarExportFailedTitle: 'Calendar export failed',
+      calendarExportFailedMessage: 'The calendar file could not be created.',
+      calendarImportNotesTitle: 'Calendar import finished with notes',
+      calendarImportFailedTitle: 'Calendar import failed',
+      calendarImportFailedMessage: 'The selected calendar file could not be imported.',
+      calendarExportStartA11y: 'Calendar export start date',
+      calendarExportEndA11y: 'Calendar export end date',
+      calendarExportA11y: 'Export shift calendar',
+      calendarExport: 'Export calendar',
+      calendarImportA11y: 'Import roster calendar',
+      calendarImport: 'Import roster',
+    };
     const requiredKeys = [
       'templateTitle',
       'templateHint',
@@ -276,6 +298,12 @@ describe('Universal shift templates', () => {
 
       for (const key of requiredKeys) {
         expect(schedule.builder?.[key]?.trim()).toBeTruthy();
+      }
+
+      if (locale !== 'en') {
+        for (const [key, englishValue] of Object.entries(englishPlaceholders)) {
+          expect(schedule.builder?.[key]).not.toBe(englishValue);
+        }
       }
     }
   });
