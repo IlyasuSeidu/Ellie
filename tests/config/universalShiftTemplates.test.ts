@@ -69,7 +69,37 @@ describe('Universal shift templates', () => {
     expect(builderScreen).toContain('shift_builder_template_applied');
   });
 
-  it('localizes the template library copy in every schedule locale', () => {
+  it('localizes launch-critical exception and calendar builder sections', () => {
+    const builderScreen = fs.readFileSync(
+      path.join(process.cwd(), 'src/screens/main/UniversalShiftBuilderScreen.tsx'),
+      'utf8'
+    );
+
+    for (const key of [
+      'holidayTitle',
+      'holidayHint',
+      'oneOffTitle',
+      'oneOffHint',
+      'calendarTitle',
+      'calendarHint',
+      'calendarExport',
+      'calendarImport',
+    ]) {
+      expect(builderScreen).toContain(`t('builder.${key}'`);
+    }
+
+    for (const retiredLiteral of [
+      'Holiday exceptions',
+      'One-off changes',
+      'Calendar import/export',
+      'Export this schedule as an .ics calendar',
+      'Reason, e.g. swapped with Alex',
+    ]) {
+      expect(builderScreen).not.toContain(retiredLiteral);
+    }
+  });
+
+  it('localizes launch-critical builder copy in every schedule locale', () => {
     const localeRoot = path.join(process.cwd(), 'src/i18n/locales');
     const requiredKeys = [
       'templateTitle',
@@ -79,6 +109,63 @@ describe('Universal shift templates', () => {
       'templateUseButton',
       'useTemplateA11y',
       'templateCycleLength',
+      'holidayTitle',
+      'holidayHint',
+      'holidayDetailsTitle',
+      'holidayCountryYearError',
+      'noHolidaysTitle',
+      'noHolidaysMessage',
+      'holidayImportFailedTitle',
+      'holidayImportFailedMessage',
+      'holidayManualError',
+      'holidayCountryA11y',
+      'holidayYearA11y',
+      'holidayImportA11y',
+      'import',
+      'holidayNamePlaceholder',
+      'holidayNameA11y',
+      'holidayDateA11y',
+      'holidayAddA11y',
+      'holidayListSubtitle',
+      'removeHolidayA11y',
+      'oneOffTitle',
+      'oneOffHint',
+      'oneOffDetailsTitle',
+      'oneOffDateError',
+      'oneOffShiftTypeTitle',
+      'oneOffShiftTypeError',
+      'oneOffSwapToLabel',
+      'oneOffShiftSwapLabel',
+      'oneOffOffDayLabel',
+      'swapShift',
+      'makeOff',
+      'oneOffDateA11y',
+      'oneOffReasonPlaceholder',
+      'oneOffReasonA11y',
+      'oneOffAddA11y',
+      'makeThisDayShift',
+      'selectedShift',
+      'makeThisDayOff',
+      'shift',
+      'removeOneOffA11y',
+      'calendarTitle',
+      'calendarHint',
+      'calendarExportBlockedTitle',
+      'calendarExportDatesTitle',
+      'calendarExportDatesError',
+      'calendarExportFailedTitle',
+      'calendarExportFailedMessage',
+      'calendarImportNotesTitle',
+      'calendarImportFailedTitle',
+      'calendarImportFailedMessage',
+      'calendarExportStartA11y',
+      'calendarExportEndA11y',
+      'calendarIncludeOffA11y',
+      'calendarIncludeOff',
+      'calendarExportA11y',
+      'calendarExport',
+      'calendarImportA11y',
+      'calendarImport',
     ];
 
     for (const locale of fs.readdirSync(localeRoot)) {

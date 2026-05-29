@@ -568,7 +568,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
     const country = holidayCountry.trim().slice(0, 2).toUpperCase();
     const year = Number(holidayYear);
     if (!/^[A-Z]{2}$/.test(country) || !Number.isInteger(year) || year < 1900 || year > 2200) {
-      Alert.alert('Check holiday details', 'Use a two-letter country code and a four-digit year.');
+      Alert.alert(t('builder.holidayDetailsTitle'), t('builder.holidayCountryYearError'));
       return;
     }
 
@@ -604,10 +604,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
       });
       const holidays = await service.getHolidaysForCountry(country, year);
       if (holidays.length === 0) {
-        Alert.alert(
-          'No public holidays found',
-          'No public holiday data is available for that country/year yet. You can add a holiday exception manually below.'
-        );
+        Alert.alert(t('builder.noHolidaysTitle'), t('builder.noHolidaysMessage'));
         return;
       }
 
@@ -622,21 +619,18 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
         count: exceptions.length,
       });
     } catch {
-      Alert.alert('Holiday import failed', 'Try again, or add the holiday manually.');
+      Alert.alert(t('builder.holidayImportFailedTitle'), t('builder.holidayImportFailedMessage'));
     } finally {
       setHolidayImporting(false);
     }
-  }, [holidayCountry, holidayYear, mergeHolidayExceptions]);
+  }, [holidayCountry, holidayYear, mergeHolidayExceptions, t]);
 
   const handleAddManualHolidayException = useCallback(() => {
     const date = holidayDraftDate.trim();
     const name = holidayDraftName.trim();
     const country = holidayCountry.trim().slice(0, 2).toUpperCase();
     if (!name || !/^\d{4}-\d{2}-\d{2}$/.test(date) || !/^[A-Z]{2}$/.test(country)) {
-      Alert.alert(
-        'Check holiday details',
-        'Add a holiday name, YYYY-MM-DD date, and two-letter country code.'
-      );
+      Alert.alert(t('builder.holidayDetailsTitle'), t('builder.holidayManualError'));
       return;
     }
 
@@ -653,7 +647,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
     ]);
     setHolidayDraftName('');
     Analytics.track('shift_builder_holiday_exception_added', { country });
-  }, [holidayCountry, holidayDraftDate, holidayDraftName, mergeHolidayExceptions]);
+  }, [holidayCountry, holidayDraftDate, holidayDraftName, mergeHolidayExceptions, t]);
 
   const handleRemoveHolidayException = useCallback(
     (id: string) => {
@@ -669,11 +663,11 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
     const date = oneOffDraftDate.trim();
     const reason = oneOffDraftReason.trim();
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-      Alert.alert('Check one-off change', 'Use a YYYY-MM-DD date.');
+      Alert.alert(t('builder.oneOffDetailsTitle'), t('builder.oneOffDateError'));
       return;
     }
     if (oneOffDraftAction === 'use_shift_definition' && !oneOffDraftDefinitionId) {
-      Alert.alert('Choose a shift type', 'Pick the shift this one day should become.');
+      Alert.alert(t('builder.oneOffShiftTypeTitle'), t('builder.oneOffShiftTypeError'));
       return;
     }
 
@@ -687,9 +681,9 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
       label:
         oneOffDraftAction === 'use_shift_definition'
           ? selectedDef
-            ? `Swap to ${selectedDef.name}`
-            : 'One-off shift swap'
-          : 'One-off off day',
+            ? t('builder.oneOffSwapToLabel', { shift: selectedDef.name })
+            : t('builder.oneOffShiftSwapLabel')
+          : t('builder.oneOffOffDayLabel'),
       reason: reason || undefined,
     };
 
@@ -711,6 +705,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
     oneOffDraftDefinitionId,
     oneOffDraftReason,
     schedule.shiftDefinitions,
+    t,
     updateSchedule,
   ]);
 
@@ -727,7 +722,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
   const handleExportCalendar = useCallback(async () => {
     const result = validateUniversalSchedule(schedule);
     if (!result.valid) {
-      Alert.alert('Calendar export blocked', result.errors.join('\n'));
+      Alert.alert(t('builder.calendarExportBlockedTitle'), result.errors.join('\n'));
       return;
     }
 
@@ -736,7 +731,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
       !/^\d{4}-\d{2}-\d{2}$/.test(calendarExportEnd.trim()) ||
       calendarExportStart.trim() > calendarExportEnd.trim()
     ) {
-      Alert.alert('Check export dates', 'Use a valid YYYY-MM-DD start date and end date.');
+      Alert.alert(t('builder.calendarExportDatesTitle'), t('builder.calendarExportDatesError'));
       return;
     }
 
@@ -754,13 +749,13 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
       });
     } catch (err) {
       Alert.alert(
-        'Calendar export failed',
-        err instanceof Error ? err.message : 'The calendar file could not be created.'
+        t('builder.calendarExportFailedTitle'),
+        err instanceof Error ? err.message : t('builder.calendarExportFailedMessage')
       );
     } finally {
       setCalendarExporting(false);
     }
-  }, [calendarExportEnd, calendarExportStart, calendarIncludeOffDays, schedule]);
+  }, [calendarExportEnd, calendarExportStart, calendarIncludeOffDays, schedule, t]);
 
   const handleImportCalendar = useCallback(async () => {
     setCalendarImporting(true);
@@ -782,17 +777,17 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
         warning_count: result.warnings.length,
       });
       if (result.warnings.length > 0) {
-        Alert.alert('Calendar import finished with notes', result.warnings.slice(0, 5).join('\n'));
+        Alert.alert(t('builder.calendarImportNotesTitle'), result.warnings.slice(0, 5).join('\n'));
       }
     } catch (err) {
       Alert.alert(
-        'Calendar import failed',
-        err instanceof Error ? err.message : 'The selected calendar file could not be imported.'
+        t('builder.calendarImportFailedTitle'),
+        err instanceof Error ? err.message : t('builder.calendarImportFailedMessage')
       );
     } finally {
       setCalendarImporting(false);
     }
-  }, [schedule]);
+  }, [schedule, t]);
 
   // ── AI flow ────────────────────────────────────────────────────────────────
 
@@ -1343,10 +1338,8 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
       <View style={styles.section}>
         <View style={styles.holidayHeaderRow}>
           <View>
-            <Text style={styles.sectionLabel}>Holiday exceptions</Text>
-            <Text style={styles.holidayHint}>
-              Mark matching work shifts as holiday/off while preserving the original shift.
-            </Text>
+            <Text style={styles.sectionLabel}>{t('builder.holidayTitle')}</Text>
+            <Text style={styles.holidayHint}>{t('builder.holidayHint')}</Text>
           </View>
           <View style={styles.holidayCountBadge}>
             <Ionicons name="calendar" size={13} color={theme.colors.deepVoid} />
@@ -1364,7 +1357,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
               placeholderTextColor={theme.colors.shadow}
               autoCapitalize="characters"
               maxLength={2}
-              accessibilityLabel="Holiday country code"
+              accessibilityLabel={t('builder.holidayCountryA11y')}
             />
             <TextInput
               style={styles.holidayYearInput}
@@ -1374,7 +1367,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
               placeholderTextColor={theme.colors.shadow}
               keyboardType="number-pad"
               maxLength={4}
-              accessibilityLabel="Holiday year"
+              accessibilityLabel={t('builder.holidayYearA11y')}
             />
             <TouchableOpacity
               style={[
@@ -1383,7 +1376,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
               ]}
               onPress={() => void handleImportPublicHolidays()}
               disabled={holidayImporting}
-              accessibilityLabel="Import public holidays"
+              accessibilityLabel={t('builder.holidayImportA11y')}
               accessibilityRole="button"
             >
               {holidayImporting ? (
@@ -1391,7 +1384,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
               ) : (
                 <Ionicons name="download-outline" size={16} color={theme.colors.deepVoid} />
               )}
-              <Text style={styles.holidayImportButtonText}>Import</Text>
+              <Text style={styles.holidayImportButtonText}>{t('builder.import')}</Text>
             </TouchableOpacity>
           </View>
 
@@ -1400,10 +1393,10 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
               style={styles.holidayNameInput}
               value={holidayDraftName}
               onChangeText={setHolidayDraftName}
-              placeholder="Holiday name"
+              placeholder={t('builder.holidayNamePlaceholder')}
               placeholderTextColor={theme.colors.shadow}
               maxLength={80}
-              accessibilityLabel="Holiday exception name"
+              accessibilityLabel={t('builder.holidayNameA11y')}
             />
             <TextInput
               style={styles.holidayDateInput}
@@ -1413,12 +1406,12 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
               placeholderTextColor={theme.colors.shadow}
               maxLength={10}
               keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'numeric'}
-              accessibilityLabel="Holiday exception date"
+              accessibilityLabel={t('builder.holidayDateA11y')}
             />
             <TouchableOpacity
               style={styles.holidayAddButton}
               onPress={handleAddManualHolidayException}
-              accessibilityLabel="Add holiday exception"
+              accessibilityLabel={t('builder.holidayAddA11y')}
               accessibilityRole="button"
             >
               <Ionicons name="add" size={18} color={theme.colors.deepVoid} />
@@ -1441,13 +1434,18 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
                       {exception.holidayName}
                     </Text>
                     <Text style={styles.holidayListSubtitle} numberOfLines={1}>
-                      {exception.date} • {exception.country} • mark work shift off
+                      {t('builder.holidayListSubtitle', {
+                        date: exception.date,
+                        country: exception.country,
+                      })}
                     </Text>
                   </View>
                   <TouchableOpacity
                     style={styles.holidayRemoveButton}
                     onPress={() => handleRemoveHolidayException(exception.id)}
-                    accessibilityLabel={`Remove ${exception.holidayName}`}
+                    accessibilityLabel={t('builder.removeHolidayA11y', {
+                      holiday: exception.holidayName,
+                    })}
                     accessibilityRole="button"
                   >
                     <Ionicons name="trash-outline" size={16} color={theme.colors.error} />
@@ -1470,10 +1468,8 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
       <View style={styles.section}>
         <View style={styles.holidayHeaderRow}>
           <View>
-            <Text style={styles.sectionLabel}>One-off changes</Text>
-            <Text style={styles.holidayHint}>
-              Change one specific day without changing the repeating schedule.
-            </Text>
+            <Text style={styles.sectionLabel}>{t('builder.oneOffTitle')}</Text>
+            <Text style={styles.holidayHint}>{t('builder.oneOffHint')}</Text>
           </View>
           <View style={styles.oneOffCountBadge}>
             <Ionicons name="swap-horizontal" size={13} color={theme.colors.paper} />
@@ -1503,7 +1499,9 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
                   <Text
                     style={[styles.oneOffActionText, selected && styles.oneOffActionTextSelected]}
                   >
-                    {action === 'use_shift_definition' ? 'Swap shift' : 'Make off'}
+                    {action === 'use_shift_definition'
+                      ? t('builder.swapShift')
+                      : t('builder.makeOff')}
                   </Text>
                 </TouchableOpacity>
               );
@@ -1519,16 +1517,16 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
               placeholderTextColor={theme.colors.shadow}
               maxLength={10}
               keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'numeric'}
-              accessibilityLabel="One-off change date"
+              accessibilityLabel={t('builder.oneOffDateA11y')}
             />
             <TextInput
               style={styles.oneOffReasonInput}
               value={oneOffDraftReason}
               onChangeText={setOneOffDraftReason}
-              placeholder="Reason, e.g. swapped with Alex"
+              placeholder={t('builder.oneOffReasonPlaceholder')}
               placeholderTextColor={theme.colors.shadow}
               maxLength={120}
-              accessibilityLabel="Reason for one-off change"
+              accessibilityLabel={t('builder.oneOffReasonA11y')}
             />
           </View>
 
@@ -1566,14 +1564,16 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
           <TouchableOpacity
             style={styles.oneOffAddButton}
             onPress={handleAddOneOffException}
-            accessibilityLabel="Add one-off change"
+            accessibilityLabel={t('builder.oneOffAddA11y')}
             accessibilityRole="button"
           >
             <Ionicons name="add-circle" size={18} color={theme.colors.deepVoid} />
             <Text style={styles.oneOffAddButtonText}>
               {oneOffDraftAction === 'use_shift_definition'
-                ? `Make this day ${selectedDefinition?.name ?? 'selected shift'}`
-                : 'Make this day off'}
+                ? t('builder.makeThisDayShift', {
+                    shift: selectedDefinition?.name ?? t('builder.selectedShift'),
+                  })
+                : t('builder.makeThisDayOff')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -1614,8 +1614,10 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
                     <View style={styles.holidayListTextWrap}>
                       <Text style={styles.holidayListTitle} numberOfLines={1}>
                         {exception.action === 'use_shift_definition'
-                          ? `Swap to ${definition?.name ?? 'shift'}`
-                          : exception.label || 'One-off off day'}
+                          ? t('builder.oneOffSwapToLabel', {
+                              shift: definition?.name ?? t('builder.shift'),
+                            })
+                          : exception.label || t('builder.oneOffOffDayLabel')}
                       </Text>
                       <Text style={styles.holidayListSubtitle} numberOfLines={1}>
                         {exception.date}
@@ -1625,7 +1627,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
                     <TouchableOpacity
                       style={styles.holidayRemoveButton}
                       onPress={() => handleRemoveOneOffException(exception.id)}
-                      accessibilityLabel="Remove one-off change"
+                      accessibilityLabel={t('builder.removeOneOffA11y')}
                       accessibilityRole="button"
                     >
                       <Ionicons name="trash-outline" size={16} color={theme.colors.error} />
@@ -1643,11 +1645,8 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
     <View style={styles.section}>
       <View style={styles.holidayHeaderRow}>
         <View>
-          <Text style={styles.sectionLabel}>Calendar import/export</Text>
-          <Text style={styles.holidayHint}>
-            Export this schedule as an .ics calendar, or import roster events as one-off shift
-            changes.
-          </Text>
+          <Text style={styles.sectionLabel}>{t('builder.calendarTitle')}</Text>
+          <Text style={styles.holidayHint}>{t('builder.calendarHint')}</Text>
         </View>
         <View style={styles.calendarCountBadge}>
           <Ionicons name="calendar-outline" size={13} color={theme.colors.deepVoid} />
@@ -1665,7 +1664,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
             placeholderTextColor={theme.colors.shadow}
             maxLength={10}
             keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'numeric'}
-            accessibilityLabel="Calendar export start date"
+            accessibilityLabel={t('builder.calendarExportStartA11y')}
           />
           <TextInput
             style={styles.calendarDateInput}
@@ -1675,7 +1674,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
             placeholderTextColor={theme.colors.shadow}
             maxLength={10}
             keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'numeric'}
-            accessibilityLabel="Calendar export end date"
+            accessibilityLabel={t('builder.calendarExportEndA11y')}
           />
         </View>
 
@@ -1684,14 +1683,14 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
           onPress={() => setCalendarIncludeOffDays((value) => !value)}
           accessibilityRole="checkbox"
           accessibilityState={{ checked: calendarIncludeOffDays }}
-          accessibilityLabel="Include off days in exported calendar"
+          accessibilityLabel={t('builder.calendarIncludeOffA11y')}
         >
           <Ionicons
             name={calendarIncludeOffDays ? 'checkbox' : 'square-outline'}
             size={18}
             color={calendarIncludeOffDays ? theme.colors.sacredGold : theme.colors.shadow}
           />
-          <Text style={styles.calendarToggleText}>Include off, leave, and rest days</Text>
+          <Text style={styles.calendarToggleText}>{t('builder.calendarIncludeOff')}</Text>
         </TouchableOpacity>
 
         <View style={styles.calendarActionRow}>
@@ -1703,14 +1702,14 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
             onPress={() => void handleExportCalendar()}
             disabled={calendarExporting}
             accessibilityRole="button"
-            accessibilityLabel="Export shift calendar"
+            accessibilityLabel={t('builder.calendarExportA11y')}
           >
             {calendarExporting ? (
               <ActivityIndicator size="small" color={theme.colors.deepVoid} />
             ) : (
               <Ionicons name="share-outline" size={17} color={theme.colors.deepVoid} />
             )}
-            <Text style={styles.calendarPrimaryButtonText}>Export calendar</Text>
+            <Text style={styles.calendarPrimaryButtonText}>{t('builder.calendarExport')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -1721,14 +1720,14 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
             onPress={() => void handleImportCalendar()}
             disabled={calendarImporting}
             accessibilityRole="button"
-            accessibilityLabel="Import roster calendar"
+            accessibilityLabel={t('builder.calendarImportA11y')}
           >
             {calendarImporting ? (
               <ActivityIndicator size="small" color={theme.colors.paper} />
             ) : (
               <Ionicons name="cloud-upload-outline" size={17} color={theme.colors.paper} />
             )}
-            <Text style={styles.calendarSecondaryButtonText}>Import roster</Text>
+            <Text style={styles.calendarSecondaryButtonText}>{t('builder.calendarImport')}</Text>
           </TouchableOpacity>
         </View>
 
@@ -1974,13 +1973,13 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
           {/* Anchor date + phase */}
           {renderAnchorSection()}
 
-          {/* Holiday exceptions */}
+          {/* Holiday exception controls */}
           {renderHolidayExceptionsSection()}
 
-          {/* One-off changes */}
+          {/* One-off exception controls */}
           {renderOneOffExceptionsSection()}
 
-          {/* Calendar import/export */}
+          {/* Calendar file controls */}
           {renderCalendarImportExportSection()}
 
           {/* Validation banner */}
