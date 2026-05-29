@@ -6,6 +6,7 @@
  */
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 import { logger } from '@/utils/logger';
 
@@ -38,6 +39,12 @@ const META_SUFFIX = ':meta';
 const STORAGE_SCHEMA_VERSION_KEY = 'storage:schemaVersion';
 const CURRENT_STORAGE_SCHEMA_VERSION = 1;
 const MMKV_MIGRATION_MARKER_KEY = `${KEY_PREFIX}storage:mmkvMigrated:v1`;
+
+function isE2ETestMode(): boolean {
+  return (
+    (Constants.expoConfig?.extra as Record<string, unknown> | undefined)?.E2E_TEST_MODE === '1'
+  );
+}
 
 class AsyncStorageBackend implements StorageBackend {
   readonly kind = 'async-storage' as const;
@@ -131,7 +138,7 @@ class MMKVBackend implements StorageBackend {
 }
 
 function resolveStorageBackend(): StorageBackend {
-  if (Platform.OS === 'web' || process.env.NODE_ENV === 'test') {
+  if (Platform.OS === 'web' || process.env.NODE_ENV === 'test' || isE2ETestMode()) {
     return new AsyncStorageBackend();
   }
 

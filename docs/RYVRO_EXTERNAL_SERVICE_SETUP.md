@@ -138,10 +138,11 @@ Recommended display copy:
 - Annual: Ryvro Pro Annual
 - Entitlement: Ryvro Pro
 
-Migration:
+Pre-launch cleanup:
 
-- Keep old entitlement aliases in the app until every tester/customer receipt has been confirmed on the Ryvro entitlement.
-- Do not delete old RevenueCat project data until restore purchases has been tested on real sandbox accounts.
+- Do not configure retired Ellie entitlement IDs in the launch app because the product has not shipped publicly.
+- If any private tester receipt exists under an old dashboard, reissue it through Ryvro sandbox products instead of keeping old aliases in production code.
+- Confirm restore purchases with fresh Ryvro sandbox accounts before release.
 
 Env values:
 

@@ -46,15 +46,6 @@ const ENTITLEMENT_ALIASES = [
   'ryvro-premium',
   'ryvro_shift_planner_pro',
   'Ryvro Shift Planner Pro',
-  // Migration aliases only. Keep these until any existing tester/customer
-  // receipts are safely moved to the Ryvro dashboard entitlement names.
-  'ellie_pro',
-  'ellie-premium',
-  'ellie_shift_planner_pro',
-  'Ellie Shift Planner Pro',
-  'ellie_miner_shift_assistant_pro',
-  'miner_shift_assistant_pro',
-  'Ellie: Miner Shift Assistant Pro',
 ];
 
 export const getRevenueCatEntitlementIds = (): string[] => {

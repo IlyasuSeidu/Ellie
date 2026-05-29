@@ -88,7 +88,7 @@ describe('RevenueCatEntitlements', () => {
     });
   });
 
-  it('keeps retired Ellie entitlement names as migration aliases only', () => {
+  it('does not accept retired Ellie entitlement names for this pre-launch rebrand', () => {
     jest.isolateModules(() => {
       jest.doMock('expo-constants', () => ({
         __esModule: true,
@@ -106,7 +106,7 @@ describe('RevenueCatEntitlements', () => {
       } = require('../RevenueCatEntitlements');
 
       expect(getRevenueCatEntitlementIds()).toEqual(
-        expect.arrayContaining([
+        expect.not.arrayContaining([
           'ellie_pro',
           'ellie-premium',
           'ellie_shift_planner_pro',
@@ -116,9 +116,9 @@ describe('RevenueCatEntitlements', () => {
           'Ellie: Miner Shift Assistant Pro',
         ])
       );
-      expect(hasActiveProEntitlement(makeCustomerInfo(['Ellie Shift Planner Pro']))).toBe(true);
+      expect(hasActiveProEntitlement(makeCustomerInfo(['Ellie Shift Planner Pro']))).toBe(false);
       expect(hasActiveProEntitlement(makeCustomerInfo(['Ellie: Miner Shift Assistant Pro']))).toBe(
-        true
+        false
       );
     });
   });

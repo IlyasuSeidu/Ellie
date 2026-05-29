@@ -11,6 +11,24 @@ try {
 }
 
 module.exports = ({ config = {} }) => {
+  const ryvroIdentity = {
+    name: 'Ryvro Shift Planner',
+    slug: 'ryvro',
+    scheme: 'ryvro',
+    icon: './assets/icon.png',
+    splash: {
+      image: './assets/splash-icon.png',
+      resizeMode: 'contain',
+      backgroundColor: '#ffffff',
+    },
+    iosBundleIdentifier: 'com.ryvro.shiftplanner',
+    androidPackage: 'com.ryvro.shiftplanner',
+    adaptiveIcon: {
+      foregroundImage: './assets/adaptive-icon.png',
+      backgroundColor: '#ffffff',
+    },
+    favicon: './assets/favicon.png',
+  };
   const appEnv = process.env.APP_ENV || 'development';
   const configExtra = config.extra || {};
   const easProjectId = process.env.EAS_PROJECT_ID || configExtra?.eas?.projectId || '';
@@ -20,6 +38,10 @@ module.exports = ({ config = {} }) => {
   const iosGoogleServicesFile =
     process.env.EXPO_IOS_GOOGLE_SERVICES_FILE ||
     process.env.IOS_GOOGLE_SERVICES_FILE ||
+    process.env.GOOGLE_SERVICES_FILE;
+  const androidGoogleServicesFile =
+    process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE ||
+    process.env.ANDROID_GOOGLE_SERVICES_FILE ||
     process.env.GOOGLE_SERVICES_FILE;
 
   if (!expoUpdates.url && easProjectId) {
@@ -34,11 +56,33 @@ module.exports = ({ config = {} }) => {
 
   return {
     ...config,
+    name: config.name || ryvroIdentity.name,
+    slug: config.slug || ryvroIdentity.slug,
+    scheme: config.scheme || ryvroIdentity.scheme,
+    icon: config.icon || ryvroIdentity.icon,
+    splash: {
+      ...ryvroIdentity.splash,
+      ...(config.splash || {}),
+    },
     updates: expoUpdates,
     runtimeVersion,
     ios: {
       ...(config.ios || {}),
+      bundleIdentifier: config.ios?.bundleIdentifier || ryvroIdentity.iosBundleIdentifier,
       ...(iosGoogleServicesFile ? { googleServicesFile: iosGoogleServicesFile } : {}),
+    },
+    android: {
+      ...(config.android || {}),
+      package: config.android?.package || ryvroIdentity.androidPackage,
+      adaptiveIcon: {
+        ...ryvroIdentity.adaptiveIcon,
+        ...(config.android?.adaptiveIcon || {}),
+      },
+      ...(androidGoogleServicesFile ? { googleServicesFile: androidGoogleServicesFile } : {}),
+    },
+    web: {
+      ...(config.web || {}),
+      favicon: config.web?.favicon || ryvroIdentity.favicon,
     },
     extra: {
       ...configExtra,

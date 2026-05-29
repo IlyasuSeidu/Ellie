@@ -73,6 +73,63 @@ describe('Ryvro environment template', () => {
     expect(appJson.expo?.android?.package).toBe('com.ryvro.shiftplanner');
   });
 
+  it('pins dynamic Expo config to Ryvro identity even without inherited static config', () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const buildAppConfig = require('../../app.config.js') as (params: {
+      config?: Record<string, unknown>;
+    }) => {
+      name?: string;
+      slug?: string;
+      scheme?: string;
+      icon?: string;
+      splash?: { image?: string };
+      ios?: { bundleIdentifier?: string; googleServicesFile?: string };
+      android?: {
+        package?: string;
+        googleServicesFile?: string;
+        adaptiveIcon?: { foregroundImage?: string };
+      };
+      web?: { favicon?: string };
+    };
+
+    const previousIosGoogleServices = process.env.EXPO_IOS_GOOGLE_SERVICES_FILE;
+    const previousAndroidGoogleServices = process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE;
+    process.env.EXPO_IOS_GOOGLE_SERVICES_FILE = './ios/Ryvro/GoogleService-Info.plist';
+    process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE = './android/app/ryvro-google-services.json';
+
+    try {
+      const dynamicConfig = buildAppConfig({ config: {} });
+
+      expect(dynamicConfig.name).toBe('Ryvro Shift Planner');
+      expect(dynamicConfig.slug).toBe('ryvro');
+      expect(dynamicConfig.scheme).toBe('ryvro');
+      expect(dynamicConfig.icon).toBe('./assets/icon.png');
+      expect(dynamicConfig.splash?.image).toBe('./assets/splash-icon.png');
+      expect(dynamicConfig.ios?.bundleIdentifier).toBe('com.ryvro.shiftplanner');
+      expect(dynamicConfig.ios?.googleServicesFile).toBe('./ios/Ryvro/GoogleService-Info.plist');
+      expect(dynamicConfig.android?.package).toBe('com.ryvro.shiftplanner');
+      expect(dynamicConfig.android?.adaptiveIcon?.foregroundImage).toBe(
+        './assets/adaptive-icon.png'
+      );
+      expect(dynamicConfig.android?.googleServicesFile).toBe(
+        './android/app/ryvro-google-services.json'
+      );
+      expect(dynamicConfig.web?.favicon).toBe('./assets/favicon.png');
+    } finally {
+      if (previousIosGoogleServices === undefined) {
+        delete process.env.EXPO_IOS_GOOGLE_SERVICES_FILE;
+      } else {
+        process.env.EXPO_IOS_GOOGLE_SERVICES_FILE = previousIosGoogleServices;
+      }
+
+      if (previousAndroidGoogleServices === undefined) {
+        delete process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE;
+      } else {
+        process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE = previousAndroidGoogleServices;
+      }
+    }
+  });
+
   it('pins native installed identity to Ryvro launch values', () => {
     expect(appJson.expo?.ios?.infoPlist).toMatchObject({
       NSSpeechRecognitionUsageDescription:
@@ -173,6 +230,20 @@ describe('Ryvro environment template', () => {
     expect(storeListing).toContain('App Store Connect / Google Play review notes');
     expect(storeListing).not.toContain('to be created');
     expect(storeListing).not.toContain('TBD');
+  });
+
+  it('keeps RevenueCat launch guidance free of retired Ellie entitlement aliases', () => {
+    const externalSetup = fs.readFileSync(
+      path.join(process.cwd(), 'docs/RYVRO_EXTERNAL_SERVICE_SETUP.md'),
+      'utf8'
+    );
+
+    expect(externalSetup).toContain('ryvro_pro_monthly');
+    expect(externalSetup).toContain('ryvro_pro_annual');
+    expect(externalSetup).toContain('Do not configure retired Ellie entitlement IDs');
+    expect(externalSetup).not.toContain('ellie_pro');
+    expect(externalSetup).not.toContain('Ellie Shift Planner Pro');
+    expect(externalSetup).not.toContain('Keep old entitlement aliases');
   });
 
   it('does not keep retired Ellie brain endpoints in CI workflows', () => {
