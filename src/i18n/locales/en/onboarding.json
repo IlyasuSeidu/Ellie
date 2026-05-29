@@ -230,7 +230,7 @@
       "continental": {
         "name": "Continental Rotation",
         "schedule": "2 mornings • 2 afternoons • 2 nights • 4 off",
-        "description": "Work 2 morning shifts, 2 afternoon, 2 night, then 4 days off-for 8-hour shift sites"
+        "description": "Work 2 morning shifts, 2 afternoon, 2 night, then 4 days off-for 8-hour shift teams"
       },
       "pitman": {
         "name": "Pitman Schedule",
@@ -240,7 +240,7 @@
       "custom": {
         "name": "Custom Rotation",
         "schedule": "You choose",
-        "description": "Your site uses something different? Build your own rotation here"
+        "description": "Your workplace uses something different? Build your own rotation here"
       },
       "fifo-8-6": {
         "name": "FIFO 8/6",

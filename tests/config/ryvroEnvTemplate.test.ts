@@ -561,6 +561,14 @@ describe('Ryvro environment template', () => {
           }
         >;
       };
+      shiftPattern?: {
+        cards?: Record<
+          string,
+          {
+            description?: string;
+          }
+        >;
+      };
     };
     const shiftSystem = onboarding.shiftSystem;
     const guardedCopy = [
@@ -571,15 +579,18 @@ describe('Ryvro environment template', () => {
         card.description ?? '',
         ...(card.details?.useCases ?? []),
       ]),
+      onboarding.shiftPattern?.cards?.continental?.description ?? '',
+      onboarding.shiftPattern?.cards?.custom?.description ?? '',
     ].join('\n');
 
     expect(guardedCopy).toContain('workplace');
+    expect(guardedCopy).toContain('8-hour shift teams');
     expect(guardedCopy).toContain('Healthcare');
     expect(guardedCopy).toContain('Security');
     expect(guardedCopy).toContain('Manufacturing');
     expect(guardedCopy).toContain('Transport hubs');
     expect(guardedCopy).not.toMatch(
-      /your mine|underground mines|mine infrastructure|mining sites/i
+      /your mine|your site uses|underground mines|mine infrastructure|mining sites|8-hour shift sites/i
     );
   });
 
