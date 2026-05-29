@@ -390,8 +390,11 @@ describe('Ryvro environment template', () => {
     expect(storeListing).toContain('reviewer@getryvro.com');
     expect(storeListing).toContain('support@getryvro.com');
     expect(storeListing).toContain('App Store Connect / Google Play review notes');
+    expect(storeListing).toContain('changes by work location');
+    expect(storeListing).toContain('heading to work');
     expect(storeListing).not.toContain('to be created');
     expect(storeListing).not.toContain('TBD');
+    expect(storeListing).not.toMatch(/changes by site|heading to site/i);
   });
 
   it('keeps RevenueCat launch guidance free of retired Ellie entitlement aliases', () => {
@@ -717,6 +720,11 @@ describe('Ryvro environment template', () => {
     const profileLocale = JSON.parse(
       fs.readFileSync(path.join(process.cwd(), 'src/i18n/locales/en/profile.json'), 'utf8')
     ) as {
+      shift?: {
+        site?: string;
+        siteName?: string;
+        sections?: Record<string, string>;
+      };
       smartReminders?: {
         rows?: {
           commute?: {
@@ -733,11 +741,18 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'src/components/profile/SmartRemindersPanel.tsx'),
       'utf8'
     );
+    const shiftInspectorSheet = fs.readFileSync(
+      path.join(process.cwd(), 'src/components/shift-builder/ShiftInspectorSheet.tsx'),
+      'utf8'
+    );
     const calendarUtils = fs.readFileSync(
       path.join(process.cwd(), 'src/utils/universalShiftCalendarUtils.ts'),
       'utf8'
     );
 
+    expect(profileLocale.shift?.site).toBe('Work location');
+    expect(profileLocale.shift?.siteName).toBe('Work location (optional)');
+    expect(profileLocale.shift?.sections?.siteDetails).toBe('WORK LOCATION');
     expect(scheduleLocale.builder?.holidayHint).toContain('preserving the original shift');
     expect(scheduleLocale.builder?.oneOffHint).toBe(
       'Change one specific day without changing the repeating schedule.'
@@ -749,6 +764,8 @@ describe('Ryvro environment template', () => {
     );
 
     expect(builderScreen).toContain("t('builder.oneOffListSubtitle'");
+    expect(shiftInspectorSheet).toContain('Work location (optional)');
+    expect(shiftInspectorSheet).toContain('Work location name');
     expect(smartRemindersPanel).toContain('How long to reach your work location');
     expect(calendarUtils).toContain('LOCATION:');
     expect(calendarUtils).toContain('Changed just this day');
@@ -759,8 +776,12 @@ describe('Ryvro environment template', () => {
       scheduleLocale.builder?.oneOffListSubtitle,
       scheduleLocale.builder?.calendarHint,
       profileLocale.smartReminders?.rows?.commute?.sublabel,
+      profileLocale.shift?.site,
+      profileLocale.shift?.siteName,
+      profileLocale.shift?.sections?.siteDetails,
+      shiftInspectorSheet,
     ].join('\n');
 
-    expect(guardedCopy).not.toMatch(/mine site|haul truck|underground/i);
+    expect(guardedCopy).not.toMatch(/mine site|haul truck|underground|Location \/ Site|site name/i);
   });
 });

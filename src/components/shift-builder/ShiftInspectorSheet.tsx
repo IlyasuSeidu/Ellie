@@ -689,15 +689,15 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
               </View>
 
               {/* Location */}
-              <Text style={styles.fieldLabel}>Location / Site (optional)</Text>
+              <Text style={styles.fieldLabel}>Work location (optional)</Text>
               <TextInput
                 style={styles.textInput}
                 value={locationName}
                 onChangeText={setLocationName}
-                placeholder="e.g. Site, hospital, depot, plant"
+                placeholder="e.g. Hospital, depot, plant, site"
                 placeholderTextColor={theme.colors.shadow}
                 maxLength={200}
-                accessibilityLabel="Location or site name"
+                accessibilityLabel="Work location name"
               />
 
               {/* Reminder profile */}

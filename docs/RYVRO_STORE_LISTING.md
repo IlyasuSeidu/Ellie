@@ -70,7 +70,7 @@ Use Ryvro to stop counting through your roster manually and start planning your 
 
 Ryvro is an AI-assisted shift planner for miners, FIFO crews, and shift workers.
 
-If your schedule repeats, rotates, swaps, runs overnight, changes by site, or does not fit a simple 9-to-5 calendar, Ryvro helps you turn it into a clear plan.
+If your schedule repeats, rotates, swaps, runs overnight, changes by work location, or does not fit a simple 9-to-5 calendar, Ryvro helps you turn it into a clear plan.
 
 Build your schedule three ways:
 
@@ -103,7 +103,7 @@ Key features:
 - Calendar import and export
 - Offline-first access to your schedule
 
-Ryvro is built for shift workers who need certainty: whether you are heading to site, starting nights, planning family time, checking your next rest block, or trying to avoid setting the wrong alarm.
+Ryvro is built for shift workers who need certainty: whether you are heading to work, starting nights, planning family time, checking your next rest block, or trying to avoid setting the wrong alarm.
 
 Miner-first at launch. Universal by design.
 
