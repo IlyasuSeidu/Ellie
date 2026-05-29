@@ -20,13 +20,13 @@ It is not a general coding assistant unless the coding work directly improves Ry
 ## Product
 
 - Product name: `Ryvro`
-- Current focus: shift scheduling and shift calendar for miners
+- Current focus: shift scheduling and shift calendars for FIFO crews and shift workers, launched from mining roster pain
 - Long-term direction: shift scheduling for all industries
 - Product promise: practical, premium, reliable, worker-first
 
 ## Problem Ryvro Solves
 
-Ryvro exists because shift workers, especially miners, carry too much mental math:
+Ryvro exists because shift workers, starting with miners and FIFO crews, carry too much mental math:
 
 - rotating cycles
 - days versus nights

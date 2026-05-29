@@ -276,6 +276,25 @@ describe('Ryvro environment template', () => {
     }
   });
 
+  it('keeps build-in-public content prompts aligned with broader shift-worker positioning', () => {
+    const anthropicProvider = fs.readFileSync(
+      path.join(process.cwd(), 'scripts/lib/content-providers/anthropic.js'),
+      'utf8'
+    );
+    const buildInPublicBrief = fs.readFileSync(
+      path.join(process.cwd(), 'docs/RYVRO_BUILD_IN_PUBLIC_AGENT.md'),
+      'utf8'
+    );
+    const activeContentGuidance = `${anthropicProvider}\n${buildInPublicBrief}`;
+
+    expect(activeContentGuidance).toContain('FIFO crews and shift workers');
+    expect(activeContentGuidance).toContain('launched from real mining roster pain');
+    expect(activeContentGuidance).not.toContain('Ryvro is a shift scheduling product for miners');
+    expect(activeContentGuidance).not.toContain(
+      'Current focus: shift scheduling and shift calendar for miners'
+    );
+  });
+
   it('does not keep retired Ellie brain endpoints in CI workflows', () => {
     const ciWorkflow = fs.readFileSync(
       path.join(process.cwd(), '.github/workflows/ci.yml'),
