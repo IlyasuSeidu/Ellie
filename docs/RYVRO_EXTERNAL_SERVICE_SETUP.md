@@ -264,6 +264,8 @@ Use Ryvro-visible names in dashboards:
 
 - Firebase project display name: Ryvro
 - Analytics property/report labels: Ryvro
+- Segment schedule setup dashboards by industry, template, and source.
+- Use `industry`, `template_id`, and `schedule_source` / `source` dimensions from backend daily summaries instead of making mining/FIFO the default segment.
 - RevenueCat project/app labels: Ryvro iOS, Ryvro Android
 - Support mailbox name: Ryvro Support
 - Email sender: Ryvro Support

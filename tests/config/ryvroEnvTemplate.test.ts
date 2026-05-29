@@ -274,6 +274,10 @@ describe('Ryvro environment template', () => {
     expect(externalSetup).toContain('iOS app nickname: Ryvro iOS');
     expect(externalSetup).toContain('Android app nickname: Ryvro Android');
     expect(externalSetup).toContain('Display name: Ryvro Pro');
+    expect(externalSetup).toContain('Analytics property/report labels: Ryvro');
+    expect(externalSetup).toContain(
+      'Segment schedule setup dashboards by industry, template, and source'
+    );
     expect(externalSetup).toContain('Profile shows `Ryvro Pro - Active`');
     expect(externalSetup).toContain('Do not configure retired Ellie entitlement IDs');
     expect(externalSetup).not.toContain('Ellie iOS');

@@ -70,7 +70,10 @@ import {
   pickAndImportUniversalScheduleCalendar,
   shareUniversalScheduleCalendarFile,
 } from '@/services/ShiftCalendarFileService';
-import { UNIVERSAL_SHIFT_TEMPLATES } from '@/constants/universalShiftTemplates';
+import {
+  UNIVERSAL_SHIFT_TEMPLATES,
+  type UniversalShiftTemplateIndustry,
+} from '@/constants/universalShiftTemplates';
 
 // ── Navigation types ──────────────────────────────────────────────────────────
 
@@ -85,6 +88,11 @@ type BuilderRoute = RouteProp<
   { UniversalShiftBuilder: UniversalShiftBuilderParams },
   'UniversalShiftBuilder'
 >;
+
+type SelectedTemplateAnalytics = {
+  templateId: string;
+  industry: UniversalShiftTemplateIndustry;
+};
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -207,6 +215,8 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
   const [calendarExporting, setCalendarExporting] = useState(false);
   const [calendarImporting, setCalendarImporting] = useState(false);
   const [calendarImportSummary, setCalendarImportSummary] = useState<string | null>(null);
+  const [selectedTemplateAnalytics, setSelectedTemplateAnalytics] =
+    useState<SelectedTemplateAnalytics | null>(null);
 
   // ── Inspector sheet state ───────────────────────────────────────────────────
   const [inspectorVisible, setInspectorVisible] = useState(false);
@@ -804,6 +814,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
         prompt_length: aiPrompt.trim().length,
         has_existing_schedule: schedule.sequence.length > 0,
       });
+      setSelectedTemplateAnalytics(null);
       const result = await parseShiftScheduleDescription(
         {
           prompt: aiPrompt.trim(),
@@ -937,7 +948,9 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
       confidence: draft.aiDraftMeta?.confidence,
       parser_source: draft.aiDraftMeta?.parserSource,
       fallback_reason: draft.aiDraftMeta?.fallbackReason,
+      schedule_source: draft.source,
     });
+    setSelectedTemplateAnalytics(null);
     setSchedule(draft);
     setIsDirty(true);
     setDismissedWarnings(false);
@@ -969,12 +982,15 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
       const applyTemplate = () => {
         const nextSchedule = cloneTemplateSchedule(template.schedule);
         setSchedule(nextSchedule);
+        setSelectedTemplateAnalytics({ templateId: template.id, industry: template.industry });
         setIsDirty(true);
         setDismissedWarnings(false);
         setAiPrompt(template.aiPromptExample);
         Analytics.track('shift_builder_template_applied', {
           template_id: template.id,
           industry: template.industry,
+          template_industry: template.industry,
+          schedule_source: nextSchedule.source,
           sequence_length: nextSchedule.sequence.length,
           definition_count: nextSchedule.shiftDefinitions.length,
         });
@@ -1048,7 +1064,11 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
         sequence_length: finalSchedule.sequence.length,
         definition_count: finalSchedule.shiftDefinitions.length,
         source: finalSchedule.source,
+        schedule_source: finalSchedule.source,
         entry_point: entryPoint,
+        template_id: selectedTemplateAnalytics?.templateId,
+        industry: selectedTemplateAnalytics?.industry,
+        template_industry: selectedTemplateAnalytics?.industry,
         ai_parser_source: finalSchedule.aiDraftMeta?.parserSource,
         ai_fallback_reason: finalSchedule.aiDraftMeta?.fallbackReason,
       });
@@ -1066,7 +1086,16 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
     } finally {
       setIsSaving(false);
     }
-  }, [entryPoint, isOnboardingEntry, navigation, onSaveNextScreen, schedule, t, updateDataAsync]);
+  }, [
+    entryPoint,
+    isOnboardingEntry,
+    navigation,
+    onSaveNextScreen,
+    schedule,
+    selectedTemplateAnalytics,
+    t,
+    updateDataAsync,
+  ]);
 
   const handleSave = useCallback(async () => {
     if (isSaving) return;

@@ -11,6 +11,8 @@ import {
 test('sanitizes sensitive analytics fields without storing raw text', () => {
   const params = sanitizeAnalyticsParams({
     query_text: 'When is my next day off?',
+    mining_site: 'Northern Pit',
+    site_name: 'City Hospital Ward A',
     screen_name: 'HomeScreen',
     latency_ms: 123,
     toolsInvoked: ['get_shift_for_date', 'days_until_rest'],
@@ -21,6 +23,10 @@ test('sanitizes sensitive analytics fields without storing raw text', () => {
   assert.equal(params.query_text_redacted, true);
   assert.equal(params.query_text_length, 24);
   assert.equal(typeof params.query_text_hash, 'string');
+  assert.equal(params.mining_site_redacted, true);
+  assert.equal(params.site_name_redacted, true);
+  assert.equal('mining_site' in params, false);
+  assert.equal('site_name' in params, false);
   assert.equal(params.screen_name, 'HomeScreen');
   assert.equal(params.latency_ms, 123);
   assert.deepEqual(params.toolsInvoked, ['get_shift_for_date', 'days_until_rest']);
@@ -100,6 +106,65 @@ test('aggregates daily voice, revenue, onboarding, and offline signals', () => {
   assert.equal(summary.offline.unsupportedQuestions, 1);
   assert.equal(summary.onboarding.dropOffs[0]?.step, 'shift_pattern');
   assert.equal(summary.dailyIntelligenceReport.reportDate, '2026-04-17');
+});
+
+test('aggregates setup analytics by industry, template, and schedule source without a mining default', () => {
+  const receivedAtMs = Date.parse('2026-04-17T10:00:00.000Z');
+  const event = (
+    id: string,
+    eventName: string,
+    params: Record<string, unknown>
+  ): AnalyticsEventDocument =>
+    buildAnalyticsEventDocument(
+      id,
+      {
+        eventName,
+        params,
+        clientContext: { installId: `install-${id}`, platform: 'ios' },
+        occurredAtMs: receivedAtMs,
+      },
+      { userId: id, installId: null },
+      receivedAtMs
+    );
+
+  const events = [
+    event('u1', 'shift_builder_template_applied', {
+      industry: 'healthcare',
+      template_id: 'healthcare-2-2-3',
+      schedule_source: 'template',
+    }),
+    event('u2', 'shift_builder_saved', {
+      template_industry: 'security',
+      template_id: 'security-4-4',
+      source: 'template',
+    }),
+    event('u3', 'shift_builder_saved', {
+      schedule_source: 'ai',
+    }),
+  ];
+
+  const summary = buildDailyAnalyticsSummary('2026-04-17', events, receivedAtMs);
+
+  assert.deepEqual(summary.setup.countsByIndustry, {
+    healthcare: 1,
+    security: 1,
+  });
+  assert.deepEqual(summary.setup.countsByTemplate, {
+    'healthcare-2-2-3': 1,
+    'security-4-4': 1,
+  });
+  assert.deepEqual(summary.setup.countsByScheduleSource, {
+    template: 2,
+    ai: 1,
+  });
+  assert.deepEqual(summary.dailyIntelligenceReport.industryBreakdown, {
+    healthcare: 1,
+    security: 1,
+  });
+  assert.equal(
+    Object.prototype.hasOwnProperty.call(summary.setup.countsByIndustry, 'mining_fifo'),
+    false
+  );
 });
 
 test('creates AI decision candidates for unsupported holiday/date offline intent', () => {

@@ -47,6 +47,7 @@ Completed in the current working tree:
 - Hardened the Ryvro voice backend system prompt so it does not assume mining, FIFO, or site-based work unless the user context says so, and added backend prompt tests for non-mining universal schedules.
 - Added documentation regression tests that pin `docs/ARCHITECTURE.md` to the Universal Shift Builder source-of-truth architecture and keep the active FIFO guide template-specific.
 - Added legal, privacy, support, external-service, and RevenueCat handoff regression tests so repo-side launch docs stay broad, Ryvro-named, and free of retired Ellie product aliases.
+- Added backend analytics setup dimensions for industry, template, and schedule source so dashboards can segment universal schedule adoption without defaulting to mining/FIFO, and guarded legacy site/mining-site parameters as redacted sensitive fields.
 
 Still pending outside this repo or intentionally kept for compatibility:
 
@@ -1371,6 +1372,7 @@ Completed P1 tasks:
 - RB-035 repo-side RevenueCat launch setup: guarded by `ryvroEnvTemplate.test.ts`; external dashboard changes remain account-owner work.
 - RB-036 privacy/terms coverage for AI prompts and calendar import/export: guarded by `ryvroEnvTemplate.test.ts`.
 Deferred P2 tasks:
+- RB-042 analytics industry/template/source mapping: backend daily summaries now expose setup dimensions and redact legacy site/mining-site fields; external dashboards still need to consume the mapped dimensions.
 - RB-041 support macros and help copy: repo-side templates are guarded by `ryvroEnvTemplate.test.ts`; published support desk/macros remain account-owner work.
 
 Remaining old-term hits:
