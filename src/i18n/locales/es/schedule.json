@@ -110,6 +110,26 @@
     "calendarExportA11y": "Export shift calendar",
     "calendarExport": "Export calendar",
     "calendarImportA11y": "Import roster calendar",
-    "calendarImport": "Import roster"
+    "calendarImport": "Import roster",
+    "defaultScheduleName": "My Schedule",
+    "aiGenericError": "Something went wrong. Please try again.",
+    "aiRetryA11y": "Retry AI",
+    "useTodayA11y": "Use today as the date to match from",
+    "restoreCurrentDateA11y": "Restore current match date",
+    "sequenceDayTitle": "Day {{day}}",
+    "sequenceLabelSubtitle": "{{label}} label",
+    "sequenceItem": "Sequence item",
+    "closeSequenceEditorA11y": "Close sequence item editor",
+    "customDayLabel": "Custom day label",
+    "customDayLabelA11y": "Custom label for this sequence day",
+    "customDayLabelHelp": "Leave blank to use the reusable shift type name.",
+    "clearCustomDayLabelA11y": "Clear custom day label",
+    "clearLabel": "Clear label",
+    "saveCustomDayLabelA11y": "Save custom day label",
+    "saveLabel": "Save label",
+    "scheduleName": "Schedule Name",
+    "scheduleNameA11y": "Schedule name",
+    "saveScheduleA11y": "Save schedule",
+    "saveSchedule": "Save schedule"
   }
 }

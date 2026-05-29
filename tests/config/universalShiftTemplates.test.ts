@@ -99,6 +99,39 @@ describe('Universal shift templates', () => {
     }
   });
 
+  it('localizes high-traffic schedule naming and sequence editor copy', () => {
+    const builderScreen = fs.readFileSync(
+      path.join(process.cwd(), 'src/screens/main/UniversalShiftBuilderScreen.tsx'),
+      'utf8'
+    );
+
+    for (const key of [
+      'defaultScheduleName',
+      'aiGenericError',
+      'aiRetryA11y',
+      'useTodayA11y',
+      'restoreCurrentDateA11y',
+      'sequenceDayTitle',
+      'sequenceLabelSubtitle',
+      'customDayLabelHelp',
+      'scheduleName',
+      'saveSchedule',
+    ]) {
+      expect(builderScreen).toContain(`t('builder.${key}'`);
+    }
+
+    for (const retiredLiteral of [
+      'Something went wrong. Please try again.',
+      'Schedule Name',
+      'Save schedule',
+      'Custom day label',
+      'Leave blank to use the reusable shift type name.',
+      'Close sequence item editor',
+    ]) {
+      expect(builderScreen).not.toContain(retiredLiteral);
+    }
+  });
+
   it('localizes launch-critical builder copy in every schedule locale', () => {
     const localeRoot = path.join(process.cwd(), 'src/i18n/locales');
     const requiredKeys = [
@@ -166,6 +199,26 @@ describe('Universal shift templates', () => {
       'calendarExport',
       'calendarImportA11y',
       'calendarImport',
+      'defaultScheduleName',
+      'aiGenericError',
+      'aiRetryA11y',
+      'useTodayA11y',
+      'restoreCurrentDateA11y',
+      'sequenceDayTitle',
+      'sequenceLabelSubtitle',
+      'sequenceItem',
+      'closeSequenceEditorA11y',
+      'customDayLabel',
+      'customDayLabelA11y',
+      'customDayLabelHelp',
+      'clearCustomDayLabelA11y',
+      'clearLabel',
+      'saveCustomDayLabelA11y',
+      'saveLabel',
+      'scheduleName',
+      'scheduleNameA11y',
+      'saveScheduleA11y',
+      'saveSchedule',
     ];
 
     for (const locale of fs.readdirSync(localeRoot)) {

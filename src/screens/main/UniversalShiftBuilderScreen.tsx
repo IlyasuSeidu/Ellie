@@ -176,7 +176,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
   // ── Schedule state ──────────────────────────────────────────────────────────
 
   const [schedule, setSchedule] = useState<UniversalShiftSchedule>(
-    () => existingSchedule ?? buildEmptySchedule()
+    () => existingSchedule ?? buildEmptySchedule(t('builder.defaultScheduleName'))
   );
   const [isDirty, setIsDirty] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -825,13 +825,13 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
       if (err instanceof ShiftScheduleParserError) {
         setAiError(err.message);
       } else {
-        setAiError('Something went wrong. Please try again.');
+        setAiError(t('builder.aiGenericError'));
       }
     } finally {
       setAiLoading(false);
       aiAbortRef.current = null;
     }
-  }, [aiPrompt, schedule, i18n.language]);
+  }, [aiPrompt, schedule, i18n.language, t]);
 
   const handleAiFollowUp = useCallback(
     async (prompt: string) => {
@@ -959,7 +959,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
 
     const finalSchedule: UniversalShiftSchedule = {
       ...normalized.normalizedSchedule,
-      name: schedule.name.trim() || 'My Schedule',
+      name: schedule.name.trim() || t('builder.defaultScheduleName'),
       updatedAt: new Date().toISOString(),
     };
 
@@ -1170,7 +1170,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
                 <Text style={styles.aiErrorText}>{aiError}</Text>
                 <TouchableOpacity
                   onPress={() => void handleBuildWithAI()}
-                  accessibilityLabel="Retry AI"
+                  accessibilityLabel={t('builder.aiRetryA11y')}
                   accessibilityRole="button"
                 >
                   <Text style={styles.aiRetryText}>{t('builder.aiRetry')}</Text>
@@ -1798,7 +1798,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
                 setAnchorDraft(todayStr());
                 setAnchorDraftError(null);
               }}
-              accessibilityLabel="Use today as the date to match from"
+              accessibilityLabel={t('builder.useTodayA11y')}
               accessibilityRole="button"
             >
               <Text style={styles.anchorPickerQuickText}>{t('builder.today')}</Text>
@@ -1809,7 +1809,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
                 setAnchorDraft(schedule.anchorDate);
                 setAnchorDraftError(null);
               }}
-              accessibilityLabel="Restore current match date"
+              accessibilityLabel={t('builder.restoreCurrentDateA11y')}
               accessibilityRole="button"
             >
               <Text style={styles.anchorPickerQuickText}>{t('builder.current')}</Text>
@@ -1852,16 +1852,20 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
                   <Ionicons name="create-outline" size={18} color={theme.colors.sacredGold} />
                 </View>
                 <View>
-                  <Text style={styles.anchorPickerTitle}>Day {sequenceEditIndex + 1}</Text>
+                  <Text style={styles.anchorPickerTitle}>
+                    {t('builder.sequenceDayTitle', { day: sequenceEditIndex + 1 })}
+                  </Text>
                   <Text style={styles.anchorPickerSubtitle}>
-                    {definition?.name ?? 'Sequence item'} label
+                    {t('builder.sequenceLabelSubtitle', {
+                      label: definition?.name ?? t('builder.sequenceItem'),
+                    })}
                   </Text>
                 </View>
               </View>
               <TouchableOpacity
                 onPress={() => setSequenceEditIndex(null)}
                 hitSlop={8}
-                accessibilityLabel="Close sequence item editor"
+                accessibilityLabel={t('builder.closeSequenceEditorA11y')}
                 accessibilityRole="button"
               >
                 <Ionicons name="close-circle" size={24} color={theme.colors.shadow} />
@@ -1872,34 +1876,32 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
               style={styles.anchorPickerInput}
               value={sequenceLabelDraft}
               onChangeText={(text) => setSequenceLabelDraft(text.slice(0, 80))}
-              placeholder={definition?.name ?? 'Custom day label'}
+              placeholder={definition?.name ?? t('builder.customDayLabel')}
               placeholderTextColor={theme.colors.shadow}
               maxLength={80}
-              accessibilityLabel="Custom label for this sequence day"
+              accessibilityLabel={t('builder.customDayLabelA11y')}
             />
-            <Text style={styles.anchorPickerHelp}>
-              Leave blank to use the reusable shift type name.
-            </Text>
+            <Text style={styles.anchorPickerHelp}>{t('builder.customDayLabelHelp')}</Text>
 
             <View style={styles.anchorPickerQuickRow}>
               <TouchableOpacity
                 style={styles.anchorPickerQuickButton}
                 onPress={() => setSequenceLabelDraft('')}
-                accessibilityLabel="Clear custom day label"
+                accessibilityLabel={t('builder.clearCustomDayLabelA11y')}
                 accessibilityRole="button"
               >
-                <Text style={styles.anchorPickerQuickText}>Clear label</Text>
+                <Text style={styles.anchorPickerQuickText}>{t('builder.clearLabel')}</Text>
               </TouchableOpacity>
             </View>
 
             <TouchableOpacity
               style={styles.anchorPickerApplyButton}
               onPress={handleSequenceLabelSave}
-              accessibilityLabel="Save custom day label"
+              accessibilityLabel={t('builder.saveCustomDayLabelA11y')}
               accessibilityRole="button"
             >
               <Ionicons name="checkmark-circle" size={18} color={theme.colors.deepVoid} />
-              <Text style={styles.anchorPickerApplyText}>Save label</Text>
+              <Text style={styles.anchorPickerApplyText}>{t('builder.saveLabel')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -1923,15 +1925,15 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
         >
           {/* Schedule name */}
           <View style={styles.section}>
-            <Text style={styles.sectionLabel}>Schedule Name</Text>
+            <Text style={styles.sectionLabel}>{t('builder.scheduleName')}</Text>
             <TextInput
               style={styles.nameInput}
               value={schedule.name}
               onChangeText={handleNameChange}
-              placeholder="My Schedule"
+              placeholder={t('builder.defaultScheduleName')}
               placeholderTextColor={theme.colors.shadow}
               maxLength={120}
-              accessibilityLabel="Schedule name"
+              accessibilityLabel={t('builder.scheduleNameA11y')}
             />
           </View>
 
@@ -2018,7 +2020,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
             style={[styles.saveBarButton, !canSave && styles.saveBarButtonDisabled]}
             onPress={() => void handleSave()}
             disabled={!canSave}
-            accessibilityLabel="Save schedule"
+            accessibilityLabel={t('builder.saveScheduleA11y')}
             accessibilityRole="button"
           >
             {isSaving ? (
@@ -2033,7 +2035,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
                 <Text
                   style={[styles.saveBarButtonText, !canSave && styles.saveBarButtonTextDisabled]}
                 >
-                  Save schedule
+                  {t('builder.saveSchedule')}
                 </Text>
               </>
             )}
