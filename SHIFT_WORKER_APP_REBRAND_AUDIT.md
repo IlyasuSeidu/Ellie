@@ -108,17 +108,19 @@ Latest repeatable public preflight command:
 npm run release:clearance
 ```
 
-Result captured at `2026-05-29T14:36:21.446Z`:
+Result captured at `2026-05-29T17:04:00.191Z`:
 
-- Apple public software search: no exact `Ryvro` or `Ryvro Shift Planner` app result returned across 12 fuzzy results. Public search still does not prove App Store Connect name availability.
-- Google Play public search: no exact `Ryvro` or `Ryvro Shift Planner` result text found. Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`. Public search still does not prove Play Console title/package availability.
+- Apple public software search: no exact `Ryvro` or `Ryvro Shift Planner` app result returned across 5 fuzzy results. Public search still does not prove App Store Connect name availability.
+- Google Play public search: no exact `Ryvro` or `Ryvro Shift Planner` result text found. Visible fuzzy names included `Rydoo` and `Rydora`. Public search still does not prove Play Console title/package availability.
+- Chrome read-only Google Play search showed visible public results such as `Rolify`, `Land Rover Remote`, `Rvolution Remote`, `Rydoo`, and `Rydora`, with no exact `Ryvro` or `Ryvro Shift Planner` visible. This still does not prove Play Console title/package availability.
 - USPTO public search app: reachable only through the automated preflight. This is not legal clearance.
 - `getryvro.com`: no public DNS record and Verisign `.com` returned no match.
 - `useryvro.com`, `tryryvro.com`, and `getryvroapp.com`: no public DNS record and Verisign `.com` returned no match.
 - `ryvro.com`: registered through GoDaddy/Afternic and should not be treated as available unless purchased from the current registrant.
 - `ryvro.app`, `ryvro.co`, `ryvro.io`, `ryvro.ai`, `ryvro.net`, and `ryvro.org`: no public DNS record in the preflight, but registrar availability still needs direct confirmation.
 - X, Instagram, and TikTok `@ryvro`: public URLs returned `200`; this is not reliable handle availability proof and requires logged-in reservation.
-- YouTube `@ryvro` and LinkedIn `company/ryvro`: public URLs returned `404`; still reserve directly while logged in.
+- YouTube `@ryvro`: public URL returned `404`; still reserve directly while logged in.
+- LinkedIn `company/ryvro`: public URL returned bot-protection status `999`; still check and reserve directly while logged in.
 
 The account-only checks remain unchanged: App Store Connect, Google Play Console, registrar purchase, social reservation, and formal trademark/legal clearance must be completed by the account owner or counsel.
 
@@ -1646,16 +1648,16 @@ Phase gate:
 - [ ] Commit changes in logical groups.
 - [ ] Push branch.
 - [ ] Verify GitHub CI.
-- [ ] Attach completion report.
-- [ ] Attach old-term classification.
-- [ ] Attach device QA notes.
-- [ ] Attach rollback note.
+- [x] Attach completion report.
+- [x] Attach old-term classification.
+- [x] Attach device QA notes.
+- [x] Attach rollback note.
 - [ ] Confirm deferred tasks are not P0/P1 launch blockers.
 
 Phase gate:
 
 - [ ] CI is green.
-- [ ] Completion report is filled.
+- [x] Completion report is filled.
 - [ ] Rebrand can be reviewed or merged without hidden assumptions.
 
 ## Working Tracker: Old-Term Classification Table

@@ -240,16 +240,33 @@ describe('Ryvro environment template', () => {
     );
     const clearanceEvidence = `${externalSetup}\n${audit}`;
 
-    expect(clearanceEvidence).toContain('2026-05-29 at 14:36:21Z');
-    expect(clearanceEvidence).toContain('2026-05-29T14:36:21.446Z');
+    expect(clearanceEvidence).toContain('2026-05-29 at 17:04:00Z');
+    expect(clearanceEvidence).toContain('2026-05-29T17:04:00.191Z');
     expect(clearanceEvidence).toContain('no exact `Ryvro` or `Ryvro Shift Planner` app result');
-    expect(clearanceEvidence).toContain('Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`');
+    expect(clearanceEvidence).toContain('Visible fuzzy names included `Rydoo` and `Rydora`');
+    expect(clearanceEvidence).toContain('Chrome read-only Google Play search');
     expect(clearanceEvidence).toContain('Formal trademark/legal clearance');
     expect(clearanceEvidence).toContain('App Store Connect and Google Play Console name checks');
     expect(clearanceEvidence).toContain('Play Console title/package availability');
     expect(clearanceEvidence).toContain('reserve directly while logged in');
-    expect(clearanceEvidence).not.toContain('2026-05-29 at 13:38:11Z');
-    expect(clearanceEvidence).not.toContain('2026-05-29T13:38:11.003Z');
+    expect(clearanceEvidence).not.toContain('2026-05-29 at 14:36:21Z');
+    expect(clearanceEvidence).not.toContain('2026-05-29T14:36:21.446Z');
+  });
+
+  it('keeps the Ryvro release readiness report explicit about evidence and remaining blockers', () => {
+    const readinessReport = fs.readFileSync(
+      path.join(process.cwd(), 'docs/RYVRO_RELEASE_READINESS_REPORT.md'),
+      'utf8'
+    );
+
+    expect(readinessReport).toContain('commit `9570a6e`');
+    expect(readinessReport).toContain('Repo-Proven Status');
+    expect(readinessReport).toContain('Device QA Notes');
+    expect(readinessReport).toContain('Account-Only Work');
+    expect(readinessReport).toContain('Physical iPhone 13');
+    expect(readinessReport).toContain('Physical iPhone XS Max');
+    expect(readinessReport).toContain('Android build/install');
+    expect(readinessReport).toContain('not as fully launch-cleared production release evidence');
   });
 
   it('keeps the store listing pack submission-ready without placeholder review contacts', () => {
