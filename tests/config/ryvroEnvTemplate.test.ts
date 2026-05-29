@@ -148,6 +148,30 @@ describe('Ryvro environment template', () => {
     }
   });
 
+  it('keeps native URL schemes aligned to the Ryvro launch scheme', () => {
+    const androidManifest = readOptional('android/app/src/main/AndroidManifest.xml');
+    if (androidManifest) {
+      expect(androidManifest).toContain('<data android:scheme="ryvro"/>');
+      expect(androidManifest).toContain('<data android:scheme="com.ryvro.shiftplanner"/>');
+      expect(androidManifest).toContain('<data android:scheme="exp+ryvro"/>');
+      expect(androidManifest).not.toContain('<data android:scheme="ellie"');
+      expect(androidManifest).not.toContain('<data android:scheme="exp+ellie"');
+      expect(androidManifest).not.toContain('com.ellie.minershiftassistant');
+      expect(androidManifest).not.toContain('com.ilyasuseidu.ellie');
+    }
+
+    const iosInfoPlist = readOptional('ios/Ellie/Info.plist');
+    if (iosInfoPlist) {
+      expect(iosInfoPlist).toContain('<string>ryvro</string>');
+      expect(iosInfoPlist).toContain('<string>com.ryvro.shiftplanner</string>');
+      expect(iosInfoPlist).toContain('<string>exp+ryvro</string>');
+      expect(iosInfoPlist).not.toContain('<string>ellie</string>');
+      expect(iosInfoPlist).not.toContain('<string>exp+ellie</string>');
+      expect(iosInfoPlist).not.toContain('com.ellie.minershiftassistant');
+      expect(iosInfoPlist).not.toContain('com.ilyasuseidu.ellie');
+    }
+  });
+
   it('keeps Detox iOS release configuration on the Ryvro simulator app identity', () => {
     const detoxConfig = fs.readFileSync(path.join(process.cwd(), '.detoxrc.js'), 'utf8');
 
