@@ -543,6 +543,46 @@ describe('Ryvro environment template', () => {
     );
   });
 
+  it('keeps active English shift-system onboarding copy universal-ready', () => {
+    const onboarding = JSON.parse(
+      fs.readFileSync(path.join(process.cwd(), 'src/i18n/locales/en/onboarding.json'), 'utf8')
+    ) as {
+      shiftSystem?: {
+        title?: string;
+        title_named?: string;
+        instruction?: string;
+        cards?: Record<
+          string,
+          {
+            description?: string;
+            details?: {
+              useCases?: string[];
+            };
+          }
+        >;
+      };
+    };
+    const shiftSystem = onboarding.shiftSystem;
+    const guardedCopy = [
+      shiftSystem?.title ?? '',
+      shiftSystem?.title_named ?? '',
+      shiftSystem?.instruction ?? '',
+      ...Object.values(shiftSystem?.cards ?? {}).flatMap((card) => [
+        card.description ?? '',
+        ...(card.details?.useCases ?? []),
+      ]),
+    ].join('\n');
+
+    expect(guardedCopy).toContain('workplace');
+    expect(guardedCopy).toContain('Healthcare');
+    expect(guardedCopy).toContain('Security');
+    expect(guardedCopy).toContain('Manufacturing');
+    expect(guardedCopy).toContain('Transport hubs');
+    expect(guardedCopy).not.toMatch(
+      /your mine|underground mines|mine infrastructure|mining sites/i
+    );
+  });
+
   it('keeps content generation outputs broad while preserving the miner-builder origin story', () => {
     const contentGenerator = fs.readFileSync(
       path.join(process.cwd(), 'scripts/generate-stop-scroll-content.js'),

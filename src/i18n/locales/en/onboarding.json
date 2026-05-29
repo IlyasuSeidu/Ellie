@@ -136,13 +136,13 @@
     }
   },
   "shiftSystem": {
-    "title": "How Many Shifts Does Your Site Run?",
-    "title_named": "Hey {{name}}, How Many Shifts Does Your Site Run?",
+    "title": "How Many Shifts Does Your Workplace Run?",
+    "title_named": "Hey {{name}}, How Many Shifts Does Your Workplace Run?",
     "reviewAgain": "Please review systems again to make your selection",
     "reviewButton": "Review Systems",
     "continueButton": "Continue",
     "closeButton": "Close",
-    "instruction": "Select how your site operates—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info",
+    "instruction": "Select how your team operates—we'll build your calendar from this\nSwipe right to choose, left to see more, up for info",
     "endState": {
       "selectedTitle": "Got it! We'll set up your calendar for this.",
       "reviewedTitle": "You've viewed all {{count}} shift systems!",
@@ -152,10 +152,10 @@
       "2-shift": {
         "title": "2 Shifts (12 hours)",
         "schedule": "Day & night",
-        "description": "Your mine runs two 12-hour shifts—one during the day, one at night",
+        "description": "Your workplace runs two 12-hour shifts—one during the day, one at night",
         "details": {
           "workRestRatio": "12 hours on, 12 hours off",
-          "useCases": ["Mining sites", "Oil & gas", "24/7 operations", "Remote work"],
+          "useCases": ["Healthcare", "Security", "Oil & gas", "24/7 operations"],
           "pros": ["Extended rest periods", "Predictable schedule", "Good work-life balance"],
           "cons": [
             "Long shift duration",
@@ -167,15 +167,10 @@
       "3-shift": {
         "title": "3 Shifts (8 hours)",
         "schedule": "Morning, afternoon & night",
-        "description": "Your processing plant runs three 8-hour shifts—morning, afternoon, and night",
+        "description": "Your operation runs three 8-hour shifts—morning, afternoon, and night",
         "details": {
           "workRestRatio": "8 hours on, 16 hours off",
-          "useCases": [
-            "Underground mines",
-            "Processing plants",
-            "Mine infrastructure",
-            "24/7 operations"
-          ],
+          "useCases": ["Hospitals", "Manufacturing", "Transport hubs", "24/7 operations"],
           "pros": ["Shorter shifts", "More time for family", "Easier to stay alert"],
           "cons": [
             "More frequent shift changes",
