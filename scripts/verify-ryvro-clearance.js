@@ -24,6 +24,8 @@ const DOMAIN_CANDIDATES = [
   'ryvro.net',
   'ryvro.org',
   'useryvro.com',
+  'tryryvro.com',
+  'getryvroapp.com',
 ];
 
 const SOCIAL_URLS = [
