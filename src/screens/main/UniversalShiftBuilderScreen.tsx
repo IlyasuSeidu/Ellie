@@ -818,13 +818,47 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
         status: result.status,
         confidence: result.confidence,
         has_draft: Boolean(result.scheduleDraft),
+        parser_source: result.parserSource,
+        fallback_reason: result.fallbackReason,
+        question_count: result.questions.length,
+        warning_count: result.warnings.length,
       });
+      Analytics.track('shift_builder_ai_parse_completed', {
+        status: result.status,
+        parser_source: result.parserSource,
+        fallback_reason: result.fallbackReason,
+        has_draft: Boolean(result.scheduleDraft),
+      });
+      if (result.parserSource === 'local_fallback') {
+        Analytics.track('shift_builder_ai_fallback_used', {
+          fallback_reason: result.fallbackReason ?? 'unknown',
+          prompt_length: aiPrompt.trim().length,
+          has_draft: Boolean(result.scheduleDraft),
+        });
+      }
+      if (result.status === 'needs_clarification') {
+        Analytics.track('shift_builder_ai_clarification_needed', {
+          parser_source: result.parserSource,
+          question_count: result.questions.length,
+          has_draft: Boolean(result.scheduleDraft),
+        });
+      }
       setAiResult(result);
       setAiReviewVisible(true);
     } catch (err) {
       if (err instanceof ShiftScheduleParserError) {
+        Analytics.track('shift_builder_ai_parse_failed', {
+          code: err.code,
+          retryable: err.retryable,
+          prompt_length: aiPrompt.trim().length,
+        });
         setAiError(err.message);
       } else {
+        Analytics.track('shift_builder_ai_parse_failed', {
+          code: 'unknown',
+          retryable: false,
+          prompt_length: aiPrompt.trim().length,
+        });
         setAiError(t('builder.aiGenericError'));
       }
     } finally {
@@ -840,6 +874,10 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
 
       const followUpAbort = new AbortController();
       try {
+        Analytics.track('shift_builder_ai_follow_up_submitted', {
+          prompt_length: prompt.length,
+          had_existing_draft: Boolean(aiResult?.scheduleDraft),
+        });
         const result = await parseShiftScheduleDescription(
           {
             prompt,
@@ -850,8 +888,37 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
           },
           followUpAbort.signal
         );
+        Analytics.track('shift_builder_ai_parse_completed', {
+          status: result.status,
+          parser_source: result.parserSource,
+          fallback_reason: result.fallbackReason,
+          has_draft: Boolean(result.scheduleDraft),
+          is_follow_up: true,
+        });
+        if (result.parserSource === 'local_fallback') {
+          Analytics.track('shift_builder_ai_fallback_used', {
+            fallback_reason: result.fallbackReason ?? 'unknown',
+            prompt_length: prompt.length,
+            has_draft: Boolean(result.scheduleDraft),
+            is_follow_up: true,
+          });
+        }
+        if (result.status === 'needs_clarification') {
+          Analytics.track('shift_builder_ai_clarification_needed', {
+            parser_source: result.parserSource,
+            question_count: result.questions.length,
+            has_draft: Boolean(result.scheduleDraft),
+            is_follow_up: true,
+          });
+        }
         setAiResult(result);
       } catch (err) {
+        Analytics.track('shift_builder_ai_parse_failed', {
+          code: err instanceof ShiftScheduleParserError ? err.code : 'unknown',
+          retryable: err instanceof ShiftScheduleParserError ? err.retryable : false,
+          prompt_length: prompt.length,
+          is_follow_up: true,
+        });
         Alert.alert(
           t('builder.followUpFailed'),
           err instanceof ShiftScheduleParserError ? err.message : t('builder.tryAgain')
@@ -868,6 +935,8 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
       sequence_length: draft.sequence.length,
       definition_count: draft.shiftDefinitions.length,
       confidence: draft.aiDraftMeta?.confidence,
+      parser_source: draft.aiDraftMeta?.parserSource,
+      fallback_reason: draft.aiDraftMeta?.fallbackReason,
     });
     setSchedule(draft);
     setIsDirty(true);
@@ -878,8 +947,14 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
   }, []);
 
   const handleAiEditManually = useCallback(() => {
+    Analytics.track('shift_builder_ai_manual_edit_after_draft', {
+      status: aiResult?.status,
+      parser_source: aiResult?.parserSource,
+      fallback_reason: aiResult?.fallbackReason,
+      has_draft: Boolean(aiResult?.scheduleDraft),
+    });
     setAiReviewVisible(false);
-  }, []);
+  }, [aiResult]);
 
   const handleAiDiscard = useCallback(() => {
     setAiReviewVisible(false);
@@ -974,6 +1049,8 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
         definition_count: finalSchedule.shiftDefinitions.length,
         source: finalSchedule.source,
         entry_point: entryPoint,
+        ai_parser_source: finalSchedule.aiDraftMeta?.parserSource,
+        ai_fallback_reason: finalSchedule.aiDraftMeta?.fallbackReason,
       });
       setIsDirty(false);
       if (isOnboardingEntry) {

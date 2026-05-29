@@ -383,6 +383,10 @@ const universalShiftScheduleBaseSchema = z.object({
       confidence: z.number().min(0).max(1),
       assumptions: z.array(z.string()),
       unresolvedQuestions: z.array(z.string()),
+      parserSource: z.enum(['remote_ai', 'local_fallback']).optional(),
+      fallbackReason: z
+        .enum(['not_configured', 'not_found', 'server_error', 'network_error', 'timeout'])
+        .optional(),
     })
     .optional(),
 });

@@ -18,6 +18,7 @@ const result: ShiftScheduleParserResult = {
   questions: [],
   warnings: [],
   confidence: 0.86,
+  parserSource: 'remote_ai',
   scheduleDraft: {
     version: 3,
     name: 'AI Draft',

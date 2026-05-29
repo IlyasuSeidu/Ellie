@@ -41,6 +41,7 @@ Completed in the current working tree:
 - Hardened tracked generated-content guidance and publishable build-in-public packs so they use Ryvro naming, broad shift-worker discovery tags, and FIFO/shift-worker audience language instead of stale Ellie or mining-only tags.
 - Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the latest cleanup. Latest pushed CI run for this branch passed on 2026-05-29.
 - Added built-in fallback parser regression coverage across 20 shift-worker industry prompts so the AI builder fallback is proven beyond mining/FIFO examples.
+- Added AI builder fallback metadata, friendlier fallback copy, and analytics events for parser completion, local fallback use, clarification, draft acceptance, manual edit after draft, and save context.
 
 Still pending outside this repo or intentionally kept for compatibility:
 
@@ -1358,6 +1359,7 @@ Identity:
 Completed P0 tasks:
 Completed P1 tasks:
 - RB-023 parser tests for 20 industry phrases: covered by `ShiftScheduleParserService.test.ts`.
+- RB-024 AI fallback telemetry and copy: parser results now expose `parserSource` / `fallbackReason`, local fallback drafts persist that metadata, the review sheet shows plain-language fallback copy, and `UniversalShiftBuilderScreen` emits completion, fallback, clarification, acceptance, manual-edit, and save analytics.
 Deferred P2 tasks:
 
 Remaining old-term hits:

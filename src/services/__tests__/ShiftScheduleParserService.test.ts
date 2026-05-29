@@ -177,6 +177,8 @@ describe('parseShiftScheduleDescription - error conditions', () => {
     const result = await parseShiftScheduleDescription(makeRequest('I work 4 on 4 off'));
 
     expect(result.status).toBe('draft');
+    expect(result.parserSource).toBe('local_fallback');
+    expect(result.fallbackReason).toBe('not_configured');
     expect(result.scheduleDraft?.sequence).toHaveLength(8);
     expect(mockFetch).not.toHaveBeenCalled();
   });
@@ -200,7 +202,9 @@ describe('parseShiftScheduleDescription - error conditions', () => {
     abortError.name = 'AbortError';
     mockFetch.mockRejectedValue(abortError);
 
-    await expect(parseShiftScheduleDescription(makeRequest())).rejects.toMatchObject({
+    await expect(
+      parseShiftScheduleDescription(makeRequest('unknown pattern'))
+    ).rejects.toMatchObject({
       code: 'TIMEOUT',
     });
   });
@@ -216,9 +220,48 @@ describe('parseShiftScheduleDescription - error conditions', () => {
   it('throws SERVER_ERROR on a 500 response', async () => {
     mockFetch.mockReturnValue(fetchError(500));
 
-    await expect(parseShiftScheduleDescription(makeRequest())).rejects.toMatchObject({
+    await expect(
+      parseShiftScheduleDescription(makeRequest('unknown pattern'))
+    ).rejects.toMatchObject({
       code: 'SERVER_ERROR',
     });
+  });
+
+  it('falls back to the built-in parser when a 500 response interrupts a recognizable prompt', async () => {
+    mockFetch.mockReturnValue(fetchError(500));
+
+    const result = await parseShiftScheduleDescription(makeRequest('I work 4 on 4 off'));
+
+    expect(result.status).toBe('draft');
+    expect(result.parserSource).toBe('local_fallback');
+    expect(result.fallbackReason).toBe('server_error');
+    expect(result.scheduleDraft?.aiDraftMeta?.parserSource).toBe('local_fallback');
+    expect(result.scheduleDraft?.aiDraftMeta?.fallbackReason).toBe('server_error');
+    expect(result.warnings).toContain(
+      'Ryvro used its built-in pattern builder because online AI was unavailable. Review the draft before saving.'
+    );
+  });
+
+  it('falls back to the built-in parser when a timeout interrupts a recognizable prompt', async () => {
+    const abortError = new Error('The user aborted a request.');
+    abortError.name = 'AbortError';
+    mockFetch.mockRejectedValue(abortError);
+
+    const result = await parseShiftScheduleDescription(makeRequest('I work 4 on 4 off'));
+
+    expect(result.status).toBe('draft');
+    expect(result.parserSource).toBe('local_fallback');
+    expect(result.fallbackReason).toBe('timeout');
+  });
+
+  it('falls back to the built-in parser when a network error interrupts a recognizable prompt', async () => {
+    mockFetch.mockRejectedValue(new Error('Network request failed'));
+
+    const result = await parseShiftScheduleDescription(makeRequest('I work 4 on 4 off'));
+
+    expect(result.status).toBe('draft');
+    expect(result.parserSource).toBe('local_fallback');
+    expect(result.fallbackReason).toBe('network_error');
   });
 
   it('throws SERVER_ERROR on a 400 response', async () => {
@@ -239,6 +282,8 @@ describe('parseShiftScheduleDescription - error conditions', () => {
     );
 
     expect(result.status).toBe('draft');
+    expect(result.parserSource).toBe('local_fallback');
+    expect(result.fallbackReason).toBe('not_found');
     expect(result.scheduleDraft?.source).toBe('ai');
     expect(result.scheduleDraft?.sequence).toHaveLength(7);
     expect(result.scheduleDraft?.shiftDefinitions.map((definition) => definition.name)).toEqual([
@@ -256,7 +301,7 @@ describe('parseShiftScheduleDescription - error conditions', () => {
       crossesMidnight: true,
     });
     expect(result.warnings).toContain(
-      'AI parser endpoint was unavailable, so Ryvro used the built-in pattern parser.'
+      'Ryvro used its built-in pattern builder because online AI was unavailable. Review the draft before saving.'
     );
   });
 
@@ -376,7 +421,7 @@ describe('parseShiftScheduleDescription - error conditions', () => {
       expect(result.scheduleDraft?.shiftDefinitions.length).toBeGreaterThan(0);
       expect(result.scheduleDraft?.sequence.length).toBeGreaterThan(0);
       expect(result.warnings).toContain(
-        'AI parser endpoint was unavailable, so Ryvro used the built-in pattern parser.'
+        'Ryvro used its built-in pattern builder because online AI was unavailable. Review the draft before saving.'
       );
     }
     expect(mockFetch).not.toHaveBeenCalled();
@@ -442,7 +487,9 @@ describe('parseShiftScheduleDescription - error conditions', () => {
   it('throws NETWORK_ERROR on a generic fetch network failure', async () => {
     mockFetch.mockRejectedValue(new TypeError('Failed to fetch'));
 
-    await expect(parseShiftScheduleDescription(makeRequest())).rejects.toMatchObject({
+    await expect(
+      parseShiftScheduleDescription(makeRequest('unknown pattern'))
+    ).rejects.toMatchObject({
       code: 'NETWORK_ERROR',
     });
   });
