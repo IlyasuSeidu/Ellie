@@ -181,11 +181,16 @@ describe('Universal shift templates', () => {
     const localeRoot = path.join(process.cwd(), 'src/i18n/locales');
     const englishPlaceholders = {
       aiUnavailable: 'AI builder not available - build manually below',
+      aiTitle: 'Build with AI',
+      aiPromptPlaceholder: 'Describe your schedule... e.g. 4 days on, 4 nights, 4 off',
       holidayTitle: 'Holiday exceptions',
+      holidayCountryA11y: 'Holiday country code',
       noHolidaysMessage:
         'No public holiday data is available for that country/year yet. You can add a holiday exception manually below.',
       holidayImportFailedTitle: 'Holiday import failed',
       holidayImportFailedMessage: 'Try again, or add the holiday manually.',
+      oneOffTitle: 'One-off changes',
+      calendarTitle: 'Calendar import/export',
       calendarExportBlockedTitle: 'Calendar export blocked',
       calendarExportDatesTitle: 'Check export dates',
       calendarExportDatesError: 'Use a valid YYYY-MM-DD start date and end date.',
@@ -196,10 +201,17 @@ describe('Universal shift templates', () => {
       calendarImportFailedMessage: 'The selected calendar file could not be imported.',
       calendarExportStartA11y: 'Calendar export start date',
       calendarExportEndA11y: 'Calendar export end date',
+      calendarIncludeOffA11y: 'Include off days in exported calendar',
       calendarExportA11y: 'Export shift calendar',
       calendarExport: 'Export calendar',
       calendarImportA11y: 'Import roster calendar',
       calendarImport: 'Import roster',
+      defaultScheduleName: 'My Schedule',
+      aiGenericError: 'Something went wrong. Please try again.',
+      aiRetryA11y: 'Retry AI',
+      customDayLabel: 'Custom day label',
+      saveScheduleA11y: 'Save schedule',
+      saveSchedule: 'Save schedule',
     };
     const requiredKeys = [
       'templateTitle',
