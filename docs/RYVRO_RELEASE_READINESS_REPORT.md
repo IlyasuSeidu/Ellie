@@ -20,7 +20,7 @@ Completed and guarded in the current branch:
 
 ## Current Public Clearance Evidence
 
-`npm run release:clearance` was run on 2026-05-29 at `2026-05-29T17:04:00.191Z`.
+`npm run release:clearance` was run on 2026-05-29 at `2026-05-29T19:51:39.887Z`.
 
 - Apple public software search returned 5 fuzzy results and no exact `Ryvro` or `Ryvro Shift Planner` app result.
 - Google Play public search returned no exact `Ryvro` or `Ryvro Shift Planner` result text; visible fuzzy names were `Rydoo` and `Rydora`.
@@ -30,7 +30,7 @@ Completed and guarded in the current branch:
 - `ryvro.com` is already registered through GoDaddy/Afternic and should not be treated as available unless purchased from the current registrant.
 - `ryvro.app`, `ryvro.co`, `ryvro.io`, `ryvro.ai`, `ryvro.net`, and `ryvro.org` had no public DNS records in the preflight, but registrar availability still needs direct confirmation.
 - X, Instagram, and TikTok `@ryvro` returned public `200` responses; this does not prove ownership or availability.
-- YouTube `@ryvro` returned public `404`; LinkedIn `company/ryvro` returned `999`; both still require logged-in reservation checks.
+- YouTube `@ryvro` returned public `404`; LinkedIn `company/ryvro` returned public `404`; both still require logged-in reservation checks.
 
 ## Verification Completed
 
@@ -47,6 +47,8 @@ Completed and guarded in the current branch:
 - Latest completed pushed GitHub Actions baseline for the Phase 9 code change: CI run `26652464303` passed for commit `b2c475b`.
 - iOS release simulator build command `npm run test:e2e:build:ios`: previously passed on 2026-05-29T15:22:59Z with built plist values `CFBundleDisplayName = Ryvro`, `CFBundleName = Ryvro`, and `CFBundleIdentifier = com.ryvro.shiftplanner`.
 - Android debug build passed on 2026-05-29 with `cd android && ./gradlew assembleDebug`; the generated APK reported package `com.ryvro.shiftplanner`, versionCode `1`, and versionName `1.0.0`.
+- Android release-style Detox build passed on 2026-05-29 with `DETOX_ANDROID_AVD=Medium_Phone_API_36.0 DETOX_ANDROID_ARCHS=arm64-v8a npx detox build --configuration android.release`.
+- Android release-style Detox dashboard smoke passed on 2026-05-29 with `DETOX_ANDROID_AVD=Medium_Phone_API_36.0 DETOX_ANDROID_ARCHS=arm64-v8a npx detox test --configuration android.release e2e/dashboard.test.ts`: 15 dashboard smoke tests on `Medium_Phone_API_36.0`.
 
 ## Device QA Notes
 
@@ -55,12 +57,13 @@ Completed:
 - Available simulator build/install identity was verified through the Detox iOS release build path and generated plist evidence.
 - Small-screen simulator QA passed on an iPhone XS Max simulator with 15 dashboard smoke tests.
 - Android build identity was verified from the debug APK package metadata.
+- Android release-style emulator dashboard QA passed on `Medium_Phone_API_36.0` with 15 Detox dashboard smoke tests.
 
 Still pending:
 
 - Physical iPhone 13 fresh install, auth, Universal Builder, dashboard color/icon, reminders, exceptions, and import/export QA.
 - Physical iPhone XS Max QA if physical-device coverage remains a release requirement; the iPhone XS Max simulator small-screen smoke has passed.
-- Android install and Android auth/Universal Builder QA. The build passed, but no Android device or emulator was attached (`adb devices` returned no devices, and `emulator` was not available on PATH).
+- Physical Android device QA plus Android auth and Universal Builder flows. Android release-style build and dashboard smoke now pass on an emulator, but this is not complete production device coverage.
 - Google Sign-In and Apple Sign-In smoke tests after fresh Firebase/OAuth/Apple console configuration is generated for `com.ryvro.shiftplanner`.
 
 ## Account-Only Work

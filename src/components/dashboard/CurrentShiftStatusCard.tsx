@@ -434,19 +434,25 @@ export const CurrentShiftStatusCard: React.FC<CurrentShiftStatusCardProps> = ({
                       style={[styles.liveDot, liveDotStyle]}
                     />
                   )}
-                  <Ionicons
+                  <View
+                    collapsable={false}
                     testID="shift-status-badge-icon"
-                    name={
-                      universalDisplay
-                        ? (universalDisplay.icon as keyof typeof Ionicons.glyphMap)
-                        : shiftType === 'off'
-                          ? 'moon-outline'
-                          : 'calendar'
-                    }
-                    size={12}
-                    color={shiftType === 'off' ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.96)'}
-                    style={{ marginRight: 5 }}
-                  />
+                    style={styles.badgeIconWrapper}
+                  >
+                    <Ionicons
+                      name={
+                        universalDisplay
+                          ? (universalDisplay.icon as keyof typeof Ionicons.glyphMap)
+                          : shiftType === 'off'
+                            ? 'moon-outline'
+                            : 'calendar'
+                      }
+                      size={12}
+                      color={
+                        shiftType === 'off' ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.96)'
+                      }
+                    />
+                  </View>
                   <Animated.Text
                     style={
                       isOnShift
@@ -602,6 +608,11 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: '#4CAF50',
     marginRight: 6,
+  },
+  badgeIconWrapper: {
+    width: 12,
+    height: 12,
+    marginRight: 5,
   },
   liveText: {
     fontSize: 12,

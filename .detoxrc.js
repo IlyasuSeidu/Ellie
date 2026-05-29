@@ -1,3 +1,6 @@
+const androidAvdName = process.env.DETOX_ANDROID_AVD || 'TestEmulator';
+const androidArchitectures = process.env.DETOX_ANDROID_ARCHS || 'x86_64,arm64-v8a';
+
 /** @type {Detox.DetoxConfig} */
 module.exports = {
   testRunner: {
@@ -13,7 +16,7 @@ module.exports = {
     'ios.release': {
       type: 'ios.app',
       build: [
-        'E2E_TEST_MODE=1 xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 16" -derivedDataPath ios/build build',
+        'E2E_TEST_MODE=1 EXPO_PUBLIC_E2E_TEST_MODE=1 xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 16" -derivedDataPath ios/build build',
         'APP="ios/build/Build/Products/Release-iphonesimulator/Ryvro.app"',
         'find "$APP/Frameworks" -type f | while read -r f; do if file "$f" | grep -q "Mach-O"; then codesign --force --sign - --timestamp=none "$f"; fi; done',
         'find "$APP/Frameworks" -type d -name "*.framework" -exec codesign --force --sign - --timestamp=none {} \\;',
@@ -23,7 +26,7 @@ module.exports = {
     },
     'android.release': {
       type: 'android.apk',
-      build: 'cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release',
+      build: `cd android && E2E_TEST_MODE=1 EXPO_PUBLIC_E2E_TEST_MODE=1 ./gradlew --no-daemon --no-parallel :app:assembleRelease :app:assembleAndroidTest -DtestBuildType=release -PreactNativeArchitectures=${androidArchitectures}`,
       binaryPath: './android/app/build/outputs/apk/release/app-release.apk',
       testBinaryPath:
         './android/app/build/outputs/apk/androidTest/release/app-release-androidTest.apk',
@@ -45,7 +48,7 @@ module.exports = {
     emulator: {
       type: 'android.emulator',
       device: {
-        avdName: 'TestEmulator',
+        avdName: androidAvdName,
       },
     },
   },

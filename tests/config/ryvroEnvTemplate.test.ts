@@ -243,17 +243,21 @@ describe('Ryvro environment template', () => {
     );
     const clearanceEvidence = `${externalSetup}\n${audit}`;
 
-    expect(clearanceEvidence).toContain('2026-05-29 at 17:04:00Z');
-    expect(clearanceEvidence).toContain('2026-05-29T17:04:00.191Z');
+    expect(clearanceEvidence).toContain('2026-05-29 at 19:51:39Z');
+    expect(clearanceEvidence).toContain('2026-05-29T19:51:39.887Z');
     expect(clearanceEvidence).toContain('no exact `Ryvro` or `Ryvro Shift Planner` app result');
     expect(clearanceEvidence).toContain('Visible fuzzy names included `Rydoo` and `Rydora`');
     expect(clearanceEvidence).toContain('Chrome read-only Google Play search');
+    expect(clearanceEvidence).toContain('LinkedIn `company/ryvro`: public URL returned `404`');
     expect(clearanceEvidence).toContain('Formal trademark/legal clearance');
     expect(clearanceEvidence).toContain('App Store Connect and Google Play Console name checks');
     expect(clearanceEvidence).toContain('Play Console title/package availability');
     expect(clearanceEvidence).toContain('reserve directly while logged in');
     expect(clearanceEvidence).not.toContain('2026-05-29 at 14:36:21Z');
     expect(clearanceEvidence).not.toContain('2026-05-29T14:36:21.446Z');
+    expect(clearanceEvidence).not.toContain(
+      'LinkedIn `company/ryvro`: public URL returned bot-protection status `999`'
+    );
   });
 
   it('keeps the Ryvro release readiness report explicit about evidence and remaining blockers', () => {
@@ -278,12 +282,88 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('iPhone XS Max simulator');
     expect(readinessReport).toContain('Small-screen simulator QA passed on an iPhone XS Max');
     expect(readinessReport).toContain('Android debug build passed on 2026-05-29');
+    expect(readinessReport).toContain('Android release-style Detox build passed on 2026-05-29');
+    expect(readinessReport).toContain(
+      'Android release-style Detox dashboard smoke passed on 2026-05-29'
+    );
+    expect(readinessReport).toContain('Medium_Phone_API_36.0');
     expect(readinessReport).toContain('com.ryvro.shiftplanner');
-    expect(readinessReport).toContain('no Android device or emulator was attached');
+    expect(readinessReport).toContain('15 Detox dashboard smoke tests');
     expect(readinessReport).toContain('Physical iPhone 13');
     expect(readinessReport).toContain('Physical iPhone XS Max');
-    expect(readinessReport).toContain('Android install and Android auth/Universal Builder QA');
+    expect(readinessReport).toContain(
+      'Physical Android device QA plus Android auth and Universal Builder flows'
+    );
     expect(readinessReport).toContain('not as fully launch-cleared production release evidence');
+    expect(readinessReport).not.toContain('no Android device or emulator was attached');
+  });
+
+  it('keeps Android release-style Detox E2E wiring reproducible', () => {
+    const detoxConfig = fs.readFileSync(path.join(process.cwd(), '.detoxrc.js'), 'utf8');
+    const androidBuildGradle = fs.readFileSync(
+      path.join(process.cwd(), 'android/app/build.gradle'),
+      'utf8'
+    );
+    const androidRootBuildGradle = fs.readFileSync(
+      path.join(process.cwd(), 'android/build.gradle'),
+      'utf8'
+    );
+    const androidMainApplication = fs.readFileSync(
+      path.join(
+        process.cwd(),
+        'android/app/src/main/java/com/ryvro/shiftplanner/MainApplication.kt'
+      ),
+      'utf8'
+    );
+    const androidE2EModule = fs.readFileSync(
+      path.join(
+        process.cwd(),
+        'android/app/src/main/java/com/ryvro/shiftplanner/E2EConfigModule.kt'
+      ),
+      'utf8'
+    );
+    const androidDetoxTest = fs.readFileSync(
+      path.join(
+        process.cwd(),
+        'android/app/src/androidTest/java/com/ryvro/shiftplanner/DetoxTest.java'
+      ),
+      'utf8'
+    );
+    const appConfig = fs.readFileSync(path.join(process.cwd(), 'app.config.js'), 'utf8');
+    const e2eUtils = fs.readFileSync(path.join(process.cwd(), 'src/utils/e2e.ts'), 'utf8');
+    const e2eStorage = fs.readFileSync(path.join(process.cwd(), 'e2e/helpers/storage.ts'), 'utf8');
+    const currentShiftStatusCard = fs.readFileSync(
+      path.join(process.cwd(), 'src/components/dashboard/CurrentShiftStatusCard.tsx'),
+      'utf8'
+    );
+
+    expect(detoxConfig).toContain('DETOX_ANDROID_AVD');
+    expect(detoxConfig).toContain('DETOX_ANDROID_ARCHS');
+    expect(detoxConfig).toContain('EXPO_PUBLIC_E2E_TEST_MODE=1');
+    expect(detoxConfig).toContain(':app:assembleRelease :app:assembleAndroidTest');
+    expect(detoxConfig).toContain('--no-daemon --no-parallel');
+
+    expect(androidRootBuildGradle).toContain('node_modules/detox/Detox-android');
+    expect(androidBuildGradle).toContain('buildConfigField "boolean", "E2E_TEST_MODE"');
+    expect(androidBuildGradle).toContain('debuggable isE2ETestMode');
+    expect(androidBuildGradle).toContain("testBuildType 'release'");
+    expect(androidBuildGradle).toContain('testInstrumentationRunner');
+    expect(androidBuildGradle).toContain('androidTestImplementation("com.wix:detox:20.47.0")');
+    expect(androidBuildGradle).toContain('protobuf-lite');
+    expect(androidMainApplication).toContain('E2EConfigPackage');
+    expect(androidE2EModule).toContain('RyvroE2EConfig');
+    expect(androidE2EModule).toContain('BuildConfig.E2E_TEST_MODE');
+    expect(androidDetoxTest).toContain('Detox.runTests');
+
+    expect(appConfig).toContain('expoUpdates.enabled = false');
+    expect(e2eUtils).toContain('RyvroE2EConfig');
+    expect(e2eUtils).toContain('EXPO_PUBLIC_E2E_TEST_MODE');
+    expect(e2eUtils).toContain('manifest2');
+    expect(e2eStorage).toContain('PRAGMA user_version = 1');
+    expect(e2eStorage).toContain('run-as');
+    expect(e2eStorage).toContain('RKStorage');
+    expect(currentShiftStatusCard).toContain('collapsable={false}');
+    expect(currentShiftStatusCard).toContain('shift-status-badge-icon');
   });
 
   it('keeps the store listing pack submission-ready without placeholder review contacts', () => {

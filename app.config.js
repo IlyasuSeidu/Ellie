@@ -35,6 +35,7 @@ module.exports = ({ config = {} }) => {
   const expoUpdates = {
     ...(config.updates || {}),
   };
+  const isE2ETestMode = process.env.E2E_TEST_MODE === '1' || process.env.E2E_TEST_MODE === 'true';
   const iosGoogleServicesFile =
     process.env.EXPO_IOS_GOOGLE_SERVICES_FILE ||
     process.env.IOS_GOOGLE_SERVICES_FILE ||
@@ -46,6 +47,11 @@ module.exports = ({ config = {} }) => {
 
   if (!expoUpdates.url && easProjectId) {
     expoUpdates.url = `https://u.expo.dev/${easProjectId}`;
+  }
+
+  if (isE2ETestMode) {
+    expoUpdates.enabled = false;
+    delete expoUpdates.url;
   }
 
   // Use appVersion runtime in non-production to avoid local-vs-cloud fingerprint drift in dev builds.
@@ -139,6 +145,7 @@ module.exports = ({ config = {} }) => {
         process.env.REVENUECAT_API_KEY ||
         '',
       E2E_TEST_MODE: process.env.E2E_TEST_MODE || '',
+      EXPO_PUBLIC_E2E_TEST_MODE: process.env.EXPO_PUBLIC_E2E_TEST_MODE || '',
       API_BASE_URL: process.env.API_BASE_URL || 'https://api.getryvro.com',
       API_TIMEOUT: process.env.API_TIMEOUT || '30000',
       RYVRO_BRAIN_URL:
@@ -160,6 +167,7 @@ module.exports = ({ config = {} }) => {
       UNIVERSAL_SHIFT_BUILDER_ENABLED: process.env.UNIVERSAL_SHIFT_BUILDER_ENABLED || '',
       AI_SHIFT_BUILDER_ENABLED: process.env.AI_SHIFT_BUILDER_ENABLED || '',
       E2E_TEST_MODE: process.env.E2E_TEST_MODE || '',
+      EXPO_PUBLIC_E2E_TEST_MODE: process.env.EXPO_PUBLIC_E2E_TEST_MODE || '',
       PICOVOICE_ACCESS_KEY: process.env.PICOVOICE_ACCESS_KEY || '',
       WAKE_WORD_PROVIDER: process.env.WAKE_WORD_PROVIDER || '',
       WAKE_WORD_ENABLED: process.env.WAKE_WORD_ENABLED || '',

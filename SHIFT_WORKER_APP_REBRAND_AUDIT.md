@@ -52,7 +52,7 @@ Completed in the current working tree:
 - Updated Detox iOS release QA config to build/install the generated `Ryvro.app` product on the available iPhone 16 simulator instead of the retired `EllieMinerShiftAssistant.app` path; `npm run test:e2e:build:ios` passed on 2026-05-29T15:22:59Z and the built plist reports `CFBundleDisplayName = Ryvro`, `CFBundleName = Ryvro`, and `CFBundleIdentifier = com.ryvro.shiftplanner`.
 - Added an iPhone XS Max simulator release QA target and passed the seeded dashboard smoke on a clean install: `E2E_TEST_MODE=1 npx detox test --configuration ios.release.xsmax e2e/dashboard.test.ts` passed 15/15 tests on 2026-05-29.
 - Added an E2E RevenueCat guard so release simulator QA does not load RevenueCat with `test_` API keys, which trigger RevenueCat's native release-mode test-key protection alert.
-- Built the Android debug APK on 2026-05-29 with package `com.ryvro.shiftplanner`; Android install and auth/Universal Builder QA remain pending because no Android device or emulator was attached.
+- Built the Android debug APK on 2026-05-29 with package `com.ryvro.shiftplanner`; Android release-style Detox build and seeded dashboard smoke now pass on `Medium_Phone_API_36.0` with 15/15 dashboard tests. Physical Android device QA plus Android auth and Universal Builder flows remain pending.
 
 Still pending outside this repo or intentionally kept for compatibility:
 
@@ -111,7 +111,7 @@ Latest repeatable public preflight command:
 npm run release:clearance
 ```
 
-Result captured at `2026-05-29T17:04:00.191Z`:
+Result captured at `2026-05-29T19:51:39.887Z`:
 
 - Apple public software search: no exact `Ryvro` or `Ryvro Shift Planner` app result returned across 5 fuzzy results. Public search still does not prove App Store Connect name availability.
 - Google Play public search: no exact `Ryvro` or `Ryvro Shift Planner` result text found. Visible fuzzy names included `Rydoo` and `Rydora`. Public search still does not prove Play Console title/package availability.
@@ -123,7 +123,7 @@ Result captured at `2026-05-29T17:04:00.191Z`:
 - `ryvro.app`, `ryvro.co`, `ryvro.io`, `ryvro.ai`, `ryvro.net`, and `ryvro.org`: no public DNS record in the preflight, but registrar availability still needs direct confirmation.
 - X, Instagram, and TikTok `@ryvro`: public URLs returned `200`; this is not reliable handle availability proof and requires logged-in reservation.
 - YouTube `@ryvro`: public URL returned `404`; still reserve directly while logged in.
-- LinkedIn `company/ryvro`: public URL returned bot-protection status `999`; still check and reserve directly while logged in.
+- LinkedIn `company/ryvro`: public URL returned `404`; still check and reserve directly while logged in.
 
 The account-only checks remain unchanged: App Store Connect, Google Play Console, registrar purchase, social reservation, and formal trademark/legal clearance must be completed by the account owner or counsel.
 
@@ -1393,7 +1393,7 @@ Device QA:
 - iOS simulator: iPhone 16 dashboard smoke passed 15/15; iPhone XS Max simulator dashboard smoke passed 15/15 after clean install.
 - iPhone 13:
 - iPhone XS Max: simulator equivalent passed; physical device remains pending if required.
-- Android: debug APK build passed with package `com.ryvro.shiftplanner`; install pending due no attached device/emulator.
+- Android: debug APK identity passed with package `com.ryvro.shiftplanner`; release-style Detox build and seeded dashboard smoke passed 15/15 on `Medium_Phone_API_36.0`; physical device/auth/Universal Builder QA remains pending.
 
 Auth QA:
 - Email:
@@ -1637,7 +1637,8 @@ Phase gate:
 - [ ] Universal Builder check on iPhone 13.
 - [ ] Fresh install on iPhone XS Max when available.
 - [x] Small-screen visual QA on iPhone XS Max or equivalent simulator.
-- [ ] Android build/install. Build passed; install remains pending because no Android device or emulator was attached.
+- [x] Android release-style build/install dashboard smoke on emulator. `DETOX_ANDROID_AVD=Medium_Phone_API_36.0 DETOX_ANDROID_ARCHS=arm64-v8a npx detox test --configuration android.release e2e/dashboard.test.ts` passed 15/15 dashboard tests.
+- [ ] Android physical device QA.
 - [ ] Android auth check.
 - [ ] Android Universal Builder check.
 
