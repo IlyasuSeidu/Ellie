@@ -20,11 +20,10 @@ Completed and guarded in the current branch:
 
 ## Current Public Clearance Evidence
 
-`npm run release:clearance` was run on 2026-05-29 at `2026-05-29T19:51:39.887Z`.
+`npm run release:clearance` was run on 2026-05-29 at `2026-05-29T21:22:25.775Z`.
 
 - Apple public software search returned 5 fuzzy results and no exact `Ryvro` or `Ryvro Shift Planner` app result.
 - Google Play public search returned no exact `Ryvro` or `Ryvro Shift Planner` result text; visible fuzzy names were `Rydoo` and `Rydora`.
-- Chrome read-only Google Play search for `Ryvro` showed visible public results such as `Rolify`, `Land Rover Remote`, `Rvolution Remote`, `Rydoo`, and `Rydora`, with no exact `Ryvro` or `Ryvro Shift Planner` visible.
 - USPTO Trademark Search was reachable, but this is not legal trademark clearance.
 - `getryvro.com`, `useryvro.com`, `tryryvro.com`, and `getryvroapp.com` had no public DNS records and Verisign `.com` returned no match.
 - `ryvro.com` is already registered through GoDaddy/Afternic and should not be treated as available unless purchased from the current registrant.
