@@ -184,14 +184,14 @@
           "author": "Rotating shift worker — 4/4 pattern"
         },
         {
-          "quote": "The same builder handles our odd site roster and one-off swaps.",
+          "quote": "The same builder handles our odd work roster and one-off swaps.",
           "author": "Operations worker — custom rotation"
         }
       ],
       "features": {
         "fullYear": "See your full year — every shift, month by month",
         "askSchedule": "Ask Ryvro anything — \"When's my next day off?\"",
-        "offline": "Works in low-signal sites, camps, plants, and commute zones",
+        "offline": "Works in low-signal workplaces, camps, plants, and commute zones",
         "leavePlanning": "Plan leave, public holidays, and swaps without breaking your rotation",
         "aiPowered": "AI-assisted setup for your exact shift pattern",
         "fullYearFIFO": "See your full year — every work block, every R&R",

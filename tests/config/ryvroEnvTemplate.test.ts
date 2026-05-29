@@ -462,6 +462,9 @@ describe('Ryvro environment template', () => {
       const common = JSON.parse(fs.readFileSync(file, 'utf8')) as {
         subscription?: {
           paywall?: {
+            features?: {
+              offline?: string;
+            };
             socialProof?: string;
             testimonials?: Array<{ author?: string; quote?: string }>;
           };
@@ -470,6 +473,7 @@ describe('Ryvro environment template', () => {
       const paywall = common.subscription?.paywall;
       const launchProof = [
         paywall?.socialProof ?? '',
+        paywall?.features?.offline ?? '',
         ...(paywall?.testimonials ?? []).flatMap((testimonial) => [
           testimonial.author ?? '',
           testimonial.quote ?? '',
@@ -477,6 +481,7 @@ describe('Ryvro environment template', () => {
       ].join('\n');
 
       expect(launchProof).not.toMatch(/underground miner|subterr[aâ]ne|haul truck|drill/i);
+      expect(launchProof).not.toMatch(/site roster|low-signal sites/i);
       expect(launchProof).toMatch(/FIFO|shift|turno|santé|health|security|transport|equipes/i);
     }
   });
@@ -733,6 +738,15 @@ describe('Ryvro environment template', () => {
         };
       };
     };
+    const onboardingLocale = JSON.parse(
+      fs.readFileSync(path.join(process.cwd(), 'src/i18n/locales/en/onboarding.json'), 'utf8')
+    ) as {
+      shiftBuilder?: {
+        inspector?: {
+          location?: string;
+        };
+      };
+    };
     const builderScreen = fs.readFileSync(
       path.join(process.cwd(), 'src/screens/main/UniversalShiftBuilderScreen.tsx'),
       'utf8'
@@ -766,6 +780,7 @@ describe('Ryvro environment template', () => {
     expect(builderScreen).toContain("t('builder.oneOffListSubtitle'");
     expect(shiftInspectorSheet).toContain('Work location (optional)');
     expect(shiftInspectorSheet).toContain('Work location name');
+    expect(onboardingLocale.shiftBuilder?.inspector?.location).toBe('Work location (optional)');
     expect(smartRemindersPanel).toContain('How long to reach your work location');
     expect(calendarUtils).toContain('LOCATION:');
     expect(calendarUtils).toContain('Changed just this day');
@@ -779,6 +794,7 @@ describe('Ryvro environment template', () => {
       profileLocale.shift?.site,
       profileLocale.shift?.siteName,
       profileLocale.shift?.sections?.siteDetails,
+      onboardingLocale.shiftBuilder?.inspector?.location,
       shiftInspectorSheet,
     ].join('\n');
 

@@ -58,6 +58,16 @@ describe('Universal shift templates', () => {
     }
   });
 
+  it('keeps non-mining template copy from inheriting mining or site-specific language', () => {
+    for (const template of UNIVERSAL_SHIFT_TEMPLATES.filter(
+      (candidate) => candidate.industry !== 'mining_fifo'
+    )) {
+      const launchCopy = [template.title, template.subtitle, template.aiPromptExample].join('\n');
+
+      expect(launchCopy).not.toMatch(/\bsite\b|mine|mining|FIFO|fly-in|fly-out/i);
+    }
+  });
+
   it('keeps completed E2E onboarding seeds compatible with the main app gate', () => {
     const completedSeeds = [
       MAIN_APP_SEED,

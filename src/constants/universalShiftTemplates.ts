@@ -106,7 +106,7 @@ export const UNIVERSAL_SHIFT_TEMPLATES: UniversalShiftTemplate[] = [
     id: 'security-4-4',
     industry: 'security',
     title: 'Security 4 Days / 4 Nights / 4 Off',
-    subtitle: 'A common site-security rotation with equal day, night, and rest blocks.',
+    subtitle: 'A common security rotation with equal day, night, and rest blocks.',
     aiPromptExample: 'I work security: 4 days 6am to 6pm, 4 nights 6pm to 6am, then 4 off.',
     schedule: schedule(
       'Security 4/4/4',

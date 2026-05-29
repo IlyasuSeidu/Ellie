@@ -1268,7 +1268,7 @@
       "countsAsNight": "Counts as night shift",
       "color": "Colour",
       "icon": "Icon",
-      "location": "Site / Location (optional)",
+      "location": "Work location (optional)",
       "save": "Save",
       "delete": "Delete shift type",
       "deleteConfirm": {
