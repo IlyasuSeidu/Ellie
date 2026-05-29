@@ -115,6 +115,7 @@ Result captured at `2026-05-29T21:22:25.775Z`:
 
 - Apple public software search: no exact `Ryvro` or `Ryvro Shift Planner` app result returned across 5 fuzzy results. Public search still does not prove App Store Connect name availability.
 - Google Play public search: no exact `Ryvro` or `Ryvro Shift Planner` result text found. Visible fuzzy names included `Rydoo` and `Rydora`. Public search still does not prove Play Console title/package availability.
+- Chrome logged-in Google Play search on 2026-05-29: visible results included `Rolify`, `Rydoo`, and `Rydora`, but no exact `Ryvro` or `Ryvro Shift Planner` result. This still does not prove Play Console title/package availability.
 - USPTO public search app: reachable only through the automated preflight. This is not legal clearance.
 - `getryvro.com`: no public DNS record and Verisign `.com` returned no match.
 - `useryvro.com`, `tryryvro.com`, and `getryvroapp.com`: no public DNS record and Verisign `.com` returned no match.

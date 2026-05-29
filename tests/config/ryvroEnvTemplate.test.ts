@@ -247,6 +247,8 @@ describe('Ryvro environment template', () => {
     expect(clearanceEvidence).toContain('2026-05-29T21:22:25.775Z');
     expect(clearanceEvidence).toContain('no exact `Ryvro` or `Ryvro Shift Planner` app result');
     expect(clearanceEvidence).toContain('Visible fuzzy names included `Rydoo` and `Rydora`');
+    expect(clearanceEvidence).toContain('Chrome logged-in Google Play search on 2026-05-29');
+    expect(clearanceEvidence).toContain('visible results included `Rolify`, `Rydoo`, and `Rydora`');
     expect(clearanceEvidence).toContain('LinkedIn `company/ryvro`: public URL returned `404`');
     expect(clearanceEvidence).toContain('Formal trademark/legal clearance');
     expect(clearanceEvidence).toContain('App Store Connect and Google Play Console name checks');
