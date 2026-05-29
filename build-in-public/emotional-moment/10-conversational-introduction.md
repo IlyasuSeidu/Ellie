@@ -23,7 +23,7 @@ The chatbot:
 - Reduces overwhelm (one question at a time, not four fields staring at you)
 - Feels personal (uses your name: "Great to meet you, John!")
 - Forgives mistakes (long-press any response to edit it)
-- Shows personality (animated mining helmet avatar with breathing animation)
+- Shows personality (animated Ryvro assistant avatar with breathing animation)
 
 For someone coming off a night shift, exhausted, just wanting to set up their calendar—this gentler onboarding matters.
 
@@ -58,7 +58,7 @@ Same information collected. Completely different feeling.
 
 Typing indicators are tricky. Too fast = robotic. Too slow = frustrating. I tested 600ms, 800ms, 1000ms delays. Settled on 800-1000ms—long enough to feel natural, short enough to not waste time.
 
-The breathing avatar (mining helmet that gently scales from 1.0 → 1.05 → 1.0 over 4 seconds) almost got cut. "Too subtle," I thought. But it's that subtlety that makes it work. You don't consciously notice the breathing—you just sense the bot is _present_.
+The breathing avatar (a simple Ryvro assistant mark that gently scales from 1.0 → 1.05 → 1.0 over 4 seconds) almost got cut. "Too subtle," I thought. But it's that subtlety that makes it work. You don't consciously notice the breathing—you just sense the bot is _present_.
 
 **For beginners**: Progressive disclosure means revealing information gradually instead of all at once. Think wizard setup (step 1, step 2, step 3) vs. overwhelming preference page with 50 checkboxes.
 
@@ -237,7 +237,7 @@ Same information collected. Completely different feeling."
 
 **[0:45-1:05] The Detail**
 
-"The mining helmet avatar has a subtle breathing animation—scale 1.0 to 1.05 over 4 seconds. You don't consciously notice it, but it makes the bot feel _present_.
+"The Ryvro assistant avatar has a subtle breathing animation—scale 1.0 to 1.05 over 4 seconds. You don't consciously notice it, but it makes the bot feel _present_.
 
 Typing indicators delay 800 to 1000 milliseconds. Fast enough to not waste time, slow enough to feel natural."
 
@@ -328,7 +328,7 @@ What makes you trust an app? Let me know in the comments."
 ### New Components
 
 1. **ChatAvatar.tsx** (+110 lines)
-   - Circular 40x40px avatar with mining helmet icon
+   - Circular 40x40px Ryvro assistant avatar
    - Breathing animation (scale 1.0 → 1.05 → 1.0 over 4s)
    - White background, gold border
    - Reduced motion support

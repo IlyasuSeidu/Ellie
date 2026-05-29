@@ -287,7 +287,7 @@ Also: I learned React Native Reanimated the hard way. Turns out animations that 
 
 1. **Skip Button**: Currently users MUST wait for animations to finish before tapping Continue. Should add a "Skip" button that appears after 0.5s for impatient users.
 
-2. **Lottie Animations**: Currently using simple opacity/transform animations. Could use Lottie for richer motion graphics (e.g., mining helmet icon animates on). Tradeoff: Bundle size +200KB.
+2. **Lottie Animations**: Currently using simple opacity/transform animations. Could use Lottie for richer motion graphics (e.g., Ryvro mark animates on). Tradeoff: Bundle size +200KB.
 
 3. **Audio Feedback**: Subtle "whoosh" sound as each element appears? Some apps do this. Feels premium but also annoying if user has sound on in public. Probably not worth it.
 

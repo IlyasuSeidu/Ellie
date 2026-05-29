@@ -19,6 +19,7 @@ Completed in the current working tree:
 - Updated local generated native Android and iOS identity files so the current workspace build output displays `Ryvro` and uses `com.ryvro.shiftplanner`.
 - Replaced the app icon, adaptive icon, splash icon, favicon, and onboarding assistant avatar with neutral Ryvro assets.
 - Removed the mining-helmet onboarding assistant asset family from the active asset set.
+- Removed retired mining-helmet avatar references from publishable build-in-public story packs and expanded the content guard so active public content uses neutral Ryvro assistant/mark language instead.
 - Rebranded primary English app copy, onboarding copy, paywall copy, settings/dashboard assistant copy, notification text, voice assistant UI, and calendar export metadata to `Ryvro`.
 - Cleaned translated locale values so user-facing assistant strings no longer say Ellie in Chinese, Arabic, Hindi, or Russian.
 - Added universal industry onboarding/e2e fixtures while preserving a miner/FIFO fixture as the launch wedge.
@@ -1661,19 +1662,20 @@ Phase gate:
 
 Fill this table after each old-term scan.
 
-| Term/Path                                                                | Classification            | Reason                                              | Action                              |
-| ------------------------------------------------------------------------ | ------------------------- | --------------------------------------------------- | ----------------------------------- |
-| `app.json` app name                                                      | done                      | Public app identity is Ryvro Shift Planner          | Keep verified                       |
-| `ios/Ellie/Info.plist` display name                                      | done-generated-native     | Local generated native output now displays Ryvro    | Regenerate with EAS/native workflow |
-| `android/settings.gradle` root name                                      | done-generated-native     | Local generated native output now uses Ryvro        | Regenerate with EAS/native workflow |
-| `e2e/helpers/testData.ts` default fixture                                | done                      | Default demo user is neutral; mining is separate    | Keep both fixture classes           |
-| `assets/.../mining-helmet-sacred-flame.png`                              | done                      | Retired helmet family removed from active assets    | Keep only archived references       |
-| `docs/USER_GUIDE_FIFO.md`                                                | rewritten                 | Current guide routes FIFO through builder           | Keep as template-specific guide     |
-| `docs/FIFO_QA_CHECKLIST.md`                                              | archived                  | Historical fixed-roster QA                          | Keep in legacy archive              |
-| `docs/RELEASE_NOTES_FIFO_DUAL_ROSTER.md`                                 | archived                  | Historical release note                             | Keep in legacy archive              |
-| `src/i18n/locales/*/onboarding.json` FIFO copy                           | allowed-template-specific | FIFO keys remain for migration/template labels      | Do not use as default flow          |
-| `src/i18n/locales/*/common.json` paywall miner social proof              | cleaned                   | Broad social proof now used where launch-critical   | Keep miner examples only by intent  |
-| `src/components/shift-builder/ShiftInspectorSheet.tsx` location examples | done                      | Builder placeholder uses broader site/location copy | Keep broad examples                 |
+| Term/Path                                                                | Classification            | Reason                                               | Action                              |
+| ------------------------------------------------------------------------ | ------------------------- | ---------------------------------------------------- | ----------------------------------- |
+| `app.json` app name                                                      | done                      | Public app identity is Ryvro Shift Planner           | Keep verified                       |
+| `ios/Ellie/Info.plist` display name                                      | done-generated-native     | Local generated native output now displays Ryvro     | Regenerate with EAS/native workflow |
+| `android/settings.gradle` root name                                      | done-generated-native     | Local generated native output now uses Ryvro         | Regenerate with EAS/native workflow |
+| `e2e/helpers/testData.ts` default fixture                                | done                      | Default demo user is neutral; mining is separate     | Keep both fixture classes           |
+| `assets/.../mining-helmet-sacred-flame.png`                              | done                      | Retired helmet family removed from active assets     | Keep only archived references       |
+| `build-in-public/**` mining helmet avatar references                     | done                      | Publishable story packs now use Ryvro assistant copy | Guarded by public-content scan      |
+| `docs/USER_GUIDE_FIFO.md`                                                | rewritten                 | Current guide routes FIFO through builder            | Keep as template-specific guide     |
+| `docs/FIFO_QA_CHECKLIST.md`                                              | archived                  | Historical fixed-roster QA                           | Keep in legacy archive              |
+| `docs/RELEASE_NOTES_FIFO_DUAL_ROSTER.md`                                 | archived                  | Historical release note                              | Keep in legacy archive              |
+| `src/i18n/locales/*/onboarding.json` FIFO copy                           | allowed-template-specific | FIFO keys remain for migration/template labels       | Do not use as default flow          |
+| `src/i18n/locales/*/common.json` paywall miner social proof              | cleaned                   | Broad social proof now used where launch-critical    | Keep miner examples only by intent  |
+| `src/components/shift-builder/ShiftInspectorSheet.tsx` location examples | done                      | Builder placeholder uses broader site/location copy  | Keep broad examples                 |
 
 ## Working Tracker: Concrete Replacement Decisions
 

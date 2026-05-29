@@ -452,7 +452,7 @@ describe('Ryvro environment template', () => {
 
       expect(content).not.toMatch(/#ellieapp|#mining|Hey Ellie|\bEllie\b/);
       expect(content).not.toContain('miners, shift workers, and broad discovery viewers');
-      expect(content).not.toContain('mining-helmet-sacred-flame');
+      expect(content).not.toMatch(/mining helmet|helmet icon|mining-helmet-sacred-flame/i);
     }
   });
 
