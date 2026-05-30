@@ -30,7 +30,7 @@ export type OpenWakeWordInferenceEvent = {
   rms?: number;
 };
 
-type EllieOpenWakeWordNativeModule = {
+type RyvroOpenWakeWordNativeModule = {
   isAvailable: () => boolean;
   isInitialized: () => boolean;
   isListening: () => boolean;
@@ -50,7 +50,7 @@ type EllieOpenWakeWordNativeModule = {
   simulateDetection?: (score?: number) => Promise<void>;
 };
 
-const moduleInstance = requireNativeModule<EllieOpenWakeWordNativeModule>('EllieOpenWakeWord');
+const moduleInstance = requireNativeModule<RyvroOpenWakeWordNativeModule>('RyvroOpenWakeWord');
 const eventEmitter = new EventEmitter(moduleInstance);
 
 export function addWakeWordDetectionListener(

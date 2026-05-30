@@ -10,9 +10,9 @@ private final class WakeWordException: GenericException<String> {
   override var reason: String { param }
 }
 
-public final class EllieOpenWakeWordModule: Module {
+public final class RyvroOpenWakeWordModule: Module {
   private let stateLock = NSLock()
-  private let inferenceQueue = DispatchQueue(label: "ellie.openwakeword.inference", qos: .utility)
+  private let inferenceQueue = DispatchQueue(label: "ryvro.openwakeword.inference", qos: .utility)
 
   private var initialized = false
   private var listening = false
@@ -59,7 +59,7 @@ public final class EllieOpenWakeWordModule: Module {
   private var pendingInferenceWorkItems = 0
 
   public func definition() -> ModuleDefinition {
-    Name("EllieOpenWakeWord")
+    Name("RyvroOpenWakeWord")
 
     Events("onWakeWordDetected", "onWakeWordError", "onWakeWordInference")
 
@@ -829,12 +829,12 @@ public final class EllieOpenWakeWordModule: Module {
     let resourceName = fileURL.deletingPathExtension().path
 
     // Build list of candidate bundles, including the module's resource bundle
-    var candidateBundles = [Bundle.main, Bundle(for: EllieOpenWakeWordModule.self)]
+    var candidateBundles = [Bundle.main, Bundle(for: RyvroOpenWakeWordModule.self)]
 
-    // Look for EllieOpenWakeWordResources.bundle inside the module's own bundle
+    // Look for RyvroOpenWakeWordResources.bundle inside the module's own bundle
     // and inside the main bundle (CocoaPods resource_bundles places it here)
-    for parentBundle in [Bundle(for: EllieOpenWakeWordModule.self), Bundle.main] {
-      if let resourceBundleURL = parentBundle.url(forResource: "EllieOpenWakeWordResources", withExtension: "bundle"),
+    for parentBundle in [Bundle(for: RyvroOpenWakeWordModule.self), Bundle.main] {
+      if let resourceBundleURL = parentBundle.url(forResource: "RyvroOpenWakeWordResources", withExtension: "bundle"),
          let resourceBundle = Bundle(url: resourceBundleURL)
       {
         candidateBundles.insert(resourceBundle, at: 0)

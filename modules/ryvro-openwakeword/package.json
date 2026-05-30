@@ -1,7 +1,7 @@
 {
-  "name": "ellie-openwakeword",
+  "name": "ryvro-openwakeword",
   "version": "0.1.0",
-  "description": "Local Expo module for OpenWakeWord integration in Ellie",
+  "description": "Local Expo module for OpenWakeWord integration in Ryvro",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "sideEffects": false,

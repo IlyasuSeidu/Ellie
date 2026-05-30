@@ -1,4 +1,4 @@
-package expo.modules.ellieopenwakeword
+package expo.modules.ryvroopenwakeword
 
 import ai.onnxruntime.NodeInfo
 import ai.onnxruntime.OnnxTensor
@@ -26,7 +26,7 @@ import kotlin.math.exp
 import kotlin.math.max
 import kotlin.math.min
 
-class EllieOpenWakeWordModule : Module() {
+class RyvroOpenWakeWordModule : Module() {
   private val stateLock = Any()
 
   private var initialized = false
@@ -72,7 +72,7 @@ class EllieOpenWakeWordModule : Module() {
   private var quietFrameSkipCounter = 0
 
   override fun definition() = ModuleDefinition {
-    Name("EllieOpenWakeWord")
+    Name("RyvroOpenWakeWord")
 
     Events("onWakeWordDetected", "onWakeWordError", "onWakeWordInference")
 
@@ -815,7 +815,7 @@ class EllieOpenWakeWordModule : Module() {
 
     return try {
       context.assets.open(normalizedAssetPath).use { inputStream ->
-        val targetDirectory = File(context.cacheDir, "ellie-openwakeword-models")
+        val targetDirectory = File(context.cacheDir, "ryvro-openwakeword-models")
         if (!targetDirectory.exists()) {
           targetDirectory.mkdirs()
         }

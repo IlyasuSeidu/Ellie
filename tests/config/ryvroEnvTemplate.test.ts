@@ -389,6 +389,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('passed Lint and Type Check, Unit Tests, and Build Check');
     expect(readinessReport).toContain('Prior completed pushed GitHub Actions baseline');
     expect(readinessReport).toContain('Repo-Proven Status');
+    expect(readinessReport).toContain('internal OpenWakeWord Expo module now uses Ryvro-branded');
     expect(readinessReport).toContain('Device QA Notes');
     expect(readinessReport).toContain('Account-Only Work');
     expect(readinessReport).toContain('Focused Phase 9 automated QA passed on 2026-05-29');
