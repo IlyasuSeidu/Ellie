@@ -2,7 +2,8 @@
 
 Date: 2026-05-30
 Branch: `codex/ryvro-rebrand-rollout`
-Current rollback point before this report: commit `ba1a77c` (`Localize schedule exception controls`)
+Latest pushed commit at this handoff: `4a78448` (`Finalize Ryvro launch readiness cleanup`)
+Open PR: `https://github.com/IlyasuSeidu/Ellie/pull/1`
 
 This report is the current handoff for the Ryvro rebrand. It separates repo-proven work from account-only or device-only work that still needs the owner, console access, counsel, or physical hardware.
 
@@ -22,7 +23,7 @@ Completed and guarded in the current branch:
 
 ## Current Public Clearance Evidence
 
-`npm run release:clearance` was run on 2026-05-30 at `2026-05-30T05:08:52.377Z`.
+`npm run release:clearance` was run on 2026-05-30 at `2026-05-30T05:38:18.547Z`.
 
 - Apple public software search returned 5 fuzzy results and no exact `Ryvro` or `Ryvro Shift Planner` app result.
 - Google Play public search returned no exact `Ryvro` or `Ryvro Shift Planner` result text; visible fuzzy names were `Rydoo` and `Rydora`.
@@ -46,6 +47,7 @@ Completed and guarded in the current branch:
 - `E2E_TEST_MODE=1 npx detox test --configuration ios.release.xsmax e2e/dashboard.test.ts`: passed on 2026-05-29 on the iPhone XS Max simulator, 15 dashboard smoke tests. The run uninstalled the previous app first, installed the rebuilt `Ryvro.app`, and verified the small-screen dashboard smoke without the RevenueCat release guard alert.
 - `npm test -- RevenueCatRuntime ryvroEnvTemplate --runInBand`: passed on 2026-05-29 after adding the E2E RevenueCat runtime guard and treating `test_` RevenueCat keys as unavailable launch keys.
 - `npm run validate`: passed on 2026-05-29 after the latest Phase 9 E2E seed and selector updates.
+- Latest pushed GitHub Actions check for PR #1 passed on commit `4a78448`: CI run `26675838354` passed Lint and Type Check, Unit Tests, and Build Check.
 - Prior completed pushed GitHub Actions baseline for the Android release E2E readiness change: CI run `26659012373` passed for commit `92a52ab`.
 - iOS release simulator build command `npm run test:e2e:build:ios`: previously passed on 2026-05-29T15:22:59Z with built plist values `CFBundleDisplayName = Ryvro`, `CFBundleName = Ryvro`, and `CFBundleIdentifier = com.ryvro.shiftplanner`.
 - `xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -showBuildSettings | rg "PRODUCT_NAME|FULL_PRODUCT_NAME|PRODUCT_BUNDLE_IDENTIFIER|WRAPPER_NAME|TARGET_NAME|INFOPLIST_FILE"`: passed on 2026-05-30 and reported `FULL_PRODUCT_NAME = Ryvro.app`, `WRAPPER_NAME = Ryvro.app`, `PRODUCT_NAME = Ryvro`, and `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner`.

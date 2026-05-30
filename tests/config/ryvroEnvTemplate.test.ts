@@ -313,8 +313,8 @@ describe('Ryvro environment template', () => {
     );
     const clearanceEvidence = `${externalSetup}\n${audit}`;
 
-    expect(clearanceEvidence).toContain('2026-05-30 at 05:08:52Z');
-    expect(clearanceEvidence).toContain('2026-05-30T05:08:52.377Z');
+    expect(clearanceEvidence).toContain('2026-05-30 at 05:38:18Z');
+    expect(clearanceEvidence).toContain('2026-05-30T05:38:18.547Z');
     expect(clearanceEvidence).toContain('no exact `Ryvro` or `Ryvro Shift Planner` app result');
     expect(clearanceEvidence).toContain('Visible fuzzy names included `Rydoo` and `Rydora`');
     expect(clearanceEvidence).toContain(
@@ -337,6 +337,8 @@ describe('Ryvro environment template', () => {
     expect(clearanceEvidence).not.toContain('2026-05-29T22:09:36.826Z');
     expect(clearanceEvidence).not.toContain('2026-05-30 at 04:26:28Z');
     expect(clearanceEvidence).not.toContain('2026-05-30T04:26:28.800Z');
+    expect(clearanceEvidence).not.toContain('2026-05-30 at 05:08:52Z');
+    expect(clearanceEvidence).not.toContain('2026-05-30T05:08:52.377Z');
     expect(clearanceEvidence).not.toContain(
       'LinkedIn `company/ryvro`: public URL returned bot-protection status `999`'
     );
@@ -382,6 +384,9 @@ describe('Ryvro environment template', () => {
 
     expect(readinessReport).toContain('CI run `26659012373`');
     expect(readinessReport).toContain('commit `92a52ab`');
+    expect(readinessReport).toContain('commit `4a78448`');
+    expect(readinessReport).toContain('CI run `26675838354`');
+    expect(readinessReport).toContain('passed Lint and Type Check, Unit Tests, and Build Check');
     expect(readinessReport).toContain('Prior completed pushed GitHub Actions baseline');
     expect(readinessReport).toContain('Repo-Proven Status');
     expect(readinessReport).toContain('Device QA Notes');
