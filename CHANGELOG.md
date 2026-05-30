@@ -9,36 +9,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Initial project setup with Expo SDK 54
-- TypeScript configuration with strict mode
-- React Navigation setup (native stack and bottom tabs)
-- Firebase integration for authentication and backend services
-- React Native Paper UI component library
-- Comprehensive testing setup (Jest + Detox)
-- ESLint and Prettier code quality tools
-- Pre-commit hooks with Husky and lint-staged
-- GitHub Actions CI/CD pipelines
-- Comprehensive project documentation
+- Ryvro launch identity across Expo, native iOS/Android metadata, E2E storage paths, and release documentation.
+- Ryvro Pro subscription wiring with RevenueCat runtime guards, paywall recovery, restore-purchase paths, and launch setup documentation.
+- Universal Shift Builder launch templates for FIFO/mining, healthcare, security, emergency services, manufacturing, transport/logistics, hospitality, aviation, rail, and operations/call-center schedules.
+- Ryvro external-service, store-listing, privacy/support, clearance, environment, and release-readiness handoff documents.
 
 ### Changed
 
-- N/A
+- Rebranded launch-critical app copy from Ellie to Ryvro while keeping the product broad enough for non-mining shift teams.
+- Updated dashboard quick actions to route to implemented builder/export/profile surfaces.
+- Replaced Schedule and Stats helper-screen "Coming Soon" copy with shipped-path guidance across bundled locales.
+- Moved active backend and CI configuration toward `ryvroBrain` / `RYVRO_BRAIN_*` while retaining legacy `ellieBrain` only as migration compatibility.
 
 ### Deprecated
 
-- N/A
+- Legacy Ellie-branded docs, retired fixed-roster guidance, and old mining-only launch assumptions are archived under `docs/archive/legacy-ellie/`.
 
 ### Removed
 
-- N/A
+- Retired mining-helmet default brand visuals from active app assets.
+- Stale generated Detox artifacts tied to the retired iOS app identity.
 
 ### Fixed
 
-- N/A
+- Release checks now guard Ryvro environment placeholders, legal/support URLs, native assets, launch docs, broad localization, and active voice/backend naming.
 
 ### Security
 
-- N/A
+- Added production env preflight checks for real Firebase, Google OAuth, RevenueCat, legal/support, EAS, and Ryvro Brain values before release builds.
 
 ## [1.0.0] - YYYY-MM-DD
 

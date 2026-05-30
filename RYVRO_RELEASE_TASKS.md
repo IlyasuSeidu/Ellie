@@ -1,7 +1,7 @@
 # Ryvro — Release Task List
 
 Source: `SHIFT_WORKER_APP_REBRAND_AUDIT.md`
-Last updated: May 30, 2026 (Ryvro rebrand, universal builder rollout, pushed PR #1 CI pass)
+Last updated: May 30, 2026 (Ryvro rebrand, universal builder rollout, Schedule/Stats launch-copy cleanup, pushed PR #1 CI pass)
 
 Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you do this)
 
@@ -16,6 +16,7 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 | 3   | Identify and fix any dead/unimplemented quick-action buttons in visible screens                                        | ✅ Done |
 | 4   | Fix `release:check` Jest teardown warning (haptics async path) so it exits with code 0                                 | ✅ Done |
 | 5   | Run full quality gate: `lint` + `type-check` + `test` + `backend:build` + `release:check` — all must pass              | ✅ Done |
+| 5a  | Remove visible launch placeholder copy from hidden/helper Schedule and Stats entry points                              | ✅ Done |
 
 ---
 

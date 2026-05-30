@@ -524,9 +524,16 @@ describe('Ryvro environment template', () => {
 
     expect(readinessReport).toContain('CI run `26659012373`');
     expect(readinessReport).toContain('commit `92a52ab`');
-    expect(readinessReport).toContain('commit `4a78448`');
-    expect(readinessReport).toContain('CI run `26675838354`');
+    expect(readinessReport).toContain('commit `610795d`');
+    expect(readinessReport).toContain('CI run `26678024310`');
+    expect(readinessReport).toContain(
+      'commits `f004097`, `10353e7`, `3f92d56`, `90d403d`, and `82fd530`'
+    );
     expect(readinessReport).toContain('passed Lint and Type Check, Unit Tests, and Build Check');
+    expect(readinessReport).toContain('106 Jest suites / 1,725 tests');
+    expect(readinessReport).toContain(
+      'Schedule and Stats helper screens no longer present launch users with "Coming Soon" copy'
+    );
     expect(readinessReport).toContain('Prior completed pushed GitHub Actions baseline');
     expect(readinessReport).toContain('Repo-Proven Status');
     expect(readinessReport).toContain('internal OpenWakeWord Expo module now uses Ryvro-branded');
@@ -568,6 +575,7 @@ describe('Ryvro environment template', () => {
     );
     expect(readinessReport).toContain('not as fully launch-cleared production release evidence');
     expect(readinessReport).not.toContain('no Android device or emulator was attached');
+    expect(readinessReport).not.toContain('commit `4a78448`: CI run `26675838354`');
   });
 
   it('keeps Android release-style Detox E2E wiring reproducible', () => {
@@ -1349,6 +1357,41 @@ describe('Ryvro environment template', () => {
     ].join('\n');
 
     expect(guardedCopy).not.toMatch(/mine site|haul truck|underground|Location \/ Site|site name/i);
+  });
+
+  it('keeps hidden Schedule and Stats helper screens free of launch placeholder copy', () => {
+    const scheduleScreen = fs.readFileSync(
+      path.join(process.cwd(), 'src/screens/main/ScheduleScreen.tsx'),
+      'utf8'
+    );
+    const statsScreen = fs.readFileSync(
+      path.join(process.cwd(), 'src/screens/main/StatsScreen.tsx'),
+      'utf8'
+    );
+    const localeRoot = path.join(process.cwd(), 'src/i18n/locales');
+
+    expect(scheduleScreen).toContain("t('availableNow')");
+    expect(statsScreen).toContain("t('availableNow')");
+    expect(scheduleScreen).not.toMatch(/coming soon|placeholder|will provide/i);
+    expect(statsScreen).not.toMatch(/coming soon|placeholder|will provide/i);
+
+    for (const locale of fs.readdirSync(localeRoot)) {
+      const scheduleLocalePath = path.join(localeRoot, locale, 'schedule.json');
+      if (!fs.existsSync(scheduleLocalePath)) continue;
+
+      const scheduleLocale = JSON.parse(fs.readFileSync(scheduleLocalePath, 'utf8')) as {
+        availableNow?: string;
+        comingSoon?: string;
+        description?: string;
+        statsDescription?: string;
+      };
+
+      expect(scheduleLocale.availableNow?.trim()).toBeTruthy();
+      expect(scheduleLocale.comingSoon).toBeUndefined();
+      expect([scheduleLocale.description, scheduleLocale.statsDescription].join('\n')).not.toMatch(
+        /coming soon|will appear here|will provide/i
+      );
+    }
   });
 
   it('localizes remaining high-risk reminder, dashboard, and onboarding launch labels', () => {

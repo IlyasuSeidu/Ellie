@@ -24,6 +24,8 @@ Completed and guarded in the current branch:
 - The ignored generated iOS CocoaPods workspace was refreshed on 2026-05-30; `pod install` installed `RyvroOpenWakeWord`, removed `EllieOpenWakeWord`, and `ios/Podfile.lock` now points at `../modules/ryvro-openwakeword/ios`.
 - Native iOS build metadata now resolves to `FULL_PRODUCT_NAME = Ryvro.app`, `WRAPPER_NAME = Ryvro.app`, `PRODUCT_NAME = Ryvro`, and `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner`; the remaining `TARGET_NAME = Ellie` is internal Xcode target scaffolding.
 - Stale generated Detox artifacts from the retired iOS app identity were removed from the tracked tree; `artifacts/` is now ignored so current release evidence stays in docs and fresh CI/test output instead of checked-in logs.
+- Dashboard quick actions now route to implemented launch surfaces instead of dead tap targets: builder/export actions enter the Universal Shift Builder, and alert/profile actions open the Profile tab.
+- Schedule and Stats helper screens no longer present launch users with "Coming Soon" copy; they point users to the shipped Shift Builder, dashboard metrics, calendar import/export, exceptions, reminders, and profile schedule settings in every bundled locale.
 
 ## Current Public Clearance Evidence
 
@@ -52,7 +54,9 @@ Completed and guarded in the current branch:
 - `E2E_TEST_MODE=1 npx detox test --configuration ios.release.xsmax e2e/dashboard.test.ts`: passed on 2026-05-29 on the iPhone XS Max simulator, 15 dashboard smoke tests. The run uninstalled the previous app first, installed the rebuilt `Ryvro.app`, and verified the small-screen dashboard smoke without the RevenueCat release guard alert.
 - `npm test -- RevenueCatRuntime ryvroEnvTemplate --runInBand`: passed on 2026-05-29 after adding the E2E RevenueCat runtime guard and treating `test_` RevenueCat keys as unavailable launch keys.
 - `npm run validate`: passed on 2026-05-29 after the latest Phase 9 E2E seed and selector updates.
-- Recent pushed GitHub Actions check for PR #1 passed on commit `4a78448`: CI run `26675838354` passed Lint and Type Check, Unit Tests, and Build Check.
+- Recent pushed GitHub Actions check for PR #1 passed on commit `610795d`: CI run `26678024310` passed Lint and Type Check, Unit Tests, and Build Check.
+- Earlier same-day pushed GitHub Actions checks also passed on commits `f004097`, `10353e7`, `3f92d56`, `90d403d`, and `82fd530`, covering dashboard quick actions, release env template alignment, legal launch URLs, EAS scaffolding, and production env preflight.
+- Local release verification on 2026-05-30 passed `git diff --check`, `npm run lint`, and `npm run release:check` after the Schedule/Stats launch-copy update. The release check included TypeScript, 106 Jest suites / 1,725 tests, and the backend functions TypeScript build.
 - Prior completed pushed GitHub Actions baseline for the Android release E2E readiness change: CI run `26659012373` passed for commit `92a52ab`.
 - iOS release simulator build command `npm run test:e2e:build:ios`: previously passed on 2026-05-29T15:22:59Z with built plist values `CFBundleDisplayName = Ryvro`, `CFBundleName = Ryvro`, and `CFBundleIdentifier = com.ryvro.shiftplanner`.
 - `xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -showBuildSettings | rg "PRODUCT_NAME|FULL_PRODUCT_NAME|PRODUCT_BUNDLE_IDENTIFIER|WRAPPER_NAME|TARGET_NAME|INFOPLIST_FILE"`: passed on 2026-05-30 and reported `FULL_PRODUCT_NAME = Ryvro.app`, `WRAPPER_NAME = Ryvro.app`, `PRODUCT_NAME = Ryvro`, and `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner`.
