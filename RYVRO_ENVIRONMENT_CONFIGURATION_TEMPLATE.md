@@ -67,7 +67,7 @@ WAKE_WORD_KEYWORD_PATHS=
 
 WAKE_WORD_KEYWORD_PATHS_ANDROID=ryvro_android.ppn
 
-# iOS: add ryvro_ios.ppn to Xcode app target resources (under the current iOS native project folder, currently ios/Ellie)
+# iOS: add ryvro_ios.ppn to the current Xcode app target resources
 
 WAKE_WORD_KEYWORD_PATHS_IOS=ryvro_ios.ppn
 

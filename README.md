@@ -1,10 +1,10 @@
 # Ryvro Shift Planner
 
-![CI Pipeline](https://github.com/IlyasuSeidu/Ellie/workflows/CI%20Pipeline/badge.svg)
-![E2E Tests](https://github.com/IlyasuSeidu/Ellie/workflows/E2E%20Tests/badge.svg)
-[![codecov](https://codecov.io/gh/IlyasuSeidu/Ellie/branch/main/graph/badge.svg)](https://codecov.io/gh/IlyasuSeidu/Ellie)
+![CI Pipeline](https://github.com/IlyasuSeidu/ryvro/workflows/CI%20Pipeline/badge.svg)
+![E2E Tests](https://github.com/IlyasuSeidu/ryvro/workflows/E2E%20Tests/badge.svg)
+[![codecov](https://codecov.io/gh/IlyasuSeidu/ryvro/branch/main/graph/badge.svg)](https://codecov.io/gh/IlyasuSeidu/ryvro)
 
-**Ryvro** helps miners, FIFO crews, and shift workers build reliable schedules from AI, templates, or the Universal Shift Builder. It keeps rotating rosters, block schedules, reminders, exceptions, colors, and calendar exports in one practical shift-work app.
+**Ryvro** helps FIFO crews, healthcare teams, security staff, emergency services, transport operators, hospitality workers, miners, and other shift workers build reliable schedules from AI, templates, or the Universal Shift Builder. It keeps rotating rosters, block schedules, reminders, exceptions, colors, and calendar exports in one practical shift-work app.
 
 > **"Did I set my alarm for the right time? Am I on days or nights tomorrow?"**
 > **"When's my next fly-out day?"**
@@ -14,9 +14,9 @@ Ryvro answers these questions with a glance—no mental math, no counting forwar
 
 ---
 
-## 🎯 The Problem
+## The Problem
 
-Mining shift workers operate on repeating cycles (7-7-7, 4-4-4, 2-2-3, custom patterns) that span weeks. Keeping track of which day of the cycle you're on, across months and life events, is mentally exhausting. Workers constantly:
+Shift workers operate on repeating cycles, FIFO blocks, overnight rotations, 24-hour duty patterns, weekly venue schedules, and custom rosters that span weeks. Keeping track of which day of the cycle you're on, across months and life events, is mentally exhausting. Workers constantly:
 
 - Lose their place in the 21-day cycle, especially after days off
 - Do mental math to figure out if they're working a specific future date
@@ -27,14 +27,14 @@ Mining shift workers operate on repeating cycles (7-7-7, 4-4-4, 2-2-3, custom pa
 
 ---
 
-## ✨ The Solution
+## The Solution
 
-Ryvro is a **miner-first shift planner** built on a universal schedule engine. It provides:
+Ryvro is a **shift planner for FIFO, rotating, and irregular work** built on a universal schedule engine. It provides:
 
 - **Instant shift visibility**: "Tomorrow: Night Shift 🌙 6pm-6am"
 - **Long-term planning**: See your schedule months in advance
 - **Smart notifications**: Reminders before shift starts
-- **Offline-first**: Works on-site, underground, in transit, or anywhere signal is unreliable
+- **Offline-first**: Works on-site, in transit, in hospitals, at venues, at depots, or anywhere signal is unreliable
 - **Universal schedule flexibility**: Supports repeating rotations, FIFO/block rosters, irregular one-off swaps, holidays, travel, training, on-call work, leave, and custom cycles
 - **AI + manual setup**: Describe a roster in plain English, start from an industry template, or build it manually
 - **Voice assistant tooling**: Date/range queries, next block, days-until-work/rest, current block info, and schedule questions
@@ -189,8 +189,8 @@ Ryvro now uses the Universal Shift Builder as its onboarding schedule setup, rep
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/IlyasuSeidu/Ellie.git
-cd Ellie
+git clone https://github.com/IlyasuSeidu/ryvro.git
+cd ryvro
 
 # 2. Install dependencies (use --legacy-peer-deps due to React Native constraints)
 npm install --legacy-peer-deps
@@ -338,7 +338,7 @@ Ryvro uses a custom design system called **"Sacred"** - built for shift workers 
 
 ### Color Palette
 
-Colors are grounded in the miner-first launch wedge but broad enough for every shift-work setting:
+Colors are grounded in low-light shift-work conditions and broad enough for every shift-work setting:
 
 | Name           | Hex       | Usage                                  |
 | -------------- | --------- | -------------------------------------- |
@@ -424,7 +424,7 @@ I'm building Ryvro in public, documenting every decision, challenge, and lesson 
 
 Each story includes:
 
-- Human summary for miners
+- Human summary for shift workers
 - Build-in-public post
 - Beginner lesson
 - Expert insight
@@ -584,7 +584,7 @@ This project is private and proprietary.
 ## 📞 Contact
 
 **GitHub**: [@IlyasuSeidu](https://github.com/IlyasuSeidu)
-**Repository**: [Ryvro app repository](https://github.com/IlyasuSeidu/Ellie)
+**Repository**: [Ryvro app repository](https://github.com/IlyasuSeidu/ryvro)
 
 ---
 
@@ -592,7 +592,7 @@ This project is private and proprietary.
 
 **Ryvro exists because shift work is hard enough without the mental overhead of tracking complex rotating schedules.**
 
-Every feature is designed with one question in mind: _"Will this help a miner know what shift they're on at 4am?"_
+Every feature is designed with one question in mind: _"Will this help a shift worker know what they're working at 4am?"_
 
 If you're a shift worker tired of counting through your pattern, Ryvro is for you.
 

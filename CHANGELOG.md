@@ -224,10 +224,10 @@ Security improvements and vulnerability patches.
 
 ## Links
 
-- [Repository](https://github.com/IlyasuSeidu/Ellie)
-- [Issue Tracker](https://github.com/IlyasuSeidu/Ellie/issues)
+- [Repository](https://github.com/IlyasuSeidu/ryvro)
+- [Issue Tracker](https://github.com/IlyasuSeidu/ryvro/issues)
 - [Documentation](./README.md)
 
 ---
 
-**Note**: This changelog is updated with each release. For a complete history, see the [git commit history](https://github.com/IlyasuSeidu/Ellie/commits/main).
+**Note**: This changelog is updated with each release. For a complete history, see the [git commit history](https://github.com/IlyasuSeidu/ryvro/commits/main).

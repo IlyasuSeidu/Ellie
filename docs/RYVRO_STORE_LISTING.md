@@ -2,7 +2,7 @@
 
 Last updated: 2026-05-28
 
-This pack is the source copy for App Store Connect, Google Play Console, screenshots, and launch review notes. It keeps the launch wedge miner/FIFO-first without trapping Ryvro as mining-only.
+This pack is the source copy for App Store Connect, Google Play Console, screenshots, and launch review notes. It keeps the FIFO and rotating-shift launch wedge sharp without trapping Ryvro in a single-industry frame.
 
 ## Source Requirements
 
@@ -26,8 +26,8 @@ Sources:
 - Android package: com.ryvro.shiftplanner
 - Primary category: Productivity
 - Secondary category: Utilities
-- Launch audience: miners, FIFO crews, and rotating shift workers
-- Expansion audience: healthcare, security, emergency services, manufacturing, transport, hospitality, aviation, rail, and other shift workers
+- Launch audience: FIFO crews, rotating shift workers, miners, healthcare teams, security, emergency services, transport, hospitality, and manufacturing workers
+- Expansion audience: aviation, rail, logistics, call-center operations, utilities, oil and gas, and other shift workers
 
 ## App Store Subtitle
 
@@ -35,9 +35,9 @@ AI schedules for shift workers
 
 ## Google Play Short Description
 
-AI shift planner for FIFO, mining, nights, rosters, reminders, and calendars.
+AI shift planner for FIFO, nights, rosters, reminders, and calendars.
 
-Character count: 79
+Character count: 67
 
 ## Promotional Text
 
@@ -45,7 +45,7 @@ Build your shift pattern with AI, edit it manually, add exceptions, and export y
 
 ## App Store Description
 
-Ryvro helps miners, FIFO crews, and shift workers know exactly what they are working today, tomorrow, and months from now.
+Ryvro helps FIFO crews, healthcare teams, security staff, emergency services, transport operators, hospitality workers, miners, and other shift workers know exactly what they are working today, tomorrow, and months from now.
 
 Describe your shift pattern in plain English, start from a template, or build it manually with the Universal Shift Builder. Ryvro turns repeating rosters, night shifts, days off, travel days, training, on-call work, holidays, and one-off swaps into a clear schedule you can trust.
 
@@ -62,13 +62,13 @@ Built for real shift work:
 - Calendar import and export
 - Offline-first schedule visibility for low-signal work environments
 
-Ryvro is miner-first because that is where the product started: real FIFO and rotating-shift pain. But the schedule engine is universal, so it can support almost any worker whose life runs around shifts.
+Ryvro started from real FIFO and rotating-shift pain, then grew into a universal schedule engine for almost any worker whose life runs around shifts.
 
 Use Ryvro to stop counting through your roster manually and start planning your life with confidence.
 
 ## Google Play Full Description
 
-Ryvro is an AI-assisted shift planner for miners, FIFO crews, and shift workers.
+Ryvro is an AI-assisted shift planner for FIFO crews, healthcare teams, security staff, emergency services, transport operators, hospitality workers, miners, and other shift workers.
 
 If your schedule repeats, rotates, swaps, runs overnight, changes by work location, or does not fit a simple 9-to-5 calendar, Ryvro helps you turn it into a clear plan.
 

@@ -2,7 +2,7 @@
 
 ## Why This Matters
 
-Ryvro is built miner-first and universal-ready for shift workers who may operate underground, on remote sites, in hospitals, in transport depots, or anywhere with unreliable signal. The app promises shift visibility without a connection: tomorrow's start time, remaining days off, block schedule, exceptions, reminders, and calendar state without a network call. Offline-first is a core promise.
+Ryvro is built for shift workers who may operate underground, on remote sites, in hospitals, in transport depots, at venues, or anywhere with unreliable signal. The app promises shift visibility without a connection: tomorrow's start time, remaining days off, block schedule, exceptions, reminders, and calendar state without a network call. Offline-first is a core promise.
 
 ---
 

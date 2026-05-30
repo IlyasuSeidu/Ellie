@@ -1,7 +1,7 @@
 # Minimum Viable Deployment Plan (MVD)
 
 Last updated: March 10, 2026  
-Repository: `/Users/Shared/Ellie`
+Repository: repo root
 
 ## 1. Goal
 
@@ -60,10 +60,10 @@ Current status:
 
 Files to update:
 
-- `/Users/Shared/Ellie/app.json`
-- `/Users/Shared/Ellie/app.config.js` (if it overrides values)
-- `/Users/Shared/Ellie/android/app/build.gradle`
-- `/Users/Shared/Ellie/android/app/src/main/AndroidManifest.xml` (scheme entries if needed)
+- `app.json`
+- `app.config.js` (if it overrides values)
+- `android/app/build.gradle`
+- `android/app/src/main/AndroidManifest.xml` (scheme entries if needed)
 - iOS target bundle identifier in Xcode project settings
 
 Implementation steps:
@@ -78,7 +78,7 @@ Implementation steps:
 4. Update deep-link schemes only if they still reference old identifier.
 5. Clean build caches and rebuild:
    ```bash
-   cd /Users/Shared/Ellie
+   cd <repo-root>
    rm -rf android/.gradle
    rm -rf ios/build
    ```
@@ -99,15 +99,15 @@ Implementation steps:
 
 1. Generate upload keystore once:
    ```bash
-   cd /Users/Shared/Ellie/android/app
+   cd <repo-root>/android/app
    keytool -genkeypair -v \
      -keystore ryvro-upload-key.keystore \
      -alias ryvro-upload \
      -keyalg RSA -keysize 2048 -validity 10000
    ```
 2. Move keystore to safe location (not committed). Example:
-   - `/Users/Shared/Ellie/android/keystores/ryvro-upload-key.keystore`
-3. Add secrets to `/Users/Shared/Ellie/android/gradle.properties` (local) and CI secrets:
+   - `<repo-root>/android/keystores/ryvro-upload-key.keystore`
+3. Add secrets to `<repo-root>/android/gradle.properties` (local) and CI secrets:
    ```properties
    RYVRO_UPLOAD_STORE_FILE=../keystores/ryvro-upload-key.keystore
    RYVRO_UPLOAD_STORE_PASSWORD=*****
@@ -117,7 +117,7 @@ Implementation steps:
 4. Configure release signing through EAS credentials, or if using a checked/generated native Android project, make `android/app/build.gradle` read the `RYVRO_UPLOAD_*` properties/env vars and fail release builds if they are missing.
 5. Build and verify:
    ```bash
-   cd /Users/Shared/Ellie/android
+   cd <repo-root>/android
    ./gradlew bundleRelease
    ```
 6. Keep this first upload key permanently for Play updates.
@@ -156,14 +156,14 @@ Current status:
 
 Files:
 
-- `/Users/Shared/Ellie/src/utils/hapticsDiagnostics.ts`
+- `src/utils/hapticsDiagnostics.ts`
 - Tests impacted by async haptic calls
 
 Implementation steps:
 
 1. Re-run:
    ```bash
-   cd /Users/Shared/Ellie
+   cd <repo-root>
    npm run release:check
    ```
 
@@ -192,8 +192,8 @@ Acceptance criteria:
 
 Files:
 
-- `/Users/Shared/Ellie/src/screens/main/ScheduleScreen.tsx`
-- `/Users/Shared/Ellie/src/screens/main/StatsScreen.tsx`
+- `src/screens/main/ScheduleScreen.tsx`
+- `src/screens/main/StatsScreen.tsx`
 
 Implementation steps:
 
@@ -209,8 +209,8 @@ Acceptance criteria:
 
 Files:
 
-- `/Users/Shared/Ellie/src/screens/main/MainDashboardScreen.tsx`
-- `/Users/Shared/Ellie/src/components/dashboard/QuickActionsBar.tsx`
+- `src/screens/main/MainDashboardScreen.tsx`
+- `src/components/dashboard/QuickActionsBar.tsx`
 
 Implementation steps:
 
@@ -226,7 +226,7 @@ Acceptance criteria:
 
 Files:
 
-- `/Users/Shared/Ellie/README.md`
+- `README.md`
 
 Implementation steps:
 
@@ -245,7 +245,7 @@ Acceptance criteria:
 Run exactly:
 
 ```bash
-cd /Users/Shared/Ellie
+cd <repo-root>
 npm ci --legacy-peer-deps
 npm run lint
 npm run type-check
@@ -257,14 +257,14 @@ npm run release:check
 ## C2) iOS release build flow
 
 ```bash
-cd /Users/Shared/Ellie
+cd <repo-root>
 npx expo prebuild --platform ios --clean
 cd ios
 xcodebuild -workspace Ellie.xcworkspace \
   -scheme Ellie \
   -configuration Release \
   -destination generic/platform=iOS \
-  -archivePath /tmp/Ellie.xcarchive archive
+  -archivePath /tmp/Ryvro.xcarchive archive
 ```
 
 Then:
@@ -276,7 +276,7 @@ Then:
 ## C3) Android release build flow
 
 ```bash
-cd /Users/Shared/Ellie
+cd <repo-root>
 npx expo prebuild --platform android --clean
 cd android
 ./gradlew bundleRelease
@@ -284,7 +284,7 @@ cd android
 
 Output:
 
-- `/Users/Shared/Ellie/android/app/build/outputs/bundle/release/app-release.aab`
+- `<repo-root>/android/app/build/outputs/bundle/release/app-release.aab`
 
 Then upload to Play Internal testing track.
 

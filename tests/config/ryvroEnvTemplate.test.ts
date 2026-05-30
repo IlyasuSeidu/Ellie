@@ -201,6 +201,36 @@ describe('Ryvro environment template', () => {
     expect(detoxConfig).not.toContain('name=iPhone 15 Pro');
   });
 
+  it('keeps the native iOS build product on the Ryvro app artifact', () => {
+    const xcodeProject = readOptional('ios/Ellie.xcodeproj/project.pbxproj');
+    const xcodeScheme = readOptional('ios/Ellie.xcodeproj/xcshareddata/xcschemes/Ellie.xcscheme');
+
+    if (xcodeProject) {
+      expect(xcodeProject).toContain('PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner;');
+      expect(xcodeProject).toContain('PRODUCT_NAME = Ryvro;');
+      expect(xcodeProject).toContain('productName = Ryvro;');
+      expect(xcodeProject).toContain('path = Ryvro.app;');
+      expect(xcodeProject).not.toContain('path = Ellie.app;');
+    }
+
+    if (xcodeScheme) {
+      expect(xcodeScheme).toContain('BuildableName = "Ryvro.app"');
+      expect(xcodeScheme).not.toContain('BuildableName = "Ellie.app"');
+    }
+  });
+
+  it('does not keep retired Ellie app paths in tracked release artifacts', () => {
+    const gitignore = fs.readFileSync(path.join(process.cwd(), '.gitignore'), 'utf8');
+    const artifactFiles = walkFiles(path.join(process.cwd(), 'artifacts')).filter((file) =>
+      /\.(json|log|txt)$/.test(file)
+    );
+    const artifactContent = artifactFiles.map((file) => fs.readFileSync(file, 'utf8')).join('\n');
+
+    expect(gitignore).toContain('artifacts/');
+    expect(artifactContent).not.toContain('Release-iphonesimulator/Ellie.app');
+    expect(artifactContent).not.toContain('/Ellie.app installed');
+  });
+
   it('pins tracked Firebase mobile clients to the Ryvro bundle and package', () => {
     expect(appJson.expo?.ios?.googleServicesFile).toBe('./ios/Ryvro/GoogleService-Info.plist');
     expect(appJson.expo?.android?.googleServicesFile).toBe('./android/app/google-services.json');
@@ -283,14 +313,15 @@ describe('Ryvro environment template', () => {
     );
     const clearanceEvidence = `${externalSetup}\n${audit}`;
 
-    expect(clearanceEvidence).toContain('2026-05-30 at 04:26:28Z');
-    expect(clearanceEvidence).toContain('2026-05-30T04:26:28.800Z');
+    expect(clearanceEvidence).toContain('2026-05-30 at 05:08:52Z');
+    expect(clearanceEvidence).toContain('2026-05-30T05:08:52.377Z');
     expect(clearanceEvidence).toContain('no exact `Ryvro` or `Ryvro Shift Planner` app result');
     expect(clearanceEvidence).toContain('Visible fuzzy names included `Rydoo` and `Rydora`');
     expect(clearanceEvidence).toContain(
-      'A Chrome browser automation retry on 2026-05-30 could not connect'
+      'Chrome/Computer Use read the public Google Play search page for `Ryvro`'
     );
-    expect(clearanceEvidence).toContain('no fresh logged-in Google Play evidence');
+    expect(clearanceEvidence).toContain('no exact Ryvro listing visible');
+    expect(clearanceEvidence).toContain('Do not treat this as logged-in Play Console evidence');
     expect(clearanceEvidence).toContain('LinkedIn `company/ryvro`: public URL returned `404`');
     expect(clearanceEvidence).toContain('Formal trademark/legal clearance');
     expect(clearanceEvidence).toContain('App Store Connect and Google Play Console name checks');
@@ -304,9 +335,43 @@ describe('Ryvro environment template', () => {
     expect(clearanceEvidence).not.toContain('2026-05-29T21:22:25.775Z');
     expect(clearanceEvidence).not.toContain('2026-05-29 at 22:09:36Z');
     expect(clearanceEvidence).not.toContain('2026-05-29T22:09:36.826Z');
+    expect(clearanceEvidence).not.toContain('2026-05-30 at 04:26:28Z');
+    expect(clearanceEvidence).not.toContain('2026-05-30T04:26:28.800Z');
     expect(clearanceEvidence).not.toContain(
       'LinkedIn `company/ryvro`: public URL returned bot-protection status `999`'
     );
+  });
+
+  it('keeps the active deployment plan on Ryvro and repo-root release paths', () => {
+    const deploymentPlan = fs.readFileSync(
+      path.join(process.cwd(), 'docs/MINIMUM_VIABLE_DEPLOYMENT_PLAN.md'),
+      'utf8'
+    );
+
+    expect(deploymentPlan).toContain('Repository: repo root');
+    expect(deploymentPlan).toContain('cd <repo-root>');
+    expect(deploymentPlan).toContain('-archivePath /tmp/Ryvro.xcarchive archive');
+    expect(deploymentPlan).toContain(
+      '<repo-root>/android/app/build/outputs/bundle/release/app-release.aab'
+    );
+    expect(deploymentPlan).not.toContain('/Users/Shared/Ellie');
+    expect(deploymentPlan).not.toContain('/tmp/Ellie.xcarchive');
+  });
+
+  it('keeps the release task checklist on Ryvro and repo-root release paths', () => {
+    const releaseTasks = fs.readFileSync(
+      path.join(process.cwd(), 'RYVRO_RELEASE_TASKS.md'),
+      'utf8'
+    );
+
+    expect(releaseTasks).toContain('PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner');
+    expect(releaseTasks).toContain('PRODUCT_NAME = Ryvro');
+    expect(releaseTasks).toContain('internal generated workspace/scheme');
+    expect(releaseTasks).toContain('cd <repo-root>');
+    expect(releaseTasks).toContain('-archivePath /tmp/Ryvro.xcarchive archive');
+    expect(releaseTasks).not.toContain('/Users/Shared/Ellie');
+    expect(releaseTasks).not.toContain('/tmp/Ellie.xcarchive');
+    expect(releaseTasks).not.toContain('PRODUCT_NAME = Ellie');
   });
 
   it('keeps the Ryvro release readiness report explicit about evidence and remaining blockers', () => {
@@ -436,8 +501,17 @@ describe('Ryvro environment template', () => {
     expect(storeListing).toContain('reviewer@getryvro.com');
     expect(storeListing).toContain('support@getryvro.com');
     expect(storeListing).toContain('App Store Connect / Google Play review notes');
+    expect(storeListing).toContain(
+      'Launch audience: FIFO crews, rotating shift workers, miners, healthcare teams, security'
+    );
+    expect(storeListing).toContain(
+      'Ryvro helps FIFO crews, healthcare teams, security staff, emergency services'
+    );
     expect(storeListing).toContain('changes by work location');
     expect(storeListing).toContain('heading to work');
+    expect(storeListing).not.toContain('miners, FIFO crews, and shift workers');
+    expect(storeListing).not.toContain('miner-first because');
+    expect(storeListing).not.toContain('miner/FIFO-first');
     expect(storeListing).not.toContain('to be created');
     expect(storeListing).not.toContain('TBD');
     expect(storeListing).not.toMatch(/changes by site|heading to site/i);
@@ -786,6 +860,21 @@ describe('Ryvro environment template', () => {
     expect(onboarding.rosterType?.cards?.fifo?.details?.regions).not.toContain(
       'Remote global mining'
     );
+  });
+
+  it('keeps publishable build-in-public packs on current Ryvro file names', () => {
+    const contentFiles = walkFiles(path.join(process.cwd(), 'build-in-public')).filter((file) =>
+      file.endsWith('.json')
+    );
+    const content = contentFiles.map((file) => fs.readFileSync(file, 'utf8')).join('\n');
+
+    expect(content).toContain('backend/functions/src/audience-os/ryvro-adapter.ts');
+    expect(content).toContain('src/components/voice/RyvroVoiceButton.tsx');
+    expect(content).toContain('src/services/RyvroBrainService.ts');
+    expect(content).not.toContain('backend/functions/src/audience-os/ellie-adapter.ts');
+    expect(content).not.toContain('src/components/voice/EllieButton.tsx');
+    expect(content).not.toContain('src/services/EllieBrainService.ts');
+    expect(content).not.toContain('docs/ELLIE_RESEARCH_FUNNEL_OS.md');
   });
 
   it('keeps active English shift-system onboarding copy universal-ready', () => {

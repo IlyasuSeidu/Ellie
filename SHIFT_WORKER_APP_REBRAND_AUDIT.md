@@ -53,6 +53,8 @@ Completed in the current working tree:
 - Added an iPhone XS Max simulator release QA target and passed the seeded dashboard smoke on a clean install: `E2E_TEST_MODE=1 npx detox test --configuration ios.release.xsmax e2e/dashboard.test.ts` passed 15/15 tests on 2026-05-29.
 - Added an E2E RevenueCat guard so release simulator QA does not load RevenueCat with `test_` API keys, which trigger RevenueCat's native release-mode test-key protection alert.
 - Built the Android debug APK on 2026-05-29 with package `com.ryvro.shiftplanner`; Android release-style Detox build, seeded dashboard smoke, auth form/navigation smoke, onboarding through Universal Shift Builder, and profile language-selector smoke now pass on `Medium_Phone_API_36.0`. Physical Android device QA and real provider auth remain pending.
+- Tightened tracked Xcode product metadata so the iOS shared scheme and product file reference now point at `Ryvro.app`; `xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -showBuildSettings` reported `FULL_PRODUCT_NAME = Ryvro.app`, `WRAPPER_NAME = Ryvro.app`, `PRODUCT_NAME = Ryvro`, and `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner` on 2026-05-30.
+- Removed stale tracked Detox artifact logs/screenshots from the old iOS `EllieMinerShiftAssistant` identity and added `artifacts/` to `.gitignore` so generated release logs do not re-enter the tracked launch tree.
 
 Still pending outside this repo or intentionally kept for compatibility:
 
@@ -111,11 +113,11 @@ Latest repeatable public preflight command:
 npm run release:clearance
 ```
 
-Result captured at `2026-05-30T04:26:28.800Z`:
+Result captured at `2026-05-30T05:08:52.377Z`:
 
 - Apple public software search: no exact `Ryvro` or `Ryvro Shift Planner` app result returned across 5 fuzzy results. Public search still does not prove App Store Connect name availability.
 - Google Play public search: no exact `Ryvro` or `Ryvro Shift Planner` result text found. Visible fuzzy names included `Rydoo` and `Rydora`. Public search still does not prove Play Console title/package availability.
-- A Chrome browser automation retry on 2026-05-30 could not connect to the Codex Chrome Extension even though Chrome, the extension, and the native host were present. Do not treat this as logged-in Google Play evidence; there is no fresh logged-in Google Play evidence in this report, so complete Play Console title/package checks directly in the account.
+- Chrome/Computer Use read the public Google Play search page for `Ryvro` on 2026-05-30. Visible public results included fuzzy/non-conflicting names such as Rolify, Rydoo, and Rydora, with no exact Ryvro listing visible. Do not treat this as logged-in Play Console evidence; complete Play Console title/package checks directly in the account.
 - USPTO public search app: reachable only through the automated preflight. This is not legal clearance.
 - `getryvro.com`: no public DNS record and Verisign `.com` returned no match.
 - `useryvro.com`, `tryryvro.com`, and `getryvroapp.com`: no public DNS record and Verisign `.com` returned no match.
@@ -210,7 +212,7 @@ Repo-side identity work is complete for the current Ryvro direction:
 - Short native display name: `Ryvro`.
 - Expo slug and URL scheme: `ryvro`.
 - iOS bundle ID and Android package: `com.ryvro.shiftplanner`.
-- Current generated iOS simulator build installs as `Ryvro.app` and exposes `CFBundleDisplayName = Ryvro` and `CFBundleName = Ryvro`.
+- Current generated iOS simulator build installs as `Ryvro.app` and exposes `CFBundleDisplayName = Ryvro` and `CFBundleName = Ryvro`; current Xcode build settings also report `FULL_PRODUCT_NAME = Ryvro.app`, `WRAPPER_NAME = Ryvro.app`, `PRODUCT_NAME = Ryvro`, and `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner`.
 - Current generated Android/iOS native identity files have been updated locally by the prebuild/run flow. If the repo keeps `ios/` and `android/` ignored, the tracked source of truth remains `app.json` and `app.config.js`.
 
 Remaining account-side identity work:
@@ -1441,15 +1443,15 @@ Phase gate:
 
 - [ ] Finalize public name.
 - [ ] Finalize short app label.
-- [ ] Finalize bundle ID/package ID decision.
-- [ ] Update `app.json`.
-- [ ] Update `app.config.js` if needed.
+- [x] Finalize bundle ID/package ID decision: `com.ryvro.shiftplanner`.
+- [x] Update `app.json`.
+- [x] Update `app.config.js` if needed.
 - [ ] Update or remove `app.config.js.backup`.
 - [ ] Update `android/settings.gradle`.
-- [ ] Update iOS display name.
-- [ ] Update e2e bundle/container references if ID changes.
-- [ ] Replace Google/Firebase native config files if ID changes.
-- [ ] Test iOS build after identity changes.
+- [x] Update iOS display name.
+- [x] Update e2e bundle/container references if ID changes.
+- [x] Replace Google/Firebase native config file bundle/package values in tracked local fixtures; fresh console-generated production files still require Firebase owner access.
+- [x] Test iOS build settings after identity changes.
 - [ ] Test simulator install after identity changes.
 - [ ] Test real iPhone install after identity changes.
 

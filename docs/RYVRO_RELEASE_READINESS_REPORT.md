@@ -17,14 +17,16 @@ Completed and guarded in the current branch:
 - Universal fixtures and launch templates now cover healthcare, security, emergency services, manufacturing, transport/logistics, hospitality, aviation/rail, mining/FIFO, and call-center/operations examples.
 - RevenueCat repo-side identifiers and guidance use Ryvro launch aliases while keeping old Ellie/miner aliases documented as compatibility-only migration inputs.
 - Firebase/backend repo config exposes `ryvroBrain` and uses `RYVRO_BRAIN_*` as the preferred environment names while preserving old `ELLIE_BRAIN_*` keys only as migration fallbacks.
+- Native iOS build metadata now resolves to `FULL_PRODUCT_NAME = Ryvro.app`, `WRAPPER_NAME = Ryvro.app`, `PRODUCT_NAME = Ryvro`, and `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner`; the remaining `TARGET_NAME = Ellie` is internal Xcode target scaffolding.
+- Stale generated Detox artifacts from the retired iOS app identity were removed from the tracked tree; `artifacts/` is now ignored so current release evidence stays in docs and fresh CI/test output instead of checked-in logs.
 
 ## Current Public Clearance Evidence
 
-`npm run release:clearance` was run on 2026-05-30 at `2026-05-30T04:26:28.800Z`.
+`npm run release:clearance` was run on 2026-05-30 at `2026-05-30T05:08:52.377Z`.
 
 - Apple public software search returned 5 fuzzy results and no exact `Ryvro` or `Ryvro Shift Planner` app result.
 - Google Play public search returned no exact `Ryvro` or `Ryvro Shift Planner` result text; visible fuzzy names were `Rydoo` and `Rydora`.
-- Chrome browser automation was attempted on 2026-05-30, but the browser extension connection was unavailable despite Chrome, extension, and native host setup checks passing. This means the current report has no fresh logged-in Google Play evidence; Play Console title/package availability still requires account-owner verification.
+- Chrome/Computer Use read the public Google Play search page for `Ryvro` on 2026-05-30. Visible public results included fuzzy/non-conflicting names such as Rolify, Rydoo, and Rydora, with no exact Ryvro listing visible. This is still not logged-in Play Console evidence; Play Console title/package availability requires account-owner verification.
 - USPTO Trademark Search was reachable, but this is not legal trademark clearance.
 - `getryvro.com`, `useryvro.com`, `tryryvro.com`, and `getryvroapp.com` had no public DNS records and Verisign `.com` returned no match.
 - `ryvro.com` is already registered through GoDaddy/Afternic and should not be treated as available unless purchased from the current registrant.
@@ -46,6 +48,7 @@ Completed and guarded in the current branch:
 - `npm run validate`: passed on 2026-05-29 after the latest Phase 9 E2E seed and selector updates.
 - Prior completed pushed GitHub Actions baseline for the Android release E2E readiness change: CI run `26659012373` passed for commit `92a52ab`.
 - iOS release simulator build command `npm run test:e2e:build:ios`: previously passed on 2026-05-29T15:22:59Z with built plist values `CFBundleDisplayName = Ryvro`, `CFBundleName = Ryvro`, and `CFBundleIdentifier = com.ryvro.shiftplanner`.
+- `xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -showBuildSettings | rg "PRODUCT_NAME|FULL_PRODUCT_NAME|PRODUCT_BUNDLE_IDENTIFIER|WRAPPER_NAME|TARGET_NAME|INFOPLIST_FILE"`: passed on 2026-05-30 and reported `FULL_PRODUCT_NAME = Ryvro.app`, `WRAPPER_NAME = Ryvro.app`, `PRODUCT_NAME = Ryvro`, and `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner`.
 - Android debug build passed on 2026-05-29 with `cd android && ./gradlew assembleDebug`; the generated APK reported package `com.ryvro.shiftplanner`, versionCode `1`, and versionName `1.0.0`.
 - Android release-style Detox build passed on 2026-05-29 with `DETOX_ANDROID_AVD=Medium_Phone_API_36.0 DETOX_ANDROID_ARCHS=arm64-v8a npx detox build --configuration android.release`.
 - Android release-style Detox dashboard smoke passed on 2026-05-29 with `DETOX_ANDROID_AVD=Medium_Phone_API_36.0 DETOX_ANDROID_ARCHS=arm64-v8a npx detox test --configuration android.release e2e/dashboard.test.ts`: 15 dashboard smoke tests on `Medium_Phone_API_36.0`.

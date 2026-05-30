@@ -382,7 +382,7 @@
           "category": "other"
         },
         {
-          "path": "backend/functions/src/audience-os/ellie-adapter.ts",
+          "path": "backend/functions/src/audience-os/ryvro-adapter.ts",
           "added": 176,
           "deleted": 0,
           "category": "other"
@@ -478,13 +478,13 @@
           "category": "other"
         },
         {
-          "path": "docs/ELLIE_RESEARCH_FUNNEL_AUTOMATION_PROMPT.md",
+          "path": "docs/RYVRO_RESEARCH_FUNNEL_AUTOMATION_PROMPT.md",
           "added": 109,
           "deleted": 0,
           "category": "docs"
         },
         {
-          "path": "docs/ELLIE_RESEARCH_FUNNEL_OS.md",
+          "path": "docs/RYVRO_RESEARCH_FUNNEL_OS.md",
           "added": 628,
           "deleted": 0,
           "category": "docs"
@@ -514,7 +514,7 @@
           "category": "components"
         },
         {
-          "path": "src/components/voice/EllieButton.tsx",
+          "path": "src/components/voice/RyvroVoiceButton.tsx",
           "added": 12,
           "deleted": 1,
           "category": "components"
@@ -526,7 +526,7 @@
           "category": "components"
         },
         {
-          "path": "src/components/voice/__tests__/EllieButton.test.tsx",
+          "path": "src/components/voice/__tests__/RyvroVoiceButton.test.tsx",
           "added": 33,
           "deleted": 0,
           "category": "tests"
@@ -538,7 +538,7 @@
           "category": "tests"
         },
         {
-          "path": "src/components/voice/__tests__/__snapshots__/EllieButton.test.tsx.snap",
+          "path": "src/components/voice/__tests__/__snapshots__/RyvroVoiceButton.test.tsx.snap",
           "added": 2,
           "deleted": 2,
           "category": "tests"
@@ -706,7 +706,7 @@
           "category": "services"
         },
         {
-          "path": "src/services/EllieBrainService.ts",
+          "path": "src/services/RyvroBrainService.ts",
           "added": 10,
           "deleted": 1,
           "category": "services"

@@ -374,8 +374,8 @@ function buildAppConfig(): AppConfig {
       ),
     },
     features: {
-      universalShiftBuilderEnabled: parseBooleanEnv('UNIVERSAL_SHIFT_BUILDER_ENABLED', false),
-      aiShiftBuilderEnabled: parseBooleanEnv('AI_SHIFT_BUILDER_ENABLED', false),
+      universalShiftBuilderEnabled: parseBooleanEnv('UNIVERSAL_SHIFT_BUILDER_ENABLED', true),
+      aiShiftBuilderEnabled: parseBooleanEnv('AI_SHIFT_BUILDER_ENABLED', true),
     },
     voiceAssistant: {
       locale: 'en-US',

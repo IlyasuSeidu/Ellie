@@ -21,14 +21,14 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 
 ## Phase 2 — Config + Identifiers
 
-| #   | Task                                                                                        | Status                             |
-| --- | ------------------------------------------------------------------------------------------- | ---------------------------------- |
-| 6   | Decide your bundle identifier (permanent — cannot change after Google Play submission)      | ✅ Done (`com.ryvro.shiftplanner`) |
-| 7   | Update bundle ID in `app.json` (iOS + Android), add `buildNumber: "1"` and `versionCode: 1` | ✅ Done                            |
-| 8   | Update bundle ID in `android/app/build.gradle` (namespace + applicationId, lines 90+92)     | ✅ Done                            |
-| 9   | Update bundle ID in `ios/Ellie.xcodeproj/project.pbxproj` (both occurrences)                | ✅ Done                            |
-| 10  | Create `eas.json` with development / preview / production build profiles                    | ✅ Done                            |
-| 10a | Add store listing copy, privacy/support templates, and external service handoff docs        | ✅ Done                            |
+| #   | Task                                                                                                                                                                                                                             | Status                             |
+| --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| 6   | Decide your bundle identifier (permanent — cannot change after Google Play submission)                                                                                                                                           | ✅ Done (`com.ryvro.shiftplanner`) |
+| 7   | Update bundle ID in `app.json` (iOS + Android), add `buildNumber: "1"` and `versionCode: 1`                                                                                                                                      | ✅ Done                            |
+| 8   | Update bundle ID in `android/app/build.gradle` (namespace + applicationId, lines 90+92)                                                                                                                                          | ✅ Done                            |
+| 9   | Verify generated iOS build settings use `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner` and `PRODUCT_NAME = Ryvro`; the internal generated workspace/scheme may still be `Ellie` until the next native-project regeneration | ✅ Done                            |
+| 10  | Create `eas.json` with development / preview / production build profiles                                                                                                                                                         | ✅ Done                            |
+| 10a | Add store listing copy, privacy/support templates, and external service handoff docs                                                                                                                                             | ✅ Done                            |
 
 ---
 
@@ -80,7 +80,7 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 | 12  | 👤 Register App ID on Apple Developer Portal with bundle ID `com.ryvro.shiftplanner` + Push Notifications capability                                                                        | 👤 Todo |
 | 13  | 👤 Create app in App Store Connect (name: `Ryvro Shift Planner`, language: English AU, SKU: `ryvro-shift-001`)                                                                              | 👤 Todo |
 | 14  | 👤 Create app in Google Play Console ($25 one-time fee) with matching name                                                                                                                  | 👤 Todo |
-| 15  | 👤 Run `eas login` then `eas init` in `/Users/Shared/Ellie` — copy the EAS Project ID UUID                                                                                                  | 👤 Todo |
+| 15  | 👤 Run `eas login` then `eas init` in the repo root — copy the EAS Project ID UUID                                                                                                          | 👤 Todo |
 | 16  | 👤 Update `.env`: set `APP_ENV=production`, paste `EAS_PROJECT_ID`, paste `GOOGLE_WEB_CLIENT_ID` from Firebase Console, fill `REVENUECAT_IOS_KEY` and `REVENUECAT_ANDROID_KEY` from Phase 4 | 👤 Todo |
 | 17  | 👤 Set up iOS signing: run `eas credentials --platform ios` → add distribution cert + provisioning profile                                                                                  | 👤 Todo |
 | 17a | Use `docs/RYVRO_STORE_LISTING.md` for App Store and Google Play copy                                                                                                                        | ✅ Done |
@@ -142,7 +142,7 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 ## Quality Gate Commands (Tasks 5 + 41 — run in order, all must pass)
 
 ```bash
-cd /Users/Shared/Ellie
+cd <repo-root>
 npm ci --legacy-peer-deps
 npm run lint
 npm run type-check
@@ -158,13 +158,14 @@ npm run release:check
 ```bash
 # iOS archive
 npx expo prebuild --platform ios --clean
+# Current generated iOS workspace/scheme names are internal scaffolding names.
 cd ios && xcodebuild -workspace Ellie.xcworkspace \
   -scheme Ellie -configuration Release \
   -destination generic/platform=iOS \
-  -archivePath /tmp/Ellie.xcarchive archive
+  -archivePath /tmp/Ryvro.xcarchive archive
 
 # Android AAB
-cd /Users/Shared/Ellie
+cd <repo-root>
 npx expo prebuild --platform android --clean
 cd android && ./gradlew bundleRelease
 ```
@@ -183,8 +184,8 @@ cd android && ./gradlew bundleRelease
 
 **Subscription readiness:**
 
-- [ ] `react-native-purchases` installed and all subscription files created (Tasks 31–40)
-- [ ] Quality gate re-run passes after subscription code is added (Task 41)
+- [x] `react-native-purchases` installed and all subscription files created (Tasks 31–40)
+- [x] Quality gate re-run passes after subscription code is added (Task 41)
 - [ ] RevenueCat entitlement `pro` configured with both product IDs (Tasks 42–48)
 - [ ] App Store Connect subscription products `ryvro_pro_monthly` + `ryvro_pro_annual` created (Task 45)
 - [ ] Google Play subscription products created with matching IDs (Task 46)

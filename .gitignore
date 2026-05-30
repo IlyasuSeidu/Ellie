@@ -43,6 +43,7 @@ web-admin/analytics-intelligence/firebase-config.local.js
 
 # test coverage
 coverage/
+artifacts/
 
 # generated native folders
 /ios
