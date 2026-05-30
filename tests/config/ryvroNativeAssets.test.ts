@@ -4,6 +4,11 @@ import path from 'path';
 const read = (relativePath: string): string =>
   fs.readFileSync(path.join(process.cwd(), relativePath), 'utf8');
 
+const readOptional = (relativePath: string): string | null => {
+  const absolutePath = path.join(process.cwd(), relativePath);
+  return fs.existsSync(absolutePath) ? fs.readFileSync(absolutePath, 'utf8') : null;
+};
+
 describe('Ryvro native wake-word assets', () => {
   it('uses Ryvro-branded native module identifiers', () => {
     expect(fs.existsSync(path.join(process.cwd(), 'modules/ryvro-openwakeword'))).toBe(true);
@@ -60,5 +65,33 @@ describe('Ryvro native wake-word assets', () => {
     expect(androidModule).not.toContain('Hey Ellie');
     expect(iosModule).not.toContain('EllieOpenWakeWord');
     expect(androidModule).not.toContain('EllieOpenWakeWord');
+  });
+
+  it('keeps generated iOS pods aligned with the Ryvro wake-word module when present', () => {
+    const podfileLock = readOptional('ios/Podfile.lock');
+    const podspec = readOptional('ios/Pods/Local Podspecs/RyvroOpenWakeWord.podspec.json');
+    const retiredPodspecPath = path.join(
+      process.cwd(),
+      'ios/Pods/Local Podspecs/EllieOpenWakeWord.podspec.json'
+    );
+
+    if (!podfileLock && !podspec) {
+      return;
+    }
+
+    if (podfileLock) {
+      expect(podfileLock).toContain('RyvroOpenWakeWord');
+      expect(podfileLock).toContain('../modules/ryvro-openwakeword/ios');
+      expect(podfileLock).not.toContain('EllieOpenWakeWord');
+      expect(podfileLock).not.toContain('../modules/ellie-openwakeword/ios');
+    }
+
+    if (podspec) {
+      expect(podspec).toContain('"name": "RyvroOpenWakeWord"');
+      expect(podspec).toContain('RyvroOpenWakeWordResources');
+      expect(podspec).not.toContain('EllieOpenWakeWord');
+    }
+
+    expect(fs.existsSync(retiredPodspecPath)).toBe(false);
   });
 });

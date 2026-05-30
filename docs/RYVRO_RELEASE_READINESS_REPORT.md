@@ -18,6 +18,7 @@ Completed and guarded in the current branch:
 - RevenueCat repo-side identifiers and guidance use Ryvro launch aliases while keeping old Ellie/miner aliases documented as compatibility-only migration inputs.
 - Firebase/backend repo config exposes `ryvroBrain` and uses `RYVRO_BRAIN_*` as the preferred environment names while preserving old `ELLIE_BRAIN_*` keys only as migration fallbacks.
 - The internal OpenWakeWord Expo module now uses Ryvro-branded package, native module, Android namespace, iOS podspec, resource bundle, and JS adapter identifiers.
+- The ignored generated iOS CocoaPods workspace was refreshed on 2026-05-30; `pod install` installed `RyvroOpenWakeWord`, removed `EllieOpenWakeWord`, and `ios/Podfile.lock` now points at `../modules/ryvro-openwakeword/ios`.
 - Native iOS build metadata now resolves to `FULL_PRODUCT_NAME = Ryvro.app`, `WRAPPER_NAME = Ryvro.app`, `PRODUCT_NAME = Ryvro`, and `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner`; the remaining `TARGET_NAME = Ellie` is internal Xcode target scaffolding.
 - Stale generated Detox artifacts from the retired iOS app identity were removed from the tracked tree; `artifacts/` is now ignored so current release evidence stays in docs and fresh CI/test output instead of checked-in logs.
 
@@ -43,6 +44,7 @@ Completed and guarded in the current branch:
   - `npm test -- universalShiftCalendarUtils HolidayService NotificationService SmartReminderSettingsService shift-schedule-parser --runInBand`: 4 suites, 107 tests.
   - `npm test` in `backend/functions`: TypeScript build plus 38 Node tests.
 - `npm test -- universalShiftTemplates ryvroEnvTemplate --runInBand`: passed on 2026-05-29, including a guard that completed E2E onboarding seeds carry Universal Shift Builder schedules.
+- `pod install` in `ios/`: passed on 2026-05-30 and regenerated the ignored local CocoaPods metadata from `EllieOpenWakeWord` to `RyvroOpenWakeWord`.
 - `E2E_TEST_MODE=1 npx expo start --localhost` plus `npx detox test --configuration ios.release e2e/dashboard.test.ts --reuse`: passed on 2026-05-29 on the iPhone 16 simulator, 15 dashboard smoke tests.
 - `E2E_TEST_MODE=1 npx detox test --configuration ios.release.xsmax e2e/dashboard.test.ts`: passed on 2026-05-29 on the iPhone XS Max simulator, 15 dashboard smoke tests. The run uninstalled the previous app first, installed the rebuilt `Ryvro.app`, and verified the small-screen dashboard smoke without the RevenueCat release guard alert.
 - `npm test -- RevenueCatRuntime ryvroEnvTemplate --runInBand`: passed on 2026-05-29 after adding the E2E RevenueCat runtime guard and treating `test_` RevenueCat keys as unavailable launch keys.
