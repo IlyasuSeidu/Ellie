@@ -267,7 +267,7 @@ npm run release:clearance
 
 This command checks public Apple software search results, public Google Play search text, DNS, Verisign WHOIS for `.com` candidates, social URL HTTP statuses, and USPTO Trademark Search reachability. It does not buy domains, reserve handles, prove App Store Connect or Play Console availability, or replace legal trademark clearance. Treat it as a repeatable preflight check before the account-owner completes the logged-in steps.
 
-Latest public preflight evidence captured on 2026-05-30 at 06:28:28Z:
+Latest public preflight evidence captured on 2026-05-30 at 07:46:33Z:
 
 - Apple public software search: no exact `Ryvro` or `Ryvro Shift Planner` app result returned across 5 fuzzy results.
 - Google Play public search: no exact `Ryvro` or `Ryvro Shift Planner` result text found. Visible fuzzy names included `Rydoo` and `Rydora`.
@@ -278,9 +278,8 @@ Latest public preflight evidence captured on 2026-05-30 at 06:28:28Z:
 - `tryryvro.com`: no public DNS record and Verisign `.com` returned no match.
 - `getryvroapp.com`: no public DNS record and Verisign `.com` returned no match.
 - `ryvro.com`: already registered through GoDaddy/Afternic and should not be treated as available.
-- YouTube `@ryvro`: public 404 at the time of check, but still requires logged-in reservation.
-- LinkedIn `company/ryvro`: public 404 at the time of check, but still requires logged-in reservation.
-- X, Instagram, and TikTok `@ryvro`: public URLs returned 200 and must be checked/reserved while logged in.
+- X, Instagram, and TikTok `@ryvro`: public URLs returned `200`; this is not reliable ownership or availability proof.
+- YouTube `@ryvro` and LinkedIn `company/ryvro`: public URLs returned `404`; reserve directly while logged in.
 
 ## Analytics And Support Naming
 
