@@ -313,8 +313,8 @@ describe('Ryvro environment template', () => {
     );
     const clearanceEvidence = `${externalSetup}\n${audit}`;
 
-    expect(clearanceEvidence).toContain('2026-05-30 at 05:38:18Z');
-    expect(clearanceEvidence).toContain('2026-05-30T05:38:18.547Z');
+    expect(clearanceEvidence).toContain('2026-05-30 at 06:28:28Z');
+    expect(clearanceEvidence).toContain('2026-05-30T06:28:28.205Z');
     expect(clearanceEvidence).toContain('no exact `Ryvro` or `Ryvro Shift Planner` app result');
     expect(clearanceEvidence).toContain('Visible fuzzy names included `Rydoo` and `Rydora`');
     expect(clearanceEvidence).toContain(
@@ -339,6 +339,8 @@ describe('Ryvro environment template', () => {
     expect(clearanceEvidence).not.toContain('2026-05-30T04:26:28.800Z');
     expect(clearanceEvidence).not.toContain('2026-05-30 at 05:08:52Z');
     expect(clearanceEvidence).not.toContain('2026-05-30T05:08:52.377Z');
+    expect(clearanceEvidence).not.toContain('2026-05-30 at 05:38:18Z');
+    expect(clearanceEvidence).not.toContain('2026-05-30T05:38:18.547Z');
     expect(clearanceEvidence).not.toContain(
       'LinkedIn `company/ryvro`: public URL returned bot-protection status `999`'
     );
