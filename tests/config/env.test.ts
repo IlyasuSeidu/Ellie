@@ -13,6 +13,7 @@ import config, {
   googleConfig,
   apiConfig,
   appConfig,
+  legalConfig,
 } from '@/config/env';
 
 describe('Environment Configuration', () => {
@@ -23,6 +24,7 @@ describe('Environment Configuration', () => {
     expect(config.google).toBeDefined();
     expect(config.api).toBeDefined();
     expect(config.app).toBeDefined();
+    expect(config.legal).toBeDefined();
   });
 
   it('should have valid environment type', () => {
@@ -108,6 +110,20 @@ describe('Environment Configuration', () => {
     });
   });
 
+  describe('Legal Configuration', () => {
+    it('should have live Ryvro legal and support URLs', () => {
+      expect(legalConfig.privacyPolicyUrl).toBe('https://getryvro.com/privacy');
+      expect(legalConfig.termsOfServiceUrl).toBe('https://getryvro.com/terms');
+      expect(legalConfig.supportUrl).toBe('https://getryvro.com/support');
+    });
+
+    it('should use HTTPS URLs', () => {
+      expect(legalConfig.privacyPolicyUrl).toMatch(/^https:\/\//);
+      expect(legalConfig.termsOfServiceUrl).toMatch(/^https:\/\//);
+      expect(legalConfig.supportUrl).toMatch(/^https:\/\//);
+    });
+  });
+
   describe('Environment Flags', () => {
     it('should have valid environment flag values', () => {
       expect(typeof isDevelopment).toBe('boolean');
@@ -135,7 +151,7 @@ describe('Environment Configuration', () => {
 
   describe('Configuration Structure', () => {
     it('should have consistent structure', () => {
-      const expectedKeys = ['env', 'firebase', 'google', 'api', 'app'];
+      const expectedKeys = ['env', 'firebase', 'google', 'api', 'app', 'legal'];
       const actualKeys = Object.keys(config);
 
       expectedKeys.forEach((key) => {
@@ -148,6 +164,7 @@ describe('Environment Configuration', () => {
       expect(googleConfig).toBe(config.google);
       expect(apiConfig).toBe(config.api);
       expect(appConfig).toBe(config.app);
+      expect(legalConfig).toBe(config.legal);
     });
   });
 
@@ -188,6 +205,11 @@ describe('Environment Configuration', () => {
       expect(typeof config.app.name).toBe('string');
       expect(typeof config.app.version).toBe('string');
       expect(typeof config.app.buildNumber).toBe('string');
+
+      // Legal config types
+      expect(typeof config.legal.privacyPolicyUrl).toBe('string');
+      expect(typeof config.legal.termsOfServiceUrl).toBe('string');
+      expect(typeof config.legal.supportUrl).toBe('string');
     });
 
     it('should have proper enum for environment', () => {

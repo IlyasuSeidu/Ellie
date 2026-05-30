@@ -148,6 +148,11 @@ module.exports = ({ config = {} }) => {
       EXPO_PUBLIC_E2E_TEST_MODE: process.env.EXPO_PUBLIC_E2E_TEST_MODE || '',
       API_BASE_URL: process.env.API_BASE_URL || 'https://api.getryvro.com',
       API_TIMEOUT: process.env.API_TIMEOUT || '30000',
+      LEGAL_PRIVACY_POLICY_URL:
+        process.env.LEGAL_PRIVACY_POLICY_URL || 'https://getryvro.com/privacy',
+      LEGAL_TERMS_OF_SERVICE_URL:
+        process.env.LEGAL_TERMS_OF_SERVICE_URL || 'https://getryvro.com/terms',
+      SUPPORT_URL: process.env.SUPPORT_URL || 'https://getryvro.com/support',
       RYVRO_BRAIN_URL:
         process.env.RYVRO_BRAIN_URL ||
         process.env.ELLIE_BRAIN_URL ||

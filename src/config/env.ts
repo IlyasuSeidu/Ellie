@@ -123,6 +123,11 @@ export interface AppConfig {
     version: string;
     buildNumber: string;
   };
+  legal: {
+    privacyPolicyUrl: string;
+    termsOfServiceUrl: string;
+    supportUrl: string;
+  };
   ryvroBrain: {
     /** Cloud Function URL for the Ryvro voice assistant backend */
     url: string;
@@ -352,6 +357,13 @@ function buildAppConfig(): AppConfig {
       version: Constants.expoConfig?.version || '1.0.0',
       buildNumber: Constants.expoConfig?.ios?.buildNumber || '1',
     },
+    legal: {
+      privacyPolicyUrl:
+        getEnvVar('LEGAL_PRIVACY_POLICY_URL', false) || 'https://getryvro.com/privacy',
+      termsOfServiceUrl:
+        getEnvVar('LEGAL_TERMS_OF_SERVICE_URL', false) || 'https://getryvro.com/terms',
+      supportUrl: getEnvVar('SUPPORT_URL', false) || 'https://getryvro.com/support',
+    },
     ryvroBrain: {
       url:
         getEnvVar('RYVRO_BRAIN_URL', false) ||
@@ -437,6 +449,17 @@ function validateConfig(config: AppConfig): void {
   if (config.api.timeout < 1000 || config.api.timeout > 60000) {
     throw new Error('API timeout must be between 1000 and 60000 milliseconds');
   }
+
+  Object.entries(config.legal).forEach(([key, value]) => {
+    try {
+      const parsed = new URL(value);
+      if (parsed.protocol !== 'https:') {
+        throw new Error('not https');
+      }
+    } catch {
+      throw new Error(`Legal URL ${key} must be a valid HTTPS URL`);
+    }
+  });
 
   if (!isConfiguredRyvroBrainUrl(config.ryvroBrain.url)) {
     const message =
@@ -560,6 +583,11 @@ try {
         version: '1.0.0',
         buildNumber: '1',
       },
+      legal: {
+        privacyPolicyUrl: 'https://getryvro.com/privacy',
+        termsOfServiceUrl: 'https://getryvro.com/terms',
+        supportUrl: 'https://getryvro.com/support',
+      },
       ryvroBrain: {
         url: 'https://ryvro-brain-test.cloudfunctions.net/ryvroBrain',
         timeout: 30000,
@@ -641,5 +669,6 @@ export const firebaseConfig = config.firebase;
 export const googleConfig = config.google;
 export const apiConfig = config.api;
 export const appConfig = config.app;
+export const legalConfig = config.legal;
 export const ryvroBrainConfig = config.ryvroBrain;
 export const voiceAssistantConfig = config.voiceAssistant;

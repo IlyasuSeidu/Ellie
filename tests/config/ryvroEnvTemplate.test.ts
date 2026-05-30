@@ -142,6 +142,7 @@ describe('Ryvro environment template', () => {
         adaptiveIcon?: { foregroundImage?: string };
       };
       web?: { favicon?: string };
+      extra?: Record<string, unknown>;
     };
 
     const previousIosGoogleServices = process.env.EXPO_IOS_GOOGLE_SERVICES_FILE;
@@ -167,6 +168,9 @@ describe('Ryvro environment template', () => {
         './android/app/ryvro-google-services.json'
       );
       expect(dynamicConfig.web?.favicon).toBe('./assets/favicon.png');
+      expect(dynamicConfig.extra?.LEGAL_PRIVACY_POLICY_URL).toBe('https://getryvro.com/privacy');
+      expect(dynamicConfig.extra?.LEGAL_TERMS_OF_SERVICE_URL).toBe('https://getryvro.com/terms');
+      expect(dynamicConfig.extra?.SUPPORT_URL).toBe('https://getryvro.com/support');
     } finally {
       if (previousIosGoogleServices === undefined) {
         delete process.env.EXPO_IOS_GOOGLE_SERVICES_FILE;
@@ -360,11 +364,19 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('RYVRO_BRAIN_URL');
     expect(script).toContain('REVENUECAT_IOS_KEY');
     expect(script).toContain('REVENUECAT_ANDROID_KEY');
+    expect(script).toContain('LEGAL_PRIVACY_POLICY_URL');
+    expect(script).toContain('LEGAL_TERMS_OF_SERVICE_URL');
+    expect(script).toContain('SUPPORT_URL');
     expect(envExample).toContain('REVENUECAT_ENTITLEMENT_ID=pro');
     expect(envExample).toContain('EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID=pro');
+    expect(envExample).toContain('LEGAL_PRIVACY_POLICY_URL=https://getryvro.com/privacy');
+    expect(envExample).toContain('LEGAL_TERMS_OF_SERVICE_URL=https://getryvro.com/terms');
+    expect(envExample).toContain('SUPPORT_URL=https://getryvro.com/support');
     expect(script).toContain('ELLIE_BRAIN_URL: leave empty for new Ryvro production builds');
     expect(externalSetup).toContain('npm run release:env:check');
+    expect(externalSetup).toContain('live HTTPS `LEGAL_PRIVACY_POLICY_URL`');
     expect(releaseTasks).toContain('npm run release:env:check');
+    expect(releaseTasks).toContain('set live HTTPS legal/support URLs');
   });
 
   it('keeps public clearance evidence current while preserving account-only caveats', () => {

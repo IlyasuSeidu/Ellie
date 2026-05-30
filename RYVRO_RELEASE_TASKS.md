@@ -74,17 +74,17 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 
 ## Phase 5 — Accounts + External Setup (Manual — you do these)
 
-| #   | Task                                                                                                                                                                                                              | Status  |
-| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| 11  | 👤 Enroll Apple Developer account at developer.apple.com ($99/year) — takes 24-48h to approve — **start immediately, runs in parallel with Phase 3**                                                              | 👤 Todo |
-| 12  | 👤 Register App ID on Apple Developer Portal with bundle ID `com.ryvro.shiftplanner` + Push Notifications capability                                                                                              | 👤 Todo |
-| 13  | 👤 Create app in App Store Connect (name: `Ryvro Shift Planner`, language: English AU, SKU: `ryvro-shift-001`)                                                                                                    | 👤 Todo |
-| 14  | 👤 Create app in Google Play Console ($25 one-time fee) with matching name                                                                                                                                        | 👤 Todo |
-| 15  | 👤 Run `eas login` then `eas init` in the repo root — copy the EAS Project ID UUID                                                                                                                                | 👤 Todo |
-| 16  | 👤 Update `.env`: set `APP_ENV=production`, paste `EAS_PROJECT_ID`, paste Firebase/Google OAuth values, fill `REVENUECAT_IOS_KEY` and `REVENUECAT_ANDROID_KEY` from Phase 4, then run `npm run release:env:check` | 👤 Todo |
-| 17  | 👤 Set up iOS signing: run `eas credentials --platform ios` → add distribution cert + provisioning profile                                                                                                        | 👤 Todo |
-| 17a | Use `docs/RYVRO_STORE_LISTING.md` for App Store and Google Play copy                                                                                                                                              | ✅ Done |
-| 17b | Use `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md` for privacy, terms, support, account deletion, and Firebase Auth email templates                                                                                    | ✅ Done |
+| #   | Task                                                                                                                                                                                                                                                 | Status  |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| 11  | 👤 Enroll Apple Developer account at developer.apple.com ($99/year) — takes 24-48h to approve — **start immediately, runs in parallel with Phase 3**                                                                                                 | 👤 Todo |
+| 12  | 👤 Register App ID on Apple Developer Portal with bundle ID `com.ryvro.shiftplanner` + Push Notifications capability                                                                                                                                 | 👤 Todo |
+| 13  | 👤 Create app in App Store Connect (name: `Ryvro Shift Planner`, language: English AU, SKU: `ryvro-shift-001`)                                                                                                                                       | 👤 Todo |
+| 14  | 👤 Create app in Google Play Console ($25 one-time fee) with matching name                                                                                                                                                                           | 👤 Todo |
+| 15  | 👤 Run `eas login` then `eas init` in the repo root — copy the EAS Project ID UUID                                                                                                                                                                   | 👤 Todo |
+| 16  | 👤 Update `.env`: set `APP_ENV=production`, paste `EAS_PROJECT_ID`, paste Firebase/Google OAuth values, fill `REVENUECAT_IOS_KEY` and `REVENUECAT_ANDROID_KEY` from Phase 4, set live HTTPS legal/support URLs, then run `npm run release:env:check` | 👤 Todo |
+| 17  | 👤 Set up iOS signing: run `eas credentials --platform ios` → add distribution cert + provisioning profile                                                                                                                                           | 👤 Todo |
+| 17a | Use `docs/RYVRO_STORE_LISTING.md` for App Store and Google Play copy                                                                                                                                                                                 | ✅ Done |
+| 17b | Use `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md` for privacy, terms, support, account deletion, and Firebase Auth email templates                                                                                                                       | ✅ Done |
 
 ---
 

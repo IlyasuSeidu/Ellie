@@ -60,6 +60,14 @@ function requireValue(errors, env, key, predicate, message) {
   }
 }
 
+function isHttpsUrl(value) {
+  try {
+    return new URL(value).protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
 function main() {
   const { envFile } = parseArgs(process.argv.slice(2));
   const envPath = path.resolve(process.cwd(), envFile);
@@ -117,6 +125,21 @@ function main() {
     'must be a real Ryvro Android RevenueCat SDK key, not a test_ or placeholder key'
   );
   requireValue(errors, env, 'REVENUECAT_ENTITLEMENT_ID', (value) => value === 'pro', 'must be pro');
+  requireValue(
+    errors,
+    env,
+    'LEGAL_PRIVACY_POLICY_URL',
+    isHttpsUrl,
+    'must be the live HTTPS Ryvro privacy policy URL'
+  );
+  requireValue(
+    errors,
+    env,
+    'LEGAL_TERMS_OF_SERVICE_URL',
+    isHttpsUrl,
+    'must be the live HTTPS Ryvro terms URL'
+  );
+  requireValue(errors, env, 'SUPPORT_URL', isHttpsUrl, 'must be the live HTTPS Ryvro support URL');
 
   if (env.ELLIE_BRAIN_URL?.trim()) {
     errors.push('ELLIE_BRAIN_URL: leave empty for new Ryvro production builds');

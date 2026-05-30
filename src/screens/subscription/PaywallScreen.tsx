@@ -38,10 +38,7 @@ import { MiniYearCalendar } from '@/components/paywall/MiniYearCalendar';
 import { formatLocalizedDate } from '@/utils/i18nFormat';
 import { useNetworkStatus } from '@/hooks/useNetworkStatus';
 import { useSubscription } from '@/hooks/useSubscription';
-
-// Legal URLs — update these to point to the live hosted documents
-const PRIVACY_POLICY_URL = 'https://getryvro.com/privacy';
-const TERMS_OF_SERVICE_URL = 'https://getryvro.com/terms';
+import { legalConfig } from '@/config/env';
 
 function packageHasTrial(pkg: import('react-native-purchases').PurchasesPackage | null): boolean {
   if (!pkg) return false;
@@ -817,11 +814,11 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
   };
 
   const handleOpenPrivacyPolicy = () => {
-    void Linking.openURL(PRIVACY_POLICY_URL);
+    void Linking.openURL(legalConfig.privacyPolicyUrl);
   };
 
   const handleOpenTerms = () => {
-    void Linking.openURL(TERMS_OF_SERVICE_URL);
+    void Linking.openURL(legalConfig.termsOfServiceUrl);
   };
 
   return (
