@@ -1262,6 +1262,32 @@ describe('Ryvro environment template', () => {
     }
   });
 
+  it('keeps the web admin Firebase config path on Ryvro-safe values', () => {
+    const gitignore = fs.readFileSync(path.join(process.cwd(), '.gitignore'), 'utf8');
+    const firebaseJson = fs.readFileSync(path.join(process.cwd(), 'firebase.json'), 'utf8');
+    const adminReadme = fs.readFileSync(
+      path.join(process.cwd(), 'web-admin/analytics-intelligence/README.md'),
+      'utf8'
+    );
+    const exampleConfig = fs.readFileSync(
+      path.join(process.cwd(), 'web-admin/analytics-intelligence/firebase-config.example.js'),
+      'utf8'
+    );
+    const localConfig = readOptional('web-admin/analytics-intelligence/firebase-config.local.js');
+    const guardedConfig = [exampleConfig, localConfig ?? ''].join('\n');
+
+    expect(gitignore).toContain('web-admin/analytics-intelligence/firebase-config.local.js');
+    expect(firebaseJson).toContain('"firebase-config.local.js"');
+    expect(adminReadme).toContain('Ryvro Firebase web config values');
+    expect(adminReadme).toContain('Do not point the local admin console at the retired Ellie');
+    expect(exampleConfig).toContain('YOUR_RYVRO_PROJECT_ID.firebaseapp.com');
+    expect(exampleConfig).toContain('YOUR_RYVRO_PROJECT_ID.firebasestorage.app');
+    expect(guardedConfig).not.toContain('ellie-20260220135308');
+    expect(guardedConfig).not.toContain('ellieBrain');
+    expect(guardedConfig).not.toContain('com.ilyasuseidu.ellie');
+    expect(guardedConfig).not.toContain('com.ellie.minershiftassistant');
+  });
+
   it('pins universal exception, calendar, and reminder copy for launch surfaces', () => {
     const scheduleLocale = JSON.parse(
       fs.readFileSync(path.join(process.cwd(), 'src/i18n/locales/en/schedule.json'), 'utf8')

@@ -19,9 +19,11 @@ cp web-admin/analytics-intelligence/firebase-config.example.js \
   web-admin/analytics-intelligence/firebase-config.local.js
 ```
 
-Edit `web-admin/analytics-intelligence/firebase-config.local.js` and fill in the Firebase web config values from Firebase Console -> Project settings -> Your apps -> Web app -> SDK setup.
+Edit `web-admin/analytics-intelligence/firebase-config.local.js` and fill in the Ryvro Firebase web config values from Firebase Console -> Project settings -> Your apps -> Web app -> SDK setup.
 
 `firebase-config.local.js` is gitignored. Firebase web config values are public identifiers, not private secrets, but local project config should not be committed.
+
+Do not point the local admin console at the retired Ellie Firebase project. Local preview should use the Ryvro Firebase project that owns `com.ryvro.shiftplanner` and the deployed Ryvro analytics callable functions.
 
 ### 2. Run locally
 
