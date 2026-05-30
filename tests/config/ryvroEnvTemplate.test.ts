@@ -574,6 +574,13 @@ describe('Ryvro environment template', () => {
     expect(externalSetup).toContain('iOS app nickname: Ryvro iOS');
     expect(externalSetup).toContain('Android app nickname: Ryvro Android');
     expect(externalSetup).toContain('Display name: Ryvro Pro');
+    expect(externalSetup).toContain('Preferred voice endpoint for new builds: ryvroBrain');
+    expect(externalSetup).toContain(
+      'RYVRO_BRAIN_URL=https://<region>-<project-id>.cloudfunctions.net/ryvroBrain'
+    );
+    expect(externalSetup).toContain(
+      'Do not configure `ellieBrain` as the launch `RYVRO_BRAIN_URL`'
+    );
     expect(externalSetup).toContain('Analytics property/report labels: Ryvro');
     expect(externalSetup).toContain(
       'Segment schedule setup dashboards by industry, template, and source'
@@ -586,6 +593,9 @@ describe('Ryvro environment template', () => {
     expect(externalSetup).not.toContain('Ellie iOS');
     expect(externalSetup).not.toContain('Ellie Android');
     expect(externalSetup).not.toContain('Ellie Pro');
+    expect(externalSetup).not.toContain(
+      'RYVRO_BRAIN_URL=https://<region>-<project-id>.cloudfunctions.net/ellieBrain'
+    );
   });
 
   it('keeps active launch paywall proof broad enough for non-mining shift teams', () => {

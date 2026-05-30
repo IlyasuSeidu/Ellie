@@ -13,8 +13,8 @@ This is the account-side setup checklist for services that cannot be fully chang
 - URL scheme: ryvro
 - Preferred domain: getryvro.com
 - Preferred support email: support@getryvro.com
-- Preferred voice endpoint: ryvroBrain
-- Legacy voice endpoint kept during migration: ellieBrain
+- Preferred voice endpoint for new builds: ryvroBrain
+- Legacy voice endpoint kept only during migration: ellieBrain
 
 ## Firebase
 
@@ -55,6 +55,13 @@ Deploy backend functions:
 firebase use <ryvro-project-id>
 firebase deploy --only functions
 ```
+
+Configure new production app and EAS secrets with the `ryvroBrain` HTTPS URL only:
+
+- `RYVRO_BRAIN_URL=https://<region>-<project-id>.cloudfunctions.net/ryvroBrain`
+- `RYVRO_BRAIN_TIMEOUT=30000`
+
+Do not configure `ellieBrain` as the launch `RYVRO_BRAIN_URL`. Keep the `ellieBrain` function deployed only long enough to support pre-migration builds, then retire it after production clients and dashboards have moved to `ryvroBrain`.
 
 Smoke-test endpoints after deploy:
 
