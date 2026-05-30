@@ -23,7 +23,7 @@ Completed in the current working tree:
 - Rebranded primary English app copy, onboarding copy, paywall copy, settings/dashboard assistant copy, notification text, voice assistant UI, and calendar export metadata to `Ryvro`.
 - Cleaned translated locale values so user-facing assistant strings no longer say Ellie in Chinese, Arabic, Hindi, or Russian.
 - Added universal industry onboarding/e2e fixtures while preserving a miner/FIFO fixture as the launch wedge.
-- Added a starter universal template catalog for healthcare, security, emergency services, manufacturing, transport, hospitality, aviation/rail, and mining FIFO examples.
+- Added a starter universal template catalog for healthcare, security, emergency services, manufacturing, transport, hospitality, separate aviation and rail operations, and mining FIFO examples.
 - Added broad RevenueCat entitlement aliases while preserving old Ellie/miner aliases for backward compatibility.
 - Added RevenueCat entitlement regression tests that pin Ryvro launch aliases while making the old Ellie/miner aliases explicit migration compatibility only.
 - Added `RYVRO_BRAIN_URL` / `RYVRO_BRAIN_TIMEOUT` as the preferred voice-backend environment names while preserving the old `ELLIE_BRAIN_*` keys as migration fallbacks.

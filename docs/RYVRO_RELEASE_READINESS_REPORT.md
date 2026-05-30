@@ -16,7 +16,7 @@ Completed and guarded in the current branch:
 - Launch-critical English UI, selected translated user-facing assistant/paywall strings, calendar export metadata, reminders, settings/dashboard copy, and support/store/legal templates use Ryvro language.
 - French, Afrikaans, Arabic, Spanish, Portuguese, Hindi, Russian, Chinese, and Zulu launch-critical onboarding/profile copy now use broad work-location language instead of mining-site phrasing in roster setup, FIFO phase selection, and reminder labels.
 - Backend daily intelligence prompts now describe Ryvro's launch audience across FIFO, healthcare, security, emergency services, transport, hospitality, manufacturing, mining, and other shift-work teams instead of treating mining/FIFO as the only launch lens.
-- Universal fixtures and launch templates now cover healthcare, security, emergency services, manufacturing, transport/logistics, hospitality, aviation/rail, mining/FIFO, and call-center/operations examples.
+- Universal fixtures and launch templates now cover healthcare, security, emergency services, manufacturing, transport/logistics, hospitality, separate aviation and rail operations, mining/FIFO, and call-center/operations examples.
 - RevenueCat repo-side identifiers and guidance use Ryvro launch aliases while keeping old Ellie/miner aliases documented as compatibility-only migration inputs.
 - Firebase/backend repo config exposes `ryvroBrain` and uses `RYVRO_BRAIN_*` as the preferred environment names while preserving old `ELLIE_BRAIN_*` keys only as migration fallbacks.
 - CI and E2E workflows now exercise only `RYVRO_BRAIN_*` endpoint variables; legacy `ELLIE_BRAIN_*` names are no longer exported in workflow environments.

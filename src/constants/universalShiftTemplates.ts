@@ -7,7 +7,8 @@ export type UniversalShiftTemplateIndustry =
   | 'manufacturing'
   | 'transport_logistics'
   | 'hospitality_retail'
-  | 'aviation_rail'
+  | 'aviation'
+  | 'rail'
   | 'mining_fifo';
 
 export interface UniversalShiftTemplate {
@@ -190,9 +191,9 @@ export const UNIVERSAL_SHIFT_TEMPLATES: UniversalShiftTemplate[] = [
   },
   {
     id: 'aviation-early-late-night',
-    industry: 'aviation_rail',
+    industry: 'aviation',
     title: 'Aviation Early / Late / Night',
-    subtitle: 'Airport and rail operations pattern with early starts and overnight coverage.',
+    subtitle: 'Airport operations pattern with early starts and overnight coverage.',
     aiPromptExample:
       'Airport operations: 2 early, 2 late, 2 night, 4 days off, starting first late.',
     schedule: schedule(
@@ -205,6 +206,23 @@ export const UNIVERSAL_SHIFT_TEMPLATES: UniversalShiftTemplate[] = [
         ['off', 4],
       ],
       2
+    ),
+  },
+  {
+    id: 'rail-control-4-4-4',
+    industry: 'rail',
+    title: 'Rail Control 4 Days / 4 Nights / 4 Off',
+    subtitle: 'Rail control and operations pattern with balanced day, night, and rest blocks.',
+    aiPromptExample:
+      'Rail control room: 4 day shifts from 7am to 7pm, 4 night shifts from 7pm to 7am, then 4 off.',
+    schedule: schedule(
+      'Rail Control 4/4/4',
+      [day, night, off],
+      [
+        ['day', 4],
+        ['night', 4],
+        ['off', 4],
+      ]
     ),
   },
   {

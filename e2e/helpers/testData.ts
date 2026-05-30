@@ -177,7 +177,7 @@ export const UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES = {
     },
     universalSchedule: templateSchedule('hospitality-5-2'),
   },
-  aviationRail: {
+  aviation: {
     name: 'Priya',
     occupation: 'Airport Operations Coordinator',
     company: 'International Airport',
@@ -192,6 +192,22 @@ export const UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES = {
       nightShift: { hour: 21, minute: 0 },
     },
     universalSchedule: templateSchedule('aviation-early-late-night'),
+  },
+  rail: {
+    name: 'Morgan',
+    occupation: 'Rail Controller',
+    company: 'Metro Rail Control',
+    country: 'United Kingdom',
+    shiftSystem: '2-shift',
+    rosterType: 'rotating',
+    patternType: 'STANDARD_4_4_4',
+    phaseOffset: 1,
+    startDate: new Date(Date.now() - 9 * 24 * 60 * 60 * 1000).toISOString(),
+    shiftTimes: {
+      dayShift: { hour: 7, minute: 0 },
+      nightShift: { hour: 19, minute: 0 },
+    },
+    universalSchedule: templateSchedule('rail-control-4-4-4'),
   },
   miningFifo: MINING_FIFO_ONBOARDING_DATA,
 };

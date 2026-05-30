@@ -20,7 +20,8 @@ const REQUIRED_INDUSTRIES: UniversalShiftTemplateIndustry[] = [
   'manufacturing',
   'transport_logistics',
   'hospitality_retail',
-  'aviation_rail',
+  'aviation',
+  'rail',
   'mining_fifo',
 ];
 
@@ -42,7 +43,13 @@ describe('Universal shift templates', () => {
     expect(UNIVERSAL_SHIFT_TEMPLATES.length).toBeGreaterThanOrEqual(REQUIRED_INDUSTRIES.length);
     expect(
       UNIVERSAL_SHIFT_TEMPLATES.filter((template) => template.industry !== 'mining_fifo').length
-    ).toBeGreaterThanOrEqual(7);
+    ).toBeGreaterThanOrEqual(8);
+    expect(UNIVERSAL_SHIFT_TEMPLATES.some((template) => template.id.startsWith('aviation-'))).toBe(
+      true
+    );
+    expect(UNIVERSAL_SHIFT_TEMPLATES.some((template) => template.id.startsWith('rail-'))).toBe(
+      true
+    );
   });
 
   it('keeps every template usable as a valid Universal Shift Builder schedule', () => {
@@ -69,6 +76,20 @@ describe('Universal shift templates', () => {
   });
 
   it('keeps completed E2E onboarding seeds compatible with the main app gate', () => {
+    expect(Object.keys(UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES)).toEqual(
+      expect.arrayContaining([
+        'healthcare',
+        'security',
+        'emergencyServices',
+        'manufacturing',
+        'transport',
+        'hospitality',
+        'aviation',
+        'rail',
+        'miningFifo',
+      ])
+    );
+
     const completedSeeds = [
       MAIN_APP_SEED,
       MINING_FIFO_MAIN_APP_SEED,
