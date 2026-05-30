@@ -201,8 +201,16 @@ describe('Ryvro environment template', () => {
 
     const previousIosGoogleServices = process.env.EXPO_IOS_GOOGLE_SERVICES_FILE;
     const previousAndroidGoogleServices = process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE;
+    const previousRyvroBrainUrl = process.env.RYVRO_BRAIN_URL;
+    const previousRyvroBrainTimeout = process.env.RYVRO_BRAIN_TIMEOUT;
+    const previousEllieBrainUrl = process.env.ELLIE_BRAIN_URL;
+    const previousEllieBrainTimeout = process.env.ELLIE_BRAIN_TIMEOUT;
     process.env.EXPO_IOS_GOOGLE_SERVICES_FILE = './ios/Ryvro/GoogleService-Info.plist';
     process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE = './android/app/ryvro-google-services.json';
+    delete process.env.RYVRO_BRAIN_URL;
+    delete process.env.RYVRO_BRAIN_TIMEOUT;
+    delete process.env.ELLIE_BRAIN_URL;
+    delete process.env.ELLIE_BRAIN_TIMEOUT;
 
     try {
       const dynamicConfig = buildAppConfig({ config: {} });
@@ -225,6 +233,12 @@ describe('Ryvro environment template', () => {
       expect(dynamicConfig.extra?.LEGAL_PRIVACY_POLICY_URL).toBe('https://getryvro.com/privacy');
       expect(dynamicConfig.extra?.LEGAL_TERMS_OF_SERVICE_URL).toBe('https://getryvro.com/terms');
       expect(dynamicConfig.extra?.SUPPORT_URL).toBe('https://getryvro.com/support');
+      expect(dynamicConfig.extra?.RYVRO_BRAIN_URL).toBe(
+        'https://ryvro-brain-REGION-PROJECT.cloudfunctions.net/ryvroBrain'
+      );
+      expect(dynamicConfig.extra?.RYVRO_BRAIN_TIMEOUT).toBe('30000');
+      expect(dynamicConfig.extra?.ELLIE_BRAIN_URL).toBe('');
+      expect(dynamicConfig.extra?.ELLIE_BRAIN_TIMEOUT).toBe('');
     } finally {
       if (previousIosGoogleServices === undefined) {
         delete process.env.EXPO_IOS_GOOGLE_SERVICES_FILE;
@@ -236,6 +250,30 @@ describe('Ryvro environment template', () => {
         delete process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE;
       } else {
         process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE = previousAndroidGoogleServices;
+      }
+
+      if (previousRyvroBrainUrl === undefined) {
+        delete process.env.RYVRO_BRAIN_URL;
+      } else {
+        process.env.RYVRO_BRAIN_URL = previousRyvroBrainUrl;
+      }
+
+      if (previousRyvroBrainTimeout === undefined) {
+        delete process.env.RYVRO_BRAIN_TIMEOUT;
+      } else {
+        process.env.RYVRO_BRAIN_TIMEOUT = previousRyvroBrainTimeout;
+      }
+
+      if (previousEllieBrainUrl === undefined) {
+        delete process.env.ELLIE_BRAIN_URL;
+      } else {
+        process.env.ELLIE_BRAIN_URL = previousEllieBrainUrl;
+      }
+
+      if (previousEllieBrainTimeout === undefined) {
+        delete process.env.ELLIE_BRAIN_TIMEOUT;
+      } else {
+        process.env.ELLIE_BRAIN_TIMEOUT = previousEllieBrainTimeout;
       }
     }
   });

@@ -159,12 +159,8 @@ module.exports = ({ config = {} }) => {
         'https://ryvro-brain-REGION-PROJECT.cloudfunctions.net/ryvroBrain',
       RYVRO_BRAIN_TIMEOUT:
         process.env.RYVRO_BRAIN_TIMEOUT || process.env.ELLIE_BRAIN_TIMEOUT || '30000',
-      ELLIE_BRAIN_URL:
-        process.env.RYVRO_BRAIN_URL ||
-        process.env.ELLIE_BRAIN_URL ||
-        'https://ryvro-brain-REGION-PROJECT.cloudfunctions.net/ryvroBrain',
-      ELLIE_BRAIN_TIMEOUT:
-        process.env.RYVRO_BRAIN_TIMEOUT || process.env.ELLIE_BRAIN_TIMEOUT || '30000',
+      ELLIE_BRAIN_URL: process.env.ELLIE_BRAIN_URL || '',
+      ELLIE_BRAIN_TIMEOUT: process.env.ELLIE_BRAIN_TIMEOUT || '',
       SHIFT_SCHEDULE_PARSER_URL: process.env.SHIFT_SCHEDULE_PARSER_URL || '',
       SHIFT_SCHEDULE_PARSER_TIMEOUT_MS: process.env.SHIFT_SCHEDULE_PARSER_TIMEOUT_MS || '45000',
       SHIFT_SCHEDULE_PARSER_MAX_PROMPT_LENGTH:

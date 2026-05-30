@@ -22,6 +22,7 @@ Completed and guarded in the current branch:
 - RevenueCat launch env templates now include both native and Expo public platform SDK keys, and the production env preflight rejects mismatched public/native key pairs before EAS builds.
 - Firebase/backend repo config exposes `ryvroBrain` and uses `RYVRO_BRAIN_*` as the preferred environment names while preserving old `ELLIE_BRAIN_*` keys only as migration fallbacks.
 - CI and E2E workflows now exercise only `RYVRO_BRAIN_*` endpoint variables; legacy `ELLIE_BRAIN_*` names are no longer exported in workflow environments.
+- New Expo config no longer mirrors `RYVRO_BRAIN_*` into legacy `ELLIE_BRAIN_*` extras; legacy brain values stay empty unless an old environment explicitly supplies them for migration.
 - The internal OpenWakeWord Expo module now uses Ryvro-branded package, native module, Android namespace, iOS podspec, resource bundle, and JS adapter identifiers.
 - The ignored generated iOS CocoaPods workspace was refreshed on 2026-05-30; `pod install` installed `RyvroOpenWakeWord`, removed `EllieOpenWakeWord`, and `ios/Podfile.lock` now points at `../modules/ryvro-openwakeword/ios`.
 - Native iOS build metadata now resolves to `FULL_PRODUCT_NAME = Ryvro.app`, `WRAPPER_NAME = Ryvro.app`, `PRODUCT_NAME = Ryvro`, and `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner`; the remaining `TARGET_NAME = Ellie` is internal Xcode target scaffolding.

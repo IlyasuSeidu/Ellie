@@ -57,6 +57,7 @@ Completed in the current working tree:
 - Removed stale tracked Detox artifact logs/screenshots from the old iOS `EllieMinerShiftAssistant` identity and added `artifacts/` to `.gitignore` so generated release logs do not re-enter the tracked launch tree.
 - Launch-critical onboarding occupation placeholders now use broad examples such as healthcare, security, and plant operations instead of mining/trades-only examples across bundled locales.
 - Hardened `npm run release:env:check` so production builds require the Expo public RevenueCat iOS/Android keys to mirror the native RevenueCat SDK keys before EAS secrets are pushed.
+- Stopped new Expo config from mirroring the Ryvro voice endpoint into legacy `ELLIE_BRAIN_*` extras; old `ELLIE_BRAIN_*` values are still accepted only when explicitly supplied for migration.
 
 Still pending outside this repo or intentionally kept for compatibility:
 
