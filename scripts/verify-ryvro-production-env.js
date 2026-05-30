@@ -1,0 +1,145 @@
+#!/usr/bin/env node
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable no-console */
+
+const fs = require('node:fs');
+const path = require('node:path');
+
+function parseArgs(argv) {
+  const args = { envFile: '.env' };
+
+  for (let index = 0; index < argv.length; index += 1) {
+    const arg = argv[index];
+    if (arg === '--env-file') {
+      args.envFile = argv[index + 1];
+      index += 1;
+    }
+  }
+
+  return args;
+}
+
+function parseEnvFile(content) {
+  return content
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith('#'))
+    .reduce((accumulator, line) => {
+      const separatorIndex = line.indexOf('=');
+      if (separatorIndex === -1) return accumulator;
+
+      const key = line.slice(0, separatorIndex).trim();
+      let value = line.slice(separatorIndex + 1).trim();
+      if (
+        (value.startsWith('"') && value.endsWith('"')) ||
+        (value.startsWith("'") && value.endsWith("'"))
+      ) {
+        value = value.slice(1, -1);
+      }
+
+      if (key) accumulator[key] = value;
+      return accumulator;
+    }, {});
+}
+
+function isPlaceholder(value) {
+  return (
+    !value ||
+    /^(your-|FILL_|YOUR_|example-|placeholder|xxx|appl_x+|goog_x+)/i.test(value) ||
+    value.includes('your-project-id') ||
+    value.includes('REGION-PROJECT') ||
+    value.includes('<region>') ||
+    value.includes('<project-id>')
+  );
+}
+
+function requireValue(errors, env, key, predicate, message) {
+  const value = env[key]?.trim();
+  if (!value || isPlaceholder(value) || (predicate && !predicate(value))) {
+    errors.push(`${key}: ${message}`);
+  }
+}
+
+function main() {
+  const { envFile } = parseArgs(process.argv.slice(2));
+  const envPath = path.resolve(process.cwd(), envFile);
+
+  if (!fs.existsSync(envPath)) {
+    console.error(`Missing env file: ${envPath}`);
+    process.exitCode = 1;
+    return;
+  }
+
+  const env = {
+    ...parseEnvFile(fs.readFileSync(envPath, 'utf8')),
+    ...process.env,
+  };
+  const errors = [];
+
+  requireValue(errors, env, 'APP_ENV', (value) => value === 'production', 'must be production');
+  requireValue(errors, env, 'EAS_PROJECT_ID', undefined, 'must be the real EAS project UUID');
+  requireValue(errors, env, 'FIREBASE_PROJECT_ID', undefined, 'must be the Ryvro Firebase project');
+  requireValue(
+    errors,
+    env,
+    'GOOGLE_WEB_CLIENT_ID',
+    (value) => value.endsWith('.apps.googleusercontent.com'),
+    'must be the real Google web OAuth client ID'
+  );
+  requireValue(
+    errors,
+    env,
+    'GOOGLE_IOS_CLIENT_ID',
+    (value) => value.endsWith('.apps.googleusercontent.com'),
+    'must be the real Google iOS OAuth client ID for com.ryvro.shiftplanner'
+  );
+  requireValue(
+    errors,
+    env,
+    'RYVRO_BRAIN_URL',
+    (value) =>
+      /^https:\/\/.+\.cloudfunctions\.net\/ryvroBrain$/.test(value) &&
+      !value.includes('ellieBrain'),
+    'must be the deployed ryvroBrain HTTPS function URL'
+  );
+  requireValue(
+    errors,
+    env,
+    'REVENUECAT_IOS_KEY',
+    (value) => /^appl_[A-Za-z0-9]+/.test(value) && !value.startsWith('appl_test'),
+    'must be a real Ryvro iOS RevenueCat SDK key, not a test_ or placeholder key'
+  );
+  requireValue(
+    errors,
+    env,
+    'REVENUECAT_ANDROID_KEY',
+    (value) => /^goog_[A-Za-z0-9]+/.test(value) && !value.startsWith('goog_test'),
+    'must be a real Ryvro Android RevenueCat SDK key, not a test_ or placeholder key'
+  );
+  requireValue(errors, env, 'REVENUECAT_ENTITLEMENT_ID', (value) => value === 'pro', 'must be pro');
+
+  if (env.ELLIE_BRAIN_URL?.trim()) {
+    errors.push('ELLIE_BRAIN_URL: leave empty for new Ryvro production builds');
+  }
+
+  if (env.AI_SHIFT_BUILDER_ENABLED === 'true') {
+    requireValue(
+      errors,
+      env,
+      'SHIFT_SCHEDULE_PARSER_URL',
+      (value) => /^https:\/\/.+\.cloudfunctions\.net\/parseShiftScheduleDescription$/.test(value),
+      'must be the deployed parseShiftScheduleDescription HTTPS function URL when AI builder is enabled'
+    );
+  }
+
+  if (errors.length > 0) {
+    console.error('Ryvro production env check failed:');
+    errors.forEach((error) => console.error(`- ${error}`));
+    process.exitCode = 1;
+    return;
+  }
+
+  console.log(`Ryvro production env check passed for ${envPath}`);
+}
+
+main();

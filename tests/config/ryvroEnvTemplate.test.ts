@@ -302,6 +302,35 @@ describe('Ryvro environment template', () => {
     expect(fs.existsSync(scriptPath)).toBe(true);
   });
 
+  it('keeps the Ryvro production env preflight command available before EAS builds', () => {
+    const scriptPath = path.join(process.cwd(), 'scripts/verify-ryvro-production-env.js');
+    const script = fs.readFileSync(scriptPath, 'utf8');
+    const externalSetup = fs.readFileSync(
+      path.join(process.cwd(), 'docs/RYVRO_EXTERNAL_SERVICE_SETUP.md'),
+      'utf8'
+    );
+    const releaseTasks = fs.readFileSync(
+      path.join(process.cwd(), 'RYVRO_RELEASE_TASKS.md'),
+      'utf8'
+    );
+
+    expect(packageJson.scripts?.['release:env:check']).toBe(
+      'node scripts/verify-ryvro-production-env.js'
+    );
+    expect(script).toContain('APP_ENV');
+    expect(script).toContain('EAS_PROJECT_ID');
+    expect(script).toContain('GOOGLE_WEB_CLIENT_ID');
+    expect(script).toContain('GOOGLE_IOS_CLIENT_ID');
+    expect(script).toContain('RYVRO_BRAIN_URL');
+    expect(script).toContain('REVENUECAT_IOS_KEY');
+    expect(script).toContain('REVENUECAT_ANDROID_KEY');
+    expect(envExample).toContain('REVENUECAT_ENTITLEMENT_ID=pro');
+    expect(envExample).toContain('EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID=pro');
+    expect(script).toContain('ELLIE_BRAIN_URL: leave empty for new Ryvro production builds');
+    expect(externalSetup).toContain('npm run release:env:check');
+    expect(releaseTasks).toContain('npm run release:env:check');
+  });
+
   it('keeps public clearance evidence current while preserving account-only caveats', () => {
     const externalSetup = fs.readFileSync(
       path.join(process.cwd(), 'docs/RYVRO_EXTERNAL_SERVICE_SETUP.md'),

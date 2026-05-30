@@ -96,6 +96,14 @@ GOOGLE_IOS_CLIENT_ID=
 EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=
 ```
 
+Before pushing secrets to EAS or starting production builds, validate that `.env` contains real production values and no launch placeholders:
+
+```bash
+npm run release:env:check
+```
+
+The check requires `APP_ENV=production`, real Firebase/Google OAuth values, the deployed `ryvroBrain` URL, real RevenueCat `appl_...` and `goog_...` SDK keys, and an empty `ELLIE_BRAIN_URL` for new Ryvro builds.
+
 Verification:
 
 - Google sign-in works on iOS simulator or physical device.
