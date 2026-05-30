@@ -198,7 +198,7 @@
   },
   "rosterType": {
     "title": "你的名册如何运作？",
-    "instruction": "选择您矿山使用的排班方式——这会影响您的整个日程安排\n向右滑动选择，向左滑动查看更多，向上滑动查看详情",
+    "instruction": "选择您的工作地点使用的排班方式——这会影响您的整个日程安排\n向右滑动选择，向左滑动查看更多，向上滑动查看详情",
     "preparingNextStep": "准备下一步...",
     "learnMore": {
       "examples": "示例",
@@ -411,7 +411,7 @@
       "swingConfig": "配置你的挥杆分割",
       "block": "您处于 FIFO 周期的哪个阶段？",
       "dayWithinBlock": "您在 {{blockTitle}} 的哪一天？",
-      "block_named": "{{name}}，你现在是在矿区还是在家？"
+      "block_named": "{{name}}，你现在是在工作地点还是在家？"
     },
     "subtitle": {
       "workPattern": "向右滑动以选择您的工作块模式，向左滑动以选择下一个选项，或向上滑动以获取信息",
@@ -442,10 +442,10 @@
     },
     "blocks": {
       "work": {
-        "title": "现场（工作中）",
-        "descriptionDay": "您目前在矿场的白班工作区",
-        "descriptionNight": "您目前在矿场的夜班工作区",
-        "descriptionNeutral": "您目前位于工作区的矿场",
+        "title": "工作地点（工作中）",
+        "descriptionDay": "您目前在工作地点的白班工作区",
+        "descriptionNight": "您目前在工作地点的夜班工作区",
+        "descriptionNeutral": "您目前位于工作地点的工作区",
         "quickInfoDay": "这意味着您的周期从白班工作区开始计算。",
         "quickInfoNight": "这意味着您的周期从夜班工作区开始计算。",
         "quickInfoNeutral": "这意味着您的周期从当前的工作块开始计数。"
@@ -473,9 +473,9 @@
       },
       "defaultDayTitle": "第 {{dayNumber}} 天",
       "work": {
-        "firstDayAtSite": "回到现场第一天",
-        "firstNightAtSite": "第一个夜班回到现场",
-        "firstShiftAtSite": "第一班返回现场",
+        "firstDayAtSite": "回到工作地点第一天",
+        "firstNightAtSite": "回到工作地点的第一个夜班",
+        "firstShiftAtSite": "返回工作地点的第一班",
         "lastDayBeforeHome": "飞回家前的最后一天",
         "lastNightBeforeHome": "飞回家前的最后一个夜班",
         "lastShiftBeforeHome": "飞回家前的最后一次轮班",
@@ -485,12 +485,12 @@
       },
       "rest": {
         "firstDayAtHome": "回国第一天",
-        "lastDayBeforeSite": "返回站点前的最后一天",
+        "lastDayBeforeSite": "返回工作地点前的最后一天",
         "dayOfRestBlock": "您的休息时间段的 {{dayNumber}} 天"
       },
       "swing": {
         "dayShiftTitle": "白班日 {{dayNumber}}",
-        "firstDayShiftAtSite": "第一天返回现场",
+        "firstDayShiftAtSite": "回到工作地点的第一个白班",
         "finalDayShiftBeforeNights": "切换到夜班之前的最后一个白班",
         "dayShiftDayDescription": "您工作区的白班日 {{dayNumber}}",
         "nightShiftTitle": "夜班日 {{dayNumber}}",

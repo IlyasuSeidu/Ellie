@@ -211,7 +211,7 @@
   },
   "rosterType": {
     "title": "Hoe werk jou rooster?",
-    "instruction": "Kies die roosterstyl wat jou mynterrein gebruik - dit vorm jou hele skedule\nSwiep regs om te kies, links om meer te sien, op vir besonderhede",
+    "instruction": "Kies die roosterstyl wat jou werkplek gebruik - dit vorm jou hele skedule\nSwiep regs om te kies, links om meer te sien, op vir besonderhede",
     "preparingNextStep": "Berei tans volgende stap voor...",
     "learnMore": {
       "examples": "Voorbeelde",
@@ -448,7 +448,7 @@
       "swingConfig": "Stel jou swaaiverdeling op",
       "block": "Waar is jy in jou EIEU-siklus?",
       "dayWithinBlock": "Op watter dag van {{blockTitle}} is jy?",
-      "block_named": "Is jy nou op die terrein of by die huis, {{name}}?"
+      "block_named": "Is jy nou by die werkplek of by die huis, {{name}}?"
     },
     "subtitle": {
       "workPattern": "Swiep regs om jou werkblokpatroon te kies, links vir volgende opsie, of op vir inligting",
@@ -479,10 +479,10 @@
     },
     "blocks": {
       "work": {
-        "title": "Op die terrein (werk)",
-        "descriptionDay": "Jy is tans by die mynperseel op jou dagskofwerkblok",
-        "descriptionNight": "Jy is tans by die mynperseel op jou nagskofwerkblok",
-        "descriptionNeutral": "Jy is tans by die mynperseel op jou werkblok",
+        "title": "By die werkplek (werk)",
+        "descriptionDay": "Jy is tans by jou werkplek op jou dagskofwerkblok",
+        "descriptionNight": "Jy is tans by jou werkplek op jou nagskofwerkblok",
+        "descriptionNeutral": "Jy is tans by jou werkplek op jou werkblok",
         "quickInfoDay": "Dit beteken jou siklus begin tel vanaf jou dagskof-werkblok.",
         "quickInfoNight": "Dit beteken jou siklus begin tel vanaf jou nagskof-werkblok.",
         "quickInfoNeutral": "Dit beteken jou siklus begin tel vanaf jou huidige werkblok."
@@ -510,9 +510,9 @@
       },
       "defaultDayTitle": "Dag {{dayNumber}}",
       "work": {
-        "firstDayAtSite": "Eerste dag terug op die terrein",
-        "firstNightAtSite": "Eerste nagskof terug op werf",
-        "firstShiftAtSite": "Eerste skof terug by werf",
+        "firstDayAtSite": "Eerste dag terug by die werkplek",
+        "firstNightAtSite": "Eerste nagskof terug by die werkplek",
+        "firstShiftAtSite": "Eerste skof terug by die werkplek",
         "lastDayBeforeHome": "Laaste dag voor huistoe vlieg",
         "lastNightBeforeHome": "Gisteraandskof voor ek huis toe vlieg",
         "lastShiftBeforeHome": "Laaste skof voor huis toe vlieg",
@@ -522,12 +522,12 @@
       },
       "rest": {
         "firstDayAtHome": "Eerste dag terug by die huis",
-        "lastDayBeforeSite": "Laaste dag voor terugkeer na werf",
+        "lastDayBeforeSite": "Laaste dag voor terugkeer werk toe",
         "dayOfRestBlock": "Dag {{dayNumber}} van jou rusblok"
       },
       "swing": {
         "dayShiftTitle": "Dagskofdag {{dayNumber}}",
-        "firstDayShiftAtSite": "Eerste dagskof terug op terrein",
+        "firstDayShiftAtSite": "Eerste dagskof terug by die werkplek",
         "finalDayShiftBeforeNights": "Laaste dagskof voor oorskakeling na nagte",
         "dayShiftDayDescription": "Dagskof dag {{dayNumber}} van jou werkblok",
         "nightShiftTitle": "Nagskofdag {{dayNumber}}",

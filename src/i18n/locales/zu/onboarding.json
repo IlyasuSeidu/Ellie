@@ -224,7 +224,7 @@
   },
   "rosterType": {
     "title": "Lusebenza Kanjani Uhlu Lwakho?",
-    "instruction": "Khetha isitayela sohlelo olusetshenziswa esikhundleni sakho semigodi - lokhu kulolonga uhlelo lwakho lonke\nSwayiphela kwesokudla ukuze ukhethe, kwesokunxele ukuze ubone okwengeziwe, ukuze uthole imininingwane",
+    "instruction": "Khetha isitayela sohlelo olusetshenziswa indawo yakho yokusebenza - lokhu kulolonga uhlelo lwakho lonke\nSwayiphela kwesokudla ukuze ukhethe, kwesokunxele ukuze ubone okwengeziwe, ukuze uthole imininingwane",
     "preparingNextStep": "Ilungiselela isinyathelo esilandelayo...",
     "learnMore": {
       "examples": "Izibonelo",
@@ -498,10 +498,10 @@
     },
     "blocks": {
       "work": {
-        "title": "Esizeni (Emsebenzini)",
-        "descriptionDay": "Okwamanje usendaweni yemayini endaweni yakho yomsebenzi weshifu yosuku",
-        "descriptionNight": "Okwamanje usendaweni yezimayini endaweni yakho yomsebenzi weshifu yasebusuku",
-        "descriptionNeutral": "Okwamanje usendaweni yezimayini endaweni yakho yomsebenzi",
+        "title": "Endaweni yokusebenza (Emsebenzini)",
+        "descriptionDay": "Okwamanje usendaweni yakho yokusebenza kubhulokhi yomsebenzi weshifu yosuku",
+        "descriptionNight": "Okwamanje usendaweni yakho yokusebenza kubhulokhi yomsebenzi weshifu yasebusuku",
+        "descriptionNeutral": "Okwamanje usendaweni yakho yokusebenza kubhulokhi yomsebenzi",
         "quickInfoDay": "Lokhu kusho ukuthi umjikelezo wakho uqala ukubala kusukela kubhulokhi yakho yomsebenzi weshifu yosuku.",
         "quickInfoNight": "Lokhu kusho ukuthi umjikelezo wakho uqala ukubala ukusuka kubhulokhi yakho yomsebenzi weshifu yasebusuku.",
         "quickInfoNeutral": "Lokhu kusho ukuthi umjikelezo wakho uqala ukubala ukusuka kubhulokhi yakho yamanje yomsebenzi."
@@ -529,9 +529,9 @@
       },
       "defaultDayTitle": "Usuku {{dayNumber}}",
       "work": {
-        "firstDayAtSite": "Ngosuku lokuqala ebuyela endaweni",
-        "firstNightAtSite": "Ubusuku bokuqala bubuyela endaweni",
-        "firstShiftAtSite": "Ukushintsha kokuqala emuva endaweni",
+        "firstDayAtSite": "Usuku lokuqala lokubuyela endaweni yokusebenza",
+        "firstNightAtSite": "Ishifu yasebusuku yokuqala yokubuyela endaweni yokusebenza",
+        "firstShiftAtSite": "Ishifu yokuqala yokubuyela endaweni yokusebenza",
         "lastDayBeforeHome": "Ngosuku lokugcina ngaphambi kokundiza ekhaya",
         "lastNightBeforeHome": "Izolo ebusuku ishifu ngaphambi kokundizela ekhaya",
         "lastShiftBeforeHome": "Ishifu yokugcina ngaphambi kokundizela ekhaya",
@@ -541,12 +541,12 @@
       },
       "rest": {
         "firstDayAtHome": "Usuku lokuqala ngibuyele ekhaya",
-        "lastDayBeforeSite": "Ngosuku lokugcina ngaphambi kokubuyela esizeni",
+        "lastDayBeforeSite": "Usuku lokugcina ngaphambi kokubuyela endaweni yokusebenza",
         "dayOfRestBlock": "Usuku {{dayNumber}} lwebhulokhi yakho yokuphumula"
       },
       "swing": {
         "dayShiftTitle": "Usuku Lokushintsha Kosuku {{dayNumber}}",
-        "firstDayShiftAtSite": "Usuku lokuqala lokubuyela endaweni",
+        "firstDayShiftAtSite": "Ishifu yosuku yokuqala yokubuyela endaweni yokusebenza",
         "finalDayShiftBeforeNights": "Ukushintsha usuku lokugcina ngaphambi kokushintshela ebusuku",
         "dayShiftDayDescription": "Usuku lweshifu yosuku {{dayNumber}} lwebhulogi yakho yomsebenzi",
         "nightShiftTitle": "Usuku lweshifu yasebusuku {{dayNumber}}",

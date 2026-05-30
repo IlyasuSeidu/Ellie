@@ -291,7 +291,7 @@
       },
       "commute": {
         "label": "通勤时间",
-        "sublabel": "到矿区需要多久"
+        "sublabel": "到工作地点需要多久"
       },
       "imminent": {
         "label": "15分钟提醒",

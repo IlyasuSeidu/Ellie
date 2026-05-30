@@ -443,11 +443,11 @@
   },
   "fifoPhaseSelector": {
     "title": {
-      "workPattern": "Como os turnos funcionam durante seu bloco FIFO na mina?",
+      "workPattern": "Como os turnos funcionam durante seu bloco FIFO no trabalho?",
       "swingConfig": "Configure a divisão do swing",
       "block": "Em que parte do seu ciclo FIFO você está?",
       "dayWithinBlock": "Qual dia de {{blockTitle}} você está?",
-      "block_named": "Você está na mina ou em casa agora, {{name}}?"
+      "block_named": "Você está no trabalho ou em casa agora, {{name}}?"
     },
     "subtitle": {
       "workPattern": "Deslize para a direita para escolher o padrão de trabalho, para a esquerda para a próxima opção, ou para cima para mais informações",
@@ -478,7 +478,7 @@
     },
     "blocks": {
       "work": {
-        "title": "Na mina (Trabalhando)",
+        "title": "No trabalho (trabalhando)",
         "descriptionDay": "Você está atualmente no trabalho no seu bloco de turno diurno",
         "descriptionNight": "Você está atualmente no trabalho no seu bloco de turno noturno",
         "descriptionNeutral": "Você está atualmente no trabalho no seu bloco de trabalho",
@@ -509,9 +509,9 @@
       },
       "defaultDayTitle": "Dia {{dayNumber}}",
       "work": {
-        "firstDayAtSite": "Primeiro dia de volta à mina",
-        "firstNightAtSite": "Primeiro turno noturno de volta à mina",
-        "firstShiftAtSite": "Primeiro turno de volta à mina",
+        "firstDayAtSite": "Primeiro dia de volta ao trabalho",
+        "firstNightAtSite": "Primeiro turno noturno de volta ao trabalho",
+        "firstShiftAtSite": "Primeiro turno de volta ao trabalho",
         "lastDayBeforeHome": "Último dia antes de voltar para casa",
         "lastNightBeforeHome": "Último turno noturno antes de voltar para casa",
         "lastShiftBeforeHome": "Último turno antes de voltar para casa",
@@ -521,12 +521,12 @@
       },
       "rest": {
         "firstDayAtHome": "Primeiro dia de volta em casa",
-        "lastDayBeforeSite": "Último dia antes de retornar à mina",
+        "lastDayBeforeSite": "Último dia antes de retornar ao trabalho",
         "dayOfRestBlock": "Dia {{dayNumber}} do seu bloco de descanso"
       },
       "swing": {
         "dayShiftTitle": "Turno diurno dia {{dayNumber}}",
-        "firstDayShiftAtSite": "Primeiro turno diurno de volta à mina",
+        "firstDayShiftAtSite": "Primeiro turno diurno de volta ao trabalho",
         "finalDayShiftBeforeNights": "Último turno diurno antes de mudar para noites",
         "dayShiftDayDescription": "Turno diurno dia {{dayNumber}} do seu bloco de trabalho",
         "nightShiftTitle": "Turno noturno dia {{dayNumber}}",

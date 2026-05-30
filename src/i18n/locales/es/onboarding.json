@@ -453,11 +453,11 @@
   },
   "fifoPhaseSelector": {
     "title": {
-      "workPattern": "¿Cómo se trabajan los turnos durante tu bloque FIFO en sitio?",
+      "workPattern": "¿Cómo se trabajan los turnos durante tu bloque FIFO en el lugar de trabajo?",
       "swingConfig": "Configura tu reparto de swing",
       "block": "¿Dónde estás en tu ciclo FIFO?",
       "dayWithinBlock": "¿Qué día de {{blockTitle}} estás cursando?",
-      "block_named": "¿Estás en la mina o en casa ahora mismo, {{name}}?"
+      "block_named": "¿Estás en el trabajo o en casa ahora mismo, {{name}}?"
     },
     "subtitle": {
       "workPattern": "Desliza a la derecha para elegir el patrón de trabajo, a la izquierda para la siguiente opción, o hacia arriba para más información",
@@ -488,7 +488,7 @@
     },
     "blocks": {
       "work": {
-        "title": "En sitio (Trabajando)",
+        "title": "En el trabajo (Trabajando)",
         "descriptionDay": "Ahora mismo estás en el trabajo dentro de tu bloque de turno de día",
         "descriptionNight": "Ahora mismo estás en el trabajo dentro de tu bloque de turno de noche",
         "descriptionNeutral": "Ahora mismo estás en el trabajo dentro de tu bloque laboral",
@@ -519,9 +519,9 @@
       },
       "defaultDayTitle": "Día {{dayNumber}}",
       "work": {
-        "firstDayAtSite": "Primer día de regreso al sitio",
-        "firstNightAtSite": "Primer turno nocturno de regreso al sitio",
-        "firstShiftAtSite": "Primer turno de regreso al sitio",
+        "firstDayAtSite": "Primer día de regreso al trabajo",
+        "firstNightAtSite": "Primer turno nocturno de regreso al trabajo",
+        "firstShiftAtSite": "Primer turno de regreso al trabajo",
         "lastDayBeforeHome": "Último día antes de volver a casa",
         "lastNightBeforeHome": "Último turno nocturno antes de volver a casa",
         "lastShiftBeforeHome": "Último turno antes de volver a casa",
@@ -531,12 +531,12 @@
       },
       "rest": {
         "firstDayAtHome": "Primer día de regreso en casa",
-        "lastDayBeforeSite": "Último día antes de volver al sitio",
+        "lastDayBeforeSite": "Último día antes de volver al trabajo",
         "dayOfRestBlock": "Día {{dayNumber}} de tu bloque de descanso"
       },
       "swing": {
         "dayShiftTitle": "Turno de día {{dayNumber}}",
-        "firstDayShiftAtSite": "Primer turno de día de regreso al sitio",
+        "firstDayShiftAtSite": "Primer turno de día de regreso al trabajo",
         "finalDayShiftBeforeNights": "Último turno de día antes de pasar a noches",
         "dayShiftDayDescription": "Turno de día {{dayNumber}} de tu bloque de trabajo",
         "nightShiftTitle": "Turno de noche {{dayNumber}}",

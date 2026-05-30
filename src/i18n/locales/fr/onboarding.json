@@ -224,7 +224,7 @@
   },
   "rosterType": {
     "title": "Comment fonctionne votre liste?",
-    "instruction": "Choisissez le style de liste utilisé par votre site minier – cela façonne l'ensemble de votre emploi du temps\nFaites glisser votre doigt vers la droite pour choisir, vers la gauche pour en voir plus, vers le haut pour plus de détails",
+    "instruction": "Choisissez le style de liste utilisé par votre lieu de travail – cela façonne l'ensemble de votre emploi du temps\nFaites glisser votre doigt vers la droite pour choisir, vers la gauche pour en voir plus, vers le haut pour plus de détails",
     "preparingNextStep": "Préparation de la prochaine étape...",
     "learnMore": {
       "examples": "Exemples",
@@ -503,9 +503,9 @@
     "blocks": {
       "work": {
         "title": "Sur site (travail)",
-        "descriptionDay": "Vous êtes actuellement sur le site minier sur votre bloc de travail de jour",
-        "descriptionNight": "Vous êtes actuellement sur le site minier sur votre bloc de travail de nuit",
-        "descriptionNeutral": "Vous êtes actuellement sur le site minier sur votre bloc de travail",
+        "descriptionDay": "Vous êtes actuellement sur votre lieu de travail pendant votre bloc de travail de jour",
+        "descriptionNight": "Vous êtes actuellement sur votre lieu de travail pendant votre bloc de travail de nuit",
+        "descriptionNeutral": "Vous êtes actuellement sur votre lieu de travail pendant votre bloc de travail",
         "quickInfoDay": "Cela signifie que votre cycle commence à compter à partir de votre bloc de travail de jour.",
         "quickInfoNight": "Cela signifie que votre cycle commence à compter à partir de votre bloc de travail de nuit.",
         "quickInfoNeutral": "Cela signifie que votre cycle commence à compter à partir de votre bloc de travail actuel."

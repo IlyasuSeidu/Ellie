@@ -725,6 +725,36 @@ describe('Ryvro environment template', () => {
         shiftPattern?: {
           instruction?: string;
         };
+        rosterType?: {
+          instruction?: string;
+        };
+        fifoPhaseSelector?: {
+          title?: {
+            workPattern?: string;
+            block_named?: string;
+          };
+          blocks?: {
+            work?: {
+              title?: string;
+              descriptionDay?: string;
+              descriptionNight?: string;
+              descriptionNeutral?: string;
+            };
+          };
+          days?: {
+            work?: {
+              firstDayAtSite?: string;
+              firstNightAtSite?: string;
+              firstShiftAtSite?: string;
+            };
+            rest?: {
+              lastDayBeforeSite?: string;
+            };
+            swing?: {
+              firstDayShiftAtSite?: string;
+            };
+          };
+        };
         shiftSystem?: {
           instruction?: string;
           title?: string;
@@ -743,6 +773,18 @@ describe('Ryvro environment template', () => {
         onboarding.shiftSystem?.title_named,
         onboarding.shiftSystem?.instruction,
         onboarding.shiftPattern?.instruction,
+        onboarding.rosterType?.instruction,
+        onboarding.fifoPhaseSelector?.title?.workPattern,
+        onboarding.fifoPhaseSelector?.title?.block_named,
+        onboarding.fifoPhaseSelector?.blocks?.work?.title,
+        onboarding.fifoPhaseSelector?.blocks?.work?.descriptionDay,
+        onboarding.fifoPhaseSelector?.blocks?.work?.descriptionNight,
+        onboarding.fifoPhaseSelector?.blocks?.work?.descriptionNeutral,
+        onboarding.fifoPhaseSelector?.days?.work?.firstDayAtSite,
+        onboarding.fifoPhaseSelector?.days?.work?.firstNightAtSite,
+        onboarding.fifoPhaseSelector?.days?.work?.firstShiftAtSite,
+        onboarding.fifoPhaseSelector?.days?.rest?.lastDayBeforeSite,
+        onboarding.fifoPhaseSelector?.days?.swing?.firstDayShiftAtSite,
       ].join('\n');
 
       for (const phrase of expected.topFunnel) {
@@ -750,7 +792,7 @@ describe('Ryvro environment template', () => {
       }
 
       expect(topFunnelCopy).not.toMatch(
-        /site minier|site minero|site de mina|site mine|site your|your site|your mine|mine site|mining site|sitio|situs|сайт|участок|站点|网站|साइट|موقعك|موقع منجمك|terrein|werf|webwerf|esizeni|indawo yakho yemigodi/i
+        /site minier|site minero|site de mina|site mine|site your|your site|your mine|mine site|mining site|sitio|situs|сайт|участок|站点|网站|साइट|موقعك|موقع منجمك|موقع المنجم|موقع التعدين|terrein|werf|webwerf|mynterrein|mynperseel|esizeni|indawo yakho yemigodi|na mina|à mina|de volta à mina|en la mina/i
       );
     }
   });
