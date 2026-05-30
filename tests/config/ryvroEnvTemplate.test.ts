@@ -617,6 +617,35 @@ describe('Ryvro environment template', () => {
     expect(deploymentGuide).not.toContain('your-team-id');
   });
 
+  it('keeps the active API reference aligned with Ryvro launch configuration', () => {
+    const apiReference = fs.readFileSync(path.join(process.cwd(), 'docs/API_REFERENCE.md'), 'utf8');
+
+    expect(apiReference).toContain('POST /ryvroBrain');
+    expect(apiReference).toContain('"occupation": "Nurse"');
+    expect(apiReference).toContain('"industry": "healthcare"');
+    expect(apiReference).toContain('FIREBASE_STORAGE_BUCKET=your-project-id.firebasestorage.app');
+    expect(apiReference).toContain(
+      'RYVRO_BRAIN_URL=https://us-central1-your-project-id.cloudfunctions.net/ryvroBrain'
+    );
+    expect(apiReference).toContain(
+      'SHIFT_SCHEDULE_PARSER_URL=https://us-central1-your-project-id.cloudfunctions.net/parseShiftScheduleDescription'
+    );
+    expect(apiReference).toContain('EXPO_PUBLIC_REVENUECAT_IOS_KEY=appl_xxxxxxxxxxxxx');
+    expect(apiReference).toContain('EXPO_PUBLIC_REVENUECAT_ANDROID_KEY=goog_xxxxxxxxxxxxx');
+    expect(apiReference).toContain('LEGAL_PRIVACY_POLICY_URL=https://getryvro.com/privacy');
+    expect(apiReference).toContain('npm run release:env:check');
+    expect(apiReference).toContain('ios/Ryvro/GoogleService-Info.plist');
+    expect(apiReference).toContain('android/app/google-services.json');
+    expect(apiReference).toContain('docs/RYVRO_EXTERNAL_SERVICE_SETUP.md');
+    expect(apiReference).toContain('Constants.expoConfig?.extra?.FIREBASE_API_KEY');
+    expect(apiReference).toContain('Constants.expoConfig?.extra?.RYVRO_BRAIN_URL');
+    expect(apiReference).not.toContain('your_project_id.appspot.com');
+    expect(apiReference).not.toContain('Constants.expoConfig?.extra?.firebaseApiKey');
+    expect(apiReference).not.toContain('Constants.expoConfig?.extra?.apiTimeout');
+    expect(apiReference).not.toContain('"name": "Alex"');
+    expect(apiReference).not.toContain('"patternType": "FIFO_8_6"');
+  });
+
   it('keeps the release task checklist on Ryvro and repo-root release paths', () => {
     const releaseTasks = fs.readFileSync(
       path.join(process.cwd(), 'RYVRO_RELEASE_TASKS.md'),

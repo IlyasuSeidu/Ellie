@@ -26,21 +26,23 @@ This document provides comprehensive information about the APIs, services, and i
 {
   "query": "am I working tomorrow?",
   "userContext": {
-    "name": "Alex",
-    "shiftSystem": "2-shift",
-    "rosterType": "fifo",
+    "name": "Amina",
+    "occupation": "Nurse",
+    "workLocation": "Emergency department",
+    "shiftSystem": "3-shift",
+    "rosterType": "rotating",
     "shiftCycle": {
-      "patternType": "FIFO_8_6",
-      "rosterType": "fifo",
-      "daysOn": 8,
-      "nightsOn": 0,
-      "daysOff": 6,
+      "patternType": "CUSTOM",
+      "rosterType": "rotating",
+      "daysOn": 5,
+      "nightsOn": 2,
+      "daysOff": 3,
       "startDate": "2026-01-01",
       "phaseOffset": 0,
-      "fifoConfig": {
-        "workBlockDays": 8,
-        "restBlockDays": 6,
-        "workBlockPattern": "straight-days"
+      "universalSchedule": {
+        "templateId": "healthcare-continental-2-2-3",
+        "industry": "healthcare",
+        "timezone": "Africa/Accra"
       }
     }
   }
@@ -102,21 +104,43 @@ Create a `.env` file in the project root with the following variables:
 
 ```env
 # Firebase Configuration
-FIREBASE_API_KEY=your_firebase_api_key
-FIREBASE_AUTH_DOMAIN=your_project_id.firebaseapp.com
-FIREBASE_PROJECT_ID=your_project_id
-FIREBASE_STORAGE_BUCKET=your_project_id.appspot.com
-FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-FIREBASE_APP_ID=your_app_id
-FIREBASE_MEASUREMENT_ID=your_measurement_id
+FIREBASE_API_KEY=your-firebase-api-key
+FIREBASE_AUTH_DOMAIN=your-project-id.firebaseapp.com
+FIREBASE_PROJECT_ID=your-project-id
+FIREBASE_STORAGE_BUCKET=your-project-id.firebasestorage.app
+FIREBASE_MESSAGING_SENDER_ID=your-messaging-sender-id
+FIREBASE_APP_ID=your-firebase-app-id
+FIREBASE_MEASUREMENT_ID=
 
 # App Configuration
 APP_ENV=development  # development | staging | production
+API_BASE_URL=https://api.getryvro.com
 API_TIMEOUT=30000    # API request timeout in milliseconds
 
-# Feature Flags (Optional)
-ENABLE_ANALYTICS=true
-ENABLE_CRASH_REPORTING=true
+# Ryvro Brain and AI schedule parser
+RYVRO_BRAIN_URL=https://us-central1-your-project-id.cloudfunctions.net/ryvroBrain
+RYVRO_BRAIN_TIMEOUT=30000
+SHIFT_SCHEDULE_PARSER_URL=https://us-central1-your-project-id.cloudfunctions.net/parseShiftScheduleDescription
+SHIFT_SCHEDULE_PARSER_TIMEOUT_MS=45000
+
+# Google Sign-In
+GOOGLE_WEB_CLIENT_ID=your-google-web-client-id.apps.googleusercontent.com
+EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=your-google-web-client-id.apps.googleusercontent.com
+GOOGLE_IOS_CLIENT_ID=your-google-ios-client-id.apps.googleusercontent.com
+EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=your-google-ios-client-id.apps.googleusercontent.com
+
+# RevenueCat
+REVENUECAT_IOS_KEY=appl_xxxxxxxxxxxxx
+EXPO_PUBLIC_REVENUECAT_IOS_KEY=appl_xxxxxxxxxxxxx
+REVENUECAT_ANDROID_KEY=goog_xxxxxxxxxxxxx
+EXPO_PUBLIC_REVENUECAT_ANDROID_KEY=goog_xxxxxxxxxxxxx
+REVENUECAT_ENTITLEMENT_ID=pro
+EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID=pro
+
+# Legal and support URLs
+LEGAL_PRIVACY_POLICY_URL=https://getryvro.com/privacy
+LEGAL_TERMS_OF_SERVICE_URL=https://getryvro.com/terms
+SUPPORT_URL=https://getryvro.com/support
 ```
 
 ### Environment-Specific Configuration
@@ -126,9 +150,8 @@ ENABLE_CRASH_REPORTING=true
 ```env
 APP_ENV=development
 FIREBASE_PROJECT_ID=ryvro-dev
+RYVRO_BRAIN_URL=https://us-central1-ryvro-dev.cloudfunctions.net/ryvroBrain
 API_TIMEOUT=60000
-ENABLE_ANALYTICS=false
-ENABLE_CRASH_REPORTING=false
 ```
 
 #### Staging (`.env.staging`)
@@ -136,9 +159,8 @@ ENABLE_CRASH_REPORTING=false
 ```env
 APP_ENV=staging
 FIREBASE_PROJECT_ID=ryvro-staging
+RYVRO_BRAIN_URL=https://us-central1-ryvro-staging.cloudfunctions.net/ryvroBrain
 API_TIMEOUT=45000
-ENABLE_ANALYTICS=true
-ENABLE_CRASH_REPORTING=true
 ```
 
 #### Production (`.env.production`)
@@ -146,9 +168,14 @@ ENABLE_CRASH_REPORTING=true
 ```env
 APP_ENV=production
 FIREBASE_PROJECT_ID=ryvro-prod
+RYVRO_BRAIN_URL=https://us-central1-ryvro-prod.cloudfunctions.net/ryvroBrain
 API_TIMEOUT=30000
-ENABLE_ANALYTICS=true
-ENABLE_CRASH_REPORTING=true
+```
+
+Before pushing production secrets to EAS, run:
+
+```bash
+npm run release:env:check
 ```
 
 ### Accessing Environment Variables
@@ -157,8 +184,9 @@ ENABLE_CRASH_REPORTING=true
 import Constants from 'expo-constants';
 
 const config = {
-  firebaseApiKey: Constants.expoConfig?.extra?.firebaseApiKey,
-  apiTimeout: Constants.expoConfig?.extra?.apiTimeout,
+  firebaseApiKey: Constants.expoConfig?.extra?.FIREBASE_API_KEY,
+  ryvroBrainUrl: Constants.expoConfig?.extra?.RYVRO_BRAIN_URL,
+  apiTimeout: Constants.expoConfig?.extra?.API_TIMEOUT,
 };
 ```
 
@@ -170,10 +198,12 @@ const config = {
 
 1. Go to [Firebase Console](https://console.firebase.google.com/)
 2. Create a new project
-3. Add iOS and Android apps
+3. Add iOS and Android apps for `com.ryvro.shiftplanner`
 4. Download configuration files:
-   - iOS: `GoogleService-Info.plist`
-   - Android: `google-services.json`
+   - iOS: `GoogleService-Info.plist` to `ios/Ryvro/GoogleService-Info.plist`
+   - Android: `google-services.json` to `android/app/google-services.json`
+
+Use `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md` as the console setup source of truth. Do not reuse config files from the old app identity.
 
 #### 2. Enable Firebase Services
 
