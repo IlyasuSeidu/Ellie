@@ -19,6 +19,10 @@ test('builds a Claude prompt from aggregate summaries only', () => {
   const prompt = buildClaudeDailyIntelligencePrompt(summary);
 
   assert.match(prompt.system, /strict JSON/i);
+  assert.match(prompt.system, /healthcare teams/i);
+  assert.match(prompt.system, /security staff/i);
+  assert.match(prompt.system, /manufacturing teams/i);
+  assert.doesNotMatch(prompt.system, /miners and FIFO workers at launch/i);
   assert.match(prompt.user, /daily Ryvro analytics report/i);
   assert.match(prompt.user, /dailyIntelligenceReport|report/);
   assert.doesNotMatch(prompt.user, /raw_query|email|phone/i);
@@ -99,5 +103,9 @@ test('fallback analysis creates deterministic decision candidates', () => {
 
   assert.equal(fallback.status, 'fallback');
   assert.equal(fallback.errorMessage, 'missing secret');
+  assert.doesNotMatch(
+    fallback.abTestRecommendation?.treatment ?? '',
+    /miner\/FIFO-first|miners and FIFO/i
+  );
   assert.ok(Array.isArray(candidates));
 });

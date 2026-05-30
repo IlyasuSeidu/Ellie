@@ -285,7 +285,7 @@ export function buildClaudeDailyIntelligencePrompt(
   summary: DailyAnalyticsSummary
 ): ClaudeIntelligencePrompt {
   const system = [
-    'You are the AI intelligence engine for Ryvro, a shift planner for miners and FIFO workers at launch that is built on a universal shift-worker schedule engine.',
+    'You are the AI intelligence engine for Ryvro, a shift planner for FIFO crews, healthcare teams, security staff, emergency services, transport operators, hospitality workers, manufacturing teams, miners, and other shift workers.',
     'Analyze aggregated analytics only. Never ask for raw PII. Never invent metrics that are not in the report.',
     'FIFO rest-block inactivity is not automatically churn; other shift-worker industries may also have long off blocks.',
     'Return strict JSON only. No markdown. No commentary outside JSON.',
@@ -410,7 +410,7 @@ export function buildFallbackDailyIntelligenceAnalysis(
           hypothesis: `Reducing friction on ${summary.onboarding.dropOffs[0].step} will improve onboarding completion.`,
           control: 'Current onboarding step copy and layout.',
           treatment:
-            'One clearer miner/FIFO-first explanation plus a lower-effort action path that still works for other shift workers.',
+            'One clearer shift-worker explanation with examples spanning FIFO, healthcare, security, emergency services, transport, hospitality, manufacturing, and mining.',
           primaryMetric: 'onboarding_step_completed',
         }
       : null,
