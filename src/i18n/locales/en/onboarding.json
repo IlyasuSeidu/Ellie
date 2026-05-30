@@ -115,7 +115,7 @@
     "allSet": "Perfect! You're all set, {{name}}. Let's get your shift calendar configured.",
     "placeholders": {
       "name": "Enter your name",
-      "occupation": "e.g. Nurse, miner, security officer, plant operator",
+      "occupation": "e.g. Nurse, security officer, plant operator",
       "company": "Enter company name",
       "country": "Enter your country"
     },

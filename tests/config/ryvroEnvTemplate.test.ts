@@ -917,6 +917,9 @@ describe('Ryvro environment template', () => {
       ) as {
         intro?: {
           askOccupation?: string;
+          placeholders?: {
+            occupation?: string;
+          };
         };
         shiftBuilder?: {
           inspector?: {
@@ -967,6 +970,10 @@ describe('Ryvro environment template', () => {
       expect(profile.shift?.siteName).toBe(expected.location);
       expect(profile.shift?.sections?.siteDetails).toBe(expected.section);
       expect(onboarding.shiftBuilder?.inspector?.location).toBe(expected.location);
+      expect(onboarding.intro?.placeholders?.occupation).toBeTruthy();
+      expect(onboarding.intro?.placeholders?.occupation).not.toMatch(
+        /miner|minero|mineração|minería|mine|mining|haul truck|dump truck|camión|caminhão|самосвал|矿卡|boilermaker|calderero|caldeireiro|chaudronnier|ketelmaker|котельщик|बॉयलरमेकर/i
+      );
 
       const topFunnelCopy = [
         onboarding.intro?.askOccupation,
@@ -991,6 +998,13 @@ describe('Ryvro environment template', () => {
       for (const phrase of expected.topFunnel) {
         expect(topFunnelCopy).toContain(phrase);
       }
+
+      const fullOnboardingCopy = JSON.stringify(onboarding);
+      const fullProfileCopy = JSON.stringify(profile);
+      expect(fullOnboardingCopy).not.toMatch(
+        /Votre mine comporte|Sites miniers|Minería global remota|Mineração global remota/i
+      );
+      expect(fullProfileCopy).not.toMatch(/"Minero"/i);
 
       expect(topFunnelCopy).not.toMatch(
         /site minier|site minero|site de mina|site mine|site your|your site|your mine|mine site|mining site|sitio|situs|сайт|участок|站点|网站|साइट|موقعك|موقع منجمك|موقع المنجم|موقع التعدين|terrein|werf|webwerf|mynterrein|mynperseel|esizeni|indawo yakho yemigodi|na mina|à mina|de volta à mina|en la mina/i

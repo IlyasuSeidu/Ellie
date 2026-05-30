@@ -180,7 +180,7 @@ describe('PremiumIntroductionScreen', () => {
       });
 
       const occupationInput = await findByPlaceholderText(
-        'e.g. Nurse, miner, security officer, plant operator',
+        'e.g. Nurse, security officer, plant operator',
         { timeout: 3000 }
       );
       fireEvent.changeText(occupationInput, 'Driller');
@@ -220,7 +220,7 @@ describe('PremiumIntroductionScreen', () => {
       });
 
       const occupationInput = await findByPlaceholderText(
-        'e.g. Nurse, miner, security officer, plant operator',
+        'e.g. Nurse, security officer, plant operator',
         { timeout: 3000 }
       );
       fireEvent.changeText(occupationInput, 'Miner');

@@ -39,7 +39,7 @@
     "allSet": "Parfait! Vous êtes prêt, {{name}}. Configureons votre calendrier de travail.",
     "placeholders": {
       "name": "Entrez votre nom",
-      "occupation": "p.ex. Conducteur de camion, Chaudronnier, Électricien",
+      "occupation": "p.ex. Infirmier, agent de sécurité, opérateur d'usine",
       "company": "Entrez le nom de l'entreprise",
       "country": "Entrez votre pays"
     },
@@ -77,11 +77,11 @@
       "2-shift": {
         "title": "2 équipes (12 heures)",
         "schedule": "Jour et nuit",
-        "description": "Votre mine comporte deux équipes de 12 heures: une de jour et une de nuit.",
+        "description": "Votre lieu de travail comporte deux équipes de 12 heures: une de jour et une de nuit.",
         "details": {
           "workRestRatio": "12 heures allumées, 12 heures éteintes",
           "useCases": [
-            "Sites miniers",
+            "Équipes de santé",
             "Pétrole et gaz",
             "Opérations 24h/24 et 7j/7",
             "Travail à distance"
@@ -105,9 +105,9 @@
         "details": {
           "workRestRatio": "8 heures allumées, 16 heures éteintes",
           "useCases": [
-            "Mines souterraines",
+            "Équipes industrielles",
             "Usines de traitement",
-            "Infrastructure minière",
+            "Sites de production",
             "Opérations 24h/24 et 7j/7"
           ],
           "pros": [
@@ -249,7 +249,7 @@
             "Afrique du Sud",
             "Zambie",
             "RDC",
-            "Europe (sites miniers)",
+            "Europe (opérations en continu)",
             "Certaines opérations américaines"
           ],
           "pros": [
@@ -277,11 +277,7 @@
             "21h/21 et 7j/7 (sites distants)",
             "28/14 (cycle long)"
           ],
-          "regions": [
-            "Australie",
-            "Canada (sites éloignés)",
-            "Exploitation minière mondiale à distance"
-          ],
+          "regions": ["Australie", "Canada (sites éloignés)", "Opérations distantes mondiales"],
           "pros": [
             "Temps prolongé à la maison",
             "Des taux de rémunération plus élevés",
@@ -315,15 +311,15 @@
       "sleep": "Suivi et informations sur le sommeil",
       "sleepDesc": "Optimisez votre repos entre les quarts de travail grâce à des analyses personnalisées du sommeil",
       "fatigue": "Surveillance de la fatigue",
-      "fatigueDesc": "Surveillez le risque de fatigue sur les longs quarts — essentiel pour la sécurité souterraine",
+      "fatigueDesc": "Surveillez le risque de fatigue sur les longs quarts — essentiel pour les rôles exigeants",
       "team": "Coordination d'équipe",
       "teamDesc": "Consultez le calendrier de votre équipe et coordonnez les transferts en toute transparence",
       "balance": "Équilibre travail-vie personnelle",
       "balanceDesc": "Restez en bonne santé entre les swings FIFO avec le suivi de la routine et du bien-être",
       "earnings": "Calculateur de gains",
-      "earningsDesc": "Calculez automatiquement les allocations de site, les chargements FIFO et les heures supplémentaires",
+      "earningsDesc": "Calculez automatiquement les indemnités de travail, les chargements FIFO et les heures supplémentaires",
       "meals": "Repas & hydratation",
-      "mealsDesc": "Restez hydraté et alimenté lors de quarts souterrains de 12 heures"
+      "mealsDesc": "Restez hydraté et alimenté lors de quarts de 12 heures"
     },
     "featureHint": "Appuyez sur une puce de fonctionnalité pour voir plus de détails.",
     "featuresTitle": "Ce que vous pouvez faire avec Ryvro",
@@ -1043,7 +1039,7 @@
     "a11y": "Le robot tape"
   },
   "chatAvatar": {
-    "a11y": "Avatar de l’assistant minier"
+    "a11y": "Avatar de l’assistant Ryvro"
   },
   "premiumCalendar": {
     "previousMonthA11y": "Mois précédent",

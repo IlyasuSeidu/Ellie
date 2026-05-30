@@ -39,7 +39,7 @@
     "allSet": "完美的！一切就绪，{{name}}。让我们配置您的轮班日历。",
     "placeholders": {
       "name": "输入你的名字",
-      "occupation": "例如：矿卡驾驶员、锅炉工、电工",
+      "occupation": "例如：护士、安保人员、工厂操作员",
       "company": "输入公司名称",
       "country": "输入您的国家/地区"
     },

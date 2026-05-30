@@ -55,6 +55,7 @@ Completed in the current working tree:
 - Built the Android debug APK on 2026-05-29 with package `com.ryvro.shiftplanner`; Android release-style Detox build, seeded dashboard smoke, auth form/navigation smoke, onboarding through Universal Shift Builder, and profile language-selector smoke now pass on `Medium_Phone_API_36.0`. Physical Android device QA and real provider auth remain pending.
 - Tightened tracked Xcode product metadata so the iOS shared scheme and product file reference now point at `Ryvro.app`; `xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -showBuildSettings` reported `FULL_PRODUCT_NAME = Ryvro.app`, `WRAPPER_NAME = Ryvro.app`, `PRODUCT_NAME = Ryvro`, and `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner` on 2026-05-30.
 - Removed stale tracked Detox artifact logs/screenshots from the old iOS `EllieMinerShiftAssistant` identity and added `artifacts/` to `.gitignore` so generated release logs do not re-enter the tracked launch tree.
+- Launch-critical onboarding occupation placeholders now use broad examples such as healthcare, security, and plant operations instead of mining/trades-only examples across bundled locales.
 
 Still pending outside this repo or intentionally kept for compatibility:
 

@@ -39,7 +39,7 @@
     "allSet": "Perfecto! Todo listo, {{name}}. Vamos a configurar tu calendario de turnos.",
     "placeholders": {
       "name": "Ingresa tu nombre",
-      "occupation": "ej. Operador de camión, Calderero, Electricista",
+      "occupation": "ej. Enfermera, guardia de seguridad, operador de planta",
       "company": "Ingresa empresa",
       "country": "Ingresa tu pais"
     },
@@ -361,7 +361,7 @@
             "21/7 (sitios remotos)",
             "28/14 (ciclo largo)"
           ],
-          "regions": ["Australia Occidental", "Canadá", "Minería global remota"],
+          "regions": ["Australia Occidental", "Canadá", "Operaciones remotas globales"],
           "pros": [
             "Tiempo extendido en casa",
             "Tasas salariales más altas",
