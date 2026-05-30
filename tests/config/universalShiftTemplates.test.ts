@@ -110,6 +110,19 @@ describe('Universal shift templates', () => {
     }
   });
 
+  it('keeps the fresh onboarding E2E happy path on a non-mining launch fixture', () => {
+    const onboardingE2E = fs.readFileSync(
+      path.join(process.cwd(), 'e2e/onboarding.test.ts'),
+      'utf8'
+    );
+
+    expect(onboardingE2E).toContain("submitIntroAnswer('Amina')");
+    expect(onboardingE2E).toContain("submitIntroAnswer('Nurse')");
+    expect(onboardingE2E).toContain('universal-shift-builder-template-healthcare-2-2-3');
+    expect(onboardingE2E).not.toContain("submitIntroAnswer('Miner')");
+    expect(onboardingE2E).not.toContain("submitIntroAnswer('FIFO");
+  });
+
   it('gives every template visible color and icon choices for calendar/dashboard rendering', () => {
     for (const template of UNIVERSAL_SHIFT_TEMPLATES) {
       for (const definition of template.schedule.shiftDefinitions) {

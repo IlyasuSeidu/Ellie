@@ -88,8 +88,8 @@ describe('Onboarding Flow — rotating roster happy path', () => {
 
     // Introduction
     await waitForVisible('premium-introduction-screen', LONG);
-    await submitIntroAnswer('Ilyasu');
-    await submitIntroAnswer('Miner');
+    await submitIntroAnswer('Amina');
+    await submitIntroAnswer('Nurse');
     await waitForVisible(INTRO_SKIP_COMPANY, XLONG);
     await element(by.id(INTRO_SKIP_COMPANY)).tap();
     await submitIntroAnswer('Australia');

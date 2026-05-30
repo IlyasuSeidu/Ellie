@@ -562,7 +562,10 @@ describe('Ryvro environment template', () => {
       'commits `f004097`, `10353e7`, `3f92d56`, `90d403d`, and `82fd530`'
     );
     expect(readinessReport).toContain('passed Lint and Type Check, Unit Tests, and Build Check');
-    expect(readinessReport).toContain('106 Jest suites / 1,725 tests');
+    expect(readinessReport).toContain('106 Jest suites / 1,729 tests');
+    expect(readinessReport).toContain(
+      'fresh onboarding E2E happy path uses non-mining healthcare worker data'
+    );
     expect(readinessReport).toContain(
       'Schedule and Stats helper screens no longer present launch users with "Coming Soon" copy'
     );

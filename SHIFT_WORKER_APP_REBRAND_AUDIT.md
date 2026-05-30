@@ -1521,25 +1521,25 @@ Phase gate:
 
 ### Phase 5: Universal Templates And Demo Data
 
-- [ ] Replace default e2e user occupation.
-- [ ] Replace default e2e company.
-- [ ] Add healthcare fixture.
-- [ ] Add security fixture.
-- [ ] Add emergency services fixture.
-- [ ] Add manufacturing fixture.
-- [ ] Add transport/logistics fixture.
-- [ ] Add hospitality/retail fixture.
-- [ ] Add aviation/rail fixture.
-- [ ] Add offshore/mining fixture as optional.
-- [ ] Add universal template metadata.
-- [ ] Add template colors/icons/reminder defaults.
-- [ ] Add template QA cases.
+- [x] Replace default e2e user occupation.
+- [x] Replace default e2e company.
+- [x] Add healthcare fixture.
+- [x] Add security fixture.
+- [x] Add emergency services fixture.
+- [x] Add manufacturing fixture.
+- [x] Add transport/logistics fixture.
+- [x] Add hospitality/retail fixture.
+- [x] Add aviation/rail fixture.
+- [x] Add offshore/mining fixture as optional.
+- [x] Add universal template metadata.
+- [x] Add template colors/icons/reminder defaults.
+- [x] Add template QA cases.
 
 Phase gate:
 
-- [ ] Default demo user is not a miner.
-- [ ] Mining remains supported as one template family.
-- [ ] Templates save into Universal Shift Builder data, not legacy fields.
+- [x] Default demo user is not a miner.
+- [x] Mining remains supported as one template family.
+- [x] Templates save into Universal Shift Builder data, not legacy fields.
 
 ### Phase 6: Builder, Calendar, Exceptions, And Reminders
 

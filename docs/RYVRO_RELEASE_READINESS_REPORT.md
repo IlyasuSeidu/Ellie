@@ -17,6 +17,7 @@ Completed and guarded in the current branch:
 - French, Afrikaans, Arabic, Spanish, Portuguese, Hindi, Russian, Chinese, and Zulu launch-critical onboarding/profile copy now use broad work-location language instead of mining-site phrasing in roster setup, FIFO phase selection, and reminder labels.
 - Backend daily intelligence prompts now describe Ryvro's launch audience across FIFO, healthcare, security, emergency services, transport, hospitality, manufacturing, mining, and other shift-work teams instead of treating mining/FIFO as the only launch lens.
 - Universal fixtures and launch templates now cover healthcare, security, emergency services, manufacturing, transport/logistics, hospitality, separate aviation and rail operations, mining/FIFO, and call-center/operations examples.
+- The default completed E2E seed and fresh onboarding E2E happy path now use healthcare worker data rather than a miner-only default.
 - RevenueCat repo-side identifiers and guidance use Ryvro launch aliases while keeping old Ellie/miner aliases documented as compatibility-only migration inputs.
 - Firebase/backend repo config exposes `ryvroBrain` and uses `RYVRO_BRAIN_*` as the preferred environment names while preserving old `ELLIE_BRAIN_*` keys only as migration fallbacks.
 - CI and E2E workflows now exercise only `RYVRO_BRAIN_*` endpoint variables; legacy `ELLIE_BRAIN_*` names are no longer exported in workflow environments.
@@ -48,7 +49,7 @@ Completed and guarded in the current branch:
   - `npm test -- AuthService SignInScreen ShiftScheduleParserService universalShiftEdgeCases MonthlyCalendarCard ShiftSettingsPanel PremiumWelcomeScreen SmartReminderService --runInBand`: 8 suites, 162 tests.
   - `npm test -- universalShiftCalendarUtils HolidayService NotificationService SmartReminderSettingsService shift-schedule-parser --runInBand`: 4 suites, 107 tests.
   - `npm test` in `backend/functions`: TypeScript build plus 38 Node tests.
-- `npm test -- universalShiftTemplates ryvroEnvTemplate --runInBand`: passed on 2026-05-29, including a guard that completed E2E onboarding seeds carry Universal Shift Builder schedules.
+- `npm test -- --runInBand --silent tests/config/universalShiftTemplates.test.ts tests/config/ryvroEnvTemplate.test.ts`: passed on 2026-05-30, including guards that completed E2E onboarding seeds carry Universal Shift Builder schedules and the fresh onboarding E2E happy path uses non-mining healthcare worker data.
 - `pod install` in `ios/`: passed on 2026-05-30 and regenerated the ignored local CocoaPods metadata from `EllieOpenWakeWord` to `RyvroOpenWakeWord`.
 - `E2E_TEST_MODE=1 npx expo start --localhost` plus `npx detox test --configuration ios.release e2e/dashboard.test.ts --reuse`: passed on 2026-05-29 on the iPhone 16 simulator, 15 dashboard smoke tests.
 - `E2E_TEST_MODE=1 npx detox test --configuration ios.release.xsmax e2e/dashboard.test.ts`: passed on 2026-05-29 on the iPhone XS Max simulator, 15 dashboard smoke tests. The run uninstalled the previous app first, installed the rebuilt `Ryvro.app`, and verified the small-screen dashboard smoke without the RevenueCat release guard alert.
@@ -56,7 +57,7 @@ Completed and guarded in the current branch:
 - `npm run validate`: passed on 2026-05-29 after the latest Phase 9 E2E seed and selector updates.
 - Recent pushed GitHub Actions check for PR #1 passed on commit `610795d`: CI run `26678024310` passed Lint and Type Check, Unit Tests, and Build Check.
 - Earlier same-day pushed GitHub Actions checks also passed on commits `f004097`, `10353e7`, `3f92d56`, `90d403d`, and `82fd530`, covering dashboard quick actions, release env template alignment, legal launch URLs, EAS scaffolding, and production env preflight.
-- Local release verification on 2026-05-30 passed `git diff --check`, `npm run lint`, and `npm run release:check` after the Schedule/Stats launch-copy update. The release check included TypeScript, 106 Jest suites / 1,725 tests, and the backend functions TypeScript build.
+- Local release verification on 2026-05-30 passed `git diff --check`, focused config tests, and `npm run release:check` after the non-mining E2E onboarding fixture update. The release check included TypeScript, 106 Jest suites / 1,729 tests, and the backend functions TypeScript build.
 - Prior completed pushed GitHub Actions baseline for the Android release E2E readiness change: CI run `26659012373` passed for commit `92a52ab`.
 - iOS release simulator build command `npm run test:e2e:build:ios`: previously passed on 2026-05-29T15:22:59Z with built plist values `CFBundleDisplayName = Ryvro`, `CFBundleName = Ryvro`, and `CFBundleIdentifier = com.ryvro.shiftplanner`.
 - `xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -showBuildSettings | rg "PRODUCT_NAME|FULL_PRODUCT_NAME|PRODUCT_BUNDLE_IDENTIFIER|WRAPPER_NAME|TARGET_NAME|INFOPLIST_FILE"`: passed on 2026-05-30 and reported `FULL_PRODUCT_NAME = Ryvro.app`, `WRAPPER_NAME = Ryvro.app`, `PRODUCT_NAME = Ryvro`, and `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner`.
