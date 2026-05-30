@@ -1,9 +1,9 @@
 {
   "title": "Skedule",
-  "comingSoon": "Binnekort",
-  "description": "Jou gedetailleerde skofkalender en skedulebestuur sal hier verskyn.",
+  "availableNow": "Beskikbaar in Ryvro",
+  "description": "Gebruik die Skofbouer om jou skedule te wysig, kalenders in/uit te voer, uitsonderings te bestuur en herinneringe aan te pas.",
   "statsTitle": "Statistiek",
-  "statsDescription": "Gedetailleerde ontledings en insigte oor jou skofpatrone sal hier verskyn.",
+  "statsDescription": "Jou dashboard wys hierdie maand se werkdae, afdae, balans en komende skofte. Profiel hou dieper skedule-instellings.",
   "builder": {
     "fallbackTitle": "Skofbouer",
     "unsavedChanges": "Ongestoorde veranderings",

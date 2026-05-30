@@ -1,9 +1,9 @@
 {
   "title": "Schedule",
-  "comingSoon": "Coming Soon",
-  "description": "Your detailed shift calendar and schedule management will appear here.",
+  "availableNow": "Available in Ryvro",
+  "description": "Use the Shift Builder to edit your schedule, import/export calendars, manage exceptions, and tune reminders.",
   "statsTitle": "Statistics",
-  "statsDescription": "Detailed analytics and insights about your shift patterns will appear here.",
+  "statsDescription": "Your dashboard shows this month's work days, off days, balance, and upcoming shifts. Profile keeps deeper schedule settings.",
   "builder": {
     "fallbackTitle": "Shift Builder",
     "unsavedChanges": "Unsaved changes",

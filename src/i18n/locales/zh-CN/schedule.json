@@ -1,9 +1,9 @@
 {
   "title": "日程",
-  "comingSoon": "即将推出",
-  "description": "您详细的轮班日历和日程管理将显示在此处。",
+  "availableNow": "已在 Ryvro 中可用",
+  "description": "使用班次生成器编辑排班、导入/导出日历、管理例外情况并调整提醒。",
   "statsTitle": "统计数据",
-  "statsDescription": "有关您的轮班模式的详细分析和见解将显示在此处。",
+  "statsDescription": "仪表板显示本月工作日、休息日、平衡情况和即将到来的班次。个人资料中保留更详细的排班设置。",
   "builder": {
     "fallbackTitle": "班次生成器",
     "unsavedChanges": "未保存的更改",

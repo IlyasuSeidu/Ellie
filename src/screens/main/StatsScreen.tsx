@@ -1,8 +1,7 @@
 /**
  * StatsScreen
  *
- * Placeholder screen for the Stats tab.
- * Will contain detailed statistics, analytics, and insights.
+ * Stats helper screen for entry points that still route to stats content.
  */
 
 import React from 'react';
@@ -35,7 +34,7 @@ export const StatsScreen: React.FC = () => {
           {t('statsTitle')}
         </Animated.Text>
         <Animated.Text entering={FadeInUp.delay(200).duration(400)} style={styles.subtitle}>
-          {t('comingSoon')}
+          {t('availableNow')}
         </Animated.Text>
         <Animated.Text entering={FadeInUp.delay(300).duration(400)} style={styles.description}>
           {t('statsDescription')}

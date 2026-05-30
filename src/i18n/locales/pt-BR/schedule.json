@@ -1,9 +1,9 @@
 {
   "title": "Agenda",
-  "comingSoon": "Em breve",
-  "description": "Seu calendario detalhado de turnos e o gerenciamento de agenda aparecerao aqui.",
+  "availableNow": "Disponivel no Ryvro",
+  "description": "Use o Construtor de turnos para editar sua agenda, importar/exportar calendarios, gerenciar excecoes e ajustar lembretes.",
   "statsTitle": "Estatisticas",
-  "statsDescription": "Analises detalhadas sobre seus padroes de turno aparecerao aqui.",
+  "statsDescription": "O painel mostra dias de trabalho, dias de folga, equilibrio e proximos turnos deste mes. O Perfil guarda ajustes mais detalhados da agenda.",
   "builder": {
     "fallbackTitle": "Construtor de turnos",
     "unsavedChanges": "Alterações não salvas",

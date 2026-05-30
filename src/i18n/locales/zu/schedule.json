@@ -1,9 +1,9 @@
 {
   "title": "Isheduli",
-  "comingSoon": "Kuyeza maduze",
-  "description": "Ikhalenda lakho lokushintsha elinemininingwane kanye nokuphathwa kweshejuli kuzovela lapha.",
+  "availableNow": "Kuyatholakala ku-Ryvro",
+  "description": "Sebenzisa uMwakhi Wamashifu ukuhlela isheduli yakho, ukungenisa/ukuthekelisa amakhalenda, ukuphatha okuhlukile, nokulungisa izikhumbuzi.",
   "statsTitle": "Izibalo",
-  "statsDescription": "Izibalo ezinemininingwane kanye nemininingwane mayelana namaphethini akho okushintsha kuzovela lapha.",
+  "statsDescription": "Ideshibhodi ibonisa izinsuku zokusebenza, izinsuku zokuphumula, ibhalansi, namashifu alandelayo ale nyanga. Iphrofayela igcina izilungiselelo zesheduli ezijulile.",
   "builder": {
     "fallbackTitle": "Umakhi wamashifu",
     "unsavedChanges": "Izinguquko ezingakalondolozwa",

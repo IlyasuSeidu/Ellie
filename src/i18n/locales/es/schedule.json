@@ -1,9 +1,9 @@
 {
   "title": "Horario",
-  "comingSoon": "Proximamente",
-  "description": "Tu calendario detallado de turnos y la gestion de horarios apareceran aqui.",
+  "availableNow": "Disponible en Ryvro",
+  "description": "Usa el constructor de turnos para editar tu horario, importar/exportar calendarios, gestionar excepciones y ajustar recordatorios.",
   "statsTitle": "Estadisticas",
-  "statsDescription": "Analitica y detalles sobre tus patrones de turno apareceran aqui.",
+  "statsDescription": "El panel muestra los dias de trabajo, dias libres, balance y proximos turnos de este mes. Perfil guarda ajustes mas profundos del horario.",
   "builder": {
     "fallbackTitle": "Constructor de turnos",
     "unsavedChanges": "Cambios sin guardar",

@@ -1,9 +1,9 @@
 {
   "title": "Jadwal",
-  "comingSoon": "Segera hadir",
-  "description": "Kalender shift dan manajemen jadwal Anda yang terperinci akan muncul di sini.",
+  "availableNow": "Tersedia di Ryvro",
+  "description": "Gunakan Pembuat Shift untuk mengedit jadwal, impor/ekspor kalender, mengelola pengecualian, dan menyesuaikan pengingat.",
   "statsTitle": "Statistik",
-  "statsDescription": "Analisis dan wawasan terperinci tentang pola shift Anda akan muncul di sini.",
+  "statsDescription": "Dasbor menampilkan hari kerja, hari libur, keseimbangan, dan shift berikutnya bulan ini. Profil menyimpan pengaturan jadwal yang lebih detail.",
   "builder": {
     "fallbackTitle": "Pembuat Shift",
     "unsavedChanges": "Perubahan belum disimpan",

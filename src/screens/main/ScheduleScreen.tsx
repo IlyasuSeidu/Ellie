@@ -1,8 +1,7 @@
 /**
  * ScheduleScreen
  *
- * Placeholder screen for the Schedule tab.
- * Will contain detailed shift calendar and schedule management.
+ * Schedule helper screen for entry points that still route to schedule content.
  */
 
 import React from 'react';
@@ -35,7 +34,7 @@ export const ScheduleScreen: React.FC = () => {
           {t('title')}
         </Animated.Text>
         <Animated.Text entering={FadeInUp.delay(200).duration(400)} style={styles.subtitle}>
-          {t('comingSoon')}
+          {t('availableNow')}
         </Animated.Text>
         <Animated.Text entering={FadeInUp.delay(300).duration(400)} style={styles.description}>
           {t('description')}
