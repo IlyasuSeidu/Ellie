@@ -56,6 +56,7 @@ Completed in the current working tree:
 - Tightened tracked Xcode product metadata so the iOS shared scheme and product file reference now point at `Ryvro.app`; `xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -showBuildSettings` reported `FULL_PRODUCT_NAME = Ryvro.app`, `WRAPPER_NAME = Ryvro.app`, `PRODUCT_NAME = Ryvro`, and `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner` on 2026-05-30.
 - Removed stale tracked Detox artifact logs/screenshots from the old iOS `EllieMinerShiftAssistant` identity and added `artifacts/` to `.gitignore` so generated release logs do not re-enter the tracked launch tree.
 - Launch-critical onboarding occupation placeholders now use broad examples such as healthcare, security, and plant operations instead of mining/trades-only examples across bundled locales.
+- Hardened `npm run release:env:check` so production builds require the Expo public RevenueCat iOS/Android keys to mirror the native RevenueCat SDK keys before EAS secrets are pushed.
 
 Still pending outside this repo or intentionally kept for compatibility:
 

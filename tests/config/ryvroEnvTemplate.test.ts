@@ -1,6 +1,7 @@
 import fs from 'fs';
+import os from 'os';
 import path from 'path';
-import { execFileSync } from 'child_process';
+import { execFileSync, spawnSync } from 'child_process';
 
 const walkFiles = (dir: string): string[] => {
   if (!fs.existsSync(dir)) {
@@ -108,6 +109,46 @@ describe('Ryvro environment template', () => {
     }, source);
 
     return typeof value === 'string' ? value : undefined;
+  };
+
+  const validProductionEnv = [
+    'APP_ENV=production',
+    'EAS_PROJECT_ID=3dcb1926-9b5b-4f20-93b1-2f5b8f490000',
+    'FIREBASE_PROJECT_ID=ryvro-prod',
+    'GOOGLE_WEB_CLIENT_ID=1234567890-web.apps.googleusercontent.com',
+    'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=1234567890-web.apps.googleusercontent.com',
+    'GOOGLE_IOS_CLIENT_ID=1234567890-ios.apps.googleusercontent.com',
+    'EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=1234567890-ios.apps.googleusercontent.com',
+    'RYVRO_BRAIN_URL=https://us-central1-ryvro-prod.cloudfunctions.net/ryvroBrain',
+    'REVENUECAT_IOS_KEY=appl_liveios123',
+    'EXPO_PUBLIC_REVENUECAT_IOS_KEY=appl_liveios123',
+    'REVENUECAT_ANDROID_KEY=goog_liveandroid123',
+    'EXPO_PUBLIC_REVENUECAT_ANDROID_KEY=goog_liveandroid123',
+    'REVENUECAT_ENTITLEMENT_ID=pro',
+    'EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID=pro',
+    'LEGAL_PRIVACY_POLICY_URL=https://getryvro.com/privacy',
+    'LEGAL_TERMS_OF_SERVICE_URL=https://getryvro.com/terms',
+    'SUPPORT_URL=https://getryvro.com/support',
+    'ELLIE_BRAIN_URL=',
+  ].join('\n');
+
+  const runProductionEnvCheck = (envContent: string) => {
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ryvro-env-check-'));
+    const envPath = path.join(tempDir, '.env.production');
+    fs.writeFileSync(envPath, envContent);
+
+    return spawnSync(
+      process.execPath,
+      ['scripts/verify-ryvro-production-env.js', '--env-file', envPath],
+      {
+        cwd: process.cwd(),
+        encoding: 'utf8',
+        env: {
+          NODE_ENV: process.env.NODE_ENV ?? 'test',
+          PATH: process.env.PATH,
+        },
+      }
+    );
   };
 
   it('uses Ryvro defaults for public launch configuration', () => {
@@ -376,14 +417,22 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('GOOGLE_IOS_CLIENT_ID');
     expect(script).toContain('RYVRO_BRAIN_URL');
     expect(script).toContain('REVENUECAT_IOS_KEY');
+    expect(script).toContain('EXPO_PUBLIC_REVENUECAT_IOS_KEY');
     expect(script).toContain('REVENUECAT_ANDROID_KEY');
+    expect(script).toContain('EXPO_PUBLIC_REVENUECAT_ANDROID_KEY');
     expect(script).toContain('LEGAL_PRIVACY_POLICY_URL');
     expect(script).toContain('LEGAL_TERMS_OF_SERVICE_URL');
     expect(script).toContain('SUPPORT_URL');
+    expect(envExample).toContain('EXPO_PUBLIC_REVENUECAT_IOS_KEY=appl_xxxxxxxxxxxxx');
+    expect(envExample).toContain('EXPO_PUBLIC_REVENUECAT_ANDROID_KEY=goog_xxxxxxxxxxxxx');
     expect(envExample).toContain('REVENUECAT_ENTITLEMENT_ID=pro');
     expect(envExample).toContain('EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID=pro');
     expect(envConfigurationTemplate).toContain('REVENUECAT_IOS_KEY=appl_xxxxxxxxxxxxx');
+    expect(envConfigurationTemplate).toContain('EXPO_PUBLIC_REVENUECAT_IOS_KEY=appl_xxxxxxxxxxxxx');
     expect(envConfigurationTemplate).toContain('REVENUECAT_ANDROID_KEY=goog_xxxxxxxxxxxxx');
+    expect(envConfigurationTemplate).toContain(
+      'EXPO_PUBLIC_REVENUECAT_ANDROID_KEY=goog_xxxxxxxxxxxxx'
+    );
     expect(envConfigurationTemplate).toContain('REVENUECAT_ENTITLEMENT_ID=pro');
     expect(envConfigurationTemplate).toContain('EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID=pro');
     expect(envExample).toContain('LEGAL_PRIVACY_POLICY_URL=https://getryvro.com/privacy');
@@ -404,10 +453,32 @@ describe('Ryvro environment template', () => {
     expect(envConfigurationTemplate).toContain('UNIVERSAL_SHIFT_BUILDER_ENABLED=true');
     expect(envConfigurationTemplate).toContain('AI_SHIFT_BUILDER_ENABLED=true');
     expect(script).toContain('ELLIE_BRAIN_URL: leave empty for new Ryvro production builds');
+    expect(script).toContain('must match REVENUECAT_IOS_KEY');
+    expect(script).toContain('must match REVENUECAT_ANDROID_KEY');
     expect(externalSetup).toContain('npm run release:env:check');
     expect(externalSetup).toContain('live HTTPS `LEGAL_PRIVACY_POLICY_URL`');
     expect(releaseTasks).toContain('npm run release:env:check');
     expect(releaseTasks).toContain('set live HTTPS legal/support URLs');
+  });
+
+  it('accepts a production env only when Expo public RevenueCat keys mirror native keys', () => {
+    const result = runProductionEnvCheck(validProductionEnv);
+
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain('Ryvro production env check passed');
+  });
+
+  it('rejects production env files with mismatched Expo public RevenueCat keys', () => {
+    const result = runProductionEnvCheck(
+      validProductionEnv.replace(
+        'EXPO_PUBLIC_REVENUECAT_IOS_KEY=appl_liveios123',
+        'EXPO_PUBLIC_REVENUECAT_IOS_KEY=appl_different123'
+      )
+    );
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain('EXPO_PUBLIC_REVENUECAT_IOS_KEY');
+    expect(result.stderr).toContain('must match REVENUECAT_IOS_KEY');
   });
 
   it('keeps public clearance evidence current while preserving account-only caveats', () => {

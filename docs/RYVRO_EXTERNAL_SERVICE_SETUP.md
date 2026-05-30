@@ -174,6 +174,7 @@ Important:
 
 - Do not use RevenueCat `test_` API keys for release, store, or E2E simulator QA. The app treats `test_` keys as unavailable launch keys so RevenueCat's release-mode test-key protection cannot block QA with a native alert.
 - Use production/sandbox app API keys from the Ryvro RevenueCat apps, such as the normal iOS `appl_...` and Android `goog_...` key formats.
+- Keep `EXPO_PUBLIC_REVENUECAT_IOS_KEY` identical to `REVENUECAT_IOS_KEY` and `EXPO_PUBLIC_REVENUECAT_ANDROID_KEY` identical to `REVENUECAT_ANDROID_KEY`; `npm run release:env:check` blocks mismatches so the native app and Expo runtime cannot load different RevenueCat projects.
 
 Verification:
 

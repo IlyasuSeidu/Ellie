@@ -19,6 +19,7 @@ Completed and guarded in the current branch:
 - Universal fixtures and launch templates now cover healthcare, security, emergency services, manufacturing, transport/logistics, hospitality, separate aviation and rail operations, mining/FIFO, and call-center/operations examples.
 - The default completed E2E seed and fresh onboarding E2E happy path now use healthcare worker data rather than a miner-only default.
 - RevenueCat repo-side identifiers and guidance use Ryvro launch aliases while keeping old Ellie/miner aliases documented as compatibility-only migration inputs.
+- RevenueCat launch env templates now include both native and Expo public platform SDK keys, and the production env preflight rejects mismatched public/native key pairs before EAS builds.
 - Firebase/backend repo config exposes `ryvroBrain` and uses `RYVRO_BRAIN_*` as the preferred environment names while preserving old `ELLIE_BRAIN_*` keys only as migration fallbacks.
 - CI and E2E workflows now exercise only `RYVRO_BRAIN_*` endpoint variables; legacy `ELLIE_BRAIN_*` names are no longer exported in workflow environments.
 - The internal OpenWakeWord Expo module now uses Ryvro-branded package, native module, Android namespace, iOS podspec, resource bundle, and JS adapter identifiers.
@@ -58,6 +59,7 @@ Completed and guarded in the current branch:
 - Recent pushed GitHub Actions check for PR #1 passed on commit `610795d`: CI run `26678024310` passed Lint and Type Check, Unit Tests, and Build Check.
 - Earlier same-day pushed GitHub Actions checks also passed on commits `f004097`, `10353e7`, `3f92d56`, `90d403d`, and `82fd530`, covering dashboard quick actions, release env template alignment, legal launch URLs, EAS scaffolding, and production env preflight.
 - Local release verification on 2026-05-30 passed `git diff --check`, focused config tests, and `npm run release:check` after the non-mining E2E onboarding fixture update. The release check included TypeScript, 106 Jest suites / 1,729 tests, and the backend functions TypeScript build.
+- Local release verification on 2026-05-30 passed focused RevenueCat/config tests and `npm run release:check` after the RevenueCat env mirror guard update. The release check included TypeScript, 106 Jest suites / 1,731 tests, 4 snapshots, and the backend functions TypeScript build.
 - Prior completed pushed GitHub Actions baseline for the Android release E2E readiness change: CI run `26659012373` passed for commit `92a52ab`.
 - iOS release simulator build command `npm run test:e2e:build:ios`: previously passed on 2026-05-29T15:22:59Z with built plist values `CFBundleDisplayName = Ryvro`, `CFBundleName = Ryvro`, and `CFBundleIdentifier = com.ryvro.shiftplanner`.
 - `xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -showBuildSettings | rg "PRODUCT_NAME|FULL_PRODUCT_NAME|PRODUCT_BUNDLE_IDENTIFIER|WRAPPER_NAME|TARGET_NAME|INFOPLIST_FILE"`: passed on 2026-05-30 and reported `FULL_PRODUCT_NAME = Ryvro.app`, `WRAPPER_NAME = Ryvro.app`, `PRODUCT_NAME = Ryvro`, and `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner`.

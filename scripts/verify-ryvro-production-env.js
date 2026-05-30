@@ -60,6 +60,15 @@ function requireValue(errors, env, key, predicate, message) {
   }
 }
 
+function requireMatchingValue(errors, env, key, expectedKey, message) {
+  const value = env[key]?.trim();
+  const expected = env[expectedKey]?.trim();
+
+  if (!value || isPlaceholder(value) || value !== expected) {
+    errors.push(`${key}: ${message}`);
+  }
+}
+
 function isHttpsUrl(value) {
   try {
     return new URL(value).protocol === 'https:';
@@ -117,12 +126,26 @@ function main() {
     (value) => /^appl_[A-Za-z0-9]+/.test(value) && !value.startsWith('appl_test'),
     'must be a real Ryvro iOS RevenueCat SDK key, not a test_ or placeholder key'
   );
+  requireMatchingValue(
+    errors,
+    env,
+    'EXPO_PUBLIC_REVENUECAT_IOS_KEY',
+    'REVENUECAT_IOS_KEY',
+    'must match REVENUECAT_IOS_KEY so the Expo runtime receives the same Ryvro iOS SDK key'
+  );
   requireValue(
     errors,
     env,
     'REVENUECAT_ANDROID_KEY',
     (value) => /^goog_[A-Za-z0-9]+/.test(value) && !value.startsWith('goog_test'),
     'must be a real Ryvro Android RevenueCat SDK key, not a test_ or placeholder key'
+  );
+  requireMatchingValue(
+    errors,
+    env,
+    'EXPO_PUBLIC_REVENUECAT_ANDROID_KEY',
+    'REVENUECAT_ANDROID_KEY',
+    'must match REVENUECAT_ANDROID_KEY so the Expo runtime receives the same Ryvro Android SDK key'
   );
   requireValue(errors, env, 'REVENUECAT_ENTITLEMENT_ID', (value) => value === 'pro', 'must be pro');
   requireValue(
