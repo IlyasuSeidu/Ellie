@@ -267,14 +267,14 @@ describe('Ryvro environment template', () => {
     );
     const clearanceEvidence = `${externalSetup}\n${audit}`;
 
-    expect(clearanceEvidence).toContain('2026-05-29 at 22:09:36Z');
-    expect(clearanceEvidence).toContain('2026-05-29T22:09:36.826Z');
+    expect(clearanceEvidence).toContain('2026-05-30 at 04:26:28Z');
+    expect(clearanceEvidence).toContain('2026-05-30T04:26:28.800Z');
     expect(clearanceEvidence).toContain('no exact `Ryvro` or `Ryvro Shift Planner` app result');
+    expect(clearanceEvidence).toContain('Visible fuzzy names included `Rydoo` and `Rydora`');
     expect(clearanceEvidence).toContain(
-      'Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`'
+      'A Chrome browser automation retry on 2026-05-30 could not connect'
     );
-    expect(clearanceEvidence).toContain('Chrome logged-in Google Play search on 2026-05-29');
-    expect(clearanceEvidence).toContain('visible results included `Rolify`, `Rydoo`, and `Rydora`');
+    expect(clearanceEvidence).toContain('no fresh logged-in Google Play evidence');
     expect(clearanceEvidence).toContain('LinkedIn `company/ryvro`: public URL returned `404`');
     expect(clearanceEvidence).toContain('Formal trademark/legal clearance');
     expect(clearanceEvidence).toContain('App Store Connect and Google Play Console name checks');
@@ -286,6 +286,8 @@ describe('Ryvro environment template', () => {
     expect(clearanceEvidence).not.toContain('2026-05-29T19:51:39.887Z');
     expect(clearanceEvidence).not.toContain('2026-05-29 at 21:22:25Z');
     expect(clearanceEvidence).not.toContain('2026-05-29T21:22:25.775Z');
+    expect(clearanceEvidence).not.toContain('2026-05-29 at 22:09:36Z');
+    expect(clearanceEvidence).not.toContain('2026-05-29T22:09:36.826Z');
     expect(clearanceEvidence).not.toContain(
       'LinkedIn `company/ryvro`: public URL returned bot-protection status `999`'
     );

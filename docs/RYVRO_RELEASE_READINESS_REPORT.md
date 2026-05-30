@@ -1,8 +1,8 @@
 # Ryvro Release Readiness Report
 
-Date: 2026-05-29
+Date: 2026-05-30
 Branch: `codex/ryvro-rebrand-rollout`
-Current rollback point before this report: commit `9570a6e` (`Remove retired helmet motif from Ryvro public content`)
+Current rollback point before this report: commit `ba1a77c` (`Localize schedule exception controls`)
 
 This report is the current handoff for the Ryvro rebrand. It separates repo-proven work from account-only or device-only work that still needs the owner, console access, counsel, or physical hardware.
 
@@ -20,11 +20,11 @@ Completed and guarded in the current branch:
 
 ## Current Public Clearance Evidence
 
-`npm run release:clearance` was run on 2026-05-29 at `2026-05-29T21:22:25.775Z`.
+`npm run release:clearance` was run on 2026-05-30 at `2026-05-30T04:26:28.800Z`.
 
 - Apple public software search returned 5 fuzzy results and no exact `Ryvro` or `Ryvro Shift Planner` app result.
 - Google Play public search returned no exact `Ryvro` or `Ryvro Shift Planner` result text; visible fuzzy names were `Rydoo` and `Rydora`.
-- Chrome logged-in Google Play search on 2026-05-29 showed fuzzy visible results including `Rolify`, `Rydoo`, and `Rydora`, with no exact `Ryvro` or `Ryvro Shift Planner` result visible. This still does not prove Play Console title/package availability.
+- Chrome browser automation was attempted on 2026-05-30, but the browser extension connection was unavailable despite Chrome, extension, and native host setup checks passing. This means the current report has no fresh logged-in Google Play evidence; Play Console title/package availability still requires account-owner verification.
 - USPTO Trademark Search was reachable, but this is not legal trademark clearance.
 - `getryvro.com`, `useryvro.com`, `tryryvro.com`, and `getryvroapp.com` had no public DNS records and Verisign `.com` returned no match.
 - `ryvro.com` is already registered through GoDaddy/Afternic and should not be treated as available unless purchased from the current registrant.

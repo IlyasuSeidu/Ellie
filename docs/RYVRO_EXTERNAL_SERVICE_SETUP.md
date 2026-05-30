@@ -1,6 +1,6 @@
 # Ryvro External Service Setup
 
-Last updated: 2026-05-29
+Last updated: 2026-05-30
 
 This is the account-side setup checklist for services that cannot be fully changed from the repo. It translates the repo identity into exact console values.
 
@@ -252,10 +252,10 @@ npm run release:clearance
 
 This command checks public Apple software search results, public Google Play search text, DNS, Verisign WHOIS for `.com` candidates, social URL HTTP statuses, and USPTO Trademark Search reachability. It does not buy domains, reserve handles, prove App Store Connect or Play Console availability, or replace legal trademark clearance. Treat it as a repeatable preflight check before the account-owner completes the logged-in steps.
 
-Latest public preflight evidence captured on 2026-05-29 at 22:09:36Z:
+Latest public preflight evidence captured on 2026-05-30 at 04:26:28Z:
 
 - Apple public software search: no exact `Ryvro` or `Ryvro Shift Planner` app result returned across 5 fuzzy results.
-- Google Play public search: no exact `Ryvro` or `Ryvro Shift Planner` result text found. Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`.
+- Google Play public search: no exact `Ryvro` or `Ryvro Shift Planner` result text found. Visible fuzzy names included `Rydoo` and `Rydora`.
 - USPTO public search app: reachable only. This is not legal clearance.
 - `getryvro.com`: no public DNS record and Verisign `.com` returned no match.
 - `useryvro.com`: no public DNS record and Verisign `.com` returned no match.

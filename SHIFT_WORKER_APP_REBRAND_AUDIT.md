@@ -103,7 +103,7 @@ Required account-only checks:
 - Social platforms: reserve `@ryvro` or a consistent fallback such as `@getryvro`.
 - Trademark counsel/search: run formal clearance in launch markets before public launch.
 
-## External Clearance Evidence: 2026-05-29
+## External Clearance Evidence: 2026-05-30
 
 Latest repeatable public preflight command:
 
@@ -111,11 +111,11 @@ Latest repeatable public preflight command:
 npm run release:clearance
 ```
 
-Result captured at `2026-05-29T22:09:36.826Z`:
+Result captured at `2026-05-30T04:26:28.800Z`:
 
 - Apple public software search: no exact `Ryvro` or `Ryvro Shift Planner` app result returned across 5 fuzzy results. Public search still does not prove App Store Connect name availability.
-- Google Play public search: no exact `Ryvro` or `Ryvro Shift Planner` result text found. Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`. Public search still does not prove Play Console title/package availability.
-- Chrome logged-in Google Play search on 2026-05-29: visible results included `Rolify`, `Rydoo`, and `Rydora`, but no exact `Ryvro` or `Ryvro Shift Planner` result. This still does not prove Play Console title/package availability.
+- Google Play public search: no exact `Ryvro` or `Ryvro Shift Planner` result text found. Visible fuzzy names included `Rydoo` and `Rydora`. Public search still does not prove Play Console title/package availability.
+- A Chrome browser automation retry on 2026-05-30 could not connect to the Codex Chrome Extension even though Chrome, the extension, and the native host were present. Do not treat this as logged-in Google Play evidence; there is no fresh logged-in Google Play evidence in this report, so complete Play Console title/package checks directly in the account.
 - USPTO public search app: reachable only through the automated preflight. This is not legal clearance.
 - `getryvro.com`: no public DNS record and Verisign `.com` returned no match.
 - `useryvro.com`, `tryryvro.com`, and `getryvroapp.com`: no public DNS record and Verisign `.com` returned no match.
