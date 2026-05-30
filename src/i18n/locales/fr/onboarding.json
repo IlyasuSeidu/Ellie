@@ -349,12 +349,12 @@
       "startDate": "Date de début",
       "title": "Votre profil",
       "workPattern": "Modèle de travail",
-      "allDay": "All day",
-      "notTimed": "Not timed",
-      "rosterTypeUniversal": "Universal schedule",
-      "universalShiftSystem": "Universal custom shifts",
-      "scheduleEngine": "Schedule engine",
-      "scheduleType": "Schedule type"
+      "allDay": "Toute la journee",
+      "notTimed": "Sans horaire",
+      "rosterTypeUniversal": "Planning universel",
+      "universalShiftSystem": "Postes personnalises universels",
+      "scheduleEngine": "Moteur de planning",
+      "scheduleType": "Type de planning"
     },
     "title": "Tout est prêt.",
     "tryAgain": "Essayer à nouveau",
@@ -398,7 +398,7 @@
       "decline": "Pas maintenant"
     },
     "title_named": "{{name}}, tout est prêt.",
-    "setupReady": "Votre roulement {{setup}} est prêt.",
+    "setupReady": "Votre planning {{setup}} est pret.",
     "reminderPromise": "Ryvro vous rappellera chaque shift avant qu’il commence."
   },
   "phaseSelector": {
@@ -566,7 +566,7 @@
           "afternoon": "Après-midi",
           "off": "Repos"
         },
-        "title": "{{shiftType}} {{dayNumber}}",
+        "title": "{{shiftType}} jour {{dayNumber}}",
         "description": "Poste {{shiftType}} {{dayNumber}} de votre séquence personnalisée"
       }
     },
@@ -644,7 +644,7 @@
     "preview": {
       "notSelected": "Non sélectionné",
       "startingLabel": "Départ:",
-      "phaseLabel": "Phase:",
+      "phaseLabel": "Phase :",
       "confirmation": "Votre premier cycle commence ici"
     }
   },
@@ -767,8 +767,8 @@
       "label": "À quelle heure pointez-vous habituellement?",
       "helper": "Utilisez le format 12 heures (par exemple, 6h00)",
       "period": {
-        "am": "AM",
-        "pm": "PM"
+        "am": "matin",
+        "pm": "soir"
       }
     },
     "validation": {
@@ -1273,7 +1273,7 @@
       "name": "Nom",
       "namePlaceholder": "ex. Équipe de jour",
       "kind": {
-        "label": "Type",
+        "label": "Catégorie",
         "work": "Travail",
         "off": "Repos",
         "travel": "Voyage",

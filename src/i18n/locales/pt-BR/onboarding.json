@@ -250,12 +250,12 @@
       "startDate": "Data de início",
       "title": "Seu perfil",
       "workPattern": "Padrão de Trabalho",
-      "allDay": "All day",
-      "notTimed": "Not timed",
-      "rosterTypeUniversal": "Universal schedule",
-      "universalShiftSystem": "Universal custom shifts",
-      "scheduleEngine": "Schedule engine",
-      "scheduleType": "Schedule type"
+      "allDay": "Dia inteiro",
+      "notTimed": "Sem horario",
+      "rosterTypeUniversal": "Escala universal",
+      "universalShiftSystem": "Turnos personalizados universais",
+      "scheduleEngine": "Motor de escala",
+      "scheduleType": "Tipo de escala"
     },
     "title": "Tudo pronto.",
     "tryAgain": "Tente novamente",
@@ -299,7 +299,7 @@
       "decline": "Agora não"
     },
     "title_named": "{{name}}, tudo pronto.",
-    "setupReady": "Your {{setup}} schedule is ready.",
+    "setupReady": "Sua escala {{setup}} esta pronta.",
     "reminderPromise": "Ryvro vai te lembrar antes de cada turno."
   },
   "rosterType": {
@@ -542,7 +542,7 @@
           "afternoon": "Tarde",
           "off": "Folga"
         },
-        "title": "{{shiftType}} {{dayNumber}}",
+        "title": "{{shiftType}} dia {{dayNumber}}",
         "description": "Turno {{shiftType}} {{dayNumber}} da sua sequência personalizada"
       }
     },
@@ -743,8 +743,8 @@
       "label": "Que horas você costuma bater o ponto?",
       "helper": "Use formato de 12 horas (ex.: 6:00 AM)",
       "period": {
-        "am": "AM",
-        "pm": "PM"
+        "am": "a.m.",
+        "pm": "p.m."
       }
     },
     "validation": {

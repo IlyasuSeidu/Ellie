@@ -323,12 +323,12 @@
       "startDate": "تاريخ البدء",
       "title": "ملفك الشخصي",
       "workPattern": "نمط العمل",
-      "allDay": "All day",
-      "notTimed": "Not timed",
-      "rosterTypeUniversal": "Universal schedule",
-      "universalShiftSystem": "Universal custom shifts",
-      "scheduleEngine": "Schedule engine",
-      "scheduleType": "Schedule type"
+      "allDay": "طوال اليوم",
+      "notTimed": "بلا وقت محدد",
+      "rosterTypeUniversal": "جدول عام",
+      "universalShiftSystem": "ورديات مخصصة عامة",
+      "scheduleEngine": "محرك الجدولة",
+      "scheduleType": "نوع الجدول"
     },
     "title": "أنت جاهز.",
     "tryAgain": "حاول ثانية",
@@ -540,7 +540,7 @@
           "afternoon": "مساء",
           "off": "راحة"
         },
-        "title": "{{shiftType}} {{dayNumber}}",
+        "title": "{{shiftType}} اليوم {{dayNumber}}",
         "description": "وردية {{shiftType}} رقم {{dayNumber}} من تسلسلك المخصص"
       }
     },
@@ -618,7 +618,7 @@
     "preview": {
       "notSelected": "لم يتم التحديد",
       "startingLabel": "البدء:",
-      "phaseLabel": "مرحلة:",
+      "phaseLabel": "المرحلة:",
       "confirmation": "تبدأ دورتك الأولى هنا"
     }
   },

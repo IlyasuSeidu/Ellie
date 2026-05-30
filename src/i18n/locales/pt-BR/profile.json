@@ -273,10 +273,10 @@
       "timing": "HORARIOS",
       "doNotDisturb": "NAO PERTURBE",
       "adaptive": "ADAPTATIVOS",
-      "travel": "Travel blocks"
+      "travel": "Blocos de viagem"
     },
     "units": {
-      "hoursShort": "{{value}} h",
+      "hoursShort": "{{value}} h.",
       "minutesShort": "{{value}} min",
       "none": "Nenhum"
     },

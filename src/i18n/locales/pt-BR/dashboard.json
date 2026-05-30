@@ -269,21 +269,21 @@
       },
       "travel": {
         "outToday": {
-          "title": "Travel-out day",
+          "title": "Dia de viagem de saida",
           "body": "Hoje você volta para casa. Conclua a passagem, arrume seu equipamento e viaje com segurança."
         },
         "tomorrow": {
           "title": "Dia de viagem amanhã",
-          "body": "You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
+          "body": "Voce viaja amanha para seu {{shiftType}}. Arrume seus equipamentos e confira seus documentos hoje a noite."
         }
       }
     }
   },
   "countdown": {
     "leftIn": "Faltam {{time}} no {{shiftName}}",
-    "leftInShift": "{{time}} left in this shift",
+    "leftInShift": "Restam {{time}} neste turno",
     "untilStarts": "{{time}} até {{shiftName}} começar",
-    "untilShift": "{{time}} until this shift starts",
+    "untilShift": "Faltam {{time}} para este turno comecar",
     "until": "{{time}} até {{shiftName}}",
     "tomorrow": "{{shiftName}} amanhã",
     "daysUntil": "{{days}} dias até {{shiftName}}",
@@ -306,7 +306,7 @@
     "energyPrompt": "Como estava sua energia neste turno?",
     "energy": {
       "high": "Alta",
-      "medium": "Média",
+      "medium": "Media",
       "low": "Baixa"
     },
     "notesLabel": "Notas (opcional)",
@@ -321,7 +321,7 @@
   "onboardingChecklist": {
     "title": "Aproveite ao máximo o Ryvro",
     "items": {
-      "schedule": "Set up your schedule",
+      "schedule": "Configure sua escala",
       "shiftTimes": "Adicione seus horários de turno",
       "profile": "Complete seu perfil",
       "askRyvro": "Faça uma pergunta para a Ryvro"

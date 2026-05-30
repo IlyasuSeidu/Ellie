@@ -345,12 +345,12 @@
       "startDate": "Usuku okuqalwa ngalo",
       "title": "Iphrofayela yakho",
       "workPattern": "Iphethini Yomsebenzi",
-      "allDay": "All day",
-      "notTimed": "Not timed",
-      "rosterTypeUniversal": "Universal schedule",
-      "universalShiftSystem": "Universal custom shifts",
-      "scheduleEngine": "Schedule engine",
-      "scheduleType": "Schedule type"
+      "allDay": "Usuku lonke",
+      "notTimed": "Akukho sikhathi",
+      "rosterTypeUniversal": "Ishejuli ejwayelekile",
+      "universalShiftSystem": "Amashifu angokwezifiso ajwayelekile",
+      "scheduleEngine": "Injini yeshejuli",
+      "scheduleType": "Uhlobo lweshejuli"
     },
     "title": "Konke sekumi ngomumo.",
     "tryAgain": "Zama futhi",
@@ -394,7 +394,7 @@
       "decline": "Hhayi manje"
     },
     "title_named": "{{name}}, konke sekumi ngomumo.",
-    "setupReady": "Irosta yakho ye-{{setup}} isilungile.",
+    "setupReady": "Ishejuli yakho ye-{{setup}} isilungile.",
     "reminderPromise": "Ryvro izokukhumbuza ngaphambi kweshifu ngayinye."
   },
   "phaseSelector": {
@@ -562,7 +562,7 @@
           "afternoon": "Ntambama",
           "off": "Vala"
         },
-        "title": "{{shiftType}} {{dayNumber}}",
+        "title": "{{shiftType}} usuku {{dayNumber}}",
         "description": "Ishifthi {{shiftType}} {{dayNumber}} yokulandelana kwakho okwenziwe ngokwezifiso"
       }
     },
@@ -763,8 +763,8 @@
       "label": "Uvamise ukungena ngasiphi isikhathi?",
       "helper": "Sebenzisa ifomethi yamahora angu-12 (isb., 6:00 AM)",
       "period": {
-        "am": "AM",
-        "pm": "PM"
+        "am": "ekuseni",
+        "pm": "ntambama"
       }
     },
     "validation": {

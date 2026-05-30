@@ -269,21 +269,21 @@
       },
       "travel": {
         "outToday": {
-          "title": "Travel-out day",
+          "title": "出行日",
           "body": "今天你将返家。完成交接、收拾装备，并注意安全出行。"
         },
         "tomorrow": {
           "title": "明天是出发日",
-          "body": "You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
+          "body": "你明天要前往 {{shiftType}}。今晚请收拾装备并检查证件。"
         }
       }
     }
   },
   "countdown": {
     "leftIn": "{{shiftName}}还剩{{time}}",
-    "leftInShift": "{{time}} left in this shift",
+    "leftInShift": "此班次还剩 {{time}}",
     "untilStarts": "{{time}}后{{shiftName}}开始",
-    "untilShift": "{{time}} until this shift starts",
+    "untilShift": "此班次还有 {{time}} 开始",
     "until": "{{time}}后到{{shiftName}}",
     "tomorrow": "明天{{shiftName}}",
     "daysUntil": "{{days}}天后到{{shiftName}}",
@@ -306,7 +306,7 @@
     "energyPrompt": "这次班次你的精力如何？",
     "energy": {
       "high": "高",
-      "medium": "中",
+      "medium": "中等",
       "low": "低"
     },
     "notesLabel": "备注（可选）",
@@ -321,7 +321,7 @@
   "onboardingChecklist": {
     "title": "充分发挥 Ryvro 的作用",
     "items": {
-      "schedule": "Set up your schedule",
+      "schedule": "设置你的排班",
       "shiftTimes": "添加你的班次时间",
       "profile": "完善你的个人资料",
       "askRyvro": "向 Ryvro 提一个问题"

@@ -269,21 +269,21 @@
       },
       "travel": {
         "outToday": {
-          "title": "Travel-out day",
+          "title": "Dia de viaje de salida",
           "body": "Hoy vuelves a casa. Completa el relevo, prepara tu equipo y viaja con cuidado."
         },
         "tomorrow": {
           "title": "Mañana es día de viaje",
-          "body": "You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
+          "body": "Viajas manana para tu {{shiftType}}. Prepara tu equipo y revisa tus documentos esta noche."
         }
       }
     }
   },
   "countdown": {
     "leftIn": "Quedan {{time}} de {{shiftName}}",
-    "leftInShift": "{{time}} left in this shift",
+    "leftInShift": "Quedan {{time}} en este turno",
     "untilStarts": "{{time}} hasta que empiece {{shiftName}}",
-    "untilShift": "{{time}} until this shift starts",
+    "untilShift": "Faltan {{time}} para que empiece este turno",
     "until": "{{time}} hasta {{shiftName}}",
     "tomorrow": "{{shiftName}} mañana",
     "daysUntil": "{{days}} días hasta {{shiftName}}",
@@ -321,7 +321,7 @@
   "onboardingChecklist": {
     "title": "Aprovecha al máximo Ryvro",
     "items": {
-      "schedule": "Set up your schedule",
+      "schedule": "Configura tu horario",
       "shiftTimes": "Añade tus horarios de turno",
       "profile": "Completa tu perfil",
       "askRyvro": "Hazle una pregunta a Ryvro"

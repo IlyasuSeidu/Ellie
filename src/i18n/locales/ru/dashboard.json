@@ -269,21 +269,21 @@
       },
       "travel": {
         "outToday": {
-          "title": "Travel-out day",
+          "title": "День выезда",
           "body": "Сегодня вы отправляетесь домой. Завершите передачу смены, соберите снаряжение и добирайтесь безопасно."
         },
         "tomorrow": {
           "title": "Завтра день вылета",
-          "body": "You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
+          "body": "Завтра вы едете на {{shiftType}}. Соберите вещи и проверьте документы сегодня вечером."
         }
       }
     }
   },
   "countdown": {
     "leftIn": "Осталось {{time}} в {{shiftName}}",
-    "leftInShift": "{{time}} left in this shift",
+    "leftInShift": "В этой смене осталось {{time}}",
     "untilStarts": "{{time}} до начала {{shiftName}}",
-    "untilShift": "{{time}} until this shift starts",
+    "untilShift": "До начала этой смены {{time}}",
     "until": "{{time}} до {{shiftName}}",
     "tomorrow": "{{shiftName}} завтра",
     "daysUntil": "{{days}} дн. до {{shiftName}}",
@@ -306,7 +306,7 @@
     "energyPrompt": "Какой у вас был уровень энергии на этой смене?",
     "energy": {
       "high": "Высокий",
-      "medium": "Средний",
+      "medium": "Средняя",
       "low": "Низкий"
     },
     "notesLabel": "Заметки (необязательно)",
@@ -321,7 +321,7 @@
   "onboardingChecklist": {
     "title": "Получите максимум от Ryvro",
     "items": {
-      "schedule": "Set up your schedule",
+      "schedule": "Настройте график",
       "shiftTimes": "Добавьте время своих смен",
       "profile": "Заполните профиль",
       "askRyvro": "Задайте вопрос Ryvro"

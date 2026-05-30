@@ -54,6 +54,22 @@ describe('Ryvro environment template', () => {
     return fs.existsSync(absolutePath) ? fs.readFileSync(absolutePath, 'utf8') : null;
   };
 
+  const readLocale = (locale: string, file: string): Record<string, unknown> =>
+    JSON.parse(
+      fs.readFileSync(path.join(process.cwd(), 'src/i18n/locales', locale, file), 'utf8')
+    ) as Record<string, unknown>;
+
+  const getNestedString = (source: Record<string, unknown>, key: string): string | undefined => {
+    const value = key.split('.').reduce<unknown>((current, part) => {
+      if (!current || typeof current !== 'object' || Array.isArray(current)) {
+        return undefined;
+      }
+      return (current as Record<string, unknown>)[part];
+    }, source);
+
+    return typeof value === 'string' ? value : undefined;
+  };
+
   it('uses Ryvro defaults for public launch configuration', () => {
     expect(envExample).toContain('API_BASE_URL=https://api.getryvro.com');
     expect(envExample).toContain(
@@ -659,6 +675,54 @@ describe('Ryvro environment template', () => {
     }
   });
 
+  it('localizes launch-visible fallback copy outside the schedule builder locales', () => {
+    const localeRoot = path.join(process.cwd(), 'src/i18n/locales');
+    const guardedKeys: Record<string, string[]> = {
+      'onboarding.json': [
+        'completion.summary.allDay',
+        'completion.summary.notTimed',
+        'completion.summary.rosterTypeUniversal',
+        'completion.summary.universalShiftSystem',
+        'completion.summary.scheduleEngine',
+        'completion.summary.scheduleType',
+        'completion.setupReady',
+        'fifoPhaseSelector.days.custom.title',
+        'startDate.preview.phaseLabel',
+        'shiftBuilder.inspector.kind.label',
+        'shiftBuilder.validation.errorTitle_one',
+      ],
+      'dashboard.json': [
+        'notifications.smartReminders.travel.outToday.title',
+        'notifications.smartReminders.travel.tomorrow.body',
+        'countdown.leftInShift',
+        'countdown.untilShift',
+        'shiftCheckIn.energy.medium',
+        'onboardingChecklist.items.schedule',
+      ],
+      'profile.json': ['smartReminders.sections.travel', 'smartReminders.units.hoursShort'],
+    };
+    const englishLocales = Object.fromEntries(
+      Object.keys(guardedKeys).map((file) => [file, readLocale('en', file)])
+    );
+
+    for (const locale of fs.readdirSync(localeRoot)) {
+      if (locale === 'en') continue;
+
+      for (const [file, keys] of Object.entries(guardedKeys)) {
+        const localeFile = path.join(localeRoot, locale, file);
+        if (!fs.existsSync(localeFile)) continue;
+
+        const translated = readLocale(locale, file);
+        const english = englishLocales[file];
+
+        for (const key of keys) {
+          expect(getNestedString(translated, key)?.trim()).toBeTruthy();
+          expect(getNestedString(translated, key)).not.toBe(getNestedString(english, key));
+        }
+      }
+    }
+  });
+
   it('keeps build-in-public content prompts aligned with broader shift-worker positioning', () => {
     const anthropicProvider = fs.readFileSync(
       path.join(process.cwd(), 'scripts/lib/content-providers/anthropic.js'),
@@ -974,5 +1038,50 @@ describe('Ryvro environment template', () => {
     ].join('\n');
 
     expect(guardedCopy).not.toMatch(/mine site|haul truck|underground|Location \/ Site|site name/i);
+  });
+
+  it('localizes remaining high-risk reminder, dashboard, and onboarding launch labels', () => {
+    const guardedLocaleKeys: Record<string, string[]> = {
+      'common.json': ['subscription.paywall.plans.weeklySuffix'],
+      'profile.json': ['smartReminders.sections.travel', 'smartReminders.units.hoursShort'],
+      'dashboard.json': [
+        'notifications.smartReminders.travel.outToday.title',
+        'notifications.smartReminders.travel.tomorrow.body',
+        'countdown.leftInShift',
+        'countdown.untilShift',
+        'shiftCheckIn.energy.medium',
+        'onboardingChecklist.items.schedule',
+      ],
+      'onboarding.json': [
+        'completion.summary.universalShiftSystem',
+        'shiftBuilder.validation.errorTitle_one',
+        'shiftTime.customInput.period.am',
+        'shiftTime.customInput.period.pm',
+        'shiftBuilder.inspector.kind.label',
+      ],
+    };
+
+    const localeRoot = path.join(process.cwd(), 'src/i18n/locales');
+    const locales = fs.readdirSync(localeRoot).filter((locale) => locale !== 'en');
+
+    for (const [file, keys] of Object.entries(guardedLocaleKeys)) {
+      const englishLocale = readLocale('en', file);
+
+      for (const locale of locales) {
+        const localePath = path.join(localeRoot, locale, file);
+        if (!fs.existsSync(localePath)) continue;
+
+        const translatedLocale = readLocale(locale, file);
+
+        for (const key of keys) {
+          const englishValue = getNestedString(englishLocale, key);
+          const translatedValue = getNestedString(translatedLocale, key);
+
+          if (!translatedValue) continue;
+
+          expect(translatedValue).not.toBe(englishValue);
+        }
+      }
+    }
   });
 });

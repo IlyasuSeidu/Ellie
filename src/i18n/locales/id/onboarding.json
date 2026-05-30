@@ -340,12 +340,12 @@
       "startDate": "Tanggal Mulai",
       "title": "Profil Anda",
       "workPattern": "Pola Kerja",
-      "allDay": "All day",
-      "notTimed": "Not timed",
-      "rosterTypeUniversal": "Universal schedule",
-      "universalShiftSystem": "Universal custom shifts",
-      "scheduleEngine": "Schedule engine",
-      "scheduleType": "Schedule type"
+      "allDay": "Sepanjang hari",
+      "notTimed": "Tanpa waktu",
+      "rosterTypeUniversal": "Jadwal universal",
+      "universalShiftSystem": "Shift kustom universal",
+      "scheduleEngine": "Mesin jadwal",
+      "scheduleType": "Jenis jadwal"
     },
     "title": "Semua sudah siap.",
     "tryAgain": "Coba Lagi",
@@ -389,7 +389,7 @@
       "decline": "Nanti saja"
     },
     "title_named": "{{name}}, semua sudah siap.",
-    "setupReady": "Roster {{setup}} Anda sudah siap.",
+    "setupReady": "Jadwal {{setup}} Anda sudah siap.",
     "reminderPromise": "Ryvro akan mengingatkan Anda sebelum setiap shift."
   },
   "phaseSelector": {
@@ -557,7 +557,7 @@
           "afternoon": "Sore",
           "off": "Libur"
         },
-        "title": "{{shiftType}} {{dayNumber}}",
+        "title": "{{shiftType}} hari {{dayNumber}}",
         "description": "Shift {{shiftType}} {{dayNumber}} dari urutan khusus Anda"
       }
     },
@@ -758,8 +758,8 @@
       "label": "Jam berapa biasanya Anda masuk?",
       "helper": "Gunakan format 12 jam (misalnya, 06.00)",
       "period": {
-        "am": "AM",
-        "pm": "PM"
+        "am": "pagi",
+        "pm": "malam"
       }
     },
     "validation": {
@@ -1264,7 +1264,7 @@
       "name": "Nama",
       "namePlaceholder": "mis. Shift siang",
       "kind": {
-        "label": "Tipe",
+        "label": "Jenis",
         "work": "Kerja",
         "off": "Libur",
         "travel": "Perjalanan",

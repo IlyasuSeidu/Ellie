@@ -269,21 +269,21 @@
       },
       "travel": {
         "outToday": {
-          "title": "Travel-out day",
+          "title": "Hari berangkat",
           "body": "Hari ini Anda pulang. Selesaikan serah terima, kemasi perlengkapan, dan bepergian dengan aman."
         },
         "tomorrow": {
           "title": "Besok hari perjalanan",
-          "body": "You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
+          "body": "Anda berangkat besok untuk {{shiftType}}. Siapkan perlengkapan dan cek dokumen Anda malam ini."
         }
       }
     }
   },
   "countdown": {
     "leftIn": "{{time}} tersisa di {{shiftName}}",
-    "leftInShift": "{{time}} left in this shift",
+    "leftInShift": "{{time}} tersisa di shift ini",
     "untilStarts": "{{time}} hingga {{shiftName}} dimulai",
-    "untilShift": "{{time}} until this shift starts",
+    "untilShift": "{{time}} sampai shift ini dimulai",
     "until": "{{time}} hingga {{shiftName}}",
     "tomorrow": "{{shiftName}} besok",
     "daysUntil": "{{days}} hari hingga {{shiftName}}",
@@ -321,7 +321,7 @@
   "onboardingChecklist": {
     "title": "Dapatkan manfaat maksimal dari Ryvro",
     "items": {
-      "schedule": "Set up your schedule",
+      "schedule": "Atur jadwal Anda",
       "shiftTimes": "Tambahkan jam shift Anda",
       "profile": "Lengkapi profil Anda",
       "askRyvro": "Ajukan pertanyaan ke Ryvro"

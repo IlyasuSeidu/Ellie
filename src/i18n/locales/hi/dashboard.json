@@ -269,21 +269,21 @@
       },
       "travel": {
         "outToday": {
-          "title": "Travel-out day",
+          "title": "यात्रा का दिन",
           "body": "आज आप घर जा रहे हैं। हैंडओवर पूरा करें, अपना सामान तैयार करें और सुरक्षित यात्रा करें।"
         },
         "tomorrow": {
           "title": "कल यात्रा का दिन है",
-          "body": "You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
+          "body": "आप कल अपनी {{shiftType}} के लिए यात्रा करेंगे। आज रात अपना सामान पैक करें और दस्तावेज जांचें।"
         }
       }
     }
   },
   "countdown": {
     "leftIn": "{{shiftName}} में {{time}} बाकी",
-    "leftInShift": "{{time}} left in this shift",
+    "leftInShift": "इस शिफ्ट में {{time}} बाकी",
     "untilStarts": "{{shiftName}} शुरू होने में {{time}}",
-    "untilShift": "{{time}} until this shift starts",
+    "untilShift": "इस शिफ्ट के शुरू होने में {{time}}",
     "until": "{{shiftName}} तक {{time}}",
     "tomorrow": "{{shiftName}} कल",
     "daysUntil": "{{shiftName}} तक {{days}} दिन",
@@ -321,7 +321,7 @@
   "onboardingChecklist": {
     "title": "Ryvro का पूरा लाभ उठाएँ",
     "items": {
-      "schedule": "Set up your schedule",
+      "schedule": "अपना शेड्यूल सेट करें",
       "shiftTimes": "अपनी शिफ्ट के समय जोड़ें",
       "profile": "अपनी प्रोफ़ाइल पूरी करें",
       "askRyvro": "Ryvro से एक प्रश्न पूछें"

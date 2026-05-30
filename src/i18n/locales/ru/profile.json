@@ -273,7 +273,7 @@
       "timing": "ВРЕМЯ",
       "doNotDisturb": "НЕ БЕСПОКОИТЬ",
       "adaptive": "АДАПТИВНЫЕ",
-      "travel": "Travel blocks"
+      "travel": "Блоки поездок"
     },
     "units": {
       "hoursShort": "{{value}} ч",

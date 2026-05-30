@@ -273,10 +273,10 @@
       "timing": "WAKTU",
       "doNotDisturb": "JANGAN GANGGU",
       "adaptive": "ADAPTIF",
-      "travel": "Travel blocks"
+      "travel": "Blok perjalanan"
     },
     "units": {
-      "hoursShort": "{{value}} j",
+      "hoursShort": "{{value}} jam",
       "minutesShort": "{{value}} mnt",
       "none": "Tidak ada"
     },

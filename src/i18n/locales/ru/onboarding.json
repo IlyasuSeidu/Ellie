@@ -335,12 +335,12 @@
       "startDate": "Дата начала",
       "title": "Ваш профиль",
       "workPattern": "Схема работы",
-      "allDay": "All day",
-      "notTimed": "Not timed",
-      "rosterTypeUniversal": "Universal schedule",
-      "universalShiftSystem": "Universal custom shifts",
-      "scheduleEngine": "Schedule engine",
-      "scheduleType": "Schedule type"
+      "allDay": "Весь день",
+      "notTimed": "Без времени",
+      "rosterTypeUniversal": "Универсальный график",
+      "universalShiftSystem": "Универсальные пользовательские смены",
+      "scheduleEngine": "Механизм расписания",
+      "scheduleType": "Тип графика"
     },
     "title": "Всё готово.",
     "tryAgain": "Попробуйте еще раз",
@@ -552,7 +552,7 @@
           "afternoon": "День",
           "off": "Выходной"
         },
-        "title": "{{shiftType}} {{dayNumber}}",
+        "title": "{{shiftType}} день {{dayNumber}}",
         "description": "Смена {{shiftType}} {{dayNumber}} в вашей пользовательской последовательности"
       }
     },

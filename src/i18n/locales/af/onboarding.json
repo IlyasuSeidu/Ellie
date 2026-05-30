@@ -326,12 +326,12 @@
       "startDate": "Begindatum",
       "title": "Jou profiel",
       "workPattern": "Werkpatroon",
-      "allDay": "All day",
-      "notTimed": "Not timed",
-      "rosterTypeUniversal": "Universal schedule",
-      "universalShiftSystem": "Universal custom shifts",
-      "scheduleEngine": "Schedule engine",
-      "scheduleType": "Schedule type"
+      "allDay": "Heeldag",
+      "notTimed": "Geen tyd",
+      "rosterTypeUniversal": "Universele skedule",
+      "universalShiftSystem": "Universele pasgemaakte skofte",
+      "scheduleEngine": "Skedule-enjin",
+      "scheduleType": "Skeduletipe"
     },
     "title": "Jy is reg.",
     "tryAgain": "Probeer weer",
@@ -375,7 +375,7 @@
       "decline": "Nie nou nie"
     },
     "title_named": "{{name}}, jy is reg.",
-    "setupReady": "Jou {{setup}}-rooster is gereed.",
+    "setupReady": "Jou {{setup}}-skedule is gereed.",
     "reminderPromise": "Ryvro sal jou voor elke skof herinner."
   },
   "phaseSelector": {
@@ -543,7 +543,7 @@
           "afternoon": "Middag",
           "off": "Af"
         },
-        "title": "{{shiftType}} {{dayNumber}}",
+        "title": "{{shiftType}} dag {{dayNumber}}",
         "description": "{{shiftType}} skof {{dayNumber}} van jou pasgemaakte volgorde"
       }
     },

@@ -321,12 +321,12 @@
       "startDate": "आरंभ करने की तिथि",
       "title": "आपकी प्रोफ़ाइल",
       "workPattern": "कार्य पैटर्न",
-      "allDay": "All day",
-      "notTimed": "Not timed",
-      "rosterTypeUniversal": "Universal schedule",
-      "universalShiftSystem": "Universal custom shifts",
-      "scheduleEngine": "Schedule engine",
-      "scheduleType": "Schedule type"
+      "allDay": "पूरा दिन",
+      "notTimed": "समय तय नहीं",
+      "rosterTypeUniversal": "यूनिवर्सल शेड्यूल",
+      "universalShiftSystem": "यूनिवर्सल कस्टम शिफ्ट",
+      "scheduleEngine": "शेड्यूल इंजन",
+      "scheduleType": "शेड्यूल प्रकार"
     },
     "title": "सब तैयार है।",
     "tryAgain": "पुनः प्रयास करें",
@@ -370,7 +370,7 @@
       "decline": "अभी नहीं"
     },
     "title_named": "{{name}}, सब तैयार है।",
-    "setupReady": "आपका {{setup}} रोस्टर तैयार है।",
+    "setupReady": "आपका {{setup}} शेड्यूल तैयार है।",
     "reminderPromise": "Ryvro हर शिफ्ट से पहले आपको याद दिलाएगी।"
   },
   "phaseSelector": {
@@ -538,7 +538,7 @@
           "afternoon": "दोपहर",
           "off": "छुट्टी"
         },
-        "title": "{{shiftType}} {{dayNumber}}",
+        "title": "{{shiftType}} दिन {{dayNumber}}",
         "description": "आपके कस्टम कार्य क्रम की {{shiftType}} शिफ्ट {{dayNumber}}"
       }
     },

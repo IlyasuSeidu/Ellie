@@ -269,21 +269,21 @@
       },
       "travel": {
         "outToday": {
-          "title": "Travel-out day",
+          "title": "Reis-uit dag",
           "body": "Vandag gaan jy huis toe. Voltooi jou oorhandiging, pak jou toerusting en reis veilig."
         },
         "tomorrow": {
           "title": "Reisdag môre",
-          "body": "You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
+          "body": "Jy reis more vir jou {{shiftType}}. Pak jou toerusting en kontroleer jou dokumente vanaand."
         }
       }
     }
   },
   "countdown": {
     "leftIn": "{{time}} oor in {{shiftName}}",
-    "leftInShift": "{{time}} left in this shift",
+    "leftInShift": "{{time}} oor in hierdie skof",
     "untilStarts": "{{time}} totdat {{shiftName}} begin",
-    "untilShift": "{{time}} until this shift starts",
+    "untilShift": "{{time}} totdat hierdie skof begin",
     "until": "{{time}} tot {{shiftName}}",
     "tomorrow": "{{shiftName}} môre",
     "daysUntil": "{{days}} dae tot {{shiftName}}",
@@ -306,7 +306,7 @@
     "energyPrompt": "Hoe was jou energie op hierdie skof?",
     "energy": {
       "high": "Hoog",
-      "medium": "Medium",
+      "medium": "Medium energie",
       "low": "Laag"
     },
     "notesLabel": "Notas (opsioneel)",
@@ -321,7 +321,7 @@
   "onboardingChecklist": {
     "title": "Kry die meeste uit Ryvro",
     "items": {
-      "schedule": "Set up your schedule",
+      "schedule": "Stel jou skedule op",
       "shiftTimes": "Voeg jou skoftye by",
       "profile": "Voltooi jou profiel",
       "askRyvro": "Vra vir Ryvro ’n vraag"

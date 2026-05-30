@@ -269,21 +269,21 @@
       },
       "travel": {
         "outToday": {
-          "title": "Travel-out day",
+          "title": "Usuku lokuhamba",
           "body": "Namuhla ubuyela ekhaya. Qedela ukudlulisa umsebenzi, pakisha izinto zakho, uhambe ngokuphepha."
         },
         "tomorrow": {
           "title": "Usuku lokuhamba kusasa",
-          "body": "You travel tomorrow for your {{shiftType}}. Pack your gear and check your documents tonight."
+          "body": "Uhamba kusasa uye ku-{{shiftType}} yakho. Pakisha izinto zakho futhi uhlole amadokhumenti akho namhlanje kusihlwa."
         }
       }
     }
   },
   "countdown": {
     "leftIn": "{{time}} esele ku-{{shiftName}}",
-    "leftInShift": "{{time}} left in this shift",
+    "leftInShift": "Kusele {{time}} kuleli shifu",
     "untilStarts": "{{time}} kuze kuqale {{shiftName}}",
-    "untilShift": "{{time}} until this shift starts",
+    "untilShift": "{{time}} kuze kuqale leli shifu",
     "until": "{{time}} kuze kube {{shiftName}}",
     "tomorrow": "{{shiftName}} kusasa",
     "daysUntil": "{{days}} izinsuku kuze kube {{shiftName}}",
@@ -321,7 +321,7 @@
   "onboardingChecklist": {
     "title": "Thola okuningi ku- Ryvro",
     "items": {
-      "schedule": "Set up your schedule",
+      "schedule": "Setha ishejuli yakho",
       "shiftTimes": "Engeza izikhathi zakho zeshifu",
       "profile": "Qedela iphrofayela yakho",
       "askRyvro": "Buza u- Ryvro umbuzo"

@@ -194,7 +194,7 @@
         "savePercent": "BESPAAR {{percent}}%",
         "monthlyNoSavings": "Geen jaarlikse besparing",
         "weekly": "Weekliks",
-        "weeklySuffix": "/wk",
+        "weeklySuffix": "/week",
         "weeklyBilled": "Weekliks gefaktureer"
       },
       "cta": "Begin gratis proef",

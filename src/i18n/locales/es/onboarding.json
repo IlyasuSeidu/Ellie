@@ -254,12 +254,12 @@
       "startDate": "Fecha de inicio",
       "title": "Tu perfil",
       "workPattern": "Patrón de trabajo",
-      "allDay": "All day",
-      "notTimed": "Not timed",
-      "rosterTypeUniversal": "Universal schedule",
-      "universalShiftSystem": "Universal custom shifts",
-      "scheduleEngine": "Schedule engine",
-      "scheduleType": "Schedule type"
+      "allDay": "Todo el dia",
+      "notTimed": "Sin hora",
+      "rosterTypeUniversal": "Horario universal",
+      "universalShiftSystem": "Turnos personalizados universales",
+      "scheduleEngine": "Motor de horario",
+      "scheduleType": "Tipo de horario"
     },
     "title": "Ya está todo listo.",
     "tryAgain": "Intentar otra vez",
@@ -303,7 +303,7 @@
       "decline": "Ahora no"
     },
     "title_named": "{{name}}, ya está todo listo.",
-    "setupReady": "Your {{setup}} schedule is ready.",
+    "setupReady": "Tu horario {{setup}} esta listo.",
     "reminderPromise": "Ryvro te recordará antes de cada turno."
   },
   "rosterType": {
@@ -552,7 +552,7 @@
           "afternoon": "Tarde",
           "off": "Libre"
         },
-        "title": "{{shiftType}} {{dayNumber}}",
+        "title": "{{shiftType}} dia {{dayNumber}}",
         "description": "Turno {{shiftType}} {{dayNumber}} de tu secuencia personalizada"
       }
     },
@@ -1303,7 +1303,7 @@
       "errors": "La vista previa no se puede mostrar debido a errores."
     },
     "validation": {
-      "errorTitle_one": "{{count}} error",
+      "errorTitle_one": "{{count}} error detectado",
       "errorTitle_other": "{{count}} errores",
       "warningTitle_one": "{{count}} advertencia",
       "warningTitle_other": "{{count}} advertencias",

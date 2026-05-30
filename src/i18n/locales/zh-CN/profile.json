@@ -273,10 +273,10 @@
       "timing": "时间",
       "doNotDisturb": "免打扰",
       "adaptive": "自适应",
-      "travel": "Travel blocks"
+      "travel": "出行区块"
     },
     "units": {
-      "hoursShort": "{{value}}小时",
+      "hoursShort": "{{value}} 小时",
       "minutesShort": "{{value}}分钟",
       "none": "无"
     },
