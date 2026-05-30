@@ -1289,6 +1289,10 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'src/screens/main/UniversalShiftBuilderScreen.tsx'),
       'utf8'
     );
+    const dashboardScreen = fs.readFileSync(
+      path.join(process.cwd(), 'src/screens/main/MainDashboardScreen.tsx'),
+      'utf8'
+    );
     const smartRemindersPanel = fs.readFileSync(
       path.join(process.cwd(), 'src/components/profile/SmartRemindersPanel.tsx'),
       'utf8'
@@ -1316,6 +1320,14 @@ describe('Ryvro environment template', () => {
     );
 
     expect(builderScreen).toContain("t('builder.oneOffListSubtitle'");
+    expect(dashboardScreen).toContain('QuickActionsBar');
+    expect(dashboardScreen).toContain('dashboardQuickActions');
+    expect(dashboardScreen).toContain('dashboard-quick-actions');
+    expect(dashboardScreen).toContain('handleDashboardQuickActionPress');
+    expect(dashboardScreen).toContain('quick_action_builder');
+    expect(dashboardScreen).toContain('quick_action_export');
+    expect(dashboardScreen).not.toContain('QuickActionsBar hidden');
+    expect(dashboardScreen).not.toContain('actions not yet implemented');
     expect(shiftInspectorSheet).toContain('Work location (optional)');
     expect(shiftInspectorSheet).toContain('Work location name');
     expect(onboardingLocale.shiftBuilder?.inspector?.location).toBe('Work location (optional)');

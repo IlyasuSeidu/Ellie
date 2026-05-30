@@ -37,7 +37,13 @@ import { usePaywallRecovery } from '@/hooks/usePaywallRecovery';
 import { PaywallScreen } from '@/screens/subscription/PaywallScreen';
 import { Analytics } from '@/utils/analytics';
 import * as Haptics from 'expo-haptics';
-import { useIsFocused } from '@react-navigation/native';
+import {
+  useIsFocused,
+  useNavigation,
+  type CompositeNavigationProp,
+} from '@react-navigation/native';
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { theme } from '@/utils/theme';
 import { getShiftDaysInRange, getShiftStatistics, buildShiftCycle } from '@/utils/shiftUtils';
 import { toDateString, getDaysInMonth } from '@/utils/dateUtils';
@@ -53,9 +59,16 @@ import { PersonalizedHeader } from '@/components/dashboard/PersonalizedHeader';
 import { CurrentShiftStatusCard } from '@/components/dashboard/CurrentShiftStatusCard';
 import { MonthlyCalendarCard } from '@/components/dashboard/MonthlyCalendarCard';
 import { StatisticsRow } from '@/components/dashboard/StatisticsCard';
+import { QuickActionsBar, type QuickAction } from '@/components/dashboard/QuickActionsBar';
+import type { MainStackParamList } from '@/navigation/MainStackNavigator';
+import type { MainTabParamList } from '@/navigation/MainTabNavigator';
 
 // Voice assistant is now in MainTabNavigator (center tab + global modal)
-// QuickActionsBar hidden for v1 — actions not yet implemented
+
+type DashboardNavigation = CompositeNavigationProp<
+  BottomTabNavigationProp<MainTabParamList, 'Home'>,
+  NativeStackNavigationProp<MainStackParamList>
+>;
 
 /**
  * Calculate monthly statistics
@@ -91,6 +104,7 @@ export const MainDashboardScreen: React.FC = () => {
   const { t, i18n } = useTranslation('dashboard');
   const { t: tCommon } = useTranslation('common');
   const isFocused = useIsFocused();
+  const navigation = useNavigation<DashboardNavigation>();
   const insets = useSafeAreaInsets();
   const { data: onboardingContextData, updateData, hydrated: onboardingHydrated } = useOnboarding();
   const [userData, setUserData] = useState<OnboardingData | null>(null);
@@ -107,6 +121,31 @@ export const MainDashboardScreen: React.FC = () => {
   // G5: Non-converter recovery — isPro needed for gate + recovery hook
   const { isPro, isLoading: subscriptionLoading } = useSubscription();
   const { shouldNudge, dismissNudge } = usePaywallRecovery(isPro);
+  const dashboardQuickActions = useMemo<QuickAction[]>(
+    () => [
+      {
+        key: 'builder',
+        icon: 'calendar-outline',
+        label: t('tabs.schedule'),
+      },
+      {
+        key: 'reminders',
+        icon: 'notifications-outline',
+        label: t('quickActions.alerts'),
+      },
+      {
+        key: 'profile',
+        icon: 'person-outline',
+        label: t('quickActions.profile'),
+      },
+      {
+        key: 'export',
+        icon: 'share-outline',
+        label: t('quickActions.export'),
+      },
+    ],
+    [t]
+  );
 
   // Refresh animation state
   const [refreshKey, setRefreshKey] = useState(0);
@@ -347,6 +386,52 @@ export const MainDashboardScreen: React.FC = () => {
     setShowFeatureGatePaywall(true);
   }, [monthsAhead, subscriptionLoading]);
 
+  const handleOpenBuilderFromDashboard = useCallback(
+    (source: 'quick_action_builder' | 'quick_action_export') => {
+      if (subscriptionLoading || !userData) {
+        return;
+      }
+
+      if (!isPro) {
+        Analytics.track('feature_gate_triggered', {
+          feature: 'universal_shift_builder',
+          source,
+          months_ahead: monthsAhead,
+        });
+        setShowFeatureGatePaywall(true);
+        return;
+      }
+
+      navigation.navigate('UniversalShiftBuilder', {
+        mode: userData.universalSchedule ? 'edit' : 'create',
+        entryPoint: 'settings',
+        existingSchedule: userData.universalSchedule,
+      });
+    },
+    [isPro, monthsAhead, navigation, subscriptionLoading, userData]
+  );
+
+  const handleDashboardQuickActionPress = useCallback(
+    (key: string) => {
+      Analytics.track('dashboard_quick_action_tapped', {
+        action: key,
+      });
+
+      if (key === 'export') {
+        handleOpenBuilderFromDashboard('quick_action_export');
+        return;
+      }
+
+      if (key === 'builder') {
+        handleOpenBuilderFromDashboard('quick_action_builder');
+        return;
+      }
+
+      navigation.navigate('Profile');
+    },
+    [handleOpenBuilderFromDashboard, navigation]
+  );
+
   // Avatar change handler — persists new URI to AsyncStorage
   const handleAvatarChange = useCallback(
     (newUri: string | null) => {
@@ -478,6 +563,13 @@ export const MainDashboardScreen: React.FC = () => {
             </View>
           </Animated.View>
         )}
+
+        <QuickActionsBar
+          actions={dashboardQuickActions}
+          onActionPress={handleDashboardQuickActionPress}
+          animationDelay={260}
+          testID="dashboard-quick-actions"
+        />
 
         {/* Current Shift Status Card (HERO) */}
         <CurrentShiftStatusCard
