@@ -27,9 +27,7 @@ jobs:
       FIREBASE_APP_ID: 1:123456789:web:abcdef
       GOOGLE_WEB_CLIENT_ID: 123456789-abcdef.apps.googleusercontent.com
       RYVRO_BRAIN_URL: https://ryvro-brain-test.cloudfunctions.net/ryvroBrain
-      ELLIE_BRAIN_URL: https://ryvro-brain-test.cloudfunctions.net/ryvroBrain
       RYVRO_BRAIN_TIMEOUT: '30000'
-      ELLIE_BRAIN_TIMEOUT: '30000'
 
     steps:
       - name: Checkout code
@@ -87,9 +85,7 @@ jobs:
       FIREBASE_APP_ID: 1:123456789:web:abcdef
       GOOGLE_WEB_CLIENT_ID: 123456789-abcdef.apps.googleusercontent.com
       RYVRO_BRAIN_URL: https://ryvro-brain-test.cloudfunctions.net/ryvroBrain
-      ELLIE_BRAIN_URL: https://ryvro-brain-test.cloudfunctions.net/ryvroBrain
       RYVRO_BRAIN_TIMEOUT: '30000'
-      ELLIE_BRAIN_TIMEOUT: '30000'
 
     steps:
       - name: Checkout code

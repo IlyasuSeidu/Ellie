@@ -18,6 +18,7 @@ Completed and guarded in the current branch:
 - Universal fixtures and launch templates now cover healthcare, security, emergency services, manufacturing, transport/logistics, hospitality, aviation/rail, mining/FIFO, and call-center/operations examples.
 - RevenueCat repo-side identifiers and guidance use Ryvro launch aliases while keeping old Ellie/miner aliases documented as compatibility-only migration inputs.
 - Firebase/backend repo config exposes `ryvroBrain` and uses `RYVRO_BRAIN_*` as the preferred environment names while preserving old `ELLIE_BRAIN_*` keys only as migration fallbacks.
+- CI and E2E workflows now exercise only `RYVRO_BRAIN_*` endpoint variables; legacy `ELLIE_BRAIN_*` names are no longer exported in workflow environments.
 - The internal OpenWakeWord Expo module now uses Ryvro-branded package, native module, Android namespace, iOS podspec, resource bundle, and JS adapter identifiers.
 - The ignored generated iOS CocoaPods workspace was refreshed on 2026-05-30; `pod install` installed `RyvroOpenWakeWord`, removed `EllieOpenWakeWord`, and `ios/Podfile.lock` now points at `../modules/ryvro-openwakeword/ios`.
 - Native iOS build metadata now resolves to `FULL_PRODUCT_NAME = Ryvro.app`, `WRAPPER_NAME = Ryvro.app`, `PRODUCT_NAME = Ryvro`, and `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner`; the remaining `TARGET_NAME = Ellie` is internal Xcode target scaffolding.

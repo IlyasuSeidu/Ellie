@@ -989,6 +989,10 @@ describe('Ryvro environment template', () => {
 
     expect(ciWorkflow).not.toContain('ellie-brain-test.cloudfunctions.net/ellieBrain');
     expect(e2eWorkflow).not.toContain('ellie-brain-test.cloudfunctions.net/ellieBrain');
+    expect(ciWorkflow).not.toContain('ELLIE_BRAIN_URL');
+    expect(ciWorkflow).not.toContain('ELLIE_BRAIN_TIMEOUT');
+    expect(e2eWorkflow).not.toContain('ELLIE_BRAIN_URL');
+    expect(e2eWorkflow).not.toContain('ELLIE_BRAIN_TIMEOUT');
     expect(ciWorkflow).toContain('ryvro-brain-test.cloudfunctions.net/ryvroBrain');
     expect(e2eWorkflow).toContain('ryvro-brain-test.cloudfunctions.net/ryvroBrain');
   });
