@@ -1,6 +1,6 @@
 # Minimum Viable Deployment Plan (MVD)
 
-Last updated: March 10, 2026  
+Last updated: May 30, 2026
 Repository: repo root
 
 ## 1. Goal
@@ -31,10 +31,11 @@ with the smallest safe scope that:
 - Full notification automation loop (service exists, runtime product wiring is partial)
 - Multi-pattern advanced workflows
 
-### 2.3 Product decision for placeholder tabs (required before submission)
+### 2.3 Product decision for secondary tabs
 
-- Keep tabs visible, but clearly mark both as beta placeholders and add in-screen feedback CTA.
-- This avoids risky nav refactor before release and keeps UX explicit.
+- Hide Schedule and Stats tabs for v1.
+- This keeps the launch surface focused on onboarding, dashboard, profile/settings, Ryvro voice, reminders, and import/export paths that are ready to smoke test.
+- Reintroduce Schedule and Stats only after they are feature-complete enough for store review.
 
 ## 3. Release Exit Criteria (Definition of Done)
 
@@ -188,22 +189,22 @@ Acceptance criteria:
 
 ## 5. Workstream B - Product UX Completeness for MVD
 
-## B1) Verify secondary tabs are launch-safe
+## B1) Keep secondary tabs out of the v1 navigation
 
 Files:
 
-- `src/screens/main/ScheduleScreen.tsx`
-- `src/screens/main/StatsScreen.tsx`
+- `src/navigation/MainTabNavigator.tsx`
+- `src/navigation/CustomTabBar.tsx`
 
 Implementation steps:
 
-1. Confirm every visible tab is either feature-complete or clearly marked as beta.
-2. Add a `Send Feedback` button where a surface is intentionally incomplete.
-3. Keep existing design language.
+1. Confirm Schedule and Stats are not present in the bottom tab navigation.
+2. Confirm no visible launch CTA routes users into incomplete Schedule or Stats surfaces.
+3. Keep hidden screens as post-v1 implementation backlog only.
 
 Acceptance criteria:
 
-- Users understand these tabs are beta, not broken.
+- Users cannot enter incomplete secondary tabs during v1 smoke testing.
 
 ## B2) Wire dashboard quick actions or remove temporarily
 
@@ -308,7 +309,7 @@ Must-pass flows:
 8. Verify calendar import/export paths.
 9. App relaunch persistence check for onboarding data.
 10. Voice assistant modal open/close and permission handling.
-11. Secondary tabs show complete functionality or beta messaging and feedback CTA.
+11. Schedule and Stats tabs are not visible anywhere in the bottom navigation.
 
 ## 7. Workstream D - Store Submission Readiness
 
@@ -413,7 +414,7 @@ Risk: CI appears green but release check fails locally.
 Mitigation: Make `release:check` mandatory before every release candidate tag.
 
 Risk: Secondary tabs or actions create poor first impression if they look unfinished.  
-Mitigation: Label as beta, provide feedback route, and set expectation clearly.
+Mitigation: Keep Schedule and Stats hidden until their full launch surfaces are ready.
 
 ## 13. Post-Launch Iteration Backlog (Not part of MVD)
 

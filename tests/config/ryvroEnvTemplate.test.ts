@@ -352,10 +352,16 @@ describe('Ryvro environment template', () => {
 
     expect(deploymentPlan).toContain('Repository: repo root');
     expect(deploymentPlan).toContain('cd <repo-root>');
+    expect(deploymentPlan).toContain('Hide Schedule and Stats tabs for v1.');
+    expect(deploymentPlan).toContain(
+      'Schedule and Stats tabs are not visible anywhere in the bottom navigation.'
+    );
     expect(deploymentPlan).toContain('-archivePath /tmp/Ryvro.xcarchive archive');
     expect(deploymentPlan).toContain(
       '<repo-root>/android/app/build/outputs/bundle/release/app-release.aab'
     );
+    expect(deploymentPlan).not.toContain('Keep tabs visible');
+    expect(deploymentPlan).not.toContain('beta placeholders');
     expect(deploymentPlan).not.toContain('/Users/Shared/Ellie');
     expect(deploymentPlan).not.toContain('/tmp/Ellie.xcarchive');
   });
