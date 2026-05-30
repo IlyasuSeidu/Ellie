@@ -18,6 +18,10 @@ const walkFiles = (dir: string): string[] => {
 
 describe('Ryvro environment template', () => {
   const envExample = fs.readFileSync(path.join(process.cwd(), '.env.example'), 'utf8');
+  const envConfigurationTemplate = fs.readFileSync(
+    path.join(process.cwd(), 'RYVRO_ENVIRONMENT_CONFIGURATION_TEMPLATE.md'),
+    'utf8'
+  );
   const appJson = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'app.json'), 'utf8')) as {
     expo?: {
       name?: string;
@@ -108,13 +112,22 @@ describe('Ryvro environment template', () => {
 
   it('uses Ryvro defaults for public launch configuration', () => {
     expect(envExample).toContain('API_BASE_URL=https://api.getryvro.com');
+    expect(envConfigurationTemplate).toContain('API_BASE_URL=https://api.getryvro.com');
     expect(envExample).toContain(
       'RYVRO_BRAIN_URL=https://us-central1-your-project-id.cloudfunctions.net/ryvroBrain'
     );
+    expect(envConfigurationTemplate).toContain(
+      'RYVRO_BRAIN_URL=https://us-central1-your-project-id.cloudfunctions.net/ryvroBrain'
+    );
     expect(envExample).toContain('WAKE_WORD_PHRASE=Ryvro');
+    expect(envConfigurationTemplate).toContain('WAKE_WORD_PHRASE=Ryvro');
     expect(envExample).toContain('WAKE_WORD_KEYWORD_PATHS_ANDROID=ryvro_android.ppn');
+    expect(envConfigurationTemplate).toContain('WAKE_WORD_KEYWORD_PATHS_ANDROID=ryvro_android.ppn');
     expect(envExample).toContain('WAKE_WORD_KEYWORD_PATHS_IOS=ryvro_ios.ppn');
+    expect(envConfigurationTemplate).toContain('WAKE_WORD_KEYWORD_PATHS_IOS=ryvro_ios.ppn');
     expect(envExample).toContain('OPENWAKEWORD_MODEL_PATH=');
+    expect(envConfigurationTemplate).toContain('OPENWAKEWORD_MODEL_PATH=');
+    expect(envConfigurationTemplate).not.toContain('OPENWAKEWORD_MODEL_PATH=openwakeword/');
   });
 
   it('pins tracked Expo identity to Ryvro launch values', () => {
@@ -369,9 +382,27 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('SUPPORT_URL');
     expect(envExample).toContain('REVENUECAT_ENTITLEMENT_ID=pro');
     expect(envExample).toContain('EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID=pro');
+    expect(envConfigurationTemplate).toContain('REVENUECAT_IOS_KEY=appl_xxxxxxxxxxxxx');
+    expect(envConfigurationTemplate).toContain('REVENUECAT_ANDROID_KEY=goog_xxxxxxxxxxxxx');
+    expect(envConfigurationTemplate).toContain('REVENUECAT_ENTITLEMENT_ID=pro');
+    expect(envConfigurationTemplate).toContain('EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID=pro');
     expect(envExample).toContain('LEGAL_PRIVACY_POLICY_URL=https://getryvro.com/privacy');
     expect(envExample).toContain('LEGAL_TERMS_OF_SERVICE_URL=https://getryvro.com/terms');
     expect(envExample).toContain('SUPPORT_URL=https://getryvro.com/support');
+    expect(envConfigurationTemplate).toContain(
+      'LEGAL_PRIVACY_POLICY_URL=https://getryvro.com/privacy'
+    );
+    expect(envConfigurationTemplate).toContain(
+      'LEGAL_TERMS_OF_SERVICE_URL=https://getryvro.com/terms'
+    );
+    expect(envConfigurationTemplate).toContain('SUPPORT_URL=https://getryvro.com/support');
+    expect(envConfigurationTemplate).toContain(
+      'SHIFT_SCHEDULE_PARSER_URL=https://us-central1-your-project-id.cloudfunctions.net/parseShiftScheduleDescription'
+    );
+    expect(envConfigurationTemplate).toContain('SHIFT_SCHEDULE_PARSER_TIMEOUT_MS=45000');
+    expect(envConfigurationTemplate).toContain('SHIFT_SCHEDULE_PARSER_MAX_PROMPT_LENGTH=2000');
+    expect(envConfigurationTemplate).toContain('UNIVERSAL_SHIFT_BUILDER_ENABLED=true');
+    expect(envConfigurationTemplate).toContain('AI_SHIFT_BUILDER_ENABLED=true');
     expect(script).toContain('ELLIE_BRAIN_URL: leave empty for new Ryvro production builds');
     expect(externalSetup).toContain('npm run release:env:check');
     expect(externalSetup).toContain('live HTTPS `LEGAL_PRIVACY_POLICY_URL`');

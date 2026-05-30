@@ -36,6 +36,14 @@ EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=your-google-ios-client-id.apps.googleuserconten
 API_BASE_URL=https://api.getryvro.com
 API_TIMEOUT=30000
 
+# Legal and Support URLs
+
+# Must be live HTTPS pages before App Store / Play submission.
+
+LEGAL_PRIVACY_POLICY_URL=https://getryvro.com/privacy
+LEGAL_TERMS_OF_SERVICE_URL=https://getryvro.com/terms
+SUPPORT_URL=https://getryvro.com/support
+
 # Ryvro Brain (Firebase Cloud Function)
 
 RYVRO_BRAIN_URL=https://us-central1-your-project-id.cloudfunctions.net/ryvroBrain
@@ -81,13 +89,11 @@ WAKE_WORD_BUILT_IN_KEYWORDS=
 
 # Set WAKE_WORD_PROVIDER=openwakeword to use these settings.
 
-# Use ONNX model path bundled in native assets.
+# Set these after generating and bundling real Ryvro ONNX wake-word models.
 
-# Example classifier bundled by this repo:
-
-OPENWAKEWORD_MODEL_PATH=openwakeword/ryvro_v0.1.onnx
-OPENWAKEWORD_MODEL_PATH_ANDROID=openwakeword/ryvro_v0.1.onnx
-OPENWAKEWORD_MODEL_PATH_IOS=openwakeword/ryvro_v0.1.onnx
+OPENWAKEWORD_MODEL_PATH=
+OPENWAKEWORD_MODEL_PATH_ANDROID=
+OPENWAKEWORD_MODEL_PATH_IOS=
 
 # Optional advanced feature-model overrides (defaults are bundled in native module):
 
@@ -124,3 +130,28 @@ EAS_PROJECT_ID=your-eas-project-id
 
 DEBUG=false
 LOG_LEVEL=info
+
+# RevenueCat Subscriptions
+
+REVENUECAT_IOS_KEY=appl_xxxxxxxxxxxxx
+REVENUECAT_ANDROID_KEY=goog_xxxxxxxxxxxxx
+REVENUECAT_ENTITLEMENT_ID=pro
+EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID=pro
+
+# Universal Shift Builder
+
+# Cloud Function URL for AI-assisted schedule parsing.
+
+# Leave empty to use the built-in deterministic fallback when the remote AI parser is unavailable.
+
+SHIFT_SCHEDULE_PARSER_URL=https://us-central1-your-project-id.cloudfunctions.net/parseShiftScheduleDescription
+SHIFT_SCHEDULE_PARSER_TIMEOUT_MS=45000
+SHIFT_SCHEDULE_PARSER_MAX_PROMPT_LENGTH=2000
+
+# Set to true to expose the Universal Shift Builder entry point in Profile.
+
+UNIVERSAL_SHIFT_BUILDER_ENABLED=true
+
+# Set to true to expose AI-assisted schedule drafting inside the builder.
+
+AI_SHIFT_BUILDER_ENABLED=true
