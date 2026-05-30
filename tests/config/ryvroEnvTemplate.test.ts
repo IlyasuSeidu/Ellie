@@ -476,6 +476,36 @@ describe('Ryvro environment template', () => {
     expect(deploymentPlan).not.toContain('/tmp/Ellie.xcarchive');
   });
 
+  it('keeps the active deployment guide aligned with Ryvro release preflight', () => {
+    const deploymentGuide = fs.readFileSync(path.join(process.cwd(), 'docs/DEPLOYMENT.md'), 'utf8');
+
+    expect(deploymentGuide).toContain('docs/MINIMUM_VIABLE_DEPLOYMENT_PLAN.md');
+    expect(deploymentGuide).toContain('docs/RYVRO_EXTERNAL_SERVICE_SETUP.md');
+    expect(deploymentGuide).toContain('RYVRO_ENVIRONMENT_CONFIGURATION_TEMPLATE.md');
+    expect(deploymentGuide).toContain('RYVRO_RELEASE_TASKS.md');
+    expect(deploymentGuide).toContain('npm run release:env:check');
+    expect(deploymentGuide).toContain('eas secret:push --scope project --env-file .env');
+    expect(deploymentGuide).toContain('"name": "Ryvro Shift Planner"');
+    expect(deploymentGuide).toContain('"slug": "ryvro"');
+    expect(deploymentGuide).toContain('"image": "./assets/splash-icon.png"');
+    expect(deploymentGuide).toContain('"bundleIdentifier": "com.ryvro.shiftplanner"');
+    expect(deploymentGuide).toContain('"package": "com.ryvro.shiftplanner"');
+    expect(deploymentGuide).toContain('"permissions": ["INTERNET", "RECORD_AUDIO"]');
+    expect(deploymentGuide).toContain('"serviceAccountKeyPath": "./google-play-key.json"');
+    expect(deploymentGuide).toContain('ryvro-upload-key.keystore');
+    expect(deploymentGuide).toContain('RYVRO_UPLOAD_*');
+    expect(deploymentGuide).toContain('https://u.expo.dev/FILL_AFTER_EAS_INIT');
+    expect(deploymentGuide).not.toContain('"permissions": ["CAMERA"');
+    expect(deploymentGuide).not.toContain('READ_EXTERNAL_STORAGE');
+    expect(deploymentGuide).not.toContain('WRITE_EXTERNAL_STORAGE');
+    expect(deploymentGuide).not.toContain('"image": "./assets/splash.png"');
+    expect(deploymentGuide).not.toContain('"projectId": "your-project-id"');
+    expect(deploymentGuide).not.toContain('your-api-key');
+    expect(deploymentGuide).not.toContain('your-apple-id@example.com');
+    expect(deploymentGuide).not.toContain('your-app-store-connect-id');
+    expect(deploymentGuide).not.toContain('your-team-id');
+  });
+
   it('keeps the release task checklist on Ryvro and repo-root release paths', () => {
     const releaseTasks = fs.readFileSync(
       path.join(process.cwd(), 'RYVRO_RELEASE_TASKS.md'),

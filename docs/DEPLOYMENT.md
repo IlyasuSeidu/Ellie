@@ -4,6 +4,13 @@
 
 This guide covers building and deploying the Ryvro application to iOS and Android platforms using Expo Application Services (EAS).
 
+Current Ryvro release source of truth:
+
+- `docs/MINIMUM_VIABLE_DEPLOYMENT_PLAN.md` for the minimum store-release sequence.
+- `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md` for Firebase, OAuth, RevenueCat, App Store Connect, Play Console, domain, social, and support setup.
+- `RYVRO_ENVIRONMENT_CONFIGURATION_TEMPLATE.md` for production environment values.
+- `RYVRO_RELEASE_TASKS.md` for owner/account steps that cannot be completed from the repo.
+
 ## Release Checklist (Ryvro Universal Builder + Voice)
 
 Before cutting a release, run this gate in order:
@@ -95,7 +102,7 @@ eas login
 eas build:configure
 ```
 
-This creates `eas.json` configuration file.
+This repo already tracks `eas.json`. Use `eas build:configure` only when refreshing EAS project linkage, then keep the committed Ryvro build profiles intact.
 
 ### 2. Configure EAS Build Profiles
 
@@ -137,12 +144,12 @@ Edit `eas.json`:
   "submit": {
     "production": {
       "ios": {
-        "appleId": "your-apple-id@example.com",
-        "ascAppId": "your-app-store-connect-id",
-        "appleTeamId": "your-team-id"
+        "appleId": "YOUR_APPLE_ID_EMAIL",
+        "ascAppId": "FILL_AFTER_APP_STORE_CONNECT_APP_EXISTS",
+        "appleTeamId": "BZ798WZJCB"
       },
       "android": {
-        "serviceAccountKeyPath": "./path/to/api-key.json",
+        "serviceAccountKeyPath": "./google-play-key.json",
         "track": "internal"
       }
     }
@@ -162,7 +169,7 @@ Edit `eas.json`:
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -171,8 +178,8 @@ Edit `eas.json`:
       "buildNumber": "1",
       "supportsTablet": true,
       "infoPlist": {
-        "NSCameraUsageDescription": "Allow Ryvro to access your camera",
-        "NSPhotoLibraryUsageDescription": "Allow Ryvro to access your photos"
+        "NSSpeechRecognitionUsageDescription": "Ryvro needs speech recognition to understand your questions.",
+        "NSMicrophoneUsageDescription": "Ryvro needs microphone access for voice commands."
       }
     },
     "android": {
@@ -182,11 +189,11 @@ Edit `eas.json`:
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
+      "permissions": ["INTERNET", "RECORD_AUDIO"]
     },
     "extra": {
       "eas": {
-        "projectId": "your-project-id"
+        "projectId": "FILL_AFTER_EAS_INIT"
       }
     }
   }
@@ -197,60 +204,40 @@ Edit `eas.json`:
 
 ### 1. Create Environment Files
 
-Create separate `.env` files for each environment:
+Create a production `.env` from the Ryvro template:
 
-- `.env.development`
-- `.env.staging`
-- `.env.production`
+```bash
+cp RYVRO_ENVIRONMENT_CONFIGURATION_TEMPLATE.md /tmp/ryvro-env-reference.md
+cp .env.example .env
+```
+
+Fill `.env` with real production values for Firebase, Google OAuth, RevenueCat, legal/support URLs, EAS project ID, and `RYVRO_BRAIN_URL`.
+
+Before pushing secrets to EAS or starting production builds, run:
+
+```bash
+npm run release:env:check
+```
 
 ### 2. Configure Environment in EAS
 
-Add environment variables to EAS:
+After `npm run release:env:check` passes, push the checked `.env` values to EAS:
 
 ```bash
-eas secret:create --scope project --name FIREBASE_API_KEY --value "your-api-key"
-eas secret:create --scope project --name FIREBASE_PROJECT_ID --value "your-project-id"
+eas secret:push --scope project --env-file .env
 ```
 
-Or add to `eas.json`:
-
-```json
-{
-  "build": {
-    "production": {
-      "env": {
-        "FIREBASE_API_KEY": "your-api-key",
-        "FIREBASE_PROJECT_ID": "your-project-id"
-      }
-    }
-  }
-}
-```
+Do not commit `.env`, service account keys, keystores, provisioning profiles, or real Firebase config copied from the consoles.
 
 ### 3. Load Environment Variables
 
-Install dotenv:
+Ryvro already loads release configuration from `app.config.js`; do not replace it with a static sample. If you add a new environment key, add it to:
 
-```bash
-npm install --save-dev dotenv
-```
-
-Update `app.config.js`:
-
-```javascript
-require('dotenv').config();
-
-export default {
-  expo: {
-    // ... existing config
-    extra: {
-      firebaseApiKey: process.env.FIREBASE_API_KEY,
-      firebaseProjectId: process.env.FIREBASE_PROJECT_ID,
-      // ... other env vars
-    },
-  },
-};
-```
+- `.env.example`
+- `RYVRO_ENVIRONMENT_CONFIGURATION_TEMPLATE.md`
+- `src/config/env.ts`
+- `scripts/verify-ryvro-production-env.js`
+- related tests in `tests/config/`
 
 ## Building for iOS
 
@@ -320,14 +307,16 @@ Edit `eas.json` for iOS-specific settings:
 
 ### 1. Create Keystore
 
-Generate a new keystore for signing:
+Generate a new upload keystore for signing if you are not letting EAS manage Android credentials:
 
 ```bash
-keytool -genkeypair -v -storetype PKCS12 -keystore ryvro.keystore \
-  -alias ryvro-key-alias -keyalg RSA -keysize 2048 -validity 10000
+keytool -genkeypair -v \
+  -keystore ryvro-upload-key.keystore \
+  -alias ryvro-upload \
+  -keyalg RSA -keysize 2048 -validity 10000
 ```
 
-**Important**: Store keystore and passwords securely!
+**Important**: Store keystore and passwords securely. Never commit the keystore. If using local Gradle signing, use `RYVRO_UPLOAD_*` properties as described in `docs/MINIMUM_VIABLE_DEPLOYMENT_PLAN.md`.
 
 ### 2. Configure Android Credentials
 
@@ -519,7 +508,7 @@ Configure in `app.json`:
 {
   "expo": {
     "updates": {
-      "url": "https://u.expo.dev/your-project-id"
+      "url": "https://u.expo.dev/FILL_AFTER_EAS_INIT"
     },
     "runtimeVersion": {
       "policy": "sdkVersion"
