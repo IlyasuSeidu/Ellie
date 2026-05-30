@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { execFileSync } from 'child_process';
 
 const walkFiles = (dir: string): string[] => {
   if (!fs.existsSync(dir)) {
@@ -47,6 +48,41 @@ describe('Ryvro environment template', () => {
     fs.readFileSync(path.join(process.cwd(), 'package.json'), 'utf8')
   ) as {
     scripts?: Record<string, string>;
+  };
+  const easJson = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'eas.json'), 'utf8')) as {
+    cli?: {
+      appVersionSource?: string;
+    };
+    build?: {
+      development?: {
+        distribution?: string;
+        developmentClient?: boolean;
+      };
+      preview?: {
+        distribution?: string;
+      };
+      production?: {
+        ios?: {
+          buildConfiguration?: string;
+        };
+        android?: {
+          buildType?: string;
+        };
+      };
+    };
+    submit?: {
+      production?: {
+        ios?: {
+          appleId?: string;
+          ascAppId?: string;
+          appleTeamId?: string;
+        };
+        android?: {
+          serviceAccountKeyPath?: string;
+          track?: string;
+        };
+      };
+    };
   };
 
   const readOptional = (relativePath: string): string | null => {
@@ -411,6 +447,30 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).not.toContain('/Users/Shared/Ellie');
     expect(releaseTasks).not.toContain('/tmp/Ellie.xcarchive');
     expect(releaseTasks).not.toContain('PRODUCT_NAME = Ellie');
+  });
+
+  it('keeps EAS build and submit scaffolding aligned to Ryvro release flow', () => {
+    const gitignore = fs.readFileSync(path.join(process.cwd(), '.gitignore'), 'utf8');
+    const trackedFiles = execFileSync('git', ['ls-files'], {
+      cwd: process.cwd(),
+      encoding: 'utf8',
+    });
+
+    expect(easJson.cli?.appVersionSource).toBe('remote');
+    expect(easJson.build?.development?.developmentClient).toBe(true);
+    expect(easJson.build?.development?.distribution).toBe('internal');
+    expect(easJson.build?.preview?.distribution).toBe('internal');
+    expect(easJson.build?.production?.ios?.buildConfiguration).toBe('Release');
+    expect(easJson.build?.production?.android?.buildType).toBe('app-bundle');
+    expect(easJson.submit?.production?.ios?.appleId).toBe('YOUR_APPLE_ID_EMAIL');
+    expect(easJson.submit?.production?.ios?.ascAppId).toBe('FILL_AFTER_STEP_6');
+    expect(easJson.submit?.production?.ios?.appleTeamId).toBe('BZ798WZJCB');
+    expect(easJson.submit?.production?.android?.serviceAccountKeyPath).toBe(
+      './google-play-key.json'
+    );
+    expect(easJson.submit?.production?.android?.track).toBe('internal');
+    expect(gitignore).toContain('google-play-key.json');
+    expect(trackedFiles).not.toContain('google-play-key.json');
   });
 
   it('keeps the Ryvro release readiness report explicit about evidence and remaining blockers', () => {
