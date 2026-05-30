@@ -515,6 +515,13 @@ describe('Ryvro environment template', () => {
     expect(storeListing).toContain('reviewer@getryvro.com');
     expect(storeListing).toContain('support@getryvro.com');
     expect(storeListing).toContain('App Store Connect / Google Play review notes');
+    expect(storeListing).toContain('App Store iPhone 6.7 inch: 3 screenshots at 1290 x 2796');
+    expect(storeListing).toContain('App Store iPad Pro 12.9 inch: 3 screenshots at 2048 x 2732');
+    expect(storeListing).toContain('Google Play phone: at least 2 screenshots at 1080 x 1920');
+    expect(storeListing).toContain(
+      'Universal Shift Builder template screen showing FIFO, healthcare, aviation, and rail options'
+    );
+    expect(storeListing).toContain('Ryvro Pro paywall screen showing the free-trial CTA');
     expect(storeListing).toContain(
       'Launch audience: FIFO crews, rotating shift workers, miners, healthcare teams, security'
     );
@@ -528,6 +535,7 @@ describe('Ryvro environment template', () => {
     expect(storeListing).not.toContain('miner/FIFO-first');
     expect(storeListing).not.toContain('to be created');
     expect(storeListing).not.toContain('TBD');
+    expect(storeListing).not.toContain('aviation/rail templates');
     expect(storeListing).not.toMatch(/changes by site|heading to site/i);
   });
 

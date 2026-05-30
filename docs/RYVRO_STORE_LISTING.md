@@ -1,6 +1,6 @@
 # Ryvro Store Listing Pack
 
-Last updated: 2026-05-28
+Last updated: 2026-05-30
 
 This pack is the source copy for App Store Connect, Google Play Console, screenshots, and launch review notes. It keeps the FIFO and rotating-shift launch wedge sharp without trapping Ryvro in a single-industry frame.
 
@@ -139,7 +139,28 @@ shift planner, roster, FIFO, mining roster, shift calendar, night shift, work sc
 
 7. Templates
    - Caption: Start from real shift-work templates
-   - Screen: mining/FIFO, healthcare, security, emergency, manufacturing, transport, hospitality, aviation/rail templates
+   - Screen: mining/FIFO, healthcare, security, emergency, manufacturing, transport, hospitality, aviation, and rail templates
+
+## Submission Screenshot Capture Plan
+
+Capture these store-ready sets after the production/TestFlight/internal builds are installed and the reviewer account is configured:
+
+- App Store iPhone 6.7 inch: 3 screenshots at 1290 x 2796
+- App Store iPad Pro 12.9 inch: 3 screenshots at 2048 x 2732
+- Google Play phone: at least 2 screenshots at 1080 x 1920 or higher
+
+Minimum launch sequence:
+
+1. Universal Shift Builder template screen showing FIFO, healthcare, aviation, and rail options.
+2. Dashboard/calendar screen showing current shift color, next shift, and calendar icons.
+3. Ryvro Pro paywall screen showing the free-trial CTA and restore purchases link.
+
+Optional extra screenshots:
+
+- AI Builder prompt and generated preview.
+- Manual sequence editor with colors/icons.
+- Holiday and one-off exception editor.
+- Reminder profile setup.
 
 ## App Review Notes
 
