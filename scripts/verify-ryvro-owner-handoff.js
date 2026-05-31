@@ -71,7 +71,9 @@ const submissionDraft = read('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
   ['Physical iOS and Android smoke tests', ownerRunbook],
   ['Store screenshots, app privacy, data safety, content rating', ownerRunbook],
   ['Production `ryvroBrain` and `parseShiftScheduleDescription` endpoints', ownerRunbook],
+  ['root-level Firebase native service files', ownerRunbook],
   ['Fresh Firebase iOS/Android app configs and OAuth clients', readinessReport],
+  ['real root-level Firebase native service files', readinessReport],
   ['Production Firebase deploy and smoke test for the `ryvroBrain` endpoint', readinessReport],
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'owner launch handoff'));
 
@@ -116,6 +118,12 @@ requireIncludes(
   'dedicated Release Check job running `npm run release:check`',
   'owner runbook CI evidence'
 );
+requireMatches(
+  readinessReport,
+  /CI run `\d+` passed Lint and Type Check/,
+  'readiness report CI run evidence'
+);
+requireMatches(ownerRunbook, /CI run `\d+` on commit `[0-9a-f]+`/, 'owner runbook CI run evidence');
 
 requireMatches(
   releaseTasks,

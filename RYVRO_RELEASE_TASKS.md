@@ -1,7 +1,7 @@
 # Ryvro — Release Task List
 
 Source: `SHIFT_WORKER_APP_REBRAND_AUDIT.md`
-Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, and latest pushed PR #1 CI pass)
+Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, production Firebase service-file preflight, and recent pushed PR #1 CI pass)
 
 Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you do this)
 
@@ -49,6 +49,7 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 | 10c | Derive the Google Sign-In iOS URL scheme from `GOOGLE_IOS_CLIENT_ID` / `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID` at Expo config build time so production OAuth cannot keep a stale static client scheme                                                             | ✅ Done                            |
 | 10d | Pin dynamic Expo config fallbacks for Apple Sign-In, iOS privacy strings, Android microphone permission, and required native config plugins so generated Ryvro builds keep launch capabilities even if static config inheritance changes                     | ✅ Done                            |
 | 10e | Reject retired Ellie/ShiftSync Firebase project IDs and Cloud Function hosts in the Ryvro production env preflight before release builds                                                                                                                     | ✅ Done                            |
+| 10f | Require the Ryvro production env preflight to validate real root-level Firebase native service files for `com.ryvro.shiftplanner`, rejecting tracked local placeholders and generated native-folder paths before release builds                              | ✅ Done                            |
 
 ---
 

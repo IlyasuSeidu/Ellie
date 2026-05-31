@@ -1509,7 +1509,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, and latest pushed PR #1 CI pass)'
+      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, production Firebase service-file preflight, and recent pushed PR #1 CI pass)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
@@ -1538,6 +1538,12 @@ describe('Ryvro environment template', () => {
     );
     expect(releaseTasks).toContain(
       'Pin dynamic Expo config fallbacks for Apple Sign-In, iOS privacy strings'
+    );
+    expect(releaseTasks).toContain(
+      'Require the Ryvro production env preflight to validate real root-level Firebase native service files'
+    );
+    expect(releaseTasks).toContain(
+      'rejecting tracked local placeholders and generated native-folder paths'
     );
     expect(releaseTasks).toContain('Use `docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md`');
     expect(releaseTasks).toContain(
@@ -1688,6 +1694,10 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain(
       'Production env preflight now requires real root-level Firebase native service files'
     );
+    expect(readinessReport).toContain('CI run `26714544097`');
+    expect(readinessReport).toContain('commit `35ea875`');
+    expect(readinessReport).toContain('CI run `26714296664`');
+    expect(readinessReport).toContain('commit `574f3b1`');
     expect(readinessReport).toContain('Release native scaffold preflight now runs');
     expect(readinessReport).toContain('adding the Ryvro native scaffold preflight');
     expect(readinessReport).toContain('Store readiness preflight now runs');
@@ -2082,6 +2092,7 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('EAS project ID');
     expect(ownerRunbook).toContain('npm run release:native:check');
     expect(ownerRunbook).toContain('npm run release:env:check');
+    expect(ownerRunbook).toContain('real root-level Firebase native service files');
     expect(ownerRunbook).toContain('eas secret:push --scope project --env-file .env');
     expect(ownerRunbook).toContain('RYVRO_BRAIN_URL');
     expect(ownerRunbook).toContain('RevenueCat `pro` entitlement');
@@ -2098,8 +2109,10 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('npm run release:owner:check');
     expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');
-    expect(ownerRunbook).toContain('CI run `26714150098`');
-    expect(ownerRunbook).toContain('commit `0edba23`');
+    expect(ownerRunbook).toContain('CI run `26714544097`');
+    expect(ownerRunbook).toContain('commit `35ea875`');
+    expect(ownerRunbook).toContain('CI run `26714296664`');
+    expect(ownerRunbook).toContain('commit `574f3b1`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');

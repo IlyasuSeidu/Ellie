@@ -74,7 +74,7 @@ Owner-only steps:
 - Create or rename the production Firebase project to a Ryvro-visible name.
 - Add iOS app `com.ryvro.shiftplanner` and Android app `com.ryvro.shiftplanner`.
 - Download fresh `GoogleService-Info.plist` and `google-services.json`.
-- Place the real service files at the repo root as `GoogleService-Info.plist` and `google-services.json`; do not point production `.env` at generated `ios/` or `android/` paths because clean prebuild deletes them.
+- Place the real root-level Firebase native service files at the repo root as `GoogleService-Info.plist` and `google-services.json`; do not point production `.env` at generated `ios/` or `android/` paths because clean prebuild deletes them.
 - Create Google OAuth web, iOS, and Android clients in the same project.
 - Deploy backend functions to the Ryvro Firebase project.
 - Configure `.env` from `.env.production.example` with real values.
@@ -206,7 +206,7 @@ Evidence to record:
 
 - Latest local gate: `npm run release:check` passed on 2026-05-31 with 109 Jest suites, 1,759 tests, 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build.
 - Current local release gate includes `npm run release:owner:check`, which fails if the account-only launch blockers, physical-device QA requirements, and not-yet-live stop gates disappear from the tracked handoff docs.
-- Latest pushed PR gate: GitHub Actions CI run `26714150098` passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check` with the owner handoff preflight on commit `0edba23`.
+- Recent pushed PR gates include GitHub Actions CI run `26714544097` on commit `35ea875` and CI run `26714296664` on commit `574f3b1`; both passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check` with the owner handoff preflight.
 - Current repo branch: `codex/ryvro-rebrand-rollout`.
 
 Keep this section current whenever a new launch-readiness commit is pushed and CI passes.
