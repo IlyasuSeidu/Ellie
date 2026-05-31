@@ -27,7 +27,7 @@ Completed and guarded in the current branch:
 - Final EAS submit readiness now has a separate owner-only guard, `npm run release:submit:check`, which intentionally fails until EAS submit placeholders are replaced and required evidence-log rows are marked `Passed` or explicitly `Not applicable` with non-secret notes.
 - GitHub Actions CI now includes a dedicated `Release Check` job that runs `npm run release:check`, so pushed PRs exercise the same TypeScript, Jest, native scaffold, store readiness, and backend build gate used locally.
 - The default completed E2E seed and fresh onboarding E2E happy path now use healthcare worker data rather than a miner-only default.
-- The launch smoke-test matrix now follows the shipped Universal Shift Builder entry modes: non-mining template start, FIFO/mining or rotating-shift AI description, and manual custom setup with reminders, exceptions, and calendar export enabled.
+- The launch smoke-test matrix now follows the shipped Universal Shift Builder entry modes: non-mining template start, FIFO/block-roster or rotating-shift AI description, and manual custom setup with reminders, exceptions, and calendar export enabled.
 - RevenueCat repo-side identifiers and guidance use Ryvro launch aliases while keeping old Ellie/miner aliases documented as compatibility-only migration inputs.
 - RevenueCat launch env templates now include both native and Expo public platform SDK keys, the public entitlement mirror, and the production env preflight rejects mismatched public/native key or entitlement pairs before EAS builds.
 - Production env preflight now requires the real EAS project UUID shape before release builds, so placeholder or project-name values fail before EAS secrets are pushed.

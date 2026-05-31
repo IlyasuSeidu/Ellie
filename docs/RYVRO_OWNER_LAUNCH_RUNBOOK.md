@@ -203,7 +203,7 @@ Run the full smoke matrix in `RYVRO_RELEASE_TASKS.md` on:
 Must-pass coverage:
 
 - Fresh install and onboarding through non-mining template start.
-- Fresh install and onboarding through FIFO/mining or rotating-shift AI description.
+- Fresh install and onboarding through FIFO/block-roster or rotating-shift AI description.
 - Fresh install and onboarding through manual custom setup.
 - Email auth, Google Sign-In, and Apple Sign-In where platform-available.
 - Dashboard colors/icons, settings edits, reminders, exceptions, import/export, and app relaunch persistence.

@@ -81,10 +81,10 @@ Ryvro now uses the Universal Shift Builder as its onboarding schedule setup, rep
 - Build shift definitions and sequences manually
 - Preview schedule before saving
 
-#### 4. **Manual Shift Builder** - Every Site Is Different
+#### 4. **Manual Shift Builder** - Every Work Pattern Is Different
 
 - Drag-and-drop sequence canvas with non-drag reorder controls
-- Per-shift color, icon, name, time, location/site, and reminder settings
+- Per-shift color, icon, name, time, work location, and reminder settings
 - Real-time calendar preview with color-coded blocks
 - Smart validation with helpful warnings
 - Live cycle visualization
@@ -364,7 +364,7 @@ Ryvro/
 
 ## 🎨 Design System - Sacred Theme
 
-Ryvro uses a custom design system called **"Sacred"** - built for shift workers who check their schedules at 4am before heading to site, ward, depot, airport, plant, or control room.
+Ryvro uses a custom design system called **"Sacred"** - built for shift workers who check their schedules at 4am before heading to a work location, ward, depot, airport, plant, venue, or control room.
 
 ### Color Palette
 

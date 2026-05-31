@@ -1386,8 +1386,9 @@ describe('Ryvro environment template', () => {
       'Fresh install -> complete onboarding via Universal Shift Builder template start with a non-mining template'
     );
     expect(deploymentPlan).toContain(
-      'Fresh install -> complete onboarding via Universal Shift Builder AI description with a FIFO/mining or rotating-shift prompt'
+      'Fresh install -> complete onboarding via Universal Shift Builder AI description with a FIFO/block-roster or rotating-shift prompt'
     );
+    expect(deploymentPlan).not.toContain('FIFO/mining or rotating-shift prompt');
     expect(deploymentPlan).toContain(
       'Fresh install -> complete onboarding via Universal Shift Builder manual setup with custom shift names, colors, icons, reminders, exceptions, and calendar export enabled'
     );
@@ -1463,6 +1464,11 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('Works at remote work locations');
     expect(readme).toContain('Testing infrastructure (1,771 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
+    expect(readme).toContain('Every Work Pattern Is Different');
+    expect(readme).toContain('work location, and reminder settings');
+    expect(readme).toContain(
+      'heading to a work location, ward, depot, airport, plant, venue, or control room'
+    );
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
     expect(readme).toContain('Jest (1,771 tests in the latest release check)');
@@ -1476,6 +1482,9 @@ describe('Ryvro environment template', () => {
     expect(readme).not.toContain('Jest (1,500 tests)');
     expect(readme).not.toContain('github.com/IlyasuSeidu/ryvro');
     expect(readme).not.toContain('Works on-site');
+    expect(readme).not.toContain('Every Site Is Different');
+    expect(readme).not.toContain('location/site');
+    expect(readme).not.toContain('heading to site');
     expect(readme).not.toContain('FIREBASE_PROJECT_ID=your_project_id');
     expect(readme).not.toContain('FIREBASE_STORAGE_BUCKET=your_storage_bucket');
   });
@@ -1748,8 +1757,9 @@ describe('Ryvro environment template', () => {
     );
     expect(releaseTasks).toContain('oil/gas offshore, transport, warehouse logistics');
     expect(releaseTasks).toContain(
-      'Fresh install → complete onboarding via Universal Shift Builder AI description with a FIFO/mining or rotating-shift prompt'
+      'Fresh install → complete onboarding via Universal Shift Builder AI description with a FIFO/block-roster or rotating-shift prompt'
     );
+    expect(releaseTasks).not.toContain('FIFO/mining or rotating-shift prompt');
     expect(releaseTasks).toContain(
       'Fresh install → complete onboarding via Universal Shift Builder manual setup with custom shift names, colors, icons, reminders, exceptions, and calendar export enabled'
     );
@@ -2035,8 +2045,9 @@ describe('Ryvro environment template', () => {
       'launch smoke-test matrix now follows the shipped Universal Shift Builder entry modes'
     );
     expect(readinessReport).toContain(
-      'non-mining template start, FIFO/mining or rotating-shift AI description, and manual custom setup'
+      'non-mining template start, FIFO/block-roster or rotating-shift AI description, and manual custom setup'
     );
+    expect(readinessReport).not.toContain('FIFO/mining or rotating-shift AI description');
     expect(readinessReport).toContain('oil/gas offshore, transport/logistics, warehouse logistics');
     expect(readinessReport).toContain(
       'active API reference now uses a broad healthcare rotating-schedule example'
@@ -2517,6 +2528,8 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('Physical iOS and Android smoke tests');
     expect(ownerRunbook).toContain('TestFlight iPhone');
     expect(ownerRunbook).toContain('Play internal testing install');
+    expect(ownerRunbook).toContain('FIFO/block-roster or rotating-shift AI description');
+    expect(ownerRunbook).not.toContain('FIFO/mining or rotating-shift AI description');
     expect(ownerRunbook).toContain('eas submit --platform ios --latest');
     expect(ownerRunbook).toContain('eas submit --platform android --latest');
     expect(ownerRunbook).toContain('npm run release:submit:check');

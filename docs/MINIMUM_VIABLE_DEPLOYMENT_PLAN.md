@@ -345,7 +345,7 @@ Devices:
 Core must-pass flows:
 
 1. Fresh install -> complete onboarding via Universal Shift Builder template start with a non-mining template such as healthcare, security, emergency services, manufacturing, transport, hospitality, aviation, or rail.
-2. Fresh install -> complete onboarding via Universal Shift Builder AI description with a FIFO/mining or rotating-shift prompt, then review and save the generated schedule.
+2. Fresh install -> complete onboarding via Universal Shift Builder AI description with a FIFO/block-roster or rotating-shift prompt, then review and save the generated schedule.
 3. Fresh install -> complete onboarding via Universal Shift Builder manual setup with custom shift names, colors, icons, reminders, exceptions, and calendar export enabled.
 4. Edit shift settings from profile and confirm dashboard updates immediately.
 5. Verify shift color and icon updates at boundary transitions.
