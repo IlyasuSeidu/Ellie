@@ -150,12 +150,25 @@ Capture these store-ready sets after the production/TestFlight/internal builds a
 - App Store iPhone 6.7 inch: 3 screenshots at 1290 x 2796
 - App Store iPad Pro 12.9 inch: 3 screenshots at 2048 x 2732
 - Google Play phone: at least 2 screenshots at 1080 x 1920 or higher
+- Capture from production, TestFlight, or Play internal builds only; do not use Expo Go or development-client screenshots for store submission.
+- Use the reviewer account `reviewer@getryvro.com` with a saved non-mining schedule and a configured Ryvro Pro sandbox path before capture.
 
 Minimum launch sequence:
 
 1. Universal Shift Builder template screen showing FIFO, healthcare, aviation, and rail options.
 2. Dashboard/calendar screen showing current shift color, next shift, and calendar icons.
 3. Ryvro Pro paywall screen showing the free-trial CTA and restore purchases link.
+
+Required capture matrix:
+
+| Store surface          | Size / device target        | Required frames                                                                                           |
+| ---------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------- |
+| App Store iPhone       | 1290 x 2796, 6.7 inch       | Template start, dashboard/calendar, Ryvro Pro paywall                                                     |
+| App Store iPad         | 2048 x 2732, 12.9 inch      | Template start, dashboard/calendar, Ryvro Pro paywall                                                     |
+| Google Play phone      | 1080 x 1920 or higher       | Template start and dashboard/calendar, with Ryvro Pro paywall included when using more than 2 screenshots |
+| Internal QA attachment | Native screenshots or video | Any failed smoke-test path, including auth, reminders, import/export, purchases, assistant, or offline    |
+
+Name captured files with the store, device class, frame number, and screen purpose, for example `app-store-iphone-01-template-start.png`, `app-store-ipad-03-paywall.png`, and `google-play-phone-02-dashboard-calendar.png`.
 
 Optional extra screenshots:
 

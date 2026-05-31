@@ -1967,6 +1967,15 @@ describe('Ryvro environment template', () => {
     expect(storeListing).toContain('App Store iPad Pro 12.9 inch: 3 screenshots at 2048 x 2732');
     expect(storeListing).toContain('Google Play phone: at least 2 screenshots at 1080 x 1920');
     expect(storeListing).toContain(
+      'Capture from production, TestFlight, or Play internal builds only'
+    );
+    expect(storeListing).toContain('Required capture matrix');
+    expect(storeListing).toContain('App Store iPhone');
+    expect(storeListing).toContain('App Store iPad');
+    expect(storeListing).toContain('Internal QA attachment');
+    expect(storeListing).toContain('app-store-iphone-01-template-start.png');
+    expect(storeListing).toContain('google-play-phone-02-dashboard-calendar.png');
+    expect(storeListing).toContain(
       'Universal Shift Builder template screen showing FIFO, healthcare, aviation, and rail options'
     );
     expect(storeListing).toContain('Ryvro Pro paywall screen showing the free-trial CTA');

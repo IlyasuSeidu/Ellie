@@ -127,6 +127,11 @@ if (!appStoreDescription) {
   'App Store iPad Pro 12.9 inch: 3 screenshots at 2048 x 2732',
   'Google Play phone: at least 2 screenshots at 1080 x 1920 or higher',
   'Ryvro Pro paywall screen showing the free-trial CTA and restore purchases link',
+  'Capture from production, TestFlight, or Play internal builds only',
+  'reviewer@getryvro.com',
+  'Required capture matrix',
+  'app-store-iphone-01-template-start.png',
+  'google-play-phone-02-dashboard-calendar.png',
 ].forEach((expected) => requireIncludes(screenshotPlan, expected, 'store screenshot capture plan'));
 
 const forbiddenClaims = [
