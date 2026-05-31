@@ -206,14 +206,20 @@ requireMatches(
 requireMatches(ownerRunbook, /CI run `\d+` on commit `[0-9a-f]+`/, 'owner runbook CI run evidence');
 requireMatches(readme, /CI run `\d+` on commit `[0-9a-f]+`/, 'README CI run evidence');
 [
-  ['CI run `26727786109`', readme],
-  ['commit `5b23309`', readme],
-  ['CI run `26727786109`', readinessReport],
-  ['commit `5b23309`', readinessReport],
-  ['CI run `26727786109`', ownerRunbook],
-  ['commit `5b23309`', ownerRunbook],
+  ['CI run `26727972848`', readme],
+  ['commit `5bee483`', readme],
+  ['CI run `26727972848`', readinessReport],
+  ['commit `5bee483`', readinessReport],
+  ['CI run `26727972848`', ownerRunbook],
+  ['commit `5bee483`', ownerRunbook],
   ['store screenshot capture checklist', readinessReport],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', ownerRunbook],
+  ['Launch Landing Page Copy', storeListing],
+  ['Social Profile Source Copy', storeListing],
+  [
+    'AI shift planner for FIFO, nights, rotating rosters, reminders, and calendar export.',
+    storeListing,
+  ],
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'pushed launch evidence'));
 
 if (

@@ -44,7 +44,7 @@ Completed in the current working tree:
 - Expanded E2E onboarding fixtures for launch QA personas including nurse, security officer, firefighter, plant operator, linehaul driver, warehouse lead, hotel duty manager, airport operations coordinator, offshore technician, and a mining/FIFO operator.
 - Cleaned remaining launch-critical broad-market copy in README, English onboarding feature descriptions, selected translated placeholders/social proof, and onboarding icon source guidance.
 - Hardened tracked generated-content guidance and publishable build-in-public packs so they use Ryvro naming, broad shift-worker discovery tags, and FIFO/shift-worker audience language instead of stale Ellie or mining-only tags.
-- Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the launch-readiness cleanup. The latest pushed CI run for this branch passed on 2026-05-31: CI run `26727786109` on commit `5b23309`.
+- Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the launch-readiness cleanup. The latest pushed CI run for this branch passed on 2026-05-31: CI run `26727972848` on commit `5bee483`.
 - Aligned the active deployment guide to the committed Ryvro `eas.json`, dynamic `app.config.js`, and guarded `npm run release:submit:check` plus `eas submit --latest` store-submission flow.
 - Renamed retired Ellie storage-key code symbols to neutral Ryvro-era `retired...` names while preserving the raw old keys only for migration/removal.
 - Tightened the Ryvro native scaffold verifier so active release checks inspect only `ios/RyvroShiftPlanner` generated paths instead of accepting old iOS project-name fallbacks.
@@ -77,6 +77,7 @@ Completed in the current working tree:
 - Stopped new Expo config from mirroring the Ryvro voice endpoint into legacy `ELLIE_BRAIN_*` extras, and the production env preflight now rejects retired `ELLIE_BRAIN_*` keys before release builds.
 - Aligned the active API reference with the Ryvro launch configuration: broad healthcare rotating-schedule example, `RYVRO_BRAIN_*` runtime names, `ryvroBrain`, current Firebase config paths, RevenueCat native/public key pairs, and the release env preflight.
 - Reconciled the older implementation tracker with current Ryvro evidence so repo-complete items are checked off and owner-only/live-device gaps remain explicit instead of mixed with stale implementation tasks.
+- Added repo-side social profile and launch landing-page source copy so the owner can publish external launch surfaces after handle/domain reservation without inventing new mining-only language.
 
 Still pending outside this repo or intentionally kept for compatibility:
 
@@ -1623,8 +1624,8 @@ Phase gate:
 - [x] Update privacy policy.
 - [x] Update terms.
 - [x] Update support FAQ.
-- [ ] Update social bios.
-- [ ] Update landing page copy if present.
+- [x] Draft social bios.
+- [x] Draft landing page copy.
 
 Phase gate:
 

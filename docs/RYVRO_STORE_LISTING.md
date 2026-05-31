@@ -147,6 +147,75 @@ shift planner, roster, FIFO, mining roster, shift calendar, night shift, work sc
    - Caption: Start from real shift-work templates
    - Screen: mining/FIFO, healthcare, security, emergency, manufacturing, oil/gas offshore, transport, warehouse logistics, hospitality, aviation, and rail templates
 
+## Launch Landing Page Copy
+
+Use this source copy for `https://getryvro.com` or the final controlled Ryvro launch domain after the owner completes domain reservation.
+
+Hero:
+
+- Headline: Ryvro Shift Planner
+- Subheadline: AI schedules, reminders, and calendar exports for FIFO, nights, rotating rosters, and irregular shift work.
+- Primary CTA: Download Ryvro
+- Secondary CTA: See shift templates
+
+Primary sections:
+
+1. Build your schedule three ways
+   - Describe your roster in plain English.
+   - Start from templates for FIFO, healthcare, security, emergency services, manufacturing, offshore, transport, warehouse, hospitality, aviation, and rail.
+   - Fine-tune shifts manually with colors, icons, times, reminders, exceptions, and calendar export.
+
+2. Know what you are working next
+   - See today's shift, the next shift, countdowns, days off, and upcoming changes.
+   - Keep your schedule available offline for low-signal work locations.
+   - Export shifts to your calendar with locations and one-off notes.
+
+3. Built for shift workers, not just one industry
+   - Ryvro started with FIFO and mining schedules.
+   - The schedule engine supports rotating teams, nights, on-call work, travel days, training, holidays, swaps, and custom patterns.
+   - Use Ryvro as a personal planning aid alongside your official employer roster.
+
+Footer links:
+
+- Privacy: `https://getryvro.com/privacy`
+- Terms: `https://getryvro.com/terms`
+- Support: `https://getryvro.com/support`
+- Delete account: `https://getryvro.com/delete-account`
+
+Footer disclaimer:
+
+Ryvro is a personal planning aid. It does not replace your employer's official roster, payroll, HR, fatigue-management, dispatch, clinical, aviation, rail, transport compliance, or safety systems.
+
+## Social Profile Source Copy
+
+Use these profiles only after the owner reserves the final handle on each platform. Start with `@ryvro`; fall back consistently to `@getryvro` or `@tryryvro` if `@ryvro` cannot be reserved.
+
+Display name:
+
+- Ryvro
+
+Short bio:
+
+- AI shift planner for FIFO, nights, rotating rosters, reminders, and calendar export.
+
+Long bio:
+
+- Ryvro helps FIFO crews, healthcare teams, security staff, emergency services, transport operators, hospitality workers, miners, and other shift workers plan complex rosters with AI, templates, reminders, exceptions, and calendar export.
+
+Launch post:
+
+- Meet Ryvro Shift Planner: AI schedules for FIFO, nights, rotating rosters, and irregular shift work. Start from a template, describe your roster, or build it manually. Miner-first at launch. Universal by design.
+
+Profile link:
+
+- `https://getryvro.com`
+
+Do not use:
+
+- Claims that Ryvro is already live before App Store and Play evidence exists.
+- Claims that Ryvro replaces official employer rostering, payroll, HR, compliance, dispatch, clinical, aviation, rail, fatigue-management, or safety systems.
+- Mining-only bios that make the product sound unusable for healthcare, security, transport, hospitality, manufacturing, emergency services, aviation, or rail.
+
 ## Submission Screenshot Capture Plan
 
 Capture these store-ready sets after the production/TestFlight/internal builds are installed and the reviewer account is configured:

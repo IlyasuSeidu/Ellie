@@ -9,7 +9,7 @@ Use these source docs while completing the runbook:
 - `RYVRO_RELEASE_TASKS.md` for the canonical task list and go/no-go gate.
 - `docs/RYVRO_RELEASE_READINESS_REPORT.md` for repo-proven evidence and known blockers.
 - `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md` for Firebase, OAuth, Apple, RevenueCat, EAS, domain, social, analytics, and support console values.
-- `docs/RYVRO_STORE_LISTING.md` for App Store and Google Play copy.
+- `docs/RYVRO_STORE_LISTING.md` for App Store, Google Play, social profile, and launch landing-page copy.
 - `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md` for required App Store and Google Play screenshot frames, file names, and capture evidence.
 - `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md` for privacy, terms, support, account deletion, and Firebase Auth email templates.
 - `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md` for App Store privacy answers, Google Play Data safety answers, content rating, export compliance, and reviewer notes.
@@ -153,6 +153,8 @@ Evidence to record:
 Owner-only steps:
 
 - Publish privacy policy, terms, support, and the `https://getryvro.com/delete-account` account-deletion page on the controlled launch domain.
+- Publish the launch landing page using the source copy in `docs/RYVRO_STORE_LISTING.md`.
+- Apply the reserved social handle bios, display names, and links from `docs/RYVRO_STORE_LISTING.md` after account reservation.
 - Configure Firebase Auth verification and password-reset email templates with Ryvro copy.
 - Fill App Store privacy answers from `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md`.
 - Fill Google Play Data safety and account deletion answers from `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md`.
@@ -161,6 +163,7 @@ Owner-only steps:
 Evidence to record:
 
 - Live privacy, terms, support, and `https://getryvro.com/delete-account` account-deletion URLs.
+- Live launch landing-page URL and social profile links.
 - Firebase Auth template screenshots or confirmation.
 - App Store privacy form completion.
 - Google Play Data safety form completion.
@@ -248,7 +251,7 @@ Evidence to record:
 - Current local release gate includes `npm run release:owner:check`, which fails if the account-only launch blockers, physical-device QA requirements, and not-yet-live stop gates disappear from the tracked handoff docs.
 - Final submit readiness is guarded by `npm run release:submit:check`, which must fail until EAS submit placeholders are replaced and every required non-secret row in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` is `Passed` or explicitly `Not applicable`.
 - Store screenshot capture is now tracked in `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md`, and `npm run release:store:check` / `npm run release:owner:check` fail if the checklist or evidence-log handoff disappears.
-- Recent pushed PR gate evidence includes GitHub Actions CI run `26727786109` on commit `5b23309`, CI run `26727672100` on commit `3d494f8`, and CI run `26727544770` on commit `9baa0ba`, which passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check` with the owner handoff preflight.
+- Recent pushed PR gate evidence includes GitHub Actions CI run `26727972848` on commit `5bee483`, CI run `26727786109` on commit `5b23309`, and CI run `26727672100` on commit `3d494f8`, which passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check` with the owner handoff preflight.
 - Recent pushed PR gates also include CI run `26726876514` on commit `f72f885` and CI run `26726707448` on commit `0290dc2`; both passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check` with the owner handoff preflight.
 - Current repo branch: `codex/ryvro-rebrand-rollout`.
 
