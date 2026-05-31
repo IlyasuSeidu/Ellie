@@ -102,7 +102,7 @@ Before pushing secrets to EAS or starting production builds, validate that `.env
 npm run release:env:check
 ```
 
-The check requires `APP_ENV=production`, real Firebase/Google OAuth values, the deployed `ryvroBrain` URL, real RevenueCat `appl_...` and `goog_...` SDK keys, live HTTPS `LEGAL_PRIVACY_POLICY_URL`, `LEGAL_TERMS_OF_SERVICE_URL`, and `SUPPORT_URL` values, and an empty `ELLIE_BRAIN_URL` for new Ryvro builds.
+The check requires `APP_ENV=production`, the real EAS project UUID, real Firebase/Google OAuth values, the deployed `ryvroBrain` URL, real RevenueCat `appl_...` and `goog_...` SDK keys, mirrored Expo public RevenueCat keys and entitlement ID, live HTTPS `LEGAL_PRIVACY_POLICY_URL`, `LEGAL_TERMS_OF_SERVICE_URL`, and `SUPPORT_URL` values, and an empty `ELLIE_BRAIN_URL` for new Ryvro builds.
 
 Verification:
 
@@ -174,7 +174,7 @@ Important:
 
 - Do not use RevenueCat `test_` API keys for release, store, or E2E simulator QA. The app treats `test_` keys as unavailable launch keys so RevenueCat's release-mode test-key protection cannot block QA with a native alert.
 - Use production/sandbox app API keys from the Ryvro RevenueCat apps, such as the normal iOS `appl_...` and Android `goog_...` key formats.
-- Keep `EXPO_PUBLIC_REVENUECAT_IOS_KEY` identical to `REVENUECAT_IOS_KEY` and `EXPO_PUBLIC_REVENUECAT_ANDROID_KEY` identical to `REVENUECAT_ANDROID_KEY`; `npm run release:env:check` blocks mismatches so the native app and Expo runtime cannot load different RevenueCat projects.
+- Keep `EXPO_PUBLIC_REVENUECAT_IOS_KEY` identical to `REVENUECAT_IOS_KEY`, `EXPO_PUBLIC_REVENUECAT_ANDROID_KEY` identical to `REVENUECAT_ANDROID_KEY`, and `EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID` identical to `REVENUECAT_ENTITLEMENT_ID`; `npm run release:env:check` blocks mismatches so the native app and Expo runtime cannot load different RevenueCat projects or entitlement gates.
 
 Verification:
 

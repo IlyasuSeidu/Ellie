@@ -19,7 +19,8 @@ Completed and guarded in the current branch:
 - Universal fixtures and launch templates now cover healthcare, security, emergency services, manufacturing, transport/logistics, hospitality, separate aviation and rail operations, mining/FIFO, and call-center/operations examples.
 - The default completed E2E seed and fresh onboarding E2E happy path now use healthcare worker data rather than a miner-only default.
 - RevenueCat repo-side identifiers and guidance use Ryvro launch aliases while keeping old Ellie/miner aliases documented as compatibility-only migration inputs.
-- RevenueCat launch env templates now include both native and Expo public platform SDK keys, and the production env preflight rejects mismatched public/native key pairs before EAS builds.
+- RevenueCat launch env templates now include both native and Expo public platform SDK keys, the public entitlement mirror, and the production env preflight rejects mismatched public/native key or entitlement pairs before EAS builds.
+- Production env preflight now requires the real EAS project UUID shape before release builds, so placeholder or project-name values fail before EAS secrets are pushed.
 - Firebase/backend repo config exposes `ryvroBrain` and uses `RYVRO_BRAIN_*` as the preferred environment names while preserving old `ELLIE_BRAIN_*` keys only as migration fallbacks.
 - CI and E2E workflows now exercise only `RYVRO_BRAIN_*` endpoint variables; legacy `ELLIE_BRAIN_*` names are no longer exported in workflow environments.
 - New Expo config no longer mirrors `RYVRO_BRAIN_*` into legacy `ELLIE_BRAIN_*` extras; legacy brain values stay empty unless an old environment explicitly supplies them for migration.
@@ -73,6 +74,8 @@ Completed and guarded in the current branch:
 - Local release verification on 2026-05-31 passed focused cache-policy/config tests and `npm run release:check` after centralizing cache TTL policy in `src/config/cacheConfig.ts`. The release check included TypeScript, 109 Jest suites / 1,742 tests, 4 snapshots, and the backend functions TypeScript build.
 - Local release verification on 2026-05-31 passed `git diff --check`, focused store-version/config tests, and `npm run release:check` after aligning dynamic Expo version fallbacks with first-store-build native values. The release check included TypeScript, 109 Jest suites / 1,743 tests, 4 snapshots, and the backend functions TypeScript build.
 - Local release verification on 2026-05-31 passed `npm run release:clearance`, `git diff --check`, focused public-clearance config tests, and `npm run release:check` after refreshing public clearance evidence. The release check included TypeScript, 109 Jest suites / 1,743 tests, 4 snapshots, and the backend functions TypeScript build.
+- Local release verification on 2026-05-31 passed `git diff --check`, focused production-env config tests, and `npm run release:check` after tightening the production env preflight for EAS UUIDs and RevenueCat entitlement mirrors. The release check included TypeScript, 109 Jest suites / 1,745 tests, 4 snapshots, and the backend functions TypeScript build.
+- Recent pushed GitHub Actions check for PR #1 passed on commit `5b63d05`: CI run `26706418121` passed Unit Tests, Lint and Type Check, and Build Check.
 - Recent pushed GitHub Actions check for PR #1 passed on commit `df0b161`: CI run `26706309637` passed Unit Tests, Lint and Type Check, and Build Check.
 - Recent pushed GitHub Actions check for PR #1 passed on commit `7115d85`: CI run `26706091677` passed Unit Tests, Lint and Type Check, and Build Check.
 - Recent pushed GitHub Actions check for PR #1 passed on commit `b001c10`: CI run `26705685141` passed Unit Tests, Lint and Type Check, and Build Check.

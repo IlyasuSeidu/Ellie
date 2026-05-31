@@ -77,6 +77,10 @@ function isHttpsUrl(value) {
   }
 }
 
+function isUuid(value) {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
+}
+
 function main() {
   const { envFile } = parseArgs(process.argv.slice(2));
   const envPath = path.resolve(process.cwd(), envFile);
@@ -94,7 +98,7 @@ function main() {
   const errors = [];
 
   requireValue(errors, env, 'APP_ENV', (value) => value === 'production', 'must be production');
-  requireValue(errors, env, 'EAS_PROJECT_ID', undefined, 'must be the real EAS project UUID');
+  requireValue(errors, env, 'EAS_PROJECT_ID', isUuid, 'must be the real EAS project UUID');
   requireValue(errors, env, 'FIREBASE_PROJECT_ID', undefined, 'must be the Ryvro Firebase project');
   requireValue(
     errors,
@@ -148,6 +152,13 @@ function main() {
     'must match REVENUECAT_ANDROID_KEY so the Expo runtime receives the same Ryvro Android SDK key'
   );
   requireValue(errors, env, 'REVENUECAT_ENTITLEMENT_ID', (value) => value === 'pro', 'must be pro');
+  requireMatchingValue(
+    errors,
+    env,
+    'EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID',
+    'REVENUECAT_ENTITLEMENT_ID',
+    'must match REVENUECAT_ENTITLEMENT_ID so the Expo runtime checks the same Ryvro entitlement'
+  );
   requireValue(
     errors,
     env,
