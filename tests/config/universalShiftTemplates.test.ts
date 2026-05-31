@@ -86,6 +86,26 @@ describe('Universal shift templates', () => {
     }
   });
 
+  it('keeps the mining FIFO launch template explicit without making site the default concept', () => {
+    const miningFifoTemplate = UNIVERSAL_SHIFT_TEMPLATES.find(
+      (template) => template.id === 'mining-fifo-14-14'
+    );
+
+    expect(miningFifoTemplate).toBeDefined();
+    expect(miningFifoTemplate?.industry).toBe('mining_fifo');
+    expect(miningFifoTemplate?.title).toContain('Mining FIFO');
+
+    const launchCopy = [
+      miningFifoTemplate?.title,
+      miningFifoTemplate?.subtitle,
+      miningFifoTemplate?.aiPromptExample,
+    ].join('\n');
+
+    expect(launchCopy).toContain('remote operations crews');
+    expect(launchCopy).toContain('work location');
+    expect(launchCopy).not.toMatch(/\bsite\b|mine site|mining site|site crews/i);
+  });
+
   it('keeps completed E2E onboarding seeds compatible with the main app gate', () => {
     expect(Object.keys(UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES)).toEqual(
       expect.arrayContaining([
