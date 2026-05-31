@@ -22,16 +22,16 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 
 ## Phase 1 — Code Cleanup (No user input needed)
 
-| #   | Task                                                                                                                                                              | Status  |
-| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| 1   | Hide Schedule + Stats tabs from nav (MainTabNavigator + CustomTabBar)                                                                                             | ✅ Done |
-| 2   | Audit and remove unsafe Android permissions (`SYSTEM_ALERT_WINDOW`, `READ_EXTERNAL_STORAGE`, `WRITE_EXTERNAL_STORAGE`)                                            | ✅ Done |
-| 3   | Identify and fix any dead/unimplemented quick-action buttons in visible screens                                                                                   | ✅ Done |
-| 4   | Fix `release:check` Jest teardown warning (haptics async path) so it exits with code 0                                                                            | ✅ Done |
-| 5   | Run full quality gate: `lint` + `type-check` + `test` + `backend:build` + `release:check` — all must pass, with CI also running the dedicated `Release Check` job | ✅ Done |
-| 5a  | Remove visible launch placeholder copy from hidden/helper Schedule and Stats entry points                                                                         | ✅ Done |
-| 5b  | Add app-level offline/pending-sync status visibility for queued local writes                                                                                      | ✅ Done |
-| 5c  | Centralize runtime cache TTL policy for launch offline caches and recovery windows                                                                                | ✅ Done |
+| #   | Task                                                                                                                                                                                          | Status  |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| 1   | Hide Schedule + Stats tabs from nav (MainTabNavigator + CustomTabBar)                                                                                                                         | ✅ Done |
+| 2   | Audit and remove unsafe Android permissions (`SYSTEM_ALERT_WINDOW`, `READ_EXTERNAL_STORAGE`, `WRITE_EXTERNAL_STORAGE`)                                                                        | ✅ Done |
+| 3   | Identify and fix any dead/unimplemented quick-action buttons in visible screens                                                                                                               | ✅ Done |
+| 4   | Fix `release:check` Jest teardown warning (haptics async path) so it exits with code 0                                                                                                        | ✅ Done |
+| 5   | Run full quality gate: `lint` + `type-check` + `test` + `backend:build` + `release:check` — all must pass, with CI also running the dedicated `Release Check` job and owner-handoff preflight | ✅ Done |
+| 5a  | Remove visible launch placeholder copy from hidden/helper Schedule and Stats entry points                                                                                                     | ✅ Done |
+| 5b  | Add app-level offline/pending-sync status visibility for queued local writes                                                                                                                  | ✅ Done |
+| 5c  | Centralize runtime cache TTL policy for launch offline caches and recovery windows                                                                                                            | ✅ Done |
 
 ---
 
@@ -107,6 +107,7 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 | 17b | Use `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md` for privacy, terms, support, account deletion, and Firebase Auth email templates                                                                                                                                                                                                           | ✅ Done |
 | 17c | Use `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md` for App Store privacy answers, Google Play Data safety answers, content rating, export compliance, and reviewer notes                                                                                                                                                                    | ✅ Done |
 | 17d | Use `docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md` as the sequenced owner checklist for clearance, accounts, Firebase/OAuth, RevenueCat, legal/support, production builds, device QA, and store submission                                                                                                                                         | ✅ Done |
+| 17e | Guard owner-only launch blockers with `npm run release:owner:check` so release verification fails if the account/device handoff stops documenting the app as not yet live                                                                                                                                                                | ✅ Done |
 
 ---
 
@@ -181,6 +182,7 @@ npm run type-check
 npm test -- --runInBand --silent
 npm run release:native:check
 npm run release:store:check
+npm run release:owner:check
 npm run backend:build
 npm run release:check
 ```
@@ -215,6 +217,7 @@ cd android && ./gradlew bundleRelease
 - [x] `npm test -- --runInBand --silent` passes cleanly
 - [x] `npm run release:native:check` exits with code 0
 - [x] `npm run release:store:check` exits with code 0
+- [x] `npm run release:owner:check` exits with code 0
 - [x] `npm run backend:build` passes
 - [x] `npm run release:check` exits with code 0
 

@@ -503,6 +503,33 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('forbidden claim');
   });
 
+  it('keeps the Ryvro owner handoff preflight in the release gate', () => {
+    const scriptPath = path.join(process.cwd(), 'scripts/verify-ryvro-owner-handoff.js');
+    const script = fs.readFileSync(scriptPath, 'utf8');
+    const result = spawnSync(process.execPath, [scriptPath], {
+      cwd: process.cwd(),
+      encoding: 'utf8',
+    });
+
+    expect(packageJson.scripts?.['release:owner:check']).toBe(
+      'node scripts/verify-ryvro-owner-handoff.js'
+    );
+    expect(packageJson.scripts?.['release:check']).toContain('npm run release:owner:check');
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain('Ryvro owner handoff check passed');
+    expect(script).toContain('formal trademark/legal clearance');
+    expect(script).toContain('App Store Connect app name `Ryvro Shift Planner`');
+    expect(script).toContain('Google Play title `Ryvro Shift Planner`');
+    expect(script).toContain('Create RevenueCat account');
+    expect(script).toContain('Run `eas login` then `eas init`');
+    expect(script).toContain('Physical iOS and Android smoke tests');
+    expect(script).toContain('Store screenshots, app privacy, data safety, content rating');
+    expect(script).toContain('Production Firebase deploy and smoke test');
+    expect(script).toContain(
+      'launch is not complete until the account-only and physical-device checks above are done'
+    );
+  });
+
   it('does not keep retired Ellie app paths in tracked release artifacts', () => {
     const gitignore = fs.readFileSync(path.join(process.cwd(), '.gitignore'), 'utf8');
     const artifactFiles = walkFiles(path.join(process.cwd(), 'artifacts')).filter((file) =>
@@ -1483,10 +1510,13 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('109 Jest suites / 1,755 tests');
     expect(readinessReport).toContain('109 Jest suites / 1,756 tests');
     expect(readinessReport).toContain('109 Jest suites / 1,757 tests');
+    expect(readinessReport).toContain('109 Jest suites / 1,758 tests');
     expect(readinessReport).toContain('Release native scaffold preflight now runs');
     expect(readinessReport).toContain('adding the Ryvro native scaffold preflight');
     expect(readinessReport).toContain('Store readiness preflight now runs');
     expect(readinessReport).toContain('adding the store metadata preflight');
+    expect(readinessReport).toContain('Owner handoff preflight now runs');
+    expect(readinessReport).toContain('adding the owner-only launch blocker preflight');
     expect(readinessReport).toContain(
       'GitHub Actions CI now includes a dedicated `Release Check` job'
     );
@@ -1886,6 +1916,8 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('eas submit --platform ios --latest');
     expect(ownerRunbook).toContain('eas submit --platform android --latest');
     expect(ownerRunbook).toContain('109 Jest suites, 1,757 tests');
+    expect(ownerRunbook).toContain('npm run release:owner:check');
+    expect(ownerRunbook).toContain('not-yet-live stop gates');
     expect(ownerRunbook).toContain('CI run `26713338408`');
     expect(ownerRunbook).toContain('commit `37057ae`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
@@ -2477,6 +2509,7 @@ describe('Ryvro environment template', () => {
     expect(ciWorkflow).toContain('run: npm run release:check');
     expect(packageJson.scripts?.['release:check']).toContain('npm run release:native:check');
     expect(packageJson.scripts?.['release:check']).toContain('npm run release:store:check');
+    expect(packageJson.scripts?.['release:check']).toContain('npm run release:owner:check');
   });
 
   it('keeps active voice backend source on Ryvro naming', () => {
