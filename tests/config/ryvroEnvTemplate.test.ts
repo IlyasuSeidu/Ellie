@@ -517,11 +517,19 @@ describe('Ryvro environment template', () => {
     expect(packageJson.scripts?.['release:check']).toContain('npm run release:owner:check');
     expect(result.status).toBe(0);
     expect(result.stdout).toContain('Ryvro owner handoff check passed');
+    expect(script).toContain("const readme = read('README.md')");
+    expect(script).toContain(
+      "const deploymentPlan = read('docs/MINIMUM_VIABLE_DEPLOYMENT_PLAN.md')"
+    );
     expect(script).toContain('formal trademark/legal clearance');
     expect(script).toContain('App Store Connect app name `Ryvro Shift Planner`');
     expect(script).toContain('Google Play title `Ryvro Shift Planner`');
     expect(script).toContain('Create RevenueCat account');
     expect(script).toContain('Run `eas login` then `eas init`');
+    expect(script).toContain('not live in the App Store or Google Play yet');
+    expect(script).toContain('npm run release:owner:check');
+    expect(script).toContain('owner handoff preflight');
+    expect(script).toContain('Manual smoke tests pass on 2 physical devices');
     expect(script).toContain('Physical iOS and Android smoke tests');
     expect(script).toContain('Store screenshots, app privacy, data safety, content rating');
     expect(script).toContain('Production Firebase deploy and smoke test');
@@ -1045,6 +1053,10 @@ describe('Ryvro environment template', () => {
     expect(deploymentPlan).toContain('Repository: repo root');
     expect(deploymentPlan).toContain('Last updated: May 31, 2026');
     expect(deploymentPlan).toContain('cd <repo-root>');
+    expect(deploymentPlan).toContain(
+      'including the native scaffold, store readiness, owner handoff preflight, and backend build gates'
+    );
+    expect(deploymentPlan).toContain('npm run release:owner:check');
     expect(deploymentPlan).toContain('Hide Schedule and Stats tabs for v1.');
     expect(deploymentPlan).toContain(
       'Schedule and Stats tabs are not visible anywhere in the bottom navigation.'
@@ -1103,6 +1115,9 @@ describe('Ryvro environment template', () => {
       '[x] Add repo-side Ryvro Pro subscription gating, paywall, and RevenueCat runtime guards'
     );
     expect(deploymentPlan).toContain(
+      '[x] Add owner handoff preflight for account-only blockers, not-live status, physical-device QA, and store submission handoff docs'
+    );
+    expect(deploymentPlan).toContain(
       '[ ] Create RevenueCat `pro` entitlement, `default` offering, and both Ryvro store products'
     );
     expect(deploymentPlan).toContain(
@@ -1138,23 +1153,24 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('109 Jest suites / 1,757 tests / 4 snapshots');
+    expect(readme).toContain('109 Jest suites / 1,758 tests / 4 snapshots');
     expect(readme).toContain('the Ryvro native scaffold preflight');
     expect(readme).toContain('the store readiness preflight');
-    expect(readme).toContain('Recent pushed PR gate');
-    expect(readme).toContain('GitHub Actions CI passed Unit Tests, Lint and Type Check');
-    expect(readme).toContain('run `26712571047`');
+    expect(readme).toContain('the owner handoff preflight');
+    expect(readme).toContain('Latest pushed PR gate');
+    expect(readme).toContain('GitHub Actions CI run `26713667593`');
+    expect(readme).toContain('commit `55beb97`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
-    expect(readme).toContain('Testing infrastructure (1,757 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,758 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,757 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,758 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-05-31 release check)');
-    expect(readme).toContain('Total Tests**: 1,757 passing (109 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Total Tests**: 1,758 passing (109 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -1468,6 +1484,8 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('CI run `26711015976`');
     expect(readinessReport).toContain('commit `4d7519e`');
     expect(readinessReport).toContain('CI run `26712571047`');
+    expect(readinessReport).toContain('commit `55beb97`');
+    expect(readinessReport).toContain('CI run `26713667593`');
     expect(readinessReport).toContain('commit `37057ae`');
     expect(readinessReport).toContain('CI run `26713338408`');
     expect(readinessReport).toContain('commit `1deb795`');
@@ -1915,11 +1933,12 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('Play internal testing install');
     expect(ownerRunbook).toContain('eas submit --platform ios --latest');
     expect(ownerRunbook).toContain('eas submit --platform android --latest');
-    expect(ownerRunbook).toContain('109 Jest suites, 1,757 tests');
+    expect(ownerRunbook).toContain('109 Jest suites, 1,758 tests');
     expect(ownerRunbook).toContain('npm run release:owner:check');
+    expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');
-    expect(ownerRunbook).toContain('CI run `26713338408`');
-    expect(ownerRunbook).toContain('commit `37057ae`');
+    expect(ownerRunbook).toContain('CI run `26713667593`');
+    expect(ownerRunbook).toContain('commit `55beb97`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');

@@ -44,7 +44,7 @@ You can submit only when all items are true:
 
 1. `npm run lint` passes.
 2. `npm run type-check` passes.
-3. `npm run release:check` passes with exit code 0.
+3. `npm run release:check` passes with exit code 0, including the native scaffold, store readiness, owner handoff preflight, and backend build gates.
 4. iOS Release Archive succeeds with production bundle ID.
 5. Android `bundleRelease` succeeds with production keystore signing.
 6. No restricted/invalid Android permissions remain unless intentionally justified.
@@ -158,6 +158,7 @@ Acceptance criteria:
 Current status:
 
 - `npm run release:check` is green on the Ryvro branch.
+- `npm run release:owner:check` is green and guards the not-live, owner-account, and physical-device launch blockers in the tracked handoff docs.
 - Keep it mandatory before each release candidate.
 
 Files:
@@ -171,12 +172,14 @@ Implementation steps:
    ```bash
    cd <repo-root>
    npm run release:native:check
+   npm run release:owner:check
    npm run release:check
    ```
 
 Acceptance criteria:
 
 - `release:native:check` exits with code 0 and reports the tracked Ryvro native identity source of truth.
+- `release:owner:check` exits with code 0 and confirms the owner-only launch blockers are still documented.
 - `release:check` exits with code 0 consistently.
 
 ## A5) Versioning + build numbers for stores
@@ -239,7 +242,7 @@ Acceptance criteria:
 
 Current status:
 
-- README now includes a Ryvro release status snapshot with repo-proven launch state, latest local/CI gates, and the owner/account/device work still required before the app is live.
+- README now includes a Ryvro release status snapshot with repo-proven launch state, latest local/CI gates, and the owner/account/device work still required before public store launch.
 
 Files:
 
@@ -288,6 +291,7 @@ npm run lint
 npm run type-check
 npm test -- --runInBand --silent
 npm run backend:build
+npm run release:owner:check
 npm run release:check
 ```
 
@@ -453,6 +457,7 @@ Day 7:
 - [ ] Generate/upload the real Android release keystore through EAS/local secrets before store upload
 - [x] Remove unneeded Android permissions from active app config
 - [x] Ensure `npm run release:check` exits 0
+- [x] Add owner handoff preflight for account-only blockers, not-live status, physical-device QA, and store submission handoff docs
 - [x] Pin first-store-build iOS build number + Android versionCode across tracked config
 - [ ] Increment iOS build number + Android versionCode again after each uploaded binary
 - [x] Verify every visible tab/action is complete or routed to an implemented launch surface
@@ -477,6 +482,10 @@ Mitigation: Remove risky permissions unless strictly required; document justific
 
 Risk: CI appears green but release check fails locally.  
 Mitigation: Make `release:check` mandatory before every release candidate tag.
+
+Risk: Repo docs overstate launch readiness while owner-only account, domain, RevenueCat `pro` entitlement, App Store Connect + Play Console metadata/privacy/forms, screenshots, and physical-device work remain incomplete.
+
+Mitigation: Keep `release:owner:check` in the release gate so the not-live stop gates, Manual smoke tests pass on 2 physical devices requirement, and account-only blockers stay visible before every release candidate.
 
 Risk: Secondary tabs or actions create poor first impression if they look unfinished.  
 Mitigation: Keep Schedule and Stats hidden until their full launch surfaces are ready.

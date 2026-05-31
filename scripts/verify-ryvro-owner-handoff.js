@@ -35,6 +35,8 @@ function requireNotMatches(content, pattern, label) {
 }
 
 const releaseTasks = read('RYVRO_RELEASE_TASKS.md');
+const readme = read('README.md');
+const deploymentPlan = read('docs/MINIMUM_VIABLE_DEPLOYMENT_PLAN.md');
 const readinessReport = read('docs/RYVRO_RELEASE_READINESS_REPORT.md');
 const ownerRunbook = read('docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md');
 const externalSetup = read('docs/RYVRO_EXTERNAL_SERVICE_SETUP.md');
@@ -57,6 +59,15 @@ const submissionDraft = read('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
   ['Run `npm run release:env:check`, then push `.env` secrets to EAS', releaseTasks],
   ['Build production iOS binary', releaseTasks],
   ['Build production Android AAB', releaseTasks],
+  ['not live in the App Store or Google Play yet', readme],
+  ['npm run release:owner:check', readme],
+  ['owner handoff preflight', readme],
+  ['Physical iOS and Android device smoke tests', readme],
+  ['npm run release:owner:check', deploymentPlan],
+  ['owner handoff preflight', deploymentPlan],
+  ['RevenueCat `pro` entitlement', deploymentPlan],
+  ['Manual smoke tests pass on 2 physical devices', deploymentPlan],
+  ['App Store Connect + Play Console metadata/privacy/forms, screenshots', deploymentPlan],
   ['Physical iOS and Android smoke tests', ownerRunbook],
   ['Store screenshots, app privacy, data safety, content rating', ownerRunbook],
   ['Production `ryvroBrain` and `parseShiftScheduleDescription` endpoints', ownerRunbook],
@@ -127,6 +138,8 @@ const unsafeCompletionPattern =
   /(app is live|ready for production submission|all launch blockers are complete)/i;
 requireNotMatches(readinessReport, unsafeCompletionPattern, 'readiness report');
 requireNotMatches(ownerRunbook, unsafeCompletionPattern, 'owner runbook');
+requireNotMatches(readme, unsafeCompletionPattern, 'README release snapshot');
+requireNotMatches(deploymentPlan, unsafeCompletionPattern, 'minimum viable deployment plan');
 
 if (errors.length > 0) {
   console.error('Ryvro owner handoff check failed:');
