@@ -71,14 +71,6 @@ function requireMatchingValue(errors, env, key, expectedKey, message) {
   }
 }
 
-function isHttpsUrl(value) {
-  try {
-    return new URL(value).protocol === 'https:';
-  } catch {
-    return false;
-  }
-}
-
 function isProductionHttpsUrl(value) {
   try {
     const parsed = new URL(value);
@@ -87,7 +79,27 @@ function isProductionHttpsUrl(value) {
       parsed.hostname !== 'localhost' &&
       parsed.hostname !== '127.0.0.1' &&
       !parsed.hostname.endsWith('.local') &&
+      !parsed.hostname.includes('example') &&
       !parsed.hostname.includes('ellie')
+    );
+  } catch {
+    return false;
+  }
+}
+
+function isRyvroPublicUrl(value, pathPattern) {
+  try {
+    const parsed = new URL(value);
+
+    return (
+      parsed.protocol === 'https:' &&
+      parsed.hostname.includes('ryvro') &&
+      parsed.hostname !== 'localhost' &&
+      parsed.hostname !== '127.0.0.1' &&
+      !parsed.hostname.endsWith('.local') &&
+      !parsed.hostname.includes('example') &&
+      !hasRetiredRyvroName(parsed.hostname) &&
+      pathPattern.test(parsed.pathname)
     );
   } catch {
     return false;
@@ -282,17 +294,23 @@ function main() {
     errors,
     env,
     'LEGAL_PRIVACY_POLICY_URL',
-    isHttpsUrl,
-    'must be the live HTTPS Ryvro privacy policy URL'
+    (value) => isRyvroPublicUrl(value, /privacy/i),
+    'must be the live HTTPS Ryvro privacy policy URL on a Ryvro-owned domain'
   );
   requireValue(
     errors,
     env,
     'LEGAL_TERMS_OF_SERVICE_URL',
-    isHttpsUrl,
-    'must be the live HTTPS Ryvro terms URL'
+    (value) => isRyvroPublicUrl(value, /(terms|legal)/i),
+    'must be the live HTTPS Ryvro terms URL on a Ryvro-owned domain'
   );
-  requireValue(errors, env, 'SUPPORT_URL', isHttpsUrl, 'must be the live HTTPS Ryvro support URL');
+  requireValue(
+    errors,
+    env,
+    'SUPPORT_URL',
+    (value) => isRyvroPublicUrl(value, /(support|help)/i),
+    'must be the live HTTPS Ryvro support URL on a Ryvro-owned domain'
+  );
 
   if (env.ELLIE_BRAIN_URL?.trim()) {
     errors.push('ELLIE_BRAIN_URL: leave empty for new Ryvro production builds');

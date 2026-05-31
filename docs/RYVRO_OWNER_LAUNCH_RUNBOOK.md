@@ -203,8 +203,8 @@ Evidence to record:
 
 ## Current Repo Evidence
 
-- Latest local gate: `npm run release:check` passed on 2026-05-31 with 109 Jest suites, 1,755 tests, 4 snapshots, the Ryvro native scaffold preflight, and backend build.
-- Latest pushed PR gate before this runbook update: GitHub Actions CI run `26712150556` passed Unit Tests, Lint and Type Check, and Build Check on commit `1deb795`.
+- Latest local gate: `npm run release:check` passed on 2026-05-31 with 109 Jest suites, 1,756 tests, 4 snapshots, the Ryvro native scaffold preflight, and backend build.
+- Latest pushed PR gate before this env-url preflight update: GitHub Actions CI run `26712571047` passed Unit Tests, Lint and Type Check, and Build Check on commit `4d7519e`.
 - Current repo branch: `codex/ryvro-rebrand-rollout`.
 
 Keep this section current whenever a new launch-readiness commit is pushed and CI passes.

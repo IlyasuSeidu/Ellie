@@ -643,6 +643,7 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('must match REVENUECAT_IOS_KEY');
     expect(script).toContain('must match REVENUECAT_ANDROID_KEY');
     expect(script).toContain('must match REVENUECAT_ENTITLEMENT_ID');
+    expect(script).toContain('Ryvro-owned domain');
     expect(envExample).toContain('Ryvro local development environment template');
     expect(envExample).toContain('For release builds, copy .env.production.example to .env');
     expect(envExample).toContain('npm run release:env:check');
@@ -680,11 +681,11 @@ describe('Ryvro environment template', () => {
     expect(externalSetup).toContain(
       'rejects retired Ellie/ShiftSync Firebase project IDs and Cloud Function hosts'
     );
-    expect(externalSetup).toContain('live HTTPS `LEGAL_PRIVACY_POLICY_URL`');
+    expect(externalSetup).toContain('live HTTPS Ryvro-owned `LEGAL_PRIVACY_POLICY_URL`');
     expect(releaseTasks).toContain('npm run release:env:check');
     expect(releaseTasks).toContain('Copy `.env.production.example` to `.env`');
     expect(releaseTasks).toContain('Reject retired Ellie/ShiftSync Firebase project IDs');
-    expect(releaseTasks).toContain('live HTTPS legal/support URLs');
+    expect(releaseTasks).toContain('live HTTPS Ryvro-owned legal/support URLs');
   });
 
   it('accepts a production env only when Expo public service values mirror native values', () => {
@@ -896,6 +897,41 @@ describe('Ryvro environment template', () => {
     expect(retiredHostResult.stderr).toContain('retired Ellie host');
   });
 
+  it('rejects production env files with generic or mismatched legal and support URLs', () => {
+    const genericPrivacyResult = runProductionEnvCheck(
+      validProductionEnv.replace(
+        'LEGAL_PRIVACY_POLICY_URL=https://getryvro.com/privacy',
+        'LEGAL_PRIVACY_POLICY_URL=https://example.com/privacy'
+      )
+    );
+
+    expect(genericPrivacyResult.status).toBe(1);
+    expect(genericPrivacyResult.stderr).toContain('LEGAL_PRIVACY_POLICY_URL');
+    expect(genericPrivacyResult.stderr).toContain('Ryvro-owned domain');
+
+    const wrongTermsPathResult = runProductionEnvCheck(
+      validProductionEnv.replace(
+        'LEGAL_TERMS_OF_SERVICE_URL=https://getryvro.com/terms',
+        'LEGAL_TERMS_OF_SERVICE_URL=https://getryvro.com/privacy'
+      )
+    );
+
+    expect(wrongTermsPathResult.status).toBe(1);
+    expect(wrongTermsPathResult.stderr).toContain('LEGAL_TERMS_OF_SERVICE_URL');
+    expect(wrongTermsPathResult.stderr).toContain('Ryvro terms URL');
+
+    const retiredSupportHostResult = runProductionEnvCheck(
+      validProductionEnv.replace(
+        'SUPPORT_URL=https://getryvro.com/support',
+        'SUPPORT_URL=https://support.ellie-shift.example.com/support'
+      )
+    );
+
+    expect(retiredSupportHostResult.status).toBe(1);
+    expect(retiredSupportHostResult.stderr).toContain('SUPPORT_URL');
+    expect(retiredSupportHostResult.stderr).toContain('Ryvro support URL');
+  });
+
   it('keeps public clearance evidence current while preserving account-only caveats', () => {
     const externalSetup = fs.readFileSync(
       path.join(process.cwd(), 'docs/RYVRO_EXTERNAL_SERVICE_SETUP.md'),
@@ -1053,22 +1089,22 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('109 Jest suites / 1,755 tests / 4 snapshots');
+    expect(readme).toContain('109 Jest suites / 1,756 tests / 4 snapshots');
     expect(readme).toContain('the Ryvro native scaffold preflight');
     expect(readme).toContain('Recent pushed PR gate');
     expect(readme).toContain('GitHub Actions CI passed Unit Tests, Lint and Type Check');
-    expect(readme).toContain('run `26712150556`');
+    expect(readme).toContain('run `26712571047`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
-    expect(readme).toContain('Testing infrastructure (1,755 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,756 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,755 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,756 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-05-31 release check)');
-    expect(readme).toContain('Total Tests**: 1,755 passing (109 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Total Tests**: 1,756 passing (109 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -1380,6 +1416,8 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('CI run `26708126932`');
     expect(readinessReport).toContain('commit `2202b94`');
     expect(readinessReport).toContain('CI run `26711015976`');
+    expect(readinessReport).toContain('commit `4d7519e`');
+    expect(readinessReport).toContain('CI run `26712571047`');
     expect(readinessReport).toContain('commit `1deb795`');
     expect(readinessReport).toContain('CI run `26712150556`');
     expect(readinessReport).toContain('commit `134a5ca`');
@@ -1418,8 +1456,11 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('109 Jest suites / 1,753 tests');
     expect(readinessReport).toContain('109 Jest suites / 1,754 tests');
     expect(readinessReport).toContain('109 Jest suites / 1,755 tests');
+    expect(readinessReport).toContain('109 Jest suites / 1,756 tests');
     expect(readinessReport).toContain('Release native scaffold preflight now runs');
     expect(readinessReport).toContain('adding the Ryvro native scaffold preflight');
+    expect(readinessReport).toContain('legal and support URLs to be live HTTPS Ryvro-owned URLs');
+    expect(readinessReport).toContain('requiring Ryvro-owned legal/support URLs');
     expect(readinessReport).toContain('aligning dynamic Expo version fallbacks');
     expect(readinessReport).toContain('refreshing public clearance evidence');
     expect(readinessReport).toContain(
@@ -1809,9 +1850,9 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('Play internal testing install');
     expect(ownerRunbook).toContain('eas submit --platform ios --latest');
     expect(ownerRunbook).toContain('eas submit --platform android --latest');
-    expect(ownerRunbook).toContain('109 Jest suites, 1,755 tests');
-    expect(ownerRunbook).toContain('CI run `26712150556`');
-    expect(ownerRunbook).toContain('commit `1deb795`');
+    expect(ownerRunbook).toContain('109 Jest suites, 1,756 tests');
+    expect(ownerRunbook).toContain('CI run `26712571047`');
+    expect(ownerRunbook).toContain('commit `4d7519e`');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');
 
