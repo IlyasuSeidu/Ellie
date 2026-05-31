@@ -172,6 +172,8 @@ REVENUECAT_ENTITLEMENT_ID=pro
 EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID=pro
 ```
 
+Fill these in `.env` from the `.env.production.example` slots after creating the Ryvro RevenueCat apps, products, entitlement, and default offering. Keep the same keys in `.env.example` as local-development placeholders only.
+
 Important:
 
 - Do not use RevenueCat `test_` API keys for release, store, or E2E simulator QA. The app treats `test_` keys as unavailable launch keys so RevenueCat's release-mode test-key protection cannot block QA with a native alert.
@@ -186,6 +188,7 @@ Verification:
 - Restore purchases succeeds.
 - Profile shows `Ryvro Pro - Active` after entitlement activation.
 - Center voice button unlocks when Pro is active.
+- `npm run release:env:check` passes with the real RevenueCat native/public key mirrors before secrets are pushed to EAS.
 
 ## App Store Connect
 

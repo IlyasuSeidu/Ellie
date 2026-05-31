@@ -1056,6 +1056,9 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).toContain('PRODUCT_NAME = Ryvro');
     expect(releaseTasks).toContain('internal generated workspace/scheme');
     expect(releaseTasks).toContain(
+      'Add RevenueCat native/public key and entitlement placeholders to `.env.example`, `.env.production.example`, runtime config, and `npm run release:env:check`'
+    );
+    expect(releaseTasks).toContain(
       'Add app-level offline/pending-sync status visibility for queued local writes'
     );
     expect(releaseTasks).toContain(
@@ -1407,6 +1410,12 @@ describe('Ryvro environment template', () => {
     expect(externalSetup).toContain('ryvro_pro_annual');
     expect(externalSetup).toContain('Do not use RevenueCat `test_` API keys');
     expect(externalSetup).toContain('Do not configure retired Ellie entitlement IDs');
+    expect(externalSetup).toContain(
+      'Fill these in `.env` from the `.env.production.example` slots'
+    );
+    expect(externalSetup).toContain(
+      '`npm run release:env:check` passes with the real RevenueCat native/public key mirrors before secrets are pushed to EAS'
+    );
     expect(externalSetup).not.toContain('ellie_pro');
     expect(externalSetup).not.toContain('Ellie Shift Planner Pro');
     expect(externalSetup).not.toContain('Keep old entitlement aliases');

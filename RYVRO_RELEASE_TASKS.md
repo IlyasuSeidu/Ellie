@@ -53,19 +53,19 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 > Source: current Ryvro subscription implementation and release-blocker audit.
 > **Must be complete before Phase 4.** Apple does not allow retroactively paywalling a feature that shipped free. The subscription binary must be in the first submitted version.
 
-| #   | Task                                                                                                                                                                                 | Status  |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- |
-| 31  | Install RevenueCat SDK: `npx expo install react-native-purchases` + `react-native-purchases-ui`                                                                                      | ✅ Done |
-| 32  | Create `src/contexts/SubscriptionContext.tsx` — RevenueCat init, `isPro` state, `openPaywall`, `restorePurchases`                                                                    | ✅ Done |
-| 33  | Create `src/hooks/useSubscription.ts` — convenience re-export of `useSubscription`                                                                                                   | ✅ Done |
-| 34  | Create `src/components/subscription/PadlockOverlay.tsx` — absolute overlay rendered over locked calendar weeks                                                                       | ✅ Done |
-| 35  | Create `src/screens/subscription/PaywallScreen.tsx` — full-screen paywall: gold mic hero, 5 benefit lines, annual pre-selected, "Start 7-Day Free Trial" CTA, Restore Purchases link | ✅ Done |
-| 36  | Edit `App.tsx` — wrap app with `<SubscriptionProvider>`, render `<PaywallScreen>` as full-screen overlay when `paywallVisible` is true                                               | ✅ Done |
-| 37  | Edit `CustomTabBar.tsx` — gate center mic button: `isPro` → `openModal()`, not Pro → `openPaywall()`                                                                                 | ✅ Done |
-| 38  | Edit `MonthlyCalendarCard.tsx` + dashboard wiring — current week renders free; all other weeks get `<PadlockOverlay>` at 35% opacity when not Pro                                    | ✅ Done |
-| 39  | Edit `ProfileScreen.tsx` — add "Ryvro Pro — Active ✓" / "Upgrade to Ryvro Pro" row after Work Stats section                                                                          | ✅ Done |
-| 40  | Add `REVENUECAT_IOS_KEY` and `REVENUECAT_ANDROID_KEY` placeholders to `.env.example` / runtime config (fill real `.env` values after Task 42)                                        | ✅ Done |
-| 41  | Re-run full quality gate after subscription code is added: `lint` + `type-check` + `test` + `release:check` — all must pass                                                          | ✅ Done |
+| #   | Task                                                                                                                                                                                                    | Status  |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| 31  | Install RevenueCat SDK: `npx expo install react-native-purchases` + `react-native-purchases-ui`                                                                                                         | ✅ Done |
+| 32  | Create `src/contexts/SubscriptionContext.tsx` — RevenueCat init, `isPro` state, `openPaywall`, `restorePurchases`                                                                                       | ✅ Done |
+| 33  | Create `src/hooks/useSubscription.ts` — convenience re-export of `useSubscription`                                                                                                                      | ✅ Done |
+| 34  | Create `src/components/subscription/PadlockOverlay.tsx` — absolute overlay rendered over locked calendar weeks                                                                                          | ✅ Done |
+| 35  | Create `src/screens/subscription/PaywallScreen.tsx` — full-screen paywall: gold mic hero, 5 benefit lines, annual pre-selected, "Start 7-Day Free Trial" CTA, Restore Purchases link                    | ✅ Done |
+| 36  | Edit `App.tsx` — wrap app with `<SubscriptionProvider>`, render `<PaywallScreen>` as full-screen overlay when `paywallVisible` is true                                                                  | ✅ Done |
+| 37  | Edit `CustomTabBar.tsx` — gate center mic button: `isPro` → `openModal()`, not Pro → `openPaywall()`                                                                                                    | ✅ Done |
+| 38  | Edit `MonthlyCalendarCard.tsx` + dashboard wiring — current week renders free; all other weeks get `<PadlockOverlay>` at 35% opacity when not Pro                                                       | ✅ Done |
+| 39  | Edit `ProfileScreen.tsx` — add "Ryvro Pro — Active ✓" / "Upgrade to Ryvro Pro" row after Work Stats section                                                                                             | ✅ Done |
+| 40  | Add RevenueCat native/public key and entitlement placeholders to `.env.example`, `.env.production.example`, runtime config, and `npm run release:env:check` (fill real `.env` values after Tasks 42–48) | ✅ Done |
+| 41  | Re-run full quality gate after subscription code is added: `lint` + `type-check` + `test` + `release:check` — all must pass                                                                             | ✅ Done |
 
 ---
 
