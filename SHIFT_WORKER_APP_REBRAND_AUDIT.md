@@ -44,10 +44,11 @@ Completed in the current working tree:
 - Expanded E2E onboarding fixtures for launch QA personas including nurse, security officer, firefighter, plant operator, linehaul driver, warehouse lead, hotel duty manager, airport operations coordinator, offshore technician, and a mining/FIFO operator.
 - Cleaned remaining launch-critical broad-market copy in README, English onboarding feature descriptions, selected translated placeholders/social proof, and onboarding icon source guidance.
 - Hardened tracked generated-content guidance and publishable build-in-public packs so they use Ryvro naming, broad shift-worker discovery tags, and FIFO/shift-worker audience language instead of stale Ellie or mining-only tags.
-- Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the launch-readiness cleanup. The latest pushed CI run for this branch passed on 2026-05-31: CI run `26727022362` on commit `90e3e04`.
+- Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the launch-readiness cleanup. The latest pushed CI run for this branch passed on 2026-05-31: CI run `26727184078` on commit `35a453c`.
 - Aligned the active deployment guide to the committed Ryvro `eas.json`, dynamic `app.config.js`, and guarded `npm run release:submit:check` plus `eas submit --latest` store-submission flow.
 - Renamed retired Ellie storage-key code symbols to neutral Ryvro-era `retired...` names while preserving the raw old keys only for migration/removal.
 - Tightened the Ryvro native scaffold verifier so active release checks inspect only `ios/RyvroShiftPlanner` generated paths instead of accepting old iOS project-name fallbacks.
+- Confirmed active wake-word keyword/model guidance uses Ryvro filenames (`ryvro_ios.ppn`, `ryvro_android.ppn`, and optional `openwakeword/ryvro.onnx`) with no active `hey_ellie`, `ellie_ios`, or `ellie_android` launch defaults.
 - Added built-in fallback parser regression coverage across 20 shift-worker industry prompts so the AI builder fallback is proven beyond mining/FIFO examples.
 - Added AI builder fallback metadata, friendlier fallback copy, and analytics events for parser completion, local fallback use, clarification, draft acceptance, manual edit after draft, and save context.
 - Tightened exception, calendar, and reminder launch copy so one-off rows say they changed just that day, calendar export promises shift times/locations/notes, and smart reminder commute copy defaults to work location instead of site.
@@ -83,7 +84,7 @@ Still pending outside this repo or intentionally kept for compatibility:
 - RevenueCat dashboard product/entitlement renames if the production dashboard still uses old Ellie/miner names. Repo-side setup values and user-facing Ryvro Pro copy are documented and guarded by tests.
 - Push notification, analytics, Sentry, support-email, privacy-policy, terms, website, and store-listing updates outside the repo. Repo-side source copy and setup handoff now exist in `docs/RYVRO_STORE_LISTING.md`, `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`, and `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md`.
 - Production backend deploy and smoke test for `ryvroBrain` and `parseShiftScheduleDescription`. Repo code no longer exposes the retired `ellieBrain` endpoint for new Ryvro builds, but the actual Firebase project still needs deploy output and smoke evidence.
-- Optional internal code-symbol cleanup for old technical names such as `EllieButton`, internal `Ellie` tab route, and wake-word model filenames. The raw `@ellie_language` and `checklist:ask_ellie_done` storage strings remain only as retired migration/removal inputs behind neutral Ryvro-era code symbols.
+- Any remaining legacy `Ellie` references are intentional compatibility inputs, migration removals, historical evidence, or test guards. The raw `@ellie_language` and `checklist:ask_ellie_done` storage strings remain only as retired migration/removal inputs behind neutral Ryvro-era code symbols.
 
 ## External Clearance Evidence: 2026-05-28
 

@@ -49,6 +49,24 @@ describe('Ryvro native wake-word assets', () => {
     ).toBe(false);
   });
 
+  it('documents only Ryvro keyword filenames for launch wake-word setup', () => {
+    const envExample = read('.env.example');
+    const envProductionExample = read('.env.production.example');
+    const setupGuide = read('docs/wake-word-ryvro.md');
+    const wakeWordServiceTests = read('src/services/__tests__/WakeWordService.test.ts');
+    const launchWakeWordDocs = [envExample, envProductionExample, setupGuide].join('\n');
+    const launchWakeWordSources = [launchWakeWordDocs, wakeWordServiceTests].join('\n');
+
+    expect(launchWakeWordDocs).toContain('WAKE_WORD_PHRASE=Ryvro');
+    expect(launchWakeWordDocs).toContain('ryvro_android.ppn');
+    expect(launchWakeWordDocs).toContain('ryvro_ios.ppn');
+    expect(wakeWordServiceTests).toContain('openwakeword/ryvro.onnx');
+    expect(launchWakeWordSources).not.toContain('WAKE_WORD_PHRASE=Hey Ellie');
+    expect(launchWakeWordSources).not.toContain('ellie_android.ppn');
+    expect(launchWakeWordSources).not.toContain('ellie_ios.ppn');
+    expect(launchWakeWordSources).not.toContain('hey_ellie');
+  });
+
   it('uses Ryvro as the native fallback keyword label', () => {
     const iosModule = read('modules/ryvro-openwakeword/ios/RyvroOpenWakeWordModule.swift');
     const androidModule = read(
