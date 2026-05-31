@@ -179,6 +179,7 @@ npm ci --legacy-peer-deps
 npm run lint
 npm run type-check
 npm test -- --runInBand --silent
+npm run release:native:check
 npm run backend:build
 npm run release:check
 ```
@@ -211,6 +212,7 @@ cd android && ./gradlew bundleRelease
 - [x] `npm run lint` passes
 - [x] `npm run type-check` passes
 - [x] `npm test -- --runInBand --silent` passes cleanly
+- [x] `npm run release:native:check` exits with code 0
 - [x] `npm run backend:build` passes
 - [x] `npm run release:check` exits with code 0
 

@@ -170,11 +170,13 @@ Implementation steps:
 1. Re-run:
    ```bash
    cd <repo-root>
+   npm run release:native:check
    npm run release:check
    ```
 
 Acceptance criteria:
 
+- `release:native:check` exits with code 0 and reports the tracked Ryvro native identity source of truth.
 - `release:check` exits with code 0 consistently.
 
 ## A5) Versioning + build numbers for stores

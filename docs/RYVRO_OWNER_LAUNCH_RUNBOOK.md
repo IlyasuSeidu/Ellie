@@ -77,9 +77,10 @@ Owner-only steps:
 - Create Google OAuth web, iOS, and Android clients in the same project.
 - Deploy backend functions to the Ryvro Firebase project.
 - Configure `.env` from `.env.production.example` with real values.
-- Run:
+- Run the repo preflights:
 
 ```bash
+npm run release:native:check
 npm run release:env:check
 ```
 
@@ -93,6 +94,7 @@ Evidence to record:
 
 - Firebase project ID and app IDs.
 - OAuth client IDs.
+- `npm run release:native:check` output.
 - `npm run release:env:check` output.
 - EAS secret push confirmation.
 - `curl` smoke-test output for `RYVRO_BRAIN_URL`.
@@ -201,7 +203,7 @@ Evidence to record:
 
 ## Current Repo Evidence
 
-- Latest local gate: `npm run release:check` passed on 2026-05-31 with 109 Jest suites, 1,754 tests, 4 snapshots, and backend build.
+- Latest local gate: `npm run release:check` passed on 2026-05-31 with 109 Jest suites, 1,755 tests, 4 snapshots, the Ryvro native scaffold preflight, and backend build.
 - Latest pushed PR gate before this runbook update: GitHub Actions CI run `26712150556` passed Unit Tests, Lint and Type Check, and Build Check on commit `1deb795`.
 - Current repo branch: `codex/ryvro-rebrand-rollout`.
 
