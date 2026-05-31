@@ -283,9 +283,17 @@ Example:
 
 Ryvro Support
 
-## Firebase Email Template Copy
+## Firebase Auth Email Template Copy
 
 Use these when configuring Firebase Auth templates.
+
+Console settings:
+
+- Sender name: Ryvro Support
+- Reply-to email: support@getryvro.com
+- Public action domain: getryvro.com
+- Continue URL / action URL domain: https://getryvro.com
+- Do not use retired Ellie sender names, reply-to addresses, or action domains in the production Firebase project.
 
 ### Verification Email
 
@@ -300,6 +308,22 @@ Confirm this email address so you can use it with Ryvro.
 Verify email: %LINK%
 
 If you did not create a Ryvro account, you can ignore this email.
+
+Ryvro Support
+
+### Email Change Confirmation
+
+Subject: Your Ryvro email was changed
+
+Body:
+
+Hi,
+
+The email address on your Ryvro account was changed.
+
+If you made this change, no action is needed.
+
+If you did not make this change, contact Ryvro Support immediately at support@getryvro.com.
 
 Ryvro Support
 

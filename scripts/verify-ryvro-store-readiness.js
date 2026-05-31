@@ -101,6 +101,18 @@ const screenshotPlan = extractSection(storeListing, 'Submission Screenshot Captu
     'privacy/support templates',
   ],
   ['Support email: `support@getryvro.com`', privacySupport, 'privacy/support templates'],
+  ['## Firebase Auth Email Template Copy', privacySupport, 'privacy/support templates'],
+  ['Sender name: Ryvro Support', privacySupport, 'privacy/support templates'],
+  ['Reply-to email: support@getryvro.com', privacySupport, 'privacy/support templates'],
+  ['Public action domain: getryvro.com', privacySupport, 'privacy/support templates'],
+  [
+    'Continue URL / action URL domain: https://getryvro.com',
+    privacySupport,
+    'privacy/support templates',
+  ],
+  ['Subject: Verify your Ryvro email', privacySupport, 'privacy/support templates'],
+  ['Subject: Reset your Ryvro password', privacySupport, 'privacy/support templates'],
+  ['Subject: Your Ryvro email was changed', privacySupport, 'privacy/support templates'],
 ].forEach(([expected, content, label]) => requireIncludes(content, expected, label));
 
 if (characterCount(appStoreName) > 30) {

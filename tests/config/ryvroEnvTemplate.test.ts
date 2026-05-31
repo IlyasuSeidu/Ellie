@@ -2074,6 +2074,14 @@ describe('Ryvro environment template', () => {
       'Account deletion does not automatically cancel App Store or Google Play subscriptions'
     );
     expect(privacySupport).toContain('support@getryvro.com');
+    expect(privacySupport).toContain('## Firebase Auth Email Template Copy');
+    expect(privacySupport).toContain('Sender name: Ryvro Support');
+    expect(privacySupport).toContain('Reply-to email: support@getryvro.com');
+    expect(privacySupport).toContain('Public action domain: getryvro.com');
+    expect(privacySupport).toContain('Continue URL / action URL domain: https://getryvro.com');
+    expect(privacySupport).toContain('Subject: Verify your Ryvro email');
+    expect(privacySupport).toContain('Subject: Reset your Ryvro password');
+    expect(privacySupport).toContain('Subject: Your Ryvro email was changed');
     expect(privacySupport).not.toMatch(/mine site|haul truck|underground miner/i);
 
     expect(profileScreen).toContain('legalConfig.supportUrl');
@@ -2252,6 +2260,12 @@ describe('Ryvro environment template', () => {
     expect(externalSetup).toContain('Do not configure retired Ellie entitlement IDs');
     expect(externalSetup).toContain('Account deletion URL: `https://getryvro.com/delete-account`');
     expect(externalSetup).toContain('support/privacy/account deletion URLs');
+    expect(externalSetup).toContain(
+      'Configure Firebase Auth email templates from `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`'
+    );
+    expect(externalSetup).toContain('sender name `Ryvro Support`');
+    expect(externalSetup).toContain('reply-to email `support@getryvro.com`');
+    expect(externalSetup).toContain('continue/action URLs on `https://getryvro.com`');
     expect(externalSetup).not.toContain('Ellie iOS');
     expect(externalSetup).not.toContain('Ellie Android');
     expect(externalSetup).not.toContain('Ellie Pro');

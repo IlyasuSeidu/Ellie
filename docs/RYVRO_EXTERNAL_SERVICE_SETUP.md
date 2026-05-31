@@ -50,6 +50,7 @@ Important:
 - Do not reuse config files from the old app identity.
 - Confirm `REVERSED_CLIENT_ID` in `GoogleService-Info.plist` matches the new OAuth client.
 - Confirm Firebase Auth authorized domains include the production website domain.
+- Configure Firebase Auth email templates from `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md` with sender name `Ryvro Support`, reply-to email `support@getryvro.com`, public action domain `getryvro.com`, and continue/action URLs on `https://getryvro.com`.
 - Confirm Firestore rules and indexes are deployed after the project is selected.
 - Confirm Analytics events appear under the Ryvro Firebase project.
 
