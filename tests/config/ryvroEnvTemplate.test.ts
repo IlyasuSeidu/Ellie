@@ -1427,12 +1427,12 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
     expect(readme).toContain('Recent pushed PR gates');
-    expect(readme).toContain('GitHub Actions CI run `26721241901`');
-    expect(readme).toContain('commit `51e04b9`');
-    expect(readme).toContain('CI run `26721045586`');
-    expect(readme).toContain('commit `d80ea95`');
-    expect(readme).toContain('CI run `26720871665`');
-    expect(readme).toContain('commit `b6c0505`');
+    expect(readme).toContain('GitHub Actions CI run `26721813503`');
+    expect(readme).toContain('commit `e18acb5`');
+    expect(readme).toContain('CI run `26721538596`');
+    expect(readme).toContain('commit `dd1b0ce`');
+    expect(readme).toContain('CI run `26721408710`');
+    expect(readme).toContain('commit `c33b833`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain(
@@ -1765,6 +1765,14 @@ describe('Ryvro environment template', () => {
       'utf8'
     );
 
+    expect(readinessReport).toContain(
+      'production env preflight now rejects retired `ELLIE_BRAIN_*` keys'
+    );
+    expect(readinessReport).toContain(
+      'New Expo config no longer exports legacy `ELLIE_BRAIN_*` extras'
+    );
+    expect(readinessReport).not.toContain('preserving old `ELLIE_BRAIN_*` keys');
+    expect(readinessReport).not.toContain('legacy brain values stay empty');
     expect(readinessReport).toContain('CI run `26659012373`');
     expect(readinessReport).toContain('commit `92a52ab`');
     expect(readinessReport).toContain('commit `610795d`');
@@ -1866,12 +1874,12 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
-    expect(readinessReport).toContain('CI run `26721241901`');
-    expect(readinessReport).toContain('commit `51e04b9`');
-    expect(readinessReport).toContain('CI run `26721045586`');
-    expect(readinessReport).toContain('commit `d80ea95`');
-    expect(readinessReport).toContain('CI run `26720871665`');
-    expect(readinessReport).toContain('commit `b6c0505`');
+    expect(readinessReport).toContain('CI run `26721813503`');
+    expect(readinessReport).toContain('commit `e18acb5`');
+    expect(readinessReport).toContain('CI run `26721538596`');
+    expect(readinessReport).toContain('commit `dd1b0ce`');
+    expect(readinessReport).toContain('CI run `26721408710`');
+    expect(readinessReport).toContain('commit `c33b833`');
     expect(readinessReport).toContain(
       'adding Day 1 research-sequence hooks for every launch persona'
     );
@@ -2427,12 +2435,12 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');
     expect(ownerRunbook).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
-    expect(ownerRunbook).toContain('CI run `26721241901`');
-    expect(ownerRunbook).toContain('commit `51e04b9`');
-    expect(ownerRunbook).toContain('CI run `26721045586`');
-    expect(ownerRunbook).toContain('commit `d80ea95`');
-    expect(ownerRunbook).toContain('CI run `26720871665`');
-    expect(ownerRunbook).toContain('commit `b6c0505`');
+    expect(ownerRunbook).toContain('CI run `26721813503`');
+    expect(ownerRunbook).toContain('commit `e18acb5`');
+    expect(ownerRunbook).toContain('CI run `26721538596`');
+    expect(ownerRunbook).toContain('commit `dd1b0ce`');
+    expect(ownerRunbook).toContain('CI run `26721408710`');
+    expect(ownerRunbook).toContain('commit `c33b833`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');
