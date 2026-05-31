@@ -23,6 +23,7 @@ Completed and guarded in the current branch:
 - Firebase/backend repo config exposes `ryvroBrain` and uses `RYVRO_BRAIN_*` as the preferred environment names while preserving old `ELLIE_BRAIN_*` keys only as migration fallbacks.
 - CI and E2E workflows now exercise only `RYVRO_BRAIN_*` endpoint variables; legacy `ELLIE_BRAIN_*` names are no longer exported in workflow environments.
 - New Expo config no longer mirrors `RYVRO_BRAIN_*` into legacy `ELLIE_BRAIN_*` extras; legacy brain values stay empty unless an old environment explicitly supplies them for migration.
+- The active API reference now uses a broad healthcare rotating-schedule example and current Ryvro launch configuration: `RYVRO_BRAIN_*`, `ryvroBrain`, fresh Firebase config paths, RevenueCat native/public key pairs, and `npm run release:env:check`.
 - The internal OpenWakeWord Expo module now uses Ryvro-branded package, native module, Android namespace, iOS podspec, resource bundle, and JS adapter identifiers.
 - The ignored generated iOS CocoaPods workspace was refreshed on 2026-05-30; `pod install` installed `RyvroOpenWakeWord`, removed `EllieOpenWakeWord`, and `ios/Podfile.lock` now points at `../modules/ryvro-openwakeword/ios`.
 - Native iOS build metadata now resolves to `FULL_PRODUCT_NAME = Ryvro.app`, `WRAPPER_NAME = Ryvro.app`, `PRODUCT_NAME = Ryvro`, and `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner`; the remaining `TARGET_NAME = Ellie` is internal Xcode target scaffolding.
@@ -32,11 +33,11 @@ Completed and guarded in the current branch:
 
 ## Current Public Clearance Evidence
 
-`npm run release:clearance` was run on 2026-05-30 at `2026-05-30T07:46:33.337Z`.
+`npm run release:clearance` was run on 2026-05-31 at `2026-05-31T05:16:18.075Z`.
 
 - Apple public software search returned 5 fuzzy results and no exact `Ryvro` or `Ryvro Shift Planner` app result.
-- Google Play public search returned no exact `Ryvro` or `Ryvro Shift Planner` result text; visible fuzzy names were `Rydoo` and `Rydora`.
-- Chrome/Computer Use read the public Google Play search page for `Ryvro` on 2026-05-30. Visible public results included fuzzy/non-conflicting names such as Rolify, Rydoo, and Rydora, with no exact Ryvro listing visible. This is still not logged-in Play Console evidence; Play Console title/package availability requires account-owner verification.
+- Google Play public search returned no exact `Ryvro` or `Ryvro Shift Planner` result text; visible fuzzy names were `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`.
+- Chrome/Computer Use previously read the public Google Play search page for `Ryvro` on 2026-05-30. Visible public results included fuzzy/non-conflicting names such as Rolify, Rydoo, and Rydora, with no exact Ryvro listing visible. This is still not logged-in Play Console evidence; Play Console title/package availability requires account-owner verification.
 - USPTO Trademark Search was reachable, but this is not legal trademark clearance.
 - `getryvro.com`, `useryvro.com`, `tryryvro.com`, and `getryvroapp.com` had no public DNS records and Verisign `.com` returned no match.
 - `ryvro.com` is already registered through GoDaddy/Afternic and should not be treated as available unless purchased from the current registrant.
@@ -61,6 +62,9 @@ Completed and guarded in the current branch:
 - Earlier same-day pushed GitHub Actions checks also passed on commits `f004097`, `10353e7`, `3f92d56`, `90d403d`, and `82fd530`, covering dashboard quick actions, release env template alignment, legal launch URLs, EAS scaffolding, and production env preflight.
 - Local release verification on 2026-05-30 passed `git diff --check`, focused config tests, and `npm run release:check` after the non-mining E2E onboarding fixture update. The release check included TypeScript, 106 Jest suites / 1,729 tests, and the backend functions TypeScript build.
 - Local release verification on 2026-05-30 passed focused RevenueCat/config tests and `npm run release:check` after the RevenueCat env mirror guard update. The release check included TypeScript, 106 Jest suites / 1,731 tests, 4 snapshots, and the backend functions TypeScript build.
+- Local release verification on 2026-05-30 passed focused API-reference/config tests and `npm run release:check` after the active API reference launch-configuration update. The release check included TypeScript, 106 Jest suites / 1,732 tests, 4 snapshots, and the backend functions TypeScript build.
+- Local release verification on 2026-05-31 passed `git diff --check`, focused readiness/audit config tests, `npm run release:clearance`, and `npm run release:check` after refreshing the launch-readiness handoff. The release check included TypeScript, 106 Jest suites / 1,732 tests, 4 snapshots, and the backend functions TypeScript build.
+- Latest pushed GitHub Actions check for PR #1 passed on commit `e638418`: CI run `26679223794` passed Lint and Type Check, Unit Tests, and Build Check.
 - Prior completed pushed GitHub Actions baseline for the Android release E2E readiness change: CI run `26659012373` passed for commit `92a52ab`.
 - iOS release simulator build command `npm run test:e2e:build:ios`: previously passed on 2026-05-29T15:22:59Z with built plist values `CFBundleDisplayName = Ryvro`, `CFBundleName = Ryvro`, and `CFBundleIdentifier = com.ryvro.shiftplanner`.
 - `xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -showBuildSettings | rg "PRODUCT_NAME|FULL_PRODUCT_NAME|PRODUCT_BUNDLE_IDENTIFIER|WRAPPER_NAME|TARGET_NAME|INFOPLIST_FILE"`: passed on 2026-05-30 and reported `FULL_PRODUCT_NAME = Ryvro.app`, `WRAPPER_NAME = Ryvro.app`, `PRODUCT_NAME = Ryvro`, and `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner`.

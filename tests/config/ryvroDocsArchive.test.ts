@@ -139,10 +139,15 @@ describe('Ryvro documentation archive', () => {
   it('keeps the active rebrand audit aligned with completed Ryvro asset replacement', () => {
     const audit = read('SHIFT_WORKER_APP_REBRAND_AUDIT.md');
 
-    expect(audit).toContain('Implementation Status: 2026-05-29');
+    expect(audit).toContain('Implementation Status: 2026-05-30');
     expect(audit).toContain('Current tracked app icon, adaptive icon, splash icon, favicon');
     expect(audit).toContain('The retired onboarding mining helmet asset family has been removed');
+    expect(audit).toContain('Aligned the active API reference with the Ryvro launch configuration');
+    expect(audit).toContain(
+      '`docs/API_REFERENCE.md`: done; active examples now use broad healthcare rotating-schedule data'
+    );
     expect(audit).not.toContain('Current asset family includes `mining-helmet-sacred-flame`');
+    expect(audit).not.toContain('`docs/API_REFERENCE.md`: remove first-class FIFO assumptions');
     expect(audit).not.toContain(
       'replace `assets/onboarding/icons/consolidated/mining-helmet-sacred-flame.png`'
     );

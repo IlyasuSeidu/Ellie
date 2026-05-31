@@ -11,7 +11,7 @@ The current strategy is not a full universal-market rebrand on day one. The reco
 
 In short: **market narrowly now, build broadly underneath.**
 
-## Implementation Status: 2026-05-29
+## Implementation Status: 2026-05-30
 
 Completed in the current working tree:
 
@@ -40,7 +40,7 @@ Completed in the current working tree:
 - Replaced the default e2e seed profile with a neutral shift-worker fixture while keeping a separate mining/FIFO launch-wedge fixture.
 - Cleaned remaining launch-critical broad-market copy in README, English onboarding feature descriptions, selected translated placeholders/social proof, and onboarding icon source guidance.
 - Hardened tracked generated-content guidance and publishable build-in-public packs so they use Ryvro naming, broad shift-worker discovery tags, and FIFO/shift-worker audience language instead of stale Ellie or mining-only tags.
-- Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the latest cleanup. Latest pushed CI run for this branch passed on 2026-05-29.
+- Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the launch-readiness cleanup. The latest pushed CI run for this branch passed on 2026-05-30.
 - Added built-in fallback parser regression coverage across 20 shift-worker industry prompts so the AI builder fallback is proven beyond mining/FIFO examples.
 - Added AI builder fallback metadata, friendlier fallback copy, and analytics events for parser completion, local fallback use, clarification, draft acceptance, manual edit after draft, and save context.
 - Tightened exception, calendar, and reminder launch copy so one-off rows say they changed just that day, calendar export promises shift times/locations/notes, and smart reminder commute copy defaults to work location instead of site.
@@ -58,6 +58,7 @@ Completed in the current working tree:
 - Launch-critical onboarding occupation placeholders now use broad examples such as healthcare, security, and plant operations instead of mining/trades-only examples across bundled locales.
 - Hardened `npm run release:env:check` so production builds require the Expo public RevenueCat iOS/Android keys to mirror the native RevenueCat SDK keys before EAS secrets are pushed.
 - Stopped new Expo config from mirroring the Ryvro voice endpoint into legacy `ELLIE_BRAIN_*` extras; old `ELLIE_BRAIN_*` values are still accepted only when explicitly supplied for migration.
+- Aligned the active API reference with the Ryvro launch configuration: broad healthcare rotating-schedule example, `RYVRO_BRAIN_*` runtime names, `ryvroBrain`, current Firebase config paths, RevenueCat native/public key pairs, and the release env preflight.
 
 Still pending outside this repo or intentionally kept for compatibility:
 
@@ -108,7 +109,7 @@ Required account-only checks:
 - Social platforms: reserve `@ryvro` or a consistent fallback such as `@getryvro`.
 - Trademark counsel/search: run formal clearance in launch markets before public launch.
 
-## External Clearance Evidence: 2026-05-30
+## External Clearance Evidence: 2026-05-31
 
 Latest repeatable public preflight command:
 
@@ -116,11 +117,11 @@ Latest repeatable public preflight command:
 npm run release:clearance
 ```
 
-Result captured at `2026-05-30T07:46:33.337Z`:
+Result captured at `2026-05-31T05:16:18.075Z`:
 
 - Apple public software search: no exact `Ryvro` or `Ryvro Shift Planner` app result returned across 5 fuzzy results. Public search still does not prove App Store Connect name availability.
-- Google Play public search: no exact `Ryvro` or `Ryvro Shift Planner` result text found. Visible fuzzy names included `Rydoo` and `Rydora`. Public search still does not prove Play Console title/package availability.
-- Chrome/Computer Use read the public Google Play search page for `Ryvro` on 2026-05-30. Visible public results included fuzzy/non-conflicting names such as Rolify, Rydoo, and Rydora, with no exact Ryvro listing visible. Do not treat this as logged-in Play Console evidence; complete Play Console title/package checks directly in the account.
+- Google Play public search: no exact `Ryvro` or `Ryvro Shift Planner` result text found. Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`. Public search still does not prove Play Console title/package availability.
+- Chrome/Computer Use previously read the public Google Play search page for `Ryvro` on 2026-05-30. Visible public results included fuzzy/non-conflicting names such as Rolify, Rydoo, and Rydora, with no exact Ryvro listing visible. Do not treat this as logged-in Play Console evidence; complete Play Console title/package checks directly in the account.
 - USPTO public search app: reachable only through the automated preflight. This is not legal clearance.
 - `getryvro.com`: no public DNS record and Verisign `.com` returned no match.
 - `useryvro.com`, `tryryvro.com`, and `getryvroapp.com`: no public DNS record and Verisign `.com` returned no match.
@@ -679,7 +680,7 @@ Add first-class examples and QA scenarios for:
 - `docs/USER_GUIDE_FIFO.md`: convert to a template guide inside a broader shift-pattern guide.
 - `docs/FIFO_QA_CHECKLIST.md`: fold into universal builder QA.
 - `docs/ARCHITECTURE.md`: update from dual rotating/FIFO architecture to universal schedule architecture.
-- `docs/API_REFERENCE.md`: remove first-class FIFO assumptions from examples.
+- `docs/API_REFERENCE.md`: done; active examples now use broad healthcare rotating-schedule data and the Ryvro launch environment/configuration names.
 - `docs/ADDING_SHIFT_PATTERNS.md`: replace legacy pattern instructions with universal template instructions.
 - `docs/DEPLOYMENT.md`: replace FIFO onboarding checks with universal builder checks.
 - `docs/RELEASE_NOTES_FIFO_DUAL_ROSTER.md`: archive as historical.

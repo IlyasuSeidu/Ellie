@@ -530,12 +530,14 @@ describe('Ryvro environment template', () => {
     );
     const clearanceEvidence = `${externalSetup}\n${audit}`;
 
-    expect(clearanceEvidence).toContain('2026-05-30 at 07:46:33Z');
-    expect(clearanceEvidence).toContain('2026-05-30T07:46:33.337Z');
+    expect(clearanceEvidence).toContain('2026-05-31 at 05:16:18Z');
+    expect(clearanceEvidence).toContain('2026-05-31T05:16:18.075Z');
     expect(clearanceEvidence).toContain('no exact `Ryvro` or `Ryvro Shift Planner` app result');
-    expect(clearanceEvidence).toContain('Visible fuzzy names included `Rydoo` and `Rydora`');
     expect(clearanceEvidence).toContain(
-      'Chrome/Computer Use read the public Google Play search page for `Ryvro`'
+      'Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`'
+    );
+    expect(clearanceEvidence).toContain(
+      'Chrome/Computer Use previously read the public Google Play search page for `Ryvro`'
     );
     expect(clearanceEvidence).toContain('no exact Ryvro listing visible');
     expect(clearanceEvidence).toContain('Do not treat this as logged-in Play Console evidence');
@@ -696,14 +698,26 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `92a52ab`');
     expect(readinessReport).toContain('commit `610795d`');
     expect(readinessReport).toContain('CI run `26678024310`');
+    expect(readinessReport).toContain('commit `e638418`');
+    expect(readinessReport).toContain('CI run `26679223794`');
     expect(readinessReport).toContain(
       'commits `f004097`, `10353e7`, `3f92d56`, `90d403d`, and `82fd530`'
     );
     expect(readinessReport).toContain('passed Lint and Type Check, Unit Tests, and Build Check');
     expect(readinessReport).toContain('106 Jest suites / 1,729 tests');
+    expect(readinessReport).toContain('106 Jest suites / 1,732 tests');
+    expect(readinessReport).toContain(
+      'Local release verification on 2026-05-31 passed `git diff --check`, focused readiness/audit config tests'
+    );
+    expect(readinessReport).toContain('`npm run release:clearance`');
     expect(readinessReport).toContain(
       'fresh onboarding E2E happy path uses non-mining healthcare worker data'
     );
+    expect(readinessReport).toContain(
+      'active API reference now uses a broad healthcare rotating-schedule example'
+    );
+    expect(readinessReport).toContain('RYVRO_BRAIN_*');
+    expect(readinessReport).toContain('ryvroBrain');
     expect(readinessReport).toContain(
       'Schedule and Stats helper screens no longer present launch users with "Coming Soon" copy'
     );
