@@ -838,7 +838,7 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('109 Jest suites / 1,749 tests / 4 snapshots');
     expect(readme).toContain('Recent pushed PR gate');
     expect(readme).toContain('GitHub Actions CI passed Unit Tests, Lint and Type Check');
-    expect(readme).toContain('run `26707609409`');
+    expect(readme).toContain('run `26708126932`');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
@@ -1139,6 +1139,14 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `c1fd791`');
     expect(readinessReport).toContain('CI run `26706771178`');
     expect(readinessReport).toContain('commit `cd8bd5f`');
+    expect(readinessReport).toContain('commit `680454e`');
+    expect(readinessReport).toContain('CI run `26707724396`');
+    expect(readinessReport).toContain('commit `71e70f1`');
+    expect(readinessReport).toContain('CI run `26707866556`');
+    expect(readinessReport).toContain('commit `7c33bd4`');
+    expect(readinessReport).toContain('CI run `26707996159`');
+    expect(readinessReport).toContain('commit `9bdae31`');
+    expect(readinessReport).toContain('CI run `26708126932`');
     expect(readinessReport).toContain('commit `1892dcb`');
     expect(readinessReport).toContain('CI run `26707461391`');
     expect(readinessReport).toContain('commit `c07d19e`');
