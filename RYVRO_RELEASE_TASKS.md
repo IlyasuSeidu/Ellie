@@ -1,7 +1,7 @@
 # Ryvro — Release Task List
 
 Source: `SHIFT_WORKER_APP_REBRAND_AUDIT.md`
-Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, pending-sync/cache TTL/store version readiness, latest pushed PR #1 CI pass)
+Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, and latest pushed PR #1 CI pass)
 
 Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you do this)
 
@@ -37,14 +37,15 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 
 ## Phase 2 — Config + Identifiers
 
-| #   | Task                                                                                                                                                                                                                             | Status                             |
-| --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
-| 6   | Decide your bundle identifier (permanent — cannot change after Google Play submission)                                                                                                                                           | ✅ Done (`com.ryvro.shiftplanner`) |
-| 7   | Update bundle ID in `app.json` (iOS + Android), add `buildNumber: "1"` and `versionCode: 1`                                                                                                                                      | ✅ Done                            |
-| 8   | Update bundle ID in `android/app/build.gradle` (namespace + applicationId, lines 90+92)                                                                                                                                          | ✅ Done                            |
-| 9   | Verify generated iOS build settings use `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner` and `PRODUCT_NAME = Ryvro`; the internal generated workspace/scheme may still be `Ellie` until the next native-project regeneration | ✅ Done                            |
-| 10  | Create `eas.json` with development / preview / production build profiles                                                                                                                                                         | ✅ Done                            |
-| 10a | Add store listing copy, privacy/support templates, and external service handoff docs                                                                                                                                             | ✅ Done                            |
+| #   | Task                                                                                                                                                                                                                                                         | Status                             |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------- |
+| 6   | Decide your bundle identifier (permanent — cannot change after Google Play submission)                                                                                                                                                                       | ✅ Done (`com.ryvro.shiftplanner`) |
+| 7   | Update bundle ID in `app.json` (iOS + Android), add `buildNumber: "1"` and `versionCode: 1`                                                                                                                                                                  | ✅ Done                            |
+| 8   | Update bundle ID in `android/app/build.gradle` (namespace + applicationId, lines 90+92)                                                                                                                                                                      | ✅ Done                            |
+| 9   | Verify generated iOS build settings use `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner` and `PRODUCT_NAME = Ryvro`; the internal generated workspace/scheme may still be `Ellie` until the next native-project regeneration                             | ✅ Done                            |
+| 10  | Create `eas.json` with development / preview / production build profiles                                                                                                                                                                                     | ✅ Done                            |
+| 10a | Add store listing copy, privacy/support templates, and external service handoff docs                                                                                                                                                                         | ✅ Done                            |
+| 10b | Align research-funnel runtime personas, docs, scoring, and automation prompts with Ryvro's broad launch audience across mining/FIFO, healthcare, security/emergency services, transport/logistics, hospitality/manufacturing, and other rotating-shift teams | ✅ Done                            |
 
 ---
 
