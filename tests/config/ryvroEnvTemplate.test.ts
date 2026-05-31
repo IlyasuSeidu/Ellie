@@ -2739,6 +2739,10 @@ describe('Ryvro environment template', () => {
         )
       ) as {
         shift?: {
+          configCard?: {
+            workDaysOnSite?: string;
+            restDaysAtHome?: string;
+          };
           sections?: {
             siteDetails?: string;
           };
@@ -2806,6 +2810,8 @@ describe('Ryvro environment template', () => {
       expect(profile.shift?.site).toBe(expected.site);
       expect(profile.shift?.siteName).toBe(expected.location);
       expect(profile.shift?.sections?.siteDetails).toBe(expected.section);
+      expect(profile.shift?.configCard?.workDaysOnSite).toBeTruthy();
+      expect(profile.shift?.configCard?.restDaysAtHome).toBeTruthy();
       expect(onboarding.shiftBuilder?.inspector?.location).toBe(expected.location);
       expect(onboarding.intro?.placeholders?.occupation).toBeTruthy();
       expect(onboarding.intro?.placeholders?.occupation).not.toMatch(
@@ -2842,6 +2848,13 @@ describe('Ryvro environment template', () => {
         /Votre mine comporte|Sites miniers|Minería global remota|Mineração global remota/i
       );
       expect(fullProfileCopy).not.toMatch(/"Minero"/i);
+      expect(
+        [profile.shift?.configCard?.workDaysOnSite, profile.shift?.configCard?.restDaysAtHome].join(
+          '\n'
+        )
+      ).not.toMatch(
+        /on-site|on site|site|sitio|situs|terrein|werf|موقع|साइट|现场|месте|kusayithi/i
+      );
 
       expect(topFunnelCopy).not.toMatch(
         /site minier|site minero|site de mina|site mine|site your|your site|your mine|mine site|mining site|sitio|situs|сайт|участок|站点|网站|साइट|موقعك|موقع منجمك|موقع المنجم|موقع التعدين|terrein|werf|webwerf|mynterrein|mynperseel|esizeni|indawo yakho yemigodi|na mina|à mina|de volta à mina|en la mina/i

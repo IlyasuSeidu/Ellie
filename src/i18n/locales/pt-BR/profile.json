@@ -248,8 +248,8 @@
     },
     "configCard": {
       "timesLabel": "Tempos",
-      "workDaysOnSite": "{{count}} dias no local",
-      "restDaysAtHome": "{{count}} dias em casa",
+      "workDaysOnSite": "{{count}} dias de bloco de trabalho",
+      "restDaysAtHome": "{{count}} dias de descanso",
       "empty": "Nenhuma configuração de turno definida",
       "footer": "As configurações de turno podem ser atualizadas em Configurações"
     },

@@ -248,8 +248,8 @@
     },
     "configCard": {
       "timesLabel": "Izikhathi",
-      "workDaysOnSite": "{{count}} izinsuku kusayithi",
-      "restDaysAtHome": "{{count}} izinsuku ekhaya",
+      "workDaysOnSite": "{{count}} izinsuku zebhulokhi yomsebenzi",
+      "restDaysAtHome": "{{count}} izinsuku zokuphumula",
       "empty": "Akukho ukucushwa kwe-shift okusethiwe",
       "footer": "Izilungiselelo ze-Shift zingabuyekezwa kokuthi Izilungiselelo"
     },

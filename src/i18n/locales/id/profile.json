@@ -248,8 +248,8 @@
     },
     "configCard": {
       "timesLabel": "Kali",
-      "workDaysOnSite": "{{count}} hari di lokasi",
-      "restDaysAtHome": "{{count}} hari di rumah",
+      "workDaysOnSite": "{{count}} hari blok kerja",
+      "restDaysAtHome": "{{count}} hari istirahat",
       "empty": "Tidak ada konfigurasi shift yang disetel",
       "footer": "Pengaturan shift dapat diperbarui di Pengaturan"
     },

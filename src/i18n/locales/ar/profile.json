@@ -248,8 +248,8 @@
     },
     "configCard": {
       "timesLabel": "مرات",
-      "workDaysOnSite": "{{count}} أيام في الموقع",
-      "restDaysAtHome": "{{count}} أيام في المنزل",
+      "workDaysOnSite": "{{count}} أيام كتلة العمل",
+      "restDaysAtHome": "{{count}} أيام راحة",
       "empty": "لم يتم ضبط تكوين التحول",
       "footer": "يمكن تحديث إعدادات Shift في الإعدادات"
     },

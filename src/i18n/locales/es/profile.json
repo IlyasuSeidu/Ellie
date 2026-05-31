@@ -248,8 +248,8 @@
     },
     "configCard": {
       "timesLabel": "Veces",
-      "workDaysOnSite": "{{count}} días en sitio",
-      "restDaysAtHome": "{{count}} días en casa",
+      "workDaysOnSite": "{{count}} días de bloque de trabajo",
+      "restDaysAtHome": "{{count}} días de descanso",
       "empty": "No hay configuración de turno establecida",
       "footer": "La configuración de turnos se puede actualizar en Configuración"
     },

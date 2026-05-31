@@ -248,8 +248,8 @@
     },
     "configCard": {
       "timesLabel": "Tye",
-      "workDaysOnSite": "{{count}} dae op die terrein",
-      "restDaysAtHome": "{{count}} dae by die huis",
+      "workDaysOnSite": "{{count}} werkblokdae",
+      "restDaysAtHome": "{{count}} rusdae",
       "empty": "Geen skofkonfigurasie gestel nie",
       "footer": "Shift-instellings kan in Instellings opgedateer word"
     },

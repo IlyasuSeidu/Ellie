@@ -248,8 +248,8 @@
     },
     "configCard": {
       "timesLabel": "टाइम्स",
-      "workDaysOnSite": "{{count}} साइट पर दिन",
-      "restDaysAtHome": "{{count}} दिन घर पर",
+      "workDaysOnSite": "{{count}} कार्य-ब्लॉक दिन",
+      "restDaysAtHome": "{{count}} आराम दिन",
       "empty": "कोई शिफ्ट कॉन्फ़िगरेशन सेट नहीं",
       "footer": "सेटिंग्स में शिफ्ट सेटिंग्स को अपडेट किया जा सकता है"
     },

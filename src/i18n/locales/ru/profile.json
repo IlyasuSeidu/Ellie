@@ -248,8 +248,8 @@
     },
     "configCard": {
       "timesLabel": "Время",
-      "workDaysOnSite": "{{count}} дней на месте",
-      "restDaysAtHome": "{{count}} дней дома",
+      "workDaysOnSite": "{{count}} дней рабочего блока",
+      "restDaysAtHome": "{{count}} дней отдыха",
       "empty": "Конфигурация смены не задана",
       "footer": "Настройки смены можно обновить в Настройках."
     },

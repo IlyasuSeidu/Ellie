@@ -248,8 +248,8 @@
     },
     "configCard": {
       "timesLabel": "Times",
-      "workDaysOnSite": "{{count}} days on-site",
-      "restDaysAtHome": "{{count}} days at home",
+      "workDaysOnSite": "{{count}} work-block days",
+      "restDaysAtHome": "{{count}} rest days",
       "empty": "No shift configuration set",
       "footer": "Shift settings can be updated in Settings"
     },

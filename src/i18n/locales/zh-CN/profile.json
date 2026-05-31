@@ -248,8 +248,8 @@
     },
     "configCard": {
       "timesLabel": "时代",
-      "workDaysOnSite": "{{count}} 现场天数",
-      "restDaysAtHome": "{{count}} 在家的日子",
+      "workDaysOnSite": "{{count}} 个工作块天数",
+      "restDaysAtHome": "{{count}} 个休息日",
       "empty": "无班次配置集",
       "footer": "轮班设置可以在“设置”中更新"
     },

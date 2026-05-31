@@ -248,8 +248,8 @@
     },
     "configCard": {
       "timesLabel": "Fois",
-      "workDaysOnSite": "{{count}} jours sur place",
-      "restDaysAtHome": "{{count}} jours à la maison",
+      "workDaysOnSite": "{{count}} jours de bloc de travail",
+      "restDaysAtHome": "{{count}} jours de repos",
       "empty": "Aucune configuration de quart de travail définie",
       "footer": "Les paramètres de changement peuvent être mis à jour dans Paramètres"
     },
