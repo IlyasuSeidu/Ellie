@@ -44,10 +44,9 @@ Resolved since the original audit:
 
 | Gap                              | Location                | Launch impact                           |
 | -------------------------------- | ----------------------- | --------------------------------------- |
-| No shared cache TTL constants    | `src/config/`           | Expiry policy is harder to audit        |
 | Device offline QA still required | iOS and Android devices | Simulator/unit coverage is insufficient |
 
-The remaining work is now cache policy hardening and physical-device offline QA, not basic network detection or pending-sync visibility.
+The remaining work is now physical-device offline QA, not basic network detection, pending-sync visibility, or cache TTL policy.
 
 ---
 
@@ -111,20 +110,17 @@ Use the existing `src/services/NetworkService.ts`; do not add a parallel network
 
 ### Files To Create
 
-| File                        | Purpose                                          |
-| --------------------------- | ------------------------------------------------ |
-| `src/config/cacheConfig.ts` | Shared TTL constants used across cached services |
+No remaining repo-side offline files are planned for the current launch-readiness pass.
 
 ### Files To Modify
 
-| File                     | Change                                                                |
-| ------------------------ | --------------------------------------------------------------------- |
-| `src/config/firebase.ts` | Verify native/web Firestore cache behavior for the production runtime |
+| File                     | Change                                                               |
+| ------------------------ | -------------------------------------------------------------------- |
+| `src/config/firebase.ts` | Verify native/web Firestore cache behavior during physical-device QA |
 
 ### Step-By-Step Work
 
-1. Centralize cache TTL values in `src/config/cacheConfig.ts`.
-2. Run physical iOS and Android offline QA before store submission.
+1. Run physical iOS and Android offline QA before store submission.
 
 ---
 
@@ -142,14 +138,20 @@ When local and remote records differ:
 
 ## Cache TTL Reference
 
-| Data type         | Suggested TTL | Reasoning                                |
-| ----------------- | ------------- | ---------------------------------------- |
-| User profile      | 24 hours      | Profile changes are infrequent           |
-| Shift schedules   | 7 days        | Schedules must survive multi-day outages |
-| Active schedule   | 7 days        | Dashboard should remain useful offline   |
-| Reminder settings | 7 days        | Reminder state should survive outages    |
-| Holidays          | 30 days       | Holiday dates change rarely              |
-| Voice fallback    | No TTL        | Static bundled behavior                  |
+Runtime cache TTLs live in `src/config/cacheConfig.ts`.
+
+| Data type                   | Configured TTL | Reasoning                                                |
+| --------------------------- | -------------- | -------------------------------------------------------- |
+| User profile                | 24 hours       | Profile changes are infrequent                           |
+| Shift schedules             | 7 days         | Schedules must survive multi-day outages                 |
+| Active schedule             | 7 days         | Dashboard should remain useful offline                   |
+| Reminder settings           | 7 days         | Reminder state should survive outages                    |
+| Holidays                    | 30 days        | Holiday dates change rarely                              |
+| RevenueCat offerings        | 24 hours       | Prices/packages can change externally                    |
+| Paywall recovery window     | 7 days         | Avoid stale subscription recovery nudges                 |
+| Storage maintenance cadence | 24 hours       | Expired cache sweep without startup cost                 |
+| Voice assistant persistence | 12 hours       | Preserve short-term context and expire stale diagnostics |
+| Voice fallback              | No TTL         | Static bundled behavior                                  |
 
 ---
 

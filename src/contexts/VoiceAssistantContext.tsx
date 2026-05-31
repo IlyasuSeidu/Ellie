@@ -43,6 +43,7 @@ import { useOnboarding } from '@/contexts/OnboardingContext';
 import { buildShiftCycle } from '@/utils/shiftUtils';
 import { toDateString } from '@/utils/dateUtils';
 import { voiceAssistantConfig } from '@/config/env';
+import { CACHE_TTL_SECONDS } from '@/config/cacheConfig';
 import { logger } from '@/utils/logger';
 import i18n from '@/i18n';
 import type {
@@ -106,7 +107,6 @@ export interface VoiceAssistantProviderProps {
 }
 
 const DEFAULT_WAKE_WORD_LABEL = 'wake word';
-const DEFAULT_VOICE_PERSIST_TTL_SECONDS = 12 * 60 * 60;
 const NOTICE_AUTO_DISMISS_MS = 4_000;
 const PERSISTENCE_DEBOUNCE_MS = 2_000;
 const WAKE_WORD_RETRY_BASE_MS = 5_000;
@@ -127,7 +127,7 @@ const getWakeWordPermissionRequiredWarning = (): string =>
 export function getVoicePersistenceTTLSeconds(): number | undefined {
   const rawValue = process.env.EXPO_PUBLIC_VOICE_ASSISTANT_PERSIST_TTL_SECONDS;
   if (!rawValue) {
-    return DEFAULT_VOICE_PERSIST_TTL_SECONDS;
+    return CACHE_TTL_SECONDS.voiceAssistantPersistence;
   }
 
   const parsed = Number(rawValue);

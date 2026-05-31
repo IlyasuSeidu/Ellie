@@ -9,6 +9,7 @@
 
 import { Holiday, HolidayType } from '@/types';
 import { logger } from '@/utils/logger';
+import { CACHE_PREFIXES, CACHE_TTL_MS } from '@/config/cacheConfig';
 import { IStorageService } from './StorageService';
 
 /**
@@ -21,18 +22,11 @@ interface HolidayDataFile {
 }
 
 /**
- * Cache configuration
- */
-const CACHE_CONFIG = {
-  PREFIX: 'holidays',
-  TTL_MS: 90 * 24 * 60 * 60 * 1000, // 90 days
-};
-
-/**
  * Holiday Service class
  */
 export class HolidayService {
-  private dataLoader: ((country: string, year: number) => Promise<HolidayDataFile | null>) | null = null;
+  private dataLoader: ((country: string, year: number) => Promise<HolidayDataFile | null>) | null =
+    null;
 
   constructor(private storage: IStorageService) {}
 
@@ -40,19 +34,14 @@ export class HolidayService {
    * Set the data loader function for loading JSON files
    * This is injected to avoid file system dependencies in core service
    */
-  setDataLoader(
-    loader: (country: string, year: number) => Promise<HolidayDataFile | null>
-  ): void {
+  setDataLoader(loader: (country: string, year: number) => Promise<HolidayDataFile | null>): void {
     this.dataLoader = loader;
   }
 
   /**
    * Get holidays for a specific country and year
    */
-  async getHolidaysForCountry(
-    country: string,
-    year: number
-  ): Promise<Holiday[]> {
+  async getHolidaysForCountry(country: string, year: number): Promise<Holiday[]> {
     logger.debug('Getting holidays for country', { country, year });
 
     // Try cache first
@@ -87,11 +76,7 @@ export class HolidayService {
   /**
    * Get holidays in a date range
    */
-  async getHolidaysInRange(
-    country: string,
-    start: Date,
-    end: Date
-  ): Promise<Holiday[]> {
+  async getHolidaysInRange(country: string, start: Date, end: Date): Promise<Holiday[]> {
     logger.debug('Getting holidays in range', {
       country,
       start: start.toISOString(),
@@ -133,10 +118,7 @@ export class HolidayService {
   /**
    * Get holiday for a specific date
    */
-  async getHolidayForDate(
-    date: Date,
-    country: string
-  ): Promise<Holiday | null> {
+  async getHolidayForDate(date: Date, country: string): Promise<Holiday | null> {
     const year = date.getFullYear();
     const dateStr = this.formatDate(date);
 
@@ -164,9 +146,10 @@ export class HolidayService {
    */
   searchHolidays(holidays: Holiday[], query: string): Holiday[] {
     const lowerQuery = query.toLowerCase();
-    return holidays.filter((h) =>
-      h.name.toLowerCase().includes(lowerQuery) ||
-      h.description?.toLowerCase().includes(lowerQuery)
+    return holidays.filter(
+      (h) =>
+        h.name.toLowerCase().includes(lowerQuery) ||
+        h.description?.toLowerCase().includes(lowerQuery)
     );
   }
 
@@ -191,7 +174,7 @@ export class HolidayService {
    * Invalidate cache for a country
    */
   async invalidateCache(country: string): Promise<void> {
-    const prefix = `${CACHE_CONFIG.PREFIX}:${country}:`;
+    const prefix = `${CACHE_PREFIXES.holidays}:${country}:`;
     await this.storage.clearPrefix(prefix);
     logger.info('Holiday cache invalidated', { country });
   }
@@ -199,10 +182,7 @@ export class HolidayService {
   /**
    * Get holidays from cache
    */
-  private async getFromCache(
-    country: string,
-    year: number
-  ): Promise<Holiday[] | null> {
+  private async getFromCache(country: string, year: number): Promise<Holiday[] | null> {
     try {
       const cacheKey = this.getCacheKey(country, year);
       const cached = await this.storage.get<Holiday[]>(cacheKey);
@@ -219,14 +199,10 @@ export class HolidayService {
   /**
    * Save holidays to cache
    */
-  private async saveToCache(
-    country: string,
-    year: number,
-    holidays: Holiday[]
-  ): Promise<void> {
+  private async saveToCache(country: string, year: number, holidays: Holiday[]): Promise<void> {
     try {
       const cacheKey = this.getCacheKey(country, year);
-      await this.storage.set(cacheKey, holidays, CACHE_CONFIG.TTL_MS);
+      await this.storage.set(cacheKey, holidays, CACHE_TTL_MS.holidays);
       logger.debug('Holidays saved to cache', { country, year });
     } catch (error) {
       logger.error('Failed to save to cache', error as Error, {
@@ -240,10 +216,7 @@ export class HolidayService {
   /**
    * Load holidays from data file
    */
-  private async loadFromDataFile(
-    country: string,
-    year: number
-  ): Promise<Holiday[]> {
+  private async loadFromDataFile(country: string, year: number): Promise<Holiday[]> {
     try {
       if (!this.dataLoader) {
         logger.warn('No data loader configured');
@@ -276,7 +249,7 @@ export class HolidayService {
    * Get cache key for country and year
    */
   private getCacheKey(country: string, year: number): string {
-    return `${CACHE_CONFIG.PREFIX}:${country}:${year}`;
+    return `${CACHE_PREFIXES.holidays}:${country}:${year}`;
   }
 
   /**

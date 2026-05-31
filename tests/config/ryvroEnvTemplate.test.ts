@@ -609,20 +609,20 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('108 Jest suites / 1,740 tests / 4 snapshots');
+    expect(readme).toContain('109 Jest suites / 1,742 tests / 4 snapshots');
     expect(readme).toContain('Recent pushed PR gate');
     expect(readme).toContain('GitHub Actions CI passed Unit Tests, Lint and Type Check');
     expect(readme).toContain('run `26704558053`');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
-    expect(readme).toContain('Testing infrastructure (1,740 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,742 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,740 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,742 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-05-31 release check)');
-    expect(readme).toContain('Total Tests**: 1,740 passing (108 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Total Tests**: 1,742 passing (109 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -672,6 +672,18 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'src/services/StorageMaintenanceService.ts'),
       'utf8'
     );
+    const cacheConfig = fs.readFileSync(
+      path.join(process.cwd(), 'src/config/cacheConfig.ts'),
+      'utf8'
+    );
+    const shiftDataService = fs.readFileSync(
+      path.join(process.cwd(), 'src/services/ShiftDataService.ts'),
+      'utf8'
+    );
+    const holidayService = fs.readFileSync(
+      path.join(process.cwd(), 'src/services/HolidayService.ts'),
+      'utf8'
+    );
 
     expect(packageJson.dependencies?.['@react-native-community/netinfo']).toBeTruthy();
     expect(networkService).toContain("require('@react-native-community/netinfo')");
@@ -688,12 +700,20 @@ describe('Ryvro environment template', () => {
     expect(app).toContain('<SyncStatusIndicator />');
     expect(app).toContain('storageMaintenanceService.initialize()');
     expect(storageMaintenanceService).toContain('this.storage.removeExpired()');
+    expect(storageMaintenanceService).toContain('CACHE_TTL_MS.storageMaintenanceInterval');
+    expect(cacheConfig).toContain('shiftSchedules: 7 * MS_PER_DAY');
+    expect(cacheConfig).toContain('holidays: 30 * MS_PER_DAY');
+    expect(cacheConfig).toContain('voiceAssistantPersistence: 12 * 60 * 60');
+    expect(shiftDataService).toContain('CACHE_TTL_MS.shiftSchedules');
+    expect(holidayService).toContain('CACHE_TTL_MS.holidays');
     expect(offlineStrategy).toContain('NetInfo-backed network state');
     expect(offlineStrategy).toContain('Resolved since the original audit');
     expect(offlineStrategy).toContain('Network status hook');
     expect(offlineStrategy).toContain('Offline banner');
     expect(offlineStrategy).toContain('Pending sync indicator');
     expect(offlineStrategy).toContain('Storage cleanup maintenance');
+    expect(offlineStrategy).toContain('Runtime cache TTLs live in `src/config/cacheConfig.ts`');
+    expect(offlineStrategy).not.toContain('No shared cache TTL constants');
     expect(offlineStrategy).not.toContain('No pending-sync indicator in edit flows');
     expect(offlineStrategy).not.toContain('Network detection hardcoded to `true`');
     expect(offlineStrategy).not.toContain('Queue never activates');
@@ -860,6 +880,8 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('106 Jest suites / 1,735 tests');
     expect(readinessReport).toContain('108 Jest suites / 1,740 tests');
     expect(readinessReport).toContain('adding global pending-sync visibility');
+    expect(readinessReport).toContain('109 Jest suites / 1,742 tests');
+    expect(readinessReport).toContain('centralizing cache TTL policy');
     expect(readinessReport).toContain(
       'aligning offline-first docs with the current NetInfo-backed implementation'
     );
