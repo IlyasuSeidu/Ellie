@@ -244,12 +244,12 @@ Evidence to record:
 
 ## Current Repo Evidence
 
-- Latest local gate: `npm run release:check` passed on 2026-05-31 with 110 Jest suites, 1,767 tests, 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build.
+- Latest local gate: `npm run release:check` passed on 2026-05-31 with 110 Jest suites, 1,769 tests, 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build.
 - Current local release gate includes `npm run release:owner:check`, which fails if the account-only launch blockers, physical-device QA requirements, and not-yet-live stop gates disappear from the tracked handoff docs.
 - Final submit readiness is guarded by `npm run release:submit:check`, which must fail until EAS submit placeholders are replaced and every required non-secret row in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` is `Passed` or explicitly `Not applicable`.
 - Store screenshot capture is now tracked in `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md`, and `npm run release:store:check` / `npm run release:owner:check` fail if the checklist or evidence-log handoff disappears.
-- Recent pushed PR gate evidence includes GitHub Actions CI run `26722883474` on commit `651f32d`, which passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check` with the owner handoff preflight.
-- Recent pushed PR gates also include CI run `26722709832` on commit `b331116` and CI run `26722580831` on commit `12fb9af`; both passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check` with the owner handoff preflight.
+- Recent pushed PR gate evidence includes GitHub Actions CI run `26724505909` on commit `b143808`, which passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check` with the owner handoff preflight.
+- Recent pushed PR gates also include CI run `26724315046` on commit `17ad934` and CI run `26724195202` on commit `e0f12b1`; both passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check` with the owner handoff preflight.
 - Current repo branch: `codex/ryvro-rebrand-rollout`.
 
 Keep this section current whenever a new launch-readiness commit is pushed and CI passes.
