@@ -1450,17 +1450,17 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('110 Jest suites / 1,776 tests / 4 snapshots');
+    expect(readme).toContain('110 Jest suites / 1,777 tests / 4 snapshots');
     expect(readme).toContain('the Ryvro native scaffold preflight');
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
     expect(readme).toContain('Recent pushed PR gates');
-    expect(readme).toContain('GitHub Actions CI run `26727184078`');
+    expect(readme).toContain('GitHub Actions CI run `26727378127`');
+    expect(readme).toContain('commit `5101ca3`');
+    expect(readme).toContain('CI run `26727184078`');
     expect(readme).toContain('commit `35a453c`');
     expect(readme).toContain('CI run `26727022362`');
     expect(readme).toContain('commit `90e3e04`');
-    expect(readme).toContain('CI run `26726876514`');
-    expect(readme).toContain('commit `f72f885`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain(
@@ -1469,7 +1469,7 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('valid-prompt `SHIFT_SCHEDULE_PARSER_URL` parser response');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
     expect(readme).toContain('Works at remote work locations');
-    expect(readme).toContain('Testing infrastructure (1,776 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,777 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Every Work Pattern Is Different');
     expect(readme).toContain('work location, and reminder settings');
@@ -1478,9 +1478,9 @@ describe('Ryvro environment template', () => {
     );
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,776 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,777 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-05-31 release check)');
-    expect(readme).toContain('Total Tests**: 1,776 passing (110 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Total Tests**: 1,777 passing (110 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -1711,7 +1711,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, latest public clearance evidence at 20:33Z, and latest pushed PR #1 CI pass `26727184078` on `35a453c`)'
+      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, latest public clearance evidence at 20:33Z, and latest pushed PR #1 CI pass `26727378127` on `5101ca3`)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
@@ -1924,6 +1924,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('110 Jest suites / 1,767 tests');
     expect(readinessReport).toContain('110 Jest suites / 1,771 tests');
     expect(readinessReport).toContain('110 Jest suites / 1,776 tests');
+    expect(readinessReport).toContain('110 Jest suites / 1,777 tests');
     expect(readinessReport).toContain('Profile legal/support link coverage');
     expect(readinessReport).toContain(
       'requiring real root-level Firebase native service files for Ryvro production builds'
@@ -1937,12 +1938,12 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
+    expect(readinessReport).toContain('CI run `26727378127`');
+    expect(readinessReport).toContain('commit `5101ca3`');
     expect(readinessReport).toContain('CI run `26727184078`');
     expect(readinessReport).toContain('commit `35a453c`');
     expect(readinessReport).toContain('CI run `26727022362`');
     expect(readinessReport).toContain('commit `90e3e04`');
-    expect(readinessReport).toContain('CI run `26726876514`');
-    expect(readinessReport).toContain('commit `f72f885`');
     expect(readinessReport).toContain('CI run `26722400690`');
     expect(readinessReport).toContain('commit `4af8a23`');
     expect(readinessReport).toContain('CI run `26721974527`');
@@ -2140,7 +2141,7 @@ describe('Ryvro environment template', () => {
     expect(audit).toContain(
       'removed the retired `ellieBrain` HTTP export from active backend source'
     );
-    expect(audit).toContain('CI run `26727184078` on commit `35a453c`');
+    expect(audit).toContain('CI run `26727378127` on commit `5101ca3`');
     expect(audit).toContain(
       'Aligned the active deployment guide to the committed Ryvro `eas.json`, dynamic `app.config.js`, and guarded `npm run release:submit:check` plus `eas submit --latest` store-submission flow.'
     );
@@ -2152,6 +2153,9 @@ describe('Ryvro environment template', () => {
     );
     expect(audit).toContain(
       'Confirmed active wake-word keyword/model guidance uses Ryvro filenames (`ryvro_ios.ppn`, `ryvro_android.ppn`, and optional `openwakeword/ryvro.onnx`) with no active `hey_ellie`, `ellie_ios`, or `ellie_android` launch defaults.'
+    );
+    expect(audit).toContain(
+      'Renamed the retired Firebase JS service sidecar code symbol to neutral Ryvro-era cleanup wording while preserving the raw old sidecar app name only as a compatibility lookup.'
     );
     expect(audit).toContain(
       'Any remaining legacy `Ellie` references are intentional compatibility inputs, migration removals, historical evidence, or test guards.'
@@ -2576,19 +2580,19 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('eas submit --platform android --latest');
     expect(ownerRunbook).toContain('npm run release:submit:check');
     expect(ownerRunbook).toContain('Final submit readiness is guarded');
-    expect(ownerRunbook).toContain('110 Jest suites, 1,776 tests');
+    expect(ownerRunbook).toContain('110 Jest suites, 1,777 tests');
     expect(ownerRunbook).toContain('npm run release:owner:check');
     expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');
     expect(ownerRunbook).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
     expect(ownerRunbook).toContain('Recent pushed PR gate evidence includes');
     expect(ownerRunbook).not.toContain('Latest pushed PR gate');
+    expect(ownerRunbook).toContain('CI run `26727378127`');
+    expect(ownerRunbook).toContain('commit `5101ca3`');
     expect(ownerRunbook).toContain('CI run `26727184078`');
     expect(ownerRunbook).toContain('commit `35a453c`');
     expect(ownerRunbook).toContain('CI run `26727022362`');
     expect(ownerRunbook).toContain('commit `90e3e04`');
-    expect(ownerRunbook).toContain('CI run `26726876514`');
-    expect(ownerRunbook).toContain('commit `f72f885`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');
@@ -3530,6 +3534,26 @@ describe('Ryvro environment template', () => {
     expect(activeStorageCode).not.toContain('legacyAskEllieDone');
     expect(activeStorageCode).not.toContain('LEGACY_LANGUAGE_KEY');
     expect(activeStorageCode).not.toContain('LEGACY_CHECKLIST_ASK_ELLIE_DONE_KEY');
+  });
+
+  it('keeps active Firebase JS service-app symbols neutral while preserving retired cleanup', () => {
+    const firebaseConfigSource = fs.readFileSync(
+      path.join(process.cwd(), 'src/config/firebase.ts'),
+      'utf8'
+    );
+    const firebaseFallbackTest = fs.readFileSync(
+      path.join(process.cwd(), 'tests/config/firebase.native-fallback.test.ts'),
+      'utf8'
+    );
+
+    expect(firebaseConfigSource).toContain('const RYVRO_JS_SERVICE_APP_NAME');
+    expect(firebaseConfigSource).toContain('const RETIRED_JS_SERVICE_APP_NAME');
+    expect(firebaseConfigSource).toContain("'__RYVRO_JS_SERVICES__'");
+    expect(firebaseConfigSource).toContain("'__ELLIE_JS_SERVICES__'");
+    expect(firebaseConfigSource).not.toContain('LEGACY_ELLIE_JS_SERVICE_APP_NAME');
+    expect(firebaseFallbackTest).toContain(
+      "expect(jsInitializeApp).not.toHaveBeenCalledWith(expect.anything(), '__ELLIE_JS_SERVICES__')"
+    );
   });
 
   it('keeps the web admin Firebase config path on Ryvro-safe values', () => {

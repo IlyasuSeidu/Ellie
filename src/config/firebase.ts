@@ -42,7 +42,7 @@ let functions: Functions | undefined;
 let jsSdkServiceApp: FirebaseJsApp | undefined;
 
 const RYVRO_JS_SERVICE_APP_NAME = '__RYVRO_JS_SERVICES__';
-const LEGACY_ELLIE_JS_SERVICE_APP_NAME = '__ELLIE_JS_SERVICES__';
+const RETIRED_JS_SERVICE_APP_NAME = '__ELLIE_JS_SERVICES__';
 
 type FirebaseAuthPackageRuntime = {
   getReactNativePersistence?: (
@@ -130,7 +130,7 @@ function getFirebaseJsServiceApp(firebaseApp: FirebaseApp): FirebaseJsApp {
   const existingSidecar = firebaseAppModule
     .getApps()
     .find((registeredApp) =>
-      [RYVRO_JS_SERVICE_APP_NAME, LEGACY_ELLIE_JS_SERVICE_APP_NAME].includes(registeredApp.name)
+      [RYVRO_JS_SERVICE_APP_NAME, RETIRED_JS_SERVICE_APP_NAME].includes(registeredApp.name)
     );
 
   jsSdkServiceApp =
