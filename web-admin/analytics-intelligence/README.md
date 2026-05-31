@@ -1,7 +1,7 @@
 # AI Intelligence - Ryvro Web Admin
 
 Static web dashboard for the Ryvro analytics intelligence backend.
-It is intentionally separate from the iOS/Android miner app.
+It is intentionally separate from the iOS/Android Ryvro shift-worker app.
 
 The dashboard follows the archived analytics intelligence strategy by focusing on:
 

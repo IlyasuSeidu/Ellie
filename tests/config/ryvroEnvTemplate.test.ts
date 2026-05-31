@@ -3163,6 +3163,8 @@ describe('Ryvro environment template', () => {
     expect(firebaseJson).toContain('"firebase-config.local.js"');
     expect(adminReadme).toContain('Ryvro Firebase web config values');
     expect(adminReadme).toContain('Do not point the local admin console at the retired Ellie');
+    expect(adminReadme).toContain('iOS/Android Ryvro shift-worker app');
+    expect(adminReadme).not.toContain('iOS/Android miner app');
     expect(exampleConfig).toContain('YOUR_RYVRO_PROJECT_ID.firebaseapp.com');
     expect(exampleConfig).toContain('YOUR_RYVRO_PROJECT_ID.firebasestorage.app');
     expect(guardedConfig).not.toContain('ellie-20260220135308');
