@@ -214,9 +214,7 @@ requireMatches(readme, /CI run `\d+` on commit `[0-9a-f]+`/, 'README CI run evid
   ['commit `20f4758`', ownerRunbook],
   ['store screenshot capture checklist', readinessReport],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', ownerRunbook],
-].forEach(([expected, content]) =>
-  requireIncludes(content, expected, 'latest pushed launch evidence')
-);
+].forEach(([expected, content]) => requireIncludes(content, expected, 'pushed launch evidence'));
 
 if (
   packageJson.scripts?.['release:submit:check'] !== 'node scripts/verify-ryvro-submit-readiness.js'

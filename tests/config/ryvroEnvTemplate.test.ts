@@ -2439,6 +2439,8 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');
     expect(ownerRunbook).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
+    expect(ownerRunbook).toContain('Recent pushed PR gate evidence includes');
+    expect(ownerRunbook).not.toContain('Latest pushed PR gate');
     expect(ownerRunbook).toContain('CI run `26721974527`');
     expect(ownerRunbook).toContain('commit `20f4758`');
     expect(ownerRunbook).toContain('CI run `26721813503`');
