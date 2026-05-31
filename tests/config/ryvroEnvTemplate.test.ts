@@ -1368,7 +1368,10 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('commit `63b4339`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
-    expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
+    expect(readme).toContain(
+      'Production `ryvroBrain` and `parseShiftScheduleDescription` deploys and smoke tests'
+    );
+    expect(readme).toContain('valid-prompt `SHIFT_SCHEDULE_PARSER_URL` parser response');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
     expect(readme).toContain('Testing infrastructure (1,761 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
@@ -1612,6 +1615,12 @@ describe('Ryvro environment template', () => {
       'Guard final EAS submit readiness with `npm run release:submit:check`'
     );
     expect(releaseTasks).toContain('npm run release:submit:check');
+    expect(releaseTasks).toContain(
+      'Verify Firebase Cloud Functions are deployed: `curl` the configured `RYVRO_BRAIN_URL` endpoint and `SHIFT_SCHEDULE_PARSER_URL` endpoint'
+    );
+    expect(releaseTasks).toContain(
+      'parser launch evidence must include a valid-prompt `200` draft response'
+    );
     expect(releaseTasks).toContain(
       'Add app-level offline/pending-sync status visibility for queued local writes'
     );
@@ -1889,6 +1898,12 @@ describe('Ryvro environment template', () => {
     );
     expect(readinessReport).toContain('RYVRO_BRAIN_*');
     expect(readinessReport).toContain('ryvroBrain');
+    expect(readinessReport).toContain(
+      'Production Firebase deploy and smoke tests for both `ryvroBrain` and `parseShiftScheduleDescription`'
+    );
+    expect(readinessReport).toContain(
+      'valid-prompt `SHIFT_SCHEDULE_PARSER_URL` `200` draft response'
+    );
     expect(readinessReport).toContain(
       'Schedule and Stats helper screens no longer present launch users with "Coming Soon" copy'
     );

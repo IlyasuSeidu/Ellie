@@ -88,7 +88,11 @@ const screenshotChecklist = read('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
   ['docs/RYVRO_LAUNCH_EVIDENCE_LOG.md', ownerRunbook],
   ['Fresh Firebase iOS/Android app configs and OAuth clients', readinessReport],
   ['real root-level Firebase native service files', readinessReport],
-  ['Production Firebase deploy and smoke test for the `ryvroBrain` endpoint', readinessReport],
+  [
+    'Production Firebase deploy and smoke tests for both `ryvroBrain` and `parseShiftScheduleDescription`',
+    readinessReport,
+  ],
+  ['valid-prompt `SHIFT_SCHEDULE_PARSER_URL` `200` draft response', readinessReport],
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'owner launch handoff'));
 
 [

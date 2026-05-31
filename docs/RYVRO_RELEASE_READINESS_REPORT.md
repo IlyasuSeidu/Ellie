@@ -186,7 +186,7 @@ These items cannot be proven from the repo alone:
 - Logged-in social handle reservation.
 - Fresh Firebase iOS/Android app configs and OAuth clients for `com.ryvro.shiftplanner`.
 - RevenueCat dashboard display-name, product, offering, and entitlement cleanup if production still contains retired Ellie/miner names.
-- Production Firebase deploy and smoke test for the `ryvroBrain` endpoint before retiring the legacy `ellieBrain` compatibility endpoint.
+- Production Firebase deploy and smoke tests for both `ryvroBrain` and `parseShiftScheduleDescription` before retiring the legacy `ellieBrain` compatibility endpoint; parser evidence must include a valid-prompt `SHIFT_SCHEDULE_PARSER_URL` `200` draft response.
 
 ## Merge Readiness
 

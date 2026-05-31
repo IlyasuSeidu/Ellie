@@ -115,11 +115,11 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 
 ## Phase 6 — Backend + Privacy (Mix of code + manual)
 
-| #   | Task                                                                                                                                                                            | Status  |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| 18  | Verify Firebase Cloud Function is deployed: `curl` the configured `RYVRO_BRAIN_URL` endpoint (200/400 = live)                                                                   | 👤 Todo |
-| 19  | 👤 Create and publish Privacy Policy — must mention microphone, Firebase, OpenAI, RevenueCat, and subscription terms (Notion page or GitHub Pages) — required before submission | 👤 Todo |
-| 19a | Repo-side Ryvro privacy, terms, support, and email template drafts are ready in `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`                                                       | ✅ Done |
+| #   | Task                                                                                                                                                                                                             | Status  |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| 18  | Verify Firebase Cloud Functions are deployed: `curl` the configured `RYVRO_BRAIN_URL` endpoint and `SHIFT_SCHEDULE_PARSER_URL` endpoint; parser launch evidence must include a valid-prompt `200` draft response | 👤 Todo |
+| 19  | 👤 Create and publish Privacy Policy — must mention microphone, Firebase, OpenAI, RevenueCat, and subscription terms (Notion page or GitHub Pages) — required before submission                                  | 👤 Todo |
+| 19a | Repo-side Ryvro privacy, terms, support, and email template drafts are ready in `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`                                                                                        | ✅ Done |
 
 ---
 
