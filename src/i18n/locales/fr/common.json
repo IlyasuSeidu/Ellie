@@ -289,5 +289,10 @@
   },
   "offlineBanner": {
     "message": "Hors ligne. Vos données de quarts restent disponibles."
+  },
+  "syncStatus": {
+    "pending": "{{count}} mise à jour enregistrée localement. Elle se synchronisera quand vous serez en ligne.",
+    "syncing": "Synchronisation de {{count}} mise à jour enregistrée.",
+    "failed": "{{count}} mise à jour doit être vérifiée avant de pouvoir se synchroniser."
   }
 }

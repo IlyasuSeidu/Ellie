@@ -289,5 +289,10 @@
   },
   "offlineBanner": {
     "message": "Vanlyn. Jou skofdata is steeds beskikbaar."
+  },
+  "syncStatus": {
+    "pending": "{{count}} opdatering plaaslik gestoor. Dit sal sinkroniseer wanneer jy aanlyn is.",
+    "syncing": "Sinkroniseer {{count}} gestoorde opdatering.",
+    "failed": "{{count}} opdatering moet nagegaan word voordat dit kan sinkroniseer."
   }
 }

@@ -289,5 +289,10 @@
   },
   "offlineBanner": {
     "message": "Awuxhunyiwe. Idatha yamashifu akho isatholakala."
+  },
+  "syncStatus": {
+    "pending": "{{count}} isibuyekezo silondolozwe kudivayisi. Sizovumelaniswa uma usuxhumekile.",
+    "syncing": "Kuvumelaniswa {{count}} isibuyekezo esilondoloziwe.",
+    "failed": "{{count}} isibuyekezo sidinga ukubuyekezwa ngaphambi kokuvumelaniswa."
   }
 }

@@ -289,5 +289,10 @@
   },
   "offlineBanner": {
     "message": "Offline. Data shift Anda masih tersedia."
+  },
+  "syncStatus": {
+    "pending": "{{count}} pembaruan disimpan lokal. Akan disinkronkan saat Anda online.",
+    "syncing": "Menyinkronkan {{count}} pembaruan tersimpan.",
+    "failed": "{{count}} pembaruan perlu ditinjau sebelum dapat disinkronkan."
   }
 }

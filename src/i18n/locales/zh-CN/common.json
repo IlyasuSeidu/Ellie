@@ -289,5 +289,10 @@
   },
   "offlineBanner": {
     "message": "当前离线。你的班次数据仍可用。"
+  },
+  "syncStatus": {
+    "pending": "{{count}} 个更新已保存在本地。联网后会同步。",
+    "syncing": "正在同步 {{count}} 个已保存更新。",
+    "failed": "{{count}} 个更新需要检查后才能同步。"
   }
 }

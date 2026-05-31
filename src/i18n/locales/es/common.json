@@ -289,5 +289,10 @@
   },
   "offlineBanner": {
     "message": "Sin conexión. Tus datos de turnos siguen disponibles."
+  },
+  "syncStatus": {
+    "pending": "{{count}} actualización guardada localmente. Se sincronizará cuando tengas conexión.",
+    "syncing": "Sincronizando {{count}} actualización guardada.",
+    "failed": "{{count}} actualización necesita revisión antes de sincronizarse."
   }
 }

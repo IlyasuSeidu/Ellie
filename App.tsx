@@ -16,6 +16,7 @@ import { notificationService } from './src/services/NotificationService';
 import { useShiftAccent } from './src/hooks/useShiftAccent';
 import { appStateStorageService } from './src/services/AppStateStorageService';
 import { OfflineBanner } from './src/components/system/OfflineBanner';
+import { SyncStatusIndicator } from './src/components/system/SyncStatusIndicator';
 import { PostShiftCheckInController } from './src/components/checkin/PostShiftCheckInController';
 import { storageMaintenanceService } from './src/services/StorageMaintenanceService';
 import { PaywallScreen } from './src/screens/subscription/PaywallScreen';
@@ -57,6 +58,7 @@ function AppContent() {
       />
       <StatusBar style="light" backgroundColor={statusAreaColor} translucent={false} />
       <OfflineBanner />
+      <SyncStatusIndicator />
       <NavigationContainer>
         <AppNavigator />
       </NavigationContainer>

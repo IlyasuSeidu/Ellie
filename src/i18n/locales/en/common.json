@@ -286,5 +286,10 @@
   },
   "offlineBanner": {
     "message": "Offline. Your shift data is still available."
+  },
+  "syncStatus": {
+    "pending": "{{count}} update saved locally. It will sync when you are online.",
+    "syncing": "Syncing {{count}} saved update.",
+    "failed": "{{count}} update needs review before it can sync."
   }
 }

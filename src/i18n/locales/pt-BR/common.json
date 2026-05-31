@@ -289,5 +289,10 @@
   },
   "offlineBanner": {
     "message": "Offline. Seus dados de turnos ainda estão disponíveis."
+  },
+  "syncStatus": {
+    "pending": "{{count}} atualização salva localmente. Ela será sincronizada quando você estiver online.",
+    "syncing": "Sincronizando {{count}} atualização salva.",
+    "failed": "{{count}} atualização precisa de revisão antes de sincronizar."
   }
 }

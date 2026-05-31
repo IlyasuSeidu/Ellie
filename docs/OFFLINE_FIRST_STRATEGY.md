@@ -8,23 +8,26 @@ Ryvro is built for shift workers who may operate underground, on remote sites, i
 
 ## Current State Assessment
 
-The offline infrastructure is partially implemented.
+The offline infrastructure is implemented for the repo-side launch path. Account-backed service
+checks and physical device QA still need to happen before store submission.
 
 ### What Already Works
 
-| Component                                  | File                                        | Status                                       |
-| ------------------------------------------ | ------------------------------------------- | -------------------------------------------- |
-| NetInfo-backed network state               | `src/services/NetworkService.ts`            | Implemented with native-module fallback      |
-| Sync queue (CREATE/UPDATE/DELETE)          | `src/services/DataSyncService.ts`           | Wired to network state and flushes on online |
-| Firebase network guards and cache fallback | `src/services/firebase/FirebaseService.ts`  | Wired to network state                       |
-| Type-safe local storage with TTL           | `src/services/AsyncStorageService.ts`       | Implemented                                  |
-| Exponential backoff retry                  | `src/utils/reliableRetry.ts`                | Implemented                                  |
-| Offline voice query fallback               | `src/utils/offlineFallback.ts`              | Implemented across bundled locales           |
-| Network status hook                        | `src/hooks/useNetworkStatus.ts`             | Implemented from `networkService` snapshots  |
-| Offline banner                             | `src/components/system/OfflineBanner.tsx`   | Mounted in `App.tsx` and covered by tests    |
-| Storage cleanup maintenance                | `src/services/StorageMaintenanceService.ts` | Runs on startup and app foreground           |
-| Shift calculations                         | `src/utils/shiftUtils.ts`                   | Pure functions with no network dependency    |
-| Firebase Auth session persistence          | `src/config/firebase.ts`                    | Implemented                                  |
+| Component                                  | File                                            | Status                                           |
+| ------------------------------------------ | ----------------------------------------------- | ------------------------------------------------ |
+| NetInfo-backed network state               | `src/services/NetworkService.ts`                | Implemented with native-module fallback          |
+| Sync queue (CREATE/UPDATE/DELETE)          | `src/services/DataSyncService.ts`               | Wired to network state and flushes on online     |
+| Firebase network guards and cache fallback | `src/services/firebase/FirebaseService.ts`      | Wired to network state                           |
+| Type-safe local storage with TTL           | `src/services/AsyncStorageService.ts`           | Implemented                                      |
+| Exponential backoff retry                  | `src/utils/reliableRetry.ts`                    | Implemented                                      |
+| Offline voice query fallback               | `src/utils/offlineFallback.ts`                  | Implemented across bundled locales               |
+| Network status hook                        | `src/hooks/useNetworkStatus.ts`                 | Implemented from `networkService` snapshots      |
+| Offline banner                             | `src/components/system/OfflineBanner.tsx`       | Mounted in `App.tsx` and covered by tests        |
+| Pending sync indicator                     | `src/components/system/SyncStatusIndicator.tsx` | Counts local queues and failed sync items        |
+| Pending sync status hook                   | `src/hooks/usePendingSyncStatus.ts`             | Reads user, shift-log, session, analytics queues |
+| Storage cleanup maintenance                | `src/services/StorageMaintenanceService.ts`     | Runs on startup and app foreground               |
+| Shift calculations                         | `src/utils/shiftUtils.ts`                       | Pure functions with no network dependency        |
+| Firebase Auth session persistence          | `src/config/firebase.ts`                        | Implemented                                      |
 
 Resolved since the original audit:
 
@@ -34,17 +37,17 @@ Resolved since the original audit:
 - `FirebaseService.initializeNetworkListener()` subscribes to `networkService` and updates network guards from the current snapshot.
 - `NetworkService` falls back safely when the native NetInfo module is unavailable, which keeps Jest and unsupported runtimes from crashing at import time.
 - `OfflineBanner` is mounted in `App.tsx` and renders only when `useNetworkStatus()` reports `offline`.
+- `SyncStatusIndicator` is mounted in `App.tsx` and surfaces queued user, shift-log, session, and analytics writes from local storage.
 - `StorageMaintenanceService.initialize()` runs from `App.tsx` and calls `removeExpired()` when due without blocking app render.
 
 ### Remaining Gaps
 
-| Gap                                     | Location                                   | Launch impact                           |
-| --------------------------------------- | ------------------------------------------ | --------------------------------------- |
-| No pending-sync indicator in edit flows | `src/components/`, profile/builder screens | Users cannot see queued edit count      |
-| No shared cache TTL constants           | `src/config/`                              | Expiry policy is harder to audit        |
-| Device offline QA still required        | iOS and Android devices                    | Simulator/unit coverage is insufficient |
+| Gap                              | Location                | Launch impact                           |
+| -------------------------------- | ----------------------- | --------------------------------------- |
+| No shared cache TTL constants    | `src/config/`           | Expiry policy is harder to audit        |
+| Device offline QA still required | iOS and Android devices | Simulator/unit coverage is insufficient |
 
-The remaining work is now pending-sync visibility, cache policy hardening, and physical-device offline QA, not basic network detection.
+The remaining work is now cache policy hardening and physical-device offline QA, not basic network detection or pending-sync visibility.
 
 ---
 
@@ -65,7 +68,10 @@ React Native app
   |     |-- falls back to local Firestore/AsyncStorage cache where supported
   |
   |-- AsyncStorageService
-        |-- TTL-aware persisted cache
+  |     |-- TTL-aware persisted cache
+  |
+  |-- SyncStatusIndicator
+        |-- reads local pending/failed queues and surfaces sync state
 ```
 
 ### Read Path
@@ -90,10 +96,11 @@ User edits profile, schedule, exception, or reminder
   |
   |-- update local state/cache optimistically
   |
-  |-- online -> write to Firebase
-  |-- offline -> queue operation in DataSyncService
+  |-- online -> write to Firebase/service backend
+  |-- offline -> queue operation in the feature-specific local queue
   |
-  |-- network returns -> DataSyncService processes queue
+  |-- network returns -> service processes queue
+  |-- SyncStatusIndicator shows local pending/failed state while queued
 ```
 
 ---
@@ -104,26 +111,20 @@ Use the existing `src/services/NetworkService.ts`; do not add a parallel network
 
 ### Files To Create
 
-| File                                     | Purpose                                           |
-| ---------------------------------------- | ------------------------------------------------- |
-| `src/components/SyncStatusIndicator.tsx` | Badge showing pending queue count and sync action |
-| `src/config/cacheConfig.ts`              | Shared TTL constants used across cached services  |
+| File                        | Purpose                                          |
+| --------------------------- | ------------------------------------------------ |
+| `src/config/cacheConfig.ts` | Shared TTL constants used across cached services |
 
 ### Files To Modify
 
-| File                              | Change                                                                 |
-| --------------------------------- | ---------------------------------------------------------------------- |
-| `src/services/UserService.ts`     | Continue moving profile and schedule reads toward local-first behavior |
-| `src/config/firebase.ts`          | Verify native/web Firestore cache behavior for the production runtime  |
-| `src/services/DataSyncService.ts` | Surface pending queue count for UI and keep reconnect flush guarded    |
+| File                     | Change                                                                |
+| ------------------------ | --------------------------------------------------------------------- |
+| `src/config/firebase.ts` | Verify native/web Firestore cache behavior for the production runtime |
 
 ### Step-By-Step Work
 
-1. Add a compact `SyncStatusIndicator` wherever profile, schedule, exception, or reminder edits can queue.
-2. Expose pending queue state through the existing `DataSyncService.getQueueSize()` path, or a thin hook that subscribes to network snapshots and refreshes queue size.
-3. Centralize cache TTL values in `src/config/cacheConfig.ts`.
-4. Add launch-focused tests for pending-sync indicator visibility and queued edit count.
-5. Run physical iOS and Android offline QA before store submission.
+1. Centralize cache TTL values in `src/config/cacheConfig.ts`.
+2. Run physical iOS and Android offline QA before store submission.
 
 ---
 
