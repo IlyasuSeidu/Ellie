@@ -402,6 +402,22 @@ describe('Ryvro environment template', () => {
     }
   });
 
+  it('keeps the dynamic Expo extra map free of duplicate launch keys', () => {
+    const appConfigSource = fs.readFileSync(path.join(process.cwd(), 'app.config.js'), 'utf8');
+
+    for (const key of [
+      'E2E_TEST_MODE',
+      'EXPO_PUBLIC_E2E_TEST_MODE',
+      'RYVRO_BRAIN_URL',
+      'SHIFT_SCHEDULE_PARSER_URL',
+      'LEGAL_PRIVACY_POLICY_URL',
+      'ACCOUNT_DELETION_URL',
+    ]) {
+      const matches = appConfigSource.match(new RegExp(`\\b${key}:`, 'g')) || [];
+      expect(matches).toHaveLength(1);
+    }
+  });
+
   it('derives Ryvro Cloud Function defaults from the Firebase project when present', () => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const buildAppConfig = require(path.join(process.cwd(), 'app.config.js')) as ({
@@ -1303,6 +1319,7 @@ describe('Ryvro environment template', () => {
     expect(clearanceEvidence).not.toContain('2026-05-30T06:28:28.205Z');
     expect(clearanceEvidence).not.toContain('2026-05-31 at 05:16:18Z');
     expect(clearanceEvidence).not.toContain('2026-05-31T05:16:18.075Z');
+    expect(clearanceEvidence).not.toContain('2026-05-31 at 07:14Z');
     expect(clearanceEvidence).not.toContain(
       'Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`'
     );
@@ -1660,11 +1677,12 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, and latest pushed PR #1 CI pass)'
+      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, latest public clearance evidence at 19:32Z, and latest pushed PR #1 CI pass)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
-    expect(releaseTasks).toContain('latest public evidence: 2026-05-31 07:14Z');
+    expect(releaseTasks).toContain('latest public evidence: 2026-05-31 19:32Z');
+    expect(releaseTasks).not.toContain('latest public evidence: 2026-05-31 07:14Z');
     expect(releaseTasks).toContain('formal trademark/legal clearance for `Ryvro`');
     expect(releaseTasks).toContain(
       'Reserve or create App Store Connect app name `Ryvro Shift Planner`'

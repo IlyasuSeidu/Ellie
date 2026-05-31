@@ -1,7 +1,7 @@
 # Ryvro — Release Task List
 
 Source: `SHIFT_WORKER_APP_REBRAND_AUDIT.md`
-Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, and latest pushed PR #1 CI pass)
+Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, latest public clearance evidence at 19:32Z, and latest pushed PR #1 CI pass)
 
 Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you do this)
 
@@ -11,7 +11,7 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 
 | #   | Task                                                                                                                                                                              | Status                                              |
 | --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
-| 0a  | Run repeatable public clearance preflight with `npm run release:clearance` and keep evidence in `docs/RYVRO_RELEASE_READINESS_REPORT.md` / `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md` | ✅ Done (latest public evidence: 2026-05-31 07:14Z) |
+| 0a  | Run repeatable public clearance preflight with `npm run release:clearance` and keep evidence in `docs/RYVRO_RELEASE_READINESS_REPORT.md` / `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md` | ✅ Done (latest public evidence: 2026-05-31 19:32Z) |
 | 0b  | 👤 Complete formal trademark/legal clearance for `Ryvro` in launch markets                                                                                                        | 👤 Todo                                             |
 | 0c  | 👤 Reserve or create App Store Connect app name `Ryvro Shift Planner`                                                                                                             | 👤 Todo                                             |
 | 0d  | 👤 Reserve or create Google Play title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`                                                                                 | 👤 Todo                                             |
