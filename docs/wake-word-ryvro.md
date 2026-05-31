@@ -18,7 +18,7 @@ This app is configured with a best-effort strategy:
 - Android model path:
   - `<repo-root>/android/app/src/main/assets/ryvro_android.ppn`
 - iOS model path:
-  - `<repo-root>/ios/Ellie/ryvro_ios.ppn`
+  - `<repo-root>/ios/RyvroShiftPlanner/ryvro_ios.ppn`
 
 For iOS, add `ryvro_ios.ppn` to the app target in Xcode:
 

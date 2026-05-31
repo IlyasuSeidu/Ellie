@@ -49,11 +49,11 @@ Completed in the current working tree:
 - Added documentation regression tests that pin `docs/ARCHITECTURE.md` to the Universal Shift Builder source-of-truth architecture and keep the active FIFO guide template-specific.
 - Added legal, privacy, support, external-service, and RevenueCat handoff regression tests so repo-side launch docs stay broad, Ryvro-named, and free of retired Ellie product aliases.
 - Added backend analytics setup dimensions for industry, template, and schedule source so dashboards can segment universal schedule adoption without defaulting to mining/FIFO, and guarded legacy site/mining-site parameters as redacted sensitive fields.
-- Updated Detox iOS release QA config to build/install the generated `Ryvro.app` product on the available iPhone 16 simulator instead of the retired `EllieMinerShiftAssistant.app` path; `npm run test:e2e:build:ios` passed on 2026-05-29T15:22:59Z and the built plist reports `CFBundleDisplayName = Ryvro`, `CFBundleName = Ryvro`, and `CFBundleIdentifier = com.ryvro.shiftplanner`.
+- Updated Detox iOS release QA config to build/install the generated `RyvroShiftPlanner.app` product on the available iPhone 16 simulator instead of the retired `EllieMinerShiftAssistant.app` path; the app-visible plist still pins `CFBundleDisplayName = Ryvro` and `CFBundleIdentifier = com.ryvro.shiftplanner`.
 - Added an iPhone XS Max simulator release QA target and passed the seeded dashboard smoke on a clean install: `E2E_TEST_MODE=1 npx detox test --configuration ios.release.xsmax e2e/dashboard.test.ts` passed 15/15 tests on 2026-05-29.
 - Added an E2E RevenueCat guard so release simulator QA does not load RevenueCat with `test_` API keys, which trigger RevenueCat's native release-mode test-key protection alert.
 - Built the Android debug APK on 2026-05-29 with package `com.ryvro.shiftplanner`; Android release-style Detox build, seeded dashboard smoke, auth form/navigation smoke, onboarding through Universal Shift Builder, and profile language-selector smoke now pass on `Medium_Phone_API_36.0`. Physical Android device QA and real provider auth remain pending.
-- Tightened tracked Xcode product metadata so the iOS shared scheme and product file reference now point at `Ryvro.app`; `xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -showBuildSettings` reported `FULL_PRODUCT_NAME = Ryvro.app`, `WRAPPER_NAME = Ryvro.app`, `PRODUCT_NAME = Ryvro`, and `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner` on 2026-05-30.
+- Verified clean Expo iOS prebuild now creates `ios/RyvroShiftPlanner.xcodeproj` and `ios/RyvroShiftPlanner.xcworkspace`, with `CFBundleDisplayName = Ryvro`, `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner`, and the release archive docs using `-scheme RyvroShiftPlanner`.
 - Removed stale tracked Detox artifact logs/screenshots from the old iOS `EllieMinerShiftAssistant` identity and added `artifacts/` to `.gitignore` so generated release logs do not re-enter the tracked launch tree.
 - Launch-critical onboarding occupation placeholders now use broad examples such as healthcare, security, and plant operations instead of mining/trades-only examples across bundled locales.
 - Hardened `npm run release:env:check` so production builds require the Expo public RevenueCat iOS/Android keys to mirror the native RevenueCat SDK keys before EAS secrets are pushed.
@@ -216,7 +216,7 @@ Repo-side identity work is complete for the current Ryvro direction:
 - Short native display name: `Ryvro`.
 - Expo slug and URL scheme: `ryvro`.
 - iOS bundle ID and Android package: `com.ryvro.shiftplanner`.
-- Current generated iOS simulator build installs as `Ryvro.app` and exposes `CFBundleDisplayName = Ryvro` and `CFBundleName = Ryvro`; current Xcode build settings also report `FULL_PRODUCT_NAME = Ryvro.app`, `WRAPPER_NAME = Ryvro.app`, `PRODUCT_NAME = Ryvro`, and `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner`.
+- Current clean generated iOS scaffold uses the internal `RyvroShiftPlanner` workspace, scheme, and product while exposing `CFBundleDisplayName = Ryvro` and `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner`.
 - Current generated Android/iOS native identity files have been updated locally by the prebuild/run flow. If the repo keeps `ios/` and `android/` ignored, the tracked source of truth remains `app.json` and `app.config.js`.
 
 Remaining account-side identity work:
@@ -862,16 +862,15 @@ These were updated together in the Ryvro rebrand branch because they affect buil
   - Confirmed no env-driven override reintroduces old public naming.
 - `app.config.js.backup`
   - Updated to the same Ryvro identity values so the backup does not mislead future agents.
-- `ios/Ellie/Info.plist`
-  - `CFBundleDisplayName`: `Ryvro`.
+- `ios/RyvroShiftPlanner/Info.plist`
+  - Clean prebuild output contains `CFBundleDisplayName`: `Ryvro`.
   - URL schemes: `ryvro`, `com.ryvro.shiftplanner`, and `exp+ryvro`.
-- `ios/Ellie.xcodeproj/project.pbxproj`
-  - Product name references now build `Ryvro`.
-  - Google service resource reference should still resolve.
-- `ios/Ellie/GoogleService-Info.plist`
-  - Needs replacement from Firebase Console because the checked-in/generated file still belongs to the old Firebase project even though the local bundle ID was adjusted.
-- `ios/Ellie/Ellie.entitlements`
-  - Verify Sign in with Apple entitlement remains valid.
+- `ios/RyvroShiftPlanner.xcodeproj/project.pbxproj`
+  - Clean prebuild output uses `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner`.
+  - Internal generated product remains `RyvroShiftPlanner.app`; app-visible display name is pinned separately.
+- Firebase native service files
+  - Local prebuild falls back to tracked Ryvro-shaped placeholders in `config/firebase/`.
+  - Production builds must use fresh ignored root-level `GoogleService-Info.plist` and `google-services.json` downloaded from Firebase Console for `com.ryvro.shiftplanner`.
 - `android/settings.gradle`
   - `rootProject.name`: `Ryvro Shift Planner`.
 - Android native package files
@@ -1634,7 +1633,7 @@ Phase gate:
 
 ### Phase 10: Device QA
 
-- [x] Fresh install on iOS simulator. Detox installed rebuilt `Ryvro.app` on a clean iPhone XS Max simulator before the seeded dashboard smoke.
+- [x] Fresh install on iOS simulator. Detox previously installed the rebuilt Ryvro display-name app on a clean iPhone XS Max simulator before the seeded dashboard smoke; current Detox build config targets the clean-generated `RyvroShiftPlanner.app` product.
 - [ ] Fresh onboarding on iOS simulator.
 - [ ] Settings edit on iOS simulator.
 - [ ] Dashboard color/icon check on iOS simulator.
@@ -1679,7 +1678,7 @@ Fill this table after each old-term scan.
 | Term/Path                                                                | Classification            | Reason                                               | Action                              |
 | ------------------------------------------------------------------------ | ------------------------- | ---------------------------------------------------- | ----------------------------------- |
 | `app.json` app name                                                      | done                      | Public app identity is Ryvro Shift Planner           | Keep verified                       |
-| `ios/Ellie/Info.plist` display name                                      | done-generated-native     | Local generated native output now displays Ryvro     | Regenerate with EAS/native workflow |
+| `ios/RyvroShiftPlanner/Info.plist` display name                          | done-generated-native     | Clean generated native output now displays Ryvro     | Regenerate with EAS/native workflow |
 | `android/settings.gradle` root name                                      | done-generated-native     | Local generated native output now uses Ryvro         | Regenerate with EAS/native workflow |
 | `e2e/helpers/testData.ts` default fixture                                | done                      | Default demo user is neutral; mining is separate     | Keep both fixture classes           |
 | `assets/.../mining-helmet-sacred-flame.png`                              | done                      | Retired helmet family removed from active assets     | Keep only archived references       |

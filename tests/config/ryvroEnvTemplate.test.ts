@@ -202,6 +202,13 @@ describe('Ryvro environment template', () => {
     expect(envConfigurationTemplate).toContain('WAKE_WORD_KEYWORD_PATHS_ANDROID=ryvro_android.ppn');
     expect(envExample).toContain('WAKE_WORD_KEYWORD_PATHS_IOS=ryvro_ios.ppn');
     expect(envConfigurationTemplate).toContain('WAKE_WORD_KEYWORD_PATHS_IOS=ryvro_ios.ppn');
+    const wakeWordGuide = fs.readFileSync(
+      path.join(process.cwd(), 'docs/wake-word-ryvro.md'),
+      'utf8'
+    );
+    expect(wakeWordGuide).toContain('<repo-root>/ios/RyvroShiftPlanner/ryvro_ios.ppn');
+    expect(wakeWordGuide).toContain('<repo-root>/ios/RyvroShiftPlanner.xcworkspace');
+    expect(wakeWordGuide).not.toContain('<repo-root>/ios/Ellie/ryvro_ios.ppn');
     expect(envExample).toContain('OPENWAKEWORD_MODEL_PATH=');
     expect(envConfigurationTemplate).toContain('OPENWAKEWORD_MODEL_PATH=');
     expect(envConfigurationTemplate).not.toContain('OPENWAKEWORD_MODEL_PATH=openwakeword/');
@@ -1207,8 +1214,8 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
     expect(readme).toContain('Latest pushed PR gate');
-    expect(readme).toContain('GitHub Actions CI run `26713667593`');
-    expect(readme).toContain('commit `55beb97`');
+    expect(readme).toContain('GitHub Actions CI run `26714150098`');
+    expect(readme).toContain('commit `0edba23`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
@@ -1536,6 +1543,8 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('CI run `26711015976`');
     expect(readinessReport).toContain('commit `4d7519e`');
     expect(readinessReport).toContain('CI run `26712571047`');
+    expect(readinessReport).toContain('commit `0edba23`');
+    expect(readinessReport).toContain('CI run `26714150098`');
     expect(readinessReport).toContain('commit `55beb97`');
     expect(readinessReport).toContain('CI run `26713667593`');
     expect(readinessReport).toContain('commit `37057ae`');
@@ -1587,6 +1596,8 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('adding the store metadata preflight');
     expect(readinessReport).toContain('Owner handoff preflight now runs');
     expect(readinessReport).toContain('adding the owner-only launch blocker preflight');
+    expect(readinessReport).toContain('aligning Firebase service-file paths');
+    expect(readinessReport).toContain('clean-generated `RyvroShiftPlanner` iOS scaffolding');
     expect(readinessReport).toContain(
       'GitHub Actions CI now includes a dedicated `Release Check` job'
     );
@@ -1989,8 +2000,8 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('npm run release:owner:check');
     expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');
-    expect(ownerRunbook).toContain('CI run `26713667593`');
-    expect(ownerRunbook).toContain('commit `55beb97`');
+    expect(ownerRunbook).toContain('CI run `26714150098`');
+    expect(ownerRunbook).toContain('commit `0edba23`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');

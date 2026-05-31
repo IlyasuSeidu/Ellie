@@ -143,9 +143,15 @@ describe('Ryvro documentation archive', () => {
     expect(audit).toContain('Current tracked app icon, adaptive icon, splash icon, favicon');
     expect(audit).toContain('The retired onboarding mining helmet asset family has been removed');
     expect(audit).toContain('Aligned the active API reference with the Ryvro launch configuration');
+    expect(audit).toContain('RyvroShiftPlanner.app');
+    expect(audit).toContain('ios/RyvroShiftPlanner.xcodeproj');
+    expect(audit).toContain('CFBundleDisplayName = Ryvro');
+    expect(audit).toContain('GoogleService-Info.plist');
     expect(audit).toContain(
       '`docs/API_REFERENCE.md`: done; active examples now use broad healthcare rotating-schedule data'
     );
+    expect(audit).not.toContain('xcodebuild -workspace ios/Ellie.xcworkspace');
+    expect(audit).not.toContain('Current generated iOS simulator build installs as `Ryvro.app`');
     expect(audit).not.toContain('Current asset family includes `mining-helmet-sacred-flame`');
     expect(audit).not.toContain('`docs/API_REFERENCE.md`: remove first-class FIFO assumptions');
     expect(audit).not.toContain(
