@@ -806,7 +806,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, release handoff refresh, pushed PR #1 CI pass)'
+      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, pending-sync/cache TTL readiness, latest pushed PR #1 CI pass)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
@@ -823,6 +823,14 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).toContain('PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner');
     expect(releaseTasks).toContain('PRODUCT_NAME = Ryvro');
     expect(releaseTasks).toContain('internal generated workspace/scheme');
+    expect(releaseTasks).toContain(
+      'Add app-level offline/pending-sync status visibility for queued local writes'
+    );
+    expect(releaseTasks).toContain(
+      'Centralize runtime cache TTL policy for launch offline caches and recovery windows'
+    );
+    expect(releaseTasks).toContain('Repo-side offline basics are now covered');
+    expect(releaseTasks).toContain('Physical-device QA still has to prove');
     expect(releaseTasks).toContain('cd <repo-root>');
     expect(releaseTasks).toContain('-archivePath /tmp/Ryvro.xcarchive archive');
     expect(releaseTasks).not.toContain('/Users/Shared/Ellie');
@@ -870,6 +878,10 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('CI run `26704558053`');
     expect(readinessReport).toContain('commit `3d85add`');
     expect(readinessReport).toContain('CI run `26704249051`');
+    expect(readinessReport).toContain('commit `82909cc`');
+    expect(readinessReport).toContain('CI run `26705470020`');
+    expect(readinessReport).toContain('commit `b001c10`');
+    expect(readinessReport).toContain('CI run `26705685141`');
     expect(readinessReport).toContain(
       'commits `f004097`, `10353e7`, `3f92d56`, `90d403d`, and `82fd530`'
     );
@@ -882,6 +894,8 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('adding global pending-sync visibility');
     expect(readinessReport).toContain('109 Jest suites / 1,742 tests');
     expect(readinessReport).toContain('centralizing cache TTL policy');
+    expect(readinessReport).toContain('Global pending-sync visibility now surfaces queued');
+    expect(readinessReport).toContain('Runtime cache TTL policy is centralized');
     expect(readinessReport).toContain(
       'aligning offline-first docs with the current NetInfo-backed implementation'
     );

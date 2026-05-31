@@ -1,7 +1,7 @@
 # Ryvro — Release Task List
 
 Source: `SHIFT_WORKER_APP_REBRAND_AUDIT.md`
-Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, release handoff refresh, pushed PR #1 CI pass)
+Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, pending-sync/cache TTL readiness, latest pushed PR #1 CI pass)
 
 Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you do this)
 
@@ -30,6 +30,8 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 | 4   | Fix `release:check` Jest teardown warning (haptics async path) so it exits with code 0                                 | ✅ Done |
 | 5   | Run full quality gate: `lint` + `type-check` + `test` + `backend:build` + `release:check` — all must pass              | ✅ Done |
 | 5a  | Remove visible launch placeholder copy from hidden/helper Schedule and Stats entry points                              | ✅ Done |
+| 5b  | Add app-level offline/pending-sync status visibility for queued local writes                                           | ✅ Done |
+| 5c  | Centralize runtime cache TTL policy for launch offline caches and recovery windows                                     | ✅ Done |
 
 ---
 
@@ -121,6 +123,8 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 | 22  | Build production Android AAB: `eas build --platform android --profile production`                                                              | 🔧 Partial (local AAB built via Gradle; EAS build pending login)  |
 | 23  | 👤 Install TestFlight build on real iPhone — run full smoke test matrix (see below)                                                            | 👤 Todo                                                           |
 | 24  | 👤 Install .apk on Android device — repeat smoke tests                                                                                         | 👤 Todo                                                           |
+
+Repo-side offline basics are now covered by NetInfo-aware sync state, pending-sync visibility, and centralized cache TTL policy. Physical-device QA still has to prove the same behavior on production builds with real account credentials.
 
 ---
 

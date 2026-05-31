@@ -1,6 +1,6 @@
 # Ryvro Release Readiness Report
 
-Date: 2026-05-30
+Date: 2026-05-31
 Branch: `codex/ryvro-rebrand-rollout`
 Open PR: `https://github.com/IlyasuSeidu/Ellie/pull/1`
 
@@ -30,6 +30,8 @@ Completed and guarded in the current branch:
 - Stale generated Detox artifacts from the retired iOS app identity were removed from the tracked tree; `artifacts/` is now ignored so current release evidence stays in docs and fresh CI/test output instead of checked-in logs.
 - Dashboard quick actions now route to implemented launch surfaces instead of dead tap targets: builder/export actions enter the Universal Shift Builder, and alert/profile actions open the Profile tab.
 - Schedule and Stats helper screens no longer present launch users with "Coming Soon" copy; they point users to the shipped Shift Builder, dashboard metrics, calendar import/export, exceptions, reminders, and profile schedule settings in every bundled locale.
+- Global pending-sync visibility now surfaces queued user-profile, shift-log, session, analytics, and related offline writes through the app-level sync status indicator.
+- Runtime cache TTL policy is centralized in `src/config/cacheConfig.ts` and wired through shift schedules, holidays, RevenueCat offerings, paywall recovery, voice assistant persistence, and storage maintenance.
 
 ## Current Public Clearance Evidence
 
@@ -68,6 +70,8 @@ Completed and guarded in the current branch:
 - Local release verification on 2026-05-31 passed focused offline-strategy/config tests and `npm run release:check` after aligning offline-first docs with the current NetInfo-backed implementation. The release check included TypeScript, 106 Jest suites / 1,735 tests, 4 snapshots, and the backend functions TypeScript build.
 - Local release verification on 2026-05-31 passed `git diff --check`, focused pending-sync indicator/config tests, and `npm run release:check` after adding global pending-sync visibility. The release check included TypeScript, 108 Jest suites / 1,740 tests, 4 snapshots, and the backend functions TypeScript build.
 - Local release verification on 2026-05-31 passed focused cache-policy/config tests and `npm run release:check` after centralizing cache TTL policy in `src/config/cacheConfig.ts`. The release check included TypeScript, 109 Jest suites / 1,742 tests, 4 snapshots, and the backend functions TypeScript build.
+- Recent pushed GitHub Actions check for PR #1 passed on commit `b001c10`: CI run `26705685141` passed Unit Tests, Lint and Type Check, and Build Check.
+- Recent pushed GitHub Actions check for PR #1 passed on commit `82909cc`: CI run `26705470020` passed Unit Tests, Lint and Type Check, and Build Check.
 - Recent pushed GitHub Actions check for PR #1 passed on commit `47441dd`: CI run `26704558053` passed Unit Tests, Lint and Type Check, and Build Check.
 - Previous pushed GitHub Actions checks for PR #1 passed on commit `3d85add` with CI run `26704249051` and commit `e638418` with CI run `26679223794`.
 - Prior completed pushed GitHub Actions baseline for the Android release E2E readiness change: CI run `26659012373` passed for commit `92a52ab`.
