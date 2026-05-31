@@ -16,7 +16,7 @@ Use `docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md` first when executing launch work; this 
 - Preferred domain: getryvro.com
 - Preferred support email: support@getryvro.com
 - Preferred voice endpoint for new builds: ryvroBrain
-- Legacy voice endpoint kept only during migration: ellieBrain
+- Retired voice endpoint: ellieBrain must not be configured for new Ryvro builds
 
 ## Firebase
 
@@ -69,7 +69,7 @@ Configure new production app and EAS secrets with both Ryvro HTTPS function URLs
 - `SHIFT_SCHEDULE_PARSER_TIMEOUT_MS=45000`
 - `SHIFT_SCHEDULE_PARSER_MAX_PROMPT_LENGTH=2000`
 
-Do not configure `ellieBrain` as the launch `RYVRO_BRAIN_URL`. Keep the `ellieBrain` function deployed only long enough to support pre-migration builds, then retire it after production clients and dashboards have moved to `ryvroBrain`.
+Do not configure `ellieBrain` as the launch `RYVRO_BRAIN_URL`. Because Ryvro has not launched publicly yet, new production builds should only deploy and configure `ryvroBrain`; do not keep an `ellieBrain` compatibility endpoint in the launch backend.
 
 Smoke-test endpoints after deploy:
 
@@ -116,7 +116,7 @@ cp .env.production.example .env
 npm run release:env:check
 ```
 
-The check requires `APP_ENV=production`, the real EAS project UUID, real Firebase values scoped to one Ryvro `FIREBASE_PROJECT_ID`, root-level real Firebase native service files referenced by `EXPO_IOS_GOOGLE_SERVICES_FILE` and `EXPO_ANDROID_GOOGLE_SERVICES_FILE`, live HTTPS `API_BASE_URL`, real Google OAuth values, mirrored Expo public Google OAuth client IDs, the deployed `ryvroBrain` URL, real RevenueCat `appl_...` and `goog_...` SDK keys, mirrored Expo public RevenueCat keys and entitlement ID, live HTTPS Ryvro-owned `LEGAL_PRIVACY_POLICY_URL`, `LEGAL_TERMS_OF_SERVICE_URL`, `SUPPORT_URL`, and `ACCOUNT_DELETION_URL` values with matching privacy, terms/legal, support/help, and account deletion paths, and an empty `ELLIE_BRAIN_URL` for new Ryvro builds. It also rejects retired Ellie/ShiftSync Firebase project IDs, Cloud Function hosts for `ryvroBrain` and `parseShiftScheduleDescription`, tracked local service-file placeholders under `config/firebase/`, generated native-folder service-file paths under `ios/` or `android/`, and service files whose project ID or bundle/package does not match `FIREBASE_PROJECT_ID` and `com.ryvro.shiftplanner`. `.env.production.example` is a checklist, not a usable secret file; it must fail the preflight until every placeholder is replaced.
+The check requires `APP_ENV=production`, the real EAS project UUID, real Firebase values scoped to one Ryvro `FIREBASE_PROJECT_ID`, root-level real Firebase native service files referenced by `EXPO_IOS_GOOGLE_SERVICES_FILE` and `EXPO_ANDROID_GOOGLE_SERVICES_FILE`, live HTTPS `API_BASE_URL`, real Google OAuth values, mirrored Expo public Google OAuth client IDs, the deployed `ryvroBrain` URL, real RevenueCat `appl_...` and `goog_...` SDK keys, mirrored Expo public RevenueCat keys and entitlement ID, and live HTTPS Ryvro-owned `LEGAL_PRIVACY_POLICY_URL`, `LEGAL_TERMS_OF_SERVICE_URL`, `SUPPORT_URL`, and `ACCOUNT_DELETION_URL` values with matching privacy, terms/legal, support/help, and account deletion paths. It also rejects retired Ellie/ShiftSync Firebase project IDs, retired `ELLIE_BRAIN_*` env keys, Cloud Function hosts for `ryvroBrain` and `parseShiftScheduleDescription`, tracked local service-file placeholders under `config/firebase/`, generated native-folder service-file paths under `ios/` or `android/`, and service files whose project ID or bundle/package does not match `FIREBASE_PROJECT_ID` and `com.ryvro.shiftplanner`. `.env.production.example` is a checklist, not a usable secret file; it must fail the preflight until every placeholder is replaced.
 
 Verification:
 

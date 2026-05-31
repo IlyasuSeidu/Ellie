@@ -56,11 +56,6 @@ ACCOUNT_DELETION_URL=https://getryvro.com/delete-account
 RYVRO_BRAIN_URL=https://us-central1-your-project-id.cloudfunctions.net/ryvroBrain
 RYVRO_BRAIN_TIMEOUT=30000
 
-# Legacy fallback accepted during migration:
-
-ELLIE_BRAIN_URL=
-ELLIE_BRAIN_TIMEOUT=
-
 # Wake Word Provider
 
 # Default uses OpenWakeWord local ONNX model (no cloud key required).

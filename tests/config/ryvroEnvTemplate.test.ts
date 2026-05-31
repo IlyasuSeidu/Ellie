@@ -152,7 +152,6 @@ describe('Ryvro environment template', () => {
       'SHIFT_SCHEDULE_PARSER_URL=',
       'https://us-central1-ryvro-prod.cloudfunctions.net/parseShiftScheduleDescription',
     ].join(''),
-    'ELLIE_BRAIN_URL=',
   ].join('\n');
 
   const runProductionEnvCheck = (envContent: string) => {
@@ -303,16 +302,12 @@ describe('Ryvro environment template', () => {
     const previousFirebaseProjectId = process.env.FIREBASE_PROJECT_ID;
     const previousRyvroBrainUrl = process.env.RYVRO_BRAIN_URL;
     const previousRyvroBrainTimeout = process.env.RYVRO_BRAIN_TIMEOUT;
-    const previousEllieBrainUrl = process.env.ELLIE_BRAIN_URL;
-    const previousEllieBrainTimeout = process.env.ELLIE_BRAIN_TIMEOUT;
     const previousShiftScheduleParserUrl = process.env.SHIFT_SCHEDULE_PARSER_URL;
     process.env.EXPO_IOS_GOOGLE_SERVICES_FILE = './GoogleService-Info.plist';
     process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE = './google-services.json';
     delete process.env.FIREBASE_PROJECT_ID;
     delete process.env.RYVRO_BRAIN_URL;
     delete process.env.RYVRO_BRAIN_TIMEOUT;
-    delete process.env.ELLIE_BRAIN_URL;
-    delete process.env.ELLIE_BRAIN_TIMEOUT;
     delete process.env.SHIFT_SCHEDULE_PARSER_URL;
 
     try {
@@ -365,8 +360,8 @@ describe('Ryvro environment template', () => {
       expect(dynamicConfig.extra?.ACCOUNT_DELETION_URL).toBe('https://getryvro.com/delete-account');
       expect(dynamicConfig.extra?.RYVRO_BRAIN_URL).toBe('');
       expect(dynamicConfig.extra?.RYVRO_BRAIN_TIMEOUT).toBe('30000');
-      expect(dynamicConfig.extra?.ELLIE_BRAIN_URL).toBe('');
-      expect(dynamicConfig.extra?.ELLIE_BRAIN_TIMEOUT).toBe('');
+      expect(dynamicConfig.extra).not.toHaveProperty('ELLIE_BRAIN_URL');
+      expect(dynamicConfig.extra).not.toHaveProperty('ELLIE_BRAIN_TIMEOUT');
       expect(dynamicConfig.extra?.SHIFT_SCHEDULE_PARSER_URL).toBe('');
     } finally {
       if (previousIosGoogleServices === undefined) {
@@ -399,18 +394,6 @@ describe('Ryvro environment template', () => {
         process.env.RYVRO_BRAIN_TIMEOUT = previousRyvroBrainTimeout;
       }
 
-      if (previousEllieBrainUrl === undefined) {
-        delete process.env.ELLIE_BRAIN_URL;
-      } else {
-        process.env.ELLIE_BRAIN_URL = previousEllieBrainUrl;
-      }
-
-      if (previousEllieBrainTimeout === undefined) {
-        delete process.env.ELLIE_BRAIN_TIMEOUT;
-      } else {
-        process.env.ELLIE_BRAIN_TIMEOUT = previousEllieBrainTimeout;
-      }
-
       if (previousShiftScheduleParserUrl === undefined) {
         delete process.env.SHIFT_SCHEDULE_PARSER_URL;
       } else {
@@ -429,12 +412,10 @@ describe('Ryvro environment template', () => {
 
     const previousFirebaseProjectId = process.env.FIREBASE_PROJECT_ID;
     const previousRyvroBrainUrl = process.env.RYVRO_BRAIN_URL;
-    const previousEllieBrainUrl = process.env.ELLIE_BRAIN_URL;
     const previousShiftScheduleParserUrl = process.env.SHIFT_SCHEDULE_PARSER_URL;
 
     process.env.FIREBASE_PROJECT_ID = 'ryvro-staging';
     delete process.env.RYVRO_BRAIN_URL;
-    delete process.env.ELLIE_BRAIN_URL;
     delete process.env.SHIFT_SCHEDULE_PARSER_URL;
 
     try {
@@ -457,12 +438,6 @@ describe('Ryvro environment template', () => {
         delete process.env.RYVRO_BRAIN_URL;
       } else {
         process.env.RYVRO_BRAIN_URL = previousRyvroBrainUrl;
-      }
-
-      if (previousEllieBrainUrl === undefined) {
-        delete process.env.ELLIE_BRAIN_URL;
-      } else {
-        process.env.ELLIE_BRAIN_URL = previousEllieBrainUrl;
       }
 
       if (previousShiftScheduleParserUrl === undefined) {
@@ -810,9 +785,13 @@ describe('Ryvro environment template', () => {
     expect(jestSetup).not.toContain("name: 'ShiftSync'");
   });
 
-  it('keeps old brain keys only as empty migration fallbacks', () => {
-    expect(envExample).toContain('ELLIE_BRAIN_URL=');
-    expect(envExample).toContain('ELLIE_BRAIN_TIMEOUT=');
+  it('does not expose retired Ellie brain keys in new Ryvro environment templates', () => {
+    expect(envExample).not.toContain('ELLIE_BRAIN_URL');
+    expect(envExample).not.toContain('ELLIE_BRAIN_TIMEOUT');
+    expect(productionEnvExample).not.toContain('ELLIE_BRAIN_URL');
+    expect(productionEnvExample).not.toContain('ELLIE_BRAIN_TIMEOUT');
+    expect(envConfigurationTemplate).not.toContain('ELLIE_BRAIN_URL');
+    expect(envConfigurationTemplate).not.toContain('ELLIE_BRAIN_TIMEOUT');
   });
 
   it('keeps the Ryvro public clearance preflight command available', () => {
@@ -900,7 +879,8 @@ describe('Ryvro environment template', () => {
     expect(envConfigurationTemplate).toContain('SHIFT_SCHEDULE_PARSER_MAX_PROMPT_LENGTH=2000');
     expect(envConfigurationTemplate).toContain('UNIVERSAL_SHIFT_BUILDER_ENABLED=true');
     expect(envConfigurationTemplate).toContain('AI_SHIFT_BUILDER_ENABLED=true');
-    expect(script).toContain('ELLIE_BRAIN_URL: leave empty for new Ryvro production builds');
+    expect(script).toContain('ELLIE_BRAIN_URL');
+    expect(script).toContain('remove retired Ellie voice endpoint keys');
     expect(script).toContain('must match FIREBASE_PROJECT_ID as <project-id>.firebaseapp.com');
     expect(script).toContain('must match FIREBASE_PROJECT_ID as a Firebase Storage bucket');
     expect(script).toContain('must be the Ryvro Firebase project ID');
@@ -947,7 +927,8 @@ describe('Ryvro environment template', () => {
     expect(productionEnvExample).toContain(
       'ACCOUNT_DELETION_URL=https://getryvro.com/delete-account'
     );
-    expect(productionEnvExample).toContain('ELLIE_BRAIN_URL=');
+    expect(productionEnvExample).not.toContain('ELLIE_BRAIN_URL');
+    expect(productionEnvExample).not.toContain('ELLIE_BRAIN_TIMEOUT');
     expect(productionEnvExample).not.toContain('com.ellie.minershiftassistant');
     expect(productionEnvExample).not.toContain('Hey Ellie');
     expect(externalSetup).toContain('npm run release:env:check');
@@ -956,7 +937,7 @@ describe('Ryvro environment template', () => {
       'it must fail the preflight until every placeholder is replaced'
     );
     expect(externalSetup).toContain(
-      'rejects retired Ellie/ShiftSync Firebase project IDs, Cloud Function hosts'
+      'rejects retired Ellie/ShiftSync Firebase project IDs, retired `ELLIE_BRAIN_*` env keys'
     );
     expect(externalSetup).toContain(
       'tracked local service-file placeholders under `config/firebase/`'
@@ -1190,6 +1171,21 @@ describe('Ryvro environment template', () => {
     expect(parserResult.status).toBe(1);
     expect(parserResult.stderr).toContain('SHIFT_SCHEDULE_PARSER_URL');
     expect(parserResult.stderr).toContain('scoped to a Ryvro Firebase project');
+  });
+
+  it('rejects production env files that still carry retired Ellie brain keys', () => {
+    const result = runProductionEnvCheck(
+      [
+        validProductionEnv,
+        'ELLIE_BRAIN_URL=https://us-central1-ryvro-prod.cloudfunctions.net/ellieBrain',
+        'ELLIE_BRAIN_TIMEOUT=30000',
+      ].join('\n')
+    );
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain('ELLIE_BRAIN_URL');
+    expect(result.stderr).toContain('ELLIE_BRAIN_TIMEOUT');
+    expect(result.stderr).toContain('remove retired Ellie voice endpoint keys');
   });
 
   it('rejects production env files with unsafe API base URLs', () => {
@@ -1426,7 +1422,7 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('110 Jest suites / 1,764 tests / 4 snapshots');
+    expect(readme).toContain('110 Jest suites / 1,765 tests / 4 snapshots');
     expect(readme).toContain('the Ryvro native scaffold preflight');
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
@@ -1444,13 +1440,13 @@ describe('Ryvro environment template', () => {
     );
     expect(readme).toContain('valid-prompt `SHIFT_SCHEDULE_PARSER_URL` parser response');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
-    expect(readme).toContain('Testing infrastructure (1,764 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,765 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,764 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,765 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-05-31 release check)');
-    expect(readme).toContain('Total Tests**: 1,764 passing (110 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Total Tests**: 1,765 passing (110 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -1648,7 +1644,9 @@ describe('Ryvro environment template', () => {
     expect(backendReadme).toContain(
       'SHIFT_SCHEDULE_PARSER_URL=https://<region>-<project-id>.cloudfunctions.net/parseShiftScheduleDescription'
     );
-    expect(backendReadme).toContain('ELLIE_BRAIN_URL` is still accepted as a legacy fallback');
+    expect(backendReadme).toContain(
+      'New Ryvro builds do not accept `ELLIE_BRAIN_URL` or deploy an `ellieBrain` compatibility endpoint.'
+    );
   });
 
   it('keeps the release task checklist on Ryvro and repo-root release paths', () => {
@@ -1658,7 +1656,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, and latest pushed PR #1 CI pass)'
+      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, and latest pushed PR #1 CI pass)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
@@ -1854,7 +1852,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('109 Jest suites / 1,759 tests');
     expect(readinessReport).toContain('110 Jest suites / 1,760 tests');
     expect(readinessReport).toContain('110 Jest suites / 1,761 tests');
-    expect(readinessReport).toContain('110 Jest suites / 1,764 tests');
+    expect(readinessReport).toContain('110 Jest suites / 1,765 tests');
     expect(readinessReport).toContain('Profile legal/support link coverage');
     expect(readinessReport).toContain(
       'requiring real root-level Firebase native service files for Ryvro production builds'
@@ -2424,7 +2422,7 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('eas submit --platform android --latest');
     expect(ownerRunbook).toContain('npm run release:submit:check');
     expect(ownerRunbook).toContain('Final submit readiness is guarded');
-    expect(ownerRunbook).toContain('110 Jest suites, 1,764 tests');
+    expect(ownerRunbook).toContain('110 Jest suites, 1,765 tests');
     expect(ownerRunbook).toContain('npm run release:owner:check');
     expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');
@@ -2497,6 +2495,7 @@ describe('Ryvro environment template', () => {
     expect(externalSetup).toContain(
       'Do not configure `ellieBrain` as the launch `RYVRO_BRAIN_URL`'
     );
+    expect(externalSetup).toContain('retired `ELLIE_BRAIN_*` env keys');
     expect(externalSetup).toContain('Analytics property/report labels: Ryvro');
     expect(externalSetup).toContain(
       'Segment schedule setup dashboards by industry, template, and source'
@@ -3098,6 +3097,7 @@ describe('Ryvro environment template', () => {
     expect(activeSource).toContain('hospitality-manufacturing-shift-worker');
     expect(activeSource).not.toContain('EllieBrainService');
     expect(activeSource).not.toContain('ellieBrainService');
+    expect(activeSource).not.toContain('export const ellieBrain');
     expect(activeSource).not.toContain('isConfiguredEllieBrainUrl');
     expect(activeSource).not.toContain("'ellie_brain'");
     expect(activeSource).not.toContain('classifyMinerPersona');

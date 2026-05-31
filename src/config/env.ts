@@ -371,16 +371,8 @@ function buildAppConfig(): AppConfig {
         getEnvVar('ACCOUNT_DELETION_URL', false) || 'https://getryvro.com/delete-account',
     },
     ryvroBrain: {
-      url:
-        getEnvVar('RYVRO_BRAIN_URL', false) ||
-        getEnvVar('ELLIE_BRAIN_URL', false) ||
-        defaultRyvroBrainUrl,
-      timeout: parseInt(
-        getEnvVar('RYVRO_BRAIN_TIMEOUT', false) ||
-          getEnvVar('ELLIE_BRAIN_TIMEOUT', false) ||
-          '30000',
-        10
-      ),
+      url: getEnvVar('RYVRO_BRAIN_URL', false) || defaultRyvroBrainUrl,
+      timeout: parseInt(getEnvVar('RYVRO_BRAIN_TIMEOUT', false) || '30000', 10),
       maxQueryLength: 500,
     },
     shiftScheduleParser: {

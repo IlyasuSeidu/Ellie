@@ -416,8 +416,16 @@ function main() {
     'must be the live HTTPS Ryvro account deletion URL on a Ryvro-owned domain'
   );
 
-  if (env.ELLIE_BRAIN_URL?.trim()) {
-    errors.push('ELLIE_BRAIN_URL: leave empty for new Ryvro production builds');
+  if (Object.prototype.hasOwnProperty.call(env, 'ELLIE_BRAIN_URL')) {
+    errors.push(
+      'ELLIE_BRAIN_URL: remove retired Ellie voice endpoint keys from Ryvro production env files'
+    );
+  }
+
+  if (Object.prototype.hasOwnProperty.call(env, 'ELLIE_BRAIN_TIMEOUT')) {
+    errors.push(
+      'ELLIE_BRAIN_TIMEOUT: remove retired Ellie voice endpoint keys from Ryvro production env files'
+    );
   }
 
   if (env.AI_SHIFT_BUILDER_ENABLED === 'true') {

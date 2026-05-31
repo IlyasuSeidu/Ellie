@@ -261,12 +261,8 @@ module.exports = ({ config = {} }) => {
       SUPPORT_URL: process.env.SUPPORT_URL || 'https://getryvro.com/support',
       ACCOUNT_DELETION_URL:
         process.env.ACCOUNT_DELETION_URL || 'https://getryvro.com/delete-account',
-      RYVRO_BRAIN_URL:
-        process.env.RYVRO_BRAIN_URL || process.env.ELLIE_BRAIN_URL || defaultRyvroBrainUrl,
-      RYVRO_BRAIN_TIMEOUT:
-        process.env.RYVRO_BRAIN_TIMEOUT || process.env.ELLIE_BRAIN_TIMEOUT || '30000',
-      ELLIE_BRAIN_URL: process.env.ELLIE_BRAIN_URL || '',
-      ELLIE_BRAIN_TIMEOUT: process.env.ELLIE_BRAIN_TIMEOUT || '',
+      RYVRO_BRAIN_URL: process.env.RYVRO_BRAIN_URL || defaultRyvroBrainUrl,
+      RYVRO_BRAIN_TIMEOUT: process.env.RYVRO_BRAIN_TIMEOUT || '30000',
       SHIFT_SCHEDULE_PARSER_URL:
         process.env.SHIFT_SCHEDULE_PARSER_URL || defaultShiftScheduleParserUrl,
       SHIFT_SCHEDULE_PARSER_TIMEOUT_MS: process.env.SHIFT_SCHEDULE_PARSER_TIMEOUT_MS || '45000',

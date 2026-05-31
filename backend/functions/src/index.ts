@@ -652,15 +652,6 @@ async function handleRyvroVoiceRequest(req: Request, res: Response) {
 export const ryvroBrain = onRequest(ryvroVoiceEndpointOptions, handleRyvroVoiceRequest);
 
 /**
- * Legacy HTTPS endpoint retained for migration compatibility.
- *
- * POST /ellieBrain
- * Body: RyvroBrainRequest
- * Response: RyvroBrainResponse
- */
-export const ellieBrain = onRequest(ryvroVoiceEndpointOptions, handleRyvroVoiceRequest);
-
-/**
  * AI-assisted universal shift schedule parser.
  *
  * POST /parseShiftScheduleDescription
