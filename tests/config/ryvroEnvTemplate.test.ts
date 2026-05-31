@@ -3319,8 +3319,8 @@ describe('Ryvro environment template', () => {
     expect(dashboardScreen).toContain('quick_action_export');
     expect(dashboardScreen).not.toContain('QuickActionsBar hidden');
     expect(dashboardScreen).not.toContain('actions not yet implemented');
-    expect(shiftInspectorSheet).toContain('Work location (optional)');
-    expect(shiftInspectorSheet).toContain('Work location name');
+    expect(shiftInspectorSheet).toContain("t('shiftBuilder.inspector.location')");
+    expect(shiftInspectorSheet).toContain("t('shiftBuilder.inspector.locationA11y')");
     expect(onboardingLocale.shiftBuilder?.inspector?.location).toBe('Work location (optional)');
     expect(smartRemindersPanel).toContain('How long to reach your work location');
     expect(calendarUtils).toContain('LOCATION:');
@@ -3390,6 +3390,14 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'src/components/shift-builder/SchedulePreviewCalendar.tsx'),
       'utf8'
     );
+    const shiftSequenceCanvas = fs.readFileSync(
+      path.join(process.cwd(), 'src/components/shift-builder/ShiftSequenceCanvas.tsx'),
+      'utf8'
+    );
+    const shiftInspectorSheet = fs.readFileSync(
+      path.join(process.cwd(), 'src/components/shift-builder/ShiftInspectorSheet.tsx'),
+      'utf8'
+    );
     const guardedLocaleKeys: Record<string, string[]> = {
       'common.json': ['subscription.paywall.plans.weeklySuffix'],
       'profile.json': ['smartReminders.sections.travel', 'smartReminders.units.hoursShort'],
@@ -3408,6 +3416,12 @@ describe('Ryvro environment template', () => {
         'shiftTime.customInput.period.pm',
         'shiftBuilder.inspector.kind.label',
         'shiftBuilder.preview.errorHint',
+        'shiftBuilder.canvas.noShiftTypesTitle',
+        'shiftBuilder.canvas.emptyTitle',
+        'shiftBuilder.canvas.modalAddRepeated',
+        'shiftBuilder.inspector.nameRequiredTitle',
+        'shiftBuilder.inspector.remindersTitle',
+        'shiftBuilder.inspector.travelRemindersTitle',
       ],
     };
 
@@ -3416,6 +3430,20 @@ describe('Ryvro environment template', () => {
     expect(schedulePreviewCalendar).toContain("t('shiftBuilder.preview.errorHint')");
     expect(schedulePreviewCalendar).not.toContain('Fix this in the validation card above');
     expect(schedulePreviewCalendar).not.toContain('Complete your schedule to see a preview');
+    expect(shiftSequenceCanvas).toContain("useTranslation('onboarding')");
+    expect(shiftSequenceCanvas).toContain("t('shiftBuilder.canvas.noShiftTypesTitle')");
+    expect(shiftSequenceCanvas).toContain("t('shiftBuilder.canvas.modalAddRepeated')");
+    expect(shiftSequenceCanvas).not.toContain('No shift types');
+    expect(shiftSequenceCanvas).not.toContain('Create a shift type first using the palette below.');
+    expect(shiftSequenceCanvas).not.toContain('No shifts in sequence');
+    expect(shiftSequenceCanvas).not.toContain('Add shift types below then tap Add shift');
+    expect(shiftInspectorSheet).toContain("useTranslation('onboarding')");
+    expect(shiftInspectorSheet).toContain("t('shiftBuilder.inspector.nameRequiredTitle')");
+    expect(shiftInspectorSheet).toContain("t('shiftBuilder.inspector.remindersTitle')");
+    expect(shiftInspectorSheet).not.toContain('Name required');
+    expect(shiftInspectorSheet).not.toContain('Times required');
+    expect(shiftInspectorSheet).not.toContain('Reminders for this shift');
+    expect(shiftInspectorSheet).not.toContain('Travel reminders');
 
     const localeRoot = path.join(process.cwd(), 'src/i18n/locales');
     const locales = fs.readdirSync(localeRoot).filter((locale) => locale !== 'en');

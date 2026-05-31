@@ -22,6 +22,7 @@ import {
 } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import type {
   UniversalShiftDefinition,
@@ -258,6 +259,7 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
   onDelete,
   onClose,
 }) => {
+  const { t } = useTranslation('onboarding');
   const isNew = !definition;
 
   const [name, setName] = useState('');
@@ -391,11 +393,17 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
 
   const handleSave = useCallback(() => {
     if (!name.trim()) {
-      Alert.alert('Name required', 'Please enter a name for this shift type.');
+      Alert.alert(
+        t('shiftBuilder.inspector.nameRequiredTitle'),
+        t('shiftBuilder.inspector.nameRequiredMessage')
+      );
       return;
     }
     if (timePolicy === 'timed' && (!startTime || !endTime)) {
-      Alert.alert('Times required', 'Please set start and end times for a timed shift.');
+      Alert.alert(
+        t('shiftBuilder.inspector.timesRequiredTitle'),
+        t('shiftBuilder.inspector.timesRequiredMessage')
+      );
       return;
     }
 
@@ -463,22 +471,27 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
     travelReminders,
     definition,
     onSave,
+    t,
   ]);
 
   const handleDelete = useCallback(() => {
     if (!definition || !onDelete) return;
-    Alert.alert(`Delete "${definition.name}"?`, 'This will permanently remove this shift type.', [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Delete',
-        style: 'destructive',
-        onPress: () => {
-          void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
-          onDelete(definition.id);
+    Alert.alert(
+      t('shiftBuilder.inspector.deleteConfirm.title'),
+      t('shiftBuilder.inspector.deleteConfirm.message'),
+      [
+        { text: t('shiftBuilder.inspector.deleteConfirm.cancel'), style: 'cancel' },
+        {
+          text: t('shiftBuilder.inspector.deleteConfirm.confirm'),
+          style: 'destructive',
+          onPress: () => {
+            void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+            onDelete(definition.id);
+          },
         },
-      },
-    ]);
-  }, [definition, onDelete]);
+      ]
+    );
+  }, [definition, onDelete, t]);
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
@@ -493,10 +506,14 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
 
             {/* Header */}
             <View style={styles.sheetHeader}>
-              <Text style={styles.sheetTitle}>{isNew ? 'New Shift Type' : 'Edit Shift Type'}</Text>
+              <Text style={styles.sheetTitle}>
+                {t(
+                  isNew ? 'shiftBuilder.inspector.titleCreate' : 'shiftBuilder.inspector.titleEdit'
+                )}
+              </Text>
               <TouchableOpacity
                 onPress={onClose}
-                accessibilityLabel="Close"
+                accessibilityLabel={t('common.closeButton')}
                 accessibilityRole="button"
               >
                 <Ionicons name="close" size={24} color={theme.colors.dust} />
@@ -505,82 +522,100 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
 
             <ScrollView style={styles.formScroll} keyboardShouldPersistTaps="handled">
               {/* Name */}
-              <Text style={styles.fieldLabel}>Name</Text>
+              <Text style={styles.fieldLabel}>{t('shiftBuilder.inspector.name')}</Text>
               <TextInput
                 style={styles.textInput}
                 value={name}
                 onChangeText={(t) => setName(t.slice(0, 80))}
-                placeholder="e.g. Day Shift, Rest Day"
+                placeholder={t('shiftBuilder.inspector.namePlaceholder')}
                 placeholderTextColor={theme.colors.shadow}
                 maxLength={80}
-                accessibilityLabel="Shift name"
+                accessibilityLabel={t('shiftBuilder.inspector.name')}
               />
               <Text style={styles.charCount}>{name.length}/80</Text>
 
               {/* Kind */}
-              <Text style={styles.fieldLabel}>Kind</Text>
+              <Text style={styles.fieldLabel}>{t('shiftBuilder.inspector.kind.label')}</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.pillRow}>
-                {KIND_OPTIONS.map((opt) => (
-                  <TouchableOpacity
-                    key={opt.value}
-                    style={[styles.kindPill, kind === opt.value && styles.kindPillActive]}
-                    onPress={() => handleKindChange(opt.value)}
-                    accessibilityLabel={opt.label}
-                    accessibilityState={{ selected: kind === opt.value }}
-                    accessibilityRole="radio"
-                  >
-                    <Ionicons
-                      name={opt.icon as keyof typeof Ionicons.glyphMap}
-                      size={14}
-                      color={kind === opt.value ? theme.colors.deepVoid : theme.colors.dust}
-                    />
-                    <Text
-                      style={[styles.kindPillText, kind === opt.value && styles.kindPillTextActive]}
+                {KIND_OPTIONS.map((opt) => {
+                  const label = t(`shiftBuilder.inspector.kind.${opt.value}`);
+                  return (
+                    <TouchableOpacity
+                      key={opt.value}
+                      style={[styles.kindPill, kind === opt.value && styles.kindPillActive]}
+                      onPress={() => handleKindChange(opt.value)}
+                      accessibilityLabel={label}
+                      accessibilityState={{ selected: kind === opt.value }}
+                      accessibilityRole="radio"
                     >
-                      {opt.label}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
+                      <Ionicons
+                        name={opt.icon as keyof typeof Ionicons.glyphMap}
+                        size={14}
+                        color={kind === opt.value ? theme.colors.deepVoid : theme.colors.dust}
+                      />
+                      <Text
+                        style={[
+                          styles.kindPillText,
+                          kind === opt.value && styles.kindPillTextActive,
+                        ]}
+                      >
+                        {label}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
               </ScrollView>
 
               {/* Time Policy */}
-              <Text style={styles.fieldLabel}>Time</Text>
+              <Text style={styles.fieldLabel}>{t('shiftBuilder.inspector.timePolicy.label')}</Text>
               <View style={styles.pillRowInline}>
-                {TIME_POLICY_OPTIONS.map((opt) => (
-                  <TouchableOpacity
-                    key={opt.value}
-                    style={[styles.timePill, timePolicy === opt.value && styles.timePillActive]}
-                    onPress={() => handleTimePolicyChange(opt.value)}
-                    accessibilityLabel={opt.label}
-                    accessibilityState={{ selected: timePolicy === opt.value }}
-                    accessibilityRole="radio"
-                  >
-                    <Text
-                      style={[
-                        styles.timePillText,
-                        timePolicy === opt.value && styles.timePillTextActive,
-                      ]}
+                {TIME_POLICY_OPTIONS.map((opt) => {
+                  const label = t(`shiftBuilder.inspector.timePolicy.${opt.value}`);
+                  return (
+                    <TouchableOpacity
+                      key={opt.value}
+                      style={[styles.timePill, timePolicy === opt.value && styles.timePillActive]}
+                      onPress={() => handleTimePolicyChange(opt.value)}
+                      accessibilityLabel={label}
+                      accessibilityState={{ selected: timePolicy === opt.value }}
+                      accessibilityRole="radio"
                     >
-                      {opt.label}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
+                      <Text
+                        style={[
+                          styles.timePillText,
+                          timePolicy === opt.value && styles.timePillTextActive,
+                        ]}
+                      >
+                        {label}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
               </View>
 
               {/* Timed fields */}
               {timePolicy === 'timed' && (
                 <View>
                   <View style={styles.timeRow}>
-                    <TimeField label="Start" value={startTime} onChange={setStartTime} />
+                    <TimeField
+                      label={t('shiftBuilder.inspector.startTime')}
+                      value={startTime}
+                      onChange={setStartTime}
+                    />
                     <View style={styles.timeSep} />
-                    <TimeField label="End" value={endTime} onChange={setEndTime} />
+                    <TimeField
+                      label={t('shiftBuilder.inspector.endTime')}
+                      value={endTime}
+                      onChange={setEndTime}
+                    />
                   </View>
                   <View style={styles.toggleRow}>
                     <View style={styles.toggleInfo}>
-                      <Text style={styles.toggleLabel}>Overnight</Text>
+                      <Text style={styles.toggleLabel}>
+                        {t('shiftBuilder.inspector.overnight')}
+                      </Text>
                       <Text style={styles.toggleSub}>
-                        Shift ends after midnight. For 24-hour shifts, use the same start/end time
-                        and turn this on.
+                        {t('shiftBuilder.inspector.overnightHint')}
                       </Text>
                     </View>
                     <Switch
@@ -588,14 +623,14 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
                       onValueChange={setCrossesMidnight}
                       trackColor={{ true: theme.colors.sacredGold }}
                       thumbColor={theme.colors.paper}
-                      accessibilityLabel="Crosses midnight toggle"
+                      accessibilityLabel={t('shiftBuilder.inspector.overnight')}
                     />
                   </View>
                 </View>
               )}
 
               {/* Color grid */}
-              <Text style={styles.fieldLabel}>Color</Text>
+              <Text style={styles.fieldLabel}>{t('shiftBuilder.inspector.color')}</Text>
               <View style={styles.colorGrid}>
                 {PRESET_COLORS.map((c) => (
                   <TouchableOpacity
@@ -609,7 +644,7 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
                       setColor(c);
                       setCustomColor('');
                     }}
-                    accessibilityLabel={`Color ${c}`}
+                    accessibilityLabel={t('shiftBuilder.inspector.colorA11y', { color: c })}
                     accessibilityState={{ selected: color === c }}
                     accessibilityRole="radio"
                   >
@@ -627,11 +662,11 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
                     setCustomColor(hex);
                     if (/^#[0-9A-Fa-f]{6}$/.test(hex)) setColor(hex);
                   }}
-                  placeholder="Custom hex (e.g. FF5722)"
+                  placeholder={t('shiftBuilder.inspector.customColorPlaceholder')}
                   placeholderTextColor={theme.colors.shadow}
                   maxLength={6}
                   autoCapitalize="characters"
-                  accessibilityLabel="Custom color hex code"
+                  accessibilityLabel={t('shiftBuilder.inspector.customColorA11y')}
                 />
                 {customColor && /^#[0-9A-Fa-f]{6}$/.test(customColor) && (
                   <View style={[styles.customColorPreview, { backgroundColor: customColor }]} />
@@ -639,14 +674,14 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
               </View>
 
               {/* Icon picker */}
-              <Text style={styles.fieldLabel}>Icon</Text>
+              <Text style={styles.fieldLabel}>{t('shiftBuilder.inspector.icon')}</Text>
               <View style={styles.iconGrid}>
                 {ICON_OPTIONS.map((ic) => (
                   <TouchableOpacity
                     key={ic}
                     style={[styles.iconButton, icon === ic && styles.iconButtonSelected]}
                     onPress={() => setIcon(ic)}
-                    accessibilityLabel={`Icon: ${ic}`}
+                    accessibilityLabel={t('shiftBuilder.inspector.iconA11y', { icon: ic })}
                     accessibilityState={{ selected: icon === ic }}
                     accessibilityRole="radio"
                   >
@@ -662,46 +697,52 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
               {/* Toggles */}
               <View style={styles.toggleRow}>
                 <View style={styles.toggleInfo}>
-                  <Text style={styles.toggleLabel}>Counts as work</Text>
-                  <Text style={styles.toggleSub}>Included in work day stats</Text>
+                  <Text style={styles.toggleLabel}>{t('shiftBuilder.inspector.countsAsWork')}</Text>
+                  <Text style={styles.toggleSub}>
+                    {t('shiftBuilder.inspector.countsAsWorkHint')}
+                  </Text>
                 </View>
                 <Switch
                   value={countsAsWork}
                   onValueChange={setCountsAsWork}
                   trackColor={{ true: theme.colors.sacredGold }}
                   thumbColor={theme.colors.paper}
-                  accessibilityLabel="Counts as work day toggle"
+                  accessibilityLabel={t('shiftBuilder.inspector.countsAsWorkA11y')}
                 />
               </View>
 
               <View style={styles.toggleRow}>
                 <View style={styles.toggleInfo}>
-                  <Text style={styles.toggleLabel}>Counts as night</Text>
-                  <Text style={styles.toggleSub}>Affects night shift statistics</Text>
+                  <Text style={styles.toggleLabel}>
+                    {t('shiftBuilder.inspector.countsAsNight')}
+                  </Text>
+                  <Text style={styles.toggleSub}>
+                    {t('shiftBuilder.inspector.countsAsNightHint')}
+                  </Text>
                 </View>
                 <Switch
                   value={countsAsNight}
                   onValueChange={setCountsAsNight}
                   trackColor={{ true: theme.colors.sacredGold }}
                   thumbColor={theme.colors.paper}
-                  accessibilityLabel="Counts as night shift toggle"
+                  accessibilityLabel={t('shiftBuilder.inspector.countsAsNightA11y')}
                 />
               </View>
 
               {/* Location */}
-              <Text style={styles.fieldLabel}>Work location (optional)</Text>
+              <Text style={styles.fieldLabel}>{t('shiftBuilder.inspector.location')}</Text>
               <TextInput
                 style={styles.textInput}
                 value={locationName}
                 onChangeText={setLocationName}
-                placeholder="e.g. Hospital, depot, plant, station"
+                placeholder={t('shiftBuilder.inspector.locationPlaceholder')}
                 placeholderTextColor={theme.colors.shadow}
                 maxLength={200}
-                accessibilityLabel="Work location name"
+                accessibilityLabel={t('shiftBuilder.inspector.locationA11y')}
               />
 
               {/* Reminder profile */}
-              <Text style={styles.fieldLabel}>Reminders for this shift</Text>
+              <Text style={styles.fieldLabel}>{t('shiftBuilder.inspector.remindersTitle')}</Text>
               <View
                 style={[
                   styles.reminderCard,
@@ -711,16 +752,18 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
               >
                 {!countsAsWork ? (
                   <Text style={styles.helperText}>
-                    Off and leave shift types do not schedule pre-shift reminders.
+                    {t('shiftBuilder.inspector.remindersDisabled')}
                   </Text>
                 ) : (
                   <>
                     <View style={styles.reminderProfileHeader}>
                       <Ionicons name="notifications-outline" size={18} color={color} />
                       <View style={styles.reminderProfileHeaderText}>
-                        <Text style={styles.toggleLabel}>Reminder rules</Text>
+                        <Text style={styles.toggleLabel}>
+                          {t('shiftBuilder.inspector.reminderRulesTitle')}
+                        </Text>
                         <Text style={styles.toggleSub}>
-                          These rules apply only to this shift type.
+                          {t('shiftBuilder.inspector.reminderRulesHint')}
                         </Text>
                       </View>
                     </View>
@@ -735,12 +778,14 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
                       placeholderTextColor={theme.colors.shadow}
                       maxLength={80}
                       autoCapitalize="none"
-                      accessibilityLabel="Reminder profile name"
+                      accessibilityLabel={t('shiftBuilder.inspector.reminderProfileA11y')}
                     />
 
                     <View style={styles.reminderNumberGrid}>
                       <View style={styles.reminderNumberField}>
-                        <Text style={styles.reminderNumberLabel}>First reminder</Text>
+                        <Text style={styles.reminderNumberLabel}>
+                          {t('shiftBuilder.inspector.firstReminder')}
+                        </Text>
                         <View style={styles.reminderNumberInputRow}>
                           <TextInput
                             style={styles.reminderNumberInput}
@@ -751,14 +796,18 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
                             keyboardType="number-pad"
                             maxLength={2}
                             selectTextOnFocus
-                            accessibilityLabel="Hours before shift for first reminder"
+                            accessibilityLabel={t('shiftBuilder.inspector.firstReminderA11y')}
                           />
-                          <Text style={styles.reminderNumberSuffix}>hours before</Text>
+                          <Text style={styles.reminderNumberSuffix}>
+                            {t('shiftBuilder.inspector.hoursBefore')}
+                          </Text>
                         </View>
                       </View>
 
                       <View style={styles.reminderNumberField}>
-                        <Text style={styles.reminderNumberLabel}>Prep time</Text>
+                        <Text style={styles.reminderNumberLabel}>
+                          {t('shiftBuilder.inspector.prepTime')}
+                        </Text>
                         <View style={styles.reminderNumberInputRow}>
                           <TextInput
                             style={styles.reminderNumberInput}
@@ -769,14 +818,18 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
                             keyboardType="number-pad"
                             maxLength={3}
                             selectTextOnFocus
-                            accessibilityLabel="Preparation minutes before shift"
+                            accessibilityLabel={t('shiftBuilder.inspector.prepTimeA11y')}
                           />
-                          <Text style={styles.reminderNumberSuffix}>minutes</Text>
+                          <Text style={styles.reminderNumberSuffix}>
+                            {t('shiftBuilder.inspector.minutes')}
+                          </Text>
                         </View>
                       </View>
 
                       <View style={styles.reminderNumberField}>
-                        <Text style={styles.reminderNumberLabel}>Travel time</Text>
+                        <Text style={styles.reminderNumberLabel}>
+                          {t('shiftBuilder.inspector.travelTime')}
+                        </Text>
                         <View style={styles.reminderNumberInputRow}>
                           <TextInput
                             style={styles.reminderNumberInput}
@@ -787,9 +840,11 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
                             keyboardType="number-pad"
                             maxLength={3}
                             selectTextOnFocus
-                            accessibilityLabel="Travel minutes before shift"
+                            accessibilityLabel={t('shiftBuilder.inspector.travelTimeA11y')}
                           />
-                          <Text style={styles.reminderNumberSuffix}>minutes</Text>
+                          <Text style={styles.reminderNumberSuffix}>
+                            {t('shiftBuilder.inspector.minutes')}
+                          </Text>
                         </View>
                       </View>
                     </View>
@@ -797,9 +852,11 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
                     <View style={styles.reminderToggleGrid}>
                       <View style={styles.toggleRow}>
                         <View style={styles.toggleInfo}>
-                          <Text style={styles.toggleLabel}>15-minute alert</Text>
+                          <Text style={styles.toggleLabel}>
+                            {t('shiftBuilder.inspector.imminentReminderTitle')}
+                          </Text>
                           <Text style={styles.toggleSub}>
-                            Send a final reminder just before start time
+                            {t('shiftBuilder.inspector.imminentReminderHint')}
                           </Text>
                         </View>
                         <Switch
@@ -807,15 +864,17 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
                           onValueChange={setImminentReminderEnabled}
                           trackColor={{ true: theme.colors.sacredGold }}
                           thumbColor={theme.colors.paper}
-                          accessibilityLabel="15 minute reminder toggle"
+                          accessibilityLabel={t('shiftBuilder.inspector.imminentReminderA11y')}
                         />
                       </View>
 
                       <View style={styles.toggleRow}>
                         <View style={styles.toggleInfo}>
-                          <Text style={styles.toggleLabel}>Briefing reminder</Text>
+                          <Text style={styles.toggleLabel}>
+                            {t('shiftBuilder.inspector.briefingReminderTitle')}
+                          </Text>
                           <Text style={styles.toggleSub}>
-                            Treat the 15-minute reminder as critical briefing prep
+                            {t('shiftBuilder.inspector.briefingReminderHint')}
                           </Text>
                         </View>
                         <Switch
@@ -823,15 +882,17 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
                           onValueChange={setPreBriefingEnabled}
                           trackColor={{ true: theme.colors.sacredGold }}
                           thumbColor={theme.colors.paper}
-                          accessibilityLabel="Briefing reminder toggle"
+                          accessibilityLabel={t('shiftBuilder.inspector.briefingReminderA11y')}
                         />
                       </View>
 
                       <View style={styles.toggleRow}>
                         <View style={styles.toggleInfo}>
-                          <Text style={styles.toggleLabel}>Fatigue-aware timing</Text>
+                          <Text style={styles.toggleLabel}>
+                            {t('shiftBuilder.inspector.fatigueAwareTitle')}
+                          </Text>
                           <Text style={styles.toggleSub}>
-                            Move prep reminders earlier when fatigue risk is high
+                            {t('shiftBuilder.inspector.fatigueAwareHint')}
                           </Text>
                         </View>
                         <Switch
@@ -839,15 +900,17 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
                           onValueChange={setFatigueAwareReminders}
                           trackColor={{ true: theme.colors.sacredGold }}
                           thumbColor={theme.colors.paper}
-                          accessibilityLabel="Fatigue-aware reminders toggle"
+                          accessibilityLabel={t('shiftBuilder.inspector.fatigueAwareA11y')}
                         />
                       </View>
 
                       <View style={styles.toggleRow}>
                         <View style={styles.toggleInfo}>
-                          <Text style={styles.toggleLabel}>Post-shift check-in</Text>
+                          <Text style={styles.toggleLabel}>
+                            {t('shiftBuilder.inspector.postShiftCheckinTitle')}
+                          </Text>
                           <Text style={styles.toggleSub}>
-                            Ask how the shift went one hour after it ends
+                            {t('shiftBuilder.inspector.postShiftCheckinHint')}
                           </Text>
                         </View>
                         <Switch
@@ -855,15 +918,17 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
                           onValueChange={setPostShiftCheckin}
                           trackColor={{ true: theme.colors.sacredGold }}
                           thumbColor={theme.colors.paper}
-                          accessibilityLabel="Post shift check-in toggle"
+                          accessibilityLabel={t('shiftBuilder.inspector.postShiftCheckinA11y')}
                         />
                       </View>
 
                       <View style={styles.toggleRow}>
                         <View style={styles.toggleInfo}>
-                          <Text style={styles.toggleLabel}>Travel reminders</Text>
+                          <Text style={styles.toggleLabel}>
+                            {t('shiftBuilder.inspector.travelRemindersTitle')}
+                          </Text>
                           <Text style={styles.toggleSub}>
-                            Use this shift in travel-in and travel-out reminders
+                            {t('shiftBuilder.inspector.travelRemindersHint')}
                           </Text>
                         </View>
                         <Switch
@@ -871,7 +936,7 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
                           onValueChange={setTravelReminders}
                           trackColor={{ true: theme.colors.sacredGold }}
                           thumbColor={theme.colors.paper}
-                          accessibilityLabel="Travel reminders toggle"
+                          accessibilityLabel={t('shiftBuilder.inspector.travelRemindersA11y')}
                         />
                       </View>
                     </View>
@@ -888,7 +953,7 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
                 <TouchableOpacity
                   style={styles.deleteButton}
                   onPress={handleDelete}
-                  accessibilityLabel="Delete shift type"
+                  accessibilityLabel={t('shiftBuilder.inspector.delete')}
                   accessibilityRole="button"
                 >
                   <Ionicons name="trash-outline" size={18} color={theme.colors.error} />
@@ -897,18 +962,18 @@ export const ShiftInspectorSheet: React.FC<ShiftInspectorSheetProps> = ({
               <TouchableOpacity
                 style={styles.cancelButton}
                 onPress={onClose}
-                accessibilityLabel="Cancel"
+                accessibilityLabel={t('shiftBuilder.cancel')}
                 accessibilityRole="button"
               >
-                <Text style={styles.cancelText}>Cancel</Text>
+                <Text style={styles.cancelText}>{t('shiftBuilder.cancel')}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.saveButton}
                 onPress={handleSave}
-                accessibilityLabel="Save shift type"
+                accessibilityLabel={t('shiftBuilder.inspector.saveA11y')}
                 accessibilityRole="button"
               >
-                <Text style={styles.saveText}>Save</Text>
+                <Text style={styles.saveText}>{t('shiftBuilder.inspector.save')}</Text>
               </TouchableOpacity>
             </View>
           </View>

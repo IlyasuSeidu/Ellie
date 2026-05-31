@@ -26,6 +26,7 @@ import Animated, {
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import type { UniversalShiftSequenceItem, UniversalShiftDefinition } from '@/types';
 import { ShiftBlockCard } from './ShiftBlockCard';
@@ -157,6 +158,7 @@ export const ShiftSequenceCanvas: React.FC<ShiftSequenceCanvasProps> = ({
   onAddShift,
   onAddRepeatedBlock,
 }) => {
+  const { t } = useTranslation('onboarding');
   const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
   const [addMode, setAddMode] = useState<AddMode>(null);
   const [repeatCount, setRepeatCount] = useState('4');
@@ -248,7 +250,10 @@ export const ShiftSequenceCanvas: React.FC<ShiftSequenceCanvasProps> = ({
   const handleAddSingle = useCallback(() => {
     void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     if (definitions.length === 0) {
-      Alert.alert('No shift types', 'Create a shift type first using the palette below.');
+      Alert.alert(
+        t('shiftBuilder.canvas.noShiftTypesTitle'),
+        t('shiftBuilder.canvas.noShiftTypesMessage')
+      );
       return;
     }
     if (definitions.length === 1) {
@@ -257,17 +262,20 @@ export const ShiftSequenceCanvas: React.FC<ShiftSequenceCanvasProps> = ({
     }
     setPendingInsert(null);
     setAddMode('single');
-  }, [definitions, onAddShift]);
+  }, [definitions, onAddShift, t]);
 
   const handleAddRepeated = useCallback(() => {
     void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     if (definitions.length === 0) {
-      Alert.alert('No shift types', 'Create a shift type first using the palette below.');
+      Alert.alert(
+        t('shiftBuilder.canvas.noShiftTypesTitle'),
+        t('shiftBuilder.canvas.noShiftTypesMessage')
+      );
       return;
     }
     setPendingInsert(null);
     setAddMode('repeated');
-  }, [definitions]);
+  }, [definitions, t]);
 
   const handleCloseModal = useCallback(() => {
     setAddMode(null);
@@ -277,10 +285,8 @@ export const ShiftSequenceCanvas: React.FC<ShiftSequenceCanvasProps> = ({
   const renderEmpty = () => (
     <Animated.View entering={FadeInUp} style={styles.emptyState}>
       <Ionicons name="calendar-outline" size={40} color={theme.colors.shadow} />
-      <Text style={styles.emptyTitle}>No shifts in sequence</Text>
-      <Text style={styles.emptySubtitle}>
-        Add shift types below then tap Add shift to build your cycle.
-      </Text>
+      <Text style={styles.emptyTitle}>{t('shiftBuilder.canvas.emptyTitle')}</Text>
+      <Text style={styles.emptySubtitle}>{t('shiftBuilder.canvas.emptySubtitle')}</Text>
     </Animated.View>
   );
 
@@ -288,11 +294,14 @@ export const ShiftSequenceCanvas: React.FC<ShiftSequenceCanvasProps> = ({
     <View style={styles.container}>
       {/* Header with stats */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Sequence</Text>
+        <Text style={styles.headerTitle}>{t('shiftBuilder.canvas.title')}</Text>
         {cycleStats && (
           <View style={styles.statsBadge}>
             <Text style={styles.statsBadgeText}>
-              {cycleStats.totalDays}-day cycle · {cycleStats.avgPerWeek} work days/week avg
+              {t('shiftBuilder.canvas.cycleStats', {
+                days: cycleStats.totalDays,
+                avg: cycleStats.avgPerWeek,
+              })}
             </Text>
           </View>
         )}
@@ -333,21 +342,21 @@ export const ShiftSequenceCanvas: React.FC<ShiftSequenceCanvasProps> = ({
         <TouchableOpacity
           style={styles.addButton}
           onPress={handleAddSingle}
-          accessibilityLabel="Add shift to sequence"
+          accessibilityLabel={t('shiftBuilder.canvas.addShiftA11y')}
           accessibilityRole="button"
         >
           <Ionicons name="add-circle-outline" size={18} color={theme.colors.sacredGold} />
-          <Text style={styles.addButtonText}>Add shift</Text>
+          <Text style={styles.addButtonText}>{t('shiftBuilder.canvas.addShift')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.addButton}
           onPress={handleAddRepeated}
-          accessibilityLabel="Add repeated block to sequence"
+          accessibilityLabel={t('shiftBuilder.canvas.addBlockA11y')}
           accessibilityRole="button"
         >
           <Ionicons name="layers-outline" size={18} color={theme.colors.sacredGold} />
-          <Text style={styles.addButtonText}>Add block</Text>
+          <Text style={styles.addButtonText}>{t('shiftBuilder.canvas.addBlock')}</Text>
         </TouchableOpacity>
       </View>
 
@@ -364,15 +373,20 @@ export const ShiftSequenceCanvas: React.FC<ShiftSequenceCanvasProps> = ({
 
             <Text style={styles.modalTitle}>
               {addMode === 'repeated'
-                ? 'Add Repeated Block'
+                ? t('shiftBuilder.canvas.modalAddRepeated')
                 : pendingInsert
-                  ? `Insert ${pendingInsert.mode === 'before' ? 'Before' : 'After'} Day ${pendingInsert.index + 1}`
-                  : 'Choose Shift Type'}
+                  ? t(
+                      pendingInsert.mode === 'before'
+                        ? 'shiftBuilder.canvas.modalInsertBefore'
+                        : 'shiftBuilder.canvas.modalInsertAfter',
+                      { day: pendingInsert.index + 1 }
+                    )
+                  : t('shiftBuilder.canvas.modalChooseShift')}
             </Text>
 
             {addMode === 'repeated' && (
               <View style={styles.repeatRow}>
-                <Text style={styles.repeatLabel}>Repeat count:</Text>
+                <Text style={styles.repeatLabel}>{t('shiftBuilder.canvas.repeatCountLabel')}</Text>
                 <TextInput
                   style={styles.repeatInput}
                   value={repeatCount}
@@ -380,9 +394,9 @@ export const ShiftSequenceCanvas: React.FC<ShiftSequenceCanvasProps> = ({
                   keyboardType="number-pad"
                   maxLength={2}
                   selectTextOnFocus
-                  accessibilityLabel="Number of repetitions"
+                  accessibilityLabel={t('shiftBuilder.canvas.repeatInputA11y')}
                 />
-                <Text style={styles.repeatLabel}>times</Text>
+                <Text style={styles.repeatLabel}>{t('shiftBuilder.canvas.repeatTimes')}</Text>
               </View>
             )}
 
@@ -394,7 +408,13 @@ export const ShiftSequenceCanvas: React.FC<ShiftSequenceCanvasProps> = ({
                     key={def.id}
                     style={styles.defPickerRow}
                     onPress={() => handleDefinitionPick(def.id)}
-                    accessibilityLabel={`${def.name}${usageCount > 0 ? ', used ' + usageCount + ' times' : ''}`}
+                    accessibilityLabel={
+                      usageCount > 0
+                        ? `${def.name}, ${t('shiftBuilder.canvas.definitionUsedTimes', {
+                            count: usageCount,
+                          })}`
+                        : def.name
+                    }
                     accessibilityRole="button"
                   >
                     <View style={[styles.defColorChip, { backgroundColor: def.color }]} />
@@ -418,10 +438,10 @@ export const ShiftSequenceCanvas: React.FC<ShiftSequenceCanvasProps> = ({
             <TouchableOpacity
               style={styles.cancelButton}
               onPress={handleCloseModal}
-              accessibilityLabel="Cancel"
+              accessibilityLabel={t('shiftBuilder.cancel')}
               accessibilityRole="button"
             >
-              <Text style={styles.cancelButtonText}>Cancel</Text>
+              <Text style={styles.cancelButtonText}>{t('shiftBuilder.cancel')}</Text>
             </TouchableOpacity>
           </View>
         </View>
