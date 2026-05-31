@@ -786,20 +786,20 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('109 Jest suites / 1,748 tests / 4 snapshots');
+    expect(readme).toContain('109 Jest suites / 1,749 tests / 4 snapshots');
     expect(readme).toContain('Recent pushed PR gate');
     expect(readme).toContain('GitHub Actions CI passed Unit Tests, Lint and Type Check');
     expect(readme).toContain('run `26706926728`');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
-    expect(readme).toContain('Testing infrastructure (1,748 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,749 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,748 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,749 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-05-31 release check)');
-    expect(readme).toContain('Total Tests**: 1,748 passing (109 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Total Tests**: 1,749 passing (109 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -1088,6 +1088,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('109 Jest suites / 1,746 tests');
     expect(readinessReport).toContain('109 Jest suites / 1,747 tests');
     expect(readinessReport).toContain('109 Jest suites / 1,748 tests');
+    expect(readinessReport).toContain('109 Jest suites / 1,749 tests');
     expect(readinessReport).toContain('aligning dynamic Expo version fallbacks');
     expect(readinessReport).toContain('refreshing public clearance evidence');
     expect(readinessReport).toContain(
@@ -1102,6 +1103,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain(
       'adding live HTTPS API base URL checks to the production env preflight'
     );
+    expect(readinessReport).toContain('removing retired Arabic Ellie labels');
     expect(readinessReport).toContain('First-store-build version values are aligned');
     expect(readinessReport).toContain(
       'Production env preflight now requires the real EAS project UUID'
@@ -1768,6 +1770,9 @@ describe('Ryvro environment template', () => {
           }
         >;
       };
+      completion?: {
+        features?: Record<string, string | undefined>;
+      };
     };
     const shiftSystem = onboarding.shiftSystem;
     const guardedCopy = [
@@ -1791,6 +1796,49 @@ describe('Ryvro environment template', () => {
     expect(guardedCopy).not.toMatch(
       /your mine|your site uses|underground mines|mine infrastructure|mining sites|8-hour shift sites/i
     );
+
+    const completionFeatures = onboarding.completion?.features ?? {};
+    const completionBenefitCopy = [
+      completionFeatures.remindersDesc,
+      completionFeatures.balanceDesc,
+      completionFeatures.earningsDesc,
+      completionFeatures.mealsDesc,
+    ].join('\n');
+
+    expect(completionBenefitCopy).toContain('handover, callout, or early start');
+    expect(completionBenefitCopy).toContain('shift hours, allowances, and overtime');
+    expect(completionBenefitCopy).not.toMatch(
+      /roster swing|FIFO loadings|site allowances|FIFO swings|12-hour underground/i
+    );
+  });
+
+  it('keeps localized completion benefits and Arabic voice labels off retired launch copy', () => {
+    const localeRoot = path.join(process.cwd(), 'src/i18n/locales');
+    const locales = fs.readdirSync(localeRoot);
+    const completionFeatureKeys = [
+      'completion.features.remindersDesc',
+      'completion.features.fatigueDesc',
+      'completion.features.balanceDesc',
+      'completion.features.earningsDesc',
+      'completion.features.mealsDesc',
+    ];
+
+    for (const locale of locales) {
+      const onboarding = readLocale(locale, 'onboarding.json');
+      const completionBenefitCopy = completionFeatureKeys
+        .map((key) => getNestedString(onboarding, key) ?? '')
+        .join('\n');
+
+      expect(completionBenefitCopy).not.toMatch(
+        /FIFO loadings|FIFO-ladings|muatan FIFO|cargas FIFO|cargas? FIFO|FIFO费用|FIFO लोडिंग|FIFO-нагрузки|terrein(toelae)?|site allowances|sitio subterráneo|situs bawah tanah|сайт FIFO|участке, FIFO|现场津贴|साइट भत्ते|izibonelelo zesite|underground|subterr[aâ]ne|subterráne|subterrâneo|ondergrondse|bawah tanah|भूमिगत|под зем|地下|engaphansi komhlaba/i
+      );
+    }
+
+    const arabicOnboarding = JSON.stringify(readLocale('ar', 'onboarding.json'));
+    const arabicDashboard = JSON.stringify(readLocale('ar', 'dashboard.json'));
+    expect(arabicOnboarding).toContain('Ryvro');
+    expect(arabicDashboard).toContain('Ryvro');
+    expect([arabicOnboarding, arabicDashboard].join('\n')).not.toMatch(/ايلي|إيلي|إيلى/i);
   });
 
   it('keeps content generation outputs broad while preserving the miner-builder origin story', () => {
