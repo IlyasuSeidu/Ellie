@@ -42,7 +42,7 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 | 6   | Decide your bundle identifier (permanent — cannot change after Google Play submission)                                                                                                                                                                       | ✅ Done (`com.ryvro.shiftplanner`) |
 | 7   | Update bundle ID in `app.json` (iOS + Android), add `buildNumber: "1"` and `versionCode: 1`                                                                                                                                                                  | ✅ Done                            |
 | 8   | Update bundle ID in `android/app/build.gradle` (namespace + applicationId, lines 90+92)                                                                                                                                                                      | ✅ Done                            |
-| 9   | Verify generated iOS build settings use `PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner` and `PRODUCT_NAME = Ryvro`; the internal generated workspace/scheme may still be `Ellie` until the next native-project regeneration                             | ✅ Done                            |
+| 9   | Verify clean generated iOS scaffolding uses `CFBundleDisplayName = Ryvro`, the Ryvro bundle/package source of truth, and archive commands use `RyvroShiftPlanner.xcworkspace` with `-scheme RyvroShiftPlanner`                                               | ✅ Done                            |
 | 10  | Create `eas.json` with development / preview / production build profiles                                                                                                                                                                                     | ✅ Done                            |
 | 10a | Add store listing copy, privacy/support templates, and external service handoff docs                                                                                                                                                                         | ✅ Done                            |
 | 10b | Align research-funnel runtime personas, docs, scoring, and automation prompts with Ryvro's broad launch audience across mining/FIFO, healthcare, security/emergency services, transport/logistics, hospitality/manufacturing, and other rotating-shift teams | ✅ Done                            |
@@ -194,9 +194,8 @@ npm run release:check
 ```bash
 # iOS archive
 npx expo prebuild --platform ios --clean
-# Current generated iOS workspace/scheme names are internal scaffolding names.
-cd ios && xcodebuild -workspace Ellie.xcworkspace \
-  -scheme Ellie -configuration Release \
+cd ios && xcodebuild -workspace RyvroShiftPlanner.xcworkspace \
+  -scheme RyvroShiftPlanner -configuration Release \
   -destination generic/platform=iOS \
   -archivePath /tmp/Ryvro.xcarchive archive
 

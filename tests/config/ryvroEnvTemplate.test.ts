@@ -129,6 +129,8 @@ describe('Ryvro environment template', () => {
     'FIREBASE_STORAGE_BUCKET=ryvro-prod.firebasestorage.app',
     'FIREBASE_MESSAGING_SENDER_ID=123456789012',
     'FIREBASE_APP_ID=1:123456789012:web:abcdef1234567890',
+    'EXPO_IOS_GOOGLE_SERVICES_FILE=./GoogleService-Info.plist',
+    'EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json',
     'API_BASE_URL=https://api.getryvro.com',
     'GOOGLE_WEB_CLIENT_ID=1234567890-web.apps.googleusercontent.com',
     'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=1234567890-web.apps.googleusercontent.com',
@@ -179,6 +181,20 @@ describe('Ryvro environment template', () => {
     );
     expect(envConfigurationTemplate).toContain(
       'RYVRO_BRAIN_URL=https://us-central1-your-project-id.cloudfunctions.net/ryvroBrain'
+    );
+    expect(envExample).toContain('EXPO_IOS_GOOGLE_SERVICES_FILE=./GoogleService-Info.plist');
+    expect(envExample).toContain('EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json');
+    expect(productionEnvExample).toContain(
+      'EXPO_IOS_GOOGLE_SERVICES_FILE=./GoogleService-Info.plist'
+    );
+    expect(productionEnvExample).toContain(
+      'EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json'
+    );
+    expect(envConfigurationTemplate).toContain(
+      'EXPO_IOS_GOOGLE_SERVICES_FILE=./GoogleService-Info.plist'
+    );
+    expect(envConfigurationTemplate).toContain(
+      'EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json'
     );
     expect(envExample).toContain('WAKE_WORD_PHRASE=Ryvro');
     expect(envConfigurationTemplate).toContain('WAKE_WORD_PHRASE=Ryvro');
@@ -238,8 +254,8 @@ describe('Ryvro environment template', () => {
     const previousRyvroBrainTimeout = process.env.RYVRO_BRAIN_TIMEOUT;
     const previousEllieBrainUrl = process.env.ELLIE_BRAIN_URL;
     const previousEllieBrainTimeout = process.env.ELLIE_BRAIN_TIMEOUT;
-    process.env.EXPO_IOS_GOOGLE_SERVICES_FILE = './ios/Ryvro/GoogleService-Info.plist';
-    process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE = './android/app/ryvro-google-services.json';
+    process.env.EXPO_IOS_GOOGLE_SERVICES_FILE = './GoogleService-Info.plist';
+    process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE = './google-services.json';
     delete process.env.RYVRO_BRAIN_URL;
     delete process.env.RYVRO_BRAIN_TIMEOUT;
     delete process.env.ELLIE_BRAIN_URL;
@@ -256,10 +272,11 @@ describe('Ryvro environment template', () => {
       expect(dynamicConfig.splash?.image).toBe('./assets/splash-icon.png');
       expect(dynamicConfig.ios?.bundleIdentifier).toBe('com.ryvro.shiftplanner');
       expect(dynamicConfig.ios?.buildNumber).toBe('1');
-      expect(dynamicConfig.ios?.googleServicesFile).toBe('./ios/Ryvro/GoogleService-Info.plist');
+      expect(dynamicConfig.ios?.googleServicesFile).toBe('./GoogleService-Info.plist');
       expect(dynamicConfig.ios?.supportsTablet).toBe(true);
       expect(dynamicConfig.ios?.usesAppleSignIn).toBe(true);
       expect(dynamicConfig.ios?.infoPlist).toMatchObject({
+        CFBundleDisplayName: 'Ryvro',
         NSSpeechRecognitionUsageDescription:
           'Ryvro needs speech recognition to understand your questions.',
         NSMicrophoneUsageDescription: 'Ryvro needs microphone access for voice commands.',
@@ -273,9 +290,7 @@ describe('Ryvro environment template', () => {
       expect(dynamicConfig.android?.adaptiveIcon?.foregroundImage).toBe(
         './assets/adaptive-icon.png'
       );
-      expect(dynamicConfig.android?.googleServicesFile).toBe(
-        './android/app/ryvro-google-services.json'
-      );
+      expect(dynamicConfig.android?.googleServicesFile).toBe('./google-services.json');
       expect(dynamicConfig.web?.favicon).toBe('./assets/favicon.png');
       expect(dynamicConfig.plugins).toEqual(
         expect.arrayContaining([
@@ -388,12 +403,16 @@ describe('Ryvro environment template', () => {
 
   it('pins native installed identity to Ryvro launch values', () => {
     expect(appJson.expo?.ios?.infoPlist).toMatchObject({
+      CFBundleDisplayName: 'Ryvro',
       NSSpeechRecognitionUsageDescription:
         'Ryvro needs speech recognition to understand your questions.',
       NSMicrophoneUsageDescription: 'Ryvro needs microphone access for voice commands.',
     });
 
-    const iosInfoPlist = readOptional('ios/Ellie/Info.plist');
+    const iosInfoPlist =
+      readOptional('ios/RyvroShiftPlanner/Info.plist') ||
+      readOptional('ios/Ryvro/Info.plist') ||
+      readOptional('ios/Ellie/Info.plist');
     if (iosInfoPlist) {
       expect(iosInfoPlist).toContain('<key>CFBundleDisplayName</key>');
       expect(iosInfoPlist).toContain('<string>Ryvro</string>');
@@ -431,7 +450,9 @@ describe('Ryvro environment template', () => {
   it('keeps Detox iOS release configuration on the Ryvro simulator app identity', () => {
     const detoxConfig = fs.readFileSync(path.join(process.cwd(), '.detoxrc.js'), 'utf8');
 
-    expect(detoxConfig).toContain('Release-iphonesimulator/Ryvro.app');
+    expect(detoxConfig).toContain('RyvroShiftPlanner.xcworkspace');
+    expect(detoxConfig).toContain('-scheme RyvroShiftPlanner');
+    expect(detoxConfig).toContain('Release-iphonesimulator/RyvroShiftPlanner.app');
     expect(detoxConfig).toContain('name=iPhone 16');
     expect(detoxConfig).toContain("type: 'iPhone 16'");
     expect(detoxConfig).toContain("'ios.release.xsmax'");
@@ -442,19 +463,27 @@ describe('Ryvro environment template', () => {
   });
 
   it('keeps the native iOS build product on the Ryvro app artifact', () => {
-    const xcodeProject = readOptional('ios/Ellie.xcodeproj/project.pbxproj');
-    const xcodeScheme = readOptional('ios/Ellie.xcodeproj/xcshareddata/xcschemes/Ellie.xcscheme');
+    const xcodeProject =
+      readOptional('ios/RyvroShiftPlanner.xcodeproj/project.pbxproj') ||
+      readOptional('ios/Ryvro.xcodeproj/project.pbxproj') ||
+      readOptional('ios/Ellie.xcodeproj/project.pbxproj');
+    const xcodeScheme =
+      readOptional(
+        'ios/RyvroShiftPlanner.xcodeproj/xcshareddata/xcschemes/RyvroShiftPlanner.xcscheme'
+      ) ||
+      readOptional('ios/Ryvro.xcodeproj/xcshareddata/xcschemes/Ryvro.xcscheme') ||
+      readOptional('ios/Ellie.xcodeproj/xcshareddata/xcschemes/Ellie.xcscheme');
 
     if (xcodeProject) {
-      expect(xcodeProject).toContain('PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner;');
-      expect(xcodeProject).toContain('PRODUCT_NAME = Ryvro;');
-      expect(xcodeProject).toContain('productName = Ryvro;');
-      expect(xcodeProject).toContain('path = Ryvro.app;');
+      expect(xcodeProject).toMatch(/PRODUCT_BUNDLE_IDENTIFIER = "?com\.ryvro\.shiftplanner"?;/);
+      expect(xcodeProject).toMatch(/PRODUCT_NAME = "?RyvroShiftPlanner"?;/);
+      expect(xcodeProject).toContain('productName = RyvroShiftPlanner;');
+      expect(xcodeProject).toContain('path = RyvroShiftPlanner.app;');
       expect(xcodeProject).not.toContain('path = Ellie.app;');
     }
 
     if (xcodeScheme) {
-      expect(xcodeScheme).toContain('BuildableName = "Ryvro.app"');
+      expect(xcodeScheme).toContain('BuildableName = "RyvroShiftPlanner.app"');
       expect(xcodeScheme).not.toContain('BuildableName = "Ellie.app"');
     }
   });
@@ -475,7 +504,7 @@ describe('Ryvro environment template', () => {
     expect(result.stdout).toContain('Ryvro native scaffold check passed');
     expect(script).toContain('Ryvro Shift Planner');
     expect(script).toContain('com.ryvro.shiftplanner');
-    expect(script).toContain('./ios/Ryvro/GoogleService-Info.plist');
+    expect(script).toContain('ios/RyvroShiftPlanner/GoogleService-Info.plist');
     expect(script).toContain('--strict-generated');
     expect(script).toContain('--strict-generated-services');
     expect(script).toContain('retired Firebase project');
@@ -551,10 +580,30 @@ describe('Ryvro environment template', () => {
   });
 
   it('pins tracked Firebase mobile clients to the Ryvro bundle and package', () => {
-    expect(appJson.expo?.ios?.googleServicesFile).toBe('./ios/Ryvro/GoogleService-Info.plist');
-    expect(appJson.expo?.android?.googleServicesFile).toBe('./android/app/google-services.json');
+    expect(appJson.expo?.ios?.googleServicesFile).toBeUndefined();
+    expect(appJson.expo?.android?.googleServicesFile).toBeUndefined();
 
-    const iosGoogleServicePlist = readOptional('ios/Ryvro/GoogleService-Info.plist');
+    const envExample = fs.readFileSync(path.join(process.cwd(), '.env.example'), 'utf8');
+    const productionEnvExample = fs.readFileSync(
+      path.join(process.cwd(), '.env.production.example'),
+      'utf8'
+    );
+    const gitignore = fs.readFileSync(path.join(process.cwd(), '.gitignore'), 'utf8');
+
+    expect(envExample).toContain('EXPO_IOS_GOOGLE_SERVICES_FILE=./GoogleService-Info.plist');
+    expect(envExample).toContain('EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json');
+    expect(productionEnvExample).toContain(
+      'EXPO_IOS_GOOGLE_SERVICES_FILE=./GoogleService-Info.plist'
+    );
+    expect(productionEnvExample).toContain(
+      'EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json'
+    );
+    expect(gitignore).toContain('GoogleService-Info.plist');
+    expect(gitignore).toContain('google-services.json');
+
+    const iosGoogleServicePlist =
+      readOptional('ios/RyvroShiftPlanner/GoogleService-Info.plist') ||
+      readOptional('ios/Ryvro/GoogleService-Info.plist');
     if (iosGoogleServicePlist) {
       expect(iosGoogleServicePlist).toContain('<key>BUNDLE_ID</key>');
       expect(iosGoogleServicePlist).toContain('<string>com.ryvro.shiftplanner</string>');
@@ -1341,8 +1390,10 @@ describe('Ryvro environment template', () => {
     expect(apiReference).toContain('EXPO_PUBLIC_REVENUECAT_ANDROID_KEY=goog_xxxxxxxxxxxxx');
     expect(apiReference).toContain('LEGAL_PRIVACY_POLICY_URL=https://getryvro.com/privacy');
     expect(apiReference).toContain('npm run release:env:check');
-    expect(apiReference).toContain('ios/Ryvro/GoogleService-Info.plist');
-    expect(apiReference).toContain('android/app/google-services.json');
+    expect(apiReference).toContain('<repo-root>/GoogleService-Info.plist');
+    expect(apiReference).toContain('<repo-root>/google-services.json');
+    expect(apiReference).toContain('EXPO_IOS_GOOGLE_SERVICES_FILE');
+    expect(apiReference).toContain('EXPO_ANDROID_GOOGLE_SERVICES_FILE');
     expect(apiReference).toContain('docs/RYVRO_EXTERNAL_SERVICE_SETUP.md');
     expect(apiReference).toContain('Constants.expoConfig?.extra?.FIREBASE_API_KEY');
     expect(apiReference).toContain('Constants.expoConfig?.extra?.RYVRO_BRAIN_URL');
@@ -1374,9 +1425,10 @@ describe('Ryvro environment template', () => {
     );
     expect(releaseTasks).toContain('`getryvro.com` as the current cleanest public candidate');
     expect(releaseTasks).toContain('starting with `@ryvro`');
-    expect(releaseTasks).toContain('PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner');
-    expect(releaseTasks).toContain('PRODUCT_NAME = Ryvro');
-    expect(releaseTasks).toContain('internal generated workspace/scheme');
+    expect(releaseTasks).toContain('com.ryvro.shiftplanner');
+    expect(releaseTasks).toContain('CFBundleDisplayName = Ryvro');
+    expect(releaseTasks).toContain('RyvroShiftPlanner.xcworkspace');
+    expect(releaseTasks).toContain('-scheme RyvroShiftPlanner');
     expect(releaseTasks).toContain(
       'Add RevenueCat native/public key and entitlement placeholders to `.env.example`, `.env.production.example`, runtime config, and `npm run release:env:check`'
     );

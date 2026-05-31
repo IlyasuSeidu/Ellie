@@ -200,8 +200,10 @@ const config = {
 2. Create a new project
 3. Add iOS and Android apps for `com.ryvro.shiftplanner`
 4. Download configuration files:
-   - iOS: `GoogleService-Info.plist` to `ios/Ryvro/GoogleService-Info.plist`
-   - Android: `google-services.json` to `android/app/google-services.json`
+   - iOS: `GoogleService-Info.plist` to `<repo-root>/GoogleService-Info.plist`
+   - Android: `google-services.json` to `<repo-root>/google-services.json`
+
+Keep both service files at the repo root and out of Git; the Expo config uses `EXPO_IOS_GOOGLE_SERVICES_FILE` and `EXPO_ANDROID_GOOGLE_SERVICES_FILE` so clean native prebuilds can copy them into generated projects.
 
 Use `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md` as the console setup source of truth. Do not reuse config files from the old app identity.
 

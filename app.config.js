@@ -68,6 +68,7 @@ module.exports = ({ config = {} }) => {
     favicon: './assets/favicon.png',
   };
   const ryvroIosInfoPlist = {
+    CFBundleDisplayName: 'Ryvro',
     NSSpeechRecognitionUsageDescription:
       'Ryvro needs speech recognition to understand your questions.',
     NSMicrophoneUsageDescription: 'Ryvro needs microphone access for voice commands.',
@@ -119,11 +120,13 @@ module.exports = ({ config = {} }) => {
   const iosGoogleServicesFile =
     process.env.EXPO_IOS_GOOGLE_SERVICES_FILE ||
     process.env.IOS_GOOGLE_SERVICES_FILE ||
-    process.env.GOOGLE_SERVICES_FILE;
+    process.env.GOOGLE_SERVICES_FILE ||
+    (appEnv === 'production' ? undefined : './config/firebase/GoogleService-Info.local.plist');
   const androidGoogleServicesFile =
     process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE ||
     process.env.ANDROID_GOOGLE_SERVICES_FILE ||
-    process.env.GOOGLE_SERVICES_FILE;
+    process.env.GOOGLE_SERVICES_FILE ||
+    (appEnv === 'production' ? undefined : './config/firebase/google-services.local.json');
   const googleIosClientId =
     process.env.GOOGLE_IOS_CLIENT_ID || process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || '';
   const googleIosUrlScheme = getGoogleIosUrlScheme(googleIosClientId);

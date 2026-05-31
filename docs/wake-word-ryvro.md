@@ -22,7 +22,7 @@ This app is configured with a best-effort strategy:
 
 For iOS, add `ryvro_ios.ppn` to the app target in Xcode:
 
-1. Open `<repo-root>/ios/Ellie.xcworkspace`
+1. Open `<repo-root>/ios/RyvroShiftPlanner.xcworkspace`
 2. Drag `ryvro_ios.ppn` into the current native iOS project
 3. Ensure `Target Membership` includes the current app target
 

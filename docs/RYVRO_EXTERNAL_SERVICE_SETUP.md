@@ -40,8 +40,10 @@ Download fresh config files:
 
 Repo placement:
 
-- iOS current native path: `ios/Ryvro/GoogleService-Info.plist`
-- Android current native path: `android/app/google-services.json`
+- iOS source path before native generation: `./GoogleService-Info.plist`
+- Android source path before native generation: `./google-services.json`
+- Keep both files at the repo root and ignored by Git so `npx expo prebuild --clean` can copy them into the generated native projects without deleting the source files first.
+- Local prebuilds fall back to tracked Ryvro-shaped placeholder files in `config/firebase/`; production `.env` must set the root-level `EXPO_IOS_GOOGLE_SERVICES_FILE` and `EXPO_ANDROID_GOOGLE_SERVICES_FILE` paths after the owner downloads real Firebase configs.
 
 Important:
 

@@ -301,8 +301,8 @@ npm run release:check
 cd <repo-root>
 npx expo prebuild --platform ios --clean
 cd ios
-xcodebuild -workspace Ellie.xcworkspace \
-  -scheme Ellie \
+xcodebuild -workspace RyvroShiftPlanner.xcworkspace \
+  -scheme RyvroShiftPlanner \
   -configuration Release \
   -destination generic/platform=iOS \
   -archivePath /tmp/Ryvro.xcarchive archive

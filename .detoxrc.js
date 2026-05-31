@@ -16,13 +16,13 @@ module.exports = {
     'ios.release': {
       type: 'ios.app',
       build: [
-        'E2E_TEST_MODE=1 EXPO_PUBLIC_E2E_TEST_MODE=1 xcodebuild -workspace ios/Ellie.xcworkspace -scheme Ellie -configuration Release -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 16" -derivedDataPath ios/build build',
-        'APP="ios/build/Build/Products/Release-iphonesimulator/Ryvro.app"',
+        'E2E_TEST_MODE=1 EXPO_PUBLIC_E2E_TEST_MODE=1 xcodebuild -workspace ios/RyvroShiftPlanner.xcworkspace -scheme RyvroShiftPlanner -configuration Release -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 16" -derivedDataPath ios/build build',
+        'APP="ios/build/Build/Products/Release-iphonesimulator/RyvroShiftPlanner.app"',
         'find "$APP/Frameworks" -type f | while read -r f; do if file "$f" | grep -q "Mach-O"; then codesign --force --sign - --timestamp=none "$f"; fi; done',
         'find "$APP/Frameworks" -type d -name "*.framework" -exec codesign --force --sign - --timestamp=none {} \\;',
         'codesign --force --sign - --deep --timestamp=none "$APP"',
       ].join(' && '),
-      binaryPath: './ios/build/Build/Products/Release-iphonesimulator/Ryvro.app',
+      binaryPath: './ios/build/Build/Products/Release-iphonesimulator/RyvroShiftPlanner.app',
     },
     'android.release': {
       type: 'android.apk',

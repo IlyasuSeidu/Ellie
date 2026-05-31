@@ -62,17 +62,7 @@ assertEqual(
   'com.ryvro.shiftplanner',
   'app.json ios.bundleIdentifier'
 );
-assertEqual(
-  appJsonExpo.ios?.googleServicesFile,
-  './ios/Ryvro/GoogleService-Info.plist',
-  'app.json ios.googleServicesFile'
-);
 assertEqual(appJsonExpo.android?.package, 'com.ryvro.shiftplanner', 'app.json android.package');
-assertEqual(
-  appJsonExpo.android?.googleServicesFile,
-  './android/app/google-services.json',
-  'app.json android.googleServicesFile'
-);
 assertEqual(
   appJsonExpo.android?.adaptiveIcon?.foregroundImage,
   './assets/adaptive-icon.png',
@@ -91,9 +81,19 @@ assertEqual(
   'app.config.js ios.bundleIdentifier'
 );
 assertEqual(
+  dynamicExpo.ios?.googleServicesFile,
+  './config/firebase/GoogleService-Info.local.plist',
+  'app.config.js ios.googleServicesFile without env override'
+);
+assertEqual(
   dynamicExpo.android?.package,
   'com.ryvro.shiftplanner',
   'app.config.js android.package'
+);
+assertEqual(
+  dynamicExpo.android?.googleServicesFile,
+  './config/firebase/google-services.local.json',
+  'app.config.js android.googleServicesFile without env override'
 );
 assertEqual(
   dynamicExpo.android?.adaptiveIcon?.foregroundImage,
@@ -106,23 +106,29 @@ assertAbsent(readOptional('app.json'), retiredVisibleIdentityPattern, 'app.json'
 assertAbsent(readOptional('app.config.js'), retiredVisibleIdentityPattern, 'app.config.js');
 
 const generatedInfoPlist =
-  readOptional('ios/Ryvro/Info.plist') || readOptional('ios/Ellie/Info.plist');
+  readOptional('ios/RyvroShiftPlanner/Info.plist') ||
+  readOptional('ios/Ryvro/Info.plist') ||
+  readOptional('ios/Ellie/Info.plist');
 if (generatedInfoPlist) {
-  if (!generatedInfoPlist.includes('<string>Ryvro</string>')) {
-    addError('Generated iOS Info.plist must contain Ryvro as the visible app name');
+  if (
+    !generatedInfoPlist.includes('<key>CFBundleDisplayName</key>') ||
+    !generatedInfoPlist.includes('<string>Ryvro</string>')
+  ) {
+    addError('Generated iOS Info.plist must contain CFBundleDisplayName = Ryvro');
   }
   assertAbsent(generatedInfoPlist, retiredVisibleIdentityPattern, 'Generated iOS Info.plist');
 }
 
 const generatedXcodeProject =
+  readOptional('ios/RyvroShiftPlanner.xcodeproj/project.pbxproj') ||
   readOptional('ios/Ryvro.xcodeproj/project.pbxproj') ||
   readOptional('ios/Ellie.xcodeproj/project.pbxproj');
 if (generatedXcodeProject) {
-  if (!generatedXcodeProject.includes('PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner;')) {
+  if (!/PRODUCT_BUNDLE_IDENTIFIER = "?com\.ryvro\.shiftplanner"?;/.test(generatedXcodeProject)) {
     addError('Generated iOS Xcode project must build com.ryvro.shiftplanner');
   }
-  if (!generatedXcodeProject.includes('PRODUCT_NAME = Ryvro;')) {
-    addError('Generated iOS Xcode project must build product name Ryvro');
+  if (!/PRODUCT_NAME = "?RyvroShiftPlanner"?;/.test(generatedXcodeProject)) {
+    addError('Generated iOS Xcode project must build the RyvroShiftPlanner native product');
   }
   if (/TARGET_NAME = Ellie|PBXNativeTarget "Ellie"|name = Ellie;/.test(generatedXcodeProject)) {
     warnings.push(
@@ -132,6 +138,7 @@ if (generatedXcodeProject) {
 }
 
 const generatedIosGoogleService =
+  readOptional('ios/RyvroShiftPlanner/GoogleService-Info.plist') ||
   readOptional('ios/Ryvro/GoogleService-Info.plist') ||
   readOptional('ios/Ellie/GoogleService-Info.plist');
 if (generatedIosGoogleService) {

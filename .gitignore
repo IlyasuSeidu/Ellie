@@ -35,6 +35,8 @@ yarn-error.*
 .env
 .env*.local
 backend/functions/.secret.local
+GoogleService-Info.plist
+google-services.json
 google-play-key.json
 web-admin/analytics-intelligence/firebase-config.local.js
 

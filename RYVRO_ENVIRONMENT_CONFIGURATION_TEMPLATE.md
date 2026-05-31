@@ -23,6 +23,8 @@ FIREBASE_STORAGE_BUCKET=your-project-id.firebasestorage.app
 FIREBASE_MESSAGING_SENDER_ID=your-messaging-sender-id
 FIREBASE_APP_ID=your-firebase-app-id
 FIREBASE_MEASUREMENT_ID=
+EXPO_IOS_GOOGLE_SERVICES_FILE=./GoogleService-Info.plist
+EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json
 
 # Google Sign-In Configuration
 

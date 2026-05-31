@@ -16,9 +16,9 @@
     "ios": {
       "supportsTablet": true,
       "buildNumber": "1",
-      "googleServicesFile": "./ios/Ryvro/GoogleService-Info.plist",
       "usesAppleSignIn": true,
       "infoPlist": {
+        "CFBundleDisplayName": "Ryvro",
         "NSSpeechRecognitionUsageDescription": "Ryvro needs speech recognition to understand your questions.",
         "NSMicrophoneUsageDescription": "Ryvro needs microphone access for voice commands.",
         "ITSAppUsesNonExemptEncryption": false
@@ -26,7 +26,6 @@
       "bundleIdentifier": "com.ryvro.shiftplanner"
     },
     "android": {
-      "googleServicesFile": "./android/app/google-services.json",
       "package": "com.ryvro.shiftplanner",
       "versionCode": 1,
       "adaptiveIcon": {
