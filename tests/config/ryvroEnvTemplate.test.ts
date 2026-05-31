@@ -1999,8 +1999,34 @@ describe('Ryvro environment template', () => {
     expect(contentGenerator).not.toContain('#mining #buildinpublic');
     expect(platformPlaybook).toContain('FIFO crews, shift workers, and broad discovery viewers');
     expect(platformPlaybook).not.toContain('miners, shift workers, and broad discovery viewers');
-    expect(researchAutomationPrompt).toContain('closest Ryvro launch persona');
+    expect(researchAutomationPrompt).toContain('closest Ryvro shift-worker launch persona');
     expect(researchAutomationPrompt).not.toContain('closest Ryvro miner persona');
+  });
+
+  it('keeps the research funnel operating system aligned with broad shift-worker personas', () => {
+    const researchFunnelOs = fs.readFileSync(
+      path.join(process.cwd(), 'docs/RYVRO_RESEARCH_FUNNEL_OS.md'),
+      'utf8'
+    );
+
+    expect(researchFunnelOs).toContain('Turn shift-worker discovery');
+    expect(researchFunnelOs).toContain('## Exact Shift-Worker Personas');
+    expect(researchFunnelOs).toContain('Runtime persona ID: `healthcare-rotating-clinician`');
+    expect(researchFunnelOs).toContain('Runtime persona ID: `security-operations-officer`');
+    expect(researchFunnelOs).toContain('Runtime persona ID: `transport-logistics-shift-worker`');
+    expect(researchFunnelOs).toContain(
+      'Runtime persona ID: `hospitality-manufacturing-shift-worker`'
+    );
+    expect(researchFunnelOs).toContain('Healthcare variant:');
+    expect(researchFunnelOs).toContain('Security variant:');
+    expect(researchFunnelOs).toContain('Transport variant:');
+    expect(researchFunnelOs).toContain('Hospitality/manufacturing variant:');
+    expect(researchFunnelOs).toContain('personas.ts');
+    expect(researchFunnelOs).not.toContain('## Exact Miner Personas');
+    expect(researchFunnelOs).not.toContain('Turn miner discovery');
+    expect(researchFunnelOs).not.toContain('no mining relevance');
+    expect(researchFunnelOs).not.toContain('persona-classifier.ts');
+    expect(researchFunnelOs).not.toContain('the exact problems the miner described');
   });
 
   it('keeps tracked publishable build-in-public content on Ryvro naming', () => {

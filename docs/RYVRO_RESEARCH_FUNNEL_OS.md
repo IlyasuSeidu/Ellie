@@ -1,12 +1,12 @@
 # Ryvro Research Funnel Operating System
 
-Turn miner discovery into a consented, daily, conversation-first funnel that surfaces real pain, captures direct contact, and introduces Ryvro only when the lead is clearly a fit for the product that exists now.
+Turn shift-worker discovery into a consented, daily, conversation-first funnel that surfaces real roster pain, captures direct contact, and introduces Ryvro only when the lead is clearly a fit for the product that exists now.
 
 ## Goal
 
 Build a repeatable outbound system that:
 
-- starts with miner discovery on LinkedIn without violating platform rules
+- starts with shift-worker discovery on LinkedIn, forms, events, referrals, and approved exports without violating platform rules
 - moves contacts into a consented channel such as email or WhatsApp
 - runs a 7-day research conversation that feels personal, not like a pitch
 - scores fit, urgency, and product readiness
@@ -24,7 +24,7 @@ Build a repeatable outbound system that:
 
 ## Why This Fits Ryvro
 
-Ryvro is strongest when the pain is about shift certainty, not generic mining software.
+Ryvro is strongest when the pain is about personal shift certainty, not generic workforce-management software. The launch story still starts from real mining and FIFO roster pain, but the funnel must also recognize healthcare, security, emergency services, transport, hospitality, manufacturing, aviation, rail, and other shift-work teams whose schedules rotate, swap, or run overnight.
 
 Current product strengths:
 
@@ -70,9 +70,9 @@ Recommended split:
 - Firebase and Cloud Functions: production data model, scheduler, webhooks, queue processing
 - Email and WhatsApp APIs: actual message delivery after opt-in
 
-## Exact Miner Personas
+## Exact Shift-Worker Personas
 
-Focus on the personas Ryvro can help now, not the entire mining org chart.
+Focus on the personas Ryvro can help now, not entire employer org charts. The runtime classifier currently uses these launch persona IDs from `backend/functions/src/research-funnel/personas.ts`.
 
 ### Primary Persona 1: Underground Production Operator
 
@@ -121,16 +121,68 @@ Focus on the personas Ryvro can help now, not the entire mining org chart.
   - says the roster is simple but still easy to lose mentally
   - says they need the answer fast, especially before or after sleep
 
+### Primary Persona 5: Healthcare Rotating Clinician
+
+- Runtime persona ID: `healthcare-rotating-clinician`
+- Typical titles: registered nurse, enrolled nurse, midwife, paramedic, resident doctor, healthcare assistant
+- Typical roster: rotating days/nights, on-call, 12-hour shifts, ward or clinic handovers
+- Core pain: keeping nights, days, handovers, on-call blocks, and days off straight
+- Best Ryvro fit: next-shift visibility, reminders, calendar certainty, exception handling
+- Best hook question: `What is hardest to keep straight right now: nights, days, handovers, on-call, or days off?`
+- High-fit signals:
+  - mentions ward, clinic, handover, or on-call confusion
+  - says they double-check rosters before sleep
+  - needs reminders around shift transitions
+
+### Primary Persona 6: Security or Emergency Operations Officer
+
+- Runtime persona ID: `security-operations-officer`
+- Typical titles: security officer, guard, control room operator, dispatcher, firefighter, emergency services worker
+- Typical roster: nights, patrol rotations, posts, standby, coverage changes
+- Core pain: keeping posts, patrol blocks, nights, and last-minute coverage changes straight
+- Best Ryvro fit: current/next shift clarity, reminders, exceptions, calendar export
+- Best hook question: `What is hardest to keep straight right now: posts, patrol blocks, nights, or last-minute coverage changes?`
+- High-fit signals:
+  - mentions patrol, post, control room, or coverage changes
+  - works nights or alternating posts
+  - uses screenshots, chat threads, or paper notes to track shifts
+
+### Primary Persona 7: Transport or Logistics Shift Worker
+
+- Runtime persona ID: `transport-logistics-shift-worker`
+- Typical titles: driver, train driver, bus driver, ground crew, dispatcher, warehouse operator, logistics worker
+- Typical roster: early starts, late finishes, depot or terminal rotations, rotating rest days
+- Core pain: tracking early starts, routes, depot changes, rest blocks, and fatigue-sensitive planning
+- Best Ryvro fit: next-shift confidence, long-range schedule visibility, calendar export, reminders
+- Best hook question: `What is hardest to keep straight right now: early starts, depot changes, routes, or rest days?`
+- High-fit signals:
+  - mentions depot, terminal, route, dispatch, or early-start confusion
+  - checks schedule multiple times before a run
+  - needs future-date certainty for rest and family planning
+
+### Primary Persona 8: Hospitality or Manufacturing Shift Worker
+
+- Runtime persona ID: `hospitality-manufacturing-shift-worker`
+- Typical titles: chef, bartender, front-desk worker, factory operator, production worker, machine operator
+- Typical roster: weekends, split shifts, line rotations, night shifts, venue or plant schedules
+- Core pain: knowing which shift, line, venue, or rest day comes next when the pattern changes often
+- Best Ryvro fit: manual builder, template start, reminders, exceptions, calendar export
+- Best hook question: `What is hardest to keep straight right now: weekends, split shifts, line rotations, or nights?`
+- High-fit signals:
+  - mentions weekend or split-shift planning
+  - uses group chats or screenshots as the source of truth
+  - needs a personal calendar view outside the employer roster system
+
 ## Secondary Personas
 
 These can enter the system, but they should score lower unless their pain maps tightly to today's product.
 
-### Secondary Persona 5: Crew Lead or Supervisor
+### Secondary Persona 9: Crew Lead or Supervisor
 
 - Useful when the pain is still personal roster certainty
 - Lower fit if the pain is mostly crew allocation, approvals, or workforce planning
 
-### Secondary Persona 6: Mining Parent or Family-Planning Worker
+### Secondary Persona 10: Family-Planning Shift Worker
 
 - Strong emotional trigger
 - Good angle when they mention birthdays, school events, travel, or relationship strain
@@ -154,10 +206,10 @@ Use a 100-point model split into static fit and dynamic engagement.
 
 #### 1. Role Fit: 0-20
 
-- 20: underground operator, FIFO field worker, trades miner, process operator
+- 20: underground operator, FIFO field worker, trades miner, process operator, rotating clinician, security/emergency operator, transport/logistics worker, hospitality/manufacturing worker
 - 14: supervisor with personal roster pain
 - 6: admin, planner, or manager with weak personal use case
-- 0: no mining relevance
+- 0: no personal shift-work relevance
 
 #### 2. Roster Fit: 0-20
 
@@ -240,6 +292,10 @@ Message rules:
 - Core question: `What roster are you on right now, and what part of keeping track of it is the most annoying?`
 - Underground variant: `Do you ever lose track of whether the next swing is days, nights, or off?`
 - FIFO variant: `What is harder to keep straight for you: next swing in, next swing home, or planning around the block?`
+- Healthcare variant: `What is hardest to keep straight right now: nights, days, handovers, on-call, or days off?`
+- Security variant: `What is hardest to keep straight right now: posts, patrol blocks, nights, or last-minute coverage changes?`
+- Transport variant: `What is hardest to keep straight right now: early starts, depot changes, routes, or rest days?`
+- Hospitality/manufacturing variant: `What is hardest to keep straight right now: weekends, split shifts, line rotations, or nights?`
 - Score signals:
   - clear roster type
   - concrete pain
@@ -371,7 +427,7 @@ If this moves from docs into runtime code, add a dedicated module:
 ```text
 backend/functions/src/research-funnel/
   types.ts
-  persona-classifier.ts
+  personas.ts
   score-lead.ts
   sequence-engine.ts
   reply-interpreter.ts
@@ -625,4 +681,4 @@ Market it first as help with:
 - roster confidence
 - knowing the next work or rest block without counting
 
-Then reveal Ryvro as the product being built around the exact problems the miner described.
+Then reveal Ryvro as the product being built around the exact shift-work problems the lead described.
