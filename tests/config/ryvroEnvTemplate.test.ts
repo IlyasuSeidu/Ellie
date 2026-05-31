@@ -573,8 +573,13 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'docs/MINIMUM_VIABLE_DEPLOYMENT_PLAN.md'),
       'utf8'
     );
+    const androidBuildGradle = fs.readFileSync(
+      path.join(process.cwd(), 'android/app/build.gradle'),
+      'utf8'
+    );
 
     expect(deploymentPlan).toContain('Repository: repo root');
+    expect(deploymentPlan).toContain('Last updated: May 31, 2026');
     expect(deploymentPlan).toContain('cd <repo-root>');
     expect(deploymentPlan).toContain('Hide Schedule and Stats tabs for v1.');
     expect(deploymentPlan).toContain(
@@ -589,6 +594,23 @@ describe('Ryvro environment template', () => {
       '[x] Verify every visible tab/action is complete or routed to an implemented launch surface'
     );
     expect(deploymentPlan).toContain('[x] Update README release status snapshot');
+    expect(deploymentPlan).toContain(
+      'Non-E2E release tasks now fail fast when upload-key credentials are missing'
+    );
+    expect(deploymentPlan).toContain(
+      'Add tracked Gradle release-signing guard so non-E2E release tasks require `RYVRO_UPLOAD_*`'
+    );
+    expect(deploymentPlan).toContain(
+      'Generate/upload the real Android release keystore through EAS/local secrets before store upload'
+    );
+    expect(androidBuildGradle).toContain('RYVRO_UPLOAD_STORE_FILE');
+    expect(androidBuildGradle).toContain('RYVRO_UPLOAD_STORE_PASSWORD');
+    expect(androidBuildGradle).toContain('RYVRO_UPLOAD_KEY_ALIAS');
+    expect(androidBuildGradle).toContain('RYVRO_UPLOAD_KEY_PASSWORD');
+    expect(androidBuildGradle).toContain('throw new GradleException');
+    expect(androidBuildGradle).toContain('Ryvro release signing is not configured');
+    expect(androidBuildGradle).toContain('!isE2ETestMode');
+    expect(androidBuildGradle).toContain("storeFile file('debug.keystore')");
     expect(deploymentPlan).not.toContain('Keep tabs visible');
     expect(deploymentPlan).not.toContain('beta placeholders');
     expect(deploymentPlan).not.toContain('/Users/Shared/Ellie');

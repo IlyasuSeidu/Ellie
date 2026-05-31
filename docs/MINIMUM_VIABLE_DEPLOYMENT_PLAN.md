@@ -1,6 +1,6 @@
 # Minimum Viable Deployment Plan (MVD)
 
-Last updated: May 30, 2026
+Last updated: May 31, 2026
 Repository: repo root
 
 ## 1. Goal
@@ -92,9 +92,10 @@ Acceptance criteria:
 
 Current status:
 
-- The generated native Android project is ignored by git in this repo, so release signing must be configured through EAS credentials or regenerated native Gradle config before store builds.
-- Release builds must require Ryvro upload-key credentials and must not fall back to debug signing.
-- The upload keystore itself still has to be generated outside git and installed in local/CI secrets.
+- The tracked native Android Gradle config reads `RYVRO_UPLOAD_*` signing values, with legacy `ANDROID_UPLOAD_*` aliases accepted only as migration fallbacks.
+- Non-E2E release tasks now fail fast when upload-key credentials are missing, so production release builds cannot silently fall back to debug signing.
+- E2E release-style Detox builds may use the debug keystore only when `E2E_TEST_MODE` is enabled, keeping emulator smoke tests reproducible without weakening store-build signing.
+- The upload keystore itself still has to be generated outside git and installed in EAS/local/CI secrets.
 
 Implementation steps:
 
@@ -115,7 +116,7 @@ Implementation steps:
    RYVRO_UPLOAD_KEY_ALIAS=ryvro-upload
    RYVRO_UPLOAD_KEY_PASSWORD=*****
    ```
-4. Configure release signing through EAS credentials, or if using a checked/generated native Android project, make `android/app/build.gradle` read the `RYVRO_UPLOAD_*` properties/env vars and fail release builds if they are missing.
+4. Configure release signing through EAS credentials or local/CI Gradle properties using the `RYVRO_UPLOAD_*` values already enforced by `android/app/build.gradle`.
 5. Build and verify:
    ```bash
    cd <repo-root>/android
@@ -126,6 +127,7 @@ Implementation steps:
 Acceptance criteria:
 
 - `app-release.aab` is signed with upload key (not debug key).
+- Running a non-E2E release Gradle task without `RYVRO_UPLOAD_*` credentials fails before producing a release artifact.
 
 ## A3) Remove/justify high-risk Android permissions
 
@@ -293,6 +295,11 @@ Output:
 
 Then upload to Play Internal testing track.
 
+Release signing guard:
+
+- Non-E2E release builds require `RYVRO_UPLOAD_STORE_FILE`, `RYVRO_UPLOAD_STORE_PASSWORD`, `RYVRO_UPLOAD_KEY_ALIAS`, and `RYVRO_UPLOAD_KEY_PASSWORD`.
+- Release-style Detox builds can continue to pass with debug signing only when `E2E_TEST_MODE=1`, because those artifacts are emulator-only QA builds and must not be uploaded to Play.
+
 ## C4) Manual runtime smoke test matrix (required)
 
 Devices:
@@ -394,7 +401,8 @@ Day 7:
 
 - [x] Set production `bundleIdentifier` and `android.package` in repo config
 - [x] Set Android `namespace` and `applicationId` in repo config
-- [ ] Configure and verify release keystore signing in EAS or generated native Gradle before store upload
+- [x] Add tracked Gradle release-signing guard so non-E2E release tasks require `RYVRO_UPLOAD_*`
+- [ ] Generate/upload the real Android release keystore through EAS/local secrets before store upload
 - [x] Remove unneeded Android permissions from active app config
 - [x] Ensure `npm run release:check` exits 0
 - [ ] Increment iOS build number + Android versionCode
