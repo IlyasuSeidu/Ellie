@@ -55,32 +55,28 @@ You can submit only when all items are true:
 
 ## 4. Workstream A - Hard Technical Blockers
 
-## A1) Replace placeholder app identifiers
+## A1) Verify Ryvro app identifiers and provision owner accounts
 
 Current status:
 
-- Repo-side app identifiers now use `com.ryvro.shiftplanner`.
-- Account-side Firebase, OAuth, Apple, Google Play, and App Store records still need to be created or updated for this ID.
+- Repo-side app identifiers are already pinned to `Ryvro Shift Planner`, native display name `Ryvro`, URL scheme `ryvro`, and bundle/package ID `com.ryvro.shiftplanner`.
+- Tracked native scaffolds are generated under `ios/RyvroShiftPlanner` and Android package paths for `com.ryvro.shiftplanner`.
+- Account-side Firebase, OAuth, Apple, Google Play, App Store, RevenueCat, and EAS records still need to be created or updated for this exact ID before store builds can be treated as launch-ready.
 
-Files to update:
+Tracked files that must stay pinned:
 
 - `app.json`
-- `app.config.js` (if it overrides values)
+- `app.config.js`
 - `android/app/build.gradle`
 - `android/app/src/main/AndroidManifest.xml` (scheme entries if needed)
 - iOS target bundle identifier in Xcode project settings
 
-Implementation steps:
+Owner provisioning steps:
 
-1. Use production reverse-DNS ID: `com.ryvro.shiftplanner`.
-2. Update:
-   - `expo.ios.bundleIdentifier`
-   - `expo.android.package`
-3. Update Android:
-   - `namespace`
-   - `applicationId`
-4. Update deep-link schemes only if they still reference old identifier.
-5. Clean build caches and rebuild:
+1. Create Apple App ID, App Store Connect record, Google Play app, Firebase apps, OAuth clients, RevenueCat apps, and EAS project values for `com.ryvro.shiftplanner`.
+2. Download fresh Firebase native service files for the Ryvro iOS and Android apps and place the real files at the repo root before production preflight.
+3. Keep all EAS submit placeholders and evidence-log rows pending until real owner console values exist.
+4. After any identifier or native scaffold change, clean build caches and rebuild:
    ```bash
    cd <repo-root>
    rm -rf android/.gradle
@@ -89,7 +85,9 @@ Implementation steps:
 
 Acceptance criteria:
 
-- Built binaries report new IDs on both platforms.
+- `npm run release:native:check` passes.
+- Built binaries report `Ryvro` and `com.ryvro.shiftplanner` on both platforms.
+- `npm run release:submit:check` remains blocked until owner console values and non-secret evidence are complete.
 
 ## A2) Configure production Android signing (must not use debug signing)
 

@@ -1360,6 +1360,21 @@ describe('Ryvro environment template', () => {
     );
     expect(deploymentPlan).toContain('[x] Update README release status snapshot');
     expect(deploymentPlan).toContain(
+      '## A1) Verify Ryvro app identifiers and provision owner accounts'
+    );
+    expect(deploymentPlan).toContain(
+      'Repo-side app identifiers are already pinned to `Ryvro Shift Planner`, native display name `Ryvro`, URL scheme `ryvro`, and bundle/package ID `com.ryvro.shiftplanner`'
+    );
+    expect(deploymentPlan).toContain('Tracked files that must stay pinned');
+    expect(deploymentPlan).toContain(
+      'Create Apple App ID, App Store Connect record, Google Play app, Firebase apps, OAuth clients, RevenueCat apps, and EAS project values for `com.ryvro.shiftplanner`'
+    );
+    expect(deploymentPlan).toContain('`npm run release:native:check` passes');
+    expect(deploymentPlan).toContain(
+      '`npm run release:submit:check` remains blocked until owner console values and non-secret evidence are complete'
+    );
+    expect(deploymentPlan).not.toContain('## A1) Replace placeholder app identifiers');
+    expect(deploymentPlan).toContain(
       'Non-E2E release tasks now fail fast when upload-key credentials are missing'
     );
     expect(deploymentPlan).toContain(
