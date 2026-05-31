@@ -110,6 +110,7 @@ const requiredEvidenceItems = [
   'App Store Connect app name `Ryvro Shift Planner`',
   'Google Play title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`',
   'Domain control for `getryvro.com`',
+  'Social handles',
   'Apple Developer account',
   'Apple App ID',
   'Google Play app',
@@ -147,6 +148,7 @@ const requiredEvidenceItems = [
   'TestFlight iPhone QA',
   'Physical Android QA',
   'Store screenshots',
+  'Store submission',
 ];
 
 const rowsByItem = new Map(evidenceRows.map((row) => [row[0], row]));

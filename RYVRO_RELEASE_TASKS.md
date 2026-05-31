@@ -1,7 +1,7 @@
 # Ryvro — Release Task List
 
 Source: `SHIFT_WORKER_APP_REBRAND_AUDIT.md`
-Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, Firebase-project-derived backend function defaults, and latest pushed PR #1 CI pass)
+Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, and latest pushed PR #1 CI pass)
 
 Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you do this)
 
