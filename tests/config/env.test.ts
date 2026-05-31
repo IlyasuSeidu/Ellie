@@ -14,6 +14,7 @@ import config, {
   apiConfig,
   appConfig,
   legalConfig,
+  ryvroBrainConfig,
 } from '@/config/env';
 
 describe('Environment Configuration', () => {
@@ -88,6 +89,13 @@ describe('Environment Configuration', () => {
 
     it('should have valid URL format for base URL', () => {
       expect(apiConfig.baseUrl).toMatch(/^https?:\/\//);
+    });
+  });
+
+  describe('Ryvro Brain Configuration', () => {
+    it('does not expose the old placeholder voice endpoint', () => {
+      expect(ryvroBrainConfig.url).toMatch(/^https:\/\/.+cloudfunctions\.net\/ryvroBrain$/);
+      expect(ryvroBrainConfig.url).not.toContain('REGION-PROJECT');
     });
   });
 

@@ -300,16 +300,20 @@ describe('Ryvro environment template', () => {
 
     const previousIosGoogleServices = process.env.EXPO_IOS_GOOGLE_SERVICES_FILE;
     const previousAndroidGoogleServices = process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE;
+    const previousFirebaseProjectId = process.env.FIREBASE_PROJECT_ID;
     const previousRyvroBrainUrl = process.env.RYVRO_BRAIN_URL;
     const previousRyvroBrainTimeout = process.env.RYVRO_BRAIN_TIMEOUT;
     const previousEllieBrainUrl = process.env.ELLIE_BRAIN_URL;
     const previousEllieBrainTimeout = process.env.ELLIE_BRAIN_TIMEOUT;
+    const previousShiftScheduleParserUrl = process.env.SHIFT_SCHEDULE_PARSER_URL;
     process.env.EXPO_IOS_GOOGLE_SERVICES_FILE = './GoogleService-Info.plist';
     process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE = './google-services.json';
+    delete process.env.FIREBASE_PROJECT_ID;
     delete process.env.RYVRO_BRAIN_URL;
     delete process.env.RYVRO_BRAIN_TIMEOUT;
     delete process.env.ELLIE_BRAIN_URL;
     delete process.env.ELLIE_BRAIN_TIMEOUT;
+    delete process.env.SHIFT_SCHEDULE_PARSER_URL;
 
     try {
       const dynamicConfig = buildAppConfig({ config: {} });
@@ -359,12 +363,11 @@ describe('Ryvro environment template', () => {
       expect(dynamicConfig.extra?.LEGAL_TERMS_OF_SERVICE_URL).toBe('https://getryvro.com/terms');
       expect(dynamicConfig.extra?.SUPPORT_URL).toBe('https://getryvro.com/support');
       expect(dynamicConfig.extra?.ACCOUNT_DELETION_URL).toBe('https://getryvro.com/delete-account');
-      expect(dynamicConfig.extra?.RYVRO_BRAIN_URL).toBe(
-        'https://ryvro-brain-REGION-PROJECT.cloudfunctions.net/ryvroBrain'
-      );
+      expect(dynamicConfig.extra?.RYVRO_BRAIN_URL).toBe('');
       expect(dynamicConfig.extra?.RYVRO_BRAIN_TIMEOUT).toBe('30000');
       expect(dynamicConfig.extra?.ELLIE_BRAIN_URL).toBe('');
       expect(dynamicConfig.extra?.ELLIE_BRAIN_TIMEOUT).toBe('');
+      expect(dynamicConfig.extra?.SHIFT_SCHEDULE_PARSER_URL).toBe('');
     } finally {
       if (previousIosGoogleServices === undefined) {
         delete process.env.EXPO_IOS_GOOGLE_SERVICES_FILE;
@@ -376,6 +379,12 @@ describe('Ryvro environment template', () => {
         delete process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE;
       } else {
         process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE = previousAndroidGoogleServices;
+      }
+
+      if (previousFirebaseProjectId === undefined) {
+        delete process.env.FIREBASE_PROJECT_ID;
+      } else {
+        process.env.FIREBASE_PROJECT_ID = previousFirebaseProjectId;
       }
 
       if (previousRyvroBrainUrl === undefined) {
@@ -400,6 +409,66 @@ describe('Ryvro environment template', () => {
         delete process.env.ELLIE_BRAIN_TIMEOUT;
       } else {
         process.env.ELLIE_BRAIN_TIMEOUT = previousEllieBrainTimeout;
+      }
+
+      if (previousShiftScheduleParserUrl === undefined) {
+        delete process.env.SHIFT_SCHEDULE_PARSER_URL;
+      } else {
+        process.env.SHIFT_SCHEDULE_PARSER_URL = previousShiftScheduleParserUrl;
+      }
+    }
+  });
+
+  it('derives Ryvro Cloud Function defaults from the Firebase project when present', () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const buildAppConfig = require(path.join(process.cwd(), 'app.config.js')) as ({
+      config,
+    }: {
+      config?: Record<string, unknown>;
+    }) => { extra?: Record<string, unknown> };
+
+    const previousFirebaseProjectId = process.env.FIREBASE_PROJECT_ID;
+    const previousRyvroBrainUrl = process.env.RYVRO_BRAIN_URL;
+    const previousEllieBrainUrl = process.env.ELLIE_BRAIN_URL;
+    const previousShiftScheduleParserUrl = process.env.SHIFT_SCHEDULE_PARSER_URL;
+
+    process.env.FIREBASE_PROJECT_ID = 'ryvro-staging';
+    delete process.env.RYVRO_BRAIN_URL;
+    delete process.env.ELLIE_BRAIN_URL;
+    delete process.env.SHIFT_SCHEDULE_PARSER_URL;
+
+    try {
+      const dynamicConfig = buildAppConfig({ config: {} });
+
+      expect(dynamicConfig.extra?.RYVRO_BRAIN_URL).toBe(
+        'https://us-central1-ryvro-staging.cloudfunctions.net/ryvroBrain'
+      );
+      expect(dynamicConfig.extra?.SHIFT_SCHEDULE_PARSER_URL).toBe(
+        'https://us-central1-ryvro-staging.cloudfunctions.net/parseShiftScheduleDescription'
+      );
+    } finally {
+      if (previousFirebaseProjectId === undefined) {
+        delete process.env.FIREBASE_PROJECT_ID;
+      } else {
+        process.env.FIREBASE_PROJECT_ID = previousFirebaseProjectId;
+      }
+
+      if (previousRyvroBrainUrl === undefined) {
+        delete process.env.RYVRO_BRAIN_URL;
+      } else {
+        process.env.RYVRO_BRAIN_URL = previousRyvroBrainUrl;
+      }
+
+      if (previousEllieBrainUrl === undefined) {
+        delete process.env.ELLIE_BRAIN_URL;
+      } else {
+        process.env.ELLIE_BRAIN_URL = previousEllieBrainUrl;
+      }
+
+      if (previousShiftScheduleParserUrl === undefined) {
+        delete process.env.SHIFT_SCHEDULE_PARSER_URL;
+      } else {
+        process.env.SHIFT_SCHEDULE_PARSER_URL = previousShiftScheduleParserUrl;
       }
     }
   });
@@ -1503,6 +1572,8 @@ describe('Ryvro environment template', () => {
     expect(deploymentGuide).toContain('RYVRO_ENVIRONMENT_CONFIGURATION_TEMPLATE.md');
     expect(deploymentGuide).toContain('RYVRO_RELEASE_TASKS.md');
     expect(deploymentGuide).toContain('npm run release:env:check');
+    expect(deploymentGuide).toContain('SHIFT_SCHEDULE_PARSER_URL');
+    expect(deploymentGuide).toContain('parser timeout/length values');
     expect(deploymentGuide).toContain(
       'Do not start release builds from `.env.example`; that file is for local development defaults'
     );
@@ -1558,11 +1629,24 @@ describe('Ryvro environment template', () => {
     expect(apiReference).toContain('docs/RYVRO_EXTERNAL_SERVICE_SETUP.md');
     expect(apiReference).toContain('Constants.expoConfig?.extra?.FIREBASE_API_KEY');
     expect(apiReference).toContain('Constants.expoConfig?.extra?.RYVRO_BRAIN_URL');
+    expect(apiReference).not.toContain('ryvro-brain-REGION-PROJECT');
     expect(apiReference).not.toContain('your_project_id.appspot.com');
     expect(apiReference).not.toContain('Constants.expoConfig?.extra?.firebaseApiKey');
     expect(apiReference).not.toContain('Constants.expoConfig?.extra?.apiTimeout');
     expect(apiReference).not.toContain('"name": "Alex"');
     expect(apiReference).not.toContain('"patternType": "FIFO_8_6"');
+  });
+
+  it('keeps backend deployment notes on both Ryvro HTTPS function URLs', () => {
+    const backendReadme = fs.readFileSync(path.join(process.cwd(), 'backend/README.md'), 'utf8');
+
+    expect(backendReadme).toContain(
+      'RYVRO_BRAIN_URL=https://<region>-<project-id>.cloudfunctions.net/ryvroBrain'
+    );
+    expect(backendReadme).toContain(
+      'SHIFT_SCHEDULE_PARSER_URL=https://<region>-<project-id>.cloudfunctions.net/parseShiftScheduleDescription'
+    );
+    expect(backendReadme).toContain('ELLIE_BRAIN_URL` is still accepted as a legacy fallback');
   });
 
   it('keeps the release task checklist on Ryvro and repo-root release paths', () => {

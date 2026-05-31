@@ -18,7 +18,7 @@ Before cutting a release, run this gate in order:
 1. `npm run type-check`
 2. `npm test -- --runInBand`
 3. `npm run backend:build`
-4. Confirm voice env values are set (`RYVRO_BRAIN_URL`, `RYVRO_BRAIN_TIMEOUT`, and wake-word env keys; legacy `ELLIE_BRAIN_*` values are migration fallbacks only)
+4. Confirm backend env values are set (`RYVRO_BRAIN_URL`, `RYVRO_BRAIN_TIMEOUT`, `SHIFT_SCHEDULE_PARSER_URL`, parser timeout/length values, and wake-word env keys; legacy `ELLIE_BRAIN_*` values are migration fallbacks only)
 5. Build dev clients for smoke:
    - `npx expo run:ios`
    - `npx expo run:android`
@@ -211,7 +211,7 @@ cp RYVRO_ENVIRONMENT_CONFIGURATION_TEMPLATE.md /tmp/ryvro-env-reference.md
 cp .env.production.example .env
 ```
 
-Fill `.env` with real production values for Firebase, Google OAuth, RevenueCat, legal/support URLs, EAS project ID, and `RYVRO_BRAIN_URL`. Keep the real Firebase native service files at the repo root and set `EXPO_IOS_GOOGLE_SERVICES_FILE=./GoogleService-Info.plist` plus `EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json`. The production example is intentionally placeholder-filled and should fail `npm run release:env:check` until those owner/account values are replaced.
+Fill `.env` with real production values for Firebase, Google OAuth, RevenueCat, legal/support URLs, EAS project ID, `RYVRO_BRAIN_URL`, and `SHIFT_SCHEDULE_PARSER_URL`. Keep the real Firebase native service files at the repo root and set `EXPO_IOS_GOOGLE_SERVICES_FILE=./GoogleService-Info.plist` plus `EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json`. The production example is intentionally placeholder-filled and should fail `npm run release:env:check` until those owner/account values are replaced.
 
 Before pushing secrets to EAS or starting production builds, run:
 

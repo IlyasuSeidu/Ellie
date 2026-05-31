@@ -46,6 +46,13 @@ function withGoogleSignInIosUrlScheme(plugins, iosUrlScheme) {
 }
 
 module.exports = ({ config = {} }) => {
+  const firebaseProjectId = process.env.FIREBASE_PROJECT_ID || '';
+  const defaultRyvroBrainUrl = firebaseProjectId
+    ? `https://us-central1-${firebaseProjectId}.cloudfunctions.net/ryvroBrain`
+    : '';
+  const defaultShiftScheduleParserUrl = firebaseProjectId
+    ? `https://us-central1-${firebaseProjectId}.cloudfunctions.net/parseShiftScheduleDescription`
+    : '';
   const ryvroIdentity = {
     name: 'Ryvro Shift Planner',
     slug: 'ryvro',
@@ -194,7 +201,7 @@ module.exports = ({ config = {} }) => {
       APP_ENV: appEnv,
       FIREBASE_API_KEY: process.env.FIREBASE_API_KEY || '',
       FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN || '',
-      FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID || '',
+      FIREBASE_PROJECT_ID: firebaseProjectId,
       FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET || '',
       FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID || '',
       FIREBASE_APP_ID: process.env.FIREBASE_APP_ID || '',
@@ -255,14 +262,13 @@ module.exports = ({ config = {} }) => {
       ACCOUNT_DELETION_URL:
         process.env.ACCOUNT_DELETION_URL || 'https://getryvro.com/delete-account',
       RYVRO_BRAIN_URL:
-        process.env.RYVRO_BRAIN_URL ||
-        process.env.ELLIE_BRAIN_URL ||
-        'https://ryvro-brain-REGION-PROJECT.cloudfunctions.net/ryvroBrain',
+        process.env.RYVRO_BRAIN_URL || process.env.ELLIE_BRAIN_URL || defaultRyvroBrainUrl,
       RYVRO_BRAIN_TIMEOUT:
         process.env.RYVRO_BRAIN_TIMEOUT || process.env.ELLIE_BRAIN_TIMEOUT || '30000',
       ELLIE_BRAIN_URL: process.env.ELLIE_BRAIN_URL || '',
       ELLIE_BRAIN_TIMEOUT: process.env.ELLIE_BRAIN_TIMEOUT || '',
-      SHIFT_SCHEDULE_PARSER_URL: process.env.SHIFT_SCHEDULE_PARSER_URL || '',
+      SHIFT_SCHEDULE_PARSER_URL:
+        process.env.SHIFT_SCHEDULE_PARSER_URL || defaultShiftScheduleParserUrl,
       SHIFT_SCHEDULE_PARSER_TIMEOUT_MS: process.env.SHIFT_SCHEDULE_PARSER_TIMEOUT_MS || '45000',
       SHIFT_SCHEDULE_PARSER_MAX_PROMPT_LENGTH:
         process.env.SHIFT_SCHEDULE_PARSER_MAX_PROMPT_LENGTH || '2000',

@@ -338,6 +338,9 @@ function buildAppConfig(): AppConfig {
   );
   const defaultWakeWordEnabled =
     wakeWordProvider === 'openwakeword' ? hasOpenWakeWordModelPath : Boolean(wakeWordAccessKey);
+  const defaultRyvroBrainUrl = firebase.projectId
+    ? `https://us-central1-${firebase.projectId}.cloudfunctions.net/ryvroBrain`
+    : '';
   const defaultShiftScheduleParserUrl = firebase.projectId
     ? `https://us-central1-${firebase.projectId}.cloudfunctions.net/parseShiftScheduleDescription`
     : '';
@@ -371,7 +374,7 @@ function buildAppConfig(): AppConfig {
       url:
         getEnvVar('RYVRO_BRAIN_URL', false) ||
         getEnvVar('ELLIE_BRAIN_URL', false) ||
-        'https://ryvro-brain-REGION-PROJECT.cloudfunctions.net/ryvroBrain',
+        defaultRyvroBrainUrl,
       timeout: parseInt(
         getEnvVar('RYVRO_BRAIN_TIMEOUT', false) ||
           getEnvVar('ELLIE_BRAIN_TIMEOUT', false) ||
