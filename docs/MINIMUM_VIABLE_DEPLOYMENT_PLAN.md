@@ -176,14 +176,19 @@ Acceptance criteria:
 
 ## A5) Versioning + build numbers for stores
 
+Current status:
+
+- Initial v1 store versions are pinned across tracked config: Expo `version` is `1.0.0`, iOS `buildNumber` / `CURRENT_PROJECT_VERSION` is `1`, Android `versionCode` is `1`, and Android `versionName` is `1.0.0`.
+- The dynamic Expo config also falls back to the same version/build values when static config is not inherited.
+- Future store submissions must increment iOS build number and Android versionCode after each uploaded binary.
+
 Implementation steps:
 
-1. Set semantic app version in `app.json`, `package.json`:
-   - Example: `1.0.0` -> `1.0.1` if you changed post-build.
-2. Increment:
+1. For the first store build, keep semantic app version aligned in `app.json`, `app.config.js`, `package.json`, Android `versionName`, and generated iOS `MARKETING_VERSION`.
+2. For every later uploaded binary, increment:
    - iOS build number (CFBundleVersion)
    - Android versionCode
-3. Keep release log in `CHANGELOG.md`.
+3. Keep release log in `CHANGELOG.md` once public release notes begin.
 
 Acceptance criteria:
 
@@ -405,7 +410,8 @@ Day 7:
 - [ ] Generate/upload the real Android release keystore through EAS/local secrets before store upload
 - [x] Remove unneeded Android permissions from active app config
 - [x] Ensure `npm run release:check` exits 0
-- [ ] Increment iOS build number + Android versionCode
+- [x] Pin first-store-build iOS build number + Android versionCode across tracked config
+- [ ] Increment iOS build number + Android versionCode again after each uploaded binary
 - [x] Verify every visible tab/action is complete or routed to an implemented launch surface
 - [x] Update README release status snapshot
 - [ ] Run full smoke test matrix on physical devices

@@ -28,17 +28,20 @@ describe('Ryvro environment template', () => {
       name?: string;
       slug?: string;
       scheme?: string;
+      version?: string;
       icon?: string;
       splash?: {
         image?: string;
       };
       ios?: {
         bundleIdentifier?: string;
+        buildNumber?: string;
         googleServicesFile?: string;
         infoPlist?: Record<string, unknown>;
       };
       android?: {
         package?: string;
+        versionCode?: number;
         googleServicesFile?: string;
         adaptiveIcon?: {
           foregroundImage?: string;
@@ -52,6 +55,7 @@ describe('Ryvro environment template', () => {
   const packageJson = JSON.parse(
     fs.readFileSync(path.join(process.cwd(), 'package.json'), 'utf8')
   ) as {
+    version?: string;
     dependencies?: Record<string, string>;
     scripts?: Record<string, string>;
   };
@@ -188,11 +192,13 @@ describe('Ryvro environment template', () => {
       name?: string;
       slug?: string;
       scheme?: string;
+      version?: string;
       icon?: string;
       splash?: { image?: string };
-      ios?: { bundleIdentifier?: string; googleServicesFile?: string };
+      ios?: { bundleIdentifier?: string; buildNumber?: string; googleServicesFile?: string };
       android?: {
         package?: string;
+        versionCode?: number;
         googleServicesFile?: string;
         adaptiveIcon?: { foregroundImage?: string };
       };
@@ -219,11 +225,14 @@ describe('Ryvro environment template', () => {
       expect(dynamicConfig.name).toBe('Ryvro Shift Planner');
       expect(dynamicConfig.slug).toBe('ryvro');
       expect(dynamicConfig.scheme).toBe('ryvro');
+      expect(dynamicConfig.version).toBe('1.0.0');
       expect(dynamicConfig.icon).toBe('./assets/icon.png');
       expect(dynamicConfig.splash?.image).toBe('./assets/splash-icon.png');
       expect(dynamicConfig.ios?.bundleIdentifier).toBe('com.ryvro.shiftplanner');
+      expect(dynamicConfig.ios?.buildNumber).toBe('1');
       expect(dynamicConfig.ios?.googleServicesFile).toBe('./ios/Ryvro/GoogleService-Info.plist');
       expect(dynamicConfig.android?.package).toBe('com.ryvro.shiftplanner');
+      expect(dynamicConfig.android?.versionCode).toBe(1);
       expect(dynamicConfig.android?.adaptiveIcon?.foregroundImage).toBe(
         './assets/adaptive-icon.png'
       );
@@ -602,6 +611,13 @@ describe('Ryvro environment template', () => {
     );
     expect(deploymentPlan).toContain(
       'Generate/upload the real Android release keystore through EAS/local secrets before store upload'
+    );
+    expect(deploymentPlan).toContain('Initial v1 store versions are pinned across tracked config');
+    expect(deploymentPlan).toContain(
+      'Pin first-store-build iOS build number + Android versionCode across tracked config'
+    );
+    expect(deploymentPlan).toContain(
+      'Increment iOS build number + Android versionCode again after each uploaded binary'
     );
     expect(androidBuildGradle).toContain('RYVRO_UPLOAD_STORE_FILE');
     expect(androidBuildGradle).toContain('RYVRO_UPLOAD_STORE_PASSWORD');
@@ -1049,6 +1065,39 @@ describe('Ryvro environment template', () => {
     expect(e2eStorage).toContain('RKStorage');
     expect(currentShiftStatusCard).toContain('collapsable={false}');
     expect(currentShiftStatusCard).toContain('shift-status-badge-icon');
+  });
+
+  it('keeps first-store-build version values aligned across tracked native and Expo config', () => {
+    const androidBuildGradle = fs.readFileSync(
+      path.join(process.cwd(), 'android/app/build.gradle'),
+      'utf8'
+    );
+    const iosProject = readOptional('ios/Ellie.xcodeproj/project.pbxproj');
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const buildAppConfig = require('../../app.config.js') as (params: {
+      config?: Record<string, unknown>;
+    }) => {
+      version?: string;
+      ios?: { buildNumber?: string };
+      android?: { versionCode?: number };
+    };
+    const dynamicConfig = buildAppConfig({ config: {} });
+
+    expect(packageJson.version).toBe('1.0.0');
+    expect(appJson.expo?.version).toBe('1.0.0');
+    expect(appJson.expo?.ios?.buildNumber).toBe('1');
+    expect(appJson.expo?.android?.versionCode).toBe(1);
+    expect(dynamicConfig.version).toBe('1.0.0');
+    expect(dynamicConfig.ios?.buildNumber).toBe('1');
+    expect(dynamicConfig.android?.versionCode).toBe(1);
+    expect(androidBuildGradle).toContain('versionCode 1');
+    expect(androidBuildGradle).toContain('versionName "1.0.0"');
+
+    if (iosProject) {
+      expect(iosProject).toContain('CURRENT_PROJECT_VERSION = 1;');
+      expect(iosProject).toContain('MARKETING_VERSION = 1.0.0;');
+      expect(iosProject).not.toContain('MARKETING_VERSION = 1.0;');
+    }
   });
 
   it('keeps the store listing pack submission-ready without placeholder review contacts', () => {

@@ -15,6 +15,7 @@ module.exports = ({ config = {} }) => {
     name: 'Ryvro Shift Planner',
     slug: 'ryvro',
     scheme: 'ryvro',
+    version: '1.0.0',
     icon: './assets/icon.png',
     splash: {
       image: './assets/splash-icon.png',
@@ -22,7 +23,9 @@ module.exports = ({ config = {} }) => {
       backgroundColor: '#ffffff',
     },
     iosBundleIdentifier: 'com.ryvro.shiftplanner',
+    iosBuildNumber: '1',
     androidPackage: 'com.ryvro.shiftplanner',
+    androidVersionCode: 1,
     adaptiveIcon: {
       foregroundImage: './assets/adaptive-icon.png',
       backgroundColor: '#ffffff',
@@ -65,6 +68,7 @@ module.exports = ({ config = {} }) => {
     name: config.name || ryvroIdentity.name,
     slug: config.slug || ryvroIdentity.slug,
     scheme: config.scheme || ryvroIdentity.scheme,
+    version: config.version || ryvroIdentity.version,
     icon: config.icon || ryvroIdentity.icon,
     splash: {
       ...ryvroIdentity.splash,
@@ -75,11 +79,13 @@ module.exports = ({ config = {} }) => {
     ios: {
       ...(config.ios || {}),
       bundleIdentifier: config.ios?.bundleIdentifier || ryvroIdentity.iosBundleIdentifier,
+      buildNumber: config.ios?.buildNumber || ryvroIdentity.iosBuildNumber,
       ...(iosGoogleServicesFile ? { googleServicesFile: iosGoogleServicesFile } : {}),
     },
     android: {
       ...(config.android || {}),
       package: config.android?.package || ryvroIdentity.androidPackage,
+      versionCode: config.android?.versionCode || ryvroIdentity.androidVersionCode,
       adaptiveIcon: {
         ...ryvroIdentity.adaptiveIcon,
         ...(config.android?.adaptiveIcon || {}),
