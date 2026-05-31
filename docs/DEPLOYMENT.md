@@ -18,7 +18,7 @@ Before cutting a release, run this gate in order:
 1. `npm run type-check`
 2. `npm test -- --runInBand`
 3. `npm run backend:build`
-4. Confirm backend env values are set (`RYVRO_BRAIN_URL`, `RYVRO_BRAIN_TIMEOUT`, `SHIFT_SCHEDULE_PARSER_URL`, parser timeout/length values, and wake-word env keys; legacy `ELLIE_BRAIN_*` values are migration fallbacks only)
+4. Confirm backend env values are set (`RYVRO_BRAIN_URL`, `RYVRO_BRAIN_TIMEOUT`, `SHIFT_SCHEDULE_PARSER_URL`, parser timeout/length values, and wake-word env keys; retired `ELLIE_BRAIN_*` values must be removed before Ryvro release builds)
 5. Build dev clients for smoke:
    - `npx expo run:ios`
    - `npx expo run:android`
