@@ -2937,8 +2937,12 @@ describe('Ryvro environment template', () => {
       rosterType?: {
         cards?: {
           fifo?: {
+            description?: string;
             details?: {
+              howItWorks?: string;
+              examples?: string[];
               regions?: string[];
+              pros?: string[];
             };
           };
         };
@@ -2956,9 +2960,24 @@ describe('Ryvro environment template', () => {
     expect(angleFramework).toContain(
       'shift workers need a fast answer they can trust, and the launch story starts from mining and FIFO roster pain'
     );
-    expect(onboarding.rosterType?.cards?.fifo?.details?.regions).toContain('Remote global sites');
+    expect(onboarding.rosterType?.cards?.fifo?.details?.regions).toContain(
+      'Remote global operations'
+    );
     expect(onboarding.rosterType?.cards?.fifo?.details?.regions).not.toContain(
       'Remote global mining'
+    );
+
+    const fifoRosterType = onboarding.rosterType?.cards?.fifo;
+    const fifoRosterTypeCopy = [
+      fifoRosterType?.description,
+      fifoRosterType?.details?.howItWorks,
+      ...(fifoRosterType?.details?.examples ?? []),
+      ...(fifoRosterType?.details?.regions ?? []),
+      ...(fifoRosterType?.details?.pros ?? []),
+    ].join('\n');
+    expect(fifoRosterTypeCopy).toContain('Remote global operations');
+    expect(fifoRosterTypeCopy).not.toMatch(
+      /on-site|remote sites|global mining|remote global sites/i
     );
   });
 
@@ -3006,6 +3025,25 @@ describe('Ryvro environment template', () => {
       completion?: {
         features?: Record<string, string | undefined>;
       };
+      fifoCustom?: {
+        preview?: {
+          ratioLabel?: string;
+          siteDays?: string;
+          subtitle?: string;
+        };
+        sliders?: {
+          daysAtSite?: string;
+        };
+        subtitle?: string;
+        success?: string;
+        workPatternSubtitle?: string;
+        workPatterns?: Record<
+          string,
+          {
+            description?: string;
+          }
+        >;
+      };
     };
     const shiftSystem = onboarding.shiftSystem;
     const guardedCopy = [
@@ -3018,6 +3056,14 @@ describe('Ryvro environment template', () => {
       ]),
       onboarding.shiftPattern?.cards?.continental?.description ?? '',
       onboarding.shiftPattern?.cards?.custom?.description ?? '',
+      onboarding.shiftPattern?.cards?.['4-4-4']?.description ?? '',
+      onboarding.shiftPattern?.cards?.['fifo-8-6']?.description ?? '',
+      onboarding.shiftPattern?.cards?.['fifo-7-7']?.description ?? '',
+      onboarding.shiftPattern?.cards?.['fifo-14-14']?.description ?? '',
+      onboarding.shiftPattern?.cards?.['fifo-14-7']?.description ?? '',
+      onboarding.shiftPattern?.cards?.['fifo-21-7']?.description ?? '',
+      onboarding.shiftPattern?.cards?.['fifo-28-14']?.description ?? '',
+      onboarding.shiftPattern?.cards?.['fifo-custom']?.description ?? '',
     ].join('\n');
 
     expect(guardedCopy).toContain('workplace');
@@ -3029,6 +3075,22 @@ describe('Ryvro environment template', () => {
     expect(guardedCopy).not.toMatch(
       /your mine|your site uses|underground mines|mine infrastructure|mining sites|8-hour shift sites/i
     );
+
+    const fifoCustom = onboarding.fifoCustom;
+    const fifoBuilderCopy = [
+      fifoCustom?.preview?.ratioLabel,
+      fifoCustom?.preview?.siteDays,
+      fifoCustom?.preview?.subtitle,
+      fifoCustom?.sliders?.daysAtSite,
+      fifoCustom?.subtitle,
+      fifoCustom?.success,
+      fifoCustom?.workPatternSubtitle,
+      ...Object.values(fifoCustom?.workPatterns ?? {}).map((pattern) => pattern.description),
+    ].join('\n');
+
+    expect(fifoBuilderCopy).toContain('work-block days');
+    expect(fifoBuilderCopy).toContain('rest days');
+    expect(fifoBuilderCopy).not.toMatch(/site|on-site|on site|at site|site block/i);
 
     const completionFeatures = onboarding.completion?.features ?? {};
     const completionBenefitCopy = [
@@ -3072,6 +3134,127 @@ describe('Ryvro environment template', () => {
     expect(arabicOnboarding).toContain('Ryvro');
     expect(arabicDashboard).toContain('Ryvro');
     expect([arabicOnboarding, arabicDashboard].join('\n')).not.toMatch(/ايلي|إيلي|إيلى/i);
+  });
+
+  it('keeps translated onboarding FIFO setup copy broad instead of site-specific', () => {
+    const localeRoot = path.join(process.cwd(), 'src/i18n/locales');
+
+    for (const locale of fs.readdirSync(localeRoot)) {
+      const onboarding = readLocale(locale, 'onboarding.json') as {
+        shiftPattern?: {
+          cards?: Record<
+            string,
+            {
+              description?: string;
+            }
+          >;
+        };
+        rosterType?: {
+          cards?: {
+            fifo?: {
+              description?: string;
+              details?: {
+                howItWorks?: string;
+                examples?: string[];
+                regions?: string[];
+                pros?: string[];
+              };
+            };
+          };
+        };
+        fifoCustom?: {
+          preview?: {
+            ratioLabel?: string;
+            siteDays?: string;
+            subtitle?: string;
+          };
+          sliders?: {
+            daysAtSite?: string;
+          };
+          subtitle?: string;
+          success?: string;
+          workPatternSubtitle?: string;
+          workPatterns?: Record<
+            string,
+            {
+              description?: string;
+            }
+          >;
+        };
+        fifoPhaseSelector?: {
+          title?: {
+            block_named?: string;
+          };
+          patterns?: {
+            straightNights?: {
+              quickInfo?: string;
+            };
+          };
+          blocks?: {
+            work?: {
+              title?: string;
+            };
+            rest?: {
+              title?: string;
+            };
+          };
+          days?: {
+            work?: {
+              firstDayAtSite?: string;
+              firstNightAtSite?: string;
+              firstShiftAtSite?: string;
+            };
+            rest?: {
+              lastDayBeforeSite?: string;
+            };
+            swing?: {
+              firstDayShiftAtSite?: string;
+            };
+          };
+        };
+      };
+      const fifoCards = onboarding.shiftPattern?.cards ?? {};
+      const fifoRosterType = onboarding.rosterType?.cards?.fifo;
+      const fifoCustom = onboarding.fifoCustom;
+      const fifoPhaseSelector = onboarding.fifoPhaseSelector;
+      const launchVisibleFifoCopy = [
+        fifoRosterType?.description,
+        fifoRosterType?.details?.howItWorks,
+        ...(fifoRosterType?.details?.examples ?? []),
+        ...(fifoRosterType?.details?.regions ?? []),
+        ...(fifoRosterType?.details?.pros ?? []),
+        fifoCards['4-4-4']?.description,
+        fifoCards['fifo-8-6']?.description,
+        fifoCards['fifo-7-7']?.description,
+        fifoCards['fifo-14-14']?.description,
+        fifoCards['fifo-14-7']?.description,
+        fifoCards['fifo-21-7']?.description,
+        fifoCards['fifo-28-14']?.description,
+        fifoCards['fifo-custom']?.description,
+        fifoCustom?.preview?.ratioLabel,
+        fifoCustom?.preview?.siteDays,
+        fifoCustom?.preview?.subtitle,
+        fifoCustom?.sliders?.daysAtSite,
+        fifoCustom?.subtitle,
+        fifoCustom?.success,
+        fifoCustom?.workPatternSubtitle,
+        ...Object.values(fifoCustom?.workPatterns ?? {}).map((pattern) => pattern.description),
+        fifoPhaseSelector?.title?.block_named,
+        fifoPhaseSelector?.patterns?.straightNights?.quickInfo,
+        fifoPhaseSelector?.blocks?.work?.title,
+        fifoPhaseSelector?.blocks?.rest?.title,
+        fifoPhaseSelector?.days?.work?.firstDayAtSite,
+        fifoPhaseSelector?.days?.work?.firstNightAtSite,
+        fifoPhaseSelector?.days?.work?.firstShiftAtSite,
+        fifoPhaseSelector?.days?.rest?.lastDayBeforeSite,
+        fifoPhaseSelector?.days?.swing?.firstDayShiftAtSite,
+      ].join('\n');
+
+      expect(launchVisibleFifoCopy).not.toMatch(
+        /on-site|on site|at site|back at site|returning to site|site block|site days|days at site|your site|site uses|site crews|remote sites|long-haul remote sites|remote global mining|global mining|sitio|situs|terrein|werf|webwerf|موقع|साइट|现场|站点|объект|месте|сайт|esizeni|sayithi/i
+      );
+      expect(launchVisibleFifoCopy).not.toMatch(/mine|myn|mina|mining|haul truck|underground/i);
+    }
   });
 
   it('keeps content generation outputs broad while preserving the miner-builder origin story', () => {

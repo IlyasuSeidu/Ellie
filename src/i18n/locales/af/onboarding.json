@@ -128,7 +128,7 @@
       "4-4-4": {
         "name": "4-4-4 Rotasie",
         "schedule": "4 dae • 4 nagte • 4 af",
-        "description": "Werk 4 dagskofte, dan 4 nagskofte, en kry dan 4 dae af-gewoonlik vir invlieg-uit-weg-plekke"
+        "description": "Werk 4 dagskofte, dan 4 nagskofte, dan 4 dae af — algemeen vir 24/7- en FIFO-spanne"
       },
       "7-7-7": {
         "name": "7-7-7 Rotasie",
@@ -173,37 +173,37 @@
       "fifo-8-6": {
         "name": "EIEU 8/6",
         "schedule": "8 dae werk • 6 dae tuis",
-        "description": "Werk 8 opeenvolgende dae ter plaatse, dan 6 dae by die huis - gewild in WA mynbou"
+        "description": "Werk 8 agtereenvolgende werkblokdae, dan 6 rusdae — algemeen vir afgeleë en FIFO-spanne"
       },
       "fifo-7-7": {
         "name": "EIEU 7/7 (Ewe-tyd)",
         "schedule": "1 week werk • 1 week tuis",
-        "description": "Een week op die perseel, een week by die huis - perfekte 50/50 balans"
+        "description": "Een week werkblok, een week rus — goeie 50/50-balans"
       },
       "fifo-14-14": {
         "name": "EIEU 14/14 (Ewe-tyd)",
         "schedule": "2 weke werk • 2 weke tuis",
-        "description": "Twee weke op die terrein, twee weke by die huis-perfekte werk-lewe balans"
+        "description": "Twee weke werkblok, twee weke rus — gebalanseerde werk/rus-ritme"
       },
       "fifo-14-7": {
         "name": "EIEU 14/7 (2:1)",
         "schedule": "2 weke werk • 1 week tuis",
-        "description": "Twee weke op die perseel, een week by die huis-hoë verdienstepotensiaal"
+        "description": "Twee weke werkblok, een week rus — vir langer verdienblokke"
       },
       "fifo-21-7": {
         "name": "EIEU 21/7 (3:1)",
         "schedule": "3 weke werk • 1 week tuis",
-        "description": "Drie weke op die perseel, een week by die huis - vir baie afgeleë bedrywighede"
+        "description": "Drie weke werkblok, een week rus — vir baie afgeleë bedrywighede"
       },
       "fifo-28-14": {
         "name": "EIEU 28/14 (2:1)",
         "schedule": "4 weke werk • 2 weke tuis",
-        "description": "Vier weke op die perseel, twee weke by die huis - vir langafstand-afgeleë terreine"
+        "description": "Vier weke werkblok, twee weke rus — vir langafstand-bedrywighede"
       },
       "fifo-custom": {
         "name": "Pasgemaakte EIEU",
         "schedule": "Bou jou eie",
-        "description": "Gebruik jou EIEU-werf 'n unieke rooster? Stel jou eie werk-/rusblokke op"
+        "description": "Gebruik jou FIFO-span ’n unieke rooster? Stel jou eie werk/rusblokke op"
       }
     },
     "title_named": "Wat is jou patroon, {{name}}?",
@@ -249,20 +249,20 @@
       "fifo": {
         "title": "EIEU / Swing Roster",
         "subtitle": "Werkblokke • Tuisblokke",
-        "description": "Jy werk opeenvolgende dae ter plaatse en kry dan lang tyd by die huis",
+        "description": "Jy werk opeenvolgende werkblokdae en kry dan verlengde rustyd by die huis",
         "details": {
-          "howItWorks": "Werkers vlieg na afgeleë terreine, werk opeenvolgende dae (werkblok), vlieg dan huis toe vir lang rus (rusblok)",
+          "howItWorks": "Werkers reis na afgeleë bedrywighede, werk opeenvolgende dae (werkblok), en reis dan huis toe vir verlengde rus (rusblok)",
           "examples": [
-            "8/6 (gewone WA)",
+            "8/6 (algemeen)",
             "14/14 (gelyktyd)",
-            "21/7 (afgeleë werwe)",
+            "21/7 (afgeleë bedrywighede)",
             "28/14 (lang siklus)"
           ],
-          "regions": ["Australië", "Kanada", "Afgeleë globale mynbou"],
+          "regions": ["Australië", "Kanada", "Afgeleë globale bedrywighede"],
           "pros": [
             "Verlengde tyd by die huis",
             "Hoër betaalkoerse",
-            "Goed vir afgeleë werwe",
+            "Goed vir afgeleë bedrywighede",
             "Voorspelbare blokke"
           ],
           "cons": [
@@ -448,7 +448,7 @@
       "swingConfig": "Stel jou swaaiverdeling op",
       "block": "Waar is jy in jou EIEU-siklus?",
       "dayWithinBlock": "Op watter dag van {{blockTitle}} is jy?",
-      "block_named": "Is jy nou by die werkplek of by die huis, {{name}}?"
+      "block_named": "Is jy nou in jou werkblok of rusblok, {{name}}?"
     },
     "subtitle": {
       "workPattern": "Swiep regs om jou werkblokpatroon te kies, links vir volgende opsie, of op vir inligting",
@@ -469,7 +469,7 @@
       "straightNights": {
         "title": "Reguit nagte",
         "description": "Jou werkblok loop slegs nagskof.",
-        "quickInfo": "Gebruik dit wanneer terreinspanne vir die volle werkblok op nagskof bly."
+        "quickInfo": "Gebruik dit wanneer spanne op nagskofte bly vir die volle werkblok."
       },
       "swing": {
         "title": "Swaai",
@@ -479,7 +479,7 @@
     },
     "blocks": {
       "work": {
-        "title": "By die werkplek (werk)",
+        "title": "Werkblok",
         "descriptionDay": "Jy is tans by jou werkplek op jou dagskofwerkblok",
         "descriptionNight": "Jy is tans by jou werkplek op jou nagskofwerkblok",
         "descriptionNeutral": "Jy is tans by jou werkplek op jou werkblok",
@@ -488,7 +488,7 @@
         "quickInfoNeutral": "Dit beteken jou siklus begin tel vanaf jou huidige werkblok."
       },
       "rest": {
-        "title": "By die huis (Rus)",
+        "title": "Rusblok",
         "description": "Jy is tans tuis op jou rusblok",
         "quickInfo": "Dit verreken jou siklus eers deur jou werkbloklengte."
       }
@@ -510,9 +510,9 @@
       },
       "defaultDayTitle": "Dag {{dayNumber}}",
       "work": {
-        "firstDayAtSite": "Eerste dag terug by die werkplek",
-        "firstNightAtSite": "Eerste nagskof terug by die werkplek",
-        "firstShiftAtSite": "Eerste skof terug by die werkplek",
+        "firstDayAtSite": "Eerste dag van jou werkblok",
+        "firstNightAtSite": "Eerste nagskof van jou werkblok",
+        "firstShiftAtSite": "Eerste skof van jou werkblok",
         "lastDayBeforeHome": "Laaste dag voor huistoe vlieg",
         "lastNightBeforeHome": "Gisteraandskof voor ek huis toe vlieg",
         "lastShiftBeforeHome": "Laaste skof voor huis toe vlieg",
@@ -522,12 +522,12 @@
       },
       "rest": {
         "firstDayAtHome": "Eerste dag terug by die huis",
-        "lastDayBeforeSite": "Laaste dag voor terugkeer werk toe",
+        "lastDayBeforeSite": "Laaste dag voor die volgende werkblok",
         "dayOfRestBlock": "Dag {{dayNumber}} van jou rusblok"
       },
       "swing": {
         "dayShiftTitle": "Dagskofdag {{dayNumber}}",
-        "firstDayShiftAtSite": "Eerste dagskof terug by die werkplek",
+        "firstDayShiftAtSite": "Eerste dagskof van jou werkblok",
         "finalDayShiftBeforeNights": "Laaste dagskof voor oorskakeling na nagte",
         "dayShiftDayDescription": "Dagskof dag {{dayNumber}} van jou werkblok",
         "nightShiftTitle": "Nagskofdag {{dayNumber}}",
@@ -918,10 +918,10 @@
         "swingWorkBlock": "Swaaiwerkblok",
         "customWorkBlock": "Pasgemaakte werkblok"
       },
-      "ratioLabel": "Site to home ritme",
+      "ratioLabel": "Werk-tot-rus ritme",
       "restLabel": "Rus: {{restBlockDays}} dae",
-      "siteDays": "werf dae",
-      "subtitle": "{{workBlockDays}} dae by die werf, dan {{restBlockDays}} dae by die huis",
+      "siteDays": "werkblokdae",
+      "subtitle": "{{workBlockDays}} werkblokdae, dan {{restBlockDays}} rusdae",
       "swingSplit": "Swaaiverdeling: {{daysOnDayShift}} dagskof dae + {{daysOnNightShift}} nagskof dae",
       "title": "Jou EIEU-rotasievoorskou",
       "workLabel": "Werk: {{workBlockDays}} dae",
@@ -946,14 +946,14 @@
     "saveHintValid": "{{workBlockDays}} dae werk, {{restBlockDays}} dae rus",
     "sliders": {
       "daysAtHome": "Dae by die huis (rusblok)",
-      "daysAtSite": "Dae op die terrein (werkblok)",
+      "daysAtSite": "Werkblokdae",
       "daysOnDayShift": "Dae op dagskof",
       "daysOnNightShift": "Dae op Nagskof"
     },
     "slidersTitle": "Stel jou EIEU-patroon op",
-    "subtitle": "Stel jou ter plaatse blok, huis blok, en werk-blok skof styl vir 'n skedule wat pas by jou webwerf siklus.",
+    "subtitle": "Stap 1: Stel werkblokdae en rusdae. Stap 2: Kies hoe skofte gedurende jou werkblok loop.",
     "subtitleSecondary": "Werkblok, rusblok en patroonverdeling",
-    "success": "Soliede EIEU-opstelling. {{workBlockDays}} dae by die werf, dan {{restBlockDays}} dae by die huis.",
+    "success": "Soliede FIFO-opstelling. {{workBlockDays}} werkblokdae, dan {{restBlockDays}} rusdae.",
     "swingSubtitle": "Verdeel jou werkblok tussen dag- en nagskofte.",
     "swingTitle": "Swaai-konfigurasie",
     "swingTotal": "Gedeelde totaal: {{swingTotal}}/{{workBlockDays}} dae",
@@ -964,20 +964,20 @@
       "swingMismatch": "Swaaiverdeling moet gelyk wees aan {{workBlockDays}} dae voor stoor."
     },
     "warning": "Hierdie rooster is swaar ({{workPercentage}}% werk). Oorweeg om met meer tuisdae te balanseer as moegheid 'n probleem word.",
-    "workPatternSubtitle": "Hoe word jou skofte georganiseer terwyl jy op die terrein is?",
+    "workPatternSubtitle": "Kies hoe skofte gedurende jou werkblok loop.",
     "workPatternTitle": "Werkpatroon tydens werkblok",
     "workPatterns": {
       "straight-days": {
         "title": "Reguit Dae",
-        "description": "Werk dagskofte slegs vir die hele werkblok (bv. 07:00-19:00)"
+        "description": "Alle werkblokdae is dagskof."
       },
       "straight-nights": {
         "title": "Reguit nagte",
-        "description": "Werk slegs nagskof vir die hele werkblok (bv. 19:00-07:00)"
+        "description": "Alle werkblokdae is nagskof."
       },
       "swing": {
         "title": "Swaairooster",
-        "description": "Wissel af tussen dagskof en nagskofte tydens werkblok"
+        "description": "Die werkblok bevat dag- en nagskofte."
       },
       "custom": {
         "title": "Pasgemaakte volgorde",

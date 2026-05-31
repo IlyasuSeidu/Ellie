@@ -141,7 +141,7 @@
       "4-4-4": {
         "name": "Rotation 4-4-4",
         "schedule": "4 jours • 4 nuits • 4 repos",
-        "description": "4 jours, puis 4 nuits, puis 4 jours de repos; courant en FIFO."
+        "description": "Travaillez 4 postes de jour, puis 4 postes de nuit, puis 4 jours de repos — courant pour les équipes 24/7 et FIFO"
       },
       "7-7-7": {
         "name": "Rotation 7-7-7",
@@ -186,37 +186,37 @@
       "fifo-8-6": {
         "name": "Rotation FIFO 8/6",
         "schedule": "8 jours travail • 6 jours maison",
-        "description": "8 jours consécutifs sur site, puis 6 jours à la maison."
+        "description": "Travaillez 8 jours consécutifs de bloc de travail, puis 6 jours de repos — courant pour les équipes éloignées et FIFO"
       },
       "fifo-7-7": {
         "name": "FIFO 7/7 (temps égal)",
         "schedule": "1 semaine travail • 1 semaine maison",
-        "description": "Une semaine sur site et une semaine à la maison (50/50)."
+        "description": "Une semaine de travail, une semaine de repos — bon équilibre 50/50"
       },
       "fifo-14-14": {
         "name": "FIFO 14/14 (temps égal)",
         "schedule": "2 semaines travail • 2 semaines maison",
-        "description": "Deux semaines sur site et deux semaines à la maison."
+        "description": "Deux semaines de travail, deux semaines de repos — rythme travail/repos équilibré"
       },
       "fifo-14-7": {
         "name": "Rotation FIFO 14/7 (2:1)",
         "schedule": "2 semaines travail • 1 semaine maison",
-        "description": "Deux semaines sur site et une semaine à la maison."
+        "description": "Deux semaines de travail, une semaine de repos — pour des blocs de revenus plus longs"
       },
       "fifo-21-7": {
         "name": "Rotation FIFO 21/7 (3:1)",
         "schedule": "3 semaines travail • 1 semaine maison",
-        "description": "Trois semaines sur site et une semaine à la maison."
+        "description": "Trois semaines de travail, une semaine de repos — pour les opérations très éloignées"
       },
       "fifo-28-14": {
         "name": "Rotation FIFO 28/14 (2:1)",
         "schedule": "4 semaines travail • 2 semaines maison",
-        "description": "Quatre semaines sur site et deux semaines à la maison."
+        "description": "Quatre semaines de travail, deux semaines de repos — pour les opérations éloignées longue durée"
       },
       "fifo-custom": {
         "name": "FIFO personnalisé",
         "schedule": "Créez le vôtre",
-        "description": "Votre site FIFO est unique? Configurez vos blocs travail/repos."
+        "description": "Votre équipe FIFO utilise un planning unique ? Configurez vos propres blocs travail/repos"
       }
     },
     "title_named": "Quel est votre modèle, {{name}}?",
@@ -268,20 +268,20 @@
       "fifo": {
         "title": "Liste FIFO / Swing",
         "subtitle": "Blocs de travail • Blocs d'accueil",
-        "description": "Vous travaillez des jours consécutifs sur place, puis bénéficiez de périodes prolongées à la maison",
+        "description": "Vous travaillez des jours consécutifs de bloc de travail, puis profitez d’un repos prolongé à la maison",
         "details": {
-          "howItWorks": "Les travailleurs se rendent par avion vers des sites distants, travaillent des jours consécutifs (bloc de travail), puis rentrent chez eux pour un repos prolongé (bloc de repos)",
+          "howItWorks": "Les travailleurs se rendent vers des opérations éloignées, travaillent des jours consécutifs (bloc de travail), puis rentrent chez eux pour un repos prolongé (bloc de repos)",
           "examples": [
-            "8/6 (WA commun)",
-            "14/14 (temps pair)",
-            "21h/21 et 7j/7 (sites distants)",
+            "8/6 (courant)",
+            "14/14 (temps égal)",
+            "21/7 (opérations éloignées)",
             "28/14 (cycle long)"
           ],
-          "regions": ["Australie", "Canada (sites éloignés)", "Opérations distantes mondiales"],
+          "regions": ["Australie", "Canada", "Opérations mondiales éloignées"],
           "pros": [
             "Temps prolongé à la maison",
-            "Des taux de rémunération plus élevés",
-            "Idéal pour les sites distants",
+            "Taux de rémunération plus élevés",
+            "Adapté aux opérations éloignées",
             "Blocs prévisibles"
           ],
           "cons": [
@@ -467,7 +467,7 @@
       "swingConfig": "Configurez votre swing split",
       "block": "Où en es-tu dans ton cycle FIFO?",
       "dayWithinBlock": "Quel jour du {{blockTitle}} êtes-vous?",
-      "block_named": "Es-tu sur site ou à la maison en ce moment, {{name}}?"
+      "block_named": "Es-tu dans ton bloc de travail ou ton bloc de repos en ce moment, {{name}} ?"
     },
     "subtitle": {
       "workPattern": "Faites glisser votre doigt vers la droite pour choisir votre modèle de bloc de travail, vers la gauche pour l'option suivante ou vers le haut pour plus d'informations.",
@@ -488,7 +488,7 @@
       "straightNights": {
         "title": "Nuits droites",
         "description": "Votre bloc de travail fonctionne uniquement de nuit.",
-        "quickInfo": "Utilisez-le lorsque les équipes de chantier restent de nuit pendant toute la durée du bloc de travail."
+        "quickInfo": "Utilisez ceci quand les équipes restent en poste de nuit pendant tout le bloc de travail."
       },
       "swing": {
         "title": "Balançoire",
@@ -498,7 +498,7 @@
     },
     "blocks": {
       "work": {
-        "title": "Sur site (travail)",
+        "title": "Bloc de travail",
         "descriptionDay": "Vous êtes actuellement sur votre lieu de travail pendant votre bloc de travail de jour",
         "descriptionNight": "Vous êtes actuellement sur votre lieu de travail pendant votre bloc de travail de nuit",
         "descriptionNeutral": "Vous êtes actuellement sur votre lieu de travail pendant votre bloc de travail",
@@ -507,7 +507,7 @@
         "quickInfoNeutral": "Cela signifie que votre cycle commence à compter à partir de votre bloc de travail actuel."
       },
       "rest": {
-        "title": "À la maison (repos)",
+        "title": "Bloc de repos",
         "description": "Vous êtes actuellement chez vous sur votre bloc de repos",
         "quickInfo": "Cela compense d'abord votre cycle par la longueur de votre bloc de travail."
       }
@@ -529,9 +529,9 @@
       },
       "defaultDayTitle": "Jour {{dayNumber}}",
       "work": {
-        "firstDayAtSite": "Premier jour de retour sur site",
-        "firstNightAtSite": "Premier quart de nuit de retour sur site",
-        "firstShiftAtSite": "Premier retour sur site",
+        "firstDayAtSite": "Premier jour de votre bloc de travail",
+        "firstNightAtSite": "Premier poste de nuit de votre bloc de travail",
+        "firstShiftAtSite": "Premier poste de votre bloc de travail",
         "lastDayBeforeHome": "Dernier jour avant de rentrer chez moi",
         "lastNightBeforeHome": "Dernière équipe de nuit avant de rentrer chez moi",
         "lastShiftBeforeHome": "Dernier quart de travail avant de rentrer chez moi",
@@ -541,12 +541,12 @@
       },
       "rest": {
         "firstDayAtHome": "Premier jour de retour à la maison",
-        "lastDayBeforeSite": "Dernier jour avant le retour sur place",
+        "lastDayBeforeSite": "Dernier jour avant le prochain bloc de travail",
         "dayOfRestBlock": "Jour {{dayNumber}} de votre bloc de repos"
       },
       "swing": {
         "dayShiftTitle": "Jour Quart Jour {{dayNumber}}",
-        "firstDayShiftAtSite": "Premier jour de retour sur site",
+        "firstDayShiftAtSite": "Premier poste de jour de votre bloc de travail",
         "finalDayShiftBeforeNights": "Dernière équipe de jour avant de passer à la nuit",
         "dayShiftDayDescription": "Jour de quart de jour {{dayNumber}} de votre bloc de travail",
         "nightShiftTitle": "Quart de nuit Jour {{dayNumber}}",
@@ -937,10 +937,10 @@
         "swingWorkBlock": "Bloc de travail alterné",
         "customWorkBlock": "Bloc de travail personnalisé"
       },
-      "ratioLabel": "Du site au rythme de la maison",
+      "ratioLabel": "Rythme travail-repos",
       "restLabel": "Repos: {{restBlockDays}} jours",
-      "siteDays": "jours de chantier",
-      "subtitle": "{{workBlockDays}} jours sur site, puis {{restBlockDays}} jours à domicile",
+      "siteDays": "jours de bloc de travail",
+      "subtitle": "{{workBlockDays}} jours de travail, puis {{restBlockDays}} jours de repos",
       "swingSplit": "Répartition du swing: {{daysOnDayShift}} jours de jour + {{daysOnNightShift}} jours de nuit",
       "title": "Votre aperçu de la rotation FIFO",
       "workLabel": "Travail: {{workBlockDays}} jours",
@@ -965,14 +965,14 @@
     "saveHintValid": "{{workBlockDays}} jours de travail, {{restBlockDays}} jours de repos",
     "sliders": {
       "daysAtHome": "Jours à la maison (bloc de repos)",
-      "daysAtSite": "Jours sur site (bloc de travail)",
+      "daysAtSite": "Jours de bloc de travail",
       "daysOnDayShift": "Jours de travail de jour",
       "daysOnNightShift": "Jours de nuit"
     },
     "slidersTitle": "Configurez votre modèle FIFO",
-    "subtitle": "Définissez votre style de bloc sur site, de bloc d'accueil et de bloc de travail pour un horaire qui correspond au cycle de votre site.",
+    "subtitle": "Étape 1 : définissez les jours de travail et de repos. Étape 2 : choisissez comment les postes se déroulent pendant votre bloc de travail.",
     "subtitleSecondary": "Bloc de travail, bloc de repos et division de motif",
-    "success": "Configuration FIFO solide. {{workBlockDays}} jours sur place, puis {{restBlockDays}} jours à la maison.",
+    "success": "Configuration FIFO solide. {{workBlockDays}} jours de travail, puis {{restBlockDays}} jours de repos.",
     "swingSubtitle": "Répartissez votre bloc de travail entre les quarts de jour et de nuit.",
     "swingTitle": "Configuration de la balançoire",
     "swingTotal": "Total fractionné: {{swingTotal}}/{{workBlockDays}} jours",
@@ -983,20 +983,20 @@
       "swingMismatch": "Le fractionnement du swing doit être égal à {{workBlockDays}} jours avant l'enregistrement."
     },
     "warning": "Cette liste est lourde ({{workPercentage}}% de travail). Pensez à équilibrer davantage de journées à la maison si la fatigue devient un problème.",
-    "workPatternSubtitle": "Comment sont organisés vos quarts de travail sur site?",
+    "workPatternSubtitle": "Choisissez comment les postes se déroulent pendant votre bloc de travail.",
     "workPatternTitle": "Modèle de travail pendant le bloc de travail",
     "workPatterns": {
       "straight-days": {
         "title": "Jours continus",
-        "description": "Travail uniquement en équipe de jour pendant tout le bloc de travail."
+        "description": "Tous les jours du bloc de travail sont en poste de jour."
       },
       "straight-nights": {
         "title": "Nuits continues",
-        "description": "Travail uniquement en équipe de nuit pendant tout le bloc de travail."
+        "description": "Tous les jours du bloc de travail sont en poste de nuit."
       },
       "swing": {
         "title": "Rotation alternée",
-        "description": "Alternez entre équipes de jour et de nuit pendant le bloc de travail."
+        "description": "Le bloc de travail comprend des postes de jour et de nuit."
       },
       "custom": {
         "title": "Séquence personnalisée",

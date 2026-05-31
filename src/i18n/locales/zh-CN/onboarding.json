@@ -115,7 +115,7 @@
       "4-4-4": {
         "name": "4-4-4 轮换",
         "schedule": "4 天 • 4 晚 • 4 折",
-        "description": "轮班 4 个白班，然后轮班 4 个夜班，然后在飞进飞出地点休息 4 天"
+        "description": "先上 4 个白班，再上 4 个夜班，然后休息 4 天 — 适合 24/7 和 FIFO 团队"
       },
       "7-7-7": {
         "name": "7-7-7轮换",
@@ -160,37 +160,37 @@
       "fifo-8-6": {
         "name": "先进先出8/6",
         "schedule": "工作 8 天 • 在家 6 天",
-        "description": "连续 8 天在现场工作，然后在家工作 6 天——这在西澳采矿业很受欢迎"
+        "description": "连续工作 8 天，然后休息 6 天 — 适合远程和 FIFO 团队"
       },
       "fifo-7-7": {
         "name": "FIFO 7/7（偶数时间）",
         "schedule": "工作 1 周 • 回家 1 周",
-        "description": "现场一周，在家一周 - 完美的 50/50 平衡"
+        "description": "一周工作，一周休息 — 良好的 50/50 平衡"
       },
       "fifo-14-14": {
         "name": "FIFO 14/14（偶数时间）",
         "schedule": "工作 2 周 • 回家 2 周",
-        "description": "两周现场，两周在家——工作与生活的完美平衡"
+        "description": "两周工作，两周休息 — 平衡的工作/休息节奏"
       },
       "fifo-14-7": {
         "name": "先进先出 14/7 (2:1)",
         "schedule": "工作 2 周 • 回家 1 周",
-        "description": "现场两周，在家一周——高收入潜力"
+        "description": "两周工作，一周休息 — 适合较长工作块"
       },
       "fifo-21-7": {
         "name": "先进先出 21/7 (3:1)",
         "schedule": "工作 3 周 • 回家 1 周",
-        "description": "三周现场，一周在家 - 适用于非常远程的操作"
+        "description": "三周工作，一周休息 — 适合非常远程的运营"
       },
       "fifo-28-14": {
         "name": "先进先出 28/14 (2:1)",
         "schedule": "工作 4 周 • 回家 2 周",
-        "description": "对于长途远程站点，现场四个星期，家里两周"
+        "description": "四周工作，两周休息 — 适合长周期远程运营"
       },
       "fifo-custom": {
         "name": "定制先进先出",
         "schedule": "建立你自己的",
-        "description": "您的 FIFO 站点使用独特的名册？配置您自己的工作/休息区"
+        "description": "你的 FIFO 团队使用独特排班？配置自己的工作/休息块"
       }
     },
     "title_named": "{{name}}，你的排班模式是什么？",
@@ -222,17 +222,12 @@
       "fifo": {
         "title": "先进先出/摇摆名册",
         "subtitle": "工作块 • 家庭块",
-        "description": "您在现场连续工作几天，然后延长在家工作的时间",
+        "description": "连续工作若干工作块天数，然后在家获得更长休息时间",
         "details": {
-          "howItWorks": "工人飞往偏远地点，连续工作几天（工作区），然后飞回家延长休息时间（休息区）",
-          "examples": [
-            "8/6（常见西澳）",
-            "14/14（偶数时间）",
-            "21/7（远程站点）",
-            "28/14（长周期）"
-          ],
-          "regions": ["澳大利亚", "加拿大", "远程全球挖矿"],
-          "pros": ["延长在家时间", "更高的工资率", "适合远程站点", "可预测的区块"],
+          "howItWorks": "工作人员前往远程运营点，连续工作若干天（工作块），然后回家进行延长休息（休息块）",
+          "examples": ["8/6（常见）", "14/14（等时）", "21/7（远程运营）", "28/14（长周期）"],
+          "regions": ["澳大利亚", "加拿大", "远程全球运营"],
+          "pros": ["在家时间更长", "更高的薪酬率", "适合远程运营", "可预测的区块"],
           "cons": ["长时间远离家人", "旅途疲劳", "营地隔离", "块间​​调整"]
         }
       }
@@ -411,7 +406,7 @@
       "swingConfig": "配置你的挥杆分割",
       "block": "您处于 FIFO 周期的哪个阶段？",
       "dayWithinBlock": "您在 {{blockTitle}} 的哪一天？",
-      "block_named": "{{name}}，你现在是在工作地点还是在家？"
+      "block_named": "{{name}}，你现在处于工作块还是休息块？"
     },
     "subtitle": {
       "workPattern": "向右滑动以选择您的工作块模式，向左滑动以选择下一个选项，或向上滑动以获取信息",
@@ -432,7 +427,7 @@
       "straightNights": {
         "title": "直夜",
         "description": "您的工作区只上夜班。",
-        "quickInfo": "当现场工作人员在整个工作区都上夜班时使用此功能。"
+        "quickInfo": "当团队在整个工作块期间都保持夜班时使用。"
       },
       "swing": {
         "title": "摇摆",
@@ -442,7 +437,7 @@
     },
     "blocks": {
       "work": {
-        "title": "工作地点（工作中）",
+        "title": "工作块",
         "descriptionDay": "您目前在工作地点的白班工作区",
         "descriptionNight": "您目前在工作地点的夜班工作区",
         "descriptionNeutral": "您目前位于工作地点的工作区",
@@ -451,7 +446,7 @@
         "quickInfoNeutral": "这意味着您的周期从当前的工作块开始计数。"
       },
       "rest": {
-        "title": "在家（休息）",
+        "title": "休息块",
         "description": "您目前在家中的休息区",
         "quickInfo": "这首先会根据工作块长度来抵消您的周期。"
       }
@@ -473,9 +468,9 @@
       },
       "defaultDayTitle": "第 {{dayNumber}} 天",
       "work": {
-        "firstDayAtSite": "回到工作地点第一天",
-        "firstNightAtSite": "回到工作地点的第一个夜班",
-        "firstShiftAtSite": "返回工作地点的第一班",
+        "firstDayAtSite": "工作块的第一天",
+        "firstNightAtSite": "工作块的第一个夜班",
+        "firstShiftAtSite": "工作块的第一班",
         "lastDayBeforeHome": "飞回家前的最后一天",
         "lastNightBeforeHome": "飞回家前的最后一个夜班",
         "lastShiftBeforeHome": "飞回家前的最后一次轮班",
@@ -485,12 +480,12 @@
       },
       "rest": {
         "firstDayAtHome": "回国第一天",
-        "lastDayBeforeSite": "返回工作地点前的最后一天",
+        "lastDayBeforeSite": "下一个工作块前的最后一天",
         "dayOfRestBlock": "您的休息时间段的 {{dayNumber}} 天"
       },
       "swing": {
         "dayShiftTitle": "白班日 {{dayNumber}}",
-        "firstDayShiftAtSite": "回到工作地点的第一个白班",
+        "firstDayShiftAtSite": "工作块的第一个白班",
         "finalDayShiftBeforeNights": "切换到夜班之前的最后一个白班",
         "dayShiftDayDescription": "您工作区的白班日 {{dayNumber}}",
         "nightShiftTitle": "夜班日 {{dayNumber}}",
@@ -881,10 +876,10 @@
         "swingWorkBlock": "混合工作区段",
         "customWorkBlock": "自定义工作区段"
       },
-      "ratioLabel": "从现场到家的节奏",
+      "ratioLabel": "工作到休息节奏",
       "restLabel": "休息：{{restBlockDays}} 天",
-      "siteDays": "现场日",
-      "subtitle": "在现场 {{workBlockDays}} 天，然后在家里 {{restBlockDays}} 天",
+      "siteDays": "工作块天数",
+      "subtitle": "{{workBlockDays}} 个工作块天数，然后 {{restBlockDays}} 个休息日",
       "swingSplit": "轮班分班：{{daysOnDayShift}} 白班天数 + {{daysOnNightShift}} 夜班天数",
       "title": "您的 FIFO 循环预览",
       "workLabel": "工作时间：{{workBlockDays}} 天",
@@ -909,14 +904,14 @@
     "saveHintValid": "工作 {{workBlockDays}} 天，休息 {{restBlockDays}} 天",
     "sliders": {
       "daysAtHome": "在家的日子（休息区）",
-      "daysAtSite": "现场天数（工作区）",
+      "daysAtSite": "工作块天数",
       "daysOnDayShift": "白班天数",
       "daysOnNightShift": "夜班天数"
     },
     "slidersTitle": "设置您的 FIFO 模式",
-    "subtitle": "设置现场区块、家庭区块和工作区块轮班方式，以制定适合您现场周期的时间表。",
+    "subtitle": "第 1 步：设置工作块天数和休息日。第 2 步：选择工作块期间的轮班方式。",
     "subtitleSecondary": "工作块、休息块和模式分割",
-    "success": "可靠的 FIFO 设置。在现场 {{workBlockDays}} 天，然后在家 {{restBlockDays}} 天。",
+    "success": "可靠的 FIFO 设置。{{workBlockDays}} 个工作块天数，然后 {{restBlockDays}} 个休息日。",
     "swingSubtitle": "将您的工作区域划分为白班和夜班。",
     "swingTitle": "摆动配置",
     "swingTotal": "分期总计：{{swingTotal}}/{{workBlockDays}} 天",
@@ -927,20 +922,20 @@
       "swingMismatch": "保存前的周转分割必须等于 {{workBlockDays}} 天。"
     },
     "warning": "这个名册很繁重（{{workPercentage}}% 工作）。如果疲劳成为问题，请考虑增加在家休息的时间。",
-    "workPatternSubtitle": "您在现场时如何安排轮班？",
+    "workPatternSubtitle": "选择工作块期间的轮班方式。",
     "workPatternTitle": "工作块期间的工作模式",
     "workPatterns": {
       "straight-days": {
         "title": "直日",
-        "description": "仅整个工作区的工作日轮班（例如上午 7 点至下午 7 点）"
+        "description": "所有工作块天数都是白班。"
       },
       "straight-nights": {
         "title": "直夜",
-        "description": "仅在整个工作区进行夜班工作（例如晚上 7 点至上午 7 点）"
+        "description": "所有工作块天数都是夜班。"
       },
       "swing": {
         "title": "摇摆花名册",
-        "description": "在工作时段轮换白班和夜班"
+        "description": "工作块包含白班和夜班。"
       },
       "custom": {
         "title": "自定义序列",

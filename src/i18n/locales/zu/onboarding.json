@@ -141,7 +141,7 @@
       "4-4-4": {
         "name": "4-4-4 Ukujikeleza",
         "schedule": "Izinsuku ezi-4 • ubusuku obu-4 • 4 isaphulelo",
-        "description": "Sebenza amashifu ezinsuku ezi-4, bese kuba amashifu ama-4 ebusuku, bese uthola izinsuku ezi-4 ungekho okuvamile kumasayithi okundiza okungena ngaphakathi."
+        "description": "Sebenza amashifu osuku angu-4, bese kuba awasebusuku angu-4, bese uphumula izinsuku ezingu-4 — kuvamile kumaqembu angu-24/7 nawe-FIFO"
       },
       "7-7-7": {
         "name": "7-7-7 Ukujikeleza",
@@ -186,37 +186,37 @@
       "fifo-8-6": {
         "name": "I-FIFO 8/6",
         "schedule": "Ukusebenza kwezinsuku eziyi-8 • Izinsuku eziyisi-6 ekhaya",
-        "description": "Sebenza izinsuku eziyi-8 ezilandelanayo endaweni, bese izinsuku eziyisi-6 usekhaya-okudumile ezimayini ze-WA"
+        "description": "Sebenza izinsuku zebhulokhi yomsebenzi ezingu-8 zilandelana, bese uphumula izinsuku ezingu-6 — kuvamile kumaqembu akude nawe-FIFO"
       },
       "fifo-7-7": {
         "name": "I-FIFO 7/7 (Isikhathi Esilinganayo)",
         "schedule": "Umsebenzi wesonto eli-1 • Isonto eli-1 ekhaya",
-        "description": "Isonto elilodwa esizeni, isonto elilodwa ekhaya-ibhalansi ephelele engu-50/50"
+        "description": "Isonto elilodwa lomsebenzi, isonto elilodwa lokuphumula — ibhalansi enhle engu-50/50"
       },
       "fifo-14-14": {
         "name": "I-FIFO 14/14 (Isikhathi Sokulingana)",
         "schedule": "2 amasonto ukusebenza • 2 amasonto ekhaya",
-        "description": "Amaviki amabili esizeni, amaviki amabili ebhalansi yempilo esebenza kahle ekhaya"
+        "description": "Amasonto amabili omsebenzi, amasonto amabili okuphumula — isigqi esilinganiselayo somsebenzi/nokuphumula"
       },
       "fifo-14-7": {
         "name": "I-FIFO 14/7 (2:1)",
         "schedule": "Umsebenzi wamaviki ama-2 • Isonto eli-1 ekhaya",
-        "description": "Amaviki amabili esizeni, isonto elilodwa emandleni okuthola imali ephezulu ekhaya"
+        "description": "Amasonto amabili omsebenzi, isonto elilodwa lokuphumula — ngamabhulokhi omsebenzi amade"
       },
       "fifo-21-7": {
         "name": "I-FIFO 21/7 (3:1)",
         "schedule": "Umsebenzi wamaviki ama-3 • Isonto eli-1 ekhaya",
-        "description": "Amaviki amathathu esizeni, isonto elilodwa usekhaya-ngemisebenzi ekude kakhulu"
+        "description": "Amasonto amathathu omsebenzi, isonto elilodwa lokuphumula — emisebenzini ekude kakhulu"
       },
       "fifo-28-14": {
         "name": "I-FIFO 28/14 (2:1)",
         "schedule": "Umsebenzi wamaviki ama-4 • Amaviki ama-2 usekhaya",
-        "description": "Amaviki amane esizeni, amasonto amabili ekhaya-ezindaweni ezikude ezikude"
+        "description": "Amasonto amane omsebenzi, amasonto amabili okuphumula — emisebenzini ekude yesikhathi eside"
       },
       "fifo-custom": {
         "name": "I-FIFO yangokwezifiso",
         "schedule": "Yakha eyakho",
-        "description": "Isayithi lakho le-FIFO lisebenzisa uhlelo oluhlukile? Lungiselela amabhlogo akho omsebenzi/ukuphumula"
+        "description": "Iqembu lakho le-FIFO lisebenzisa i-roster ehlukile? Lungisa amabhulokhi akho omsebenzi/okuphumula"
       }
     },
     "title_named": "Iyiphi iphethini yakho, {{name}}?",
@@ -268,21 +268,21 @@
       "fifo": {
         "title": "I-FIFO / Swing Roster",
         "subtitle": "Amabhulokhi okusebenza • Amabhulokhi asekhaya",
-        "description": "Usebenza izinsuku ezilandelanayo endaweni, bese uthola isikhathi esengeziwe ekhaya",
+        "description": "Usebenza izinsuku zebhulokhi yomsebenzi zilandelana, bese uthola isikhathi sokuphumula eside ekhaya",
         "details": {
-          "howItWorks": "Izisebenzi zindizela ezindaweni ezikude, zisebenze izinsuku ezilandelanayo (indawo yomsebenzi), bese zindizela ekhaya ukuze ziphumule isikhathi eside (indawo yokuphumula)",
+          "howItWorks": "Abasebenzi baya emisebenzini ekude, basebenze izinsuku ezilandelanayo (ibhulokhi yomsebenzi), bese bebuyela ekhaya ukuze baphumule isikhathi eside (ibhulokhi yokuphumula)",
           "examples": [
-            "8/6 (i-WA evamile)",
+            "8/6 (okuvamile)",
             "14/14 (isikhathi esilinganayo)",
-            "21/7 (amasayithi akude)",
+            "21/7 (imisebenzi ekude)",
             "28/14 (umjikelezo omude)"
           ],
-          "regions": ["i-Australia", "i-Canada", "Izimayini zomhlaba ezikude"],
+          "regions": ["i-Australia", "i-Canada", "Imisebenzi yomhlaba ekude"],
           "pros": [
-            "Isikhathi esingeziwe ekhaya",
-            "Izinga lokukhokha eliphakeme",
-            "Ilungele amasayithi akude",
-            "Amabhulokhi angabikezelwa"
+            "Isikhathi eside ekhaya",
+            "Izinga lokukhokha eliphezulu",
+            "Kuhle emisebenzini ekude",
+            "Amabhulokhi abikezelwayo"
           ],
           "cons": [
             "Ukude nomndeni isikhathi eside",
@@ -467,7 +467,7 @@
       "swingConfig": "Lungiselela ukuhlukana kwakho kwe-swing",
       "block": "Ukuphi kumjikelezo wakho we-FIFO?",
       "dayWithinBlock": "Iluphi usuku lwe-{{blockTitle}} okulo?",
-      "block_named": "Ingabe usemsebenzini noma usekhaya manje, {{name}}?"
+      "block_named": "Ingabe usebhulokhini yomsebenzi noma yokuphumula manje, {{name}}?"
     },
     "subtitle": {
       "workPattern": "Swayiphela kwesokudla ukuze ukhethe iphethini yakho yesivimbeli somsebenzi, kwesokunxele ukuze uthole inketho elandelayo, noma phezulu ukuze uthole ulwazi",
@@ -488,7 +488,7 @@
       "straightNights": {
         "title": "Ubusuku obuqondile",
         "description": "Ibhulokhi yakho yomsebenzi isebenzisa amashifu ebusuku kuphela.",
-        "quickInfo": "Sebenzisa lokhu lapho abasebenzi besizinda behlala emashifu ebusuku ukuze basebenze ngokugcwele."
+        "quickInfo": "Sebenzisa lokhu lapho amaqembu ehlala kumashifu asebusuku kuyo yonke ibhulokhi yomsebenzi."
       },
       "swing": {
         "title": "I-Swing roster",
@@ -498,7 +498,7 @@
     },
     "blocks": {
       "work": {
-        "title": "Endaweni yokusebenza (Emsebenzini)",
+        "title": "Ibhulokhi yomsebenzi",
         "descriptionDay": "Okwamanje usendaweni yakho yokusebenza kubhulokhi yomsebenzi weshifu yosuku",
         "descriptionNight": "Okwamanje usendaweni yakho yokusebenza kubhulokhi yomsebenzi weshifu yasebusuku",
         "descriptionNeutral": "Okwamanje usendaweni yakho yokusebenza kubhulokhi yomsebenzi",
@@ -507,7 +507,7 @@
         "quickInfoNeutral": "Lokhu kusho ukuthi umjikelezo wakho uqala ukubala ukusuka kubhulokhi yakho yamanje yomsebenzi."
       },
       "rest": {
-        "title": "Ekhaya (Ekuphumuleni)",
+        "title": "Ibhulokhi yokuphumula",
         "description": "Okwamanje usekhaya endaweni yakho yokuphumula",
         "quickInfo": "Lokhu kunciphisa umjikelezo wakho ngobude bebhulokhi yakho yomsebenzi kuqala."
       }
@@ -529,9 +529,9 @@
       },
       "defaultDayTitle": "Usuku {{dayNumber}}",
       "work": {
-        "firstDayAtSite": "Usuku lokuqala lokubuyela endaweni yokusebenza",
-        "firstNightAtSite": "Ishifu yasebusuku yokuqala yokubuyela endaweni yokusebenza",
-        "firstShiftAtSite": "Ishifu yokuqala yokubuyela endaweni yokusebenza",
+        "firstDayAtSite": "Usuku lokuqala lwebhulokhi yakho yomsebenzi",
+        "firstNightAtSite": "Ishifu yasebusuku yokuqala yebhulokhi yakho yomsebenzi",
+        "firstShiftAtSite": "Ishifu yokuqala yebhulokhi yakho yomsebenzi",
         "lastDayBeforeHome": "Ngosuku lokugcina ngaphambi kokundiza ekhaya",
         "lastNightBeforeHome": "Izolo ebusuku ishifu ngaphambi kokundizela ekhaya",
         "lastShiftBeforeHome": "Ishifu yokugcina ngaphambi kokundizela ekhaya",
@@ -541,12 +541,12 @@
       },
       "rest": {
         "firstDayAtHome": "Usuku lokuqala ngibuyele ekhaya",
-        "lastDayBeforeSite": "Usuku lokugcina ngaphambi kokubuyela endaweni yokusebenza",
+        "lastDayBeforeSite": "Usuku lokugcina ngaphambi kwebhulokhi yomsebenzi elandelayo",
         "dayOfRestBlock": "Usuku {{dayNumber}} lwebhulokhi yakho yokuphumula"
       },
       "swing": {
         "dayShiftTitle": "Usuku Lokushintsha Kosuku {{dayNumber}}",
-        "firstDayShiftAtSite": "Ishifu yosuku yokuqala yokubuyela endaweni yokusebenza",
+        "firstDayShiftAtSite": "Ishifu yosuku yokuqala yebhulokhi yakho yomsebenzi",
         "finalDayShiftBeforeNights": "Ukushintsha usuku lokugcina ngaphambi kokushintshela ebusuku",
         "dayShiftDayDescription": "Usuku lweshifu yosuku {{dayNumber}} lwebhulogi yakho yomsebenzi",
         "nightShiftTitle": "Usuku lweshifu yasebusuku {{dayNumber}}",
@@ -937,10 +937,10 @@
         "swingWorkBlock": "Ibhulokhi yomsebenzi we-swing",
         "customWorkBlock": "Ibhulokhi yomsebenzi owenziwe ngokwezifiso"
       },
-      "ratioLabel": "Indawo eya ekhaya isigqi",
+      "ratioLabel": "Isigqi somsebenzi ukuya ekuphumuleni",
       "restLabel": "Ukuphumula: {{restBlockDays}} izinsuku",
-      "siteDays": "izinsuku zesayithi",
-      "subtitle": "{{workBlockDays}} izinsuku endaweni, bese {{restBlockDays}} izinsuku ekhaya",
+      "siteDays": "izinsuku zebhulokhi yomsebenzi",
+      "subtitle": "{{workBlockDays}} izinsuku zebhulokhi yomsebenzi, bese {{restBlockDays}} izinsuku zokuphumula",
       "swingSplit": "Ukuhlukaniswa kwe-Swing: {{daysOnDayShift}} izinsuku zokushintsha kosuku + {{daysOnNightShift}} izinsuku zokushintsha ebusuku",
       "title": "Ukubuka kuqala kwakho kwe-FIFO Rotation",
       "workLabel": "Umsebenzi: {{workBlockDays}} izinsuku",
@@ -965,14 +965,14 @@
     "saveHintValid": "{{workBlockDays}} umsebenzi wezinsuku, {{restBlockDays}} izinsuku zokuphumula",
     "sliders": {
       "daysAtHome": "Izinsuku Ekhaya (Ibhulokhi Yokuphumula)",
-      "daysAtSite": "Izinsuku Esayithini (Ibhulokhi Yomsebenzi)",
+      "daysAtSite": "Izinsuku zebhulokhi yomsebenzi",
       "daysOnDayShift": "Izinsuku eshifini lasemini",
       "daysOnNightShift": "Izinsuku eshifini yasebusuku"
     },
     "slidersTitle": "Setha Iphethini Yakho ye-FIFO",
-    "subtitle": "Setha ibhulokhi yakho ekusayithi, ibhulokhi yasekhaya, nesitayela seshifu yebhulokhi yomsebenzi ukuze uthole ishejuli efanelana nomjikelezo wesayithi lakho.",
+    "subtitle": "Isinyathelo 1: Setha izinsuku zebhulokhi yomsebenzi nezinsuku zokuphumula. Isinyathelo 2: Khetha ukuthi amashifu asebenza kanjani phakathi kwebhulokhi yomsebenzi.",
     "subtitleSecondary": "Ibhulokhi yomsebenzi, ibhulokhi yokuphumula nohlukaniso lwephethini",
-    "success": "Ukusethwa okuqinile kwe-FIFO. {{workBlockDays}} izinsuku endaweni, bese {{restBlockDays}} izinsuku ekhaya.",
+    "success": "Ukusethwa okuqinile kwe-FIFO. {{workBlockDays}} izinsuku zebhulokhi yomsebenzi, bese {{restBlockDays}} izinsuku zokuphumula.",
     "swingSubtitle": "Hlukanisa ibhulokhi yakho yomsebenzi phakathi kwamashifu emini nasebusuku.",
     "swingTitle": "Ukucushwa kwe-Swing",
     "swingTotal": "Isamba sokuhlukaniswa: {{swingTotal}}/{{workBlockDays}} izinsuku",
@@ -983,20 +983,20 @@
       "swingMismatch": "Ukuhlukaniswa kwe-Swing kufanele kulingane nezinsuku ezingu-{{workBlockDays}} ngaphambi kokulondoloza."
     },
     "warning": "Lolu hlelo lunzima ({{workPercentage}}% umsebenzi). Cabangela ukulingana nezinsuku eziningi zasekhaya uma ukukhathala kuba yinkinga.",
-    "workPatternSubtitle": "Ahlelwa kanjani amashifu akho ngenkathi usendaweni?",
+    "workPatternSubtitle": "Khetha ukuthi amashifu asebenza kanjani phakathi kwebhulokhi yomsebenzi.",
     "workPatternTitle": "Iphethini Yomsebenzi Ngesikhathi Sokuvimbela Umsebenzi",
     "workPatterns": {
       "straight-days": {
         "title": "Izinsuku Eziqondile",
-        "description": "Amashifu osuku lokusebenza kuphela kulo lonke ibhulokhi yomsebenzi (isb., 7am-7pm)"
+        "description": "Zonke izinsuku zebhulokhi yomsebenzi zingamashifu osuku."
       },
       "straight-nights": {
         "title": "Ubusuku obuqondile",
-        "description": "Amashifu okusebenza ebusuku alo lonke ibhulokhi yomsebenzi (isb., 7pm-7am)"
+        "description": "Zonke izinsuku zebhulokhi yomsebenzi zingamashifu asebusuku."
       },
       "swing": {
         "title": "I-Swing Roster",
-        "description": "Shintshanisa amashifu emini kanye namashifu ebusuku ngesikhathi sokuvimba umsebenzi"
+        "description": "Ibhulokhi yomsebenzi ihlanganisa amashifu osuku nawasebusuku."
       },
       "custom": {
         "title": "Ukulandelana okwenziwe ngokwezifiso",

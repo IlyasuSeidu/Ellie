@@ -200,7 +200,7 @@
       "4-4-4": {
         "name": "4-4-4 Rotation",
         "schedule": "4 days • 4 nights • 4 off",
-        "description": "Work 4 day shifts, then 4 night shifts, then get 4 days off — common for 24/7 teams and FIFO sites"
+        "description": "Work 4 day shifts, then 4 night shifts, then get 4 days off — common for 24/7 teams and FIFO crews"
       },
       "7-7-7": {
         "name": "7-7-7 Rotation",
@@ -245,37 +245,37 @@
       "fifo-8-6": {
         "name": "FIFO 8/6",
         "schedule": "8 days work • 6 days home",
-        "description": "Work 8 consecutive days on-site, then 6 days at home — common for remote and FIFO teams"
+        "description": "Work 8 consecutive work-block days, then 6 rest days — common for remote and FIFO teams"
       },
       "fifo-7-7": {
         "name": "FIFO 7/7 (Even-Time)",
         "schedule": "1 week work • 1 week home",
-        "description": "One week on-site, one week at home-perfect 50/50 balance"
+        "description": "One work-block week, one rest week — good 50/50 balance"
       },
       "fifo-14-14": {
         "name": "FIFO 14/14 (Even-Time)",
         "schedule": "2 weeks work • 2 weeks home",
-        "description": "Two weeks on-site, two weeks at home-perfect work-life balance"
+        "description": "Two work-block weeks, two rest weeks — balanced work/rest rhythm"
       },
       "fifo-14-7": {
         "name": "FIFO 14/7 (2:1)",
         "schedule": "2 weeks work • 1 week home",
-        "description": "Two weeks on-site, one week at home-high earning potential"
+        "description": "Two work-block weeks, one rest week — for longer earning blocks"
       },
       "fifo-21-7": {
         "name": "FIFO 21/7 (3:1)",
         "schedule": "3 weeks work • 1 week home",
-        "description": "Three weeks on-site, one week at home-for very remote operations"
+        "description": "Three work-block weeks, one rest week — for very remote operations"
       },
       "fifo-28-14": {
         "name": "FIFO 28/14 (2:1)",
         "schedule": "4 weeks work • 2 weeks home",
-        "description": "Four weeks on-site, two weeks at home-for long-haul remote sites"
+        "description": "Four work-block weeks, two rest weeks — for long-haul remote operations"
       },
       "fifo-custom": {
         "name": "Custom FIFO",
         "schedule": "Build your own",
-        "description": "Your FIFO site uses a unique roster? Configure your own work/rest blocks"
+        "description": "Your FIFO team uses a unique roster? Configure your own work/rest blocks"
       }
     }
   },
@@ -328,20 +328,20 @@
       "fifo": {
         "title": "FIFO / Swing Roster",
         "subtitle": "Work blocks • Home blocks",
-        "description": "You work consecutive days on-site, then get extended time at home",
+        "description": "You work consecutive work-block days, then get extended rest time at home",
         "details": {
-          "howItWorks": "Workers fly in to remote sites, work consecutive days (work block), then fly home for extended rest (rest block)",
+          "howItWorks": "Workers travel to remote operations, work consecutive days (work block), then return home for extended rest (rest block)",
           "examples": [
-            "8/6 (common WA)",
+            "8/6 (common)",
             "14/14 (even-time)",
-            "21/7 (remote sites)",
+            "21/7 (remote operations)",
             "28/14 (long cycle)"
           ],
-          "regions": ["Australia", "Canada", "Remote global sites"],
+          "regions": ["Australia", "Canada", "Remote global operations"],
           "pros": [
             "Extended time at home",
             "Higher pay rates",
-            "Good for remote sites",
+            "Good for remote operations",
             "Predictable blocks"
           ],
           "cons": [
@@ -517,7 +517,7 @@
       "workPattern": "How are shifts run during your FIFO work block?",
       "swingConfig": "Configure your swing split",
       "block": "Where are you in your FIFO cycle?",
-      "block_named": "Are you at site or at home right now, {{name}}?",
+      "block_named": "Are you in your work block or rest block right now, {{name}}?",
       "dayWithinBlock": "Which day of {{blockTitle}} are you on?"
     },
     "anticipation": "Almost there. One more tap and your FIFO roster is ready.",
@@ -540,7 +540,7 @@
       "straightNights": {
         "title": "Straight Nights",
         "description": "Your work block runs night shifts only.",
-        "quickInfo": "Use this when site crews remain on night shifts for the full work block."
+        "quickInfo": "Use this when crews remain on night shifts for the full work block."
       },
       "swing": {
         "title": "Swing",
@@ -550,7 +550,7 @@
     },
     "blocks": {
       "work": {
-        "title": "At Site (Working)",
+        "title": "Work Block",
         "descriptionDay": "You are currently at work on your day-shift work block",
         "descriptionNight": "You are currently at work on your night-shift work block",
         "descriptionNeutral": "You are currently at work on your work block",
@@ -559,7 +559,7 @@
         "quickInfoNeutral": "This means your cycle starts counting from your current work block."
       },
       "rest": {
-        "title": "At Home (Rest)",
+        "title": "Rest Block",
         "description": "You are currently at home on your rest block",
         "quickInfo": "This offsets your cycle by your work block length first."
       }
@@ -581,9 +581,9 @@
       },
       "defaultDayTitle": "Day {{dayNumber}}",
       "work": {
-        "firstDayAtSite": "First day back at site",
-        "firstNightAtSite": "First night shift back at site",
-        "firstShiftAtSite": "First shift back at site",
+        "firstDayAtSite": "First day of your work block",
+        "firstNightAtSite": "First night shift of your work block",
+        "firstShiftAtSite": "First shift of your work block",
         "lastDayBeforeHome": "Last day before flying home",
         "lastNightBeforeHome": "Last night shift before flying home",
         "lastShiftBeforeHome": "Last shift before flying home",
@@ -593,12 +593,12 @@
       },
       "rest": {
         "firstDayAtHome": "First day back at home",
-        "lastDayBeforeSite": "Last day before returning to site",
+        "lastDayBeforeSite": "Last day before the next work block",
         "dayOfRestBlock": "Day {{dayNumber}} of your rest block"
       },
       "swing": {
         "dayShiftTitle": "Day Shift Day {{dayNumber}}",
-        "firstDayShiftAtSite": "First day shift back at site",
+        "firstDayShiftAtSite": "First day shift of your work block",
         "finalDayShiftBeforeNights": "Final day shift before switching to nights",
         "dayShiftDayDescription": "Day shift day {{dayNumber}} of your work block",
         "nightShiftTitle": "Night Shift Day {{dayNumber}}",
@@ -988,10 +988,10 @@
         "swingWorkBlock": "Swing Work Block",
         "customWorkBlock": "Custom Work Block"
       },
-      "ratioLabel": "Site to home rhythm",
+      "ratioLabel": "Work to rest rhythm",
       "restLabel": "Rest: {{restBlockDays}} days",
-      "siteDays": "site days",
-      "subtitle": "{{workBlockDays}} days at site, then {{restBlockDays}} days at home",
+      "siteDays": "work-block days",
+      "subtitle": "{{workBlockDays}} work-block days, then {{restBlockDays}} rest days",
       "swingSplit": "Swing split: {{daysOnDayShift}} day-shift days + {{daysOnNightShift}} night-shift days",
       "title": "Your FIFO Rotation Preview",
       "workLabel": "Work: {{workBlockDays}} days",
@@ -1016,14 +1016,14 @@
     "saveHintValid": "{{workBlockDays}} days work, {{restBlockDays}} days rest",
     "sliders": {
       "daysAtHome": "Days at Home (Rest Block)",
-      "daysAtSite": "Days at Site (Work Block)",
+      "daysAtSite": "Work-block days",
       "daysOnDayShift": "Days on Day Shift",
       "daysOnNightShift": "Days on Night Shift"
     },
     "slidersTitle": "Step 1: Set block lengths",
-    "subtitle": "Step 1: Set days at site and days at home. Step 2: Choose how shifts run while you are on site.",
+    "subtitle": "Step 1: Set work-block days and rest days. Step 2: Choose how shifts run during your work block.",
     "subtitleSecondary": "Step 3: Review preview and save",
-    "success": "Solid FIFO setup. {{workBlockDays}} days at site, then {{restBlockDays}} days at home.",
+    "success": "Solid FIFO setup. {{workBlockDays}} work-block days, then {{restBlockDays}} rest days.",
     "swingSubtitle": "Set exactly how many work-block days are day shift vs night shift.",
     "swingTitle": "Step 2A: Swing Split",
     "swingTotal": "Split total: {{swingTotal}}/{{workBlockDays}} days",
@@ -1034,20 +1034,20 @@
       "swingMismatch": "Swing split must equal {{workBlockDays}} days before saving."
     },
     "warning": "This roster is heavy ({{workPercentage}}% work). Consider balancing with more home days if fatigue becomes an issue.",
-    "workPatternSubtitle": "Choose how shifts run during your site block.",
+    "workPatternSubtitle": "Choose how shifts run during your work block.",
     "workPatternTitle": "Step 2: Work-Block Shift Style",
     "workPatterns": {
       "straight-days": {
         "title": "Straight Days",
-        "description": "All site days are day shift."
+        "description": "All work-block days are day shift."
       },
       "straight-nights": {
         "title": "Straight Nights",
-        "description": "All site days are night shift."
+        "description": "All work-block days are night shift."
       },
       "swing": {
         "title": "Swing (Days + Nights)",
-        "description": "Site block includes both day shifts and night shifts."
+        "description": "Work block includes both day shifts and night shifts."
       },
       "custom": {
         "title": "Custom Sequence",
