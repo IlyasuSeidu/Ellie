@@ -1485,6 +1485,9 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('adding the Ryvro native scaffold preflight');
     expect(readinessReport).toContain('Store readiness preflight now runs');
     expect(readinessReport).toContain('adding the store metadata preflight');
+    expect(readinessReport).toContain(
+      'GitHub Actions CI now includes a dedicated `Release Check` job'
+    );
     expect(readinessReport).toContain('legal and support URLs to be live HTTPS Ryvro-owned URLs');
     expect(readinessReport).toContain('requiring Ryvro-owned legal/support URLs');
     expect(readinessReport).toContain('aligning dynamic Expo version fallbacks');
@@ -2461,6 +2464,10 @@ describe('Ryvro environment template', () => {
     expect(e2eWorkflow).not.toContain('ELLIE_BRAIN_TIMEOUT');
     expect(ciWorkflow).toContain('ryvro-brain-test.cloudfunctions.net/ryvroBrain');
     expect(e2eWorkflow).toContain('ryvro-brain-test.cloudfunctions.net/ryvroBrain');
+    expect(ciWorkflow).toContain('name: Release Check');
+    expect(ciWorkflow).toContain('run: npm run release:check');
+    expect(packageJson.scripts?.['release:check']).toContain('npm run release:native:check');
+    expect(packageJson.scripts?.['release:check']).toContain('npm run release:store:check');
   });
 
   it('keeps active voice backend source on Ryvro naming', () => {

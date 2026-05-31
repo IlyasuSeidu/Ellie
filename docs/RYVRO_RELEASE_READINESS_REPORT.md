@@ -21,6 +21,7 @@ Completed and guarded in the current branch:
 - Store-submission form draft now covers App Store privacy answers, Google Play Data safety answers, content rating, export compliance, and reviewer notes for the account-owner console steps.
 - Owner launch runbook now sequences clearance, console setup, Firebase/OAuth/backend secrets, RevenueCat products, legal/support publication, production builds, device QA, and store submission evidence.
 - Store readiness preflight now runs inside `npm run release:check`; it validates tracked App Store/Google Play copy limits, required screenshot specs, reviewer/support values, RevenueCat product IDs, data-safety draft anchors, and forbidden claim patterns before store metadata is copied into the consoles.
+- GitHub Actions CI now includes a dedicated `Release Check` job that runs `npm run release:check`, so pushed PRs exercise the same TypeScript, Jest, native scaffold, store readiness, and backend build gate used locally.
 - The default completed E2E seed and fresh onboarding E2E happy path now use healthcare worker data rather than a miner-only default.
 - The launch smoke-test matrix now follows the shipped Universal Shift Builder entry modes: non-mining template start, FIFO/mining or rotating-shift AI description, and manual custom setup with reminders, exceptions, and calendar export enabled.
 - RevenueCat repo-side identifiers and guidance use Ryvro launch aliases while keeping old Ellie/miner aliases documented as compatibility-only migration inputs.

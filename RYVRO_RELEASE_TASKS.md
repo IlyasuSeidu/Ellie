@@ -22,16 +22,16 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 
 ## Phase 1 — Code Cleanup (No user input needed)
 
-| #   | Task                                                                                                                   | Status  |
-| --- | ---------------------------------------------------------------------------------------------------------------------- | ------- |
-| 1   | Hide Schedule + Stats tabs from nav (MainTabNavigator + CustomTabBar)                                                  | ✅ Done |
-| 2   | Audit and remove unsafe Android permissions (`SYSTEM_ALERT_WINDOW`, `READ_EXTERNAL_STORAGE`, `WRITE_EXTERNAL_STORAGE`) | ✅ Done |
-| 3   | Identify and fix any dead/unimplemented quick-action buttons in visible screens                                        | ✅ Done |
-| 4   | Fix `release:check` Jest teardown warning (haptics async path) so it exits with code 0                                 | ✅ Done |
-| 5   | Run full quality gate: `lint` + `type-check` + `test` + `backend:build` + `release:check` — all must pass              | ✅ Done |
-| 5a  | Remove visible launch placeholder copy from hidden/helper Schedule and Stats entry points                              | ✅ Done |
-| 5b  | Add app-level offline/pending-sync status visibility for queued local writes                                           | ✅ Done |
-| 5c  | Centralize runtime cache TTL policy for launch offline caches and recovery windows                                     | ✅ Done |
+| #   | Task                                                                                                                                                              | Status  |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| 1   | Hide Schedule + Stats tabs from nav (MainTabNavigator + CustomTabBar)                                                                                             | ✅ Done |
+| 2   | Audit and remove unsafe Android permissions (`SYSTEM_ALERT_WINDOW`, `READ_EXTERNAL_STORAGE`, `WRITE_EXTERNAL_STORAGE`)                                            | ✅ Done |
+| 3   | Identify and fix any dead/unimplemented quick-action buttons in visible screens                                                                                   | ✅ Done |
+| 4   | Fix `release:check` Jest teardown warning (haptics async path) so it exits with code 0                                                                            | ✅ Done |
+| 5   | Run full quality gate: `lint` + `type-check` + `test` + `backend:build` + `release:check` — all must pass, with CI also running the dedicated `Release Check` job | ✅ Done |
+| 5a  | Remove visible launch placeholder copy from hidden/helper Schedule and Stats entry points                                                                         | ✅ Done |
+| 5b  | Add app-level offline/pending-sync status visibility for queued local writes                                                                                      | ✅ Done |
+| 5c  | Centralize runtime cache TTL policy for launch offline caches and recovery windows                                                                                | ✅ Done |
 
 ---
 
