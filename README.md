@@ -141,7 +141,7 @@ Repo-proven launch state:
 - Hidden v1 tabs: Schedule and Stats are omitted from the bottom navigation; their helper screens are kept free of placeholder copy for any internal entry points
 - Templates and fixtures: mining/FIFO plus healthcare, security, emergency services, manufacturing, transport, hospitality, aviation, rail, and operations examples
 - Latest local gate: `npm run release:check` passed TypeScript, 109 Jest suites / 1,749 tests / 4 snapshots, and backend build on 2026-05-31
-- Recent pushed PR gate: GitHub Actions CI passed Unit Tests, Lint and Type Check, and Build Check on run `26706926728`
+- Recent pushed PR gate: GitHub Actions CI passed Unit Tests, Lint and Type Check, and Build Check on run `26707355628`
 
 Owner/account work still required before launch:
 
