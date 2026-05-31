@@ -1328,10 +1328,12 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
     expect(readme).toContain('Recent pushed PR gates');
-    expect(readme).toContain('GitHub Actions CI run `26715590873`');
+    expect(readme).toContain('GitHub Actions CI run `26719993721`');
+    expect(readme).toContain('commit `5ec179f`');
+    expect(readme).toContain('CI run `26717717583`');
+    expect(readme).toContain('commit `0f6da9d`');
+    expect(readme).toContain('CI run `26715590873`');
     expect(readme).toContain('commit `63b4339`');
-    expect(readme).toContain('CI run `26715426451`');
-    expect(readme).toContain('commit `a019d6c`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
@@ -1535,7 +1537,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, production Firebase service-file preflight, and recent pushed PR #1 CI pass)'
+      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, production Firebase service-file preflight, screenshot capture checklist, and latest pushed PR #1 CI pass)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
@@ -1732,6 +1734,12 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `a019d6c`');
     expect(readinessReport).toContain('CI run `26715590873`');
     expect(readinessReport).toContain('commit `63b4339`');
+    expect(readinessReport).toContain('CI run `26717717583`');
+    expect(readinessReport).toContain('commit `0f6da9d`');
+    expect(readinessReport).toContain('CI run `26719993721`');
+    expect(readinessReport).toContain('commit `5ec179f`');
+    expect(readinessReport).toContain('adding the store screenshot capture checklist');
+    expect(readinessReport).toContain('Screenshot capture checklist now defines store-ready');
     expect(readinessReport).toContain(
       'recording the Firebase service-file gate in the launch handoff'
     );
@@ -2258,10 +2266,13 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('npm run release:owner:check');
     expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');
+    expect(ownerRunbook).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
+    expect(ownerRunbook).toContain('CI run `26719993721`');
+    expect(ownerRunbook).toContain('commit `5ec179f`');
+    expect(ownerRunbook).toContain('CI run `26717717583`');
+    expect(ownerRunbook).toContain('commit `0f6da9d`');
     expect(ownerRunbook).toContain('CI run `26715590873`');
     expect(ownerRunbook).toContain('commit `63b4339`');
-    expect(ownerRunbook).toContain('CI run `26715426451`');
-    expect(ownerRunbook).toContain('commit `a019d6c`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');

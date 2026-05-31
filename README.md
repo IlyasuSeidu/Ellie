@@ -143,7 +143,7 @@ Repo-proven launch state:
 - Templates and fixtures: mining/FIFO plus healthcare, security, emergency services, manufacturing, transport, hospitality, aviation, rail, and operations examples
 - Latest local gate: `npm run release:check` passed TypeScript, 110 Jest suites / 1,760 tests / 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build on 2026-05-31
 - Owner handoff gate: `npm run release:owner:check` keeps the not-live status, owner account tasks, physical-device QA, and store submission handoff docs visible
-- Recent pushed PR gates: GitHub Actions CI run `26715590873` on commit `63b4339` and CI run `26715426451` on commit `a019d6c` passed Unit Tests, Lint and Type Check, Build Check, and the dedicated Release Check job running `npm run release:check`
+- Recent pushed PR gates: GitHub Actions CI run `26719993721` on commit `5ec179f`, CI run `26717717583` on commit `0f6da9d`, and CI run `26715590873` on commit `63b4339` passed Unit Tests, Lint and Type Check, Build Check, and the dedicated Release Check job running `npm run release:check`
 
 Owner/account work still required before launch:
 

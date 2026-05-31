@@ -191,6 +191,18 @@ requireMatches(
 );
 requireMatches(ownerRunbook, /CI run `\d+` on commit `[0-9a-f]+`/, 'owner runbook CI run evidence');
 requireMatches(readme, /CI run `\d+` on commit `[0-9a-f]+`/, 'README CI run evidence');
+[
+  ['CI run `26719993721`', readme],
+  ['commit `5ec179f`', readme],
+  ['CI run `26719993721`', readinessReport],
+  ['commit `5ec179f`', readinessReport],
+  ['CI run `26719993721`', ownerRunbook],
+  ['commit `5ec179f`', ownerRunbook],
+  ['store screenshot capture checklist', readinessReport],
+  ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', ownerRunbook],
+].forEach(([expected, content]) =>
+  requireIncludes(content, expected, 'latest pushed launch evidence')
+);
 
 requireMatches(
   releaseTasks,
