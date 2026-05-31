@@ -35,6 +35,7 @@ function requireNotMatches(content, pattern, label) {
 }
 
 const releaseTasks = read('RYVRO_RELEASE_TASKS.md');
+const packageJson = JSON.parse(read('package.json'));
 const readme = read('README.md');
 const deploymentPlan = read('docs/MINIMUM_VIABLE_DEPLOYMENT_PLAN.md');
 const readinessReport = read('docs/RYVRO_RELEASE_READINESS_REPORT.md');
@@ -59,6 +60,7 @@ const screenshotChecklist = read('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
   ['Enroll Apple Developer account', releaseTasks],
   ['Run `eas login` then `eas init`', releaseTasks],
   ['Run `npm run release:env:check`, then push `.env` secrets to EAS', releaseTasks],
+  ['npm run release:submit:check', releaseTasks],
   ['Build production iOS binary', releaseTasks],
   ['Build production Android AAB', releaseTasks],
   ['not live in the App Store or Google Play yet', readme],
@@ -72,11 +74,13 @@ const screenshotChecklist = read('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
   ['App Store Connect + Play Console metadata/privacy/forms, screenshots', deploymentPlan],
   ['Physical iOS and Android smoke tests', ownerRunbook],
   ['Store screenshots, app privacy, data safety, content rating', ownerRunbook],
+  ['npm run release:submit:check', ownerRunbook],
   ['Production `ryvroBrain` and `parseShiftScheduleDescription` endpoints', ownerRunbook],
   ['root-level Firebase native service files', ownerRunbook],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', ownerRunbook],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', storeListing],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', launchEvidenceLog],
+  ['npm run release:submit:check', launchEvidenceLog],
   ['docs/RYVRO_LAUNCH_EVIDENCE_LOG.md', releaseTasks],
   ['docs/RYVRO_LAUNCH_EVIDENCE_LOG.md', ownerRunbook],
   ['Fresh Firebase iOS/Android app configs and OAuth clients', readinessReport],
@@ -203,6 +207,12 @@ requireMatches(readme, /CI run `\d+` on commit `[0-9a-f]+`/, 'README CI run evid
 ].forEach(([expected, content]) =>
   requireIncludes(content, expected, 'latest pushed launch evidence')
 );
+
+if (
+  packageJson.scripts?.['release:submit:check'] !== 'node scripts/verify-ryvro-submit-readiness.js'
+) {
+  addError('package.json must expose release:submit:check');
+}
 
 requireMatches(
   releaseTasks,

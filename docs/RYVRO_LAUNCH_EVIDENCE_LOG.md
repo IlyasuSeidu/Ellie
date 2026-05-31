@@ -84,4 +84,4 @@ Status values:
 
 ## Go/No-Go Summary
 
-Before launch, every required row above should be `Passed` or explicitly `Not applicable`, and the full go/no-go gate in `RYVRO_RELEASE_TASKS.md` must also be satisfied. The current repository branch is still not proof that Ryvro is live in the App Store or Google Play.
+Before launch, every required row above should be `Passed` or explicitly `Not applicable`, each completed row should include a non-secret evidence location or note, `npm run release:submit:check` should pass, and the full go/no-go gate in `RYVRO_RELEASE_TASKS.md` must also be satisfied. The current repository branch is still not proof that Ryvro is live in the App Store or Google Play.

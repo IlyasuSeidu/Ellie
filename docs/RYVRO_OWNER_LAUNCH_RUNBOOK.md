@@ -29,6 +29,7 @@ Do not submit to App Store review or Google Play production until all of these a
 - RevenueCat products, entitlement `pro`, and offering `default` are connected to App Store and Play subscription products.
 - Physical iOS and Android smoke tests pass with real auth, purchases, reminders, calendar import/export, and assistant flows.
 - Store screenshots, app privacy, data safety, content rating, in-app purchase declarations, and reviewer notes are complete.
+- `npm run release:submit:check` passes after the evidence log is completed and EAS submit values are real.
 
 ## Sequence
 
@@ -200,6 +201,12 @@ Evidence to record:
 
 Owner-only steps:
 
+- Run the final submit readiness guard:
+
+```bash
+npm run release:submit:check
+```
+
 - Upload screenshots, metadata, privacy/data forms, content rating, and subscription details.
 - Submit iOS through App Store Connect after `eas submit --platform ios --latest`.
 - Submit Android to internal testing first after `eas submit --platform android --latest`.
@@ -215,8 +222,9 @@ Evidence to record:
 
 ## Current Repo Evidence
 
-- Latest local gate: `npm run release:check` passed on 2026-05-31 with 110 Jest suites, 1,760 tests, 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build.
+- Latest local gate: `npm run release:check` passed on 2026-05-31 with 110 Jest suites, 1,761 tests, 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build.
 - Current local release gate includes `npm run release:owner:check`, which fails if the account-only launch blockers, physical-device QA requirements, and not-yet-live stop gates disappear from the tracked handoff docs.
+- Final submit readiness is guarded by `npm run release:submit:check`, which must fail until EAS submit placeholders are replaced and every required non-secret row in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` is `Passed` or explicitly `Not applicable`.
 - Store screenshot capture is now tracked in `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md`, and `npm run release:store:check` / `npm run release:owner:check` fail if the checklist or evidence-log handoff disappears.
 - Latest pushed PR gate: GitHub Actions CI run `26719993721` on commit `5ec179f` passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check` with the owner handoff preflight.
 - Recent pushed PR gates also include CI run `26717717583` on commit `0f6da9d` and CI run `26715590873` on commit `63b4339`; both passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check` with the owner handoff preflight.

@@ -109,6 +109,7 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 | 17c | Use `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md` for App Store privacy answers, Google Play Data safety answers, content rating, export compliance, and reviewer notes                                                                                                                                                                                     | ✅ Done |
 | 17d | Use `docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md` as the sequenced owner checklist and `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` as the non-secret evidence ledger for clearance, accounts, Firebase/OAuth, RevenueCat, legal/support, production builds, device QA, and store submission                                                                                | ✅ Done |
 | 17e | Guard owner-only launch blockers with `npm run release:owner:check` so release verification fails if the account/device handoff stops documenting the app as not yet live                                                                                                                                                                                 | ✅ Done |
+| 17f | Guard final EAS submit readiness with `npm run release:submit:check`; it must fail until EAS submit values are real and all required non-secret evidence rows are `Passed` or explicitly `Not applicable`                                                                                                                                                 | ✅ Done |
 
 ---
 
@@ -186,6 +187,8 @@ npm run release:store:check
 npm run release:owner:check
 npm run backend:build
 npm run release:check
+# Final owner-only submission gate after all evidence rows are complete:
+npm run release:submit:check
 ```
 
 ---

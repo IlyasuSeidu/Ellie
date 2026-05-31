@@ -616,6 +616,34 @@ describe('Ryvro environment template', () => {
     expect(script).toContain(
       'launch is not complete until the account-only and physical-device checks above are done'
     );
+    expect(script).toContain('release:submit:check');
+    expect(script).toContain('npm run release:submit:check');
+  });
+
+  it('keeps final EAS submit readiness behind an owner evidence guard', () => {
+    const scriptPath = path.join(process.cwd(), 'scripts/verify-ryvro-submit-readiness.js');
+    const script = fs.readFileSync(scriptPath, 'utf8');
+    const result = spawnSync(process.execPath, [scriptPath], {
+      cwd: process.cwd(),
+      encoding: 'utf8',
+    });
+
+    expect(packageJson.scripts?.['release:submit:check']).toBe(
+      'node scripts/verify-ryvro-submit-readiness.js'
+    );
+    expect(packageJson.scripts?.['release:check']).not.toContain('release:submit:check');
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain('Ryvro submit readiness check failed');
+    expect(result.stderr).toContain('submit.production.ios.appleId');
+    expect(result.stderr).toContain('submit.production.ios.ascAppId');
+    expect(result.stderr).toContain('Formal trademark/legal clearance for `Ryvro`');
+    expect(result.stderr).toContain('Store screenshots still has pending owner evidence');
+    expect(script).toContain('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
+    expect(script).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
+    expect(script).toContain('eas submit --platform ios --latest');
+    expect(script).toContain('eas submit --platform android --latest');
+    expect(script).toContain('Pending owner evidence');
+    expect(script).toContain('submit.production.android.track must stay on internal');
   });
 
   it('does not keep retired Ellie app paths in tracked release artifacts', () => {
@@ -1323,7 +1351,7 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('110 Jest suites / 1,760 tests / 4 snapshots');
+    expect(readme).toContain('110 Jest suites / 1,761 tests / 4 snapshots');
     expect(readme).toContain('the Ryvro native scaffold preflight');
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
@@ -1338,13 +1366,13 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
-    expect(readme).toContain('Testing infrastructure (1,760 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,761 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,760 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,761 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-05-31 release check)');
-    expect(readme).toContain('Total Tests**: 1,760 passing (110 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Total Tests**: 1,761 passing (110 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -1577,6 +1605,10 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).toContain('`docs/RYVRO_LAUNCH_EVIDENCE_LOG.md`');
     expect(releaseTasks).toContain('non-secret evidence ledger');
     expect(releaseTasks).toContain(
+      'Guard final EAS submit readiness with `npm run release:submit:check`'
+    );
+    expect(releaseTasks).toContain('npm run release:submit:check');
+    expect(releaseTasks).toContain(
       'Add app-level offline/pending-sync status visibility for queued local writes'
     );
     expect(releaseTasks).toContain(
@@ -1623,6 +1655,9 @@ describe('Ryvro environment template', () => {
       './google-play-key.json'
     );
     expect(easJson.submit?.production?.android?.track).toBe('internal');
+    expect(packageJson.scripts?.['release:submit:check']).toBe(
+      'node scripts/verify-ryvro-submit-readiness.js'
+    );
     expect(gitignore).toContain('google-play-key.json');
     expect(trackedFiles).not.toContain('google-play-key.json');
   });
@@ -1719,6 +1754,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('109 Jest suites / 1,758 tests');
     expect(readinessReport).toContain('109 Jest suites / 1,759 tests');
     expect(readinessReport).toContain('110 Jest suites / 1,760 tests');
+    expect(readinessReport).toContain('110 Jest suites / 1,761 tests');
     expect(readinessReport).toContain('Profile legal/support link coverage');
     expect(readinessReport).toContain(
       'requiring real root-level Firebase native service files for Ryvro production builds'
@@ -1751,6 +1787,10 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('adding the store metadata preflight');
     expect(readinessReport).toContain('Owner handoff preflight now runs');
     expect(readinessReport).toContain('adding the owner-only launch blocker preflight');
+    expect(readinessReport).toContain(
+      'Final EAS submit readiness now has a separate owner-only guard'
+    );
+    expect(readinessReport).toContain('npm run release:submit:check');
     expect(readinessReport).toContain('aligning Firebase service-file paths');
     expect(readinessReport).toContain('clean-generated `RyvroShiftPlanner` iOS scaffolding');
     expect(readinessReport).toContain(
@@ -2262,7 +2302,9 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('Play internal testing install');
     expect(ownerRunbook).toContain('eas submit --platform ios --latest');
     expect(ownerRunbook).toContain('eas submit --platform android --latest');
-    expect(ownerRunbook).toContain('110 Jest suites, 1,760 tests');
+    expect(ownerRunbook).toContain('npm run release:submit:check');
+    expect(ownerRunbook).toContain('Final submit readiness is guarded');
+    expect(ownerRunbook).toContain('110 Jest suites, 1,761 tests');
     expect(ownerRunbook).toContain('npm run release:owner:check');
     expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');
@@ -2300,6 +2342,7 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('Store submission');
     expect(launchEvidenceLog).toContain('Pending owner evidence');
     expect(launchEvidenceLog).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
+    expect(launchEvidenceLog).toContain('npm run release:submit:check');
     expect(screenshotChecklist).toContain('device model');
     expect(screenshotChecklist).toContain('final file list');
 
