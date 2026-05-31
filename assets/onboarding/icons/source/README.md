@@ -9,7 +9,7 @@ Place your original high-resolution PNG icons here with transparent backgrounds.
 Use descriptive names for your icons:
 
 - `shift-calendar.png` - Shift schedule icon
-- `site-badge.png` - Work site or team icon
+- `work-location-badge.png` - Work location or team icon
 - `shift.png` - Shift schedule icon
 - etc.
 

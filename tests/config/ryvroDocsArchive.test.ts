@@ -163,6 +163,7 @@ describe('Ryvro documentation archive', () => {
   });
 
   it('keeps retired mining-specific default examples out of active launch surfaces', () => {
+    const iconSourceReadme = read('assets/onboarding/icons/source/README.md');
     const activeFiles = [
       'README.md',
       'assets/onboarding/icons/source/README.md',
@@ -178,5 +179,10 @@ describe('Ryvro documentation archive', () => {
       expect(content).not.toContain('haul truck');
       expect(content).not.toContain('Hey Ellie');
     }
+
+    expect(iconSourceReadme).toContain('work-location-badge.png');
+    expect(iconSourceReadme).toContain('Work location or team icon');
+    expect(iconSourceReadme).not.toContain('site-badge.png');
+    expect(iconSourceReadme).not.toContain('Work site or team icon');
   });
 });
