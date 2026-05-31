@@ -4,6 +4,8 @@ Last updated: 2026-05-30
 
 This pack is the source copy for App Store Connect, Google Play Console, screenshots, and launch review notes. It keeps the FIFO and rotating-shift launch wedge sharp without trapping Ryvro in a single-industry frame.
 
+Use `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md` beside this file for App Store privacy answers, Google Play Data safety answers, content rating, export compliance, and reviewer notes.
+
 ## Source Requirements
 
 - Apple requires a privacy policy URL for all apps in App Store Connect app privacy metadata.

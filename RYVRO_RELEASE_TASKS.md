@@ -105,6 +105,7 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 | 17  | 👤 Set up iOS signing: run `eas credentials --platform ios` → add distribution cert + provisioning profile                                                                                                                                                                                                                   | 👤 Todo |
 | 17a | Use `docs/RYVRO_STORE_LISTING.md` for App Store and Google Play copy                                                                                                                                                                                                                                                         | ✅ Done |
 | 17b | Use `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md` for privacy, terms, support, account deletion, and Firebase Auth email templates                                                                                                                                                                                               | ✅ Done |
+| 17c | Use `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md` for App Store privacy answers, Google Play Data safety answers, content rating, export compliance, and reviewer notes                                                                                                                                                        | ✅ Done |
 
 ---
 
@@ -227,5 +228,5 @@ cd android && ./gradlew bundleRelease
 - [ ] Android AAB built with production ID + valid release signing
 - [ ] Manual smoke tests pass on physical iOS + Android devices (all smoke matrix items)
 - [ ] Privacy Policy published and URL live — mentions RevenueCat + subscription terms (Task 19)
-- [ ] App Store Connect metadata + privacy form + in-app purchase section completed
-- [ ] Play Console data safety + content forms + in-app products declared completed
+- [ ] App Store Connect metadata + privacy form + in-app purchase section completed from `docs/RYVRO_STORE_LISTING.md`, `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`, and `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md`
+- [ ] Play Console data safety + content forms + in-app products declared completed from `docs/RYVRO_STORE_LISTING.md`, `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`, and `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md`

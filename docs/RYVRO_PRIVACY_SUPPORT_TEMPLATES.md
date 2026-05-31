@@ -4,6 +4,8 @@ Last updated: 2026-05-28
 
 These templates are repo-side launch assets. They are not legal advice. Publish final versions on the production website or hosted policy pages before App Store Connect and Google Play submission.
 
+Use `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md` beside this file for App Store privacy answers, Google Play Data safety answers, content rating, export compliance, and reviewer notes.
+
 ## Required Public URLs
 
 - Privacy policy URL: `https://getryvro.com/privacy`

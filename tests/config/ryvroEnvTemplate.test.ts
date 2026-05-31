@@ -1031,20 +1031,20 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('109 Jest suites / 1,752 tests / 4 snapshots');
+    expect(readme).toContain('109 Jest suites / 1,753 tests / 4 snapshots');
     expect(readme).toContain('Recent pushed PR gate');
     expect(readme).toContain('GitHub Actions CI passed Unit Tests, Lint and Type Check');
     expect(readme).toContain('run `26711322778`');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
-    expect(readme).toContain('Testing infrastructure (1,752 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,753 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,752 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,753 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-05-31 release check)');
-    expect(readme).toContain('Total Tests**: 1,752 passing (109 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Total Tests**: 1,753 passing (109 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -1388,6 +1388,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('109 Jest suites / 1,750 tests');
     expect(readinessReport).toContain('109 Jest suites / 1,751 tests');
     expect(readinessReport).toContain('109 Jest suites / 1,752 tests');
+    expect(readinessReport).toContain('109 Jest suites / 1,753 tests');
     expect(readinessReport).toContain('aligning dynamic Expo version fallbacks');
     expect(readinessReport).toContain('refreshing public clearance evidence');
     expect(readinessReport).toContain(
@@ -1431,6 +1432,9 @@ describe('Ryvro environment template', () => {
     );
     expect(readinessReport).toContain(
       'rejecting retired Firebase project IDs and Cloud Function hosts'
+    );
+    expect(readinessReport).toContain(
+      'adding the App Store privacy, Google Play Data safety, content rating'
     );
     expect(readinessReport).toContain(
       'Production env preflight now validates the Firebase API key'
@@ -1620,6 +1624,7 @@ describe('Ryvro environment template', () => {
 
     expect(storeListing).toContain('reviewer@getryvro.com');
     expect(storeListing).toContain('support@getryvro.com');
+    expect(storeListing).toContain('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
     expect(storeListing).toContain('App Store Connect / Google Play review notes');
     expect(storeListing).toContain('App Store iPhone 6.7 inch: 3 screenshots at 1290 x 2796');
     expect(storeListing).toContain('App Store iPad Pro 12.9 inch: 3 screenshots at 2048 x 2732');
@@ -1672,6 +1677,7 @@ describe('Ryvro environment template', () => {
       'utf8'
     );
 
+    expect(privacySupport).toContain('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
     expect(privacySupport).toContain(
       'Ryvro Shift Planner helps shift workers create, edit, and understand work schedules'
     );
@@ -1683,6 +1689,59 @@ describe('Ryvro environment template', () => {
     expect(privacySupport).toContain('account deletion');
     expect(privacySupport).toContain('support@getryvro.com');
     expect(privacySupport).not.toMatch(/mine site|haul truck|underground miner/i);
+  });
+
+  it('keeps store submission form answers drafted for account-owner console work', () => {
+    const storeSubmissionDraft = fs.readFileSync(
+      path.join(process.cwd(), 'docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md'),
+      'utf8'
+    );
+    const externalSetup = fs.readFileSync(
+      path.join(process.cwd(), 'docs/RYVRO_EXTERNAL_SERVICE_SETUP.md'),
+      'utf8'
+    );
+    const releaseTasks = fs.readFileSync(
+      path.join(process.cwd(), 'RYVRO_RELEASE_TASKS.md'),
+      'utf8'
+    );
+    const readinessReport = fs.readFileSync(
+      path.join(process.cwd(), 'docs/RYVRO_RELEASE_READINESS_REPORT.md'),
+      'utf8'
+    );
+
+    expect(storeSubmissionDraft).toContain('Apple App Store Connect app privacy');
+    expect(storeSubmissionDraft).toContain('Google Play Data safety form');
+    expect(storeSubmissionDraft).toContain('Google Play account deletion requirements');
+    expect(storeSubmissionDraft).toContain(
+      'Answer: Yes, Ryvro and third-party partners collect data'
+    );
+    expect(storeSubmissionDraft).toContain(
+      'Answer: No, Ryvro does not use collected data to track'
+    );
+    expect(storeSubmissionDraft).toContain('Contact Info: email address and name');
+    expect(storeSubmissionDraft).toContain('User Content: shift schedules');
+    expect(storeSubmissionDraft).toContain('Identifiers: Firebase Auth UID');
+    expect(storeSubmissionDraft).toContain('Purchases: subscription status');
+    expect(storeSubmissionDraft).toContain('Usage Data: app interactions');
+    expect(storeSubmissionDraft).toContain('Diagnostics: crash logs');
+    expect(storeSubmissionDraft).toContain('Data is encrypted in transit: Yes');
+    expect(storeSubmissionDraft).toContain('Users can request data deletion: Yes');
+    expect(storeSubmissionDraft).toContain('RevenueCat for subscription status');
+    expect(storeSubmissionDraft).toContain('OpenAI or the configured AI provider');
+    expect(storeSubmissionDraft).toContain('Audio files: declare only if');
+    expect(storeSubmissionDraft).toContain('No gambling, contests, or real-money games');
+    expect(storeSubmissionDraft).toContain('In-app purchases: Yes, Ryvro Pro subscription');
+    expect(storeSubmissionDraft).toContain('ITSAppUsesNonExemptEncryption');
+    expect(storeSubmissionDraft).toContain('reviewer@getryvro.com');
+    expect(storeSubmissionDraft).toContain('ryvro_pro_monthly');
+    expect(storeSubmissionDraft).toContain('ryvro_pro_annual');
+    expect(storeSubmissionDraft).toContain('does not replace employer rosters');
+    expect(storeSubmissionDraft).not.toContain('TBD');
+    expect(storeSubmissionDraft).not.toContain('ellie_pro');
+
+    expect(externalSetup).toContain('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
+    expect(releaseTasks).toContain('Use `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md`');
+    expect(readinessReport).toContain('Store-submission form draft now covers');
   });
 
   it('keeps external account setup instructions on Ryvro console names', () => {

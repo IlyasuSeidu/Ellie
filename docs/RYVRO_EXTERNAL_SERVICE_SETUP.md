@@ -203,6 +203,7 @@ Metadata source:
 
 - `docs/RYVRO_STORE_LISTING.md`
 - `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`
+- `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md`
 
 Required before submit:
 
@@ -228,6 +229,7 @@ Metadata source:
 
 - `docs/RYVRO_STORE_LISTING.md`
 - `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`
+- `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md`
 
 Required before submit:
 
