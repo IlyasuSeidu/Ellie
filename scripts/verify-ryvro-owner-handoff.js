@@ -124,6 +124,7 @@ requireMatches(
   'readiness report CI run evidence'
 );
 requireMatches(ownerRunbook, /CI run `\d+` on commit `[0-9a-f]+`/, 'owner runbook CI run evidence');
+requireMatches(readme, /CI run `\d+` on commit `[0-9a-f]+`/, 'README CI run evidence');
 
 requireMatches(
   releaseTasks,

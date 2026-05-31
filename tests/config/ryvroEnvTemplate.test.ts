@@ -1304,9 +1304,11 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('the Ryvro native scaffold preflight');
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
-    expect(readme).toContain('Latest pushed PR gate');
-    expect(readme).toContain('GitHub Actions CI run `26714150098`');
-    expect(readme).toContain('commit `0edba23`');
+    expect(readme).toContain('Recent pushed PR gates');
+    expect(readme).toContain('GitHub Actions CI run `26714684603`');
+    expect(readme).toContain('commit `1bc3031`');
+    expect(readme).toContain('CI run `26714544097`');
+    expect(readme).toContain('commit `35ea875`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
@@ -1696,6 +1698,11 @@ describe('Ryvro environment template', () => {
     );
     expect(readinessReport).toContain('CI run `26714544097`');
     expect(readinessReport).toContain('commit `35ea875`');
+    expect(readinessReport).toContain('CI run `26714684603`');
+    expect(readinessReport).toContain('commit `1bc3031`');
+    expect(readinessReport).toContain(
+      'recording the Firebase service-file gate in the launch handoff'
+    );
     expect(readinessReport).toContain('CI run `26714296664`');
     expect(readinessReport).toContain('commit `574f3b1`');
     expect(readinessReport).toContain('Release native scaffold preflight now runs');
@@ -2109,10 +2116,10 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('npm run release:owner:check');
     expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');
+    expect(ownerRunbook).toContain('CI run `26714684603`');
+    expect(ownerRunbook).toContain('commit `1bc3031`');
     expect(ownerRunbook).toContain('CI run `26714544097`');
     expect(ownerRunbook).toContain('commit `35ea875`');
-    expect(ownerRunbook).toContain('CI run `26714296664`');
-    expect(ownerRunbook).toContain('commit `574f3b1`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');
