@@ -11,7 +11,7 @@ import {
   type ProductManifest,
   type RawLeadInput,
 } from '../audience-os';
-import { classifyShiftWorkerPersona } from '../research-funnel';
+import { classifyShiftWorkerPersona, planNextResearchMessage } from '../research-funnel';
 
 const ryvroManifest: ProductManifest = {
   productId: 'ryvro',
@@ -311,6 +311,50 @@ test('Ryvro audience classifier covers broad shift-worker launch personas', () =
     }).personaId,
     'transport-logistics-shift-worker'
   );
+});
+
+test('research sequence has Day 1 hooks for every launch persona', () => {
+  const baseLead = {
+    leadId: 'persona-sequence',
+    stage: 'opted_in' as const,
+    sequenceDay: 1,
+    consecutiveMisses: 0,
+    contact: { optInStatus: 'opted_in' as const, email: 'lead@getryvro.com' },
+    signals: {
+      rosterTypeHint: 'rotating' as const,
+      rosterComplexity: 'high' as const,
+      problemFitSignals: ['wrong alarms', 'manual counting', 'future planning'],
+      replyCount: 2,
+      substantiveReplyCount: 2,
+      painSeverity: 'medium' as const,
+      buyingReadiness: 'curious' as const,
+      wantsCrewScheduling: false,
+      wantsPlannedFeaturesOnly: false,
+    },
+  };
+
+  const expectedPrompts = {
+    'underground-production-operator': 'days, nights, or off',
+    'fifo-field-worker': 'next swing in',
+    'maintenance-trades-miner': 'start times',
+    'process-plant-control-room-operator': 'same roster for ages',
+    'healthcare-rotating-clinician': 'handovers',
+    'security-operations-officer': 'patrol blocks',
+    'transport-logistics-shift-worker': 'depot changes',
+    'hospitality-manufacturing-shift-worker': 'split shifts',
+    'crew-lead-supervisor': 'coverage gaps',
+  } as const;
+
+  for (const [personaId, expectedText] of Object.entries(expectedPrompts)) {
+    const plan = planNextResearchMessage({
+      ...baseLead,
+      personaId: personaId as keyof typeof expectedPrompts,
+    });
+
+    assert.equal(plan.action, 'send_question');
+    assert.equal(plan.messageDay, 1);
+    assert.match(plan.message ?? '', new RegExp(expectedText, 'i'));
+  }
 });
 
 test('OpenClaw config includes shared skills, agents, and hook routing', () => {

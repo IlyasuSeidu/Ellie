@@ -76,6 +76,7 @@ Focus on the personas Ryvro can help now, not entire employer org charts. The ru
 
 ### Primary Persona 1: Underground Production Operator
 
+- Runtime persona ID: `underground-production-operator`
 - Typical titles: jumbo operator, bogger operator, loader operator, haul truck operator, driller, shotfirer
 - Typical roster: rotating 7/7/7, 4/4/4, 2/2/3, or site-specific custom swings
 - Core pain: losing place in the cycle and second-guessing tomorrow's shift
@@ -88,6 +89,7 @@ Focus on the personas Ryvro can help now, not entire employer org charts. The ru
 
 ### Primary Persona 2: FIFO Field Worker
 
+- Runtime persona ID: `fifo-field-worker`
 - Typical titles: FIFO operator, FIFO tradesperson, contractor, field service tech, shutdown worker
 - Typical roster: 8/6, 14/7, 14/14, 21/7, 28/14
 - Core pain: knowing when the next work block or rest block starts and planning life around swings
@@ -100,6 +102,7 @@ Focus on the personas Ryvro can help now, not entire employer org charts. The ru
 
 ### Primary Persona 3: Maintenance and Trades Miner
 
+- Runtime persona ID: `maintenance-trades-miner`
 - Typical titles: boilermaker, fitter, electrician, diesel mechanic, fixed plant maintainer
 - Typical roster: rotating or FIFO, often long shifts and short turnarounds
 - Core pain: fatigue, prep time, inconsistent start times, and work-life disruption
@@ -112,6 +115,7 @@ Focus on the personas Ryvro can help now, not entire employer org charts. The ru
 
 ### Primary Persona 4: Process Plant or Control Room Operator
 
+- Runtime persona ID: `process-plant-control-room-operator`
 - Typical titles: process operator, control room operator, plant operator
 - Typical roster: structured rotating shifts with frequent day-night transitions
 - Core pain: staying confident on where they are in a repetitive but mentally draining cycle
@@ -179,6 +183,7 @@ These can enter the system, but they should score lower unless their pain maps t
 
 ### Secondary Persona 9: Crew Lead or Supervisor
 
+- Runtime persona ID: `crew-lead-supervisor`
 - Useful when the pain is still personal roster certainty
 - Lower fit if the pain is mostly crew allocation, approvals, or workforce planning
 

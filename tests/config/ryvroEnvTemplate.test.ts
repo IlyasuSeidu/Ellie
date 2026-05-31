@@ -1429,12 +1429,12 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
     expect(readme).toContain('Recent pushed PR gates');
-    expect(readme).toContain('GitHub Actions CI run `26720871665`');
+    expect(readme).toContain('GitHub Actions CI run `26721045586`');
+    expect(readme).toContain('commit `d80ea95`');
+    expect(readme).toContain('CI run `26720871665`');
     expect(readme).toContain('commit `b6c0505`');
     expect(readme).toContain('CI run `26720684323`');
     expect(readme).toContain('commit `85c947e`');
-    expect(readme).toContain('CI run `26720564698`');
-    expect(readme).toContain('commit `0aebfd9`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain(
@@ -1656,7 +1656,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, production Firebase service-file preflight, screenshot capture checklist, Firebase-project-derived backend function defaults, and latest pushed PR #1 CI pass)'
+      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, Firebase-project-derived backend function defaults, and latest pushed PR #1 CI pass)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
@@ -1866,12 +1866,15 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
+    expect(readinessReport).toContain('CI run `26721045586`');
+    expect(readinessReport).toContain('commit `d80ea95`');
     expect(readinessReport).toContain('CI run `26720871665`');
     expect(readinessReport).toContain('commit `b6c0505`');
     expect(readinessReport).toContain('CI run `26720684323`');
     expect(readinessReport).toContain('commit `85c947e`');
-    expect(readinessReport).toContain('CI run `26720564698`');
-    expect(readinessReport).toContain('commit `0aebfd9`');
+    expect(readinessReport).toContain(
+      'adding Day 1 research-sequence hooks for every launch persona'
+    );
     expect(readinessReport).toContain('adding the store screenshot capture checklist');
     expect(readinessReport).toContain('Screenshot capture checklist now defines store-ready');
     expect(readinessReport).toContain(
@@ -2421,12 +2424,12 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');
     expect(ownerRunbook).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
+    expect(ownerRunbook).toContain('CI run `26721045586`');
+    expect(ownerRunbook).toContain('commit `d80ea95`');
     expect(ownerRunbook).toContain('CI run `26720871665`');
     expect(ownerRunbook).toContain('commit `b6c0505`');
     expect(ownerRunbook).toContain('CI run `26720684323`');
     expect(ownerRunbook).toContain('commit `85c947e`');
-    expect(ownerRunbook).toContain('CI run `26720564698`');
-    expect(ownerRunbook).toContain('commit `0aebfd9`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');
@@ -3006,12 +3009,17 @@ describe('Ryvro environment template', () => {
 
     expect(researchFunnelOs).toContain('Turn shift-worker discovery');
     expect(researchFunnelOs).toContain('## Exact Shift-Worker Personas');
+    expect(researchFunnelOs).toContain('Runtime persona ID: `underground-production-operator`');
+    expect(researchFunnelOs).toContain('Runtime persona ID: `fifo-field-worker`');
+    expect(researchFunnelOs).toContain('Runtime persona ID: `maintenance-trades-miner`');
+    expect(researchFunnelOs).toContain('Runtime persona ID: `process-plant-control-room-operator`');
     expect(researchFunnelOs).toContain('Runtime persona ID: `healthcare-rotating-clinician`');
     expect(researchFunnelOs).toContain('Runtime persona ID: `security-operations-officer`');
     expect(researchFunnelOs).toContain('Runtime persona ID: `transport-logistics-shift-worker`');
     expect(researchFunnelOs).toContain(
       'Runtime persona ID: `hospitality-manufacturing-shift-worker`'
     );
+    expect(researchFunnelOs).toContain('Runtime persona ID: `crew-lead-supervisor`');
     expect(researchFunnelOs).toContain('Healthcare variant:');
     expect(researchFunnelOs).toContain('Security variant:');
     expect(researchFunnelOs).toContain('Transport variant:');

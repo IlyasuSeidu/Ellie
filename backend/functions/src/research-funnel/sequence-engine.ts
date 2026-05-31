@@ -16,6 +16,10 @@ const DAY_PROMPTS: Record<number, DayPrompt> = {
         'Do you ever lose track of whether the next swing is days, nights, or off?',
       'fifo-field-worker':
         'What is harder to keep straight for you: next swing in, next swing home, or planning around the block?',
+      'maintenance-trades-miner':
+        'What catches you out more often: the roster itself, the start times, or the knock-on effect on your life outside site?',
+      'process-plant-control-room-operator':
+        "How often do you still need to check the pattern even when you've been on the same roster for ages?",
       'healthcare-rotating-clinician':
         'What is hardest to keep straight right now: nights, days, handovers, on-call, or days off?',
       'security-operations-officer':
@@ -24,6 +28,8 @@ const DAY_PROMPTS: Record<number, DayPrompt> = {
         'What is hardest to keep straight right now: early starts, depot changes, routes, or rest days?',
       'hospitality-manufacturing-shift-worker':
         'What is hardest to keep straight right now: weekends, split shifts, line rotations, or nights?',
+      'crew-lead-supervisor':
+        'When your own roster changes, what is hardest to keep straight: handovers, coverage gaps, nights, or days off?',
     },
   },
   2: {
