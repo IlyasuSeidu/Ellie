@@ -462,7 +462,9 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('APP_ENV');
     expect(script).toContain('EAS_PROJECT_ID');
     expect(script).toContain('GOOGLE_WEB_CLIENT_ID');
+    expect(script).toContain('EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID');
     expect(script).toContain('GOOGLE_IOS_CLIENT_ID');
+    expect(script).toContain('EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID');
     expect(script).toContain('RYVRO_BRAIN_URL');
     expect(script).toContain('REVENUECAT_IOS_KEY');
     expect(script).toContain('EXPO_PUBLIC_REVENUECAT_IOS_KEY');
@@ -503,6 +505,8 @@ describe('Ryvro environment template', () => {
     expect(envConfigurationTemplate).toContain('UNIVERSAL_SHIFT_BUILDER_ENABLED=true');
     expect(envConfigurationTemplate).toContain('AI_SHIFT_BUILDER_ENABLED=true');
     expect(script).toContain('ELLIE_BRAIN_URL: leave empty for new Ryvro production builds');
+    expect(script).toContain('must match GOOGLE_WEB_CLIENT_ID');
+    expect(script).toContain('must match GOOGLE_IOS_CLIENT_ID');
     expect(script).toContain('must match REVENUECAT_IOS_KEY');
     expect(script).toContain('must match REVENUECAT_ANDROID_KEY');
     expect(script).toContain('must match REVENUECAT_ENTITLEMENT_ID');
@@ -512,11 +516,35 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).toContain('set live HTTPS legal/support URLs');
   });
 
-  it('accepts a production env only when Expo public RevenueCat keys mirror native keys', () => {
+  it('accepts a production env only when Expo public service values mirror native values', () => {
     const result = runProductionEnvCheck(validProductionEnv);
 
     expect(result.status).toBe(0);
     expect(result.stdout).toContain('Ryvro production env check passed');
+  });
+
+  it('rejects production env files with mismatched Expo public Google OAuth client IDs', () => {
+    const webResult = runProductionEnvCheck(
+      validProductionEnv.replace(
+        'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=1234567890-web.apps.googleusercontent.com',
+        'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=1234567890-other-web.apps.googleusercontent.com'
+      )
+    );
+
+    expect(webResult.status).toBe(1);
+    expect(webResult.stderr).toContain('EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID');
+    expect(webResult.stderr).toContain('must match GOOGLE_WEB_CLIENT_ID');
+
+    const iosResult = runProductionEnvCheck(
+      validProductionEnv.replace(
+        'EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=1234567890-ios.apps.googleusercontent.com',
+        'EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=1234567890-other-ios.apps.googleusercontent.com'
+      )
+    );
+
+    expect(iosResult.status).toBe(1);
+    expect(iosResult.stderr).toContain('EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID');
+    expect(iosResult.stderr).toContain('must match GOOGLE_IOS_CLIENT_ID');
   });
 
   it('rejects production env files with mismatched Expo public RevenueCat keys', () => {
@@ -679,20 +707,20 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('109 Jest suites / 1,745 tests / 4 snapshots');
+    expect(readme).toContain('109 Jest suites / 1,746 tests / 4 snapshots');
     expect(readme).toContain('Recent pushed PR gate');
     expect(readme).toContain('GitHub Actions CI passed Unit Tests, Lint and Type Check');
-    expect(readme).toContain('run `26706418121`');
+    expect(readme).toContain('run `26706616710`');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
-    expect(readme).toContain('Testing infrastructure (1,745 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,746 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,745 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,746 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-05-31 release check)');
-    expect(readme).toContain('Total Tests**: 1,745 passing (109 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Total Tests**: 1,746 passing (109 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -958,6 +986,8 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('CI run `26706309637`');
     expect(readinessReport).toContain('commit `5b63d05`');
     expect(readinessReport).toContain('CI run `26706418121`');
+    expect(readinessReport).toContain('commit `6b1c125`');
+    expect(readinessReport).toContain('CI run `26706616710`');
     expect(readinessReport).toContain(
       'commits `f004097`, `10353e7`, `3f92d56`, `90d403d`, and `82fd530`'
     );
@@ -972,14 +1002,21 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('centralizing cache TTL policy');
     expect(readinessReport).toContain('109 Jest suites / 1,743 tests');
     expect(readinessReport).toContain('109 Jest suites / 1,745 tests');
+    expect(readinessReport).toContain('109 Jest suites / 1,746 tests');
     expect(readinessReport).toContain('aligning dynamic Expo version fallbacks');
     expect(readinessReport).toContain('refreshing public clearance evidence');
     expect(readinessReport).toContain(
       'tightening the production env preflight for EAS UUIDs and RevenueCat entitlement mirrors'
     );
+    expect(readinessReport).toContain(
+      'adding Google OAuth native/public mirror checks to the production env preflight'
+    );
     expect(readinessReport).toContain('First-store-build version values are aligned');
     expect(readinessReport).toContain(
       'Production env preflight now requires the real EAS project UUID'
+    );
+    expect(readinessReport).toContain(
+      'Production env preflight also requires Expo public Google OAuth client IDs'
     );
     expect(readinessReport).toContain('Global pending-sync visibility now surfaces queued');
     expect(readinessReport).toContain('Runtime cache TTL policy is centralized');

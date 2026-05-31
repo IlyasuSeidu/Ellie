@@ -107,12 +107,26 @@ function main() {
     (value) => value.endsWith('.apps.googleusercontent.com'),
     'must be the real Google web OAuth client ID'
   );
+  requireMatchingValue(
+    errors,
+    env,
+    'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID',
+    'GOOGLE_WEB_CLIENT_ID',
+    'must match GOOGLE_WEB_CLIENT_ID so the Expo runtime receives the same Ryvro web OAuth client'
+  );
   requireValue(
     errors,
     env,
     'GOOGLE_IOS_CLIENT_ID',
     (value) => value.endsWith('.apps.googleusercontent.com'),
     'must be the real Google iOS OAuth client ID for com.ryvro.shiftplanner'
+  );
+  requireMatchingValue(
+    errors,
+    env,
+    'EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID',
+    'GOOGLE_IOS_CLIENT_ID',
+    'must match GOOGLE_IOS_CLIENT_ID so the Expo runtime receives the same Ryvro iOS OAuth client'
   );
   requireValue(
     errors,
