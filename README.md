@@ -125,7 +125,7 @@ Ryvro now uses the Universal Shift Builder as its onboarding schedule setup, rep
 - **TypeScript + Zod Validation**: Runtime safety for user data
 - **Firebase Backend**: Cloud Firestore for data sync
 - **Sacred Theme System**: Premium design language for shift workers
-- **1,750 Tests**: Comprehensive unit, config, service, and integration coverage
+- **1,751 Tests**: Comprehensive unit, config, service, and integration coverage
 - [Read the story →](build-in-public/system-thinking/01-day-one-foundations.md)
 
 ---
@@ -140,7 +140,7 @@ Repo-proven launch state:
 - Launch surface: Universal Shift Builder onboarding, dashboard, profile/settings, Ryvro voice entry point, reminders, exceptions, and calendar import/export
 - Hidden v1 tabs: Schedule and Stats are omitted from the bottom navigation; their helper screens are kept free of placeholder copy for any internal entry points
 - Templates and fixtures: mining/FIFO plus healthcare, security, emergency services, manufacturing, transport, hospitality, aviation, rail, and operations examples
-- Latest local gate: `npm run release:check` passed TypeScript, 109 Jest suites / 1,750 tests / 4 snapshots, and backend build on 2026-05-31
+- Latest local gate: `npm run release:check` passed TypeScript, 109 Jest suites / 1,751 tests / 4 snapshots, and backend build on 2026-05-31
 - Recent pushed PR gate: GitHub Actions CI passed Unit Tests, Lint and Type Check, and Build Check on run `26711322778`
 
 Owner/account work still required before launch:
@@ -186,7 +186,7 @@ Current launch handoff lives in [docs/RYVRO_RELEASE_READINESS_REPORT.md](docs/RY
 - **Formatting**: Prettier
 - **Pre-commit Hooks**: Husky + lint-staged
 - **Type Checking**: TypeScript strict mode
-- **Testing**: Jest (1,750 tests in the latest release check), React Testing Library, Detox (E2E)
+- **Testing**: Jest (1,751 tests in the latest release check), React Testing Library, Detox (E2E)
 
 ### CI/CD
 
@@ -393,7 +393,7 @@ Colors are grounded in low-light shift-work conditions and broad enough for ever
 - [x] Utility functions (shift calculation, date handling)
 - [x] Firebase integration
 - [x] Sacred theme system
-- [x] Testing infrastructure (1,750 tests in the latest release check)
+- [x] Testing infrastructure (1,751 tests in the latest release check)
 
 ### ✅ Phase 2: Premium Onboarding And Universal Builder
 
@@ -467,7 +467,7 @@ Each story includes:
 
 Ryvro has comprehensive test coverage across all layers:
 
-### Unit Tests (1,750 tests in the latest release check)
+### Unit Tests (1,751 tests in the latest release check)
 
 - **Utilities**: Shift calculations, date manipulation, validation
 - **Components**: Onboarding, dashboard, voice, profile, and builder components
@@ -589,7 +589,7 @@ npm run format
 
 ### Current Status (as of 2026-05-31 release check)
 
-- **Total Tests**: 1,750 passing (109 Jest suites, 4 snapshots)
+- **Total Tests**: 1,751 passing (109 Jest suites, 4 snapshots)
 - **Test Coverage**:
   - Branches: 62.03% (≥60% ✅)
   - Functions: 76.95% (≥70% ✅)

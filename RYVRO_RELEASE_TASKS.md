@@ -46,6 +46,7 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 | 10  | Create `eas.json` with development / preview / production build profiles                                                                                                                                                                                     | ✅ Done                            |
 | 10a | Add store listing copy, privacy/support templates, and external service handoff docs                                                                                                                                                                         | ✅ Done                            |
 | 10b | Align research-funnel runtime personas, docs, scoring, and automation prompts with Ryvro's broad launch audience across mining/FIFO, healthcare, security/emergency services, transport/logistics, hospitality/manufacturing, and other rotating-shift teams | ✅ Done                            |
+| 10c | Derive the Google Sign-In iOS URL scheme from `GOOGLE_IOS_CLIENT_ID` / `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID` at Expo config build time so production OAuth cannot keep a stale static client scheme                                                             | ✅ Done                            |
 
 ---
 

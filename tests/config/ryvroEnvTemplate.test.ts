@@ -298,6 +298,54 @@ describe('Ryvro environment template', () => {
     }
   });
 
+  it('derives the Google Sign-In iOS URL scheme from the Ryvro OAuth client at build time', () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const buildAppConfig = require('../../app.config.js') as (params: {
+      config?: Record<string, unknown>;
+    }) => {
+      plugins?: unknown[];
+      extra?: Record<string, unknown>;
+    };
+    const previousGoogleIosClientId = process.env.GOOGLE_IOS_CLIENT_ID;
+    const previousExpoGoogleIosClientId = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID;
+
+    process.env.GOOGLE_IOS_CLIENT_ID = '1234567890-ryvroios.apps.googleusercontent.com';
+    process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID = '1234567890-ryvroios.apps.googleusercontent.com';
+
+    try {
+      const dynamicConfig = buildAppConfig({ config: appJson.expo as Record<string, unknown> });
+      const googleSignInPlugin = dynamicConfig.plugins?.find(
+        (plugin): plugin is [string, { iosUrlScheme?: string }] =>
+          Array.isArray(plugin) && plugin[0] === '@react-native-google-signin/google-signin'
+      );
+
+      expect(dynamicConfig.extra?.GOOGLE_IOS_CLIENT_ID).toBe(
+        '1234567890-ryvroios.apps.googleusercontent.com'
+      );
+      expect(dynamicConfig.extra?.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID).toBe(
+        '1234567890-ryvroios.apps.googleusercontent.com'
+      );
+      expect(googleSignInPlugin?.[1].iosUrlScheme).toBe(
+        'com.googleusercontent.apps.1234567890-ryvroios'
+      );
+      expect(googleSignInPlugin?.[1].iosUrlScheme).not.toBe(
+        'com.googleusercontent.apps.197162533368-5mhtc7pnngbq2n50rll6857n90n3t97r'
+      );
+    } finally {
+      if (previousGoogleIosClientId === undefined) {
+        delete process.env.GOOGLE_IOS_CLIENT_ID;
+      } else {
+        process.env.GOOGLE_IOS_CLIENT_ID = previousGoogleIosClientId;
+      }
+
+      if (previousExpoGoogleIosClientId === undefined) {
+        delete process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID;
+      } else {
+        process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID = previousExpoGoogleIosClientId;
+      }
+    }
+  });
+
   it('pins native installed identity to Ryvro launch values', () => {
     expect(appJson.expo?.ios?.infoPlist).toMatchObject({
       NSSpeechRecognitionUsageDescription:
@@ -871,20 +919,20 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('109 Jest suites / 1,750 tests / 4 snapshots');
+    expect(readme).toContain('109 Jest suites / 1,751 tests / 4 snapshots');
     expect(readme).toContain('Recent pushed PR gate');
     expect(readme).toContain('GitHub Actions CI passed Unit Tests, Lint and Type Check');
     expect(readme).toContain('run `26711322778`');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
-    expect(readme).toContain('Testing infrastructure (1,750 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,751 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,750 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,751 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-05-31 release check)');
-    expect(readme).toContain('Total Tests**: 1,750 passing (109 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Total Tests**: 1,751 passing (109 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -1098,6 +1146,9 @@ describe('Ryvro environment template', () => {
       'Align research-funnel runtime personas, docs, scoring, and automation prompts with Ryvro'
     );
     expect(releaseTasks).toContain(
+      'Derive the Google Sign-In iOS URL scheme from `GOOGLE_IOS_CLIENT_ID`'
+    );
+    expect(releaseTasks).toContain(
       'Add app-level offline/pending-sync status visibility for queued local writes'
     );
     expect(releaseTasks).toContain(
@@ -1220,6 +1271,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('109 Jest suites / 1,748 tests');
     expect(readinessReport).toContain('109 Jest suites / 1,749 tests');
     expect(readinessReport).toContain('109 Jest suites / 1,750 tests');
+    expect(readinessReport).toContain('109 Jest suites / 1,751 tests');
     expect(readinessReport).toContain('aligning dynamic Expo version fallbacks');
     expect(readinessReport).toContain('refreshing public clearance evidence');
     expect(readinessReport).toContain(
@@ -1248,6 +1300,12 @@ describe('Ryvro environment template', () => {
     );
     expect(readinessReport).toContain(
       'Production env preflight also requires Expo public Google OAuth client IDs'
+    );
+    expect(readinessReport).toContain(
+      "Dynamic Expo config now derives the Google Sign-In plugin's iOS URL scheme"
+    );
+    expect(readinessReport).toContain(
+      'deriving the Google Sign-In iOS URL scheme from the Ryvro OAuth client ID'
     );
     expect(readinessReport).toContain(
       'Production env preflight now validates the Firebase API key'

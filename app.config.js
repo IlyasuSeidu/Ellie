@@ -10,6 +10,41 @@ try {
   // dotenv is optional in some environments
 }
 
+const GOOGLE_IOS_CLIENT_SUFFIX = '.apps.googleusercontent.com';
+
+function getGoogleIosUrlScheme(googleIosClientId) {
+  if (!googleIosClientId || !googleIosClientId.endsWith(GOOGLE_IOS_CLIENT_SUFFIX)) {
+    return '';
+  }
+
+  return `com.googleusercontent.apps.${googleIosClientId.slice(0, -GOOGLE_IOS_CLIENT_SUFFIX.length)}`;
+}
+
+function withGoogleSignInIosUrlScheme(plugins, iosUrlScheme) {
+  if (!iosUrlScheme) {
+    return plugins;
+  }
+
+  return plugins.map((plugin) => {
+    const pluginName = Array.isArray(plugin) ? plugin[0] : plugin;
+
+    if (pluginName !== '@react-native-google-signin/google-signin') {
+      return plugin;
+    }
+
+    const pluginOptions =
+      Array.isArray(plugin) && plugin[1] && typeof plugin[1] === 'object' ? plugin[1] : {};
+
+    return [
+      '@react-native-google-signin/google-signin',
+      {
+        ...pluginOptions,
+        iosUrlScheme,
+      },
+    ];
+  });
+}
+
 module.exports = ({ config = {} }) => {
   const ryvroIdentity = {
     name: 'Ryvro Shift Planner',
@@ -47,6 +82,9 @@ module.exports = ({ config = {} }) => {
     process.env.EXPO_ANDROID_GOOGLE_SERVICES_FILE ||
     process.env.ANDROID_GOOGLE_SERVICES_FILE ||
     process.env.GOOGLE_SERVICES_FILE;
+  const googleIosClientId =
+    process.env.GOOGLE_IOS_CLIENT_ID || process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || '';
+  const googleIosUrlScheme = getGoogleIosUrlScheme(googleIosClientId);
 
   if (!expoUpdates.url && easProjectId) {
     expoUpdates.url = `https://u.expo.dev/${easProjectId}`;
@@ -96,6 +134,7 @@ module.exports = ({ config = {} }) => {
       ...(config.web || {}),
       favicon: config.web?.favicon || ryvroIdentity.favicon,
     },
+    plugins: withGoogleSignInIosUrlScheme(config.plugins || [], googleIosUrlScheme),
     extra: {
       ...configExtra,
       APP_ENV: appEnv,
