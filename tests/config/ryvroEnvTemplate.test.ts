@@ -520,10 +520,7 @@ describe('Ryvro environment template', () => {
       NSMicrophoneUsageDescription: 'Ryvro needs microphone access for voice commands.',
     });
 
-    const iosInfoPlist =
-      readOptional('ios/RyvroShiftPlanner/Info.plist') ||
-      readOptional('ios/Ryvro/Info.plist') ||
-      readOptional('ios/Ellie/Info.plist');
+    const iosInfoPlist = readOptional('ios/RyvroShiftPlanner/Info.plist');
     if (iosInfoPlist) {
       expect(iosInfoPlist).toContain('<key>CFBundleDisplayName</key>');
       expect(iosInfoPlist).toContain('<string>Ryvro</string>');
@@ -546,7 +543,7 @@ describe('Ryvro environment template', () => {
       expect(androidManifest).not.toContain('com.ilyasuseidu.ellie');
     }
 
-    const iosInfoPlist = readOptional('ios/Ellie/Info.plist');
+    const iosInfoPlist = readOptional('ios/RyvroShiftPlanner/Info.plist');
     if (iosInfoPlist) {
       expect(iosInfoPlist).toContain('<string>ryvro</string>');
       expect(iosInfoPlist).toContain('<string>com.ryvro.shiftplanner</string>');
@@ -574,16 +571,10 @@ describe('Ryvro environment template', () => {
   });
 
   it('keeps the native iOS build product on the Ryvro app artifact', () => {
-    const xcodeProject =
-      readOptional('ios/RyvroShiftPlanner.xcodeproj/project.pbxproj') ||
-      readOptional('ios/Ryvro.xcodeproj/project.pbxproj') ||
-      readOptional('ios/Ellie.xcodeproj/project.pbxproj');
-    const xcodeScheme =
-      readOptional(
-        'ios/RyvroShiftPlanner.xcodeproj/xcshareddata/xcschemes/RyvroShiftPlanner.xcscheme'
-      ) ||
-      readOptional('ios/Ryvro.xcodeproj/xcshareddata/xcschemes/Ryvro.xcscheme') ||
-      readOptional('ios/Ellie.xcodeproj/xcshareddata/xcschemes/Ellie.xcscheme');
+    const xcodeProject = readOptional('ios/RyvroShiftPlanner.xcodeproj/project.pbxproj');
+    const xcodeScheme = readOptional(
+      'ios/RyvroShiftPlanner.xcodeproj/xcshareddata/xcschemes/RyvroShiftPlanner.xcscheme'
+    );
 
     if (xcodeProject) {
       expect(xcodeProject).toMatch(/PRODUCT_BUNDLE_IDENTIFIER = "?com\.ryvro\.shiftplanner"?;/);
@@ -617,6 +608,9 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('com.ryvro.shiftplanner');
     expect(script).toContain('app.config.js.backup must not be tracked');
     expect(fs.existsSync(path.join(process.cwd(), 'app.config.js.backup'))).toBe(false);
+    expect(script).not.toContain("readOptional('ios/Ellie");
+    expect(script).not.toContain("readOptional('ios/Ryvro/");
+    expect(script).not.toContain("readOptional('ios/Ryvro.xcodeproj");
     expect(script).toContain('ios/RyvroShiftPlanner/GoogleService-Info.plist');
     expect(script).toContain('--strict-generated');
     expect(script).toContain('--strict-generated-services');
@@ -748,9 +742,7 @@ describe('Ryvro environment template', () => {
     expect(gitignore).toContain('GoogleService-Info.plist');
     expect(gitignore).toContain('google-services.json');
 
-    const iosGoogleServicePlist =
-      readOptional('ios/RyvroShiftPlanner/GoogleService-Info.plist') ||
-      readOptional('ios/Ryvro/GoogleService-Info.plist');
+    const iosGoogleServicePlist = readOptional('ios/RyvroShiftPlanner/GoogleService-Info.plist');
     if (iosGoogleServicePlist) {
       expect(iosGoogleServicePlist).toContain('<key>BUNDLE_ID</key>');
       expect(iosGoogleServicePlist).toContain('<string>com.ryvro.shiftplanner</string>');
@@ -1463,12 +1455,12 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
     expect(readme).toContain('Recent pushed PR gates');
-    expect(readme).toContain('GitHub Actions CI run `26726876514`');
+    expect(readme).toContain('GitHub Actions CI run `26727022362`');
+    expect(readme).toContain('commit `90e3e04`');
+    expect(readme).toContain('CI run `26726876514`');
     expect(readme).toContain('commit `f72f885`');
     expect(readme).toContain('CI run `26726707448`');
     expect(readme).toContain('commit `0290dc2`');
-    expect(readme).toContain('CI run `26726588935`');
-    expect(readme).toContain('commit `c2c6267`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain(
@@ -1719,7 +1711,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, latest public clearance evidence at 20:33Z, and latest pushed PR #1 CI pass `26726876514` on `f72f885`)'
+      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, latest public clearance evidence at 20:33Z, and latest pushed PR #1 CI pass `26727022362` on `90e3e04`)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
@@ -1944,12 +1936,12 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
+    expect(readinessReport).toContain('CI run `26727022362`');
+    expect(readinessReport).toContain('commit `90e3e04`');
     expect(readinessReport).toContain('CI run `26726876514`');
     expect(readinessReport).toContain('commit `f72f885`');
     expect(readinessReport).toContain('CI run `26726707448`');
     expect(readinessReport).toContain('commit `0290dc2`');
-    expect(readinessReport).toContain('CI run `26726588935`');
-    expect(readinessReport).toContain('commit `c2c6267`');
     expect(readinessReport).toContain('CI run `26722400690`');
     expect(readinessReport).toContain('commit `4af8a23`');
     expect(readinessReport).toContain('CI run `26721974527`');
@@ -2147,12 +2139,15 @@ describe('Ryvro environment template', () => {
     expect(audit).toContain(
       'removed the retired `ellieBrain` HTTP export from active backend source'
     );
-    expect(audit).toContain('CI run `26726876514` on commit `f72f885`');
+    expect(audit).toContain('CI run `26727022362` on commit `90e3e04`');
     expect(audit).toContain(
       'Aligned the active deployment guide to the committed Ryvro `eas.json`, dynamic `app.config.js`, and guarded `npm run release:submit:check` plus `eas submit --latest` store-submission flow.'
     );
     expect(audit).toContain(
       'Renamed retired Ellie storage-key code symbols to neutral Ryvro-era `retired...` names while preserving the raw old keys only for migration/removal.'
+    );
+    expect(audit).toContain(
+      'Tightened the Ryvro native scaffold verifier so active release checks inspect only `ios/RyvroShiftPlanner` generated paths instead of accepting old iOS project-name fallbacks.'
     );
     expect(audit).toContain(
       'Broadened remaining translated FIFO helper tips and active voice-assistant rest-block tool copy away from site/off-site wording.'
@@ -2249,7 +2244,7 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'android/app/build.gradle'),
       'utf8'
     );
-    const iosProject = readOptional('ios/Ellie.xcodeproj/project.pbxproj');
+    const iosProject = readOptional('ios/RyvroShiftPlanner.xcodeproj/project.pbxproj');
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const buildAppConfig = require('../../app.config.js') as (params: {
       config?: Record<string, unknown>;
@@ -2269,11 +2264,9 @@ describe('Ryvro environment template', () => {
     expect(dynamicConfig.android?.versionCode).toBe(1);
     expect(androidBuildGradle).toContain('versionCode 1');
     expect(androidBuildGradle).toContain('versionName "1.0.0"');
-
     if (iosProject) {
       expect(iosProject).toContain('CURRENT_PROJECT_VERSION = 1;');
-      expect(iosProject).toContain('MARKETING_VERSION = 1.0.0;');
-      expect(iosProject).not.toContain('MARKETING_VERSION = 1.0;');
+      expect(iosProject).toMatch(/MARKETING_VERSION = 1\.0(?:\.0)?;/);
     }
   });
 
@@ -2582,12 +2575,12 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
     expect(ownerRunbook).toContain('Recent pushed PR gate evidence includes');
     expect(ownerRunbook).not.toContain('Latest pushed PR gate');
+    expect(ownerRunbook).toContain('CI run `26727022362`');
+    expect(ownerRunbook).toContain('commit `90e3e04`');
     expect(ownerRunbook).toContain('CI run `26726876514`');
     expect(ownerRunbook).toContain('commit `f72f885`');
     expect(ownerRunbook).toContain('CI run `26726707448`');
     expect(ownerRunbook).toContain('commit `0290dc2`');
-    expect(ownerRunbook).toContain('CI run `26726588935`');
-    expect(ownerRunbook).toContain('commit `c2c6267`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');

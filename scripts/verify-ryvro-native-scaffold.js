@@ -111,10 +111,7 @@ if (fs.existsSync(path.join(root, 'app.config.js.backup'))) {
   );
 }
 
-const generatedInfoPlist =
-  readOptional('ios/RyvroShiftPlanner/Info.plist') ||
-  readOptional('ios/Ryvro/Info.plist') ||
-  readOptional('ios/Ellie/Info.plist');
+const generatedInfoPlist = readOptional('ios/RyvroShiftPlanner/Info.plist');
 if (generatedInfoPlist) {
   if (
     !generatedInfoPlist.includes('<key>CFBundleDisplayName</key>') ||
@@ -125,10 +122,7 @@ if (generatedInfoPlist) {
   assertAbsent(generatedInfoPlist, retiredVisibleIdentityPattern, 'Generated iOS Info.plist');
 }
 
-const generatedXcodeProject =
-  readOptional('ios/RyvroShiftPlanner.xcodeproj/project.pbxproj') ||
-  readOptional('ios/Ryvro.xcodeproj/project.pbxproj') ||
-  readOptional('ios/Ellie.xcodeproj/project.pbxproj');
+const generatedXcodeProject = readOptional('ios/RyvroShiftPlanner.xcodeproj/project.pbxproj');
 if (generatedXcodeProject) {
   if (!/PRODUCT_BUNDLE_IDENTIFIER = "?com\.ryvro\.shiftplanner"?;/.test(generatedXcodeProject)) {
     addError('Generated iOS Xcode project must build com.ryvro.shiftplanner');
@@ -143,10 +137,7 @@ if (generatedXcodeProject) {
   }
 }
 
-const generatedIosGoogleService =
-  readOptional('ios/RyvroShiftPlanner/GoogleService-Info.plist') ||
-  readOptional('ios/Ryvro/GoogleService-Info.plist') ||
-  readOptional('ios/Ellie/GoogleService-Info.plist');
+const generatedIosGoogleService = readOptional('ios/RyvroShiftPlanner/GoogleService-Info.plist');
 if (generatedIosGoogleService) {
   if (!generatedIosGoogleService.includes('<string>com.ryvro.shiftplanner</string>')) {
     addError('Generated iOS GoogleService-Info.plist must target com.ryvro.shiftplanner');
