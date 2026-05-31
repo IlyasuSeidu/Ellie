@@ -1463,12 +1463,12 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
     expect(readme).toContain('Recent pushed PR gates');
-    expect(readme).toContain('GitHub Actions CI run `26726588935`');
+    expect(readme).toContain('GitHub Actions CI run `26726707448`');
+    expect(readme).toContain('commit `0290dc2`');
+    expect(readme).toContain('CI run `26726588935`');
     expect(readme).toContain('commit `c2c6267`');
     expect(readme).toContain('CI run `26726366157`');
     expect(readme).toContain('commit `314b41e`');
-    expect(readme).toContain('CI run `26726208572`');
-    expect(readme).toContain('commit `f130644`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain(
@@ -1631,17 +1631,28 @@ describe('Ryvro environment template', () => {
       '`.env.production.example` when the key is required for release builds'
     );
     expect(deploymentGuide).toContain('eas secret:push --scope project --env-file .env');
-    expect(deploymentGuide).toContain('"name": "Ryvro Shift Planner"');
-    expect(deploymentGuide).toContain('"slug": "ryvro"');
-    expect(deploymentGuide).toContain('"image": "./assets/splash-icon.png"');
-    expect(deploymentGuide).toContain('"bundleIdentifier": "com.ryvro.shiftplanner"');
-    expect(deploymentGuide).toContain('"package": "com.ryvro.shiftplanner"');
-    expect(deploymentGuide).toContain('"permissions": ["INTERNET", "RECORD_AUDIO"]');
+    expect(deploymentGuide).toContain('Do not replace the committed `eas.json`');
+    expect(deploymentGuide).toContain('"version": ">= 12.0.0"');
+    expect(deploymentGuide).toContain('"node": "20.19.4"');
+    expect(deploymentGuide).toContain('"buildType": "app-bundle"');
+    expect(deploymentGuide).toContain('`npm run release:submit:check` must fail until');
+    expect(deploymentGuide).toContain("name: 'Ryvro Shift Planner'");
+    expect(deploymentGuide).toContain("slug: 'ryvro'");
+    expect(deploymentGuide).toContain("scheme: 'ryvro'");
+    expect(deploymentGuide).toContain("icon: './assets/icon.png'");
+    expect(deploymentGuide).toContain("splash.image: './assets/splash-icon.png'");
+    expect(deploymentGuide).toContain('iOS bundle identifier `com.ryvro.shiftplanner`');
+    expect(deploymentGuide).toContain('Android package `com.ryvro.shiftplanner`');
+    expect(deploymentGuide).toContain('native display name `Ryvro`');
+    expect(deploymentGuide).toContain('Ryvro function defaults for `ryvroBrain`');
     expect(deploymentGuide).toContain('"ascAppId": "FILL_AFTER_STEP_6"');
     expect(deploymentGuide).toContain('"serviceAccountKeyPath": "./google-play-key.json"');
+    expect(deploymentGuide).toContain('eas submit --platform ios --latest');
+    expect(deploymentGuide).toContain('eas submit --platform android --latest');
+    expect(deploymentGuide).not.toContain('eas submit --platform ios --profile production');
+    expect(deploymentGuide).not.toContain('eas submit --platform android --profile production');
     expect(deploymentGuide).toContain('ryvro-upload-key.keystore');
     expect(deploymentGuide).toContain('RYVRO_UPLOAD_*');
-    expect(deploymentGuide).toContain('https://u.expo.dev/FILL_AFTER_EAS_INIT');
     expect(deploymentGuide).not.toContain('"permissions": ["CAMERA"');
     expect(deploymentGuide).not.toContain('READ_EXTERNAL_STORAGE');
     expect(deploymentGuide).not.toContain('WRITE_EXTERNAL_STORAGE');
@@ -1708,7 +1719,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, latest public clearance evidence at 20:33Z, and latest pushed PR #1 CI pass `26726588935` on `c2c6267`)'
+      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, latest public clearance evidence at 20:33Z, and latest pushed PR #1 CI pass `26726707448` on `0290dc2`)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
@@ -1933,12 +1944,12 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
+    expect(readinessReport).toContain('CI run `26726707448`');
+    expect(readinessReport).toContain('commit `0290dc2`');
     expect(readinessReport).toContain('CI run `26726588935`');
     expect(readinessReport).toContain('commit `c2c6267`');
     expect(readinessReport).toContain('CI run `26726366157`');
     expect(readinessReport).toContain('commit `314b41e`');
-    expect(readinessReport).toContain('CI run `26726208572`');
-    expect(readinessReport).toContain('commit `f130644`');
     expect(readinessReport).toContain('CI run `26722400690`');
     expect(readinessReport).toContain('commit `4af8a23`');
     expect(readinessReport).toContain('CI run `26721974527`');
@@ -2136,7 +2147,10 @@ describe('Ryvro environment template', () => {
     expect(audit).toContain(
       'removed the retired `ellieBrain` HTTP export from active backend source'
     );
-    expect(audit).toContain('CI run `26726588935` on commit `c2c6267`');
+    expect(audit).toContain('CI run `26726707448` on commit `0290dc2`');
+    expect(audit).toContain(
+      'Aligned the active deployment guide to the committed Ryvro `eas.json`, dynamic `app.config.js`, and guarded `npm run release:submit:check` plus `eas submit --latest` store-submission flow.'
+    );
     expect(audit).toContain(
       'Broadened remaining translated FIFO helper tips and active voice-assistant rest-block tool copy away from site/off-site wording.'
     );
@@ -2565,12 +2579,12 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
     expect(ownerRunbook).toContain('Recent pushed PR gate evidence includes');
     expect(ownerRunbook).not.toContain('Latest pushed PR gate');
+    expect(ownerRunbook).toContain('CI run `26726707448`');
+    expect(ownerRunbook).toContain('commit `0290dc2`');
     expect(ownerRunbook).toContain('CI run `26726588935`');
     expect(ownerRunbook).toContain('commit `c2c6267`');
     expect(ownerRunbook).toContain('CI run `26726366157`');
     expect(ownerRunbook).toContain('commit `314b41e`');
-    expect(ownerRunbook).toContain('CI run `26726208572`');
-    expect(ownerRunbook).toContain('commit `f130644`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');

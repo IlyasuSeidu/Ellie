@@ -104,40 +104,33 @@ eas build:configure
 
 This repo already tracks `eas.json`. Use `eas build:configure` only when refreshing EAS project linkage, then keep the committed Ryvro build profiles intact.
 
-### 2. Configure EAS Build Profiles
+### 2. Verify EAS Build Profiles
 
-Edit `eas.json`:
+Do not replace the committed `eas.json` with an older sample from Expo docs. The tracked Ryvro file is the source of truth and must keep:
 
 ```json
 {
   "cli": {
-    "version": ">= 5.0.0"
+    "version": ">= 12.0.0",
+    "appVersionSource": "remote"
   },
   "build": {
     "development": {
+      "node": "20.19.4",
       "developmentClient": true,
-      "distribution": "internal",
-      "ios": {
-        "simulator": true
-      },
-      "android": {
-        "buildType": "apk"
-      }
+      "distribution": "internal"
     },
     "preview": {
-      "distribution": "internal",
-      "ios": {
-        "simulator": false
-      },
-      "android": {
-        "buildType": "apk"
-      }
+      "node": "20.19.4",
+      "distribution": "internal"
     },
     "production": {
-      "distribution": "store",
-      "autoIncrement": true,
-      "env": {
-        "APP_ENV": "production"
+      "node": "20.19.4",
+      "ios": {
+        "buildConfiguration": "Release"
+      },
+      "android": {
+        "buildType": "app-bundle"
       }
     }
   },
@@ -157,48 +150,22 @@ Edit `eas.json`:
 }
 ```
 
-### 3. Update app.json
+`submit.production` intentionally keeps placeholder owner console values until App Store Connect, Play Console, and service-account evidence exists. `npm run release:submit:check` must fail until those values and `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` are complete.
 
-```json
-{
-  "expo": {
-    "name": "Ryvro Shift Planner",
-    "slug": "ryvro",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "ios": {
-      "bundleIdentifier": "com.ryvro.shiftplanner",
-      "buildNumber": "1",
-      "supportsTablet": true,
-      "infoPlist": {
-        "NSSpeechRecognitionUsageDescription": "Ryvro needs speech recognition to understand your questions.",
-        "NSMicrophoneUsageDescription": "Ryvro needs microphone access for voice commands."
-      }
-    },
-    "android": {
-      "package": "com.ryvro.shiftplanner",
-      "versionCode": 1,
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "permissions": ["INTERNET", "RECORD_AUDIO"]
-    },
-    "extra": {
-      "eas": {
-        "projectId": "FILL_AFTER_EAS_INIT"
-      }
-    }
-  }
-}
-```
+### 3. Verify app.config.js
+
+Ryvro uses dynamic Expo config in `app.config.js`, not a static `app.json` release sample. Before release, verify `app.config.js` still owns:
+
+- `name: 'Ryvro Shift Planner'`
+- `slug: 'ryvro'`
+- `scheme: 'ryvro'`
+- `icon: './assets/icon.png'`
+- `splash.image: './assets/splash-icon.png'`
+- iOS bundle identifier `com.ryvro.shiftplanner`
+- Android package `com.ryvro.shiftplanner`
+- native display name `Ryvro`
+- legal/support URLs on `https://getryvro.com`
+- Ryvro function defaults for `ryvroBrain` and `parseShiftScheduleDescription`
 
 ## Environment Configuration
 
@@ -409,7 +376,8 @@ Edit `eas.json` for Android-specific settings:
 #### Option 1: Using EAS Submit
 
 ```bash
-eas submit --platform ios --profile production
+npm run release:submit:check
+eas submit --platform ios --latest
 ```
 
 #### Option 2: Manual Upload
@@ -463,7 +431,8 @@ eas submit --platform ios --profile production
 #### Option 1: Using EAS Submit
 
 ```bash
-eas submit --platform android --profile production
+npm run release:submit:check
+eas submit --platform android --latest
 ```
 
 #### Option 2: Manual Upload
@@ -626,8 +595,9 @@ jobs:
 
       - name: Submit to stores
         run: |
-          eas submit --platform ios --profile production --non-interactive
-          eas submit --platform android --profile production --non-interactive
+          npm run release:submit:check
+          eas submit --platform ios --latest --non-interactive
+          eas submit --platform android --latest --non-interactive
 ```
 
 ## Environment-Specific Configs
