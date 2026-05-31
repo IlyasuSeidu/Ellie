@@ -1269,8 +1269,8 @@ describe('Ryvro environment template', () => {
     );
     const clearanceEvidence = `${externalSetup}\n${audit}`;
 
-    expect(clearanceEvidence).toContain('2026-05-31 at 07:14:40Z');
-    expect(clearanceEvidence).toContain('2026-05-31T07:14:40.822Z');
+    expect(clearanceEvidence).toContain('2026-05-31 at 19:32:28Z');
+    expect(clearanceEvidence).toContain('2026-05-31T19:32:28.044Z');
     expect(clearanceEvidence).toContain('no exact `Ryvro` or `Ryvro Shift Planner` app result');
     expect(clearanceEvidence).toContain('Visible fuzzy names included `Rydoo` and `Rydora`');
     expect(clearanceEvidence).toContain(
@@ -1278,7 +1278,9 @@ describe('Ryvro environment template', () => {
     );
     expect(clearanceEvidence).toContain('no exact Ryvro listing visible');
     expect(clearanceEvidence).toContain('Do not treat this as logged-in Play Console evidence');
-    expect(clearanceEvidence).toContain('LinkedIn `company/ryvro`: public URL returned `404`');
+    expect(clearanceEvidence).toContain(
+      'LinkedIn `company/ryvro`: public URL returned bot-protection status `999`'
+    );
     expect(clearanceEvidence).toContain('Formal trademark/legal clearance');
     expect(clearanceEvidence).toContain('App Store Connect and Google Play Console name checks');
     expect(clearanceEvidence).toContain('Play Console title/package availability');
@@ -1304,9 +1306,7 @@ describe('Ryvro environment template', () => {
     expect(clearanceEvidence).not.toContain(
       'Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`'
     );
-    expect(clearanceEvidence).not.toContain(
-      'LinkedIn `company/ryvro`: public URL returned bot-protection status `999`'
-    );
+    expect(clearanceEvidence).not.toContain('LinkedIn `company/ryvro`: public URL returned `404`');
   });
 
   it('keeps the active deployment plan on Ryvro and repo-root release paths', () => {

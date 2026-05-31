@@ -117,7 +117,7 @@ Latest repeatable public preflight command:
 npm run release:clearance
 ```
 
-Result captured at `2026-05-31T07:14:40.822Z`:
+Result captured at `2026-05-31T19:32:28.044Z`:
 
 - Apple public software search: no exact `Ryvro` or `Ryvro Shift Planner` app result returned across 5 fuzzy results. Public search still does not prove App Store Connect name availability.
 - Google Play public search: no exact `Ryvro` or `Ryvro Shift Planner` result text found. Visible fuzzy names included `Rydoo` and `Rydora`. Public search still does not prove Play Console title/package availability.
@@ -129,7 +129,7 @@ Result captured at `2026-05-31T07:14:40.822Z`:
 - `ryvro.app`, `ryvro.co`, `ryvro.io`, `ryvro.ai`, `ryvro.net`, and `ryvro.org`: no public DNS record in the preflight, but registrar availability still needs direct confirmation.
 - X, Instagram, and TikTok `@ryvro`: public URLs returned `200`; this is not reliable handle availability proof and requires logged-in reservation.
 - YouTube `@ryvro`: public URL returned `404`; still reserve directly while logged in.
-- LinkedIn `company/ryvro`: public URL returned `404`; still check and reserve directly while logged in.
+- LinkedIn `company/ryvro`: public URL returned bot-protection status `999`; still check and reserve directly while logged in.
 
 The account-only checks remain unchanged: App Store Connect, Google Play Console, registrar purchase, social reservation, and formal trademark/legal clearance must be completed by the account owner or counsel.
 

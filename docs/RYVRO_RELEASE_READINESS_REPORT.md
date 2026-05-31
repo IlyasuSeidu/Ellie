@@ -56,7 +56,7 @@ Completed and guarded in the current branch:
 
 ## Current Public Clearance Evidence
 
-`npm run release:clearance` was run on 2026-05-31 at `2026-05-31T07:14:40.822Z`.
+`npm run release:clearance` was run on 2026-05-31 at `2026-05-31T19:32:28.044Z`.
 
 - Apple public software search returned 5 fuzzy results and no exact `Ryvro` or `Ryvro Shift Planner` app result.
 - Google Play public search returned no exact `Ryvro` or `Ryvro Shift Planner` result text; visible fuzzy names were `Rydoo` and `Rydora`.
@@ -66,7 +66,7 @@ Completed and guarded in the current branch:
 - `ryvro.com` is already registered through GoDaddy/Afternic and should not be treated as available unless purchased from the current registrant.
 - `ryvro.app`, `ryvro.co`, `ryvro.io`, `ryvro.ai`, `ryvro.net`, and `ryvro.org` had no public DNS records in the preflight, but registrar availability still needs direct confirmation.
 - X, Instagram, and TikTok `@ryvro` returned public `200` responses; this does not prove ownership or availability.
-- YouTube `@ryvro` returned public `404`; LinkedIn `company/ryvro` returned public `404`; both still require logged-in reservation checks.
+- YouTube `@ryvro` returned public `404`; LinkedIn `company/ryvro` returned bot-protection status `999`. Both still require logged-in reservation checks.
 
 ## Verification Completed
 
