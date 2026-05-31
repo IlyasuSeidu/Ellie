@@ -1444,12 +1444,12 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
     expect(readme).toContain('Recent pushed PR gates');
-    expect(readme).toContain('GitHub Actions CI run `26722580831`');
+    expect(readme).toContain('GitHub Actions CI run `26722883474`');
+    expect(readme).toContain('commit `651f32d`');
+    expect(readme).toContain('CI run `26722709832`');
+    expect(readme).toContain('commit `b331116`');
+    expect(readme).toContain('CI run `26722580831`');
     expect(readme).toContain('commit `12fb9af`');
-    expect(readme).toContain('CI run `26722400690`');
-    expect(readme).toContain('commit `4af8a23`');
-    expect(readme).toContain('CI run `26721974527`');
-    expect(readme).toContain('commit `20f4758`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain(
@@ -1677,7 +1677,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, latest public clearance evidence at 19:32Z, and latest pushed PR #1 CI pass)'
+      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, latest public clearance evidence at 19:32Z, and latest pushed PR #1 CI pass `26722883474` on `651f32d`)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
@@ -1898,6 +1898,10 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
+    expect(readinessReport).toContain('CI run `26722883474`');
+    expect(readinessReport).toContain('commit `651f32d`');
+    expect(readinessReport).toContain('CI run `26722709832`');
+    expect(readinessReport).toContain('commit `b331116`');
     expect(readinessReport).toContain('CI run `26722580831`');
     expect(readinessReport).toContain('commit `12fb9af`');
     expect(readinessReport).toContain('CI run `26722400690`');
@@ -2093,7 +2097,7 @@ describe('Ryvro environment template', () => {
     expect(audit).toContain(
       'removed the retired `ellieBrain` HTTP export from active backend source'
     );
-    expect(audit).toContain('CI run `26722709832` on commit `b331116`');
+    expect(audit).toContain('CI run `26722883474` on commit `651f32d`');
     expect(audit).toContain(
       'production env preflight now rejects retired `ELLIE_BRAIN_*` keys before release builds'
     );
@@ -2491,12 +2495,12 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
     expect(ownerRunbook).toContain('Recent pushed PR gate evidence includes');
     expect(ownerRunbook).not.toContain('Latest pushed PR gate');
+    expect(ownerRunbook).toContain('CI run `26722883474`');
+    expect(ownerRunbook).toContain('commit `651f32d`');
+    expect(ownerRunbook).toContain('CI run `26722709832`');
+    expect(ownerRunbook).toContain('commit `b331116`');
     expect(ownerRunbook).toContain('CI run `26722580831`');
     expect(ownerRunbook).toContain('commit `12fb9af`');
-    expect(ownerRunbook).toContain('CI run `26722400690`');
-    expect(ownerRunbook).toContain('commit `4af8a23`');
-    expect(ownerRunbook).toContain('CI run `26721974527`');
-    expect(ownerRunbook).toContain('commit `20f4758`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');
