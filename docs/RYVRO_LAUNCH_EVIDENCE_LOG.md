@@ -73,14 +73,14 @@ Status values:
 
 ## Production Builds And Device QA
 
-| Item                   | Required evidence                                                                    | Status                 | Evidence location or notes |
-| ---------------------- | ------------------------------------------------------------------------------------ | ---------------------- | -------------------------- |
-| iOS production build   | EAS build URL, build number, and installed bundle ID proof                           | Pending owner evidence |                            |
-| Android production AAB | EAS build URL, versionCode, and package ID proof                                     | Pending owner evidence |                            |
-| TestFlight iPhone QA   | Device model, OS version, build number, tester account, smoke matrix result          | Pending owner evidence |                            |
-| Physical Android QA    | Device model, OS version, versionCode, tester account, smoke matrix result           | Pending owner evidence |                            |
-| Store screenshots      | File list for iPhone 6.7 inch, iPad 12.9 inch, Android phone, and paywall screenshot | Pending owner evidence |                            |
-| Store submission       | App Store submission ID/status and Google Play release ID/track status               | Pending owner evidence |                            |
+| Item                   | Required evidence                                                                                                                      | Status                 | Evidence location or notes |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | -------------------------- |
+| iOS production build   | EAS build URL, build number, and installed bundle ID proof                                                                             | Pending owner evidence |                            |
+| Android production AAB | EAS build URL, versionCode, and package ID proof                                                                                       | Pending owner evidence |                            |
+| TestFlight iPhone QA   | Device model, OS version, build number, tester account, smoke matrix result                                                            | Pending owner evidence |                            |
+| Physical Android QA    | Device model, OS version, versionCode, tester account, smoke matrix result                                                             | Pending owner evidence |                            |
+| Store screenshots      | File list from `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md` for iPhone 6.7 inch, iPad 12.9 inch, Android phone, and paywall screenshot | Pending owner evidence |                            |
+| Store submission       | App Store submission ID/status and Google Play release ID/track status                                                                 | Pending owner evidence |                            |
 
 ## Go/No-Go Summary
 

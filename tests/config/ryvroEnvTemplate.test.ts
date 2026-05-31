@@ -1990,10 +1990,15 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'docs/RYVRO_STORE_LISTING.md'),
       'utf8'
     );
+    const screenshotChecklist = fs.readFileSync(
+      path.join(process.cwd(), 'docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md'),
+      'utf8'
+    );
 
     expect(storeListing).toContain('reviewer@getryvro.com');
     expect(storeListing).toContain('support@getryvro.com');
     expect(storeListing).toContain('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
+    expect(storeListing).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
     expect(storeListing).toContain('App Store Connect / Google Play review notes');
     expect(storeListing).toContain('App Store iPhone 6.7 inch: 3 screenshots at 1290 x 2796');
     expect(storeListing).toContain('App Store iPad Pro 12.9 inch: 3 screenshots at 2048 x 2732');
@@ -2026,6 +2031,24 @@ describe('Ryvro environment template', () => {
     expect(storeListing).not.toContain('TBD');
     expect(storeListing).not.toContain('aviation/rail templates');
     expect(storeListing).not.toMatch(/changes by site|heading to site/i);
+
+    expect(screenshotChecklist).toContain('# Ryvro Screenshot Capture Checklist');
+    expect(screenshotChecklist).toContain('Do not use Expo Go, web previews');
+    expect(screenshotChecklist).toContain('reviewer@getryvro.com');
+    expect(screenshotChecklist).toContain('app-store-iphone-01-template-start.png');
+    expect(screenshotChecklist).toContain('app-store-iphone-02-dashboard-calendar.png');
+    expect(screenshotChecklist).toContain('app-store-iphone-03-paywall.png');
+    expect(screenshotChecklist).toContain('app-store-ipad-01-template-start.png');
+    expect(screenshotChecklist).toContain('app-store-ipad-02-dashboard-calendar.png');
+    expect(screenshotChecklist).toContain('app-store-ipad-03-paywall.png');
+    expect(screenshotChecklist).toContain('google-play-phone-01-template-start.png');
+    expect(screenshotChecklist).toContain('google-play-phone-02-dashboard-calendar.png');
+    expect(screenshotChecklist).toContain('google-play-phone-03-paywall.png');
+    expect(screenshotChecklist).toContain('1290 x 2796');
+    expect(screenshotChecklist).toContain('2048 x 2732');
+    expect(screenshotChecklist).toContain('1080 x 1920 or higher');
+    expect(screenshotChecklist).toContain('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
+    expect(screenshotChecklist).toContain('Keep the screenshot files out of Git');
   });
 
   it('keeps RevenueCat launch guidance free of retired Ellie entitlement aliases', () => {
@@ -2201,8 +2224,13 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'docs/RYVRO_LAUNCH_EVIDENCE_LOG.md'),
       'utf8'
     );
+    const screenshotChecklist = fs.readFileSync(
+      path.join(process.cwd(), 'docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md'),
+      'utf8'
+    );
 
     expect(ownerRunbook).toContain('Do not submit to App Store review or Google Play production');
+    expect(ownerRunbook).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
     expect(ownerRunbook).toContain('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
     expect(ownerRunbook).toContain('non-secret owner evidence');
     expect(ownerRunbook).toContain('Formal trademark/legal clearance for `Ryvro`');
@@ -2260,6 +2288,9 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('Physical Android QA');
     expect(launchEvidenceLog).toContain('Store submission');
     expect(launchEvidenceLog).toContain('Pending owner evidence');
+    expect(launchEvidenceLog).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
+    expect(screenshotChecklist).toContain('device model');
+    expect(screenshotChecklist).toContain('final file list');
 
     expect(externalSetup).toContain('docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md');
   });

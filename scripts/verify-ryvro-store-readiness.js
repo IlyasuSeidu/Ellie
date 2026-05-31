@@ -53,6 +53,7 @@ function characterCount(value) {
 const storeListing = read('docs/RYVRO_STORE_LISTING.md');
 const submissionDraft = read('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
 const privacySupport = read('docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md');
+const screenshotChecklist = read('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
 
 const appStoreName = 'Ryvro Shift Planner';
 const googlePlayName = 'Ryvro Shift Planner';
@@ -166,6 +167,26 @@ if (!appStoreDescription) {
   'app-store-iphone-01-template-start.png',
   'google-play-phone-02-dashboard-calendar.png',
 ].forEach((expected) => requireIncludes(screenshotPlan, expected, 'store screenshot capture plan'));
+
+[
+  '# Ryvro Screenshot Capture Checklist',
+  'Do not use Expo Go, web previews, local development-client screenshots',
+  'reviewer@getryvro.com',
+  'app-store-iphone-01-template-start.png',
+  'app-store-iphone-02-dashboard-calendar.png',
+  'app-store-iphone-03-paywall.png',
+  'app-store-ipad-01-template-start.png',
+  'app-store-ipad-02-dashboard-calendar.png',
+  'app-store-ipad-03-paywall.png',
+  'google-play-phone-01-template-start.png',
+  'google-play-phone-02-dashboard-calendar.png',
+  'google-play-phone-03-paywall.png',
+  '1290 x 2796',
+  '2048 x 2732',
+  '1080 x 1920 or higher',
+  'docs/RYVRO_LAUNCH_EVIDENCE_LOG.md',
+  'Keep the screenshot files out of Git',
+].forEach((expected) => requireIncludes(screenshotChecklist, expected, 'screenshot checklist'));
 
 const forbiddenClaims = [
   /best ever/i,

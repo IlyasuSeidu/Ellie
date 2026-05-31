@@ -10,6 +10,7 @@ Use these source docs while completing the runbook:
 - `docs/RYVRO_RELEASE_READINESS_REPORT.md` for repo-proven evidence and known blockers.
 - `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md` for Firebase, OAuth, Apple, RevenueCat, EAS, domain, social, analytics, and support console values.
 - `docs/RYVRO_STORE_LISTING.md` for App Store and Google Play copy.
+- `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md` for required App Store and Google Play screenshot frames, file names, and capture evidence.
 - `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md` for privacy, terms, support, account deletion, and Firebase Auth email templates.
 - `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md` for App Store privacy answers, Google Play Data safety answers, content rating, export compliance, and reviewer notes.
 - `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` for recording non-secret owner evidence before go/no-go.
@@ -192,6 +193,7 @@ Evidence to record:
 - Device model, OS version, app build number/versionCode, tester account, date/time, and pass/fail notes.
 - Screenshots or screen recordings for failed cases.
 - Store-ready screenshots listed in `docs/RYVRO_STORE_LISTING.md`.
+- Store-ready screenshot file names and capture metadata from `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md`.
 - Update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` with the non-secret evidence references.
 
 ### 8. Submission And Release

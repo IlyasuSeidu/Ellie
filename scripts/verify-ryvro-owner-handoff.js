@@ -44,6 +44,7 @@ const storeListing = read('docs/RYVRO_STORE_LISTING.md');
 const privacySupport = read('docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md');
 const submissionDraft = read('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
 const launchEvidenceLog = read('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
+const screenshotChecklist = read('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
 
 [
   ['formal trademark/legal clearance', releaseTasks],
@@ -73,6 +74,9 @@ const launchEvidenceLog = read('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
   ['Store screenshots, app privacy, data safety, content rating', ownerRunbook],
   ['Production `ryvroBrain` and `parseShiftScheduleDescription` endpoints', ownerRunbook],
   ['root-level Firebase native service files', ownerRunbook],
+  ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', ownerRunbook],
+  ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', storeListing],
+  ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', launchEvidenceLog],
   ['docs/RYVRO_LAUNCH_EVIDENCE_LOG.md', releaseTasks],
   ['docs/RYVRO_LAUNCH_EVIDENCE_LOG.md', ownerRunbook],
   ['Fresh Firebase iOS/Android app configs and OAuth clients', readinessReport],
@@ -84,6 +88,7 @@ const launchEvidenceLog = read('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
   ['docs/RYVRO_RELEASE_READINESS_REPORT.md', ownerRunbook],
   ['docs/RYVRO_EXTERNAL_SERVICE_SETUP.md', ownerRunbook],
   ['docs/RYVRO_STORE_LISTING.md', ownerRunbook],
+  ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', ownerRunbook],
   ['docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md', ownerRunbook],
   ['docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md', ownerRunbook],
   ['docs/RYVRO_LAUNCH_EVIDENCE_LOG.md', ownerRunbook],
@@ -138,6 +143,26 @@ const launchEvidenceLog = read('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
   ['Store submission', launchEvidenceLog],
   ['Pending owner evidence', launchEvidenceLog],
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'launch evidence log'));
+
+[
+  ['# Ryvro Screenshot Capture Checklist', screenshotChecklist],
+  ['Do not use Expo Go, web previews, local development-client screenshots', screenshotChecklist],
+  ['reviewer@getryvro.com', screenshotChecklist],
+  ['app-store-iphone-01-template-start.png', screenshotChecklist],
+  ['app-store-iphone-02-dashboard-calendar.png', screenshotChecklist],
+  ['app-store-iphone-03-paywall.png', screenshotChecklist],
+  ['app-store-ipad-01-template-start.png', screenshotChecklist],
+  ['app-store-ipad-02-dashboard-calendar.png', screenshotChecklist],
+  ['app-store-ipad-03-paywall.png', screenshotChecklist],
+  ['google-play-phone-01-template-start.png', screenshotChecklist],
+  ['google-play-phone-02-dashboard-calendar.png', screenshotChecklist],
+  ['google-play-phone-03-paywall.png', screenshotChecklist],
+  ['1290 x 2796', screenshotChecklist],
+  ['2048 x 2732', screenshotChecklist],
+  ['1080 x 1920 or higher', screenshotChecklist],
+  ['docs/RYVRO_LAUNCH_EVIDENCE_LOG.md', screenshotChecklist],
+  ['Keep the screenshot files out of Git', screenshotChecklist],
+].forEach(([expected, content]) => requireIncludes(content, expected, 'screenshot checklist'));
 
 requireIncludes(
   readinessReport,

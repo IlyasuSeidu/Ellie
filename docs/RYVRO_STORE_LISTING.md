@@ -4,7 +4,7 @@ Last updated: 2026-05-30
 
 This pack is the source copy for App Store Connect, Google Play Console, screenshots, and launch review notes. It keeps the FIFO and rotating-shift launch wedge sharp without trapping Ryvro in a single-industry frame.
 
-Use `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md` beside this file for App Store privacy answers, Google Play Data safety answers, content rating, export compliance, and reviewer notes.
+Use `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md` beside this file for App Store privacy answers, Google Play Data safety answers, content rating, export compliance, and reviewer notes. Use `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md` for the exact screenshot capture file names, preconditions, and evidence-log fields.
 
 ## Source Requirements
 
