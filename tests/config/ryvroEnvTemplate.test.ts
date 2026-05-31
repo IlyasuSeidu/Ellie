@@ -653,7 +653,7 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('109 Jest suites / 1,743 tests / 4 snapshots');
     expect(readme).toContain('Recent pushed PR gate');
     expect(readme).toContain('GitHub Actions CI passed Unit Tests, Lint and Type Check');
-    expect(readme).toContain('run `26706091677`');
+    expect(readme).toContain('run `26706309637`');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
@@ -925,6 +925,8 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('CI run `26705685141`');
     expect(readinessReport).toContain('commit `7115d85`');
     expect(readinessReport).toContain('CI run `26706091677`');
+    expect(readinessReport).toContain('commit `df0b161`');
+    expect(readinessReport).toContain('CI run `26706309637`');
     expect(readinessReport).toContain(
       'commits `f004097`, `10353e7`, `3f92d56`, `90d403d`, and `82fd530`'
     );
@@ -939,6 +941,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('centralizing cache TTL policy');
     expect(readinessReport).toContain('109 Jest suites / 1,743 tests');
     expect(readinessReport).toContain('aligning dynamic Expo version fallbacks');
+    expect(readinessReport).toContain('refreshing public clearance evidence');
     expect(readinessReport).toContain('First-store-build version values are aligned');
     expect(readinessReport).toContain('Global pending-sync visibility now surfaces queued');
     expect(readinessReport).toContain('Runtime cache TTL policy is centralized');
