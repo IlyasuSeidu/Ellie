@@ -12,6 +12,7 @@ Use these source docs while completing the runbook:
 - `docs/RYVRO_STORE_LISTING.md` for App Store and Google Play copy.
 - `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md` for privacy, terms, support, account deletion, and Firebase Auth email templates.
 - `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md` for App Store privacy answers, Google Play Data safety answers, content rating, export compliance, and reviewer notes.
+- `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` for recording non-secret owner evidence before go/no-go.
 
 ## Stop Gates
 
@@ -47,6 +48,7 @@ Evidence to record:
 - Google Play package reservation confirmation.
 - Registrar receipt and DNS control proof.
 - Reserved social handle list.
+- Update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` with the non-secret evidence references.
 
 ### 2. Account And Console Setup
 
@@ -66,6 +68,7 @@ Evidence to record:
 - Google Play app/package dashboard link.
 - EAS project ID.
 - Signing/provisioning status.
+- Update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` with the non-secret evidence references.
 
 ### 3. Firebase, OAuth, Backend, And Secrets
 
@@ -99,6 +102,7 @@ Evidence to record:
 - `npm run release:env:check` output.
 - EAS secret push confirmation.
 - `curl` smoke-test output for `RYVRO_BRAIN_URL`.
+- Update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` with the non-secret evidence references.
 
 ### 4. RevenueCat And Store Products
 
@@ -118,6 +122,7 @@ Evidence to record:
 - iOS and Android SDK keys copied into `.env`.
 - App Store and Play product status.
 - Sandbox purchase, cancel, and restore results.
+- Update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` with the non-secret evidence references.
 
 ### 5. Legal, Support, And Store Forms
 
@@ -136,6 +141,7 @@ Evidence to record:
 - App Store privacy form completion.
 - Google Play Data safety form completion.
 - Reviewer account credentials stored only in the store consoles.
+- Update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` with the non-secret evidence references.
 
 ### 6. Production Builds
 
@@ -161,6 +167,7 @@ Evidence to record:
 - EAS Android build URL and versionCode.
 - Installed bundle/package identity proof.
 - Any build warnings and resolutions.
+- Update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` with the non-secret evidence references.
 
 ### 7. Device QA
 
@@ -185,6 +192,7 @@ Evidence to record:
 - Device model, OS version, app build number/versionCode, tester account, date/time, and pass/fail notes.
 - Screenshots or screen recordings for failed cases.
 - Store-ready screenshots listed in `docs/RYVRO_STORE_LISTING.md`.
+- Update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` with the non-secret evidence references.
 
 ### 8. Submission And Release
 
@@ -201,6 +209,7 @@ Evidence to record:
 - Google Play release ID and track status.
 - Review feedback and resolutions.
 - Final production release date/time.
+- Update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` with the non-secret evidence references.
 
 ## Current Repo Evidence
 

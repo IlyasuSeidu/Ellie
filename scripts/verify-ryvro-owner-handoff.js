@@ -43,6 +43,7 @@ const externalSetup = read('docs/RYVRO_EXTERNAL_SERVICE_SETUP.md');
 const storeListing = read('docs/RYVRO_STORE_LISTING.md');
 const privacySupport = read('docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md');
 const submissionDraft = read('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
+const launchEvidenceLog = read('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
 
 [
   ['formal trademark/legal clearance', releaseTasks],
@@ -72,6 +73,8 @@ const submissionDraft = read('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
   ['Store screenshots, app privacy, data safety, content rating', ownerRunbook],
   ['Production `ryvroBrain` and `parseShiftScheduleDescription` endpoints', ownerRunbook],
   ['root-level Firebase native service files', ownerRunbook],
+  ['docs/RYVRO_LAUNCH_EVIDENCE_LOG.md', releaseTasks],
+  ['docs/RYVRO_LAUNCH_EVIDENCE_LOG.md', ownerRunbook],
   ['Fresh Firebase iOS/Android app configs and OAuth clients', readinessReport],
   ['real root-level Firebase native service files', readinessReport],
   ['Production Firebase deploy and smoke test for the `ryvroBrain` endpoint', readinessReport],
@@ -83,6 +86,7 @@ const submissionDraft = read('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
   ['docs/RYVRO_STORE_LISTING.md', ownerRunbook],
   ['docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md', ownerRunbook],
   ['docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md', ownerRunbook],
+  ['docs/RYVRO_LAUNCH_EVIDENCE_LOG.md', ownerRunbook],
   ['docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md', externalSetup],
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'cross-linked owner docs'));
 
@@ -104,6 +108,36 @@ const submissionDraft = read('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
   ['Bundle ID: com.ryvro.shiftplanner', storeListing],
   ['Android package: com.ryvro.shiftplanner', storeListing],
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'launch console handoff'));
+
+[
+  ['# Ryvro Launch Evidence Log', launchEvidenceLog],
+  ['Do not paste passwords, private keys, signing certificates', launchEvidenceLog],
+  ['## Clearance And Reservations', launchEvidenceLog],
+  ['Formal trademark/legal clearance for `Ryvro`', launchEvidenceLog],
+  ['App Store Connect app name `Ryvro Shift Planner`', launchEvidenceLog],
+  [
+    'Google Play title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`',
+    launchEvidenceLog,
+  ],
+  ['Domain control for `getryvro.com`', launchEvidenceLog],
+  ['## Firebase, OAuth, Backend, And Email', launchEvidenceLog],
+  ['Firebase Auth email templates', launchEvidenceLog],
+  [
+    'Sender `Ryvro Support`, reply-to `support@getryvro.com`, action domain `getryvro.com`',
+    launchEvidenceLog,
+  ],
+  ['`ryvroBrain` and `parseShiftScheduleDescription` function deploy output', launchEvidenceLog],
+  ['## RevenueCat And Store Products', launchEvidenceLog],
+  ['Entitlement ID `pro`, display name `Ryvro Pro`', launchEvidenceLog],
+  ['`ryvro_pro_monthly` and `ryvro_pro_annual`', launchEvidenceLog],
+  ['## Legal, Support, And Store Forms', launchEvidenceLog],
+  ['Live `https://getryvro.com/delete-account` URL', launchEvidenceLog],
+  ['## Production Builds And Device QA', launchEvidenceLog],
+  ['TestFlight iPhone QA', launchEvidenceLog],
+  ['Physical Android QA', launchEvidenceLog],
+  ['Store submission', launchEvidenceLog],
+  ['Pending owner evidence', launchEvidenceLog],
+].forEach(([expected, content]) => requireIncludes(content, expected, 'launch evidence log'));
 
 requireIncludes(
   readinessReport,

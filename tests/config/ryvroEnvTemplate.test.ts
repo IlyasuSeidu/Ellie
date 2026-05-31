@@ -1572,6 +1572,8 @@ describe('Ryvro environment template', () => {
       'rejecting tracked local placeholders and generated native-folder paths'
     );
     expect(releaseTasks).toContain('Use `docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md`');
+    expect(releaseTasks).toContain('`docs/RYVRO_LAUNCH_EVIDENCE_LOG.md`');
+    expect(releaseTasks).toContain('non-secret evidence ledger');
     expect(releaseTasks).toContain(
       'Add app-level offline/pending-sync status visibility for queued local writes'
     );
@@ -2195,8 +2197,14 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'docs/RYVRO_EXTERNAL_SERVICE_SETUP.md'),
       'utf8'
     );
+    const launchEvidenceLog = fs.readFileSync(
+      path.join(process.cwd(), 'docs/RYVRO_LAUNCH_EVIDENCE_LOG.md'),
+      'utf8'
+    );
 
     expect(ownerRunbook).toContain('Do not submit to App Store review or Google Play production');
+    expect(ownerRunbook).toContain('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
+    expect(ownerRunbook).toContain('non-secret owner evidence');
     expect(ownerRunbook).toContain('Formal trademark/legal clearance for `Ryvro`');
     expect(ownerRunbook).toContain('Reserve or create Google Play title `Ryvro Shift Planner`');
     expect(ownerRunbook).toContain('Purchase or reserve the launch domain');
@@ -2229,6 +2237,29 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');
+
+    expect(launchEvidenceLog).toContain('# Ryvro Launch Evidence Log');
+    expect(launchEvidenceLog).toContain('Do not paste passwords, private keys');
+    expect(launchEvidenceLog).toContain('Formal trademark/legal clearance for `Ryvro`');
+    expect(launchEvidenceLog).toContain('App Store Connect app name `Ryvro Shift Planner`');
+    expect(launchEvidenceLog).toContain(
+      'Google Play title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`'
+    );
+    expect(launchEvidenceLog).toContain('Domain control for `getryvro.com`');
+    expect(launchEvidenceLog).toContain('Firebase Auth email templates');
+    expect(launchEvidenceLog).toContain(
+      'Sender `Ryvro Support`, reply-to `support@getryvro.com`, action domain `getryvro.com`'
+    );
+    expect(launchEvidenceLog).toContain(
+      '`ryvroBrain` and `parseShiftScheduleDescription` function deploy output'
+    );
+    expect(launchEvidenceLog).toContain('Entitlement ID `pro`, display name `Ryvro Pro`');
+    expect(launchEvidenceLog).toContain('`ryvro_pro_monthly` and `ryvro_pro_annual`');
+    expect(launchEvidenceLog).toContain('Live `https://getryvro.com/delete-account` URL');
+    expect(launchEvidenceLog).toContain('TestFlight iPhone QA');
+    expect(launchEvidenceLog).toContain('Physical Android QA');
+    expect(launchEvidenceLog).toContain('Store submission');
+    expect(launchEvidenceLog).toContain('Pending owner evidence');
 
     expect(externalSetup).toContain('docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md');
   });
