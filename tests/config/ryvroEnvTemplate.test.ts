@@ -2465,6 +2465,8 @@ describe('Ryvro environment template', () => {
     expect(ciWorkflow).toContain('ryvro-brain-test.cloudfunctions.net/ryvroBrain');
     expect(e2eWorkflow).toContain('ryvro-brain-test.cloudfunctions.net/ryvroBrain');
     expect(ciWorkflow).toContain('name: Release Check');
+    expect(ciWorkflow).toContain('backend/functions/package-lock.json');
+    expect(ciWorkflow).toContain('npm --prefix backend/functions ci');
     expect(ciWorkflow).toContain('run: npm run release:check');
     expect(packageJson.scripts?.['release:check']).toContain('npm run release:native:check');
     expect(packageJson.scripts?.['release:check']).toContain('npm run release:store:check');

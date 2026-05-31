@@ -204,9 +204,14 @@ jobs:
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            backend/functions/package-lock.json
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: |
+          npm ci --legacy-peer-deps
+          npm --prefix backend/functions ci
 
       - name: Run release gate
         run: npm run release:check
