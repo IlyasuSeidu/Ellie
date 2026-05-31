@@ -44,12 +44,13 @@ Completed in the current working tree:
 - Expanded E2E onboarding fixtures for launch QA personas including nurse, security officer, firefighter, plant operator, linehaul driver, warehouse lead, hotel duty manager, airport operations coordinator, offshore technician, and a mining/FIFO operator.
 - Cleaned remaining launch-critical broad-market copy in README, English onboarding feature descriptions, selected translated placeholders/social proof, and onboarding icon source guidance.
 - Hardened tracked generated-content guidance and publishable build-in-public packs so they use Ryvro naming, broad shift-worker discovery tags, and FIFO/shift-worker audience language instead of stale Ellie or mining-only tags.
-- Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the launch-readiness cleanup. The latest pushed CI run for this branch passed on 2026-05-31: CI run `26727378127` on commit `5101ca3`.
+- Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the launch-readiness cleanup. The latest pushed CI run for this branch passed on 2026-05-31: CI run `26727544770` on commit `9baa0ba`.
 - Aligned the active deployment guide to the committed Ryvro `eas.json`, dynamic `app.config.js`, and guarded `npm run release:submit:check` plus `eas submit --latest` store-submission flow.
 - Renamed retired Ellie storage-key code symbols to neutral Ryvro-era `retired...` names while preserving the raw old keys only for migration/removal.
 - Tightened the Ryvro native scaffold verifier so active release checks inspect only `ios/RyvroShiftPlanner` generated paths instead of accepting old iOS project-name fallbacks.
 - Confirmed active wake-word keyword/model guidance uses Ryvro filenames (`ryvro_ios.ppn`, `ryvro_android.ppn`, and optional `openwakeword/ryvro.onnx`) with no active `hey_ellie`, `ellie_ios`, or `ellie_android` launch defaults.
 - Renamed the retired Firebase JS service sidecar code symbol to neutral Ryvro-era cleanup wording while preserving the raw old sidecar app name only as a compatibility lookup.
+- Reconciled the asset checklist with current launch asset evidence: production Expo icons, splash, favicon, neutral Ryvro assistant densities, and retired helmet cleanup are now tracked as done, while unverified render and thumbnail checks remain open.
 - Added built-in fallback parser regression coverage across 20 shift-worker industry prompts so the AI builder fallback is proven beyond mining/FIFO examples.
 - Added AI builder fallback metadata, friendlier fallback copy, and analytics events for parser completion, local fallback use, clarification, draft acceptance, manual edit after draft, and save context.
 - Tightened exception, calendar, and reminder launch copy so one-off rows say they changed just that day, calendar export promises shift times/locations/notes, and smart reminder commute copy defaults to work location instead of site.
@@ -1482,15 +1483,15 @@ Phase gate:
 
 ### Phase 2: Core Assets
 
-- [ ] Replace app icon.
-- [ ] Replace adaptive icon.
-- [ ] Replace splash image.
-- [ ] Replace favicon.
-- [ ] Replace mining helmet assistant avatar in all density folders.
-- [ ] Replace consolidated mining helmet assets.
-- [ ] Add universal assistant/source asset.
+- [x] Replace app icon.
+- [x] Replace adaptive icon.
+- [x] Replace splash image.
+- [x] Replace favicon.
+- [x] Replace mining helmet assistant avatar in all density folders.
+- [x] Replace consolidated mining helmet assets.
+- [x] Add universal assistant/source asset.
 - [ ] Add industry template thumbnail set.
-- [ ] Update import paths from old asset names where needed.
+- [x] Update import paths from old asset names where needed.
 - [ ] Verify assets render in onboarding.
 - [ ] Verify assets render on app icon/home screen.
 
