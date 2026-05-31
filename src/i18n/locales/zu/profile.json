@@ -3,7 +3,8 @@
     "personalInfo": "Ulwazi lomuntu siqu",
     "workOverview": "Ukubuka konke komsebenzi",
     "shiftSettings": "Shift Izilungiselelo",
-    "smartReminders": "Izikhumbuzi ezihlakaniphile"
+    "smartReminders": "Izikhumbuzi ezihlakaniphile",
+    "legalSupport": "Help & Legal"
   },
   "fields": {
     "name": "Igama",
@@ -350,6 +351,28 @@
     "test": {
       "title": "Izikhumbuzi ezihlakaniphile zivuliwe",
       "body": "Uma lokhu kufika, izikhumbuzi zakho ezihlakaniphile ziyasebenza."
+    }
+  },
+  "legal": {
+    "support": {
+      "title": "Support",
+      "hint": "Get help with your account or schedule",
+      "a11y": "Open Ryvro support"
+    },
+    "deleteAccount": {
+      "title": "Delete account",
+      "hint": "Request account and app data deletion",
+      "a11y": "Open Ryvro account deletion"
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "hint": "How Ryvro handles your data",
+      "a11y": "Open Ryvro privacy policy"
+    },
+    "terms": {
+      "title": "Terms of service",
+      "hint": "Subscription and app usage terms",
+      "a11y": "Open Ryvro terms of service"
     }
   }
 }

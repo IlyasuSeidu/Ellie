@@ -3,7 +3,8 @@
     "personalInfo": "个人信息",
     "workOverview": "工作概况",
     "shiftSettings": "班次设置",
-    "smartReminders": "智能提醒"
+    "smartReminders": "智能提醒",
+    "legalSupport": "Help & Legal"
   },
   "fields": {
     "name": "姓名",
@@ -350,6 +351,28 @@
     "test": {
       "title": "智能提醒已开启",
       "body": "如果你收到了这条提醒，说明智能提醒正在正常工作。"
+    }
+  },
+  "legal": {
+    "support": {
+      "title": "Support",
+      "hint": "Get help with your account or schedule",
+      "a11y": "Open Ryvro support"
+    },
+    "deleteAccount": {
+      "title": "Delete account",
+      "hint": "Request account and app data deletion",
+      "a11y": "Open Ryvro account deletion"
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "hint": "How Ryvro handles your data",
+      "a11y": "Open Ryvro privacy policy"
+    },
+    "terms": {
+      "title": "Terms of service",
+      "hint": "Subscription and app usage terms",
+      "a11y": "Open Ryvro terms of service"
     }
   }
 }

@@ -3,7 +3,8 @@
     "personalInfo": "Persoonlike inligting",
     "workOverview": "Werk Oorsig",
     "shiftSettings": "Shift instellings",
-    "smartReminders": "Slim herinneringe"
+    "smartReminders": "Slim herinneringe",
+    "legalSupport": "Help & Legal"
   },
   "fields": {
     "name": "Naam",
@@ -350,6 +351,28 @@
     "test": {
       "title": "Slim herinneringe is aan",
       "body": "As dit aankom, werk jou slim herinneringe."
+    }
+  },
+  "legal": {
+    "support": {
+      "title": "Support",
+      "hint": "Get help with your account or schedule",
+      "a11y": "Open Ryvro support"
+    },
+    "deleteAccount": {
+      "title": "Delete account",
+      "hint": "Request account and app data deletion",
+      "a11y": "Open Ryvro account deletion"
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "hint": "How Ryvro handles your data",
+      "a11y": "Open Ryvro privacy policy"
+    },
+    "terms": {
+      "title": "Terms of service",
+      "hint": "Subscription and app usage terms",
+      "a11y": "Open Ryvro terms of service"
     }
   }
 }

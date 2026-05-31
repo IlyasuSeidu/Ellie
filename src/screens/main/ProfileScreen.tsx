@@ -15,6 +15,7 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  Linking,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -39,6 +40,7 @@ import type { RootStackParamList } from '@/navigation/AppNavigator';
 import { useSubscription } from '@/hooks/useSubscription';
 import { getSettingsErrorMessage } from '@/utils/settingsErrorMessage';
 import { setPersistedOnboardingComplete } from '@/utils/onboardingPersistence';
+import { legalConfig } from '@/config/env';
 
 export const ProfileScreen: React.FC = () => {
   const { t } = useTranslation('profile');
@@ -145,6 +147,10 @@ export const ProfileScreen: React.FC = () => {
       );
     }
   }, [canOpenCustomerCenter, isPro, openCustomerCenter, openPaywall, subscriptionLoading, tCommon]);
+
+  const handleOpenUrl = useCallback((url: string) => {
+    void Linking.openURL(url);
+  }, []);
 
   return (
     <View style={styles.screen}>
@@ -299,6 +305,98 @@ export const ProfileScreen: React.FC = () => {
           <Ionicons name="chevron-forward" size={16} color={theme.colors.dust} />
         </TouchableOpacity>
 
+        <ProfileSectionHeader
+          title={t('sections.legalSupport', { defaultValue: 'Help & Legal' })}
+          icon="help-circle-outline"
+          iconColor={tabAccentColor}
+          backgroundGradientColors={profileAccentGradient}
+          animationDelay={1500}
+        />
+
+        <TouchableOpacity
+          style={styles.languageRow}
+          onPress={() => handleOpenUrl(legalConfig.supportUrl)}
+          accessibilityRole="link"
+          accessibilityLabel={t('legal.support.a11y', { defaultValue: 'Open Ryvro support' })}
+          testID="profile-support-link"
+        >
+          <Ionicons name="help-buoy-outline" size={18} color={theme.colors.sacredGold} />
+          <View style={styles.legalCopy}>
+            <Text style={styles.legalTitle}>
+              {t('legal.support.title', { defaultValue: 'Support' })}
+            </Text>
+            <Text style={styles.legalHint}>
+              {t('legal.support.hint', { defaultValue: 'Get help with your account or schedule' })}
+            </Text>
+          </View>
+          <Ionicons name="open-outline" size={16} color={theme.colors.dust} />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.languageRow}
+          onPress={() => handleOpenUrl(legalConfig.accountDeletionUrl)}
+          accessibilityRole="link"
+          accessibilityLabel={t('legal.deleteAccount.a11y', {
+            defaultValue: 'Open Ryvro account deletion',
+          })}
+          testID="profile-account-deletion-link"
+        >
+          <Ionicons name="trash-outline" size={18} color={theme.colors.sacredGold} />
+          <View style={styles.legalCopy}>
+            <Text style={styles.legalTitle}>
+              {t('legal.deleteAccount.title', { defaultValue: 'Delete account' })}
+            </Text>
+            <Text style={styles.legalHint}>
+              {t('legal.deleteAccount.hint', {
+                defaultValue: 'Request account and app data deletion',
+              })}
+            </Text>
+          </View>
+          <Ionicons name="open-outline" size={16} color={theme.colors.dust} />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.languageRow}
+          onPress={() => handleOpenUrl(legalConfig.privacyPolicyUrl)}
+          accessibilityRole="link"
+          accessibilityLabel={t('legal.privacy.a11y', {
+            defaultValue: 'Open Ryvro privacy policy',
+          })}
+          testID="profile-privacy-link"
+        >
+          <Ionicons name="shield-checkmark-outline" size={18} color={theme.colors.sacredGold} />
+          <View style={styles.legalCopy}>
+            <Text style={styles.legalTitle}>
+              {t('legal.privacy.title', { defaultValue: 'Privacy policy' })}
+            </Text>
+            <Text style={styles.legalHint}>
+              {t('legal.privacy.hint', { defaultValue: 'How Ryvro handles your data' })}
+            </Text>
+          </View>
+          <Ionicons name="open-outline" size={16} color={theme.colors.dust} />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.languageRow}
+          onPress={() => handleOpenUrl(legalConfig.termsOfServiceUrl)}
+          accessibilityRole="link"
+          accessibilityLabel={t('legal.terms.a11y', {
+            defaultValue: 'Open Ryvro terms of service',
+          })}
+          testID="profile-terms-link"
+        >
+          <Ionicons name="document-text-outline" size={18} color={theme.colors.sacredGold} />
+          <View style={styles.legalCopy}>
+            <Text style={styles.legalTitle}>
+              {t('legal.terms.title', { defaultValue: 'Terms of service' })}
+            </Text>
+            <Text style={styles.legalHint}>
+              {t('legal.terms.hint', { defaultValue: 'Subscription and app usage terms' })}
+            </Text>
+          </View>
+          <Ionicons name="open-outline" size={16} color={theme.colors.dust} />
+        </TouchableOpacity>
+
         {__DEV__ ? (
           <View style={styles.onboardingToolsSection}>
             <Pressable
@@ -391,6 +489,20 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   subscriptionHint: {
+    color: theme.colors.dust,
+    fontSize: 12,
+    lineHeight: 16,
+  },
+  legalCopy: {
+    flex: 1,
+    gap: 4,
+  },
+  legalTitle: {
+    color: theme.colors.paper,
+    fontSize: theme.typography.fontSizes.sm,
+    fontWeight: '700',
+  },
+  legalHint: {
     color: theme.colors.dust,
     fontSize: 12,
     lineHeight: 16,

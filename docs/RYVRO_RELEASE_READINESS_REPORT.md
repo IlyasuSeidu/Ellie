@@ -46,6 +46,7 @@ Completed and guarded in the current branch:
 - Release native scaffold preflight now runs inside `npm run release:check`; it verifies tracked Expo/native source-of-truth identity and warns when ignored generated iOS scaffolding or Firebase plist files still carry Ellie-era internals.
 - Stale generated Detox artifacts from the retired iOS app identity were removed from the tracked tree; `artifacts/` is now ignored so current release evidence stays in docs and fresh CI/test output instead of checked-in logs.
 - Dashboard quick actions now route to implemented launch surfaces instead of dead tap targets: builder/export actions enter the Universal Shift Builder, and alert/profile actions open the Profile tab.
+- Profile/settings now exposes configured support, account deletion, privacy policy, and terms links so launch users and app reviewers can reach the required legal/support pages from inside the app.
 - Schedule and Stats helper screens no longer present launch users with "Coming Soon" copy; they point users to the shipped Shift Builder, dashboard metrics, calendar import/export, exceptions, reminders, and profile schedule settings in every bundled locale.
 - Global pending-sync visibility now surfaces queued user-profile, shift-log, session, analytics, and related offline writes through the app-level sync status indicator.
 - Runtime cache TTL policy is centralized in `src/config/cacheConfig.ts` and wired through shift schedules, holidays, RevenueCat offerings, paywall recovery, voice assistant persistence, and storage maintenance.

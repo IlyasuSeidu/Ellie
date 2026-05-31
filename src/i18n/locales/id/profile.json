@@ -3,7 +3,8 @@
     "personalInfo": "Informasi Pribadi",
     "workOverview": "Ikhtisar Pekerjaan",
     "shiftSettings": "Pengaturan Pergeseran",
-    "smartReminders": "Pengingat cerdas"
+    "smartReminders": "Pengingat cerdas",
+    "legalSupport": "Help & Legal"
   },
   "fields": {
     "name": "Nama",
@@ -350,6 +351,28 @@
     "test": {
       "title": "Pengingat cerdas aktif",
       "body": "Jika ini masuk, pengingat cerdas Anda sedang bekerja."
+    }
+  },
+  "legal": {
+    "support": {
+      "title": "Support",
+      "hint": "Get help with your account or schedule",
+      "a11y": "Open Ryvro support"
+    },
+    "deleteAccount": {
+      "title": "Delete account",
+      "hint": "Request account and app data deletion",
+      "a11y": "Open Ryvro account deletion"
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "hint": "How Ryvro handles your data",
+      "a11y": "Open Ryvro privacy policy"
+    },
+    "terms": {
+      "title": "Terms of service",
+      "hint": "Subscription and app usage terms",
+      "a11y": "Open Ryvro terms of service"
     }
   }
 }

@@ -138,6 +138,7 @@ Repo-proven launch state:
 
 - App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`
 - Launch surface: Universal Shift Builder onboarding, dashboard, profile/settings, Ryvro voice entry point, reminders, exceptions, and calendar import/export
+- Support/legal surface: Profile links open the configured support, account deletion, privacy policy, and terms URLs
 - Hidden v1 tabs: Schedule and Stats are omitted from the bottom navigation; their helper screens are kept free of placeholder copy for any internal entry points
 - Templates and fixtures: mining/FIFO plus healthcare, security, emergency services, manufacturing, transport, hospitality, aviation, rail, and operations examples
 - Latest local gate: `npm run release:check` passed TypeScript, 109 Jest suites / 1,759 tests / 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build on 2026-05-31
@@ -149,7 +150,7 @@ Owner/account work still required before launch:
 - Formal trademark/legal clearance for `Ryvro`
 - App Store Connect and Google Play Console app creation/name/package reservation
 - Domain and social handle reservation
-- Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat, legal/support URLs, and EAS production secrets
+- Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat, legal/support/account deletion URLs, and EAS production secrets
 - Production `ryvroBrain` deploy and smoke test
 - Physical iOS and Android device smoke tests, store screenshots, privacy forms, data-safety forms, TestFlight/internal track upload, and final submission
 

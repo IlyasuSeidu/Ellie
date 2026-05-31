@@ -866,7 +866,7 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).toContain('npm run release:env:check');
     expect(releaseTasks).toContain('Copy `.env.production.example` to `.env`');
     expect(releaseTasks).toContain('Reject retired Ellie/ShiftSync Firebase project IDs');
-    expect(releaseTasks).toContain('live HTTPS Ryvro-owned legal/support URLs');
+    expect(releaseTasks).toContain('live HTTPS Ryvro-owned legal/support/account deletion URLs');
   });
 
   it('accepts a production env only when Expo public service values mirror native values', () => {
@@ -2046,6 +2046,11 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md'),
       'utf8'
     );
+    const profileScreen = fs.readFileSync(
+      path.join(process.cwd(), 'src/screens/main/ProfileScreen.tsx'),
+      'utf8'
+    );
+    const localeRoot = path.join(process.cwd(), 'src/i18n/locales');
 
     expect(privacySupport).toContain('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
     expect(privacySupport).toContain(
@@ -2064,6 +2069,45 @@ describe('Ryvro environment template', () => {
     );
     expect(privacySupport).toContain('support@getryvro.com');
     expect(privacySupport).not.toMatch(/mine site|haul truck|underground miner/i);
+
+    expect(profileScreen).toContain('legalConfig.supportUrl');
+    expect(profileScreen).toContain('legalConfig.accountDeletionUrl');
+    expect(profileScreen).toContain('legalConfig.privacyPolicyUrl');
+    expect(profileScreen).toContain('legalConfig.termsOfServiceUrl');
+    expect(profileScreen).toContain('profile-support-link');
+    expect(profileScreen).toContain('profile-account-deletion-link');
+    expect(profileScreen).toContain('profile-privacy-link');
+    expect(profileScreen).toContain('profile-terms-link');
+
+    for (const locale of fs.readdirSync(localeRoot)) {
+      const profileLocale = JSON.parse(
+        fs.readFileSync(path.join(localeRoot, locale, 'profile.json'), 'utf8')
+      ) as {
+        sections?: {
+          legalSupport?: string;
+        };
+        legal?: {
+          support?: { title?: string; hint?: string; a11y?: string };
+          deleteAccount?: { title?: string; hint?: string; a11y?: string };
+          privacy?: { title?: string; hint?: string; a11y?: string };
+          terms?: { title?: string; hint?: string; a11y?: string };
+        };
+      };
+
+      expect(profileLocale.sections?.legalSupport).toBeTruthy();
+      expect(profileLocale.legal?.support?.title).toBeTruthy();
+      expect(profileLocale.legal?.support?.hint).toBeTruthy();
+      expect(profileLocale.legal?.support?.a11y).toBeTruthy();
+      expect(profileLocale.legal?.deleteAccount?.title).toBeTruthy();
+      expect(profileLocale.legal?.deleteAccount?.hint).toBeTruthy();
+      expect(profileLocale.legal?.deleteAccount?.a11y).toBeTruthy();
+      expect(profileLocale.legal?.privacy?.title).toBeTruthy();
+      expect(profileLocale.legal?.privacy?.hint).toBeTruthy();
+      expect(profileLocale.legal?.privacy?.a11y).toBeTruthy();
+      expect(profileLocale.legal?.terms?.title).toBeTruthy();
+      expect(profileLocale.legal?.terms?.hint).toBeTruthy();
+      expect(profileLocale.legal?.terms?.a11y).toBeTruthy();
+    }
   });
 
   it('keeps store submission form answers drafted for account-owner console work', () => {
@@ -2123,6 +2167,9 @@ describe('Ryvro environment template', () => {
     expect(externalSetup).toContain('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
     expect(releaseTasks).toContain('Use `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md`');
     expect(readinessReport).toContain('Store-submission form draft now covers');
+    expect(readinessReport).toContain(
+      'Profile/settings now exposes configured support, account deletion, privacy policy, and terms links'
+    );
   });
 
   it('keeps the owner launch runbook sequenced for the remaining account and device work', () => {

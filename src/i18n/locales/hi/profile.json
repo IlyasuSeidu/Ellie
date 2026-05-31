@@ -3,7 +3,8 @@
     "personalInfo": "व्यक्तिगत जानकारी",
     "workOverview": "कार्य अवलोकन",
     "shiftSettings": "शिफ्ट सेटिंग्स",
-    "smartReminders": "स्मार्ट रिमाइंडर"
+    "smartReminders": "स्मार्ट रिमाइंडर",
+    "legalSupport": "Help & Legal"
   },
   "fields": {
     "name": "नाम",
@@ -350,6 +351,28 @@
     "test": {
       "title": "स्मार्ट रिमाइंडर चालू हैं",
       "body": "अगर यह पहुँचे, तो आपके स्मार्ट रिमाइंडर काम कर रहे हैं।"
+    }
+  },
+  "legal": {
+    "support": {
+      "title": "Support",
+      "hint": "Get help with your account or schedule",
+      "a11y": "Open Ryvro support"
+    },
+    "deleteAccount": {
+      "title": "Delete account",
+      "hint": "Request account and app data deletion",
+      "a11y": "Open Ryvro account deletion"
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "hint": "How Ryvro handles your data",
+      "a11y": "Open Ryvro privacy policy"
+    },
+    "terms": {
+      "title": "Terms of service",
+      "hint": "Subscription and app usage terms",
+      "a11y": "Open Ryvro terms of service"
     }
   }
 }
