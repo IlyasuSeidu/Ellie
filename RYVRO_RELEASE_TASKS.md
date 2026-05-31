@@ -1,7 +1,7 @@
 # Ryvro — Release Task List
 
 Source: `SHIFT_WORKER_APP_REBRAND_AUDIT.md`
-Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, pending-sync/cache TTL readiness, latest pushed PR #1 CI pass)
+Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, pending-sync/cache TTL/store version readiness, latest pushed PR #1 CI pass)
 
 Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you do this)
 

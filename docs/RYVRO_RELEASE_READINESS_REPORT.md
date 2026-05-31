@@ -32,6 +32,7 @@ Completed and guarded in the current branch:
 - Schedule and Stats helper screens no longer present launch users with "Coming Soon" copy; they point users to the shipped Shift Builder, dashboard metrics, calendar import/export, exceptions, reminders, and profile schedule settings in every bundled locale.
 - Global pending-sync visibility now surfaces queued user-profile, shift-log, session, analytics, and related offline writes through the app-level sync status indicator.
 - Runtime cache TTL policy is centralized in `src/config/cacheConfig.ts` and wired through shift schedules, holidays, RevenueCat offerings, paywall recovery, voice assistant persistence, and storage maintenance.
+- First-store-build version values are aligned across tracked Expo and native config: app version `1.0.0`, iOS build number `1`, Android versionCode `1`, and Android versionName `1.0.0`.
 
 ## Current Public Clearance Evidence
 
@@ -70,6 +71,8 @@ Completed and guarded in the current branch:
 - Local release verification on 2026-05-31 passed focused offline-strategy/config tests and `npm run release:check` after aligning offline-first docs with the current NetInfo-backed implementation. The release check included TypeScript, 106 Jest suites / 1,735 tests, 4 snapshots, and the backend functions TypeScript build.
 - Local release verification on 2026-05-31 passed `git diff --check`, focused pending-sync indicator/config tests, and `npm run release:check` after adding global pending-sync visibility. The release check included TypeScript, 108 Jest suites / 1,740 tests, 4 snapshots, and the backend functions TypeScript build.
 - Local release verification on 2026-05-31 passed focused cache-policy/config tests and `npm run release:check` after centralizing cache TTL policy in `src/config/cacheConfig.ts`. The release check included TypeScript, 109 Jest suites / 1,742 tests, 4 snapshots, and the backend functions TypeScript build.
+- Local release verification on 2026-05-31 passed `git diff --check`, focused store-version/config tests, and `npm run release:check` after aligning dynamic Expo version fallbacks with first-store-build native values. The release check included TypeScript, 109 Jest suites / 1,743 tests, 4 snapshots, and the backend functions TypeScript build.
+- Recent pushed GitHub Actions check for PR #1 passed on commit `7115d85`: CI run `26706091677` passed Unit Tests, Lint and Type Check, and Build Check.
 - Recent pushed GitHub Actions check for PR #1 passed on commit `b001c10`: CI run `26705685141` passed Unit Tests, Lint and Type Check, and Build Check.
 - Recent pushed GitHub Actions check for PR #1 passed on commit `82909cc`: CI run `26705470020` passed Unit Tests, Lint and Type Check, and Build Check.
 - Recent pushed GitHub Actions check for PR #1 passed on commit `47441dd`: CI run `26704558053` passed Unit Tests, Lint and Type Check, and Build Check.

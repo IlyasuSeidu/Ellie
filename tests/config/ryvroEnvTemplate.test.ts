@@ -647,20 +647,20 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('109 Jest suites / 1,742 tests / 4 snapshots');
+    expect(readme).toContain('109 Jest suites / 1,743 tests / 4 snapshots');
     expect(readme).toContain('Recent pushed PR gate');
     expect(readme).toContain('GitHub Actions CI passed Unit Tests, Lint and Type Check');
-    expect(readme).toContain('run `26704558053`');
+    expect(readme).toContain('run `26706091677`');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
-    expect(readme).toContain('Testing infrastructure (1,742 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,743 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,742 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,743 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-05-31 release check)');
-    expect(readme).toContain('Total Tests**: 1,742 passing (109 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Total Tests**: 1,743 passing (109 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -844,7 +844,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, pending-sync/cache TTL readiness, latest pushed PR #1 CI pass)'
+      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, pending-sync/cache TTL/store version readiness, latest pushed PR #1 CI pass)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
@@ -920,6 +920,8 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('CI run `26705470020`');
     expect(readinessReport).toContain('commit `b001c10`');
     expect(readinessReport).toContain('CI run `26705685141`');
+    expect(readinessReport).toContain('commit `7115d85`');
+    expect(readinessReport).toContain('CI run `26706091677`');
     expect(readinessReport).toContain(
       'commits `f004097`, `10353e7`, `3f92d56`, `90d403d`, and `82fd530`'
     );
@@ -932,6 +934,9 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('adding global pending-sync visibility');
     expect(readinessReport).toContain('109 Jest suites / 1,742 tests');
     expect(readinessReport).toContain('centralizing cache TTL policy');
+    expect(readinessReport).toContain('109 Jest suites / 1,743 tests');
+    expect(readinessReport).toContain('aligning dynamic Expo version fallbacks');
+    expect(readinessReport).toContain('First-store-build version values are aligned');
     expect(readinessReport).toContain('Global pending-sync visibility now surfaces queued');
     expect(readinessReport).toContain('Runtime cache TTL policy is centralized');
     expect(readinessReport).toContain(
