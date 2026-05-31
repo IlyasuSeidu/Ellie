@@ -161,7 +161,7 @@
       "continental": {
         "name": "Rotación continental",
         "schedule": "2 mañanas • 2 tardes • 2 noches • 4 libres",
-        "description": "2 mañanas, 2 tardes, 2 noches y 4 días libres para sitios de 8 horas."
+        "description": "2 mañanas, 2 tardes, 2 noches y 4 días libres para equipos de turnos de 8 horas."
       },
       "pitman": {
         "name": "Patrón Pitman",
@@ -171,7 +171,7 @@
       "custom": {
         "name": "Rotación personalizada",
         "schedule": "Tú eliges",
-        "description": "Si tu sitio usa otro esquema, crea tu propia rotación."
+        "description": "Si tu equipo usa otro esquema, crea tu propia rotación."
       },
       "fifo-8-6": {
         "name": "Patrón FIFO 8/6",
@@ -966,7 +966,7 @@
     "swingSubtitle": "Divide tu bloque de trabajo entre turnos diurnos y nocturnos.",
     "swingTitle": "Configuración de giro",
     "swingTotal": "Total dividido: {{swingTotal}}/{{workBlockDays}} días",
-    "tip": "Consejo: Haga coincidir su bloque de residencia con las demandas de recuperación y viaje. Los patrones FIFO funcionan mejor cuando el bloque de descanso es lo suficientemente largo como para restablecerse antes de que se ejecute el próximo sitio.",
+    "tip": "Consejo: Ajusta tu bloque en casa a tus necesidades de recuperación y viaje. Los patrones FIFO funcionan mejor cuando el bloque de descanso es lo bastante largo para reiniciarte antes de tu próximo bloque de trabajo.",
     "title": "Construya su rotación FIFO",
     "validation": {
       "blocksMinimum": "Los bloques de trabajo y descanso deben ser de al menos 1 día cada uno.",

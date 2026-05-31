@@ -176,7 +176,7 @@
       "features": {
         "askSchedule": "Tanyakan \"Hai __TK1__\" apa pun tentang daftar pemain Anda",
         "fullYear": "Lihat setahun penuh Anda — setiap shift, bulan demi bulan",
-        "offline": "Bekerja di bawah tanah, tidak diperlukan sinyal",
+        "offline": "Tetap bekerja saat sinyal lemah",
         "instantAnswers": "Jawaban instan tentang cuti dan pola",
         "aiPowered": "Didukung oleh AI dan selalu berkembang",
         "leavePlanning": "Rencanakan libur tanpa menelepon HR",

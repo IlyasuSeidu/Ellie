@@ -174,7 +174,7 @@ export const CLAUDE_TOOL_DEFINITIONS = [
   {
     name: 'get_next_rest_block',
     description:
-      'Find the next date when a rest/home block starts. Useful for "when am I next off-site?"',
+      'Find the next date when a rest/home block starts. Useful for rest, recovery, and rotating questions like "when does my next break start?"',
     input_schema: {
       type: 'object' as const,
       properties: {

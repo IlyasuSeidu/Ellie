@@ -77,10 +77,10 @@
       "2-shift": {
         "title": "2 skofte (12 uur)",
         "schedule": "Dag & nag",
-        "description": "Jou myn loop twee 12-uur skofte—een gedurende die dag, een in die nag",
+        "description": "Jou span werk twee 12-uur skofte—een gedurende die dag, een in die nag",
         "details": {
           "workRestRatio": "12 uur aan, 12 uur af",
-          "useCases": ["Mynterreine", "Olie en gas", "24/7 operasies", "Werk op afstand"],
+          "useCases": ["Afgeleë bedrywighede", "Olie en gas", "24/7 operasies", "Werk op afstand"],
           "pros": [
             "Verlengde rusperiodes",
             "Voorspelbare skedule",
@@ -96,9 +96,9 @@
         "details": {
           "workRestRatio": "8 uur aan, 16 uur af",
           "useCases": [
-            "Ondergrondse myne",
+            "Produksiespanne",
             "Verwerkingsaanlegte",
-            "Myninfrastruktuur",
+            "Operasionele infrastruktuur",
             "24/7 operasies"
           ],
           "pros": ["Korter skofte", "Meer tyd vir familie", "Makliker om wakker te bly"],
@@ -168,7 +168,7 @@
       "custom": {
         "name": "Pasgemaakte rotasie",
         "schedule": "Jy kies",
-        "description": "Gebruik jou werf iets anders? Bou jou eie rotasie hier"
+        "description": "Gebruik jou span iets anders? Bou jou eie rotasie hier"
       },
       "fifo-8-6": {
         "name": "EIEU 8/6",
@@ -957,7 +957,7 @@
     "swingSubtitle": "Verdeel jou werkblok tussen dag- en nagskofte.",
     "swingTitle": "Swaai-konfigurasie",
     "swingTotal": "Gedeelde totaal: {{swingTotal}}/{{workBlockDays}} dae",
-    "tip": "Wenk: Pas jou huisblok by herstel- en reiseise. EIEU-patrone werk die beste wanneer die rusblok lank genoeg is om terug te stel voor jou volgende werfloop.",
+    "tip": "Wenk: Pas jou huisblok by herstel- en reiseise. EIEU-patrone werk die beste wanneer die rusblok lank genoeg is om terug te stel voor jou volgende werkblok.",
     "title": "Bou jou EIEU-rotasie",
     "validation": {
       "blocksMinimum": "Werk- en rusblokke moet elk minstens 1 dag wees.",
@@ -1020,7 +1020,7 @@
     "a11y": "Bot tik"
   },
   "chatAvatar": {
-    "a11y": "Myn-assistent avatar"
+    "a11y": "Ryvro-assistent avatar"
   },
   "premiumCalendar": {
     "previousMonthA11y": "Vorige maand",

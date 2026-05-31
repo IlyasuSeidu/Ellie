@@ -100,9 +100,9 @@
         "details": {
           "workRestRatio": "8 jam aktif, 16 jam nonaktif",
           "useCases": [
-            "Tambang bawah tanah",
+            "Tim produksi",
             "Pabrik pengolahan",
-            "Infrastruktur tambang",
+            "Infrastruktur operasi",
             "Operasi 24/7"
           ],
           "pros": [
@@ -971,7 +971,7 @@
     "swingSubtitle": "Bagi blok kerja Anda antara shift siang dan malam.",
     "swingTitle": "Konfigurasi Ayunan",
     "swingTotal": "Total pembagian: {{swingTotal}}/{{workBlockDays}} hari",
-    "tip": "Tip: Sesuaikan blok rumah Anda dengan tuntutan pemulihan dan perjalanan. Pola FIFO bekerja paling baik ketika blok sisanya cukup panjang untuk direset sebelum situs Anda berikutnya dijalankan.",
+    "tip": "Tip: Sesuaikan blok rumah Anda dengan kebutuhan pemulihan dan perjalanan. Pola FIFO bekerja paling baik ketika blok istirahat cukup panjang untuk reset sebelum blok kerja berikutnya.",
     "title": "Bangun Rotasi FIFO Anda",
     "validation": {
       "blocksMinimum": "Blok kerja dan istirahat masing-masing harus minimal 1 hari.",

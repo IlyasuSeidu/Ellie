@@ -171,7 +171,7 @@
       "continental": {
         "name": "Rotation continentale",
         "schedule": "2 matins • 2 après-midis • 2 nuits • 4 repos",
-        "description": "2 matins, 2 après-midis, 2 nuits et 4 repos pour sites en 8 heures."
+        "description": "2 matins, 2 après-midis, 2 nuits et 4 repos pour équipes en quarts de 8 heures."
       },
       "pitman": {
         "name": "Cycle Pitman",
@@ -181,7 +181,7 @@
       "custom": {
         "name": "Rotation personnalisée",
         "schedule": "Vous choisissez",
-        "description": "Votre site a un autre schéma? Construisez votre rotation."
+        "description": "Votre équipe a un autre schéma? Construisez votre rotation."
       },
       "fifo-8-6": {
         "name": "Rotation FIFO 8/6",
@@ -976,7 +976,7 @@
     "swingSubtitle": "Répartissez votre bloc de travail entre les quarts de jour et de nuit.",
     "swingTitle": "Configuration de la balançoire",
     "swingTotal": "Total fractionné: {{swingTotal}}/{{workBlockDays}} jours",
-    "tip": "Conseil: Adaptez votre bloc d'habitation aux exigences de récupération et de voyage. Les modèles FIFO fonctionnent mieux lorsque le bloc de repos est suffisamment long pour être réinitialisé avant la prochaine exécution de votre site.",
+    "tip": "Conseil: adaptez votre bloc à la maison aux besoins de récupération et de voyage. Les modèles FIFO fonctionnent mieux lorsque le bloc de repos est assez long pour récupérer avant le prochain bloc de travail.",
     "title": "Construisez votre rotation FIFO",
     "validation": {
       "blocksMinimum": "Les blocs de travail et de repos doivent chacun durer au moins 1 jour.",

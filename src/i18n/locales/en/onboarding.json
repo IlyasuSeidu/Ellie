@@ -311,7 +311,13 @@
             "7-7-7 (long cycle)",
             "2-2-3 (short cycle)"
           ],
-          "regions": ["Australia", "Canada", "Remote sites", "Hospitals", "Security operations"],
+          "regions": [
+            "Australia",
+            "Canada",
+            "Remote operations",
+            "Hospitals",
+            "Security operations"
+          ],
           "pros": [
             "Go home daily or frequently",
             "Regular routine at each phase",
@@ -362,7 +368,7 @@
       "sleep": "Sleep tracking & insights",
       "sleepDesc": "Optimize your rest between shifts with personalized sleep analytics",
       "fatigue": "Fatigue monitoring",
-      "fatigueDesc": "Monitor fatigue risk on long shifts across site, ward, depot, and field work",
+      "fatigueDesc": "Monitor fatigue risk on long shifts across work locations, wards, depots, and field work",
       "team": "Team coordination",
       "teamDesc": "See your crew schedule and coordinate handovers seamlessly",
       "balance": "Work-life balance",
@@ -1027,7 +1033,7 @@
     "swingSubtitle": "Set exactly how many work-block days are day shift vs night shift.",
     "swingTitle": "Step 2A: Swing Split",
     "swingTotal": "Split total: {{swingTotal}}/{{workBlockDays}} days",
-    "tip": "Tip: Start with your real travel + recovery rhythm. Then adjust site/home days until the cycle is sustainable.",
+    "tip": "Tip: Start with your real travel and recovery rhythm. Then adjust work-block and rest-block days until the cycle is sustainable.",
     "title": "Build Your FIFO Roster",
     "validation": {
       "blocksMinimum": "Work and rest blocks must each be at least 1 day.",

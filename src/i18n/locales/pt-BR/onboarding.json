@@ -157,7 +157,7 @@
       "continental": {
         "name": "Rotação Continental",
         "schedule": "2 manhãs • 2 tardes • 2 noites • 4 folgas",
-        "description": "2 manhãs, 2 tardes, 2 noites e 4 folgas para sites de 8 horas."
+        "description": "2 manhãs, 2 tardes, 2 noites e 4 folgas para equipes de turnos de 8 horas."
       },
       "pitman": {
         "name": "Escala Pitman",
@@ -167,7 +167,7 @@
       "custom": {
         "name": "Rotação personalizada",
         "schedule": "Você escolhe",
-        "description": "Se seu site usa outro modelo, monte sua própria rotação."
+        "description": "Se sua equipe usa outro modelo, monte sua própria rotação."
       },
       "fifo-8-6": {
         "name": "Padrão FIFO 8/6",
@@ -956,7 +956,7 @@
     "swingSubtitle": "Divida seu bloco de trabalho entre turnos diurnos e noturnos.",
     "swingTitle": "Configuração de balanço",
     "swingTotal": "Total dividido: dias {{swingTotal}}/{{workBlockDays}}",
-    "tip": "Dica: Combine o seu quarteirão residencial com as demandas de recuperação e viagens. Os padrões FIFO funcionam melhor quando o bloco restante é longo o suficiente para ser redefinido antes da próxima execução do site.",
+    "tip": "Dica: Combine seu bloco em casa com as necessidades de recuperação e viagem. Os padrões FIFO funcionam melhor quando o bloco de descanso é longo o suficiente para você se recuperar antes do próximo bloco de trabalho.",
     "title": "Construa sua rotação FIFO",
     "validation": {
       "blocksMinimum": "Os blocos de trabalho e descanso devem durar pelo menos 1 dia cada.",

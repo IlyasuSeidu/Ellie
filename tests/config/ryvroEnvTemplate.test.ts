@@ -1463,12 +1463,12 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
     expect(readme).toContain('Recent pushed PR gates');
-    expect(readme).toContain('GitHub Actions CI run `26726208572`');
+    expect(readme).toContain('GitHub Actions CI run `26726366157`');
+    expect(readme).toContain('commit `314b41e`');
+    expect(readme).toContain('CI run `26726208572`');
     expect(readme).toContain('commit `f130644`');
     expect(readme).toContain('CI run `26726104050`');
     expect(readme).toContain('commit `f1e7c74`');
-    expect(readme).toContain('CI run `26726000675`');
-    expect(readme).toContain('commit `40fb47c`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain(
@@ -1708,7 +1708,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, latest public clearance evidence at 20:33Z, and latest pushed PR #1 CI pass `26726208572` on `f130644`)'
+      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, voice rest-block tool copy cleanup, latest public clearance evidence at 20:33Z, and latest pushed PR #1 CI pass `26726366157` on `314b41e`)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
@@ -1933,12 +1933,12 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
+    expect(readinessReport).toContain('CI run `26726366157`');
+    expect(readinessReport).toContain('commit `314b41e`');
     expect(readinessReport).toContain('CI run `26726208572`');
     expect(readinessReport).toContain('commit `f130644`');
     expect(readinessReport).toContain('CI run `26726104050`');
     expect(readinessReport).toContain('commit `f1e7c74`');
-    expect(readinessReport).toContain('CI run `26726000675`');
-    expect(readinessReport).toContain('commit `40fb47c`');
     expect(readinessReport).toContain('CI run `26722400690`');
     expect(readinessReport).toContain('commit `4af8a23`');
     expect(readinessReport).toContain('CI run `26721974527`');
@@ -2136,7 +2136,13 @@ describe('Ryvro environment template', () => {
     expect(audit).toContain(
       'removed the retired `ellieBrain` HTTP export from active backend source'
     );
-    expect(audit).toContain('CI run `26726208572` on commit `f130644`');
+    expect(audit).toContain('CI run `26726366157` on commit `314b41e`');
+    expect(audit).toContain(
+      'Broadened remaining translated FIFO helper tips and active voice-assistant rest-block tool copy away from site/off-site wording.'
+    );
+    expect(audit).toContain(
+      'Broadened translated shift-system, assistant-avatar, and paywall offline copy that still framed launch proof around mines, underground work, or mining infrastructure.'
+    );
     expect(audit).toContain(
       'production env preflight now rejects retired `ELLIE_BRAIN_*` keys before release builds'
     );
@@ -2556,12 +2562,12 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
     expect(ownerRunbook).toContain('Recent pushed PR gate evidence includes');
     expect(ownerRunbook).not.toContain('Latest pushed PR gate');
+    expect(ownerRunbook).toContain('CI run `26726366157`');
+    expect(ownerRunbook).toContain('commit `314b41e`');
     expect(ownerRunbook).toContain('CI run `26726208572`');
     expect(ownerRunbook).toContain('commit `f130644`');
     expect(ownerRunbook).toContain('CI run `26726104050`');
     expect(ownerRunbook).toContain('commit `f1e7c74`');
-    expect(ownerRunbook).toContain('CI run `26726000675`');
-    expect(ownerRunbook).toContain('commit `40fb47c`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');
@@ -2679,7 +2685,9 @@ describe('Ryvro environment template', () => {
         ]),
       ].join('\n');
 
-      expect(launchProof).not.toMatch(/underground miner|subterr[aâ]ne|haul truck|drill/i);
+      expect(launchProof).not.toMatch(
+        /underground miner|subterr[aâ]ne|ondergronds|bawah tanah|भूमिगत|под зем|地下|haul truck|drill/i
+      );
       expect(launchProof).not.toMatch(/site roster|roster site|low-signal sites/i);
       expect(launchProof).toMatch(/FIFO|shift|turno|santé|health|security|transport|equipes/i);
     }
@@ -2877,7 +2885,7 @@ describe('Ryvro environment template', () => {
       const fullOnboardingCopy = JSON.stringify(onboarding);
       const fullProfileCopy = JSON.stringify(profile);
       expect(fullOnboardingCopy).not.toMatch(
-        /Votre mine comporte|Sites miniers|Minería global remota|Mineração global remota/i
+        /Votre mine comporte|Sites miniers|Minería global remota|Mineração global remota|Jou myn|Mynterreine|Myninfrastruktuur|مواقع التعدين|مناجم تحت الأرض|بنية المنجم|يعمل منجمك|आपकी खदान|खनन स्थल|भूमिगत खदानें|खनन अवसंरचना|您的矿山|地下矿山|矿山基础设施/i
       );
       expect(fullProfileCopy).not.toMatch(/"Minero"/i);
       expect(
@@ -3081,6 +3089,7 @@ describe('Ryvro environment template', () => {
         };
         subtitle?: string;
         success?: string;
+        tip?: string;
         workPatternSubtitle?: string;
         workPatterns?: Record<
           string,
@@ -3218,6 +3227,7 @@ describe('Ryvro environment template', () => {
           };
           subtitle?: string;
           success?: string;
+          tip?: string;
           workPatternSubtitle?: string;
           workPatterns?: Record<
             string,
@@ -3282,6 +3292,7 @@ describe('Ryvro environment template', () => {
         fifoCustom?.sliders?.daysAtSite,
         fifoCustom?.subtitle,
         fifoCustom?.success,
+        fifoCustom?.tip,
         fifoCustom?.workPatternSubtitle,
         ...Object.values(fifoCustom?.workPatterns ?? {}).map((pattern) => pattern.description),
         fifoPhaseSelector?.title?.block_named,
@@ -3300,6 +3311,16 @@ describe('Ryvro environment template', () => {
       );
       expect(launchVisibleFifoCopy).not.toMatch(/mine|myn|mina|mining|haul truck|underground/i);
     }
+  });
+
+  it('keeps active assistant tool descriptions off site-specific launch wording', () => {
+    const voiceAssistantPrompts = fs.readFileSync(
+      path.join(process.cwd(), 'src/utils/voiceAssistantPrompts.ts'),
+      'utf8'
+    );
+
+    expect(voiceAssistantPrompts).toContain('when does my next break start?');
+    expect(voiceAssistantPrompts).not.toMatch(/off-site|on-site|at site|next site/i);
   });
 
   it('keeps content generation outputs broad while preserving the miner-builder origin story', () => {

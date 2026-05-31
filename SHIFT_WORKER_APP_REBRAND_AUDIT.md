@@ -44,12 +44,14 @@ Completed in the current working tree:
 - Expanded E2E onboarding fixtures for launch QA personas including nurse, security officer, firefighter, plant operator, linehaul driver, warehouse lead, hotel duty manager, airport operations coordinator, offshore technician, and a mining/FIFO operator.
 - Cleaned remaining launch-critical broad-market copy in README, English onboarding feature descriptions, selected translated placeholders/social proof, and onboarding icon source guidance.
 - Hardened tracked generated-content guidance and publishable build-in-public packs so they use Ryvro naming, broad shift-worker discovery tags, and FIFO/shift-worker audience language instead of stale Ellie or mining-only tags.
-- Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the launch-readiness cleanup. The latest pushed CI run for this branch passed on 2026-05-31: CI run `26726208572` on commit `f130644`.
+- Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the launch-readiness cleanup. The latest pushed CI run for this branch passed on 2026-05-31: CI run `26726366157` on commit `314b41e`.
 - Added built-in fallback parser regression coverage across 20 shift-worker industry prompts so the AI builder fallback is proven beyond mining/FIFO examples.
 - Added AI builder fallback metadata, friendlier fallback copy, and analytics events for parser completion, local fallback use, clarification, draft acceptance, manual edit after draft, and save context.
 - Tightened exception, calendar, and reminder launch copy so one-off rows say they changed just that day, calendar export promises shift times/locations/notes, and smart reminder commute copy defaults to work location instead of site.
 - Broadened active dashboard FIFO status and offline assistant pattern summaries across bundled locales from site-specific language to work-block language.
 - Broadened onboarding FIFO roster-type cards, phase selector labels, and custom FIFO builder copy across bundled locales from site-specific language to work-block/rest-block language, while preserving FIFO as a launch template and migration concept.
+- Broadened remaining translated FIFO helper tips and active voice-assistant rest-block tool copy away from site/off-site wording.
+- Broadened translated shift-system, assistant-avatar, and paywall offline copy that still framed launch proof around mines, underground work, or mining infrastructure.
 - Broadened profile/settings FIFO config-card summaries across bundled locales from site/on-site language to work-block/rest-block language.
 - Broadened the active FIFO user guide so it defines work/rest blocks without making on-site work the default, and routes optional location data through the Universal Shift Builder.
 - Added calendar export metadata coverage for `LOCATION` and one-off exception notes in `.ics` files.

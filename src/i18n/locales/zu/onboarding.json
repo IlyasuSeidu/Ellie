@@ -181,7 +181,7 @@
       "custom": {
         "name": "Ukuzungezisa Ngokwezifiso",
         "schedule": "Uyakhetha",
-        "description": "Isayithi lakho lisebenzisa okuthile okuhlukile? Yakha okwakho ukuzungezisa lapha"
+        "description": "Ithimba lakho lisebenzisa okuthile okuhlukile? Yakha okwakho ukuzungezisa lapha"
       },
       "fifo-8-6": {
         "name": "I-FIFO 8/6",
@@ -976,7 +976,7 @@
     "swingSubtitle": "Hlukanisa ibhulokhi yakho yomsebenzi phakathi kwamashifu emini nasebusuku.",
     "swingTitle": "Ukucushwa kwe-Swing",
     "swingTotal": "Isamba sokuhlukaniswa: {{swingTotal}}/{{workBlockDays}} izinsuku",
-    "tip": "Ithiphu: Qondanisa ibhulokhi yakho yasekhaya nezidingo zokutholwa kanye nezohambo. Amaphethini e-FIFO asebenza kangcono uma ibhulokhi esele iyinde ngokwanele ukuthi ingasethwa kabusha ngaphambi kokuthi isayithi lakho elilandelayo liqalise.",
+    "tip": "Ithiphu: Qondanisa ibhulokhi yakho yasekhaya nezidingo zokululama kanye nohambo. Amaphethini e-FIFO asebenza kangcono uma ibhulokhi yokuphumula yinde ngokwanele ngaphambi kwebhulokhi yomsebenzi elandelayo.",
     "title": "Yakha i-FIFO Rotation Yakho",
     "validation": {
       "blocksMinimum": "Amabhlokhi omsebenzi nezindawo zokuphumula kufanele ngayinye ibe okungenani usuku olungu-1.",
