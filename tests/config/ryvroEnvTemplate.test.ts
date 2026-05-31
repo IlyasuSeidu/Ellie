@@ -19,6 +19,10 @@ const walkFiles = (dir: string): string[] => {
 
 describe('Ryvro environment template', () => {
   const envExample = fs.readFileSync(path.join(process.cwd(), '.env.example'), 'utf8');
+  const productionEnvExample = fs.readFileSync(
+    path.join(process.cwd(), '.env.production.example'),
+    'utf8'
+  );
   const envConfigurationTemplate = fs.readFileSync(
     path.join(process.cwd(), 'RYVRO_ENVIRONMENT_CONFIGURATION_TEMPLATE.md'),
     'utf8'
@@ -526,10 +530,36 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('must match REVENUECAT_IOS_KEY');
     expect(script).toContain('must match REVENUECAT_ANDROID_KEY');
     expect(script).toContain('must match REVENUECAT_ENTITLEMENT_ID');
+    expect(productionEnvExample).toContain('APP_ENV=production');
+    expect(productionEnvExample).toContain('EAS_PROJECT_ID=00000000-0000-0000-0000-000000000000');
+    expect(productionEnvExample).toContain('FIREBASE_PROJECT_ID=ryvro-prod');
+    expect(productionEnvExample).toContain('API_BASE_URL=https://api.getryvro.com');
+    expect(productionEnvExample).toContain(
+      'RYVRO_BRAIN_URL=https://us-central1-ryvro-prod.cloudfunctions.net/ryvroBrain'
+    );
+    expect(productionEnvExample).toContain(
+      'SHIFT_SCHEDULE_PARSER_URL=https://us-central1-ryvro-prod.cloudfunctions.net/parseShiftScheduleDescription'
+    );
+    expect(productionEnvExample).toContain(
+      'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=REPLACE-web.apps.googleusercontent.com'
+    );
+    expect(productionEnvExample).toContain(
+      'EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=REPLACE-ios.apps.googleusercontent.com'
+    );
+    expect(productionEnvExample).toContain('REVENUECAT_ENTITLEMENT_ID=pro');
+    expect(productionEnvExample).toContain('EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID=pro');
+    expect(productionEnvExample).toContain('ELLIE_BRAIN_URL=');
+    expect(productionEnvExample).not.toContain('com.ellie.minershiftassistant');
+    expect(productionEnvExample).not.toContain('Hey Ellie');
     expect(externalSetup).toContain('npm run release:env:check');
+    expect(externalSetup).toContain('cp .env.production.example .env');
+    expect(externalSetup).toContain(
+      'it must fail the preflight until every placeholder is replaced'
+    );
     expect(externalSetup).toContain('live HTTPS `LEGAL_PRIVACY_POLICY_URL`');
     expect(releaseTasks).toContain('npm run release:env:check');
-    expect(releaseTasks).toContain('set live HTTPS legal/support URLs');
+    expect(releaseTasks).toContain('Copy `.env.production.example` to `.env`');
+    expect(releaseTasks).toContain('live HTTPS legal/support URLs');
   });
 
   it('accepts a production env only when Expo public service values mirror native values', () => {
@@ -600,6 +630,17 @@ describe('Ryvro environment template', () => {
     expect(result.status).toBe(1);
     expect(result.stderr).toContain('EAS_PROJECT_ID');
     expect(result.stderr).toContain('must be the real EAS project UUID');
+
+    const zeroUuidResult = runProductionEnvCheck(
+      validProductionEnv.replace(
+        'EAS_PROJECT_ID=3dcb1926-9b5b-4f20-93b1-2f5b8f490000',
+        'EAS_PROJECT_ID=00000000-0000-0000-0000-000000000000'
+      )
+    );
+
+    expect(zeroUuidResult.status).toBe(1);
+    expect(zeroUuidResult.stderr).toContain('EAS_PROJECT_ID');
+    expect(zeroUuidResult.stderr).toContain('must be the real EAS project UUID');
   });
 
   it('rejects production env files with placeholder or mismatched Firebase values', () => {

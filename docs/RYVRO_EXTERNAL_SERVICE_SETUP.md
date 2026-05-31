@@ -99,10 +99,12 @@ EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=
 Before pushing secrets to EAS or starting production builds, validate that `.env` contains real production values and no launch placeholders:
 
 ```bash
+cp .env.production.example .env
+# Fill .env with real owner/account values first.
 npm run release:env:check
 ```
 
-The check requires `APP_ENV=production`, the real EAS project UUID, real Firebase values scoped to one Ryvro `FIREBASE_PROJECT_ID`, live HTTPS `API_BASE_URL`, real Google OAuth values, mirrored Expo public Google OAuth client IDs, the deployed `ryvroBrain` URL, real RevenueCat `appl_...` and `goog_...` SDK keys, mirrored Expo public RevenueCat keys and entitlement ID, live HTTPS `LEGAL_PRIVACY_POLICY_URL`, `LEGAL_TERMS_OF_SERVICE_URL`, and `SUPPORT_URL` values, and an empty `ELLIE_BRAIN_URL` for new Ryvro builds.
+The check requires `APP_ENV=production`, the real EAS project UUID, real Firebase values scoped to one Ryvro `FIREBASE_PROJECT_ID`, live HTTPS `API_BASE_URL`, real Google OAuth values, mirrored Expo public Google OAuth client IDs, the deployed `ryvroBrain` URL, real RevenueCat `appl_...` and `goog_...` SDK keys, mirrored Expo public RevenueCat keys and entitlement ID, live HTTPS `LEGAL_PRIVACY_POLICY_URL`, `LEGAL_TERMS_OF_SERVICE_URL`, and `SUPPORT_URL` values, and an empty `ELLIE_BRAIN_URL` for new Ryvro builds. `.env.production.example` is a checklist, not a usable secret file; it must fail the preflight until every placeholder is replaced.
 
 Verification:
 

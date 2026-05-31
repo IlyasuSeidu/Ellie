@@ -208,10 +208,10 @@ Create a production `.env` from the Ryvro template:
 
 ```bash
 cp RYVRO_ENVIRONMENT_CONFIGURATION_TEMPLATE.md /tmp/ryvro-env-reference.md
-cp .env.example .env
+cp .env.production.example .env
 ```
 
-Fill `.env` with real production values for Firebase, Google OAuth, RevenueCat, legal/support URLs, EAS project ID, and `RYVRO_BRAIN_URL`.
+Fill `.env` with real production values for Firebase, Google OAuth, RevenueCat, legal/support URLs, EAS project ID, and `RYVRO_BRAIN_URL`. The production example is intentionally placeholder-filled and should fail `npm run release:env:check` until those owner/account values are replaced.
 
 Before pushing secrets to EAS or starting production builds, run:
 

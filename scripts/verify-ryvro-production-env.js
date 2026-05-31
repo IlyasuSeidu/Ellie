@@ -46,6 +46,8 @@ function isPlaceholder(value) {
   return (
     !value ||
     /^(your-|FILL_|YOUR_|example-|placeholder|xxx|appl_x+|goog_x+)/i.test(value) ||
+    /^0{8}-0{4}-0{4}-0{4}-0{12}$/i.test(value) ||
+    value.includes('REPLACE') ||
     value.includes('your-project-id') ||
     value.includes('REGION-PROJECT') ||
     value.includes('<region>') ||
@@ -93,7 +95,10 @@ function isProductionHttpsUrl(value) {
 }
 
 function isUuid(value) {
-  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
+  return (
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value) &&
+    !/^0{8}-0{4}-0{4}-0{4}-0{12}$/i.test(value)
+  );
 }
 
 function isFirebaseApiKey(value) {
