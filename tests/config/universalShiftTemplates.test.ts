@@ -93,7 +93,9 @@ describe('Universal shift templates', () => {
         'security',
         'emergencyServices',
         'manufacturing',
+        'offshore',
         'transport',
+        'warehouseLogistics',
         'hospitality',
         'aviation',
         'rail',
@@ -119,6 +121,36 @@ describe('Universal shift templates', () => {
     for (const fixture of Object.values(UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES)) {
       expectCompleteUniversalSchedule(fixture.universalSchedule);
     }
+  });
+
+  it('keeps E2E fixture personas broad enough for launch QA', () => {
+    const fixtureCopy = Object.values(UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES)
+      .map((fixture) => [fixture.name, fixture.occupation, fixture.company].join(' '))
+      .join('\n');
+
+    for (const expectedPersona of [
+      'Nurse',
+      'Security Officer',
+      'Firefighter',
+      'Plant Operator',
+      'Linehaul Driver',
+      'Warehouse Lead',
+      'Hotel Duty Manager',
+      'Airport Operations Coordinator',
+      'Offshore Technician',
+      'FIFO Site Operator',
+    ]) {
+      expect(fixtureCopy).toContain(expectedPersona);
+    }
+
+    expect(UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES.transport.occupation).toContain('Driver');
+    expect(UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES.emergencyServices.occupation).toBe('Firefighter');
+    expect(UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES.offshore.universalSchedule.name).toContain(
+      'Offshore'
+    );
+    expect(
+      UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES.warehouseLogistics.universalSchedule.name
+    ).toContain('Warehouse');
   });
 
   it('keeps the fresh onboarding E2E happy path on a non-mining launch fixture', () => {

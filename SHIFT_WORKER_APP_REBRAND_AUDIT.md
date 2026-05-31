@@ -40,6 +40,7 @@ Completed in the current working tree:
 - Verified the current working tree with full Jest and project validation after the rebrand cleanup.
 - Archived old Ellie homescreen HTML prototypes and fixed-roster implementation plans so active docs point to the Universal Shift Builder path.
 - Replaced the default e2e seed profile with a neutral shift-worker fixture while keeping a separate mining/FIFO launch-wedge fixture.
+- Expanded E2E onboarding fixtures for launch QA personas including nurse, security officer, firefighter, plant operator, linehaul driver, warehouse lead, hotel duty manager, airport operations coordinator, offshore technician, and a mining/FIFO operator.
 - Cleaned remaining launch-critical broad-market copy in README, English onboarding feature descriptions, selected translated placeholders/social proof, and onboarding icon source guidance.
 - Hardened tracked generated-content guidance and publishable build-in-public packs so they use Ryvro naming, broad shift-worker discovery tags, and FIFO/shift-worker audience language instead of stale Ellie or mining-only tags.
 - Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the launch-readiness cleanup. The latest pushed CI run for this branch passed on 2026-05-31: CI run `26722883474` on commit `651f32d`.
@@ -665,7 +666,7 @@ Add first-class examples and QA scenarios for:
 ### Test data backlog
 
 - Replace default e2e user occupation `Miner` with a neutral default such as `Nurse` or `Shift Worker`.
-- Add fixture users for nurse, security, firefighter, factory worker, driver, hospitality worker, aviation worker, offshore worker, and miner.
+- Fixture users now cover nurse, security officer, firefighter, plant operator/factory worker, linehaul driver, warehouse lead, hospitality worker, aviation worker, offshore worker, and miner.
 - Keep one mining fixture for regression coverage.
 - Replace `Test Mine Co.` with neutral fixture employers or industry-specific employers.
 
