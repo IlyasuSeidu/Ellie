@@ -252,6 +252,8 @@ module.exports = ({ config = {} }) => {
       LEGAL_TERMS_OF_SERVICE_URL:
         process.env.LEGAL_TERMS_OF_SERVICE_URL || 'https://getryvro.com/terms',
       SUPPORT_URL: process.env.SUPPORT_URL || 'https://getryvro.com/support',
+      ACCOUNT_DELETION_URL:
+        process.env.ACCOUNT_DELETION_URL || 'https://getryvro.com/delete-account',
       RYVRO_BRAIN_URL:
         process.env.RYVRO_BRAIN_URL ||
         process.env.ELLIE_BRAIN_URL ||

@@ -49,6 +49,7 @@ API_TIMEOUT=30000
 LEGAL_PRIVACY_POLICY_URL=https://getryvro.com/privacy
 LEGAL_TERMS_OF_SERVICE_URL=https://getryvro.com/terms
 SUPPORT_URL=https://getryvro.com/support
+ACCOUNT_DELETION_URL=https://getryvro.com/delete-account
 
 # Ryvro Brain (Firebase Cloud Function)
 

@@ -408,6 +408,13 @@ function main() {
     (value) => isRyvroPublicUrl(value, /(support|help)/i),
     'must be the live HTTPS Ryvro support URL on a Ryvro-owned domain'
   );
+  requireValue(
+    errors,
+    env,
+    'ACCOUNT_DELETION_URL',
+    (value) => isRyvroPublicUrl(value, /(delete-account|account-deletion|delete|deletion)/i),
+    'must be the live HTTPS Ryvro account deletion URL on a Ryvro-owned domain'
+  );
 
   if (env.ELLIE_BRAIN_URL?.trim()) {
     errors.push('ELLIE_BRAIN_URL: leave empty for new Ryvro production builds');

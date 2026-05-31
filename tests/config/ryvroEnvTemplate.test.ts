@@ -146,6 +146,7 @@ describe('Ryvro environment template', () => {
     'LEGAL_PRIVACY_POLICY_URL=https://getryvro.com/privacy',
     'LEGAL_TERMS_OF_SERVICE_URL=https://getryvro.com/terms',
     'SUPPORT_URL=https://getryvro.com/support',
+    'ACCOUNT_DELETION_URL=https://getryvro.com/delete-account',
     'AI_SHIFT_BUILDER_ENABLED=true',
     [
       'SHIFT_SCHEDULE_PARSER_URL=',
@@ -357,6 +358,7 @@ describe('Ryvro environment template', () => {
       expect(dynamicConfig.extra?.LEGAL_PRIVACY_POLICY_URL).toBe('https://getryvro.com/privacy');
       expect(dynamicConfig.extra?.LEGAL_TERMS_OF_SERVICE_URL).toBe('https://getryvro.com/terms');
       expect(dynamicConfig.extra?.SUPPORT_URL).toBe('https://getryvro.com/support');
+      expect(dynamicConfig.extra?.ACCOUNT_DELETION_URL).toBe('https://getryvro.com/delete-account');
       expect(dynamicConfig.extra?.RYVRO_BRAIN_URL).toBe(
         'https://ryvro-brain-REGION-PROJECT.cloudfunctions.net/ryvroBrain'
       );
@@ -761,6 +763,7 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('LEGAL_PRIVACY_POLICY_URL');
     expect(script).toContain('LEGAL_TERMS_OF_SERVICE_URL');
     expect(script).toContain('SUPPORT_URL');
+    expect(script).toContain('ACCOUNT_DELETION_URL');
     expect(envExample).toContain('EXPO_PUBLIC_REVENUECAT_IOS_KEY=appl_xxxxxxxxxxxxx');
     expect(envExample).toContain('EXPO_PUBLIC_REVENUECAT_ANDROID_KEY=goog_xxxxxxxxxxxxx');
     expect(envExample).toContain('REVENUECAT_ENTITLEMENT_ID=pro');
@@ -776,6 +779,7 @@ describe('Ryvro environment template', () => {
     expect(envExample).toContain('LEGAL_PRIVACY_POLICY_URL=https://getryvro.com/privacy');
     expect(envExample).toContain('LEGAL_TERMS_OF_SERVICE_URL=https://getryvro.com/terms');
     expect(envExample).toContain('SUPPORT_URL=https://getryvro.com/support');
+    expect(envExample).toContain('ACCOUNT_DELETION_URL=https://getryvro.com/delete-account');
     expect(envConfigurationTemplate).toContain(
       'LEGAL_PRIVACY_POLICY_URL=https://getryvro.com/privacy'
     );
@@ -783,6 +787,9 @@ describe('Ryvro environment template', () => {
       'LEGAL_TERMS_OF_SERVICE_URL=https://getryvro.com/terms'
     );
     expect(envConfigurationTemplate).toContain('SUPPORT_URL=https://getryvro.com/support');
+    expect(envConfigurationTemplate).toContain(
+      'ACCOUNT_DELETION_URL=https://getryvro.com/delete-account'
+    );
     expect(envConfigurationTemplate).toContain(
       'SHIFT_SCHEDULE_PARSER_URL=https://us-central1-your-project-id.cloudfunctions.net/parseShiftScheduleDescription'
     );
@@ -807,6 +814,7 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('must match REVENUECAT_ANDROID_KEY');
     expect(script).toContain('must match REVENUECAT_ENTITLEMENT_ID');
     expect(script).toContain('Ryvro-owned domain');
+    expect(script).toContain('Ryvro account deletion URL');
     expect(envExample).toContain('Ryvro local development environment template');
     expect(envExample).toContain('For release builds, copy .env.production.example to .env');
     expect(envExample).toContain('npm run release:env:check');
@@ -833,6 +841,9 @@ describe('Ryvro environment template', () => {
     );
     expect(productionEnvExample).toContain('REVENUECAT_ENTITLEMENT_ID=pro');
     expect(productionEnvExample).toContain('EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID=pro');
+    expect(productionEnvExample).toContain(
+      'ACCOUNT_DELETION_URL=https://getryvro.com/delete-account'
+    );
     expect(productionEnvExample).toContain('ELLIE_BRAIN_URL=');
     expect(productionEnvExample).not.toContain('com.ellie.minershiftassistant');
     expect(productionEnvExample).not.toContain('Hey Ellie');
@@ -851,6 +862,7 @@ describe('Ryvro environment template', () => {
       'generated native-folder service-file paths under `ios/` or `android/`'
     );
     expect(externalSetup).toContain('live HTTPS Ryvro-owned `LEGAL_PRIVACY_POLICY_URL`');
+    expect(externalSetup).toContain('`ACCOUNT_DELETION_URL`');
     expect(releaseTasks).toContain('npm run release:env:check');
     expect(releaseTasks).toContain('Copy `.env.production.example` to `.env`');
     expect(releaseTasks).toContain('Reject retired Ellie/ShiftSync Firebase project IDs');
@@ -1134,6 +1146,17 @@ describe('Ryvro environment template', () => {
     expect(retiredSupportHostResult.status).toBe(1);
     expect(retiredSupportHostResult.stderr).toContain('SUPPORT_URL');
     expect(retiredSupportHostResult.stderr).toContain('Ryvro support URL');
+
+    const wrongDeletionPathResult = runProductionEnvCheck(
+      validProductionEnv.replace(
+        'ACCOUNT_DELETION_URL=https://getryvro.com/delete-account',
+        'ACCOUNT_DELETION_URL=https://getryvro.com/support'
+      )
+    );
+
+    expect(wrongDeletionPathResult.status).toBe(1);
+    expect(wrongDeletionPathResult.stderr).toContain('ACCOUNT_DELETION_URL');
+    expect(wrongDeletionPathResult.stderr).toContain('Ryvro account deletion URL');
   });
 
   it('keeps public clearance evidence current while preserving account-only caveats', () => {
@@ -1489,6 +1512,7 @@ describe('Ryvro environment template', () => {
     expect(apiReference).toContain('EXPO_PUBLIC_REVENUECAT_IOS_KEY=appl_xxxxxxxxxxxxx');
     expect(apiReference).toContain('EXPO_PUBLIC_REVENUECAT_ANDROID_KEY=goog_xxxxxxxxxxxxx');
     expect(apiReference).toContain('LEGAL_PRIVACY_POLICY_URL=https://getryvro.com/privacy');
+    expect(apiReference).toContain('ACCOUNT_DELETION_URL=https://getryvro.com/delete-account');
     expect(apiReference).toContain('npm run release:env:check');
     expect(apiReference).toContain('<repo-root>/GoogleService-Info.plist');
     expect(apiReference).toContain('<repo-root>/google-services.json');

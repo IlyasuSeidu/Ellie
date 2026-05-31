@@ -115,12 +115,14 @@ describe('Environment Configuration', () => {
       expect(legalConfig.privacyPolicyUrl).toBe('https://getryvro.com/privacy');
       expect(legalConfig.termsOfServiceUrl).toBe('https://getryvro.com/terms');
       expect(legalConfig.supportUrl).toBe('https://getryvro.com/support');
+      expect(legalConfig.accountDeletionUrl).toBe('https://getryvro.com/delete-account');
     });
 
     it('should use HTTPS URLs', () => {
       expect(legalConfig.privacyPolicyUrl).toMatch(/^https:\/\//);
       expect(legalConfig.termsOfServiceUrl).toMatch(/^https:\/\//);
       expect(legalConfig.supportUrl).toMatch(/^https:\/\//);
+      expect(legalConfig.accountDeletionUrl).toMatch(/^https:\/\//);
     });
   });
 
@@ -210,6 +212,7 @@ describe('Environment Configuration', () => {
       expect(typeof config.legal.privacyPolicyUrl).toBe('string');
       expect(typeof config.legal.termsOfServiceUrl).toBe('string');
       expect(typeof config.legal.supportUrl).toBe('string');
+      expect(typeof config.legal.accountDeletionUrl).toBe('string');
     });
 
     it('should have proper enum for environment', () => {

@@ -127,6 +127,7 @@ export interface AppConfig {
     privacyPolicyUrl: string;
     termsOfServiceUrl: string;
     supportUrl: string;
+    accountDeletionUrl: string;
   };
   ryvroBrain: {
     /** Cloud Function URL for the Ryvro voice assistant backend */
@@ -363,6 +364,8 @@ function buildAppConfig(): AppConfig {
       termsOfServiceUrl:
         getEnvVar('LEGAL_TERMS_OF_SERVICE_URL', false) || 'https://getryvro.com/terms',
       supportUrl: getEnvVar('SUPPORT_URL', false) || 'https://getryvro.com/support',
+      accountDeletionUrl:
+        getEnvVar('ACCOUNT_DELETION_URL', false) || 'https://getryvro.com/delete-account',
     },
     ryvroBrain: {
       url:
@@ -587,6 +590,7 @@ try {
         privacyPolicyUrl: 'https://getryvro.com/privacy',
         termsOfServiceUrl: 'https://getryvro.com/terms',
         supportUrl: 'https://getryvro.com/support',
+        accountDeletionUrl: 'https://getryvro.com/delete-account',
       },
       ryvroBrain: {
         url: 'https://ryvro-brain-test.cloudfunctions.net/ryvroBrain',
