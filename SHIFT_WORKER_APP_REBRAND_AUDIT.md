@@ -11,7 +11,7 @@ The current strategy is not a full universal-market rebrand on day one. The reco
 
 In short: **market narrowly now, build broadly underneath.**
 
-## Implementation Status: 2026-05-30
+## Implementation Status: 2026-05-31
 
 Completed in the current working tree:
 
@@ -26,10 +26,10 @@ Completed in the current working tree:
 - Added a starter universal template catalog for healthcare, security, emergency services, manufacturing, transport, hospitality, separate aviation and rail operations, and mining FIFO examples.
 - Added broad RevenueCat entitlement aliases while preserving old Ellie/miner aliases for backward compatibility.
 - Added RevenueCat entitlement regression tests that pin Ryvro launch aliases while making the old Ellie/miner aliases explicit migration compatibility only.
-- Added `RYVRO_BRAIN_URL` / `RYVRO_BRAIN_TIMEOUT` as the preferred voice-backend environment names while preserving the old `ELLIE_BRAIN_*` keys as migration fallbacks.
-- Renamed the Firebase functions deploy codebase from `ellie-brain` to `ryvro-brain` in repo config and added `ryvroBrain` as the primary HTTPS function export. The old `ellieBrain` export remains as a compatibility endpoint until production clients and external dashboards have migrated.
-- Renamed active Ryvro voice client/source symbols from the old Ellie brain naming to `RyvroBrain*` while preserving only the `ellieBrain` HTTP export as the legacy migration endpoint.
-- Updated CI and e2e dummy brain endpoint environment values so both preferred and legacy compatibility variables point at the Ryvro test endpoint.
+- Added `RYVRO_BRAIN_URL` / `RYVRO_BRAIN_TIMEOUT` as the launch voice-backend environment names and removed retired `ELLIE_BRAIN_*` fallbacks from new Ryvro builds.
+- Renamed the Firebase functions deploy codebase from `ellie-brain` to `ryvro-brain` in repo config and kept `ryvroBrain` as the only launch HTTPS function export.
+- Renamed active Ryvro voice client/source symbols from the old Ellie brain naming to `RyvroBrain*` and removed the retired `ellieBrain` HTTP export from active backend source.
+- Updated CI and e2e dummy brain endpoint environment values so only `RYVRO_BRAIN_*` variables point at the Ryvro test endpoint.
 - Added repo-side App Store / Google Play listing copy in `docs/RYVRO_STORE_LISTING.md`.
 - Added repo-side privacy policy, terms, support, account deletion, support email, and Firebase Auth email templates in `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`.
 - Added account-side Firebase, Google OAuth, Apple Sign-In, RevenueCat, store, domain, social, analytics, and release verification handoff in `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md`.
@@ -40,7 +40,7 @@ Completed in the current working tree:
 - Replaced the default e2e seed profile with a neutral shift-worker fixture while keeping a separate mining/FIFO launch-wedge fixture.
 - Cleaned remaining launch-critical broad-market copy in README, English onboarding feature descriptions, selected translated placeholders/social proof, and onboarding icon source guidance.
 - Hardened tracked generated-content guidance and publishable build-in-public packs so they use Ryvro naming, broad shift-worker discovery tags, and FIFO/shift-worker audience language instead of stale Ellie or mining-only tags.
-- Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the launch-readiness cleanup. The latest pushed CI run for this branch passed on 2026-05-30.
+- Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the launch-readiness cleanup. The latest pushed CI run for this branch passed on 2026-05-31: CI run `26722709832` on commit `b331116`.
 - Added built-in fallback parser regression coverage across 20 shift-worker industry prompts so the AI builder fallback is proven beyond mining/FIFO examples.
 - Added AI builder fallback metadata, friendlier fallback copy, and analytics events for parser completion, local fallback use, clarification, draft acceptance, manual edit after draft, and save context.
 - Tightened exception, calendar, and reminder launch copy so one-off rows say they changed just that day, calendar export promises shift times/locations/notes, and smart reminder commute copy defaults to work location instead of site.
@@ -57,7 +57,7 @@ Completed in the current working tree:
 - Removed stale tracked Detox artifact logs/screenshots from the old iOS `EllieMinerShiftAssistant` identity and added `artifacts/` to `.gitignore` so generated release logs do not re-enter the tracked launch tree.
 - Launch-critical onboarding occupation placeholders now use broad examples such as healthcare, security, and plant operations instead of mining/trades-only examples across bundled locales.
 - Hardened `npm run release:env:check` so production builds require the Expo public RevenueCat iOS/Android keys to mirror the native RevenueCat SDK keys before EAS secrets are pushed.
-- Stopped new Expo config from mirroring the Ryvro voice endpoint into legacy `ELLIE_BRAIN_*` extras; old `ELLIE_BRAIN_*` values are still accepted only when explicitly supplied for migration.
+- Stopped new Expo config from mirroring the Ryvro voice endpoint into legacy `ELLIE_BRAIN_*` extras, and the production env preflight now rejects retired `ELLIE_BRAIN_*` keys before release builds.
 - Aligned the active API reference with the Ryvro launch configuration: broad healthcare rotating-schedule example, `RYVRO_BRAIN_*` runtime names, `ryvroBrain`, current Firebase config paths, RevenueCat native/public key pairs, and the release env preflight.
 
 Still pending outside this repo or intentionally kept for compatibility:
@@ -68,7 +68,7 @@ Still pending outside this repo or intentionally kept for compatibility:
 - New Firebase project/OAuth clients and fresh `GoogleService-Info.plist` / `google-services.json` generated from Firebase Console for `com.ryvro.shiftplanner`.
 - RevenueCat dashboard product/entitlement renames if the production dashboard still uses old Ellie/miner names. Repo-side setup values and user-facing Ryvro Pro copy are documented and guarded by tests.
 - Push notification, analytics, Sentry, support-email, privacy-policy, terms, website, and store-listing updates outside the repo. Repo-side source copy and setup handoff now exist in `docs/RYVRO_STORE_LISTING.md`, `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`, and `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md`.
-- Production backend deploy and cutover from `ellieBrain` to `ryvroBrain`. Repo code now exposes both endpoints, but the actual Firebase project still needs a deploy, smoke test, and eventual legacy endpoint retirement plan.
+- Production backend deploy and smoke test for `ryvroBrain` and `parseShiftScheduleDescription`. Repo code no longer exposes the retired `ellieBrain` endpoint for new Ryvro builds, but the actual Firebase project still needs deploy output and smoke evidence.
 - Optional internal code-symbol cleanup for old technical names such as `EllieButton`, internal `Ellie` tab route, `@ellie_language`, and wake-word model filenames. These are not user-facing in the current UI and were left stable to avoid breaking stored data, tests, native modules, and backend contracts.
 
 ## External Clearance Evidence: 2026-05-28
@@ -858,7 +858,7 @@ These were updated together in the Ryvro rebrand branch because they affect buil
   - `expo.icon`, `expo.splash.image`, `expo.android.adaptiveIcon.foregroundImage`: point to Ryvro assets.
 - `app.config.js`
   - Uses `https://api.getryvro.com` as the default API base URL.
-  - Exposes `RYVRO_BRAIN_URL` / `RYVRO_BRAIN_TIMEOUT` as preferred voice-backend names while retaining legacy `ELLIE_BRAIN_*` fallbacks for migration.
+  - Exposes `RYVRO_BRAIN_URL` / `RYVRO_BRAIN_TIMEOUT` as the launch voice-backend names and rejects retired `ELLIE_BRAIN_*` keys in production release preflight.
   - Confirmed no env-driven override reintroduces old public naming.
 - `app.config.js.backup`
   - Updated to the same Ryvro identity values so the backup does not mislead future agents.

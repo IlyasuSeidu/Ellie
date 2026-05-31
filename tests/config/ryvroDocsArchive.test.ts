@@ -139,7 +139,7 @@ describe('Ryvro documentation archive', () => {
   it('keeps the active rebrand audit aligned with completed Ryvro asset replacement', () => {
     const audit = read('SHIFT_WORKER_APP_REBRAND_AUDIT.md');
 
-    expect(audit).toContain('Implementation Status: 2026-05-30');
+    expect(audit).toContain('Implementation Status: 2026-05-31');
     expect(audit).toContain('Current tracked app icon, adaptive icon, splash icon, favicon');
     expect(audit).toContain('The retired onboarding mining helmet asset family has been removed');
     expect(audit).toContain('Aligned the active API reference with the Ryvro launch configuration');

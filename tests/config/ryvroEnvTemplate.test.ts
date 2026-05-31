@@ -1439,7 +1439,7 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('110 Jest suites / 1,766 tests / 4 snapshots');
+    expect(readme).toContain('110 Jest suites / 1,767 tests / 4 snapshots');
     expect(readme).toContain('the Ryvro native scaffold preflight');
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
@@ -1457,13 +1457,13 @@ describe('Ryvro environment template', () => {
     );
     expect(readme).toContain('valid-prompt `SHIFT_SCHEDULE_PARSER_URL` parser response');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
-    expect(readme).toContain('Testing infrastructure (1,766 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,767 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,766 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,767 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-05-31 release check)');
-    expect(readme).toContain('Total Tests**: 1,766 passing (110 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Total Tests**: 1,767 passing (110 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -1884,6 +1884,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('110 Jest suites / 1,761 tests');
     expect(readinessReport).toContain('110 Jest suites / 1,765 tests');
     expect(readinessReport).toContain('110 Jest suites / 1,766 tests');
+    expect(readinessReport).toContain('110 Jest suites / 1,767 tests');
     expect(readinessReport).toContain('Profile legal/support link coverage');
     expect(readinessReport).toContain(
       'requiring real root-level Firebase native service files for Ryvro production builds'
@@ -2078,6 +2079,32 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('not as fully launch-cleared production release evidence');
     expect(readinessReport).not.toContain('no Android device or emulator was attached');
     expect(readinessReport).not.toContain('commit `4a78448`: CI run `26675838354`');
+  });
+
+  it('keeps the rebrand audit aligned with the retired Ellie brain endpoint removal', () => {
+    const audit = fs.readFileSync(
+      path.join(process.cwd(), 'SHIFT_WORKER_APP_REBRAND_AUDIT.md'),
+      'utf8'
+    );
+
+    expect(audit).toContain('## Implementation Status: 2026-05-31');
+    expect(audit).toContain('removed retired `ELLIE_BRAIN_*` fallbacks from new Ryvro builds');
+    expect(audit).toContain('kept `ryvroBrain` as the only launch HTTPS function export');
+    expect(audit).toContain(
+      'removed the retired `ellieBrain` HTTP export from active backend source'
+    );
+    expect(audit).toContain('CI run `26722709832` on commit `b331116`');
+    expect(audit).toContain(
+      'production env preflight now rejects retired `ELLIE_BRAIN_*` keys before release builds'
+    );
+    expect(audit).toContain(
+      'Repo code no longer exposes the retired `ellieBrain` endpoint for new Ryvro builds'
+    );
+    expect(audit).not.toContain('preserving the old `ELLIE_BRAIN_*` keys as migration fallbacks');
+    expect(audit).not.toContain('old `ellieBrain` export remains as a compatibility endpoint');
+    expect(audit).not.toContain('both preferred and legacy compatibility variables');
+    expect(audit).not.toContain('Repo code now exposes both endpoints');
+    expect(audit).not.toContain('retaining legacy `ELLIE_BRAIN_*` fallbacks for migration');
   });
 
   it('keeps Android release-style Detox E2E wiring reproducible', () => {
@@ -2457,7 +2484,7 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('eas submit --platform android --latest');
     expect(ownerRunbook).toContain('npm run release:submit:check');
     expect(ownerRunbook).toContain('Final submit readiness is guarded');
-    expect(ownerRunbook).toContain('110 Jest suites, 1,766 tests');
+    expect(ownerRunbook).toContain('110 Jest suites, 1,767 tests');
     expect(ownerRunbook).toContain('npm run release:owner:check');
     expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');
