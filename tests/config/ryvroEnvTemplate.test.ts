@@ -651,17 +651,41 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'src/services/NetworkService.ts'),
       'utf8'
     );
+    const useNetworkStatus = fs.readFileSync(
+      path.join(process.cwd(), 'src/hooks/useNetworkStatus.ts'),
+      'utf8'
+    );
+    const offlineBanner = fs.readFileSync(
+      path.join(process.cwd(), 'src/components/system/OfflineBanner.tsx'),
+      'utf8'
+    );
+    const app = fs.readFileSync(path.join(process.cwd(), 'App.tsx'), 'utf8');
+    const storageMaintenanceService = fs.readFileSync(
+      path.join(process.cwd(), 'src/services/StorageMaintenanceService.ts'),
+      'utf8'
+    );
 
     expect(packageJson.dependencies?.['@react-native-community/netinfo']).toBeTruthy();
     expect(networkService).toContain("require('@react-native-community/netinfo')");
     expect(dataSyncService).toContain('networkService.subscribe((snapshot)');
     expect(firebaseService).toContain('networkService.subscribe((snapshot)');
+    expect(useNetworkStatus).toContain('networkService.subscribe(setSnapshot)');
+    expect(offlineBanner).toContain('useNetworkStatus()');
+    expect(app).toContain('<OfflineBanner />');
+    expect(app).toContain('storageMaintenanceService.initialize()');
+    expect(storageMaintenanceService).toContain('this.storage.removeExpired()');
     expect(offlineStrategy).toContain('NetInfo-backed network state');
     expect(offlineStrategy).toContain('Resolved since the original audit');
-    expect(offlineStrategy).toContain('No app-level network context/hook');
+    expect(offlineStrategy).toContain('Network status hook');
+    expect(offlineStrategy).toContain('Offline banner');
+    expect(offlineStrategy).toContain('Storage cleanup maintenance');
+    expect(offlineStrategy).toContain('No pending-sync indicator in edit flows');
     expect(offlineStrategy).not.toContain('Network detection hardcoded to `true`');
     expect(offlineStrategy).not.toContain('Queue never activates');
     expect(offlineStrategy).not.toContain('@react-native-community/netinfo` not installed');
+    expect(offlineStrategy).not.toContain('No offline banner or sync indicator');
+    expect(offlineStrategy).not.toContain('No app-level network context/hook');
+    expect(offlineStrategy).not.toContain('Startup cache expiry sweep needs stronger evidence');
   });
 
   it('keeps active contributor setup on the current Ryvro app repository', () => {

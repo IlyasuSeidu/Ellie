@@ -12,16 +12,19 @@ The offline infrastructure is partially implemented.
 
 ### What Already Works
 
-| Component                                  | File                                       | Status                                       |
-| ------------------------------------------ | ------------------------------------------ | -------------------------------------------- |
-| NetInfo-backed network state               | `src/services/NetworkService.ts`           | Implemented with native-module fallback      |
-| Sync queue (CREATE/UPDATE/DELETE)          | `src/services/DataSyncService.ts`          | Wired to network state and flushes on online |
-| Firebase network guards and cache fallback | `src/services/firebase/FirebaseService.ts` | Wired to network state                       |
-| Type-safe local storage with TTL           | `src/services/AsyncStorageService.ts`      | Implemented                                  |
-| Exponential backoff retry                  | `src/utils/reliableRetry.ts`               | Implemented                                  |
-| Offline voice query fallback               | `src/utils/offlineFallback.ts`             | Implemented across bundled locales           |
-| Shift calculations                         | `src/utils/shiftUtils.ts`                  | Pure functions with no network dependency    |
-| Firebase Auth session persistence          | `src/config/firebase.ts`                   | Implemented                                  |
+| Component                                  | File                                        | Status                                       |
+| ------------------------------------------ | ------------------------------------------- | -------------------------------------------- |
+| NetInfo-backed network state               | `src/services/NetworkService.ts`            | Implemented with native-module fallback      |
+| Sync queue (CREATE/UPDATE/DELETE)          | `src/services/DataSyncService.ts`           | Wired to network state and flushes on online |
+| Firebase network guards and cache fallback | `src/services/firebase/FirebaseService.ts`  | Wired to network state                       |
+| Type-safe local storage with TTL           | `src/services/AsyncStorageService.ts`       | Implemented                                  |
+| Exponential backoff retry                  | `src/utils/reliableRetry.ts`                | Implemented                                  |
+| Offline voice query fallback               | `src/utils/offlineFallback.ts`              | Implemented across bundled locales           |
+| Network status hook                        | `src/hooks/useNetworkStatus.ts`             | Implemented from `networkService` snapshots  |
+| Offline banner                             | `src/components/system/OfflineBanner.tsx`   | Mounted in `App.tsx` and covered by tests    |
+| Storage cleanup maintenance                | `src/services/StorageMaintenanceService.ts` | Runs on startup and app foreground           |
+| Shift calculations                         | `src/utils/shiftUtils.ts`                   | Pure functions with no network dependency    |
+| Firebase Auth session persistence          | `src/config/firebase.ts`                    | Implemented                                  |
 
 Resolved since the original audit:
 
@@ -30,18 +33,18 @@ Resolved since the original audit:
 - `DataSyncService.initializeNetworkListener()` subscribes to `networkService` and calls `setOnlineState()` so queued writes can flush when connectivity returns.
 - `FirebaseService.initializeNetworkListener()` subscribes to `networkService` and updates network guards from the current snapshot.
 - `NetworkService` falls back safely when the native NetInfo module is unavailable, which keeps Jest and unsupported runtimes from crashing at import time.
+- `OfflineBanner` is mounted in `App.tsx` and renders only when `useNetworkStatus()` reports `offline`.
+- `StorageMaintenanceService.initialize()` runs from `App.tsx` and calls `removeExpired()` when due without blocking app render.
 
 ### Remaining Gaps
 
-| Gap                                                | Location                    | Launch impact                           |
-| -------------------------------------------------- | --------------------------- | --------------------------------------- |
-| No app-level network context/hook                  | `src/contexts`, `src/hooks` | UI cannot reflect offline state         |
-| No offline banner or sync indicator                | `src/components/`           | Users get weak feedback offline         |
-| No shared cache TTL constants                      | `src/config/`               | Expiry policy is harder to audit        |
-| Startup cache expiry sweep needs stronger evidence | `App.tsx`                   | Storage cleanup evidence is incomplete  |
-| Device offline QA still required                   | iOS and Android devices     | Simulator/unit coverage is insufficient |
+| Gap                                     | Location                                   | Launch impact                           |
+| --------------------------------------- | ------------------------------------------ | --------------------------------------- |
+| No pending-sync indicator in edit flows | `src/components/`, profile/builder screens | Users cannot see queued edit count      |
+| No shared cache TTL constants           | `src/config/`                              | Expiry policy is harder to audit        |
+| Device offline QA still required        | iOS and Android devices                    | Simulator/unit coverage is insufficient |
 
-The remaining work is now the user-visible offline experience and cache-maintenance hardening, not basic network detection.
+The remaining work is now pending-sync visibility, cache policy hardening, and physical-device offline QA, not basic network detection.
 
 ---
 
@@ -101,13 +104,10 @@ Use the existing `src/services/NetworkService.ts`; do not add a parallel network
 
 ### Files To Create
 
-| File                                     | Purpose                                            |
-| ---------------------------------------- | -------------------------------------------------- |
-| `src/contexts/NetworkContext.tsx`        | React context exposing network and sync state      |
-| `src/hooks/useNetworkState.ts`           | Convenience hook for UI components                 |
-| `src/components/OfflineBanner.tsx`       | Top-level user feedback when the device is offline |
-| `src/components/SyncStatusIndicator.tsx` | Badge showing pending queue count and sync action  |
-| `src/config/cacheConfig.ts`              | Shared TTL constants used across cached services   |
+| File                                     | Purpose                                           |
+| ---------------------------------------- | ------------------------------------------------- |
+| `src/components/SyncStatusIndicator.tsx` | Badge showing pending queue count and sync action |
+| `src/config/cacheConfig.ts`              | Shared TTL constants used across cached services  |
 
 ### Files To Modify
 
@@ -115,18 +115,15 @@ Use the existing `src/services/NetworkService.ts`; do not add a parallel network
 | --------------------------------- | ---------------------------------------------------------------------- |
 | `src/services/UserService.ts`     | Continue moving profile and schedule reads toward local-first behavior |
 | `src/config/firebase.ts`          | Verify native/web Firestore cache behavior for the production runtime  |
-| `App.tsx`                         | Add network provider, offline banner, and startup cache expiry sweep   |
 | `src/services/DataSyncService.ts` | Surface pending queue count for UI and keep reconnect flush guarded    |
 
 ### Step-By-Step Work
 
-1. Add a `NetworkContext` backed by `networkService.subscribe()` and `dataSyncService.getQueue()`.
-2. Add `useNetworkState()` for screens and cards that need `isOffline`, `pendingSyncCount`, and `syncNow`.
-3. Add an `OfflineBanner` that says “Offline mode: showing saved schedule” only when the app is offline.
-4. Add a compact `SyncStatusIndicator` wherever profile or schedule edits can queue.
-5. Centralize cache TTL values in `src/config/cacheConfig.ts`.
-6. Verify `asyncStorageService.removeExpired()` runs once during startup without blocking app render.
-7. Add tests for NetInfo transitions, queue flush on reconnect, offline banner visibility, and cache expiry cleanup.
+1. Add a compact `SyncStatusIndicator` wherever profile, schedule, exception, or reminder edits can queue.
+2. Expose pending queue state through the existing `DataSyncService.getQueueSize()` path, or a thin hook that subscribes to network snapshots and refreshes queue size.
+3. Centralize cache TTL values in `src/config/cacheConfig.ts`.
+4. Add launch-focused tests for pending-sync indicator visibility and queued edit count.
+5. Run physical iOS and Android offline QA before store submission.
 
 ---
 
