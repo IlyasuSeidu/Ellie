@@ -530,6 +530,14 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('must match REVENUECAT_IOS_KEY');
     expect(script).toContain('must match REVENUECAT_ANDROID_KEY');
     expect(script).toContain('must match REVENUECAT_ENTITLEMENT_ID');
+    expect(envExample).toContain('Ryvro local development environment template');
+    expect(envExample).toContain('For release builds, copy .env.production.example to .env');
+    expect(envExample).toContain('npm run release:env:check');
+    expect(envConfigurationTemplate).toContain('Ryvro Environment Configuration Reference');
+    expect(envConfigurationTemplate).toContain('For local development, copy .env.example to .env');
+    expect(envConfigurationTemplate).toContain(
+      'For release builds, copy .env.production.example to .env and run npm run release:env:check'
+    );
     expect(productionEnvExample).toContain('APP_ENV=production');
     expect(productionEnvExample).toContain('EAS_PROJECT_ID=00000000-0000-0000-0000-000000000000');
     expect(productionEnvExample).toContain('FIREBASE_PROJECT_ID=ryvro-prod');
@@ -964,6 +972,12 @@ describe('Ryvro environment template', () => {
     expect(deploymentGuide).toContain('RYVRO_ENVIRONMENT_CONFIGURATION_TEMPLATE.md');
     expect(deploymentGuide).toContain('RYVRO_RELEASE_TASKS.md');
     expect(deploymentGuide).toContain('npm run release:env:check');
+    expect(deploymentGuide).toContain(
+      'Do not start release builds from `.env.example`; that file is for local development defaults'
+    );
+    expect(deploymentGuide).toContain(
+      '`.env.production.example` when the key is required for release builds'
+    );
     expect(deploymentGuide).toContain('eas secret:push --scope project --env-file .env');
     expect(deploymentGuide).toContain('"name": "Ryvro Shift Planner"');
     expect(deploymentGuide).toContain('"slug": "ryvro"');

@@ -204,7 +204,7 @@ Edit `eas.json`:
 
 ### 1. Create Environment Files
 
-Create a production `.env` from the Ryvro template:
+Create a production `.env` from the Ryvro production template. Do not start release builds from `.env.example`; that file is for local development defaults.
 
 ```bash
 cp RYVRO_ENVIRONMENT_CONFIGURATION_TEMPLATE.md /tmp/ryvro-env-reference.md
@@ -235,6 +235,7 @@ Ryvro already loads release configuration from `app.config.js`; do not replace i
 
 - `.env.example`
 - `RYVRO_ENVIRONMENT_CONFIGURATION_TEMPLATE.md`
+- `.env.production.example` when the key is required for release builds
 - `src/config/env.ts`
 - `scripts/verify-ryvro-production-env.js`
 - related tests in `tests/config/`

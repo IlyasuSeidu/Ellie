@@ -1,6 +1,10 @@
-# Environment Configuration Template
+# Ryvro Environment Configuration Reference
 
-# Copy this file to .env and fill in your actual values
+# This file documents every supported environment key.
+
+# For local development, copy .env.example to .env.
+
+# For release builds, copy .env.production.example to .env and run npm run release:env:check.
 
 # DO NOT commit .env to version control
 

@@ -221,17 +221,19 @@ cd Ellie
 # 2. Install dependencies (use --legacy-peer-deps due to React Native constraints)
 npm install --legacy-peer-deps
 
-# 3. Set up environment variables
-# Create .env file in root directory
+# 3. Set up local development environment variables
 cp .env.example .env
 
-# 4. Add your Firebase configuration to .env
+# 4. Add your local Firebase configuration to .env
 FIREBASE_API_KEY=your-firebase-api-key
 FIREBASE_AUTH_DOMAIN=your-project-id.firebaseapp.com
 FIREBASE_PROJECT_ID=your-project-id
 FIREBASE_STORAGE_BUCKET=your-project-id.firebasestorage.app
 FIREBASE_MESSAGING_SENDER_ID=your-sender-id
 FIREBASE_APP_ID=your-firebase-app-id
+
+# For production release builds, use .env.production.example instead
+# and run npm run release:env:check before pushing secrets to EAS.
 
 # 5. Start the development server
 npm start
