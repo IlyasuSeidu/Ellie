@@ -52,6 +52,7 @@ describe('Ryvro environment template', () => {
   const packageJson = JSON.parse(
     fs.readFileSync(path.join(process.cwd(), 'package.json'), 'utf8')
   ) as {
+    dependencies?: Record<string, string>;
     scripts?: Record<string, string>;
   };
   const easJson = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'eas.json'), 'utf8')) as {
@@ -602,23 +603,26 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('github.com/IlyasuSeidu/Ellie/workflows/CI%20Pipeline');
     expect(readme).toContain('git clone https://github.com/IlyasuSeidu/Ellie.git');
     expect(readme).toContain('Current Ryvro app repository');
+    expect(readme).toContain('FIREBASE_API_KEY=your-firebase-api-key');
+    expect(readme).toContain('FIREBASE_PROJECT_ID=your-project-id');
+    expect(readme).toContain('FIREBASE_STORAGE_BUCKET=your-project-id.firebasestorage.app');
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('106 Jest suites / 1,734 tests / 4 snapshots');
+    expect(readme).toContain('106 Jest suites / 1,735 tests / 4 snapshots');
     expect(readme).toContain('Recent pushed PR gate');
     expect(readme).toContain('GitHub Actions CI passed Unit Tests, Lint and Type Check');
     expect(readme).toContain('run `26704558053`');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
-    expect(readme).toContain('Testing infrastructure (1,734 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,735 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,734 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,735 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-05-31 release check)');
-    expect(readme).toContain('Total Tests**: 1,734 passing (106 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Total Tests**: 1,735 passing (106 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -626,6 +630,38 @@ describe('Ryvro environment template', () => {
     expect(readme).not.toContain('Total Tests**: 1,701 passing (51 test suites)');
     expect(readme).not.toContain('Jest (1,500 tests)');
     expect(readme).not.toContain('github.com/IlyasuSeidu/ryvro');
+    expect(readme).not.toContain('FIREBASE_PROJECT_ID=your_project_id');
+    expect(readme).not.toContain('FIREBASE_STORAGE_BUCKET=your_storage_bucket');
+  });
+
+  it('keeps the offline-first strategy aligned with the current NetInfo implementation', () => {
+    const offlineStrategy = fs.readFileSync(
+      path.join(process.cwd(), 'docs/OFFLINE_FIRST_STRATEGY.md'),
+      'utf8'
+    );
+    const dataSyncService = fs.readFileSync(
+      path.join(process.cwd(), 'src/services/DataSyncService.ts'),
+      'utf8'
+    );
+    const firebaseService = fs.readFileSync(
+      path.join(process.cwd(), 'src/services/firebase/FirebaseService.ts'),
+      'utf8'
+    );
+    const networkService = fs.readFileSync(
+      path.join(process.cwd(), 'src/services/NetworkService.ts'),
+      'utf8'
+    );
+
+    expect(packageJson.dependencies?.['@react-native-community/netinfo']).toBeTruthy();
+    expect(networkService).toContain("require('@react-native-community/netinfo')");
+    expect(dataSyncService).toContain('networkService.subscribe((snapshot)');
+    expect(firebaseService).toContain('networkService.subscribe((snapshot)');
+    expect(offlineStrategy).toContain('NetInfo-backed network state');
+    expect(offlineStrategy).toContain('Resolved since the original audit');
+    expect(offlineStrategy).toContain('No app-level network context/hook');
+    expect(offlineStrategy).not.toContain('Network detection hardcoded to `true`');
+    expect(offlineStrategy).not.toContain('Queue never activates');
+    expect(offlineStrategy).not.toContain('@react-native-community/netinfo` not installed');
   });
 
   it('keeps active contributor setup on the current Ryvro app repository', () => {
@@ -782,6 +818,10 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('106 Jest suites / 1,729 tests');
     expect(readinessReport).toContain('106 Jest suites / 1,732 tests');
     expect(readinessReport).toContain('106 Jest suites / 1,734 tests');
+    expect(readinessReport).toContain('106 Jest suites / 1,735 tests');
+    expect(readinessReport).toContain(
+      'aligning offline-first docs with the current NetInfo-backed implementation'
+    );
     expect(readinessReport).toContain(
       'Local release verification on 2026-05-31 passed `git diff --check`, focused readiness/audit config tests'
     );
