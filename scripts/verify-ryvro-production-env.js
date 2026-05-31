@@ -71,6 +71,48 @@ function requireMatchingValue(errors, env, key, expectedKey, message) {
   }
 }
 
+function resolveEnvPath(envPath, value) {
+  return path.isAbsolute(value) ? value : path.resolve(path.dirname(envPath), value);
+}
+
+function requireNativeServiceFile(errors, env, envPath, key, expectedFileName, validate) {
+  const value = env[key]?.trim();
+
+  if (!value || isPlaceholder(value)) {
+    errors.push(`${key}: must point to the real ${expectedFileName} file downloaded for Ryvro`);
+    return;
+  }
+
+  if (path.basename(value) !== expectedFileName) {
+    errors.push(`${key}: must point to ${expectedFileName}`);
+    return;
+  }
+
+  if (/\/(ios|android)\//.test(value.replace(/\\/g, '/'))) {
+    errors.push(
+      `${key}: keep the production Firebase service file outside generated ios/ and android/ folders so clean prebuilds do not delete the source file`
+    );
+    return;
+  }
+
+  if (/config\/firebase|\.local\./i.test(value.replace(/\\/g, '/'))) {
+    errors.push(`${key}: must not use tracked local placeholder Firebase service files`);
+    return;
+  }
+
+  const absolutePath = resolveEnvPath(envPath, value);
+  if (!fs.existsSync(absolutePath)) {
+    errors.push(`${key}: ${expectedFileName} does not exist at ${absolutePath}`);
+    return;
+  }
+
+  try {
+    validate(fs.readFileSync(absolutePath, 'utf8'));
+  } catch (error) {
+    errors.push(`${key}: ${error.message}`);
+  }
+}
+
 function isProductionHttpsUrl(value) {
   try {
     const parsed = new URL(value);
@@ -211,6 +253,61 @@ function main() {
     'FIREBASE_APP_ID',
     isFirebaseAppId,
     'must be the real Ryvro Firebase app ID'
+  );
+  requireNativeServiceFile(
+    errors,
+    env,
+    envPath,
+    'EXPO_IOS_GOOGLE_SERVICES_FILE',
+    'GoogleService-Info.plist',
+    (content) => {
+      if (hasRetiredRyvroName(content) || content.includes('ryvro-local')) {
+        throw new Error('must be a fresh Ryvro production plist, not a retired or local file');
+      }
+
+      if (!content.includes('<key>BUNDLE_ID</key>')) {
+        throw new Error('must include BUNDLE_ID');
+      }
+
+      if (!content.includes('<string>com.ryvro.shiftplanner</string>')) {
+        throw new Error('must target BUNDLE_ID com.ryvro.shiftplanner');
+      }
+
+      if (!content.includes('<key>PROJECT_ID</key>')) {
+        throw new Error('must include PROJECT_ID');
+      }
+
+      if (!content.includes(`<string>${env.FIREBASE_PROJECT_ID}</string>`)) {
+        throw new Error('PROJECT_ID must match FIREBASE_PROJECT_ID');
+      }
+    }
+  );
+  requireNativeServiceFile(
+    errors,
+    env,
+    envPath,
+    'EXPO_ANDROID_GOOGLE_SERVICES_FILE',
+    'google-services.json',
+    (content) => {
+      if (hasRetiredRyvroName(content) || content.includes('ryvro-local')) {
+        throw new Error('must be a fresh Ryvro production JSON file, not a retired or local file');
+      }
+
+      const parsed = JSON.parse(content);
+      const projectId = parsed?.project_info?.project_id;
+      const packageNames =
+        parsed?.client
+          ?.map((client) => client?.client_info?.android_client_info?.package_name)
+          .filter(Boolean) || [];
+
+      if (projectId !== env.FIREBASE_PROJECT_ID) {
+        throw new Error('project_info.project_id must match FIREBASE_PROJECT_ID');
+      }
+
+      if (!packageNames.includes('com.ryvro.shiftplanner')) {
+        throw new Error('must include Android package com.ryvro.shiftplanner');
+      }
+    }
   );
   requireValue(
     errors,

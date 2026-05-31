@@ -157,6 +157,48 @@ describe('Ryvro environment template', () => {
   const runProductionEnvCheck = (envContent: string) => {
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ryvro-env-check-'));
     const envPath = path.join(tempDir, '.env.production');
+    fs.writeFileSync(
+      path.join(tempDir, 'GoogleService-Info.plist'),
+      [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<plist version="1.0">',
+        '<dict>',
+        '<key>BUNDLE_ID</key>',
+        '<string>com.ryvro.shiftplanner</string>',
+        '<key>PROJECT_ID</key>',
+        '<string>ryvro-prod</string>',
+        '<key>GOOGLE_APP_ID</key>',
+        '<string>1:123456789012:ios:abcdef1234567890</string>',
+        '</dict>',
+        '</plist>',
+      ].join('\n')
+    );
+    fs.writeFileSync(
+      path.join(tempDir, 'google-services.json'),
+      JSON.stringify(
+        {
+          project_info: {
+            project_number: '123456789012',
+            project_id: 'ryvro-prod',
+            storage_bucket: 'ryvro-prod.firebasestorage.app',
+          },
+          client: [
+            {
+              client_info: {
+                mobilesdk_app_id: '1:123456789012:android:abcdef1234567890',
+                android_client_info: {
+                  package_name: 'com.ryvro.shiftplanner',
+                },
+              },
+              api_key: [{ current_key: 'AIzaSyRyvroProd1234567890abcdefghiJKLMN' }],
+            },
+          ],
+          configuration_version: '1',
+        },
+        null,
+        2
+      )
+    );
     fs.writeFileSync(envPath, envContent);
 
     return spawnSync(
@@ -700,6 +742,10 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('FIREBASE_STORAGE_BUCKET');
     expect(script).toContain('FIREBASE_MESSAGING_SENDER_ID');
     expect(script).toContain('FIREBASE_APP_ID');
+    expect(script).toContain('EXPO_IOS_GOOGLE_SERVICES_FILE');
+    expect(script).toContain('EXPO_ANDROID_GOOGLE_SERVICES_FILE');
+    expect(script).toContain('GoogleService-Info.plist');
+    expect(script).toContain('google-services.json');
     expect(script).toContain('API_BASE_URL');
     expect(script).toContain('GOOGLE_WEB_CLIENT_ID');
     expect(script).toContain('EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID');
@@ -750,6 +796,10 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('must be the Ryvro Firebase project ID');
     expect(script).toContain('scoped to a Ryvro Firebase project');
     expect(script).toContain('retired Ellie/ShiftSync');
+    expect(script).toContain('must not use tracked local placeholder Firebase service files');
+    expect(script).toContain('outside generated ios/ and android/ folders');
+    expect(script).toContain('must target BUNDLE_ID com.ryvro.shiftplanner');
+    expect(script).toContain('must include Android package com.ryvro.shiftplanner');
     expect(script).toContain('must be the live HTTPS Ryvro API base URL');
     expect(script).toContain('must match GOOGLE_WEB_CLIENT_ID');
     expect(script).toContain('must match GOOGLE_IOS_CLIENT_ID');
@@ -792,7 +842,13 @@ describe('Ryvro environment template', () => {
       'it must fail the preflight until every placeholder is replaced'
     );
     expect(externalSetup).toContain(
-      'rejects retired Ellie/ShiftSync Firebase project IDs and Cloud Function hosts'
+      'rejects retired Ellie/ShiftSync Firebase project IDs, Cloud Function hosts'
+    );
+    expect(externalSetup).toContain(
+      'tracked local service-file placeholders under `config/firebase/`'
+    );
+    expect(externalSetup).toContain(
+      'generated native-folder service-file paths under `ios/` or `android/`'
     );
     expect(externalSetup).toContain('live HTTPS Ryvro-owned `LEGAL_PRIVACY_POLICY_URL`');
     expect(releaseTasks).toContain('npm run release:env:check');
@@ -953,6 +1009,41 @@ describe('Ryvro environment template', () => {
     expect(genericProjectResult.status).toBe(1);
     expect(genericProjectResult.stderr).toContain('FIREBASE_PROJECT_ID');
     expect(genericProjectResult.stderr).toContain('must be the Ryvro Firebase project ID');
+  });
+
+  it('rejects production env files without real Ryvro Firebase native service files', () => {
+    const missingIosResult = runProductionEnvCheck(
+      validProductionEnv.replace(
+        'EXPO_IOS_GOOGLE_SERVICES_FILE=./GoogleService-Info.plist',
+        'EXPO_IOS_GOOGLE_SERVICES_FILE=./missing/GoogleService-Info.plist'
+      )
+    );
+
+    expect(missingIosResult.status).toBe(1);
+    expect(missingIosResult.stderr).toContain('EXPO_IOS_GOOGLE_SERVICES_FILE');
+    expect(missingIosResult.stderr).toContain('does not exist');
+
+    const generatedIosPathResult = runProductionEnvCheck(
+      validProductionEnv.replace(
+        'EXPO_IOS_GOOGLE_SERVICES_FILE=./GoogleService-Info.plist',
+        'EXPO_IOS_GOOGLE_SERVICES_FILE=./ios/RyvroShiftPlanner/GoogleService-Info.plist'
+      )
+    );
+
+    expect(generatedIosPathResult.status).toBe(1);
+    expect(generatedIosPathResult.stderr).toContain('EXPO_IOS_GOOGLE_SERVICES_FILE');
+    expect(generatedIosPathResult.stderr).toContain('outside generated ios/ and android/ folders');
+
+    const localPlaceholderResult = runProductionEnvCheck(
+      validProductionEnv.replace(
+        'EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json',
+        'EXPO_ANDROID_GOOGLE_SERVICES_FILE=./config/firebase/google-services.json'
+      )
+    );
+
+    expect(localPlaceholderResult.status).toBe(1);
+    expect(localPlaceholderResult.stderr).toContain('EXPO_ANDROID_GOOGLE_SERVICES_FILE');
+    expect(localPlaceholderResult.stderr).toContain('must not use tracked local placeholder');
   });
 
   it('rejects production env files with retired Cloud Function project hosts', () => {
@@ -1209,7 +1300,7 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('109 Jest suites / 1,758 tests / 4 snapshots');
+    expect(readme).toContain('109 Jest suites / 1,759 tests / 4 snapshots');
     expect(readme).toContain('the Ryvro native scaffold preflight');
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
@@ -1220,13 +1311,13 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
-    expect(readme).toContain('Testing infrastructure (1,758 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,759 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,758 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,759 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-05-31 release check)');
-    expect(readme).toContain('Total Tests**: 1,758 passing (109 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Total Tests**: 1,759 passing (109 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -1590,6 +1681,13 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('109 Jest suites / 1,756 tests');
     expect(readinessReport).toContain('109 Jest suites / 1,757 tests');
     expect(readinessReport).toContain('109 Jest suites / 1,758 tests');
+    expect(readinessReport).toContain('109 Jest suites / 1,759 tests');
+    expect(readinessReport).toContain(
+      'requiring real root-level Firebase native service files for Ryvro production builds'
+    );
+    expect(readinessReport).toContain(
+      'Production env preflight now requires real root-level Firebase native service files'
+    );
     expect(readinessReport).toContain('Release native scaffold preflight now runs');
     expect(readinessReport).toContain('adding the Ryvro native scaffold preflight');
     expect(readinessReport).toContain('Store readiness preflight now runs');
@@ -1996,7 +2094,7 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('Play internal testing install');
     expect(ownerRunbook).toContain('eas submit --platform ios --latest');
     expect(ownerRunbook).toContain('eas submit --platform android --latest');
-    expect(ownerRunbook).toContain('109 Jest suites, 1,758 tests');
+    expect(ownerRunbook).toContain('109 Jest suites, 1,759 tests');
     expect(ownerRunbook).toContain('npm run release:owner:check');
     expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');

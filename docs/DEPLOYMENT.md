@@ -211,7 +211,7 @@ cp RYVRO_ENVIRONMENT_CONFIGURATION_TEMPLATE.md /tmp/ryvro-env-reference.md
 cp .env.production.example .env
 ```
 
-Fill `.env` with real production values for Firebase, Google OAuth, RevenueCat, legal/support URLs, EAS project ID, and `RYVRO_BRAIN_URL`. The production example is intentionally placeholder-filled and should fail `npm run release:env:check` until those owner/account values are replaced.
+Fill `.env` with real production values for Firebase, Google OAuth, RevenueCat, legal/support URLs, EAS project ID, and `RYVRO_BRAIN_URL`. Keep the real Firebase native service files at the repo root and set `EXPO_IOS_GOOGLE_SERVICES_FILE=./GoogleService-Info.plist` plus `EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json`. The production example is intentionally placeholder-filled and should fail `npm run release:env:check` until those owner/account values are replaced.
 
 Before pushing secrets to EAS or starting production builds, run:
 
