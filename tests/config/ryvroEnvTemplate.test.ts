@@ -540,12 +540,10 @@ describe('Ryvro environment template', () => {
     );
     const clearanceEvidence = `${externalSetup}\n${audit}`;
 
-    expect(clearanceEvidence).toContain('2026-05-31 at 05:16:18Z');
-    expect(clearanceEvidence).toContain('2026-05-31T05:16:18.075Z');
+    expect(clearanceEvidence).toContain('2026-05-31 at 07:14:40Z');
+    expect(clearanceEvidence).toContain('2026-05-31T07:14:40.822Z');
     expect(clearanceEvidence).toContain('no exact `Ryvro` or `Ryvro Shift Planner` app result');
-    expect(clearanceEvidence).toContain(
-      'Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`'
-    );
+    expect(clearanceEvidence).toContain('Visible fuzzy names included `Rydoo` and `Rydora`');
     expect(clearanceEvidence).toContain(
       'Chrome/Computer Use previously read the public Google Play search page for `Ryvro`'
     );
@@ -572,6 +570,11 @@ describe('Ryvro environment template', () => {
     expect(clearanceEvidence).not.toContain('2026-05-30T05:38:18.547Z');
     expect(clearanceEvidence).not.toContain('2026-05-30 at 06:28:28Z');
     expect(clearanceEvidence).not.toContain('2026-05-30T06:28:28.205Z');
+    expect(clearanceEvidence).not.toContain('2026-05-31 at 05:16:18Z');
+    expect(clearanceEvidence).not.toContain('2026-05-31T05:16:18.075Z');
+    expect(clearanceEvidence).not.toContain(
+      'Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`'
+    );
     expect(clearanceEvidence).not.toContain(
       'LinkedIn `company/ryvro`: public URL returned bot-protection status `999`'
     );
@@ -848,7 +851,7 @@ describe('Ryvro environment template', () => {
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
-    expect(releaseTasks).toContain('latest public evidence: 2026-05-31 05:16Z');
+    expect(releaseTasks).toContain('latest public evidence: 2026-05-31 07:14Z');
     expect(releaseTasks).toContain('formal trademark/legal clearance for `Ryvro`');
     expect(releaseTasks).toContain(
       'Reserve or create App Store Connect app name `Ryvro Shift Planner`'

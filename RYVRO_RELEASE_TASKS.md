@@ -11,7 +11,7 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 
 | #   | Task                                                                                                                                                                              | Status                                              |
 | --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
-| 0a  | Run repeatable public clearance preflight with `npm run release:clearance` and keep evidence in `docs/RYVRO_RELEASE_READINESS_REPORT.md` / `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md` | ✅ Done (latest public evidence: 2026-05-31 05:16Z) |
+| 0a  | Run repeatable public clearance preflight with `npm run release:clearance` and keep evidence in `docs/RYVRO_RELEASE_READINESS_REPORT.md` / `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md` | ✅ Done (latest public evidence: 2026-05-31 07:14Z) |
 | 0b  | 👤 Complete formal trademark/legal clearance for `Ryvro` in launch markets                                                                                                        | 👤 Todo                                             |
 | 0c  | 👤 Reserve or create App Store Connect app name `Ryvro Shift Planner`                                                                                                             | 👤 Todo                                             |
 | 0d  | 👤 Reserve or create Google Play title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`                                                                                 | 👤 Todo                                             |
