@@ -3386,6 +3386,10 @@ describe('Ryvro environment template', () => {
   });
 
   it('localizes remaining high-risk reminder, dashboard, and onboarding launch labels', () => {
+    const schedulePreviewCalendar = fs.readFileSync(
+      path.join(process.cwd(), 'src/components/shift-builder/SchedulePreviewCalendar.tsx'),
+      'utf8'
+    );
     const guardedLocaleKeys: Record<string, string[]> = {
       'common.json': ['subscription.paywall.plans.weeklySuffix'],
       'profile.json': ['smartReminders.sections.travel', 'smartReminders.units.hoursShort'],
@@ -3403,8 +3407,15 @@ describe('Ryvro environment template', () => {
         'shiftTime.customInput.period.am',
         'shiftTime.customInput.period.pm',
         'shiftBuilder.inspector.kind.label',
+        'shiftBuilder.preview.errorHint',
       ],
     };
+
+    expect(schedulePreviewCalendar).toContain("useTranslation('onboarding')");
+    expect(schedulePreviewCalendar).toContain("t('shiftBuilder.preview.title')");
+    expect(schedulePreviewCalendar).toContain("t('shiftBuilder.preview.errorHint')");
+    expect(schedulePreviewCalendar).not.toContain('Fix this in the validation card above');
+    expect(schedulePreviewCalendar).not.toContain('Complete your schedule to see a preview');
 
     const localeRoot = path.join(process.cwd(), 'src/i18n/locales');
     const locales = fs.readdirSync(localeRoot).filter((locale) => locale !== 'en');

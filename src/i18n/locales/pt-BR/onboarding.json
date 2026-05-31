@@ -1290,7 +1290,8 @@
       "today": "Hoje",
       "anchor": "Âncora",
       "empty": "Nenhum dado de visualização disponível.",
-      "errors": "A visualização não pode ser exibida por causa de erros."
+      "errors": "A visualização não pode ser exibida por causa de erros.",
+      "errorHint": "Corrija o problema destacado acima e a prévia do calendário aparecerá aqui."
     },
     "validation": {
       "errorTitle_one": "{{count}} erro",

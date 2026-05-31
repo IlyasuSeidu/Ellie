@@ -9,6 +9,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@/utils/theme';
 import type { UniversalShiftSchedule } from '@/types';
 import { calculateUniversalShiftDay } from '@/utils/universalShiftUtils';
@@ -71,6 +72,7 @@ export const SchedulePreviewCalendar: React.FC<SchedulePreviewCalendarProps> = (
   hasErrors,
   errors = [],
 }) => {
+  const { t } = useTranslation('onboarding');
   const [range, setRange] = useState<PreviewRange>(30);
 
   const today = useMemo(() => new Date(), []);
@@ -174,15 +176,11 @@ export const SchedulePreviewCalendar: React.FC<SchedulePreviewCalendarProps> = (
     const firstError = errors[0];
     return (
       <View style={styles.container}>
-        <Text style={styles.sectionTitle}>Preview</Text>
+        <Text style={styles.sectionTitle}>{t('shiftBuilder.preview.title')}</Text>
         <View style={styles.errorState}>
           <Ionicons name="warning-outline" size={32} color={theme.colors.warning} />
-          <Text style={styles.errorText}>
-            {firstError ?? 'Finish the required schedule fields to unlock preview.'}
-          </Text>
-          <Text style={styles.errorHint}>
-            Fix this in the validation card above, then the calendar preview will appear here.
-          </Text>
+          <Text style={styles.errorText}>{firstError ?? t('shiftBuilder.preview.errors')}</Text>
+          <Text style={styles.errorHint}>{t('shiftBuilder.preview.errorHint')}</Text>
         </View>
       </View>
     );
@@ -191,10 +189,10 @@ export const SchedulePreviewCalendar: React.FC<SchedulePreviewCalendarProps> = (
   if (!isScheduleComplete) {
     return (
       <View style={styles.container}>
-        <Text style={styles.sectionTitle}>Preview</Text>
+        <Text style={styles.sectionTitle}>{t('shiftBuilder.preview.title')}</Text>
         <View style={styles.emptyState}>
           <Ionicons name="eye-outline" size={32} color={theme.colors.shadow} />
-          <Text style={styles.emptyText}>Complete your schedule to see a preview</Text>
+          <Text style={styles.emptyText}>{t('shiftBuilder.preview.empty')}</Text>
         </View>
       </View>
     );
@@ -204,14 +202,14 @@ export const SchedulePreviewCalendar: React.FC<SchedulePreviewCalendarProps> = (
     <View style={styles.container}>
       {/* Header + toggle */}
       <View style={styles.header}>
-        <Text style={styles.sectionTitle}>Preview</Text>
+        <Text style={styles.sectionTitle}>{t('shiftBuilder.preview.title')}</Text>
         <View style={styles.rangeToggle}>
           {RANGE_OPTIONS.map((r) => (
             <TouchableOpacity
               key={r}
               style={[styles.rangePill, range === r && styles.rangePillActive]}
               onPress={() => setRange(r)}
-              accessibilityLabel={`${r} day preview`}
+              accessibilityLabel={t(`shiftBuilder.preview.range${r}`)}
               accessibilityState={{ selected: range === r }}
               accessibilityRole="radio"
             >
@@ -236,11 +234,11 @@ export const SchedulePreviewCalendar: React.FC<SchedulePreviewCalendarProps> = (
               },
             ]}
           />
-          <Text style={styles.legendText}>Today</Text>
+          <Text style={styles.legendText}>{t('shiftBuilder.preview.today')}</Text>
         </View>
         <View style={styles.legendItem}>
           <Ionicons name="flag" size={10} color={theme.colors.sacredGold} />
-          <Text style={styles.legendText}>Anchor</Text>
+          <Text style={styles.legendText}>{t('shiftBuilder.preview.anchor')}</Text>
         </View>
       </View>
 

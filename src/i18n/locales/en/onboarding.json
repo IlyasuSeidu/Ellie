@@ -1286,7 +1286,8 @@
       "today": "Today",
       "anchor": "Anchor",
       "empty": "Add shifts to see a preview",
-      "errors": "Fix errors to see preview"
+      "errors": "Fix errors to see preview",
+      "errorHint": "Fix the highlighted issue above, then your calendar preview will appear here."
     },
     "validation": {
       "errorTitle_one": "{{count}} error",

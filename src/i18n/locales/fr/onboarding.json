@@ -1310,7 +1310,8 @@
       "today": "Aujourd'hui",
       "anchor": "Ancrage",
       "empty": "Aucune donnée d'aperçu disponible.",
-      "errors": "L'aperçu ne peut pas être affiché en raison d'erreurs."
+      "errors": "L'aperçu ne peut pas être affiché en raison d'erreurs.",
+      "errorHint": "Corrigez le problème indiqué ci-dessus, puis l'aperçu du calendrier apparaîtra ici."
     },
     "validation": {
       "errorTitle_one": "{{count}} erreur",

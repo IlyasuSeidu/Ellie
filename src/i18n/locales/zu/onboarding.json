@@ -1310,7 +1310,8 @@
       "today": "Namuhla",
       "anchor": "Ankolo",
       "empty": "Awekho amanani okubuka kuqala.",
-      "errors": "Ukubuka kuqala akungaboniswa ngenxa yamaphutha."
+      "errors": "Ukubuka kuqala akungaboniswa ngenxa yamaphutha.",
+      "errorHint": "Lungisa inkinga egqanyisiwe ngenhla, bese ukubuka kuqala kwekhalenda kuzovela lapha."
     },
     "validation": {
       "errorTitle_one": "{{count}} iphutha",

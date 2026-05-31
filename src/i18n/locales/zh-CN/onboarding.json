@@ -1254,7 +1254,8 @@
       "today": "今天",
       "anchor": "锚定",
       "empty": "暂无预览数据。",
-      "errors": "由于存在错误，无法显示预览。"
+      "errors": "由于存在错误，无法显示预览。",
+      "errorHint": "先修正上方标出的内容，然后日历预览会显示在这里。"
     },
     "validation": {
       "errorTitle_one": "{{count}} 个错误",

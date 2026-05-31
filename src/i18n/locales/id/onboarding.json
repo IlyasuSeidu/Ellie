@@ -1305,7 +1305,8 @@
       "today": "Hari ini",
       "anchor": "Jangkar",
       "empty": "Tidak ada data pratinjau yang tersedia.",
-      "errors": "Pratinjau tidak dapat ditampilkan karena terdapat kesalahan."
+      "errors": "Pratinjau tidak dapat ditampilkan karena terdapat kesalahan.",
+      "errorHint": "Perbaiki masalah yang disorot di atas, lalu pratinjau kalender akan muncul di sini."
     },
     "validation": {
       "errorTitle_one": "{{count}} kesalahan",

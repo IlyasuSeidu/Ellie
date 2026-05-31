@@ -1291,7 +1291,8 @@
       "today": "Vandag",
       "anchor": "Anker",
       "empty": "Geen voorskoudata beskikbaar nie.",
-      "errors": "Voorskou kan nie vertoon word as gevolg van foute nie."
+      "errors": "Voorskou kan nie vertoon word as gevolg van foute nie.",
+      "errorHint": "Maak die uitgeligte probleem hierbo reg; dan sal die kalendervoorskou hier verskyn."
     },
     "validation": {
       "errorTitle_one": "{{count}} fout",

@@ -1300,7 +1300,8 @@
       "today": "Hoy",
       "anchor": "Anclaje",
       "empty": "No hay datos de vista previa disponibles.",
-      "errors": "La vista previa no se puede mostrar debido a errores."
+      "errors": "La vista previa no se puede mostrar debido a errores.",
+      "errorHint": "Corrige el problema resaltado arriba y luego aparecerá aquí la vista previa del calendario."
     },
     "validation": {
       "errorTitle_one": "{{count}} error detectado",
