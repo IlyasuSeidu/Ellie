@@ -145,15 +145,23 @@ Repo-side offline basics are now covered by NetInfo-aware sync state, pending-sy
 
 **Core app:**
 
-1. Fresh install → complete onboarding via rotating roster path
-2. Fresh install → complete onboarding via FIFO path
-3. Profile shift edits reflect immediately on dashboard
-4. Hero/status/tab accent colors switch correctly per active shift
-5. App relaunch preserves all onboarding data (AsyncStorage)
-6. Schedule and Stats tabs are not visible anywhere in the nav
-7. No dead/broken tap targets in any visible screen
+1. Fresh install → complete onboarding via Universal Shift Builder template start with a non-mining template such as healthcare, security, emergency services, manufacturing, transport, hospitality, aviation, or rail
+2. Fresh install → complete onboarding via Universal Shift Builder AI description with a FIFO/mining or rotating-shift prompt, then review and save the generated schedule
+3. Fresh install → complete onboarding via Universal Shift Builder manual setup with custom shift names, colors, icons, reminders, exceptions, and calendar export enabled
+4. Profile shift edits reflect immediately on dashboard
+5. Hero/status/tab accent colors switch correctly per active shift
+6. App relaunch preserves all onboarding data (AsyncStorage)
+7. Schedule and Stats tabs are not visible anywhere in the nav
+8. No dead/broken tap targets in any visible screen
 
-**Subscription (Ryvro Pro):** 8. Tap center mic (not subscribed) → PaywallScreen appears; annual plan pre-selected; "Start 7-Day Free Trial" button visible 9. Tap any locked calendar week (not subscribed) → PaywallScreen appears 10. Start 7-day free trial (RevenueCat sandbox) → `isPro` = true → mic opens voice assistant; full year calendar unlocks 11. Profile screen shows "Ryvro Pro — Active ✓" when subscribed; shows "Upgrade to Ryvro Pro" row with price when not subscribed 12. Tap "Restore Purchases" on paywall → purchases restore correctly 13. Voice assistant opens (subscribed), handles microphone permission flow, and responds
+**Subscription (Ryvro Pro):**
+
+9. Tap center mic (not subscribed) → PaywallScreen appears; annual plan pre-selected; "Start 7-Day Free Trial" button visible
+10. Tap any locked calendar week (not subscribed) → PaywallScreen appears
+11. Start 7-day free trial (RevenueCat sandbox) → `isPro` = true → mic opens voice assistant; full year calendar unlocks
+12. Profile screen shows "Ryvro Pro — Active ✓" when subscribed; shows "Upgrade to Ryvro Pro" row with price when not subscribed
+13. Tap "Restore Purchases" on paywall → purchases restore correctly
+14. Voice assistant opens (subscribed), handles microphone permission flow, and responds
 
 ---
 

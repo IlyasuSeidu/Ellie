@@ -1049,8 +1049,19 @@ describe('Ryvro environment template', () => {
     );
     expect(releaseTasks).toContain('Repo-side offline basics are now covered');
     expect(releaseTasks).toContain('Physical-device QA still has to prove');
+    expect(releaseTasks).toContain(
+      'Fresh install → complete onboarding via Universal Shift Builder template start with a non-mining template'
+    );
+    expect(releaseTasks).toContain(
+      'Fresh install → complete onboarding via Universal Shift Builder AI description with a FIFO/mining or rotating-shift prompt'
+    );
+    expect(releaseTasks).toContain(
+      'Fresh install → complete onboarding via Universal Shift Builder manual setup with custom shift names, colors, icons, reminders, exceptions, and calendar export enabled'
+    );
     expect(releaseTasks).toContain('cd <repo-root>');
     expect(releaseTasks).toContain('-archivePath /tmp/Ryvro.xcarchive archive');
+    expect(releaseTasks).not.toContain('complete onboarding via rotating roster path');
+    expect(releaseTasks).not.toContain('complete onboarding via FIFO path');
     expect(releaseTasks).not.toContain('/Users/Shared/Ellie');
     expect(releaseTasks).not.toContain('/tmp/Ellie.xcarchive');
     expect(releaseTasks).not.toContain('PRODUCT_NAME = Ellie');
@@ -1179,6 +1190,12 @@ describe('Ryvro environment template', () => {
     );
     expect(readinessReport).toContain(
       'fresh onboarding E2E happy path uses non-mining healthcare worker data'
+    );
+    expect(readinessReport).toContain(
+      'launch smoke-test matrix now follows the shipped Universal Shift Builder entry modes'
+    );
+    expect(readinessReport).toContain(
+      'non-mining template start, FIFO/mining or rotating-shift AI description, and manual custom setup'
     );
     expect(readinessReport).toContain(
       'active API reference now uses a broad healthcare rotating-schedule example'
