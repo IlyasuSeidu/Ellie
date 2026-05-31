@@ -125,8 +125,34 @@ Ryvro now uses the Universal Shift Builder as its onboarding schedule setup, rep
 - **TypeScript + Zod Validation**: Runtime safety for user data
 - **Firebase Backend**: Cloud Firestore for data sync
 - **Sacred Theme System**: Premium design language for shift workers
-- **1,500+ Tests**: Comprehensive coverage across 42 test suites
+- **1,733 Tests**: Comprehensive unit, config, service, and integration coverage
 - [Read the story →](build-in-public/system-thinking/01-day-one-foundations.md)
+
+---
+
+## Release Status Snapshot
+
+Ryvro is release-prep ready in the repository, but it is not live in the App Store or Google Play yet.
+
+Repo-proven launch state:
+
+- App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`
+- Launch surface: Universal Shift Builder onboarding, dashboard, profile/settings, Ryvro voice entry point, reminders, exceptions, and calendar import/export
+- Hidden v1 tabs: Schedule and Stats are omitted from the bottom navigation; their helper screens are kept free of placeholder copy for any internal entry points
+- Templates and fixtures: mining/FIFO plus healthcare, security, emergency services, manufacturing, transport, hospitality, aviation, rail, and operations examples
+- Latest local gate: `npm run release:check` passed TypeScript, 106 Jest suites / 1,733 tests / 4 snapshots, and backend build on 2026-05-31
+- Latest pushed PR gate: GitHub Actions CI passed Unit Tests, Lint and Type Check, and Build Check on run `26704249051`
+
+Owner/account work still required before launch:
+
+- Formal trademark/legal clearance for `Ryvro`
+- App Store Connect and Google Play Console app creation/name/package reservation
+- Domain and social handle reservation
+- Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat, legal/support URLs, and EAS production secrets
+- Production `ryvroBrain` deploy and smoke test
+- Physical iOS and Android device smoke tests, store screenshots, privacy forms, data-safety forms, TestFlight/internal track upload, and final submission
+
+Current launch handoff lives in [docs/RYVRO_RELEASE_READINESS_REPORT.md](docs/RYVRO_RELEASE_READINESS_REPORT.md), [RYVRO_RELEASE_TASKS.md](RYVRO_RELEASE_TASKS.md), and [docs/RYVRO_EXTERNAL_SERVICE_SETUP.md](docs/RYVRO_EXTERNAL_SERVICE_SETUP.md).
 
 ---
 
@@ -160,7 +186,7 @@ Ryvro now uses the Universal Shift Builder as its onboarding schedule setup, rep
 - **Formatting**: Prettier
 - **Pre-commit Hooks**: Husky + lint-staged
 - **Type Checking**: TypeScript strict mode
-- **Testing**: Jest (1,500 tests), React Testing Library, Detox (E2E)
+- **Testing**: Jest (1,733 tests in the latest release check), React Testing Library, Detox (E2E)
 
 ### CI/CD
 
@@ -358,16 +384,16 @@ Colors are grounded in low-light shift-work conditions and broad enough for ever
 
 ## 🧭 Roadmap
 
-### ✅ Phase 1: Foundation (Completed)
+### ✅ Phase 1: Foundation
 
 - [x] Project setup and development environment
 - [x] TypeScript types and Zod validation
 - [x] Utility functions (shift calculation, date handling)
 - [x] Firebase integration
 - [x] Sacred theme system
-- [x] Testing infrastructure (1,500+ tests)
+- [x] Testing infrastructure (1,733 tests in the latest release check)
 
-### ✅ Phase 2: Premium Onboarding (In Progress)
+### ✅ Phase 2: Premium Onboarding And Universal Builder
 
 - [x] Welcome screen with orchestrated animations
 - [x] Introduction screen (name, occupation, company, country)
@@ -377,30 +403,32 @@ Colors are grounded in low-light shift-work conditions and broad enough for ever
 - [x] Exceptions, holiday overrides, import/export, and calendar preview
 - [x] Onboarding navigation flow
 
-### 🚧 Phase 3: Core App Features (In Progress)
+### ✅ Phase 3: Core Launch App
 
-- [ ] Energy level selection
-- [ ] AI assistance preference
-- [ ] Earnings input (hourly rate, overtime)
-- [ ] Onboarding completion screen
+- [x] Home dashboard with current/next shift visibility
+- [x] Month calendar preview with colors, icons, overnight shifts, and locked future weeks
+- [x] Profile and shift settings editing
+- [x] Ryvro voice assistant entry point
+- [x] Smart reminder configuration and notification service coverage
+- [x] Calendar import/export from the Universal Shift Builder
+- [x] Dashboard quick actions route to implemented launch surfaces
 
-### 📋 Phase 4: Main App (Planned)
+### 🚧 Phase 4: Store Launch Readiness
 
-- [ ] Home screen with "Tomorrow: [Shift Type]" display
-- [ ] Full calendar view with shift preview
-- [ ] Shift notifications (1 hour before start)
-- [ ] Pattern editing and management
-- [ ] Fly-out day countdown
-- [ ] Important date checking ("Am I working on...")
+- [x] Repo-side Ryvro identity, assets, copy, templates, release docs, and CI gates
+- [x] Public clearance preflight script and current public evidence
+- [ ] Account-owner clearance, console setup, production secrets, and production backend deploy
+- [ ] Physical iOS and Android smoke tests
+- [ ] Store screenshots, privacy/data-safety forms, TestFlight/internal track upload, and final submission
 
-### 🔮 Phase 5: Advanced Features (Future)
+### 🔮 Phase 5: Post-Launch Expansion
 
-- [ ] Multiple pattern support (different sites)
-- [ ] Shift swap tracking
-- [ ] Calendar export (Google Calendar integration)
-- [ ] Pattern sharing with coworkers
-- [ ] Recurring event support (holidays, shutdowns)
-- [ ] Analytics and insights (hours worked, earnings tracking)
+- [ ] Full Schedule tab
+- [ ] Full Stats/analytics surface
+- [ ] Team sharing and coworker pattern exchange
+- [ ] Advanced shift swap tracking
+- [ ] Deeper earnings and allowance analytics
+- [ ] Automated EAS/Fastlane release lanes
 
 ---
 
@@ -437,22 +465,22 @@ Each story includes:
 
 Ryvro has comprehensive test coverage across all layers:
 
-### Unit Tests (1,500+ tests)
+### Unit Tests (1,733 tests in the latest release check)
 
 - **Utilities**: Shift calculations, date manipulation, validation
-- **Components**: All onboarding components
-- **Services**: Firebase, storage, auth, shift data
-- **Contexts**: Onboarding state management
+- **Components**: Onboarding, dashboard, voice, profile, and builder components
+- **Services**: Firebase, storage, auth, schedule parsing, notifications, RevenueCat, voice, and analytics
+- **Contexts**: Auth, language, onboarding, and subscription state management
 
 ### Integration Tests
 
 - **Services Integration**: Cross-service data flow
 - **Onboarding Flow**: Complete user journey
 
-### E2E Tests (Planned)
+### E2E Tests
 
-- **Critical Flows**: Onboarding completion, shift viewing
-- **Platform-Specific**: iOS and Android behavior
+- **Simulator/emulator smoke**: iOS and Android release-style dashboard, auth, onboarding, and profile language flows have repo-documented evidence
+- **Physical device smoke**: still required before store submission
 
 ### Test Commands
 
@@ -557,9 +585,9 @@ npm run format
 
 ## 📊 Metrics
 
-### Current Status (as of latest commit)
+### Current Status (as of 2026-05-31 release check)
 
-- **Total Tests**: 1,701 passing (51 test suites)
+- **Total Tests**: 1,733 passing (106 Jest suites, 4 snapshots)
 - **Test Coverage**:
   - Branches: 62.03% (≥60% ✅)
   - Functions: 76.95% (≥70% ✅)

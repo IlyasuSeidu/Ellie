@@ -583,10 +583,44 @@ describe('Ryvro environment template', () => {
     expect(deploymentPlan).toContain(
       '<repo-root>/android/app/build/outputs/bundle/release/app-release.aab'
     );
+    expect(deploymentPlan).toContain('README now includes a Ryvro release status snapshot');
+    expect(deploymentPlan).toContain(
+      '[x] Verify every visible tab/action is complete or routed to an implemented launch surface'
+    );
+    expect(deploymentPlan).toContain('[x] Update README release status snapshot');
     expect(deploymentPlan).not.toContain('Keep tabs visible');
     expect(deploymentPlan).not.toContain('beta placeholders');
     expect(deploymentPlan).not.toContain('/Users/Shared/Ellie');
     expect(deploymentPlan).not.toContain('/tmp/Ellie.xcarchive');
+  });
+
+  it('keeps the README release status aligned with current Ryvro launch readiness', () => {
+    const readme = fs.readFileSync(path.join(process.cwd(), 'README.md'), 'utf8');
+
+    expect(readme).toContain('## Release Status Snapshot');
+    expect(readme).toContain('not live in the App Store or Google Play yet');
+    expect(readme).toContain(
+      'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
+    );
+    expect(readme).toContain('106 Jest suites / 1,733 tests / 4 snapshots');
+    expect(readme).toContain('GitHub Actions CI passed Unit Tests, Lint and Type Check');
+    expect(readme).toContain('run `26704249051`');
+    expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
+    expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
+    expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
+    expect(readme).toContain('Testing infrastructure (1,733 tests in the latest release check)');
+    expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
+    expect(readme).toContain('Full Schedule tab');
+    expect(readme).toContain('**Physical device smoke**: still required before store submission');
+    expect(readme).toContain('Jest (1,733 tests in the latest release check)');
+    expect(readme).toContain('Current Status (as of 2026-05-31 release check)');
+    expect(readme).toContain('Total Tests**: 1,733 passing (106 Jest suites, 4 snapshots)');
+    expect(readme).not.toContain('1,732 Tests');
+    expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
+    expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
+    expect(readme).not.toContain('E2E Tests (Planned)');
+    expect(readme).not.toContain('Total Tests**: 1,701 passing (51 test suites)');
+    expect(readme).not.toContain('Jest (1,500 tests)');
   });
 
   it('keeps the active deployment guide aligned with Ryvro release preflight', () => {
@@ -700,16 +734,22 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('CI run `26678024310`');
     expect(readinessReport).toContain('commit `e638418`');
     expect(readinessReport).toContain('CI run `26679223794`');
+    expect(readinessReport).toContain('commit `3d85add`');
+    expect(readinessReport).toContain('CI run `26704249051`');
     expect(readinessReport).toContain(
       'commits `f004097`, `10353e7`, `3f92d56`, `90d403d`, and `82fd530`'
     );
     expect(readinessReport).toContain('passed Lint and Type Check, Unit Tests, and Build Check');
     expect(readinessReport).toContain('106 Jest suites / 1,729 tests');
     expect(readinessReport).toContain('106 Jest suites / 1,732 tests');
+    expect(readinessReport).toContain('106 Jest suites / 1,733 tests');
     expect(readinessReport).toContain(
       'Local release verification on 2026-05-31 passed `git diff --check`, focused readiness/audit config tests'
     );
     expect(readinessReport).toContain('`npm run release:clearance`');
+    expect(readinessReport).toContain(
+      'focused README/deployment-plan config tests, and `npm run release:check`'
+    );
     expect(readinessReport).toContain(
       'fresh onboarding E2E happy path uses non-mining healthcare worker data'
     );

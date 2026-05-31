@@ -225,6 +225,10 @@ Acceptance criteria:
 
 ## B3) Update documentation to match current reality
 
+Current status:
+
+- README now includes a Ryvro release status snapshot with repo-proven launch state, latest local/CI gates, and the owner/account/device work still required before the app is live.
+
 Files:
 
 - `README.md`
@@ -394,7 +398,8 @@ Day 7:
 - [x] Remove unneeded Android permissions from active app config
 - [x] Ensure `npm run release:check` exits 0
 - [ ] Increment iOS build number + Android versionCode
-- [ ] Verify every visible tab/action is complete or clearly beta
+- [x] Verify every visible tab/action is complete or routed to an implemented launch surface
+- [x] Update README release status snapshot
 - [ ] Run full smoke test matrix on physical devices
 - [ ] Upload TestFlight build
 - [ ] Upload Play Internal build
