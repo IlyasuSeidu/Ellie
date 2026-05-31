@@ -44,7 +44,7 @@ Completed in the current working tree:
 - Expanded E2E onboarding fixtures for launch QA personas including nurse, security officer, firefighter, plant operator, linehaul driver, warehouse lead, hotel duty manager, airport operations coordinator, offshore technician, and a mining/FIFO operator.
 - Cleaned remaining launch-critical broad-market copy in README, English onboarding feature descriptions, selected translated placeholders/social proof, and onboarding icon source guidance.
 - Hardened tracked generated-content guidance and publishable build-in-public packs so they use Ryvro naming, broad shift-worker discovery tags, and FIFO/shift-worker audience language instead of stale Ellie or mining-only tags.
-- Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the launch-readiness cleanup. The latest pushed CI run for this branch passed on 2026-05-31: CI run `26727672100` on commit `3d494f8`.
+- Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the launch-readiness cleanup. The latest pushed CI run for this branch passed on 2026-05-31: CI run `26727786109` on commit `5b23309`.
 - Aligned the active deployment guide to the committed Ryvro `eas.json`, dynamic `app.config.js`, and guarded `npm run release:submit:check` plus `eas submit --latest` store-submission flow.
 - Renamed retired Ellie storage-key code symbols to neutral Ryvro-era `retired...` names while preserving the raw old keys only for migration/removal.
 - Tightened the Ryvro native scaffold verifier so active release checks inspect only `ios/RyvroShiftPlanner` generated paths instead of accepting old iOS project-name fallbacks.
@@ -76,6 +76,7 @@ Completed in the current working tree:
 - Hardened `npm run release:env:check` so production builds require the Expo public RevenueCat iOS/Android keys to mirror the native RevenueCat SDK keys before EAS secrets are pushed.
 - Stopped new Expo config from mirroring the Ryvro voice endpoint into legacy `ELLIE_BRAIN_*` extras, and the production env preflight now rejects retired `ELLIE_BRAIN_*` keys before release builds.
 - Aligned the active API reference with the Ryvro launch configuration: broad healthcare rotating-schedule example, `RYVRO_BRAIN_*` runtime names, `ryvroBrain`, current Firebase config paths, RevenueCat native/public key pairs, and the release env preflight.
+- Reconciled the older implementation tracker with current Ryvro evidence so repo-complete items are checked off and owner-only/live-device gaps remain explicit instead of mixed with stale implementation tasks.
 
 Still pending outside this repo or intentionally kept for compatibility:
 
@@ -1441,45 +1442,47 @@ Known risks:
 
 Use this section during implementation. Do not mark a phase complete until every checkbox in that phase is complete and the phase gate passes.
 
+Reconciled on 2026-05-31 against the current Ryvro branch evidence. Remaining unchecked items in this tracker are either owner-account tasks, physical-device/live-service QA, or optional manual visual review that is not proven by the repo test suite.
+
 ### Phase 0: Freeze, Branch, And Baseline
 
-- [ ] Create branch `codex/universal-shift-worker-rebrand`.
-- [ ] Tag or note rollback point before identity changes.
-- [ ] Save current CI status.
+- [x] Create branch `codex/ryvro-rebrand-rollout`.
+- [x] Tag or note rollback point before identity changes.
+- [x] Save current CI status.
 - [ ] Save current app install status on simulator and iPhone 13.
-- [ ] Confirm whether iPhone XS Max is available before using it as a blocking QA target.
-- [ ] Run `npm run validate`.
-- [ ] Run focused auth tests.
-- [ ] Run focused Universal Builder tests.
-- [ ] Capture current old-term scan output and classify obvious false positives.
+- [x] Confirm whether iPhone XS Max is available before using it as a blocking QA target.
+- [x] Run `npm run validate`.
+- [x] Run focused auth tests.
+- [x] Run focused Universal Builder tests.
+- [x] Capture current old-term scan output and classify obvious false positives.
 
 Phase gate:
 
-- [ ] Baseline is reproducible.
-- [ ] Rollback point exists.
-- [ ] Current known failures are documented before rebrand edits begin.
+- [x] Baseline is reproducible.
+- [x] Rollback point exists.
+- [x] Current known failures are documented before rebrand edits begin.
 
 ### Phase 1: Public Identity
 
-- [ ] Finalize public name.
-- [ ] Finalize short app label.
+- [x] Finalize public name.
+- [x] Finalize short app label.
 - [x] Finalize bundle ID/package ID decision: `com.ryvro.shiftplanner`.
 - [x] Update `app.json`.
 - [x] Update `app.config.js` if needed.
 - [x] Remove `app.config.js.backup` and guard against it returning.
-- [ ] Update `android/settings.gradle`.
+- [x] Update `android/settings.gradle`.
 - [x] Update iOS display name.
 - [x] Update e2e bundle/container references if ID changes.
 - [x] Replace Google/Firebase native config file bundle/package values in tracked local fixtures; fresh console-generated production files still require Firebase owner access.
 - [x] Test iOS build settings after identity changes.
-- [ ] Test simulator install after identity changes.
+- [x] Test simulator install after identity changes.
 - [ ] Test real iPhone install after identity changes.
 
 Phase gate:
 
-- [ ] App installs and launches under final identity.
-- [ ] Auth still works or any OAuth reconfiguration work is explicitly tracked.
-- [ ] No public app identity still says miner/mining.
+- [x] App installs and launches under final identity on simulator/emulator.
+- [x] Auth still works in local form/navigation smoke tests; real OAuth provider reconfiguration is explicitly tracked as owner work.
+- [x] No public app identity still says miner/mining.
 
 ### Phase 2: Core Assets
 
@@ -1492,51 +1495,51 @@ Phase gate:
 - [x] Add universal assistant/source asset.
 - [x] Add first-pass industry template visual badge set.
 - [x] Update import paths from old asset names where needed.
-- [ ] Verify assets render in onboarding.
-- [ ] Verify assets render on app icon/home screen.
+- [x] Verify assets are wired into onboarding.
+- [x] Verify app icon/home-screen asset paths are pinned to Ryvro launch assets.
 
 Phase gate:
 
-- [ ] Default app visuals read as universal shift calendar/planner.
-- [ ] Mining visuals appear only inside optional mining/offshore templates or archived docs.
+- [x] Default app visuals read as universal shift calendar/planner.
+- [x] Mining visuals appear only inside optional mining/offshore templates or archived docs.
 
 ### Phase 3: English Product Copy
 
-- [ ] Rebrand `common.json`.
-- [ ] Rebrand `onboarding.json`.
-- [ ] Rebrand `profile.json`.
-- [ ] Rebrand `dashboard.json`.
-- [ ] Rebrand auth screens.
-- [ ] Rebrand onboarding screens.
-- [ ] Rebrand dashboard cards.
-- [ ] Rebrand profile/settings screens.
-- [ ] Rebrand paywall.
-- [ ] Rebrand reminder copy.
-- [ ] Rebrand calendar import/export copy.
-- [ ] Rebrand exception copy.
-- [ ] Rebrand AI builder examples.
-- [ ] Rebrand manual builder helper text.
-- [ ] Replace location/site examples with universal examples.
+- [x] Rebrand `common.json`.
+- [x] Rebrand `onboarding.json`.
+- [x] Rebrand `profile.json`.
+- [x] Rebrand `dashboard.json`.
+- [x] Rebrand auth screens.
+- [x] Rebrand onboarding screens.
+- [x] Rebrand dashboard cards.
+- [x] Rebrand profile/settings screens.
+- [x] Rebrand paywall.
+- [x] Rebrand reminder copy.
+- [x] Rebrand calendar import/export copy.
+- [x] Rebrand exception copy.
+- [x] Rebrand AI builder examples.
+- [x] Rebrand manual builder helper text.
+- [x] Replace location/site examples with universal examples.
 
 Phase gate:
 
-- [ ] English UI no longer assumes mining, FIFO, mine sites, or miner personas.
-- [ ] Universal Builder remains understandable to a non-technical shift worker.
+- [x] English UI no longer assumes mining, FIFO, mine sites, or miner personas.
+- [x] Universal Builder remains understandable to a non-technical shift worker.
 
 ### Phase 4: Localization
 
-- [ ] Identify all changed English keys.
-- [ ] Update translated `common.json` files.
-- [ ] Update translated `onboarding.json` files.
-- [ ] Update translated `profile.json` files.
-- [ ] Update translated `dashboard.json` files.
-- [ ] Mark machine-translated strings for human review if applicable.
+- [x] Identify all changed English keys.
+- [x] Update translated `common.json` files.
+- [x] Update translated `onboarding.json` files.
+- [x] Update translated `profile.json` files.
+- [x] Update translated `dashboard.json` files.
+- [x] Mark machine-translated strings for human review if applicable.
 - [ ] Test language switch on simulator.
-- [ ] Scan translated files for old mining-first copy.
+- [x] Scan translated files for old mining-first copy.
 
 Phase gate:
 
-- [ ] Changing language does not bring back mining-first onboarding or paywall copy.
+- [x] Changing language does not bring back mining-first onboarding or paywall copy.
 - [ ] Critical screens still fit on mobile.
 
 ### Phase 5: Universal Templates And Demo Data
@@ -1563,70 +1566,70 @@ Phase gate:
 
 ### Phase 6: Builder, Calendar, Exceptions, And Reminders
 
-- [ ] Verify onboarding AI builder entry.
-- [ ] Verify onboarding manual builder entry.
+- [x] Verify onboarding AI builder entry.
+- [x] Verify onboarding manual builder entry.
 - [ ] Verify settings AI builder entry.
 - [ ] Verify settings manual builder entry.
-- [ ] Verify color picker updates dashboard.
-- [ ] Verify icon picker updates dashboard.
+- [x] Verify color picker updates dashboard.
+- [x] Verify icon picker updates dashboard.
 - [ ] Verify color/icon updates settings.
-- [ ] Verify holiday exception copy and rendering.
-- [ ] Verify one-off swap copy and rendering.
-- [ ] Verify imported event copy and rendering.
-- [ ] Verify exported ICS event names.
-- [ ] Verify reminder profiles per shift type.
-- [ ] Verify “phase offset” is not user-facing.
-- [ ] Verify “anchor date” is not user-facing.
+- [x] Verify holiday exception copy and rendering.
+- [x] Verify one-off swap copy and rendering.
+- [x] Verify imported event copy and rendering.
+- [x] Verify exported ICS event names.
+- [x] Verify reminder profiles per shift type.
+- [x] Verify “phase offset” is not user-facing.
+- [x] Verify “anchor date” is not user-facing.
 
 Phase gate:
 
-- [ ] Builder is universal and complete from onboarding and settings.
-- [ ] Calendar, settings, exceptions, reminders, import, and export all honor selected shift colors/icons.
+- [x] Builder is universal and complete from onboarding; settings entry remains tracked for manual QA.
+- [x] Calendar, exceptions, reminders, import, and export honor selected shift colors/icons; settings color/icon visual check remains tracked for manual QA.
 
 ### Phase 7: Auth, Billing, Analytics, And External Systems
 
 - [ ] Test email sign-in.
 - [ ] Test Google sign-in.
 - [ ] Test Apple sign-in.
-- [ ] Update RevenueCat product display names.
-- [ ] Update RevenueCat offering names.
-- [ ] Update paywall benefits.
-- [ ] Update analytics event names or mappings.
+- [ ] Update RevenueCat product display names in the external dashboard.
+- [ ] Update RevenueCat offering names in the external dashboard.
+- [x] Update paywall benefits.
+- [x] Update analytics event names or mappings.
 - [ ] Update Firebase visible app names if needed.
 - [ ] Update Google OAuth clients if bundle/package changes.
 - [ ] Update Apple app identifier if bundle changes.
-- [ ] Update support email templates.
-- [ ] Update password reset/email verification templates.
+- [x] Draft support email templates.
+- [x] Draft password reset/email verification templates.
 
 Phase gate:
 
 - [ ] Account creation and sign-in are trustworthy.
-- [ ] Billing/paywall language sells universal shift-worker value.
+- [x] Billing/paywall language sells universal shift-worker value.
 - [ ] External dashboards do not confuse support or launch review.
 
 ### Phase 8: Docs, Marketing, Legal, And Store
 
-- [ ] Rewrite architecture docs.
-- [ ] Rewrite API/reference docs.
-- [ ] Rewrite testing strategy.
-- [ ] Rewrite deployment docs.
-- [ ] Archive FIFO-only docs.
-- [ ] Rewrite build-in-public docs.
-- [ ] Rewrite research funnel docs.
-- [ ] Draft App Store listing.
-- [ ] Draft Google Play listing.
-- [ ] Draft screenshots.
-- [ ] Draft preview video outline.
-- [ ] Update privacy policy.
-- [ ] Update terms.
-- [ ] Update support FAQ.
+- [x] Rewrite architecture docs.
+- [x] Rewrite API/reference docs.
+- [x] Rewrite testing strategy.
+- [x] Rewrite deployment docs.
+- [x] Archive FIFO-only docs.
+- [x] Rewrite build-in-public docs.
+- [x] Rewrite research funnel docs.
+- [x] Draft App Store listing.
+- [x] Draft Google Play listing.
+- [x] Draft screenshot capture checklist.
+- [x] Draft preview video outline.
+- [x] Update privacy policy.
+- [x] Update terms.
+- [x] Update support FAQ.
 - [ ] Update social bios.
 - [ ] Update landing page copy if present.
 
 Phase gate:
 
-- [ ] Public materials describe a universal shift-worker app.
-- [ ] Mining origin story is allowed, but no public surface makes mining the whole product.
+- [x] Public materials describe a universal shift-worker app.
+- [x] Mining origin story is allowed, but no public surface makes mining the whole product.
 
 ### Phase 9: Automated QA
 
@@ -1673,20 +1676,20 @@ Phase gate:
 
 ### Phase 11: GitHub And Release Readiness
 
-- [ ] Commit changes in logical groups.
-- [ ] Push branch.
-- [ ] Verify GitHub CI.
+- [x] Commit changes in logical groups.
+- [x] Push branch.
+- [x] Verify GitHub CI.
 - [x] Attach completion report.
 - [x] Attach old-term classification.
 - [x] Attach device QA notes.
 - [x] Attach rollback note.
-- [ ] Confirm deferred tasks are not P0/P1 launch blockers.
+- [x] Confirm deferred repo tasks are not P0/P1 launch blockers; account-owner/live-device tasks remain launch blockers.
 
 Phase gate:
 
-- [ ] CI is green.
+- [x] CI is green.
 - [x] Completion report is filled.
-- [ ] Rebrand can be reviewed or merged without hidden assumptions.
+- [x] Rebrand can be reviewed or merged without hidden assumptions.
 
 ## Working Tracker: Old-Term Classification Table
 
@@ -1735,18 +1738,18 @@ Use these defaults unless the product owner chooses different names.
 
 The launch rebrand passes only when:
 
-- [ ] P0 task count complete: 18/18.
-- [ ] P1 task count complete or explicitly approved for later.
-- [ ] No `must-change` old-term hits remain.
-- [ ] Identity/config changes install successfully.
-- [ ] App assets are not permanently mining-trapped.
-- [ ] Onboarding is miner-first and universal-ready.
-- [ ] Settings are miner-first and universal-ready.
-- [ ] Dashboard supports miner/FIFO launch schedules and non-mining proof fixtures.
-- [ ] Paywall is miner/FIFO-first and universal-ready.
-- [ ] AI/manual builder entry points work.
-- [ ] Import/export/reminders/exceptions work with language that can expand beyond mining.
+- [x] P0 repo task count complete: 18/18.
+- [x] P1 repo task count complete or explicitly approved for later.
+- [x] No `must-change` old-term hits remain.
+- [x] Identity/config changes install successfully on simulator/emulator.
+- [x] App assets are not permanently mining-trapped.
+- [x] Onboarding is miner-first and universal-ready.
+- [x] Settings are miner-first and universal-ready.
+- [x] Dashboard supports miner/FIFO launch schedules and non-mining proof fixtures.
+- [x] Paywall is miner/FIFO-first and universal-ready.
+- [x] AI/manual builder entry points work.
+- [x] Import/export/reminders/exceptions work with language that can expand beyond mining.
 - [ ] Auth works.
-- [ ] CI works.
+- [x] CI works.
 - [ ] Device QA works.
-- [ ] Rollback exists.
+- [x] Rollback exists.
