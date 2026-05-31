@@ -599,28 +599,43 @@ describe('Ryvro environment template', () => {
 
     expect(readme).toContain('## Release Status Snapshot');
     expect(readme).toContain('not live in the App Store or Google Play yet');
+    expect(readme).toContain('github.com/IlyasuSeidu/Ellie/workflows/CI%20Pipeline');
+    expect(readme).toContain('git clone https://github.com/IlyasuSeidu/Ellie.git');
+    expect(readme).toContain('Current Ryvro app repository');
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('106 Jest suites / 1,733 tests / 4 snapshots');
+    expect(readme).toContain('106 Jest suites / 1,734 tests / 4 snapshots');
     expect(readme).toContain('GitHub Actions CI passed Unit Tests, Lint and Type Check');
     expect(readme).toContain('run `26704249051`');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
-    expect(readme).toContain('Testing infrastructure (1,733 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,734 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,733 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,734 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-05-31 release check)');
-    expect(readme).toContain('Total Tests**: 1,733 passing (106 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Total Tests**: 1,734 passing (106 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
     expect(readme).not.toContain('E2E Tests (Planned)');
     expect(readme).not.toContain('Total Tests**: 1,701 passing (51 test suites)');
     expect(readme).not.toContain('Jest (1,500 tests)');
+    expect(readme).not.toContain('github.com/IlyasuSeidu/ryvro');
+  });
+
+  it('keeps active contributor setup on the current Ryvro app repository', () => {
+    const contributing = fs.readFileSync(path.join(process.cwd(), 'docs/CONTRIBUTING.md'), 'utf8');
+
+    expect(contributing).toContain(
+      'git remote add upstream https://github.com/IlyasuSeidu/Ellie.git'
+    );
+    expect(contributing).not.toContain(
+      'git remote add upstream https://github.com/IlyasuSeidu/ryvro.git'
+    );
   });
 
   it('keeps the active deployment guide aligned with Ryvro release preflight', () => {
@@ -742,7 +757,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('passed Lint and Type Check, Unit Tests, and Build Check');
     expect(readinessReport).toContain('106 Jest suites / 1,729 tests');
     expect(readinessReport).toContain('106 Jest suites / 1,732 tests');
-    expect(readinessReport).toContain('106 Jest suites / 1,733 tests');
+    expect(readinessReport).toContain('106 Jest suites / 1,734 tests');
     expect(readinessReport).toContain(
       'Local release verification on 2026-05-31 passed `git diff --check`, focused readiness/audit config tests'
     );

@@ -57,7 +57,7 @@ cd ryvro
 3. Add upstream remote:
 
 ```bash
-git remote add upstream https://github.com/IlyasuSeidu/ryvro.git
+git remote add upstream https://github.com/IlyasuSeidu/Ellie.git
 ```
 
 4. Install dependencies:

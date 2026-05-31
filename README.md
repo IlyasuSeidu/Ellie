@@ -1,8 +1,8 @@
 # Ryvro Shift Planner
 
-![CI Pipeline](https://github.com/IlyasuSeidu/ryvro/workflows/CI%20Pipeline/badge.svg)
-![E2E Tests](https://github.com/IlyasuSeidu/ryvro/workflows/E2E%20Tests/badge.svg)
-[![codecov](https://codecov.io/gh/IlyasuSeidu/ryvro/branch/main/graph/badge.svg)](https://codecov.io/gh/IlyasuSeidu/ryvro)
+![CI Pipeline](https://github.com/IlyasuSeidu/Ellie/workflows/CI%20Pipeline/badge.svg)
+![E2E Tests](https://github.com/IlyasuSeidu/Ellie/workflows/E2E%20Tests/badge.svg)
+[![codecov](https://codecov.io/gh/IlyasuSeidu/Ellie/branch/main/graph/badge.svg)](https://codecov.io/gh/IlyasuSeidu/Ellie)
 
 **Ryvro** helps FIFO crews, healthcare teams, security staff, emergency services, transport operators, hospitality workers, miners, and other shift workers build reliable schedules from AI, templates, or the Universal Shift Builder. It keeps rotating rosters, block schedules, reminders, exceptions, colors, and calendar exports in one practical shift-work app.
 
@@ -125,7 +125,7 @@ Ryvro now uses the Universal Shift Builder as its onboarding schedule setup, rep
 - **TypeScript + Zod Validation**: Runtime safety for user data
 - **Firebase Backend**: Cloud Firestore for data sync
 - **Sacred Theme System**: Premium design language for shift workers
-- **1,733 Tests**: Comprehensive unit, config, service, and integration coverage
+- **1,734 Tests**: Comprehensive unit, config, service, and integration coverage
 - [Read the story →](build-in-public/system-thinking/01-day-one-foundations.md)
 
 ---
@@ -140,7 +140,7 @@ Repo-proven launch state:
 - Launch surface: Universal Shift Builder onboarding, dashboard, profile/settings, Ryvro voice entry point, reminders, exceptions, and calendar import/export
 - Hidden v1 tabs: Schedule and Stats are omitted from the bottom navigation; their helper screens are kept free of placeholder copy for any internal entry points
 - Templates and fixtures: mining/FIFO plus healthcare, security, emergency services, manufacturing, transport, hospitality, aviation, rail, and operations examples
-- Latest local gate: `npm run release:check` passed TypeScript, 106 Jest suites / 1,733 tests / 4 snapshots, and backend build on 2026-05-31
+- Latest local gate: `npm run release:check` passed TypeScript, 106 Jest suites / 1,734 tests / 4 snapshots, and backend build on 2026-05-31
 - Latest pushed PR gate: GitHub Actions CI passed Unit Tests, Lint and Type Check, and Build Check on run `26704249051`
 
 Owner/account work still required before launch:
@@ -186,7 +186,7 @@ Current launch handoff lives in [docs/RYVRO_RELEASE_READINESS_REPORT.md](docs/RY
 - **Formatting**: Prettier
 - **Pre-commit Hooks**: Husky + lint-staged
 - **Type Checking**: TypeScript strict mode
-- **Testing**: Jest (1,733 tests in the latest release check), React Testing Library, Detox (E2E)
+- **Testing**: Jest (1,734 tests in the latest release check), React Testing Library, Detox (E2E)
 
 ### CI/CD
 
@@ -214,9 +214,9 @@ Current launch handoff lives in [docs/RYVRO_RELEASE_READINESS_REPORT.md](docs/RY
 ### Installation
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/IlyasuSeidu/ryvro.git
-cd ryvro
+# 1. Clone the current repository
+git clone https://github.com/IlyasuSeidu/Ellie.git
+cd Ellie
 
 # 2. Install dependencies (use --legacy-peer-deps due to React Native constraints)
 npm install --legacy-peer-deps
@@ -391,7 +391,7 @@ Colors are grounded in low-light shift-work conditions and broad enough for ever
 - [x] Utility functions (shift calculation, date handling)
 - [x] Firebase integration
 - [x] Sacred theme system
-- [x] Testing infrastructure (1,733 tests in the latest release check)
+- [x] Testing infrastructure (1,734 tests in the latest release check)
 
 ### ✅ Phase 2: Premium Onboarding And Universal Builder
 
@@ -465,7 +465,7 @@ Each story includes:
 
 Ryvro has comprehensive test coverage across all layers:
 
-### Unit Tests (1,733 tests in the latest release check)
+### Unit Tests (1,734 tests in the latest release check)
 
 - **Utilities**: Shift calculations, date manipulation, validation
 - **Components**: Onboarding, dashboard, voice, profile, and builder components
@@ -587,7 +587,7 @@ npm run format
 
 ### Current Status (as of 2026-05-31 release check)
 
-- **Total Tests**: 1,733 passing (106 Jest suites, 4 snapshots)
+- **Total Tests**: 1,734 passing (106 Jest suites, 4 snapshots)
 - **Test Coverage**:
   - Branches: 62.03% (≥60% ✅)
   - Functions: 76.95% (≥70% ✅)
@@ -612,7 +612,7 @@ This project is private and proprietary.
 ## 📞 Contact
 
 **GitHub**: [@IlyasuSeidu](https://github.com/IlyasuSeidu)
-**Repository**: [Ryvro app repository](https://github.com/IlyasuSeidu/ryvro)
+**Repository**: [Current Ryvro app repository](https://github.com/IlyasuSeidu/Ellie)
 
 ---
 
