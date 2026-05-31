@@ -1441,6 +1441,8 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('CI run `26711015976`');
     expect(readinessReport).toContain('commit `4d7519e`');
     expect(readinessReport).toContain('CI run `26712571047`');
+    expect(readinessReport).toContain('commit `37057ae`');
+    expect(readinessReport).toContain('CI run `26713338408`');
     expect(readinessReport).toContain('commit `1deb795`');
     expect(readinessReport).toContain('CI run `26712150556`');
     expect(readinessReport).toContain('commit `134a5ca`');
@@ -1488,6 +1490,10 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain(
       'GitHub Actions CI now includes a dedicated `Release Check` job'
     );
+    expect(readinessReport).toContain(
+      'dedicated Release Check job running `npm run release:check`'
+    );
+    expect(readinessReport).toContain('installing backend function dependencies inside that job');
     expect(readinessReport).toContain('legal and support URLs to be live HTTPS Ryvro-owned URLs');
     expect(readinessReport).toContain('requiring Ryvro-owned legal/support URLs');
     expect(readinessReport).toContain('aligning dynamic Expo version fallbacks');
@@ -1880,8 +1886,9 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('eas submit --platform ios --latest');
     expect(ownerRunbook).toContain('eas submit --platform android --latest');
     expect(ownerRunbook).toContain('109 Jest suites, 1,757 tests');
-    expect(ownerRunbook).toContain('CI run `26712571047`');
-    expect(ownerRunbook).toContain('commit `4d7519e`');
+    expect(ownerRunbook).toContain('CI run `26713338408`');
+    expect(ownerRunbook).toContain('commit `37057ae`');
+    expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');
 
