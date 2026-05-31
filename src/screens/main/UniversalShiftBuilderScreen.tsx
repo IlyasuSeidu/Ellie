@@ -1324,22 +1324,40 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
             testID={`universal-shift-builder-template-${template.id}`}
           >
             <View style={styles.templateCardTopRow}>
-              <View style={styles.templateIconStack}>
-                {template.schedule.shiftDefinitions.slice(0, 3).map((definition, index) => (
-                  <View
-                    key={`${template.id}-${definition.id}`}
-                    style={[
-                      styles.templateIconBubble,
-                      {
-                        backgroundColor: `${definition.color}24`,
-                        marginLeft: index === 0 ? 0 : -8,
-                        zIndex: 3 - index,
-                      },
-                    ]}
-                  >
-                    <Ionicons name={definition.icon as never} size={14} color={definition.color} />
-                  </View>
-                ))}
+              <View style={styles.templateVisualGroup}>
+                <View
+                  style={[
+                    styles.templateVisualBadge,
+                    { backgroundColor: `${template.visual.accentColor}26` },
+                  ]}
+                >
+                  <Ionicons
+                    name={template.visual.icon as never}
+                    size={18}
+                    color={template.visual.accentColor}
+                  />
+                </View>
+                <View style={styles.templateIconStack}>
+                  {template.schedule.shiftDefinitions.slice(0, 3).map((definition, index) => (
+                    <View
+                      key={`${template.id}-${definition.id}`}
+                      style={[
+                        styles.templateIconBubble,
+                        {
+                          backgroundColor: `${definition.color}24`,
+                          marginLeft: index === 0 ? 0 : -8,
+                          zIndex: 3 - index,
+                        },
+                      ]}
+                    >
+                      <Ionicons
+                        name={definition.icon as never}
+                        size={14}
+                        color={definition.color}
+                      />
+                    </View>
+                  ))}
+                </View>
               </View>
               <Text style={styles.templateCycleText}>
                 {t('builder.templateCycleLength', { count: template.schedule.sequence.length })}
@@ -1355,7 +1373,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
 
             <View style={styles.templateFooterRow}>
               <Text style={styles.templateIndustryText} numberOfLines={1}>
-                {template.industry.replace(/_/g, ' ')}
+                {template.visual.label}
               </Text>
               <Ionicons name="chevron-forward" size={15} color={theme.colors.sacredGold} />
             </View>
@@ -2436,10 +2454,25 @@ const styles = StyleSheet.create({
     gap: theme.spacing.xs,
     marginBottom: theme.spacing.sm,
   },
+  templateVisualGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    minWidth: 104,
+  },
+  templateVisualBadge: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: theme.colors.softStone,
+    marginRight: 7,
+  },
   templateIconStack: {
     flexDirection: 'row',
     alignItems: 'center',
-    minWidth: 70,
+    minWidth: 62,
   },
   templateIconBubble: {
     width: 30,

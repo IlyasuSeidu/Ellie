@@ -55,7 +55,7 @@ Built for real shift work:
 
 - AI-assisted shift builder for natural-language schedules
 - Manual Universal Shift Builder for custom rotations
-- Launch templates for mining/FIFO plus healthcare, security, emergency services, manufacturing, transport, hospitality, aviation, and rail
+- Launch templates for mining/FIFO plus healthcare, security, emergency services, manufacturing, oil/gas offshore, transport, warehouse logistics, hospitality, aviation, and rail
 - Day, night, evening, morning, travel, training, on-call, leave, holiday, and custom shift types
 - Shift colors and icons that show across the calendar and dashboard
 - One-off irregular exceptions for swaps and roster changes
@@ -141,7 +141,7 @@ shift planner, roster, FIFO, mining roster, shift calendar, night shift, work sc
 
 7. Templates
    - Caption: Start from real shift-work templates
-   - Screen: mining/FIFO, healthcare, security, emergency, manufacturing, transport, hospitality, aviation, and rail templates
+   - Screen: mining/FIFO, healthcare, security, emergency, manufacturing, oil/gas offshore, transport, warehouse logistics, hospitality, aviation, and rail templates
 
 ## Submission Screenshot Capture Plan
 
@@ -155,7 +155,7 @@ Capture these store-ready sets after the production/TestFlight/internal builds a
 
 Minimum launch sequence:
 
-1. Universal Shift Builder template screen showing FIFO, healthcare, aviation, and rail options.
+1. Universal Shift Builder template screen showing FIFO, healthcare, oil/gas offshore, warehouse logistics, aviation, and rail options.
 2. Dashboard/calendar screen showing current shift color, next shift, and calendar icons.
 3. Ryvro Pro paywall screen showing the free-trial CTA and restore purchases link.
 

@@ -154,7 +154,7 @@ Repo-side offline basics are now covered by NetInfo-aware sync state, pending-sy
 
 **Core app:**
 
-1. Fresh install → complete onboarding via Universal Shift Builder template start with a non-mining template such as healthcare, security, emergency services, manufacturing, transport, hospitality, aviation, or rail
+1. Fresh install → complete onboarding via Universal Shift Builder template start with a non-mining template such as healthcare, security, emergency services, manufacturing, oil/gas offshore, transport, warehouse logistics, hospitality, aviation, or rail
 2. Fresh install → complete onboarding via Universal Shift Builder AI description with a FIFO/mining or rotating-shift prompt, then review and save the generated schedule
 3. Fresh install → complete onboarding via Universal Shift Builder manual setup with custom shift names, colors, icons, reminders, exceptions, and calendar export enabled
 4. Profile shift edits reflect immediately on dashboard

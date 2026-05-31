@@ -1742,6 +1742,7 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).toContain(
       'Fresh install → complete onboarding via Universal Shift Builder template start with a non-mining template'
     );
+    expect(releaseTasks).toContain('oil/gas offshore, transport, warehouse logistics');
     expect(releaseTasks).toContain(
       'Fresh install → complete onboarding via Universal Shift Builder AI description with a FIFO/mining or rotating-shift prompt'
     );
@@ -2031,6 +2032,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain(
       'non-mining template start, FIFO/mining or rotating-shift AI description, and manual custom setup'
     );
+    expect(readinessReport).toContain('oil/gas offshore, transport/logistics, warehouse logistics');
     expect(readinessReport).toContain(
       'active API reference now uses a broad healthcare rotating-schedule example'
     );
@@ -2246,7 +2248,7 @@ describe('Ryvro environment template', () => {
     expect(storeListing).toContain('app-store-iphone-01-template-start.png');
     expect(storeListing).toContain('google-play-phone-02-dashboard-calendar.png');
     expect(storeListing).toContain(
-      'Universal Shift Builder template screen showing FIFO, healthcare, aviation, and rail options'
+      'Universal Shift Builder template screen showing FIFO, healthcare, oil/gas offshore, warehouse logistics, aviation, and rail options'
     );
     expect(storeListing).toContain('Ryvro Pro paywall screen showing the free-trial CTA');
     expect(storeListing).toContain(

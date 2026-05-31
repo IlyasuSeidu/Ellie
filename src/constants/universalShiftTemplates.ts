@@ -5,11 +5,19 @@ export type UniversalShiftTemplateIndustry =
   | 'security'
   | 'emergency_services'
   | 'manufacturing'
+  | 'oil_gas_offshore'
   | 'transport_logistics'
+  | 'warehouse_logistics'
   | 'hospitality_retail'
   | 'aviation'
   | 'rail'
   | 'mining_fifo';
+
+export interface UniversalShiftTemplateVisual {
+  label: string;
+  icon: string;
+  accentColor: string;
+}
 
 export interface UniversalShiftTemplate {
   id: string;
@@ -17,6 +25,7 @@ export interface UniversalShiftTemplate {
   title: string;
   subtitle: string;
   aiPromptExample: string;
+  visual: UniversalShiftTemplateVisual;
   schedule: UniversalShiftSchedule;
 }
 
@@ -84,6 +93,20 @@ const travel = definition('travel', 'Travel Day', '08:00', '16:00', '#14B8A6', '
   reminderProfile: { earlyReminderHours: 24 },
 });
 
+const standby = definition('standby', 'Standby', '09:00', '17:00', '#64748B', 'radio', {
+  reminderProfile: { earlyReminderHours: 2 },
+});
+
+const visual = (
+  label: string,
+  icon: string,
+  accentColor: string
+): UniversalShiftTemplateVisual => ({
+  label,
+  icon,
+  accentColor,
+});
+
 export const UNIVERSAL_SHIFT_TEMPLATES: UniversalShiftTemplate[] = [
   {
     id: 'healthcare-2-2-3',
@@ -92,6 +115,7 @@ export const UNIVERSAL_SHIFT_TEMPLATES: UniversalShiftTemplate[] = [
     subtitle: 'Two days, two off, three nights/off rotation used by hospital teams.',
     aiPromptExample:
       'I am a nurse working 2 day shifts, 2 days off, 3 night shifts, then 2 days off.',
+    visual: visual('Hospital', 'medical', '#22C55E'),
     schedule: schedule(
       'Healthcare 2-2-3',
       [day, night, off],
@@ -109,6 +133,7 @@ export const UNIVERSAL_SHIFT_TEMPLATES: UniversalShiftTemplate[] = [
     title: 'Security 4 Days / 4 Nights / 4 Off',
     subtitle: 'A common security rotation with equal day, night, and rest blocks.',
     aiPromptExample: 'I work security: 4 days 6am to 6pm, 4 nights 6pm to 6am, then 4 off.',
+    visual: visual('Security Post', 'shield-checkmark', '#38BDF8'),
     schedule: schedule(
       'Security 4/4/4',
       [day, night, off],
@@ -125,6 +150,7 @@ export const UNIVERSAL_SHIFT_TEMPLATES: UniversalShiftTemplate[] = [
     title: 'Emergency 24/48',
     subtitle: 'One full-day duty period followed by two recovery days.',
     aiPromptExample: 'I work a 24-hour paramedic shift from 8am, then 48 hours off.',
+    visual: visual('Station', 'flame', '#EF4444'),
     schedule: schedule(
       'Emergency 24/48',
       [
@@ -147,6 +173,7 @@ export const UNIVERSAL_SHIFT_TEMPLATES: UniversalShiftTemplate[] = [
     title: 'Manufacturing Continental',
     subtitle: 'Day/night manufacturing pattern with a longer rest block.',
     aiPromptExample: 'I work a continental plant roster with 2 days, 2 nights, then 4 off.',
+    visual: visual('Plant', 'construct', '#F97316'),
     schedule: schedule(
       'Manufacturing Continental',
       [day, night, off],
@@ -158,11 +185,29 @@ export const UNIVERSAL_SHIFT_TEMPLATES: UniversalShiftTemplate[] = [
     ),
   },
   {
+    id: 'oil-gas-offshore-14-14',
+    industry: 'oil_gas_offshore',
+    title: 'Oil & Gas Offshore 14/14',
+    subtitle: 'Two weeks on, one travel handoff, then two weeks recovery for offshore teams.',
+    aiPromptExample: 'Offshore operations: 14 day shifts, 1 travel handoff day, then 14 days off.',
+    visual: visual('Rig', 'boat', '#0F766E'),
+    schedule: schedule(
+      'Oil & Gas Offshore 14/14',
+      [day, travel, off],
+      [
+        ['day', 14],
+        ['travel', 1],
+        ['off', 14],
+      ]
+    ),
+  },
+  {
     id: 'transport-early-late-night',
     industry: 'transport_logistics',
     title: 'Transport Early / Late / Night',
     subtitle: 'Three-shift rotation for depots, rail, logistics, and control rooms.',
     aiPromptExample: 'I work 2 early shifts, 2 late shifts, 2 night shifts, then 4 off.',
+    visual: visual('Depot', 'bus', '#0EA5E9'),
     schedule: schedule(
       'Transport Early/Late/Night',
       [early, late, night, off],
@@ -175,11 +220,31 @@ export const UNIVERSAL_SHIFT_TEMPLATES: UniversalShiftTemplate[] = [
     ),
   },
   {
+    id: 'warehouse-split-standby',
+    industry: 'warehouse_logistics',
+    title: 'Warehouse Split / Standby',
+    subtitle: 'Early dispatch, late receiving, standby coverage, then recovery days.',
+    aiPromptExample:
+      'Warehouse operations: 2 early dispatch shifts, 2 late receiving shifts, 1 standby day, then 2 days off.',
+    visual: visual('Warehouse', 'cube', '#A855F7'),
+    schedule: schedule(
+      'Warehouse Split/Standby',
+      [early, late, standby, off],
+      [
+        ['early', 2],
+        ['late', 2],
+        ['standby', 1],
+        ['off', 2],
+      ]
+    ),
+  },
+  {
     id: 'hospitality-5-2',
     industry: 'hospitality_retail',
     title: 'Hospitality Five On / Two Off',
     subtitle: 'Simple repeating week for venue, retail, hotel, and duty managers.',
     aiPromptExample: 'I work five late shifts from 2pm to 10pm, then two days off.',
+    visual: visual('Hotel', 'restaurant', '#F59E0B'),
     schedule: schedule(
       'Hospitality 5/2',
       [late, off],
@@ -196,6 +261,7 @@ export const UNIVERSAL_SHIFT_TEMPLATES: UniversalShiftTemplate[] = [
     subtitle: 'Airport operations pattern with early starts and overnight coverage.',
     aiPromptExample:
       'Airport operations: 2 early, 2 late, 2 night, 4 days off, starting first late.',
+    visual: visual('Airport', 'airplane', '#6366F1'),
     schedule: schedule(
       'Aviation Early/Late/Night',
       [early, late, night, off],
@@ -215,6 +281,7 @@ export const UNIVERSAL_SHIFT_TEMPLATES: UniversalShiftTemplate[] = [
     subtitle: 'Rail control and operations pattern with balanced day, night, and rest blocks.',
     aiPromptExample:
       'Rail control room: 4 day shifts from 7am to 7pm, 4 night shifts from 7pm to 7am, then 4 off.',
+    visual: visual('Rail', 'train', '#84CC16'),
     schedule: schedule(
       'Rail Control 4/4/4',
       [day, night, off],
@@ -231,6 +298,7 @@ export const UNIVERSAL_SHIFT_TEMPLATES: UniversalShiftTemplate[] = [
     title: 'Mining FIFO 14/14',
     subtitle: 'Launch-wedge FIFO template for mining and remote site crews.',
     aiPromptExample: 'I do FIFO mining: 14 days on site, travel home, then 14 days off.',
+    visual: visual('Mine', 'hammer', '#D97706'),
     schedule: schedule(
       'Mining FIFO 14/14',
       [day, travel, off],

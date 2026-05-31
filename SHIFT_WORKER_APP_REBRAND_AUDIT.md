@@ -24,6 +24,7 @@ Completed in the current working tree:
 - Cleaned translated locale values so user-facing assistant strings no longer say Ellie in Chinese, Arabic, Hindi, or Russian.
 - Added universal industry onboarding/e2e fixtures while preserving a miner/FIFO fixture as the launch wedge.
 - Added a starter universal template catalog for healthcare, security, emergency services, manufacturing, transport, hospitality, separate aviation and rail operations, and mining FIFO examples.
+- Expanded the template catalog with oil/gas offshore and warehouse logistics examples, plus industry visual badges for hospital, security post, station, plant, rig, depot, warehouse, hotel, airport, rail, and mine template cards.
 - Added broad RevenueCat entitlement aliases while preserving old Ellie/miner aliases for backward compatibility.
 - Added RevenueCat entitlement regression tests that pin Ryvro launch aliases while making the old Ellie/miner aliases explicit migration compatibility only.
 - Added `RYVRO_BRAIN_URL` / `RYVRO_BRAIN_TIMEOUT` as the launch voice-backend environment names and removed retired `ELLIE_BRAIN_*` fallbacks from new Ryvro builds.
@@ -273,7 +274,7 @@ Remaining account-side identity work:
 - Onboarding assistant avatar: done; the retired helmet family should stay out of active assets.
 - Paywall hero art: currently not mine-site specific in tracked launch surfaces; keep future screenshots cross-industry capable.
 - Empty states: use neutral schedule/calendar graphics for any new empty-state work.
-- Template thumbnails: add visual variants for hospital, station, terminal, plant, depot, hotel, factory, airport, rig, warehouse, store, and mine.
+- Template thumbnails: first-pass industry visual badges now cover hospital, security post, station, plant, rig, depot, warehouse, hotel, airport, rail, and mine; future bitmap thumbnail art can still add terminal, factory, store, and venue-specific scene variants.
 - Notification icons: ensure small icons are readable and not industry-specific.
 - Store screenshots: show at least five worker contexts, not one mining context.
 - Web/social preview images: update Open Graph/Twitter/landing assets if they exist outside the repo.

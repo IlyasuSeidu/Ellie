@@ -18,7 +18,9 @@ const REQUIRED_INDUSTRIES: UniversalShiftTemplateIndustry[] = [
   'security',
   'emergency_services',
   'manufacturing',
+  'oil_gas_offshore',
   'transport_logistics',
+  'warehouse_logistics',
   'hospitality_retail',
   'aviation',
   'rail',
@@ -50,6 +52,12 @@ describe('Universal shift templates', () => {
     expect(UNIVERSAL_SHIFT_TEMPLATES.some((template) => template.id.startsWith('rail-'))).toBe(
       true
     );
+    expect(
+      UNIVERSAL_SHIFT_TEMPLATES.some((template) => template.id.startsWith('oil-gas-offshore-'))
+    ).toBe(true);
+    expect(UNIVERSAL_SHIFT_TEMPLATES.some((template) => template.id.startsWith('warehouse-'))).toBe(
+      true
+    );
   });
 
   it('keeps every template usable as a valid Universal Shift Builder schedule', () => {
@@ -62,6 +70,9 @@ describe('Universal shift templates', () => {
       expect(template.schedule.shiftDefinitions.length).toBeGreaterThan(0);
       expect(template.schedule.sequence.length).toBeGreaterThan(0);
       expect(template.aiPromptExample.trim().length).toBeGreaterThan(20);
+      expect(template.visual.label.trim().length).toBeGreaterThan(2);
+      expect(template.visual.icon.trim().length).toBeGreaterThan(0);
+      expect(template.visual.accentColor).toMatch(/^#[0-9A-F]{6}$/i);
     }
   });
 
@@ -132,6 +143,28 @@ describe('Universal shift templates', () => {
     }
   });
 
+  it('ships industry visual badges for launch template cards', () => {
+    const visualLabels = new Set(
+      UNIVERSAL_SHIFT_TEMPLATES.map((template) => template.visual.label)
+    );
+
+    expect(Array.from(visualLabels)).toEqual(
+      expect.arrayContaining([
+        'Hospital',
+        'Security Post',
+        'Station',
+        'Plant',
+        'Rig',
+        'Depot',
+        'Warehouse',
+        'Hotel',
+        'Airport',
+        'Rail',
+        'Mine',
+      ])
+    );
+  });
+
   it('exposes the template library from the Universal Builder screen', () => {
     const builderScreen = fs.readFileSync(
       path.join(process.cwd(), 'src/screens/main/UniversalShiftBuilderScreen.tsx'),
@@ -143,6 +176,9 @@ describe('Universal shift templates', () => {
     expect(builderScreen).toContain("t('builder.templateTitle')");
     expect(builderScreen).toContain("t('builder.templateHint')");
     expect(builderScreen).toContain("t('builder.templateCycleLength'");
+    expect(builderScreen).toContain('template.visual.icon');
+    expect(builderScreen).toContain('template.visual.accentColor');
+    expect(builderScreen).toContain('template.visual.label');
     expect(builderScreen).not.toContain('Start from a template');
     expect(builderScreen).not.toContain('Pick a real shift-worker pattern');
     expect(builderScreen).toContain('shift_builder_template_applied');
