@@ -1287,10 +1287,12 @@ describe('Ryvro environment template', () => {
     );
     const clearanceEvidence = `${externalSetup}\n${audit}`;
 
-    expect(clearanceEvidence).toContain('2026-05-31 at 19:32:28Z');
-    expect(clearanceEvidence).toContain('2026-05-31T19:32:28.044Z');
+    expect(clearanceEvidence).toContain('2026-05-31 at 20:33:40Z');
+    expect(clearanceEvidence).toContain('2026-05-31T20:33:40.206Z');
     expect(clearanceEvidence).toContain('no exact `Ryvro` or `Ryvro Shift Planner` app result');
-    expect(clearanceEvidence).toContain('Visible fuzzy names included `Rydoo` and `Rydora`');
+    expect(clearanceEvidence).toContain(
+      'Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`'
+    );
     expect(clearanceEvidence).toContain(
       'Chrome/Computer Use previously read the public Google Play search page for `Ryvro`'
     );
@@ -1322,9 +1324,8 @@ describe('Ryvro environment template', () => {
     expect(clearanceEvidence).not.toContain('2026-05-31 at 05:16:18Z');
     expect(clearanceEvidence).not.toContain('2026-05-31T05:16:18.075Z');
     expect(clearanceEvidence).not.toContain('2026-05-31 at 07:14Z');
-    expect(clearanceEvidence).not.toContain(
-      'Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`'
-    );
+    expect(clearanceEvidence).not.toContain('2026-05-31 at 19:32:28Z');
+    expect(clearanceEvidence).not.toContain('2026-05-31T19:32:28.044Z');
     expect(clearanceEvidence).not.toContain('LinkedIn `company/ryvro`: public URL returned `404`');
   });
 
@@ -1679,11 +1680,12 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, latest public clearance evidence at 19:32Z, and latest pushed PR #1 CI pass `26722883474` on `651f32d`)'
+      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, latest public clearance evidence at 20:33Z, and latest pushed PR #1 CI pass `26723624766` on `19415e3`)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
-    expect(releaseTasks).toContain('latest public evidence: 2026-05-31 19:32Z');
+    expect(releaseTasks).toContain('latest public evidence: 2026-05-31 20:33Z');
+    expect(releaseTasks).not.toContain('latest public evidence: 2026-05-31 19:32Z');
     expect(releaseTasks).not.toContain('latest public evidence: 2026-05-31 07:14Z');
     expect(releaseTasks).toContain('formal trademark/legal clearance for `Ryvro`');
     expect(releaseTasks).toContain(
