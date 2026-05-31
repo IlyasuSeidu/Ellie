@@ -4,6 +4,8 @@ Last updated: 2026-05-31
 
 This is the account-side setup checklist for services that cannot be fully changed from the repo. It translates the repo identity into exact console values.
 
+Use `docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md` first when executing launch work; this file provides the detailed console values for that runbook.
+
 ## Final Identity Values
 
 - App name: Ryvro Shift Planner

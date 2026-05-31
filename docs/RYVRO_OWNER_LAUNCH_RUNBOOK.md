@@ -1,0 +1,208 @@
+# Ryvro Owner Launch Runbook
+
+Last updated: 2026-05-31
+
+This is the account-owner sequence for taking the repo-ready Ryvro build to the App Store and Google Play. It intentionally separates owner-only account work from repo-proven work so a release cannot be treated as live before console, domain, payment, backend, and physical-device evidence exists.
+
+Use these source docs while completing the runbook:
+
+- `RYVRO_RELEASE_TASKS.md` for the canonical task list and go/no-go gate.
+- `docs/RYVRO_RELEASE_READINESS_REPORT.md` for repo-proven evidence and known blockers.
+- `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md` for Firebase, OAuth, Apple, RevenueCat, EAS, domain, social, analytics, and support console values.
+- `docs/RYVRO_STORE_LISTING.md` for App Store and Google Play copy.
+- `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md` for privacy, terms, support, account deletion, and Firebase Auth email templates.
+- `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md` for App Store privacy answers, Google Play Data safety answers, content rating, export compliance, and reviewer notes.
+
+## Stop Gates
+
+Do not submit to App Store review or Google Play production until all of these are true:
+
+- Formal trademark/legal clearance for `Ryvro` is complete in launch markets.
+- The owner has reserved or created App Store Connect app name `Ryvro Shift Planner`.
+- The owner has reserved or created Google Play app title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`.
+- The launch domain is purchased, controlled, and serving privacy, terms, support, and account-deletion instructions.
+- Firebase, Google OAuth, Apple Sign-In, RevenueCat, and EAS secrets are created for `com.ryvro.shiftplanner`.
+- `npm run release:env:check` passes with the real production `.env`.
+- Production `ryvroBrain` and `parseShiftScheduleDescription` endpoints are deployed and smoke-tested.
+- RevenueCat products, entitlement `pro`, and offering `default` are connected to App Store and Play subscription products.
+- Physical iOS and Android smoke tests pass with real auth, purchases, reminders, calendar import/export, and assistant flows.
+- Store screenshots, app privacy, data safety, content rating, in-app purchase declarations, and reviewer notes are complete.
+
+## Sequence
+
+### 1. Clearance And Reservations
+
+Owner-only steps:
+
+- Complete formal trademark/legal clearance for `Ryvro`.
+- Reserve or create App Store Connect app name `Ryvro Shift Planner`.
+- Reserve or create Google Play title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`.
+- Purchase or reserve the launch domain, with `getryvro.com` as the current preferred candidate.
+- Reserve social handles while logged in, starting with `@ryvro`, then `@getryvro` or `@tryryvro` if needed.
+
+Evidence to record:
+
+- Counsel or trademark-search result summary.
+- App Store Connect app ID / Apple ID.
+- Google Play package reservation confirmation.
+- Registrar receipt and DNS control proof.
+- Reserved social handle list.
+
+### 2. Account And Console Setup
+
+Owner-only steps:
+
+- Enroll or confirm Apple Developer access.
+- Register the Apple App ID for `com.ryvro.shiftplanner` with Sign in with Apple and Push Notifications enabled.
+- Create the App Store Connect app with SKU `ryvro-shift-001`.
+- Create the Google Play Console app.
+- Run `eas login` and `eas init` in the repo root, then copy the EAS project UUID into production env values.
+- Set up iOS distribution credentials and Android release upload key or EAS-managed credentials.
+
+Evidence to record:
+
+- Apple Team ID.
+- App Store Connect app ID.
+- Google Play app/package dashboard link.
+- EAS project ID.
+- Signing/provisioning status.
+
+### 3. Firebase, OAuth, Backend, And Secrets
+
+Owner-only steps:
+
+- Create or rename the production Firebase project to a Ryvro-visible name.
+- Add iOS app `com.ryvro.shiftplanner` and Android app `com.ryvro.shiftplanner`.
+- Download fresh `GoogleService-Info.plist` and `google-services.json`.
+- Create Google OAuth web, iOS, and Android clients in the same project.
+- Deploy backend functions to the Ryvro Firebase project.
+- Configure `.env` from `.env.production.example` with real values.
+- Run:
+
+```bash
+npm run release:env:check
+```
+
+- Push secrets to EAS only after the preflight passes:
+
+```bash
+eas secret:push --scope project --env-file .env
+```
+
+Evidence to record:
+
+- Firebase project ID and app IDs.
+- OAuth client IDs.
+- `npm run release:env:check` output.
+- EAS secret push confirmation.
+- `curl` smoke-test output for `RYVRO_BRAIN_URL`.
+
+### 4. RevenueCat And Store Products
+
+Owner-only steps:
+
+- Create Ryvro iOS and Android apps in RevenueCat.
+- Configure entitlement `pro` with display name `Ryvro Pro`.
+- Create App Store subscription group `Ryvro Pro`.
+- Create products `ryvro_pro_monthly` and `ryvro_pro_annual` in App Store Connect and Google Play Console.
+- Attach both products to the RevenueCat `pro` entitlement.
+- Create RevenueCat offering `default` with Monthly and Annual packages.
+- Use production/sandbox SDK keys in `.env`; do not use RevenueCat `test_` keys for release QA.
+
+Evidence to record:
+
+- RevenueCat project/app IDs.
+- iOS and Android SDK keys copied into `.env`.
+- App Store and Play product status.
+- Sandbox purchase, cancel, and restore results.
+
+### 5. Legal, Support, And Store Forms
+
+Owner-only steps:
+
+- Publish privacy policy, terms, support, and account-deletion instructions on the controlled launch domain.
+- Configure Firebase Auth verification and password-reset email templates with Ryvro copy.
+- Fill App Store privacy answers from `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md`.
+- Fill Google Play Data safety and account deletion answers from `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md`.
+- Complete content rating, age rating, export compliance, app access, and reviewer notes.
+
+Evidence to record:
+
+- Live privacy, terms, support, and account-deletion URLs.
+- Firebase Auth template screenshots or confirmation.
+- App Store privacy form completion.
+- Google Play Data safety form completion.
+- Reviewer account credentials stored only in the store consoles.
+
+### 6. Production Builds
+
+Owner-only steps:
+
+- Build iOS production binary:
+
+```bash
+eas build --platform ios --profile production
+```
+
+- Build Android production AAB:
+
+```bash
+eas build --platform android --profile production
+```
+
+- Submit only after physical-device QA passes.
+
+Evidence to record:
+
+- EAS iOS build URL and build number.
+- EAS Android build URL and versionCode.
+- Installed bundle/package identity proof.
+- Any build warnings and resolutions.
+
+### 7. Device QA
+
+Run the full smoke matrix in `RYVRO_RELEASE_TASKS.md` on:
+
+- TestFlight iPhone.
+- Physical Android device or Play internal testing install.
+
+Must-pass coverage:
+
+- Fresh install and onboarding through non-mining template start.
+- Fresh install and onboarding through FIFO/mining or rotating-shift AI description.
+- Fresh install and onboarding through manual custom setup.
+- Email auth, Google Sign-In, and Apple Sign-In where platform-available.
+- Dashboard colors/icons, settings edits, reminders, exceptions, import/export, and app relaunch persistence.
+- Paywall, sandbox trial, entitlement activation, locked calendar behavior, center mic unlock, and restore purchases.
+- Voice assistant permission flow and basic response path.
+- Offline saved-schedule visibility and pending-sync indicator.
+
+Evidence to record:
+
+- Device model, OS version, app build number/versionCode, tester account, date/time, and pass/fail notes.
+- Screenshots or screen recordings for failed cases.
+- Store-ready screenshots listed in `docs/RYVRO_STORE_LISTING.md`.
+
+### 8. Submission And Release
+
+Owner-only steps:
+
+- Upload screenshots, metadata, privacy/data forms, content rating, and subscription details.
+- Submit iOS through App Store Connect after `eas submit --platform ios --latest`.
+- Submit Android to internal testing first after `eas submit --platform android --latest`.
+- Promote Android from internal testing to production only after internal track smoke passes.
+
+Evidence to record:
+
+- App Store submission ID and status.
+- Google Play release ID and track status.
+- Review feedback and resolutions.
+- Final production release date/time.
+
+## Current Repo Evidence
+
+- Latest local gate: `npm run release:check` passed on 2026-05-31 with 109 Jest suites, 1,754 tests, 4 snapshots, and backend build.
+- Latest pushed PR gate before this runbook update: GitHub Actions CI run `26712150556` passed Unit Tests, Lint and Type Check, and Build Check on commit `1deb795`.
+- Current repo branch: `codex/ryvro-rebrand-rollout`.
+
+Keep this section current whenever a new launch-readiness commit is pushed and CI passes.
