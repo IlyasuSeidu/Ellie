@@ -1323,26 +1323,26 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('109 Jest suites / 1,759 tests / 4 snapshots');
+    expect(readme).toContain('110 Jest suites / 1,760 tests / 4 snapshots');
     expect(readme).toContain('the Ryvro native scaffold preflight');
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
     expect(readme).toContain('Recent pushed PR gates');
-    expect(readme).toContain('GitHub Actions CI run `26714684603`');
-    expect(readme).toContain('commit `1bc3031`');
-    expect(readme).toContain('CI run `26714544097`');
-    expect(readme).toContain('commit `35ea875`');
+    expect(readme).toContain('GitHub Actions CI run `26715590873`');
+    expect(readme).toContain('commit `63b4339`');
+    expect(readme).toContain('CI run `26715426451`');
+    expect(readme).toContain('commit `a019d6c`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
-    expect(readme).toContain('Testing infrastructure (1,759 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,760 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,759 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,760 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-05-31 release check)');
-    expect(readme).toContain('Total Tests**: 1,759 passing (109 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Total Tests**: 1,760 passing (110 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -1714,6 +1714,8 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('109 Jest suites / 1,757 tests');
     expect(readinessReport).toContain('109 Jest suites / 1,758 tests');
     expect(readinessReport).toContain('109 Jest suites / 1,759 tests');
+    expect(readinessReport).toContain('110 Jest suites / 1,760 tests');
+    expect(readinessReport).toContain('Profile legal/support link coverage');
     expect(readinessReport).toContain(
       'requiring real root-level Firebase native service files for Ryvro production builds'
     );
@@ -1724,6 +1726,10 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `35ea875`');
     expect(readinessReport).toContain('CI run `26714684603`');
     expect(readinessReport).toContain('commit `1bc3031`');
+    expect(readinessReport).toContain('CI run `26715426451`');
+    expect(readinessReport).toContain('commit `a019d6c`');
+    expect(readinessReport).toContain('CI run `26715590873`');
+    expect(readinessReport).toContain('commit `63b4339`');
     expect(readinessReport).toContain(
       'recording the Firebase service-file gate in the launch handoff'
     );
@@ -2204,14 +2210,14 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('Play internal testing install');
     expect(ownerRunbook).toContain('eas submit --platform ios --latest');
     expect(ownerRunbook).toContain('eas submit --platform android --latest');
-    expect(ownerRunbook).toContain('109 Jest suites, 1,759 tests');
+    expect(ownerRunbook).toContain('110 Jest suites, 1,760 tests');
     expect(ownerRunbook).toContain('npm run release:owner:check');
     expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');
-    expect(ownerRunbook).toContain('CI run `26714684603`');
-    expect(ownerRunbook).toContain('commit `1bc3031`');
-    expect(ownerRunbook).toContain('CI run `26714544097`');
-    expect(ownerRunbook).toContain('commit `35ea875`');
+    expect(ownerRunbook).toContain('CI run `26715590873`');
+    expect(ownerRunbook).toContain('commit `63b4339`');
+    expect(ownerRunbook).toContain('CI run `26715426451`');
+    expect(ownerRunbook).toContain('commit `a019d6c`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');

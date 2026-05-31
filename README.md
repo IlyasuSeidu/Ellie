@@ -125,7 +125,7 @@ Ryvro now uses the Universal Shift Builder as its onboarding schedule setup, rep
 - **TypeScript + Zod Validation**: Runtime safety for user data
 - **Firebase Backend**: Cloud Firestore for data sync
 - **Sacred Theme System**: Premium design language for shift workers
-- **1,759 Tests**: Comprehensive unit, config, service, and integration coverage
+- **1,760 Tests**: Comprehensive unit, config, service, and integration coverage
 - [Read the story →](build-in-public/system-thinking/01-day-one-foundations.md)
 
 ---
@@ -141,9 +141,9 @@ Repo-proven launch state:
 - Support/legal surface: Profile links open the configured support, account deletion, privacy policy, and terms URLs
 - Hidden v1 tabs: Schedule and Stats are omitted from the bottom navigation; their helper screens are kept free of placeholder copy for any internal entry points
 - Templates and fixtures: mining/FIFO plus healthcare, security, emergency services, manufacturing, transport, hospitality, aviation, rail, and operations examples
-- Latest local gate: `npm run release:check` passed TypeScript, 109 Jest suites / 1,759 tests / 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build on 2026-05-31
+- Latest local gate: `npm run release:check` passed TypeScript, 110 Jest suites / 1,760 tests / 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build on 2026-05-31
 - Owner handoff gate: `npm run release:owner:check` keeps the not-live status, owner account tasks, physical-device QA, and store submission handoff docs visible
-- Recent pushed PR gates: GitHub Actions CI run `26714684603` on commit `1bc3031` and CI run `26714544097` on commit `35ea875` passed Unit Tests, Lint and Type Check, Build Check, and the dedicated Release Check job running `npm run release:check`
+- Recent pushed PR gates: GitHub Actions CI run `26715590873` on commit `63b4339` and CI run `26715426451` on commit `a019d6c` passed Unit Tests, Lint and Type Check, Build Check, and the dedicated Release Check job running `npm run release:check`
 
 Owner/account work still required before launch:
 
@@ -188,7 +188,7 @@ Current launch handoff lives in [docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md](docs/RYVRO_
 - **Formatting**: Prettier
 - **Pre-commit Hooks**: Husky + lint-staged
 - **Type Checking**: TypeScript strict mode
-- **Testing**: Jest (1,759 tests in the latest release check), React Testing Library, Detox (E2E)
+- **Testing**: Jest (1,760 tests in the latest release check), React Testing Library, Detox (E2E)
 
 ### CI/CD
 
@@ -395,7 +395,7 @@ Colors are grounded in low-light shift-work conditions and broad enough for ever
 - [x] Utility functions (shift calculation, date handling)
 - [x] Firebase integration
 - [x] Sacred theme system
-- [x] Testing infrastructure (1,759 tests in the latest release check)
+- [x] Testing infrastructure (1,760 tests in the latest release check)
 
 ### ✅ Phase 2: Premium Onboarding And Universal Builder
 
@@ -469,7 +469,7 @@ Each story includes:
 
 Ryvro has comprehensive test coverage across all layers:
 
-### Unit Tests (1,759 tests in the latest release check)
+### Unit Tests (1,760 tests in the latest release check)
 
 - **Utilities**: Shift calculations, date manipulation, validation
 - **Components**: Onboarding, dashboard, voice, profile, and builder components
@@ -591,7 +591,7 @@ npm run format
 
 ### Current Status (as of 2026-05-31 release check)
 
-- **Total Tests**: 1,759 passing (109 Jest suites, 4 snapshots)
+- **Total Tests**: 1,760 passing (110 Jest suites, 4 snapshots)
 - **Test Coverage**:
   - Branches: 62.03% (≥60% ✅)
   - Functions: 76.95% (≥70% ✅)
