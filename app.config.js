@@ -67,6 +67,48 @@ module.exports = ({ config = {} }) => {
     },
     favicon: './assets/favicon.png',
   };
+  const ryvroIosInfoPlist = {
+    NSSpeechRecognitionUsageDescription:
+      'Ryvro needs speech recognition to understand your questions.',
+    NSMicrophoneUsageDescription: 'Ryvro needs microphone access for voice commands.',
+    ITSAppUsesNonExemptEncryption: false,
+  };
+  const ryvroPlugins = [
+    'expo-localization',
+    'expo-font',
+    'expo-asset',
+    '@react-native-firebase/app',
+    '@react-native-firebase/auth',
+    [
+      'expo-build-properties',
+      {
+        ios: {
+          deploymentTarget: '16.0',
+          useFrameworks: 'static',
+        },
+      },
+    ],
+    [
+      '@react-native-google-signin/google-signin',
+      {
+        iosUrlScheme: 'com.googleusercontent.apps.197162533368-5mhtc7pnngbq2n50rll6857n90n3t97r',
+      },
+    ],
+    [
+      'expo-image-picker',
+      {
+        photosPermission: 'Ryvro needs access to your photos to set a profile picture.',
+        cameraPermission: 'Ryvro needs access to your camera to take a profile picture.',
+      },
+    ],
+    [
+      'expo-speech-recognition',
+      {
+        microphonePermission: 'Ryvro needs microphone access for voice commands.',
+        speechRecognitionPermission: 'Ryvro needs speech recognition to understand your questions.',
+      },
+    ],
+  ];
   const appEnv = process.env.APP_ENV || 'development';
   const configExtra = config.extra || {};
   const easProjectId = process.env.EAS_PROJECT_ID || configExtra?.eas?.projectId || '';
@@ -116,6 +158,12 @@ module.exports = ({ config = {} }) => {
     runtimeVersion,
     ios: {
       ...(config.ios || {}),
+      supportsTablet: config.ios?.supportsTablet ?? true,
+      usesAppleSignIn: config.ios?.usesAppleSignIn ?? true,
+      infoPlist: {
+        ...ryvroIosInfoPlist,
+        ...(config.ios?.infoPlist || {}),
+      },
       bundleIdentifier: config.ios?.bundleIdentifier || ryvroIdentity.iosBundleIdentifier,
       buildNumber: config.ios?.buildNumber || ryvroIdentity.iosBuildNumber,
       ...(iosGoogleServicesFile ? { googleServicesFile: iosGoogleServicesFile } : {}),
@@ -124,6 +172,9 @@ module.exports = ({ config = {} }) => {
       ...(config.android || {}),
       package: config.android?.package || ryvroIdentity.androidPackage,
       versionCode: config.android?.versionCode || ryvroIdentity.androidVersionCode,
+      edgeToEdgeEnabled: config.android?.edgeToEdgeEnabled ?? true,
+      predictiveBackGestureEnabled: config.android?.predictiveBackGestureEnabled ?? false,
+      permissions: config.android?.permissions || ['android.permission.RECORD_AUDIO'],
       adaptiveIcon: {
         ...ryvroIdentity.adaptiveIcon,
         ...(config.android?.adaptiveIcon || {}),
@@ -134,7 +185,7 @@ module.exports = ({ config = {} }) => {
       ...(config.web || {}),
       favicon: config.web?.favicon || ryvroIdentity.favicon,
     },
-    plugins: withGoogleSignInIosUrlScheme(config.plugins || [], googleIosUrlScheme),
+    plugins: withGoogleSignInIosUrlScheme(config.plugins || ryvroPlugins, googleIosUrlScheme),
     extra: {
       ...configExtra,
       APP_ENV: appEnv,

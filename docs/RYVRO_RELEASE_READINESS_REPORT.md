@@ -25,6 +25,7 @@ Completed and guarded in the current branch:
 - Production env preflight now requires the real EAS project UUID shape before release builds, so placeholder or project-name values fail before EAS secrets are pushed.
 - Production env preflight also requires Expo public Google OAuth client IDs to mirror the private web and iOS Google client IDs, so release builds cannot silently ship with split OAuth projects.
 - Dynamic Expo config now derives the Google Sign-In plugin's iOS URL scheme from `GOOGLE_IOS_CLIENT_ID` / `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID`, so production EAS builds can follow the fresh Ryvro OAuth client instead of a stale static scheme.
+- Dynamic Expo config now also pins launch native capability fallbacks for Apple Sign-In, iOS microphone/speech privacy strings, Android microphone permission, and required Expo/Firebase/Google native config plugins if static config inheritance changes.
 - Production env preflight now validates the Firebase API key, app ID, messaging sender ID, auth domain, and storage bucket shape against the same Ryvro `FIREBASE_PROJECT_ID`.
 - Production env preflight now rejects unsafe production `API_BASE_URL` values such as localhost, HTTP, or retired Ellie hosts.
 - Firebase/backend repo config exposes `ryvroBrain` and uses `RYVRO_BRAIN_*` as the preferred environment names while preserving old `ELLIE_BRAIN_*` keys only as migration fallbacks.

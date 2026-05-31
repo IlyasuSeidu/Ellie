@@ -205,14 +205,25 @@ describe('Ryvro environment template', () => {
       version?: string;
       icon?: string;
       splash?: { image?: string };
-      ios?: { bundleIdentifier?: string; buildNumber?: string; googleServicesFile?: string };
+      ios?: {
+        bundleIdentifier?: string;
+        buildNumber?: string;
+        googleServicesFile?: string;
+        supportsTablet?: boolean;
+        usesAppleSignIn?: boolean;
+        infoPlist?: Record<string, unknown>;
+      };
       android?: {
         package?: string;
         versionCode?: number;
         googleServicesFile?: string;
+        edgeToEdgeEnabled?: boolean;
+        predictiveBackGestureEnabled?: boolean;
+        permissions?: string[];
         adaptiveIcon?: { foregroundImage?: string };
       };
       web?: { favicon?: string };
+      plugins?: unknown[];
       extra?: Record<string, unknown>;
     };
 
@@ -241,8 +252,19 @@ describe('Ryvro environment template', () => {
       expect(dynamicConfig.ios?.bundleIdentifier).toBe('com.ryvro.shiftplanner');
       expect(dynamicConfig.ios?.buildNumber).toBe('1');
       expect(dynamicConfig.ios?.googleServicesFile).toBe('./ios/Ryvro/GoogleService-Info.plist');
+      expect(dynamicConfig.ios?.supportsTablet).toBe(true);
+      expect(dynamicConfig.ios?.usesAppleSignIn).toBe(true);
+      expect(dynamicConfig.ios?.infoPlist).toMatchObject({
+        NSSpeechRecognitionUsageDescription:
+          'Ryvro needs speech recognition to understand your questions.',
+        NSMicrophoneUsageDescription: 'Ryvro needs microphone access for voice commands.',
+        ITSAppUsesNonExemptEncryption: false,
+      });
       expect(dynamicConfig.android?.package).toBe('com.ryvro.shiftplanner');
       expect(dynamicConfig.android?.versionCode).toBe(1);
+      expect(dynamicConfig.android?.edgeToEdgeEnabled).toBe(true);
+      expect(dynamicConfig.android?.predictiveBackGestureEnabled).toBe(false);
+      expect(dynamicConfig.android?.permissions).toEqual(['android.permission.RECORD_AUDIO']);
       expect(dynamicConfig.android?.adaptiveIcon?.foregroundImage).toBe(
         './assets/adaptive-icon.png'
       );
@@ -250,6 +272,19 @@ describe('Ryvro environment template', () => {
         './android/app/ryvro-google-services.json'
       );
       expect(dynamicConfig.web?.favicon).toBe('./assets/favicon.png');
+      expect(dynamicConfig.plugins).toEqual(
+        expect.arrayContaining([
+          'expo-localization',
+          'expo-font',
+          'expo-asset',
+          '@react-native-firebase/app',
+          '@react-native-firebase/auth',
+          expect.arrayContaining(['expo-build-properties']),
+          expect.arrayContaining(['@react-native-google-signin/google-signin']),
+          expect.arrayContaining(['expo-image-picker']),
+          expect.arrayContaining(['expo-speech-recognition']),
+        ])
+      );
       expect(dynamicConfig.extra?.LEGAL_PRIVACY_POLICY_URL).toBe('https://getryvro.com/privacy');
       expect(dynamicConfig.extra?.LEGAL_TERMS_OF_SERVICE_URL).toBe('https://getryvro.com/terms');
       expect(dynamicConfig.extra?.SUPPORT_URL).toBe('https://getryvro.com/support');
@@ -1149,6 +1184,9 @@ describe('Ryvro environment template', () => {
       'Derive the Google Sign-In iOS URL scheme from `GOOGLE_IOS_CLIENT_ID`'
     );
     expect(releaseTasks).toContain(
+      'Pin dynamic Expo config fallbacks for Apple Sign-In, iOS privacy strings'
+    );
+    expect(releaseTasks).toContain(
       'Add app-level offline/pending-sync status visibility for queued local writes'
     );
     expect(releaseTasks).toContain(
@@ -1303,6 +1341,9 @@ describe('Ryvro environment template', () => {
     );
     expect(readinessReport).toContain(
       "Dynamic Expo config now derives the Google Sign-In plugin's iOS URL scheme"
+    );
+    expect(readinessReport).toContain(
+      'Dynamic Expo config now also pins launch native capability fallbacks'
     );
     expect(readinessReport).toContain(
       'deriving the Google Sign-In iOS URL scheme from the Ryvro OAuth client ID'
