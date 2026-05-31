@@ -710,6 +710,21 @@ describe('Ryvro environment template', () => {
       'utf8'
     );
 
+    expect(releaseTasks).toContain(
+      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, release handoff refresh, pushed PR #1 CI pass)'
+    );
+    expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
+    expect(releaseTasks).toContain('npm run release:clearance');
+    expect(releaseTasks).toContain('latest public evidence: 2026-05-31 05:16Z');
+    expect(releaseTasks).toContain('formal trademark/legal clearance for `Ryvro`');
+    expect(releaseTasks).toContain(
+      'Reserve or create App Store Connect app name `Ryvro Shift Planner`'
+    );
+    expect(releaseTasks).toContain(
+      'Reserve or create Google Play title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`'
+    );
+    expect(releaseTasks).toContain('`getryvro.com` as the current cleanest public candidate');
+    expect(releaseTasks).toContain('starting with `@ryvro`');
     expect(releaseTasks).toContain('PRODUCT_BUNDLE_IDENTIFIER = com.ryvro.shiftplanner');
     expect(releaseTasks).toContain('PRODUCT_NAME = Ryvro');
     expect(releaseTasks).toContain('internal generated workspace/scheme');
