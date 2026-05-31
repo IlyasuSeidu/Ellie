@@ -615,6 +615,8 @@ describe('Ryvro environment template', () => {
     expect(result.stdout).toContain('Ryvro native scaffold check passed');
     expect(script).toContain('Ryvro Shift Planner');
     expect(script).toContain('com.ryvro.shiftplanner');
+    expect(script).toContain('app.config.js.backup must not be tracked');
+    expect(fs.existsSync(path.join(process.cwd(), 'app.config.js.backup'))).toBe(false);
     expect(script).toContain('ios/RyvroShiftPlanner/GoogleService-Info.plist');
     expect(script).toContain('--strict-generated');
     expect(script).toContain('--strict-generated-services');
@@ -2092,6 +2094,8 @@ describe('Ryvro environment template', () => {
     );
 
     expect(audit).toContain('## Implementation Status: 2026-05-31');
+    expect(audit).toContain('Removed from the tracked launch tree');
+    expect(audit).toContain('Remove `app.config.js.backup` and guard against it returning.');
     expect(audit).toContain('removed retired `ELLIE_BRAIN_*` fallbacks from new Ryvro builds');
     expect(audit).toContain('kept `ryvroBrain` as the only launch HTTPS function export');
     expect(audit).toContain(

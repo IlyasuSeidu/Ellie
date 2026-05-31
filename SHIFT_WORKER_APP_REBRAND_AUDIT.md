@@ -861,7 +861,7 @@ These were updated together in the Ryvro rebrand branch because they affect buil
   - Exposes `RYVRO_BRAIN_URL` / `RYVRO_BRAIN_TIMEOUT` as the launch voice-backend names and rejects retired `ELLIE_BRAIN_*` keys in production release preflight.
   - Confirmed no env-driven override reintroduces old public naming.
 - `app.config.js.backup`
-  - Updated to the same Ryvro identity values so the backup does not mislead future agents.
+  - Removed from the tracked launch tree; `npm run release:native:check` now fails if the stale backup config returns.
 - `ios/RyvroShiftPlanner/Info.plist`
   - Clean prebuild output contains `CFBundleDisplayName`: `Ryvro`.
   - URL schemes: `ryvro`, `com.ryvro.shiftplanner`, and `exp+ryvro`.
@@ -1449,7 +1449,7 @@ Phase gate:
 - [x] Finalize bundle ID/package ID decision: `com.ryvro.shiftplanner`.
 - [x] Update `app.json`.
 - [x] Update `app.config.js` if needed.
-- [ ] Update or remove `app.config.js.backup`.
+- [x] Remove `app.config.js.backup` and guard against it returning.
 - [ ] Update `android/settings.gradle`.
 - [x] Update iOS display name.
 - [x] Update e2e bundle/container references if ID changes.

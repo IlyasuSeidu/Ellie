@@ -105,6 +105,12 @@ assertEqual(dynamicExpo.web?.favicon, './assets/favicon.png', 'app.config.js web
 assertAbsent(readOptional('app.json'), retiredVisibleIdentityPattern, 'app.json');
 assertAbsent(readOptional('app.config.js'), retiredVisibleIdentityPattern, 'app.config.js');
 
+if (fs.existsSync(path.join(root, 'app.config.js.backup'))) {
+  addError(
+    'app.config.js.backup must not be tracked for the Ryvro launch; remove stale backup config files instead of carrying alternate app identity sources.'
+  );
+}
+
 const generatedInfoPlist =
   readOptional('ios/RyvroShiftPlanner/Info.plist') ||
   readOptional('ios/Ryvro/Info.plist') ||
