@@ -11,6 +11,7 @@ Use `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md` beside this file for App Store p
 - Privacy policy URL: `https://getryvro.com/privacy`
 - Terms URL: `https://getryvro.com/terms`
 - Support URL: `https://getryvro.com/support`
+- Account deletion URL: `https://getryvro.com/delete-account`
 - Support email: `support@getryvro.com`
 
 If `getryvro.com` is not secured, use the final purchased Ryvro domain and update this file, App Store Connect, Google Play Console, RevenueCat, website footer, and in-app legal links together.
@@ -92,7 +93,7 @@ Ryvro can send shift reminders if the user enables notifications. Users can turn
 
 ## Data Retention
 
-Ryvro keeps account and schedule information while the account is active. Users can request deletion of account data by contacting support.
+Ryvro keeps account and schedule information while the account is active. Users can request deletion of account data from `https://getryvro.com/delete-account` or by contacting support.
 
 ## Children
 
@@ -180,6 +181,24 @@ Common support topics:
 - reminders
 - subscription and restore purchases
 - account deletion
+
+## Account Deletion Page Draft
+
+# Delete Your Ryvro Account
+
+Users can request deletion of their Ryvro account and associated app data at:
+
+`https://getryvro.com/delete-account`
+
+To request deletion, email support@getryvro.com with the subject "Ryvro account deletion request" and include the email address used for the Ryvro account.
+
+Ryvro account deletion covers saved account profile data, schedules, shift templates, exceptions, reminder settings, AI builder prompts retained with the account, and app settings associated with the account.
+
+Account deletion does not automatically cancel App Store or Google Play subscriptions. Users must cancel active subscriptions through their Apple ID or Google Play account to stop future billing.
+
+Support may need to keep limited records required for security, fraud prevention, legal compliance, dispute handling, or completed subscription transactions.
+
+Ryvro will confirm the request and complete deletion within the timeframe required by applicable law and app-store policy.
 
 ## Account Deletion Request Template
 

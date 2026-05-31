@@ -19,6 +19,7 @@ Primary references checked on 2026-05-31:
 - Android package: com.ryvro.shiftplanner
 - Category: Productivity
 - Support URL: https://getryvro.com/support
+- Account deletion URL: https://getryvro.com/delete-account
 - Privacy policy URL: https://getryvro.com/privacy
 - Terms URL: https://getryvro.com/terms
 - Support email: support@getryvro.com
@@ -89,7 +90,7 @@ Answer the form for every app track, including internal testing, closed testing,
 
 - Data is encrypted in transit: Yes.
 - Users can request data deletion: Yes.
-- Data deletion URL: https://getryvro.com/support or the final account deletion page if a dedicated URL exists.
+- Data deletion URL: https://getryvro.com/delete-account
 - Independent security review: No, unless a real independent review has been completed.
 - Committed to Google Play Families policy: No, unless the target audience later includes children.
 

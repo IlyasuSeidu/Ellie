@@ -213,6 +213,7 @@ Required before submit:
 
 - Privacy policy URL
 - Support URL
+- Account deletion URL: `https://getryvro.com/delete-account`
 - Screenshots
 - App privacy answers
 - Subscription group and products
@@ -240,6 +241,7 @@ Required before submit:
 - Main store listing
 - Screenshots and feature graphic
 - Privacy policy URL
+- Account deletion URL: `https://getryvro.com/delete-account`
 - Data safety form
 - App access instructions
 - Content rating
@@ -265,10 +267,10 @@ Fallbacks:
 
 After domain purchase:
 
-- Publish privacy, terms, and support pages.
+- Publish privacy, terms, support, and account deletion pages.
 - Add `support@getryvro.com`.
 - Add Firebase Auth authorized domain.
-- Add App Store and Play Store support/privacy URLs.
+- Add App Store and Play Store support/privacy/account deletion URLs.
 - Add website and social links to store listings.
 
 Before purchase/reservation, run the public repo-side evidence check:

@@ -79,6 +79,27 @@ const screenshotPlan = extractSection(storeListing, 'Submission Screenshot Captu
   ['Privacy policy URL: https://getryvro.com/privacy', submissionDraft, 'store submission draft'],
   ['Terms URL: https://getryvro.com/terms', submissionDraft, 'store submission draft'],
   ['Support URL: https://getryvro.com/support', submissionDraft, 'store submission draft'],
+  [
+    'Account deletion URL: https://getryvro.com/delete-account',
+    submissionDraft,
+    'store submission draft',
+  ],
+  [
+    'Data deletion URL: https://getryvro.com/delete-account',
+    submissionDraft,
+    'store submission draft',
+  ],
+  [
+    'Account deletion URL: `https://getryvro.com/delete-account`',
+    privacySupport,
+    'privacy/support templates',
+  ],
+  ['# Delete Your Ryvro Account', privacySupport, 'privacy/support templates'],
+  [
+    'Account deletion does not automatically cancel App Store or Google Play subscriptions',
+    privacySupport,
+    'privacy/support templates',
+  ],
   ['Support email: `support@getryvro.com`', privacySupport, 'privacy/support templates'],
 ].forEach(([expected, content, label]) => requireIncludes(content, expected, label));
 

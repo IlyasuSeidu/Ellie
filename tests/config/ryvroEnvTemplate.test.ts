@@ -2033,6 +2033,11 @@ describe('Ryvro environment template', () => {
     expect(privacySupport).toContain('holiday exceptions');
     expect(privacySupport).toContain('reminders');
     expect(privacySupport).toContain('account deletion');
+    expect(privacySupport).toContain('Account deletion URL: `https://getryvro.com/delete-account`');
+    expect(privacySupport).toContain('# Delete Your Ryvro Account');
+    expect(privacySupport).toContain(
+      'Account deletion does not automatically cancel App Store or Google Play subscriptions'
+    );
     expect(privacySupport).toContain('support@getryvro.com');
     expect(privacySupport).not.toMatch(/mine site|haul truck|underground miner/i);
   });
@@ -2072,6 +2077,12 @@ describe('Ryvro environment template', () => {
     expect(storeSubmissionDraft).toContain('Diagnostics: crash logs');
     expect(storeSubmissionDraft).toContain('Data is encrypted in transit: Yes');
     expect(storeSubmissionDraft).toContain('Users can request data deletion: Yes');
+    expect(storeSubmissionDraft).toContain(
+      'Account deletion URL: https://getryvro.com/delete-account'
+    );
+    expect(storeSubmissionDraft).toContain(
+      'Data deletion URL: https://getryvro.com/delete-account'
+    );
     expect(storeSubmissionDraft).toContain('RevenueCat for subscription status');
     expect(storeSubmissionDraft).toContain('OpenAI or the configured AI provider');
     expect(storeSubmissionDraft).toContain('Audio files: declare only if');
@@ -2104,6 +2115,7 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('Formal trademark/legal clearance for `Ryvro`');
     expect(ownerRunbook).toContain('Reserve or create Google Play title `Ryvro Shift Planner`');
     expect(ownerRunbook).toContain('Purchase or reserve the launch domain');
+    expect(ownerRunbook).toContain('https://getryvro.com/delete-account');
     expect(ownerRunbook).toContain('Apple App ID for `com.ryvro.shiftplanner`');
     expect(ownerRunbook).toContain('EAS project ID');
     expect(ownerRunbook).toContain('npm run release:native:check');
@@ -2161,6 +2173,8 @@ describe('Ryvro environment template', () => {
     );
     expect(externalSetup).toContain('Profile shows `Ryvro Pro - Active`');
     expect(externalSetup).toContain('Do not configure retired Ellie entitlement IDs');
+    expect(externalSetup).toContain('Account deletion URL: `https://getryvro.com/delete-account`');
+    expect(externalSetup).toContain('support/privacy/account deletion URLs');
     expect(externalSetup).not.toContain('Ellie iOS');
     expect(externalSetup).not.toContain('Ellie Android');
     expect(externalSetup).not.toContain('Ellie Pro');

@@ -20,7 +20,7 @@ Do not submit to App Store review or Google Play production until all of these a
 - Formal trademark/legal clearance for `Ryvro` is complete in launch markets.
 - The owner has reserved or created App Store Connect app name `Ryvro Shift Planner`.
 - The owner has reserved or created Google Play app title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`.
-- The launch domain is purchased, controlled, and serving privacy, terms, support, and account-deletion instructions.
+- The launch domain is purchased, controlled, and serving privacy, terms, support, and `https://getryvro.com/delete-account` account-deletion instructions.
 - Firebase, Google OAuth, Apple Sign-In, RevenueCat, and EAS secrets are created for `com.ryvro.shiftplanner`.
 - `npm run release:env:check` passes with the real production `.env`.
 - Production `ryvroBrain` and `parseShiftScheduleDescription` endpoints are deployed and smoke-tested.
@@ -123,7 +123,7 @@ Evidence to record:
 
 Owner-only steps:
 
-- Publish privacy policy, terms, support, and account-deletion instructions on the controlled launch domain.
+- Publish privacy policy, terms, support, and the `https://getryvro.com/delete-account` account-deletion page on the controlled launch domain.
 - Configure Firebase Auth verification and password-reset email templates with Ryvro copy.
 - Fill App Store privacy answers from `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md`.
 - Fill Google Play Data safety and account deletion answers from `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md`.
@@ -131,7 +131,7 @@ Owner-only steps:
 
 Evidence to record:
 
-- Live privacy, terms, support, and account-deletion URLs.
+- Live privacy, terms, support, and `https://getryvro.com/delete-account` account-deletion URLs.
 - Firebase Auth template screenshots or confirmation.
 - App Store privacy form completion.
 - Google Play Data safety form completion.
