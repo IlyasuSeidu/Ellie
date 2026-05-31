@@ -94,6 +94,35 @@ function isProductionHttpsUrl(value) {
   }
 }
 
+function hasRetiredRyvroName(value) {
+  return /(ellie|shift[-_]?sync|mineshift|miner)/i.test(value);
+}
+
+function isRyvroFirebaseProjectId(value) {
+  return (
+    /^[a-z][a-z0-9-]{4,28}[a-z0-9]$/.test(value) &&
+    value.includes('ryvro') &&
+    !hasRetiredRyvroName(value)
+  );
+}
+
+function isRyvroCloudFunctionUrl(value, functionName) {
+  try {
+    const parsed = new URL(value);
+
+    return (
+      parsed.protocol === 'https:' &&
+      parsed.hostname.endsWith('.cloudfunctions.net') &&
+      parsed.pathname === `/${functionName}` &&
+      parsed.hostname.includes('ryvro') &&
+      !hasRetiredRyvroName(parsed.hostname) &&
+      !hasRetiredRyvroName(parsed.pathname)
+    );
+  } catch {
+    return false;
+  }
+}
+
 function isUuid(value) {
   return (
     /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value) &&
@@ -127,7 +156,13 @@ function main() {
 
   requireValue(errors, env, 'APP_ENV', (value) => value === 'production', 'must be production');
   requireValue(errors, env, 'EAS_PROJECT_ID', isUuid, 'must be the real EAS project UUID');
-  requireValue(errors, env, 'FIREBASE_PROJECT_ID', undefined, 'must be the Ryvro Firebase project');
+  requireValue(
+    errors,
+    env,
+    'FIREBASE_PROJECT_ID',
+    isRyvroFirebaseProjectId,
+    'must be the Ryvro Firebase project ID and must not contain retired Ellie/ShiftSync names'
+  );
   requireValue(
     errors,
     env,
@@ -204,10 +239,8 @@ function main() {
     errors,
     env,
     'RYVRO_BRAIN_URL',
-    (value) =>
-      /^https:\/\/.+\.cloudfunctions\.net\/ryvroBrain$/.test(value) &&
-      !value.includes('ellieBrain'),
-    'must be the deployed ryvroBrain HTTPS function URL'
+    (value) => isRyvroCloudFunctionUrl(value, 'ryvroBrain'),
+    'must be the deployed ryvroBrain HTTPS function URL scoped to a Ryvro Firebase project, not a retired Ellie/ShiftSync host'
   );
   requireValue(
     errors,
@@ -270,8 +303,8 @@ function main() {
       errors,
       env,
       'SHIFT_SCHEDULE_PARSER_URL',
-      (value) => /^https:\/\/.+\.cloudfunctions\.net\/parseShiftScheduleDescription$/.test(value),
-      'must be the deployed parseShiftScheduleDescription HTTPS function URL when AI builder is enabled'
+      (value) => isRyvroCloudFunctionUrl(value, 'parseShiftScheduleDescription'),
+      'must be the deployed parseShiftScheduleDescription HTTPS function URL scoped to a Ryvro Firebase project when AI builder is enabled'
     );
   }
 

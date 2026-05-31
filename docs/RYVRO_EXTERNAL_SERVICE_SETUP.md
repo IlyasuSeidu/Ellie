@@ -104,7 +104,7 @@ cp .env.production.example .env
 npm run release:env:check
 ```
 
-The check requires `APP_ENV=production`, the real EAS project UUID, real Firebase values scoped to one Ryvro `FIREBASE_PROJECT_ID`, live HTTPS `API_BASE_URL`, real Google OAuth values, mirrored Expo public Google OAuth client IDs, the deployed `ryvroBrain` URL, real RevenueCat `appl_...` and `goog_...` SDK keys, mirrored Expo public RevenueCat keys and entitlement ID, live HTTPS `LEGAL_PRIVACY_POLICY_URL`, `LEGAL_TERMS_OF_SERVICE_URL`, and `SUPPORT_URL` values, and an empty `ELLIE_BRAIN_URL` for new Ryvro builds. `.env.production.example` is a checklist, not a usable secret file; it must fail the preflight until every placeholder is replaced.
+The check requires `APP_ENV=production`, the real EAS project UUID, real Firebase values scoped to one Ryvro `FIREBASE_PROJECT_ID`, live HTTPS `API_BASE_URL`, real Google OAuth values, mirrored Expo public Google OAuth client IDs, the deployed `ryvroBrain` URL, real RevenueCat `appl_...` and `goog_...` SDK keys, mirrored Expo public RevenueCat keys and entitlement ID, live HTTPS `LEGAL_PRIVACY_POLICY_URL`, `LEGAL_TERMS_OF_SERVICE_URL`, and `SUPPORT_URL` values, and an empty `ELLIE_BRAIN_URL` for new Ryvro builds. It also rejects retired Ellie/ShiftSync Firebase project IDs and Cloud Function hosts for `ryvroBrain` and `parseShiftScheduleDescription`. `.env.production.example` is a checklist, not a usable secret file; it must fail the preflight until every placeholder is replaced.
 
 Verification:
 

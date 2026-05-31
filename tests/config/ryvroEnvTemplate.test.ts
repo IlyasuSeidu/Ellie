@@ -144,6 +144,11 @@ describe('Ryvro environment template', () => {
     'LEGAL_PRIVACY_POLICY_URL=https://getryvro.com/privacy',
     'LEGAL_TERMS_OF_SERVICE_URL=https://getryvro.com/terms',
     'SUPPORT_URL=https://getryvro.com/support',
+    'AI_SHIFT_BUILDER_ENABLED=true',
+    [
+      'SHIFT_SCHEDULE_PARSER_URL=',
+      'https://us-central1-ryvro-prod.cloudfunctions.net/parseShiftScheduleDescription',
+    ].join(''),
     'ELLIE_BRAIN_URL=',
   ].join('\n');
 
@@ -607,6 +612,9 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('ELLIE_BRAIN_URL: leave empty for new Ryvro production builds');
     expect(script).toContain('must match FIREBASE_PROJECT_ID as <project-id>.firebaseapp.com');
     expect(script).toContain('must match FIREBASE_PROJECT_ID as a Firebase Storage bucket');
+    expect(script).toContain('must be the Ryvro Firebase project ID');
+    expect(script).toContain('scoped to a Ryvro Firebase project');
+    expect(script).toContain('retired Ellie/ShiftSync');
     expect(script).toContain('must be the live HTTPS Ryvro API base URL');
     expect(script).toContain('must match GOOGLE_WEB_CLIENT_ID');
     expect(script).toContain('must match GOOGLE_IOS_CLIENT_ID');
@@ -647,9 +655,13 @@ describe('Ryvro environment template', () => {
     expect(externalSetup).toContain(
       'it must fail the preflight until every placeholder is replaced'
     );
+    expect(externalSetup).toContain(
+      'rejects retired Ellie/ShiftSync Firebase project IDs and Cloud Function hosts'
+    );
     expect(externalSetup).toContain('live HTTPS `LEGAL_PRIVACY_POLICY_URL`');
     expect(releaseTasks).toContain('npm run release:env:check');
     expect(releaseTasks).toContain('Copy `.env.production.example` to `.env`');
+    expect(releaseTasks).toContain('Reject retired Ellie/ShiftSync Firebase project IDs');
     expect(releaseTasks).toContain('live HTTPS legal/support URLs');
   });
 
@@ -771,6 +783,71 @@ describe('Ryvro environment template', () => {
     expect(storageBucketResult.stderr).toContain(
       'must match FIREBASE_PROJECT_ID as a Firebase Storage bucket'
     );
+
+    const retiredProjectResult = runProductionEnvCheck(
+      validProductionEnv
+        .replace(
+          'FIREBASE_AUTH_DOMAIN=ryvro-prod.firebaseapp.com',
+          'FIREBASE_AUTH_DOMAIN=ellie-prod.firebaseapp.com'
+        )
+        .replace('FIREBASE_PROJECT_ID=ryvro-prod', 'FIREBASE_PROJECT_ID=ellie-prod')
+        .replace(
+          'FIREBASE_STORAGE_BUCKET=ryvro-prod.firebasestorage.app',
+          'FIREBASE_STORAGE_BUCKET=ellie-prod.firebasestorage.app'
+        )
+    );
+
+    expect(retiredProjectResult.status).toBe(1);
+    expect(retiredProjectResult.stderr).toContain('FIREBASE_PROJECT_ID');
+    expect(retiredProjectResult.stderr).toContain('retired Ellie/ShiftSync names');
+
+    const genericProjectResult = runProductionEnvCheck(
+      validProductionEnv
+        .replace(
+          'FIREBASE_AUTH_DOMAIN=ryvro-prod.firebaseapp.com',
+          'FIREBASE_AUTH_DOMAIN=shiftplanner-prod.firebaseapp.com'
+        )
+        .replace('FIREBASE_PROJECT_ID=ryvro-prod', 'FIREBASE_PROJECT_ID=shiftplanner-prod')
+        .replace(
+          'FIREBASE_STORAGE_BUCKET=ryvro-prod.firebasestorage.app',
+          'FIREBASE_STORAGE_BUCKET=shiftplanner-prod.firebasestorage.app'
+        )
+    );
+
+    expect(genericProjectResult.status).toBe(1);
+    expect(genericProjectResult.stderr).toContain('FIREBASE_PROJECT_ID');
+    expect(genericProjectResult.stderr).toContain('must be the Ryvro Firebase project ID');
+  });
+
+  it('rejects production env files with retired Cloud Function project hosts', () => {
+    const brainResult = runProductionEnvCheck(
+      validProductionEnv.replace(
+        'RYVRO_BRAIN_URL=https://us-central1-ryvro-prod.cloudfunctions.net/ryvroBrain',
+        'RYVRO_BRAIN_URL=https://us-central1-ellie-prod.cloudfunctions.net/ryvroBrain'
+      )
+    );
+
+    expect(brainResult.status).toBe(1);
+    expect(brainResult.stderr).toContain('RYVRO_BRAIN_URL');
+    expect(brainResult.stderr).toContain('scoped to a Ryvro Firebase project');
+    expect(brainResult.stderr).toContain('retired Ellie/ShiftSync host');
+
+    const parserResult = runProductionEnvCheck(
+      validProductionEnv.replace(
+        [
+          'SHIFT_SCHEDULE_PARSER_URL=',
+          'https://us-central1-ryvro-prod.cloudfunctions.net/parseShiftScheduleDescription',
+        ].join(''),
+        [
+          'SHIFT_SCHEDULE_PARSER_URL=',
+          'https://us-central1-shift-sync-prod.cloudfunctions.net/parseShiftScheduleDescription',
+        ].join('')
+      )
+    );
+
+    expect(parserResult.status).toBe(1);
+    expect(parserResult.stderr).toContain('SHIFT_SCHEDULE_PARSER_URL');
+    expect(parserResult.stderr).toContain('scoped to a Ryvro Firebase project');
   });
 
   it('rejects production env files with unsafe API base URLs', () => {
@@ -954,20 +1031,20 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('109 Jest suites / 1,751 tests / 4 snapshots');
+    expect(readme).toContain('109 Jest suites / 1,752 tests / 4 snapshots');
     expect(readme).toContain('Recent pushed PR gate');
     expect(readme).toContain('GitHub Actions CI passed Unit Tests, Lint and Type Check');
     expect(readme).toContain('run `26711322778`');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
-    expect(readme).toContain('Testing infrastructure (1,751 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,752 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,751 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,752 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-05-31 release check)');
-    expect(readme).toContain('Total Tests**: 1,751 passing (109 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Total Tests**: 1,752 passing (109 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -1310,6 +1387,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('109 Jest suites / 1,749 tests');
     expect(readinessReport).toContain('109 Jest suites / 1,750 tests');
     expect(readinessReport).toContain('109 Jest suites / 1,751 tests');
+    expect(readinessReport).toContain('109 Jest suites / 1,752 tests');
     expect(readinessReport).toContain('aligning dynamic Expo version fallbacks');
     expect(readinessReport).toContain('refreshing public clearance evidence');
     expect(readinessReport).toContain(
@@ -1346,7 +1424,13 @@ describe('Ryvro environment template', () => {
       'Dynamic Expo config now also pins launch native capability fallbacks'
     );
     expect(readinessReport).toContain(
+      'Production env preflight now rejects retired Ellie/ShiftSync Firebase project IDs'
+    );
+    expect(readinessReport).toContain(
       'deriving the Google Sign-In iOS URL scheme from the Ryvro OAuth client ID'
+    );
+    expect(readinessReport).toContain(
+      'rejecting retired Firebase project IDs and Cloud Function hosts'
     );
     expect(readinessReport).toContain(
       'Production env preflight now validates the Firebase API key'

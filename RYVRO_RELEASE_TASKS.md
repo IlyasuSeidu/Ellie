@@ -48,6 +48,7 @@ Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you
 | 10b | Align research-funnel runtime personas, docs, scoring, and automation prompts with Ryvro's broad launch audience across mining/FIFO, healthcare, security/emergency services, transport/logistics, hospitality/manufacturing, and other rotating-shift teams | ✅ Done                            |
 | 10c | Derive the Google Sign-In iOS URL scheme from `GOOGLE_IOS_CLIENT_ID` / `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID` at Expo config build time so production OAuth cannot keep a stale static client scheme                                                             | ✅ Done                            |
 | 10d | Pin dynamic Expo config fallbacks for Apple Sign-In, iOS privacy strings, Android microphone permission, and required native config plugins so generated Ryvro builds keep launch capabilities even if static config inheritance changes                     | ✅ Done                            |
+| 10e | Reject retired Ellie/ShiftSync Firebase project IDs and Cloud Function hosts in the Ryvro production env preflight before release builds                                                                                                                     | ✅ Done                            |
 
 ---
 
