@@ -607,7 +607,7 @@ describe('Ryvro environment template', () => {
     );
     expect(readme).toContain('106 Jest suites / 1,734 tests / 4 snapshots');
     expect(readme).toContain('GitHub Actions CI passed Unit Tests, Lint and Type Check');
-    expect(readme).toContain('run `26704249051`');
+    expect(readme).toContain('run `26704558053`');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
@@ -633,9 +633,13 @@ describe('Ryvro environment template', () => {
     expect(contributing).toContain(
       'git remote add upstream https://github.com/IlyasuSeidu/Ellie.git'
     );
+    expect(contributing).toContain('git clone https://github.com/YOUR_USERNAME/Ellie.git');
+    expect(contributing).toContain('cd Ellie');
     expect(contributing).not.toContain(
       'git remote add upstream https://github.com/IlyasuSeidu/ryvro.git'
     );
+    expect(contributing).not.toContain('git clone https://github.com/YOUR_USERNAME/ryvro.git');
+    expect(contributing).not.toContain('cd ryvro');
   });
 
   it('keeps the active deployment guide aligned with Ryvro release preflight', () => {
@@ -653,6 +657,7 @@ describe('Ryvro environment template', () => {
     expect(deploymentGuide).toContain('"bundleIdentifier": "com.ryvro.shiftplanner"');
     expect(deploymentGuide).toContain('"package": "com.ryvro.shiftplanner"');
     expect(deploymentGuide).toContain('"permissions": ["INTERNET", "RECORD_AUDIO"]');
+    expect(deploymentGuide).toContain('"ascAppId": "FILL_AFTER_STEP_6"');
     expect(deploymentGuide).toContain('"serviceAccountKeyPath": "./google-play-key.json"');
     expect(deploymentGuide).toContain('ryvro-upload-key.keystore');
     expect(deploymentGuide).toContain('RYVRO_UPLOAD_*');
@@ -666,6 +671,7 @@ describe('Ryvro environment template', () => {
     expect(deploymentGuide).not.toContain('your-apple-id@example.com');
     expect(deploymentGuide).not.toContain('your-app-store-connect-id');
     expect(deploymentGuide).not.toContain('your-team-id');
+    expect(deploymentGuide).not.toContain('FILL_AFTER_APP_STORE_CONNECT_APP_EXISTS');
   });
 
   it('keeps the active API reference aligned with Ryvro launch configuration', () => {
@@ -749,6 +755,8 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('CI run `26678024310`');
     expect(readinessReport).toContain('commit `e638418`');
     expect(readinessReport).toContain('CI run `26679223794`');
+    expect(readinessReport).toContain('commit `47441dd`');
+    expect(readinessReport).toContain('CI run `26704558053`');
     expect(readinessReport).toContain('commit `3d85add`');
     expect(readinessReport).toContain('CI run `26704249051`');
     expect(readinessReport).toContain(
@@ -1650,12 +1658,20 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'src/screens/main/StatsScreen.tsx'),
       'utf8'
     );
+    const universalShiftBuilderSpec = fs.readFileSync(
+      path.join(process.cwd(), 'docs/UNIVERSAL_SHIFT_BUILDER_SPEC.md'),
+      'utf8'
+    );
     const localeRoot = path.join(process.cwd(), 'src/i18n/locales');
 
     expect(scheduleScreen).toContain("t('availableNow')");
     expect(statsScreen).toContain("t('availableNow')");
     expect(scheduleScreen).not.toMatch(/coming soon|placeholder|will provide/i);
     expect(statsScreen).not.toMatch(/coming soon|placeholder|will provide/i);
+    expect(universalShiftBuilderSpec).toContain(
+      'Internal Schedule surfaces or future schedule screen'
+    );
+    expect(universalShiftBuilderSpec).not.toContain('Schedule screen placeholders');
 
     for (const locale of fs.readdirSync(localeRoot)) {
       const scheduleLocalePath = path.join(localeRoot, locale, 'schedule.json');

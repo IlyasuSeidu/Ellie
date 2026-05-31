@@ -283,7 +283,7 @@ Universal shift metadata must flow into:
 - Dashboard current shift card.
 - Monthly calendar.
 - Upcoming shifts.
-- Schedule screen placeholders or future schedule screen.
+- Internal Schedule surfaces or future schedule screen.
 - Smart reminders.
 - Voice assistant prompts and tools.
 - Offline fallback answers.

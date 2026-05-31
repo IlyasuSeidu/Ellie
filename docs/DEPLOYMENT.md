@@ -145,7 +145,7 @@ Edit `eas.json`:
     "production": {
       "ios": {
         "appleId": "YOUR_APPLE_ID_EMAIL",
-        "ascAppId": "FILL_AFTER_APP_STORE_CONNECT_APP_EXISTS",
+        "ascAppId": "FILL_AFTER_STEP_6",
         "appleTeamId": "BZ798WZJCB"
       },
       "android": {

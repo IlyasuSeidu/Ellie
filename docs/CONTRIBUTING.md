@@ -50,8 +50,8 @@ Ensure you have the following installed:
 2. Clone your fork locally:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/ryvro.git
-cd ryvro
+git clone https://github.com/YOUR_USERNAME/Ellie.git
+cd Ellie
 ```
 
 3. Add upstream remote:
