@@ -176,6 +176,11 @@ describe('Universal shift templates', () => {
     expect(builderScreen).toContain("t('builder.templateTitle')");
     expect(builderScreen).toContain("t('builder.templateHint')");
     expect(builderScreen).toContain("t('builder.templateCycleLength'");
+    expect(builderScreen).toContain('templateSearchQuery');
+    expect(builderScreen).toContain('filteredTemplates');
+    expect(builderScreen).toContain('normalizeTemplateSearch');
+    expect(builderScreen).toContain("t('builder.templateSearchPlaceholder')");
+    expect(builderScreen).toContain("t('builder.templateEmptyTitle')");
     expect(builderScreen).toContain('template.visual.icon');
     expect(builderScreen).toContain('template.visual.accentColor');
     expect(builderScreen).toContain('template.visual.label');
@@ -382,6 +387,10 @@ describe('Universal shift templates', () => {
       'templateUseButton',
       'useTemplateA11y',
       'templateCycleLength',
+      'templateSearchPlaceholder',
+      'templateSearchA11y',
+      'templateEmptyTitle',
+      'templateEmptyHint',
       'holidayTitle',
       'holidayHint',
       'holidayDetailsTitle',

@@ -164,6 +164,14 @@ function getSequenceDayLabel(
   return item.labelOverride || definition?.name || fallbackLabels.unknownShift;
 }
 
+function normalizeTemplateSearch(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[_/-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export const UniversalShiftBuilderScreen: React.FC = () => {
@@ -217,6 +225,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
   const [calendarImportSummary, setCalendarImportSummary] = useState<string | null>(null);
   const [selectedTemplateAnalytics, setSelectedTemplateAnalytics] =
     useState<SelectedTemplateAnalytics | null>(null);
+  const [templateSearchQuery, setTemplateSearchQuery] = useState('');
 
   // ── Inspector sheet state ───────────────────────────────────────────────────
   const [inspectorVisible, setInspectorVisible] = useState(false);
@@ -235,6 +244,27 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
   const aiAbortRef = useRef<AbortController | null>(null);
 
   const aiAvailable = useMemo(() => config.features.aiShiftBuilderEnabled, []);
+  const filteredTemplates = useMemo(() => {
+    const query = normalizeTemplateSearch(templateSearchQuery);
+    if (!query) return UNIVERSAL_SHIFT_TEMPLATES;
+
+    return UNIVERSAL_SHIFT_TEMPLATES.filter((template) => {
+      const searchableText = normalizeTemplateSearch(
+        [
+          template.id,
+          template.industry,
+          template.title,
+          template.subtitle,
+          template.aiPromptExample,
+          template.visual.label,
+          template.schedule.name,
+          ...template.schedule.shiftDefinitions.map((definition) => definition.name),
+        ].join(' ')
+      );
+
+      return searchableText.includes(query);
+    });
+  }, [templateSearchQuery]);
 
   useEffect(() => {
     Analytics.screenView('UniversalShiftBuilder');
@@ -1314,7 +1344,22 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
         contentContainerStyle={styles.templateContent}
         testID="universal-shift-builder-template-scroll"
       >
-        {UNIVERSAL_SHIFT_TEMPLATES.map((template) => (
+        <View style={styles.templateSearchCard}>
+          <Ionicons name="search" size={17} color={theme.colors.shadow} />
+          <TextInput
+            value={templateSearchQuery}
+            onChangeText={setTemplateSearchQuery}
+            placeholder={t('builder.templateSearchPlaceholder')}
+            placeholderTextColor={theme.colors.shadow}
+            accessibilityLabel={t('builder.templateSearchA11y')}
+            style={styles.templateSearchInput}
+            autoCapitalize="none"
+            autoCorrect={false}
+            returnKeyType="search"
+            testID="universal-shift-builder-template-search"
+          />
+        </View>
+        {filteredTemplates.map((template) => (
           <TouchableOpacity
             key={template.id}
             style={styles.templateCard}
@@ -1379,6 +1424,13 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
             </View>
           </TouchableOpacity>
         ))}
+        {filteredTemplates.length === 0 && (
+          <View style={styles.templateEmptyCard} testID="universal-shift-builder-template-empty">
+            <Ionicons name="search-outline" size={22} color={theme.colors.shadow} />
+            <Text style={styles.templateEmptyTitle}>{t('builder.templateEmptyTitle')}</Text>
+            <Text style={styles.templateEmptyHint}>{t('builder.templateEmptyHint')}</Text>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
@@ -2437,6 +2489,28 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.spacing.md,
     gap: theme.spacing.sm,
   },
+  templateSearchCard: {
+    width: 204,
+    minHeight: 174,
+    backgroundColor: theme.colors.deepVoid,
+    borderRadius: theme.borderRadius.md,
+    borderWidth: 1,
+    borderColor: theme.colors.softStone,
+    paddingHorizontal: theme.spacing.sm,
+    paddingVertical: theme.spacing.sm,
+    marginRight: theme.spacing.sm,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: theme.spacing.xs,
+  },
+  templateSearchInput: {
+    flex: 1,
+    minHeight: 42,
+    color: theme.colors.paper,
+    fontSize: theme.typography.fontSizes.sm,
+    lineHeight: 18,
+    padding: 0,
+  },
   templateCard: {
     width: 222,
     minHeight: 174,
@@ -2514,6 +2588,29 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: theme.typography.fontWeights.semibold,
     textTransform: 'capitalize',
+  },
+  templateEmptyCard: {
+    width: 222,
+    minHeight: 174,
+    backgroundColor: theme.colors.darkStone,
+    borderRadius: theme.borderRadius.md,
+    borderWidth: 1,
+    borderColor: theme.colors.softStone,
+    padding: theme.spacing.md,
+    marginRight: theme.spacing.sm,
+    justifyContent: 'center',
+  },
+  templateEmptyTitle: {
+    color: theme.colors.paper,
+    fontSize: theme.typography.fontSizes.sm,
+    fontWeight: theme.typography.fontWeights.bold,
+    marginTop: theme.spacing.sm,
+    marginBottom: 4,
+  },
+  templateEmptyHint: {
+    color: theme.colors.dust,
+    fontSize: theme.typography.fontSizes.xs,
+    lineHeight: 16,
   },
   holidayHeaderRow: {
     flexDirection: 'row',
