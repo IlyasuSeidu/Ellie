@@ -76,7 +76,11 @@ describe('ShiftSettingsPanel universal builder navigation', () => {
       universalSchedule: schedule,
     };
 
-    const { getByLabelText } = render(<ShiftSettingsPanel data={data} onUpdate={jest.fn()} />);
+    const { getByLabelText, getByText } = render(
+      <ShiftSettingsPanel data={data} onUpdate={jest.fn()} />
+    );
+
+    expect(getByText('Names, colors, icons, AI drafting, and manual drag-and-drop')).toBeTruthy();
 
     fireEvent.press(getByLabelText('Edit Universal Schedule'));
 
@@ -85,6 +89,27 @@ describe('ShiftSettingsPanel universal builder navigation', () => {
       mode: 'edit',
       entryPoint: 'settings',
       existingSchedule: schedule,
+    });
+  });
+
+  it('opens the Universal Shift Builder from settings in create mode when no schedule exists', () => {
+    const data: OnboardingData = {
+      name: 'Amina',
+    };
+
+    const { getByLabelText, getByText } = render(
+      <ShiftSettingsPanel data={data} onUpdate={jest.fn()} />
+    );
+
+    expect(getByText('Names, colors, icons, AI drafting, and manual drag-and-drop')).toBeTruthy();
+
+    fireEvent.press(getByLabelText('Build Universal Schedule'));
+
+    expect(mockOpenPaywall).not.toHaveBeenCalled();
+    expect(mockNavigate).toHaveBeenCalledWith('UniversalShiftBuilder', {
+      mode: 'create',
+      entryPoint: 'settings',
+      existingSchedule: undefined,
     });
   });
 });
