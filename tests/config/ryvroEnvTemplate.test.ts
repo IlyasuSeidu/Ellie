@@ -125,6 +125,7 @@ describe('Ryvro environment template', () => {
     'FIREBASE_STORAGE_BUCKET=ryvro-prod.firebasestorage.app',
     'FIREBASE_MESSAGING_SENDER_ID=123456789012',
     'FIREBASE_APP_ID=1:123456789012:web:abcdef1234567890',
+    'API_BASE_URL=https://api.getryvro.com',
     'GOOGLE_WEB_CLIENT_ID=1234567890-web.apps.googleusercontent.com',
     'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=1234567890-web.apps.googleusercontent.com',
     'GOOGLE_IOS_CLIENT_ID=1234567890-ios.apps.googleusercontent.com',
@@ -472,6 +473,7 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('FIREBASE_STORAGE_BUCKET');
     expect(script).toContain('FIREBASE_MESSAGING_SENDER_ID');
     expect(script).toContain('FIREBASE_APP_ID');
+    expect(script).toContain('API_BASE_URL');
     expect(script).toContain('GOOGLE_WEB_CLIENT_ID');
     expect(script).toContain('EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID');
     expect(script).toContain('GOOGLE_IOS_CLIENT_ID');
@@ -518,6 +520,7 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('ELLIE_BRAIN_URL: leave empty for new Ryvro production builds');
     expect(script).toContain('must match FIREBASE_PROJECT_ID as <project-id>.firebaseapp.com');
     expect(script).toContain('must match FIREBASE_PROJECT_ID as a Firebase Storage bucket');
+    expect(script).toContain('must be the live HTTPS Ryvro API base URL');
     expect(script).toContain('must match GOOGLE_WEB_CLIENT_ID');
     expect(script).toContain('must match GOOGLE_IOS_CLIENT_ID');
     expect(script).toContain('must match REVENUECAT_IOS_KEY');
@@ -636,6 +639,30 @@ describe('Ryvro environment template', () => {
     expect(storageBucketResult.stderr).toContain(
       'must match FIREBASE_PROJECT_ID as a Firebase Storage bucket'
     );
+  });
+
+  it('rejects production env files with unsafe API base URLs', () => {
+    const localhostResult = runProductionEnvCheck(
+      validProductionEnv.replace(
+        'API_BASE_URL=https://api.getryvro.com',
+        'API_BASE_URL=http://localhost:3000'
+      )
+    );
+
+    expect(localhostResult.status).toBe(1);
+    expect(localhostResult.stderr).toContain('API_BASE_URL');
+    expect(localhostResult.stderr).toContain('must be the live HTTPS Ryvro API base URL');
+
+    const retiredHostResult = runProductionEnvCheck(
+      validProductionEnv.replace(
+        'API_BASE_URL=https://api.getryvro.com',
+        'API_BASE_URL=https://api.ellie-shift.example.com'
+      )
+    );
+
+    expect(retiredHostResult.status).toBe(1);
+    expect(retiredHostResult.stderr).toContain('API_BASE_URL');
+    expect(retiredHostResult.stderr).toContain('retired Ellie host');
   });
 
   it('keeps public clearance evidence current while preserving account-only caveats', () => {
@@ -759,20 +786,20 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('109 Jest suites / 1,747 tests / 4 snapshots');
+    expect(readme).toContain('109 Jest suites / 1,748 tests / 4 snapshots');
     expect(readme).toContain('Recent pushed PR gate');
     expect(readme).toContain('GitHub Actions CI passed Unit Tests, Lint and Type Check');
-    expect(readme).toContain('run `26706771178`');
+    expect(readme).toContain('run `26706926728`');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain('Production `ryvroBrain` deploy and smoke test');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
-    expect(readme).toContain('Testing infrastructure (1,747 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,748 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,747 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,748 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-05-31 release check)');
-    expect(readme).toContain('Total Tests**: 1,747 passing (109 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Total Tests**: 1,748 passing (109 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -1042,6 +1069,8 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('CI run `26706616710`');
     expect(readinessReport).toContain('commit `c1fd791`');
     expect(readinessReport).toContain('CI run `26706771178`');
+    expect(readinessReport).toContain('commit `cd8bd5f`');
+    expect(readinessReport).toContain('CI run `26706926728`');
     expect(readinessReport).toContain(
       'commits `f004097`, `10353e7`, `3f92d56`, `90d403d`, and `82fd530`'
     );
@@ -1058,6 +1087,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('109 Jest suites / 1,745 tests');
     expect(readinessReport).toContain('109 Jest suites / 1,746 tests');
     expect(readinessReport).toContain('109 Jest suites / 1,747 tests');
+    expect(readinessReport).toContain('109 Jest suites / 1,748 tests');
     expect(readinessReport).toContain('aligning dynamic Expo version fallbacks');
     expect(readinessReport).toContain('refreshing public clearance evidence');
     expect(readinessReport).toContain(
@@ -1069,6 +1099,9 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain(
       'adding Firebase value-shape and project-scope checks to the production env preflight'
     );
+    expect(readinessReport).toContain(
+      'adding live HTTPS API base URL checks to the production env preflight'
+    );
     expect(readinessReport).toContain('First-store-build version values are aligned');
     expect(readinessReport).toContain(
       'Production env preflight now requires the real EAS project UUID'
@@ -1078,6 +1111,9 @@ describe('Ryvro environment template', () => {
     );
     expect(readinessReport).toContain(
       'Production env preflight now validates the Firebase API key'
+    );
+    expect(readinessReport).toContain(
+      'Production env preflight now rejects unsafe production `API_BASE_URL` values'
     );
     expect(readinessReport).toContain('Global pending-sync visibility now surfaces queued');
     expect(readinessReport).toContain('Runtime cache TTL policy is centralized');

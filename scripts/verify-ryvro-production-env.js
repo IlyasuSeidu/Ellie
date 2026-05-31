@@ -77,6 +77,21 @@ function isHttpsUrl(value) {
   }
 }
 
+function isProductionHttpsUrl(value) {
+  try {
+    const parsed = new URL(value);
+    return (
+      parsed.protocol === 'https:' &&
+      parsed.hostname !== 'localhost' &&
+      parsed.hostname !== '127.0.0.1' &&
+      !parsed.hostname.endsWith('.local') &&
+      !parsed.hostname.includes('ellie')
+    );
+  } catch {
+    return false;
+  }
+}
+
 function isUuid(value) {
   return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
 }
@@ -144,6 +159,13 @@ function main() {
     'FIREBASE_APP_ID',
     isFirebaseAppId,
     'must be the real Ryvro Firebase app ID'
+  );
+  requireValue(
+    errors,
+    env,
+    'API_BASE_URL',
+    isProductionHttpsUrl,
+    'must be the live HTTPS Ryvro API base URL, not localhost, HTTP, or a retired Ellie host'
   );
   requireValue(
     errors,
