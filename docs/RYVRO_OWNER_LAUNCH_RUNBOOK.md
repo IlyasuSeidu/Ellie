@@ -83,12 +83,33 @@ Owner-only steps:
 - Create Google OAuth web, iOS, and Android clients in the same project.
 - Deploy backend functions to the Ryvro Firebase project.
 - Configure `.env` from `.env.production.example` with real values.
+- Confirm both backend URLs point at the Ryvro Firebase project:
+
+```bash
+RYVRO_BRAIN_URL=https://<region>-<project-id>.cloudfunctions.net/ryvroBrain
+SHIFT_SCHEDULE_PARSER_URL=https://<region>-<project-id>.cloudfunctions.net/parseShiftScheduleDescription
+```
+
 - Run the repo preflights:
 
 ```bash
 npm run release:native:check
 npm run release:env:check
 ```
+
+- Smoke-test both deployed functions:
+
+```bash
+curl -i -X POST "$RYVRO_BRAIN_URL" \
+  -H "Content-Type: application/json" \
+  -d "{}"
+
+curl -i -X POST "$SHIFT_SCHEDULE_PARSER_URL" \
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"I work 2 days, 2 nights, then 4 off.","timezone":"UTC","locale":"en-US","today":"2026-05-31"}'
+```
+
+The parser smoke test must return `200` with a draft schedule before launch. A `400` from an intentionally invalid parser body proves reachability only; missing secret, provider, Firebase project, auth, or network errors are not launch-ready.
 
 - Push secrets to EAS only after the preflight passes:
 
@@ -104,6 +125,7 @@ Evidence to record:
 - `npm run release:env:check` output.
 - EAS secret push confirmation.
 - `curl` smoke-test output for `RYVRO_BRAIN_URL`.
+- `curl` smoke-test output for `SHIFT_SCHEDULE_PARSER_URL` with a minimal schedule prompt.
 - Update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` with the non-secret evidence references.
 
 ### 4. RevenueCat And Store Products

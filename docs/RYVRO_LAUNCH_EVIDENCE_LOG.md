@@ -42,8 +42,10 @@ Status values:
 | OAuth clients                 | Web, iOS, and Android client IDs created in the Ryvro Firebase/Google Cloud project      | Pending owner evidence |                            |
 | Firebase Auth domains         | `getryvro.com` added as an authorized domain                                             | Pending owner evidence |                            |
 | Firebase Auth email templates | Sender `Ryvro Support`, reply-to `support@getryvro.com`, action domain `getryvro.com`    | Pending owner evidence |                            |
-| Backend deploy                | `ryvroBrain` and `parseShiftScheduleDescription` function deploy output                  | Pending owner evidence |                            |
-| Backend smoke                 | `curl` result for configured `RYVRO_BRAIN_URL`; `200` or expected validation `400`       | Pending owner evidence |                            |
+| Backend deploy - ryvroBrain   | `ryvroBrain` function deploy output and HTTPS URL                                        | Pending owner evidence |                            |
+| Backend smoke - ryvroBrain    | `curl` result for configured `RYVRO_BRAIN_URL`; `200` or expected validation `400`       | Pending owner evidence |                            |
+| Backend deploy - parser       | `parseShiftScheduleDescription` function deploy output and HTTPS URL                     | Pending owner evidence |                            |
+| Shift parser smoke            | `curl` result for configured `SHIFT_SCHEDULE_PARSER_URL` using a minimal schedule prompt | Pending owner evidence |                            |
 | Production env preflight      | `npm run release:env:check` output with real `.env` values                               | Pending owner evidence |                            |
 | EAS secret push               | `eas secret:push --scope project --env-file .env` confirmation                           | Pending owner evidence |                            |
 

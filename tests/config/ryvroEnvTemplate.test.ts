@@ -642,6 +642,10 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
     expect(script).toContain('eas submit --platform ios --latest');
     expect(script).toContain('eas submit --platform android --latest');
+    expect(script).toContain('Backend deploy - ryvroBrain');
+    expect(script).toContain('Backend smoke - ryvroBrain');
+    expect(script).toContain('Backend deploy - parser');
+    expect(script).toContain('Shift parser smoke');
     expect(script).toContain('Pending owner evidence');
     expect(script).toContain('submit.production.android.track must stay on internal');
   });
@@ -2292,6 +2296,11 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('real root-level Firebase native service files');
     expect(ownerRunbook).toContain('eas secret:push --scope project --env-file .env');
     expect(ownerRunbook).toContain('RYVRO_BRAIN_URL');
+    expect(ownerRunbook).toContain('SHIFT_SCHEDULE_PARSER_URL');
+    expect(ownerRunbook).toContain('parseShiftScheduleDescription');
+    expect(ownerRunbook).toContain(
+      '{"prompt":"I work 2 days, 2 nights, then 4 off.","timezone":"UTC","locale":"en-US","today":"2026-05-31"}'
+    );
     expect(ownerRunbook).toContain('RevenueCat `pro` entitlement');
     expect(ownerRunbook).toContain('ryvro_pro_monthly');
     expect(ownerRunbook).toContain('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
@@ -2331,9 +2340,11 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain(
       'Sender `Ryvro Support`, reply-to `support@getryvro.com`, action domain `getryvro.com`'
     );
-    expect(launchEvidenceLog).toContain(
-      '`ryvroBrain` and `parseShiftScheduleDescription` function deploy output'
-    );
+    expect(launchEvidenceLog).toContain('Backend deploy - ryvroBrain');
+    expect(launchEvidenceLog).toContain('Backend smoke - ryvroBrain');
+    expect(launchEvidenceLog).toContain('Backend deploy - parser');
+    expect(launchEvidenceLog).toContain('Shift parser smoke');
+    expect(launchEvidenceLog).toContain('SHIFT_SCHEDULE_PARSER_URL');
     expect(launchEvidenceLog).toContain('Entitlement ID `pro`, display name `Ryvro Pro`');
     expect(launchEvidenceLog).toContain('`ryvro_pro_monthly` and `ryvro_pro_annual`');
     expect(launchEvidenceLog).toContain('Live `https://getryvro.com/delete-account` URL');
@@ -2361,6 +2372,15 @@ describe('Ryvro environment template', () => {
     expect(externalSetup).toContain('Preferred voice endpoint for new builds: ryvroBrain');
     expect(externalSetup).toContain(
       'RYVRO_BRAIN_URL=https://<region>-<project-id>.cloudfunctions.net/ryvroBrain'
+    );
+    expect(externalSetup).toContain(
+      'SHIFT_SCHEDULE_PARSER_URL=https://<region>-<project-id>.cloudfunctions.net/parseShiftScheduleDescription'
+    );
+    expect(externalSetup).toContain('SHIFT_SCHEDULE_PARSER_TIMEOUT_MS=45000');
+    expect(externalSetup).toContain('SHIFT_SCHEDULE_PARSER_MAX_PROMPT_LENGTH=2000');
+    expect(externalSetup).toContain('curl -i -X POST "$SHIFT_SCHEDULE_PARSER_URL"');
+    expect(externalSetup).toContain(
+      '{"prompt":"I work 2 days, 2 nights, then 4 off.","timezone":"UTC","locale":"en-US","today":"2026-05-31"}'
     );
     expect(externalSetup).toContain(
       'Do not configure `ellieBrain` as the launch `RYVRO_BRAIN_URL`'

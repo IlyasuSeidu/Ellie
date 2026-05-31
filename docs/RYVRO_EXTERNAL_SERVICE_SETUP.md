@@ -61,10 +61,13 @@ firebase use <ryvro-project-id>
 firebase deploy --only functions
 ```
 
-Configure new production app and EAS secrets with the `ryvroBrain` HTTPS URL only:
+Configure new production app and EAS secrets with both Ryvro HTTPS function URLs:
 
 - `RYVRO_BRAIN_URL=https://<region>-<project-id>.cloudfunctions.net/ryvroBrain`
 - `RYVRO_BRAIN_TIMEOUT=30000`
+- `SHIFT_SCHEDULE_PARSER_URL=https://<region>-<project-id>.cloudfunctions.net/parseShiftScheduleDescription`
+- `SHIFT_SCHEDULE_PARSER_TIMEOUT_MS=45000`
+- `SHIFT_SCHEDULE_PARSER_MAX_PROMPT_LENGTH=2000`
 
 Do not configure `ellieBrain` as the launch `RYVRO_BRAIN_URL`. Keep the `ellieBrain` function deployed only long enough to support pre-migration builds, then retire it after production clients and dashboards have moved to `ryvroBrain`.
 
@@ -74,13 +77,17 @@ Smoke-test endpoints after deploy:
 curl -i -X POST "$RYVRO_BRAIN_URL" \
   -H "Content-Type: application/json" \
   -d "{}"
+
+curl -i -X POST "$SHIFT_SCHEDULE_PARSER_URL" \
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"I work 2 days, 2 nights, then 4 off.","timezone":"UTC","locale":"en-US","today":"2026-05-31"}'
 ```
 
 Expected result:
 
-- `400` means the HTTPS function is live and rejected the invalid body.
-- `200` means the function is live and processed a valid test body.
-- Network errors, `404`, or Firebase auth/project errors mean the endpoint is not ready.
+- `ryvroBrain`: `400` means the HTTPS function is live and rejected the invalid body; `200` means it processed a valid test body.
+- `parseShiftScheduleDescription`: `200` with a draft schedule proves the parser endpoint, OpenAI secret/fallback path, and response path are launch-ready. A `400` from an intentionally invalid body proves only HTTP reachability, not parser readiness.
+- Network errors, `404`, Firebase auth/project errors, missing secret errors, or provider failures mean the endpoint is not ready.
 
 ## Google Sign-In
 
