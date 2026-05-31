@@ -221,7 +221,7 @@ cd android && ./gradlew bundleRelease
 
 - [ ] iOS archive built with production bundle ID
 - [ ] Android AAB built with production ID + valid release signing
-- [ ] Manual smoke tests pass on physical iOS + Android devices (all 13 items)
+- [ ] Manual smoke tests pass on physical iOS + Android devices (all smoke matrix items)
 - [ ] Privacy Policy published and URL live — mentions RevenueCat + subscription terms (Task 19)
 - [ ] App Store Connect metadata + privacy form + in-app purchase section completed
 - [ ] Play Console data safety + content forms + in-app products declared completed

@@ -807,6 +807,40 @@ describe('Ryvro environment template', () => {
     expect(deploymentPlan).toContain(
       'Increment iOS build number + Android versionCode again after each uploaded binary'
     );
+    expect(deploymentPlan).toContain(
+      'Ryvro Pro subscription gating, paywall, restore purchases, and RevenueCat product loading in the first submitted binary'
+    );
+    expect(deploymentPlan).toContain(
+      'RevenueCat `pro` entitlement, `ryvro_pro_monthly`, `ryvro_pro_annual`, and `default` offering are configured for both stores'
+    );
+    expect(deploymentPlan).toContain('## B4) Keep Ryvro Pro in the first-store-build scope');
+    expect(deploymentPlan).toContain(
+      'Fresh install -> complete onboarding via Universal Shift Builder template start with a non-mining template'
+    );
+    expect(deploymentPlan).toContain(
+      'Fresh install -> complete onboarding via Universal Shift Builder AI description with a FIFO/mining or rotating-shift prompt'
+    );
+    expect(deploymentPlan).toContain(
+      'Fresh install -> complete onboarding via Universal Shift Builder manual setup with custom shift names, colors, icons, reminders, exceptions, and calendar export enabled'
+    );
+    expect(deploymentPlan).toContain('Subscription must-pass flows');
+    expect(deploymentPlan).toContain(
+      'Tap center mic while not subscribed -> PaywallScreen appears; annual plan is pre-selected'
+    );
+    expect(deploymentPlan).toContain('Start the sandbox 7-day free trial -> `isPro` becomes true');
+    expect(deploymentPlan).toContain('Restore Purchases reactivates Ryvro Pro');
+    expect(deploymentPlan).toContain('monthly product: `ryvro_pro_monthly`');
+    expect(deploymentPlan).toContain('annual product: `ryvro_pro_annual`');
+    expect(deploymentPlan).toContain('Include a paywall screenshot');
+    expect(deploymentPlan).toContain(
+      '[x] Add repo-side Ryvro Pro subscription gating, paywall, and RevenueCat runtime guards'
+    );
+    expect(deploymentPlan).toContain(
+      '[ ] Create RevenueCat `pro` entitlement, `default` offering, and both Ryvro store products'
+    );
+    expect(deploymentPlan).toContain(
+      '[ ] Pass sandbox purchase/cancel/restore smoke on iOS and Android'
+    );
     expect(androidBuildGradle).toContain('RYVRO_UPLOAD_STORE_FILE');
     expect(androidBuildGradle).toContain('RYVRO_UPLOAD_STORE_PASSWORD');
     expect(androidBuildGradle).toContain('RYVRO_UPLOAD_KEY_ALIAS');
@@ -817,6 +851,8 @@ describe('Ryvro environment template', () => {
     expect(androidBuildGradle).toContain("storeFile file('debug.keystore')");
     expect(deploymentPlan).not.toContain('Keep tabs visible');
     expect(deploymentPlan).not.toContain('beta placeholders');
+    expect(deploymentPlan).not.toContain('complete onboarding with manual drag/drop builder');
+    expect(deploymentPlan).not.toContain('complete onboarding from mining/FIFO template');
     expect(deploymentPlan).not.toContain('/Users/Shared/Ellie');
     expect(deploymentPlan).not.toContain('/tmp/Ellie.xcarchive');
   });
@@ -1079,6 +1115,7 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).toContain('-archivePath /tmp/Ryvro.xcarchive archive');
     expect(releaseTasks).not.toContain('complete onboarding via rotating roster path');
     expect(releaseTasks).not.toContain('complete onboarding via FIFO path');
+    expect(releaseTasks).not.toContain('all 13 items');
     expect(releaseTasks).not.toContain('/Users/Shared/Ellie');
     expect(releaseTasks).not.toContain('/tmp/Ellie.xcarchive');
     expect(releaseTasks).not.toContain('PRODUCT_NAME = Ellie');

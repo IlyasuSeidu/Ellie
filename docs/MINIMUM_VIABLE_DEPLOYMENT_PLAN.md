@@ -25,6 +25,7 @@ with the smallest safe scope that:
 - Dashboard (hero card, calendar, shift state/coloring, icons, exceptions)
 - Profile + Shift Settings editing flows
 - Ryvro voice assistant entry point
+- Ryvro Pro subscription gating, paywall, restore purchases, and RevenueCat product loading in the first submitted binary
 
 ### 2.2 Out of scope for v1 deployment
 
@@ -47,8 +48,10 @@ You can submit only when all items are true:
 4. iOS Release Archive succeeds with production bundle ID.
 5. Android `bundleRelease` succeeds with production keystore signing.
 6. No restricted/invalid Android permissions remain unless intentionally justified.
-7. Manual smoke tests pass on 2 physical devices (iOS + Android minimum).
-8. App Store Connect + Play Console metadata/privacy forms are fully completed.
+7. RevenueCat `pro` entitlement, `ryvro_pro_monthly`, `ryvro_pro_annual`, and `default` offering are configured for both stores.
+8. Sandbox subscription smoke passes: purchase activates Ryvro Pro, voice/full calendar unlock, cancel/expiration re-locks, and Restore Purchases works.
+9. Manual smoke tests pass on 2 physical devices (iOS + Android minimum).
+10. App Store Connect + Play Console metadata/privacy/forms, screenshots, and in-app purchase declarations are fully completed.
 
 ## 4. Workstream A - Hard Technical Blockers
 
@@ -250,6 +253,26 @@ Acceptance criteria:
 
 - README no longer conflicts with actual shipped app behavior.
 
+## B4) Keep Ryvro Pro in the first-store-build scope
+
+Current status:
+
+- The repo-side subscription implementation is present and guarded by tests.
+- Production RevenueCat apps, store products, entitlements, and sandbox receipt checks still require owner console access.
+- Ryvro must not ship a first public binary with future-paid functionality exposed as free if the launch plan is to gate it behind Ryvro Pro.
+
+Implementation steps:
+
+1. Keep the center voice button and non-current calendar weeks behind Ryvro Pro for non-subscribed users.
+2. Confirm the paywall shows the annual and monthly options from RevenueCat, the free-trial CTA, restore purchases, and store processing copy.
+3. Create the App Store and Google Play subscription products before production build submission.
+4. Connect both product IDs to the RevenueCat `pro` entitlement and `default` offering.
+5. Smoke-test purchase, cancellation/expiration, and restore on iOS and Android sandbox accounts.
+
+Acceptance criteria:
+
+- The first submitted binary includes subscription gating and can complete a sandbox purchase/restore path using Ryvro store products.
+
 ## 6. Workstream C - Build, QA, and Runtime Validation
 
 ## C1) Local quality gates
@@ -313,19 +336,26 @@ Devices:
 - 1 Android physical device (minimum)
 - Preferred: 2 iOS + 2 Android
 
-Must-pass flows:
+Core must-pass flows:
 
-1. Fresh install -> complete onboarding with AI builder.
-2. Fresh install -> complete onboarding with manual drag/drop builder.
-3. Fresh install -> complete onboarding from mining/FIFO template.
-4. Fresh install -> complete onboarding from at least one non-mining template.
-5. Edit shift settings from profile and confirm dashboard updates immediately.
-6. Verify shift color and icon updates at boundary transitions.
-7. Verify holiday exceptions and one-off irregular exceptions render correctly.
-8. Verify calendar import/export paths.
-9. App relaunch persistence check for onboarding data.
-10. Voice assistant modal open/close and permission handling.
-11. Schedule and Stats tabs are not visible anywhere in the bottom navigation.
+1. Fresh install -> complete onboarding via Universal Shift Builder template start with a non-mining template such as healthcare, security, emergency services, manufacturing, transport, hospitality, aviation, or rail.
+2. Fresh install -> complete onboarding via Universal Shift Builder AI description with a FIFO/mining or rotating-shift prompt, then review and save the generated schedule.
+3. Fresh install -> complete onboarding via Universal Shift Builder manual setup with custom shift names, colors, icons, reminders, exceptions, and calendar export enabled.
+4. Edit shift settings from profile and confirm dashboard updates immediately.
+5. Verify shift color and icon updates at boundary transitions.
+6. Verify holiday exceptions and one-off irregular exceptions render correctly.
+7. Verify calendar import/export paths.
+8. App relaunch persistence check for onboarding data.
+9. Schedule and Stats tabs are not visible anywhere in the bottom navigation.
+
+Subscription must-pass flows:
+
+1. Tap center mic while not subscribed -> PaywallScreen appears; annual plan is pre-selected; "Start 7-Day Free Trial" is visible.
+2. Tap a locked calendar week while not subscribed -> PaywallScreen appears.
+3. Start the sandbox 7-day free trial -> `isPro` becomes true, the center mic opens the voice assistant, and the full year calendar unlocks.
+4. Cancel or let the sandbox subscription expire -> locked weeks and the paywall gate return.
+5. Restore Purchases reactivates Ryvro Pro for the same sandbox account.
+6. Profile shows "Ryvro Pro - Active" when subscribed and an upgrade row with live product pricing when not subscribed.
 
 ## 7. Workstream D - Store Submission Readiness
 
@@ -338,8 +368,14 @@ Prepare:
 3. App Review notes:
    - explain onboarding purpose
    - explain microphone/speech usage
-4. Fill App Privacy questionnaire accurately.
-5. Ensure `Info.plist` permission strings are precise and user-facing.
+4. Subscription group and products:
+   - group: Ryvro Pro
+   - monthly product: `ryvro_pro_monthly`
+   - annual product: `ryvro_pro_annual`
+   - 7-day free trial on both products
+5. Include a paywall screenshot and reviewer instructions for testing the subscription flow.
+6. Fill App Privacy questionnaire accurately.
+7. Ensure `Info.plist` permission strings are precise and user-facing.
 
 ## D2) Google Play Console requirements
 
@@ -349,7 +385,12 @@ Prepare:
 2. Content rating questionnaire.
 3. Privacy policy URL.
 4. App access/testing instructions if needed.
-5. Verify target API level and policy compliance.
+5. Subscriptions:
+   - monthly product: `ryvro_pro_monthly`
+   - annual product: `ryvro_pro_annual`
+   - matching 7-day free trial base plans
+6. Include paywall screenshots and declare in-app purchases in store metadata.
+7. Verify target API level and policy compliance.
 
 ## 8. CI/CD Plan (Minimum)
 
@@ -414,6 +455,9 @@ Day 7:
 - [ ] Increment iOS build number + Android versionCode again after each uploaded binary
 - [x] Verify every visible tab/action is complete or routed to an implemented launch surface
 - [x] Update README release status snapshot
+- [x] Add repo-side Ryvro Pro subscription gating, paywall, and RevenueCat runtime guards
+- [ ] Create RevenueCat `pro` entitlement, `default` offering, and both Ryvro store products
+- [ ] Pass sandbox purchase/cancel/restore smoke on iOS and Android
 - [ ] Run full smoke test matrix on physical devices
 - [ ] Upload TestFlight build
 - [ ] Upload Play Internal build
