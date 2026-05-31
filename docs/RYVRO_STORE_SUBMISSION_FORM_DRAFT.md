@@ -138,6 +138,7 @@ Expected answers for first release:
 - No sale of physical goods.
 - No medical diagnosis or health treatment claims.
 - No employer, payroll, HR, fatigue-management, or safety-critical decision replacement claims.
+- No clinical, emergency dispatch, aviation, rail, transport compliance, fatigue-management, mine-safety, or other regulated-duty replacement claims.
 - In-app purchases: Yes, Ryvro Pro subscription.
 - AI features: Yes, AI-assisted schedule drafting and schedule questions; users must review generated schedules before relying on them.
 
@@ -158,6 +159,8 @@ Provide reviewer access only after the owner creates the production Firebase/Aut
 Suggested review note:
 
 Ryvro Shift Planner helps users create shift schedules from templates, manual setup, or natural-language descriptions. To test: sign in with the reviewer account, complete onboarding, open the Universal Shift Builder, save a schedule, view the dashboard/calendar, open Profile, open the Ryvro Pro paywall, and test sandbox purchase or restore. The app is a personal planning tool and does not replace employer rosters, payroll, HR systems, fatigue-management policy, or safety instructions.
+
+For regulated or safety-critical roles, Ryvro is not a clinical, aviation, rail, emergency dispatch, transport compliance, fatigue-management, or mine-safety system. Users must follow their employer's official roster, handover, dispatch, duty-time, fatigue, safety, and compliance systems.
 
 ## Account-Owner Checks Before Submission
 

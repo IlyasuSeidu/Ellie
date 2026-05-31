@@ -1,6 +1,6 @@
 # Ryvro Store Listing Pack
 
-Last updated: 2026-05-30
+Last updated: 2026-05-31
 
 This pack is the source copy for App Store Connect, Google Play Console, screenshots, and launch review notes. It keeps the FIFO and rotating-shift launch wedge sharp without trapping Ryvro in a single-industry frame.
 
@@ -66,6 +66,8 @@ Built for real shift work:
 
 Ryvro started from real FIFO and rotating-shift pain, then grew into a universal schedule engine for almost any worker whose life runs around shifts.
 
+Ryvro is a personal planning aid. It does not replace your employer's official roster, payroll, HR, fatigue-management, dispatch, clinical, aviation, rail, transport compliance, or safety systems.
+
 Use Ryvro to stop counting through your roster manually and start planning your life with confidence.
 
 ## Google Play Full Description
@@ -108,6 +110,8 @@ Key features:
 Ryvro is built for shift workers who need certainty: whether you are heading to work, starting nights, planning family time, checking your next rest block, or trying to avoid setting the wrong alarm.
 
 Miner-first at launch. Universal by design.
+
+Ryvro is a personal planning aid. It does not replace your employer's official roster, payroll, HR, fatigue-management, dispatch, clinical, aviation, rail, transport compliance, or safety systems.
 
 ## Keywords
 
@@ -206,3 +210,4 @@ Review paths:
 - Anonymous testimonials
 - Price claims in screenshots or promotional graphics
 - Claims that Ryvro replaces employer payroll, HR, or official rostering systems
+- Claims that Ryvro replaces clinical, dispatch, aviation, rail, transport compliance, fatigue-management, or safety systems

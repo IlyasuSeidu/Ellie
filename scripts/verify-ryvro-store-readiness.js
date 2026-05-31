@@ -196,6 +196,13 @@ const forbiddenClaims = [
   /replaces employer payroll/i,
   /replaces employer.*HR/i,
   /replaces employer.*rostering/i,
+  /replaces.*clinical/i,
+  /replaces.*dispatch/i,
+  /replaces.*aviation/i,
+  /replaces.*rail/i,
+  /replaces.*transport compliance/i,
+  /replaces.*fatigue-management/i,
+  /replaces.*safety systems/i,
 ];
 
 const publishableStoreCopy = [
@@ -233,6 +240,32 @@ if (!submissionDraft.includes('Data is encrypted in transit: Yes')) {
 if (!submissionDraft.includes('In-app purchases: Yes, Ryvro Pro subscription')) {
   addError('Store submission draft must explicitly declare in-app purchases for content rating');
 }
+
+[
+  ['personal planning aid', storeListing, 'store listing regulated-use disclaimer'],
+  ['does not replace your employer', storeListing, 'store listing regulated-use disclaimer'],
+  [
+    'clinical, aviation, rail, transport compliance',
+    storeListing,
+    'store listing regulated-use disclaimer',
+  ],
+  [
+    'not a clinical, aviation, rail, emergency dispatch, transport compliance, fatigue-management, or mine-safety system',
+    submissionDraft,
+    'store submission regulated-use disclaimer',
+  ],
+  [
+    "follow their employer's official roster, handover, dispatch, duty-time, fatigue, safety, and compliance systems",
+    submissionDraft,
+    'store submission regulated-use disclaimer',
+  ],
+  ['Not For Safety-Critical Decisions', privacySupport, 'privacy/support regulated-use disclaimer'],
+  [
+    'not a clinical, aviation, rail, emergency dispatch, transport compliance, fatigue-management, or mine-safety system',
+    privacySupport,
+    'privacy/support regulated-use disclaimer',
+  ],
+].forEach(([expected, content, label]) => requireIncludes(content, expected, label));
 
 if (!submissionDraft.includes('Reviewer password: create a fresh strong password')) {
   addError('Store submission draft must avoid committing a reusable reviewer password');

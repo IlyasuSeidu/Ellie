@@ -2257,6 +2257,10 @@ describe('Ryvro environment template', () => {
     expect(storeListing).toContain(
       'Ryvro helps FIFO crews, healthcare teams, security staff, emergency services'
     );
+    expect(storeListing).toContain('Ryvro is a personal planning aid');
+    expect(storeListing).toContain(
+      "does not replace your employer's official roster, payroll, HR, fatigue-management, dispatch, clinical, aviation, rail, transport compliance, or safety systems"
+    );
     expect(storeListing).toContain('changes by work location');
     expect(storeListing).toContain('heading to work');
     expect(storeListing).not.toContain('miners, FIFO crews, and shift workers');
@@ -2342,6 +2346,13 @@ describe('Ryvro environment template', () => {
     expect(privacySupport).toContain('Subject: Verify your Ryvro email');
     expect(privacySupport).toContain('Subject: Reset your Ryvro password');
     expect(privacySupport).toContain('Subject: Your Ryvro email was changed');
+    expect(privacySupport).toContain('Not For Safety-Critical Decisions');
+    expect(privacySupport).toContain(
+      'not a clinical, aviation, rail, emergency dispatch, transport compliance, fatigue-management, or mine-safety system'
+    );
+    expect(privacySupport).toContain(
+      "follow their employer's official roster, handover, dispatch, duty-time, fatigue, safety, and compliance systems"
+    );
     expect(privacySupport).not.toMatch(/mine site|haul truck|underground miner/i);
 
     expect(profileScreen).toContain('legalConfig.supportUrl');
@@ -2430,6 +2441,15 @@ describe('Ryvro environment template', () => {
     expect(storeSubmissionDraft).toContain('Audio files: declare only if');
     expect(storeSubmissionDraft).toContain('No gambling, contests, or real-money games');
     expect(storeSubmissionDraft).toContain('In-app purchases: Yes, Ryvro Pro subscription');
+    expect(storeSubmissionDraft).toContain(
+      'No clinical, emergency dispatch, aviation, rail, transport compliance, fatigue-management, mine-safety, or other regulated-duty replacement claims'
+    );
+    expect(storeSubmissionDraft).toContain(
+      'not a clinical, aviation, rail, emergency dispatch, transport compliance, fatigue-management, or mine-safety system'
+    );
+    expect(storeSubmissionDraft).toContain(
+      "follow their employer's official roster, handover, dispatch, duty-time, fatigue, safety, and compliance systems"
+    );
     expect(storeSubmissionDraft).toContain('ITSAppUsesNonExemptEncryption');
     expect(storeSubmissionDraft).toContain('reviewer@getryvro.com');
     expect(storeSubmissionDraft).toContain('ryvro_pro_monthly');

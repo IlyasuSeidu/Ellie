@@ -1,6 +1,6 @@
 # Ryvro Privacy And Support Templates
 
-Last updated: 2026-05-28
+Last updated: 2026-05-31
 
 These templates are repo-side launch assets. They are not legal advice. Publish final versions on the production website or hosted policy pages before App Store Connect and Google Play submission.
 
@@ -124,6 +124,10 @@ Ryvro Shift Planner helps users plan and understand shift schedules. By using Ry
 ## Not An Employer System
 
 Ryvro is a personal planning tool. It does not replace an employer roster, payroll system, HR system, fatigue management policy, safety instruction, or official work direction. Users should confirm critical work times with their employer.
+
+## Not For Safety-Critical Decisions
+
+Ryvro is not a clinical, aviation, rail, emergency dispatch, transport compliance, fatigue-management, or mine-safety system. Users working in regulated or safety-critical roles must follow their employer's official roster, handover, dispatch, duty-time, fatigue, safety, and compliance systems.
 
 ## User Responsibility
 
