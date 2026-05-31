@@ -81,6 +81,14 @@ function isUuid(value) {
   return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
 }
 
+function isFirebaseApiKey(value) {
+  return /^AIza[A-Za-z0-9_-]{20,}$/.test(value);
+}
+
+function isFirebaseAppId(value) {
+  return /^1:\d+:(web|ios|android):[A-Za-z0-9_-]+$/.test(value);
+}
+
 function main() {
   const { envFile } = parseArgs(process.argv.slice(2));
   const envPath = path.resolve(process.cwd(), envFile);
@@ -100,6 +108,43 @@ function main() {
   requireValue(errors, env, 'APP_ENV', (value) => value === 'production', 'must be production');
   requireValue(errors, env, 'EAS_PROJECT_ID', isUuid, 'must be the real EAS project UUID');
   requireValue(errors, env, 'FIREBASE_PROJECT_ID', undefined, 'must be the Ryvro Firebase project');
+  requireValue(
+    errors,
+    env,
+    'FIREBASE_API_KEY',
+    isFirebaseApiKey,
+    'must be the real Ryvro Firebase web API key'
+  );
+  requireValue(
+    errors,
+    env,
+    'FIREBASE_AUTH_DOMAIN',
+    (value) => value === `${env.FIREBASE_PROJECT_ID}.firebaseapp.com`,
+    'must match FIREBASE_PROJECT_ID as <project-id>.firebaseapp.com'
+  );
+  requireValue(
+    errors,
+    env,
+    'FIREBASE_STORAGE_BUCKET',
+    (value) =>
+      value === `${env.FIREBASE_PROJECT_ID}.firebasestorage.app` ||
+      value === `${env.FIREBASE_PROJECT_ID}.appspot.com`,
+    'must match FIREBASE_PROJECT_ID as a Firebase Storage bucket'
+  );
+  requireValue(
+    errors,
+    env,
+    'FIREBASE_MESSAGING_SENDER_ID',
+    (value) => /^\d{6,}$/.test(value),
+    'must be the numeric Ryvro Firebase messaging sender ID'
+  );
+  requireValue(
+    errors,
+    env,
+    'FIREBASE_APP_ID',
+    isFirebaseAppId,
+    'must be the real Ryvro Firebase app ID'
+  );
   requireValue(
     errors,
     env,

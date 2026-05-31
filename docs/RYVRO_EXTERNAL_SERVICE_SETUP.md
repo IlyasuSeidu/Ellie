@@ -102,7 +102,7 @@ Before pushing secrets to EAS or starting production builds, validate that `.env
 npm run release:env:check
 ```
 
-The check requires `APP_ENV=production`, the real EAS project UUID, real Firebase/Google OAuth values, mirrored Expo public Google OAuth client IDs, the deployed `ryvroBrain` URL, real RevenueCat `appl_...` and `goog_...` SDK keys, mirrored Expo public RevenueCat keys and entitlement ID, live HTTPS `LEGAL_PRIVACY_POLICY_URL`, `LEGAL_TERMS_OF_SERVICE_URL`, and `SUPPORT_URL` values, and an empty `ELLIE_BRAIN_URL` for new Ryvro builds.
+The check requires `APP_ENV=production`, the real EAS project UUID, real Firebase values scoped to one Ryvro `FIREBASE_PROJECT_ID`, real Google OAuth values, mirrored Expo public Google OAuth client IDs, the deployed `ryvroBrain` URL, real RevenueCat `appl_...` and `goog_...` SDK keys, mirrored Expo public RevenueCat keys and entitlement ID, live HTTPS `LEGAL_PRIVACY_POLICY_URL`, `LEGAL_TERMS_OF_SERVICE_URL`, and `SUPPORT_URL` values, and an empty `ELLIE_BRAIN_URL` for new Ryvro builds.
 
 Verification:
 
