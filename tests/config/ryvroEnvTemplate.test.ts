@@ -1460,6 +1460,7 @@ describe('Ryvro environment template', () => {
     );
     expect(readme).toContain('valid-prompt `SHIFT_SCHEDULE_PARSER_URL` parser response');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
+    expect(readme).toContain('Works at remote work locations');
     expect(readme).toContain('Testing infrastructure (1,771 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Full Schedule tab');
@@ -1474,6 +1475,7 @@ describe('Ryvro environment template', () => {
     expect(readme).not.toContain('Total Tests**: 1,701 passing (51 test suites)');
     expect(readme).not.toContain('Jest (1,500 tests)');
     expect(readme).not.toContain('github.com/IlyasuSeidu/ryvro');
+    expect(readme).not.toContain('Works on-site');
     expect(readme).not.toContain('FIREBASE_PROJECT_ID=your_project_id');
     expect(readme).not.toContain('FIREBASE_STORAGE_BUCKET=your_storage_bucket');
   });
@@ -1551,6 +1553,7 @@ describe('Ryvro environment template', () => {
     expect(shiftDataService).toContain('CACHE_TTL_MS.shiftSchedules');
     expect(holidayService).toContain('CACHE_TTL_MS.holidays');
     expect(offlineStrategy).toContain('NetInfo-backed network state');
+    expect(offlineStrategy).toContain('remote work locations');
     expect(offlineStrategy).toContain('Resolved since the original audit');
     expect(offlineStrategy).toContain('Network status hook');
     expect(offlineStrategy).toContain('Offline banner');
@@ -1565,6 +1568,7 @@ describe('Ryvro environment template', () => {
     expect(offlineStrategy).not.toContain('No offline banner or sync indicator');
     expect(offlineStrategy).not.toContain('No app-level network context/hook');
     expect(offlineStrategy).not.toContain('Startup cache expiry sweep needs stronger evidence');
+    expect(offlineStrategy).not.toContain('remote sites');
   });
 
   it('keeps active contributor setup on the current Ryvro app repository', () => {

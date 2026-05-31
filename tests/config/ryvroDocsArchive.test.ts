@@ -129,9 +129,12 @@ describe('Ryvro documentation archive', () => {
 
     expect(fifoGuide).toContain('Open the Universal Shift Builder from onboarding or Settings');
     expect(fifoGuide).toContain('Choose the mining/FIFO template');
-    expect(fifoGuide).toContain('site/location details in the builder preview');
+    expect(fifoGuide).toContain('optional work-location details in the builder preview');
+    expect(fifoGuide).toContain('Work block**: consecutive days working');
     expect(fifoGuide).not.toContain('Ryvro only supports FIFO');
     expect(fifoGuide).not.toContain('All users must choose FIFO');
+    expect(fifoGuide).not.toContain('consecutive days on-site');
+    expect(fifoGuide).not.toContain('site/location details');
     expect(fifoGuide).not.toContain('phase offset');
     expect(fifoGuide).not.toContain('anchor date');
   });

@@ -4,8 +4,8 @@
 
 FIFO rosters split your cycle into:
 
-- **Work block**: consecutive days on-site
-- **Rest block**: consecutive days at home/off
+- **Work block**: consecutive days working
+- **Rest block**: consecutive days off or away from scheduled shifts
 
 Examples: `8/6`, `7/7`, `14/14`, `14/7`.
 
@@ -13,7 +13,7 @@ Examples: `8/6`, `7/7`, `14/14`, `14/7`.
 
 1. Open the Universal Shift Builder from onboarding or Settings.
 2. Choose the mining/FIFO template, describe your roster to the AI builder, or build it manually.
-3. Set the work block, rest block, current block day, shift times, colors, icons, reminders, and site/location details in the builder preview.
+3. Set the work block, rest block, current block day, shift times, colors, icons, reminders, and optional work-location details in the builder preview.
 4. Save the schedule after the calendar preview matches your real roster.
 
 ## Reading the dashboard

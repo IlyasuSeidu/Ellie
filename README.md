@@ -34,7 +34,7 @@ Ryvro is a **shift planner for FIFO, rotating, and irregular work** built on a u
 - **Instant shift visibility**: "Tomorrow: Night Shift 🌙 6pm-6am"
 - **Long-term planning**: See your schedule months in advance
 - **Smart notifications**: Reminders before shift starts
-- **Offline-first**: Works on-site, in transit, in hospitals, at venues, at depots, or anywhere signal is unreliable
+- **Offline-first**: Works at remote work locations, in transit, in hospitals, at venues, at depots, or anywhere signal is unreliable
 - **Universal schedule flexibility**: Supports repeating rotations, FIFO/block rosters, irregular one-off swaps, holidays, travel, training, on-call work, leave, and custom cycles
 - **AI + manual setup**: Describe a roster in plain English, start from an industry template, or build it manually
 - **Voice assistant tooling**: Date/range queries, next block, days-until-work/rest, current block info, and schedule questions

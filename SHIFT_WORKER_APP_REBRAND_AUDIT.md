@@ -51,6 +51,7 @@ Completed in the current working tree:
 - Broadened active dashboard FIFO status and offline assistant pattern summaries across bundled locales from site-specific language to work-block language.
 - Broadened onboarding FIFO roster-type cards, phase selector labels, and custom FIFO builder copy across bundled locales from site-specific language to work-block/rest-block language, while preserving FIFO as a launch template and migration concept.
 - Broadened profile/settings FIFO config-card summaries across bundled locales from site/on-site language to work-block/rest-block language.
+- Broadened the active FIFO user guide so it defines work/rest blocks without making on-site work the default, and routes optional location data through the Universal Shift Builder.
 - Added calendar export metadata coverage for `LOCATION` and one-off exception notes in `.ics` files.
 - Hardened the Ryvro voice backend system prompt so it does not assume mining, FIFO, or site-based work unless the user context says so, and added backend prompt tests for non-mining universal schedules.
 - Added documentation regression tests that pin `docs/ARCHITECTURE.md` to the Universal Shift Builder source-of-truth architecture and keep the active FIFO guide template-specific.
