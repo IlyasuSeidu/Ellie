@@ -38,7 +38,7 @@
     "off": "Rus en herlaai!"
   },
   "fifo": {
-    "onSite": "On-site rooster aktief",
+    "onSite": "Werkblok aktief",
     "homeBlock": "Tuisblok aktief",
     "workBlock": "Werk",
     "restBlock": "Rus",
@@ -170,7 +170,7 @@
       "startBack": "Jy begin weer werk op {{date}}.",
       "patternSummaryRotating": "Jou patroon is {{dayCount}} dagskofte, {{nightCount}} nagskofte en dan {{offCount}} afdae.",
       "patternSummaryThreeShift": "Jou patroon is {{morningCount}} oggendskofte, {{afternoonCount}} middagskofte, {{nightCount}} nagskofte en dan {{offCount}} afdae.",
-      "patternSummaryFifo": "Jou patroon is {{workDays}} dae op die terrein en dan {{restDays}} afdae.",
+      "patternSummaryFifo": "Jou patroon is {{workDays}} werksdae en dan {{restDays}} afdae.",
       "unsupportedWithNextShift": "Ek kan dit nog nie heeltemal vanlyn beantwoord nie, maar ek ken steeds jou gestoorde rooster. Jou volgende werkskof is {{shiftType}} op {{date}}. Probeer vra oor môre, jou volgende afdag, nagskofte hierdie maand, of jou patroon.",
       "unsupportedGeneric": "Ek kan dit nog nie heeltemal vanlyn beantwoord nie, maar ek kan steeds help met jou gestoorde rooster. Probeer vra oor môre, jou volgende afdag, nagskofte hierdie maand, of jou patroon."
     },

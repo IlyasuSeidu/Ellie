@@ -1442,7 +1442,7 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('110 Jest suites / 1,769 tests / 4 snapshots');
+    expect(readme).toContain('110 Jest suites / 1,770 tests / 4 snapshots');
     expect(readme).toContain('the Ryvro native scaffold preflight');
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
@@ -1460,13 +1460,13 @@ describe('Ryvro environment template', () => {
     );
     expect(readme).toContain('valid-prompt `SHIFT_SCHEDULE_PARSER_URL` parser response');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
-    expect(readme).toContain('Testing infrastructure (1,769 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,770 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,769 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,770 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-05-31 release check)');
-    expect(readme).toContain('Total Tests**: 1,769 passing (110 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Total Tests**: 1,770 passing (110 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -1890,7 +1890,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('110 Jest suites / 1,765 tests');
     expect(readinessReport).toContain('110 Jest suites / 1,766 tests');
     expect(readinessReport).toContain('110 Jest suites / 1,767 tests');
-    expect(readinessReport).toContain('110 Jest suites / 1,769 tests');
+    expect(readinessReport).toContain('110 Jest suites / 1,770 tests');
     expect(readinessReport).toContain('Profile legal/support link coverage');
     expect(readinessReport).toContain(
       'requiring real root-level Firebase native service files for Ryvro production builds'
@@ -2517,7 +2517,7 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('eas submit --platform android --latest');
     expect(ownerRunbook).toContain('npm run release:submit:check');
     expect(ownerRunbook).toContain('Final submit readiness is guarded');
-    expect(ownerRunbook).toContain('110 Jest suites, 1,769 tests');
+    expect(ownerRunbook).toContain('110 Jest suites, 1,770 tests');
     expect(ownerRunbook).toContain('npm run release:owner:check');
     expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');
@@ -3276,6 +3276,18 @@ describe('Ryvro environment template', () => {
     ) as {
       builder?: Record<string, string>;
     };
+    const dashboardLocale = JSON.parse(
+      fs.readFileSync(path.join(process.cwd(), 'src/i18n/locales/en/dashboard.json'), 'utf8')
+    ) as {
+      fifo?: {
+        onSite?: string;
+      };
+      voiceAssistant?: {
+        offlineFallback?: {
+          patternSummaryFifo?: string;
+        };
+      };
+    };
     const profileLocale = JSON.parse(
       fs.readFileSync(path.join(process.cwd(), 'src/i18n/locales/en/profile.json'), 'utf8')
     ) as {
@@ -3334,6 +3346,10 @@ describe('Ryvro environment template', () => {
     expect(profileLocale.smartReminders?.rows?.commute?.sublabel).toBe(
       'How long to reach your work location'
     );
+    expect(dashboardLocale.fifo?.onSite).toBe('Work block active');
+    expect(dashboardLocale.voiceAssistant?.offlineFallback?.patternSummaryFifo).toBe(
+      'Your pattern is {{workDays}} work days, then {{restDays}} days off.'
+    );
 
     expect(builderScreen).toContain("t('builder.oneOffListSubtitle'");
     expect(dashboardScreen).toContain('QuickActionsBar');
@@ -3361,10 +3377,41 @@ describe('Ryvro environment template', () => {
       profileLocale.shift?.siteName,
       profileLocale.shift?.sections?.siteDetails,
       onboardingLocale.shiftBuilder?.inspector?.location,
+      dashboardLocale.fifo?.onSite,
+      dashboardLocale.voiceAssistant?.offlineFallback?.patternSummaryFifo,
       shiftInspectorSheet,
     ].join('\n');
 
     expect(guardedCopy).not.toMatch(/mine site|haul truck|underground|Location \/ Site|site name/i);
+  });
+
+  it('keeps translated dashboard FIFO summaries broad instead of site-specific', () => {
+    const localeRoot = path.join(process.cwd(), 'src/i18n/locales');
+
+    for (const locale of fs.readdirSync(localeRoot)) {
+      const dashboardLocale = JSON.parse(
+        fs.readFileSync(path.join(localeRoot, locale, 'dashboard.json'), 'utf8')
+      ) as {
+        fifo?: {
+          onSite?: string;
+        };
+        voiceAssistant?: {
+          offlineFallback?: {
+            patternSummaryFifo?: string;
+          };
+        };
+      };
+
+      const launchVisibleFifoCopy = [
+        dashboardLocale.fifo?.onSite,
+        dashboardLocale.voiceAssistant?.offlineFallback?.patternSummaryFifo,
+      ].join('\n');
+
+      expect(launchVisibleFifoCopy).not.toMatch(
+        /on-site|on site|site|sitio|situs|terrein|موقع|साइट|现场|esizeni|объект|месте/i
+      );
+      expect(launchVisibleFifoCopy).not.toMatch(/mine|myn|mina|mining|haul truck|underground/i);
+    }
   });
 
   it('keeps hidden Schedule and Stats helper screens free of launch placeholder copy', () => {

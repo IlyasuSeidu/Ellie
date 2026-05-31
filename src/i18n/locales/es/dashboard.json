@@ -38,7 +38,7 @@
     "off": "Descansa y recarga!"
   },
   "fifo": {
-    "onSite": "Bloque en sitio activo",
+    "onSite": "Bloque de trabajo activo",
     "homeBlock": "Bloque en casa activo",
     "workBlock": "Trabajo",
     "restBlock": "Descanso",
@@ -170,7 +170,7 @@
       "startBack": "Vuelves al trabajo el {{date}}.",
       "patternSummaryRotating": "Tu patrón es {{dayCount}} turnos de día, {{nightCount}} de noche y luego {{offCount}} días libres.",
       "patternSummaryThreeShift": "Tu patrón es {{morningCount}} turnos de mañana, {{afternoonCount}} de tarde, {{nightCount}} de noche y luego {{offCount}} días libres.",
-      "patternSummaryFifo": "Tu patrón es {{workDays}} días en sitio y luego {{restDays}} días libres.",
+      "patternSummaryFifo": "Tu patrón es {{workDays}} días de trabajo y luego {{restDays}} días libres.",
       "unsupportedWithNextShift": "Todavía no puedo responder eso completamente sin conexión, pero sí conozco tu roster guardado. Tu próximo turno de trabajo es {{shiftType}} el {{date}}. Prueba preguntar por mañana, tu próximo día libre, los turnos nocturnos de este mes o tu patrón.",
       "unsupportedGeneric": "Todavía no puedo responder eso completamente sin conexión, pero sí puedo ayudarte con tu roster guardado. Prueba preguntar por mañana, tu próximo día libre, los turnos nocturnos de este mes o tu patrón."
     },

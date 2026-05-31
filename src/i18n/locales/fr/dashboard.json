@@ -38,7 +38,7 @@
     "off": "Reposez-vous et ressourcez-vous!"
   },
   "fifo": {
-    "onSite": "Bloc sur site actif",
+    "onSite": "Bloc de travail actif",
     "homeBlock": "Bloc à domicile actif",
     "workBlock": "Travail",
     "restBlock": "Repos",
@@ -170,7 +170,7 @@
       "startBack": "Vous reprenez le {{date}}.",
       "patternSummaryRotating": "Votre rythme est de {{dayCount}} quarts de jour, {{nightCount}} quarts de nuit, puis {{offCount}} jours de repos.",
       "patternSummaryThreeShift": "Votre rythme est de {{morningCount}} quarts du matin, {{afternoonCount}} quarts de l’après-midi, {{nightCount}} quarts de nuit, puis {{offCount}} jours de repos.",
-      "patternSummaryFifo": "Votre rythme est de {{workDays}} jours sur site, puis {{restDays}} jours de repos.",
+      "patternSummaryFifo": "Votre rythme est de {{workDays}} jours de travail, puis {{restDays}} jours de repos.",
       "unsupportedWithNextShift": "Je ne peux pas encore répondre complètement à cela hors ligne, mais je connais toujours votre planning enregistré. Votre prochaine prise de poste est {{shiftType}} le {{date}}. Essayez de demander pour demain, votre prochain jour de repos, les postes de nuit de ce mois ou votre rotation.",
       "unsupportedGeneric": "Je ne peux pas encore répondre complètement à cela hors ligne, mais je peux toujours vous aider avec votre planning enregistré. Essayez de demander pour demain, votre prochain jour de repos, les postes de nuit de ce mois ou votre rotation."
     },

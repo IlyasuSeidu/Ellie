@@ -38,7 +38,7 @@
     "off": "Phumula futhi ushaje!"
   },
   "fifo": {
-    "onSite": "Uhlu lwasendaweni luyasebenza",
+    "onSite": "Ibhulokhi yomsebenzi iyasebenza",
     "homeBlock": "Ibhulokhi yasekhaya iyasebenza",
     "workBlock": "Sebenza",
     "restBlock": "Phumula",
@@ -170,7 +170,7 @@
       "startBack": "Uqala umsebenzi futhi ngo-{{date}}.",
       "patternSummaryRotating": "Iphethini yakho ingamashifu emini angu-{{dayCount}}, amashifu ebusuku angu-{{nightCount}}, bese kuba nezinsuku zokuphumula ezingu-{{offCount}}.",
       "patternSummaryThreeShift": "Iphethini yakho ingamashifu asekuseni angu-{{morningCount}}, amashifu antambama angu-{{afternoonCount}}, amashifu ebusuku angu-{{nightCount}}, bese kuba nezinsuku zokuphumula ezingu-{{offCount}}.",
-      "patternSummaryFifo": "Iphethini yakho ingu-{{workDays}} izinsuku esizeni bese kuba ngu-{{restDays}} izinsuku zokuphumula.",
+      "patternSummaryFifo": "Iphethini yakho ingu-{{workDays}} izinsuku zomsebenzi bese kuba ngu-{{restDays}} izinsuku zokuphumula.",
       "unsupportedWithNextShift": "Angikakwazi ukuphendula lokho ngokuphelele ngaphandle kwe-inthanethi okwamanje, kodwa ngisazi irosta yakho egciniwe. Ishifu yakho elandelayo yomsebenzi yi-{{shiftType}} ngo-{{date}}. Zama ukubuza ngomuso, usuku lwakho olulandelayo lokuphumula, amashifu asebusuku ale nyanga, noma iphethini yakho.",
       "unsupportedGeneric": "Angikakwazi ukuphendula lokho ngokuphelele ngaphandle kwe-inthanethi okwamanje, kodwa ngisengakusiza ngerosta yakho egciniwe. Zama ukubuza ngomuso, usuku lwakho olulandelayo lokuphumula, amashifu asebusuku ale nyanga, noma iphethini yakho."
     },

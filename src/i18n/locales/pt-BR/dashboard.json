@@ -38,7 +38,7 @@
     "off": "Descanse e recarregue!"
   },
   "fifo": {
-    "onSite": "Bloco no site ativo",
+    "onSite": "Bloco de trabalho ativo",
     "homeBlock": "Bloco em casa ativo",
     "workBlock": "Trabalho",
     "restBlock": "Descanso",
@@ -170,7 +170,7 @@
       "startBack": "Você volta ao trabalho em {{date}}.",
       "patternSummaryRotating": "Seu padrão é {{dayCount}} turnos diurnos, {{nightCount}} noturnos e depois {{offCount}} dias de folga.",
       "patternSummaryThreeShift": "Seu padrão é {{morningCount}} turnos da manhã, {{afternoonCount}} da tarde, {{nightCount}} noturnos e depois {{offCount}} dias de folga.",
-      "patternSummaryFifo": "Seu padrão é {{workDays}} dias no site e depois {{restDays}} dias de folga.",
+      "patternSummaryFifo": "Seu padrão é {{workDays}} dias de trabalho e depois {{restDays}} dias de folga.",
       "unsupportedWithNextShift": "Ainda não consigo responder isso totalmente offline, mas continuo conhecendo sua escala salva. Seu próximo turno de trabalho é {{shiftType}} em {{date}}. Tente perguntar sobre amanhã, sua próxima folga, os turnos noturnos deste mês ou seu padrão.",
       "unsupportedGeneric": "Ainda não consigo responder isso totalmente offline, mas ainda posso ajudar com sua escala salva. Tente perguntar sobre amanhã, sua próxima folga, os turnos noturnos deste mês ou seu padrão."
     },

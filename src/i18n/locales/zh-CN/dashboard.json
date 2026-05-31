@@ -38,7 +38,7 @@
     "off": "休息并充电！"
   },
   "fifo": {
-    "onSite": "现场名册活跃",
+    "onSite": "工作区块进行中",
     "homeBlock": "主块处于活动状态",
     "workBlock": "工作",
     "restBlock": "休息",
@@ -170,7 +170,7 @@
       "startBack": "你将在{{date}}返回上班。",
       "patternSummaryRotating": "你的轮班模式是{{dayCount}}个白班、{{nightCount}}个夜班，然后{{offCount}}天休息。",
       "patternSummaryThreeShift": "你的轮班模式是{{morningCount}}个早班、{{afternoonCount}}个下午班、{{nightCount}}个夜班，然后{{offCount}}天休息。",
-      "patternSummaryFifo": "你的模式是现场工作{{workDays}}天，然后休息{{restDays}}天。",
+      "patternSummaryFifo": "你的模式是工作{{workDays}}天，然后休息{{restDays}}天。",
       "unsupportedWithNextShift": "我暂时还不能在离线状态下完整回答这个问题，但我仍然知道你保存的班表。你的下一次工作班次是 {{date}} 的 {{shiftType}}。你可以问我明天的班次、下一个休息日、本月夜班数量或你的轮班模式。",
       "unsupportedGeneric": "我暂时还不能在离线状态下完整回答这个问题，但我仍然可以根据你保存的班表提供帮助。你可以问我明天的班次、下一个休息日、本月夜班数量或你的轮班模式。"
     },

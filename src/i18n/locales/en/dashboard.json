@@ -38,7 +38,7 @@
     "off": "Rest and recharge!"
   },
   "fifo": {
-    "onSite": "On-site roster active",
+    "onSite": "Work block active",
     "homeBlock": "Home block active",
     "workBlock": "Work",
     "restBlock": "Rest",
@@ -186,7 +186,7 @@
       "startBack": "You start back on {{date}}.",
       "patternSummaryRotating": "Your pattern is {{dayCount}} day shifts, {{nightCount}} night shifts, then {{offCount}} days off.",
       "patternSummaryThreeShift": "Your pattern is {{morningCount}} morning shifts, {{afternoonCount}} afternoon shifts, {{nightCount}} night shifts, then {{offCount}} days off.",
-      "patternSummaryFifo": "Your pattern is {{workDays}} days on site, then {{restDays}} days off.",
+      "patternSummaryFifo": "Your pattern is {{workDays}} work days, then {{restDays}} days off.",
       "unsupportedWithNextShift": "I can't answer that fully offline yet, but I still know your saved roster. Your next work shift is {{shiftType}} on {{date}}. Try asking about tomorrow, your next day off, night shifts this month, or your pattern.",
       "unsupportedGeneric": "I can't answer that fully offline yet, but I can still help with your saved roster. Try asking about tomorrow, your next day off, night shifts this month, or your pattern."
     },
