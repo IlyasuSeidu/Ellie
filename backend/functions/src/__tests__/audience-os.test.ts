@@ -11,13 +11,14 @@ import {
   type ProductManifest,
   type RawLeadInput,
 } from '../audience-os';
+import { classifyShiftWorkerPersona } from '../research-funnel';
 
 const ryvroManifest: ProductManifest = {
   productId: 'ryvro',
   name: 'Ryvro',
-  category: 'miner shift certainty app',
+  category: 'shift-work schedule certainty app',
   oneSentencePositioning:
-    'Ryvro gives miners and shift workers fast confidence about their next shift, next block, and future roster dates without mental math.',
+    'Ryvro gives FIFO crews, healthcare teams, security staff, transport operators, hospitality workers, manufacturing crews, miners, and other shift workers fast confidence about their next shift, next block, and future roster dates without mental math.',
   targetAudience: [
     {
       personaId: 'underground-production-operator',
@@ -25,6 +26,20 @@ const ryvroManifest: ProductManifest = {
       titles: ['Jumbo operator', 'Bogger operator'],
       corePains: ['Losing track of where they are in the cycle'],
       bestHooks: ['Do you ever need to double-check if tomorrow is days, nights, or off?'],
+    },
+    {
+      personaId: 'healthcare-rotating-clinician',
+      label: 'Healthcare Rotating Clinician',
+      titles: ['Registered nurse', 'Paramedic'],
+      corePains: ['Keeping nights, handovers, and days off straight'],
+      bestHooks: ['Do you ever double-check whether tomorrow is a day, night, or off?'],
+    },
+    {
+      personaId: 'transport-logistics-shift-worker',
+      label: 'Transport And Logistics Shift Worker',
+      titles: ['Driver', 'Ground crew'],
+      corePains: ['Tracking early starts, depot changes, and rotating rest days'],
+      bestHooks: ['How often do you check your next early start more than once?'],
     },
   ],
   currentStrengths: ['Rotating and FIFO roster support', 'Future-date shift lookup'],
@@ -79,9 +94,9 @@ test('daily audience run ingests leads, routes tasks, and builds sheet tabs', ()
   const rawLeads: RawLeadInput[] = [
     {
       externalId: 'alpha-1',
-      fullName: 'Ayo Miner',
-      jobTitle: 'Bogger operator',
-      company: 'Gold Ridge',
+      fullName: 'Ayo Mensah',
+      jobTitle: 'Registered nurse',
+      company: 'Ridge Hospital',
       country: 'Ghana',
       sourceType: 'opt_in_form',
       sourceLabel: 'LinkedIn form',
@@ -246,6 +261,56 @@ test('daily audience run ingests leads, routes tasks, and builds sheet tabs', ()
   assert.ok(result.sheetWorkbook.tabs.some((sheet) => sheet.name === 'Leads_Master'));
   assert.ok(result.leadSnapshots.some((lead) => lead.personalizationSummary?.includes('Goals:')));
   assert.ok(result.brief.leadCount >= 3);
+});
+
+test('Ryvro audience classifier covers broad shift-worker launch personas', () => {
+  assert.equal(
+    classifyShiftWorkerPersona({
+      leadId: 'nurse-1',
+      jobTitle: 'Registered nurse',
+      stage: 'opted_in',
+      sequenceDay: 1,
+      consecutiveMisses: 0,
+      contact: { optInStatus: 'opted_in' },
+      signals: {
+        rosterTypeHint: 'rotating',
+        rosterComplexity: 'high',
+        problemFitSignals: ['wrong alarms'],
+        replyCount: 1,
+        substantiveReplyCount: 1,
+        painSeverity: 'medium',
+        buyingReadiness: 'curious',
+        wantsCrewScheduling: false,
+        wantsPlannedFeaturesOnly: false,
+      },
+      lastPainSummary: 'Nights, ward handover, and days off are hard to track.',
+    }).personaId,
+    'healthcare-rotating-clinician'
+  );
+
+  assert.equal(
+    classifyShiftWorkerPersona({
+      leadId: 'transport-1',
+      jobTitle: 'Rail ground crew',
+      stage: 'opted_in',
+      sequenceDay: 1,
+      consecutiveMisses: 0,
+      contact: { optInStatus: 'opted_in' },
+      signals: {
+        rosterTypeHint: 'rotating',
+        rosterComplexity: 'high',
+        problemFitSignals: ['early starts'],
+        replyCount: 1,
+        substantiveReplyCount: 1,
+        painSeverity: 'medium',
+        buyingReadiness: 'curious',
+        wantsCrewScheduling: false,
+        wantsPlannedFeaturesOnly: false,
+      },
+      lastPainSummary: 'Depot changes and early starts keep changing.',
+    }).personaId,
+    'transport-logistics-shift-worker'
+  );
 });
 
 test('OpenClaw config includes shared skills, agents, and hook routing', () => {

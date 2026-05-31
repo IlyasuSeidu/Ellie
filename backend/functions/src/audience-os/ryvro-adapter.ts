@@ -1,5 +1,5 @@
 import {
-  classifyMinerPersona,
+  classifyShiftWorkerPersona,
   planNextResearchMessage,
   scoreResearchLead,
   type ResearchLead,
@@ -103,7 +103,7 @@ export const ryvroAudienceAdapter: AudienceProductAdapter = {
   adapterId: 'ryvro',
   assessLead(_manifest: ProductManifest, lead: AudienceLead): LeadAssessment {
     const researchLead = toResearchLead(lead);
-    const classification = classifyMinerPersona(researchLead);
+    const classification = classifyShiftWorkerPersona(researchLead);
     const score = scoreResearchLead({
       ...researchLead,
       personaId: classification.personaId,

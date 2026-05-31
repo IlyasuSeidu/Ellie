@@ -1,10 +1,10 @@
-import { classifyMinerPersona } from './personas';
+import { classifyShiftWorkerPersona } from './personas';
 import { scoreResearchLead } from './score-lead';
-import type { MinerPersonaId, ResearchLead, ResearchStage, SequencePlan } from './types';
+import type { ResearchLead, ResearchStage, SequencePlan, ShiftWorkerPersonaId } from './types';
 
 type DayPrompt = {
   default: string;
-  variants?: Partial<Record<MinerPersonaId, string>>;
+  variants?: Partial<Record<ShiftWorkerPersonaId, string>>;
 };
 
 const DAY_PROMPTS: Record<number, DayPrompt> = {
@@ -16,6 +16,14 @@ const DAY_PROMPTS: Record<number, DayPrompt> = {
         'Do you ever lose track of whether the next swing is days, nights, or off?',
       'fifo-field-worker':
         'What is harder to keep straight for you: next swing in, next swing home, or planning around the block?',
+      'healthcare-rotating-clinician':
+        'What is hardest to keep straight right now: nights, days, handovers, on-call, or days off?',
+      'security-operations-officer':
+        'What is hardest to keep straight right now: posts, patrol blocks, nights, or last-minute coverage changes?',
+      'transport-logistics-shift-worker':
+        'What is hardest to keep straight right now: early starts, depot changes, routes, or rest days?',
+      'hospitality-manufacturing-shift-worker':
+        'What is hardest to keep straight right now: weekends, split shifts, line rotations, or nights?',
     },
   },
   2: {
@@ -54,7 +62,7 @@ function normalizeSequenceDay(sequenceDay: number): number {
   return Math.floor(sequenceDay);
 }
 
-function choosePrompt(day: number, personaId: MinerPersonaId): string {
+function choosePrompt(day: number, personaId: ShiftWorkerPersonaId): string {
   const prompt = DAY_PROMPTS[day];
   if (!prompt) {
     return DAY_PROMPTS[7].default;
@@ -80,7 +88,7 @@ function activeOrAwaitingStage(currentStage: ResearchStage): ResearchStage {
 }
 
 export function planNextResearchMessage(lead: ResearchLead): SequencePlan {
-  const classification = classifyMinerPersona(lead);
+  const classification = classifyShiftWorkerPersona(lead);
   const scoring = scoreResearchLead({
     ...lead,
     personaId: lead.personaId ?? classification.personaId,

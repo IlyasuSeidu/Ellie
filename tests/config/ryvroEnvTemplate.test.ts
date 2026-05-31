@@ -2048,10 +2048,19 @@ describe('Ryvro environment template', () => {
     expect(activeSource).toContain('ryvroBrainService');
     expect(activeSource).toContain('isConfiguredRyvroBrainUrl');
     expect(activeSource).toContain("'ryvro_brain'");
+    expect(activeSource).toContain('classifyShiftWorkerPersona');
+    expect(activeSource).toContain('ShiftWorkerPersonaId');
+    expect(activeSource).toContain('healthcare-rotating-clinician');
+    expect(activeSource).toContain('security-operations-officer');
+    expect(activeSource).toContain('transport-logistics-shift-worker');
+    expect(activeSource).toContain('hospitality-manufacturing-shift-worker');
     expect(activeSource).not.toContain('EllieBrainService');
     expect(activeSource).not.toContain('ellieBrainService');
     expect(activeSource).not.toContain('isConfiguredEllieBrainUrl');
     expect(activeSource).not.toContain("'ellie_brain'");
+    expect(activeSource).not.toContain('classifyMinerPersona');
+    expect(activeSource).not.toContain('MinerPersonaId');
+    expect(activeSource).not.toContain('No clear mining persona match found.');
   });
 
   it('keeps active voice UI and admin surfaces on Ryvro naming', () => {

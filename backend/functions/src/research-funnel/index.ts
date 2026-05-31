@@ -1,4 +1,4 @@
-export { classifyMinerPersona } from './personas';
+export { classifyShiftWorkerPersona } from './personas';
 export { planNextResearchMessage } from './sequence-engine';
 export { scoreResearchLead } from './score-lead';
 export type {
@@ -8,7 +8,6 @@ export type {
   LeadContact,
   LeadScoreBreakdown,
   LeadSignals,
-  MinerPersonaId,
   PainSeverity,
   PersonaClassificationResult,
   ResearchLead,
@@ -17,4 +16,5 @@ export type {
   RosterHint,
   SequencePlan,
   SequencePlanAction,
+  ShiftWorkerPersonaId,
 } from './types';

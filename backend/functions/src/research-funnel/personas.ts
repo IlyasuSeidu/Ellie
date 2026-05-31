@@ -1,7 +1,7 @@
-import type { MinerPersonaId, PersonaClassificationResult, ResearchLead } from './types';
+import type { PersonaClassificationResult, ResearchLead, ShiftWorkerPersonaId } from './types';
 
 type PersonaRule = {
-  personaId: MinerPersonaId;
+  personaId: ShiftWorkerPersonaId;
   jobTitleKeywords: string[];
   contextKeywords: string[];
   rosterBonus?: 'rotating' | 'fifo';
@@ -78,6 +78,74 @@ const PERSONA_RULES: PersonaRule[] = [
     ],
     contextKeywords: ['crew', 'handover', 'shift plan', 'people'],
   },
+  {
+    personaId: 'healthcare-rotating-clinician',
+    jobTitleKeywords: [
+      'nurse',
+      'registered nurse',
+      'enrolled nurse',
+      'midwife',
+      'paramedic',
+      'doctor',
+      'resident',
+      'clinician',
+      'care worker',
+      'healthcare assistant',
+    ],
+    contextKeywords: ['ward', 'hospital', 'clinic', 'handover', 'nights', 'on call', 'rota'],
+    rosterBonus: 'rotating',
+  },
+  {
+    personaId: 'security-operations-officer',
+    jobTitleKeywords: [
+      'security',
+      'guard',
+      'security officer',
+      'control room operator',
+      'patrol',
+      'dispatcher',
+      'emergency services',
+      'firefighter',
+      'police',
+    ],
+    contextKeywords: ['patrol', 'post', 'site rotation', 'control room', 'night shift', 'coverage'],
+    rosterBonus: 'rotating',
+  },
+  {
+    personaId: 'transport-logistics-shift-worker',
+    jobTitleKeywords: [
+      'driver',
+      'truck driver',
+      'bus driver',
+      'train driver',
+      'rail',
+      'aviation',
+      'ground crew',
+      'dispatcher',
+      'logistics',
+      'warehouse',
+      'operator',
+    ],
+    contextKeywords: ['route', 'depot', 'terminal', 'dispatch', 'early start', 'late finish'],
+    rosterBonus: 'rotating',
+  },
+  {
+    personaId: 'hospitality-manufacturing-shift-worker',
+    jobTitleKeywords: [
+      'chef',
+      'cook',
+      'bartender',
+      'front desk',
+      'hotel',
+      'factory operator',
+      'production worker',
+      'machine operator',
+      'manufacturing',
+      'plant operator',
+    ],
+    contextKeywords: ['venue', 'factory', 'plant', 'line', 'weekend', 'split shift', 'night shift'],
+    rosterBonus: 'rotating',
+  },
 ];
 
 function normalize(value: string | undefined): string {
@@ -88,7 +156,7 @@ function countKeywordHits(text: string, keywords: string[]): string[] {
   return keywords.filter((keyword) => text.includes(keyword));
 }
 
-export function classifyMinerPersona(lead: ResearchLead): PersonaClassificationResult {
+export function classifyShiftWorkerPersona(lead: ResearchLead): PersonaClassificationResult {
   const jobTitle = normalize(lead.jobTitle);
   const context = normalize(
     [lead.lastPainSummary, lead.lastWorkaroundSummary, lead.lastOutcomeSummary]
@@ -96,7 +164,7 @@ export function classifyMinerPersona(lead: ResearchLead): PersonaClassificationR
       .join(' ')
   );
 
-  let bestPersona: MinerPersonaId = 'unknown';
+  let bestPersona: ShiftWorkerPersonaId = 'unknown';
   let bestScore = 0;
   let bestSignals: string[] = [];
 
