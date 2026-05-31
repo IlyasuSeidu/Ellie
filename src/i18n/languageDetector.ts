@@ -4,7 +4,7 @@ import type { LanguageDetectorAsyncModule } from 'i18next';
 import { STORAGE_KEYS } from '@/constants/storageKeys';
 
 export const LANGUAGE_KEY = STORAGE_KEYS.i18n.language;
-const LEGACY_LANGUAGE_KEY = STORAGE_KEYS.i18n.legacyLanguage;
+export const RETIRED_LANGUAGE_PREFERENCE_KEY = STORAGE_KEYS.i18n.retiredLanguagePreference;
 export const SUPPORTED_LANGUAGES = [
   'en',
   'es',
@@ -95,11 +95,13 @@ export const languageDetector: LanguageDetectorAsyncModule = {
           return;
         }
 
-        const legacyLanguage = await AsyncStorage.getItem(LEGACY_LANGUAGE_KEY);
-        if (legacyLanguage) {
-          const normalized = normalizeLanguage(legacyLanguage);
+        const retiredLanguagePreference = await AsyncStorage.getItem(
+          RETIRED_LANGUAGE_PREFERENCE_KEY
+        );
+        if (retiredLanguagePreference) {
+          const normalized = normalizeLanguage(retiredLanguagePreference);
           await AsyncStorage.setItem(LANGUAGE_KEY, normalized);
-          await AsyncStorage.removeItem(LEGACY_LANGUAGE_KEY);
+          await AsyncStorage.removeItem(RETIRED_LANGUAGE_PREFERENCE_KEY);
           callback(normalized);
           return;
         }
@@ -113,7 +115,7 @@ export const languageDetector: LanguageDetectorAsyncModule = {
   cacheUserLanguage: async (language) => {
     try {
       await AsyncStorage.setItem(LANGUAGE_KEY, normalizeLanguage(language));
-      await AsyncStorage.removeItem(LEGACY_LANGUAGE_KEY);
+      await AsyncStorage.removeItem(RETIRED_LANGUAGE_PREFERENCE_KEY);
     } catch {
       // Ignore persistence errors to avoid blocking language switch.
     }

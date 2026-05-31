@@ -58,4 +58,10 @@ describe('AppStateStorageService', () => {
     expect(asyncStorageService.remove).toHaveBeenCalledWith('paywall:declinedAt:user-123');
     expect(asyncStorageService.remove).toHaveBeenCalledWith('paywall:declinedAt:anonymous');
   });
+
+  it('cleans up the retired assistant checklist key without exposing it as an active app key', async () => {
+    await appStateStorageService.cleanupObsoleteKeys();
+
+    expect(AsyncStorage.removeItem).toHaveBeenCalledWith('checklist:ask_ellie_done');
+  });
 });

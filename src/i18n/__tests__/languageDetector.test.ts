@@ -1,6 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Localization from 'expo-localization';
-import { LANGUAGE_KEY, languageDetector, normalizeLanguage } from '@/i18n/languageDetector';
+import {
+  LANGUAGE_KEY,
+  RETIRED_LANGUAGE_PREFERENCE_KEY,
+  languageDetector,
+  normalizeLanguage,
+} from '@/i18n/languageDetector';
 
 describe('languageDetector', () => {
   beforeEach(() => {
@@ -51,7 +56,7 @@ describe('languageDetector', () => {
 
     expect(detected).toBe('es');
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(LANGUAGE_KEY, 'es');
-    expect(AsyncStorage.removeItem).toHaveBeenCalledWith('@ellie_language');
+    expect(AsyncStorage.removeItem).toHaveBeenCalledWith(RETIRED_LANGUAGE_PREFERENCE_KEY);
   });
 
   it('falls back to device locale when no saved value exists', async () => {
@@ -77,6 +82,6 @@ describe('languageDetector', () => {
     await languageDetector.cacheUserLanguage?.('fr-CA');
 
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(LANGUAGE_KEY, 'fr');
-    expect(AsyncStorage.removeItem).toHaveBeenCalledWith('@ellie_language');
+    expect(AsyncStorage.removeItem).toHaveBeenCalledWith(RETIRED_LANGUAGE_PREFERENCE_KEY);
   });
 });

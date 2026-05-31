@@ -1463,12 +1463,12 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
     expect(readme).toContain('Recent pushed PR gates');
-    expect(readme).toContain('GitHub Actions CI run `26726707448`');
+    expect(readme).toContain('GitHub Actions CI run `26726876514`');
+    expect(readme).toContain('commit `f72f885`');
+    expect(readme).toContain('CI run `26726707448`');
     expect(readme).toContain('commit `0290dc2`');
     expect(readme).toContain('CI run `26726588935`');
     expect(readme).toContain('commit `c2c6267`');
-    expect(readme).toContain('CI run `26726366157`');
-    expect(readme).toContain('commit `314b41e`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain(
@@ -1719,7 +1719,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, latest public clearance evidence at 20:33Z, and latest pushed PR #1 CI pass `26726707448` on `0290dc2`)'
+      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, latest public clearance evidence at 20:33Z, and latest pushed PR #1 CI pass `26726876514` on `f72f885`)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
@@ -1944,12 +1944,12 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
+    expect(readinessReport).toContain('CI run `26726876514`');
+    expect(readinessReport).toContain('commit `f72f885`');
     expect(readinessReport).toContain('CI run `26726707448`');
     expect(readinessReport).toContain('commit `0290dc2`');
     expect(readinessReport).toContain('CI run `26726588935`');
     expect(readinessReport).toContain('commit `c2c6267`');
-    expect(readinessReport).toContain('CI run `26726366157`');
-    expect(readinessReport).toContain('commit `314b41e`');
     expect(readinessReport).toContain('CI run `26722400690`');
     expect(readinessReport).toContain('commit `4af8a23`');
     expect(readinessReport).toContain('CI run `26721974527`');
@@ -2147,9 +2147,12 @@ describe('Ryvro environment template', () => {
     expect(audit).toContain(
       'removed the retired `ellieBrain` HTTP export from active backend source'
     );
-    expect(audit).toContain('CI run `26726707448` on commit `0290dc2`');
+    expect(audit).toContain('CI run `26726876514` on commit `f72f885`');
     expect(audit).toContain(
       'Aligned the active deployment guide to the committed Ryvro `eas.json`, dynamic `app.config.js`, and guarded `npm run release:submit:check` plus `eas submit --latest` store-submission flow.'
+    );
+    expect(audit).toContain(
+      'Renamed retired Ellie storage-key code symbols to neutral Ryvro-era `retired...` names while preserving the raw old keys only for migration/removal.'
     );
     expect(audit).toContain(
       'Broadened remaining translated FIFO helper tips and active voice-assistant rest-block tool copy away from site/off-site wording.'
@@ -2579,12 +2582,12 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
     expect(ownerRunbook).toContain('Recent pushed PR gate evidence includes');
     expect(ownerRunbook).not.toContain('Latest pushed PR gate');
+    expect(ownerRunbook).toContain('CI run `26726876514`');
+    expect(ownerRunbook).toContain('commit `f72f885`');
     expect(ownerRunbook).toContain('CI run `26726707448`');
     expect(ownerRunbook).toContain('commit `0290dc2`');
     expect(ownerRunbook).toContain('CI run `26726588935`');
     expect(ownerRunbook).toContain('commit `c2c6267`');
-    expect(ownerRunbook).toContain('CI run `26726366157`');
-    expect(ownerRunbook).toContain('commit `314b41e`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');
@@ -3506,6 +3509,26 @@ describe('Ryvro environment template', () => {
         );
       }
     }
+  });
+
+  it('keeps active storage code symbols neutral while preserving retired key cleanup', () => {
+    const storageFiles = [
+      'src/constants/storageKeys.ts',
+      'src/i18n/languageDetector.ts',
+      'src/services/AppStateStorageService.ts',
+    ].map((relativePath) => fs.readFileSync(path.join(process.cwd(), relativePath), 'utf8'));
+    const activeStorageCode = storageFiles.join('\n');
+
+    expect(activeStorageCode).toContain('retiredLanguagePreference');
+    expect(activeStorageCode).toContain('retiredAssistantChecklistDone');
+    expect(activeStorageCode).toContain('RETIRED_LANGUAGE_PREFERENCE_KEY');
+    expect(activeStorageCode).toContain('RETIRED_ASSISTANT_CHECKLIST_DONE_KEY');
+    expect(activeStorageCode).toContain("'@ellie_language'");
+    expect(activeStorageCode).toContain("'checklist:ask_ellie_done'");
+    expect(activeStorageCode).not.toContain('legacyLanguage');
+    expect(activeStorageCode).not.toContain('legacyAskEllieDone');
+    expect(activeStorageCode).not.toContain('LEGACY_LANGUAGE_KEY');
+    expect(activeStorageCode).not.toContain('LEGACY_CHECKLIST_ASK_ELLIE_DONE_KEY');
   });
 
   it('keeps the web admin Firebase config path on Ryvro-safe values', () => {

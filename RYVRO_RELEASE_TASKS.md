@@ -1,7 +1,7 @@
 # Ryvro — Release Task List
 
 Source: `SHIFT_WORKER_APP_REBRAND_AUDIT.md`
-Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, latest public clearance evidence at 20:33Z, and latest pushed PR #1 CI pass `26726707448` on `0290dc2`)
+Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, latest public clearance evidence at 20:33Z, and latest pushed PR #1 CI pass `26726876514` on `f72f885`)
 
 Legend: ✅ Done · 🔧 Code task (can be implemented) · 👤 Manual step (you do this)
 
