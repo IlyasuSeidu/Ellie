@@ -247,7 +247,7 @@ Evidence to record:
 
 ## Current Repo Evidence
 
-- Latest local gate: `npm run release:check` passed on 2026-06-01 with 110 Jest suites, 1,779 tests, 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build.
+- Latest local gate: `npm run release:check` passed on 2026-06-01 with 110 Jest suites, 1,781 tests, 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build.
 - Current local release gate includes `npm run release:owner:check`, which fails if the account-only launch blockers, physical-device QA requirements, and not-yet-live stop gates disappear from the tracked handoff docs.
 - Final submit readiness is guarded by `npm run release:submit:check`, which must fail until EAS submit placeholders are replaced and every required non-secret row in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` is `Passed` or explicitly `Not applicable`.
 - Store screenshot capture is now tracked in `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md`, and `npm run release:store:check` / `npm run release:owner:check` fail if the checklist or evidence-log handoff disappears.

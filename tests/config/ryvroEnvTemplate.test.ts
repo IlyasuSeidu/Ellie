@@ -1463,7 +1463,7 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('110 Jest suites / 1,779 tests / 4 snapshots');
+    expect(readme).toContain('110 Jest suites / 1,781 tests / 4 snapshots');
     expect(readme).toContain('the Ryvro native scaffold preflight');
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
@@ -1486,7 +1486,7 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('valid-prompt `SHIFT_SCHEDULE_PARSER_URL` parser response');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
     expect(readme).toContain('Works at remote work locations');
-    expect(readme).toContain('Testing infrastructure (1,779 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,781 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Every Work Pattern Is Different');
     expect(readme).toContain('work location, and reminder settings');
@@ -1495,9 +1495,9 @@ describe('Ryvro environment template', () => {
     );
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,779 tests in the latest release check)');
+    expect(readme).toContain('Jest (1,781 tests in the latest release check)');
     expect(readme).toContain('Current Status (as of 2026-06-01 release check)');
-    expect(readme).toContain('Total Tests**: 1,779 passing (110 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Total Tests**: 1,781 passing (110 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -1941,7 +1941,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('110 Jest suites / 1,767 tests');
     expect(readinessReport).toContain('110 Jest suites / 1,771 tests');
     expect(readinessReport).toContain('110 Jest suites / 1,776 tests');
-    expect(readinessReport).toContain('110 Jest suites / 1,779 tests');
+    expect(readinessReport).toContain('110 Jest suites / 1,781 tests');
     expect(readinessReport).toContain('Profile legal/support link coverage');
     expect(readinessReport).toContain(
       'requiring real root-level Firebase native service files for Ryvro production builds'
@@ -2194,7 +2194,7 @@ describe('Ryvro environment template', () => {
       'Renamed the retired Firebase JS service sidecar code symbol to neutral Ryvro-era cleanup wording while preserving the raw old sidecar app name only as a compatibility lookup.'
     );
     expect(audit).toContain(
-      'Reconciled the asset checklist with current launch asset evidence: production Expo icons, splash, favicon, neutral Ryvro assistant densities, retired helmet cleanup, and first-pass industry visual badges are now tracked as done, while unverified render checks and future bitmap scene thumbnails remain open.'
+      'Reconciled the asset checklist with current launch asset evidence: production Expo icons, splash, favicon, neutral Ryvro assistant densities, retired helmet cleanup, first-pass industry visual badges, and consolidated onboarding icon density render checks are now tracked as done, while future optional bitmap scene thumbnails remain open.'
     );
     expect(audit).toContain(
       'Reconciled the older implementation tracker with current Ryvro evidence so repo-complete items are checked off and owner-only/live-device gaps remain explicit instead of mixed with stale implementation tasks.'
@@ -2681,7 +2681,7 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('eas submit --platform android --latest');
     expect(ownerRunbook).toContain('npm run release:submit:check');
     expect(ownerRunbook).toContain('Final submit readiness is guarded');
-    expect(ownerRunbook).toContain('110 Jest suites, 1,779 tests');
+    expect(ownerRunbook).toContain('110 Jest suites, 1,781 tests');
     expect(ownerRunbook).toContain('npm run release:owner:check');
     expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');

@@ -125,7 +125,7 @@ Ryvro now uses the Universal Shift Builder as its onboarding schedule setup, rep
 - **TypeScript + Zod Validation**: Runtime safety for user data
 - **Firebase Backend**: Cloud Firestore for data sync
 - **Sacred Theme System**: Premium design language for shift workers
-- **1,779 Tests**: Comprehensive unit, config, service, and integration coverage
+- **1,781 Tests**: Comprehensive unit, config, service, and integration coverage
 - [Read the story →](build-in-public/system-thinking/01-day-one-foundations.md)
 
 ---
@@ -141,7 +141,7 @@ Repo-proven launch state:
 - Support/legal surface: Profile links open the configured support, account deletion, privacy policy, and terms URLs
 - Hidden v1 tabs: Schedule and Stats are omitted from the bottom navigation; their helper screens are kept free of placeholder copy for any internal entry points
 - Templates and fixtures: mining/FIFO plus healthcare, security, emergency services, manufacturing, transport, hospitality, aviation, rail, and operations examples
-- Latest local gate: `npm run release:check` passed TypeScript, 110 Jest suites / 1,779 tests / 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build on 2026-06-01
+- Latest local gate: `npm run release:check` passed TypeScript, 110 Jest suites / 1,781 tests / 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build on 2026-06-01
 - Latest iOS simulator gate: `npm run test:e2e -- e2e/onboarding.test.ts --reuse` passed the fresh onboarding path into the Universal Shift Builder, `npm run test:e2e -- e2e/dashboard.test.ts --reuse` passed 16 dashboard checks including the active universal shift icon, and `npm run test:e2e -- e2e/critical-mobile.test.ts --reuse` passed auth, onboarding, dashboard, profile, and builder mobile-fit checks
 - Owner handoff gate: `npm run release:owner:check` keeps the not-live status, owner account tasks, physical-device QA, and store submission handoff docs visible
 - Recent pushed PR gates: GitHub Actions CI run `26776633987` on commit `7a51dc6`, CI run `26776194564` on commit `63cbbef`, and CI run `26735606843` on commit `f194981` passed Unit Tests, Lint and Type Check, Build Check, and the dedicated Release Check job running `npm run release:check`
@@ -189,7 +189,7 @@ Current launch handoff lives in [docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md](docs/RYVRO_
 - **Formatting**: Prettier
 - **Pre-commit Hooks**: Husky + lint-staged
 - **Type Checking**: TypeScript strict mode
-- **Testing**: Jest (1,779 tests in the latest release check), React Testing Library, Detox (E2E)
+- **Testing**: Jest (1,781 tests in the latest release check), React Testing Library, Detox (E2E)
 
 ### CI/CD
 
@@ -396,7 +396,7 @@ Colors are grounded in low-light shift-work conditions and broad enough for ever
 - [x] Utility functions (shift calculation, date handling)
 - [x] Firebase integration
 - [x] Sacred theme system
-- [x] Testing infrastructure (1,779 tests in the latest release check)
+- [x] Testing infrastructure (1,781 tests in the latest release check)
 
 ### ✅ Phase 2: Premium Onboarding And Universal Builder
 
@@ -470,7 +470,7 @@ Each story includes:
 
 Ryvro has comprehensive test coverage across all layers:
 
-### Unit Tests (1,779 tests in the latest release check)
+### Unit Tests (1,781 tests in the latest release check)
 
 - **Utilities**: Shift calculations, date manipulation, validation
 - **Components**: Onboarding, dashboard, voice, profile, and builder components
@@ -592,7 +592,7 @@ npm run format
 
 ### Current Status (as of 2026-06-01 release check)
 
-- **Total Tests**: 1,779 passing (110 Jest suites, 4 snapshots)
+- **Total Tests**: 1,781 passing (110 Jest suites, 4 snapshots)
 - **Test Coverage**:
   - Branches: 62.03% (≥60% ✅)
   - Functions: 76.95% (≥70% ✅)
