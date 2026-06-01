@@ -255,7 +255,7 @@
       "purchaseSuccessPaid": "你的订阅已生效",
       "billingDisclosureTrialGeneric": "您的免费试用今天开始。请在开始扣费前随时前往设置取消。订阅会自动续订。",
       "unavailable": "此应用构建版本不支持订阅。请安装最新的 EAS 开发版或生产版构建。",
-      "unconfigured": "此构建尚未配置订阅。请将 RevenueCat SDK 密钥加入构建环境后重新构建。"
+      "unconfigured": "此版本暂不支持 Ryvro Pro。请更新应用；如果问题仍然出现，请联系支持团队。"
     },
     "profile": {
       "rowActiveA11y": "__TK1__ Pro 主动订阅",

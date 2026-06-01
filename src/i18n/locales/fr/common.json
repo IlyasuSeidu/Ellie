@@ -255,7 +255,7 @@
       "purchaseSuccessPaid": "Votre abonnement est actif",
       "billingDisclosureTrialGeneric": "Votre essai gratuit commence aujourd’hui. Annulez à tout moment dans Réglages avant le début de la facturation. Les abonnements se renouvellent automatiquement.",
       "unavailable": "Les abonnements ne sont pas disponibles dans cette version de l’application. Installez la dernière build EAS de développement ou de production.",
-      "unconfigured": "Les abonnements ne sont pas configurés dans cette build. Ajoutez la clé SDK RevenueCat à l’environnement de build puis reconstruisez l’application."
+      "unconfigured": "Ryvro Pro n’est pas encore disponible dans cette version. Mettez l’app à jour ou contactez le support si cela continue."
     },
     "profile": {
       "rowActiveA11y": "Ryvro Abonnement Pro actif",

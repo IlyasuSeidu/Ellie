@@ -252,7 +252,7 @@
       "purchaseSuccessPaid": "Your subscription is active",
       "billingDisclosureTrialGeneric": "Your free trial starts today. Cancel anytime in Settings before billing begins. Subscriptions renew automatically.",
       "unavailable": "Subscriptions are unavailable in this app build. Install the latest EAS development/production build.",
-      "unconfigured": "Subscriptions are not configured in this build. Add the RevenueCat SDK key to the build environment and rebuild."
+      "unconfigured": "Ryvro Pro is not available in this build yet. Please update the app or contact support if this keeps happening."
     },
     "profile": {
       "rowActiveA11y": "Ryvro Pro active subscription",

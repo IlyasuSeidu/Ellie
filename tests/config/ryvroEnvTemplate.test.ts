@@ -2197,6 +2197,9 @@ describe('Ryvro environment template', () => {
       'Reconciled the asset checklist with current launch asset evidence: production Expo icons, splash, favicon, neutral Ryvro assistant densities, retired helmet cleanup, first-pass industry visual badges, and consolidated onboarding icon density render checks are now tracked as done, while future optional bitmap scene thumbnails remain open.'
     );
     expect(audit).toContain(
+      'Replaced developer-facing paywall fallback copy across bundled locales and hardcoded defaults so unconfigured subscription builds say Ryvro Pro is unavailable and direct users to update or contact support instead of exposing RevenueCat SDK setup language.'
+    );
+    expect(audit).toContain(
       'Reconciled the older implementation tracker with current Ryvro evidence so repo-complete items are checked off and owner-only/live-device gaps remain explicit instead of mixed with stale implementation tasks.'
     );
     expect(audit).toContain(
@@ -2800,6 +2803,7 @@ describe('Ryvro environment template', () => {
             features?: {
               offline?: string;
             };
+            unconfigured?: string;
             socialProof?: string;
             testimonials?: Array<{ author?: string; quote?: string }>;
           };
@@ -2820,7 +2824,22 @@ describe('Ryvro environment template', () => {
       );
       expect(launchProof).not.toMatch(/site roster|roster site|low-signal sites/i);
       expect(launchProof).toMatch(/FIFO|shift|turno|santé|health|security|transport|equipes/i);
+
+      expect(paywall?.unconfigured).toContain('Ryvro Pro');
+      expect(paywall?.unconfigured).not.toMatch(
+        /RevenueCat|SDK key|build environment|rebuild|not configured/i
+      );
     }
+
+    const paywallScreen = fs.readFileSync(
+      path.join(process.cwd(), 'src/screens/subscription/PaywallScreen.tsx'),
+      'utf8'
+    );
+    expect(paywallScreen).toContain(
+      'Ryvro Pro is not available in this build yet. Please update the app or contact support if this keeps happening.'
+    );
+    expect(paywallScreen).not.toContain('Add the RevenueCat SDK key');
+    expect(paywallScreen).not.toContain('build environment and rebuild');
   });
 
   it('keeps translated work-location labels broad instead of site-specific', () => {

@@ -255,7 +255,7 @@
       "purchaseSuccessPaid": "Tu suscripción está activa",
       "billingDisclosureTrialGeneric": "Tu prueba gratuita comienza hoy. Cancela en cualquier momento en Ajustes antes de que empiece la facturación. Las suscripciones se renuevan automáticamente.",
       "unavailable": "Las suscripciones no están disponibles en esta compilación de la app. Instala la última compilación EAS de desarrollo o producción.",
-      "unconfigured": "Las suscripciones no están configuradas en esta compilación. Añade la clave del SDK de RevenueCat al entorno de compilación y vuelve a compilar."
+      "unconfigured": "Ryvro Pro aún no está disponible en esta compilación. Actualiza la app o contacta con soporte si esto sigue ocurriendo."
     },
     "profile": {
       "rowActiveA11y": "Ryvro Suscripción activa profesional",
