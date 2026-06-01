@@ -258,12 +258,14 @@ export const ONBOARDING_START_SEED: Record<string, unknown> = {
  */
 export const MAIN_APP_SEED: Record<string, unknown> = {
   'e2e:mock_user': MOCK_USER,
+  'i18n:language': 'en',
   'onboarding:complete': true,
   'onboarding:data': UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES.healthcare,
 };
 
 export const MINING_FIFO_MAIN_APP_SEED: Record<string, unknown> = {
   'e2e:mock_user': MOCK_USER,
+  'i18n:language': 'en',
   'onboarding:complete': true,
   'onboarding:data': MINING_FIFO_ONBOARDING_DATA,
 };
@@ -274,6 +276,7 @@ export const NON_MINING_PROOF_MAIN_APP_SEED: Record<string, unknown> = {
     uid: 'e2e-nurse-uid-001',
     displayName: 'Amina',
   },
+  'i18n:language': 'en',
   'onboarding:complete': true,
   'onboarding:data': NON_MINING_PROOF_ONBOARDING_DATA,
 };

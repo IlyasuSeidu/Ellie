@@ -301,7 +301,9 @@ export const ProfileScreen: React.FC = () => {
         >
           <Ionicons name="language-outline" size={18} color={theme.colors.sacredGold} />
           <Text style={styles.languageLabel}>{t('language.label')}</Text>
-          <Text style={styles.languageValue}>{LANGUAGE_NAMES[language] ?? language}</Text>
+          <Text style={styles.languageValue} testID="language-selector-current-value">
+            {LANGUAGE_NAMES[language] ?? language}
+          </Text>
           <Ionicons name="chevron-forward" size={16} color={theme.colors.dust} />
         </TouchableOpacity>
 

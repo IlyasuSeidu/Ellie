@@ -2145,7 +2145,7 @@ describe('Ryvro environment template', () => {
     expect(audit).toContain(
       'removed the retired `ellieBrain` HTTP export from active backend source'
     );
-    expect(audit).toContain('CI run `26728238458` on commit `d7f8f0e`');
+    expect(audit).toContain('CI run `26728442767` on commit `4db2331`');
     expect(audit).toContain(
       'Added settings-panel regression coverage proving saved shift definition names, colors, icons, times, and cycle counts render in Profile settings.'
     );

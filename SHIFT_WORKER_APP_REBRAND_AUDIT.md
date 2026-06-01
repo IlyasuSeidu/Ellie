@@ -44,7 +44,7 @@ Completed in the current working tree:
 - Expanded E2E onboarding fixtures for launch QA personas including nurse, security officer, firefighter, plant operator, linehaul driver, warehouse lead, hotel duty manager, airport operations coordinator, offshore technician, and a mining/FIFO operator.
 - Cleaned remaining launch-critical broad-market copy in README, English onboarding feature descriptions, selected translated placeholders/social proof, and onboarding icon source guidance.
 - Hardened tracked generated-content guidance and publishable build-in-public packs so they use Ryvro naming, broad shift-worker discovery tags, and FIFO/shift-worker audience language instead of stale Ellie or mining-only tags.
-- Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the launch-readiness cleanup. The latest pushed CI run for this branch passed on 2026-05-31: CI run `26728238458` on commit `d7f8f0e`.
+- Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the launch-readiness cleanup. The latest pushed CI run for this branch passed on 2026-05-31: CI run `26728442767` on commit `4db2331`.
 - Aligned the active deployment guide to the committed Ryvro `eas.json`, dynamic `app.config.js`, and guarded `npm run release:submit:check` plus `eas submit --latest` store-submission flow.
 - Renamed retired Ellie storage-key code symbols to neutral Ryvro-era `retired...` names while preserving the raw old keys only for migration/removal.
 - Tightened the Ryvro native scaffold verifier so active release checks inspect only `ios/RyvroShiftPlanner` generated paths instead of accepting old iOS project-name fallbacks.
@@ -80,6 +80,7 @@ Completed in the current working tree:
 - Reconciled the older implementation tracker with current Ryvro evidence so repo-complete items are checked off and owner-only/live-device gaps remain explicit instead of mixed with stale implementation tasks.
 - Added repo-side social profile and launch landing-page source copy so the owner can publish external launch surfaces after handle/domain reservation without inventing new mining-only language.
 - Added focused settings-entry coverage proving Profile settings opens the Universal Shift Builder in both edit and create modes with the AI/manual builder affordance visible.
+- Passed the iPhone 16 simulator profile smoke on 2026-06-01 with `npm run test:e2e -- e2e/profile.test.ts --reuse`: 4/4 tests covered language selector visibility, language-sheet opening, Spanish language switching, and opening the Universal Shift Builder from Profile settings. The tested build plist reported `CFBundleDisplayName = Ryvro`, `CFBundleIdentifier = com.ryvro.shiftplanner`, and `CFBundleName = RyvroShiftPlanner`.
 
 Still pending outside this repo or intentionally kept for compatibility:
 
@@ -1537,7 +1538,7 @@ Phase gate:
 - [x] Update translated `profile.json` files.
 - [x] Update translated `dashboard.json` files.
 - [x] Mark machine-translated strings for human review if applicable.
-- [ ] Test language switch on simulator.
+- [x] Test language switch on simulator.
 - [x] Scan translated files for old mining-first copy.
 
 Phase gate:
@@ -1658,7 +1659,7 @@ Phase gate:
 
 - [x] Fresh install on iOS simulator. Detox previously installed the rebuilt Ryvro display-name app on a clean iPhone XS Max simulator before the seeded dashboard smoke; current Detox build config targets the clean-generated `RyvroShiftPlanner.app` product.
 - [ ] Fresh onboarding on iOS simulator.
-- [ ] Settings edit on iOS simulator.
+- [x] Settings edit on iOS simulator. Profile settings opened the Universal Shift Builder on the iPhone 16 simulator with the Ryvro bundle identity.
 - [ ] Dashboard color/icon check on iOS simulator.
 - [ ] Fresh install on iPhone 13.
 - [ ] Auth check on iPhone 13.

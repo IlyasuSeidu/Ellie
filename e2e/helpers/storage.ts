@@ -19,6 +19,7 @@ const STORAGE_RELATIVE =
   'Library/Application Support/com.ryvro.shiftplanner/RCTAsyncLocalStorage_V1';
 const MANIFEST = 'manifest.json';
 const APP_PREFIX = 'app:';
+const RAW_STORAGE_KEYS = new Set(['i18n:language', '@ellie_language']);
 const ANDROID_STORAGE_DB = 'RKStorage';
 const ANDROID_STORAGE_TABLE = 'catalystLocalStorage';
 
@@ -72,7 +73,7 @@ function createAndroidStorageDb(items: Record<string, unknown>): string {
   const statements = [
     `CREATE TABLE ${ANDROID_STORAGE_TABLE} (key TEXT PRIMARY KEY, value TEXT NOT NULL);`,
     ...Object.entries(items).map(([key, value]) => {
-      const fullKey = `${APP_PREFIX}${key}`;
+      const fullKey = RAW_STORAGE_KEYS.has(key) ? key : `${APP_PREFIX}${key}`;
       return `INSERT OR REPLACE INTO ${ANDROID_STORAGE_TABLE} (key, value) VALUES (${sqliteLiteral(
         fullKey
       )}, ${sqliteLiteral(serialize(value))});`;
@@ -150,7 +151,8 @@ export function seedStorage(items: Record<string, unknown>): void {
   }
 
   for (const [key, value] of Object.entries(items)) {
-    manifest[`${APP_PREFIX}${key}`] = serialize(value);
+    const fullKey = RAW_STORAGE_KEYS.has(key) ? key : `${APP_PREFIX}${key}`;
+    manifest[fullKey] = serialize(value);
   }
 
   fs.writeFileSync(manifestPath, JSON.stringify(manifest));
@@ -176,7 +178,7 @@ export function clearE2ESeedKeys(): void {
   }
 
   for (const key of Object.keys(manifest)) {
-    if (key.startsWith(`${APP_PREFIX}e2e:`)) {
+    if (key.startsWith(`${APP_PREFIX}e2e:`) || RAW_STORAGE_KEYS.has(key)) {
       delete manifest[key];
     }
   }

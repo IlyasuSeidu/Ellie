@@ -81,6 +81,8 @@ Completed and guarded in the current branch:
 - `pod install` in `ios/`: passed on 2026-05-30 and regenerated the ignored local CocoaPods metadata from `EllieOpenWakeWord` to `RyvroOpenWakeWord`.
 - `E2E_TEST_MODE=1 npx expo start --localhost` plus `npx detox test --configuration ios.release e2e/dashboard.test.ts --reuse`: passed on 2026-05-29 on the iPhone 16 simulator, 15 dashboard smoke tests.
 - `E2E_TEST_MODE=1 npx detox test --configuration ios.release.xsmax e2e/dashboard.test.ts`: passed on 2026-05-29 on the iPhone XS Max simulator, 15 dashboard smoke tests. The historical run installed the then-current Ryvro display-name build and verified the small-screen dashboard smoke without the RevenueCat release guard alert; current clean prebuilds produce the internal `RyvroShiftPlanner.app` product with `CFBundleDisplayName = Ryvro`.
+- `npm run test:e2e:build:ios`: passed on 2026-06-01 after the Ryvro identity/native build repair. The built iPhone simulator plist reported `CFBundleDisplayName = Ryvro`, `CFBundleIdentifier = com.ryvro.shiftplanner`, and `CFBundleName = RyvroShiftPlanner`.
+- `E2E_TEST_MODE=1 EXPO_PUBLIC_E2E_TEST_MODE=1 ./node_modules/.bin/expo start --localhost --port 8081 --clear` plus `npm run test:e2e -- e2e/profile.test.ts --reuse`: passed on 2026-06-01 on the iPhone 16 simulator, 4 profile smoke tests covering language selector visibility, language-sheet opening, Spanish language switching, and Profile settings opening the Universal Shift Builder.
 - `npm test -- RevenueCatRuntime ryvroEnvTemplate --runInBand`: passed on 2026-05-29 after adding the E2E RevenueCat runtime guard and treating `test_` RevenueCat keys as unavailable launch keys.
 - `npm run validate`: passed on 2026-05-29 after the latest Phase 9 E2E seed and selector updates.
 - Recent pushed GitHub Actions check for PR #1 passed on commit `610795d`: CI run `26678024310` passed Lint and Type Check, Unit Tests, and Build Check.
@@ -90,6 +92,7 @@ Completed and guarded in the current branch:
 - Local release verification on 2026-05-30 passed focused API-reference/config tests and `npm run release:check` after the active API reference launch-configuration update. The release check included TypeScript, 106 Jest suites / 1,732 tests, 4 snapshots, and the backend functions TypeScript build.
 - Local release verification on 2026-05-31 passed `git diff --check`, focused readiness/audit config tests, `npm run release:clearance`, and `npm run release:check` after refreshing the launch-readiness handoff. The release check included TypeScript, 106 Jest suites / 1,732 tests, 4 snapshots, and the backend functions TypeScript build.
 - Local release verification on 2026-05-31 passed `git diff --check`, focused README/deployment-plan config tests, and `npm run release:check` after adding the README release status snapshot. The release check included TypeScript, 106 Jest suites / 1,734 tests, 4 snapshots, and the backend functions TypeScript build.
+- Local profile simulator verification on 2026-06-01 passed focused config/profile tests and `npm run test:e2e -- e2e/profile.test.ts --reuse` after repairing the iOS Detox build path and adding stable Profile settings coverage. The focused Jest pass covered 3 suites / 83 tests.
 - Local release verification on 2026-05-31 passed focused offline-strategy/config tests and `npm run release:check` after aligning offline-first docs with the current NetInfo-backed implementation. The release check included TypeScript, 106 Jest suites / 1,735 tests, 4 snapshots, and the backend functions TypeScript build.
 - Local release verification on 2026-05-31 passed `git diff --check`, focused pending-sync indicator/config tests, and `npm run release:check` after adding global pending-sync visibility. The release check included TypeScript, 108 Jest suites / 1,740 tests, 4 snapshots, and the backend functions TypeScript build.
 - Local release verification on 2026-05-31 passed focused cache-policy/config tests and `npm run release:check` after centralizing cache TTL policy in `src/config/cacheConfig.ts`. The release check included TypeScript, 109 Jest suites / 1,742 tests, 4 snapshots, and the backend functions TypeScript build.
@@ -190,6 +193,7 @@ Completed and guarded in the current branch:
 Completed:
 
 - Available simulator build/install identity was verified through the Detox iOS release build path and generated plist evidence.
+- iPhone 16 simulator profile QA passed with language selector, Spanish language switching, and Profile settings to Universal Shift Builder coverage on the Ryvro bundle identity.
 - Small-screen simulator QA passed on an iPhone XS Max simulator with 15 dashboard smoke tests.
 - Android build identity was verified from the debug APK package metadata.
 - Android release-style emulator dashboard QA passed on `Medium_Phone_API_36.0` with 15 Detox dashboard smoke tests.

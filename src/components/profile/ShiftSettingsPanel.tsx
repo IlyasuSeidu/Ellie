@@ -122,6 +122,23 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
             {schedule ? 'Universal schedule active' : 'No schedule configured'}
           </Animated.Text>
         </View>
+        {config.features.universalShiftBuilderEnabled && (
+          <TouchableOpacity
+            style={styles.headerEditButton}
+            onPress={handleOpenUniversalBuilder}
+            disabled={subscriptionLoading}
+            activeOpacity={0.76}
+            accessibilityRole="button"
+            accessibilityLabel={schedule ? 'Open schedule builder' : 'Create schedule'}
+            testID="shift-settings-builder-button"
+          >
+            <Ionicons
+              name={schedule ? 'create-outline' : 'build-outline'}
+              size={18}
+              color={iconColor}
+            />
+          </TouchableOpacity>
+        )}
       </LinearGradient>
 
       <View style={styles.card}>
@@ -210,6 +227,7 @@ export const ShiftSettingsPanel: React.FC<ShiftSettingsPanelProps> = ({
             activeOpacity={0.76}
             accessibilityRole="button"
             accessibilityLabel={schedule ? 'Edit Universal Schedule' : 'Build Universal Schedule'}
+            testID="shift-settings-builder-card-button"
           >
             <View style={styles.builderButtonLeft}>
               <Ionicons
@@ -282,6 +300,16 @@ const styles = StyleSheet.create({
   },
   headerCopy: {
     flex: 1,
+  },
+  headerEditButton: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255,255,255,0.18)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.24)',
   },
   headerTitle: {
     fontSize: 16,

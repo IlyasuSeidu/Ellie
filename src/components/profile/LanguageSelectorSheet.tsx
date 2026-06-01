@@ -155,6 +155,7 @@ const LanguageRow: React.FC<RowProps> = React.memo(
           accessibilityRole="button"
           accessibilityState={{ selected: isSelected }}
           accessibilityLabel={localizedName}
+          testID={`language-option-${option.code}`}
         >
           {/* Animated gold border sits flush over the row, transparent to touches */}
           <Animated.View style={[styles.optionBorderOverlay, borderStyle]} pointerEvents="none" />
@@ -312,6 +313,7 @@ export const LanguageSelectorSheet: React.FC<LanguageSelectorSheetProps> = ({
           activeOpacity={1}
           accessibilityRole="button"
           accessibilityLabel={t('buttons.close')}
+          testID="language-selector-backdrop"
         />
       </Animated.View>
 
@@ -337,6 +339,7 @@ export const LanguageSelectorSheet: React.FC<LanguageSelectorSheetProps> = ({
             hitSlop={10}
             accessibilityRole="button"
             accessibilityLabel={t('buttons.close')}
+            testID="language-selector-close-button"
           >
             <View style={styles.closeButtonInner}>
               <Ionicons name="close" size={15} color={theme.colors.dust} />

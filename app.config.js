@@ -96,6 +96,7 @@ module.exports = ({ config = {} }) => {
         },
       },
     ],
+    './plugins/withNonModularHeaders',
     [
       '@react-native-google-signin/google-signin',
       {
