@@ -1457,6 +1457,7 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('Latest iOS simulator gate');
     expect(readme).toContain('fresh onboarding path into the Universal Shift Builder');
     expect(readme).toContain('active universal shift icon');
+    expect(readme).toContain('auth, onboarding, dashboard, profile, and builder mobile-fit checks');
     expect(readme).toContain('Recent pushed PR gates');
     expect(readme).toContain('GitHub Actions CI run `26735606843`');
     expect(readme).toContain('commit `f194981`');
@@ -1714,7 +1715,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: June 1, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, asset checklist reconciliation, industry template visual badge checklist reconciliation, working tracker reconciliation, social profile and landing-page source copy, settings builder entry coverage, settings color/icon coverage, latest public clearance evidence at 20:33Z, iOS simulator onboarding and dashboard proof, and latest pushed PR #1 CI pass `26735606843` on `f194981`)'
+      'Last updated: June 1, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, asset checklist reconciliation, industry template visual badge checklist reconciliation, working tracker reconciliation, social profile and landing-page source copy, settings builder entry coverage, settings color/icon coverage, latest public clearance evidence at 20:33Z, iOS simulator onboarding, dashboard, and mobile-fit proof, and latest pushed PR #1 CI pass `26735606843` on `f194981`)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
@@ -1947,6 +1948,8 @@ describe('Ryvro environment template', () => {
       'fresh Welcome, pain-hook, introduction, and Universal Shift Builder entry path'
     );
     expect(readinessReport).toContain('active universal shift icon from the healthcare template');
+    expect(readinessReport).toContain('signed-out auth controls, fresh onboarding CTA');
+    expect(readinessReport).toContain('profile language/settings controls');
     expect(readinessReport).toContain('CI run `26728238458`');
     expect(readinessReport).toContain('commit `d7f8f0e`');
     expect(readinessReport).toContain('CI run `26727972848`');

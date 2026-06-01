@@ -1544,7 +1544,7 @@ Phase gate:
 Phase gate:
 
 - [x] Changing language does not bring back mining-first onboarding or paywall copy.
-- [ ] Critical screens still fit on mobile.
+- [x] Critical screens still fit on mobile. `npm run test:e2e -- e2e/critical-mobile.test.ts --reuse` passed 3/3 iPhone 16 simulator checks covering signed-out auth controls, fresh onboarding CTA, dashboard shift/calendar controls, profile language/settings controls, and Universal Shift Builder entry controls.
 
 ### Phase 5: Universal Templates And Demo Data
 
