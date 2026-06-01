@@ -317,7 +317,7 @@ export const ShiftSequenceCanvas: React.FC<ShiftSequenceCanvasProps> = ({
             if (!def) return null;
             return (
               <DraggableSequenceItem
-                key={item.id}
+                key={`${item.id}-${index}`}
                 item={item}
                 definition={def}
                 index={index}

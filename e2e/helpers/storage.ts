@@ -9,7 +9,7 @@
  *   logical key  →  "app:" + key  (stored in RCTAsyncLocalStorage_V1/manifest.json)
  */
 
-import { execFileSync, execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
@@ -31,14 +31,22 @@ function isAndroidDetoxRun(): boolean {
   );
 }
 
-function getAppDataContainer(): string {
-  return execSync(`xcrun simctl get_app_container booted ${BUNDLE_ID} data`, {
-    encoding: 'utf8',
-  }).trim();
+function getIosDeviceId(deviceId?: string): string {
+  return deviceId || process.env.DETOX_DEVICE_ID || process.env.SIMULATOR_UDID || 'booted';
 }
 
-function getManifestPath(): string {
-  const container = getAppDataContainer();
+function getAppDataContainer(deviceId?: string): string {
+  return execFileSync(
+    'xcrun',
+    ['simctl', 'get_app_container', getIosDeviceId(deviceId), BUNDLE_ID, 'data'],
+    {
+      encoding: 'utf8',
+    }
+  ).trim();
+}
+
+function getManifestPath(deviceId?: string): string {
+  const container = getAppDataContainer(deviceId);
   return path.join(container, STORAGE_RELATIVE, MANIFEST);
 }
 
@@ -130,13 +138,13 @@ function replaceAndroidStorage(items: Record<string, unknown>): void {
  *
  * @param items  Map of logical key → value (e.g. { 'onboarding:complete': true })
  */
-export function seedStorage(items: Record<string, unknown>): void {
+export function seedStorage(items: Record<string, unknown>, deviceId?: string): void {
   if (isAndroidDetoxRun()) {
     replaceAndroidStorage(items);
     return;
   }
 
-  const manifestPath = getManifestPath();
+  const manifestPath = getManifestPath(deviceId);
   const dir = path.dirname(manifestPath);
 
   fs.mkdirSync(dir, { recursive: true });
@@ -158,16 +166,24 @@ export function seedStorage(items: Record<string, unknown>): void {
   fs.writeFileSync(manifestPath, JSON.stringify(manifest));
 }
 
+function shouldClearSeededKey(key: string): boolean {
+  return (
+    key.startsWith(`${APP_PREFIX}e2e:`) ||
+    key.startsWith(`${APP_PREFIX}onboarding:`) ||
+    RAW_STORAGE_KEYS.has(key)
+  );
+}
+
 /**
- * Remove all keys with the "app:e2e:" prefix from the manifest.
+ * Remove E2E auth, onboarding, and language seed keys from the manifest.
  */
-export function clearE2ESeedKeys(): void {
+export function clearE2ESeedKeys(deviceId?: string): void {
   if (isAndroidDetoxRun()) {
     removeAndroidStorageFiles();
     return;
   }
 
-  const manifestPath = getManifestPath();
+  const manifestPath = getManifestPath(deviceId);
   if (!fs.existsSync(manifestPath)) return;
 
   let manifest: Record<string, string | null>;
@@ -178,7 +194,7 @@ export function clearE2ESeedKeys(): void {
   }
 
   for (const key of Object.keys(manifest)) {
-    if (key.startsWith(`${APP_PREFIX}e2e:`) || RAW_STORAGE_KEYS.has(key)) {
+    if (shouldClearSeededKey(key)) {
       delete manifest[key];
     }
   }

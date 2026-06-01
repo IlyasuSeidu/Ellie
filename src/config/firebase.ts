@@ -148,6 +148,9 @@ function initializeFirebaseApp(): FirebaseApp {
 
   try {
     if (canUseNativeFirebase()) {
+      if (getApps().length === 0) {
+        void initializeApp(buildFirebaseOptions());
+      }
       app = getApp();
       console.log('Firebase app initialized successfully');
       return app;

@@ -29,6 +29,7 @@ import {
   type FirestoreError,
 } from '@/services/firebase/firestoreSdk';
 import { getAuth, type Auth } from '@/services/firebase/authSdk';
+import { getFirebaseInstances } from '@/config/firebase';
 import { asyncStorageService } from '@/services/AsyncStorageService';
 import { shouldUseNativeFirebaseFullStack } from '@/services/firebase/nativeAvailability';
 import { logger } from '@/utils/logger';
@@ -63,8 +64,9 @@ export class FirebaseService {
   private unsubscribeNetwork: (() => void) | null = null;
 
   constructor() {
-    this.db = getFirestore();
-    this.auth = getAuth();
+    const firebaseInstances = getFirebaseInstances();
+    this.db = firebaseInstances.firestore ?? getFirestore(firebaseInstances.app);
+    this.auth = firebaseInstances.auth ?? getAuth(firebaseInstances.app);
     this.initializeNetworkListener();
   }
 

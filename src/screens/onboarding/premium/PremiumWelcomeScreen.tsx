@@ -151,6 +151,7 @@ export const PremiumWelcomeScreen: React.FC<PremiumWelcomeScreenProps> = ({
 
       {/* Content */}
       <ScrollView
+        testID={`${testID}-scroll-view`}
         contentContainerStyle={[
           styles.content,
           {

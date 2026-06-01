@@ -47,6 +47,12 @@ module.exports = {
         id: '0D934C32-AFB6-497E-8A1E-39F2DB3C447F',
       },
     },
+    'simulator.iphone16e': {
+      type: 'ios.simulator',
+      device: {
+        id: 'E19B62D4-CF73-49E3-8E6B-F0663DA6E76C',
+      },
+    },
     emulator: {
       type: 'android.emulator',
       device: {
@@ -61,6 +67,10 @@ module.exports = {
     },
     'ios.release.xsmax': {
       device: 'simulator.xsmax',
+      app: 'ios.release',
+    },
+    'ios.release.iphone16e': {
+      device: 'simulator.iphone16e',
       app: 'ios.release',
     },
     'android.release': {

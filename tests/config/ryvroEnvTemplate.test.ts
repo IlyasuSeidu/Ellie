@@ -566,15 +566,26 @@ describe('Ryvro environment template', () => {
     expect(detoxConfig).toContain("'ios.release.xsmax'");
     expect(detoxConfig).toContain("'simulator.xsmax'");
     expect(detoxConfig).toContain("id: '0D934C32-AFB6-497E-8A1E-39F2DB3C447F'");
+    expect(detoxConfig).toContain("'ios.release.iphone16e'");
+    expect(detoxConfig).toContain("'simulator.iphone16e'");
+    expect(detoxConfig).toContain("id: 'E19B62D4-CF73-49E3-8E6B-F0663DA6E76C'");
     expect(detoxConfig).not.toContain('EllieMinerShiftAssistant.app');
     expect(detoxConfig).not.toContain('name=iPhone 15 Pro');
   });
 
   it('keeps the native iOS build product on the Ryvro app artifact', () => {
+    const appDelegate = readOptional('ios/RyvroShiftPlanner/AppDelegate.swift');
     const xcodeProject = readOptional('ios/RyvroShiftPlanner.xcodeproj/project.pbxproj');
     const xcodeScheme = readOptional(
       'ios/RyvroShiftPlanner.xcodeproj/xcshareddata/xcschemes/RyvroShiftPlanner.xcscheme'
     );
+
+    if (appDelegate) {
+      expect(appDelegate).toContain(
+        'Firebase default app is initialized through the React Native Firebase JS registry'
+      );
+      expect(appDelegate).not.toContain('FirebaseApp.configure()');
+    }
 
     if (xcodeProject) {
       expect(xcodeProject).toMatch(/PRODUCT_BUNDLE_IDENTIFIER = "?com\.ryvro\.shiftplanner"?;/);
@@ -3625,6 +3636,10 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'src/config/firebase.ts'),
       'utf8'
     );
+    const firebaseServiceSource = fs.readFileSync(
+      path.join(process.cwd(), 'src/services/firebase/FirebaseService.ts'),
+      'utf8'
+    );
     const firebaseFallbackTest = fs.readFileSync(
       path.join(process.cwd(), 'tests/config/firebase.native-fallback.test.ts'),
       'utf8'
@@ -3632,6 +3647,18 @@ describe('Ryvro environment template', () => {
 
     expect(firebaseConfigSource).toContain('const RYVRO_JS_SERVICE_APP_NAME');
     expect(firebaseConfigSource).toContain('const RETIRED_JS_SERVICE_APP_NAME');
+    expect(firebaseConfigSource).toContain('if (getApps().length === 0)');
+    expect(firebaseConfigSource).toContain('void initializeApp(buildFirebaseOptions())');
+    expect(firebaseServiceSource).toContain(
+      "import { getFirebaseInstances } from '@/config/firebase'"
+    );
+    expect(firebaseServiceSource).toContain('const firebaseInstances = getFirebaseInstances()');
+    expect(
+      fs.readFileSync(
+        path.join(process.cwd(), 'src/services/firebase/nativeAvailability.ts'),
+        'utf8'
+      )
+    ).toContain("process.env.EXPO_PUBLIC_E2E_TEST_MODE === '1'");
     expect(firebaseConfigSource).toContain("'__RYVRO_JS_SERVICES__'");
     expect(firebaseConfigSource).toContain("'__ELLIE_JS_SERVICES__'");
     expect(firebaseConfigSource).not.toContain('LEGACY_ELLIE_JS_SERVICE_APP_NAME');

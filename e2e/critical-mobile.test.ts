@@ -19,7 +19,7 @@ async function launchWithoutSeed(): Promise<void> {
   } catch {
     // The app may not be running yet.
   }
-  clearE2ESeedKeys();
+  clearE2ESeedKeys(device.id);
   await device.launchApp({ newInstance: true });
 }
 
@@ -29,8 +29,10 @@ async function launchWithSeed(seed: Record<string, unknown>): Promise<void> {
   } catch {
     // The app may not be running yet.
   }
-  seedStorage(seed);
+  clearE2ESeedKeys(device.id);
+  seedStorage(seed, device.id);
   await device.launchApp({ newInstance: true });
+  await device.disableSynchronization();
 }
 
 async function waitVisible(testID: string, timeout = TIMEOUT): Promise<void> {
@@ -58,7 +60,8 @@ async function scrollVisible(
 
 describe('Launch-critical mobile fit', () => {
   afterEach(async () => {
-    clearE2ESeedKeys();
+    await device.enableSynchronization();
+    clearE2ESeedKeys(device.id);
   });
 
   it('shows primary auth controls on the signed-out launch screen', async () => {
@@ -78,7 +81,12 @@ describe('Launch-critical mobile fit', () => {
   it('shows the first-run onboarding entry on a fresh authenticated launch', async () => {
     await launchWithSeed(ONBOARDING_START_SEED);
 
-    await waitVisible('premium-welcome-screen-button');
+    await waitVisible('premium-welcome-screen');
+    await scrollVisible(
+      'premium-welcome-screen-button',
+      'premium-welcome-screen-scroll-view',
+      'down'
+    );
   });
 
   it('shows dashboard, profile, and builder controls after onboarding is complete', async () => {

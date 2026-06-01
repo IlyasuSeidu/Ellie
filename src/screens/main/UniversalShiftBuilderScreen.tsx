@@ -20,6 +20,7 @@ import {
   Platform,
   KeyboardAvoidingView,
   Modal,
+  useWindowDimensions,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation, useRoute, type RouteProp } from '@react-navigation/native';
@@ -176,6 +177,7 @@ function normalizeTemplateSearch(value: string): string {
 
 export const UniversalShiftBuilderScreen: React.FC = () => {
   const insets = useSafeAreaInsets();
+  const { width: windowWidth } = useWindowDimensions();
   const navigation = useNavigation();
   const route = useRoute<BuilderRoute>();
   const { t, i18n } = useTranslation('schedule');
@@ -226,6 +228,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
   const [selectedTemplateAnalytics, setSelectedTemplateAnalytics] =
     useState<SelectedTemplateAnalytics | null>(null);
   const [templateSearchQuery, setTemplateSearchQuery] = useState('');
+  const templateTileWidth = Math.min(312, Math.max(248, windowWidth - theme.spacing.md * 5));
 
   // ── Inspector sheet state ───────────────────────────────────────────────────
   const [inspectorVisible, setInspectorVisible] = useState(false);
@@ -1344,7 +1347,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
         contentContainerStyle={styles.templateContent}
         testID="universal-shift-builder-template-scroll"
       >
-        <View style={styles.templateSearchCard}>
+        <View style={[styles.templateSearchCard, { width: templateTileWidth }]}>
           <Ionicons name="search" size={17} color={theme.colors.shadow} />
           <TextInput
             value={templateSearchQuery}
@@ -1362,7 +1365,7 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
         {filteredTemplates.map((template) => (
           <TouchableOpacity
             key={template.id}
-            style={styles.templateCard}
+            style={[styles.templateCard, { width: templateTileWidth }]}
             onPress={() => handleApplyTemplate(template.id)}
             accessibilityRole="button"
             accessibilityLabel={t('builder.useTemplateA11y', { template: template.title })}
@@ -1425,7 +1428,10 @@ export const UniversalShiftBuilderScreen: React.FC = () => {
           </TouchableOpacity>
         ))}
         {filteredTemplates.length === 0 && (
-          <View style={styles.templateEmptyCard} testID="universal-shift-builder-template-empty">
+          <View
+            style={[styles.templateEmptyCard, { width: templateTileWidth }]}
+            testID="universal-shift-builder-template-empty"
+          >
             <Ionicons name="search-outline" size={22} color={theme.colors.shadow} />
             <Text style={styles.templateEmptyTitle}>{t('builder.templateEmptyTitle')}</Text>
             <Text style={styles.templateEmptyHint}>{t('builder.templateEmptyHint')}</Text>

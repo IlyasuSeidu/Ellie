@@ -1,6 +1,9 @@
 import { NativeModules, Platform } from 'react-native';
 
-const baseUseFirebaseJsSdk = Platform.OS === 'web' || process.env.JEST_WORKER_ID !== undefined;
+const isE2ETestMode =
+  process.env.E2E_TEST_MODE === '1' || process.env.EXPO_PUBLIC_E2E_TEST_MODE === '1';
+const baseUseFirebaseJsSdk =
+  Platform.OS === 'web' || process.env.JEST_WORKER_ID !== undefined || isE2ETestMode;
 let forceFirebaseJsSdk = false;
 
 const nativeModules = NativeModules as Record<string, unknown> | undefined;
