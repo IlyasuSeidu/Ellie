@@ -1450,17 +1450,17 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('110 Jest suites / 1,777 tests / 4 snapshots');
+    expect(readme).toContain('110 Jest suites / 1,779 tests / 4 snapshots');
     expect(readme).toContain('the Ryvro native scaffold preflight');
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
     expect(readme).toContain('Recent pushed PR gates');
-    expect(readme).toContain('GitHub Actions CI run `26728115119`');
+    expect(readme).toContain('GitHub Actions CI run `26728238458`');
+    expect(readme).toContain('commit `d7f8f0e`');
+    expect(readme).toContain('CI run `26728115119`');
     expect(readme).toContain('commit `50bc770`');
     expect(readme).toContain('CI run `26727972848`');
     expect(readme).toContain('commit `5bee483`');
-    expect(readme).toContain('CI run `26727786109`');
-    expect(readme).toContain('commit `5b23309`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain(
@@ -1469,7 +1469,7 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('valid-prompt `SHIFT_SCHEDULE_PARSER_URL` parser response');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
     expect(readme).toContain('Works at remote work locations');
-    expect(readme).toContain('Testing infrastructure (1,777 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,779 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Every Work Pattern Is Different');
     expect(readme).toContain('work location, and reminder settings');
@@ -1478,9 +1478,9 @@ describe('Ryvro environment template', () => {
     );
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,777 tests in the latest release check)');
-    expect(readme).toContain('Current Status (as of 2026-05-31 release check)');
-    expect(readme).toContain('Total Tests**: 1,777 passing (110 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Jest (1,779 tests in the latest release check)');
+    expect(readme).toContain('Current Status (as of 2026-06-01 release check)');
+    expect(readme).toContain('Total Tests**: 1,779 passing (110 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -1711,7 +1711,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: May 31, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, asset checklist reconciliation, industry template visual badge checklist reconciliation, working tracker reconciliation, social profile and landing-page source copy, settings builder entry coverage, latest public clearance evidence at 20:33Z, and latest pushed PR #1 CI pass `26728115119` on `50bc770`)'
+      'Last updated: June 1, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, asset checklist reconciliation, industry template visual badge checklist reconciliation, working tracker reconciliation, social profile and landing-page source copy, settings builder entry coverage, settings color/icon coverage, latest public clearance evidence at 20:33Z, and latest pushed PR #1 CI pass `26728238458` on `d7f8f0e`)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
@@ -1924,7 +1924,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('110 Jest suites / 1,767 tests');
     expect(readinessReport).toContain('110 Jest suites / 1,771 tests');
     expect(readinessReport).toContain('110 Jest suites / 1,776 tests');
-    expect(readinessReport).toContain('110 Jest suites / 1,777 tests');
+    expect(readinessReport).toContain('110 Jest suites / 1,779 tests');
     expect(readinessReport).toContain('Profile legal/support link coverage');
     expect(readinessReport).toContain(
       'requiring real root-level Firebase native service files for Ryvro production builds'
@@ -1938,12 +1938,10 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
-    expect(readinessReport).toContain('CI run `26728115119`');
-    expect(readinessReport).toContain('commit `50bc770`');
+    expect(readinessReport).toContain('CI run `26728238458`');
+    expect(readinessReport).toContain('commit `d7f8f0e`');
     expect(readinessReport).toContain('CI run `26727972848`');
     expect(readinessReport).toContain('commit `5bee483`');
-    expect(readinessReport).toContain('CI run `26727786109`');
-    expect(readinessReport).toContain('commit `5b23309`');
     expect(readinessReport).toContain('CI run `26727672100`');
     expect(readinessReport).toContain('commit `3d494f8`');
     expect(readinessReport).toContain('CI run `26727544770`');
@@ -2147,7 +2145,10 @@ describe('Ryvro environment template', () => {
     expect(audit).toContain(
       'removed the retired `ellieBrain` HTTP export from active backend source'
     );
-    expect(audit).toContain('CI run `26728115119` on commit `50bc770`');
+    expect(audit).toContain('CI run `26728238458` on commit `d7f8f0e`');
+    expect(audit).toContain(
+      'Added settings-panel regression coverage proving saved shift definition names, colors, icons, times, and cycle counts render in Profile settings.'
+    );
     expect(audit).toContain(
       'Aligned the active deployment guide to the committed Ryvro `eas.json`, dynamic `app.config.js`, and guarded `npm run release:submit:check` plus `eas submit --latest` store-submission flow.'
     );
@@ -2651,19 +2652,19 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('eas submit --platform android --latest');
     expect(ownerRunbook).toContain('npm run release:submit:check');
     expect(ownerRunbook).toContain('Final submit readiness is guarded');
-    expect(ownerRunbook).toContain('110 Jest suites, 1,777 tests');
+    expect(ownerRunbook).toContain('110 Jest suites, 1,779 tests');
     expect(ownerRunbook).toContain('npm run release:owner:check');
     expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');
     expect(ownerRunbook).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
     expect(ownerRunbook).toContain('Recent pushed PR gate evidence includes');
     expect(ownerRunbook).not.toContain('Latest pushed PR gate');
+    expect(ownerRunbook).toContain('CI run `26728238458`');
+    expect(ownerRunbook).toContain('commit `d7f8f0e`');
     expect(ownerRunbook).toContain('CI run `26728115119`');
     expect(ownerRunbook).toContain('commit `50bc770`');
     expect(ownerRunbook).toContain('CI run `26727972848`');
     expect(ownerRunbook).toContain('commit `5bee483`');
-    expect(ownerRunbook).toContain('CI run `26727786109`');
-    expect(ownerRunbook).toContain('commit `5b23309`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');

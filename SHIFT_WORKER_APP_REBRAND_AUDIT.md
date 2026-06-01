@@ -44,7 +44,7 @@ Completed in the current working tree:
 - Expanded E2E onboarding fixtures for launch QA personas including nurse, security officer, firefighter, plant operator, linehaul driver, warehouse lead, hotel duty manager, airport operations coordinator, offshore technician, and a mining/FIFO operator.
 - Cleaned remaining launch-critical broad-market copy in README, English onboarding feature descriptions, selected translated placeholders/social proof, and onboarding icon source guidance.
 - Hardened tracked generated-content guidance and publishable build-in-public packs so they use Ryvro naming, broad shift-worker discovery tags, and FIFO/shift-worker audience language instead of stale Ellie or mining-only tags.
-- Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the launch-readiness cleanup. The latest pushed CI run for this branch passed on 2026-05-31: CI run `26728115119` on commit `50bc770`.
+- Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the launch-readiness cleanup. The latest pushed CI run for this branch passed on 2026-05-31: CI run `26728238458` on commit `d7f8f0e`.
 - Aligned the active deployment guide to the committed Ryvro `eas.json`, dynamic `app.config.js`, and guarded `npm run release:submit:check` plus `eas submit --latest` store-submission flow.
 - Renamed retired Ellie storage-key code symbols to neutral Ryvro-era `retired...` names while preserving the raw old keys only for migration/removal.
 - Tightened the Ryvro native scaffold verifier so active release checks inspect only `ios/RyvroShiftPlanner` generated paths instead of accepting old iOS project-name fallbacks.
@@ -52,6 +52,7 @@ Completed in the current working tree:
 - Renamed the retired Firebase JS service sidecar code symbol to neutral Ryvro-era cleanup wording while preserving the raw old sidecar app name only as a compatibility lookup.
 - Reconciled the asset checklist with current launch asset evidence: production Expo icons, splash, favicon, neutral Ryvro assistant densities, retired helmet cleanup, and first-pass industry visual badges are now tracked as done, while unverified render checks and future bitmap scene thumbnails remain open.
 - Added built-in fallback parser regression coverage across 20 shift-worker industry prompts so the AI builder fallback is proven beyond mining/FIFO examples.
+- Added settings-panel regression coverage proving saved shift definition names, colors, icons, times, and cycle counts render in Profile settings.
 - Added AI builder fallback metadata, friendlier fallback copy, and analytics events for parser completion, local fallback use, clarification, draft acceptance, manual edit after draft, and save context.
 - Tightened exception, calendar, and reminder launch copy so one-off rows say they changed just that day, calendar export promises shift times/locations/notes, and smart reminder commute copy defaults to work location instead of site.
 - Broadened active dashboard FIFO status and offline assistant pattern summaries across bundled locales from site-specific language to work-block language.
@@ -1574,7 +1575,7 @@ Phase gate:
 - [x] Verify settings manual builder entry.
 - [x] Verify color picker updates dashboard.
 - [x] Verify icon picker updates dashboard.
-- [ ] Verify color/icon updates settings.
+- [x] Verify color/icon updates settings.
 - [x] Verify holiday exception copy and rendering.
 - [x] Verify one-off swap copy and rendering.
 - [x] Verify imported event copy and rendering.
@@ -1586,7 +1587,7 @@ Phase gate:
 Phase gate:
 
 - [x] Builder is universal and complete from onboarding and settings.
-- [x] Calendar, exceptions, reminders, import, and export honor selected shift colors/icons; settings color/icon visual check remains tracked for manual QA.
+- [x] Calendar, exceptions, reminders, import, export, and settings honor selected shift colors/icons.
 
 ### Phase 7: Auth, Billing, Analytics, And External Systems
 

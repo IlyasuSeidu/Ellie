@@ -10,7 +10,8 @@ jest.mock('@expo/vector-icons', () => {
   const React = require('react');
   const { Text } = require('react-native');
   return {
-    Ionicons: ({ name }: { name: string }) => React.createElement(Text, null, name),
+    Ionicons: ({ name, color }: { name: string; color?: string }) =>
+      React.createElement(Text, null, color ? `${name}:${color}` : name),
   };
 });
 
@@ -61,8 +62,27 @@ const schedule: NonNullable<OnboardingData['universalSchedule']> = {
       color: '#2563eb',
       icon: 'sunny',
     },
+    {
+      id: 'night-def',
+      name: 'Night Shift',
+      kind: 'work',
+      timePolicy: 'timed',
+      activePolicy: 'timed_window',
+      startTime: '18:00',
+      endTime: '06:00',
+      crossesMidnight: true,
+      countsAsWork: true,
+      countsAsNight: true,
+      countsForStats: true,
+      color: '#7c3aed',
+      icon: 'moon',
+    },
   ],
-  sequence: [{ id: 'seq-1', shiftDefinitionId: 'day-def' }],
+  sequence: [
+    { id: 'seq-1', shiftDefinitionId: 'day-def' },
+    { id: 'seq-2', shiftDefinitionId: 'night-def' },
+    { id: 'seq-3', shiftDefinitionId: 'night-def' },
+  ],
 };
 
 describe('ShiftSettingsPanel universal builder navigation', () => {
@@ -90,6 +110,24 @@ describe('ShiftSettingsPanel universal builder navigation', () => {
       entryPoint: 'settings',
       existingSchedule: schedule,
     });
+  });
+
+  it('shows configured shift colors and icons in settings', () => {
+    const data: OnboardingData = {
+      name: 'Amina',
+      universalSchedule: schedule,
+    };
+
+    const { getByText } = render(<ShiftSettingsPanel data={data} onUpdate={jest.fn()} />);
+
+    expect(getByText('Day Shift')).toBeTruthy();
+    expect(getByText('Night Shift')).toBeTruthy();
+    expect(getByText('sunny:#2563eb')).toBeTruthy();
+    expect(getByText('moon:#7c3aed')).toBeTruthy();
+    expect(getByText('6 AM - 6 PM')).toBeTruthy();
+    expect(getByText('6 PM - 6 AM +1')).toBeTruthy();
+    expect(getByText('x1')).toBeTruthy();
+    expect(getByText('x2')).toBeTruthy();
   });
 
   it('opens the Universal Shift Builder from settings in create mode when no schedule exists', () => {
