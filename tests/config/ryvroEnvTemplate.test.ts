@@ -1290,8 +1290,8 @@ describe('Ryvro environment template', () => {
     );
     const clearanceEvidence = `${externalSetup}\n${audit}`;
 
-    expect(clearanceEvidence).toContain('2026-05-31 at 20:33:40Z');
-    expect(clearanceEvidence).toContain('2026-05-31T20:33:40.206Z');
+    expect(clearanceEvidence).toContain('2026-06-01 at 19:15:52Z');
+    expect(clearanceEvidence).toContain('2026-06-01T19:15:52.766Z');
     expect(clearanceEvidence).toContain('no exact `Ryvro` or `Ryvro Shift Planner` app result');
     expect(clearanceEvidence).toContain(
       'Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`'
@@ -1307,6 +1307,8 @@ describe('Ryvro environment template', () => {
     expect(clearanceEvidence).toContain('Formal trademark/legal clearance');
     expect(clearanceEvidence).toContain('App Store Connect and Google Play Console name checks');
     expect(clearanceEvidence).toContain('Play Console title/package availability');
+    expect(clearanceEvidence).toContain('76.223.54.146');
+    expect(clearanceEvidence).toContain('2026-06-16T10:06:52Z');
     expect(clearanceEvidence).toContain('reserve directly while logged in');
     expect(clearanceEvidence).not.toContain('2026-05-29 at 14:36:21Z');
     expect(clearanceEvidence).not.toContain('2026-05-29T14:36:21.446Z');
@@ -1726,11 +1728,11 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: June 1, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, asset checklist reconciliation, industry template visual badge checklist reconciliation, working tracker reconciliation, social profile and landing-page source copy, settings builder entry coverage, settings color/icon coverage, latest public clearance evidence at 20:33Z, iOS simulator onboarding, dashboard, and mobile-fit proof, and latest pushed PR #1 CI pass `26735606843` on `f194981`)'
+      'Last updated: June 1, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, asset checklist reconciliation, industry template visual badge checklist reconciliation, working tracker reconciliation, social profile and landing-page source copy, settings builder entry coverage, settings color/icon coverage, latest public clearance evidence at 19:15Z, iOS simulator onboarding, dashboard, and mobile-fit proof, and latest pushed PR #1 CI pass `26776194564` on `63cbbef`)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
-    expect(releaseTasks).toContain('latest public evidence: 2026-05-31 20:33Z');
+    expect(releaseTasks).toContain('latest public evidence: 2026-06-01 19:15Z');
     expect(releaseTasks).not.toContain('latest public evidence: 2026-05-31 19:32Z');
     expect(releaseTasks).not.toContain('latest public evidence: 2026-05-31 07:14Z');
     expect(releaseTasks).toContain('formal trademark/legal clearance for `Ryvro`');

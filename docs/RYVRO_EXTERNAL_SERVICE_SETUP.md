@@ -1,6 +1,6 @@
 # Ryvro External Service Setup
 
-Last updated: 2026-05-31
+Last updated: 2026-06-01
 
 This is the account-side setup checklist for services that cannot be fully changed from the repo. It translates the repo identity into exact console values.
 
@@ -289,7 +289,7 @@ npm run release:clearance
 
 This command checks public Apple software search results, public Google Play search text, DNS, Verisign WHOIS for `.com` candidates, social URL HTTP statuses, and USPTO Trademark Search reachability. It does not buy domains, reserve handles, prove App Store Connect or Play Console availability, or replace legal trademark clearance. Treat it as a repeatable preflight check before the account-owner completes the logged-in steps.
 
-Latest public preflight evidence captured on 2026-05-31 at 20:33:40Z:
+Latest public preflight evidence captured on 2026-06-01 at 19:15:52Z:
 
 - Apple public software search: no exact `Ryvro` or `Ryvro Shift Planner` app result returned across 5 fuzzy results.
 - Google Play public search: no exact `Ryvro` or `Ryvro Shift Planner` result text found. Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`.
@@ -299,7 +299,7 @@ Latest public preflight evidence captured on 2026-05-31 at 20:33:40Z:
 - `useryvro.com`: no public DNS record and Verisign `.com` returned no match.
 - `tryryvro.com`: no public DNS record and Verisign `.com` returned no match.
 - `getryvroapp.com`: no public DNS record and Verisign `.com` returned no match.
-- `ryvro.com`: already registered through GoDaddy/Afternic and should not be treated as available.
+- `ryvro.com`: already registered through GoDaddy/Afternic, with public A records `76.223.54.146` and `13.248.169.48`, creation date `2025-06-16T10:06:52Z`, expiry date `2026-06-16T10:06:52Z`, and Afternic nameservers. Do not treat it as available unless purchased from the current registrant.
 - X, Instagram, and TikTok `@ryvro`: public URLs returned `200`; this is not reliable ownership or availability proof.
 - YouTube `@ryvro`: public URL returned `404`; reserve directly while logged in.
 - LinkedIn `company/ryvro`: public URL returned bot-protection status `999`; this is not reliable ownership or availability proof, so check and reserve directly while logged in.

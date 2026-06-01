@@ -131,7 +131,7 @@ Required account-only checks:
 - Social platforms: reserve `@ryvro` or a consistent fallback such as `@getryvro`.
 - Trademark counsel/search: run formal clearance in launch markets before public launch.
 
-## External Clearance Evidence: 2026-05-31
+## External Clearance Evidence: 2026-06-01
 
 Latest repeatable public preflight command:
 
@@ -139,7 +139,7 @@ Latest repeatable public preflight command:
 npm run release:clearance
 ```
 
-Result captured at `2026-05-31T20:33:40.206Z`:
+Result captured at `2026-06-01T19:15:52.766Z`:
 
 - Apple public software search: no exact `Ryvro` or `Ryvro Shift Planner` app result returned across 5 fuzzy results. Public search still does not prove App Store Connect name availability.
 - Google Play public search: no exact `Ryvro` or `Ryvro Shift Planner` result text found. Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`. Public search still does not prove Play Console title/package availability.
@@ -147,7 +147,7 @@ Result captured at `2026-05-31T20:33:40.206Z`:
 - USPTO public search app: reachable only through the automated preflight. This is not legal clearance.
 - `getryvro.com`: no public DNS record and Verisign `.com` returned no match.
 - `useryvro.com`, `tryryvro.com`, and `getryvroapp.com`: no public DNS record and Verisign `.com` returned no match.
-- `ryvro.com`: registered through GoDaddy/Afternic and should not be treated as available unless purchased from the current registrant.
+- `ryvro.com`: registered through GoDaddy/Afternic, with public A records `76.223.54.146` and `13.248.169.48`, creation date `2025-06-16T10:06:52Z`, expiry date `2026-06-16T10:06:52Z`, and Afternic nameservers. It should not be treated as available unless purchased from the current registrant.
 - `ryvro.app`, `ryvro.co`, `ryvro.io`, `ryvro.ai`, `ryvro.net`, and `ryvro.org`: no public DNS record in the preflight, but registrar availability still needs direct confirmation.
 - X, Instagram, and TikTok `@ryvro`: public URLs returned `200`; this is not reliable handle availability proof and requires logged-in reservation.
 - YouTube `@ryvro`: public URL returned `404`; still reserve directly while logged in.

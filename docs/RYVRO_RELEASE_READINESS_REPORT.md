@@ -1,6 +1,6 @@
 # Ryvro Release Readiness Report
 
-Date: 2026-05-31
+Date: 2026-06-01
 Branch: `codex/ryvro-rebrand-rollout`
 Open PR: `https://github.com/IlyasuSeidu/Ellie/pull/1`
 
@@ -58,14 +58,14 @@ Completed and guarded in the current branch:
 
 ## Current Public Clearance Evidence
 
-`npm run release:clearance` was run on 2026-05-31 at `2026-05-31T20:33:40.206Z`.
+`npm run release:clearance` was run on 2026-06-01 at `2026-06-01T19:15:52.766Z`.
 
 - Apple public software search returned 5 fuzzy results and no exact `Ryvro` or `Ryvro Shift Planner` app result.
 - Google Play public search returned no exact `Ryvro` or `Ryvro Shift Planner` result text; visible fuzzy names were `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`.
 - Chrome/Computer Use previously read the public Google Play search page for `Ryvro` on 2026-05-30. Visible public results included fuzzy/non-conflicting names such as Rolify, Rydoo, and Rydora, with no exact Ryvro listing visible. This is still not logged-in Play Console evidence; Play Console title/package availability requires account-owner verification.
 - USPTO Trademark Search was reachable, but this is not legal trademark clearance.
 - `getryvro.com`, `useryvro.com`, `tryryvro.com`, and `getryvroapp.com` had no public DNS records and Verisign `.com` returned no match.
-- `ryvro.com` is already registered through GoDaddy/Afternic and should not be treated as available unless purchased from the current registrant.
+- `ryvro.com` is already registered through GoDaddy/Afternic. The public check returned A records `76.223.54.146` and `13.248.169.48`, creation date `2025-06-16T10:06:52Z`, expiry date `2026-06-16T10:06:52Z`, and Afternic nameservers; it should not be treated as available unless purchased from the current registrant.
 - `ryvro.app`, `ryvro.co`, `ryvro.io`, `ryvro.ai`, `ryvro.net`, and `ryvro.org` had no public DNS records in the preflight, but registrar availability still needs direct confirmation.
 - X, Instagram, and TikTok `@ryvro` returned public `200` responses; this does not prove ownership or availability.
 - YouTube `@ryvro` returned public `404`; LinkedIn `company/ryvro` returned bot-protection status `999`. Both still require logged-in reservation checks.
@@ -118,6 +118,10 @@ Completed and guarded in the current branch:
 - Local release verification on 2026-05-31 passed focused production-env config tests, `git diff --check`, `npm run lint`, and `npm run release:check` after requiring real root-level Firebase native service files for Ryvro production builds. The release check included TypeScript, 109 Jest suites / 1,759 tests, 4 snapshots, the native scaffold preflight, the store readiness preflight, the owner handoff preflight, and the backend functions TypeScript build.
 - Local release verification on 2026-05-31 passed focused owner-handoff/config tests, `git diff --check`, `npm run lint`, and `npm run release:check` after recording the Firebase service-file gate in the launch handoff and updating recent pushed CI evidence. The release check included TypeScript, 109 Jest suites / 1,759 tests, 4 snapshots, the native scaffold preflight, the store readiness preflight, the owner handoff preflight, and the backend functions TypeScript build.
 - Local release verification on 2026-05-31 passed `git diff --check`, `npm run lint`, and `npm run release:check` after adding Profile legal/support link coverage for support, account deletion, privacy, and terms. The release check included TypeScript, 110 Jest suites / 1,760 tests, 4 snapshots, the native scaffold preflight, the store readiness preflight, the owner handoff preflight, and the backend functions TypeScript build.
+- Local release verification on 2026-06-01 passed `npm run release:check` after the iPhone 16e small-screen proof hardening and Firebase E2E bootstrap repair. The release check included TypeScript, 110 Jest suites / 1,779 tests, 4 snapshots, the native scaffold preflight, the store readiness preflight, the owner handoff preflight, and the backend functions TypeScript build.
+- GitHub Actions CI for PR #1 passed on commit `63cbbef`: CI run `26776194564` passed Release Check, Build Check, Lint and Type Check, and Unit Tests.
+- `npm run release:submit:check` still intentionally fails on 2026-06-01 because EAS submit values are placeholders and the owner-only launch evidence rows in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` are still `Pending owner evidence`.
+- iPhone 16e Detox work on 2026-06-01 exposed a repo-side seed-targeting bug and a small-screen builder template clipping issue; both were fixed in commit `63cbbef`. A fresh iPhone 16e proof still needs a clean local CoreSimulator session because `simctl` stopped listing devices after CoreSimulatorService became unhealthy during the failed run.
 - Local release verification on 2026-05-31 passed focused screenshot-checklist/config tests, `git diff --check`, and `npm run release:check` after adding the store screenshot capture checklist. The release check included TypeScript, 110 Jest suites / 1,760 tests, 4 snapshots, the native scaffold preflight, the store readiness preflight, the owner handoff preflight, and the backend functions TypeScript build.
 - Local release verification on 2026-05-31 passed focused submit-readiness/config tests, `npm run release:submit:check` with the expected owner-evidence failure, `git diff --check`, and `npm run release:check` after adding the final EAS submit readiness guard. The release check included TypeScript, 110 Jest suites / 1,761 tests, 4 snapshots, the native scaffold preflight, the store readiness preflight, the owner handoff preflight, and the backend functions TypeScript build.
 - Local release verification on 2026-05-31 passed focused config/defaults tests, `npm run release:owner:check`, `git diff --check`, and `npm run release:check` after deriving Ryvro Cloud Function defaults from `FIREBASE_PROJECT_ID` and documenting both backend function URLs. The release check included TypeScript, 110 Jest suites / 1,764 tests, 4 snapshots, the native scaffold preflight, the store readiness preflight, the owner handoff preflight, and the backend functions TypeScript build.
