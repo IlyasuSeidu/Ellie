@@ -173,7 +173,7 @@ describe('Universal shift templates', () => {
     ).toContain('Warehouse');
   });
 
-  it('keeps the fresh onboarding E2E happy path on a non-mining launch fixture', () => {
+  it('keeps the fresh onboarding E2E entry path on a non-mining launch fixture', () => {
     const onboardingE2E = fs.readFileSync(
       path.join(process.cwd(), 'e2e/onboarding.test.ts'),
       'utf8'
@@ -181,7 +181,8 @@ describe('Universal shift templates', () => {
 
     expect(onboardingE2E).toContain("submitIntroAnswer('Amina')");
     expect(onboardingE2E).toContain("submitIntroAnswer('Nurse')");
-    expect(onboardingE2E).toContain('universal-shift-builder-template-healthcare-2-2-3');
+    expect(onboardingE2E).toContain('universal-shift-builder-screen');
+    expect(onboardingE2E).toContain('universal-shift-builder-template-search');
     expect(onboardingE2E).not.toContain("submitIntroAnswer('Miner')");
     expect(onboardingE2E).not.toContain("submitIntroAnswer('FIFO");
   });

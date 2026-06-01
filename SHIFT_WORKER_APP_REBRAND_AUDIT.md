@@ -1658,9 +1658,9 @@ Phase gate:
 ### Phase 10: Device QA
 
 - [x] Fresh install on iOS simulator. Detox previously installed the rebuilt Ryvro display-name app on a clean iPhone XS Max simulator before the seeded dashboard smoke; current Detox build config targets the clean-generated `RyvroShiftPlanner.app` product.
-- [ ] Fresh onboarding on iOS simulator.
+- [x] Fresh onboarding on iOS simulator. `npm run test:e2e -- e2e/onboarding.test.ts --reuse` passed the fresh Welcome, pain-hook, introduction, and Universal Shift Builder entry path on the iPhone 16 simulator with bundle `com.ryvro.shiftplanner`.
 - [x] Settings edit on iOS simulator. Profile settings opened the Universal Shift Builder on the iPhone 16 simulator with the Ryvro bundle identity.
-- [ ] Dashboard color/icon check on iOS simulator.
+- [x] Dashboard color/icon check on iOS simulator. `npm run test:e2e -- e2e/dashboard.test.ts --reuse` passed 16/16 iPhone 16 simulator checks, including `shift-status-universal-icon` from the active healthcare template and the dashboard calendar grid.
 - [ ] Fresh install on iPhone 13.
 - [ ] Auth check on iPhone 13.
 - [ ] Universal Builder check on iPhone 13.

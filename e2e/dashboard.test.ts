@@ -53,6 +53,7 @@ describe('Main Dashboard', () => {
     });
 
     it('renders the calendar card', async () => {
+      await scrollDashboardTo('dashboard-calendar');
       await detoxExpect(element(by.id('dashboard-calendar'))).toBeVisible();
     });
 
@@ -70,6 +71,10 @@ describe('Main Dashboard', () => {
 
     it('shows the shift status badge icon', async () => {
       await detoxExpect(element(by.id('shift-status-badge-icon'))).toBeVisible();
+    });
+
+    it('shows the universal shift icon from the active template', async () => {
+      await detoxExpect(element(by.id('shift-status-universal-icon'))).toBeVisible();
     });
   });
 

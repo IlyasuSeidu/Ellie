@@ -250,6 +250,9 @@ export const UNIVERSAL_INDUSTRY_ONBOARDING_FIXTURES = {
  */
 export const ONBOARDING_START_SEED: Record<string, unknown> = {
   'e2e:mock_user': MOCK_USER,
+  'i18n:language': 'en',
+  'onboarding:complete': false,
+  'onboarding:data': {},
 };
 
 /**
