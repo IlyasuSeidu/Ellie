@@ -9,6 +9,7 @@ Use these source docs while completing the runbook:
 - `RYVRO_RELEASE_TASKS.md` for the canonical task list and go/no-go gate.
 - `docs/RYVRO_RELEASE_READINESS_REPORT.md` for repo-proven evidence and known blockers.
 - `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md` for Firebase, OAuth, Apple, RevenueCat, EAS, domain, social, analytics, and support console values.
+- `docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md` for formal clearance, domain purchase, DNS/HTTPS proof, support mailbox, legal page publication, and social handle reservation evidence.
 - `docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md` for App Store Connect metadata, TestFlight internal testing, App Store privacy/forms, reviewer account, iOS subscriptions, EAS submit, and App Review evidence.
 - `docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md` for Firebase project creation, native service files, OAuth clients, Auth domains, backend deploys, smoke tests, production env preflight, and EAS secret evidence.
 - `docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md` for Ryvro Pro entitlement, store products, RevenueCat offering, SDK key copying, env preflight, and sandbox purchase QA evidence.
@@ -45,6 +46,7 @@ Do not submit to App Store review or Google Play production until all of these a
 Owner-only steps:
 
 - Complete formal trademark/legal clearance for `Ryvro`.
+- Use `docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md` as the fill-in evidence packet for formal clearance, domain purchase, DNS/HTTPS proof, support mailbox, legal page publication, and social handle reservation.
 - Sign in as the Apple Developer Account Holder at `developer.apple.com/account` and confirm the Apple Developer Program License Agreement is accepted.
 - Reserve or create App Store Connect app name `Ryvro Shift Planner`. Completed 2026-06-05 with ASC app ID `6776994726`.
 - Complete App Store Connect EU trader status if Ryvro will be distributed in the European Union.
@@ -56,6 +58,7 @@ Owner-only steps:
 Evidence to record:
 
 - Counsel or trademark-search result summary.
+- Completed `docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md` packet or equivalent non-secret clearance/domain/social evidence.
 - Apple Developer Program License Agreement accepted status.
 - App Store Connect app ID / Apple ID. Current ASC app ID: `6776994726`; owner Apple ID email: `seiduilyasu94@gmail.com`.
 - Completed `docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md` packet or equivalent non-secret App Store/TestFlight evidence.
@@ -179,6 +182,7 @@ Evidence to record:
 Owner-only steps:
 
 - Publish privacy policy, terms, support, and the `https://getryvro.com/delete-account` account-deletion page on the controlled launch domain.
+- Use `docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md` for live domain, DNS/HTTPS, support mailbox, static launch page, and social profile evidence.
 - Review and publish the repo static launch pages in `web/launch` after setting final effective dates and domain-specific links.
 - Publish the launch landing page using the source copy in `docs/RYVRO_STORE_LISTING.md`.
 - Apply the reserved social handle bios, display names, and links from `docs/RYVRO_STORE_LISTING.md` after account reservation.

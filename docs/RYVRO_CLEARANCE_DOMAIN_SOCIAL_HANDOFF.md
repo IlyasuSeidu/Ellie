@@ -1,0 +1,156 @@
+# Ryvro Clearance, Domain, And Social Handoff
+
+Last updated: 2026-06-05
+
+Use this checklist for the external clearance and public ownership work that must happen before Ryvro can be treated as launch-ready. It covers formal trademark/legal clearance, App Store and Google Play name checks, domain purchase, DNS and HTTPS proof, support mailbox setup, legal page publication, and social handle reservation.
+
+This file is not legal advice. Public search results and automated checks are only preflight evidence. Formal trademark/legal clearance must come from the owner, counsel, or a launch-market trademark-search report before submission.
+
+Do not store registrar passwords, payment details, legal invoices, legal privileged communications, mailbox passwords, DNS provider API keys, social account recovery codes, or private verification documents in Git, docs, screenshots, or chat.
+
+## Required Launch Values
+
+- Brand: `Ryvro`
+- App Store name: `Ryvro Shift Planner`
+- Google Play title: `Ryvro Shift Planner`
+- iOS bundle ID: `com.ryvro.shiftplanner`
+- Android package: `com.ryvro.shiftplanner`
+- Preferred domain: `getryvro.com`
+- Privacy policy URL: `https://getryvro.com/privacy`
+- Terms URL: `https://getryvro.com/terms`
+- Support URL: `https://getryvro.com/support`
+- Account deletion URL: `https://getryvro.com/delete-account`
+- Support email: `support@getryvro.com`
+- Preferred social handle: `@ryvro`
+- Fallback social handles: `@getryvro`, `@tryryvro`
+
+## Current Public Preflight Evidence
+
+Run:
+
+```bash
+npm run release:clearance
+```
+
+Latest public preflight captured on 2026-06-05 at `2026-06-05T13:31:53.172Z`:
+
+- Apple public software search returned 5 fuzzy results and no exact `Ryvro` or `Ryvro Shift Planner` app result.
+- Google Play public search found no exact `Ryvro` or `Ryvro Shift Planner` result text; visible fuzzy names were `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`.
+- USPTO Trademark Search app was reachable with status `200`; this is not legal clearance.
+- `getryvro.com` had no public DNS records and Verisign `.com` returned no match.
+- `useryvro.com`, `tryryvro.com`, and `getryvroapp.com` had no public DNS records and Verisign `.com` returned no match.
+- `ryvro.app`, `ryvro.co`, `ryvro.io`, `ryvro.ai`, `ryvro.net`, and `ryvro.org` had no public DNS records in the preflight.
+- `ryvro.com` is already registered through GoDaddy/Afternic, with public A records `76.223.54.146` and `13.248.169.48`, creation date `2025-06-16T10:06:52Z`, expiry date `2026-06-16T10:06:52Z`, and Afternic nameservers.
+- X, Instagram, and TikTok `@ryvro` returned public `200` responses; this is not ownership or availability proof.
+- YouTube `@ryvro` and LinkedIn `company/ryvro` returned public `404` responses; still reserve directly while logged in.
+
+## Formal Clearance
+
+Complete before public launch.
+
+- Search the intended launch markets for `Ryvro`, `Ryvro Shift Planner`, and confusingly similar names.
+- Check app/productivity, workforce scheduling, calendar, AI assistant, subscription software, and mobile app categories.
+- Confirm whether `Ryvro` is safe enough for the intended launch markets.
+- Confirm whether the app can use `Ryvro Shift Planner` as the store title.
+- Keep the full legal report or counsel communication outside the repo.
+
+Record only non-secret evidence:
+
+- Clearance source: counsel, trademark-search report, or owner search packet
+- Launch markets checked
+- Search date
+- Decision summary: pass, pass with caveats, or failed
+- Any required fallback name or domain decision
+
+## Domain Reservation And DNS
+
+Reserve the launch domain before store submission.
+
+- Purchase or reserve `getryvro.com` if available.
+- If `getryvro.com` is unavailable, choose a fallback and update all repo/env/store references together.
+- Do not treat `ryvro.com` as available unless it is purchased from the current registrant.
+- Configure DNS through the chosen registrar or DNS provider.
+- Configure HTTPS.
+- Publish the landing, privacy, terms, support, and account deletion pages.
+- Configure `support@getryvro.com` before store review.
+
+Required live checks:
+
+```bash
+curl -I https://getryvro.com
+curl -I https://getryvro.com/privacy
+curl -I https://getryvro.com/terms
+curl -I https://getryvro.com/support
+curl -I https://getryvro.com/delete-account
+```
+
+Record:
+
+- Registrar purchase or reservation note
+- Domain owner/control proof
+- DNS provider note
+- HTTPS status for all required URLs
+- Support mailbox send/receive test note
+- Account deletion request-flow test note
+- Any deployment target, such as Firebase Hosting, Vercel, Netlify, or static host
+
+## Static Launch Pages
+
+Repo-side drafts already exist:
+
+- Landing page: `web/launch/index.html`
+- Privacy page: `web/launch/privacy/index.html`
+- Terms page: `web/launch/terms/index.html`
+- Support page: `web/launch/support/index.html`
+- Account deletion page: `web/launch/delete-account/index.html`
+
+Before publishing:
+
+- Review all legal/support copy.
+- Set final effective dates.
+- Confirm subscription, RevenueCat, Firebase, AI provider, microphone, calendar import/export, analytics, diagnostics, and account deletion behavior match the shipped build.
+- Confirm the pages do not claim Ryvro is live before App Store and Google Play evidence exists.
+- Confirm in-app links, App Store Connect, Google Play Console, Firebase Auth email templates, RevenueCat, and store review notes use the same live URLs.
+
+## Social Handle Reservation
+
+Reserve while logged in. Public HTTP status is not enough.
+
+Preferred:
+
+- X: `@ryvro`
+- Instagram: `@ryvro`
+- TikTok: `@ryvro`
+- YouTube: `@ryvro`
+- LinkedIn company page: `Ryvro`
+
+Fallbacks:
+
+- `@getryvro`
+- `@tryryvro`
+
+Record:
+
+- Platform
+- Reserved handle or fallback handle
+- Profile URL
+- Display name
+- Owner account email or business account note, without password or recovery codes
+- Bio/status note
+- Link to `https://getryvro.com`
+
+## Evidence Log Updates
+
+Update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` after owner proof exists.
+
+Only mark rows `Passed` when the matching evidence is complete:
+
+- Formal trademark/legal clearance for `Ryvro`
+- Domain control for `getryvro.com`
+- `Social handles`
+- `Privacy page`
+- `Terms page`
+- `Support page/mailbox`
+- `Account deletion page`
+
+Keep rows as `Pending owner evidence` until the owner evidence exists and `npm run release:submit:check` no longer reports those rows.

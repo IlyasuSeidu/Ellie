@@ -44,6 +44,7 @@ const externalSetup = read('docs/RYVRO_EXTERNAL_SERVICE_SETUP.md');
 const storeListing = read('docs/RYVRO_STORE_LISTING.md');
 const privacySupport = read('docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md');
 const submissionDraft = read('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
+const clearanceDomainSocialHandoff = read('docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md');
 const appStoreTestFlightHandoff = read('docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md');
 const firebaseOauthBackendHandoff = read('docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md');
 const revenueCatProductsHandoff = read('docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md');
@@ -97,6 +98,9 @@ const launchDeletion = read('web/launch/delete-account/index.html');
   ['Static launch-page drafts now exist in `web/launch`', readinessReport],
   ['static launch legal/support pages', releaseTasks],
   ['root-level Firebase native service files', ownerRunbook],
+  ['docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md', ownerRunbook],
+  ['docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md', externalSetup],
+  ['docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md', launchEvidenceLog],
   ['docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md', ownerRunbook],
   ['docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md', externalSetup],
   ['docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md', launchEvidenceLog],
@@ -130,6 +134,7 @@ const launchDeletion = read('web/launch/delete-account/index.html');
 [
   ['docs/RYVRO_RELEASE_READINESS_REPORT.md', ownerRunbook],
   ['docs/RYVRO_EXTERNAL_SERVICE_SETUP.md', ownerRunbook],
+  ['docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md', ownerRunbook],
   ['docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md', ownerRunbook],
   ['docs/RYVRO_STORE_LISTING.md', ownerRunbook],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', ownerRunbook],
@@ -198,6 +203,45 @@ const launchDeletion = read('web/launch/delete-account/index.html');
   ['Store submission', launchEvidenceLog],
   ['Pending owner evidence', launchEvidenceLog],
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'launch evidence log'));
+
+[
+  ['# Ryvro Clearance, Domain, And Social Handoff', clearanceDomainSocialHandoff],
+  ['Formal trademark/legal clearance', clearanceDomainSocialHandoff],
+  ['Brand: `Ryvro`', clearanceDomainSocialHandoff],
+  ['App Store name: `Ryvro Shift Planner`', clearanceDomainSocialHandoff],
+  ['Google Play title: `Ryvro Shift Planner`', clearanceDomainSocialHandoff],
+  ['Preferred domain: `getryvro.com`', clearanceDomainSocialHandoff],
+  ['Privacy policy URL: `https://getryvro.com/privacy`', clearanceDomainSocialHandoff],
+  ['Terms URL: `https://getryvro.com/terms`', clearanceDomainSocialHandoff],
+  ['Support URL: `https://getryvro.com/support`', clearanceDomainSocialHandoff],
+  ['Account deletion URL: `https://getryvro.com/delete-account`', clearanceDomainSocialHandoff],
+  ['Support email: `support@getryvro.com`', clearanceDomainSocialHandoff],
+  ['Preferred social handle: `@ryvro`', clearanceDomainSocialHandoff],
+  ['Fallback social handles: `@getryvro`, `@tryryvro`', clearanceDomainSocialHandoff],
+  ['2026-06-05T13:31:53.172Z', clearanceDomainSocialHandoff],
+  ['no exact `Ryvro` or `Ryvro Shift Planner` app result', clearanceDomainSocialHandoff],
+  [
+    'visible fuzzy names were `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`',
+    clearanceDomainSocialHandoff,
+  ],
+  ['USPTO Trademark Search app was reachable with status `200`', clearanceDomainSocialHandoff],
+  ['`getryvro.com` had no public DNS records', clearanceDomainSocialHandoff],
+  ['`ryvro.com` is already registered through GoDaddy/Afternic', clearanceDomainSocialHandoff],
+  [
+    'X, Instagram, and TikTok `@ryvro` returned public `200` responses',
+    clearanceDomainSocialHandoff,
+  ],
+  [
+    'YouTube `@ryvro` and LinkedIn `company/ryvro` returned public `404` responses',
+    clearanceDomainSocialHandoff,
+  ],
+  ['Domain Reservation And DNS', clearanceDomainSocialHandoff],
+  ['Static Launch Pages', clearanceDomainSocialHandoff],
+  ['Social Handle Reservation', clearanceDomainSocialHandoff],
+  ['Do not store registrar passwords', clearanceDomainSocialHandoff],
+].forEach(([expected, content]) =>
+  requireIncludes(content, expected, 'clearance domain social handoff')
+);
 
 [
   ['# Ryvro Device QA Evidence Template', deviceQaTemplate],

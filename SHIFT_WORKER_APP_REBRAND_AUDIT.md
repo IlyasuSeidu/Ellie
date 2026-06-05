@@ -133,7 +133,7 @@ Required account-only checks:
 - Social platforms: reserve `@ryvro` or a consistent fallback such as `@getryvro`.
 - Trademark counsel/search: run formal clearance in launch markets before public launch.
 
-## External Clearance Evidence: 2026-06-01
+## External Clearance Evidence: 2026-06-05
 
 Latest repeatable public preflight command:
 
@@ -141,7 +141,7 @@ Latest repeatable public preflight command:
 npm run release:clearance
 ```
 
-Result captured at `2026-06-05T11:04:32.887Z`:
+Result captured at `2026-06-05T13:31:53.172Z`:
 
 - Apple public software search: no exact `Ryvro` or `Ryvro Shift Planner` app result returned across 5 fuzzy results. Public search still does not prove App Store Connect name availability.
 - Google Play public search: no exact `Ryvro` or `Ryvro Shift Planner` result text found. Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`. Public search still does not prove Play Console title/package availability.

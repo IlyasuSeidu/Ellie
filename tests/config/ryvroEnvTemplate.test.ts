@@ -1293,8 +1293,8 @@ describe('Ryvro environment template', () => {
     );
     const clearanceEvidence = `${externalSetup}\n${audit}`;
 
-    expect(clearanceEvidence).toContain('2026-06-05 at 11:04:32Z');
-    expect(clearanceEvidence).toContain('2026-06-05T11:04:32.887Z');
+    expect(clearanceEvidence).toContain('2026-06-05 at 13:31:53Z');
+    expect(clearanceEvidence).toContain('2026-06-05T13:31:53.172Z');
     expect(clearanceEvidence).toContain('no exact `Ryvro` or `Ryvro Shift Planner` app result');
     expect(clearanceEvidence).toContain(
       'Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`'
@@ -1332,6 +1332,8 @@ describe('Ryvro environment template', () => {
     expect(clearanceEvidence).not.toContain('2026-05-31 at 07:14Z');
     expect(clearanceEvidence).not.toContain('2026-05-31 at 19:32:28Z');
     expect(clearanceEvidence).not.toContain('2026-05-31T19:32:28.044Z');
+    expect(clearanceEvidence).not.toContain('2026-06-05 at 11:04:32Z');
+    expect(clearanceEvidence).not.toContain('2026-06-05T11:04:32.887Z');
     expect(clearanceEvidence).not.toContain(
       'LinkedIn `company/ryvro`: public URL returned bot-protection status `999`'
     );
@@ -1733,11 +1735,12 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: June 5, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, asset checklist reconciliation, industry template visual badge checklist reconciliation, working tracker reconciliation, social profile and landing-page source copy, settings builder entry coverage, settings color/icon coverage, latest public clearance evidence at 11:04Z, iOS simulator onboarding, dashboard, mobile-fit proof, consolidated onboarding icon density coverage, user-safe Ryvro Pro fallback copy, localized Profile help/legal copy, Ryvro Pro unavailable/unconfigured copy cleanup, Ryvro Pro runtime diagnostics cleanup, Play Console account-type handoff, iOS IPA identity proof, Android AAB proof, RevenueCat project and Android app handoff, task checklist reconciliation, static launch legal/support pages, device QA evidence template, Google Play internal-testing handoff, Firebase OAuth backend handoff, RevenueCat products handoff, App Store TestFlight handoff, and recent pushed PR #1 CI pass `27014539880` on `8b277ee`)'
+      'Last updated: June 5, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, asset checklist reconciliation, industry template visual badge checklist reconciliation, working tracker reconciliation, social profile and landing-page source copy, settings builder entry coverage, settings color/icon coverage, latest public clearance evidence at 13:31Z, iOS simulator onboarding, dashboard, mobile-fit proof, consolidated onboarding icon density coverage, user-safe Ryvro Pro fallback copy, localized Profile help/legal copy, Ryvro Pro unavailable/unconfigured copy cleanup, Ryvro Pro runtime diagnostics cleanup, Play Console account-type handoff, iOS IPA identity proof, Android AAB proof, RevenueCat project and Android app handoff, task checklist reconciliation, static launch legal/support pages, device QA evidence template, Google Play internal-testing handoff, Firebase OAuth backend handoff, RevenueCat products handoff, App Store TestFlight handoff, clearance domain social handoff, and recent pushed PR #1 CI pass `27014539880` on `8b277ee`)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
-    expect(releaseTasks).toContain('latest public evidence: 2026-06-05 11:04Z');
+    expect(releaseTasks).toContain('latest public evidence: 2026-06-05 13:31Z');
+    expect(releaseTasks).not.toContain('latest public evidence: 2026-06-05 11:04Z');
     expect(releaseTasks).not.toContain('latest public evidence: 2026-05-31 19:32Z');
     expect(releaseTasks).not.toContain('latest public evidence: 2026-05-31 07:14Z');
     expect(releaseTasks).toContain('formal trademark/legal clearance for `Ryvro`');
@@ -1801,6 +1804,9 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).toContain('docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md');
     expect(releaseTasks).toContain('App Store TestFlight handoff');
     expect(releaseTasks).toContain('App Store Connect metadata, TestFlight internal testing');
+    expect(releaseTasks).toContain('docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md');
+    expect(releaseTasks).toContain('clearance domain social handoff');
+    expect(releaseTasks).toContain('formal clearance, domain purchase, DNS/HTTPS proof');
     expect(releaseTasks).toContain('npm run release:submit:check');
     expect(releaseTasks).toContain(
       'Verify Firebase Cloud Functions are deployed: `curl` the configured `RYVRO_BRAIN_URL` endpoint and `SHIFT_SCHEDULE_PARSER_URL` endpoint'
@@ -2783,6 +2789,10 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md'),
       'utf8'
     );
+    const clearanceDomainSocialHandoff = fs.readFileSync(
+      path.join(process.cwd(), 'docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md'),
+      'utf8'
+    );
     const appStoreTestFlightHandoff = fs.readFileSync(
       path.join(process.cwd(), 'docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md'),
       'utf8'
@@ -2804,12 +2814,17 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
     expect(ownerRunbook).toContain('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
     expect(ownerRunbook).toContain('docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md');
+    expect(ownerRunbook).toContain('docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md');
     expect(ownerRunbook).toContain('docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md');
     expect(ownerRunbook).toContain('docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md');
     expect(ownerRunbook).toContain('docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md');
     expect(ownerRunbook).toContain('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md');
     expect(ownerRunbook).toContain('non-secret owner evidence');
     expect(ownerRunbook).toContain('Formal trademark/legal clearance for `Ryvro`');
+    expect(ownerRunbook).toContain('formal clearance, domain purchase, DNS/HTTPS proof');
+    expect(ownerRunbook).toContain(
+      'Completed `docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md` packet'
+    );
     expect(ownerRunbook).toContain('Apple Developer Program License Agreement');
     expect(ownerRunbook).toContain('ASC app ID `6776994726`');
     expect(ownerRunbook).toContain('EU trader status');
@@ -2855,6 +2870,7 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
     expect(ownerRunbook).toContain('social profile, and launch landing-page copy');
     expect(ownerRunbook).toContain('repo static launch pages in `web/launch`');
+    expect(ownerRunbook).toContain('live domain, DNS/HTTPS, support mailbox');
     expect(ownerRunbook).toContain('Publish the launch landing page');
     expect(ownerRunbook).toContain('Apply the reserved social handle bios');
     expect(ownerRunbook).toContain('Deployment note for the reviewed `web/launch` static pages');
@@ -2895,6 +2911,9 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('# Ryvro Launch Evidence Log');
     expect(launchEvidenceLog).toContain('Do not paste passwords, private keys');
     expect(launchEvidenceLog).toContain('Formal trademark/legal clearance for `Ryvro`');
+    expect(launchEvidenceLog).toContain('docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md');
+    expect(launchEvidenceLog).toContain('clearance/domain/social evidence packet');
+    expect(launchEvidenceLog).toContain('2026-06-05T13:31:53.172Z');
     expect(launchEvidenceLog).toContain('App Store Connect app name `Ryvro Shift Planner`');
     expect(launchEvidenceLog).toContain('docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md');
     expect(launchEvidenceLog).toContain('App Store/TestFlight evidence packet');
@@ -2942,7 +2961,9 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md');
     expect(launchEvidenceLog).toContain('service account JSON handling');
     expect(launchEvidenceLog).toContain('Domain control for `getryvro.com`');
+    expect(launchEvidenceLog).toContain('domain, DNS, HTTPS, support mailbox');
     expect(launchEvidenceLog).toContain('Social handles');
+    expect(launchEvidenceLog).toContain('social handle evidence');
     expect(launchEvidenceLog).toContain('generated project ID `ryvro-shift-planner`');
     expect(launchEvidenceLog).toContain('optional Gemini in Firebase was switched off');
     expect(launchEvidenceLog).toContain('`Ryvro Google Analytics`');
@@ -2983,6 +3004,7 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('Entitlement ID `pro`, display name `Ryvro Pro`');
     expect(launchEvidenceLog).toContain('`ryvro_pro_monthly` and `ryvro_pro_annual`');
     expect(launchEvidenceLog).toContain('Live `https://getryvro.com/delete-account` URL');
+    expect(launchEvidenceLog).toContain('account deletion request-flow evidence');
     expect(launchEvidenceLog).toContain('TestFlight iPhone QA');
     expect(launchEvidenceLog).toContain('Physical Android QA');
     expect(launchEvidenceLog).toContain(
@@ -3001,6 +3023,8 @@ describe('Ryvro environment template', () => {
     expect(screenshotChecklist).toContain('final file list');
 
     expect(externalSetup).toContain('docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md');
+    expect(externalSetup).toContain('docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md');
+    expect(externalSetup).toContain('formal clearance, domain purchase, DNS/HTTPS proof');
     expect(externalSetup).toContain('docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md');
     expect(externalSetup).toContain('App Store Connect metadata, TestFlight internal testing');
     expect(externalSetup).toContain('docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md');
@@ -3032,6 +3056,53 @@ describe('Ryvro environment template', () => {
     expect(deviceQaTemplate).toContain('Failure Record');
     expect(deviceQaTemplate).toContain('Do not record passwords, private keys');
     expect(deviceQaTemplate).not.toMatch(/Ellie Shift Planner|ellie_pro|mine site|haul truck/i);
+
+    expect(clearanceDomainSocialHandoff).toContain('# Ryvro Clearance, Domain, And Social Handoff');
+    expect(clearanceDomainSocialHandoff).toContain('Formal trademark/legal clearance');
+    expect(clearanceDomainSocialHandoff).toContain('Brand: `Ryvro`');
+    expect(clearanceDomainSocialHandoff).toContain('App Store name: `Ryvro Shift Planner`');
+    expect(clearanceDomainSocialHandoff).toContain('Google Play title: `Ryvro Shift Planner`');
+    expect(clearanceDomainSocialHandoff).toContain('Preferred domain: `getryvro.com`');
+    expect(clearanceDomainSocialHandoff).toContain(
+      'Privacy policy URL: `https://getryvro.com/privacy`'
+    );
+    expect(clearanceDomainSocialHandoff).toContain('Terms URL: `https://getryvro.com/terms`');
+    expect(clearanceDomainSocialHandoff).toContain('Support URL: `https://getryvro.com/support`');
+    expect(clearanceDomainSocialHandoff).toContain(
+      'Account deletion URL: `https://getryvro.com/delete-account`'
+    );
+    expect(clearanceDomainSocialHandoff).toContain('Support email: `support@getryvro.com`');
+    expect(clearanceDomainSocialHandoff).toContain('Preferred social handle: `@ryvro`');
+    expect(clearanceDomainSocialHandoff).toContain(
+      'Fallback social handles: `@getryvro`, `@tryryvro`'
+    );
+    expect(clearanceDomainSocialHandoff).toContain('2026-06-05T13:31:53.172Z');
+    expect(clearanceDomainSocialHandoff).toContain(
+      'no exact `Ryvro` or `Ryvro Shift Planner` app result'
+    );
+    expect(clearanceDomainSocialHandoff).toContain(
+      'visible fuzzy names were `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`'
+    );
+    expect(clearanceDomainSocialHandoff).toContain(
+      'USPTO Trademark Search app was reachable with status `200`'
+    );
+    expect(clearanceDomainSocialHandoff).toContain('`getryvro.com` had no public DNS records');
+    expect(clearanceDomainSocialHandoff).toContain(
+      '`ryvro.com` is already registered through GoDaddy/Afternic'
+    );
+    expect(clearanceDomainSocialHandoff).toContain(
+      'X, Instagram, and TikTok `@ryvro` returned public `200` responses'
+    );
+    expect(clearanceDomainSocialHandoff).toContain(
+      'YouTube `@ryvro` and LinkedIn `company/ryvro` returned public `404` responses'
+    );
+    expect(clearanceDomainSocialHandoff).toContain('Domain Reservation And DNS');
+    expect(clearanceDomainSocialHandoff).toContain('Static Launch Pages');
+    expect(clearanceDomainSocialHandoff).toContain('Social Handle Reservation');
+    expect(clearanceDomainSocialHandoff).toContain('Do not store registrar passwords');
+    expect(clearanceDomainSocialHandoff).not.toMatch(
+      /Ellie Shift Planner|ellie_pro|mine site|haul truck/i
+    );
 
     expect(appStoreTestFlightHandoff).toContain('# Ryvro App Store Connect And TestFlight Handoff');
     expect(appStoreTestFlightHandoff).toContain('App name: `Ryvro Shift Planner`');

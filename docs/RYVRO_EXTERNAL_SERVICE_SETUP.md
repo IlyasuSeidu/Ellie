@@ -6,6 +6,8 @@ This is the account-side setup checklist for services that cannot be fully chang
 
 Use `docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md` first when executing launch work; this file provides the detailed console values for that runbook.
 
+Use `docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md` as the fill-in evidence packet for formal clearance, domain purchase, DNS/HTTPS proof, support mailbox, legal page publication, and social handle reservation.
+
 Use `docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md` as the fill-in evidence packet for App Store Connect metadata, TestFlight internal testing, App Store privacy/forms, reviewer account, iOS subscriptions, EAS submit, and App Review gates.
 
 Use `docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md` as the fill-in evidence packet for Firebase project creation, native app config files, Google OAuth, Firebase Auth domains and email templates, backend deploys, endpoint smoke tests, production env preflight, and EAS secret push.
@@ -330,7 +332,7 @@ npm run release:clearance
 
 This command checks public Apple software search results, public Google Play search text, DNS, Verisign WHOIS for `.com` candidates, social URL HTTP statuses, and USPTO Trademark Search reachability. It does not buy domains, reserve handles, prove App Store Connect or Play Console availability, or replace legal trademark clearance. Treat it as a repeatable preflight check before the account-owner completes the logged-in steps.
 
-Latest public preflight evidence captured on 2026-06-05 at 11:04:32Z:
+Latest public preflight evidence captured on 2026-06-05 at 13:31:53Z:
 
 - Apple public software search: no exact `Ryvro` or `Ryvro Shift Planner` app result returned across 5 fuzzy results.
 - Google Play public search: no exact `Ryvro` or `Ryvro Shift Planner` result text found. Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`.
