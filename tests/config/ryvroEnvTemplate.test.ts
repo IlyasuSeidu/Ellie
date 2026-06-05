@@ -1735,7 +1735,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: June 5, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, asset checklist reconciliation, industry template visual badge checklist reconciliation, working tracker reconciliation, social profile and landing-page source copy, settings builder entry coverage, settings color/icon coverage, latest public clearance evidence at 13:31Z, iOS simulator onboarding, dashboard, mobile-fit proof, consolidated onboarding icon density coverage, user-safe Ryvro Pro fallback copy, localized Profile help/legal copy, Ryvro Pro unavailable/unconfigured copy cleanup, Ryvro Pro runtime diagnostics cleanup, Play Console account-type handoff, iOS IPA identity proof, Android AAB proof, RevenueCat project and Android app handoff, task checklist reconciliation, static launch legal/support pages, device QA evidence template, Google Play internal-testing handoff, Firebase OAuth backend handoff, RevenueCat products handoff, App Store TestFlight handoff, clearance domain social handoff, and recorded pushed PR #1 CI pass `27018502561` on `ed43b3c`)'
+      'Last updated: June 5, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, asset checklist reconciliation, industry template visual badge checklist reconciliation, working tracker reconciliation, social profile and landing-page source copy, settings builder entry coverage, settings color/icon coverage, latest public clearance evidence at 13:31Z, iOS simulator onboarding, dashboard, mobile-fit proof, consolidated onboarding icon density coverage, user-safe Ryvro Pro fallback copy, localized Profile help/legal copy, Ryvro Pro unavailable/unconfigured copy cleanup, Ryvro Pro runtime diagnostics cleanup, Play Console account-type handoff, iOS IPA identity proof, Android AAB proof, RevenueCat project and Android app handoff, task checklist reconciliation, static launch legal/support pages, device QA evidence template, Google Play internal-testing handoff, Firebase OAuth backend handoff, RevenueCat products handoff, App Store TestFlight handoff, clearance domain social handoff, submit blocker triage, and recorded pushed PR #1 CI pass `27018502561` on `ed43b3c`)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
@@ -1807,6 +1807,9 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).toContain('docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md');
     expect(releaseTasks).toContain('clearance domain social handoff');
     expect(releaseTasks).toContain('formal clearance, domain purchase, DNS/HTTPS proof');
+    expect(releaseTasks).toContain('docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md');
+    expect(releaseTasks).toContain('submit blocker triage');
+    expect(releaseTasks).toContain('owner workflow order before final submit');
     expect(releaseTasks).toContain('npm run release:submit:check');
     expect(releaseTasks).toContain(
       'Verify Firebase Cloud Functions are deployed: `curl` the configured `RYVRO_BRAIN_URL` endpoint and `SHIFT_SCHEDULE_PARSER_URL` endpoint'
@@ -2793,6 +2796,10 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md'),
       'utf8'
     );
+    const submitBlockerTriage = fs.readFileSync(
+      path.join(process.cwd(), 'docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md'),
+      'utf8'
+    );
     const appStoreTestFlightHandoff = fs.readFileSync(
       path.join(process.cwd(), 'docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md'),
       'utf8'
@@ -2815,6 +2822,10 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
     expect(ownerRunbook).toContain('docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md');
     expect(ownerRunbook).toContain('docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md');
+    expect(ownerRunbook).toContain('docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md');
+    expect(ownerRunbook).toContain(
+      'ordered owner workflow when `npm run release:submit:check` reports the remaining blockers'
+    );
     expect(ownerRunbook).toContain('docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md');
     expect(ownerRunbook).toContain('docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md');
     expect(ownerRunbook).toContain('docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md');
@@ -3103,6 +3114,28 @@ describe('Ryvro environment template', () => {
     expect(clearanceDomainSocialHandoff).not.toMatch(
       /Ellie Shift Planner|ellie_pro|mine site|haul truck/i
     );
+
+    expect(submitBlockerTriage).toContain('# Ryvro Submit Blocker Triage');
+    expect(submitBlockerTriage).toContain('Current Submit Gate');
+    expect(submitBlockerTriage).toContain('Recommended Order');
+    expect(submitBlockerTriage).toContain(
+      'Android service account key path `./google-play-key.json`'
+    );
+    expect(submitBlockerTriage).toContain('Formal trademark/legal clearance for `Ryvro`');
+    expect(submitBlockerTriage).toContain('Finish Google Play Enrollment');
+    expect(submitBlockerTriage).toContain('Create Production Firebase And OAuth');
+    expect(submitBlockerTriage).toContain('Finish RevenueCat And Store Products');
+    expect(submitBlockerTriage).toContain('Rebuild, Test, Screenshot, Then Submit');
+    expect(submitBlockerTriage).toContain('docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md');
+    expect(submitBlockerTriage).toContain('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md');
+    expect(submitBlockerTriage).toContain('docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md');
+    expect(submitBlockerTriage).toContain('docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md');
+    expect(submitBlockerTriage).toContain('docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md');
+    expect(submitBlockerTriage).toContain(
+      'Only mark a row in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` as `Passed`'
+    );
+    expect(submitBlockerTriage).toContain('Keep rows as `Pending owner evidence`');
+    expect(submitBlockerTriage).not.toMatch(/Ellie Shift Planner|ellie_pro|mine site|haul truck/i);
 
     expect(appStoreTestFlightHandoff).toContain('# Ryvro App Store Connect And TestFlight Handoff');
     expect(appStoreTestFlightHandoff).toContain('App name: `Ryvro Shift Planner`');

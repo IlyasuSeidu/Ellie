@@ -45,6 +45,7 @@ const storeListing = read('docs/RYVRO_STORE_LISTING.md');
 const privacySupport = read('docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md');
 const submissionDraft = read('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
 const clearanceDomainSocialHandoff = read('docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md');
+const submitBlockerTriage = read('docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md');
 const appStoreTestFlightHandoff = read('docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md');
 const firebaseOauthBackendHandoff = read('docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md');
 const revenueCatProductsHandoff = read('docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md');
@@ -101,6 +102,8 @@ const launchDeletion = read('web/launch/delete-account/index.html');
   ['docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md', ownerRunbook],
   ['docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md', externalSetup],
   ['docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md', launchEvidenceLog],
+  ['docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md', ownerRunbook],
+  ['submit blocker triage', releaseTasks],
   ['docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md', ownerRunbook],
   ['docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md', externalSetup],
   ['docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md', launchEvidenceLog],
@@ -135,6 +138,7 @@ const launchDeletion = read('web/launch/delete-account/index.html');
   ['docs/RYVRO_RELEASE_READINESS_REPORT.md', ownerRunbook],
   ['docs/RYVRO_EXTERNAL_SERVICE_SETUP.md', ownerRunbook],
   ['docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md', ownerRunbook],
+  ['docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md', ownerRunbook],
   ['docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md', ownerRunbook],
   ['docs/RYVRO_STORE_LISTING.md', ownerRunbook],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', ownerRunbook],
@@ -242,6 +246,19 @@ const launchDeletion = read('web/launch/delete-account/index.html');
 ].forEach(([expected, content]) =>
   requireIncludes(content, expected, 'clearance domain social handoff')
 );
+
+[
+  ['# Ryvro Submit Blocker Triage', submitBlockerTriage],
+  ['Current Submit Gate', submitBlockerTriage],
+  ['Recommended Order', submitBlockerTriage],
+  ['Android service account key path `./google-play-key.json`', submitBlockerTriage],
+  ['Formal trademark/legal clearance for `Ryvro`', submitBlockerTriage],
+  ['Finish Google Play Enrollment', submitBlockerTriage],
+  ['Create Production Firebase And OAuth', submitBlockerTriage],
+  ['Finish RevenueCat And Store Products', submitBlockerTriage],
+  ['Rebuild, Test, Screenshot, Then Submit', submitBlockerTriage],
+  ['Only mark a row in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` as `Passed`', submitBlockerTriage],
+].forEach(([expected, content]) => requireIncludes(content, expected, 'submit blocker triage'));
 
 [
   ['# Ryvro Device QA Evidence Template', deviceQaTemplate],

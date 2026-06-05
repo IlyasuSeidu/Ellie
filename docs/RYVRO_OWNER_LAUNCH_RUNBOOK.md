@@ -10,6 +10,7 @@ Use these source docs while completing the runbook:
 - `docs/RYVRO_RELEASE_READINESS_REPORT.md` for repo-proven evidence and known blockers.
 - `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md` for Firebase, OAuth, Apple, RevenueCat, EAS, domain, social, analytics, and support console values.
 - `docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md` for formal clearance, domain purchase, DNS/HTTPS proof, support mailbox, legal page publication, and social handle reservation evidence.
+- `docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md` for the ordered owner workflow when `npm run release:submit:check` reports the remaining blockers.
 - `docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md` for App Store Connect metadata, TestFlight internal testing, App Store privacy/forms, reviewer account, iOS subscriptions, EAS submit, and App Review evidence.
 - `docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md` for Firebase project creation, native service files, OAuth clients, Auth domains, backend deploys, smoke tests, production env preflight, and EAS secret evidence.
 - `docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md` for Ryvro Pro entitlement, store products, RevenueCat offering, SDK key copying, env preflight, and sandbox purchase QA evidence.
