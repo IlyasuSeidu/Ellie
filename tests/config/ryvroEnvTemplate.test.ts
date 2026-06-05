@@ -2805,7 +2805,13 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('category `Productivity`');
     expect(launchEvidenceLog).toContain('`Native Apple` plus `Native Android`');
     expect(launchEvidenceLog).toContain('connected to the Test Store only');
-    expect(launchEvidenceLog).toContain('requires a p8 in-app purchase key file');
+    expect(launchEvidenceLog).toContain('`Ryvro (Play Store)`');
+    expect(launchEvidenceLog).toContain('package `com.ryvro.shiftplanner`');
+    expect(launchEvidenceLog).toContain('app.revenuecat.com/projects/42dccd7e/apps/appab0f4b628d');
+    expect(launchEvidenceLog).toContain('REST API identifier `appab0f4b628d`');
+    expect(launchEvidenceLog).toContain('Google developer notifications remain pending');
+    expect(launchEvidenceLog).toContain('`Ryvro (App Store)`');
+    expect(launchEvidenceLog).toContain('In-App Purchase Key ID and In-App Purchase Issuer ID');
     expect(launchEvidenceLog).toContain('Entitlement ID `pro`, display name `Ryvro Pro`');
     expect(launchEvidenceLog).toContain('`ryvro_pro_monthly` and `ryvro_pro_annual`');
     expect(launchEvidenceLog).toContain('Live `https://getryvro.com/delete-account` URL');
