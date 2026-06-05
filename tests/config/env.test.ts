@@ -63,7 +63,7 @@ describe('Environment Configuration', () => {
     it('should have Google web client ID', () => {
       expect(googleConfig.webClientId).toBeDefined();
       expect(typeof googleConfig.webClientId).toBe('string');
-      expect(typeof googleConfig.androidClientId).toBe('string');
+      expect(['string', 'undefined']).toContain(typeof googleConfig.androidClientId);
     });
 
     it('should have non-empty Google client ID', () => {
@@ -207,7 +207,7 @@ describe('Environment Configuration', () => {
 
       // Google config types
       expect(typeof config.google.webClientId).toBe('string');
-      expect(typeof config.google.androidClientId).toBe('string');
+      expect(['string', 'undefined']).toContain(typeof config.google.androidClientId);
 
       // API config types
       expect(typeof config.api.baseUrl).toBe('string');

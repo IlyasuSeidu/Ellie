@@ -3043,6 +3043,9 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('Firebase CLI wants to access your Google Account');
     expect(launchEvidenceLog).toContain('see, edit, configure, and delete Google Cloud data');
     expect(launchEvidenceLog).toContain('without clicking `Allow`');
+    expect(launchEvidenceLog).toContain('After owner approval, Firebase CLI reauth completed');
+    expect(launchEvidenceLog).toContain('No Ryvro project was present');
+    expect(launchEvidenceLog).toContain('current CLI project remained `ellie-20260220135308`');
     expect(launchEvidenceLog).toContain('testflight/groups/c9ea8051-517c-4d81-b8a0-57099d9e864d');
     expect(launchEvidenceLog).toContain('Internal Group ∙ 1 Tester ∙ 1 Build');
     expect(launchEvidenceLog).toContain('tester status `Invited`');
@@ -3333,6 +3336,9 @@ describe('Ryvro environment template', () => {
       'Firebase CLI wants to access your Google Account'
     );
     expect(firebaseOauthBackendHandoff).toContain('view and administer Firebase data and settings');
+    expect(firebaseOauthBackendHandoff).toContain('Firebase CLI reauth completed on 2026-06-05');
+    expect(firebaseOauthBackendHandoff).toContain('No Ryvro project was present');
+    expect(firebaseOauthBackendHandoff).toContain('firebase use <ryvro-project-id>');
     expect(firebaseOauthBackendHandoff).toContain(
       'If Google Analytics terms or other legal terms appear'
     );
