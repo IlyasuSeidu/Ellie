@@ -129,7 +129,7 @@ export const getRevenueCatRuntime = (): RevenueCatRuntime | null => {
     if (__DEV__ && nativeMissingHint) {
       // Keep development guidance explicit while preventing runtime crashes.
       console.warn(
-        `[RevenueCat] Native module unavailable (${nativeMissingHint}). Rebuild and reinstall a development/production client that includes react-native-purchases.`
+        `[RevenueCat] Ryvro Pro native purchase module is unavailable in this runtime (${nativeMissingHint}).`
       );
     }
 

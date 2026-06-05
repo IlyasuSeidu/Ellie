@@ -43,6 +43,13 @@ describe('RevenueCatUIRuntime', () => {
       expect(getRevenueCatUIAvailability().reason).toBe('missing_native_module');
     });
 
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('Ryvro Pro native paywall module is unavailable in this runtime')
+    );
+    expect(warnSpy).not.toHaveBeenCalledWith(
+      expect.stringMatching(/development\/production|rebuild/i)
+    );
+
     warnSpy.mockRestore();
   });
 });

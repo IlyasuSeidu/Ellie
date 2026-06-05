@@ -66,6 +66,13 @@ describe('RevenueCatRuntime', () => {
       expect(isRevenueCatConfigured()).toBe(false);
     });
 
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('Ryvro Pro native purchase module is unavailable in this runtime')
+    );
+    expect(warnSpy).not.toHaveBeenCalledWith(
+      expect.stringMatching(/development\/production|rebuild/i)
+    );
+
     warnSpy.mockRestore();
   });
 
