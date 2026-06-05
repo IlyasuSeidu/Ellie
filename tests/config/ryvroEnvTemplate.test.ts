@@ -2204,7 +2204,7 @@ describe('Ryvro environment template', () => {
       'Reconciled the asset checklist with current launch asset evidence: production Expo icons, splash, favicon, neutral Ryvro assistant densities, retired helmet cleanup, first-pass industry visual badges, and consolidated onboarding icon density render checks are now tracked as done, while future optional bitmap scene thumbnails remain open.'
     );
     expect(audit).toContain(
-      'Replaced developer-facing paywall fallback copy across bundled locales and hardcoded defaults so unconfigured subscription builds say Ryvro Pro is unavailable and direct users to update or contact support instead of exposing RevenueCat SDK setup language.'
+      'Replaced developer-facing paywall fallback copy across bundled locales and hardcoded defaults so missing or unavailable subscription setup says Ryvro Pro is unavailable and directs users to update Ryvro or contact support instead of exposing RevenueCat, build, or EAS setup language.'
     );
     expect(audit).toContain(
       'Localized the launch-critical Profile help/legal labels, hints, and accessibility text across bundled non-English locales so support, account deletion, privacy, and terms rows no longer fall back to English.'
@@ -2838,7 +2838,7 @@ describe('Ryvro environment template', () => {
 
       expect(paywall?.unconfigured).toContain('Ryvro Pro');
       expect(paywall?.unconfigured).not.toMatch(
-        /RevenueCat|SDK key|build environment|rebuild|not configured/i
+        /RevenueCat|SDK key|build environment|rebuild|not configured|this build|app build|\bEAS\b|development\/production/i
       );
       expect(paywall?.unavailable).toContain('Ryvro Pro');
       expect(paywall?.unavailable).not.toMatch(
@@ -2851,7 +2851,7 @@ describe('Ryvro environment template', () => {
       'utf8'
     );
     expect(paywallScreen).toContain(
-      'Ryvro Pro is not available in this build yet. Please update the app or contact support if this keeps happening.'
+      'Ryvro Pro is not available yet. Please update Ryvro or contact support if this keeps happening.'
     );
     expect(paywallScreen).toContain(
       'Ryvro Pro is unavailable right now. Please update Ryvro or contact support if this keeps happening.'
@@ -2859,6 +2859,7 @@ describe('Ryvro environment template', () => {
     expect(paywallScreen).not.toContain('Add the RevenueCat SDK key');
     expect(paywallScreen).not.toContain('build environment and rebuild');
     expect(paywallScreen).not.toContain('Install the latest EAS development/production build');
+    expect(paywallScreen).not.toContain('Ryvro Pro is not available in this build yet');
   });
 
   it('keeps translated work-location labels broad instead of site-specific', () => {

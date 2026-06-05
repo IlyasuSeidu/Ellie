@@ -898,7 +898,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
                 : offeringsLoadError === 'unconfigured'
                   ? t('subscription.paywall.unconfigured', {
                       defaultValue:
-                        'Ryvro Pro is not available in this build yet. Please update the app or contact support if this keeps happening.',
+                        'Ryvro Pro is not available yet. Please update Ryvro or contact support if this keeps happening.',
                     })
                   : t('subscription.paywall.unavailable', {
                       defaultValue:
@@ -1276,7 +1276,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
             {revenueCatAvailability.reason === 'missing_api_key'
               ? t('subscription.paywall.unconfigured', {
                   defaultValue:
-                    'Ryvro Pro is not available in this build yet. Please update the app or contact support if this keeps happening.',
+                    'Ryvro Pro is not available yet. Please update Ryvro or contact support if this keeps happening.',
                 })
               : t('subscription.paywall.unavailable', {
                   defaultValue:

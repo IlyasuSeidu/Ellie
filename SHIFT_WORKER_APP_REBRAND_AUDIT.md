@@ -56,8 +56,7 @@ Completed in the current working tree:
 - Added AI builder fallback metadata, friendlier fallback copy, and analytics events for parser completion, local fallback use, clarification, draft acceptance, manual edit after draft, and save context.
 - Tightened exception, calendar, and reminder launch copy so one-off rows say they changed just that day, calendar export promises shift times/locations/notes, and smart reminder commute copy defaults to work location instead of site.
 - Broadened active dashboard FIFO status and offline assistant pattern summaries across bundled locales from site-specific language to work-block language.
-- Replaced developer-facing paywall fallback copy across bundled locales and hardcoded defaults so unconfigured subscription builds say Ryvro Pro is unavailable and direct users to update or contact support instead of exposing RevenueCat SDK setup language.
-- Replaced the remaining subscription-unavailable copy across bundled locales, Profile, and Paywall defaults so launch users see Ryvro Pro update/support guidance instead of EAS build instructions.
+- Replaced developer-facing paywall fallback copy across bundled locales and hardcoded defaults so missing or unavailable subscription setup says Ryvro Pro is unavailable and directs users to update Ryvro or contact support instead of exposing RevenueCat, build, or EAS setup language.
 - Localized the launch-critical Profile help/legal labels, hints, and accessibility text across bundled non-English locales so support, account deletion, privacy, and terms rows no longer fall back to English.
 - Broadened onboarding FIFO roster-type cards, phase selector labels, and custom FIFO builder copy across bundled locales from site-specific language to work-block/rest-block language, while preserving FIFO as a launch template and migration concept.
 - Broadened remaining translated FIFO helper tips and active voice-assistant rest-block tool copy away from site/off-site wording.

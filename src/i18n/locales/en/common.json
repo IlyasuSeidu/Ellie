@@ -252,7 +252,7 @@
       "purchaseSuccessPaid": "Your subscription is active",
       "billingDisclosureTrialGeneric": "Your free trial starts today. Cancel anytime in Settings before billing begins. Subscriptions renew automatically.",
       "unavailable": "Ryvro Pro is unavailable right now. Please update Ryvro or contact support if this keeps happening.",
-      "unconfigured": "Ryvro Pro is not available in this build yet. Please update the app or contact support if this keeps happening."
+      "unconfigured": "Ryvro Pro is not available yet. Please update Ryvro or contact support if this keeps happening."
     },
     "profile": {
       "rowActiveA11y": "Ryvro Pro active subscription",
