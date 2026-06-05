@@ -9,6 +9,7 @@ Use these source docs while completing the runbook:
 - `RYVRO_RELEASE_TASKS.md` for the canonical task list and go/no-go gate.
 - `docs/RYVRO_RELEASE_READINESS_REPORT.md` for repo-proven evidence and known blockers.
 - `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md` for Firebase, OAuth, Apple, RevenueCat, EAS, domain, social, analytics, and support console values.
+- `docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md` for App Store Connect metadata, TestFlight internal testing, App Store privacy/forms, reviewer account, iOS subscriptions, EAS submit, and App Review evidence.
 - `docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md` for Firebase project creation, native service files, OAuth clients, Auth domains, backend deploys, smoke tests, production env preflight, and EAS secret evidence.
 - `docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md` for Ryvro Pro entitlement, store products, RevenueCat offering, SDK key copying, env preflight, and sandbox purchase QA evidence.
 - `docs/RYVRO_STORE_LISTING.md` for App Store, Google Play, social profile, and launch landing-page copy.
@@ -47,6 +48,7 @@ Owner-only steps:
 - Sign in as the Apple Developer Account Holder at `developer.apple.com/account` and confirm the Apple Developer Program License Agreement is accepted.
 - Reserve or create App Store Connect app name `Ryvro Shift Planner`. Completed 2026-06-05 with ASC app ID `6776994726`.
 - Complete App Store Connect EU trader status if Ryvro will be distributed in the European Union.
+- Use `docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md` for the App Store Connect app-record, EU trader, TestFlight, reviewer-account, and App Review evidence packet.
 - Reserve or create Google Play title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`.
 - Purchase or reserve the launch domain, with `getryvro.com` as the current preferred candidate.
 - Reserve social handles while logged in, starting with `@ryvro`, then `@getryvro` or `@tryryvro` if needed.
@@ -56,6 +58,7 @@ Evidence to record:
 - Counsel or trademark-search result summary.
 - Apple Developer Program License Agreement accepted status.
 - App Store Connect app ID / Apple ID. Current ASC app ID: `6776994726`; owner Apple ID email: `seiduilyasu94@gmail.com`.
+- Completed `docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md` packet or equivalent non-secret App Store/TestFlight evidence.
 - EU trader status completion note, if applicable.
 - Google Play package reservation confirmation.
 - Registrar receipt and DNS control proof.
@@ -71,6 +74,7 @@ Owner-only steps:
 - Create the App Store Connect app with SKU `ryvro-shift-001`. Completed 2026-06-05 with ASC app ID `6776994726`.
 - Create the Google Play Console app. Logged-in Chrome check on 2026-06-05 showed `seiduilyasu94@gmail.com` still needs Play Console developer-account enrollment before any app can be created. The open signup page is titled "Creating a Play Console developer account" and is waiting at "To get started, choose an account type" with the choices `An organization` and `Yourself`. Google warns that `seiduilyasu94@gmail.com` will own the developer account and that ownership cannot be changed after the developer account is created.
 - Use `docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md` for the Play Console developer enrollment, `Ryvro Shift Planner` app creation, `com.ryvro.shiftplanner` package confirmation, Google Play service account JSON, and internal testing setup.
+- Use `docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md` for App Store Connect metadata, TestFlight internal group/build evidence, reviewer account, and App Review submission gates.
 - Run `eas login` and create or link a Ryvro EAS project whose project slug matches `ryvro`, then copy the new EAS project UUID into production env values. Completed 2026-06-05: `@ilyasu/ryvro`, project ID `b306643e-1688-448e-8acd-f72bf74312c3`.
 - In the Expo dashboard, confirm the project display name is `Ryvro Shift Planner`. Completed 2026-06-05.
 - Upload an App Store Connect API key in Expo/EAS before connecting the project to the App Store Connect app. The dashboard showed no saved ASC API keys on 2026-06-05.
@@ -180,6 +184,7 @@ Owner-only steps:
 - Apply the reserved social handle bios, display names, and links from `docs/RYVRO_STORE_LISTING.md` after account reservation.
 - Configure Firebase Auth verification and password-reset email templates with Ryvro copy.
 - Fill App Store privacy answers from `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md`.
+- Use `docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md` for App Store privacy, export compliance, content rating, EU trader status, reviewer account, and App Review evidence.
 - Fill Google Play Data safety and account deletion answers from `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md`.
 - Complete content rating, age rating, export compliance, app access, and reviewer notes.
 
@@ -215,6 +220,7 @@ eas build --platform android --profile production
 Evidence to record:
 
 - EAS iOS build URL and build number.
+- App Store Connect build selection and TestFlight availability note from `docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md`.
 - EAS Android build URL, version code, AAB archive URL when finished, and package ID proof.
 - Installed bundle/package identity proof.
 - Any build warnings and resolutions.
@@ -228,6 +234,7 @@ Run the full smoke matrix in `RYVRO_RELEASE_TASKS.md` on:
 - Physical Android device or Play internal testing install.
 
 Use `docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md` as the fill-in QA packet for each platform.
+Use `docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md` for the matching TestFlight group, tester invite, installed bundle ID, and App Store submission evidence.
 
 Must-pass coverage:
 

@@ -44,6 +44,7 @@ const externalSetup = read('docs/RYVRO_EXTERNAL_SERVICE_SETUP.md');
 const storeListing = read('docs/RYVRO_STORE_LISTING.md');
 const privacySupport = read('docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md');
 const submissionDraft = read('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
+const appStoreTestFlightHandoff = read('docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md');
 const firebaseOauthBackendHandoff = read('docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md');
 const revenueCatProductsHandoff = read('docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md');
 const playInternalTestingHandoff = read('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md');
@@ -96,6 +97,9 @@ const launchDeletion = read('web/launch/delete-account/index.html');
   ['Static launch-page drafts now exist in `web/launch`', readinessReport],
   ['static launch legal/support pages', releaseTasks],
   ['root-level Firebase native service files', ownerRunbook],
+  ['docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md', ownerRunbook],
+  ['docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md', externalSetup],
+  ['docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md', launchEvidenceLog],
   ['docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md', ownerRunbook],
   ['docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md', externalSetup],
   ['docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md', launchEvidenceLog],
@@ -126,6 +130,7 @@ const launchDeletion = read('web/launch/delete-account/index.html');
 [
   ['docs/RYVRO_RELEASE_READINESS_REPORT.md', ownerRunbook],
   ['docs/RYVRO_EXTERNAL_SERVICE_SETUP.md', ownerRunbook],
+  ['docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md', ownerRunbook],
   ['docs/RYVRO_STORE_LISTING.md', ownerRunbook],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', ownerRunbook],
   ['docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md', ownerRunbook],
@@ -211,6 +216,44 @@ const launchDeletion = read('web/launch/delete-account/index.html');
   ['Failure Record', deviceQaTemplate],
   ['Do not record passwords, private keys', deviceQaTemplate],
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'device QA template'));
+
+[
+  ['# Ryvro App Store Connect And TestFlight Handoff', appStoreTestFlightHandoff],
+  ['App name: `Ryvro Shift Planner`', appStoreTestFlightHandoff],
+  ['Native display name: `Ryvro`', appStoreTestFlightHandoff],
+  ['Bundle ID: `com.ryvro.shiftplanner`', appStoreTestFlightHandoff],
+  ['SKU: `ryvro-shift-001`', appStoreTestFlightHandoff],
+  ['Apple app ID / ASC app ID: `6776994726`', appStoreTestFlightHandoff],
+  ['Owner Apple ID email: `seiduilyasu94@gmail.com`', appStoreTestFlightHandoff],
+  ['Apple Team ID: `BZ798WZJCB`', appStoreTestFlightHandoff],
+  ['First iOS release version: `1.0.0`', appStoreTestFlightHandoff],
+  ['First iOS build number: `1`', appStoreTestFlightHandoff],
+  ['EAS submit command: `eas submit --platform ios --latest`', appStoreTestFlightHandoff],
+  ['Reviewer account email: `reviewer@getryvro.com`', appStoreTestFlightHandoff],
+  ['EAS iOS production build `c99b0e0a-829c-4ab7-bd93-164586ade68a`', appStoreTestFlightHandoff],
+  ['EAS Submit `c17b593c-7909-42db-96f6-a81f095f7479`', appStoreTestFlightHandoff],
+  [
+    'TestFlight shows version `1.0.0`, build `1`, status `Ready to Submit`',
+    appStoreTestFlightHandoff,
+  ],
+  ['Internal TestFlight group `Ryvro iPhone QA`', appStoreTestFlightHandoff],
+  [
+    'Tester `seiduilyasu94@gmail.com` / `Ilyasu Seidu` is currently `Invited`',
+    appStoreTestFlightHandoff,
+  ],
+  ['EU trader-status warning', appStoreTestFlightHandoff],
+  ['local placeholder Firebase/OAuth URL schemes', appStoreTestFlightHandoff],
+  ['App Store Connect App Record', appStoreTestFlightHandoff],
+  ['TestFlight Internal Testing', appStoreTestFlightHandoff],
+  ['App Store Privacy, Review Forms, And Reviewer Access', appStoreTestFlightHandoff],
+  ['Subscription And In-App Purchase Review', appStoreTestFlightHandoff],
+  ['EAS Submit And App Review', appStoreTestFlightHandoff],
+  ['Production App Store Gate', appStoreTestFlightHandoff],
+  ['npm run release:submit:check', appStoreTestFlightHandoff],
+  ['Do not store Apple ID passwords', appStoreTestFlightHandoff],
+].forEach(([expected, content]) =>
+  requireIncludes(content, expected, 'App Store TestFlight handoff')
+);
 
 [
   ['# Ryvro Firebase, OAuth, And Backend Handoff', firebaseOauthBackendHandoff],
