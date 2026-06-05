@@ -1,0 +1,117 @@
+# Ryvro Google Play Internal Testing Handoff
+
+Last updated: 2026-06-05
+
+Use this checklist after the Play Console developer account is enrolled and before any Android production rollout. It covers the Android owner/account path that cannot be completed from the repo alone.
+
+Do not store the Google Play service account JSON, upload key material, passwords, payment details, or private tester passwords in Git, docs, screenshots, or chat.
+
+## Required Console Values
+
+- App name: `Ryvro Shift Planner`
+- Package name: `com.ryvro.shiftplanner`
+- Default language: English
+- App type: App
+- Pricing: Free with optional subscription
+- First release track: Internal testing
+- EAS submit command: `eas submit --platform android --latest`
+- EAS submit service account key path: `./google-play-key.json`
+
+## Developer Account Enrollment
+
+Complete this in Play Console while signed in as the owner.
+
+- Choose the correct account type: `Yourself` or `An organization`.
+- Complete identity, payment, contact, and verification steps.
+- Confirm the owner understands that Google warns the developer-account owner cannot be changed after account creation.
+- Record only non-secret evidence: chosen account type, enrollment status, payment completion note without payment details, and verification status.
+
+## App Creation
+
+Create the app before uploading the AAB.
+
+- App name: `Ryvro Shift Planner`
+- Package name: `com.ryvro.shiftplanner`
+- App or game: App
+- Free or paid: Free
+- Declarations: complete accurately in Play Console; do not accept declarations on behalf of the owner.
+- Record the Play Console app dashboard link or package dashboard note in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md`.
+
+## Service Account And API Access
+
+Create a Google Play service account for EAS Submit and RevenueCat. Keep the JSON file local and ignored by Git.
+
+- In Play Console, open API access and link or confirm the Google Cloud project.
+- Create a least-privilege Google Play service account named `Ryvro EAS Submit` or equivalent.
+- Grant only the permissions needed to upload and manage releases for `com.ryvro.shiftplanner`.
+- Save the downloaded JSON key locally as `google-play-key.json` at the repo root.
+- Confirm `.gitignore` keeps `google-play-key.json` out of Git.
+- Do not paste the JSON contents anywhere.
+- Record only the service account email, permission summary, and local file path `./google-play-key.json` in the evidence log.
+
+Local verification before Android submit:
+
+```bash
+test -f ./google-play-key.json
+npm run release:submit:check
+```
+
+The submit check should still fail until all other owner evidence rows are complete, but the Android service-account file-path error should be gone once the real local JSON exists.
+
+## Internal Testing Track
+
+Submit Android to internal testing first.
+
+```bash
+eas submit --platform android --latest
+```
+
+Required internal-track setup:
+
+- Track: Internal testing
+- Tester list: owner/tester Gmail accounts only
+- Release name: `Ryvro 1.0.0 internal`
+- AAB package proof: `com.ryvro.shiftplanner`
+- Version code: current production Android version code
+- Release notes: concise testing note based on `docs/RYVRO_STORE_LISTING.md`
+- Rollout target: internal testing only, not production
+
+Record:
+
+- EAS submit URL or submission ID
+- Play internal release ID or dashboard note
+- Track status
+- Version code
+- Tester list name, without private tester passwords
+- Opt-in link if Play Console provides one
+
+## Android Device QA
+
+Install from the Play internal testing channel on a physical Android device. Do not use Expo Go or a debug build for final Android QA.
+
+Use `docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md` and record:
+
+- Device model
+- Android version
+- Installed package proof for `com.ryvro.shiftplanner`
+- Version code
+- Tester account
+- Smoke matrix result
+- Sandbox purchase result
+- Screenshot evidence from `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md`
+
+Only mark `Physical Android QA` as `Passed` after the Play/internal install passes the full smoke matrix.
+
+## Production Promotion Gate
+
+Do not promote the Android release beyond internal testing until all of these are true:
+
+- `npm run release:submit:check` passes.
+- Google Play Data safety, content rating, target audience, app access, privacy policy, account deletion, and subscription declarations are complete.
+- RevenueCat Android app, entitlement `pro`, products, and offering `default` are complete.
+- Sandbox purchase and restore pass on Android.
+- Physical Android QA passes from the internal testing install.
+- Store screenshots are captured from production-equivalent builds.
+- The owner approves production rollout timing.
+
+After promotion, update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` with the Play release ID, production track status, and rollout note.

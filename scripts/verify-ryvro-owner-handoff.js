@@ -44,6 +44,7 @@ const externalSetup = read('docs/RYVRO_EXTERNAL_SERVICE_SETUP.md');
 const storeListing = read('docs/RYVRO_STORE_LISTING.md');
 const privacySupport = read('docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md');
 const submissionDraft = read('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
+const playInternalTestingHandoff = read('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md');
 const launchEvidenceLog = read('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
 const screenshotChecklist = read('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
 const deviceQaTemplate = read('docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md');
@@ -95,6 +96,9 @@ const launchDeletion = read('web/launch/delete-account/index.html');
   ['root-level Firebase native service files', ownerRunbook],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', ownerRunbook],
   ['docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md', ownerRunbook],
+  ['docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md', ownerRunbook],
+  ['docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md', externalSetup],
+  ['docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md', launchEvidenceLog],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', storeListing],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', launchEvidenceLog],
   ['docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md', launchEvidenceLog],
@@ -199,6 +203,26 @@ const launchDeletion = read('web/launch/delete-account/index.html');
   ['Failure Record', deviceQaTemplate],
   ['Do not record passwords, private keys', deviceQaTemplate],
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'device QA template'));
+
+[
+  ['# Ryvro Google Play Internal Testing Handoff', playInternalTestingHandoff],
+  ['App name: `Ryvro Shift Planner`', playInternalTestingHandoff],
+  ['Package name: `com.ryvro.shiftplanner`', playInternalTestingHandoff],
+  ['First release track: Internal testing', playInternalTestingHandoff],
+  ['EAS submit command: `eas submit --platform android --latest`', playInternalTestingHandoff],
+  ['EAS submit service account key path: `./google-play-key.json`', playInternalTestingHandoff],
+  ['Developer Account Enrollment', playInternalTestingHandoff],
+  ['Service Account And API Access', playInternalTestingHandoff],
+  ['least-privilege Google Play service account', playInternalTestingHandoff],
+  ['Save the downloaded JSON key locally as `google-play-key.json`', playInternalTestingHandoff],
+  ['Do not paste the JSON contents anywhere', playInternalTestingHandoff],
+  ['Internal Testing Track', playInternalTestingHandoff],
+  ['Track: Internal testing', playInternalTestingHandoff],
+  ['Physical Android QA', playInternalTestingHandoff],
+  ['docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md', playInternalTestingHandoff],
+  ['Production Promotion Gate', playInternalTestingHandoff],
+  ['npm run release:submit:check', playInternalTestingHandoff],
+].forEach(([expected, content]) => requireIncludes(content, expected, 'Google Play handoff'));
 
 [
   ['# Ryvro Screenshot Capture Checklist', screenshotChecklist],

@@ -10,6 +10,7 @@ Use these source docs while completing the runbook:
 - `docs/RYVRO_RELEASE_READINESS_REPORT.md` for repo-proven evidence and known blockers.
 - `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md` for Firebase, OAuth, Apple, RevenueCat, EAS, domain, social, analytics, and support console values.
 - `docs/RYVRO_STORE_LISTING.md` for App Store, Google Play, social profile, and launch landing-page copy.
+- `docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md` for Play Console enrollment, app creation, service account JSON handling, internal testing, and Android device QA evidence.
 - `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md` for required App Store and Google Play screenshot frames, file names, and capture evidence.
 - `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md` for privacy, terms, support, account deletion, and Firebase Auth email templates.
 - `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md` for App Store privacy answers, Google Play Data safety answers, content rating, export compliance, and reviewer notes.
@@ -67,6 +68,7 @@ Owner-only steps:
 - Register the Apple App ID for `com.ryvro.shiftplanner` with Sign in with Apple and Push Notifications enabled. Completed 2026-06-05.
 - Create the App Store Connect app with SKU `ryvro-shift-001`. Completed 2026-06-05 with ASC app ID `6776994726`.
 - Create the Google Play Console app. Logged-in Chrome check on 2026-06-05 showed `seiduilyasu94@gmail.com` still needs Play Console developer-account enrollment before any app can be created. The open signup page is titled "Creating a Play Console developer account" and is waiting at "To get started, choose an account type" with the choices `An organization` and `Yourself`. Google warns that `seiduilyasu94@gmail.com` will own the developer account and that ownership cannot be changed after the developer account is created.
+- Use `docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md` for the Play Console developer enrollment, `Ryvro Shift Planner` app creation, `com.ryvro.shiftplanner` package confirmation, Google Play service account JSON, and internal testing setup.
 - Run `eas login` and create or link a Ryvro EAS project whose project slug matches `ryvro`, then copy the new EAS project UUID into production env values. Completed 2026-06-05: `@ilyasu/ryvro`, project ID `b306643e-1688-448e-8acd-f72bf74312c3`.
 - In the Expo dashboard, confirm the project display name is `Ryvro Shift Planner`. Completed 2026-06-05.
 - Upload an App Store Connect API key in Expo/EAS before connecting the project to the App Store Connect app. The dashboard showed no saved ASC API keys on 2026-06-05.
@@ -78,6 +80,8 @@ Evidence to record:
 - App Store Connect app ID `6776994726`.
 - Owner Apple ID email `seiduilyasu94@gmail.com`.
 - Google Play app/package dashboard link.
+- Google Play developer enrollment account type and verification status.
+- Google Play service account email, permission summary, and local key path `./google-play-key.json`; do not record the JSON contents.
 - Play Console developer enrollment status. If enrollment is incomplete, record the account type chosen, verification status, and payment completion note without storing payment details. If using `An organization`, also record the verified organization type; if using `Yourself`, record that the owner intentionally chose the personal account path.
 - EAS project ID `b306643e-1688-448e-8acd-f72bf74312c3`; `eas project:info` output verifies `@ilyasu/ryvro`.
 - Expo/EAS App Store Connect app connection note after the ASC API key is uploaded.
@@ -252,6 +256,7 @@ npm run release:submit:check
 - Upload screenshots, metadata, privacy/data forms, content rating, and subscription details.
 - Submit iOS through App Store Connect after `eas submit --platform ios --latest`.
 - Submit Android to internal testing first after `eas submit --platform android --latest`.
+- Use `docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md` before Android submit and production promotion.
 - Promote Android from internal testing to production only after internal track smoke passes.
 
 Evidence to record:

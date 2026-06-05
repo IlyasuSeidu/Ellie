@@ -228,6 +228,7 @@ Create app:
 Metadata source:
 
 - `docs/RYVRO_STORE_LISTING.md`
+- `docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md`
 - `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`
 - `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md`
 
@@ -270,6 +271,17 @@ Required before submit:
 - Target audience
 - Subscriptions
 - Internal testing release
+
+Service account and internal testing:
+
+- Complete Play Console developer-account enrollment before creating the app.
+- Create the Play app as `Ryvro Shift Planner` with package `com.ryvro.shiftplanner`.
+- Set first release track to Internal testing.
+- Create a least-privilege Google Play service account for EAS Submit and RevenueCat access.
+- Save the downloaded JSON key locally as `./google-play-key.json`; keep it ignored by Git and never paste its contents into docs, chat, or screenshots.
+- Confirm `eas.json` points Android production submit at `./google-play-key.json` and track `internal`.
+- Run `eas submit --platform android --latest` only after the AAB exists and the service account is ready.
+- Use `docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md` for the exact evidence packet and promotion gate.
 
 ## Domain And Social Handles
 
