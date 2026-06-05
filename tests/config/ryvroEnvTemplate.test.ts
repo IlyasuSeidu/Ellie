@@ -685,6 +685,8 @@ describe('Ryvro environment template', () => {
     );
     expect(script).toContain('release:submit:check');
     expect(script).toContain('npm run release:submit:check');
+    expect(script).toContain('CI run `27013691021`');
+    expect(script).toContain('commit `8d24c2a`');
   });
 
   it('keeps final EAS submit readiness behind an owner evidence guard', () => {
@@ -1472,14 +1474,14 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('active universal shift icon');
     expect(readme).toContain('auth, onboarding, dashboard, profile, and builder mobile-fit checks');
     expect(readme).toContain('Recent pushed PR gates');
-    expect(readme).toContain('GitHub Actions CI run `27011713114`');
-    expect(readme).toContain('commit `885089b`');
-    expect(readme).toContain('CI run `27011414391`');
-    expect(readme).toContain('commit `6fcced7`');
-    expect(readme).toContain('CI run `27011090251`');
-    expect(readme).toContain('commit `00cb507`');
-    expect(readme).toContain('CI run `27009866646`');
-    expect(readme).toContain('commit `94d5ad0`');
+    expect(readme).toContain('GitHub Actions CI run `27013691021`');
+    expect(readme).toContain('commit `8d24c2a`');
+    expect(readme).toContain('CI run `27013231061`');
+    expect(readme).toContain('commit `9e69151`');
+    expect(readme).toContain('CI run `27012828719`');
+    expect(readme).toContain('commit `0fb439b`');
+    expect(readme).toContain('CI run `27012424495`');
+    expect(readme).toContain('commit `4c61feb`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain(
@@ -2483,6 +2485,18 @@ describe('Ryvro environment template', () => {
 
     expect(externalSetup).toContain('ryvro_pro_monthly');
     expect(externalSetup).toContain('ryvro_pro_annual');
+    expect(externalSetup).toContain(
+      'Project URL path: `https://app.revenuecat.com/projects/42dccd7e/overview`'
+    );
+    expect(externalSetup).toContain('Android app: saved as `Ryvro (Play Store)`');
+    expect(externalSetup).toContain(
+      'app URL `https://app.revenuecat.com/projects/42dccd7e/apps/appab0f4b628d`'
+    );
+    expect(externalSetup).toContain('REST API identifier `appab0f4b628d`');
+    expect(externalSetup).toContain('upload the Google Play service account credentials JSON');
+    expect(externalSetup).toContain('iOS app: the App Store app form was filled');
+    expect(externalSetup).toContain('In-App Purchase Key ID and In-App Purchase Issuer ID');
+    expect(externalSetup).toContain('App Store Connect in-app purchase p8 key');
     expect(externalSetup).toContain('Do not use RevenueCat `test_` API keys');
     expect(externalSetup).toContain('Do not configure retired Ellie entitlement IDs');
     expect(externalSetup).toContain(
@@ -2729,14 +2743,15 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
     expect(ownerRunbook).toContain('Recent pushed PR gate evidence includes');
     expect(ownerRunbook).not.toContain('Latest pushed PR gate');
-    expect(ownerRunbook).toContain('CI run `27011713114`');
-    expect(ownerRunbook).toContain('commit `885089b`');
-    expect(ownerRunbook).toContain('CI run `27011414391`');
-    expect(ownerRunbook).toContain('commit `6fcced7`');
-    expect(ownerRunbook).toContain('CI run `27011090251`');
-    expect(ownerRunbook).toContain('commit `00cb507`');
-    expect(ownerRunbook).toContain('CI run `27009866646`');
-    expect(ownerRunbook).toContain('commit `94d5ad0`');
+    expect(ownerRunbook).toContain('recording RevenueCat project/app evidence');
+    expect(ownerRunbook).toContain('CI run `27013691021`');
+    expect(ownerRunbook).toContain('commit `8d24c2a`');
+    expect(ownerRunbook).toContain('CI run `27013231061`');
+    expect(ownerRunbook).toContain('commit `9e69151`');
+    expect(ownerRunbook).toContain('CI run `27012828719`');
+    expect(ownerRunbook).toContain('commit `0fb439b`');
+    expect(ownerRunbook).toContain('CI run `27012424495`');
+    expect(ownerRunbook).toContain('commit `4c61feb`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');

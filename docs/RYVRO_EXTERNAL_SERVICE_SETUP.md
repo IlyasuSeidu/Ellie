@@ -1,6 +1,6 @@
 # Ryvro External Service Setup
 
-Last updated: 2026-06-01
+Last updated: 2026-06-05
 
 This is the account-side setup checklist for services that cannot be fully changed from the repo. It translates the repo identity into exact console values.
 
@@ -140,9 +140,23 @@ Verification:
 
 ## RevenueCat
 
-Create apps:
+Current non-secret dashboard state from logged-in owner-console work on 2026-06-05:
 
+- Project: `Ryvro`
+- Project URL path: `https://app.revenuecat.com/projects/42dccd7e/overview`
+- Category: `Productivity`
+- Starting platforms: `Native Apple` and `Native Android`
+- Setup status: dashboard still shows setup `(0 of 6)` and Test Store only.
+- Android app: saved as `Ryvro (Play Store)` with package `com.ryvro.shiftplanner`, app URL `https://app.revenuecat.com/projects/42dccd7e/apps/appab0f4b628d`, and REST API identifier `appab0f4b628d`.
+- Android remaining work: upload the Google Play service account credentials JSON, save the RevenueCat app settings, and configure Google developer notifications after Play Console setup is complete.
+- iOS app: the App Store app form was filled with `Ryvro (App Store)` and bundle `com.ryvro.shiftplanner`, but RevenueCat blocked save with `The following fields have errors: In-App Purchase Key ID and In-App Purchase Issuer ID`.
+- iOS remaining work: create or upload the App Store Connect in-app purchase p8 key, then provide its Key ID and Issuer ID in RevenueCat before saving the iOS app configuration.
+
+Target apps:
+
+- iOS app name: Ryvro (App Store)
 - iOS app bundle ID: com.ryvro.shiftplanner
+- Android app name: Ryvro (Play Store)
 - Android package: com.ryvro.shiftplanner
 
 Entitlement:
