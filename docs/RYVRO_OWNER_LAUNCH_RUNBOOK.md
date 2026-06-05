@@ -14,6 +14,7 @@ Use these source docs while completing the runbook:
 - `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md` for privacy, terms, support, account deletion, and Firebase Auth email templates.
 - `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md` for App Store privacy answers, Google Play Data safety answers, content rating, export compliance, and reviewer notes.
 - `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` for recording non-secret owner evidence before go/no-go.
+- `docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md` for TestFlight iPhone, Android physical/internal-track QA, sandbox purchase, and store screenshot evidence capture.
 
 ## Stop Gates
 
@@ -216,6 +217,8 @@ Run the full smoke matrix in `RYVRO_RELEASE_TASKS.md` on:
 - TestFlight iPhone.
 - Physical Android device or Play internal testing install.
 
+Use `docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md` as the fill-in QA packet for each platform.
+
 Must-pass coverage:
 
 - Fresh install and onboarding through non-mining template start.
@@ -230,6 +233,7 @@ Must-pass coverage:
 Evidence to record:
 
 - Device model, OS version, app build number/versionCode, tester account, date/time, and pass/fail notes.
+- Completed `docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md` packet or equivalent non-secret QA evidence.
 - Screenshots or screen recordings for failed cases.
 - Store-ready screenshots listed in `docs/RYVRO_STORE_LISTING.md`.
 - Store-ready screenshot file names and capture metadata from `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md`.

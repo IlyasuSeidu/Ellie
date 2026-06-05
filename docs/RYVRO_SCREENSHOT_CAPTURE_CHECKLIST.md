@@ -4,6 +4,8 @@ Last updated: 2026-05-31
 
 Use this checklist after TestFlight, Play internal testing, or production-equivalent builds are installed. Do not use Expo Go, web previews, local development-client screenshots, or mock account data for App Store or Google Play submission screenshots.
 
+Use `docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md` beside this checklist to capture the full TestFlight iPhone and Android physical/internal-track smoke matrix. This screenshot checklist only covers final store artwork evidence.
+
 ## Preconditions
 
 - Reviewer account `reviewer@getryvro.com` exists in the production Ryvro Firebase project.
@@ -58,5 +60,7 @@ After capture, update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` with:
 - account used
 - final file list
 - any rejected or retaken frames
+
+Also update the screenshot table in `docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md` or attach the equivalent non-secret screenshot evidence packet.
 
 Keep the screenshot files out of Git unless the owner explicitly decides to version final store artwork in the repository.

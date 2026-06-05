@@ -1733,7 +1733,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: June 5, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, asset checklist reconciliation, industry template visual badge checklist reconciliation, working tracker reconciliation, social profile and landing-page source copy, settings builder entry coverage, settings color/icon coverage, latest public clearance evidence at 11:04Z, iOS simulator onboarding, dashboard, mobile-fit proof, consolidated onboarding icon density coverage, user-safe Ryvro Pro fallback copy, localized Profile help/legal copy, Ryvro Pro unavailable/unconfigured copy cleanup, Ryvro Pro runtime diagnostics cleanup, Play Console account-type handoff, iOS IPA identity proof, Android AAB proof, RevenueCat project and Android app handoff, task checklist reconciliation, static launch legal/support pages, and recent pushed PR #1 CI pass `27014539880` on `8b277ee`)'
+      'Last updated: June 5, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, asset checklist reconciliation, industry template visual badge checklist reconciliation, working tracker reconciliation, social profile and landing-page source copy, settings builder entry coverage, settings color/icon coverage, latest public clearance evidence at 11:04Z, iOS simulator onboarding, dashboard, mobile-fit proof, consolidated onboarding icon density coverage, user-safe Ryvro Pro fallback copy, localized Profile help/legal copy, Ryvro Pro unavailable/unconfigured copy cleanup, Ryvro Pro runtime diagnostics cleanup, Play Console account-type handoff, iOS IPA identity proof, Android AAB proof, RevenueCat project and Android app handoff, task checklist reconciliation, static launch legal/support pages, device QA evidence template, and recent pushed PR #1 CI pass `27014539880` on `8b277ee`)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
@@ -2767,10 +2767,15 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md'),
       'utf8'
     );
+    const deviceQaTemplate = fs.readFileSync(
+      path.join(process.cwd(), 'docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md'),
+      'utf8'
+    );
 
     expect(ownerRunbook).toContain('Do not submit to App Store review or Google Play production');
     expect(ownerRunbook).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
     expect(ownerRunbook).toContain('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
+    expect(ownerRunbook).toContain('docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md');
     expect(ownerRunbook).toContain('non-secret owner evidence');
     expect(ownerRunbook).toContain('Formal trademark/legal clearance for `Ryvro`');
     expect(ownerRunbook).toContain('Apple Developer Program License Agreement');
@@ -2817,6 +2822,8 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('Physical iOS and Android smoke tests');
     expect(ownerRunbook).toContain('TestFlight iPhone');
     expect(ownerRunbook).toContain('Play internal testing install');
+    expect(ownerRunbook).toContain('fill-in QA packet for each platform');
+    expect(ownerRunbook).toContain('Completed `docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md` packet');
     expect(ownerRunbook).toContain('FIFO/block-roster or rotating-shift AI description');
     expect(ownerRunbook).not.toContain('FIFO/mining or rotating-shift AI description');
     expect(ownerRunbook).toContain('eas submit --platform ios --latest');
@@ -2919,14 +2926,41 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('Live `https://getryvro.com/delete-account` URL');
     expect(launchEvidenceLog).toContain('TestFlight iPhone QA');
     expect(launchEvidenceLog).toContain('Physical Android QA');
+    expect(launchEvidenceLog).toContain(
+      'Use `docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md` for the TestFlight iPhone QA packet'
+    );
+    expect(launchEvidenceLog).toContain(
+      'Use `docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md` for the Android physical device or Play internal testing QA packet'
+    );
     expect(launchEvidenceLog).toContain('Store submission');
     expect(launchEvidenceLog).toContain('Pending owner evidence');
     expect(launchEvidenceLog).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
+    expect(launchEvidenceLog).toContain('docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md');
     expect(launchEvidenceLog).toContain('npm run release:submit:check');
+    expect(screenshotChecklist).toContain('docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md');
     expect(screenshotChecklist).toContain('device model');
     expect(screenshotChecklist).toContain('final file list');
 
     expect(externalSetup).toContain('docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md');
+
+    expect(deviceQaTemplate).toContain('# Ryvro Device QA Evidence Template');
+    expect(deviceQaTemplate).toContain('TestFlight iPhone QA');
+    expect(deviceQaTemplate).toContain('Physical Android QA');
+    expect(deviceQaTemplate).toContain('Sandbox purchase QA');
+    expect(deviceQaTemplate).toContain('Installed bundle/package proof');
+    expect(deviceQaTemplate).toContain('Must-Pass Smoke Matrix');
+    expect(deviceQaTemplate).toContain(
+      'Fresh install from TestFlight or Play/internal store channel'
+    );
+    expect(deviceQaTemplate).toContain('reviewer@getryvro.com');
+    expect(deviceQaTemplate).toContain('Google Sign-In');
+    expect(deviceQaTemplate).toContain('Apple Sign-In');
+    expect(deviceQaTemplate).toContain('RevenueCat entitlement `pro` becomes active');
+    expect(deviceQaTemplate).toContain('Pending-sync status appears and clears after reconnect');
+    expect(deviceQaTemplate).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
+    expect(deviceQaTemplate).toContain('Failure Record');
+    expect(deviceQaTemplate).toContain('Do not record passwords, private keys');
+    expect(deviceQaTemplate).not.toMatch(/Ellie Shift Planner|ellie_pro|mine site|haul truck/i);
   });
 
   it('keeps external account setup instructions on Ryvro console names', () => {

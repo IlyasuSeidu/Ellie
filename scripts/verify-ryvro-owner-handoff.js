@@ -46,6 +46,7 @@ const privacySupport = read('docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md');
 const submissionDraft = read('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
 const launchEvidenceLog = read('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
 const screenshotChecklist = read('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
+const deviceQaTemplate = read('docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md');
 const launchReadme = read('web/launch/README.md');
 const launchHome = read('web/launch/index.html');
 const launchPrivacy = read('web/launch/privacy/index.html');
@@ -93,8 +94,11 @@ const launchDeletion = read('web/launch/delete-account/index.html');
   ['static launch legal/support pages', releaseTasks],
   ['root-level Firebase native service files', ownerRunbook],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', ownerRunbook],
+  ['docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md', ownerRunbook],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', storeListing],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', launchEvidenceLog],
+  ['docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md', launchEvidenceLog],
+  ['docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md', screenshotChecklist],
   ['npm run release:submit:check', launchEvidenceLog],
   ['docs/RYVRO_LAUNCH_EVIDENCE_LOG.md', releaseTasks],
   ['docs/RYVRO_LAUNCH_EVIDENCE_LOG.md', ownerRunbook],
@@ -179,6 +183,24 @@ const launchDeletion = read('web/launch/delete-account/index.html');
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'launch evidence log'));
 
 [
+  ['# Ryvro Device QA Evidence Template', deviceQaTemplate],
+  ['TestFlight iPhone QA', deviceQaTemplate],
+  ['Physical Android QA', deviceQaTemplate],
+  ['Sandbox purchase QA', deviceQaTemplate],
+  ['Installed bundle/package proof', deviceQaTemplate],
+  ['Must-Pass Smoke Matrix', deviceQaTemplate],
+  ['Fresh install from TestFlight or Play/internal store channel', deviceQaTemplate],
+  ['reviewer@getryvro.com', deviceQaTemplate],
+  ['Google Sign-In', deviceQaTemplate],
+  ['Apple Sign-In', deviceQaTemplate],
+  ['RevenueCat entitlement `pro` becomes active', deviceQaTemplate],
+  ['Pending-sync status appears and clears after reconnect', deviceQaTemplate],
+  ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', deviceQaTemplate],
+  ['Failure Record', deviceQaTemplate],
+  ['Do not record passwords, private keys', deviceQaTemplate],
+].forEach(([expected, content]) => requireIncludes(content, expected, 'device QA template'));
+
+[
   ['# Ryvro Screenshot Capture Checklist', screenshotChecklist],
   ['Do not use Expo Go, web previews, local development-client screenshots', screenshotChecklist],
   ['reviewer@getryvro.com', screenshotChecklist],
@@ -195,6 +217,7 @@ const launchDeletion = read('web/launch/delete-account/index.html');
   ['2048 x 2732', screenshotChecklist],
   ['1080 x 1920 or higher', screenshotChecklist],
   ['docs/RYVRO_LAUNCH_EVIDENCE_LOG.md', screenshotChecklist],
+  ['docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md', screenshotChecklist],
   ['Keep the screenshot files out of Git', screenshotChecklist],
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'screenshot checklist'));
 
