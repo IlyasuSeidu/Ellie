@@ -22,6 +22,14 @@ Do not store Firebase service-file contents, OAuth client secrets, API keys, Ope
 
 Complete this in Firebase Console while signed in as the owner.
 
+- First refresh Firebase CLI auth from the repo root:
+
+```bash
+firebase login --reauth
+firebase projects:list
+```
+
+- Keep the browser approval step owner-controlled. If the CLI says credentials are no longer valid or waits for authentication, the owner must finish the Google approval page before project creation or deploy work can continue.
 - Create or rename the production Firebase project to a Ryvro-visible name.
 - If Google Analytics terms or other legal terms appear, the owner must review and accept them directly.
 - Record only the Firebase project ID, visible display name, Analytics property name if enabled, and owner account used.

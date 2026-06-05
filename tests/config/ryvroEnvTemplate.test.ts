@@ -1924,6 +1924,7 @@ describe('Ryvro environment template', () => {
       'npx eas-cli build:version:get --platform all --profile production --json'
     );
     expect(gitignore).toContain('google-play-key.json');
+    expect(gitignore).toContain('firebase-debug.log');
     expect(trackedFiles).not.toContain('google-play-key.json');
   });
 
@@ -2909,6 +2910,8 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('App Store Connect metadata, TestFlight internal group');
     expect(ownerRunbook).toContain('npm run release:native:check');
     expect(ownerRunbook).toContain('npm run release:env:check');
+    expect(ownerRunbook).toContain('firebase login --reauth');
+    expect(ownerRunbook).toContain('firebase projects:list');
     expect(ownerRunbook).toContain('fill-in evidence packet for Firebase, OAuth');
     expect(ownerRunbook).toContain('real root-level Firebase native service files');
     expect(ownerRunbook).toContain(
@@ -2989,6 +2992,11 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('status `Ready to Submit`');
     expect(launchEvidenceLog).toContain('`Ryvro iPhone QA` internal group');
     expect(launchEvidenceLog).toContain('Fresh logged-in Chrome inspection');
+    expect(launchEvidenceLog).toContain(
+      'Firebase CLI check on 2026-06-05 ran `firebase projects:list`'
+    );
+    expect(launchEvidenceLog).toContain('firebase login --reauth');
+    expect(launchEvidenceLog).toContain('waiting for owner approval');
     expect(launchEvidenceLog).toContain('testflight/groups/c9ea8051-517c-4d81-b8a0-57099d9e864d');
     expect(launchEvidenceLog).toContain('Internal Group ∙ 1 Tester ∙ 1 Build');
     expect(launchEvidenceLog).toContain('tester status `Invited`');
@@ -3272,6 +3280,9 @@ describe('Ryvro environment template', () => {
     expect(firebaseOauthBackendHandoff).toContain(
       'Parser function: `parseShiftScheduleDescription`'
     );
+    expect(firebaseOauthBackendHandoff).toContain('firebase login --reauth');
+    expect(firebaseOauthBackendHandoff).toContain('firebase projects:list');
+    expect(firebaseOauthBackendHandoff).toContain('the owner must finish the Google approval page');
     expect(firebaseOauthBackendHandoff).toContain(
       'If Google Analytics terms or other legal terms appear'
     );
