@@ -8,6 +8,8 @@ Use `docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md` first when executing launch work; this 
 
 Use `docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md` as the fill-in evidence packet for Firebase project creation, native app config files, Google OAuth, Firebase Auth domains and email templates, backend deploys, endpoint smoke tests, production env preflight, and EAS secret push.
 
+Use `docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md` as the fill-in evidence packet for RevenueCat apps, Ryvro Pro entitlement, App Store and Google Play subscription products, default offering, SDK key copying, env preflight, and sandbox purchase QA.
+
 ## Final Identity Values
 
 - App name: Ryvro Shift Planner

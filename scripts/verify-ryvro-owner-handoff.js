@@ -45,6 +45,7 @@ const storeListing = read('docs/RYVRO_STORE_LISTING.md');
 const privacySupport = read('docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md');
 const submissionDraft = read('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
 const firebaseOauthBackendHandoff = read('docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md');
+const revenueCatProductsHandoff = read('docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md');
 const playInternalTestingHandoff = read('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md');
 const launchEvidenceLog = read('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
 const screenshotChecklist = read('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
@@ -98,6 +99,9 @@ const launchDeletion = read('web/launch/delete-account/index.html');
   ['docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md', ownerRunbook],
   ['docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md', externalSetup],
   ['docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md', launchEvidenceLog],
+  ['docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md', ownerRunbook],
+  ['docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md', externalSetup],
+  ['docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md', launchEvidenceLog],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', ownerRunbook],
   ['docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md', ownerRunbook],
   ['docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md', ownerRunbook],
@@ -247,6 +251,29 @@ const launchDeletion = read('web/launch/delete-account/index.html');
 ].forEach(([expected, content]) =>
   requireIncludes(content, expected, 'Firebase OAuth backend handoff')
 );
+
+[
+  ['# Ryvro RevenueCat And Store Products Handoff', revenueCatProductsHandoff],
+  ['Entitlement ID: `pro`', revenueCatProductsHandoff],
+  ['Entitlement display name: `Ryvro Pro`', revenueCatProductsHandoff],
+  ['Offering ID: `default`', revenueCatProductsHandoff],
+  ['Monthly product ID: `ryvro_pro_monthly`', revenueCatProductsHandoff],
+  ['Annual product ID: `ryvro_pro_annual`', revenueCatProductsHandoff],
+  ['First-release requirement', revenueCatProductsHandoff],
+  ['RevenueCat project: `Ryvro`', revenueCatProductsHandoff],
+  ['REST API identifier `appab0f4b628d`', revenueCatProductsHandoff],
+  ['App Store Connect Subscription Setup', revenueCatProductsHandoff],
+  ['Google Play Subscription Setup', revenueCatProductsHandoff],
+  ['Create entitlement ID `pro`', revenueCatProductsHandoff],
+  ['Create offering ID `default`', revenueCatProductsHandoff],
+  ['REVENUECAT_IOS_KEY=<real appl_ key>', revenueCatProductsHandoff],
+  ['REVENUECAT_ANDROID_KEY=<real goog_ key>', revenueCatProductsHandoff],
+  ['npm run release:env:check', revenueCatProductsHandoff],
+  ['Sandbox Purchase QA', revenueCatProductsHandoff],
+  ['RevenueCat entitlement `pro` becomes active', revenueCatProductsHandoff],
+  ['Restore Purchases works', revenueCatProductsHandoff],
+  ['Do not store RevenueCat SDK keys', revenueCatProductsHandoff],
+].forEach(([expected, content]) => requireIncludes(content, expected, 'RevenueCat handoff'));
 
 [
   ['# Ryvro Google Play Internal Testing Handoff', playInternalTestingHandoff],

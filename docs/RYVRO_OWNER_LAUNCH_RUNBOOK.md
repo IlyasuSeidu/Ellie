@@ -10,6 +10,7 @@ Use these source docs while completing the runbook:
 - `docs/RYVRO_RELEASE_READINESS_REPORT.md` for repo-proven evidence and known blockers.
 - `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md` for Firebase, OAuth, Apple, RevenueCat, EAS, domain, social, analytics, and support console values.
 - `docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md` for Firebase project creation, native service files, OAuth clients, Auth domains, backend deploys, smoke tests, production env preflight, and EAS secret evidence.
+- `docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md` for Ryvro Pro entitlement, store products, RevenueCat offering, SDK key copying, env preflight, and sandbox purchase QA evidence.
 - `docs/RYVRO_STORE_LISTING.md` for App Store, Google Play, social profile, and launch landing-page copy.
 - `docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md` for Play Console enrollment, app creation, service account JSON handling, internal testing, and Android device QA evidence.
 - `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md` for required App Store and Google Play screenshot frames, file names, and capture evidence.
@@ -152,6 +153,7 @@ Evidence to record:
 Owner-only steps:
 
 - Create Ryvro iOS and Android apps in RevenueCat.
+- Use `docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md` as the fill-in evidence packet for Ryvro Pro store products, entitlement, offering, SDK key copying, env preflight, and sandbox purchase QA.
 - Configure entitlement `pro` with display name `Ryvro Pro`.
 - Create App Store subscription group `Ryvro Pro`.
 - Create products `ryvro_pro_monthly` and `ryvro_pro_annual` in App Store Connect and Google Play Console.
@@ -162,6 +164,7 @@ Owner-only steps:
 Evidence to record:
 
 - RevenueCat project/app IDs.
+- Completed `docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md` packet or equivalent non-secret subscription evidence.
 - iOS and Android SDK keys copied into `.env`.
 - App Store and Play product status.
 - Sandbox purchase, cancel, and restore results.

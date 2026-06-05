@@ -1733,7 +1733,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: June 5, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, asset checklist reconciliation, industry template visual badge checklist reconciliation, working tracker reconciliation, social profile and landing-page source copy, settings builder entry coverage, settings color/icon coverage, latest public clearance evidence at 11:04Z, iOS simulator onboarding, dashboard, mobile-fit proof, consolidated onboarding icon density coverage, user-safe Ryvro Pro fallback copy, localized Profile help/legal copy, Ryvro Pro unavailable/unconfigured copy cleanup, Ryvro Pro runtime diagnostics cleanup, Play Console account-type handoff, iOS IPA identity proof, Android AAB proof, RevenueCat project and Android app handoff, task checklist reconciliation, static launch legal/support pages, device QA evidence template, Google Play internal-testing handoff, Firebase OAuth backend handoff, and recent pushed PR #1 CI pass `27014539880` on `8b277ee`)'
+      'Last updated: June 5, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, asset checklist reconciliation, industry template visual badge checklist reconciliation, working tracker reconciliation, social profile and landing-page source copy, settings builder entry coverage, settings color/icon coverage, latest public clearance evidence at 11:04Z, iOS simulator onboarding, dashboard, mobile-fit proof, consolidated onboarding icon density coverage, user-safe Ryvro Pro fallback copy, localized Profile help/legal copy, Ryvro Pro unavailable/unconfigured copy cleanup, Ryvro Pro runtime diagnostics cleanup, Play Console account-type handoff, iOS IPA identity proof, Android AAB proof, RevenueCat project and Android app handoff, task checklist reconciliation, static launch legal/support pages, device QA evidence template, Google Play internal-testing handoff, Firebase OAuth backend handoff, RevenueCat products handoff, and recent pushed PR #1 CI pass `27014539880` on `8b277ee`)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
@@ -1795,6 +1795,9 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).toContain('docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md');
     expect(releaseTasks).toContain('Firebase OAuth backend handoff');
     expect(releaseTasks).toContain('native service files, OAuth clients, Auth domains');
+    expect(releaseTasks).toContain('docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md');
+    expect(releaseTasks).toContain('RevenueCat products handoff');
+    expect(releaseTasks).toContain('Ryvro Pro entitlement, App Store and Google Play products');
     expect(releaseTasks).toContain('npm run release:submit:check');
     expect(releaseTasks).toContain(
       'Verify Firebase Cloud Functions are deployed: `curl` the configured `RYVRO_BRAIN_URL` endpoint and `SHIFT_SCHEDULE_PARSER_URL` endpoint'
@@ -2781,6 +2784,10 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md'),
       'utf8'
     );
+    const revenueCatProductsHandoff = fs.readFileSync(
+      path.join(process.cwd(), 'docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md'),
+      'utf8'
+    );
     const googlePlayInternalTestingHandoff = fs.readFileSync(
       path.join(process.cwd(), 'docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md'),
       'utf8'
@@ -2791,6 +2798,7 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
     expect(ownerRunbook).toContain('docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md');
     expect(ownerRunbook).toContain('docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md');
+    expect(ownerRunbook).toContain('docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md');
     expect(ownerRunbook).toContain('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md');
     expect(ownerRunbook).toContain('non-secret owner evidence');
     expect(ownerRunbook).toContain('Formal trademark/legal clearance for `Ryvro`');
@@ -2832,6 +2840,7 @@ describe('Ryvro environment template', () => {
       '{"prompt":"I work 2 days, 2 nights, then 4 off.","timezone":"UTC","locale":"en-US","today":"2026-05-31"}'
     );
     expect(ownerRunbook).toContain('RevenueCat `pro` entitlement');
+    expect(ownerRunbook).toContain('fill-in evidence packet for Ryvro Pro store products');
     expect(ownerRunbook).toContain('ryvro_pro_monthly');
     expect(ownerRunbook).toContain('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
     expect(ownerRunbook).toContain('social profile, and launch landing-page copy');
@@ -2948,6 +2957,11 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('package `com.ryvro.shiftplanner`');
     expect(launchEvidenceLog).toContain('app.revenuecat.com/projects/42dccd7e/apps/appab0f4b628d');
     expect(launchEvidenceLog).toContain('REST API identifier `appab0f4b628d`');
+    expect(launchEvidenceLog).toContain('docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md');
+    expect(launchEvidenceLog).toContain('RevenueCat/store-products evidence packet');
+    expect(launchEvidenceLog).toContain('App Store Connect subscription group `Ryvro Pro`');
+    expect(launchEvidenceLog).toContain('RevenueCat offering `default`');
+    expect(launchEvidenceLog).toContain('sandbox trial or purchase');
     expect(launchEvidenceLog).toContain('Google developer notifications remain pending');
     expect(launchEvidenceLog).toContain('`Ryvro (App Store)`');
     expect(launchEvidenceLog).toContain('In-App Purchase Key ID and In-App Purchase Issuer ID');
@@ -2974,6 +2988,8 @@ describe('Ryvro environment template', () => {
     expect(externalSetup).toContain('docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md');
     expect(externalSetup).toContain('docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md');
     expect(externalSetup).toContain('Firebase project creation, native app config files');
+    expect(externalSetup).toContain('docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md');
+    expect(externalSetup).toContain('RevenueCat apps, Ryvro Pro entitlement');
     expect(externalSetup).toContain('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md');
     expect(externalSetup).toContain('Create a least-privilege Google Play service account');
     expect(externalSetup).toContain(
@@ -3051,6 +3067,30 @@ describe('Ryvro environment template', () => {
     );
     expect(firebaseOauthBackendHandoff).toContain('Do not store Firebase service-file contents');
     expect(firebaseOauthBackendHandoff).not.toMatch(
+      /Ellie Shift Planner|ellie_pro|mine site|haul truck/i
+    );
+
+    expect(revenueCatProductsHandoff).toContain('# Ryvro RevenueCat And Store Products Handoff');
+    expect(revenueCatProductsHandoff).toContain('Entitlement ID: `pro`');
+    expect(revenueCatProductsHandoff).toContain('Entitlement display name: `Ryvro Pro`');
+    expect(revenueCatProductsHandoff).toContain('Offering ID: `default`');
+    expect(revenueCatProductsHandoff).toContain('Monthly product ID: `ryvro_pro_monthly`');
+    expect(revenueCatProductsHandoff).toContain('Annual product ID: `ryvro_pro_annual`');
+    expect(revenueCatProductsHandoff).toContain('First-release requirement');
+    expect(revenueCatProductsHandoff).toContain('RevenueCat project: `Ryvro`');
+    expect(revenueCatProductsHandoff).toContain('REST API identifier `appab0f4b628d`');
+    expect(revenueCatProductsHandoff).toContain('App Store Connect Subscription Setup');
+    expect(revenueCatProductsHandoff).toContain('Google Play Subscription Setup');
+    expect(revenueCatProductsHandoff).toContain('Create entitlement ID `pro`');
+    expect(revenueCatProductsHandoff).toContain('Create offering ID `default`');
+    expect(revenueCatProductsHandoff).toContain('REVENUECAT_IOS_KEY=<real appl_ key>');
+    expect(revenueCatProductsHandoff).toContain('REVENUECAT_ANDROID_KEY=<real goog_ key>');
+    expect(revenueCatProductsHandoff).toContain('npm run release:env:check');
+    expect(revenueCatProductsHandoff).toContain('Sandbox Purchase QA');
+    expect(revenueCatProductsHandoff).toContain('RevenueCat entitlement `pro` becomes active');
+    expect(revenueCatProductsHandoff).toContain('Restore Purchases works');
+    expect(revenueCatProductsHandoff).toContain('Do not store RevenueCat SDK keys');
+    expect(revenueCatProductsHandoff).not.toMatch(
       /Ellie Shift Planner|ellie_pro|mine site|haul truck/i
     );
 
