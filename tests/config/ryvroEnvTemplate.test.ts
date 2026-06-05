@@ -2740,6 +2740,11 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('EAS-managed Android keystore');
     expect(launchEvidenceLog).toContain('318b4e8f-b344-4ed9-8bcd-a5805093339d');
     expect(launchEvidenceLog).toContain('version code `1`');
+    expect(launchEvidenceLog).toContain('77QGA2J8tMvr4Rj3iF9DNM.aab');
+    expect(launchEvidenceLog).toContain('c3ef1f79945b09e8e6190cfccac4951db65ff8aa');
+    expect(launchEvidenceLog).toContain(
+      '9eafac4baaab0119c7237347c6cdd5b41572912e6cbe4351112950927bf9e1fa'
+    );
     expect(launchEvidenceLog).toContain('Expo dashboard display name is `Ryvro Shift Planner`');
     expect(launchEvidenceLog).toContain('Created and linked EAS project `@ilyasu/ryvro`');
     expect(launchEvidenceLog).toContain('b306643e-1688-448e-8acd-f72bf74312c3');
