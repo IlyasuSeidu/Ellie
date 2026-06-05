@@ -65,7 +65,7 @@ Owner-only steps:
 - Enroll or confirm Apple Developer access.
 - Register the Apple App ID for `com.ryvro.shiftplanner` with Sign in with Apple and Push Notifications enabled. Completed 2026-06-05.
 - Create the App Store Connect app with SKU `ryvro-shift-001`. Completed 2026-06-05 with ASC app ID `6776994726`.
-- Create the Google Play Console app. Logged-in check on 2026-06-05 showed `seiduilyasu94@gmail.com` still needs Play Console developer-account enrollment before any app can be created.
+- Create the Google Play Console app. Logged-in Chrome check on 2026-06-05 showed `seiduilyasu94@gmail.com` still needs Play Console developer-account enrollment before any app can be created. The open signup page is titled "Creating a Play Console developer account" and is waiting at "To get started, choose an account type" with the choices `An organization` and `Yourself`. Google warns that `seiduilyasu94@gmail.com` will own the developer account and that ownership cannot be changed after the developer account is created.
 - Run `eas login` and create or link a Ryvro EAS project whose project slug matches `ryvro`, then copy the new EAS project UUID into production env values. Completed 2026-06-05: `@ilyasu/ryvro`, project ID `b306643e-1688-448e-8acd-f72bf74312c3`.
 - In the Expo dashboard, confirm the project display name is `Ryvro Shift Planner`. Completed 2026-06-05.
 - Upload an App Store Connect API key in Expo/EAS before connecting the project to the App Store Connect app. The dashboard showed no saved ASC API keys on 2026-06-05.
@@ -77,7 +77,7 @@ Evidence to record:
 - App Store Connect app ID `6776994726`.
 - Owner Apple ID email `seiduilyasu94@gmail.com`.
 - Google Play app/package dashboard link.
-- Play Console developer enrollment status. If enrollment is incomplete, record the account type chosen, verification status, and payment completion note without storing payment details.
+- Play Console developer enrollment status. If enrollment is incomplete, record the account type chosen, verification status, and payment completion note without storing payment details. If using `An organization`, also record the verified organization type; if using `Yourself`, record that the owner intentionally chose the personal account path.
 - EAS project ID `b306643e-1688-448e-8acd-f72bf74312c3`; `eas project:info` output verifies `@ilyasu/ryvro`.
 - Expo/EAS App Store Connect app connection note after the ASC API key is uploaded.
 - Signing/provisioning status. For iOS, record only non-secret certificate/profile identifiers and expiry dates; do not record password, certificate, private key, push key material, or provisioning-profile contents.
@@ -258,12 +258,11 @@ Evidence to record:
 
 ## Current Repo Evidence
 
-- Latest local gate: `npm run release:check` passed on 2026-06-05 with 110 Jest suites, 1,782 tests, 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build.
+- Latest local gate: `npm run release:check` passed on 2026-06-05 after recording iOS IPA identity proof, with 110 Jest suites, 1,782 tests, 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build.
 - Current local release gate includes `npm run release:owner:check`, which fails if the account-only launch blockers, physical-device QA requirements, and not-yet-live stop gates disappear from the tracked handoff docs.
 - Final submit readiness is guarded by `npm run release:submit:check`, which must fail until EAS submit placeholders are replaced and every required non-secret row in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` is `Passed` or explicitly `Not applicable`.
 - Store screenshot capture is now tracked in `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md`, and `npm run release:store:check` / `npm run release:owner:check` fail if the checklist or evidence-log handoff disappears.
-- Recent pushed PR gate evidence includes GitHub Actions CI run `27003316953` on commit `9ebb4f9`, CI run `27003005078` on commit `b157126`, and CI run `27002675763` on commit `02947b1`, which passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check` with the owner handoff preflight.
-- Recent pushed PR gates also include CI run `26728238458` on commit `d7f8f0e`, CI run `26728115119` on commit `50bc770`, CI run `26726876514` on commit `f72f885`, and CI run `26726707448` on commit `0290dc2`; all passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check` with the owner handoff preflight.
+- Recent pushed PR gate evidence includes GitHub Actions CI run `27011713114` on commit `885089b`, CI run `27011414391` on commit `6fcced7`, CI run `27011090251` on commit `00cb507`, and CI run `27009866646` on commit `94d5ad0`; all passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check` with the owner handoff preflight.
 - Current repo branch: `codex/ryvro-rebrand-rollout`.
 
 Keep this section current whenever a new launch-readiness commit is pushed and CI passes.
