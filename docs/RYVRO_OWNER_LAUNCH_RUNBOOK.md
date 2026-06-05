@@ -69,7 +69,7 @@ Owner-only steps:
 - Run `eas login` and create or link a Ryvro EAS project whose project slug matches `ryvro`, then copy the new EAS project UUID into production env values. Completed 2026-06-05: `@ilyasu/ryvro`, project ID `b306643e-1688-448e-8acd-f72bf74312c3`.
 - In the Expo dashboard, confirm the project display name is `Ryvro Shift Planner`. Completed 2026-06-05.
 - Upload an App Store Connect API key in Expo/EAS before connecting the project to the App Store Connect app. The dashboard showed no saved ASC API keys on 2026-06-05.
-- Set up iOS distribution credentials and Android release upload key or EAS-managed credentials. The iOS EAS build flow reached Apple login on 2026-06-05; the owner must enter the current Apple password so EAS can generate or validate signing credentials.
+- Set up iOS distribution credentials and Android release upload key or EAS-managed credentials. iOS signing was completed on 2026-06-05 for `@ilyasu/ryvro` / `com.ryvro.shiftplanner`; Android release signing is still pending.
 
 Evidence to record:
 
@@ -80,7 +80,7 @@ Evidence to record:
 - Play Console developer enrollment status. If enrollment is incomplete, record the account type chosen, verification status, and payment completion note without storing payment details.
 - EAS project ID `b306643e-1688-448e-8acd-f72bf74312c3`; `eas project:info` output verifies `@ilyasu/ryvro`.
 - Expo/EAS App Store Connect app connection note after the ASC API key is uploaded.
-- Signing/provisioning status. For iOS, record the EAS credentials result after the owner completes Apple login; do not record password, certificate, private key, or provisioning-profile contents.
+- Signing/provisioning status. For iOS, record only non-secret certificate/profile identifiers and expiry dates; do not record password, certificate, private key, push key material, or provisioning-profile contents.
 - Update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` with the non-secret evidence references.
 
 ### 3. Firebase, OAuth, Backend, And Secrets
