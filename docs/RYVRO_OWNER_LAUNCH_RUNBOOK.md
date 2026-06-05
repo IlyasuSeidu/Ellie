@@ -20,6 +20,7 @@ Use these source docs while completing the runbook:
 Do not submit to App Store review or Google Play production until all of these are true:
 
 - Formal trademark/legal clearance for `Ryvro` is complete in launch markets.
+- The Apple Developer Program License Agreement is accepted by the Account Holder in Apple Developer.
 - The owner has reserved or created App Store Connect app name `Ryvro Shift Planner`.
 - The owner has reserved or created Google Play app title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`.
 - The launch domain is purchased, controlled, and serving privacy, terms, support, and `https://getryvro.com/delete-account` account-deletion instructions.
@@ -38,6 +39,7 @@ Do not submit to App Store review or Google Play production until all of these a
 Owner-only steps:
 
 - Complete formal trademark/legal clearance for `Ryvro`.
+- Sign in as the Apple Developer Account Holder at `developer.apple.com/account` and accept the updated Apple Developer Program License Agreement.
 - Reserve or create App Store Connect app name `Ryvro Shift Planner`.
 - Reserve or create Google Play title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`.
 - Purchase or reserve the launch domain, with `getryvro.com` as the current preferred candidate.
@@ -46,6 +48,7 @@ Owner-only steps:
 Evidence to record:
 
 - Counsel or trademark-search result summary.
+- Apple Developer Program License Agreement accepted status.
 - App Store Connect app ID / Apple ID.
 - Google Play package reservation confirmation.
 - Registrar receipt and DNS control proof.

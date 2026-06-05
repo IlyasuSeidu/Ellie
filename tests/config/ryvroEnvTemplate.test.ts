@@ -2666,6 +2666,7 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
     expect(ownerRunbook).toContain('non-secret owner evidence');
     expect(ownerRunbook).toContain('Formal trademark/legal clearance for `Ryvro`');
+    expect(ownerRunbook).toContain('Apple Developer Program License Agreement');
     expect(ownerRunbook).toContain('Reserve or create Google Play title `Ryvro Shift Planner`');
     expect(ownerRunbook).toContain('Purchase or reserve the launch domain');
     expect(ownerRunbook).toContain('https://getryvro.com/delete-account');
@@ -2723,6 +2724,8 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('Do not paste passwords, private keys');
     expect(launchEvidenceLog).toContain('Formal trademark/legal clearance for `Ryvro`');
     expect(launchEvidenceLog).toContain('App Store Connect app name `Ryvro Shift Planner`');
+    expect(launchEvidenceLog).toContain('Apple Developer Program License Agreement Updated');
+    expect(launchEvidenceLog).toContain('Account Holder must accept the updated agreement');
     expect(launchEvidenceLog).toContain(
       'Google Play title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`'
     );
