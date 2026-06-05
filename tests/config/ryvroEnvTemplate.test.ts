@@ -686,8 +686,8 @@ describe('Ryvro environment template', () => {
     );
     expect(script).toContain('release:submit:check');
     expect(script).toContain('npm run release:submit:check');
-    expect(script).toContain('CI run `27014075248`');
-    expect(script).toContain('commit `c424ff3`');
+    expect(script).toContain('CI run `27014539880`');
+    expect(script).toContain('commit `8b277ee`');
   });
 
   it('keeps final EAS submit readiness behind an owner evidence guard', () => {
@@ -1475,14 +1475,14 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('active universal shift icon');
     expect(readme).toContain('auth, onboarding, dashboard, profile, and builder mobile-fit checks');
     expect(readme).toContain('Recent pushed PR gates');
-    expect(readme).toContain('GitHub Actions CI run `27014075248`');
+    expect(readme).toContain('GitHub Actions CI run `27014539880`');
+    expect(readme).toContain('commit `8b277ee`');
+    expect(readme).toContain('CI run `27014075248`');
     expect(readme).toContain('commit `c424ff3`');
     expect(readme).toContain('CI run `27013691021`');
     expect(readme).toContain('commit `8d24c2a`');
     expect(readme).toContain('CI run `27013231061`');
     expect(readme).toContain('commit `9e69151`');
-    expect(readme).toContain('CI run `27012828719`');
-    expect(readme).toContain('commit `0fb439b`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain(
@@ -1733,7 +1733,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: June 5, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, asset checklist reconciliation, industry template visual badge checklist reconciliation, working tracker reconciliation, social profile and landing-page source copy, settings builder entry coverage, settings color/icon coverage, latest public clearance evidence at 11:04Z, iOS simulator onboarding, dashboard, mobile-fit proof, consolidated onboarding icon density coverage, user-safe Ryvro Pro fallback copy, localized Profile help/legal copy, Ryvro Pro unavailable/unconfigured copy cleanup, Ryvro Pro runtime diagnostics cleanup, Play Console account-type handoff, iOS IPA identity proof, Android AAB proof, RevenueCat project and Android app handoff, task checklist reconciliation, and recent pushed PR #1 CI pass `27014075248` on `c424ff3`)'
+      'Last updated: June 5, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, asset checklist reconciliation, industry template visual badge checklist reconciliation, working tracker reconciliation, social profile and landing-page source copy, settings builder entry coverage, settings color/icon coverage, latest public clearance evidence at 11:04Z, iOS simulator onboarding, dashboard, mobile-fit proof, consolidated onboarding icon density coverage, user-safe Ryvro Pro fallback copy, localized Profile help/legal copy, Ryvro Pro unavailable/unconfigured copy cleanup, Ryvro Pro runtime diagnostics cleanup, Play Console account-type handoff, iOS IPA identity proof, Android AAB proof, RevenueCat project and Android app handoff, task checklist reconciliation, and recent pushed PR #1 CI pass `27014539880` on `8b277ee`)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
@@ -1983,8 +1983,8 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
-    expect(readinessReport).toContain('CI run `27014075248`');
-    expect(readinessReport).toContain('commit `c424ff3`');
+    expect(readinessReport).toContain('CI run `27014539880`');
+    expect(readinessReport).toContain('commit `8b277ee`');
     expect(readinessReport).toContain('CI run `27013691021`');
     expect(readinessReport).toContain('commit `8d24c2a`');
     expect(readinessReport).toContain('CI run `27011414391`');
@@ -2769,8 +2769,8 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('Recent pushed PR gate evidence includes');
     expect(ownerRunbook).not.toContain('Latest pushed PR gate');
     expect(ownerRunbook).toContain('recording RevenueCat project/app evidence');
-    expect(ownerRunbook).toContain('CI run `27014075248`');
-    expect(ownerRunbook).toContain('commit `c424ff3`');
+    expect(ownerRunbook).toContain('CI run `27014539880`');
+    expect(ownerRunbook).toContain('commit `8b277ee`');
     expect(ownerRunbook).toContain('CI run `27013691021`');
     expect(ownerRunbook).toContain('commit `8d24c2a`');
     expect(ownerRunbook).toContain('CI run `27013231061`');
