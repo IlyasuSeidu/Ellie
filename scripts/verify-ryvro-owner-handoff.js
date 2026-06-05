@@ -44,6 +44,7 @@ const externalSetup = read('docs/RYVRO_EXTERNAL_SERVICE_SETUP.md');
 const storeListing = read('docs/RYVRO_STORE_LISTING.md');
 const privacySupport = read('docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md');
 const submissionDraft = read('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
+const firebaseOauthBackendHandoff = read('docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md');
 const playInternalTestingHandoff = read('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md');
 const launchEvidenceLog = read('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
 const screenshotChecklist = read('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
@@ -94,6 +95,9 @@ const launchDeletion = read('web/launch/delete-account/index.html');
   ['Static launch-page drafts now exist in `web/launch`', readinessReport],
   ['static launch legal/support pages', releaseTasks],
   ['root-level Firebase native service files', ownerRunbook],
+  ['docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md', ownerRunbook],
+  ['docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md', externalSetup],
+  ['docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md', launchEvidenceLog],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', ownerRunbook],
   ['docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md', ownerRunbook],
   ['docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md', ownerRunbook],
@@ -203,6 +207,46 @@ const launchDeletion = read('web/launch/delete-account/index.html');
   ['Failure Record', deviceQaTemplate],
   ['Do not record passwords, private keys', deviceQaTemplate],
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'device QA template'));
+
+[
+  ['# Ryvro Firebase, OAuth, And Backend Handoff', firebaseOauthBackendHandoff],
+  ['Firebase project display name: `Ryvro` or `Ryvro Shift Planner`', firebaseOauthBackendHandoff],
+  ['iOS bundle ID: `com.ryvro.shiftplanner`', firebaseOauthBackendHandoff],
+  ['Android package name: `com.ryvro.shiftplanner`', firebaseOauthBackendHandoff],
+  ['Public domain: `getryvro.com`', firebaseOauthBackendHandoff],
+  ['Support reply-to: `support@getryvro.com`', firebaseOauthBackendHandoff],
+  ['Voice function: `ryvroBrain`', firebaseOauthBackendHandoff],
+  ['Parser function: `parseShiftScheduleDescription`', firebaseOauthBackendHandoff],
+  ['If Google Analytics terms or other legal terms appear', firebaseOauthBackendHandoff],
+  ['Download the fresh iOS file as `GoogleService-Info.plist`', firebaseOauthBackendHandoff],
+  ['Download the fresh Android file as `google-services.json`', firebaseOauthBackendHandoff],
+  ['Place both files at the repo root only', firebaseOauthBackendHandoff],
+  ['Do not use tracked local placeholders under `config/firebase/`', firebaseOauthBackendHandoff],
+  ['Web OAuth client', firebaseOauthBackendHandoff],
+  ['Android release signing SHA-1 and SHA-256 fingerprints', firebaseOauthBackendHandoff],
+  ['Firebase Auth authorized domain: `getryvro.com`', firebaseOauthBackendHandoff],
+  ['Firebase Auth sender name: `Ryvro Support`', firebaseOauthBackendHandoff],
+  ['firebase deploy --only functions', firebaseOauthBackendHandoff],
+  [
+    'RYVRO_BRAIN_URL=https://<region>-<project-id>.cloudfunctions.net/ryvroBrain',
+    firebaseOauthBackendHandoff,
+  ],
+  [
+    'SHIFT_SCHEDULE_PARSER_URL=https://<region>-<project-id>.cloudfunctions.net/parseShiftScheduleDescription',
+    firebaseOauthBackendHandoff,
+  ],
+  ['Do not configure `ellieBrain`', firebaseOauthBackendHandoff],
+  [
+    'parseShiftScheduleDescription`: must return `200` with a draft schedule',
+    firebaseOauthBackendHandoff,
+  ],
+  ['npm run release:native:check', firebaseOauthBackendHandoff],
+  ['npm run release:env:check', firebaseOauthBackendHandoff],
+  ['eas secret:push --scope project --env-file .env', firebaseOauthBackendHandoff],
+  ['Do not store Firebase service-file contents', firebaseOauthBackendHandoff],
+].forEach(([expected, content]) =>
+  requireIncludes(content, expected, 'Firebase OAuth backend handoff')
+);
 
 [
   ['# Ryvro Google Play Internal Testing Handoff', playInternalTestingHandoff],

@@ -9,6 +9,7 @@ Use these source docs while completing the runbook:
 - `RYVRO_RELEASE_TASKS.md` for the canonical task list and go/no-go gate.
 - `docs/RYVRO_RELEASE_READINESS_REPORT.md` for repo-proven evidence and known blockers.
 - `docs/RYVRO_EXTERNAL_SERVICE_SETUP.md` for Firebase, OAuth, Apple, RevenueCat, EAS, domain, social, analytics, and support console values.
+- `docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md` for Firebase project creation, native service files, OAuth clients, Auth domains, backend deploys, smoke tests, production env preflight, and EAS secret evidence.
 - `docs/RYVRO_STORE_LISTING.md` for App Store, Google Play, social profile, and launch landing-page copy.
 - `docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md` for Play Console enrollment, app creation, service account JSON handling, internal testing, and Android device QA evidence.
 - `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md` for required App Store and Google Play screenshot frames, file names, and capture evidence.
@@ -93,6 +94,7 @@ Evidence to record:
 Owner-only steps:
 
 - Create or rename the production Firebase project to a Ryvro-visible name.
+- Use `docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md` as the fill-in evidence packet for Firebase, OAuth, Auth domains, backend deploys, smoke tests, production env preflight, and EAS secrets.
 - Add iOS app `com.ryvro.shiftplanner` and Android app `com.ryvro.shiftplanner`.
 - Download fresh `GoogleService-Info.plist` and `google-services.json`.
 - Place the real root-level Firebase native service files at the repo root as `GoogleService-Info.plist` and `google-services.json`; do not point production `.env` at generated `ios/` or `android/` paths because clean prebuild deletes them.
@@ -136,6 +138,7 @@ eas secret:push --scope project --env-file .env
 Evidence to record:
 
 - Firebase project ID and app IDs.
+- Completed `docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md` packet or equivalent non-secret Firebase/OAuth/backend evidence.
 - OAuth client IDs.
 - `npm run release:native:check` output.
 - `npm run release:env:check` output.

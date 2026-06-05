@@ -6,6 +6,8 @@ This is the account-side setup checklist for services that cannot be fully chang
 
 Use `docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md` first when executing launch work; this file provides the detailed console values for that runbook.
 
+Use `docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md` as the fill-in evidence packet for Firebase project creation, native app config files, Google OAuth, Firebase Auth domains and email templates, backend deploys, endpoint smoke tests, production env preflight, and EAS secret push.
+
 ## Final Identity Values
 
 - App name: Ryvro Shift Planner
