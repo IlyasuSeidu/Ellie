@@ -1889,6 +1889,8 @@ describe('Ryvro environment template', () => {
       'utf8'
     );
 
+    expect(readinessReport).toContain('Date: 2026-06-05');
+    expect(readinessReport).not.toContain('Date: 2026-06-01');
     expect(readinessReport).toContain(
       'production env preflight now rejects retired `ELLIE_BRAIN_*` keys'
     );
