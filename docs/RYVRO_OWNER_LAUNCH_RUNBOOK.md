@@ -106,8 +106,8 @@ Owner-only steps:
 - Use `docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md` as the fill-in evidence packet for Firebase, OAuth, Auth domains, backend deploys, smoke tests, production env preflight, and EAS secrets.
 - Refresh Firebase CLI auth with `firebase login --reauth`, then verify access with `firebase projects:list`.
 - When Google shows `Firebase CLI wants to access your Google Account`, approve it only if you are ready for Firebase CLI to administer Firebase settings and access Google Cloud data for the owner account.
-- Firebase CLI reauth was completed on 2026-06-05 as `seiduilyasu94@gmail.com`, and `firebase projects:list` succeeded. It showed no Ryvro project and the current CLI project still pointed at `ellie-20260220135308`, so create or select the production Ryvro Firebase project before any backend deploy or production env work.
-- Firebase Console project creation is currently paused at the `I accept the Google Analytics terms` checkbox after saving and selecting the new `Ryvro Google Analytics` account. Owner review and acceptance is required before continuing to the final project creation step.
+- Firebase project creation was completed on 2026-06-05 as `Ryvro Shift Planner` / `ryvro-shift-planner`; `firebase projects:list --json` confirmed state `ACTIVE`, project number `1002666052675`, and hosting site `ryvro-shift-planner`. The tracked `.firebaserc` default now points to `ryvro-shift-planner`.
+- Local Firebase CLI caveat: if `firebase use` still prints `ellie-20260220135308` because Firebase Tools cannot access `/Users/user/.config`, repair the local Firebase Tools config-store permission before deploying or pass `--project ryvro-shift-planner` explicitly on Firebase deploy/functions commands.
 - Add iOS app `com.ryvro.shiftplanner` and Android app `com.ryvro.shiftplanner`.
 - Download fresh `GoogleService-Info.plist` and `google-services.json`.
 - Place the real root-level Firebase native service files at the repo root as `GoogleService-Info.plist` and `google-services.json`; do not point production `.env` at generated `ios/` or `android/` paths because clean prebuild deletes them.
