@@ -2912,6 +2912,8 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('npm run release:env:check');
     expect(ownerRunbook).toContain('firebase login --reauth');
     expect(ownerRunbook).toContain('firebase projects:list');
+    expect(ownerRunbook).toContain('Firebase CLI wants to access your Google Account');
+    expect(ownerRunbook).toContain('administer Firebase settings');
     expect(ownerRunbook).toContain('fill-in evidence packet for Firebase, OAuth');
     expect(ownerRunbook).toContain('real root-level Firebase native service files');
     expect(ownerRunbook).toContain(
@@ -2996,7 +2998,9 @@ describe('Ryvro environment template', () => {
       'Firebase CLI check on 2026-06-05 ran `firebase projects:list`'
     );
     expect(launchEvidenceLog).toContain('firebase login --reauth');
-    expect(launchEvidenceLog).toContain('waiting for owner approval');
+    expect(launchEvidenceLog).toContain('Firebase CLI wants to access your Google Account');
+    expect(launchEvidenceLog).toContain('see, edit, configure, and delete Google Cloud data');
+    expect(launchEvidenceLog).toContain('without clicking `Allow`');
     expect(launchEvidenceLog).toContain('testflight/groups/c9ea8051-517c-4d81-b8a0-57099d9e864d');
     expect(launchEvidenceLog).toContain('Internal Group ∙ 1 Tester ∙ 1 Build');
     expect(launchEvidenceLog).toContain('tester status `Invited`');
@@ -3283,6 +3287,10 @@ describe('Ryvro environment template', () => {
     expect(firebaseOauthBackendHandoff).toContain('firebase login --reauth');
     expect(firebaseOauthBackendHandoff).toContain('firebase projects:list');
     expect(firebaseOauthBackendHandoff).toContain('the owner must finish the Google approval page');
+    expect(firebaseOauthBackendHandoff).toContain(
+      'Firebase CLI wants to access your Google Account'
+    );
+    expect(firebaseOauthBackendHandoff).toContain('view and administer Firebase data and settings');
     expect(firebaseOauthBackendHandoff).toContain(
       'If Google Analytics terms or other legal terms appear'
     );

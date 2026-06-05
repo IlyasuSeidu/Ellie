@@ -30,6 +30,7 @@ firebase projects:list
 ```
 
 - Keep the browser approval step owner-controlled. If the CLI says credentials are no longer valid or waits for authentication, the owner must finish the Google approval page before project creation or deploy work can continue.
+- The current blocking approval screen says `Firebase CLI wants to access your Google Account` for `seiduilyasu94@gmail.com`, with permissions to view and administer Firebase data and settings, view Cloud Platform projects, and see, edit, configure, and delete Google Cloud data. Click `Allow` only when the owner is ready to grant those permissions to the Firebase CLI.
 - Create or rename the production Firebase project to a Ryvro-visible name.
 - If Google Analytics terms or other legal terms appear, the owner must review and accept them directly.
 - Record only the Firebase project ID, visible display name, Analytics property name if enabled, and owner account used.

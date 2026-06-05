@@ -105,6 +105,7 @@ Owner-only steps:
 - Create or rename the production Firebase project to a Ryvro-visible name.
 - Use `docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md` as the fill-in evidence packet for Firebase, OAuth, Auth domains, backend deploys, smoke tests, production env preflight, and EAS secrets.
 - Refresh Firebase CLI auth with `firebase login --reauth`, then verify access with `firebase projects:list`.
+- When Google shows `Firebase CLI wants to access your Google Account`, approve it only if you are ready for Firebase CLI to administer Firebase settings and access Google Cloud data for the owner account.
 - Add iOS app `com.ryvro.shiftplanner` and Android app `com.ryvro.shiftplanner`.
 - Download fresh `GoogleService-Info.plist` and `google-services.json`.
 - Place the real root-level Firebase native service files at the repo root as `GoogleService-Info.plist` and `google-services.json`; do not point production `.env` at generated `ios/` or `android/` paths because clean prebuild deletes them.
