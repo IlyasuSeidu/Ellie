@@ -180,6 +180,47 @@ describe('locale parity', () => {
     expect(missingKeys).toEqual([]);
   });
 
+  it('localizes launch-critical Profile help and legal strings', () => {
+    const keys = [
+      'sections.legalSupport',
+      'legal.support.title',
+      'legal.support.hint',
+      'legal.support.a11y',
+      'legal.deleteAccount.title',
+      'legal.deleteAccount.hint',
+      'legal.deleteAccount.a11y',
+      'legal.privacy.title',
+      'legal.privacy.hint',
+      'legal.privacy.a11y',
+      'legal.terms.title',
+      'legal.terms.hint',
+      'legal.terms.a11y',
+    ];
+    const baselinePath = path.join(LOCALES_ROOT, 'en', 'profile.json');
+    const baseline = JSON.parse(fs.readFileSync(baselinePath, 'utf8')) as Record<string, unknown>;
+    const baselineStrings = flattenStringValues(baseline);
+    const untranslated: string[] = [];
+
+    locales
+      .filter((locale) => locale !== 'en')
+      .forEach((locale) => {
+        const localePath = path.join(LOCALES_ROOT, locale, 'profile.json');
+        const localized = JSON.parse(fs.readFileSync(localePath, 'utf8')) as Record<
+          string,
+          unknown
+        >;
+        const localizedStrings = flattenStringValues(localized);
+
+        keys.forEach((key) => {
+          if (localizedStrings.get(key) === baselineStrings.get(key)) {
+            untranslated.push(`${locale}:${key}`);
+          }
+        });
+      });
+
+    expect(untranslated).toEqual([]);
+  });
+
   it('does not expose technical cycle-alignment terms in onboarding copy', () => {
     const forbiddenPhrases = [
       'phase offset',

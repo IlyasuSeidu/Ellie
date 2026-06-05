@@ -4,7 +4,7 @@
     "workOverview": "نظرة عامة على العمل",
     "shiftSettings": "إعدادات التحول",
     "smartReminders": "التذكيرات الذكية",
-    "legalSupport": "Help & Legal"
+    "legalSupport": "المساعدة والشؤون القانونية"
   },
   "fields": {
     "name": "اسم",
@@ -355,24 +355,24 @@
   },
   "legal": {
     "support": {
-      "title": "Support",
-      "hint": "Get help with your account or schedule",
-      "a11y": "Open Ryvro support"
+      "title": "الدعم",
+      "hint": "احصل على مساعدة بشأن حسابك أو جدولك",
+      "a11y": "فتح دعم Ryvro"
     },
     "deleteAccount": {
-      "title": "Delete account",
-      "hint": "Request account and app data deletion",
-      "a11y": "Open Ryvro account deletion"
+      "title": "حذف الحساب",
+      "hint": "اطلب حذف الحساب وبيانات التطبيق",
+      "a11y": "فتح حذف حساب Ryvro"
     },
     "privacy": {
-      "title": "Privacy policy",
-      "hint": "How Ryvro handles your data",
-      "a11y": "Open Ryvro privacy policy"
+      "title": "سياسة الخصوصية",
+      "hint": "كيف يتعامل Ryvro مع بياناتك",
+      "a11y": "فتح سياسة خصوصية Ryvro"
     },
     "terms": {
-      "title": "Terms of service",
-      "hint": "Subscription and app usage terms",
-      "a11y": "Open Ryvro terms of service"
+      "title": "شروط الخدمة",
+      "hint": "شروط الاشتراك واستخدام التطبيق",
+      "a11y": "فتح شروط خدمة Ryvro"
     }
   }
 }

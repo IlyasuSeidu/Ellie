@@ -4,7 +4,7 @@
     "workOverview": "Обзор работы",
     "shiftSettings": "Настройки смены",
     "smartReminders": "Умные напоминания",
-    "legalSupport": "Help & Legal"
+    "legalSupport": "Помощь и юридическая информация"
   },
   "fields": {
     "name": "Имя",
@@ -355,24 +355,24 @@
   },
   "legal": {
     "support": {
-      "title": "Support",
-      "hint": "Get help with your account or schedule",
-      "a11y": "Open Ryvro support"
+      "title": "Поддержка",
+      "hint": "Получите помощь с аккаунтом или графиком",
+      "a11y": "Открыть поддержку Ryvro"
     },
     "deleteAccount": {
-      "title": "Delete account",
-      "hint": "Request account and app data deletion",
-      "a11y": "Open Ryvro account deletion"
+      "title": "Удалить аккаунт",
+      "hint": "Запросить удаление аккаунта и данных приложения",
+      "a11y": "Открыть удаление аккаунта Ryvro"
     },
     "privacy": {
-      "title": "Privacy policy",
-      "hint": "How Ryvro handles your data",
-      "a11y": "Open Ryvro privacy policy"
+      "title": "Политика конфиденциальности",
+      "hint": "Как Ryvro обрабатывает ваши данные",
+      "a11y": "Открыть политику конфиденциальности Ryvro"
     },
     "terms": {
-      "title": "Terms of service",
-      "hint": "Subscription and app usage terms",
-      "a11y": "Open Ryvro terms of service"
+      "title": "Условия обслуживания",
+      "hint": "Условия подписки и использования приложения",
+      "a11y": "Открыть условия обслуживания Ryvro"
     }
   }
 }

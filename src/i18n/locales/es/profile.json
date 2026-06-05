@@ -4,7 +4,7 @@
     "workOverview": "Resumen laboral",
     "shiftSettings": "Configuracion de turnos",
     "smartReminders": "Recordatorios inteligentes",
-    "legalSupport": "Help & Legal"
+    "legalSupport": "Ayuda y legal"
   },
   "fields": {
     "name": "Nombre",
@@ -355,24 +355,24 @@
   },
   "legal": {
     "support": {
-      "title": "Support",
-      "hint": "Get help with your account or schedule",
-      "a11y": "Open Ryvro support"
+      "title": "Soporte",
+      "hint": "Obtén ayuda con tu cuenta o tu horario",
+      "a11y": "Abrir soporte de Ryvro"
     },
     "deleteAccount": {
-      "title": "Delete account",
-      "hint": "Request account and app data deletion",
-      "a11y": "Open Ryvro account deletion"
+      "title": "Eliminar cuenta",
+      "hint": "Solicita la eliminación de tu cuenta y datos de la app",
+      "a11y": "Abrir eliminación de cuenta de Ryvro"
     },
     "privacy": {
-      "title": "Privacy policy",
-      "hint": "How Ryvro handles your data",
-      "a11y": "Open Ryvro privacy policy"
+      "title": "Política de privacidad",
+      "hint": "Cómo Ryvro maneja tus datos",
+      "a11y": "Abrir política de privacidad de Ryvro"
     },
     "terms": {
-      "title": "Terms of service",
-      "hint": "Subscription and app usage terms",
-      "a11y": "Open Ryvro terms of service"
+      "title": "Términos del servicio",
+      "hint": "Términos de suscripción y uso de la app",
+      "a11y": "Abrir términos del servicio de Ryvro"
     }
   }
 }

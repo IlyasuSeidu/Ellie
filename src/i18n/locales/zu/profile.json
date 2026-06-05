@@ -4,7 +4,7 @@
     "workOverview": "Ukubuka konke komsebenzi",
     "shiftSettings": "Shift Izilungiselelo",
     "smartReminders": "Izikhumbuzi ezihlakaniphile",
-    "legalSupport": "Help & Legal"
+    "legalSupport": "Usizo nezomthetho"
   },
   "fields": {
     "name": "Igama",
@@ -355,24 +355,24 @@
   },
   "legal": {
     "support": {
-      "title": "Support",
-      "hint": "Get help with your account or schedule",
-      "a11y": "Open Ryvro support"
+      "title": "Usekelo",
+      "hint": "Thola usizo nge-akhawunti noma ishejuli yakho",
+      "a11y": "Vula usekelo lwe-Ryvro"
     },
     "deleteAccount": {
-      "title": "Delete account",
-      "hint": "Request account and app data deletion",
-      "a11y": "Open Ryvro account deletion"
+      "title": "Susa i-akhawunti",
+      "hint": "Cela ukususwa kwe-akhawunti nedatha ye-app",
+      "a11y": "Vula ukususwa kwe-akhawunti ye-Ryvro"
     },
     "privacy": {
-      "title": "Privacy policy",
-      "hint": "How Ryvro handles your data",
-      "a11y": "Open Ryvro privacy policy"
+      "title": "Inqubomgomo yobumfihlo",
+      "hint": "Indlela i-Ryvro ephatha ngayo idatha yakho",
+      "a11y": "Vula inqubomgomo yobumfihlo ye-Ryvro"
     },
     "terms": {
-      "title": "Terms of service",
-      "hint": "Subscription and app usage terms",
-      "a11y": "Open Ryvro terms of service"
+      "title": "Imigomo yesevisi",
+      "hint": "Imigomo yokubhalisa nokusebenzisa i-app",
+      "a11y": "Vula imigomo yesevisi ye-Ryvro"
     }
   }
 }

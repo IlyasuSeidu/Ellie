@@ -4,7 +4,7 @@
     "workOverview": "Werk Oorsig",
     "shiftSettings": "Shift instellings",
     "smartReminders": "Slim herinneringe",
-    "legalSupport": "Help & Legal"
+    "legalSupport": "Hulp en Regte"
   },
   "fields": {
     "name": "Naam",
@@ -355,24 +355,24 @@
   },
   "legal": {
     "support": {
-      "title": "Support",
-      "hint": "Get help with your account or schedule",
-      "a11y": "Open Ryvro support"
+      "title": "Ondersteuning",
+      "hint": "Kry hulp met jou rekening of skedule",
+      "a11y": "Maak Ryvro-ondersteuning oop"
     },
     "deleteAccount": {
-      "title": "Delete account",
-      "hint": "Request account and app data deletion",
-      "a11y": "Open Ryvro account deletion"
+      "title": "Vee rekening uit",
+      "hint": "Versoek dat jou rekening en appdata uitgevee word",
+      "a11y": "Maak Ryvro-rekeninguitvee oop"
     },
     "privacy": {
-      "title": "Privacy policy",
-      "hint": "How Ryvro handles your data",
-      "a11y": "Open Ryvro privacy policy"
+      "title": "Privaatheidsbeleid",
+      "hint": "Hoe Ryvro jou data hanteer",
+      "a11y": "Maak Ryvro-privaatheidsbeleid oop"
     },
     "terms": {
-      "title": "Terms of service",
-      "hint": "Subscription and app usage terms",
-      "a11y": "Open Ryvro terms of service"
+      "title": "Diensbepalings",
+      "hint": "Intekening- en appgebruiksbepalings",
+      "a11y": "Maak Ryvro-diensbepalings oop"
     }
   }
 }

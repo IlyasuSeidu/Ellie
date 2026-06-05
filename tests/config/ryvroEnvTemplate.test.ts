@@ -2204,6 +2204,9 @@ describe('Ryvro environment template', () => {
       'Replaced developer-facing paywall fallback copy across bundled locales and hardcoded defaults so unconfigured subscription builds say Ryvro Pro is unavailable and direct users to update or contact support instead of exposing RevenueCat SDK setup language.'
     );
     expect(audit).toContain(
+      'Localized the launch-critical Profile help/legal labels, hints, and accessibility text across bundled non-English locales so support, account deletion, privacy, and terms rows no longer fall back to English.'
+    );
+    expect(audit).toContain(
       'Reconciled the older implementation tracker with current Ryvro evidence so repo-complete items are checked off and owner-only/live-device gaps remain explicit instead of mixed with stale implementation tasks.'
     );
     expect(audit).toContain(

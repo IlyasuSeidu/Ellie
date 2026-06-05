@@ -4,7 +4,7 @@
     "workOverview": "कार्य अवलोकन",
     "shiftSettings": "शिफ्ट सेटिंग्स",
     "smartReminders": "स्मार्ट रिमाइंडर",
-    "legalSupport": "Help & Legal"
+    "legalSupport": "सहायता और कानूनी"
   },
   "fields": {
     "name": "नाम",
@@ -355,24 +355,24 @@
   },
   "legal": {
     "support": {
-      "title": "Support",
-      "hint": "Get help with your account or schedule",
-      "a11y": "Open Ryvro support"
+      "title": "सहायता",
+      "hint": "अपने खाते या शेड्यूल के लिए सहायता पाएं",
+      "a11y": "Ryvro सहायता खोलें"
     },
     "deleteAccount": {
-      "title": "Delete account",
-      "hint": "Request account and app data deletion",
-      "a11y": "Open Ryvro account deletion"
+      "title": "खाता हटाएं",
+      "hint": "खाता और ऐप डेटा हटाने का अनुरोध करें",
+      "a11y": "Ryvro खाता हटाने का पेज खोलें"
     },
     "privacy": {
-      "title": "Privacy policy",
-      "hint": "How Ryvro handles your data",
-      "a11y": "Open Ryvro privacy policy"
+      "title": "गोपनीयता नीति",
+      "hint": "Ryvro आपका डेटा कैसे संभालता है",
+      "a11y": "Ryvro गोपनीयता नीति खोलें"
     },
     "terms": {
-      "title": "Terms of service",
-      "hint": "Subscription and app usage terms",
-      "a11y": "Open Ryvro terms of service"
+      "title": "सेवा की शर्तें",
+      "hint": "सदस्यता और ऐप उपयोग की शर्तें",
+      "a11y": "Ryvro सेवा की शर्तें खोलें"
     }
   }
 }

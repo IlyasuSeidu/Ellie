@@ -4,7 +4,7 @@
     "workOverview": "工作概况",
     "shiftSettings": "班次设置",
     "smartReminders": "智能提醒",
-    "legalSupport": "Help & Legal"
+    "legalSupport": "帮助与法律"
   },
   "fields": {
     "name": "姓名",
@@ -355,24 +355,24 @@
   },
   "legal": {
     "support": {
-      "title": "Support",
-      "hint": "Get help with your account or schedule",
-      "a11y": "Open Ryvro support"
+      "title": "支持",
+      "hint": "获取账号或排班方面的帮助",
+      "a11y": "打开 Ryvro 支持"
     },
     "deleteAccount": {
-      "title": "Delete account",
-      "hint": "Request account and app data deletion",
-      "a11y": "Open Ryvro account deletion"
+      "title": "删除账号",
+      "hint": "请求删除账号和应用数据",
+      "a11y": "打开 Ryvro 账号删除"
     },
     "privacy": {
-      "title": "Privacy policy",
-      "hint": "How Ryvro handles your data",
-      "a11y": "Open Ryvro privacy policy"
+      "title": "隐私政策",
+      "hint": "Ryvro 如何处理你的数据",
+      "a11y": "打开 Ryvro 隐私政策"
     },
     "terms": {
-      "title": "Terms of service",
-      "hint": "Subscription and app usage terms",
-      "a11y": "Open Ryvro terms of service"
+      "title": "服务条款",
+      "hint": "订阅和应用使用条款",
+      "a11y": "打开 Ryvro 服务条款"
     }
   }
 }
