@@ -66,7 +66,9 @@ Owner-only steps:
 - Register the Apple App ID for `com.ryvro.shiftplanner` with Sign in with Apple and Push Notifications enabled. Completed 2026-06-05.
 - Create the App Store Connect app with SKU `ryvro-shift-001`. Completed 2026-06-05 with ASC app ID `6776994726`.
 - Create the Google Play Console app.
-- Run `eas login` and `eas init` in the repo root, then copy the EAS project UUID into production env values.
+- Run `eas login` and create or link a Ryvro EAS project whose project slug matches `ryvro`, then copy the new EAS project UUID into production env values. Completed 2026-06-05: `@ilyasu/ryvro`, project ID `b306643e-1688-448e-8acd-f72bf74312c3`.
+- In the Expo dashboard, confirm the project display name is `Ryvro Shift Planner`. Completed 2026-06-05.
+- Upload an App Store Connect API key in Expo/EAS before connecting the project to the App Store Connect app. The dashboard showed no saved ASC API keys on 2026-06-05.
 - Set up iOS distribution credentials and Android release upload key or EAS-managed credentials.
 
 Evidence to record:
@@ -74,7 +76,8 @@ Evidence to record:
 - Apple Team ID.
 - App Store Connect app ID `6776994726`.
 - Google Play app/package dashboard link.
-- EAS project ID.
+- EAS project ID `b306643e-1688-448e-8acd-f72bf74312c3`; `eas project:info` output verifies `@ilyasu/ryvro`.
+- Expo/EAS App Store Connect app connection note after the ASC API key is uploaded.
 - Signing/provisioning status.
 - Update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` with the non-secret evidence references.
 

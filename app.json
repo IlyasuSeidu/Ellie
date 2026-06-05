@@ -74,6 +74,12 @@
           "speechRecognitionPermission": "Ryvro needs speech recognition to understand your questions."
         }
       ]
-    ]
+    ],
+    "owner": "ilyasu",
+    "extra": {
+      "eas": {
+        "projectId": "b306643e-1688-448e-8acd-f72bf74312c3"
+      }
+    }
   }
 }

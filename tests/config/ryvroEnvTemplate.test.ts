@@ -2673,6 +2673,11 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('https://getryvro.com/delete-account');
     expect(ownerRunbook).toContain('Apple App ID for `com.ryvro.shiftplanner`');
     expect(ownerRunbook).toContain('EAS project ID');
+    expect(ownerRunbook).toContain('project slug matches `ryvro`');
+    expect(ownerRunbook).toContain(
+      '`@ilyasu/ryvro`, project ID `b306643e-1688-448e-8acd-f72bf74312c3`'
+    );
+    expect(ownerRunbook).toContain('App Store Connect API key');
     expect(ownerRunbook).toContain('npm run release:native:check');
     expect(ownerRunbook).toContain('npm run release:env:check');
     expect(ownerRunbook).toContain('real root-level Firebase native service files');
@@ -2730,6 +2735,10 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('explicit bundle ID `com.ryvro.shiftplanner`');
     expect(launchEvidenceLog).toContain('EU trader status');
     expect(launchEvidenceLog).toContain('submit a build to start testing');
+    expect(launchEvidenceLog).toContain('Expo dashboard display name is `Ryvro Shift Planner`');
+    expect(launchEvidenceLog).toContain('Created and linked EAS project `@ilyasu/ryvro`');
+    expect(launchEvidenceLog).toContain('b306643e-1688-448e-8acd-f72bf74312c3');
+    expect(launchEvidenceLog).toContain('no saved ASC API keys');
     expect(launchEvidenceLog).toContain(
       'Google Play title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`'
     );
