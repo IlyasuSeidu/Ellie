@@ -21,7 +21,7 @@ Do not submit to App Store review or Google Play production until all of these a
 
 - Formal trademark/legal clearance for `Ryvro` is complete in launch markets.
 - The Apple Developer Program License Agreement remains accepted by the Account Holder in Apple Developer.
-- The owner has reserved or created App Store Connect app name `Ryvro Shift Planner`; current ASC app ID is `6776994726`.
+- The owner has reserved or created App Store Connect app name `Ryvro Shift Planner`; current ASC app ID is `6776994726`, and the verified owner Apple ID email in EAS submit config is `seiduilyasu94@gmail.com`.
 - App Store Connect EU trader status is complete if the app will be submitted for EU distribution.
 - The owner has reserved or created Google Play app title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`.
 - The launch domain is purchased, controlled, and serving privacy, terms, support, and `https://getryvro.com/delete-account` account-deletion instructions.
@@ -51,7 +51,7 @@ Evidence to record:
 
 - Counsel or trademark-search result summary.
 - Apple Developer Program License Agreement accepted status.
-- App Store Connect app ID / Apple ID. Current ASC app ID: `6776994726`.
+- App Store Connect app ID / Apple ID. Current ASC app ID: `6776994726`; owner Apple ID email: `seiduilyasu94@gmail.com`.
 - EU trader status completion note, if applicable.
 - Google Play package reservation confirmation.
 - Registrar receipt and DNS control proof.
@@ -75,6 +75,7 @@ Evidence to record:
 
 - Apple Team ID.
 - App Store Connect app ID `6776994726`.
+- Owner Apple ID email `seiduilyasu94@gmail.com`.
 - Google Play app/package dashboard link.
 - EAS project ID `b306643e-1688-448e-8acd-f72bf74312c3`; `eas project:info` output verifies `@ilyasu/ryvro`.
 - Expo/EAS App Store Connect app connection note after the ASC API key is uploaded.

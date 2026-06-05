@@ -701,7 +701,8 @@ describe('Ryvro environment template', () => {
     expect(packageJson.scripts?.['release:check']).not.toContain('release:submit:check');
     expect(result.status).toBe(1);
     expect(result.stderr).toContain('Ryvro submit readiness check failed');
-    expect(result.stderr).toContain('submit.production.ios.appleId');
+    expect(result.stderr).not.toContain('submit.production.ios.appleId');
+    expect(result.stderr).toContain('Android service account key path ./google-play-key.json');
     expect(result.stderr).toContain('Formal trademark/legal clearance for `Ryvro`');
     expect(result.stderr).toContain('Store screenshots still has pending owner evidence');
     expect(script).toContain('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
@@ -1653,7 +1654,7 @@ describe('Ryvro environment template', () => {
     expect(deploymentGuide).toContain('Android package `com.ryvro.shiftplanner`');
     expect(deploymentGuide).toContain('native display name `Ryvro`');
     expect(deploymentGuide).toContain('Ryvro function defaults for `ryvroBrain`');
-    expect(deploymentGuide).toContain('"ascAppId": "FILL_AFTER_STEP_6"');
+    expect(deploymentGuide).toContain('"ascAppId": "6776994726"');
     expect(deploymentGuide).toContain('"serviceAccountKeyPath": "./google-play-key.json"');
     expect(deploymentGuide).toContain('eas submit --platform ios --latest');
     expect(deploymentGuide).toContain('eas submit --platform android --latest');
@@ -1820,7 +1821,7 @@ describe('Ryvro environment template', () => {
     expect(easJson.build?.preview?.distribution).toBe('internal');
     expect(easJson.build?.production?.ios?.buildConfiguration).toBe('Release');
     expect(easJson.build?.production?.android?.buildType).toBe('app-bundle');
-    expect(easJson.submit?.production?.ios?.appleId).toBe('YOUR_APPLE_ID_EMAIL');
+    expect(easJson.submit?.production?.ios?.appleId).toBe('seiduilyasu94@gmail.com');
     expect(easJson.submit?.production?.ios?.ascAppId).toBe('6776994726');
     expect(easJson.submit?.production?.ios?.appleTeamId).toBe('BZ798WZJCB');
     expect(easJson.submit?.production?.android?.serviceAccountKeyPath).toBe(

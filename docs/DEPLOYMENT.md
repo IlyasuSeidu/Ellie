@@ -137,8 +137,8 @@ Do not replace the committed `eas.json` with an older sample from Expo docs. The
   "submit": {
     "production": {
       "ios": {
-        "appleId": "YOUR_APPLE_ID_EMAIL",
-        "ascAppId": "FILL_AFTER_STEP_6",
+        "appleId": "seiduilyasu94@gmail.com",
+        "ascAppId": "6776994726",
         "appleTeamId": "BZ798WZJCB"
       },
       "android": {
@@ -150,7 +150,7 @@ Do not replace the committed `eas.json` with an older sample from Expo docs. The
 }
 ```
 
-`submit.production` intentionally keeps placeholder owner console values until App Store Connect, Play Console, and service-account evidence exists. `npm run release:submit:check` must fail until those values and `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` are complete.
+`submit.production` now includes the verified App Store Connect Apple ID email and ASC app ID. It still keeps Android service-account evidence outside the repository, so `npm run release:submit:check` must fail until the remaining console values, local key file, and `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` are complete.
 
 ### 3. Verify app.config.js
 
