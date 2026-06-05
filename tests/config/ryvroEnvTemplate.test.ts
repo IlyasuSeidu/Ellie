@@ -3046,6 +3046,12 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('After owner approval, Firebase CLI reauth completed');
     expect(launchEvidenceLog).toContain('No Ryvro project was present');
     expect(launchEvidenceLog).toContain('current CLI project remained `ellie-20260220135308`');
+    expect(launchEvidenceLog).toContain(
+      'new Google Analytics account named `Ryvro Google Analytics` was saved and selected'
+    );
+    expect(launchEvidenceLog).toContain(
+      'paused at the `I accept the Google Analytics terms` checkbox'
+    );
     expect(launchEvidenceLog).toContain('testflight/groups/c9ea8051-517c-4d81-b8a0-57099d9e864d');
     expect(launchEvidenceLog).toContain('Internal Group ∙ 1 Tester ∙ 1 Build');
     expect(launchEvidenceLog).toContain('tester status `Invited`');
@@ -3089,10 +3095,10 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('Social handles');
     expect(launchEvidenceLog).toContain('social handle evidence');
     expect(launchEvidenceLog).toContain('generated project ID `ryvro-shift-planner`');
-    expect(launchEvidenceLog).toContain('optional Gemini in Firebase was switched off');
+    expect(launchEvidenceLog).toContain('Gemini in Firebase switched off');
     expect(launchEvidenceLog).toContain('`Ryvro Google Analytics`');
     expect(launchEvidenceLog).toContain('`I accept the Google Analytics terms`');
-    expect(launchEvidenceLog).toContain('do not accept this legal term on behalf of the owner');
+    expect(launchEvidenceLog).toContain('the owner must review and accept the terms');
     expect(launchEvidenceLog).toContain('docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md');
     expect(launchEvidenceLog).toContain('root path `./GoogleService-Info.plist` only');
     expect(launchEvidenceLog).toContain('root path `./google-services.json` only');
@@ -3339,6 +3345,12 @@ describe('Ryvro environment template', () => {
     expect(firebaseOauthBackendHandoff).toContain('Firebase CLI reauth completed on 2026-06-05');
     expect(firebaseOauthBackendHandoff).toContain('No Ryvro project was present');
     expect(firebaseOauthBackendHandoff).toContain('firebase use <ryvro-project-id>');
+    expect(firebaseOauthBackendHandoff).toContain(
+      'a new Google Analytics account named `Ryvro Google Analytics` was saved and selected'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'paused at the `I accept the Google Analytics terms` checkbox'
+    );
     expect(firebaseOauthBackendHandoff).toContain(
       'If Google Analytics terms or other legal terms appear'
     );

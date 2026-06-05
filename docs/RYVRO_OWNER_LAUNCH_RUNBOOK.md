@@ -107,6 +107,7 @@ Owner-only steps:
 - Refresh Firebase CLI auth with `firebase login --reauth`, then verify access with `firebase projects:list`.
 - When Google shows `Firebase CLI wants to access your Google Account`, approve it only if you are ready for Firebase CLI to administer Firebase settings and access Google Cloud data for the owner account.
 - Firebase CLI reauth was completed on 2026-06-05 as `seiduilyasu94@gmail.com`, and `firebase projects:list` succeeded. It showed no Ryvro project and the current CLI project still pointed at `ellie-20260220135308`, so create or select the production Ryvro Firebase project before any backend deploy or production env work.
+- Firebase Console project creation is currently paused at the `I accept the Google Analytics terms` checkbox after saving and selecting the new `Ryvro Google Analytics` account. Owner review and acceptance is required before continuing to the final project creation step.
 - Add iOS app `com.ryvro.shiftplanner` and Android app `com.ryvro.shiftplanner`.
 - Download fresh `GoogleService-Info.plist` and `google-services.json`.
 - Place the real root-level Firebase native service files at the repo root as `GoogleService-Info.plist` and `google-services.json`; do not point production `.env` at generated `ios/` or `android/` paths because clean prebuild deletes them.
