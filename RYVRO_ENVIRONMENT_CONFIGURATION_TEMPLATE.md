@@ -30,12 +30,14 @@ EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json
 
 # Get this from Google Cloud Console > APIs & Services > Credentials
 
-# Use the Web Client ID (not the iOS or Android client ID)
+# Use the web client for Firebase/Auth, plus the native iOS and Android clients for the final bundle/package.
 
 GOOGLE_WEB_CLIENT_ID=your-google-web-client-id.apps.googleusercontent.com
 EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=your-google-web-client-id.apps.googleusercontent.com
 GOOGLE_IOS_CLIENT_ID=your-google-ios-client-id.apps.googleusercontent.com
 EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=your-google-ios-client-id.apps.googleusercontent.com
+GOOGLE_ANDROID_CLIENT_ID=your-google-android-client-id.apps.googleusercontent.com
+EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=your-google-android-client-id.apps.googleusercontent.com
 
 # API Configuration
 

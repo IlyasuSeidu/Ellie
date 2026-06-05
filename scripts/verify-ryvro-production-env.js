@@ -347,6 +347,20 @@ function main() {
   requireValue(
     errors,
     env,
+    'GOOGLE_ANDROID_CLIENT_ID',
+    (value) => value.endsWith('.apps.googleusercontent.com'),
+    'must be the real Google Android OAuth client ID for com.ryvro.shiftplanner'
+  );
+  requireMatchingValue(
+    errors,
+    env,
+    'EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID',
+    'GOOGLE_ANDROID_CLIENT_ID',
+    'must match GOOGLE_ANDROID_CLIENT_ID so the Expo runtime receives the same Ryvro Android OAuth client'
+  );
+  requireValue(
+    errors,
+    env,
     'RYVRO_BRAIN_URL',
     (value) => isRyvroCloudFunctionUrl(value, 'ryvroBrain'),
     'must be the deployed ryvroBrain HTTPS function URL scoped to a Ryvro Firebase project, not a retired Ellie/ShiftSync host'

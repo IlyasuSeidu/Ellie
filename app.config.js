@@ -215,6 +215,14 @@ module.exports = ({ config = {} }) => {
         process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || process.env.GOOGLE_IOS_CLIENT_ID || '',
       GOOGLE_IOS_CLIENT_ID:
         process.env.GOOGLE_IOS_CLIENT_ID || process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || '',
+      EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID:
+        process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID ||
+        process.env.GOOGLE_ANDROID_CLIENT_ID ||
+        '',
+      GOOGLE_ANDROID_CLIENT_ID:
+        process.env.GOOGLE_ANDROID_CLIENT_ID ||
+        process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID ||
+        '',
       REVENUECAT_API_KEY:
         process.env.REVENUECAT_API_KEY || process.env.EXPO_PUBLIC_REVENUECAT_API_KEY || '',
       EXPO_PUBLIC_REVENUECAT_API_KEY:

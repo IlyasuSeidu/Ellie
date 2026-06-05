@@ -136,6 +136,8 @@ describe('Ryvro environment template', () => {
     'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=1234567890-web.apps.googleusercontent.com',
     'GOOGLE_IOS_CLIENT_ID=1234567890-ios.apps.googleusercontent.com',
     'EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=1234567890-ios.apps.googleusercontent.com',
+    'GOOGLE_ANDROID_CLIENT_ID=1234567890-android.apps.googleusercontent.com',
+    'EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=1234567890-android.apps.googleusercontent.com',
     'RYVRO_BRAIN_URL=https://us-central1-ryvro-prod.cloudfunctions.net/ryvroBrain',
     'REVENUECAT_IOS_KEY=appl_liveios123',
     'EXPO_PUBLIC_REVENUECAT_IOS_KEY=appl_liveios123',
@@ -474,9 +476,14 @@ describe('Ryvro environment template', () => {
     };
     const previousGoogleIosClientId = process.env.GOOGLE_IOS_CLIENT_ID;
     const previousExpoGoogleIosClientId = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID;
+    const previousGoogleAndroidClientId = process.env.GOOGLE_ANDROID_CLIENT_ID;
+    const previousExpoGoogleAndroidClientId = process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID;
 
     process.env.GOOGLE_IOS_CLIENT_ID = '1234567890-ryvroios.apps.googleusercontent.com';
     process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID = '1234567890-ryvroios.apps.googleusercontent.com';
+    process.env.GOOGLE_ANDROID_CLIENT_ID = '1234567890-ryvroandroid.apps.googleusercontent.com';
+    process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID =
+      '1234567890-ryvroandroid.apps.googleusercontent.com';
 
     try {
       const dynamicConfig = buildAppConfig({ config: appJson.expo as Record<string, unknown> });
@@ -490,6 +497,12 @@ describe('Ryvro environment template', () => {
       );
       expect(dynamicConfig.extra?.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID).toBe(
         '1234567890-ryvroios.apps.googleusercontent.com'
+      );
+      expect(dynamicConfig.extra?.GOOGLE_ANDROID_CLIENT_ID).toBe(
+        '1234567890-ryvroandroid.apps.googleusercontent.com'
+      );
+      expect(dynamicConfig.extra?.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID).toBe(
+        '1234567890-ryvroandroid.apps.googleusercontent.com'
       );
       expect(googleSignInPlugin?.[1].iosUrlScheme).toBe(
         'com.googleusercontent.apps.1234567890-ryvroios'
@@ -508,6 +521,18 @@ describe('Ryvro environment template', () => {
         delete process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID;
       } else {
         process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID = previousExpoGoogleIosClientId;
+      }
+
+      if (previousGoogleAndroidClientId === undefined) {
+        delete process.env.GOOGLE_ANDROID_CLIENT_ID;
+      } else {
+        process.env.GOOGLE_ANDROID_CLIENT_ID = previousGoogleAndroidClientId;
+      }
+
+      if (previousExpoGoogleAndroidClientId === undefined) {
+        delete process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID;
+      } else {
+        process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID = previousExpoGoogleAndroidClientId;
       }
     }
   });
@@ -868,6 +893,8 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID');
     expect(script).toContain('GOOGLE_IOS_CLIENT_ID');
     expect(script).toContain('EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID');
+    expect(script).toContain('GOOGLE_ANDROID_CLIENT_ID');
+    expect(script).toContain('EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID');
     expect(script).toContain('RYVRO_BRAIN_URL');
     expect(script).toContain('REVENUECAT_IOS_KEY');
     expect(script).toContain('EXPO_PUBLIC_REVENUECAT_IOS_KEY');
@@ -926,6 +953,7 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('must be the live HTTPS Ryvro API base URL');
     expect(script).toContain('must match GOOGLE_WEB_CLIENT_ID');
     expect(script).toContain('must match GOOGLE_IOS_CLIENT_ID');
+    expect(script).toContain('must match GOOGLE_ANDROID_CLIENT_ID');
     expect(script).toContain('must match REVENUECAT_IOS_KEY');
     expect(script).toContain('must match REVENUECAT_ANDROID_KEY');
     expect(script).toContain('must match REVENUECAT_ENTITLEMENT_ID');
@@ -954,6 +982,9 @@ describe('Ryvro environment template', () => {
     );
     expect(productionEnvExample).toContain(
       'EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=REPLACE-ios.apps.googleusercontent.com'
+    );
+    expect(productionEnvExample).toContain(
+      'EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=REPLACE-android.apps.googleusercontent.com'
     );
     expect(productionEnvExample).toContain('REVENUECAT_ENTITLEMENT_ID=pro');
     expect(productionEnvExample).toContain('EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID=pro');
@@ -1015,6 +1046,17 @@ describe('Ryvro environment template', () => {
     expect(iosResult.status).toBe(1);
     expect(iosResult.stderr).toContain('EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID');
     expect(iosResult.stderr).toContain('must match GOOGLE_IOS_CLIENT_ID');
+
+    const androidResult = runProductionEnvCheck(
+      validProductionEnv.replace(
+        'EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=1234567890-android.apps.googleusercontent.com',
+        'EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=1234567890-other-android.apps.googleusercontent.com'
+      )
+    );
+
+    expect(androidResult.status).toBe(1);
+    expect(androidResult.stderr).toContain('EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID');
+    expect(androidResult.stderr).toContain('must match GOOGLE_ANDROID_CLIENT_ID');
   });
 
   it('rejects production env files with mismatched Expo public RevenueCat keys', () => {

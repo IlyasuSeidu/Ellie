@@ -113,6 +113,7 @@ export interface AppConfig {
   google: {
     webClientId: string;
     iosClientId?: string;
+    androidClientId?: string;
   };
   api: {
     baseUrl: string;
@@ -351,6 +352,7 @@ function buildAppConfig(): AppConfig {
     google: {
       webClientId: getEnvVar('GOOGLE_WEB_CLIENT_ID') as string,
       iosClientId: getEnvVar('GOOGLE_IOS_CLIENT_ID', false),
+      androidClientId: getEnvVar('GOOGLE_ANDROID_CLIENT_ID', false),
     },
     api: {
       baseUrl: getEnvVar('API_BASE_URL', false) || 'https://api.getryvro.com',
@@ -571,6 +573,7 @@ try {
       google: {
         webClientId: 'test-web-client-id',
         iosClientId: 'test-ios-client-id',
+        androidClientId: 'test-android-client-id',
       },
       api: {
         baseUrl: 'https://api.test.com',

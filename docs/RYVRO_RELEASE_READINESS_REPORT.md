@@ -39,7 +39,7 @@ Completed and guarded in the current branch:
 - RevenueCat repo-side identifiers and guidance use Ryvro launch aliases while keeping old Ellie/miner aliases documented as compatibility-only migration inputs.
 - RevenueCat launch env templates now include both native and Expo public platform SDK keys, the public entitlement mirror, and the production env preflight rejects mismatched public/native key or entitlement pairs before EAS builds.
 - Production env preflight now requires the real EAS project UUID shape before release builds, so placeholder or project-name values fail before EAS secrets are pushed.
-- Production env preflight also requires Expo public Google OAuth client IDs to mirror the private web and iOS Google client IDs, so release builds cannot silently ship with split OAuth projects.
+- Production env preflight also requires Expo public Google OAuth client IDs to mirror the private web, iOS, and Android Google client IDs, so release builds cannot silently ship with split OAuth projects.
 - Dynamic Expo config now derives the Google Sign-In plugin's iOS URL scheme from `GOOGLE_IOS_CLIENT_ID` / `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID`, so production EAS builds can follow the fresh Ryvro OAuth client instead of a stale static scheme.
 - Dynamic Expo config now also pins launch native capability fallbacks for Apple Sign-In, iOS microphone/speech privacy strings, Android microphone permission, and required Expo/Firebase/Google native config plugins if static config inheritance changes.
 - Production env preflight now validates the Firebase API key, app ID, messaging sender ID, auth domain, and storage bucket shape against the same Ryvro `FIREBASE_PROJECT_ID`.

@@ -128,6 +128,8 @@ GOOGLE_WEB_CLIENT_ID=your-google-web-client-id.apps.googleusercontent.com
 EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=your-google-web-client-id.apps.googleusercontent.com
 GOOGLE_IOS_CLIENT_ID=your-google-ios-client-id.apps.googleusercontent.com
 EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=your-google-ios-client-id.apps.googleusercontent.com
+GOOGLE_ANDROID_CLIENT_ID=your-google-android-client-id.apps.googleusercontent.com
+EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=your-google-android-client-id.apps.googleusercontent.com
 
 # RevenueCat
 REVENUECAT_IOS_KEY=appl_xxxxxxxxxxxxx
