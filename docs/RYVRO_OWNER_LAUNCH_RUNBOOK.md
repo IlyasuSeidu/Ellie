@@ -69,7 +69,7 @@ Owner-only steps:
 - Run `eas login` and create or link a Ryvro EAS project whose project slug matches `ryvro`, then copy the new EAS project UUID into production env values. Completed 2026-06-05: `@ilyasu/ryvro`, project ID `b306643e-1688-448e-8acd-f72bf74312c3`.
 - In the Expo dashboard, confirm the project display name is `Ryvro Shift Planner`. Completed 2026-06-05.
 - Upload an App Store Connect API key in Expo/EAS before connecting the project to the App Store Connect app. The dashboard showed no saved ASC API keys on 2026-06-05.
-- Set up iOS distribution credentials and Android release upload key or EAS-managed credentials. iOS signing was completed on 2026-06-05 for `@ilyasu/ryvro` / `com.ryvro.shiftplanner`; Android release signing is still pending.
+- Set up iOS distribution credentials and Android release upload key or EAS-managed credentials. iOS signing was completed on 2026-06-05 for `@ilyasu/ryvro` / `com.ryvro.shiftplanner`; Android release signing was completed on 2026-06-05 with an EAS-managed keystore.
 
 Evidence to record:
 
@@ -202,7 +202,7 @@ eas build --platform android --profile production
 Evidence to record:
 
 - EAS iOS build URL and build number.
-- EAS Android build URL and versionCode.
+- EAS Android build URL, version code, AAB archive URL when finished, and package ID proof.
 - Installed bundle/package identity proof.
 - Any build warnings and resolutions.
 - Update `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` with the non-secret evidence references.

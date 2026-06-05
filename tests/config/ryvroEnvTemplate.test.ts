@@ -2737,6 +2737,9 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('EU trader status');
     expect(launchEvidenceLog).toContain('status `Ready to Submit`');
     expect(launchEvidenceLog).toContain('Internal group `Ryvro iPhone QA`');
+    expect(launchEvidenceLog).toContain('EAS-managed Android keystore');
+    expect(launchEvidenceLog).toContain('318b4e8f-b344-4ed9-8bcd-a5805093339d');
+    expect(launchEvidenceLog).toContain('version code `1`');
     expect(launchEvidenceLog).toContain('Expo dashboard display name is `Ryvro Shift Planner`');
     expect(launchEvidenceLog).toContain('Created and linked EAS project `@ilyasu/ryvro`');
     expect(launchEvidenceLog).toContain('b306643e-1688-448e-8acd-f72bf74312c3');
