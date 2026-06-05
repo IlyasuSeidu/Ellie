@@ -254,7 +254,7 @@
       "ctaOffline": "联网后订阅",
       "purchaseSuccessPaid": "你的订阅已生效",
       "billingDisclosureTrialGeneric": "您的免费试用今天开始。请在开始扣费前随时前往设置取消。订阅会自动续订。",
-      "unavailable": "此应用构建版本不支持订阅。请安装最新的 EAS 开发版或生产版构建。",
+      "unavailable": "Ryvro Pro 目前不可用。请更新 Ryvro；如果问题持续，请联系支持团队。",
       "unconfigured": "此版本暂不支持 Ryvro Pro。请更新应用；如果问题仍然出现，请联系支持团队。"
     },
     "profile": {

@@ -120,7 +120,7 @@ export const ProfileScreen: React.FC = () => {
         tCommon('errors.titles.error', { defaultValue: 'Error' }),
         tCommon('subscription.paywall.unavailable', {
           defaultValue:
-            'Subscriptions are unavailable in this app build. Install the latest EAS development/production build.',
+            'Ryvro Pro is unavailable right now. Please update Ryvro or contact support if this keeps happening.',
         })
       );
       return;
@@ -132,7 +132,7 @@ export const ProfileScreen: React.FC = () => {
         tCommon('errors.titles.error', { defaultValue: 'Error' }),
         tCommon('subscription.paywall.unavailable', {
           defaultValue:
-            'Subscriptions are unavailable in this app build. Install the latest EAS development/production build.',
+            'Ryvro Pro is unavailable right now. Please update Ryvro or contact support if this keeps happening.',
         })
       );
       return;

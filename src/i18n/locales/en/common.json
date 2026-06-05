@@ -251,7 +251,7 @@
       "ctaOffline": "Connect to subscribe",
       "purchaseSuccessPaid": "Your subscription is active",
       "billingDisclosureTrialGeneric": "Your free trial starts today. Cancel anytime in Settings before billing begins. Subscriptions renew automatically.",
-      "unavailable": "Subscriptions are unavailable in this app build. Install the latest EAS development/production build.",
+      "unavailable": "Ryvro Pro is unavailable right now. Please update Ryvro or contact support if this keeps happening.",
       "unconfigured": "Ryvro Pro is not available in this build yet. Please update the app or contact support if this keeps happening."
     },
     "profile": {

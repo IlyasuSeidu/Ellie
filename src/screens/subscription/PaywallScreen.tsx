@@ -708,7 +708,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
         setPurchaseError(
           t('subscription.paywall.unavailable', {
             defaultValue:
-              'Subscriptions are unavailable in this app build. Install the latest EAS development/production build.',
+              'Ryvro Pro is unavailable right now. Please update Ryvro or contact support if this keeps happening.',
           })
         );
         return;
@@ -804,7 +804,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
         setPurchaseError(
           t('subscription.paywall.unavailable', {
             defaultValue:
-              'Subscriptions are unavailable in this app build. Install the latest EAS development/production build.',
+              'Ryvro Pro is unavailable right now. Please update Ryvro or contact support if this keeps happening.',
           })
         );
       }
@@ -902,7 +902,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
                     })
                   : t('subscription.paywall.unavailable', {
                       defaultValue:
-                        'Subscriptions are unavailable in this app build. Install the latest EAS development/production build.',
+                        'Ryvro Pro is unavailable right now. Please update Ryvro or contact support if this keeps happening.',
                     })}
             </Text>
             {!isOffline && purchasesAvailable && canPresentNativePaywall ? (
@@ -1280,7 +1280,7 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({
                 })
               : t('subscription.paywall.unavailable', {
                   defaultValue:
-                    'Subscriptions are unavailable in this app build. Install the latest EAS development/production build.',
+                    'Ryvro Pro is unavailable right now. Please update Ryvro or contact support if this keeps happening.',
                 })}
           </Text>
         ) : null}

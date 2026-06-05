@@ -2814,6 +2814,7 @@ describe('Ryvro environment template', () => {
               offline?: string;
             };
             unconfigured?: string;
+            unavailable?: string;
             socialProof?: string;
             testimonials?: Array<{ author?: string; quote?: string }>;
           };
@@ -2839,6 +2840,10 @@ describe('Ryvro environment template', () => {
       expect(paywall?.unconfigured).not.toMatch(
         /RevenueCat|SDK key|build environment|rebuild|not configured/i
       );
+      expect(paywall?.unavailable).toContain('Ryvro Pro');
+      expect(paywall?.unavailable).not.toMatch(
+        /\bEAS\b|development\/production|SDK key|build environment|rebuild|app build/i
+      );
     }
 
     const paywallScreen = fs.readFileSync(
@@ -2848,8 +2853,12 @@ describe('Ryvro environment template', () => {
     expect(paywallScreen).toContain(
       'Ryvro Pro is not available in this build yet. Please update the app or contact support if this keeps happening.'
     );
+    expect(paywallScreen).toContain(
+      'Ryvro Pro is unavailable right now. Please update Ryvro or contact support if this keeps happening.'
+    );
     expect(paywallScreen).not.toContain('Add the RevenueCat SDK key');
     expect(paywallScreen).not.toContain('build environment and rebuild');
+    expect(paywallScreen).not.toContain('Install the latest EAS development/production build');
   });
 
   it('keeps translated work-location labels broad instead of site-specific', () => {
