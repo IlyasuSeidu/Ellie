@@ -2786,6 +2786,11 @@ describe('Ryvro environment template', () => {
     );
     expect(launchEvidenceLog).toContain('Domain control for `getryvro.com`');
     expect(launchEvidenceLog).toContain('Social handles');
+    expect(launchEvidenceLog).toContain('generated project ID `ryvro-shift-planner`');
+    expect(launchEvidenceLog).toContain('optional Gemini in Firebase was switched off');
+    expect(launchEvidenceLog).toContain('`Ryvro Google Analytics`');
+    expect(launchEvidenceLog).toContain('`I accept the Google Analytics terms`');
+    expect(launchEvidenceLog).toContain('do not accept this legal term on behalf of the owner');
     expect(launchEvidenceLog).toContain('Firebase Auth email templates');
     expect(launchEvidenceLog).toContain(
       'Sender `Ryvro Support`, reply-to `support@getryvro.com`, action domain `getryvro.com`'
