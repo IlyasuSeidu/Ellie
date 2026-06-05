@@ -51,6 +51,7 @@ const evidenceLog = read('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
 const ownerRunbook = read('docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md');
 const releaseTasks = read('RYVRO_RELEASE_TASKS.md');
 const screenshotChecklist = read('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
+const submitBlockerTriage = read('docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md');
 
 [
   [
@@ -66,6 +67,16 @@ const screenshotChecklist = read('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
   ['google-play-phone-02-dashboard-calendar.png', screenshotChecklist],
   ['eas submit --platform ios --latest', ownerRunbook],
   ['eas submit --platform android --latest', ownerRunbook],
+  ['# Ryvro Submit Blocker Triage', submitBlockerTriage],
+  ['Current Submit Gate', submitBlockerTriage],
+  ['Recommended Order', submitBlockerTriage],
+  ['Android service account key path `./google-play-key.json`', submitBlockerTriage],
+  ['Formal trademark/legal clearance for `Ryvro`', submitBlockerTriage],
+  ['Finish Google Play Enrollment', submitBlockerTriage],
+  ['Create Production Firebase And OAuth', submitBlockerTriage],
+  ['Finish RevenueCat And Store Products', submitBlockerTriage],
+  ['Rebuild, Test, Screenshot, Then Submit', submitBlockerTriage],
+  ['Only mark a row in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` as `Passed`', submitBlockerTriage],
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'submit readiness handoff'));
 
 const submitConfig = easJson.submit?.production;

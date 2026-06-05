@@ -710,8 +710,14 @@ describe('Ryvro environment template', () => {
     expect(result.stderr).toContain('Store screenshots still has pending owner evidence');
     expect(script).toContain('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
     expect(script).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
+    expect(script).toContain('docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md');
     expect(script).toContain('eas submit --platform ios --latest');
     expect(script).toContain('eas submit --platform android --latest');
+    expect(script).toContain('# Ryvro Submit Blocker Triage');
+    expect(script).toContain('Recommended Order');
+    expect(script).toContain('Finish Google Play Enrollment');
+    expect(script).toContain('Create Production Firebase And OAuth');
+    expect(script).toContain('Rebuild, Test, Screenshot, Then Submit');
     expect(script).toContain('Social handles');
     expect(script).toContain('Backend deploy - ryvroBrain');
     expect(script).toContain('Backend smoke - ryvroBrain');
