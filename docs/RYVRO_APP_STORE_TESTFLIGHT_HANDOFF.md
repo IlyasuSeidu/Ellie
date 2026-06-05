@@ -44,6 +44,8 @@ Known owner-console evidence from 2026-06-05:
 - EAS iOS signing reused distribution certificate serial `301E6C7873C7CB794FF62784DA03A26D`, expiring Thu, 11 Mar 2027 10:35:07 UTC.
 - EAS created provisioning profile Developer Portal ID `8SPN7X8WKH`, expiring Thu, 11 Mar 2027 10:35:07 UTC.
 - EAS iOS production build `c99b0e0a-829c-4ab7-bd93-164586ade68a` uploaded to App Store Connect through EAS Submit `c17b593c-7909-42db-96f6-a81f095f7479`.
+- Latest EAS iOS production build evidence from `npx eas-cli build:list --platform ios --limit 5 --json` is build `782b6dec-1cf1-4cf2-9159-69ef1ab4078a`, status `FINISHED`, project `@ilyasu/ryvro`, version `1.0.0`, build number `1`, completed `2026-06-05T10:05:30.038Z`, and application archive `https://expo.dev/artifacts/eas/fQEAHqM7cPm7B5yEpFosVy.ipa`.
+- Do not submit build `782b6dec-1cf1-4cf2-9159-69ef1ab4078a` as-is because App Store Connect already has version `1.0.0`, build `1` from the earlier TestFlight upload. The next TestFlight upload should use real production Firebase/OAuth/RevenueCat values and an incremented iOS build number.
 - App Store Connect TestFlight shows version `1.0.0`, build `1`, status `Ready to Submit`.
 - Internal TestFlight group `Ryvro iPhone QA` shows `Internal Group ∙ 1 Tester ∙ 1 Build`.
 - Tester `seiduilyasu94@gmail.com` / `Ilyasu Seidu` is currently `Invited`.
@@ -88,6 +90,7 @@ Use TestFlight before public App Store review.
 - Install through TestFlight, not Expo Go and not a local debug build.
 - Use `docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md` for the smoke matrix.
 - Keep the current build pending until it is rebuilt with real Firebase/OAuth/RevenueCat production values.
+- Increment the iOS build number before uploading the next production-auth-ready TestFlight build.
 
 Record:
 

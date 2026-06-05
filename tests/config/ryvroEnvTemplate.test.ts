@@ -1836,6 +1836,13 @@ describe('Ryvro environment template', () => {
       'EAS iOS build `c99b0e0a-829c-4ab7-bd93-164586ade68a` uploaded to TestFlight'
     );
     expect(releaseTasks).toContain(
+      'latest EAS build `782b6dec-1cf1-4cf2-9159-69ef1ab4078a` also finished'
+    );
+    expect(releaseTasks).toContain(
+      'should not be submitted as-is because App Store Connect already has build `1`'
+    );
+    expect(releaseTasks).toContain('incremented iOS build number');
+    expect(releaseTasks).toContain(
       'EAS Android AAB `318b4e8f-b344-4ed9-8bcd-a5805093339d` proves package `com.ryvro.shiftplanner`'
     );
     expect(releaseTasks).toContain('EAS Submit `c17b593c-7909-42db-96f6-a81f095f7479`');
@@ -2954,6 +2961,13 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('tester status `Invited`');
     expect(launchEvidenceLog).toContain('EAS-managed Android keystore');
     expect(launchEvidenceLog).toContain('c99b0e0a-829c-4ab7-bd93-164586ade68a');
+    expect(launchEvidenceLog).toContain('782b6dec-1cf1-4cf2-9159-69ef1ab4078a');
+    expect(launchEvidenceLog).toContain(
+      'Do not submit that later build as-is because App Store Connect already has version `1.0.0`, build `1`'
+    );
+    expect(launchEvidenceLog).toContain(
+      'real production env evidence exists, the iOS build number is incremented'
+    );
     expect(launchEvidenceLog).toContain(
       '2efbacac748ea9471a4b28ca332b37aed86cbc80ff654a22651a6bbde7f45cf2'
     );
@@ -3163,6 +3177,12 @@ describe('Ryvro environment template', () => {
     expect(appStoreTestFlightHandoff).toContain(
       'EAS iOS production build `c99b0e0a-829c-4ab7-bd93-164586ade68a`'
     );
+    expect(appStoreTestFlightHandoff).toContain('Latest EAS iOS production build evidence');
+    expect(appStoreTestFlightHandoff).toContain('782b6dec-1cf1-4cf2-9159-69ef1ab4078a');
+    expect(appStoreTestFlightHandoff).toContain(
+      'Do not submit build `782b6dec-1cf1-4cf2-9159-69ef1ab4078a` as-is'
+    );
+    expect(appStoreTestFlightHandoff).toContain('incremented iOS build number');
     expect(appStoreTestFlightHandoff).toContain(
       'EAS Submit `c17b593c-7909-42db-96f6-a81f095f7479`'
     );

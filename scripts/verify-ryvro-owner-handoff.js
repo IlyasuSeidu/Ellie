@@ -292,6 +292,10 @@ const launchDeletion = read('web/launch/delete-account/index.html');
   ['EAS submit command: `eas submit --platform ios --latest`', appStoreTestFlightHandoff],
   ['Reviewer account email: `reviewer@getryvro.com`', appStoreTestFlightHandoff],
   ['EAS iOS production build `c99b0e0a-829c-4ab7-bd93-164586ade68a`', appStoreTestFlightHandoff],
+  ['Latest EAS iOS production build evidence', appStoreTestFlightHandoff],
+  ['782b6dec-1cf1-4cf2-9159-69ef1ab4078a', appStoreTestFlightHandoff],
+  ['Do not submit build `782b6dec-1cf1-4cf2-9159-69ef1ab4078a` as-is', appStoreTestFlightHandoff],
+  ['incremented iOS build number', appStoreTestFlightHandoff],
   ['EAS Submit `c17b593c-7909-42db-96f6-a81f095f7479`', appStoreTestFlightHandoff],
   [
     'TestFlight shows version `1.0.0`, build `1`, status `Ready to Submit`',
@@ -512,7 +516,7 @@ requireMatches(
 );
 requireMatches(
   releaseTasks,
-  /\|\s*21\s*\|[\s\S]*c99b0e0a-829c-4ab7-bd93-164586ade68a[\s\S]*real Firebase\/OAuth\/RevenueCat env evidence/,
+  /\|\s*21\s*\|[\s\S]*c99b0e0a-829c-4ab7-bd93-164586ade68a[\s\S]*782b6dec-1cf1-4cf2-9159-69ef1ab4078a[\s\S]*incremented iOS build number/,
   'release task 21'
 );
 requireMatches(
