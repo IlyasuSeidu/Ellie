@@ -3047,8 +3047,20 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('The tracked `.firebaserc` default now points');
     expect(launchEvidenceLog).toContain('Local Firebase CLI caveat');
     expect(launchEvidenceLog).toContain('pass `--project ryvro-shift-planner` explicitly');
-    expect(launchEvidenceLog).toContain('Keep the related Firebase iOS app');
+    expect(launchEvidenceLog).toContain('Keep the related OAuth');
     expect(firebaseRc).toContain('"default": "ryvro-shift-planner"');
+    expect(launchEvidenceLog).toContain('Firebase iOS app');
+    expect(launchEvidenceLog).toContain('Firebase Android app');
+    expect(launchEvidenceLog).toContain('firebase apps:create IOS "Ryvro iOS"');
+    expect(launchEvidenceLog).toContain('firebase apps:create ANDROID "Ryvro Android"');
+    expect(launchEvidenceLog).toContain('`1:1002666052675:ios:bf72c1cc611308a76b98f6`');
+    expect(launchEvidenceLog).toContain('`1:1002666052675:android:735fd0ef9443ddf76b98f6`');
+    expect(launchEvidenceLog).toContain('platform `IOS`');
+    expect(launchEvidenceLog).toContain('platform `ANDROID`');
+    expect(launchEvidenceLog).toContain('namespace `com.ryvro.shiftplanner`');
+    expect(launchEvidenceLog).toContain('Git status `!! GoogleService-Info.plist`');
+    expect(launchEvidenceLog).toContain('Git status `!! google-services.json`');
+    expect(launchEvidenceLog).toContain('file contents were not printed or committed');
     expect(launchEvidenceLog).toContain('testflight/groups/c9ea8051-517c-4d81-b8a0-57099d9e864d');
     expect(launchEvidenceLog).toContain('Internal Group ∙ 1 Tester ∙ 1 Build');
     expect(launchEvidenceLog).toContain('tester status `Invited`');
@@ -3096,8 +3108,8 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('`Ryvro Google Analytics`');
     expect(launchEvidenceLog).toContain('owner clicked `Create project`');
     expect(launchEvidenceLog).toContain('docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md');
-    expect(launchEvidenceLog).toContain('root path `./GoogleService-Info.plist` only');
-    expect(launchEvidenceLog).toContain('root path `./google-services.json` only');
+    expect(launchEvidenceLog).toContain('fresh ignored root file at `./GoogleService-Info.plist`');
+    expect(launchEvidenceLog).toContain('fresh ignored root file at `./google-services.json`');
     expect(launchEvidenceLog).toContain('Android release SHA-1/SHA-256 notes only');
     expect(launchEvidenceLog).toContain('Firebase Auth email templates');
     expect(launchEvidenceLog).toContain(
@@ -3349,6 +3361,22 @@ describe('Ryvro environment template', () => {
       'pass `--project ryvro-shift-planner` explicitly'
     );
     expect(firebaseOauthBackendHandoff).toContain(
+      'Firebase native apps were created on 2026-06-05'
+    );
+    expect(firebaseOauthBackendHandoff).toContain('`Ryvro iOS` app ID');
+    expect(firebaseOauthBackendHandoff).toContain('`Ryvro Android` app ID');
+    expect(firebaseOauthBackendHandoff).toContain('`1:1002666052675:ios:bf72c1cc611308a76b98f6`');
+    expect(firebaseOauthBackendHandoff).toContain(
+      '`1:1002666052675:android:735fd0ef9443ddf76b98f6`'
+    );
+    expect(firebaseOauthBackendHandoff).toContain('state `ACTIVE`');
+    expect(firebaseOauthBackendHandoff).toContain(
+      'Fresh native Firebase config files were downloaded'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'Metadata-only local verification confirmed both files target'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
       'a new Google Analytics account named `Ryvro Google Analytics` was saved and selected'
     );
     expect(firebaseOauthBackendHandoff).toContain('owner then accepted Google Analytics terms');
@@ -3356,12 +3384,13 @@ describe('Ryvro environment template', () => {
       'If Google Analytics terms or other legal terms appear'
     );
     expect(firebaseOauthBackendHandoff).toContain(
-      'Download the fresh iOS file as `GoogleService-Info.plist`'
+      'The fresh iOS file was downloaded as `GoogleService-Info.plist`'
     );
     expect(firebaseOauthBackendHandoff).toContain(
-      'Download the fresh Android file as `google-services.json`'
+      'The fresh Android file was downloaded as `google-services.json`'
     );
-    expect(firebaseOauthBackendHandoff).toContain('Place both files at the repo root only');
+    expect(firebaseOauthBackendHandoff).toContain('Both files are placed at the repo root only');
+    expect(firebaseOauthBackendHandoff).toContain('Both files are ignored by Git');
     expect(firebaseOauthBackendHandoff).toContain(
       'Do not use tracked local placeholders under `config/firebase/`'
     );

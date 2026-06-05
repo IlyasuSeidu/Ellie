@@ -61,10 +61,9 @@ Evidence source: `docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md`.
 
 Do this before rebuilding production binaries.
 
-- Create or finish the Ryvro Firebase project.
-- Add iOS app `com.ryvro.shiftplanner`.
-- Add Android app `com.ryvro.shiftplanner`.
-- Download fresh root-level `GoogleService-Info.plist` and `google-services.json`.
+- Ryvro Firebase project `ryvro-shift-planner` is created.
+- Firebase iOS app `Ryvro iOS` is active for `com.ryvro.shiftplanner`, and root-level `GoogleService-Info.plist` is downloaded as an ignored local file.
+- Firebase Android app `Ryvro Android` is active for `com.ryvro.shiftplanner`, and root-level `google-services.json` is downloaded as an ignored local file.
 - Create web, iOS, and Android OAuth clients.
 - Add `getryvro.com` as a Firebase Auth authorized domain.
 - Configure Firebase Auth email templates with `Ryvro Support`, `support@getryvro.com`, and `getryvro.com`.

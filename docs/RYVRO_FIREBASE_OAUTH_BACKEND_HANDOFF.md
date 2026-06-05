@@ -35,22 +35,26 @@ firebase projects:list
 - Firebase Console project creation was restarted on 2026-06-05 with display name `Ryvro Shift Planner`, generated project ID `ryvro-shift-planner`, Gemini in Firebase switched off, and Google Analytics left on. With owner confirmation, a new Google Analytics account named `Ryvro Google Analytics` was saved and selected with Analytics location `United States`; the owner then accepted Google Analytics terms and clicked `Create project`.
 - Firebase project creation completed on 2026-06-05. `firebase projects:list --json` confirmed project ID `ryvro-shift-planner`, display name `Ryvro Shift Planner`, project number `1002666052675`, state `ACTIVE`, and hosting site `ryvro-shift-planner`. The tracked `.firebaserc` default now points to `ryvro-shift-planner`.
 - Local Firebase CLI note: `firebase use` and `firebase use --clear` still failed after project creation because Firebase Tools could not access `/Users/user/.config` for its update/config store and continued to print `ellie-20260220135308`. Before deploying, either repair that local Firebase Tools config-store permission and rerun `firebase use ryvro-shift-planner`, or pass `--project ryvro-shift-planner` explicitly on deploy and functions commands.
+- Firebase native apps were created on 2026-06-05. `firebase apps:list --project ryvro-shift-planner --json` confirmed `Ryvro iOS` app ID `1:1002666052675:ios:bf72c1cc611308a76b98f6`, platform `IOS`, namespace `com.ryvro.shiftplanner`, state `ACTIVE`; and `Ryvro Android` app ID `1:1002666052675:android:735fd0ef9443ddf76b98f6`, platform `ANDROID`, namespace `com.ryvro.shiftplanner`, state `ACTIVE`.
+- Fresh native Firebase config files were downloaded on 2026-06-05 to ignored root paths only: `./GoogleService-Info.plist` and `./google-services.json`. Metadata-only local verification confirmed both files target project ID `ryvro-shift-planner` and `com.ryvro.shiftplanner`; file contents were not printed or committed.
 - If Google Analytics terms or other legal terms appear, the owner must review and accept them directly.
 - Record only the Firebase project ID, visible display name, Analytics property name if enabled, and owner account used.
 - Do not record web API keys or full app config contents in the evidence log.
 
 ## Native App Config Files
 
-Add fresh Firebase apps for the final bundle/package.
+Fresh Firebase apps for the final bundle/package were created and verified.
 
 - iOS app nickname: `Ryvro iOS`
 - iOS bundle ID: `com.ryvro.shiftplanner`
+- iOS app ID: `1:1002666052675:ios:bf72c1cc611308a76b98f6`
 - Android app nickname: `Ryvro Android`
 - Android package name: `com.ryvro.shiftplanner`
-- Download the fresh iOS file as `GoogleService-Info.plist`.
-- Download the fresh Android file as `google-services.json`.
-- Place both files at the repo root only: `./GoogleService-Info.plist` and `./google-services.json`.
-- Keep both files ignored by Git.
+- Android app ID: `1:1002666052675:android:735fd0ef9443ddf76b98f6`
+- The fresh iOS file was downloaded as `GoogleService-Info.plist`.
+- The fresh Android file was downloaded as `google-services.json`.
+- Both files are placed at the repo root only: `./GoogleService-Info.plist` and `./google-services.json`.
+- Both files are ignored by Git.
 - Do not point production `.env` at generated `ios/` or `android/` service-file paths.
 - Do not use tracked local placeholders under `config/firebase/` for production builds.
 

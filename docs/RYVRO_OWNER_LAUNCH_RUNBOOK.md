@@ -108,9 +108,9 @@ Owner-only steps:
 - When Google shows `Firebase CLI wants to access your Google Account`, approve it only if you are ready for Firebase CLI to administer Firebase settings and access Google Cloud data for the owner account.
 - Firebase project creation was completed on 2026-06-05 as `Ryvro Shift Planner` / `ryvro-shift-planner`; `firebase projects:list --json` confirmed state `ACTIVE`, project number `1002666052675`, and hosting site `ryvro-shift-planner`. The tracked `.firebaserc` default now points to `ryvro-shift-planner`.
 - Local Firebase CLI caveat: if `firebase use` still prints `ellie-20260220135308` because Firebase Tools cannot access `/Users/user/.config`, repair the local Firebase Tools config-store permission before deploying or pass `--project ryvro-shift-planner` explicitly on Firebase deploy/functions commands.
-- Add iOS app `com.ryvro.shiftplanner` and Android app `com.ryvro.shiftplanner`.
-- Download fresh `GoogleService-Info.plist` and `google-services.json`.
-- Place the real root-level Firebase native service files at the repo root as `GoogleService-Info.plist` and `google-services.json`; do not point production `.env` at generated `ios/` or `android/` paths because clean prebuild deletes them.
+- Firebase native app creation was completed on 2026-06-05. `firebase apps:list --project ryvro-shift-planner --json` confirmed `Ryvro iOS` app ID `1:1002666052675:ios:bf72c1cc611308a76b98f6` and `Ryvro Android` app ID `1:1002666052675:android:735fd0ef9443ddf76b98f6`, both active with namespace `com.ryvro.shiftplanner`.
+- Fresh root-level Firebase native service files were downloaded as ignored local files at `GoogleService-Info.plist` and `google-services.json`; metadata-only verification confirmed both target `ryvro-shift-planner` and `com.ryvro.shiftplanner`.
+- Keep the real root-level Firebase native service files at the repo root as `GoogleService-Info.plist` and `google-services.json`; do not point production `.env` at generated `ios/` or `android/` paths because clean prebuild deletes them.
 - Create Google OAuth web, iOS, and Android clients in the same project.
 - Deploy backend functions to the Ryvro Firebase project.
 - Configure `.env` from `.env.production.example` with real values.
