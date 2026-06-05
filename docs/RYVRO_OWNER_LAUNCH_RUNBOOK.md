@@ -1,6 +1,6 @@
 # Ryvro Owner Launch Runbook
 
-Last updated: 2026-05-31
+Last updated: 2026-06-02
 
 This is the account-owner sequence for taking the repo-ready Ryvro build to the App Store and Google Play. It intentionally separates owner-only account work from repo-proven work so a release cannot be treated as live before console, domain, payment, backend, and physical-device evidence exists.
 
@@ -251,7 +251,7 @@ Evidence to record:
 - Current local release gate includes `npm run release:owner:check`, which fails if the account-only launch blockers, physical-device QA requirements, and not-yet-live stop gates disappear from the tracked handoff docs.
 - Final submit readiness is guarded by `npm run release:submit:check`, which must fail until EAS submit placeholders are replaced and every required non-secret row in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` is `Passed` or explicitly `Not applicable`.
 - Store screenshot capture is now tracked in `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md`, and `npm run release:store:check` / `npm run release:owner:check` fail if the checklist or evidence-log handoff disappears.
-- Recent pushed PR gate evidence includes GitHub Actions CI run `26776633987` on commit `7a51dc6`, CI run `26776194564` on commit `63cbbef`, and CI run `26735606843` on commit `f194981`, which passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check` with the owner handoff preflight.
+- Recent pushed PR gate evidence includes GitHub Actions CI run `26777884874` on commit `cf9f7e2`, CI run `26777512610` on commit `d171409`, and CI run `26776633987` on commit `7a51dc6`, which passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check` with the owner handoff preflight.
 - Recent pushed PR gates also include CI run `26728238458` on commit `d7f8f0e`, CI run `26728115119` on commit `50bc770`, CI run `26726876514` on commit `f72f885`, and CI run `26726707448` on commit `0290dc2`; all passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check` with the owner handoff preflight.
 - Current repo branch: `codex/ryvro-rebrand-rollout`.
 

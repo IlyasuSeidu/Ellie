@@ -144,7 +144,7 @@ Repo-proven launch state:
 - Latest local gate: `npm run release:check` passed TypeScript, 110 Jest suites / 1,781 tests / 4 snapshots, the Ryvro native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build on 2026-06-01
 - Latest iOS simulator gate: `npm run test:e2e -- e2e/onboarding.test.ts --reuse` passed the fresh onboarding path into the Universal Shift Builder, `npm run test:e2e -- e2e/dashboard.test.ts --reuse` passed 16 dashboard checks including the active universal shift icon, and `npm run test:e2e -- e2e/critical-mobile.test.ts --reuse` passed auth, onboarding, dashboard, profile, and builder mobile-fit checks
 - Owner handoff gate: `npm run release:owner:check` keeps the not-live status, owner account tasks, physical-device QA, and store submission handoff docs visible
-- Recent pushed PR gates: GitHub Actions CI run `26776633987` on commit `7a51dc6`, CI run `26776194564` on commit `63cbbef`, and CI run `26735606843` on commit `f194981` passed Unit Tests, Lint and Type Check, Build Check, and the dedicated Release Check job running `npm run release:check`
+- Recent pushed PR gates: GitHub Actions CI run `26777884874` on commit `cf9f7e2`, CI run `26777512610` on commit `d171409`, and CI run `26776633987` on commit `7a51dc6` passed Unit Tests, Lint and Type Check, Build Check, and the dedicated Release Check job running `npm run release:check`
 
 Owner/account work still required before launch:
 
