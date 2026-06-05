@@ -1290,8 +1290,8 @@ describe('Ryvro environment template', () => {
     );
     const clearanceEvidence = `${externalSetup}\n${audit}`;
 
-    expect(clearanceEvidence).toContain('2026-06-01 at 19:15:52Z');
-    expect(clearanceEvidence).toContain('2026-06-01T19:15:52.766Z');
+    expect(clearanceEvidence).toContain('2026-06-05 at 11:04:32Z');
+    expect(clearanceEvidence).toContain('2026-06-05T11:04:32.887Z');
     expect(clearanceEvidence).toContain('no exact `Ryvro` or `Ryvro Shift Planner` app result');
     expect(clearanceEvidence).toContain(
       'Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`'
@@ -1301,9 +1301,7 @@ describe('Ryvro environment template', () => {
     );
     expect(clearanceEvidence).toContain('no exact Ryvro listing visible');
     expect(clearanceEvidence).toContain('Do not treat this as logged-in Play Console evidence');
-    expect(clearanceEvidence).toContain(
-      'LinkedIn `company/ryvro`: public URL returned bot-protection status `999`'
-    );
+    expect(clearanceEvidence).toContain('LinkedIn `company/ryvro`: public URL returned `404`');
     expect(clearanceEvidence).toContain('Formal trademark/legal clearance');
     expect(clearanceEvidence).toContain('App Store Connect and Google Play Console name checks');
     expect(clearanceEvidence).toContain('Play Console title/package availability');
@@ -1331,7 +1329,9 @@ describe('Ryvro environment template', () => {
     expect(clearanceEvidence).not.toContain('2026-05-31 at 07:14Z');
     expect(clearanceEvidence).not.toContain('2026-05-31 at 19:32:28Z');
     expect(clearanceEvidence).not.toContain('2026-05-31T19:32:28.044Z');
-    expect(clearanceEvidence).not.toContain('LinkedIn `company/ryvro`: public URL returned `404`');
+    expect(clearanceEvidence).not.toContain(
+      'LinkedIn `company/ryvro`: public URL returned bot-protection status `999`'
+    );
   });
 
   it('keeps the active deployment plan on Ryvro and repo-root release paths', () => {
@@ -1728,11 +1728,11 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: June 5, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, asset checklist reconciliation, industry template visual badge checklist reconciliation, working tracker reconciliation, social profile and landing-page source copy, settings builder entry coverage, settings color/icon coverage, latest public clearance evidence at 19:15Z, iOS simulator onboarding, dashboard, mobile-fit proof, consolidated onboarding icon density coverage, user-safe Ryvro Pro fallback copy, localized Profile help/legal copy, Ryvro Pro unavailable/unconfigured copy cleanup, Ryvro Pro runtime diagnostics cleanup, and latest pushed PR #1 CI pass `27003316953` on `9ebb4f9`)'
+      'Last updated: June 5, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, asset checklist reconciliation, industry template visual badge checklist reconciliation, working tracker reconciliation, social profile and landing-page source copy, settings builder entry coverage, settings color/icon coverage, latest public clearance evidence at 11:04Z, iOS simulator onboarding, dashboard, mobile-fit proof, consolidated onboarding icon density coverage, user-safe Ryvro Pro fallback copy, localized Profile help/legal copy, Ryvro Pro unavailable/unconfigured copy cleanup, Ryvro Pro runtime diagnostics cleanup, and latest pushed PR #1 CI pass `27003316953` on `9ebb4f9`)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
-    expect(releaseTasks).toContain('latest public evidence: 2026-06-01 19:15Z');
+    expect(releaseTasks).toContain('latest public evidence: 2026-06-05 11:04Z');
     expect(releaseTasks).not.toContain('latest public evidence: 2026-05-31 19:32Z');
     expect(releaseTasks).not.toContain('latest public evidence: 2026-05-31 07:14Z');
     expect(releaseTasks).toContain('formal trademark/legal clearance for `Ryvro`');
