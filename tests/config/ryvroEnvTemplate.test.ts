@@ -2735,7 +2735,8 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('Apple Developer Program License Agreement accepted');
     expect(launchEvidenceLog).toContain('explicit bundle ID `com.ryvro.shiftplanner`');
     expect(launchEvidenceLog).toContain('EU trader status');
-    expect(launchEvidenceLog).toContain('Apple is processing the binary');
+    expect(launchEvidenceLog).toContain('status `Ready to Submit`');
+    expect(launchEvidenceLog).toContain('Internal group `Ryvro iPhone QA`');
     expect(launchEvidenceLog).toContain('Expo dashboard display name is `Ryvro Shift Planner`');
     expect(launchEvidenceLog).toContain('Created and linked EAS project `@ilyasu/ryvro`');
     expect(launchEvidenceLog).toContain('b306643e-1688-448e-8acd-f72bf74312c3');
