@@ -290,7 +290,7 @@ Evidence to record:
 - Current local release gate includes `npm run release:owner:check`, which fails if the account-only launch blockers, physical-device QA requirements, and not-yet-live stop gates disappear from the tracked handoff docs.
 - Final submit readiness is guarded by `npm run release:submit:check`, which must fail until EAS submit placeholders are replaced and every required non-secret row in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` is `Passed` or explicitly `Not applicable`.
 - Store screenshot capture is now tracked in `docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md`, and `npm run release:store:check` / `npm run release:owner:check` fail if the checklist or evidence-log handoff disappears.
-- Recent pushed PR gate evidence includes GitHub Actions CI run `27014539880` on commit `8b277ee`, CI run `27014075248` on commit `c424ff3`, CI run `27013691021` on commit `8d24c2a`, CI run `27013231061` on commit `9e69151`, and CI run `27012828719` on commit `0fb439b`; all passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check` with the owner handoff preflight.
+- Recent pushed PR gate evidence includes GitHub Actions CI run `27018502561` on commit `ed43b3c`, CI run `27017702436` on commit `583fa55`, CI run `27017194317` on commit `597388b`, CI run `27016680821` on commit `5059dcc`, and CI run `27016257277` on commit `0268975`; all passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check` with the owner handoff preflight.
 - Current repo branch: `codex/ryvro-rebrand-rollout`.
 
 Keep this section current whenever a new launch-readiness commit is pushed and CI passes.
