@@ -44,7 +44,7 @@ Completed in the current working tree:
 - Expanded E2E onboarding fixtures for launch QA personas including nurse, security officer, firefighter, plant operator, linehaul driver, warehouse lead, hotel duty manager, airport operations coordinator, offshore technician, and a mining/FIFO operator.
 - Cleaned remaining launch-critical broad-market copy in README, English onboarding feature descriptions, selected translated placeholders/social proof, and onboarding icon source guidance.
 - Hardened tracked generated-content guidance and publishable build-in-public packs so they use Ryvro naming, broad shift-worker discovery tags, and FIFO/shift-worker audience language instead of stale Ellie or mining-only tags.
-- Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the launch-readiness cleanup. The latest pushed CI run for this branch passed on 2026-05-31: CI run `26728442767` on commit `4db2331`.
+- Re-ran local release clearance preflight, focused rebrand tests, full project validation, and GitHub CI after the launch-readiness cleanup. The latest pushed CI run for this branch passed on 2026-06-05: CI run `27002675763` on commit `02947b1`.
 - Aligned the active deployment guide to the committed Ryvro `eas.json`, dynamic `app.config.js`, and guarded `npm run release:submit:check` plus `eas submit --latest` store-submission flow.
 - Renamed retired Ellie storage-key code symbols to neutral Ryvro-era `retired...` names while preserving the raw old keys only for migration/removal.
 - Tightened the Ryvro native scaffold verifier so active release checks inspect only `ios/RyvroShiftPlanner` generated paths instead of accepting old iOS project-name fallbacks.
