@@ -1492,6 +1492,7 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('CI run `27016680821`');
     expect(readme).toContain('commit `5059dcc`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
+    expect(readme).toContain('[docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
     expect(readme).toContain(
       'Production `ryvroBrain` and `parseShiftScheduleDescription` deploys and smoke tests'

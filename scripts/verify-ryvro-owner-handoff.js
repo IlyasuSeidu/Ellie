@@ -483,6 +483,7 @@ requireMatches(readme, /CI run `\d+` on commit `[0-9a-f]+`/, 'README CI run evid
   ['commit `ed43b3c`', readinessReport],
   ['CI run `27018502561`', ownerRunbook],
   ['commit `ed43b3c`', ownerRunbook],
+  ['docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md', readme],
   ['store screenshot capture checklist', readinessReport],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', ownerRunbook],
   ['Launch Landing Page Copy', storeListing],

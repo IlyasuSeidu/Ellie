@@ -155,7 +155,7 @@ Owner/account work still required before launch:
 - Production `ryvroBrain` and `parseShiftScheduleDescription` deploys and smoke tests, including a valid-prompt `SHIFT_SCHEDULE_PARSER_URL` parser response
 - Physical iOS and Android device smoke tests, store screenshots, privacy forms, data-safety forms, TestFlight/internal track upload, and final submission
 
-Current launch handoff lives in [docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md](docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md), [docs/RYVRO_RELEASE_READINESS_REPORT.md](docs/RYVRO_RELEASE_READINESS_REPORT.md), [RYVRO_RELEASE_TASKS.md](RYVRO_RELEASE_TASKS.md), and [docs/RYVRO_EXTERNAL_SERVICE_SETUP.md](docs/RYVRO_EXTERNAL_SERVICE_SETUP.md).
+Current launch handoff lives in [docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md](docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md), [docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md](docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md), [docs/RYVRO_RELEASE_READINESS_REPORT.md](docs/RYVRO_RELEASE_READINESS_REPORT.md), [RYVRO_RELEASE_TASKS.md](RYVRO_RELEASE_TASKS.md), and [docs/RYVRO_EXTERNAL_SERVICE_SETUP.md](docs/RYVRO_EXTERNAL_SERVICE_SETUP.md).
 
 ---
 
