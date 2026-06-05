@@ -2800,6 +2800,12 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('Backend deploy - parser');
     expect(launchEvidenceLog).toContain('Shift parser smoke');
     expect(launchEvidenceLog).toContain('SHIFT_SCHEDULE_PARSER_URL');
+    expect(launchEvidenceLog).toContain('created project `Ryvro`');
+    expect(launchEvidenceLog).toContain('app.revenuecat.com/projects/42dccd7e/overview');
+    expect(launchEvidenceLog).toContain('category `Productivity`');
+    expect(launchEvidenceLog).toContain('`Native Apple` plus `Native Android`');
+    expect(launchEvidenceLog).toContain('connected to the Test Store only');
+    expect(launchEvidenceLog).toContain('requires a p8 in-app purchase key file');
     expect(launchEvidenceLog).toContain('Entitlement ID `pro`, display name `Ryvro Pro`');
     expect(launchEvidenceLog).toContain('`ryvro_pro_monthly` and `ryvro_pro_annual`');
     expect(launchEvidenceLog).toContain('Live `https://getryvro.com/delete-account` URL');
