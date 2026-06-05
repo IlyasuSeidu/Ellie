@@ -53,7 +53,8 @@ const screenshotChecklist = read('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
   ['Google Play title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`', releaseTasks],
   ['getryvro.com', releaseTasks],
   ['Reserve social handles directly while logged in', releaseTasks],
-  ['Create RevenueCat account', releaseTasks],
+  ['Create RevenueCat project', releaseTasks],
+  ['Android app `Ryvro (Play Store)` exists as `appab0f4b628d`', releaseTasks],
   ['RevenueCat → Entitlements → Add entitlement: ID = `pro`', releaseTasks],
   ['ryvro_pro_monthly', releaseTasks],
   ['ryvro_pro_annual', releaseTasks],
@@ -206,12 +207,12 @@ requireMatches(
 requireMatches(ownerRunbook, /CI run `\d+` on commit `[0-9a-f]+`/, 'owner runbook CI run evidence');
 requireMatches(readme, /CI run `\d+` on commit `[0-9a-f]+`/, 'README CI run evidence');
 [
-  ['CI run `27013691021`', readme],
-  ['commit `8d24c2a`', readme],
-  ['CI run `27013691021`', readinessReport],
-  ['commit `8d24c2a`', readinessReport],
-  ['CI run `27013691021`', ownerRunbook],
-  ['commit `8d24c2a`', ownerRunbook],
+  ['CI run `27014075248`', readme],
+  ['commit `c424ff3`', readme],
+  ['CI run `27014075248`', readinessReport],
+  ['commit `c424ff3`', readinessReport],
+  ['CI run `27014075248`', ownerRunbook],
+  ['commit `c424ff3`', ownerRunbook],
   ['store screenshot capture checklist', readinessReport],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', ownerRunbook],
   ['Launch Landing Page Copy', storeListing],
@@ -240,10 +241,14 @@ requireMatches(
 );
 requireMatches(
   releaseTasks,
-  /\|\s*21\s*\|[\s\S]*signing\/provisioning not configured yet/,
+  /\|\s*21\s*\|[\s\S]*c99b0e0a-829c-4ab7-bd93-164586ade68a[\s\S]*real Firebase\/OAuth\/RevenueCat env evidence/,
   'release task 21'
 );
-requireMatches(releaseTasks, /\|\s*22\s*\|[\s\S]*EAS build pending login/, 'release task 22');
+requireMatches(
+  releaseTasks,
+  /\|\s*22\s*\|[\s\S]*318b4e8f-b344-4ed9-8bcd-a5805093339d[\s\S]*com\.ryvro\.shiftplanner/,
+  'release task 22'
+);
 
 const unsafeCompletionPattern =
   /(app is live|ready for production submission|all launch blockers are complete)/i;
