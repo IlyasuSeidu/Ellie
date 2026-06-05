@@ -2753,7 +2753,11 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('ownership cannot be changed after creation');
     expect(launchEvidenceLog).toContain('EU trader status');
     expect(launchEvidenceLog).toContain('status `Ready to Submit`');
-    expect(launchEvidenceLog).toContain('Internal group `Ryvro iPhone QA`');
+    expect(launchEvidenceLog).toContain('`Ryvro iPhone QA` internal group');
+    expect(launchEvidenceLog).toContain('Fresh logged-in Chrome inspection');
+    expect(launchEvidenceLog).toContain('testflight/groups/c9ea8051-517c-4d81-b8a0-57099d9e864d');
+    expect(launchEvidenceLog).toContain('Internal Group ∙ 1 Tester ∙ 1 Build');
+    expect(launchEvidenceLog).toContain('tester status `Invited`');
     expect(launchEvidenceLog).toContain('EAS-managed Android keystore');
     expect(launchEvidenceLog).toContain('c99b0e0a-829c-4ab7-bd93-164586ade68a');
     expect(launchEvidenceLog).toContain(
