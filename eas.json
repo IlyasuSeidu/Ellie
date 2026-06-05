@@ -39,7 +39,7 @@
     "production": {
       "ios": {
         "appleId": "YOUR_APPLE_ID_EMAIL",
-        "ascAppId": "FILL_AFTER_STEP_6",
+        "ascAppId": "6776994726",
         "appleTeamId": "BZ798WZJCB"
       },
       "android": {

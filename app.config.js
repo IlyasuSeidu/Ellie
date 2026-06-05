@@ -62,7 +62,7 @@ module.exports = ({ config = {} }) => {
     splash: {
       image: './assets/splash-icon.png',
       resizeMode: 'contain',
-      backgroundColor: '#ffffff',
+      backgroundColor: '#05080c',
     },
     iosBundleIdentifier: 'com.ryvro.shiftplanner',
     iosBuildNumber: '1',
@@ -70,7 +70,7 @@ module.exports = ({ config = {} }) => {
     androidVersionCode: 1,
     adaptiveIcon: {
       foregroundImage: './assets/adaptive-icon.png',
-      backgroundColor: '#ffffff',
+      backgroundColor: '#05080c',
     },
     favicon: './assets/favicon.png',
   };

@@ -702,7 +702,6 @@ describe('Ryvro environment template', () => {
     expect(result.status).toBe(1);
     expect(result.stderr).toContain('Ryvro submit readiness check failed');
     expect(result.stderr).toContain('submit.production.ios.appleId');
-    expect(result.stderr).toContain('submit.production.ios.ascAppId');
     expect(result.stderr).toContain('Formal trademark/legal clearance for `Ryvro`');
     expect(result.stderr).toContain('Store screenshots still has pending owner evidence');
     expect(script).toContain('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
@@ -1822,7 +1821,7 @@ describe('Ryvro environment template', () => {
     expect(easJson.build?.production?.ios?.buildConfiguration).toBe('Release');
     expect(easJson.build?.production?.android?.buildType).toBe('app-bundle');
     expect(easJson.submit?.production?.ios?.appleId).toBe('YOUR_APPLE_ID_EMAIL');
-    expect(easJson.submit?.production?.ios?.ascAppId).toBe('FILL_AFTER_STEP_6');
+    expect(easJson.submit?.production?.ios?.ascAppId).toBe('6776994726');
     expect(easJson.submit?.production?.ios?.appleTeamId).toBe('BZ798WZJCB');
     expect(easJson.submit?.production?.android?.serviceAccountKeyPath).toBe(
       './google-play-key.json'
@@ -2667,6 +2666,8 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('non-secret owner evidence');
     expect(ownerRunbook).toContain('Formal trademark/legal clearance for `Ryvro`');
     expect(ownerRunbook).toContain('Apple Developer Program License Agreement');
+    expect(ownerRunbook).toContain('ASC app ID `6776994726`');
+    expect(ownerRunbook).toContain('EU trader status');
     expect(ownerRunbook).toContain('Reserve or create Google Play title `Ryvro Shift Planner`');
     expect(ownerRunbook).toContain('Purchase or reserve the launch domain');
     expect(ownerRunbook).toContain('https://getryvro.com/delete-account');
@@ -2724,8 +2725,11 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('Do not paste passwords, private keys');
     expect(launchEvidenceLog).toContain('Formal trademark/legal clearance for `Ryvro`');
     expect(launchEvidenceLog).toContain('App Store Connect app name `Ryvro Shift Planner`');
-    expect(launchEvidenceLog).toContain('Apple Developer Program License Agreement Updated');
-    expect(launchEvidenceLog).toContain('Account Holder must accept the updated agreement');
+    expect(launchEvidenceLog).toContain('ASC app ID: `6776994726`');
+    expect(launchEvidenceLog).toContain('Apple Developer Program License Agreement accepted');
+    expect(launchEvidenceLog).toContain('explicit bundle ID `com.ryvro.shiftplanner`');
+    expect(launchEvidenceLog).toContain('EU trader status');
+    expect(launchEvidenceLog).toContain('submit a build to start testing');
     expect(launchEvidenceLog).toContain(
       'Google Play title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`'
     );

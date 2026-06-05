@@ -1,6 +1,6 @@
 # Ryvro Owner Launch Runbook
 
-Last updated: 2026-06-02
+Last updated: 2026-06-05
 
 This is the account-owner sequence for taking the repo-ready Ryvro build to the App Store and Google Play. It intentionally separates owner-only account work from repo-proven work so a release cannot be treated as live before console, domain, payment, backend, and physical-device evidence exists.
 
@@ -20,8 +20,9 @@ Use these source docs while completing the runbook:
 Do not submit to App Store review or Google Play production until all of these are true:
 
 - Formal trademark/legal clearance for `Ryvro` is complete in launch markets.
-- The Apple Developer Program License Agreement is accepted by the Account Holder in Apple Developer.
-- The owner has reserved or created App Store Connect app name `Ryvro Shift Planner`.
+- The Apple Developer Program License Agreement remains accepted by the Account Holder in Apple Developer.
+- The owner has reserved or created App Store Connect app name `Ryvro Shift Planner`; current ASC app ID is `6776994726`.
+- App Store Connect EU trader status is complete if the app will be submitted for EU distribution.
 - The owner has reserved or created Google Play app title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`.
 - The launch domain is purchased, controlled, and serving privacy, terms, support, and `https://getryvro.com/delete-account` account-deletion instructions.
 - Firebase, Google OAuth, Apple Sign-In, RevenueCat, and EAS secrets are created for `com.ryvro.shiftplanner`.
@@ -39,8 +40,9 @@ Do not submit to App Store review or Google Play production until all of these a
 Owner-only steps:
 
 - Complete formal trademark/legal clearance for `Ryvro`.
-- Sign in as the Apple Developer Account Holder at `developer.apple.com/account` and accept the updated Apple Developer Program License Agreement.
-- Reserve or create App Store Connect app name `Ryvro Shift Planner`.
+- Sign in as the Apple Developer Account Holder at `developer.apple.com/account` and confirm the Apple Developer Program License Agreement is accepted.
+- Reserve or create App Store Connect app name `Ryvro Shift Planner`. Completed 2026-06-05 with ASC app ID `6776994726`.
+- Complete App Store Connect EU trader status if Ryvro will be distributed in the European Union.
 - Reserve or create Google Play title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`.
 - Purchase or reserve the launch domain, with `getryvro.com` as the current preferred candidate.
 - Reserve social handles while logged in, starting with `@ryvro`, then `@getryvro` or `@tryryvro` if needed.
@@ -49,7 +51,8 @@ Evidence to record:
 
 - Counsel or trademark-search result summary.
 - Apple Developer Program License Agreement accepted status.
-- App Store Connect app ID / Apple ID.
+- App Store Connect app ID / Apple ID. Current ASC app ID: `6776994726`.
+- EU trader status completion note, if applicable.
 - Google Play package reservation confirmation.
 - Registrar receipt and DNS control proof.
 - Reserved social handle list.
@@ -60,8 +63,8 @@ Evidence to record:
 Owner-only steps:
 
 - Enroll or confirm Apple Developer access.
-- Register the Apple App ID for `com.ryvro.shiftplanner` with Sign in with Apple and Push Notifications enabled.
-- Create the App Store Connect app with SKU `ryvro-shift-001`.
+- Register the Apple App ID for `com.ryvro.shiftplanner` with Sign in with Apple and Push Notifications enabled. Completed 2026-06-05.
+- Create the App Store Connect app with SKU `ryvro-shift-001`. Completed 2026-06-05 with ASC app ID `6776994726`.
 - Create the Google Play Console app.
 - Run `eas login` and `eas init` in the repo root, then copy the EAS project UUID into production env values.
 - Set up iOS distribution credentials and Android release upload key or EAS-managed credentials.
@@ -69,7 +72,7 @@ Owner-only steps:
 Evidence to record:
 
 - Apple Team ID.
-- App Store Connect app ID.
+- App Store Connect app ID `6776994726`.
 - Google Play app/package dashboard link.
 - EAS project ID.
 - Signing/provisioning status.
