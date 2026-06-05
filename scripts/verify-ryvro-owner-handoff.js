@@ -46,6 +46,12 @@ const privacySupport = read('docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md');
 const submissionDraft = read('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
 const launchEvidenceLog = read('docs/RYVRO_LAUNCH_EVIDENCE_LOG.md');
 const screenshotChecklist = read('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
+const launchReadme = read('web/launch/README.md');
+const launchHome = read('web/launch/index.html');
+const launchPrivacy = read('web/launch/privacy/index.html');
+const launchTerms = read('web/launch/terms/index.html');
+const launchSupport = read('web/launch/support/index.html');
+const launchDeletion = read('web/launch/delete-account/index.html');
 
 [
   ['formal trademark/legal clearance', releaseTasks],
@@ -80,6 +86,11 @@ const screenshotChecklist = read('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
   ['SHIFT_SCHEDULE_PARSER_URL', ownerRunbook],
   ['SHIFT_SCHEDULE_PARSER_URL', externalSetup],
   ['parseShiftScheduleDescription', externalSetup],
+  ['static launch pages in `web/launch`', externalSetup],
+  ['repo static launch pages in `web/launch`', ownerRunbook],
+  ['Static HTML launch-page drafts now live in `web/launch`', privacySupport],
+  ['Static launch-page drafts now exist in `web/launch`', readinessReport],
+  ['static launch legal/support pages', releaseTasks],
   ['root-level Firebase native service files', ownerRunbook],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', ownerRunbook],
   ['docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md', storeListing],
@@ -116,6 +127,10 @@ const screenshotChecklist = read('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
   ['Data deletion URL: https://getryvro.com/delete-account', submissionDraft],
   ['Account deletion URL: `https://getryvro.com/delete-account`', privacySupport],
   ['Support email: `support@getryvro.com`', privacySupport],
+  ['https://getryvro.com/privacy', launchReadme],
+  ['https://getryvro.com/terms', launchReadme],
+  ['https://getryvro.com/support', launchReadme],
+  ['https://getryvro.com/delete-account', launchReadme],
   ['Sender name: Ryvro Support', privacySupport],
   ['Reply-to email: support@getryvro.com', privacySupport],
   ['Public action domain: getryvro.com', privacySupport],
@@ -151,6 +166,10 @@ const screenshotChecklist = read('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
   ['Entitlement ID `pro`, display name `Ryvro Pro`', launchEvidenceLog],
   ['`ryvro_pro_monthly` and `ryvro_pro_annual`', launchEvidenceLog],
   ['## Legal, Support, And Store Forms', launchEvidenceLog],
+  ['web/launch/privacy/index.html', launchEvidenceLog],
+  ['web/launch/terms/index.html', launchEvidenceLog],
+  ['web/launch/support/index.html', launchEvidenceLog],
+  ['web/launch/delete-account/index.html', launchEvidenceLog],
   ['Live `https://getryvro.com/delete-account` URL', launchEvidenceLog],
   ['## Production Builds And Device QA', launchEvidenceLog],
   ['TestFlight iPhone QA', launchEvidenceLog],
@@ -178,6 +197,35 @@ const screenshotChecklist = read('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
   ['docs/RYVRO_LAUNCH_EVIDENCE_LOG.md', screenshotChecklist],
   ['Keep the screenshot files out of Git', screenshotChecklist],
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'screenshot checklist'));
+
+[
+  ['Ryvro Shift Planner', launchHome],
+  ['FIFO crews, healthcare teams, security staff', launchHome],
+  ['It does not replace an employer roster', launchHome],
+  ['AI builder prompts used to draft schedules', launchPrivacy],
+  ['RevenueCat', launchPrivacy],
+  ['https://getryvro.com/delete-account', launchPrivacy],
+  ['Not For Safety-Critical Decisions', launchTerms],
+  ['App Store, Google Play, and RevenueCat', launchTerms],
+  ['Managing Ryvro Pro subscriptions and restore purchases', launchSupport],
+  ['Ryvro account deletion request', launchDeletion],
+  [
+    'Account deletion does not automatically cancel App Store or Google Play subscriptions',
+    launchDeletion,
+  ],
+].forEach(([expected, content]) => requireIncludes(content, expected, 'launch static pages'));
+
+[launchHome, launchPrivacy, launchTerms, launchSupport, launchDeletion].forEach((content) => {
+  [
+    'Ryvro',
+    '/privacy/',
+    '/terms/',
+    '/support/',
+    '/delete-account/',
+    'support@getryvro.com',
+  ].forEach((expected) => requireIncludes(content, expected, 'launch static page navigation'));
+  requireNotMatches(content, /Ellie Shift Planner|ellie_pro|mine site|haul truck/i, 'launch page');
+});
 
 requireIncludes(
   readinessReport,

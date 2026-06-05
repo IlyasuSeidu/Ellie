@@ -1733,7 +1733,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(releaseTasks).toContain(
-      'Last updated: June 5, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, asset checklist reconciliation, industry template visual badge checklist reconciliation, working tracker reconciliation, social profile and landing-page source copy, settings builder entry coverage, settings color/icon coverage, latest public clearance evidence at 11:04Z, iOS simulator onboarding, dashboard, mobile-fit proof, consolidated onboarding icon density coverage, user-safe Ryvro Pro fallback copy, localized Profile help/legal copy, Ryvro Pro unavailable/unconfigured copy cleanup, Ryvro Pro runtime diagnostics cleanup, Play Console account-type handoff, iOS IPA identity proof, Android AAB proof, RevenueCat project and Android app handoff, task checklist reconciliation, and recent pushed PR #1 CI pass `27014539880` on `8b277ee`)'
+      'Last updated: June 5, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, asset checklist reconciliation, industry template visual badge checklist reconciliation, working tracker reconciliation, social profile and landing-page source copy, settings builder entry coverage, settings color/icon coverage, latest public clearance evidence at 11:04Z, iOS simulator onboarding, dashboard, mobile-fit proof, consolidated onboarding icon density coverage, user-safe Ryvro Pro fallback copy, localized Profile help/legal copy, Ryvro Pro unavailable/unconfigured copy cleanup, Ryvro Pro runtime diagnostics cleanup, Play Console account-type handoff, iOS IPA identity proof, Android AAB proof, RevenueCat project and Android app handoff, task checklist reconciliation, static launch legal/support pages, and recent pushed PR #1 CI pass `27014539880` on `8b277ee`)'
     );
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
@@ -2540,6 +2540,25 @@ describe('Ryvro environment template', () => {
       path.join(process.cwd(), 'docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md'),
       'utf8'
     );
+    const launchReadme = fs.readFileSync(path.join(process.cwd(), 'web/launch/README.md'), 'utf8');
+    const launchHome = fs.readFileSync(path.join(process.cwd(), 'web/launch/index.html'), 'utf8');
+    const launchPrivacy = fs.readFileSync(
+      path.join(process.cwd(), 'web/launch/privacy/index.html'),
+      'utf8'
+    );
+    const launchTerms = fs.readFileSync(
+      path.join(process.cwd(), 'web/launch/terms/index.html'),
+      'utf8'
+    );
+    const launchSupport = fs.readFileSync(
+      path.join(process.cwd(), 'web/launch/support/index.html'),
+      'utf8'
+    );
+    const launchDeletion = fs.readFileSync(
+      path.join(process.cwd(), 'web/launch/delete-account/index.html'),
+      'utf8'
+    );
+    const launchStyles = fs.readFileSync(path.join(process.cwd(), 'web/launch/styles.css'), 'utf8');
     const profileScreen = fs.readFileSync(
       path.join(process.cwd(), 'src/screens/main/ProfileScreen.tsx'),
       'utf8'
@@ -2547,6 +2566,11 @@ describe('Ryvro environment template', () => {
     const localeRoot = path.join(process.cwd(), 'src/i18n/locales');
 
     expect(privacySupport).toContain('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
+    expect(privacySupport).toContain('Static HTML launch-page drafts now live in `web/launch`');
+    expect(privacySupport).toContain('web/launch/privacy/index.html');
+    expect(privacySupport).toContain('web/launch/terms/index.html');
+    expect(privacySupport).toContain('web/launch/support/index.html');
+    expect(privacySupport).toContain('web/launch/delete-account/index.html');
     expect(privacySupport).toContain(
       'Ryvro Shift Planner helps shift workers create, edit, and understand work schedules'
     );
@@ -2578,6 +2602,42 @@ describe('Ryvro environment template', () => {
       "follow their employer's official roster, handover, dispatch, duty-time, fatigue, safety, and compliance systems"
     );
     expect(privacySupport).not.toMatch(/mine site|haul truck|underground miner/i);
+
+    expect(launchReadme).toContain('https://getryvro.com/privacy');
+    expect(launchReadme).toContain('https://getryvro.com/terms');
+    expect(launchReadme).toContain('https://getryvro.com/support');
+    expect(launchReadme).toContain('https://getryvro.com/delete-account');
+    expect(launchReadme).toContain('firebase target:apply hosting launch-site');
+    expect(launchReadme).toContain(
+      'firebase deploy --config firebase.json --only hosting:launch-site'
+    );
+    expect(launchReadme).toContain('Do not replace the existing analytics admin hosting target');
+
+    [launchHome, launchPrivacy, launchTerms, launchSupport, launchDeletion].forEach((page) => {
+      expect(page).toContain('Ryvro');
+      expect(page).toContain('/privacy/');
+      expect(page).toContain('/terms/');
+      expect(page).toContain('/support/');
+      expect(page).toContain('/delete-account/');
+      expect(page).toContain('support@getryvro.com');
+      expect(page).not.toMatch(/Ellie Shift Planner|ellie_pro|mine site|haul truck/i);
+    });
+    expect(launchHome).toContain('Ryvro Shift Planner');
+    expect(launchHome).toContain('FIFO crews, healthcare teams, security staff');
+    expect(launchHome).toContain('It does not replace an employer roster');
+    expect(launchPrivacy).toContain('AI builder prompts used to draft schedules');
+    expect(launchPrivacy).toContain('RevenueCat');
+    expect(launchPrivacy).toContain('https://getryvro.com/delete-account');
+    expect(launchTerms).toContain('Not For Safety-Critical Decisions');
+    expect(launchTerms).toContain('Ryvro Pro');
+    expect(launchTerms).toContain('App Store, Google Play, and RevenueCat');
+    expect(launchSupport).toContain('Managing Ryvro Pro subscriptions and restore purchases');
+    expect(launchDeletion).toContain('Ryvro account deletion request');
+    expect(launchDeletion).toContain(
+      'Account deletion does not automatically cancel App Store or Google Play subscriptions'
+    );
+    expect(launchStyles).toContain('--accent: #c5975c');
+    expect(launchStyles).toContain('max-width: 920px');
 
     expect(profileScreen).toContain('legalConfig.supportUrl');
     expect(profileScreen).toContain('legalConfig.accountDeletionUrl');
@@ -2748,8 +2808,10 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('ryvro_pro_monthly');
     expect(ownerRunbook).toContain('docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md');
     expect(ownerRunbook).toContain('social profile, and launch landing-page copy');
+    expect(ownerRunbook).toContain('repo static launch pages in `web/launch`');
     expect(ownerRunbook).toContain('Publish the launch landing page');
     expect(ownerRunbook).toContain('Apply the reserved social handle bios');
+    expect(ownerRunbook).toContain('Deployment note for the reviewed `web/launch` static pages');
     expect(ownerRunbook).toContain('eas build --platform ios --profile production');
     expect(ownerRunbook).toContain('eas build --platform android --profile production');
     expect(ownerRunbook).toContain('Physical iOS and Android smoke tests');
@@ -2903,6 +2965,13 @@ describe('Ryvro environment template', () => {
     expect(externalSetup).toContain('Profile shows `Ryvro Pro - Active`');
     expect(externalSetup).toContain('Do not configure retired Ellie entitlement IDs');
     expect(externalSetup).toContain('Account deletion URL: `https://getryvro.com/delete-account`');
+    expect(externalSetup).toContain('static launch pages in `web/launch`');
+    expect(externalSetup).toContain('firebase target:apply hosting launch-site');
+    expect(externalSetup).toContain(
+      'firebase deploy --config firebase.json --only hosting:launch-site'
+    );
+    expect(externalSetup).toContain('existing analytics admin hosting path is not overwritten');
+    expect(externalSetup).toContain('Record the live `https://getryvro.com/privacy`');
     expect(externalSetup).toContain('support/privacy/account deletion URLs');
     expect(externalSetup).toContain(
       'Configure Firebase Auth email templates from `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md`'

@@ -289,11 +289,20 @@ Fallbacks:
 
 After domain purchase:
 
-- Publish privacy, terms, support, and account deletion pages.
+- Review and publish the static launch pages in `web/launch`: landing page, privacy, terms, support, and account deletion.
 - Add `support@getryvro.com`.
 - Add Firebase Auth authorized domain.
 - Add App Store and Play Store support/privacy/account deletion URLs.
 - Add website and social links to store listings.
+
+If Firebase Hosting is used for the public site, configure a separate hosting target before deploying `web/launch` so the existing analytics admin hosting path is not overwritten:
+
+```bash
+firebase target:apply hosting launch-site <firebase-hosting-site-id>
+firebase deploy --config firebase.json --only hosting:launch-site
+```
+
+Record the live `https://getryvro.com/privacy`, `https://getryvro.com/terms`, `https://getryvro.com/support`, and `https://getryvro.com/delete-account` checks in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md`.
 
 Before purchase/reservation, run the public repo-side evidence check:
 

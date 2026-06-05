@@ -6,6 +6,8 @@ These templates are repo-side launch assets. They are not legal advice. Publish 
 
 Use `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md` beside this file for App Store privacy answers, Google Play Data safety answers, content rating, export compliance, and reviewer notes.
 
+Static HTML launch-page drafts now live in `web/launch`. Review them, set final effective dates, connect the production domain, and verify the live HTTPS URLs before using them in App Store Connect, Google Play Console, RevenueCat, Firebase Auth email templates, or in-app legal links.
+
 ## Required Public URLs
 
 - Privacy policy URL: `https://getryvro.com/privacy`
@@ -15,6 +17,14 @@ Use `docs/RYVRO_STORE_SUBMISSION_FORM_DRAFT.md` beside this file for App Store p
 - Support email: `support@getryvro.com`
 
 If `getryvro.com` is not secured, use the final purchased Ryvro domain and update this file, App Store Connect, Google Play Console, RevenueCat, website footer, and in-app legal links together.
+
+Repo-side page paths:
+
+- Landing page: `web/launch/index.html`
+- Privacy page: `web/launch/privacy/index.html`
+- Terms page: `web/launch/terms/index.html`
+- Support page: `web/launch/support/index.html`
+- Account deletion page: `web/launch/delete-account/index.html`
 
 ## Privacy Policy Draft
 
