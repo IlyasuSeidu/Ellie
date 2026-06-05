@@ -186,14 +186,15 @@ Current status:
 
 - Initial v1 store versions are pinned across tracked config: Expo `version` is `1.0.0`, iOS `buildNumber` / `CURRENT_PROJECT_VERSION` is `1`, Android `versionCode` is `1`, and Android `versionName` is `1.0.0`.
 - The dynamic Expo config also falls back to the same version/build values when static config is not inherited.
-- Future store submissions must increment iOS build number and Android versionCode after each uploaded binary.
+- EAS uses remote app version source, so run `npm run release:versions:get` before store rebuilds; the latest checked EAS remote values on 2026-06-05 were iOS build number `1` and Android versionCode `1`.
+- Future store submissions must increment EAS remote iOS build number and Android versionCode after each uploaded binary.
 
 Implementation steps:
 
 1. For the first store build, keep semantic app version aligned in `app.json`, `app.config.js`, `package.json`, Android `versionName`, and generated iOS `MARKETING_VERSION`.
-2. For every later uploaded binary, increment:
-   - iOS build number (CFBundleVersion)
-   - Android versionCode
+2. For every later uploaded binary, run `npm run release:versions:get`, then use `eas build:version:set --platform ios --profile production` and `eas build:version:set --platform android --profile production` to increment:
+   - EAS remote iOS build number (CFBundleVersion)
+   - EAS remote Android versionCode
 3. Keep release log in `CHANGELOG.md` once public release notes begin.
 
 Acceptance criteria:

@@ -76,6 +76,9 @@ const submitBlockerTriage = read('docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md');
   ['Create Production Firebase And OAuth', submitBlockerTriage],
   ['Finish RevenueCat And Store Products', submitBlockerTriage],
   ['Rebuild, Test, Screenshot, Then Submit', submitBlockerTriage],
+  ['npm run release:versions:get', submitBlockerTriage],
+  ['eas build:version:set --platform ios --profile production', submitBlockerTriage],
+  ['eas build:version:set --platform android --profile production', submitBlockerTriage],
   ['Only mark a row in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` as `Passed`', submitBlockerTriage],
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'submit readiness handoff'));
 

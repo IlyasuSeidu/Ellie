@@ -31,6 +31,7 @@
     "release:owner:check": "node scripts/verify-ryvro-owner-handoff.js",
     "release:submit:check": "node scripts/verify-ryvro-submit-readiness.js",
     "release:store:check": "node scripts/verify-ryvro-store-readiness.js",
+    "release:versions:get": "npx eas-cli build:version:get --platform all --profile production --json",
     "firebase:projects": "firebase projects:list",
     "firebase:emulators:functions": "firebase emulators:start --config firebase.json --only functions",
     "firebase:deploy:functions": "firebase deploy --config firebase.json --only functions",

@@ -152,6 +152,21 @@ Do not replace the committed `eas.json` with an older sample from Expo docs. The
 
 `submit.production` now includes the verified App Store Connect Apple ID email and ASC app ID. It still keeps Android service-account evidence outside the repository, so `npm run release:submit:check` must fail until the remaining console values, local key file, and `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` are complete.
 
+Because `cli.appVersionSource` is `remote`, Expo ignores tracked `ios.buildNumber` and `android.versionCode` for EAS store builds. Before each production-auth rebuild, check the remote values:
+
+```bash
+npm run release:versions:get
+```
+
+If iOS build number or Android versionCode still matches an uploaded store binary, increment the remote value before rebuilding:
+
+```bash
+eas build:version:set --platform ios --profile production
+eas build:version:set --platform android --profile production
+```
+
+The latest checked production remote values on 2026-06-05 were iOS build number `1` and Android versionCode `1`, so the next production-auth TestFlight and Play internal builds must bump remote versions first.
+
 ### 3. Verify app.config.js
 
 Ryvro uses dynamic Expo config in `app.config.js`, not a static `app.json` release sample. Before release, verify `app.config.js` still owns:

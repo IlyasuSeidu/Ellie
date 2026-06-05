@@ -94,6 +94,8 @@ Evidence source: `docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md`.
 
 Do this only after real Firebase, OAuth, RevenueCat, legal URLs, backend URLs, and EAS secrets exist.
 
+- Run `npm run release:versions:get` and confirm the current EAS remote values.
+- If iOS `buildNumber` is still `1` or Android `versionCode` is still `1`, run `eas build:version:set --platform ios --profile production` and `eas build:version:set --platform android --profile production` before rebuilding. The current checked EAS remote values are iOS build number `1` and Android versionCode `1`.
 - Rebuild iOS production binary.
 - Rebuild Android production AAB.
 - Submit iOS build to TestFlight.

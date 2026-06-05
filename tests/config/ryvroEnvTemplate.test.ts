@@ -713,6 +713,9 @@ describe('Ryvro environment template', () => {
     expect(script).toContain('docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md');
     expect(script).toContain('eas submit --platform ios --latest');
     expect(script).toContain('eas submit --platform android --latest');
+    expect(script).toContain('npm run release:versions:get');
+    expect(script).toContain('eas build:version:set --platform ios --profile production');
+    expect(script).toContain('eas build:version:set --platform android --profile production');
     expect(script).toContain('# Ryvro Submit Blocker Triage');
     expect(script).toContain('Recommended Order');
     expect(script).toContain('Finish Google Play Enrollment');
@@ -1400,6 +1403,14 @@ describe('Ryvro environment template', () => {
       'Generate/upload the real Android release keystore through EAS/local secrets before store upload'
     );
     expect(deploymentPlan).toContain('Initial v1 store versions are pinned across tracked config');
+    expect(deploymentPlan).toContain('EAS uses remote app version source');
+    expect(deploymentPlan).toContain('npm run release:versions:get');
+    expect(deploymentPlan).toContain(
+      'latest checked EAS remote values on 2026-06-05 were iOS build number `1` and Android versionCode `1`'
+    );
+    expect(deploymentPlan).toContain(
+      'Future store submissions must increment EAS remote iOS build number and Android versionCode'
+    );
     expect(deploymentPlan).toContain(
       'Pin first-store-build iOS build number + Android versionCode across tracked config'
     );
@@ -1670,6 +1681,15 @@ describe('Ryvro environment template', () => {
     expect(deploymentGuide).toContain('Ryvro function defaults for `ryvroBrain`');
     expect(deploymentGuide).toContain('"ascAppId": "6776994726"');
     expect(deploymentGuide).toContain('"serviceAccountKeyPath": "./google-play-key.json"');
+    expect(deploymentGuide).toContain('cli.appVersionSource');
+    expect(deploymentGuide).toContain('npm run release:versions:get');
+    expect(deploymentGuide).toContain('eas build:version:set --platform ios --profile production');
+    expect(deploymentGuide).toContain(
+      'eas build:version:set --platform android --profile production'
+    );
+    expect(deploymentGuide).toContain(
+      'latest checked production remote values on 2026-06-05 were iOS build number `1` and Android versionCode `1`'
+    );
     expect(deploymentGuide).toContain('eas submit --platform ios --latest');
     expect(deploymentGuide).toContain('eas submit --platform android --latest');
     expect(deploymentGuide).not.toContain('eas submit --platform ios --profile production');
@@ -1836,6 +1856,13 @@ describe('Ryvro environment template', () => {
       'EAS iOS build `c99b0e0a-829c-4ab7-bd93-164586ade68a` uploaded to TestFlight'
     );
     expect(releaseTasks).toContain(
+      'Build production iOS binary after running `npm run release:versions:get`'
+    );
+    expect(releaseTasks).toContain('bumping remote EAS versions with `eas build:version:set`');
+    expect(releaseTasks).toContain(
+      'EAS remote values checked at iOS build number `1` and Android versionCode `1`'
+    );
+    expect(releaseTasks).toContain(
       'latest EAS build `782b6dec-1cf1-4cf2-9159-69ef1ab4078a` also finished'
     );
     expect(releaseTasks).toContain(
@@ -1892,6 +1919,9 @@ describe('Ryvro environment template', () => {
     expect(easJson.submit?.production?.android?.track).toBe('internal');
     expect(packageJson.scripts?.['release:submit:check']).toBe(
       'node scripts/verify-ryvro-submit-readiness.js'
+    );
+    expect(packageJson.scripts?.['release:versions:get']).toBe(
+      'npx eas-cli build:version:get --platform all --profile production --json'
     );
     expect(gitignore).toContain('google-play-key.json');
     expect(trackedFiles).not.toContain('google-play-key.json');
@@ -2901,6 +2931,9 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('Publish the launch landing page');
     expect(ownerRunbook).toContain('Apply the reserved social handle bios');
     expect(ownerRunbook).toContain('Deployment note for the reviewed `web/launch` static pages');
+    expect(ownerRunbook).toContain('npm run release:versions:get');
+    expect(ownerRunbook).toContain('eas build:version:set --platform ios --profile production');
+    expect(ownerRunbook).toContain('eas build:version:set --platform android --profile production');
     expect(ownerRunbook).toContain('eas build --platform ios --profile production');
     expect(ownerRunbook).toContain('eas build --platform android --profile production');
     expect(ownerRunbook).toContain('Physical iOS and Android smoke tests');
@@ -3149,6 +3182,16 @@ describe('Ryvro environment template', () => {
     expect(submitBlockerTriage).toContain('Create Production Firebase And OAuth');
     expect(submitBlockerTriage).toContain('Finish RevenueCat And Store Products');
     expect(submitBlockerTriage).toContain('Rebuild, Test, Screenshot, Then Submit');
+    expect(submitBlockerTriage).toContain('npm run release:versions:get');
+    expect(submitBlockerTriage).toContain(
+      'eas build:version:set --platform ios --profile production'
+    );
+    expect(submitBlockerTriage).toContain(
+      'eas build:version:set --platform android --profile production'
+    );
+    expect(submitBlockerTriage).toContain(
+      'current checked EAS remote values are iOS build number `1` and Android versionCode `1`'
+    );
     expect(submitBlockerTriage).toContain('docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md');
     expect(submitBlockerTriage).toContain('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md');
     expect(submitBlockerTriage).toContain('docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md');
@@ -3176,6 +3219,14 @@ describe('Ryvro environment template', () => {
     expect(appStoreTestFlightHandoff).toContain('Reviewer account email: `reviewer@getryvro.com`');
     expect(appStoreTestFlightHandoff).toContain(
       'EAS iOS production build `c99b0e0a-829c-4ab7-bd93-164586ade68a`'
+    );
+    expect(appStoreTestFlightHandoff).toContain('EAS remote version check');
+    expect(appStoreTestFlightHandoff).toContain('npm run release:versions:get');
+    expect(appStoreTestFlightHandoff).toContain(
+      'returned iOS build number `1` and Android versionCode `1`'
+    );
+    expect(appStoreTestFlightHandoff).toContain(
+      'eas build:version:set --platform ios --profile production'
     );
     expect(appStoreTestFlightHandoff).toContain('Latest EAS iOS production build evidence');
     expect(appStoreTestFlightHandoff).toContain('782b6dec-1cf1-4cf2-9159-69ef1ab4078a');

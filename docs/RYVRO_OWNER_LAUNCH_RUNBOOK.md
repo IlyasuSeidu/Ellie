@@ -211,12 +211,15 @@ Owner-only steps:
 - Build iOS production binary:
 
 ```bash
+npm run release:versions:get
+eas build:version:set --platform ios --profile production
 eas build --platform ios --profile production
 ```
 
 - Build Android production AAB:
 
 ```bash
+eas build:version:set --platform android --profile production
 eas build --platform android --profile production
 ```
 
