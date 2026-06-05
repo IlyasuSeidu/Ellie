@@ -2738,6 +2738,17 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('status `Ready to Submit`');
     expect(launchEvidenceLog).toContain('Internal group `Ryvro iPhone QA`');
     expect(launchEvidenceLog).toContain('EAS-managed Android keystore');
+    expect(launchEvidenceLog).toContain('c99b0e0a-829c-4ab7-bd93-164586ade68a');
+    expect(launchEvidenceLog).toContain(
+      '2efbacac748ea9471a4b28ca332b37aed86cbc80ff654a22651a6bbde7f45cf2'
+    );
+    expect(launchEvidenceLog).toContain('`CFBundleIdentifier` is `com.ryvro.shiftplanner`');
+    expect(launchEvidenceLog).toContain('`CFBundleDisplayName` is `Ryvro`');
+    expect(launchEvidenceLog).toContain('`CFBundleShortVersionString` is `1.0.0`');
+    expect(launchEvidenceLog).toContain('`CFBundleVersion` is `1`');
+    expect(launchEvidenceLog).toContain(
+      'local placeholder Firebase/OAuth URL schemes (`com.googleusercontent.apps.local-ryvro-placeholder` and `app-1-000000000000-ios-localryvroplaceholder`)'
+    );
     expect(launchEvidenceLog).toContain('318b4e8f-b344-4ed9-8bcd-a5805093339d');
     expect(launchEvidenceLog).toContain('version code `1`');
     expect(launchEvidenceLog).toContain('77QGA2J8tMvr4Rj3iF9DNM.aab');
