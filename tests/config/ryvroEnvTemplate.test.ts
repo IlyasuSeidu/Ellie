@@ -3363,6 +3363,14 @@ describe('Ryvro environment template', () => {
     expect(appStoreTestFlightHandoff).toContain(
       'npx eas-cli@14 build --profile production --platform ios --non-interactive --no-wait --message "Ryvro TestFlight candidate 63972d5"'
     );
+    expect(appStoreTestFlightHandoff).toContain('3243cfd5-2a92-42ad-b19b-471ae9a085aa');
+    expect(appStoreTestFlightHandoff).toContain(
+      'commit `35e010e0cf7e73ce9085847863654851979708b6`'
+    );
+    expect(appStoreTestFlightHandoff).toContain('initial status `IN_PROGRESS`');
+    expect(appStoreTestFlightHandoff).toContain(
+      "metro.config.js` already extends Expo's default config"
+    );
     expect(appStoreTestFlightHandoff).not.toContain('eas-cli@14 build --verbose-logs');
     expect(appStoreTestFlightHandoff).toContain('incremented iOS build number');
     expect(appStoreTestFlightHandoff).toContain(
@@ -3595,6 +3603,14 @@ describe('Ryvro environment template', () => {
     expect(googlePlayInternalTestingHandoff).not.toMatch(
       /Ellie Shift Planner|ellie_pro|mine site|haul truck/i
     );
+  });
+
+  it('keeps the Metro config on Expo default Metro settings for production asset builds', () => {
+    const metroConfig = fs.readFileSync(path.join(process.cwd(), 'metro.config.js'), 'utf8');
+
+    expect(metroConfig).toContain("require('expo/metro-config')");
+    expect(metroConfig).toContain('getDefaultConfig(__dirname)');
+    expect(metroConfig).toContain('module.exports = config');
   });
 
   it('keeps external account setup instructions on Ryvro console names', () => {
