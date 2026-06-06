@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ryvro Account Action</title>
+    <meta
+      name="description"
+      content="Complete Ryvro email verification, password reset, or email recovery actions."
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/">Ryvro</a>
+      <nav class="nav" aria-label="Legal and support">
+        <a href="/privacy/">Privacy</a>
+        <a href="/terms/">Terms</a>
+        <a href="/support/">Support</a>
+        <a href="/delete-account/">Delete account</a>
+      </nav>
+    </header>
+    <main class="container auth-action-page">
+      <p class="eyebrow">Account security</p>
+      <h1 id="action-title">Checking your Ryvro link</h1>
+      <p class="lead" id="action-message">
+        Keep this page open while Ryvro checks the email action link.
+      </p>
+
+      <section class="panel auth-action-panel" id="reset-password-panel" hidden>
+        <h2>Choose a new password</h2>
+        <form id="reset-password-form">
+          <label class="field-label" for="new-password">New password</label>
+          <input
+            autocomplete="new-password"
+            class="text-field"
+            id="new-password"
+            minlength="8"
+            name="new-password"
+            required
+            type="password"
+          />
+          <button class="button" type="submit">Save new password</button>
+        </form>
+      </section>
+
+      <div class="button-row" id="action-links" hidden>
+        <a class="button" href="/">Back to Ryvro</a>
+        <a class="button secondary" href="/support/">Contact support</a>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <p>Support: <a href="mailto:support@getryvro.com">support@getryvro.com</a></p>
+    </footer>
+    <script defer src="/__/firebase/8.10.1/firebase-app.js"></script>
+    <script defer src="/__/firebase/8.10.1/firebase-auth.js"></script>
+    <script defer src="/__/firebase/init.js"></script>
+    <script defer src="/auth/action/handler.js?v=20260606"></script>
+  </body>
+</html>

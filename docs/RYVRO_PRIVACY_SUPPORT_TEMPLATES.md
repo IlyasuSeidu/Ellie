@@ -25,6 +25,18 @@ Repo-side page paths:
 - Terms page: `web/launch/terms/index.html`
 - Support page: `web/launch/support/index.html`
 - Account deletion page: `web/launch/delete-account/index.html`
+- Firebase Auth action handler page: `web/launch/auth/action/index.html`
+- Firebase Auth action handler script: `web/launch/auth/action/handler.js`
+
+## Firebase Auth Action Handler
+
+Use this custom action URL in Firebase Authentication email templates after `getryvro.com` is connected to Firebase Hosting and verified:
+
+```text
+https://getryvro.com/auth/action/
+```
+
+The page handles verification, password reset, and email recovery links. It relies on Firebase Hosting reserved SDK URLs and `/__/firebase/init.js`, so it must be deployed to Firebase Hosting with the Ryvro project config before live email-action QA.
 
 ## Privacy Policy Draft
 
@@ -306,6 +318,7 @@ Console settings:
 - Sender name: Ryvro Support
 - Reply-to email: support@getryvro.com
 - Public action domain: getryvro.com
+- Custom action URL: https://getryvro.com/auth/action/
 - Continue URL / action URL domain: https://getryvro.com
 - Do not use retired Ellie sender names, reply-to addresses, or action domains in the production Firebase project.
 

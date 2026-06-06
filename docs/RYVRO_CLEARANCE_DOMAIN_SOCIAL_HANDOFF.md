@@ -49,7 +49,10 @@ Logged-in browser reservation progress from 2026-06-06:
 - Spaceship showed `getryvro.com` as available.
 - The domain was added to the Spaceship cart without add-ons.
 - Cart evidence showed `getryvro.com`, first-year line price `$8.88`, renewal price `$9.98`, and visible total `$9.08`.
-- Checkout was not clicked because that starts a paid purchase flow. Do not mark domain control as passed until the owner completes purchase, records non-secret registrar proof, configures DNS/HTTPS, and verifies the live `getryvro.com` pages.
+- The owner then confirmed `getryvro.com` was purchased.
+- Spaceship Advanced DNS was configured with an `A` record for host `@` pointing to `199.36.158.100` and a `TXT` record for host `@` with value `hosting-site=ryvro-launch-site`.
+- Public DNS checks on 2026-06-06 returned `199.36.158.100` for `getryvro.com A` and `"hosting-site=ryvro-launch-site"` for `getryvro.com TXT`.
+- Firebase Console has custom domain `getryvro.com` attached to Hosting site `ryvro-launch-site`, but the console still reported `Records not yet detected (Last checked just now)` after two Verify attempts. Keep domain control pending until Firebase accepts the TXT record, mints the SSL certificate, and the live HTTPS page checks pass.
 
 ## Formal Clearance
 
@@ -84,11 +87,15 @@ Reserve the launch domain before store submission.
 Required live checks:
 
 ```bash
+dig +short getryvro.com A
+dig +short getryvro.com TXT
+curl -I http://getryvro.com
 curl -I https://getryvro.com
 curl -I https://getryvro.com/privacy
 curl -I https://getryvro.com/terms
 curl -I https://getryvro.com/support
 curl -I https://getryvro.com/delete-account
+curl -I https://getryvro.com/auth/action/
 ```
 
 Record:
@@ -117,13 +124,15 @@ Firebase Hosting progress from 2026-06-06:
 - Default Hosting URL: `https://ryvro-launch-site.web.app`
 - Local target mapping: `.firebaserc` maps project `ryvro-shift-planner` target `launch-site` to site `ryvro-launch-site`
 - Deployment command used: `npm run firebase:deploy:launch-site -- --project ryvro-shift-planner`
-- Verified HTTP checks: `/`, `/privacy/`, `/terms/`, `/support/`, and `/delete-account/` returned HTTP `200`; `/privacy` returned a single HTTP `301` to `/privacy/`
+- Verified fallback HTTP checks: `/`, `/privacy/`, `/terms/`, `/support/`, `/delete-account/`, and `/auth/action/` returned HTTP `200`; `/privacy` returned a single HTTP `301` to `/privacy/`
+- `http://getryvro.com` now returns HTTP `301` to `https://getryvro.com/`.
+- `https://getryvro.com` currently fails certificate validation because Firebase has not minted a certificate for the custom domain yet.
 
 Before publishing:
 
 - Review all legal/support copy.
 - Set final effective dates.
-- Connect `getryvro.com` to the `ryvro-launch-site` Firebase Hosting site, then repeat the HTTPS checks against the production domain.
+- Wait for Firebase Console to detect the TXT record, finish SSL certificate minting, and then repeat the HTTPS checks against the production domain.
 - Confirm subscription, RevenueCat, Firebase, AI provider, microphone, calendar import/export, analytics, diagnostics, and account deletion behavior match the shipped build.
 - Confirm the pages do not claim Ryvro is live before App Store and Google Play evidence exists.
 - Confirm in-app links, App Store Connect, Google Play Console, Firebase Auth email templates, RevenueCat, and store review notes use the same live URLs.

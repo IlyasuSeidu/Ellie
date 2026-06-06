@@ -59,6 +59,8 @@ const launchPrivacy = read('web/launch/privacy/index.html');
 const launchTerms = read('web/launch/terms/index.html');
 const launchSupport = read('web/launch/support/index.html');
 const launchDeletion = read('web/launch/delete-account/index.html');
+const launchAuthAction = read('web/launch/auth/action/index.html');
+const launchAuthActionHandler = read('web/launch/auth/action/handler.js');
 
 [
   ['formal trademark/legal clearance', releaseTasks],
@@ -177,9 +179,14 @@ const launchDeletion = read('web/launch/delete-account/index.html');
   ['https://getryvro.com/terms', launchReadme],
   ['https://getryvro.com/support', launchReadme],
   ['https://getryvro.com/delete-account', launchReadme],
+  ['https://getryvro.com/auth/action', launchReadme],
   ['Sender name: Ryvro Support', privacySupport],
   ['Reply-to email: support@getryvro.com', privacySupport],
   ['Public action domain: getryvro.com', privacySupport],
+  ['Custom action URL: https://getryvro.com/auth/action/', privacySupport],
+  ['Custom action URL: https://getryvro.com/auth/action/', externalSetup],
+  ['web/launch/auth/action/index.html', privacySupport],
+  ['web/launch/auth/action/handler.js', privacySupport],
   ['Continue URL / action URL domain: https://getryvro.com', privacySupport],
   ['App Store name: Ryvro Shift Planner', storeListing],
   ['Google Play app name: Ryvro Shift Planner', storeListing],
@@ -225,6 +232,9 @@ const launchDeletion = read('web/launch/delete-account/index.html');
   ['web/launch/terms/index.html', launchEvidenceLog],
   ['web/launch/support/index.html', launchEvidenceLog],
   ['web/launch/delete-account/index.html', launchEvidenceLog],
+  ['web/launch/auth/action/index.html', launchEvidenceLog],
+  ['web/launch/auth/action/handler.js', launchEvidenceLog],
+  ['https://getryvro.com/auth/action/', launchEvidenceLog],
   ['Live `https://getryvro.com/delete-account` URL', launchEvidenceLog],
   ['## Production Builds And Device QA', launchEvidenceLog],
   ['TestFlight iPhone QA', launchEvidenceLog],
@@ -522,19 +532,41 @@ const launchDeletion = read('web/launch/delete-account/index.html');
     'Account deletion does not automatically cancel App Store or Google Play subscriptions',
     launchDeletion,
   ],
+  ['Ryvro Account Action', launchAuthAction],
+  ['Checking your Ryvro link', launchAuthAction],
+  ['reset-password-form', launchAuthAction],
+  ['/__/firebase/8.10.1/firebase-app.js', launchAuthAction],
+  ['/__/firebase/8.10.1/firebase-auth.js', launchAuthAction],
+  ['/__/firebase/init.js', launchAuthAction],
+  ['/auth/action/handler.js?v=20260606', launchAuthAction],
+  ['new URLSearchParams(window.location.search)', launchAuthActionHandler],
+  ["mode === 'resetPassword'", launchAuthActionHandler],
+  ["mode === 'verifyEmail'", launchAuthActionHandler],
+  ["mode === 'recoverEmail'", launchAuthActionHandler],
+  ['verifyPasswordResetCode', launchAuthActionHandler],
+  ['confirmPasswordReset', launchAuthActionHandler],
+  ['applyActionCode', launchAuthActionHandler],
+  ['checkActionCode', launchAuthActionHandler],
+  ['continueUrl', launchAuthActionHandler],
 ].forEach(([expected, content]) => requireIncludes(content, expected, 'launch static pages'));
 
-[launchHome, launchPrivacy, launchTerms, launchSupport, launchDeletion].forEach((content) => {
-  [
-    'Ryvro',
-    '/privacy/',
-    '/terms/',
-    '/support/',
-    '/delete-account/',
-    'support@getryvro.com',
-  ].forEach((expected) => requireIncludes(content, expected, 'launch static page navigation'));
-  requireNotMatches(content, /Ellie Shift Planner|ellie_pro|mine site|haul truck/i, 'launch page');
-});
+[launchHome, launchPrivacy, launchTerms, launchSupport, launchDeletion, launchAuthAction].forEach(
+  (content) => {
+    [
+      'Ryvro',
+      '/privacy/',
+      '/terms/',
+      '/support/',
+      '/delete-account/',
+      'support@getryvro.com',
+    ].forEach((expected) => requireIncludes(content, expected, 'launch static page navigation'));
+    requireNotMatches(
+      content,
+      /Ellie Shift Planner|ellie_pro|mine site|haul truck/i,
+      'launch page'
+    );
+  }
+);
 
 requireIncludes(
   readinessReport,

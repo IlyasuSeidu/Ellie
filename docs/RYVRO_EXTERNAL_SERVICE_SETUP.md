@@ -58,7 +58,7 @@ Important:
 - Do not reuse config files from the old app identity.
 - Confirm `REVERSED_CLIENT_ID` in `GoogleService-Info.plist` matches the new OAuth client.
 - Confirm Firebase Auth authorized domains include the production website domain.
-- Configure Firebase Auth email templates from `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md` with sender name `Ryvro Support`, reply-to email `support@getryvro.com`, public action domain `getryvro.com`, and continue/action URLs on `https://getryvro.com`.
+- Configure Firebase Auth email templates from `docs/RYVRO_PRIVACY_SUPPORT_TEMPLATES.md` with sender name `Ryvro Support`, reply-to email `support@getryvro.com`, public action domain `getryvro.com`, custom action URL `https://getryvro.com/auth/action/`, and continue/action URLs on `https://getryvro.com`.
 - Confirm Firestore rules and indexes are deployed after the project is selected.
 - Confirm Analytics events appear under the Ryvro Firebase project.
 
@@ -314,6 +314,7 @@ After domain purchase:
 - Review and publish the static launch pages in `web/launch`: landing page, privacy, terms, support, and account deletion.
 - Add `support@getryvro.com`.
 - Add Firebase Auth authorized domain.
+- Configure Firebase Auth email-template Custom action URL: https://getryvro.com/auth/action/
 - Add App Store and Play Store support/privacy/account deletion URLs.
 - Add website and social links to store listings.
 
@@ -330,9 +331,11 @@ Current Firebase Hosting progress:
 - Default launch URL: `https://ryvro-launch-site.web.app`
 - `.firebaserc` maps `launch-site` to `ryvro-launch-site` for project `ryvro-shift-planner`
 - `npm run firebase:deploy:launch-site -- --project ryvro-shift-planner` deployed the static launch pages on 2026-06-06
-- Verified fallback URLs: `https://ryvro-launch-site.web.app/privacy/`, `https://ryvro-launch-site.web.app/terms/`, `https://ryvro-launch-site.web.app/support/`, and `https://ryvro-launch-site.web.app/delete-account/`
+- The 2026-06-06 redeploy included the Firebase Auth action handler at `https://ryvro-launch-site.web.app/auth/action/`
+- Verified fallback URLs: `https://ryvro-launch-site.web.app/privacy/`, `https://ryvro-launch-site.web.app/terms/`, `https://ryvro-launch-site.web.app/support/`, `https://ryvro-launch-site.web.app/delete-account/`, and `https://ryvro-launch-site.web.app/auth/action/`
+- Browser smoke against `https://ryvro-launch-site.web.app/auth/action/?mode=verifyEmail&oobCode=invalid-test-code` loaded the page title `Ryvro Account Action`, rendered the expected invalid-link state, and produced no browser console errors.
 
-Record the live `https://getryvro.com/privacy`, `https://getryvro.com/terms`, `https://getryvro.com/support`, and `https://getryvro.com/delete-account` checks in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md`.
+Record the live `https://getryvro.com/privacy`, `https://getryvro.com/terms`, `https://getryvro.com/support`, `https://getryvro.com/delete-account`, and `https://getryvro.com/auth/action/` checks in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md` after the production domain is connected.
 
 Before purchase/reservation, run the public repo-side evidence check:
 
@@ -357,7 +360,7 @@ Latest public preflight evidence captured on 2026-06-06 at 13:11:48Z:
 - YouTube `@ryvro`: public URL returned `404`; reserve directly while logged in.
 - LinkedIn `company/ryvro`: public URL returned `404`; this is not reliable ownership or availability proof, so check and reserve directly while logged in.
 
-Logged-in domain-cart progress from 2026-06-06: Spaceship showed `getryvro.com` as available and the domain was added to the cart without add-ons. The cart showed first-year line price `$8.88`, renewal price `$9.98`, and visible total `$9.08`. Checkout was not clicked because that starts a paid purchase flow; keep the domain row pending until purchase, DNS, HTTPS, and live page checks are complete.
+Logged-in domain progress from 2026-06-06: Spaceship showed `getryvro.com` as available and the domain was added to the cart without add-ons. The cart showed first-year line price `$8.88`, renewal price `$9.98`, and visible total `$9.08`. The owner later confirmed purchase. Spaceship Advanced DNS now has `A @ 199.36.158.100` and `TXT @ hosting-site=ryvro-launch-site`; public `dig` checks returned both records, and `http://getryvro.com` returns HTTP `301` to `https://getryvro.com/`. Firebase Hosting custom domain `getryvro.com` is attached to site `ryvro-launch-site`, but Firebase Console still reports `Records not yet detected (Last checked just now)` after Verify attempts. `https://getryvro.com` currently fails certificate validation because the Firebase certificate is not ready. Keep the domain row pending until Firebase accepts the TXT record, SSL is minted, HTTPS page checks pass, and support mailbox evidence exists.
 
 ## Analytics And Support Naming
 

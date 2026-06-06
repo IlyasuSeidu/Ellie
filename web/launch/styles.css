@@ -137,6 +137,36 @@ code {
   padding: 2px 6px;
 }
 
+.auth-action-page {
+  max-width: 760px;
+}
+
+.auth-action-panel h2 {
+  border-top: 0;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.field-label {
+  color: var(--muted);
+  display: block;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.text-field {
+  background: #0f0d0b;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--text);
+  display: block;
+  font: inherit;
+  margin-bottom: 16px;
+  min-height: 48px;
+  padding: 10px 12px;
+  width: 100%;
+}
+
 @media (min-width: 720px) {
   .site-header {
     align-items: center;
