@@ -3123,7 +3123,7 @@ describe('Ryvro environment template', () => {
       'Do not submit that later build as-is because App Store Connect already has version `1.0.0`, build `1`'
     );
     expect(launchEvidenceLog).toContain(
-      'real production env evidence exists, the iOS build number is incremented'
+      'Keep build `71fde2ff-aa36-4741-aa69-e4f11ba30acd` pending until it finishes'
     );
     expect(launchEvidenceLog).toContain(
       '2efbacac748ea9471a4b28ca332b37aed86cbc80ff654a22651a6bbde7f45cf2'
@@ -3230,6 +3230,14 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('account deletion request-flow evidence');
     expect(launchEvidenceLog).toContain('TestFlight iPhone QA');
     expect(launchEvidenceLog).toContain('Physical Android QA');
+    expect(launchEvidenceLog).toContain('71fde2ff-aa36-4741-aa69-e4f11ba30acd');
+    expect(launchEvidenceLog).toContain('build number `2`');
+    expect(launchEvidenceLog).toContain(
+      'message `Ryvro TestFlight candidate build 2`, and status `IN_PROGRESS`'
+    );
+    expect(launchEvidenceLog).toContain(
+      'not final production-auth-ready evidence until the EAS production environment'
+    );
     expect(launchEvidenceLog).toContain(
       'Use `docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md` and `docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md` for the TestFlight iPhone QA packet'
     );
@@ -3415,6 +3423,15 @@ describe('Ryvro environment template', () => {
     expect(appStoreTestFlightHandoff).toContain('Android versionCode `1` and iOS buildNumber `2`');
     expect(appStoreTestFlightHandoff).toContain(
       'npx eas-cli@14 build --profile production --platform ios --non-interactive --no-wait --message "Ryvro TestFlight candidate build 2"'
+    );
+    expect(appStoreTestFlightHandoff).toContain('71fde2ff-aa36-4741-aa69-e4f11ba30acd');
+    expect(appStoreTestFlightHandoff).toContain('iOS build number `2`');
+    expect(appStoreTestFlightHandoff).toContain(
+      'commit `6b8ddb9c1343b4d36ebe5cf965cbf71041163456`'
+    );
+    expect(appStoreTestFlightHandoff).toContain('current status `IN_PROGRESS`');
+    expect(appStoreTestFlightHandoff).toContain(
+      'This is still not final production-auth-ready evidence'
     );
     expect(appStoreTestFlightHandoff).not.toContain('eas-cli@14 build --verbose-logs');
     expect(appStoreTestFlightHandoff).toContain('incremented iOS build number');
