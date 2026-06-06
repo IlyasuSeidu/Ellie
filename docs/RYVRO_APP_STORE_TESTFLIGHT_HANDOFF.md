@@ -1,6 +1,6 @@
 # Ryvro App Store Connect And TestFlight Handoff
 
-Last updated: 2026-06-05
+Last updated: 2026-06-06
 
 Use this checklist for the remaining iOS owner-account path after the App Store Connect app exists and before App Store review submission. It turns the current TestFlight and App Store Connect blockers into one non-secret evidence packet.
 
@@ -47,6 +47,7 @@ Known owner-console evidence from 2026-06-05:
 - Latest EAS iOS production build evidence from `npx eas-cli build:list --platform ios --limit 5 --json` is build `782b6dec-1cf1-4cf2-9159-69ef1ab4078a`, status `FINISHED`, project `@ilyasu/ryvro`, version `1.0.0`, build number `1`, completed `2026-06-05T10:05:30.038Z`, and application archive `https://expo.dev/artifacts/eas/fQEAHqM7cPm7B5yEpFosVy.ipa`.
 - EAS remote version check with `npm run release:versions:get` on 2026-06-05 returned iOS build number `1` and Android versionCode `1`.
 - Do not submit build `782b6dec-1cf1-4cf2-9159-69ef1ab4078a` as-is because App Store Connect already has version `1.0.0`, build `1` from the earlier TestFlight upload. The next TestFlight upload should use real production Firebase/OAuth/RevenueCat values and an incremented iOS build number.
+- Fresh EAS iOS build attempts on 2026-06-06 from commit `8338318` reached `Uploading to EAS Build (0 / 223 MB)` and did not create a new remote build record. The `.easignore` cleanup in commit `8338318` reduced the upload archive from `244 MB` to `223 MB` by excluding local-only files, but the upload still stalled from the Codex environment. If this repeats locally, retry with the older EAS CLI that still satisfies this project: `cd /Users/Shared/Ellie && npx eas-cli@14 build --profile production --platform ios --non-interactive --no-wait --verbose-logs --message "Ryvro TestFlight candidate 8338318"`.
 - App Store Connect TestFlight shows version `1.0.0`, build `1`, status `Ready to Submit`.
 - Internal TestFlight group `Ryvro iPhone QA` shows `Internal Group ∙ 1 Tester ∙ 1 Build`.
 - Tester `seiduilyasu94@gmail.com` / `Ilyasu Seidu` is currently `Invited`.

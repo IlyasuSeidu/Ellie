@@ -989,14 +989,14 @@ describe('Ryvro environment template', () => {
       'For release builds, copy .env.production.example to .env and run npm run release:env:check'
     );
     expect(productionEnvExample).toContain('APP_ENV=production');
-    expect(productionEnvExample).toContain('EAS_PROJECT_ID=00000000-0000-0000-0000-000000000000');
-    expect(productionEnvExample).toContain('FIREBASE_PROJECT_ID=ryvro-prod');
+    expect(productionEnvExample).toContain('EAS_PROJECT_ID=b306643e-1688-448e-8acd-f72bf74312c3');
+    expect(productionEnvExample).toContain('FIREBASE_PROJECT_ID=ryvro-shift-planner');
     expect(productionEnvExample).toContain('API_BASE_URL=https://api.getryvro.com');
     expect(productionEnvExample).toContain(
-      'RYVRO_BRAIN_URL=https://us-central1-ryvro-prod.cloudfunctions.net/ryvroBrain'
+      'RYVRO_BRAIN_URL=https://us-central1-ryvro-shift-planner.cloudfunctions.net/ryvroBrain'
     );
     expect(productionEnvExample).toContain(
-      'SHIFT_SCHEDULE_PARSER_URL=https://us-central1-ryvro-prod.cloudfunctions.net/parseShiftScheduleDescription'
+      'SHIFT_SCHEDULE_PARSER_URL=https://us-central1-ryvro-shift-planner.cloudfunctions.net/parseShiftScheduleDescription'
     );
     expect(productionEnvExample).toContain(
       'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=REPLACE-web.apps.googleusercontent.com'

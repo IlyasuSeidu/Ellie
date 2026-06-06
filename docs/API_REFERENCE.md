@@ -170,8 +170,8 @@ API_TIMEOUT=45000
 
 ```env
 APP_ENV=production
-FIREBASE_PROJECT_ID=ryvro-prod
-RYVRO_BRAIN_URL=https://us-central1-ryvro-prod.cloudfunctions.net/ryvroBrain
+FIREBASE_PROJECT_ID=ryvro-shift-planner
+RYVRO_BRAIN_URL=https://us-central1-ryvro-shift-planner.cloudfunctions.net/ryvroBrain
 API_TIMEOUT=30000
 ```
 

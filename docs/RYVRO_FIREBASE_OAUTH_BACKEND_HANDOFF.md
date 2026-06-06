@@ -172,6 +172,8 @@ Record:
 
 Fill `.env` from `.env.production.example` only after Firebase, OAuth, legal URLs, backend URLs, and RevenueCat keys are ready.
 
+The committed `.env.production.example` now contains the non-secret Ryvro project IDs and deployed Firebase Functions URLs. Keep actual Firebase API keys, Firebase app IDs, RevenueCat SDK keys, and any provider keys out of Git.
+
 Run:
 
 ```bash
