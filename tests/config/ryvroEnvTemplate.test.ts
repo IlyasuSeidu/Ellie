@@ -3371,6 +3371,13 @@ describe('Ryvro environment template', () => {
     expect(appStoreTestFlightHandoff).toContain(
       "metro.config.js` already extends Expo's default config"
     );
+    expect(appStoreTestFlightHandoff).toContain(
+      'Remote EAS iOS build number was bumped from `1` to `2`'
+    );
+    expect(appStoreTestFlightHandoff).toContain('Android versionCode `1` and iOS buildNumber `2`');
+    expect(appStoreTestFlightHandoff).toContain(
+      'npx eas-cli@14 build --profile production --platform ios --non-interactive --no-wait --message "Ryvro TestFlight candidate build 2"'
+    );
     expect(appStoreTestFlightHandoff).not.toContain('eas-cli@14 build --verbose-logs');
     expect(appStoreTestFlightHandoff).toContain('incremented iOS build number');
     expect(appStoreTestFlightHandoff).toContain(
