@@ -14,7 +14,7 @@ Firebase Hosting can publish this folder after a separate hosting target is conf
 
 ```bash
 firebase target:apply hosting launch-site <firebase-hosting-site-id>
-firebase deploy --config firebase.json --only hosting:launch-site
+npm run firebase:deploy:launch-site
 ```
 
-Do not replace the existing analytics admin hosting target without intentionally migrating that admin page.
+`npm run firebase:deploy:launch-site` uses `firebase.launch.json`, which points only at `web/launch` and the `launch-site` hosting target. Do not replace the existing analytics admin hosting target without intentionally migrating that admin page.

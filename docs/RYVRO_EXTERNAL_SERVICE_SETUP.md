@@ -321,7 +321,7 @@ If Firebase Hosting is used for the public site, configure a separate hosting ta
 
 ```bash
 firebase target:apply hosting launch-site <firebase-hosting-site-id>
-firebase deploy --config firebase.json --only hosting:launch-site
+npm run firebase:deploy:launch-site
 ```
 
 Record the live `https://getryvro.com/privacy`, `https://getryvro.com/terms`, `https://getryvro.com/support`, and `https://getryvro.com/delete-account` checks in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md`.

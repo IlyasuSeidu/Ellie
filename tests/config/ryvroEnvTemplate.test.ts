@@ -2672,6 +2672,16 @@ describe('Ryvro environment template', () => {
       'utf8'
     );
     const launchReadme = fs.readFileSync(path.join(process.cwd(), 'web/launch/README.md'), 'utf8');
+    const launchFirebaseConfig = JSON.parse(
+      fs.readFileSync(path.join(process.cwd(), 'firebase.launch.json'), 'utf8')
+    ) as {
+      hosting?: {
+        target?: string;
+        public?: string;
+        headers?: Array<{ source?: string; headers?: Array<{ key?: string; value?: string }> }>;
+        redirects?: Array<{ source?: string; destination?: string; type?: number }>;
+      };
+    };
     const launchHome = fs.readFileSync(path.join(process.cwd(), 'web/launch/index.html'), 'utf8');
     const launchPrivacy = fs.readFileSync(
       path.join(process.cwd(), 'web/launch/privacy/index.html'),
@@ -2739,8 +2749,23 @@ describe('Ryvro environment template', () => {
     expect(launchReadme).toContain('https://getryvro.com/support');
     expect(launchReadme).toContain('https://getryvro.com/delete-account');
     expect(launchReadme).toContain('firebase target:apply hosting launch-site');
-    expect(launchReadme).toContain(
-      'firebase deploy --config firebase.json --only hosting:launch-site'
+    expect(launchReadme).toContain('npm run firebase:deploy:launch-site');
+    expect(packageJson.scripts?.['firebase:deploy:launch-site']).toBe(
+      'firebase deploy --config firebase.launch.json --only hosting:launch-site'
+    );
+    expect(launchFirebaseConfig.hosting?.target).toBe('launch-site');
+    expect(launchFirebaseConfig.hosting?.public).toBe('web/launch');
+    expect(launchFirebaseConfig.hosting?.redirects).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ source: '/privacy', destination: '/privacy/', type: 301 }),
+        expect.objectContaining({ source: '/terms', destination: '/terms/', type: 301 }),
+        expect.objectContaining({ source: '/support', destination: '/support/', type: 301 }),
+        expect.objectContaining({
+          source: '/delete-account',
+          destination: '/delete-account/',
+          type: 301,
+        }),
+      ])
     );
     expect(launchReadme).toContain('Do not replace the existing analytics admin hosting target');
 
@@ -3658,9 +3683,7 @@ describe('Ryvro environment template', () => {
     expect(externalSetup).toContain('Account deletion URL: `https://getryvro.com/delete-account`');
     expect(externalSetup).toContain('static launch pages in `web/launch`');
     expect(externalSetup).toContain('firebase target:apply hosting launch-site');
-    expect(externalSetup).toContain(
-      'firebase deploy --config firebase.json --only hosting:launch-site'
-    );
+    expect(externalSetup).toContain('npm run firebase:deploy:launch-site');
     expect(externalSetup).toContain('existing analytics admin hosting path is not overwritten');
     expect(externalSetup).toContain('Record the live `https://getryvro.com/privacy`');
     expect(externalSetup).toContain('support/privacy/account deletion URLs');

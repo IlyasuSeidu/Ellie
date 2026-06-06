@@ -1,0 +1,52 @@
+{
+  "hosting": {
+    "target": "launch-site",
+    "public": "web/launch",
+    "ignore": ["firebase.json", "firebase.launch.json", "**/.*", "**/node_modules/**", "README.md"],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "Content-Security-Policy",
+            "value": "default-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
+          },
+          {
+            "key": "X-Content-Type-Options",
+            "value": "nosniff"
+          },
+          {
+            "key": "Referrer-Policy",
+            "value": "strict-origin-when-cross-origin"
+          },
+          {
+            "key": "Permissions-Policy",
+            "value": "camera=(), microphone=(), geolocation=()"
+          }
+        ]
+      }
+    ],
+    "redirects": [
+      {
+        "source": "/privacy",
+        "destination": "/privacy/",
+        "type": 301
+      },
+      {
+        "source": "/terms",
+        "destination": "/terms/",
+        "type": 301
+      },
+      {
+        "source": "/support",
+        "destination": "/support/",
+        "type": 301
+      },
+      {
+        "source": "/delete-account",
+        "destination": "/delete-account/",
+        "type": 301
+      }
+    ]
+  }
+}

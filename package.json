@@ -35,6 +35,7 @@
     "firebase:projects": "firebase projects:list",
     "firebase:emulators:functions": "firebase emulators:start --config firebase.json --only functions",
     "firebase:deploy:functions": "firebase deploy --config firebase.json --only functions",
+    "firebase:deploy:launch-site": "firebase deploy --config firebase.launch.json --only hosting:launch-site",
     "admin:web": "npx serve web-admin/analytics-intelligence",
     "firebase:deploy:hosting": "firebase deploy --config firebase.json --only hosting"
   },
