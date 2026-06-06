@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { ShiftScheduleParserError, parseShiftScheduleDescription } from '../shift-schedule-parser';
+import {
+  ShiftScheduleParserError,
+  normalizeProviderShiftScheduleResult,
+  parseShiftScheduleDescription,
+} from '../shift-schedule-parser';
 
 test('parseShiftScheduleDescription validates required prompt', async () => {
   await assert.rejects(
@@ -88,4 +92,51 @@ test('parseShiftScheduleDescription fallback handles broad industry shift langua
   assert.ok(draft.shiftDefinitions.some((definition) => definition.kind === 'leave'));
   assert.ok(draft.shiftDefinitions.some((definition) => definition.kind === 'custom'));
   assert.ok(draft.shiftDefinitions.some((definition) => definition.kind === 'off'));
+});
+
+test('normalizeProviderShiftScheduleResult asks for clarification when provider draft is malformed', () => {
+  const result = normalizeProviderShiftScheduleResult(
+    {
+      status: 'draft',
+      summary: 'I found a two-week roster.',
+      assumptions: ['The roster repeats every two weeks.'],
+      warnings: ['Provider used incomplete fields.'],
+      confidence: 0.82,
+      scheduleDraft: {
+        version: 3,
+        name: 'Two-week roster',
+        timezone: 'UTC',
+        anchorDate: '2026-06-08',
+      } as never,
+    },
+    'Week one early Monday to Wednesday, late Thursday and Friday. Week two nights Tuesday to Saturday.'
+  );
+
+  assert.equal(result.status, 'needs_clarification');
+  assert.equal(result.summary, 'I found a two-week roster.');
+  assert.deepEqual(result.assumptions, ['The roster repeats every two weeks.']);
+  assert.ok(result.questions.some((question) => question.includes('shift names')));
+  assert.ok(result.warnings.some((warning) => warning.includes('incomplete draft')));
+  assert.equal(result.confidence, 0.35);
+});
+
+test('normalizeProviderShiftScheduleResult preserves clarification responses from provider', () => {
+  const result = normalizeProviderShiftScheduleResult(
+    {
+      status: 'needs_clarification',
+      summary: 'I need the start date.',
+      assumptions: ['The pattern repeats.'],
+      questions: ['What date does this roster start?'],
+      warnings: ['Missing start date.'],
+      confidence: 0.5,
+    },
+    'Two days, two nights, four off.'
+  );
+
+  assert.equal(result.status, 'needs_clarification');
+  assert.equal(result.summary, 'I need the start date.');
+  assert.deepEqual(result.assumptions, ['The pattern repeats.']);
+  assert.deepEqual(result.questions, ['What date does this roster start?']);
+  assert.deepEqual(result.warnings, ['Missing start date.']);
+  assert.equal(result.confidence, 0.5);
 });

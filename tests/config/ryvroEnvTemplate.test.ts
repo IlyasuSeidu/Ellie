@@ -3208,7 +3208,8 @@ describe('Ryvro environment template', () => {
     );
     expect(launchEvidenceLog).toContain('roles/run.invoker');
     expect(launchEvidenceLog).toContain('09:22 UTC');
-    expect(launchEvidenceLog).toContain('HTTP `500` with non-secret error code `internal_error`');
+    expect(launchEvidenceLog).toContain('HTTP `200` with `status` `needs_clarification`');
+    expect(launchEvidenceLog).toContain('incomplete-draft clarification');
     expect(launchEvidenceLog).toContain('firebase login --reauth');
     expect(launchEvidenceLog).toContain('SHIFT_SCHEDULE_PARSER_URL');
     expect(launchEvidenceLog).toContain('minimal prompt smoke');
@@ -3614,12 +3615,10 @@ describe('Ryvro environment template', () => {
       'parseShiftScheduleDescription`: must return `200` with a draft schedule'
     );
     expect(firebaseOauthBackendHandoff).toContain(
-      'Provider-backed parser calls still fail for non-heuristic prompts'
+      'Provider-backed parser calls still do not produce launch-ready non-heuristic drafts'
     );
-    expect(firebaseOauthBackendHandoff).toContain(
-      'HTTP `500` with non-secret error code `internal_error`'
-    );
-    expect(firebaseOauthBackendHandoff).toContain('Firebase CLI log inspection was blocked');
+    expect(firebaseOauthBackendHandoff).toContain('HTTP `200` with `status` `needs_clarification`');
+    expect(firebaseOauthBackendHandoff).toContain('incomplete-draft clarification');
     expect(firebaseOauthBackendHandoff).toContain('npm run release:native:check');
     expect(firebaseOauthBackendHandoff).toContain('npm run release:env:check');
     expect(firebaseOauthBackendHandoff).toContain('npm run release:env:push');

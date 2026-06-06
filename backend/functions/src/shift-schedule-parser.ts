@@ -65,6 +65,76 @@ function validateRequest(request: unknown): ShiftScheduleParserRequest {
   };
 }
 
+function safeArray(value: unknown): string[] {
+  return Array.isArray(value)
+    ? value.filter((item): item is string => typeof item === 'string')
+    : [];
+}
+
+export function normalizeProviderShiftScheduleResult(
+  result: Partial<ShiftScheduleParserResult>,
+  originalPrompt: string
+): ShiftScheduleParserResult {
+  if (result.status !== 'draft') {
+    return {
+      status: result.status === 'invalid' ? 'invalid' : 'needs_clarification',
+      summary: result.summary ?? 'I need a little more detail before building this schedule.',
+      assumptions: safeArray(result.assumptions),
+      questions: safeArray(result.questions),
+      warnings: safeArray(result.warnings),
+      confidence: typeof result.confidence === 'number' ? result.confidence : 0.4,
+    };
+  }
+
+  if (!result.scheduleDraft) {
+    throw new ShiftScheduleParserError('provider_error', 'Provider returned no draft.', true, 502);
+  }
+
+  let normalized: UniversalShiftSchedule;
+  try {
+    normalized = normalizeUniversalScheduleDraft(
+      result.scheduleDraft as UniversalShiftSchedule,
+      originalPrompt
+    );
+  } catch {
+    return {
+      status: 'needs_clarification',
+      summary: result.summary ?? 'I need a little more detail before building this schedule.',
+      assumptions: safeArray(result.assumptions),
+      questions: [
+        'The AI draft was incomplete. Please include the shift names, order, start date, and any start or end times.',
+      ],
+      warnings: [
+        ...safeArray(result.warnings),
+        'AI parsing returned an incomplete draft, so Ryvro did not save it.',
+      ],
+      confidence: typeof result.confidence === 'number' ? Math.min(result.confidence, 0.35) : 0.35,
+    };
+  }
+
+  const validationErrors = validateUniversalScheduleDraft(normalized);
+  if (validationErrors.length > 0) {
+    return {
+      status: 'needs_clarification',
+      summary: result.summary ?? 'I need a little more detail before building this schedule.',
+      assumptions: safeArray(result.assumptions),
+      questions: validationErrors,
+      warnings: safeArray(result.warnings),
+      confidence: typeof result.confidence === 'number' ? result.confidence : 0.35,
+    };
+  }
+
+  return {
+    status: 'draft',
+    scheduleDraft: normalized,
+    summary: result.summary ?? 'I created a shift schedule draft.',
+    assumptions: safeArray(result.assumptions),
+    questions: safeArray(result.questions),
+    warnings: safeArray(result.warnings),
+    confidence: typeof result.confidence === 'number' ? result.confidence : 0.7,
+  };
+}
+
 export async function parseShiftScheduleDescription(
   requestBody: unknown,
   openaiApiKey: string
@@ -146,44 +216,5 @@ export async function parseShiftScheduleDescription(
   }
 
   const result = parsed as Partial<ShiftScheduleParserResult>;
-  if (result.status !== 'draft') {
-    return {
-      status: result.status === 'invalid' ? 'invalid' : 'needs_clarification',
-      summary: result.summary ?? 'I need a little more detail before building this schedule.',
-      assumptions: Array.isArray(result.assumptions) ? result.assumptions : [],
-      questions: Array.isArray(result.questions) ? result.questions : [],
-      warnings: Array.isArray(result.warnings) ? result.warnings : [],
-      confidence: typeof result.confidence === 'number' ? result.confidence : 0.4,
-    };
-  }
-
-  if (!result.scheduleDraft) {
-    throw new ShiftScheduleParserError('provider_error', 'Provider returned no draft.', true, 502);
-  }
-
-  const normalized = normalizeUniversalScheduleDraft(
-    result.scheduleDraft as UniversalShiftSchedule,
-    request.prompt
-  );
-  const validationErrors = validateUniversalScheduleDraft(normalized);
-  if (validationErrors.length > 0) {
-    return {
-      status: 'needs_clarification',
-      summary: result.summary ?? 'I need a little more detail before building this schedule.',
-      assumptions: Array.isArray(result.assumptions) ? result.assumptions : [],
-      questions: validationErrors,
-      warnings: Array.isArray(result.warnings) ? result.warnings : [],
-      confidence: typeof result.confidence === 'number' ? result.confidence : 0.35,
-    };
-  }
-
-  return {
-    status: 'draft',
-    scheduleDraft: normalized,
-    summary: result.summary ?? 'I created a shift schedule draft.',
-    assumptions: Array.isArray(result.assumptions) ? result.assumptions : [],
-    questions: Array.isArray(result.questions) ? result.questions : [],
-    warnings: Array.isArray(result.warnings) ? result.warnings : [],
-    confidence: typeof result.confidence === 'number' ? result.confidence : 0.7,
-  };
+  return normalizeProviderShiftScheduleResult(result, request.prompt);
 }
