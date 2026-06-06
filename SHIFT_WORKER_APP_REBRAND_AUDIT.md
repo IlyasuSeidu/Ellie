@@ -133,7 +133,7 @@ Required account-only checks:
 - Social platforms: reserve `@ryvro` or a consistent fallback such as `@getryvro`.
 - Trademark counsel/search: run formal clearance in launch markets before public launch.
 
-## External Clearance Evidence: 2026-06-05
+## External Clearance Evidence: 2026-06-06
 
 Latest repeatable public preflight command:
 
@@ -141,10 +141,10 @@ Latest repeatable public preflight command:
 npm run release:clearance
 ```
 
-Result captured at `2026-06-05T13:31:53.172Z`:
+Result captured at `2026-06-06T13:11:48.530Z`:
 
 - Apple public software search: no exact `Ryvro` or `Ryvro Shift Planner` app result returned across 5 fuzzy results. Public search still does not prove App Store Connect name availability.
-- Google Play public search: no exact `Ryvro` or `Ryvro Shift Planner` result text found. Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`. Public search still does not prove Play Console title/package availability.
+- Google Play public search: no exact `Ryvro` or `Ryvro Shift Planner` result text found. Visible fuzzy names included `Rydoo` and `Rydora`. Public search still does not prove Play Console title/package availability.
 - Chrome/Computer Use previously read the public Google Play search page for `Ryvro` on 2026-05-30. Visible public results included fuzzy/non-conflicting names such as Rolify, Rydoo, and Rydora, with no exact Ryvro listing visible. Do not treat this as logged-in Play Console evidence; complete Play Console title/package checks directly in the account.
 - USPTO public search app: reachable only through the automated preflight. This is not legal clearance.
 - `getryvro.com`: no public DNS record and Verisign `.com` returned no match.
@@ -154,6 +154,8 @@ Result captured at `2026-06-05T13:31:53.172Z`:
 - X, Instagram, and TikTok `@ryvro`: public URLs returned `200`; this is not reliable handle availability proof and requires logged-in reservation.
 - YouTube `@ryvro`: public URL returned `404`; still reserve directly while logged in.
 - LinkedIn `company/ryvro`: public URL returned `404`; still check and reserve directly while logged in.
+
+Logged-in domain-cart progress from 2026-06-06: Spaceship showed `getryvro.com` as available and the domain was added to the cart without add-ons. The cart showed first-year line price `$8.88`, renewal price `$9.98`, and visible total `$9.08`. Checkout was not clicked because that starts a paid purchase flow; this is not domain-control proof until purchase, DNS, HTTPS, and live page checks are complete.
 
 The account-only checks remain unchanged: App Store Connect, Google Play Console, registrar purchase, social reservation, and formal trademark/legal clearance must be completed by the account owner or counsel.
 

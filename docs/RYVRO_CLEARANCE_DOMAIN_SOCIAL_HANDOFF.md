@@ -1,6 +1,6 @@
 # Ryvro Clearance, Domain, And Social Handoff
 
-Last updated: 2026-06-05
+Last updated: 2026-06-06
 
 Use this checklist for the external clearance and public ownership work that must happen before Ryvro can be treated as launch-ready. It covers formal trademark/legal clearance, App Store and Google Play name checks, domain purchase, DNS and HTTPS proof, support mailbox setup, legal page publication, and social handle reservation.
 
@@ -32,10 +32,10 @@ Run:
 npm run release:clearance
 ```
 
-Latest public preflight captured on 2026-06-05 at `2026-06-05T13:31:53.172Z`:
+Latest public preflight captured on 2026-06-06 at `2026-06-06T13:11:48.530Z`:
 
 - Apple public software search returned 5 fuzzy results and no exact `Ryvro` or `Ryvro Shift Planner` app result.
-- Google Play public search found no exact `Ryvro` or `Ryvro Shift Planner` result text; visible fuzzy names were `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`.
+- Google Play public search found no exact `Ryvro` or `Ryvro Shift Planner` result text; visible fuzzy names were `Rydoo` and `Rydora`.
 - USPTO Trademark Search app was reachable with status `200`; this is not legal clearance.
 - `getryvro.com` had no public DNS records and Verisign `.com` returned no match.
 - `useryvro.com`, `tryryvro.com`, and `getryvroapp.com` had no public DNS records and Verisign `.com` returned no match.
@@ -43,6 +43,13 @@ Latest public preflight captured on 2026-06-05 at `2026-06-05T13:31:53.172Z`:
 - `ryvro.com` is already registered through GoDaddy/Afternic, with public A records `76.223.54.146` and `13.248.169.48`, creation date `2025-06-16T10:06:52Z`, expiry date `2026-06-16T10:06:52Z`, and Afternic nameservers.
 - X, Instagram, and TikTok `@ryvro` returned public `200` responses; this is not ownership or availability proof.
 - YouTube `@ryvro` and LinkedIn `company/ryvro` returned public `404` responses; still reserve directly while logged in.
+
+Logged-in browser reservation progress from 2026-06-06:
+
+- Spaceship showed `getryvro.com` as available.
+- The domain was added to the Spaceship cart without add-ons.
+- Cart evidence showed `getryvro.com`, first-year line price `$8.88`, renewal price `$9.98`, and visible total `$9.08`.
+- Checkout was not clicked because that starts a paid purchase flow. Do not mark domain control as passed until the owner completes purchase, records non-secret registrar proof, configures DNS/HTTPS, and verifies the live `getryvro.com` pages.
 
 ## Formal Clearance
 

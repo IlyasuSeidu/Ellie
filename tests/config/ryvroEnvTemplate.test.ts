@@ -1371,12 +1371,10 @@ describe('Ryvro environment template', () => {
     );
     const clearanceEvidence = `${externalSetup}\n${audit}`;
 
-    expect(clearanceEvidence).toContain('2026-06-05 at 13:31:53Z');
-    expect(clearanceEvidence).toContain('2026-06-05T13:31:53.172Z');
+    expect(clearanceEvidence).toContain('2026-06-06 at 13:11:48Z');
+    expect(clearanceEvidence).toContain('2026-06-06T13:11:48.530Z');
     expect(clearanceEvidence).toContain('no exact `Ryvro` or `Ryvro Shift Planner` app result');
-    expect(clearanceEvidence).toContain(
-      'Visible fuzzy names included `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`'
-    );
+    expect(clearanceEvidence).toContain('Visible fuzzy names included `Rydoo` and `Rydora`');
     expect(clearanceEvidence).toContain(
       'Chrome/Computer Use previously read the public Google Play search page for `Ryvro`'
     );
@@ -1389,6 +1387,9 @@ describe('Ryvro environment template', () => {
     expect(clearanceEvidence).toContain('76.223.54.146');
     expect(clearanceEvidence).toContain('2026-06-16T10:06:52Z');
     expect(clearanceEvidence).toContain('reserve directly while logged in');
+    expect(clearanceEvidence).toContain('Spaceship showed `getryvro.com` as available');
+    expect(clearanceEvidence).toContain('first-year line price `$8.88`');
+    expect(clearanceEvidence).toContain('visible total `$9.08`');
     expect(clearanceEvidence).not.toContain('2026-05-29 at 14:36:21Z');
     expect(clearanceEvidence).not.toContain('2026-05-29T14:36:21.446Z');
     expect(clearanceEvidence).not.toContain('2026-05-29 at 19:51:39Z');
@@ -1412,6 +1413,7 @@ describe('Ryvro environment template', () => {
     expect(clearanceEvidence).not.toContain('2026-05-31T19:32:28.044Z');
     expect(clearanceEvidence).not.toContain('2026-06-05 at 11:04:32Z');
     expect(clearanceEvidence).not.toContain('2026-06-05T11:04:32.887Z');
+    expect(clearanceEvidence).not.toContain('2026-06-05 at 13:31:53Z');
     expect(clearanceEvidence).not.toContain(
       'LinkedIn `company/ryvro`: public URL returned bot-protection status `999`'
     );
@@ -3072,7 +3074,7 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('Formal trademark/legal clearance for `Ryvro`');
     expect(launchEvidenceLog).toContain('docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md');
     expect(launchEvidenceLog).toContain('clearance/domain/social evidence packet');
-    expect(launchEvidenceLog).toContain('2026-06-05T13:31:53.172Z');
+    expect(launchEvidenceLog).toContain('2026-06-06T13:11:48.530Z');
     expect(launchEvidenceLog).toContain('App Store Connect app name `Ryvro Shift Planner`');
     expect(launchEvidenceLog).toContain('docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md');
     expect(launchEvidenceLog).toContain('App Store/TestFlight evidence packet');
@@ -3317,13 +3319,11 @@ describe('Ryvro environment template', () => {
     expect(clearanceDomainSocialHandoff).toContain(
       'Fallback social handles: `@getryvro`, `@tryryvro`'
     );
-    expect(clearanceDomainSocialHandoff).toContain('2026-06-05T13:31:53.172Z');
+    expect(clearanceDomainSocialHandoff).toContain('2026-06-06T13:11:48.530Z');
     expect(clearanceDomainSocialHandoff).toContain(
       'no exact `Ryvro` or `Ryvro Shift Planner` app result'
     );
-    expect(clearanceDomainSocialHandoff).toContain(
-      'visible fuzzy names were `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`'
-    );
+    expect(clearanceDomainSocialHandoff).toContain('visible fuzzy names were `Rydoo` and `Rydora`');
     expect(clearanceDomainSocialHandoff).toContain(
       'USPTO Trademark Search app was reachable with status `200`'
     );
@@ -3337,6 +3337,8 @@ describe('Ryvro environment template', () => {
     expect(clearanceDomainSocialHandoff).toContain(
       'YouTube `@ryvro` and LinkedIn `company/ryvro` returned public `404` responses'
     );
+    expect(clearanceDomainSocialHandoff).toContain('Spaceship showed `getryvro.com` as available');
+    expect(clearanceDomainSocialHandoff).toContain('visible total `$9.08`');
     expect(clearanceDomainSocialHandoff).toContain('Domain Reservation And DNS');
     expect(clearanceDomainSocialHandoff).toContain('Static Launch Pages');
     expect(clearanceDomainSocialHandoff).toContain('Social Handle Reservation');
