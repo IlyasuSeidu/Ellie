@@ -83,10 +83,13 @@ Create or confirm OAuth clients in the same Ryvro Google Cloud/Firebase project.
 - Android release signing SHA-1 `D5:BD:0B:C7:43:DB:4A:DE:B3:4A:86:16:A5:74:23:F8:86:74:9E:EF`
 - Android release signing SHA-256 `07:31:46:00:75:14:2E:55:32:DF:34:76:5F:B2:83:A1:5C:E9:EB:CF:EB:03:74:9B:C0:1A:D2:6E:ED:C7:D2:9C`
 - Web client secret was not recorded.
+- Firebase Auth was enabled on 2026-06-06 in the logged-in Firebase Console.
 - Firebase Auth authorized domain: `getryvro.com`
-- Firebase Auth sender name: `Ryvro Support`
-- Firebase Auth reply-to email: `support@getryvro.com`
-- Firebase Auth action domain and continue URLs on `https://getryvro.com`
+- Metadata-only Identity Toolkit Admin API verification on 2026-06-06 confirmed `authorizedDomains` contains `localhost`, `ryvro-shift-planner.firebaseapp.com`, `ryvro-shift-planner.web.app`, and `getryvro.com`.
+- Firebase Auth email templates are still pending. The same metadata-only verification showed default sender and reply-to values, so do not mark template evidence complete yet.
+- Required Firebase Auth sender name: `Ryvro Support`
+- Required Firebase Auth reply-to email: `support@getryvro.com`
+- Required Firebase Auth action domain and continue URLs on `https://getryvro.com`
 
 Record only:
 
@@ -99,16 +102,16 @@ Record only:
 
 Deploy functions to the Ryvro Firebase project.
 
-Current blocker recorded on 2026-06-06:
+Current blocker updated on 2026-06-06:
 
-- `firebase functions:secrets:access OPENAI_API_KEY --project ryvro-shift-planner` failed because project `ryvro-shift-planner` must be on the Blaze pay-as-you-go plan before Firebase can enable the required `secretmanager.googleapis.com` API.
-- Logged-in Firebase Console usage and billing showed current Firebase billing plan `Spark No-cost`.
-- The Firebase pricing dialog showed `Spark plan` as the current plan and `Blaze plan` as the pay-as-you-go plan with `Select plan: Blaze`.
-- The owner must complete the Blaze upgrade and any billing account or payment confirmation directly. Do not deploy backend functions or attempt Secret Manager configuration until the plan is upgraded.
+- The owner reported Firebase billing is now on pay-as-you-go, and Firebase Secret Manager is reachable.
+- `firebase functions:secrets:get OPENAI_API_KEY --project ryvro-shift-planner --json` returned success with an empty `secrets` version list, so `OPENAI_API_KEY` has no enabled Secret Manager version available for deployment yet.
+- `firebase functions:secrets:get ANTHROPIC_API_KEY --project ryvro-shift-planner` returned 404. This still blocks the optional Claude-backed analytics intelligence functions, but it does not block the first targeted deploy of `ryvroBrain` and `parseShiftScheduleDescription`.
+- Run `firebase functions:secrets:set OPENAI_API_KEY --project ryvro-shift-planner` and enter the key privately in the masked CLI prompt. Do not print or commit the secret value.
+- After `OPENAI_API_KEY` has an enabled version, deploy only the launch-critical OpenAI-backed endpoints first:
 
 ```bash
-firebase use <ryvro-project-id>
-firebase deploy --only functions
+firebase deploy --only functions:ryvroBrain,functions:parseShiftScheduleDescription --project ryvro-shift-planner
 ```
 
 Required function URLs:

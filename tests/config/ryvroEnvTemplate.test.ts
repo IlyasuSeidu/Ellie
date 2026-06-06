@@ -3157,13 +3157,20 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain(
       'Sender `Ryvro Support`, reply-to `support@getryvro.com`, action domain `getryvro.com`'
     );
+    expect(launchEvidenceLog).toContain(
+      'Firebase Authentication for project `ryvro-shift-planner`'
+    );
+    expect(launchEvidenceLog).toContain('A metadata-only Identity Toolkit Admin API read');
+    expect(launchEvidenceLog).toContain('authorizedDomains');
+    expect(launchEvidenceLog).toContain('getryvro.com');
+    expect(launchEvidenceLog).toContain('email-template row remains pending');
     expect(launchEvidenceLog).toContain('Backend deploy - ryvroBrain');
     expect(launchEvidenceLog).toContain('Backend smoke - ryvroBrain');
     expect(launchEvidenceLog).toContain('Backend deploy - parser');
     expect(launchEvidenceLog).toContain('Shift parser smoke');
-    expect(launchEvidenceLog).toContain('Spark No-cost');
-    expect(launchEvidenceLog).toContain('Blaze pay-as-you-go plan');
-    expect(launchEvidenceLog).toContain('secretmanager.googleapis.com');
+    expect(launchEvidenceLog).toContain('Firebase Secret Manager is reachable');
+    expect(launchEvidenceLog).toContain('empty `secrets` version list');
+    expect(launchEvidenceLog).toContain('has no enabled secret version');
     expect(launchEvidenceLog).toContain('SHIFT_SCHEDULE_PARSER_URL');
     expect(launchEvidenceLog).toContain('valid-prompt parser smoke returns `200`');
     expect(launchEvidenceLog).toContain('EAS secret push confirmation');
@@ -3444,10 +3451,10 @@ describe('Ryvro environment template', () => {
     expect(firebaseOauthBackendHandoff).toContain(
       'Android release signing SHA-1 and SHA-256 fingerprints'
     );
-    expect(firebaseOauthBackendHandoff).toContain('Current blocker recorded on 2026-06-06');
-    expect(firebaseOauthBackendHandoff).toContain('Spark No-cost');
-    expect(firebaseOauthBackendHandoff).toContain('Select plan: Blaze');
-    expect(firebaseOauthBackendHandoff).toContain('secretmanager.googleapis.com');
+    expect(firebaseOauthBackendHandoff).toContain('Current blocker updated on 2026-06-06');
+    expect(firebaseOauthBackendHandoff).toContain('Firebase Secret Manager is reachable');
+    expect(firebaseOauthBackendHandoff).toContain('empty `secrets` version list');
+    expect(firebaseOauthBackendHandoff).toContain('has no enabled Secret Manager version');
     expect(firebaseOauthBackendHandoff).toContain(
       'owner accepted the Google API Services User Data Policy'
     );
@@ -3487,8 +3494,19 @@ describe('Ryvro environment template', () => {
     expect(firebaseOauthBackendHandoff).toContain(
       'Firebase Auth authorized domain: `getryvro.com`'
     );
-    expect(firebaseOauthBackendHandoff).toContain('Firebase Auth sender name: `Ryvro Support`');
-    expect(firebaseOauthBackendHandoff).toContain('firebase deploy --only functions');
+    expect(firebaseOauthBackendHandoff).toContain('Firebase Auth was enabled on 2026-06-06');
+    expect(firebaseOauthBackendHandoff).toContain(
+      'Metadata-only Identity Toolkit Admin API verification on 2026-06-06'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'Firebase Auth email templates are still pending'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'Required Firebase Auth sender name: `Ryvro Support`'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'firebase deploy --only functions:ryvroBrain,functions:parseShiftScheduleDescription'
+    );
     expect(firebaseOauthBackendHandoff).toContain(
       'RYVRO_BRAIN_URL=https://<region>-<project-id>.cloudfunctions.net/ryvroBrain'
     );
