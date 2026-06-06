@@ -119,7 +119,7 @@ firebase deploy --only functions:ryvro-brain:ryvroBrain,functions:ryvro-brain:pa
 - Standard Firebase HTTPS URLs remain the URLs production clients should use.
 - Both Cloud Run services initially returned public HTTP `403`, so `roles/run.invoker` was granted to `allUsers` on only `ryvrobrain` and `parseshiftscheduledescription`.
 - A Firebase Functions artifact cleanup policy was set for `us-central1` to delete images older than 1 day.
-- OpenAI provider calls currently return `429` quota exceeded. Fix OpenAI project billing or quota before marking AI voice and non-heuristic parser behavior launch-ready.
+- Provider-backed parser calls still fail for non-heuristic prompts. A 2026-06-06 retry reached Firebase and returned HTTP `500` with non-secret error code `internal_error`; Firebase CLI log inspection was blocked because local Firebase credentials had expired. Run `firebase login --reauth`, inspect `parseShiftScheduleDescription` logs, and fix the backend/provider failure before marking AI voice and non-heuristic parser behavior launch-ready.
 
 Required function URLs:
 
@@ -156,9 +156,9 @@ Expected launch evidence:
 - `ryvroBrain`: `400` for the intentionally empty body proves reachability; `200` with a valid body also passes.
 - `parseShiftScheduleDescription`: must return `200` with a draft schedule for the minimal schedule prompt.
 - `404`, missing secret, wrong project, provider failure, auth failure, network failure, or parser `400` for the valid prompt is not launch-ready.
-- Current smoke result on 2026-06-06: `ryvroBrain` returned HTTP `400` with non-secret error code `invalid_request` for the intentionally empty body after public invoker access was fixed.
-- Current smoke result on 2026-06-06: `parseShiftScheduleDescription` returned HTTP `200` with a draft schedule for the minimal 2 days, 2 nights, 4 off prompt, but warned that deterministic fallback was used because AI parsing was unavailable.
-- Current provider blocker on 2026-06-06: a non-heuristic parser prompt returned HTTP `502` with OpenAI `429` quota exceeded. Treat provider-backed voice and AI parsing as not launch-ready until OpenAI quota or billing is fixed and a non-heuristic parser smoke passes without quota error.
+- Current smoke result on 2026-06-06 at 09:22 UTC: `ryvroBrain` returned HTTP `400` with non-secret error code `invalid_request` for the intentionally empty body after public invoker access was fixed.
+- Current smoke result on 2026-06-06 at 09:22 UTC: `parseShiftScheduleDescription` returned HTTP `200` with a draft schedule for the minimal 2 days, 2 nights, 4 off prompt, but warned that deterministic fallback was used because AI parsing was unavailable.
+- Current provider blocker on 2026-06-06 at 09:25 UTC: a non-heuristic parser prompt reached Firebase and returned HTTP `500` with non-secret error code `internal_error`. Firebase CLI log inspection was blocked by expired local Firebase credentials. Treat provider-backed voice and AI parsing as not launch-ready until `firebase login --reauth` is complete, function logs identify the backend/provider failure, and a non-heuristic parser smoke passes without deterministic fallback or server error.
 
 Record:
 

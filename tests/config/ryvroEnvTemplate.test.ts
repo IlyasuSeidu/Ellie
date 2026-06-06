@@ -3087,6 +3087,7 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('App Store content rating and export compliance');
     expect(launchEvidenceLog).toContain('reviewer account exists');
     expect(launchEvidenceLog).toContain('status `Ready to Submit`');
+    expect(launchEvidenceLog).toContain('build `2` through submission');
     expect(launchEvidenceLog).toContain('`Ryvro iPhone QA` internal group');
     expect(launchEvidenceLog).toContain('Fresh logged-in Chrome inspection');
     expect(launchEvidenceLog).toContain('project ID `ryvro-shift-planner`');
@@ -3122,8 +3123,9 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain(
       'Do not submit that later build as-is because App Store Connect already has version `1.0.0`, build `1`'
     );
+    expect(launchEvidenceLog).toContain('2026-06-06T09:26:45.414Z');
     expect(launchEvidenceLog).toContain(
-      'Keep build `71fde2ff-aa36-4741-aa69-e4f11ba30acd` pending until it finishes'
+      'https://expo.dev/artifacts/eas/f5qhVQot1CDyn9zD4bzSfR.ipa'
     );
     expect(launchEvidenceLog).toContain(
       '2efbacac748ea9471a4b28ca332b37aed86cbc80ff654a22651a6bbde7f45cf2'
@@ -3145,7 +3147,9 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('Expo dashboard display name is `Ryvro Shift Planner`');
     expect(launchEvidenceLog).toContain('Created and linked EAS project `@ilyasu/ryvro`');
     expect(launchEvidenceLog).toContain('b306643e-1688-448e-8acd-f72bf74312c3');
-    expect(launchEvidenceLog).toContain('no saved ASC API keys');
+    expect(launchEvidenceLog).toContain('b53825db-0f5c-4f56-b19e-c5af5f1999f3');
+    expect(launchEvidenceLog).toContain('Apple was processing the binary after upload');
+    expect(launchEvidenceLog).toContain('authResult=FAILED');
     expect(launchEvidenceLog).toContain(
       'Google Play title `Ryvro Shift Planner` and package `com.ryvro.shiftplanner`'
     );
@@ -3203,10 +3207,14 @@ describe('Ryvro environment template', () => {
       'stored as Firebase Secret Manager `OPENAI_API_KEY` version `1`'
     );
     expect(launchEvidenceLog).toContain('roles/run.invoker');
-    expect(launchEvidenceLog).toContain('OpenAI `429` quota exceeded');
+    expect(launchEvidenceLog).toContain('09:22 UTC');
+    expect(launchEvidenceLog).toContain('HTTP `500` with non-secret error code `internal_error`');
+    expect(launchEvidenceLog).toContain('firebase login --reauth');
     expect(launchEvidenceLog).toContain('SHIFT_SCHEDULE_PARSER_URL');
     expect(launchEvidenceLog).toContain('minimal prompt smoke');
     expect(launchEvidenceLog).toContain('EAS production environment push confirmation');
+    expect(launchEvidenceLog).toContain('No variables found for this environment');
+    expect(launchEvidenceLog).toContain('did not upload placeholder values');
     expect(launchEvidenceLog).toContain('created project `Ryvro`');
     expect(launchEvidenceLog).toContain('app.revenuecat.com/projects/42dccd7e/overview');
     expect(launchEvidenceLog).toContain('category `Productivity`');
@@ -3233,10 +3241,10 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('71fde2ff-aa36-4741-aa69-e4f11ba30acd');
     expect(launchEvidenceLog).toContain('build number `2`');
     expect(launchEvidenceLog).toContain(
-      'message `Ryvro TestFlight candidate build 2`, and status `IN_PROGRESS`'
+      'message `Ryvro TestFlight candidate build 2`, and final status `FINISHED`'
     );
     expect(launchEvidenceLog).toContain(
-      'not final production-auth-ready evidence until the EAS production environment'
+      'a fresh production-auth-ready build is created after the EAS production environment'
     );
     expect(launchEvidenceLog).toContain(
       'Use `docs/RYVRO_APP_STORE_TESTFLIGHT_HANDOFF.md` and `docs/RYVRO_DEVICE_QA_EVIDENCE_TEMPLATE.md` for the TestFlight iPhone QA packet'
@@ -3429,7 +3437,14 @@ describe('Ryvro environment template', () => {
     expect(appStoreTestFlightHandoff).toContain(
       'commit `6b8ddb9c1343b4d36ebe5cf965cbf71041163456`'
     );
-    expect(appStoreTestFlightHandoff).toContain('current status `IN_PROGRESS`');
+    expect(appStoreTestFlightHandoff).toContain('final status `FINISHED`');
+    expect(appStoreTestFlightHandoff).toContain('2026-06-06T09:26:45.414Z');
+    expect(appStoreTestFlightHandoff).toContain(
+      'https://expo.dev/artifacts/eas/f5qhVQot1CDyn9zD4bzSfR.ipa'
+    );
+    expect(appStoreTestFlightHandoff).toContain('BQG8N6UP7Y');
+    expect(appStoreTestFlightHandoff).toContain('b53825db-0f5c-4f56-b19e-c5af5f1999f3');
+    expect(appStoreTestFlightHandoff).toContain('Apple was processing the binary after upload');
     expect(appStoreTestFlightHandoff).toContain(
       'This is still not final production-auth-ready evidence'
     );
@@ -3439,7 +3454,7 @@ describe('Ryvro environment template', () => {
       'EAS Submit `c17b593c-7909-42db-96f6-a81f095f7479`'
     );
     expect(appStoreTestFlightHandoff).toContain(
-      'TestFlight shows version `1.0.0`, build `1`, status `Ready to Submit`'
+      'TestFlight previously showed version `1.0.0`, build `1`, status `Ready to Submit`'
     );
     expect(appStoreTestFlightHandoff).toContain('Internal TestFlight group `Ryvro iPhone QA`');
     expect(appStoreTestFlightHandoff).toContain(
@@ -3599,8 +3614,12 @@ describe('Ryvro environment template', () => {
       'parseShiftScheduleDescription`: must return `200` with a draft schedule'
     );
     expect(firebaseOauthBackendHandoff).toContain(
-      'OpenAI provider calls currently return `429` quota exceeded'
+      'Provider-backed parser calls still fail for non-heuristic prompts'
     );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'HTTP `500` with non-secret error code `internal_error`'
+    );
+    expect(firebaseOauthBackendHandoff).toContain('Firebase CLI log inspection was blocked');
     expect(firebaseOauthBackendHandoff).toContain('npm run release:native:check');
     expect(firebaseOauthBackendHandoff).toContain('npm run release:env:check');
     expect(firebaseOauthBackendHandoff).toContain('npm run release:env:push');
