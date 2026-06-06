@@ -2688,6 +2688,12 @@ describe('Ryvro environment template', () => {
         redirects?: Array<{ source?: string; destination?: string; type?: number }>;
       };
     };
+    const firebaseRc = JSON.parse(
+      fs.readFileSync(path.join(process.cwd(), '.firebaserc'), 'utf8')
+    ) as {
+      projects?: { default?: string };
+      targets?: Record<string, { hosting?: Record<string, string[]> }>;
+    };
     const launchHome = fs.readFileSync(path.join(process.cwd(), 'web/launch/index.html'), 'utf8');
     const launchPrivacy = fs.readFileSync(
       path.join(process.cwd(), 'web/launch/privacy/index.html'),
@@ -2761,17 +2767,10 @@ describe('Ryvro environment template', () => {
     );
     expect(launchFirebaseConfig.hosting?.target).toBe('launch-site');
     expect(launchFirebaseConfig.hosting?.public).toBe('web/launch');
-    expect(launchFirebaseConfig.hosting?.redirects).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ source: '/privacy', destination: '/privacy/', type: 301 }),
-        expect.objectContaining({ source: '/terms', destination: '/terms/', type: 301 }),
-        expect.objectContaining({ source: '/support', destination: '/support/', type: 301 }),
-        expect.objectContaining({
-          source: '/delete-account',
-          destination: '/delete-account/',
-          type: 301,
-        }),
-      ])
+    expect(launchFirebaseConfig.hosting?.redirects).toBeUndefined();
+    expect(firebaseRc.projects?.default).toBe('ryvro-shift-planner');
+    expect(firebaseRc.targets?.['ryvro-shift-planner']?.hosting?.['launch-site']).toContain(
+      'ryvro-launch-site'
     );
     expect(launchReadme).toContain('Do not replace the existing analytics admin hosting target');
 
@@ -3097,9 +3096,10 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain(
       'Firebase Console then showed `Your Firebase project is ready`'
     );
-    expect(launchEvidenceLog).toContain('The tracked `.firebaserc` default now points');
-    expect(launchEvidenceLog).toContain('Local Firebase CLI caveat');
-    expect(launchEvidenceLog).toContain('pass `--project ryvro-shift-planner` explicitly');
+    expect(launchEvidenceLog).toContain('default hosting site `ryvro-shift-planner`');
+    expect(launchEvidenceLog).toContain('separate public launch site `ryvro-launch-site`');
+    expect(launchEvidenceLog).toContain('https://ryvro-launch-site.web.app');
+    expect(launchEvidenceLog).toContain('hosting target `launch-site` to `ryvro-launch-site`');
     expect(launchEvidenceLog).toContain('Keep the related OAuth');
     expect(firebaseRc).toContain('"default": "ryvro-shift-planner"');
     expect(launchEvidenceLog).toContain('Firebase iOS app');

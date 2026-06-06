@@ -324,6 +324,14 @@ firebase target:apply hosting launch-site <firebase-hosting-site-id>
 npm run firebase:deploy:launch-site
 ```
 
+Current Firebase Hosting progress:
+
+- Separate launch site created: `ryvro-launch-site`
+- Default launch URL: `https://ryvro-launch-site.web.app`
+- `.firebaserc` maps `launch-site` to `ryvro-launch-site` for project `ryvro-shift-planner`
+- `npm run firebase:deploy:launch-site -- --project ryvro-shift-planner` deployed the static launch pages on 2026-06-06
+- Verified fallback URLs: `https://ryvro-launch-site.web.app/privacy/`, `https://ryvro-launch-site.web.app/terms/`, `https://ryvro-launch-site.web.app/support/`, and `https://ryvro-launch-site.web.app/delete-account/`
+
 Record the live `https://getryvro.com/privacy`, `https://getryvro.com/terms`, `https://getryvro.com/support`, and `https://getryvro.com/delete-account` checks in `docs/RYVRO_LAUNCH_EVIDENCE_LOG.md`.
 
 Before purchase/reservation, run the public repo-side evidence check:

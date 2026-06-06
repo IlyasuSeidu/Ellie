@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "ryvro-shift-planner"
-  }
+  },
+  "targets": {
+    "ryvro-shift-planner": {
+      "hosting": {
+        "launch-site": [
+          "ryvro-launch-site"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

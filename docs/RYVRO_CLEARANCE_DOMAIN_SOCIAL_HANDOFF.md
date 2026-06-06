@@ -104,10 +104,19 @@ Repo-side drafts already exist:
 - Support page: `web/launch/support/index.html`
 - Account deletion page: `web/launch/delete-account/index.html`
 
+Firebase Hosting progress from 2026-06-06:
+
+- Separate Hosting site: `ryvro-launch-site`
+- Default Hosting URL: `https://ryvro-launch-site.web.app`
+- Local target mapping: `.firebaserc` maps project `ryvro-shift-planner` target `launch-site` to site `ryvro-launch-site`
+- Deployment command used: `npm run firebase:deploy:launch-site -- --project ryvro-shift-planner`
+- Verified HTTP checks: `/`, `/privacy/`, `/terms/`, `/support/`, and `/delete-account/` returned HTTP `200`; `/privacy` returned a single HTTP `301` to `/privacy/`
+
 Before publishing:
 
 - Review all legal/support copy.
 - Set final effective dates.
+- Connect `getryvro.com` to the `ryvro-launch-site` Firebase Hosting site, then repeat the HTTPS checks against the production domain.
 - Confirm subscription, RevenueCat, Firebase, AI provider, microphone, calendar import/export, analytics, diagnostics, and account deletion behavior match the shipped build.
 - Confirm the pages do not claim Ryvro is live before App Store and Google Play evidence exists.
 - Confirm in-app links, App Store Connect, Google Play Console, Firebase Auth email templates, RevenueCat, and store review notes use the same live URLs.
