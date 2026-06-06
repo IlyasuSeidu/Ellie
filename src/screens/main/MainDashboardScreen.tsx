@@ -46,18 +46,20 @@ import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { theme } from '@/utils/theme';
 import { getShiftDaysInRange, getShiftStatistics, buildShiftCycle } from '@/utils/shiftUtils';
-import { toDateString, getDaysInMonth } from '@/utils/dateUtils';
+import { toDateString, getDaysInMonth, addDays } from '@/utils/dateUtils';
+import { formatTimeForDisplay } from '@/utils/shiftTimeUtils';
 import { formatLocalizedDateTime } from '@/utils/i18nFormat';
 import { useOnboarding, type OnboardingData } from '@/contexts/OnboardingContext';
 import { type ShiftCycle } from '@/types';
 import { useActiveShift } from '@/hooks/useActiveShift';
 import { getNextShiftAccentRefreshAt } from '@/hooks/useShiftAccent';
-import type { MonthStatistics } from '@/types/dashboard';
+import type { MonthStatistics, UpcomingShift } from '@/types/dashboard';
 
 // Dashboard components
 import { PersonalizedHeader } from '@/components/dashboard/PersonalizedHeader';
 import { CurrentShiftStatusCard } from '@/components/dashboard/CurrentShiftStatusCard';
 import { MonthlyCalendarCard } from '@/components/dashboard/MonthlyCalendarCard';
+import { UpcomingShiftsCard } from '@/components/dashboard/UpcomingShiftsCard';
 import { StatisticsRow } from '@/components/dashboard/StatisticsCard';
 import { QuickActionsBar, type QuickAction } from '@/components/dashboard/QuickActionsBar';
 import type { MainStackParamList } from '@/navigation/MainStackNavigator';
@@ -87,6 +89,50 @@ function calculateMonthStats(year: number, month: number, cycle: ShiftCycle): Mo
     nightShifts: stats.nightShifts,
     workLifeBalance: totalDays > 0 ? (stats.daysOff / totalDays) * 100 : 0,
   };
+}
+
+function buildUpcomingTimeDisplay(shift: ReturnType<typeof getShiftDaysInRange>[number]): string {
+  const universal = shift.universal;
+  if (!universal) return '';
+  if (universal.timePolicy === 'all_day') return 'All day';
+  if (universal.timePolicy !== 'timed' || !universal.startTime || !universal.endTime) return '';
+  return `${formatTimeForDisplay(universal.startTime)} - ${formatTimeForDisplay(universal.endTime)}${
+    universal.crossesMidnight ? ' +1' : ''
+  }`;
+}
+
+function buildUpcomingShifts(
+  cycle: ShiftCycle,
+  language: string | undefined,
+  today = new Date()
+): UpcomingShift[] {
+  const startDate = addDays(today, 1);
+  const endDate = addDays(today, 21);
+
+  return getShiftDaysInRange(startDate, endDate, cycle)
+    .filter((shift) => shift.isWorkDay)
+    .slice(0, 3)
+    .map((shift) => {
+      const date = new Date(`${shift.date}T00:00:00`);
+      return {
+        date: shift.date,
+        shiftType: shift.shiftType,
+        isWorkDay: shift.isWorkDay,
+        displayDate: formatLocalizedDateTime(
+          date,
+          { weekday: 'short', month: 'short', day: 'numeric' },
+          language
+        ),
+        timeDisplay: buildUpcomingTimeDisplay(shift),
+        universalDisplay: shift.universal
+          ? {
+              title: shift.universal.definitionName,
+              color: shift.universal.color,
+              icon: shift.universal.icon,
+            }
+          : undefined,
+      };
+    });
 }
 
 /** Glow colors per shift type — used for overnight carry-over on the calendar */
@@ -323,6 +369,12 @@ export const MainDashboardScreen: React.FC = () => {
     const { year, month } = currentMonth;
     return calculateMonthStats(year, month, shiftCycle);
   }, [shiftCycle, currentMonth, currentDateStr]);
+
+  const upcomingShifts = useMemo(() => {
+    if (!shiftCycle) return [];
+    void currentDateStr;
+    return buildUpcomingShifts(shiftCycle, i18n.resolvedLanguage ?? i18n.language);
+  }, [currentDateStr, i18n.language, i18n.resolvedLanguage, shiftCycle]);
 
   // Month navigation
   const handlePreviousMonth = useCallback(() => {
@@ -584,6 +636,13 @@ export const MainDashboardScreen: React.FC = () => {
           isOnShift={activeShift.isOnShift}
           animationDelay={100}
           testID="dashboard-shift-status"
+        />
+
+        <UpcomingShiftsCard
+          key={`upcoming-${refreshKey}`}
+          shifts={upcomingShifts}
+          animationDelay={180}
+          testID="dashboard-upcoming-shifts"
         />
 
         {/* Monthly Calendar */}

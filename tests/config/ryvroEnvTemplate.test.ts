@@ -4680,6 +4680,9 @@ describe('Ryvro environment template', () => {
     expect(dashboardScreen).toContain('QuickActionsBar');
     expect(dashboardScreen).toContain('dashboardQuickActions');
     expect(dashboardScreen).toContain('dashboard-quick-actions');
+    expect(dashboardScreen).toContain('UpcomingShiftsCard');
+    expect(dashboardScreen).toContain('buildUpcomingShifts');
+    expect(dashboardScreen).toContain('dashboard-upcoming-shifts');
     expect(dashboardScreen).toContain('handleDashboardQuickActionPress');
     expect(dashboardScreen).toContain('quick_action_builder');
     expect(dashboardScreen).toContain('quick_action_export');
