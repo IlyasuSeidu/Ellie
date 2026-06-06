@@ -58,7 +58,8 @@ Logged-in browser reservation progress from 2026-06-06:
 - Spaceship Email forwarding now has individual rules forwarding `support@getryvro.com` and `reviewer@getryvro.com` to `seiduilyasu94@gmail.com`.
 - Public DNS checks on 2026-06-06 returned Spaceship email-forwarding MX records `mx1.efwd.spaceship.net` and `mx2.efwd.spaceship.net`, plus SPF TXT value `v=spf1 include:spf.efwd.spaceship.net ~all`.
 - A Gmail test message from `seiduilyasu94@gmail.com` to `support@getryvro.com` sent successfully, but Gmail did not show a forwarded inbound copy because the sender and forwarding destination were the same mailbox. The requested outside sender `seiduilyasu@tmail.com` could not be used because `tmail.com` returned no public MX or A records and Chrome showed a DNS error. Final mailbox proof still needs a test from a reachable different sender.
-- Live HTTPS checks on 2026-06-06 returned HTTP `200` for `https://getryvro.com/`, `/privacy/`, `/terms/`, `/support/`, `/delete-account/`, and `/auth/action/`. Keep the broader launch row pending until support mailbox evidence, final legal/content review, account deletion request-flow evidence, and store-console evidence are complete.
+- Live HTTPS checks on 2026-06-06 returned HTTP `200` for `https://getryvro.com/`, `/privacy/`, `/terms/`, `/support/`, `/delete-account/`, and `/auth/action/`.
+- The live account deletion page now includes a prefilled deletion request link to `support@getryvro.com` with subject `Ryvro account deletion request`, account email, country, and optional-notes fields, plus a primary `Start deletion request` action. Keep the broader launch row pending until support mailbox evidence, final legal/content review, and store-console evidence are complete.
 
 ## Formal Clearance
 

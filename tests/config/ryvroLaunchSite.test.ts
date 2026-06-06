@@ -10,6 +10,7 @@ describe('Ryvro launch site', () => {
   const launchReadme = read('web/launch/README.md');
   const actionPage = read('web/launch/auth/action/index.html');
   const actionHandler = read('web/launch/auth/action/handler.js');
+  const deleteAccountPage = read('web/launch/delete-account/index.html');
   const firebaseLaunchConfig = read('firebase.launch.json');
 
   it('publishes the Firebase Auth action handler under the launch site', () => {
@@ -45,5 +46,17 @@ describe('Ryvro launch site', () => {
     expect(actionPage).not.toMatch(/AIza[0-9A-Za-z_-]+/);
     expect(actionHandler).not.toMatch(/AIza[0-9A-Za-z_-]+/);
     expect(actionPage).toContain('/__/firebase/init.js');
+  });
+
+  it('keeps the account deletion request flow ready for app review', () => {
+    expect(deleteAccountPage).toContain('Delete Your Ryvro Account');
+    expect(deleteAccountPage).toContain('support@getryvro.com');
+    expect(deleteAccountPage).toContain('subject=Ryvro%20account%20deletion%20request');
+    expect(deleteAccountPage).toContain(
+      'Please%20delete%20my%20Ryvro%20account%20and%20associated%20app%20data'
+    );
+    expect(deleteAccountPage).toContain('Account%20email%3A%0ACountry%3A%0AOptional%20notes');
+    expect(deleteAccountPage).toContain('Start deletion request');
+    expect(deleteAccountPage).toContain('/support/');
   });
 });
