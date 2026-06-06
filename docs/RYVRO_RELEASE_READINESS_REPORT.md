@@ -81,6 +81,8 @@ Completed and guarded in the current branch:
 
 ## Verification Completed
 
+- Local release verification on 2026-06-06 passed `npm run release:check` after refreshing the launch-readiness evidence report, README release snapshot, owner launch runbook, and release task tracker. The release check included TypeScript, 110 Jest suites / 1,784 tests, 4 snapshots, the native scaffold preflight, the store readiness preflight, the owner handoff preflight, and backend build.
+- Recent pushed GitHub Actions check for PR #1 passed on commit `9e31a32`: CI run `27063524476` passed Lint and Type Check, Unit Tests, Build Check, and the dedicated Release Check job running `npm run release:check`.
 - `npm test -- ryvroEnvTemplate --runInBand`: passed on 2026-05-29 after the latest public-content guard update.
 - Focused Phase 9 automated QA passed on 2026-05-29:
   - `npm test -- AuthService SignInScreen ShiftScheduleParserService universalShiftEdgeCases MonthlyCalendarCard ShiftSettingsPanel PremiumWelcomeScreen SmartReminderService --runInBand`: 8 suites, 162 tests.

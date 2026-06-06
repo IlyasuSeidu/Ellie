@@ -732,8 +732,8 @@ describe('Ryvro environment template', () => {
     );
     expect(script).toContain('release:submit:check');
     expect(script).toContain('npm run release:submit:check');
-    expect(script).toContain('CI run `27018502561`');
-    expect(script).toContain('commit `ed43b3c`');
+    expect(script).toContain('CI run `27063524476`');
+    expect(script).toContain('commit `9e31a32`');
   });
 
   it('keeps final EAS submit readiness behind an owner evidence guard', () => {
@@ -1556,7 +1556,7 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain(
       'App identity: `Ryvro Shift Planner`, native display name `Ryvro`, bundle/package `com.ryvro.shiftplanner`'
     );
-    expect(readme).toContain('110 Jest suites / 1,782 tests / 4 snapshots');
+    expect(readme).toContain('110 Jest suites / 1,784 tests / 4 snapshots');
     expect(readme).toContain('the Ryvro native scaffold preflight');
     expect(readme).toContain('the store readiness preflight');
     expect(readme).toContain('the owner handoff preflight');
@@ -1565,14 +1565,10 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('active universal shift icon');
     expect(readme).toContain('auth, onboarding, dashboard, profile, and builder mobile-fit checks');
     expect(readme).toContain('Recent pushed PR gates');
-    expect(readme).toContain('GitHub Actions CI run `27018502561`');
-    expect(readme).toContain('commit `ed43b3c`');
-    expect(readme).toContain('CI run `27017702436`');
-    expect(readme).toContain('commit `583fa55`');
-    expect(readme).toContain('CI run `27017194317`');
-    expect(readme).toContain('commit `597388b`');
-    expect(readme).toContain('CI run `27016680821`');
-    expect(readme).toContain('commit `5059dcc`');
+    expect(readme).toContain('GitHub Actions CI run `27063524476`');
+    expect(readme).toContain('commit `9e31a32`');
+    expect(readme).toContain('CI run `27063279446`');
+    expect(readme).toContain('commit `3d11b09`');
     expect(readme).toContain('[docs/RYVRO_OWNER_LAUNCH_RUNBOOK.md]');
     expect(readme).toContain('[docs/RYVRO_SUBMIT_BLOCKER_TRIAGE.md]');
     expect(readme).toContain('Fresh Firebase, Google OAuth, Apple Sign-In, RevenueCat');
@@ -1582,7 +1578,7 @@ describe('Ryvro environment template', () => {
     expect(readme).toContain('valid-prompt `SHIFT_SCHEDULE_PARSER_URL` parser response');
     expect(readme).toContain('[docs/RYVRO_RELEASE_READINESS_REPORT.md]');
     expect(readme).toContain('Works at remote work locations');
-    expect(readme).toContain('Testing infrastructure (1,782 tests in the latest release check)');
+    expect(readme).toContain('Testing infrastructure (1,784 tests in the latest release check)');
     expect(readme).toContain('Dashboard quick actions route to implemented launch surfaces');
     expect(readme).toContain('Every Work Pattern Is Different');
     expect(readme).toContain('work location, and reminder settings');
@@ -1591,9 +1587,9 @@ describe('Ryvro environment template', () => {
     );
     expect(readme).toContain('Full Schedule tab');
     expect(readme).toContain('**Physical device smoke**: still required before store submission');
-    expect(readme).toContain('Jest (1,782 tests in the latest release check)');
-    expect(readme).toContain('Current Status (as of 2026-06-05 release check)');
-    expect(readme).toContain('Total Tests**: 1,782 passing (110 Jest suites, 4 snapshots)');
+    expect(readme).toContain('Jest (1,784 tests in the latest release check)');
+    expect(readme).toContain('Current Status (as of 2026-06-06 release check)');
+    expect(readme).toContain('Total Tests**: 1,784 passing (110 Jest suites, 4 snapshots)');
     expect(readme).not.toContain('1,732 Tests');
     expect(readme).not.toContain('### 📋 Phase 4: Main App (Planned)');
     expect(readme).not.toContain('- [ ] Home screen with "Tomorrow: [Shift Type]" display');
@@ -1835,7 +1831,8 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).toContain('Last updated: June 6, 2026');
     expect(releaseTasks).toContain('latest public clearance evidence at 13:11Z');
     expect(releaseTasks).toContain('domain cart evidence');
-    expect(releaseTasks).toContain('CI pass `27063279446` on `3d11b09`');
+    expect(releaseTasks).toContain('owner runbook verification refresh');
+    expect(releaseTasks).toContain('CI pass `27063524476` on `9e31a32`');
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
     expect(releaseTasks).toContain('latest public evidence: 2026-06-06 13:11Z');
@@ -2115,7 +2112,7 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('110 Jest suites / 1,771 tests');
     expect(readinessReport).toContain('110 Jest suites / 1,776 tests');
     expect(readinessReport).toContain('110 Jest suites / 1,781 tests');
-    expect(readinessReport).toContain('110 Jest suites / 1,782 tests');
+    expect(readinessReport).toContain('110 Jest suites / 1,784 tests');
     expect(readinessReport).toContain('Profile legal/support link coverage');
     expect(readinessReport).toContain(
       'requiring real root-level Firebase native service files for Ryvro production builds'
@@ -2129,10 +2126,10 @@ describe('Ryvro environment template', () => {
     expect(readinessReport).toContain('commit `1bc3031`');
     expect(readinessReport).toContain('CI run `26715426451`');
     expect(readinessReport).toContain('commit `a019d6c`');
-    expect(readinessReport).toContain('CI run `27018502561`');
-    expect(readinessReport).toContain('commit `ed43b3c`');
-    expect(readinessReport).toContain('CI run `27017702436`');
-    expect(readinessReport).toContain('commit `583fa55`');
+    expect(readinessReport).toContain('CI run `27063524476`');
+    expect(readinessReport).toContain('commit `9e31a32`');
+    expect(readinessReport).toContain('launch-readiness evidence report');
+    expect(readinessReport).toContain('README release snapshot');
     expect(readinessReport).toContain('CI run `27011414391`');
     expect(readinessReport).toContain('commit `6fcced7`');
     expect(readinessReport).toContain('CI run `27011090251`');
@@ -3056,22 +3053,18 @@ describe('Ryvro environment template', () => {
     expect(ownerRunbook).toContain('eas submit --platform android --latest');
     expect(ownerRunbook).toContain('npm run release:submit:check');
     expect(ownerRunbook).toContain('Final submit readiness is guarded');
-    expect(ownerRunbook).toContain('110 Jest suites, 1,782 tests');
+    expect(ownerRunbook).toContain('110 Jest suites, 1,784 tests');
     expect(ownerRunbook).toContain('npm run release:owner:check');
     expect(ownerRunbook).toContain('owner handoff preflight');
     expect(ownerRunbook).toContain('not-yet-live stop gates');
     expect(ownerRunbook).toContain('docs/RYVRO_SCREENSHOT_CAPTURE_CHECKLIST.md');
     expect(ownerRunbook).toContain('Recent pushed PR gate evidence includes');
     expect(ownerRunbook).not.toContain('Latest pushed PR gate');
-    expect(ownerRunbook).toContain('recording RevenueCat project/app evidence');
-    expect(ownerRunbook).toContain('CI run `27018502561`');
-    expect(ownerRunbook).toContain('commit `ed43b3c`');
-    expect(ownerRunbook).toContain('CI run `27017702436`');
-    expect(ownerRunbook).toContain('commit `583fa55`');
-    expect(ownerRunbook).toContain('CI run `27017194317`');
-    expect(ownerRunbook).toContain('commit `597388b`');
-    expect(ownerRunbook).toContain('CI run `27016680821`');
-    expect(ownerRunbook).toContain('commit `5059dcc`');
+    expect(ownerRunbook).toContain('refreshing the launch-readiness evidence report');
+    expect(ownerRunbook).toContain('CI run `27063524476`');
+    expect(ownerRunbook).toContain('commit `9e31a32`');
+    expect(ownerRunbook).toContain('CI run `27063279446`');
+    expect(ownerRunbook).toContain('commit `3d11b09`');
     expect(ownerRunbook).toContain('dedicated Release Check job');
     expect(ownerRunbook).not.toContain('Ellie Shift Planner');
     expect(ownerRunbook).not.toContain('ellie_pro');
