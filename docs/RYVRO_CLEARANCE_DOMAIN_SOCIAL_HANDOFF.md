@@ -55,9 +55,9 @@ Logged-in browser reservation progress from 2026-06-06:
 - Firebase Console has custom domain `getryvro.com` attached to Hosting site `ryvro-launch-site`. After adding Firebase's required `_acme-challenge.getryvro.com` TXT record in Spaceship, Firebase accepted the domain verification and moved the custom domain to `Minting certificate`.
 - Public DNS checks on 2026-06-06 returned the `_acme-challenge.getryvro.com` TXT value requested by Firebase from local DNS, Google DNS, and Cloudflare DNS.
 - The Firebase Hosting custom-domain API reported `hostState` `HOST_ACTIVE`, `ownershipState` `OWNERSHIP_ACTIVE`, and certificate state `CERT_PROPAGATING`.
-- Spaceship Email forwarding now has an individual rule forwarding `support@getryvro.com` to `seiduilyasu94@gmail.com`.
+- Spaceship Email forwarding now has individual rules forwarding `support@getryvro.com` and `reviewer@getryvro.com` to `seiduilyasu94@gmail.com`.
 - Public DNS checks on 2026-06-06 returned Spaceship email-forwarding MX records `mx1.efwd.spaceship.net` and `mx2.efwd.spaceship.net`, plus SPF TXT value `v=spf1 include:spf.efwd.spaceship.net ~all`.
-- A Gmail test message from `seiduilyasu94@gmail.com` to `support@getryvro.com` sent successfully, but Gmail did not show a forwarded inbound copy because the sender and forwarding destination were the same mailbox. Final mailbox proof still needs a test from a different sender.
+- A Gmail test message from `seiduilyasu94@gmail.com` to `support@getryvro.com` sent successfully, but Gmail did not show a forwarded inbound copy because the sender and forwarding destination were the same mailbox. The requested outside sender `seiduilyasu@tmail.com` could not be used because `tmail.com` returned no public MX or A records and Chrome showed a DNS error. Final mailbox proof still needs a test from a reachable different sender.
 - Live HTTPS checks on 2026-06-06 returned HTTP `200` for `https://getryvro.com/`, `/privacy/`, `/terms/`, `/support/`, `/delete-account/`, and `/auth/action/`. Keep the broader launch row pending until support mailbox evidence, final legal/content review, account deletion request-flow evidence, and store-console evidence are complete.
 
 ## Formal Clearance
