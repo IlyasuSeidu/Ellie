@@ -52,9 +52,9 @@ Logged-in browser reservation progress from 2026-06-06:
 - The owner then confirmed `getryvro.com` was purchased.
 - Spaceship Advanced DNS was configured with an `A` record for host `@` pointing to `199.36.158.100` and a `TXT` record for host `@` with value `hosting-site=ryvro-launch-site`.
 - Public DNS checks on 2026-06-06 returned `199.36.158.100` for `getryvro.com A` and `"hosting-site=ryvro-launch-site"` for `getryvro.com TXT`.
-- Firebase Console has custom domain `getryvro.com` attached to Hosting site `ryvro-launch-site`. After adding Firebase's required `_acme-challenge.getryvro.com` TXT record in Spaceship, Firebase accepted the domain verification and moved the custom domain to `Minting certificate`.
+- Firebase Console has custom domain `getryvro.com` attached to Hosting site `ryvro-launch-site`. After adding Firebase's required `_acme-challenge.getryvro.com` TXT record in Spaceship, Firebase accepted the domain verification and initially moved the custom domain to `Minting certificate`.
 - Public DNS checks on 2026-06-06 returned the `_acme-challenge.getryvro.com` TXT value requested by Firebase from local DNS, Google DNS, and Cloudflare DNS.
-- The Firebase Hosting custom-domain API reported `hostState` `HOST_ACTIVE`, `ownershipState` `OWNERSHIP_ACTIVE`, and certificate state `CERT_PROPAGATING`.
+- A later Firebase Hosting custom-domain API recheck on 2026-06-06 reported `hostState` `HOST_ACTIVE`, `ownershipState` `OWNERSHIP_ACTIVE`, and certificate state `CERT_ACTIVE`.
 - Spaceship Email forwarding now has individual rules forwarding `support@getryvro.com` and `reviewer@getryvro.com` to `seiduilyasu94@gmail.com`.
 - Public DNS checks on 2026-06-06 returned Spaceship email-forwarding MX records `mx1.efwd.spaceship.net` and `mx2.efwd.spaceship.net`, plus SPF TXT value `v=spf1 include:spf.efwd.spaceship.net ~all`.
 - A Gmail test message from `seiduilyasu94@gmail.com` to `support@getryvro.com` sent successfully, but Gmail did not show a forwarded inbound copy because the sender and forwarding destination were the same mailbox. The requested outside sender `seiduilyasu@tmail.com` could not be used because `tmail.com` returned no public MX or A records and Chrome showed a DNS error. Final mailbox proof still needs a test from a reachable different sender.
@@ -134,13 +134,13 @@ Firebase Hosting progress from 2026-06-06:
 - Verified fallback HTTP checks: `/`, `/privacy/`, `/terms/`, `/support/`, `/delete-account/`, and `/auth/action/` returned HTTP `200`; `/privacy` returned a single HTTP `301` to `/privacy/`
 - `http://getryvro.com` now returns HTTP `301` to `https://getryvro.com/`.
 - `https://getryvro.com/`, `/privacy/`, `/terms/`, `/support/`, `/delete-account/`, and `/auth/action/` now return HTTP `200` with the launch-site security headers.
-- Firebase still reports certificate state `CERT_PROPAGATING`, so re-check the certificate state before final store submission even though HTTPS is already serving the pages.
+- Firebase now reports certificate state `CERT_ACTIVE`, but repeat the HTTPS checks against the production domain before final store submission.
 
 Before publishing:
 
 - Review all legal/support copy.
 - Set final effective dates.
-- Re-check Firebase's custom-domain certificate state and repeat the HTTPS checks against the production domain.
+- Repeat the HTTPS checks against the production domain.
 - Confirm subscription, RevenueCat, Firebase, AI provider, microphone, calendar import/export, analytics, diagnostics, and account deletion behavior match the shipped build.
 - Confirm the pages do not claim Ryvro is live before App Store and Google Play evidence exists.
 - Confirm in-app links, App Store Connect, Google Play Console, Firebase Auth email templates, RevenueCat, and store review notes use the same live URLs.
