@@ -3168,11 +3168,13 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('Backend smoke - ryvroBrain');
     expect(launchEvidenceLog).toContain('Backend deploy - parser');
     expect(launchEvidenceLog).toContain('Shift parser smoke');
-    expect(launchEvidenceLog).toContain('Firebase Secret Manager is reachable');
-    expect(launchEvidenceLog).toContain('empty `secrets` version list');
-    expect(launchEvidenceLog).toContain('has no enabled secret version');
+    expect(launchEvidenceLog).toContain(
+      'stored as Firebase Secret Manager `OPENAI_API_KEY` version `1`'
+    );
+    expect(launchEvidenceLog).toContain('roles/run.invoker');
+    expect(launchEvidenceLog).toContain('OpenAI `429` quota exceeded');
     expect(launchEvidenceLog).toContain('SHIFT_SCHEDULE_PARSER_URL');
-    expect(launchEvidenceLog).toContain('valid-prompt parser smoke returns `200`');
+    expect(launchEvidenceLog).toContain('minimal prompt smoke');
     expect(launchEvidenceLog).toContain('EAS secret push confirmation');
     expect(launchEvidenceLog).toContain('created project `Ryvro`');
     expect(launchEvidenceLog).toContain('app.revenuecat.com/projects/42dccd7e/overview');
@@ -3303,7 +3305,7 @@ describe('Ryvro environment template', () => {
     expect(submitBlockerTriage).toContain('Formal trademark/legal clearance for `Ryvro`');
     expect(submitBlockerTriage).toContain('Finish Google Play Enrollment');
     expect(submitBlockerTriage).toContain('Create Production Firebase And OAuth');
-    expect(submitBlockerTriage).toContain('Firebase billing plan upgrade from Spark to Blaze');
+    expect(submitBlockerTriage).toContain('OpenAI quota or billing');
     expect(submitBlockerTriage).toContain('Finish RevenueCat And Store Products');
     expect(submitBlockerTriage).toContain('Rebuild, Test, Screenshot, Then Submit');
     expect(submitBlockerTriage).toContain('npm run release:versions:get');
@@ -3451,10 +3453,14 @@ describe('Ryvro environment template', () => {
     expect(firebaseOauthBackendHandoff).toContain(
       'Android release signing SHA-1 and SHA-256 fingerprints'
     );
-    expect(firebaseOauthBackendHandoff).toContain('Current blocker updated on 2026-06-06');
+    expect(firebaseOauthBackendHandoff).toContain('Current state updated on 2026-06-06');
     expect(firebaseOauthBackendHandoff).toContain('Firebase Secret Manager is reachable');
-    expect(firebaseOauthBackendHandoff).toContain('empty `secrets` version list');
-    expect(firebaseOauthBackendHandoff).toContain('has no enabled Secret Manager version');
+    expect(firebaseOauthBackendHandoff).toContain(
+      'stored as Firebase Secret Manager `OPENAI_API_KEY` version `1`'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'non-production placeholder Secret Manager value'
+    );
     expect(firebaseOauthBackendHandoff).toContain(
       'owner accepted the Google API Services User Data Policy'
     );
@@ -3505,17 +3511,20 @@ describe('Ryvro environment template', () => {
       'Required Firebase Auth sender name: `Ryvro Support`'
     );
     expect(firebaseOauthBackendHandoff).toContain(
-      'firebase deploy --only functions:ryvroBrain,functions:parseShiftScheduleDescription'
+      'firebase deploy --only functions:ryvro-brain:ryvroBrain,functions:ryvro-brain:parseShiftScheduleDescription'
     );
     expect(firebaseOauthBackendHandoff).toContain(
-      'RYVRO_BRAIN_URL=https://<region>-<project-id>.cloudfunctions.net/ryvroBrain'
+      'RYVRO_BRAIN_URL=https://us-central1-ryvro-shift-planner.cloudfunctions.net/ryvroBrain'
     );
     expect(firebaseOauthBackendHandoff).toContain(
-      'SHIFT_SCHEDULE_PARSER_URL=https://<region>-<project-id>.cloudfunctions.net/parseShiftScheduleDescription'
+      'SHIFT_SCHEDULE_PARSER_URL=https://us-central1-ryvro-shift-planner.cloudfunctions.net/parseShiftScheduleDescription'
     );
     expect(firebaseOauthBackendHandoff).toContain('Do not configure `ellieBrain`');
     expect(firebaseOauthBackendHandoff).toContain(
       'parseShiftScheduleDescription`: must return `200` with a draft schedule'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'OpenAI provider calls currently return `429` quota exceeded'
     );
     expect(firebaseOauthBackendHandoff).toContain('npm run release:native:check');
     expect(firebaseOauthBackendHandoff).toContain('npm run release:env:check');

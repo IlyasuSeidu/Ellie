@@ -102,23 +102,30 @@ Record only:
 
 Deploy functions to the Ryvro Firebase project.
 
-Current blocker updated on 2026-06-06:
+Current state updated on 2026-06-06:
 
 - The owner reported Firebase billing is now on pay-as-you-go, and Firebase Secret Manager is reachable.
-- `firebase functions:secrets:get OPENAI_API_KEY --project ryvro-shift-planner --json` returned success with an empty `secrets` version list, so `OPENAI_API_KEY` has no enabled Secret Manager version available for deployment yet.
-- `firebase functions:secrets:get ANTHROPIC_API_KEY --project ryvro-shift-planner` returned 404. This still blocks the optional Claude-backed analytics intelligence functions, but it does not block the first targeted deploy of `ryvroBrain` and `parseShiftScheduleDescription`.
-- Run `firebase functions:secrets:set OPENAI_API_KEY --project ryvro-shift-planner` and enter the key privately in the masked CLI prompt. Do not print or commit the secret value.
-- After `OPENAI_API_KEY` has an enabled version, deploy only the launch-critical OpenAI-backed endpoints first:
+- OpenAI Platform project `Ryvro Project` now has a new key for the Firebase backend. The key value was copied without printing it and stored as Firebase Secret Manager `OPENAI_API_KEY` version `1` for project `ryvro-shift-planner`.
+- `ANTHROPIC_API_KEY` was added as a non-production placeholder Secret Manager value only because Firebase Functions requires every declared secret name to exist while it analyzes the codebase. This is not launch evidence for Claude-backed analytics.
+- The codebase-qualified Firebase deploy filter is required for this project:
 
 ```bash
-firebase deploy --only functions:ryvroBrain,functions:parseShiftScheduleDescription --project ryvro-shift-planner
+firebase deploy --only functions:ryvro-brain:ryvroBrain,functions:ryvro-brain:parseShiftScheduleDescription --project ryvro-shift-planner
 ```
+
+- The first deploy attempt failed because the default compute service account was missing Cloud Build builder permissions. The documented fix was applied by granting `roles/cloudbuild.builds.builder` to `1002666052675-compute@developer.gserviceaccount.com`.
+- The rerun successfully updated both `ryvro-brain:ryvroBrain(us-central1)` and `ryvro-brain:parseShiftScheduleDescription(us-central1)`.
+- Firebase returned Cloud Run URLs `https://ryvrobrain-olx76zaeka-uc.a.run.app` and `https://parseshiftscheduledescription-olx76zaeka-uc.a.run.app`.
+- Standard Firebase HTTPS URLs remain the URLs production clients should use.
+- Both Cloud Run services initially returned public HTTP `403`, so `roles/run.invoker` was granted to `allUsers` on only `ryvrobrain` and `parseshiftscheduledescription`.
+- A Firebase Functions artifact cleanup policy was set for `us-central1` to delete images older than 1 day.
+- OpenAI provider calls currently return `429` quota exceeded. Fix OpenAI project billing or quota before marking AI voice and non-heuristic parser behavior launch-ready.
 
 Required function URLs:
 
 ```text
-RYVRO_BRAIN_URL=https://<region>-<project-id>.cloudfunctions.net/ryvroBrain
-SHIFT_SCHEDULE_PARSER_URL=https://<region>-<project-id>.cloudfunctions.net/parseShiftScheduleDescription
+RYVRO_BRAIN_URL=https://us-central1-ryvro-shift-planner.cloudfunctions.net/ryvroBrain
+SHIFT_SCHEDULE_PARSER_URL=https://us-central1-ryvro-shift-planner.cloudfunctions.net/parseShiftScheduleDescription
 ```
 
 Do not configure `ellieBrain` for new Ryvro production builds.
@@ -149,6 +156,9 @@ Expected launch evidence:
 - `ryvroBrain`: `400` for the intentionally empty body proves reachability; `200` with a valid body also passes.
 - `parseShiftScheduleDescription`: must return `200` with a draft schedule for the minimal schedule prompt.
 - `404`, missing secret, wrong project, provider failure, auth failure, network failure, or parser `400` for the valid prompt is not launch-ready.
+- Current smoke result on 2026-06-06: `ryvroBrain` returned HTTP `400` with non-secret error code `invalid_request` for the intentionally empty body after public invoker access was fixed.
+- Current smoke result on 2026-06-06: `parseShiftScheduleDescription` returned HTTP `200` with a draft schedule for the minimal 2 days, 2 nights, 4 off prompt, but warned that deterministic fallback was used because AI parsing was unavailable.
+- Current provider blocker on 2026-06-06: a non-heuristic parser prompt returned HTTP `502` with OpenAI `429` quota exceeded. Treat provider-backed voice and AI parsing as not launch-ready until OpenAI quota or billing is fixed and a non-heuristic parser smoke passes without quota error.
 
 Record:
 

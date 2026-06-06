@@ -23,8 +23,7 @@ The latest checked blocker families are:
 - Google Play title, package, app creation, service account, internal testing, Android QA, and Play submission
 - Domain control for `getryvro.com`, DNS, HTTPS, live privacy, terms, support, and account deletion pages
 - Social handle reservation
-- Firebase project, native apps, OAuth clients, Auth domains, Auth email templates, backend deploys, and backend smoke tests
-- Firebase billing plan upgrade from Spark to Blaze before Secret Manager and backend deploy
+- Firebase Auth email templates, OpenAI quota or billing, backend provider smokes, production env, and EAS secret push
 - Production `.env`, `npm run release:env:check`, and EAS secret push
 - RevenueCat apps, entitlement `pro`, store products, offering `default`, and sandbox purchase QA
 - App Store privacy, content rating, export compliance, EU trader status, reviewer account, screenshots, TestFlight iPhone QA, and store submission
@@ -68,9 +67,9 @@ Do this before rebuilding production binaries.
 - Web, iOS, and Android OAuth clients are created.
 - Firebase Auth is enabled, and `getryvro.com` is added as a Firebase Auth authorized domain.
 - Configure Firebase Auth email templates with `Ryvro Support`, `support@getryvro.com`, and `getryvro.com`.
-- Add an enabled `OPENAI_API_KEY` Secret Manager version with `firebase functions:secrets:set OPENAI_API_KEY --project ryvro-shift-planner`.
-- Deploy `ryvroBrain` and `parseShiftScheduleDescription`.
-- Smoke-test both deployed functions.
+- `OPENAI_API_KEY` is now stored in Firebase Secret Manager and both `ryvroBrain` and `parseShiftScheduleDescription` are deployed.
+- Fix OpenAI project quota or billing. Current provider calls return OpenAI `429` quota exceeded, so AI voice and non-heuristic parser behavior are not launch-ready.
+- Rerun backend smoke tests after quota is fixed, including one valid non-heuristic parser prompt and one valid voice request.
 - Fill real production `.env` values.
 - Run `npm run release:env:check`.
 - Push project secrets with `eas secret:push --scope project --env-file .env`.
