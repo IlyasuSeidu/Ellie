@@ -130,6 +130,10 @@ Firebase Hosting progress from 2026-06-06:
 
 - Separate Hosting site: `ryvro-launch-site`
 - Default Hosting URL: `https://ryvro-launch-site.web.app`
+- Custom domain: `https://getryvro.com`
+- Privacy and terms effective date: `June 6, 2026`
+- Live privacy check: `curl -sS https://getryvro.com/privacy/` confirmed `Effective date: June 6, 2026`
+- Live terms check: `curl -sS https://getryvro.com/terms/` confirmed `Effective date: June 6, 2026`
 - Local target mapping: `.firebaserc` maps project `ryvro-shift-planner` target `launch-site` to site `ryvro-launch-site`
 - Deployment command used: `npm run firebase:deploy:launch-site -- --project ryvro-shift-planner`
 - Verified fallback HTTP checks: `/`, `/privacy/`, `/terms/`, `/support/`, `/delete-account/`, and `/auth/action/` returned HTTP `200`; `/privacy` returned a single HTTP `301` to `/privacy/`

@@ -2820,9 +2820,13 @@ describe('Ryvro environment template', () => {
     expect(launchPrivacy).toContain('AI builder prompts used to draft schedules');
     expect(launchPrivacy).toContain('RevenueCat');
     expect(launchPrivacy).toContain('https://getryvro.com/delete-account');
+    expect(launchPrivacy).toContain('Effective date: June 6, 2026');
+    expect(launchPrivacy).not.toContain('To be confirmed before launch');
     expect(launchTerms).toContain('Not For Safety-Critical Decisions');
     expect(launchTerms).toContain('Ryvro Pro');
     expect(launchTerms).toContain('App Store, Google Play, and RevenueCat');
+    expect(launchTerms).toContain('Effective date: June 6, 2026');
+    expect(launchTerms).not.toContain('To be confirmed before launch');
     expect(launchSupport).toContain('Managing Ryvro Pro subscriptions and restore purchases');
     expect(launchDeletion).toContain('Ryvro account deletion request');
     expect(launchDeletion).toContain(
