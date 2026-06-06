@@ -32,6 +32,9 @@ yarn-error.*
 .DS_Store
 *.pem
 
+# git metadata is not needed in the remote EAS build archive
+.git/
+
 # local env files and console secrets
 .env
 .env*.local
@@ -48,6 +51,10 @@ web-admin/analytics-intelligence/firebase-config.local.js
 coverage/
 artifacts/
 reports/
+tests/
+e2e/
+docs/
+*.md
 
 # generated native folders
 /ios
@@ -58,6 +65,9 @@ backend/
 web-admin/
 build-in-public/
 design/
+
+# source images are retained in git but not needed at runtime
+assets/onboarding/icons/source/
 
 # local training/build scratch
 .tmp-*/
