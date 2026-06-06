@@ -3359,6 +3359,11 @@ describe('Ryvro environment template', () => {
     expect(appStoreTestFlightHandoff).toContain(
       'Do not submit build `782b6dec-1cf1-4cf2-9159-69ef1ab4078a` as-is'
     );
+    expect(appStoreTestFlightHandoff).toContain('EAS CLI 14 does not support `--verbose-logs`');
+    expect(appStoreTestFlightHandoff).toContain(
+      'npx eas-cli@14 build --profile production --platform ios --non-interactive --no-wait --message "Ryvro TestFlight candidate 63972d5"'
+    );
+    expect(appStoreTestFlightHandoff).not.toContain('eas-cli@14 build --verbose-logs');
     expect(appStoreTestFlightHandoff).toContain('incremented iOS build number');
     expect(appStoreTestFlightHandoff).toContain(
       'EAS Submit `c17b593c-7909-42db-96f6-a81f095f7479`'
