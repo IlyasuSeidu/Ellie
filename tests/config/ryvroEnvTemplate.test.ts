@@ -1832,12 +1832,14 @@ describe('Ryvro environment template', () => {
       'utf8'
     );
 
-    expect(releaseTasks).toContain(
-      'Last updated: June 5, 2026 (Ryvro rebrand, universal builder rollout, broad launch personas, research-funnel docs, research sequence persona hooks, production Firebase service-file preflight, screenshot capture checklist, final submit evidence guard, Firebase-project-derived backend function defaults, retired Ellie voice endpoint fallback removal, FIFO work-block language cleanup, work-location icon source guidance, localized FIFO helper copy cleanup, localized mining-only launch-proof cleanup, mining FIFO template work-location cleanup, voice rest-block tool copy cleanup, deployment-guide EAS/app-config cleanup, storage-key symbol cleanup, native-scaffold verifier cleanup, wake-word filename cleanup, Firebase service sidecar symbol cleanup, asset checklist reconciliation, industry template visual badge checklist reconciliation, working tracker reconciliation, social profile and landing-page source copy, settings builder entry coverage, settings color/icon coverage, latest public clearance evidence at 13:31Z, iOS simulator onboarding, dashboard, mobile-fit proof, consolidated onboarding icon density coverage, user-safe Ryvro Pro fallback copy, localized Profile help/legal copy, Ryvro Pro unavailable/unconfigured copy cleanup, Ryvro Pro runtime diagnostics cleanup, Play Console account-type handoff, iOS IPA identity proof, Android AAB proof, RevenueCat project and Android app handoff, task checklist reconciliation, static launch legal/support pages, device QA evidence template, Google Play internal-testing handoff, Firebase OAuth backend handoff, RevenueCat products handoff, App Store TestFlight handoff, clearance domain social handoff, submit blocker triage, and recorded pushed PR #1 CI pass `27018502561` on `ed43b3c`)'
-    );
+    expect(releaseTasks).toContain('Last updated: June 6, 2026');
+    expect(releaseTasks).toContain('latest public clearance evidence at 13:11Z');
+    expect(releaseTasks).toContain('domain cart evidence');
+    expect(releaseTasks).toContain('CI pass `27063279446` on `3d11b09`');
     expect(releaseTasks).toContain('## Phase 0 — External Clearance And Reservation');
     expect(releaseTasks).toContain('npm run release:clearance');
-    expect(releaseTasks).toContain('latest public evidence: 2026-06-05 13:31Z');
+    expect(releaseTasks).toContain('latest public evidence: 2026-06-06 13:11Z');
+    expect(releaseTasks).not.toContain('latest public evidence: 2026-06-05 13:31Z');
     expect(releaseTasks).not.toContain('latest public evidence: 2026-06-05 11:04Z');
     expect(releaseTasks).not.toContain('latest public evidence: 2026-05-31 19:32Z');
     expect(releaseTasks).not.toContain('latest public evidence: 2026-05-31 07:14Z');
@@ -2005,8 +2007,13 @@ describe('Ryvro environment template', () => {
       'utf8'
     );
 
-    expect(readinessReport).toContain('Date: 2026-06-05');
+    expect(readinessReport).toContain('Date: 2026-06-06');
     expect(readinessReport).not.toContain('Date: 2026-06-01');
+    expect(readinessReport).toContain('2026-06-06T13:11:48.530Z');
+    expect(readinessReport).toContain('visible fuzzy names were `Rydoo` and `Rydora`');
+    expect(readinessReport).toContain('Spaceship showed `getryvro.com` as available');
+    expect(readinessReport).toContain('visible total `$9.08`');
+    expect(readinessReport).not.toContain('2026-06-05T13:31:53.172Z');
     expect(readinessReport).toContain(
       'production env preflight now rejects retired `ELLIE_BRAIN_*` keys'
     );

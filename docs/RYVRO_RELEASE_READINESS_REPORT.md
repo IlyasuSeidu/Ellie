@@ -1,6 +1,6 @@
 # Ryvro Release Readiness Report
 
-Date: 2026-06-05
+Date: 2026-06-06
 Branch: `codex/ryvro-rebrand-rollout`
 Open PR: `https://github.com/IlyasuSeidu/Ellie/pull/1`
 
@@ -66,10 +66,10 @@ Completed and guarded in the current branch:
 
 ## Current Public Clearance Evidence
 
-`npm run release:clearance` was run on 2026-06-05 at `2026-06-05T13:31:53.172Z`.
+`npm run release:clearance` was run on 2026-06-06 at `2026-06-06T13:11:48.530Z`.
 
 - Apple public software search returned 5 fuzzy results and no exact `Ryvro` or `Ryvro Shift Planner` app result.
-- Google Play public search returned no exact `Ryvro` or `Ryvro Shift Planner` result text; visible fuzzy names were `Rydoo`, `Rydora`, `Ryver`, and `Ryver LLC`.
+- Google Play public search returned no exact `Ryvro` or `Ryvro Shift Planner` result text; visible fuzzy names were `Rydoo` and `Rydora`.
 - Chrome/Computer Use previously read the public Google Play search page for `Ryvro` on 2026-05-30. Visible public results included fuzzy/non-conflicting names such as Rolify, Rydoo, and Rydora, with no exact Ryvro listing visible. This is still not logged-in Play Console evidence; Play Console title/package availability requires account-owner verification.
 - USPTO Trademark Search was reachable, but this is not legal trademark clearance.
 - `getryvro.com`, `useryvro.com`, `tryryvro.com`, and `getryvroapp.com` had no public DNS records and Verisign `.com` returned no match.
@@ -77,6 +77,7 @@ Completed and guarded in the current branch:
 - `ryvro.app`, `ryvro.co`, `ryvro.io`, `ryvro.ai`, `ryvro.net`, and `ryvro.org` had no public DNS records in the preflight, but registrar availability still needs direct confirmation.
 - X, Instagram, and TikTok `@ryvro` returned public `200` responses; this does not prove ownership or availability.
 - YouTube `@ryvro` and LinkedIn `company/ryvro` returned public `404` responses. Both still require logged-in reservation checks.
+- Logged-in domain-cart progress on 2026-06-06: Spaceship showed `getryvro.com` as available and the domain was added to the cart without add-ons. The cart showed first-year line price `$8.88`, renewal price `$9.98`, and visible total `$9.08`. Checkout was not clicked because that starts a paid purchase flow; this is not domain-control proof until purchase, DNS, HTTPS, and live page checks are complete.
 
 ## Verification Completed
 
