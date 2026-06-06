@@ -3392,7 +3392,14 @@ describe('Ryvro environment template', () => {
     expect(appStoreTestFlightHandoff).toContain(
       'commit `35e010e0cf7e73ce9085847863654851979708b6`'
     );
-    expect(appStoreTestFlightHandoff).toContain('initial status `IN_PROGRESS`');
+    expect(appStoreTestFlightHandoff).toContain('final status `FINISHED`');
+    expect(appStoreTestFlightHandoff).toContain('2026-06-06T08:59:07.070Z');
+    expect(appStoreTestFlightHandoff).toContain(
+      'https://expo.dev/artifacts/eas/7d169i6X9ZpAJm9twMYE29.ipa'
+    );
+    expect(appStoreTestFlightHandoff).toContain(
+      'Do not submit this build because it is still iOS build number `1`'
+    );
     expect(appStoreTestFlightHandoff).toContain(
       "metro.config.js` already extends Expo's default config"
     );
