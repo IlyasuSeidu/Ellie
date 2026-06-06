@@ -1005,13 +1005,22 @@ describe('Ryvro environment template', () => {
       'SHIFT_SCHEDULE_PARSER_URL=https://us-central1-ryvro-shift-planner.cloudfunctions.net/parseShiftScheduleDescription'
     );
     expect(productionEnvExample).toContain(
-      'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=REPLACE-web.apps.googleusercontent.com'
+      'GOOGLE_WEB_CLIENT_ID=1002666052675-p31u9msgqrtmg1sgcl1vv5mu5fijo98o.apps.googleusercontent.com'
     );
     expect(productionEnvExample).toContain(
-      'EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=REPLACE-ios.apps.googleusercontent.com'
+      'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=1002666052675-p31u9msgqrtmg1sgcl1vv5mu5fijo98o.apps.googleusercontent.com'
     );
     expect(productionEnvExample).toContain(
-      'EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=REPLACE-android.apps.googleusercontent.com'
+      'GOOGLE_IOS_CLIENT_ID=1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io.apps.googleusercontent.com'
+    );
+    expect(productionEnvExample).toContain(
+      'EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io.apps.googleusercontent.com'
+    );
+    expect(productionEnvExample).toContain(
+      'GOOGLE_ANDROID_CLIENT_ID=1002666052675-94b6mo0a78vr4kjb8ql8rorpe9rrovch.apps.googleusercontent.com'
+    );
+    expect(productionEnvExample).toContain(
+      'EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=1002666052675-94b6mo0a78vr4kjb8ql8rorpe9rrovch.apps.googleusercontent.com'
     );
     expect(productionEnvExample).toContain('REVENUECAT_ENTITLEMENT_ID=pro');
     expect(productionEnvExample).toContain('EXPO_PUBLIC_REVENUECAT_ENTITLEMENT_ID=pro');
@@ -1027,6 +1036,7 @@ describe('Ryvro environment template', () => {
     expect(externalSetup).toContain(
       'it must fail the preflight until every placeholder is replaced'
     );
+    expect(externalSetup).toContain('known non-secret Ryvro OAuth client IDs');
     expect(externalSetup).toContain(
       'rejects retired Ellie/ShiftSync Firebase project IDs, retired `ELLIE_BRAIN_*` env keys'
     );
@@ -3633,6 +3643,12 @@ describe('Ryvro environment template', () => {
     expect(firebaseOauthBackendHandoff).toContain('schedule name `2-week roster`');
     expect(firebaseOauthBackendHandoff).toContain('npm run release:native:check');
     expect(firebaseOauthBackendHandoff).toContain('npm run release:env:check');
+    expect(firebaseOauthBackendHandoff).toContain(
+      'npm run release:env:check -- --env-file .env.production.example'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'The remaining template-only failures are `FIREBASE_API_KEY`, `FIREBASE_APP_ID`, `REVENUECAT_IOS_KEY`, `EXPO_PUBLIC_REVENUECAT_IOS_KEY`, `REVENUECAT_ANDROID_KEY`, and `EXPO_PUBLIC_REVENUECAT_ANDROID_KEY`'
+    );
     expect(firebaseOauthBackendHandoff).toContain('npm run release:env:push');
     expect(firebaseOauthBackendHandoff).toContain('Do not store Firebase service-file contents');
     expect(firebaseOauthBackendHandoff).not.toMatch(

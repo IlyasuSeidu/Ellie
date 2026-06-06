@@ -173,7 +173,13 @@ Record:
 
 Fill `.env` from `.env.production.example` only after Firebase, OAuth, legal URLs, backend URLs, and RevenueCat keys are ready.
 
-The committed `.env.production.example` now contains the non-secret Ryvro project IDs and deployed Firebase Functions URLs. Keep actual Firebase API keys, Firebase app IDs, RevenueCat SDK keys, and any provider keys out of Git.
+The committed `.env.production.example` now contains the non-secret Ryvro project IDs, Google OAuth client IDs, and deployed Firebase Functions URLs. Keep actual Firebase API keys, Firebase app IDs, RevenueCat SDK keys, and any provider keys out of Git.
+
+Current non-secret template dry-run on 2026-06-06:
+
+- `npm run release:env:check -- --env-file .env.production.example` still fails as expected because it contains committed placeholders instead of owner-only secrets.
+- The remaining template-only failures are `FIREBASE_API_KEY`, `FIREBASE_APP_ID`, `REVENUECAT_IOS_KEY`, `EXPO_PUBLIC_REVENUECAT_IOS_KEY`, `REVENUECAT_ANDROID_KEY`, and `EXPO_PUBLIC_REVENUECAT_ANDROID_KEY`.
+- Do not replace those placeholders in Git. Copy the template to `.env`, fill the real owner-only values locally, then run `npm run release:env:check`.
 
 Run:
 
