@@ -119,7 +119,7 @@ firebase deploy --only functions:ryvro-brain:ryvroBrain,functions:ryvro-brain:pa
 - Standard Firebase HTTPS URLs remain the URLs production clients should use.
 - Both Cloud Run services initially returned public HTTP `403`, so `roles/run.invoker` was granted to `allUsers` on only `ryvrobrain` and `parseshiftscheduledescription`.
 - A Firebase Functions artifact cleanup policy was set for `us-central1` to delete images older than 1 day.
-- Provider-backed parser calls still do not produce launch-ready non-heuristic drafts. A 2026-06-06 retry reached Firebase and returned HTTP `500` with non-secret error code `internal_error`; Firebase CLI reauth later completed as `seiduilyasu94@gmail.com`, local tests were added for malformed provider drafts, and a targeted redeploy of `functions:ryvro-brain:parseShiftScheduleDescription` succeeded. The same non-heuristic prompt then returned HTTP `200` with `status` `needs_clarification`, summary text, and warning text that the AI draft was incomplete. Treat provider-backed voice and AI parsing as not launch-ready until a non-heuristic parser smoke returns a usable draft without deterministic fallback, incomplete-draft clarification, or provider warning.
+- Provider-backed parser calls now have launch-ready smoke coverage for the current test prompts. A 2026-06-06 retry reached Firebase and returned HTTP `500` with non-secret error code `internal_error`; Firebase CLI reauth later completed as `seiduilyasu94@gmail.com`, local tests were added for malformed provider drafts, weekday roster prompts, and explicit count-based fallback, and targeted redeploys of `functions:ryvro-brain:parseShiftScheduleDescription` succeeded. On 2026-06-06 at 11:55 UTC, the minimal 2 days, 2 nights, 4 off prompt and the richer two-week weekday roster prompt both returned HTTP `200` with `status` `draft`, `questions: []`, and `warnings: []`.
 
 Required function URLs:
 
@@ -156,9 +156,9 @@ Expected launch evidence:
 - `ryvroBrain`: `400` for the intentionally empty body proves reachability; `200` with a valid body also passes.
 - `parseShiftScheduleDescription`: must return `200` with a draft schedule for the minimal schedule prompt.
 - `404`, missing secret, wrong project, provider failure, auth failure, network failure, or parser `400` for the valid prompt is not launch-ready.
-- Current smoke result on 2026-06-06 at 09:22 UTC: `ryvroBrain` returned HTTP `400` with non-secret error code `invalid_request` for the intentionally empty body after public invoker access was fixed.
-- Current smoke result on 2026-06-06 at 09:22 UTC: `parseShiftScheduleDescription` returned HTTP `200` with a draft schedule for the minimal 2 days, 2 nights, 4 off prompt, but warned that deterministic fallback was used because AI parsing was unavailable.
-- Current provider blocker on 2026-06-06 at 09:44 UTC: after Firebase CLI reauth, local parser hardening, and a targeted redeploy, the non-heuristic parser prompt returned HTTP `200` with `status` `needs_clarification` instead of the previous HTTP `500`. Treat provider-backed voice and AI parsing as not launch-ready until a non-heuristic parser smoke returns a usable draft without deterministic fallback, incomplete-draft clarification, or provider warning.
+- Current smoke result on 2026-06-06 at 11:52 UTC: `ryvroBrain` returned HTTP `200` with `ok: true`, an assistant response saying the user has tomorrow off, and `shiftData.toolName` `get_current_status` with current rest-block data. The earlier intentionally empty body smoke returned HTTP `400` with non-secret error code `invalid_request`, proving endpoint reachability before the valid voice smoke was run.
+- Current smoke result on 2026-06-06 at 11:55 UTC: `parseShiftScheduleDescription` returned HTTP `200` with `status` `draft`, `questions: []`, and `warnings: []` for the minimal 2 days, 2 nights, 4 off prompt.
+- Current non-heuristic smoke result on 2026-06-06 at 11:55 UTC: `parseShiftScheduleDescription` returned HTTP `200` with `status` `draft`, schedule name `2-week roster`, anchor date `2026-06-08`, a 14-item sequence, `questions: []`, and `warnings: []`.
 
 Record:
 

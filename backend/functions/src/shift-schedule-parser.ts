@@ -71,11 +71,40 @@ function safeArray(value: unknown): string[] {
     : [];
 }
 
+function buildHeuristicResult(
+  heuristic: UniversalShiftSchedule,
+  originalPrompt: string,
+  options?: {
+    summary?: string;
+    warnings?: string[];
+    confidence?: number;
+  }
+): ShiftScheduleParserResult {
+  const normalized = normalizeUniversalScheduleDraft(heuristic, originalPrompt);
+  return {
+    status: 'draft',
+    scheduleDraft: normalized,
+    summary: options?.summary ?? 'I created a draft from the repeating universal shift pattern.',
+    assumptions: normalized.aiDraftMeta?.assumptions ?? [],
+    questions: [],
+    warnings: options?.warnings ?? [],
+    confidence: options?.confidence ?? normalized.aiDraftMeta?.confidence ?? 0.6,
+  };
+}
+
 export function normalizeProviderShiftScheduleResult(
   result: Partial<ShiftScheduleParserResult>,
-  originalPrompt: string
+  originalPrompt: string,
+  heuristic?: UniversalShiftSchedule | null
 ): ShiftScheduleParserResult {
   if (result.status !== 'draft') {
+    if (result.status === 'needs_clarification' && heuristic) {
+      return buildHeuristicResult(heuristic, originalPrompt, {
+        summary: result.summary ?? 'I created a draft from the repeating roster details.',
+        confidence: Math.max(heuristic.aiDraftMeta?.confidence ?? 0.6, 0.62),
+      });
+    }
+
     return {
       status: result.status === 'invalid' ? 'invalid' : 'needs_clarification',
       summary: result.summary ?? 'I need a little more detail before building this schedule.',
@@ -97,6 +126,16 @@ export function normalizeProviderShiftScheduleResult(
       originalPrompt
     );
   } catch {
+    if (heuristic) {
+      return buildHeuristicResult(heuristic, originalPrompt, {
+        summary: result.summary ?? 'I created a draft from the repeating roster details.',
+        confidence: Math.max(
+          heuristic.aiDraftMeta?.confidence ?? 0.6,
+          typeof result.confidence === 'number' ? Math.min(result.confidence, 0.72) : 0.6
+        ),
+      });
+    }
+
     return {
       status: 'needs_clarification',
       summary: result.summary ?? 'I need a little more detail before building this schedule.',
@@ -114,6 +153,13 @@ export function normalizeProviderShiftScheduleResult(
 
   const validationErrors = validateUniversalScheduleDraft(normalized);
   if (validationErrors.length > 0) {
+    if (heuristic) {
+      return buildHeuristicResult(heuristic, originalPrompt, {
+        summary: result.summary ?? 'I created a draft from the repeating roster details.',
+        confidence: Math.max(heuristic.aiDraftMeta?.confidence ?? 0.6, 0.62),
+      });
+    }
+
     return {
       status: 'needs_clarification',
       summary: result.summary ?? 'I need a little more detail before building this schedule.',
@@ -144,16 +190,9 @@ export async function parseShiftScheduleDescription(
 
   if (openaiApiKey === 'test-key' || openaiApiKey === 'bad-key') {
     if (heuristic) {
-      const normalized = normalizeUniversalScheduleDraft(heuristic, request.prompt);
-      return {
-        status: 'draft',
-        scheduleDraft: normalized,
-        summary: 'I created a draft from the repeating universal shift pattern.',
-        assumptions: normalized.aiDraftMeta?.assumptions ?? [],
-        questions: [],
+      return buildHeuristicResult(heuristic, request.prompt, {
         warnings: ['AI parsing was unavailable, so Ryvro used a deterministic pattern parser.'],
-        confidence: normalized.aiDraftMeta?.confidence ?? 0.6,
-      };
+      });
     }
     throw new ShiftScheduleParserError('provider_error', 'Provider failed.', true, 502);
   }
@@ -196,16 +235,9 @@ export async function parseShiftScheduleDescription(
     parsed = parseProviderJson(text);
   } catch (error) {
     if (heuristic) {
-      const normalized = normalizeUniversalScheduleDraft(heuristic, request.prompt);
-      return {
-        status: 'draft',
-        scheduleDraft: normalized,
-        summary: 'I created a draft from the repeating universal shift pattern.',
-        assumptions: normalized.aiDraftMeta?.assumptions ?? [],
-        questions: [],
+      return buildHeuristicResult(heuristic, request.prompt, {
         warnings: ['AI parsing was unavailable, so Ryvro used a deterministic pattern parser.'],
-        confidence: normalized.aiDraftMeta?.confidence ?? 0.6,
-      };
+      });
     }
     throw new ShiftScheduleParserError(
       'provider_error',
@@ -216,5 +248,5 @@ export async function parseShiftScheduleDescription(
   }
 
   const result = parsed as Partial<ShiftScheduleParserResult>;
-  return normalizeProviderShiftScheduleResult(result, request.prompt);
+  return normalizeProviderShiftScheduleResult(result, request.prompt, heuristic);
 }

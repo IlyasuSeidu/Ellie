@@ -5,6 +5,7 @@ import {
   normalizeProviderShiftScheduleResult,
   parseShiftScheduleDescription,
 } from '../shift-schedule-parser';
+import { buildHeuristicDraft } from '../universal-shift-utils';
 
 test('parseShiftScheduleDescription validates required prompt', async () => {
   await assert.rejects(
@@ -120,6 +121,35 @@ test('normalizeProviderShiftScheduleResult asks for clarification when provider 
   assert.equal(result.confidence, 0.35);
 });
 
+test('normalizeProviderShiftScheduleResult recovers malformed provider drafts with weekday heuristics', () => {
+  const prompt =
+    'My roster starts Monday 2026-06-08. Week one is early shift Monday through Wednesday, late shift Thursday and Friday, off Saturday and Sunday. Week two is night shift Tuesday through Saturday and off Sunday and Monday. Repeat those two weeks.';
+  const heuristic = buildHeuristicDraft(prompt, 'UTC', '2026-06-06');
+  assert.ok(heuristic);
+
+  const result = normalizeProviderShiftScheduleResult(
+    {
+      status: 'draft',
+      summary: 'The roster consists of alternating two-week shifts starting from June 8, 2026.',
+      confidence: 0.8,
+      scheduleDraft: {
+        version: 3,
+        name: 'Two-week roster',
+        timezone: 'UTC',
+        anchorDate: '2026-06-08',
+      } as never,
+    },
+    prompt,
+    heuristic
+  );
+
+  assert.equal(result.status, 'draft');
+  assert.equal(result.scheduleDraft?.sequence.length, 14);
+  assert.deepEqual(result.warnings, []);
+  assert.ok(result.assumptions.some((assumption) => assumption.includes('Monday through Sunday')));
+  assert.ok(result.confidence >= 0.72);
+});
+
 test('normalizeProviderShiftScheduleResult preserves clarification responses from provider', () => {
   const result = normalizeProviderShiftScheduleResult(
     {
@@ -139,4 +169,26 @@ test('normalizeProviderShiftScheduleResult preserves clarification responses fro
   assert.deepEqual(result.questions, ['What date does this roster start?']);
   assert.deepEqual(result.warnings, ['Missing start date.']);
   assert.equal(result.confidence, 0.5);
+});
+
+test('normalizeProviderShiftScheduleResult uses heuristics for explicit patterns when provider asks extra questions', () => {
+  const prompt = 'I work 2 days, 2 nights, then 4 off.';
+  const heuristic = buildHeuristicDraft(prompt, 'UTC', '2026-05-31');
+  assert.ok(heuristic);
+
+  const result = normalizeProviderShiftScheduleResult(
+    {
+      status: 'needs_clarification',
+      summary: 'The user works a rotating shift pattern.',
+      questions: ['What is the start date?'],
+      confidence: 0.5,
+    },
+    prompt,
+    heuristic
+  );
+
+  assert.equal(result.status, 'draft');
+  assert.equal(result.scheduleDraft?.sequence.length, 8);
+  assert.deepEqual(result.questions, []);
+  assert.deepEqual(result.warnings, []);
 });

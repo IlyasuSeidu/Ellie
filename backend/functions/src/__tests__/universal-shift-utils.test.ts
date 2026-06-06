@@ -19,6 +19,41 @@ test('buildHeuristicDraft creates a day/night/off universal schedule', () => {
   assert.equal(draft.shiftDefinitions.length, 3);
 });
 
+test('buildHeuristicDraft creates a two-week weekday roster from named days', () => {
+  const draft = buildHeuristicDraft(
+    'My roster starts Monday 2026-06-08. Week one is early shift Monday through Wednesday, late shift Thursday and Friday, off Saturday and Sunday. Week two is night shift Tuesday through Saturday and off Sunday and Monday. Repeat those two weeks.',
+    'UTC',
+    '2026-06-06'
+  );
+
+  assert.ok(draft);
+  assert.equal(draft.name, '2-week roster');
+  assert.equal(draft.anchorDate, '2026-06-08');
+  assert.equal(draft.sequence.length, 14);
+
+  const definitionsById = new Map(
+    draft.shiftDefinitions.map((definition) => [definition.id, definition.name])
+  );
+  const sequenceNames = draft.sequence.map((item) => definitionsById.get(item.shiftDefinitionId));
+  assert.deepEqual(sequenceNames, [
+    'Day Shift',
+    'Day Shift',
+    'Day Shift',
+    'Evening Shift',
+    'Evening Shift',
+    'Off',
+    'Off',
+    'Off',
+    'Night Shift',
+    'Night Shift',
+    'Night Shift',
+    'Night Shift',
+    'Night Shift',
+    'Off',
+  ]);
+  assert.deepEqual(validateUniversalScheduleDraft(draft), []);
+});
+
 test('normalizeUniversalScheduleDraft rewrites ids and preserves valid sequence references', () => {
   const draft = buildHeuristicDraft('4 days 4 nights 4 off', 'Africa/Accra', '2026-05-20');
   assert.ok(draft);
