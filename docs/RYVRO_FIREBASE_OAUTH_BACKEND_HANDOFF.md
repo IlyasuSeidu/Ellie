@@ -99,6 +99,13 @@ Record only:
 
 Deploy functions to the Ryvro Firebase project.
 
+Current blocker recorded on 2026-06-06:
+
+- `firebase functions:secrets:access OPENAI_API_KEY --project ryvro-shift-planner` failed because project `ryvro-shift-planner` must be on the Blaze pay-as-you-go plan before Firebase can enable the required `secretmanager.googleapis.com` API.
+- Logged-in Firebase Console usage and billing showed current Firebase billing plan `Spark No-cost`.
+- The Firebase pricing dialog showed `Spark plan` as the current plan and `Blaze plan` as the pay-as-you-go plan with `Select plan: Blaze`.
+- The owner must complete the Blaze upgrade and any billing account or payment confirmation directly. Do not deploy backend functions or attempt Secret Manager configuration until the plan is upgraded.
+
 ```bash
 firebase use <ryvro-project-id>
 firebase deploy --only functions

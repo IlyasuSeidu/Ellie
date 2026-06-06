@@ -3140,6 +3140,9 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('Backend smoke - ryvroBrain');
     expect(launchEvidenceLog).toContain('Backend deploy - parser');
     expect(launchEvidenceLog).toContain('Shift parser smoke');
+    expect(launchEvidenceLog).toContain('Spark No-cost');
+    expect(launchEvidenceLog).toContain('Blaze pay-as-you-go plan');
+    expect(launchEvidenceLog).toContain('secretmanager.googleapis.com');
     expect(launchEvidenceLog).toContain('SHIFT_SCHEDULE_PARSER_URL');
     expect(launchEvidenceLog).toContain('valid-prompt parser smoke returns `200`');
     expect(launchEvidenceLog).toContain('EAS secret push confirmation');
@@ -3272,6 +3275,7 @@ describe('Ryvro environment template', () => {
     expect(submitBlockerTriage).toContain('Formal trademark/legal clearance for `Ryvro`');
     expect(submitBlockerTriage).toContain('Finish Google Play Enrollment');
     expect(submitBlockerTriage).toContain('Create Production Firebase And OAuth');
+    expect(submitBlockerTriage).toContain('Firebase billing plan upgrade from Spark to Blaze');
     expect(submitBlockerTriage).toContain('Finish RevenueCat And Store Products');
     expect(submitBlockerTriage).toContain('Rebuild, Test, Screenshot, Then Submit');
     expect(submitBlockerTriage).toContain('npm run release:versions:get');
@@ -3419,6 +3423,10 @@ describe('Ryvro environment template', () => {
     expect(firebaseOauthBackendHandoff).toContain(
       'Android release signing SHA-1 and SHA-256 fingerprints'
     );
+    expect(firebaseOauthBackendHandoff).toContain('Current blocker recorded on 2026-06-06');
+    expect(firebaseOauthBackendHandoff).toContain('Spark No-cost');
+    expect(firebaseOauthBackendHandoff).toContain('Select plan: Blaze');
+    expect(firebaseOauthBackendHandoff).toContain('secretmanager.googleapis.com');
     expect(firebaseOauthBackendHandoff).toContain(
       'owner accepted the Google API Services User Data Policy'
     );

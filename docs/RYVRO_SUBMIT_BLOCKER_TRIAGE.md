@@ -1,6 +1,6 @@
 # Ryvro Submit Blocker Triage
 
-Last updated: 2026-06-05
+Last updated: 2026-06-06
 
 Use this file when `npm run release:submit:check` fails. It groups the remaining blockers into the order that should unblock TestFlight, Play internal testing, and final store submission.
 
@@ -24,6 +24,7 @@ The latest checked blocker families are:
 - Domain control for `getryvro.com`, DNS, HTTPS, live privacy, terms, support, and account deletion pages
 - Social handle reservation
 - Firebase project, native apps, OAuth clients, Auth domains, Auth email templates, backend deploys, and backend smoke tests
+- Firebase billing plan upgrade from Spark to Blaze before Secret Manager and backend deploy
 - Production `.env`, `npm run release:env:check`, and EAS secret push
 - RevenueCat apps, entitlement `pro`, store products, offering `default`, and sandbox purchase QA
 - App Store privacy, content rating, export compliance, EU trader status, reviewer account, screenshots, TestFlight iPhone QA, and store submission
@@ -67,6 +68,7 @@ Do this before rebuilding production binaries.
 - Create web, iOS, and Android OAuth clients.
 - Add `getryvro.com` as a Firebase Auth authorized domain.
 - Configure Firebase Auth email templates with `Ryvro Support`, `support@getryvro.com`, and `getryvro.com`.
+- Upgrade Firebase billing from Spark to Blaze so Secret Manager can enable `secretmanager.googleapis.com` for `OPENAI_API_KEY`.
 - Deploy `ryvroBrain` and `parseShiftScheduleDescription`.
 - Smoke-test both deployed functions.
 - Fill real production `.env` values.
