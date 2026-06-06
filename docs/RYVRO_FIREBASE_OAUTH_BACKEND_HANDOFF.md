@@ -1,6 +1,6 @@
 # Ryvro Firebase, OAuth, And Backend Handoff
 
-Last updated: 2026-06-05
+Last updated: 2026-06-06
 
 Use this checklist after the owner creates the production Firebase project and before rebuilding Ryvro production binaries. It turns the Firebase, OAuth, backend, and EAS-secret launch blockers into one evidence packet.
 
@@ -37,6 +37,10 @@ firebase projects:list
 - Local Firebase CLI note: `firebase use` and `firebase use --clear` still failed after project creation because Firebase Tools could not access `/Users/user/.config` for its update/config store and continued to print `ellie-20260220135308`. Before deploying, either repair that local Firebase Tools config-store permission and rerun `firebase use ryvro-shift-planner`, or pass `--project ryvro-shift-planner` explicitly on deploy and functions commands.
 - Firebase native apps were created on 2026-06-05. `firebase apps:list --project ryvro-shift-planner --json` confirmed `Ryvro iOS` app ID `1:1002666052675:ios:bf72c1cc611308a76b98f6`, platform `IOS`, namespace `com.ryvro.shiftplanner`, state `ACTIVE`; and `Ryvro Android` app ID `1:1002666052675:android:735fd0ef9443ddf76b98f6`, platform `ANDROID`, namespace `com.ryvro.shiftplanner`, state `ACTIVE`.
 - Fresh native Firebase config files were downloaded on 2026-06-05 to ignored root paths only: `./GoogleService-Info.plist` and `./google-services.json`. Metadata-only local verification confirmed both files target project ID `ryvro-shift-planner` and `com.ryvro.shiftplanner`; file contents were not printed or committed.
+- Google Cloud credentials page check on 2026-06-06 for project `ryvro-shift-planner` initially showed Firebase-created API keys but no OAuth clients. Google Auth Platform was then created with app name `Ryvro Shift Planner`, support email `seiduilyasu94@gmail.com`, audience `External`, and developer contact `seiduilyasu94@gmail.com` after the owner accepted the Google API Services User Data Policy.
+- OAuth clients were created on 2026-06-06 in the Ryvro Google Cloud project. Web client ID: `1002666052675-p31u9msgqrtmg1sgcl1vv5mu5fijo98o.apps.googleusercontent.com`; iOS client ID: `1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io.apps.googleusercontent.com`; Android client ID: `1002666052675-94b6mo0a78vr4kjb8ql8rorpe9rrovch.apps.googleusercontent.com`. The Web client secret was shown by Google Cloud but was not recorded in the repo, docs, chat, or tests.
+- EAS production Android credentials check on 2026-06-06 displayed the EAS-managed keystore fingerprints used for the Android OAuth client and Firebase Android app: SHA-1 `D5:BD:0B:C7:43:DB:4A:DE:B3:4A:86:16:A5:74:23:F8:86:74:9E:EF` and SHA-256 `07:31:46:00:75:14:2E:55:32:DF:34:76:5F:B2:83:A1:5C:E9:EB:CF:EB:03:74:9B:C0:1A:D2:6E:ED:C7:D2:9C`.
+- Firebase Android app signing fingerprints were registered on 2026-06-06 with `firebase apps:android:sha:create` for both SHA-1 and SHA-256. Fresh ignored root config files were then re-downloaded. Metadata-only verification confirmed the iOS config includes `CLIENT_ID` `1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io.apps.googleusercontent.com` and `REVERSED_CLIENT_ID` `com.googleusercontent.apps.1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io`; the Android config includes OAuth client type `1` with `1002666052675-94b6mo0a78vr4kjb8ql8rorpe9rrovch.apps.googleusercontent.com` and type `3` with `1002666052675-p31u9msgqrtmg1sgcl1vv5mu5fijo98o.apps.googleusercontent.com`.
 - If Google Analytics terms or other legal terms appear, the owner must review and accept them directly.
 - Record only the Firebase project ID, visible display name, Analytics property name if enabled, and owner account used.
 - Do not record web API keys or full app config contents in the evidence log.
@@ -55,6 +59,9 @@ Fresh Firebase apps for the final bundle/package were created and verified.
 - The fresh Android file was downloaded as `google-services.json`.
 - Both files are placed at the repo root only: `./GoogleService-Info.plist` and `./google-services.json`.
 - Both files are ignored by Git.
+- The current ignored root files were refreshed after OAuth client creation and Android SHA registration on 2026-06-06.
+- The iOS root file metadata includes the Ryvro iOS OAuth client ID and reversed client ID.
+- The Android root file metadata includes the Ryvro Android OAuth client ID and Ryvro Web OAuth client ID.
 - Do not point production `.env` at generated `ios/` or `android/` service-file paths.
 - Do not use tracked local placeholders under `config/firebase/` for production builds.
 
@@ -69,10 +76,13 @@ Record:
 
 Create or confirm OAuth clients in the same Ryvro Google Cloud/Firebase project.
 
-- Web OAuth client for Firebase/Auth and Expo runtime values
-- iOS OAuth client for `com.ryvro.shiftplanner`
-- Android OAuth client for `com.ryvro.shiftplanner`
-- Android release signing SHA-1 and SHA-256 fingerprints from the signing key used for the tested build
+- Web OAuth client for Firebase/Auth and Expo runtime values: `1002666052675-p31u9msgqrtmg1sgcl1vv5mu5fijo98o.apps.googleusercontent.com`
+- iOS OAuth client for `com.ryvro.shiftplanner`: `1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io.apps.googleusercontent.com`
+- Android OAuth client for `com.ryvro.shiftplanner`: `1002666052675-94b6mo0a78vr4kjb8ql8rorpe9rrovch.apps.googleusercontent.com`
+- Android release signing SHA-1 and SHA-256 fingerprints are recorded here as non-secret launch evidence.
+- Android release signing SHA-1 `D5:BD:0B:C7:43:DB:4A:DE:B3:4A:86:16:A5:74:23:F8:86:74:9E:EF`
+- Android release signing SHA-256 `07:31:46:00:75:14:2E:55:32:DF:34:76:5F:B2:83:A1:5C:E9:EB:CF:EB:03:74:9B:C0:1A:D2:6E:ED:C7:D2:9C`
+- Web client secret was not recorded.
 - Firebase Auth authorized domain: `getryvro.com`
 - Firebase Auth sender name: `Ryvro Support`
 - Firebase Auth reply-to email: `support@getryvro.com`

@@ -3110,7 +3110,28 @@ describe('Ryvro environment template', () => {
     expect(launchEvidenceLog).toContain('docs/RYVRO_FIREBASE_OAUTH_BACKEND_HANDOFF.md');
     expect(launchEvidenceLog).toContain('fresh ignored root file at `./GoogleService-Info.plist`');
     expect(launchEvidenceLog).toContain('fresh ignored root file at `./google-services.json`');
-    expect(launchEvidenceLog).toContain('Android release SHA-1/SHA-256 notes only');
+    expect(launchEvidenceLog).toContain('Google API Services User Data Policy');
+    expect(launchEvidenceLog).toContain(
+      '1002666052675-p31u9msgqrtmg1sgcl1vv5mu5fijo98o.apps.googleusercontent.com'
+    );
+    expect(launchEvidenceLog).toContain(
+      '1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io.apps.googleusercontent.com'
+    );
+    expect(launchEvidenceLog).toContain(
+      '1002666052675-94b6mo0a78vr4kjb8ql8rorpe9rrovch.apps.googleusercontent.com'
+    );
+    expect(launchEvidenceLog).toContain('Web client secret was shown');
+    expect(launchEvidenceLog).toContain('was not recorded in the repo, docs, chat, or tests');
+    expect(launchEvidenceLog).toContain('both were registered on the Firebase Android app');
+    expect(launchEvidenceLog).toContain('iOS `CLIENT_ID` / `REVERSED_CLIENT_ID`');
+    expect(launchEvidenceLog).toContain('Android OAuth client type `1`');
+    expect(launchEvidenceLog).toContain('Web OAuth client type `3`');
+    expect(launchEvidenceLog).toContain(
+      'D5:BD:0B:C7:43:DB:4A:DE:B3:4A:86:16:A5:74:23:F8:86:74:9E:EF'
+    );
+    expect(launchEvidenceLog).toContain(
+      '07:31:46:00:75:14:2E:55:32:DF:34:76:5F:B2:83:A1:5C:E9:EB:CF:EB:03:74:9B:C0:1A:D2:6E:ED:C7:D2:9C'
+    );
     expect(launchEvidenceLog).toContain('Firebase Auth email templates');
     expect(launchEvidenceLog).toContain(
       'Sender `Ryvro Support`, reply-to `support@getryvro.com`, action domain `getryvro.com`'
@@ -3397,6 +3418,42 @@ describe('Ryvro environment template', () => {
     expect(firebaseOauthBackendHandoff).toContain('Web OAuth client');
     expect(firebaseOauthBackendHandoff).toContain(
       'Android release signing SHA-1 and SHA-256 fingerprints'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'owner accepted the Google API Services User Data Policy'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      '1002666052675-p31u9msgqrtmg1sgcl1vv5mu5fijo98o.apps.googleusercontent.com'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      '1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io.apps.googleusercontent.com'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      '1002666052675-94b6mo0a78vr4kjb8ql8rorpe9rrovch.apps.googleusercontent.com'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'Web client secret was shown by Google Cloud but was not recorded'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'Firebase Android app signing fingerprints were registered on 2026-06-06'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'The current ignored root files were refreshed after OAuth client creation'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'The iOS root file metadata includes the Ryvro iOS OAuth client ID'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'The Android root file metadata includes the Ryvro Android OAuth client ID'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'com.googleusercontent.apps.1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      'D5:BD:0B:C7:43:DB:4A:DE:B3:4A:86:16:A5:74:23:F8:86:74:9E:EF'
+    );
+    expect(firebaseOauthBackendHandoff).toContain(
+      '07:31:46:00:75:14:2E:55:32:DF:34:76:5F:B2:83:A1:5C:E9:EB:CF:EB:03:74:9B:C0:1A:D2:6E:ED:C7:D2:9C'
     );
     expect(firebaseOauthBackendHandoff).toContain(
       'Firebase Auth authorized domain: `getryvro.com`'

@@ -351,6 +351,27 @@ const launchDeletion = read('web/launch/delete-account/index.html');
   ['Both files are ignored by Git', firebaseOauthBackendHandoff],
   ['Do not use tracked local placeholders under `config/firebase/`', firebaseOauthBackendHandoff],
   ['Web OAuth client', firebaseOauthBackendHandoff],
+  [
+    '1002666052675-p31u9msgqrtmg1sgcl1vv5mu5fijo98o.apps.googleusercontent.com',
+    firebaseOauthBackendHandoff,
+  ],
+  [
+    '1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io.apps.googleusercontent.com',
+    firebaseOauthBackendHandoff,
+  ],
+  [
+    '1002666052675-94b6mo0a78vr4kjb8ql8rorpe9rrovch.apps.googleusercontent.com',
+    firebaseOauthBackendHandoff,
+  ],
+  ['Web client secret was shown by Google Cloud but was not recorded', firebaseOauthBackendHandoff],
+  [
+    'Firebase Android app signing fingerprints were registered on 2026-06-06',
+    firebaseOauthBackendHandoff,
+  ],
+  [
+    'The current ignored root files were refreshed after OAuth client creation',
+    firebaseOauthBackendHandoff,
+  ],
   ['Android release signing SHA-1 and SHA-256 fingerprints', firebaseOauthBackendHandoff],
   ['Firebase Auth authorized domain: `getryvro.com`', firebaseOauthBackendHandoff],
   ['Firebase Auth sender name: `Ryvro Support`', firebaseOauthBackendHandoff],
