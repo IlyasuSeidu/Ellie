@@ -54,6 +54,7 @@ describe('Ryvro environment template', () => {
       web?: {
         favicon?: string;
       };
+      plugins?: unknown[];
     };
   };
   const packageJson = JSON.parse(
@@ -537,6 +538,20 @@ describe('Ryvro environment template', () => {
     }
   });
 
+  it('pins the tracked Expo Google Sign-In scheme to the Ryvro iOS OAuth client', () => {
+    const googleSignInPlugin = appJson.expo?.plugins?.find(
+      (plugin): plugin is [string, { iosUrlScheme?: string }] =>
+        Array.isArray(plugin) && plugin[0] === '@react-native-google-signin/google-signin'
+    );
+
+    expect(googleSignInPlugin?.[1].iosUrlScheme).toBe(
+      'com.googleusercontent.apps.1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io'
+    );
+    expect(googleSignInPlugin?.[1].iosUrlScheme).not.toBe(
+      'com.googleusercontent.apps.197162533368-5mhtc7pnngbq2n50rll6857n90n3t97r'
+    );
+  });
+
   it('pins native installed identity to Ryvro launch values', () => {
     expect(appJson.expo?.ios?.infoPlist).toMatchObject({
       CFBundleDisplayName: 'Ryvro',
@@ -573,10 +588,16 @@ describe('Ryvro environment template', () => {
       expect(iosInfoPlist).toContain('<string>ryvro</string>');
       expect(iosInfoPlist).toContain('<string>com.ryvro.shiftplanner</string>');
       expect(iosInfoPlist).toContain('<string>exp+ryvro</string>');
+      expect(iosInfoPlist).toContain(
+        '<string>com.googleusercontent.apps.1002666052675-le1ivq51bi0dv77pt24kvtir90qli2io</string>'
+      );
       expect(iosInfoPlist).not.toContain('<string>ellie</string>');
       expect(iosInfoPlist).not.toContain('<string>exp+ellie</string>');
       expect(iosInfoPlist).not.toContain('com.ellie.minershiftassistant');
       expect(iosInfoPlist).not.toContain('com.ilyasuseidu.ellie');
+      expect(iosInfoPlist).not.toContain(
+        'com.googleusercontent.apps.197162533368-5mhtc7pnngbq2n50rll6857n90n3t97r'
+      );
     }
   });
 
