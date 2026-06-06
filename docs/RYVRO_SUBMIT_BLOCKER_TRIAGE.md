@@ -95,8 +95,10 @@ Evidence source: `docs/RYVRO_REVENUECAT_PRODUCTS_HANDOFF.md`.
 Do this only after real Firebase, OAuth, RevenueCat, legal URLs, backend URLs, and EAS production environment values exist.
 
 - Run `npm run release:versions:get` and confirm the current EAS remote values.
-- If iOS `buildNumber` is still `1` or Android `versionCode` is still `1`, run `eas build:version:set --platform ios --profile production` and `eas build:version:set --platform android --profile production` before rebuilding. The current checked EAS remote values are iOS build number `1` and Android versionCode `1`.
-- Rebuild iOS production binary.
+- App Store Connect already has version `1.0.0`, build `2`, from EAS build `71fde2ff-aa36-4741-aa69-e4f11ba30acd`, and TestFlight visual inspection showed build `2` as `Ready to Submit`.
+- Do not reuse iOS build number `2` for the next production-auth-ready binary. If EAS still reports iOS build number `2`, run `eas build:version:set --platform ios --profile production` before rebuilding so the next upload uses a later build number.
+- Check Android `versionCode`; if it is still `1` or otherwise already used for a Play upload, run `eas build:version:set --platform android --profile production` before rebuilding.
+- Rebuild iOS production binary after real Firebase, OAuth, RevenueCat, backend, and legal URL values have been pushed to the EAS production environment.
 - Rebuild Android production AAB.
 - Submit iOS build to TestFlight.
 - Install and test on a real iPhone.

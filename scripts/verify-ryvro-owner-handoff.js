@@ -126,6 +126,19 @@ const launchDeletion = read('web/launch/delete-account/index.html');
   ['npm run release:versions:get', ownerRunbook],
   ['eas build:version:set --platform ios --profile production', ownerRunbook],
   ['eas build:version:set --platform android --profile production', ownerRunbook],
+  ['iOS build number `2`', deploymentPlan],
+  [
+    'Increment remote iOS build number past `2` before the next production-auth-ready TestFlight upload',
+    deploymentPlan,
+  ],
+  [
+    'Do not reuse iOS build number `2` for the next production-auth-ready binary',
+    submitBlockerTriage,
+  ],
+  [
+    'Rebuild iOS production binary after real Firebase, OAuth, RevenueCat, backend, and legal URL values',
+    submitBlockerTriage,
+  ],
   ['docs/RYVRO_LAUNCH_EVIDENCE_LOG.md', releaseTasks],
   ['docs/RYVRO_LAUNCH_EVIDENCE_LOG.md', ownerRunbook],
   ['Fresh Firebase iOS/Android app configs and OAuth clients', readinessReport],
@@ -586,7 +599,7 @@ requireMatches(
 );
 requireMatches(
   releaseTasks,
-  /\|\s*21\s*\|[\s\S]*c99b0e0a-829c-4ab7-bd93-164586ade68a[\s\S]*782b6dec-1cf1-4cf2-9159-69ef1ab4078a[\s\S]*incremented iOS build number/,
+  /\|\s*21\s*\|[\s\S]*71fde2ff-aa36-4741-aa69-e4f11ba30acd[\s\S]*b53825db-0f5c-4f56-b19e-c5af5f1999f3[\s\S]*increment the remote iOS build number past `2`/,
   'release task 21'
 );
 requireMatches(

@@ -1430,7 +1430,7 @@ describe('Ryvro environment template', () => {
     );
 
     expect(deploymentPlan).toContain('Repository: repo root');
-    expect(deploymentPlan).toContain('Last updated: May 31, 2026');
+    expect(deploymentPlan).toContain('Last updated: June 6, 2026');
     expect(deploymentPlan).toContain('cd <repo-root>');
     expect(deploymentPlan).toContain(
       'including the native scaffold, store readiness, owner handoff preflight, and backend build gates'
@@ -1463,6 +1463,13 @@ describe('Ryvro environment template', () => {
     expect(deploymentPlan).toContain(
       '`npm run release:submit:check` remains blocked until owner console values and non-secret evidence are complete'
     );
+    expect(deploymentPlan).toContain('iOS build number `2`');
+    expect(deploymentPlan).toContain(
+      'App Store Connect visual inspection on 2026-06-06 showed iOS build `2` as `Ready to Submit`'
+    );
+    expect(deploymentPlan).toContain(
+      'Increment remote iOS build number past `2` before the next production-auth-ready TestFlight upload'
+    );
     expect(deploymentPlan).not.toContain('## A1) Replace placeholder app identifiers');
     expect(deploymentPlan).toContain(
       'Non-E2E release tasks now fail fast when upload-key credentials are missing'
@@ -1473,21 +1480,25 @@ describe('Ryvro environment template', () => {
     expect(deploymentPlan).toContain(
       'Generate/upload the real Android release keystore through EAS/local secrets before store upload'
     );
-    expect(deploymentPlan).toContain('Initial v1 store versions are pinned across tracked config');
+    expect(deploymentPlan).toContain('Initial v1 app version is pinned across tracked config');
+    expect(deploymentPlan).toContain(
+      'EAS uses remote app version source for store builds, so remote EAS build numbers are the source of truth for submitted binaries'
+    );
     expect(deploymentPlan).toContain('EAS uses remote app version source');
     expect(deploymentPlan).toContain('npm run release:versions:get');
     expect(deploymentPlan).toContain(
-      'latest checked EAS remote values on 2026-06-05 were iOS build number `1` and Android versionCode `1`'
+      'The latest submitted iOS evidence is EAS build `71fde2ff-aa36-4741-aa69-e4f11ba30acd`'
     );
     expect(deploymentPlan).toContain(
-      'Future store submissions must increment EAS remote iOS build number and Android versionCode'
+      'The next production-auth-ready iOS upload must run `npm run release:versions:get`'
     );
     expect(deploymentPlan).toContain(
       'Pin first-store-build iOS build number + Android versionCode across tracked config'
     );
     expect(deploymentPlan).toContain(
-      'Increment iOS build number + Android versionCode again after each uploaded binary'
+      'Increment remote iOS build number past `2` before the next production-auth-ready TestFlight upload'
     );
+    expect(deploymentPlan).toContain('Increment Android versionCode before the next Play upload');
     expect(deploymentPlan).toContain(
       'Ryvro Pro subscription gating, paywall, restore purchases, and RevenueCat product loading in the first submitted binary'
     );
@@ -1923,26 +1934,18 @@ describe('Ryvro environment template', () => {
     expect(releaseTasks).toContain('Repo-side offline basics are now covered');
     expect(releaseTasks).toContain('Physical-device QA still has to prove');
     expect(releaseTasks).toContain(
-      'EAS iOS build `c99b0e0a-829c-4ab7-bd93-164586ade68a` uploaded to TestFlight'
+      'EAS iOS build `71fde2ff-aa36-4741-aa69-e4f11ba30acd`, version `1.0.0`, build `2`'
     );
     expect(releaseTasks).toContain(
       'Build production iOS binary after running `npm run release:versions:get`'
     );
     expect(releaseTasks).toContain('bumping remote EAS versions with `eas build:version:set`');
-    expect(releaseTasks).toContain(
-      'EAS remote values checked at iOS build number `1` and Android versionCode `1`'
-    );
-    expect(releaseTasks).toContain(
-      'latest EAS build `782b6dec-1cf1-4cf2-9159-69ef1ab4078a` also finished'
-    );
-    expect(releaseTasks).toContain(
-      'should not be submitted as-is because App Store Connect already has build `1`'
-    );
-    expect(releaseTasks).toContain('incremented iOS build number');
+    expect(releaseTasks).toContain('App Store Connect visual inspection showed build `2`');
+    expect(releaseTasks).toContain('increment the remote iOS build number past `2`');
     expect(releaseTasks).toContain(
       'EAS Android AAB `318b4e8f-b344-4ed9-8bcd-a5805093339d` proves package `com.ryvro.shiftplanner`'
     );
-    expect(releaseTasks).toContain('EAS Submit `c17b593c-7909-42db-96f6-a81f095f7479`');
+    expect(releaseTasks).toContain('EAS Submit `b53825db-0f5c-4f56-b19e-c5af5f1999f3`');
     expect(releaseTasks).toContain(
       'Install Play internal testing build or a store-signed Android QA build'
     );
@@ -3367,7 +3370,13 @@ describe('Ryvro environment template', () => {
       'eas build:version:set --platform android --profile production'
     );
     expect(submitBlockerTriage).toContain(
-      'current checked EAS remote values are iOS build number `1` and Android versionCode `1`'
+      'App Store Connect already has version `1.0.0`, build `2`'
+    );
+    expect(submitBlockerTriage).toContain(
+      'Do not reuse iOS build number `2` for the next production-auth-ready binary'
+    );
+    expect(submitBlockerTriage).toContain(
+      'Rebuild iOS production binary after real Firebase, OAuth, RevenueCat, backend, and legal URL values'
     );
     expect(submitBlockerTriage).toContain('docs/RYVRO_CLEARANCE_DOMAIN_SOCIAL_HANDOFF.md');
     expect(submitBlockerTriage).toContain('docs/RYVRO_GOOGLE_PLAY_INTERNAL_TESTING_HANDOFF.md');

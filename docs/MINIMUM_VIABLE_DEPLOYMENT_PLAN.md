@@ -1,6 +1,6 @@
 # Minimum Viable Deployment Plan (MVD)
 
-Last updated: May 31, 2026
+Last updated: June 6, 2026
 Repository: repo root
 
 ## 1. Goal
@@ -184,15 +184,16 @@ Acceptance criteria:
 
 Current status:
 
-- Initial v1 store versions are pinned across tracked config: Expo `version` is `1.0.0`, iOS `buildNumber` / `CURRENT_PROJECT_VERSION` is `1`, Android `versionCode` is `1`, and Android `versionName` is `1.0.0`.
-- The dynamic Expo config also falls back to the same version/build values when static config is not inherited.
-- EAS uses remote app version source, so run `npm run release:versions:get` before store rebuilds; the latest checked EAS remote values on 2026-06-05 were iOS build number `1` and Android versionCode `1`.
-- Future store submissions must increment EAS remote iOS build number and Android versionCode after each uploaded binary.
+- Initial v1 app version is pinned across tracked config: Expo `version` is `1.0.0`, Android `versionName` is `1.0.0`, and tracked fallback build values remain iOS `buildNumber` / `CURRENT_PROJECT_VERSION` `1` plus Android `versionCode` `1`.
+- EAS uses remote app version source for store builds, so remote EAS build numbers are the source of truth for submitted binaries.
+- The latest submitted iOS evidence is EAS build `71fde2ff-aa36-4741-aa69-e4f11ba30acd`, version `1.0.0`, iOS build number `2`, uploaded to App Store Connect through EAS Submit `b53825db-0f5c-4f56-b19e-c5af5f1999f3`.
+- App Store Connect visual inspection on 2026-06-06 showed iOS build `2` as `Ready to Submit` and attached to internal TestFlight group `Ryvro iPhone QA`, but the build still contains placeholder Firebase/OAuth values and is not production-auth-ready.
+- The next production-auth-ready iOS upload must run `npm run release:versions:get` and then increment the remote iOS build number past `2` before rebuilding. Android versionCode still needs to be checked and incremented before the next Play upload.
 
 Implementation steps:
 
-1. For the first store build, keep semantic app version aligned in `app.json`, `app.config.js`, `package.json`, Android `versionName`, and generated iOS `MARKETING_VERSION`.
-2. For every later uploaded binary, run `npm run release:versions:get`, then use `eas build:version:set --platform ios --profile production` and `eas build:version:set --platform android --profile production` to increment:
+1. Keep semantic app version aligned in `app.json`, `app.config.js`, `package.json`, Android `versionName`, and generated iOS `MARKETING_VERSION`.
+2. For every uploaded binary after the current TestFlight build `2`, run `npm run release:versions:get`, then use `eas build:version:set --platform ios --profile production` and `eas build:version:set --platform android --profile production` to increment:
    - EAS remote iOS build number (CFBundleVersion)
    - EAS remote Android versionCode
 3. Keep release log in `CHANGELOG.md` once public release notes begin.
@@ -458,14 +459,16 @@ Day 7:
 - [x] Ensure `npm run release:check` exits 0
 - [x] Add owner handoff preflight for account-only blockers, not-live status, physical-device QA, and store submission handoff docs
 - [x] Pin first-store-build iOS build number + Android versionCode across tracked config
-- [ ] Increment iOS build number + Android versionCode again after each uploaded binary
+- [x] Upload iOS build number `2` to App Store Connect / TestFlight for internal testing
+- [ ] Increment remote iOS build number past `2` before the next production-auth-ready TestFlight upload
+- [ ] Increment Android versionCode before the next Play upload
 - [x] Verify every visible tab/action is complete or routed to an implemented launch surface
 - [x] Update README release status snapshot
 - [x] Add repo-side Ryvro Pro subscription gating, paywall, and RevenueCat runtime guards
 - [ ] Create RevenueCat `pro` entitlement, `default` offering, and both Ryvro store products
 - [ ] Pass sandbox purchase/cancel/restore smoke on iOS and Android
 - [ ] Run full smoke test matrix on physical devices
-- [ ] Upload TestFlight build
+- [x] Upload TestFlight build `2`
 - [ ] Upload Play Internal build
 - [ ] Complete App Store Connect metadata/privacy
 - [ ] Complete Play Console data safety/content forms
