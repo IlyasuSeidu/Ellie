@@ -86,7 +86,7 @@ Create or confirm OAuth clients in the same Ryvro Google Cloud/Firebase project.
 - Firebase Auth was enabled on 2026-06-06 in the logged-in Firebase Console.
 - Firebase Auth authorized domain: `getryvro.com`
 - Metadata-only Identity Toolkit Admin API verification on 2026-06-06 confirmed `authorizedDomains` contains `localhost`, `ryvro-shift-planner.firebaseapp.com`, `ryvro-shift-planner.web.app`, and `getryvro.com`.
-- Firebase Auth email templates are still pending. The earlier metadata-only verification showed default sender and reply-to values before the console edits. Later logged-in Firebase Console work on 2026-06-06 saved Email address verification with sender `Ryvro Support` and reply-to `support@getryvro.com`, and staged Password reset with the same values. The action URL attempt for `https://getryvro.com/__/auth/action` did not produce verified persistent evidence; the preview still showed `https://ryvro-shift-planner.firebaseapp.com/__/auth/action`.
+- Firebase Auth email templates are still pending. The earlier metadata-only verification showed default sender and reply-to values before the console edits. Later logged-in Firebase Console work on 2026-06-06 saved Email address verification and Password reset with sender `Ryvro Support` and reply-to `support@getryvro.com`. The action URL attempt for `https://getryvro.com/__/auth/action` did not produce verified persistent evidence; the preview still showed `https://ryvro-shift-planner.firebaseapp.com/__/auth/action`.
 - Required Firebase Auth sender name: `Ryvro Support`
 - Required Firebase Auth reply-to email: `support@getryvro.com`
 - Required Firebase Auth action domain and continue URLs on `https://getryvro.com`
