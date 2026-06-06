@@ -165,7 +165,7 @@ eas build:version:set --platform ios --profile production
 eas build:version:set --platform android --profile production
 ```
 
-The latest checked production remote values on 2026-06-05 were iOS build number `1` and Android versionCode `1`, so the next production-auth TestFlight and Play internal builds must bump remote versions first.
+App Store Connect already has Ryvro version `1.0.0`, build `2`, from EAS build `71fde2ff-aa36-4741-aa69-e4f11ba30acd` and EAS Submit `b53825db-0f5c-4f56-b19e-c5af5f1999f3`. The next production-auth-ready iOS build must increment the remote iOS build number past `2` before upload. Check Android `versionCode` with `npm run release:versions:get` and increment it before the next Play upload if it still matches an uploaded build.
 
 ### 3. Verify app.config.js
 
@@ -193,7 +193,7 @@ cp RYVRO_ENVIRONMENT_CONFIGURATION_TEMPLATE.md /tmp/ryvro-env-reference.md
 cp .env.production.example .env
 ```
 
-Fill `.env` with real production values for Firebase, Google web, iOS, and Android OAuth clients, RevenueCat, legal/support URLs, EAS project ID, `RYVRO_BRAIN_URL`, and `SHIFT_SCHEDULE_PARSER_URL`. Keep the real Firebase native service files at the repo root and set `EXPO_IOS_GOOGLE_SERVICES_FILE=./GoogleService-Info.plist` plus `EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json`. The production example is intentionally placeholder-filled and should fail `npm run release:env:check` until those owner/account values are replaced.
+Fill `.env` with the remaining real production values for Firebase web API/app IDs, RevenueCat SDK keys, legal/support URLs, EAS project ID, `RYVRO_BRAIN_URL`, and `SHIFT_SCHEDULE_PARSER_URL`. The committed production example already includes the known non-secret Ryvro Google web, iOS, and Android OAuth client IDs. Keep the real Firebase native service files at the repo root and set `EXPO_IOS_GOOGLE_SERVICES_FILE=./GoogleService-Info.plist` plus `EXPO_ANDROID_GOOGLE_SERVICES_FILE=./google-services.json`. The production example still intentionally contains owner-only placeholders and should fail `npm run release:env:check` until those values are replaced locally.
 
 Before pushing secrets to EAS or starting production builds, run:
 

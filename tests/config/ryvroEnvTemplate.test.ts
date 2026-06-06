@@ -1776,7 +1776,19 @@ describe('Ryvro environment template', () => {
       'eas build:version:set --platform android --profile production'
     );
     expect(deploymentGuide).toContain(
-      'latest checked production remote values on 2026-06-05 were iOS build number `1` and Android versionCode `1`'
+      'App Store Connect already has Ryvro version `1.0.0`, build `2`'
+    );
+    expect(deploymentGuide).toContain(
+      'The next production-auth-ready iOS build must increment the remote iOS build number past `2`'
+    );
+    expect(deploymentGuide).toContain(
+      'Check Android `versionCode` with `npm run release:versions:get`'
+    );
+    expect(deploymentGuide).toContain(
+      'The committed production example already includes the known non-secret Ryvro Google web, iOS, and Android OAuth client IDs'
+    );
+    expect(deploymentGuide).toContain(
+      'The production example still intentionally contains owner-only placeholders'
     );
     expect(deploymentGuide).toContain('eas submit --platform ios --latest');
     expect(deploymentGuide).toContain('eas submit --platform android --latest');
